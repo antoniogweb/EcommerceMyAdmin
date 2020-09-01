@@ -38,7 +38,7 @@ class CronController extends Controller {
 			{
 				mkdir(ROOT.'/Logs');
 				chmod(ROOT.'/Logs', 0777);
-				$fp = fopen($basepath.'/index.html', 'w');
+				$fp = fopen(ROOT.'/Logs/index.html', 'w');
 				fclose($fp);
 			}
 			
