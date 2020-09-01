@@ -1,0 +1,36 @@
+ul#menuBlock li {
+	height:24px;
+}
+
+ul#menuBlock li ul {
+	top:25px;
+}
+
+ul#menuBlock li ul li {
+	margin-top:-3px;
+}
+
+.list_filter_input
+{
+	width:100px;
+}
+.list_filter_form
+{
+	height:7px;
+}
+
+.list_filter_clear_link
+{
+	vertical-align:0px;
+	padding-left:5px;
+}
+.list_filter_submit
+{
+	vertical-align:-2px;
+	padding-left:10px;
+}
+
+.login_box input.type_text
+{
+	width:180px;
+}

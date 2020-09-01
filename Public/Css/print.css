@@ -1,0 +1,24 @@
+.for_print
+{
+	display:none !important;
+}
+
+body
+{
+	background: #FFF;
+}
+
+#admin_tools, .mainMenu, .scaffold_header, #ombra_header, #header, .submit_entry, .executed, .box_fatture, .close_lightbox
+{
+	display:none;
+}
+
+.sidebar, .page-header, .alert
+{
+	display:none !important;
+}
+
+.col-md-offset-2
+{
+    margin-left: 0 !important;
+}

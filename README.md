@@ -1,2 +1,2 @@
 # EcommerceMyAdmin
-Ecommerce Admin
+CMS / Ecommerce

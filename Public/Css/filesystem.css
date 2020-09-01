@@ -1,0 +1,103 @@
+html, body{margin: 0;padding:0}
+body{text-align: left;margin:0px;padding:0px;font-family:sans-serif;font-size:12px;}
+
+img
+{
+	border:none;
+}
+
+form
+{
+/* 	height:25px; */
+	margin-bottom:0px;
+}
+
+.EGfolderBox td, .EGfileBox td, .EGuploadFileBox
+{
+	background-color:#E6E6FA;
+	padding-left:5px;
+}
+.EGuploadFileBox, .EGcreateFolderBox
+{
+	background-color:#F0E68C;
+	padding:5px;
+	margin:2px;
+	margin-bottom:0px;
+}
+.EGcreateFolderBox
+{
+	background-color:#FFD700;
+}
+.EGbackBox td
+{
+	background-color:#D3D3D3;
+}
+.EGbackBox td.second
+{
+	padding-left:5px;
+}
+.EGbackBox td.first
+{
+	padding-left:8px;
+}
+
+/*alert string*/
+.alert {
+	font:bold 12px/1.5 Verdana,arial;
+	padding:5px;
+	margin:2px 2px 0px 2px;
+	background:TOMATO;
+/* 	border-top:2px solid MAROON; */
+/* 	border-bottom:2px solid MAROON; */
+	color:MAROON;
+}
+
+/*executed operation string*/
+.executed {
+	font:bold 12px/1.5 Verdana,arial;
+	padding:5px;
+	margin:2px 2px 0px 2px;
+	background:#E0FFFF;
+/* 	border:5px solid #ADD8E6; */
+/* 	border-bottom:2px solid #ADD8E6; */
+	color:#4169E1;
+}
+.alert-success
+{
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+	color: #3c763d;
+}
+.EGfileBox, .EGfolderBox
+{
+	cursor:pointer;
+}
+
+.selected td
+{
+	background-color:orange;
+}
+
+.inserisci_button
+{
+	margin:20px 0;
+}
+
+.loading_gif
+{
+	margin-top:4px;
+}
+.loading_gif img, .loading_gif_del img
+{
+	vertical-align:middle;
+	visibility:hidden;
+	margin-left:10px;
+}
+.loading_gif_del img
+{
+	margin-left:2px;
+}
+#userfile
+{
+	
+}
