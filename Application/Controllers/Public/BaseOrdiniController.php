@@ -25,9 +25,9 @@ use PHPMailer\PHPMailer\Exception;
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(ROOT.'/admin/External/PHPMailer-master/src/Exception.php');
-require_once(ROOT.'/admin/External/PHPMailer-master/src/PHPMailer.php');
-require_once(ROOT.'/admin/External/PHPMailer-master/src/SMTP.php');
+require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
+require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
+require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
 
 class BaseOrdiniController extends BaseController
 {
