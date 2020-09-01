@@ -22,6 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+if (!defined("FRONT"))
+	define('FRONT', ROOT);
+
 class BaseThumbController extends Controller {
 
 	public function contenuto($fileName)
@@ -42,13 +45,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -80,13 +83,13 @@ class BaseThumbController extends Controller {
 			{
 				if (strcmp($fileName,'') !== 0)
 				{
-					$thumb = new Image_Gd_Thumbnail(ROOT.'/images/layer',$params);
+					$thumb = new Image_Gd_Thumbnail(FRONT.'/images/layer',$params);
 					$thumb->render($fileName);
 				}
 			}
 			else
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 				$thumb->render('nofound.jpeg');
 			}
 		}
@@ -108,13 +111,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -135,13 +138,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -166,13 +169,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -192,13 +195,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -222,13 +225,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -252,13 +255,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -282,13 +285,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -313,13 +316,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -340,13 +343,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -370,13 +373,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -400,13 +403,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -430,13 +433,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -457,13 +460,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -487,13 +490,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/images/marchi',$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/marchi',$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -517,13 +520,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/images/categorie',$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/categorie',$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -547,13 +550,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -577,13 +580,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -607,13 +610,13 @@ class BaseThumbController extends Controller {
 		{
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -666,14 +669,14 @@ class BaseThumbController extends Controller {
 			{
 				if (strcmp($fileName,'') !== 0)
 				{
-					$thumb = new Image_Gd_Thumbnail(ROOT.'/images/widgets',$params);
+					$thumb = new Image_Gd_Thumbnail(FRONT.'/images/widgets',$params);
 					$thumb->render($fileName);
 				}
 			}
 		}
 		else
 		{
-			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
 	}
@@ -696,13 +699,13 @@ class BaseThumbController extends Controller {
 // 		{
 // 			if (strcmp($fileName,'') !== 0)
 // 			{
-// 				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiNews,$params);
+// 				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiNews,$params);
 // 				$thumb->render($fileName);
 // 			}
 // 		}
 // 		else
 // 		{
-// 			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+// 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 // 			$thumb->render('nofound.jpeg');
 // 		}
 // 	}
@@ -725,13 +728,13 @@ class BaseThumbController extends Controller {
 // 		{
 // 			if (strcmp($fileName,'') !== 0)
 // 			{
-// 				$thumb = new Image_Gd_Thumbnail(ROOT.'/'.Parametri::$cartellaImmaginiNews,$params);
+// 				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiNews,$params);
 // 				$thumb->render($fileName);
 // 			}
 // 		}
 // 		else
 // 		{
-// 			$thumb = new Image_Gd_Thumbnail(ROOT.'/Public/Img',$params);
+// 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 // 			$thumb->render('nofound.jpeg');
 // 		}
 // 	}

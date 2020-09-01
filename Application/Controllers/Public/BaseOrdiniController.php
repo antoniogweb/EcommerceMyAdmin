@@ -91,7 +91,7 @@ class BaseOrdiniController extends BaseController
 		
 		$this->clean();
 		
-		require (ROOT.'/External/paypal/paypal_class.php');
+		require (LIBRARY.'/External/paypal/paypal_class.php');
 			
 		if (Parametri::$useSandbox)
 		{
@@ -304,7 +304,7 @@ class BaseOrdiniController extends BaseController
 					$this->clean();
 				}
 				
-				require (ROOT.'/External/paypal/paypal_class.php');
+				require (LIBRARY.'/External/paypal/paypal_class.php');
 				
 				if (Parametri::$useSandbox)
 				{

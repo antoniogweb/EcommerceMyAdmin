@@ -36,10 +36,13 @@ class BaseBaseController extends Controller
 
 	public function __construct($model, $controller, $queryString)
 	{
+		if (!defined("FRONT"))
+			define('FRONT', ROOT);
+		
 // 		$_GET["asJson"] = true;
 		
-		Domain::$parentRoot = ROOT;
-		Domain::$adminRoot = ROOT."/admin";
+		Domain::$parentRoot = FRONT;
+		Domain::$adminRoot = LIBRARY;
 		Domain::$adminName = $this->baseUrlSrc."/admin";
 		
 		parent::__construct($model, $controller, $queryString);

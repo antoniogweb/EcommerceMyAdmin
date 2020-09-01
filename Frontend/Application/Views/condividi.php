@@ -1,0 +1,6 @@
+<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+
+<a href="#" data-type="facebook" data-url="<?php echo $this->baseUrl."/$urlAlias";?>" data-title="<?php echo $p["pages"]["title"];?>>" data-description="<?php echo $p["pages"]["title"];?>" class="prettySocial bntFacebook"><img src="<?php echo $this->baseUrlSrc."/Public/Img/facebook.png";?>" /></a>
+<a href="#" data-type="googleplus" data-url="<?php echo $this->baseUrl."/$urlAlias";?>" data-title="<?php echo $p["pages"]["title"];?>>" class="prettySocial bntGoogle"><img src="<?php echo $this->baseUrlSrc."/Public/Img/google.png";?>" /></a>
+<a href="#" data-type="twitter" data-url="<?php echo $this->baseUrl."/$urlAlias";?>" data-title="<?php echo $n["newsroom"]["title"];?>>" data-description="<?php echo $p["pages"]["title"];?>" class="prettySocial bntTwitter"><img src="<?php echo $this->baseUrlSrc."/Public/Img/twitter.png";?>" /></a>
+<a href="#" data-type="linkedin" data-url="<?php echo $this->baseUrl."/$urlAlias";?>" data-title="<?php echo $p["pages"]["title"];?>>" data-description="<?php echo $p["pages"]["title"];?>" class="prettySocial bntLinkedin"><img src="<?php echo $this->baseUrlSrc."/Public/Img/linkedin.png";?>" /></a>
