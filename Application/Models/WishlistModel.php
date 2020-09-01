@@ -1,0 +1,159 @@
+<?php
+
+// EcommerceMyAdmin is a PHP CMS based on EasyGiant
+//
+// Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.txt.
+//
+// This file is part of EcommerceMyAdmin
+//
+// EcommerceMyAdmin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// EcommerceMyAdmin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
+
+if (!defined('EG')) die('Direct access not allowed!');
+
+class WishlistModel extends Model_Tree {
+	
+	public static $pagesInWishlist = null;
+	
+	public function __construct() {
+		$this->_tables='wishlist';
+		$this->_idFields='id_wishlist';
+		
+		$this->_idOrder = 'id_order';
+		
+		$this->orderBy = 'wishlist.id_wishlist';
+		$this->_lang = 'It';
+		
+		parent::__construct();
+
+		$this->deleteExpired();
+	}
+
+	public function deleteExpired()
+	{
+		$limit = time() - Parametri::$durataWishlist; 
+		$this->db->del('wishlist','creation_time < '.$limit);
+	}
+	
+	public function emptyWishlist()
+	{
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		$this->del(null, "wishlist_uid = '" . $clean["wishlist_uid"] . "'");
+	}
+	
+	public function delete($id_page)
+	{
+		$clean["id_page"] = (int)$id_page;
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		$sql = "id_page = " . $clean["id_page"] . " AND wishlist_uid = '" . $clean["wishlist_uid"] . "'";
+		
+		return $this->del(null, $sql);
+	}
+	
+	public function add($id_page = 0)
+	{
+		$clean["id_page"] = (int)$id_page;
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		$p = new PagesModel();
+
+		$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
+		
+		if (count($rPage) > 0)
+		{
+			$res = $this->clear()->where(array("id_page"=>$clean["id_page"],"wishlist_uid"=>$clean["wishlist_uid"]))->send();
+			
+			if (count($res) === 0)
+			{
+				$this->setValues(array(
+					"id_page"		=>	$clean["id_page"],
+					"wishlist_uid"	=>	$clean["wishlist_uid"],
+					"creation_time"	=>	$this->getCreationTime(),
+				));
+				
+				return $this->insert();
+			}
+		}
+		
+		return false;
+	}
+	
+	public function getCreationTime()
+	{
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		$res = $this->clear()->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->send();
+		
+		if (count($res) > 0)
+		{
+			return $res[0]["wishlist"]["creation_time"];
+		}
+		
+		return time();
+	}
+	
+	public static function isInWishlist($id_page)
+	{
+		if (!isset(self::$pagesInWishlist))
+		{
+			self::$pagesInWishlist = array();
+			
+			$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+			
+			$wl = new WishlistModel();
+			
+			$res = $wl->clear()->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->send(false);
+			
+			foreach ($res as $w)
+			{
+				self::$pagesInWishlist[] = $w["id_page"];
+			}
+		}
+		
+		return in_array($id_page, self::$pagesInWishlist) ? true : false;
+	}
+	
+	public function recordExists($id_page)
+	{
+		$clean["id_page"] = (int)$id_page;
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		$res = $this->clear()->where(array("id_page"=>$clean["id_page"],"wishlist_uid"=>$clean["wishlist_uid"]))->send();
+		
+		if (count($res) > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	//numero prodotti nel carrello
+	public function numberOfItems()
+	{
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		$res = $this->clear()->select("count(id_wishlist) as q")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->groupBy("wishlist_uid")->send();
+		
+		if (count($res) > 0)
+		{
+			return $res[0]["aggregate"]["q"];
+		}
+
+		return "0";
+	}
+	
+	
+}
