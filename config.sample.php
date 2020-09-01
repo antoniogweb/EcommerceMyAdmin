@@ -22,9 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-$db_name = 'easystart';
-$db_user = 'root';
-$db_pwd = 'Nnppdclp12vag';
-$db_host = 'localhost';
+$db_name = '';
+$db_user = '';
+$db_pwd = '';
+$db_host = '';
 
-$website_domain_name = "easystart";
+$website_domain_name = "";
