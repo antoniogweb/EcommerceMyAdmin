@@ -34,6 +34,14 @@ class CronController extends Controller {
 	{
 		if (is_string($c) && $c == "23489sdfmn60sdnbw46zxnbf7834htfg")
 		{
+			if (@!is_dir(ROOT.'/Logs'))
+			{
+				mkdir(ROOT.'/Logs');
+				chmod(ROOT.'/Logs', 0777);
+				$fp = fopen($basepath.'/index.html', 'w');
+				fclose($fp);
+			}
+			
 			$hand = fopen(ROOT.'/Logs/migrazioni.txt','a+');
 			
 			fwrite($hand,"\n");
