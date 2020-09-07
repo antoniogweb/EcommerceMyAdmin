@@ -347,7 +347,6 @@ class Route
 		
 		'tag,main',
 		'tag,form',
-		
 // 		'regusers,ordina',
 	);
 	
