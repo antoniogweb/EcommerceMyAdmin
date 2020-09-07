@@ -11,6 +11,10 @@
 									<div class="woocommerce-notices-wrapper"></div>
 									<?php if (count($pages) > 0) { ?>
 										<div class="col-lg-8 col-md-12">
+											<?php if (!checkQtaCartFull()) { ?>
+											<div class="alert alert-danger"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
+											<?php } ?>
+											
 											<table class="shop_table cart_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
 												<thead>
 													<tr class="cart_head">
@@ -55,7 +59,9 @@
 														<td class="product-quantity cart_item_quantity" data-title="Quantità">
 															<div class="quantity">
 																<label class="screen-reader-text" for="quantity_5d986ec501abf"></label>
+																<?php $backColor = checkGiacenza($p["cart"]["id_cart"], $p["cart"]["quantity"]) ? "#FFF" : "red";?>
 																<input
+																style="background-color:<?php echo $backColor;?>" 
 																type="number"
 																id="quantity_5d986ec501abf"
 																class="item_quantity input-text qty text"

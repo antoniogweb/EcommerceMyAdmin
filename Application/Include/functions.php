@@ -1461,3 +1461,17 @@ function giacenzaPrincipale($id_page)
 	
 	return $p->giacenzaPrincipale($id_page);
 }
+
+function checkGiacenza($idCart, $qty)
+{
+	$c = new CartModel();
+	
+	return $c->checkQtaFinale($idCart, $qty);
+}
+
+function checkQtaCartFull()
+{
+	$c = new CartModel();
+	
+	return $c->checkQtaFull();
+}

@@ -18,6 +18,9 @@ if (errore_selezionare_variante == undefined)
 if (stringa_errore_giacenza_carrello == undefined)
 	var stringa_errore_giacenza_carrello = "Attenzione, controllare la quantità delle righe evidenziate";
 
+if (back_cart_error == undefined)
+	back_cart_error = "red";
+
 var time;
 var arrayAccessori = [];
 
@@ -794,8 +797,7 @@ $(document).ready(function(){
 				
 				for (var i=0; i<content.length; i++)
 				{
-// 					console.log(".cart_table [rel='"+content[i]+"']");
-					$(".cart_table [rel='"+content[i]+"']").find(".item_quantity").css("background-color","red");
+					$(".cart_table [rel='"+content[i]+"']").find(".item_quantity").css("background-color",back_cart_error);
 				}
 				
 				if (content.length == 0)
