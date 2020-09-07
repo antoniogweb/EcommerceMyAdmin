@@ -94,6 +94,13 @@ function getMarchioUrlAlias($id_c)
 	return $p->getUrlAlias($clean["id_c"]);
 }
 
+function getTitoloMarchio($idM)
+{
+	$m = new MarchiModel();
+	
+	return $m->titolo((int)$idM);
+}
+
 function getDocumenti($id_page)
 {
 	$clean["id_page"] = (int)$id_page;

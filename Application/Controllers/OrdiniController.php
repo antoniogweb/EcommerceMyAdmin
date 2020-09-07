@@ -32,7 +32,7 @@ class OrdiniController extends BaseController {
 		$this->session('admin');
 		$this->model();
 
-		$this->setArgKeys(array('page:forceInt'=>1,'id_o:sanitizeAll'=>'tutti','pagamento:sanitizeAll'=>'tutti','stato:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','email:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','registrato:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
+		$this->setArgKeys(array('page:forceInt'=>1,'id_o:sanitizeAll'=>'tutti','pagamento:sanitizeAll'=>'tutti','stato:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','email:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','registrato:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token', 'partial:sanitizeAll'=>'tutti', 'id_comb:sanitizeAll'=>'tutti'));
 
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
@@ -62,7 +62,7 @@ class OrdiniController extends BaseController {
 		
 		$this->scaffold->loadMain('<a href="'.$this->baseUrl.'/ordini/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>,smartDate|orders.data_creazione,OrdiniModel.getNome|orders.id_o,orders.email,orders.tipo_cliente,OrdiniModel.getCFoPIva|orders.id_o,orders.nome_promozione,statoOrdineBreve|orders.stato','orders:id_o','');
 		
-		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/ordini/vedi/;orders.id_o;".$this->viewStatus."?n=y'><i class='verde fa fa-arrow-right'></i></a>";
+		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/ordini/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
 		
 		$this->scaffold->addItem('text',";OrdiniModel.pulsanteFattura|orders.id_o;");
 		$this->scaffold->addItem('text',$vediOrdineLink);
@@ -100,6 +100,13 @@ class OrdiniController extends BaseController {
 			);
 
 			$this->scaffold->model->aWhere($where);
+		}
+		
+		if ($this->viewArgs['id_comb'] != "tutti")
+		{
+			$this->scaffold->model->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o")->aWhere(array(
+				"righe.id_c"	=>	$this->viewArgs['id_comb'],
+			));
 		}
 		
 		$this->scaffold->itemList->colProperties = array(

@@ -59,11 +59,20 @@ class ProdottiModel extends PagesModel {
 			'id_c'	=>	'lft asc',
 		);
 		
+		$this->_popupWhere[] = array();
+		
 		if (isset($this->hModel->section))
 		{
-			$this->_popupWhere = array(
-				'id_c'	=>	$this->hModel->getChildrenFilterWhere(),
-			);
+			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
+		}
+		
+		if (v("usa_marchi"))
+		{
+			$this->_popupItemNames["-id_marchio"] = "titolo";
+			$this->_popupLabels["-id_marchio"] = gtext("marchio",true,"strtoupper");
+// 			$this->_popupWhere["-id_marchio"] = "id_marchio != 0";
+// 			$this->_popupFunctions["-id_marchio"] = "getTitoloMarchio";
+			$this->_popupOrderBy["-id_marchio"] = "marchi.titolo";
 		}
 	}
 	

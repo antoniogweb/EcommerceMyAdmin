@@ -81,6 +81,9 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Giacenza";
 		}
 		
+		$this->mainFields[] = "ordini";
+		$this->mainHead .= ",Acquisti";
+		
 		if ($this->viewArgs['id_page'] == "tutti")
 			$this->filters = array("categoria", "prodotto", "codice");
 		
