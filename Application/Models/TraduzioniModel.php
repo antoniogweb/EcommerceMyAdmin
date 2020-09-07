@@ -166,4 +166,9 @@ class TraduzioniModel extends GenericModel {
 		
 		return parent::update($id, $where);
 	}
+	
+	public function elimina($record)
+	{
+		return "<a href='".Url::getRoot()."traduzioni/elimina/".$record["traduzioni"]["id_t"]."' class='text text-danger text_16 elimina_traduzione'><i class='fa fa-trash'></i></a>";
+	}
 }

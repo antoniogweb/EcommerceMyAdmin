@@ -143,6 +143,8 @@ class BaseController extends Controller
 	
 	public $filtroAttivo = array("tutti"=>"Attivi / NON Attivi","Y"=>"Attivi","N"=>"NON Attivi");
 	
+	public $elencoLingue = array();
+	
 	public function __construct($model, $controller, $queryString)
 	{
 		parent::__construct($model, $controller, $queryString);
@@ -157,7 +159,7 @@ class BaseController extends Controller
 			"attiva"		=>	1,
 		))->orderBy("id_order")->toList("codice")->send();
 		
-		$data['elencoLingue'] = $this->m["LingueModel"]->clear()->where(array(
+		$data['elencoLingue'] = $this->elencoLingue = $this->m["LingueModel"]->clear()->where(array(
 			"attiva"	=>	1,
 		))->orderBy("id_order desc")->toList("codice", "descrizione")->send();
 		

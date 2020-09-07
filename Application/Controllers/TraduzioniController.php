@@ -87,6 +87,9 @@ class TraduzioniController extends BaseController {
 			$this->mainHead .= ",".strtoupper($codiceLingua);
 		}
 		
+		$this->mainFields[] = "elimina";
+		$this->mainHead .= ",";
+		
 		$this->colProperties = array();
 		
 		$this->mainButtons = '';
@@ -114,6 +117,24 @@ class TraduzioniController extends BaseController {
 		));
 		
 		$this->m[$this->modelName]->update($idT);
+	}
+	
+	public function elimina($id_t)
+	{
+		$this->clean();
+		
+		$record = $this->m[$this->modelName]->selectId((int)$id_t);
+		
+		foreach ($this->elencoLingue as $codiceLingua => $desc)
+		{
+			$traduzione =  $this->m[$this->modelName]->clear()->where(array(
+				"lingua"	=>	$codiceLingua,
+				"chiave"	=>	sanitizeDb($record["chiave"]),
+			))->record();
+			
+			if (!empty($traduzione))
+				$this->m[$this->modelName]->del($traduzione["id_t"]);
+		}
 	}
 	
 // 	public function main()

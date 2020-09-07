@@ -440,7 +440,29 @@ $(document).ready(function(){
 		});
 	});
 	
-	
+	$("body").on("click", ".elimina_traduzione", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-trash").addClass("fa-refresh").addClass("fa-spin");
+		
+		var url = $(this).attr("href");
+		
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				
+				location.reload();
+				
+			}
+		});
+		
+	});
 // 	setTimeout(function(){
 // 		
 // 		aggiornaAltezzaIframe();
