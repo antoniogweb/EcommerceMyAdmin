@@ -152,6 +152,7 @@ class Route
 		'traduzioni,main',
 		'traduzioni,form',
 		'traduzioni,aggiorna',
+		'traduzioni,elimina',
 		
 		'scaglioni,form',
 		
