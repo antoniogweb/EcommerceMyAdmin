@@ -106,6 +106,8 @@ class PagesController extends BaseController {
 		$this->model("TipicontenutoModel");
 		$this->model("PersonalizzazioniModel");
 		$this->model("PagespersonalizzazioniModel");
+		$this->model("TagModel");
+		$this->model("PagestagModel");
 		
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
@@ -1382,6 +1384,58 @@ class PagesController extends BaseController {
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
 		$data["lista"] = $this->m["PersonalizzazioniModel"]->clear()->sWhere("id_pers not in (select id_pers from pages_personalizzazioni where id_page = ".$clean['id'].")")->orderBy("titolo")->toList("id_pers","titolo")->send();
+		
+		$this->append($data);
+	}
+	
+	public function tag($id = 0)
+	{
+		$this->orderBy = "tag.id_order";
+		
+		$this->_posizioni['tag'] = 'class="active"';
+		
+		$this->ordinaAction = "ordinatag";
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "PagestagModel";
+		
+		$this->m[$this->modelName]->setFields('id_tag','sanitizeAll');
+		$this->m[$this->modelName]->values['id_page'] = $clean['id'];
+		$this->m[$this->modelName]->updateTable('insert,del');
+		
+		if ($this->m[$this->modelName]->queryResult)
+			$this->redirect($this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("tag.titolo");
+		$this->mainHead = "Titolo";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"tag/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("tag.*,pages_tag.*")->inner(array("tag"))->orderBy("pages_tag.id_order")->where(array(
+			"pages_tag.id_page"	=>	$clean['id'],
+		))->save();
+		
+		$this->tabella = "pages";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$data["lista"] = $this->m["TagModel"]->clear()->sWhere("id_tag not in (select id_tag from pages_tag where id_page = ".$clean['id'].")")->orderBy("titolo")->toList("id_tag","titolo")->send();
 		
 		$this->append($data);
 	}

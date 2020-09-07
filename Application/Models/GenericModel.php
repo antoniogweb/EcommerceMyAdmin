@@ -524,6 +524,7 @@ class GenericModel extends Model_Tree {
 				$id_a = ($keyField == "id_a") ? (int)$id : 0;
 				$id_av = ($keyField == "id_av") ? (int)$id : 0;
 				$id_pers = ($keyField == "id_pers") ? (int)$id : 0;
+				$id_tag = ($keyField == "id_tag") ? (int)$id : 0;
 				
 				$ct->setValues(array(
 					"lingua"		=>	sanitizeDb($lingua),
@@ -545,6 +546,7 @@ class GenericModel extends Model_Tree {
 					"id_a"			=>	$id_a,
 					"id_av"			=>	$id_av,
 					"id_pers"		=>	$id_pers,
+					"id_tag"		=>	$id_tag,
 					"sezione"		=>	$sezione,
 				),"sanitizeDb");
 				

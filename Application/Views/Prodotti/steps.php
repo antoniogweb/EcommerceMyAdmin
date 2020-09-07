@@ -31,6 +31,9 @@
   <?php if (v("attiva_personalizzazioni")) { ?>
   <li <?php echo $posizioni['personalizzazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/personalizzazioni/$id_page".$this->viewStatus;?>">Personalizzazioni</a></li>
   <?php } ?>
+   <?php if (v("usa_tag")) { ?>
+  <li <?php echo $posizioni['tag'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/tag/$id_page".$this->viewStatus;?>">Tag</a></li>
+  <?php } ?>
   <?php if (v("documenti_in_prodotti")) { ?>
   <li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/documenti/$id_page".$this->viewStatus;?>">Documenti</a></li>
   <?php } ?>

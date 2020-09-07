@@ -111,7 +111,7 @@ class ContenutitradottiModel extends GenericModel
 	
 	public function sAlias($record, $id = null)
 	{
-		if ($record["id_marchio"])
+		if ($record["id_marchio"] || $record["id_tag"])
 		{
 			if (!$this->values["alias"])
 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));

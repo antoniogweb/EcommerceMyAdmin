@@ -55,6 +55,7 @@ class BaseController extends Controller
 		"team"			=>	array("",""),
 		"tipitipidocumento"	=>	array("",""),
 		"download"		=>	array("",""),
+		"tag"			=>	array("",""),
 	);
 	
 	public $id = 0;

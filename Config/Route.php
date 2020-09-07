@@ -145,6 +145,8 @@ class Route
 		'prodotti,testi',
 		'prodotti,personalizzazioni',
 		'prodotti,ordinapersonalizzazioni',
+		'prodotti,tag',
+		'prodotti,ordinatag',
 		
 		'testi,main',
 		'testi,form',
@@ -342,6 +344,9 @@ class Route
 		
 		'personalizzazioni,main',
 		'personalizzazioni,form',
+		
+		'tag,main',
+		'tag,form',
 		
 // 		'regusers,ordina',
 	);

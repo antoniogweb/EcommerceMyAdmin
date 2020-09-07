@@ -116,7 +116,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Categoria<?php if (v("usa_marchi")) { ?> / Marchio<?php } ?>
+								Categoria<?php if (v("usa_marchi")) { ?> / <?php echo gtext("famiglie",true,"ucfirst");?><?php } ?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["id_c"];?>
