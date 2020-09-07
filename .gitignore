@@ -3,3 +3,4 @@
 /Logs/*
 /media/Fatture/*
 config.php
+/Application/Views/Fatture/layout_fattura.php

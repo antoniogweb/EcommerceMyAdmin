@@ -140,6 +140,8 @@ class BaseCartController extends BaseController
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		$clean["json_pers"] = $this->request->post("json_pers","");
 		
+		$c = new CombinazioniModel();
+		
 		$arrayPers = array();
 		
 		if ($clean["json_pers"])
@@ -148,7 +150,6 @@ class BaseCartController extends BaseController
 		// Cerco la combinazione principale
 		if ((int)$clean["id_c"] === 0)
 		{
-			$c = new CombinazioniModel();
 			$principale = $c->combinazionePrincipale($clean["id_page"]);
 			
 			if (!empty($principale))
@@ -170,24 +171,48 @@ class BaseCartController extends BaseController
 		
 		if ($clean["quantity"] >= 0)
 		{
-			$idCart = $this->m["CartModel"]->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
+			$giacenza = $c->qta($clean["id_c"]);
 			
-			if ($idCart)
+			if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza)
 			{
-				if (!empty($recordCart))
-				{
-					$this->m["CartModel"]->setValues(array(
-						"id_order"	=>	$recordCart["id_order"],
-					));
-					
-					$this->m["CartModel"]->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
-				}
+				// OK giacenza
+				$idCart = $this->m["CartModel"]->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
 				
-				$result = "OK";
+				if ($idCart)
+				{
+					if ($idCart == -1)
+					{
+						$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+					}
+					else
+					{
+						if (!empty($recordCart))
+						{
+							$this->m["CartModel"]->setValues(array(
+								"id_order"	=>	$recordCart["id_order"],
+							));
+							
+							$this->m["CartModel"]->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+						}
+						
+						$result = "OK";
+					}
+				}
+				else
+					$errore = gtext("Si prega di selezionare la variante", false);
 			}
 			else
 			{
-				$errore = gtext("Si prega di selezionare la variante", false);
+				// KO giacenza
+				if ((int)$giacenza === 0)
+					$errore = gtext("Attenzione, prodotto esaurito", false);
+				else if ((int)$giacenza == 1)
+					$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
+				else if ((int)$giacenza > 1)
+				{
+					$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
+					$errore = str_replace("[N]", $giacenza, $errore);
+				}
 			}
 		}
 		else
@@ -241,11 +266,26 @@ class BaseCartController extends BaseController
 
 		$quantityArray = explode("|",$clean["quantity"]);
 		
+		$arrayIdErroriQta = array();
+		$arrayIdQuantity = array();
+		
 		foreach ($quantityArray as $q)
 		{
 			if (strcmp($q,"") !== 0 and strstr($q, ':'))
 			{
 				$temp = explode(":",$q);
+				
+				if (!$this->m["CartModel"]->checkQtaFinale($temp[0], $temp[1]))
+					$arrayIdErroriQta[] = $temp[0];
+				
+				$arrayIdQuantity[] = array($temp[0], $temp[1]);
+			}
+		}
+		
+		if ((int)count($arrayIdErroriQta) === 0)
+		{
+			foreach ($arrayIdQuantity as $temp)
+			{
 				$this->m["CartModel"]->set($temp[0], $temp[1]);
 			}
 		}
@@ -253,5 +293,9 @@ class BaseCartController extends BaseController
 		// Se sono JSON, stampa in output il carrello completo
 		if (Output::$json)
 			$this->index();
+		else
+		{
+			echo json_encode($arrayIdErroriQta);
+		}
 	}
 }

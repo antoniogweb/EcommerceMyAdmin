@@ -123,13 +123,14 @@
 	var errore_combinazione = "<?php echo gtext("Si prega di selezionare la variante:", false);?>";
 	var errore_quantita_minore_zero = "<?php echo gtext("Si prega di indicare una quantità maggiore di zero", false);?>";
 	var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
+	var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
 </script>
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>jquery/jquery.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>jquery/jquery-migrate.min.js'></script>
-<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
-<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
-<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>ajaxQueue.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/libs/modernizr.custom.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/revslider/public/assets/js/jquery.themepunch.tools.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/revslider/public/assets/js/jquery.themepunch.revolution.min.js'></script>

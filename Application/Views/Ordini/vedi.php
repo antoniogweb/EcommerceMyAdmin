@@ -124,7 +124,7 @@
 					<table width="100%" class="table table-striped" cellspacing="0">
 						<thead>
 							<tr class="">
-								<th align="left" class="">Prodotto</th>
+								<th colspan="2" align="left" class="">Prodotto</th>
 								<th align="left" class="">Codice</th>
 								<th align="left" class="">Peso</th>
 								<th align="left" class="">Prezzo</th>
@@ -139,7 +139,10 @@
 							$pesoTotale += $p["righe"]["peso"] * $p["righe"]["quantity"];
 						?>
 						<tr class="">
-							<td class=""><?php echo $p["righe"]["title"];?>
+							<?php if ($p["righe"]["id_p"]) { ?>
+							<td width="1%"><i class="fa fa-arrow-right"></i></td>
+							<?php } ?>
+							<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class=""><?php echo $p["righe"]["title"];?>
 							<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 							</td>
 							<td class=""><?php echo $p["righe"]["codice"];?></td>

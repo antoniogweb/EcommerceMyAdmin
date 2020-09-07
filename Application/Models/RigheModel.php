@@ -36,59 +36,80 @@ class RigheModel extends GenericModel {
 		parent::__construct();
 	}
 	
-	//get the total from the cart
-	public function total($id_o)
+	public function insert()
 	{
-		$clean["id_o"] = (int)$id_o;
+		$res = parent::insert();
 		
-		$res = $this->clear()->where(array("id_o"=>$clean["id_o"]))->send();
-		
-		$total = 0;
-		
-		if (count($res) > 0)
+		if ($res && v("attiva_giacenza") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
 		{
-			foreach ($res as $r)
+			$c = new CombinazioniModel();
+			
+			$combinazione = $c->selectId((int)$this->values["id_c"]);
+			
+			if (!empty($combinazione))
 			{
-				$total = $total + ($r[$this->_tables]["price"] * $r[$this->_tables]["quantity"]);
+				$c->setValues(array(
+					"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$this->values["quantity"]),
+				));
+				
+				$c->pUpdate($combinazione["id_c"]);
 			}
 		}
 		
-		return $total;
+		return $res;
 	}
 	
-	public function getPesoTotale($id_o)
-	{
-		$clean["id_o"] = (int)$id_o;
-		
-		$res = $this->clear()->where(array("id_o"=>$clean["id_o"]))->send();
-		
-		$total = 0;
-		
-		if (count($res) > 0)
-		{
-			foreach ($res as $r)
-			{
-				$total = $total + ($r[$this->_tables]["peso"] * $r[$this->_tables]["quantity"]);
-			}
-		}
-		
-		return $total;
-	}
-	
-	//numero prodotti nel carrello
-	public function numberOfItems($id_o)
-	{
-		$clean["id_o"] = (int)$id_o;
-		
-		$res = $this->clear()->select("sum(quantity) as q")->where(array("id_o"=>$clean["id_o"]))->groupBy("id_o")->send();
-		
-		if (count($res) > 0)
-		{
-			return $res[0]["aggregate"]["q"];
-		}
-
-		return "0";
-	}
-	
-	
+// 	//get the total from the cart
+// 	public function total($id_o)
+// 	{
+// 		$clean["id_o"] = (int)$id_o;
+// 		
+// 		$res = $this->clear()->where(array("id_o"=>$clean["id_o"]))->send();
+// 		
+// 		$total = 0;
+// 		
+// 		if (count($res) > 0)
+// 		{
+// 			foreach ($res as $r)
+// 			{
+// 				$total = $total + ($r[$this->_tables]["price"] * $r[$this->_tables]["quantity"]);
+// 			}
+// 		}
+// 		
+// 		return $total;
+// 	}
+// 	
+// 	public function getPesoTotale($id_o)
+// 	{
+// 		$clean["id_o"] = (int)$id_o;
+// 		
+// 		$res = $this->clear()->where(array("id_o"=>$clean["id_o"]))->send();
+// 		
+// 		$total = 0;
+// 		
+// 		if (count($res) > 0)
+// 		{
+// 			foreach ($res as $r)
+// 			{
+// 				$total = $total + ($r[$this->_tables]["peso"] * $r[$this->_tables]["quantity"]);
+// 			}
+// 		}
+// 		
+// 		return $total;
+// 	}
+// 	
+// 	//numero prodotti nel carrello
+// 	public function numberOfItems($id_o)
+// 	{
+// 		$clean["id_o"] = (int)$id_o;
+// 		
+// 		$res = $this->clear()->select("sum(quantity) as q")->where(array("id_o"=>$clean["id_o"]))->groupBy("id_o")->send();
+// 		
+// 		if (count($res) > 0)
+// 		{
+// 			return $res[0]["aggregate"]["q"];
+// 		}
+// 
+// 		return "0";
+// 	}
 }

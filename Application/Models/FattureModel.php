@@ -41,7 +41,7 @@ class FattureModel extends Model_Tree {
 		
 		$this->year = date("Y");
 		
-		$this->files->setBase(Domain::$parentRoot . rtrim("/".Parametri::$cartellaFatture));
+		$this->files->setBase(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture));
 		
 		$this->checkFatture();
 	}
@@ -70,11 +70,11 @@ class FattureModel extends Model_Tree {
 	
 	public function checkFatture()
 	{
-		if (@!is_dir(Domain::$parentRoot . rtrim("/".Parametri::$cartellaFatture)))
+		if (@!is_dir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
 		{
-			if (@mkdir(Domain::$parentRoot . rtrim("/".Parametri::$cartellaFatture)))
+			if (@mkdir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
 			{
-				$fp = fopen(Domain::$parentRoot . rtrim("/".Parametri::$cartellaFatture).'/index.html', 'w');
+				$fp = fopen(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture).'/index.html', 'w');
 				fclose($fp);
 			}
 		}
@@ -276,7 +276,7 @@ class FattureModel extends Model_Tree {
 				$html2pdf->setDefaultFont('Helvetica');
 				$html2pdf->writeHTML($content);
 				
-				$html2pdf->Output(Domain::$parentRoot . rtrim("/".Parametri::$cartellaFatture) . "/" . $clean["fileName"],'F');
+				$html2pdf->Output(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture) . "/" . $clean["fileName"],'F');
 				
 				$this->checkFiles();
 				//$this->redirect("ordini/vedi/".$ordine["id_o"]."/".$ordine["admin_token"]."?n=y");

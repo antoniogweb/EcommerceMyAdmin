@@ -11,7 +11,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //you can access the whole set of classes and functions of EasyGiant
 
-require(ROOT."/../External/mobile_detect.php");
+require(LIBRARY."/External/mobile_detect.php");
 
 $detect = new Mobile_Detect();
 User::$isMobile = $detect->isMobile();

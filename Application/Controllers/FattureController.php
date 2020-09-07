@@ -119,7 +119,7 @@ class FattureController extends BaseController {
 		{
 			header('Content-disposition: attachment; filename='.$res[0]['fatture']['filename']);
 			header('Content-Type: application/pdf');
-			readfile(Domain::$parentRoot . rtrim("/".Parametri::$cartellaFatture) . "/" . $res[0]['fatture']['filename']);
+			readfile(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture) . "/" . $res[0]['fatture']['filename']);
 		}
 		else
 		{

@@ -24,6 +24,7 @@ define('EG','allowed');
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__));
+define('FRONT', dirname(__FILE__)."/Frontend");
 define('APPLICATION_PATH','Application'); //name of the folder that contains the application files
 
 // call the config file and the bootstrap file

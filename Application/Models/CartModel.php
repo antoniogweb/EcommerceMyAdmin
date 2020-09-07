@@ -312,6 +312,13 @@ class CartModel extends Model_Tree {
 			
 			if (!empty($cart))
 			{
+				// Controllo la quantità
+				$qtaPresente = $cart["quantity"];
+				$qtaAggiunta = ($clean["quantity"] - $qtaPresente);
+				
+				if (!$this->checkQta($cart["id_c"], $qtaAggiunta))
+					return -1;
+				
 				$this->values = array(
 					"quantity" => $clean["quantity"],
 				);
@@ -396,6 +403,53 @@ class CartModel extends Model_Tree {
 		return $prezzoFinale;
 	}
 	
+	public function checkQta($id_c = 0, $qtyDaAggiungere = 0)
+	{
+		if (!v("attiva_giacenza"))
+			return true;
+		
+		$clean["id_c"] = (int)$id_c;
+		
+		$c = new CombinazioniModel();
+		$giacenza = $c->qta($clean["id_c"]);
+		
+		$qtaCarrello = $this->qta($clean["id_c"]);
+		$qtaFinale = $qtyDaAggiungere + $qtaCarrello;
+		
+		if ($giacenza >= $qtaFinale)
+			return true;
+		
+		return false;
+	}
+	
+	public function checkQtaFinale($id_cart = 0, $qtaFinale = 0)
+	{
+		$cart = $this->getCart((int)$id_cart);
+		
+		if (!empty($cart))
+			return $this->checkQta($cart["id_c"], ((int)$qtaFinale - $cart["quantity"]));
+		
+		return false;
+	}
+	
+	public function qta($id_c = 0)
+	{
+		$clean["id_c"] = (int)$id_c;
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$res = $this->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"id_c"		=>	$clean["id_c"],
+			"cart_uid"	=>	$clean["cart_uid"],
+		))->send();
+		
+		if (count($res) > 0)
+		{
+			return $res[0]["aggregate"]["SOMMA"];
+		}
+		
+		return 0;
+	}
+	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array())
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -447,6 +501,10 @@ class CartModel extends Model_Tree {
 			$prodottoParent = $this->clear()->where(array(
 				"id_cart"	=>	$clean["id_p"],
 			))->record();
+			
+			// Controllo la quantità
+			if (!$this->checkQta($clean["id_c"], $clean["quantity"]))
+				return -1;
 			
 			if (count($res) > 0)
 			{

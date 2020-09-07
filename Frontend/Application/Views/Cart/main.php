@@ -21,7 +21,6 @@
 														<th class="product-price prezzo_prodotto"><?php echo gtext("Prezzo (Iva esclusa)");?></th>
 														<th class="product-quantity quantita_prodotto"><span class="desk"><?php echo gtext("Quantità");?></span></th>
 														<th class="product-subtotal subtotal_prodotto"><?php echo gtext("Totale (Iva esclusa)");?></th>
-														<th class="product-subtotal subtotal_prodotto"></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -41,7 +40,10 @@
 															<?php if (!$p["cart"]["id_p"]) { ?>
 															</a>
 															<?php } ?>
-														<?php if (strcmp($p["cart"]["id_c"],0) !== 0) { echo "<br />".$p["cart"]["attributi"]; } ?>
+															<?php if (strcmp($p["cart"]["id_c"],0) !== 0) { echo "<br />".$p["cart"]["attributi"]; } ?>
+															<?php if (!$p["cart"]["id_p"]) { ?>
+																<br /><a href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"])."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
+															<?php } ?>
 														</td>
 														<td class="product-name cart_item_product" data-title="Codice"><?php echo $p["cart"]["codice"];?></td>
 														<td class="product-price cart_item_price" data-title="Prezzo">
@@ -68,15 +70,10 @@
 															</div>
 														</td>
 														<td class="cart_item_subtotal" data-title="Subtotale">€ <span class="item_price_subtotal"><?php echo setPriceReverse($p["cart"]["quantity"] * $p["cart"]["price"]);?></span></td>
-														<td>
-															<?php if (!$p["cart"]["id_p"]) { ?>
-																<a href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"])."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
-															<?php } ?>
-														</td>
 													</tr>
 													<?php } ?>
 													<tr class="cart_item_row_main_promo">
-														<td colspan="8" class="actions">
+														<td colspan="7" class="actions">
 															<?php if (!hasActiveCoupon()) { ?>
 															<form action="<?php echo $this->baseUrl."/carrello/vedi";?>" method="POST">
 																<div class="coupon">
