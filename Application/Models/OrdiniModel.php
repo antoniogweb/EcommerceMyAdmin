@@ -341,8 +341,6 @@ class OrdiniModel extends FormModel {
 				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
 				$output = ob_get_clean();
 				
-				echo $output;die();
-				
 				// Imposto le traduzioni del back
 				Params::$lang = null;
 				TraduzioniModel::$contestoStatic = "back";

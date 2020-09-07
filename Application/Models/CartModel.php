@@ -403,6 +403,25 @@ class CartModel extends Model_Tree {
 		return $prezzoFinale;
 	}
 	
+	public function checkQtaFull()
+	{
+		if (!v("attiva_giacenza"))
+			return true;
+		
+		$prodotti = $this->getProdotti();
+		
+		foreach ($prodotti as $p)
+		{
+			$idCart = $p["cart"]["id_cart"];
+			$qty = $p["cart"]["quantity"];
+			
+			if (!$this->checkQtaFinale($idCart, $qty))
+				return false;
+		}
+		
+		return true;
+	}
+	
 	public function checkQta($id_c = 0, $qtyDaAggiungere = 0)
 	{
 		if (!v("attiva_giacenza"))

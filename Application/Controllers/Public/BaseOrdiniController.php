@@ -500,7 +500,13 @@ class BaseOrdiniController extends BaseController
 		if (count($data["pages"]) === 0)
 		{
 			if (Output::$html)
-				$this->redirect("vai-al-carrello");
+				$this->redirect("carrello/vedi");
+		}
+		
+		if (!$this->m["CartModel"]->checkQtaFull())
+		{
+			if (Output::$html)
+				$this->redirect("carrello/vedi");
 		}
 		
 		// Prendo valori da account, per app

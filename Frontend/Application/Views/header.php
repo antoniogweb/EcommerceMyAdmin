@@ -124,6 +124,7 @@
 	var errore_quantita_minore_zero = "<?php echo gtext("Si prega di indicare una quantità maggiore di zero", false);?>";
 	var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
 	var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
+	var back_cart_error = "red";
 </script>
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>jquery/jquery.js'></script>
