@@ -84,19 +84,12 @@ class PagesModel extends GenericModel {
 	}
 	
 	public function relations() {
-<<<<<<< HEAD
 		return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_page', null, "CASCADE"),
 			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),
 			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_page', null, "CASCADE"),
 			'personalizzazioni' => array("HAS_MANY", 'PagespersonalizzazioniModel', 'id_page', null, "CASCADE"),
 			'tag' => array("HAS_MANY", 'PagestagModel', 'id_page', null, "CASCADE"),
-=======
-        return array(
-			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_page', null, "CASCADE"),
-			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),
-			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_page', null, "CASCADE"),
->>>>>>> 9725db80ce7bd09e8e5602d7e5ed5041ecb0cded
 			'link' => array("HAS_MANY", 'PageslinkModel', 'id_page', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
         );
