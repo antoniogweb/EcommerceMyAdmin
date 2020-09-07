@@ -390,6 +390,27 @@ class CombinazioniModel extends GenericModel {
 			return $record["combinazioni"]["giacenza"];
 	}
 	
+	public function ordini($record)
+	{
+		$idC = (int)$record["combinazioni"]["id_c"];
+		
+		$r = new RigheModel();
+		
+		$res = $r->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"id_c"	=>	$idC,
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)
+		{
+			if (!isset($_GET["esporta"]))
+				return $res[0]["aggregate"]["SOMMA"]." <a title='Elenco ordini dove è stato acquistato' class='iframe' href='".Url::getRoot()."ordini/main?partial=Y&id_comb=$idC'><i class='fa fa-list'></i></a>";
+			else
+				return $res[0]["aggregate"]["SOMMA"];
+		}
+		
+		return "";
+	}
+	
 // 	public function col2($record)
 // 	{
 // 		$idAttr = $record["combinazioni"]["col_2"];

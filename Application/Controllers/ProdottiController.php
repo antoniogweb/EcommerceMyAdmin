@@ -35,15 +35,24 @@ class ProdottiController extends PagesController {
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a> <br /><span class='get_title'>(alias: ;pages.alias;)</span><br />codice: <b>;pages.codice;</b><br />prezzo: <b>;setPriceReverse|pages.price;€</b>",
 			'PagesModel.categoriesS|pages.id_page',
-			'PagesModel.inPromozioneText|pages.id_page',
-			'PagesModel.getPubblicatoCheckbox|pages.id_page',
-			'PagesModel.getInEvidenzaCheckbox|pages.id_page',
 // 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],THUMB,CODICE / TITOLO,CATEGORIE,IN PROMOZ?,PUBBL?,IN EVID?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Codice / Titolo,Categorie';
 		$this->filters = array(null,null,'title');
-	
+		
+		if (v("usa_marchi"))
+		{
+			$this->tableFields[] = 'marchio';
+			$this->head .= ',Marchio';
+		}
+		
+		$this->tableFields[] = 'PagesModel.inPromozioneText|pages.id_page';
+		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';
+		$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
+		
+		$this->head .= ',In promoz?,Pubbl?,In evid?';
+		
 		$this->queryFields = "title,alias,id_c,price,codice,attivo,in_evidenza,peso,in_promozione,prezzo_promozione,dal,al,description,immagine,use_editor,id_iva,sottotitolo";
 		
 		if (v("usa_marchi"))

@@ -83,6 +83,7 @@ class PagesController extends BaseController {
 			'titolo_documento:sanitizeAll' => "tutti",
 			'lingua_doc:sanitizeAll' => "tutti",
 			'id_tipo_doc:sanitizeAll' => "tutti",
+			'-id_marchio:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -242,13 +243,14 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
 		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci un nuovo prodotto';
 		
-		$this->scaffold->fields = "distinct pages.codice_alfa,categories.*,pages.*";
-		$this->scaffold->model->clear()->inner("categories")->using("id_c")->orderBy($this->orderBy);
+		$this->scaffold->fields = "distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo";
+		$this->scaffold->model->clear()->inner("categories")->using("id_c")->left(array("marchio"))->orderBy($this->orderBy);
 		
 		$where = array(
 			'attivo'		=>	$this->viewArgs['attivo'],
 			'in_evidenza'	=>	$this->viewArgs['in_evidenza'],
 			'in_promozione'	=>	$this->viewArgs['in_promozione'],
+			'id_marchio'	=>	$this->viewArgs['-id_marchio'],
 		);
 		
 		$this->scaffold->model->where($where);

@@ -41,7 +41,10 @@ class PagesModel extends GenericModel {
 		
 		$this->hModel = new $this->hModelName();
 		
-		$this->_where = array("id_c"=>"categories");
+		$this->_where = array(
+			"id_c"			=>	"categories",
+			"-id_marchio"	=>	"marchi",
+		);
 		
 		$this->_idOrder = 'id_order';
 		
@@ -98,7 +101,7 @@ class PagesModel extends GenericModel {
 			'in_evidenza'	=>	'in_evidenza',
 // 			'in_promozione'	=>	'in_promozione',
 		);
-
+		
 		$this->_popupLabels = array(
 			'attivo'	=>	'PUBBLICATO?',
 			'id_c'	=>	'CATEGORIA',
@@ -1513,5 +1516,10 @@ class PagesModel extends GenericModel {
 			return $principale["giacenza"];
 		
 		return 0;
+	}
+	
+	public function marchio($record)
+	{
+		return $record["marchi"]["titolo"];
 	}
 }
