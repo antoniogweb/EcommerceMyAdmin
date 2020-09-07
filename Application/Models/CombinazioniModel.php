@@ -315,6 +315,14 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
+	// Restituisce la giacenza della combinazione
+	public function qta($idC)
+	{
+		return (int)$this->clear()->where(array(
+			"id_c"	=>	(int)$idC,
+		))->field("giacenza");
+	}
+	
 // 	public function del($id = null, $where = null)
 // 	{
 // 		if (!isset($where))

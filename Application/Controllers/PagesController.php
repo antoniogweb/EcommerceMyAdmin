@@ -1066,6 +1066,9 @@ class PagesController extends BaseController {
 			array(
 				'width'	=>	'3%',
 			),
+			array(
+				'width'	=>	'3%',
+			),
 // 			array(
 // 				'width'	=>	'3%',
 // 			),
@@ -1089,11 +1092,18 @@ class PagesController extends BaseController {
 		$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean["id"]);
 		
 // 		$this->h['List']->addItem('delForm','pages/attributi/'.$clean['id'],';combinazioni.id_c;');
-		$head = 'CODICE,PREZZO,PESO';
+		$head = 'Codice,Prezzo,Peso';
 		foreach ($colonne as $col)
 		{
 			$head .= ",$col";
 		}
+		
+		if (v("attiva_giacenza"))
+		{
+			$this->h['List']->addItem("text",";combinazioni.giacenza;");
+			$head .= ",Giacenza";
+		}
+		
 		$this->h['List']->setHead($head);
 		
 		$data['listaCombinazioni'] = $this->h['List']->render($result);

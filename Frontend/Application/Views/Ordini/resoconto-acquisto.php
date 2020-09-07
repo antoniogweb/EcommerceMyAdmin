@@ -126,7 +126,7 @@ if (!isset($baseUrl))
 								<table width="100%" class="cart_table table_left table_responsive" cellspacing="0">
 									<thead>
 										<tr class="cart_head">
-											<th align="left" class="nome_prodotto row_left"><?php echo gtext("Prodotto", false); ?></th>
+											<th colspan="2" align="left" class="nome_prodotto row_left"><?php echo gtext("Prodotto", false); ?></th>
 											<th align="left" class="nome_prodotto"><?php echo gtext("Codice", false); ?></th>
 											<th align="left" class="prezzo_prodotto"><?php echo gtext("Prezzo (Iva esclusa)", false); ?></th>
 											<th align="left" class="quantita_prodotto"><?php echo gtext("Quantità", false); ?></th>
@@ -136,7 +136,10 @@ if (!isset($baseUrl))
 									
 									<?php foreach ($righeOrdine as $p) { ?>
 									<tr class="cart_item_row">
-										<td class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
+										<?php if ($p["righe"]["id_p"]) { ?>
+										<td width="2%">-</td>
+										<?php } ?>
+										<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
 										<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 										</td>
 										<td class="cart_item_product"><?php echo $p["righe"]["codice"];?></td>

@@ -151,6 +151,8 @@ class ImmaginiModel extends Model_Tree {
 						{
 							parent::del($clean['id_immagine']);
 						}
+						else
+							parent::del($clean['id_immagine']);
 					}
 					else
 					{

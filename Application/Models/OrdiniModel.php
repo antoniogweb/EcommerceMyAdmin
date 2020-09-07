@@ -341,7 +341,7 @@ class OrdiniModel extends FormModel {
 				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
 				$output = ob_get_clean();
 				
-// 				echo $output;die();
+				echo $output;die();
 				
 				// Imposto le traduzioni del back
 				Params::$lang = null;
@@ -355,9 +355,9 @@ class OrdiniModel extends FormModel {
 						"id_o"	=>	(int)$ordine["id_o"]
 					))->record();
 					
-					if (!empty($fattura) && file_exists(Domain::$parentRoot."/admin/media/Fatture/".$fattura["filename"]))
+					if (!empty($fattura) && file_exists(LIBRARY."/media/Fatture/".$fattura["filename"]))
 					{
-						$mail->AddAttachment(Domain::$parentRoot."/admin/media/Fatture/".$fattura["filename"]);
+						$mail->AddAttachment(LIBRARY."/media/Fatture/".$fattura["filename"]);
 					}
 				}
 				

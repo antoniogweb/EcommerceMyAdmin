@@ -201,7 +201,8 @@ class BaseController extends Controller
 		$this->setArgKeys($baseArgsKeys);
 		
 		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin",null,$this->baseUrl);
-		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = str_replace("/admin",null,ROOT);
+		
+		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = defined("FRONT") ? FRONT : str_replace("/admin",null,ROOT);
 		
 		Domain::$adminRoot = ROOT;
 		Domain::$adminName = $this->baseUrlSrc;
