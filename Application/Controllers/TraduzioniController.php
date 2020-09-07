@@ -71,11 +71,13 @@ class TraduzioniController extends BaseController {
 		$this->mainHead = "IT";
 		$this->addBulkActions = false;
 		
-		$this->filters = array("valore", array("tradotta",null,array(
-			"tutti"	=>	"Tipo",
-			0	=>	"Da tradurre",
-			1	=>	"Tradotti",
-		)));
+// 		$this->filters = array("valore", array("tradotta",null,array(
+// 			"tutti"	=>	"Tipo",
+// 			0	=>	"Da tradurre",
+// 			1	=>	"Tradotti",
+// 		)));
+		
+		$this->filters = array("valore");
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>300, 'mainMenu'=>'');
 		
