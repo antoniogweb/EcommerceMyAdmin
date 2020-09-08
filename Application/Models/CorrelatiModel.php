@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CorrelatiModel extends Model_Tree {
+class CorrelatiModel extends GenericModel {
 
 	public $cart_uid = null;
 	

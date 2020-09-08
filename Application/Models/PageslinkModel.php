@@ -59,23 +59,23 @@ class PageslinkModel extends GenericModel {
 	}
 	
 	//duplica i link
-	public function duplica($from_id, $to_id)
-	{
-		$clean["from_id"] = (int)$from_id;
-		$clean["to_id"] = (int)$to_id;
-		
-		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send(false);
-		
-		foreach ($res as $r)
-		{
-			$this->setValues($r, "sanitizeDb");
-			$this->setValue("id_page", $to_id);
-			
-			unset($this->values["id_page_link"]);
-			unset($this->values["data_creazione"]);
-			unset($this->values["id_order"]);
-			parent::insert();
-		}
-	}
+// 	public function duplica($from_id, $to_id)
+// 	{
+// 		$clean["from_id"] = (int)$from_id;
+// 		$clean["to_id"] = (int)$to_id;
+// 		
+// 		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send(false);
+// 		
+// 		foreach ($res as $r)
+// 		{
+// 			$this->setValues($r, "sanitizeDb");
+// 			$this->setValue("id_page", $to_id);
+// 			
+// 			unset($this->values["id_page_link"]);
+// 			unset($this->values["data_creazione"]);
+// 			unset($this->values["id_order"]);
+// 			parent::insert();
+// 		}
+// 	}
 	
 }

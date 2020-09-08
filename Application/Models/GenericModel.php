@@ -638,4 +638,29 @@ class GenericModel extends Model_Tree {
 		
 		return array();
 	}
+	
+	//duplica gli elementi della pagina
+	public function duplica($from_id, $to_id)
+	{
+		$clean["from_id"] = (int)$from_id;
+		$clean["to_id"] = (int)$to_id;
+		
+		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send(false);
+		
+		foreach ($res as $r)
+		{
+			$this->setValues($r, "sanitizeDb");
+			$this->setValue("id_page", $to_id);
+			
+			unset($this->values[$this->_idFields]);
+			
+			if (isset($this->values["data_creazione"]))
+				unset($this->values["data_creazione"]);
+			
+			if (isset($this->values["id_order"]))
+				unset($this->values["id_order"]);
+			
+			parent::insert();
+		}
+	}
 }

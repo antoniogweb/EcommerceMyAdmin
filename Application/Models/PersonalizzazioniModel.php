@@ -36,6 +36,7 @@ class PersonalizzazioniModel extends GenericModel
 	public function relations() {
         return array(
 			'pages' => array("HAS_MANY", 'PagespersonalizzazioniModel', 'id_pers', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_pers', null, "CASCADE"),
         );
     }
     

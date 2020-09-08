@@ -705,6 +705,9 @@ class PagesController extends BaseController {
 						$this->m["ContenutiModel"]->duplica($clean['id'], $lId);
 						$this->m["DocumentiModel"]->duplica($clean['id'], $lId);
 						$this->m["PageslinkModel"]->duplica($clean['id'], $lId);
+						$this->m["CorrelatiModel"]->duplica($clean['id'], $lId);
+						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
+						$this->m["PagestagModel"]->duplica($clean['id'], $lId);
 						
 						$this->redirect($this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 					}

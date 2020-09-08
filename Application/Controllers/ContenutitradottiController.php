@@ -71,11 +71,8 @@ class ContenutitradottiController extends BaseController
 			$fields = 'titolo';
 		else if ($section == "-marchio-")
 			$fields = 'titolo,alias,description';
-<<<<<<< HEAD
 		else if ($section == "tag")
 			$fields = 'titolo,alias';
-=======
->>>>>>> 9725db80ce7bd09e8e5602d7e5ed5041ecb0cded
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

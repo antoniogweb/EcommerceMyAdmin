@@ -47,8 +47,8 @@ class TagController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("tag.titolo");
-		$this->mainHead = "Titolo";
+		$this->mainFields = array("tag.titolo", "tag.attivo");
+		$this->mainHead = "Titolo,Attivo";
 		
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
@@ -63,7 +63,7 @@ class TagController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,alias');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,alias,attivo');
 		
 		parent::form($queryType, $id);
 	}

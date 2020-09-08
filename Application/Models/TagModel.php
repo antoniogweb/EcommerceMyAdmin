@@ -41,12 +41,12 @@ class TagModel extends GenericModel {
 		parent::__construct();
 	}
 	
-// 	public function relations() {
-//         return array(
-// 			'prezzi' => array("HAS_MANY", 'PagesModel', 'id_marchio', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
-// 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_marchio', null, "CASCADE"),
-//         );
-//     }
+	public function relations() {
+        return array(
+			'pagine' => array("HAS_MANY", 'PagestagModel', 'id_tag', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_tag', null, "CASCADE"),
+        );
+    }
     
     public function setFormStruct()
 	{
