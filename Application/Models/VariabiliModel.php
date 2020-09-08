@@ -56,6 +56,7 @@ class VariabiliModel extends GenericModel {
 		"download_attivi"			=>	1,
 		"attiva_giacenza"			=>	0,
 		"usa_tag"					=>	0,
+		"shop_in_alias_marchio"		=>	1,
 	);
 	
 	public function __construct() {

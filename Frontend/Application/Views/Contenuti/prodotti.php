@@ -40,7 +40,7 @@
 							</li>
 							<?php foreach ($elencoMarchi as $idM => $titolo) { ?>
 							<li class="cat-item <?php if ($idM == $idMarchio) { ?>current-cat<?php } ?>">
-								<a href="<?php echo $this->baseUrl."/".encodeUrl(strtolower($titolo))."/".getCategoryUrlAlias($datiCategoria["categories"]["id_c"]);?>">
+								<a href="<?php echo $this->baseUrl."/".getMarchioUrlAlias($idM);?>">
 									<?php echo $titolo;?>
 								</a>
 							</li>

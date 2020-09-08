@@ -84,7 +84,7 @@ class BaseBaseController extends Controller
 		$this->model("DocumentiModel");
 		$this->model("RuoliModel");
 		$this->model("PersonalizzazioniModel");
-		
+		$this->model("TagModel");
 		
 		$this->m["ImpostazioniModel"]->getImpostazioni();
 		

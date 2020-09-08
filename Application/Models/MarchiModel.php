@@ -130,10 +130,6 @@ class MarchiModel extends GenericModel {
 	
 	public function getUrlAlias($id)
 	{
-		$c = new CategoriesModel;
-		
-		$idShop = $c->getShopCategoryId();
-		
 		$marchio = $this->clear()->where(array(
 			"id_marchio"	=>	(int)$id,
 		))->addJoinTraduzione()->send();
@@ -142,7 +138,16 @@ class MarchiModel extends GenericModel {
 		
 		if (count($marchio) > 0)
 		{
-			return mfield($marchio[0],"alias")."/".getCategoryUrlAlias($idShop);
+			if (v("shop_in_alias_marchio"))
+			{
+				$c = new CategoriesModel;
+		
+				$idShop = $c->getShopCategoryId();
+				
+				return mfield($marchio[0],"alias")."/".getCategoryUrlAlias($idShop);
+			}
+			else
+				return mfield($marchio[0],"alias").".html";
 		}
 		
 		return "";

@@ -36,6 +36,7 @@ class BaseContenutiController extends BaseController
 	public $currUrl = null; //the URL of the current page
 	public $elementsPerPage = 9; //number of elements per page
 	public $idMarchio = 0;
+	public $idTag = 0;
 	
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
@@ -70,6 +71,23 @@ class BaseContenutiController extends BaseController
 		
 		$this->pageArgs = func_get_args();
 		
+		if (v("usa_tag"))
+		{
+			$elencoTag = $this->m["TagModel"]->clear()->addJoinTraduzione()->orderBy("tag.titolo")->send();
+			$elencoTagEncoded = array();
+			foreach ($elencoTag as $tag)
+			{
+				$elencoTagEncoded[tagfield($tag,"alias")] = $tag["tag"]["id_tag"];
+			}
+			
+			if (count($this->pageArgs) > 0 && isset($elencoTagEncoded[$this->pageArgs[0]]))
+			{
+				$this->idTag = $elencoTagEncoded[$this->pageArgs[0]];
+				
+				array_shift($this->pageArgs);
+			}
+		}
+		
 		if (v("usa_marchi"))
 		{
 			$elencoMarchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
@@ -87,9 +105,23 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		if( strcmp($this->pageArgs[count($this->pageArgs)-1],"") === 0)
+		if( count($this->pageArgs) > 0 && strcmp($this->pageArgs[count($this->pageArgs)-1],"") === 0)
 		{
 			array_pop($this->pageArgs);
+		}
+		
+		// Controlla che non sia un marchio o un tag
+		if (count($this->pageArgs) === 0 && ($this->idMarchio || $this->idTag))
+		{
+			$catProdotti = $this->m['CategoriesModel']->clear()
+				->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+				->where(array(
+					"section"	=>	Parametri::$nomeSezioneProdotti
+				))
+				->first();
+			
+			if ($catProdotti)
+				$this->pageArgs[] = cfield($catProdotti, "alias");
 		}
 		
 		$args = $this->pageArgs;
@@ -366,6 +398,18 @@ class BaseContenutiController extends BaseController
 				$data["aliasMarchioCorrente"] = mfield($marchioCorrente, "alias")."/";
 		}
 		
+		$data["idTag"] = $this->idTag;
+		
+		if (v("usa_tag"))
+		{
+			$tagCorrente =  $data["tagCorrente"] = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+				"tag.id_tag"	=>	(int)$this->idTag,
+			))->first();
+			
+			if (count($tagCorrente) > 0)
+				$data["aliasTagCorrente"] = tagfield($tagCorrente, "alias")."/";
+		}
+		
 // 		print_r($arrayLingue);
 // 		$urlAlias = $this->m["CategoriesModel"]->getUrlAlias($clean['id']);
 // 		
@@ -425,6 +469,11 @@ class BaseContenutiController extends BaseController
 		if ($this->idMarchio)
 			$this->m["PagesModel"]->aWhere(array(
 				"id_marchio"	=>	(int)$this->idMarchio,
+			));
+		
+		if ($this->idTag)
+			$this->m["PagesModel"]->inner(array("tag"))->aWhere(array(
+				"pages_tag.id_tag"	=>	(int)$this->idTag,
 			));
 		
 		if ($this->catSWhere)

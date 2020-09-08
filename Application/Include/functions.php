@@ -743,6 +743,21 @@ function persfield($p, $field)
 	return "";
 }
 
+function tagfield($p, $field)
+{
+	if (isset($p["contenuti_tradotti"][$field]) and strcmp($p["contenuti_tradotti"][$field],"") !== 0)
+	{
+		return $p["contenuti_tradotti"][$field];
+	}
+	else
+	{
+		if (isset($p["tag"][$field]))
+			return $p["tag"][$field];
+	}
+	
+	return "";
+}
+
 function fullcategory($idC)
 {
 	$c = new CategoriesModel();
