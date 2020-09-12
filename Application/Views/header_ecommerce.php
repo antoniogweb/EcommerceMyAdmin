@@ -141,11 +141,21 @@ include(ROOT."/Application/Views/header.php");
 			<li class="<?php echo $tm["iva"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-folder"></i>
-					<span>Tipologie iva</span>
+					<span>Aliquote iva</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/iva/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi tipologia</a></li>
-					<li><a href="<?php echo $this->baseUrl."/iva/main";?>"><i class="fa fa-list"></i> Lista tipologie</a></li>
+					<li><a href="<?php echo $this->baseUrl."/iva/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+					<li><a href="<?php echo $this->baseUrl."/iva/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+				</ul>
+			</li>
+			<li class="<?php echo tm($tm, "nazioni");?> treeview">
+				<a href="#">
+					<i class="fa fa-folder"></i>
+					<span>Nazioni</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/nazioni/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+					<li><a href="<?php echo $this->baseUrl."/nazioni/main";?>"><i class="fa fa-list"></i> Lista</a></li>
 				</ul>
 			</li>
 			<?php } ?>

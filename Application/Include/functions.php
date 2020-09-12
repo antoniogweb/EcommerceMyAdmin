@@ -1504,3 +1504,11 @@ function acquistabile($id_page)
 	
 	return $p->acquistabile($id_page);
 }
+
+function tm($tm, $controller)
+{
+	if (isset($tm[$controller]))
+		return "active";
+	
+	return "";
+}

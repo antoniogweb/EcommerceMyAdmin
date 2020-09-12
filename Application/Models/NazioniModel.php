@@ -33,6 +33,36 @@ class NazioniModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public function setFormStruct()
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'attiva'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	array(
+						"1"	=>	"Sì",
+						"0"	=>	"No",
+					),
+					"reverse"	=>	"yes",
+				),
+				'attiva_spedizione'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	array(
+						"1"	=>	"Sì",
+						"0"	=>	"No",
+					),
+					"reverse"	=>	"yes",
+				),
+				'iso_country_code'	=>	array(
+					"labelString"	=>"Codice nazione (2 cifre)"
+				),
+			),
+			
+			'enctype'	=>	'multipart/form-data',
+		);
+	}
+	
 	public function getNome($codice)
 	{
 		return $this->clear()->where(array(
@@ -50,5 +80,29 @@ class NazioniModel extends GenericModel
 			return $nazione["iso_country_code"];
 		
 		return "";
+	}
+	
+	public function tipo($record)
+	{
+		if ($record["nazioni"]["tipo"] == "UE")
+			return "UE";
+		
+		return "EXTRA UE";
+	}
+	
+	public function attiva($record)
+	{
+		if ($record["nazioni"]["attiva"])
+			return "Sì";
+		
+		return "No";
+	}
+	
+	public function attivaSpedizione($record)
+	{
+		if ($record["nazioni"]["attiva_spedizione"])
+			return "Sì";
+		
+		return "No";
 	}
 }

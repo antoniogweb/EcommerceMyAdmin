@@ -553,3 +553,18 @@ div.pageList a.currentPage
 	max-height: 400px !important;
     overflow: auto !important;
 }
+.list_filter_form
+{
+	margin-top:0px !important;
+}
+.list_filter_form .form-control
+{
+	width:auto !important;
+	display: inline-block;
+	margin-right:5px;
+	margin-top:0px !important;
+}
+.list_filter_form .btn
+{
+	display:none;
+}

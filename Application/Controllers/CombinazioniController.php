@@ -22,12 +22,6 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_List::$filtersFormLayout["form"]["innerWrap"] = array("", "");
-Helper_List::$filtersFormLayout["form"]["attributes"] = array(
-	"class"	=>	"list_filter_form list_filter_form_top",
-);
-Helper_List::$filtersFormLayout["submit"]["wrap"] = array("", "");
-
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;

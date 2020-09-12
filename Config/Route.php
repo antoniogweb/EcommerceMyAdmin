@@ -347,6 +347,9 @@ class Route
 		
 		'tag,main',
 		'tag,form',
+		
+		'nazioni,main',
+		'nazioni,form',
 // 		'regusers,ordina',
 	);
 	

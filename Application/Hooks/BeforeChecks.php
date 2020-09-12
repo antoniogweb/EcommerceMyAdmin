@@ -239,9 +239,9 @@ Helper_List::$actionsLayout = array(
 
 Helper_List::$filtersFormLayout = array(
 	"form"	=>	array(
-		"innerWrap"	=>	array(
-			"<div class='row'>","</div>"
-		)
+// 		"innerWrap"	=>	array(
+// 			"<div class='filters_form'>","</div>"
+// 		)
 	),
 	"filters"	=>	array(
 		"titolo"	=>	array(
@@ -249,18 +249,18 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 				"placeholder"	=>	"Cerca ..",
 			),
-			"wrap"	=>	array(
-				"<div class='col-md-2'>","</div>"
-			)
+// 			"wrap"	=>	array(
+// 				"<div class='col-md-2'>","</div>"
+// 			)
 		),
 		"attivo"	=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
 				"class"	=>	"form-control"
 			),
-			"wrap"	=>	array(
-				"<div class='col-md-2'>","</div>"
-			),
+// 			"wrap"	=>	array(
+// 				"<div class='col-md-2'>","</div>"
+// 			),
 		),
 		"username"	=>	array(
 			"attributes"	=>	array(
@@ -364,6 +364,24 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"tipo"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"attiva"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"attiva_spedizione"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(
@@ -371,8 +389,8 @@ Helper_List::$filtersFormLayout = array(
 		"attributes"	=>	array(
 			"class"	=>	"btn btn-success"
 		),
-		"wrap"	=>	array(
-			"<div class='col-md-2'>","</div>"
-		)
+// 		"wrap"	=>	array(
+// 			"<div class='col-md-2'>","</div>"
+// 		)
 	),
 );
