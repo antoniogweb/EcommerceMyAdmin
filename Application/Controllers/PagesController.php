@@ -900,7 +900,7 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
 		$this->scaffold->fields = "pages.*,prodotti_correlati.*";
-		$this->scaffold->loadMain('PagesModel.getThumb|pages.id_page,;pages.codice; - ;pages.title;,getYesNo|pages.attivo','prodotti_correlati:id_c','moveup,movedown,ldel');
+		$this->scaffold->loadMain('PagesModel.getThumb|pages.id_page,;pages.codice; - ;pages.title;,getYesNo|pages.attivo','prodotti_correlati:id_pc','moveup,movedown,ldel');
 		$this->scaffold->setHead('Thumb,Titolo prodotto,Pubblicato?');
 		
 		$this->scaffold->model->clear()->inner("pages")->on("prodotti_correlati.id_corr = pages.id_page")->orderBy("prodotti_correlati.id_order")->where(array(

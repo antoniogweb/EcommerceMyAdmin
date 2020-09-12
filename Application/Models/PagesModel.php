@@ -574,23 +574,6 @@ class PagesModel extends GenericModel {
 		{
 			$this->setAlias(0);
 			
-// 			if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
-// 			{
-// 				$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-// 			}
-// 			
-// 			$res = $this->query("select alias from categories where alias = '".$this->values["alias"]."' union select alias from pages where alias = '".$this->values["alias"]."'");
-// 		
-// 			if (count($res) > 0)
-// 			{
-// 				$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-// 			}
-			
-	// 		if (strcmp($this->values["prezzo_promozione"],"") === 0)
-	// 		{
-	// 			$this->values["prezzo_promozione"] = $this->values["price"];
-	// 		}
-			
 			if (!isset($this->values["codice_alfa"]))
 			{
 				$this->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
@@ -610,6 +593,9 @@ class PagesModel extends GenericModel {
 				$this->controllaCombinazioni($this->lId);
 				
 				$this->updatePageAccessibility($this->lId);
+				
+				// Aggiungi tutti i prodotti sempre come accessori
+				$this->aggiungiAccesori($this->lId);
 			}
 		}
 		
@@ -1523,5 +1509,35 @@ class PagesModel extends GenericModel {
 	public function marchio($record)
 	{
 		return $record["marchi"]["titolo"];
+	}
+	
+	public function aggiungiAccesori($idPage)
+	{
+		$ids = $this->clear()->where(array(
+			"attivo"	=>	"Y",
+			"aggiungi_sempre_come_accessorio"	=>	"Y",
+		))->toList("id_page")->send();
+		
+		$c = new CorrelatiModel();
+		
+		foreach ($ids as $id)
+		{
+			$numero = $c->clear()->where(array(
+				"id_page"	=>	(int)$idPage,
+				"id_corr"	=>	(int)$id,
+				"accessorio"=>	1,
+			))->rowNumber();
+			
+			if (!$numero)
+			{
+				$c->setValues(array(
+					"id_page"		=>	$idPage,
+					"id_corr"		=>	$id,
+					"accessorio"	=>	1,
+				));
+				
+				$c->insert();
+			}
+		}
 	}
 }

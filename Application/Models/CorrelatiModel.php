@@ -28,7 +28,7 @@ class CorrelatiModel extends GenericModel {
 	
 	public function __construct() {
 		$this->_tables='prodotti_correlati';
-		$this->_idFields='id_c';
+		$this->_idFields='id_pc';
 		
 		$this->_idOrder = 'id_order';
 		

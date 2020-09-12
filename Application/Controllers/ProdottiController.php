@@ -58,6 +58,9 @@ class ProdottiController extends PagesController {
 		if (v("usa_marchi"))
 			$this->queryFields .= ",id_marchio";
 		
+		if (v("accessori_in_prodotti"))
+			$this->queryFields .= ",acquistabile,aggiungi_sempre_come_accessorio";
+		
 		$data["tabella"] = "prodotti";
 		
 		$data["sezionePannello"] = "ecommerce";
