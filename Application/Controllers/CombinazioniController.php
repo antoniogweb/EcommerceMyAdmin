@@ -30,6 +30,8 @@ class CombinazioniController extends BaseController
 	
 	public $sezionePannello = "ecommerce";
 	
+	public $tabella = "magazzino";
+	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		$this->argKeys = array(
