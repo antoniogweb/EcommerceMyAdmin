@@ -6,3 +6,4 @@ config.php
 /Application/Views/Fatture/layout_fattura.php
 Frontend/Logs/.ipn_results.log
 Frontend/Logs/back_paypal.txt
+DB/Dump/dump.sql
