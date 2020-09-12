@@ -150,7 +150,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<li class="<?php echo tm($tm, "nazioni");?> treeview">
 				<a href="#">
-					<i class="fa fa-folder"></i>
+					<i class="fa fa-globe"></i>
 					<span>Nazioni</span>
 				</a>
 				<ul class="treeview-menu">

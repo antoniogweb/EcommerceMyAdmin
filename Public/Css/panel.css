@@ -118,6 +118,7 @@ td.simpleLink
     text-align: center;
 	font-weight:bold;
 	font-size:14px;
+	margin-top:10px !important;
 }
 .alert, .alert h4 {
 /*     color: #C09853; */

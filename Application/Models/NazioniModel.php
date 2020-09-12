@@ -90,7 +90,7 @@ class NazioniModel extends GenericModel
 		return "EXTRA UE";
 	}
 	
-	public function attiva($record)
+	public function attivaCrud($record)
 	{
 		if ($record["nazioni"]["attiva"])
 			return "Sì";
@@ -98,11 +98,47 @@ class NazioniModel extends GenericModel
 		return "No";
 	}
 	
-	public function attivaSpedizione($record)
+	public function attivaSpedizioneCrud($record)
 	{
 		if ($record["nazioni"]["attiva_spedizione"])
 			return "Sì";
 		
 		return "No";
+	}
+	
+	public function attiva($id)
+	{
+		$this->setValues(array(
+			"attiva"	=>	1
+		));
+		
+		$this->update((int)$id);
+	}
+	
+	public function disattiva($id)
+	{
+		$this->setValues(array(
+			"attiva"	=>	0
+		));
+		
+		$this->update((int)$id);
+	}
+	
+	public function attivasped($id)
+	{
+		$this->setValues(array(
+			"attiva_spedizione"	=>	1
+		));
+		
+		$this->update((int)$id);
+	}
+	
+	public function disattivasped($id)
+	{
+		$this->setValues(array(
+			"attiva_spedizione"	=>	0
+		));
+		
+		$this->update((int)$id);
 	}
 }

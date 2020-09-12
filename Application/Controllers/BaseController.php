@@ -344,6 +344,8 @@ class BaseController extends Controller
 	
 	protected function main()
 	{
+		$this->m[$this->modelName]->db->beginTransaction();
+		
 		$this->shift();
 		
 		if ($this->id !== 0)
@@ -493,6 +495,7 @@ class BaseController extends Controller
 		
 		$this->append($data);
 		
+		$this->m[$this->modelName]->db->commit();
 	}
 	
 	protected function form($queryType = 'insert', $id = 0)

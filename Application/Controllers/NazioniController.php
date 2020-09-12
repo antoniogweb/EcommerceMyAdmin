@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class NazioniController extends BaseController {
 	
-	public $mainFields = array("[[ledit]];nazioni.titolo;","nazioni.iso_country_code","tipo","attiva","attivaSpedizione");
+	public $mainFields = array("[[ledit]];nazioni.titolo;","nazioni.iso_country_code","tipo","attivaCrud","attivaSpedizioneCrud");
 	
 	public $mainHead = "Titolo,Codice nazione,Tipo,Attiva,Spedizione attiva";
 	
@@ -39,6 +39,8 @@ class NazioniController extends BaseController {
 	public function main()
 	{
 		$this->shift();
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'add');
 		
 		$attivaDisattiva = array(
 			"tutti"	=>	"Attiva / Disattiva",
@@ -71,6 +73,15 @@ class NazioniController extends BaseController {
 				"attiva"	=>	$this->viewArgs["attiva"],
 				"attiva_spedizione"	=>	$this->viewArgs["attiva_spedizione"],
 			))->orderBy($this->orderBy)->convert()->save();
+		
+		$this->bulkQueryActions = "attiva,disattiva,attivasped,disattivasped";
+		
+		$this->bulkActions = array(
+			"checkbox_nazioni_id_nazione"	=>	array("attiva","ATTIVA"),
+			" checkbox_nazioni_id_nazione"	=>	array("disattiva","DISATTIVA"),
+			"  checkbox_nazioni_id_nazione"	=>	array("attivasped","ATTIVA SPEDIZIONE"),
+			"   checkbox_nazioni_id_nazione"	=>	array("disattivasped","DISATTIVA SPEDIZIONE"),
+		);
 		
 		parent::main();
 	}
