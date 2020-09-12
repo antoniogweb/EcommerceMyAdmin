@@ -164,7 +164,10 @@ class BaseCartController extends BaseController
 			$recordCart = $this->m["CartModel"]->getCart($clean["id_cart"]);
 			
 			if (!empty($recordCart))
-				$this->m["CartModel"]->delete($clean["id_cart"]);
+			{
+				if ($this->m["CartModel"]->checkQta($clean["id_c"], ($clean["quantity"] - $recordCart["quantity"])))
+					$this->m["CartModel"]->delete($clean["id_cart"]);
+			}
 		}
 		
 		$this->clean();

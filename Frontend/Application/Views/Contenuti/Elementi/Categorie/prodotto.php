@@ -32,8 +32,8 @@ $hasCombinations = hasCombinations($idPr);
 					</div>
 				</div>
 			</div>
-			<?php if (isProdotto($idPr)) { ?>
-			<a img-thumb="<?php echo $this->baseUrlSrc."/thumb/tooltip/".$p["pages"]["immagine"];?>" href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="button product_type_simple add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations) { ?>aggiungi_al_carrello_semplice<?php } ?>" data-product_id="1064" data-product_sku="su21" aria-label="<?php echo encodeUrl(field($p, "title"));?>" rel="nofollow">
+			<?php if (isProdotto($idPr) && acquistabile($idPr)) { ?>
+			<a img-thumb="<?php echo $this->baseUrlSrc."/thumb/tooltip/".$p["pages"]["immagine"];?>" href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="button product_type_simple add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations) { ?>aggiungi_al_carrello_semplice<?php } ?>" aria-label="<?php echo encodeUrl(field($p, "title"));?>" rel="nofollow">
 				<?php if (!$hasCombinations) {
 					$stringaDa = "";
 				?>
@@ -45,7 +45,7 @@ $hasCombinations = hasCombinations($idPr);
 				<?php } ?>
 			</a>
 			<?php } ?>
-			<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"></a>
+			<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" class=""></a>
 		</div>
 		<div class="caption">
 			<h3 class="woocommerce-loop-product__title">

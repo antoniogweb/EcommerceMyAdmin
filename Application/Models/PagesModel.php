@@ -1540,4 +1540,12 @@ class PagesModel extends GenericModel {
 			}
 		}
 	}
+	
+	public function acquistabile($idPage)
+	{
+		return $this->clear()->where(array(
+			"id_page"		=>	(int)$idPage,
+			"acquistabile"	=>	"Y"
+		))->rowNumber();
+	}
 }

@@ -1497,3 +1497,10 @@ function checkQtaCartFull()
 	
 	return $c->checkQtaFull();
 }
+
+function acquistabile($id_page)
+{
+	$p = new PagesModel();
+	
+	return $p->acquistabile($id_page);
+}

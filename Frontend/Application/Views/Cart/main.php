@@ -28,7 +28,12 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php foreach ($pages as $p) { ?>
+													<?php
+													$lastParent = array();
+													foreach ($pages as $p) {
+														if (!$p["cart"]["id_p"])
+															$lastParent = $p;
+													?>
 													<tr class="cart_item cart_item_row <?php if (!$p["cart"]["id_p"]) { ?>cart_item_row_main<?php } else { ?>cart_item_row_accessorio<?php } ?>" rel="<?php echo $p["cart"]["id_cart"];?>">
 														<td class="product-remove cart_item_delete"><a class="remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#">x</a></td>
 														<td class="product-thumbnail cart_item_thumb">
@@ -44,10 +49,10 @@
 															<?php if (!$p["cart"]["id_p"]) { ?>
 															</a>
 															<?php } ?>
-															<?php if (strcmp($p["cart"]["id_c"],0) !== 0) { echo "<br />".$p["cart"]["attributi"]; } ?>
-															<?php if (!$p["cart"]["id_p"]) { ?>
-																<br /><a href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"])."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
-															<?php } ?>
+															<?php if (strcmp($p["cart"]["id_c"],0) !== 0 && $p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
+															
+															<br /><a href="<?php echo $this->baseUrl."/".getUrlAlias($lastParent["cart"]["id_page"])."?id_cart=".$lastParent["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
+															
 														</td>
 														<td class="product-name cart_item_product" data-title="Codice"><?php echo $p["cart"]["codice"];?></td>
 														<td class="product-price cart_item_price" data-title="Prezzo">
