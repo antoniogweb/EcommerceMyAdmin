@@ -141,4 +141,28 @@ class NazioniModel extends GenericModel
 		
 		$this->update((int)$id);
 	}
+	
+	public function selectNazioniAttive()
+	{
+		return $this->clear()->select("iso_country_code,titolo")->where(array(
+			"attiva"	=>	"1",
+		))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
+	public function selectCodiciAttivi()
+	{
+		return array_keys($this->selectNazioniAttive());
+	}
+	
+	public function selectNazioniAttiveSpedizione()
+	{
+		return $this->clear()->select("iso_country_code,titolo")->where(array(
+			"attiva_spedizione"	=>	"1",
+		))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
+	public function selectCodiciAttiviSpedizione()
+	{
+		return array_keys($this->selectNazioniAttiveSpedizione());
+	}
 }

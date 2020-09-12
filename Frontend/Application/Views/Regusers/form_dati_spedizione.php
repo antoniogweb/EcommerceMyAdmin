@@ -11,7 +11,7 @@
 	</tr>
 	<tr>
 		<td class="first_column"><?php echo gtext("Nazione");?> *</td>
-		<td><?php echo Html_Form::select("nazione_spedizione",$values['nazione_spedizione'],$selectNazioni,"text_input class_nazione_spedizione",null,"yes");?></td>
+		<td><?php echo Html_Form::select("nazione_spedizione",$values['nazione_spedizione'],$selectNazioniSpedizione,"text_input class_nazione_spedizione",null,"yes");?></td>
 	</tr>
 	<tr>
 		<td class="first_column"><?php echo gtext("Provincia");?> *</td>

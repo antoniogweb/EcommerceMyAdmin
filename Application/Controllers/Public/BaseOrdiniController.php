@@ -565,6 +565,8 @@ class BaseOrdiniController extends BaseController
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 		
+		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
+		
 		//imposto spedizione uguale a fatturazione
 		if (isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0)
 		{
@@ -575,6 +577,9 @@ class BaseOrdiniController extends BaseController
 			$_POST["citta_spedizione"] = $this->request->post("citta","","none");
 			$_POST["telefono_spedizione"] = $this->request->post("telefono","","none");
 			$_POST["nazione_spedizione"] = $this->request->post("nazione","","none");
+			
+			if (!in_array($_POST["nazione_spedizione"], $codiciSpedizioneAttivi))
+				$_POST["spedisci_dati_fatturazione"] = "N";
 			
 			$_POST["id_spedizione"] = 0;
 		}
@@ -651,6 +656,14 @@ class BaseOrdiniController extends BaseController
 		$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
 		
 		$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
+		
+		$codiciNazioniAttive = implode(",",$this->m["NazioniModel"]->selectCodiciAttivi());
+		
+		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+		
+		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
+		
+		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
 		
 		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario';
 		
@@ -1068,6 +1081,12 @@ class BaseOrdiniController extends BaseController
 		else
 		{
 			$defaultValues["spedisci_dati_fatturazione"] = "Y";
+			
+			if (!isset($defaultValues["nazione"]))
+				$defaultValues["nazione"] = "IT";
+			
+			if (!isset($defaultValues["nazione_spedizione"]))
+				$defaultValues["nazione_spedizione"] = "IT";
 		}
 		
 		if (isset($defaultValues["accetto"]))

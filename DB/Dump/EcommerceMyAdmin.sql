@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Set 12, 2020 alle 12:21
+-- Creato il: Set 12, 2020 alle 13:08
 -- Versione del server: 5.7.31-0ubuntu0.18.04.1
 -- Versione PHP: 7.3.18-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -254,12 +254,7 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`id_cart`, `data_creazione`, `id_page`, `quantity`, `id_order`, `cart_uid`, `creation_time`, `price`, `codice`, `title`, `immagine`, `in_promozione`, `prezzo_intero`, `id_c`, `attributi`, `peso`, `json_sconti`, `id_iva`, `iva`, `id_p`, `json_attributi`, `json_personalizzazioni`) VALUES
 (18, '2020-09-07 10:09:31', 349, 1, 2, '0f445db09503748ebce4001d2c5c4fb4', 1599473371, '102.0000', '', 'Tige Doge 1', 'tige-doge-01.jpg', 'N', '102.0000', 307, '<span class=\'stringa_attributi_title\'>Lunghezza: </span><span class=\'stringa_attributi_value\'><b>600 mm</b></span> <br /><span class=\'stringa_attributi_title\'>Colore: </span><span class=\'stringa_attributi_value\'><b>Nero</b></span> <br /><span class=\'stringa_attributi_title\'>Verticale: </span><span class=\'stringa_attributi_value\'><b>225 mm</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Testo incisione: </span><span class=\'stringa_personalizzazioni_value\'><b>a</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Pers 2: </span><span class=\'stringa_personalizzazioni_value\'><b>a</b></span> ', '1.00', '[]', 1, '22.00', 0, '[{\"col\":\"col_1\",\"val\":\"78\"},{\"col\":\"col_2\",\"val\":\"74\"},{\"col\":\"col_3\",\"val\":\"81\"}]', '[{\"col\":3,\"val\":\"a\"},{\"col\":4,\"val\":\"a\"}]'),
-(35, '2020-09-12 08:49:23', 349, 1, 4, '20ca70f95882482d4aac7f93d75e547a', 1599900311, '112.0000', '2222', 'Tige Doge 1', 'tige-doge-01.jpg', 'N', '112.0000', 300, '<span class=\'stringa_attributi_title\'>Lunghezza: </span><span class=\'stringa_attributi_value\'><b>200 mm</b></span> <br /><span class=\'stringa_attributi_title\'>Colore: </span><span class=\'stringa_attributi_value\'><b>Nero</b></span> <br /><span class=\'stringa_attributi_title\'>Verticale: </span><span class=\'stringa_attributi_value\'><b>100 mm</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Testo incisione: </span><span class=\'stringa_personalizzazioni_value\'><b>a</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Pers 2: </span><span class=\'stringa_personalizzazioni_value\'><b>b</b></span> ', '2.00', '[]', 1, '22.00', 0, '[{\"col\":\"col_1\",\"val\":\"79\"},{\"col\":\"col_2\",\"val\":\"74\"},{\"col\":\"col_3\",\"val\":\"80\"}]', '[{\"col\":3,\"val\":\"a\"},{\"col\":4,\"val\":\"b\"}]'),
-(36, '2020-09-12 08:49:23', 391, 1, 4, '20ca70f95882482d4aac7f93d75e547a', 1599900311, '0.0000', '', 'Pacco regalo', '', 'N', '0.0000', 336, '', '1.00', '[]', 1, '22.00', 35, '[]', '[]'),
-(37, '2020-09-12 08:49:23', 392, 1, 4, '20ca70f95882482d4aac7f93d75e547a', 1599900311, '10.0000', '', 'Incisione', '', 'N', '10.0000', 341, '<span class=\'stringa_attributi_title\'>Font: </span><span class=\'stringa_attributi_value\'><b>Arial</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Testo incisione: </span><span class=\'stringa_personalizzazioni_value\'><b>1</b></span> ', '1.00', '[]', 1, '22.00', 35, '[{\"col\":\"col_1\",\"val\":\"86\"}]', '[{\"col\":3,\"val\":\"1\"}]'),
-(41, '2020-09-12 08:53:26', 349, 10, 3, '20ca70f95882482d4aac7f93d75e547a', 1599900311, '91.8000', '', 'Tige Doge 1', 'tige-doge-01.jpg', 'N', '102.0000', 313, '<span class=\'stringa_attributi_title\'>Lunghezza: </span><span class=\'stringa_attributi_value\'><b>1000 mm</b></span> <br /><span class=\'stringa_attributi_title\'>Colore: </span><span class=\'stringa_attributi_value\'><b>Nero</b></span> <br /><span class=\'stringa_attributi_title\'>Verticale: </span><span class=\'stringa_attributi_value\'><b>225 mm</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Testo incisione: </span><span class=\'stringa_personalizzazioni_value\'><b>a</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Pers 2: </span><span class=\'stringa_personalizzazioni_value\'><b>b</b></span> ', '1.00', '[\"Sconto quantit&agrave; 10 pezzi, sconto: 10  %\"]', 1, '22.00', 0, '[{\"col\":\"col_1\",\"val\":\"77\"},{\"col\":\"col_2\",\"val\":\"74\"},{\"col\":\"col_3\",\"val\":\"81\"}]', '[{\"col\":3,\"val\":\"a\"},{\"col\":4,\"val\":\"b\"}]'),
-(42, '2020-09-12 08:53:27', 391, 10, 3, '20ca70f95882482d4aac7f93d75e547a', 1599900311, '0.0000', '', 'Pacco regalo', '', 'N', '0.0000', 336, '', '1.00', '[]', 1, '22.00', 41, '[]', '[]'),
-(43, '2020-09-12 08:53:27', 392, 10, 3, '20ca70f95882482d4aac7f93d75e547a', 1599900311, '10.0000', '', 'Incisione', '', 'N', '10.0000', 341, '<span class=\'stringa_attributi_title\'>Font: </span><span class=\'stringa_attributi_value\'><b>Arial</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Testo incisione: </span><span class=\'stringa_personalizzazioni_value\'><b>BBB</b></span> ', '1.00', '[]', 1, '22.00', 41, '[{\"col\":\"col_1\",\"val\":\"86\"}]', '[{\"col\":3,\"val\":\"BBB\"}]');
+(45, '2020-09-12 11:02:26', 394, 1, 3, '3e4ba638efc791312199332a87c7b788', 1599908546, '0.0000', '', '(Copia di) AAAA', '', 'N', '0.0000', 345, '', '1.00', '[]', 1, '22.00', 0, '[]', '[]');
 
 -- --------------------------------------------------------
 
@@ -421,7 +416,7 @@ INSERT INTO `combinazioni` (`id_c`, `col_1`, `col_2`, `col_3`, `col_4`, `col_5`,
 (294, 76, 0, 0, 0, 0, 0, 0, 0, 354, 'tige-22-01.jpg', '2020-06-07 10:04:49', '126.0000', 'AA', 79, '1.00', 0),
 (295, 84, 0, 0, 0, 0, 0, 0, 0, 363, 'square-01.jpg', '2020-06-07 10:07:32', '147.0000', 'bbb', 80, '1.23', 0),
 (296, 85, 0, 0, 0, 0, 0, 0, 0, 363, 'square-01.jpg', '2020-05-30 20:42:16', '222.0000', '3', 81, '1.00', 0),
-(300, 79, 74, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:19', '112.0000', '2222', 85, '2.00', 1),
+(300, 79, 74, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:19', '112.0000', '2222', 85, '2.00', 0),
 (301, 79, 74, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 86, '1.00', 2),
 (302, 79, 75, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 87, '1.00', 3),
 (303, 79, 75, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 88, '1.00', 4),
@@ -433,7 +428,7 @@ INSERT INTO `combinazioni` (`id_c`, `col_1`, `col_2`, `col_3`, `col_4`, `col_5`,
 (310, 78, 76, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 95, '1.00', 10),
 (311, 78, 76, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 96, '1.00', 11),
 (312, 77, 74, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 97, '1.00', 12),
-(313, 77, 74, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 98, '1.00', 13),
+(313, 77, 74, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 98, '1.00', 3),
 (314, 77, 75, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 99, '1.00', 14),
 (315, 77, 75, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 100, '1.00', 15),
 (316, 77, 76, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 101, '1.00', 16),
@@ -450,12 +445,12 @@ INSERT INTO `combinazioni` (`id_c`, `col_1`, `col_2`, `col_3`, `col_4`, `col_5`,
 (333, 74, 0, 0, 0, 0, 0, 0, 0, 353, 'tige-21-01.jpg', '2020-08-12 19:03:00', '126.0000', 'TTTT', 115, '1.00', 0),
 (334, 75, 0, 0, 0, 0, 0, 0, 0, 353, 'tige-21-01.jpg', '2020-08-12 19:03:01', '126.0000', 'TTTT', 116, '1.00', 0),
 (335, 76, 0, 0, 0, 0, 0, 0, 0, 353, 'tige-21-01.jpg', '2020-08-12 19:03:01', '126.0000', 'TTTT', 117, '1.00', 0),
-(336, 0, 0, 0, 0, 0, 0, 0, 0, 391, '', '2020-08-24 14:44:14', '0.0000', '', 118, '1.00', 99996),
-(341, 86, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 119, '1.00', 9996),
+(336, 0, 0, 0, 0, 0, 0, 0, 0, 391, '', '2020-08-24 14:44:14', '0.0000', '', 118, '1.00', 99985),
+(341, 86, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 119, '1.00', 9985),
 (342, 87, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 120, '1.00', 9999),
 (343, 88, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 121, '1.00', 9999),
 (344, 0, 0, 0, 0, 0, 0, 0, 0, 393, '', '2020-09-12 08:01:25', '0.0000', '', 122, '1.00', 0),
-(345, 0, 0, 0, 0, 0, 0, 0, 0, 394, '', '2020-09-12 08:01:33', '0.0000', '', 123, '1.00', 12),
+(345, 0, 0, 0, 0, 0, 0, 0, 0, 394, '', '2020-09-12 08:01:33', '0.0000', '', 123, '1.00', 11),
 (346, 0, 0, 0, 0, 0, 0, 0, 0, 395, '', '2020-09-12 08:01:51', '0.0000', '', 124, '1.00', 0);
 
 -- --------------------------------------------------------
@@ -722,13 +717,6 @@ CREATE TABLE `fatture` (
   `numero` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `id_order` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `fatture`
---
-
-INSERT INTO `fatture` (`id_f`, `id_o`, `data_creazione`, `filename`, `numero`, `id_order`) VALUES
-(1, 13, '2020-09-07 09:58:29', '1W_07-09-2020.pdf', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2231,7 +2219,9 @@ INSERT INTO `regaccesses` (`id`, `ip`, `data`, `ora`, `username`) VALUES
 (292, '127.0.0.1', '23-08-2020', '18:57', 'info@laboratoriolibero.com'),
 (293, '127.0.0.1', '24-08-2020', '16:52', 'info@laboratoriolibero.com'),
 (294, '127.0.0.1', '01-09-2020', '15:30', 'antoniog.web@gmail.com'),
-(295, '127.0.0.1', '07-09-2020', '11:25', 'info@laboratoriolibero.com');
+(295, '127.0.0.1', '07-09-2020', '11:25', 'info@laboratoriolibero.com'),
+(296, '127.0.0.1', '12-09-2020', '12:58', 'antoniog.web@gmail.com'),
+(297, '127.0.0.1', '12-09-2020', '12:59', 'antoniog.web@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -2280,6 +2270,13 @@ CREATE TABLE `regsessions` (
   `creation_date` int(10) UNSIGNED NOT NULL,
   `user_agent` char(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `regsessions`
+--
+
+INSERT INTO `regsessions` (`uid`, `token`, `id_user`, `creation_date`, `user_agent`) VALUES
+('5d659d574ab4ed836210521272f56d47', '8b69e64b429aee9aab98907070b91830', 66, 1599908317, '07cd63964cd4102f3186766c33314e34');
 
 -- --------------------------------------------------------
 
@@ -3535,7 +3532,10 @@ INSERT INTO `traduzioni` (`id_t`, `chiave`, `valore`, `lingua`, `contesto`, `tra
 (3281, 'Non hai effettuato alcun ordine', 'You have not placed any order', 'en', 'front', '1'),
 (3282, 'Si prega di selezionare la variante', 'Please select the variant', 'en', 'front', '1'),
 (3283, 'Tag / Linee', 'Tag / Linee', 'it', 'back', '0'),
-(3285, 'Tag', 'Tag', 'it', 'back', '0');
+(3285, 'Tag', 'Tag', 'it', 'back', '0'),
+(3286, 'Seleziona', 'Seleziona', 'it', 'front', '0'),
+(3287, '<b>Si prega di selezionare una nazione tra quelle permesse</b>', '<b>Si prega di selezionare una nazione tra quelle permesse</b>', 'it', 'front', '0'),
+(3288, '<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>', '<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>', 'it', 'front', '0');
 
 -- --------------------------------------------------------
 
@@ -4100,7 +4100,7 @@ ALTER TABLE `caratteristiche_valori`
 -- AUTO_INCREMENT per la tabella `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_cart` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT per la tabella `categories`
@@ -4160,7 +4160,7 @@ ALTER TABLE `documenti`
 -- AUTO_INCREMENT per la tabella `fatture`
 --
 ALTER TABLE `fatture`
-  MODIFY `id_f` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_f` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `immagini`
@@ -4304,7 +4304,7 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT per la tabella `regaccesses`
 --
 ALTER TABLE `regaccesses`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=298;
 
 --
 -- AUTO_INCREMENT per la tabella `reggroups`
@@ -4322,7 +4322,7 @@ ALTER TABLE `reggroups_categories`
 -- AUTO_INCREMENT per la tabella `regusers`
 --
 ALTER TABLE `regusers`
-  MODIFY `id_user` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id_user` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT per la tabella `regusers_groups`
@@ -4358,7 +4358,7 @@ ALTER TABLE `slide_layer`
 -- AUTO_INCREMENT per la tabella `spedizioni`
 --
 ALTER TABLE `spedizioni`
-  MODIFY `id_spedizione` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_spedizione` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `tag`
@@ -4394,7 +4394,7 @@ ALTER TABLE `tipi_documento`
 -- AUTO_INCREMENT per la tabella `traduzioni`
 --
 ALTER TABLE `traduzioni`
-  MODIFY `id_t` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3286;
+  MODIFY `id_t` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3289;
 
 --
 -- AUTO_INCREMENT per la tabella `variabili`

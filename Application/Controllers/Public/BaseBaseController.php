@@ -420,7 +420,8 @@ class BaseBaseController extends Controller
 		
 		if (Output::$html)
 		{
-			$data["selectNazioni"] = array(""	=>	"Seleziona") + $this->m["NazioniModel"]->clear()->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
+			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
 			
 			$data["selectRuoli"] = $this->m["RuoliModel"]->selectRuoli(true);
 		}

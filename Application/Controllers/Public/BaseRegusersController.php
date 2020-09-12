@@ -712,6 +712,11 @@ class BaseRegusersController extends BaseController
 		$this->m['SpedizioniModel']->clearConditions("strong");
 		$this->m['SpedizioniModel']->addStrongCondition("both",'checkNotEmpty',"indirizzo_spedizione,cap_spedizione,$campoObbligatoriProvincia,citta_spedizione,telefono_spedizione,nazione_spedizione");
 		
+		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
+		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
+		
+		$this->m['SpedizioniModel']->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+		
 		$this->m['SpedizioniModel']->updateTable('insert,update',$clean["id"]);
 		
 		if ($this->m['SpedizioniModel']->queryResult)

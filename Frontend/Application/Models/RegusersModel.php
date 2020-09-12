@@ -256,6 +256,12 @@ class RegusersModel extends Model_Tree
 			"checkUniqueCompl"		=>	"username|".gtext("Questa E-Mail è già usata da un altro utente e non può quindi essere scelta").$evidenziaEU,
 		);
 		
+		$naz = new NazioniModel();
+		
+		$codiciNazioniAttive = implode(",",$naz->selectCodiciAttivi());
+		
+		$this->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+		
 		if (strcmp($queryType,"insert") === 0)
 		{
 			$evidenziaP = Output::$html ? "<span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>" : "";
