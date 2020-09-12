@@ -4,3 +4,4 @@
 /media/Fatture/*
 config.php
 /Application/Views/Fatture/layout_fattura.php
+Frontend/Logs/.ipn_results.log
