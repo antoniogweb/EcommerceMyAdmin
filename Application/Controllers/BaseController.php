@@ -130,6 +130,8 @@ class BaseController extends Controller
 	
 	public $sezionePannello = "sito";
 	
+	public $formDefaultValues = array();
+	
 	public $useEditor = false;
 	
 	public $argKeys = null;
@@ -649,7 +651,7 @@ class BaseController extends Controller
 			
 			$this->scaffold->model->fields = isset($this->formFields) ? $this->formFields : $this->scaffold->model->fields;
 			
-			$this->scaffold->getFormValues('sanitizeHtml',$clean["id"]);
+			$this->scaffold->getFormValues('sanitizeHtml',$clean["id"],$this->formDefaultValues);
 			
 			if (count($this->menuLinksStruct) > 0)
 			{

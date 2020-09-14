@@ -35,6 +35,23 @@ class CorrierispeseModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function setFormStruct()
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'nazione'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectNazione(true),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+			
+			'enctype'	=>	'multipart/form-data',
+		);
+	}
+	
 	public function getPrezzo($idCorriere, $peso)
 	{
 		$res = $this->clear()->where(array(
@@ -53,5 +70,13 @@ class CorrierispeseModel extends GenericModel {
 			return $prezzo;
 		
 		return 0;
+	}
+	
+	public function nazione($record)
+	{
+		if ($record["corrieri_spese"]["nazione"] != "W")
+			return findTitoloDaCodice($record["corrieri_spese"]["nazione"]);
+		
+		return "Tutte";
 	}
 }

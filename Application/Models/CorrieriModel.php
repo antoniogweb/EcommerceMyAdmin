@@ -40,5 +40,5 @@ class CorrieriModel extends GenericModel {
 			'prezzi' => array("HAS_MANY", 'CorrierispeseModel', 'id_corriere', null, "CASCADE"),
         );
     }
-	
+    
 }

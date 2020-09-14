@@ -34,7 +34,7 @@ class CorrieriController extends BaseController {
 	
 	public $orderBy = "titolo";
 	
-	public $argKeys = array('titolo:sanitizeAll'=>'tutti');
+	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'W');
 	
 	public $useEditor = true;
 	
@@ -70,7 +70,7 @@ class CorrieriController extends BaseController {
 		$this->shift(1);
 		
 		$clean['id'] = $this->id = (int)$id;
-		$this->id_name = "id_user";
+		$this->id_name = "id_corriere";
 		
 		$this->mainButtons = "ldel";
 		
@@ -78,14 +78,21 @@ class CorrieriController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("corrieri_spese.peso","corrieri_spese.prezzo");
-		$this->mainHead = "Peso (kg),Prezzo (€)";
+		$this->mainFields = array("corrieri_spese.peso","nazione","corrieri_spese.prezzo");
+		$this->mainHead = "Peso (kg),Nazione,Prezzo (€)";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"prezzi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->orderBy("corrieri_spese.peso")->where(array("id_corriere"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->orderBy("corrieri_spese.peso")->where(array(
+			"id_corriere"	=>	$clean['id'],
+			"nazione"		=>	$this->viewArgs["nazione"],
+		))->convert()->save();
 		
 		$this->tabella = "corrieri";
+		
+		$data["elencoNazioniCorrieri"] = $this->m[$this->modelName]->clear()->select("distinct nazione")->where(array(
+			"id_corriere"	=>	$clean['id'],
+		))->orderBy("nazione")->toList("nazione")->send();
 		
 		parent::main();
 		

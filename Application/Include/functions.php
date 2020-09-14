@@ -1512,3 +1512,10 @@ function tm($tm, $controller)
 	
 	return "";
 }
+
+function findTitoloDaCodice($codice, $default = null)
+{
+	$n = new NazioniModel();
+	
+	return $n->findTitoloDaCodice($codice, $default);
+}

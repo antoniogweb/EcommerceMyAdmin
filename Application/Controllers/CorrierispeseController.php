@@ -26,18 +26,28 @@ class CorrierispeseController extends BaseController {
 	
 	public $tabella = "scaglioni corrieri";
 	
-	public $argKeys = array('id_corriere:sanitizeAll'=>'tutti');
+	public $argKeys = array('id_corriere:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'tutti');
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("peso,prezzo");
+		$this->formDefaultValues = $this->viewArgs;
+		
+		$fields = "peso,prezzo";
+		
+		if ($this->viewArgs["nazione"] == "tutti")
+			$fields .= ",nazione";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_corriere"] != "tutti")
 		{
 			$this->m[$this->modelName]->setValue("id_corriere", $this->viewArgs["id_corriere"]);
 		}
+		
+		if ($this->viewArgs["nazione"] != "tutti")
+			$this->m[$this->modelName]->setValue("nazione", $this->viewArgs["nazione"]);
 		
 		parent::form($queryType, $id);
 	}

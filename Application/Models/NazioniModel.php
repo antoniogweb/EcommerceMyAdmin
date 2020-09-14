@@ -26,6 +26,8 @@ class NazioniModel extends GenericModel
 {
 	public static $elenco = null;
 	
+	public static $elencoNazioni = null;
+	
 	public function __construct() {
 		$this->_tables = 'nazioni';
 		$this->_idFields = 'id_nazione';
@@ -80,6 +82,20 @@ class NazioniModel extends GenericModel
 			return $nazione["iso_country_code"];
 		
 		return "";
+	}
+	
+	public function findTitoloDaCodice($codice, $default = null)
+	{
+		if (!self::$elencoNazioni)
+			self::$elencoNazioni = $this->clear()->toList("iso_country_code", "titolo")->send();
+		
+		if (isset(self::$elencoNazioni[$codice]))
+			return self::$elencoNazioni[$codice];
+		
+		if (isset($default))
+			return $default;
+		else
+			return $codice;
 	}
 	
 	public function tipo($record)

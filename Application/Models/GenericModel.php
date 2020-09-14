@@ -394,13 +394,14 @@ class GenericModel extends Model_Tree {
 		return "";
 	}
 	
-	public function selectNazione()
+	public function selectNazione($empty = false)
 	{
 		$n = new NazioniModel();
 		
 		if (!isset(NazioniModel::$elenco))
 		{
-			NazioniModel::$elenco = array("0"	=>	"Seleziona") + $n->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+			$default = $empty ? array("W"	=>	"Tutte le nazioni") : array("0"	=>	"Seleziona");
+			NazioniModel::$elenco = $default + $n->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
 		}
 		
 		return NazioniModel::$elenco;
