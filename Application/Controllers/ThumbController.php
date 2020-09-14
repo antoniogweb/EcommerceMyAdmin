@@ -32,6 +32,7 @@ class ThumbController extends BaseController {
 
 		$this->model('ImmaginiModel');
 		
+		$this->publicRoot = str_replace("/admin","",LIBRARY);
 	}
 
 	public function contenuto($image)
@@ -48,7 +49,7 @@ class ThumbController extends BaseController {
 				'cropImage'		=>	'no',
 			);
 
-			$thumb = new Image_Gd_Thumbnail($this->parentRootFolder.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 			$thumb->render($image);
 		}
 	}
@@ -67,7 +68,7 @@ class ThumbController extends BaseController {
 				'cropImage'		=>	'no',
 			);
 
-			$thumb = new Image_Gd_Thumbnail($this->parentRootFolder.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 			$thumb->render($image);
 		}
 	}
@@ -96,12 +97,12 @@ class ThumbController extends BaseController {
 			
 			if (strcmp($fileName,'') !== 0)
 			{
-				$thumb = new Image_Gd_Thumbnail($this->parentRootFolder.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+				$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName);
 			}
 			else
 			{
-				$thumb = new Image_Gd_Thumbnail($this->parentRootFolder.'/Public/Img',$params);
+				$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/Public/Img',$params);
 				$thumb->render('nofound.jpeg');
 			}
 		}
@@ -119,7 +120,7 @@ class ThumbController extends BaseController {
 		
 		if (strcmp($fileName,'') !== 0)
 		{
-			$thumb = new Image_Gd_Thumbnail($this->parentRootFolder.'/'.Parametri::$cartellaImmaginiNews,$params);
+			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiNews,$params);
 			$thumb->render($fileName);
 		}
 		else

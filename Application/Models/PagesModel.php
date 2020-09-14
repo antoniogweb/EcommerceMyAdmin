@@ -1233,6 +1233,8 @@ class PagesModel extends GenericModel {
 				$this->delFields("id_page");
 				$this->delFields("id_order");
 				
+				$this->sanitize();
+				
 				$this->pUpdate(null, "codice_alfa = '".$record["codice_alfa"]."'");
 // 			}
 		}

@@ -15,4 +15,9 @@ class Import
 	{
 		ImportContenuti::utenti();
 	}
+	
+	public static function news()
+	{
+		ImportContenuti::news();
+	}
 }

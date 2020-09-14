@@ -608,6 +608,11 @@ class GenericModel extends Model_Tree {
 		return $this->linklingua($record, "es");
 	}
 	
+	public function linkde($record)
+	{
+		return $this->linklingua($record, "de");
+	}
+	
 	public function buildAllCatSelect()
 	{
 		$c = new CategoriesModel();

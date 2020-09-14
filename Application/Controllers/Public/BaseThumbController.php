@@ -26,7 +26,15 @@ if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
 class BaseThumbController extends Controller {
-
+	
+	public function __construct($model, $controller, $queryString) {
+		parent::__construct($model, $controller, $queryString);
+		
+		// Variabili
+		$this->model('VariabiliModel');
+		VariabiliModel::ottieniVariabili();
+	}
+	
 	public function contenuto($fileName)
 	{
 		$this->clean();

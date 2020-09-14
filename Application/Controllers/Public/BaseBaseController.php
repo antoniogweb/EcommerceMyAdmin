@@ -51,6 +51,10 @@ class BaseBaseController extends Controller
 		
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
+		// Variabili
+		$this->model('VariabiliModel');
+		VariabiliModel::ottieniVariabili();
+		
 		$this->model("CategoriesModel");
 		$this->model("MenuModel");
 		$this->model("MenusecModel");
@@ -107,10 +111,6 @@ class BaseBaseController extends Controller
 			Parametri::$paypalSeller = ImpostazioniModel::$valori["paypal_seller"];
 			Parametri::$paypalSandBoxSeller = ImpostazioniModel::$valori["paypal_sandbox_seller"];
 		}
-		
-		// Variabili
-		$this->model('VariabiliModel');
-		VariabiliModel::ottieniVariabili();
 		
 		$this->session('registered');
 		$this->s['registered']->checkStatus();

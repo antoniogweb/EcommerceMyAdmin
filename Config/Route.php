@@ -335,6 +335,7 @@ class Route
 		
 		'import,prodotti',
 		'import,utenti',
+		'import,news',
 		
 		'ruoli,main',
 		'ruoli,form',

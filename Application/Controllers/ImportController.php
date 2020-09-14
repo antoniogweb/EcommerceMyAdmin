@@ -41,6 +41,9 @@ class ImportController extends Controller {
 		$this->model('ImpostazioniModel');
 		
 		$this->m["ImpostazioniModel"]->getImpostazioni();
+		
+		$this->session('admin');
+		$this->s['admin']->check();
 	}
 	
 	public function prodotti($c = "")
@@ -48,6 +51,14 @@ class ImportController extends Controller {
 		if (is_string($c) && $c == "sdf8734jhbsdf78jhsd8dfgmbjhbf34")
 		{
 			Import::prodotti();
+		}
+	}
+	
+	public function news($c = "")
+	{
+		if (is_string($c) && $c == "sdf8734jhbsdf78jhsd8dfgmbjhbf34")
+		{
+			Import::news();
 		}
 	}
 	

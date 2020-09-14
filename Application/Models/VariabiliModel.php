@@ -57,6 +57,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_giacenza"			=>	0,
 		"usa_tag"					=>	0,
 		"shop_in_alias_marchio"		=>	1,
+		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
 	);
 	
 	public function __construct() {

@@ -233,7 +233,7 @@ function getYesNoPromozione($id_page)
 
 function accepted($fileName)
 {
-	if (preg_match('/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i',$fileName))
+	if (preg_match(v("reg_expr_file"),$fileName))
 	{
 		return true;
 	}
