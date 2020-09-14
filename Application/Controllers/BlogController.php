@@ -49,6 +49,7 @@ class BlogController extends PagesController {
 		{
 			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
 			$this->queryFields .= ",in_evidenza";
+			$this->head .= ",In evidenza";
 		}
 		
 		$this->clean();
