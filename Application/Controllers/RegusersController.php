@@ -45,7 +45,8 @@ class RegusersController extends BaseController {
 		$this->model();
 		$this->model("RegusersgroupsModel");
 		$this->model("SpedizioniModel");
-
+		$this->model("OrdiniModel");
+		
 // 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->setArgKeys(array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1, 'partial:sanitizeAll'=>'tutti', 'p_iva:sanitizeAll'=>'tutti'));
@@ -200,6 +201,39 @@ class RegusersController extends BaseController {
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"spedizioni/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("spedizioni.*")->orderBy("spedizioni.indirizzo_spedizione")->where(array("id_user"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function ordini($id = 0)
+	{
+		$this->_posizioni['ordini'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_user";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "OrdiniModel";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
+		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array("id_user"=>$clean['id']))->save();
 		
 		parent::main();
 		

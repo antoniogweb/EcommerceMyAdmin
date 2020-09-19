@@ -80,8 +80,22 @@ function impostaSpedizioneNonLoggato(obj)
 	}
 }
 
-function impostaSpeseSpedizione(id_corriere)
+function impostaSpeseSpedizione()
 {
+	if ($("[name='spedisci_dati_fatturazione']").length > 0)
+	{
+		if ($("[name='spedisci_dati_fatturazione']:checked").val() == "Y")
+			var nazione = $("[name='nazione']").val();
+		else
+			var nazione = $("[name='nazione_spedizione']").val();
+	}
+	else
+		var nazione = $("[name='nazione_spedizione']").val();
+	
+	var id_corriere = $("[name='id_corriere']:checked").val();
+	
+	console.log(nazione);
+	
 	$.ajaxQueue({
 		url: baseUrl + "/ordini/totale",
 		cache:false,
@@ -89,7 +103,8 @@ function impostaSpeseSpedizione(id_corriere)
 		dataType: "html",
 		method: "POST",
 		data: {
-			id_corriere: id_corriere
+			id_corriere: id_corriere,
+			nazione_spedizione: nazione
 		},
 		success: function(content){
 			
@@ -236,8 +251,11 @@ $(document).ready(function(){
 	
 	$("body").on("ifChanged", "[name='spedisci_dati_fatturazione']", function(e){
 		
-		impostaSpedizioneNonLoggato($(this));
-		
+		if ($(this).is(":checked"))
+		{
+			impostaSpedizioneNonLoggato($(this));
+			impostaSpeseSpedizione();
+		}
 	});
 	
 	if ($("[name='aggiungi_nuovo_indirizzo']:checked").length > 0)
@@ -258,12 +276,17 @@ $(document).ready(function(){
 	});
 	
 	if ($("[name='id_corriere']:checked").length > 0)
-		impostaSpeseSpedizione($("[name='id_corriere']:checked").val());
+		impostaSpeseSpedizione();
 	
 	$("body").on("ifChanged", "[name='id_corriere']", function(e){
 		
-		impostaSpeseSpedizione($(this).val());
+		if ($(this).is(":checked"))
+			impostaSpeseSpedizione();
 		
+	});
+	
+	$("body").on("change", "[name='nazione'],[name='nazione_spedizione']", function(e){
+		impostaSpeseSpedizione();
 	});
 	
 	impostaLabelPagamento($("[name='pagamento']:checked"));

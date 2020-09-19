@@ -54,11 +54,11 @@ class NazioniController extends BaseController {
 			"0"		=>	"Sped. non attiva",
 		);
 		
-		$this->filters = array("titolo",array("tipo",null,array(
-			"tutti"	=>	"Tipo",
-			"UE"	=>	"UE",
-			"EX"	=>	"EXTRA UE",
-		)), array(
+		$filtroTipo = array("tutti"=>"Tipo") + NazioniModel::$selectTipi;
+		
+		$this->filters = array("titolo",array(
+			"tipo",null,$filtroTipo),
+		array(
 			"attiva",null,$attivaDisattiva
 		),  array(
 			"attiva_spedizione",null,$attivaDisattivaSped
@@ -88,7 +88,7 @@ class NazioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,iso_country_code,attiva,attiva_spedizione');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,iso_country_code,tipo,attiva,attiva_spedizione');
 		
 		parent::form($queryType, $id);
 	}

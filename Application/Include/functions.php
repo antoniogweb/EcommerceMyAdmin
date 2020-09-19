@@ -425,10 +425,13 @@ function getSpedizioneN()
 	
 	$corriere = array();
 	
+	$nazione = v("nazione_default");
+	
+	if (isset($_POST["nazione_spedizione"]))
+		$nazione = $_POST["nazione_spedizione"];
+	
 	if (isset($_POST["id_corriere"]))
-	{
 		$corriere = $corr->selectId((int)$_POST["id_corriere"]);
-	}
 	else
 	{
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("titolo")->send(false);
@@ -438,9 +441,7 @@ function getSpedizioneN()
 	}
 	
 	if (!empty($corriere))
-	{
-		return $corrSpese->getPrezzo($corriere["id_corriere"],$peso);
-	}
+		return $corrSpese->getPrezzo($corriere["id_corriere"],$peso, $nazione);
 	
 	return 0;
 }

@@ -28,6 +28,11 @@ class NazioniModel extends GenericModel
 	
 	public static $elencoNazioni = null;
 	
+	public static $selectTipi = array(
+		"UE"	=>	"UE",
+		"EX"	=>	"EXTRA UE",
+	);
+	
 	public function __construct() {
 		$this->_tables = 'nazioni';
 		$this->_idFields = 'id_nazione';
@@ -58,6 +63,11 @@ class NazioniModel extends GenericModel
 				),
 				'iso_country_code'	=>	array(
 					"labelString"	=>"Codice nazione (2 cifre)"
+				),
+				'tipo'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	self::$selectTipi,
+					"reverse"	=>	"yes",
 				),
 			),
 			

@@ -90,6 +90,7 @@ class Route
 		'regusers,form',
 		'regusers,gruppi',
 		'regusers,spedizioni',
+		'regusers,ordini',
 		'news,main',
 		'news,form',
 		'news,ordina',

@@ -8,10 +8,11 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
+			<?php if (!nobuttons()) { ?>
 			<div class="mainMenu">
 				<?php echo $menu;?>
 			</div>
-			
+			<?php } ?>
 			<div class="box">
 				<div class="box-header with-border main">
 					<?php echo $notice_send;?>

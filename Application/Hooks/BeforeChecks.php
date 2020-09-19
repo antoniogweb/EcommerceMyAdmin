@@ -239,6 +239,9 @@ Helper_List::$actionsLayout = array(
 
 Helper_List::$filtersFormLayout = array(
 	"form"	=>	array(
+		"attributes"	=>	array(
+			"class"	=>	"form-inline list_filter_form",
+		)
 // 		"innerWrap"	=>	array(
 // 			"<div class='filters_form'>","</div>"
 // 		)
@@ -271,13 +274,34 @@ Helper_List::$filtersFormLayout = array(
 		"codice_fiscale"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
-				"placeholder"	=>	"Cerca ..",
+				"placeholder"	=>	"CF / P.IVA ..",
+			),
+		),
+		"dal"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control data_field",
+				"placeholder"	=>	"Dal",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+			),
+		),
+		"al"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control data_field",
+				"placeholder"	=>	"Al",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
 			),
 		),
 		"p_iva"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
 				"placeholder"	=>	"Cerca ..",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
 			),
 		),
 		"title"	=>	array(
@@ -325,13 +349,13 @@ Helper_List::$filtersFormLayout = array(
 		"email"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
-				"placeholder"	=>	"Codice..",
+				"placeholder"	=>	"Email..",
 			),
 		),
 		"id_o"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
-				"placeholder"	=>	"Codice..",
+				"placeholder"	=>	"Ordine..",
 			),
 		),
 		"valore"	=>	array(
@@ -370,6 +394,18 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"tipo_cliente"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"stato"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 		"attiva"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
@@ -394,3 +430,14 @@ Helper_List::$filtersFormLayout = array(
 // 		)
 	),
 );
+
+$tempFilters = array();
+
+foreach (Helper_List::$filtersFormLayout["filters"] as $key => $filter)
+{
+	$filter["attributes"]["autocomplete"] = "off";
+	
+	$tempFilters[$key] = $filter;
+}
+
+Helper_List::$filtersFormLayout["filters"] = $tempFilters;

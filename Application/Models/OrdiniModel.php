@@ -470,4 +470,14 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
+	public function totaleCrud($record)
+	{
+		return number_format($record["orders"]["total"],2,",",".");
+	}
+	
+	public function vedi($record)
+	{
+		return "<a title='Elenco ordini dove è stato acquistato' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."?partial=Y&nobuttons=Y'>".$record["orders"]["id_o"]."</a>";
+	}
+	
 }

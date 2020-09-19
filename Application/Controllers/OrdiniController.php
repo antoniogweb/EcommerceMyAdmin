@@ -32,7 +32,21 @@ class OrdiniController extends BaseController {
 		$this->session('admin');
 		$this->model();
 
-		$this->setArgKeys(array('page:forceInt'=>1,'id_o:sanitizeAll'=>'tutti','pagamento:sanitizeAll'=>'tutti','stato:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','email:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','registrato:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token', 'partial:sanitizeAll'=>'tutti', 'id_comb:sanitizeAll'=>'tutti'));
+		$this->setArgKeys(array(
+			'page:forceInt'=>1,
+			'id_o:sanitizeAll'=>'tutti',
+			'pagamento:sanitizeAll'=>'tutti',
+			'stato:sanitizeAll'=>'tutti',
+			'tipo_cliente:sanitizeAll'=>'tutti',
+			'email:sanitizeAll'=>'tutti',
+			'codice_fiscale:sanitizeAll'=>'tutti',
+			'registrato:sanitizeAll'=>'tutti',
+			'token:sanitizeAll'=>'token',
+			'partial:sanitizeAll'=>'tutti',
+			'id_comb:sanitizeAll'=>'tutti',
+			'dal:sanitizeAll'=>'tutti',
+			'al:sanitizeAll'=>'tutti',
+		));
 
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
@@ -60,14 +74,14 @@ class OrdiniController extends BaseController {
 
 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>'panel'));
 		
-		$this->scaffold->loadMain('<a href="'.$this->baseUrl.'/ordini/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>,smartDate|orders.data_creazione,OrdiniModel.getNome|orders.id_o,orders.email,orders.tipo_cliente,OrdiniModel.getCFoPIva|orders.id_o,orders.nome_promozione,statoOrdineBreve|orders.stato','orders:id_o','');
+		$this->scaffold->loadMain('<a href="'.$this->baseUrl.'/ordini/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>,smartDate|orders.data_creazione,OrdiniModel.getNome|orders.id_o,orders.email,orders.tipo_cliente,OrdiniModel.getCFoPIva|orders.id_o,orders.nome_promozione,statoOrdineBreve|orders.stato,totaleCrud','orders:id_o','');
 		
 		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/ordini/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
 		
-		$this->scaffold->addItem('text',";OrdiniModel.pulsanteFattura|orders.id_o;");
+// 		$this->scaffold->addItem('text',";OrdiniModel.pulsanteFattura|orders.id_o;");
 		$this->scaffold->addItem('text',$vediOrdineLink);
 		
-		$this->scaffold->setHead('#ID,DATA,NOME/R.SOC,EMAIL,CLIENTE,C.F. / P. IVA,PROMOZ.,STATO ORDINE');
+		$this->scaffold->setHead('#ID,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale');
 		
 		$this->scaffold->model->clear()->orderBy("orders.id_o desc");
 		
@@ -109,36 +123,26 @@ class OrdiniController extends BaseController {
 			));
 		}
 		
-		$this->scaffold->itemList->colProperties = array(
-			array(
-				'width'	=>	'105px',
-			),
-			array(
-				'width'	=>	'70px',
-			),
-			null,
-			array(
-				'width'	=>	'170px',
-			),
-			array(
-				'width'	=>	'50px',
-			),
-			array(
-				'width'	=>	'170px',
-			),
-			array(
-				'width'	=>	'80px',
-			),
-			null,
-			array(
-				'width'	=>	'22px',
-			),
-			array(
-				'width'	=>	'2%',
-			),
-			
+		if ($this->viewArgs['dal'] != "tutti")
+			$this->scaffold->model->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= '".getIsoDate($this->viewArgs['dal'])."'");
+		
+		if ($this->viewArgs['al'] != "tutti")
+			$this->scaffold->model->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= '".getIsoDate($this->viewArgs['al'])."'");
+		
+		$this->scaffold->itemList->aggregateFilters();
+		$this->scaffold->itemList->showFilters = false;
+		$filtroTipo = array(
+			"tutti"		=>	"Tipo cliente",
+			"privato"	=>	"Privato",
+			"libero_professionista"	=>	"Professionista",
+			"azienda"	=>	"Azienda",
 		);
-		$this->scaffold->itemList->setFilters(array('id_o',null,null,'email',null,'codice_fiscale'));
+		
+		$filtroStato = array(
+			"tutti"		=>	"Stato",
+		) + OrdiniModel::$stati;
+		
+		$this->scaffold->itemList->setFilters(array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato)));
 		
 		$data['scaffold'] = $this->scaffold->render();
 		
@@ -148,6 +152,7 @@ class OrdiniController extends BaseController {
 		$data['pageList'] = $this->scaffold->html['pageList'];
 		
 		$data['notice'] = $this->scaffold->model->notice;
+		$data["filtri"] = $this->scaffold->itemList->createFilters();
 		
 		$data["tabella"] = "ordini";
 		

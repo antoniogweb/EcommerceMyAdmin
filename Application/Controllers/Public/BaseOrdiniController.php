@@ -153,7 +153,8 @@ class BaseOrdiniController extends BaseController
 					
 					$mail->From       = Parametri::$mailFrom;
 					$mail->FromName   = Parametri::$mailFromName;
-					$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+					if (Parametri::$mailFrom && Parametri::$mailFromName)
+						$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
 					
 					$mail->CharSet = 'UTF-8';
 					
@@ -873,7 +874,8 @@ class BaseOrdiniController extends BaseController
 										//manda mail con credenziali al cliente
 										$mail->ClearAddresses();
 										$mail->AddAddress($ordine["email"]);
-										$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+										if (Parametri::$mailFrom && Parametri::$mailFromName)
+											$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
 										$mail->Subject  = "[".Parametri::$nomeNegozio." - Invio credenziali nuovo utente";
 										$mail->IsHTML(true);
 										
@@ -966,7 +968,8 @@ class BaseOrdiniController extends BaseController
                             
 							$mail->ClearAddresses();
 							$mail->AddAddress($ordine["email"]);
-							$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+							if (Parametri::$mailFrom && Parametri::$mailFromName)
+								$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
 							$mail->Subject  = Parametri::$nomeNegozio." - Ordine N°" . $clean['lastId'];
 							$mail->IsHTML(true);
 							

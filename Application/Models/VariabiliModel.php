@@ -58,6 +58,7 @@ class VariabiliModel extends GenericModel {
 		"usa_tag"					=>	0,
 		"shop_in_alias_marchio"		=>	1,
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
+		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 	);
 	
 	public function __construct() {

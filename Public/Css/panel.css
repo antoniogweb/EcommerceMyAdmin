@@ -481,6 +481,10 @@ div.pageList a {
 	padding-right:10px;
 }
 
+.input-group.date {
+    width: 150px !important;
+}
+
 /*view footer*/
 .viewFooter {
 	height:50px;
@@ -565,7 +569,15 @@ div.pageList a.currentPage
 	margin-right:5px;
 	margin-top:0px !important;
 }
+.list_filter_form .input-group.date .form-control
+{
+	margin-right:0px;
+}
+.list_filter_form .input-group.date
+{
+	margin-right:5px;
+}
 .list_filter_form .btn
 {
-	display:none;
+/* 	display:none; */
 }
