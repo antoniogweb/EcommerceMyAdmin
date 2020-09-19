@@ -1209,4 +1209,25 @@ class BaseOrdiniController extends BaseController
 		
 		$this->load("totale_merce");
 	}
+	
+	public function corrieri($nazione = 0)
+	{
+		$this->clean();
+		
+		if (!$nazione)
+			$nazione = v("nazione_default");
+		
+		$clean["nazione"] = sanitizeAll($nazione);
+		
+		$corr = new CorrieriModel();
+		
+		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere")->inner(array("prezzi"))->where(array(
+			"OR"	=>	array(
+				"corrieri_spese.nazione"	=> $clean["nazione"],
+				"-corrieri_spese.nazione"	=> "W",
+			),
+		))->toList("corrieri.id_corriere")->send();
+		
+		echo json_encode($corrieri);
+	}
 }

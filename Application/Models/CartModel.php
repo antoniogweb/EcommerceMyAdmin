@@ -167,7 +167,9 @@ class CartModel extends Model_Tree {
 			}
 		}
 		
-		$ivaSped = number_format(Parametri::$iva,2,".","");
+// 		$ivaSped = number_format(Parametri::$iva,2,".","");
+		
+		$ivaSped = number_format($this->getMaxIva(),2,".","");
 		
 		if (isset($arraySubtotale[$ivaSped]))
 			$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),2,".","");
@@ -189,6 +191,18 @@ class CartModel extends Model_Tree {
 		$total = array_sum($arrayIva);
 		
 		return $total;
+	}
+	
+	public function getMaxIva()
+	{
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$iva = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->getMax("iva");
+		
+		if ($iva)
+			return $iva;
+		
+		return Parametri::$iva;
 	}
 	
 // 	// Totale scontato
