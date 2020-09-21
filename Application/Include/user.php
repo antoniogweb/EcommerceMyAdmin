@@ -20,4 +20,22 @@ class User
 	
 	public static $adminLogged = false;
 	public static $asJson = false;
+	
+	public static function getSpedizioneDefault()
+	{
+// 		if (User::$logged)
+// 		{
+// 			$sp = new SpedizioniModel();
+// 			
+// 			$spedizione = $sp->clear()->where(array(
+// 				"id_user"		=>	(int)User::$id,
+// 				"ultimo_usato"	=>	"Y",
+// 			))->record();
+// 			
+// 			if (!empty($spedizione))
+// 				return $spedizione["nazione_spedizione"];
+// 		}
+		
+		return v("nazione_default");
+	}
 }

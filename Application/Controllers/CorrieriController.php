@@ -24,13 +24,13 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CorrieriController extends BaseController {
 	
-	public $mainFields = array("[[ledit]];corrieri.titolo;");
+	public $mainFields = array("[[ledit]];corrieri.titolo;","corrieri.attivo");
 	
-	public $mainHead = "Titolo";
+	public $mainHead = "Titolo,Attivo";
 	
 	public $filters = array("titolo");
 	
-	public $formValuesToDb = 'titolo';
+	public $formValuesToDb = 'titolo,attivo';
 	
 	public $orderBy = "id_order";
 	

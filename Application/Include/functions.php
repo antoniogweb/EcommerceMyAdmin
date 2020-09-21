@@ -425,7 +425,7 @@ function getSpedizioneN()
 	
 	$corriere = array();
 	
-	$nazione = v("nazione_default");
+	$nazione = User::getSpedizioneDefault();
 	
 	if (isset($_POST["nazione_spedizione"]))
 		$nazione = $_POST["nazione_spedizione"];
@@ -444,6 +444,13 @@ function getSpedizioneN()
 		return $corrSpese->getPrezzo($corriere["id_corriere"],$peso, $nazione);
 	
 	return 0;
+}
+
+function spedibile($idCorriere, $nazione)
+{
+	$corr = new CorrieriModel();
+	
+	return $corr->spedibile($idCorriere, $nazione);
 }
 
 function getSpedizione()

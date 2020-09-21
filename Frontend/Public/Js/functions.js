@@ -48,7 +48,7 @@ function impostaTipoSpedizione(obj)
 		$(".link_indirizzo_come_fatturazione").css("display","block");
 		$(".blocco_tendina_scelta_indirizzo").css("display","none");
 		
-		if ($("#form .alert").length == 0)
+		if ($("[name='post_error']").length == 0)
 		{
 			$("[name='indirizzo_spedizione']").val("");
 			$("[name='cap_spedizione']").val("");
@@ -59,6 +59,7 @@ function impostaTipoSpedizione(obj)
 		}
 		
 		sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
+		impostaCorrieriESpeseSpedizione();
 	}
 	else
 	{
@@ -66,8 +67,40 @@ function impostaTipoSpedizione(obj)
 		$(".blocco_tendina_scelta_indirizzo").css("display","block");
 		impostaCampiSpedizione($(".tendina_scelta_indirizzo").val());
 	}
-	
-	impostaCorrieriESpeseSpedizione();
+}
+
+function impostaCampiSpedizione(id_spedizione)
+{
+	if ($("[name='post_error']").length > 0)
+	{
+		sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
+		impostaCorrieriESpeseSpedizione();
+	}
+	else
+	{
+		$.ajaxQueue({
+			url: baseUrl + "/indirizzo-di-spedizione/" + id_spedizione,
+			cache:false,
+			async: true,
+			dataType: "json",
+			success: function(content){
+				
+				if (content)
+				{
+					$("[name='indirizzo_spedizione']").val(content.indirizzo_spedizione);
+					$("[name='cap_spedizione']").val(content.cap_spedizione);
+					$("[name='citta_spedizione']").val(content.citta_spedizione);
+					$("[name='provincia_spedizione']").val(content.provincia_spedizione);
+					$("[name='dprovincia_spedizione']").val(content.dprovincia_spedizione);
+					$("[name='telefono_spedizione']").val(content.telefono_spedizione);
+					$("[name='nazione_spedizione']").val(content.nazione_spedizione);
+					
+					sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
+					impostaCorrieriESpeseSpedizione();
+				}
+			}
+		});
+	}
 }
 
 function impostaSpedizioneNonLoggato(obj)
@@ -170,6 +203,9 @@ function impostaCorrieriESpeseSpedizione()
 					}
 				}
 				
+				if (id_corriere == "" || id_corriere == undefined)
+					id_corriere = 0;
+				
 				impostaSpeseSpedizione(id_corriere, nazione);
 			}
 		});
@@ -181,32 +217,6 @@ function impostaCorrieriESpeseSpedizione()
 		
 		impostaSpeseSpedizione(id_corriere, nazione);
 	}
-}
-
-function impostaCampiSpedizione(id_spedizione)
-{
-	$.ajaxQueue({
-		url: baseUrl + "/indirizzo-di-spedizione/" + id_spedizione,
-		cache:false,
-		async: true,
-		dataType: "json",
-		success: function(content){
-			
-			if (content)
-			{
-				$("[name='indirizzo_spedizione']").val(content.indirizzo_spedizione);
-				$("[name='cap_spedizione']").val(content.cap_spedizione);
-				$("[name='citta_spedizione']").val(content.citta_spedizione);
-				$("[name='provincia_spedizione']").val(content.provincia_spedizione);
-				$("[name='dprovincia_spedizione']").val(content.dprovincia_spedizione);
-				$("[name='telefono_spedizione']").val(content.telefono_spedizione);
-				$("[name='nazione_spedizione']").val(content.nazione_spedizione);
-				
-				sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
-				impostaCorrieriESpeseSpedizione();
-			}
-		}
-	});
 }
 
 function impostaLabelPagamento(obj)
@@ -334,11 +344,15 @@ $(document).ready(function(){
 		
 // 		console.log($(this).val());
 		
+		$("[name='post_error']").remove();
+		
 		impostaTipoSpedizione($(this));
 		
 	});
 	
 	$("body").on("change", ".tendina_scelta_indirizzo", function(e){
+		
+		$("[name='post_error']").remove();
 		
 		impostaCampiSpedizione($(this).val());
 		

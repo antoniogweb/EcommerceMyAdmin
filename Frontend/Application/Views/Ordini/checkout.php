@@ -183,6 +183,12 @@
 											<input class="button button_submit_desktop" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" /></p>
 									</div>
 								</div>
+								
+								<?php
+								if (isset($_POST['invia']))
+									echo Html_Form::hidden("post_error",2);
+								?>
+								
 								<?php include(ROOT."/Application/Views/Ordini/checkout_totali.php"); ?>
 							</form>
 						<?php } else { ?>

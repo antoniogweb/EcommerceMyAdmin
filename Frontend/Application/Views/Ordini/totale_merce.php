@@ -15,7 +15,9 @@
 <tr class="woocommerce-shipping-totals shipping">
 	<th>
 		<?php echo gtext("Spese spedizione");?>
-		<?php /*if (isset($_POST["id_corriere"]))*/ ?>
+		<?php if (isset($_POST["id_corriere"]) && isset($_POST["nazione_spedizione"]) && !spedibile($_POST["id_corriere"], $_POST["nazione_spedizione"])) { ?>
+		<div style="color:red;"><?php echo gtext("Non spedibile nella nazione selezionata")?></div>
+		<?php } ?>
 	</th>
 	<td></td>
 	<td><span class="woocommerce-Price-amount amount"><?php echo getSpedizione();?><span class="woocommerce-Price-currencySymbol">&euro;</span></span></td>
@@ -32,3 +34,11 @@
 	<td></td>
 	<td><strong><span class="woocommerce-Price-amount amount"><?php echo getTotal();?><span class="woocommerce-Price-currencySymbol">&euro;</span></span></strong> </td>
 </tr>
+
+<?php if (isset($_POST["id_corriere"]) && isset($_POST["nazione_spedizione"]) && !spedibile($_POST["id_corriere"], $_POST["nazione_spedizione"])) { ?>
+<tr>
+	<td colspan="3">
+		<div class="alert alert-danger"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
+	</td>
+</tr>
+<?php } ?>

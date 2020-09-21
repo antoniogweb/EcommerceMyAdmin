@@ -52,12 +52,15 @@ class CorrieriModel extends GenericModel {
 				"corrieri_spese.nazione"	=> $clean["nazione"],
 				"-corrieri_spese.nazione"	=> "W",
 			),
+			"corrieri.attivo"	=>	"Y",
 		))->toList("corrieri.id_corriere")->orderBy("corrieri.id_corriere")->send();
 	}
 	
 	public function elencoCorrieri()
 	{
-		return $this->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("corrieri.id_order")->send(false);
+		return $this->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->where(array(
+			"corrieri.attivo"	=>	"Y",
+		))->orderBy("corrieri.id_order")->send(false);
 	}
 	
 	public function spedibile($idCorriere, $nazione)
@@ -70,6 +73,8 @@ class CorrieriModel extends GenericModel {
 			
 			if (in_array($idCorriere, $idsCorrieri))
 				return true;
+			
+			return false;
 		}
 		
 		return true;
