@@ -165,6 +165,7 @@ class Route
 		'spedizioni,form',
 		
 		'corrieri,main',
+		'corrieri,ordina',
 		'corrieri,form',
 		'corrieri,prezzi',
 		

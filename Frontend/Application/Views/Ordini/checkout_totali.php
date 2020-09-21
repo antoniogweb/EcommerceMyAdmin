@@ -15,7 +15,6 @@
 				</tr>
 			</thead>
 
-
 				<?php foreach ($pages as $p) { ?>
 				<tbody>
 					<tr class="cart_item">

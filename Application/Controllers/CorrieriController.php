@@ -32,7 +32,7 @@ class CorrieriController extends BaseController {
 	
 	public $formValuesToDb = 'titolo';
 	
-	public $orderBy = "titolo";
+	public $orderBy = "id_order";
 	
 	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'W');
 	
@@ -50,6 +50,13 @@ class CorrieriController extends BaseController {
 			))->orderBy($this->orderBy)->convert()->save();
 		
 		parent::main();
+	}
+	
+	public function ordina()
+	{
+		$this->modelName = "CorrieriModel";
+		
+		parent::ordina();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)

@@ -13,7 +13,10 @@
 </tr>
 <?php } ?>
 <tr class="woocommerce-shipping-totals shipping">
-	<th><?php echo gtext("Spese spedizione");?></th>
+	<th>
+		<?php echo gtext("Spese spedizione");?>
+		<?php /*if (isset($_POST["id_corriere"]))*/ ?>
+	</th>
 	<td></td>
 	<td><span class="woocommerce-Price-amount amount"><?php echo getSpedizione();?><span class="woocommerce-Price-currencySymbol">&euro;</span></span></td>
 </tr>

@@ -36,10 +36,17 @@ $.ajaxQueue = function( ajaxOpts ) {
 
 	// run the actual query
 	function doRequest( next ) {
-		jqXHR = $.ajax( ajaxOpts )
-			.done( dfd.resolve )
-			.fail( dfd.reject )
-			.then( next, next );
+		
+// 		setTimeout(function(){
+			
+			jqXHR = $.ajax( ajaxOpts )
+				.done( dfd.resolve )
+				.fail( dfd.reject )
+				.then( next, next );
+			
+// 		}, 5000);
+		
+		
 	}
 
 	return promise;

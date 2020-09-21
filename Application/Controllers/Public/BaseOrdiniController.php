@@ -568,6 +568,8 @@ class BaseOrdiniController extends BaseController
 		
 		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
 		
+		$elencoCorrieri = $this->m["CorrieriModel"]->elencoCorrieri();
+		
 		//imposto spedizione uguale a fatturazione
 		if (isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0)
 		{
@@ -665,6 +667,13 @@ class BaseOrdiniController extends BaseController
 		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
 		
 		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+		
+		if (isset($_POST["nazione_spedizione"]) && count($elencoCorrieri) > 0)
+		{
+			$listaCorrieriNazione = implode(",",$this->m["CorrieriModel"]->getIdsCorrieriNazione($_POST["nazione_spedizione"]));
+			
+			$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
+		}
 		
 		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario';
 		
@@ -1059,7 +1068,7 @@ class BaseOrdiniController extends BaseController
 		$this->m['OrdiniModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,registrato,newsletter,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,spedisci_dati_fatturazione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,dprovincia";
 		
 		// Elenco corrieri
-		$data['corrieri'] = $this->m["CorrieriModel"]->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("titolo")->send(false);
+		$data['corrieri'] = $elencoCorrieri;
 		
 		$defaultValues = $_SESSION;
 		
@@ -1221,12 +1230,7 @@ class BaseOrdiniController extends BaseController
 		
 		$corr = new CorrieriModel();
 		
-		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere")->inner(array("prezzi"))->where(array(
-			"OR"	=>	array(
-				"corrieri_spese.nazione"	=> $clean["nazione"],
-				"-corrieri_spese.nazione"	=> "W",
-			),
-		))->toList("corrieri.id_corriere")->send();
+		$corrieri = $corr->getIdsCorrieriNazione($clean["nazione"]);
 		
 		echo json_encode($corrieri);
 	}

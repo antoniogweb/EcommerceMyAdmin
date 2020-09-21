@@ -434,7 +434,7 @@ function getSpedizioneN()
 		$corriere = $corr->selectId((int)$_POST["id_corriere"]);
 	else
 	{
-		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("titolo")->send(false);
+		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("corrieri.id_order")->send(false);
 		
 		if (count($corrieri) > 0)
 			$corriere = $corrieri[0];

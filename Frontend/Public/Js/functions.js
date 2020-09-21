@@ -119,36 +119,68 @@ function getNazione()
 	return nazione;
 }
 
+var cercaSpeseSpedizione = true;
+
 function impostaCorrieriESpeseSpedizione()
 {
+	if (!cercaSpeseSpedizione)
+		return;
+	
 	var nazione = getNazione();
-	var id_corriere = $("[name='id_corriere']:checked").val();
 	
-// 	console.log(nazione);
+	if (nazione == "" || nazione == undefined)
+		return;
 	
-	$.ajaxQueue({
-		url: baseUrl + "/ordini/corrieri/" + nazione,
-		cache:false,
-		async: true,
-		dataType: "json",
-		success: function(content){
-			
-			if (content.indexOf(id_corriere) == -1)
-				id_corriere = content[0];
-			
-			$(".radio_corriere").css("display","none");
-			
-			for (var i=0;i<content.length;i++)
-			{
-				$(".radio_corriere.corriere_"+content[i]).css("display","block");
+	if ($(".box_corrieri").length > 0)
+	{
+		var id_corriere = $("[name='id_corriere']:checked").val();
+		
+		$.ajaxQueue({
+			url: baseUrl + "/ordini/corrieri/" + nazione,
+			cache:false,
+			async: true,
+			dataType: "json",
+			success: function(content){
 				
-				if (id_corriere == content[i])
-					$(".radio_corriere.corriere_"+content[i]).find("input").iCheck('check');
+				if (content.indexOf(id_corriere) == -1)
+					id_corriere = content[0];
+				
+				if (content.length == 0)
+				{
+					$(".radio_corriere").each(function(){
+						$(this).find("input").iCheck('uncheck');
+					});
+					
+					$(".box_corrieri").css("display","none");
+				}
+				else
+					$(".box_corrieri").css("display","block");
+				
+				$(".radio_corriere").css("display","none");
+				
+				for (var i=0;i<content.length;i++)
+				{
+					$(".radio_corriere.corriere_"+content[i]).css("display","block");
+					
+					if (id_corriere == content[i])
+					{
+						cercaSpeseSpedizione = false;
+						$(".radio_corriere.corriere_"+content[i]).find("input").iCheck('check');
+						cercaSpeseSpedizione = true;
+					}
+				}
+				
+				impostaSpeseSpedizione(id_corriere, nazione);
 			}
-			
-			impostaSpeseSpedizione(id_corriere, nazione);
-		}
-	});
+		});
+	}
+	else
+	{
+		var nazione = getNazione();
+		var id_corriere = $("[name='id_corriere']").val();
+		
+		impostaSpeseSpedizione(id_corriere, nazione);
+	}
 }
 
 function impostaCampiSpedizione(id_spedizione)
@@ -313,6 +345,8 @@ $(document).ready(function(){
 	});
 	
 	if ($("[name='id_corriere']:checked").length > 0)
+		impostaCorrieriESpeseSpedizione();
+	else if ($("[name='id_corriere'][type='hidden']").length > 0)
 		impostaCorrieriESpeseSpedizione();
 	
 	$("body").on("ifChanged", "[name='id_corriere']", function(e){

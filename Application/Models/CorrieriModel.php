@@ -28,6 +28,8 @@ class CorrieriModel extends GenericModel {
 		$this->_tables='corrieri';
 		$this->_idFields='id_corriere';
 		
+		$this->_idOrder='id_order';
+		
 		$this->_lang = 'It';
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
@@ -41,4 +43,35 @@ class CorrieriModel extends GenericModel {
         );
     }
     
+    public function getIdsCorrieriNazione($nazione)
+	{
+		$clean["nazione"] = sanitizeAll($nazione);
+		
+		return $this->clear()->select("distinct corrieri.id_corriere")->inner(array("prezzi"))->where(array(
+			"OR"	=>	array(
+				"corrieri_spese.nazione"	=> $clean["nazione"],
+				"-corrieri_spese.nazione"	=> "W",
+			),
+		))->toList("corrieri.id_corriere")->orderBy("corrieri.id_corriere")->send();
+	}
+	
+	public function elencoCorrieri()
+	{
+		return $this->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("corrieri.id_order")->send(false);
+	}
+	
+	public function spedibile($idCorriere, $nazione)
+	{
+		$elencoCorrieri = $this->elencoCorrieri();
+		
+		if (count($elencoCorrieri) > 0)
+		{
+			$idsCorrieri = $this->getIdsCorrieriNazione($nazione);
+			
+			if (in_array($idCorriere, $idsCorrieri))
+				return true;
+		}
+		
+		return true;
+	}
 }

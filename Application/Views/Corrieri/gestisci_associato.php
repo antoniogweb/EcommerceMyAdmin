@@ -20,10 +20,10 @@ foreach ($elencoNazioniCorrieri as $codice) {
 <?php } ?>
 
 <p>
-	<a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/corrierispese/form/insert";?>?partial=Y&nobuttons=Y&id_corriere=<?php echo $id;?>">Aggiungi NAZIONE</a>
+	<a class="iframe btn btn-primary" href="<?php echo $this->baseUrl."/corrierispese/form/insert";?>?partial=Y&nobuttons=Y&id_corriere=<?php echo $id;?>">Aggiungi NAZIONE</a>
 	
 	<?php if ($nazioneTrovata) { ?>
-	<a class="iframe btn btn-primary" href="<?php echo $this->baseUrl."/corrierispese/form/insert";?>?partial=Y&nobuttons=Y&id_corriere=<?php echo $id;?>&nazione=<?php echo $this->viewArgs["nazione"];?>">Aggiungi scaglione <?php echo strtoupper(findTitoloDaCodice($this->viewArgs["nazione"], "Tutte le nazioni"));?></a>
+	<a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/corrierispese/form/insert";?>?partial=Y&nobuttons=Y&id_corriere=<?php echo $id;?>&nazione=<?php echo $this->viewArgs["nazione"];?>">Aggiungi scaglione <?php echo strtoupper(findTitoloDaCodice($this->viewArgs["nazione"], "Tutte le nazioni"));?></a>
 	<?php } ?>
 </p>
 
