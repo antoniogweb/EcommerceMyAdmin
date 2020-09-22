@@ -1,6 +1,6 @@
 $ = jQuery;
 
-function updateForm()
+function updateFormTipoCliente()
 {
 	var tipo_cliente = $(".radio_cliente:checked").val();
 	
@@ -29,6 +29,11 @@ function updateForm()
 		$(".blocco_fatturazione_elettronica").css("display","block");
 	}
 	
+	impostaCorrieriESpeseSpedizione();
+}
+
+function updateFormRegistrato()
+{
 	var registrato = $(".radio_registrato:checked").val();
 	
 	if (registrato == "Y")
@@ -117,6 +122,8 @@ function impostaSpedizioneNonLoggato(obj)
 
 function impostaSpeseSpedizione(id_corriere, nazione)
 {
+	var tipo_cliente = $(".radio_cliente:checked").val();
+	
 	$.ajaxQueue({
 		url: baseUrl + "/ordini/totale",
 		cache:false,
@@ -125,7 +132,8 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 		method: "POST",
 		data: {
 			id_corriere: id_corriere,
-			nazione_spedizione: nazione
+			nazione_spedizione: nazione,
+			tipo_cliente: tipo_cliente
 		},
 		success: function(content){
 			
@@ -264,17 +272,18 @@ $(document).ready(function(){
 		
 	});
 	
-	updateForm();
-
-	$('input').on('ifChanged', function(event){
+	updateFormRegistrato();
+	updateFormTipoCliente();
+	
+	$('[name="tipo_cliente"]').on('ifChanged', function(event){
 		
-		updateForm();
+		updateFormTipoCliente();
 		
 	});
 	
 	$('.radio_registrato').on('ifChanged', function(event){
 		
-		updateForm();
+		updateFormRegistrato();
 		
 	});
 	

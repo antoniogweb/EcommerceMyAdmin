@@ -487,6 +487,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function index()
 	{
+		IvaModel::getAliquotaEstera();
+		
 		session_start();
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
@@ -743,6 +745,8 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["codice_promozione"] = User::$coupon;
 						$this->m['OrdiniModel']->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
 						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
+						
+						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
 						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
 						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;
@@ -1214,7 +1218,12 @@ class BaseOrdiniController extends BaseController
 	
 	public function totale()
 	{
+		IvaModel::getAliquotaEstera();
+		
 		$this->clean();
+		
+		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		$this->append($data);
 		
 		$this->load("totale_merce");
 	}

@@ -462,6 +462,13 @@ class OrdiniModel extends FormModel {
 		{
 			$r->values = $p["cart"];
 			$r->values["id_o"] = $clean["id_o"];
+			
+			if (isset(IvaModel::$aliquotaEstera))
+				$r->values["iva"] = IvaModel::$aliquotaEstera;
+			
+			if (isset(IvaModel::$idIvaEstera))
+				$r->values["id_iva"] = IvaModel::$idIvaEstera;
+			
 			$r->delFields("id_cart");
 			$r->delFields("id_order");
 			

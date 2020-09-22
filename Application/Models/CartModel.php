@@ -118,6 +118,8 @@ class CartModel extends Model_Tree {
 	// Totale iva dal carrello
 	public function iva()
 	{
+		IvaModel::getAliquotaEstera();
+		
 		$sconto = 0;
 		if (hasActiveCoupon())
 		{
@@ -157,19 +159,31 @@ class CartModel extends Model_Tree {
 				
 				$subtotale = number_format($prezzo * $r["cart"]["quantity"],2,".","");
 				
-				if (isset($arraySubtotale[$r["cart"]["iva"]]))
-					$arraySubtotale[$r["cart"]["iva"]] += $subtotale;
-				else
-					$arraySubtotale[$r["cart"]["iva"]] = $subtotale;
+				$ivaRiga = $r["cart"]["iva"];
 				
-				$iva = $subtotale*($r["cart"]["iva"]/100);
+				// Controllo l'aliquota estera
+				if (isset(IvaModel::$aliquotaEstera))
+					$ivaRiga = IvaModel::$aliquotaEstera;
+				
+				if (isset($arraySubtotale[$ivaRiga]))
+					$arraySubtotale[$ivaRiga] += $subtotale;
+				else
+					$arraySubtotale[$ivaRiga] = $subtotale;
+				
+				$iva = $subtotale*($ivaRiga/100);
 				$total += number_format($iva,2,".","");
 			}
 		}
 		
 // 		$ivaSped = number_format(Parametri::$iva,2,".","");
 		
-		$ivaSped = number_format($this->getMaxIva(),2,".","");
+		$ivaSped = self::getMaxIva();
+		
+		// Controllo l'aliquota estera
+		if (isset(IvaModel::$aliquotaEstera))
+			$ivaSped = IvaModel::$aliquotaEstera;
+		
+		$ivaSped = number_format($ivaSped,2,".","");
 		
 		if (isset($arraySubtotale[$ivaSped]))
 			$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),2,".","");
@@ -193,14 +207,39 @@ class CartModel extends Model_Tree {
 		return $total;
 	}
 	
-	public function getMaxIva()
+	public static function getIdIvaSpedizione()
 	{
+		$idIvaSped = self::getMaxIva("id_iva");
+		
+		// Controllo l'aliquota estera
+		if (isset(IvaModel::$idIvaEstera))
+			$idIvaSped = IvaModel::$idIvaEstera;
+		
+		return $idIvaSped;
+	}
+	
+	public static function getMaxIva($field = "iva")
+	{
+		$c = new CartModel();
+		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$iva = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->getMax("iva");
+		$record = $c->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("iva desc")->limit(1)->record();
 		
-		if ($iva)
-			return $iva;
+		if (!empty($record))
+			return $record[$field];
+		
+		$i = new IvaModel();
+		
+		$record = $i->clear()->orderBy("id_iva")->limit(1)->record();
+		
+		if (!empty($record))
+		{
+			if ($field == "iva")
+				$field = "valore";
+			
+			return $record[$field];
+		}
 		
 		return Parametri::$iva;
 	}

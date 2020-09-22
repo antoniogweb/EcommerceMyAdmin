@@ -24,6 +24,17 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class IvaModel extends GenericModel
 {
+	public static $idIvaEstera = null;
+	public static $aliquotaEstera = null;
+	public static $titoloAliquotaEstera = null;
+	
+	public static $tipo = array(
+		""		=>	"--",
+		"B2BUE"	=>	"Acquisto B2B UE",
+		"B2BEX"	=>	"Acquisto B2B EXTRA UE",
+		"B2CEX"	=>	"Acquisto B2C EXTRA UE",
+	);
+	
 	public function __construct() {
 		$this->_tables = 'iva';
 		$this->_idFields = 'id_iva';
@@ -39,6 +50,22 @@ class IvaModel extends GenericModel
         );
     }
     
+    public function setFormStruct()
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'tipo'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipologia estero",
+					"options"	=>	self::$tipo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
     public function getValore($id)
     {
 		$record = $this->selectId((int)$id);
@@ -47,5 +74,42 @@ class IvaModel extends GenericModel
 			return $record["valore"];
 		
 		return 0;
+    }
+    
+    public static function getAliquotaEstera()
+    {
+		if (isset($_POST["nazione_spedizione"]) && isset($_POST["tipo_cliente"]) && $_POST["nazione_spedizione"] != v("nazione_default"))
+		{
+			$tipo = "B2B";
+			
+			if ($_POST["tipo_cliente"] == "privato")
+				$tipo = "B2C";
+			
+			$n = new NazioniModel();
+			
+			$nazione = $n->clear()->where(array(
+				"iso_country_code"	=>	sanitizeAll($_POST["nazione_spedizione"]),
+			))->record();
+			
+			if (!empty($nazione))
+			{
+				$chiaveIva = $tipo.$nazione["tipo"];
+// 				echo $chiaveIva;
+				$im = new IvaModel();
+				
+				$ivaEstera = $im->clear()->where(array(
+					"tipo"	=>	sanitizeAll($chiaveIva),
+				))->record();
+				
+				if (!empty($ivaEstera))
+				{
+					self::$idIvaEstera = $ivaEstera["id_iva"];
+					self::$aliquotaEstera = $ivaEstera["valore"];
+					self::$titoloAliquotaEstera = $ivaEstera["titolo"];
+				}
+			}
+		}
+		
+		return null;
     }
 }
