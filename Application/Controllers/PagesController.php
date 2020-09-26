@@ -1610,7 +1610,7 @@ class PagesController extends BaseController {
 						$extArray = explode('.', $_FILES['Filedata']['name']);
 						$ext = strtolower(end($extArray));
 						
-						$targetPath = $this->parentRootFolder."/".$cartellaImmagini;
+						$targetPath = str_replace("/admin","",LIBRARY)."/".$cartellaImmagini;
 						
 						array_pop($extArray);
 						
