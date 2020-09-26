@@ -94,7 +94,7 @@ class IvaModel extends GenericModel
 			if (!empty($nazione))
 			{
 				$chiaveIva = $tipo.$nazione["tipo"];
-// 				echo $chiaveIva;
+				
 				$im = new IvaModel();
 				
 				$ivaEstera = $im->clear()->where(array(

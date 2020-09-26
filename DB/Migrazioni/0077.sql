@@ -1,1 +1,1 @@
-ALTER TABLE `nazioni` add latitudine char(10) not null default '';
+ALTER TABLE `nazioni` add latitudine char(15) not null default '';

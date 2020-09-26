@@ -92,4 +92,31 @@ class NazioniController extends BaseController {
 		
 		parent::form($queryType, $id);
 	}
+	
+// 	public function importa()
+// 	{
+// 		$this->clean();
+// 		
+// 		$n = new NazioniModel();
+// 		
+// 		if (($handle = fopen(ROOT."/nazioni.csv", "r")) !== FALSE)
+// 		{
+// 			while (($riga = fgetcsv($handle, 1000, ";")) !== FALSE)
+// 			{
+// 				$idN = (int)$n->clear()->where(array(
+// 					"iso_country_code"	=>	sanitizeAll($riga[0]),
+// 				))->field("id_nazione");
+// 				
+// 				if ($idN)
+// 				{
+// 					$n->setValues(array(
+// 						"latitudine"	=>	$riga[1],
+// 						"longitudine"	=>	$riga[2],
+// 					));
+// 					
+// 					$n->update($idN);
+// 				}
+// 			}
+// 		}
+// 	}
 }
