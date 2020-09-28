@@ -27,6 +27,7 @@ class NazioniModel extends GenericModel
 	public static $elenco = null;
 	
 	public static $elencoNazioni = null;
+	public static $elencoCoordinateNazioni = null;
 	
 	public static $selectTipi = array(
 		"UE"	=>	"UE",
@@ -106,6 +107,29 @@ class NazioniModel extends GenericModel
 			return $default;
 		else
 			return $codice;
+	}
+	
+	public static function findCoordinateDaCodice($codice)
+	{
+		if (!self::$elencoNazioni)
+		{
+			$nm = new NazioniModel();
+			
+			$nazioni = $nm->clear()->send(false);
+			
+			foreach ($nazioni as $n)
+			{
+				self::$elencoCoordinateNazioni[$n["iso_country_code"]] = array(
+					$n["latitudine"],
+					$n["longitudine"],
+				);
+			}
+		}
+		
+		if (isset(self::$elencoCoordinateNazioni[$codice]))
+			return self::$elencoCoordinateNazioni[$codice];
+		
+		return array();
 	}
 	
 	public function tipo($record)
