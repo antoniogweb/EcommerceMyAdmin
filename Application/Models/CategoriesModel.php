@@ -588,4 +588,59 @@ class CategoriesModel extends HierarchicalModel {
 	{
 		return $this->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c))->send();
 	}
+	
+	public static $elencoTag = null;
+	public static $elencoMarchi = null;
+	
+	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0)
+	{
+		$urlArray = array();
+		
+		if ($id_tag)
+		{
+			if (!isset(self::$elencoTag))
+			{
+				$t = new TagModel();
+				
+				$tags = $t->clear()->addJoinTraduzione()->send();
+				
+				foreach ($tags as $t)
+				{
+					self::$elencoTag[$t["tag"]["id_tag"]] = tagfield($t,"alias");
+				}
+			}
+			
+			if (isset(self::$elencoTag[$id_tag]))
+				$urlArray[] = self::$elencoTag[$id_tag];
+		}
+		
+		if ($id_marchio)
+		{
+			if (!isset(self::$elencoMarchi))
+			{
+				$t = new MarchiModel();
+				
+				$tags = $t->clear()->addJoinTraduzione()->send();
+				
+				foreach ($tags as $t)
+				{
+					self::$elencoMarchi[$t["marchi"]["id_marchio"]] = mfield($t,"alias");
+				}
+			}
+			
+			if (isset(self::$elencoMarchi[$id_marchio]))
+				$urlArray[] = self::$elencoMarchi[$id_marchio];
+		}
+		
+		if ($id_c)
+		{
+			$c = new CategoriesModel();
+			
+			Parametri::$useHtmlExtension = false;
+			$urlArray[] = $c->getUrlAlias($id_c);
+			Parametri::$useHtmlExtension = true;
+		}
+		
+		return implode("/", $urlArray).".html";
+	}
 }

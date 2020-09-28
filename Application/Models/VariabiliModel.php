@@ -61,6 +61,8 @@ class VariabiliModel extends GenericModel {
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"referenze_attive"			=>	1,
 		"blog_attivo"				=>	1,
+		"divisone_breadcrum"		=>	" » ",
+		"shop_in_alias_tag"			=>	0,
 	);
 	
 	public function __construct() {

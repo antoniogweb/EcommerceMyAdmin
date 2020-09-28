@@ -73,7 +73,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_tag"))
 		{
-			$elencoTag = $this->m["TagModel"]->clear()->addJoinTraduzione()->orderBy("tag.titolo")->send();
+			$elencoTag = $this->m["TagModel"]->clear()->addJoinTraduzione()->send();
 			$elencoTagEncoded = array();
 			foreach ($elencoTag as $tag)
 			{
@@ -90,7 +90,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_marchi"))
 		{
-			$elencoMarchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			$elencoMarchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->send();
 			$elencoMarchiEncoded = array();
 			foreach ($elencoMarchi as $marchio)
 			{
@@ -352,7 +352,7 @@ class BaseContenutiController extends BaseController
 			
 			$i++;
 		}
-		return implode(" &raquo; ", $breadcrumbArray);
+		return implode(v("divisone_breadcrum"), $breadcrumbArray);
 	}
 	
 	protected function category($id)
@@ -365,7 +365,7 @@ class BaseContenutiController extends BaseController
 		$this->setArgKeys($argKeys);
 		$this->shift(count($this->pageArgs));
 		
-		$clean['id'] = (int)$id;
+		$clean['id'] = $data["id_categoria"] = (int)$id;
 		
 		$this->checkCategory($clean["id"]);
 		

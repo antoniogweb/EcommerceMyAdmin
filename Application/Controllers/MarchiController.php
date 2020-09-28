@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class MarchiController extends BaseController
 {
-// 	public $orderBy = "id_order";
+	public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
@@ -56,11 +56,18 @@ class MarchiController extends BaseController
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("titolo")->convert()->save();
+				->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}
-
+	
+	public function ordina()
+	{
+		$this->modelName = "MarchiModel";
+		
+		parent::ordina();
+	}
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->m[$this->modelName]->setValuesFromPost('titolo,alias,descrizione,immagine,immagine_2x');

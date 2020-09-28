@@ -319,6 +319,7 @@ class Route
 		
 		'marchi,main',
 		'marchi,form',
+		'marchi,ordina',
 		
 		'combinazioni,main',
 		'combinazioni,form',
@@ -350,6 +351,7 @@ class Route
 		
 		'tag,main',
 		'tag,form',
+		'tag,ordina',
 		
 		'nazioni,main',
 		'nazioni,form',

@@ -407,7 +407,7 @@ class HierarchicalModel extends GenericModel {
 			$this->callRebuildTree();
 		}
 		
-		$this->callRebuildTree();
+// 		$this->callRebuildTree();
 	}
 	
 	public function depth($id = null)

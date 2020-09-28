@@ -87,23 +87,30 @@ class TagModel extends GenericModel {
 		}
 	}
 	
-// 	public function getUrlAlias($id)
-// 	{
-// 		$c = new CategoriesModel;
-// 		
-// 		$idShop = $c->getShopCategoryId();
-// 		
-// 		$marchio = $this->clear()->where(array(
-// 			"id_marchio"	=>	(int)$id,
-// 		))->addJoinTraduzione()->send();
-// 		
-// // 		$marchio = $this->selectId((int)$id);
-// 		
-// 		if (count($marchio) > 0)
-// 		{
-// 			return mfield($marchio[0],"alias")."/".getCategoryUrlAlias($idShop);
-// 		}
-// 		
-// 		return "";
-// 	}
+	public static function getUrlAlias($id)
+	{
+		$t = new TagModel();
+		
+		$tag = $t->clear()->where(array(
+			"id_tag"	=>	(int)$id,
+		))->addJoinTraduzione()->send();
+		
+// 		$marchio = $this->selectId((int)$id);
+		
+		if (count($tag) > 0)
+		{
+			if (v("shop_in_alias_tag"))
+			{
+				$c = new CategoriesModel;
+		
+				$idShop = $c->getShopCategoryId();
+				
+				return tagfield($tag[0],"alias")."/".getCategoryUrlAlias($idShop);
+			}
+			else
+				return tagfield($tag[0],"alias").".html";
+		}
+		
+		return "";
+	}
 }
