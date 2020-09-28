@@ -276,11 +276,11 @@ class GenericModel extends Model_Tree {
 					
 					if (!isset($params["type"]) or strcmp(strtolower($params["type"]),"image") === 0)
 					{
-						$wrapHtml = "<div class='thumb box_immagine_upload'><a target='_blank' href='".$href."'><img src='".$src."'></a><a data-field='$field' class='elimina_allegato' title='cancella documento' href=''><img src='".Domain::$name."/Public/Img/Icons/elementary_2_5/delete.png' /></a></div>";
+						$wrapHtml = "<div class='thumb box_immagine_upload'><a target='_blank' href='".$href."'><img src='".$src."'></a><a data-field='$field' class='elimina_allegato' title='cancella documento' href=''><img src='".Url::getRoot()."Public/Img/Icons/elementary_2_5/delete.png' /></a></div>";
 					}
 					else
 					{
-						$wrapHtml = "<div class='file box_immagine_upload'><span class='file_container'><a target='_blank' href='".$href."'>$value</a></span><a data-field='$field' class='elimina_allegato' title='cancella immagine' href=''><img src='".Domain::$name."/Public/Img/Icons/elementary_2_5/delete.png' /></a></div>";
+						$wrapHtml = "<div class='file box_immagine_upload'><span class='file_container'><a target='_blank' href='".$href."'>$value</a></span><a data-field='$field' class='elimina_allegato' title='cancella immagine' href=''><img src='".Url::getRoot()."Public/Img/Icons/elementary_2_5/delete.png' /></a></div>";
 					}
 				}
 				

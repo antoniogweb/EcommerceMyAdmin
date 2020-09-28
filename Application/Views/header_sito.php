@@ -43,6 +43,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/home/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 				</ul>
 			</li>-->
+			<?php if (v("blog_attivo")) { ?>
 			<li class="<?php echo $tm["blog"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-folder-open"></i>
@@ -55,11 +56,13 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/blogcat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
 				</ul>
 			</li>
+			<?php } ?>
 			<li class="<?php echo $tm["pagine"][0];?>">
 				<a href="<?php echo $this->baseUrl."/pagine/main";?>">
 					<i class="fa fa-folder-open"></i> <span>Pagine</span>
 				</a>
             </li>
+            <?php if (v("referenze_attive")) { ?>
             <li class="<?php echo $tm["referenze"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-folder-open"></i>
@@ -70,6 +73,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/referenze/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 				</ul>
 			</li>
+			<?php } ?>
 			<?php if (v("team_attivo")) { ?>
 			<li class="<?php echo $tm["team"][0];?> treeview">
 				<a href="#">
