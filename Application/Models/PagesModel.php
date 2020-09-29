@@ -1469,7 +1469,7 @@ class PagesModel extends GenericModel {
 			if (count($resValoriAttributi) > 0)
 			{
 				if ($resValoriAttributi[0]["attributi"]["tipo"] == "TENDINA")
-					$temp = array("0" => "-- ".gtext("seleziona", true)." --");
+					$temp = array("0" => $name);
 				else
 				{
 					$temp = array();
@@ -1479,7 +1479,7 @@ class PagesModel extends GenericModel {
 			
 			foreach ($resValoriAttributi as $rva)
 			{
-				$arrayCombValori[$rva["combinazioni"][$c]] = $radio ? "<span class='variante_radio_valore'>".avfield($rva, "titolo")."</span>" : avfield($rva, "titolo");
+				$arrayCombValori[$rva["combinazioni"][$c]] = $radio ? "<span class='variante_radio_valore'>".avfield($rva, "titolo")."</span>" : $name.": ".avfield($rva, "titolo");
 			}
 			
 			$lista_valori_attributi[$c] = $temp + $arrayCombValori;
