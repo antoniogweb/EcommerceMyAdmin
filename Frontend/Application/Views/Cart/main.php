@@ -49,7 +49,7 @@
 															<?php if (!$p["cart"]["id_p"]) { ?>
 															</a>
 															<?php } ?>
-															<?php if (strcmp($p["cart"]["id_c"],0) !== 0 && $p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
+															<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
 															
 															<br /><a href="<?php echo $this->baseUrl."/".getUrlAlias($lastParent["cart"]["id_page"])."?id_cart=".$lastParent["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
 															
