@@ -1434,6 +1434,31 @@ class PagesModel extends GenericModel {
 		))->orderBy("documenti.id_order")->send();
 	}
 	
+	public static function getAttributoDaCol($idPage, $col)
+	{
+		$pa = new PagesattributiModel();
+		
+		$res = $pa->clear()->select("attributi.*")->inner(array("attributo"))->where(array(
+			"id_page"	=>	(int)$idPage,
+			"colonna"	=>	sanitizeAll($col),
+		))->send();
+		
+		if (count($res) > 0)
+			return $res[0]["attributi"];
+		
+		return array();
+	}
+	
+	public static function isRadioAttributo($idPage, $col)
+	{
+		$attributo = self::getAttributoDaCol($idPage, $col);
+		
+		if (!empty($attributo) && $attributo["tipo"] == "RADIO")
+			return true;
+		
+		return false;
+	}
+	
 	public function selectAttributi($id_page)
 	{
 		$clean['id'] = (int)$id_page;
@@ -1468,13 +1493,15 @@ class PagesModel extends GenericModel {
 			
 			if (count($resValoriAttributi) > 0)
 			{
+				$temp = array();
+				
 				if ($resValoriAttributi[0]["attributi"]["tipo"] == "TENDINA")
-					$temp = array("0" => $name);
-				else
 				{
-					$temp = array();
-					$radio = true;
+					if (!v("primo_attributo_selezionato"))
+						$temp = array("0" => $name);
 				}
+				else
+					$radio = true;
 			}
 			
 			foreach ($resValoriAttributi as $rva)

@@ -54,9 +54,12 @@ class Helper_Pages extends Helper_Html
 	public static $staticDividerPre = "";
 	public static $staticDividerPost = "";
 	public static $staticShowDivider = "none";
+	public static $showOnlyNext = false;
 	
 	public static $staticShowFirstLast = false; //if to show the first and last element
 	public static $staticFirstLastDividerHtml = ""; //html before the current pagination and the first/last element
+	public static $staticPreviousString = "";
+	public static $staticNextString = "";
 	
 	//instance of Lang_{language}_Generic
 	public $strings = null;
@@ -145,24 +148,34 @@ class Helper_Pages extends Helper_Html
 	//return the page list string
 	public function render($pageNumber,$numberOfPages)
 	{
+		if (self::$staticPreviousString)
+			$this->previousString = self::$staticPreviousString;
+		
+		if (self::$staticNextString)
+			$this->nextString = self::$staticNextString;
+		
 		$pageList = null;
-		if ($this->showPrev)
-		{
-			$pageList .= $this->pageLink($this->_currentPage-1,$this->previousString);
-		}
 		
-		if ($this->showFirstLast and $pageNumber > 1 and ($this->_numbOfPages > 1))
+		if (!self::$showOnlyNext)
 		{
-			$pageList .= $this->pageLink("1","1");
-			$pageList .= $this->firstLastDividerHtml;
-		}
-		
-		$pageList .= $this->recursiveLink($pageNumber,$numberOfPages);
-		
-		if ($this->showFirstLast and ($pageNumber + $numberOfPages) <= $this->_numbOfPages)
-		{
-			$pageList .= $this->firstLastDividerHtml;
-			$pageList .= $this->pageLink($this->_numbOfPages,$this->_numbOfPages);
+			if ($this->showPrev)
+			{
+				$pageList .= $this->pageLink($this->_currentPage-1,$this->previousString);
+			}
+			
+			if ($this->showFirstLast and $pageNumber > 1 and ($this->_numbOfPages > 1))
+			{
+				$pageList .= $this->pageLink("1","1");
+				$pageList .= $this->firstLastDividerHtml;
+			}
+			
+			$pageList .= $this->recursiveLink($pageNumber,$numberOfPages);
+			
+			if ($this->showFirstLast and ($pageNumber + $numberOfPages) <= $this->_numbOfPages)
+			{
+				$pageList .= $this->firstLastDividerHtml;
+				$pageList .= $this->pageLink($this->_numbOfPages,$this->_numbOfPages);
+			}
 		}
 		
 		if ($this->showNext)

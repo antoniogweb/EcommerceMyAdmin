@@ -66,7 +66,18 @@ class CombinazioniModel extends GenericModel {
 			$jsonArray = array();
 			foreach ($colonne as $col => $name)
 			{
-				$testoAttributo = "<span class='stringa_attributi_title'>".$name.": </span><span class='stringa_attributi_value'><b>".$attr->getName($res[0]["combinazioni"][$col])."</b></span> ";
+				$valoreAttributo = $attr->getName($res[0]["combinazioni"][$col]);
+				
+				$template = v("template_attributo");
+				
+				if ($template)
+				{
+					$testoAttributo = str_replace("[NOME]",$name,$template);
+					$testoAttributo = str_replace("[VALORE]",$valoreAttributo,$testoAttributo);
+				}
+				else
+					$testoAttributo = "<span class='stringa_attributi_title'>".$name.": </span><span class='stringa_attributi_value'><b>".$valoreAttributo."</b></span> ";
+				
 				$stringArray[] = $testoAttributo;
 				
 				$jsonArray[] = array(
