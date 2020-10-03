@@ -106,29 +106,29 @@
 
 		
 	<form class="cart" action="<?php echo $this->baseUrl."/".$urlAlias;?>" method="post" enctype='multipart/form-data'>
-	<div class="quantity">
-		<label class="screen-reader-text" for="quantity_5d9af32c655fa"><?php echo gtext("Quantità"); ?></label>
-		<input
-			type="number"
-			id="quantity_5d9af32c655fa"
-			class="input-text qty text quantita_input"
-			step="1"
-			min="1"
-			max=""
-			name="quantita"
-			value="<?php echo getQtaDaCarrello();?>"
-			title="Quantità"
-			size="4"
-			inputmode="numeric" />
-	</div>
+		<div class="quantity">
+			<label class="screen-reader-text" for="quantity_5d9af32c655fa"><?php echo gtext("Quantità"); ?></label>
+			<input
+				type="number"
+				id="quantity_5d9af32c655fa"
+				class="input-text qty text quantita_input"
+				step="1"
+				min="1"
+				max=""
+				name="quantita"
+				value="<?php echo getQtaDaCarrello();?>"
+				title="Quantità"
+				size="4"
+				inputmode="numeric" />
+		</div>
 
-	<button type="submit" name="add-to-cart" id-cart="<?php echo isset($_GET["id_cart"]) ? (int)$_GET["id_cart"] : 0;?>" rel="<?php echo $p["pages"]["id_page"];?>"  class="aggiungi_al_carrello pulsante_carrello single_add_to_cart_button button alt"><span>
-		<?php if (idCarrelloEsistente()) { ?>
-		<?php echo gtext("Modifica prodotto nel carrello", false); ?>
-		<?php } else { ?>
-		<?php echo gtext("Aggiungi al carrello", false); ?>
-		<?php } ?>
-		</span></button>
+		<button type="submit" name="add-to-cart" id-cart="<?php echo isset($_GET["id_cart"]) ? (int)$_GET["id_cart"] : 0;?>" rel="<?php echo $p["pages"]["id_page"];?>"  class="aggiungi_al_carrello pulsante_carrello single_add_to_cart_button button alt"><span>
+			<?php if (idCarrelloEsistente()) { ?>
+			<?php echo gtext("Modifica prodotto nel carrello", false); ?>
+			<?php } else { ?>
+			<?php echo gtext("Aggiungi al carrello", false); ?>
+			<?php } ?>
+			</span></button>
 	</form>
 
 	<div class="yith-wcwl-add-to-wishlist add-to-wishlist-1118 blocco_wishlist">
