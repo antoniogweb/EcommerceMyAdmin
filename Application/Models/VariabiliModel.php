@@ -64,6 +64,10 @@ class VariabiliModel extends GenericModel {
 		"divisone_breadcrum"		=>	" » ",
 		"shop_in_alias_tag"			=>	0,
 		"menu_class_prefix"			=>	"",
+		"primo_attributo_selezionato"	=>	0,
+		"prodotti_per_pagina"		=>	999999,
+		"template_attributo"		=>	"",
+		"template_personalizzazione"	=>	"",
 	);
 	
 	public function __construct() {

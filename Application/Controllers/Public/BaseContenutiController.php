@@ -54,7 +54,7 @@ class BaseContenutiController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString);
 		
-		if (Output::$html)
+		if (Output::$html && !isset($_GET["vista_parziale"]))
 		{
 			$this->load('header');
 			$this->load('footer','last');
@@ -374,7 +374,7 @@ class BaseContenutiController extends BaseController
 		
 		if ($firstSection == "prodotti")
 		{
-			$this->elementsPerPage = 999999;
+			$this->elementsPerPage = $data["elementsPerPage"] = v("prodotti_per_pagina");
 		}
 		
 		$data["arrayLingue"] = array();
@@ -498,6 +498,8 @@ class BaseContenutiController extends BaseController
 // 		print_r($data["pages"]);
 // 		die();
 // 		$rowNumber = $data["rowNumber"] = count($data["pages"]);
+		
+		$data["linkAltri"] = null;
 		
 		if ($rowNumber > $this->elementsPerPage)
 		{

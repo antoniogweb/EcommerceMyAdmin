@@ -57,7 +57,16 @@ class PersonalizzazioniModel extends GenericModel
 					
 					if (!empty($personalizzazione))
 					{
-						$testo = "<span class='stringa_personalizzazioni_title'>".persfield($personalizzazione, "titolo").": </span><span class='stringa_personalizzazioni_value'><b>".sanitizeHtml($str["val"])."</b></span> ";
+						$template = v("template_personalizzazione");
+						
+						if ($template)
+						{
+							$testo = str_replace("[NOME]",persfield($personalizzazione, "titolo"),$template);
+							$testo = str_replace("[VALORE]",sanitizeHtml($str["val"]),$testo);
+						}
+						else
+							$testo = "<span class='stringa_personalizzazioni_title'>".persfield($personalizzazione, "titolo").": </span><span class='stringa_personalizzazioni_value'><b>".sanitizeHtml($str["val"])."</b></span> ";
+						
 						$stringArray[] = $testo;
 				
 						$jsonArray[] = array(
