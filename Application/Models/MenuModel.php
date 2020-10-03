@@ -260,7 +260,7 @@ class MenuModel extends HierarchicalModel {
 					$target = strcmp($node["node"]["link_to"],"esterno") === 0 ? "target='_blank'" : null;
 					
 					if ($node["node"]["link_to"] != "custom")
-						$menuHtml .= "<li class='$hasChildClass menu-item li_menu_level li_menu_level_".$depth." ".$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."</a></li>";
+						$menuHtml .= "<li class='$hasChildClass menu-item li_menu_level li_menu_level_".$depth." ".v("menu_class_prefix").$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."</a></li>";
 					else
 					{
 						ob_start();

@@ -63,6 +63,7 @@ class VariabiliModel extends GenericModel {
 		"blog_attivo"				=>	1,
 		"divisone_breadcrum"		=>	" » ",
 		"shop_in_alias_tag"			=>	0,
+		"menu_class_prefix"			=>	"",
 	);
 	
 	public function __construct() {

@@ -127,7 +127,7 @@
 							</div>
 						</div>
 					</div>
-					<?php if (v("accessori_in_prodotti")) { ?>
+					<?php if (v("accessori_in_prodotti") && v("ecommerce_attivo")) { ?>
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">

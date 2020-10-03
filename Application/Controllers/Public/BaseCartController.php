@@ -46,7 +46,7 @@ class BaseCartController extends BaseController
 	{
 		$data["pageView"] = sanitizeAll($pageView);
 		
-		$data["headerClass"] = "woocommerce-account";
+		$data["headerClass"] = "";
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
@@ -244,7 +244,7 @@ class BaseCartController extends BaseController
 		
 		$this->clean();
 		
-		if ($this->m["CartModel"]->delete($clean["id_cart"]))
+		if ($id_cart && $this->m["CartModel"]->delete($clean["id_cart"]))
 		{
 			$result = "OK";
 		}
