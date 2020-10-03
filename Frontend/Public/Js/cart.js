@@ -555,7 +555,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			id_cart = id_cart_pulsante;
 	}
 	
-	if ($(".accessorio_principale .id_combinazione").length > 0)
+	if (!principale.hasClass("aggiungi_al_carrello_semplice") && $(".accessorio_principale .id_combinazione").length > 0)
 		id_c = $(".accessorio_principale .id_combinazione").text();
 	
 	if (accessorio != undefined)
