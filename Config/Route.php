@@ -356,6 +356,9 @@ class Route
 		'nazioni,main',
 		'nazioni,form',
 // 		'nazioni,importa',
+
+		'fasceprezzo,main',
+		'fasceprezzo,form',
 	);
 	
 	//it can be 'yes' or 'no'

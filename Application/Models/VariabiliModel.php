@@ -69,6 +69,8 @@ class VariabiliModel extends GenericModel {
 		"template_attributo"		=>	"",
 		"template_personalizzazione"	=>	"",
 		"usa_https"					=>	0,
+		"codice_cron"				=>	"",
+		"mostra_fasce_prezzo"		=>	0,
 	);
 	
 	public function __construct() {

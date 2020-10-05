@@ -32,7 +32,7 @@ class CronController extends Controller {
 	
 	public function migrazioni($c = "")
 	{
-		if (is_string($c) && $c == "23489sdfmn60sdnbw46zxnbf7834htfg")
+		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
 			if (@!is_dir(ROOT.'/Logs'))
 			{

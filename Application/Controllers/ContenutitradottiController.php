@@ -67,7 +67,7 @@ class ContenutitradottiController extends BaseController
 			$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
 		else if ($section == "-car-")
 			$fields = 'titolo';
-		else if ($section == "-cv-" || $section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni")
+		else if ($section == "-cv-" || $section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni" || $section == "fasce_prezzo")
 			$fields = 'titolo';
 		else if ($section == "-marchio-")
 			$fields = 'titolo,alias,description';

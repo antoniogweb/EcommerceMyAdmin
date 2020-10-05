@@ -521,6 +521,9 @@ class BaseContenutiController extends BaseController
 		// Estraggo le fasce
 		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti(0, $clean['id'], $this);
 		
+		// Estraggo le fasce di pre3zzo
+		$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
+		
 		$pagineConDecode = array();
 		
 		if (Output::$json)
