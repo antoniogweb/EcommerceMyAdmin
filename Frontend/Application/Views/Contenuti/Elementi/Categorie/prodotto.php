@@ -18,11 +18,11 @@ $hasCombinations = hasCombinations($idPr);
 			<div class="product-caption">
 				<div class="shop-action blocco_wishlist">
 					<div class="yith-wcwl-add-to-wishlist add-to-wishlist-1192">
-						<div class="not_in_wishlist  yith-wcwl-add-button show" style="display:<?php if (WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>none<?php } ?>;">
+						<div class="not_in_wishlist  yith-wcwl-add-button show" style="<?php if (WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>display:none<?php } ?>;">
 							<a title='<?php echo gtext("Aggiungi alla lista dei desideri", false);?>' href="<?php echo $this->baseUrl."/wishlist/aggiungi/".$p["pages"]["id_page"];?>" rel="nofollow" data-product-id="1192" data-product-type="simple" class=" azione_wishlist"></a>
 							<img src="<?php echo $this->baseUrlSrc."/Public/Tema/"?>/plugins/yith-woocommerce-wishlist/assets/images/wpspin_light.gif" class="ajax-loading" alt="loading" width="16" height="16" style="visibility:hidden">
 						</div>
-						<div class="in_wishlist yith-wcwl-wishlistaddedbrowse hide" style="display:<?php if (!WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>none<?php } ?>;">
+						<div class="in_wishlist yith-wcwl-wishlistaddedbrowse hide" style="<?php if (!WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>display:none<?php } ?>;">
 							<span class="feedback"><?php echo gtext("Articolo aggiunto!");?></span>
 							<a class=" azione_wishlist" title='<?php echo gtext("Elimina dalla lista dei desideri", false);?>' href="<?php echo $this->baseUrl."/wishlist/elimina/".$p["pages"]["id_page"];?>" rel="nofollow"></a>
 							<img src="<?php echo $this->baseUrlSrc."/Public/Tema/"?>/plugins/yith-woocommerce-wishlist/assets/images/wpspin_light.gif" class="ajax-loading" alt="loading" width="16" height="16" style="visibility:hidden">

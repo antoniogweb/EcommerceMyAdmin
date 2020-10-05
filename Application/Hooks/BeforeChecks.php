@@ -11,6 +11,11 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //you can access the whole set of classes and functions of EasyGiant
 
+VariabiliModel::ottieniVariabili();
+
+if (v("usa_https"))
+	Params::$useHttps = true;
+
 require(LIBRARY."/External/mobile_detect.php");
 
 $detect = new Mobile_Detect();
