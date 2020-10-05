@@ -163,7 +163,6 @@ class BaseRiservataController extends BaseController
 		{
 			setcookie("ok_cookie","OK",(time()-3600),"/");
 			$this->redirect("riservata/privacy?ok_no_cookies");
-			
 		}
 		
 		if (isset($_POST["cancella"]))

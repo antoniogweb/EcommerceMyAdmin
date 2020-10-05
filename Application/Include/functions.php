@@ -865,7 +865,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 	{
 		$clean["id"] = (int)$testo["id_t"];
 		
-		$iconaEdit = User::$adminLogged ? "<span rel='".$clean["id"]."' title='modifica il testo' class='edit_blocco_testo' href='#'><img src='".Url::getFileRoot()."Public/Img/Icons/elementary_2_5/edit.png' /></span>" : null;
+		$iconaEdit = User::$adminLogged ? "<span rel='".$clean["id"]."' title='modifica il testo' class='edit_blocco_testo' href='#'><img src='".Url::getFileRoot()."admin/Public/Img/Icons/elementary_2_5/edit.png' /></span>" : null;
 		
 		$t = strcmp($tags,"") !== 0 ? strip_tags(htmlentitydecode($testo["valore"]),$tags) : htmlentitydecode($testo["valore"]);
 		
