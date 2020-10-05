@@ -189,7 +189,6 @@ class BaseController extends Controller
 		
 		// Variabili
 		$this->model('VariabiliModel');
-		VariabiliModel::ottieniVariabili();
 		
 		// Traduzioni
 		TraduzioniModel::checkTraduzioneAttiva();

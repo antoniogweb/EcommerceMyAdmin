@@ -68,6 +68,7 @@ class VariabiliModel extends GenericModel {
 		"prodotti_per_pagina"		=>	999999,
 		"template_attributo"		=>	"",
 		"template_personalizzazione"	=>	"",
+		"usa_https"					=>	0,
 	);
 	
 	public function __construct() {
