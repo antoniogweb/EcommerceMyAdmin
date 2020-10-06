@@ -71,7 +71,7 @@ class CaratteristicheController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,tipo');
 		
 		parent::form($queryType, $id);
 		

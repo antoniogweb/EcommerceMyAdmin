@@ -71,6 +71,7 @@ class VariabiliModel extends GenericModel {
 		"usa_https"					=>	0,
 		"codice_cron"				=>	"",
 		"mostra_fasce_prezzo"		=>	0,
+		"estrai_materiali"			=>	0,
 	);
 	
 	public function __construct() {

@@ -5,6 +5,8 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php echo $form["tipo"];?>
+						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 						<?php } ?>

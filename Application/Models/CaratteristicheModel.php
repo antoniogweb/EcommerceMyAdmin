@@ -61,6 +61,30 @@ class CaratteristicheModel extends GenericModel {
         );
     }
     
+    public function setFormStruct()
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'titolo'		=>	array(
+					'labelString'=>	'Titolo caratteristica',
+				),
+				'id_car'	=>	array(
+					'type'		=>	'Hidden'
+				),
+				'tipo'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	array(
+						""			=>	"--",
+						"MATERIALE"	=>	"Materiale",
+					),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
 	public function insert()
 	{
 		$res = parent::insert();

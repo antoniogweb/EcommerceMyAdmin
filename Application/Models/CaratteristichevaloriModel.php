@@ -47,6 +47,7 @@ class CaratteristichevaloriModel extends GenericModel {
 	public function relations() {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_cv', null, "CASCADE"),
+			'caratteristica' => array("BELONGS_TO", 'CaratteristicheModel', 'id_car',null,"CASCADE"),
         );
     }
     

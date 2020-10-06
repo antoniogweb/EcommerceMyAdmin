@@ -627,12 +627,14 @@ class GenericModel extends Model_Tree {
 		return array("0"=>"--") + $this->clear()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
-	public function addJoinTraduzione($lingua = null)
+	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti")
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
 		
-		$this->select("*")->left("contenuti_tradotti")->on("contenuti_tradotti.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'");
+		$strAlias = " as $alias";
+		
+		$this->select("*")->left("contenuti_tradotti $strAlias")->on("$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = '".sanitizeDb($lingua)."'");
 		
 		return $this;
 	}

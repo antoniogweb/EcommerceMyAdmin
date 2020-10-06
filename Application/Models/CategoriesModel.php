@@ -592,7 +592,7 @@ class CategoriesModel extends HierarchicalModel {
 	public static $elencoTag = null;
 	public static $elencoMarchi = null;
 	
-	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0)
+	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "")
 	{
 		$urlArray = array();
 		
@@ -641,6 +641,11 @@ class CategoriesModel extends HierarchicalModel {
 			Parametri::$useHtmlExtension = true;
 		}
 		
-		return implode("/", $urlArray).".html";
+		$url = implode("/", $urlArray).".html";
+		
+		if ($viewStatus)
+			$url .= "$viewStatus";
+		
+		return $url;
 	}
 }

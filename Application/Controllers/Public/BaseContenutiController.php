@@ -521,8 +521,17 @@ class BaseContenutiController extends BaseController
 		// Estraggo le fasce
 		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti(0, $clean['id'], $this);
 		
-		// Estraggo le fasce di pre3zzo
-		$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
+		// Estraggo le fasce di prezzo
+		if (v("mostra_fasce_prezzo"))
+			$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
+		
+		// Estraggo i materiali
+		if (v("estrai_materiali"))
+			$data["elencoMateriali"] = $this->m["CaratteristichevaloriModel"]->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
+				"caratteristiche.tipo" => "MATERIALE",
+			))->send();
+		
+// 		print_r($data["elencoMateriali"]);die();
 		
 		$pagineConDecode = array();
 		
