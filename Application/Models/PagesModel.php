@@ -89,6 +89,8 @@ class PagesModel extends GenericModel {
 			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),
 			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_page', null, "CASCADE"),
 			'personalizzazioni' => array("HAS_MANY", 'PagespersonalizzazioniModel', 'id_page', null, "CASCADE"),
+			'combinazioni' => array("HAS_MANY", 'CombinazioniModel', 'id_page', null, "CASCADE"),
+			'caratteristiche' => array("HAS_MANY", 'PagescarvalModel', 'id_page', null, "CASCADE"),
 			'tag' => array("HAS_MANY", 'PagestagModel', 'id_page', null, "CASCADE"),
 			'link' => array("HAS_MANY", 'PageslinkModel', 'id_page', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
@@ -973,12 +975,12 @@ class PagesModel extends GenericModel {
 			$attr->del(null,"id_page='".$clean["id"]."'");
 			
 			//cancello le combinazioni del prodotto
-			$comb = new CombinazioniModel();
-			$comb->del(null,"id_page='".$clean["id"]."'");
+// 			$comb = new CombinazioniModel();
+// 			$comb->del(null,"id_page='".$clean["id"]."'");
 			
 			//cancello le caratteristiche del prodotto
-			$pcv = new PagescarvalModel();
-			$pcv->del(null,"id_page='".$clean["id"]."'");
+// 			$pcv = new PagescarvalModel();
+// 			$pcv->del(null,"id_page='".$clean["id"]."'");
 			
 			//cancello gli scaglioni
 			$pcv = new ScaglioniModel();

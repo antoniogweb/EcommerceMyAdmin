@@ -455,7 +455,7 @@ class BaseContenutiController extends BaseController
 		//se tutti i prodotti figli!!
 		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
 		$catWhere = "in(".implode(",",$children).")";
-		$this->m["PagesModel"]->clear()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->where(array(
+		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
 			"in" => array("-id_c" => $children),
 			"pages.attivo"	=>	"Y",
 			"acquistabile"	=>	"Y",
