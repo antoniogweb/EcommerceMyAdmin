@@ -70,7 +70,15 @@ class TagController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,alias,attivo');
+		$fields = 'titolo,alias,attivo';
+		
+		if (v("mostra_seconda_immagine_tag"))
+			$fields .= ",immagine_2";
+		
+		if (v("mostra_colore_testo"))
+			$fields .= ",colore_testo_in_slide";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}

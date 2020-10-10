@@ -258,6 +258,20 @@ class PagesModel extends GenericModel {
 					'reverse' => 'yes',
 					"idName"	=>	"combobox1",
 				),
+				'link_id_marchio'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a marchio',
+					'options'	=>	$this->selectMarchi(),
+					'reverse' => 'yes',
+					"idName"	=>	"combobox",
+				),
+				'link_id_tag'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a tag',
+					'options'	=>	$this->selectTag(),
+					'reverse' => 'yes',
+					"idName"	=>	"combobox",
+				),
 				'codice_nazione'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Nazione',
@@ -280,7 +294,14 @@ class PagesModel extends GenericModel {
 	{
 		$m = new MarchiModel();
 		
-		return array(0 => "-- Marchio --") + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+		return array(0 => "--") + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+	}
+	
+	public function selectTag()
+	{
+		$t = new TagModel();
+		
+		return array(0 => "--") + $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
 	}
 	
 	public function getIva($idPage)

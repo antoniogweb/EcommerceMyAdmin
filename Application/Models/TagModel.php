@@ -38,6 +38,26 @@ class TagModel extends GenericModel {
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
+		$this->uploadFields = array(
+			"immagine_2"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/tag_2",
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+// 				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	300,
+					'imgHeight'		=>	300,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'no',
+				),
+			),
+		);
+		
 		parent::__construct();
 	}
 	
@@ -60,6 +80,9 @@ class TagModel extends GenericModel {
 						null,
 						"<div class='form_notice'>Indicazione del tag nell'URL (se lasciato vuoto viene creato in automatico)</div>"
 					),
+				),
+				'colore_testo_in_slide'	=>	array(
+					"className"	=>	"form-control colorpicker-element",
 				),
 			),
 			

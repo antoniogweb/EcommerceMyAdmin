@@ -30,18 +30,12 @@
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery_easygiant.js"></script>
-
-<!-- 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl?>/Public/Js/uploadify_3_2_1/uploadify.css"/> -->
-
-	<!-- Bootstrap core CSS -->
-<!--     <link href="<?php echo $this->baseUrl?>/Public/Js/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet"> -->
 	
 	<!-- 	CSS tema -->
 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/css/AdminLTE.min.css">
 	
 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
-<!-- 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/font-awesome.min.css"> -->
 	
     <!-- Custom styles for this template -->
     <link href="<?php echo $this->baseUrl?>/Public/Css/dashboard.css" rel="stylesheet">
@@ -52,6 +46,9 @@
     <script src="<?php echo $this->baseUrl?>/Public/Js/Respond-master/dest/respond.src.js"></script>
     
     <link href="<?php echo $this->baseUrl?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="<?php echo $this->baseUrl?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <script src="<?php echo $this->baseUrl?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     
     <?php if (partial()) { ?>
     <style>

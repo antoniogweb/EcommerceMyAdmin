@@ -41,6 +41,16 @@
 										<div class='col-md-4'>
 											<?php echo $form["link_id_c"];?>
 										</div>
+										<?php if (v("usa_marchi")) { ?>
+										<div class='col-md-4'>
+											<?php echo $form["link_id_marchio"];?>
+										</div>
+										<?php } ?>
+										<?php if (v("usa_tag")) { ?>
+										<div class='col-md-4'>
+											<?php echo $form["link_id_tag"];?>
+										</div>
+										<?php } ?>
 										<div class='col-md-4'>
 											<?php echo $form["url"];?>
 										</div>
@@ -109,6 +119,34 @@
 								<div class="alert-fileupload"></div>
 							</div>
 						</div>
+						
+						<?php if (v("immagine_2_in_slide")) { ?>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<?php echo gtext("Immagine 2");?>
+							</div>
+							<div class="panel-body image_panel">
+								<div class="preview_image_2"></div>
+								<?php echo $form["immagine_2"];?>
+								<div class="cancella_immagine_box_2">
+									<a title="cancella immagine" class="cancella_immagine_2" href="#"><span class="glyphicon glyphicon-remove"></span></a>
+								</div>
+								<div class="scarica_immagine_box_2">
+									<a target="_blank" title="scarica immagine" class="scarica_immagine_2" href="#"><span class="glyphicon glyphicon-download"></span></a>
+								</div>
+								<span class="btn btn-success fileinput-button">
+									<i class="fa fa-plus"></i>
+									<span>SELEZIONA IMMAGINE</span>
+									<!-- The file input field used as target for the file upload widget -->
+									<input id="userfile_2" type="file" name="Filedata">
+								</span>
+								<div style="display:none;margin-top:10px;" id="progress-2" class="progress">
+									<div class="progress-bar progress-bar-success"></div>
+								</div>
+								<div class="alert-fileupload-2"></div>
+							</div>
+						</div>
+						<?php } ?>
 					</div>
 				</div>
 			</form>

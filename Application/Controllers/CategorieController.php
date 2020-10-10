@@ -32,6 +32,12 @@ class CategorieController extends CategoriesController {
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 		
+		if (v("mostra_colore_testo"))
+			$this->queryFields .= ",colore_testo_in_slide";
+		
+		if (v("mostra_seconda_immagine_categoria_prodotti"))
+			$this->queryFields .= ",immagine_2";
+		
 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->append($data);

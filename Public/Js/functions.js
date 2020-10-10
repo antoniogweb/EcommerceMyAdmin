@@ -283,10 +283,11 @@ $(document).ready(function(){
 	
 	if ($(".formClass").length > 0)
 	{
-		$(".formClass input, .formClass select, .formClass textarea").change(function(){
+		$("body").on("change", ".formClass input, .formClass select, .formClass textarea", function(e){
+// 		$(".formClass input, .formClass select, .formClass textarea").change(function(){
 			
 			form_modificato = true;
-			
+			console.log("AAA");
 		});
 		
 		$(".nav_dettaglio a, .nav-sidebar a, .panel-title a").click(function(e){
@@ -463,19 +464,8 @@ $(document).ready(function(){
 		});
 		
 	});
-// 	setTimeout(function(){
-// 		
-// 		aggiornaAltezzaIframe();
-// 		
-// 	}, 100);
-// 	
-// 	$( "body" ).on( "click", "a", function(e){
-// 		aggiornaAltezzaIframe();
-// 	});
-// 	
-// 	$(document).ajaxSuccess(function() {
-// 		aggiornaAltezzaIframe();
-// 	});
+	
+	$('.colorpicker-element').colorpicker();
 });
 
 

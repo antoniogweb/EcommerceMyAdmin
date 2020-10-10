@@ -75,6 +75,23 @@ class CategoriesModel extends HierarchicalModel {
 					'cropImage'		=>	'no',
 				),
 			),
+			"immagine_2"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/categorie_2",
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+// 				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	300,
+					'imgHeight'		=>	300,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'no',
+				),
+			),
 		);
 		
 		parent::__construct();
@@ -112,6 +129,9 @@ class CategoriesModel extends HierarchicalModel {
 				),
 				'id_c'	=>	array(
 					'type'		=>	'Hidden'
+				),
+				'colore_testo_in_slide'	=>	array(
+					"className"	=>	"form-control colorpicker-element",
 				),
 			),
 			
@@ -647,5 +667,20 @@ class CategoriesModel extends HierarchicalModel {
 			$url .= "$viewStatus";
 		
 		return $url;
+	}
+	
+	public static function getFirstParentImage2($id)
+	{
+		$c = new CategoriesModel();
+		
+		$parents = $c->parents($id, false, false);
+		
+		rsort($parents);
+		
+		foreach ($parents as $p)
+		{
+			if ($p["categories"]["immagine_2"])
+				return $p["categories"]["immagine_2"];
+		}
 	}
 }
