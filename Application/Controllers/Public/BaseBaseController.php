@@ -373,16 +373,19 @@ class BaseBaseController extends Controller
 		
 		Lang::$current = Params::$lang;
 		
-// 		echo $clean["idShop"];
 		$data["alberoCategorieProdotti"] = $this->m["CategoriesModel"]->recursiveTree($clean["idShop"],2);
 		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
 // 		print_r($data["alberoCategorieProdottiConShop"]);die();
 		
-		$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+		if (v("usa_marchi"))
+		{
+			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+			
+			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+		}
 		
-		$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 // 		print_r($data["elencoMarchi"]);
 // 		$res = json_encode($res);
 // 		echo $res;
