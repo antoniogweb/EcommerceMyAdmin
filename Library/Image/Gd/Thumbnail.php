@@ -30,6 +30,8 @@ class Image_Gd_Thumbnail
 	private $params = array(); //parameters of the object
 	private $basePath = null; //the path of the folder inside which the images are saved
 	
+	public $textOverlay = array();
+	
 	public function __construct($basePath,$params = null)
 	{
 		$finalChar = $basePath[strlen($basePath) - 1];
@@ -387,7 +389,35 @@ class Image_Gd_Thumbnail
 			imagecolorallocate($img,200,200,200);
 			
 		}
-
+		
+		foreach ($this->textOverlay as $text)
+		{
+			if (isset($text["font"]) && isset($text["text"]) && $text["text"])
+			{
+				if (isset($text["color"]) && is_array($text["color"]) && count($text["color"]) === 3)
+					$color = imagecolorallocate($img, $text["color"][0], $text["color"][1], $text["color"][2]);
+				else
+					$color = imagecolorallocate($img, 255, 255, 255);
+				
+				$x = $text["x"];
+				
+				if ($text["x"] == "center")
+				{
+					$centerX = $width / 2;
+					
+					list($left, $bottom, $right, , , $top) = imageftbbox($text["size"], $text["angle"], $text["font"], $text["text"]);
+					
+					$left_offset = ($right - $left) / 2;
+					$x = $centerX - $left_offset;
+					
+					if (isset($text["x-offset"]))
+						$x += $text["x-offset"];
+				}
+				
+				imagettftext($img, $text["size"], $text["angle"], $x, $text["y"], $color, $text["font"], $text["text"]);
+			}
+		}
+		
 		//print the image
 		if (!isset($outputFile))
 		{
