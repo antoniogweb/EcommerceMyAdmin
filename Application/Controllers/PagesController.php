@@ -1161,6 +1161,12 @@ class PagesController extends BaseController {
 		$this->mainFields = array("titoloContenuto","tipi_contenuto.titolo","lingua","attivo");
 		$this->mainHead = "Titolo,Tipo,Lingua,Attivo";
 		
+		if (v("attiva_gruppi_contenuti"))
+		{
+			$this->mainFields[] = "accessi";
+			$this->mainHead .= ",Accessi";
+		}
+		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"contenuti/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("contenuti.*,tipi_contenuto.*")->inner(array("tipo"))->orderBy("contenuti.id_order")->where(array(
@@ -1216,6 +1222,12 @@ class PagesController extends BaseController {
 		
 		$this->mainFields = array("titoloContenuto","tipi_contenuto.titolo","lingua","attivo");
 		$this->mainHead = "Titolo,Tipo,Lingua,Attivo";
+		
+		if (v("attiva_gruppi_contenuti"))
+		{
+			$this->mainFields[] = "accessi";
+			$this->mainHead .= ",Accessi";
+		}
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"testi/".$clean['id'],'pageVariable'=>'page_fgl');
 		

@@ -31,7 +31,7 @@ class ContenutiController extends BaseController {
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 
-		$this->model("ReguserscontenutiModel");
+		$this->model("ReggroupscontenutiModel");
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
@@ -83,10 +83,10 @@ class ContenutiController extends BaseController {
 		
 		$this->mainButtons = "ldel";
 		
-		$this->modelName = "ReguserscontenutiModel";
+		$this->modelName = "ReggroupscontenutiModel";
 		
 		$this->m[$this->modelName]->setFields('id_group','sanitizeAll');
-		$this->m[$this->modelName]->values['id_user'] = $clean['id'];
+		$this->m[$this->modelName]->values['id_cont'] = $clean['id'];
 		$this->m[$this->modelName]->updateTable('insert,del');
 		
 		$this->mainFields = array("reggroups.name");
@@ -94,7 +94,7 @@ class ContenutiController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"gruppi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("reggroups_contenuti.*,reggroups.*")->inner("reggroups")->using("id_group")->orderBy("reggroups.name")->where(array("id_user"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->select("reggroups_contenuti.*,reggroups.*")->inner("reggroups")->using("id_group")->orderBy("reggroups.name")->where(array("id_cont"=>$clean['id']))->convert()->save();
 		
 		parent::main();
 		

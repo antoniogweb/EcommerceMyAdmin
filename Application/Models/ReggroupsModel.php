@@ -39,6 +39,7 @@ class ReggroupsModel extends GenericModel {
         return array(
 			'clienti' => array("HAS_MANY", 'RegusersgroupsModel', 'id_group', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'categorie' => array("HAS_MANY", 'ReggroupscategoriesModel', 'id_group', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'contenuti' => array("HAS_MANY", 'ReggroupscontenutiModel', 'id_group', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
         );
     }
 	

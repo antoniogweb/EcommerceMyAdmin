@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ReguserscontenutiModel extends GenericModel {
+class ReggroupscontenutiModel extends GenericModel {
 	
 	public function __construct() {
 		$this->_tables='reggroups_contenuti';
@@ -36,6 +36,12 @@ class ReguserscontenutiModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'gruppo' => array("BELONGS_TO", 'ReggroupsModel', 'id_group',null,"CASCADE"),
+        );
+    }
+    
 	public function insert()
 	{
 		$clean["id_cont"] = (int)$this->values["id_cont"];

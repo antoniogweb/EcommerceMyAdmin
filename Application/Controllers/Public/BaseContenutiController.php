@@ -809,7 +809,7 @@ class BaseContenutiController extends BaseController
 		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['id'], 0, $this);
 		
 		// Estraggo i contenuti generici
-		$data["contenuti"] = $this->m["ContenutiModel"]->clear()->select("contenuti.*,tipi_contenuto.*")->inner(array("tipo"))->where(array(
+		$this->m["ContenutiModel"]->clear()->select("distinct contenuti.id_cont,contenuti.*,tipi_contenuto.*")->inner(array("tipo"))->where(array(
 			"OR"	=>	array(
 				"lingua" => "tutte",
 				" lingua" => sanitizeDb(Params::$lang),
@@ -817,7 +817,12 @@ class BaseContenutiController extends BaseController
 			"tipo"	=>	"GENERICO",
 			"id_page"	=>	$clean['id'],
 			"attivo"	=>	"Y",
-		))->save()->orderBy("contenuti.id_order")->send();
+		));
+		
+		if (v("attiva_gruppi_contenuti"))
+			$this->m["ContenutiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+		
+		$data["contenuti"] = $this->m["ContenutiModel"]->save()->orderBy("contenuti.id_order")->send();
 		
 		// Estraggo i marker
 		$data["marker"] = $this->m["ContenutiModel"]->restore(true)->where(array(

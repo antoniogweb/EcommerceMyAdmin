@@ -79,7 +79,7 @@ class ContenutiModel extends GenericModel {
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'category' => array("BELONGS_TO", 'CategoriesModel', 'id_c',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipicontenutoModel', 'id_tipo',null,"CASCADE"),
-			'groups' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReguserscontenutiModel","id_cont","id_group"), "CASCADE"),
+			'gruppi' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReggroupscontenutiModel","id_cont","id_group"), "CASCADE"),
         );
     }
     
@@ -155,6 +155,20 @@ class ContenutiModel extends GenericModel {
 			return "No";
 		
 		return "Sì";
+	}
+	
+	public function accessi($record)
+	{
+		$rc = new ReggroupscontenutiModel();
+		
+		$gruppi = $rc->clear()->select("reggroups.name")->where(array(
+			"id_cont"	=>	$record["contenuti"]["id_cont"],
+		))->inner(array("gruppo"))->toList("reggroups.name")->send();
+		
+		if (count($gruppi) > 0)
+			return implode("<br />", $gruppi);
+		
+		return "-";
 	}
 	
 	public function immagini($record)
