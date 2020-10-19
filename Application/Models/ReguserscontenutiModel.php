@@ -22,24 +22,46 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ReggroupsModel extends GenericModel {
-	
-	public $campoTitolo = "name";
+class ReguserscontenutiModel extends GenericModel {
 	
 	public function __construct() {
-		$this->_tables='reggroups';
-		$this->_idFields='id_group';
+		$this->_tables='reggroups_contenuti';
+		$this->_idFields='id_group_cont';
+		
+		$this->orderBy = 'id_order desc';
 		
 		$this->_lang = 'It';
+		$this->_idOrder = 'id_order';
 		
 		parent::__construct();
 	}
 	
-	public function relations() {
-        return array(
-			'clienti' => array("HAS_MANY", 'RegusersgroupsModel', 'id_group', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
-			'categorie' => array("HAS_MANY", 'ReggroupscategoriesModel', 'id_group', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
-        );
-    }
+	public function insert()
+	{
+		$clean["id_cont"] = (int)$this->values["id_cont"];
+		$clean["id_group"] = (int)$this->values["id_group"];
+		
+		$u = new ReggroupsModel();
+		
+		$ng = $u->where(array("id_group"=>$clean["id_group"]))->rowNumber();
+		
+		if ($ng > 0)
+		{
+			$res3 = $this->clear()->where(array("id_group"=>$clean["id_group"],"id_cont"=>$clean["id_cont"]))->send();
+			
+			if (count($res3) > 0)
+			{
+				$this->notice = "<div class='alert'>Questo contenuto è già stato associato a questo gruppo</div>";
+			}
+			else
+			{
+				return parent::insert();
+			}
+		}
+		else
+		{
+			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+		}
+	}
 	
 }

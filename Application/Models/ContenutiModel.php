@@ -79,6 +79,7 @@ class ContenutiModel extends GenericModel {
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'category' => array("BELONGS_TO", 'CategoriesModel', 'id_c',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipicontenutoModel', 'id_tipo',null,"CASCADE"),
+			'groups' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReguserscontenutiModel","id_cont","id_group"), "CASCADE"),
         );
     }
     
@@ -145,7 +146,7 @@ class ContenutiModel extends GenericModel {
 	
     public function titoloContenuto($record)
 	{
-		return "<a class='iframe action_iframe' href='".Url::getRoot()."contenuti/form/update/".$record["contenuti"]["id_cont"]."?partial=Y&nobuttons=N&tipo=".$record["contenuti"]["tipo"]."'>".$record["contenuti"]["titolo"]."</a>";
+		return "<a class='iframe action_iframe' href='".Url::getRoot()."contenuti/form/update/".$record["contenuti"]["id_cont"]."?partial=Y&nobuttons=Y&tipo=".$record["contenuti"]["tipo"]."'>".$record["contenuti"]["titolo"]."</a>";
 	}
 	
 	public function attivo($record)

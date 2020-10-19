@@ -106,25 +106,10 @@ class RegusersController extends BaseController {
 		{
 			$where = array(
 				"lk" => array('n!regusers.username' => $this->viewArgs['username']),
-// 				'n!regusers.username' =>	"like '%".$this->viewArgs['username']."%'",
 			);
 
 			$this->scaffold->model->aWhere($where);
 		}
-		
-// 		if (strcmp($this->viewArgs['codice_fiscale'],'tutti') !== 0)
-// 		{
-// 			$where = array(
-// 				"OR"	=> array(
-// 					"lk" => array('n!regusers.codice_fiscale' => $this->viewArgs['codice_fiscale']),
-// 					" lk" => array('n!regusers.p_iva' => $this->viewArgs['p_iva']),
-// // 					'n!regusers.codice_fiscale'	=>	"like '%".$this->viewArgs['codice_fiscale']."%'",
-// // 					'n!regusers.p_iva' 			=>	"like '%".$this->viewArgs['codice_fiscale']."%'",
-// 					)
-// 			);
-// 
-// 			$this->scaffold->model->aWhere($where);
-// 		}
 
 		$this->scaffold->itemList->colProperties = array(
 			array(
@@ -133,7 +118,6 @@ class RegusersController extends BaseController {
 		);
 		
 		$data['scaffold'] = $this->scaffold->render();
-// 		echo $this->scaffold->model->getQuery();
 		
 		$data['menu'] = $this->scaffold->html['menu'];
 		$data['popup'] = $this->scaffold->html['popup'];

@@ -91,6 +91,10 @@ class Route
 		'regusers,gruppi',
 		'regusers,spedizioni',
 		'regusers,ordini',
+		
+		'reggroups,main',
+		'reggroups,form',
+		
 		'news,main',
 		'news,form',
 		'news,ordina',
@@ -316,6 +320,7 @@ class Route
 		
 		'contenuti,form',
 		'contenuti,thumb',
+		'contenuti,gruppi',
 		
 		'marchi,main',
 		'marchi,form',

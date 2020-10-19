@@ -10,9 +10,11 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
+			<?php if (!nobuttons()) { ?>
 			<div class='mainMenu'>
 				<?php echo $menu;?>
 			</div>
+			<?php } ?>
 			
 			<?php if (isset($stepsAssociato)) { ?>
 			<?php include($this->viewPath($stepsAssociato));?>
