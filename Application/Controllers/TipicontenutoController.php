@@ -32,6 +32,11 @@ class TipicontenutoController extends BaseController
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
+		$this->argKeys = array(
+			'titolo:sanitizeAll'=>'tutti',
+			'tipo:sanitizeAll'=>'tutti',
+		);
+		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->s["admin"]->check();
@@ -43,11 +48,12 @@ class TipicontenutoController extends BaseController
 		
 		$this->mainFields = array("tipi_contenuto.titolo", "tipi_contenuto.tipo");
 		$this->mainHead = "Titolo,Tipo";
-// 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
+		$this->filters = array(null, "titolo", array("tipo",null,array("tutti"=>"Tipo") + TipicontenutoModel::$tipi));
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
+					"lk" => array('titolo' => $this->viewArgs['titolo']),
+					"tipo"	=>	$this->viewArgs['tipo'],
 				))
 				->orderBy("titolo")->save();
 		

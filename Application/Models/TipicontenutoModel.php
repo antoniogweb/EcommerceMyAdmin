@@ -24,6 +24,12 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class TipicontenutoModel extends GenericModel
 {
+	public static $tipi = array(
+		"FASCIA"	=>	"FASCIA",
+		"GENERICO"	=>	"GENERICO",
+		"MARKER"	=>	"MARKER",
+	);
+	
 	public function __construct() {
 		$this->_tables = 'tipi_contenuto';
 		$this->_idFields = 'id_tipo';
@@ -40,7 +46,7 @@ class TipicontenutoModel extends GenericModel
 			'entries' 	=> 	array(
 				'tipo'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	"FASCIA,GENERICO,MARKER",
+					"options"	=>	self::$tipi,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),

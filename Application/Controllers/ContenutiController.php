@@ -90,7 +90,7 @@ class ContenutiController extends BaseController {
 		$this->m[$this->modelName]->updateTable('insert,del');
 		
 		$this->mainFields = array("reggroups.name");
-		$this->mainHead = "GRUPPO";
+		$this->mainHead = "Gruppo";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"gruppi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
