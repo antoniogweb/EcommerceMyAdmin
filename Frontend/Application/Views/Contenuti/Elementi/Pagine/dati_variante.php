@@ -8,6 +8,6 @@
 	<span class="prezzo_pieno_combinazione"></span>
 </div>
 <div style="display:none;" class="main_price"><?php echo setPriceReverse(calcolaPrezzoFinale($el["pages"]["id_page"], $el["pages"]["price"]));?></div>
-<div style="display:none;" class="main_immagine"><?php echo $firstImage;?></div>
+<div style="display:none;" class="main_immagine"><?php echo isset($firstImage) ? $firstImage : "";?></div>
 <div style="display:none;" class="main_codice"><?php echo $el["pages"]["codice"];?></div>
 <div style="display:none;" class="main_price_pieno"><?php echo setPriceReverse(calcolaPrezzoIvato($el["pages"]["id_page"], $el["pages"]["price"]));?></div>
