@@ -38,7 +38,7 @@ function ajaxfilemanager(field_name, url, type, win) {
 	return false;
 }
 $().ready(function() {
-	$('[name="description"],.dettagli').tinymce(tiny_editor_config);
+	$('.dettagli').tinymce(tiny_editor_config);
 });
 </script>
 <div class='row'>

@@ -46,6 +46,11 @@ class ContenutitradottiModel extends GenericModel
 				'url'		=>	array(
 					'labelString'=>	'Link libero',
 				),
+				'description'		=>	array(
+					'type'		 =>	'Textarea',
+					'labelString'=>	'Descrizione',
+					'className'		=>	'text_input form-control dettagli',
+				),
 			),
 		);
 		
