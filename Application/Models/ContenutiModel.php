@@ -32,6 +32,8 @@ class ContenutiModel extends GenericModel {
 		
 		$this->_idOrder = 'id_order';
 		
+		$this->traduzione = true;
+		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
 		$this->uploadFields = array(
@@ -76,6 +78,7 @@ class ContenutiModel extends GenericModel {
 	
 	public function relations() {
         return array(
+			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_cont', null, "CASCADE"),
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'category' => array("BELONGS_TO", 'CategoriesModel', 'id_c',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipicontenutoModel', 'id_tipo',null,"CASCADE"),
@@ -95,6 +98,7 @@ class ContenutiModel extends GenericModel {
 					"options"	=>	$this->selectLingua(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+					"labelString"	=>	"Visibile su lingua",
 				),
 				'id_tipo'	=>	array(
 					"type"	=>	"Select",

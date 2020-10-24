@@ -8,7 +8,7 @@ var tiny_editor_config = {
 	forced_root_block : '',
 	entity_encoding : "raw",
 // 			width : "910",
-			height : "300",
+// 			height : "300",
 	
 	// General options
 	theme : "advanced",

@@ -1257,7 +1257,7 @@ class PagesController extends BaseController {
 		
 		$this->mainFields[] = "lingua";
 		$this->mainFields[] = "attivo";
-		$this->mainHead .= ",Lingua,Attivo";
+		$this->mainHead .= ",Visibile su lingua,Attivo";
 		
 		if (v("attiva_gruppi_contenuti"))
 		{
@@ -1367,7 +1367,7 @@ class PagesController extends BaseController {
 		$this->showFilters = true;
 		
 		$this->mainFields = array("immagine","titoloDocumento","filename","lingua","tipi_documento.titolo");
-		$this->mainHead = "Thumb,Titolo,File,Lingua,Tipo";
+		$this->mainHead = "Thumb,Titolo,File,Visibile su lingua,Tipo";
 		
 		if (v("attiva_gruppi_documenti"))
 		{

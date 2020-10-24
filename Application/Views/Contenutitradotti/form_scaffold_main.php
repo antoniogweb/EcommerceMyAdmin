@@ -64,6 +64,10 @@ $().ready(function() {
 			<?php echo $form["description"];?>
 			<?php } ?>
 			
+			<?php if (isset($form["descrizione"])) { ?>
+			<?php echo $form["descrizione"];?>
+			<?php } ?>
+			
 			<?php if (isset($form["url"])) { ?>
 			<?php echo $form["url"];?>
 			<?php } ?>

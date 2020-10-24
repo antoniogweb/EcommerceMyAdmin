@@ -119,6 +119,20 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
+								Categoria<?php if (v("usa_marchi")) { ?> / <?php echo gtext("famiglie",true,"ucfirst");?><?php } ?>
+							</div>
+							<div class="panel-body">
+								<?php echo $form["id_c"];?>
+								
+								<?php if (v("usa_marchi")) { ?>
+								<?php echo $form["id_marchio"];?>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+					<div class='col-md-4'>
+						<div class="panel panel-info">
+							<div class="panel-heading">
 								Immagine principale
 							</div>
 							<div class="panel-body image_panel">
@@ -135,21 +149,6 @@
 									<div class="progress-bar progress-bar-success"></div>
 								</div>
 								<div class="alert-fileupload"></div>
-<!-- 											<div id="userfile_box"><input id="userfile" name="userfile" type="file"></div> -->
-							</div>
-						</div>
-					</div>
-					<div class='col-md-4'>
-						<div class="panel panel-info">
-							<div class="panel-heading">
-								Categoria<?php if (v("usa_marchi")) { ?> / <?php echo gtext("famiglie",true,"ucfirst");?><?php } ?>
-							</div>
-							<div class="panel-body">
-								<?php echo $form["id_c"];?>
-								
-								<?php if (v("usa_marchi")) { ?>
-								<?php echo $form["id_marchio"];?>
-								<?php } ?>
 							</div>
 						</div>
 					</div>

@@ -61,8 +61,9 @@ $(document).ready(function() {
 			<?php if (!showreport()) { ?>
 			<div class="box">
 				<div class="box-header with-border main">
-					<?php echo $notice;?>
-					<?php echo flash("notice");?>
+					<?php $flash = flash("notice");?>
+					<?php echo $flash;?>
+					<?php if (!$flash) echo $notice;?>
 					
 					<!-- show the table -->
 					<div class='scaffold_form'>

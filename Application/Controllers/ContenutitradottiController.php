@@ -73,6 +73,8 @@ class ContenutitradottiController extends BaseController
 			$fields = 'titolo,alias,description';
 		else if ($section == "tag")
 			$fields = 'titolo,alias';
+		else if ($section == "documenti" || $section == "contenuti")
+			$fields = 'titolo,descrizione';
 		
 		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
 		{

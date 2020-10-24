@@ -528,6 +528,8 @@ class GenericModel extends Model_Tree {
 				$id_pers = ($keyField == "id_pers") ? (int)$id : 0;
 				$id_tag = ($keyField == "id_tag") ? (int)$id : 0;
 				$id_fascia_prezzo = ($keyField == "id_fascia_prezzo") ? (int)$id : 0;
+				$id_doc = ($keyField == "id_doc") ? (int)$id : 0;
+				$id_cont = ($keyField == "id_cont") ? (int)$id : 0;
 				
 				$ct->setValues(array(
 					"lingua"		=>	sanitizeDb($lingua),
@@ -539,6 +541,7 @@ class GenericModel extends Model_Tree {
 					"url"			=>	isset($record["url"]) ? $record["url"] : "",
 					"sottotitolo"	=>	isset($record["sottotitolo"]) ? $record["sottotitolo"] : "",
 					"titolo"		=>	isset($record["titolo"]) ? $record["titolo"] : "",
+					"descrizione"	=>	isset($record["descrizione"]) ? $record["descrizione"] : "",
 					"id_page"		=>	$id_page,
 					"id_c"			=>	$id_c,
 					"id_car"		=>	$id_car,
@@ -551,6 +554,8 @@ class GenericModel extends Model_Tree {
 					"id_pers"		=>	$id_pers,
 					"id_tag"		=>	$id_tag,
 					"id_fascia_prezzo"	=>	$id_fascia_prezzo,
+					"id_doc"		=>	$id_doc,
+					"id_cont"		=>	$id_cont,
 					"sezione"		=>	$sezione,
 				),"sanitizeDb");
 				
