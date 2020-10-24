@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Set 12, 2020 alle 13:08
+-- Creato il: Ott 22, 2020 alle 08:07
 -- Versione del server: 5.7.31-0ubuntu0.18.04.1
 -- Versione PHP: 7.3.18-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -41,7 +41,16 @@ CREATE TABLE `accesses` (
 --
 
 INSERT INTO `accesses` (`id`, `ip`, `data`, `ora`, `username`) VALUES
-(1, '127.0.0.1', '12-09-2020', '12:20', 'antonio');
+(1, '127.0.0.1', '12-09-2020', '12:20', 'antonio'),
+(2, '127.0.0.1', '14-09-2020', '12:57', 'antonio'),
+(3, '127.0.0.1', '19-09-2020', '09:55', 'antonio'),
+(4, '127.0.0.1', '21-09-2020', '09:36', 'antonio'),
+(5, '127.0.0.1', '22-09-2020', '16:18', 'antonio'),
+(6, '127.0.0.1', '22-09-2020', '17:54', 'antonio'),
+(7, '127.0.0.1', '26-09-2020', '11:17', 'antonio'),
+(8, '127.0.0.1', '28-09-2020', '10:59', 'antonio'),
+(9, '127.0.0.1', '03-10-2020', '21:35', 'antonio'),
+(10, '127.0.0.1', '22-10-2020', '08:04', 'antonio');
 
 -- --------------------------------------------------------
 
@@ -80,7 +89,7 @@ CREATE TABLE `adminsessions` (
 --
 
 INSERT INTO `adminsessions` (`uid`, `token`, `id_user`, `creation_date`, `user_agent`) VALUES
-('f91bf6f9d1467dbe1ae72de8aa385b9b', 'c4f3ff676400b1e211227d4bffaacd38', 2, 1599906044, '07cd63964cd4102f3186766c33314e34');
+('185980176e0cc05ebb7bba33970c9f5d', '7f069d5b33aea44bad2b01d472f4608c', 2, 1603346676, '07cd63964cd4102f3186766c33314e34');
 
 -- --------------------------------------------------------
 
@@ -131,17 +140,6 @@ CREATE TABLE `attributi` (
   `tipo` char(20) NOT NULL DEFAULT 'TENDINA'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `attributi`
---
-
-INSERT INTO `attributi` (`id_a`, `data_creazione`, `titolo`, `id_order`, `tipo`) VALUES
-(15, '2019-10-14 08:32:52', 'Colore', 1, 'TENDINA'),
-(16, '2019-10-14 08:33:58', 'Lunghezza', 2, 'RADIO'),
-(17, '2019-10-14 08:34:42', 'Verticale', 3, 'TENDINA'),
-(20, '2019-10-14 08:37:55', ' Lunghezza ', 4, 'TENDINA'),
-(21, '2020-08-24 14:44:25', 'Font', 5, 'RADIO');
-
 -- --------------------------------------------------------
 
 --
@@ -156,25 +154,6 @@ CREATE TABLE `attributi_valori` (
   `id_a` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `immagine` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `attributi_valori`
---
-
-INSERT INTO `attributi_valori` (`id_av`, `data_creazione`, `titolo`, `id_order`, `id_a`, `immagine`) VALUES
-(74, '2019-10-14 08:33:09', 'Nero', 1, 15, ''),
-(75, '2019-10-14 08:33:17', 'Corten', 2, 15, ''),
-(76, '2019-10-14 08:33:24', 'Bianco', 3, 15, ''),
-(77, '2019-10-14 08:34:10', '1000 mm', 6, 16, ''),
-(78, '2019-10-14 08:34:17', '600 mm', 5, 16, ''),
-(79, '2019-10-14 08:34:28', '200 mm', 4, 16, ''),
-(80, '2019-10-14 08:34:51', '100 mm', 7, 17, ''),
-(81, '2019-10-14 08:34:59', '225 mm', 8, 17, ''),
-(84, '2019-10-14 08:38:06', '32 cm', 9, 20, ''),
-(85, '2019-10-14 08:38:14', '60 cm', 10, 20, ''),
-(86, '2020-08-24 14:44:35', 'Arial', 11, 21, ''),
-(87, '2020-08-24 14:44:43', 'Verdana', 12, 21, ''),
-(88, '2020-08-24 14:44:51', 'Times', 13, 21, '');
 
 -- --------------------------------------------------------
 
@@ -247,14 +226,6 @@ CREATE TABLE `cart` (
   `json_attributi` varchar(100) NOT NULL DEFAULT '[]',
   `json_personalizzazioni` varchar(100) NOT NULL DEFAULT '[]'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `cart`
---
-
-INSERT INTO `cart` (`id_cart`, `data_creazione`, `id_page`, `quantity`, `id_order`, `cart_uid`, `creation_time`, `price`, `codice`, `title`, `immagine`, `in_promozione`, `prezzo_intero`, `id_c`, `attributi`, `peso`, `json_sconti`, `id_iva`, `iva`, `id_p`, `json_attributi`, `json_personalizzazioni`) VALUES
-(18, '2020-09-07 10:09:31', 349, 1, 2, '0f445db09503748ebce4001d2c5c4fb4', 1599473371, '102.0000', '', 'Tige Doge 1', 'tige-doge-01.jpg', 'N', '102.0000', 307, '<span class=\'stringa_attributi_title\'>Lunghezza: </span><span class=\'stringa_attributi_value\'><b>600 mm</b></span> <br /><span class=\'stringa_attributi_title\'>Colore: </span><span class=\'stringa_attributi_value\'><b>Nero</b></span> <br /><span class=\'stringa_attributi_title\'>Verticale: </span><span class=\'stringa_attributi_value\'><b>225 mm</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Testo incisione: </span><span class=\'stringa_personalizzazioni_value\'><b>a</b></span> <br /><span class=\'stringa_personalizzazioni_title\'>Pers 2: </span><span class=\'stringa_personalizzazioni_value\'><b>a</b></span> ', '1.00', '[]', 1, '22.00', 0, '[{\"col\":\"col_1\",\"val\":\"78\"},{\"col\":\"col_2\",\"val\":\"74\"},{\"col\":\"col_3\",\"val\":\"81\"}]', '[{\"col\":3,\"val\":\"a\"},{\"col\":4,\"val\":\"a\"}]'),
-(45, '2020-09-12 11:02:26', 394, 1, 3, '3e4ba638efc791312199332a87c7b788', 1599908546, '0.0000', '', '(Copia di) AAAA', '', 'N', '0.0000', 345, '', '1.00', '[]', 1, '22.00', 0, '[]', '[]');
 
 -- --------------------------------------------------------
 
@@ -369,90 +340,6 @@ CREATE TABLE `combinazioni` (
   `giacenza` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `combinazioni`
---
-
-INSERT INTO `combinazioni` (`id_c`, `col_1`, `col_2`, `col_3`, `col_4`, `col_5`, `col_6`, `col_7`, `col_8`, `id_page`, `immagine`, `data_creazione`, `price`, `codice`, `id_order`, `peso`, `giacenza`) VALUES
-(140, 79, 74, 0, 0, 0, 0, 0, 0, 350, 'tige-cappello-del-parroco-01_1.jpg', '2019-10-28 08:11:38', '126.0000', 'TI30220', 9, '1.60', 0),
-(141, 79, 75, 0, 0, 0, 0, 0, 0, 350, 'tige-cappello-del-parroco-01_1.jpg', '2019-10-28 08:11:38', '160.0000', 'TI30220', 10, '1.60', 0),
-(143, 78, 74, 0, 0, 0, 0, 0, 0, 350, 'tige-cappello-del-parroco-01_1.jpg', '2019-10-28 08:11:38', '140.0000', 'TI30260', 12, '1.80', 0),
-(144, 78, 75, 0, 0, 0, 0, 0, 0, 350, 'tige-cappello-del-parroco-01_1.jpg', '2019-10-28 08:11:38', '175.0000', 'TI30260', 13, '1.80', 0),
-(146, 77, 74, 0, 0, 0, 0, 0, 0, 350, 'tige-cappello-del-parroco-01_1.jpg', '2019-10-28 08:11:38', '155.0000', 'TI302100', 15, '2.00', 0),
-(147, 77, 75, 0, 0, 0, 0, 0, 0, 350, 'tige-cappello-del-parroco-01_1.jpg', '2019-10-28 08:11:38', '184.0000', 'TI302100', 16, '2.00', 0),
-(155, 77, 74, 0, 0, 0, 0, 0, 0, 351, 'tige-mezza-11-01.jpg', '2019-10-28 08:14:18', '149.0000', 'TI303100', 23, '1.00', 0),
-(156, 77, 75, 0, 0, 0, 0, 0, 0, 351, 'tige-mezza-11-01.jpg', '2019-10-28 08:14:18', '179.0000', 'TI303100', 24, '1.00', 0),
-(188, 74, 0, 0, 0, 0, 0, 0, 0, 355, 'tige-23-01.jpg', '2019-10-28 10:05:44', '151.0000', 'TI1206A', 37, '0.70', 0),
-(189, 75, 0, 0, 0, 0, 0, 0, 0, 355, 'tige-23-01.jpg', '2019-10-28 10:05:44', '175.0000', 'TI1206A', 38, '0.70', 0),
-(191, 74, 0, 0, 0, 0, 0, 0, 0, 356, 'tige-24-01.jpg', '2019-10-28 10:06:36', '151.0000', 'TI1206B', 39, '0.70', 0),
-(192, 75, 0, 0, 0, 0, 0, 0, 0, 356, 'tige-24-01.jpg', '2019-10-28 10:06:36', '175.0000', 'TI1206B', 40, '0.70', 0),
-(194, 74, 0, 0, 0, 0, 0, 0, 0, 357, 'tige-30-01.jpg', '2019-10-28 10:07:28', '116.0000', 'TI1207', 41, '1.40', 0),
-(195, 75, 0, 0, 0, 0, 0, 0, 0, 357, 'tige-30-01.jpg', '2019-10-28 10:07:28', '145.0000', 'TI1207', 42, '1.40', 0),
-(197, 74, 0, 0, 0, 0, 0, 0, 0, 358, 'tige-petrarca-01.jpg', '2019-10-28 10:08:19', '116.0000', 'TI1208', 43, '3.00', 0),
-(198, 75, 0, 0, 0, 0, 0, 0, 0, 358, 'tige-petrarca-01.jpg', '2019-10-28 10:08:19', '145.0000', 'TI1208', 44, '3.00', 0),
-(200, 74, 0, 0, 0, 0, 0, 0, 0, 359, 'tige-casanova-01.jpg', '2019-10-28 10:09:25', '289.0000', 'TI209', 45, '8.00', 0),
-(201, 75, 0, 0, 0, 0, 0, 0, 0, 359, 'tige-casanova-01.jpg', '2019-10-28 10:09:25', '328.0000', 'TI209', 46, '8.00', 0),
-(203, 74, 0, 0, 0, 0, 0, 0, 0, 361, 'cube-01.jpg', '2019-10-28 10:10:32', '34.0000', 'FS201', 47, '0.40', 0),
-(205, 76, 0, 0, 0, 0, 0, 0, 0, 361, 'cube-01.jpg', '2019-10-28 10:10:32', '34.0000', 'FS201', 49, '0.40', 0),
-(206, 74, 0, 0, 0, 0, 0, 0, 0, 362, 'round-01.jpg', '2019-10-28 10:11:20', '34.0000', 'FS202', 50, '0.40', 0),
-(208, 76, 0, 0, 0, 0, 0, 0, 0, 362, 'round-01.jpg', '2019-10-28 10:11:20', '34.0000', 'FS202', 52, '0.40', 0),
-(226, 74, 0, 0, 0, 0, 0, 0, 0, 364, 'stilo-01.jpg', '2019-10-28 10:14:30', '172.0000', 'FS101BV', 59, '4.00', 0),
-(228, 76, 0, 0, 0, 0, 0, 0, 0, 364, 'stilo-01.jpg', '2019-10-28 10:14:30', '172.0000', 'FS101', 61, '4.00', 0),
-(245, 0, 0, 0, 0, 0, 0, 0, 0, 380, 'img1_3.jpg', '2020-05-30 20:22:13', '2.0000', 'AAAA', 62, '3.00', 0),
-(271, 84, 80, 74, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 65, '1.00', 0),
-(272, 84, 80, 75, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 66, '1.00', 0),
-(273, 84, 80, 76, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 67, '1.00', 0),
-(274, 84, 81, 74, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 68, '1.00', 0),
-(275, 84, 81, 75, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 69, '1.00', 0),
-(276, 84, 81, 76, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 70, '1.00', 0),
-(277, 85, 80, 74, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 71, '1.00', 0),
-(278, 85, 80, 75, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 72, '1.00', 0),
-(279, 85, 80, 76, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:43', '222.0000', 'DDD', 73, '1.00', 0),
-(280, 85, 81, 74, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:44', '222.0000', 'DDD', 74, '1.00', 0),
-(281, 85, 81, 75, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:44', '222.0000', 'DDD', 75, '1.00', 0),
-(282, 85, 81, 76, 0, 0, 0, 0, 0, 381, 'img1_3.jpg', '2020-05-30 20:46:44', '222.0000', 'DDD', 76, '1.00', 0),
-(292, 74, 0, 0, 0, 0, 0, 0, 0, 354, 'tige-22-01.jpg', '2019-10-28 10:04:51', '126.0000', 'TI1205B', 77, '1.00', 0),
-(293, 75, 0, 0, 0, 0, 0, 0, 0, 354, 'tige-22-01.jpg', '2019-10-28 10:04:51', '155.0000', 'TI1205B', 78, '2.00', 0),
-(294, 76, 0, 0, 0, 0, 0, 0, 0, 354, 'tige-22-01.jpg', '2020-06-07 10:04:49', '126.0000', 'AA', 79, '1.00', 0),
-(295, 84, 0, 0, 0, 0, 0, 0, 0, 363, 'square-01.jpg', '2020-06-07 10:07:32', '147.0000', 'bbb', 80, '1.23', 0),
-(296, 85, 0, 0, 0, 0, 0, 0, 0, 363, 'square-01.jpg', '2020-05-30 20:42:16', '222.0000', '3', 81, '1.00', 0),
-(300, 79, 74, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:19', '112.0000', '2222', 85, '2.00', 0),
-(301, 79, 74, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 86, '1.00', 2),
-(302, 79, 75, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 87, '1.00', 3),
-(303, 79, 75, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 88, '1.00', 4),
-(304, 79, 76, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 89, '1.00', 5),
-(305, 79, 76, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 90, '1.00', 6),
-(307, 78, 74, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 92, '1.00', 1),
-(308, 78, 75, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 93, '1.00', 8),
-(309, 78, 75, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 94, '1.00', 9),
-(310, 78, 76, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 95, '1.00', 10),
-(311, 78, 76, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 96, '1.00', 11),
-(312, 77, 74, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 97, '1.00', 12),
-(313, 77, 74, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 98, '1.00', 3),
-(314, 77, 75, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 99, '1.00', 14),
-(315, 77, 75, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 100, '1.00', 15),
-(316, 77, 76, 80, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 101, '1.00', 16),
-(317, 77, 76, 81, 0, 0, 0, 0, 0, 349, 'tige-doge-01.jpg', '2020-07-07 21:04:20', '102.0000', '', 102, '1.00', 17),
-(321, 79, 74, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:26', '174.0000', '', 106, '1.00', 0),
-(322, 79, 75, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:26', '174.0000', '', 107, '1.00', 0),
-(323, 79, 76, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:26', '174.0000', '', 108, '1.00', 0),
-(324, 78, 74, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:26', '174.0000', '', 109, '1.00', 0),
-(325, 78, 75, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:26', '174.0000', '', 110, '1.00', 0),
-(326, 78, 76, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:26', '174.0000', '', 111, '1.00', 0),
-(327, 77, 74, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2019-10-28 10:02:24', '174.0000', 'TI304100', 112, '1.10', 0),
-(328, 77, 75, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2019-10-28 08:15:13', '208.0000', 'TI304100', 113, '1.10', 0),
-(329, 77, 76, 0, 0, 0, 0, 0, 0, 352, 'tige-mezza-12-01.jpg', '2020-08-01 09:21:27', '174.0000', '', 114, '1.00', 0),
-(333, 74, 0, 0, 0, 0, 0, 0, 0, 353, 'tige-21-01.jpg', '2020-08-12 19:03:00', '126.0000', 'TTTT', 115, '1.00', 0),
-(334, 75, 0, 0, 0, 0, 0, 0, 0, 353, 'tige-21-01.jpg', '2020-08-12 19:03:01', '126.0000', 'TTTT', 116, '1.00', 0),
-(335, 76, 0, 0, 0, 0, 0, 0, 0, 353, 'tige-21-01.jpg', '2020-08-12 19:03:01', '126.0000', 'TTTT', 117, '1.00', 0),
-(336, 0, 0, 0, 0, 0, 0, 0, 0, 391, '', '2020-08-24 14:44:14', '0.0000', '', 118, '1.00', 99985),
-(341, 86, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 119, '1.00', 9985),
-(342, 87, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 120, '1.00', 9999),
-(343, 88, 0, 0, 0, 0, 0, 0, 0, 392, '', '2020-08-24 14:46:49', '10.0000', '', 121, '1.00', 9999),
-(344, 0, 0, 0, 0, 0, 0, 0, 0, 393, '', '2020-09-12 08:01:25', '0.0000', '', 122, '1.00', 0),
-(345, 0, 0, 0, 0, 0, 0, 0, 0, 394, '', '2020-09-12 08:01:33', '0.0000', '', 123, '1.00', 11),
-(346, 0, 0, 0, 0, 0, 0, 0, 0, 395, '', '2020-09-12 08:01:51', '0.0000', '', 124, '1.00', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -484,7 +371,6 @@ CREATE TABLE `contenuti` (
 --
 
 INSERT INTO `contenuti` (`id_cont`, `data_creazione`, `lingua`, `titolo`, `descrizione`, `immagine_1`, `immagine_2`, `id_tipo`, `id_c`, `id_page`, `id_order`, `link_contenuto`, `link_libero`, `target`, `attivo`, `tipo`, `coordinate`) VALUES
-(8, '2020-06-22 08:22:35', 'tutte', 'PRODOTTO', '111', 'img1.jpg', 'img9.jpg', 3, 0, 349, 15, 0, '', 'NUOVO_TAB', 'Y', 'FASCIA', ''),
 (10, '2020-06-23 09:38:51', 'tutte', 'Fascia 1', NULL, NULL, NULL, 1, 0, 204, 5, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
 (11, '2020-06-23 09:55:50', 'tutte', 'AAAA', NULL, NULL, NULL, 1, 0, 207, 6, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
 (12, '2020-06-23 09:59:09', 'it', 'BBB', NULL, NULL, NULL, 1, 0, 207, 8, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
@@ -493,11 +379,7 @@ INSERT INTO `contenuti` (`id_cont`, `data_creazione`, `lingua`, `titolo`, `descr
 (16, '2020-06-27 10:06:05', 'tutte', 'AAAA', NULL, NULL, NULL, 1, 84, 0, 13, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
 (17, '2020-06-27 10:06:11', 'tutte', 'BBBB', NULL, NULL, NULL, 1, 84, 0, 10, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
 (18, '2020-06-29 09:38:36', 'tutte', 'PRODOTTI', NULL, NULL, NULL, 2, 98, 0, 12, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
-(19, '2020-06-29 09:56:06', 'tutte', 'PRODOTTI', NULL, NULL, NULL, 2, 84, 0, 11, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
-(20, '2020-06-29 10:45:05', 'tutte', 'AAAA', NULL, NULL, NULL, 1, 0, 380, 14, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
-(21, '2020-07-07 20:36:01', 'tutte', 'FFFF', NULL, NULL, NULL, 1, 0, 349, 3, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', ''),
-(22, '2020-08-01 08:48:27', 'tutte', '111', '', NULL, NULL, 4, 0, 349, 17, 0, NULL, 'STESSO_TAB', 'Y', 'GENERICO', ''),
-(23, '2020-08-01 08:48:33', 'tutte', '222', '', NULL, NULL, 4, 0, 349, 16, 0, NULL, 'STESSO_TAB', 'Y', 'GENERICO', '');
+(19, '2020-06-29 09:56:06', 'tutte', 'PRODOTTI', NULL, NULL, NULL, 2, 84, 0, 11, 0, NULL, 'STESSO_TAB', 'Y', 'FASCIA', '');
 
 -- --------------------------------------------------------
 
@@ -537,22 +419,6 @@ CREATE TABLE `contenuti_tradotti` (
 --
 
 INSERT INTO `contenuti_tradotti` (`id_ct`, `data_creazione`, `lingua`, `title`, `alias`, `description`, `keywords`, `meta_description`, `id_c`, `id_page`, `salvato`, `url`, `sottotitolo`, `id_car`, `id_cv`, `titolo`, `sezione`, `id_marchio`, `id_ruolo`, `id_tipo_azienda`, `id_a`, `id_av`, `id_pers`, `id_tag`) VALUES
-(1, '2020-05-26 08:12:52', 'en', 'Tige Doge 1', 'aasdsa', '&lt;p&gt;&lt;br /&gt;Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;/p&gt;\r\n&lt;p&gt;Caratteristiche:&lt;br /&gt;Attacco 1xE27 (max 60W)&lt;br /&gt;Compatibile con lampade classe A++&lt;br /&gt;220-230V 50Hz&lt;/p&gt;', '', '', 0, 349, 1, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(3, '2020-05-26 08:12:52', 'en', 'Tige Cappello Del Parroco', 'tige-cappello-del-parroco', '&lt;p&gt;Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;Attacco 1xE27 (max 60W)&lt;br /&gt;Compatibile con lampade classe A++&lt;br /&gt;220-230V 50Hz&lt;/p&gt;', '', '', 0, 350, 1, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(5, '2020-05-26 08:12:52', 'en', 'Tige Mezza 11 ', 'tige-mezza-11', 'aaa&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 351, 1, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(7, '2020-05-26 08:12:52', 'en', 'Tige Mezza 12', 'tige-mezza-12', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 352, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(9, '2020-05-26 08:12:52', 'en', 'Tige 21', 'tige-21', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++', '', '', 0, 353, 0, '', '', 0, 0, '', 'prodotti_detail', 0, 0, 0, 0, 0, 0, 0),
-(11, '2020-05-26 08:12:53', 'en', 'Tige 22', 'tige-22', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++', '', '', 0, 354, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(13, '2020-05-26 08:12:53', 'en', 'Tige 23', 'tige-23', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 355, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(15, '2020-05-26 08:12:53', 'en', 'Tige 24', 'tige-24', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 356, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(17, '2020-05-26 08:12:53', 'en', 'Tige 30', 'tige-30', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 357, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(19, '2020-05-26 08:12:53', 'en', 'Tige Petrarca', 'tige-petrarca', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 358, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(21, '2020-05-26 08:12:53', 'en', 'Tige Casanova', 'tige-casanova', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', '', '', 0, 359, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(23, '2020-05-26 08:12:53', 'en', 'Sfera in vetro soffiato', 'sfera-in-vetro-soffiato', '', '', '', 0, 360, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(25, '2020-05-26 08:12:53', 'en', 'Cube', 'cube', 'Caratteristiche:&lt;br /&gt;&bull; Attacco GU10 (lampada non inclusa max75w)&lt;br /&gt;&bull; IP20', '', '', 0, 361, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(27, '2020-05-26 08:12:54', 'en', 'Round', 'round', '&lt;p&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco GU10 (lampada non inclusa max75w)&lt;br /&gt;&bull; IP20&lt;/p&gt;\r\n&lt;div&gt;&nbsp;&lt;/div&gt;', '', '', 0, 362, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(29, '2020-05-26 08:12:54', 'en', 'Square', 'square', '&lt;p&gt;Caratteristiche:&lt;/p&gt;\r\n&lt;p&gt;Versione con lunghezza 32cm:&lt;br /&gt;&bull; Led 3000&deg;K 12w 500mA - 220/230V 50/60Hz&nbsp;&lt;br /&gt;&bull; Flusso luminoso 1840Lm&nbsp;&lt;br /&gt;&bull; IP20&nbsp;&lt;br /&gt;Versione con lunghezza 60cm:&lt;br /&gt;&bull; Led 3000&deg;K 24w 500mA - 220/230V 50/60Hz&lt;br /&gt;&bull; Flusso luminoso 2700lm&lt;br /&gt;&bull; IP20&lt;/p&gt;\r\n&lt;div&gt;&nbsp;&lt;/div&gt;', '', '', 0, 363, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(31, '2020-05-26 08:12:54', 'en', 'Stilo', 'stilo', '&lt;p&gt;Led 3000&deg;K&lt;br /&gt;30w&lt;br /&gt;24V&lt;br /&gt;Flusso luminoso 2600Lm&lt;br /&gt;IP20&lt;br /&gt;220/230V 50/60Hz&lt;/p&gt;', '', '', 0, 364, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (37, '2020-05-26 08:15:54', 'en', '(Copia di) (Copia di) Post 1', 'post-1-8761-2231', 'test', '', '', 0, 375, 1, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (39, '2020-05-26 08:15:54', 'en', '(Copia di) Post 1', 'post-1-8761', 'test', '', '', 0, 374, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (41, '2020-05-26 08:26:36', 'en', 'Shop', 'shop', '', '', '', 84, 0, 1, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
@@ -575,8 +441,6 @@ INSERT INTO `contenuti_tradotti` (`id_ct`, `data_creazione`, `lingua`, `title`, 
 (79, '2020-05-30 19:55:48', 'en', 'AAAA', 'aaaa-5388', '', '', '', 0, 186, 0, 'aaa', '111 2222', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (81, '2020-05-30 19:55:48', 'en', 'Slide 2', 'slide-2', '', '', '', 0, 365, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (83, '2020-05-30 19:55:48', 'en', 'Slide 3', 'slide-3', '', '', '', 0, 367, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(85, '2020-05-30 20:22:13', 'en', 'bbb', 'bbb', 'aaaa', '1', '2', 0, 380, 1, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
-(87, '2020-05-30 20:46:02', 'en', '(Copia di) aaaa', 'aaaa-3981', '', '', '', 0, 381, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (89, '2020-06-08 19:10:29', 'en', 'aaa', 'aaa', '', '', '', 106, 0, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (91, '2020-06-08 19:10:45', 'en', 'bbb', 'ccc', '', '', '', 107, 0, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
 (93, '2020-06-15 13:21:49', 'en', '111', '111-6638', '', '', '', 108, 0, 0, '', '', 0, 0, NULL, '', 0, 0, 0, 0, 0, 0, 0),
@@ -590,36 +454,18 @@ INSERT INTO `contenuti_tradotti` (`id_ct`, `data_creazione`, `lingua`, `title`, 
 (165, '2020-07-11 10:10:15', 'en', 'yyyy7777', 'yyyy7777', '', '', '', 0, 385, 1, '', '', 0, 0, '', 'referenze_detail', 0, 0, 0, 0, 0, 0, 0),
 (168, '2020-07-27 16:05:00', 'en', '', 'technical-aa', '', '', '', 0, 0, 0, '', '', 0, 0, 'Technical aa', '-marchio-', 6, 0, 0, 0, 0, 0, 0),
 (171, '2020-07-27 16:05:00', 'en', '', 'tige', '', '', '', 0, 0, 0, '', '', 0, 0, 'Tige', '-marchio-', 5, 0, 0, 0, 0, 0, 0),
-(174, '2020-07-28 07:11:02', 'en', '', 'a', '', '', '', 0, 0, 1, '', '', 0, 0, 'Color', 'attributi', 0, 0, 0, 15, 0, 0, 0),
-(177, '2020-07-28 07:11:02', 'en', '', 'a', '', '', '', 0, 0, 1, '', '', 0, 0, 'Length', 'attributi', 0, 0, 0, 16, 0, 0, 0),
-(180, '2020-07-28 07:11:03', 'en', '', 'a', '', '', '', 0, 0, 0, '', '', 0, 0, 'Verticale', 'attributi', 0, 0, 0, 17, 0, 0, 0),
-(183, '2020-07-28 07:11:03', 'en', '', 'a', '', '', '', 0, 0, 0, '', '', 0, 0, ' Lunghezza ', 'attributi', 0, 0, 0, 20, 0, 0, 0),
-(186, '2020-07-28 07:14:11', 'en', '', 'nero', '', '', '', 0, 0, 1, '', '', 0, 0, 'Black', 'attributi_valori', 0, 0, 0, 0, 74, 0, 0),
-(189, '2020-07-28 07:14:12', 'en', '', 'a', '', '', '', 0, 0, 0, '', '', 0, 0, 'Corten', 'attributi_valori', 0, 0, 0, 0, 75, 0, 0),
-(192, '2020-07-28 07:14:13', 'en', '', 'a', '', '', '', 0, 0, 1, '', '', 0, 0, 'White', 'attributi_valori', 0, 0, 0, 0, 76, 0, 0),
 (219, '2020-07-28 07:42:38', 'en', 'uuu', 'uuu', '', '', '', 111, 0, 1, '', '', 0, 0, '', 'prodotti', 0, 0, 0, 0, 0, 0, 0),
 (222, '2020-07-30 11:34:39', 'en', 'TEST', 'test', '', '', '', 0, 387, 0, '', '', 0, 0, '', 'team_detail', 0, 0, 0, 0, 0, 0, 0),
 (225, '2020-07-30 11:35:46', 'en', '', '', '', '', '', 0, 0, 0, '', '', 1, 0, 'TEST', '-car-', 0, 0, 0, 0, 0, 0, 0),
 (228, '2020-07-30 11:35:54', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 1, 'CCCC', '-cv-', 0, 0, 0, 0, 0, 0, 0),
 (231, '2020-08-01 08:45:32', 'en', 'Team', 'team', '', '', '', 110, 0, 0, '', '', 0, 0, '', 'team', 0, 0, 0, 0, 0, 0, 0),
-(240, '2020-08-01 09:00:36', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, '200 mm', 'attributi_valori', 0, 0, 0, 0, 79, 0, 0),
-(243, '2020-08-01 09:00:36', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, '600 mm', 'attributi_valori', 0, 0, 0, 0, 78, 0, 0),
-(246, '2020-08-01 09:00:37', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, '1000 mm', 'attributi_valori', 0, 0, 0, 0, 77, 0, 0),
 (249, '2020-08-01 09:44:02', 'en', 'Privacy', 'privacy', '', '', '', 0, 390, 0, '', '', 0, 0, '', '_detail', 0, 0, 0, 0, 0, 0, 0),
-(251, '2020-08-24 14:44:13', 'en', 'Pacco regalo', 'pacco-regalo', '', '', '', 0, 391, 0, '', '', 0, 0, '', 'prodotti_detail', 0, 0, 0, 0, 0, 0, 0),
-(252, '2020-08-24 14:44:25', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, 'Font', 'attributi', 0, 0, 0, 21, 0, 0, 0),
-(253, '2020-08-24 14:44:36', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, 'Arial', 'attributi_valori', 0, 0, 0, 0, 86, 0, 0),
-(254, '2020-08-24 14:44:43', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, 'Verdana', 'attributi_valori', 0, 0, 0, 0, 87, 0, 0),
-(255, '2020-08-24 14:44:51', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, 'Times', 'attributi_valori', 0, 0, 0, 0, 88, 0, 0),
-(256, '2020-08-24 14:46:36', 'en', 'Incisione', 'incisione', '', '', '', 0, 392, 0, '', '', 0, 0, '', 'prodotti_detail', 0, 0, 0, 0, 0, 0, 0),
 (257, '2020-08-29 09:45:04', 'en', '', '', '', '', '', 0, 0, 1, '', '', 0, 0, 'bbb', 'personalizzazioni', 0, 0, 0, 0, 0, 1, 0),
 (258, '2020-08-29 09:45:05', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, 'BBB', 'personalizzazioni', 0, 0, 0, 0, 0, 2, 0),
 (259, '2020-08-29 10:12:29', 'en', '', '', '', '', '', 0, 0, 1, '', '', 0, 0, 'Engraving text', 'personalizzazioni', 0, 0, 0, 0, 0, 3, 0),
 (260, '2020-08-29 10:35:09', 'en', '', '', '', '', '', 0, 0, 0, '', '', 0, 0, 'Pers 2', 'personalizzazioni', 0, 0, 0, 0, 0, 4, 0),
 (272, '2020-09-08 12:39:20', 'en', '', 'christmas-2020', '', '', '', 0, 0, 1, '', '', 0, 0, 'Christmas 2020', 'tag', 0, 0, 0, 0, 0, 0, 3),
-(273, '2020-09-12 08:01:25', 'en', 'AAAA', 'aaaa-8927', '', '', '', 0, 393, 0, '', '', 0, 0, '', 'prodotti_detail', 0, 0, 0, 0, 0, 0, 0),
-(274, '2020-09-12 08:01:33', 'en', '(Copia di) AAAA', 'aaaa-8927-5148', '', '', '', 0, 394, 0, '', '', 0, 0, '', 'prodotti_detail', 0, 0, 0, 0, 0, 0, 0),
-(275, '2020-09-12 08:01:51', 'en', 'bbb', 'bbb', '', '', '', 0, 395, 0, '', '', 0, 0, '', 'prodotti_detail', 0, 0, 0, 0, 0, 0, 0);
+(276, '2020-09-26 09:19:18', 'en', 'Download', 'download', '', '', '', 112, 0, 0, '', '', 0, 0, '', 'download', 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -631,15 +477,17 @@ CREATE TABLE `corrieri` (
   `id_corriere` int(10) UNSIGNED NOT NULL,
   `titolo` varchar(200) CHARACTER SET utf8 NOT NULL,
   `id_order` int(10) UNSIGNED NOT NULL,
-  `prezzo` decimal(10,2) DEFAULT NULL
+  `prezzo` decimal(10,2) DEFAULT NULL,
+  `attivo` enum('Y','N') NOT NULL DEFAULT 'Y'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `corrieri`
 --
 
-INSERT INTO `corrieri` (`id_corriere`, `titolo`, `id_order`, `prezzo`) VALUES
-(5, 'Corriere 1', 0, '10.30');
+INSERT INTO `corrieri` (`id_corriere`, `titolo`, `id_order`, `prezzo`, `attivo`) VALUES
+(10, 'Corriere espresso', 1, NULL, 'Y'),
+(11, 'Corriere standard', 2, NULL, 'Y');
 
 -- --------------------------------------------------------
 
@@ -651,27 +499,21 @@ CREATE TABLE `corrieri_spese` (
   `id_spesa` int(10) UNSIGNED NOT NULL,
   `peso` decimal(10,2) DEFAULT NULL,
   `prezzo` decimal(10,2) DEFAULT NULL,
-  `id_corriere` int(10) UNSIGNED NOT NULL
+  `id_corriere` int(10) UNSIGNED NOT NULL,
+  `nazione` char(2) NOT NULL DEFAULT 'W'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `corrieri_spese`
 --
 
-INSERT INTO `corrieri_spese` (`id_spesa`, `peso`, `prezzo`, `id_corriere`) VALUES
-(43, '25.00', '10.80', 5),
-(44, '30.00', '13.90', 5),
-(45, '40.00', '16.00', 5),
-(46, '50.00', '28.00', 5),
-(48, '200.00', '55.00', 5),
-(49, '300.00', '75.00', 5),
-(50, '1000.00', '100.00', 5),
-(52, '1.00', '4.00', 5),
-(53, '3.00', '4.40', 5),
-(54, '5.00', '5.22', 5),
-(55, '10.00', '6.55', 5),
-(56, '20.00', '8.45', 5),
-(57, '100.00', '40.00', 5);
+INSERT INTO `corrieri_spese` (`id_spesa`, `peso`, `prezzo`, `id_corriere`, `nazione`) VALUES
+(80, '1.00', '6.50', 10, 'IT'),
+(81, '4.00', '9.00', 10, 'IT'),
+(82, '1.00', '1.00', 11, 'IT'),
+(83, '4.00', '3.00', 11, 'IT'),
+(84, '1.00', '10.00', 10, 'W'),
+(85, '4.00', '20.00', 10, 'W');
 
 -- --------------------------------------------------------
 
@@ -695,13 +537,6 @@ CREATE TABLE `documenti` (
   `clean_immagine` varchar(255) NOT NULL DEFAULT '',
   `id_tipo_doc` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `documenti`
---
-
-INSERT INTO `documenti` (`id_doc`, `data_creazione`, `titolo`, `filename`, `clean_filename`, `lingua`, `estensione`, `content_type`, `id_page`, `id_order`, `data_documento`, `immagine`, `clean_immagine`, `id_tipo_doc`) VALUES
-(4, '2020-07-06 10:34:20', 'BBBB', 'd220d6f9db74b4ccc29afc7007903abb.pdf', 'test.pdf', 'en', '', '', 349, 1, '2020-07-06', '17bd6c2adeb663dbf100b3084158d73f.jpg', 'img1.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -745,51 +580,6 @@ INSERT INTO `immagini` (`id_immagine`, `data_creazione`, `immagine`, `id_page`, 
 (461, '2018-08-15 11:55:08', 'spedizioni.png', 205, 245),
 (462, '2018-08-15 11:55:08', 'ordine-2632-1-.png', 205, 246),
 (463, '2018-08-15 11:55:08', 'ordine-2632.png', 205, 244),
-(473, '2019-10-14 09:47:12', 'tige-cappello-del-parroco-02.jpg', 350, 249),
-(474, '2019-10-14 09:47:12', 'tige-cappello-del-parroco-d.jpg', 350, 251),
-(475, '2019-10-14 09:47:12', 'tige-cappello-del-parroco-03.jpg', 350, 250),
-(477, '2019-10-14 09:49:23', 'tige-mezza-11-02.jpg', 351, 253),
-(478, '2019-10-14 09:49:23', 'tige-mezza-11-d.jpg', 351, 256),
-(479, '2019-10-14 09:49:23', 'tige-mezza-11-03.jpg', 351, 254),
-(480, '2019-10-14 09:49:23', 'tige-mezza-11-a.jpg', 351, 255),
-(481, '2019-10-14 09:49:49', 'tige-mezza-12-03.jpg', 352, 258),
-(482, '2019-10-14 09:49:49', 'tige-mezza-12-02.jpg', 352, 257),
-(483, '2019-10-14 09:49:49', 'tige-mezza-12-d.jpg', 352, 259),
-(484, '2019-10-14 09:50:20', 'tige-21-02.jpg', 353, 260),
-(485, '2019-10-14 09:50:20', 'tige-21-d.jpg', 353, 263),
-(486, '2019-10-14 09:50:20', 'tige-21-03.jpg', 353, 261),
-(487, '2019-10-14 09:50:20', 'tige-21-a.jpg', 353, 262),
-(488, '2019-10-14 09:51:04', 'tige-22-03.jpg', 354, 265),
-(489, '2019-10-14 09:51:04', 'tige-22-d.jpg', 354, 266),
-(490, '2019-10-14 09:51:05', 'tige-22-02.jpg', 354, 264),
-(491, '2019-10-14 09:51:28', 'tige-23-02.jpg', 355, 267),
-(492, '2019-10-14 09:51:28', 'tige-23-03.jpg', 355, 268),
-(493, '2019-10-14 09:51:28', 'tige-23-d.jpg', 355, 269),
-(494, '2019-10-14 09:51:53', 'tige-24-03.jpg', 356, 271),
-(495, '2019-10-14 09:51:53', 'tige-24-02.jpg', 356, 270),
-(496, '2019-10-14 09:51:53', 'tige-24-d.jpg', 356, 273),
-(497, '2019-10-14 09:51:53', 'tige-24-a.jpg', 356, 272),
-(498, '2019-10-14 09:52:18', 'tige-30-02.jpg', 357, 274),
-(499, '2019-10-14 09:52:18', 'tige-30-d.jpg', 357, 275),
-(500, '2019-10-14 09:52:18', 'tige-30-a.jpg', 357, 274),
-(501, '2019-10-14 09:52:43', 'tige-petrarca-03.jpg', 358, 277),
-(502, '2019-10-14 09:52:43', 'tige-petrarca-02.jpg', 358, 276),
-(503, '2019-10-14 09:52:43', 'tige-petrarca-d.jpg', 358, 279),
-(504, '2019-10-14 09:52:43', 'tige-petrarca-a.jpg', 358, 278),
-(505, '2019-10-14 09:53:41', 'tige-casanova-03.jpg', 359, 281),
-(506, '2019-10-14 09:53:41', 'tige-casanova-d.jpg', 359, 283),
-(507, '2019-10-14 09:53:42', 'tige-casanova-02.jpg', 359, 280),
-(508, '2019-10-14 09:53:42', 'tige-casanova-2-a.jpg', 359, 282),
-(509, '2019-10-14 09:54:28', 'cube-d.jpg', 361, 285),
-(510, '2019-10-14 09:54:28', 'cube-02.jpg', 361, 284),
-(511, '2019-10-14 09:54:47', 'round-02.jpg', 362, 286),
-(512, '2019-10-14 09:54:48', 'round-d.jpg', 362, 287),
-(513, '2019-10-14 09:55:04', 'square-02.jpg', 363, 288),
-(514, '2019-10-14 09:55:04', 'square-d.jpg', 363, 289),
-(515, '2019-10-14 09:55:20', 'stilo-02.jpg', 364, 290),
-(516, '2019-10-14 09:55:20', 'stilo-d.jpg', 364, 292),
-(517, '2019-10-14 09:55:20', 'stilo-03.jpg', 364, 291),
-(532, '2020-07-07 20:39:28', 'img9_2.jpg', 380, 307),
 (533, '2020-07-11 10:08:43', 'img10_2.jpg', 375, 308),
 (534, '2020-07-11 10:08:43', 'img1_8.jpg', 375, 309),
 (535, '2020-07-11 10:08:44', 'img9_3.jpg', 375, 315),
@@ -850,7 +640,7 @@ CREATE TABLE `impostazioni` (
 --
 
 INSERT INTO `impostazioni` (`id_imp`, `data_creazione`, `iva`, `usa_smtp`, `smtp_host`, `smtp_port`, `smtp_user`, `smtp_psw`, `smtp_from`, `smtp_nome`, `bcc`, `mail_invio_ordine`, `mail_invio_conferma_pagamento`, `nome_sito`, `iva_inclusa`, `usa_sandbox`, `paypal_seller`, `paypal_sandbox_seller`, `title_home_page`, `esponi_prezzi_ivati`, `redirect_immediato_a_paypal`, `mailchimp_api_key`, `mailchimp_list_id`, `mostra_scritta_iva_inclusa`, `analytics`, `manda_mail_fattura_in_automatico`, `meta_description`, `keywords`, `spedizioni_gratuite_sopra_euro`) VALUES
-(1, '2018-02-25 18:05:00', '22', 'Y', '', '25', '', '', '', 'EcommerceMyAdmin', '', '', '', 'EcommerceMyAdmin', 'N', 'Y', '', 'seller_1295877693_biz@yahoo.com', 'Sito di test', 'Y', 'Y', '', '', 'Y', '', 'N', '111', '222', 157);
+(1, '2018-02-25 18:05:00', '22', 'N', '', '25', '', '', 'EcommerceMyAdmin@test.it', 'EcommerceMyAdmin', '', '', '', 'EcommerceMyAdmin', 'N', 'Y', '', 'seller_1295877693_biz@yahoo.com', 'Sito di test', 'Y', 'Y', '', '', 'Y', '', 'N', '111', '222', 1000);
 
 -- --------------------------------------------------------
 
@@ -863,17 +653,20 @@ CREATE TABLE `iva` (
   `data_creazione` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `titolo` char(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `valore` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `id_order` int(10) UNSIGNED NOT NULL DEFAULT '0'
+  `id_order` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `tipo` char(20) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `iva`
 --
 
-INSERT INTO `iva` (`id_iva`, `data_creazione`, `titolo`, `valore`, `id_order`) VALUES
-(1, '2018-03-13 13:21:39', 'Iva al 22%', '22.00', 1),
-(2, '2018-03-13 15:23:49', 'Iva al 10%', '10.00', 2),
-(3, '2018-03-13 15:24:14', 'Iva al 4%', '4.00', 3);
+INSERT INTO `iva` (`id_iva`, `data_creazione`, `titolo`, `valore`, `id_order`, `tipo`) VALUES
+(1, '2018-03-13 13:21:39', 'Iva al 22%', '22.00', 1, ''),
+(3, '2018-03-13 15:24:14', 'Iva al 4%', '4.00', 3, ''),
+(4, '2020-09-22 14:23:30', 'Ex art. 41 del D.L. n. 331/1993', '0.00', 4, 'B2BUE'),
+(5, '2020-09-22 14:23:55', 'Ex art. 7 c.4 del D.P.R. 633/72', '0.00', 5, 'B2BEX'),
+(6, '2020-09-22 14:24:48', 'Ex Art.8', '0.00', 6, 'B2CEX');
 
 -- --------------------------------------------------------
 
@@ -1076,262 +869,264 @@ CREATE TABLE `nazioni` (
   `iso_country_code` varchar(6) NOT NULL,
   `tipo` char(2) DEFAULT '2',
   `attiva` tinyint(4) NOT NULL DEFAULT '1',
-  `attiva_spedizione` tinyint(4) NOT NULL DEFAULT '1'
+  `attiva_spedizione` tinyint(4) NOT NULL DEFAULT '1',
+  `latitudine` char(15) NOT NULL DEFAULT '',
+  `longitudine` char(15) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dump dei dati per la tabella `nazioni`
 --
 
-INSERT INTO `nazioni` (`id_nazione`, `titolo`, `iso_country_code`, `tipo`, `attiva`, `attiva_spedizione`) VALUES
-(2, 'Italia', 'IT', 'UE', 1, 1),
-(3, 'Afghanistan', 'AF', 'EX', 1, 1),
-(4, 'Albania', 'AL', 'EX', 1, 1),
-(5, 'Algeria', 'DZ', 'EX', 1, 1),
-(6, 'American Samoa', 'AS', 'EX', 1, 1),
-(7, 'Andorra', 'AD', 'EX', 1, 1),
-(8, 'Angola', 'AO', 'EX', 1, 1),
-(9, 'Anguilla', 'AI', 'EX', 1, 1),
-(10, 'Antarctica', 'AQ', 'EX', 1, 1),
-(11, 'Antigua and Barbuda', 'AG', 'EX', 1, 1),
-(12, 'Argentina', 'AR', 'EX', 1, 1),
-(13, 'Armenia', 'AM', 'EX', 1, 1),
-(14, 'Aruba', 'AW', 'EX', 1, 1),
-(15, 'Australia', 'AU', 'EX', 1, 1),
-(16, 'Austria', 'AT', 'UE', 1, 1),
-(17, 'Azerbaijan', 'AZ', 'EX', 1, 1),
-(18, 'Bahamas', 'BS', 'EX', 1, 1),
-(19, 'Bahrain', 'BH', 'EX', 1, 1),
-(20, 'Bangladesh', 'BD', 'EX', 1, 1),
-(21, 'Barbados', 'BB', 'EX', 1, 1),
-(22, 'Belarus', 'BY', 'EX', 1, 1),
-(23, 'Belgium', 'BE', 'UE', 1, 1),
-(24, 'Belize', 'BZ', 'EX', 1, 1),
-(25, 'Benin', 'BJ', 'EX', 1, 1),
-(26, 'Bermuda', 'BM', 'EX', 1, 1),
-(27, 'Bhutan', 'BT', 'EX', 1, 1),
-(28, 'Bolivia', 'BO', 'EX', 1, 1),
-(29, 'Bonaire, Sint Eustatius and Saba', 'BQ', 'EX', 1, 1),
-(30, 'Bosnia and Herzegovina', 'BA', 'EX', 1, 1),
-(31, 'Botswana', 'BW', 'EX', 1, 1),
-(32, 'Brazil', 'BR', 'EX', 1, 1),
-(33, 'British Indian Ocean Territory', 'IO', 'EX', 1, 1),
-(34, 'Brunei Darussalam', 'BN', 'EX', 1, 1),
-(35, 'Bulgaria', 'BG', 'UE', 1, 1),
-(36, 'Burkina Faso', 'BF', 'EX', 1, 1),
-(37, 'Burundi', 'BI', 'EX', 1, 1),
-(38, 'Cambodia', 'KH', 'EX', 1, 1),
-(39, 'Cameroon', 'CM', 'EX', 1, 1),
-(40, 'Canada', 'CA', 'EX', 1, 1),
-(41, 'Cape Verde', 'CV', 'EX', 1, 1),
-(42, 'Cayman Islands', 'KY', 'EX', 1, 1),
-(43, 'Central African Republic', 'CF', 'EX', 1, 1),
-(44, 'Chad', 'TD', 'EX', 1, 1),
-(45, 'Chile', 'CL', 'EX', 1, 1),
-(46, 'China', 'CN', 'EX', 1, 1),
-(47, 'Christmas Island', 'CX', 'EX', 1, 1),
-(48, 'Cocos (Keeling) Islands', 'CC', 'EX', 1, 1),
-(49, 'Colombia', 'CO', 'EX', 1, 1),
-(50, 'Comoros', 'KM', 'EX', 1, 1),
-(51, 'Congo', 'CG', 'EX', 1, 1),
-(52, 'Congo, The Democratic Republic of the', 'CD', 'EX', 1, 1),
-(53, 'Cook Islands', 'CK', 'EX', 1, 1),
-(54, 'Costa Rica', 'CR', 'EX', 1, 1),
-(55, 'CÃ´te d\'Ivoire', 'CI', 'EX', 1, 1),
-(56, 'Croatia', 'HR', 'UE', 1, 1),
-(57, 'Cuba', 'CU', 'EX', 1, 1),
-(58, 'CuraÃ§ao', 'CW', 'EX', 1, 1),
-(59, 'Cyprus', 'CY', 'UE', 1, 1),
-(60, 'Czech Republic', 'CZ', 'UE', 1, 1),
-(61, 'Denmark', 'DK', 'UE', 1, 1),
-(62, 'Djibouti', 'DJ', 'EX', 1, 1),
-(63, 'Dominica', 'DM', 'EX', 1, 1),
-(64, 'Dominican Republic', 'DO', 'EX', 1, 1),
-(65, 'Ecuador', 'EC', 'EX', 1, 1),
-(66, 'Egypt', 'EG', 'EX', 1, 1),
-(67, 'El Salvador', 'SV', 'EX', 1, 1),
-(68, 'Equatorial Guinea', 'GQ', 'EX', 1, 1),
-(69, 'Eritrea', 'ER', 'EX', 1, 1),
-(70, 'Estonia', 'EE', 'UE', 1, 1),
-(71, 'Ethiopia', 'ET', 'EX', 1, 1),
-(72, 'Falkland Islands (Malvinas)', 'FK', 'EX', 1, 1),
-(73, 'Faroe Islands', 'FO', 'EX', 1, 1),
-(74, 'Fiji', 'FJ', 'EX', 1, 1),
-(75, 'Finland', 'FI', 'UE', 1, 1),
-(76, 'France', 'FR', 'UE', 1, 1),
-(77, 'French Guiana', 'GF', 'EX', 1, 1),
-(78, 'French Polynesia', 'PF', 'EX', 1, 1),
-(79, 'French Southern Territories', 'TF', 'EX', 1, 1),
-(80, 'Gabon', 'GA', 'EX', 1, 1),
-(81, 'Gambia', 'GM', 'EX', 1, 1),
-(82, 'Georgia', 'GE', 'EX', 1, 1),
-(83, 'Germania', 'DE', 'UE', 1, 1),
-(84, 'Ghana', 'GH', 'EX', 1, 1),
-(85, 'Gibraltar', 'GI', 'EX', 1, 1),
-(86, 'Greece', 'GR', 'UE', 1, 1),
-(87, 'Greenland', 'GL', 'EX', 1, 1),
-(88, 'Grenada', 'GD', 'EX', 1, 1),
-(89, 'Guadeloupe', 'GP', 'EX', 1, 1),
-(90, 'Guam', 'GU', 'EX', 1, 1),
-(91, 'Guatemala', 'GT', 'EX', 1, 1),
-(92, 'Guernsey', 'GG', 'EX', 1, 1),
-(93, 'Guinea', 'GN', 'EX', 1, 1),
-(94, 'Guinea-Bissau', 'GW', 'EX', 1, 1),
-(95, 'Guyana', 'GY', 'EX', 1, 1),
-(96, 'Haiti', 'HT', 'EX', 1, 1),
-(97, 'Heard Island and McDonald Islands', 'HM', 'EX', 1, 1),
-(98, 'CittÃ  del vaticano', 'VA', 'EX', 1, 1),
-(99, 'Honduras', 'HN', 'EX', 1, 1),
-(100, 'Hong Kong', 'HK', 'EX', 1, 1),
-(101, 'Hungary', 'HU', 'UE', 1, 1),
-(102, 'Iceland', 'IS', 'EX', 1, 1),
-(103, 'India', 'IN', 'EX', 1, 1),
-(104, 'Indonesia', 'ID', 'EX', 1, 1),
-(105, 'Installations in International Waters', 'XZ', 'EX', 1, 1),
-(106, 'Iran, Islamic Republic of', 'IR', 'EX', 1, 1),
-(107, 'Iraq', 'IQ', 'EX', 1, 1),
-(108, 'Ireland', 'IE', 'UE', 1, 1),
-(109, 'Isle of Man', 'IM', 'EX', 1, 1),
-(110, 'Israel', 'IL', 'EX', 1, 1),
-(111, 'Jamaica', 'JM', 'EX', 1, 1),
-(112, 'Japan', 'JP', 'EX', 1, 1),
-(113, 'Jersey', 'JE', 'EX', 1, 1),
-(114, 'Jordan', 'JO', 'EX', 1, 1),
-(115, 'Kazakhstan', 'KZ', 'EX', 1, 1),
-(116, 'Kenya', 'KE', 'EX', 1, 1),
-(117, 'Kiribati', 'KI', 'EX', 1, 1),
-(118, 'Korea, Democratic People\'s Republic of', 'KP', 'EX', 1, 1),
-(119, 'Korea, Republic of', 'KR', 'EX', 1, 1),
-(120, 'Kuwait', 'KW', 'EX', 1, 1),
-(121, 'Kyrgyzstan', 'KG', 'EX', 1, 1),
-(122, 'Lao People\'s Democratic Republic', 'LA', 'EX', 1, 1),
-(123, 'Latvia', 'LV', 'UE', 1, 1),
-(124, 'Lebanon', 'LB', 'EX', 1, 1),
-(125, 'Lesotho', 'LS', 'EX', 1, 1),
-(126, 'Liberia', 'LR', 'EX', 1, 1),
-(127, 'Libya', 'LY', 'EX', 1, 1),
-(128, 'Liechtenstein', 'LI', 'EX', 1, 1),
-(129, 'Lithuania', 'LT', 'UE', 1, 1),
-(130, 'Luxembourg', 'LU', 'UE', 1, 1),
-(131, 'Macao', 'MO', 'EX', 1, 1),
-(132, 'Macedonia, The former Yugoslav Republic of', 'MK', 'EX', 1, 1),
-(133, 'Madagascar', 'MG', 'EX', 1, 1),
-(134, 'Malawi', 'MW', 'EX', 1, 1),
-(135, 'Malaysia', 'MY', 'EX', 1, 1),
-(136, 'Maldives', 'MV', 'EX', 1, 1),
-(137, 'Mali', 'ML', 'EX', 1, 1),
-(138, 'Malta', 'MT', 'UE', 1, 1),
-(139, 'Marshall Islands', 'MH', 'EX', 1, 1),
-(140, 'Martinique', 'MQ', 'EX', 1, 1),
-(141, 'Mauritania', 'MR', 'EX', 1, 1),
-(142, 'Mauritius', 'MU', 'EX', 1, 1),
-(143, 'Mayotte', 'YT', 'EX', 1, 1),
-(144, 'Mexico', 'MX', 'EX', 1, 1),
-(145, 'Micronesia, Federated States of', 'FM', 'EX', 1, 1),
-(146, 'Moldavia', 'MD', 'EX', 1, 1),
-(147, 'Monaco', 'MC', 'EX', 1, 1),
-(148, 'Mongolia', 'MN', 'EX', 1, 1),
-(149, 'Montenegro', 'ME', 'EX', 1, 1),
-(150, 'Montserrat', 'MS', 'EX', 1, 1),
-(151, 'Morocco', 'MA', 'EX', 1, 1),
-(152, 'Mozambique', 'MZ', 'EX', 1, 1),
-(153, 'Myanmar', 'MM', 'EX', 1, 1),
-(154, 'Namibia', 'NA', 'EX', 1, 1),
-(155, 'Nauru', 'NR', 'EX', 1, 1),
-(156, 'Nepal', 'NP', 'EX', 1, 1),
-(157, 'Netherlands', 'NL', 'UE', 1, 1),
-(158, 'New Caledonia', 'NC', 'EX', 1, 1),
-(159, 'New Zealand', 'NZ', 'EX', 1, 1),
-(160, 'Nicaragua', 'NI', 'EX', 1, 1),
-(161, 'Niger', 'NE', 'EX', 1, 1),
-(162, 'Nigeria', 'NG', 'EX', 1, 1),
-(163, 'Niue', 'NU', 'EX', 1, 1),
-(164, 'Norfolk Island', 'NF', 'EX', 1, 1),
-(165, 'Northern Mariana Islands', 'MP', 'EX', 1, 1),
-(166, 'Norway', 'NO', 'EX', 1, 1),
-(167, 'Oman', 'OM', 'EX', 1, 1),
-(168, 'Pakistan', 'PK', 'EX', 1, 1),
-(169, 'Palau', 'PW', 'EX', 1, 1),
-(170, 'Palestine, State of', 'PS', 'EX', 1, 1),
-(171, 'Panama', 'PA', 'EX', 1, 1),
-(172, 'Papua New Guinea', 'PG', 'EX', 1, 1),
-(173, 'Paraguay', 'PY', 'EX', 1, 1),
-(174, 'Peru', 'PE', 'EX', 1, 1),
-(175, 'Philippines', 'PH', 'EX', 1, 1),
-(176, 'Pitcairn', 'PN', 'EX', 1, 1),
-(177, 'Poland', 'PL', 'UE', 1, 1),
-(178, 'Portugal', 'PT', 'UE', 1, 1),
-(179, 'Puerto Rico', 'PR', 'EX', 1, 1),
-(180, 'Qatar', 'QA', 'EX', 1, 1),
-(181, 'Reunion', 'RE', 'EX', 1, 1),
-(182, 'Romania', 'RO', 'UE', 1, 1),
-(183, 'Russian Federation', 'RU', 'EX', 1, 1),
-(184, 'Rwanda', 'RW', 'EX', 1, 1),
-(185, 'Saint BarthÃ©lemy', 'BL', 'EX', 1, 1),
-(186, 'Saint Helena, Ascension and Tristan Da Cunha', 'SH', 'EX', 1, 1),
-(187, 'Saint Kitts and Nevis', 'KN', 'EX', 1, 1),
-(188, 'Saint Lucia', 'LC', 'EX', 1, 1),
-(189, 'Saint Martin (French Part)', 'MF', 'EX', 1, 1),
-(190, 'Saint Pierre and Miquelon', 'PM', 'EX', 1, 1),
-(191, 'Saint Vincent and the Grenadines', 'VC', 'EX', 1, 1),
-(192, 'Samoa', 'WS', 'EX', 1, 1),
-(193, 'San Marino', 'SM', 'EX', 1, 1),
-(194, 'Sao Tome and Principe', 'ST', 'EX', 1, 1),
-(195, 'Saudi Arabia', 'SA', 'EX', 1, 1),
-(196, 'Senegal', 'SN', 'EX', 1, 1),
-(197, 'Serbia', 'RS', 'EX', 1, 1),
-(198, 'Seychelles', 'SC', 'EX', 1, 1),
-(199, 'Sierra Leone', 'SL', 'EX', 1, 1),
-(200, 'Singapore', 'SG', 'EX', 1, 1),
-(201, 'Sint Maarten (Dutch Part)', 'SX', 'EX', 1, 1),
-(202, 'Slovakia', 'SK', 'UE', 1, 1),
-(203, 'Slovenia', 'SI', 'UE', 1, 1),
-(204, 'Solomon Islands', 'SB', 'EX', 1, 1),
-(205, 'Somalia', 'SO', 'EX', 1, 1),
-(206, 'South Africa', 'ZA', 'EX', 1, 1),
-(207, 'South Georgia and the South Sandwich Islands', 'GS', 'EX', 1, 1),
-(208, 'South Sudan', 'SS', 'EX', 1, 1),
-(209, 'Spain', 'ES', 'UE', 1, 1),
-(210, 'Sri Lanka', 'LK', 'EX', 1, 1),
-(211, 'Sudan', 'SD', 'EX', 1, 1),
-(212, 'Suriname', 'SR', 'EX', 1, 1),
-(213, 'Svalbard and Jan Mayen', 'SJ', 'EX', 1, 1),
-(214, 'Swaziland', 'SZ', 'EX', 1, 1),
-(215, 'Sweden', 'SE', 'UE', 1, 1),
-(216, 'Switzerland', 'CH', 'EX', 1, 1),
-(217, 'Syrian Arab Republic', 'SY', 'EX', 1, 1),
-(218, 'Taiwan, Province of China', 'TW', 'EX', 1, 1),
-(219, 'Tajikistan', 'TJ', 'EX', 1, 1),
-(220, 'Tanzania, United Republic of', 'TZ', 'EX', 1, 1),
-(221, 'Thailand', 'TH', 'EX', 1, 1),
-(222, 'Timor-Leste', 'TL', 'EX', 1, 1),
-(223, 'Togo', 'TG', 'EX', 1, 1),
-(224, 'Tokelau', 'TK', 'EX', 1, 1),
-(225, 'Tonga', 'TO', 'EX', 1, 1),
-(226, 'Trinidad and Tobago', 'TT', 'EX', 1, 1),
-(227, 'Tunisia', 'TN', 'EX', 1, 1),
-(228, 'Turkey', 'TR', 'EX', 1, 1),
-(229, 'Turkmenistan', 'TM', 'EX', 1, 1),
-(230, 'Turks and Caicos Islands', 'TC', 'EX', 1, 1),
-(231, 'Tuvalu', 'TV', 'EX', 1, 1),
-(232, 'Uganda', 'UG', 'EX', 1, 1),
-(233, 'Ukraine', 'UA', 'EX', 1, 1),
-(234, 'United Arab Emirates', 'AE', 'EX', 1, 1),
-(235, 'United Kingdom', 'UK', 'EX', 1, 1),
-(236, 'United States', 'US', 'EX', 1, 1),
-(237, 'United States Minor Outlying Islands', 'UM', 'EX', 1, 1),
-(238, 'Uruguay', 'UY', 'EX', 1, 1),
-(239, 'Uzbekistan', 'UZ', 'EX', 1, 1),
-(240, 'Vanuatu', 'VU', 'EX', 1, 1),
-(241, 'Venezuela', 'VE', 'EX', 1, 1),
-(242, 'Viet Nam', 'VN', 'EX', 1, 1),
-(243, 'Virgin Islands, British', 'VG', 'EX', 1, 1),
-(244, 'Virgin Islands, U.S.', 'VI', 'EX', 1, 1),
-(245, 'Wallis and Futuna', 'WF', 'EX', 1, 1),
-(246, 'Western Sahara', 'EH', 'EX', 1, 1),
-(247, 'Yemen', 'YE', 'EX', 1, 1),
-(248, 'Zambia', 'ZM', 'EX', 1, 1),
-(249, 'Zimbabwe', 'ZW', 'EX', 1, 1);
+INSERT INTO `nazioni` (`id_nazione`, `titolo`, `iso_country_code`, `tipo`, `attiva`, `attiva_spedizione`, `latitudine`, `longitudine`) VALUES
+(2, 'Italia', 'IT', 'UE', 1, 1, '41.87194', '12.56738'),
+(3, 'Afghanistan', 'AF', 'EX', 1, 1, '33.93911', '67.709953'),
+(4, 'Albania', 'AL', 'EX', 1, 1, '41.153332', '20.168331'),
+(5, 'Algeria', 'DZ', 'EX', 1, 1, '28.033886', '1.659626'),
+(6, 'American Samoa', 'AS', 'EX', 1, 1, '-14.270972', '-170.132217'),
+(7, 'Andorra', 'AD', 'EX', 1, 1, '42.546245', '1.601554'),
+(8, 'Angola', 'AO', 'EX', 1, 1, '-11.202692', '17.873887'),
+(9, 'Anguilla', 'AI', 'EX', 1, 1, '18.220554', '-63.068615'),
+(10, 'Antarctica', 'AQ', 'EX', 1, 1, '-75.250973', '-0.071389'),
+(11, 'Antigua and Barbuda', 'AG', 'EX', 1, 1, '17.060816', '-61.796428'),
+(12, 'Argentina', 'AR', 'EX', 1, 1, '-38.416097', '-63.616672'),
+(13, 'Armenia', 'AM', 'EX', 1, 1, '40.069099', '45.038189'),
+(14, 'Aruba', 'AW', 'EX', 1, 1, '12.52111', '-69.968338'),
+(15, 'Australia', 'AU', 'EX', 1, 1, '-25.274398', '133.775136'),
+(16, 'Austria', 'AT', 'UE', 1, 1, '47.516231', '14.550072'),
+(17, 'Azerbaijan', 'AZ', 'EX', 1, 1, '40.143105', '47.576927'),
+(18, 'Bahamas', 'BS', 'EX', 1, 1, '25.03428', '-77.39628'),
+(19, 'Bahrain', 'BH', 'EX', 1, 1, '25.930414', '50.637772'),
+(20, 'Bangladesh', 'BD', 'EX', 1, 1, '23.684994', '90.356331'),
+(21, 'Barbados', 'BB', 'EX', 1, 1, '13.193887', '-59.543198'),
+(22, 'Belarus', 'BY', 'EX', 1, 1, '53.709807', '27.953389'),
+(23, 'Belgium', 'BE', 'UE', 1, 1, '50.503887', '4.469936'),
+(24, 'Belize', 'BZ', 'EX', 1, 1, '17.189877', '-88.49765'),
+(25, 'Benin', 'BJ', 'EX', 1, 1, '9.30769', '2.315834'),
+(26, 'Bermuda', 'BM', 'EX', 1, 1, '32.321384', '-64.75737'),
+(27, 'Bhutan', 'BT', 'EX', 1, 1, '27.514162', '90.433601'),
+(28, 'Bolivia', 'BO', 'EX', 1, 1, '-16.290154', '-63.588653'),
+(29, 'Bonaire, Sint Eustatius and Saba', 'BQ', 'EX', 1, 1, '', ''),
+(30, 'Bosnia and Herzegovina', 'BA', 'EX', 1, 1, '43.915886', '17.679076'),
+(31, 'Botswana', 'BW', 'EX', 1, 1, '-22.328474', '24.684866'),
+(32, 'Brazil', 'BR', 'EX', 1, 1, '-14.235004', '-51.92528'),
+(33, 'British Indian Ocean Territory', 'IO', 'EX', 1, 1, '-6.343194', '71.876519'),
+(34, 'Brunei Darussalam', 'BN', 'EX', 1, 1, '4.535277', '114.727669'),
+(35, 'Bulgaria', 'BG', 'UE', 1, 1, '42.733883', '25.48583'),
+(36, 'Burkina Faso', 'BF', 'EX', 1, 1, '12.238333', '-1.561593'),
+(37, 'Burundi', 'BI', 'EX', 1, 1, '-3.373056', '29.918886'),
+(38, 'Cambodia', 'KH', 'EX', 1, 1, '12.565679', '104.990963'),
+(39, 'Cameroon', 'CM', 'EX', 1, 1, '7.369722', '12.354722'),
+(40, 'Canada', 'CA', 'EX', 1, 1, '56.130366', '-106.346771'),
+(41, 'Cape Verde', 'CV', 'EX', 1, 1, '16.002082', '-24.013197'),
+(42, 'Cayman Islands', 'KY', 'EX', 1, 1, '19.513469', '-80.566956'),
+(43, 'Central African Republic', 'CF', 'EX', 1, 1, '6.611111', '20.939444'),
+(44, 'Chad', 'TD', 'EX', 1, 1, '15.454166', '18.732207'),
+(45, 'Chile', 'CL', 'EX', 1, 1, '-35.675147', '-71.542969'),
+(46, 'China', 'CN', 'EX', 1, 1, '35.86166', '104.195397'),
+(47, 'Christmas Island', 'CX', 'EX', 1, 1, '-10.447525', '105.690449'),
+(48, 'Cocos (Keeling) Islands', 'CC', 'EX', 1, 1, '-12.164165', '96.870956'),
+(49, 'Colombia', 'CO', 'EX', 1, 1, '4.570868', '-74.297333'),
+(50, 'Comoros', 'KM', 'EX', 1, 1, '-11.875001', '43.872219'),
+(51, 'Congo', 'CG', 'EX', 1, 1, '-0.228021', '15.827659'),
+(52, 'Congo, The Democratic Republic of the', 'CD', 'EX', 1, 1, '-4.038333', '21.758664'),
+(53, 'Cook Islands', 'CK', 'EX', 1, 1, '-21.236736', '-159.777671'),
+(54, 'Costa Rica', 'CR', 'EX', 1, 1, '9.748917', '-83.753428'),
+(55, 'CÃ´te d\'Ivoire', 'CI', 'EX', 1, 1, '7.539989', '-5.54708'),
+(56, 'Croatia', 'HR', 'UE', 1, 1, '45.1', '15.2'),
+(57, 'Cuba', 'CU', 'EX', 1, 1, '21.521757', '-77.781167'),
+(58, 'CuraÃ§ao', 'CW', 'EX', 1, 1, '', ''),
+(59, 'Cyprus', 'CY', 'UE', 1, 1, '35.126413', '33.429859'),
+(60, 'Czech Republic', 'CZ', 'UE', 1, 1, '49.817492', '15.472962'),
+(61, 'Denmark', 'DK', 'UE', 1, 1, '56.26392', '9.501785'),
+(62, 'Djibouti', 'DJ', 'EX', 1, 1, '11.825138', '42.590275'),
+(63, 'Dominica', 'DM', 'EX', 1, 1, '15.414999', '-61.370976'),
+(64, 'Dominican Republic', 'DO', 'EX', 1, 1, '18.735693', '-70.162651'),
+(65, 'Ecuador', 'EC', 'EX', 1, 1, '-1.831239', '-78.183406'),
+(66, 'Egypt', 'EG', 'EX', 1, 1, '26.820553', '30.802498'),
+(67, 'El Salvador', 'SV', 'EX', 1, 1, '13.794185', '-88.89653'),
+(68, 'Equatorial Guinea', 'GQ', 'EX', 1, 1, '1.650801', '10.267895'),
+(69, 'Eritrea', 'ER', 'EX', 1, 1, '15.179384', '39.782334'),
+(70, 'Estonia', 'EE', 'UE', 1, 1, '58.595272', '25.013607'),
+(71, 'Ethiopia', 'ET', 'EX', 1, 1, '9.145', '40.489673'),
+(72, 'Falkland Islands (Malvinas)', 'FK', 'EX', 1, 1, '-51.796253', '-59.523613'),
+(73, 'Faroe Islands', 'FO', 'EX', 1, 1, '61.892635', '-6.911806'),
+(74, 'Fiji', 'FJ', 'EX', 1, 1, '-16.578193', '179.414413'),
+(75, 'Finland', 'FI', 'UE', 1, 1, '61.92411', '25.748151'),
+(76, 'France', 'FR', 'UE', 1, 1, '46.227638', '2.213749'),
+(77, 'French Guiana', 'GF', 'EX', 1, 1, '3.933889', '-53.125782'),
+(78, 'French Polynesia', 'PF', 'EX', 1, 1, '-17.679742', '-149.406843'),
+(79, 'French Southern Territories', 'TF', 'EX', 1, 1, '-49.280366', '69.348557'),
+(80, 'Gabon', 'GA', 'EX', 1, 1, '-0.803689', '11.609444'),
+(81, 'Gambia', 'GM', 'EX', 1, 1, '13.443182', '-15.310139'),
+(82, 'Georgia', 'GE', 'EX', 1, 1, '42.315407', '43.356892'),
+(83, 'Germania', 'DE', 'UE', 1, 1, '51.165691', '10.451526'),
+(84, 'Ghana', 'GH', 'EX', 1, 1, '7.946527', '-1.023194'),
+(85, 'Gibraltar', 'GI', 'EX', 1, 1, '36.137741', '-5.345374'),
+(86, 'Greece', 'GR', 'UE', 1, 1, '39.074208', '21.824312'),
+(87, 'Greenland', 'GL', 'EX', 1, 1, '71.706936', '-42.604303'),
+(88, 'Grenada', 'GD', 'EX', 1, 1, '12.262776', '-61.604171'),
+(89, 'Guadeloupe', 'GP', 'EX', 1, 1, '16.995971', '-62.067641'),
+(90, 'Guam', 'GU', 'EX', 1, 1, '13.444304', '144.793731'),
+(91, 'Guatemala', 'GT', 'EX', 1, 1, '15.783471', '-90.230759'),
+(92, 'Guernsey', 'GG', 'EX', 1, 1, '49.465691', '-2.585278'),
+(93, 'Guinea', 'GN', 'EX', 1, 1, '9.945587', '-9.696645'),
+(94, 'Guinea-Bissau', 'GW', 'EX', 1, 1, '11.803749', '-15.180413'),
+(95, 'Guyana', 'GY', 'EX', 1, 1, '4.860416', '-58.93018'),
+(96, 'Haiti', 'HT', 'EX', 1, 1, '18.971187', '-72.285215'),
+(97, 'Heard Island and McDonald Islands', 'HM', 'EX', 1, 1, '-53.08181', '73.504158'),
+(98, 'CittÃ  del vaticano', 'VA', 'EX', 1, 1, '41.902916', '12.453389'),
+(99, 'Honduras', 'HN', 'EX', 1, 1, '15.199999', '-86.241905'),
+(100, 'Hong Kong', 'HK', 'EX', 1, 1, '22.396428', '114.109497'),
+(101, 'Hungary', 'HU', 'UE', 1, 1, '47.162494', '19.503304'),
+(102, 'Iceland', 'IS', 'EX', 1, 1, '64.963051', '-19.020835'),
+(103, 'India', 'IN', 'EX', 1, 1, '20.593684', '78.96288'),
+(104, 'Indonesia', 'ID', 'EX', 1, 1, '-0.789275', '113.921327'),
+(105, 'Installations in International Waters', 'XZ', 'EX', 1, 1, '', ''),
+(106, 'Iran, Islamic Republic of', 'IR', 'EX', 1, 1, '32.427908', '53.688046'),
+(107, 'Iraq', 'IQ', 'EX', 1, 1, '33.223191', '43.679291'),
+(108, 'Ireland', 'IE', 'UE', 1, 1, '53.41291', '-8.24389'),
+(109, 'Isle of Man', 'IM', 'EX', 1, 1, '54.236107', '-4.548056'),
+(110, 'Israel', 'IL', 'EX', 1, 1, '31.046051', '34.851612'),
+(111, 'Jamaica', 'JM', 'EX', 1, 1, '18.109581', '-77.297508'),
+(112, 'Japan', 'JP', 'EX', 1, 1, '36.204824', '138.252924'),
+(113, 'Jersey', 'JE', 'EX', 1, 1, '49.214439', '-2.13125'),
+(114, 'Jordan', 'JO', 'EX', 1, 1, '30.585164', '36.238414'),
+(115, 'Kazakhstan', 'KZ', 'EX', 1, 1, '48.019573', '66.923684'),
+(116, 'Kenya', 'KE', 'EX', 1, 1, '-0.023559', '37.906193'),
+(117, 'Kiribati', 'KI', 'EX', 1, 1, '-3.370417', '-168.734039'),
+(118, 'Korea, Democratic People\'s Republic of', 'KP', 'EX', 1, 1, '40.339852', '127.510093'),
+(119, 'Korea, Republic of', 'KR', 'EX', 1, 1, '35.907757', '127.766922'),
+(120, 'Kuwait', 'KW', 'EX', 1, 1, '29.31166', '47.481766'),
+(121, 'Kyrgyzstan', 'KG', 'EX', 1, 1, '41.20438', '74.766098'),
+(122, 'Lao People\'s Democratic Republic', 'LA', 'EX', 1, 1, '19.85627', '102.495496'),
+(123, 'Latvia', 'LV', 'UE', 1, 1, '56.879635', '24.603189'),
+(124, 'Lebanon', 'LB', 'EX', 1, 1, '33.854721', '35.862285'),
+(125, 'Lesotho', 'LS', 'EX', 1, 1, '-29.609988', '28.233608'),
+(126, 'Liberia', 'LR', 'EX', 1, 1, '6.428055', '-9.429499'),
+(127, 'Libya', 'LY', 'EX', 1, 1, '26.3351', '17.228331'),
+(128, 'Liechtenstein', 'LI', 'EX', 1, 1, '47.166', '9.555373'),
+(129, 'Lithuania', 'LT', 'UE', 1, 1, '55.169438', '23.881275'),
+(130, 'Luxembourg', 'LU', 'UE', 1, 1, '49.815273', '6.129583'),
+(131, 'Macao', 'MO', 'EX', 1, 1, '22.198745', '113.543873'),
+(132, 'Macedonia, The former Yugoslav Republic of', 'MK', 'EX', 1, 1, '41.608635', '21.745275'),
+(133, 'Madagascar', 'MG', 'EX', 1, 1, '-18.766947', '46.869107'),
+(134, 'Malawi', 'MW', 'EX', 1, 1, '-13.254308', '34.301525'),
+(135, 'Malaysia', 'MY', 'EX', 1, 1, '4.210484', '101.975766'),
+(136, 'Maldives', 'MV', 'EX', 1, 1, '3.202778', '73.22068'),
+(137, 'Mali', 'ML', 'EX', 1, 1, '17.570692', '-3.996166'),
+(138, 'Malta', 'MT', 'UE', 1, 1, '35.937496', '14.375416'),
+(139, 'Marshall Islands', 'MH', 'EX', 1, 1, '7.131474', '171.184478'),
+(140, 'Martinique', 'MQ', 'EX', 1, 1, '14.641528', '-61.024174'),
+(141, 'Mauritania', 'MR', 'EX', 1, 1, '21.00789', '-10.940835'),
+(142, 'Mauritius', 'MU', 'EX', 1, 1, '-20.348404', '57.552152'),
+(143, 'Mayotte', 'YT', 'EX', 1, 1, '-12.8275', '45.166244'),
+(144, 'Mexico', 'MX', 'EX', 1, 1, '23.634501', '-102.552784'),
+(145, 'Micronesia, Federated States of', 'FM', 'EX', 1, 1, '7.425554', '150.550812'),
+(146, 'Moldavia', 'MD', 'EX', 1, 1, '47.411631', '28.369885'),
+(147, 'Monaco', 'MC', 'EX', 1, 1, '43.750298', '7.412841'),
+(148, 'Mongolia', 'MN', 'EX', 1, 1, '46.862496', '103.846656'),
+(149, 'Montenegro', 'ME', 'EX', 1, 1, '42.708678', '19.37439'),
+(150, 'Montserrat', 'MS', 'EX', 1, 1, '16.742498', '-62.187366'),
+(151, 'Morocco', 'MA', 'EX', 1, 1, '31.791702', '-7.09262'),
+(152, 'Mozambique', 'MZ', 'EX', 1, 1, '-18.665695', '35.529562'),
+(153, 'Myanmar', 'MM', 'EX', 1, 1, '21.913965', '95.956223'),
+(154, 'Namibia', 'NA', 'EX', 1, 1, '-22.95764', '18.49041'),
+(155, 'Nauru', 'NR', 'EX', 1, 1, '-0.522778', '166.931503'),
+(156, 'Nepal', 'NP', 'EX', 1, 1, '28.394857', '84.124008'),
+(157, 'Netherlands', 'NL', 'UE', 1, 1, '52.132633', '5.291266'),
+(158, 'New Caledonia', 'NC', 'EX', 1, 1, '-20.904305', '165.618042'),
+(159, 'New Zealand', 'NZ', 'EX', 1, 1, '-40.900557', '174.885971'),
+(160, 'Nicaragua', 'NI', 'EX', 1, 1, '12.865416', '-85.207229'),
+(161, 'Niger', 'NE', 'EX', 1, 1, '17.607789', '8.081666'),
+(162, 'Nigeria', 'NG', 'EX', 1, 1, '9.081999', '8.675277'),
+(163, 'Niue', 'NU', 'EX', 1, 1, '-19.054445', '-169.867233'),
+(164, 'Norfolk Island', 'NF', 'EX', 1, 1, '-29.040835', '167.954712'),
+(165, 'Northern Mariana Islands', 'MP', 'EX', 1, 1, '17.33083', '145.38469'),
+(166, 'Norway', 'NO', 'EX', 1, 1, '60.472024', '8.468946'),
+(167, 'Oman', 'OM', 'EX', 1, 1, '21.512583', '55.923255'),
+(168, 'Pakistan', 'PK', 'EX', 1, 1, '30.375321', '69.345116'),
+(169, 'Palau', 'PW', 'EX', 1, 1, '7.51498', '134.58252'),
+(170, 'Palestine, State of', 'PS', 'EX', 1, 1, '31.952162', '35.233154'),
+(171, 'Panama', 'PA', 'EX', 1, 1, '8.537981', '-80.782127'),
+(172, 'Papua New Guinea', 'PG', 'EX', 1, 1, '-6.314993', '143.95555'),
+(173, 'Paraguay', 'PY', 'EX', 1, 1, '-23.442503', '-58.443832'),
+(174, 'Peru', 'PE', 'EX', 1, 1, '-9.189967', '-75.015152'),
+(175, 'Philippines', 'PH', 'EX', 1, 1, '12.879721', '121.774017'),
+(176, 'Pitcairn', 'PN', 'EX', 1, 1, '-24.703615', '-127.439308'),
+(177, 'Poland', 'PL', 'UE', 1, 1, '51.919438', '19.145136'),
+(178, 'Portugal', 'PT', 'UE', 1, 1, '39.399872', '-8.224454'),
+(179, 'Puerto Rico', 'PR', 'EX', 1, 1, '18.220833', '-66.590149'),
+(180, 'Qatar', 'QA', 'EX', 1, 1, '25.354826', '51.183884'),
+(181, 'Reunion', 'RE', 'EX', 1, 1, '-21.115141', '55.536384'),
+(182, 'Romania', 'RO', 'UE', 1, 1, '45.943161', '24.96676'),
+(183, 'Russian Federation', 'RU', 'EX', 1, 1, '61.52401', '105.318756'),
+(184, 'Rwanda', 'RW', 'EX', 1, 1, '-1.940278', '29.873888'),
+(185, 'Saint BarthÃ©lemy', 'BL', 'EX', 1, 1, '', ''),
+(186, 'Saint Helena, Ascension and Tristan Da Cunha', 'SH', 'EX', 1, 1, '-24.143474', '-10.030696'),
+(187, 'Saint Kitts and Nevis', 'KN', 'EX', 1, 1, '17.357822', '-62.782998'),
+(188, 'Saint Lucia', 'LC', 'EX', 1, 1, '13.909444', '-60.978893'),
+(189, 'Saint Martin (French Part)', 'MF', 'EX', 1, 1, '', ''),
+(190, 'Saint Pierre and Miquelon', 'PM', 'EX', 1, 1, '46.941936', '-56.27111'),
+(191, 'Saint Vincent and the Grenadines', 'VC', 'EX', 1, 1, '12.984305', '-61.287228'),
+(192, 'Samoa', 'WS', 'EX', 1, 1, '-13.759029', '-172.104629'),
+(193, 'San Marino', 'SM', 'EX', 1, 1, '43.94236', '12.457777'),
+(194, 'Sao Tome and Principe', 'ST', 'EX', 1, 1, '0.18636', '6.613081'),
+(195, 'Saudi Arabia', 'SA', 'EX', 1, 1, '23.885942', '45.079162'),
+(196, 'Senegal', 'SN', 'EX', 1, 1, '14.497401', '-14.452362'),
+(197, 'Serbia', 'RS', 'EX', 1, 1, '44.016521', '21.005859'),
+(198, 'Seychelles', 'SC', 'EX', 1, 1, '-4.679574', '55.491977'),
+(199, 'Sierra Leone', 'SL', 'EX', 1, 1, '8.460555', '-11.779889'),
+(200, 'Singapore', 'SG', 'EX', 1, 1, '1.352083', '103.819836'),
+(201, 'Sint Maarten (Dutch Part)', 'SX', 'EX', 1, 1, '', ''),
+(202, 'Slovakia', 'SK', 'UE', 1, 1, '48.669026', '19.699024'),
+(203, 'Slovenia', 'SI', 'UE', 1, 1, '46.151241', '14.995463'),
+(204, 'Solomon Islands', 'SB', 'EX', 1, 1, '-9.64571', '160.156194'),
+(205, 'Somalia', 'SO', 'EX', 1, 1, '5.152149', '46.199616'),
+(206, 'South Africa', 'ZA', 'EX', 1, 1, '-30.559482', '22.937506'),
+(207, 'South Georgia and the South Sandwich Islands', 'GS', 'EX', 1, 1, '-54.429579', '-36.587909'),
+(208, 'South Sudan', 'SS', 'EX', 1, 1, '', ''),
+(209, 'Spain', 'ES', 'UE', 1, 1, '40.463667', '-3.74922'),
+(210, 'Sri Lanka', 'LK', 'EX', 1, 1, '7.873054', '80.771797'),
+(211, 'Sudan', 'SD', 'EX', 1, 1, '12.862807', '30.217636'),
+(212, 'Suriname', 'SR', 'EX', 1, 1, '3.919305', '-56.027783'),
+(213, 'Svalbard and Jan Mayen', 'SJ', 'EX', 1, 1, '77.553604', '23.670272'),
+(214, 'Swaziland', 'SZ', 'EX', 1, 1, '-26.522503', '31.465866'),
+(215, 'Sweden', 'SE', 'UE', 1, 1, '60.128161', '18.643501'),
+(216, 'Switzerland', 'CH', 'EX', 1, 1, '46.818188', '8.227512'),
+(217, 'Syrian Arab Republic', 'SY', 'EX', 1, 1, '34.802075', '38.996815'),
+(218, 'Taiwan, Province of China', 'TW', 'EX', 1, 1, '23.69781', '120.960515'),
+(219, 'Tajikistan', 'TJ', 'EX', 1, 1, '38.861034', '71.276093'),
+(220, 'Tanzania, United Republic of', 'TZ', 'EX', 1, 1, '-6.369028', '34.888822'),
+(221, 'Thailand', 'TH', 'EX', 1, 1, '15.870032', '100.992541'),
+(222, 'Timor-Leste', 'TL', 'EX', 1, 1, '-8.874217', '125.727539'),
+(223, 'Togo', 'TG', 'EX', 1, 1, '8.619543', '0.824782'),
+(224, 'Tokelau', 'TK', 'EX', 1, 1, '-8.967363', '-171.855881'),
+(225, 'Tonga', 'TO', 'EX', 1, 1, '-21.178986', '-175.198242'),
+(226, 'Trinidad and Tobago', 'TT', 'EX', 1, 1, '10.691803', '-61.222503'),
+(227, 'Tunisia', 'TN', 'EX', 1, 1, '33.886917', '9.537499'),
+(228, 'Turkey', 'TR', 'EX', 1, 1, '38.963745', '35.243322'),
+(229, 'Turkmenistan', 'TM', 'EX', 1, 1, '38.969719', '59.556278'),
+(230, 'Turks and Caicos Islands', 'TC', 'EX', 1, 1, '21.694025', '-71.797928'),
+(231, 'Tuvalu', 'TV', 'EX', 1, 1, '-7.109535', '177.64933'),
+(232, 'Uganda', 'UG', 'EX', 1, 1, '1.373333', '32.290275'),
+(233, 'Ukraine', 'UA', 'EX', 1, 1, '48.379433', '31.16558'),
+(234, 'United Arab Emirates', 'AE', 'EX', 1, 1, '23.424076', '53.847818'),
+(235, 'United Kingdom', 'UK', 'EX', 1, 1, '', ''),
+(236, 'United States', 'US', 'EX', 1, 1, '37.09024', '-95.712891'),
+(237, 'United States Minor Outlying Islands', 'UM', 'EX', 1, 1, '', ''),
+(238, 'Uruguay', 'UY', 'EX', 1, 1, '-32.522779', '-55.765835'),
+(239, 'Uzbekistan', 'UZ', 'EX', 1, 1, '41.377491', '64.585262'),
+(240, 'Vanuatu', 'VU', 'EX', 1, 1, '-15.376706', '166.959158'),
+(241, 'Venezuela', 'VE', 'EX', 1, 1, '6.42375', '-66.58973'),
+(242, 'Viet Nam', 'VN', 'EX', 1, 1, '14.058324', '108.277199'),
+(243, 'Virgin Islands, British', 'VG', 'EX', 1, 1, '18.420695', '-64.639968'),
+(244, 'Virgin Islands, U.S.', 'VI', 'EX', 1, 1, '18.335765', '-64.896335'),
+(245, 'Wallis and Futuna', 'WF', 'EX', 1, 1, '-13.768752', '-177.156097'),
+(246, 'Western Sahara', 'EH', 'EX', 1, 1, '24.215527', '-12.885834'),
+(247, 'Yemen', 'YE', 'EX', 1, 1, '15.552727', '48.516388'),
+(248, 'Zambia', 'ZM', 'EX', 1, 1, '-13.133897', '27.849332'),
+(249, 'Zimbabwe', 'ZW', 'EX', 1, 1, '-19.015438', '29.154857');
 
 -- --------------------------------------------------------
 
@@ -1425,7 +1220,8 @@ CREATE TABLE `orders` (
   `promo` decimal(10,2) DEFAULT NULL,
   `dprovincia` varchar(255) NOT NULL,
   `dprovincia_spedizione` varchar(255) NOT NULL,
-  `lingua` char(2) NOT NULL DEFAULT 'it'
+  `lingua` char(2) NOT NULL DEFAULT 'it',
+  `id_iva` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1498,38 +1294,15 @@ INSERT INTO `pages` (`id_page`, `data_creazione`, `attivo`, `title`, `descriptio
 (209, '2018-02-26 10:53:02', 'Y', 'GIARDINEGGIANDO, AL FIANCO DEL PROFESSIONISTA', '        &lt;div class=&quot;main clearfix &quot;&gt;\r\n            &lt;div class=&quot;content fullwidth&quot;&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=&quot;aq-block aq-block-aq_title_border_block aq_span12 aq-first cf&quot;&gt;\r\n                &lt;div class=&quot;border-block&quot;&gt;\r\n                    &lt;div class=&quot;title-block-wrap&quot;&gt;\r\n                        &lt;div class=&quot;titletext margintitle&quot;&gt; &lt;/div&gt;\r\n                    &lt;/div&gt;\r\n                    &lt;div id=&quot;aq-block-9551-12&quot; class=&quot;aq-block aq-block-pmc_prebuild_start_title_small aq_span12 aq-first cf&quot;&gt;\r\n                        &lt;div id=&quot;aq-block-9551-13&quot; class=&quot;aq-block aq-block-aq_quote_title_block aq_span12 aq-first cf&quot;&gt;\r\n                            &lt;div class=&quot;infotextwrap&quot;&gt;\r\n                    			&lt;div class=&quot;infotext&quot;&gt;\r\n                    				&lt;div class=&quot;infotext-before&quot;&gt;&lt;/div&gt;\r\n                    				&lt;div class=&quot;infotext-title&quot;&gt;\r\n                    					&lt;h2 style=&quot;color:#fff&quot;&gt;[testo home_2_top]&lt;/h2&gt;\r\n                    					&lt;div class=&quot;infotext-title-small&quot; style=&quot;color:#fff&quot;&gt;\r\n                    						&lt;p&gt;[testo home_2_middle]&lt;/p&gt;\r\n                    					&lt;/div&gt;\r\n                    				&lt;/div&gt;\r\n                    				&lt;div class=&quot;infotext-after&quot;&gt;&lt;/div&gt;\r\n                    			&lt;/div&gt;\r\n                    		&lt;/div&gt;\r\n                    	&lt;/div&gt;\r\n                    	&lt;div id=&quot;aq-block-9551-14&quot; class=&quot;aq-block aq-block-aq_clear_block aq_span12 aq-first cf&quot;&gt;\r\n                    		&lt;div class=&quot;cf&quot; style=&quot;height:30px; background:&quot;&gt;&lt;/div&gt;\r\n                    	&lt;/div&gt;\r\n                    	&lt;div id=&quot;aq-block-9551-15&quot; class=&quot;aq-block aq-block-aq_logo_block aq_span12 aq-first cf&quot;&gt;\r\n                    		&lt;div class=&quot;logo-center&quot;&gt;\r\n                    			&lt;a href=&quot;[baseUrl]&quot;&gt;[testo home_2_img]&lt;/a&gt;\r\n                    		&lt;/div&gt;\r\n                    	&lt;/div&gt;\r\n                    	&lt;div id=&quot;aq-block-9551-16&quot; class=&quot;aq-block aq-block-aq_richtext_block aq_span12 aq-first cf&quot;&gt;&lt;br&gt;\r\n                    		&lt;div class=&quot;contact-opus-button&quot; style=&quot;text-align: center;&quot;&gt;&lt;a title=&quot;Contattaci per il tuo prodotto su misura&quot; href=&quot;[baseUrl]/crea-account/&quot;&gt;REGISTRATI ORA&lt;/a&gt;&lt;/div&gt;\r\n                    	&lt;/div&gt;\r\n                    &lt;/div&gt;\r\n                    &lt;div class=&quot;aq-block aq-block-aq_end_content_block aq_span12 aq-first cf&quot;&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=&quot;aq-block aq-block-aq_end_content_block aq_span12 aq-first cf&quot;&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;', 'giardineggiando-al-fianco-del-professionista', 0, 86, 0, 0, 49, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', '0354c7299cedecc624f3dd1959cd4f57', 'Y', '', '', 'Y', '--free--', 'foto-nera.jpg', '', 'N', '0000-00-00', '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (210, '2018-02-26 11:16:56', 'Y', 'Newsletter', '', 'newsletter', 0, 1, 0, 0, 51, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', '20c9b79aec49aed08ad55491e609b76f', 'Y', 'newsletter', '', 'Y', '--free--', '', 'newsletter', 'Y', '0000-00-00', '', '', 1, 0, '', '', 'input[type=&quot;color&quot;],\r\ninput[type=&quot;date&quot;],\r\ninput[type=&quot;datetime-local&quot;],\r\ninput[type=&quot;datetime&quot;],\r\ninput[type=&quot;email&quot;],\r\ninput[type=&quot;month&quot;],\r\ninput[type=&quot;number&quot;],\r\ninput[type=&quot;password&quot;],\r\ninput[type=&quot;range&quot;],\r\ninput[type=&quot;search&quot;],\r\ninput[type=&quot;tel&quot;],\r\ninput[type=&quot;text&quot;],\r\ninput[type=&quot;time&quot;],\r\ninput[type=&quot;url&quot;],\r\ninput[type=&quot;week&quot;],\r\ntextarea {\r\n  font-size: 1rem;\r\n  border-bottom: 1px solid #222 !important;\r\n  display: block;\r\n  width: 100%;\r\n  padding: 0.8rem 1.25rem;\r\n  background-color: #f6f6f6;\r\n  border-radius: 0;\r\n  padding-left:0px;\r\n}\r\n\r\n.wpcf7-form label {\r\n    font-size: 16px;\r\n    font-weight: 600;\r\n}\r\n\r\n.wpcf7-form select\r\n{\r\n    width:100%;\r\n}', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (227, '2018-02-27 11:40:47', 'Y', 'Grazie', 'Grazie per averci contattato, vi risponderemo il prima possibile.&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;', 'grazie', 0, 1, 0, 0, 62, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'f190698f8102e8d2a3f62603dcccaf7d', 'Y', 'grazie', 'Grazie per averci contattato, vi risponderemo il prima possibile', 'Y', '--free--', '', '', 'Y', '0000-00-00', '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(349, '2019-10-14 08:41:14', 'Y', 'Tige Doge 1', '&lt;p&gt;&lt;br /&gt;Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;/p&gt;\r\n&lt;p&gt;Caratteristiche:&lt;br /&gt;Attacco 1xE27 (max 60W)&lt;br /&gt;Compatibile con lampade classe A++&lt;br /&gt;220-230V 50Hz&lt;/p&gt;', 'tige-doge', 0, 97, 0, 0, 159, '102.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '9b85f3d0d315a086149eea0a49e1c256', 'Y', '', '', 'Y', '--free--', '', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a soffitto con corpo in metallo verniciato. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(350, '2019-10-14 08:51:09', 'Y', 'Tige Cappello Del Parroco', '&lt;p&gt;Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;Attacco 1xE27 (max 60W)&lt;br /&gt;Compatibile con lampade classe A++&lt;br /&gt;220-230V 50Hz&lt;/p&gt;', 'tige-cappello-del-parroco', 0, 97, 0, 0, 160, '126.0000', '', 'Y', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '997543b40a1980e5147e296e4987cc2f', 'Y', '', '', 'Y', '--free--', 'tige-cappello-del-parroco-01_1.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a soffitto con corpo in metallo verniciato con disco &Oslash; 200mm.Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;/p&gt;\r\n&lt;p&gt;&nbsp;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(351, '2019-10-14 08:52:27', 'Y', 'Tige Mezza 77', 'AAAA', 'tige-mezza-77', 0, 97, 0, 0, 161, '149.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '636e190e0b60370b01c46bde6c0d10da', 'Y', '', '', 'Y', '--free--', 'tige-mezza-11-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a soffitto con corpo in metallo verniciato e cavo calzato nero, lunghezza 700mm, regolabile in altezza. Cavi di lunghezza personalizzata, disponibili a richiesta.&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(352, '2019-10-14 08:53:04', 'Y', 'Tige Mezza 12', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', 'tige-mezza-12', 0, 97, 0, 0, 162, '174.0000', '', 'Y', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '2b7008248616617a7044ae6a030d4f5d', 'Y', '', '', 'Y', '--free--', 'tige-mezza-12-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a soffitto con corpo e disco &Oslash; 200mm in metallo verniciato e cavo calzato nero, lunghezza 700mm, regolabile in altezza. Cavi di lunghezza personalizzata, disponibili a richiesta. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(353, '2019-10-14 08:54:02', 'Y', 'Tige 21', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++', 'tige-21', 0, 98, 0, 0, 163, '126.0000', 'TTTT', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', 'e327a15143060ce750c4fbe92cce83ca', 'Y', '', '', 'Y', '--free--', 'tige-21-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a parete con corpo in metallo verniciato.Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(354, '2019-10-14 08:54:28', 'Y', 'Tige 22', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++', 'tige-22', 0, 98, 0, 0, 164, '126.0000', 'AA', 'Y', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', 'b35f418744a1f67d45fd1acc8d08e455', 'Y', '', '', 'Y', '--free--', 'tige-22-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a parete con corpo in metallo verniciato. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(355, '2019-10-14 08:55:05', 'Y', 'Tige 23', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', 'tige-23', 0, 98, 0, 0, 165, '151.0000', '', 'Y', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '567e50617269ff96f5fa0911d039a1f6', 'Y', '', '', 'Y', '--free--', 'tige-23-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a parete con corpo e disco &Oslash; 200mm in metallo verniciato. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(356, '2019-10-14 08:55:32', 'Y', 'Tige 24', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro&lt;br /&gt;soffiato verniciato bianco.&lt;br /&gt;&bull; Versione con snodo orientabile.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', 'tige-24', 0, 98, 0, 0, 166, '151.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', 'eab2b4e5170ed7c3d99dee9aac0d4852', 'Y', '', '', 'Y', '--free--', 'tige-24-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a parete con corpo e disco &Oslash; 200mm in metallo verniciato. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(357, '2019-10-14 08:57:11', 'Y', 'Tige 30', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', 'tige-30', 0, 99, 0, 0, 167, '116.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', 'e9e63a723af5fe535d13123882a55f58', 'Y', '', '', 'Y', '--free--', 'tige-30-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada a soffitto con corpo in metallo verniciato. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(358, '2019-10-14 08:57:43', 'Y', 'Tige Petrarca', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', 'tige-petrarca', 0, 100, 0, 0, 168, '191.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '2c84bea00a702fd55f24e5e3f62b9a53', 'Y', '', '', 'Y', '--free--', 'tige-petrarca-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada da tavolo con corpo in metallo verniciato.Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(359, '2019-10-14 08:58:20', 'Y', 'Tige Casanova', 'Su richiesta:&lt;br /&gt;&bull; Versione con sfera in vetro soffiato verniciato bianco.&lt;br /&gt;&lt;br /&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco 1xE27 (max 60W)&lt;br /&gt;&bull; Compatibile con lampade classe A++&lt;br /&gt;&bull; 220-230V 50Hz', 'tige-casanova', 0, 101, 0, 0, 169, '289.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '768dbcc132cbfbb2a53e957851ccee7e', 'Y', '', '', 'Y', '--free--', 'tige-casanova-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Lampada da terra con corpo in metallo verniciato. Tige &egrave; un sistema completo dal gusto minimale e retr&ograve;, in grado di caratterizzare diversi contesti d&rsquo;interni.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(360, '2019-10-14 08:59:25', 'Y', 'Sfera in vetro soffiato', '', 'sfera-in-vetro-soffiato', 0, 102, 0, 0, 170, '0.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '233b9d1b92e69c0e050cc2fc0b09ec98', 'Y', '', '', 'Y', '--free--', 'sfera.jpg', '', 'Y', '0000-00-00', '', '', 1, 5, '', '&lt;p&gt;Sfera in vetro soffiato verniciato bianco.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(361, '2019-10-14 08:59:53', 'Y', 'Cube', 'Caratteristiche:&lt;br /&gt;&bull; Attacco GU10 (lampada non inclusa max75w)&lt;br /&gt;&bull; IP20', 'cube', 0, 99, 0, 0, 171, '34.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', 'b6caa73341144ab8284d5cb01c4dc720', 'Y', '', '', 'Y', '--free--', 'cube-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 6, '', '&lt;p&gt;Lampada da soffitto per interni in alluminio verniciato.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;\r\n&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(362, '2019-10-14 09:00:21', 'Y', 'Round', '&lt;p&gt;Caratteristiche:&lt;br /&gt;&bull; Attacco GU10 (lampada non inclusa max75w)&lt;br /&gt;&bull; IP20&lt;/p&gt;\r\n&lt;div&gt;&nbsp;&lt;/div&gt;', 'round', 0, 99, 0, 0, 172, '34.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '98787d1c95c6579f564394bc5d0a6e91', 'Y', '', '', 'Y', '--free--', 'round-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 6, '', '&lt;p&gt;Lampada da soffitto per interni in alluminio verniciato.&lt;/p&gt;\r\n&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;\r\n&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(363, '2019-10-14 09:00:52', 'Y', 'Square', '&lt;p&gt;Caratteristiche:&lt;/p&gt;\r\n&lt;p&gt;Versione con lunghezza 32cm:&lt;br /&gt;&bull; Led 3000&deg;K 12w 500mA - 220/230V 50/60Hz&nbsp;&lt;br /&gt;&bull; Flusso luminoso 1840Lm&nbsp;&lt;br /&gt;&bull; IP20&nbsp;&lt;br /&gt;Versione con lunghezza 60cm:&lt;br /&gt;&bull; Led 3000&deg;K 24w 500mA - 220/230V 50/60Hz&lt;br /&gt;&bull; Flusso luminoso 2700lm&lt;br /&gt;&bull; IP20&lt;/p&gt;\r\n&lt;div&gt;&nbsp;&lt;/div&gt;', 'square', 0, 98, 0, 0, 173, '147.0000', 'aaa', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', 'b3dd718098fdb6f476d7660e406ab1bb', 'Y', '', '', 'Y', '--free--', 'square-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 6, '', '&lt;p&gt;Lampada da parete per interni a luce indiretta in alluminio verniciato bianco completa di alimentatore elettronico integrato.&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;\r\n&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;\r\n&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(364, '2019-10-14 09:01:30', 'Y', 'Stilo', '&lt;p&gt;Led 3000&deg;K&lt;br /&gt;30w&lt;br /&gt;24V&lt;br /&gt;Flusso luminoso 2600Lm&lt;br /&gt;IP20&lt;br /&gt;220/230V 50/60Hz&lt;/p&gt;', 'stilo', 0, 97, 0, 0, 174, '172.0000', '', 'N', 'N', '0.00', '2019-10-14', '2019-10-14', '1.00', '4040ea3d7ce3239823612f616f5aa944', 'Y', '', '', 'Y', '--free--', 'stilo-01.jpg', '', 'Y', '0000-00-00', '', '', 1, 6, '', '&lt;p&gt;Lampada a sospensione per interni in alluminio verniciato bianco completa di alimentatore elettronico integrato (remoto nel rosone)&lt;br /&gt; &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (365, '2019-10-15 08:41:42', 'Y', 'Slide 2', '', 'slide-2', 0, 85, 0, 0, 175, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', '8cb0bd7bdb737880861e8888b4be82fa', 'Y', '', '', 'Y', '--free--', '', '', 'Y', '0000-00-00', '1000', 'fade', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (367, '2019-10-15 08:51:53', 'Y', 'Slide 3', '', 'slide-3', 0, 85, 0, 0, 66, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'df827b39038f4747fd6723f8fa745d5e', 'Y', '', '', 'Y', '--free--', 'foto-slide-stilo_1.jpg', '', 'Y', '0000-00-00', '1000', 'fade', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (370, '2019-10-26 11:37:13', 'Y', 'Lighting 2018', '', 'lighting-2018', 0, 103, 0, 0, 178, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'c77b22a18e86b96ec110c5945a43effa', 'Y', '', '', 'Y', '--free--', 'home1_banner1.jpg', '', 'Y', '0000-00-00', '', '', 0, 0, '', '', '', 'round-02_1.jpg', 'http://tige/it/blog.html', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (374, '2019-10-28 10:21:41', 'Y', '(Copia di) Post 1', 'test', 'post-1-8761', 0, 87, 0, 0, 180, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', '40913e72a74ff0ecd3a112ed003a9bf8', 'Y', '', '', 'Y', '--free--', 'img1_1_1.jpg', '', 'Y', '2019-10-26', '', '', 0, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (375, '2019-10-28 10:21:42', 'Y', '888', '888', '888', 0, 87, 0, 0, 181, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'df65b35b5b30751ec537c9ecd1350a16', 'Y', '123', '', 'Y', '--free--', 'img1_1_1.jpg', '', 'Y', '2019-10-27', '', '', 0, 0, '', '', '', '', '', 0, 0, 'aaaa', '', '', 'img1.jpg', 0, 'Y', 'N'),
-(380, '2020-05-30 20:22:13', 'Y', 'aaaa', '', 'aaaa', 0, 84, 0, 0, 182, '2.0000', 'AAAA', 'N', 'N', '0.00', '2020-05-30', '2020-05-30', '3.00', '3f08ea196a18023a1e459b03b01e1c93', 'Y', '', '', 'Y', '--free--', 'img1_3.jpg', '', 'Y', '0000-00-00', '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(381, '2020-05-30 20:46:02', 'Y', '(Copia di) aaaa', '', 'aaaa-3981', 0, 84, 0, 0, 183, '222.0000', 'DDD', 'N', 'N', '0.00', '2020-05-30', '2020-05-30', '1.00', '78da10de2824cadcdc09d59a3b087eb4', 'Y', '', '', 'Y', '--free--', 'img1_3.jpg', '', 'Y', NULL, '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
 (383, '2020-07-11 10:07:19', 'Y', 'yyyy', '', 'yyyy', 0, 109, 0, 0, 184, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'd6e9e0d66df34cc72ac522c1283b2bdc', 'Y', '', '', 'Y', '--free--', 'img1_7.jpg', '', 'Y', '2020-07-11', '', '', 0, 0, '', '', '', '', '', 0, 0, '', 'AF', '1234,5678', '', 0, 'Y', 'N'),
 (385, '2020-07-11 10:10:15', 'Y', '(Copia di) yyyy AAA', '', 'yyyy-7819', 0, 109, 0, 0, 185, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'a97ec14b5de493f8722a904918f46c69', 'Y', '', '', 'Y', '--free--', 'img1_7.jpg', '', 'Y', '2020-07-11', '', '', 0, 0, '', '', '', '', '', 0, 0, '', '0', '', '', 0, 'Y', 'N'),
-(387, '2020-07-30 11:34:39', 'Y', 'TEST', '', 'test', 0, 110, 0, 0, 187, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', '6e405390630c738361bcf02115c8af48', 'Y', '', '', 'Y', '--free--', '', '', 'Y', NULL, '', '', 0, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(390, '2020-08-01 09:44:02', 'Y', 'Privacy', '', 'privacy', 0, 1, 0, 0, 190, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'e0f1da2995191abe2b2cbb59acc6cf84', 'Y', '', '', 'Y', '--free--', '', '', 'Y', NULL, '', '', 0, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(391, '2020-08-24 14:44:13', 'Y', 'Pacco regalo', '', 'pacco-regalo', 0, 102, 0, 0, 191, '0.0000', '', 'N', 'N', '0.00', '2020-08-24', '2020-08-24', '1.00', '8c2d420b5e4c18633d03bf04ffd9059c', 'Y', '', '', 'Y', '--free--', '', '', 'Y', '0000-00-00', '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'N', 'Y'),
-(392, '2020-08-24 14:46:36', 'Y', 'Incisione', '', 'incisione', 0, 102, 0, 0, 192, '10.0000', '', 'N', 'N', '0.00', '2020-08-24', '2020-08-24', '1.00', '7a88a30653b475176de543b6c70bf7dd', 'Y', '', '', 'Y', '--free--', '', '', 'Y', '0000-00-00', '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'N', 'N'),
-(393, '2020-09-12 08:01:24', 'Y', 'AAAA', '', 'aaaa-8927', 0, 84, 0, 0, 193, '0.0000', '', 'N', 'N', '0.00', '2020-09-12', '2020-09-12', '1.00', 'c8fad1101a0aa99b2d648614e34c8f77', 'Y', '', '', 'Y', '--free--', '', '', 'Y', NULL, '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(394, '2020-09-12 08:01:33', 'Y', '(Copia di) AAAA', '', 'aaaa-8927-5148', 0, 84, 0, 0, 194, '0.0000', '', 'N', 'N', '0.00', '2020-09-12', '2020-09-12', '1.00', 'fdcc89bf8cffbad7616d9594dccb37d9', 'Y', '', '', 'Y', '--free--', '', '', 'Y', '0000-00-00', '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
-(395, '2020-09-12 08:01:51', 'Y', 'bbb', '', 'bbb', 0, 84, 0, 0, 195, '0.0000', '', 'N', 'N', '0.00', '2020-09-12', '2020-09-12', '1.00', '566dfffd31740a0469a65865ee294286', 'Y', '', '', 'Y', '--free--', '', '', 'Y', NULL, '', '', 1, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N');
+(387, '2020-07-30 11:34:39', 'Y', 'TEST', '', 'test', 0, 110, 0, 0, 187, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', '6e405390630c738361bcf02115c8af48', 'Y', '', '', 'Y', '--free--', 'img9.jpg', '', 'Y', '0000-00-00', '', '', 0, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N'),
+(390, '2020-08-01 09:44:02', 'Y', 'Privacy', '', 'privacy', 0, 1, 0, 0, 190, '0.0000', '', 'N', 'N', '0.00', '0000-00-00', '0000-00-00', '1.00', 'e0f1da2995191abe2b2cbb59acc6cf84', 'Y', '', '', 'Y', '--free--', '', '', 'Y', NULL, '', '', 0, 0, '', '', '', '', '', 0, 0, '', '', '', '', 0, 'Y', 'N');
 
 -- --------------------------------------------------------
 
@@ -1545,36 +1318,6 @@ CREATE TABLE `pages_attributi` (
   `colonna` char(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dump dei dati per la tabella `pages_attributi`
---
-
-INSERT INTO `pages_attributi` (`id_pa`, `id_page`, `id_a`, `id_order`, `colonna`) VALUES
-(10, 349, 16, 1, 'col_1'),
-(11, 349, 15, 2, 'col_2'),
-(12, 350, 16, 3, 'col_1'),
-(13, 350, 15, 4, 'col_2'),
-(14, 351, 16, 5, 'col_1'),
-(15, 351, 15, 6, 'col_2'),
-(16, 352, 16, 7, 'col_1'),
-(17, 352, 15, 8, 'col_2'),
-(20, 353, 15, 9, 'col_1'),
-(21, 354, 15, 10, 'col_1'),
-(22, 355, 15, 11, 'col_1'),
-(23, 356, 15, 12, 'col_1'),
-(24, 357, 15, 13, 'col_1'),
-(25, 358, 15, 14, 'col_1'),
-(26, 359, 15, 15, 'col_1'),
-(27, 361, 15, 16, 'col_1'),
-(28, 362, 15, 17, 'col_1'),
-(31, 363, 20, 18, 'col_1'),
-(33, 364, 15, 20, 'col_1'),
-(37, 381, 20, 21, 'col_1'),
-(38, 381, 17, 22, 'col_2'),
-(39, 381, 15, 23, 'col_3'),
-(40, 349, 17, 24, 'col_3'),
-(41, 392, 21, 25, 'col_1');
-
 -- --------------------------------------------------------
 
 --
@@ -1587,13 +1330,6 @@ CREATE TABLE `pages_caratteristiche_valori` (
   `id_cv` int(11) UNSIGNED NOT NULL,
   `id_order` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `pages_caratteristiche_valori`
---
-
-INSERT INTO `pages_caratteristiche_valori` (`id_pcv`, `id_page`, `id_cv`, `id_order`) VALUES
-(1, 349, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1623,15 +1359,6 @@ CREATE TABLE `pages_personalizzazioni` (
   `id_order` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dump dei dati per la tabella `pages_personalizzazioni`
---
-
-INSERT INTO `pages_personalizzazioni` (`id_pp`, `id_page`, `id_pers`, `id_order`) VALUES
-(8, 392, 3, 1),
-(9, 349, 4, 2),
-(10, 349, 3, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -1644,14 +1371,6 @@ CREATE TABLE `pages_tag` (
   `id_tag` int(11) UNSIGNED NOT NULL,
   `id_order` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `pages_tag`
---
-
-INSERT INTO `pages_tag` (`id_pt`, `id_page`, `id_tag`, `id_order`) VALUES
-(1, 349, 3, 1),
-(2, 361, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -1694,17 +1413,8 @@ CREATE TABLE `prodotti_correlati` (
 --
 
 INSERT INTO `prodotti_correlati` (`id_pc`, `id_page`, `id_corr`, `id_order`, `accessorio`) VALUES
-(2, 363, 349, 2, 0),
-(3, 363, 350, 3, 0),
-(4, 363, 352, 4, 0),
-(5, 363, 351, 5, 0),
-(6, 349, 353, 6, 0),
 (8, 374, 375, 8, 0),
-(11, 349, 362, 1, 0),
-(12, 375, 374, 11, 0),
-(19, 349, 391, 13, 1),
-(21, 393, 391, 14, 1),
-(26, 349, 392, 15, 1);
+(12, 375, 374, 11, 0);
 
 -- --------------------------------------------------------
 
@@ -2221,7 +1931,15 @@ INSERT INTO `regaccesses` (`id`, `ip`, `data`, `ora`, `username`) VALUES
 (294, '127.0.0.1', '01-09-2020', '15:30', 'antoniog.web@gmail.com'),
 (295, '127.0.0.1', '07-09-2020', '11:25', 'info@laboratoriolibero.com'),
 (296, '127.0.0.1', '12-09-2020', '12:58', 'antoniog.web@gmail.com'),
-(297, '127.0.0.1', '12-09-2020', '12:59', 'antoniog.web@gmail.com');
+(297, '127.0.0.1', '12-09-2020', '12:59', 'antoniog.web@gmail.com'),
+(298, '127.0.0.1', '19-09-2020', '11:53', 'antoniog.web@gmail.com'),
+(299, '127.0.0.1', '19-09-2020', '12:17', 'info@laboratoriolibero.com'),
+(300, '127.0.0.1', '19-09-2020', '13:19', 'info@laboratoriolibero.com'),
+(301, '127.0.0.1', '21-09-2020', '10:50', 'antoniog.web@gmail.com'),
+(302, '127.0.0.1', '22-09-2020', '17:34', 'info@laboratoriolibero.com'),
+(303, '127.0.0.1', '22-09-2020', '17:35', 'antoniog.web@gmail.com'),
+(304, '127.0.0.1', '03-10-2020', '22:16', 'info@laboratoriolibero.com'),
+(305, '127.0.0.1', '05-10-2020', '17:43', 'info@laboratoriolibero.com');
 
 -- --------------------------------------------------------
 
@@ -2270,13 +1988,6 @@ CREATE TABLE `regsessions` (
   `creation_date` int(10) UNSIGNED NOT NULL,
   `user_agent` char(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `regsessions`
---
-
-INSERT INTO `regsessions` (`uid`, `token`, `id_user`, `creation_date`, `user_agent`) VALUES
-('5d659d574ab4ed836210521272f56d47', '8b69e64b429aee9aab98907070b91830', 66, 1599908317, '07cd63964cd4102f3186766c33314e34');
 
 -- --------------------------------------------------------
 
@@ -2396,14 +2107,6 @@ CREATE TABLE `scaglioni` (
   `sconto` decimal(10,2) NOT NULL,
   `id_order` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `scaglioni`
---
-
-INSERT INTO `scaglioni` (`id_scaglione`, `data_creazione`, `id_page`, `quantita`, `sconto`, `id_order`) VALUES
-(1, '2020-03-21 14:51:16', 349, 3, '10.00', 0),
-(2, '2020-07-07 20:39:40', 380, 1, '2.00', 0);
 
 -- --------------------------------------------------------
 
@@ -3535,7 +3238,14 @@ INSERT INTO `traduzioni` (`id_t`, `chiave`, `valore`, `lingua`, `contesto`, `tra
 (3285, 'Tag', 'Tag', 'it', 'back', '0'),
 (3286, 'Seleziona', 'Seleziona', 'it', 'front', '0'),
 (3287, '<b>Si prega di selezionare una nazione tra quelle permesse</b>', '<b>Si prega di selezionare una nazione tra quelle permesse</b>', 'it', 'front', '0'),
-(3288, '<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>', '<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>', 'it', 'front', '0');
+(3288, '<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>', '<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>', 'it', 'front', '0'),
+(3289, 'Seleziona il corriere', 'Seleziona il corriere', 'it', 'front', '0'),
+(3290, '<b>Si prega di selezionare un corriere tra quelli permessi</b>', '<b>Si prega di selezionare un corriere tra quelli permessi</b>', 'it', 'front', '0'),
+(3291, '<b>Non è possibile spedire nella nazione selezionata</b>', '<b>Non è possibile spedire nella nazione selezionata</b>', 'it', 'front', '0'),
+(3292, 'Non spedibile ', 'Non spedibile ', 'it', 'front', '0'),
+(3293, 'Non spedibile nella nazione scelta', 'Non spedibile nella nazione scelta', 'it', 'front', '0'),
+(3294, 'Non spedibile nella nazione selezionata', 'Non spedibile nella nazione selezionata', 'it', 'front', '0'),
+(3295, 'Seleziona', 'Seleziona', 'en', 'front', '0');
 
 -- --------------------------------------------------------
 
@@ -3555,7 +3265,7 @@ CREATE TABLE `variabili` (
 
 INSERT INTO `variabili` (`id_v`, `chiave`, `valore`) VALUES
 (5, 'usa_marchi', '1'),
-(7, 'db_version', '72'),
+(7, 'db_version', '81'),
 (8, 'contenuti_in_prodotti', '1'),
 (9, 'scaglioni_in_prodotti', '1'),
 (10, 'correlati_in_prodotti', '1'),
@@ -3583,7 +3293,18 @@ INSERT INTO `variabili` (`id_v`, `chiave`, `valore`) VALUES
 (32, 'attiva_personalizzazioni', '1'),
 (33, 'attiva_giacenza', '1'),
 (34, 'usa_tag', '1'),
-(35, 'shop_in_alias_marchio', '0');
+(35, 'shop_in_alias_marchio', '0'),
+(36, 'reg_expr_file', '/^[a-zA-Z0-9_\\-]+\\.(jpg|jpeg|gif|png)$/i'),
+(37, 'nazione_default', 'IT'),
+(38, 'referenze_attive', '1'),
+(39, 'blog_attivo', '1'),
+(40, 'divisone_breadcrum', ' &raquo; '),
+(41, 'shop_in_alias_tag', '0'),
+(42, 'menu_class_prefix', ''),
+(43, 'primo_attributo_selezionato', '0'),
+(44, 'prodotti_per_pagina', '999999'),
+(45, 'template_attributo', ''),
+(46, 'template_personalizzazione', '');
 
 -- --------------------------------------------------------
 
@@ -3605,9 +3326,6 @@ CREATE TABLE `wishlist` (
 --
 
 INSERT INTO `wishlist` (`id_wishlist`, `data_creazione`, `wishlist_uid`, `id_page`, `creation_time`, `id_order`) VALUES
-(50, '2019-09-23 13:52:55', '323e7d43652e2c9c4e2cdc2448910621', 282, 1569246775, 1),
-(51, '2019-09-30 06:34:51', '6c5d146af9b57c179678c3864b30a046', 333, 1569825291, 2),
-(52, '2019-09-30 06:34:55', '6c5d146af9b57c179678c3864b30a046', 343, 1569825291, 3),
 (103, '2019-10-28 10:36:25', '55d1d2f3a2210155e468986241c1381f', 360, 1572258985, 4),
 (104, '2020-04-16 16:12:00', 'ec90b34e1438f46211761d83a211b2bd', 358, 1587053520, 5),
 (105, '2020-06-29 09:57:40', 'e974dc83e488bde46f199d332c4fdfb7', 380, 1593424660, 6),
@@ -4052,7 +3770,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT per la tabella `accesses`
 --
 ALTER TABLE `accesses`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT per la tabella `admingroups`
@@ -4100,7 +3818,7 @@ ALTER TABLE `caratteristiche_valori`
 -- AUTO_INCREMENT per la tabella `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id_cart` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT per la tabella `categories`
@@ -4136,25 +3854,25 @@ ALTER TABLE `contenuti`
 -- AUTO_INCREMENT per la tabella `contenuti_tradotti`
 --
 ALTER TABLE `contenuti_tradotti`
-  MODIFY `id_ct` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+  MODIFY `id_ct` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=281;
 
 --
 -- AUTO_INCREMENT per la tabella `corrieri`
 --
 ALTER TABLE `corrieri`
-  MODIFY `id_corriere` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_corriere` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT per la tabella `corrieri_spese`
 --
 ALTER TABLE `corrieri_spese`
-  MODIFY `id_spesa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id_spesa` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT per la tabella `documenti`
 --
 ALTER TABLE `documenti`
-  MODIFY `id_doc` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_doc` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT per la tabella `fatture`
@@ -4178,7 +3896,7 @@ ALTER TABLE `impostazioni`
 -- AUTO_INCREMENT per la tabella `iva`
 --
 ALTER TABLE `iva`
-  MODIFY `id_iva` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_iva` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `lingue`
@@ -4274,7 +3992,7 @@ ALTER TABLE `personalizzazioni`
 -- AUTO_INCREMENT per la tabella `prodotti_correlati`
 --
 ALTER TABLE `prodotti_correlati`
-  MODIFY `id_pc` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_pc` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT per la tabella `promozioni`
@@ -4304,7 +4022,7 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT per la tabella `regaccesses`
 --
 ALTER TABLE `regaccesses`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=298;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=306;
 
 --
 -- AUTO_INCREMENT per la tabella `reggroups`
@@ -4322,7 +4040,7 @@ ALTER TABLE `reggroups_categories`
 -- AUTO_INCREMENT per la tabella `regusers`
 --
 ALTER TABLE `regusers`
-  MODIFY `id_user` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id_user` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `regusers_groups`
@@ -4358,7 +4076,7 @@ ALTER TABLE `slide_layer`
 -- AUTO_INCREMENT per la tabella `spedizioni`
 --
 ALTER TABLE `spedizioni`
-  MODIFY `id_spedizione` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_spedizione` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `tag`
@@ -4394,13 +4112,13 @@ ALTER TABLE `tipi_documento`
 -- AUTO_INCREMENT per la tabella `traduzioni`
 --
 ALTER TABLE `traduzioni`
-  MODIFY `id_t` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3289;
+  MODIFY `id_t` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3296;
 
 --
 -- AUTO_INCREMENT per la tabella `variabili`
 --
 ALTER TABLE `variabili`
-  MODIFY `id_v` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_v` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT per la tabella `wishlist`
