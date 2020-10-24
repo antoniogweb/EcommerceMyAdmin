@@ -332,6 +332,7 @@ class Route
 		
 		'tipicontenuto,main',
 		'tipicontenuto,form',
+		'tipicontenuto,ordina',
 		
 		'cron,migrazioni',
 		

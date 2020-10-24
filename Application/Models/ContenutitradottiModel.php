@@ -47,8 +47,10 @@ class ContenutitradottiModel extends GenericModel
 					'labelString'=>	'Link libero',
 				),
 			),
-
 		);
+		
+		if ($this->formStructAggiuntivoEntries)
+			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
 	}
 	
 	public function titolo($id)

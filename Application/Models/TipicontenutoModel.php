@@ -50,7 +50,37 @@ class TipicontenutoModel extends GenericModel
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'section'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->getSezioni(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'labelString'=>	'Sezione',
+				),
+				'campi'	=>	array(
+					'labelString'=>	'Campi (divisi da virgola)',
+				),
 			),
 		);
+	}
+	
+	public function getSezioni()
+	{
+		$c = new CategoriesModel();
+		
+		$sezioni = array(""=>"--") + $c->clear()->select("section, section as `Sezione|strtoupper`")->where(array(
+			"ne"	=>	array(
+				"section"	=>	"",
+			)
+		))->process()->toList("section", "Sezione")->send();
+		
+		return $sezioni;
+	}
+	
+	public static function getRecord($id)
+	{
+		$t = new TipicontenutoModel();
+		
+		return $t->clear()->selectId($id);
 	}
 }

@@ -55,9 +55,11 @@ $(document).ready(function() {
 			<?php echo $form["coordinate"];?>
 			<?php } ?>
 		</div>
+		<?php if (isset($form["id_tipo"])) { ?>
 		<div class='col-md-6'>
 			<?php echo $form["id_tipo"];?>
 		</div>
+		<?php } ?>
 		<div class='col-md-6'>
 			<?php echo $form["lingua"];?>
 		</div>

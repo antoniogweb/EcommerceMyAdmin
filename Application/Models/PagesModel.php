@@ -279,8 +279,10 @@ class PagesModel extends GenericModel {
 					'reverse' => 'yes',
 				),
 			),
-
 		);
+		
+		if ($this->formStructAggiuntivoEntries)
+			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
 	}
 	
 	public function selectIva()

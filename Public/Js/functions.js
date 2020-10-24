@@ -8,7 +8,7 @@ var tiny_editor_config = {
 	forced_root_block : '',
 	entity_encoding : "raw",
 // 			width : "910",
-// 			height : "700",
+			height : "300",
 	
 	// General options
 	theme : "advanced",
@@ -48,7 +48,6 @@ function open_lightbox(titolo, contenuto)
 		$(".black_overlay, .white_content").css("display","none");
 		
 		return false;
-		
 	});
 }
 

@@ -34,6 +34,8 @@
 									<?php echo $form["title"];?>
 									<?php echo $form["alias"];?>
 									<?php echo $form["sottotitolo"];?>
+									
+									<?php if (isset($form["price"]) && isset($form["id_iva"])) { ?>
 									<div class='row'>
 										<div class='col-lg-6'>
 											<?php echo $form["price"];?>
@@ -42,14 +44,38 @@
 											<?php echo $form["id_iva"];?>
 										</div>
 									</div>
+									<?php } ?>
+									
+									<?php if (isset($form["codice"])) { ?>
 									<?php echo $form["codice"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["peso"])) { ?>
 									<?php echo $form["peso"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["in_promozione"])) { ?>
 									<?php echo $form["in_promozione"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["prezzo_promozione"])) { ?>
 									<?php echo $form["prezzo_promozione"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["dal"])) { ?>
 									<?php echo $form["dal"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["al"])) { ?>
 									<?php echo $form["al"];?>
-									<?php echo $form["use_editor"];?>
-									<?php echo $form["description"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["description"])) { ?>
+										<?php echo $form["use_editor"];?>
+										<?php echo $form["description"];?>
+									<?php } ?>
+									
+									<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
 									
 									<?php if ($type === "update") { ?>
 									<input class="varchar_input form-control" type="hidden" value="<?php echo $id_page;?>" name="id_page">

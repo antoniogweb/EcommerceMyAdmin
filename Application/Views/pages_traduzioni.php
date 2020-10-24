@@ -39,7 +39,7 @@ $cmT = new CategoriesModel();
 			else
 				$urlT = $cmT->getUrlAlias($trad["id_c"], $trad["lingua"]);
 			?>
-			<a target="_blank" title="Vai alla pagina" href="<?php echo Domain::$name."/".$trad["lingua"]."/".$urlT;?>"><i class="fa fa-arrow-right"></i></a>
+			<a target="_blank" title="Vedi pagina" href="<?php echo Domain::$name."/".$trad["lingua"]."/".$urlT;?>"><i class="fa fa-arrow-right"></i></a>
 		</td>
 		<?php } ?>
 	</tr>

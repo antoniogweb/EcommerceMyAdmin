@@ -28,6 +28,8 @@ class TipicontenutoController extends BaseController
 	
 	public $argKeys = array();
 	
+	public $orderBy = "id_order";
+	
 	public $sezionePannello = "utenti";
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
@@ -46,8 +48,8 @@ class TipicontenutoController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("tipi_contenuto.titolo", "tipi_contenuto.tipo");
-		$this->mainHead = "Titolo,Tipo";
+		$this->mainFields = array("tipi_contenuto.titolo", "tipi_contenuto.tipo", "tipi_contenuto.section");
+		$this->mainHead = "Titolo,Tipo,Sezione";
 		$this->filters = array(null, "titolo", array("tipo",null,array("tutti"=>"Tipo") + TipicontenutoModel::$tipi));
 		
 		$this->m[$this->modelName]->clear()
@@ -55,15 +57,20 @@ class TipicontenutoController extends BaseController
 					"lk" => array('titolo' => $this->viewArgs['titolo']),
 					"tipo"	=>	$this->viewArgs['tipo'],
 				))
-				->orderBy("titolo")->save();
+				->orderBy("id_order")->save();
 		
 		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,tipo,descrizione');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,tipo,section,campi,descrizione');
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function ordina()
+	{
+		parent::ordina();
 	}
 }

@@ -31,6 +31,7 @@ class GenericModel extends Model_Tree {
 	public $uploadFields = array();
 	public $lId = null;
 	public $traduzione = false;
+	public $formStructAggiuntivoEntries = array();
 	
 	public function __construct() {
 
@@ -552,6 +553,18 @@ class GenericModel extends Model_Tree {
 					"id_fascia_prezzo"	=>	$id_fascia_prezzo,
 					"sezione"		=>	$sezione,
 				),"sanitizeDb");
+				
+				// Prendo i campi aggiuntivi
+				if (defined("CAMPI_AGGIUNTIVI_PAGINE") && is_array(CAMPI_AGGIUNTIVI_PAGINE))
+				{
+					foreach (CAMPI_AGGIUNTIVI_PAGINE as $struct)
+					{
+						foreach ($struct as $campo => $frm)
+						{
+							$ct->setValue($campo, isset($record[$campo]) ? $record[$campo] : "", "sanitizeDb");
+						}
+					}
+				}
 				
 // 				print_r($ct->values);die();
 				

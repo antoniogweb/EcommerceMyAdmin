@@ -45,6 +45,9 @@ class PagesController extends BaseController {
 	
 	public $formFields = null;
 	
+	public $tabContenuti = array();
+	public $section = null;
+	
 	protected $_posizioni = array(
 		"main"		=>	null,
 		"immagini"	=>	null,
@@ -64,8 +67,9 @@ class PagesController extends BaseController {
 		$this->session('admin');
 		$this->model();
 		$this->model("PagesModel");
-
+		
 		$data['posizioni'] = $this->_posizioni;
+		$data['sezione'] = $clean["section"] = $this->section = sanitizeAll($this->m[$this->modelName]->hModel->section); 
 		
 		$this->setArgKeys(array(
 			'page:forceInt'=>1,
@@ -108,6 +112,11 @@ class PagesController extends BaseController {
 		$this->model("PagespersonalizzazioniModel");
 		$this->model("TagModel");
 		$this->model("PagestagModel");
+		
+		// Estraggo tutte le tab dei contenuti
+		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
+			"section" => $clean["section"],
+		))->orderBy("id_order")->toList("id_tipo", "titolo")->send();
 		
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
@@ -543,11 +552,22 @@ class PagesController extends BaseController {
 		$data["use_editor"] = "Y";
 		
 		$data["section"] = $this->m[$this->modelName]->hModel->section;
+		$sectionDetail = $data["sectionCampiAggiuntivi"] = $data["section"]."_detail";
 		
 		if ($queryType === "insert" or $this->m[$this->modelName]->principale($clean['id']))
 		{
 			if (in_array($queryType,$qAllowed))
 			{
+				if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$sectionDetail]))
+				{
+					foreach (CAMPI_AGGIUNTIVI_PAGINE[$sectionDetail] as $campo => $form)
+					{
+						$this->queryFields .= ",$campo";
+						
+						$this->m[$this->modelName]->formStructAggiuntivoEntries[$campo] = $form;
+					}
+				}
+				
 				$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 				
 				$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
@@ -1216,12 +1236,28 @@ class PagesController extends BaseController {
 		$filtroLingua = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectLingua();
 		$filtroTipo = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectTipo("GENERICO");
 		
-		$this->filters = array(null,"titolo_contenuto", array("tipocontenuto","",$filtroTipo), array("lingua","",$filtroLingua));
+		$this->filters = array(null,"titolo_contenuto");
+		
+		if ((int)count($this->tabContenuti) === 0)
+			$this->filters[] = array("tipocontenuto","",$filtroTipo);
+		
+		$this->filters[] = array("lingua","",$filtroLingua);
+		
 		$this->aggregateFilters = false;
 		$this->showFilters = true;
 		
-		$this->mainFields = array("titoloContenuto","tipi_contenuto.titolo","lingua","attivo");
-		$this->mainHead = "Titolo,Tipo,Lingua,Attivo";
+		$this->mainFields = array("titoloContenuto");
+		$this->mainHead = "Titolo";
+		
+		if ((int)count($this->tabContenuti) === 0)
+		{
+			$this->mainFields[] = "tipi_contenuto.titolo";
+			$this->mainHead .= ",Tipo";
+		}
+		
+		$this->mainFields[] = "lingua";
+		$this->mainFields[] = "attivo";
+		$this->mainHead .= ",Lingua,Attivo";
 		
 		if (v("attiva_gruppi_contenuti"))
 		{

@@ -78,6 +78,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_colore_testo"		=>	0,
 		"attiva_gruppi"				=>	0,
 		"attiva_gruppi_contenuti"	=>	0,
+		"mostra_descrizione_in_prodotti"	=>	1,
 	);
 	
 	public function __construct() {

@@ -52,13 +52,13 @@ class ContenutitradottiController extends BaseController
 		$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
 		
 		if ($queryType == "insert")
-			$section = $this->viewArgs["section"];
+			$section = $data["sectionCampiAggiuntivi"] = $this->viewArgs["section"];
 		else
 		{
 			$record = $this->m[$this->modelName]->selectId((int)$id);
 			
 			if (!empty($record))
-				$section = $record["sezione"];
+				$section = $data["sectionCampiAggiuntivi"] = $record["sezione"];
 		}
 		
 		if ($section == "slide_detail")
@@ -74,6 +74,16 @@ class ContenutitradottiController extends BaseController
 		else if ($section == "tag")
 			$fields = 'titolo,alias';
 		
+		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
+		{
+			foreach (CAMPI_AGGIUNTIVI_PAGINE[$section] as $campo => $form)
+			{
+				$fields .= ",$campo";
+				
+				$this->m[$this->modelName]->formStructAggiuntivoEntries[$campo] = $form;
+			}
+		}
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		// Lo imposto come salvato manualmente
@@ -83,5 +93,7 @@ class ContenutitradottiController extends BaseController
 			$this->m[$this->modelName]->setValue("sezione",$section);
 		
 		parent::form($queryType, $id);
+		
+		$this->append($data);
 	}
 }

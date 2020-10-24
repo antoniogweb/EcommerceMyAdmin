@@ -38,7 +38,7 @@ function ajaxfilemanager(field_name, url, type, win) {
 	return false;
 }
 $().ready(function() {
-	$('[name="description"]').tinymce(tiny_editor_config);
+	$('[name="description"],.dettagli').tinymce(tiny_editor_config);
 });
 </script>
 <div class='row'>
@@ -67,6 +67,8 @@ $().ready(function() {
 			<?php if (isset($form["url"])) { ?>
 			<?php echo $form["url"];?>
 			<?php } ?>
+			
+			<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
 			
 			<?php if ($type === "update") { ?>
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_ct">

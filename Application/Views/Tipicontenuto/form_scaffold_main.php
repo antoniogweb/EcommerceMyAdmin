@@ -14,6 +14,10 @@ $().ready(function() {
 	
 	<?php echo $form["tipo"];?>
 	
+	<?php echo $form["section"];?>
+	
+	<?php echo $form["campi"];?>
+	
 	<?php echo $form["descrizione"];?>
 	
 	<?php if ($type === "update") { ?>

@@ -53,13 +53,19 @@ class ProdottiController extends PagesController {
 		
 		$this->head .= ',In promoz?,Pubbl?,In evid?';
 		
-		$this->queryFields = "title,alias,id_c,price,codice,attivo,in_evidenza,peso,in_promozione,prezzo_promozione,dal,al,description,immagine,use_editor,id_iva,sottotitolo";
+		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
+		
+		if (v("ecommerce_attivo"))
+			$this->queryFields .= "price,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al";
 		
 		if (v("usa_marchi"))
 			$this->queryFields .= ",id_marchio";
 		
 		if (v("accessori_in_prodotti"))
 			$this->queryFields .= ",acquistabile,aggiungi_sempre_come_accessorio";
+		
+		if (v("mostra_descrizione_in_prodotti"))
+			$this->queryFields .= ",description,use_editor";
 		
 		$data["tabella"] = "prodotti";
 		

@@ -24,14 +24,15 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ContenutiController extends BaseController {
 	
-	public $tabella = "fascia";
+	public $tabella = "elemento";
 	
-	public $argKeys = array('id_page:sanitizeAll'=>'tutti', 'id_c:sanitizeAll'=>'tutti', 'tipo:sanitizeAll'=>'tutti');
+	public $argKeys = array('id_page:sanitizeAll'=>'tutti', 'id_c:sanitizeAll'=>'tutti', 'tipo:sanitizeAll'=>'tutti', 'id_tipo:sanitizeAll'=>'tutti');
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 
 		$this->model("ReggroupscontenutiModel");
+		$this->model("TipicontenutoModel");
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
@@ -42,14 +43,36 @@ class ContenutiController extends BaseController {
 		
 		$this->shift(2);
 		
+		$recordTipo = array();
+		
+		if ($this->viewArgs["id_tipo"] != "tutti")
+			$recordTipo = $this->m["TipicontenutoModel"]->selectId($this->viewArgs["id_tipo"]);
+		else
+		{
+			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
+			
+			if ($recordContenuto)
+				$recordTipo = $this->m["TipicontenutoModel"]->selectId($recordContenuto["id_tipo"]);
+		}
+		
 // 		$this->m[$this->modelName]->setValuesFromPost("titolo,id_tipo,lingua,immagine_1,immagine_2,descrizione,link_contenuto,link_libero,target");
 		
-		$fields = "titolo,id_tipo,lingua,attivo";
+		$fields = "lingua,attivo";
 		
-		if ($this->viewArgs["tipo"] == "GENERICO")
-			$fields .= ",descrizione,immagine_1";
-		else if ($this->viewArgs["tipo"] == "MARKER")
-			$fields .= ",descrizione,coordinate";
+		if (!empty($recordTipo) && trim($recordTipo["campi"]))
+			$fields .= ",".$recordTipo["campi"];
+		else
+		{
+			if ($this->viewArgs["tipo"] == "GENERICO")
+				$fields .= ",descrizione,immagine_1";
+			else if ($this->viewArgs["tipo"] == "MARKER")
+				$fields .= ",descrizione,coordinate";
+		}
+		
+		$fields .= ",titolo";
+		
+		if ($this->viewArgs["id_tipo"] == "tutti" && $queryType == "insert")
+			$fields .= ",id_tipo";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
@@ -60,7 +83,19 @@ class ContenutiController extends BaseController {
 			$this->m[$this->modelName]->setValue("id_c", $this->viewArgs["id_c"]);
 		
 		if ($this->viewArgs["tipo"] != "tutti")
+		{
 			$this->m[$this->modelName]->setValue("tipo", $this->viewArgs["tipo"]);
+			
+// 			$this->tabella = strtolower($this->viewArgs["tipo"]);
+		}
+		
+		if ($this->viewArgs["id_tipo"] != "tutti")
+		{
+			$this->m[$this->modelName]->setValue("id_tipo", $this->viewArgs["id_tipo"]);
+		}
+		
+		if ($recordTipo)
+			$this->tabella = $recordTipo["titolo"];
 		
 		parent::form($queryType, $id);
 	}
