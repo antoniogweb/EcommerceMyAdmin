@@ -649,6 +649,16 @@ function mfield($p, $field)
 	return genericField($p, $field, "marchi");
 }
 
+function dfield($p, $field)
+{
+	return genericField($p, $field, "documenti");
+}
+
+function contfield($p, $field)
+{
+	return genericField($p, $field, "contenuti");
+}
+
 function afield($p, $field)
 {
 	return genericField($p, $field, "attributi");

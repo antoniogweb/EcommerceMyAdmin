@@ -1450,7 +1450,7 @@ class PagesModel extends GenericModel {
 		
 		$d = new DocumentiModel();
 		
-		$d->clear()->select("distinct documenti.id_doc,documenti.*,tipi_documento.*")->left(array("tipo"))->where(array(
+		$d->clear()->addJoinTraduzione()->select("distinct documenti.id_doc,documenti.*,tipi_documento.*,contenuti_tradotti.*")->left(array("tipo"))->where(array(
 			"id_page"	=>	(int)$id,
 			"OR"	=>	array(
 				"lingua" => "tutte",

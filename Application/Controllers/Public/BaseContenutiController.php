@@ -809,7 +809,7 @@ class BaseContenutiController extends BaseController
 		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['id'], 0, $this);
 		
 		// Estraggo i contenuti generici
-		$this->m["ContenutiModel"]->clear()->select("distinct contenuti.id_cont,contenuti.*,tipi_contenuto.*")->inner(array("tipo"))->where(array(
+		$this->m["ContenutiModel"]->clear()->addJoinTraduzione()->select("distinct contenuti.id_cont,contenuti.*,tipi_contenuto.*,contenuti_tradotti.*")->inner(array("tipo"))->where(array(
 			"OR"	=>	array(
 				"lingua" => "tutte",
 				" lingua" => sanitizeDb(Params::$lang),

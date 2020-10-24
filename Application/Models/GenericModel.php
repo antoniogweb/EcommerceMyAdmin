@@ -645,7 +645,7 @@ class GenericModel extends Model_Tree {
 		return array("0"=>"--") + $this->clear()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
-	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti")
+	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true)
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
