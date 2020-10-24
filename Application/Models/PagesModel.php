@@ -1450,13 +1450,18 @@ class PagesModel extends GenericModel {
 		
 		$d = new DocumentiModel();
 		
-		return $d->clear()->select("documenti.*,tipi_documento.*")->left(array("tipo"))->where(array(
+		$d->clear()->select("distinct documenti.id_doc,documenti.*,tipi_documento.*")->left(array("tipo"))->where(array(
 			"id_page"	=>	(int)$id,
 			"OR"	=>	array(
 				"lingua" => "tutte",
 				" lingua" => $lingua,
 			),
-		))->orderBy("documenti.id_order")->send();
+		));
+		
+		if (v("attiva_gruppi_documenti"))
+			$d->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+		
+		return $d->orderBy("documenti.id_order")->send();
 	}
 	
 	public static function getAttributoDaCol($idPage, $col)

@@ -1190,7 +1190,17 @@ class BaseContenutiController extends BaseController
 	
 	public function documento($id)
 	{
-		$documento = $this->m["DocumentiModel"]->selectId((int)$id);
+		$this->clean();
+		
+		$this->m["DocumentiModel"]->clear()->select("distinct documenti.id_doc,documenti.*")->where(array(
+			"id_doc"	=>	(int)$id,
+		));
+		
+		if (v("attiva_gruppi_documenti"))
+			$this->m["DocumentiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+		
+		$documento = $this->m["DocumentiModel"]->record();
+// 		$documento = $this->m["DocumentiModel"]->selectId((int)$id);
 		
 		if (!empty($documento))
 		{
@@ -1209,5 +1219,7 @@ class BaseContenutiController extends BaseController
 				readfile($path);
 			}
 		}
+		else
+			$this->redirect("");
 	}
 }

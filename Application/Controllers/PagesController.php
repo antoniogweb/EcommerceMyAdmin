@@ -1369,6 +1369,12 @@ class PagesController extends BaseController {
 		$this->mainFields = array("immagine","titoloDocumento","filename","lingua","tipi_documento.titolo");
 		$this->mainHead = "Thumb,Titolo,File,Lingua,Tipo";
 		
+		if (v("attiva_gruppi_documenti"))
+		{
+			$this->mainFields[] = "accessi";
+			$this->mainHead .= ",Accessi";
+		}
+		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"documenti/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("documenti.*,tipi_documento.*")->inner(array("page"))->left(array("tipo"))->orderBy("documenti.id_order")->where(array(

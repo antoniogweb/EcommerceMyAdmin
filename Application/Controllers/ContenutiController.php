@@ -114,7 +114,7 @@ class ContenutiController extends BaseController {
 		$this->shift(1);
 		
 		$clean['id'] = $this->id = (int)$id;
-		$this->id_name = "id_user";
+		$this->id_name = "id_cont";
 		
 		$this->mainButtons = "ldel";
 		

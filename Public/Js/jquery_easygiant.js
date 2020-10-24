@@ -80,21 +80,23 @@ $(document).ready(function(){
 
 				bulk_values_string = bulk_values_string.replace("'","&apos;");
 
-				var submit = true;
+				var formHtml = "<form class='bulk_actions_form' action='"+current_URL+"' method='POST'><input type='hidden' name='bulkActionValues' value='"+bulk_values_string+"' /><input type='hidden' name='bulkAction' value='"+t_action+"' /></form>";
+				$("body").append(formHtml);
+				
+				var submit = false;
 				
 				if (selected_option.attr("data-confirm") == "Y")
 				{
-					if (!window.confirm(doYouConfirmString + t_action_readable + "' ?")) {
-						submit = false;
-					}
+					setTimeout(function(){
+						
+						if (window.confirm(doYouConfirmString + t_action_readable + "' ?")) {
+							$(".bulk_actions_form").submit();
+						}
+						
+					}, 100);
 				}
-				
-				if (submit)
-				{
-					var formHtml = "<form class='bulk_actions_form' action='"+current_URL+"' method='POST'><input type='hidden' name='bulkActionValues' value='"+bulk_values_string+"' /><input type='hidden' name='bulkAction' value='"+t_action+"' /></form>";
-					$("body").append(formHtml);
+				else
 					$(".bulk_actions_form").submit();
-				}
 			}
 			else
 			{

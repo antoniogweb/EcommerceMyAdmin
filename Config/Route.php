@@ -339,6 +339,7 @@ class Route
 		'documenti,form',
 		'documenti,documento',
 		'documenti,thumb',
+		'documenti,gruppi',
 		
 		'pageslink,form',
 		

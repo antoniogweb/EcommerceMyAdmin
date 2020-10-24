@@ -152,6 +152,11 @@ class BaseController extends Controller
 	{
 		parent::__construct($model, $controller, $queryString);
 		
+		if( !session_id() )
+		{
+			session_start();
+		}
+		
 		$this->model("ContenutitradottiModel");
 		
 		// Estraggo le traduzioni
@@ -579,6 +584,8 @@ class BaseController extends Controller
 			{
 				$lId = $this->m[$this->modelName]->lId;
 				
+				flash("notice",$this->m[$this->modelName]->notice);
+				
 				if (isset($this->insertRedirectUrl))
 				{
 					$this->redirect($this->insertRedirectUrl);
@@ -589,9 +596,14 @@ class BaseController extends Controller
 				}
 			}
 			
-			if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult and ($this->updateRedirect or isset($_POST["redirectToList"])))
+			if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
 			{
-				$this->redirect($this->controller.'/main/'.$this->viewStatus);
+				flash("notice",$this->m[$this->modelName]->notice);
+				
+				if ($this->updateRedirect or isset($_POST["redirectToList"]))
+					$this->redirect($this->controller.'/main/'.$this->viewStatus);
+				else
+					$this->redirect($this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
 			}
 			
 			$this->m[$this->modelName]->setFormStruct();

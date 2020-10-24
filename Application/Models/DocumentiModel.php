@@ -70,6 +70,7 @@ class DocumentiModel extends GenericModel {
         return array(
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipidocumentoModel', 'id_tipo_doc',null,"CASCADE"),
+			'gruppi' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReggroupsdocumentiModel","id_doc","id_group"), "CASCADE"),
         );
     }
     
@@ -106,7 +107,7 @@ class DocumentiModel extends GenericModel {
     
     public function titoloDocumento($record)
     {
-		return "<a class='iframe action_iframe' href='".Url::getRoot()."documenti/form/update/".$record["documenti"]["id_doc"]."?partial=Y'>".$record["documenti"]["titolo"]."</a>";
+		return "<a class='iframe action_iframe' href='".Url::getRoot()."documenti/form/update/".$record["documenti"]["id_doc"]."?partial=Y&nobuttons=Y'>".$record["documenti"]["titolo"]."</a>";
     }
     
     public function filename($record)
@@ -130,6 +131,20 @@ class DocumentiModel extends GenericModel {
 	{
 		if ($this->upload("insert"))
 			return parent::insert();
+	}
+	
+	public function accessi($record)
+	{
+		$rc = new ReggroupsdocumentiModel();
+		
+		$gruppi = $rc->clear()->select("reggroups.name")->where(array(
+			"id_doc"	=>	$record["documenti"]["id_doc"],
+		))->inner(array("gruppo"))->toList("reggroups.name")->send();
+		
+		if (count($gruppi) > 0)
+			return implode("<br />", $gruppi);
+		
+		return "-";
 	}
 	
 }

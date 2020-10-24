@@ -22,11 +22,11 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ReggroupscontenutiModel extends GenericModel {
+class ReggroupsdocumentiModel extends GenericModel {
 	
 	public function __construct() {
-		$this->_tables='reggroups_contenuti';
-		$this->_idFields='id_group_cont';
+		$this->_tables='reggroups_documenti';
+		$this->_idFields='id_group_doc';
 		
 		$this->orderBy = 'id_order desc';
 		
@@ -44,7 +44,7 @@ class ReggroupscontenutiModel extends GenericModel {
     
 	public function insert()
 	{
-		return parent::inserisciGruppo("id_cont");
+		return parent::inserisciGruppo("id_doc");
 	}
 	
 }

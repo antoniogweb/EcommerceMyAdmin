@@ -686,4 +686,35 @@ class GenericModel extends Model_Tree {
 			parent::insert();
 		}
 	}
+	
+	// Inserisci un gruppo
+	public function inserisciGruppo($key)
+	{
+		$clean["id_elem"] = (int)$this->values[$key];
+		$clean["id_group"] = (int)$this->values["id_group"];
+		
+		$u = new ReggroupsModel();
+		
+		$ng = $u->where(array("id_group"=>$clean["id_group"]))->rowNumber();
+		
+		if ($ng > 0)
+		{
+			$res3 = $this->clear()->where(array("id_group"=>$clean["id_group"],$key=>$clean["id_elem"]))->send();
+			
+			if (count($res3) > 0)
+			{
+				$this->notice = "<div class='alert'>Questo contenuto è già stato associato a questo gruppo</div>";
+				return false;
+			}
+			else
+			{
+				return parent::insert();
+			}
+		}
+		else
+		{
+			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+			return false;
+		}
+	}
 }

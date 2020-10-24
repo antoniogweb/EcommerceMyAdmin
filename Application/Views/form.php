@@ -62,6 +62,7 @@ $(document).ready(function() {
 			<div class="box">
 				<div class="box-header with-border main">
 					<?php echo $notice;?>
+					<?php echo flash("notice");?>
 					
 					<!-- show the table -->
 					<div class='scaffold_form'>
