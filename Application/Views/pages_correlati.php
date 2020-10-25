@@ -34,7 +34,7 @@ $(document).ready(function(){
 						<?php echo $notice;?>
 					</div>
 
-					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 					
 						<?php echo Html_Form::select("id_corr","",$listaProdotti,null,"combobox","yes");?>
 						

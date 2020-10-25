@@ -16,6 +16,14 @@ VariabiliModel::ottieniVariabili();
 if (v("usa_https"))
 	Params::$useHttps = true;
 
+if (defined("APPS"))
+	Params::$installed = APPS;
+
+if (defined("APPS_ROUTE"))
+	Route::$allowed = array_merge(Route::$allowed, APPS_ROUTE);
+
+// print_r(Route::$allowed);die();
+
 require(LIBRARY."/External/mobile_detect.php");
 
 $detect = new Mobile_Detect();

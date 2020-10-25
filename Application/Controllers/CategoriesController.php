@@ -36,8 +36,9 @@ class CategoriesController extends BaseController {
 		"gruppi"	=> null,
 	);
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->session('admin');
 		$this->model();
@@ -207,7 +208,7 @@ class CategoriesController extends BaseController {
 		);
 			
 		$this->loadScaffold('form', $params);
-		$this->scaffold->loadForm("update",$this->controller."/meta/".$clean["id"]);
+		$this->scaffold->loadForm("update",$this->applicationUrl.$this->controller."/meta/".$clean["id"]);
 		
 		$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
 		
@@ -383,7 +384,7 @@ class CategoriesController extends BaseController {
 			if ($this->m[$this->modelName]->queryResult and $queryType === "insert")
 			{
 				$lId = $this->m[$this->modelName]->lId;
-				$this->redirect($this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
+				$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 			}
 
 			$this->m[$this->modelName]->setFormStruct();
@@ -395,7 +396,7 @@ class CategoriesController extends BaseController {
 			);
 			
 			$this->loadScaffold('form',$params);
-			$this->scaffold->loadForm($queryType,$this->controller."/form/$queryType/".$clean['id']);
+			$this->scaffold->loadForm($queryType,$this->applicationUrl.$this->controller."/form/$queryType/".$clean['id']);
 			
 			if ($queryType === "update")
 			{

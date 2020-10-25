@@ -150,9 +150,9 @@ class BaseController extends Controller
 	
 	public $elencoLingue = array();
 	
-	public function __construct($model, $controller, $queryString)
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
-		parent::__construct($model, $controller, $queryString);
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if( !session_id() )
 		{
@@ -580,7 +580,7 @@ class BaseController extends Controller
 				$partialU = $queryStringChar;
 			}
 			
-			$formAction = isset($this->formAction) ? $this->formAction : $this->controller."/".$this->action."/$queryType/".$clean["id"].$partial;
+			$formAction = isset($this->formAction) ? $this->formAction : $this->applicationUrl.$this->controller."/".$this->action."/$queryType/".$clean["id"].$partial;
 			
 			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult and $this->insertRedirect)
 			{
@@ -594,7 +594,7 @@ class BaseController extends Controller
 				}
 				else
 				{
-					$this->redirect($this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU."insert=ok");
+					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU."insert=ok");
 				}
 			}
 			
@@ -607,7 +607,7 @@ class BaseController extends Controller
 				else if ($this->updateRedirectUrl)
 					$this->redirect($this->updateRedirectUrl);
 				else
-					$this->redirect($this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
+					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
 			}
 			
 			$this->m[$this->modelName]->setFormStruct();

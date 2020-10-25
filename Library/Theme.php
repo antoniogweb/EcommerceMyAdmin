@@ -35,6 +35,7 @@ class Theme {
 	public $viewStatus = '';
 	public $controller = 'controller';
 	public $application = null;
+	public $applicationUrl = null; //the url of the application
 	public $action = '';
 	public $currPage; //the URL of the current page
 	
@@ -49,6 +50,8 @@ class Theme {
 		$this->baseUrl = MOD_REWRITE_MODULE === true ? "$protocol://" . DOMAIN_NAME . $langUrl : "$protocol://" . DOMAIN_NAME . '/index.php' . $langUrl;
 		
 		$this->baseUrlSrc = "$protocol://" . DOMAIN_NAME;
+		
+		$this->applicationUrl = isset($application) ? $application . "/" : null;
 	}
 
 

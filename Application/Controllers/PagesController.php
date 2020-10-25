@@ -58,8 +58,9 @@ class PagesController extends BaseController {
 		"contenuti"	=> null,
 	);
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 // 		$this->load('header_sito');
 // 		$this->load('footer','last');
@@ -513,7 +514,7 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->setFormStruct();
 		
 		$this->loadScaffold('form',$params);
-		$this->scaffold->loadForm("update",$this->controller."/meta/".$clean["id"]);
+		$this->scaffold->loadForm("update",$this->applicationUrl.$this->controller."/meta/".$clean["id"]);
 		
 		$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
 		
@@ -580,7 +581,7 @@ class PagesController extends BaseController {
 				if ($this->m[$this->modelName]->queryResult and $queryType === "insert")
 				{
 					$lId = $this->m[$this->modelName]->lId;
-					$this->redirect($this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
+					$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 				}
 
 				$this->m[$this->modelName]->setFormStruct();
@@ -729,7 +730,7 @@ class PagesController extends BaseController {
 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
 						$this->m["PagestagModel"]->duplica($clean['id'], $lId);
 						
-						$this->redirect($this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
+						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 					}
 				}
 			}
@@ -769,7 +770,7 @@ class PagesController extends BaseController {
 		
 		$data["titoloPagina"] = $this->m[$this->modelName]->getSimpleTitle($clean['id']);
 		
-		$this->helper("Menu",$this->controller,"main");
+		$this->helper("Menu",$this->applicationUrl.$this->controller,"main");
 		
 		$this->h["Menu"]->links['copia']['url'] = 'form/copia/'.$clean['id'];
 		$this->h["Menu"]->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';

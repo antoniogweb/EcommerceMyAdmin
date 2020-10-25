@@ -20,7 +20,7 @@ function aggiornaOrdinamento()
 	$.ajax({
 		type: "POST",
 		data: post_data,
-		url: "<?php echo $this->baseUrl.'/'.$this->controller.'/ordina/';?>",
+		url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/ordina/';?>",
 		async: false,
 		cache:false,
 		success: function(html){
@@ -66,7 +66,7 @@ $(document).ready(function(){
 		var t_gif = $(this).parent().find(".loading_gif_del img").css("visibility","visible");
 		
 		$.ajax({
-			url: "<?php echo $this->baseUrl.'/'.$this->controller.'/pubblica/';?>"+t_id+"/"+t_value,
+			url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/pubblica/';?>"+t_id+"/"+t_value,
 			async: false,
 			cache:false,
 			success: function(html){
@@ -92,7 +92,7 @@ $(document).ready(function(){
 		var t_gif = $(this).parent().find(".loading_gif_del img").css("visibility","visible");
 		
 		$.ajax({
-			url: "<?php echo $this->baseUrl.'/'.$this->controller.'/inevidenza/';?>"+t_id+"/"+t_value,
+			url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/inevidenza/';?>"+t_id+"/"+t_value,
 			async: false,
 			cache:false,
 			success: function(html){
