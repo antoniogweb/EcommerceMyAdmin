@@ -29,4 +29,19 @@ $db_host = '';
 
 $website_domain_name = "";
 
+// $campiAggiuntiviPagine = array(
+// 	"prodotti_detail"	=>	array(
+// 		"campo"	=>	array(
+// 			'labelString'=>	'Label',
+// 			'className'		=>	'text_input form-control dettagli',
+// 		),
+// 	),
+// );
+// 
+// define ("CAMPI_AGGIUNTIVI_PAGINE", $campiAggiuntiviPagine);
+// 
+// define ("APPS", array(
+// 	"app_name"
+// ));
+
 
