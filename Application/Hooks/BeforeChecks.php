@@ -16,13 +16,26 @@ VariabiliModel::ottieniVariabili();
 if (v("usa_https"))
 	Params::$useHttps = true;
 
+// Imposto le app
 if (defined("APPS"))
+{
 	Params::$installed = APPS;
-
-if (defined("APPS_ROUTE"))
-	Route::$allowed = array_merge(Route::$allowed, APPS_ROUTE);
-
-// print_r(Route::$allowed);die();
+	
+	foreach (APPS as $app)
+	{
+		$path = ROOT."/Application/Apps/".ucfirst($app)."/Route/route.php";
+		
+		if (file_exists($path))
+		{
+			unset($APP_ROUTE);
+			
+			include($path);
+			
+			if (isset($APP_ROUTE))
+				Route::$allowed = array_merge(Route::$allowed, $APP_ROUTE);
+		}
+	}
+}
 
 require(LIBRARY."/External/mobile_detect.php");
 
