@@ -22,7 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class DocumentiController extends BaseController {
+class DocumentiController extends BaseController
+{
+	use TraitController;
 	
 	public $tabella = "documenti";
 	

@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ContenutitradottiController extends BaseController
 {
+	use TraitController;
+	
 	public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
@@ -45,57 +47,6 @@ class ContenutitradottiController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->shift(2);
-		
-		$this->menuLinks = "save";
-		
-		$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
-		
-		if ($queryType == "insert")
-			$section = $data["sectionCampiAggiuntivi"] = $this->viewArgs["section"];
-		else
-		{
-			$record = $this->m[$this->modelName]->selectId((int)$id);
-			
-			if (!empty($record))
-				$section = $data["sectionCampiAggiuntivi"] = $record["sezione"];
-		}
-		
-		if ($section == "slide_detail")
-			$fields = 'title,sottotitolo,url';
-		else if ($section == "blog_detail")
-			$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
-		else if ($section == "-car-")
-			$fields = 'titolo';
-		else if ($section == "-cv-" || $section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni" || $section == "fasce_prezzo")
-			$fields = 'titolo';
-		else if ($section == "-marchio-")
-			$fields = 'titolo,alias,description';
-		else if ($section == "tag")
-			$fields = 'titolo,alias';
-		else if ($section == "documenti" || $section == "contenuti")
-			$fields = 'titolo,descrizione';
-		
-		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
-		{
-			foreach (CAMPI_AGGIUNTIVI_PAGINE[$section] as $campo => $form)
-			{
-				$fields .= ",$campo";
-				
-				$this->m[$this->modelName]->formStructAggiuntivoEntries[$campo] = $form;
-			}
-		}
-		
-		$this->m[$this->modelName]->setValuesFromPost($fields);
-		
-		// Lo imposto come salvato manualmente
-		$this->m[$this->modelName]->setValue("salvato",1);
-		
-		if ($section != "tutti")
-			$this->m[$this->modelName]->setValue("sezione",$section);
-		
-		parent::form($queryType, $id);
-		
-		$this->append($data);
+		$this->ctform($queryType, $id);
 	}
 }

@@ -86,6 +86,8 @@ class BaseController extends Controller
 	
 	public $updateRedirect = false;
 	
+	public $updateRedirectUrl = null;
+	
 	public $insertRedirect = true;
 	
 	public $insertRedirectUrl = null;
@@ -602,6 +604,8 @@ class BaseController extends Controller
 				
 				if ($this->updateRedirect or isset($_POST["redirectToList"]))
 					$this->redirect($this->controller.'/main/'.$this->viewStatus);
+				else if ($this->updateRedirectUrl)
+					$this->redirect($this->updateRedirectUrl);
 				else
 					$this->redirect($this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
 			}

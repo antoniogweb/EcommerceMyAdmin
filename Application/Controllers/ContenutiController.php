@@ -22,7 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ContenutiController extends BaseController {
+class ContenutiController extends BaseController
+{
+	use TraitController;
 	
 	public $tabella = "elemento";
 	
@@ -99,6 +101,8 @@ class ContenutiController extends BaseController {
 		
 		parent::form($queryType, $id);
 	}
+	
+	
 	
 	public function thumb($field = "", $id = 0)
 	{

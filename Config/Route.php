@@ -321,6 +321,7 @@ class Route
 		'contenuti,form',
 		'contenuti,thumb',
 		'contenuti,gruppi',
+		'contenuti,traduzione',
 		
 		'marchi,main',
 		'marchi,form',
@@ -340,6 +341,7 @@ class Route
 		'documenti,documento',
 		'documenti,thumb',
 		'documenti,gruppi',
+		'documenti,traduzione',
 		
 		'pageslink,form',
 		
