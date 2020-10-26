@@ -819,6 +819,8 @@ class BaseRegusersController extends BaseController
 
 							$mail = new PHPMailer(true); //New instance, with exceptions enabled
 
+// 							$mail->SMTPDebug = 4;
+							
 							if (Parametri::$useSMTP)
 							{
 								$mail->IsSMTP();                         // tell the class to use SMTP

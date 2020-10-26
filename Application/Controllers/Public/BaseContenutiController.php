@@ -1038,12 +1038,19 @@ class BaseContenutiController extends BaseController
 					" lk" => array('pages.codice' => $this->viewArgs["s"]),
 					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["s"]),
 					),
-				"in" => array("-id_c" => $childrenProdotti),
+// 				"in" => array("-id_c" => $childrenProdotti),
 				"attivo" => "Y",
 				"principale" => "Y"
 			);
 			
-			$data["pages"] = $this->m['PagesModel']->clear()->where($where);
+			$this->m['PagesModel']->clear()->where($where);
+			
+			if ($this->viewArgs["sec"] != "tutti")
+				$this->m["CategoriesModel"]->aWhere(array(
+					"in" => array("-id_c" => $childrenProdotti),
+				));
+			
+// 			$data["pages"] = $this->m['PagesModel']->clear()->where($where);
 			
 			if (Parametri::$hideNotAllowedNodesInLists)
 			{
@@ -1073,6 +1080,7 @@ class BaseContenutiController extends BaseController
 			}
 			
 			$data["pages"] = $this->m['PagesModel']->send();
+// 			echo $this->m['PagesModel']->getQuery();die();
 		}
 		
 		$this->append($data);
