@@ -801,6 +801,14 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[carrello_prodotto\]/', array($obj,'getCarrelloProdotto') ,$string);
 		$string = preg_replace_callback('/\[news-in-evidenza\]/', array($obj,'getNewsInEvidenza') ,$string);
 		$string = preg_replace_callback('/\[team\]/', array($obj,'getTeam') ,$string);
+		
+		if (defined("FASCE_TAGS"))
+		{
+			foreach (FASCE_TAGS as $reg => $metodo)
+			{
+				$string = preg_replace_callback('/\['.$reg.'\]/', array($obj,$metodo) ,$string);
+			}
+		}
 	}
 	
 	return $string;
