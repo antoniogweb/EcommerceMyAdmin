@@ -55,6 +55,7 @@
 								</div>
 							</div>
 						</div>
+						<?php if (v("fatture_attive")) { ?>
 						<div class="col-lg-6">
 							<?php if ($fattureOk) { ?>
 							<div class="panel panel-info">
@@ -91,6 +92,7 @@
 							</div>
 							<?php } ?>
 						</div>
+						<?php } ?>
 					</div>
 
 					<h1>Resoconto dell'ordine</h1>

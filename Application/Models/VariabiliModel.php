@@ -80,6 +80,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_gruppi_contenuti"	=>	0,
 		"attiva_gruppi_documenti"	=>	0,
 		"mostra_descrizione_in_prodotti"	=>	1,
+		"fatture_attive"			=>	1,
+		"favicon_url"				=>	"",
 	);
 	
 	public function __construct() {
