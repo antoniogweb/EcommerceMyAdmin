@@ -683,4 +683,11 @@ class CategoriesModel extends HierarchicalModel {
 				return $p["categories"]["immagine_2"];
 		}
 	}
+	
+	public static function sDepth($id = null)
+	{
+		$c = new CategorieModel();
+		
+		return $c->depth($id);
+	}
 }
