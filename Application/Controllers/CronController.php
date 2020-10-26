@@ -32,6 +32,8 @@ class CronController extends Controller {
 	
 	public function migrazioni($c = "")
 	{
+		$this->clean();
+		
 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
 			if (@!is_dir(ROOT.'/Logs'))

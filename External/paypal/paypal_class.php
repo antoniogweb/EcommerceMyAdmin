@@ -111,7 +111,7 @@ class paypal_class {
 		foreach ($this->fields as $name => $value) {
 			$html .= "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 		}
-		$html .= "<input type='image' src='http://".DOMAIN_NAME."/External/paypal/Img/paga_adesso.gif' name='invia'>\n";
+		$html .= "<input type='image' src='http://".DOMAIN_NAME."/admin/External/paypal/Img/paga_adesso.gif' name='invia'>\n";
 		$html .= "</form>\n";
 		return $html;
 	}

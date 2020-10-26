@@ -718,6 +718,17 @@ class HierarchicalModel extends GenericModel {
 		return $ret;
 	}
 	
+	public function isImmediateChild($idCat, $idParent)
+	{
+		$clean["idCat"] = (int)$idCat;
+		$clean["idParent"] = (int)$idParent;
+		
+		return $this->clear()->where(array(
+			"id_c"	=>	$clean["idCat"],
+			"id_p"	=>	$clean["idParent"],
+		))->rowNumber();
+	}
+	
 	public function hasChildren($id)
 	{
 		$clean["id"] = (int)$id;

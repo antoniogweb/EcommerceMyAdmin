@@ -1570,6 +1570,17 @@ class PagesModel extends GenericModel {
 		return $record["marchi"]["titolo"];
 	}
 	
+	public function tag($record)
+	{
+		$pt = new PagestagModel();
+		
+		$tags = $pt->clear()->select("tag.titolo")->inner(array("tag"))->where(array(
+			"id_page"	=>	(int)$record["pages"]["id_page"],
+		))->toList("tag.titolo")->send();
+		
+		return implode("<br />", $tags);
+	}
+	
 	public function aggiungiAccesori($idPage)
 	{
 		$ids = $this->clear()->where(array(

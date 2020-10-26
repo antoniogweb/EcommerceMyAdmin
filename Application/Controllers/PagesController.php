@@ -89,6 +89,7 @@ class PagesController extends BaseController {
 			'lingua_doc:sanitizeAll' => "tutti",
 			'id_tipo_doc:sanitizeAll' => "tutti",
 			'-id_marchio:sanitizeAll' => "tutti",
+			'id_tag:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -286,6 +287,13 @@ class PagesController extends BaseController {
 		}
 		
 		$data["sId"] = 0;
+		
+		if (strcmp($this->viewArgs['id_tag'],'tutti') !== 0)
+		{
+			$this->scaffold->model->inner(array("tag"))->aWhere(array(
+				"pages_tag.id_tag"	=>	$this->viewArgs['id_tag'],
+			));
+		}
 		
 		if (strcmp($this->viewArgs['id_c'],'tutti') !== 0)
 		{

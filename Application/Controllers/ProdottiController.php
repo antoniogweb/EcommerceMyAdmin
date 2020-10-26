@@ -39,12 +39,21 @@ class ProdottiController extends PagesController {
 		);
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Codice / Titolo,Categorie';
-		$this->filters = array(null,null,'title');
+		
+		$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->selectPerFiltro();
+		
+		$this->filters = array(null,null,'title',null,null,array("id_tag",null,$filtroTag));
 		
 		if (v("usa_marchi"))
 		{
 			$this->tableFields[] = 'marchio';
 			$this->head .= ',Marchio';
+		}
+		
+		if (v("usa_tag"))
+		{
+			$this->tableFields[] = 'tag';
+			$this->head .= ',Tag';
 		}
 		
 		$this->tableFields[] = 'PagesModel.inPromozioneText|pages.id_page';

@@ -136,4 +136,9 @@ class TagModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function selectPerFiltro()
+	{
+		return $this->clear()->toList("id_tag","titolo")->orderBy("titolo")->send();
+	}
 }

@@ -1411,6 +1411,13 @@ function categorieFiglie($id_c)
 	return $c->categorieFiglie($id_c);
 }
 
+function isImmediateChild($idCat, $idParent)
+{
+	$c = new CategoriesModel();
+	
+	return $c->isImmediateChild($idCat, $idParent);
+}
+
 function getAttributoDaCarrello($col, $idAcc = null)
 {
 	if (isset($_GET["id_cart"]))
