@@ -40,7 +40,7 @@
 	<li <?php echo $posizioni['tag'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/tag/$id_page".$viewStatusTutti;?>">Tag</a></li>
 	<?php } ?>
 	<?php if (v("documenti_in_prodotti")) { ?>
-	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/documenti/$id_page".$viewStatusTutti;?>">Documenti</a></li>
+	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/documenti/$id_page".$viewStatusTutti;?>"><?php echo gtext("Documenti");?></a></li>
 	<?php } ?>
 	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
 		$temp = $this->viewArgs;
