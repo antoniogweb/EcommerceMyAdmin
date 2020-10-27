@@ -8,7 +8,10 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <?php if (v("favicon_url")) { ?>
+	<link rel="icon" href="<?php echo v("favicon_url");?>" type="image/png"/>
+	<?php } ?>
+	
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl.'/Public/Css/panel.css';?>">
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrl.'/Public/Css/main.css';?>">
 	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrl."/Public/Css/";?>print.css" />

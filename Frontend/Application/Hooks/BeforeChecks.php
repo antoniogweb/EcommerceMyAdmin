@@ -5,6 +5,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+VariabiliModel::ottieniVariabili();
+
 // Se arriva dalla app usa php://input
 if (isset($_GET["fromApp"]))
 {
@@ -38,6 +40,9 @@ require(LIBRARY."/Application/Include/output.php");
 Domain::$adminRoot = LIBRARY;
 
 require(LIBRARY."/External/mobile_detect.php");
+
+if (v("usa_https"))
+	Params::$useHttps = true;
 
 $detect = new Mobile_Detect();
 User::$isMobile = $detect->isMobile();

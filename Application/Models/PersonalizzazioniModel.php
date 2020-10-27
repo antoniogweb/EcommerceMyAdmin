@@ -57,6 +57,8 @@ class PersonalizzazioniModel extends GenericModel
 					
 					if (!empty($personalizzazione))
 					{
+						$str["val"] = mb_substr($str["val"], 0, $personalizzazione["personalizzazioni"]["numero_caratteri"]);
+						
 						$template = v("template_personalizzazione");
 						
 						if ($template)
