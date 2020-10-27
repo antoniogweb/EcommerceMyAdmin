@@ -1528,3 +1528,10 @@ function findTitoloDaCodice($codice, $default = null)
 	
 	return $n->findTitoloDaCodice($codice, $default);
 }
+
+function hasActivePages($id_c)
+{
+	$c = new CategoriesModel();
+	
+	return $c->hasActivePages($id_c);
+}

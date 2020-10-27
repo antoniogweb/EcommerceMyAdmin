@@ -465,6 +465,26 @@ $(document).ready(function(){
 	});
 	
 	$('.colorpicker-element').colorpicker();
+	
+	$("body").on("submit", ".moveupForm form, .movedownForm form", function(e){
+        e.preventDefault();  //prevent form from submitting
+        var data = $(this).serializeArray();
+		var url = $(this).attr("action");
+		
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			method: "POST",
+			data: data,
+			success: function(content){
+				
+				location.reload();
+				
+			}
+		});
+    });
 });
 
 

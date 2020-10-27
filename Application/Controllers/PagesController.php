@@ -245,7 +245,11 @@ class PagesController extends BaseController {
 			$this->head .= ",".strtoupper($codiceLingua);
 		}
 		
-		$this->scaffold->loadMain($this->tableFields,'pages:id_page','ldel,ledit');
+		$azioni = "ldel,ledit";
+		if (strstr($this->orderBy, "id_order") && v("mostra_pulsanti_ordinamenti"))
+			$azioni = "moveup,movedown,ldel,ledit";
+		
+		$this->scaffold->loadMain($this->tableFields,'pages:id_page',$azioni);
 		
 		$this->scaffold->setHead($this->head);
 		

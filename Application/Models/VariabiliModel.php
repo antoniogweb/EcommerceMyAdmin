@@ -80,6 +80,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_gruppi_contenuti"	=>	0,
 		"attiva_gruppi_documenti"	=>	0,
 		"mostra_descrizione_in_prodotti"	=>	1,
+		"mostra_pulsanti_ordinamenti"	=>	0,
 	);
 	
 	public function __construct() {
