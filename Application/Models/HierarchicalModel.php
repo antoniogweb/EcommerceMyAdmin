@@ -729,6 +729,13 @@ class HierarchicalModel extends GenericModel {
 		))->rowNumber();
 	}
 	
+	public function isChild($idCat, $idParent)
+	{
+		$children = $this->children($idParent, true, true);
+		
+		return in_array($idCat, $children) ? true : false;
+	}
+	
 	public function hasChildren($id)
 	{
 		$clean["id"] = (int)$id;
