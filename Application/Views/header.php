@@ -41,17 +41,28 @@
 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
 	
     <!-- Custom styles for this template -->
-    <link href="<?php echo $this->baseUrl?>/Public/Css/dashboard.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl;?>/Public/Css/dashboard.css" rel="stylesheet">
     
-    <script src="<?php echo $this->baseUrl?>/Public/Js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
-    <script src="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/js/app.min.js"></script>
+    <script src="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="<?php echo $this->baseUrl;?>/Public/Js/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     
-    <script src="<?php echo $this->baseUrl?>/Public/Js/Respond-master/dest/respond.src.js"></script>
+    <script src="<?php echo $this->baseUrl;?>/Public/Js/Respond-master/dest/respond.src.js"></script>
     
-    <link href="<?php echo $this->baseUrl?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
-    <link href="<?php echo $this->baseUrl?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
-    <script src="<?php echo $this->baseUrl?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+    <link href="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <script src="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+    
+    <?php if (defined("APPS")) {
+		foreach (APPS as $app)
+		{
+			$path = ROOT."/Application/Apps/".ucfirst($app)."/Public/";
+			
+			if (file_exists($path."app_editor.js")) { ?>
+				<script src="<?php echo $this->baseUrl."/Application/Apps/".ucfirst($app);?>/Public/app_editor.js?v=<?php echo rand(1,100000);?>"></script>
+			<?php }
+		}
+	} ?>
     
     <?php if (partial()) { ?>
     <style>

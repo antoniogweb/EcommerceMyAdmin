@@ -630,7 +630,7 @@ class PagesController extends BaseController {
 						),
 					))->send(false);
 					
-					$record = $this->m[$this->modelName]->selectId($clean['id']);
+					$record = $data["dettagliPagina"] = $this->m[$this->modelName]->selectId($clean['id']);
 					
 					if (count($record) > 0)
 					{

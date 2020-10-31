@@ -90,6 +90,23 @@
 								</div>
 							</div>
 						</div>
+						
+						<?php if (v("accessori_in_prodotti") && v("ecommerce_attivo")) { ?>
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									Accessorio
+								</div>
+								<div class="panel-body">
+									<?php if (isset($form["acquistabile"])) { ?>
+									<?php echo $form["acquistabile"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["aggiungi_sempre_come_accessorio"])) { ?>
+									<?php echo $form["aggiungi_sempre_come_accessorio"];?>
+									<?php } ?>
+								</div>
+							</div>
+						<?php } ?>
 					</div>
 					<div class='col-md-4'>
 						<div class="panel panel-info">
@@ -152,25 +169,8 @@
 							</div>
 						</div>
 					</div>
-					<?php if (v("accessori_in_prodotti") && v("ecommerce_attivo")) { ?>
-					<div class='col-md-4'>
-						<div class="panel panel-info">
-							<div class="panel-heading">
-								Accessorio
-							</div>
-							<div class="panel-body">
-								<?php if (isset($form["acquistabile"])) { ?>
-								<?php echo $form["acquistabile"];?>
-								<?php } ?>
-								
-								<?php if (isset($form["aggiungi_sempre_come_accessorio"])) { ?>
-								<?php echo $form["aggiungi_sempre_come_accessorio"];?>
-								<?php } ?>
-							</div>
-						</div>
-					</div>
-					<?php } ?>
-				
+					<?php include($this->viewPath("pages_form_app_box"));?>
+					
 					<?php if ($type === "update") { ?>
 					<!--<div class='col-md-4'>
 						<div class="panel panel-info">

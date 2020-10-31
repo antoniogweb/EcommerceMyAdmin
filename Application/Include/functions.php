@@ -1542,3 +1542,12 @@ function hasActivePages($id_c)
 	
 	return $c->hasActivePages($id_c);
 }
+
+function hexToRbg($hex)
+{
+	$split = str_split(ltrim($hex, "#"), 2);
+	$r = hexdec($split[0]);
+	$g = hexdec($split[1]);
+	$b = hexdec($split[2]);
+	return array($r, $g, $b);
+}

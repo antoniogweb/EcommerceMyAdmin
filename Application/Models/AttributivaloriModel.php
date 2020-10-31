@@ -68,6 +68,7 @@ class AttributivaloriModel extends GenericModel {
 	public function relations() {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_av', null, "CASCADE"),
+			'attributo' => array("BELONGS_TO", 'AttributiModel', 'id_a',null,"CASCADE"),
         );
     }
 	

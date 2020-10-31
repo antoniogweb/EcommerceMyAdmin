@@ -69,16 +69,14 @@ $(document).ready(function() {
 					<div class='scaffold_form'>
 					<?php } ?>
 						<?php
-						$path = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_scaffold_main.php";
+						$applicationPath = $this->application ? "Apps/".ucfirst($this->application)."/" : "";
+						
+						$path = ROOT."/Application/".$applicationPath."Views/".ucfirst($this->controller)."/".$this->action."_scaffold_main.php";
 						
 						if (file_exists($path))
-						{
 							include($path);
-						}
 						else
-						{
 							echo $main;
-						}
 						?>
 					<?php if (!showreport()) { ?>
 					</div>
