@@ -384,6 +384,11 @@ class CartModel extends Model_Tree {
 				
 				$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true);
 				
+				if (number_format($this->values["price"],2,".","") != number_format($cart["prezzo_intero"],2,".",""))
+					$this->values["in_promozione"] = "Y";
+				else
+					$this->values["in_promozione"] = "N";
+				
 				$this->sanitize();
 				$this->update(null, "id_cart = " . $clean["id_cart"] . " AND cart_uid = '" . $clean["cart_uid"] . "'");
 			}
