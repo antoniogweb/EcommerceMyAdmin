@@ -119,7 +119,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li <?php if (strcmp($sezionePannello,"sito") === 0) { ?>class="active"<?php } ?>>
-							<a href="<?php echo $this->baseUrl.'/blog/main';?>"><span class="glyphicon glyphicon-cloud"></span>
+							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><span class="glyphicon glyphicon-cloud"></span>
 							<?php if (!User::$isMobile) { ?>
 							CMS
 							<?php } ?>

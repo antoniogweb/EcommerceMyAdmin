@@ -165,7 +165,7 @@ class CartModel extends Model_Tree {
 				
 				$subtotale = number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 				
-				$ivaRiga = $r["cart"]["iva"];
+				$ivaRiga = number_format($r["cart"]["iva"],$cifre,".","");
 				
 				// Controllo l'aliquota estera
 				if (isset(IvaModel::$aliquotaEstera))

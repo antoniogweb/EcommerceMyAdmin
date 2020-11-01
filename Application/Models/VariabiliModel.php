@@ -84,6 +84,7 @@ class VariabiliModel extends GenericModel {
 		"fatture_attive"			=>	1,
 		"favicon_url"				=>	"",
 		"cifre_decimali"			=>	2,
+		"link_cms"					=>	"blog/main",
 	);
 	
 	public function __construct() {
