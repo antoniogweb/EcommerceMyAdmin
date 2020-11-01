@@ -403,7 +403,10 @@ class Image_Gd_Thumbnail
 				
 				if ($text["x"] == "center")
 				{
-					$centerX = $width / 2;
+					if (isset($this->params['imgWidth']))
+						$centerX = $this->params['imgWidth'] / 2;
+					else
+						$centerX = $width / 2;
 					
 					list($left, $bottom, $right, , , $top) = imageftbbox($text["size"], $text["angle"], $text["font"], $text["text"]);
 					

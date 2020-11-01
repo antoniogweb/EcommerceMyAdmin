@@ -49,6 +49,8 @@ class CartModel extends Model_Tree {
 	// Totale scontato
 	public function totaleScontato($conSpedizione = false)
 	{
+		$cifre = v("cifre_decimali");
+		
 		if (hasActiveCoupon())
 		{
 			$p = new PromozioniModel();
@@ -65,19 +67,19 @@ class CartModel extends Model_Tree {
 			{
 				foreach ($res as $r)
 				{
-					$prezzo = number_format($r["cart"]["price"],2,".","");
+					$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 					
 					if (in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
 					{
-						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),2,".","");
+						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
 					}
 					
-					$total = $total + number_format($prezzo * $r["cart"]["quantity"],2,".","");
+					$total = $total + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 				}
 			}
 			
 			if ($conSpedizione)
-				$total += number_format(getSpedizioneN(), 2,".","");
+				$total += number_format(getSpedizioneN(), $cifre,".","");
 			
 			return $total;
 		}
@@ -88,6 +90,8 @@ class CartModel extends Model_Tree {
 	//get the total from the cart
 	public function total($conSpedizione = false)
 	{
+		$cifre = v("cifre_decimali");
+		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
 // 		$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
@@ -102,15 +106,15 @@ class CartModel extends Model_Tree {
 		{
 			foreach ($res2 as $r)
 			{
-				$prezzo = number_format($r["cart"]["price"],2,".","");
+				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 				
-				$total = $total + number_format($prezzo * $r["cart"]["quantity"],2,".","");
+				$total = $total + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 // 				$total = $total + number_format($r["aggregate"]["SOMMA"],2,".","");
 			}
 		}
 		
 		if ($conSpedizione)
-			$total += number_format(getSpedizioneN(), 2,".","");
+			$total += number_format(getSpedizioneN(), $cifre,".","");
 		
 		return $total;
 	}
@@ -118,6 +122,8 @@ class CartModel extends Model_Tree {
 	// Totale iva dal carrello
 	public function iva()
 	{
+		$cifre = v("cifre_decimali");
+		
 		IvaModel::getAliquotaEstera();
 		
 		$sconto = 0;
@@ -150,14 +156,14 @@ class CartModel extends Model_Tree {
 		{
 			foreach ($res as $r)
 			{
-				$prezzo = number_format($r["cart"]["price"],2,".","");
+				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 					
 				if (in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
 				{
-					$prezzo = number_format($prezzo - $prezzo*($sconto/100),2,".","");
+					$prezzo = number_format($prezzo - $prezzo*($sconto/100),$cifre,".","");
 				}
 				
-				$subtotale = number_format($prezzo * $r["cart"]["quantity"],2,".","");
+				$subtotale = number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 				
 				$ivaRiga = $r["cart"]["iva"];
 				
@@ -171,7 +177,7 @@ class CartModel extends Model_Tree {
 					$arraySubtotale[$ivaRiga] = $subtotale;
 				
 				$iva = $subtotale*($ivaRiga/100);
-				$total += number_format($iva,2,".","");
+				$total += number_format($iva,$cifre,".","");
 			}
 		}
 		
@@ -183,16 +189,16 @@ class CartModel extends Model_Tree {
 		if (isset(IvaModel::$aliquotaEstera))
 			$ivaSped = IvaModel::$aliquotaEstera;
 		
-		$ivaSped = number_format($ivaSped,2,".","");
+		$ivaSped = number_format($ivaSped,$cifre,".","");
 		
 		if (isset($arraySubtotale[$ivaSped]))
-			$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),2,".","");
+			$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),$cifre,".","");
 		else
-			$arraySubtotale[$ivaSped] = number_format(getSpedizioneN(),2,".","");
+			$arraySubtotale[$ivaSped] = number_format(getSpedizioneN(),$cifre,".","");
 		
 		foreach ($arraySubtotale as $iva => $sub)
 		{
-			$arrayIva[$iva] = number_format($sub*$iva/100,2,".","");
+			$arrayIva[$iva] = number_format($sub*$iva/100,$cifre,".","");
 		}
 		
 // 		if (isset($_GET["dev"]))

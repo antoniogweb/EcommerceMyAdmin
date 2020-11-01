@@ -83,6 +83,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_pulsanti_ordinamenti"	=>	0,
 		"fatture_attive"			=>	1,
 		"favicon_url"				=>	"",
+		"cifre_decimali"			=>	2,
 	);
 	
 	public function __construct() {

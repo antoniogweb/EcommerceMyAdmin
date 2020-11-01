@@ -829,6 +829,15 @@ class BaseContenutiController extends BaseController
 			"tipo"	=>	"marker",
 		))->send();
 		
+		if (v("usa_marchi"))
+		{
+			$marchioCorrente =  $data["marchioCorrente"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+				"marchi.id_marchio"	=>	(int)$this->idMarchio,
+			))->first();
+			
+			if (count($marchioCorrente) > 0)
+				$data["aliasMarchioCorrente"] = mfield($marchioCorrente, "alias")."/";
+		}
 // 		print_r($data["marker"]);die();
 		
 		$this->append($data);
