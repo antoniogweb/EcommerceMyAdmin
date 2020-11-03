@@ -662,6 +662,9 @@ class CartModel extends Model_Tree {
 				//calcolo lo sconto dovuto allo scaglionamento
 				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true);
 				
+				if (number_format($this->values["price"],2,".","") != number_format($this->values["prezzo_intero"],2,".",""))
+					$this->values["in_promozione"] = "Y";
+				
 				$this->sanitize();
 				$this->insert();
 				

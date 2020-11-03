@@ -178,6 +178,11 @@
 						<p class="cart_totale_merce"><i class="fa fa-dollar"></i> Totale ordine: <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></p>
 					</div>
 					
+					<?php if (trim($ordine["note"])) { ?>
+					<h2>Note</h2>
+					<?php echo nl2br($ordine["note"])?>
+					<?php } ?>
+					
 					<div class="row">
 						<div class="col-lg-6">
 							<h2>Dati di fatturazione:</h2>
