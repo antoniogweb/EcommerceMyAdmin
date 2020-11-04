@@ -701,24 +701,24 @@ class PagesController extends BaseController {
 					
 					$this->m[$this->modelName]->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 					
-					$clean["id_c"] = 1;
-					
-					if (isset($this->m[$this->modelName]->hModel->section))
-					{
-						$section = $this->m[$this->modelName]->hModel->section;
-						
-						if (strcmp($section,$this->m[$this->modelName]->hModel->rootSectionName) !== 0)
-						{
-							$cat = $this->m[$this->modelName]->hModel->clear()->where(array("section"=>$this->m[$this->modelName]->hModel->section))->record();
-						
-							if (count($cat) > 0)
-							{
-								$clean["id_c"] = $cat["id_c"];
-							}
-						}
-					}
-					
-					$this->m[$this->modelName]->values["id_c"] = $clean["id_c"];
+// 					$clean["id_c"] = 1;
+// 					
+// 					if (isset($this->m[$this->modelName]->hModel->section))
+// 					{
+// 						$section = $this->m[$this->modelName]->hModel->section;
+// 						
+// 						if (strcmp($section,$this->m[$this->modelName]->hModel->rootSectionName) !== 0)
+// 						{
+// 							$cat = $this->m[$this->modelName]->hModel->clear()->where(array("section"=>$this->m[$this->modelName]->hModel->section))->record();
+// 						
+// 							if (count($cat) > 0)
+// 							{
+// 								$clean["id_c"] = $cat["id_c"];
+// 							}
+// 						}
+// 					}
+// 					
+// 					$this->m[$this->modelName]->values["id_c"] = $clean["id_c"];
 					
 					$this->m[$this->modelName]->sanitize();
 
