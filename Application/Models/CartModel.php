@@ -798,4 +798,12 @@ class CartModel extends Model_Tree {
 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("cart.id_order ASC, id_cart ASC")->send();
 	}
+	
+	public function insert()
+	{
+		if (isset($this->values["json_personalizzazioni"]) && !trim($this->values["json_personalizzazioni"]))
+			$this->values["json_personalizzazioni"] = "[]";
+		
+		return parent::insert();
+	}
 }
