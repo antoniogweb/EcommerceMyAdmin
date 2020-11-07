@@ -130,4 +130,12 @@ class PagesattributiModel extends Model_Tree {
 			}
 		}
 	}
+	
+	public function titoloConNota($record)
+	{
+		if ($record["attributi"]["nota_interna"])
+			return $record["attributi"]["titolo"]." (".$record["attributi"]["nota_interna"].")";
+		
+		return $record["attributi"]["titolo"];
+	}
 }

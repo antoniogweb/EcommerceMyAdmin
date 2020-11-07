@@ -92,12 +92,4 @@ class CorrierispeseModel extends GenericModel {
 		
 		return 0;
 	}
-	
-	public function nazione($record)
-	{
-		if ($record["corrieri_spese"]["nazione"] != "W")
-			return findTitoloDaCodice($record["corrieri_spese"]["nazione"]);
-		
-		return "Tutte";
-	}
 }

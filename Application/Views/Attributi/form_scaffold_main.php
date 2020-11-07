@@ -5,6 +5,8 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php echo $form["nota_interna"];?>
+						
 						<?php echo $form["tipo"];?>
 						
 						<?php if ($type === "update") { ?>

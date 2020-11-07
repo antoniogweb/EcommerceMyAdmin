@@ -39,6 +39,7 @@ class CombinazioniController extends BaseController
 			'categoria:sanitizeAll'=>'tutti',
 			'codice:sanitizeAll'=>'tutti',
 			'id_page:sanitizeAll'=>'tutti',
+			'listino:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -62,6 +63,7 @@ class CombinazioniController extends BaseController
 		$this->s["admin"]->check();
 		
 		$this->model("AttributivaloriModel");
+		$this->model("CombinazionilistiniModel");
 	}
 
 	public function main()
@@ -69,7 +71,17 @@ class CombinazioniController extends BaseController
 		$this->shift();
 		
 		$this->mainFields = array("c1.title", "prodotto","varianti","codice","prezzo","peso");
-		$this->mainHead = "Categoria,Prodotto,Combinazioni,Codice,Prezzo,Peso";
+		
+		$prezzoLabel = "Prezzo";
+		
+		if ($this->viewArgs["listino"] == "tutti")
+			$prezzoLabel .= " (Italia)";
+		else if ($this->viewArgs["listino"] == "W")
+			$prezzoLabel .= " (Mondo)";
+		else
+			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
+		
+		$this->mainHead = "Categoria,Prodotto,Combinazione,Codice,$prezzoLabel,Peso";
 		
 		if (v("attiva_giacenza"))
 		{
@@ -172,14 +184,25 @@ class CombinazioniController extends BaseController
 		{
 			$this->m[$this->modelName]->setValues(array(
 				"codice"	=>	$v["codice"],
-				"price"		=>	$v["prezzo"],
 				"peso"		=>	$v["peso"],
 			));
+			
+			if (!$v["id_cl"])
+				$this->m[$this->modelName]->setValue("price", $v["prezzo"]);
 			
 			if (isset($v["giacenza"]))
 				$this->m[$this->modelName]->setValue("giacenza", $v["giacenza"]);
 			
 			$this->m[$this->modelName]->update($v["id_c"]);
+			
+			if ($v["id_cl"])
+			{
+				$this->m ["CombinazionilistiniModel"]->setValues(array(
+					"price"	=>	$v["prezzo"],
+				));
+				
+				$this->m ["CombinazionilistiniModel"]->update($v["id_cl"]);
+			}
 		}
 		
 		$this->m[$this->modelName]->db->commit();

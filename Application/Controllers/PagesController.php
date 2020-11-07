@@ -1026,7 +1026,7 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
 		$this->scaffold->fields = "attributi.*,pages_attributi.*";
-		$this->scaffold->loadMain('attributi.titolo','pages_attributi:id_pa','moveup,movedown,del');
+		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa','moveup,movedown,del');
 		$this->scaffold->setHead('ATTRIBUTO');
 		
 		$this->scaffold->model->clear()->inner("attributi")->on("attributi.id_a = pages_attributi.id_a")->orderBy("pages_attributi.id_order")->where(array("n!pages_attributi.id_page"=>$clean['id']));
@@ -1043,8 +1043,15 @@ class PagesController extends BaseController {
 		
 		$data['numeroAttributi'] = $this->scaffold->model->rowNumber();
 		
-		$data["listaAttributi"] = $this->m['AttributiModel']->clear()->toList("attributi.id_a","attributi.titolo")->orderBy("titolo")->send();
-// 		echo $this->scaffold->model->getQuery();
+		$resAttributi = $this->m['AttributiModel']->clear()->orderBy("titolo")->send();
+		
+		$data["listaAttributi"] = array();
+		
+		foreach ($resAttributi as $rowAttr)
+		{
+			$selectVal = $rowAttr["attributi"]["nota_interna"] ? $rowAttr["attributi"]["titolo"]. " (".$rowAttr["attributi"]["nota_interna"].")" : $rowAttr["attributi"]["titolo"];
+			$data["listaAttributi"][$rowAttr["attributi"]["id_a"]] = $selectVal;
+		}
 		
 		$data['menu'] = $this->scaffold->html['menu'];
 		$data['main'] = $this->scaffold->html['main'];

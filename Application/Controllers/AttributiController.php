@@ -53,7 +53,7 @@ class AttributiController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("attributi.titolo", "attributi.tipo");
+		$this->mainFields = array("attributi.titolo", "attributi.nota_interna", "attributi.tipo");
 		$this->mainHead = "Titolo,Tipo";
 		$this->filters = array("titolo");
 		
@@ -70,7 +70,7 @@ class AttributiController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo,tipo');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,nota_interna,tipo');
 		
 		parent::form($queryType, $id);
 	}

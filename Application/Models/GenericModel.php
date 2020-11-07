@@ -722,4 +722,12 @@ class GenericModel extends Model_Tree {
 			return false;
 		}
 	}
+	
+	public function nazione($record)
+	{
+		if ($record["corrieri_spese"]["nazione"] != "W")
+			return findTitoloDaCodice($record["corrieri_spese"]["nazione"]);
+		
+		return "Tutte";
+	}
 }

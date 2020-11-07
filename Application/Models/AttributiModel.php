@@ -121,5 +121,4 @@ class AttributiModel extends GenericModel {
 		}
 		
 	}
-
 }

@@ -11,7 +11,14 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class='mainMenu'>
-				<?php echo $menu;?>
+				<?php
+				$pathMenu = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_menu.php";
+				
+				if (file_exists($pathMenu))
+					include($pathMenu);
+				else if (isset($menu))
+					echo $menu;
+				?>
 			</div>
 			<div class="box">
 				<div class="box-header with-border main">
@@ -20,13 +27,9 @@
 					$path = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_filtri.php";
 					
 					if (file_exists($path))
-					{
 						include($path);
-					}
 					else if (isset($filtri))
-					{
 						echo $filtri;
-					}
 					?>
 					
 					<?php echo $notice;?>

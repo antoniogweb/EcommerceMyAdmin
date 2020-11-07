@@ -42,7 +42,8 @@ class CombinazioniModel extends GenericModel {
 	
 	public function relations() {
         return array(
-			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare il corso"),
+			'listini' => array("HAS_MANY", 'CombinazionilistiniModel', 'id_c', null, "CASCADE"),
+			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
     
@@ -379,10 +380,29 @@ class CombinazioniModel extends GenericModel {
 	
 	public function prezzo($record)
 	{
-		if (!isset($_GET["esporta"]))
-			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='price' value='".$record["combinazioni"]["price"]."' />";
+		if (!isset($_GET["listino"]) || $_GET["listino"] == "tutti")
+		{
+			$prezzo = $record["combinazioni"]["price"];
+			$attrIdCl = "id-cl='0'";
+		}
 		else
-			return $record["combinazioni"]["price"];
+		{
+			$cl = new CombinazionilistiniModel();
+			list($idCl, $prezzo) = $cl->getPrezzoListino($record["combinazioni"]["id_c"], $_GET["listino"]);
+			$attrIdCl = "id-cl='$idCl'";
+		}
+		
+		if (isset($prezzo))
+		{
+			$prezzo = number_format($prezzo, 4, ",", "");
+			
+			if (!isset($_GET["esporta"]))
+				return "<input id-c='".$record["combinazioni"]["id_c"]."' $attrIdCl style='max-width:120px;' class='form-control' name='price' value='".$prezzo."' />";
+			else
+				return $prezzo;
+		}
+		else
+			return "!!";
 	}
 	
 	public function peso($record)
