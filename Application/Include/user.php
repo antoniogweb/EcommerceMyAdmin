@@ -21,6 +21,8 @@ class User
 	public static $adminLogged = false;
 	public static $asJson = false;
 	
+	public static $nazione = null;
+	
 	public static function getSpedizioneDefault()
 	{
 // 		if (User::$logged)

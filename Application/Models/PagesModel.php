@@ -1422,18 +1422,37 @@ class PagesModel extends GenericModel {
 		return $section;
 	}
 	
-	public function prezzoMinimo($id_page)
+	public function prezzoMinimo($id_page, $forzaPrincipale = false)
 	{
 		$clean['id_page'] = (int)$id_page;
 		
-		$c = new CombinazioniModel();
-		
-		$res = $c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
-			"id_page"	=>	$clean['id_page'],
-		))->send();
-		
-		if (count($res) > 0)
-			return $res[0]["aggregate"]["PREZZO_MINIMO"];
+		if (!User::$nazione || $forzaPrincipale)
+		{
+			// Listino principale
+			$c = new CombinazioniModel();
+			
+			$res = $c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
+				"id_page"	=>	$clean['id_page'],
+			))->send();
+			
+			if (count($res) > 0)
+				return $res[0]["aggregate"]["PREZZO_MINIMO"];
+		}
+		else
+		{
+			// Listino nazione
+			$c = new CombinazioniModel();
+			
+			$res = $c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
+				"id_page"	=>	$clean['id_page'],
+				"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
+			))->send();
+			
+			if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
+				return $res[0]["aggregate"]["PREZZO_MINIMO"];
+			else
+				return $this->prezzoMinimo($clean['id_page'], true);
+		}
 		
 		return 0;
 	}

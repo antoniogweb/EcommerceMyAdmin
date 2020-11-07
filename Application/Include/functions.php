@@ -591,7 +591,7 @@ function tagliaStringa($string, $num = 40)
 
 function prezzoPromozione($p)
 {
-	$prezzo = calcolaPrezzoFinale($p["pages"]["id_page"], $p["pages"]["price"]);
+	$prezzo = calcolaPrezzoFinale($p["pages"]["id_page"], prezzoMinimo($p["pages"]["id_page"]));
 	
 	return $prezzo >= 0 ? setPriceReverse($prezzo) : "0,00";
 }
@@ -1550,4 +1550,11 @@ function hexToRbg($hex)
 	$g = hexdec($split[1]);
 	$b = hexdec($split[2]);
 	return array($r, $g, $b);
+}
+
+function prezzoMinimo($id_page)
+{
+	$p = new PagesModel();
+	
+	return $p->prezzoMinimo($id_page);
 }

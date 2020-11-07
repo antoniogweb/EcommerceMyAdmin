@@ -994,15 +994,20 @@ class BaseContenutiController extends BaseController
 		if (count($res) > 0)
 		{
 			$prezzoPieno = "";
+			$prezzoCombinazione = $res[0]["combinazioni"]["price"];
+			
+			if (User::$nazione)
+				$prezzoCombinazione = $this->m["CombinazioniModel"]->getPrezzoListino($res[0]["combinazioni"]["id_c"], User::$nazione, $prezzoCombinazione);
+			
 			if (inPromozioneTot($clean["id_page"]))
-				$prezzoPieno = setPriceReverse(calcolaPrezzoIvato($clean["id_page"], $res[0]["combinazioni"]["price"]));
+				$prezzoPieno = setPriceReverse(calcolaPrezzoIvato($clean["id_page"], $prezzoCombinazione));
 			
 			$qty = (int)$res[0]["combinazioni"]["giacenza"];
 			
 			if ($qty < 0)
 				$qty = 0;
 			
-			echo '<span class="id_combinazione">'.$res[0]["combinazioni"]["id_c"].'</span><span class="codice_combinazione">'.$res[0]["combinazioni"]["codice"].'</span><span class="prezzo_combinazione">'.setPriceReverse(calcolaPrezzoFinale($clean["id_page"], $res[0]["combinazioni"]["price"])).'</span><span class="immagine_combinazione">'.$res[0]["combinazioni"]["immagine"].'</span><span class="prezzo_pieno_combinazione">'.$prezzoPieno.'</span><span class="giacenza_combinazione">'.$qty.'</span>';
+			echo '<span class="id_combinazione">'.$res[0]["combinazioni"]["id_c"].'</span><span class="codice_combinazione">'.$res[0]["combinazioni"]["codice"].'</span><span class="prezzo_combinazione">'.setPriceReverse(calcolaPrezzoFinale($clean["id_page"], $prezzoCombinazione)).'</span><span class="immagine_combinazione">'.$res[0]["combinazioni"]["immagine"].'</span><span class="prezzo_pieno_combinazione">'.$prezzoPieno.'</span><span class="giacenza_combinazione">'.$qty.'</span>';
 		}
 		else
 		{

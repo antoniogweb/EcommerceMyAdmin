@@ -442,6 +442,23 @@ class CombinazioniModel extends GenericModel {
 		return "";
 	}
 	
+	public function getPrezzoListino($idC, $nazione, $prezzo = null)
+	{
+		$cl = new CombinazionilistiniModel();
+		
+		$listino = $cl->clear()->where(array(
+			"nazione"	=>	sanitizeAll($nazione),
+			"id_c"		=>	(int)$idC,
+		))->record();
+		
+		if (!empty($listino))
+			return $listino["price"];
+		else if (isset($prezzo))
+			return $prezzo;
+		else
+			return null;
+	}
+	
 // 	public function col2($record)
 // 	{
 // 		$idAttr = $record["combinazioni"]["col_2"];

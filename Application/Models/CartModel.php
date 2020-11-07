@@ -653,6 +653,9 @@ class CartModel extends Model_Tree {
 				if (isset($datiCombinazione))
 				{
 					$prezzoIntero = $this->values["prezzo_intero"] = $datiCombinazione[0]["combinazioni"]["price"];
+					
+					if (User::$nazione)
+						$prezzoIntero = $this->values["prezzo_intero"] = $comb->getPrezzoListino($datiCombinazione[0]["combinazioni"]["id_c"], User::$nazione, $prezzoIntero);
 				}
 				else
 				{
