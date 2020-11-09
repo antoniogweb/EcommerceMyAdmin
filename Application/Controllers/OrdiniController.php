@@ -74,14 +74,34 @@ class OrdiniController extends BaseController {
 
 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>'panel'));
 		
-		$this->scaffold->loadMain('<a href="'.$this->baseUrl.'/ordini/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>,smartDate|orders.data_creazione,OrdiniModel.getNome|orders.id_o,orders.email,orders.tipo_cliente,OrdiniModel.getCFoPIva|orders.id_o,orders.nome_promozione,statoOrdineBreve|orders.stato,totaleCrud','orders:id_o','');
+		$mainFields = array(
+			'<a href="'.$this->baseUrl.'/ordini/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>',
+			'smartDate|orders.data_creazione',
+			'OrdiniModel.getNome|orders.id_o',
+			'orders.email',
+			'orders.tipo_cliente',
+			'OrdiniModel.getCFoPIva|orders.id_o',
+			'orders.nome_promozione',
+			'statoOrdineBreve|orders.stato',
+			'totaleCrud',
+		);
+		
+		$headLabels = '#ID,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
+		
+		if (v("attiva_ip_location"))
+		{
+			$mainFields[] = 'nazionenavigazione';
+			$headLabels .= ',Nazione';
+		}
+		
+		$this->scaffold->loadMain($mainFields,'orders.id_o','');
 		
 		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/ordini/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
 		
 // 		$this->scaffold->addItem('text',";OrdiniModel.pulsanteFattura|orders.id_o;");
 		$this->scaffold->addItem('text',$vediOrdineLink);
 		
-		$this->scaffold->setHead('#ID,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale');
+		$this->scaffold->setHead($headLabels);
 		
 		$this->scaffold->model->clear()->orderBy("orders.id_o desc");
 		
@@ -139,7 +159,7 @@ class OrdiniController extends BaseController {
 		);
 		
 		$filtroStato = array(
-			"tutti"		=>	"Stato",
+			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
 		$this->scaffold->itemList->setFilters(array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato)));

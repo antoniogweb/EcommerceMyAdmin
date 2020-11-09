@@ -85,6 +85,7 @@ class VariabiliModel extends GenericModel {
 		"favicon_url"				=>	"",
 		"cifre_decimali"			=>	2,
 		"link_cms"					=>	"blog/main",
+		"attiva_ip_location"		=>	0,
 	);
 	
 	public function __construct() {

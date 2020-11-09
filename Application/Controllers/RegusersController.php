@@ -76,6 +76,12 @@ class RegusersController extends BaseController {
 			$headLabels .= ',Gruppi';
 		}
 		
+		if (v("attiva_ip_location"))
+		{
+			$mainFields .= ',nazionenavigazione';
+			$headLabels .= ',Nazione';
+		}
+		
 		$this->scaffold->itemList->setFilters(array(null,'username',null,null,'codice_fiscale','p_iva'));
 		
 		$this->scaffold->itemList->setBulkActions(array(

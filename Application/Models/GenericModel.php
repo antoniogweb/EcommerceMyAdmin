@@ -730,4 +730,15 @@ class GenericModel extends Model_Tree {
 		
 		return "Tutte";
 	}
+	
+	public function nazionenavigazione($record)
+	{
+		$n = new NazioniModel();
+		
+		$nazione = $record[$this->_tables]["nazione_navigazione"];
+		if (!$nazione)
+			$nazione = v("nazione_default");
+		
+		return $n->findTitoloDaCodice($nazione);
+	}
 }

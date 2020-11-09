@@ -41,7 +41,7 @@
 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
 	
     <!-- Custom styles for this template -->
-    <link href="<?php echo $this->baseUrl;?>/Public/Css/dashboard.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl;?>/Public/Css/dashboard.css?v=<?php echo rand(1,100000);?>" rel="stylesheet">
     
     <script src="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
     <script src="<?php echo $this->baseUrl;?>/Public/Js/AdminLTE-2.3.0/dist/js/app.min.js"></script>
