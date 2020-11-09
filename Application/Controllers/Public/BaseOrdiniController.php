@@ -177,12 +177,12 @@ class BaseOrdiniController extends BaseController
 					{
 						case "Completed":
 							
-							if ($ordine["registrato"] == "Y")
-								$this->m["OrdiniModel"]->mandaMail($ordine["id_o"]);
+// 							if ($ordine["registrato"] == "Y")
+// 								$this->m["OrdiniModel"]->mandaMail($ordine["id_o"]);
 							
-							$mail->Subject  = Parametri::$nomeNegozio." - Conferma Pagamento Nº Ordine: ".$ordine["id_o"];
+							$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Conferma Pagamento Nº Ordine: ").$ordine["id_o"];
 							$mail->AddAddress($ordine["email"]);
-							$output = "Grazie per il suo acquisto!<br />Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
+							$output = gtext("Grazie per il suo acquisto!<br />Il pagamento dell'ordine #").$ordine["id_o"]." ".gtext("è andato a buon fine.")."<br />";
 							
 							$fattura = $this->m["FattureModel"]->where(array(
 								"id_o"	=>	$ordine["id_o"]
@@ -891,7 +891,7 @@ class BaseOrdiniController extends BaseController
 										$mail->AddAddress($ordine["email"]);
 										if (Parametri::$mailFrom && Parametri::$mailFromName)
 											$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
-										$mail->Subject  = "[".Parametri::$nomeNegozio." - Invio credenziali nuovo utente";
+										$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Invio credenziali nuovo utente");
 										$mail->IsHTML(true);
 										
 										try
@@ -985,7 +985,7 @@ class BaseOrdiniController extends BaseController
 							$mail->AddAddress($ordine["email"]);
 							if (Parametri::$mailFrom && Parametri::$mailFromName)
 								$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
-							$mail->Subject  = Parametri::$nomeNegozio." - Ordine N°" . $clean['lastId'];
+							$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Ordine")." N°" . $clean['lastId'];
 							$mail->IsHTML(true);
 							
 // 							$mail->WordWrap = 70;
@@ -1004,7 +1004,7 @@ class BaseOrdiniController extends BaseController
 								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 								$mail->MsgHTML($output);
 								
-								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
+// 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
 									$mail->Send();
 
 								//mail al negozio
@@ -1021,11 +1021,12 @@ class BaseOrdiniController extends BaseController
 								$mail->Send();
 								
 								// Segna inviata mail ordine ricevuto
-								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
+// 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
 									$this->m['OrdiniModel']->aggiungiStoricoMail($clean['lastId'], "R");
 								
 							} catch (Exception $e) {
-								
+								var_dump($e);
+								die();
 							}
 							
 							// Iscrizione alla newsletter

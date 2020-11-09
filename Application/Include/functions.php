@@ -480,11 +480,12 @@ function getIva()
 
 function getTotal()
 {
+	$cifre = v("cifre_decimali");
 	$totalConSpedizione = getPrezzoScontatoN(true);
 	$iva = getIvaN();
 	
 // 	return $iva;
-	return setPriceReverse(number_format($totalConSpedizione,2,".","") + number_format($iva,2,".",""));
+	return setPriceReverse(number_format($totalConSpedizione,$cifre,".","") + number_format($iva,$cifre,".",""));
 }
 
 function inPromozione($id_page, $page = null)
