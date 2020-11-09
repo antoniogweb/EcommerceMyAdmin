@@ -40,6 +40,7 @@ class CombinazioniController extends BaseController
 			'codice:sanitizeAll'=>'tutti',
 			'id_page:sanitizeAll'=>'tutti',
 			'listino:sanitizeAll'=>'tutti',
+			'st_giac:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -111,6 +112,12 @@ class CombinazioniController extends BaseController
 			$this->filters[] = array("id_".$idA,null,$filtriIdA);
 		}
 		
+		$this->filters[] = array("st_giac",null,array(
+			"tutti"		=>	"Stato giacenza",
+			"0"	=>	"Esaurito",
+			"1"	=>	"Non esaurito",
+		));
+		
 // 		$this->addBulkActions = false;
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000000, 'mainMenu'=>'save_combinazioni,esporta');
@@ -128,6 +135,20 @@ class CombinazioniController extends BaseController
 					"id_page"	=>	$this->viewArgs['id_page']
 				))
 				->orderBy("c1.title,pages.title");
+		
+		if ($this->viewArgs["st_giac"] != "tutti")
+		{
+			if ($this->viewArgs["st_giac"])
+				$this->m[$this->modelName]->aWhere(array(
+					"gt"	=>	array(
+						"combinazioni.giacenza"	=>	0,
+					)
+				));
+			else
+				$this->m[$this->modelName]->aWhere(array(
+					"combinazioni.giacenza"	=>	0,
+				));
+		}
 		
 // 		print_r($this->viewArgs);die();
 		

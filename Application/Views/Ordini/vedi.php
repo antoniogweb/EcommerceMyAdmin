@@ -120,6 +120,12 @@
 							<td>Metodo di pagamento:</td>
 							<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
 						</tr>
+						<?php if (v("attiva_ip_location")) { ?>
+						<tr>
+							<td>Nazione navigazione:</td>
+							<td><b><?php echo findTitoloDaCodice($ordine["nazione_navigazione"]);?></b></td>
+						</tr>
+						<?php } ?>
 					</table>
 					
 					<h2>Dettagli ordine:</h2>

@@ -46,6 +46,7 @@ class OrdiniController extends BaseController {
 			'id_comb:sanitizeAll'=>'tutti',
 			'dal:sanitizeAll'=>'tutti',
 			'al:sanitizeAll'=>'tutti',
+			'nazione_utente:sanitizeAll'=>'tutti'
 		));
 
 		$this->model("OrdiniModel");
@@ -111,6 +112,7 @@ class OrdiniController extends BaseController {
 			'tipo_cliente'	=>	$this->viewArgs['tipo_cliente'],
 			'pagamento'	=>	$this->viewArgs['pagamento'],
 			'registrato'	=>	$this->viewArgs['registrato'],
+			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 		);
 		
 		$this->scaffold->model->where($where);
@@ -162,7 +164,14 @@ class OrdiniController extends BaseController {
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$this->scaffold->itemList->setFilters(array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato)));
+		$filtri = array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
+		
+		if (v("attiva_ip_location"))
+		{
+			$filtri[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
+		}
+		
+		$this->scaffold->itemList->setFilters($filtri);
 		
 		$data['scaffold'] = $this->scaffold->render();
 		

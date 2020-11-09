@@ -49,7 +49,7 @@ class RegusersController extends BaseController {
 		
 // 		$data["sezionePannello"] = "ecommerce";
 		
-		$this->setArgKeys(array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1, 'partial:sanitizeAll'=>'tutti', 'p_iva:sanitizeAll'=>'tutti'));
+		$this->setArgKeys(array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1, 'partial:sanitizeAll'=>'tutti', 'p_iva:sanitizeAll'=>'tutti','nazione_utente:sanitizeAll'=>'tutti'));
 
 		$this->_topMenuClasses['clienti'] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
@@ -70,19 +70,24 @@ class RegusersController extends BaseController {
 		$mainFields = '[[checkbox]];regusers.id_user;,[[ledit]];regusers.username;,nome,regusers.tipo_cliente,regusers.codice_fiscale,regusers.p_iva,getYesNoUtenti|regusers:has_confirmed';
 		$headLabels = '[[bulkselect:checkbox_regusers_id_user]],Email,Nome/r.soc,Tipo cliente,C.F., P.IVA,Attivo?';
 		
+		$filtri = array(null,'username',null,null,'codice_fiscale','p_iva',null);
+		
 		if (v("attiva_gruppi_utenti"))
 		{
 			$mainFields .= ',RegusersModel.listaGruppi|regusers.id_user';
 			$headLabels .= ',Gruppi';
+			$filtri[] = null;
 		}
 		
 		if (v("attiva_ip_location"))
 		{
 			$mainFields .= ',nazionenavigazione';
 			$headLabels .= ',Nazione';
+			
+			$filtri[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new RegusersModel()));
 		}
 		
-		$this->scaffold->itemList->setFilters(array(null,'username',null,null,'codice_fiscale','p_iva'));
+		$this->scaffold->itemList->setFilters($filtri);
 		
 		$this->scaffold->itemList->setBulkActions(array(
 			"checkbox_regusers_id_user"	=>	array("del","Elimina selezionati","confirm"),
@@ -101,6 +106,7 @@ class RegusersController extends BaseController {
 			'tipo_cliente'	=>	$this->viewArgs['tipo_cliente'],
 			"lk" => array('n!regusers.codice_fiscale' => $this->viewArgs['codice_fiscale']),
 			" lk" => array('n!regusers.p_iva' => $this->viewArgs['p_iva']),
+			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 		);
 		$this->scaffold->model->where($whereClauseArray);
 		

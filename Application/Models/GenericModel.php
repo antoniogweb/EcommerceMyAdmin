@@ -741,4 +741,23 @@ class GenericModel extends Model_Tree {
 		
 		return $n->findTitoloDaCodice($nazione);
 	}
+	
+	public static function filtroNazioneNavigazione($ru)
+	{
+		$n = new NazioniModel();
+		
+		$res = $ru->clear()->select("distinct nazione_navigazione")->toList("nazione_navigazione")->send();
+		
+		$selectFiltro = array("tutti"=>"Tutti");
+		
+		foreach ($res as $r)
+		{
+			if (!$r)
+				$r = v("nazione_default");
+			
+			$selectFiltro[$r] = $n->findTitoloDaCodice($r);
+		}
+		
+		return $selectFiltro;
+	}
 }

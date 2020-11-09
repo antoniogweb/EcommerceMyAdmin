@@ -3,12 +3,20 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class IplocationModel extends Model_Tree {
-
+	
+	public static $durataIp = 3600;
+	
 	public function __construct() {
 		$this->_tables = 'ip_location';
 		$this->_idFields = 'id_ip_location';
 
 		parent::__construct();
+	}
+	
+	public function deleteExpired()
+	{
+		$limit = time() - self::$durataIp; 
+		$this->db->del('ip_location','time_creazione < '.$limit);
 	}
 	
 	public static function setData()
@@ -27,6 +35,11 @@ class IplocationModel extends Model_Tree {
 			{
 				$nazione = $data["nazione"];
 			}
+		}
+		
+		if (function_exists("setLanguageAndCountry"))
+		{
+			setLanguageAndCountry($data);
 		}
 // 		print_r(Params::$frontEndLanguages);die();
 // 		$lang = strtolower($nazione);
@@ -47,6 +60,8 @@ class IplocationModel extends Model_Tree {
 // 			);
 		
 		$il = new IplocationModel();
+		
+		$il->deleteExpired();
 		
 		$recordIp = $il->clear()->where(array(
 			"ip"	=>	sanitizeAll($ip),
