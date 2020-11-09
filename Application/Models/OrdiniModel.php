@@ -208,6 +208,7 @@ class OrdiniModel extends FormModel {
 		$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
 		
 		$this->values["lingua"] = Params::$lang;
+		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
 		if ($this->controllaCF())
 			return parent::insert();

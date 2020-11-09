@@ -22,6 +22,7 @@ class User
 	public static $asJson = false;
 	
 	public static $nazione = null;
+	public static $nazioneNavigazione = "";
 	
 	public static function getSpedizioneDefault()
 	{
