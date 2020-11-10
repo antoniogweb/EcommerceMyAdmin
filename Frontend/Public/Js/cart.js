@@ -619,7 +619,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			
 			if (jQuery.trim(content.result) == "OK")
 			{
-				if (!haAccessori())
+				if (!haAccessori() || principale.hasClass("aggiungi_al_carrello_semplice"))
 				{
 					prodottiAggiunti(principale, content);
 					reloadCartSecondario();
@@ -639,7 +639,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 				togliSpinner(principale);
 			}
 			
-			if (haAccessori())
+			if (haAccessori() && !principale.hasClass("aggiungi_al_carrello_semplice"))
 			{
 				if (accessorio != undefined)
 				{
