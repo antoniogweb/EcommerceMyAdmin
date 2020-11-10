@@ -299,7 +299,7 @@ class CombinazioniModel extends GenericModel {
 				$this->values = $v;
 				$this->values["id_page"] = $dettagliPagina["id_page"];
 				
-				$this->delFields("id_c");
+// 				$this->delFields("id_c");
 				$this->delFields("id_order");
 				
 				$this->sanitize();
@@ -335,27 +335,27 @@ class CombinazioniModel extends GenericModel {
 		))->field("giacenza");
 	}
 	
-// 	public function del($id = null, $where = null)
-// 	{
-// 		if (!isset($where))
-// 		{
-// 			$record = $this->selectId($id);
-// 			
-// 			if (!empty($record))
-// 			{
-// 				if (parent::del($id, $where))
-// 				{
-// 					$this->controllaCombinazioniPagina($record["id_page"]);
-// 					
-// 					return true;
-// 				}
-// 				
-// 				return false;
-// 			}
-// 		}
-// 		else
-// 			return parent::del($id, $where);
-// 	}
+	public function del($id = null, $where = null)
+	{
+		if (!isset($where))
+		{
+			$record = $this->selectId($id);
+			
+			if (!empty($record))
+			{
+				if (parent::del($id, $where))
+				{
+					$this->controllaCombinazioniPagina($record["id_page"]);
+					
+					return true;
+				}
+				
+				return false;
+			}
+		}
+		else
+			return parent::del($id, $where);
+	}
 	
 	public function varianti($record)
 	{
