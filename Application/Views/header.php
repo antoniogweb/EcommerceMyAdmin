@@ -12,9 +12,9 @@
 	<link rel="icon" href="<?php echo v("favicon_url");?>" type="image/png"/>
 	<?php } ?>
 	
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl.'/Public/Css/panel.css';?>">
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrl.'/Public/Css/main.css';?>">
-	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrl."/Public/Css/";?>print.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl.'/Public/Css/panel.css?v=<?php echo rand(1,100000);?>';?>">
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrl.'/Public/Css/main.css?v=<?php echo rand(1,100000);?>';?>">
+	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrl."/Public/Css/";?>print.css?v=<?php echo rand(1,100000);?>" />
 
 	<script>
 		var baseUrl = "<?php echo $this->baseUrl;?>";

@@ -88,7 +88,7 @@ class NazioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,iso_country_code,tipo,attiva,attiva_spedizione');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,iso_country_code,tipo,attiva,attiva_spedizione,id_iva,soglia_iva_italiana');
 		
 		parent::form($queryType, $id);
 	}

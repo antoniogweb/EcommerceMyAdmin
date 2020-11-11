@@ -70,10 +70,36 @@ class NazioniModel extends GenericModel
 					'options'	=>	self::$selectTipi,
 					"reverse"	=>	"yes",
 				),
+				'id_iva'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Aliquota Iva',
+					'options'	=>	$this->selectIva(),
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Usata nel caso venga superata la soglia annuale indicata sotto</div>"
+					),
+				),
+				'soglia_iva_italiana'	=>	array(
+					'labelString'=>	'Soglia per IVA italiana (su spedizioni estere)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Soglia sotto alla quale si può applicare l'IVA italiana anche per vendite all'estero</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+	}
+	
+	public function selectIva()
+	{
+		$iva = new IvaModel();
+		
+		return array(0 => "-") + $iva->clear()->orderBy("id_order")->toList("id_iva","titolo")->send();
 	}
 	
 	public function getNome($codice)

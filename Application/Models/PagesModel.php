@@ -158,7 +158,7 @@ class PagesModel extends GenericModel {
 				),
 				'id_iva'		=>	array(
 					'type'		=>	'Select',
-					'labelString'=>	'Tipologia di Iva',
+					'labelString'=>	'Aliquota Iva',
 					'options'	=>	$this->selectIva(),
 					'reverse' => 'yes',
 					
