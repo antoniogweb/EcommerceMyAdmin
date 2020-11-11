@@ -30,10 +30,15 @@ class ProdottiController extends PagesController {
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 		
+		$campoPrice = "price";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+			$campoPrice = "price_ivato";
+			
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
-			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a> <br /><span class='get_title'>(alias: ;pages.alias;)</span><br />codice: <b>;pages.codice;</b><br />prezzo: <b>;setPriceReverse|pages.price;€</b>",
+			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a> <br /><span class='get_title'>(alias: ;pages.alias;)</span><br />codice: <b>;pages.codice;</b><br />prezzo: <b>;setPriceReverse|pages.$campoPrice;€</b>",
 			'PagesModel.categoriesS|pages.id_page',
 // 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
@@ -63,11 +68,6 @@ class ProdottiController extends PagesController {
 		$this->head .= ',In promoz?,Pubbl?,In evid?';
 		
 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
-		
-		$campoPrice = "price";
-		
-		if (v("prezzi_ivati_in_prodotti"))
-			$campoPrice = "price_ivato";
 		
 		if (v("ecommerce_attivo"))
 			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al";

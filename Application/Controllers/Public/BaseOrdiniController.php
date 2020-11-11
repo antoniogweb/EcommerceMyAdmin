@@ -755,6 +755,7 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
 						
 						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
+						$this->m['OrdiniModel']->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
 						
 						if (isset(IvaModel::$aliquotaEstera))
 						{

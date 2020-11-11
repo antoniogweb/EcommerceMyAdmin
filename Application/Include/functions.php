@@ -431,7 +431,10 @@ function getPrezzoScontato($ivato = 0)
 
 function getSpedizioneN()
 {
-	$subtotale = getPrezzoScontatoN(false);
+	if (!v("prezzi_ivati_in_carrello"))
+		$subtotale = getPrezzoScontatoN(false);
+	else
+		$subtotale = getPrezzoScontatoN(false, true);
 	
 	// Se il totale è sopra la soglia delle spedizioni gratuite, le spese di spedizione sono 0
 	if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])

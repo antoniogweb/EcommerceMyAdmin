@@ -112,4 +112,16 @@ class IvaModel extends GenericModel
 		
 		return null;
     }
+    
+    public static function getTitoloDaId($id)
+    {
+		$i = new IvaModel();
+		
+		$record = $i->selectId((int)$id);
+		
+		if (!empty($record))
+			return $record["titolo"];
+		
+		return "";
+    }
 }

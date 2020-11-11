@@ -461,6 +461,14 @@ class OrdiniModel extends FormModel {
 		$c = new CartModel();
 		$r = new RigheModel();
 		
+		$sconto = 0;
+		if (hasActiveCoupon($id_o))
+		{
+			$p = new PromozioniModel();
+			$coupon = $p->getCoupon(User::$coupon);
+			$sconto = $coupon["sconto"];
+		}
+		
 		$pages = $c->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 		
 		foreach ($pages as $p)
@@ -473,6 +481,19 @@ class OrdiniModel extends FormModel {
 			
 			if (isset(IvaModel::$idIvaEstera))
 				$r->values["id_iva"] = IvaModel::$idIvaEstera;
+			
+			$r->values["price_ivato"] = number_format($r->values["price"] * (1 + ($r->values["iva"] / 100)),2,".","");
+			$r->values["prezzo_intero_ivato"] = number_format($r->values["prezzo_intero"] * (1 + ($r->values["iva"] / 100)),2,".","");
+			
+			if (in_array($p["cart"]["id_page"], User::$prodottiInCoupon))
+			{
+				$r->values["prezzo_finale"] = number_format($r->values["price"] - ($r->values["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
+				$r->values["percentuale_promozione"] = $sconto;
+			}
+			else
+				$r->values["prezzo_finale"] = number_format($r->values["price"],v("cifre_decimali"),".","");
+			
+			$r->values["prezzo_finale_ivato"] = number_format($r->values["prezzo_finale"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
 			$r->delFields("id_cart");
 			$r->delFields("id_order");
@@ -490,6 +511,49 @@ class OrdiniModel extends FormModel {
 	public function vedi($record)
 	{
 		return "<a title='Elenco ordini dove è stato acquistato' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."?partial=Y&nobuttons=Y'>".$record["orders"]["id_o"]."</a>";
+	}
+	
+	public static function getTotaliIva($id_o)
+	{
+		$o = new OrdiniModel();
+		$r = new RigheModel();
+		
+		$ordine = $o->selectId((int)$id_o);
+		
+		$righe = $r->clear()->where(array(
+			"id_o"	=>	(int)$id_o,
+		))->send(false);
+		
+		$arrayTotali = array();
+		
+		foreach ($righe as $r)
+		{
+			if (isset($arrayTotali[$r["id_iva"]]))
+				$arrayTotali[$r["id_iva"]] += ($r["prezzo_finale_ivato"] * $r["quantity"]);
+			else
+				$arrayTotali[$r["id_iva"]] = ($r["prezzo_finale_ivato"] * $r["quantity"]);
+		}
+		
+		if (!empty($ordine))
+		{
+			if (isset($arrayTotali[$ordine["id_iva"]]))
+				$arrayTotali[$ordine["id_iva"]] += $ordine["spedizione_ivato"];
+			else
+				$arrayTotali[$ordine["id_iva"]] = $ordine["spedizione_ivato"];
+		}
+		
+		$arrayIva = array();
+		
+		$i = new IvaModel();
+		
+		foreach ($arrayTotali as $idAliquota => $totale)
+		{
+			$aliquota = $i->getValore($idAliquota);
+			
+			$arrayIva[$idAliquota] = $totale - ($totale / (1 + ($aliquota / 100)));
+		}
+		
+		return $arrayIva;
 	}
 	
 }
