@@ -44,6 +44,46 @@ class CombinazionilistiniModel extends GenericModel {
 		return $cl->clear()->select("distinct nazione")->toList("nazione")->send();
 	}
 	
+	public function setPriceNonIvato($idPage = 0)
+	{
+		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]))
+		{
+			$p = new PagesModel();
+			$valore = $p->getIva($idPage);
+			
+			$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+		}
+	}
+	
+	public function insert()
+	{
+		if (isset($this->values["id_c"]))
+		{
+			$c = new CombinazioniModel();
+			$comb = $c->selectId($this->values["id_c"]);
+			
+			if (!empty($comb))
+				$this->setPriceNonIvato($comb["id_page"]);
+		}
+			
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$res = $this->clear()->select("combinazioni.id_page")->inner(array("combinazione"))->where(array(
+			"id_combinazione_listino"	=>	(int)$id,
+		))->send();
+		
+		if (count($res) > 0)
+			$this->setPriceNonIvato($res[0]["combinazioni"]["id_page"]);
+		
+		if (parent::update($id, $where))
+			return true;
+		
+		return false;
+	}
+	
 	public function getPrezzoListino($idC, $nazione)
 	{
 		$listino = $this->clear()->where(array(
@@ -51,6 +91,11 @@ class CombinazionilistiniModel extends GenericModel {
 			"id_c"		=>	(int)$idC,
 		))->record();
 		
+		$campoPrice = "price";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+			$campoPrice = "price_ivato";
+			
 		if (empty($listino))
 		{
 			$c = new CombinazioniModel();
@@ -62,15 +107,15 @@ class CombinazionilistiniModel extends GenericModel {
 				$this->setValues(array(
 					"nazione"	=>	$nazione,
 					"id_c"		=>	$idC,
-					"price"		=>	$combinazione["price"],
+					"$campoPrice"	=>	$combinazione[$campoPrice],
 				));
 				
 				if ($this->insert())
-					return array($this->lId,$combinazione["price"]);
+					return array($this->lId,$combinazione[$campoPrice]);
 			}
 		}
 		else
-			return array($listino["id_combinazione_listino"],$listino["price"]);
+			return array($listino["id_combinazione_listino"],$listino[$campoPrice]);
 		
 		return array(0,null);
 	}

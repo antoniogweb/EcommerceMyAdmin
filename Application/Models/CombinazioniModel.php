@@ -154,8 +154,32 @@ class CombinazioniModel extends GenericModel {
 		))->sWhere("col_1 = 0 and col_2 = 0 and col_3 = 0 and col_4 = 0 and col_5 = 0 and col_6 = 0 and col_7 = 0 and col_8 = 0")->record();
 	}
 	
+	public function setPriceNonIvato($idPage = 0)
+	{
+		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]))
+		{
+			$p = new PagesModel();
+			$valore = $p->getIva($idPage);
+			
+			$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+		}
+	}
+	
+	public function insert()
+	{
+		if (isset($this->values["id_page"]))
+			$this->setPriceNonIvato($this->values["id_page"]);
+		
+		return parent::insert();
+	}
+	
 	public function update($id = null, $where = null)
 	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+			$this->setPriceNonIvato($record["id_page"]);
+		
 		if (parent::update($id, $where))
 		{
 			$record = $this->selectId((int)$id);
@@ -166,6 +190,7 @@ class CombinazioniModel extends GenericModel {
 				
 				$p->setValues(array(
 					"price"		=>	$record["price"],
+					"price_ivato"	=>	$record["price_ivato"],
 					"codice"	=>	$record["codice"],
 					"peso"		=>	$record["peso"],
 				));
@@ -239,6 +264,7 @@ class CombinazioniModel extends GenericModel {
 									{
 										$temp["codice"] = $dettagliPagina["codice"];
 										$temp["price"] = $dettagliPagina["price"];
+										$temp["price_ivato"] = $dettagliPagina["price_ivato"];
 										$temp["peso"] = $dettagliPagina["peso"];
 										$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 										$val[] = $temp;
@@ -260,6 +286,7 @@ class CombinazioniModel extends GenericModel {
 								{
 									$temp["codice"] = $dettagliPagina["codice"];
 									$temp["price"] = $dettagliPagina["price"];
+									$temp["price_ivato"] = $dettagliPagina["price_ivato"];
 									$temp["peso"] = $dettagliPagina["peso"];
 									$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 									$val[] = $temp;
@@ -282,6 +309,7 @@ class CombinazioniModel extends GenericModel {
 						{
 							$temp["codice"] = $dettagliPagina["codice"];
 							$temp["price"] = $dettagliPagina["price"];
+							$temp["price_ivato"] = $dettagliPagina["price_ivato"];
 							$temp["peso"] = $dettagliPagina["peso"];
 							$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 							$val[] = $temp;
@@ -382,7 +410,11 @@ class CombinazioniModel extends GenericModel {
 	{
 		if (!isset($_GET["listino"]) || $_GET["listino"] == "tutti")
 		{
-			$prezzo = $record["combinazioni"]["price"];
+			if (v("prezzi_ivati_in_prodotti"))
+				$prezzo = $record["combinazioni"]["price_ivato"];
+			else
+				$prezzo = $record["combinazioni"]["price"];
+			
 			$attrIdCl = "id-cl='0'";
 		}
 		else
@@ -394,7 +426,9 @@ class CombinazioniModel extends GenericModel {
 		
 		if (isset($prezzo))
 		{
-			$prezzo = number_format($prezzo, 4, ",", "");
+			$cifre = v("prezzi_ivati_in_prodotti") ? 2 : v("cifre_decimali");
+			
+			$prezzo = number_format($prezzo, $cifre, ",", "");
 			
 			if (!isset($_GET["esporta"]))
 				return "<input id-c='".$record["combinazioni"]["id_c"]."' $attrIdCl style='max-width:120px;' class='form-control' name='price' value='".$prezzo."' />";

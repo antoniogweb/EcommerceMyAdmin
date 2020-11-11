@@ -208,15 +208,15 @@
 								</tr>
 								<tr>
 									<td>Imponibile</td>
-									<td class="text-right"><b><?php echo setPriceReverse($ordine["prezzo_scontato"] + $ordine["spedizione"], v("cifre_decimali"));?> €</b></td>
+									<td class="text-right"><b><?php echo setPriceReverse($ordine["prezzo_scontato"] + $ordine["spedizione"]);?> €</b></td>
 								</tr>
 								<tr>
 									<td>Iva</td>
-									<td class="text-right"><b><?php echo setPriceReverse($ordine["iva"], v("cifre_decimali"));?> €</b></td>
+									<td class="text-right"><b><?php echo setPriceReverse($ordine["iva"]);?> €</b></td>
 								</tr>
 								<tr>
 									<td>Totale ordine</td>
-									<td class="text-right"><b><?php echo setPriceReverse($ordine["total"], v("cifre_decimali"));?> €</b></td>
+									<td class="text-right"><b><?php echo setPriceReverse($ordine["total"]);?> €</b></td>
 								</tr>
 							</table>
 						</div>

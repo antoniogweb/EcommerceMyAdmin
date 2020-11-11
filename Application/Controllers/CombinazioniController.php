@@ -75,6 +75,11 @@ class CombinazioniController extends BaseController
 		
 		$prezzoLabel = "Prezzo";
 		
+		if (v("prezzi_ivati_in_prodotti"))
+			$prezzoLabel .= " IVA inclusa";
+		else
+			$prezzoLabel .= " IVA esclusa";
+		
 		if ($this->viewArgs["listino"] == "tutti")
 			$prezzoLabel .= " (Italia)";
 		else if ($this->viewArgs["listino"] == "W")
@@ -201,6 +206,11 @@ class CombinazioniController extends BaseController
 		
 		$valori = json_decode($valori, true);
 		
+		$campoPrice = "price";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+			$campoPrice = "price_ivato";
+		
 		foreach ($valori as $v)
 		{
 			$this->m[$this->modelName]->setValues(array(
@@ -209,7 +219,7 @@ class CombinazioniController extends BaseController
 			));
 			
 			if (!$v["id_cl"])
-				$this->m[$this->modelName]->setValue("price", $v["prezzo"]);
+				$this->m[$this->modelName]->setValue($campoPrice, $v["prezzo"]);
 			
 			if (isset($v["giacenza"]))
 				$this->m[$this->modelName]->setValue("giacenza", $v["giacenza"]);
@@ -219,7 +229,7 @@ class CombinazioniController extends BaseController
 			if ($v["id_cl"])
 			{
 				$this->m ["CombinazionilistiniModel"]->setValues(array(
-					"price"	=>	$v["prezzo"],
+					$campoPrice	=>	$v["prezzo"],
 				));
 				
 				$this->m ["CombinazionilistiniModel"]->update($v["id_cl"]);

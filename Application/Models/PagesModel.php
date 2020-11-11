@@ -171,16 +171,13 @@ class PagesModel extends GenericModel {
 					
 				),
 				'price'		=>	array(
-					'labelString'=>	'Prezzo (€)',
-// 					'wrap'		=>	array(
-// 						null,null,null,null,"</div>"
-// 					),
+					'labelString'=>	'Prezzo Iva esclusa (€)',
+				),
+				'price_ivato'	=>	array(
+					'labelString'=>	'Prezzo Iva inclusa (€)',
 				),
 				'codice'		=>	array(
 					'labelString'=>	'Codice prodotto',
-// 					'wrap'		=>	array(
-// 						"<div class='col-md-6'>"
-// 					),
 				),
 				'attivo'	=>	array(
 					'type'		=>	'Select',
@@ -464,6 +461,9 @@ class PagesModel extends GenericModel {
 					$secondarie = $this->clear()->where(array("codice_alfa" => $record["codice_alfa"]))->toList("id_page")->send();
 				}
 				
+				// Imposta il prezzo non ivato
+				$this->setPriceNonIvato();
+				
 				$r = parent::update($clean["id"]);
 
 	// 			$gc = new ReggroupscategoriesModel();
@@ -547,6 +547,7 @@ class PagesModel extends GenericModel {
 				$c->setValues(array(
 					"id_page"	=>	$id,
 					"price"		=>	$pagina["price"],
+					"price_ivato"	=>	$pagina["price_ivato"],
 					"codice"	=>	$pagina["codice"],
 					"peso"		=>	$pagina["peso"],
 					"immagine"	=>	getFirstImage($id),
@@ -591,6 +592,18 @@ class PagesModel extends GenericModel {
 		$this->lId = $this->lastId();
 	}
 	
+	public function setPriceNonIvato()
+	{
+		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]) && isset($this->values["id_iva"]))
+		{
+			$i = new IvaModel();
+			$aliquota = $i->selectId($this->values["id_iva"]);
+			
+			if (!empty($aliquota))
+				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+		}
+	}
+	
 	public function insert()
 	{
 		$r = false;
@@ -603,6 +616,9 @@ class PagesModel extends GenericModel {
 			{
 				$this->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 			}
+			
+			// Imposta il prezzo non ivato
+			$this->setPriceNonIvato();
 			
 			$r = parent::insert();
 			

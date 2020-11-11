@@ -35,10 +35,14 @@
 									<?php echo $form["alias"];?>
 									<?php echo $form["sottotitolo"];?>
 									
-									<?php if (isset($form["price"]) && isset($form["id_iva"])) { ?>
+									<?php if ((isset($form["price"]) || isset($form["price_ivato"])) && isset($form["id_iva"])) { ?>
 									<div class='row'>
 										<div class='col-lg-6'>
+											<?php if (v("prezzi_ivati_in_prodotti")) { ?>
+											<?php echo $form["price_ivato"];?>
+											<?php } else { ?>
 											<?php echo $form["price"];?>
+											<?php } ?>
 										</div>
 										<div class='col-lg-6'>
 											<?php echo $form["id_iva"];?>
