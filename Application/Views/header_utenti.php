@@ -22,6 +22,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<li class="<?php echo $tm["traduzioni"][0];?>"><a href="<?php echo $this->baseUrl."/traduzioni/main/1";?>"><i class="fa fa-language"></i> Traduzioni</a></li>
 			<li class="<?php echo $tm["impostazioni"][0];?>"><a href="<?php echo $this->baseUrl."/impostazioni/form/update/1";?>"><i class="fa fa-cogs"></i> Impostazioni</a></li>
+			<?php if (v("mostra_tipi_fasce")) { ?>
 			<li class="<?php echo $tm["tipicontenuto"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-code"></i>
@@ -32,6 +33,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/tipicontenuto/main/1";?>"><i class="fa fa-list"></i> Lista tipi</a></li>
 				</ul>
 			</li>
+			<?php } ?>
 			<?php if (v("mostra_tipi_documento")) { ?>
 			<li class="<?php echo $tm["tipidocumento"][0];?> treeview">
 				<a href="#">

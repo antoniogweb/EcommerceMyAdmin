@@ -94,8 +94,13 @@
 						</div>
 						<?php } ?>
 					</div>
-
-					<h1>Resoconto dell'ordine</h1>
+				</div>
+			</div>
+			
+			<div class="box">
+				<div class="box-header with-border main">
+					<a class="iframe pull-right" href="<?php echo Domain::$name."/".$ordine["lingua"]."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> Vedi ordine lato cliente</a>
+					<h3>Resoconto dell'ordine</h3>
 					
 					<table class="table table-striped">
 						<tr>
@@ -127,8 +132,12 @@
 						</tr>
 						<?php } ?>
 					</table>
-					
-					<h2>Dettagli ordine:</h2>
+				</div>
+			</div>
+			
+			<div class="box">
+				<div class="box-header with-border main">
+					<h3>Righe ordine:</h3>
 	
 					<table width="100%" class="table table-striped" cellspacing="0">
 						<thead>
@@ -156,8 +165,7 @@
 							</td>
 							<td class=""><?php echo $p["righe"]["codice"];?></td>
 							<td class=""><?php echo setPriceReverse($p["righe"]["peso"]);?></td>
-							<td class=""><?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse($p["righe"]["prezzo_intero"])."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price"]);?></span>
-								
+							<td class=""><?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse($p["righe"]["prezzo_intero"])."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price"], v("cifre_decimali"));?></span>
 								<?php $jsonSconti = json_decode($p["righe"]["json_sconti"],true);?>
 								<?php if (count($jsonSconti) > 0) { ?>
 									<div class="well">
@@ -167,31 +175,65 @@
 								<?php } ?>
 							</td>
 							<td class=""><?php echo $p["righe"]["quantity"];?></td>
-							<td class="">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["price"]);?></span></td>
+							<td class="">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["price"],v("cifre_decimali"));?></span></td>
 						</tr>
 						<?php } ?>
 					</table>
+				</div>
+			</div>
+			
+			<div class="box">
+				<div class="box-header with-border main">
+					<h3>Totali ordine:</h3>
 					
-					<div>
-						<p class="cart_sub_totale_merce">Totale merce: <strong>&euro; <?php echo setPriceReverse($ordine["subtotal"]);?></strong></p>
-						<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-						<p class="cart_prezzo_scontato text text-success">Prezzo scontato (<i><?php echo $ordine["nome_promozione"];?></i>): <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato"]);?></strong></p>
-						<?php } ?>
-						<p class="cart_spese_spedizione">
-							<i class="fa fa-truck"></i> Spese spedizione: <strong>&euro; <?php echo setPriceReverse($ordine["spedizione"]);?></strong> - Peso totale: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?>- corriere scelto: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
-						</p>
-						<p class="cart_iva">Iva: <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></p>
-						<p class="cart_totale_merce"><i class="fa fa-dollar"></i> Totale ordine: <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></p>
+					<div class="row">
+						<div class="col-lg-6">
+							<table class="table table-striped">
+								<tr>
+									<td>Totale merce</td>
+									<td class="text-right"><?php echo setPriceReverse($ordine["subtotal"], v("cifre_decimali"));?> €</td>
+								</tr>
+								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+								<tr>
+									<td>Prezzo scontato (<i><?php echo $ordine["nome_promozione"];?></i>)</td>
+									<td class="text-right"><?php echo setPriceReverse($ordine["prezzo_scontato"], v("cifre_decimali"));?> €</td>
+								</tr>
+								<?php } ?>
+								<tr>
+									<td>
+										Spese spedizione<br />
+										Peso totale: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?>- corriere scelto: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
+									</td>
+									<td class="text-right"><?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €</td>
+								</tr>
+								<tr>
+									<td>Imponibile</td>
+									<td class="text-right"><b><?php echo setPriceReverse($ordine["prezzo_scontato"] + $ordine["spedizione"], v("cifre_decimali"));?> €</b></td>
+								</tr>
+								<tr>
+									<td>Iva</td>
+									<td class="text-right"><b><?php echo setPriceReverse($ordine["iva"], v("cifre_decimali"));?> €</b></td>
+								</tr>
+								<tr>
+									<td>Totale ordine</td>
+									<td class="text-right"><b><?php echo setPriceReverse($ordine["total"], v("cifre_decimali"));?> €</b></td>
+								</tr>
+							</table>
+						</div>
 					</div>
 					
 					<?php if (trim($ordine["note"])) { ?>
 					<h2>Note</h2>
 					<?php echo nl2br($ordine["note"])?>
 					<?php } ?>
-					
+				</div>
+			</div>
+			
+			<div class="box">
+				<div class="box-header with-border main">
 					<div class="row">
 						<div class="col-lg-6">
-							<h2>Dati di fatturazione:</h2>
+							<h3>Dati di fatturazione:</h3>
 							
 							<table class="table table-striped">
 								<?php if ($cliente) { ?>
@@ -263,7 +305,7 @@
 							</table>
 						</div>
 						<div class="col-lg-6">
-							<h2>Dati di spedizione:</h2>
+							<h3>Dati di spedizione:</h3>
 							
 							<table class="table table-striped">
 								<tr>
@@ -300,7 +342,8 @@
 					
 					<div class="row">
 						<div class="col-lg-12">
-							<h2>Dati per fatturazione elettronica:</h2>
+							<br />
+							<h3>Dati per fatturazione elettronica:</h3>
 							
 							<table class="table table-striped">
 								<tr>

@@ -732,8 +732,12 @@ class BaseOrdiniController extends BaseController
 						$_SESSION = $_POST;
 						unset($_SESSION['accetto']);
 						
-						$this->m['OrdiniModel']->values["subtotal"] = setPrice(getSubTotal());
-						$this->m['OrdiniModel']->values["spedizione"] = setPrice(getSpedizione());
+						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();
+						$this->m['OrdiniModel']->values["spedizione"] = getSpedizioneN();
+						
+						$this->m['OrdiniModel']->values["subtotal_ivato"] = setPrice(getSubTotal(true));
+						$this->m['OrdiniModel']->values["spedizione_ivato"] = setPrice(getSpedizione(1));
+						
 						$this->m['OrdiniModel']->values["iva"] = setPrice(getIva());
 						$this->m['OrdiniModel']->values["total"] = setPrice(getTotal());
 						$this->m['OrdiniModel']->values["cart_uid"] = User::$cart_uid;
@@ -743,12 +747,21 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["creation_time"] = time();
 						$this->m['OrdiniModel']->values["stato"] = "pending";
 						
-						$this->m['OrdiniModel']->values["prezzo_scontato"] = setPrice(getPrezzoScontato());
+						$this->m['OrdiniModel']->values["prezzo_scontato"] = getPrezzoScontatoN();
+						$this->m['OrdiniModel']->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
+						
 						$this->m['OrdiniModel']->values["codice_promozione"] = User::$coupon;
 						$this->m['OrdiniModel']->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
 						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
 						
 						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
+						
+						if (isset(IvaModel::$aliquotaEstera))
+						{
+							$this->m['OrdiniModel']->values["id_iva_estera"] = IvaModel::$idIvaEstera;
+							$this->m['OrdiniModel']->values["aliquota_iva_estera"] = IvaModel::$aliquotaEstera;
+							$this->m['OrdiniModel']->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
+						}
 						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
 						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;

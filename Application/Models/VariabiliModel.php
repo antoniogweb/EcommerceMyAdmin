@@ -86,6 +86,8 @@ class VariabiliModel extends GenericModel {
 		"cifre_decimali"			=>	2,
 		"link_cms"					=>	"blog/main",
 		"attiva_ip_location"		=>	0,
+		"mostra_tipi_fasce"			=>	1,
+		"prezzi_ivati_in_carrello"	=>	0,
 	);
 	
 	public function __construct() {

@@ -123,6 +123,12 @@ body {
 	width:120px !important;
 }
 
+.box-header h3
+{
+	margin-top:0px;
+	margin-bottom:20px;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

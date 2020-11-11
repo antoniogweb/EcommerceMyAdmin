@@ -357,9 +357,9 @@ function setPrice($price)
 	return $price;
 }
 
-function setPriceReverse($price)
+function setPriceReverse($price, $numeroCifre = 2)
 {
-	$price = number_format((float)$price,2,".","");
+	$price = number_format((float)$price,$numeroCifre,".","");
 	return str_replace(".",",",$price);
 }
 
@@ -383,30 +383,50 @@ function getNomePromozione()
 		$coupon = $p->getCoupon(User::$coupon);
 		return $coupon["titolo"];
 	}
+	
 	return "";
 }
 
-function getSubTotalN()
+function getSubTotalN($ivato = 0)
 {
 	$c = new CartModel();
 	$total = $c->total(false);
+	
+	IvaModel::getAliquotaEstera();
+	
+	if (isset(IvaModel::$titoloAliquotaEstera))
+		$ivato = 0;
+	
+	if ($ivato)
+		$total += $c->iva(false, true);
+	
 	return $total;
 }
 
-function getSubTotal()
+function getSubTotal($ivato = 0)
 {
-	return setPriceReverse(getSubTotalN(false));
+	return setPriceReverse(getSubTotalN($ivato));
 }
 
-function getPrezzoScontatoN($conSpedizione = false)
+function getPrezzoScontatoN($conSpedizione = false, $ivato = 0)
 {
 	$c = new CartModel();
-	return $c->totaleScontato($conSpedizione);
+	$totale = $c->totaleScontato($conSpedizione);
+	
+	IvaModel::getAliquotaEstera();
+	
+	if (isset(IvaModel::$titoloAliquotaEstera))
+		$ivato = 0;
+	
+	if ($ivato)
+		$totale += $c->iva(false);
+	
+	return $totale;
 }
 
-function getPrezzoScontato()
+function getPrezzoScontato($ivato = 0)
 {
-	return setPriceReverse(getPrezzoScontatoN(false));
+	return setPriceReverse(getPrezzoScontatoN(false, $ivato));
 }
 
 function getSpedizioneN()
@@ -446,16 +466,28 @@ function getSpedizioneN()
 	return 0;
 }
 
+function getSpedizione($ivato = false)
+{
+	IvaModel::getAliquotaEstera();
+	
+	if (isset(IvaModel::$titoloAliquotaEstera))
+		$ivato = 0;
+	
+	if ($ivato)
+	{
+		$ivaSpedizione = CartModel::getAliquotaIvaSpedizione();
+		
+		return setPriceReverse(getSpedizioneN() * (1 + ($ivaSpedizione / 100)));
+	}
+	else
+		return setPriceReverse(getSpedizioneN());
+}
+
 function spedibile($idCorriere, $nazione)
 {
 	$corr = new CorrieriModel();
 	
 	return $corr->spedibile($idCorriere, $nazione);
-}
-
-function getSpedizione()
-{
-	return setPriceReverse(getSpedizioneN());
 }
 
 function getIvaN()
@@ -478,14 +510,20 @@ function getIva()
 	return setPriceReverse(getIvaN());
 }
 
-function getTotal()
+function getTotalN()
 {
 	$cifre = v("cifre_decimali");
 	$totalConSpedizione = getPrezzoScontatoN(true);
 	$iva = getIvaN();
 	
 // 	return $iva;
-	return setPriceReverse(number_format($totalConSpedizione,$cifre,".","") + number_format($iva,$cifre,".",""));
+	return number_format($totalConSpedizione,$cifre,".","") + number_format($iva,$cifre,".","");
+}
+
+
+function getTotal()
+{
+	return setPriceReverse(getTotalN());
 }
 
 function inPromozione($id_page, $page = null)
@@ -1558,4 +1596,18 @@ function prezzoMinimo($id_page)
 	$p = new PagesModel();
 	
 	return $p->prezzoMinimo($id_page);
+}
+
+function p($c, $prezzo)
+{
+	IvaModel::getAliquotaEstera();
+	
+	if (v("prezzi_ivati_in_carrello") && !isset(IvaModel::$titoloAliquotaEstera))
+	{
+		return $prezzo * (1 + ($c["iva"] / 100));
+	}
+	else
+	{
+		return $prezzo;
+	}
 }

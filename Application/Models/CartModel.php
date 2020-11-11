@@ -119,15 +119,28 @@ class CartModel extends Model_Tree {
 		return $total;
 	}
 	
+	public static function getAliquotaIvaSpedizione()
+	{
+		IvaModel::getAliquotaEstera();
+		
+		$ivaSped = self::getMaxIva();
+		
+		// Controllo l'aliquota estera
+		if (isset(IvaModel::$aliquotaEstera))
+			$ivaSped = IvaModel::$aliquotaEstera;
+		
+		return $ivaSped;
+	}
+	
 	// Totale iva dal carrello
-	public function iva()
+	public function iva($conSpedizione = true, $pieno = false)
 	{
 		$cifre = v("cifre_decimali");
 		
 		IvaModel::getAliquotaEstera();
 		
 		$sconto = 0;
-		if (hasActiveCoupon())
+		if (hasActiveCoupon() && !$pieno)
 		{
 			$p = new PromozioniModel();
 			$coupon = $p->getCoupon(User::$coupon);
@@ -183,18 +196,23 @@ class CartModel extends Model_Tree {
 		
 // 		$ivaSped = number_format(Parametri::$iva,2,".","");
 		
-		$ivaSped = self::getMaxIva();
+// 		$ivaSped = self::getMaxIva();
+// 		
+// 		// Controllo l'aliquota estera
+// 		if (isset(IvaModel::$aliquotaEstera))
+// 			$ivaSped = IvaModel::$aliquotaEstera;
 		
-		// Controllo l'aliquota estera
-		if (isset(IvaModel::$aliquotaEstera))
-			$ivaSped = IvaModel::$aliquotaEstera;
-		
-		$ivaSped = number_format($ivaSped,$cifre,".","");
-		
-		if (isset($arraySubtotale[$ivaSped]))
-			$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),$cifre,".","");
-		else
-			$arraySubtotale[$ivaSped] = number_format(getSpedizioneN(),$cifre,".","");
+		if ($conSpedizione)
+		{
+			$ivaSped = self::getAliquotaIvaSpedizione();
+			
+			$ivaSped = number_format($ivaSped,$cifre,".","");
+			
+			if (isset($arraySubtotale[$ivaSped]))
+				$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),$cifre,".","");
+			else
+				$arraySubtotale[$ivaSped] = number_format(getSpedizioneN(),$cifre,".","");
+		}
 		
 		foreach ($arraySubtotale as $iva => $sub)
 		{
