@@ -392,10 +392,10 @@ function getSubTotalN($ivato = 0)
 	$c = new CartModel();
 	$total = $c->total(false);
 	
-	IvaModel::getAliquotaEstera();
-	
-	if (isset(IvaModel::$titoloAliquotaEstera))
-		$ivato = 0;
+// 	IvaModel::getAliquotaEstera();
+// 	
+// 	if (isset(IvaModel::$titoloAliquotaEstera))
+// 		$ivato = 0;
 	
 	if ($ivato)
 		$total += $c->iva(false, true);
@@ -413,10 +413,10 @@ function getPrezzoScontatoN($conSpedizione = false, $ivato = 0)
 	$c = new CartModel();
 	$totale = $c->totaleScontato($conSpedizione);
 	
-	IvaModel::getAliquotaEstera();
-	
-	if (isset(IvaModel::$titoloAliquotaEstera))
-		$ivato = 0;
+// 	IvaModel::getAliquotaEstera();
+// 	
+// 	if (isset(IvaModel::$titoloAliquotaEstera))
+// 		$ivato = 0;
 	
 	if ($ivato)
 		$totale += $c->iva(false);
@@ -471,10 +471,10 @@ function getSpedizioneN()
 
 function getSpedizione($ivato = false)
 {
-	IvaModel::getAliquotaEstera();
-	
-	if (isset(IvaModel::$titoloAliquotaEstera))
-		$ivato = 0;
+// 	IvaModel::getAliquotaEstera();
+// 	
+// 	if (isset(IvaModel::$titoloAliquotaEstera))
+// 		$ivato = 0;
 	
 	if ($ivato)
 	{
@@ -1605,9 +1605,12 @@ function p($c, $prezzo)
 {
 	IvaModel::getAliquotaEstera();
 	
-	if (v("prezzi_ivati_in_carrello") && !isset(IvaModel::$titoloAliquotaEstera))
+	if (v("prezzi_ivati_in_carrello"))
 	{
-		return $prezzo * (1 + ($c["iva"] / 100));
+		if (isset(IvaModel::$aliquotaEstera))
+			return $prezzo * (1 + (IvaModel::$aliquotaEstera / 100));
+		else
+			return $prezzo * (1 + ($c["iva"] / 100));
 	}
 	else
 	{

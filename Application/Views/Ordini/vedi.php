@@ -220,22 +220,26 @@
 							<td class="text-right colonne_non_ivate">
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
 							</td>
+							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
 							<td class="text-right colonne_non_ivate">
 								0%
 							</td>
 							<td class="text-right colonne_non_ivate">
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
 							</td>
+							<?php } ?>
 							<?php if (v("prezzi_ivati_in_carrello")) { ?>
-							<td class="text-right">
-								<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
-							</td>
-							<td class="text-right">
-								0%
-							</td>
-							<td class="text-right">
-								<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
-							</td>
+								<td class="text-right">
+									<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+								</td>
+								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+								<td class="text-right">
+									0%
+								</td>
+								<td class="text-right">
+									<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+								</td>
+								<?php } ?>
 							<?php } ?>
 							<td class="text-right">
 								<?php if (!v("prezzi_ivati_in_carrello")) { ?>
