@@ -1115,11 +1115,16 @@ class BaseOrdiniController extends BaseController
 		{
 			$defaultValues["spedisci_dati_fatturazione"] = "Y";
 			
+			$nazioneDefault = v("nazione_default");
+			
+			if (v("attiva_ip_location"))
+				$nazioneDefault = User::$nazioneNavigazione;
+			
 			if (!isset($defaultValues["nazione"]))
-				$defaultValues["nazione"] = "IT";
+				$defaultValues["nazione"] = $nazioneDefault;
 			
 			if (!isset($defaultValues["nazione_spedizione"]))
-				$defaultValues["nazione_spedizione"] = "IT";
+				$defaultValues["nazione_spedizione"] = $nazioneDefault;
 		}
 		
 		if (isset($defaultValues["accetto"]))

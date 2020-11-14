@@ -41,11 +41,6 @@ class IplocationModel extends Model_Tree {
 		{
 			setLanguageAndCountry($data);
 		}
-// 		print_r(Params::$frontEndLanguages);die();
-// 		$lang = strtolower($nazione);
-		
-// 		if (in_array($lang, Params::$frontEndLanguages))
-// 			Params::$defaultFrontEndLanguage = $lang;
 		
 		User::$nazioneNavigazione = $nazione;
 	}
@@ -54,17 +49,13 @@ class IplocationModel extends Model_Tree {
 	{
 		$ip = getIp();
 		
-// 		if ($ip == "127.0.0.1")
-// 			return array(
-// 				"nazione"	=>	v("nazione_default"),
-// 			);
-		
 		$il = new IplocationModel();
 		
 		$il->deleteExpired();
 		
 		$recordIp = $il->clear()->where(array(
-			"ip"	=>	sanitizeAll($ip),
+			"ip"			=>	sanitizeAll($ip),
+			"user_agent"	=>	getUserAgent(),
 		))->record();
 		
 		if (!empty($recordIp))
@@ -76,9 +67,10 @@ class IplocationModel extends Model_Tree {
 			if (isset($data["nazione"]))
 			{
 				$il->setValues(array(
-					"ip"		=>	sanitizeAll($ip),
-					"nazione"	=>	$data["nazione"],
-					"time_creazione"	=>	time(),
+					"ip"			=>	sanitizeAll($ip),
+					"nazione"		=>	$data["nazione"],
+					"time_creazione"=>	time(),
+					"user_agent"	=>	getUserAgent(),
 				));
 				
 				$il->insert();
