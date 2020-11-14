@@ -40,6 +40,12 @@ class WishlistModel extends Model_Tree {
 		$this->deleteExpired();
 	}
 
+	public function relations() {
+        return array(
+			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
+        );
+    }
+    
 	public function deleteExpired()
 	{
 		$limit = time() - Parametri::$durataWishlist; 
@@ -145,7 +151,7 @@ class WishlistModel extends Model_Tree {
 	{
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		$res = $this->clear()->select("count(id_wishlist) as q")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->groupBy("wishlist_uid")->send();
+		$res = $this->clear()->select("count(id_wishlist) as q")->inner(array("pagina"))->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->groupBy("wishlist_uid")->send();
 		
 		if (count($res) > 0)
 		{

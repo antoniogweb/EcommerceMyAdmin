@@ -266,6 +266,8 @@ class BaseBaseController extends Controller
 		$data["prodInCart"] = $this->m["CartModel"]->numberOfItems();
 		$data["prodInWishlist"] = $this->m["WishlistModel"]->numberOfItems();
 		
+		IvaModel::getAliquotaEstera();
+		
 		Domain::$name = $this->baseUrl;
 		
 		if (in_array($_SERVER['REQUEST_URI'],array("/home","/home/index","/home/index/")))

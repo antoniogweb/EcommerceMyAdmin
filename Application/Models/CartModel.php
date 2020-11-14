@@ -39,7 +39,13 @@ class CartModel extends Model_Tree {
 
 		$this->deleteExpired();
 	}
-
+	
+	public function relations() {
+        return array(
+			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
+        );
+    }
+    
 	public function deleteExpired()
 	{
 		$limit = time() - Parametri::$durataCarrello; 
@@ -49,6 +55,8 @@ class CartModel extends Model_Tree {
 	// Totale scontato
 	public function totaleScontato($conSpedizione = false)
 	{
+// 		IvaModel::getAliquotaEstera();
+		
 		$cifre = v("cifre_decimali");
 		
 		if (hasActiveCoupon())
@@ -90,6 +98,8 @@ class CartModel extends Model_Tree {
 	//get the total from the cart
 	public function total($conSpedizione = false)
 	{
+// 		IvaModel::getAliquotaEstera();
+		
 		$cifre = v("cifre_decimali");
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
@@ -121,7 +131,7 @@ class CartModel extends Model_Tree {
 	
 	public static function getAliquotaIvaSpedizione()
 	{
-		IvaModel::getAliquotaEstera();
+// 		IvaModel::getAliquotaEstera();
 		
 		$ivaSped = self::getMaxIva();
 		
@@ -137,7 +147,7 @@ class CartModel extends Model_Tree {
 	{
 		$cifre = v("cifre_decimali");
 		
-		IvaModel::getAliquotaEstera();
+// 		IvaModel::getAliquotaEstera();
 		
 		$sconto = 0;
 		if (hasActiveCoupon() && !$pieno)
@@ -373,6 +383,42 @@ class CartModel extends Model_Tree {
 		$this->del(null, "cart_uid = '" . $clean["cart_uid"] . "'");
 	}
 	
+	public function correggiPrezzi()
+	{
+		if (!v("prezzi_ivati_in_carrello"))
+			return;
+		
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$this->db->beginTransaction();
+		
+		$righe = $this->clear()->where(array(
+			"cart_uid"	=>	$clean["cart_uid"],
+		))->send(false);
+		
+		foreach ($righe as $r)
+		{
+			$aliquota = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : $r["iva"];
+			
+			$nuovoPrezzoUnitarioIvato = number_format(($r["price_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");
+			
+			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
+			
+			$rapporto = $this->calcolaPrezzoFinale($r["id_page"], 1, $r["quantity"], true, true);
+			
+			$nuovoPrezzoUnitarioIntero = $nuovoPrezzoUnitario / $rapporto;
+			
+			$this->setValues(array(
+				"price"	=>	$nuovoPrezzoUnitario,
+				"prezzo_intero"	=>	$nuovoPrezzoUnitarioIntero,
+			));
+			
+			$this->update($r["id_cart"]);
+		}
+		
+		$this->db->commit();
+	}
+	
 	public function set($id_cart, $quantity)
 	{
 		$clean["id_cart"] = (int)$id_cart;
@@ -401,6 +447,7 @@ class CartModel extends Model_Tree {
 				);
 				
 				$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true);
+				$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true);
 				
 				if (number_format($this->values["price"],2,".","") != number_format($cart["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";
@@ -613,6 +660,12 @@ class CartModel extends Model_Tree {
 				
 				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $res[0]["cart"]["prezzo_intero"], $this->values["quantity"], true, true);
 				
+				if (v("prezzi_ivati_in_prodotti"))
+					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $res[0]["cart"]["prezzo_intero_ivato"], $this->values["quantity"], true, true);
+				
+				if (number_format($this->values["price"],2,".","") != number_format($res[0]["cart"]["prezzo_intero"],2,".",""))
+					$this->values["in_promozione"] = "Y";
+				
 				$this->sanitize();
 				$this->update($res[0]["cart"]["id_cart"]);
 				
@@ -672,16 +725,30 @@ class CartModel extends Model_Tree {
 				{
 					$prezzoIntero = $this->values["prezzo_intero"] = $datiCombinazione[0]["combinazioni"]["price"];
 					
+					if (v("prezzi_ivati_in_prodotti"))
+						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = $datiCombinazione[0]["combinazioni"]["price_ivato"];
+					
 					if (User::$nazione)
+					{
 						$prezzoIntero = $this->values["prezzo_intero"] = $comb->getPrezzoListino($datiCombinazione[0]["combinazioni"]["id_c"], User::$nazione, $prezzoIntero);
+						
+						if (v("prezzi_ivati_in_prodotti"))
+							$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = $comb->getPrezzoListino($datiCombinazione[0]["combinazioni"]["id_c"], User::$nazione, $prezzoInteroIvato, "price_ivato");
+					}
 				}
 				else
 				{
 					$prezzoIntero = $this->values["prezzo_intero"] = $rPage[0]["pages"]["price"];
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = $rPage[0]["pages"]["price_ivato"];
 				}
 				
 				//calcolo lo sconto dovuto allo scaglionamento
 				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true);
+				
+				if (v("prezzi_ivati_in_prodotti"))
+					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true);
 				
 				if (number_format($this->values["price"],2,".","") != number_format($this->values["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";
@@ -729,7 +796,7 @@ class CartModel extends Model_Tree {
 	{
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$res = $this->clear()->select("sum(quantity) as q")->where(array("cart_uid"=>$clean["cart_uid"]))->groupBy("cart_uid")->send();
+		$res = $this->clear()->select("sum(quantity) as q")->inner(array("pagina"))->where(array("cart_uid"=>$clean["cart_uid"]))->groupBy("cart_uid")->send();
 		
 		if (count($res) > 0)
 		{

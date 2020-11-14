@@ -27,6 +27,7 @@ class IvaModel extends GenericModel
 	public static $idIvaEstera = null;
 	public static $aliquotaEstera = null;
 	public static $titoloAliquotaEstera = null;
+	public static $cercaIvaEstera = true;
 	
 	public static $tipo = array(
 		""		=>	"--",
@@ -78,6 +79,14 @@ class IvaModel extends GenericModel
     
     public static function getAliquotaEstera()
     {
+		// Controllo che non sia già settata
+		if (isset(self::$idIvaEstera) || !self::$cercaIvaEstera)
+			return null;
+		
+		$prezziCorretti = false;
+		
+		$c = new CartModel();
+		
 		if (isset($_POST["nazione_spedizione"]) && isset($_POST["tipo_cliente"]) && $_POST["nazione_spedizione"] != v("nazione_default"))
 		{
 			$tipo = "B2B";
@@ -106,9 +115,38 @@ class IvaModel extends GenericModel
 					self::$idIvaEstera = $ivaEstera["id_iva"];
 					self::$aliquotaEstera = $ivaEstera["valore"];
 					self::$titoloAliquotaEstera = $ivaEstera["titolo"];
+					
+					$c->correggiPrezzi();
+					$prezziCorretti = true;
+				}
+				else if ($nazione["tipo"] == "UE" && $tipo == "B2C")
+				{
+					$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
+					
+					self::$cercaIvaEstera = false;
+					$totaleNazione += getTotalN();
+					self::$cercaIvaEstera = true;
+					
+					if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
+					{
+						$recordIva = $im->selectId((int)$nazione["id_iva"]);
+						
+						if (!empty($recordIva))
+						{
+							self::$idIvaEstera = $recordIva["id_iva"];
+							self::$aliquotaEstera = $recordIva["valore"];
+							self::$titoloAliquotaEstera = $recordIva["titolo"];
+							
+							$c->correggiPrezzi();
+							$prezziCorretti = true;
+						}
+					}
 				}
 			}
 		}
+		
+		if (!$prezziCorretti)
+			$c->correggiPrezzi();
 		
 		return null;
     }

@@ -82,7 +82,7 @@ class NazioniModel extends GenericModel
 					),
 				),
 				'soglia_iva_italiana'	=>	array(
-					'labelString'=>	'Soglia per IVA italiana (su spedizioni estere)',
+					'labelString'=>	'Soglia per IVA italiana (solo su spedizioni estere UE)',
 					'wrap'		=>	array(
 						null,
 						null,

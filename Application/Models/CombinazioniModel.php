@@ -476,7 +476,7 @@ class CombinazioniModel extends GenericModel {
 		return "";
 	}
 	
-	public function getPrezzoListino($idC, $nazione, $prezzo = null)
+	public function getPrezzoListino($idC, $nazione, $prezzo = null, $campoPrezzo = "price")
 	{
 		$cl = new CombinazionilistiniModel();
 		
@@ -486,7 +486,7 @@ class CombinazioniModel extends GenericModel {
 		))->record();
 		
 		if (!empty($listino))
-			return $listino["price"];
+			return $listino[$campoPrezzo];
 		else if (isset($prezzo))
 			return $prezzo;
 		else

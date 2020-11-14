@@ -487,7 +487,7 @@ class BaseOrdiniController extends BaseController
 	
 	public function index()
 	{
-		IvaModel::getAliquotaEstera();
+// 		IvaModel::getAliquotaEstera();
 		
 		session_start();
 		
@@ -1235,7 +1235,7 @@ class BaseOrdiniController extends BaseController
 	
 	public function totale()
 	{
-		IvaModel::getAliquotaEstera();
+// 		IvaModel::getAliquotaEstera();
 		
 		$this->clean();
 		

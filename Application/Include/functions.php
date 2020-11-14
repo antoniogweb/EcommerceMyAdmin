@@ -523,7 +523,6 @@ function getTotalN()
 	return number_format($totalConSpedizione,$cifre,".","") + number_format($iva,$cifre,".","");
 }
 
-
 function getTotal()
 {
 	return setPriceReverse(getTotalN());
@@ -1603,10 +1602,12 @@ function prezzoMinimo($id_page)
 
 function p($c, $prezzo)
 {
-	IvaModel::getAliquotaEstera();
+// 	IvaModel::getAliquotaEstera();
 	
 	if (v("prezzi_ivati_in_carrello"))
 	{
+// 		$prezzo = number_format($prezzo, v("cifre_decimali"), ".", "");
+		
 		if (isset(IvaModel::$aliquotaEstera))
 			return $prezzo * (1 + (IvaModel::$aliquotaEstera / 100));
 		else

@@ -277,7 +277,8 @@ $(document).ready(function(){
 	
 	$('[name="tipo_cliente"]').on('ifChanged', function(event){
 		
-		updateFormTipoCliente();
+		if ($(this).is(":checked"))
+			updateFormTipoCliente();
 		
 	});
 	

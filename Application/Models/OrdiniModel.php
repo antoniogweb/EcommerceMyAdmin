@@ -526,34 +526,71 @@ class OrdiniModel extends FormModel {
 		
 		$arrayTotali = array();
 		
+// 		foreach ($righe as $r)
+// 		{
+// 			if (isset($arrayTotali[$r["id_iva"]]))
+// 				$arrayTotali[$r["id_iva"]] += ($r["prezzo_finale_ivato"] * $r["quantity"]);
+// 			else
+// 				$arrayTotali[$r["id_iva"]] = ($r["prezzo_finale_ivato"] * $r["quantity"]);
+// 		}
+		
 		foreach ($righe as $r)
 		{
 			if (isset($arrayTotali[$r["id_iva"]]))
-				$arrayTotali[$r["id_iva"]] += ($r["prezzo_finale_ivato"] * $r["quantity"]);
+				$arrayTotali[$r["id_iva"]] += number_format($r["prezzo_finale"] * $r["quantity"],v("cifre_decimali"),".","");
 			else
-				$arrayTotali[$r["id_iva"]] = ($r["prezzo_finale_ivato"] * $r["quantity"]);
+				$arrayTotali[$r["id_iva"]] = number_format($r["prezzo_finale"] * $r["quantity"],v("cifre_decimali"),".","");
 		}
+		
+// 		if (!empty($ordine))
+// 		{
+// 			if (isset($arrayTotali[$ordine["id_iva"]]))
+// 				$arrayTotali[$ordine["id_iva"]] += $ordine["spedizione_ivato"];
+// 			else
+// 				$arrayTotali[$ordine["id_iva"]] = $ordine["spedizione_ivato"];
+// 		}
 		
 		if (!empty($ordine))
 		{
 			if (isset($arrayTotali[$ordine["id_iva"]]))
-				$arrayTotali[$ordine["id_iva"]] += $ordine["spedizione_ivato"];
+				$arrayTotali[$ordine["id_iva"]] += number_format($ordine["spedizione"],v("cifre_decimali"),".","");
 			else
-				$arrayTotali[$ordine["id_iva"]] = $ordine["spedizione_ivato"];
+				$arrayTotali[$ordine["id_iva"]] = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
 		}
 		
 		$arrayIva = array();
 		
 		$i = new IvaModel();
 		
+// 		foreach ($arrayTotali as $idAliquota => $totale)
+// 		{
+// 			$aliquota = $i->getValore($idAliquota);
+// 			
+// 			$arrayIva[$idAliquota] = $totale - ($totale / (1 + ($aliquota / 100)));
+// 		}
+		
 		foreach ($arrayTotali as $idAliquota => $totale)
 		{
 			$aliquota = $i->getValore($idAliquota);
 			
-			$arrayIva[$idAliquota] = $totale - ($totale / (1 + ($aliquota / 100)));
+			$arrayIva[$idAliquota] = $totale * ($aliquota / 100);
 		}
 		
 		return $arrayIva;
+	}
+	
+	public static function totaleNazione($nazione)
+	{
+		$o = new OrdiniModel();
+		
+		$res = $o->clear()->select("SUM(total) as TOTALE")->where(array(
+			"nazione_spedizione"	=>	sanitizeAll($nazione),
+		))->send();
+		
+		if (isset($res[0]["aggregate"]["TOTALE"]) && $res[0]["aggregate"]["TOTALE"])
+			return $res[0]["aggregate"]["TOTALE"];
+		
+		return 0;
 	}
 	
 }

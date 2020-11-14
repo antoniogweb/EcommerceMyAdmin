@@ -151,14 +151,18 @@
 								<th class="text-right colonne_non_ivate">Sconto<br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
 								<th class="text-right colonne_non_ivate">Prezzo scontato<br />IVA esclusa</th>
 								<?php } ?>
-								<?php if (v("prezzi_ivati_in_carrello")) { ?>
-									<th class="text-right">Prezzo<br />IVA inclusa</th>
-									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-									<th class="text-right">Sconto<br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
-									<th class="text-right">Prezzo scontato<br />IVA inclusa</th>
+								<th class="text-right colonne_non_ivate">Aliquota</th>
+								<?php if (false) { ?>
+									<?php if (v("prezzi_ivati_in_carrello")) { ?>
+										<th class="text-right">Prezzo<br />IVA inclusa</th>
+										<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+										<th class="text-right">Sconto<br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
+										<th class="text-right">Prezzo scontato<br />IVA inclusa</th>
+										<?php } ?>
 									<?php } ?>
+									<th class="text-right">Totale IVA <?php if (v("prezzi_ivati_in_carrello")) { ?>inclusa<?php } else { ?>esclusa<?php } ?></th>
 								<?php } ?>
-								<th class="text-right">Totale IVA <?php if (v("prezzi_ivati_in_carrello")) { ?>inclusa<?php } else { ?>esclusa<?php } ?></th>
+								<th class="text-right">Totale IVA esclusa</th>
 							</tr>
 						</thead>
 						
@@ -178,7 +182,7 @@
 							<td class="text-right"><?php echo setPriceReverse($p["righe"]["peso"]);?></td>
 							<td class="text-right"><?php echo $p["righe"]["quantity"];?></td>
 							<td class="text-right colonne_non_ivate">
-								<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse($p["righe"]["prezzo_intero"])." €</del>"; } ?> <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price"], v("cifre_decimali"));?></span> €
+								<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali"))." €</del>"; } ?> <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price"], v("cifre_decimali"));?></span> €
 								
 								<?php $jsonSconti = json_decode($p["righe"]["json_sconti"],true);?>
 								
@@ -190,23 +194,29 @@
 							</td>
 							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
 							<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
-							<td class="text-right colonne_non_ivate"><?php echo $p["righe"]["prezzo_finale"];?></td>
+							<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["prezzo_finale"], v("cifre_decimali"));?></td>
 							<?php } ?>
-							<?php if (v("prezzi_ivati_in_carrello")) { ?>
-								<td class="text-right">
-									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse($p["righe"]["prezzo_intero_ivato"])." €</del>"; } ?> <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price_ivato"]);?></span> €
-								</td>
-								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-								<td class="text-right"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
-								<td class="text-right"><?php echo setPriceReverse($p["righe"]["prezzo_finale_ivato"]);?></td>
+							<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["iva"]);?> %</td>
+							<?php if (false) { ?>
+								<?php if (v("prezzi_ivati_in_carrello")) { ?>
+									<td class="text-right">
+										<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse($p["righe"]["prezzo_intero_ivato"])." €</del>"; } ?> <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price_ivato"]);?></span> €
+									</td>
+									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+									<td class="text-right"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
+									<td class="text-right"><?php echo setPriceReverse($p["righe"]["prezzo_finale_ivato"]);?></td>
+									<?php } ?>
 								<?php } ?>
+								<td class="text-right">
+									<?php if (v("prezzi_ivati_in_carrello")) { ?>
+									<span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale_ivato"]);?></span> €
+									<?php } else { ?>
+									<span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale"],v("cifre_decimali"));?></span> €
+									<?php } ?>
+								</td>
 							<?php } ?>
 							<td class="text-right">
-								<?php if (v("prezzi_ivati_in_carrello")) { ?>
-								<span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale_ivato"]);?></span> €
-								<?php } else { ?>
 								<span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale"],v("cifre_decimali"));?></span> €
-								<?php } ?>
 							</td>
 						</tr>
 						<?php } ?>
@@ -228,25 +238,33 @@
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
 							</td>
 							<?php } ?>
-							<?php if (v("prezzi_ivati_in_carrello")) { ?>
-								<td class="text-right">
-									<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
-								</td>
-								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-								<td class="text-right">
-									0%
-								</td>
-								<td class="text-right">
-									<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
-								</td>
+							<td class="text-right colonne_non_ivate">
+								<?php echo setPriceReverse($ordine["iva_spedizione"], 2);?> %
+							</td>
+							<?php if (false) { ?>
+								<?php if (v("prezzi_ivati_in_carrello")) { ?>
+									<td class="text-right">
+										<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+									</td>
+									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+									<td class="text-right">
+										0%
+									</td>
+									<td class="text-right">
+										<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+									</td>
+									<?php } ?>
 								<?php } ?>
+								<td class="text-right">
+									<?php if (!v("prezzi_ivati_in_carrello")) { ?>
+									<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
+									<?php } else { ?>
+									<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+									<?php } ?>
+								</td>
 							<?php } ?>
 							<td class="text-right">
-								<?php if (!v("prezzi_ivati_in_carrello")) { ?>
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
-								<?php } else { ?>
-								<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
-								<?php } ?>
 							</td>
 						</tr>
 					</table>
