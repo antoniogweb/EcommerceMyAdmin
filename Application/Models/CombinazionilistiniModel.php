@@ -102,7 +102,7 @@ class CombinazionilistiniModel extends GenericModel {
 			
 			$combinazione = $c->selectId((int)$idC);
 			
-			if (!empty($idC))
+			if (!empty($combinazione))
 			{
 				$this->setValues(array(
 					"nazione"	=>	$nazione,
