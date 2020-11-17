@@ -267,7 +267,9 @@ class HierarchicalModel extends GenericModel {
 		
 		if (is_array($neighbours[$index]))
 		{
-			return '<form class="listItemForm" method="POST" action="http://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$this->strings->gtext('up').'" src="http://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/up.png" title="'.$this->strings->gtext('move up').'"><input type="hidden" value="'.$this->strings->gtext('up').'" name="moveupAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
+			$protocol = Params::$useHttps ? "https" : "http";
+			
+			return '<form class="listItemForm" method="POST" action="'.$protocol.'://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$this->strings->gtext('up').'" src="'.$protocol.'://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/up.png" title="'.$this->strings->gtext('move up').'"><input type="hidden" value="'.$this->strings->gtext('up').'" name="moveupAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
 		}
 	}
 		
@@ -282,7 +284,9 @@ class HierarchicalModel extends GenericModel {
 		
 		if (is_array($neighbours[$index]))
 		{
-			return '<form class="listItemForm" method="POST" action="http://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$this->strings->gtext('down').'" src="http://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/down.png" title="'.$this->strings->gtext('move down').'"><input type="hidden" value="'.$this->strings->gtext('down').'" name="movedownAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
+			$protocol = Params::$useHttps ? "https" : "http";
+			
+			return '<form class="listItemForm" method="POST" action="'.$protocol.'://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$this->strings->gtext('down').'" src="'.$protocol.'://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/down.png" title="'.$this->strings->gtext('move down').'"><input type="hidden" value="'.$this->strings->gtext('down').'" name="movedownAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
 		}
 	}
 	

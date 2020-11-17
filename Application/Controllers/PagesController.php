@@ -961,11 +961,12 @@ class PagesController extends BaseController {
 		))->field("id_c");
 		
 		$children = $this->m["CategoriesModel"]->children((int)$idFirstParent, true);
-
+		
 		$res = $this->m['PagesModel']->clear()->where(array(
 			"ne" => array("id_page" => $clean['id']),
 			"attivo" => "Y",
 			"principale"=>"Y",
+			"acquistabile"	=>	$accessori ? "N" : "Y",
 			"in" => array("-id_c" => $children),
 		))->orderBy("id_order")->send();
 		
