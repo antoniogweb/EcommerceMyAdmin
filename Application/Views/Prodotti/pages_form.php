@@ -54,8 +54,19 @@
 									<?php echo $form["codice"];?>
 									<?php } ?>
 									
-									<?php if (isset($form["peso"])) { ?>
-									<?php echo $form["peso"];?>
+									<?php if (isset($form["price"]) || isset($form["price_ivato"])) { ?>
+									<div class='row'>
+										<div class='col-lg-6'>
+											<?php if (isset($form["peso"])) { ?>
+											<?php echo $form["peso"];?>
+											<?php } ?>
+										</div>
+										<div class='col-lg-6'>
+											<?php if (isset($form["giacenza"])) { ?>
+											<?php echo $form["giacenza"];?>
+											<?php } ?>
+										</div>
+									</div>
 									<?php } ?>
 									
 									<?php if (isset($form["in_promozione"])) { ?>

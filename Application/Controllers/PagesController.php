@@ -512,7 +512,8 @@ class PagesController extends BaseController {
 		}
 		
 		$this->m[$this->modelName]->setFields($this->metaQueryFields,'sanitizeAll');
-					
+		$this->m[$this->modelName]->setValue("meta_modificato", 1);
+		
 		$data["type"] = "meta";
 		
 		$this->m[$this->modelName]->updateTable('update',$clean["id"]);

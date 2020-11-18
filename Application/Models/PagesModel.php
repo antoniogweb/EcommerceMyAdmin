@@ -275,6 +275,9 @@ class PagesModel extends GenericModel {
 					'options'	=>	$this->selectNazione(),
 					'reverse' => 'yes',
 				),
+				'giacenza'	=>	array(
+					'labelString'=>	'Giacenza (disponibilità a magazzino)',
+				),
 			),
 		);
 		
@@ -461,6 +464,9 @@ class PagesModel extends GenericModel {
 					$secondarie = $this->clear()->where(array("codice_alfa" => $record["codice_alfa"]))->toList("id_page")->send();
 				}
 				
+				// Salva informazioni meta della pagina
+				$this->salvaMeta($record["meta_modificato"]);
+				
 				// Imposta il prezzo non ivato
 				$this->setPriceNonIvato();
 				
@@ -550,6 +556,7 @@ class PagesModel extends GenericModel {
 					"price_ivato"	=>	$pagina["price_ivato"],
 					"codice"	=>	$pagina["codice"],
 					"peso"		=>	$pagina["peso"],
+					"giacenza"	=>	$pagina["giacenza"],
 					"immagine"	=>	getFirstImage($id),
 				));
 				
@@ -604,6 +611,12 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
+	public function salvaMeta($metaModificato = 0)
+	{
+		if (isset($this->values["description"]) && !$metaModificato)
+			$this->values["meta_description"] = sanitizeDb(strip_tags(br2dot(htmlentitydecode($this->values["description"]))));
+	}
+	
 	public function insert()
 	{
 		$r = false;
@@ -616,6 +629,9 @@ class PagesModel extends GenericModel {
 			{
 				$this->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 			}
+			
+			// Salva informazioni meta della pagina
+			$this->salvaMeta();
 			
 			// Imposta il prezzo non ivato
 			$this->setPriceNonIvato();

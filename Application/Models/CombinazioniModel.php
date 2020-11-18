@@ -193,6 +193,7 @@ class CombinazioniModel extends GenericModel {
 					"price_ivato"	=>	$record["price_ivato"],
 					"codice"	=>	$record["codice"],
 					"peso"		=>	$record["peso"],
+					"giacenza"	=>	$record["giacenza"],
 				));
 				
 				$p->pUpdate($record["id_page"]);
@@ -266,6 +267,7 @@ class CombinazioniModel extends GenericModel {
 										$temp["price"] = $dettagliPagina["price"];
 										$temp["price_ivato"] = $dettagliPagina["price_ivato"];
 										$temp["peso"] = $dettagliPagina["peso"];
+										$temp["giacenza"] = $dettagliPagina["giacenza"];
 										$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 										$val[] = $temp;
 									}
@@ -288,6 +290,7 @@ class CombinazioniModel extends GenericModel {
 									$temp["price"] = $dettagliPagina["price"];
 									$temp["price_ivato"] = $dettagliPagina["price_ivato"];
 									$temp["peso"] = $dettagliPagina["peso"];
+									$temp["giacenza"] = $dettagliPagina["giacenza"];
 									$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 									$val[] = $temp;
 								}
@@ -311,6 +314,7 @@ class CombinazioniModel extends GenericModel {
 							$temp["price"] = $dettagliPagina["price"];
 							$temp["price_ivato"] = $dettagliPagina["price_ivato"];
 							$temp["peso"] = $dettagliPagina["peso"];
+							$temp["giacenza"] = $dettagliPagina["giacenza"];
 							$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 							$val[] = $temp;
 						}

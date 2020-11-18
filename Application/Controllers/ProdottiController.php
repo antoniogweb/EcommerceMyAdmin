@@ -70,7 +70,7 @@ class ProdottiController extends PagesController {
 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
 		
 		if (v("ecommerce_attivo"))
-			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al";
+			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
 		
 		if (v("usa_marchi"))
 			$this->queryFields .= ",id_marchio";
