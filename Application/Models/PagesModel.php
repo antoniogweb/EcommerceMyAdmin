@@ -614,7 +614,7 @@ class PagesModel extends GenericModel {
 	public function salvaMeta($metaModificato = 0)
 	{
 		if (isset($this->values["description"]) && !$metaModificato)
-			$this->values["meta_description"] = sanitizeDb(strip_tags(br2dot(htmlentitydecode($this->values["description"]))));
+			$this->values["meta_description"] = sanitizeDb(strip_tags(br2space(htmlentitydecode($this->values["description"]))));
 	}
 	
 	public function insert()

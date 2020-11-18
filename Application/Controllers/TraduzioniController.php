@@ -90,6 +90,9 @@ class TraduzioniController extends BaseController {
 		$this->mainFields[] = "elimina";
 		$this->mainHead .= ",";
 		
+		$this->mainCsvFields = array_merge(array("traduzioni.chiave"),$this->mainFields);
+		$this->mainCsvHead = "Chiave,".$this->mainHead;
+		
 		$this->colProperties = array();
 		
 		$this->mainButtons = '';

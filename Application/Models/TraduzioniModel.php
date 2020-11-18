@@ -135,7 +135,14 @@ class TraduzioniModel extends GenericModel {
 		}
 		
 		if (!empty($traduzione))
-			return "<div style='position:relative;'><textarea id-t='".$traduzione["id_t"]."' class='form-control edit-traduzione' name='en' >".$traduzione["valore"]."</textarea><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-refresh fa-spin'></i><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-check verde'></i></div>";
+		{
+			$valore = $traduzione["valore"];
+			
+			if (isset($_GET["esporta"]) && $_GET["esporta"] == "Y")
+				$valore = htmlentitydecode($valore);
+			
+			return "<div style='position:relative;'><textarea id-t='".$traduzione["id_t"]."' class='form-control edit-traduzione' name='en' >".$valore."</textarea><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-refresh fa-spin'></i><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-check verde'></i></div>";
+		}
 		
 		return "";
 	}

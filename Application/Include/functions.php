@@ -1074,6 +1074,11 @@ function br2dot($string)
     return preg_replace('/\<br(\s*)?\/?\>/i', ". ", $string);
 }
 
+function br2space($string)
+{
+    return preg_replace('/\<br(\s*)?\/?\>/i', " ", $string);
+}
+
 function getActive($tm, $section)
 {
 	return isset($tm[$section][0]) ? $tm[$section][0] : null;

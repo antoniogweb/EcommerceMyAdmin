@@ -498,6 +498,8 @@ class BaseController extends Controller
 			
 			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".csv");
 			header('Content-Type: application/vnd.ms-excel');
+			
+			echo "\xEF\xBB\xBF"; // UTF-8 BOM
 			echo $data['main'];
 		}
 		
