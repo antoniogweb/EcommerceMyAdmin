@@ -1586,7 +1586,9 @@ abstract class Model_Base
 	//$strength: strong,soft,values
 	public function applyValidateConditions($queryType,$strength = 'strong', $checkValues = false)
 	{
-		$arrayToCheck = $checkValues ? $this->values : $_POST;
+		$globalArrayToCheck = isset(Params::$arrayToValidate) ? Params::$arrayToValidate : $_POST;
+		
+		$arrayToCheck = $checkValues ? $this->values : $globalArrayToCheck;
 		
 		if ($strength === 'strong')
 		{

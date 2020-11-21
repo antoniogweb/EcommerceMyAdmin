@@ -62,6 +62,8 @@ class RegusersModel extends FormModel {
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'sedi' => array("HAS_MANY", 'SpedizioniModel', 'id_user', null, "CASCADE"),
 			'groups' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("RegusersgroupsModel","id_user","id_group"), "CASCADE"),
+			'tipo_azienda' => array("BELONGS_TO", 'TipiaziendaModel', 'id_tipo_azienda',null,"CASCADE"),
+			'ruolo' => array("BELONGS_TO", 'RuoliModel', 'id_ruolo',null,"CASCADE"),
         );
     }
 	

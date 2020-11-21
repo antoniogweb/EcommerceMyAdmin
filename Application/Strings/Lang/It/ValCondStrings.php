@@ -24,10 +24,18 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Lang_It_ValCondStrings extends Lang_En_ValCondStrings {
 	
+	public function getHiddenAlertElement($element)
+	{
+		if (GenericModel::$apiMethod == "POST")
+			return "\n".parent::getHiddenAlertElement($element);
+		
+		return "";
+	}
+	
 	//if the element is not defined
 	public function getNotDefinedResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Si prega di riempire il campo ". getFieldLabel($element) ."</i></div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>Si prega di riempire il campo ". getFieldLabel($element) ."</i></div>".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the elements are not equal

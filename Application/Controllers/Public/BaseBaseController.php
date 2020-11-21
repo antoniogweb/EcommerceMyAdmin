@@ -53,7 +53,9 @@ class BaseBaseController extends Controller
 		
 		// Variabili
 		$this->model('VariabiliModel');
-// 		VariabiliModel::ottieniVariabili();
+		
+		if (empty(VariabiliModel::$valori))
+			VariabiliModel::ottieniVariabili();
 		
 		$this->model("CategoriesModel");
 		$this->model("MenuModel");

@@ -22,11 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CronController extends Controller {
+class CronController extends BaseController {
 
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
-
+		
+		$this->clean();
+		
 		ini_set("memory_limit","512M");
 	}
 	

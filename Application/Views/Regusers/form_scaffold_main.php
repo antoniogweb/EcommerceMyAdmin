@@ -20,6 +20,7 @@
 			<?php echo $form["provincia"];?>
 			<?php echo $form["citta"];?>
 			<?php echo $form["telefono"];?>
+			<?php echo $form["telefono_2"];?>
 			
 			<?php if ($type === "update") { ?>
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">

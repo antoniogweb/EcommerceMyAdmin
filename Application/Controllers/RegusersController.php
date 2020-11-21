@@ -150,11 +150,11 @@ class RegusersController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = 'username,has_confirmed,password:sha1,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,id_classe,nazione,pec,codice_destinatario,lingua';
+		$fields = 'username,has_confirmed,password:sha1,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,id_classe,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,id_classe,nazione,pec,codice_destinatario,lingua';
+		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,id_classe,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
 		if (v("attiva_ruoli"))
 		{

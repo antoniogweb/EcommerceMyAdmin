@@ -137,4 +137,7 @@ class Params
 	
 	//define if it has to use the new or the old style of the where clause definition (new style suggested!!)
 	public static $newWhereClauseStyle = false;
+	
+	// define the array of data to validate
+	public static $arrayToValidate = null;
 }

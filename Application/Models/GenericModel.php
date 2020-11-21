@@ -27,6 +27,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class GenericModel extends Model_Tree {
 	
+	public static $apiMethod = "POST";
+	
 	public $campoTitolo = "titolo";
 	public $uploadFields = array();
 	public $lId = null;

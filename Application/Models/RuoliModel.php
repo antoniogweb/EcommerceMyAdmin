@@ -30,6 +30,8 @@ class RuoliModel extends GenericModel
 		
 		$this->traduzione = true;
 		
+		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
+		
 		parent::__construct();
 	}
 	
