@@ -89,6 +89,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_tipi_fasce"			=>	1,
 		"prezzi_ivati_in_carrello"	=>	0,
 		"prezzi_ivati_in_prodotti"	=>	0,
+		"attiva_tipi_azienda"		=>	0,
 	);
 	
 	public function __construct() {

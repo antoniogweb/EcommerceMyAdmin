@@ -69,6 +69,10 @@ include(ROOT."/Application/Views/header.php");
 					<li class="dropdown-header">Ruoli</li>
 					<li <?php if ($this->controller === "ruoli") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> Lista ruoli</a></li>
 					<?php } ?>
+					<?php if (v("attiva_tipi_azienda")) { ?>
+					<li class="dropdown-header">Tipi azienda</li>
+					<li <?php if ($this->controller === "tipiazienda") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> Lista tipi</a></li>
+					<?php } ?>
 					<?php if (v("attiva_gruppi")) { ?>
 					<li class="dropdown-header">Gruppi</li>
 					<li <?php if ($this->controller === "reggroups") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-users"></i> Lista gruppi</a></li>

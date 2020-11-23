@@ -352,6 +352,9 @@ class Route
 		'ruoli,main',
 		'ruoli,form',
 		
+		'tipiazienda,main',
+		'tipiazienda,form',
+		
 		'tipidocumento,main',
 		'tipidocumento,form',
 		

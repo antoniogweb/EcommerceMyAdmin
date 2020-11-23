@@ -152,8 +152,6 @@ class RegusersController extends BaseController {
 		
 		$fields = 'username,has_confirmed,password:sha1,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,id_classe,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
-		$this->m[$this->modelName]->setValuesFromPost($fields);
-		
 		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,id_classe,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
 		if (v("attiva_ruoli"))
@@ -161,6 +159,8 @@ class RegusersController extends BaseController {
 			$fields .= ",id_ruolo";
 			$formFields .= ",id_ruolo";
 		}
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->formFields = $formFields;
 		

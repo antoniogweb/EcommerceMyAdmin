@@ -37,6 +37,7 @@ class RuoliModel extends GenericModel
 	
 	public function relations() {
         return array(
+			'users' => array("HAS_MANY", 'RegusersModel', 'id_ruolo', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_ruolo', null, "CASCADE"),
         );
     }

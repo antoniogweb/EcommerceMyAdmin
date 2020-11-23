@@ -30,6 +30,15 @@ class TipiaziendaModel extends GenericModel
 		
 		$this->traduzione = true;
 		
+		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
+		
 		parent::__construct();
 	}
+	
+	public function relations() {
+        return array(
+			'users' => array("HAS_MANY", 'RegusersModel', 'id_tipo_azienda', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_tipo_azienda', null, "CASCADE"),
+        );
+    }
 }

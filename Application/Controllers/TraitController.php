@@ -48,7 +48,7 @@ trait TraitController
 			$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
 		else if ($section == "-car-")
 			$fields = 'titolo';
-		else if ($section == "-cv-" || $section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni" || $section == "fasce_prezzo")
+		else if ($section == "-cv-" || $section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni" || $section == "fasce_prezzo" || $section == "tipi_azienda")
 			$fields = 'titolo';
 		else if ($section == "-marchio-")
 			$fields = 'titolo,alias,description';
