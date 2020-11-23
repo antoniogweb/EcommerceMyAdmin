@@ -29,6 +29,7 @@ class GenericModel extends Model_Tree {
 	
 	public static $apiMethod = "POST";
 	
+	public $usingApi = false;
 	public $campoTitolo = "titolo";
 	public $uploadFields = array();
 	public $lId = null;

@@ -71,7 +71,7 @@ include(ROOT."/Application/Views/header.php");
 					<?php } ?>
 					<?php if (v("attiva_tipi_azienda")) { ?>
 					<li class="dropdown-header">Tipi azienda</li>
-					<li <?php if ($this->controller === "tipiazienda") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> Lista tipi</a></li>
+					<li <?php if ($this->controller === "tipiazienda") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> Lista tipi aziende</a></li>
 					<?php } ?>
 					<?php if (v("attiva_gruppi")) { ?>
 					<li class="dropdown-header">Gruppi</li>

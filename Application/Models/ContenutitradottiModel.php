@@ -143,12 +143,17 @@ class ContenutitradottiModel extends GenericModel
 		return parent::insert();
 	}
 	
-	public static function getTraduzioni($field, $id)
+	public static function getTraduzioni($field, $id, $fields = null)
 	{
 		$ct = new ContenutitradottiModel();
 		
-		return $ct->clear()->where(array(
+		$ct->clear()->where(array(
 			$field	=>	(int)$id
-		))->send(false);
+		));
+		
+		if ($fields)
+			$ct->select($fields);
+		
+		return $ct->send(false);
 	}
 }

@@ -129,6 +129,11 @@ body {
 	margin-bottom:20px;
 }
 
+.list_filter_form input
+{
+	max-width:150px !important;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {
