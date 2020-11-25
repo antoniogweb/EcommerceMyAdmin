@@ -703,6 +703,11 @@ class BaseRegusersController extends BaseController
 				$campoObbligatoriProvincia = "provincia_spedizione";
 		}
 		
+		$campiObbligatori = "indirizzo_spedizione,$campoObbligatoriProvincia,citta_spedizione,telefono_spedizione,nazione_spedizione";
+		
+		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
+			$campiObbligatori .= ",cap_spedizione";
+		
 		$fields = 'indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,nazione_spedizione';
 		
 		$this->m['SpedizioniModel']->setFields($fields,'sanitizeAll');
@@ -711,7 +716,7 @@ class BaseRegusersController extends BaseController
 			$this->m['SpedizioniModel']->values["id_user"] = User::$id;
 		
 		$this->m['SpedizioniModel']->clearConditions("strong");
-		$this->m['SpedizioniModel']->addStrongCondition("both",'checkNotEmpty',"indirizzo_spedizione,cap_spedizione,$campoObbligatoriProvincia,citta_spedizione,telefono_spedizione,nazione_spedizione");
+		$this->m['SpedizioniModel']->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
 		
 		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
 		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
