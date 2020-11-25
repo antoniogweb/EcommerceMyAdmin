@@ -74,9 +74,10 @@ class BaseRegusersController extends BaseController
 		}
 		
 		$redirect = $this->request->get('redirect','','sanitizeAll');
+		$redirect = ltrim($redirect,"/");
 		
 		//valori permessi per il redirect
-		$allowedRedirect = array("/checkout");
+		$allowedRedirect = explode(",",v("redirect_permessi"));
 		if (!in_array($redirect,$allowedRedirect))
 		{
 			$redirect = '';

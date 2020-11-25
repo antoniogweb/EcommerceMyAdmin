@@ -88,14 +88,20 @@ class ContenutitradottiModel extends GenericModel
 			$idPage = isset($this->values["id_page"]) ? $this->values["id_page"] : 0;
 			$idC = isset($this->values["id_c"]) ? $this->values["id_c"] :0;
 			
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and id_page != ".(int)$idPage . " and id_c != ".(int)$idC);
+			$whereClause = $idPage ? "id_page != ".(int)$idPage : "id_c != ".(int)$idC;
+			
+			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
 		}
 		else
 		{
 			$idPage = $record["id_page"];
 			$idC = $record["id_c"];
 			
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and id_page != ".(int)$idPage . " and id_c != ".(int)$idC." and ".$this->_idFields."!=".$clean["id"]);
+			$whereClause = $idPage ? "id_page != ".(int)$idPage : "id_c != ".(int)$idC;
+			
+			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
+			
+// 			echo $this->getQUery();die();
 		}
 		
 		if (count($res) > 0)

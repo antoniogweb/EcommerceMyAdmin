@@ -24,6 +24,8 @@ class User
 	public static $nazione = null;
 	public static $nazioneNavigazione = "";
 	
+	public static $ruid = null;
+	
 	public static function getSpedizioneDefault()
 	{
 // 		if (User::$logged)

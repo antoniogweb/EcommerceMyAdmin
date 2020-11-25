@@ -168,9 +168,11 @@ class BaseBaseController extends Controller
 				User::$categorieInClasseSconto = $this->m["CategoriesModel"]->getListaCategorieInClasseSconto();
 			}
 			
+			User::$ruid = $this->s['registered']->getUid();
+			
 			// Imposto lo stato loggato su Output
 			Output::setHeaderValue("Status","logged");
-			Output::setHeaderValue("UserId",$this->s['registered']->getUid());
+			Output::setHeaderValue("UserId",User::$ruid);
 			Output::setHeaderValue("Nome",$data['nomeCliente']);
 			Output::setHeaderValue("Email",User::$dettagli["username"]);
 // 			print_r(User::$categorieInClasseSconto);
