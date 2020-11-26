@@ -25,7 +25,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 // All EasyGiant code is released under the GNU General Public License or a compatible license.
 // See COPYRIGHT.txt and LICENSE.txt.
 
-class GenericModel extends Model_Tree {
+class GenericModel extends Model_Tree
+{
+	use CommonModel;
 	
 	public static $apiMethod = "POST";
 	
@@ -439,23 +441,23 @@ class GenericModel extends Model_Tree {
 		return array(""=>"Seleziona") + $n->orderBy("provincia")->toList("codice_provincia","provincia")->send();
 	}
 	
-	public function controllaCF()
-	{
-		if (isset($this->values["codice_fiscale"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
-		{
-			if ($this->values["tipo_cliente"] == "privato" || $this->values["tipo_cliente"] == "libero_professionista")
-			{
-				if (!codiceFiscale($this->values["codice_fiscale"]))
-				{
-					$this->notice = "<div class='alert'>Si prega di controllare il Codice Fiscale</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
-					$this->result = false;
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}
+// 	public function controllaCF()
+// 	{
+// 		if (isset($this->values["codice_fiscale"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+// 		{
+// 			if ($this->values["tipo_cliente"] == "privato" || $this->values["tipo_cliente"] == "libero_professionista")
+// 			{
+// 				if (!codiceFiscale($this->values["codice_fiscale"]))
+// 				{
+// 					$this->notice = "<div class='alert'>Si prega di controllare il Codice Fiscale</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
+// 					$this->result = false;
+// 					return false;
+// 				}
+// 			}
+// 		}
+// 		
+// 		return true;
+// 	}
 	
 	public function selectLinkContenuto()
 	{

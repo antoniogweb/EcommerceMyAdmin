@@ -1,0 +1,58 @@
+[
+    {
+        "name": "ddeboer/vatin",
+        "version": "2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ddeboer/vatin.git",
+            "reference": "7eeeec52a53929eafa90cc836bc924128d9323c7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ddeboer/vatin/zipball/7eeeec52a53929eafa90cc836bc924128d9323c7",
+            "reference": "7eeeec52a53929eafa90cc836bc924128d9323c7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6.0"
+        },
+        "require-dev": {
+            "ext-soap": "*",
+            "phpunit/phpunit": "^5.7 || ^6.5"
+        },
+        "suggest": {
+            "ext-soap": "Required if you want to check the VAT number via VIES"
+        },
+        "time": "2020-05-30T07:26:47+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Ddeboer\\Vatin\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "David de Boer",
+                "email": "david@ddeboer.nl",
+                "homepage": "https://github.com/ddeboer"
+            },
+            {
+                "name": "Community contributions",
+                "homepage": "https://github.com/ddeboer/vatin/contributors"
+            }
+        ],
+        "description": "Validate VAT identification numbers",
+        "keywords": [
+            "btw",
+            "tax",
+            "vat",
+            "vies"
+        ]
+    }
+]

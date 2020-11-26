@@ -605,13 +605,13 @@ class BaseOrdiniController extends BaseController
 				$campoObbligatoriProvinciaSpedizione = "provincia_spedizione";
 		}
 		
-		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione";
+		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione,cap";
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
-			$campiObbligatoriComuni .= ",codice_fiscale,cap";
+			$campiObbligatoriComuni .= ",codice_fiscale";
 		
-		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
-			$campiObbligatoriComuni .= ",cap_spedizione";
+// 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
+// 			$campiObbligatoriComuni .= ",cap_spedizione";
 		
 		$campiObbligatoriAggiuntivi = "";
 		
@@ -629,17 +629,22 @@ class BaseOrdiniController extends BaseController
 // 		echo $codiceDestinatario;die();
 		$campiObbligatoriComuni .= $campiObbligatoriAggiuntivi;
 		
+		$campoPIva = "";
+		
+		if (isset($_POST["nazione"]) && in_array($_POST["nazione"], NazioniModel::elencoNazioniConVat()))
+			$campoPIva = "p_iva,";
+		
 		if (strcmp($tipo_cliente,"privato") === 0)
 		{
 			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,".$campiObbligatoriComuni);
 		}
 		else if (strcmp($tipo_cliente,"libero_professionista") === 0)
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,p_iva,".$campiObbligatoriComuni);
+			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,$campoPIva".$campiObbligatoriComuni);
 		}
 		else
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"ragione_sociale,p_iva,".$campiObbligatoriComuni);
+			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"ragione_sociale,$campoPIva".$campiObbligatoriComuni);
 		}
 		
 		$this->m['OrdiniModel']->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>")."<div class='evidenzia'>class_pec</div>");

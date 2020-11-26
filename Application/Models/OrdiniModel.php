@@ -214,7 +214,7 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
-		if ($this->controllaCF())
+		if ($this->controllaCF() && $this->controllaPIva())
 			return parent::insert();
 		
 // 		$this->lId = (int)$this->lastId();
