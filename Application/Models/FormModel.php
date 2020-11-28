@@ -148,6 +148,13 @@ class FormModel extends GenericModel {
 					"className"	=>	"form-control",
 					'labelString'=>	'Ruolo',
 				),
+				'id_tipo_azienda'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectTipiAziende(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'labelString'=>	'Tipo azienda',
+				),
 				'id_user'	=>	array(
 					'type'		=>	'Hidden'
 				),
@@ -160,6 +167,20 @@ class FormModel extends GenericModel {
 			),
 		);
 
+	}
+	
+	public function selectRuoli($frontend = false)
+	{
+		$r = new RuoliModel();
+		
+		return $r->selectTipi(false);
+	}
+	
+	public function selectTipiAziende($frontend = false)
+	{
+		$r = new TipiaziendaModel();
+		
+		return $r->selectTipi(false);
 	}
 	
 	public function selectClasseSconto()

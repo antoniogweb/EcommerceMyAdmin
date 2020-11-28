@@ -160,6 +160,12 @@ class RegusersController extends BaseController {
 			$formFields .= ",id_ruolo";
 		}
 		
+		if (v("attiva_tipi_azienda"))
+		{
+			$fields .= ",id_tipo_azienda";
+			$formFields .= ",id_tipo_azienda";
+		}
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->formFields = $formFields;

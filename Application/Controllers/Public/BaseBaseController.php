@@ -91,6 +91,7 @@ class BaseBaseController extends Controller
 		$this->model("RuoliModel");
 		$this->model("PersonalizzazioniModel");
 		$this->model("TagModel");
+		$this->model("TipiaziendaModel");
 		
 		if (v("mostra_fasce_prezzo"))
 			$this->model("FasceprezzoModel");
@@ -437,7 +438,10 @@ class BaseBaseController extends Controller
 			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
 			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
 			
-			$data["selectRuoli"] = $this->m["RuoliModel"]->selectRuoli(true);
+			$data["selectRuoli"] = $this->m["RuoliModel"]->selectTipi(true);
+			
+			if (v("attiva_tipi_azienda"))
+				$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);
 		}
 		
 		$data["pagesCss"] = $data["paginaGenerica"] = "";

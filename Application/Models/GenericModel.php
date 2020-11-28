@@ -434,6 +434,25 @@ class GenericModel extends Model_Tree
 			return array(0	=>	"--") + $r->clear()->orderBy("titolo")->toList("id_ruolo", "titolo")->send();
 	}
 	
+	public function selectTipi($frontend = false)
+	{
+		if ($frontend)
+		{
+			$ruoli = $this->clear()->addJoinTraduzione()->orderBy($this->table().".".$this->campoTitolo)->send();
+			
+			$arrayRuoli = array(0	=>	"--");
+			
+			foreach ($ruoli as $ruolo)
+			{
+				$arrayRuoli[$ruolo[$this->table()][$this->getPrimaryKey()]] = genericField($ruolo, $this->campoTitolo, $this->table());
+			}
+			
+			return $arrayRuoli;
+		}
+		else
+			return array(0	=>	"--") + $this->clear()->orderBy($this->table().".".$this->campoTitolo)->toList($this->getPrimaryKey(), $this->campoTitolo)->send();
+	}
+	
 	public function selectProvince()
 	{
 		$n = new ProvinceModel();

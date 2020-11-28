@@ -9,6 +9,9 @@
 			<?php if (isset($form["id_ruolo"])) { ?>
 			<?php echo $form["id_ruolo"];?>
 			<?php } ?>
+			<?php if (isset($form["id_tipo_azienda"])) { ?>
+			<?php echo $form["id_tipo_azienda"];?>
+			<?php } ?>
 			<?php echo $form["ragione_sociale"];?>
 			<?php echo $form["nome"];?>
 			<?php echo $form["cognome"];?>

@@ -604,10 +604,13 @@ class BaseRegusersController extends BaseController
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 		
-		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente,nazione,pec,codice_destinatario,dprovincia';
+		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
 		
 		if (v("attiva_ruoli"))
 			$fields .= ",id_ruolo";
+		
+		if (v("attiva_tipi_azienda"))
+			$fields .= ",id_tipo_azienda";
 		
 		$this->m['RegusersModel']->setFields($fields,'sanitizeAll');
 		
@@ -787,10 +790,13 @@ class BaseRegusersController extends BaseController
 			$pec = $this->request->post("pec","","sanitizeAll");
 			$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 			
-			$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,password:sha1,nazione,pec,codice_destinatario,dprovincia';
+			$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,password:sha1,nazione,pec,codice_destinatario,dprovincia,telefono_2';
 			
 			if (v("attiva_ruoli"))
 				$fields .= ",id_ruolo";
+			
+			if (v("attiva_tipi_azienda"))
+				$fields .= ",id_tipo_azienda";
 			
 			$this->m['RegusersModel']->setFields($fields,'strip_tags');
 			$datiCliente = $this->m['RegusersModel']->values;
@@ -798,10 +804,13 @@ class BaseRegusersController extends BaseController
 			
 			$this->m['RegusersModel']->setConditions($tipo_cliente, "insert", $pec, $codiceDestinatario);
 			
-			$this->m['RegusersModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,conferma_username,accetto,tipo_cliente,password,confirmation,nazione,pec,codice_destinatario,dprovincia";
+			$this->m['RegusersModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,conferma_username,accetto,tipo_cliente,password,confirmation,nazione,pec,codice_destinatario,dprovincia,telefono_2";
 			
 			if (v("attiva_ruoli"))
 				$this->m['RegusersModel']->fields .= ",id_ruolo";
+			
+			if (v("attiva_tipi_azienda"))
+				$this->m['RegusersModel']->fields .= ",id_tipo_azienda";
 			
 			if (isset($_POST['updateAction']))
 			{
