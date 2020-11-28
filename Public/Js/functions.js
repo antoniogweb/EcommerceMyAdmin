@@ -502,13 +502,6 @@ $(document).ready(function(){
     });
 });
 
-jQuery(function($){
-    $('#capture').on('click', function(e){
-        e.preventDefault();
-        $('#file')[0].click();
-    });
-});
-
  (function( $ ) {
 	$.widget( "custom.combobox", {
 		_create: function() {
