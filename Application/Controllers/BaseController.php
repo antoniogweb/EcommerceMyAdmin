@@ -171,7 +171,7 @@ class BaseController extends Controller
 		
 		$data['elencoLingue'] = $this->elencoLingue = $this->m["LingueModel"]->clear()->where(array(
 			"attiva"	=>	1,
-		))->orderBy("id_order desc")->toList("codice", "descrizione")->send();
+		))->orderBy("id_order")->toList("codice", "descrizione")->send();
 		
 		$this->model('ImpostazioniModel');
 		
@@ -486,6 +486,7 @@ class BaseController extends Controller
 		else
 		{
 			$this->scaffold->itemList->renderToCsv = true;
+			$this->scaffold->itemList->csvColumnsSeparator = ";";
 			
 			$this->scaffold->params["recordPerPage"] = 10000000000;
 			$this->scaffold->params['pageList'] = false;

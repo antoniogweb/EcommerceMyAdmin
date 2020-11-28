@@ -488,6 +488,8 @@ class BaseOrdiniController extends BaseController
 	public function index()
 	{
 // 		IvaModel::getAliquotaEstera();
+		if (!v("ecommerce_online"))
+			$this->redirect("");
 		
 		session_start();
 		
@@ -605,7 +607,7 @@ class BaseOrdiniController extends BaseController
 				$campoObbligatoriProvinciaSpedizione = "provincia_spedizione";
 		}
 		
-		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione,cap";
+		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione,cap,cap_spedizione";
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			$campiObbligatoriComuni .= ",codice_fiscale";
@@ -676,6 +678,11 @@ class BaseOrdiniController extends BaseController
 			$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
 			
 			$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
+		}
+		
+		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
+		{
+			$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
 		}
 		
 		$codiciNazioniAttive = implode(",",$this->m["NazioniModel"]->selectCodiciAttivi());

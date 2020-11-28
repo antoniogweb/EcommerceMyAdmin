@@ -92,6 +92,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_tipi_azienda"		=>	0,
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
 		"controlla_p_iva"			=>	0,
+		"ecommerce_online"			=>	1,
 	);
 	
 	public function __construct() {

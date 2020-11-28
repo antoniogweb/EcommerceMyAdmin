@@ -44,6 +44,9 @@ class BaseCartController extends BaseController
 
 	public function index($pageView = "full")
 	{
+		if (!v("ecommerce_online"))
+			$this->redirect("");
+		
 		$data["pageView"] = sanitizeAll($pageView);
 		
 		$data["headerClass"] = "";
@@ -131,6 +134,17 @@ class BaseCartController extends BaseController
 		$result = "KO";
 		$idCart = 0;
 		$errore = "";
+		
+		if (!v("ecommerce_online"))
+		{
+			echo json_encode(array(
+				"result"	=>	$result,
+				"idCart"	=>	$idCart,
+				"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
+			));
+			
+			die();
+		}
 		
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = (int)$quantity;
@@ -240,6 +254,9 @@ class BaseCartController extends BaseController
 	
 	public function delete($id_cart)
 	{
+		if (!v("ecommerce_online"))
+			$this->redirect("");
+		
 		$clean["id_cart"] = (int)$id_cart;
 		
 		$this->clean();
@@ -264,6 +281,9 @@ class BaseCartController extends BaseController
 	//$quantita: id_page:quantity|id_page:quantity|...
 	public function update()
 	{
+		if (!v("ecommerce_online"))
+			$this->redirect("");
+		
 		$this->clean();
 		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
 

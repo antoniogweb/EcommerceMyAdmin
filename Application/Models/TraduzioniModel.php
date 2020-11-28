@@ -117,6 +117,7 @@ class TraduzioniModel extends GenericModel {
 		$traduzione =  $this->clear()->where(array(
 			"lingua"	=>	$lingua,
 			"chiave"	=>	sanitizeDb($record["traduzioni"]["chiave"]),
+			"contesto"	=>	"front",
 		))->record();
 		
 		if (empty($traduzione))

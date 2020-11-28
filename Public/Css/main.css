@@ -1215,7 +1215,7 @@ tr.cart_head {
 }
 .list_filter_form_top button
 {
-	vertical-align:0px;
+	vertical-align:-2px !important
 }
 
 .box

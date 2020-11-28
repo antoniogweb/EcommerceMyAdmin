@@ -160,6 +160,7 @@ class Route
 		'traduzioni,form',
 		'traduzioni,aggiorna',
 		'traduzioni,elimina',
+		'traduzioni,carica',
 		
 		'scaglioni,form',
 		

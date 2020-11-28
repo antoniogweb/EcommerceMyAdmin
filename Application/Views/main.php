@@ -34,7 +34,6 @@
 					
 					<?php echo $notice;?>
 					
-					
 					<?php echo $main;?>
 					
 					<!-- show the list of pages -->

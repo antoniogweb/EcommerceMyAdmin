@@ -79,7 +79,7 @@ class TraduzioniController extends BaseController {
 		
 		$this->filters = array("valore");
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>300, 'mainMenu'=>'');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>300, 'mainMenu'=>'esporta,importa');
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
@@ -91,7 +91,7 @@ class TraduzioniController extends BaseController {
 		$this->mainHead .= ",";
 		
 		$this->mainCsvFields = array_merge(array("traduzioni.chiave"),$this->mainFields);
-		$this->mainCsvHead = "Chiave,".$this->mainHead;
+		$this->mainCsvHead = "Chiave (non modificare),".$this->mainHead;
 		
 		$this->colProperties = array();
 		
@@ -106,6 +106,74 @@ class TraduzioniController extends BaseController {
 				))->orderBy("valore")->save();
 		
 		parent::main();
+	}
+	
+	public function carica()
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$errori = array();
+		
+		if (isset($_FILES['file']['tmp_name']))
+		{
+			if (($handle = fopen($_FILES['file']['tmp_name'], "r")) !== FALSE)
+			{
+				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+				{
+					$chiave = $data[0];
+// 					
+					$traduzione =  $this->m[$this->modelName]->clear()->where(array(
+						"lingua"	=>	"it",
+						"chiave"	=>	sanitizeDb($chiave),
+						"contesto"	=>	"front",
+					))->record();
+					
+					if (!empty($traduzione))
+					{
+						$indice = 1;
+						
+						foreach ($this->elencoLingue as $lingua => $descr)
+						{
+							if (isset($data[$indice]))
+							{
+								$traduzione =  $this->m[$this->modelName]->clear()->where(array(
+									"lingua"	=>	$lingua,
+									"chiave"	=>	sanitizeDb($chiave),
+									"contesto"	=>	"front",
+								))->record();
+								
+								if (!empty($traduzione))
+								{
+									$this->m[$this->modelName]->values = array(
+										"chiave"	=>	sanitizeDb($chiave),
+										"valore"	=>	sanitizeDb($data[$indice]),
+										"lingua"	=>	$lingua,
+										"contesto"	=>	"front",
+									);
+									
+									if (!$this->m[$this->modelName]->update($traduzione["id_t"]))
+									{
+// 										print_r($this->m[$this->modelName]->values);
+// 										echo $this->m[$this->modelName]->getQUery();
+										$errori[] = $data[$indice]." - ".$this->m[$this->modelName]->notice;
+									}
+								}
+							}
+							
+							$indice++;
+						}
+					}
+				}
+			}
+		}
+		
+		$this->redirect("traduzioni/main");
+		
+		$this->m[$this->modelName]->db->commit();
 	}
 	
 	public function aggiorna()

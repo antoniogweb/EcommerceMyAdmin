@@ -487,8 +487,27 @@ $(document).ready(function(){
 			}
 		});
     });
+	
+	$(".fileinput-button-custom").on("click",  function(e){
+        e.stopPropagation();
+		$(this).find("input")[0].click();
+    });
+	
+	
+	$('.fileinput-button-custom input').change(function() {
+		var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+		$(".fileinput-button-custom span").text(filename);
+		
+		$('.upload_traduzioni').css("display","inline");
+    });
 });
 
+jQuery(function($){
+    $('#capture').on('click', function(e){
+        e.preventDefault();
+        $('#file')[0].click();
+    });
+});
 
  (function( $ ) {
 	$.widget( "custom.combobox", {
