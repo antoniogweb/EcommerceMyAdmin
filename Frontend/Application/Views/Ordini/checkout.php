@@ -166,6 +166,12 @@
 												</div>
 											</div>
 											
+											<h2><?php echo gtext("Note d'acquisto")?></h3>
+											
+											<div class="blocco_checkout">
+												<?php echo Html_Form::textarea("note",$values["note"],null,null,"style='width:95%;' placeholder='".gtext("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
+											</div>
+											
 											<?php if (!$islogged) { ?>
  											<div class="newsletter_checkbox"><?php echo Html_Form::checkbox("newsletter",$values['newsletter'],"Y");?> <?php echo gtext("Voglio essere iscritto alla newsletter per conoscere le promozioni e le novità del negozio");?></div> 
 											<?php } ?>

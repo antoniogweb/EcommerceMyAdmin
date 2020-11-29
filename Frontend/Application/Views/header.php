@@ -125,6 +125,8 @@
 	var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
 	var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
 	var back_cart_error = "red";
+	var isMobile = <?php echo User::$isMobile ? "true" : "false";?>;
+	var nazioniConVat = ['<?php echo implode("','",NazioniModel::elencoNazioniConVat())?>'];
 </script>
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>jquery/jquery.js'></script>
@@ -236,6 +238,7 @@
 															</div>
 														</form>
 													</div>
+													<?php if (v("ecommerce_online")) { ?>
 													<div class="wish-woocommerce">
 														<div class="site-header-cart menu d-flex justify-content-center">
 															<a class="cart-contents header-button d-flex align-items-center" href="<?php echo $this->baseUrl."/wishlist/vedi";?>" title="">
@@ -246,6 +249,7 @@
 															</a>
 														</div>
 													</div>
+													<?php } ?>
 													<div class="account">
 														<div class="site-header-account">
 															<a class="link_account <?php if ($islogged) { ?>colore_arancione<?php } ?>" href="#"><span class="opal-icon-user3"></span></a>
