@@ -54,7 +54,7 @@ class AttributiController extends BaseController {
 		$this->shift();
 		
 		$this->mainFields = array("attributi.titolo", "attributi.nota_interna", "attributi.tipo");
-		$this->mainHead = "Titolo,Tipo";
+		$this->mainHead = "Titolo,Nota,Tipo";
 		$this->filters = array("titolo");
 		
 		$this->m[$this->modelName]->clear()

@@ -71,19 +71,23 @@ class BaseContenutiController extends BaseController
 		
 		$this->pageArgs = func_get_args();
 		
+		$titleTag = $titleMarchio = "";
+		
 		if (v("usa_tag"))
 		{
 			$elencoTag = $this->m["TagModel"]->clear()->addJoinTraduzione()->send();
 			$elencoTagEncoded = array();
+			$elencoTagTitle = array();
 			foreach ($elencoTag as $tag)
 			{
 				$elencoTagEncoded[tagfield($tag,"alias")] = $tag["tag"]["id_tag"];
+				$elencoTagTitle[tagfield($tag,"alias")] = tagfield($tag,"titolo");
 			}
 			
 			if (count($this->pageArgs) > 0 && isset($elencoTagEncoded[$this->pageArgs[0]]))
 			{
 				$this->idTag = $elencoTagEncoded[$this->pageArgs[0]];
-				
+				$titleTag = $elencoTagTitle[$this->pageArgs[0]];
 				array_shift($this->pageArgs);
 			}
 		}
@@ -220,6 +224,9 @@ class BaseContenutiController extends BaseController
 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["contenuti_tradotti"]["title"]);
 				else
 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["categories"]["title"]);
+				
+				if ($titleTag)
+					$data["title"] = Parametri::$nomeNegozio . " - " .$titleTag;
 				
 				$this->fullParents = $parents;
 
@@ -435,6 +442,12 @@ class BaseContenutiController extends BaseController
 			$data["keywords"] = htmlentitydecode($r[0]["contenuti_tradotti_categoria"]["keywords"]);
 		else if (strcmp($r[0]["categories"]["keywords"],"") !== 0)
 			$data["keywords"] = htmlentitydecode($r[0]["categories"]["keywords"]);
+		
+		if (isset($tagCorrente))
+		{
+			$data["keywords"] = tagfield($tagCorrente, "keywords");
+			$data["meta_description"] = tagfield($tagCorrente, "meta_description");
+		}
 		
 		$data["breadcrumb"] = $this->breadcrumb();
 		

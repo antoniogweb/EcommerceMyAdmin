@@ -70,7 +70,7 @@ class TagController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,alias,attivo';
+		$fields = 'titolo,alias,attivo,keywords,meta_description';
 		
 		if (v("mostra_seconda_immagine_tag"))
 			$fields .= ",immagine_2";

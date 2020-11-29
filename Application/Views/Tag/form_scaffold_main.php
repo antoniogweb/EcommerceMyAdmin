@@ -11,6 +11,10 @@
 						<?php echo $form["colore_testo_in_slide"];?>
 						<?php } ?>
 						
+						<?php echo $form["keywords"];?>
+
+						<?php echo $form["meta_description"];?>
+						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 						<?php } ?>

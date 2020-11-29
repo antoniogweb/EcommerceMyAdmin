@@ -35,6 +35,11 @@ class PagesModel extends GenericModel {
 	
 	public static $currentRecord = null;
 	
+	public static $tipiPagina = array(
+		"GRAZIE"	=>	"Pagina grazie",
+		"COOKIE"	=>	"Pagina cookie",
+	);
+	
 	public function __construct() {
 		$this->_tables='pages';
 		$this->_idFields='id_page';
@@ -278,11 +283,22 @@ class PagesModel extends GenericModel {
 				'giacenza'	=>	array(
 					'labelString'=>	'Giacenza (disponibilità a magazzino)',
 				),
+				'tipo_pagina'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipo pagina',
+					'options'	=>	$this->selectTipiPagina(),
+					'reverse' => 'yes',
+				),
 			),
 		);
 		
 		if ($this->formStructAggiuntivoEntries)
 			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
+	}
+	
+	public function selectTipiPagina()
+	{
+		return array(""=>"--") + self::$tipiPagina;
 	}
 	
 	public function selectIva()
@@ -1668,5 +1684,16 @@ class PagesModel extends GenericModel {
 			"id_page"		=>	(int)$idPage,
 			"acquistabile"	=>	"Y"
 		))->rowNumber();
+	}
+	
+	public static function gTipoPagina($tipo)
+	{
+		$p = new PagesModel();
+		
+		return $p->clear()->where(array(
+			"attivo"	=>	"Y",
+			"tipo_pagina"		=>	sanitizeAll($tipo),
+			"principale"	=>	"Y",
+		))->field("id_page");
 	}
 }

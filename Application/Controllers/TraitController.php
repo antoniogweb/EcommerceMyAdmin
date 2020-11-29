@@ -53,7 +53,7 @@ trait TraitController
 		else if ($section == "-marchio-")
 			$fields = 'titolo,alias,description';
 		else if ($section == "tag")
-			$fields = 'titolo,alias';
+			$fields = 'titolo,alias,keywords,meta_description';
 		else if ($section == "documenti" || $section == "contenuti")
 			$fields = 'titolo,descrizione';
 		

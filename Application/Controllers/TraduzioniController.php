@@ -171,9 +171,9 @@ class TraduzioniController extends BaseController {
 			}
 		}
 		
-		$this->redirect("traduzioni/main");
-		
 		$this->m[$this->modelName]->db->commit();
+		
+		$this->redirect("traduzioni/main");
 	}
 	
 	public function aggiorna()

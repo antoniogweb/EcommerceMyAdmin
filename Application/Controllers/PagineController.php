@@ -33,7 +33,7 @@ class PagineController extends PagesController {
 		
 		$data["sezionePannello"] = "sito";
 		
-		$this->queryFields = "use_editor,title,alias,id_c,attivo,description,use_editor,immagine";
+		$this->queryFields = "use_editor,title,alias,id_c,attivo,description,use_editor,immagine,tipo_pagina";
 		$this->metaQueryFields = "keywords,meta_description,add_in_sitemap,template";
 		
 		$this->orderBy = "pages.id_order";
