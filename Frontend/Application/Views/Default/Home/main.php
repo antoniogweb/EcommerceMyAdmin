@@ -437,7 +437,7 @@
 																<ul class="products columns-4">
 																		<?php
 																		$pages = $prodottiInEvidenza;
-																		include(ROOT."/Application/Views/Contenuti/Elementi/Categorie/prodotti.php");
+																		include(tp()."/Contenuti/Elementi/Categorie/prodotti.php");
 																		?>
 																</ul>
 																</div>

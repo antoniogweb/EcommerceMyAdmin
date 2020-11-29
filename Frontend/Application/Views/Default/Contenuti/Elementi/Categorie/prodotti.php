@@ -2,7 +2,7 @@
 	
 <!-- 	<ul class="products columns-4"> -->
 	<?php foreach ($pages as $p) {
-		include(ROOT."/Application/Views/Contenuti/Elementi/Categorie/prodotto.php");
+		include(tp()."/Contenuti/Elementi/Categorie/prodotto.php");
 	} ?>
 <!-- 	</ul> -->
 	

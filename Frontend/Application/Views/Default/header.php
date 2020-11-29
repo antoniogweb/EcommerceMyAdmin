@@ -318,7 +318,7 @@
 															
 															</a>
 															<ul class="shopping_cart carrello_secondario">
-																<?php include(ROOT."/Application/Views/Cart/ajax_cart.php");?>
+																<?php include(tp()."/Cart/ajax_cart.php");?>
 															</ul>
 														</div>
 													</div>

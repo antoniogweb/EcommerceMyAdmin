@@ -82,12 +82,12 @@
 										<h3 style="margin-bottom:30px;"><?php echo gtext("Dettagli di fatturazione");?></h3>
 				
 										<div class="blocco_checkout">
-											<?php include(ROOT."/Application/Views/Regusers/form_dati_cliente.php");?>
+											<?php include(tp()."/Regusers/form_dati_cliente.php");?>
 										</div>
 										
 										<?php if (!$islogged) { ?>
 											
-											<?php include(ROOT."/Application/Views/Ordini/scelta_spedizione_fatturazione.php");?>
+											<?php include(tp()."/Ordini/scelta_spedizione_fatturazione.php");?>
 											
 										<?php } else if ($islogged) { ?>
 											
@@ -105,12 +105,12 @@
 												</div>
 												<p class="blocco_tendina_scelta_indirizzo">Indirizzo: <?php echo Html_Form::select("id_spedizione",$values["id_spedizione"],$tendinaIndirizzi,"tendina_scelta_indirizzo",null,"yes")?></p>
 												
-												<?php include(ROOT."/Application/Views/Regusers/form_dati_spedizione.php");?>
+												<?php include(tp()."/Regusers/form_dati_spedizione.php");?>
 											</div>
 											
 											<?php } else { ?>
 											
-											<?php include(ROOT."/Application/Views/Ordini/scelta_spedizione_fatturazione.php");?>
+											<?php include(tp()."/Ordini/scelta_spedizione_fatturazione.php");?>
 											
 											<input type="hidden" name="id_spedizione" value="0" />
 											<?php } ?>
@@ -195,7 +195,7 @@
 									echo Html_Form::hidden("post_error",2);
 								?>
 								
-								<?php include(ROOT."/Application/Views/Ordini/checkout_totali.php"); ?>
+								<?php include(tp()."/Ordini/checkout_totali.php"); ?>
 							</form>
 						<?php } else { ?>
 							<p><?php echo gtext("Non ci sono prodotti nel carrello");?></p>

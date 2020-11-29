@@ -24,7 +24,7 @@
 					<?php if ($fasce) { ?>
 						<?php echo $fasce;?>
 					<?php } else { ?>
-						<?php include(ROOT."/Application/Views/Contenuti/Elementi/Categorie/blocco_prodotti.php");?>
+						<?php include(tp()."/Contenuti/Elementi/Categorie/blocco_prodotti.php");?>
 					<?php } ?>
 				</main>
 				<!-- #main -->

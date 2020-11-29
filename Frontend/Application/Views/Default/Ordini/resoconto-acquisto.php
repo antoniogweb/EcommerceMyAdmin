@@ -15,7 +15,7 @@ if (!isset($baseUrl))
 								<?php if (isset($isFromAreariservata)) { ?>
 								<?php
 								$attiva = "ordini";
-								include(ROOT."/Application/Views/riservata-left.php");?>
+								include(tp()."/riservata-left.php");?>
 								<div class="woocommerce-MyAccount-content">
 								<?php } ?>
 								
