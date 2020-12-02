@@ -117,7 +117,7 @@ class VariabiliModel extends GenericModel {
 	
 	public function strutturaForm()
 	{
-		return 	array(
+		$formFields = array(
 			'usa_marchi'	=>	array(
 				'labelString'	=>	'Attiva marchi',
 				'type'			=>	'Select',
@@ -137,6 +137,8 @@ class VariabiliModel extends GenericModel {
 				"reverse"	=>	"yes",
 			),
 		);
+		
+		return $formFields;
 	}
 	
 	public static function setValore($variabile, $valore)

@@ -487,7 +487,6 @@ class BaseOrdiniController extends BaseController
 	
 	public function index()
 	{
-// 		IvaModel::getAliquotaEstera();
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		
@@ -590,6 +589,8 @@ class BaseOrdiniController extends BaseController
 			
 			$_POST["id_spedizione"] = 0;
 		}
+		
+		IvaModel::getAliquotaEstera();
 		
 		$campoObbligatoriProvincia = "dprovincia";
 		
@@ -1261,7 +1262,7 @@ class BaseOrdiniController extends BaseController
 	
 	public function totale()
 	{
-// 		IvaModel::getAliquotaEstera();
+		IvaModel::getAliquotaEstera();
 		
 		$this->clean();
 		
@@ -1273,6 +1274,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function corrieri($nazione = 0)
 	{
+		IvaModel::getAliquotaEstera();
+		
 		$this->clean();
 		
 		if (!$nazione)

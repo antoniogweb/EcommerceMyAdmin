@@ -51,6 +51,8 @@ class ImpostazioniController extends BaseController
 		
 		$clean['id'] = $data["id"] = (int)$id;
 		
+		$data["notice"] = null;
+		
 		if (v("lista_variabili_gestibili"))
 		{
 			$variabili = explode(",", v("lista_variabili_gestibili"));
@@ -60,10 +62,10 @@ class ImpostazioniController extends BaseController
 				foreach ($variabili as $v)
 				{
 					if (isset($_POST[$v]))
-					{
 						VariabiliModel::setValore($v, $_POST[$v]);
-					}
 				}
+				
+				$data["notice"] = "<div class='alert alert-success'>operazione eseguita!</div>";
 			}
 		}
 		
