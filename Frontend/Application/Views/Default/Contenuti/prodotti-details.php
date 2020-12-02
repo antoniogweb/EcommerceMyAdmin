@@ -30,11 +30,11 @@
 				<div id="product-1022" class="product type-product post-1022 status-publish first instock product_cat-uncategorized has-post-thumbnail shipping-taxable purchasable product-type-simple">
 					<?php /*echo $fasce;*/?>
 					<div class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-6 images" data-columns="6" style="opacity: 0; transition: opacity .25s ease-in-out;">
-						<?php include(ROOT."/Application/Views/Contenuti/Elementi/Pagine/slide_prodotto.php");?>
+						<?php include(tp()."/Contenuti/Elementi/Pagine/slide_prodotto.php");?>
 					</div>
 					<div class="summary entry-summary">
 						<div class="inner">
-							<?php include(ROOT."/Application/Views/Contenuti/Elementi/Pagine/carrello_prodotto.php");?>
+							<?php include(tp()."/Contenuti/Elementi/Pagine/carrello_prodotto.php");?>
 						</div>
 					</div>
 					<div class="woocommerce-tabs wc-tabs-wrapper">
@@ -74,7 +74,7 @@
 							<h2><?php echo gtext("Prodotti correlati"); ?></h2>
 							<ul class="products columns-4">
 								<?php foreach ($prodotti_correlati as $corr) {
-									include(ROOT."/Application/Views/Contenuti/Elementi/Categorie/prodotto.php");
+									include(tp()."/Contenuti/Elementi/Categorie/prodotto.php");
 								?>
 								<?php } ?>
 							</ul>

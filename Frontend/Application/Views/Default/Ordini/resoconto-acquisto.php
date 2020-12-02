@@ -15,7 +15,7 @@ if (!isset($baseUrl))
 								<?php if (isset($isFromAreariservata)) { ?>
 								<?php
 								$attiva = "ordini";
-								include(ROOT."/Application/Views/riservata-left.php");?>
+								include(tp()."/riservata-left.php");?>
 								<div class="woocommerce-MyAccount-content">
 								<?php } ?>
 								
@@ -165,6 +165,13 @@ if (!isset($baseUrl))
 									<br /><?php echo gtext("Iva", false); ?>: <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong>
 									<br /><?php echo gtext("Totale ordine", false); ?>: <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong>
 								</p>
+								
+								<?php if (trim($ordine["note"])) { ?>
+								<h2><?php echo gtext("Note d'acquisto");?></h2>
+								<?php echo nl2br($ordine["note"]);?>
+								<br /><br />
+								<?php } ?>
+			
 								<h2><?php echo gtext("Dati di fatturazione", false); ?></h2>
 								
 								<table class="table table_50 table_left">

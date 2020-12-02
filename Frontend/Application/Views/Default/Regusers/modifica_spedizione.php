@@ -32,13 +32,13 @@
 							<div class="woocommerce">
 								<?php
 								$attiva = "indirizzi";
-								include(ROOT."/Application/Views/riservata-left.php");?>
+								include(tp()."/riservata-left.php");?>
 
 								<div class="woocommerce-MyAccount-content">
 									<?php echo $notice; ?>
 									<form action="<?php echo $this->baseUrl.$action;?>" method="POST">
 										
-										<?php include(ROOT."/Application/Views/Regusers/form_dati_spedizione.php");?>
+										<?php include(tp()."/Regusers/form_dati_spedizione.php");?>
 
 										<br />
 										<?php if ($id === 0) { ?>

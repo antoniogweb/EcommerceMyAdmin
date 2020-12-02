@@ -30,7 +30,7 @@
 			
 			<?php
 			$el = $acc;
-			include(ROOT."/Application/Views/Contenuti/Elementi/Pagine/dati_variante.php");
+			include(tp()."/Contenuti/Elementi/Pagine/dati_variante.php");
 			?>
 		</div>
 		<?php } ?>

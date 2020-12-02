@@ -29,6 +29,8 @@ function updateFormTipoCliente()
 		$(".blocco_fatturazione_elettronica").css("display","block");
 	}
 	
+	sistemaPIva($("[name='nazione']").val());
+	
 	impostaCorrieriESpeseSpedizione();
 }
 
@@ -241,11 +243,27 @@ function sistemaTendinaProvincia(val)
 	{
 		$("[name='dprovincia']").css("display","none");
 		$("[name='provincia']").css("display","block");
+		$(".nascondi_fuori_italia").css("display","table-row");
 	}
 	else
 	{
 		$("[name='dprovincia']").css("display","block");
 		$("[name='provincia']").css("display","none");
+		$(".nascondi_fuori_italia").css("display","none");
+		$("[name='codice_fiscale']").val("");
+	}
+	
+	sistemaPIva(val);
+}
+
+function sistemaPIva(nazione)
+{
+	if (nazioniConVat.indexOf(nazione) != -1 && $(".radio_cliente:checked").val() != "privato")
+		$(".box_p_iva").css("display","table-row");
+	else
+	{
+		$(".box_p_iva").css("display","none");
+		$("[name='p_iva']").val("");
 	}
 }
 

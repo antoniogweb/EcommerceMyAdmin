@@ -37,6 +37,9 @@ require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");
 
+if (!v("traduzione_frontend"))
+	Lang::$edit = false;
+
 Domain::$adminRoot = LIBRARY;
 
 require(LIBRARY."/External/mobile_detect.php");
@@ -54,3 +57,8 @@ Helper_Pages::$staticPreviousClass = "prev";
 Helper_Pages::$staticNextClass = "next";
 Helper_Pages::$staticCurrentClass = "current";
 
+if (v("attiva_ip_location"))
+	IplocationModel::setData();
+
+if (v("theme_folder"))
+	Params::$viewSubfolder = v("theme_folder");

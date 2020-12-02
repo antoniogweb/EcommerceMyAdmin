@@ -4,6 +4,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class RegusersModel extends Model_Tree
 {
+	use CommonModel;
+	
 	public function __construct()
 	{
 		$this->_tables='regusers';
@@ -16,31 +18,18 @@ class RegusersModel extends Model_Tree
 		$this->_resultString->string["executed"] = "<div class='executed'>".gtext("operazione eseguita!")."</div>\n";
 	}
 	
-	public function controllaCF()
-	{
-		if (isset($this->values["codice_fiscale"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
-		{
-			if ($this->values["tipo_cliente"] == "privato" || $this->values["tipo_cliente"] == "libero_professionista")
-			{
-				if (!codiceFiscale($this->values["codice_fiscale"]))
-				{
-					$this->notice = "<div class='alert'>Si prega di controllare il Codice Fiscale</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
-					$this->result = false;
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}
-	
 	public function insert()
 	{
 		$this->values['forgot_token'] = $this->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
 		
 		$this->values["lingua"] = Params::$lang;
 		
-		if ($this->controllaCF())
+		if (!User::$nazioneNavigazione)
+			User::$nazioneNavigazion = v("nazione_default");
+		
+		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
+		
+		if ($this->controllaCF() && $this->controllaPIva())
 			return parent::insert();
 		
 		return false;
@@ -50,7 +39,7 @@ class RegusersModel extends Model_Tree
 	{
 		$clean["id"] = (int)$id;
 		
-		if ($this->controllaCF())
+		if ($this->controllaCF() && $this->controllaPIva())
 			return parent::update($clean["id"]);
 		
 		return false;
@@ -174,38 +163,36 @@ class RegusersModel extends Model_Tree
 				$campoObbligatoriProvincia = "provincia";
 		}
 		
+		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,tipo_cliente,nazione,cap";
+		
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+			$campiObbligatoriComuni .= ",codice_fiscale";
+		
+		$campoPIva = "";
+		
+		if (isset($_POST["nazione"]) && in_array($_POST["nazione"], NazioniModel::elencoNazioniConVat()))
+			$campoPIva = "p_iva,";
+		
 		if (strcmp($tipo_cliente,"privato") === 0)
 		{
 			if (strcmp($queryType,"insert") === 0)
-			{
-				$this->addStrongCondition("both",'checkNotEmpty',"nome,cognome,codice_fiscale,indirizzo,cap,$campoObbligatoriProvincia,citta,telefono,username,conferma_username,accetto,tipo_cliente,password,confirmation,nazione");
-			}
+				$this->addStrongCondition("both",'checkNotEmpty',"$campiObbligatoriComuni,nome,cognome,username,conferma_username,accetto,password,confirmation");
 			else
-			{
-				$this->addStrongCondition("both",'checkNotEmpty',"nome,cognome,codice_fiscale,indirizzo,cap,$campoObbligatoriProvincia,citta,telefono,username,tipo_cliente,nazione");
-			}
+				$this->addStrongCondition("both",'checkNotEmpty',"$campiObbligatoriComuni,nome,cognome,username");
 		}
 		else if (strcmp($tipo_cliente,"libero_professionista") === 0)
 		{
 			if (strcmp($queryType,"insert") === 0)
-			{
-				$this->addStrongCondition("both",'checkNotEmpty',"nome,cognome,codice_fiscale,p_iva,indirizzo,cap,$campoObbligatoriProvincia,citta,telefono,username,conferma_username,accetto,tipo_cliente,password,confirmation,nazione".$campiObbligatoriAggiuntivi);
-			}
+				$this->addStrongCondition("both",'checkNotEmpty',"$campiObbligatoriComuni,nome,cognome,".$campoPIva."username,conferma_username,accetto,password,confirmation".$campiObbligatoriAggiuntivi);
 			else
-			{
-				$this->addStrongCondition("both",'checkNotEmpty',"nome,cognome,codice_fiscale,p_iva,indirizzo,cap,$campoObbligatoriProvincia,citta,telefono,username,tipo_cliente,nazione".$campiObbligatoriAggiuntivi);
-			}
+				$this->addStrongCondition("both",'checkNotEmpty',"$campiObbligatoriComuni,nome,cognome,".$campoPIva."username".$campiObbligatoriAggiuntivi);
 		}
 		else
 		{
 			if (strcmp($queryType,"insert") === 0)
-			{
-				$this->addStrongCondition("both",'checkNotEmpty',"ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,$campoObbligatoriProvincia,citta,telefono,username,conferma_username,accetto,tipo_cliente,password,confirmation,nazione".$campiObbligatoriAggiuntivi);
-			}
+				$this->addStrongCondition("both",'checkNotEmpty',"$campiObbligatoriComuni,ragione_sociale,".$campoPIva."username,conferma_username,accetto,password,confirmation".$campiObbligatoriAggiuntivi);
 			else
-			{
-				$this->addStrongCondition("both",'checkNotEmpty',"ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,$campoObbligatoriProvincia,citta,telefono,username,tipo_cliente,nazione".$campiObbligatoriAggiuntivi);
-			}
+				$this->addStrongCondition("both",'checkNotEmpty',"$campiObbligatoriComuni,ragione_sociale,".$campoPIva."username".$campiObbligatoriAggiuntivi);
 		}
 		
 		$evidenziaEmail = Output::$html ? "<div class='evidenzia'>class_username</div>" : "";
@@ -277,18 +264,20 @@ class RegusersModel extends Model_Tree
 		
 		$this->addStrongCondition("both","checkMatch|/^[0-9\s]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."$evidenziaT");
 		
-		$evidenziaCAP = Output::$html ? "<div class='evidenzia'>class_cap</div>" : "";
-		
-		$this->addStrongCondition("both","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche").$evidenziaCAP);
-		
-		$evidenziaCF = Output::$html ? "<div class='evidenzia'>class_codice_fiscale</div>" : "";
-		
-		$this->addStrongCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>").$evidenziaCF);
-		
-		$evidenziaPIVA = Output::$html ? "<div class='evidenzia'>class_p_iva</div>" : "";
-		
-		$this->addSoftCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva").$evidenziaPIVA);
-		
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+		{
+			$evidenziaCAP = Output::$html ? "<div class='evidenzia'>class_cap</div>" : "";
+			
+			$this->addStrongCondition("both","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche").$evidenziaCAP);
+			
+			$evidenziaCF = Output::$html ? "<div class='evidenzia'>class_codice_fiscale</div>" : "";
+			
+			$this->addStrongCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>").$evidenziaCF);
+			
+			$evidenziaPIVA = Output::$html ? "<div class='evidenzia'>class_p_iva</div>" : "";
+			
+			$this->addSoftCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva").$evidenziaPIVA);
+		}
 	}
 	
 	public function deleteAccount($idUser)

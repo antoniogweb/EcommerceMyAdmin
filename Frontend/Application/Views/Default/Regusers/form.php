@@ -32,14 +32,14 @@
 								<?php
 								$attiva = "account";
 								
-								include(ROOT."/Application/Views/riservata-left.php");?>
+								include(tp()."/riservata-left.php");?>
 
 								<div class="woocommerce-MyAccount-content">
 									<div class="woocommerce-notices-wrapper"><?php echo $notice; ?></div>
 									
 									<form class="" action="<?php echo $this->baseUrl.$action;?>#main" method="POST">
 										
-										<?php include(ROOT."/Application/Views/Regusers/form_dati_cliente.php");?>
+										<?php include(tp()."/Regusers/form_dati_cliente.php");?>
 										
 										<?php if (strcmp($this->action,"add") === 0) { ?>
 										<p class="testo_privacy"><br /><?php echo gtext("Ho letto e accettato le");?> <a href="<?php echo $this->baseUrl."/".getUrlAlias(390);?>"><?php echo gtext("condizioni di privacy");?></a></p>

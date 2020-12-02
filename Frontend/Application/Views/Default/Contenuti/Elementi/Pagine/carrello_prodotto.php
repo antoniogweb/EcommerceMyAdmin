@@ -38,7 +38,7 @@
 </div>
 <?php } ?>
 
-<?php include(ROOT."/Application/Views/Contenuti/Elementi/Pagine/accessori.php");?>
+<?php include(tp()."/Contenuti/Elementi/Pagine/accessori.php");?>
 
 <?php if (acquistabile($p["pages"]["id_page"])) { ?>
 	<?php if (count($lista_valori_attributi) > 0 || count($personalizzazioni) > 0) { ?>
@@ -63,7 +63,7 @@
 			
 			<?php
 			$el = $p;
-			include(ROOT."/Application/Views/Contenuti/Elementi/Pagine/dati_variante.php");
+			include(tp()."/Contenuti/Elementi/Pagine/dati_variante.php");
 			?>
 		</div>
 		<?php } ?>

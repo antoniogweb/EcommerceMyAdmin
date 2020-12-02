@@ -1628,3 +1628,10 @@ function p($c, $prezzo)
 		return $prezzo;
 	}
 }
+
+function tp()
+{
+	$subfolder = isset(Params::$viewSubfolder) ? DS . Params::$viewSubfolder : "";
+	
+	return ROOT."/Application/Views$subfolder";
+}

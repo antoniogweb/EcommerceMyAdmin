@@ -6,7 +6,7 @@
 		<td><?php echo Html_Form::input("indirizzo_spedizione",$values['indirizzo_spedizione'],"text_input class_indirizzo_spedizione");?></td>
 	</tr>
 	<tr>
-		<td class="first_column"><?php echo gtext("Cap");?> *</td>
+		<td class="first_column"><?php echo gtext("Cap");?> <span class="nascondi_fuori_italia_inline_spedizione">*</span></td>
 		<td><?php echo Html_Form::input("cap_spedizione",$values['cap_spedizione'],"text_input class_cap_spedizione");?></td>
 	</tr>
 	<tr>

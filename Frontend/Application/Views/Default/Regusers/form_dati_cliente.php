@@ -25,11 +25,11 @@ echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio
 		<td><?php echo Html_Form::input("cognome",$values['cognome'],"text_input class_cognome");?></td>
 	</tr>
 	
-	<tr>
+	<tr class="nascondi_fuori_italia">
 		<td class="first_column"><?php echo gtext("Codice fiscale");?> *</td>
 		<td><?php echo Html_Form::input("codice_fiscale",$values['codice_fiscale'],"text_input class_codice_fiscale");?></td>
 	</tr>
-	<tr class="tr_p_iva">
+	<tr class="tr_p_iva box_p_iva">
 		<td class="first_column"><?php echo gtext("Partita iva");?> *</td>
 		<td><?php echo Html_Form::input("p_iva",$values['p_iva'],"text_input class_p_iva");?></td>
 	</tr>
@@ -55,7 +55,7 @@ echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio
 		<td><?php echo Html_Form::input("indirizzo",$values['indirizzo'],"text_input class_indirizzo");?></td>
 	</tr>
 	<tr>
-		<td class="first_column"><?php echo gtext("Cap");?> *</td>
+		<td class="first_column"><?php echo gtext("Cap");?> <span class="nascondi_fuori_italia_inline">*</span></td>
 		<td><?php echo Html_Form::input("cap",$values['cap'],"text_input class_cap");?></td>
 	</tr>
 	

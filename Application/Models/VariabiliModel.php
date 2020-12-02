@@ -27,12 +27,12 @@ class VariabiliModel extends GenericModel {
 	public static $valori = array();
 	
 	public static $variabili = array(
-		"usa_marchi"	=>	"1",
-		"db_version"	=>	0,
+		"usa_marchi"				=>	"1",
+		"db_version"				=>	0,
 		"contenuti_in_prodotti"		=>	1,
 		"contenuti_in_categorie"	=>	0,
-		"fasce_in_prodotti"		=>	0,
-		"fasce_in_categorie"	=>	0,
+		"fasce_in_prodotti"			=>	0,
+		"fasce_in_categorie"		=>	0,
 		"scaglioni_in_prodotti"		=>	1,
 		"correlati_in_prodotti"		=>	1,
 		"caratteristiche_in_prodotti"=>	1,
@@ -79,7 +79,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_gruppi"				=>	0,
 		"attiva_gruppi_contenuti"	=>	0,
 		"attiva_gruppi_documenti"	=>	0,
-		"mostra_descrizione_in_prodotti"	=>	1,
+		"mostra_descrizione_in_prodotti"=>	1,
 		"mostra_pulsanti_ordinamenti"	=>	0,
 		"fatture_attive"			=>	1,
 		"favicon_url"				=>	"",
@@ -93,6 +93,8 @@ class VariabiliModel extends GenericModel {
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
 		"controlla_p_iva"			=>	0,
 		"ecommerce_online"			=>	1,
+		"theme_folder"				=>	"",
+		"traduzione_frontend"		=>	0,
 	);
 	
 	public function __construct() {

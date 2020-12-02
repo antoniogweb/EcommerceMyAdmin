@@ -24,7 +24,7 @@
 							<div class="woocommerce">
 								<?php
 								$attiva = "password";
-								include(ROOT."/Application/Views/riservata-left.php");?>
+								include(tp()."/riservata-left.php");?>
 
 								<div class="woocommerce-MyAccount-content">
 									<?php echo $notice;?>

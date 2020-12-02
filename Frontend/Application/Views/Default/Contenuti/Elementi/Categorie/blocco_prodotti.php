@@ -35,7 +35,7 @@
 <div class="columns-4">
 	<ul class="products columns-4">
 		<?php if (count($pages) > 0) { ?>
-			<?php include(ROOT."/Application/Views/Contenuti/Elementi/Categorie/prodotti.php");?>
+			<?php include(tp()."/Contenuti/Elementi/Categorie/prodotti.php");?>
 		<?php } ?>
 	</ul>
 </div>
