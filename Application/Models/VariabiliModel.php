@@ -96,6 +96,11 @@ class VariabiliModel extends GenericModel {
 		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
+		"submenu_class"				=>	"uk-nav uk-nav-default",
+		"current_menu_item"			=>	"uk-active",
+		"submenu_wrap_open"			=>	'<div class="uk-navbar-dropdown uk-margin-remove ">',
+		"submenu_wrap_close"		=>	'</div>',
+		"in_link_html_after"		=>	'<span uk-icon="icon: chevron-down; ratio: .75;"></span>'
 	);
 	
 	public function __construct() {
@@ -172,7 +177,7 @@ class VariabiliModel extends GenericModel {
 				$var->setValues(array(
 					"chiave"	=>	$k,
 					"valore"	=>	$v,
-				));
+				),"sanitizeDb");
 				
 				$var->insert();
 			}

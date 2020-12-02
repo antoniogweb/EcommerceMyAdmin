@@ -28,13 +28,13 @@ if (!defined('LIBRARY'))
 /* SANITIZE SUPERGLOBAL ARRAYS */
 function sanitizeSuperGlobal()
 {
-	$_GET = stripslashesDeep($_GET);
-
-	$_POST   = stripslashesDeep($_POST);
-
-	$_COOKIE = stripslashesDeep($_COOKIE);
-
-	$_SERVER = stripslashesDeep($_SERVER);
+// 	$_GET = stripslashesDeep($_GET);
+// 
+// 	$_POST   = stripslashesDeep($_POST);
+// 
+// 	$_COOKIE = stripslashesDeep($_COOKIE);
+// 
+// 	$_SERVER = stripslashesDeep($_SERVER);
 }
 
 function checkPostLength($checkArray = null)

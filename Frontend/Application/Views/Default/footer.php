@@ -1,407 +1,280 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="notification-added-to-cart" style="display:none;">
-	<div class="notification-wrap">
-		<div class="ns-thumb d-inline-block">
-			<img src="" alt="">
-		</div>
-		<div class="ns-content d-inline-block"><p><?php echo gtext("Il prodotto")?> <strong class="placeholder_prodotto_aggiunto"></strong> <?php echo gtext("è stato aggiunto al carrello")?></p></div>
-	</div>
-</div>
-<footer id="colophon" class="site-footer">
-   <div class="wrap">
-      <div class="container">
-         <div data-elementor-type="wp-post" data-elementor-id="362" class="elementor elementor-362 elementor-bc-flex-widget" data-elementor-settings="[]">
-            <div class="elementor-inner">
-               <div class="elementor-section-wrap">
-                  <section class="elementor-element elementor-element-ccce7da elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-top-section" data-id="ccce7da" data-element_type="section">
-                     <div class="elementor-container elementor-column-gap-no">
-                        <div class="elementor-row">
-                           <div class="elementor-element elementor-element-4cd3170 elementor-column elementor-col-25 elementor-top-column" data-id="4cd3170" data-element_type="column">
-                              <div class="elementor-column-wrap  elementor-element-populated">
-                                 <div class="elementor-widget-wrap">
-									<div class="elementor-element elementor-element-86eca5e elementor-widget elementor-widget-text-editor" data-id="86eca5e" data-element_type="widget" data-widget_type="text-editor.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-text-editor elementor-clearfix">
-                                             <p>
-												<b><?php echo gtext("ragione sociale");?></b><br />
-												<?php echo gtext("Indirizzo...");?>
-                                             </p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="elementor-element elementor-element-acee6ae elementor-widget elementor-widget-text-editor" data-id="acee6ae" data-element_type="widget" data-widget_type="text-editor.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-text-editor elementor-clearfix">
-                                             <p><?php echo gtext("049 211111111");?></p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                   
-                                     <div class="elementor-element elementor-element-acee6ae elementor-widget elementor-widget-text-editor" data-id="acee6ae" data-element_type="widget" data-widget_type="text-editor.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-text-editor elementor-clearfix">
-                                             <p><?php echo gtext("info@tttttt");?></p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                     <div class="elementor-element elementor-element-acee6ae elementor-widget elementor-widget-text-editor" data-id="acee6ae" data-element_type="widget" data-widget_type="text-editor.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-text-editor elementor-clearfix">
-                                             <p><?php echo gtext("p_iva_footer");?></p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <br />
-                                    <!--<div class="elementor-element elementor-element-eb8f6cb elementor-shape-square elementor-widget elementor-widget-social-icons" data-id="eb8f6cb" data-element_type="widget" data-widget_type="social-icons.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-social-icons-wrapper">
-                                             <a href="" class="elementor-icon elementor-social-icon elementor-social-icon-facebook elementor-animation-pulse elementor-repeater-item-d3bc26e" target="_blank">
-                                             <span class="elementor-screen-only">Facebook</span>
-                                             <i class="fa fa-facebook"></i>
-                                             </a>
-                                             <a href="" class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-animation-pulse elementor-repeater-item-4c628cc" target="_blank">
-                                             <span class="elementor-screen-only">Twitter</span>
-                                             <i class="fa fa-twitter"></i>
-                                             </a>
-                                             <a href="" class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-animation-pulse elementor-repeater-item-0100f2f" target="_blank">
-                                             <span class="elementor-screen-only">Instagram</span>
-                                             <i class="fa fa-instagram"></i>
-                                             </a>
-                                             <a href="" class="elementor-icon elementor-social-icon elementor-social-icon-vk elementor-animation-pulse elementor-repeater-item-fcab8b4" target="_blank">
-                                             <span class="elementor-screen-only">Vk</span>
-                                             <i class="fa fa-vk"></i>
-                                             </a>
-                                          </div>
-                                       </div>
-                                    </div>-->
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="elementor-element elementor-element-f3bc02a elementor-column elementor-col-25 elementor-top-column" data-id="f3bc02a" data-element_type="column">
-                              <div class="elementor-column-wrap  elementor-element-populated">
-                                 <div class="elementor-widget-wrap">
-                                    <div class="elementor-element elementor-element-d343675 elementor-widget elementor-widget-heading" data-id="d343675" data-element_type="widget" data-widget_type="heading.default">
-                                       <div class="elementor-widget-container">
-                                          <h2 class="elementor-heading-title elementor-size-default"><?php echo gtext("I nostri prodotti");?></h2>
-                                       </div>
-                                    </div>
-                                    <div class="elementor-element elementor-element-ac45543 elementor-nav-menu__align-left elementor-nav-menu-mobile__align-center elementor-nav-menu--indicator-classic elementor-widget elementor-widget-opal-nav-menu" data-id="ac45543" data-element_type="widget" data-settings="{&quot;layout&quot;:&quot;vertical&quot;}" data-widget_type="opal-nav-menu.default">
-                                       <div class="elementor-widget-container">
-                                          <nav data-subMenusMinWidth="50" data-subMenusMaxWidth="500" class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-vertical e--pointer-none">
-											
-                                             <ul id="menu-1-ac45543" class="elementor-nav-menu sm-vertical">
-												<?php foreach ($alberoCategorieProdotti as $c) {
-													$cat = fullcategory($c["id_c"]);
-												?>
-												<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-893">
-													<a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($cat["categories"]["id_c"]);?>" class="elementor-item">
-														<?php echo cfield($cat, "title");?>
-													</a>
-												</li>
-												<?php } ?>
-                                             </ul>
-                                          </nav>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="elementor-element elementor-element-0c3aff9 elementor-column elementor-col-25 elementor-top-column" data-id="0c3aff9" data-element_type="column">
-                              <div class="elementor-column-wrap  elementor-element-populated">
-                                 <div class="elementor-widget-wrap">
-                                    <div class="elementor-element elementor-element-5cfe51c elementor-widget elementor-widget-heading" data-id="5cfe51c" data-element_type="widget" data-widget_type="heading.default">
-                                       <div class="elementor-widget-container">
-                                          <h2 class="elementor-heading-title elementor-size-default">Link utili</h2>
-                                       </div>
-                                    </div>
-                                    <div class="elementor-element elementor-element-7d6a447 elementor-nav-menu__align-left elementor-nav-menu-mobile__align-center elementor-nav-menu--indicator-classic elementor-widget elementor-widget-opal-nav-menu" data-id="7d6a447" data-element_type="widget" data-settings="{&quot;layout&quot;:&quot;vertical&quot;}" data-widget_type="opal-nav-menu.default">
-                                       <div class="elementor-widget-container">
-                                          <nav data-subMenusMinWidth="50" data-subMenusMaxWidth="500" class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-vertical e--pointer-none">
-                                             <ul id="menu-1-7d6a447" class="elementor-nav-menu sm-vertical">
-													<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-882"><a href="<?php echo $this->baseUrl."/chi-siamo.html";?>" class="elementor-item">Chi siamo</a></li>
-													<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-882"><a href="<?php echo $this->baseUrl."/contattaci.html";?>" class="elementor-item">Contatti</a></li>
-													<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-882"><a href="<?php echo $this->baseUrl."/blog.html";?>" class="elementor-item">Blog</a></li>
-													<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-882"><a href="<?php echo $this->baseUrl."/condizioni-generali-di-vendita.html";?>" class="elementor-item">Termini e condizioni</a></li>
-													<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-882"><a href="<?php echo $this->baseUrl."/cookies.html";?>" class="elementor-item">Cookies</a></li>
-                                             </ul>
-                                          </nav>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="elementor-element elementor-element-c67eff6 elementor-column elementor-col-25 elementor-top-column" data-id="c67eff6" data-element_type="column">
-                              <div class="elementor-column-wrap  elementor-element-populated">
-                                 <div class="elementor-widget-wrap">
-                                    <div class="elementor-element elementor-element-9e5db64 elementor-widget elementor-widget-heading" data-id="9e5db64" data-element_type="widget" data-widget_type="heading.default">
-                                       <div class="elementor-widget-container">
-                                          <h2 class="elementor-heading-title elementor-size-default">Iscrivi alla newsletter</h2>
-                                       </div>
-                                    </div>
-                                    <div class="elementor-element elementor-element-0e024ed elementor-widget elementor-widget-text-editor" data-id="0e024ed" data-element_type="widget" data-widget_type="text-editor.default">
-                                       <div class="elementor-widget-container">
-                                          <div id="form_newsletter_footer" class="elementor-text-editor elementor-clearfix">
-												<?php include($this->viewPath("form_newsletter"));?>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+<footer>
+            <section class="uk-section uk-section-secondary uk-section-small uk-light">
+               <div class="uk-container">
+                  <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-4@m" uk-grid>
+                     <div>
+                        <a class="uk-logo" href="index.html"><img src="http://localhost:3000/images/logo-inverse.svg" width="90" height="32" alt="Logo"></a>
+                        <p class="uk-text-small">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut mauris eros. Nulla quis ante sed tortor efficitur facilisis.</p>
+                        <ul class="uk-iconnav">
+                           <li><a href="index.html#" title="Facebook" uk-icon="facebook"></a></li>
+                           <li><a href="index.html#" title="Twitter" uk-icon="twitter"></a></li>
+                           <li><a href="index.html#" title="YouTube" uk-icon="youtube"></a></li>
+                           <li><a href="index.html#" title="Instagram" uk-icon="instagram"></a></li>
+                        </ul>
                      </div>
-                  </section>
-                  <section class="elementor-element elementor-element-9983033 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-top-section" data-id="9983033" data-element_type="section">
-                     <div class="elementor-container elementor-column-gap-no">
-                        <div class="elementor-row">
-                           <div class="elementor-element elementor-element-04e2ab1 elementor-column elementor-col-50 elementor-top-column" data-id="04e2ab1" data-element_type="column">
-                              <div class="elementor-column-wrap  elementor-element-populated">
-                                 <div class="elementor-widget-wrap">
-                                    <div class="elementor-element elementor-element-def8a90 elementor-widget elementor-widget-text-editor" data-id="def8a90" data-element_type="widget" data-widget_type="text-editor.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-text-editor elementor-clearfix">
-                                             <p><?php echo gtext("Copyright © 2019");?> <span style="color: #222222;"><strong><?php echo gtext("XXXXX");?></strong></span>. <?php echo gtext("All rights reserved.");?></p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+                     <div>
+                        <nav class="uk-grid-small uk-child-width-1-2" uk-grid>
+                           <div>
+                              <ul class="uk-nav uk-nav-default">
+                                 <li><a href="catalog.html">Catalog</a></li>
+                                 <li><a href="brands.html">Brands</a></li>
+                                 <li><a href="delivery.html">Delivery</a></li>
+                                 <li><a href="faq.html">FAQ</a></li>
+                                 <li><a href="index.html#">Payment</a></li>
+                              </ul>
                            </div>
-                           <div class="elementor-element elementor-element-3f60676 elementor-column elementor-col-50 elementor-top-column" data-id="3f60676" data-element_type="column">
-                              <div class="elementor-column-wrap  elementor-element-populated">
-                                 <div class="elementor-widget-wrap">
-                                    <div class="elementor-element elementor-element-69ea588 elementor-widget elementor-widget-image" data-id="69ea588" data-element_type="widget" data-widget_type="image.default">
-                                       <div class="elementor-widget-container">
-                                          <div class="elementor-image">
-                                             <img width="374" height="25" src="<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/2018/10/paypal.png" class="attachment-full size-full" alt="" srcset="<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/2018/10/paypal.png 374w, <?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/2018/10/paypal-300x20.png 300w" sizes="(max-width: 374px) 100vw, 374px" />                                                            
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+                           <div>
+                              <ul class="uk-nav uk-nav-default">
+                                 <li><a href="about.html">About</a></li>
+                                 <li><a href="contacts.html">Contacts</a></li>
+                                 <li><a href="blog.html">Blog</a></li>
+                                 <li><a href="news.html">News</a></li>
+                              </ul>
                            </div>
-                        </div>
+                        </nav>
                      </div>
-                  </section>
+                     <div>
+                        <ul class="uk-list uk-text-small">
+                           <li><a class="uk-link-muted" href="index.html#"><span class="uk-margin-small-right" uk-icon="receiver"></span><span class="tm-pseudo">8 800 799 99 99</span></a></li>
+                           <li><a class="uk-link-muted" href="index.html#"><span class="uk-margin-small-right" uk-icon="mail"></span><span class="tm-pseudo">example@example.com</span></a></li>
+                           <li>
+                              <div class="uk-text-muted"><span class="uk-margin-small-right" uk-icon="location"></span><span>St.&nbsp;Petersburg, Nevsky&nbsp;Prospect&nbsp;28</span></div>
+                           </li>
+                           <li>
+                              <div class="uk-text-muted"><span class="uk-margin-small-right" uk-icon="clock"></span><span>Daily 10:00–22:00</span></div>
+                           </li>
+                        </ul>
+                     </div>
+                     <div>
+                        <form class="uk-form-stacked">
+                           <label>
+                              <div class="uk-form-label uk-text-muted">Subscribe for updates</div>
+                              <div class="uk-inline uk-width-1-1"><a class="uk-form-icon uk-form-icon-flip" href="index.html#" uk-icon="mail"></a><input class="uk-input" type="email" placeholder="Your email" required></div>
+                           </label>
+                        </form>
+                        <div class="uk-margin uk-text-small uk-text-muted">Shopping Categories icons by Jaro Sigrist from Noun Project</div>
+                     </div>
+                  </div>
                </div>
-            </div>
-         </div>
-      </div>
-   </div>
-</footer>
-<!-- #colophon -->
-</div><!-- #page -->
-</div>
-</nav></div><!-- end.opal-wrapper-->
-        
-<div class="woocommerce-lablel-tooltip" style="display: none!important;">
-   <div id="osf-woocommerce-cart">Add to cart</div>
-</div>
-<div class="handheld-footer-bar">
-   <ul class="columns-3">
-      <li class="my-account">
-			<?php if ($islogged) { ?>
-				<a class="my-accrount-footer" href="<?php echo $this->baseUrl."/area-riservata";?>">Area riservata</a>
-			<?php } else { ?>
-				<a class="my-accrount-footer" href="<?php echo $this->baseUrl."/regusers/login";?>">Login</a>     
-			<?php } ?>
-                            
-      </li>
-      <li class="my-account">
-			<a class="my-wishlist-footer" href="<?php echo $this->baseUrl."/wishlist/vedi";?>">
-				<i class="opal-icon-wishlist" aria-hidden="true"></i>
-				
-				<span class="link_wishlist_num_prod <?php if ($prodInWishlist > 0) { ?>count<?php } ?>"><?php echo $prodInWishlist ? $prodInWishlist : "";?></span>
-			</a>    
-      </li>
-      <li class="search">
-         <a class="search-footer" href="">Search</a>
-         <div class="site-search">
-            <form role="search" method="get" class="search-form" action="<?php echo $this->baseUrl."/risultati-ricerca";?>">
-               <div class="input-group">
-                  <label for="search-form-5d91a20a01a79">
-                  <span class="screen-reader-text">Cerca:</span>
-                  </label>
-                  <input type="search" class="search-field form-control"
-                     placeholder="Cerca"
-                     value="" name="s"/>
-                  <span class="input-group-btn">
-                  <button type="submit" class="search-submit">
-					<span class="opal-icon-search3"></span>
-					<span class="screen-reader-text">Cerca</span>
-                  </button>
-                  </span>
-               </div>
-            </form>
-         </div>
-      </li>
-      <li class="cart">
-         <a class="footer-cart-contents" href="<?php echo $this->baseUrl."/carrello/vedi";?>" 
-            title="View your shopping cart">  
-         <span class="link_carrello_num_prod <?php if ($prodInCart > 0) { ?>count<?php } ?>"><?php echo $prodInCart ? $prodInCart : "";?></span>
-         </a>                        
-      </li>
-   </ul>
-</div>
-				
-					
-		<link rel='stylesheet' id='elementor-post-2184-css'  href='<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/elementor/css/post-2184.css?ver=1569761186' type='text/css' media='all' />
-<link rel='stylesheet' id='elementor-post-1983-css'  href='<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/elementor/css/post-1983.css?ver=1569761186' type='text/css' media='all' />
-<link rel='stylesheet' id='elementor-post-2100-css'  href='<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/elementor/css/post-2100.css?ver=1569761186' type='text/css' media='all' />
-<link rel='stylesheet' id='elementor-post-2130-css'  href='<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/elementor/css/post-2130.css?ver=1569761186' type='text/css' media='all' />
-<link rel='stylesheet' id='elementor-post-2141-css'  href='<?php echo $this->baseUrlSrc."/Public/Tema/"?>uploads/elementor/css/post-2141.css?ver=1569761186' type='text/css' media='all' />
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/libs/jquery.smartmenus.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/libs/jquery.magnific-popup.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/libs/mlpushmenu.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/libs/classie.js'></script>
-<!--<script type='text/javascript'>
-/* <![CDATA[ */
-var wpcf7 = {"apiSettings":{"root":"","namespace":"contact-form-7\/v1"}};
-/* ]]> */
-</script>-->
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/contact-form-7/includes/js/scripts.js?ver=5.1.4'></script> -->
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/jquery-blockui/jquery.blockUI.min.js?ver=2.70'></script>
-<script type='text/javascript'>
-/* <![CDATA[ */
-var wc_add_to_cart_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","i18n_view_cart":"View cart","cart_url":"","is_cart":"","cart_redirect_after_add":"no"};
-/* ]]> */
-</script>
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/frontend/add-to-cart.min.js?ver=3.7.0'></script> -->
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/js-cookie/js.cookie.min.js?ver=2.1.4'></script> -->
-
-<?php if ($isProdotto) { ?>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="pswp__bg"></div>
-	<div class="pswp__scroll-wrap">
-		<div class="pswp__container">
-			<div class="pswp__item"></div>
-			<div class="pswp__item"></div>
-			<div class="pswp__item"></div>
-		</div>
-		<div class="pswp__ui pswp__ui--hidden">
-			<div class="pswp__top-bar">
-				<div class="pswp__counter"></div>
-				<button class="pswp__button pswp__button--close" aria-label="Chiudi"></button>
-				<button class="pswp__button pswp__button--share" aria-label="Condibidi"></button>
-				<button class="pswp__button pswp__button--fs" aria-label="Toggle fullscreen"></button>
-				<button class="pswp__button pswp__button--zoom" aria-label="Zoom in/out"></button>
-				<div class="pswp__preloader">
-					<div class="pswp__preloader__icn">
-						<div class="pswp__preloader__cut">
-							<div class="pswp__preloader__donut"></div>
-						</div>
+            </section>
+         </footer>
+			<div id="nav-offcanvas" uk-offcanvas="overlay: true">
+				<aside class="uk-offcanvas-bar uk-padding-remove">
+					<div class="uk-card uk-card-default uk-card-small tm-shadow-remove">
+						<header class="uk-card-header uk-flex uk-flex-middle">
+							<div>
+								<a class="uk-link-muted uk-text-bold" href="index.html#">8 800 799 99 99</a>
+								<div class="uk-text-xsmall uk-text-muted" style="margin-top: -2px;">
+								<div>St.&nbsp;Petersburg, Nevsky&nbsp;Prospect&nbsp;28</div>
+								<div>Daily 10:00–22:00</div>
+								</div>
+							</div>
+						</header>
+						<nav class="uk-card-small uk-card-body">
+							<ul class="uk-nav-default uk-nav-parent-icon uk-list-divider" uk-nav>
+								<li class="uk-parent">
+								<a href="catalog.html">Catalog</a>
+								<ul class="uk-nav-sub uk-list-divider">
+									<li><a href="subcategory.html">Laptops &amp; Tablets</a></li>
+									<li><a href="subcategory.html">Phones &amp; Gadgets</a></li>
+									<li><a href="subcategory.html">TV &amp; Video</a></li>
+									<li><a href="subcategory.html">Games &amp; Entertainment</a></li>
+									<li><a href="subcategory.html">Photo</a></li>
+									<li class="uk-text-center"><a class="uk-link-muted uk-text-uppercase tm-link-to-all" href="catalog.html"><span>see all categories</span><span uk-icon="icon: chevron-right; ratio: .75;"></span></a></li>
+								</ul>
+								</li>
+								<li class="uk-parent">
+								<a href="brands.html">Brands</a>
+								<ul class="uk-nav-sub uk-list-divider">
+									<li><a href="subcategory.html">Apple</a></li>
+									<li><a href="subcategory.html">Samsung</a></li>
+									<li><a href="subcategory.html">Sony</a></li>
+									<li><a href="subcategory.html">Microsoft</a></li>
+									<li><a href="subcategory.html">Intel</a></li>
+									<li><a href="subcategory.html">HP</a></li>
+									<li><a href="subcategory.html">LG</a></li>
+									<li><a href="subcategory.html">Lenovo</a></li>
+									<li><a href="subcategory.html">ASUS</a></li>
+									<li><a href="subcategory.html">Acer</a></li>
+									<li><a href="subcategory.html">Dell</a></li>
+									<li><a href="subcategory.html">Canon</a></li>
+									<li class="uk-text-center"><a class="uk-link-muted uk-text-uppercase tm-link-to-all" href="brands.html"><span>see all brands</span><span uk-icon="icon: chevron-right; ratio: .75;"></span></a></li>
+								</ul>
+								</li>
+								<li class="uk-parent">
+								<a href="index.html#">Pages</a>
+								<ul class="uk-nav-sub uk-list-divider">
+									<li><a href="subcategory.html">Catalog</a></li>
+									<li><a href="subcategory.html">Category</a></li>
+									<li><a href="subcategory.html">Subcategory</a></li>
+									<li><a href="subcategory.html">Product</a></li>
+									<li><a href="subcategory.html">Cart</a></li>
+									<li><a href="subcategory.html">Checkout</a></li>
+									<li><a href="subcategory.html">Compare</a></li>
+									<li><a href="subcategory.html">Brands</a></li>
+									<li><a href="subcategory.html">Compare</a></li>
+									<li><a href="subcategory.html">Account</a></li>
+									<li><a href="subcategory.html">Favorites</a></li>
+									<li><a href="subcategory.html">Personal</a></li>
+									<li><a href="subcategory.html">Settings</a></li>
+									<li><a href="subcategory.html">About</a></li>
+									<li><a href="subcategory.html">Contacts</a></li>
+									<li><a href="subcategory.html">Blog</a></li>
+									<li><a href="subcategory.html">News</a></li>
+									<li><a href="subcategory.html">Article</a></li>
+									<li><a href="subcategory.html">FAQ</a></li>
+									<li><a href="subcategory.html">Delivery</a></li>
+									<li><a href="subcategory.html">404</a></li>
+								</ul>
+								</li>
+								<li><a href="blog.html">Blog</a></li>
+								<li><a href="about.html">About</a></li>
+								<li><a href="contacts.html">Contacts</a></li>
+								<li><a href="compare.html">Compare<span class="uk-badge uk-margin-xsmall-left">3</span></a></li>
+							</ul>
+						</nav>
+						<nav class="uk-card-small uk-card-body">
+							<ul class="uk-nav uk-nav-default">
+								<li><a href="news.html">News</a></li>
+								<li><a href="faq.html">FAQ</a></li>
+								<li><a href="index.html#">Payment</a></li>
+							</ul>
+						</nav>
+						<nav class="uk-card-body">
+							<ul class="uk-iconnav uk-flex-center">
+								<li><a href="index.html#" title="Facebook" uk-icon="facebook"></a></li>
+								<li><a href="index.html#" title="Twitter" uk-icon="twitter"></a></li>
+								<li><a href="index.html#" title="YouTube" uk-icon="youtube"></a></li>
+								<li><a href="index.html#" title="Instagram" uk-icon="instagram"></a></li>
+							</ul>
+						</nav>
 					</div>
+					</aside>
 				</div>
-			</div>
-			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-				<div class="pswp__share-tooltip"></div>
-			</div>
-			<button class="pswp__button pswp__button--arrow--left" aria-label="Previous (arrow left)"></button>
-			<button class="pswp__button pswp__button--arrow--right" aria-label="Next (arrow right)"></button>
-			<div class="pswp__caption">
-				<div class="pswp__caption__center"></div>
+				<div id="cart-offcanvas" uk-offcanvas="overlay: true; flip: true">
+					<aside class="uk-offcanvas-bar uk-padding-remove">
+					<div class="uk-card uk-card-default uk-card-small uk-height-1-1 uk-flex uk-flex-column tm-shadow-remove">
+						<header class="uk-card-header uk-flex uk-flex-middle">
+							<div class="uk-grid-small uk-flex-1" uk-grid>
+								<div class="uk-width-expand">
+								<div class="uk-h3">Cart</div>
+								</div>
+								<button class="uk-offcanvas-close" type="button" uk-close></button>
+							</div>
+						</header>
+						<div class="uk-card-body uk-overflow-auto">
+							<ul class="uk-list uk-list-divider">
+								<li class="uk-visible-toggle">
+								<arttcle>
+									<div class="uk-grid-small" uk-grid>
+										<div class="uk-width-1-4">
+											<div class="tm-ratio tm-ratio-4-3">
+											<a class="tm-media-box" href="product.html">
+												<figure class="tm-media-box-wrap"><img src="img/prodotto.jpg" alt="Apple MacBook Pro 15&quot; Touch Bar MPTU2LL/A 256GB (Silver)"></figure>
+											</a>
+											</div>
+										</div>
+										<div class="uk-width-expand">
+											<div class="uk-text-meta uk-text-xsmall">Laptop</div>
+											<a class="uk-link-heading uk-text-small" href="product.html">Apple MacBook Pro 15&quot; Touch Bar MPTU2LL/A 256GB (Silver)</a>
+											<div class="uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
+											<div class="uk-text-bolder uk-text-small">$1599.00</div>
+											<div class="uk-text-meta uk-text-xsmall">1 × $1599.00</div>
+											</div>
+										</div>
+										<div><a class="uk-icon-link uk-text-danger uk-invisible-hover" href="index.html#" uk-icon="icon: close; ratio: .75" uk-tooltip="Remove"></a></div>
+									</div>
+								</arttcle>
+								</li>
+								<li class="uk-visible-toggle">
+								<arttcle>
+									<div class="uk-grid-small" uk-grid>
+										<div class="uk-width-1-4">
+											<div class="tm-ratio tm-ratio-4-3">
+											<a class="tm-media-box" href="product.html">
+												<figure class="tm-media-box-wrap"><img src="img/prodotto.jpg" alt="Apple MacBook Pro 15&quot; Touch Bar MPTU2LL/A 256GB (Silver)"></figure>
+											</a>
+											</div>
+										</div>
+										<div class="uk-width-expand">
+											<div class="uk-text-meta uk-text-xsmall">Laptop</div>
+											<a class="uk-link-heading uk-text-small" href="product.html">Apple MacBook Pro 15&quot; Touch Bar MPTU2LL/A 256GB (Silver)</a>
+											<div class="uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
+											<div class="uk-text-bolder uk-text-small">$1599.00</div>
+											<div class="uk-text-meta uk-text-xsmall">1 × $1599.00</div>
+											</div>
+										</div>
+										<div><a class="uk-icon-link uk-text-danger uk-invisible-hover" href="index.html#" uk-icon="icon: close; ratio: .75" uk-tooltip="Remove"></a></div>
+									</div>
+								</arttcle>
+								</li>
+								<li class="uk-visible-toggle">
+								<arttcle>
+									<div class="uk-grid-small" uk-grid>
+										<div class="uk-width-1-4">
+											<div class="tm-ratio tm-ratio-4-3">
+											<a class="tm-media-box" href="product.html">
+												<figure class="tm-media-box-wrap"><img src="img/prodotto.jpg" alt="Apple MacBook 12&quot; MNYN2LL/A 512GB (Rose Gold)"></figure>
+											</a>
+											</div>
+										</div>
+										<div class="uk-width-expand">
+											<div class="uk-text-meta uk-text-xsmall">Laptop</div>
+											<a class="uk-link-heading uk-text-small" href="product.html">Apple MacBook 12&quot; MNYN2LL/A 512GB (Rose Gold)</a>
+											<div class="uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
+											<div class="uk-text-bolder uk-text-small">$1549.00</div>
+											<div class="uk-text-meta uk-text-xsmall">1 × $1549.00</div>
+											</div>
+										</div>
+										<div><a class="uk-icon-link uk-text-danger uk-invisible-hover" href="index.html#" uk-icon="icon: close; ratio: .75" uk-tooltip="Remove"></a></div>
+									</div>
+								</arttcle>
+								</li>
+							</ul>
+						</div>
+						<footer class="uk-card-footer">
+							<div class="uk-grid-small" uk-grid>
+								<div class="uk-width-expand uk-text-muted uk-h4">Subtotal</div>
+								<div class="uk-h4 uk-text-bolder">$3148.00</div>
+							</div>
+							<div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-margin-small" uk-grid>
+								<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="cart.html">view cart</a></div>
+								<div><a class="uk-button uk-button-primary uk-margin-small uk-width-1-1" href="checkout.html">checkout</a></div>
+							</div>
+						</footer>
+					</div>
+				</aside>
 			</div>
 		</div>
-	</div>
-</div>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/zoom/jquery.zoom.min.js?ver=1.7.21'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/photoswipe/photoswipe.min.js?ver=4.1.1'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/photoswipe/photoswipe-ui-default.min.js?ver=4.1.1'></script>
-<script type='text/javascript'>
-/* <![CDATA[ */
-var wc_single_product_params = {"i18n_required_rating_text":"Please select a rating","review_rating_required":"yes","flexslider":{"rtl":false,"animation":"slide","smoothHeight":true,"directionNav":false,"controlNav":"thumbnails","slideshow":false,"animationSpeed":500,"animationLoop":false,"allowOneSlide":false},"zoom_enabled":"1","zoom_options":[],"photoswipe_enabled":"1","photoswipe_options":{"shareEl":false,"closeOnScroll":false,"history":false,"hideAnimationDuration":0,"showAnimationDuration":0},"flexslider_enabled":"1"};
-/* ]]> */
-</script>
+      
+      
+		<script>
+			var baseUrl = "<?php echo $this->baseUrl;?>";
+			var variante_non_esistente = "<?php echo gtext("Non esiste il prodotto con la combinazione di varianti selezionate", false);?>";
+			var errore_combinazione = "<?php echo gtext("Si prega di selezionare la variante:", false);?>";
+			var errore_quantita_minore_zero = "<?php echo gtext("Si prega di indicare una quantità maggiore di zero", false);?>";
+			var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
+			var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
+			var back_cart_error = "red";
+			var isMobile = <?php echo User::$isMobile ? "true" : "false";?>;
+			var nazioniConVat = ['<?php echo implode("','",NazioniModel::elencoNazioniConVat())?>'];
+		</script>
 
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/frontend/single-product.min.js?ver=3.7.0'></script>
+		<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>jquery-3.5.1.min.js"></script>
+		<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>ajaxQueue.js"></script>
+		<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
+		<script src="<?php echo $this->baseUrlSrc.'/'.FRONTEND_PATH.'/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>
 
-<?php } ?>
-
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/elementor/assets/js/common.min.js?ver=2.7.3'></script> -->
-
-<script type='text/javascript'>
-/* <![CDATA[ */
-var woocommerce_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%"};
-/* ]]> */
-</script>
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/frontend/woocommerce.min.js?ver=3.7.0'></script> -->
-
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/frontend/cart-fragments.min.js?ver=3.7.0'></script> -->
-
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>js/underscore.min.js'></script>
-<script type='text/javascript'>
-/* <![CDATA[ */
-var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
-/* ]]> */
-</script>
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>js/wp-util.min.js'></script> -->
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/woocommerce/main.js'></script> -->
-<!-- <script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/woocommerce/single.js?ver=5.2.3'></script> -->
-
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>themes/auros/assets/js/theme.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>themes/auros/assets/js/sticky-layout.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>js/wp-embed.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/elementor/assets/js/frontend-modules.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>js/jquery/ui/position.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/elementor/assets/lib/dialog/dialog.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/elementor/assets/lib/waypoints/waypoints.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/elementor/assets/lib/swiper/swiper.min.js'></script>
-
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/Public/Css/skins/minimal/minimal.css">
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/Public/Js/icheck.min.js'></script>
-	
-<script type='text/javascript'>
-var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"version":"2.7.3","urls":{"assets":"<?php echo str_replace("/","\/",$this->baseUrlSrc)."\/Public\/Tema/"?>plugins\/elementor\/assets\/"},"settings":{"page":[],"general":{"elementor_stretched_section_container":"body","elementor_global_image_lightbox":"yes","elementor_enable_lightbox_in_editor":"yes"}},"post":{"id":204,"title":"Home 1","excerpt":""}};
-</script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/elementor/assets/js/frontend.min.js'></script>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Tema/"?>plugins/auros-core/assets/js/elementor/frontend.js'></script>
-
-
-<?php if (!isset($_COOKIE["ok_cookie"])) { ?>
-	<script>
-	$ = jQuery;
-	
-	$(document).ready(function(){
-	
-		setTimeout(function(){ 
 		
-			$("#segnalazione_cookies_ext").animate({bottom: "0px"});
 		
-		}, 2000);
+		<script src="<?php echo $this->baseUrlSrc."/".FRONTEND_PATH."/Public/Default/Js/"?>uikit.min.js"></script>
+		<script src="<?php echo $this->baseUrlSrc."/".FRONTEND_PATH."/Public/Default/Js/"?>uikit-icons.min.js"></script>
 		
-		$(".ok_cookies").click(function(e){
 		
-			e.preventDefault();
-			
-			$("#segnalazione_cookies_ext").animate({bottom: "-150px"});
-			
-			$.ajax({
-				type: "GET",
-				url: baseUrl + "/home/settacookie",
-				async: true,
-				cache:false,
-				dataType: "html",
-				success: function(content){}
-			});
-			
-		});
 		
-	});
-	</script>
-	
-	<div id="segnalazione_cookies_ext">
-		<div id="segnalazione_cookies">
-			<?php echo gtext("Questo sito utilizza cookie per migliorare la tua esperienza di navigazione. Cliccando su OK o continuando a navigare ne consenti l'utilizzo.");?> <b><a href="<?php echo $this->baseUrl;?>/cookies.html"><?php echo gtext("Ulteriori informazioni");?></a></b>.
-			<a class="ok_cookies" title="<?php echo gtext("accetto", false);?>" href="#">OK</a>
-		</div>
-	</div>
-	<?php } ?>
-
-	<?php include($this->viewPath("admin"));?>
-</body>
-</html>
-<?php
-// $mysqli = Db_Mysqli::getInstance();
-// print_r($mysqli->queries);
+<!-- 		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/Public/Css/skins/minimal/minimal.css"> -->
+<!-- 		<script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/Public/Js/icheck.min.js'></script> -->
+      <?php include($this->viewPath("admin"));?>
+   </body>
+</html> 
