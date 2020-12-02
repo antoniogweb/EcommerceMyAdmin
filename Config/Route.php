@@ -176,6 +176,7 @@ class Route
 		
 		'corrierispese,form',
 		'impostazioni,form',
+		'impostazioni,variabili',
 		
 		'slide,main',
 		'slide,aggiungicategoria',

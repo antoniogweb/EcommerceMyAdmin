@@ -95,6 +95,7 @@ class VariabiliModel extends GenericModel {
 		"ecommerce_online"			=>	1,
 		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
+		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
 	);
 	
 	public function __construct() {
@@ -104,6 +105,58 @@ class VariabiliModel extends GenericModel {
 		$this->_lang = 'It';
 		
 		parent::__construct();
+	}
+	
+	public function opzioniSiNo()
+	{
+		return array(
+			"1"	=>	"Sì",
+			"0"	=>	"No",
+		);
+	}
+	
+	public function strutturaForm()
+	{
+		return 	array(
+			'usa_marchi'	=>	array(
+				'labelString'	=>	'Attiva marchi',
+				'type'			=>	'Select',
+				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+			'traduzione_frontend'	=>	array(
+				'labelString'	=>	'Permetti la modifica delle traduzioni dal frontend',
+				'type'			=>	'Select',
+				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+			'ecommerce_online'	=>	array(
+				'labelString'	=>	"Ecommerce online (permetti l'acquisto)",
+				'type'			=>	'Select',
+				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+		);
+	}
+	
+	public static function setValore($variabile, $valore)
+	{
+		$v = new VariabiliModel();
+		
+		$idV = $v->clear()->where(array(
+			"chiave"	=>	sanitizeDb($variabile)
+		))->field("id_v");
+		
+		if ($idV)
+		{
+			$v->setValues(array(
+				"valore"	=>	$valore,
+			));
+			
+			return $v->update((int)$idV);
+		}
+		
+		return true;
 	}
 	
 	public static function migrazioni()
