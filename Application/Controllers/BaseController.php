@@ -38,7 +38,6 @@ class BaseController extends Controller
 		"menu1"			=>	array("",""),
 		"menu2"			=>	array("",""),
 		"utenti"		=>	array("",""),
-		"testi"			=>	array("",""),
 		"classisconto"	=>	array("",""),
 		"corrieri"		=>	array("",""),
 		"impostazioni"	=>	array("",""),

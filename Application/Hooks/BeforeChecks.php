@@ -471,6 +471,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"chiave"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Cerca ..",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

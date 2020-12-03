@@ -145,9 +145,9 @@ $(function() {
 <!-- 					</div> -->
 
 					<!-- show the table -->
-<!-- 					<div class='recordsBox'> -->
+					<div class='scroll-x'>
 						<?php echo $main;?>
-<!-- 					</div> -->
+					</div>
 
 					<!-- show the list of pages -->
 					<div class="btn-group pull-right">

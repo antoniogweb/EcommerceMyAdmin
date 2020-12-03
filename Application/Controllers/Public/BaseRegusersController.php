@@ -268,6 +268,8 @@ class BaseRegusersController extends BaseController
 
 								$output = ob_get_clean();
 								
+								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+								
 								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 								$mail->MsgHTML($output);
 								
@@ -874,6 +876,7 @@ class BaseRegusersController extends BaseController
 							include ROOT."/Application/Views/Regusers/mail_credenziali.php";
 
 							$output = ob_get_clean();
+							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 							
 							$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 							$mail->MsgHTML($output);
@@ -890,6 +893,8 @@ class BaseRegusersController extends BaseController
 								include ROOT."/Application/Views/Regusers/mail_al_negozio_registr_nuovo_cliente.php";
 
 								$output = ob_get_clean();
+								
+								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 								$mail->MsgHTML($output);
 								
 								@$mail->Send();

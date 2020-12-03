@@ -137,4 +137,9 @@ class TestiModel extends GenericModel {
 			return parent::insert();
 		}
 	}
+	
+	public function lingua($record)
+	{
+		return strtoupper($record["testi"]["lingua"]);
+	}
 }

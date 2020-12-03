@@ -156,6 +156,11 @@ body {
     cursor: pointer;
 }
 
+.scroll-x
+{
+	overflow-x:auto;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

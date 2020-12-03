@@ -491,7 +491,7 @@ class GenericModel extends Model_Tree
 	{
 		LingueModel::getValori();
 		
-		$lingue = array_merge(array("tutte", Params::$defaultFrontEndLanguage),BaseController::$traduzioni);
+		$lingue = array_merge(array("tutte"=> Params::$defaultFrontEndLanguage),BaseController::$traduzioni);
 		
 		$lingue = array_unique($lingue);
 		

@@ -30,4 +30,20 @@ class MailordiniModel extends GenericModel
 		
 		parent::__construct();
 	}
+	
+	public static function loadTemplate($oggetto, $body)
+	{
+		$template = v("mail_template");
+		
+		$path = tp()."/Email/".$template.".php";
+		
+		if (file_exists($path))
+		{
+			ob_start();
+			include ($path);
+			$body = ob_get_clean();
+		}
+		
+		return $body;
+	}
 }

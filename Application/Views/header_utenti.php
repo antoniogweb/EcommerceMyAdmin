@@ -58,6 +58,9 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("mostra_gestione_testi")) { ?>
+			<li class="<?php echo tm($tm, "testi");?>"><a href="<?php echo $this->baseUrl."/testi/main/1";?>"><i class="fa fa-list"></i> Testi sito</a></li>
+			<?php } ?>
 		</ul>
 		<?php } ?>
 	</section>

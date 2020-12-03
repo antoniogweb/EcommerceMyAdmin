@@ -23,65 +23,50 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class TestiController extends BaseController {
-
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
-
-		$this->helper('Menu','users','panel/main');
-		$this->helper('Array');
-
-		$this->session('admin');
-		$this->model();
-
-		$this->_topMenuClasses['testi'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
+	
+	public $setAttivaDisattivaBulkActions = false;
+	
+	public $argKeys = array();
+	
+	public $sezionePannello = "utenti";
+	
+	function __construct($model, $controller, $queryString, $application, $action) {
 		
-		$data["sezionePannello"] = "sito";
+		$this->argKeys = array(
+			'page:forceInt'=>1,
+			'id_t:sanitizeAll'=>'tutti',
+			'chiave:sanitizeAll'=>'tutti',
+			'part:sanitizeAll'=>'tutti',
+			'lingua:sanitizeAll'=>'tutti',
+		);
 		
-		$this->setArgKeys(array('page:forceInt'=>1,'id_t:sanitizeAll'=>'tutti','chiave:sanitizeAll'=>'tutti','part:sanitizeAll'=>'tutti'));
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		$this->append($data);
-		
-		$this->s['admin']->check();
+		$this->s["admin"]->check();
 		
 		Params::$rewriteStatusVariables = false;
 	}
 	
-	public function main() { //view all the users
-
+	public function main()
+	{
 		$this->shift();
-
-		Params::$nullQueryValue = 'tutti';
 		
-		$this->m["TestiModel"]->updateTable('del');
+		$this->mainFields = array("testi.tipo", "testi.chiave", "lingua");
+		$this->mainHead = "Tipo,Titolo,Lingua";
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20));
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'');
 		
-		$this->scaffold->loadMain("[[ledit]];testi.id_t;,[[ledit]];testi.chiave;",'testi.id_t','ledit,del');
+		$filtroLingua = array("tutti" => "LINGUA") + $this->m[$this->modelName]->selectLingua();
+		$this->filters = array('chiave',array("lingua","",$filtroLingua));
 		
-		$this->scaffold->itemList->setFilters(array('id_t','chiave'));
+		$this->m[$this->modelName]->clear()
+				->where(array(
+					"lk"		=>	array('chiave' => $this->viewArgs['chiave']),
+					"lingua"	=>	$this->viewArgs['lingua'],
+				))
+				->orderBy("id_t desc")->convert()->save();
 		
-		$this->scaffold->setHead("ID,TITOLO");
-		
-		$this->scaffold->model->orderBy("id_t");
-		
-		$where = array(
-			'id_t'		=>	$this->viewArgs['id_t'],
-			"lk"		=>	array('chiave' => $this->viewArgs['chiave']),
-		);
-		
-		$this->scaffold->model->where($where)->convert();
-			
-		$data['scaffold'] = $this->scaffold->render();
-// 		echo $this->scaffold->model->getQuery();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		$data['notice'] = $this->scaffold->model->notice;
-		
-		$this->append($data);
-		$this->load('main');
+		parent::main();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)

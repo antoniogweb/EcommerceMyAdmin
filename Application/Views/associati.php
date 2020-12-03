@@ -34,7 +34,7 @@
 					<?php include($this->viewPath("gestisci_associato"));?>
 
 					<!-- show the table -->
-					<div class='recordsBox'>
+					<div class='recordsBox scroll-x'>
 						<?php echo $main;?>
 					</div>
                 </div>

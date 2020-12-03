@@ -907,7 +907,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		$alt = $testo["alt"] ? 'alt="'.$testo["alt"].'"' : "";
 		
 		if ($testo["immagine"])
-			$t .= "<img src='".Url::getFileRoot()."thumb/widget/".$testo["id_t"]."/".$testo["immagine"]."' $alt/>";
+			$t .= "<img src='".Domain::$name."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"]."' $alt/>";
 		
 		$urlLink = $target = "";
 		
@@ -1633,5 +1633,5 @@ function tp()
 {
 	$subfolder = isset(Params::$viewSubfolder) ? DS . Params::$viewSubfolder : "";
 	
-	return ROOT."/Application/Views$subfolder";
+	return Domain::$parentRoot."/Application/Views$subfolder";
 }

@@ -34,7 +34,9 @@
 					
 					<?php echo $notice;?>
 					
-					<?php echo $main;?>
+					<div class="scroll-x">
+						<?php echo $main;?>
+					</div>
 					
 					<!-- show the list of pages -->
 					<div class="btn-group pull-right">

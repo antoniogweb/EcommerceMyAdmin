@@ -346,6 +346,8 @@ class OrdiniModel extends FormModel {
 				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
 				$output = ob_get_clean();
 				
+				$output = MailordiniModel::loadTemplate($oggetto, $output);
+// 				echo $output;die();
 				// Imposto le traduzioni del back
 				Params::$lang = null;
 				TraduzioniModel::$contestoStatic = "back";

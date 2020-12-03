@@ -937,6 +937,7 @@ class BaseOrdiniController extends BaseController
 											include ROOT."/Application/Views/Regusers/mail_credenziali.php";
 
 											$output = ob_get_clean();
+											$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 											
 											$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 											$mail->MsgHTML($output);
@@ -1036,6 +1037,7 @@ class BaseOrdiniController extends BaseController
 								include ROOT."/Application/Views/Ordini/resoconto-acquisto.php";
 
 								$output = ob_get_clean();
+								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 								
 								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 								$mail->MsgHTML($output);
@@ -1052,6 +1054,7 @@ class BaseOrdiniController extends BaseController
 								include ROOT."/Application/Views/Ordini/resoconto-acquisto.php";
 
 								$output = ob_get_clean();
+								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 								
 								$mail->MsgHTML($output);
 								$mail->Send();
