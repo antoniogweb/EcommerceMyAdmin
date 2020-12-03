@@ -266,12 +266,14 @@ class BaseBaseController extends Controller
 		}
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		// Correggi decimali imponibili sulla base dell'IVA estera
+		$this->m["CartModel"]->correggiPrezzi();
+		
 		$data["carrello"] = $this->m["CartModel"]->getProdotti();
 		
 		$data["prodInCart"] = $this->m["CartModel"]->numberOfItems();
 		$data["prodInWishlist"] = $this->m["WishlistModel"]->numberOfItems();
-		
-		IvaModel::getAliquotaEstera();
 		
 		Domain::$name = $this->baseUrl;
 		

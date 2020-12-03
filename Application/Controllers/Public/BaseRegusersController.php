@@ -706,10 +706,10 @@ class BaseRegusersController extends BaseController
 				$campoObbligatoriProvincia = "provincia_spedizione";
 		}
 		
-		$campiObbligatori = "indirizzo_spedizione,$campoObbligatoriProvincia,citta_spedizione,telefono_spedizione,nazione_spedizione";
+		$campiObbligatori = "indirizzo_spedizione,$campoObbligatoriProvincia,citta_spedizione,telefono_spedizione,nazione_spedizione,cap_spedizione";
 		
-		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
-			$campiObbligatori .= ",cap_spedizione";
+// 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
+// 			$campiObbligatori .= ",cap_spedizione";
 		
 		$fields = 'indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,nazione_spedizione';
 		

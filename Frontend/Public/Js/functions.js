@@ -518,20 +518,10 @@ $(document).ready(function(){
 		}
 		
 	});
-});
-
-
-	$(document).ready(function(){
-		$('input').iCheck({
-		    checkboxClass: 'icheckbox_minimal',
-		    radioClass: 'iradio_minimal',
-		    increaseArea: '20%' // optional
-		});
 	
-
-		$('#nav-icon3').click(function(){
-		    $(this).toggleClass('open');
-		    $("#overlay, .menu-mobile").fadeToggle();
-		    $("html").toggleClass("overflowy");
-		 });
+	$('input').iCheck({
+		checkboxClass: 'icheckbox_minimal',
+		radioClass: 'iradio_minimal',
+		increaseArea: '20%' // optional
 	});
+});

@@ -24,7 +24,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseCartController extends BaseController
 {
-
 	public function __construct($model, $controller, $queryString)
 	{
 		parent::__construct($model, $controller, $queryString);
@@ -40,6 +39,8 @@ class BaseCartController extends BaseController
 		$data["arrayLingue"] = array();
 		
 		$this->append($data);
+		
+		IvaModel::getAliquotaEstera();
 	}
 
 	public function index($pageView = "full")

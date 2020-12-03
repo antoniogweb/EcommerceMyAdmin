@@ -361,7 +361,7 @@ class BaseController extends Controller
 			$clean['id'] = $data['id'] = (int)$this->id;
 			$this->mainView = "associati";
 		}
-
+		
 		$data['posizioni'] = $this->_posizioni;
 		
 		Params::$nullQueryValue = $this->nullQueryValue;

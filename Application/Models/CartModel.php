@@ -388,6 +388,9 @@ class CartModel extends Model_Tree {
 		if (!v("prezzi_ivati_in_carrello"))
 			return;
 		
+		if (!v("prezzi_ivati_in_prodotti"))
+			return;
+		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
 		$this->db->beginTransaction();
@@ -404,16 +407,20 @@ class CartModel extends Model_Tree {
 			
 			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
 			
-			$rapporto = $this->calcolaPrezzoFinale($r["id_page"], 1, $r["quantity"], true, true);
+// 			$rapporto = $this->calcolaPrezzoFinale($r["id_page"], 1, $r["quantity"], true, true);
+			$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
 			
-			$nuovoPrezzoUnitarioIntero = $nuovoPrezzoUnitario / $rapporto;
+			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitario / $rapporto, v("cifre_decimali"), ".", "");
 			
-			$this->setValues(array(
-				"price"	=>	$nuovoPrezzoUnitario,
-				"prezzo_intero"	=>	$nuovoPrezzoUnitarioIntero,
-			));
-			
-			$this->update($r["id_cart"]);
+			if ($nuovoPrezzoUnitario != $r["price"] || $nuovoPrezzoUnitarioIntero != $r["prezzo_intero"])
+			{
+				$this->setValues(array(
+					"price"	=>	$nuovoPrezzoUnitario,
+					"prezzo_intero"	=>	$nuovoPrezzoUnitarioIntero,
+				));
+				
+				$this->update($r["id_cart"]);
+			}
 		}
 		
 		$this->db->commit();
@@ -447,7 +454,9 @@ class CartModel extends Model_Tree {
 				);
 				
 				$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true);
-				$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true);
+				
+				if (v("prezzi_ivati_in_prodotti"))
+					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true);
 				
 				if (number_format($this->values["price"],2,".","") != number_format($cart["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";

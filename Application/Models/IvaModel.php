@@ -27,6 +27,11 @@ class IvaModel extends GenericModel
 	public static $idIvaEstera = null;
 	public static $aliquotaEstera = null;
 	public static $titoloAliquotaEstera = null;
+	
+	public static $bidIvaEstera = null;
+	public static $baliquotaEstera = null;
+	public static $btitoloAliquotaEstera = null;
+	
 	public static $cercaIvaEstera = true;
 	
 	public static $tipo = array(
@@ -121,17 +126,16 @@ class IvaModel extends GenericModel
 				}
 				else if ($nazione["tipo"] == "UE" && $tipo == "B2C")
 				{
+// 					print_r($nazione);
 					$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
 					
-					self::$cercaIvaEstera = false;
-					$totaleNazione += getTotalN();
-					self::$cercaIvaEstera = true;
+					$recordIva = $im->selectId((int)$nazione["id_iva"]);
 					
-					if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
+					if (!empty($recordIva))
 					{
-						$recordIva = $im->selectId((int)$nazione["id_iva"]);
+						$totaleNazione += getTotalN();
 						
-						if (!empty($recordIva))
+						if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
 						{
 							self::$idIvaEstera = $recordIva["id_iva"];
 							self::$aliquotaEstera = $recordIva["valore"];
@@ -149,6 +153,24 @@ class IvaModel extends GenericModel
 			$c->correggiPrezzi();
 		
 		return null;
+    }
+    
+    public static function resetIvaEstera()
+    {
+		self::$bidIvaEstera = self::$idIvaEstera;
+		self::$baliquotaEstera = self::$aliquotaEstera;
+		self::$btitoloAliquotaEstera = self::$titoloAliquotaEstera;
+		
+		self::$idIvaEstera = null;
+		self::$aliquotaEstera = null;
+		self::$titoloAliquotaEstera = null;
+    }
+    
+    public static function restoreIvaEstera()
+    {
+		self::$idIvaEstera = self::$bidIvaEstera;
+		self::$aliquotaEstera = self::$baliquotaEstera;
+		self::$titoloAliquotaEstera = self::$btitoloAliquotaEstera;
     }
     
     public static function getTitoloDaId($id)

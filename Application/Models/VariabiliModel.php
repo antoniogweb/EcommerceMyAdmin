@@ -95,6 +95,12 @@ class VariabiliModel extends GenericModel {
 		"ecommerce_online"			=>	1,
 		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
+		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
+		"submenu_class"				=>	"uk-nav uk-nav-default",
+		"current_menu_item"			=>	"uk-active",
+		"submenu_wrap_open"			=>	'<div class="uk-navbar-dropdown uk-margin-remove ">',
+		"submenu_wrap_close"		=>	'</div>',
+		"in_link_html_after"		=>	'<span uk-icon="icon: chevron-down; ratio: .75;"></span>'
 	);
 	
 	public function __construct() {
@@ -104,6 +110,60 @@ class VariabiliModel extends GenericModel {
 		$this->_lang = 'It';
 		
 		parent::__construct();
+	}
+	
+	public function opzioniSiNo()
+	{
+		return array(
+			"1"	=>	"Sì",
+			"0"	=>	"No",
+		);
+	}
+	
+	public function strutturaForm()
+	{
+		$formFields = array(
+			'usa_marchi'	=>	array(
+				'labelString'	=>	'Attiva marchi',
+				'type'			=>	'Select',
+				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+			'traduzione_frontend'	=>	array(
+				'labelString'	=>	'Permetti la modifica delle traduzioni dal frontend',
+				'type'			=>	'Select',
+				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+			'ecommerce_online'	=>	array(
+				'labelString'	=>	"Ecommerce online (permetti l'acquisto)",
+				'type'			=>	'Select',
+				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+		);
+		
+		return $formFields;
+	}
+	
+	public static function setValore($variabile, $valore)
+	{
+		$v = new VariabiliModel();
+		
+		$idV = $v->clear()->where(array(
+			"chiave"	=>	sanitizeDb($variabile)
+		))->field("id_v");
+		
+		if ($idV)
+		{
+			$v->setValues(array(
+				"valore"	=>	$valore,
+			));
+			
+			return $v->update((int)$idV);
+		}
+		
+		return true;
 	}
 	
 	public static function migrazioni()
@@ -117,7 +177,7 @@ class VariabiliModel extends GenericModel {
 				$var->setValues(array(
 					"chiave"	=>	$k,
 					"valore"	=>	$v,
-				));
+				),"sanitizeDb");
 				
 				$var->insert();
 			}
