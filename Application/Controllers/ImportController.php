@@ -48,7 +48,7 @@ class ImportController extends Controller {
 	
 	public function prodotti($c = "")
 	{
-		if (is_string($c) && $c == "sdf8734jhbsdf78jhsd8dfgmbjhbf34")
+		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
 			Import::prodotti();
 		}
@@ -56,7 +56,7 @@ class ImportController extends Controller {
 	
 	public function news($c = "")
 	{
-		if (is_string($c) && $c == "sdf8734jhbsdf78jhsd8dfgmbjhbf34")
+		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
 			Import::news();
 		}
@@ -64,7 +64,7 @@ class ImportController extends Controller {
 	
 	public function utenti($c = "")
 	{
-		if (is_string($c) && $c == "sdf8734jhbsdf78jhsd8dfgmbjhbf34")
+		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
 			Import::utenti();
 		}
