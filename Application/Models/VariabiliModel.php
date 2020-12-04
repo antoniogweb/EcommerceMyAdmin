@@ -102,7 +102,8 @@ class VariabiliModel extends GenericModel {
 		"submenu_wrap_close"		=>	'</div>',
 		"in_link_html_after"		=>	'<span uk-icon="icon: chevron-down; ratio: .75;"></span>',
 		"mail_template"				=>	'default',
-		"mostra_gestione_testi"		=>	1,
+		"mostra_gestione_testi"		=>	0,
+		"mostra_avvisi"				=>	0,
 	);
 	
 	public function __construct() {

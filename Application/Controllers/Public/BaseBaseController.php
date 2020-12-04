@@ -299,6 +299,12 @@ class BaseBaseController extends Controller
 				"in_evidenza"=>"Y",
 			))->orderBy("pages.id_order desc")->send(), 4);
 		
+		if (v("mostra_avvisi"))
+			$data["avvisi"] = $this->m["PagesModel"]->where(array(
+				"categories.section"	=>	"avvisi",
+				"attivo"=>"Y",
+			))->send();
+		
 		$data["isHome"] = false;
 		$data['headerClass'] = "";
 		$data['customHeaderClass'] = "";

@@ -33,16 +33,6 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/slide/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 				</ul>
 			</li>
-			<!--<li class="<?php echo $tm["home"][0];?> treeview">
-				<a href="#">
-					<i class="fa fa-home"></i>
-					<span>Home page</span>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/home/main";?>"><i class="fa fa-list"></i> Lista</a></li>
-					<li><a href="<?php echo $this->baseUrl."/home/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
-				</ul>
-			</li>-->
 			<?php if (v("blog_attivo")) { ?>
 			<li class="<?php echo $tm["blog"][0];?> treeview">
 				<a href="#">
@@ -100,11 +90,6 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
-			<!--<li class="<?php echo $tm["testi"][0];?>">
-				<a href="<?php echo $this->baseUrl."/testi/main";?>">
-					<i class="fa fa-folder-open"></i> <span>Testi</span>
-				</a>
-            </li>-->
             <!--<li class="<?php echo getActive($tm,"news");?> treeview">
 				<a href="#">
 					<i class="fa fa-folder-open"></i>
@@ -115,6 +100,18 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/news/main";?>"><i class="fa fa-list"></i> Lista notizie</a></li>
 				</ul>
 			</li>-->
+			<?php if (v("mostra_avvisi")) { ?>
+			<li class="<?php echo tm($tm, "avvisi");?> treeview">
+				<a href="#">
+					<i class="fa fa-bullhorn"></i>
+					<span>Avvisi</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/avvisi/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/avvisi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<li class="<?php echo $tm["menu1"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>
@@ -125,16 +122,6 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/menu/main?lingua=it";?>"><i class="fa fa-list"></i> Lista voci</a></li>
 				</ul>
 			</li>
-			<!--<li class="<?php echo $tm["slidesotto"][0];?> treeview">
-				<a href="#">
-					<i class="fa fa-picture-o"></i>
-					<span>Slide sotto home</span>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/slidesotto/main";?>"><i class="fa fa-list"></i> Lista slide</a></li>
-					<li><a href="<?php echo $this->baseUrl."/slidesotto/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
-				</ul>
-			</li>-->
 		</ul>
 		<?php } ?>
 	</section>
