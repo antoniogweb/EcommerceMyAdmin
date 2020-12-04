@@ -1,5 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
+<?php include(ROOT."/Application/Views/categories_form_js.php");?>
+
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
 	<h1><?php if (strcmp($type,"update") === 0) { echo "Gestione categoria: ".$titoloPagina; } else { echo "Inserimento nuova categoria";}?></h1>

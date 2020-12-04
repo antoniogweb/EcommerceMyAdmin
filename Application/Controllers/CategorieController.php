@@ -27,17 +27,17 @@ class CategorieController extends CategoriesController {
 	public $voceMenu = "categorie";
 	public $sezionePannello = "ecommerce";
 	
-	public $queryFields = "title,alias,id_p,mostra_in_home,immagine";
+	public $queryFields = "title,alias,id_p,mostra_in_home,description,immagine";
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 		
-		if (v("mostra_colore_testo"))
-			$this->queryFields .= ",colore_testo_in_slide";
-		
 		if (v("mostra_seconda_immagine_categoria_prodotti"))
 			$this->queryFields .= ",immagine_2";
 		
+		if (v("mostra_colore_testo"))
+			$this->queryFields .= ",colore_testo_in_slide";
+			
 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->append($data);
