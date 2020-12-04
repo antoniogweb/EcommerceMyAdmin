@@ -559,6 +559,7 @@ class Domain
 {
 
 	static public $name;
+	static public $publicUrl;
 	static public $parentRoot;
 	static public $adminRoot;
 	static public $adminName;
@@ -907,7 +908,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		$alt = $testo["alt"] ? 'alt="'.$testo["alt"].'"' : "";
 		
 		if ($testo["immagine"])
-			$t .= "<img src='".Domain::$name."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"]."' $alt/>";
+			$t .= "<img src='".Domain::$publicUrl."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"]."' $alt/>";
 		
 		$urlLink = $target = "";
 		

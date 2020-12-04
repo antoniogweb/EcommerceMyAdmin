@@ -43,9 +43,11 @@ class BaseBaseController extends Controller
 		
 		Domain::$parentRoot = FRONT;
 		Domain::$adminRoot = LIBRARY;
-		Domain::$adminName = $this->baseUrlSrc."/admin";
 		
 		parent::__construct($model, $controller, $queryString);
+		
+		Domain::$adminName = $this->baseUrlSrc."/admin";
+		Domain::$publicUrl = $this->baseUrlSrc;
 		
 		$this->model("TraduzioniModel");
 		

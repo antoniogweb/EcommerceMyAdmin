@@ -47,11 +47,17 @@ class IplocationModel extends Model_Tree {
 	
 	public static function getData()
 	{
+		$default = array(
+			"nazione"	=>	v("nazione_default"),
+		);
+		
 		$ip = getIp();
 		
 		$il = new IplocationModel();
-		
 		$il->deleteExpired();
+		
+		if ($ip == "127.0.0.1")
+			return $default;
 		
 		$recordIp = $il->clear()->where(array(
 			"ip"			=>	sanitizeAll($ip),
@@ -79,9 +85,7 @@ class IplocationModel extends Model_Tree {
 			}
 		}
 		
-		return array(
-			"nazione"	=>	v("nazione_default"),
-		);
+		return $default;
 	}
 
 }
