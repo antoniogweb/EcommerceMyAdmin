@@ -194,6 +194,7 @@ class BaseOrdiniController extends BaseController
 								$mail->AddAttachment(ROOT."/admin/media/Fatture/".$fattura["filename"]);
 							}
 							
+							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 							$mail->MsgHTML($output);
 							
 							try
@@ -208,6 +209,7 @@ class BaseOrdiniController extends BaseController
 							$mail->ClearAddresses();
 							$mail->AddAddress(Parametri::$mailInvioOrdine);
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
+							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 							break;
 						case "Pending":
 							$mail->Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
