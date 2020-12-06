@@ -6,7 +6,10 @@
 						<?php echo $form["titolo"];?>
 						<?php echo $form["alias"];?>
 						<?php echo $form["attivo"];?>
+						<?php if (isset($form["immagine_2"])) { ?>
 						<?php echo $form["immagine_2"];?>
+						<?php } ?>
+						
 						<?php if (v("mostra_colore_testo")) { ?>
 						<?php echo $form["colore_testo_in_slide"];?>
 						<?php } ?>

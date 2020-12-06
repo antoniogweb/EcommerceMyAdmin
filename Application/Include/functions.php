@@ -1635,3 +1635,11 @@ function tp()
 	
 	return Domain::$parentRoot."/Application/Views$subfolder";
 }
+
+function singPlu($numero, $sing, $plu)
+{
+	if ($numero == 1)
+		return $sing;
+	else
+		return $plu;
+}
