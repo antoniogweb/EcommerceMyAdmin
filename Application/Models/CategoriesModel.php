@@ -693,4 +693,16 @@ class CategoriesModel extends HierarchicalModel {
 		
 		return $c->depth($id);
 	}
+	
+	public static function resultToIdList($categorie)
+	{
+		$arrayIds = array();
+		
+		foreach ($categorie as $c)
+		{
+			$arrayIds[] = $c["categories"]["id_c"];
+		}
+		
+		return $arrayIds;
+	}
 }

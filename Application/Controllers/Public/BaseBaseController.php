@@ -30,6 +30,7 @@ class BaseBaseController extends Controller
 	
 	public $prodottiInEvidenza;
 	public $elencoMarchiFull;
+	public $elencoTagFull;
 	public $idShop = 0;
 	public $getNewsInEvidenza;
 	public $team = array();
@@ -394,6 +395,8 @@ class BaseBaseController extends Controller
 		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
+		$data["elencoCategorieFull"] = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
+		
 // 		print_r($data["alberoCategorieProdottiConShop"]);die();
 		
 		if (v("usa_marchi"))
@@ -401,6 +404,13 @@ class BaseBaseController extends Controller
 			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
 			
 			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+		}
+		
+		if (v("usa_tag"))
+		{
+			$data["elencoTagFull"] = $this->elencoTagFull = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+				"attivo"	=>	"Y",
+			))->orderBy("tag.titolo")->send();
 		}
 		
 // 		print_r($data["elencoMarchi"]);
