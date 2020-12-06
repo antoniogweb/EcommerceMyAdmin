@@ -113,6 +113,9 @@ class CategoriesModel extends HierarchicalModel {
 				'title'		=>	array(
 					'labelString'=>	'Titolo',
 				),
+				'description'	=>	array(
+					'labelString'=>	'Descrizione',
+				),
 				'alias'		=>	array(
 					'labelString'=>	'Alias (per URL)',
 				),
