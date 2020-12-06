@@ -22,25 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CategorieController extends CategoriesController {
+class AvvisicatModel extends CategoriesModel {
 
-	public $voceMenu = "categorie";
-	public $sezionePannello = "ecommerce";
-	
-	public $queryFields = "title,alias,id_p,mostra_in_home,description,immagine";
-	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct() {
+
+		$this->section = "avvisi";
+		$this->controller = "avvisicat";
 		
-		if (v("mostra_seconda_immagine_categoria_prodotti"))
-			$this->queryFields .= ",immagine_2";
+		parent::__construct();
 		
-		if (v("mostra_colore_testo"))
-			$this->queryFields .= ",colore_testo_in_slide";
-			
-		$data["sezionePannello"] = "ecommerce";
-		
-		$this->append($data);
 	}
 
 }

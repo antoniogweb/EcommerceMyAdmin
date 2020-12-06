@@ -133,7 +133,7 @@ class IvaModel extends GenericModel
 					
 					if (!empty($recordIva))
 					{
-						$totaleNazione += getTotalN();
+						$totaleNazione += getPrezzoScontatoN();
 						
 						if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
 						{

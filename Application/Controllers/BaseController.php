@@ -216,6 +216,7 @@ class BaseController extends Controller
 		
 		Domain::$adminRoot = ROOT;
 		Domain::$adminName = $this->baseUrlSrc;
+		Domain::$publicUrl = str_replace("/admin",null,$this->baseUrlSrc);
 		
 		$this->session('admin');
 		

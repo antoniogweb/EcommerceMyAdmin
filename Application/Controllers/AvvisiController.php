@@ -22,23 +22,50 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CategorieController extends CategoriesController {
+class AvvisiController extends PagesController {
 
-	public $voceMenu = "categorie";
-	public $sezionePannello = "ecommerce";
-	
-	public $queryFields = "title,alias,id_p,mostra_in_home,description,immagine";
+	public $voceMenu = "avvisi";
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
+
+		$this->tableFields = array(
+			'[[checkbox]];pages.id_page;',
+			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			'PagesModel.getPubblicatoCheckbox|pages.id_page',
+		);
 		
-		if (v("mostra_seconda_immagine_categoria_prodotti"))
-			$this->queryFields .= ",immagine_2";
+		$this->orderBy = "pages.id_order desc";
 		
-		if (v("mostra_colore_testo"))
-			$this->queryFields .= ",colore_testo_in_slide";
-			
-		$data["sezionePannello"] = "ecommerce";
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva';
+		$this->filters = array(null,null,'title');
+		
+		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
+		$this->queryFields = "title,attivo,description";
+		
+		$this->clean();
+		
+		$this->load('header_sito');
+		$this->load('footer','last');
+		
+		$data["sezionePannello"] = "sito";
+		
+		$data["tabella"] = "slide";
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->append($data);
+	}
+	
+	public function form($queryType = 'insert',$id = 0)
+	{
+		parent::form($queryType, $id);
+		
+		$data["use_editor"] = "Y";
 		
 		$this->append($data);
 	}

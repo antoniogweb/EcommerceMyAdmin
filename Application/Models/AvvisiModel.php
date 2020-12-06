@@ -22,25 +22,53 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CategorieController extends CategoriesController {
+class AvvisiModel extends PagesModel {
+	
+	public $hModelName = "AvvisicatModel";
+	
+	public function __construct() {
+		
+		parent::__construct();
 
-	public $voceMenu = "categorie";
-	public $sezionePannello = "ecommerce";
-	
-	public $queryFields = "title,alias,id_p,mostra_in_home,description,immagine";
-	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
-		
-		if (v("mostra_seconda_immagine_categoria_prodotti"))
-			$this->queryFields .= ",immagine_2";
-		
-		if (v("mostra_colore_testo"))
-			$this->queryFields .= ",colore_testo_in_slide";
-			
-		$data["sezionePannello"] = "ecommerce";
-		
-		$this->append($data);
 	}
+	
+	public function setCategory()
+	{
+		$c = new CategoriesModel();
+		
+		$clean["id_c"] = (int)$c->clear()->where(array("section"=>"avvisi"))->field("id_c");
+		
+		$this->values["alias"] = "";
+		
+		$this->values["id_c"] = $clean["id_c"];
+	}
+	
+	public function insert()
+	{
+		$this->setCategory();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setCategory();
+		
+		return parent::update($id, $where);
+	}
+	
+	public function setFilters()
+	{
+		$this->_popupItemNames = array(
+			'attivo'	=>	'attivo',
+		);
 
+		$this->_popupLabels = array(
+			'attivo'	=>	'PUBBLICATO?',
+		);
+
+		$this->_popupFunctions = array(
+			'attivo'=>	'getYesNo',
+		);
+	}
 }

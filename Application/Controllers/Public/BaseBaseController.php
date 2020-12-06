@@ -44,9 +44,11 @@ class BaseBaseController extends Controller
 		
 		Domain::$parentRoot = FRONT;
 		Domain::$adminRoot = LIBRARY;
-		Domain::$adminName = $this->baseUrlSrc."/admin";
 		
 		parent::__construct($model, $controller, $queryString);
+		
+		Domain::$adminName = $this->baseUrlSrc."/admin";
+		Domain::$publicUrl = $this->baseUrlSrc;
 		
 		$this->model("TraduzioniModel");
 		
@@ -297,6 +299,12 @@ class BaseBaseController extends Controller
 				"attivo"=>"Y",
 				"in_evidenza"=>"Y",
 			))->orderBy("pages.id_order desc")->send(), 4);
+		
+		if (v("mostra_avvisi"))
+			$data["avvisi"] = $this->m["PagesModel"]->where(array(
+				"categories.section"	=>	"avvisi",
+				"attivo"=>"Y",
+			))->send();
 		
 		$data["isHome"] = false;
 		$data['headerClass'] = "";

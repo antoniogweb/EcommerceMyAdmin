@@ -585,9 +585,9 @@ class OrdiniModel extends FormModel {
 	{
 		$o = new OrdiniModel();
 		
-		$res = $o->clear()->select("SUM(total) as TOTALE")->where(array(
+		$res = $o->clear()->select("SUM(subtotal) as TOTALE")->where(array(
 			"nazione_spedizione"	=>	sanitizeAll($nazione),
-		))->send();
+		))->sWhere("DATE_FORMAT(data_creazione, '%Y') = '".date("Y")."'")->send();
 		
 		if (isset($res[0]["aggregate"]["TOTALE"]) && $res[0]["aggregate"]["TOTALE"])
 			return $res[0]["aggregate"]["TOTALE"];
