@@ -1696,4 +1696,74 @@ class PagesModel extends GenericModel {
 			"principale"	=>	"Y",
 		))->field("id_page");
 	}
+	
+	public static function disponibilita($idPage = 0)
+	{
+		$c = new CombinazioniModel();
+		
+		$res = $c->clear()->select("max(giacenza) as GIACENZA")->where(array(
+			"id_page"	=>	(int)$idPage
+		))->send();
+		
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["GIACENZA"];
+		
+		return 0;
+	}
+	
+	public static function gXmlProdottiGoogle()
+	{
+		$c = new CategoriesModel();
+		$p = new PagesModel();
+		$m = new MarchiModel();
+		
+		$idShop = $c->getShopCategoryId();
+		
+		$children = $c->children($idShop, true);
+		
+		$catWhere = "in(".implode(",",$children).")";
+		$res = $p->clear()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
+			"in" => array("-id_c" => $children),
+			"pages.attivo"	=>	"Y",
+			"acquistabile"	=>	"Y",
+		))->inner("categories")->on("categories.id_c = pages.id_c")
+			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->orderBy("pages.title")->send();
+		
+		$arrayProdotti = array();
+		
+		foreach ($res as $r)
+		{
+			$giacenza = self::disponibilita($r["pages"]["id_page"]);
+			$outOfStock = v("attiva_giacenza") ? "out of stock" : "preorder";
+			
+			$temp = array(
+				"g:id"	=>	$r["pages"]["id_page"],
+				"g:title"	=>	htmlentitydecode(field($r,"title")),
+				"g:description"	=>	htmlentitydecode(field($r,"description")),
+				"g:google_product_category"	=>	htmlentitydecode(cfield($r,"title")),
+				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
+				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$p->prezzoMinimo($r["pages"]["id_page"])),2,".",""). " EUR",
+				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
+			);
+			
+			if ($r["pages"]["immagine"])
+				$temp["g:image_link"] = Url::getRoot()."thumb/dettagliobig/".$r["pages"]["immagine"];
+			
+			if ($r["pages"]["id_marchio"])
+			{
+				$marchio = $m->clear()->addJoinTraduzione()->where(array(
+					"id_marchio"	=>	(int)$r["pages"]["id_marchio"],
+				))->first();
+				
+				if (!empty($marchio))
+					$temp["g:brand"] = htmlentitydecode(mfield($marchio, "titolo"));
+			}
+			
+			$arrayProdotti[] = $temp;
+		}
+		
+		return $arrayProdotti;
+	}
 }

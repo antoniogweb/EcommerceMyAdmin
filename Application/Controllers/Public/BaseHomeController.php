@@ -107,5 +107,29 @@ class BaseHomeController extends BaseController
 		$time = time() + 3600*24*365*10;
 		setcookie("ok_cookie","OK",$time,"/");
 	}
+	
+	public function xmlprodotti()
+	{
+		$this->clean();
+		
+		$prodotti = PagesModel::gXmlProdottiGoogle();
+		
+		$xmlArray = array();
+		
+		$xmlArray["channel"] = array(
+			"title"	=>	ImpostazioniModel::$valori["title_home_page"],
+			"link"	=>	Url::getRoot(),
+			"description"	=>	ImpostazioniModel::$valori["meta_description"],
+			"item"	=>	$prodotti,
+		);
+		
+		$xml = aToX($xmlArray);
+		
+		header ("Content-Type:text/xml");
+		echo '<?xml version="1.0"?>';
+		echo '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
+		echo $xml;
+		echo '</rss>';
+	}
 
 }

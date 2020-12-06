@@ -1644,3 +1644,44 @@ function singPlu($numero, $sing, $plu)
 	else
 		return $plu;
 }
+
+function aToX($struct, $key = "", $cdata = true)
+{
+	$xml = "";
+	
+	foreach ($struct as $kk => $value)
+	{
+		if (!is_numeric($kk))
+		{
+			if (is_array($value))
+			{
+				if (array_values($value) === $value)
+					$xml .= aToX($value, $kk, $cdata);
+				else
+					$xml .= "<$kk>".aToX($value, $kk, $cdata)."</$kk>"; 
+			}
+			else
+				$xml .= "<$kk>".cXmlC($value, $cdata)."</$kk>";
+		}
+		else
+		{
+			if (is_array($value))
+				$xml .= "<$key>".aToX($value, "", $cdata)."</$key>";
+		}
+	}
+	
+	return $xml;
+}
+
+function cXmlC($t, $cdata = false)
+{
+	$t = str_replace(">","&gt;",$t);
+	$t = str_replace("°","",$t);
+	$t = str_replace("&","&amp;",$t);
+	$t = str_replace("<","&lt;",$t);
+	
+	if ($cdata)
+		$t = "<![CDATA[".$t."]]>";
+	
+	return $t;
+}
