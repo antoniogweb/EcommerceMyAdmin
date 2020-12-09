@@ -336,13 +336,16 @@ class BaseOrdiniController extends BaseController
 					$p->add_field('last_name', $data["ordine"]["cognome"]);
 				}
 				
-	// 			$p->add_field('address1', '');
-	// 			$p->add_field('city', '');
-	// 			$p->add_field('email', '');
-	// 			$p->add_field('first_name', '');
-	// 			$p->add_field('last_name', '');
-	// 			$p->add_field('zip', '');
-	// 			$p->add_field('country', '');
+				$p->add_field('address1', $data["ordine"]["indirizzo"]);
+				$p->add_field('city', $data["ordine"]["citta"]);
+				$p->add_field('zip', $data["ordine"]["cap"]);
+				$p->add_field('country', $data["ordine"]["nazione"]);
+				
+				if ($data["ordine"]["nazione"] == "IT")
+					$p->add_field('state', $data["ordine"]["provincia"]);
+				else
+					$p->add_field('state', $data["ordine"]["dprovincia"]);
+				
 				$p->add_field('cmd', '_xclick');
 				$p->add_field('rm', '2');   // Return method = POST
 				
