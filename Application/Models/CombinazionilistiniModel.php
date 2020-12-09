@@ -119,4 +119,13 @@ class CombinazionilistiniModel extends GenericModel {
 		
 		return array(0,null);
 	}
+	
+	public static function listinoEsistente($nazione)
+	{
+		$cl = new CombinazionilistiniModel();
+		
+		return $cl->clear()->where(array(
+			"nazione"	=>	sanitizeDb($nazione),
+		))->rowNumber();
+	}
 }

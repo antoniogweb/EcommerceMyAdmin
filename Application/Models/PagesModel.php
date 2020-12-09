@@ -1736,7 +1736,7 @@ class PagesModel extends GenericModel {
 		foreach ($res as $r)
 		{
 			$giacenza = self::disponibilita($r["pages"]["id_page"]);
-			$outOfStock = v("attiva_giacenza") ? "out of stock" : "preorder";
+			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 			
 			$temp = array(
 				"g:id"	=>	$r["pages"]["id_page"],

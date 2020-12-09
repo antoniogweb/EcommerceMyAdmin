@@ -110,6 +110,9 @@ class BaseHomeController extends BaseController
 	
 	public function xmlprodotti()
 	{
+		if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
+			User::$nazione = sanitizeAll($_GET["listino"]);
+		
 		$this->clean();
 		
 		$prodotti = PagesModel::gXmlProdottiGoogle();
@@ -117,9 +120,9 @@ class BaseHomeController extends BaseController
 		$xmlArray = array();
 		
 		$xmlArray["channel"] = array(
-			"title"	=>	ImpostazioniModel::$valori["title_home_page"],
+			"title"	=>	htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]),
 			"link"	=>	Url::getRoot(),
-			"description"	=>	ImpostazioniModel::$valori["meta_description"],
+			"description"	=>	htmlentitydecode(ImpostazioniModel::$valori["meta_description"]),
 			"item"	=>	$prodotti,
 		);
 		

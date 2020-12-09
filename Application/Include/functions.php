@@ -1675,10 +1675,10 @@ function aToX($struct, $key = "", $cdata = true)
 
 function cXmlC($t, $cdata = false)
 {
-	$t = str_replace(">","&gt;",$t);
-	$t = str_replace("°","",$t);
-	$t = str_replace("&","&amp;",$t);
-	$t = str_replace("<","&lt;",$t);
+// 	$t = str_replace(">","&gt;",$t);
+// 	$t = str_replace("°","",$t);
+// 	$t = str_replace("&","&amp;",$t);
+// 	$t = str_replace("<","&lt;",$t);
 	
 	if ($cdata)
 		$t = "<![CDATA[".$t."]]>";

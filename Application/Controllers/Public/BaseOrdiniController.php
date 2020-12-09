@@ -328,6 +328,14 @@ class BaseOrdiniController extends BaseController
 				$p->add_field('amount', $data["ordine"]["total"]);
 				$p->add_field('currency_code', 'EUR');
 				$p->add_field('lc', 'IT');
+				
+				$p->add_field('email', $data["ordine"]["email"]);
+
+				if (strcmp($data["ordine"]["tipo_cliente"], "privato") === 0) {
+					$p->add_field('first_name', $data["ordine"]["nome"]);
+					$p->add_field('last_name', $data["ordine"]["cognome"]);
+				}
+				
 	// 			$p->add_field('address1', '');
 	// 			$p->add_field('city', '');
 	// 			$p->add_field('email', '');

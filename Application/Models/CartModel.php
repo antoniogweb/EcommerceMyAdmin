@@ -408,7 +408,10 @@ class CartModel extends Model_Tree {
 			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
 			
 // 			$rapporto = $this->calcolaPrezzoFinale($r["id_page"], 1, $r["quantity"], true, true);
-			$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
+			if ($r["prezzo_intero_ivato"] > 0)
+				$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
+			else
+				$rapporto = 1;
 			
 			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitario / $rapporto, v("cifre_decimali"), ".", "");
 			
