@@ -72,6 +72,7 @@ class RegusersModel extends FormModel {
 	public function update($id = null, $where = null)
 	{
 		$clean['id'] = (int)$id;
+		
 		if (strcmp($this->values['password'],sha1('')) === 0)
 		{
 			$this->delFields('password');
