@@ -38,6 +38,7 @@ class PagesModel extends GenericModel {
 	public static $tipiPagina = array(
 		"GRAZIE"	=>	"Pagina grazie",
 		"COOKIE"	=>	"Pagina cookie",
+		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 	);
 	
 	public function __construct() {
