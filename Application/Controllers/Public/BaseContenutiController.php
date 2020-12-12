@@ -344,7 +344,7 @@ class BaseContenutiController extends BaseController
 				$titolo = ($tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
 				
 // 				print_r($tempParents[count($tempParents)-1]);
-				array_unshift($breadcrumbArray, "<span class='breadcrumb_last_text'>".$titolo."</span>");
+				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<span class='breadcrumb_last_text'>".$titolo."</span>".v("breadcrumb_element_close"));
 			}
 			else
 			{
@@ -352,7 +352,7 @@ class BaseContenutiController extends BaseController
 				
 				$titolo = $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
 				
-				array_unshift($breadcrumbArray, "<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/$ref'>".$titolo."</a>");
+				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/$ref'>".$titolo."</a>".v("breadcrumb_element_close"));
 			}
 			
 			array_pop($tempParents);

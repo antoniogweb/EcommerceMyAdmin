@@ -104,6 +104,8 @@ class VariabiliModel extends GenericModel {
 		"mail_template"				=>	'default',
 		"mostra_gestione_testi"		=>	0,
 		"mostra_avvisi"				=>	0,
+		"breadcrumb_element_open"	=>	"",
+		"breadcrumb_element_close"	=>	"",
 	);
 	
 	public function __construct() {
