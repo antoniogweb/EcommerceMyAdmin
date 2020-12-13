@@ -1685,3 +1685,10 @@ function cXmlC($t, $cdata = false)
 	
 	return $t;
 }
+
+function sanitizeJs($jsString)
+{
+	$result = strtr($jsString, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n' ));
+	
+	return $result;
+}

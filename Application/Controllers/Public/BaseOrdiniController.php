@@ -261,7 +261,7 @@ class BaseOrdiniController extends BaseController
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
-		$clean["id_o"] = (int)$id_o;
+		$clean["id_o"] = $data['idOrdineGtm'] = (int)$id_o;
 		
 		$esisteOrdine = true;
 		
@@ -492,6 +492,8 @@ class BaseOrdiniController extends BaseController
 				$data["conclusa"] = false;
 			
 			$data["ordine"] = $res[0]["orders"];
+			
+			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 			
 			$this->append($data);
 			$this->load("ritorno-da-paypal");

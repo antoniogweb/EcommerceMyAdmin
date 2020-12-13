@@ -106,6 +106,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_avvisi"				=>	0,
 		"breadcrumb_element_open"	=>	"",
 		"breadcrumb_element_close"	=>	"",
+		"codice_gtm"				=>	"",
 	);
 	
 	public function __construct() {

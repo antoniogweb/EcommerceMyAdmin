@@ -39,6 +39,7 @@ class PagesModel extends GenericModel {
 		"GRAZIE"	=>	"Pagina grazie",
 		"COOKIE"	=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
+		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
 	);
 	
 	public function __construct() {
@@ -1766,5 +1767,13 @@ class PagesModel extends GenericModel {
 		}
 		
 		return $arrayProdotti;
+	}
+	
+	public function tipopagina($record)
+	{
+		if (isset(self::$tipiPagina[$record["pages"]["tipo_pagina"]]))
+			return self::$tipiPagina[$record["pages"]["tipo_pagina"]];
+		
+		return "";
 	}
 }

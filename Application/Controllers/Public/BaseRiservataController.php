@@ -178,7 +178,13 @@ class BaseRiservataController extends BaseController
 			{
 				$this->m["RegusersModel"]->deleteAccount($user["id_user"]);
 				$this->s['registered']->logout();
-				$this->redirect('account-cancellato.html',0);
+				
+				$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
+				
+				if ($idRedirect)
+					$this->redirect(getUrlAlias($idRedirect));
+				else
+					$this->redirect('account-cancellato.html',0);
 			}
 			else
 				$data["notice"] = "<div class='alert alert-danger'>".gtext("Attenzione, password non corretta.")."</div><div class='evidenzia'>class_password</div>";
