@@ -83,7 +83,7 @@ class OrdiniController extends BaseController {
 			'orders.tipo_cliente',
 			'OrdiniModel.getCFoPIva|orders.id_o',
 			'orders.nome_promozione',
-			'statoOrdineBreve|orders.stato',
+			'statoordinelabel',
 			'totaleCrud',
 		);
 		

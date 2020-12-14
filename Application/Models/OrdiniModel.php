@@ -595,4 +595,11 @@ class OrdiniModel extends FormModel {
 		return 0;
 	}
 	
+	public function statoordinelabel($records)
+	{
+		if (isset(OrdiniModel::$stati[$records["orders"]["stato"]]))
+			return "<span class='text-bold text text-".OrdiniModel::$labelStati[$records["orders"]["stato"]]."'>".OrdiniModel::$stati[$records["orders"]["stato"]]."<span>";
+		
+		return $records["orders"]["stato"];
+	}
 }
