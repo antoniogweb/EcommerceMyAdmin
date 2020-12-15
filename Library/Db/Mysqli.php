@@ -26,7 +26,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 //singleton!
 class Db_Mysqli
 {
-	
 	private $autocommit = true;
 	private $transactionBatchSize = 100;
 	
@@ -230,7 +229,11 @@ class Db_Mysqli
 		$select = isset($group_by) ? $selectField : 'count('.$selectField.') as number';
 		
 		$query = $this->createSelectQuery($table,$select,$where,$group_by,null,null,$on,$using,$join);
-
+		
+		$dataCached = Cache::getData($table, "COUNT ".$query);
+		if (isset($dataCached))
+			return $dataCached;
+		
 		$this->query = $query;
 		$this->queries[] = $query;
 		
@@ -248,6 +251,9 @@ class Db_Mysqli
 			}
 			
 			$ris->close();
+			
+			Cache::setData($table, "COUNT ".$query, $num_rows);
+			
 			return (int)$num_rows;
 		} else {
 			return 0;
@@ -302,11 +308,20 @@ class Db_Mysqli
 	{
 		$query = $this->createSelectQuery($table,$fields,$where,$group_by,$order_by,$limit,$on,$using,$join);
 		
+		$dataCached = Cache::getData($table, "SELECT ".$query);
+		if (isset($dataCached))
+			return $dataCached;
+		
 		$this->query = $query;
 		$this->queries[] = $query;
 		
 		$result = $this->db->query($query);
-		return $this->getData($result, $showTable);
+		
+		$data = $this->getData($result, $showTable);
+		
+		Cache::setData($table, "SELECT ".$query, $data);
+		
+		return $data;
 	}
 
 

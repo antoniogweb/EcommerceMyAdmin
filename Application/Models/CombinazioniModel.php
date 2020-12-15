@@ -173,6 +173,26 @@ class CombinazioniModel extends GenericModel {
 		return parent::insert();
 	}
 	
+	public function aggiornaGiacenzaPagina($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!$record["col_1"] && !$record["col_2"] && !$record["col_3"] && !$record["col_4"] && !$record["col_5"] && !$record["col_6"] && !$record["col_7"] && !$record["col_8"])
+		{
+			$p = new PagesModel();
+			
+			$p->setValues(array(
+				"price"		=>	$record["price"],
+				"price_ivato"	=>	$record["price_ivato"],
+				"codice"	=>	$record["codice"],
+				"peso"		=>	$record["peso"],
+				"giacenza"	=>	$record["giacenza"],
+			));
+			
+			$p->pUpdate($record["id_page"]);
+		}
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$record = $this->selectId((int)$id);
@@ -182,22 +202,23 @@ class CombinazioniModel extends GenericModel {
 		
 		if (parent::update($id, $where))
 		{
-			$record = $this->selectId((int)$id);
-			
-			if (!$record["col_1"] && !$record["col_2"] && !$record["col_3"] && !$record["col_4"] && !$record["col_5"] && !$record["col_6"] && !$record["col_7"] && !$record["col_8"])
-			{
-				$p = new PagesModel();
-				
-				$p->setValues(array(
-					"price"		=>	$record["price"],
-					"price_ivato"	=>	$record["price_ivato"],
-					"codice"	=>	$record["codice"],
-					"peso"		=>	$record["peso"],
-					"giacenza"	=>	$record["giacenza"],
-				));
-				
-				$p->pUpdate($record["id_page"]);
-			}
+			$this->aggiornaGiacenzaPagina($id);
+// 			$record = $this->selectId((int)$id);
+// 			
+// 			if (!$record["col_1"] && !$record["col_2"] && !$record["col_3"] && !$record["col_4"] && !$record["col_5"] && !$record["col_6"] && !$record["col_7"] && !$record["col_8"])
+// 			{
+// 				$p = new PagesModel();
+// 				
+// 				$p->setValues(array(
+// 					"price"		=>	$record["price"],
+// 					"price_ivato"	=>	$record["price_ivato"],
+// 					"codice"	=>	$record["codice"],
+// 					"peso"		=>	$record["peso"],
+// 					"giacenza"	=>	$record["giacenza"],
+// 				));
+// 				
+// 				$p->pUpdate($record["id_page"]);
+// 			}
 			
 			return true;
 		}

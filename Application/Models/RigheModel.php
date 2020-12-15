@@ -53,6 +53,9 @@ class RigheModel extends GenericModel {
 				));
 				
 				$c->pUpdate($combinazione["id_c"]);
+				
+				// Aggiorno la combinazione della pagina
+				$c->aggiornaGiacenzaPagina($combinazione["id_c"]);
 			}
 		}
 		

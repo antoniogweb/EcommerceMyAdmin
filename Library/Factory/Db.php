@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //class to create the database layer class
 class Factory_Db {
-
+	
 	//start the database connection
 	//$dbType: mysql,mysqli,pg
 	//$dbArrayParams: array containing the HOST, the USER, the PWD, and the DB of the database (see config.php)
