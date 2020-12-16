@@ -29,6 +29,7 @@ class Cache {
 	public static $cacheFolder = null;
 	public static $cacheMinutes = 10;
 	public static $cacheTimeString = null;
+	public static $cleanCacheEveryXMinutes = 60;
 	
 	public static function roundToLastSet()
 	{
@@ -59,7 +60,7 @@ class Cache {
 			{
 				$time = (int)file_get_contents($path);
 				
-				if ((time() - $time) >= 60*60)
+				if ((time() - $time) >= 60 * self::$cleanCacheEveryXMinutes)
 				{
 					foreach (new DirectoryIterator(self::$cacheFolder) as $fileInfo)
 					{
@@ -69,7 +70,7 @@ class Cache {
 						if ($fileInfo->getFilename() == "index.html")
 							continue;
 						
-						if ($fileInfo->isFile() && ((time() - $fileInfo->getCTime()) >= 50*60))
+						if ($fileInfo->isFile() && ((time() - $fileInfo->getCTime()) >= 50 * self::$cleanCacheEveryXMinutes))
 							unlink($fileInfo->getRealPath());
 					}
 					
