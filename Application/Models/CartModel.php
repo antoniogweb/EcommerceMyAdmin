@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class CartModel extends Model_Tree {
 	
 	public static $ordinamento = 0;
+	public static $deletedExpired = false;
 	
 	public function __construct() {
 		$this->_tables='cart';
@@ -48,8 +49,12 @@ class CartModel extends Model_Tree {
     
 	public function deleteExpired()
 	{
-		$limit = time() - Parametri::$durataCarrello; 
-		$this->db->del('cart','creation_time < '.$limit);
+		if (!self::$deletedExpired)
+		{
+			$limit = time() - Parametri::$durataCarrello; 
+			$this->db->del('cart','creation_time < '.$limit);
+			self::$deletedExpired = true;
+		}
 	}
 	
 	// Totale scontato

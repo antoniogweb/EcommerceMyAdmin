@@ -27,8 +27,27 @@ class Cache {
 	public static $cachedQueries = array();
 	public static $cachedTables = array();
 	public static $cacheFolder = null;
-	public static $cacheTimeExpression = "Y_m_d_h_i";
+	public static $cacheMinutes = 10;
 	public static $cacheTimeString = null;
+	
+	public static function roundToLastSet()
+	{
+		$date = new DateTime();
+
+		// Remove any seconds, we don't need them
+		$seconds = $date->format('s');
+		$date->modify('-' . $seconds . ' seconds');
+
+		// Store the original number of minutes on the datetime
+		$original_minutes = $date->format('i');
+		// Calculate how many minutes past the last quarter hour
+		$remaining_minutes = $original_minutes - ($original_minutes - ($original_minutes % self::$cacheMinutes));
+
+		// Modify the minutes, remove the number of minutes past the last quarter of an hour
+		$date->modify('-' . $remaining_minutes . ' minutes');
+
+		return $date;
+	}
 	
 	public static function deleteExpired()
 	{
@@ -65,7 +84,11 @@ class Cache {
 	public static function getCacheTimeString()
 	{
 		if (!self::$cacheTimeString)
-			self::$cacheTimeString = date(self::$cacheTimeExpression);
+		{
+			$date = self::roundToLastSet();
+			self::$cacheTimeString = $date->format("Y_m_d_H_i");
+		}
+			
 		
 		return self::$cacheTimeString;
 	}
