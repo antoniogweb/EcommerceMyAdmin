@@ -1763,6 +1763,9 @@ class PagesModel extends GenericModel {
 					$temp["g:brand"] = htmlentitydecode(mfield($marchio, "titolo"));
 			}
 			
+			if (isset($_GET["fbk"]))
+				$temp["condition"] = "new";
+			
 			$arrayProdotti[] = $temp;
 		}
 		
