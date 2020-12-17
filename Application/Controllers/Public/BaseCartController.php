@@ -135,6 +135,7 @@ class BaseCartController extends BaseController
 		$result = "KO";
 		$idCart = 0;
 		$errore = "";
+		$contentsFbk = "";
 		
 		if (!v("ecommerce_online"))
 		{
@@ -142,6 +143,7 @@ class BaseCartController extends BaseController
 				"result"	=>	$result,
 				"idCart"	=>	$idCart,
 				"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
+				"contens_fbk"	=>	"",
 			));
 			
 			die();
@@ -214,6 +216,24 @@ class BaseCartController extends BaseController
 						}
 						
 						$result = "OK";
+						
+						$rcu = $this->m["CartModel"]->getCart($idCart);
+						
+						if (!empty($rcu))
+						{
+							$contentsFbk = array(
+								"value"	=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
+								"currency"	=>	"EUR",
+								"content_type"	=>	"product",
+								"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
+								"contents"	=>	array(
+									array(
+										"id"		=>	$rcu["id_page"],
+										"quantity"	=>	$clean["quantity"],
+									)
+								),
+							);
+						}
 					}
 				}
 				else
@@ -250,6 +270,7 @@ class BaseCartController extends BaseController
 				"result"	=>	$result,
 				"idCart"	=>	$idCart,
 				"errore"	=>	$errore,
+				"contens_fbk"	=>	$contentsFbk,
 			));
 	}
 	

@@ -261,7 +261,7 @@ class BaseOrdiniController extends BaseController
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
-		$clean["id_o"] = $data['idOrdineGtm'] = (int)$id_o;
+		$clean["id_o"] = (int)$id_o;
 		
 		$esisteOrdine = true;
 		
@@ -295,6 +295,10 @@ class BaseOrdiniController extends BaseController
 		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"],"cart_uid" => $clean["cart_uid"]))->send();
 		
 		$data["ordine"] = $res[0]["orders"];
+		
+		// ID ordine per GTM e FBK (solo se bonifico)
+		if ($data["ordine"]["pagamento"] == "bonifico")
+			$data['idOrdineGtm'] = (int)$id_o;
 		
 		$data["tipoOutput"] = "web";
 		
@@ -872,6 +876,14 @@ class BaseOrdiniController extends BaseController
 							
 							if (ImpostazioniModel::$valori["bcc"])
 								$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+							
+							if (defined("BCC") && is_array(BCC))
+							{
+								foreach (BCC as $emailBcc)
+								{
+									$mail->addBCC($emailBcc);
+								}
+							}
 							
 							if (!$this->islogged)
 							{

@@ -120,9 +120,29 @@ class BaseWishlistController extends BaseController
 		
 		$this->clean();
 		
+		$contentsFbk = "";
+		
 		if ($this->m["WishlistModel"]->add($clean["id_cart"]))
 		{
 			$result = "OK";
+			
+			$p = new PagesModel();
+			$page = $p->selectId($clean["id_cart"]);
+			
+			if (!empty($page))
+			{
+				$contentsFbk = array(
+					"currency"	=>	"EUR",
+					"content_type"	=>	"product",
+					"content_name"	=>	sanitizeJs(htmlentitydecode($page["title"])),
+					"contents"	=>	array(
+						array(
+							"id"		=>	$page["id_page"],
+							"quantity"	=>	1,
+						)
+					),
+				);
+			}
 		}
 		else
 		{
@@ -137,7 +157,10 @@ class BaseWishlistController extends BaseController
 			$this->load("api_output");
 		}
 		else
-			echo $result;
+			echo json_encode(array(
+				"result"	=>	$result,
+				"contens_fbk"	=>	$contentsFbk,
+			));
 	}
 	
 	public function delete($id_cart)
@@ -159,7 +182,10 @@ class BaseWishlistController extends BaseController
 		if (Output::$json)
 			$this->index();
 		else
-			echo $result;
+			echo json_encode(array(
+				"result"	=>	$result,
+				"contens_fbk"	=>	"",
+			));
 			
 	}
 	
