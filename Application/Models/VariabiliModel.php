@@ -107,6 +107,8 @@ class VariabiliModel extends GenericModel {
 		"breadcrumb_element_open"	=>	"",
 		"breadcrumb_element_close"	=>	"",
 		"codice_gtm"				=>	"",
+		"thumb_ajax_w"				=>	40,
+		"thumb_ajax_h"				=>	40,
 	);
 	
 	public function __construct() {

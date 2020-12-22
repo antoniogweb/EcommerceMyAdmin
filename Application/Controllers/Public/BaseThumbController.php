@@ -544,8 +544,8 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	40,
-			'imgHeight'		=>	40,
+			'imgWidth'		=>	v("thumb_ajax_w"),
+			'imgHeight'		=>	v("thumb_ajax_h"),
 			'defaultImage'	=>  null,
 			'backgroundColor' => "#FFF",
 			'useCache'		=>	true,

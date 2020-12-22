@@ -1067,13 +1067,14 @@ class BaseContenutiController extends BaseController
 					),
 // 				"in" => array("-id_c" => $childrenProdotti),
 				"attivo" => "Y",
-				"principale" => "Y"
+				"principale" => "Y",
+				"acquistabile"	=>	"Y",
 			);
 			
 			$this->m['PagesModel']->clear()->where($where);
 			
 			if ($this->viewArgs["sec"] != "tutti")
-				$this->m["CategoriesModel"]->aWhere(array(
+				$this->m["PagesModel"]->aWhere(array(
 					"in" => array("-id_c" => $childrenProdotti),
 				));
 			
