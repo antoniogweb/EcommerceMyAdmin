@@ -67,10 +67,10 @@ class Cache {
 						if ($fileInfo->isDot())
 							continue;
 						
-						if ($fileInfo->getFilename() == "index.html")
+						if ($fileInfo->getFilename() == "index.html" || $fileInfo->getFilename() == ".htaccess")
 							continue;
 						
-						if ($fileInfo->isFile() && ((time() - $fileInfo->getCTime()) >= 50 * self::$cleanCacheEveryXMinutes))
+						if ($fileInfo->isFile() && ((time() - $fileInfo->getCTime()) >= 60 * self::$cacheMinutes))
 							unlink($fileInfo->getRealPath());
 					}
 					
@@ -89,7 +89,6 @@ class Cache {
 			$date = self::roundToLastSet();
 			self::$cacheTimeString = $date->format("Y_m_d_H_i");
 		}
-			
 		
 		return self::$cacheTimeString;
 	}
@@ -124,6 +123,10 @@ class Cache {
 					{
 						$fp = fopen(self::$cacheFolder.'/index.html', 'w');
 						fclose($fp);
+						
+						$fp = fopen(self::$cacheFolder.'/.htaccess', 'w');
+						fwrite($fp, 'deny from all');
+						fclose($fp);
 					}
 				}
 				
@@ -138,5 +141,4 @@ class Cache {
 				self::$cachedQueries[md5($query)] = $data;
 		}
 	}
-
 }
