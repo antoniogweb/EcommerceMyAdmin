@@ -137,13 +137,13 @@ class BaseRegusersController extends BaseController
 					break;
 				case 'login-error':
 					if (Output::$html)
-						$data['notice'] = '<div class="alert">'.gtext('E-Mail o Password sbagliati').'</div>';
+						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('E-Mail o Password sbagliati').'</div>';
 					else
 						Output::setHeaderValue("Status","login-error");
 					break;
 				case 'wait':
 					if (Output::$html)
-						$data['notice'] = '<div class="alert">'.gtext('Devi aspettare 5 secondi prima di poter tentare nuovamente il login').'</div>';
+						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('Devi aspettare 5 secondi prima di poter tentare nuovamente il login').'</div>';
 					else
 						Output::setHeaderValue("Status","wait");
 					break;
@@ -629,7 +629,7 @@ class BaseRegusersController extends BaseController
 		else
 		{
 			if (Output::$html)
-				$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
 		}
 		
 		if (Output::$html)
@@ -914,12 +914,12 @@ class BaseRegusersController extends BaseController
 						}
 						else
 						{
-							$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+							$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
 						}
 					}
 					else
 					{
-						$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
 					}
 				}
 			}
