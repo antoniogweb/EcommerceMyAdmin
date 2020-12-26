@@ -187,7 +187,7 @@ class BaseRiservataController extends BaseController
 					$this->redirect('account-cancellato.html',0);
 			}
 			else
-				$data["notice"] = "<div class='alert alert-danger'>".gtext("Attenzione, password non corretta.")."</div><div class='evidenzia'>class_password</div>";
+				$data["notice"] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, password non corretta.")."</div><div class='evidenzia'>class_password</div>";
 		}
 		
 		$this->append($data);

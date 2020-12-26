@@ -40,6 +40,7 @@ class PagesModel extends GenericModel {
 		"COOKIE"	=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
+		"PRIVACY"	=>	"Pagina privacy",
 	);
 	
 	public function __construct() {

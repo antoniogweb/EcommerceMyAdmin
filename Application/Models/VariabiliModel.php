@@ -110,6 +110,7 @@ class VariabiliModel extends GenericModel {
 		"thumb_ajax_w"				=>	40,
 		"thumb_ajax_h"				=>	40,
 		"alert_error_class"			=>	"alert",
+		"alert_success_class"		=>	"executed",
 	);
 	
 	public function __construct() {

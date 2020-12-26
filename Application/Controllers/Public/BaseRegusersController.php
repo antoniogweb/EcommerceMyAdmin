@@ -430,12 +430,12 @@ class BaseRegusersController extends BaseController
 				}
 				else
 				{
-					$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
 				}
 			}
 			else
 			{
-				$data['notice'] = "<div class='alert'>".gtext("Vecchia password sbagliata")."</div><span class='evidenzia'>class_old</span>\n";
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Vecchia password sbagliata")."</div><span class='evidenzia'>class_old</span>\n";
 				
 				$this->m['RegusersModel']->addError("old",gtext("Vecchia password sbagliata"));
 				
@@ -738,7 +738,7 @@ class BaseRegusersController extends BaseController
 		else
 		{
 			if (!$this->m['SpedizioniModel']->result)
-				$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['SpedizioniModel']->notice;
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['SpedizioniModel']->notice;
 		}
 		
 		$submitAction = $id > 0 ? "update" : "insert";
