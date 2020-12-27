@@ -1111,7 +1111,7 @@ class BaseOrdiniController extends BaseController
 						}
 						else
 						{
-							$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['OrdiniModel']->notice;
+							$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['OrdiniModel']->notice;
 							$this->m['RegusersModel']->result = false;
 							
 							if (Output::$json)
@@ -1120,7 +1120,7 @@ class BaseOrdiniController extends BaseController
 					}
 					else
 					{
-						$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['RegusersModel']->notice;
+						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['RegusersModel']->notice;
 						$this->m['OrdiniModel']->result = false;
 						
 						if (Output::$json)
@@ -1129,7 +1129,7 @@ class BaseOrdiniController extends BaseController
 				}
 				else
 				{
-					$data['notice'] = "<div class='alert'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['OrdiniModel']->notice;
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['OrdiniModel']->notice;
 					$this->m['RegusersModel']->result = false;
 					
 					if (Output::$json)
