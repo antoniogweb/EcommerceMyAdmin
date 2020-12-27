@@ -288,14 +288,14 @@ class BaseRegusersController extends BaseController
 							else
 							{
 								$error = gtext("Siamo spiacenti, non esiste alcun utente attivo corrispondente all'email da lei inserita");
-								$data['notice'] = "<div class='alert'>".$error."</div><span class='evidenzia'>class_username</span>";
+								$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
 								$res = $this->m["RegusersModel"]->addError("username", $error);
 							}
 						}
 						else
 						{
 							$error = gtext("Si prega di ricontrollare l'indirizzo e-mail");
-							$data['notice'] = "<div class='alert'>".$error."</div><span class='evidenzia'>class_username</span>";
+							$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
 							$res = $this->m["RegusersModel"]->addError("username", $error);
 						}
 					}

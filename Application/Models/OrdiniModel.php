@@ -210,7 +210,7 @@ class OrdiniModel extends FormModel {
 		$this->values["lingua"] = Params::$lang;
 		
 		if (!User::$nazioneNavigazione)
-			User::$nazioneNavigazion = v("nazione_default");
+			User::$nazioneNavigazione = v("nazione_default");
 		
 		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
