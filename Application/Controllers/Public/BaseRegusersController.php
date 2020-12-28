@@ -264,7 +264,7 @@ class BaseRegusersController extends BaseController
 								);
 								
 								ob_start();
-								include ROOT."/Application/Views/Regusers/mail_richiesta_cambio_password.php";
+								include tp()."/Regusers/mail_richiesta_cambio_password.php";
 
 								$output = ob_get_clean();
 								
@@ -873,7 +873,7 @@ class BaseRegusersController extends BaseController
 							
 							//mail con credenziali
 							ob_start();
-							include ROOT."/Application/Views/Regusers/mail_credenziali.php";
+							include tp()."/Regusers/mail_credenziali.php";
 
 							$output = ob_get_clean();
 							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
@@ -890,7 +890,7 @@ class BaseRegusersController extends BaseController
 								
 								//mail con credenziali
 								ob_start();
-								include ROOT."/Application/Views/Regusers/mail_al_negozio_registr_nuovo_cliente.php";
+								include tp()."/Regusers/mail_al_negozio_registr_nuovo_cliente.php";
 
 								$output = ob_get_clean();
 								
