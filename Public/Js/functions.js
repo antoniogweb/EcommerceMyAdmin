@@ -286,7 +286,7 @@ $(document).ready(function(){
 // 		$(".formClass input, .formClass select, .formClass textarea").change(function(){
 			
 			form_modificato = true;
-			console.log("AAA");
+// 			console.log("AAA");
 		});
 		
 		$(".nav_dettaglio a, .nav-sidebar a, .panel-title a").click(function(e){
