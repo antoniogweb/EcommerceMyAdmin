@@ -1111,7 +1111,7 @@ function creaFormContatti($matches = "")
 {
 	ob_start();
 	$tipoOutput = "mail_al_negozio";
-	include ROOT."/Application/Views/form-contatti.php";
+	include tp()."/form-contatti.php";
 	$output = ob_get_clean();
 	
 	return $output;
