@@ -29,14 +29,28 @@ class RegusersController extends BaseController {
 // 		"gruppi"	=>	null,
 // 	);
 	
+	public $argKeys = array(
+		'page:forceInt'=>1,
+		'username:sanitizeAll'=>'tutti',
+		'tipo_cliente:sanitizeAll'=>'tutti',
+		'codice_fiscale:sanitizeAll'=>'tutti',
+		'has_confirmed:sanitizeAll'=>'tutti',
+		'token:sanitizeAll'=>'token',
+		'page_fgl:forceInt'=>1,
+// 		'partial:sanitizeAll'=>'tutti',
+		'p_iva:sanitizeAll'=>'tutti',
+		'nazione_utente:sanitizeAll'=>'tutti',
+	);
+	
 	public $tabella = "clienti";
 	
 	public $useEditor = true;
 	
 	public $sezionePannello = "ecommerce";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->helper('Menu','users','panel/main');
 		$this->helper('Array');
@@ -48,8 +62,6 @@ class RegusersController extends BaseController {
 		$this->model("OrdiniModel");
 		
 // 		$data["sezionePannello"] = "ecommerce";
-		
-		$this->setArgKeys(array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','tipo_cliente:sanitizeAll'=>'tutti','codice_fiscale:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1, 'partial:sanitizeAll'=>'tutti', 'p_iva:sanitizeAll'=>'tutti','nazione_utente:sanitizeAll'=>'tutti'));
 
 		$this->_topMenuClasses['clienti'] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
@@ -138,7 +150,7 @@ class RegusersController extends BaseController {
 		
 		$data['notice'] = $this->scaffold->model->notice;
 		
-		$data['tabella'] = "utente sito web";
+		$data['tabella'] = "cliente";
 		
 		$this->append($data);
 		$this->load('main');

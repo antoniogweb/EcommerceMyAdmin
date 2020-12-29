@@ -75,7 +75,7 @@ $(document).ready(function(){
 						<?php echo $notice;?>
 					</div>
 
-					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/caratteristiche/$id_page".$this->viewStatus;?>' method='POST'>
+					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id_page".$this->viewStatus;?>' method='POST'>
 					
 						<?php echo Html_Form::select("id_car","",$listaCaratteristiche,"lista_caratt form_select form-control",null,"yes");?>
 						<div class="form-group">

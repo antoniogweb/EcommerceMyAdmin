@@ -155,7 +155,7 @@ $(document).ready(function(){
 						<?php echo $notice;?>
 					</div>
 
-					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
+					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
 						
 						<?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control',null,"yes");?>
 						<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi">
@@ -187,7 +187,7 @@ $(document).ready(function(){
 					<div class="box_lista_combinazioni">	
 						<div id="form_opzioni">Combinazioni di questo prodotto</div>
 						
-						<a class="link_aggiorna_combinazioni btn btn-warning" href="<?php echo $this->baseUrl."/".$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
+						<a class="link_aggiorna_combinazioni btn btn-warning" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
 						
 						<a class="iframe btn btn-primary" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
 						

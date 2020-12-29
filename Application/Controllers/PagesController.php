@@ -261,7 +261,7 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci un nuovo prodotto';
 		
 		$this->scaffold->fields = "distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo";
-		$this->scaffold->model->clear()->inner("categories")->using("id_c")->left(array("marchio"))->orderBy($this->orderBy);
+		$this->scaffold->model->clear()->restore(true)->inner("categories")->using("id_c")->left(array("marchio"))->orderBy($this->orderBy);
 		
 		$where = array(
 			'attivo'		=>	$this->viewArgs['attivo'],
@@ -270,7 +270,7 @@ class PagesController extends BaseController {
 			'id_marchio'	=>	$this->viewArgs['-id_marchio'],
 		);
 		
-		$this->scaffold->model->where($where);
+		$this->scaffold->model->aWhere($where);
 		
 		//add the where clause to get only the pages of that category
 // 		print_r($this->m[$this->modelName]->hModel->getChildrenSectionWhere());
@@ -1066,13 +1066,13 @@ class PagesController extends BaseController {
 			if (strcmp($_GET["action"],"aggiorna") === 0)
 			{
 				$this->m["CombinazioniModel"]->creaCombinazioni($clean['id']);
-				$this->redirect($this->controller."/attributi/$id".$this->viewStatus."&refresh=y#refresh_link");
+				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y#refresh_link");
 			}
 			else if (strcmp($_GET["action"],"del_comb") === 0)
 			{
 				$clean["id_c"] = $this->request->get("id",0,"forceInt");
 				$this->m["CombinazioniModel"]->del($clean["id_c"]);
-				$this->redirect($this->controller."/attributi/$id".$this->viewStatus."&refresh=y#refresh_link");
+				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y#refresh_link");
 			}
 		}
 		$this->m['CombinazioniModel']->creaColonne($clean['id']);
@@ -1444,7 +1444,7 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->updateTable('insert,del');
 		
 		if ($this->m[$this->modelName]->queryResult)
-			$this->redirect($this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
+			$this->redirect($this->applicationUrl.$this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
 		
 		$this->colProperties = array(
 			array(
@@ -1496,7 +1496,7 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->updateTable('insert,del');
 		
 		if ($this->m[$this->modelName]->queryResult)
-			$this->redirect($this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
+			$this->redirect($this->applicationUrl.$this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
 		
 		$this->colProperties = array(
 			array(

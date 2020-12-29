@@ -100,7 +100,11 @@ $(document).ready(function(){
 			}
 			else
 			{
-				alert(noSelectedString);
+				setTimeout(function(){
+					
+					alert(noSelectedString);
+					
+				}, 100);
 			}
 		}
 	

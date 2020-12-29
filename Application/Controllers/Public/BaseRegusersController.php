@@ -78,9 +78,20 @@ class BaseRegusersController extends BaseController
 		
 		//valori permessi per il redirect
 		$allowedRedirect = explode(",",v("redirect_permessi"));
-		if (!in_array($redirect,$allowedRedirect))
+		
+		if (is_numeric($redirect))
 		{
-			$redirect = '';
+			$page = $this->m["PagesModel"]->selectId((int)$redirect);
+			
+			if (!empty($page))
+				$redirect = (int)$redirect;
+			else
+				$redirect = '';
+		}
+		else
+		{
+			if (!in_array($redirect,$allowedRedirect))
+				$redirect = '';
 		}
 		
 		$data['action'] = Url::getRoot("regusers/login?redirect=$redirect");
@@ -112,7 +123,11 @@ class BaseRegusersController extends BaseController
 					{
 						if (strcmp($redirect,'') !== 0)
 						{
-							$urlRedirect = Url::getRoot().$redirect;
+							if (is_numeric($redirect))
+								$urlRedirect = Url::getRoot().getUrlAlias((int)$redirect);
+							else
+								$urlRedirect = Url::getRoot().$redirect;
+							
 							header('Location: '.$urlRedirect);
 						}
 						else
@@ -123,16 +138,6 @@ class BaseRegusersController extends BaseController
 					else
 					{
 						$this->setUserHead();
-// 						Output::setHeaderValue("Status","logged");
-// 						Output::setHeaderValue("UserId",$this->s['registered']->getUid());
-// 						
-// 						$res = $this->m['RegusersModel']->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
-// 						User::$dettagli = $res[0]['regusers'];
-// 						
-// 						$nomeCliente = (strcmp(User::$dettagli["tipo_cliente"],"privato") === 0 || strcmp(User::$dettagli["tipo_cliente"],"libero_professionista") === 0) ?  User::$dettagli["nome"] : $data['dettagliUtente']["ragione_sociale"];
-// 						
-// 						Output::setHeaderValue("Nome",$nomeCliente);
-// 						Output::setHeaderValue("Email",User::$dettagli["username"]);
 					}
 					break;
 				case 'login-error':

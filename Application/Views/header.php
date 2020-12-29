@@ -32,7 +32,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery_easygiant.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery_easygiant.js?v=<?php echo rand(1,100000);?>"></script>
 	
 	<!-- 	CSS tema -->
 	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">

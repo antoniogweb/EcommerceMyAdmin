@@ -27,8 +27,9 @@ class ProdottiController extends PagesController {
 	public $voceMenu = "prodotti";
 	public $sezionePannello = "ecommerce";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$campoPrice = "price";
 		
