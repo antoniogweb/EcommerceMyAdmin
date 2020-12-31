@@ -67,4 +67,16 @@ class Lang_It_Formats_From_Mysql
 		return $string;
 	}
 	
+	public function time($string)
+	{
+		if (preg_match('/^[0-9]{2}\:[0-9]{2}\:[0-9]{2}$/',$string))
+		{
+			$array = explode(":",$string);
+			
+			return $array[0].":".$array[1];
+		}
+		
+		return $string;
+	}
+	
 }

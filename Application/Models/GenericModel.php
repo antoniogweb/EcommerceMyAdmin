@@ -365,7 +365,7 @@ class GenericModel extends Model_Tree
 		{
 			if (isset($this->form->entry[$e]))
 			{
-				$this->form->entry[$e]->attributes = "readonly";
+				$this->form->entry[$e]->attributes = "disabled";
 			}
 		}
 	}
