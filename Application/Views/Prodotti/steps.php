@@ -31,7 +31,7 @@
 	<li <?php echo $posizioni['caratteristiche'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>">Caratteristiche</a></li>
 	<?php } ?>
 	<?php if (v("combinazioni_in_prodotti")) { ?>
-	<li <?php echo $posizioni['attributi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/attributi/$id_page".$viewStatusTutti;?>">Combinazioni</a></li>
+	<li <?php echo $posizioni['attributi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/attributi/$id_page".$viewStatusTutti;?>">Varianti</a></li>
 	<?php } ?>
 	<?php if (v("attiva_personalizzazioni")) { ?>
 	<li <?php echo $posizioni['personalizzazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/personalizzazioni/$id_page".$viewStatusTutti;?>">Personalizzazioni</a></li>

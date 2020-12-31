@@ -151,6 +151,8 @@ $(document).ready(function(){
 			
 			<div class="box">
 				<div class="box-header with-border main">
+					<div id="form_opzioni">Varianti associate a questo prodotto</div>
+					
 					<div class="notice_box">
 						<?php echo $notice;?>
 					</div>
@@ -161,13 +163,7 @@ $(document).ready(function(){
 						<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi">
 						
 					</form>
-				</div>
-			</div>
-			
-			<div class="box">
-				<div class="box-header with-border main">
-					<div id="form_opzioni">Attributi associati a questo prodotto</div>
-
+					<br />
 					<!-- show the table -->
 					<div class='recordsBox'>
 						<?php if ($numeroAttributi > 0) { ?>
