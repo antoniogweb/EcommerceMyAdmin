@@ -837,6 +837,16 @@ class BaseContenutiController extends BaseController
 		
 		$data["contenuti"] = $this->m["ContenutiModel"]->save()->orderBy("contenuti.id_order")->send();
 		
+		$data["contenuti_tab"] = array();
+		
+		foreach ($data["contenuti"] as $cont)
+		{
+			if (isset($data["contenuti_tab"][$cont["tipi_contenuto"]["titolo"]]))
+				$data["contenuti_tab"][$cont["tipi_contenuto"]["titolo"]][] = $cont;
+			else
+				$data["contenuti_tab"][$cont["tipi_contenuto"]["titolo"]] = array($cont);
+		}
+		
 		// Estraggo i marker
 		$data["marker"] = $this->m["ContenutiModel"]->restore(true)->where(array(
 			"tipo"	=>	"marker",

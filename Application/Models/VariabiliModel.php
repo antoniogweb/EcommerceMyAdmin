@@ -111,6 +111,12 @@ class VariabiliModel extends GenericModel {
 		"thumb_ajax_h"				=>	40,
 		"alert_error_class"			=>	"alert",
 		"alert_success_class"		=>	"executed",
+		"facebook_link"				=>	"",
+		"twitter_link"				=>	"",
+		"youtube_link"				=>	"",
+		"instagram_link"			=>	"",
+		"indirizzo_aziendale"		=>	"",
+		"telefono_aziendale"		=>	"",
 	);
 	
 	public function __construct() {
