@@ -207,12 +207,14 @@ class OrdiniModel extends FormModel {
 	{
 		$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
 		
-		$this->values["lingua"] = Params::$lang;
+		if (!isset($this->values["lingua"]))
+			$this->values["lingua"] = Params::$lang;
 		
 		if (!User::$nazioneNavigazione)
 			User::$nazioneNavigazione = v("nazione_default");
 		
-		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
+		if (!isset($this->values["nazione_navigazione"]))
+			$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
 		if ($this->controllaCF() && $this->controllaPIva())
 			return parent::insert();

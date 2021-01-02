@@ -615,7 +615,7 @@ class CartModel extends Model_Tree {
 		return 0;
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array())
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null)
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -738,7 +738,16 @@ class CartModel extends Model_Tree {
 					$this->values["id_order"] = $prodottoParent["id_order"];
 				}
 				
-				if (isset($datiCombinazione))
+				if (isset($prIntero))
+				{
+					$prezzoIntero = $this->values["prezzo_intero"] = number_format($prIntero,v("cifre_decimali"),".","");
+					
+					if (isset($prInteroIvato))
+						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = number_format($prInteroIvato,2,".","");
+					else
+						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = number_format($prezzoIntero * (1 + ($this->values["iva"] / 100)),2,".","");
+				}
+				else if (isset($datiCombinazione))
 				{
 					$prezzoIntero = $this->values["prezzo_intero"] = $datiCombinazione[0]["combinazioni"]["price"];
 					

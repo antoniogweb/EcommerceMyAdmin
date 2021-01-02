@@ -938,7 +938,7 @@ class BaseOrdiniController extends BaseController
 										
 										$this->m["SpedizioniModel"]->insert();
 										
-										$idSpedizione = $this->m["SpedizioniModel"]->lastId();
+										$idSpedizione = $this->m["SpedizioniModel"]->lId;
 										
 										$this->m['OrdiniModel']->values = array(
 											"id_user" => $clean['userId'],
