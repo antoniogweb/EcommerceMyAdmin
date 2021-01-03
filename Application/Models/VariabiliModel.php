@@ -117,6 +117,7 @@ class VariabiliModel extends GenericModel {
 		"instagram_link"			=>	"",
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
+		"numero_in_evidenza"		=>	4,
 	);
 	
 	public function __construct() {

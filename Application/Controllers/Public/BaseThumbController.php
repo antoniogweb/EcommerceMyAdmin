@@ -135,11 +135,14 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	1180,
-			'imgHeight'		=>	500,
+			'imgWidth'		=>	1920,
+			'imgHeight'		=>	700,
 			'defaultImage'	=>  null,
-			'useCache'		=>	true,
+// 			'useCache'		=>	true,
 			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
 		);
 		
 		if (accepted($fileName))
@@ -518,13 +521,13 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	680,
-			'imgHeight'		=>	853,
+			'imgWidth'		=>	550,
+			'imgHeight'		=>	600,
 			'defaultImage'	=>  null,
 			'backgroundColor' => "#FFF",
-// 			'cropImage'		=>	'yes',
-// 			'horizAlign'	=>	'center',
-// 			'vertAlign'		=>	'center',
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
 			'useCache'		=>	true,
 		);
 		
@@ -533,6 +536,36 @@ class BaseThumbController extends Controller {
 			if (strcmp($fileName,'') !== 0)
 			{
 				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/categorie',$params);
+				$thumb->render($fileName);
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
+	public function tagbig($fileName)
+	{
+		$this->clean();
+		
+		$params = array(
+			'imgWidth'		=>	800,
+			'imgHeight'		=>	500,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'useCache'		=>	true,
+		);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/tag_2',$params);
 				$thumb->render($fileName);
 			}
 		}

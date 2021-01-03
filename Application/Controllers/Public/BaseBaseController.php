@@ -298,7 +298,7 @@ class BaseBaseController extends Controller
 				"in" => array("-id_c" => $childrenProdotti),
 				"attivo"=>"Y",
 				"in_evidenza"=>"Y",
-			))->orderBy("pages.id_order desc")->send(), 4);
+			))->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza"));
 		
 		if (v("mostra_avvisi"))
 			$data["avvisi"] = $this->m["PagesModel"]->where(array(
