@@ -648,4 +648,15 @@ class OrdiniModel extends FormModel {
 		
 		return false;
 	}
+	
+	public static function getByCartUid($cartUid)
+	{
+		$clean["cartUid"] = sanitizeAll($cartUid);
+		
+		$o = new OrdiniModel();
+		
+		return $o->clear()->where(array(
+			"cart_uid"	=>	$clean["cartUid"],
+		))->record();
+	}
 }

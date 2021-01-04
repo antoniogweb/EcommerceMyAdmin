@@ -705,6 +705,9 @@ class BaseRegusersController extends BaseController
 		$data['notice'] = null;
 		$data['action'] = "/gestisci-spedizione/".$clean["id"];
 		
+		if (isset($_GET["cart_uid"]) && !empty(OrdiniModel::getByCartUid($_GET["cart_uid"])))
+			$data['action'] .= "?cart_uid=".sanitizeHtml($_GET["cart_uid"]);
+		
 		$campoObbligatoriProvincia = "dprovincia_spedizione";
 		
 		if (isset($_POST["nazione_spedizione"]))
@@ -738,7 +741,19 @@ class BaseRegusersController extends BaseController
 		if ($this->m['SpedizioniModel']->queryResult)
 		{
 			if (Output::$html)
-				$this->redirect("riservata/indirizzi");
+			{
+				if (isset($_GET["cart_uid"]))
+				{
+					$ordine = OrdiniModel::getByCartUid($_GET["cart_uid"]);
+					
+					if (!empty($ordine))
+						$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
+					else
+						$this->redirect("riservata/indirizzi");
+				}
+				else
+					$this->redirect("riservata/indirizzi");
+			}
 		}
 		else
 		{

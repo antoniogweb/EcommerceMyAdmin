@@ -288,7 +288,7 @@ class BaseOrdiniController extends BaseController
 				$result = $this->m['OrdiniModel']->importaSpedizione($clean["id_o"], $_POST["id_spedizione"]);
 			
 			if ($result)
-				$this->redirect("resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]);
+				$this->redirect("resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."?n=y");
 			else
 				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile cambiare i dati di spedizione. Contattare il negozio")."</div>";
 		}
