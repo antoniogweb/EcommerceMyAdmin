@@ -32,7 +32,9 @@ class BaseThumbController extends Controller {
 		
 		// Variabili
 		$this->model('VariabiliModel');
-		VariabiliModel::ottieniVariabili();
+		
+		if (empty(VariabiliModel::$valori))
+			VariabiliModel::ottieniVariabili();
 	}
 	
 	public function contenuto($fileName)
@@ -715,7 +717,7 @@ class BaseThumbController extends Controller {
 				if (strcmp($fileName,'') !== 0)
 				{
 					$thumb = new Image_Gd_Thumbnail(FRONT.'/images/widgets',$params);
-					$thumb->render($fileName);
+// 					$thumb->render($fileName);
 				}
 			}
 		}

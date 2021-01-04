@@ -38,6 +38,8 @@ class ConteggioqueryModel extends GenericModel {
 		$cq->setValues(array(
 			"numero"	=>	$numero,
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
+			"ip"		=>	getIp(),
+			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 		));
 		
 		$cq->insert();
