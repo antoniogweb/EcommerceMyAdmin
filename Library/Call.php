@@ -502,7 +502,11 @@ try {
 
 	//call the main hook
 	callHook();
-
+	
+	//include the file containing the set of actions to carry out before ending application
+	if (file_exists(ROOT . DS . APPLICATION_PATH . DS . 'Hooks' . DS . 'BeforeEnding.php'))
+		Hooks::load(ROOT . DS . APPLICATION_PATH . DS . 'Hooks' . DS . 'BeforeEnding.php');
+	
 	//disconnect to the database
 	Factory_Db::disconnect(DATABASE_TYPE);
 
