@@ -717,7 +717,7 @@ class BaseThumbController extends Controller {
 				if (strcmp($fileName,'') !== 0)
 				{
 					$thumb = new Image_Gd_Thumbnail(FRONT.'/images/widgets',$params);
-// 					$thumb->render($fileName);
+					$thumb->render($fileName);
 				}
 			}
 		}
