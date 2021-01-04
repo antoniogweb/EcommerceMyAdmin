@@ -118,6 +118,7 @@ class VariabiliModel extends GenericModel {
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
 		"numero_in_evidenza"		=>	4,
+		"pagamenti_permessi"		=>	"bonifico,paypal",
 	);
 	
 	public function __construct() {

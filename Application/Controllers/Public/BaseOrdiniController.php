@@ -253,6 +253,61 @@ class BaseOrdiniController extends BaseController
 		}
 	}
 	
+	public function modifica($id_o = 0, $cart_uid = 0)
+	{
+		$data['notice'] = null;
+		
+		$data['title'] = Parametri::$nomeNegozio . " - Modifica resoconto ordine";
+		
+		$clean["cart_uid"] = sanitizeAll($cart_uid);
+		$clean["id_o"] = (int)$id_o;
+		
+		if (!$this->m["OrdiniModel"]->recordExists($clean["id_o"], $clean["cart_uid"]))
+		{
+			if (Output::$html)
+				$this->redirect("carrello");
+			else
+				$esisteOrdine = false;
+		}
+		
+		$data["tendinaIndirizzi"] = $this->m["RegusersModel"]->getTendinaIndirizzi(User::$id);
+		
+		$this->m['OrdiniModel']->addStrongCondition("update",'checkIsStrings|'.v("pagamenti_permessi"),"pagamento|".gtext("<b>Si prega di selezionare il pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+		
+		$this->m['OrdiniModel']->addStrongCondition("update",'checkIsStrings|'.implode(",",array_keys($data["tendinaIndirizzi"])),"id_spedizione|".gtext("<b>Si prega di selezionare l'indirizzo</b>")."<div class='evidenzia'>class_id_spedizione</div>");
+		
+		$this->m['OrdiniModel']->setFields("pagamento,id_spedizione",'sanitizeAll');
+		$this->m['OrdiniModel']->updateTable('update',$clean["id_o"]);
+		$data['notice'] = $this->m['OrdiniModel']->notice;
+		
+		if ($this->m['OrdiniModel']->queryResult)
+		{
+			$result = false;
+			
+			if (isset($_POST["id_spedizione"]) && in_array($_POST["id_spedizione"], array_keys($data["tendinaIndirizzi"])))
+				$result = $this->m['OrdiniModel']->importaSpedizione($clean["id_o"], $_POST["id_spedizione"]);
+			
+			if ($result)
+				$this->redirect("resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]);
+			else
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile cambiare i dati di spedizione. Contattare il negozio")."</div>";
+		}
+		
+		$res = $this->m["OrdiniModel"]->clear()
+							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
+							->send();
+		
+		$data["ordine"] = $res[0]["orders"];
+		
+		if ($data["ordine"]["stato"] != "pending")
+			$this->redirect("");
+		
+		
+		
+		$this->append($data);
+		$this->load("modifica_ordine");
+	}
+	
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$data['notice'] = null;

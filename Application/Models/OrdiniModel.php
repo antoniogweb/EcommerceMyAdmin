@@ -38,6 +38,15 @@ class OrdiniModel extends FormModel {
 		"deleted"	=>	"Ordine annullato",
 	);
 	
+	public static $pagamenti = array();
+	
+	public static $elencoPagamenti = array(
+		"bonifico"		=>	"Bonifico bancario",
+		"contrassegno"	=>	"Contrassegno (pagamento alla consegna)",
+		"paypal"		=>	"Pagamento online tramite PayPal",
+		"carta_di_credito"	=>	"Pagamento online tramite carta di credito",
+	);
+	
 	public static $labelStati = array(
 		"pending"	=>	"default",
 		"completed"	=>	"primary",
@@ -119,6 +128,14 @@ class OrdiniModel extends FormModel {
 			"closed"	=>	gtext("Ordine completato e spedito", false),
 			"deleted"	=>	gtext("Ordine annullato", false),
 		);
+		
+		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
+		
+		foreach (self::$elencoPagamenti as $k => $v)
+		{
+			if (in_array($k, $pagamentiPermessi))
+				self::$pagamenti[$k] = gtext($v, false);
+		}
 	}
 	
 	public function relations() {
@@ -603,5 +620,32 @@ class OrdiniModel extends FormModel {
 			return "<span class='text-bold text text-".OrdiniModel::$labelStati[$records["orders"]["stato"]]."'>".OrdiniModel::$stati[$records["orders"]["stato"]]."<span>";
 		
 		return $records["orders"]["stato"];
+	}
+	
+	// Importa i dati della spedizione $id_s nell'ordine $id_o
+	public function importaSpedizione($id_o, $id_s)
+	{
+		$s = new SpedizioniModel();
+		$o = new OrdiniModel();
+		
+		$spedizione = $s->selectId((int)$id_s);
+		
+		if (!empty($spedizione))
+		{
+			$o->setValues(array(
+				"id_spedizione"			=>	(int)$id_s,
+				"indirizzo_spedizione"	=>	$spedizione["indirizzo_spedizione"],
+				"cap_spedizione"		=>	$spedizione["cap_spedizione"],
+				"provincia_spedizione"	=>	$spedizione["provincia_spedizione"],
+				"nazione_spedizione"	=>	$spedizione["nazione_spedizione"],
+				"citta_spedizione"		=>	$spedizione["citta_spedizione"],
+				"telefono_spedizione"	=>	$spedizione["telefono_spedizione"],
+				"dprovincia_spedizione"	=>	$spedizione["dprovincia_spedizione"],
+			), "sanitizeDb");
+			
+			return $o->update((int)$id_o);
+		}
+		
+		return false;
 	}
 }
