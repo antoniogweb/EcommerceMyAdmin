@@ -937,7 +937,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 			$t = "<a $target class='link_testi' href='".$urlLink."'>".$t."</a>";
 		}
 		
-		$path = ROOT . "/Application/Views/Contenuti/Elementi/Widget/".strtolower($tipo).".php";
+		$path = tp() . "/Contenuti/Elementi/Widget/".strtolower($tipo).".php";
 		
 		if (file_exists($path))
 		{

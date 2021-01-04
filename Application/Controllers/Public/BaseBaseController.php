@@ -298,6 +298,7 @@ class BaseBaseController extends Controller
 				"in" => array("-id_c" => $childrenProdotti),
 				"attivo"=>"Y",
 				"in_evidenza"=>"Y",
+				"acquistabile"	=>	"Y",
 			))->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza"));
 		
 		if (v("mostra_avvisi"))
@@ -375,16 +376,20 @@ class BaseBaseController extends Controller
 		
 		$data["categorieBlog"] = $this->m["CategoriesModel"]->children(87, false, false);
 		
-		//estraggo i prodotti in promozione
-// 		$nowDate = date("Y-m-d");
-// 		$pWhere = array(
-// 			"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-// 			" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-// 			"attivo" => "Y",
-// 			"in_promozione" => "Y",
-// 		);
-// 		
-// 		$data["inPromozione"] = getRandom($this->m["PagesModel"]->clear()->where($pWhere)->limit(20)->orderBy("pages.id_order")->send());
+		if (v("estrai_in_promozione_home"))
+		{
+			//estraggo i prodotti in promozione
+			$nowDate = date("Y-m-d");
+			$pWhere = array(
+				"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+				" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+				"attivo" => "Y",
+				"in_promozione" => "Y",
+				"acquistabile"	=>	"Y",
+			);
+			
+			$data["inPromozione"] = getRandom($this->m["PagesModel"]->clear()->where($pWhere)->limit(20)->orderBy("pages.id_order")->send());
+		}
 		
 		$data["meta_description"] = $data["title"] =  htmlentitydecode(ImpostazioniModel::$valori["meta_description"]);
 		$data["keywords"] = $data["title"] =  htmlentitydecode(ImpostazioniModel::$valori["keywords"]);
