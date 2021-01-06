@@ -76,7 +76,7 @@ class BlogModel extends PagesModel {
 	{
 		$this->_popupItemNames = array(
 			'attivo'	=>	'attivo',
-// 			'id_c'	=>	'id_c',
+			'id_c'	=>	'id_c',
 // 			'in_evidenza'	=>	'in_evidenza',
 // 			'in_promozione'	=>	'in_promozione',
 // 			'mostra_in_slide'	=>	'mostra_in_slide',
@@ -85,7 +85,7 @@ class BlogModel extends PagesModel {
 
 		$this->_popupLabels = array(
 			'attivo'	=>	'PUBBLICATO?',
-// 			'id_c'	=>	'CATEGORIA',
+			'id_c'	=>	'CATEGORIA',
 			'in_evidenza'	=>	'IN EVIDENZA?',
 // 			'in_promozione'	=>	'IN PROMOZIONE?',
 // 			'mostra_in_slide'	=>	'IN SLIDE?',
@@ -94,10 +94,13 @@ class BlogModel extends PagesModel {
 
 		$this->_popupFunctions = array(
 			'attivo'=>	'getYesNo',
-// 			'id_c'	=>	'getCatNameForFilters',
+			'id_c'	=>	'getCatNameForFilters',
 // 			'in_evidenza'	=>	'getYesNo',
 // 			'in_promozione'	=>	'getYesNo',
 // 			'mostra_in_slide'	=>	'getYesNo',
 		);
+		
+		if (isset($this->hModel->section))
+			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
 	}
 }

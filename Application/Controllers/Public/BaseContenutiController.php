@@ -380,9 +380,9 @@ class BaseContenutiController extends BaseController
 		$firstSection = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
 		
 		if ($firstSection == "prodotti")
-		{
 			$this->elementsPerPage = $data["elementsPerPage"] = v("prodotti_per_pagina");
-		}
+		else if ($firstSection == "blog")
+			$this->elementsPerPage = $data["elementsPerPage"] = v("news_per_pagina");
 		
 		$data["arrayLingue"] = array();
 		

@@ -33,13 +33,14 @@ class BlogController extends PagesController {
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			'PagesModel.categoriesS|pages.id_page',
 			'pages.data_news',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
 		$this->orderBy = "pages.data_news desc";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Data,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data,Pubblicato?';
 		$this->filters = array(null,null,'title');
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";

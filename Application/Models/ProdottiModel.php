@@ -62,9 +62,7 @@ class ProdottiModel extends PagesModel {
 		$this->_popupWhere[] = array();
 		
 		if (isset($this->hModel->section))
-		{
 			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
-		}
 		
 		if (v("usa_marchi"))
 		{
