@@ -25,6 +25,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 class CategoriesModel extends HierarchicalModel {
 
 	public static $aliases = array();
+	public static $elencoTag = null;
+	public static $elencoMarchi = null;
 	
 	public $controller = "categories";
 	
@@ -612,9 +614,6 @@ class CategoriesModel extends HierarchicalModel {
 		return $this->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c, "attivo"=>"Y"))->orderBy("categories.lft")->send();
 	}
 	
-	public static $elencoTag = null;
-	public static $elencoMarchi = null;
-	
 	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "")
 	{
 		$urlArray = array();
@@ -657,11 +656,16 @@ class CategoriesModel extends HierarchicalModel {
 		
 		if ($id_c)
 		{
-			$c = new CategoriesModel();
-			
-			Parametri::$useHtmlExtension = false;
-			$urlArray[] = $c->getUrlAlias($id_c);
-			Parametri::$useHtmlExtension = true;
+			if (is_numeric($id_c))
+			{
+				$c = new CategoriesModel();
+				
+				Parametri::$useHtmlExtension = false;
+				$urlArray[] = $c->getUrlAlias($id_c);
+				Parametri::$useHtmlExtension = true;
+			}
+			else
+				$urlArray[] = $id_c;
 		}
 		
 		$url = implode("/", $urlArray).".html";
