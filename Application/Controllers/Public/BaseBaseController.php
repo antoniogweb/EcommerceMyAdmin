@@ -292,8 +292,8 @@ class BaseBaseController extends Controller
 		
 		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"], true);
 		
-		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = getRandom($this->m["PagesModel"]->clear()->select("*")->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = getRandom($this->m["PagesModel"]->clear()->select("*")
+			->addJoinTraduzionePagina()
 			->where(array(
 				"in" => array("-id_c" => $childrenProdotti),
 				"attivo"=>"Y",
@@ -340,19 +340,21 @@ class BaseBaseController extends Controller
 		
 		$data["categoriaShop"] = $this->m["CategoriesModel"]->selectId($clean["idShop"]);
 		
-		$idBlog = (int)$this->m["CategoriesModel"]->clear()->where(array(
-			"section"	=>	"blog",
-		))->field("id_c");
-		
-		$children = $this->m["CategoriesModel"]->children($idBlog, true);
+		if (v("blog_attivo"))
+		{
+			$idBlog = (int)$this->m["CategoriesModel"]->clear()->where(array(
+				"section"	=>	"blog",
+			))->field("id_c");
+			
+			$children = $this->m["CategoriesModel"]->children($idBlog, true);
 
-		$data["ultimiArticoli"] = $this->getNewsInEvidenza = $this->m['PagesModel']->clear()->select("*")
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->where(array(
-				"attivo" => "Y",
-				"in" => array("-id_c" => $children),
-			))->orderBy("data_news desc")->limit(4)->send();
+			$data["ultimiArticoli"] = $this->getNewsInEvidenza = $this->m['PagesModel']->clear()->select("*")
+				->addJoinTraduzionePagina()
+				->where(array(
+					"attivo" => "Y",
+					"in" => array("-id_c" => $children),
+				))->orderBy("data_news desc")->limit(4)->send();
+		}
 		
 		if (v("team_attivo"))
 		{
@@ -361,8 +363,7 @@ class BaseBaseController extends Controller
 			))->field("id_c");
 			
 			$data["team"] = $this->team = $this->m['PagesModel']->clear()->select("*")
-				->inner("categories")->on("categories.id_c = pages.id_c")
-				->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
 					"id_c"		=>	(int)$idTeam,
@@ -388,7 +389,7 @@ class BaseBaseController extends Controller
 				"acquistabile"	=>	"Y",
 			);
 			
-			$data["inPromozione"] = getRandom($this->m["PagesModel"]->clear()->where($pWhere)->limit(20)->orderBy("pages.id_order")->send());
+			$data["inPromozione"] = getRandom($this->m["PagesModel"]->clear()->addJoinTraduzionePagina()->where($pWhere)->limit(20)->orderBy("pages.id_order")->send());
 		}
 		
 		$data["meta_description"] = $data["title"] =  htmlentitydecode(ImpostazioniModel::$valori["meta_description"]);

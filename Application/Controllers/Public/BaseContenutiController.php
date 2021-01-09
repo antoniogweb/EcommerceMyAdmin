@@ -1174,7 +1174,7 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->aWhere($accWhere);
 		}
 	
-		$data["pages"] = $this->m['PagesModel']->select("distinct pages.codice_alfa,pages.*")->orderBy("pages.id_order")->send();
+		$data["pages"] = $this->m['PagesModel']->addJoinTraduzionePagina()->orderBy("pages.id_order")->send();
 		
 		$rowNumber = $data["rowNumber"] = count($data["pages"]);
 		

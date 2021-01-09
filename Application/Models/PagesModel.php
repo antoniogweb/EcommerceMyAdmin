@@ -1780,4 +1780,16 @@ class PagesModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function addJoinTraduzionePagina()
+	{
+		$this->inner("categories")->on("categories.id_c = pages.id_c")
+			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'");
+		
+		if (!$this->select)
+			$this->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*");
+		
+		return $this;
+	}
 }
