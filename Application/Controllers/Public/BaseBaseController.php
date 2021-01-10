@@ -340,9 +340,11 @@ class BaseBaseController extends Controller
 		
 		$data["categoriaShop"] = $this->m["CategoriesModel"]->selectId($clean["idShop"]);
 		
+		$data["idBlog"] = 0;
+		
 		if (v("blog_attivo"))
 		{
-			$idBlog = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idBlog = $data["idBlog"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
 				"section"	=>	"blog",
 			))->field("id_c");
 			
@@ -461,6 +463,12 @@ class BaseBaseController extends Controller
 		
 		if (Output::$html)
 		{
+			$data["tipiPagina"] = $this->m["PagesModel"]->clear()->where(array(
+				"ne"	=>	array("tipo_pagina" => ""),
+			))->toList("tipo_pagina", "id_page")->send();
+			
+// 			print_r($data["tipiPagina"]);
+			
 			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
 			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
 			

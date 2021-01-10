@@ -41,6 +41,10 @@ class PagesModel extends GenericModel {
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
 		"PRIVACY"	=>	"Pagina privacy",
+		"AZIENDA"	=>	"Pagina azienda",
+		"CONTATTI"	=>	"Pagina contatti",
+		"RESI"		=>	"Pagina resi",
+		"FAQ"		=>	"Pagina FAQ",
 	);
 	
 	public function __construct() {
