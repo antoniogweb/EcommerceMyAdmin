@@ -95,7 +95,7 @@ class ContenutiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'lingua'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	$this->selectLingua(),
+					"options"	=>	array("tutte" => "TUTTE") + $this->selectLingua(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					"labelString"	=>	"Visibile su lingua",
