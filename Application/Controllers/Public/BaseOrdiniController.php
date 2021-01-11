@@ -1016,7 +1016,7 @@ class BaseOrdiniController extends BaseController
 										{
 											//mail con credenziali
 											ob_start();
-											include ROOT."/Application/Views/Regusers/mail_credenziali.php";
+											include tp()."/Regusers/mail_credenziali.php";
 
 											$output = ob_get_clean();
 											$output = MailordiniModel::loadTemplate($mail->Subject, $output);
@@ -1116,7 +1116,7 @@ class BaseOrdiniController extends BaseController
 								//mail al cliente
 								ob_start();
 								$tipoOutput = "mail_al_cliente";
-								include ROOT."/Application/Views/Ordini/resoconto-acquisto.php";
+								include tp()."/Ordini/resoconto-acquisto.php";
 
 								$output = ob_get_clean();
 								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
@@ -1133,7 +1133,7 @@ class BaseOrdiniController extends BaseController
 								
 								ob_start();
 								$tipoOutput = "mail_al_negozio";
-								include ROOT."/Application/Views/Ordini/resoconto-acquisto.php";
+								include tp()."/Ordini/resoconto-acquisto.php";
 
 								$output = ob_get_clean();
 								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
