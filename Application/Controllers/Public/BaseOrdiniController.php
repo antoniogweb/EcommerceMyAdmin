@@ -83,6 +83,19 @@ class BaseOrdiniController extends BaseController
 	//ritorno da paypal
 	public function ipn()
 	{
+		if(!is_dir(ROOT.'/Logs'))
+		{
+			if (@mkdir(ROOT.'/Logs'))
+			{
+				$fp = fopen(ROOT.'/Logs/index.html', 'w');
+				fclose($fp);
+				
+				$fp = fopen(ROOT.'/Logs/.htaccess', 'w');
+				fwrite($fp, 'deny from all');
+				fclose($fp);
+			}
+		}
+		
 		$fp = fopen(ROOT.'/Logs/ipn.txt', 'a+');
 		fwrite($fp, date("Y-m-d H:i:s"));
 		fwrite($fp, print_r($_GET,true));
