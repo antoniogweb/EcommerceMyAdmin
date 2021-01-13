@@ -1692,3 +1692,10 @@ function sanitizeJs($jsString)
 	
 	return $result;
 }
+
+function parent($file)
+{
+	$file = str_replace(tp(),"",$file);
+	
+	return ROOT."/Application/Views/_".$file;
+}
