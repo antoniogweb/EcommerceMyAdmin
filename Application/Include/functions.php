@@ -1637,6 +1637,18 @@ function tp()
 	return Domain::$parentRoot."/Application/Views$subfolder";
 }
 
+function tpf($filePath = "")
+{
+	$subfolder = isset(Params::$viewSubfolder) ? DS . Params::$viewSubfolder : "";
+	
+	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+	
+	if (isset(Params::$viewSubfolder) && file_exists($subFolderFullPath))
+		return $subFolderFullPath;
+	
+	return Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+}
+
 function singPlu($numero, $sing, $plu)
 {
 	if ($numero == 1)
