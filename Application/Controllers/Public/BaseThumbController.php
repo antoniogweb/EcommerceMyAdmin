@@ -228,11 +228,11 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	300,
-			'imgHeight'		=>	300,
+			'imgWidth'		=>	500,
+			'imgHeight'		=>	500,
 			'defaultImage'	=>  null,
-			'useCache'		=>	true,
-			'cropImage'		=>	'yes',
+// 			'useCache'		=>	true,
+// 			'cropImage'		=>	'yes',
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 			'backgroundColor' => "#FFF",

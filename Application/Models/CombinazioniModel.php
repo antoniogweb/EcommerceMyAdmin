@@ -412,7 +412,9 @@ class CombinazioniModel extends GenericModel {
 	
 	public function varianti($record)
 	{
-		return $this->getStringa($record["combinazioni"]["id_c"], " - ");
+		$divisorio = v("immagine_in_varianti") ? "<br />" : " - ";
+		
+		return $this->getStringa($record["combinazioni"]["id_c"], $divisorio);
 	}
 	
 	public function prodotto($record)
@@ -421,6 +423,36 @@ class CombinazioniModel extends GenericModel {
 			return "<a target='_blank' href='".Url::getRoot()."prodotti/form/update/".$record["pages"]["id_page"]."'>".$record["pages"]["title"]."</a>";
 		
 		return $record["pages"]["title"];
+	}
+	
+	public function immagine($record)
+	{
+		$strutturaImmagini = PagesModel::listaImmaginiPagina();
+		
+		$html = "";
+		
+		$imgSrc = $record["combinazioni"]["immagine"] ? $record["combinazioni"]["immagine"] : "nofound.jpeg";
+		$dataUrl = $record["combinazioni"]["immagine"] ? $record["combinazioni"]["immagine"] : "";
+		$classe = isset($strutturaImmagini[$record["combinazioni"]["id_page"]]) ? "immagine_variante" : "";
+		
+		$html .= "<img class='$classe' src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$imgSrc."' />";
+		
+		$html .= "<input type='hidden' name='immagine' value=\"".$record["combinazioni"]["immagine"]."\" />";
+		
+		if (isset($strutturaImmagini[$record["combinazioni"]["id_page"]]))
+		{
+			$html .= "<div style='display:none'><div class='box_immagini_varianti'>";
+			
+			foreach ($strutturaImmagini[$record["combinazioni"]["id_page"]] as $img)
+			{
+				$html .= "<img class='seleziona_immagine_variante' style='cursor:pointer;' data-img=\"".$img."\" src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$img."' />";
+			}
+			
+			$html .= "</div></div>";
+			
+		}
+		
+		return $html;
 	}
 	
 	public function codice($record)

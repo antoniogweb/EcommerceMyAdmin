@@ -35,6 +35,8 @@ class PagesModel extends GenericModel {
 	
 	public static $currentRecord = null;
 	
+	public static $arrayImmagini = null;
+	
 	public static $tipiPagina = array(
 		"GRAZIE"	=>	"Pagina grazie",
 		"COOKIE"	=>	"Pagina cookie",
@@ -1795,5 +1797,40 @@ class PagesModel extends GenericModel {
 			$this->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*");
 		
 		return $this;
+	}
+	
+	public static function listaImmaginiPagina()
+	{
+		if (isset(self::$arrayImmagini))
+			return self::$arrayImmagini;
+		
+		$p = new PagesModel();
+		$i = new ImmaginiModel();
+		
+		// Immagine principale
+		$strImm = $p->clear()->select("distinct codice_alfa,pages.id_page,pages.immagine")->toList("id_page", "immagine")->send();
+		
+		$struttImmagini = array();
+		
+		foreach ($strImm as $idPage => $immagine)
+		{
+			if (trim($immagine))
+				$struttImmagini[$idPage] = array($immagine);
+		}
+		
+		// Altre immagini
+		$elencoImmagini = $i->clear()->select("id_page,immagine")->orderBy("id_order")->send(false);
+		
+		foreach ($elencoImmagini as $row)
+		{
+			if (isset($struttImmagini[$row["id_page"]]))
+				$struttImmagini[$row["id_page"]][] = $row["immagine"];
+			else
+				$struttImmagini[$row["id_page"]] = array($row["immagine"]);
+		}
+		
+		self::$arrayImmagini = $struttImmagini;
+		
+		return self::$arrayImmagini;
 	}
 }

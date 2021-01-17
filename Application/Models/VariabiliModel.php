@@ -122,6 +122,7 @@ class VariabiliModel extends GenericModel {
 		"estrai_in_promozione_home"	=>	0,
 		"news_per_pagina"			=>	16,
 		"email_aziendale"			=>	"",
+		"immagine_in_varianti"		=>	0,
 	);
 	
 	public function __construct() {

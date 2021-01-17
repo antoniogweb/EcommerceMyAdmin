@@ -379,6 +379,9 @@ $(document).ready(function(){
 			if ($(this).find("[name='giacenza']").length > 0)
 				temp.giacenza = $(this).find("[name='giacenza']").val();
 			
+			if ($(this).find("[name='immagine']").length > 0)
+				temp.immagine = $(this).find("[name='immagine']").val();
+			
 			valori.push(temp);
 		});
 		

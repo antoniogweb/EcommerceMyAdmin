@@ -71,8 +71,6 @@ class CombinazioniController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("c1.title", "prodotto","varianti","codice","prezzo","peso");
-		
 		$prezzoLabel = "Prezzo";
 		
 		if (v("prezzi_ivati_in_prodotti"))
@@ -87,7 +85,24 @@ class CombinazioniController extends BaseController
 		else
 			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 		
-		$this->mainHead = "Categoria,Prodotto,Combinazione,Codice,$prezzoLabel,Peso";
+		$mainFields = array("c1.title", "prodotto");
+		$mainHead = "Categoria,Prodotto";
+		
+		if (v("immagine_in_varianti"))
+		{
+			$mainFields[] = "immagine";
+			$mainHead .= ",Immagine";
+		}
+		
+		$mainFields[] = "varianti";
+		$mainFields[] = "codice";
+		$mainFields[] = "prezzo";
+		$mainFields[] = "peso";
+		
+		$mainHead .= ",Combinazione,Codice,$prezzoLabel,Peso";
+		
+		$this->mainFields = $mainFields;
+		$this->mainHead = $mainHead;
 		
 		if (v("attiva_giacenza"))
 		{
@@ -97,6 +112,17 @@ class CombinazioniController extends BaseController
 		
 		$this->mainFields[] = "ordini";
 		$this->mainHead .= ",Acquisti";
+		
+		if (v("attiva_giacenza"))
+			$this->colProperties = array(
+				array(
+					'width'	=>	'60px',
+				),
+				null,null,null,
+				array(
+					'width'	=>	'160px',
+				)
+			);
 		
 		if ($this->viewArgs['id_page'] == "tutti")
 			$this->filters = array("categoria", "prodotto", "codice");
@@ -223,6 +249,9 @@ class CombinazioniController extends BaseController
 			
 			if (isset($v["giacenza"]))
 				$this->m[$this->modelName]->setValue("giacenza", $v["giacenza"]);
+			
+			if (isset($v["immagine"]))
+				$this->m[$this->modelName]->setValue("immagine", $v["immagine"]);
 			
 			$this->m[$this->modelName]->update($v["id_c"]);
 			

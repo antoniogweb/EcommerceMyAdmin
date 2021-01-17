@@ -1123,7 +1123,8 @@ class PagesController extends BaseController {
 // 			),
 		);
 		
-// 		$this->h['List']->addItem("text","<img class='immagine_variante' src='http://".DOMAIN_NAME."/thumb/immagineinlistaprodotti/0/;combinazioni.immagine;' /><img id=';combinazioni.id_c;' title='modifica immagine' class='img_attributo_aggiorna immagine_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><img class='attributo_loading align_middle' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' />");
+		if (v("immagine_in_varianti"))
+			$this->h['List']->addItem("text","<img class='immagine_variante' src='".$this->baseUrl."/thumb/immagineinlistaprodotti/0/;combinazioni.immagine;' /><img id=';combinazioni.id_c;' title='modifica immagine' class='img_attributo_aggiorna immagine_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><img class='attributo_loading align_middle' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' />");
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;combinazioni.codice;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='codice' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
 		
@@ -1146,7 +1147,12 @@ class PagesController extends BaseController {
 		$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean["id"]);
 		
 // 		$this->h['List']->addItem('delForm','pages/attributi/'.$clean['id'],';combinazioni.id_c;');
-		$head = 'Codice,Prezzo,Peso';
+		
+		if (v("immagine_in_varianti"))
+			$head = "Immagine,Codice,Prezzo,Peso";
+		else
+			$head = 'Codice,Prezzo,Peso';
+		
 		foreach ($colonne as $col)
 		{
 			$head .= ",$col";
