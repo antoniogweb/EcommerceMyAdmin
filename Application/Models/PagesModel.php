@@ -1721,10 +1721,16 @@ class PagesModel extends GenericModel {
 		return 0;
 	}
 	
-	public static function gXmlProdottiGoogle()
+	public static function gXmlProdottiGoogle($p = null)
 	{
 		$c = new CategoriesModel();
-		$p = new PagesModel();
+		
+		if (!isset($p))
+		{
+			$p = new PagesModel();
+			$p->clear();
+		}
+		
 		$m = new MarchiModel();
 		
 		$idShop = $c->getShopCategoryId();
@@ -1732,7 +1738,7 @@ class PagesModel extends GenericModel {
 		$children = $c->children($idShop, true);
 		
 		$catWhere = "in(".implode(",",$children).")";
-		$res = $p->clear()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
+		$res = $p->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
 			"in" => array("-id_c" => $children),
 			"pages.attivo"	=>	"Y",
 			"acquistabile"	=>	"Y",

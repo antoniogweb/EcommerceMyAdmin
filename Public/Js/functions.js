@@ -469,6 +469,30 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".svuota_cache", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+// 		that.find("i").removeClass("fa-trash").addClass("fa-refresh").addClass("fa-spin");
+		
+		var url = $(this).attr("href");
+		
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				
+				alert("Cache svuotata")
+				
+			}
+		});
+		
+	});
+	
 	$('.colorpicker-element').colorpicker();
 	
 	$("body").on("submit", ".moveupForm form, .movedownForm form", function(e){
