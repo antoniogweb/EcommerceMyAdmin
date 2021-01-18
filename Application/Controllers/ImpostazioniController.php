@@ -107,4 +107,17 @@ class ImpostazioniController extends BaseController
 		
 		$this->append($data);
 	}
+	
+	public function svuotacache()
+	{
+		$this->clean();
+		
+		if (defined("CACHE_FOLDER"))
+		{
+			Cache::$cacheFolder = Domain::$parentRoot."/".CACHE_FOLDER;
+			Cache::$cacheMinutes = 0;
+			Cache::$cleanCacheEveryXMinutes = 0;
+			Cache::deleteExpired();
+		}
+	}
 }

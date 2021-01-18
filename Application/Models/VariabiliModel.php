@@ -123,6 +123,7 @@ class VariabiliModel extends GenericModel {
 		"news_per_pagina"			=>	16,
 		"email_aziendale"			=>	"",
 		"immagine_in_varianti"		=>	0,
+		"piattaforma_in_sviluppo"	=>	1,
 	);
 	
 	public function __construct() {
