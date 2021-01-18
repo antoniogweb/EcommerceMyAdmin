@@ -108,14 +108,14 @@ class BaseHomeController extends BaseController
 		setcookie("ok_cookie","OK",$time,"/");
 	}
 	
-	public function xmlprodotti()
+	public function xmlprodotti($p = null)
 	{
 		if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
 			User::$nazione = sanitizeAll($_GET["listino"]);
 		
 		$this->clean();
 		
-		$prodotti = PagesModel::gXmlProdottiGoogle();
+		$prodotti = PagesModel::gXmlProdottiGoogle($p);
 		
 		$xmlArray = array();
 		
