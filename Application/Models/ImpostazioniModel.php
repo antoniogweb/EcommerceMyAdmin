@@ -44,6 +44,13 @@ class ImpostazioniModel extends GenericModel {
 		if (count($res) > 0)
 		{
 			self::$valori = $res[0]["impostazioni"];
+			
+			if (v("email_sviluppo"))
+			{
+				self::$valori["mail_invio_ordine"] = v("email_sviluppo");
+				self::$valori["mail_invio_conferma_pagamento"] = v("email_sviluppo");
+				self::$valori["bcc"] = v("email_sviluppo");
+			}
 		}
 	}
 	

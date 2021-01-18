@@ -124,6 +124,7 @@ class VariabiliModel extends GenericModel {
 		"email_aziendale"			=>	"",
 		"immagine_in_varianti"		=>	0,
 		"piattaforma_in_sviluppo"	=>	1,
+		"email_sviluppo"			=>	"",
 	);
 	
 	public function __construct() {
