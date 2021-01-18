@@ -181,4 +181,13 @@ class AttributivaloriModel extends GenericModel {
 		if ($record["attributi_valori"]["id_av"])
 			return "<a class='iframe action_iframe' href='".Url::getRoot()."/attributivalori/form/update/".$record["attributi_valori"]["id_av"]."?partial=Y&nobuttons=N'>".$record["attributi_valori"]["titolo"]."</a>";
 	}
+	
+	public static function getTipo($idAV)
+	{
+		$av = new AttributivaloriModel();
+		
+		return $av->select("attributi.tipo")->inner(array("attributo"))->where(array(
+			"id_av"	=>	(int)$idAV,
+		))->field("attributi.tipo");
+	}
 }

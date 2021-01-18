@@ -1601,12 +1601,13 @@ class PagesModel extends GenericModel {
 			{
 				$temp = array();
 				
-				if ($resValoriAttributi[0]["attributi"]["tipo"] == "TENDINA")
+				if ($resValoriAttributi[0]["attributi"]["tipo"] == "TENDINA" || $resValoriAttributi[0]["attributi"]["tipo"] == "IMMAGINE")
 				{
 					if (!v("primo_attributo_selezionato"))
 						$temp = array("0" => $name);
 				}
-				else
+				
+				if ($resValoriAttributi[0]["attributi"]["tipo"] == "RADIO")
 					$radio = true;
 			}
 			

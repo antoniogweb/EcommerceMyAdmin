@@ -94,8 +94,27 @@ class AttributiController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("edit");
-		$this->mainHead = "Titolo";
+		$tipo = AttributiModel::getTipo($clean['id']);
+		
+		if ($tipo == "IMMAGINE")
+		{
+			$this->mainFields = array("thumb", "edit");
+			$this->mainHead = "Immagine,Titolo";
+			
+			$this->colProperties = array(
+				array(
+					'width'	=>	'60px',
+				),
+				array(
+					'width'	=>	'120px',
+				),
+			);
+		}
+		else
+		{
+			$this->mainFields = array("edit");
+			$this->mainHead = "Titolo";
+		}
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"valori/".$clean['id'],'pageVariable'=>'page_fgl');
 		

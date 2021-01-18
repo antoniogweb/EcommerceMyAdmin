@@ -52,7 +52,6 @@ class AttributiModel extends GenericModel {
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo|Si prega di compilare il campo <i>Titolo attributo</i>");
 		
 		parent::__construct();
-
 	}
 	
 	public function relations() {
@@ -68,7 +67,7 @@ class AttributiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'tipo'		=>	array(
 					'type'		=>	'Select',
-					'options'	=>	"TENDINA,RADIO",
+					'options'	=>	"TENDINA,RADIO,IMMAGINE,COLORE",
 					'reverse' => 'yes',
 					
 				),
@@ -119,6 +118,14 @@ class AttributiModel extends GenericModel {
 				return parent::del($clean["id"]);
 			}
 		}
+	}
+	
+	public static function getTipo($idA)
+	{
+		$a = new AttributiModel();
 		
+		return $a->where(array(
+			"id_a"	=>	(int)$idA,
+		))->field("tipo");
 	}
 }

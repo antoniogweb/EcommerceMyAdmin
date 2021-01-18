@@ -5,6 +5,10 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php if (isset($form["immagine"])) { ?>
+						<?php echo $form["immagine"];?>
+						<?php } ?>
+						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 						<?php } ?>

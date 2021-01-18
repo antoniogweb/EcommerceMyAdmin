@@ -34,7 +34,17 @@ class AttributivaloriController extends BaseController {
 		
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("titolo");
+		$fields = "titolo";
+		
+		if ($this->viewArgs["id_a"] != "tutti")
+			$tipo = AttributiModel::getTipo($this->viewArgs["id_a"]);
+		else
+			$tipo = AttributivaloriModel::getTipo($id);
+		
+		if ($tipo == "IMMAGINE")
+				$fields .= ",immagine";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_a"] != "tutti")
 		{

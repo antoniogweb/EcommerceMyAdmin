@@ -364,6 +364,9 @@ class BaseContenutiController extends BaseController
 	
 	protected function category($id)
 	{
+		if (!in_array("combinazioni", Cache::$cachedTables))
+			Cache::$cachedTables[] = "combinazioni";
+		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
 			'o:sanitizeAll'	=>	"tutti",
