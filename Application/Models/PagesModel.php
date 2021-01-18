@@ -1613,7 +1613,7 @@ class PagesModel extends GenericModel {
 			
 			foreach ($resValoriAttributi as $rva)
 			{
-				$arrayCombValori[$rva["combinazioni"][$c]] = $radio ? "<span class='variante_radio_valore'>".avfield($rva, "titolo")."</span>" : $name.": ".avfield($rva, "titolo");
+				$arrayCombValori[$rva["combinazioni"][$c]] = $radio ? "<span class='variante_radio_valore ".v("classe_variante_radio")."'>".avfield($rva, "titolo")."</span>" : $name.": ".avfield($rva, "titolo");
 			}
 			
 			$lista_valori_attributi[$c] = $temp + $arrayCombValori;
