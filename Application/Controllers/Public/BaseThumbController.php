@@ -643,8 +643,8 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	100,
-			'imgHeight'		=>	100,
+			'imgWidth'		=>	300,
+			'imgHeight'		=>	300,
 			'defaultImage'	=>  null,
 			'backgroundColor' => "#FFF",
 			'useCache'		=>	true,
