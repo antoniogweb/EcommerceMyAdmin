@@ -1555,14 +1555,19 @@ class PagesModel extends GenericModel {
 		return array();
 	}
 	
-	public static function isRadioAttributo($idPage, $col)
+	public static function isAttributoTipo($idPage, $col, $tipo)
 	{
 		$attributo = self::getAttributoDaCol($idPage, $col);
 		
-		if (!empty($attributo) && $attributo["tipo"] == "RADIO")
+		if (!empty($attributo) && $attributo["tipo"] == $tipo)
 			return true;
 		
 		return false;
+	}
+	
+	public static function isRadioAttributo($idPage, $col)
+	{
+		return self::isAttributoTipo($idPage, $col, "RADIO");
 	}
 	
 	public function selectAttributi($id_page)
@@ -1584,7 +1589,7 @@ class PagesModel extends GenericModel {
 			$temp = array();
 			
 			$resValoriAttributi = $cm->clear()
-								->select("combinazioni.$c,attributi_valori.titolo,contenuti_tradotti.titolo,attributi.tipo")
+								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,contenuti_tradotti.titolo,attributi.tipo")
 								->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
 								->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
 								->left("contenuti_tradotti")->on("contenuti_tradotti.id_av = attributi_valori.id_av and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
@@ -1595,25 +1600,29 @@ class PagesModel extends GenericModel {
 			
 			$arrayCombValori = array();
 			
-			$radio = false;
+			$tipo = "TENDINA";
 			
 			if (count($resValoriAttributi) > 0)
 			{
+				$tipo = $resValoriAttributi[0]["attributi"]["tipo"];
+				
 				$temp = array();
 				
-				if ($resValoriAttributi[0]["attributi"]["tipo"] == "TENDINA" || $resValoriAttributi[0]["attributi"]["tipo"] == "IMMAGINE")
+				if ($tipo == "TENDINA" || $tipo == "IMMAGINE")
 				{
 					if (!v("primo_attributo_selezionato"))
 						$temp = array("0" => $name);
 				}
-				
-				if ($resValoriAttributi[0]["attributi"]["tipo"] == "RADIO")
-					$radio = true;
 			}
 			
 			foreach ($resValoriAttributi as $rva)
 			{
-				$arrayCombValori[$rva["combinazioni"][$c]] = $radio ? "<span class='variante_radio_valore ".v("classe_variante_radio")."'>".avfield($rva, "titolo")."</span>" : $name.": ".avfield($rva, "titolo");
+				if ($tipo == "RADIO")
+					$arrayCombValori[$rva["combinazioni"][$c]] = "<span class='variante_radio_valore ".v("classe_variante_radio")."'>".avfield($rva, "titolo")."</span>";
+				else if ($tipo == "IMMAGINE")
+					$arrayCombValori[$rva["combinazioni"][$c]] = $rva["attributi_valori"]["immagine"];
+				else
+					$arrayCombValori[$rva["combinazioni"][$c]] = $name.": ".avfield($rva, "titolo");
 			}
 			
 			$lista_valori_attributi[$c] = $temp + $arrayCombValori;

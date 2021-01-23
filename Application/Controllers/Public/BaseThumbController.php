@@ -668,6 +668,36 @@ class BaseThumbController extends Controller {
 		}
 	}
 	
+	public function valoreattributo($fileName)
+	{
+		$this->clean();
+		
+		$params = array(
+			'imgWidth'		=>	100,
+			'imgHeight'		=>	100,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'useCache'		=>	true,
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+		);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/valori_attributi',$params);
+				$thumb->render($fileName);
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
 	public function widget($id, $immagine, $field = "immagine")
 	{
 		$this->widgetg($id, $immagine, "immagine");
