@@ -126,6 +126,12 @@ class VariabiliModel extends GenericModel {
 		"piattaforma_in_sviluppo"	=>	1,
 		"email_sviluppo"			=>	"",
 		"classe_variante_radio"		=>	"",
+		"insert_account_fields"		=>	"nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2",
+		"account_attiva_conferma_password"	=>	1,
+		"account_attiva_conferma_username"	=>	1,
+		"insert_account_nominativo_obbligatorio"	=>	1,
+		"insert_account_cf_obbligatorio"			=>	1,
+		"insert_account_p_iva_obbligatorio"			=>	1,
 	);
 	
 	public function __construct() {

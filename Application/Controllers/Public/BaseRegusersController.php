@@ -810,7 +810,11 @@ class BaseRegusersController extends BaseController
 			$pec = $this->request->post("pec","","sanitizeAll");
 			$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 			
-			$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,password:sha1,nazione,pec,codice_destinatario,dprovincia,telefono_2';
+			$baseFields = v("insert_account_fields");
+			
+			// BASE: 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
+			
+			$fields = $baseFields.',password:sha1';
 			
 			if (v("attiva_ruoli"))
 				$fields .= ",id_ruolo";
@@ -824,7 +828,13 @@ class BaseRegusersController extends BaseController
 			
 			$this->m['RegusersModel']->setConditions($tipo_cliente, "insert", $pec, $codiceDestinatario);
 			
-			$this->m['RegusersModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,conferma_username,accetto,tipo_cliente,password,confirmation,nazione,pec,codice_destinatario,dprovincia,telefono_2";
+			$this->m['RegusersModel']->fields = "$baseFields,password";
+			
+			if (v("account_attiva_conferma_password"))
+				$this->m['RegusersModel']->fields .= ",confirmation";
+			
+			if (v("account_attiva_conferma_username"))
+				$this->m['RegusersModel']->fields .= ",conferma_username";
 			
 			if (v("attiva_ruoli"))
 				$this->m['RegusersModel']->fields .= ",id_ruolo";
