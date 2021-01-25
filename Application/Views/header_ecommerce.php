@@ -86,7 +86,7 @@ include(ROOT."/Application/Views/header.php");
 					<span>Ordini</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/ordini/main/1";?>"><i class="fa fa-list"></i> Lista ordini</a></li>
+					<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_ordini")."/1";?>"><i class="fa fa-list"></i> Lista ordini</a></li>
 					<?php if (v("fatture_attive")) { ?>
 					<li><a href="<?php echo $this->baseUrl."/fatture/main/1";?>"><i class="fa fa-list"></i> Lista fatture</a></li>
 					<?php } ?>

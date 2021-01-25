@@ -132,6 +132,7 @@ class VariabiliModel extends GenericModel {
 		"insert_account_nominativo_obbligatorio"	=>	1,
 		"insert_account_cf_obbligatorio"			=>	1,
 		"insert_account_p_iva_obbligatorio"			=>	1,
+		"url_elenco_ordini"			=>	"ordini/main",
 	);
 	
 	public function __construct() {

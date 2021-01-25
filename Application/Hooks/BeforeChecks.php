@@ -490,6 +490,15 @@ Helper_List::$filtersFormLayout = array(
 	),
 );
 
+if (defined("FILTRI_AGGIUNTIVI") && is_array(FILTRI_AGGIUNTIVI))
+{
+	foreach (FILTRI_AGGIUNTIVI as $asta => $filtro)
+	{
+		Helper_List::$filtersFormLayout["filters"][$asta] = $filtro;
+	}
+}
+
+
 $tempFilters = array();
 
 foreach (Helper_List::$filtersFormLayout["filters"] as $key => $filter)

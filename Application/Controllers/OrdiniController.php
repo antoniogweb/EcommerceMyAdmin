@@ -26,8 +26,9 @@ class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->session('admin');
 		$this->model();
@@ -76,7 +77,7 @@ class OrdiniController extends BaseController {
 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>'panel'));
 		
 		$mainFields = array(
-			'<a href="'.$this->baseUrl.'/ordini/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>',
+			'<a href="'.$this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>',
 			'smartDate|orders.data_creazione',
 			'OrdiniModel.getNome|orders.id_o',
 			'orders.email',
@@ -97,7 +98,7 @@ class OrdiniController extends BaseController {
 		
 		$this->scaffold->loadMain($mainFields,'orders.id_o','');
 		
-		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/ordini/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
+		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
 		
 // 		$this->scaffold->addItem('text',";OrdiniModel.pulsanteFattura|orders.id_o;");
 		$this->scaffold->addItem('text',$vediOrdineLink);
@@ -224,7 +225,7 @@ class OrdiniController extends BaseController {
 // 			);
 // 		
 // 			$this->loadScaffold('form',$params);
-// 			$this->scaffold->loadForm($queryType,"ordini/form/$queryType/".$clean['id']."/".$clean["admin_token"]);
+// 			$this->scaffold->loadForm($queryType,$this->applicationUrl.$this->controller."/form/$queryType/".$clean['id']."/".$clean["admin_token"]);
 // 			
 // 			$this->scaffold->mainMenu->links['torna_ordine']['url'] = 'vedi/'.$clean['id']."/".$clean["admin_token"];
 // // 			$this->scaffold->mainMenu->links['torna_ordine']['queryString'] = '?n=y';
@@ -304,7 +305,7 @@ class OrdiniController extends BaseController {
 			}
 		}
 		
-		$this->redirect("ordini/vedi/".(int)$id_o.$this->viewStatus);
+		$this->redirect($this->applicationUrl.$this->controller."/vedi/".(int)$id_o.$this->viewStatus);
 	}
 	
 	public function vedi($id_o)
@@ -327,7 +328,7 @@ class OrdiniController extends BaseController {
 			$this->m["OrdiniModel"]->mandaMail($clean["id_o"]);
 // 			$data["notice_send"] = $this->m["OrdiniModel"]->notice;
 			flash("notice_send",$this->m["OrdiniModel"]->notice);
-			$this->redirect("ordini/vedi/".$clean["id_o"].$this->viewStatus);
+			$this->redirect($this->applicationUrl.$this->controller."/vedi/".$clean["id_o"].$this->viewStatus);
 		}
 		
 		if (isset($_GET["invia_fattura"]))
@@ -335,7 +336,7 @@ class OrdiniController extends BaseController {
 			$this->m["OrdiniModel"]->mandaMailFattura($clean["id_o"]);
 // 			$data["notice_send"] = $this->m["OrdiniModel"]->notice;
 			flash("notice_send",$this->m["OrdiniModel"]->notice);
-			$this->redirect("ordini/vedi/".$clean["id_o"].$this->viewStatus);
+			$this->redirect($this->applicationUrl.$this->controller."/vedi/".$clean["id_o"].$this->viewStatus);
 		}
 		
 		$res = $this->m["OrdiniModel"]->clear()
