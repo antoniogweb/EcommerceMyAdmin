@@ -24,17 +24,20 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait CommonModel {
 	
-	public function controllaCF()
+	public function controllaCF($controlla = 1)
 	{
-		if (isset($this->values["codice_fiscale"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+		if ($controlla)
 		{
-			if ($this->values["tipo_cliente"] == "privato" || $this->values["tipo_cliente"] == "libero_professionista")
+			if (isset($this->values["codice_fiscale"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			{
-				if (!codiceFiscale($this->values["codice_fiscale"]))
+				if ($this->values["tipo_cliente"] == "privato" || $this->values["tipo_cliente"] == "libero_professionista")
 				{
-					$this->notice = "<div class='alert'>".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
-					$this->result = false;
-					return false;
+					if (!codiceFiscale($this->values["codice_fiscale"]))
+					{
+						$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
+						$this->result = false;
+						return false;
+					}
 				}
 			}
 		}
@@ -42,9 +45,9 @@ trait CommonModel {
 		return true;
 	}
 	
-	public function controllaPIva()
+	public function controllaPIva($controlla = 1)
 	{
-		if (v("controlla_p_iva"))
+		if (v("controlla_p_iva") && $controlla)
 		{
 			if (isset($this->values["p_iva"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $this->values["tipo_cliente"] != "privato")
 			{
@@ -60,7 +63,7 @@ trait CommonModel {
 					
 					if (!$res)
 					{
-						$this->notice = "<div class='alert'>".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."</div><span class='evidenzia'>class_p_iva</span>".$this->notice;
+						$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."</div><span class='evidenzia'>class_p_iva</span>".$this->notice;
 						$this->result = false;
 						return false;
 					}
