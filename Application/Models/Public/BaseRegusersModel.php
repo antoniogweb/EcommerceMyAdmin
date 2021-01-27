@@ -143,7 +143,7 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$campiObbligatoriAggiuntivi = "";
 		
-		if (strcmp($tipo_cliente,"privato") !== 0)
+		if (strcmp($tipo_cliente,"privato") !== 0 && (v("insert_account_sdi_pec_obbligatorio") || $queryType == "update"))
 		{
 			if (trim($codiceDestinatario) == "")
 				$campiObbligatoriAggiuntivi .= ",codice_destinatario";
@@ -157,11 +157,8 @@ class BaseRegusersModel extends Model_Tree
 		
 		$campoObbligatoriProvincia = "dprovincia";
 		
-		if (isset($_POST["nazione"]))
-		{
-			if ($_POST["nazione"] == "IT")
-				$campoObbligatoriProvincia = "provincia";
-		}
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+			$campoObbligatoriProvincia = "provincia";
 		
 		$campiObbligatoriComuni = "tipo_cliente";
 		
@@ -210,28 +207,6 @@ class BaseRegusersModel extends Model_Tree
 			$campiObbligatori .= $campiObbligatoriConfermaAccount.",accetto,password";
 		
 		$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-		
-// 		if (strcmp($tipo_cliente,"privato") === 0)
-// 		{
-// 			if (strcmp($queryType,"insert") === 0)
-// 				$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-// 			else
-// 				$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-// 		}
-// 		else if (strcmp($tipo_cliente,"libero_professionista") === 0)
-// 		{
-// 			if (strcmp($queryType,"insert") === 0)
-// 				$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-// 			else
-// 				$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-// 		}
-// 		else
-// 		{
-// 			if (strcmp($queryType,"insert") === 0)
-// 				$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-// 			else
-// 				$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
-// 		}
 		
 		$evidenziaEmail = Output::$html ? "<div class='evidenzia'>class_username</div>" : "";
 		

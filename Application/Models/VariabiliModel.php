@@ -144,6 +144,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_cache_prodotti"		=>	1,
 		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"debug1234",
+		"insert_account_sdi_pec_obbligatorio"	=>	1,
 	);
 	
 	public function __construct() {
