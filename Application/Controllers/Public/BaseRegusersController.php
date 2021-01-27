@@ -329,6 +329,66 @@ class BaseRegusersController extends BaseController
 
 	}
 	
+	public function conferma($conf_token = "")
+	{
+		$this->clean();
+		
+		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Conferma registrazione");
+		
+		$validToken = false;
+		
+		$urlAdd = isset($_GET["eFromApp"]) ? "?eFromApp&ecommerce" : "";
+		
+		session_start();
+		
+		if ($this->s['registered']->status['status'] === 'logged')
+		{
+			$this->redirect("area-riservata");
+		}
+		else
+		{
+			if (strcmp((string)$conf_token,"") !== 0)
+			{
+				$clean['conf_token'] = $data['conf_token'] = sanitizeAll($conf_token);
+
+				$res = $this->m['RegusersModel']->clear()->where(array("confirmation_token"=>$clean['conf_token'],"has_confirmed"=>1))->send();
+
+				if (count($res) > 0)
+				{
+					$confirmSeconds = (int)v("ore_durata_link_conferma")*3600;
+					
+					$now = time();
+					$checkTime = $res[0]['regusers']['confirmation_time'] + $confirmSeconds;
+					
+					if ($checkTime > $now)
+					{
+						$validToken = true;
+						
+						$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
+						
+						$this->m['RegusersModel']->setPasswordCondition();
+					
+						$this->m['RegusersModel']->setValues(array(
+							"has_confirmed"	=>	0,
+						));
+						
+						$this->m['RegusersModel']->pUpdate($clean['id_user']);
+
+						$_SESSION['result'] = 'account_confermato';
+						
+						$this->redirect("avvisi".$urlAdd);
+					}
+				}
+			}
+		}
+		
+		if (!$validToken)
+		{
+			$_SESSION['result'] = 'invalid_token';
+			$this->redirect("avvisi".$urlAdd);
+		}
+	}
+	
 	public function change($forgot_token = '')
 	{
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Imposta nuova password");
@@ -857,7 +917,8 @@ class BaseRegusersController extends BaseController
 							$clean["username"] = $this->request->post("username","","sanitizeAll");
 							
 							//loggo l'utente
-							$this->s['registered']->login($clean["username"],$password);
+							if (!v("conferma_registrazione"))
+								$this->s['registered']->login($clean["username"],$password);
 							
 							if (Output::$json)
 								$this->setUserHead();
