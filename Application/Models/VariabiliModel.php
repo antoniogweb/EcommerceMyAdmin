@@ -137,6 +137,7 @@ class VariabiliModel extends GenericModel {
 		"numero_per_pagina_pages"	=>	30,
 		"attiva_cache_prodotti"		=>	1,
 		"check_fatture"				=>	0,
+		"debug_get_variable"		=>	"debug1234",
 	);
 	
 	public function __construct() {
