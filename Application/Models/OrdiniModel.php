@@ -362,7 +362,8 @@ class OrdiniModel extends FormModel {
 				$baseUrl = Url::getRoot();
 				$baseUrl = str_replace("admin/", "", $baseUrl);
 				$tipoOutput = "mail_al_cliente";
-				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
+				include tpf("/Ordini/$template.php");
+// 				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
 				$output = ob_get_clean();
 				
 				$output = MailordiniModel::loadTemplate($oggetto, $output);
