@@ -22,6 +22,9 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$this->values['forgot_token'] = $this->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
 		
+		if (v("conferma_registrazione"))
+			$this->values["has_confirmed"] = 1;
+		
 		$this->values["lingua"] = Params::$lang;
 		
 		if (!User::$nazioneNavigazione)

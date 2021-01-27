@@ -145,6 +145,8 @@ class VariabiliModel extends GenericModel {
 		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"debug1234",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
+		"conferma_registrazione"	=>	0,
+		"ore_durata_link_conferma"	=>	24,
 	);
 	
 	public function __construct() {

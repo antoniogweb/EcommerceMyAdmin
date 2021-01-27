@@ -849,6 +849,8 @@ class BaseRegusersController extends BaseController
 				{
 					if ($this->m['RegusersModel']->checkConditions('insert'))
 					{
+						$tokenConferma = $this->m['RegusersModel']->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
+						
 						if ($this->m['RegusersModel']->insert())
 						{
 							$password = $this->request->post("password","","none");
