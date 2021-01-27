@@ -133,6 +133,10 @@ class VariabiliModel extends GenericModel {
 		"insert_account_cf_obbligatorio"			=>	1,
 		"insert_account_p_iva_obbligatorio"			=>	1,
 		"url_elenco_ordini"			=>	"ordini/main",
+		"numero_per_pagina_magazzino"	=>	50,
+		"numero_per_pagina_pages"	=>	30,
+		"attiva_cache_prodotti"		=>	1,
+		"check_fatture"				=>	0,
 	);
 	
 	public function __construct() {

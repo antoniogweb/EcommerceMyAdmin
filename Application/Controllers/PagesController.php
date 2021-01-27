@@ -204,6 +204,9 @@ class PagesController extends BaseController {
 	
 	public function main()
 	{
+		if (v("attiva_cache_prodotti") && empty($_POST))
+			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+		
 		$this->m[$this->modelName]->db->beginTransaction();
 		
 		$this->shift();
@@ -237,7 +240,7 @@ class PagesController extends BaseController {
 		$data["orderBy"] = $this->orderBy;
 		
 		$this->m[$this->modelName]->setFilters();
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add'));
+		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_pages"), 'mainMenu'=>'add'));
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
@@ -544,6 +547,9 @@ class PagesController extends BaseController {
 	
 	public function form($queryType = 'insert',$id = 0)
 	{
+		if (v("attiva_cache_prodotti") && empty($_POST))
+			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+		
 		$this->_posizioni['main'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
 		
@@ -890,6 +896,9 @@ class PagesController extends BaseController {
 	
 	private function correlatigeneric($id = 0, $accessori = 0)
 	{
+		if (v("attiva_cache_prodotti") && empty($_POST))
+			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+		
 		$posizione = $accessori ? "accessori" : "prod_corr";
 		$action = $accessori ? "accessori" : "correlati";
 		

@@ -151,7 +151,7 @@ class CombinazioniController extends BaseController
 		
 // 		$this->addBulkActions = false;
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000000, 'mainMenu'=>'save_combinazioni,esporta');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_magazzino"), 'mainMenu'=>'save_combinazioni,esporta');
 		
 		$this->mainButtons = 'ldel';
 		

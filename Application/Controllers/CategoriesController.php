@@ -61,6 +61,9 @@ class CategoriesController extends BaseController {
 
 	public function main()
 	{
+		if (v("attiva_cache_prodotti") && empty($_POST))
+			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+		
 		$this->shift();
 
 		Params::$nullQueryValue = 'tutti';

@@ -70,6 +70,9 @@ class FattureModel extends Model_Tree {
 	
 	public function checkFatture()
 	{
+		if (!v("check_fatture"))
+			return;
+		
 		if (@!is_dir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
 		{
 			if (@mkdir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
