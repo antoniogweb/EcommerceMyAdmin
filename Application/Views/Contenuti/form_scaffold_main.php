@@ -44,6 +44,10 @@ $(document).ready(function() {
 		<div class='col-md-6'>
 			<?php echo $form["titolo"];?>
 			
+			<?php if (isset($form["tipo_layer"])) { ?>
+			<?php echo $form["tipo_layer"];?>
+			<?php } ?>
+			
 			<?php if (isset($form["immagine_1"])) { ?>
 			<?php echo $form["immagine_1"];?>
 			<?php } ?>
@@ -66,20 +70,118 @@ $(document).ready(function() {
 			
 			<?php echo $form["attivo"];?>
 			
-			<?php if (isset($form["link_id_page"])) { ?>
-			<?php echo $form["link_id_page"];?>
+			<?php if (isset($form["link_id_page"]) || isset($form["link_id_c"]) || isset($form["link_id_marchio"]) || isset($form["link_id_tag"])) { ?>
+			<div class="well">
+				<h3>Link a contenuto</h3>
+				<div class='row'>
+				<?php if (isset($form["link_id_page"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["link_id_page"];?>
+					</div>
+				<?php } ?>
+				
+				<?php if (isset($form["link_id_c"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["link_id_c"];?>
+					</div>
+				<?php } ?>
+				
+				<?php if (isset($form["link_id_marchio"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["link_id_marchio"];?>
+					</div>
+				<?php } ?>
+				
+				<?php if (isset($form["link_id_tag"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["link_id_tag"];?>
+					</div>
+				<?php } ?>
+				</div>
+			</div>
 			<?php } ?>
 			
-			<?php if (isset($form["link_id_c"])) { ?>
-			<?php echo $form["link_id_c"];?>
+			<?php if (isset($form["posizione"]) || isset($form["animazione"])) { ?>
+			<div class="well">
+				<h3>Posizione e animazione</h3>
+				<div class='row'>
+					<?php if (isset($form["posizione"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["posizione"];?>
+					</div>
+					<?php } ?>
+					<?php if (isset($form["animazione"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["animazione"];?>
+					</div>
+					<?php } ?>
+				</div>
+			</div>
 			<?php } ?>
 			
-			<?php if (isset($form["link_id_marchio"])) { ?>
-			<?php echo $form["link_id_marchio"];?>
-			<?php } ?>
-			
-			<?php if (isset($form["link_id_tag"])) { ?>
-			<?php echo $form["link_id_tag"];?>
+			<?php if (isset($form["posizione_s"]) || isset($form["visibile_s"])) { ?>
+			<div class="well">
+				<h3>Gestione responsive</h3>
+				<?php if (isset($form["posizione_s"]) || isset($form["visibile_s"])) { ?>
+				<div class='row'>
+					<?php if (isset($form["posizione_s"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["posizione_s"];?>
+					</div>
+					<?php } ?>
+					<?php if (isset($form["visibile_s"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["visibile_s"];?>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+				
+				<?php if (isset($form["posizione_m"]) || isset($form["visibile_m"])) { ?>
+				<div class='row'>
+					<?php if (isset($form["posizione_m"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["posizione_m"];?>
+					</div>
+					<?php } ?>
+					<?php if (isset($form["visibile_m"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["visibile_m"];?>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+				
+				<?php if (isset($form["posizione_l"]) || isset($form["visibile_l"])) { ?>
+				<div class='row'>
+					<?php if (isset($form["posizione_l"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["posizione_l"];?>
+					</div>
+					<?php } ?>
+					<?php if (isset($form["visibile_l"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["visibile_l"];?>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+				
+				<?php if (isset($form["posizione_xl"]) || isset($form["visibile_xl"])) { ?>
+				<div class='row'>
+					<?php if (isset($form["posizione_xl"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["posizione_xl"];?>
+					</div>
+					<?php } ?>
+					<?php if (isset($form["visibile_xl"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["visibile_xl"];?>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+			</div>
 			<?php } ?>
 		</div>
 	</div>

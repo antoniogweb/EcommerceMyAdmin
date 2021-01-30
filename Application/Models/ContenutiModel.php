@@ -23,7 +23,31 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class ContenutiModel extends GenericModel {
-
+	
+	public static $posizioni = array(
+		"uk-position-top-left"		=>	"In alto a sinistra",
+		"uk-position-top-center"	=>	"In alto in centro",
+		"uk-position-top-right"		=>	"In alto a destra",
+		"uk-position-center-left"	=>	"In mezzo a sinistra",
+		"uk-position-center"		=>	"In mezzo",
+		"uk-position-center-right"	=>	"In mezzo a destra",
+		"uk-position-bottom-left"	=>	"In basso a sinistra",
+		"uk-position-bottom-center"	=>	"In basso in centro",
+		"uk-position-bottom-right"	=>	"In basso a destra",
+	);
+	
+	public static $visibile = array(
+		1	=>	"Visibile",
+		0	=>	"Nascosto",
+	);
+	
+	public static $animazioni = array(
+		"-x"		=>	"Entra da sinistra",
+		"x"			=>	"Entra da destra",
+		"-y"		=>	"Entra dal basso",
+		"y"			=>	"Entra dall'alto",
+	);
+	
 	public function __construct() {
 		$this->_tables='contenuti';
 		$this->_idFields='id_cont';
@@ -121,6 +145,86 @@ class ContenutiModel extends GenericModel {
 					"type"	=>	"Select",
 					"labelString"	=>	"Link al contenuto",
 					"options"	=>	$this->selectLinkContenuto(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'posizione'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Posizione",
+					"options"	=>	self::$posizioni,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'posizione_s'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Posizione (solo schermo piccolo)",
+					"options"	=>	self::$posizioni,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'posizione_m'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Posizione (solo schermo medio)",
+					"options"	=>	self::$posizioni,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'posizione_l'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Posizione (solo schermo normale)",
+					"options"	=>	self::$posizioni,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'posizione_xl'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Posizione (solo schermo molto grande)",
+					"options"	=>	self::$posizioni,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'visibile_s'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Visibilità (solo schermo piccolo)",
+					"options"	=>	self::$visibile,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'visibile_m'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Visibilità (solo schermo medio)",
+					"options"	=>	self::$visibile,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'visibile_l'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Visibilità (solo schermo normale)",
+					"options"	=>	self::$visibile,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'visibile_xl'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Visibilità (solo schermo molto grande)",
+					"options"	=>	self::$visibile,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'animazione'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Animazione",
+					"options"	=>	self::$animazioni,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'tipo_layer'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipo layer",
+					"options"	=>	array(
+						"IMMAGINE"	=>	"IMMAGINE",
+						"TESTO"		=>	"TESTO",
+					),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
