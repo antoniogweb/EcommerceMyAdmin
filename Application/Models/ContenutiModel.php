@@ -128,6 +128,8 @@ class ContenutiModel extends GenericModel {
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+		
+		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
 	}
 	
 	public function selectTipo($tipo = null)
@@ -146,6 +148,13 @@ class ContenutiModel extends GenericModel {
 // 			));
 		
 		return $t->send();
+	}
+	
+	public function buildAllPagesSelect()
+	{
+		$p = new PagesModel();
+		
+		return array("0"=>"--") + $p->clear()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
     public function titoloContenuto($record)

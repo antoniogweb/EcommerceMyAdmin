@@ -56,16 +56,31 @@ $(document).ready(function() {
 			<?php echo $form["coordinate"];?>
 			<?php } ?>
 		</div>
-		<?php if (isset($form["id_tipo"])) { ?>
+		
 		<div class='col-md-6'>
+			<?php if (isset($form["id_tipo"])) { ?>
 			<?php echo $form["id_tipo"];?>
-		</div>
-		<?php } ?>
-		<div class='col-md-6'>
+			<?php } ?>
+			
 			<?php echo $form["lingua"];?>
-		</div>
-		<div class='col-md-6'>
+			
 			<?php echo $form["attivo"];?>
+			
+			<?php if (isset($form["link_id_page"])) { ?>
+			<?php echo $form["link_id_page"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["link_id_c"])) { ?>
+			<?php echo $form["link_id_c"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["link_id_marchio"])) { ?>
+			<?php echo $form["link_id_marchio"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["link_id_tag"])) { ?>
+			<?php echo $form["link_id_tag"];?>
+			<?php } ?>
 		</div>
 	</div>
 	

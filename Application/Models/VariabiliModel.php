@@ -147,6 +147,7 @@ class VariabiliModel extends GenericModel {
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
 		"conferma_registrazione"	=>	0,
 		"ore_durata_link_conferma"	=>	24,
+		"main_slide_order"			=>	"pages.id_order desc",
 	);
 	
 	public function __construct() {

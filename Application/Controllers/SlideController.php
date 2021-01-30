@@ -42,7 +42,7 @@ class SlideController extends PagesController {
 // 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.id_order desc";
+// 		$this->orderBy = "pages.id_order desc";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Attiva';
 		$this->filters = array(null,null,'title');
@@ -78,15 +78,6 @@ class SlideController extends PagesController {
 		$data["use_editor"] = "N";
 		
 		$this->append($data);
-	}
-	
-	public function ordinalayer()
-	{
-		$this->orderBy = "id_order";
-		
-		$this->modelName = "LayerModel";
-		
-		parent::ordina();
 	}
 
 }

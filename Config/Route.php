@@ -193,8 +193,8 @@ class Route
 		'slide,updatevalue',
 		'slide,meta',
 		'slide,ordina',
-		'slide,layer',
-		'slide,ordinalayer',
+		'slide,testi',
+		'slide,ordinacontenuti',
 		
 		'avvisi,main',
 		'avvisi,aggiungicategoria',

@@ -784,4 +784,52 @@ class GenericModel extends Model_Tree
 		
 		return $selectFiltro;
 	}
+	
+	public function selectMarchi()
+	{
+		$m = new MarchiModel();
+		
+		return array(0 => "--") + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+	}
+	
+	public function selectTag()
+	{
+		$t = new TagModel();
+		
+		return array(0 => "--") + $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
+	}
+	
+	public function getLinkEntries()
+	{
+		return array(
+				'link_id_page'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a contenuto',
+					'options'	=>	$this->buildAllPagesSelect(),
+					'reverse' => 'yes',
+					"idName"	=>	"combobox",
+				),
+				'link_id_c'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a categoria',
+					'options'	=>	$this->buildAllCatSelect(),
+					'reverse' => 'yes',
+					"idName"	=>	"combobox1",
+				),
+				'link_id_marchio'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a marchio',
+					'options'	=>	$this->selectMarchi(),
+					'reverse' => 'yes',
+					"idName"	=>	"combobox",
+				),
+				'link_id_tag'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a tag',
+					'options'	=>	$this->selectTag(),
+					'reverse' => 'yes',
+					"idName"	=>	"combobox",
+				),
+			);
+	}
 }

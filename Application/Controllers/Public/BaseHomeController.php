@@ -48,7 +48,7 @@ class BaseHomeController extends BaseController
 			->where(array(
 				"categories.section"	=>	"slide",
 				"attivo"=>"Y",
-			))->orderBy("pages.id_order desc")->send();
+			))->orderBy(v("main_slide_order"))->send();
 		
 		$clean["idShop"] = $this->m["CategoriesModel"]->getShopCategoryId();
 		

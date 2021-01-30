@@ -255,34 +255,6 @@ class PagesModel extends GenericModel {
 				'immagine_2'	=>	array(
 					'type'		=>	'Hidden'
 				),
-				'link_id_page'		=>	array(
-					'type'		=>	'Select',
-					'labelString'=>	'Link a contenuto',
-					'options'	=>	$this->buildAllPagesSelect(),
-					'reverse' => 'yes',
-					"idName"	=>	"combobox",
-				),
-				'link_id_c'		=>	array(
-					'type'		=>	'Select',
-					'labelString'=>	'Link a categoria',
-					'options'	=>	$this->buildAllCatSelect(),
-					'reverse' => 'yes',
-					"idName"	=>	"combobox1",
-				),
-				'link_id_marchio'		=>	array(
-					'type'		=>	'Select',
-					'labelString'=>	'Link a marchio',
-					'options'	=>	$this->selectMarchi(),
-					'reverse' => 'yes',
-					"idName"	=>	"combobox",
-				),
-				'link_id_tag'		=>	array(
-					'type'		=>	'Select',
-					'labelString'=>	'Link a tag',
-					'options'	=>	$this->selectTag(),
-					'reverse' => 'yes',
-					"idName"	=>	"combobox",
-				),
 				'codice_nazione'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Nazione',
@@ -301,6 +273,8 @@ class PagesModel extends GenericModel {
 			),
 		);
 		
+		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
+		
 		if ($this->formStructAggiuntivoEntries)
 			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
 	}
@@ -315,20 +289,6 @@ class PagesModel extends GenericModel {
 		$iva = new IvaModel();
 		
 		return $iva->clear()->orderBy("id_order")->toList("id_iva","titolo")->send();
-	}
-	
-	public function selectMarchi()
-	{
-		$m = new MarchiModel();
-		
-		return array(0 => "--") + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
-	}
-	
-	public function selectTag()
-	{
-		$t = new TagModel();
-		
-		return array(0 => "--") + $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
 	}
 	
 	public function getIva($idPage)
