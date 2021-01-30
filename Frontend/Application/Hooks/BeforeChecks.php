@@ -5,6 +5,16 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti");
+
+if (defined("CACHE_FOLDER"))
+{
+	Cache::$cacheFolder = CACHE_FOLDER;
+	Cache::$cacheMinutes = 60;
+	Cache::$cleanCacheEveryXMinutes = 70;
+	Cache::deleteExpired();
+}
+
 VariabiliModel::ottieniVariabili();
 
 // Se arriva dalla app usa php://input
@@ -26,9 +36,12 @@ Params::$exactUrlMatchRewrite = true;
 
 Params::$frontEndLanguages = array("it","en");
 Params::$allowSessionIdFromGet = true;
+Params::$errorStringClassName = "uk-alert uk-alert-danger";
 
 $mysqli = Db_Mysqli::getInstance();
-$mysqli->query("set session sql_mode=''");
+
+if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
+	$mysqli->query("set session sql_mode=''");
 
 //includo il file di parametri dall'admin
 require(LIBRARY."/Application/Include/language.php");
@@ -55,10 +68,15 @@ Helper_Pages::$pageLinkWrapClass = array("");
 Helper_Pages::$staticLinkClass = "page-numbers";
 Helper_Pages::$staticPreviousClass = "prev";
 Helper_Pages::$staticNextClass = "next";
-Helper_Pages::$staticCurrentClass = "current";
+Helper_Pages::$staticCurrentClass = "uk-text-secondary";
+Helper_Pages::$staticPreviousString = '<span uk-pagination-previous></span>';
+Helper_Pages::$staticNextString = '<span uk-pagination-next></span>';
 
 if (v("attiva_ip_location"))
-	IplocationModel::setData();
+{
+	if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
+		IplocationModel::setData();
+}
 
 if (v("theme_folder"))
 	Params::$viewSubfolder = v("theme_folder");

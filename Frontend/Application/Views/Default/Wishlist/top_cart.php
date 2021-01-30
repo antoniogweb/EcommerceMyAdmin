@@ -1,1 +1,1 @@
-<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php include(parent(__FILE__));?>

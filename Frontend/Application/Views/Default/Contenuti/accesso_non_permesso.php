@@ -1,7 +1,15 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php
+$breadcrumb = array(
+	gtext("Home") 		=> $this->baseUrl,
+	gtext("Pagina non trovata") => "",
+);
 
-<p class="breadcrumb"><span class="testo_sei_qui">sei qui:</span> <a href="<?php echo $this->baseUrl;?>">Home</a> » accesso non permesso</p>
+$titoloPagina = gtext("Pagina non trovata");
 
-<div id="main">
-Siamo spiacenti, non può accedere alla pagina richiesta
-</div>
+include(tpf("/Elementi/Pagine/page_top.php"));
+?>
+<p><b><?php echo gtext("Siamo spiacenti, non può accedere alla pagina richiesta")?></b></a></p>
+
+<?php
+include(tpf("/Elementi/Pagine/page_bottom.php"));
