@@ -74,4 +74,26 @@ trait CommonModel {
 		return true;
 	}
 	
+	public static function getUrlContenuto($p)
+	{
+		$className = get_called_class();
+		
+		$model = new $className();
+		
+		$tableName = $model->table();
+		
+		$url = "";
+		if ($p[$tableName]["link_id_page"])
+			$url = Url::getRoot().getUrlAlias($p[$tableName]["link_id_page"]);
+		else if ($p[$tableName]["link_id_c"])
+			$url = Url::getRoot().getCategoryUrlAlias($p[$tableName]["link_id_c"]);
+		else if ($p[$tableName]["link_id_marchio"])
+			$url = Url::getRoot().getMarchioUrlAlias($p[$tableName]["link_id_marchio"]);
+		else if ($p[$tableName]["link_id_tag"])
+			$url = Url::getRoot().TagModel::getUrlAlias($p[$tableName]["link_id_tag"]);
+		else if (field($p, "url") && $tableName == "pages")
+			$url = checkHttp(field($p, "url"));
+		
+		return $url;
+	}
 }

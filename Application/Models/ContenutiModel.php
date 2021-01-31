@@ -42,6 +42,7 @@ class ContenutiModel extends GenericModel {
 	);
 	
 	public static $animazioni = array(
+		""			=>	"Nessuna",
 		"-x"		=>	"Entra da sinistra",
 		"x"			=>	"Entra da destra",
 		"-y"		=>	"Entra dal basso",
@@ -158,28 +159,28 @@ class ContenutiModel extends GenericModel {
 				'posizione_s'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Posizione (solo schermo piccolo)",
-					"options"	=>	self::$posizioni,
+					"options"	=>	array("" => "Eredita") + self::$posizioni,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
 				'posizione_m'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Posizione (solo schermo medio)",
-					"options"	=>	self::$posizioni,
+					"options"	=>	array("" => "Eredita") + self::$posizioni,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
 				'posizione_l'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Posizione (solo schermo normale)",
-					"options"	=>	self::$posizioni,
+					"options"	=>	array("" => "Eredita") + self::$posizioni,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
 				'posizione_xl'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Posizione (solo schermo molto grande)",
-					"options"	=>	self::$posizioni,
+					"options"	=>	array("" => "Eredita") + self::$posizioni,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
