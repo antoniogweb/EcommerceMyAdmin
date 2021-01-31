@@ -825,20 +825,21 @@ class BaseContenutiController extends BaseController
 		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['id'], 0, $this);
 		
 		// Estraggo i contenuti generici
-		$this->m["ContenutiModel"]->clear()->addJoinTraduzione()->select("distinct contenuti.id_cont,contenuti.*,tipi_contenuto.*,contenuti_tradotti.*")->inner(array("tipo"))->where(array(
-			"OR"	=>	array(
-				"lingua" => "tutte",
-				" lingua" => sanitizeDb(Params::$lang),
-			),
-			"tipo"	=>	"GENERICO",
-			"id_page"	=>	$clean['id'],
-			"attivo"	=>	"Y",
-		));
-		
-		if (v("attiva_gruppi_contenuti"))
-			$this->m["ContenutiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
-		
-		$data["contenuti"] = $this->m["ContenutiModel"]->save()->orderBy("contenuti.id_order")->send();
+// 		$this->m["ContenutiModel"]->clear()->addJoinTraduzione()->select("distinct contenuti.id_cont,contenuti.*,tipi_contenuto.*,contenuti_tradotti.*")->inner(array("tipo"))->where(array(
+// 			"OR"	=>	array(
+// 				"lingua" => "tutte",
+// 				" lingua" => sanitizeDb(Params::$lang),
+// 			),
+// 			"tipo"	=>	"GENERICO",
+// 			"id_page"	=>	$clean['id'],
+// 			"attivo"	=>	"Y",
+// 		));
+// 		
+// 		if (v("attiva_gruppi_contenuti"))
+// 			$this->m["ContenutiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+// 		
+// 		$data["contenuti"] = $this->m["ContenutiModel"]->save()->orderBy("contenuti.id_order")->send();
+		$data["contenuti"] = ContenutiModel::getContenutiPagina($clean['id'], "GENERICO");
 		
 		$data["contenuti_tab"] = array();
 		
@@ -851,9 +852,10 @@ class BaseContenutiController extends BaseController
 		}
 		
 		// Estraggo i marker
-		$data["marker"] = $this->m["ContenutiModel"]->restore(true)->where(array(
-			"tipo"	=>	"marker",
-		))->send();
+// 		$data["marker"] = $this->m["ContenutiModel"]->restore(true)->where(array(
+// 			"tipo"	=>	"marker",
+// 		))->send();
+		$data["marker"] = ContenutiModel::getContenutiPagina($clean['id'], "MARKER");
 		
 		if (v("usa_marchi"))
 		{

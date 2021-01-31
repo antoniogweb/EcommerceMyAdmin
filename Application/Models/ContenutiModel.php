@@ -399,4 +399,25 @@ class ContenutiModel extends GenericModel {
 		
 		return $htmlFinale;
 	}
+	
+	// Estrai i contenuti della pagina
+	public static function getContenutiPagina($idPage, $tipo = "GENERICO")
+	{
+		$c = new ContenutiModel();
+		
+		$c->clear()->addJoinTraduzione()->select("distinct contenuti.id_cont,contenuti.*,tipi_contenuto.*,contenuti_tradotti.*")->inner(array("tipo"))->where(array(
+			"OR"	=>	array(
+				"lingua" => "tutte",
+				" lingua" => sanitizeDb(Params::$lang),
+			),
+			"tipo"	=>	$tipo,
+			"id_page"	=>	(int)$idPage,
+			"attivo"	=>	"Y",
+		));
+		
+		if (v("attiva_gruppi_contenuti"))
+			$c->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+		
+		return $c->save()->orderBy("contenuti.id_order")->send();
+	}
 }
