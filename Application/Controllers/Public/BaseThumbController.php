@@ -162,6 +162,31 @@ class BaseThumbController extends Controller {
 		}
 	}
 	
+	public function slidelayer($fileName)
+	{
+		$this->clean();
+		
+		$params = array(
+			'imgWidth'		=>	800,
+			'imgHeight'		=>	800,
+			'defaultImage'	=>  null,
+		);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/contenuti',$params);
+				$thumb->render($fileName);
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
 	public function slidesotto($fileName)
 	{
 		$this->clean();

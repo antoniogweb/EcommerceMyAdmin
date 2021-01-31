@@ -17,6 +17,8 @@ class User
 	public static $categorieInClasseSconto = array();
 	public static $prodottiInCoupon = array();
 	public static $isMobile = false;
+	public static $isTablet = false;
+	public static $isPhone = false;
 	
 	public static $adminLogged = false;
 	public static $asJson = false;

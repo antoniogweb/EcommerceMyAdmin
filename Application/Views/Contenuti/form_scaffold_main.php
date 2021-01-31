@@ -122,6 +122,21 @@ $(document).ready(function() {
 			<?php if (isset($form["posizione_s"]) || isset($form["visibile_s"])) { ?>
 			<div class="well">
 				<h3>Gestione responsive</h3>
+				<?php if (isset($form["posizione_xs"]) || isset($form["visibile_xs"])) { ?>
+				<div class='row'>
+					<?php if (isset($form["posizione_xs"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["posizione_xs"];?>
+					</div>
+					<?php } ?>
+					<?php if (isset($form["visibile_xs"])) { ?>
+					<div class='col-md-6'>
+						<?php echo $form["visibile_xs"];?>
+					</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+				
 				<?php if (isset($form["posizione_s"]) || isset($form["visibile_s"])) { ?>
 				<div class='row'>
 					<?php if (isset($form["posizione_s"])) { ?>
