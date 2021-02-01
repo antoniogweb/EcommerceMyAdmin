@@ -612,7 +612,7 @@ class BaseThumbController extends Controller {
 			'imgHeight'		=>	v("thumb_ajax_h"),
 			'defaultImage'	=>  null,
 			'backgroundColor' => "#FFF",
-			'useCache'		=>	true,
+// 			'useCache'		=>	true,
 // 				'cropImage'		=>	'yes',
 // 				'horizAlign'	=>	'center',
 // 				'vertAlign'		=>	'center',
