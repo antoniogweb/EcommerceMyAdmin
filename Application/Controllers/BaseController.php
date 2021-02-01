@@ -149,6 +149,8 @@ class BaseController extends Controller
 	
 	public $elencoLingue = array();
 	
+	public $mainMenu = "add";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);

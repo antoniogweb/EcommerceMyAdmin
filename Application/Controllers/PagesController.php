@@ -240,7 +240,7 @@ class PagesController extends BaseController {
 		$data["orderBy"] = $this->orderBy;
 		
 		$this->m[$this->modelName]->setFilters();
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_pages"), 'mainMenu'=>'add'));
+		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_pages"), 'mainMenu'=>$this->mainMenu));
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{

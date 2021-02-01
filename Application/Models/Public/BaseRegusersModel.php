@@ -148,7 +148,7 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$campiObbligatoriAggiuntivi = "";
 		
-		if (strcmp($tipo_cliente,"privato") !== 0 && (v("insert_account_sdi_pec_obbligatorio") || $queryType == "update"))
+		if (strcmp($tipo_cliente,"privato") !== 0 && (v("insert_account_sdi_pec_obbligatorio") || $queryType == "update") && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{
 			if (trim($codiceDestinatario) == "")
 				$campiObbligatoriAggiuntivi .= ",codice_destinatario";

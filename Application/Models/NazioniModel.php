@@ -62,6 +62,15 @@ class NazioniModel extends GenericModel
 					),
 					"reverse"	=>	"yes",
 				),
+				'campo_p_iva'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Attiva P.IVA',
+					'options'	=>	array(
+						"1"	=>	"Sì",
+						"0"	=>	"No",
+					),
+					"reverse"	=>	"yes",
+				),
 				'iso_country_code'	=>	array(
 					"labelString"	=>"Codice nazione (2 cifre)"
 				),
@@ -182,6 +191,14 @@ class NazioniModel extends GenericModel
 		return "No";
 	}
 	
+	public function pivaAttiva($record)
+	{
+		if ($record["nazioni"]["campo_p_iva"])
+			return "Sì";
+		
+		return "No";
+	}
+	
 	public function attiva($id)
 	{
 		$this->setValues(array(
@@ -220,9 +237,25 @@ class NazioniModel extends GenericModel
 	
 	public function selectNazioniAttive()
 	{
-		return $this->clear()->select("iso_country_code,titolo")->where(array(
-			"attiva"	=>	"1",
-		))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+		if (v("attiva_ip_location") && v("abilita_solo_nazione_navigazione"))
+		{
+			$res = $this->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva"	=>	"1",
+				"iso_country_code"	=>	sanitizeDb(User::$nazioneNavigazione),
+			))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+			
+			if (count($res) > 0)
+				return $res;
+			
+			return $this->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva"	=>	"1",
+				"iso_country_code"	=>	v("nazione_default"),
+			))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+		}
+		else
+			return $this->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva"	=>	"1",
+			))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
 	}
 	
 	public function selectCodiciAttivi()
@@ -232,9 +265,25 @@ class NazioniModel extends GenericModel
 	
 	public function selectNazioniAttiveSpedizione()
 	{
-		return $this->clear()->select("iso_country_code,titolo")->where(array(
-			"attiva_spedizione"	=>	"1",
-		))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+		if (v("attiva_ip_location") && v("abilita_solo_nazione_navigazione"))
+		{
+			$res =  $this->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+				"iso_country_code"	=>	sanitizeDb(User::$nazioneNavigazione),
+			))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+			
+			if (count($res) > 0)
+				return $res;
+			
+			return $this->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+				"iso_country_code"	=>	v("nazione_default"),
+			))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+		}
+		else
+			return $this->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+			))->orderBy("titolo")->toList("iso_country_code","titolo")->send();
 	}
 	
 	public function selectCodiciAttiviSpedizione()

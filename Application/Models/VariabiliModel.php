@@ -149,6 +149,7 @@ class VariabiliModel extends GenericModel {
 		"ore_durata_link_conferma"	=>	24,
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
+		"abilita_solo_nazione_navigazione"	=>	1,
 	);
 	
 	public function __construct() {

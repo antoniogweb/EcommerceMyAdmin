@@ -712,7 +712,7 @@ class BaseOrdiniController extends BaseController
 		
 		$campiObbligatoriAggiuntivi = "";
 		
-		if (strcmp($tipo_cliente,"privato") !== 0)
+		if (strcmp($tipo_cliente,"privato") !== 0 && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{
 			if (trim($codiceDestinatario) == "")
 				$campiObbligatoriAggiuntivi .= ",codice_destinatario";
