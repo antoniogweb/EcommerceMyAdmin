@@ -167,8 +167,8 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	800,
-			'imgHeight'		=>	800,
+			'imgWidth'		=>	700,
+			'imgHeight'		=>	700,
 			'defaultImage'	=>  null,
 		);
 		
