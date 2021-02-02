@@ -830,7 +830,7 @@ class BaseOrdiniController extends BaseController
 				if (v("account_attiva_conferma_password"))
 					$this->m['RegusersModel']->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");
 				else
-					$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"password");
+					$this->m['RegusersModel']->addStrongCondition("insert",'checkNotEmpty',"password");
 				
 				$this->m['RegusersModel']->addStrongCondition("insert",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>Tutte le lettere, maiuscole o minuscole (a, A, b, B, ...)</li><li>Tutti i numeri (0,1,2,...)</li><li>I seguenti caratteri: <b>_ - ! , .</b></li></ul><span class='evidenzia'>class_password</span>");
 			}
