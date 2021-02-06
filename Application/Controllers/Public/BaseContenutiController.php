@@ -287,10 +287,34 @@ class BaseContenutiController extends BaseController
 	{
 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
 		
-		$baseUrl = $completeUrl ? $this->baseUrl."/" : null;
-		if (count($this->rParent) > 0)
+		$tempParents = $this->rParent;
+
+		if ($this->idMarchio)
 		{
-			return $baseUrl.implode("/",$this->rParent)."/".$this->cleanAlias.$ext;
+			$t = new MarchiModel();
+			$tag = $t->clear()->where(array(
+				"id_marchio"	=>	$this->idMarchio,
+			))->addJoinTraduzione()->first();
+			
+			if (!empty($tag))
+				array_unshift($tempParents, mfield($tag,"alias"));
+		}
+		
+		if ($this->idTag)
+		{
+			$t = new TagModel();
+			$tag = $t->clear()->where(array(
+				"id_tag"	=>	$this->idTag,
+			))->addJoinTraduzione()->first();
+			
+			if (!empty($tag))
+				array_unshift($tempParents, tagfield($tag,"alias"));
+		}
+		
+		$baseUrl = $completeUrl ? $this->baseUrl."/" : null;
+		if (count($tempParents) > 0)
+		{
+			return $baseUrl.implode("/",$tempParents)."/".$this->cleanAlias.$ext;
 		}
 		else
 		{
