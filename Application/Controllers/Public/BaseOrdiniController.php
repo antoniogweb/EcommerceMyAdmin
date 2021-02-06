@@ -702,7 +702,12 @@ class BaseOrdiniController extends BaseController
 				$campoObbligatoriProvinciaSpedizione = "provincia_spedizione";
 		}
 		
-		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione,cap,cap_spedizione";
+		$campoConfermaEmail = "";
+		
+		if (v("account_attiva_conferma_username"))
+			$campoConfermaEmail = "conferma_email,";
+		
+		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione,cap,cap_spedizione";
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			$campiObbligatoriComuni .= ",codice_fiscale";
@@ -750,9 +755,12 @@ class BaseOrdiniController extends BaseController
 		
 		$this->m['OrdiniModel']->addStrongCondition("insert",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>")."<div class='evidenzia'>class_email</div>");
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
-		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
+		if (v("account_attiva_conferma_username"))
+		{
+			$this->m['OrdiniModel']->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
+			
+			$this->m['OrdiniModel']->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
+		}
 		
 		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di privacy</b>")."<div class='evidenzia'>class_accetto</div>");
 		
@@ -819,7 +827,10 @@ class BaseOrdiniController extends BaseController
 					"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='http://".DOMAIN_NAME."/password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".gtext("oppure decidere di completare l'acquisto come utente anonimo", false)."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
 				);
 				
-				$this->m['RegusersModel']->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");
+				if (v("account_attiva_conferma_password"))
+					$this->m['RegusersModel']->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");
+				else
+					$this->m['RegusersModel']->addStrongCondition("insert",'checkNotEmpty',"password");
 				
 				$this->m['RegusersModel']->addStrongCondition("insert",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>Tutte le lettere, maiuscole o minuscole (a, A, b, B, ...)</li><li>Tutti i numeri (0,1,2,...)</li><li>I seguenti caratteri: <b>_ - ! , .</b></li></ul><span class='evidenzia'>class_password</span>");
 			}
@@ -1266,7 +1277,10 @@ class BaseOrdiniController extends BaseController
 		
 		$data['province'] = $this->m['ProvinceModel']->selectTendina();
 		
-		$this->m['RegusersModel']->fields = "password,confirmation";
+		$this->m['RegusersModel']->fields = "password";
+		
+		if (v("account_attiva_conferma_password"))
+			$this->m['RegusersModel']->fields .= ",confirmation";
 		
 		$data['regusers_values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml');
 		

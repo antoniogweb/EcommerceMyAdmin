@@ -167,8 +167,8 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$params = array(
-			'imgWidth'		=>	800,
-			'imgHeight'		=>	800,
+			'imgWidth'		=>	700,
+			'imgHeight'		=>	700,
 			'defaultImage'	=>  null,
 		);
 		
@@ -612,7 +612,7 @@ class BaseThumbController extends Controller {
 			'imgHeight'		=>	v("thumb_ajax_h"),
 			'defaultImage'	=>  null,
 			'backgroundColor' => "#FFF",
-			'useCache'		=>	true,
+// 			'useCache'		=>	true,
 // 				'cropImage'		=>	'yes',
 // 				'horizAlign'	=>	'center',
 // 				'vertAlign'		=>	'center',
