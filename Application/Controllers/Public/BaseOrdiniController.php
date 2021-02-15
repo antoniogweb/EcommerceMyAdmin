@@ -304,8 +304,6 @@ class BaseOrdiniController extends BaseController
 		if ($data["ordine"]["stato"] != "pending")
 			$this->redirect("");
 		
-		
-		
 		$this->append($data);
 		$this->load("modifica_ordine");
 	}

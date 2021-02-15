@@ -1646,7 +1646,10 @@ function tpf($filePath = "")
 	if (isset(Params::$viewSubfolder) && file_exists($subFolderFullPath))
 		return $subFolderFullPath;
 	
-	return Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+	if (isset(Params::$viewSubfolder))
+		return Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+	
+	return Domain::$parentRoot."/Application/Views/".ltrim($filePath,"/");
 }
 
 function singPlu($numero, $sing, $plu)
