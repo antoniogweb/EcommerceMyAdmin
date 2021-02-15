@@ -270,6 +270,27 @@ class PagesModel extends GenericModel {
 					'options'	=>	$this->selectTipiPagina(),
 					'reverse' => 'yes',
 				),
+				'acquisto_diretto'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Se settato su no, non è permesso l'acquisto diretto, ma il prodotto è comunque visibile nel frontend.<br />Se predisposto, fa comparire un form di richiesta informazioni.</div>"
+					),
+				),
+				'acquistabile'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Se settato su no, il prodotto non è acquistabile e viene nascosto nel frontend.<br />Può solo essere aggiunto come accessorio.</div>"
+					),
+				),
+				'aggiungi_sempre_come_accessorio'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Se settato su sì, il prodotto viene sempre aggiunto come accessorio alla creazione di qualsiasi nuovo prodotto.</div>"
+					),
+				),
 			),
 		);
 		
@@ -1661,7 +1682,8 @@ class PagesModel extends GenericModel {
 	{
 		return $this->clear()->where(array(
 			"id_page"		=>	(int)$idPage,
-			"acquistabile"	=>	"Y"
+			"acquistabile"	=>	"Y",
+			"acquisto_diretto"	=>	"Y",
 		))->rowNumber();
 	}
 	

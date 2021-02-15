@@ -106,14 +106,18 @@
 							</div>
 						</div>
 						
-						<?php if (v("accessori_in_prodotti") && v("ecommerce_attivo")) { ?>
+						<?php if ((isset($form["acquisto_diretto"]) || v("accessori_in_prodotti")) && v("ecommerce_attivo")) { ?>
 							<div class="panel panel-info">
 								<div class="panel-heading">
-									Accessorio
+									Opzioni acquisto
 								</div>
 								<div class="panel-body">
 									<?php if (isset($form["acquistabile"])) { ?>
 									<?php echo $form["acquistabile"];?>
+									<?php } ?>
+									
+									<?php if (isset($form["acquisto_diretto"])) { ?>
+									<?php echo $form["acquisto_diretto"];?>
 									<?php } ?>
 									
 									<?php if (isset($form["aggiungi_sempre_come_accessorio"])) { ?>
