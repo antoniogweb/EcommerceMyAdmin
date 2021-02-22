@@ -1271,8 +1271,14 @@ class BaseContenutiController extends BaseController
 			
 				$contentDisposition = ($ext == "pdf" || $ext == "png" || $ext == "jpg" || $ext == "jpeg") ? "inline" : "attachment";
 				
+				//get the MIME type of the file
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$MIMEtype = finfo_file($finfo, $path);
+				$contentType = $MIMEtype;
+				finfo_close($finfo);
+				
 				header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
-				header('Content-Type: '.$documento['content_type']);
+				header('Content-Type: '.$contentType);
 // 					echo file_get_contents(ROOT."/".Parametri::$cartellaDocumenti."/".$documento['filename']);
 				readfile($path);
 			}

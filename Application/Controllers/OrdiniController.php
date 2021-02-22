@@ -345,7 +345,7 @@ class OrdiniController extends BaseController {
 		
 		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->send();
 		
-		$this->helper("Menu","ordini","panel");
+		$this->helper("Menu",$this->applicationUrl.$this->controller,"panel");
 		
 		$this->h["Menu"]->links['edit']['url'] = 'form/update/'.$clean["id_o"];
 		$this->h["Menu"]->links['edit']['class'] = 'mainMenuItem';

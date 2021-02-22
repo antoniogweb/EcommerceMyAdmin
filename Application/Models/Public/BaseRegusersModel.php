@@ -317,4 +317,39 @@ class BaseRegusersModel extends Model_Tree
 			$this->query("delete from regusers where id_user = ".(int)$idUser);
 		}
 	}
+	
+	// Iscrivi a newsletter l'utente
+	public function iscriviANewsletter($id_user)
+	{
+		$clean["id_user"] = (int)$id_user;
+		
+		$record = $this->clear()->where(array("id_user"=>$clean["id_user"]))->record();
+		
+		if (!empty($record))
+		{
+			// Iscrizione alla newsletter
+			if (ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+			{
+				$dataMailChimp = array(
+					"email"	=>	$record["username"],
+					"status"=>	"subscribed",
+				);
+				
+				if ($record["tipo_cliente"] == "azienda")
+				{
+					$dataMailChimp["firstname"] = $record["ragione_sociale"];
+					$dataMailChimp["lastname"] = $record["ragione_sociale"];
+				}
+				else
+				{
+					$dataMailChimp["firstname"] = $record["nome"];
+					$dataMailChimp["lastname"] = $record["cognome"];
+				}
+				
+				$code = syncMailchimp($dataMailChimp);
+				
+// 				echo $code;
+			}
+		}
+	}
 }

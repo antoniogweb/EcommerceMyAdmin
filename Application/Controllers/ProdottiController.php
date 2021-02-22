@@ -73,6 +73,9 @@ class ProdottiController extends PagesController {
 		if (v("ecommerce_attivo"))
 			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
 		
+		if (v("abilita_blocco_acquisto_diretto"))
+			$this->queryFields .= ",acquisto_diretto";
+		
 		if (v("usa_marchi"))
 			$this->queryFields .= ",id_marchio";
 		

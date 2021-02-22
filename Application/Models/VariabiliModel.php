@@ -150,6 +150,7 @@ class VariabiliModel extends GenericModel {
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
 		"abilita_solo_nazione_navigazione"	=>	1,
+		"abilita_blocco_acquisto_diretto"	=>	0,
 		"tipo_cliente_default"		=>	"privato",
 	);
 	
