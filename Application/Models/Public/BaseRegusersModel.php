@@ -268,7 +268,8 @@ class BaseRegusersModel extends Model_Tree
 		
 		$codiciNazioniAttive = implode(",",$naz->selectCodiciAttivi());
 		
-		$this->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+		if (v("insert_account_nazione_obbligatoria") || $queryType == "update")
+			$this->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
 		
 		if (strcmp($queryType,"insert") === 0)
 		{
