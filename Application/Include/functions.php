@@ -1642,7 +1642,7 @@ function tpf($filePath = "")
 	$subfolder = isset(Params::$viewSubfolder) ? DS . Params::$viewSubfolder : "";
 	
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
-	
+// 	echo $subFolderFullPath;
 	if (isset(Params::$viewSubfolder) && file_exists($subFolderFullPath))
 		return $subFolderFullPath;
 	

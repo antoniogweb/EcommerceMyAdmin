@@ -20,6 +20,9 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseBaseController extends Controller
@@ -34,7 +37,9 @@ class BaseBaseController extends Controller
 	public $idShop = 0;
 	public $getNewsInEvidenza;
 	public $team = array();
-
+	
+	public $defaultRegistrazione = array();
+	
 	public function __construct($model, $controller, $queryString)
 	{
 		if (!defined("FRONT"))
@@ -59,6 +64,11 @@ class BaseBaseController extends Controller
 		
 		if (empty(VariabiliModel::$valori))
 			VariabiliModel::ottieniVariabili();
+		
+		$this->defaultRegistrazione = array(
+			"nazione"		=>	v("nazione_default"),
+			"tipo_cliente"	=>	v("tipo_cliente_default"),
+		);
 		
 		$this->model("CategoriesModel");
 		$this->model("MenuModel");
@@ -601,5 +611,182 @@ class BaseBaseController extends Controller
 		$output = ob_get_clean();
 		
 		return $output;
+	}
+	
+	protected function formRegistrazione()
+	{
+		require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
+		require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
+		require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
+
+		// Se da App, genero la password e la invio all'utente
+		if (isset($_GET["fromApp"]))
+		{
+			$randPass = generateString(10);
+			$_POST["password"] = $_POST["confirmation"] = $randPass;
+		}
+		
+		$data['notice'] = null;
+		$data['isRegistrazione'] = true;
+		
+		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
+		$pec = $this->request->post("pec","","sanitizeAll");
+		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
+		
+		$baseFields = v("insert_account_fields");
+		
+		// BASE: 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
+		
+		$fields = $baseFields.',password:sha1';
+		
+		if (v("attiva_ruoli"))
+			$fields .= ",id_ruolo";
+		
+		if (v("attiva_tipi_azienda"))
+			$fields .= ",id_tipo_azienda";
+		
+		$this->m['RegusersModel']->setFields($fields,'strip_tags');
+		$datiCliente = $this->m['RegusersModel']->values;
+		$this->m['RegusersModel']->sanitize("sanitizeAll");
+		
+		$this->m['RegusersModel']->setConditions($tipo_cliente, "insert", $pec, $codiceDestinatario);
+		
+		$this->m['RegusersModel']->fields = "$baseFields,password";
+		
+		if (v("account_attiva_conferma_password"))
+			$this->m['RegusersModel']->fields .= ",confirmation";
+		
+		if (v("account_attiva_conferma_username"))
+			$this->m['RegusersModel']->fields .= ",conferma_username";
+		
+		if (v("attiva_ruoli"))
+			$this->m['RegusersModel']->fields .= ",id_ruolo";
+		
+		if (v("attiva_tipi_azienda"))
+			$this->m['RegusersModel']->fields .= ",id_tipo_azienda";
+		
+		if (isset($_POST['updateAction']))
+		{
+			$tessera = $this->request->post('tessera','');
+			if (strcmp($tessera,'') === 0)
+			{
+				if ($this->m['RegusersModel']->checkConditions('insert'))
+				{
+					$tokenConferma = $this->m['RegusersModel']->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
+					
+					if ($this->m['RegusersModel']->insert())
+					{
+						$password = $this->request->post("password","","none");
+						$clean["username"] = $this->request->post("username","","sanitizeAll");
+						
+						//loggo l'utente
+						if (!v("conferma_registrazione"))
+							$this->s['registered']->login($clean["username"],$password);
+						
+						if (Output::$json)
+							$this->setUserHead();
+						
+// 							require_once(ROOT."/External/phpmailer/class.phpmailer.php");
+
+						$mail = new PHPMailer(true); //New instance, with exceptions enabled
+
+// 							$mail->SMTPDebug = 4;
+						
+						if (Parametri::$useSMTP)
+						{
+							$mail->IsSMTP();                         // tell the class to use SMTP
+							$mail->SMTPAuth   = true;                  // enable SMTP authentication
+							$mail->Port       = 25;                    // set the SMTP server port
+							$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
+							$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
+							$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
+						}
+						
+						$mail->From       = Parametri::$mailFrom;
+						$mail->FromName   = Parametri::$mailFromName;
+						$mail->CharSet = 'UTF-8';
+						
+						$mail->SMTPOptions = array(
+							'ssl' => array(
+								'verify_peer' => false,
+								'verify_peer_name' => false,
+								'allow_self_signed' => true
+							)
+						);
+						
+						//manda mail con credenziali al cliente
+						$mail->ClearAddresses();
+						$mail->AddAddress($clean["username"]);
+						
+						if (ImpostazioniModel::$valori["bcc"])
+							$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+						
+						$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+						$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("invio credenziali nuovo utente");
+						$mail->IsHTML(true);
+						
+						//mail con credenziali
+						ob_start();
+						include tp()."/Regusers/mail_credenziali.php";
+
+						$output = ob_get_clean();
+						$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+						
+						$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
+						$mail->MsgHTML($output);
+						if (@$mail->Send())
+						{
+							$mail->ClearAddresses();
+							$mail->AddAddress(Parametri::$mailInvioOrdine);
+							
+							if (ImpostazioniModel::$valori["bcc"])
+								$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+							
+							//mail con credenziali
+							ob_start();
+							include tp()."/Regusers/mail_al_negozio_registr_nuovo_cliente.php";
+
+							$output = ob_get_clean();
+							
+							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+							$mail->MsgHTML($output);
+							
+							@$mail->Send();
+							
+							$_SESSION['result'] = 'utente_creato';
+							
+							if (Output::$html)
+								$this->redirect("avvisi");
+						}
+						else
+						{
+							$_SESSION['result'] = 'error';
+							
+							if (Output::$html)
+								$this->redirect("avvisi");
+						}
+					}
+					else
+					{
+						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+					}
+				}
+				else
+				{
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+				}
+			}
+		}
+		
+		$data['values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml',null,$this->defaultRegistrazione);
+		
+		$data['province'] = $this->m['ProvinceModel']->selectTendina();
+		
+		if (strcmp($data['values']["tipo_cliente"],"") === 0)
+		{
+			$data['values']["tipo_cliente"] = "privato";
+		}
+		
+		$this->append($data);
 	}
 }
