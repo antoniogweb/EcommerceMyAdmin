@@ -30,6 +30,8 @@ class Image_Gd_Thumbnail
 	private $params = array(); //parameters of the object
 	private $basePath = null; //the path of the folder inside which the images are saved
 	
+	public static $cacheFolderFilesPermission = 0655;
+	
 	public $textOverlay = array();
 	
 	public function __construct($basePath,$params = null)
@@ -426,6 +428,10 @@ class Image_Gd_Thumbnail
 		{
 			header("Content-type: $contentType");
 		}
+		
+		// Forzo la creazione della cartella
+		if ($cachePathForce && !file_exists(ROOT."/".$cachePathForce))
+			@mkdir(ROOT."/".$cachePathForce,self::$cacheFolderFilesPermission,true);
 		
 		if (strcmp($type,'png') === 0)
 		{
