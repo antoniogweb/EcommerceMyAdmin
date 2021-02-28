@@ -124,7 +124,7 @@ class paypal_class {
    	public function validate_ipn() {
 
 		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
-		if (! preg_match ( '/paypal\.com$/', $hostname )) {
+		if (! preg_match ( '/paypal\.com$/', $hostname ) && (string)$_SERVER ['REMOTE_ADDR'] !== "173.0.81.65" && (string)$_SERVER ['REMOTE_ADDR'] !== "173.0.81.140") {
 			$this->ipn_status = 'Validation post isn\'t from PayPal';
 			$this->log_ipn_results ( false );
 			return false;
