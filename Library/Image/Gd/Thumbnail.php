@@ -30,7 +30,7 @@ class Image_Gd_Thumbnail
 	private $params = array(); //parameters of the object
 	private $basePath = null; //the path of the folder inside which the images are saved
 	
-	public static $cacheFolderFilesPermission = 0655;
+	public static $cacheFolderFilesPermission = 0777;
 	
 	public $textOverlay = array();
 	
