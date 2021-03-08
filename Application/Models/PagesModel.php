@@ -1749,13 +1749,15 @@ class PagesModel extends GenericModel {
 			$giacenza = self::disponibilita($r["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 			
+			$prezzoMinimo = $p->prezzoMinimo($r["pages"]["id_page"]);
+			
 			$temp = array(
 				"g:id"	=>	$r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
 				"g:description"	=>	htmlentitydecode(field($r,"description")),
 				"g:google_product_category"	=>	htmlentitydecode(cfield($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
-				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$p->prezzoMinimo($r["pages"]["id_page"])),2,".",""). " EUR",
+				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
 			);
 			
@@ -1774,6 +1776,9 @@ class PagesModel extends GenericModel {
 			
 			if (isset($_GET["fbk"]))
 				$temp["condition"] = "new";
+			
+			if ($p->inPromozione($r["pages"]["id_page"], $r))
+				$temp["g:sale_price"] = number_format(calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo),2,".",""). " EUR";
 			
 			$arrayProdotti[] = $temp;
 		}

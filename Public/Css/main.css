@@ -714,7 +714,7 @@ ul.third_level
 }
 .custom-combobox, .custom-combobox-input
 {
-/* 	max-width:500px !important; */
+	max-width:500px !important;
 }
 
 .get_title
