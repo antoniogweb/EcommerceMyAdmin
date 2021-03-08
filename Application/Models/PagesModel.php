@@ -400,7 +400,7 @@ class PagesModel extends GenericModel {
 	
 	public function aggiornaStatoProdottiInPromozione()
 	{
-		$res = $this->clear()->where(array("in_promozione"=>"Y"))->send();
+		$res = $this->clear()->where(array("in_promozione"=>"Y"))->sWhere("al < '".date("Y-m-d")."'")->send();
 		
 		foreach ($res as $r)
 		{
@@ -1142,7 +1142,11 @@ class PagesModel extends GenericModel {
 				
 				if ($now >= $dal and $now <= $al)
 				{
-					return "sì<br />(".smartDate($res[0]["pages"]["dal"])." / ".smartDate($res[0]["pages"]["al"]).")<br /><b>".setPriceReverse($res[0]["pages"]["prezzo_promozione"])." %</b>";
+					return "<span class='text text-success'><b>In corso</b></span><br />(".smartDate($res[0]["pages"]["dal"])." / ".smartDate($res[0]["pages"]["al"]).")<br /><b>".setPriceReverse($res[0]["pages"]["prezzo_promozione"])." %</b>";
+				}
+				if ($now < $dal)
+				{
+					return "<b>Non ancora partita</b><br />(".smartDate($res[0]["pages"]["dal"])." / ".smartDate($res[0]["pages"]["al"]).")";
 				}
 				else
 				{
