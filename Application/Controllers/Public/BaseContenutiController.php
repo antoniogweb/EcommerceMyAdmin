@@ -520,6 +520,19 @@ class BaseContenutiController extends BaseController
 		if ($this->catSWhere)
 			$this->m["PagesModel"]->sWhere($this->catSWhere);
 		
+		// Promozioni
+		if (self::$isPromo)
+		{
+			$nowDate = date("Y-m-d");
+			$wherePromo = array(
+				"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+				" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+				"in_promozione" => "Y",
+			);
+			
+			$this->m["PagesModel"]->aWhere($wherePromo);
+		}
+		
 		$data["pages"] = $this->m["PagesModel"]->orderBy($this->gerOrderBy($section))->send();
 		
 		if ($firstSection == Parametri::$nomeSezioneProdotti)
@@ -1167,51 +1180,67 @@ class BaseContenutiController extends BaseController
 	
 	public function promozione()
 	{
-		$nowDate = date("Y-m-d");
-		$where = array(
-			"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-			" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-			"attivo" => "Y",
-			"in_promozione" => "Y",
-			"principale" => "Y",
-		);
-		
 		$data["title"] = Parametri::$nomeNegozio . " - Promozioni";
 		
-		$data["pages"] = $this->m['PagesModel']->clear()->where($where);
-			
-		if (Parametri::$hideNotAllowedNodesInLists)
-		{
-			$accWhere = $this->m["PagesModel"]->getAccessibilityWhere();
-			$this->m["PagesModel"]->aWhere($accWhere);
-		}
-	
-		$data["pages"] = $this->m['PagesModel']->addJoinTraduzionePagina()->orderBy("pages.id_order")->send();
+		$this->cleanAlias = "prodotti-in-promozione";
 		
-		$rowNumber = $data["rowNumber"] = count($data["pages"]);
+		self::$isPromo = $data["isPromo"] = true;
 		
-		if ($rowNumber > $this->elementsPerPage)
-		{
-			$argKeys = array(
-				'p:forceNat'	=>	1,
-			);
-
-			$this->setArgKeys($argKeys);
-			$this->shift(count($this->pageArgs));
-			
-			//load the Pages helper
-			$this->helper('Pages','prodotti-in-promozione','p');
-			
-			$page = $this->viewArgs['p'];
-			
-			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
-			$data["pages"] = $this->m['PagesModel']->send();
-			
-			$data['pageList'] = $this->h['Pages']->render($page-5,11);
-		}
+		$this->category($this->idShop);
 		
-		$this->append($data);
-		$this->load('promozione');
+		foreach (Params::$frontEndLanguages as $l)
+			$data["arrayLingue"][$l] = $l."/prodotti-in-promozione.html";
+		
+		$data["breadcrumb"] = gtext("promozioni");
+		
+		if (isset($data))
+			$this->append($data);
+		
+// 		$nowDate = date("Y-m-d");
+// 		$where = array(
+// 			"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+// 			" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+// 			"attivo" => "Y",
+// 			"in_promozione" => "Y",
+// 			"principale" => "Y",
+// 		);
+// 		
+// 		$data["title"] = Parametri::$nomeNegozio . " - Promozioni";
+// 		
+// 		$data["pages"] = $this->m['PagesModel']->clear()->where($where);
+// 			
+// 		if (Parametri::$hideNotAllowedNodesInLists)
+// 		{
+// 			$accWhere = $this->m["PagesModel"]->getAccessibilityWhere();
+// 			$this->m["PagesModel"]->aWhere($accWhere);
+// 		}
+// 	
+// 		$data["pages"] = $this->m['PagesModel']->addJoinTraduzionePagina()->orderBy("pages.id_order")->send();
+// 		
+// 		$rowNumber = $data["rowNumber"] = count($data["pages"]);
+// 		
+// 		if ($rowNumber > $this->elementsPerPage)
+// 		{
+// 			$argKeys = array(
+// 				'p:forceNat'	=>	1,
+// 			);
+// 
+// 			$this->setArgKeys($argKeys);
+// 			$this->shift(count($this->pageArgs));
+// 			
+// 			//load the Pages helper
+// 			$this->helper('Pages','prodotti-in-promozione','p');
+// 			
+// 			$page = $this->viewArgs['p'];
+// 			
+// 			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
+// 			$data["pages"] = $this->m['PagesModel']->send();
+// 			
+// 			$data['pageList'] = $this->h['Pages']->render($page-5,11);
+// 		}
+// 		
+// 		$this->append($data);
+// 		$this->load('promozione');
 	}
 	
 	public function sitemap()

@@ -40,6 +40,8 @@ class BaseBaseController extends Controller
 	
 	public $defaultRegistrazione = array();
 	
+	public static $isPromo = false;
+	
 	public function __construct($model, $controller, $queryString)
 	{
 		if (!defined("FRONT"))
@@ -401,7 +403,11 @@ class BaseBaseController extends Controller
 				"acquistabile"	=>	"Y",
 			);
 			
-			$data["inPromozione"] = getRandom($this->m["PagesModel"]->clear()->addJoinTraduzionePagina()->where($pWhere)->limit(20)->orderBy("pages.id_order")->send());
+			$prodottiInPromo = $this->m["PagesModel"]->clear()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
+			
+			$data["inPromozione"] = getRandom($prodottiInPromo);
+			
+			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
 		
 		$data["meta_description"] = $data["title"] =  htmlentitydecode(ImpostazioniModel::$valori["meta_description"]);
@@ -447,6 +453,8 @@ class BaseBaseController extends Controller
 		
 // 		$data["itUrl"] = "it";
 // 		$data["enUrl"] = "en";
+		
+		$data["isPromo"] = self::$isPromo;
 		
 		$data["arrayLingue"] = array();
 		
