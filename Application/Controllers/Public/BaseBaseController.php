@@ -659,7 +659,7 @@ class BaseBaseController extends Controller
 		
 		$this->m['RegusersModel']->setConditions($tipo_cliente, "insert", $pec, $codiceDestinatario);
 		
-		$this->m['RegusersModel']->fields = "$baseFields,password";
+		$this->m['RegusersModel']->fields = "$baseFields,newsletter,password";
 		
 		if (v("account_attiva_conferma_password"))
 			$this->m['RegusersModel']->fields .= ",confirmation";
@@ -684,6 +684,8 @@ class BaseBaseController extends Controller
 					
 					if ($this->m['RegusersModel']->insert())
 					{
+						$lId = $this->m['RegusersModel']->lastId();
+						
 						$password = $this->request->post("password","","none");
 						$clean["username"] = $this->request->post("username","","sanitizeAll");
 						
@@ -693,6 +695,10 @@ class BaseBaseController extends Controller
 						
 						if (Output::$json)
 							$this->setUserHead();
+						
+						// Iscrizione alla newsletter
+						if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+							$this->m['RegusersModel']->iscriviANewsletter($lId);
 						
 // 							require_once(ROOT."/External/phpmailer/class.phpmailer.php");
 
