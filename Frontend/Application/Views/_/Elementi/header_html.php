@@ -4,7 +4,7 @@
 	<div class="">
 		<div class="uk-navbar-container tm-toolbar-container uk-navbar-transparent">
 			<div class="uk-container top_nav" uk-navbar>
-				<div class="uk-navbar-left uk-visible@m">
+				<div class="uk-navbar-left uk-visible@s">
 					<nav>
 						<ul class="uk-text-small uk-navbar-nav">
 							<li>
@@ -26,7 +26,7 @@
 					</nav>
 				</div>
 				<?php } ?>
-				<div class="uk-navbar-right uk-visible@m">
+				<div class="uk-navbar-right uk-visible@s">
 					<nav>
 						<ul class="uk-navbar-nav">
 							<?php include(tpf("/Elementi/social_list.php"));?>

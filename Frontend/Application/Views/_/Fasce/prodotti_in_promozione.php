@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<div class="uk-width-expand">
-				<div class="uk-slider-container-offset" uk-slider>
+				<div class="" uk-slider>
 
 					<div class="uk-position-relative uk-visible-toggle" tabindex="-1">
 

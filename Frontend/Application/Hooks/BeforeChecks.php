@@ -62,6 +62,8 @@ if (v("usa_https"))
 
 $detect = new Mobile_Detect();
 User::$isMobile = $detect->isMobile();
+User::$isTablet = $detect->isTablet();
+User::$isPhone = ($detect->isMobile() && !$detect->isTablet());
 
 Helper_Pages::$pageLinkWrap = array("li");
 Helper_Pages::$pageLinkWrapClass = array("");

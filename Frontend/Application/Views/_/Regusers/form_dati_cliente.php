@@ -142,45 +142,42 @@ echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio
 			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"placeholder='".gtext("Email", false)."'");?>
 		</div>
 	</div>
+	<?php if (v("account_attiva_conferma_username")) { ?>
 	<div class="uk-margin">
 		<label class="uk-form-label"><?php echo gtext("Conferma email");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"placeholder='".gtext("Conferma email", false)."'");?>
 		</div>
 	</div>
+	<?php } ?>
 </div>
 
 	<?php if (!$islogged) { ?>
-	<h3><?php echo gtext("Creazione account");?></h3>
-	
-	<div class="utente_registrato class_registrato">
-		<div><?php echo Html_Form::radio("registrato",$values["registrato"],"N","radio_registrato","none");?> <?php echo gtext("Continua come utente ospite", false);?></div>
-		<div style="margin-top:10px;"><?php echo Html_Form::radio("registrato",$values["registrato"],"Y","radio_registrato","none");?> <?php echo gtext("Crea account", false);?></div>
-	<?php
-	/*$registrato = array(
-		gtext("Continua come utente ospite")=>"N",
-		gtext("Crea account")=>"Y",
-	);
-	
-	echo Html_Form::radio("registrato",$values['registrato'],$registrato,"radio_registrato");*/?>
-	</div>
+		<h3><?php echo gtext("Creazione account");?></h3>
+		
+		<div class="utente_registrato class_registrato">
+			<div><?php echo Html_Form::radio("registrato",$values["registrato"],"N","radio_registrato","none");?> <?php echo gtext("Continua come utente ospite", false);?></div>
+			<div style="margin-top:10px;"><?php echo Html_Form::radio("registrato",$values["registrato"],"Y","radio_registrato","none");?> <?php echo gtext("Crea account", false);?></div>
+		</div>
 
-	<div class="table_password">
-		<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
-			<div class="first_of_grid uk-margin">
-				<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
-				<div class="uk-form-controls">
-					<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='off' placeholder='".gtext("Password", false)."'");?>
+		<div class="table_password">
+			<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
+				<div class="first_of_grid uk-margin">
+					<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
+					<div class="uk-form-controls">
+						<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='off' placeholder='".gtext("Password", false)."'");?>
+					</div>
 				</div>
-			</div>
-			<div class="uk-margin">
-				<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
-				<div class="uk-form-controls">
-					<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation",null,"autocomplete='off' placeholder='".gtext("Conferma password", false)."'");?>
+				<?php if (v("account_attiva_conferma_password")) { ?>
+				<div class="uk-margin">
+					<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
+					<div class="uk-form-controls">
+						<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation",null,"autocomplete='off' placeholder='".gtext("Conferma password", false)."'");?>
+					</div>
 				</div>
+				<?php } ?>
 			</div>
 		</div>
-	</div>
 	<?php } ?>
 
 <?php } ?>

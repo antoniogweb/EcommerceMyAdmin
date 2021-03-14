@@ -3,7 +3,7 @@
 <section class="uk-section uk-section-muted">
 	<div class="uk-container">
 		<h2 class="uk-text-bold uk-margin-medium"><?php echo gtext("Ultimi articoli");?></h2>
-		<div data-uk-slider="velocity: 5" class=" uk-slider-container-offset uk-slider">
+		<div data-uk-slider="velocity: 5" class="uk-slider">
 			<div class="uk-position-relative">
 				<div class="uk-slider-container">
 					<ul class="uk-slider-items uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-medium">
@@ -20,7 +20,6 @@
 					<a class="uk-position-center-right-out uk-position-small" href="#" data-uk-slidenav-next data-uk-slider-item="next"></a>
 				</div>
 			</div>
-			
 		</div>
 	</div>
 </section>

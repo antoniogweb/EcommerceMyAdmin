@@ -12,6 +12,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 class Autoload
 {
 
-	public static $files = array();
+	public static $files = array(
+		"functions.php",
+	);
 
 }

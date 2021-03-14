@@ -1,11 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (User::$isMobile) { ?>
 <div class="uk-offcanvas-bar uk-padding-remove">
-	<div class="uk-card uk-card-small">
+	<div class="uk-card uk-card-default uk-card-small uk-height-1-1">
 		<div class="uk-card-header">
-			<button class="uk-offcanvas-close" type="button" uk-close></button>
+			<?php echo gtext("Menù area riservata");?>
+			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" uk-close></button>
 		</div>
-		<div class="uk-card-body uk-padding-remove uk-margin-large-top">
+		<div class="uk-card-body">
 <?php } ?>
 	<nav>
 		<ul class="uk-nav-default uk-nav-parent-icon uk-list-divider" uk-nav>

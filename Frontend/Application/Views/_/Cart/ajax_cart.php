@@ -1,11 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-card uk-card-small uk-height-1-1 uk-flex uk-flex-column">
+<div class="uk-card uk-card-default uk-card-small uk-height-1-1 uk-flex uk-flex-column">
 <header class="uk-card-header uk-flex uk-flex-middle">
 	<div class="uk-grid-small uk-flex-1" uk-grid>
 		<div class="uk-width-expand">
 			<?php echo gtext("Carrello");?>
 		</div>
-		<button class="uk-offcanvas-close" type="button" uk-close></button>
+		<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" uk-close></button>
 	</div>
 </header>
 <div class="uk-card-body uk-overflow-auto">

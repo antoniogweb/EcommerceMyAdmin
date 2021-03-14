@@ -35,6 +35,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php include(tp()."/Regusers/form_dati_cliente.php");?>
 	
 	<?php if (strcmp($this->action,"add") === 0) { ?>
+	
+	<?php if (!$islogged && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"]) { ?>
+	<div class="newsletter_checkbox"><?php echo Html_Form::checkbox("newsletter",$values['newsletter'],"Y");?> <?php echo gtext("Voglio essere iscritto alla newsletter per conoscere le promozioni e le novità del negozio");?></div> 
+	<?php } ?>
+			
 	<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small">
 		<?php echo gtext("Ho letto e accettato le");?>
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
