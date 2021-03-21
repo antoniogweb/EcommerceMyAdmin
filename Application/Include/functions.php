@@ -1632,21 +1632,25 @@ function p($c, $prezzo)
 
 function tp()
 {
-	$subfolder = isset(Params::$viewSubfolder) ? DS . Params::$viewSubfolder : "";
+	$themeFolder = v("theme_folder");
+	
+	$subfolder = $themeFolder ? DS . $themeFolder : "";
 	
 	return Domain::$parentRoot."/Application/Views$subfolder";
 }
 
 function tpf($filePath = "")
 {
-	$subfolder = isset(Params::$viewSubfolder) ? DS . Params::$viewSubfolder : "";
+	$themeFolder = v("theme_folder");
+	
+	$subfolder = $themeFolder ? DS . $themeFolder : "";
 	
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 // 	echo $subFolderFullPath;
-	if (isset(Params::$viewSubfolder) && file_exists($subFolderFullPath))
+	if ($themeFolder && file_exists($subFolderFullPath))
 		return $subFolderFullPath;
 	
-	if (isset(Params::$viewSubfolder))
+	if ($themeFolder)
 		return Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
 	
 	return Domain::$parentRoot."/Application/Views/".ltrim($filePath,"/");
@@ -1712,5 +1716,5 @@ function parent($file)
 {
 	$file = str_replace(tp(),"",$file);
 	
-	return ROOT."/Application/Views/_".$file;
+	return Domain::$parentRoot."/Application/Views/_".$file;
 }
