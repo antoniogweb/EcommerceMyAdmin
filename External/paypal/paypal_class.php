@@ -164,6 +164,8 @@ class paypal_class {
 		
 		$verified = $ipn->verifyIPN();
 		
+		$this->ipn_response = $ipn->ipn_response;
+		
 		// 		// Invalid IPN transaction.  Check the $ipn_status and log for details.
 		if (!$verified) {
 			$this->ipn_status = 'IPN Validation Failed';
