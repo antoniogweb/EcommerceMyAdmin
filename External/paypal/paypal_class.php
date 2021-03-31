@@ -39,17 +39,20 @@ class paypal_class {
 	private $fields = array();          // array holds the fields to submit to paypal
 	private $ipn_debug; 				// ipn_debug
 	private $paypal_url;
+	private $useSandbox = true;
 	
 	// initialization constructor.  Called when class is created.
 	function __construct($sandbox = false) {
 
         if ($sandbox)
         {
-          $this->paypal_url = SSL_SAND_URL;
+			$this->paypal_url = SSL_SAND_URL;
+			$this->useSandbox = true;
         }
         else
         {
           $this->paypal_url = SSL_P_URL;
+          $this->useSandbox = false;
         }
         
 		$this->ipn_status = '';
@@ -123,12 +126,12 @@ class paypal_class {
  */
    	public function validate_ipn() {
 
-		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
-		if (! preg_match ( '/paypal\.com$/', $hostname ) && (string)$_SERVER ['REMOTE_ADDR'] !== "173.0.81.65" && (string)$_SERVER ['REMOTE_ADDR'] !== "173.0.81.140") {
-			$this->ipn_status = 'Validation post isn\'t from PayPal';
-			$this->log_ipn_results ( false );
-			return false;
-		}
+// 		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
+// 		if (! preg_match ( '/paypal\.com$/', $hostname ) && (string)$_SERVER ['REMOTE_ADDR'] !== "173.0.81.65" && (string)$_SERVER ['REMOTE_ADDR'] !== "173.0.81.140") {
+// 			$this->ipn_status = 'Validation post isn\'t from PayPal';
+// 			$this->log_ipn_results ( false );
+// 			return false;
+// 		}
 		
 		if (isset($this->paypal_mail) && strtolower ( $_POST['receiver_email'] ) != strtolower(trim( $this->paypal_mail ))) {
 			$this->ipn_status = "Receiver Email Not Match";
@@ -143,49 +146,26 @@ class paypal_class {
 		}
 
 		// parse the paypal URL
-		$paypal_url = ($_POST['test_ipn'] == 1) ? SSL_SAND_URL : SSL_P_URL;
-		$url_parsed = parse_url($paypal_url);        
+		/*$paypal_url = ($_POST['test_ipn'] == 1) ? SSL_SAND_URL : SSL_P_URL;
+		$url_parsed = parse_url($paypal_url);   */     
 		
-		// generate the post string from the _POST vars aswell as load the
-		// _POST vars into an arry so we can play with them from the calling
-		// script.
-		$post_string = '';    
 		foreach ($_POST as $field=>$value) { 
 			$this->ipn_data["$field"] = $value;
-			$post_string .= $field.'='.urlencode(stripslashes($value)).'&'; 
 		}
-		$post_string.="cmd=_notify-validate"; // append ipn command
+
+		require (LIBRARY.'/External/paypal/PaypalIPN.php');
 		
-		// open the connection to paypal
-		if (isset($_POST['test_ipn']) )
-			$fp = fsockopen ( 'ssl://www.sandbox.paypal.com', "443", $err_num, $err_str, 60 );
-		else
-			$fp = fsockopen ( 'ssl://www.paypal.com', "443", $err_num, $err_str, 60 );
- 
-		if(!$fp) {
-			// could not open the connection.  If loggin is on, the error message
-			// will be in the log.
-			$this->ipn_status = "fsockopen error no. $err_num: $err_str";
-			$this->log_ipn_results(false);       
-			return false;
-		} else { 
-			// Post the data back to paypal
-			fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n"); 
-			fputs($fp, "Host: $url_parsed[host]\r\n"); 
-			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n"); 
-			fputs($fp, "Content-length: ".strlen($post_string)."\r\n"); 
-			fputs($fp, "Connection: close\r\n\r\n"); 
-			fputs($fp, $post_string . "\r\n\r\n"); 
+		$ipn = new PaypalIPN();
 		
-			// loop through the response from the server and append to variable
-			while(!feof($fp)) { 
-		   	$this->ipn_response .= fgets($fp, 1024); 
-		   } 
-		  fclose($fp); // close connection
-		}
+		if ($this->useSandbox)
+			$ipn->useSandbox();
 		
-		// Invalid IPN transaction.  Check the $ipn_status and log for details.
-		if (! preg_match("/VERIFIED/",$this->ipn_response)) {
+		$ipn->usePHPCerts();
+		
+		$verified = $ipn->verifyIPN();
+		
+		// 		// Invalid IPN transaction.  Check the $ipn_status and log for details.
+		if (!$verified) {
 			$this->ipn_status = 'IPN Validation Failed';
 			$this->log_ipn_results(false);   
 			return false;
@@ -194,6 +174,55 @@ class paypal_class {
 			$this->log_ipn_results(true); 
 			return true;
 		}
+		
+		// generate the post string from the _POST vars aswell as load the
+		// _POST vars into an arry so we can play with them from the calling
+		// script.
+// 		$post_string = '';    
+// 		foreach ($_POST as $field=>$value) { 
+// 			$this->ipn_data["$field"] = $value;
+// 			$post_string .= $field.'='.urlencode(stripslashes($value)).'&'; 
+// 		}
+// 		$post_string.="cmd=_notify-validate"; // append ipn command
+// 		
+// 		// open the connection to paypal
+// 		if (isset($_POST['test_ipn']) )
+// 			$fp = fsockopen ( 'ssl://www.sandbox.paypal.com', "443", $err_num, $err_str, 60 );
+// 		else
+// 			$fp = fsockopen ( 'ssl://www.paypal.com', "443", $err_num, $err_str, 60 );
+//  
+// 		if(!$fp) {
+// 			// could not open the connection.  If loggin is on, the error message
+// 			// will be in the log.
+// 			$this->ipn_status = "fsockopen error no. $err_num: $err_str";
+// 			$this->log_ipn_results(false);       
+// 			return false;
+// 		} else { 
+// 			// Post the data back to paypal
+// 			fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n"); 
+// 			fputs($fp, "Host: $url_parsed[host]\r\n"); 
+// 			fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n"); 
+// 			fputs($fp, "Content-length: ".strlen($post_string)."\r\n"); 
+// 			fputs($fp, "Connection: close\r\n\r\n"); 
+// 			fputs($fp, $post_string . "\r\n\r\n"); 
+// 		
+// 			// loop through the response from the server and append to variable
+// 			while(!feof($fp)) { 
+// 		   	$this->ipn_response .= fgets($fp, 1024); 
+// 		   } 
+// 		  fclose($fp); // close connection
+// 		}
+// 		
+// 		// Invalid IPN transaction.  Check the $ipn_status and log for details.
+// 		if (! preg_match("/VERIFIED/",$this->ipn_response)) {
+// 			$this->ipn_status = 'IPN Validation Failed';
+// 			$this->log_ipn_results(false);   
+// 			return false;
+// 		} else {
+// 			$this->ipn_status = "IPN VERIFIED";
+// 			$this->log_ipn_results(true); 
+// 			return true;
+// 		}
 	} 
    
 	private function log_ipn_results($success) {
