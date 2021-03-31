@@ -39,7 +39,7 @@ class paypal_class {
 	private $fields = array();          // array holds the fields to submit to paypal
 	private $ipn_debug; 				// ipn_debug
 	private $paypal_url;
-	private $useSandbox = true;
+	private $useSandbox = false;
 	
 	// initialization constructor.  Called when class is created.
 	function __construct($sandbox = false) {
