@@ -152,6 +152,11 @@ class VariabiliModel extends GenericModel {
 		"abilita_solo_nazione_navigazione"	=>	1,
 		"abilita_blocco_acquisto_diretto"	=>	0,
 		"tipo_cliente_default"		=>	"privato",
+		"codice_gtm_analytics"		=>	"",
+		"codice_gtm_analytics_noscript"	=>	"",
+		"codice_fbk"				=>	"",
+		"codice_fbk_noscript"		=>	"",
+		"debug_js"					=>	0,
 	);
 	
 	public function __construct() {
@@ -191,6 +196,22 @@ class VariabiliModel extends GenericModel {
 				'type'			=>	'Select',
 				'options'	=>	$this->opzioniSiNo(),
 				"reverse"	=>	"yes",
+			),
+			'codice_gtm_analytics'	=>	array(
+				'labelString'	=>	"Codice analytics/GTM",
+				'type'			=>	'Textarea',
+			),
+			'codice_gtm_analytics_noscript'	=>	array(
+				'labelString'	=>	"Codice analytics/GTM (noscript)",
+				'type'			=>	'Textarea',
+			),
+			'codice_fbk'	=>	array(
+				'labelString'	=>	"Codice pixel Facebook",
+				'type'			=>	'Textarea',
+			),
+			'codice_fbk_noscript'	=>	array(
+				'labelString'	=>	"Codice pixel Facebook (noscript)",
+				'type'			=>	'Textarea',
 			),
 		);
 		
