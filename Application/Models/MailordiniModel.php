@@ -20,7 +20,14 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if (!defined('EG')) die('Direct access not allowed!');
+
+require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/Exception.php');
+require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/PHPMailer.php');
+require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
 
 class MailordiniModel extends GenericModel
 {
@@ -45,5 +52,102 @@ class MailordiniModel extends GenericModel
 		}
 		
 		return $body;
+	}
+	
+	public static function inviaMail($params)
+	{
+		$mo = new MailordiniModel();
+		
+		$lingua = isset($params["lingua"]) ? $params["lingua"] : Params::$lang;
+		$emails = $params["emails"];
+		$oggetto = $params["oggetto"];
+		$idO = isset($params["id_o"]) ? $params["id_o"] : 0;
+		$idUser = isset($params["id_user"]) ? $params["id_user"] : 0;
+		$testo = isset($params["testo"]) ? $params["testo"] : "";
+		$tipologia = isset($params["tipologia"]) ? $params["tipologia"] : "ORDINE";
+		
+		$bckLang = Params::$lang;
+		$bckContesto = TraduzioniModel::$contestoStatic;
+		
+		try
+		{
+			$mail = new PHPMailer(true); //New instance, with exceptions enabled
+
+			if (Parametri::$useSMTP)
+			{
+				$mail->IsSMTP();                         // tell the class to use SMTP
+				$mail->SMTPAuth   = true;                  // enable SMTP authentication
+				$mail->Port       = 25;                    // set the SMTP server port
+				$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
+				$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
+				$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
+			}
+			
+			$mail->From       = Parametri::$mailFrom;
+			$mail->FromName   = Parametri::$mailFromName;
+			$mail->CharSet = 'UTF-8';
+			
+			$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+			
+			// Imposto le traduzioni del front
+			TraduzioniModel::$contestoStatic = "front";
+			Params::$lang = $lingua;
+			$tradModel = new TraduzioniModel();
+			$tradModel->ottieniTraduzioni();
+			
+			$oggetto = gtext($oggetto, false);
+			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
+			
+			$mail->Subject  = Parametri::$nomeNegozio." - $oggetto";
+			$mail->IsHTML(true);
+			
+			$mail->SMTPOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				)
+			);
+			
+			if (ImpostazioniModel::$valori["bcc"])
+				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+			
+			$testo = MailordiniModel::loadTemplate($oggetto, $testo);
+// 				echo $output;die();
+			// Imposto le traduzioni del back
+			Params::$lang = $bckLang;
+			TraduzioniModel::$contestoStatic = $bckContesto;
+			$tradModel = new TraduzioniModel();
+			$tradModel->ottieniTraduzioni();
+			
+			$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
+			$mail->MsgHTML($testo);
+			
+			foreach ($emails as $email)
+			{
+				$mail->ClearAddresses();
+				$mail->AddAddress($email);
+				
+				$inviata = 0;
+				
+				if ($mail->Send())
+					$inviata = 1;
+				
+				$mo->setValues(array(
+					"id_o"		=>	$idO,
+					"id_user"	=>	$idUser,
+					"email"		=>	$email,
+					"oggetto"	=>	$oggetto,
+					"testo"		=>	$testo,
+					"inviata"	=>	$inviata,
+					"tipologia"	=>	$tipologia,
+				));
+				
+				$mo->insert();
+			}
+		} catch (Exception $e) {
+			Params::$lang = $bckLang;
+			TraduzioniModel::$contestoStatic = $bckContesto;
+		}
 	}
 }

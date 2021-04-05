@@ -253,6 +253,19 @@ class BaseOrdiniController extends BaseController
 				}
 			}
 		}
+		else
+		{
+			if (v("email_log_errori"))
+			{
+				$emails = explode(",", v("email_log_errori"));
+				
+				MailordiniModel::inviaMail(array(
+					"emails"	=>	$emails,
+					"oggetto"	=>	"ERRORE IPN",
+					"testo"		=>	"<pre>".$p->log_ipn_results(true, false)."</pre>",
+				));
+			}
+		}
 	}
 	
 	public function modifica($id_o = 0, $cart_uid = 0)

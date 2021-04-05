@@ -157,6 +157,7 @@ class VariabiliModel extends GenericModel {
 		"codice_fbk"				=>	"",
 		"codice_fbk_noscript"		=>	"",
 		"debug_js"					=>	0,
+		"email_log_errori"			=>	"",
 	);
 	
 	public function __construct() {

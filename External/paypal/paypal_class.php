@@ -227,7 +227,7 @@ class paypal_class {
 // 		}
 	} 
    
-	private function log_ipn_results($success) {
+	public function log_ipn_results($success, $writeToLog = true) {
 		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
 		// Timestamp
 		$text = '[' . date ( 'm/d/Y g:i A' ) . '] - ';
@@ -248,7 +248,11 @@ class paypal_class {
 
 		// Log the response from the paypal server
 		$this->ipn_status .= "IPN Response from Paypal Server:\n" . $this->ipn_response;
-		$this->write_to_log ();
+		
+		if ($writeToLog)
+			$this->write_to_log ();
+		else
+			return $this->ipn_status;
 	}
 	
 	private function write_to_log() {
