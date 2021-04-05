@@ -255,16 +255,7 @@ class BaseOrdiniController extends BaseController
 		}
 		else
 		{
-			if (v("email_log_errori"))
-			{
-				$emails = explode(",", v("email_log_errori"));
-				
-				MailordiniModel::inviaMail(array(
-					"emails"	=>	$emails,
-					"oggetto"	=>	"ERRORE IPN",
-					"testo"		=>	"<pre>".$p->log_ipn_results(true, false)."</pre>",
-				));
-			}
+			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".$p->log_ipn_results(true, false)."</pre>", "IPN");
 		}
 	}
 	

@@ -54,6 +54,21 @@ class MailordiniModel extends GenericModel
 		return $body;
 	}
 	
+	public static function inviaMailLog($oggetto, $testo, $tipologia)
+	{
+		if (v("email_log_errori"))
+		{
+			$emails = explode(",", v("email_log_errori"));
+			
+			self::inviaMail(array(
+				"emails"	=>	$emails,
+				"oggetto"	=>	$oggetto,
+				"testo"		=>	$testo,
+				"tipologia"	=>	$tipologia,
+			));
+		}
+	}
+	
 	public static function inviaMail($params)
 	{
 		$mo = new MailordiniModel();
