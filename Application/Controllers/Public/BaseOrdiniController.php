@@ -255,7 +255,7 @@ class BaseOrdiniController extends BaseController
 		}
 		else
 		{
-			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".$p->log_ipn_results(true, false)."</pre>", "IPN");
+			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".$p->log_ipn_results(false, false)."</pre>", "IPN");
 		}
 	}
 	
