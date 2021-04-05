@@ -42,7 +42,7 @@ class MailordiniModel extends GenericModel
 	{
 		$template = v("mail_template");
 		
-		$path = tp()."/Email/".$template.".php";
+		$path = tpf("/Email/".$template.".php");
 		
 		if (file_exists($path))
 		{
