@@ -190,6 +190,10 @@ class BaseRegusersController extends BaseController
 
 	public function forgot()
 	{
+		require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
+		require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
+		require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
+		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi una nuova password");
 		
 		foreach (Params::$frontEndLanguages as $l)
