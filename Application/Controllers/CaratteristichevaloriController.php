@@ -26,32 +26,85 @@ class CaratteristichevaloriController extends BaseController {
 	
 	public $tabella = "valori variante";
 	
-	public $argKeys = array('id_car:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_car:sanitizeAll'=>'tutti',
+		'titolo:sanitizeAll'=>'tutti',
+		'id_page:sanitizeAll'=>'tutti',
+		'id_tipologia_caratteristica:sanitizeAll'=>'tutti',
+		'id_car_f:sanitizeAll'=>'tutti',
+	);
+	
+	function __construct($model, $controller, $queryString) {
+		parent::__construct($model, $controller, $queryString);
+
+		$this->session('admin');
+
+		$this->model("CaratteristicheModel");
+		
+		$this->s['admin']->check();
+	}
+	
+	public function main()
+	{
+		$this->shift();
+		
+		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "caratteristiche_valori.titolo");
+		$this->mainHead = "Tipologia,Caratteristica,Valore";
+		
+		$filtroTipologia = array("tutti" => "Tipologia") + $this->m["CaratteristicheModel"]->selectTipologia();
+		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica();
+		
+		$this->filters = array(array("id_tipologia_caratteristica", null, $filtroTipologia), array("id_car_f", null, $filtroCaratteristica), "titolo");
+		
+		$this->m[$this->modelName]->clear()->select("*")
+				->left(array("caratteristica"))
+				->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
+				->where(array(
+					"lk" => array('titolo' => $this->viewArgs['titolo']),
+					"caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs['id_tipologia_caratteristica'],
+					"caratteristiche.id_car"	=>	$this->viewArgs['id_car_f'],
+				))
+				->orderBy("tipologie_caratteristiche.titolo,caratteristiche.titolo, caratteristiche_valori.titolo");
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->bulkQueryActions = "aggiungiaprodotto";
+			
+			$this->bulkActions = array(
+				"checkbox_caratteristiche_valori_id_cv"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("caratteristiche_valori.id_cv not in (select id_cv from pages_caratteristiche_valori where id_cv is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
+		
+		parent::main();
+	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->model("ContenutitradottiModel");
-		
-		$this->menuLinks = $this->menuLinksInsert = "save";
-		
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("titolo");
+		$this->model("ContenutitradottiModel");
+		
+		$menuLinks = "save";
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+			$menuLinks = "back,save";
+		
+		$this->menuLinks = $this->menuLinksInsert = $menuLinks;
+		
+		$fields = "titolo";
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+			$fields = "id_car,titolo";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_car"] != "tutti")
-		{
 			$this->m[$this->modelName]->setValue("id_car", $this->viewArgs["id_car"]);
-		}
 		
 		parent::form($queryType, $id);
-		
-// 		if (strcmp($queryType,'update') === 0)
-// 		{
-// 			$data["contenutiTradotti"] = $this->m["ContenutitradottiModel"]->clear()->where(array(
-// 				"id_cv"	=>	(int)$id,
-// 			))->send(false);
-// 			
-// 			$this->append($data);
-// 		}
 	}
 }

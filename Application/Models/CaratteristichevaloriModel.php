@@ -51,6 +51,32 @@ class CaratteristichevaloriModel extends GenericModel {
         );
     }
     
+    public function setFormStruct()
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'titolo'		=>	array(
+					'labelString'=>	'Valore',
+				),
+				'id_car'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Caratteristica",
+					"options"	=>	$this->selectCaratteristica(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
+	public function selectCaratteristica()
+	{
+		$t = new CaratteristicheModel();
+		
+		return $t->clear()->orderBy("id_order")->toList("id_car","titolo")->send();
+	}
+	
 	//get the name of the attribute from the id
 	public function getName($id_av)
 	{
@@ -107,8 +133,6 @@ class CaratteristichevaloriModel extends GenericModel {
 	{
 		$res = parent::insert();
 		
-		$this->lId = $this->lastId();
-		
 		if ($res)
 			$this->controllaLingua($this->lId);
 		
@@ -135,4 +159,22 @@ class CaratteristichevaloriModel extends GenericModel {
 	{
 		return $this->linklinguaGeneric($record["caratteristiche_valori"]["id_cv"], $lingua, "id_cv");
 	}
+	
+	/* Importa la riga dell'offerta nella fattura */
+    public function aggiungiaprodotto($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_page"]))
+		{
+			$pcv = new PagescarvalModel();
+			
+			$pcv->setValues(array(
+				"id_page"	=>	(int)$_GET["id_page"],
+				"id_cv"		=>	(int)$id,
+			), "sanitizeDb");
+			
+			$pcv->pInsert();
+		}
+    }
 }

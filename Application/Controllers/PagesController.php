@@ -438,59 +438,20 @@ class PagesController extends BaseController {
 		parent::ordina();
 	}
 	
-	public function ordina()
+	public function ordinacaratteristiche()
 	{
-		parent::ordina();
+		$this->modelName = "PagescarvalModel";
 		
-// 		$this->s['admin']->check();
-// 		
-// 		$this->clean();
-// 		
-// 		if (strstr($this->orderBy, "id_order"))
-// 		{
-// 			if (isset($_POST["ordinaPagine"]))
-// 			{
-// 				$clean["order"] = $this->request->post("order","","sanitizeAll");
-// 			
-// 				$orderArray = explode(",",$clean["order"]);
-// 				
-// 				$orderClean = array();
-// 				
-// 				foreach ($orderArray as $id_page)
-// 				{
-// 					if ((int)$id_page !== 0)
-// 					{
-// 						$orderClean[] = (int)$id_page;
-// 					}
-// 				}
-// 				
-// 				$where = "in(".implode(",",$orderClean).")";
-// 				
-// 				$idOrderArray = $this->m[$this->modelName]->where(array(
-// 					"in" => array("id_page" => $orderClean),
-// 				))->toList("id_order")->send();
-// 				
-// 				if ($this->orderBy === "pages.id_order")
-// 				{
-// 					sort($idOrderArray);
-// 				}
-// 				else
-// 				{
-// 					rsort($idOrderArray);
-// 				}
-// 				
-// 				for ($i=0; $i<count($orderClean); $i++)
-// 				{
-// 					if (isset($idOrderArray[$i]))
-// 					{
-// 						$this->m[$this->modelName]->values = array(
-// 							"id_order" => (int)$idOrderArray[$i],
-// 						);
-// 						$this->m[$this->modelName]->pUpdate((int)$orderClean[$i]);
-// 					}
-// 				}
-// 			}
-// 		}
+		parent::ordina();
+	}
+	
+	public function ordinavalori()
+	{
+		$this->orderBy = "id_order";
+		
+		$this->modelName = "CaratteristichevaloriModel";
+		
+		parent::ordina();
 	}
 	
 	public function meta($id = 0)
@@ -1435,6 +1396,61 @@ class PagesController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function caratteristiche($id = 0)
+	{
+		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$data["ordinaAction"] = "ordinacaratteristiche";
+		
+		$this->_posizioni['caratteristiche'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "caratteristiche";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->m[$this->modelName]->checkPrincipale($clean['id']);
+		
+		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
+			die("non permesso");
+		
+		$this->modelName = "PagescarvalModel";
+		$this->mainButtons = 'ldel';
+		
+		$mainAction = "caratteristiche/".$clean['id'];
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "edit");
+		$this->mainHead = "Tipologia,Caratteristica,Valore";
+		
+		$this->m[$this->modelName]->clear()->select("tipologie_caratteristiche.*,pages_caratteristiche_valori.*,caratteristiche_valori.*,caratteristiche.*")
+			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
+			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
+			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
+			->where(array("n!pages_caratteristiche_valori.id_page"=>$clean['id']))
+			->orderBy("pages_caratteristiche_valori.id_order")->save();
+		
+		$this->tabella = "pages";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function personalizzazioni($id = 0)
 	{
 		$this->orderBy = "personalizzazioni.id_order";
@@ -1537,73 +1553,6 @@ class PagesController extends BaseController {
 		$data["lista"] = $this->m["TagModel"]->clear()->sWhere("id_tag not in (select id_tag from pages_tag where id_page = ".$clean['id'].")")->orderBy("titolo")->toList("id_tag","titolo")->send();
 		
 		$this->append($data);
-	}
-	
-	public function caratteristiche($id = 0)
-	{
-		$this->_posizioni['caratteristiche'] = 'class="active"';
-		$data['posizioni'] = $this->_posizioni;
-		
-		$data['type'] = "caratteristiche";
-		
-		$this->shift(1);
-		
-		$this->s['admin']->check();
-// 		if (!$this->s['admin']->checkCsrf($this->viewArgs['token'])) $this->redirect('panel/main',2,'wrong token');
-		
-		$clean['id'] = (int)$id;
-		$data['id_page'] = $clean['id'];
-		
-		$this->m[$this->modelName]->checkPrincipale($clean['id']);
-		
-		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
-		{
-			die("non permesso");
-		}
-		
-		$data["titoloPagina"] = $this->m[$this->modelName]->getSimpleTitle($clean['id']);
-		
-		$this->modelName = "PagescarvalModel";
-		
-		Params::$nullQueryValue = 'tutti';
-		
-		$this->m['PagescarvalModel']->setFields('id_cv,titolo,id_car','sanitizeAll');
-		$this->m['PagescarvalModel']->values['id_page'] = $clean['id'];
-		$this->m['PagescarvalModel']->updateTable('insert,del');
-		
-		$mainAction = "caratteristiche/".$clean['id'];
-		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction));
-
-		$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
-		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
-		
-		$this->scaffold->fields = "pages_caratteristiche_valori.*,caratteristiche_valori.*,caratteristiche.*";
-		$this->scaffold->loadMain('caratteristiche.titolo,edit','pages_caratteristiche_valori:id_pcv','moveup,movedown,del');
-		$this->scaffold->setHead('CARATTERISTICA,VALORE');
-		
-		$this->scaffold->model->clear()->inner("caratteristiche_valori")->using("id_cv")->inner("caratteristiche")->using("id_car")->orderBy("pages_caratteristiche_valori.id_order")->where(array("n!pages_caratteristiche_valori.id_page"=>$clean['id']));
-		
-		$this->scaffold->update('moveup,movedown');
-		
-		$data['scaffold'] = $this->scaffold->render();
-		
-		$data['numeroCaratteristicheVal'] = $this->scaffold->model->rowNumber();
-		
-		$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
-		
-		$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
-		
-		$data["listaCarattVal"] = array("0"	=>	"-- seleziona --");
-
-// 		echo $this->scaffold->model->getQuery();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['notice'] = $this->scaffold->model->notice;
-		
-		$this->append($data);
-		$this->load('pages_caratteristiche');
 	}
 	
 	public function updatevalue()

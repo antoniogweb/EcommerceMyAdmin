@@ -73,7 +73,7 @@ class CaratteristicheModel extends GenericModel {
 				'id_tipologia_caratteristica'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Tipologia caratteristica",
-					"options"	=>	$this->selectTipologia(),
+					"options"	=>	array(0 => 'Seleziona') + $this->selectTipologia(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),

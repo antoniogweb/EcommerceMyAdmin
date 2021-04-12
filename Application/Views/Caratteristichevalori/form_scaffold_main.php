@@ -3,6 +3,10 @@
 			<div class='row'>
 				<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 					<div class='col-md-8'>
+						<?php if (isset($form["id_car"])) { ?>
+						<?php echo $form["id_car"];?>
+						<?php } ?>
+						
 						<?php echo $form["titolo"];?>
 						
 						<?php if ($type === "update") { ?>

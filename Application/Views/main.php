@@ -10,6 +10,7 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
+			<?php if (!nobuttons()) { ?>
 			<div class='mainMenu'>
 				<?php
 				$pathMenu = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_menu.php";
@@ -20,9 +21,9 @@
 					echo $menu;
 				?>
 			</div>
+			<?php } ?>
 			<div class="box">
 				<div class="box-header with-border main">
-					
 					<?php
 					$path = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_filtri.php";
 					

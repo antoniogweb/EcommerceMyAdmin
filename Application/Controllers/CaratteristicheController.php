@@ -90,7 +90,7 @@ class CaratteristicheController extends BaseController {
 	{
 		$this->_posizioni['valori'] = 'class="active"';
 		
-		$data["orderBy"] = $this->orderBy = "id_order";
+		$data["orderBy"] = $this->orderBy = "titolo";
 		
 		$this->shift(1);
 		

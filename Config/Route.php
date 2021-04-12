@@ -116,6 +116,8 @@ class Route
 		'caratteristiche,lista',
 		'caratteristiche,valori',
 		'caratteristiche,ordinavalori',
+		
+		'caratteristichevalori,main',
 		'caratteristichevalori,form',
 		
 		'categorie,main',
@@ -150,6 +152,7 @@ class Route
 		'prodotti,testi',
 		'prodotti,personalizzazioni',
 		'prodotti,ordinapersonalizzazioni',
+		'prodotti,ordinacaratteristiche',
 		'prodotti,tag',
 		'prodotti,ordinatag',
 		

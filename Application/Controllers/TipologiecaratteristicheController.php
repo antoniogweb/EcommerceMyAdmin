@@ -28,7 +28,9 @@ class TipologiecaratteristicheController extends BaseController
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array();
+	public $argKeys = array(
+		'titolo:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -51,11 +53,11 @@ class TipologiecaratteristicheController extends BaseController
 		
 		$this->mainFields = array("tipologie_caratteristiche.titolo");
 		$this->mainHead = "Titolo";
-// 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
+		$this->filters = array("titolo");
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
+					"lk" => array('titolo' => $this->viewArgs['titolo']),
 				))
 				->orderBy("id_order")->save();
 		

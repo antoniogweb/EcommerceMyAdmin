@@ -47,3 +47,9 @@
 </form>
 
 <?php } ?>
+
+<?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>
+
+<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y"?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
+
+<?php } ?>
