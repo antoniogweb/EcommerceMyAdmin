@@ -26,21 +26,21 @@ class CaratteristicheController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
+	public $argKeys = array(
+		'titolo:sanitizeAll'=>'tutti',
+		'id_tipologia_caratteristica:sanitizeAll'=>'tutti',
+	);
+	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 
 		$this->session('admin');
 		$this->model();
 
-		$this->setArgKeys(array('page:forceNat'=>1,'titolo:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
-
 		$this->model("CaratteristicheModel");
 		$this->model("CaratteristichevaloriModel");
 		
 		$this->s['admin']->check();
-		
-		$this->_topMenuClasses['prodotti'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
 		
 		$data["sezionePannello"] = "ecommerce";
 		
@@ -53,16 +53,21 @@ class CaratteristicheController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("caratteristiche.titolo");
-		$this->mainHead = "Titolo";
+		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo");
+		$this->mainHead = "Tipologia,Titolo";
 		
-		$this->filters = array("titolo");
+		$filtroTipologia = array("tutti" => "Tipologia") + $this->m[$this->modelName]->selectTipologia();
+		
+		$this->filters = array(array("id_tipologia_caratteristica", null, $filtroTipologia), "titolo");
 		
 		$this->m[$this->modelName]->clear()
+				->select("*")
+				->left(array("tipologia"))
 				->where(array(
-					"lk" => array('titolo' => $this->viewArgs['titolo']),
+					"lk" => array('caratteristiche.titolo'			=>	$this->viewArgs['titolo']),
+					"caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs['id_tipologia_caratteristica'],
 				))
-				->orderBy("id_order")->convert()->save();
+				->orderBy("caratteristiche.id_order")->convert()->save();
 		
 		parent::main();
 	}
@@ -71,21 +76,14 @@ class CaratteristicheController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo,tipo');
+		$fields = 'titolo,id_tipologia_caratteristica';
+		
+		if (v("mostra_tipo_caratteristica"))
+			$fields .= ",tipo";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
-		
-// 		if (strcmp($queryType,'update') === 0)
-// 		{
-// 			$data["contenutiTradotti"] = $this->m["ContenutitradottiModel"]->clear()->where(array(
-// 				"id_car"	=>	(int)$id,
-// 				"in"	=>	array(
-// 					"lingua"	=>	self::$traduzioni,
-// 				),
-// 			))->send(false);
-// 			
-// 			$this->append($data);
-// 		}
 	}
 	
 	public function valori($id = 0)

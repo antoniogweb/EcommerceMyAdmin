@@ -389,6 +389,10 @@ class Route
 
 		'fasceprezzo,main',
 		'fasceprezzo,form',
+		
+		'tipologiecaratteristiche,main',
+		'tipologiecaratteristiche,form',
+		'tipologiecaratteristiche,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

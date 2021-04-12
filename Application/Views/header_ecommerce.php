@@ -30,10 +30,6 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/prodotti/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi prodotto</a></li>
 					<li class="icon_list <?php if ($this->controller === "prodotti") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/prodotti/main/1";?>"><i class="fa fa-list"></i> Lista prodotti</a></li>
 					
-					<?php if (v("caratteristiche_in_prodotti")) { ?>
-					<li class="dropdown-header">Caratteristiche</li>
-					<li <?php if ($this->controller === "caratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> Lista caratteristiche</a></li>
-					<?php } ?>
 					<?php if (v("combinazioni_in_prodotti")) { ?>
 					<li class="dropdown-header">Varianti prodotto</li>
 					<li <?php if ($this->controller === "attributi") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/attributi/main/1";?>"><i class="fa fa-cogs"></i> Lista varianti</a></li>
@@ -46,6 +42,21 @@ include(ROOT."/Application/Views/header.php");
 					<?php } ?>
 				</ul>
 			</li>
+			<?php if (v("caratteristiche_in_prodotti")) { ?>
+			<li class="<?php if ($this->controller === "caratteristiche" || $this->controller === "tipologiecaratteristiche") { ?>active<?php } ?> treeview">
+				<a href="#">
+					<i class="fa fa-filter"></i>
+					<span>Caratteristiche</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/caratteristiche/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi caratteristica</a></li>
+					<li <?php if ($this->controller === "caratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> Lista caratteristiche</a></li>
+					
+					<li class="dropdown-header">Tipologie</li>
+					<li <?php if ($this->controller === "tipologiecaratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipologiecaratteristiche/main/1";?>"><i class="fa fa-list"></i> Tipologie</a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<?php if (v("ecommerce_attivo")) { ?>
 			<li class="<?php if ($this->controller === "combinazioni") { ?>active<?php } ?> treeview">
 				<a href="#">
@@ -96,7 +107,7 @@ include(ROOT."/Application/Views/header.php");
 			<?php if (v("usa_marchi")) { ?>
 			<li class="<?php echo $tm["marchi"][0];?> treeview">
 				<a href="#">
-					<i class="fa fa-folder-open"></i>
+					<i class="fa fa-font-awesome"></i>
 					<span><?php echo gtext("famiglie",true,"ucfirst");?></span>
 				</a>
 				<ul class="treeview-menu">
@@ -108,7 +119,7 @@ include(ROOT."/Application/Views/header.php");
 			<?php if (v("usa_tag")) { ?>
 			<li class="<?php echo $tm["tag"][0];?> treeview">
 				<a href="#">
-					<i class="fa fa-folder-open"></i>
+					<i class="fa fa-tags"></i>
 					<span><?php echo gtext("Tag / Linee",true,"ucfirst");?></span>
 				</a>
 				<ul class="treeview-menu">

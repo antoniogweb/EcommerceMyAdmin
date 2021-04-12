@@ -5,7 +5,11 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php if (isset($form["tipo"])) { ?>
 						<?php echo $form["tipo"];?>
+						<?php } ?>
+						
+						<?php echo $form["id_tipologia_caratteristica"];?>
 						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">

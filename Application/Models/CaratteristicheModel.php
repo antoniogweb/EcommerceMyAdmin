@@ -37,18 +37,6 @@ class CaratteristicheModel extends GenericModel {
 		
 		$this->traduzione = true;
 		
-		$this->formStruct = array
-		(
-			'entries' 	=> 	array(
-				'titolo'		=>	array(
-					'labelString'=>	'Titolo caratteristica',
-				),
-				'id_car'	=>	array(
-					'type'		=>	'Hidden'
-				),
-			),
-		);
-		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo|Si prega di compilare il campo <i>Titolo caratteristica</i>");
 		
 		parent::__construct();
@@ -58,9 +46,10 @@ class CaratteristicheModel extends GenericModel {
 	public function relations() {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_car', null, "CASCADE"),
+			'tipologia' => array("BELONGS_TO", 'TipologiecaratteristicheModel', 'id_tipologia_caratteristica',null,"CASCADE"),
         );
     }
-    
+	
     public function setFormStruct()
 	{
 		$this->formStruct = array
@@ -81,8 +70,22 @@ class CaratteristicheModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'id_tipologia_caratteristica'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipologia caratteristica",
+					"options"	=>	$this->selectTipologia(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 		);
+	}
+	
+	public function selectTipologia()
+	{
+		$t = new TipologiecaratteristicheModel();
+		
+		return $t->clear()->orderBy("id_order")->toList("id_tipologia_caratteristica","titolo")->send();
 	}
 	
 	public function insert()
