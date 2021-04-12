@@ -41,6 +41,24 @@ class CaratteristichevaloriModel extends GenericModel {
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo|Si prega di specificare il valore della caratteristica");
 		
+		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/valori_caratteristiche",
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	50,
+					'imgHeight'		=>	50,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'yes',
+				),
+			),
+		);
+		
 		parent::__construct();
 	}
 	
@@ -67,6 +85,8 @@ class CaratteristichevaloriModel extends GenericModel {
 					"className"	=>	"form-control",
 				),
 			),
+			
+			'enctype'	=>	'multipart/form-data',
 		);
 	}
 	
@@ -131,20 +151,30 @@ class CaratteristichevaloriModel extends GenericModel {
 	
 	public function insert()
 	{
-		$res = parent::insert();
+		$res = false;
 		
-		if ($res)
-			$this->controllaLingua($this->lId);
-		
+		if ($this->upload("insert"))
+		{
+			$res = parent::insert();
+			
+			if ($res)
+				$this->controllaLingua($this->lId);
+		}
+		 
 		return $res;
 	}
 	
 	public function update($id = null, $where = null)
 	{
-		$res = parent::update($id, $where);
+		$res = false;
 		
-		if ($res)
-			$this->controllalingua($id, "id_cv");
+		if ($this->upload("update"))
+		{
+			$res = parent::update($id, $where);
+			
+			if ($res)
+				$this->controllalingua($id, "id_cv");
+		}
 		
 		return $res;
 	}
@@ -177,4 +207,14 @@ class CaratteristichevaloriModel extends GenericModel {
 			$pcv->pInsert();
 		}
     }
+    
+    public function thumb($record)
+	{
+		$html = "--";
+		
+		if ($record["caratteristiche_valori"]["immagine"] && file_exists(Domain::$parentRoot."/images/valori_caratteristiche/".$record["caratteristiche_valori"]["immagine"]))
+			$html = "<a target='_blank' href='".Domain::$name."/images/valori_caratteristiche/".$record["caratteristiche_valori"]["immagine"]."'><img src='".Url::getRoot()."caratteristichevalori/thumb/immagine/".$record["caratteristiche_valori"]["id_cv"]."' /></a>";
+		
+		return $html;
+	}
 }

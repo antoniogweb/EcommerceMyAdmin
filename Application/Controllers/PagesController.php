@@ -1435,6 +1435,12 @@ class PagesController extends BaseController {
 		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "edit");
 		$this->mainHead = "Tipologia,Caratteristica,Valore";
 		
+		if (v("immagine_in_caratteristiche"))
+		{
+			$this->mainFields[] = "thumb";
+			$this->mainHead .= ",Immagine";
+		}
+		
 		$this->m[$this->modelName]->clear()->select("tipologie_caratteristiche.*,pages_caratteristiche_valori.*,caratteristiche_valori.*,caratteristiche.*")
 			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
 			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")

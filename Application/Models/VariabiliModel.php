@@ -159,6 +159,7 @@ class VariabiliModel extends GenericModel {
 		"debug_js"					=>	0,
 		"email_log_errori"			=>	"",
 		"mostra_tipo_caratteristica"=>	0,
+		"immagine_in_caratteristiche"	=>	0,
 	);
 	
 	public function __construct() {

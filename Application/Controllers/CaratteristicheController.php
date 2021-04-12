@@ -105,14 +105,20 @@ class CaratteristicheController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("edit");
-		$this->mainHead = "Titolo";
+		$mainFields = array();
+		$mainHeadArray = array();
 		
-// 		foreach (self::$traduzioni as $codiceLingua)
-// 		{
-// 			$this->mainFields[] = "link".$codiceLingua;
-// 			$this->mainHead .= ",".strtoupper($codiceLingua);
-// 		}
+		if (v("immagine_in_caratteristiche"))
+		{
+			$mainFields[] = "thumb";
+			$mainHeadArray[]= "Immagine";
+		}
+		
+		$mainFields[] = "edit";
+		$mainHeadArray[]= "Titolo";
+		
+		$this->mainFields = $mainFields;
+		$this->mainHead = implode(",", $mainHeadArray);
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"valori/".$clean['id'],'pageVariable'=>'page_fgl');
 		

@@ -37,18 +37,6 @@ class AttributiModel extends GenericModel {
 		
 		$this->traduzione = true;
 		
-// 		$this->formStruct = array
-// 		(
-// 			'entries' 	=> 	array(
-// 				'titolo'		=>	array(
-// 					'labelString'=>	'Titolo attributo',
-// 				),
-// 				'id_a'	=>	array(
-// 					'type'		=>	'Hidden'
-// 				),
-// 			),
-// 		);
-		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo|Si prega di compilare il campo <i>Titolo attributo</i>");
 		
 		parent::__construct();
@@ -67,7 +55,7 @@ class AttributiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'tipo'		=>	array(
 					'type'		=>	'Select',
-					'options'	=>	"TENDINA,RADIO,IMMAGINE,COLORE",
+					'options'	=>	"TENDINA,RADIO,IMMAGINE",
 					'reverse' => 'yes',
 					
 				),
@@ -75,15 +63,6 @@ class AttributiModel extends GenericModel {
 
 		);
 	}
-	
-// 	public function insert()
-// 	{
-// 		$res = parent::insert();
-// 		
-// 		$this->lId = $this->lastId();
-// 		
-// 		return $res;
-// 	}
 	
 	public function del($id = null, $whereClause = null)
 	{

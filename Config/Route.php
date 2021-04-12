@@ -119,6 +119,7 @@ class Route
 		
 		'caratteristichevalori,main',
 		'caratteristichevalori,form',
+		'caratteristichevalori,thumb',
 		
 		'categorie,main',
 		'categorie,form',

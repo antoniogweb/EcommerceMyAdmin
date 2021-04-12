@@ -107,4 +107,11 @@ class PagescarvalModel extends GenericModel {
 		if ($record["caratteristiche_valori"]["id_cv"])
 			return "<a class='iframe action_iframe' href='".Url::getRoot()."caratteristichevalori/form/update/".$record["caratteristiche_valori"]["id_cv"]."?partial=Y&nobuttons=N'>".$record["caratteristiche_valori"]["titolo"]."</a>";
 	}
+	
+	public function thumb($record)
+	{
+		$cv = new CaratteristichevaloriModel();
+		
+		return $cv->thumb($record);
+	}
 }

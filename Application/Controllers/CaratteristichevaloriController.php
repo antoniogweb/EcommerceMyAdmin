@@ -97,8 +97,11 @@ class CaratteristichevaloriController extends BaseController {
 		
 		$fields = "titolo";
 		
+		if (v("immagine_in_caratteristiche"))
+			$fields .= ",immagine";
+		
 		if ($this->viewArgs["id_page"] != "tutti")
-			$fields = "id_car,titolo";
+			$fields = "id_car,".$fields;
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
@@ -106,5 +109,10 @@ class CaratteristichevaloriController extends BaseController {
 			$this->m[$this->modelName]->setValue("id_car", $this->viewArgs["id_car"]);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function thumb($field = "", $id = 0)
+	{
+		parent::thumb($field, $id);
 	}
 }
