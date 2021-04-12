@@ -50,6 +50,8 @@
 
 <?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>
 
-<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y"?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
+<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-list"></i> Gestiscie caratteristiche</a>
+
+<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&nobuttons=Y"?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
 
 <?php } ?>

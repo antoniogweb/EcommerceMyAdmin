@@ -60,7 +60,6 @@ class AttributiModel extends GenericModel {
 					
 				),
 			),
-
 		);
 	}
 	

@@ -68,6 +68,8 @@ class CaratteristichevaloriController extends BaseController {
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 		{
+			$this->mainButtons = "";
+			
 			$this->bulkQueryActions = "aggiungiaprodotto";
 			
 			$this->bulkActions = array(
