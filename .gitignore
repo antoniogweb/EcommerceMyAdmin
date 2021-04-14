@@ -9,3 +9,4 @@ config.php
 /Frontend/Logs/back_paypal.txt
 /DB/Dump/dump.sql
 /Application/Apps
+/Library/*
