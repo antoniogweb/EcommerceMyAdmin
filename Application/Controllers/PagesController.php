@@ -1454,7 +1454,10 @@ class PagesController extends BaseController {
 			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
 			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
 			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
-			->where(array("n!pages_caratteristiche_valori.id_page"=>$clean['id']))
+			->where(array(
+				"pages_caratteristiche_valori.id_page"	=>	$clean['id'],
+				"tipologie_caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs["id_tipo_car"],
+			))
 			->orderBy("pages_caratteristiche_valori.id_order")->save();
 		
 		$this->tabella = "pages";
