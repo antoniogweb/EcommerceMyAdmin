@@ -139,7 +139,7 @@ class PagesController extends BaseController {
 		
 		$data["tabSezioni"] = $this->tabSezioni = $this->m["SectionssectionsModel"]->clear()->select("categories.*")->where(array(
 			"in_section"	=>	sanitizeAll($this->section),
-		))->inner("categories")->on("categories.section = sections_sections.in_section")->toList("categories.section", "categories.title")->send();
+		))->inner("categories")->on("categories.section = sections_sections.section")->toList("categories.section", "categories.title")->send();
 		
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
@@ -231,6 +231,15 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->db->beginTransaction();
 		
 		$this->shift();
+		
+		if (!partial())
+		{
+			$this->viewArgs["tipocontenuto"] = "tutti";
+			$this->viewArgs["id_tipo_car"] = "tutti";
+			$this->viewArgs["pcorr_sec"] = "tutti";
+			
+			$this->buildStatus();
+		}
 		
 		Params::$nullQueryValue = 'tutti';
 		
@@ -754,6 +763,7 @@ class PagesController extends BaseController {
 						$this->m["CorrelatiModel"]->duplica($clean['id'], $lId);
 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
 						$this->m["PagestagModel"]->duplica($clean['id'], $lId);
+						$this->m["PagespagesModel"]->duplica($clean['id'], $lId);
 						
 						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 					}
