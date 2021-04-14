@@ -161,6 +161,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_tipo_caratteristica"=>	0,
 		"immagine_in_caratteristiche"	=>	0,
 		"caratteristiche_in_tab_separate"	=>	0,
+		"mostra_faq"				=>	0,
 	);
 	
 	public function __construct() {

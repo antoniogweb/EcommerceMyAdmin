@@ -112,6 +112,18 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("mostra_faq")) { ?>
+			<li class="<?php echo tm($tm, "faq");?> treeview">
+				<a href="#">
+					<i class="fa fa-question-circle"></i>
+					<span>Faq</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/faq/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/faq/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<li class="<?php echo $tm["menu1"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>

@@ -22,8 +22,46 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TeamModel extends BasicsectionModel {
+class BasicsectionModel extends PagesModel {
 	
-	public $hModelName = "TeamcatModel";
+	public function insert()
+	{
+		$c = new CategoriesModel();
+		
+		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
+		
+		$this->values["alias"] = "";
+		
+		$this->values["id_c"] = $clean["id_c"];
+		
+		return parent::insert();
+	}
 	
+	public function update($id = null, $where = null)
+	{
+		$c = new CategoriesModel();
+		
+		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
+		
+		$this->values["alias"] = "";
+		
+		$this->values["id_c"] = $clean["id_c"];
+		
+		return parent::update($id, $where);
+	}
+	
+	public function setFilters()
+	{
+		$this->_popupItemNames = array(
+			'attivo'	=>	'attivo',
+		);
+
+		$this->_popupLabels = array(
+			'attivo'	=>	'PUBBLICATO?',
+		);
+
+		$this->_popupFunctions = array(
+			'attivo'=>	'getYesNo',
+		);
+	}
 }

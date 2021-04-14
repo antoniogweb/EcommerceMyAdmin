@@ -296,8 +296,6 @@ class PagesController extends BaseController {
 				"OR"	=> array(
 					"lk" => array('n!pages.title' => $this->viewArgs['title']),
 					" lk" => array('n!pages.codice' => $this->viewArgs['title']),
-// 					'n!pages.title'		=>	"like '%".$this->viewArgs['title']."%'",
-// 					'n!pages.codice'	=>	"like '%".$this->viewArgs['title']."%'",
 					)
 			);
 

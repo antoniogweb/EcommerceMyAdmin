@@ -22,8 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TeamModel extends BasicsectionModel {
-	
-	public $hModelName = "TeamcatModel";
-	
+class FaqcatModel extends CategoriesModel {
+
+	public function __construct() {
+
+		$this->section = "faq";
+		$this->controller = "faqcat";
+		
+		parent::__construct();
+		
+	}
+
 }

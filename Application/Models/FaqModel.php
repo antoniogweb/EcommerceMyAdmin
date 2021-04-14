@@ -22,8 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TeamModel extends BasicsectionModel {
+class FaqModel extends BasicsectionModel {
 	
-	public $hModelName = "TeamcatModel";
+	public $hModelName = "FaqcatModel";
 	
 }

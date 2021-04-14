@@ -229,7 +229,6 @@ class Route
 		'team,updatevalue',
 		'team,meta',
 		'team,ordina',
-		'team,layer',
 		
 // 		'slidesotto,main',
 // 		'slidesotto,aggiungicategoria',
@@ -397,6 +396,15 @@ class Route
 		'tipologiecaratteristiche,main',
 		'tipologiecaratteristiche,form',
 		'tipologiecaratteristiche,ordina',
+		
+		'faq,main',
+		'faq,form',
+		'faq,move',
+		'faq,pubblica',
+		'faq,inevidenza',
+		'faq,updatevalue',
+		'faq,meta',
+		'faq,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

@@ -22,27 +22,32 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TeamController extends PagesController {
+class FaqController extends PagesController {
 
-	public $voceMenu = "team";
+	public $voceMenu = "faq";
+	
+	public $colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
-			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Attiva';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva';
 		$this->filters = array(null,null,'title');
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
-		$this->queryFields = "title,attivo,immagine,sottotitolo";
+		$this->queryFields = "title,attivo,description";
 		
 		$this->clean();
 		
@@ -51,9 +56,9 @@ class TeamController extends PagesController {
 		
 		$data["sezionePannello"] = "sito";
 		
-		$data["tabella"] = "team";
+		$data["tabella"] = "faq";
+		$data["use_editor"] = "Y";
 		
 		$this->append($data);
 	}
-
 }
