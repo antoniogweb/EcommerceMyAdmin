@@ -1051,6 +1051,11 @@ class PagesModel extends GenericModel {
 			$pcv = new LayerModel();
 			$pcv->del(null,"id_page='".$clean["id"]."'");
 			
+			//cancello le pagine correlate
+			$c = new PagespagesModel();
+			$c->del(null,"id_page=".$clean['id']);
+			$c->del(null,"id_corr=".$clean['id']);
+			
 // 			parent::del($clean['id']);
 			parent::del(null, "codice_alfa = '".$record["codice_alfa"]."'");
 		}
@@ -1840,4 +1845,23 @@ class PagesModel extends GenericModel {
 		
 		return self::$arrayImmagini;
 	}
+	
+	/* Importa la riga dell'offerta nella fattura */
+    public function aggiungiaprodotto($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+		{
+			$pp = new PagespagesModel();
+			
+			$pp->setValues(array(
+				"id_page"	=>	(int)$_GET["id_pcorr"],
+				"id_corr"	=>	(int)$id,
+				"section"	=>	$_GET["pcorr_sec"],
+			), "sanitizeAll");
+			
+			$pp->insert();
+		}
+    }
 }

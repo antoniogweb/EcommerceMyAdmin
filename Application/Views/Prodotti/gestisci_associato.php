@@ -55,3 +55,9 @@
 <a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&nobuttons=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
 
 <?php } ?>
+
+<?php if ($this->action === "paginecorrelate") { ?>
+
+<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/faq/main?id_pcorr=$id_page&partial=Y&pcorr_sec=faq";?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
+
+<?php } ?>

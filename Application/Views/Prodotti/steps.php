@@ -62,6 +62,7 @@
 	?>
 	<li <?php if ($this->viewArgs["tipocontenuto"] == $idTipoCont) { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".$this->controller."/testi/$id_page".Url::createUrl($temp);?>"><?php echo ucfirst(strtolower($titoloTipo));?></a></li>
 	<?php } ?>
+	<li <?php echo $posizioni['paginecorrelate'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/paginecorrelate/$id_page".$viewStatusTutti;?>">Correlate</a></li>
 </ul>
 
 

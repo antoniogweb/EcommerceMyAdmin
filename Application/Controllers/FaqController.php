@@ -44,7 +44,7 @@ class FaqController extends PagesController {
 		$this->orderBy = "pages.id_order";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva';
-		$this->filters = array(null,null,'title');
+		$this->filters = array(null,'title');
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
 		$this->queryFields = "title,attivo,description";

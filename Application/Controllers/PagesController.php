@@ -47,6 +47,8 @@ class PagesController extends BaseController {
 	
 	public $tabContenuti = array();
 	public $tabCaratteristiche = array();
+	public $tabSezioni = array();
+	
 	public $section = null;
 	
 	protected $_posizioni = array(
@@ -92,6 +94,8 @@ class PagesController extends BaseController {
 			'-id_marchio:sanitizeAll' => "tutti",
 			'id_tag:sanitizeAll' => "tutti",
 			'id_tipo_car:sanitizeAll' => "tutti",
+			'id_pcorr:sanitizeAll' => "tutti",
+			'pcorr_sec:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -117,6 +121,8 @@ class PagesController extends BaseController {
 		$this->model("TagModel");
 		$this->model("PagestagModel");
 		$this->model("TipologiecaratteristicheModel");
+		$this->model("PagespagesModel");
+		$this->model("SectionssectionsModel");
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
@@ -130,6 +136,10 @@ class PagesController extends BaseController {
 				->orderBy("tipologie_caratteristiche.id_order")
 				->toList("id_tipologia_caratteristica", "aggregate.titolo_tab")
 				->send();
+		
+		$data["tabSezioni"] = $this->tabSezioni = $this->m["SectionssectionsModel"]->clear()->select("categories.*")->where(array(
+			"in_section"	=>	sanitizeAll($this->section),
+		))->inner("categories")->on("categories.section = sections_sections.in_section")->toList("categories.section", "categories.title")->send();
 		
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
@@ -229,7 +239,12 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->m[$this->modelName]->bulkAction("del");
+		$bulkQueryActions = "del";
+		
+		if ($this->viewArgs["id_pcorr"] != "tutti")
+			$bulkQueryActions = "aggiungiaprodotto";
+		
+		$this->m[$this->modelName]->bulkAction($bulkQueryActions);
 		
 		if (isset($_POST["ordinaPagine"]))
 		{
@@ -263,13 +278,12 @@ class PagesController extends BaseController {
 		if (strstr($this->orderBy, "id_order") && v("mostra_pulsanti_ordinamenti"))
 			$azioni = "moveup,movedown,ldel,ledit";
 		
+		if ($this->viewArgs["id_pcorr"] != "tutti")
+			$azioni = "ledit";
+		
 		$this->scaffold->loadMain($this->tableFields,'pages:id_page',$azioni);
 		
 		$this->scaffold->setHead($this->head);
-		
-		$this->scaffold->itemList->setBulkActions(array(
-			"++checkbox_pages_id_page"	=>	array("del","Elimina selezionati","confirm"),
-		));
 		
 		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
 		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci un nuovo prodotto';
@@ -335,6 +349,19 @@ class PagesController extends BaseController {
 			
 			$this->scaffold->model->aWhere($where);
 		}
+		
+		if ($this->viewArgs["id_pcorr"] != "tutti")
+		{
+			$this->scaffold->model->sWhere("pages.id_page not in (select id_corr from pages_pages where id_page = ".(int)$this->viewArgs["id_pcorr"].")");
+			
+			$this->scaffold->itemList->setBulkActions(array(
+				"++checkbox_pages_id_page"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
+			));
+		}
+		else
+			$this->scaffold->itemList->setBulkActions(array(
+				"++checkbox_pages_id_page"	=>	array("del","Elimina selezionati","confirm"),
+			));
 		
 		$this->scaffold->update('moveup,movedown');
 		
@@ -459,6 +486,15 @@ class PagesController extends BaseController {
 		$this->orderBy = "id_order";
 		
 		$this->modelName = "CaratteristichevaloriModel";
+		
+		parent::ordina();
+	}
+	
+	public function ordinacorrelate()
+	{
+		$this->orderBy = "id_order";
+		
+		$this->modelName = "PagespagesModel";
 		
 		parent::ordina();
 	}
@@ -1395,6 +1431,62 @@ class PagesController extends BaseController {
 			"id_tipo_doc"	=>	$this->viewArgs["id_tipo_doc"],
 			"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
 		))->convert()->save();
+		
+		$this->tabella = "pages";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function paginecorrelate($id = 0)
+	{
+		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$data["ordinaAction"] = "ordinacorrelate";
+		
+		$this->_posizioni['paginecorrelate'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "paginecorrelate";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->m[$this->modelName]->checkPrincipale($clean['id']);
+		
+		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
+			die("non permesso");
+		
+		$this->modelName = "PagespagesModel";
+		$this->mainButtons = 'ldel';
+		
+		$mainAction = "paginecorrelate/".$clean['id'];
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("pages.title");
+		$this->mainHead = "Titolo";
+		
+		$this->m[$this->modelName]->clear()
+			->select("pages.*,pages_pages.*")
+			->inner(array("corr"))
+			->where(array(
+				"id_page"	=>	$clean['id'],
+			))
+			->orderBy("pages_pages.id_order")->save();
 		
 		$this->tabella = "pages";
 		

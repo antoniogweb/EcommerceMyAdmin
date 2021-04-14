@@ -156,6 +156,8 @@ class Route
 		'prodotti,ordinacaratteristiche',
 		'prodotti,tag',
 		'prodotti,ordinatag',
+		'prodotti,paginecorrelate',
+		'prodotti,ordinacorrelate',
 		
 		'testi,main',
 		'testi,form',
