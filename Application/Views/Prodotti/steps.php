@@ -6,6 +6,7 @@
 	<?php
 	$temp = $this->viewArgs;
 	$temp["tipocontenuto"] = "tutti";
+	$temp["id_tipo_car"] = "tutti";
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
