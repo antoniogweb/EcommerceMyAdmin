@@ -33,6 +33,13 @@
 						echo $filtri;
 					?>
 					
+					<?php
+					$path = ROOT."/Application/Views/".ucfirst($this->controller)."/main_action.php";
+					
+					if (file_exists($path))
+						include($path);
+					?>
+					
 					<?php echo $notice;?>
 					
 					<div class="scroll-x">
