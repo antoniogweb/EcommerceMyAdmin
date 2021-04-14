@@ -46,6 +46,7 @@ class PagesController extends BaseController {
 	public $formFields = null;
 	
 	public $tabContenuti = array();
+	public $tabCaratteristiche = array();
 	public $section = null;
 	
 	protected $_posizioni = array(
@@ -90,6 +91,7 @@ class PagesController extends BaseController {
 			'id_tipo_doc:sanitizeAll' => "tutti",
 			'-id_marchio:sanitizeAll' => "tutti",
 			'id_tag:sanitizeAll' => "tutti",
+			'id_tipo_car:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -114,11 +116,20 @@ class PagesController extends BaseController {
 		$this->model("PagespersonalizzazioniModel");
 		$this->model("TagModel");
 		$this->model("PagestagModel");
+		$this->model("TipologiecaratteristicheModel");
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
 			"section" => $clean["section"],
 		))->orderBy("id_order")->toList("id_tipo", "titolo")->send();
+		
+		// Estraggo tutte le tab delle caratteristiche
+		if (v("caratteristiche_in_tab_separate"))
+			$data["tabCaratteristiche"] = $this->tabCaratteristiche = $this->m["TipologiecaratteristicheModel"]->clear()
+				->select("id_tipologia_caratteristica,coalesce(NULLIF(nota_interna, ''),titolo) as titolo_tab")
+				->orderBy("tipologie_caratteristiche.id_order")
+				->toList("id_tipologia_caratteristica", "aggregate.titolo_tab")
+				->send();
 		
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;

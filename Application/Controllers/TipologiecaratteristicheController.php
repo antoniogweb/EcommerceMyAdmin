@@ -66,7 +66,7 @@ class TipologiecaratteristicheController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,nota_interna');
 		
 		parent::form($queryType, $id);
 	}

@@ -32,6 +32,7 @@ class CaratteristichevaloriController extends BaseController {
 		'id_page:sanitizeAll'=>'tutti',
 		'id_tipologia_caratteristica:sanitizeAll'=>'tutti',
 		'id_car_f:sanitizeAll'=>'tutti',
+		'id_tipo_car:sanitizeAll'=>'tutti',
 	);
 	
 	function __construct($model, $controller, $queryString) {
@@ -48,13 +49,21 @@ class CaratteristichevaloriController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "caratteristiche_valori.titolo");
-		$this->mainHead = "Tipologia,Caratteristica,Valore";
-		
 		$filtroTipologia = array("tutti" => "Tipologia") + $this->m["CaratteristicheModel"]->selectTipologia();
 		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica();
 		
-		$this->filters = array(array("id_tipologia_caratteristica", null, $filtroTipologia), array("id_car_f", null, $filtroCaratteristica), "titolo");
+		if ($this->viewArgs["id_page"] != "tutti" && $this->viewArgs["id_tipo_car"] != "tutti")
+		{
+			$this->filters = array(array("id_car_f", null, $filtroCaratteristica), "titolo");
+			$this->mainFields = array("caratteristiche.titolo", "caratteristiche_valori.titolo");
+			$this->mainHead = "Caratteristica,Valore";
+		}
+		else
+		{
+			$this->filters = array(array("id_tipologia_caratteristica", null, $filtroTipologia), array("id_car_f", null, $filtroCaratteristica), "titolo");
+			$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "caratteristiche_valori.titolo");
+			$this->mainHead = "Tipologia,Caratteristica,Valore";
+		}
 		
 		$this->m[$this->modelName]->clear()->select("*")
 				->left(array("caratteristica"))
@@ -63,6 +72,7 @@ class CaratteristichevaloriController extends BaseController {
 					"lk" => array('titolo' => $this->viewArgs['titolo']),
 					"caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs['id_tipologia_caratteristica'],
 					"caratteristiche.id_car"	=>	$this->viewArgs['id_car_f'],
+					"caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs['id_tipo_car'],
 				))
 				->orderBy("tipologie_caratteristiche.titolo,caratteristiche.titolo, caratteristiche_valori.titolo");
 		

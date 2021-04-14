@@ -28,7 +28,19 @@
 	<li <?php echo $posizioni['accessori'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/accessori/$id_page".$viewStatusTutti;?>">Accessori</a></li>
 	<?php } ?>
 	<?php if (v("caratteristiche_in_prodotti")) { ?>
-	<li <?php echo $posizioni['caratteristiche'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>">Caratteristiche</a></li>
+		<?php if (!v("caratteristiche_in_tab_separate")) { ?>
+		<li <?php echo $posizioni['caratteristiche'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>">Caratteristiche</a></li>
+		<?php } else {
+			foreach ($tabCaratteristiche as $idTipoCar => $titoloCar)
+			{
+				$temp = $this->viewArgs;
+				$temp["id_tipo_car"] = (int)$idTipoCar;
+				$temp["tipocontenuto"] = "tutti";
+			?>
+			<li <?php if ($this->viewArgs["id_tipo_car"] == $idTipoCar) { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".$this->controller."/caratteristiche/$id_page".Url::createUrl($temp);?>"><?php echo ucfirst(strtolower($titoloCar));?></a></li>
+			<?php
+			}
+		} ?>
 	<?php } ?>
 	<?php if (v("combinazioni_in_prodotti")) { ?>
 	<li <?php echo $posizioni['attributi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/attributi/$id_page".$viewStatusTutti;?>">Varianti</a></li>
@@ -45,6 +57,7 @@
 	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
 		$temp = $this->viewArgs;
 		$temp["tipocontenuto"] = (int)$idTipoCont;
+		$temp["id_tipo_car"] = "tutti";
 	?>
 	<li <?php if ($this->viewArgs["tipocontenuto"] == $idTipoCont) { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".$this->controller."/testi/$id_page".Url::createUrl($temp);?>"><?php echo ucfirst(strtolower($titoloTipo));?></a></li>
 	<?php } ?>
