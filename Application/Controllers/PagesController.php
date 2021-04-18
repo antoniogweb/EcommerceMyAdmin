@@ -137,9 +137,9 @@ class PagesController extends BaseController {
 				->toList("id_tipologia_caratteristica", "aggregate.titolo_tab")
 				->send();
 		
-		$data["tabSezioni"] = $this->tabSezioni = $this->m["SectionssectionsModel"]->clear()->select("categories.*")->where(array(
+		$data["tabSezioni"] = $this->tabSezioni = $this->m["SectionssectionsModel"]->clear()->where(array(
 			"in_section"	=>	sanitizeAll($this->section),
-		))->inner("categories")->on("categories.section = sections_sections.section")->toList("categories.section", "categories.title")->send();
+		))->toList("sections_sections.section", "sections_sections.titolo")->send();
 		
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
