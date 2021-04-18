@@ -56,7 +56,7 @@ class IvaModel extends GenericModel
         );
     }
     
-    public function setFormStruct()
+    public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
 		(

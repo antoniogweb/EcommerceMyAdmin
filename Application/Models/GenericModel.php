@@ -352,7 +352,7 @@ class GenericModel extends Model_Tree
 		return parent::update($id, $where);
 	}
 	
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
 		
 	}

@@ -146,7 +146,7 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
 		(
@@ -291,6 +291,13 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>Se settato su sì, il prodotto viene sempre aggiunto come accessorio alla creazione di qualsiasi nuovo prodotto.</div>"
 					),
 				),
+				'id_p'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Prodotto principale',
+					'options'	=>	$this->selectProdotti($id),
+					'reverse' => 'yes',
+					
+				),
 			),
 		);
 		
@@ -298,6 +305,25 @@ class PagesModel extends GenericModel {
 		
 		if ($this->formStructAggiuntivoEntries)
 			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
+	}
+	
+	public function selectProdotti($id)
+	{
+		$clean['id'] = (int)$id;
+		
+		$cm = new CategoriesModel();
+		
+		$children = $cm->children((int)$cm->getShopCategoryId(), true);
+		
+		$res = $this->clear()->where(array(
+			"ne" => array("id_page" => $clean['id']),
+			"attivo" => "Y",
+			"principale"=>"Y",
+			"acquistabile"	=>	"Y",
+			"in" => array("-id_c" => $children),
+		))->orderBy("id_order")->toList("id_page", "title")->send();
+		
+		return array(0=>"--") + $res;
 	}
 	
 	public function selectTipiPagina()

@@ -136,6 +136,10 @@
 								<?php echo $form["attivo"];?>
 								<?php echo $form["in_evidenza"];?>
 								
+								<?php if (isset($form["id_p"])) { ?>
+								<?php echo $form["id_p"];?>
+								<?php } ?>
+								
 								<?php include($this->viewPath("pages_link"));?>
 							</div>
 						</div>

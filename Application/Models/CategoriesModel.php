@@ -107,7 +107,7 @@ class CategoriesModel extends HierarchicalModel {
         );
     }
     
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
 		(

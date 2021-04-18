@@ -111,7 +111,7 @@ class ContenutiModel extends GenericModel {
         );
     }
     
-    public function setFormStruct()
+    public function setFormStruct($id = 0)
 	{
 		$tipo = (isset($_GET["tipo"]) && in_array($_GET["tipo"], array("FASCIA","GENERICO","MARKER"))) ? $_GET["tipo"] : "FASCIA";
 		

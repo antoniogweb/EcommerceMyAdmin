@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class FormModel extends GenericModel {
 
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
 
 		$this->formStruct = array

@@ -58,9 +58,9 @@ class SlideModel extends PagesModel {
 		return parent::update($id, $where);
 	}
 	
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
-		parent::setFormStruct();
+		parent::setFormStruct($id);
 		
 		$plus = array(
 		

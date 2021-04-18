@@ -81,7 +81,7 @@ class TestiModel extends GenericModel {
 		parent::__construct();
 	}
 	
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
 
 		$this->formStruct = array

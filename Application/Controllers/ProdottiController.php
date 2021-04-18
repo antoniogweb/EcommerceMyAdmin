@@ -85,6 +85,9 @@ class ProdottiController extends PagesController {
 		if (v("mostra_descrizione_in_prodotti"))
 			$this->queryFields .= ",description,use_editor";
 		
+		if (v("mostra_tendina_prodotto_principale"))
+			$this->queryFields .= ",id_p";
+		
 		$data["tabella"] = "prodotti";
 		
 		$data["sezionePannello"] = "ecommerce";

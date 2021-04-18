@@ -52,7 +52,7 @@ class MenuModel extends HierarchicalModel {
 		$this->titoloMenu .= " (".strtoupper(self::$lingua).")";
 	}
 
-	public function setFormStruct()
+	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
 		(
