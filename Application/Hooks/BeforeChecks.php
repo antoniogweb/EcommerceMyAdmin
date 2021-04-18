@@ -67,7 +67,7 @@ Helper_Menu::$htmlLinks = array(
 		"htmlAfter" => '',
 		"attributes" => 'role="button" class="btn btn-info"',
 		"class"	=>	"btn btn-default",
-		'text'	=>	'<span class="glyphicon glyphicon-plus"></span> '."Aggiungi",
+		'text'	=>	'<span class="glyphicon glyphicon-plus"></span> '."Nuovo elemento",
 	),
 	"esporta" => array(
 		"htmlBefore" => '',

@@ -615,6 +615,11 @@ class PagesController extends BaseController {
 				if ($this->m[$this->modelName]->queryResult and $queryType === "insert")
 				{
 					$lId = $this->m[$this->modelName]->lId;
+					
+					// Collego il prodotto
+					if (isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+						$this->m[$this->modelName]->aggiungiaprodotto($lId);
+					
 					$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 				}
 

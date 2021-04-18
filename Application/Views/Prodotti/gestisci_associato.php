@@ -50,7 +50,7 @@
 
 <?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>
 
-<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-list"></i> Gestiscie caratteristiche</a>
+<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione caratteristiche</a>
 
 <a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&nobuttons=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
 
@@ -58,6 +58,15 @@
 
 <?php if ($this->action === "paginecorrelate") { ?>
 
-<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/faq/main?id_pcorr=$id_page&partial=Y&pcorr_sec=faq";?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
+<?php foreach ($tabSezioni as $section => $titleSection) {
+		if ($this->viewArgs["pcorr_sec"] != $section)
+			continue;
+?>
+	<p>
+		<a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/$section/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione <?php echo $titleSection;?></a>
+
+		<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/$section/main?id_pcorr=$id_page&partial=Y&pcorr_sec=$section";?>"><i class="fa fa-plus"></i> Aggiungi</a>
+	</p>
+	<?php } ?>
 
 <?php } ?>
