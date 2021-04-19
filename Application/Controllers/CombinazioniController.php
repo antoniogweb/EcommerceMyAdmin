@@ -224,7 +224,8 @@ class CombinazioniController extends BaseController
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
-		$this->m[$this->modelName]->db->beginTransaction();
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
 		
 		$this->clean();
 		
@@ -265,6 +266,7 @@ class CombinazioniController extends BaseController
 			}
 		}
 		
-		$this->m[$this->modelName]->db->commit();
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
 	}
 }

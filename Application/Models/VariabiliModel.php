@@ -163,6 +163,7 @@ class VariabiliModel extends GenericModel {
 		"caratteristiche_in_tab_separate"	=>	0,
 		"mostra_faq"				=>	0,
 		"mostra_tendina_prodotto_principale"	=>	0,
+		"usa_transactions"			=>	1,
 	);
 	
 	public function __construct() {

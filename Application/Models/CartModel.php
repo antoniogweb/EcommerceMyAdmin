@@ -398,7 +398,8 @@ class CartModel extends Model_Tree {
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$this->db->beginTransaction();
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
 		
 		$righe = $this->clear()->where(array(
 			"cart_uid"	=>	$clean["cart_uid"],
@@ -431,7 +432,8 @@ class CartModel extends Model_Tree {
 			}
 		}
 		
-		$this->db->commit();
+		if (v("usa_transactions"))
+			$this->db->commit();
 	}
 	
 	public function set($id_cart, $quantity)

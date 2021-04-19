@@ -354,7 +354,8 @@ class BaseController extends Controller
 	
 	protected function main()
 	{
-		$this->m[$this->modelName]->db->beginTransaction();
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
 		
 		$this->shift();
 		
@@ -508,7 +509,8 @@ class BaseController extends Controller
 		
 		$this->append($data);
 		
-		$this->m[$this->modelName]->db->commit();
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
 	}
 	
 	protected function form($queryType = 'insert', $id = 0)
@@ -826,7 +828,8 @@ class BaseController extends Controller
 					rsort($idOrderArray);
 				}
 				
-				$this->m[$this->modelName]->db->beginTransaction();
+				if (v("usa_transactions"))
+					$this->m[$this->modelName]->db->beginTransaction();
 				
 				for ($i=0; $i<count($orderClean); $i++)
 				{
@@ -839,7 +842,8 @@ class BaseController extends Controller
 					}
 				}
 				
-				$this->m[$this->modelName]->db->commit();
+				if (v("usa_transactions"))
+					$this->m[$this->modelName]->db->commit();
 			}
 		}
 	}

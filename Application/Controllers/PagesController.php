@@ -228,7 +228,8 @@ class PagesController extends BaseController {
 		if (v("attiva_cache_prodotti") && empty($_POST))
 			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
-		$this->m[$this->modelName]->db->beginTransaction();
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
 		
 		$this->shift();
 		
@@ -381,7 +382,8 @@ class PagesController extends BaseController {
 		$data['scaffold'] = $this->scaffold->render();
 // 		print_r ($this->scaffold->model->db->queries);
 		
-		$this->m[$this->modelName]->db->commit();
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
 		
 		$data['menu'] = $this->scaffold->html['menu'];
 		$data['popup'] = $this->scaffold->html['popup'];
