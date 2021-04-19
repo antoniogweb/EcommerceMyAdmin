@@ -13,7 +13,9 @@
 $temp = $this->viewArgs;
 $temp["listino"] = "tutti";
 ?>
+<?php if (count($listini) > 0) { ?>
 <a href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == "tutti") { ?>info<?php } else { ?>default<?php } ?> pull-right">Listino Italia</a>
+<?php } ?>
 
 <?php echo $menu; ?>
 

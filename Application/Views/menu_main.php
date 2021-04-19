@@ -9,8 +9,10 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class='mainMenu'>
-				<?php foreach ($elencoLingue as $codice => $lingua) { ?>
-				<a style="margin-left:10px;" class="btn btn-<?php echo MenuModel::$lingua == $codice ? "primary" : "default"?> pull-right" href="<?php echo $this->baseUrl."/menu/main?lingua=".$codice;?>">Menù <?php echo $lingua;?></a>
+				<?php if (count($elencoLingue) > 1) { ?>
+					<?php foreach ($elencoLingue as $codice => $lingua) { ?>
+					<a style="margin-left:10px;" class="btn btn-<?php echo MenuModel::$lingua == $codice ? "primary" : "default"?> pull-right" href="<?php echo $this->baseUrl."/menu/main?lingua=".$codice;?>">Menù <?php echo $lingua;?></a>
+					<?php } ?>
 				<?php } ?>
 				
 				<?php echo $menu;?>
