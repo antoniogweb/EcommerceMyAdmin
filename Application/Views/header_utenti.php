@@ -20,7 +20,9 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/users/main/1";?>"><i class="fa fa-list"></i> Lista utenti</a></li>
 				</ul>
 			</li>
+			<?php if (count(BaseController::$traduzioni) > 0) { ?>
 			<li class="<?php echo $tm["traduzioni"][0];?>"><a href="<?php echo $this->baseUrl."/traduzioni/main/1";?>"><i class="fa fa-language"></i> Traduzioni</a></li>
+			<?php } ?>
 			<li class="<?php echo $tm["impostazioni"][0];?>"><a href="<?php echo $this->baseUrl."/impostazioni/form/update/1";?>"><i class="fa fa-cogs"></i> Impostazioni</a></li>
 			<?php if (v("mostra_tipi_fasce")) { ?>
 			<li class="<?php echo $tm["tipicontenuto"][0];?> treeview">
