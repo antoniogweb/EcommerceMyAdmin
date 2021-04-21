@@ -278,8 +278,9 @@ if (!isset($baseUrl))
 <p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/token";?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
 <?php } ?>
 
-<?php if (isset($isFromAreariservata)) {
-include(tpf("/Elementi/Pagine/riservata_bottom.php"));
+<?php
+if (isset($isFromAreariservata))
+	include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 
 include(tpf("/Elementi/Pagine/page_bottom.php"));
-} ?>
+?>

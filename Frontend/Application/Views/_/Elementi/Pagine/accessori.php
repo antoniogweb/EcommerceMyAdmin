@@ -3,14 +3,23 @@
 <?php if (isset($accessori)) { ?>
 	<?php foreach ($accessori as $acc) { ?>
 	<div class="box_accessorio box_accessorio_figlio" id-page="<?php echo $acc["pages"]["id_page"];?>" id-p="0">
-		<input type="checkbox" name="<?php echo $acc["pages"]["id_page"];?>" value="<?php echo $acc["pages"]["id_page"];?>" <?php if (accessorioInCarrello($acc["pages"]["id_page"])) { ?>checked<?php } ?> class="input_attivo" />
-		<?php echo field($acc, "title");?>
+		<div class="uk-margin-small">
+			<input type="checkbox" name="<?php echo $acc["pages"]["id_page"];?>" value="<?php echo $acc["pages"]["id_page"];?>" <?php if (accessorioInCarrello($acc["pages"]["id_page"])) { ?>checked<?php } ?> class="input_attivo" />
+			<span class="uk-text-lead uk-text-small uk-margin-small-left"><?php echo htmlentitydecode(field($acc, "description"));?></span>
+		</div>
+		
 		<?php
 			list($lista_attributi_acc, $lista_valori_attributi_acc) = selectAttributi($acc["pages"]["id_page"]);
 			$personalizzazioni_acc = selectPersonalizzazioni($acc["pages"]["id_page"]);
 		?>
 		
 		<div class="box_accessorio_inner">
+			<?php if (trim($acc["pages"]["sottotitolo"])) { ?>
+			<div class="uk-text-muted uk-text-small uk-margin-small">
+				<?php echo field($acc, "sottotitolo");?>
+			</div>
+			<?php } ?>
+			
 			<?php if (count($lista_valori_attributi_acc) > 0) { ?>
 			<div class="lista_attributi_prodotto">
 				<table class="variations">
@@ -38,24 +47,19 @@
 			
 			<?php if (isset($personalizzazioni_acc) && count($personalizzazioni_acc) > 0) { ?>
 			<div class="lista_personalizzazioni_prodotto">
-				<table class="variations">
-					<?php foreach ($personalizzazioni_acc as $pers) { ?>
-					<tr>
-						<td class="label" style="width:40%;"><label class="pa_size nome_attributo nome_attributo_<?php echo encodeUrl(persfield($pers, "titolo"));?>"><?php echo persfield($pers, "titolo");?></label></td>
-						<td>
-							<?php
-							$maxLength = $pers["personalizzazioni"]["numero_caratteri"] ? 'maxlength="'.$pers["personalizzazioni"]["numero_caratteri"].'"' : "";
-							echo Html_Form::input($pers["personalizzazioni"]["id_pers"],getPersonalizzazioneDaCarrello($pers["personalizzazioni"]["id_pers"],$acc["pages"]["id_page"] ),"form_input_personalizzazione",null,"style='width:100%;' $maxLength rel='".persfield($pers, "titolo")."'");?>
-						</td>
-					</tr>
-					<?php } ?>
-				</table>
+				<?php foreach ($personalizzazioni_acc as $pers) { ?>
+				<div class="uk-margin uk-width-1-2@m">
+					<?php
+					$maxLength = $pers["personalizzazioni"]["numero_caratteri"] ? 'maxlength="'.$pers["personalizzazioni"]["numero_caratteri"].'"' : "";
+					echo Html_Form::input($pers["personalizzazioni"]["id_pers"],getPersonalizzazioneDaCarrello($pers["personalizzazioni"]["id_pers"],$acc["pages"]["id_page"] ),"uk-input form_input_personalizzazione",null,"style='width:100%;' $maxLength rel='".persfield($pers, "titolo")."'".' placeholder="'.persfield($pers, "titolo").'"');?>
+				</div>
+				<?php } ?>
 			</div>
 			<?php } ?>
 			
-			<div class="errore_combinazione"></div>
+			<div class="uk-margin uk-text-small uk-text-danger errore_combinazione"></div>
 			
-			<div class="blocco-prezzo-accessorio">
+			<div class="blocco-prezzo-accessorio" style="display:none;">
 				<p class="price">
 					<span class="amount">
 						<?php if (inPromozioneTot($acc["pages"]["id_page"])) { echo "<del>€ <span class='price_full_accessorio'>€ ".setPriceReverse(calcolaPrezzoIvato($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span></del> € <span class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span>"; } else { echo "€ <span class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span>";}?>

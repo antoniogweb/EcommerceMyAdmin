@@ -126,18 +126,13 @@
 			
 			<?php if (isset($personalizzazioni) && count($personalizzazioni) > 0) { ?>
 			<div class="lista_personalizzazioni_prodotto">
-				<table class="variations">
-					<?php foreach ($personalizzazioni as $pers) { ?>
-					<tr>
-						<td class="label" style="width:40%;"><label class="pa_size nome_attributo nome_attributo_<?php echo encodeUrl(persfield($pers, "titolo"));?>"><?php echo persfield($pers, "titolo");?></label></td>
-						<td>
-							<?php
-							$maxLength = $pers["personalizzazioni"]["numero_caratteri"] ? 'maxlength="'.$pers["personalizzazioni"]["numero_caratteri"].'"' : "";
-							echo Html_Form::input($pers["personalizzazioni"]["id_pers"],getPersonalizzazioneDaCarrello($pers["personalizzazioni"]["id_pers"]),"form_input_personalizzazione",null,"$maxLength rel='".persfield($pers, "titolo")."'");?>
-						</td>
-					</tr>
-					<?php } ?>
-				</table>
+				<?php foreach ($personalizzazioni as $pers) { ?>
+				<div class="uk-margin uk-width-1-2@m">
+					<?php
+					$maxLength = $pers["personalizzazioni"]["numero_caratteri"] ? 'maxlength="'.$pers["personalizzazioni"]["numero_caratteri"].'"' : "";
+					echo Html_Form::input($pers["personalizzazioni"]["id_pers"],getPersonalizzazioneDaCarrello($pers["personalizzazioni"]["id_pers"]),"uk-input form_input_personalizzazione",null,"$maxLength rel='".persfield($pers, "titolo")."'".' placeholder="'.persfield($pers, "titolo").'"');?>
+				</div>
+				<?php } ?>
 			</div>
 			<?php } ?>
 			

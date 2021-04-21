@@ -47,7 +47,9 @@
 							<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
 						</div>
 						<?php if ($p["cart"]["immagine"]) { ?>
-						<a href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"]);?>"><img width="100px" src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" /></a>
+						<?php if (!$p["cart"]["id_p"]) { ?><a href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"]);?>"><?php } ?>
+							<img width="100px" src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
+						<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
 						<?php } ?>
 					</div>
 					<div class="uk-width-expand">

@@ -1255,6 +1255,15 @@ class BaseContenutiController extends BaseController
 		$this->load('sitemap');
 	}
 	
+	public function robots()
+	{
+		header ("Content-Type:text/plain");
+		
+		$this->clean();
+		
+		$this->load('robots');
+	}
+	
 	public function jsoncategorie($section = "")
 	{
 		$this->clean();
