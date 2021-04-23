@@ -151,6 +151,8 @@ class BaseController extends Controller
 	
 	public $mainMenu = "add";
 	
+	public $closeModal = false;
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -203,7 +205,15 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
-		$baseArgsKeys = array('page:forceInt'=>1,'attivo:sanitizeAll'=>'tutti','partial:sanitizeAll' => "tutti", 'nobuttons:sanitizeAll' => "tutti", 'report:sanitizeAll' => "tutti", 'skip:sanitizeAll' => "tutti");
+		$baseArgsKeys = array(
+			'page:forceInt'=>1,
+			'attivo:sanitizeAll'=>'tutti',
+			'partial:sanitizeAll' => "tutti",
+			'nobuttons:sanitizeAll' => "tutti",
+			'report:sanitizeAll' => "tutti",
+			'skip:sanitizeAll' => "tutti",
+			'cl_on_sv:sanitizeAll' => "tutti",
+		);
 		
 		if (isset($this->argKeys))
 		{
@@ -260,7 +270,7 @@ class BaseController extends Controller
 		
 		$data['tm'] = $this->_topMenuClasses;
 		
-		$data['queryResult'] = false;
+		$data['queryResult'] = $data['closeModal'] = false;
 		
 		$data["orderBy"] = $this->orderBy;
 		
@@ -549,6 +559,9 @@ class BaseController extends Controller
 			
 			$data["queryResult"] = $this->m[$this->modelName]->queryResult;
 			
+			if ($this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
+				$data["closeModal"] = $this->closeModal = true;
+			
 			if (isset($_POST["gAction"]))
 			{
 				$this->m[$this->modelName]->result = false;
@@ -591,17 +604,20 @@ class BaseController extends Controller
 			
 			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult and $this->insertRedirect)
 			{
-				$lId = $this->m[$this->modelName]->lId;
-				
-				flash("notice",$this->m[$this->modelName]->notice);
-				
-				if (isset($this->insertRedirectUrl))
+				if ($this->viewArgs["cl_on_sv"] != "Y")
 				{
-					$this->redirect($this->insertRedirectUrl);
-				}
-				else
-				{
-					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU."insert=ok");
+					$lId = $this->m[$this->modelName]->lId;
+					
+					flash("notice",$this->m[$this->modelName]->notice);
+					
+					if (isset($this->insertRedirectUrl))
+					{
+						$this->redirect($this->insertRedirectUrl);
+					}
+					else
+					{
+						$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU);
+					}
 				}
 			}
 			

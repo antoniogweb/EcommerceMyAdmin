@@ -36,9 +36,22 @@
 <?php
 if (isset($_GET["partial"]) and $queryResult) { ?>
 <script>
+if (window.opener)
+{
 	window.opener.closedd = true;
 	window.closed = true;
 	window.close();
+}
+</script>
+<?php } ?>
+
+<?php
+if (isset($_GET["partial"]) and $closeModal) { ?>
+<script>
+$(document).ready(function(){
+	if (window.parent)
+		window.parent.closeModal();
+});
 </script>
 <?php } ?>
 

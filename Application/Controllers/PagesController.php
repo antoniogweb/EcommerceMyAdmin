@@ -96,6 +96,7 @@ class PagesController extends BaseController {
 			'id_tipo_car:sanitizeAll' => "tutti",
 			'id_pcorr:sanitizeAll' => "tutti",
 			'pcorr_sec:sanitizeAll' => "tutti",
+			'cl_on_sv:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -607,6 +608,9 @@ class PagesController extends BaseController {
 				
 				$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 				
+				if ($this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
+					$data["closeModal"] = $this->closeModal = true;
+				
 				$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
 				
 				if (isset($_POST["gAction"]))
@@ -616,13 +620,18 @@ class PagesController extends BaseController {
 			
 				if ($this->m[$this->modelName]->queryResult and $queryType === "insert")
 				{
-					$lId = $this->m[$this->modelName]->lId;
-					
-					// Collego il prodotto
-					if (isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
-						$this->m[$this->modelName]->aggiungiaprodotto($lId);
-					
-					$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
+					if ($this->viewArgs["cl_on_sv"] != "Y")
+					{
+						$lId = $this->m[$this->modelName]->lId;
+						
+						flash("notice",$this->m[$this->modelName]->notice);
+						
+						// Collego il prodotto
+						if (isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+							$this->m[$this->modelName]->aggiungiaprodotto($lId);
+						
+						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus);
+					}
 				}
 
 				$this->m[$this->modelName]->setFormStruct();

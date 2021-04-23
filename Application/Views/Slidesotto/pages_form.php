@@ -24,7 +24,9 @@
 
 					<?php include($this->viewPath("steps"));?>
 					
-					<?php echo $notice;?>
+					<?php $flash = flash("notice");?>
+					<?php echo $flash;?>
+					<?php if (!$flash) echo $notice;?>
 
 					<!-- show the table -->
 					<div class='scaffold_form'>

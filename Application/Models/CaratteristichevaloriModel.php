@@ -71,6 +71,11 @@ class CaratteristichevaloriModel extends GenericModel {
     
     public function setFormStruct($id = 0)
 	{
+		$idTipo = "tutti";
+		
+		if (isset($_GET["id_tipo_car"]) && $_GET["id_tipo_car"] != "tutti")
+			$idTipo = (int)$_GET["id_tipo_car"];
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -83,6 +88,9 @@ class CaratteristichevaloriModel extends GenericModel {
 					"options"	=>	$this->selectCaratteristica(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+					'wrap'	=>	array(
+						null,null," <a class='iframe pull-right' href='".Url::getRoot()."caratteristiche/form/insert/0?partial=Y&nobuttons=Y&cl_on_sv=Y&id_tip_car=$idTipo'><i class='fa fa-plus-square-o'></i> Nuovo</a>"
+					),
 				),
 			),
 			
@@ -94,7 +102,14 @@ class CaratteristichevaloriModel extends GenericModel {
 	{
 		$t = new CaratteristicheModel();
 		
-		return $t->clear()->orderBy("id_order")->toList("id_car","titolo")->send();
+		$t->clear()->orderBy("id_order")->toList("id_car","titolo");
+		
+		if (isset($_GET["id_tipo_car"]) && $_GET["id_tipo_car"] != "tutti")
+			$t->aWhere(array(
+				"id_tipologia_caratteristica"	=>	(int)$_GET["id_tipo_car"],
+			));
+		
+		return $t->send();
 	}
 	
 	//get the name of the attribute from the id
@@ -158,7 +173,13 @@ class CaratteristichevaloriModel extends GenericModel {
 			$res = parent::insert();
 			
 			if ($res)
+			{
 				$this->controllaLingua($this->lId);
+				
+				// Aggiungo direttamente dal prodotto
+				if ($_GET["id_page"] && isset($this->values["id_car"]))
+					$this->aggiungiaprodotto($this->lId);
+			}
 		}
 		 
 		return $res;

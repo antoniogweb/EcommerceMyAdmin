@@ -244,6 +244,10 @@ $(document).ready(function(){
 		}
 	});
 	
+	window.closeModal = function(){
+		$('#my_modal').modal('hide');
+	};
+	
 	$(".iframe_td a, a.iframe, img.iframe").click(function(e){
 		
 		var t_href = $(this).attr("href");
@@ -261,6 +265,7 @@ $(document).ready(function(){
 		});
 		
 		$('#my_modal').modal({show:true});
+		
 	});
 	
 	$(".elimina_categoria_associata").click(function(e){

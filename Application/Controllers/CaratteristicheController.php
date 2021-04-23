@@ -29,6 +29,7 @@ class CaratteristicheController extends BaseController {
 	public $argKeys = array(
 		'titolo:sanitizeAll'=>'tutti',
 		'id_tipologia_caratteristica:sanitizeAll'=>'tutti',
+		'id_tip_car:sanitizeAll'=>'tutti',
 	);
 	
 	function __construct($model, $controller, $queryString) {
@@ -74,14 +75,22 @@ class CaratteristicheController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->shift(2);
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'titolo,id_tipologia_caratteristica';
+		$fields = 'titolo';
+		
+		if ($this->viewArgs["id_tip_car"] == "tutti")
+			$fields .= ",id_tipologia_caratteristica";
 		
 		if (v("mostra_tipo_caratteristica"))
 			$fields .= ",tipo";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		if ($this->viewArgs["id_tip_car"] != "tutti")
+			$this->m[$this->modelName]->setValue("id_tipologia_caratteristica", $this->viewArgs["id_tip_car"]);
 		
 		parent::form($queryType, $id);
 	}

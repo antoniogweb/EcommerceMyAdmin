@@ -76,11 +76,6 @@
 	<?php } ?>
 </ul>
 
-
-<?php } else { ?>
-
-
-
 <?php } ?>
 
 <div style="clear:left;"></div>

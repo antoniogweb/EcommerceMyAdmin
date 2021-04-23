@@ -26,7 +26,9 @@
 					<div class='col-md-8'>
 						<div class="box">
 							<div class="box-header with-border main">
-								<?php echo $notice;?>
+								<?php $flash = flash("notice");?>
+								<?php echo $flash;?>
+								<?php if (!$flash) echo $notice;?>
 
 								<!-- show the table -->
 								<div class='scaffold_form'>
