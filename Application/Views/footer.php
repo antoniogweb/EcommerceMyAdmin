@@ -24,7 +24,7 @@
 				<h4 class="modal-title">Gestisci elemento</h4>
 			</div>-->
 			<div class="modal-body">
-				<iframe class="iframe_dialog" src="" frameborder="0" height="500px" width="99.6%"></iframe>
+				<iframe class="iframe_dialog" src="" frameborder="0" height="500px" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>

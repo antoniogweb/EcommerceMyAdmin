@@ -109,20 +109,15 @@ function reloadPage()
 	}
 }
 
-function aggiornaAltezzaIframe()
+function aggAlteIfr()
 {
-// 	console.log(window.parent);
 	if (partial && window.frameElement)
 	{
 		setTimeout(function(){
-				if (actionName != "file")
-					var aa = $("#page-wrapper_partial").height()+20;
-				else
-					var aa = $(window.parent).height()-220;
-				
-				window.parent.$("iframe.dialog_iframe").attr("height",aa + "px");
-				window.parent.$('#my_modal').modal({refresh:true});
-		}, 10);
+			var altezza = $(".wrapper").height();
+			window.parent.$("iframe.iframe_dialog").attr("height",altezza + "px");
+			window.parent.$('#my_modal').modal({refresh:true});
+		}, 100);
 	}
 }
 
@@ -532,6 +527,20 @@ $(document).ready(function(){
 		
 		$('.upload_traduzioni').css("display","inline");
     });
+	
+	setTimeout(function(){
+		
+		aggAlteIfr();
+		
+	}, 100);
+	
+	$( "body" ).on( "click", "a", function(e){
+		aggAlteIfr();
+	});
+	
+	$(document).ajaxSuccess(function() {
+		aggAlteIfr();
+	});
 });
 
  (function( $ ) {

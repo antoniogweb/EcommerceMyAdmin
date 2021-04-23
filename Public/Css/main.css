@@ -1,4 +1,10 @@
-html, body{margin: 0;padding:0}
+html, body{margin: 0;padding:0;}
+
+html, body, .wrapper, .content_basso
+{
+	min-height:0px !important;
+}
+
 body{margin:0px;padding:0px;font-family:arial}
 
 .btn a {
@@ -1238,4 +1244,11 @@ tr.cart_head {
 
 .table {
     margin-bottom: 0px !important;
+}
+
+@media (min-width: 992px)
+{
+	body .modal-lg {
+		width: 80% !important;
+	}
 }
