@@ -46,7 +46,7 @@ if (window.opener)
 <?php } ?>
 
 <?php
-if (isset($_GET["partial"]) and $closeModal) { ?>
+if (partial() and $closeModal) { ?>
 <script>
 $(document).ready(function(){
 	if (window.parent)

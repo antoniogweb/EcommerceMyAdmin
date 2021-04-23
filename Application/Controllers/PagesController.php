@@ -608,10 +608,10 @@ class PagesController extends BaseController {
 				
 				$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 				
+				$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
+				
 				if ($this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
 					$data["closeModal"] = $this->closeModal = true;
-				
-				$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
 				
 				if (isset($_POST["gAction"]))
 				{
@@ -620,20 +620,27 @@ class PagesController extends BaseController {
 			
 				if ($this->m[$this->modelName]->queryResult and $queryType === "insert")
 				{
+					$lId = $this->m[$this->modelName]->lId;
+					
+					// Collego il prodotto
+					if (isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+						$this->m[$this->modelName]->aggiungiaprodotto($lId);
+						
 					if ($this->viewArgs["cl_on_sv"] != "Y")
 					{
-						$lId = $this->m[$this->modelName]->lId;
-						
 						flash("notice",$this->m[$this->modelName]->notice);
-						
-						// Collego il prodotto
-						if (isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
-							$this->m[$this->modelName]->aggiungiaprodotto($lId);
 						
 						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus);
 					}
 				}
-
+				
+				if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
+				{
+					flash("notice",$this->m[$this->modelName]->notice);
+					
+					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
+				}
+				
 				$this->m[$this->modelName]->setFormStruct();
 				
 				$this->m[$this->modelName]->setUploadForms($clean["id"]);
