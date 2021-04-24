@@ -559,7 +559,7 @@ class BaseController extends Controller
 			
 			$data["queryResult"] = $this->m[$this->modelName]->queryResult;
 			
-			if ($this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
+			if (isset($this->viewArgs["cl_on_sv"]) && $this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
 				$data["closeModal"] = $this->closeModal = true;
 			
 			if (isset($_POST["gAction"]))

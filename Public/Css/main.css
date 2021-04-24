@@ -1246,6 +1246,13 @@ tr.cart_head {
     margin-bottom: 0px !important;
 }
 
+.btn
+{
+	border-radius: 50px !important;
+	text-transform:uppercase;
+	font-size:14px !important;
+}
+
 @media (min-width: 992px)
 {
 	body .modal-lg {
