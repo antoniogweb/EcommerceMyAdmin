@@ -1566,8 +1566,14 @@ class PagesController extends BaseController {
 			),
 		);
 		
-		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "edit");
-		$this->mainHead = "Tipologia,Caratteristica,Valore";
+		$this->mainFields = array("caratteristiche.titolo", "edit");
+		$this->mainHead = "Caratteristica,Valore";
+		
+		if (!v("caratteristiche_in_tab_separate"))
+		{
+			array_unshift($this->mainFields, "caratteristiche.titolo");
+			$this->mainHead = "Tipologia,".$this->mainHead;
+		}
 		
 		if (v("immagine_in_caratteristiche"))
 		{
