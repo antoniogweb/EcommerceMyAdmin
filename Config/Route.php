@@ -158,6 +158,7 @@ class Route
 		'prodotti,ordinatag',
 		'prodotti,paginecorrelate',
 		'prodotti,ordinacorrelate',
+		'prodotti,feedback',
 		
 		'testi,main',
 		'testi,form',
@@ -169,6 +170,7 @@ class Route
 		'traduzioni,carica',
 		
 		'scaglioni,form',
+		'feedback,form',
 		
 		'classisconto,main',
 		'classisconto,form',

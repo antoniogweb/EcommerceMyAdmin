@@ -165,6 +165,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_tendina_prodotto_principale"	=>	0,
 		"usa_transactions"			=>	1,
 		"lingue_abilitate_frontend"	=>	"it",
+		"abilita_feedback"			=>	0,
 	);
 	
 	public function __construct() {

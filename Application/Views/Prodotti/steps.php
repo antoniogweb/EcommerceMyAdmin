@@ -74,6 +74,10 @@
 	?>
 	<li <?php if ($this->viewArgs["pcorr_sec"] == $section) { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".$this->controller."/paginecorrelate/$id_page".Url::createUrl($temp);?>"><?php echo $titleSection;?></a></li>
 	<?php } ?>
+	
+	<?php if (v("abilita_feedback")) { ?>
+	<li <?php echo $posizioni['feedback'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/feedback/$id_page".$viewStatusTutti;?>"><?php echo gtext("Feedback");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } ?>

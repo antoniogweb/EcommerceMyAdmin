@@ -27,6 +27,27 @@ var tiny_editor_config = {
 	accessibility_focus : false
 };
 
+if (typeof(ajaxfilemanager) !== typeof(Function))
+{
+	function ajaxfilemanager(field_name, url, type, win) {
+		var ajaxfilemanagerurl = baseUrl + "/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";
+		var fileBrowserWindow = new Array();
+		fileBrowserWindow["file"] = ajaxfilemanagerurl;
+		fileBrowserWindow["title"] = "Ajax File Manager";
+		fileBrowserWindow["width"] = "782";
+		fileBrowserWindow["height"] = "440";
+		fileBrowserWindow["resizable "] = "yes";
+		fileBrowserWindow["inline"] = "yes";
+		fileBrowserWindow["close_previous"] = "no";
+		tinyMCE.activeEditor.windowManager.open(fileBrowserWindow, {
+			window : win,
+			input : field_name
+		});
+		
+		return false;
+	}
+}
+
 //fa apparire la lightbox
 function open_lightbox(titolo, contenuto)
 {

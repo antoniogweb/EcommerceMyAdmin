@@ -124,6 +124,7 @@ class PagesController extends BaseController {
 		$this->model("TipologiecaratteristicheModel");
 		$this->model("PagespagesModel");
 		$this->model("SectionssectionsModel");
+		$this->model("FeedbackModel");
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
@@ -1700,6 +1701,51 @@ class PagesController extends BaseController {
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
 		$data["lista"] = $this->m["TagModel"]->clear()->sWhere("id_tag not in (select id_tag from pages_tag where id_page = ".$clean['id'].")")->orderBy("titolo")->toList("id_tag","titolo")->send();
+		
+		$this->append($data);
+	}
+	
+	public function feedback($id = 0)
+	{
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->_posizioni['feedback'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data['id_page'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "FeedbackModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("dataora", "edit", "attivo");
+		$this->mainHead = "Data ora,Autore,Pubblicato";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"feedback/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+// 		$this->h["Menu"]->links['copia']['url'] = 'form/copia/'.$clean['id'];
+// 		$this->h["Menu"]->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
+		
+		$this->m[$this->modelName]->orderBy("feedback.id_feedback")->where(array(
+			"id_page"	=>	$clean['id'],
+			"is_admin"	=>	0,
+		))->convert()->save();
+		
+		parent::main();
+		
+		$data['tabella'] = "prodotti";
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
 		$this->append($data);
 	}
