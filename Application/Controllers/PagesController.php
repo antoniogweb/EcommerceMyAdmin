@@ -1728,15 +1728,15 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("dataora", "edit", "attivo");
-		$this->mainHead = "Data ora,Autore,Pubblicato";
+		$this->mainFields = array("feedback.data_feedback", "edit", "punteggio", "attivo");
+		$this->mainHead = "Data feedback,Autore,Punteggio,Pubblicato";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"feedback/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 // 		$this->h["Menu"]->links['copia']['url'] = 'form/copia/'.$clean['id'];
 // 		$this->h["Menu"]->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
-		$this->m[$this->modelName]->orderBy("feedback.id_feedback")->where(array(
+		$this->m[$this->modelName]->orderBy("feedback.data_feedback desc")->where(array(
 			"id_page"	=>	$clean['id'],
 			"is_admin"	=>	0,
 		))->convert()->save();

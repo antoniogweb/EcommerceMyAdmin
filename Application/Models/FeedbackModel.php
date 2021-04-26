@@ -26,6 +26,20 @@ class FeedbackModel extends GenericModel {
 	
 	public $campoTitolo = "autore";
 	
+	public static $tendinaPunteggi = array(
+		"0_0"	=>	"0",
+		"0_5"	=>	"0,5",
+		"1_0"	=>	"1",
+		"1_5"	=>	"1,5",
+		"2_0"	=>	"2",
+		"2_5"	=>	"2,5",
+		"3_0"	=>	"3",
+		"3_5"	=>	"3,5",
+		"4_0"	=>	"4",
+		"4_5"	=>	"4,5",
+		"5_0"	=>	"5",
+	);
+	
 	public function __construct() {
 		$this->_tables='feedback';
 		$this->_idFields='id_feedback';
@@ -46,6 +60,12 @@ class FeedbackModel extends GenericModel {
 					'options'	=>	array('1' => 'sì','0' => 'no'),
 					"reverse"	=>	"yes",
 				),
+				'voto'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Punteggio',
+					'options'	=>	self::$tendinaPunteggi,
+					"reverse"	=>	"yes",
+				),
 			),
 		);
 	}
@@ -55,6 +75,31 @@ class FeedbackModel extends GenericModel {
 			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
+	
+	public function sistemaVoto()
+	{
+		if (isset($this->values["voto"]))
+			$this->values["voto"] = str_replace("_",".",$this->values["voto"]);
+	}
+	
+	public function sistemaVotoNumero($valore)
+	{
+		return str_replace(",","_",$valore);
+	}
+	
+	public function insert()
+	{
+		$this->sistemaVoto();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->sistemaVoto();
+		
+		return parent::update($id, $where);
+	}
 	
 	public function dataora($record)
 	{
@@ -69,6 +114,33 @@ class FeedbackModel extends GenericModel {
 	public function edit($record)
 	{
 		return "<a class='iframe action_iframe' href='".Url::getRoot()."feedback/form/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["autore"]."</a>";
+	}
+	
+	public function punteggio($record)
+	{
+		$punteggio = str_replace(",",".",$record["feedback"]["voto"]);
+		
+		$stellePiene = (int)$punteggio;
+		$mezzaStella = ($punteggio > $stellePiene) ? true : false;
+		
+		$arrayIcone = array();
+		
+		if ($punteggio <= 2)
+			$color = "danger";
+		else if ($punteggio <= 3)
+			$color = "warning";
+		else if ($punteggio <= 5)
+			$color = "success";
+			
+		for ($i = 0; $i < $stellePiene; $i++)
+		{
+			$arrayIcone[] = "<i class='text text-$color fa fa-star'></i>";
+		}
+		
+		if ($mezzaStella)
+			$arrayIcone[] = "<i class='text text-$color fa fa-star-half'></i>";
+		
+		return implode(" ",$arrayIcone);
 	}
 	
 }

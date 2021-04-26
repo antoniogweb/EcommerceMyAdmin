@@ -12,6 +12,8 @@ $().ready(function() {
 		<div class='col-md-6'>
 			<?php echo $form["autore"];?>
 			
+			<?php echo $form["data_feedback"];?>
+			
 			<?php echo $form["testo"];?>
 			
 			<?php echo $form["attivo"];?>

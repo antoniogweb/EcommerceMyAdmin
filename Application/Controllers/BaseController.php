@@ -133,6 +133,8 @@ class BaseController extends Controller
 	
 	public $formDefaultValues = array();
 	
+	public $functionsIfFromDb = array();
+	
 	public $useEditor = false;
 	
 	public $argKeys = null;
@@ -689,7 +691,7 @@ class BaseController extends Controller
 			
 			$this->scaffold->model->fields = isset($this->formFields) ? $this->formFields : $this->scaffold->model->fields;
 			
-			$this->scaffold->getFormValues('sanitizeHtml',$clean["id"],$this->formDefaultValues);
+			$this->scaffold->getFormValues('sanitizeHtml',$clean["id"],$this->formDefaultValues, $this->functionsIfFromDb);
 			
 			if (count($this->menuLinksStruct) > 0)
 			{

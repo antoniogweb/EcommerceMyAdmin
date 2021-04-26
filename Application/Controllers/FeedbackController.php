@@ -28,11 +28,15 @@ class FeedbackController extends BaseController {
 	
 	public $argKeys = array('id_page:sanitizeAll'=>'tutti');
 	
+	public $functionsIfFromDb = array(
+		"voto"	=>	"sistemaVotoNumero",
+	);
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("autore,testo,attivo,voto");
+		$this->m[$this->modelName]->setValuesFromPost("autore,data_feedback,testo,attivo,voto");
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);

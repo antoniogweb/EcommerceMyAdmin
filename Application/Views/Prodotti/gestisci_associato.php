@@ -73,6 +73,6 @@
 
 <?php if ($this->action == "feedback" && v("abilita_feedback")) { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/feedback/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>">Aggiungi feedback</a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/feedback/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>"><i class="fa fa-plus"></i> Aggiungi feedback</a></p>
 
 <?php } ?>
