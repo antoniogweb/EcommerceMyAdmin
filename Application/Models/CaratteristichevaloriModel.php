@@ -45,7 +45,7 @@ class CaratteristichevaloriModel extends GenericModel {
 			"immagine"	=>	array(
 				"type"	=>	"image",
 				"path"	=>	"images/valori_caratteristiche",
-				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif,svg',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
 				"maxFileSize"	=>	3000000,
@@ -234,7 +234,16 @@ class CaratteristichevaloriModel extends GenericModel {
 		$html = "--";
 		
 		if ($record["caratteristiche_valori"]["immagine"] && file_exists(Domain::$parentRoot."/images/valori_caratteristiche/".$record["caratteristiche_valori"]["immagine"]))
-			$html = "<a target='_blank' href='".Domain::$name."/images/valori_caratteristiche/".$record["caratteristiche_valori"]["immagine"]."'><img src='".Url::getRoot()."caratteristichevalori/thumb/immagine/".$record["caratteristiche_valori"]["id_cv"]."' /></a>";
+		{
+			$extArray = explode('.', $record["caratteristiche_valori"]["immagine"]);
+			$ext = strtolower(end($extArray));
+			
+			$srcImmagine = ($ext != "svg") ? Url::getRoot()."caratteristichevalori/thumb/immagine/".$record["caratteristiche_valori"]["id_cv"] : Domain::$name."/images/valori_caratteristiche/".$record["caratteristiche_valori"]["immagine"];
+			
+			$width = ($ext != "svg") ? "" : "width='50'";
+			
+			$html = "<a target='_blank' href='".Domain::$name."/images/valori_caratteristiche/".$record["caratteristiche_valori"]["immagine"]."'><img $width src='".$srcImmagine."' /></a>";
+		}
 		
 		return $html;
 	}
