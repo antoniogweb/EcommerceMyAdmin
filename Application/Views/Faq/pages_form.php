@@ -57,6 +57,8 @@
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
+								
+								<?php echo $form["in_evidenza"];?>
 							</div>
 						</div>
 						
