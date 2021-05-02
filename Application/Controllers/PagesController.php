@@ -39,7 +39,7 @@ class PagesController extends BaseController {
 		);
 		
 	public $queryFields = "title,alias,id_c,attivo,in_evidenza,description,immagine,use_editor";
-	public $metaQueryFields = 'keywords,meta_description,template,add_in_sitemap';
+	public $metaQueryFields = 'keywords,meta_description,template,add_in_sitemap,priorita_sitemap';
 	
 	public $orderBy = "pages.id_order";
 	
