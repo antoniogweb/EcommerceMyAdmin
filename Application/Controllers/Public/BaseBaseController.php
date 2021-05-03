@@ -463,21 +463,14 @@ class BaseBaseController extends Controller
 			$data["arrayLingue"][$l] = $l;
 		}
 		
-// 		if (Params::$lang === "it")
-// 		{
-			$res = $this->m["MenuModel"]->getTreeWithDepth(2, null, Params::$lang);
-			$data["menu"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang);
+		$res = $this->m["MenuModel"]->getTreeWithDepth(2, null, Params::$lang);
+		$data["menu"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang);
+		
+		if (v("abilita_menu_semplice"))
+			$data["menuSemplice"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang, true);
 // 			$data["menuMobile"] = $this->m["MenuModel"]->getMenu($res,true,true);
-			
-			$data["langDb"] = $this->langDb = Lang::$langDb = null;
-// 		}
-// 		else
-// 		{
-// 			$res = $this->m["MenusecModel"]->getTreeWithDepth(2);
-// 			$data["menu"] = $this->m["MenusecModel"]->getMenu($res);
-// 			
-// 			$data["langDb"] = $this->langDb = Lang::$langDb = "_en";
-// 		}
+		
+		$data["langDb"] = $this->langDb = Lang::$langDb = null;
 		
 		if (Output::$html)
 		{

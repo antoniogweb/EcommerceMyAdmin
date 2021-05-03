@@ -171,7 +171,7 @@ class MenuModel extends HierarchicalModel {
 	//create the HTML of the menu
 	//$tree: nodes as given by getTreeWithDepth
 	//$complete: if true returns also the opening and closing <ul>
-	public function getMenu($tree, $complete = true, $lingua = null)
+	public function getMenu($tree, $complete = true, $lingua = null, $simple = false)
 	{
 		if (count($tree) > 0)
 		{
@@ -192,6 +192,12 @@ class MenuModel extends HierarchicalModel {
 			$indice = 0;
 			
 			$hasChildClass = "";
+			
+			$submenu_wrap_open = v("submenu_wrap_open");
+			$submenu_wrap_close = v("submenu_wrap_close");
+			
+			if ($simple)
+				$submenu_wrap_open = $submenu_wrap_close = "";
 			
 			foreach ($tree as $node)
 			{
@@ -222,13 +228,16 @@ class MenuModel extends HierarchicalModel {
 						$subMenuLinkClass = "elementor-sub-item";
 					}
 					
-					$menuHtml .= v("submenu_wrap_open")."<ul class='$subMenuClass ul_menu_level ul_menu_level_".$depth."'>";
+					if ($simple)
+						$menuHtml .= $submenu_wrap_open."<ul>";
+					else
+						$menuHtml .= $submenu_wrap_open."<ul class='$subMenuClass ul_menu_level ul_menu_level_".$depth."'>";
 				}
 				if ($node["aggregate"]["depth"] < $depth)
 				{
 					$diff = (int)($depth - $node["aggregate"]["depth"]);
 					
-					$menuHtml .= str_repeat("</ul>".v("submenu_wrap_close")."</li>", $diff);
+					$menuHtml .= str_repeat("</ul>".$submenu_wrap_close."</li>", $diff);
 					$depth = $node["aggregate"]["depth"];
 				}
 				if (!isset($node["is_last"]))
@@ -243,7 +252,7 @@ class MenuModel extends HierarchicalModel {
 					if ((strcmp($requestUri,"/") === 0 or in_array(trim($requestUri,"/"),Params::$frontEndLanguages)) and strcmp($node["node"]["link_to"],"home") === 0)
 					{
 						$currClass = v("current_menu_item");
-						$currClassLink = "elementor-item-active";
+						$currClassLink = v("current_menu_item_link");
 					}
 					else if (strcmp($requestUri,"/") !== 0 and strcmp($node["node"]["link_to"],"home") !== 0)
 					{
@@ -259,14 +268,19 @@ class MenuModel extends HierarchicalModel {
 						if (preg_match("/(".$pattern.")/",$subject))
 						{
 							$currClass = v("current_menu_item")." current_page_item current_item";
-							$currClassLink = "elementor-item-active";
+							$currClassLink = v("current_menu_item_link");
 						}
 					}
 					$notActiveClass = strcmp($node["node"]["active_link"],"N") === 0 ? "not_active_link" : null;
 					$target = strcmp($node["node"]["link_to"],"esterno") === 0 ? "target='_blank'" : null;
 					
 					if ($node["node"]["link_to"] != "custom")
-						$menuHtml .= "<li class='$hasChildClass menu-item li_menu_level li_menu_level_".$depth." ".v("menu_class_prefix").$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."$inLinkHtmlAfter</a></li>";
+					{
+						if ($simple)
+							$menuHtml .= "<li class='$currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."</a></li>";
+						else
+							$menuHtml .= "<li class='$hasChildClass menu-item li_menu_level li_menu_level_".$depth." ".v("menu_class_prefix").$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."$inLinkHtmlAfter</a></li>";
+					}
 					else
 					{
 						ob_start();

@@ -166,6 +166,8 @@ class VariabiliModel extends GenericModel {
 		"usa_transactions"			=>	1,
 		"lingue_abilitate_frontend"	=>	"it",
 		"abilita_feedback"			=>	0,
+		"abilita_menu_semplice"		=>	0,
+		"current_menu_item_link"	=>	"",
 	);
 	
 	public function __construct() {
