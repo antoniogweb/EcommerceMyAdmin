@@ -299,6 +299,9 @@ class PagesModel extends GenericModel {
 					'reverse' => 'yes',
 					
 				),
+				'priorita_sitemap'	=>	array(
+					'labelString'=>	'Priorità sitemap',
+				),
 			),
 		);
 		

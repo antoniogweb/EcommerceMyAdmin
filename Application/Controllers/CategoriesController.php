@@ -27,7 +27,7 @@ class CategoriesController extends BaseController {
 	public $voceMenu = "prodotti";
 	
 	public $queryFields = "title,alias,id_p,immagine";
-	public $metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
+	public $metaQueryFields = "keywords,meta_description,template,add_in_sitemap,priorita_sitemap";
 	public $formFields = null;
 	
 	protected $_posizioni = array(

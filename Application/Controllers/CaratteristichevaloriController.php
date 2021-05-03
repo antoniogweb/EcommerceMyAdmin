@@ -65,6 +65,12 @@ class CaratteristichevaloriController extends BaseController {
 			$this->mainHead = "Tipologia,Caratteristica,Valore";
 		}
 		
+		if (v("immagine_in_caratteristiche"))
+		{
+			$this->mainFields[] = "thumb";
+			$this->mainHead .= ",Immagine";
+		}
+		
 		$this->m[$this->modelName]->clear()->select("*")
 				->left(array("caratteristica"))
 				->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")

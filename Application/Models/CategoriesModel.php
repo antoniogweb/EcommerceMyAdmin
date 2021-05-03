@@ -138,6 +138,9 @@ class CategoriesModel extends HierarchicalModel {
 				'colore_testo_in_slide'	=>	array(
 					"className"	=>	"form-control colorpicker-element",
 				),
+				'priorita_sitemap'	=>	array(
+					'labelString'=>	'Priorità sitemap',
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',

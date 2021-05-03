@@ -43,7 +43,6 @@ class BlogController extends PagesController {
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data,Pubblicato?';
 		$this->filters = array(null,null,'title');
 		
-		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
 		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,video,video_thumb,sottotitolo";
 		
 		if (v("in_evidenza_blog"))

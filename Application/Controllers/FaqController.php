@@ -47,7 +47,6 @@ class FaqController extends PagesController {
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva,In evidenza';
 		$this->filters = array(null,'title');
 		
-		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
 		$this->queryFields = "title,attivo,description,in_evidenza";
 		
 		$this->clean();
