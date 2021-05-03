@@ -1646,12 +1646,12 @@ function tpf($filePath = "")
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
 	
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
-// 	echo $subFolderFullPath;
+	
 	if ($themeFolder && file_exists($subFolderFullPath))
 		return $subFolderFullPath;
 	
 	if ($themeFolder)
-		return Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+		return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 	
 	return Domain::$parentRoot."/Application/Views/".ltrim($filePath,"/");
 }
@@ -1716,5 +1716,5 @@ function parent($file)
 {
 	$file = str_replace(tp(),"",$file);
 	
-	return Domain::$parentRoot."/Application/Views/_".$file;
+	return Domain::$parentRoot."/admin/Frontend/Application/Views/_".$file;
 }

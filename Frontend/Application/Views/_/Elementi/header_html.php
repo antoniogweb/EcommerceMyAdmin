@@ -60,7 +60,7 @@
 				<a class="uk-navbar-item uk-link-muted es-navbar-button <?php if ($islogged) { echo "uk-text-primary";?><?php } ?>" href="<?php if ($islogged) { ?><?php echo $this->baseUrl."/area-riservata";?><?php } else { ?><?php echo $this->baseUrl."/regusers/login";?><?php } ?>" uk-icon="user"></a>
 				<?php include(tpf("/Elementi/header_user_box.php"));?>
 				
-				<a class="uk-navbar-item uk-link-muted es-navbar-button" href="cart.html" uk-toggle="target: #cart-offcanvas" onclick="return false">
+				<a class="uk-navbar-item uk-link-muted es-navbar-button" href="<?php echo $this->baseUrl."/carrello/vedi"?>" uk-toggle="target: #cart-offcanvas" onclick="return false">
 					<span uk-icon="cart"></span>
 					<span class="uk-badge link_carrello_num_prod <?php if ((int)$prodInCart === 0) { ?>uk-hidden<?php } ?>"><?php echo $prodInCart;?></span>
 				</a>
