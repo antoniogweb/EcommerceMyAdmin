@@ -37,6 +37,7 @@ class GenericModel extends Model_Tree
 	public $lId = null;
 	public $traduzione = false;
 	public $formStructAggiuntivoEntries = array();
+	public $salvaDataModifica = false;
 	
 	public function __construct() {
 
@@ -316,6 +317,8 @@ class GenericModel extends Model_Tree
 	
 	public function update($id = null, $where = null)
 	{
+		$this->salvaDataUltimaModifica();
+		
 		$res = parent::update($id, $where);
 		
 		if ($res)
@@ -370,8 +373,16 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
+	public function salvaDataUltimaModifica()
+	{
+		if ($this->salvaDataModifica)
+			$this->values["data_ultima_modifica"] = date("Y-m-d H:i:s");
+	}
+	
 	public function insert()
 	{
+		$this->salvaDataUltimaModifica();
+		
 		parent::insert();
 		$res = $this->queryResult;
 		

@@ -55,6 +55,8 @@ class CategoriesModel extends HierarchicalModel {
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"title");
 		
+		$this->salvaDataModifica = true;
+		
 		$this->foreignKeys = array(
 			"id_c parent of PagesModel(id_c) on delete restrict (Non è possibile eliminare questa categoria perché ci sono dei contenuti associati ad essa. Si prega di eliminare prima tali contenuti)",
 		);

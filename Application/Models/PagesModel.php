@@ -69,6 +69,8 @@ class PagesModel extends GenericModel {
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"title");
 		
+		$this->salvaDataModifica = true;
+		
 // 		$this->addStrongCondition("both",'checkNotEmpty',"codice|Si prega di inserire il codice del prodotto");
 		
 // 		$inProm = isset($_POST["in_promozione"]) ? $_POST["in_promozione"] : "N";

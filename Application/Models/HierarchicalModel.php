@@ -842,8 +842,14 @@ class HierarchicalModel extends GenericModel {
 			"lft" => $left,
 			"rgt" => $right,
 		);
+		
+		$temp = $this->salvaDataModifica;
+		$this->salvaDataModifica = false;
+		
 		$this->pUpdate($id_p);
-
+		
+		$this->salvaDataModifica = $temp;
+		
 		return $right+1;   
 	}
 	
