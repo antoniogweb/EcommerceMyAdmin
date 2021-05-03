@@ -1249,7 +1249,7 @@ class BaseContenutiController extends BaseController
 		
 		$this->clean();
 		
-		$data["sitemap"] = $this->m["PagesModel"]->clear()->select("pages.*,categories.*")->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
+		$data["sitemap"] = $this->m["PagesModel"]->clear()->select("pages.*,categories.*,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica")->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
 			"attivo"			=>	"Y",
 			"add_in_sitemap"	=>	"Y",
 			"categories.add_in_sitemap"	=>	"Y",
