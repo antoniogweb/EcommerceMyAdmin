@@ -34,7 +34,6 @@ if (isset($_GET["fromApp"]))
 
 Params::$exactUrlMatchRewrite = true;
 
-Params::$frontEndLanguages = array("it","en");
 Params::$allowSessionIdFromGet = true;
 Params::$errorStringClassName = "uk-alert uk-alert-danger";
 
@@ -46,6 +45,10 @@ if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
 //includo il file di parametri dall'admin
 require(LIBRARY."/Application/Include/language.php");
 require(LIBRARY."/Application/Include/functions.php");
+
+if (v("lingue_abilitate_frontend"))
+	Params::$frontEndLanguages = explode(",", v("lingue_abilitate_frontend"));
+
 require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");
