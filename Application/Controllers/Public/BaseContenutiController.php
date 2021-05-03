@@ -1249,11 +1249,34 @@ class BaseContenutiController extends BaseController
 		
 		$this->clean();
 		
+		$dataModificaHome = 0;
+		
+		$data["sitemapCat"] = $this->m["CategoriesModel"]->clear()->select("categories.*,coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica")->where(array(
+			"attivo"			=>	"Y",
+			"add_in_sitemap"	=>	"Y",
+			"ne"	=>	array(
+				"id_c"	=>	1,
+			),
+		))->orderBy("categories.priorita_sitemap desc, categories.data_ultima_modifica desc,lft")->limit(500)->send();
+		
 		$data["sitemap"] = $this->m["PagesModel"]->clear()->select("pages.*,categories.*,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica")->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
 			"attivo"			=>	"Y",
 			"add_in_sitemap"	=>	"Y",
 			"categories.add_in_sitemap"	=>	"Y",
 		))->orderBy("categories.priorita_sitemap desc,pages.priorita_sitemap desc,coalesce(pages.data_ultima_modifica,pages.data_creazione) desc")->limit(500)->send();
+		
+		$arrayConfronto = array($data["sitemapCat"], $data["sitemap"]);
+		
+		foreach ($arrayConfronto as $arrC)
+		{
+			foreach ($arrC as $dd)
+			{
+				if (strtotime($dd["aggregate"]["ultima_modifica"]) > $dataModificaHome)
+					$dataModificaHome = strtotime($dd["aggregate"]["ultima_modifica"]);
+			}
+		}
+		
+		$data["dataModificaHome"] = $dataModificaHome;
 		
 		$this->append($data);
 		$this->load('sitemap');
