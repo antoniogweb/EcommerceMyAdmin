@@ -1257,7 +1257,7 @@ class BaseContenutiController extends BaseController
 			"ne"	=>	array(
 				"id_c"	=>	1,
 			),
-		))->orderBy("categories.priorita_sitemap desc, categories.data_ultima_modifica desc,lft")->limit(500)->send();
+		))->orderBy("categories.priorita_sitemap desc, lft")->limit(500)->send();
 		
 		$data["sitemap"] = $this->m["PagesModel"]->clear()->select("pages.*,categories.*,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica")->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
 			"attivo"			=>	"Y",
