@@ -121,7 +121,7 @@
 			<div>
 				<h3><?php echo gtext("Totali carrello");?></h3>
 				
-				<?php include(tp()."/Ordini/totali.php");?>
+				<?php include(tpf("/Ordini/totali.php"));?>
 				
 				<div class="uk-margin uk-text-small"><?php echo testo("Nota"); ?></div>
 

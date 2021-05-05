@@ -24,7 +24,7 @@
 </div>
 <?php } ?>
 <hr />
-<?php include(tp()."/Ordini/totali.php");?>
+<?php include(tpf("/Ordini/totali.php"));?>
 
 <?php if (v("prezzi_ivati_in_carrello") && isset(IvaModel::$titoloAliquotaEstera)) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
