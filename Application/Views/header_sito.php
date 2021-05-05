@@ -124,6 +124,18 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("mostra_testimonial")) { ?>
+			<li class="<?php echo tm($tm, "testimonial");?> treeview">
+				<a href="#">
+					<i class="fa fa-trophy"></i>
+					<span>Testimonial</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/testimonial/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/testimonial/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<li class="<?php echo $tm["menu1"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>

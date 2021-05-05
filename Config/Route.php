@@ -409,6 +409,14 @@ class Route
 		'faq,updatevalue',
 		'faq,meta',
 		'faq,ordina',
+		
+		'testimonial,main',
+		'testimonial,form',
+		'testimonial,move',
+		'testimonial,pubblica',
+		'testimonial,inevidenza',
+		'testimonial,updatevalue',
+		'testimonial,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

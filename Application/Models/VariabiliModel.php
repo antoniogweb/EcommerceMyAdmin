@@ -168,6 +168,7 @@ class VariabiliModel extends GenericModel {
 		"abilita_feedback"			=>	0,
 		"abilita_menu_semplice"		=>	0,
 		"current_menu_item_link"	=>	"",
+		"mostra_testimonial"		=>	0,
 	);
 	
 	public function __construct() {
