@@ -24,7 +24,7 @@
 		display:none;
 		position:absolute;
 		right:-2px;
-		top:-40px;
+		top:-34px;
 		background-color:#FFF;
 		padding:5px 10px;
 		color:#333;
@@ -150,11 +150,11 @@
 			
 		});
 		
-		$( ".blocco_fasce_contenuto" ).sortable({
-			stop: function( event, ui ) {
-				aggiornaOrdinamento();
-			}
-		});
+// 		$( ".blocco_fasce_contenuto" ).sortable({
+// 			stop: function( event, ui ) {
+// 				aggiornaOrdinamento();
+// 			}
+// 		});
 	});
 </script>
 <?php } ?>

@@ -1160,6 +1160,24 @@ function calcolaPrezzoFinale($idPage, $prezzoIntero, $checkPromo = true)
 	return $prezzoFinale;
 }
 
+function getPercSconto($pieno, $scontato)
+{
+	if ($pieno > 0)
+		return (($pieno - $scontato) / $pieno) * 100;
+	
+	return 0;
+}
+
+function getPercScontoF($pieno, $scontato)
+{
+	$sconto = getPercSconto($pieno, $scontato);
+	
+	if (round($sconto,1) > floor($sconto))
+		return number_format($sconto,1,",","");
+	
+	return $sconto;
+}
+
 function calcolaPrezzoIvato($idPage, $prezzoIntero, $iva = null)
 {
 	if (ImpostazioniModel::$valori["esponi_prezzi_ivati"] == "Y")

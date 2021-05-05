@@ -606,7 +606,7 @@ class BaseController extends Controller
 			
 			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult and $this->insertRedirect)
 			{
-				if ($this->viewArgs["cl_on_sv"] != "Y")
+				if (isset($this->viewArgs["cl_on_sv"]) && $this->viewArgs["cl_on_sv"] != "Y")
 				{
 					$lId = $this->m[$this->modelName]->lId;
 					
