@@ -642,12 +642,17 @@ class GenericModel extends Model_Tree
 			"lingua"	=>	$lingua,
 		))->record();
 		
-		$href = Url::getRoot()."contenutitradotti/form/update/".$contenuto["id_ct"]."?partial=Y";
+		if(!empty($contenuto))
+		{
+			$href = Url::getRoot()."contenutitradotti/form/update/".$contenuto["id_ct"]."?partial=Y";
+			
+			if (!empty($contenuto) && $contenuto["salvato"])
+				return "<a class='iframe' href='$href'><i class='fa fa-edit text_16'></i></a>";
+			else
+				return "<a class='iframe' href='$href'><i class='fa fa-plus text_16'></i></a>";
+		}
 		
-		if (!empty($contenuto) && $contenuto["salvato"])
-			return "<a class='iframe' href='$href'><i class='fa fa-edit text_16'></i></a>";
-		else
-			return "<a class='iframe' href='$href'><i class='fa fa-plus text_16'></i></a>";
+		return "";
 	}
 	
 	public function linken($record)
