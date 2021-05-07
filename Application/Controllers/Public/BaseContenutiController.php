@@ -886,7 +886,16 @@ class BaseContenutiController extends BaseController
 			if (count($marchioCorrente) > 0)
 				$data["aliasMarchioCorrente"] = mfield($marchioCorrente, "alias")."/";
 		}
-// 		print_r($data["marker"]);die();
+		
+		$data["page_tags"] = array();
+		
+		if (v("usa_tag"))
+		{
+			$this->model("PagestagModel");
+			$data["page_tags"] = $this->m["PagestagModel"]->clear()->select("*")->inner(array("tag"))->where(array(
+				"id_page"	=>	$clean['id'],
+			))->orderBy("pages_tag.id_order")->send();
+		}
 		
 		$this->append($data);
 		

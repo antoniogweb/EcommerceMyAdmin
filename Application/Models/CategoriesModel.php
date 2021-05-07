@@ -27,6 +27,7 @@ class CategoriesModel extends HierarchicalModel {
 	public static $aliases = array();
 	public static $elencoTag = null;
 	public static $elencoMarchi = null;
+	public static $idShop = 0;
 	
 	public $controller = "categories";
 	
@@ -659,7 +660,7 @@ class CategoriesModel extends HierarchicalModel {
 				$urlArray[] = self::$elencoMarchi[$id_marchio];
 		}
 		
-		if ($id_c)
+		if ($id_c && ($id_c != CategoriesModel::$idShop || v("shop_in_alias_tag") || v("shop_in_alias_marchio")))
 		{
 			if (is_numeric($id_c))
 			{

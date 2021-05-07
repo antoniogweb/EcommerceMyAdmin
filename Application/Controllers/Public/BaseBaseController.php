@@ -300,7 +300,7 @@ class BaseBaseController extends Controller
 		//estraggo i prodotti in evidenza
 // 		$data["inEvidenza"] = getRandom($this->m["PagesModel"]->clear()->where(array("attivo"=>"Y","in_evidenza"=>"Y"))->limit(20)->orderBy("pages.id_order")->send());
 		
-		$clean["idShop"] = $data["idShop"] = $this->idShop = $this->m["CategoriesModel"]->getShopCategoryId();
+		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m["CategoriesModel"]->getShopCategoryId();
 		
 		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"], true);
 		
