@@ -14,9 +14,7 @@
 						<?php echo $form["colore_testo_in_slide"];?>
 						<?php } ?>
 						
-						<?php echo $form["keywords"];?>
-
-						<?php echo $form["meta_description"];?>
+						<?php echo $form["description"];?>
 						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
@@ -29,11 +27,31 @@
 							</span>
 						</div>
 					</div>
+					<div class='col-md-4'>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Meta tags
+							</div>
+							<div class="panel-body">
+								<?php echo $form["keywords"];?>
+
+								<?php echo $form["meta_description"];?>
+							</div>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript" src="<?php echo $this->baseUrl?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+
+<script type="text/javascript">
+$().ready(function() {
+	$('textarea.dettagli').tinymce(tiny_editor_config);
+});
+</script>
 
 <div>
 	<div>

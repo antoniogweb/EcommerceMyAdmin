@@ -70,7 +70,7 @@ class TagController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,alias,attivo,keywords,meta_description';
+		$fields = 'titolo,alias,attivo,description,keywords,meta_description';
 		
 		if (v("mostra_seconda_immagine_tag"))
 			$fields .= ",immagine_2";
@@ -82,4 +82,13 @@ class TagController extends BaseController
 		
 		parent::form($queryType, $id);
 	}
+	
+// 	public function meta($id = 0)
+// 	{
+// 		$fields = 'keywords,meta_description';
+// 		
+// 		$this->m[$this->modelName]->setValuesFromPost($fields);
+// 		
+// 		parent::form("update", $id);
+// 	}
 }

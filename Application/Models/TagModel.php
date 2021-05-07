@@ -84,6 +84,11 @@ class TagModel extends GenericModel {
 				'colore_testo_in_slide'	=>	array(
 					"className"	=>	"form-control colorpicker-element",
 				),
+				'description'		=>	array(
+					'type'		 =>	'Textarea',
+					'labelString'=>	'Descrizione',
+					'className'		=>	'dettagli',
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
