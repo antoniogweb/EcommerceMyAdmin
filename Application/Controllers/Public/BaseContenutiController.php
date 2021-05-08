@@ -931,6 +931,8 @@ class BaseContenutiController extends BaseController
 			$this->model("FeedbackModel");
 			$data["page_feedback"] = $this->m["FeedbackModel"]->clear()->where(array(
 				"id_page"	=>	$clean['id'],
+				"is_admin"	=>	0,
+				"attivo"	=>	1,
 			))->orderBy("feedback.id_order")->send();
 		}
 		
