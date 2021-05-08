@@ -80,6 +80,7 @@ class MailordiniModel extends GenericModel
 		$idUser = isset($params["id_user"]) ? $params["id_user"] : 0;
 		$testo = isset($params["testo"]) ? $params["testo"] : "";
 		$tipologia = isset($params["tipologia"]) ? $params["tipologia"] : "ORDINE";
+		$idPage = $params["id_page"] ?? 0;
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
@@ -127,6 +128,14 @@ class MailordiniModel extends GenericModel
 			if (ImpostazioniModel::$valori["bcc"])
 				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
 			
+			if (defined("BCC") && is_array(BCC))
+			{
+				foreach (BCC as $emailBcc)
+				{
+					$mail->addBCC($emailBcc);
+				}
+			}
+			
 			$testo = MailordiniModel::loadTemplate($oggetto, $testo);
 // 				echo $output;die();
 			// Imposto le traduzioni del back
@@ -156,13 +165,17 @@ class MailordiniModel extends GenericModel
 					"testo"		=>	$testo,
 					"inviata"	=>	$inviata,
 					"tipologia"	=>	$tipologia,
+					"id_page"		=>	$idPage,
 				));
 				
 				$mo->insert();
 			}
+			
+			return true;
 		} catch (Exception $e) {
 			Params::$lang = $bckLang;
 			TraduzioniModel::$contestoStatic = $bckContesto;
+			return false;
 		}
 	}
 }

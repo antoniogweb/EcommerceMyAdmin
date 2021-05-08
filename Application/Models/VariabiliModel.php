@@ -169,6 +169,7 @@ class VariabiliModel extends GenericModel {
 		"abilita_menu_semplice"		=>	0,
 		"current_menu_item_link"	=>	"",
 		"mostra_testimonial"		=>	0,
+		"campo_form_contatti"		=>	"nome,email,messaggio,accetto",
 	);
 	
 	public function __construct() {

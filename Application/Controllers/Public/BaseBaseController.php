@@ -796,4 +796,66 @@ class BaseBaseController extends Controller
 		
 		$this->append($data);
 	}
+	
+	protected function inviaMailFormContatti($id)
+	{
+		Domain::$currentUrl =  $this->getCurrentUrl();
+		
+		$this->model('ContattiModel');
+		$this->m['ContattiModel']->strongConditions['insert'] = array(
+			'checkNotEmpty'	=>	v("campo_form_contatti"),
+			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+		);
+		
+		$this->m['ContattiModel']->setFields(v("campo_form_contatti"),'strip_tags');
+
+		Form::$notice = null;
+		
+		if (isset($_POST['invia']))
+		{
+			$cognome = $this->request->post('cognome','');
+			
+			if (strcmp($cognome,'') === 0)
+			{
+				if ($this->m['ContattiModel']->checkConditions('insert'))
+				{
+					$pagina = $this->m["PagesModel"]->selectId((int)$id);
+					$oggetto = Parametri::$nomeNegozio." - richiesta informazioni";
+					
+					ob_start();
+					include (tpf("Regusers/mail_form_contatti.php"));
+					$output = ob_get_clean();
+					$output = MailordiniModel::loadTemplate($oggetto, $output);
+					
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array(Parametri::$mailInvioOrdine),
+						"oggetto"	=>	$oggetto,
+						"testo"		=>	$output,
+						"tipologia"	=>	"PAGINA",
+						"id_user"	=>	(int)User::$id,
+						"id_page"	=>	(int)$id,
+					));
+					
+// 						$mail->SMTPDebug = 2;
+					
+					if($res) {
+						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+						
+						if ($idGrazie)
+							$this->redirect(getUrlAlias($idGrazie));
+						else
+							$this->redirect("grazie.html");
+					} else {
+						Form::$notice = "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova pi&ugrave tardi</div>";
+					}
+				}
+				else
+				{
+					Form::$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['ContattiModel']->notice;
+				}
+			}
+		}
+		
+		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+	}
 }
