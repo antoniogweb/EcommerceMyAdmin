@@ -818,18 +818,35 @@ class BaseContenutiController extends BaseController
 		
 		$this->altreImmagini = $data["altreImmagini"];
 		
+		$orderByCaratteristiche = v("caratteristiche_in_tab_separate") ? "tipologie_caratteristiche.id_order, pages_caratteristiche_valori.id_order" : "pages_caratteristiche_valori.id_order" ;
+		
 		// CARATTERISTICHE
-		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("caratteristiche_valori.*,caratteristiche.*,caratteristiche_tradotte.*,caratteristiche_valori_tradotte.*")
-			->inner("caratteristiche_valori")->using("id_cv")
-			->inner("caratteristiche")->using("id_car")
+		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("caratteristiche_valori.*,caratteristiche.*,caratteristiche_tradotte.*,caratteristiche_valori_tradotte.*,tipologie_caratteristiche.*,tipologie_caratteristiche_tradotte.*")
+			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
+			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
+			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
 			->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
 			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as tipologie_caratteristiche_tradotte")->on("tipologie_caratteristiche_tradotte.id_tipologia_caratteristica = tipologie_caratteristiche.id_tipologia_caratteristica and tipologie_caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
 			->orderBy("pages_caratteristiche_valori.id_order")
 			->where(array(
 				"pages_caratteristiche_valori.id_page"=>$clean['id']
 			))
-			->orderBy("pages_caratteristiche_valori.id_order")
+			->orderBy($orderByCaratteristiche)
 			->send();
+		
+		$data["lista_caratteristiche_tipologie"] = array();
+		
+		if (v("caratteristiche_in_tab_separate"))
+		{
+			foreach ($data["caratteristiche"] as $car)
+			{
+				if (isset($data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]]))
+					$data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]][] = $car;
+				else
+					$data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]] = array($car);
+			}
+		}
 		
 		// Personalizzazioni
 		if (v("attiva_personalizzazioni"))

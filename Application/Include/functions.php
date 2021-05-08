@@ -704,18 +704,6 @@ function contfield($p, $field)
 function afield($p, $field)
 {
 	return genericField($p, $field, "attributi");
-	
-// 	if (isset($p["contenuti_tradotti"][$field]) and strcmp($p["contenuti_tradotti"][$field],"") !== 0)
-// 	{
-// 		return $p["contenuti_tradotti"][$field];
-// 	}
-// 	else
-// 	{
-// 		if (isset($p["attributi"][$field]))
-// 			return $p["attributi"][$field];
-// 	}
-// 	
-// 	return "";
 }
 
 function avfield($p, $field)
@@ -738,32 +726,41 @@ function rfield($p, $field)
 	return "";
 }
 
+function tcarfield($p, $field)
+{
+	return genericField($p, $field, "tipologie_caratteristiche", "tipologie_caratteristiche_tradotte");
+}
+
 function carfield($p, $field)
 {
-	if (isset($p["caratteristiche_tradotte"][$field]) and strcmp($p["caratteristiche_tradotte"][$field],"") !== 0)
-	{
-		return $p["caratteristiche_tradotte"][$field];
-	}
-	else
-	{
-		if (isset($p["caratteristiche"][$field]))
-			return $p["caratteristiche"][$field];
-	}
+	return genericField($p, $field, "caratteristiche", "caratteristiche_tradotte");
 	
-	return "";
+// 	if (isset($p["caratteristiche_tradotte"][$field]) and strcmp($p["caratteristiche_tradotte"][$field],"") !== 0)
+// 	{
+// 		return $p["caratteristiche_tradotte"][$field];
+// 	}
+// 	else
+// 	{
+// 		if (isset($p["caratteristiche"][$field]))
+// 			return $p["caratteristiche"][$field];
+// 	}
+// 	
+// 	return "";
 }
 
 function carvfield($p, $field)
 {
-	if (isset($p["caratteristiche_valori_tradotte"][$field]) and strcmp($p["caratteristiche_valori_tradotte"][$field],"") !== 0)
-		return $p["caratteristiche_valori_tradotte"][$field];
-	else
-	{
-		if (isset($p["caratteristiche_valori"][$field]))
-			return $p["caratteristiche_valori"][$field];
-	}
+	return genericField($p, $field, "caratteristiche_valori", "caratteristiche_valori_tradotte");
 	
-	return "";
+// 	if (isset($p["caratteristiche_valori_tradotte"][$field]) and strcmp($p["caratteristiche_valori_tradotte"][$field],"") !== 0)
+// 		return $p["caratteristiche_valori_tradotte"][$field];
+// 	else
+// 	{
+// 		if (isset($p["caratteristiche_valori"][$field]))
+// 			return $p["caratteristiche_valori"][$field];
+// 	}
+// 	
+// 	return "";
 }
 
 function persfield($p, $field)
@@ -781,10 +778,10 @@ function fpfield($p, $field)
 	return genericField($p, $field, "fasce_prezzo");
 }
 
-function genericField($p, $field, $table)
+function genericField($p, $field, $table, $tableTradotta = "contenuti_tradotti")
 {
-	if (isset($p["contenuti_tradotti"][$field]) and strcmp($p["contenuti_tradotti"][$field],"") !== 0)
-		return $p["contenuti_tradotti"][$field];
+	if (isset($p[$tableTradotta][$field]) and strcmp($p[$tableTradotta][$field],"") !== 0)
+		return $p[$tableTradotta][$field];
 	else
 	{
 		if (isset($p[$table][$field]))
