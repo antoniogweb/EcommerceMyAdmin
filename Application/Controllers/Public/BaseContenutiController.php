@@ -809,6 +809,16 @@ class BaseContenutiController extends BaseController
 // 			echo $this->m['PagesModel']->getQuery();die();
 		}
 		
+		// Pagine correlate
+		$data["pagine_correlate"] = $this->m['PagesModel']->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->where(array(
+				"pages_pages.id_page"=>	$clean['id'],
+				"attivo"	=>	"Y",
+			))->orderBy("pages_pages.section,pages_pages.id_order")->send();
+		
 		$data["altreImmagini"] = array();
 		
 		if (count($data["pages"]) > 0)
@@ -997,7 +1007,7 @@ class BaseContenutiController extends BaseController
 				require_once(ROOT."/admin/External/mpdfPHP7/vendor/autoload.php");
 
 				ob_start();
-				include(ROOT."/Application/Views/Contenuti/pdf.php");
+				include(tpf("Contenuti/pdf.php"));
 				$content = ob_get_clean();
 				
 				$params = [
