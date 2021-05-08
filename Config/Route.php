@@ -159,6 +159,7 @@ class Route
 		'prodotti,paginecorrelate',
 		'prodotti,ordinacorrelate',
 		'prodotti,feedback',
+		'prodotti,ordinafeedback',
 		
 		'testi,main',
 		'testi,form',

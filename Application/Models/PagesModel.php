@@ -37,6 +37,8 @@ class PagesModel extends GenericModel {
 	
 	public static $arrayImmagini = null;
 	
+	public static $pagineConFeedback = null;
+	
 	public static $tipiPagina = array(
 		"GRAZIE"	=>	"Pagina grazie",
 		"COOKIE"	=>	"Pagina cookie",
@@ -1895,5 +1897,31 @@ class PagesModel extends GenericModel {
 			
 			$pp->insert();
 		}
+    }
+    
+    public static function punteggio($id)
+    {
+		$f = new FeedbackModel();
+		
+		return $f->clear()->where(array(
+			"id_page"	=>	(int)$id,
+			"is_admin"	=>	0,
+			"attivo"	=>	1,
+		))->getAvg("voto");
+    }
+    
+    public static function hasFeedback($id)
+    {
+		if (!isset(self::$pagineConFeedback))
+		{
+			$f = new FeedbackModel();
+			
+			self::$pagineConFeedback = $f->clear()->select("distinct id_page")->toList("id_page")->send();
+		}
+		
+		if (in_array($id, self::$pagineConFeedback))
+			return true;
+		
+		return false;
     }
 }

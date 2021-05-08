@@ -924,6 +924,16 @@ class BaseContenutiController extends BaseController
 			))->orderBy("pages_tag.id_order")->send();
 		}
 		
+		$data["page_feedback"] = array();
+		
+		if (v("abilita_feedback"))
+		{
+			$this->model("FeedbackModel");
+			$data["page_feedback"] = $this->m["FeedbackModel"]->clear()->where(array(
+				"id_page"	=>	$clean['id'],
+			))->orderBy("feedback.id_order")->send();
+		}
+		
 		$this->append($data);
 		
 		$template = strcmp($data['pages'][0]["pages"]["template"],"") === 0 ? null : $data['pages'][0]["pages"]["template"];

@@ -120,7 +120,7 @@ class FeedbackModel extends GenericModel {
 	{
 		$punteggio = str_replace(",",".",$record["feedback"]["voto"]);
 		
-		$stellePiene = (int)$punteggio;
+		$stellePiene = floor($punteggio);
 		$mezzaStella = ($punteggio > $stellePiene) ? true : false;
 		
 		$arrayIcone = array();

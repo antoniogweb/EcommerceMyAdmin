@@ -512,6 +512,15 @@ class PagesController extends BaseController {
 		parent::ordina();
 	}
 	
+	public function ordinafeedback()
+	{
+		$this->orderBy = "id_order";
+		
+		$this->modelName = "FeedbackModel";
+		
+		parent::ordina();
+	}
+	
 	public function meta($id = 0)
 	{
 		$this->s['admin']->check();
@@ -1713,6 +1722,8 @@ class PagesController extends BaseController {
 			),
 		);
 		
+		$this->ordinaAction = "ordinafeedback";
+		
 		$this->_posizioni['feedback'] = 'class="active"';
 		
 // 		$data["orderBy"] = $this->orderBy = "id_order";
@@ -1736,7 +1747,7 @@ class PagesController extends BaseController {
 // 		$this->h["Menu"]->links['copia']['url'] = 'form/copia/'.$clean['id'];
 // 		$this->h["Menu"]->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
-		$this->m[$this->modelName]->orderBy("feedback.data_feedback desc")->where(array(
+		$this->m[$this->modelName]->orderBy("feedback.id_order")->where(array(
 			"id_page"	=>	$clean['id'],
 			"is_admin"	=>	0,
 		))->convert()->save();
