@@ -1279,21 +1279,24 @@ function prodottiMarchio($idMarchio)
 	))->rowNumber();
 }
 
-function traduci($string)
+function traduci($string, $forzaEsteso = false)
 {
-	$string = preg_replace('/(Jan)/', 'Gen',$string);
-	$string = preg_replace('/(Feb)/', 'Feb',$string);
-	$string = preg_replace('/(Mar)/', 'Mar',$string);
-	$string = preg_replace('/(Apr)/', 'Apr',$string);
-	$string = preg_replace('/(May)/', 'Mag',$string);
-	$string = preg_replace('/(Jun)/', 'Giu',$string);
-	$string = preg_replace('/(Jul)/', 'Lug',$string);
-	$string = preg_replace('/(Aug)/', 'Ago',$string);
-	$string = preg_replace('/(Sep)/', 'Set',$string);
-	$string = preg_replace('/(Oct)/', 'Ott',$string);
-	$string = preg_replace('/(Nov)/', 'Nov',$string);
-	$string = preg_replace('/(Dec)/', 'Dic',$string);
-
+	if (!$forzaEsteso)
+	{
+		$string = preg_replace('/(Jan)/', 'Gen',$string);
+		$string = preg_replace('/(Feb)/', 'Feb',$string);
+		$string = preg_replace('/(Mar)/', 'Mar',$string);
+		$string = preg_replace('/(Apr)/', 'Apr',$string);
+		$string = preg_replace('/(May)/', 'Mag',$string);
+		$string = preg_replace('/(Jun)/', 'Giu',$string);
+		$string = preg_replace('/(Jul)/', 'Lug',$string);
+		$string = preg_replace('/(Aug)/', 'Ago',$string);
+		$string = preg_replace('/(Sep)/', 'Set',$string);
+		$string = preg_replace('/(Oct)/', 'Ott',$string);
+		$string = preg_replace('/(Nov)/', 'Nov',$string);
+		$string = preg_replace('/(Dec)/', 'Dic',$string);
+	}
+	
 	$string = preg_replace('/(January)/', 'Gennaio',$string);
 	$string = preg_replace('/(Genuary)/', 'Gennaio',$string);
 	$string = preg_replace('/(February)/', 'Febbraio',$string);

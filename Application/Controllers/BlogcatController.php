@@ -30,6 +30,8 @@ class BlogcatController extends CategoriesController {
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 		
+		$this->queryFields = "title,alias,id_p,immagine,description";
+		
 		$data["sezionePannello"] = "sito";
 		
 		$this->append($data);
