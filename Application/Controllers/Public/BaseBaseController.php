@@ -825,7 +825,6 @@ class BaseBaseController extends Controller
 					ob_start();
 					include (tpf("Regusers/mail_form_contatti.php"));
 					$output = ob_get_clean();
-					$output = MailordiniModel::loadTemplate($oggetto, $output);
 					
 					$res = MailordiniModel::inviaMail(array(
 						"emails"	=>	array(Parametri::$mailInvioOrdine),

@@ -40,15 +40,19 @@ class PagesModel extends GenericModel {
 	public static $pagineConFeedback = null;
 	
 	public static $tipiPagina = array(
-		"GRAZIE"	=>	"Pagina grazie",
-		"COOKIE"	=>	"Pagina cookie",
+		"GRAZIE"		=>	"Pagina grazie",
+		"COOKIE"		=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
-		"PRIVACY"	=>	"Pagina privacy",
-		"AZIENDA"	=>	"Pagina azienda",
-		"CONTATTI"	=>	"Pagina contatti",
-		"RESI"		=>	"Pagina resi",
-		"FAQ"		=>	"Pagina FAQ",
+		"PRIVACY"		=>	"Pagina privacy",
+		"AZIENDA"		=>	"Pagina azienda",
+		"CONTATTI"		=>	"Pagina contatti",
+		"RESI"			=>	"Pagina resi",
+		"FAQ"			=>	"Pagina FAQ",
+		"INFO_LEGALI"	=>	"Pagina informazioni Legali",
+		"SPEDIZIONI"	=>	"Pagina info spedizioni",
+		"FILOSOFIA"		=>	"Pagina filosofia",
+		"B2B"			=>	"Pagina info B2B",
 	);
 	
 	public function __construct() {

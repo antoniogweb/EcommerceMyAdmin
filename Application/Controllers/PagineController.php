@@ -32,8 +32,10 @@ class PagineController extends PagesController {
 		$this->clean();
 		
 		$data["sezionePannello"] = "sito";
+		$data["tabella"] = "pagine";
+		$this->append($data);
 		
-		$this->queryFields = "use_editor,title,alias,id_c,attivo,description,use_editor,immagine,tipo_pagina";
+		$this->queryFields = "use_editor,title,alias,id_c,attivo,description,use_editor,immagine,tipo_pagina,sottotitolo";
 		
 		$this->orderBy = "pages.id_order";
 		

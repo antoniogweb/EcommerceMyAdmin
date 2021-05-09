@@ -36,6 +36,8 @@
 									
 									<?php echo $form["alias"];?>
 									
+									<?php echo $form["sottotitolo"];?>
+									
 									<?php echo $form["tipo_pagina"];?>
 									
 									<?php echo $form["use_editor"];?>
