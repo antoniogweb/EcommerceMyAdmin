@@ -133,6 +133,7 @@ class BaseBaseController extends Controller
 			Parametri::$useSandbox = ImpostazioniModel::$valori["usa_sandbox"] == "Y" ? true : false;
 			Parametri::$paypalSeller = ImpostazioniModel::$valori["paypal_seller"];
 			Parametri::$paypalSandBoxSeller = ImpostazioniModel::$valori["paypal_sandbox_seller"];
+			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
 		}
 		
 		$this->session('registered');
@@ -728,7 +729,7 @@ class BaseBaseController extends Controller
 						if (ImpostazioniModel::$valori["bcc"])
 							$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
 						
-						$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+						$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
 						$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("invio credenziali nuovo utente");
 						$mail->IsHTML(true);
 						

@@ -103,7 +103,7 @@ class MailordiniModel extends GenericModel
 			$mail->FromName   = Parametri::$mailFromName;
 			$mail->CharSet = 'UTF-8';
 			
-			$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+			$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
 			
 			// Imposto le traduzioni del front
 			TraduzioniModel::$contestoStatic = "front";

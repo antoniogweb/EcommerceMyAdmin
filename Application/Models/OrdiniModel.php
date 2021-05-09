@@ -331,7 +331,7 @@ class OrdiniModel extends FormModel {
 				
 				$mail->ClearAddresses();
 				$mail->AddAddress($ordine["email"]);
-				$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+				$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
 				
 				// Imposto le traduzioni del front
 				TraduzioniModel::$contestoStatic = "front";
@@ -356,7 +356,7 @@ class OrdiniModel extends FormModel {
 				if (ImpostazioniModel::$valori["bcc"])
 					$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
 				
-				$mail->addBCC(ImpostazioniModel::$valori["mail_invio_ordine"]);
+// 				$mail->addBCC(ImpostazioniModel::$valori["mail_invio_ordine"]);
 				
 				ob_start();
 				$baseUrl = Url::getRoot();

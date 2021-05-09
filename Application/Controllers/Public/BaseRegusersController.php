@@ -256,7 +256,7 @@ class BaseRegusersController extends BaseController
 
 								$mail->AddAddress($e_mail);
 								
-								$mail->AddReplyTo(Parametri::$mailFrom, Parametri::$mailFromName);
+								$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
 								
 								$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("richiesta di modifica password");
 

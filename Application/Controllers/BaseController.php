@@ -197,6 +197,7 @@ class BaseController extends Controller
 			Parametri::$nomeNegozio = ImpostazioniModel::$valori["nome_sito"];
 			Parametri::$iva = ImpostazioniModel::$valori["iva"];
 			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
+			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
 		}
 		
 		// Variabili

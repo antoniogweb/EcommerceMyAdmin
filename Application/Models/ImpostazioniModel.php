@@ -71,6 +71,9 @@ class ImpostazioniModel extends GenericModel {
 				'smtp_nome'		=>	array(
 					'labelString'=>	'Campo NOME (FROM NAME) nelle mail di sistema',
 				),
+				'reply_to_mail'		=>	array(
+					'labelString'=>	'Reply To nelle mail di sistema',
+				),
 			),
 		);
 	}

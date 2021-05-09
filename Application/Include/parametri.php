@@ -15,6 +15,7 @@ class Parametri
 	public static $mailInvioOrdine = "";
 	public static $mailInvioConfermaPagamento = "";
 	public static $nomeNegozio = "";
+	public static $mailReplyTo = "";
 	
 	public static $useHtmlExtension = true;
 	public static $hideNotAllowedNodesInLists = true;
