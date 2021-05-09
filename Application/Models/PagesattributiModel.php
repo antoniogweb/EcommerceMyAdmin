@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class PagesattributiModel extends Model_Tree {
+class PagesattributiModel extends GenericModel {
 	
 	public function __construct() {
 		$this->_tables='pages_attributi';

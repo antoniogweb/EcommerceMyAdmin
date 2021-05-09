@@ -1218,7 +1218,10 @@ function syncMailchimp($data)
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $json);                                                                                                                 
-
+	
+	if (v("curl_curlopt_interface"))
+		curl_setopt($ch, CURLOPT_INTERFACE, v("curl_curlopt_interface"));
+	
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);

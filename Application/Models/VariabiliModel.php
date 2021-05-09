@@ -170,6 +170,7 @@ class VariabiliModel extends GenericModel {
 		"current_menu_item_link"	=>	"",
 		"mostra_testimonial"		=>	0,
 		"campo_form_contatti"		=>	"nome,email,messaggio,accetto",
+		"curl_curlopt_interface"	=>	"",
 	);
 	
 	public function __construct() {

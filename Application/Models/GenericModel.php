@@ -355,6 +355,11 @@ class GenericModel extends Model_Tree
 		return parent::update($id, $where);
 	}
 	
+	public function pDel($id = null, $where = null)
+	{
+		return parent::del($id, $where);
+	}
+	
 	public function setFormStruct($id = 0)
 	{
 		
@@ -714,6 +719,10 @@ class GenericModel extends Model_Tree
 	{
 		$clean["from_id"] = (int)$from_id;
 		$clean["to_id"] = (int)$to_id;
+		
+		// Elimino la combinazione creata in automatico
+		if ($this->_tables == 'combinazioni')
+			$this->pDel(null, "id_page = ".$clean["to_id"]);
 		
 		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send(false);
 		
