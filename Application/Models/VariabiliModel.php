@@ -174,6 +174,7 @@ class VariabiliModel extends GenericModel {
 		"messenger_link"			=>	"",
 		"fascia_contenuto_class"	=>	"",
 		"usa_fasce_in_home"			=>	0,
+		"numero_news_in_evidenza"	=>	4,
 	);
 	
 	public function __construct() {

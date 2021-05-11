@@ -62,10 +62,10 @@ trait BaseFasceController
 		if (!isset($this->getNewsInEvidenza))
 			return "";
 		
-		$pages = $this->getNewsInEvidenza;
+		$pages = $ultimiArticoli = $this->getNewsInEvidenza;
 		
 		ob_start();
-		include tpf("Fasce/news_in_evidenza.php");
+		include tpf("Fasce/ultimi_articoli.php");
 		$output = ob_get_clean();
 		
 		return $output;

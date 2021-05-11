@@ -370,7 +370,7 @@ class BaseBaseController extends Controller
 				->where(array(
 					"attivo" => "Y",
 					"in" => array("-id_c" => $children),
-				))->orderBy("data_news desc")->limit(4)->send();
+				))->orderBy("data_news desc")->limit(v("numero_news_in_evidenza"))->send();
 		}
 		
 		if (v("team_attivo"))
