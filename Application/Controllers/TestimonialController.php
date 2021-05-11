@@ -47,7 +47,7 @@ class TestimonialController extends PagesController {
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Autore,Attiva';
 		$this->filters = array(null,'title');
 		
-		$this->queryFields = "title,attivo,description,autore";
+		$this->queryFields = "title,attivo,description,autore,immagine";
 		
 		$this->clean();
 		

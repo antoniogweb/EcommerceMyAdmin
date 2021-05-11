@@ -38,6 +38,7 @@ class BaseBaseController extends Controller
 	public $idShop = 0;
 	public $getNewsInEvidenza;
 	public $team = array();
+	public $testimonial = array();
 	
 	public $defaultRegistrazione = array();
 	
@@ -379,6 +380,20 @@ class BaseBaseController extends Controller
 			))->field("id_c");
 			
 			$data["team"] = $this->team = $this->m['PagesModel']->clear()->select("*")
+				->addJoinTraduzionePagina()
+				->where(array(
+					"attivo"	=>	"Y",
+					"id_c"		=>	(int)$idTeam,
+				))->orderBy("pages.id_order")->send();
+		}
+		
+		if (v("mostra_testimonial"))
+		{
+			$idTeam = (int)$this->m["CategoriesModel"]->clear()->where(array(
+				"section"	=>	"testimonial",
+			))->field("id_c");
+			
+			$data["testimonial"] = $this->testimonial = $this->m['PagesModel']->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",

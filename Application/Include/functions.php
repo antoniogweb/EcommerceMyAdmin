@@ -842,6 +842,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[team\]/', array($obj,'getTeam') ,$string);
 		$string = preg_replace_callback('/\[categorie-carosello\]/', array($obj,'getCaroselloCategorie') ,$string);
 		$string = preg_replace_callback('/\[fascia-categorie\]/', array($obj,'getCategorieFascia') ,$string);
+		$string = preg_replace_callback('/\[testimonial\]/', array($obj,'getTestimonial') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{

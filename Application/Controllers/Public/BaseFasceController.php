@@ -85,6 +85,17 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getTestimonial()
+	{
+		$pages = $this->testimonial;
+		
+		ob_start();
+		include tpf("Fasce/testimonial.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getSlideProdotto()
 	{
 		if (!isset($this->pages))
