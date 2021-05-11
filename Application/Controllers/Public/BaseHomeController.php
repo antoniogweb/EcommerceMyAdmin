@@ -54,12 +54,15 @@ class BaseHomeController extends BaseController
 		
 		$data["marchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->send(false);
 		
-		
-		
-// 		$data["home"] = $this->m["PagesModel"]->clear()->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
-// 			"categories.section"	=>	"home",
-// 			"attivo"=>"Y",
-// 		))->orderBy("pages.id_order desc")->send();
+		// Estraggo le fasce
+		if (v("usa_fasce_in_home"))
+		{
+			$clean["idPaginaHome"] = (int)$this->m["PagesModel"]->clear()->where(array(
+				"tipo_pagina"	=>	"HOME",
+			))->field("id_page");
+			
+			$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['idPaginaHome'], 0, $this);
+		}
 		
 		$this->append($data);
 		

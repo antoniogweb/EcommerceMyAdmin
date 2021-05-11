@@ -173,6 +173,7 @@ class VariabiliModel extends GenericModel {
 		"curl_curlopt_interface"	=>	"",
 		"messenger_link"			=>	"",
 		"fascia_contenuto_class"	=>	"",
+		"usa_fasce_in_home"			=>	0,
 	);
 	
 	public function __construct() {

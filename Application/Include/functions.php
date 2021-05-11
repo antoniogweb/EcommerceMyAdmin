@@ -840,6 +840,8 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[carrello_prodotto\]/', array($obj,'getCarrelloProdotto') ,$string);
 		$string = preg_replace_callback('/\[news-in-evidenza\]/', array($obj,'getNewsInEvidenza') ,$string);
 		$string = preg_replace_callback('/\[team\]/', array($obj,'getTeam') ,$string);
+		$string = preg_replace_callback('/\[categorie-carosello\]/', array($obj,'getCaroselloCategorie') ,$string);
+		$string = preg_replace_callback('/\[fascia-categorie\]/', array($obj,'getCategorieFascia') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
@@ -934,7 +936,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 			$t = "<a $target class='link_testi' href='".$urlLink."'>".$t."</a>";
 		}
 		
-		$path = tp() . "/Contenuti/Elementi/Widget/".strtolower($tipo).".php";
+		$path = tpf("Contenuti/Elementi/Widget/".strtolower($tipo).".php");
 		
 		if (file_exists($path))
 		{

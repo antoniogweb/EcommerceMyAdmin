@@ -53,6 +53,7 @@ class PagesModel extends GenericModel {
 		"SPEDIZIONI"	=>	"Pagina info spedizioni",
 		"FILOSOFIA"		=>	"Pagina filosofia",
 		"B2B"			=>	"Pagina info B2B",
+		"HOME"			=>	"Home page",
 	);
 	
 	public function __construct() {

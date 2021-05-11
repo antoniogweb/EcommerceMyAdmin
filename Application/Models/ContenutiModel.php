@@ -388,6 +388,9 @@ class ContenutiModel extends GenericModel {
 			{
 				$html = htmlentitydecode($f["tipi_contenuto"]["descrizione"]);
 				
+				if ($f["contenuti"]["immagine_1"])
+				$html = preg_replace('/\[srcImmagine1\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_1"] ,$html);
+				
 				$html = preg_replace('/\[testo (.*?)\]/', '[testo ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				$html = preg_replace('/\[immagine (.*?)\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				$html = preg_replace('/\[link (.*?)\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);

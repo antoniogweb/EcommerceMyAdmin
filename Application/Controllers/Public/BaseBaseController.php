@@ -32,6 +32,7 @@ class BaseBaseController extends Controller
 	protected $dettagliUtente = null;
 	
 	public $prodottiInEvidenza;
+	public $elencoCategorieFull;
 	public $elencoMarchiFull;
 	public $elencoTagFull;
 	public $idShop = 0;
@@ -420,7 +421,7 @@ class BaseBaseController extends Controller
 		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
-		$data["elencoCategorieFull"] = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
+		$data["elencoCategorieFull"] = $this->elencoCategorieFull = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
 		
 // 		print_r($data["alberoCategorieProdottiConShop"]);die();
 		
@@ -502,117 +503,6 @@ class BaseBaseController extends Controller
 		}
 		
 		$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
-	}
-
-	public function getProdotti()
-	{
-		if (!isset($this->pages))
-			return "";
-		
-		$pages = $this->pages;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Categorie/blocco_prodotti.php";
-		$output = ob_get_clean();
-		
-		return $output;
-	}
-	
-	public function getProdottiInEvidenza()
-	{
-		if (!isset($this->prodottiInEvidenza))
-			return "";
-		
-		if (!isset($this->elencoMarchiFull))
-			return "";
-		
-		$pages = $this->prodottiInEvidenza;
-		$elencoMarchiFull = $this->elencoMarchiFull;
-		$idShop = $this->idShop;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Categorie/prodotti_in_evidenza.php";
-		$output = ob_get_clean();
-		
-		return $output;
-	}
-	
-	public function getNewsInEvidenza()
-	{
-		if (!isset($this->getNewsInEvidenza))
-			return "";
-		
-		$pages = $this->getNewsInEvidenza;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Categorie/news_in_evidenza.php";
-		$output = ob_get_clean();
-		
-		return $output;
-	}
-	
-	public function getTeam()
-	{
-		if (!isset($this->team))
-			return "";
-		
-		$pages = $this->team;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Categorie/team.php";
-		$output = ob_get_clean();
-		
-		return $output;
-	}
-	
-	public function getSlideProdotto()
-	{
-		if (!isset($this->pages))
-			return "";
-		
-		$pages = $this->pages;
-		$p = $this->p;
-		$altreImmagini = $this->altreImmagini;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Pagine/slide_prodotto.php";
-		$output = ob_get_clean();
-		
-		return $output;
-	}
-	
-	public function getCarrelloProdotto()
-	{
-		if (!isset($this->pages))
-			return "";
-		
-		$pages = $this->pages;
-		$p = $this->p;
-		
-		$lista_attributi = $this->lista_attributi;
-		$lista_valori_attributi = $this->lista_valori_attributi;
-		$scaglioni = $this->scaglioni;
-		$prezzoMinimo = $this->prezzoMinimo;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Pagine/carrello_prodotto.php";
-		$output = ob_get_clean();
-		
-		return $output;
-	}
-	
-	public function getSlide()
-	{
-		if (!isset($this->slide))
-			return "";
-		
-		$pages = $this->slide;
-		
-		ob_start();
-		include ROOT."/Application/Views/Contenuti/Elementi/Pagine/slide_principale.php";
-		$output = ob_get_clean();
-		
-		return $output;
 	}
 	
 	protected function formRegistrazione()

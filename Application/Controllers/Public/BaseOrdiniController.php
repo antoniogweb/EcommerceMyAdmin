@@ -1161,7 +1161,16 @@ class BaseOrdiniController extends BaseController
 									$mail->Send();
 
 								//mail al negozio
-								$mail->ClearAddresses();
+								$mail->ClearAllRecipients();
+								
+								if (defined("BCC") && is_array(BCC))
+								{
+									foreach (BCC as $emailBcc)
+									{
+										$mail->addBCC($emailBcc);
+									}
+								}
+								
 								$mail->AddAddress(Parametri::$mailInvioOrdine);
 								
 								ob_start();

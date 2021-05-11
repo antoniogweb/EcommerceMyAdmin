@@ -46,7 +46,7 @@ class TestiModel extends GenericModel {
 				"type"	=>	"image",
 				"path"	=>	"images/widgets",
 // 				"mandatory"	=>	true,
-				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif,svg',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
 				"maxFileSize"	=>	3000000,
