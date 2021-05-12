@@ -6,6 +6,12 @@
 <meta name="description" content="<?php echo $meta_description;?>" />
 <meta name="keywords" content="<?php echo $keywords;?>" />
 
+<?php if (isset($richSnippet)) { ?>
+<script type="application/ld+json">
+<?php echo $richSnippet;?>
+</script>
+<?php } ?>
+
 <?php
 $nomePaginaPerTracking = "";
 $idPaginaPerTracking = 0;

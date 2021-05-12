@@ -1915,6 +1915,17 @@ class PagesModel extends GenericModel {
 		))->getAvg("voto");
     }
     
+    public static function numeroFeedback($id)
+    {
+		$f = new FeedbackModel();
+		
+		return $f->clear()->where(array(
+			"id_page"	=>	(int)$id,
+			"is_admin"	=>	0,
+			"attivo"	=>	1,
+		))->rowNumber();
+    }
+    
     public static function hasFeedback($id)
     {
 		if (!isset(self::$pagineConFeedback))
@@ -1928,5 +1939,98 @@ class PagesModel extends GenericModel {
 			return true;
 		
 		return false;
+    }
+    
+    public static function getRichSnippet($id)
+    {
+		$pm = new PagesModel();
+		
+		$p = $pm->clear()->addJoinTraduzionePagina()->where(array(
+			"pages.id_page"	=>	(int)$id,
+		))->first();
+		
+		$i = new ImmaginiModel();
+		
+		$snippetArray = array();
+		
+		if (!empty($p))
+		{
+			$images = array();
+			
+			if ($p["pages"]["immagine"])
+				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$p["pages"]["immagine"];
+			
+			$altreImmagini = $i->clear()->where(array("id_page" => (int)$id))->orderBy("id_order")->send(false);
+			
+			foreach ($altreImmagini as $imm)
+			{
+				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$imm["immagine"];
+			}
+			
+			$snippetArray = array(
+				"@context"	=>	"https://schema.org/",
+				"@type"		=>	"Product",
+				"name"		=>	sanitizeJs(field($p, "title")),
+			);
+			
+			if (!empty($images))
+				$snippetArray["image"] = $images;
+			
+			$snippetArray["description"] = sanitizeJs(htmlentitydecode(field($p, "description")));
+			
+			if ($p["pages"]["codice"])
+				$snippetArray["sku"] = $p["pages"]["codice"];
+			
+			if (v("usa_marchi") && $p["pages"]["id_marchio"])
+			{
+				$m = new MarchiModel();
+				
+				$marchio = $m->clear()->addJoinTraduzione()->where(array(
+					"id_marchio"	=>	(int)$p["pages"]["id_marchio"],
+				))->first();
+				
+				if (!empty($marchio))
+				{
+					$snippetArray["brand"] = array(
+						"@type"	=>	"Brand",
+						"name"	=>	 sanitizeJs(mfield($marchio, "titolo")),
+					);
+				}
+			}
+			
+			if (v("abilita_feedback") && self::hasFeedback((int)$id))
+			{
+				$fm = new FeedbackModel();
+				
+				$feedback = $fm->clear()->where(array(
+					"id_page"	=>	(int)$id,
+					"is_admin"	=>	0,
+					"attivo"	=>	1,
+				))->orderBy("feedback.voto desc")->limit(1)->send(false);
+				
+				if (count($feedback) > 0)
+				{
+					$snippetArray["review"] = array(
+						"@type"	=>	"Review",
+						"reviewRating"	=>	array(
+							"@type"	=>	"Rating",
+							"ratingValue"	=>	$feedback[0]["voto"],
+						),
+						"author"	=>	array(
+							"@type"	=>	"Person",
+							"name"	=>	sanitizeJs($feedback[0]["autore"]),
+						),
+					);
+				}
+				
+				$snippetArray["aggregateRating"] = array(
+					"@type"	=>	"AggregateRating",
+					"ratingValue"	=>	number_format(self::punteggio((int)$id),1,".",""),
+					"reviewCount"	=>	self::numeroFeedback((int)$id),
+				);
+			}
+		}
+		
+		return $snippetArray;
     }
 }
