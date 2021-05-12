@@ -39,6 +39,7 @@ class BaseBaseController extends Controller
 	public $getNewsInEvidenza;
 	public $team = array();
 	public $testimonial = array();
+	public $faq = array();
 	
 	public $defaultRegistrazione = array();
 	
@@ -389,7 +390,7 @@ class BaseBaseController extends Controller
 		
 		if (v("mostra_testimonial"))
 		{
-			$idTeam = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
 				"section"	=>	"testimonial",
 			))->field("id_c");
 			
@@ -397,7 +398,22 @@ class BaseBaseController extends Controller
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
-					"id_c"		=>	(int)$idTeam,
+					"id_c"		=>	(int)$idTest,
+				))->orderBy("pages.id_order")->send();
+		}
+		
+		if (v("mostra_faq"))
+		{
+			$idFaq = (int)$this->m["CategoriesModel"]->clear()->where(array(
+				"section"	=>	"faq",
+			))->field("id_c");
+			
+			$data["faq"] = $this->faq = $this->m['PagesModel']->clear()->select("*")
+				->addJoinTraduzionePagina()
+				->where(array(
+					"attivo"	=>	"Y",
+					"in_evidenza"=>"Y",
+					"id_c"		=>	(int)$idFaq,
 				))->orderBy("pages.id_order")->send();
 		}
 		

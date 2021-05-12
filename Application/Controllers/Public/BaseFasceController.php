@@ -173,4 +173,24 @@ trait BaseFasceController
 		
 		return $output;
 	}
+	
+	public function getFasciaNewsletter()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_newsletter.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function getFaqInEvidenza()
+	{
+		$pages = $this->faq;
+		
+		ob_start();
+		include tpf("Fasce/fascia_faq.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
 }

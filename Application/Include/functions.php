@@ -833,7 +833,6 @@ function attivaModuli($string, $obj = null)
 	if ($obj)
 	{
 		$string = preg_replace_callback('/\[slide\]/', array($obj,'getSlide') ,$string);
-		
 		$string = preg_replace_callback('/\[prodotti\]/', array($obj,'getProdotti') ,$string);
 		$string = preg_replace_callback('/\[prodotti-in-evidenza\]/', array($obj,'getProdottiInEvidenza') ,$string);
 		$string = preg_replace_callback('/\[slide_prodotto\]/', array($obj,'getSlideProdotto') ,$string);
@@ -843,6 +842,8 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[categorie-carosello\]/', array($obj,'getCaroselloCategorie') ,$string);
 		$string = preg_replace_callback('/\[fascia-categorie\]/', array($obj,'getCategorieFascia') ,$string);
 		$string = preg_replace_callback('/\[testimonial\]/', array($obj,'getTestimonial') ,$string);
+		$string = preg_replace_callback('/\[fascia-newsletter\]/', array($obj,'getFasciaNewsletter') ,$string);
+		$string = preg_replace_callback('/\[fascia-faq\]/', array($obj,'getFaqInEvidenza') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
