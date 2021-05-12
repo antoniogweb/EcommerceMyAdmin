@@ -2,13 +2,19 @@
 
 <div class="tipo_cliente class_tipo_cliente uk-margin">
 <?php
-$tipoCliente = array(
-	"<span style='margin-left:8px;'></span>".gtext("Privato")."<span style='margin-right:20px;'></span>"=>"privato",
-	"<span style='margin-left:8px;'></span>".gtext("Azienda")."<span style='margin-right:20px;'></span>"=>"azienda",
-	"<span style='margin-left:8px;'></span>".gtext("Libero professionista")=>"libero_professionista",
-);
+if (v("solo_utenti_privati"))
+	echo Html_Form::hidden("tipo_cliente",$values['tipo_cliente'],"privato");
+else
+{
+	$tipoCliente = array(
+		"<span style='margin-left:8px;'></span>".gtext("Privato")."<span style='margin-right:20px;'></span>"=>"privato",
+		"<span style='margin-left:8px;'></span>".gtext("Azienda")."<span style='margin-right:20px;'></span>"=>"azienda",
+		"<span style='margin-left:8px;'></span>".gtext("Libero professionista")=>"libero_professionista",
+	);
 
-echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente");?>
+	echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente");
+}
+?>
 </div>
 <div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 	<div class="first_of_grid tr_ragione_sociale uk-margin">
@@ -44,12 +50,16 @@ echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio
 		</div>
 	</div>
 	
+	<?php if (count($selectNazioni) > 2) { ?>
 	<div class="uk-margin">
 		<label class="uk-form-label"><?php echo gtext("Nazione");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::select("nazione",$values['nazione'],$selectNazioni,"uk-select class_nazione",null,"yes");?>
 		</div>
 	</div>
+	<?php } else { ?>
+		<?php echo Html_Form::hidden("nazione",$values['nazione']);?>
+	<?php } ?>
 	
 	<div class="uk-margin select_id_provincia">
 		<label class="uk-form-label"><?php echo gtext("Provincia");?> *</label>

@@ -175,6 +175,7 @@ class VariabiliModel extends GenericModel {
 		"fascia_contenuto_class"	=>	"",
 		"usa_fasce_in_home"			=>	0,
 		"numero_news_in_evidenza"	=>	4,
+		"solo_utenti_privati"		=>	0,
 	);
 	
 	public function __construct() {

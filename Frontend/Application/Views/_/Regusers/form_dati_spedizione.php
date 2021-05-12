@@ -16,12 +16,16 @@
 		</div>
 	</div>
 	
+	<?php if (count($selectNazioniSpedizione) > 2) { ?>
 	<div class="uk-margin">
 		<label class="uk-form-label"><?php echo gtext("Nazione");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::select("nazione_spedizione",$values['nazione_spedizione'],$selectNazioniSpedizione,"uk-input class_nazione_spedizione",null,"yes");?>
 		</div>
 	</div>
+	<?php } else { ?>
+		<?php echo Html_Form::hidden("nazione_spedizione",$values['nazione_spedizione']);?>
+	<?php } ?>
 	
 	<div class="uk-margin">
 		<label class="uk-form-label"><?php echo gtext("Provincia");?> *</label>
