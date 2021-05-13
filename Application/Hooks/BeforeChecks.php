@@ -13,6 +13,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 VariabiliModel::ottieniVariabili();
 
+VariabiliModel::$valori["alert_error_class"] = "alert";
+
 if (v("usa_https"))
 	Params::$useHttps = true;
 

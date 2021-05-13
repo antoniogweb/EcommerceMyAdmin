@@ -156,6 +156,11 @@ body {
     cursor: pointer;
 }
 
+.evidenzia
+{
+	display:none;
+}
+
 .scroll-x
 {
 	overflow-x:auto;

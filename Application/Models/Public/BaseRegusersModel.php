@@ -34,7 +34,9 @@ class BaseRegusersModel extends Model_Tree
 		
 		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
-		if ($this->controllaCF(v("insert_account_cf_obbligatorio")) && $this->controllaPIva(v("insert_account_p_iva_obbligatorio")))
+		$checkFiscale = v("insert_account_cf_obbligatorio") && v("abilita_codice_fiscale");
+		
+		if ($this->controllaCF($checkFiscale) && $this->controllaPIva(v("insert_account_p_iva_obbligatorio")))
 			return parent::insert();
 		
 		return false;
@@ -44,7 +46,9 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$clean["id"] = (int)$id;
 		
-		if ($this->controllaCF() && $this->controllaPIva())
+		$checkFiscale = v("abilita_codice_fiscale");
+		
+		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
 			return parent::update($clean["id"]);
 		
 		return false;
@@ -185,7 +189,7 @@ class BaseRegusersModel extends Model_Tree
 		if (v("insert_account_cap_obbligatorio") || $queryType == "update")
 			$campiObbligatoriComuni .= ",cap";
 		
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && (v("insert_account_cf_obbligatorio") || $queryType == "update"))
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && (v("insert_account_cf_obbligatorio") || $queryType == "update") && v("abilita_codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";
 		
 		$campoPIva = "";
@@ -297,7 +301,8 @@ class BaseRegusersModel extends Model_Tree
 			
 			$evidenziaCF = Output::$html ? "<div class='evidenzia'>class_codice_fiscale</div>" : "";
 			
-			$this->addSoftCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>").$evidenziaCF);
+			if (v("abilita_codice_fiscale"))
+				$this->addSoftCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>").$evidenziaCF);
 			
 			$evidenziaPIVA = Output::$html ? "<div class='evidenzia'>class_p_iva</div>" : "";
 			

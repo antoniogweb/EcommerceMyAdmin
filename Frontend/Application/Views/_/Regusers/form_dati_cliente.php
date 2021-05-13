@@ -43,12 +43,14 @@ else
 		</div>
 	</div>
 	
+	<?php if (v("abilita_codice_fiscale")) { ?>
 	<div class="uk-margin nascondi_fuori_italia">
 		<label class="uk-form-label"><?php echo gtext("Codice fiscale");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::input("codice_fiscale",$values['codice_fiscale'],"uk-input class_codice_fiscale",null,"placeholder='".gtext("Codice fiscale", false)."'");?>
 		</div>
 	</div>
+	<?php } ?>
 	
 	<?php if (count($selectNazioni) > 2) { ?>
 	<div class="uk-margin">

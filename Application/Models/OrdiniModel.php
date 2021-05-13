@@ -233,7 +233,9 @@ class OrdiniModel extends FormModel {
 		if (!isset($this->values["nazione_navigazione"]))
 			$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
-		if ($this->controllaCF() && $this->controllaPIva())
+		$checkFiscale = v("abilita_codice_fiscale");
+		
+		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
 			return parent::insert();
 		
 // 		$this->lId = (int)$this->lastId();
@@ -245,7 +247,9 @@ class OrdiniModel extends FormModel {
 	{
 		$clean["id"] = (int)$id;
 		
-		if ($this->controllaCF())
+		$checkFiscale = v("abilita_codice_fiscale");
+		
+		if ($this->controllaCF($checkFiscale))
 			return parent::update($clean["id"]);
 		
 		return false;

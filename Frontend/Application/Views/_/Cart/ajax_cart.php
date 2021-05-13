@@ -18,12 +18,18 @@
 			<article>
 				<div class="uk-grid-small" uk-grid>
 					<div class="uk-width-1-4">
-						<a class="" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>">
-							<figure class="tm-media-box-wrap"><img src="<?php echo $this->baseUrl."/thumb/carrelloajax/".$p["cart"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>"></figure>
-						</a>
+						<?php if ($p["cart"]["immagine"]) { ?>
+						<?php if (!$p["cart"]["id_p"]) { ?><a class="" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } ?>
+							<figure class="tm-media-box-wrap">
+								<img src="<?php echo $this->baseUrl."/thumb/carrelloajax/".$p["cart"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>">
+							</figure>
+						<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
+						<?php } ?>
 					</div>
 					<div class="uk-width-expand">
-						<a class="uk-text-small" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php echo field($p, "title");?></a>
+						<?php if (!$p["cart"]["id_p"]) { ?><a class="uk-text-small" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } else { ?><span class="uk-link uk-text-small"><?php } ?>
+							<?php echo field($p, "title");?>
+						<?php if (!$p["cart"]["id_p"]) { ?></a><?php } else { ?></span><?php } ?>
 						<?php if ($p["cart"]["attributi"]) { ?>
 						<br />
 						<?php echo $p["cart"]["attributi"];?>

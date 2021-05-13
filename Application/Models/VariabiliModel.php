@@ -177,6 +177,7 @@ class VariabiliModel extends GenericModel {
 		"numero_news_in_evidenza"	=>	4,
 		"solo_utenti_privati"		=>	0,
 		"abilita_rich_snippet"		=>	1,
+		"abilita_codice_fiscale"	=>	1,
 	);
 	
 	public function __construct() {
