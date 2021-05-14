@@ -109,37 +109,39 @@ if (!isset($baseUrl))
 
 <h2><?php echo gtext("Dettagli ordine", false); ?>:</h2>
 
-<table width="100%" class="uk-table uk-table-divider uk-table-hover" cellspacing="0">
-	<thead>
-		<tr class="cart_head">
-			<th colspan="2" align="left" class="nome_prodotto row_left"><?php echo gtext("Prodotto", false); ?></th>
-			<th align="left" class="nome_prodotto"><?php echo gtext("Codice", false); ?></th>
-			<th align="left" class="prezzo_prodotto"><?php echo gtext("Prezzo", false); ?> <?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
-			<th align="left" class="quantita_prodotto"><?php echo gtext("Quantità", false); ?></th>
-			<th style="text-align:right;" class="subtotal_prodotto"><?php echo gtext("Totale", false); ?><?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
-		</tr>
-	</thead>
-	
-	<?php foreach ($righeOrdine as $p) { ?>
-	<tr class="cart_item_row">
-		<?php if ($p["righe"]["id_p"]) { ?>
-		<td width="4%" style="vertical-align:top;">-</td>
-		<?php } ?>
-		<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
-		<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
-		</td>
-		<td style="vertical-align:top;" class="cart_item_product"><?php echo $p["righe"]["codice"];?></td>
-		<td style="vertical-align:top;" class="cart_item_price">
-			<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["price"]));?></span>
-			<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
-			<div class="scritta_iva_carrello"><?php echo gtext("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
+<div class="uk-overflow-auto">
+	<table width="100%" class="uk-table uk-table-divider uk-table-hover" cellspacing="0">
+		<thead>
+			<tr class="cart_head">
+				<th colspan="2" align="left" class="nome_prodotto row_left"><?php echo gtext("Prodotto", false); ?></th>
+				<th align="left" class="nome_prodotto"><?php echo gtext("Codice", false); ?></th>
+				<th align="left" class="prezzo_prodotto"><?php echo gtext("Prezzo", false); ?> <?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
+				<th align="left" class="quantita_prodotto"><?php echo gtext("Quantità", false); ?></th>
+				<th style="text-align:right;" class="subtotal_prodotto"><?php echo gtext("Totale", false); ?><?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
+			</tr>
+		</thead>
+		
+		<?php foreach ($righeOrdine as $p) { ?>
+		<tr class="cart_item_row">
+			<?php if ($p["righe"]["id_p"]) { ?>
+			<td width="4%" style="vertical-align:top;">-</td>
 			<?php } ?>
-		</td>
-		<td style="vertical-align:top;" class="cart_item_quantity"><?php echo $p["righe"]["quantity"];?></td>
-		<td style="vertical-align:top;text-align:right;" class="cart_item_subtotal">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["quantity"] * $p["righe"]["price"]));?></span></td>
-	</tr>
-	<?php } ?>
-</table>
+			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
+			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
+			</td>
+			<td style="vertical-align:top;" class="cart_item_product"><?php echo $p["righe"]["codice"];?></td>
+			<td style="vertical-align:top;" class="cart_item_price">
+				<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["price"]));?></span>
+				<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
+				<div class="scritta_iva_carrello"><?php echo gtext("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
+				<?php } ?>
+			</td>
+			<td style="vertical-align:top;" class="cart_item_quantity"><?php echo $p["righe"]["quantity"];?></td>
+			<td style="vertical-align:top;text-align:right;" class="cart_item_subtotal">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["quantity"] * $p["righe"]["price"]));?></span></td>
+		</tr>
+		<?php } ?>
+	</table>
+</div>
 
 <br />
 <p class="checkout_totali">
@@ -168,111 +170,115 @@ if (!isset($baseUrl))
 
 <h2><?php echo gtext("Dati di fatturazione", false); ?></h2>
 
-<table class="uk-table uk-table-divider uk-table-hover">
-	<?php if (strcmp($ordine["tipo_cliente"],"privato") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Nome", false); ?></td>
-		<td><?php echo $ordine["nome"];?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Cognome", false); ?></td>
-		<td><?php echo $ordine["cognome"];?></td>
-	</tr>
-	<?php } ?>
-	<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Ragione sociale", false); ?></td>
-		<td><?php echo $ordine["ragione_sociale"];?></td>
-	</tr>
-	<?php } ?>
-	<?php if ($ordine["p_iva"]) { ?>
-		<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
+<div class="uk-overflow-auto">
+	<table class="uk-table uk-table-divider uk-table-hover">
+		<?php if (strcmp($ordine["tipo_cliente"],"privato") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 		<tr>
-			<td class="first_column"><?php echo gtext("P. IVA", false); ?></td>
-			<td><?php echo $ordine["p_iva"];?></td>
+			<td class="first_column"><?php echo gtext("Nome", false); ?></td>
+			<td><?php echo $ordine["nome"];?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Cognome", false); ?></td>
+			<td><?php echo $ordine["cognome"];?></td>
 		</tr>
 		<?php } ?>
-	<?php } ?>
-	<?php if ($ordine["codice_fiscale"]) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Codice fiscale", false); ?></td>
-		<td><?php echo $ordine["codice_fiscale"];?></td>
-	</tr>
-	<?php } ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Indirizzo", false); ?></td>
-		<td><?php echo $ordine["indirizzo"];?></td>
-	</tr>
-	<?php if ($ordine["cap"]) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Cap", false); ?></td>
-		<td><?php echo $ordine["cap"];?></td>
-	</tr>
-	<?php } ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Nazione", false); ?></td>
-		<td><?php echo nomeNazione($ordine["nazione"]);?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Provincia", false); ?></td>
-		<td><?php echo $ordine["provincia"];?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Città", false); ?></td>
-		<td><?php echo $ordine["citta"];?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Telefono", false); ?></td>
-		<td><?php echo $ordine["telefono"];?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Email", false); ?></td>
-		<td><?php echo $ordine["email"];?></td>
-	</tr>
-	<?php if ($ordine["pec"]) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Pec", false); ?></td>
-		<td><?php echo $ordine["pec"];?></td>
-	</tr>
-	<?php } ?>
-	<?php if ($ordine["codice_destinatario"]) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Codice destinatario", false); ?></td>
-		<td><?php echo $ordine["codice_destinatario"];?></td>
-	</tr>
-	<?php } ?>
-</table>
+		<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0) { ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Ragione sociale", false); ?></td>
+			<td><?php echo $ordine["ragione_sociale"];?></td>
+		</tr>
+		<?php } ?>
+		<?php if ($ordine["p_iva"]) { ?>
+			<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("P. IVA", false); ?></td>
+				<td><?php echo $ordine["p_iva"];?></td>
+			</tr>
+			<?php } ?>
+		<?php } ?>
+		<?php if ($ordine["codice_fiscale"]) { ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Codice fiscale", false); ?></td>
+			<td><?php echo $ordine["codice_fiscale"];?></td>
+		</tr>
+		<?php } ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Indirizzo", false); ?></td>
+			<td><?php echo $ordine["indirizzo"];?></td>
+		</tr>
+		<?php if ($ordine["cap"]) { ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Cap", false); ?></td>
+			<td><?php echo $ordine["cap"];?></td>
+		</tr>
+		<?php } ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Nazione", false); ?></td>
+			<td><?php echo nomeNazione($ordine["nazione"]);?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Provincia", false); ?></td>
+			<td><?php echo $ordine["provincia"];?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Città", false); ?></td>
+			<td><?php echo $ordine["citta"];?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Telefono", false); ?></td>
+			<td><?php echo $ordine["telefono"];?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Email", false); ?></td>
+			<td><?php echo $ordine["email"];?></td>
+		</tr>
+		<?php if ($ordine["pec"]) { ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Pec", false); ?></td>
+			<td><?php echo $ordine["pec"];?></td>
+		</tr>
+		<?php } ?>
+		<?php if ($ordine["codice_destinatario"]) { ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Codice destinatario", false); ?></td>
+			<td><?php echo $ordine["codice_destinatario"];?></td>
+		</tr>
+		<?php } ?>
+	</table>
+</div>
 
 <h2><?php echo gtext("Dati di spedizione", false); ?></h2>
 
-<table class="uk-table uk-table-divider uk-table-hover">
-	<tr>
-		<td class="first_column"><?php echo gtext("Indirizzo", false); ?></td>
-		<td><?php echo $ordine["indirizzo_spedizione"];?></td>
-	</tr>
-	<?php if ($ordine["cap_spedizione"]) { ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Cap", false); ?></td>
-		<td><?php echo $ordine["cap_spedizione"];?></td>
-	</tr>
-	<?php } ?>
-	<tr>
-		<td class="first_column"><?php echo gtext("Nazione", false); ?></td>
-		<td><?php echo nomeNazione($ordine["nazione_spedizione"]);?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Provincia", false); ?></td>
-		<td><?php echo $ordine["provincia_spedizione"];?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Città", false); ?></td>
-		<td><?php echo $ordine["citta_spedizione"];?></td>
-	</tr>
-	<tr>
-		<td class="first_column"><?php echo gtext("Telefono", false); ?></td>
-		<td><?php echo $ordine["telefono_spedizione"];?></td>
-	</tr>
-</table>
+<div class="uk-overflow-auto">
+	<table class="uk-table uk-table-divider uk-table-hover">
+		<tr>
+			<td class="first_column"><?php echo gtext("Indirizzo", false); ?></td>
+			<td><?php echo $ordine["indirizzo_spedizione"];?></td>
+		</tr>
+		<?php if ($ordine["cap_spedizione"]) { ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Cap", false); ?></td>
+			<td><?php echo $ordine["cap_spedizione"];?></td>
+		</tr>
+		<?php } ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Nazione", false); ?></td>
+			<td><?php echo nomeNazione($ordine["nazione_spedizione"]);?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Provincia", false); ?></td>
+			<td><?php echo $ordine["provincia_spedizione"];?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Città", false); ?></td>
+			<td><?php echo $ordine["citta_spedizione"];?></td>
+		</tr>
+		<tr>
+			<td class="first_column"><?php echo gtext("Telefono", false); ?></td>
+			<td><?php echo $ordine["telefono_spedizione"];?></td>
+		</tr>
+	</table>
+</div>
 <br /><br />
 <?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
 <p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/token";?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
