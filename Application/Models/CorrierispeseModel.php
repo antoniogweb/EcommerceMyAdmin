@@ -46,6 +46,9 @@ class CorrierispeseModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'peso'		=>	array(
+					'labelString'=>	'Fino al peso di (kg)',
+				),
 				'prezzo'		=>	array(
 					'labelString'=>	'Prezzo IVA ESCLUSA (€)',
 				),
@@ -60,8 +63,25 @@ class CorrierispeseModel extends GenericModel {
 	
 	public function getPrezzo($idCorriere, $peso, $nazione)
 	{
+		return self::sGetPrezzo($idCorriere, $peso, $nazione);
+	}
+	
+	public static function sGetPrezzo($idCorriere = null, $peso, $nazione)
+	{
+		$sp = new CorrierispeseModel();
+		
+		if (!$idCorriere)
+		{
+			$corr = new CorrieriModel();
+			
+			$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("corrieri.id_order")->send(false);
+			
+			if (count($corrieri) > 0)
+				$idCorriere = $corrieri[0]["id_corriere"];
+		}
+		
 		// Provo la nazione
-		$res = $this->clear()->where(array(
+		$res = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	sanitizeAll($nazione),
 			"gte"	=>	array("peso" => (float)$peso)
@@ -70,7 +90,7 @@ class CorrierispeseModel extends GenericModel {
 		if (count($res))
 			return (float)$res[0];
 		
-		$prezzo = $this->clear()->where(array(
+		$prezzo = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	sanitizeAll($nazione),
 		))->getMax("prezzo");
@@ -79,7 +99,7 @@ class CorrierispeseModel extends GenericModel {
 			return $prezzo;
 		
 		// Ricado su MONDO
-		$res = $this->clear()->where(array(
+		$res = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	"W",
 			"gte"	=>	array("peso" => (float)$peso)
@@ -88,7 +108,7 @@ class CorrierispeseModel extends GenericModel {
 		if (count($res))
 			return (float)$res[0];
 		
-		$prezzo = $this->clear()->where(array(
+		$prezzo = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	"W",
 		))->getMax("prezzo");

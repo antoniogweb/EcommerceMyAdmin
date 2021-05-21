@@ -1543,6 +1543,23 @@ class PagesModel extends GenericModel {
 		return 0;
 	}
 	
+	public static function pesoMinimo($id_page)
+	{
+		$clean['id_page'] = (int)$id_page;
+		
+		// Listino principale
+		$c = new CombinazioniModel();
+		
+		$res = $c->clear()->select("min(peso) as PESO_MINIMO")->where(array(
+			"id_page"	=>	$clean['id_page'],
+		))->send();
+		
+		if (count($res) > 0)
+			return $res[0]["aggregate"]["PESO_MINIMO"];
+		
+		return 0;
+	}
+	
 	public function linklingua($record, $lingua)
 	{
 		return $this->linklinguaGeneric($record["pages"]["id_page"], $lingua, "id_page");
