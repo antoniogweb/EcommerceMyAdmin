@@ -80,7 +80,8 @@ class MailordiniModel extends GenericModel
 		$idUser = isset($params["id_user"]) ? $params["id_user"] : 0;
 		$testo = isset($params["testo"]) ? $params["testo"] : "";
 		$tipologia = isset($params["tipologia"]) ? $params["tipologia"] : "ORDINE";
-		$idPage = $params["id_page"] ?? 0;
+		$idPage = isset($params["id_page"]) ? $params["id_page"] : 0;
+		$replyTo = isset($params["reply_to"]) ? $params["reply_to"] : "";
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
@@ -103,7 +104,10 @@ class MailordiniModel extends GenericModel
 			$mail->FromName   = Parametri::$mailFromName;
 			$mail->CharSet = 'UTF-8';
 			
-			$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+			if ($replyTo)
+				$mail->AddReplyTo($replyTo);
+			else
+				$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
 			
 			// Imposto le traduzioni del front
 			TraduzioniModel::$contestoStatic = "front";
@@ -165,7 +169,8 @@ class MailordiniModel extends GenericModel
 					"testo"		=>	$testo,
 					"inviata"	=>	$inviata,
 					"tipologia"	=>	$tipologia,
-					"id_page"		=>	$idPage,
+					"id_page"	=>	$idPage,
+					"reply_to"	=>	$replyTo,
 				));
 				
 				$mo->insert();

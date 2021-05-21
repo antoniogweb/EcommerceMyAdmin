@@ -742,7 +742,7 @@ class BaseBaseController extends Controller
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
-					$oggetto = Parametri::$nomeNegozio." - richiesta informazioni";
+					$oggetto = "richiesta informazioni";
 					
 					ob_start();
 					include (tpf("Regusers/mail_form_contatti.php"));
@@ -755,6 +755,7 @@ class BaseBaseController extends Controller
 						"tipologia"	=>	"PAGINA",
 						"id_user"	=>	(int)User::$id,
 						"id_page"	=>	(int)$id,
+						"reply_to"	=>	$this->m['ContattiModel']->values["email"],
 					));
 					
 // 						$mail->SMTPDebug = 2;
