@@ -85,8 +85,14 @@ class CorrieriController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("corrieri_spese.peso","nazione","corrieri_spese.prezzo");
-		$this->mainHead = "Peso (kg),Nazione,Prezzo (€)";
+		$this->mainFields = array("peso","nazione","corrieri_spese.prezzo");
+		$this->mainHead = "Peso (kg),Nazione,Prezzo IVA esclusa (€)";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			$this->mainFields[] = "prezzoivato";
+			$this->mainHead .= ",Prezzo IVA inclusa (€)";
+		}
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"prezzi/".$clean['id'],'pageVariable'=>'page_fgl');
 		

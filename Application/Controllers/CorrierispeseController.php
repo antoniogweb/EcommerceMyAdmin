@@ -26,25 +26,46 @@ class CorrierispeseController extends BaseController {
 	
 	public $tabella = "scaglioni corrieri";
 	
-	public $argKeys = array('id_corriere:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'tutti');
+	public $argKeys = array('id_corriere:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'tutti', 'procedi:sanitizeAll'=>0);
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		if (isset($_POST["procedi"]) && $_POST["procedi"] == 1)
+		{
+			$_GET["procedi"] = 1;
+			
+			if (isset($_POST["nazione"]))
+				$_GET["nazione"] = $_POST["nazione"];
+		}
+		
 		$this->shift(2);
 		
 		$this->formDefaultValues = $this->viewArgs;
 		
-		$fields = "peso,prezzo";
-		
-		if ($this->viewArgs["nazione"] == "tutti")
-			$fields .= ",nazione";
+		if ($queryType == "insert" && $this->viewArgs["nazione"] == "tutti")
+			$fields = "nazione";
+		else
+		{
+			$fields = "peso";
+			
+			if (v("prezzi_ivati_in_prodotti") && $this->viewArgs["nazione"] == "IT")
+			{
+				$fields .= ",prezzo_ivato";
+				
+				$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo_ivato");
+			}
+			else
+			{
+				$fields .= ",prezzo";
+				
+				$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo");
+			}
+		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_corriere"] != "tutti")
-		{
 			$this->m[$this->modelName]->setValue("id_corriere", $this->viewArgs["id_corriere"]);
-		}
 		
 		if ($this->viewArgs["nazione"] != "tutti")
 			$this->m[$this->modelName]->setValue("nazione", $this->viewArgs["nazione"]);

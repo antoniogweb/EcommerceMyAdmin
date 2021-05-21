@@ -174,8 +174,6 @@ class CartModel extends Model_Tree {
 		
 		$total = 0;
 		
-// 		$totalArrayIva = array();
-		
 		$trovata = false;
 		
 		$arraySubtotale = $arrayIva = array();
@@ -208,14 +206,6 @@ class CartModel extends Model_Tree {
 				$total += number_format($iva,$cifre,".","");
 			}
 		}
-		
-// 		$ivaSped = number_format(Parametri::$iva,2,".","");
-		
-// 		$ivaSped = self::getMaxIva();
-// 		
-// 		// Controllo l'aliquota estera
-// 		if (isset(IvaModel::$aliquotaEstera))
-// 			$ivaSped = IvaModel::$aliquotaEstera;
 		
 		if ($conSpedizione)
 		{

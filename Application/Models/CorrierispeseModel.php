@@ -30,7 +30,7 @@ class CorrierispeseModel extends GenericModel {
 		
 		$this->_lang = 'It';
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"peso,prezzo");
+		$this->addStrongCondition("both",'checkNotEmpty',"peso");
 		
 		parent::__construct();
 	}
@@ -45,6 +45,12 @@ class CorrierispeseModel extends GenericModel {
 					"options"	=>	$this->selectNazione(true),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+				),
+				'prezzo'		=>	array(
+					'labelString'=>	'Prezzo IVA ESCLUSA (€)',
+				),
+				'prezzo_ivato'	=>	array(
+					'labelString'=>	'Prezzo IVA INCLUSA (€)',
 				),
 			),
 			
@@ -91,5 +97,44 @@ class CorrierispeseModel extends GenericModel {
 			return $prezzo;
 		
 		return 0;
+	}
+	
+	public function setPriceNonIvato()
+	{
+		if (v("prezzi_ivati_in_prodotti") && isset($this->values["prezzo_ivato"]))
+		{
+			$valore = Parametri::$iva;
+			
+			$this->values["prezzo"] = number_format(setPrice($this->values["prezzo_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+		}
+	}
+	
+	public function insert()
+	{
+		$this->setPriceNonIvato();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setPriceNonIvato();
+		
+		return parent::update($id, $where);
+	}
+	
+	public function peso($record)
+	{
+		return "<a class='iframe action_iframe' href='".Url::getRoot()."/corrierispese/form/update/".$record["corrieri_spese"]["id_spesa"]."?partial=Y&nobuttons=Y&procedi=1&nazione=".$record["corrieri_spese"]["nazione"]."'>".$record["corrieri_spese"]["peso"]."</a>";
+		
+		return "--";
+	}
+	
+	public function prezzoivato($record)
+	{
+		if ($record["corrieri_spese"]["prezzo_ivato"] != "0,00")
+			return $record["corrieri_spese"]["prezzo_ivato"];
+		
+		return "--";
 	}
 }
