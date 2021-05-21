@@ -59,7 +59,7 @@
 		</div>
 		<div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-margin-small" uk-grid>
 			<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Carrello");?></a></div>
-			<div><a class="uk-button uk-button-primary uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("Checkout");?></a></div>
+			<div><a class="uk-button uk-button-secondary uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("Checkout");?></a></div>
 		</div>
 	</footer>
 	<?php } ?>
