@@ -3,4 +3,4 @@
 $descrizioneNoProdotti = gtext("Non è presente alcun articolo");
 $titoloPagina = gtext("Prodotti in promozione");
 
-include(tp()."/Contenuti/prodotti.php");
+include(tpf("/Contenuti/prodotti.php"));

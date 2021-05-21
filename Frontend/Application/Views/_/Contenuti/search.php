@@ -7,4 +7,4 @@ $breadcrumb = array(
 
 $titoloPagina = gtext("Risultati della ricerca")." $s";
 
-include(tp()."/Contenuti/prodotti.php");
+include(tpf("/Contenuti/prodotti.php"));

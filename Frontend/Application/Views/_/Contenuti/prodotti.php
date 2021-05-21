@@ -16,7 +16,7 @@
 					include(tpf($itemFile));
 				} ?>
 			</div>
-			<?php if (isset($rowNumber) && isset($elementsPerPage)) { ?>
+			<?php if (isset($pageList) && isset($rowNumber) && isset($elementsPerPage)) { ?>
 				<?php if ($rowNumber > $elementsPerPage) { ?>
 				<ul class="uk-pagination uk-flex-right uk-margin-medium-top">
 					<?php echo $pageList;?>
