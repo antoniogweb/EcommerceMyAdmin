@@ -651,7 +651,7 @@ class PagesController extends BaseController {
 					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
 				}
 				
-				$this->m[$this->modelName]->setFormStruct();
+				$this->m[$this->modelName]->setFormStruct($clean['id']);
 				
 				$this->m[$this->modelName]->setUploadForms($clean["id"]);
 				

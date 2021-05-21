@@ -1993,7 +1993,7 @@ class PagesModel extends GenericModel {
 			if (!empty($images))
 				$snippetArray["image"] = $images;
 			
-			$snippetArray["description"] = sanitizeJs(htmlentitydecode(field($p, "description")));
+			$snippetArray["description"] = sanitizeJs(strip_tags(htmlentitydecode(field($p, "description"))));
 			
 			if ($p["pages"]["codice"])
 				$snippetArray["sku"] = $p["pages"]["codice"];
@@ -2049,5 +2049,19 @@ class PagesModel extends GenericModel {
 		}
 		
 		return $snippetArray;
+    }
+    
+    public static function getTagCanonical($id)
+    {
+		$pm = new PagesModel();
+		
+		$idP = $pm->clear()->where(array(
+			"pages.id_page"	=>	(int)$id,
+		))->field("id_p");
+		
+		if ($idP)
+			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias($idP).'" />';
+		
+		return "";
     }
 }

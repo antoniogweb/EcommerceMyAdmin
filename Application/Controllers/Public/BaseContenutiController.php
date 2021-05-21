@@ -884,6 +884,9 @@ class BaseContenutiController extends BaseController
 			$data["isProdotto"] = true;
 		}
 		
+		if (v("mostra_tendina_prodotto_principale"))
+			$data["tagCanonical"] = PagesModel::getTagCanonical((int)$id);
+		
 		//estrai i dati della categoria
 		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("section"=>sanitizeAll($firstSection)))->send();
 		$data["datiCategoriaPrincipale"] = $r[0];

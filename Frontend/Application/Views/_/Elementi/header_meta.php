@@ -12,6 +12,10 @@
 </script>
 <?php } ?>
 
+<?php if (isset($tagCanonical)) { ?>
+<?php echo $tagCanonical;?>
+<?php } ?>
+
 <?php
 $nomePaginaPerTracking = "";
 $idPaginaPerTracking = 0;
