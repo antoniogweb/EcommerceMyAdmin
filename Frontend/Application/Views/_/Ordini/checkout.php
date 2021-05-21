@@ -189,7 +189,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 						</div>
 					</div>
 					
-					<div class="uk-margin">
+					<div class="uk-margin-medium uk-margin-large-bottom">
 						<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
 						<input class="uk-button uk-button-secondary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" />
 					</div>
