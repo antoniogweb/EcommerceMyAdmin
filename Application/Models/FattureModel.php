@@ -41,9 +41,14 @@ class FattureModel extends Model_Tree {
 		
 		$this->year = date("Y");
 		
-		$this->files->setBase(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture));
-		
-		$this->checkFatture();
+		if (v("check_fatture"))
+		{
+			$this->checkFolder();
+			
+			$this->files->setBase(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture));
+			
+			$this->checkFatture();
+		}
 	}
 
 	public function getNumeroFattura()
@@ -68,11 +73,8 @@ class FattureModel extends Model_Tree {
 		return 0;
 	}
 	
-	public function checkFatture()
+	public function checkFolder()
 	{
-		if (!v("check_fatture"))
-			return;
-		
 		if (@!is_dir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
 		{
 			if (@mkdir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
@@ -81,6 +83,12 @@ class FattureModel extends Model_Tree {
 				fclose($fp);
 			}
 		}
+	}
+	
+	public function checkFatture()
+	{
+		if (!v("check_fatture"))
+			return;
 		
 		$max = (int)$this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->getMax("numero");
 		
