@@ -244,7 +244,7 @@ class BaseRegusersController extends BaseController
 								{
 									$mail->IsSMTP();                         // tell the class to use SMTP
 									$mail->SMTPAuth   = true;                  // enable SMTP authentication
-									$mail->Port       = 25;                    // set the SMTP server port
+									$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
 									$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
 									$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
 									$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
