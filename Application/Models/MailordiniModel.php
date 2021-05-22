@@ -31,6 +31,8 @@ require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
 
 class MailordiniModel extends GenericModel
 {
+	public static $mailInstance = null;
+	
 	public function __construct() {
 		$this->_tables = 'mail_ordini';
 		$this->_idFields = 'id_mail';
@@ -88,7 +90,10 @@ class MailordiniModel extends GenericModel
 		
 		try
 		{
-			$mail = new PHPMailer(true); //New instance, with exceptions enabled
+			if (self::$mailInstance !== null)
+				$mail = self::$mailInstance;
+			else
+				$mail = self::$mailInstance = new PHPMailer(true); //New instance, with exceptions enabled
 
 			if (Parametri::$useSMTP)
 			{

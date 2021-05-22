@@ -20,9 +20,6 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseBaseController extends Controller
@@ -538,10 +535,6 @@ class BaseBaseController extends Controller
 	
 	protected function formRegistrazione()
 	{
-		require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
-		require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
-		require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
-
 		// Se da App, genero la password e la invio all'utente
 		if (isset($_GET["fromApp"]))
 		{
@@ -615,72 +608,33 @@ class BaseBaseController extends Controller
 						if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
 							$this->m['RegusersModel']->iscriviANewsletter($lId);
 						
-// 							require_once(ROOT."/External/phpmailer/class.phpmailer.php");
-
-						$mail = new PHPMailer(true); //New instance, with exceptions enabled
-
-// 							$mail->SMTPDebug = 4;
-						
-						if (Parametri::$useSMTP)
-						{
-							$mail->IsSMTP();                         // tell the class to use SMTP
-							$mail->SMTPAuth   = true;                  // enable SMTP authentication
-							$mail->Port       = 25;                    // set the SMTP server port
-							$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
-							$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
-							$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
-						}
-						
-						$mail->From       = Parametri::$mailFrom;
-						$mail->FromName   = Parametri::$mailFromName;
-						$mail->CharSet = 'UTF-8';
-						
-						$mail->SMTPOptions = array(
-							'ssl' => array(
-								'verify_peer' => false,
-								'verify_peer_name' => false,
-								'allow_self_signed' => true
-							)
-						);
-						
-						//manda mail con credenziali al cliente
-						$mail->ClearAddresses();
-						$mail->AddAddress($clean["username"]);
-						
-						if (ImpostazioniModel::$valori["bcc"])
-							$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-						
-						$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-						$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("invio credenziali nuovo utente");
-						$mail->IsHTML(true);
-						
-						//mail con credenziali
 						ob_start();
-						include tp()."/Regusers/mail_credenziali.php";
-
+						include (tpf("Regusers/mail_credenziali.php"));
 						$output = ob_get_clean();
-						$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 						
-						$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
-						$mail->MsgHTML($output);
-						if (@$mail->Send())
+						$res = MailordiniModel::inviaMail(array(
+							"emails"	=>	array($clean["username"]),
+							"oggetto"	=>	gtext("invio credenziali nuovo utente"),
+							"testo"		=>	$output,
+							"tipologia"	=>	"ISCRIZIONE",
+							"id_user"	=>	(int)$lId,
+							"id_page"	=>	0,
+						));
+						
+						if ($res)
 						{
-							$mail->ClearAddresses();
-							$mail->AddAddress(Parametri::$mailInvioOrdine);
-							
-							if (ImpostazioniModel::$valori["bcc"])
-								$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-							
-							//mail con credenziali
 							ob_start();
-							include tp()."/Regusers/mail_al_negozio_registr_nuovo_cliente.php";
-
+							include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
 							$output = ob_get_clean();
 							
-							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-							$mail->MsgHTML($output);
-							
-							@$mail->Send();
+							$res = MailordiniModel::inviaMail(array(
+								"emails"	=>	array(Parametri::$mailInvioOrdine),
+								"oggetto"	=>	gtext("invio credenziali nuovo utente"),
+								"testo"		=>	$output,
+								"tipologia"	=>	"ISCRIZIONE",
+								"id_user"	=>	(int)$lId,
+								"id_page"	=>	0,
+							));
 							
 							$_SESSION['result'] = 'utente_creato';
 							
