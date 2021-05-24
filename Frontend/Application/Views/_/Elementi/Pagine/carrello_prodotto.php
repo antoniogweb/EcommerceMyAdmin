@@ -168,7 +168,7 @@
 					<?php if (idCarrelloEsistente()) { ?>
 					<?php echo gtext("Aggiorna carrello", false); ?>
 					<?php } else { ?>
-					<?php echo gtext("Acquista", false); ?>
+					<?php echo gtext("Aggiungi al carrello", false); ?>
 					<?php } ?>
 				</span>
 			</a>
