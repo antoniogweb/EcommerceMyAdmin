@@ -1,3 +1,10 @@
+if (typeof icheckOptions == "undefined")
+	var icheckOptions = {
+		checkboxClass: 'icheckbox_minimal',
+		radioClass: 'iradio_minimal',
+		increaseArea: '20%' // optional
+	};
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -358,17 +365,6 @@ $(document).ready(function(){
 		return false;
 	});
 	
-// 	$("body").on("click", ".imposta_spedizione_come_fatturazione", function(e){
-// 		
-// 		e.preventDefault();
-// 		
-// 		$("[name='indirizzo_spedizione']").val($("[name='indirizzo']").val());
-// 		$("[name='cap_spedizione']").val($("[name='cap']").val());
-// 		$("[name='citta_spedizione']").val($("[name='citta']").val());
-// 		$("[name='provincia_spedizione']").val($("[name='provincia']").val());
-// 		$("[name='telefono_spedizione']").val($("[name='telefono']").val());
-// 	});
-	
 	if ($("[name='spedisci_dati_fatturazione']:checked").length > 0)
 		impostaSpedizioneNonLoggato($("[name='spedisci_dati_fatturazione']:checked"));
 	
@@ -385,8 +381,6 @@ $(document).ready(function(){
 		impostaTipoSpedizione($("[name='aggiungi_nuovo_indirizzo']:checked"));
 	
 	$("body").on("ifClicked", "[name='aggiungi_nuovo_indirizzo']", function(e){
-		
-// 		console.log($(this).val());
 		
 		$("[name='post_error']").remove();
 		
@@ -456,11 +450,7 @@ $(document).ready(function(){
 		
 	});
 	
-	$('input').iCheck({
-		checkboxClass: 'icheckbox_minimal',
-		radioClass: 'iradio_minimal',
-		increaseArea: '20%' // optional
-	});
+	$('input').iCheck(icheckOptions);
 	
 	$(".image-picker").imagepicker();
 });

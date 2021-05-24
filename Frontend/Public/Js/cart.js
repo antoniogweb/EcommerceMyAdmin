@@ -20,10 +20,10 @@ if (typeof stringa_errore_giacenza_carrello == "undefined")
 	var stringa_errore_giacenza_carrello = "Attenzione, controllare la quantità delle righe evidenziate";
 
 if (typeof back_cart_error == "undefined")
-	back_cart_error = "red";
+	var back_cart_error = "red";
 
 if (typeof input_border_color == "undefined")
-	input_border_color = "#e5e5e5";
+	var input_border_color = "#e5e5e5";
 
 var time;
 var arrayAccessori = [];
