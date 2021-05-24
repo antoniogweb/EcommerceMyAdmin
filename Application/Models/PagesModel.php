@@ -1134,7 +1134,7 @@ class PagesModel extends GenericModel {
 		if (count($res) > 0)
 		{
 			self::$currentRecord = $res;
-			return Html_Form::checkbox('attivo',$res[0]['pages']['attivo'],'Y','attivo_checkbox',$res[0]['pages']['id_page']).'<span class="loading_gif_del"><img src="http://'.DOMAIN_NAME."/Public/Img/Icons/loading4.gif".'" /></span>';
+			return Html_Form::checkbox('attivo',$res[0]['pages']['attivo'],'Y','attivo_checkbox',$res[0]['pages']['id_page']).'<span class="loading_gif_del"><img src="'.Url::getFileRoot()."Public/Img/Icons/loading4.gif".'" /></span>';
 		}
 		self::$currentRecord = null;
 		return "";
@@ -1155,7 +1155,7 @@ class PagesModel extends GenericModel {
 
 		if (count($res) > 0)
 		{
-			return Html_Form::checkbox('attivo',$res[0]['pages']['in_evidenza'],'Y','in_evidenza_checkbox',$res[0]['pages']['id_page']).'<span class="loading_gif_del"><img src="http://'.DOMAIN_NAME."/Public/Img/Icons/loading4.gif".'" /></span>';
+			return Html_Form::checkbox('attivo',$res[0]['pages']['in_evidenza'],'Y','in_evidenza_checkbox',$res[0]['pages']['id_page']).'<span class="loading_gif_del"><img src="'.Url::getFileRoot()."Public/Img/Icons/loading4.gif".'" /></span>';
 		}
 		return "";
 	}
@@ -1166,7 +1166,7 @@ class PagesModel extends GenericModel {
 		
 		$principale = $this->getPrincipale($clean['id_page']);
 		
-		return "<img src='http://".DOMAIN_NAME."/thumb/immagineinlistaprodotti/".$principale."' />";
+		return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$principale."' />";
 	}
 	
 	public function inPromozioneText($id_page)
