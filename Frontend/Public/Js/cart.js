@@ -54,18 +54,24 @@ function reloadCartSecondario()
 			var num_prod = $(".carrello_secondario").find(".ajax_cart_num_prod").text();
 			
 			if (num_prod > 0)
+			{
 				$(".link_carrello_num_prod").text(num_prod);
+				$(".link_carrello_num_prod").removeClass("uk-hidden");
+			}
 			else
+			{
 				$(".link_carrello_num_prod").text("");
+				$(".link_carrello_num_prod").addClass("uk-hidden");
+			}
 			
-			if (num_prod > 0)
-			{
-				$(".link_carrello_num_prod").addClass("count");/*css({"color":colore_carrello_non_vuoto});*/
-			}
-			else
-			{
-				$(".link_carrello_num_prod").removeClass("count");/*css({"color":"#000"});*/
-			}
+// 			if (num_prod > 0)
+// 			{
+// 				$(".link_carrello_num_prod").addClass("count");/*css({"color":colore_carrello_non_vuoto});*/
+// 			}
+// 			else
+// 			{
+// 				$(".link_carrello_num_prod").removeClass("count");/*css({"color":"#000"});*/
+// 			}
 		}
 	});
 }
@@ -83,17 +89,15 @@ function reloadWishlistSecondario()
 				window.location.reload();
 			else
 			{
-				$(".link_wishlist_num_prod").html(content);
-				
-				var num_prod = $(".carrello_secondario").find(".ajax_cart_num_prod").text();
-				
 				if (content > 0)
 				{
-					$(".link_wishlist_num_prod").addClass("count");/*css({"color":colore_carrello_non_vuoto});*/
+					$(".link_wishlist_num_prod").text(content);
+					$(".link_wishlist_num_prod").removeClass("uk-hidden");
 				}
 				else
 				{
-					$(".link_wishlist_num_prod").removeClass("count");/*css({"color":"#000"});*/
+					$(".link_wishlist_num_prod").text("");
+					$(".link_wishlist_num_prod").addClass("uk-hidden");
 				}
 			}
 		}
@@ -244,6 +248,7 @@ function aggiornaDatiVariante(obj)
 {
 	if (obj.find(".lista_attributi_prodotto").length > 0)
 	{
+		var t_peso = obj.find(".peso_combinazione").text();
 		var t_codice = obj.find(".codice_combinazione").text();
 		var t_prezzo = obj.find(".prezzo_combinazione").text();
 		var t_immagine = obj.find(".immagine_combinazione").text();
@@ -256,6 +261,7 @@ function aggiornaDatiVariante(obj)
 			$(".codice_value").text(t_codice);
 			$(".price_value").text(t_prezzo);
 			$(".blocco-prezzo").css("display", "block");
+			$(".peso_value").text(t_peso);
 			
 			if (t_giacenza == 1)
 			{
@@ -274,6 +280,21 @@ function aggiornaDatiVariante(obj)
 			
 			if (t_prezzo_pieno != "")
 				$(".price_full").text(t_prezzo_pieno);
+			
+			if (t_immagine != "" && t_immagine != undefined)
+			{
+				var indice = 0;
+				
+				$(".slide_prodotto li").each(function() {
+					
+					var imm = $(this).attr("data-image");
+					
+					if (imm == t_immagine)
+						UIkit.slideshow("#slide_singolo_prodotto").show(indice);
+					else
+						indice++;
+				});
+			}
 		}
 		else
 		{
@@ -376,6 +397,7 @@ function combinazione(obj)
 		
 		if (!ok_procedi)
 		{
+			obj.find(".peso_combinazione").text(obj.find(".main_peso").text());
 			obj.find(".codice_combinazione").text(obj.find(".main_codice").text());
 			obj.find(".prezzo_combinazione").text(obj.find(".main_price").text());
 			obj.find(".immagine_combinazione").text(obj.find(".main_immagine").text());
@@ -419,6 +441,7 @@ function combinazione(obj)
 						if (obj.find(".dati_variante").length > 0){
 							obj.find(".id_combinazione").text("0");
 							
+							obj.find(".peso_combinazione").text(obj.find(".main_peso").text());
 							obj.find(".codice_combinazione").text(obj.find(".main_codice").text());
 							obj.find(".prezzo_combinazione").text(obj.find(".main_price").text());
 							obj.find(".immagine_combinazione").text(obj.find(".main_immagine").text());
@@ -479,10 +502,14 @@ function aggiungiAccessori()
 
 function togliSpinner(that)
 {
-	// Tolgo lo spinner
 	setTimeout(function(){ 
 		
-		that.removeClass("added_to_cart").removeClass("loading");
+// 		if (that.parents(".product-block").length > 0)
+// 		{
+// 			
+// 		}
+// 		else
+			that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
 		
 	}, 500);
 }
@@ -500,7 +527,7 @@ function impostaIdParent(content)
 function beforeAggiungiCarrello(principale, accessorio)
 {
 	if (accessorio == undefined)
-		principale.addClass("added_to_cart").addClass("loading");
+		principale.addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 }
 
 function prodottiAggiunti(principale, content, id_cart)
@@ -511,23 +538,15 @@ function prodottiAggiunti(principale, content, id_cart)
 	if (principale.parents(".product-block").length > 0)
 		titoloProdo = principale.parents(".product-block").find(".woocommerce-loop-product__title a").text();
 	
-	if (principale.parents(".product-block").length > 0)
-	{
-		$(".notification-added-to-cart .ns-thumb img").attr("src",urlThumb);
-		$(".notification-added-to-cart .placeholder_prodotto_aggiunto").text(titoloProdo);
-		$(".notification-added-to-cart").show();
-	}
-	else
-	{
-		$(".woocommerce-message").removeClass("hidden-notice");
-	}
+	setTimeout(function(){ 
+		
+		principale.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+		
+	}, 500);
+	
+	
 	
 	time = setTimeout(function(){ 
-		
-		if (principale.parents(".product-block").length > 0)
-			$(".notification-added-to-cart").hide();
-		else
-			$(".woocommerce-message").addClass("hidden-notice");
 		
 	}, 5000);
 	
@@ -536,7 +555,10 @@ function prodottiAggiunti(principale, content, id_cart)
 	if (typeof id_cart !== typeof undefined && id_cart !== false && id_cart > 0)
 		location.href = baseUrl + "/carrello/vedi";
 	else
+	{
 		togliSpinner(principale);
+		UIkit.offcanvas("#cart-offcanvas").show();
+	}
 }
 
 function actionAggiungiAlCarrello(principale, accessorio)
@@ -614,11 +636,18 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			json_pers: json_pers
 		},
 		success: function(content){
-			
 			clearTimeout(time);
 			
 			if (jQuery.trim(content.result) == "OK")
 			{
+				if (pixel && content.contens_fbk != undefined && content.contens_fbk != "")
+				{
+					if (debug_js)
+						console.log(content.contens_fbk);
+					
+					fbq('track', 'AddToCart', content.contens_fbk);
+				}
+				
 				if (!haAccessori() || principale.hasClass("aggiungi_al_carrello_semplice"))
 				{
 					prodottiAggiunti(principale, content);
@@ -665,6 +694,45 @@ function apriChiudiBoxAccessorio(obj)
 		obj.parents(".box_accessorio").find(".box_accessorio_inner").css("display", "none");
 }
 
+function aggiornaCarrello()
+{
+	var products_list = "";
+	var curr_item = "";
+	var curr_quantity = "";
+	
+	$(".main_cart .cart_item_row").each(function(){
+		
+		curr_item = $(this).attr("rel");
+		curr_quantity = $(this).find(".item_quantity").val();
+		
+		products_list += curr_item + ":" + curr_quantity + "|";
+	});
+	
+	var post_data = "products_list="+encodeURIComponent(products_list);
+// 	console.log(post_data);
+	$.ajaxQueue({
+		type: "POST",
+		url: baseUrl + "/carrello/aggiorna",
+		data: post_data,
+		async: true,
+		cache:false,
+		dataType: "json",
+		success: function(content){
+			
+			$(".item_quantity").css("background-color","#FFF");
+			
+			for (var i=0; i<content.length; i++)
+			{
+				$(".item_quantity[rel='"+content[i]+"']").css("background-color",back_cart_error);
+			}
+			
+			if (content.length == 0)
+				reloadCart();
+			else
+				alert(stringa_errore_giacenza_carrello);
+		}
+	});
+}
 
 $(document).ready(function(){
 	
@@ -748,11 +816,18 @@ $(document).ready(function(){
 		}
 	});
 	
+	$( "body" ).on( "change", ".cart_item_row_mobile", function(e) {
+		
+		console.log("aa");
+		aggiornaCarrello();
+		
+	});
+	
 	$( "body" ).on( "click", ".cart_item_delete_link", function(e) {
 		
 		e.preventDefault();
 		
-		var t_tr = $(this).parent().parent();
+		var t_tr = $(this).closest(".cart_item_row");
 		var id_page = t_tr.attr("rel");
 		
 		$.ajaxQueue({
@@ -770,42 +845,8 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var products_list = "";
-		var curr_item = "";
-		var curr_quantity = "";
+		aggiornaCarrello();
 		
-		$(".cart_item_row").each(function(){
-			
-			curr_item = $(this).attr("rel");
-			curr_quantity = $(this).find(".item_quantity").val();
-			
-			products_list += curr_item + ":" + curr_quantity + "|";
-		});
-		
-		var post_data = "products_list="+encodeURIComponent(products_list);
-
-		$.ajaxQueue({
-			type: "POST",
-			url: baseUrl + "/carrello/aggiorna",
-			data: post_data,
-			async: true,
-			cache:false,
-			dataType: "json",
-			success: function(content){
-				
-				$(".cart_item_row .item_quantity").css("background-color","#FFF");
-				
-				for (var i=0; i<content.length; i++)
-				{
-					$(".cart_table [rel='"+content[i]+"']").find(".item_quantity").css("background-color",back_cart_error);
-				}
-				
-				if (content.length == 0)
-					reloadCart();
-				else
-					alert(stringa_errore_giacenza_carrello);
-			}
-		});
 	});
 	
 	$( "body" ).on( "click", ".azione_wishlist", function(e) {
@@ -816,32 +857,40 @@ $(document).ready(function(){
 		
 		var url = $(this).attr("href");
 		
-		that.parent().find("img").css("visibility","visible");
+// 		that.parent().find("img").css("visibility","visible");
 		
 		$.ajaxQueue({
 			url: url,
 			async: true,
 			cache:false,
-			dataType: "html",
+			dataType: "json",
 			success: function(content){
 				
-				if ($.trim(content) == "OK")
+				if (jQuery.trim(content.result) == "OK")
 				{
+					if (pixel && content.contens_fbk != undefined && content.contens_fbk != "")
+					{
+						if (debug_js)
+							console.log(content.contens_fbk);
+						
+						fbq('track', 'AddToWishlist', content.contens_fbk);
+					}
+					
 					if (that.parent().hasClass(classe_wish_presente))
 					{
-						that.parents("."+box_pulsante_wishlist).find("."+classe_wish_presente).css("display","none");
-						that.parents("."+box_pulsante_wishlist).find("."+classe_wish_non_presente).css("display","block");
+						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_presente).css("display","none");
+						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_non_presente).css("display","block");
 					}
 					else
 					{
-						that.parents("."+box_pulsante_wishlist).find("."+classe_wish_presente).css("display","block");
-						that.parents("."+box_pulsante_wishlist).find("."+classe_wish_non_presente).css("display","none");
+						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_presente).css("display","block");
+						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_non_presente).css("display","none");
 					}
 				}
 				
 				reloadWishlistSecondario();
 				
-				that.parent().find("img").css("visibility","hidden");
+// 				that.parent().find("img").css("visibility","hidden");
 			}
 		});
 	});

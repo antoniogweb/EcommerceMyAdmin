@@ -2,31 +2,34 @@ $ = jQuery;
 
 function updateFormTipoCliente()
 {
-	var tipo_cliente = $(".radio_cliente:checked").val();
+	if ($(".radio_cliente").length > 0)
+		var tipo_cliente = $(".radio_cliente:checked").val();
+	else
+		var tipo_cliente = $("[name='tipo_cliente']").val();
 	
 	if (tipo_cliente == "privato")
 	{
-		$(".tr_ragione_sociale").css("display","none");
-		$(".tr_p_iva").css("display","none");
-		$(".tr_nome").css("display","table-row");
-		$(".tr_cognome").css("display","table-row");
-		$(".blocco_fatturazione_elettronica").css("display","none");
+		$(".tr_ragione_sociale").addClass("uk-hidden");
+		$(".tr_p_iva").addClass("uk-hidden");
+		$(".tr_nome").removeClass("uk-hidden");
+		$(".tr_cognome").removeClass("uk-hidden");
+		$(".blocco_fatturazione_elettronica").addClass("uk-hidden");
 	}
 	else if (tipo_cliente == "libero_professionista")
 	{
-		$(".tr_ragione_sociale").css("display","none");
-		$(".tr_p_iva").css("display","table-row");
-		$(".tr_nome").css("display","table-row");
-		$(".tr_cognome").css("display","table-row");
-		$(".blocco_fatturazione_elettronica").css("display","block");
+		$(".tr_ragione_sociale").addClass("uk-hidden");
+		$(".tr_p_iva").removeClass("uk-hidden");
+		$(".tr_nome").removeClass("uk-hidden");
+		$(".tr_cognome").removeClass("uk-hidden");
+		$(".blocco_fatturazione_elettronica").removeClass("uk-hidden");
 	}
 	else
 	{
-		$(".tr_ragione_sociale").css("display","table-row");
-		$(".tr_p_iva").css("display","table-row");
-		$(".tr_nome").css("display","none");
-		$(".tr_cognome").css("display","none");
-		$(".blocco_fatturazione_elettronica").css("display","block");
+		$(".tr_ragione_sociale").removeClass("uk-hidden");
+		$(".tr_p_iva").removeClass("uk-hidden");
+		$(".tr_nome").addClass("uk-hidden");
+		$(".tr_cognome").addClass("uk-hidden");
+		$(".blocco_fatturazione_elettronica").removeClass("uk-hidden");
 	}
 	
 	sistemaPIva($("[name='nazione']").val());
@@ -40,7 +43,7 @@ function updateFormRegistrato()
 	
 	if (registrato == "Y")
 	{
-		$(".table_password").css("display","table");
+		$(".table_password").css("display","block");
 	}
 	else
 	{
@@ -265,6 +268,12 @@ function sistemaPIva(nazione)
 		$(".box_p_iva").css("display","none");
 		$("[name='p_iva']").val("");
 	}
+	
+	// Fattura elettronica
+	if (nazione == "IT" && $(".radio_cliente:checked").val() != "privato")
+		$(".blocco_fatturazione_elettronica").css("display","block");
+	else
+		$(".blocco_fatturazione_elettronica").css("display","none");
 }
 
 function sistemaTendinaProvinciaSpedizione(val)
@@ -434,94 +443,104 @@ $(document).ready(function(){
 		
 	});
 	
-	$("body").on("click", ".site-header-account > a", function(e){
+	$("body").on("click", ".btn_completa_acquisto", function(e){
 		
-		e.preventDefault();
-		
-		if ($(this).parent().hasClass("account_open"))
-		{
-			$(this).parent().removeClass("account_open");
-			$(this).parent().find(".dropdown-backdrop").remove();
-		}
-		else
-		{
-			$(this).parent().addClass("account_open");
-			$(this).parent().append('<div class="dropdown-backdrop"></div>');
-			
-		}
-	});
-	
-	$("body").on("click", ".dropdown-backdrop", function(e){
-		
-		e.preventDefault();
-		
-		$(".link_account").trigger("click");
-	});
-	
-	
-	$("body").on("click", ".select-selected", function(e){
-		
-		e.preventDefault();
-		
-		if ($(this).hasClass("select-arrow-active"))
-			$(this).removeClass("select-arrow-active");
-		else
-			$(this).addClass("select-arrow-active");
-		
-		if ($(this).parent().find(".select-items").hasClass("select-hide"))
-			$(this).parent().find(".select-items").removeClass("select-hide");
-		else
-			$(this).parent().find(".select-items").addClass("select-hide");
+		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 	});
 	
-	$("body").on("click", ".select_ordinamento", function(e){
-		
-		var o = $(this).attr("o");
-		
-		$(".tendina_ordinamento").val(o);
-		$(".woocommerce-ordering").submit();
-	});
+// 	$("body").on("click", ".site-header-account > a", function(e){
+// 		
+// 		e.preventDefault();
+// 		
+// 		if ($(this).parent().hasClass("account_open"))
+// 		{
+// 			$(this).parent().removeClass("account_open");
+// 			$(this).parent().find(".dropdown-backdrop").remove();
+// 		}
+// 		else
+// 		{
+// 			$(this).parent().addClass("account_open");
+// 			$(this).parent().append('<div class="dropdown-backdrop"></div>');
+// 			
+// 		}
+// 	});
+// 	
+// 	$("body").on("click", ".dropdown-backdrop", function(e){
+// 		
+// 		e.preventDefault();
+// 		
+// 		$(".link_account").trigger("click");
+// 	});
+// 	
+// 	
+// 	$("body").on("click", ".select-selected", function(e){
+// 		
+// 		e.preventDefault();
+// 		
+// 		if ($(this).hasClass("select-arrow-active"))
+// 			$(this).removeClass("select-arrow-active");
+// 		else
+// 			$(this).addClass("select-arrow-active");
+// 		
+// 		if ($(this).parent().find(".select-items").hasClass("select-hide"))
+// 			$(this).parent().find(".select-items").removeClass("select-hide");
+// 		else
+// 			$(this).parent().find(".select-items").addClass("select-hide");
+// 		
+// 	});
+// 	
+// 	$("body").on("click", ".select_ordinamento", function(e){
+// 		
+// 		var o = $(this).attr("o");
+// 		
+// 		$(".tendina_ordinamento").val(o);
+// 		$(".woocommerce-ordering").submit();
+// 	});
+// 	
+// 	$("body").on("click", ".open_close_sub", function(e){
+// 		
+// 		e.preventDefault();
+// 		
+// 		if ($(this).hasClass("fa-chevron-down"))
+// 		{
+// 			$(this).removeClass("fa-chevron-down");
+// 			$(this).addClass("fa-chevron-up");
+// 		}
+// 		else
+// 		{
+// 			$(this).addClass("fa-chevron-down");
+// 			$(this).removeClass("fa-chevron-up");
+// 		}
+// 		
+// 		if ($(this).parent().hasClass("open"))
+// 		{
+// 			$(this).parent().removeClass("open");
+// 			$(this).parent().find(".children").slideUp();
+// 		}
+// 		else
+// 		{
+// 			$(this).parent().addClass("open");
+// 			$(this).parent().find(".children").slideDown();
+// 		}
+// 	});
+// 	
+// 	$(".product-categories li").each(function(){
+// 		
+// 		if ($(this).hasClass("current-cat") && $(this).hasClass("cat-child"))
+// 		{
+// 			$(this).parents(".cat-parent").find(".open_close_sub").trigger("click");
+// 		}
+// 		
+// 	});
 	
-	$("body").on("click", ".open_close_sub", function(e){
-		
-		e.preventDefault();
-		
-		if ($(this).hasClass("fa-chevron-down"))
-		{
-			$(this).removeClass("fa-chevron-down");
-			$(this).addClass("fa-chevron-up");
-		}
-		else
-		{
-			$(this).addClass("fa-chevron-down");
-			$(this).removeClass("fa-chevron-up");
-		}
-		
-		if ($(this).parent().hasClass("open"))
-		{
-			$(this).parent().removeClass("open");
-			$(this).parent().find(".children").slideUp();
-		}
-		else
-		{
-			$(this).parent().addClass("open");
-			$(this).parent().find(".children").slideDown();
-		}
-	});
 	
-	$(".product-categories li").each(function(){
-		
-		if ($(this).hasClass("current-cat") && $(this).hasClass("cat-child"))
-		{
-			$(this).parents(".cat-parent").find(".open_close_sub").trigger("click");
-		}
-		
-	});
 	
 	$('input').iCheck({
 		checkboxClass: 'icheckbox_minimal',
 		radioClass: 'iradio_minimal',
 		increaseArea: '20%' // optional
 	});
+	
+	$(".image-picker").imagepicker();
 });
