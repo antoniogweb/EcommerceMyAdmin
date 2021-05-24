@@ -1,11 +1,18 @@
 $ = jQuery;
 
-function updateFormTipoCliente()
+function getTipoCliente()
 {
 	if ($(".radio_cliente").length > 0)
 		var tipo_cliente = $(".radio_cliente:checked").val();
 	else
 		var tipo_cliente = $("[name='tipo_cliente']").val();
+	
+	return tipo_cliente;
+}
+
+function updateFormTipoCliente()
+{
+	tipo_cliente = getTipoCliente();
 	
 	if (tipo_cliente == "privato")
 	{
@@ -127,7 +134,7 @@ function impostaSpedizioneNonLoggato(obj)
 
 function impostaSpeseSpedizione(id_corriere, nazione)
 {
-	var tipo_cliente = $(".radio_cliente:checked").val();
+	var tipo_cliente = getTipoCliente();
 	
 	$.ajaxQueue({
 		url: baseUrl + "/ordini/totale",
@@ -261,7 +268,7 @@ function sistemaTendinaProvincia(val)
 
 function sistemaPIva(nazione)
 {
-	if (nazioniConVat.indexOf(nazione) != -1 && $(".radio_cliente:checked").val() != "privato")
+	if (nazioniConVat.indexOf(nazione) != -1 && getTipoCliente() != "privato")
 		$(".box_p_iva").css("display","table-row");
 	else
 	{
@@ -270,7 +277,7 @@ function sistemaPIva(nazione)
 	}
 	
 	// Fattura elettronica
-	if (nazione == "IT" && $(".radio_cliente:checked").val() != "privato")
+	if (nazione == "IT" && getTipoCliente() != "privato")
 		$(".blocco_fatturazione_elettronica").css("display","block");
 	else
 		$(".blocco_fatturazione_elettronica").css("display","none");
