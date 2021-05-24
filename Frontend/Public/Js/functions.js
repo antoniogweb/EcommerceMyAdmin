@@ -3,7 +3,10 @@ if (typeof icheckOptions == "undefined")
 		checkboxClass: 'icheckbox_minimal',
 		radioClass: 'iradio_minimal',
 		increaseArea: '20%' // optional
-	};
+	}
+
+if (typeof input_error_css == "undefined")
+	var input_error_css = {"border":"1px solid #ed144b"}
 
 $ = jQuery;
 
@@ -338,7 +341,7 @@ $(document).ready(function(){
 	
 	$(".evidenzia").each(function(){
 		t_tag = $(this).text();
-		$("."+t_tag).css("border","1px solid #ed144b");
+		$("."+t_tag).css(input_error_css);
 	});
 	
 	$(".not_active_link").click(function(){
