@@ -11,6 +11,7 @@
 	var nazioniConVat = ['<?php echo implode("','",NazioniModel::elencoNazioniConVat())?>'];
 	var pixel = <?php echo v("codice_fbk") ? "true" : "false"; ?>;
 	var debug_js = <?php echo v("debug_js") ? "true" : "false"; ?>;
+	var input_border_color = "#e5e5e5";
 </script>
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
