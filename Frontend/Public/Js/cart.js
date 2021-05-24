@@ -2,24 +2,28 @@ var colore_carrello_non_vuoto = "green";
 var classe_wish_presente = "in_wishlist";
 var classe_wish_non_presente = "not_in_wishlist";
 var box_pulsante_wishlist = "blocco_wishlist";
+var vai_al_checkout = false;
 
-if (variante_non_esistente == undefined)
+if (typeof variante_non_esistente == "undefined")
 	var variante_non_esistente = "Non esiste il prodotto con la combinazioni di varianti selezionate";
 
-if (errore_combinazione == undefined)
+if (typeof errore_combinazione == "undefined")
 	var errore_combinazione = "Si prega di selezionare la variante:";
 
-if (errore_quantita_minore_zero == undefined)
+if (typeof errore_quantita_minore_zero == "undefined")
 	var errore_quantita_minore_zero = "Si prega di indicare una quantità maggiore di zero";
 
-if (errore_selezionare_variante == undefined)
+if (typeof errore_selezionare_variante == "undefined")
 	var errore_selezionare_variante = "Si prega di selezionare la variante del prodotto";
 
-if (stringa_errore_giacenza_carrello == undefined)
+if (typeof stringa_errore_giacenza_carrello == "undefined")
 	var stringa_errore_giacenza_carrello = "Attenzione, controllare la quantità delle righe evidenziate";
 
-if (back_cart_error == undefined)
+if (typeof back_cart_error == "undefined")
 	back_cart_error = "red";
+
+if (typeof input_border_color == "undefined")
+	input_border_color = "#e5e5e5";
 
 var time;
 var arrayAccessori = [];
@@ -135,13 +139,21 @@ function checkCarrello()
 function attivaDisattivaCarrello()
 {
 	$(".aggiungi_al_carrello").unbind();
+	$(".aggiungi_al_carrello_checkout").unbind();
 	
 	var okProcedi = checkCarrello();
 	
 	if (okProcedi)
+	{
 		$(".pulsante_carrello").addClass("aggiungi_al_carrello").removeClass("disabled");
+		$(".acquista_prodotto").addClass("aggiungi_al_carrello_checkout").removeClass("disabled");
+	}
+		
 	else
+	{
 		$(".pulsante_carrello").removeClass("aggiungi_al_carrello").addClass("disabled");
+		$(".acquista_prodotto").removeClass("aggiungi_al_carrello_checkout").addClass("disabled");
+	}
 	
 	if (okProcedi)
 		aggiungialcarrello();
@@ -169,7 +181,7 @@ function checkPersonalizzazione(obj)
 				$(this).css("border-color", "red");
 			}
 			else
-				$(this).css("border-color", "#666666");
+				$(this).css("border-color", input_border_color);
 		});
 		
 		errore_non_selez_stringa = errore_combinazione + " <span class='variante_non_presente'>" + errore_non_selez_array.join(", ") + "</span>";
@@ -476,6 +488,17 @@ function aggiungialcarrello()
 		
 		actionAggiungiAlCarrello($(this));
 	});
+	
+	$(".aggiungi_al_carrello_checkout").click(function(e) {
+		
+		vai_al_checkout = true;
+		
+		e.preventDefault();
+		
+		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		
+		actionAggiungiAlCarrello($(".aggiungi_al_carrello"));
+	});
 }
 
 function haAccessori()
@@ -510,7 +533,10 @@ function togliSpinner(that)
 // 		}
 // 		else
 			that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
-		
+			
+			if ($(".acquista_prodotto").length > 0)
+				$(".acquista_prodotto").removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+			
 	}, 500);
 }
 
@@ -553,7 +579,13 @@ function prodottiAggiunti(principale, content, id_cart)
 	var id_cart = principale.attr('id-cart');
 	
 	if (typeof id_cart !== typeof undefined && id_cart !== false && id_cart > 0)
+	{
 		location.href = baseUrl + "/carrello/vedi";
+	}
+	else if (vai_al_checkout)
+	{
+		location.href = baseUrl + "/checkout";
+	}
 	else
 	{
 		togliSpinner(principale);
@@ -900,5 +932,4 @@ $(document).ready(function(){
 	},function(){
 		$("#carrello_secondario").css("display","none");
 	});
-	
 })
