@@ -43,24 +43,6 @@ function updateForm()
 	}
 }
 
-function ajaxfilemanager(field_name, url, type, win) {
-	var ajaxfilemanagerurl = "<?php echo $this->baseUrl."/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";?>";
-
-	var fileBrowserWindow = new Array();
-	fileBrowserWindow["file"] = ajaxfilemanagerurl;
-	fileBrowserWindow["title"] = "Ajax File Manager";
-	fileBrowserWindow["width"] = "100%";
-	fileBrowserWindow["height"] = "440";
-	fileBrowserWindow["resizable "] = "yes";
-	fileBrowserWindow["inline"] = "yes";
-	fileBrowserWindow["close_previous"] = "no";
-	tinyMCE.activeEditor.windowManager.open(fileBrowserWindow, {
-		window : win,
-		input : field_name
-	});
-	
-	return false;
-}
 $().ready(function() {
 <?php if (strcmp($use_editor,"Y") === 0) { ?>
 	$('textarea.dettagli').tinymce(tiny_editor_config);

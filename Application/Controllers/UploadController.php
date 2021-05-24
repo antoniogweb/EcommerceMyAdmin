@@ -79,7 +79,7 @@ class UploadController extends BaseController {
 		$params = array(
 			'filesPermission'	=>	0777,
 			'language'			=>	'It',
-			'allowedExtensions'	=>	'png,jpg,jpeg,txt,odt,doc,pdf,zip,gif,bmp',
+			'allowedExtensions'	=>	'png,jpg,jpeg,txt,odt,doc,pdf,zip,gif,bmp,svg',
 			'maxFileSize'		=>	10000000,
 			'fileUploadKey'		=>	'userfile',
 			'fileUploadBehaviour'	=>	'add_token', //can be none or add_token

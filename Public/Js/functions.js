@@ -1,6 +1,6 @@
 var tiny_editor_config = {
 	// Location of TinyMCE script
-	script_url :  baseUrl+ '/Public/Js/tiny_mce/tiny_mce.js',
+	script_url :  baseUrl+ '/Public/Js/tiny_mce/tiny_mce_src.js',
 	convert_urls : false,
 
 	force_br_newlines : true,
