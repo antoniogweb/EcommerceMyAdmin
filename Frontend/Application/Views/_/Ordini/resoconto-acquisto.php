@@ -90,7 +90,7 @@ if (!isset($baseUrl))
 <?php } else if (strcmp($ordine["pagamento"],"paypal") === 0 and strcmp($ordine["stato"],"pending") === 0 and strcmp($tipoOutput,"web") === 0) { ?>
 
 	<?php if(!isset($actionFromAdmin)) { ?>
-	<div class="pulsante_paypal"><?php echo $pulsantePaypal;?></div>
+	<div class="pulsante_paypal"><br /><?php echo $pulsantePaypal;?></div>
 	<?php } else { ?>
 	<h2>Dettagli pagamento:</h2>
 	<p>Pagamento tramite paypal ancora da eseguire</p>
