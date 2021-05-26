@@ -1,4 +1,4 @@
-EcommerceMyAdmin is a PHP is a PHP CMS based on EasyGiant
+EcommerceMyAdmin is a PHP is a PHP CMS based on MvcMyLibrary
 Copyright (C) 2009 - 2020 Antonio Gallo (info@laboratoriolibero.com)
 
 This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 EcommerceMyAdmin includes works distributed under the licenses listed below.
 
-EasyGiant
+EcommerceMyAdmin
 -------
 License:	GNU GPL version 3 or later
 Copyright (C) 2009 - 2020  Free Antonio Gallo (info@laboratoriolibero.com)
