@@ -660,7 +660,7 @@ class CategoriesModel extends HierarchicalModel {
 				$urlArray[] = self::$elencoMarchi[$id_marchio];
 		}
 		
-		if ($id_c && ($id_c != CategoriesModel::$idShop || v("shop_in_alias_tag") || v("shop_in_alias_marchio")))
+		if ($id_c && ($id_c != CategoriesModel::$idShop || v("shop_in_alias_tag") || v("shop_in_alias_marchio") || (!$id_tag && !$id_marchio)))
 		{
 			if (is_numeric($id_c))
 			{
