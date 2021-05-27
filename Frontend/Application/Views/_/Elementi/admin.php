@@ -65,7 +65,7 @@
 		background-color:red;
 		border:1px solid #CCC;
 	}
-	.blocco_testo:hover .edit_blocco_testo img
+	.blocco_testo:hover .edit_blocco_testo img, .fascia_contenuto:hover .edit_blocco_testo img
 	{
 		width:20px;
 		display:block !important;
