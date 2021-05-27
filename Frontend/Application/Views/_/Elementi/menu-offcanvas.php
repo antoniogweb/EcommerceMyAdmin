@@ -5,7 +5,7 @@
 			<header class="uk-card-header uk-flex uk-flex-middle">
 				<button class="uk-offcanvas-close" type="button" uk-close></button>
 				<div>
-					<div class="uk-margin-medium"><a href="<?php echo $this->baseUrl;?>"><img src="<?php echo $this->baseUrlSrc."/Public/Img/logo.png"?>" width="90" alt="Logo"></a></div>
+					<div class="uk-margin-medium"><a href="<?php echo $this->baseUrl;?>"><?php echo i("__LOGO__");?></a></div>
 					<div class="uk-text-muted uk-text-bold"><span class="uk-margin-small-right" uk-icon="receiver"></span> <?php echo v("telefono_aziendale");?></div>
 					<div class="uk-text-xsmall uk-text-muted">
 						<span class="uk-margin-small-right" uk-icon="location"></span><span><?php echo v("indirizzo_aziendale");?>

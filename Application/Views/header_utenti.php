@@ -59,7 +59,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("mostra_gestione_testi")) { ?>
-			<li class="<?php echo tm($tm, "testi");?>"><a href="<?php echo $this->baseUrl."/testi/main/1";?>"><i class="fa fa-list"></i> Testi sito</a></li>
+			<li class="<?php echo tm($tm, "testi");?>"><a href="<?php echo $this->baseUrl."/testi/main/1";?>"><i class="fa fa-pencil"></i> Elementi tema</a></li>
 			<?php } ?>
 			<?php if (defined("CACHE_FOLDER")) { ?>
 			<li class=""><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-trash"></i> Svuota cache</a></li>

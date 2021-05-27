@@ -39,7 +39,7 @@
 	<div class=" uk-navbar-container es-navbar-container" uk-sticky="cls-active: tm-navbar-container-fixed">
 		<div class="uk-container" uk-navbar>
 			<div class="uk-navbar-left">
-				<button class="uk-navbar-toggle uk-hidden@m" uk-toggle="target: #nav-offcanvas" uk-navbar-toggle-icon></button><a class="uk-navbar-item uk-logo" href="<?php echo $this->baseUrl;?>"><img src="<?php echo $this->baseUrlSrc."/Public/Img/logo.png"?>" width="90" height="32" alt="Logo"></a>
+				<button class="uk-navbar-toggle uk-hidden@m" uk-toggle="target: #nav-offcanvas" uk-navbar-toggle-icon></button><a class="uk-navbar-item uk-logo" href="<?php echo $this->baseUrl;?>"><?php echo i("__LOGO__");?></a>
 			</div>
 			<div class="uk-navbar-center">
 				<nav class="uk-visible@m">

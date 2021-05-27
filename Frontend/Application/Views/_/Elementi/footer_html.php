@@ -6,7 +6,7 @@
 			<div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-4@m" uk-grid>
 				<div>
 					<a class="uk-logo" href="<?php echo $this->baseUrl;?>">
-						<img src="<?php echo $this->baseUrlSrc."/Public/Img/logo_inverso.png";?>" width="140" alt="Logo">
+						<?php echo i("__LOGO_BLACK__");?>
 					</a>
 					<p class="uk-text-small"><?php echo t("Testo copy footer");?></p>
 					<ul class="uk-iconnav">
