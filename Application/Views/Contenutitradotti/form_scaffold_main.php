@@ -72,6 +72,10 @@ $().ready(function() {
 			<?php echo $form["url"];?>
 			<?php } ?>
 			
+			<?php if (isset($form["testo_link"])) { ?>
+			<?php echo $form["testo_link"];?>
+			<?php } ?>
+			
 			<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
 			
 			<?php if ($type === "update") { ?>

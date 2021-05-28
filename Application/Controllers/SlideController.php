@@ -48,7 +48,7 @@ class SlideController extends PagesController {
 		$this->filters = array(null,null,'title');
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
-		$this->queryFields = "title,attivo,immagine,sottotitolo,url,link_id_page,link_id_c";
+		$this->queryFields = "title,attivo,immagine,sottotitolo,url,link_id_page,link_id_c,testo_link";
 		
 		if (v("immagine_2_in_slide"))
 			$this->queryFields .= ",immagine_2";

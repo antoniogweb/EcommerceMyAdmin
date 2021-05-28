@@ -43,7 +43,7 @@ trait TraitController
 		}
 		
 		if ($section == "slide_detail")
-			$fields = 'title,sottotitolo,url';
+			$fields = 'title,sottotitolo,url,testo_link';
 		else if ($section == "blog_detail")
 			$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
 		else if ($section == "-car-")

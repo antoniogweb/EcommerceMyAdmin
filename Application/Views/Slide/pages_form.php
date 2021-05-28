@@ -56,6 +56,9 @@
 										<div class='col-md-4'>
 											<?php echo $form["url"];?>
 										</div>
+										<div class='col-md-4'>
+											<?php echo $form["testo_link"];?>
+										</div>
 									</div>
 									
 									<?php if ($type === "update") { ?>
