@@ -1,6 +1,6 @@
 <?php 
 
-// EcommerceMyAdmin is a PHP CMS based on EasyGiant
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
 // Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
@@ -23,7 +23,7 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 
-//class containing all the PHP files that have to be loaded at the beginning of the EasyGiant execution
+//class containing all the PHP files that have to be loaded at the beginning of the MvcMyLibrary execution
 //the files have to be saved in Application/Include
 //all the files have to be PHP files!!
 class Autoload

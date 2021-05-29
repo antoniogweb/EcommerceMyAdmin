@@ -1,6 +1,6 @@
 <?php
 
-// EcommerceMyAdmin is a PHP CMS based on EasyGiant
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
 // Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
@@ -21,9 +21,6 @@
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
 if (!defined('EG')) die('Direct access not allowed!');
-
-// All EasyGiant code is released under the GNU General Public License or a compatible license.
-// See COPYRIGHT.txt and LICENSE.txt.
 
 class GenericModel extends Model_Tree
 {

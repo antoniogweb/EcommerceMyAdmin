@@ -1,6 +1,6 @@
 <?php 
 
-// All EasyGiant code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// All MvcMyLibrary code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 // See COPYRIGHT.txt and LICENSE.txt.
 
 if (!defined('EG')) die('Direct access not allowed!');
@@ -85,7 +85,7 @@ class Route
 	);
 	
 	//it can be 'yes' or 'no'
-	//set $rewrite to 'yes' if you want that EasyGiant rewrites the URLs according to what specified in $map
+	//set $rewrite to 'yes' if you want that MvcMyLibrary rewrites the URLs according to what specified in $map
 	public static $rewrite = 'yes';
 	
 	//define the urls of your website

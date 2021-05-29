@@ -1,6 +1,6 @@
 <?php
 
-// All EasyGiant code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// All MvcMyLibrary code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 // See COPYRIGHT.txt and LICENSE.txt.
 
 if (!defined('EG')) die('Direct access not allowed!');
@@ -26,11 +26,11 @@ if (isset($_GET["fromApp"]))
 		$_POST = json_decode($rawData, true);
 }
 
-//in this file you can write the PHP code that will be executed at the beginning of the EasyGiant execution, before super global array have been sanitizied
+//in this file you can write the PHP code that will be executed at the beginning of the MvcMyLibrary execution, before super global array have been sanitizied
 
 //this is the preferred place to create and fill log files
 
-//you can access the whole set of classes and functions of EasyGiant
+//you can access the whole set of classes and functions of MvcMyLibrary
 
 Params::$exactUrlMatchRewrite = true;
 

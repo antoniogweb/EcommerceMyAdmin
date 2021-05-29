@@ -1,6 +1,6 @@
 <?php 
 
-// EcommerceMyAdmin is a PHP CMS based on EasyGiant
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
 // Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.

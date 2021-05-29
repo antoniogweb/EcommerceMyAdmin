@@ -1,6 +1,6 @@
 <?php 
 
-// EcommerceMyAdmin is a PHP CMS based on EasyGiant
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
 // Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
@@ -44,11 +44,11 @@ define('DOMAIN_NAME',$website_domain_name.'/admin');
 define('DATABASE_TYPE','Mysqli');
 
 /*error controller*/
-/*if you set ERROR_CONTROLLER to false, than EasyGiant will set ERROR_CONTROLLER equal to DEFAULT_CONTROLLER*/
+/*if you set ERROR_CONTROLLER to false, than MvcMyLibrary will set ERROR_CONTROLLER equal to DEFAULT_CONTROLLER*/
 define('ERROR_CONTROLLER','panel');
 
 /*error action*/
-/*if you set ERROR_ACTION to false, than EasyGiant will set ERROR_ACTION equal to DEFAULT_ACTION*/
+/*if you set ERROR_ACTION to false, than MvcMyLibrary will set ERROR_ACTION equal to DEFAULT_ACTION*/
 define('ERROR_ACTION','main');
 
 /*charset*/

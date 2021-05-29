@@ -1,6 +1,6 @@
 <?php 
 
-// EcommerceMyAdmin is a PHP CMS based on EasyGiant
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
 // Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
@@ -422,7 +422,7 @@ class Route
 	);
 	
 	//it can be 'yes' or 'no'
-	//set $rewrite to 'yes' if you want that EasyGiant rewrites the URLs according to what specified in $map
+	//set $rewrite to 'yes' if you want that MvcMyLibrary rewrites the URLs according to what specified in $map
 	public static $rewrite = 'no';
 	
 	//define the urls of your website

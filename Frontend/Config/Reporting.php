@@ -1,6 +1,6 @@
 <?php 
 
-// All EasyGiant code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// All MvcMyLibrary code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 // See COPYRIGHT.txt and LICENSE.txt.
 
 if (!defined('EG')) die('Direct access not allowed!');
@@ -22,12 +22,12 @@ define ('ERROR_REPORTING_DIRECTIVE',E_ALL);
 define ('DISPLAY_ERRORS','On');
 
 //set if the error file (see the next directive) has to be created or not
-//set ERROR_REPORTING_FILE to true if you want that EasyGiant saves the errors in the LOG_ERROR_FILE (next), otherwise set ERROR_REPORTING_FILE to false
+//set ERROR_REPORTING_FILE to true if you want that MvcMyLibrary saves the errors in the LOG_ERROR_FILE (next), otherwise set ERROR_REPORTING_FILE to false
 define ('ERROR_REPORTING_FILE',false);
 
 //only if ERROR_REPORTING_FILE has been set to true
 //set the file where the errors will be saved
-//default: EasyGiant_root/Logs/Errors.log
+//default: MvcMyLibrary_root/Logs/Errors.log
 //check that the LOG_ERROR_FILE is writeble (by the apache user if you are using mod_php)
 define ('LOG_ERROR_FILE','default');
 
