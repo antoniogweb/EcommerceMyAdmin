@@ -69,7 +69,7 @@ include(ROOT."/Application/Views/header.php");
             <?php if (v("referenze_attive")) { ?>
             <li class="<?php echo $tm["referenze"][0];?> treeview">
 				<a href="#">
-					<i class="fa fa-folder-open"></i>
+					<i class="fa fa-cubes"></i>
 					<span><?php echo gtext("Referenze");?></span>
 				</a>
 				<ul class="treeview-menu">

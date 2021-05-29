@@ -101,12 +101,6 @@ $(document).ready(function() {
 	
 	$("select[name='use_editor']").change(function(){
 	
-// 		if ($(this).val() == "N")
-// 		{
-// 			var old_html = $('textarea.dettagli').html();
-// 
-// 			$('textarea.dettagli').val(old_html.replace(/<br\s*\/?>/mg,"\r\n"));
-// 		}
 		reloadPage();
 		
 	});
@@ -121,7 +115,6 @@ function show_preview()
 	if (immagine != "")
 	{
 		$(".preview_image").html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
-// 		$("#userfile_box").css("display", "none");
 		$(".cancella_immagine_box").css("display", "block");
 		$(".scarica_immagine_box").css("display", "block");
 		$(".scarica_immagine").attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
@@ -129,7 +122,6 @@ function show_preview()
 	else
 	{
 		$(".preview_image").html("<p>Non è stata caricata alcuna immagine</p>");
-// 		$("#userfile_box").css("display", "block");
 		$(".cancella_immagine_box").css("display", "none");
 		$(".scarica_immagine_box").css("display", "none");
 	}
@@ -143,7 +135,6 @@ function show_preview2()
 	if (immagine != "")
 	{
 		$(".preview_image_2").html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
-// 		$("#userfile_box").css("display", "none");
 		$(".cancella_immagine_box_2").css("display", "block");
 		$(".scarica_immagine_box_2").css("display", "block");
 		$(".scarica_immagine_2").attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
@@ -151,7 +142,6 @@ function show_preview2()
 	else
 	{
 		$(".preview_image_2").html("<p>Non è stata caricata alcuna immagine</p>");
-// 		$("#userfile_box").css("display", "block");
 		$(".cancella_immagine_box_2").css("display", "none");
 		$(".scarica_immagine_box_2").css("display", "none");
 	}
@@ -191,6 +181,7 @@ $(function () {
 			var fileName = data.files[0].name;
 			
 			var fileExt = fileName.split('.').pop();
+			var fileExt = fileExt.toLowerCase();
 			
 			if (allowed.indexOf(fileExt) == -1)
 			{
@@ -238,6 +229,7 @@ $(function () {
 			var fileName = data.files[0].name;
 			
 			var fileExt = fileName.split('.').pop();
+			var fileExt = fileExt.toLowerCase();
 			
 			if (allowed.indexOf(fileExt) == -1)
 			{
@@ -255,28 +247,4 @@ $(function () {
 		.parent().addClass($.support.fileInput ? undefined : 'disabled');
 });
 
-// $(function() {
-// 	$('#userfile').uploadify({
-// 		'width'    : 180,
-// 		'fileSizeLimit' : '<?php echo Parametri::$uploadifyMaxUploadSize;?>',
-// 		'buttonText' : 'SELEZIONA IMMAGINE',
-// 		'removeCompleted' : true,
-// 		'multi'    : false,
-// 		'formData'      : {'token':'<?php echo $token;?>', 'id_page':'<?php echo $id_page; ?>', 'is_main':'1'},
-// 		'swf'      : '<?php echo $this->baseUrl."/Public/Js/uploadify_3_2_1/";?>uploadify.swf',
-// 		'uploader' : '<?php echo $this->baseUrl."/pages/move";?>',
-// 		'onUploadStart' : function(file) {
-// 			if (jQuery.inArray(file.name.split('.').pop().toLowerCase(), allowed) == -1)
-// 			{
-// 				alert("il file " + file.name + " non sarà caricato perché la sua estensione non è ammessa");
-// 				$('#userfile').uploadify("cancel",file.id);
-// 			}
-// 		},
-// 		'onUploadSuccess' : function(file, data) {
-// 			$("input[name='immagine']").val(data);
-// 			show_preview();
-// 		}
-// 	});
-// });
-	
 </script>

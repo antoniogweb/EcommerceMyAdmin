@@ -75,29 +75,7 @@
 						<?php } ?>
 						
 						<div class="panel panel-info">
-							<div class="panel-heading">
-								Immagine
-							</div>
-							<div class="panel-body image_panel">
-								<div class="preview_image"></div>
-								<?php echo $form["immagine"];?>
-								<div class="cancella_immagine_box">
-									<a title="cancella immagine" class="cancella_immagine" href="#"><span class="glyphicon glyphicon-remove"></span></a>
-								</div>
-								<div class="scarica_immagine_box">
-									<a target="_blank" title="scarica immagine" class="scarica_immagine" href="#"><span class="glyphicon glyphicon-download"></span></a>
-								</div>
-								<span class="btn btn-success fileinput-button">
-									<i class="fa fa-plus"></i>
-									<span>SELEZIONA IMMAGINE</span>
-									<!-- The file input field used as target for the file upload widget -->
-									<input id="userfile" type="file" name="Filedata">
-								</span>
-								<div style="display:none;margin-top:10px;" id="progress" class="progress">
-									<div class="progress-bar progress-bar-success"></div>
-								</div>
-								<div class="alert-fileupload"></div>
-							</div>
+							<?php include($this->viewPath("pages_form_immagine"));?>
 						</div>
 					</div>
 				</div>

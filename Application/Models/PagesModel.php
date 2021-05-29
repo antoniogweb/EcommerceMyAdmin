@@ -516,23 +516,11 @@ class PagesModel extends GenericModel {
 				$this->setPriceNonIvato();
 				
 				$r = parent::update($clean["id"]);
-
-	// 			$gc = new ReggroupscategoriesModel();
 				
 				//aggiorno i permessi della pagina
 				if ($r)
 				{
 					$this->updatePageAccessibility($clean["id"]);
-					
-// 					$list1 = $this->clear()->select()->toList('immagine')->send();
-// 					
-// 					$i = new ImmaginiModel();
-// 					$list2 = $i->clear()->select()->toList('immagine')->send();
-// 					
-// 					$list = array_merge($list1, $list2);
-// 					
-// 					$this->files->setBase(Domain::$parentRoot."/".Parametri::$cartellaImmaginiContenuti);
-// 					$this->files->removeFilesNotInTheList($list);
 				}
 				
 				if ($this->checkAll)
