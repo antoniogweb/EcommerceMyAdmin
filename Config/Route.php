@@ -419,6 +419,30 @@ class Route
 		'testimonial,inevidenza',
 		'testimonial,updatevalue',
 		'testimonial,ordina',
+		
+		'eventicat,main',
+		'eventicat,form',
+		'eventicat,meta',
+		'eventicat,gruppi',
+		
+		'eventi,main',
+		'eventi,aggiungicategoria',
+		'eventi,form',
+		'eventi,immagini',
+		'eventi,eliminacategoria',
+		'eventi,correlati',
+		'eventi,attributi',
+		'eventi,caratteristiche',
+		'eventi,move',
+		'eventi,pubblica',
+		'eventi,inevidenza',
+		'eventi,updatevalue',
+		'eventi,meta',
+		'eventi,ordina',
+		'eventi,contenuti',
+		'eventi,ordinacontenuti',
+		'eventi,link',
+		'eventi,testi',
 	);
 	
 	//it can be 'yes' or 'no'

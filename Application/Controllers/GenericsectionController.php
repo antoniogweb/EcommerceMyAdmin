@@ -22,14 +22,14 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BlogController extends GenericsectionController {
+class GenericsectionController extends PagesController {
 
-	public $voceMenu = "blog";
+	public $voceMenu = "";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-		
+
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
@@ -39,17 +39,21 @@ class BlogController extends GenericsectionController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,video,video_thumb,sottotitolo";
+		$this->orderBy = "pages.data_news desc";
 		
-		if (v("in_evidenza_blog"))
-		{
-			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
-			$this->queryFields .= ",in_evidenza";
-			$this->head .= ",In evidenza";
-		}
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data,Pubblicato?';
+		$this->filters = array(null,null,'title');
 		
-		$data["tabella"] = "blog";
+		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,sottotitolo";
+		
+		$this->clean();
+		
+		$this->load('header_sito');
+		$this->load('footer','last');
+		
+		$data["sezionePannello"] = "sito";
 		
 		$this->append($data);
 	}
+
 }

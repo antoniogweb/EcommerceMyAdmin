@@ -36,7 +36,7 @@ include(ROOT."/Application/Views/header.php");
 			<?php if (v("blog_attivo")) { ?>
 			<li class="<?php echo $tm["blog"][0];?> treeview">
 				<a href="#">
-					<i class="fa fa-folder-open"></i>
+					<i class="fa fa-rss"></i>
 					<span><?php echo gtext("Blog");?></span>
 				</a>
 				<ul class="treeview-menu">
@@ -44,6 +44,20 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/blog/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					<li class="dropdown-header">Categorie</li>
 					<li><a href="<?php echo $this->baseUrl."/blogcat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
+				</ul>
+			</li>
+			<?php } ?>
+			<?php if (v("mostra_eventi")) { ?>
+			<li class="<?php echo tm($tm, "eventi");?> treeview">
+				<a href="#">
+					<i class="fa fa-calendar-o"></i>
+					<span><?php echo gtext("Eventi");?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/eventi/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/eventi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+					<li class="dropdown-header">Categorie</li>
+					<li><a href="<?php echo $this->baseUrl."/eventicat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
 				</ul>
 			</li>
 			<?php } ?>
