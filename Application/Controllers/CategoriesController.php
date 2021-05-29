@@ -160,6 +160,11 @@ class CategoriesController extends BaseController {
 			$this->scaffold->model->aWhere($where);
 		}
 		
+		if (!$this->m[$this->modelName]->section)
+			$this->scaffold->model->aWhere(array(
+				"installata"	=>	1,
+			));
+		
 		CategoriesModel::$orderWhere = $this->scaffold->model->where;
 		
 		if (isset($_POST["moveupAction"]) or isset($_POST["movedownAction"]))

@@ -7,11 +7,6 @@
   <li <?php echo $posizioni['meta'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/meta/$id".$this->viewStatus;?>">Meta</a></li>
 </ul>
 
-
-<?php } else { ?>
-
-
-
 <?php } ?>
 
 <div style="clear:left;"></div>
