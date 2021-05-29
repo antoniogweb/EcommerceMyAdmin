@@ -53,6 +53,8 @@ class GenericsectionController extends PagesController {
 		
 		$data["sezionePannello"] = "sito";
 		
+		$data["tabella"] = $this->voceMenu;
+		
 		$this->append($data);
 	}
 

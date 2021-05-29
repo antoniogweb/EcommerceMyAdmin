@@ -179,6 +179,7 @@ class VariabiliModel extends GenericModel {
 		"abilita_rich_snippet"		=>	1,
 		"abilita_codice_fiscale"	=>	1,
 		"mostra_eventi"				=>	0,
+		"mostra_gallery"			=>	0,
 	);
 	
 	public function __construct() {

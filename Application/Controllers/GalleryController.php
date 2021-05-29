@@ -22,9 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BlogController extends GenericsectionController {
-
-	public $voceMenu = "blog";
+class GalleryController extends GenericsectionController {
+	
+	public $voceMenu = "gallery";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
@@ -34,25 +34,13 @@ class BlogController extends GenericsectionController {
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
-			'PagesModel.categoriesS|pages.id_page',
-			'smartDate|pages.data_news',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data,Pubblicato?';
-		$this->filters = array(null,null,'title');
+		$this->orderBy = "pages.id_order";
 		
-		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,video,video_thumb,sottotitolo";
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
-		if (v("in_evidenza_blog"))
-		{
-			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
-			$this->queryFields .= ",in_evidenza";
-			$this->head .= ",In evidenza";
-		}
-		
-		$data["tabella"] = "blog";
-		
-		$this->append($data);
+		$this->queryFields = "title,attivo,description,immagine";
 	}
 }

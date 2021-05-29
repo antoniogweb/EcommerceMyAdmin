@@ -141,12 +141,24 @@ include(ROOT."/Application/Views/header.php");
 			<?php if (v("mostra_testimonial")) { ?>
 			<li class="<?php echo tm($tm, "testimonial");?> treeview">
 				<a href="#">
-					<i class="fa fa-trophy"></i>
+					<i class="fa fa-star"></i>
 					<span>Testimonial</span>
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="<?php echo $this->baseUrl."/testimonial/main";?>"><i class="fa fa-list"></i> Lista</a></li>
 					<li><a href="<?php echo $this->baseUrl."/testimonial/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+				</ul>
+			</li>
+			<?php } ?>
+			<?php if (v("mostra_gallery")) { ?>
+			<li class="<?php echo tm($tm, "gallery");?> treeview">
+				<a href="#">
+					<i class="fa fa-picture-o"></i>
+					<span>Gallery</span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/gallery/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/gallery/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 				</ul>
 			</li>
 			<?php } ?>

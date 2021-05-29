@@ -22,15 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class EventiController extends GenericsectionController {
-
-	public $voceMenu = "eventi";
+class GalleryModel extends BasicsectionModel {
 	
-	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
-	{
-		parent::__construct($model, $controller, $queryString, $application, $action);
-		
-		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,sottotitolo";
-	}
-
+	public $hModelName = "GallerycatModel";
+	
 }

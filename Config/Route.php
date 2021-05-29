@@ -426,13 +426,9 @@ class Route
 		'eventicat,gruppi',
 		
 		'eventi,main',
-		'eventi,aggiungicategoria',
 		'eventi,form',
 		'eventi,immagini',
-		'eventi,eliminacategoria',
 		'eventi,correlati',
-		'eventi,attributi',
-		'eventi,caratteristiche',
 		'eventi,move',
 		'eventi,pubblica',
 		'eventi,inevidenza',
@@ -441,8 +437,15 @@ class Route
 		'eventi,ordina',
 		'eventi,contenuti',
 		'eventi,ordinacontenuti',
-		'eventi,link',
 		'eventi,testi',
+		
+		'gallery,main',
+		'gallery,form',
+		'gallery,move',
+		'gallery,pubblica',
+		'gallery,inevidenza',
+		'gallery,updatevalue',
+		'gallery,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

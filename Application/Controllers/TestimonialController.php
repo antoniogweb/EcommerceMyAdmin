@@ -32,9 +32,10 @@ class TestimonialController extends PagesController {
 			),
 		);
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
-
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
@@ -42,23 +43,9 @@ class TestimonialController extends PagesController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.id_order";
-		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Autore,Attiva';
 		$this->filters = array(null,'title');
 		
 		$this->queryFields = "title,attivo,description,autore,immagine";
-		
-		$this->clean();
-		
-		$this->load('header_sito');
-		$this->load('footer','last');
-		
-		$data["sezionePannello"] = "sito";
-		
-		$data["tabella"] = "testimonial";
-		$data["use_editor"] = "Y";
-		
-		$this->append($data);
 	}
 }
