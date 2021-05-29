@@ -32,7 +32,7 @@ class CronController extends BaseController {
 		ini_set("memory_limit","512M");
 	}
 	
-	public function migrazioni($c = "")
+	public function migrazioni($c = "", $mostra = 0)
 	{
 		$this->clean();
 		
@@ -71,17 +71,22 @@ class CronController extends BaseController {
 				{
 					$sql = file_get_contents($file);
 					
-					if ($mysqli->query($sql))
+					if (!$mostra)
 					{
-						fwrite($hand,date("Y-m-d H:i:s")." APPLICATA MIGRAZIONE ".$numero.".sql\n");
-						echo "APPLICATA MIGRAZIONE ".$numero.".sql<br />";
+						if ($mysqli->query($sql))
+						{
+							fwrite($hand,date("Y-m-d H:i:s")." APPLICATA MIGRAZIONE ".$numero.".sql\n");
+							echo "APPLICATA MIGRAZIONE ".$numero.".sql<br />";
+						}
+						else
+						{
+							echo $mysqli->getError()."<br />";
+							fwrite($hand,date("Y-m-d H:i:s")." ERRORE MIGRAZIONE ".$numero.".sql\n");
+							echo "ERRORE MIGRAZIONE ".$numero.".sql<br />";
+						}
 					}
 					else
-					{
-						echo $mysqli->getError()."<br />";
-						fwrite($hand,date("Y-m-d H:i:s")." ERRORE MIGRAZIONE ".$numero.".sql\n");
-						echo "ERRORE MIGRAZIONE ".$numero.".sql<br />";
-					}
+						echo $sql."<br />";
 					
 					$newVersion = $numero;
 				}
@@ -89,9 +94,15 @@ class CronController extends BaseController {
 			
 			if ($newVersion > $version)
 			{
-				$mysqli->query("update variabili set valore = ".(int)$newVersion." where chiave='db_version';");
-				fwrite($hand,date("Y-m-d H:i:s")." DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql\n");
-				echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />";
+				if (!$mostra)
+				{
+					$mysqli->query("update variabili set valore = ".(int)$newVersion." where chiave='db_version';");
+					fwrite($hand,date("Y-m-d H:i:s")." DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql\n");
+					echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />";
+				}
+				else
+					echo "<br />NUOVA VERSIONE: $newVersion";
+				
 				$version = $newVersion;
 			}
 			
