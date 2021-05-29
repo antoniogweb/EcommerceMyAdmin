@@ -180,6 +180,8 @@ class VariabiliModel extends GenericModel {
 		"abilita_codice_fiscale"	=>	1,
 		"mostra_eventi"				=>	0,
 		"mostra_gallery"			=>	0,
+		"attiva_immagine_sfondo"	=>	0,
+		"attiva_tutte_le_categorie"	=>	0,
 	);
 	
 	public function __construct() {

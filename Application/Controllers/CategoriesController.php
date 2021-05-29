@@ -26,9 +26,10 @@ class CategoriesController extends BaseController {
 
 	public $voceMenu = "prodotti";
 	
-	public $queryFields = "title,alias,id_p,immagine";
+	public $queryFields = "title,alias,id_p,immagine,description";
 	public $metaQueryFields = "keywords,meta_description,template,add_in_sitemap,priorita_sitemap";
 	public $formFields = null;
+	public $sezionePannello = "sito";
 	
 	protected $_posizioni = array(
 		"main"		=>	null,
@@ -38,8 +39,11 @@ class CategoriesController extends BaseController {
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
+		if ($model == "CategoriesModel")
+			$this->sezionePannello = "utenti";
+			
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
 		$this->session('admin');
 		$this->model();
 		$this->model("CategoriesModel");
@@ -54,7 +58,12 @@ class CategoriesController extends BaseController {
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
 		
+		$data["sezionePannello"] = $this->sezionePannello;
+		
 		$this->append($data);
+		
+		if (v("attiva_immagine_sfondo"))
+			$this->queryFields .= ",immagine_sfondo";
 		
 		$this->s['admin']->check();
 	}
@@ -74,16 +83,33 @@ class CategoriesController extends BaseController {
 		CategoriesModel::$actionName = $this->action;
 		CategoriesModel::$viewStatus = $this->viewStatus;
 		
-		$this->m[$this->modelName]->bulkAction("del");
+		$mainMenu = '';
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add'));
+		if ($this->m[$this->modelName]->section)
+		{
+			$this->m[$this->modelName]->bulkAction("del");
+			$mainMenu = 'add';
+		}
 		
-		$tabelFields = array(
-			'[[checkbox]];categories.id_c;',
-			$this->modelName.'.indent|categories.id_c',
-		);
+		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>$mainMenu));
 		
-		$head = '[[bulkselect:checkbox_categories_id_c]],Titolo';
+		if ($this->m[$this->modelName]->section)
+		{
+			$tabelFields = array(
+				'[[checkbox]];categories.id_c;',
+				$this->modelName.'.indent|categories.id_c',
+			);
+			
+			$head = '[[bulkselect:checkbox_categories_id_c]],Titolo';
+		}
+		else
+		{
+			$tabelFields = array(
+				$this->modelName.'.indent|categories.id_c',
+			);
+			
+			$head = 'Titolo';
+		}
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
@@ -91,20 +117,29 @@ class CategoriesController extends BaseController {
 			$head .= ",".strtoupper($codiceLingua);
 		}
 		
-		$tabelFields[] = $this->modelName.'.arrowUp|categories.id_c';
-		$tabelFields[] = $this->modelName.'.arrowDown|categories.id_c';
+		if ($this->m[$this->modelName]->section)
+		{
+			$tabelFields[] = $this->modelName.'.arrowUp|categories.id_c';
+			$tabelFields[] = $this->modelName.'.arrowDown|categories.id_c';
+			
+			$head .= ",,";
+			
+			$editAction = 'ldel,ledit';
+			
+			$this->scaffold->itemList->setBulkActions(array(
+				"checkbox_categories_id_c"	=>	array("del","Elimina selezionati","confirm"),
+			));
+		}
+		else
+		{
+			$editAction = "ledit";
+		}
 		
-		$head .= ",,";
-		
-		$this->scaffold->loadMain($tabelFields,'categories:id_c','ldel,ledit');
+		$this->scaffold->loadMain($tabelFields,'categories:id_c',$editAction);
 
 		$this->scaffold->update('del');
 		
 		$this->scaffold->setHead($head);
-		
-		$this->scaffold->itemList->setBulkActions(array(
-			"checkbox_categories_id_c"	=>	array("del","Elimina selezionati","confirm"),
-		));
 		
 		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
 		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci una nuova categoria';
@@ -140,9 +175,14 @@ class CategoriesController extends BaseController {
 		
 		$this->scaffold->model->orderBy("lft asc");
 		
-		$colProperties = array(
-			array('width'	=>	'45px',),null,
-		);
+		if ($this->m[$this->modelName]->section)
+			$colProperties = array(
+				array('width'	=>	'45px',),null,
+			);
+		else
+			$colProperties = array(
+				null,
+			);
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
@@ -159,7 +199,10 @@ class CategoriesController extends BaseController {
 		
 		$this->scaffold->itemList->colProperties = $colProperties;
 		
-		$this->scaffold->itemList->setFilters(array(null,'title'));
+		if ($this->m[$this->modelName]->section)
+			$this->scaffold->itemList->setFilters(array(null,'title'));
+		else
+			$this->scaffold->itemList->setFilters(array('title'));
 		
 		$data['scaffold'] = $this->scaffold->render();
 		

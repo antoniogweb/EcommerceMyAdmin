@@ -26,13 +26,5 @@ class DownloadcatController extends CategoriesController {
 
 	public $voceMenu = "download";
 	public $sezionePannello = "sito";
-	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
-		
-		$data["sezionePannello"] = "sito";
-		
-		$this->append($data);
-	}
 
 }

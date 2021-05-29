@@ -25,16 +25,5 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BlogcatController extends CategoriesController {
 
 	public $voceMenu = "blog";
-	public $sezionePannello = "sito";
-	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
-		
-		$this->queryFields = "title,alias,id_p,immagine,description";
-		
-		$data["sezionePannello"] = "sito";
-		
-		$this->append($data);
-	}
 
 }

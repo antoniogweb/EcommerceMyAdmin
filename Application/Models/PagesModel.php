@@ -265,6 +265,9 @@ class PagesModel extends GenericModel {
 				'immagine_2'	=>	array(
 					'type'		=>	'Hidden'
 				),
+				'immagine_fondo'	=>	array(
+					'type'		=>	'Hidden'
+				),
 				'codice_nazione'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Nazione',

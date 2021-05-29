@@ -97,6 +97,23 @@ class CategoriesModel extends HierarchicalModel {
 					'cropImage'		=>	'no',
 				),
 			),
+			"immagine_sfondo"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/categorie_sfondo",
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+// 				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	600,
+					'imgHeight'		=>	300,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'no',
+				),
+			),
 		);
 		
 		parent::__construct();

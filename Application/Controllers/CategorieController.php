@@ -37,6 +37,9 @@ class CategorieController extends CategoriesController {
 		
 		if (v("mostra_colore_testo"))
 			$this->queryFields .= ",colore_testo_in_slide";
+		
+		if (v("attiva_immagine_sfondo"))
+			$this->queryFields .= ",immagine_sfondo";
 			
 		$data["sezionePannello"] = "ecommerce";
 		

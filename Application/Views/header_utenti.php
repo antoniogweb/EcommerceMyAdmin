@@ -61,6 +61,9 @@ include(ROOT."/Application/Views/header.php");
 			<?php if (v("mostra_gestione_testi")) { ?>
 			<li class="<?php echo tm($tm, "testi");?>"><a href="<?php echo $this->baseUrl."/testi/main/1";?>"><i class="fa fa-pencil"></i> Elementi tema</a></li>
 			<?php } ?>
+			<?php if (v("attiva_tutte_le_categorie")) { ?>
+			<li class="<?php echo tm($tm, "categories");?>"><a href="<?php echo $this->baseUrl."/categories/main/1";?>"><i class="fa fa-folder-open"></i> Categorie</a></li>
+			<?php } ?>
 			<?php if (defined("CACHE_FOLDER")) { ?>
 			<li class=""><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-trash"></i> Svuota cache</a></li>
 			<?php } ?>
