@@ -314,6 +314,12 @@ class PagesModel extends GenericModel {
 				'priorita_sitemap'	=>	array(
 					'labelString'=>	'Priorità sitemap',
 				),
+				'allineamento'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	array('LX'=>'Sinistra','DX'=>'Destra','CE'=>'Centro'),
+					'reverse' => 'yes',
+					
+				),
 			),
 		);
 		
