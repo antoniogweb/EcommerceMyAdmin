@@ -185,6 +185,8 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_slide"			=>	"slide/main",
 		"traduzione_backend"		=>	0,
 		"permetti_cambio_lingua"	=>	0,
+		"google_plus"				=>	"",
+		"numero_eventi_home"		=>	3,
 	);
 	
 	public function __construct() {

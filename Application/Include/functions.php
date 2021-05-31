@@ -824,6 +824,7 @@ function attivaModuli($string, $obj = null)
 {
 	$string = preg_replace_callback('/(\[baseUrlSrc\])/', 'getBaseUrlSrc' ,$string);
 	$string = preg_replace_callback('/(\[baseUrl\])/', 'getBaseUrl' ,$string);
+	$string = preg_replace_callback('/\[themeFolder\]/', 'getThemeFolder' ,$string);
 // 	$string = preg_replace_callback('/\[(testo\=)([0-9]{1,})\]/', 'getTesto' ,$string);
 	$string = preg_replace_callback('/\[testo (.*?)\]/', 'getTesto' ,$string);
 	$string = preg_replace_callback('/\[immagine (.*?)\]/', 'getImmagine' ,$string);
@@ -844,6 +845,8 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[testimonial\]/', array($obj,'getTestimonial') ,$string);
 		$string = preg_replace_callback('/\[fascia-newsletter\]/', array($obj,'getFasciaNewsletter') ,$string);
 		$string = preg_replace_callback('/\[fascia-faq\]/', array($obj,'getFaqInEvidenza') ,$string);
+		$string = preg_replace_callback('/\[gallery\]/', array($obj,'getGalleryFascia') ,$string);
+		$string = preg_replace_callback('/\[eventi\]/', array($obj,'getEventiFascia') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
@@ -860,6 +863,11 @@ function attivaModuli($string, $obj = null)
 function getBaseUrlSrc($matches)
 {
 	return rtrim(Url::getFileRoot(),"/");
+}
+
+function getThemeFolder($matches)
+{
+	return v("theme_folder");
 }
 
 function getBaseUrl($matches)

@@ -36,6 +36,8 @@ class ContenutiModel extends GenericModel {
 		"eg-position-bottom-right"	=>	"In basso a destra",
 	);
 	
+	public static $contentData = array();
+	
 	public static $visibile = array(
 		1	=>	"Visibile",
 		0	=>	"Nascosto",
@@ -386,6 +388,8 @@ class ContenutiModel extends GenericModel {
 			
 			foreach ($fasce as $f)
 			{
+				self::$contentData = $f;
+				
 				$html = htmlentitydecode($f["tipi_contenuto"]["descrizione"]);
 				
 				if ($f["contenuti"]["immagine_1"])

@@ -7,7 +7,7 @@ var tiny_editor_config = {
 	force_p_newlines : false,
 	forced_root_block : '',
 	entity_encoding : "raw",
-// 			width : "910",
+			width : "100%",
 			height : "250",
 	
 	// General options

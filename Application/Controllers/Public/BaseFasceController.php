@@ -64,6 +64,10 @@ trait BaseFasceController
 		
 		$pages = $ultimiArticoli = $this->getNewsInEvidenza;
 		
+		$idBlog = $data["idBlog"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			"section"	=>	"blog",
+		))->field("id_c");
+	
 		ob_start();
 		include tpf("Fasce/ultimi_articoli.php");
 		$output = ob_get_clean();
@@ -189,6 +193,46 @@ trait BaseFasceController
 		
 		ob_start();
 		include tpf("Fasce/fascia_faq.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function getGalleryFascia()
+	{
+		$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			"section"	=>	"gallery",
+		))->field("id_c");
+		
+		$pages = $this->m['PagesModel']->clear()->select("*")
+			->addJoinTraduzionePagina()
+			->where(array(
+				"attivo"	=>	"Y",
+				"id_c"		=>	(int)$idTest,
+			))->orderBy("pages.id_order")->send();
+		
+		ob_start();
+		include tpf("Fasce/fascia_gallery.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function getEventiFascia()
+	{
+		$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			"section"	=>	"eventi",
+		))->field("id_c");
+		
+		$pages = $this->m['PagesModel']->clear()->select("*")
+			->addJoinTraduzionePagina()
+			->where(array(
+				"attivo"	=>	"Y",
+				"id_c"		=>	(int)$idTest,
+			))->limit(v("numero_eventi_home"))->orderBy("data_news desc")->send();
+		
+		ob_start();
+		include tpf("Fasce/fascia_eventi.php");
 		$output = ob_get_clean();
 		
 		return $output;

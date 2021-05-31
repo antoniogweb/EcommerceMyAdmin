@@ -1,6 +1,6 @@
 <?php 
 
-// All MvcMyLibrary code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// All EasyGiant code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 // See COPYRIGHT.txt and LICENSE.txt.
 
 if (!defined('EG')) die('Direct access not allowed!');
@@ -22,6 +22,7 @@ class Route
 		'contenuti,notfound',
 		'contenuti,nonpermesso',
 		'contenuti,sitemap',
+		'contenuti,robots',
 		'contenuti,jsoncategorie',
 		'cart,index',
 		'cart,ajax',
@@ -49,6 +50,7 @@ class Route
 		'thumb,dettaglionews',
 		'thumb,slidethumb',
 		'thumb,slide',
+		'thumb,slidemobile',
 		'thumb,slidelayer',
 		'thumb,slidesotto',
 		'thumb,slidesottothumb',
@@ -62,8 +64,10 @@ class Route
 		'thumb,dettagliobigapp',
 		'thumb,blog',
 		'thumb,blogdetail',
+		'thumb,blogfirst',
 		'thumb,widget',
 		'thumb,valoreattributo',
+		'thumb,testimonial',
 		'regusers,login',
 		'regusers,logout',
 		'regusers,forgot',
@@ -85,7 +89,7 @@ class Route
 	);
 	
 	//it can be 'yes' or 'no'
-	//set $rewrite to 'yes' if you want that MvcMyLibrary rewrites the URLs according to what specified in $map
+	//set $rewrite to 'yes' if you want that EasyGiant rewrites the URLs according to what specified in $map
 	public static $rewrite = 'yes';
 	
 	//define the urls of your website
@@ -126,6 +130,7 @@ class Route
 		'thumb/dettaglionews/(.*)'	=>	'thumb/dettaglionews/${1}',
 		'thumb/slidethumb/(.*)'		=>	'thumb/slidethumb/${1}',
 		'thumb/slide/(.*)'			=>	'thumb/slide/${1}',
+		'thumb/slidemobile/(.*)'	=>	'thumb/slidemobile/${1}',
 		'thumb/slidelayer/(.*)'		=>	'thumb/slidelayer/${1}',
 		'thumb/slidesotto/(.*)'		=>	'thumb/slidesotto/${1}',
 		'thumb/slidesottothumb/(.*)'=>	'thumb/slidesottothumb/${1}',
@@ -139,8 +144,10 @@ class Route
 		'thumb/dettagliobigapp/(.*)'	=>	'thumb/dettagliobigapp/${1}',
 		'thumb/blog/(.*)'			=>	'thumb/blog/${1}',
 		'thumb/blogdetail/(.*)'		=>	'thumb/blogdetail/${1}',
+		'thumb/blogfirst/(.*)'		=>	'thumb/blogfirst/${1}',
 		'thumb/widget/(.*)'			=>	'thumb/widget/${1}',
 		'thumb/valoreattributo/(.*)'=>	'thumb/valoreattributo/${1}',
+		'thumb/testimonial/(.*)'	=>	'thumb/testimonial/${1}',
 		'home/index'				=>	'home/index',
 		'home/settacookie'			=>	'home/settacookie',
 		'contenuti/notfound'		=>	'contenuti/notfound',
@@ -162,6 +169,7 @@ class Route
 		'dettaglio-notizia/(.*)' 	=>	'news/dettaglio/${1}',
 		'archivio-news'				=>	'news/index',
 		'sitemap.xml'				=>	'contenuti/sitemap',
+		'robots.txt'				=>	'contenuti/robots',
 		'contenuti/jsoncategorie/(.*)'	=>	'contenuti/jsoncategorie/${1}',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',
