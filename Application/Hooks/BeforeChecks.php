@@ -47,11 +47,18 @@ User::$isMobile = $detect->isMobile();
 $mysqli = Db_Mysqli::getInstance();
 $mysqli->query("set session sql_mode=''");
 
-Params::$language = "En";
-Params::$frontEndLanguages = array("it", "en");
-Params::$defaultFrontEndLanguage = "it";
+Params::$language = "It";
+
+if (v("permetti_cambio_lingua"))
+{
+	Params::$frontEndLanguages = array("it", "en");
+	Params::$defaultFrontEndLanguage = "it";
+}
 
 TraduzioniModel::$contestoStatic = "back";
+
+if (v("traduzione_backend"))
+	TraduzioniModel::$edit = true;
 
 Params::$setValuesConditionsFromDbTableStruct = true;
 Params::$automaticConversionToDbFormat = true;

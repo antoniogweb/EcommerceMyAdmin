@@ -208,9 +208,6 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
-		if (v("traduzione_backend"))
-			TraduzioniModel::$edit = true;
-		
 		$baseArgsKeys = array(
 			'page:forceInt'=>1,
 			'attivo:sanitizeAll'=>'tutti',
@@ -228,7 +225,7 @@ class BaseController extends Controller
 		
 		$this->setArgKeys($baseArgsKeys);
 		
-		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin",null,$this->baseUrl);
+		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin",null,$this->baseUrlSrc);
 		
 		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = str_replace("/admin",null,ROOT);
 		
