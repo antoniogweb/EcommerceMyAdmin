@@ -12,12 +12,13 @@
 	<link rel="icon" href="<?php echo v("favicon_url");?>" type="image/png"/>
 	<?php } ?>
 	
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl.'/Public/Css/panel.css?v=<?php echo rand(1,100000);?>';?>">
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrl.'/Public/Css/main.css?v=<?php echo rand(1,100000);?>';?>">
-	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrl."/Public/Css/";?>print.css?v=<?php echo rand(1,100000);?>" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/panel.css?v=<?php echo rand(1,100000);?>';?>">
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrlSrc.'/Public/Css/main.css?v=<?php echo rand(1,100000);?>';?>">
+	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrlSrc."/Public/Css/";?>print.css?v=<?php echo rand(1,100000);?>" />
 
 	<script>
 		var baseUrl = "<?php echo $this->baseUrl;?>";
+		var baseUrlSrc = "<?php echo $this->baseUrlSrc;?>";
 		var parentBaseUrl = "<?php echo $parentRoot;?>";
 		var controllerName = "<?php echo $this->controller;?>";
 		var actionName = "<?php echo $this->action;?>";
@@ -26,32 +27,32 @@
 	</script>
 
 	<!--jquery-->
-	<script src="<?php echo $this->baseUrl.'/Public/Js/jquery/';?>jquery-1.8.3.min.js"></script>
+	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-1.8.3.min.js"></script>
 	
-	<link rel="stylesheet" href="<?php echo $this->baseUrl;?>/Public/Js/jquery/ui/css/ui-lightness/jquery-ui-1.9.2.custom.css" />
-	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script>
-	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery_easygiant.js?v=<?php echo rand(1,100000);?>"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery/ui/css/ui-lightness/jquery-ui-1.9.2.custom.css" />
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="<?php echo $this->baseUrlSrcSrc.'/Public/Js/';?>ajaxQueue.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery_easygiant.js?v=<?php echo rand(1,100000);?>"></script>
 	
 	<!-- 	CSS tema -->
-	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/AdminLTE-2.3.0/dist/css/AdminLTE.min.css">
 	
-	<link rel="stylesheet" href="<?php echo $this->baseUrl?>/Public/Js/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
+	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
 	
     <!-- Custom styles for this template -->
-    <link href="<?php echo $this->baseUrl;?>/Public/Css/dashboard.css?v=<?php echo rand(1,100000);?>" rel="stylesheet">
+    <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/dashboard.css?v=<?php echo rand(1,100000);?>" rel="stylesheet">
     
-    <script src="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
-    <script src="<?php echo $this->baseUrl;?>/Public/Js/AdminLTE-2.3.0/dist/js/app.min.js"></script>
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     
-    <script src="<?php echo $this->baseUrl;?>/Public/Js/Respond-master/dest/respond.src.js"></script>
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/Respond-master/dest/respond.src.js"></script>
     
-    <link href="<?php echo $this->baseUrl;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
-    <link href="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
-    <script src="<?php echo $this->baseUrl;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     
     <?php if (defined("APPS")) {
 		foreach (APPS as $app)
@@ -59,7 +60,7 @@
 			$path = ROOT."/Application/Apps/".ucfirst($app)."/Public/";
 			
 			if (file_exists($path."app_editor.js")) { ?>
-				<script src="<?php echo $this->baseUrl."/Application/Apps/".ucfirst($app);?>/Public/app_editor.js?v=<?php echo rand(1,100000);?>"></script>
+				<script src="<?php echo $this->baseUrlSrc."/Application/Apps/".ucfirst($app);?>/Public/app_editor.js?v=<?php echo rand(1,100000);?>"></script>
 			<?php }
 		}
 	} ?>
@@ -95,9 +96,9 @@
 		<header class="main-header">
 			<!-- Logo -->
 			<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {?>
-			<a class="logo" href="<?php echo $this->baseUrl;?>/panel/main"><?php echo Parametri::$nomeNegozio;?></a>
+			<a class="logo" href="<?php echo $this->baseUrlSrc;?>/panel/main"><?php echo Parametri::$nomeNegozio;?></a>
 			<?php } else { ?>
-			<a class="logo" href="<?php echo $this->baseUrl;?>"><?php echo Parametri::$nomeNegozio;?></a>
+			<a class="logo" href="<?php echo $this->baseUrlSrc;?>"><?php echo Parametri::$nomeNegozio;?></a>
 			<?php } ?>
 
 			<!-- Header Navbar: style can be found in header.less -->
@@ -112,8 +113,8 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?php echo User::$name;?> <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="<?php echo $this->baseUrl.'/password/form';?>"><span class="glyphicon glyphicon-cog"></span> Modifica password</a></li>
-								<li><a href="<?php echo $this->baseUrl.'/users/logout';?>"><span class="glyphicon glyphicon-off"></span> Esci</a></li>
+								<li><a href="<?php echo $this->baseUrl.'/password/form';?>"><span class="glyphicon glyphicon-cog"></span> <?php echo gtext("Modifica password")?></a></li>
+								<li><a href="<?php echo $this->baseUrl.'/users/logout';?>"><span class="glyphicon glyphicon-off"></span> <?php echo gtext("Esci")?></a></li>
 							</ul>
 						</li>
 					</ul>

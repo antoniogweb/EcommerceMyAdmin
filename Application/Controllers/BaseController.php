@@ -208,6 +208,9 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
+		if (v("traduzione_backend"))
+			TraduzioniModel::$edit = true;
+		
 		$baseArgsKeys = array(
 			'page:forceInt'=>1,
 			'attivo:sanitizeAll'=>'tutti',

@@ -6,10 +6,10 @@
 <title>Admin zone</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl.'/Public/Css/filesystem.css';?>">
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/filesystem.css';?>">
 
 <?php if ($this->viewArgs['use_flash']) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl?>/Public/Js/uploadify_3_2_1/uploadify.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/uploadify.css" />
 <?php } ?>
 
 </head>

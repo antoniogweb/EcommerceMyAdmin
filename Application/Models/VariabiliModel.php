@@ -183,6 +183,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_immagine_sfondo"	=>	0,
 		"attiva_tutte_le_categorie"	=>	0,
 		"url_elenco_slide"			=>	"slide/main",
+		"traduzione_backend"		=>	0,
 	);
 	
 	public function __construct() {
