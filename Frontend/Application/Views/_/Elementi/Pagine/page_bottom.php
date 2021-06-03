@@ -1,8 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-				<?php if (!isset($noContainer)) { ?>
+				
 				</div>
-				<?php } ?>
 			</div>
+		<?php if (!isset($noContainer)) { ?>
 		</div>
+		<?php } ?>
 	</section>
 </main>
