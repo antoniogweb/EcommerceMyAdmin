@@ -171,7 +171,7 @@ class MenuModel extends HierarchicalModel {
 	//create the HTML of the menu
 	//$tree: nodes as given by getTreeWithDepth
 	//$complete: if true returns also the opening and closing <ul>
-	public function getMenu($tree, $complete = true, $lingua = null, $simple = false)
+	public function getMenu($tree, $complete = true, $lingua = null, $simple = false, $mobile = false)
 	{
 		if (count($tree) > 0)
 		{
@@ -195,20 +195,28 @@ class MenuModel extends HierarchicalModel {
 			
 			$submenu_wrap_open = v("submenu_wrap_open");
 			$submenu_wrap_close = v("submenu_wrap_close");
-			
+			$linkTextWrapTag = v("linkTextWrapTag");
+			$linkTextWrapClass = v("linkTextWrapClass");
 			
 			if ($simple)
 				$submenu_wrap_open = $submenu_wrap_close = "";
 			
 			foreach ($tree as $node)
 			{
+				$linkText = $node["node"][$this->titleFieldName];
+				
+				if ($linkTextWrapTag)
+					$linkText = wrap($linkText, array(
+						$linkTextWrapTag	=>	$linkTextWrapClass,
+					));
+				
 				$menuLinkClass = v("menu_link_class");
 				$menuItemClass = v("menu_item_class");
 				
 				if (isset($tree[($indice+1)]) && $tree[($indice+1)]["aggregate"]["depth"] > $node["aggregate"]["depth"])
 				{
 					$hasChildClass = v("has_child_class");
-					$inLinkHtmlAfter = v("in_link_html_after");;
+					$inLinkHtmlAfter = v("in_link_html_after");
 				}
 				else
 				{
@@ -286,10 +294,13 @@ class MenuModel extends HierarchicalModel {
 					
 					if ($node["node"]["link_to"] != "custom")
 					{
+						ob_start();
 						if ($simple)
-							$menuHtml .= "<li class='$currClass'><a $target class='$subMenuLinkClass $menuLinkClass $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."</a></li>";
+							include(tpf("_Menu/simple_node.php"));
 						else
-							$menuHtml .= "<li class='$hasChildClass $menuItemClass $subMenuItemClass li_menu_level li_menu_level_".$depth." ".v("menu_class_prefix").$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass $menuLinkClass $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."$inLinkHtmlAfter</a></li>";
+							include(tpf("_Menu/full_node.php"));
+						
+						$menuHtml .= ob_get_clean();
 					}
 					else
 					{

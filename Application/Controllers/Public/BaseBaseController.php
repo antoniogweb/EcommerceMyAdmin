@@ -498,7 +498,8 @@ class BaseBaseController extends Controller
 		
 		if (v("abilita_menu_semplice"))
 			$data["menuSemplice"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang, true);
-// 			$data["menuMobile"] = $this->m["MenuModel"]->getMenu($res,true,true);
+		
+		$data["menuMobile"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang, false, true);
 		
 		$data["langDb"] = $this->langDb = Lang::$langDb = null;
 		
