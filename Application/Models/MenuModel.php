@@ -196,11 +196,15 @@ class MenuModel extends HierarchicalModel {
 			$submenu_wrap_open = v("submenu_wrap_open");
 			$submenu_wrap_close = v("submenu_wrap_close");
 			
+			
 			if ($simple)
 				$submenu_wrap_open = $submenu_wrap_close = "";
 			
 			foreach ($tree as $node)
 			{
+				$menuLinkClass = v("menu_link_class");
+				$menuItemClass = v("menu_item_class");
+				
 				if (isset($tree[($indice+1)]) && $tree[($indice+1)]["aggregate"]["depth"] > $node["aggregate"]["depth"])
 				{
 					$hasChildClass = v("has_child_class");
@@ -212,7 +216,7 @@ class MenuModel extends HierarchicalModel {
 					$inLinkHtmlAfter = "";
 				}
 				
-				$subMenuLinkClass = "elementor-item";
+				$subMenuItemClass = $subMenuLinkClass = "";
 				
 				if ($node["aggregate"]["depth"] > $depth)
 				{
@@ -225,7 +229,10 @@ class MenuModel extends HierarchicalModel {
 					if ($depth > 1)
 					{
 						$subMenuClass = v("submenu_class")." ";
-						$subMenuLinkClass = "elementor-sub-item";
+						$subMenuLinkClass = v("submenu_link_class");
+						$subMenuItemClass = v("submenu_item_class");
+						$menuLinkClass = "";
+						$menuItemClass = "";
 					}
 					
 					if ($simple)
@@ -245,7 +252,10 @@ class MenuModel extends HierarchicalModel {
 					if ($depth > 1)
 					{
 						$subMenuClass = v("submenu_class")." ";
-						$subMenuLinkClass = "elementor-sub-item";
+						$subMenuLinkClass = v("submenu_link_class");
+						$subMenuItemClass = v("submenu_item_class");
+						$menuLinkClass = "";
+						$menuItemClass = "";
 					}
 					
 					$currClass = $currClassLink = null;
@@ -277,9 +287,9 @@ class MenuModel extends HierarchicalModel {
 					if ($node["node"]["link_to"] != "custom")
 					{
 						if ($simple)
-							$menuHtml .= "<li class='$currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."</a></li>";
+							$menuHtml .= "<li class='$currClass'><a $target class='$subMenuLinkClass $menuLinkClass $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."</a></li>";
 						else
-							$menuHtml .= "<li class='$hasChildClass menu-item li_menu_level li_menu_level_".$depth." ".v("menu_class_prefix").$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass link_item $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."$inLinkHtmlAfter</a></li>";
+							$menuHtml .= "<li class='$hasChildClass $menuItemClass $subMenuItemClass li_menu_level li_menu_level_".$depth." ".v("menu_class_prefix").$node["node"]["alias"]." $currClass'><a $target class='$subMenuLinkClass $menuLinkClass $notActiveClass ".$currClassLink."' href='".$node["node"]["link_alias"]."'>".$node["node"][$this->titleFieldName]."$inLinkHtmlAfter</a></li>";
 					}
 					else
 					{

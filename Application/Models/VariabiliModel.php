@@ -187,6 +187,10 @@ class VariabiliModel extends GenericModel {
 		"permetti_cambio_lingua"	=>	0,
 		"google_plus"				=>	"",
 		"numero_eventi_home"		=>	3,
+		"menu_link_class"			=>	"link_item",
+		"menu_item_class"			=>	"menu-item",
+		"submenu_link_class"		=>	"link_item",
+		"submenu_item_class"		=>	"menu-item",
 	);
 	
 	public function __construct() {
