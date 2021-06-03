@@ -393,7 +393,17 @@ class ContenutiModel extends GenericModel {
 				$html = htmlentitydecode($f["tipi_contenuto"]["descrizione"]);
 				
 				if ($f["contenuti"]["immagine_1"])
-				$html = preg_replace('/\[srcImmagine1\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_1"] ,$html);
+					$html = preg_replace('/\[srcImmagine1\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_1"] ,$html);
+				
+				if ($f["contenuti"]["immagine_2"])
+					$html = preg_replace('/\[srcImmagine2\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_2"] ,$html);
+				
+				$immagineDispositivo = (!User::$isPhone) ? $f["contenuti"]["immagine_1"] : $f["contenuti"]["immagine_2"];
+				
+				if (!$f["contenuti"]["immagine_2"])
+					$immagineDispositivo = $f["contenuti"]["immagine_1"];
+				
+				$html = preg_replace('/\[srcImmagineResponsive\]/', Url::getFileRoot()."images/contenuti/".$immagineDispositivo ,$html);
 				
 				$html = preg_replace('/\[testo (.*?)\]/', '[testo ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				$html = preg_replace('/\[immagine (.*?)\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
