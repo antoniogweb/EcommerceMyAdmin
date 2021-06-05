@@ -9,6 +9,9 @@ $hasCombinations = hasCombinations($idPr);
 $urlAlias = getUrlAlias($p["pages"]["id_page"]);
 $prezzoMinimo = prezzoMinimo($idPr);
 $stringaDa = !$hasCombinations ? "" : gtext("da");
+$prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
+$prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
+$percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
 ?>
 <article class="uk-transition-toggle">
 	<div class="uk-inline-clip " tabindex="0">
@@ -48,7 +51,7 @@ $stringaDa = !$hasCombinations ? "" : gtext("da");
 		<?php if (isProdotto($idPr)) { ?>
 		<span class="price">
 			<span class="uk-text-small">
-				<?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse(calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo))."</del> € ".setPriceReverse(calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo)); } else { echo "$stringaDa € ".setPriceReverse(calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo));}?>
+				<?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?>
 				
 				<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
 				<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>
