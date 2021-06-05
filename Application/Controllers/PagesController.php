@@ -1585,7 +1585,7 @@ class PagesController extends BaseController {
 		
 		if (!v("caratteristiche_in_tab_separate"))
 		{
-			array_unshift($this->mainFields, "caratteristiche.titolo");
+			array_unshift($this->mainFields, "tipologie_caratteristiche.titolo");
 			$this->mainHead = "Tipologia,".$this->mainHead;
 		}
 		
