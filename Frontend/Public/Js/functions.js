@@ -366,7 +366,9 @@ $(document).ready(function(){
 	
 	$(".evidenzia").each(function(){
 		t_tag = $(this).text();
-		$("."+t_tag).css(input_error_css);
+		
+		if (input_error_style == "")
+			$("."+t_tag).css(input_error_css);
 		
 		if (input_error_style != "")
 			$("."+t_tag).attr("style", input_error_style);
