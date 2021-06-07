@@ -40,6 +40,8 @@
 									
 									<?php echo $form["data_news"];?>
 									
+									<?php echo isset($form["autore"]) ? $form["autore"] : "";?>
+									
 									<?php echo $form["description"];?>
 									
 									<?php if ($type === "update") { ?>

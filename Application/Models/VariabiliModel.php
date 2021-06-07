@@ -193,6 +193,7 @@ class VariabiliModel extends GenericModel {
 		"submenu_item_class"		=>	"menu-item",
 		"linkTextWrapTag"			=>	"",
 		"linkTextWrapClass"			=>	"",
+		"mostra_autore_in_blog"		=>	0,
 	);
 	
 	public function __construct() {

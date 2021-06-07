@@ -51,6 +51,11 @@ class BlogController extends GenericsectionController {
 			$this->head .= ",In evidenza";
 		}
 		
+		if (v("mostra_autore_in_blog"))
+		{
+			$this->queryFields .= ",autore";
+		}
+		
 		$data["tabella"] = "blog";
 		
 		$this->append($data);
