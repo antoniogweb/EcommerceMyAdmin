@@ -20,7 +20,7 @@
 	<div class="uk-margin">
 		<label class="uk-form-label"><?php echo gtext("Nazione");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::select("nazione_spedizione",$values['nazione_spedizione'],$selectNazioniSpedizione,"uk-input class_nazione_spedizione",null,"yes");?>
+			<?php echo Html_Form::select("nazione_spedizione",$values['nazione_spedizione'],$selectNazioniSpedizione,"uk-select class_nazione_spedizione",null,"yes");?>
 		</div>
 	</div>
 	<?php } else { ?>
@@ -31,7 +31,7 @@
 		<label class="uk-form-label"><?php echo gtext("Provincia");?> *</label>
 		<div class="uk-form-controls">
 			<div class="select_id_provincia_spedizione">
-				<?php echo Html_Form::select("provincia_spedizione",$values['provincia_spedizione'],$province,"uk-input class_provincia_spedizione",null,"yes");?>
+				<?php echo Html_Form::select("provincia_spedizione",$values['provincia_spedizione'],$province,"uk-select class_provincia_spedizione",null,"yes");?>
 			</div>
 			<?php echo Html_Form::input("dprovincia_spedizione",$values['dprovincia_spedizione'],"uk-input class_dprovincia_spedizione",null,"placeholder='".gtext("Provincia", false)."'");?>
 		</div>

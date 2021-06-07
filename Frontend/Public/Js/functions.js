@@ -8,6 +8,9 @@ if (typeof icheckOptions == "undefined")
 if (typeof input_error_css == "undefined")
 	var input_error_css = {"border":"1px solid #ed144b"}
 
+if (typeof input_error_style == "undefined")
+	var input_error_style = "";
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -77,12 +80,7 @@ function impostaTipoSpedizione(obj)
 		
 		if ($("[name='post_error']").length == 0)
 		{
-			$("[name='indirizzo_spedizione']").val("");
-			$("[name='cap_spedizione']").val("");
-			$("[name='citta_spedizione']").val("");
-			$("[name='provincia_spedizione']").val("");
-			$("[name='telefono_spedizione']").val("");
-			$("[name='nazione_spedizione']").val("IT");
+			svuotaCampiSpedizione();
 		}
 		
 		sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
@@ -93,6 +91,33 @@ function impostaTipoSpedizione(obj)
 		$(".link_indirizzo_come_fatturazione").css("display","none");
 		$(".blocco_tendina_scelta_indirizzo").css("display","block");
 		impostaCampiSpedizione($(".tendina_scelta_indirizzo").val());
+	}
+}
+
+if (typeof svuotaCampiSpedizione !== 'function')
+{
+	function svuotaCampiSpedizione()
+	{
+		$("[name='indirizzo_spedizione']").val("");
+		$("[name='cap_spedizione']").val("");
+		$("[name='citta_spedizione']").val("");
+		$("[name='provincia_spedizione']").val("");
+		$("[name='telefono_spedizione']").val("");
+		$("[name='nazione_spedizione']").val("IT");
+	}
+}
+
+if (typeof riempiCampiSpedizione !== 'function')
+{
+	function riempiCampiSpedizione(content)
+	{
+		$("[name='indirizzo_spedizione']").val(content.indirizzo_spedizione);
+		$("[name='cap_spedizione']").val(content.cap_spedizione);
+		$("[name='citta_spedizione']").val(content.citta_spedizione);
+		$("[name='provincia_spedizione']").val(content.provincia_spedizione);
+		$("[name='dprovincia_spedizione']").val(content.dprovincia_spedizione);
+		$("[name='telefono_spedizione']").val(content.telefono_spedizione);
+		$("[name='nazione_spedizione']").val(content.nazione_spedizione);
 	}
 }
 
@@ -114,13 +139,7 @@ function impostaCampiSpedizione(id_spedizione)
 				
 				if (content)
 				{
-					$("[name='indirizzo_spedizione']").val(content.indirizzo_spedizione);
-					$("[name='cap_spedizione']").val(content.cap_spedizione);
-					$("[name='citta_spedizione']").val(content.citta_spedizione);
-					$("[name='provincia_spedizione']").val(content.provincia_spedizione);
-					$("[name='dprovincia_spedizione']").val(content.dprovincia_spedizione);
-					$("[name='telefono_spedizione']").val(content.telefono_spedizione);
-					$("[name='nazione_spedizione']").val(content.nazione_spedizione);
+					riempiCampiSpedizione(content);
 					
 					sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
 					impostaCorrieriESpeseSpedizione();
@@ -257,25 +276,6 @@ function impostaLabelPagamento(obj)
 		obj.parents(".payment_method_paypal").find(".payment_box").css("display","block");
 }
 
-function sistemaTendinaProvincia(val)
-{
-	if (val == "IT")
-	{
-		$("[name='dprovincia']").css("display","none");
-		$("[name='provincia']").css("display","block");
-		$(".nascondi_fuori_italia").css("display","table-row");
-	}
-	else
-	{
-		$("[name='dprovincia']").css("display","block");
-		$("[name='provincia']").css("display","none");
-		$(".nascondi_fuori_italia").css("display","none");
-		$("[name='codice_fiscale']").val("");
-	}
-	
-	sistemaPIva(val);
-}
-
 function sistemaPIva(nazione)
 {
 	if (nazioniConVat.indexOf(nazione) != -1 && getTipoCliente() != "privato")
@@ -293,17 +293,42 @@ function sistemaPIva(nazione)
 		$(".blocco_fatturazione_elettronica").css("display","none");
 }
 
-function sistemaTendinaProvinciaSpedizione(val)
+if (typeof sistemaTendinaProvincia !== 'function')
 {
-	if (val == "IT")
+	function sistemaTendinaProvincia(val)
 	{
-		$("[name='dprovincia_spedizione']").css("display","none");
-		$("[name='provincia_spedizione']").css("display","block");
+		if (val == "IT")
+		{
+			$("[name='dprovincia']").css("display","none");
+			$("[name='provincia']").css("display","block");
+			$(".nascondi_fuori_italia").css("display","table-row");
+		}
+		else
+		{
+			$("[name='dprovincia']").css("display","block");
+			$("[name='provincia']").css("display","none");
+			$(".nascondi_fuori_italia").css("display","none");
+			$("[name='codice_fiscale']").val("");
+		}
+		
+		sistemaPIva(val);
 	}
-	else
+}
+
+if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
+{
+	function sistemaTendinaProvinciaSpedizione(val)
 	{
-		$("[name='dprovincia_spedizione']").css("display","block");
-		$("[name='provincia_spedizione']").css("display","none");
+		if (val == "IT")
+		{
+			$("[name='dprovincia_spedizione']").css("display","none");
+			$("[name='provincia_spedizione']").css("display","block");
+		}
+		else
+		{
+			$("[name='dprovincia_spedizione']").css("display","block");
+			$("[name='provincia_spedizione']").css("display","none");
+		}
 	}
 }
 
@@ -342,6 +367,9 @@ $(document).ready(function(){
 	$(".evidenzia").each(function(){
 		t_tag = $(this).text();
 		$("."+t_tag).css(input_error_css);
+		
+		if (input_error_style != "")
+			$("."+t_tag).attr("style", input_error_style);
 	});
 	
 	$(".not_active_link").click(function(){

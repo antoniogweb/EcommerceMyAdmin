@@ -67,9 +67,13 @@ else
 		<label class="uk-form-label"><?php echo gtext("Provincia");?> *</label>
 		
 		<div class="uk-form-controls">
-			<?php echo Html_Form::select("provincia",$values['provincia'],$province,"uk-select class_provincia",null,"yes");?>
-		
-			<?php echo Html_Form::input("dprovincia",$values['dprovincia'],"uk-input class_dprovincia",null,"placeholder='".gtext("Provincia", false)."'");?>
+			<div class="box_select_provincia">
+				<?php echo Html_Form::select("provincia",$values['provincia'],$province,"uk-select class_provincia",null,"yes");?>
+			</div>
+			
+			<div class="box_select_dprovincia">
+				<?php echo Html_Form::input("dprovincia",$values['dprovincia'],"uk-input class_dprovincia",null,"placeholder='".gtext("Provincia", false)."'");?>
+			</div>
 		</div>
 	</div>
 	
