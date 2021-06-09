@@ -31,7 +31,7 @@
 	
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery/ui/css/ui-lightness/jquery-ui-1.9.2.custom.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script>
-	<script src="<?php echo $this->baseUrlSrcSrc.'/Public/Js/';?>ajaxQueue.js"></script>
+	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery_easygiant.js?v=<?php echo rand(1,100000);?>"></script>
 	
