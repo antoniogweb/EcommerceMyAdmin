@@ -548,7 +548,7 @@ class BaseOrdiniController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
 		
-		if (isset($_GET["item_number"]))
+		if (isset($_GET["item_number"]) || isset($_GET["tx"]))
 		{
 			$clean['cart_uid'] = $this->request->get('item_number','','sanitizeAll');
 			$clean['txn_id'] = $this->request->get('tx','','sanitizeAll');
@@ -557,12 +557,15 @@ class BaseOrdiniController extends BaseController
 		else
 		{
 			$clean['cart_uid'] = $this->request->post('item_number','','sanitizeAll');
-			$clean['txn_id'] = $this->request->post('txn_id','','sanitizeAll');
-			$clean['st'] = $this->request->post('payment_status','','sanitizeAll');
+			$clean['txn_id'] = $this->request->post('tx','','sanitizeAll');
+			$clean['st'] = $this->request->post('st','','sanitizeAll');
 		}
 		
 		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		$data["conclusa"] = false;
+		
+		if ((int)count($res) === 0 && trim($clean['txn_id']))
+			$res = $this->m["OrdiniModel"]->clear()->where(array("txn_id" => $clean['txn_id']))->send();
 		
 		if (count($res) > 0)
 		{
@@ -577,6 +580,12 @@ class BaseOrdiniController extends BaseController
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 			
 			$this->append($data);
+			$this->load("ritorno-da-paypal");
+		}
+		else if (trim($clean['txn_id']))
+		{
+			$this->append($data);
+			
 			$this->load("ritorno-da-paypal");
 		}
 	}
