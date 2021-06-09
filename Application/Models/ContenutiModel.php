@@ -410,6 +410,8 @@ class ContenutiModel extends GenericModel {
 				$html = preg_replace('/\[link (.*?)\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				$html = preg_replace('/\[video (.*?)\]/', '[video ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				
+				$html = preg_replace('/\[descrizione\]/', $f["contenuti"]["descrizione"], $html);
+				
 				$htmlFinale .= "<div id='".$f["contenuti"]["id_cont"]."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
 				
 				if (User::$adminLogged)

@@ -830,6 +830,7 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[immagine (.*?)\]/', 'getImmagine' ,$string);
 	$string = preg_replace_callback('/\[link (.*?)\]/', 'getLink' ,$string);
 	$string = preg_replace_callback('/\[video (.*?)\]/', 'getVideo' ,$string);
+	$string = preg_replace_callback('/\[variabile (.*?)\]/', 'getVariabile' ,$string);
 	
 	if ($obj)
 	{
@@ -847,6 +848,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[fascia-faq\]/', array($obj,'getFaqInEvidenza') ,$string);
 		$string = preg_replace_callback('/\[gallery\]/', array($obj,'getGalleryFascia') ,$string);
 		$string = preg_replace_callback('/\[eventi\]/', array($obj,'getEventiFascia') ,$string);
+		$string = preg_replace_callback('/\[form-contatti\]/', array($obj,'getFasciaFormContatti') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
@@ -883,6 +885,14 @@ function getImmagine($matches, $tags = null, $tipo = "TESTO")
 function getLink($matches, $tags = null, $tipo = "TESTO")
 {
 	return getTesto($matches, $tags, "LINK");
+}
+
+function getVariabile($matches)
+{
+	$chiave = $matches[1];
+	
+	if (in_array($chiave, explode(",",v("variabili_gestibili_da_fasce"))))
+		return v($chiave);
 }
 
 function getVideo($matches, $tags = null, $tipo = "TESTO")
@@ -957,7 +967,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		
 		if (User::$adminLogged)
 		{
-			return "<div class='blocco_testo'>".$t."$iconaEdit</div>";
+			return "<".v("tag_blocco_testo")." class='blocco_testo'>".$t."$iconaEdit</".v("tag_blocco_testo").">";
 		}
 		else
 		{
