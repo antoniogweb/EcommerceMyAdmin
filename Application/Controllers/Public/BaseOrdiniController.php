@@ -356,7 +356,7 @@ class BaseOrdiniController extends BaseController
 		$data["ordine"] = $res[0]["orders"];
 		
 		// ID ordine per GTM e FBK (solo se bonifico)
-		if ($data["ordine"]["pagamento"] == "bonifico")
+		if ($data["ordine"]["pagamento"] == "bonifico" || ($data["ordine"]["pagamento"] == "paypal" && $data["ordine"]["stato"] != "pending" && $data["ordine"]["stato"] != "deleted"))
 			$data['idOrdineGtm'] = (int)$id_o;
 		
 		$data["tipoOutput"] = "web";
