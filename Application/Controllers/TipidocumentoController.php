@@ -45,7 +45,12 @@ class TipidocumentoController extends BaseController
 		
 		$this->mainFields = array("tipi_documento.titolo");
 		$this->mainHead = "Titolo";
-// 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
+		
+		if (v("riconoscimento_tipo_documento_automatico"))
+		{
+			$this->mainFields[] = "tipi_documento.estensione";
+			$this->mainHead .= ",Estensione";
+		}
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
@@ -58,7 +63,12 @@ class TipidocumentoController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo');
+		$fields = "titolo";
+		
+		if (v("riconoscimento_tipo_documento_automatico"))
+			$fields .= ",estensione";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}

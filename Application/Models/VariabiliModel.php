@@ -198,6 +198,7 @@ class VariabiliModel extends GenericModel {
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
 		"campo_captcha_form"		=>	"cognome",
+		"riconoscimento_tipo_documento_automatico"	=>	0,
 	);
 	
 	public function __construct() {
