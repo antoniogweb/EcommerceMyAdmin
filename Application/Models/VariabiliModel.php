@@ -194,6 +194,7 @@ class VariabiliModel extends GenericModel {
 		"linkTextWrapTag"			=>	"",
 		"linkTextWrapClass"			=>	"",
 		"mostra_autore_in_blog"		=>	0,
+		"campo_form_newsletter"		=>	"email,accetto",
 	);
 	
 	public function __construct() {

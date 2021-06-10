@@ -678,13 +678,23 @@ class BaseBaseController extends Controller
 	{
 		Domain::$currentUrl =  $this->getCurrentUrl();
 		
+		$isNewsletter = false;
+		
+		if (isset($_POST['invia']) && $_POST["invia"] == "newsletter")
+		{
+			$isNewsletter = true;
+			$campiForm = v("campo_form_newsletter");
+		}
+		else
+			$campiForm = v("campo_form_contatti");
+			
 		$this->model('ContattiModel');
 		$this->m['ContattiModel']->strongConditions['insert'] = array(
-			'checkNotEmpty'	=>	v("campo_form_contatti"),
+			'checkNotEmpty'	=>	$campiForm,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
 		);
 		
-		$this->m['ContattiModel']->setFields(v("campo_form_contatti"),'strip_tags');
+		$this->m['ContattiModel']->setFields($campiForm,'strip_tags');
 
 		Form::$notice = null;
 		
@@ -697,10 +707,17 @@ class BaseBaseController extends Controller
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
-					$oggetto = "richiesta informazioni";
+					
+					if ($isNewsletter)
+						$oggetto = "form iscrizione a newsletter";
+					else
+						$oggetto = "form richiesta informazioni";
 					
 					ob_start();
-					include (tpf("Regusers/mail_form_contatti.php"));
+					if ($isNewsletter)
+						include (tpf("Regusers/mail_form_newsletter.php"));
+					else
+						include (tpf("Regusers/mail_form_contatti.php"));
 					$output = ob_get_clean();
 					
 					$res = MailordiniModel::inviaMail(array(
@@ -717,8 +734,14 @@ class BaseBaseController extends Controller
 					
 					if($res) {
 						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+						$idGrazieNewsletter = 0;
 						
-						if ($idGrazie)
+						if ($isNewsletter)
+							$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
+						
+						if ($idGrazieNewsletter)
+							$this->redirect(getUrlAlias($idGrazieNewsletter));
+						else if ($idGrazie)
 							$this->redirect(getUrlAlias($idGrazie));
 						else
 							$this->redirect("grazie.html");
@@ -734,5 +757,10 @@ class BaseBaseController extends Controller
 		}
 		
 		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+	}
+	
+	protected function getCurrentUrl($completeUrl = true)
+	{
+		return $this->currPage;
 	}
 }

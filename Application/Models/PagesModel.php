@@ -41,6 +41,7 @@ class PagesModel extends GenericModel {
 	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina grazie",
+		"GRAZIE_NEWSLETTER"	=>	"Pagina grazie iscrizione a newsletter",
 		"COOKIE"		=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
