@@ -237,4 +237,13 @@ trait BaseFasceController
 		
 		return $output;
 	}
+	
+	public function getFasciaFormContatti()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_form_contatti.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
 }

@@ -162,6 +162,15 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (defined("APPS")) {
+				foreach (APPS as $app)
+				{
+					$path = ROOT."/Application/Apps/".ucfirst($app)."/Menu/sito.php";
+					
+					if (file_exists($path))
+						include($path);
+				}
+			} ?>
 			<li class="<?php echo $tm["menu1"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>

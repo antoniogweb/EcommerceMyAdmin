@@ -629,6 +629,7 @@ class CategoriesModel extends HierarchicalModel {
 		return $p->clear()->where(array(
 			"-id_c"		=>	(int)$id_c,
 			"attivo"	=>	"Y",
+			"acquistabile"	=>	"Y",
 		))->rowNumber();
 	}
 	
