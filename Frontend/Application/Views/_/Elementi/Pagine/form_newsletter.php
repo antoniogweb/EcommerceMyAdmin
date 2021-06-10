@@ -12,6 +12,9 @@
 				<button class="uk-button uk-button-secondary uk-text-bold uk-width-expand"><?php echo gtext("Iscriviti");?></button>
 			</div>
         </div>
+        
+        <?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
+        
         <?php echo Html_Form::hidden("invia","newsletter");?>
         <?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
         <br />

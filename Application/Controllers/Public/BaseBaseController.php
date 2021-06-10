@@ -695,14 +695,14 @@ class BaseBaseController extends Controller
 		);
 		
 		$this->m['ContattiModel']->setFields($campiForm,'strip_tags');
-
+		
 		Form::$notice = null;
 		
 		if (isset($_POST['invia']))
 		{
-			$cognome = $this->request->post('cognome','');
+			$campoCaptcha = $this->request->post(v("campo_captcha_form"),'');
 			
-			if (strcmp($cognome,'') === 0)
+			if (strcmp($campoCaptcha,'') === 0)
 			{
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{

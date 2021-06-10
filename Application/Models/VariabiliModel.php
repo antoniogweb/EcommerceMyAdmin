@@ -197,6 +197,7 @@ class VariabiliModel extends GenericModel {
 		"campo_form_newsletter"		=>	"email,accetto",
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
+		"campo_captcha_form"		=>	"cognome",
 	);
 	
 	public function __construct() {
