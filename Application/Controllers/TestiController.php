@@ -38,6 +38,7 @@ class TestiController extends BaseController {
 			'chiave:sanitizeAll'=>'tutti',
 			'part:sanitizeAll'=>'tutti',
 			'lingua:sanitizeAll'=>'tutti',
+			'tipo_testo:sanitizeAll'=>'tutti',
 		);
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -51,18 +52,35 @@ class TestiController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("testi.tipo", "testi.chiave", "lingua");
-		$this->mainHead = "Tipo,Titolo,Lingua";
+		$this->mainFields = array("thumb","testi.tipo", "testi.chiave", "lingua");
+		$this->mainHead = "Thumb,Tipo,Titolo,Lingua";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'');
 		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+			array(
+				'width'	=>	'120px',
+			),
+		);
+		
 		$filtroLingua = array("tutti" => "LINGUA") + $this->m[$this->modelName]->selectLingua();
-		$this->filters = array('chiave',array("lingua","",$filtroLingua));
+		$filtroTipo = array("tutti" => "TIPO") + array(
+			"TESTO"		=>	"Testo",
+			"IMMAGINE"	=>	"Immagine",
+			"LINK"		=>	"Link",
+			"VIDEO"		=>	"Video",
+		);
+		
+		$this->filters = array('chiave',array("tipo_testo","",$filtroTipo), array("lingua","",$filtroLingua));
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
 					"lk"		=>	array('chiave' => $this->viewArgs['chiave']),
 					"lingua"	=>	$this->viewArgs['lingua'],
+					"tipo"	=>	$this->viewArgs['tipo_testo'],
 				))
 				->orderBy("id_t desc")->convert()->save();
 		

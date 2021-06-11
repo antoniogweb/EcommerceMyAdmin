@@ -142,4 +142,12 @@ class TestiModel extends GenericModel {
 	{
 		return strtoupper($record["testi"]["lingua"]);
 	}
+	
+	public function thumb($record)
+	{
+		if ($record["testi"]["tipo"] == "IMMAGINE" && $record["testi"]["immagine"] && file_exists(Domain::$parentRoot."/images/widgets/".$record["testi"]["immagine"]))
+			return "<img width='100px' src='".Domain::$publicUrl."/images/widgets/".$record["testi"]["immagine"]."' />";
+		
+		return "";
+	}
 }
