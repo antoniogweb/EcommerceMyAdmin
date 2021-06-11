@@ -410,8 +410,8 @@ class ContenutiModel extends GenericModel {
 				$html = preg_replace('/\[immagine (.*?) attributi (.*?)\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].' attributi ${2}]' ,$html);
 				$html = preg_replace('/\[link (.*?) attributi (.*?)\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].' attributi ${2}]' ,$html);
 				
-				$html = preg_replace('/\[immagine (.*?)\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
-				$html = preg_replace('/\[link (.*?)\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
+				$html = preg_replace('/\[immagine ([a-zA-Z0-9\_\-])\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
+				$html = preg_replace('/\[link ([a-zA-Z0-9\_\-])\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				$html = preg_replace('/\[video (.*?)\]/', '[video ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
 				
 				$html = preg_replace('/\[descrizione\]/', $f["contenuti"]["descrizione"], $html);
