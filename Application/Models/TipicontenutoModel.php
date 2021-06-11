@@ -39,6 +39,12 @@ class TipicontenutoModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'pages' => array("HAS_MANY", 'ContenutiModel', 'id_tipo', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+        );
+    }
+	
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array

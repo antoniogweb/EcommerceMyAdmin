@@ -826,7 +826,12 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/(\[baseUrl\])/', 'getBaseUrl' ,$string);
 	$string = preg_replace_callback('/\[themeFolder\]/', 'getThemeFolder' ,$string);
 // 	$string = preg_replace_callback('/\[(testo\=)([0-9]{1,})\]/', 'getTesto' ,$string);
+
 	$string = preg_replace_callback('/\[testo (.*?)\]/', 'getTesto' ,$string);
+	
+	$string = preg_replace_callback('/\[immagine (.*?) attributi (.*?)\]/', 'getImmagine' ,$string);
+	$string = preg_replace_callback('/\[link (.*?) attributi (.*?)\]/', 'getLink' ,$string);
+	
 	$string = preg_replace_callback('/\[immagine (.*?)\]/', 'getImmagine' ,$string);
 	$string = preg_replace_callback('/\[link (.*?)\]/', 'getLink' ,$string);
 	$string = preg_replace_callback('/\[video (.*?)\]/', 'getVideo' ,$string);
@@ -997,6 +1002,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		$t->values["chiave"] = $clean["chiave"];
 		$t->values["lingua"] = sanitizeDb($lingua);
 		$t->values["tipo"] = sanitizeDb($tipo);
+		
+		if ($tipo != "TESTO" && isset($matches[2]) && $matches[2])
+			$t->values["attributi"] = sanitizeAll($matches[2]);
 		
 		if ($t->insert())
 			return getTesto($matches, $tags, $tipo);
