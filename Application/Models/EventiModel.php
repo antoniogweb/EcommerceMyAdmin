@@ -47,4 +47,25 @@ class EventiModel extends PagesModel {
 		if (isset($this->hModel->section))
 			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
 	}
+	
+	public static function estremiEvento($id)
+	{
+		$ev = new EventiModel();
+		
+		$record = $ev->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			if (checkIsoDate($record["data_inizio_evento"]) && checkIsoDate($record["data_fine_evento"]))
+			{
+				$start = DateTime::createFromFormat("Y-m-d H:i:s", $record["data_inizio_evento"]." ".$record["ora_inizio_evento"]);
+				
+				$end = DateTime::createFromFormat("Y-m-d H:i:s", $record["data_fine_evento"]." ".$record["ora_fine_evento"]);
+				
+				return array($start, $end);
+			}
+		}
+		
+		return array(null, null);
+	}
 }

@@ -410,6 +410,8 @@ class BaseContenutiController extends BaseController
 			$this->elementsPerPage = $data["elementsPerPage"] = v("prodotti_per_pagina");
 		else if ($firstSection == "blog")
 			$this->elementsPerPage = $data["elementsPerPage"] = v("news_per_pagina");
+		else if ($firstSection == "eventi")
+			$this->elementsPerPage = $data["elementsPerPage"] = v("eventi_per_pagina");
 		
 		$data["arrayLingue"] = array();
 		
@@ -639,6 +641,9 @@ class BaseContenutiController extends BaseController
 		{
 			case "blog":
 				return "pages.data_news desc";
+				break;
+			case "eventi":
+				return "pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento";
 				break;
 		}
 		

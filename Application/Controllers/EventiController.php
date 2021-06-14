@@ -37,12 +37,14 @@ class EventiController extends GenericsectionController {
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
 			'PagesModel.categoriesS|pages.id_page',
+			'smartDate|pages.data_inizio_evento',
+			'smartDate|pages.data_fine_evento',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.data_news desc";
+		$this->orderBy = "pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data inizio,Data fine,Pubblicato?';
 		
 		$this->formDefaultValues = array(
 			"data_inizio_evento"	=>	date("d-m-Y"),
