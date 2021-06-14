@@ -38,8 +38,6 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
-									<?php echo $form["data_news"];?>
-									
 									<?php echo $form["description"];?>
 									
 									<?php if ($type === "update") { ?>
@@ -51,6 +49,41 @@
 											<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit">Salva</button>
 											<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Date e contatti evento
+							</div>
+							<div class="panel-body">
+								<div class='row'>
+									<div class='col-md-6'>
+										<?php echo $form["data_inizio_evento"];?>
+									</div>
+									<div class='col-md-6'>
+										<?php echo $form["ora_inizio_evento"];?>
+									</div>
+								</div>
+								<div class='row'>
+									<div class='col-md-6'>
+										<?php echo $form["data_fine_evento"];?>
+									</div>
+									<div class='col-md-6'>
+										<?php echo $form["ora_fine_evento"];?>
+									</div>
+								</div>
+								<div class='row'>
+									<div class='col-md-4'>
+										<?php echo $form["email_contatto_evento"];?>
+									</div>
+									<div class='col-md-4'>
+										<?php echo $form["telefono_contatto_evento"];?>
+									</div>
+									<div class='col-md-4'>
+										<?php echo $form["indirizzo_localita_evento"];?>
 									</div>
 								</div>
 							</div>

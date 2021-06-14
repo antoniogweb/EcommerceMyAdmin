@@ -321,6 +321,12 @@ class PagesModel extends GenericModel {
 					'reverse' => 'yes',
 					
 				),
+				'ora_inizio_evento'	=>	array(
+					"className"		=>	"form-control clockpicker",
+				),
+				'ora_fine_evento'	=>	array(
+					"className"		=>	"form-control clockpicker",
+				),
 			),
 		);
 		

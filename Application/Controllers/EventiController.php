@@ -30,7 +30,24 @@ class EventiController extends GenericsectionController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,sottotitolo";
+		$this->queryFields = "title,alias,attivo,description,immagine,id_c,sottotitolo,data_inizio_evento,data_fine_evento,ora_inizio_evento,ora_fine_evento,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento";
+		
+		$this->tableFields = array(
+			'[[checkbox]];pages.id_page;',
+			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
+			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			'PagesModel.categoriesS|pages.id_page',
+			'PagesModel.getPubblicatoCheckbox|pages.id_page',
+		);
+		
+		$this->orderBy = "pages.data_news desc";
+		
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Pubblicato?';
+		
+		$this->formDefaultValues = array(
+			"data_inizio_evento"	=>	date("d-m-Y"),
+			"data_fine_evento"		=>	date("d-m-Y"),
+		);
 	}
 
 }

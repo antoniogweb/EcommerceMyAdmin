@@ -1,5 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/Public/Js/clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css">
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
+
 <!-- carico i file JS di jquery file upload-->
 <link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/jQuery-File-Upload-9.18.0/css/jquery.fileupload.css">
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
@@ -103,6 +106,10 @@ $(document).ready(function() {
 	
 		reloadPage();
 		
+	});
+	
+	$(".clockpicker").clockpicker({
+		"donetext" : "Seleziona"
 	});
 	
 });
