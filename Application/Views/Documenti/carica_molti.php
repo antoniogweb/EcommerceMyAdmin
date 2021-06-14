@@ -19,7 +19,7 @@ $(document).ready(function() {
 				}
 				else
 				{
-					$(".dropbox_alert").append("<div class='alert'>" + responseText.errore + "</div>");
+					$(".dropbox_alert").append("<div class='alert alert-danger'>" + responseText.errore + "</div>");
 					aggAlteIfr();
 				}
 			});
