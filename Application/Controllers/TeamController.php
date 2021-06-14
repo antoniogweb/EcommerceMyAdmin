@@ -42,7 +42,7 @@ class TeamController extends PagesController {
 		$this->filters = array(null,null,'title');
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
-		$this->queryFields = "title,attivo,immagine,sottotitolo";
+		$this->queryFields = "title,attivo,immagine,sottotitolo,link_pagina_facebook,link_pagina_twitter,link_pagina_youtube";
 		
 		$this->clean();
 		

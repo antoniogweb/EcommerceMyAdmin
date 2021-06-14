@@ -36,6 +36,12 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
+									<?php echo $form["link_pagina_facebook"];?>
+									
+									<?php echo $form["link_pagina_twitter"];?>
+									
+									<?php echo $form["link_pagina_youtube"];?>
+									
 									<?php if ($type === "update") { ?>
 									<input class="varchar_input form-control" type="hidden" value="<?php echo $id_page;?>" name="id_page">
 									<?php } ?>
