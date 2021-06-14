@@ -27,6 +27,8 @@ var tiny_editor_config = {
 	accessibility_focus : false
 };
 
+var form_modificato = false;
+
 if (typeof(ajaxfilemanager) !== typeof(Function))
 {
 	function ajaxfilemanager(field_name, url, type, win) {

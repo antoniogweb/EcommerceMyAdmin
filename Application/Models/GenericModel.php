@@ -138,7 +138,7 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
-	protected function upload($type = "update")
+	public function upload($type = "update")
 	{
 		foreach ($this->uploadFields as $field => $params)
 		{
@@ -187,6 +187,16 @@ class GenericModel extends Model_Tree
 						$fileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
 						$fileName = encodeUrl($fileName);
 						$fileName = $this->files->getUniqueName($fileName);
+					}
+					
+					//crea la cartella images se non c'è
+					if(!is_dir(Domain::$parentRoot."/images"))
+					{
+						if (@mkdir(Domain::$parentRoot."/images"))
+						{
+							$fp = fopen(Domain::$parentRoot."/images/index.html", 'w');
+							fclose($fp);
+						}
 					}
 					
 					//crea la cartella se non c'è

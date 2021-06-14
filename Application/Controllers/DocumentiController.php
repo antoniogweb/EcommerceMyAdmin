@@ -54,6 +54,73 @@ class DocumentiController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
+	public function caricamolti($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->_posizioni['caricamolti'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['menu'] = "";
+		
+		$this->append($data);
+		
+		$this->load("carica_molti");
+	}
+	
+	public function upload()
+	{
+		header('Content-type: application/json');
+		
+		$this->shift();
+		
+		$this->clean();
+		
+		$this->m["DocumentiModel"]->setValues(array(
+			"filename"	=>	"",
+		));
+		
+		$result = "KO";
+		$errore = "";
+		
+		$erroreGenerico = gtext("Errore caricamento file: ");
+		
+		if (isset($_FILES["filename"]["name"]))
+			$erroreGenerico .= "<b>".sanitizeHtml($_FILES["filename"]["name"])."</b> ";
+		
+		if ($this->m["DocumentiModel"]->upload("insert"))
+		{
+			$ext = $this->m["DocumentiModel"]->files->ext;
+			
+			$this->m["DocumentiModel"]->setValue("estensione", $ext);
+			
+			if ($_FILES["filename"]["type"])
+				$this->m["DocumentiModel"]->setValue("content_type", $_FILES["filename"]["type"]);
+			
+			$idTipoDoc = TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext);
+			
+			$this->m["DocumentiModel"]->setValue("id_tipo_doc", $idTipoDoc);
+			
+			if ($this->viewArgs["id_page"] != "tutti")
+				$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
+			
+			$this->m["DocumentiModel"]->setValue("titolo", $this->m["DocumentiModel"]->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
+			$this->m["DocumentiModel"]->setValue("data_documento", date("Y-m-d"));
+			
+			if ($this->m["DocumentiModel"]->pInsert())
+				$result = "OK";
+			else
+				$errore = $erroreGenerico.strip_tags($this->m["DocumentiModel"]->notice);
+		}
+		else
+			$errore = $erroreGenerico.strip_tags($this->m["DocumentiModel"]->notice);
+		
+		echo json_encode(array(
+			"result"	=>	$result,
+			"errore"	=>	$errore,
+		));
+	}
+	
 	public function documento($field = "", $id = 0)
 	{
 		parent::documento($field, $id);

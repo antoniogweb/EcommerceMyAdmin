@@ -15,6 +15,13 @@
 
 <?php } else { ?>
 
+<ul class="nav_dettaglio nav nav-tabs">
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/insert/0".$this->viewStatus;?>">Carica singolo</a></li>
+	<?php if (v("riconoscimento_tipo_documento_automatico")) { ?>
+	<li <?php echo $posizioni['caricamolti'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/caricamolti/0".$this->viewStatus;?>">Carica molti</a></li>
+	<?php } ?>
+</ul>
+
 <?php } ?>
 
 <div style="clear:left;"></div>

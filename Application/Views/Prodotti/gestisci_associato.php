@@ -14,7 +14,7 @@
 
 <?php if ($this->action === "documenti" && v("documenti_in_prodotti")) { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>">Aggiungi</a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></p>
 
 <?php } ?>
 

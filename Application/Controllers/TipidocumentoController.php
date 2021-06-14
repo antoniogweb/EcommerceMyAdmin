@@ -36,6 +36,8 @@ class TipidocumentoController extends BaseController
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		$this->model("TipidocumentoestensioniModel");
+		
 		$this->s["admin"]->check();
 	}
 
@@ -45,12 +47,6 @@ class TipidocumentoController extends BaseController
 		
 		$this->mainFields = array("tipi_documento.titolo");
 		$this->mainHead = "Titolo";
-		
-		if (v("riconoscimento_tipo_documento_automatico"))
-		{
-			$this->mainFields[] = "tipi_documento.estensione";
-			$this->mainHead .= ",Estensione";
-		}
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
@@ -65,11 +61,39 @@ class TipidocumentoController extends BaseController
 	{
 		$fields = "titolo";
 		
-		if (v("riconoscimento_tipo_documento_automatico"))
-			$fields .= ",estensione";
+		$this->_posizioni['main'] = 'class="active"';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function estensioni($id = 0)
+	{
+		$this->_posizioni['estensioni'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_doc";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "TipidocumentoestensioniModel";
+		
+		$this->mainFields = array("tipi_documento_estensioni.estensione");
+		$this->mainHead = "Estensione";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"estensioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->orderBy("tipi_documento_estensioni.estensione")->where(array("id_tipo_doc"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["TipidocumentoModel"]->where(array("id_tipo_doc"=>$clean['id']))->field("titolo");
+		
+		$this->append($data);
 	}
 }

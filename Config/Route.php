@@ -368,6 +368,8 @@ class Route
 		'documenti,thumb',
 		'documenti,gruppi',
 		'documenti,traduzione',
+		'documenti,caricamolti',
+		'documenti,upload',
 		
 		'pageslink,form',
 		
@@ -383,6 +385,9 @@ class Route
 		
 		'tipidocumento,main',
 		'tipidocumento,form',
+		'tipidocumento,estensioni',
+		
+		'tipidocumentoestensioni,form',
 		
 		'personalizzazioni,main',
 		'personalizzazioni,form',

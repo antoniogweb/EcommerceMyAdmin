@@ -22,20 +22,25 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TipidocumentoModel extends GenericModel
+class TipidocumentoestensioniController extends BaseController
 {
-	public function __construct() {
-		$this->_tables = 'tipi_documento';
-		$this->_idFields = 'id_tipo_doc';
-		
-		parent::__construct();
-	}
+	public $tabella = "estensioni";
 	
-	public function relations() {
-        return array(
-			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_tipo_doc', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
-			'estensioni' => array("HAS_MANY", 'TipidocumentoestensioniModel', 'id_tipo_doc', null, "CASCADE"),
-        );
-    }
-    
+	public $argKeys = array('id_tipo_doc:sanitizeAll'=>'tutti');
+	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$this->_posizioni['main'] = 'class="active"';
+		
+		$this->menuLinks = $this->menuLinksInsert = "save";
+		
+		$this->shift(2);
+		
+		$this->m[$this->modelName]->setValuesFromPost("estensione");
+		
+		if ($this->viewArgs["id_tipo_doc"] != "tutti")
+			$this->m[$this->modelName]->setValue("id_tipo_doc", $this->viewArgs["id_tipo_doc"]);
+		
+		parent::form($queryType, $id);
+	}
 }

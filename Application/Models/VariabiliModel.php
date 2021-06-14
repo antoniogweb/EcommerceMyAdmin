@@ -198,7 +198,7 @@ class VariabiliModel extends GenericModel {
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
 		"campo_captcha_form"		=>	"cognome",
-		"riconoscimento_tipo_documento_automatico"	=>	0,
+		"riconoscimento_tipo_documento_automatico"	=>	1,
 		"eventi_per_pagina"			=>	16,
 		"contenuti_in_eventi"		=>	1,
 	);

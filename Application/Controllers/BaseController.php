@@ -281,6 +281,8 @@ class BaseController extends Controller
 		
 		$data["title"] = "Pannello di controllo";
 		
+		$data["tabella"] = isset($this->tabella) ? $this->tabella : "";
+		
 		$this->append($data);
 		
 		Params::$actionArray = "REQUEST";

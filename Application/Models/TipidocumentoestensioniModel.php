@@ -22,20 +22,35 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TipidocumentoModel extends GenericModel
+class TipidocumentoestensioniModel extends GenericModel
 {
 	public function __construct() {
-		$this->_tables = 'tipi_documento';
-		$this->_idFields = 'id_tipo_doc';
+		$this->_tables = 'tipi_documento_estensioni';
+		$this->_idFields = 'id_tipo_doc_est';
+		
+		$this->addStrongCondition("both",'checkNotEmpty',"estensione");
 		
 		parent::__construct();
 	}
 	
 	public function relations() {
         return array(
-			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_tipo_doc', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
-			'estensioni' => array("HAS_MANY", 'TipidocumentoestensioniModel', 'id_tipo_doc', null, "CASCADE"),
+			'tipo_doc' => array("BELONGS_TO", 'TipidocumentoModel', 'id_tipo_doc',null,"CASCADE"),
         );
+    }
+    
+    public static function cercaTipoDocumentoDaEstensione($ext)
+    {
+		$tde = new TipidocumentoestensioniModel();
+		
+		$res = $tde->clear()->select("tipi_documento.id_tipo_doc")->inner(array("tipo_doc"))->where(array(
+			"estensione"	=>	sanitizeDb($ext)
+		))->send();
+		
+		if (count($res) > 0)
+			return $res[0]["tipi_documento"]["id_tipo_doc"];
+		
+		return 0;
     }
     
 }

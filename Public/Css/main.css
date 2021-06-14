@@ -1253,6 +1253,11 @@ tr.cart_head {
 	font-size:14px !important;
 }
 
+.dropzone
+{
+	min-height:250px !important;
+}
+
 @media (min-width: 992px)
 {
 	body .modal-lg {

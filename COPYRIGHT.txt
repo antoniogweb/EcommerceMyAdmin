@@ -17,11 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 EcommerceMyAdmin includes works distributed under the licenses listed below.
 
-EcommerceMyAdmin
+MvcMyLibrary
 -------
 License:	GNU GPL version 3 or later
 Copyright (C) 2009 - 2020  Free Antonio Gallo (info@laboratoriolibero.com)
-link: 		https://sourceforge.net/projects/easygiant/
+link: 		https://github.com/antoniogweb/MvcMyLibrary
 
 FreeFont
 -------
