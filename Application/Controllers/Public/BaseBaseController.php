@@ -680,14 +680,19 @@ class BaseBaseController extends Controller
 		
 		$isNewsletter = false;
 		
-		if (isset($_POST['invia']) && $_POST["invia"] == "newsletter")
+		if (isset($_POST['invia']))
 		{
-			$isNewsletter = true;
-			$campiForm = v("campo_form_newsletter");
+			if ($_POST["invia"] == "newsletter")
+			{
+				$isNewsletter = true;
+				$campiForm = v("campo_form_newsletter");
+			}
+			else
+				$campiForm = v("campo_form_contatti");
 		}
 		else
-			$campiForm = v("campo_form_contatti");
-			
+			$campiForm = implode(",",array_unique(array_merge(explode(",",v("campo_form_newsletter")), explode(",",v("campo_form_contatti")))));
+		
 		$this->model('ContattiModel');
 		$this->m['ContattiModel']->strongConditions['insert'] = array(
 			'checkNotEmpty'	=>	$campiForm,
@@ -737,12 +742,18 @@ class BaseBaseController extends Controller
 						$idGrazieNewsletter = 0;
 						
 						// Iscrivo a Mailchimp
-						if (ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+						if ($isNewsletter && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
 						{
 							$dataMailChimp = array(
 								"email"	=>	$this->m['ContattiModel']->values["email"],
 								"status"=>	"subscribed",
 							);
+							
+							if (isset($this->m['ContattiModel']->values["nome"]))
+								$dataMailChimp["firstname"] = $this->m['ContattiModel']->values["nome"];
+							
+							if (isset($this->m['ContattiModel']->values["cognome"]))
+								$dataMailChimp["lastname"] = $this->m['ContattiModel']->values["cognome"];
 							
 							syncMailchimp($dataMailChimp);
 						}
