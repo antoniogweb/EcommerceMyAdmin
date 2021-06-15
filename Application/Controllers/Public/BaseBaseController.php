@@ -736,6 +736,17 @@ class BaseBaseController extends Controller
 						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
 						$idGrazieNewsletter = 0;
 						
+						// Iscrivo a Mailchimp
+						if (ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+						{
+							$dataMailChimp = array(
+								"email"	=>	$this->m['ContattiModel']->values["email"],
+								"status"=>	"subscribed",
+							);
+							
+							syncMailchimp($dataMailChimp);
+						}
+						
 						if ($isNewsletter)
 							$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
 						

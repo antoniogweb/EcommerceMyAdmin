@@ -1234,8 +1234,8 @@ function syncMailchimp($data)
         'email_address' => $data['email'],
         'status'        => $data['status'], // "subscribed","unsubscribed","cleaned","pending"
         'merge_fields'  => [
-            'FNAME'     => $data['firstname'],
-            'LNAME'     => $data['lastname']
+            'FNAME'     => isset($data['firstname']) ? $data['firstname'] : "",
+            'LNAME'     => isset($data['lastname']) ? $data['lastname'] : "",
         ]
     ]);
 
