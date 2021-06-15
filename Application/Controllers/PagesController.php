@@ -1476,6 +1476,7 @@ class PagesController extends BaseController {
 			"id_page"	=>	$clean['id'],
 			"lingua"	=>	$this->viewArgs["lingua_doc"],
 			"id_tipo_doc"	=>	$this->viewArgs["id_tipo_doc"],
+			"visibile"	=>	1,
 			"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
 		))->convert()->save();
 		

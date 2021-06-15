@@ -369,6 +369,7 @@ class Route
 		'documenti,gruppi',
 		'documenti,traduzione',
 		'documenti,caricamolti',
+		'documenti,caricazip',
 		'documenti,upload',
 		
 		'pageslink,form',

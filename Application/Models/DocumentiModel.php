@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class DocumentiModel extends GenericModel {
 
 	public $parentRootFolder;
+	public static $uploadFile = true;
 	
 	public function __construct() {
 		$this->_tables='documenti';
@@ -133,7 +134,7 @@ class DocumentiModel extends GenericModel {
 	
 	public function insert()
 	{
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 			return parent::insert();
 	}
 	
@@ -149,6 +150,75 @@ class DocumentiModel extends GenericModel {
 			return implode("<br />", $gruppi);
 		
 		return "-";
+	}
+	
+	public function elaboraArchivio($id, $idPage = 0)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["archivio"] && !$record["elaborato"])
+		{
+			$zip = new ZipArchive;
+			
+			$filePath = Domain::$parentRoot."/images/documenti/" . $record["filename"];
+			
+			self::creaCartellaImages("images/tmp", true);
+			
+			$extractPath = Domain::$parentRoot."/images/tmp/";
+			
+			if (file_exists($filePath) && $zip->open($filePath) === TRUE) {
+				$zip->extractTo($extractPath);
+				$zip->close();
+			}
+			
+			$items = scandir($extractPath);
+			foreach( $items as $this_file ) {
+				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"index.html") !== 0 && strcmp($this_file,".htaccess") !== 0) {
+					$this_file = basename($this_file);
+					
+					if (@is_file($extractPath.$this_file))
+					{
+						$this->files->setBase($extractPath);
+						
+						$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+						
+						$ext = $this->files->getFileExtension($this_file);
+						
+						$this->setValues(array(
+							"filename"			=>	$fileName.".".$ext,
+							"clean_filename"	=>	$this_file,
+							"titolo"			=>	$this->files->getNameWithoutFileExtension($this_file),
+							"data_documento"	=>	date("Y-m-d"),
+							"id_tipo_doc"		=>	TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext),
+							"estensione"		=>	$ext,
+							"content_type"		=>	$this->files->getContentType($extractPath.$this_file),
+							"id_page"			=>	$idPage,
+							"id_archivio"		=>	$id,
+						));
+						
+						DocumentiModel::$uploadFile = false;
+						
+						if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
+						{
+							if ($this->insert())
+							{
+								$this->setValues(array(
+									"elaborato"	=>	1
+								));
+								
+								$this->pUpdate((int)$id);
+								
+								// Gestisci archivio
+								if (v("elimina_archivio_dopo_upload"))
+									@unlink($filePath);
+							}
+							
+							@unlink($extractPath.$this_file);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 }

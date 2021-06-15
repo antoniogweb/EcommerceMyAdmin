@@ -138,6 +138,39 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
+	public static function creaCartellaImages($path = null, $htaccess = false)
+	{
+		//crea la cartella images se non c'è
+		if(!is_dir(Domain::$parentRoot."/images"))
+		{
+			if (@mkdir(Domain::$parentRoot."/images"))
+			{
+				$fp = fopen(Domain::$parentRoot."/images/index.html", 'w');
+				fclose($fp);
+			}
+		}
+		
+		if (!$path)
+			return;
+		
+		//crea la cartella se non c'è
+		if(!is_dir(Domain::$parentRoot."/".$path))
+		{
+			if (@mkdir(Domain::$parentRoot."/".$path))
+			{
+				$fp = fopen(Domain::$parentRoot."/".$path.'/index.html', 'w');
+				fclose($fp);
+				
+				if ($htaccess)
+				{
+					$fp = fopen(Domain::$parentRoot."/".$path.'/.htaccess', 'w');
+					fwrite($fp, 'deny from all');
+					fclose($fp);
+				}
+			}
+		}
+	}
+	
 	public function upload($type = "update")
 	{
 		foreach ($this->uploadFields as $field => $params)
@@ -189,25 +222,7 @@ class GenericModel extends Model_Tree
 						$fileName = $this->files->getUniqueName($fileName);
 					}
 					
-					//crea la cartella images se non c'è
-					if(!is_dir(Domain::$parentRoot."/images"))
-					{
-						if (@mkdir(Domain::$parentRoot."/images"))
-						{
-							$fp = fopen(Domain::$parentRoot."/images/index.html", 'w');
-							fclose($fp);
-						}
-					}
-					
-					//crea la cartella se non c'è
-					if(!is_dir(Domain::$parentRoot."/".$path))
-					{
-						if (@mkdir(Domain::$parentRoot."/".$path))
-						{
-							$fp = fopen(Domain::$parentRoot."/".$path.'/index.html', 'w');
-							fclose($fp);
-						}
-					}
+					self::creaCartellaImages($path);
 					
 					if ($this->files->uploadFile($fileName))
 					{

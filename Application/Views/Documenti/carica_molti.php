@@ -6,11 +6,16 @@
 <script>
 $(document).ready(function() {
 	Dropzone.autoDiscover = false;
+	
+	<?php if (isset($caricaZip)) { ?>
+	Dropzone.prototype.defaultOptions.dictDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file compressi (formato ZIP) che desideri caricare"))."<br /><i>(".sanitizeJs(gtext("ogni file verrà decompresso e i file al loro interno verranno salvati singolarmente")).")</i>";?>";
+	<?php } else { ?>
 	Dropzone.prototype.defaultOptions.dictDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file che desideri caricare"));?>";
+	<?php } ?>
 	
 	var myDropzone = new Dropzone(".dropzone", {
 		paramName: "filename",
-		url: "<?php echo $this->baseUrl;?>/documenti/upload?id_page=<?php echo $this->viewArgs["id_page"]?>",
+		url: "<?php echo $uploadUrl;?>",
 		init: function () {
 			this.on("success", function (file, responseText) {
 				if ($.trim(responseText.result) == "OK")
@@ -44,7 +49,7 @@ $(document).ready(function() {
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione <?php echo $tabella;?>: <?php echo "carica molti elementi";?></h1>
+	<h1>Gestione <?php echo $tabella;?>: <?php echo isset($caricaZip) ? gtext("carica uno o più file compressi") : gtext("carica molti elementi");?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
@@ -55,8 +60,8 @@ $(document).ready(function() {
 	<div class="row">
 		<div class="col-md-12">
 			<!-- show the top menù -->
-			<div class='mainMenu'>
-				<?php echo $menu;?>
+			<div class='mainMenu' style="height:30px;">
+				
 			</div>
 
 			<?php

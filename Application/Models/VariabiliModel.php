@@ -201,6 +201,8 @@ class VariabiliModel extends GenericModel {
 		"riconoscimento_tipo_documento_automatico"	=>	1,
 		"eventi_per_pagina"			=>	16,
 		"contenuti_in_eventi"		=>	1,
+		"permetti_upload_archivio"	=>	0,
+		"elimina_archivio_dopo_upload"	=>	1,
 	);
 	
 	public function __construct() {

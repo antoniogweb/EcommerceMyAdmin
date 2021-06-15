@@ -28,7 +28,10 @@ class DocumentiController extends BaseController
 	
 	public $tabella = "documenti";
 	
-	public $argKeys = array('id_page:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_page:sanitizeAll'	=>	'tutti',
+		'compresso:forceInt'	=>	0,
+	);
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
@@ -63,6 +66,25 @@ class DocumentiController extends BaseController
 		
 		$data['menu'] = "";
 		
+		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"];
+		
+		$this->append($data);
+		
+		$this->load("carica_molti");
+	}
+	
+	public function caricazip($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->_posizioni['caricazip'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['menu'] = "";
+		$data['caricaZip'] = true;
+		
+		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1";
+		
 		$this->append($data);
 		
 		$this->load("carica_molti");
@@ -73,6 +95,11 @@ class DocumentiController extends BaseController
 		header('Content-type: application/json');
 		
 		$this->shift();
+		
+		$compresso = false;
+		
+		if ((int)$this->viewArgs["compresso"] === 1 && v("riconoscimento_tipo_documento_automatico") && extension_loaded("zip") && v("permetti_upload_archivio"))
+			$compresso = true;
 		
 		$this->clean();
 		
@@ -87,6 +114,9 @@ class DocumentiController extends BaseController
 		
 		if (isset($_FILES["filename"]["name"]))
 			$erroreGenerico .= "<b>".sanitizeHtml($_FILES["filename"]["name"])."</b> ";
+		
+		if ($compresso)
+			$this->m["DocumentiModel"]->uploadFields["filename"]["allowedExtensions"] = "zip";
 		
 		if ($this->m["DocumentiModel"]->upload("insert"))
 		{
@@ -107,8 +137,22 @@ class DocumentiController extends BaseController
 			$this->m["DocumentiModel"]->setValue("titolo", $this->m["DocumentiModel"]->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
 			$this->m["DocumentiModel"]->setValue("data_documento", date("Y-m-d"));
 			
-			if ($this->m["DocumentiModel"]->pInsert())
+			if ($compresso)
+			{
+				$this->m["DocumentiModel"]->setValue("visibile",0);
+				$this->m["DocumentiModel"]->setValue("archivio",1);
+			}
+			
+			DocumentiModel::$uploadFile = false;
+			
+			if ($this->m["DocumentiModel"]->insert())
+			{
+				$lId = $this->m["DocumentiModel"]->lId;
 				$result = "OK";
+				
+				if ($compresso)
+					$this->m["DocumentiModel"]->elaboraArchivio($lId, (int)$this->viewArgs["id_page"]);
+			}
 			else
 				$errore = $erroreGenerico.strip_tags($this->m["DocumentiModel"]->notice);
 		}
