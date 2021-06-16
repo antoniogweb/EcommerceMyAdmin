@@ -467,22 +467,7 @@ class BaseBaseController extends Controller
 			))->orderBy("tag.titolo")->send();
 		}
 		
-// 		print_r($data["elencoMarchi"]);
-// 		$res = json_encode($res);
-// 		echo $res;
-// 		die();
-// 		$res = $this->m["CategoriesModel"]->getTreeWithDepth(4);
-// 		print_r($res);die();
 // 		$res = $this->m["MenuModel"]->getTreeWithDepth(2);
-// // 		print_r($res);
-// 		$data["menu"] = $this->m["MenuModel"]->getMenu($res);
-// 		$data["menu_select"] = $this->m["MenuModel"]->getSelectMenu($res);
-		
-// 		$res = $this->m["CategoriesModel"]->getTreeWithDepth(2,87);
-// 		$data["menu_blog"] =  $this->m["CategoriesModel"]->getMenu($res);
-		
-// 		$data["itUrl"] = "it";
-// 		$data["enUrl"] = "en";
 		
 		$data["isPromo"] = self::$isPromo;
 		
