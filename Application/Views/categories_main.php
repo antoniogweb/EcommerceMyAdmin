@@ -1,5 +1,65 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
+<?php if (count($elencoTraduzioniAttive) > 0) { ?>
+<style>
+<?php for ($i=0; $i<count($elencoTraduzioniAttive); $i++) { ?>
+.table-scaffolding tr td:nth-last-child(<?php echo ($i+3)?>), .table-scaffolding tr th:nth-last-child(<?php echo ($i+3)?>)
+{
+	width:30px;
+}
+<?php } ?>
+</style>
+<?php } ?>
+
+<script>
+function aggiornaOrdinamento()
+{
+	var id_page = "";
+	var order = "";
+	
+	$(".record_id").each(function(){
+	
+		var id_page = $(this).text();
+	
+		order += id_page + ",";
+	
+	});
+	
+	var post_data = "order="+order+"&ordinaPagine=Y";
+	
+// 	console.log(post_data);
+	
+	$.ajaxQueue({
+		type: "POST",
+		data: post_data,
+		url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/ordina/';?>",
+		async: true,
+		cache:false,
+		success: function(html){
+			
+		}
+	});
+}
+
+var fixHelper = function (e, ui) {
+    ui.children().each(function () {
+        $(this).width($(this).width());
+    });
+
+    return ui;
+};
+
+$(function() {
+	$( ".ul_parent" ).sortable({
+		stop: function( event, ui ) {
+			aggiornaOrdinamento();
+		},
+		handle: '.ancora_ordinamento',
+		helper: fixHelper
+	});
+});
+</script>
+
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
 	<h1>Gestione categorie</h1>
@@ -33,12 +93,14 @@
 						<?php echo $main;?>
 <!-- 					</div> -->
 
+					<?php if (!$section) { ?>
 					<!-- show the list of pages -->
 					<div class="btn-group pull-right">
 						<ul class="pagination no_vertical_margin">
 							<?php echo $pageList;?>
 						</ul>
 					</div>
+					<?php } ?>
                 </div>
 			</div>
 		</div>

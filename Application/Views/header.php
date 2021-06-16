@@ -12,8 +12,8 @@
 	<link rel="icon" href="<?php echo v("favicon_url");?>" type="image/png"/>
 	<?php } ?>
 	
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/panel.css?v=<?php echo rand(1,100000);?>';?>">
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrlSrc.'/Public/Css/main.css?v=<?php echo rand(1,100000);?>';?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/panel.css?v='.rand(1,100000);?>">
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrlSrc.'/Public/Css/main.css?v='.rand(1,100000);?>">
 	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrlSrc."/Public/Css/";?>print.css?v=<?php echo rand(1,100000);?>" />
 
 	<script>

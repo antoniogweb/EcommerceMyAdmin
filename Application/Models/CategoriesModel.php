@@ -733,4 +733,125 @@ class CategoriesModel extends HierarchicalModel {
 		
 		return $arrayIds;
 	}
+	
+// 	public function getRowList($queryResult, $rowHtml, $numCol)
+// 	{
+// 		return "<td colspan='$numCol'><table style='width:100%;'><tr>$rowHtml</tr></table></td>";
+// 	}
+	
+	//get the indentation of the row
+	public function indentList($id, $alias = true, $editLink = true, $useHtml = true)
+	{
+		$clean["id"] = (int)$id;
+		
+		$depth = $this->clear()->depth($clean["id"]);
+		$field = isset(self::$currentRecord) ? self::$currentRecord["node"] : $this->clear()->selectId($clean["id"]);
+		
+		$str = "";
+		$strAlias = "";
+		for($i = 0;$i < $depth;$i++)
+		{
+			$str .= $useHtml ? "<span style='padding-right:3px;'>-</span>" : "- ";
+			$strAlias .= $useHtml ? "<span style='padding-right:3px;'>&nbsp</span>" : "- ";
+		}
+		
+		if ($this->section)
+			$str = "<div class='record_id' style='display:none'>$id</div><i title='Trascina per ordinare' class='ancora_ordinamento fa fa-arrows text text-warning' style='padding-right:3px;font-size:12px;'></i>";
+		
+		$strAlias = strcmp($strAlias,"") !== 0 ? $strAlias."&nbsp" : "";
+		
+		$titolo = $editLink ? "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"]."'>".$field[$this->titleFieldName]."</a>" : $field[$this->titleFieldName];
+		
+		if ($alias)
+		{
+			return $str." ".$titolo." <br />$strAlias<span style='font-size:10px;font-style:italic;'>(alias: ".$field[$this->aliaseFieldName].")</span>";
+		}
+		
+		return $str." ".$titolo;
+	}
+	
+	//create the HTML of the menu
+	//$tree: nodes as given by getTreeWithDepth
+	public function getCategoryTree($tree, $htmlData)
+	{
+		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		
+		if (count($tree) > 0)
+		{
+			$tree[] = $tree[count($tree) -1];
+			$depth = $tree[count($tree) -1]["aggregate"]["depth"] = $tree[0]["aggregate"]["depth"];
+			$tree[count($tree) -1]["is_last"] = 1;
+			
+			$count = 0;
+
+			$menuHtml = null;
+			
+			$menuHtml .= "<ul id='ul_".strtolower(get_class($this))."' class='ul_parent ul_parent_1 ul_category_tree ul_".strtolower(get_class($this))."'>";
+			
+			foreach ($tree as $node)
+			{
+				if ($node["aggregate"]["depth"] > $depth)
+				{
+					$depth = $node["aggregate"]["depth"];
+					
+					$menuHtml = substr($menuHtml, 0, -5);
+					
+					$menuHtml .= "<ul class='ul_parent ul_parent_".$node["node"]["id_p"]." ul_menu_level ul_menu_level_".$depth."'>";
+				}
+				if ($node["aggregate"]["depth"] < $depth)
+				{
+					$diff = (int)($depth - $node["aggregate"]["depth"]);
+					
+					$menuHtml .= str_repeat("</ul></li>", $diff);
+					$depth = $node["aggregate"]["depth"];
+				}
+				if (!isset($node["is_last"]))
+				{
+					$urlLang = isset(Params::$lang) ? "/".Params::$lang : null;
+					
+// 					if (isset($htmlData[$count]))
+// 					{
+						$menuHtml .= "<li class='li_parent_".$node["node"]["id_p"]." li_menu_level li_menu_level_".$depth." ".$node["node"]["alias"]."'>";
+						
+						$menuHtml .= "<div><table style='width:100%;'><tr>".$htmlData[$count]."</tr></table></div>";
+						
+						$menuHtml .= "</li>";
+// 					}
+				}
+				$count++;
+			}
+			
+			$menuHtml .= "</ul>\n";
+			
+			return $menuHtml;
+		}
+		return "";
+	}
+	
+	public function getAllRowsList($queryResult, $htmlData, $numCol)
+	{
+		if ($this->section)
+		{
+			$idCat = (int)$this->clear()->where(array(
+				"section"	=>	$this->section,
+			))->field("id_c");
+		
+			$res = $this->getTreeWithDepth(999, $idCat);
+			
+			$htmlList = $this->getCategoryTree($res,$htmlData);
+			
+			$htmlList = "<tr class='listRow'><td class='td_no_padding' colspan='$numCol'>".$htmlList."</td></tr>";
+		}
+		else
+		{
+			$htmlList = "";
+			
+			for ($i = 0; $i < count($queryResult); $i++)
+			{
+				$htmlList .= "<tr class='listRow'>".$htmlData[$i]."</tr>";
+			}
+		}
+		
+		return $htmlList;
+	}
 }

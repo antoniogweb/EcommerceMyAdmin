@@ -128,6 +128,7 @@ class Route
 		'categorie,classisconto',
 		'categorie,contenuti',
 		'categorie,ordinacontenuti',
+		'categorie,ordina',
 		
 		'prodotti,main',
 		'prodotti,aggiungicategoria',

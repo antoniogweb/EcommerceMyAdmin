@@ -169,7 +169,7 @@ class BaseController extends Controller
 		// Estraggo le traduzioni
 		$this->model("LingueModel");
 		
-		self::$traduzioni = $this->m["LingueModel"]->clear()->where(array(
+		self::$traduzioni = $data['elencoTraduzioniAttive'] = $this->m["LingueModel"]->clear()->where(array(
 			"principale"	=>	0,
 			"attiva"		=>	1,
 		))->orderBy("id_order")->toList("codice")->send();

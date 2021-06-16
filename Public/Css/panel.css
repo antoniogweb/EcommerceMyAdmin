@@ -75,8 +75,8 @@ img {
 	border:none;
 }
 
-td.editForm, td.delForm, td.associateForm, td.moveupForm, td.movedownForm,td.Form, td.ledit, td.ldel {
-	width:2%;
+td.editForm, td.delForm, td.associateForm, td.moveupForm, td.movedownForm,td.Form, td.ledit, td.ldel, th.ledit, th.ldel {
+	width:30px !important;
 }
 td.ledit, td.ldel
 {

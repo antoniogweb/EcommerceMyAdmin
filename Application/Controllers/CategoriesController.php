@@ -31,6 +31,8 @@ class CategoriesController extends BaseController {
 	public $formFields = null;
 	public $sezionePannello = "sito";
 	
+	public $orderBy = "id_order";
+	
 	protected $_posizioni = array(
 		"main"		=>	null,
 		"meta"		=> null,
@@ -84,20 +86,23 @@ class CategoriesController extends BaseController {
 		CategoriesModel::$viewStatus = $this->viewStatus;
 		
 		$mainMenu = '';
+		$numeroPerPagina = 100;
 		
 		if ($this->m[$this->modelName]->section)
 		{
 			$this->m[$this->modelName]->bulkAction("del");
 			$mainMenu = 'add';
+			
+			$numeroPerPagina = 9999999;
 		}
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>$mainMenu));
+		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>$numeroPerPagina, 'mainMenu'=>$mainMenu));
 		
 		if ($this->m[$this->modelName]->section)
 		{
 			$tabelFields = array(
 				'[[checkbox]];categories.id_c;',
-				$this->modelName.'.indent|categories.id_c',
+				$this->modelName.'.indentList|categories.id_c',
 			);
 			
 			$head = '[[bulkselect:checkbox_categories_id_c]],Titolo';
@@ -105,7 +110,7 @@ class CategoriesController extends BaseController {
 		else
 		{
 			$tabelFields = array(
-				$this->modelName.'.indent|categories.id_c',
+				$this->modelName.'.indentList|categories.id_c',
 			);
 			
 			$head = 'Titolo';
@@ -119,10 +124,10 @@ class CategoriesController extends BaseController {
 		
 		if ($this->m[$this->modelName]->section)
 		{
-			$tabelFields[] = $this->modelName.'.arrowUp|categories.id_c';
-			$tabelFields[] = $this->modelName.'.arrowDown|categories.id_c';
-			
-			$head .= ",,";
+// 			$tabelFields[] = $this->modelName.'.arrowUp|categories.id_c';
+// 			$tabelFields[] = $this->modelName.'.arrowDown|categories.id_c';
+// 			
+// 			$head .= ",,";
 			
 			$editAction = 'ldel,ledit';
 			
@@ -194,20 +199,14 @@ class CategoriesController extends BaseController {
 			$colProperties[] = null;
 		}
 		
-		$colProperties[] = array(
-			'width'	=>	'2%',
-		);
-		
-		$colProperties[] = array(
-			'width'	=>	'2%',
-		);
-		
 		$this->scaffold->itemList->colProperties = $colProperties;
 		
-		if ($this->m[$this->modelName]->section)
-			$this->scaffold->itemList->setFilters(array(null,'title'));
-		else
-			$this->scaffold->itemList->setFilters(array('title'));
+		$data["section"] = $this->m[$this->modelName]->section;
+		
+// 		if ($this->m[$this->modelName]->section)
+// 			$this->scaffold->itemList->setFilters(array(null,'title'));
+// 		else
+// 			$this->scaffold->itemList->setFilters(array('title'));
 		
 		$data['scaffold'] = $this->scaffold->render();
 		
@@ -561,5 +560,18 @@ class CategoriesController extends BaseController {
 		
 		parent::ordina();
 	}
-
+	
+	public function ordina()
+	{
+		parent::ordina();
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->m["CategoriesModel"]->callRebuildTree();
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+	}
+	
 }
