@@ -26,10 +26,10 @@ if (typeof input_border_color == "undefined")
 	var input_border_color = "#e5e5e5";
 
 if (typeof pixel == "undefined")
-	var pixel = true;
+	var pixel = false;
 
 if (typeof gtm_analytics == "undefined")
-	var gtm_analytics = true;
+	var gtm_analytics = false;
 
 var time;
 var arrayAccessori = [];
