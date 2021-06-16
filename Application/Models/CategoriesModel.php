@@ -809,14 +809,11 @@ class CategoriesModel extends HierarchicalModel {
 				{
 					$urlLang = isset(Params::$lang) ? "/".Params::$lang : null;
 					
-// 					if (isset($htmlData[$count]))
-// 					{
-						$menuHtml .= "<li class='li_parent_".$node["node"]["id_p"]." li_menu_level li_menu_level_".$depth." ".$node["node"]["alias"]."'>";
-						
-						$menuHtml .= "<div><table style='width:100%;'><tr>".$htmlData[$count]."</tr></table></div>";
-						
-						$menuHtml .= "</li>";
-// 					}
+					$menuHtml .= "<li class='li_parent_".$node["node"]["id_p"]." li_menu_level li_menu_level_".$depth." ".$node["node"]["alias"]."'>";
+					
+					$menuHtml .= "<div><table style='width:100%;'><tr>".$htmlData[$count]."</tr></table></div>";
+					
+					$menuHtml .= "</li>";
 				}
 				$count++;
 			}
