@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
+		<?php include(tpf("/Elementi/header_tracking_data.php"));?>
+		
 		<?php include(tpf("/Elementi/gtm.php"));?>
 		
 		<?php include(tpf("/Elementi/header_meta.php"));?>

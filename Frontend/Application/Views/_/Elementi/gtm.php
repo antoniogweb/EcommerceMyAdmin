@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
 
-if (isset($idOrdineGtm))
+if (false && isset($idOrdineGtm))
 {
 	$o = new OrdiniModel();
 	$r = new RigheModel();
@@ -56,6 +56,24 @@ if (isset($idOrdineGtm))
 		?>
 	<?php } ?>
 <?php } ?>
-<?php if (v("codice_gtm_analytics")) { ?>
+<?php if (v("codice_gtm_analytics")) {
+// Guida di riferimento Google
+// https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce
+?>
 <?php echo htmlentitydecode(v("codice_gtm_analytics"));?>
+<?php } ?>
+
+<?php if ($nomePaginaPerTracking) {
+	$itemGtag = array(
+		array(
+			"id"	=>	$idPaginaPerTracking,
+			"name"	=>	sanitizeJs(htmlentitydecode($nomePaginaPerTracking)),
+		),
+	);
+?>
+<script>
+	gtag('event', 'view_item', {
+		"items": <?php echo json_encode($itemGtag);?>
+	});
+</script>
 <?php } ?>

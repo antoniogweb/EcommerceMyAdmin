@@ -10,6 +10,7 @@
 	var isMobile = <?php echo User::$isMobile ? "true" : "false";?>;
 	var nazioniConVat = ['<?php echo implode("','",NazioniModel::elencoNazioniConVat())?>'];
 	var pixel = <?php echo v("codice_fbk") ? "true" : "false"; ?>;
+	var gtm_analytics = <?php echo v("codice_gtm_analytics") ? "true" : "false"; ?>;
 	var debug_js = <?php echo v("debug_js") ? "true" : "false"; ?>;
 	var input_border_color = "#e5e5e5";
 </script>

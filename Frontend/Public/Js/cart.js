@@ -25,6 +25,12 @@ if (typeof back_cart_error == "undefined")
 if (typeof input_border_color == "undefined")
 	var input_border_color = "#e5e5e5";
 
+if (typeof pixel == "undefined")
+	var pixel = true;
+
+if (typeof gtm_analytics == "undefined")
+	var gtm_analytics = true;
+
 var time;
 var arrayAccessori = [];
 
@@ -678,6 +684,14 @@ function actionAggiungiAlCarrello(principale, accessorio)
 						console.log(content.contens_fbk);
 					
 					fbq('track', 'AddToCart', content.contens_fbk);
+				}
+				
+				if (gtm_analytics && content.contens_gtm != undefined && content.contens_gtm != "")
+				{
+					if (debug_js)
+						console.log(content.contens_gtm);
+					
+					gtag('event', 'add_to_cart', {"items": content.contens_gtm});
 				}
 				
 				if (!haAccessori() || principale.hasClass("aggiungi_al_carrello_semplice"))

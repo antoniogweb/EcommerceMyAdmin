@@ -16,18 +16,9 @@
 <?php echo $tagCanonical;?>
 <?php } ?>
 
-<?php
-$nomePaginaPerTracking = "";
-$idPaginaPerTracking = 0;
-$codicePerTracking = "";
-
-if (isset($isPage)) { ?>
+<?php if (isset($isPage)) { ?>
 	<?php foreach ($pages as $p) {
 		$urlAlias = getUrlAlias($p["pages"]["id_page"]);
-		
-		$nomePaginaPerTracking = htmlentitydecode($p["pages"]["title"]);
-		$idPaginaPerTracking = $p["pages"]["id_page"];
-		$codicePerTracking = $p["pages"]["codice"];
 	?>
 		<!-- for Facebook -->       
 		<meta property="og:title" content="<?php echo htmlentitydecode(tagliaStringa($p["pages"]["title"],1000));?>" />
