@@ -663,7 +663,10 @@ class GenericModel extends Model_Tree
 		))->record();
 		
 		if (empty($contenuto))
+		{
+			Cache::$cachedTables = array();
 			$this->controllaLingua($idPage);
+		}
 		
 		$contenuto = $ct->clear()->where(array(
 			"$field"	=>	$idPage,

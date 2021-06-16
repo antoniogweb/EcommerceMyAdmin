@@ -11,4 +11,8 @@ $mysqli = Db_Mysqli::getInstance();
 // 	ConteggioqueryModel::aggiungi(count($mysqli->queries) + 1);
 
 if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
+{
+	echo "<pre>";
 	print_r($mysqli->queries);
+	echo "</pre>";
+}
