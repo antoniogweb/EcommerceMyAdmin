@@ -678,7 +678,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			
 			if (jQuery.trim(content.result) == "OK")
 			{
-				if (pixel && content.contens_fbk != undefined && content.contens_fbk != "")
+				if (pixel && typeof content.contens_fbk != "undefined" && content.contens_fbk != "")
 				{
 					if (debug_js)
 						console.log(content.contens_fbk);
@@ -686,7 +686,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 					fbq('track', 'AddToCart', content.contens_fbk);
 				}
 				
-				if (gtm_analytics && content.contens_gtm != undefined && content.contens_gtm != "")
+				if (gtm_analytics && typeof content.contens_gtm != "undefined" && content.contens_gtm != "")
 				{
 					if (debug_js)
 						console.log(content.contens_gtm);
