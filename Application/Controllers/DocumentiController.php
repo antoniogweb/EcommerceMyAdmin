@@ -111,9 +111,11 @@ class DocumentiController extends BaseController
 		$errore = "";
 		
 		$erroreGenerico = gtext("Errore caricamento file: ");
+		$testoSuccesso = "";
 		
 		if (isset($_FILES["filename"]["name"]))
 			$erroreGenerico .= "<b>".sanitizeHtml($_FILES["filename"]["name"])."</b> ";
+			$testoSuccesso = gtext("File")." ".sanitizeHtml($_FILES["filename"]["name"])." ".gtext("correttamente caricato");
 		
 		if ($compresso)
 			$this->m["DocumentiModel"]->uploadFields["filename"]["allowedExtensions"] = "zip";
@@ -147,6 +149,8 @@ class DocumentiController extends BaseController
 			
 			if ($this->m["DocumentiModel"]->insert())
 			{
+				$errore = $testoSuccesso;
+				
 				$lId = $this->m["DocumentiModel"]->lId;
 				$result = "OK";
 				

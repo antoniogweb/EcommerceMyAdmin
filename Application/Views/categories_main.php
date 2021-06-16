@@ -5,7 +5,7 @@
 <?php for ($i=0; $i<count($elencoTraduzioniAttive); $i++) { ?>
 .table-scaffolding tr td:nth-last-child(<?php echo ($i+3)?>), .table-scaffolding tr th:nth-last-child(<?php echo ($i+3)?>)
 {
-	width:30px;
+	width:32px;
 }
 <?php } ?>
 </style>

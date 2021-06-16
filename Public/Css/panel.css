@@ -76,7 +76,7 @@ img {
 }
 
 td.editForm, td.delForm, td.associateForm, td.moveupForm, td.movedownForm,td.Form, td.ledit, td.ldel, th.ledit, th.ldel {
-	width:30px !important;
+	width:32px !important;
 }
 td.ledit, td.ldel
 {

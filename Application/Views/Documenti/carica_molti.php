@@ -21,12 +21,14 @@ $(document).ready(function() {
 				if ($.trim(responseText.result) == "OK")
 				{
 					myDropzone.removeFile(file);
+					$(".dropbox_alert").append("<div class='alert alert-success'>" + responseText.errore + "</div>");
 				}
 				else
 				{
 					$(".dropbox_alert").append("<div class='alert alert-danger'>" + responseText.errore + "</div>");
-					aggAlteIfr();
 				}
+				
+				aggAlteIfr();
 			});
 			
 			this.on("queuecomplete", function (file, responseText) {
