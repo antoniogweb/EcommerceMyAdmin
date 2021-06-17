@@ -31,6 +31,9 @@ if (typeof pixel == "undefined")
 if (typeof gtm_analytics == "undefined")
 	var gtm_analytics = false;
 
+if (typeof mostra_prezzo_accessori == "undefined")
+	var mostra_prezzo_accessori = false;
+
 var time;
 var arrayAccessori = [];
 
@@ -319,26 +322,29 @@ function aggiornaDatiVariante(obj)
 		}
 		else
 		{
-			obj.find(".price_value_accessorio").text(t_prezzo);
-			obj.find(".blocco-prezzo-accessorio").css("display", "block");
-			
-			if (t_prezzo_pieno != "")
-				obj.find(".price_full_accessorio").text(t_prezzo_pieno);
-			
-			if (t_giacenza == 1)
+			if (mostra_prezzo_accessori)
 			{
-				obj.find(".sng").css("display", "inline");
-				obj.find(".plu").css("display", "none");
+				obj.find(".price_value_accessorio").text(t_prezzo);
+				obj.find(".blocco-prezzo-accessorio").css("display", "block");
+				
+				if (t_prezzo_pieno != "")
+					obj.find(".price_full_accessorio").text(t_prezzo_pieno);
+				
+				if (t_giacenza == 1)
+				{
+					obj.find(".sng").css("display", "inline");
+					obj.find(".plu").css("display", "none");
+				}
+				else
+				{
+					obj.find(".sng").css("display", "none");
+					obj.find(".plu").css("display", "inline");
+				}
+				
+				obj.find(".giacenza_acc").css("display", "block");
+				
+				obj.find(".valore_giacenza_acc").text(t_giacenza);
 			}
-			else
-			{
-				obj.find(".sng").css("display", "none");
-				obj.find(".plu").css("display", "inline");
-			}
-			
-			obj.find(".giacenza_acc").css("display", "block");
-			
-			obj.find(".valore_giacenza_acc").text(t_giacenza);
 		}
 	}
 }
