@@ -203,6 +203,7 @@ class VariabiliModel extends GenericModel {
 		"contenuti_in_eventi"		=>	1,
 		"permetti_upload_archivio"	=>	0,
 		"elimina_archivio_dopo_upload"	=>	1,
+		"input_ok_back_color"		=>	"#FFF",
 	);
 	
 	public function __construct() {

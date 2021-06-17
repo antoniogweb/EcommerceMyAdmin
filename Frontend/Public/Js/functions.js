@@ -334,7 +334,7 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 
 if (typeof evidenziaErrore !== 'function')
 {
-	function evidenziaErrore(selettore, input_error_css, input_error_style)
+	function evidenziaErrore(selettore)
 	{
 		if (input_error_style == "")
 			$(selettore).css(input_error_css);
@@ -380,7 +380,7 @@ $(document).ready(function(){
 	$(".evidenzia").each(function(){
 		t_tag = $(this).text();
 		
-		evidenziaErrore("."+t_tag, input_error_css, input_error_style);
+		evidenziaErrore("."+t_tag);
 	});
 	
 	$(".not_active_link").click(function(){
