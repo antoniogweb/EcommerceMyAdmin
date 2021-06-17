@@ -332,6 +332,19 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 	}
 }
 
+if (typeof evidenziaErrore !== 'function')
+{
+	function evidenziaErrore(selettore, input_error_css, input_error_style)
+	{
+		if (input_error_style == "")
+			$(selettore).css(input_error_css);
+		
+		if (input_error_style != "")
+			$(selettore).attr("style", input_error_style);
+	}
+}
+
+
 
 $(document).ready(function(){
 	
@@ -367,11 +380,7 @@ $(document).ready(function(){
 	$(".evidenzia").each(function(){
 		t_tag = $(this).text();
 		
-		if (input_error_style == "")
-			$("."+t_tag).css(input_error_css);
-		
-		if (input_error_style != "")
-			$("."+t_tag).attr("style", input_error_style);
+		evidenziaErrore("."+t_tag, input_error_css, input_error_style);
 	});
 	
 	$(".not_active_link").click(function(){

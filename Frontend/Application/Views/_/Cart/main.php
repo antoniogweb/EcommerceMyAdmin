@@ -81,9 +81,9 @@
 							</div>
 							<div>
 								<?php if (User::$isMobile) { ?>
-								<div class="select_box"><?php echo Html_Form::select("quantity", $p["cart"]["quantity"], array_combine(range(1,30),range(1,30)),"uk-select item_quantity cart_item_row_mobile", null, "yes", "rel='".$p["cart"]["id_cart"]."' style='background-color:$backColor;'");?></div>
+								<div class="select_box cart_select_box" back-color="<?php echo $backColor;?>"><?php echo Html_Form::select("quantity", $p["cart"]["quantity"], array_combine(range(1,30),range(1,30)),"uk-select item_quantity cart_item_row_mobile", null, "yes", "rel='".$p["cart"]["id_cart"]."' style='background-color:$backColor; !important'");?></div>
 								<?php } else { ?>
-								<input rel="<?php echo $p["cart"]["id_cart"];?>" class="uk-input item_quantity" name="quantity" type="number" value="<?php echo $p["cart"]["quantity"];?>" min="1" style="background-color:<?php echo $backColor;?>" />
+								<input rel="<?php echo $p["cart"]["id_cart"];?>" class="uk-input item_quantity" name="quantity" type="number" value="<?php echo $p["cart"]["quantity"];?>" min="1" style="background-color:<?php echo $backColor;?> !important" />
 								<?php } ?>
 							</div>
 							<div>
