@@ -122,10 +122,11 @@
 						<li <?php if (strcmp($sezionePannello,"sito") === 0) { ?>class="active"<?php } ?>>
 							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><span class="glyphicon glyphicon-cloud"></span>
 							<?php if (!User::$isMobile) { ?>
-							CMS
+							<?php echo gtext("CMS")?>
 							<?php } ?>
 							</a>
 						</li>
+						<?php if (v("attiva_menu_ecommerce")) { ?>
 						<li <?php if (strcmp($sezionePannello,"ecommerce") === 0) { ?>class="active"<?php } ?>>
 							<a href="<?php echo $this->baseUrl.'/prodotti/main';?>"><span class="glyphicon glyphicon-shopping-cart"></span>
 							<?php if (!User::$isMobile) { ?>
@@ -133,6 +134,7 @@
 							<?php } ?>
 							</a>
 						</li>
+						<?php } ?>
 						<li <?php if (strcmp($sezionePannello,"utenti") === 0) { ?>class="active"<?php } ?>>
 							<a href="<?php echo $this->baseUrl.'/users/main';?>"><span class="glyphicon glyphicon-cog"></span>
 							<?php if (!User::$isMobile) { ?>
