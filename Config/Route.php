@@ -276,6 +276,7 @@ class Route
 		'blogcat,form',
 		'blogcat,meta',
 		'blogcat,gruppi',
+		'blogcat,ordina',
 		
 		'blog,main',
 		'blog,aggiungicategoria',
@@ -300,6 +301,7 @@ class Route
 		'downloadcat,form',
 		'downloadcat,meta',
 		'downloadcat,gruppi',
+		'downloadcat,ordina',
 		
 		'download,main',
 		'download,aggiungicategoria',
