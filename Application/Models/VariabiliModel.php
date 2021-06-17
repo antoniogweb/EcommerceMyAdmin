@@ -204,6 +204,8 @@ class VariabiliModel extends GenericModel {
 		"permetti_upload_archivio"	=>	0,
 		"elimina_archivio_dopo_upload"	=>	1,
 		"input_ok_back_color"		=>	"#FFF",
+		"attiva_menu_ecommerce"		=>	1,
+		"attiva_standard_cms_menu"	=>	1,
 	);
 	
 	public function __construct() {
