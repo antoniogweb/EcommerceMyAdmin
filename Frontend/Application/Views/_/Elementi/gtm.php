@@ -63,7 +63,7 @@ if (false && isset($idOrdineGtm))
 <?php echo htmlentitydecode(v("codice_gtm_analytics"));?>
 <?php } ?>
 
-<?php if ($nomePaginaPerTracking) {
+<?php if (isset($nomePaginaPerTracking) && $nomePaginaPerTracking) {
 	$itemGtag = array(
 		array(
 			"id"	=>	$idPaginaPerTracking,

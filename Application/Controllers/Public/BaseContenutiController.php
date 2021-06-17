@@ -198,20 +198,6 @@ class BaseContenutiController extends BaseController
 					}
 				}
 
-// 				$parents = $this->m["PagesModel"]->parents($clean['id'],false,false);
-// 				array_shift($parents); //remove the root parent
-// 				
-// 				$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["pages"]["title"]);
-// 				
-// 				$this->fullParents = $parents;
-// 
-// 				array_pop($parents); //remove the current element
-// 				
-// 				//build the array with the right parents
-// 				foreach ($parents as $p)
-// 				{
-// 					$this->rParent[] = $p["categories"]["alias"];
-// 				}
 				$this->checkIfRigthParents();
 				$this->page($clean['id']);
 			}
@@ -544,15 +530,14 @@ class BaseContenutiController extends BaseController
 		
 		$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false);
 		
-		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
-			->rowNumber();
+		if (User::$nazione)
+			$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+		else
+			$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
 		
-// 		echo $this->m["PagesModel"]->getQuery();
-// 		print_r($data["pages"]);
-// 		die();
-// 		$rowNumber = $data["rowNumber"] = count($data["pages"]);
+		$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
+		
+		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->rowNumber();
 		
 		$data["linkAltri"] = null;
 		
@@ -573,6 +558,8 @@ class BaseContenutiController extends BaseController
 		
 		$this->pages = $data["pages"];
 		
+// 		echo $this->m["PagesModel"]->getQuery();
+		
 		// Estraggo le fasce
 		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti(0, $clean['id'], $this);
 		
@@ -585,8 +572,6 @@ class BaseContenutiController extends BaseController
 			$data["elencoMateriali"] = $this->m["CaratteristichevaloriModel"]->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
 				"caratteristiche.tipo" => "MATERIALE",
 			))->send();
-		
-// 		print_r($data["elencoMateriali"]);die();
 		
 		$pagineConDecode = array();
 		
@@ -627,9 +612,9 @@ class BaseContenutiController extends BaseController
 			case "tutti":
 				return "pages.id_order";
 			case "crescente":
-				return "pages.price,pages.id_order";
+				return "combinazioni_minime.prezzo_minimo,pages.id_order";
 			case "decrescente":
-				return "pages.price desc,pages.id_order";
+				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
 			default:
 				return "pages.id_order";
 		}
@@ -798,9 +783,10 @@ class BaseContenutiController extends BaseController
 		$data["prezzoMinimo"] = $this->prezzoMinimo = $this->m['PagesModel']->prezzoMinimo($clean['id']);
 		
 		$data["prodotti_correlati"] = $this->m['PagesModel']->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzionePagina()
+// 			->inner("categories")->on("categories.id_c = pages.id_c")
+// 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array(
 				"prodotti_correlati.id_page"=>	$clean['id'],
 				"attivo"	=>	"Y",
@@ -816,9 +802,10 @@ class BaseContenutiController extends BaseController
 		
 		// Pagine correlate
 		$data["pagine_correlate"] = $this->m['PagesModel']->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzionePagina()
+// 			->inner("categories")->on("categories.id_c = pages.id_c")
+// 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array(
 				"pages_pages.id_page"=>	$clean['id'],
 				"attivo"	=>	"Y",
@@ -1256,52 +1243,6 @@ class BaseContenutiController extends BaseController
 		
 		if (isset($data))
 			$this->append($data);
-		
-// 		$nowDate = date("Y-m-d");
-// 		$where = array(
-// 			"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-// 			" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-// 			"attivo" => "Y",
-// 			"in_promozione" => "Y",
-// 			"principale" => "Y",
-// 		);
-// 		
-// 		$data["title"] = Parametri::$nomeNegozio . " - Promozioni";
-// 		
-// 		$data["pages"] = $this->m['PagesModel']->clear()->where($where);
-// 			
-// 		if (Parametri::$hideNotAllowedNodesInLists)
-// 		{
-// 			$accWhere = $this->m["PagesModel"]->getAccessibilityWhere();
-// 			$this->m["PagesModel"]->aWhere($accWhere);
-// 		}
-// 	
-// 		$data["pages"] = $this->m['PagesModel']->addJoinTraduzionePagina()->orderBy("pages.id_order")->send();
-// 		
-// 		$rowNumber = $data["rowNumber"] = count($data["pages"]);
-// 		
-// 		if ($rowNumber > $this->elementsPerPage)
-// 		{
-// 			$argKeys = array(
-// 				'p:forceNat'	=>	1,
-// 			);
-// 
-// 			$this->setArgKeys($argKeys);
-// 			$this->shift(count($this->pageArgs));
-// 			
-// 			//load the Pages helper
-// 			$this->helper('Pages','prodotti-in-promozione','p');
-// 			
-// 			$page = $this->viewArgs['p'];
-// 			
-// 			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
-// 			$data["pages"] = $this->m['PagesModel']->send();
-// 			
-// 			$data['pageList'] = $this->h['Pages']->render($page-5,11);
-// 		}
-// 		
-// 		$this->append($data);
-// 		$this->load('promozione');
 	}
 	
 	public function sitemap()
