@@ -36,7 +36,7 @@ var arrayAccessori = [];
 
 if (typeof reloadCart !== 'function')
 {
-	function reloadCart()
+	window.reloadCart = function()
 	{
 		$.ajax({
 			url: baseUrl + "/carrello/partial",
@@ -745,7 +745,7 @@ function apriChiudiBoxAccessorio(obj)
 
 if (typeof evidenziaErroreCart !== 'function')
 {
-	function evidenziaErroreCart(selettore)
+	window.evidenziaErroreCart = function(selettore)
 	{
 		$(selettore).css("background-color",back_cart_error);
 	}
@@ -753,7 +753,7 @@ if (typeof evidenziaErroreCart !== 'function')
 
 if (typeof pulisciErroriCart !== 'function')
 {
-	function pulisciErroriCart()
+	window.pulisciErroriCart = function()
 	{
 		$(".item_quantity").css("background-color","#FFF");
 	}

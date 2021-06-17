@@ -96,7 +96,7 @@ function impostaTipoSpedizione(obj)
 
 if (typeof svuotaCampiSpedizione !== 'function')
 {
-	function svuotaCampiSpedizione()
+	window.svuotaCampiSpedizione = function()
 	{
 		$("[name='indirizzo_spedizione']").val("");
 		$("[name='cap_spedizione']").val("");
@@ -109,7 +109,7 @@ if (typeof svuotaCampiSpedizione !== 'function')
 
 if (typeof riempiCampiSpedizione !== 'function')
 {
-	function riempiCampiSpedizione(content)
+	window.riempiCampiSpedizione = function(content)
 	{
 		$("[name='indirizzo_spedizione']").val(content.indirizzo_spedizione);
 		$("[name='cap_spedizione']").val(content.cap_spedizione);
@@ -295,7 +295,7 @@ function sistemaPIva(nazione)
 
 if (typeof sistemaTendinaProvincia !== 'function')
 {
-	function sistemaTendinaProvincia(val)
+	window.sistemaTendinaProvincia = function(val)
 	{
 		if (val == "IT")
 		{
@@ -317,7 +317,7 @@ if (typeof sistemaTendinaProvincia !== 'function')
 
 if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 {
-	function sistemaTendinaProvinciaSpedizione(val)
+	window.sistemaTendinaProvinciaSpedizione = function(val)
 	{
 		if (val == "IT")
 		{
@@ -334,7 +334,7 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 
 if (typeof evidenziaErrore !== 'function')
 {
-	function evidenziaErrore(selettore)
+	window.evidenziaErrore = function(selettore)
 	{
 		if (input_error_style == "")
 			$(selettore).css(input_error_css);
