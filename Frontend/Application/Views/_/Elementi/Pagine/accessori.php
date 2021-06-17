@@ -22,22 +22,34 @@
 			
 			<?php if (count($lista_valori_attributi_acc) > 0) { ?>
 			<div class="lista_attributi_prodotto">
-				<table class="variations">
-					<?php foreach ($lista_valori_attributi_acc as $col => $valori_attributo) { ?>
-					<tr>
-						<td class="label" style="width:40%;"><label class="pa_size nome_attributo nome_attributo_<?php echo encodeUrl($lista_attributi_acc[$col]);?>"><?php echo $lista_attributi_acc[$col];?></label></td>
-						
-						<td>
-							<?php if (!PagesModel::isRadioAttributo($acc["pages"]["id_page"], $col)) { ?>
-								<?php echo Html_Form::select($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"form_select_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]),null,"yes","style='width:100%;' col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
-							<?php } else { ?>
-								<?php echo Html_Form::radio($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]), "after", null, "yes", "col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
-							<?php } ?>
-						</td>
-					</tr>
-					<?php } ?>
-				</table>
 				
+					<?php foreach ($lista_valori_attributi_acc as $col => $valori_attributo) { ?>
+					
+						<label style="display:none;" class="pa_size nome_attributo nome_attributo_<?php echo encodeUrl($lista_attributi_acc[$col]);?>"><?php echo $lista_attributi_acc[$col];?></label>
+						
+							<?php if (PagesModel::isRadioAttributo($acc["pages"]["id_page"], $col)) { ?>
+								<?php echo Html_Form::radio($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]), "after", null, "yes", "col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
+							<?php } else if (PagesModel::isAttributoTipo($acc["pages"]["id_page"], $col, "IMMAGINE")) { ?>
+								<div class="uk-text-small uk-text-bold"><?php echo $lista_attributi_acc[$col];?></div>
+								<select class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi_acc[$col]);?>" name="<?php echo $col.$acc["pages"]["id_page"];?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi_acc[$col];?>">
+									<?php
+									$indice = 0;
+									foreach ($valori_attributo as $v => $i) {
+										if (!v("primo_attributo_selezionato") && $indice == 0)
+										{
+											$indice++;
+											continue;
+										}
+									?>
+									<option data-img-src="<?php echo $this->baseUrlSrc."/thumb/valoreattributo/".$i;?>" <?php if (getAttributoDaCarrello($col, $acc["pages"]["id_page"]) == $v) { ?>selected="selected"<?php } ?> value="<?php echo $v;?>"><?php echo $i;?></option>
+									<?php } ?>
+								</select>
+							<?php } else { ?>
+								<div class="uk-margin uk-width-1-2@m">
+									<?php echo Html_Form::select($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"uk-select form_select_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]),null,"yes","style='width:100%;' col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
+								</div>
+							<?php } ?>
+					<?php } ?>
 				<?php
 				$el = $acc;
 				include(tpf("/Elementi/Pagine/dati_variante.php"));
@@ -60,20 +72,22 @@
 			<div class="uk-margin uk-text-small uk-text-danger errore_combinazione"></div>
 			
 			<div class="blocco-prezzo-accessorio" style="display:none;">
-				<p class="price">
-					<span class="amount">
-						<?php if (inPromozioneTot($acc["pages"]["id_page"])) { echo "<del>€ <span class='price_full_accessorio'>€ ".setPriceReverse(calcolaPrezzoIvato($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span></del> € <span class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span>"; } else { echo "€ <span class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span>";}?>
-					</span>
-					<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
-						<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>
-					<?php } ?>
-				</p>
-				<p class="giacenza_acc">
-					<?php $qtaAcc = giacenzaPrincipale($acc["pages"]["id_page"]);?>
-					<span class="valore_giacenza_acc"><?php echo $qtaAcc;?></span>
-					<span class="sng" style='display:<?php echo $qtaAcc==1 ? "inline" : "none"; ?>'><?php echo gtext("pezzo rimasto", false);?></span>
-					<span class="plu" style='display:<?php echo $qtaAcc!=1 ? "inline" : "none"; ?>'><?php echo gtext("pezzi rimasti", false);?></span>
-				</p>
+				<h5>
+					<div class="price uk-text-small">
+						<?php echo gtext("Prezzo");?>: <span class="amount">
+							<?php if (inPromozioneTot($acc["pages"]["id_page"])) { echo "<del>€ <span class='price_full_accessorio'>".setPriceReverse(calcolaPrezzoIvato($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span> €</del> <strong class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</strong> €"; } else { echo "<strong class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</strong> €";}?>
+						</span>
+						<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
+							<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>
+						<?php } ?>
+					</div>
+					<div class="giacenza_acc uk-text-small">
+						<?php $qtaAcc = giacenzaPrincipale($acc["pages"]["id_page"]);?>
+						<?php echo gtext("Disponibilità");?>: <span class="valore_giacenza_acc"><?php echo $qtaAcc;?></span>
+						<span class="sng" style='display:<?php echo $qtaAcc==1 ? "inline" : "none"; ?>'><?php echo gtext("pezzo rimasto", false);?></span>
+						<span class="plu" style='display:<?php echo $qtaAcc!=1 ? "inline" : "none"; ?>'><?php echo gtext("pezzi rimasti", false);?></span>
+					</div>
+				</h5>
 			</div>
 		</div>
 	</div>
