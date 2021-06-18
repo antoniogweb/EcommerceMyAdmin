@@ -128,7 +128,7 @@ function show_preview()
 	}
 	else
 	{
-		$(".preview_image").html("<p>Non è stata caricata alcuna immagine</p>");
+		$(".preview_image").html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
 		$(".cancella_immagine_box").css("display", "none");
 		$(".scarica_immagine_box").css("display", "none");
 	}
@@ -148,7 +148,7 @@ function show_preview2()
 	}
 	else
 	{
-		$(".preview_image_2").html("<p>Non è stata caricata alcuna immagine</p>");
+		$(".preview_image_2").html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
 		$(".cancella_immagine_box_2").css("display", "none");
 		$(".scarica_immagine_box_2").css("display", "none");
 	}
@@ -192,7 +192,7 @@ $(function () {
 			
 			if (allowed.indexOf(fileExt) == -1)
 			{
-				$(".alert-fileupload").append("<div class='alert alert-danger'>Attenzione, il file <b>" + fileName + "</b> non può essere caricato perché la sua estensione non è ammessa");
+				$(".alert-fileupload").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
 			}
 		},
 		progressall: function (e, data) {
@@ -240,7 +240,7 @@ $(function () {
 			
 			if (allowed.indexOf(fileExt) == -1)
 			{
-				$(".alert-fileupload-2").append("<div class='alert alert-danger'>Attenzione, il file <b>" + fileName + "</b> non può essere caricato perché la sua estensione non è ammessa");
+				$(".alert-fileupload-2").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
 			}
 		},
 		progressall: function (e, data) {

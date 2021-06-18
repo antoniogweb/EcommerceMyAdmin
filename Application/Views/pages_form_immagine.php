@@ -27,7 +27,7 @@ if ($numeroImmagine)
 	</div>
 	<span class="btn btn-success fileinput-button">
 		<i class="fa fa-plus"></i>
-		<span>SELEZIONA IMMAGINE</span>
+		<span><?php echo gtext("SELEZIONA IMMAGINE");?></span>
 		<!-- The file input field used as target for the file upload widget -->
 		<input id="userfile<?php echo $stringImmagine;?>" type="file" name="Filedata">
 	</span>

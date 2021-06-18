@@ -53,5 +53,15 @@ class Lang_It_Generic extends Lang_En_Generic
 		'Actions'	=>	'Azioni di gruppo',
 		'-- Select bulk action --' => '-- Seleziona azione --',
 	);
+	
+	public function gtext($string)
+	{
+		if (array_key_exists($string,$this->translations))
+		{
+			return gtext($this->translations[$string], false);
+		}
+
+		return $string;
+	}
 
 }

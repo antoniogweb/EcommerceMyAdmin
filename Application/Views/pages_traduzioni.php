@@ -7,11 +7,11 @@ $cmT = new CategoriesModel();
 
 <table class="table table-striped">
 	<tr>
-		<th>Titolo</th>
+		<th><?php echo gtext("Titolo");?></th>
 		<?php if (!isset($nascondiAlias)) { ?>
-		<th>Alias</th>
+		<th><?php echo gtext("Alias");?></th>
 		<?php } ?>
-		<th>Lingua</th>
+		<th><?php echo gtext("Lingua");?></th>
 		<th></th>
 		<?php if (!isset($nascondiLink)) { ?>
 		<th></th>

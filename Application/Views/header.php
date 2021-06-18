@@ -138,7 +138,7 @@
 						<li <?php if (strcmp($sezionePannello,"utenti") === 0) { ?>class="active"<?php } ?>>
 							<a href="<?php echo $this->baseUrl.'/users/main';?>"><span class="glyphicon glyphicon-cog"></span>
 							<?php if (!User::$isMobile) { ?>
-							Preferenze
+							<?php echo gtext("Preferenze")?>
 							<?php } ?>
 							</a>
 						</li>

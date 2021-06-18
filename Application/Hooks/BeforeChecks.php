@@ -52,7 +52,7 @@ Params::$language = "It";
 if (v("permetti_cambio_lingua"))
 {
 	Params::$frontEndLanguages = array("it", "en");
-	Params::$defaultFrontEndLanguage = "it";
+	Params::$defaultFrontEndLanguage = v("default_backend_language");
 }
 
 TraduzioniModel::$contestoStatic = "back";

@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1><?php echo $titoloMenu;?></h1>
+	<h1><?php echo gtext($titoloMenu);?></h1>
 </section>
 
 <!-- Main content -->

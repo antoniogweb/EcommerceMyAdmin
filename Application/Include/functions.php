@@ -191,10 +191,10 @@ function getYesNoUtenti($input)
 	switch($input)
 	{
 		case 0:
-			$output = 'sì';
+			$output = gtext('sì');
 			break;
 		case 1:
-			$output = 'no';
+			$output = gtext('no');
 			break;
 		default:
 			$output = 'undef';
@@ -207,10 +207,10 @@ function getYesNo($input)
 	switch($input)
 	{
 		case 'Y':
-			$output = 'sì';
+			$output = gtext('sì');
 			break;
 		case 'N':
-			$output = 'no';
+			$output = gtext('no');
 			break;
 		default:
 			$output = 'undef';
@@ -226,9 +226,9 @@ function getYesNoPromozione($id_page)
 	
 	if ($inProm)
 	{
-		return "sì";
+		return gtext("sì");
 	}
-	return "no";
+	return gtext("no");
 }
 
 function accepted($fileName)

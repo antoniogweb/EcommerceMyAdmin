@@ -4,10 +4,10 @@
 <?php echo $notice;?>
 
 <!--jquery-->
-<script type="text/javascript" src="<?php echo $this->baseUrl;?>/Public/Js/jquery/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery/jquery-1.8.3.min.js"></script>
 
 <?php if ($this->viewArgs['is_popup']) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrl?>/Public/Js/tiny_mce/tiny_mce_popup.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/tiny_mce_popup.js"></script>
 
 <script language="javascript" type="text/javascript">
 
@@ -70,7 +70,7 @@
 </script>
 
 <?php if ($this->viewArgs['use_flash']) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrl?>/Public/Js/uploadify_3_2_1/jquery.uploadify.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/jquery.uploadify.js"></script>
 
 <script type="text/javascript">
 	
@@ -81,7 +81,7 @@
 			'fileSizeLimit' : '60MB',
 			'buttonText' : 'CARICA FILE',
 			'formData'      : {'directory' : '<?php echo $base;?>','token':'<?php echo $token;?>'},
-            'swf'      : '<?php echo $this->baseUrl."/Public/Js/uploadify_3_2_1/";?>uploadify.swf',
+            'swf'      : '<?php echo $this->baseUrlSrc."/Public/Js/uploadify_3_2_1/";?>uploadify.swf',
             'uploader' : '<?php echo $this->baseUrl."/upload/move";?>',
 			'onUploadStart' : function(file) {
 				if (jQuery.inArray(file.name.split('.').pop().toLowerCase(), allowed) == -1)
@@ -104,16 +104,16 @@
 	<?php if (!$this->viewArgs['use_flash']) { ?>
 	<form class="EGuploadFileBox_form" action='<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=uploadfile";?>' method='POST' enctype="multipart/form-data">
 		
-		<b>Carica file:</b>
+		<b><?php echo gtext("Carica file");?>:</b>
 		
 	<?php } ?>
 	
 		<input id="userfile" name="userfile" type="file">
 	
 	<?php if (!$this->viewArgs['use_flash']) { ?>
-		<input class="file_submit" type="submit" name="uploadFileAction" value="carica">
+		<input class="file_submit" type="submit" name="uploadFileAction" value="<?php echo gtext("carica", false);?>">
 		<input type="hidden" name="MAX_FILE_SIZE" value="10000">
-		<span class="loading_gif"><img src="<?php echo $this->baseUrl."/Public/Img/Icons/loading4.gif";?>" /></span>
+		<span class="loading_gif"><img src="<?php echo $this->baseUrlSrc."/Public/Img/Icons/loading4.gif";?>" /></span>
 		
 	</form>
 	<?php } ?>
@@ -123,9 +123,9 @@
 <?php if ($this->viewArgs['mostra_crea']) { ?>
 <div class='EGcreateFolderBox'>
 	<form action='<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=createfolder";?>' method='POST'>
-		<b>Crea una cartella:</b>
+		<b><?php echo gtext("Crea una cartella");?>:</b>
 		<input type="text" name="folderName" value="">
-		<input type="submit" name="uploadFileAction" value="crea">
+		<input type="submit" name="uploadFileAction" value="<?php echo gtext("crea", false);?>">
 	</form>
 </div>
 <?php } ?>
@@ -135,9 +135,9 @@
 		<?php if ($this->viewArgs['mostra_indietro']) { ?>
 		<tr class='EGbackBox'>
 			<td class="first" width="5%">
-				<a class="parent_folder" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$parentDir";?>"><img src="<?php echo $this->baseUrl?>/Public/Img/Icons/back.png" /></a>
+				<a class="parent_folder" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$parentDir";?>"><img src="<?php echo $this->baseUrlSrc;?>/Public/Img/Icons/back.png" /></a>
 			</td>
-			<td class="second">Current directory: <b><?php echo $base."/".$currentDir;?></b></td>
+			<td class="second"><?php echo gtext("Current directory");?>: <b><?php echo $base."/".$currentDir;?></b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="5%">&nbsp</td>
 			<?php } ?>
@@ -150,10 +150,10 @@
 			<td width="5%">
 				<a class="inside_folder" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=".$currentDir.$folder."/";?>"><img src="<?php echo $this->baseUrlSrc?>/Public/Img/Icons/folder.png" /></a>
 			</td>
-			<td>Folder name:<br /><b><?php echo $folder;?></b></td>
+			<td><?php echo gtext("Folder name");?>:<br /><b><?php echo $folder;?></b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="8%">
-				<a href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfolder&file=$folder";?>"><img src="<?php echo $this->baseUrl?>/Public/Img/Icons/delete.png" /></a>
+				<a href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfolder&file=$folder";?>"><img src="<?php echo $this->baseUrlSrc?>/Public/Img/Icons/delete.png" /></a>
 			</td>
 			<?php } ?>
 		</tr>
@@ -179,7 +179,7 @@
 				{
 					if ($this->viewArgs['use_dynamic_thumbs'])
 					{
-						$img = "<img src='".$this->baseUrl."/upload/thumb/$file?base=$base&directory=$currentDir' />";
+						$img = "<img src='".$this->baseUrlSrc."/upload/thumb/$file?base=$base&directory=$currentDir' />";
 					}
 					else
 					{
@@ -195,16 +195,16 @@
 					}
 					
 				} else if (in_array($ext,$pdfExt)) {
-					echo "<img width='50px' src='".$this->baseUrl."/Public/Img/Icons/application-pdf.png'>\n";
+					echo "<img width='50px' src='".$this->baseUrlSrc."/Public/Img/Icons/application-pdf.png'>\n";
 				
 				} else if (in_array($ext,$docExt)) {
-					echo "<img width='50px' src='".$this->baseUrl."/Public/Img/Icons/ooffice.png'>\n";
+					echo "<img width='50px' src='".$this->baseUrlSrc."/Public/Img/Icons/ooffice.png'>\n";
 				
 				} else if (in_array($ext,$zipExt)) {
-					echo "<img width='50px' src='".$this->baseUrl."/Public/Img/Icons/zip.png'>\n";
+					echo "<img width='50px' src='".$this->baseUrlSrc."/Public/Img/Icons/zip.png'>\n";
 			
 				} else {
-					echo "<img width='50px' src='".$this->baseUrl."/Public/Img/Icons/file.png'>\n";
+					echo "<img width='50px' src='".$this->baseUrlSrc."/Public/Img/Icons/file.png'>\n";
 				}
 				?>
 			</td>
@@ -217,7 +217,7 @@
 			</b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="5%">
-				<a class="delete_file_class" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfile&file=$file";?>"><img src="<?php echo $this->baseUrl?>/Public/Img/Icons/delete.png" /></a><span class="loading_gif_del"><img src="<?php echo $this->baseUrl."/Public/Img/Icons/loading4.gif";?>" /></span>
+				<a class="delete_file_class" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfile&file=$file";?>"><img src="<?php echo $this->baseUrlSrc;?>/Public/Img/Icons/delete.png" /></a><span class="loading_gif_del"><img src="<?php echo $this->baseUrlSrc."/Public/Img/Icons/loading4.gif";?>" /></span>
 			</td>
 			<?php } ?>
 		</tr>
@@ -231,7 +231,7 @@
 <?php if ($this->viewArgs['is_popup']) { ?>
 
 <div class="inserisci_button">
-	<input class="inserisci_button_submit" type="submit" name="inserisci" value="Inserisci" />
+	<input class="inserisci_button_submit" type="submit" name="inserisci" value="<?php echo gtext("Inserisci", false);?>" />
 </div>
 
 <?php } ?>

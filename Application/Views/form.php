@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 <?php if (!showreport()) { ?>
 <section class="content-header">
-	<h1><?php if (!showreport()) { ?>Gestione<?php } else { ?>Visualizzazione<?php } ?> <?php echo $tabella;?>: <?php echo $titoloRecord;?></h1>
+	<h1><?php if (!showreport()) { ?><?php echo gtext("Gestione");?><?php } else { ?><?php echo gtext("Visualizzazione");?><?php } ?> <?php echo gtext($tabella);?>: <?php echo $titoloRecord;?></h1>
 </section>
 <?php } ?>
 

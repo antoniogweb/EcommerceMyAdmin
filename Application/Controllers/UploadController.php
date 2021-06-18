@@ -134,7 +134,7 @@ class UploadController extends BaseController {
 		switch($uploadResult)
 		{
 			case 'success':
-				$data['notice'] = "<div class='executed'>Operazione eseguita</div>";
+				$data['notice'] = "<div class='executed'>".gtext("Operazione eseguita")."</div>";
 				break;
 		}
 		

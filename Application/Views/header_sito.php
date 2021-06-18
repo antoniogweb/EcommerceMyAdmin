@@ -153,11 +153,11 @@ include(ROOT."/Application/Views/header.php");
 			<li class="<?php echo $tm["menu1"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>
-					<span>Menù</span>
+					<span><?php echo gtext("Menù");?></span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/menu/form/insert/0?lingua=it";?>"><i class="fa fa-plus-circle"></i> Aggiungi voce</a></li>
-					<li><a href="<?php echo $this->baseUrl."/menu/main?lingua=it";?>"><i class="fa fa-list"></i> Lista voci</a></li>
+					<li><a href="<?php echo $this->baseUrl."/menu/main?lingua=it";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/menu/form/insert/0?lingua=it";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 				</ul>
 			</li>
 		</ul>

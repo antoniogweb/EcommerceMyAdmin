@@ -4,7 +4,7 @@
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1><?php if (strcmp($type,"update") === 0) { echo "Gestione categoria: ".$titoloPagina; } else { echo "Inserimento nuova categoria";}?></h1>
+	<h1><?php if (strcmp($type,"update") === 0) { echo gtext("Gestione").": ".$titoloPagina; } else { echo gtext("Inserimento nuova categoria");}?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
@@ -46,7 +46,7 @@
 		<div class='col-md-4'>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					Traduzioni
+					<?php echo gtext("Traduzioni");?>
 				</div>
 				<div class="panel-body">
 					<?php include($this->viewPath("pages_traduzioni"));?>

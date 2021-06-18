@@ -208,6 +208,24 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
+		Lang_It_UploadStrings::$staticStrings = array(
+			"error" => "<div class='alert'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
+			"executed"	=>	"<div class='alert alert-success'>".gtext("Operazione eseguita!")."</div>",
+			"not-child" => "<div class='alert'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
+			"not-dir" => "<div class='alert'>".gtext("La cartella selezionata non è una directory")."</div>\n",
+			"not-empty" => "<div class='alert'>".gtext("La cartella selezionata non è vuota")."</div>\n",
+			"no-folder-specified" => "<div class='alert'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
+			"no-file-specified" => "<div class='alert'>".gtext("Non è stato specificato alcun file")."</div>\n",
+			"not-writable" => "<div class='alert'>".gtext("La cartella non è scrivibile")."</div>\n",
+			"not-writable-file" => "<div class='alert'>".gtext("Il file non è scrivibile")."</div>\n",
+			"dir-exists" => "<div class='alert'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
+			"no-upload-file" => "<div class='alert'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
+			"size-over" => "<div class='alert'>".gtext("La dimensione del file è troppo grande")."</div>\n",
+			"not-allowed-ext" => "<div class='alert'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+			"not-allowed-mime-type" => "<div class='alert'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
+			"file-exists" => "<div class='alert'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
+		);
+		
 		$baseArgsKeys = array(
 			'page:forceInt'=>1,
 			'attivo:sanitizeAll'=>'tutti',

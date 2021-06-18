@@ -65,7 +65,7 @@ $(function() {
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione categorie</h1>
+	<h1><?php echo gtext("Gestione");?> <?php echo gtext("categorie");?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
