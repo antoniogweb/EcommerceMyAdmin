@@ -2,8 +2,11 @@
 
 <?php if (count($elencoTraduzioniAttive) > 0) { ?>
 <style>
-<?php for ($i=0; $i<count($elencoTraduzioniAttive); $i++) { ?>
-.table-scaffolding tr td:nth-last-child(<?php echo ($i+3)?>), .table-scaffolding tr th:nth-last-child(<?php echo ($i+3)?>)
+<?php
+$incrementoFisso = $section ? 3 : 2;
+
+for ($i=0; $i<count($elencoTraduzioniAttive); $i++) { ?>
+.table-scaffolding tr td:nth-last-child(<?php echo ($i+$incrementoFisso)?>), .table-scaffolding tr th:nth-last-child(<?php echo ($i+$incrementoFisso)?>)
 {
 	width:32px;
 }

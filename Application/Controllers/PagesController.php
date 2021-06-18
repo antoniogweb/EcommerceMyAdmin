@@ -1850,6 +1850,9 @@ class PagesController extends BaseController {
 // 			die("non permesso");
 // 		}
 		
+		// Creo la cartella
+		GenericModel::creaCartellaImages(Parametri::$cartellaImmaginiContenuti);
+		
 		$res = $this->m[$this->modelName]->query("select * from adminsessions where token = '".$clean['token']."';");
 
 		$cartellaImmagini = Parametri::$cartellaImmaginiContenuti;

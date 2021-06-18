@@ -62,6 +62,9 @@ class UploadController extends BaseController {
 	
 	public function main()
 	{
+		// Creo la cartella
+		GenericModel::creaCartellaImages(Parametri::$cartellaImmaginiGeneriche);
+		
 		$this->s['admin']->check();
 		
 		$this->setArgKeys(array('mostra_upload:forceInt'=>1,'mostra_indietro:forceInt'=>1,'mostra_delete:forceInt'=>1,'mostra_crea:forceInt'=>1,'clean_views:forceInt'=>1,'link_immagini:forceInt'=>1,'tutti_i_tipi:forceInt'=>1,'mostra_url_completo:forceInt'=>1,'is_popup:forceInt'=>0,'use_flash:forceInt'=>0,'use_dynamic_thumbs:forceInt'=>0));
