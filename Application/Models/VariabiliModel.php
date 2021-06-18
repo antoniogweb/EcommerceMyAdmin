@@ -206,6 +206,7 @@ class VariabiliModel extends GenericModel {
 		"input_ok_back_color"		=>	"#FFF",
 		"attiva_menu_ecommerce"		=>	1,
 		"attiva_standard_cms_menu"	=>	1,
+		"url_inserisci_slide"		=>	"slide/form/insert/0",
 	);
 	
 	public function __construct() {

@@ -18,7 +18,7 @@ include(ROOT."/Application/Views/header.php");
 					</a>
 					<ul class="treeview-menu">
 						<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_slide");?>"><i class="fa fa-list"></i> Lista</a></li>
-						<li><a href="<?php echo $this->baseUrl."/slide/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+						<li><a href="<?php echo $this->baseUrl."/".v("url_inserisci_slide");?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
 				<?php if (v("blog_attivo")) { ?>
