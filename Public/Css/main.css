@@ -3,6 +3,7 @@ html, body{margin: 0;padding:0;}
 html, body, .wrapper, .content_basso
 {
 	min-height:0px !important;
+	height:100%;
 }
 
 body{margin:0px;padding:0px;font-family:arial}

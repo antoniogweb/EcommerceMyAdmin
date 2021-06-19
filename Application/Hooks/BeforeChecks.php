@@ -49,10 +49,14 @@ $mysqli->query("set session sql_mode=''");
 
 Params::$language = "It";
 
-if (v("permetti_cambio_lingua"))
+if (LingueModel::permettiCambioLinguaBackend())
 {
-	Params::$frontEndLanguages = array("it", "en");
-	Params::$defaultFrontEndLanguage = v("default_backend_language");
+	Params::$frontEndLanguages = array_keys(LingueModel::$lingueBackend);
+	
+	if (isset($_COOKIE["backend_lang"]) && LingueModel::linguaPermessaBackend((string)$_COOKIE["backend_lang"]))
+		Params::$defaultFrontEndLanguage = (string)$_COOKIE["backend_lang"];
+	else
+		Params::$defaultFrontEndLanguage = v("default_backend_language");
 }
 
 TraduzioniModel::$contestoStatic = "back";

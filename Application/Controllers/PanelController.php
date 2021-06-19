@@ -35,6 +35,15 @@ class PanelController extends BaseController {
 	{
 		$this->clean();
 		
+		if (LingueModel::permettiCambioLinguaBackend())
+		{
+			if (!isset($_COOKIE["backend_lang"]) || (string)Params::$lang !== (string)$_COOKIE["backend_lang"])
+			{
+				$time = time() + 3600*24*365*10;
+				setcookie("backend_lang",Params::$lang,$time,"/");
+			}
+		}
+		
 		switch ($tipo)
 		{
 			case "sito":

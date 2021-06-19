@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class LingueModel extends GenericModel
 {
 	public static $valori = null;
+	public static $lingueBackend = array();
 	
 	public function __construct() {
 		$this->_tables = 'lingue';
@@ -52,5 +53,52 @@ class LingueModel extends GenericModel
 		return $l->clear()->where(array(
 			"principale"	=>	1
 		))->field("codice");
+	}
+	
+	public static function getLingueBackend()
+	{
+		self::$lingueBackend = self::getLingue(true);
+	}
+	
+	public static function linguaPermessaBackend($lang)
+	{
+		if (isset(self::$lingueBackend[$lang]))
+			return true;
+		
+		return false;
+	}
+	
+	public static function getLingue($soloBackend = false)
+	{
+		$l = new LingueModel();
+		
+		$l->clear()->where(array(
+			"attiva"	=>	1,
+		))->orderBy("id_order")->toList("codice", "descrizione");
+		
+		if ($soloBackend)
+			$l->aWhere(array(
+				"backend"	=>	1,
+			));
+		
+		return $l->send();
+	}
+	
+	public static function titoloLinguaCorrente()
+	{
+		if (isset(self::$lingueBackend[Params::$lang]))
+			return self::$lingueBackend[Params::$lang];
+		
+		return "";
+	}
+	
+	public static function permettiCambioLinguaBackend()
+	{
+		self::getLingueBackend();
+		
+		if (!empty(self::$lingueBackend) && v("permetti_cambio_lingua"))
+			return true;
+		
+		return false;
 	}
 }

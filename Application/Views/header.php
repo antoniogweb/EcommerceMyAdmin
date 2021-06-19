@@ -109,8 +109,18 @@
 					<span class="sr-only">Toggle navigation</span>
 				</a>
 				<div class="navbar-custom-menu">
-					<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {?>
+					<?php if (User::$logged and strcmp($this->action,'logout') !== 0) { ?>
 					<ul class="nav navbar-nav navbar-right">
+						<?php if (LingueModel::permettiCambioLinguaBackend()) { ?>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtext(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<?php foreach (LingueModel::$lingueBackend as $codiceLingua => $titoloLingua) { ?>
+								<li><a href="<?php echo $this->baseUrlSrc."/$codiceLingua/panel/main";?>"><?php echo gtext($titoloLingua)?></a></li>
+								<?php } ?>
+							</ul>
+						</li>
+						<?php } ?>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?php if (!User::$isMobile) { ?><?php echo User::$name;?> <?php } ?><span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
