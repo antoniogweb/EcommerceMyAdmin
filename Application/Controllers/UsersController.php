@@ -167,6 +167,8 @@ class UsersController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->s['admin']->check();
+		
 		$clean['id'] = (int)$id;
 		
 		$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,password:sha1','none');

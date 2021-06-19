@@ -1283,6 +1283,11 @@ tr.cart_head {
 	padding:0px !important;
 }
 
+.custom-combobox-toggle img
+{
+	width: 10px;
+}
+
 @media (min-width: 992px)
 {
 	body .modal-lg {

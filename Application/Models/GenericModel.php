@@ -520,7 +520,7 @@ class GenericModel extends Model_Tree
 	{
 		$p = new PagesModel();
 		
-		return array(0	=>	"--") + $p->clear()->inner("categories")->on("pages.id_c = categories.id_c")->orderBy("pages.title")->where(array(
+		return array(0	=>	gtext("-- NON IMPOSTATO --")) + $p->clear()->inner("categories")->on("pages.id_c = categories.id_c")->orderBy("pages.title")->where(array(
 			"nin"	=>	array("categories.alias"	=>	array("slide")),
 		))->toList("pages.id_page","pages.title")->send();
 	}
@@ -710,12 +710,12 @@ class GenericModel extends Model_Tree
 	{
 		$c = new CategoriesModel();
 		
-		return array("0"=>"--") + $c->buildSelect(null, false);
+		return array("0"=>gtext("-- NON IMPOSTATO --")) + $c->buildSelect(null, false);
 	}
 	
 	public function buildAllPagesSelect()
 	{
-		return array("0"=>"--") + $this->clear()->orderBy("title")->toList("id_page","title")->send();
+		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
 	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true)
@@ -842,14 +842,14 @@ class GenericModel extends Model_Tree
 	{
 		$m = new MarchiModel();
 		
-		return array(0 => "--") + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+		return array(0 => gtext("-- NON IMPOSTATO --")) + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
 	}
 	
 	public function selectTag()
 	{
 		$t = new TagModel();
 		
-		return array(0 => "--") + $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
+		return array(0 => gtext("-- NON IMPOSTATO --")) + $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
 	}
 	
 	public function getLinkEntries()

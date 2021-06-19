@@ -275,7 +275,7 @@ class ContenutiModel extends GenericModel {
 	{
 		$p = new PagesModel();
 		
-		return array("0"=>"--") + $p->clear()->orderBy("title")->toList("id_page","title")->send();
+		return array("0"=>gtext("-- NON IMPOSTATO --")) + $p->clear()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
     public function titoloContenuto($record)
