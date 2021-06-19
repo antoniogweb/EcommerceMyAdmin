@@ -592,12 +592,23 @@ class CategoriesModel extends HierarchicalModel {
 		return $section;
 	}
 	
+	public static function getIdFromSection($section)
+	{
+		$c = new CategorieModel();
+		
+		return (int)$c->clear()->where(array(
+			"section"	=>	sanitizeDb($section),
+		))->field("id_c");
+	}
+	
 	// Restituisce l'id della categoria ecommerce
 	public function getShopCategoryId()
 	{
-		return (int)$this->clear()->where(array(
-			"section"	=>	Parametri::$nomeSezioneProdotti
-		))->field("id_c");
+		return self::getIdFromSection(Parametri::$nomeSezioneProdotti);
+		
+// 		return (int)$this->clear()->where(array(
+// 			"section"	=>	Parametri::$nomeSezioneProdotti
+// 		))->field("id_c");
 	}
 	
 	// Restituisce la lista di categorie in sconto

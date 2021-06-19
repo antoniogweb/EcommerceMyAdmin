@@ -433,6 +433,7 @@ class Route
 		'eventicat,form',
 		'eventicat,meta',
 		'eventicat,gruppi',
+		'eventicat,ordina',
 		
 		'eventi,main',
 		'eventi,form',

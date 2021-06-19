@@ -4,8 +4,9 @@
 <link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/dropzone-5.7.0/dist/min/dropzone.min.css">
 
 <script>
+Dropzone.autoDiscover = false;
 $(document).ready(function() {
-	Dropzone.autoDiscover = false;
+	
 	
 	<?php if (isset($caricaZip)) { ?>
 	Dropzone.prototype.defaultOptions.dictDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file compressi (formato ZIP) che desideri caricare"))."<br /><i>(".sanitizeJs(gtext("ogni file verrà decompresso e i file al loro interno verranno salvati singolarmente")).")</i>";?>";

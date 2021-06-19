@@ -87,8 +87,10 @@ include(ROOT."/Application/Views/header.php");
 					<ul class="treeview-menu">
 						<li><a href="<?php echo $this->baseUrl."/download/main";?>"><i class="fa fa-list"></i> Lista</a></li>
 						<li><a href="<?php echo $this->baseUrl."/download/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+						<?php if (v("attiva_categorie_download")) { ?>
 						<li class="dropdown-header">Categorie</li>
 						<li><a href="<?php echo $this->baseUrl."/downloadcat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
+						<?php } ?>
 					</ul>
 				</li>
 				<?php } ?>

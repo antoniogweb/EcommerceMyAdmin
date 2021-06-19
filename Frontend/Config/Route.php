@@ -24,6 +24,7 @@ class Route
 		'contenuti,sitemap',
 		'contenuti,robots',
 		'contenuti,jsoncategorie',
+		'contenuti,documento',
 		'cart,index',
 		'cart,ajax',
 		'cart,add',
@@ -173,6 +174,7 @@ class Route
 		'sitemap.xml'				=>	'contenuti/sitemap',
 		'robots.txt'				=>	'contenuti/robots',
 		'contenuti/jsoncategorie/(.*)'	=>	'contenuti/jsoncategorie/${1}',
+		'contenuti/documento/(.*)'	=>	'contenuti/documento/${1}',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',
