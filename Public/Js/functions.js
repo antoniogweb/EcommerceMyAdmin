@@ -345,14 +345,14 @@ $(document).ready(function(){
 		
 		if(e.target != this) return;
 		
-		if ($(this).parents("tr").find("a.action_edit").length > 0)
+		if ($(this).closest("tr").find("a.action_edit").length > 0)
 		{
-			var url = $(this).parents("tr").find("a.action_edit").attr("href");
+			var url = $(this).closest("tr").find("a.action_edit").attr("href");
 			location.href = url;
 		}
-		else if ($(this).parents("tr").find("a.action_iframe").length > 0)
+		else if ($(this).closest("tr").find("a.action_iframe").length > 0)
 		{
-			$(this).parents("tr").find("a.action_iframe").trigger("click");
+			$(this).closest("tr").find("a.action_iframe").trigger("click");
 		}
 // 		else if ($(this).parents("tr").find("a").last().length > 0)
 // 		{
