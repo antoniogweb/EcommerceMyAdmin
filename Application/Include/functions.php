@@ -85,13 +85,13 @@ function getCategoryUrlAlias($id_c)
 	return $p->getUrlAlias($clean["id_c"]);
 }
 
-function getMarchioUrlAlias($id_c)
+function getMarchioUrlAlias($id_c, $paginaDettaglioMarchio = false)
 {
 	$clean["id_c"] = (int)$id_c;
 	
 	$p = new MarchiModel();
 	
-	return $p->getUrlAlias($clean["id_c"]);
+	return $p->getUrlAlias($clean["id_c"], $paginaDettaglioMarchio);
 }
 
 function getTitoloMarchio($idM)

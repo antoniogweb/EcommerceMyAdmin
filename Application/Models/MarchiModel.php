@@ -136,7 +136,7 @@ class MarchiModel extends GenericModel {
 		$this->controllaLinguaGeneric($id, "id_marchio", "-marchio-");
 	}
 	
-	public function getUrlAlias($id)
+	public function getUrlAlias($id, $paginaDettaglioMarchio = false)
 	{
 		$marchio = $this->clear()->where(array(
 			"id_marchio"	=>	(int)$id,
@@ -146,7 +146,7 @@ class MarchiModel extends GenericModel {
 		
 		if (count($marchio) > 0)
 		{
-			if (v("shop_in_alias_marchio"))
+			if (v("shop_in_alias_marchio") && !$paginaDettaglioMarchio)
 			{
 				$c = new CategoriesModel;
 		

@@ -387,11 +387,6 @@ class BaseContenutiController extends BaseController
 		return implode(v("divisone_breadcrum"), $breadcrumbArray);
 	}
 	
-	protected function marchio($id)
-	{
-		
-	}
-	
 	protected function category($id)
 	{
 		if (!in_array("combinazioni", Cache::$cachedTables))
@@ -735,6 +730,42 @@ class BaseContenutiController extends BaseController
 				$this->redirect("regusers/login");
 			}
 		}
+	}
+	
+	protected function marchio($id)
+	{
+		$linguaPrincipale = LingueModel::getPrincipale();
+		
+		$marchiAlias = $this->m["MarchiModel"]->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->left("contenuti_tradotti")->on("contenuti_tradotti.id_marchio = marchi.id_marchio")->where(array(
+			"marchi.id_marchio"	=>	(int)$id,
+		))->toList("contenuti_tradotti.lingua", "contenuti_tradotti.alias")->send();
+		
+		$marchioCorrente = $data["marchioCorrente"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+			"marchi.id_marchio"	=>	(int)$this->idMarchio,
+		))->first();
+		
+		if (!empty($marchioCorrente))
+		{
+			$data["arrayLingue"] = array();
+			
+			foreach (Params::$frontEndLanguages as $l)
+			{
+				if ($l == $linguaPrincipale || !isset($marchiAlias[$l]))
+					$data["arrayLingue"][$l] = $l."/".$marchioCorrente["marchi"]["alias"].".html";
+				else
+					$data["arrayLingue"][$l] = $l."/".$marchiAlias[$l].".html";
+			}
+			
+			$data["meta_description"] = htmlentitydecode(mfield($marchioCorrente, "meta_description"));
+			$data["keywords"] = mfield($marchioCorrente, "keywords");
+			$data["title"] = mfield($marchioCorrente, "titolo");
+			
+			$this->append($data);
+			
+			$this->load("marchio");
+		}
+		else
+			$this->redirect("contenuti/notfound");
 	}
 	
 	protected function page($id)
