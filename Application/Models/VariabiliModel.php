@@ -210,6 +210,7 @@ class VariabiliModel extends GenericModel {
 		"default_backend_language"	=>	"it",
 		"attiva_categorie_download"	=>	1,
 		"attiva_pagina_produttore"	=>	0,
+		"vista_promozioni_separata"	=>	0,
 	);
 	
 	public function __construct() {
