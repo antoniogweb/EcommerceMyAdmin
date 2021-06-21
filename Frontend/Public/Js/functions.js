@@ -11,6 +11,9 @@ if (typeof input_error_css == "undefined")
 if (typeof input_error_style == "undefined")
 	var input_error_style = "";
 
+if (typeof gtm_analytics == "undefined")
+	var gtm_analytics = false;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -489,6 +492,14 @@ $(document).ready(function(){
 	$("body").on("click", ".btn_completa_acquisto", function(e){
 		
 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		
+		if (gtm_analytics && typeof checkout_items !== "undefined")
+		{
+			if (debug_js)
+				console.log(checkout_items);
+			
+			gtag('event', 'checkout_progress', checkout_items);
+		}
 		
 	});
 	

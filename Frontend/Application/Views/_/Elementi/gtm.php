@@ -76,4 +76,28 @@ if (v("codice_gtm_analytics"))
 			?>
 		<?php } ?>
 	<?php } ?>
+	
+	<?php if ($this->controller == "ordini" && $this->action == "index") {
+		
+		$items = array(
+			"items"	=>	array(),
+		);
+		
+		foreach ($pages as $p)
+		{
+			$items["items"][] = array(
+				"id"	=>	$p["cart"]["id_page"],
+				"name"	=>	sanitizeJs(htmlentitydecode($p["cart"]["title"])),
+				"quantity"	=>	$p["cart"]["quantity"],
+				"price"		=>	v("prezzi_ivati_in_carrello") ? $p["cart"]["price_ivato"] : $p["cart"]["price"],
+			);
+		}
+		?>
+		<script>
+			var checkout_items = <?php echo json_encode($items);?>
+			
+			gtag('event', 'begin_checkout', <?php echo json_encode($items);?>);
+		</script>
+		<?php
+	} ?>
 <?php } ?>
