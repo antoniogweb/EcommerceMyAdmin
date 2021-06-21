@@ -208,7 +208,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_standard_cms_menu"	=>	1,
 		"url_inserisci_slide"		=>	"slide/form/insert/0",
 		"default_backend_language"	=>	"it",
-		"attiva_categorie_download"=>	1,
+		"attiva_categorie_download"	=>	1,
+		"attiva_pagina_produttore"	=>	0,
 	);
 	
 	public function __construct() {

@@ -115,7 +115,7 @@ class BaseContenutiController extends BaseController
 		}
 		
 		// Controlla che non sia un marchio o un tag
-		if (count($this->pageArgs) === 0 && ($this->idMarchio || $this->idTag))
+		if (count($this->pageArgs) === 0 && (($this->idMarchio && !v("attiva_pagina_produttore")) || $this->idTag))
 		{
 			$catProdotti = $this->m['CategoriesModel']->clear()
 				->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
@@ -233,6 +233,12 @@ class BaseContenutiController extends BaseController
 				$this->redirect("contenuti/notfound");
 			}
 		}
+		else if ($this->idMarchio && v("attiva_pagina_produttore"))
+		{
+			$this->marchio($this->idMarchio);
+		}
+		else
+			$this->redirect("contenuti/notfound");
 		
 		$data["currUrl"] = $this->getCurrentUrl();
 		
@@ -370,6 +376,11 @@ class BaseContenutiController extends BaseController
 			$i++;
 		}
 		return implode(v("divisone_breadcrum"), $breadcrumbArray);
+	}
+	
+	protected function marchio($id)
+	{
+		
 	}
 	
 	protected function category($id)
