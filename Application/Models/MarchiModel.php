@@ -34,8 +34,6 @@ class MarchiModel extends GenericModel {
 		
 		$this->_idOrder = 'id_order';
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
-		
 		$this->uploadFields = array(
 			"immagine"	=>	array(
 				"type"	=>	"image",
@@ -106,7 +104,13 @@ class MarchiModel extends GenericModel {
 	{
 		if ($this->upload("update"))
 		{
-			$this->alias($id);
+			$record = $this->selectId((int)$id);
+			
+			if (isset($this->values["alias"]))
+				$this->alias($id);
+			
+			// Salva informazioni meta della pagina
+				$this->salvaMeta($record["meta_modificato"], "descrizione");
 			
 			return parent::update($id, $whereClause);
 		}
@@ -116,7 +120,11 @@ class MarchiModel extends GenericModel {
 	{
 		if ($this->upload("insert"))
 		{
-			$this->alias();
+			if (isset($this->values["alias"]))
+				$this->alias();
+			
+			// Salva informazioni meta della pagina
+				$this->salvaMeta(0, "descrizione");
 			
 			return parent::insert();
 		}

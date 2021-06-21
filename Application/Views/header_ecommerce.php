@@ -111,8 +111,8 @@ include(ROOT."/Application/Views/header.php");
 					<span><?php echo gtext("famiglie",true,"ucfirst");?></span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/marchi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi <?php echo gtext("famiglia");?></a></li>
-					<li><a href="<?php echo $this->baseUrl."/marchi/main";?>"><i class="fa fa-list"></i> Lista <?php echo gtext("famiglie");?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/marchi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/marchi/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 				</ul>
 			</li>
 			<?php } ?>
@@ -123,8 +123,8 @@ include(ROOT."/Application/Views/header.php");
 					<span><?php echo gtext("Tag / Linee",true,"ucfirst");?></span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/tag/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi <?php echo gtext("Tag / Linee");?></a></li>
-					<li><a href="<?php echo $this->baseUrl."/tag/main";?>"><i class="fa fa-list"></i> Lista <?php echo gtext("Tag / Linee");?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/tag/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/tag/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 				</ul>
 			</li>
 			<?php } ?>

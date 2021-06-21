@@ -51,8 +51,8 @@ trait TraitController
 		else if ($section == "-cv-" || $section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni" || $section == "fasce_prezzo" || $section == "tipi_azienda" || $section == "tipologie_caratteristiche")
 			$fields = 'titolo';
 		else if ($section == "-marchio-")
-			$fields = 'titolo,alias,description';
-		else if ($section == "tag")
+			$fields = 'titolo,alias,descrizione,keywords,meta_description';
+		else if ($section == "tag" || $section == "-marchio-")
 			$fields = 'titolo,alias,description,keywords,meta_description';
 		else if ($section == "documenti" || $section == "contenuti")
 			$fields = 'titolo,descrizione';

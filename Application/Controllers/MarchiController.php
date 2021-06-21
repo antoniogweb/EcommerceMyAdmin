@@ -70,8 +70,22 @@ class MarchiController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->_posizioni['main'] = 'class="active"';
+		
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo");
+		
 		$this->m[$this->modelName]->setValuesFromPost('titolo,alias,descrizione,immagine,immagine_2x');
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function meta($queryType, $id = 0)
+	{
+		$this->_posizioni['meta'] = 'class="active"';
+		
+		$this->m[$this->modelName]->setValuesFromPost('keywords,meta_description');
+		$this->m[$this->modelName]->setValue("meta_modificato", 1);
+		
+		parent::form("update", $id);
 	}
 }

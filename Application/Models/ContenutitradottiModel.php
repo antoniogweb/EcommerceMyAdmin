@@ -51,6 +51,11 @@ class ContenutitradottiModel extends GenericModel
 					'labelString'=>	'Descrizione',
 					'className'		=>	'text_input form-control dettagli',
 				),
+				'descrizione'		=>	array(
+					'type'		 =>	'Textarea',
+					'labelString'=>	'Descrizione',
+					'className'		=>	'text_input form-control dettagli',
+				),
 			),
 		);
 		

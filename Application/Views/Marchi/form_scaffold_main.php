@@ -26,6 +26,14 @@
 	</div>
 </div>
 
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+
+<script type="text/javascript">
+$().ready(function() {
+	$('textarea').tinymce(tiny_editor_config);
+});
+</script>
+
 <div>
 	<div>
 		<div>

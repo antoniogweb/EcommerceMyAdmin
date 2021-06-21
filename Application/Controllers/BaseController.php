@@ -653,7 +653,7 @@ class BaseController extends Controller
 				else if ($this->updateRedirectUrl)
 					$this->redirect($this->updateRedirectUrl);
 				else
-					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$clean["id"].$this->viewStatus."&insert=ok");
+					$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.'/update/'.$clean["id"].$this->viewStatus."&insert=ok");
 			}
 			
 			$this->m[$this->modelName]->setFormStruct();

@@ -885,4 +885,10 @@ class GenericModel extends Model_Tree
 			),
 		);
 	}
+	
+	public function salvaMeta($metaModificato = 0, $campoDescrizione = "description")
+	{
+		if (isset($this->values[$campoDescrizione]) && !$metaModificato)
+			$this->values["meta_description"] = sanitizeDb(strip_tags(br2space(htmlentitydecode($this->values[$campoDescrizione]))));
+	}
 }
