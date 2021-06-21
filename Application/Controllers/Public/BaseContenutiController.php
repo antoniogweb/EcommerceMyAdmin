@@ -54,17 +54,26 @@ class BaseContenutiController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString);
 		
-		if (Output::$html && !isset($_GET["vista_parziale"]))
-		{
-			$this->load('header');
-			$this->load('footer','last');
-		}
+		$this->loadHeaderFooter();
 		
 		$data["elementsPerPage"] = $this->elementsPerPage;
 		
 		$this->append($data);
 	}
-
+	
+	public function loadHeaderFooter($viewFile = null)
+	{
+		if (Output::$html && !isset($_GET["vista_parziale"]))
+		{
+			$this->load('header');
+			
+			if ($viewFile)
+				$this->load($viewFile);
+			
+			$this->load('footer','last');
+		}
+	}
+	
 	public function index()
 	{
 		CategoriesModel::setAliases();
@@ -1257,6 +1266,16 @@ class BaseContenutiController extends BaseController
 		
 		if (isset($data))
 			$this->append($data);
+		
+		if (v("vista_promozioni_separata"))
+		{
+			$this->clean();
+			
+			if (Output::$html)
+				$this->loadHeaderFooter("promozione");
+			else
+				$this->load("api_output");
+		}
 	}
 	
 	public function sitemap()
