@@ -58,4 +58,5 @@ include(tpf("/Elementi/Pagine/page_top.php"));?>
 	</div>
 </div>
 
+<?php include(tpf("/gtm_impressioni_lista.php"));?>
 <?php include(tpf("/Elementi/Pagine/page_bottom.php"));?>

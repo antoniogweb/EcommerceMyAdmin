@@ -75,9 +75,11 @@ if (v("codice_gtm_analytics"))
 			$o->update((int)$idOrdineGtm);
 			?>
 		<?php } ?>
-	<?php } ?>
+	<?php }
 	
-	<?php if ($this->controller == "ordini" && $this->action == "index") {
+	if ($this->controller == "ordini" && $this->action == "index")
+	{
+		echo "\n";
 		
 		$items = array(
 			"items"	=>	array(),
@@ -99,5 +101,6 @@ if (v("codice_gtm_analytics"))
 			gtag('event', 'begin_checkout', <?php echo json_encode($items);?>);
 		</script>
 		<?php
-	} ?>
+	}
+	?>
 <?php } ?>
