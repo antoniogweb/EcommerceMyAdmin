@@ -220,7 +220,7 @@ class BaseContenutiController extends BaseController
 				else
 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["categories"]["title"]);
 				
-				if ($titleTag)
+				if ($titleTag && (int)$clean['id'] === (int)$this->idShop)
 					$data["title"] = Parametri::$nomeNegozio . " - " .$titleTag;
 				
 				$this->fullParents = $parents;
@@ -473,7 +473,7 @@ class BaseContenutiController extends BaseController
 		else if (strcmp($r[0]["categories"]["keywords"],"") !== 0)
 			$data["keywords"] = htmlentitydecode($r[0]["categories"]["keywords"]);
 		
-		if (isset($tagCorrente))
+		if (isset($tagCorrente) && !empty($tagCorrente) && (int)$id === $this->idShop)
 		{
 			$data["keywords"] = tagfield($tagCorrente, "keywords");
 			$data["meta_description"] = tagfield($tagCorrente, "meta_description");

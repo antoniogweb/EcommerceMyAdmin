@@ -11,6 +11,19 @@ if ($isPromo)
 	$titoloPagina = gtext("Prodotti in promozione");
 }
 
+$titoloAggiuntivo = "";
+
+if (isset($tagCorrente) && !empty($tagCorrente))
+{
+	if (isset($id_categoria) && $id_categoria == CategoriesModel::$idShop)
+		$titoloPagina = tagfield($tagCorrente,"titolo");
+	else
+		$titoloAggiuntivo .= " - " . tagfield($tagCorrente,"titolo");
+}
+
+if (isset($marchioCorrente) && !empty($marchioCorrente))
+	$titoloAggiuntivo .= " - ".mfield($marchioCorrente,"titolo");
+
 include(tpf("/Elementi/Pagine/page_top.php"));?>
 
 <div class="" uk-grid>

@@ -734,33 +734,11 @@ function tcarfield($p, $field)
 function carfield($p, $field)
 {
 	return genericField($p, $field, "caratteristiche", "caratteristiche_tradotte");
-	
-// 	if (isset($p["caratteristiche_tradotte"][$field]) and strcmp($p["caratteristiche_tradotte"][$field],"") !== 0)
-// 	{
-// 		return $p["caratteristiche_tradotte"][$field];
-// 	}
-// 	else
-// 	{
-// 		if (isset($p["caratteristiche"][$field]))
-// 			return $p["caratteristiche"][$field];
-// 	}
-// 	
-// 	return "";
 }
 
 function carvfield($p, $field)
 {
 	return genericField($p, $field, "caratteristiche_valori", "caratteristiche_valori_tradotte");
-	
-// 	if (isset($p["caratteristiche_valori_tradotte"][$field]) and strcmp($p["caratteristiche_valori_tradotte"][$field],"") !== 0)
-// 		return $p["caratteristiche_valori_tradotte"][$field];
-// 	else
-// 	{
-// 		if (isset($p["caratteristiche_valori"][$field]))
-// 			return $p["caratteristiche_valori"][$field];
-// 	}
-// 	
-// 	return "";
 }
 
 function persfield($p, $field)

@@ -9,7 +9,10 @@
 					<?php include(tpf("/Elementi/breadcrumb.php"));?>
 				</ul>
 				<?php if (!isset($noTitolo)) { ?>
-				<h1 class="uk-margin-small-top uk-margin-remove-bottom"><?php echo isset($titoloPagina) ? $titoloPagina : cfield($datiCategoria, "title");?></h1>
+				<h1 class="uk-margin-small-top uk-margin-remove-bottom">
+					<?php echo isset($titoloPagina) ? $titoloPagina : cfield($datiCategoria, "title");?>
+					<?php if (isset($titoloAggiuntivo)) echo $titoloAggiuntivo;?>
+				</h1>
 				<?php } ?>
 				<?php if (isset($pages) && !isset($noNumeroProdotti)) { ?>
 				<div class="uk-text-meta uk-margin-xsmall-top">
