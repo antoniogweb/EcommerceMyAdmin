@@ -36,8 +36,6 @@ class TagModel extends GenericModel {
 		
 		$this->traduzione = true;
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
-		
 		$this->uploadFields = array(
 			"immagine_2"	=>	array(
 				"type"	=>	"image",
@@ -99,7 +97,13 @@ class TagModel extends GenericModel {
 	{
 		if ($this->upload("update"))
 		{
-			$this->alias($id);
+			$record = $this->selectId((int)$id);
+			
+			if (isset($this->values["alias"]))
+				$this->alias($id);
+			
+			// Salva informazioni meta della pagina
+			$this->salvaMeta($record["meta_modificato"]);
 			
 			return parent::update($id, $whereClause);
 		}
@@ -109,7 +113,11 @@ class TagModel extends GenericModel {
 	{
 		if ($this->upload("insert"))
 		{
-			$this->alias();
+			if (isset($this->values["alias"]))
+				$this->alias();
+			
+			// Salva informazioni meta della pagina
+			$this->salvaMeta(0);
 			
 			return parent::insert();
 		}

@@ -110,7 +110,7 @@ class MarchiModel extends GenericModel {
 				$this->alias($id);
 			
 			// Salva informazioni meta della pagina
-				$this->salvaMeta($record["meta_modificato"], "descrizione");
+			$this->salvaMeta($record["meta_modificato"], "descrizione");
 			
 			return parent::update($id, $whereClause);
 		}
@@ -124,7 +124,7 @@ class MarchiModel extends GenericModel {
 				$this->alias();
 			
 			// Salva informazioni meta della pagina
-				$this->salvaMeta(0, "descrizione");
+			$this->salvaMeta(0, "descrizione");
 			
 			return parent::insert();
 		}

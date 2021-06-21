@@ -70,7 +70,11 @@ class TagController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,alias,attivo,description,keywords,meta_description';
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo");
+		
+		$this->_posizioni['main'] = 'class="active"';
+		
+		$fields = 'titolo,alias,attivo,description';
 		
 		if (v("mostra_seconda_immagine_tag"))
 			$fields .= ",immagine_2";
@@ -83,12 +87,13 @@ class TagController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
-// 	public function meta($id = 0)
-// 	{
-// 		$fields = 'keywords,meta_description';
-// 		
-// 		$this->m[$this->modelName]->setValuesFromPost($fields);
-// 		
-// 		parent::form("update", $id);
-// 	}
+	public function meta($queryType, $id = 0)
+	{
+		$this->_posizioni['meta'] = 'class="active"';
+		
+		$this->m[$this->modelName]->setValuesFromPost('keywords,meta_description');
+		$this->m[$this->modelName]->setValue("meta_modificato", 1);
+		
+		parent::form("update", $id);
+	}
 }
