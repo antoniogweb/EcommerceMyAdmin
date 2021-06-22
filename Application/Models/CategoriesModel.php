@@ -243,7 +243,7 @@ class CategoriesModel extends HierarchicalModel {
 		if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
 			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
 		
-		$this->checkAliasAll($id, array("pages", "marchi", "tag"));
+		$this->checkAliasAll($id);
 	}
 	
 	public function update($id = null, $where = null)

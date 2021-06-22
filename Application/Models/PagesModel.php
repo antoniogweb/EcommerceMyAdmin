@@ -478,7 +478,7 @@ class PagesModel extends GenericModel {
 		if (isset($this->values[$this->aliaseFieldName]) && strcmp($this->values[$this->aliaseFieldName],"") === 0)
 			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
 		
-		$this->checkAliasAll($id, array("categories", "marchi", "tag"));
+		$this->checkAliasAll($id);
 	}
 	
 	public function update($id = null, $where = null)

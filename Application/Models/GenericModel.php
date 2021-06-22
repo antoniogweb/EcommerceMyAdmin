@@ -36,6 +36,8 @@ class GenericModel extends Model_Tree
 	public $formStructAggiuntivoEntries = array();
 	public $salvaDataModifica = false;
 	
+	public static $tabelleConAlias = array("pages", "categories", "marchi", "tag");
+	
 	public function __construct() {
 
 		parent::__construct();
@@ -116,7 +118,7 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
-	public function checkAliasAll($id, $tables)
+	public function checkAliasAll($id)
 	{
 		if (isset($this->values["alias"]) && !trim($this->values["alias"]))
 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
@@ -128,8 +130,11 @@ class GenericModel extends Model_Tree
 		else
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
 			
-		foreach ($tables as $table)
+		foreach (self::$tabelleConAlias as $table)
 		{
+			if ($table == $this->_tables)
+				continue;
+			
 			$res = $this->query("select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'");
 			
 			if (count($res) > 0)

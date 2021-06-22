@@ -107,7 +107,7 @@ class MarchiModel extends GenericModel {
 			$record = $this->selectId((int)$id);
 			
 			if (isset($this->values["alias"]))
-				$this->checkAliasAll($id, array("pages", "categories", "tag"));
+				$this->checkAliasAll($id);
 			
 			// Salva informazioni meta della pagina
 			$this->salvaMeta($record["meta_modificato"], "descrizione");
@@ -121,7 +121,7 @@ class MarchiModel extends GenericModel {
 		if ($this->upload("insert"))
 		{
 			if (isset($this->values["alias"]))
-				$this->checkAliasAll(0, array("pages", "categories", "tag"));
+				$this->checkAliasAll(0);
 			
 			// Salva informazioni meta della pagina
 			$this->salvaMeta(0, "descrizione");
