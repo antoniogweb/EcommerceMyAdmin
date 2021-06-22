@@ -240,17 +240,8 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public function checkPagesAlias($id = 0)
 	{
-// 		if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
-// 		{
-// 			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-// 		}
-// 		
-// 		$res = $this->query("select alias from pages where alias ='".$this->values["alias"]."'");
-// 
-// 		if (count($res) > 0)
-// 		{
-// 			$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-// 		}
+		if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
+			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
 		
 		$this->checkAliasAll($id, array("pages", "marchi", "tag"));
 	}
