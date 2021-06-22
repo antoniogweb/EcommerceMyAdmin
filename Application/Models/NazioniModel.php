@@ -41,6 +41,12 @@ class NazioniModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'pages' => array("HAS_MANY", 'RegioniModel', 'id_nazione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+        );
+    }
+	
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array

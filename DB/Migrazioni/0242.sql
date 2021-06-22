@@ -1,0 +1,22 @@
+INSERT INTO `regioni` (`titolo`, tipo, nazione, id_nazione) VALUES
+('Abruzzo','SYS','IT', 2),
+('Basilicata','SYS','IT', 2),
+('Calabria','SYS','IT', 2),
+('Campania','SYS','IT', 2),
+('Emilia-Romagna','SYS','IT', 2),
+('Friuli-Venezia Giulia','SYS','IT', 2),
+('Lazio','SYS','IT', 2),
+('Liguria','SYS','IT', 2),
+('Lombardia','SYS','IT', 2),
+('Marche','SYS','IT', 2),
+('Molise','SYS','IT', 2),
+('Piemonte','SYS','IT', 2),
+('Puglia','SYS','IT', 2),
+('Sardegna','SYS','IT', 2),
+('Sicilia','SYS','IT', 2),
+('Toscana','SYS','IT', 2),
+('Trentino-Alto Adige/Südtirol','SYS','IT', 2),
+('Umbria','SYS','IT', 2),
+('Valle d\'Aosta/Vallée d\'Aoste','SYS','IT', 2),
+('Veneto','SYS','IT', 2);
+

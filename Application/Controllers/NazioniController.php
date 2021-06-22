@@ -88,9 +88,48 @@ class NazioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->_posizioni['main'] = 'class="active"';
+		
 		$this->m[$this->modelName]->setValuesFromPost('titolo,iso_country_code,tipo,attiva,attiva_spedizione,campo_p_iva,id_iva,soglia_iva_italiana');
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function regioni($id = 0)
+	{
+		$this->model("RegioniModel");
+		
+		$this->_posizioni['regioni'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_nazione";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "RegioniModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("edit","tipo");
+		$this->mainHead = "Titolo,Tipo";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"regioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->orderBy("regioni.titolo")->where(array(
+			"id_nazione"	=>	$clean['id'],
+		))->convert()->save();
+		
+		$this->tabella = "nazioni";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["NazioniModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 	
 // 	public function importa()

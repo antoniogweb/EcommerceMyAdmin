@@ -404,8 +404,11 @@ class Route
 		
 		'nazioni,main',
 		'nazioni,form',
+		'nazioni,regioni',
 // 		'nazioni,importa',
-
+		
+		'regioni,form',
+		
 		'fasceprezzo,main',
 		'fasceprezzo,form',
 		
