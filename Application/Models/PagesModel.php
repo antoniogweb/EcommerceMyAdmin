@@ -475,33 +475,24 @@ class PagesModel extends GenericModel {
 	// Imposta l'alias della pagina controllando che non ci sia un duplicato
 	public function setAlias($id)
 	{
-		$clean["id"] = (int)$id;
-		
-		if (isset($this->values[$this->aliaseFieldName]) && strcmp($this->values[$this->aliaseFieldName],"") === 0)
-		{
-			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-		}
-		
-		if ($clean["id"])
-		{
-			$record = $this->selectId($clean["id"]);
-			
-			$res = $this->query("select alias from categories where alias = '".$this->values["alias"]."' union select alias from pages where alias = '".$this->values["alias"]."' and id_page !=".$clean["id"] . " and codice_alfa !='".$record["codice_alfa"]."'");
-		}
-		else
-			$res = $this->query("select alias from categories where alias = '".$this->values["alias"]."' union select alias from pages where alias = '".$this->values["alias"]."'");
-		
-		if (count($res) > 0)
-		{
-			$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-		}
-		else
-		{
-// 			$res = $this->query("select alias from contenuti_tradotti where alias = '".$this->values[$this->aliaseFieldName]."'");
+// 		$clean["id"] = (int)$id;
+// 		
+// 		if (isset($this->values[$this->aliaseFieldName]) && strcmp($this->values[$this->aliaseFieldName],"") === 0)
+// 			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
+// 		
+// 		if ($clean["id"])
+// 		{
+// 			$record = $this->selectId($clean["id"]);
 // 			
-// 			if (count($res) > 0)
-// 				$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-		}
+// 			$res = $this->query("select alias from categories where alias = '".$this->values["alias"]."' union select alias from pages where alias = '".$this->values["alias"]."' and id_page !=".$clean["id"] . " and codice_alfa !='".$record["codice_alfa"]."'");
+// 		}
+// 		else
+// 			$res = $this->query("select alias from categories where alias = '".$this->values["alias"]."' union select alias from pages where alias = '".$this->values["alias"]."'");
+// 		
+// 		if (count($res) > 0)
+// 			$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
+// 		
+		$this->checkAliasAll($id, array("categories", "marchi", "tag"));
 	}
 	
 	public function update($id = null, $where = null)

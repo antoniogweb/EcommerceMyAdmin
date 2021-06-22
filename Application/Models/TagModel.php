@@ -100,7 +100,7 @@ class TagModel extends GenericModel {
 			$record = $this->selectId((int)$id);
 			
 			if (isset($this->values["alias"]))
-				$this->alias($id);
+				$this->checkAliasAll($id, array("pages", "categories", "marchi"));
 			
 			// Salva informazioni meta della pagina
 			$this->salvaMeta($record["meta_modificato"]);
@@ -114,7 +114,7 @@ class TagModel extends GenericModel {
 		if ($this->upload("insert"))
 		{
 			if (isset($this->values["alias"]))
-				$this->alias();
+				$this->checkAliasAll(0, array("pages", "categories", "marchi"));
 			
 			// Salva informazioni meta della pagina
 			$this->salvaMeta(0);

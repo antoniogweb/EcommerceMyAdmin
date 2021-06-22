@@ -116,26 +116,67 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
-	public function alias($id = null)
+	public function checkAliasAll($id, $tables)
 	{
-		$clean["id"] = (int)$id;
-		
 		if (isset($this->values["alias"]) && !trim($this->values["alias"]))
 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
+			
+		$clean["id"] = (int)$id;
+		
+		if (!$clean["id"])
+			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."'");
+		else
+			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
+			
+		foreach ($tables as $table)
+		{
+			$res = $this->query("select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'");
+			
+			if (count($res) > 0)
+				$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
+		}
 		
 		if (!isset($id))
-		{
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."'");
-		}
+			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."'");
 		else
-		{
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$this->_idFields."!=".$clean["id"]);
-		}
+			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
 		
 		if (count($res) > 0)
-		{
 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
-		}
+	}
+	
+	public function alias($id = null)
+	{
+// 		$clean["id"] = (int)$id;
+// 		
+// 		if (isset($this->values["alias"]) && !trim($this->values["alias"]))
+// 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
+// 		
+// 		if (!isset($id))
+// 			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."'");
+// 		else
+// 			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
+// 		
+// 		if (count($res) > 0)
+// 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
+// 		
+// 		$res = $this->query("select alias from pages where alias = '".sanitizeDb($this->values["alias"])."'");
+// 		
+// 		if (count($res) > 0)
+// 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
+// 		
+// 		$res = $this->query("select alias from categories where alias = '".sanitizeDb($this->values["alias"])."'");
+// 		
+// 		if (count($res) > 0)
+// 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
+// 		
+// 		if (!isset($id))
+// 			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."'");
+// 		else
+// 			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
+// 		
+// 		if (count($res) > 0)
+// 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
 	}
 	
 	public static function creaCartellaImages($path = null, $htaccess = false)

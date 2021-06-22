@@ -238,26 +238,28 @@ class CategoriesModel extends HierarchicalModel {
 		return true;
 	}
 	
-	public function checkPagesAlias()
+	public function checkPagesAlias($id = 0)
 	{
-		if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
-		{
-			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-		}
+// 		if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
+// 		{
+// 			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
+// 		}
+// 		
+// 		$res = $this->query("select alias from pages where alias ='".$this->values["alias"]."'");
+// 
+// 		if (count($res) > 0)
+// 		{
+// 			$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
+// 		}
 		
-		$res = $this->query("select alias from pages where alias ='".$this->values["alias"]."'");
-
-		if (count($res) > 0)
-		{
-			$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-		}
+		$this->checkAliasAll($id, array("pages", "marchi", "tag"));
 	}
 	
 	public function update($id = null, $where = null)
 	{
 		if ($this->checkAll)
 		{
-			$this->checkPagesAlias();
+			$this->checkPagesAlias($id);
 		}
 		
 		if ($this->upload("update"))

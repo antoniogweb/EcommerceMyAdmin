@@ -92,8 +92,17 @@ class ContenutitradottiModel extends GenericModel
 		{
 			$idPage = isset($this->values["id_page"]) ? $this->values["id_page"] : 0;
 			$idC = isset($this->values["id_c"]) ? $this->values["id_c"] :0;
+			$idMarchio = isset($this->values["id_marchio"]) ? $this->values["id_marchio"] : 0;
+			$idTag = isset($this->values["id_tag"]) ? $this->values["id_tag"] : 0;
 			
-			$whereClause = $idPage ? "id_page != ".(int)$idPage : "id_c != ".(int)$idC;
+			if ($idPage)
+				$whereClause = "id_page != ".(int)$idPage;
+			else if ($idC)
+				$whereClause = "id_c != ".(int)$idC;
+			else if ($idMarchio)
+				$whereClause = "id_marchio != ".(int)$idMarchio;
+			else if ($idTag)
+				$whereClause = "id_tag != ".(int)$idTag;
 			
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
 		}
@@ -101,8 +110,17 @@ class ContenutitradottiModel extends GenericModel
 		{
 			$idPage = $record["id_page"];
 			$idC = $record["id_c"];
+			$idMarchio = $record["id_marchio"];
+			$idTag = $record["id_tag"];
 			
-			$whereClause = $idPage ? "id_page != ".(int)$idPage : "id_c != ".(int)$idC;
+			if ($idPage)
+				$whereClause = "id_page != ".(int)$idPage;
+			else if ($idC)
+				$whereClause = "id_c != ".(int)$idC;
+			else if ($idMarchio)
+				$whereClause = "id_marchio != ".(int)$idMarchio;
+			else if ($idTag)
+				$whereClause = "id_tag != ".(int)$idTag;
 			
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
 			
@@ -131,8 +149,9 @@ class ContenutitradottiModel extends GenericModel
 	{
 		if ($record["id_marchio"] || $record["id_tag"])
 		{
-			if (!$this->values["alias"])
-				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
+			$this->alias($id);
+// 			if (!$this->values["alias"])
+// 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
 		}
 		else if ($record["id_page"] || $record["id_c"])
 			$this->alias($id);
