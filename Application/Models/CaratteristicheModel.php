@@ -90,6 +90,9 @@ class CaratteristicheModel extends GenericModel {
 	
 	public function insert()
 	{
+		if (isset($this->values["alias"]))
+			$this->checkAliasAll(0);
+		
 		$res = parent::insert();
 		
 		if ($res)
@@ -118,6 +121,9 @@ class CaratteristicheModel extends GenericModel {
 	
 	public function update($id = null, $where = null)
 	{
+		if (isset($this->values["alias"]))
+			$this->checkAliasAll($id);
+		
 		$res = parent::update($id, $where);
 		
 		if ($res)

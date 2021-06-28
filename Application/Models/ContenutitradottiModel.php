@@ -94,6 +94,8 @@ class ContenutitradottiModel extends GenericModel
 			$idC = isset($this->values["id_c"]) ? $this->values["id_c"] :0;
 			$idMarchio = isset($this->values["id_marchio"]) ? $this->values["id_marchio"] : 0;
 			$idTag = isset($this->values["id_tag"]) ? $this->values["id_tag"] : 0;
+			$idCar = isset($this->values["id_car"]) ? $this->values["id_car"] : 0;
+			$idCv = isset($this->values["id_cv"]) ? $this->values["id_cv"] : 0;
 			
 			if ($idPage)
 				$whereClause = "id_page != ".(int)$idPage;
@@ -103,6 +105,10 @@ class ContenutitradottiModel extends GenericModel
 				$whereClause = "id_marchio != ".(int)$idMarchio;
 			else if ($idTag)
 				$whereClause = "id_tag != ".(int)$idTag;
+			else if ($idCar)
+				$whereClause = "id_car != ".(int)$idCar;
+			else if ($idCv)
+				$whereClause = "id_cv != ".(int)$idCv;
 			
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
 		}
@@ -112,6 +118,8 @@ class ContenutitradottiModel extends GenericModel
 			$idC = $record["id_c"];
 			$idMarchio = $record["id_marchio"];
 			$idTag = $record["id_tag"];
+			$idCar = $record["id_car"];
+			$idCv = $record["id_cv"];
 			
 			if ($idPage)
 				$whereClause = "id_page != ".(int)$idPage;
@@ -121,6 +129,10 @@ class ContenutitradottiModel extends GenericModel
 				$whereClause = "id_marchio != ".(int)$idMarchio;
 			else if ($idTag)
 				$whereClause = "id_tag != ".(int)$idTag;
+			else if ($idCar)
+				$whereClause = "id_car != ".(int)$idCar;
+			else if ($idCv)
+				$whereClause = "id_cv != ".(int)$idCv;
 			
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
 			
@@ -147,7 +159,7 @@ class ContenutitradottiModel extends GenericModel
 	
 	public function sAlias($record, $id = null)
 	{
-		if ($record["id_marchio"] || $record["id_tag"])
+		if ($record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"])
 		{
 			$this->alias($id);
 // 			if (!$this->values["alias"])

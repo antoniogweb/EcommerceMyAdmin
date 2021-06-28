@@ -170,6 +170,9 @@ class CaratteristichevaloriModel extends GenericModel {
 		
 		if ($this->upload("insert"))
 		{
+			if (isset($this->values["alias"]))
+				$this->checkAliasAll(0);
+			
 			$res = parent::insert();
 			
 			if ($res)
@@ -191,6 +194,9 @@ class CaratteristichevaloriModel extends GenericModel {
 		
 		if ($this->upload("update"))
 		{
+			if (isset($this->values["alias"]))
+				$this->checkAliasAll($id);
+			
 			$res = parent::update($id, $where);
 			
 			if ($res)

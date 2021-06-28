@@ -79,7 +79,7 @@ class CaratteristicheController extends BaseController {
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'titolo';
+		$fields = 'titolo,alias';
 		
 		if ($this->viewArgs["id_tip_car"] == "tutti")
 			$fields .= ",id_tipologia_caratteristica";

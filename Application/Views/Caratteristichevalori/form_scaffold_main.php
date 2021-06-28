@@ -9,6 +9,8 @@
 						
 						<?php echo $form["titolo"];?>
 						
+						<?php echo $form["alias"];?>
+						
 						<?php if (isset($form["immagine"])) { ?>
 						<?php echo $form["immagine"];?>
 						<?php } ?>
@@ -41,7 +43,7 @@
 				<div class="panel-body">
 					<?php
 					$section = "-cv-";
-					$nascondiLink = $nascondiAlias = true;
+					$nascondiLink = true;
 					include($this->viewPath("pages_traduzioni"));?>
 				</div>
 			</div>

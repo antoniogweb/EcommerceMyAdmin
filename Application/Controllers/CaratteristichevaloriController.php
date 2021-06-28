@@ -113,7 +113,7 @@ class CaratteristichevaloriController extends BaseController {
 		
 		$this->menuLinks = $this->menuLinksInsert = $menuLinks;
 		
-		$fields = "titolo";
+		$fields = "titolo,alias";
 		
 		if (v("immagine_in_caratteristiche"))
 			$fields .= ",immagine";

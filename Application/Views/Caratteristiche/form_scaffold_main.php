@@ -5,6 +5,8 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php echo $form["alias"];?>
+						
 						<?php if (isset($form["tipo"])) { ?>
 						<?php echo $form["tipo"];?>
 						<?php } ?>
@@ -41,7 +43,7 @@
 				<div class="panel-body">
 					<?php
 					$section = "-car-";
-					$nascondiLink = $nascondiAlias = true;
+					$nascondiLink = true;
 					include($this->viewPath("pages_traduzioni"));?>
 				</div>
 			</div>

@@ -36,7 +36,7 @@ class GenericModel extends Model_Tree
 	public $formStructAggiuntivoEntries = array();
 	public $salvaDataModifica = false;
 	
-	public static $tabelleConAlias = array("pages", "categories", "marchi", "tag");
+	public static $tabelleConAlias = array("pages", "categories", "marchi", "tag", "caratteristiche", "caratteristiche_valori");
 	
 	public function __construct() {
 
