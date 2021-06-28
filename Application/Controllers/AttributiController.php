@@ -26,14 +26,17 @@ class AttributiController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
+	public $argKeys = array(
+		'page:forceNat'		=>	1,
+		'titolo:sanitizeAll'=>	'tutti',
+		'token:sanitizeAll'	=>	'token',
+	);
+	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 
 		$this->session('admin');
 		$this->model();
-
-		$this->setArgKeys(array('page:forceNat'=>1,'titolo:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
-
 		$this->model("AttributiModel");
 		$this->model("AttributivaloriModel");
 		

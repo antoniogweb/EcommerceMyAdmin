@@ -37,7 +37,7 @@ class AttributiModel extends GenericModel {
 		
 		$this->traduzione = true;
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"titolo|Si prega di compilare il campo <i>Titolo attributo</i>");
+		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
 		parent::__construct();
 	}
