@@ -84,9 +84,7 @@ class ContenutitradottiModel extends GenericModel
 		$record = $this->selectId($clean["id"]);
 		
 		if (!isset($this->values["alias"]) || !trim($this->values["alias"]))
-		{
 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["title"]));
-		}
 		
 		if (!isset($id))
 		{
@@ -96,21 +94,6 @@ class ContenutitradottiModel extends GenericModel
 			$idTag = isset($this->values["id_tag"]) ? $this->values["id_tag"] : 0;
 			$idCar = isset($this->values["id_car"]) ? $this->values["id_car"] : 0;
 			$idCv = isset($this->values["id_cv"]) ? $this->values["id_cv"] : 0;
-			
-			if ($idPage)
-				$whereClause = "id_page != ".(int)$idPage;
-			else if ($idC)
-				$whereClause = "id_c != ".(int)$idC;
-			else if ($idMarchio)
-				$whereClause = "id_marchio != ".(int)$idMarchio;
-			else if ($idTag)
-				$whereClause = "id_tag != ".(int)$idTag;
-			else if ($idCar)
-				$whereClause = "id_car != ".(int)$idCar;
-			else if ($idCv)
-				$whereClause = "id_cv != ".(int)$idCv;
-			
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
 		}
 		else
 		{
@@ -120,52 +103,71 @@ class ContenutitradottiModel extends GenericModel
 			$idTag = $record["id_tag"];
 			$idCar = $record["id_car"];
 			$idCv = $record["id_cv"];
-			
-			if ($idPage)
-				$whereClause = "id_page != ".(int)$idPage;
-			else if ($idC)
-				$whereClause = "id_c != ".(int)$idC;
-			else if ($idMarchio)
-				$whereClause = "id_marchio != ".(int)$idMarchio;
-			else if ($idTag)
-				$whereClause = "id_tag != ".(int)$idTag;
-			else if ($idCar)
-				$whereClause = "id_car != ".(int)$idCar;
-			else if ($idCv)
-				$whereClause = "id_cv != ".(int)$idCv;
-			
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
-			
-// 			echo $this->getQUery();die();
 		}
 		
-		if (count($res) > 0)
+		if ($idPage)
 		{
-			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789");
+			$whereClause = "id_page != ".(int)$idPage;
+			$tabella = "pages";
 		}
-		else
+		else if ($idC)
 		{
-			$idPage = isset($this->values["id_page"]) ? $this->values["id_page"] : $record["id_page"];
-			$idC = isset($this->values["id_c"]) ? $this->values["id_c"] : $record["id_c"];
+			$whereClause = "id_c != ".(int)$idC;
+			$tabella = "categories";
+		}
+		else if ($idMarchio)
+		{
+			$whereClause = "id_marchio != ".(int)$idMarchio;
+			$tabella = "marchi";
+		}
+		else if ($idTag)
+		{
+			$whereClause = "id_tag != ".(int)$idTag;
+			$tabella = "tag";
+		}
+		else if ($idCar)
+		{
+			$whereClause = "id_car != ".(int)$idCar;
+			$tabella = "caratteristiche";
+		}
+		else if ($idCv)
+		{
+			$whereClause = "id_cv != ".(int)$idCv;
+			$tabella = "caratteristiche_valori";
+		}
+		
+		if (!isset($id))
+			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
+		else
+			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
+		
+		if (count($res) > 0)
+			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789");
+		
+		if (isset($id))
+		{
+			$arrayUnion = array();
 			
-			$res = $this->query("select alias from categories where alias = '".$this->values["alias"]."' and categories.id_c != '".(int)$idC."' union select alias from pages where alias = '".$this->values["alias"]."' and pages.id_page != '".(int)$idPage."'");
+			foreach (GenericModel::$tabelleConAlias as $table)
+			{
+				if ($table == $tabella)
+					$arrayUnion[] = "select alias from $table where $whereClause and alias = '".sanitizeDb($this->values["alias"])."'";
+				else
+					$arrayUnion[] = "select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'";
+			}
+			
+			$sql = implode(" UNION ", $arrayUnion);
+// 			echo $sql;die();
+			$res = $this->query($sql);
 			
 			if (count($res) > 0)
-			{
-				$this->values["alias"] = $this->values["alias"] . "-".generateString(4,"123456789");
-			}
+				$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
 		}
 	}
 	
 	public function sAlias($record, $id = null)
 	{
-		if ($record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"])
-		{
-			$this->alias($id);
-// 			if (!$this->values["alias"])
-// 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
-		}
-		else if ($record["id_page"] || $record["id_c"])
+		if ($record["id_page"] || $record["id_c"] || $record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"])
 			$this->alias($id);
 	}
 	

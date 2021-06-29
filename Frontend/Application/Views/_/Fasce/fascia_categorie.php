@@ -8,7 +8,7 @@
 
 			<?php foreach ($elencoCategorieFull as $c) { ?>
 			<a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($c["categories"]["id_c"]);?>" class="uk-inline uk-transition-toggle">
-				<img src="<?php echo $this->baseUrlSrc."/thumb/categoria/".$c["categories"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>">
+				<img src="<?php echo $this->baseUrlSrc."/thumb/categoria/".$c["categories"]["immagine"];?>" alt="<?php echo encodeUrl(cfield($c, "title"));?>">
 				<div class="uk-position-center uk-h4 uk-margin-remove uk-text-bold uk-text-uppercase uk-text-center"><?php echo cfield($c, "title");?></div>
 
 				<div class="uk-transition-slide-bottom uk-position-bottom uk-overlay uk-overlay-default">
