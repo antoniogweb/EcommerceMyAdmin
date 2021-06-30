@@ -26,6 +26,8 @@ class CaratteristicheModel extends GenericModel {
 
 	public $lId = 0;
 	
+	public static $filtriUrl = array();
+	
 	public function __construct() {
 		$this->_tables='caratteristiche';
 		$this->_idFields='id_car';

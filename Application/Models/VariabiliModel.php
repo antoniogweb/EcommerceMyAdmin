@@ -211,6 +211,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_categorie_download"	=>	1,
 		"attiva_pagina_produttore"	=>	0,
 		"vista_promozioni_separata"	=>	0,
+		"divisorio_filtri_url"		=>	"--",
+		"attiva_filtri_caratteristiche"	=>	0,
 	);
 	
 	public function __construct() {

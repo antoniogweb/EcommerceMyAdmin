@@ -7,6 +7,10 @@
 						
 						<?php echo $form["alias"];?>
 						
+						<?php if (isset($form["filtro"])) { ?>
+						<?php echo $form["filtro"];?>
+						<?php } ?>
+						
 						<?php if (isset($form["tipo"])) { ?>
 						<?php echo $form["tipo"];?>
 						<?php } ?>

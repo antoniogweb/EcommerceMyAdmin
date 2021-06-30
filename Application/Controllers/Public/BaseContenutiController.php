@@ -28,6 +28,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BaseContenutiController extends BaseController
 {
 	public $pageArgs = array();
+	public $filtriCaratteristiche = array();
+	public $filtriRegione = array();
 	public $cleanAlias = null;
 	public $urlParent = array(); //parents array (only ALIAS) as taken by the URL
 	public $rParent = array(); //right parents array (only ALIAS) as taken by database
@@ -74,11 +76,64 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
+	public function sistemaFiltriCaratteristiche()
+	{
+		if (count($this->filtriCaratteristiche) > 0 && ((count($this->filtriCaratteristiche) % 2) === 0))
+		{
+			$tempCar = array_chunk($this->filtriCaratteristiche, 2);
+			
+			foreach ($tempCar as $carArray)
+			{
+				if ((int)count($carArray) === 2)
+				{
+					$carAlias = sanitizeAll($carArray[0]);
+					$carValoreAlias = sanitizeAll($carArray[1]);
+					
+					if (isset(CaratteristicheModel::$filtriUrl[$carArray[0]]))
+						CaratteristicheModel::$filtriUrl[$carArray[0]][] = $carArray[1];
+					else
+						CaratteristicheModel::$filtriUrl[$carArray[0]] = array($carArray[1]);
+				}
+			}
+		}
+	}
+	
 	public function index()
 	{
 		CategoriesModel::setAliases();
 		
 		$this->pageArgs = func_get_args();
+		
+		$divisorioFiltriUrl = v("divisorio_filtri_url");
+		
+		if (in_array($divisorioFiltriUrl, $this->pageArgs))
+		{
+			$indiciDivisori = array_keys($this->pageArgs, $divisorioFiltriUrl);
+			
+			if (count($indiciDivisori) > 0)
+			{
+				$tempsPageArgs = $this->pageArgs;
+				
+				$this->pageArgs = array_slice($tempsPageArgs, 0, $indiciDivisori[0]);
+				
+				if ((int)count($indiciDivisori) === 1)
+					$this->filtriCaratteristiche = array_slice($tempsPageArgs, ($indiciDivisori[0] + 1));
+				else if ((int)count($indiciDivisori) > 1)
+				{
+					$distanzaIndici = $indiciDivisori[1] - $indiciDivisori[0];
+					$this->filtriCaratteristiche = array_slice($tempsPageArgs, ($indiciDivisori[0] + 1), ($distanzaIndici - 1));
+					$this->filtriRegione = array_slice($tempsPageArgs, ($indiciDivisori[1] + 1));
+				}
+				
+				$this->sistemaFiltriCaratteristiche();
+			}
+		}
+		
+// 		print_r($this->pageArgs);
+// 		print_r($this->filtriCaratteristiche);
+// 		print_r($this->filtriRegione);
+// 		print_r(CaratteristicheModel::$filtriUrl);
+// 		die();
 		
 		$titleTag = $titleMarchio = "";
 		
@@ -446,20 +501,12 @@ class BaseContenutiController extends BaseController
 			if (count($tagCorrente) > 0)
 				$data["aliasTagCorrente"] = tagfield($tagCorrente, "alias")."/";
 		}
-		
-// 		print_r($arrayLingue);
-// 		$urlAlias = $this->m["CategoriesModel"]->getUrlAlias($clean['id']);
-// 		
-// 		$data["itUrl"] = "it/$urlAlias";
-// 		$data["enUrl"] = "en/$urlAlias";
 			
 		//estrai i dati della categoria
 		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
 		
 		$data["categorieFiglie"] = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
-		
-// 		print_r($data["categorieFiglie"]);die();
 		
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
@@ -553,6 +600,48 @@ class BaseContenutiController extends BaseController
 				$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
 			
 			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
+		}
+		
+		// Filtri caratteristiche
+		if (!empty(CaratteristicheModel::$filtriUrl))
+		{
+			$combinazioniCaratteristiche = cartesian(CaratteristicheModel::$filtriUrl);
+			
+			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',caratteristiche.alias,'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',caratteristiche_valori.alias,'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
+			
+			$this->m["PagesModel"]->inner($tabellaCaratterisitche)->on("pages.id_page = tabella_caratteristiche.id_page");
+			
+			$indice = 6;
+			
+			$aWhereArrayCar = $aWhereArrayCarVal = array();
+			
+			$sWhereArray = array();
+			
+			foreach ($combinazioniCaratteristiche as $combCar)
+			{
+				$carArray = array_keys($combCar);
+				$carValArray = array_values($combCar);
+				
+				$sWhereArray[] = $carValArray;
+			}
+			
+			$sWhereQueryArray = array();
+			
+			foreach ($sWhereArray as $sWhereValori)
+			{
+				$tempWhere = array();
+				
+				foreach ($sWhereValori as $sWhereValore)
+				{
+					$tempWhere[] = "car_val_alias like '%#$sWhereValore#%'";
+				}
+				
+				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
+			}
+			
+			$sWhereQuery = "(".implode(" OR ", $sWhereQueryArray).")";
+			
+			$this->m["PagesModel"]->sWhere($sWhereQuery);
 		}
 		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->rowNumber();

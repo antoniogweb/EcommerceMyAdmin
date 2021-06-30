@@ -1747,3 +1747,22 @@ function parent($file)
 	
 	return Domain::$parentRoot."/admin/Frontend/Application/Views/_".$file;
 }
+
+function cartesian($input) {
+    $result = array(array());
+
+    foreach ($input as $key => $values) {
+        $append = array();
+
+        foreach($result as $product) {
+            foreach($values as $item) {
+                $product[$key] = $item;
+                $append[] = $product;
+            }
+        }
+
+        $result = $append;
+    }
+
+    return $result;
+}
