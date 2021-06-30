@@ -467,6 +467,20 @@ class BaseBaseController extends Controller
 			))->orderBy("tag.titolo")->send();
 		}
 		
+		$data["filtriCaratteristiche"] = array();
+		
+		if (v("attiva_filtri_caratteristiche"))
+		{
+			$data["filtriCaratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
+				->inner(array("caratteristica_valore"))
+				->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
+				->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+				->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
+				->groupBy("caratteristiche_valori.id_cv")
+				->send();
+		}
+		
 // 		$res = $this->m["MenuModel"]->getTreeWithDepth(2);
 		
 		$data["isPromo"] = self::$isPromo;

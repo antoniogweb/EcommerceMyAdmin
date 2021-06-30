@@ -116,6 +116,7 @@ class Route
 		'caratteristiche,lista',
 		'caratteristiche,valori',
 		'caratteristiche,ordinavalori',
+		'caratteristiche,ordina',
 		
 		'caratteristichevalori,main',
 		'caratteristichevalori,form',

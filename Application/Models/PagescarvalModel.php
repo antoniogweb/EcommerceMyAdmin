@@ -36,6 +36,12 @@ class PagescarvalModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+		return array(
+			'caratteristica_valore' => array("BELONGS_TO", 'CaratteristichevaloriModel', 'id_cv',null,"CASCADE"),
+        );
+    }
+	
 	public function insert()
 	{
 		$clean["id_page"] = (int)$this->values["id_page"];

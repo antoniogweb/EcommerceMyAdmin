@@ -16,8 +16,81 @@ if (!isset($idTag))
 		<button class="uk-offcanvas-close" type="button" uk-close></button>
 	</div>
 	<?php } ?>
-	<?php if (count($elencoMarchiFull) > 0) { ?>
 	<section class="js-accordion-section uk-open">
+		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Categoria")?></h4>
+		<div class="uk-accordion-content">
+			<ul class="uk-list uk-list-divider">
+				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
+					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop);?>"><?php echo gtext("Tutti");?></a>
+				</li>
+				<?php foreach ($elencoCategorieFull as $c) {
+					$figlie = categorieFiglie($c["categories"]["id_c"]);
+					$figlieIds = CategoriesModel::resultToIdList($figlie);
+				?>
+				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>" <?php if (count($figlie) > 0) { ?>uk-accordion<?php } ?>>
+					<?php if (count($figlie) > 0) { ?>
+						<div class="<?php if (in_array($id_categoria,$figlieIds)) { ?>uk-open<?php } else { ?>uk-close<?php } ?>">
+					<?php } ?>
+						<a class="uk-text-meta uk-text-xsmall <?php if (count($figlie) > 0) { ?>uk-accordion-title"<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $c["categories"]["id_c"]);?>">
+							<?php echo cfield($c, "title");?>
+						</a>
+						<?php if (count($figlie) > 0) { ?>
+						<ul class='uk-list uk-margin-left uk-accordion-content'>
+							<?php foreach ($figlie as $fg) { ?>
+							<li class="<?php if ($datiCategoria["categories"]["id_c"] == $fg["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>">
+								<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $fg["categories"]["id_c"]);?>">
+									<?php echo cfield($fg, "title");?>
+								</a>
+							</li>
+							<?php } ?>
+						</ul>
+						<?php } ?>
+					<?php if (count($figlie) > 0) { ?></div><?php } ?>
+				</li>
+				<?php } ?>
+			</ul>
+		</div>
+	</section>
+	
+	<?php
+	// Filtri caratteristiche
+	
+	if (count($filtriCaratteristiche) > 0) {
+		$lastIdCar = $filtriCaratteristiche[0]["caratteristiche"]["id_car"];
+	?>
+		<section class="uk-margin-large-top js-accordion-section uk-open">
+			<h4 class="uk-accordion-title uk-margin-remove"><?php echo carfield($filtriCaratteristiche[0], "titolo");?></h4>
+			<div class="uk-accordion-content">
+				<ul class="uk-list uk-list-divider">
+	<?php } ?>
+	
+	<?php
+	foreach ($filtriCaratteristiche as $fc) {
+		if ($fc["caratteristiche"]["id_car"] != $lastIdCar) {
+			$lastIdCar = $fc["caratteristiche"]["id_car"];
+		?>
+				</ul>
+			</div>
+		</section>
+		
+		<section class="uk-margin-large-top js-accordion-section uk-open">
+			<h4 class="uk-accordion-title uk-margin-remove"><?php echo carfield($fc, "titolo");?></h4>
+			<div class="uk-accordion-content">
+				<ul class="uk-list uk-list-divider">
+		<?php } ?>
+					<li class="">
+						<a class="uk-text-meta uk-text-xsmall" href=""><?php echo carvfield($fc, "titolo");?></a>
+					</li>
+	<?php } ?>
+	
+	<?php if (count($filtriCaratteristiche) > 0) { ?>
+				</ul>
+			</div>
+		</section>
+	<?php } ?>
+	
+	<?php if (count($elencoMarchiFull) > 0) { ?>
+	<section class="uk-margin-large-top js-accordion-section uk-open">
 		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Marchio")?></h4>
 		<div class="uk-accordion-content">
 			<ul class="uk-list uk-list-divider">
@@ -56,40 +129,5 @@ if (!isset($idTag))
 	</section>
 	<?php } ?>
 	
-	<section class="uk-margin-large-top js-accordion-section uk-open">
-		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Categoria")?></h4>
-		<div class="uk-accordion-content">
-			<ul class="uk-list uk-list-divider">
-				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
-					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop);?>"><?php echo gtext("Tutti");?></a>
-				</li>
-				<?php foreach ($elencoCategorieFull as $c) {
-					$figlie = categorieFiglie($c["categories"]["id_c"]);
-					$figlieIds = CategoriesModel::resultToIdList($figlie);
-				?>
-				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>" <?php if (count($figlie) > 0) { ?>uk-accordion<?php } ?>>
-					<?php if (count($figlie) > 0) { ?>
-						<div class="<?php if (in_array($id_categoria,$figlieIds)) { ?>uk-open<?php } else { ?>uk-close<?php } ?>">
-					<?php } ?>
-						<a class="uk-text-meta uk-text-xsmall <?php if (count($figlie) > 0) { ?>uk-accordion-title"<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $c["categories"]["id_c"]);?>">
-							<?php echo cfield($c, "title");?>
-						</a>
-						<?php if (count($figlie) > 0) { ?>
-						<ul class='uk-list uk-margin-left uk-accordion-content'>
-							<?php foreach ($figlie as $fg) { ?>
-							<li class="<?php if ($datiCategoria["categories"]["id_c"] == $fg["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>">
-								<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $fg["categories"]["id_c"]);?>">
-									<?php echo cfield($fg, "title");?>
-								</a>
-							</li>
-							<?php } ?>
-						</ul>
-						<?php } ?>
-					<?php if (count($figlie) > 0) { ?></div><?php } ?>
-				</li>
-				<?php } ?>
-			</ul>
-		</div>
-	</section>
 	<?php if (User::$isMobile) { ?></div><?php } ?>
 </div>

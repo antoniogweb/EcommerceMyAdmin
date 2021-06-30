@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CaratteristicheController extends BaseController {
 	
+	public $orderBy = "id_order";
+	
 	public $sezionePannello = "ecommerce";
 	
 	public $argKeys = array(
@@ -33,6 +35,9 @@ class CaratteristicheController extends BaseController {
 	);
 	
 	function __construct($model, $controller, $queryString) {
+		
+		$this->orderBy = v("attiva_filtri_caratteristiche") ? "id_order" : "titolo";
+		
 		parent::__construct($model, $controller, $queryString);
 
 		$this->session('admin');
@@ -108,7 +113,9 @@ class CaratteristicheController extends BaseController {
 	{
 		$this->_posizioni['valori'] = 'class="active"';
 		
-		$data["orderBy"] = $this->orderBy = "titolo";
+		$ordinamento = v("attiva_filtri_caratteristiche") ? "id_order" : "titolo";
+		
+		$data["orderBy"] = $this->orderBy = $ordinamento;
 		
 		$this->shift(1);
 		
