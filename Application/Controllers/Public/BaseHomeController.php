@@ -36,7 +36,7 @@ class BaseHomeController extends BaseController
 			$this->load('footer','last');
 		}
 
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]);
+		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
 
 		$this->append($data);
 	}

@@ -201,7 +201,7 @@ class BaseBaseController extends Controller
 		}
 		
 		$data["isProdotto"] = false;
-		$data["title"] =  ImpostazioniModel::$valori["title_home_page"];
+		$data["title"] =  gtext(ImpostazioniModel::$valori["title_home_page"]);
 		
 		//set the cookie for the cart
 		if ((isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"]) || (isset($_GET["cart_uid"]) && $_GET["cart_uid"] && (int)strlen($_GET["cart_uid"]) === 32))
@@ -440,8 +440,8 @@ class BaseBaseController extends Controller
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
 		
-		$data["meta_description"] = $data["title"] =  htmlentitydecode(ImpostazioniModel::$valori["meta_description"]);
-		$data["keywords"] = $data["title"] =  htmlentitydecode(ImpostazioniModel::$valori["keywords"]);
+		$data["meta_description"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
+		$data["keywords"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
 		
 		Lang::$current = Params::$lang;
 		
