@@ -133,7 +133,6 @@ class BaseContenutiController extends BaseController
 // 		print_r($this->filtriCaratteristiche);
 // 		print_r($this->filtriRegione);
 // 		print_r(CaratteristicheModel::$filtriUrl);
-// 		die();
 		
 		$titleTag = $titleMarchio = "";
 		
