@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo Params::$lang;?>">
    <head>
 		<?php include(tpf("/Elementi/header_tracking_data.php"));?>
 		
