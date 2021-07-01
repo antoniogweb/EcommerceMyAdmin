@@ -497,6 +497,13 @@ class GenericModel extends Model_Tree
 		return NazioniModel::$elenco;
 	}
 	
+	public function selectNazioneId()
+	{
+		$n = new NazioniModel();
+		
+		return $n->select("id_nazione,titolo")->orderBy("titolo")->toList("id_nazione","titolo")->send();
+	}
+	
 	public function selectRuoli($frontend = false)
 	{
 		$r = new RuoliModel();

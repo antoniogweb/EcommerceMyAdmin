@@ -88,9 +88,9 @@ class CaratteristichevaloriModel extends GenericModel {
 					"options"	=>	$this->selectCaratteristica(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
-					'wrap'	=>	array(
-						null,null," <a class='iframe pull-right' href='".Url::getRoot()."caratteristiche/form/insert/0?partial=Y&nobuttons=Y&cl_on_sv=Y&id_tip_car=$idTipo'><i class='fa fa-plus-square-o'></i> Nuovo</a>"
-					),
+// 					'wrap'	=>	array(
+// 						null,null," <a class='iframe pull-right' href='".Url::getRoot()."caratteristiche/form/insert/0?partial=Y&nobuttons=Y&cl_on_sv=Y&id_tip_car=$idTipo'><i class='fa fa-plus-square-o'></i> Nuovo</a>"
+// 					),
 				),
 			),
 			

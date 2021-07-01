@@ -162,6 +162,7 @@ class Route
 		'prodotti,ordinacorrelate',
 		'prodotti,feedback',
 		'prodotti,ordinafeedback',
+		'prodotti,regioni',
 		
 		'testi,main',
 		'testi,form',
@@ -408,6 +409,7 @@ class Route
 		'nazioni,regioni',
 // 		'nazioni,importa',
 		
+		'regioni,main',
 		'regioni,form',
 		
 		'fasceprezzo,main',

@@ -26,13 +26,62 @@ class RegioniController extends BaseController {
 	
 	public $orderBy = "id_order desc";
 	
-	public $argKeys = array('id_nazione:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_nazione:sanitizeAll'	=>	'tutti',
+		'id_page:sanitizeAll'		=>	'tutti',
+		'titolo:sanitizeAll'		=>	'tutti',
+	);
+	
+	public function main()
+	{
+		$this->shift();
+		
+		$this->mainFields = array("regioni.titolo");
+		$this->mainHead = "Regione";
+		
+		$this->m[$this->modelName]->clear()->select("*")
+				->inner(array("nazione"))
+				->where(array(
+					"lk" => array('titolo' => $this->viewArgs['titolo']),
+					"id_nazione"	=>	$this->viewArgs['id_nazione'],
+				))
+				->orderBy("regioni.titolo");
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$filtroNazione = array("tutti" => "Nazione") + $this->m[$this->modelName]->selectNazioneId();
+			
+			$this->filters = array(array("id_nazione", null, $filtroNazione), "titolo");
+			
+			array_unshift($this->mainFields, "nazioni.titolo");
+			$this->mainHead = "Nazioni,".$this->mainHead;
+			
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungiaprodotto";
+			
+			$this->bulkActions = array(
+				"checkbox_regioni_id_regione"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("regioni.id_regione not in (select id_regione from pages_regioni where id_regione is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
+		
+		parent::main();
+	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("titolo,alias");
+		$fields = "titolo,alias";
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+			$fields = "id_nazione,".$fields;
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_nazione", $this->viewArgs["id_nazione"]);

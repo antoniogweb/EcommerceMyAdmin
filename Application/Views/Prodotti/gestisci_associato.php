@@ -76,3 +76,9 @@
 <p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/feedback/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>"><i class="fa fa-plus"></i> Aggiungi feedback</a></p>
 
 <?php } ?>
+
+<?php if ($this->action == "regioni" && v("attiva_localizzazione_prodotto")) { ?>
+
+<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/regioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi regione");?></a></p>
+
+<?php } ?>

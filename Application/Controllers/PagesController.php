@@ -125,6 +125,7 @@ class PagesController extends BaseController {
 		$this->model("PagespagesModel");
 		$this->model("SectionssectionsModel");
 		$this->model("FeedbackModel");
+		$this->model("PagesregioniModel");
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
@@ -1292,7 +1293,7 @@ class PagesController extends BaseController {
 			"tipo"		=>	"FASCIA",
 		))->convert()->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		
@@ -1370,7 +1371,7 @@ class PagesController extends BaseController {
 			"ne"		=>	array("tipo"	=>	"FASCIA"),
 		))->convert()->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		
@@ -1415,7 +1416,7 @@ class PagesController extends BaseController {
 			"id_page"	=>	$clean['id'],
 		))->convert()->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		
@@ -1480,7 +1481,7 @@ class PagesController extends BaseController {
 			"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
 		))->convert()->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		
@@ -1536,7 +1537,7 @@ class PagesController extends BaseController {
 			))
 			->orderBy("pages_pages.id_order")->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		
@@ -1606,7 +1607,59 @@ class PagesController extends BaseController {
 			))
 			->orderBy("pages_caratteristiche_valori.id_order")->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = "prodotti";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function regioni($id = 0)
+	{
+		$this->_posizioni['regioni'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "regioni";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->m[$this->modelName]->checkPrincipale($clean['id']);
+		
+		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
+			die("non permesso");
+		
+		$this->modelName = "PagesregioniModel";
+		$this->mainButtons = 'ldel';
+		
+		$mainAction = "regioni/".$clean['id'];
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("nazioni.titolo", "regioni.titolo");
+		$this->mainHead = "Nazione,Regione";
+		
+		$this->m[$this->modelName]->clear()->select("regioni.*,nazioni.*,pages_regioni.id_page_regione")
+			->inner(array("regione"))
+			->left(array("nazione"))
+			->where(array(
+				"pages_regioni.id_page"	=>	$clean['id'],
+			))
+			->orderBy("nazioni.titolo,regioni.titolo")->save();
+		
+		$this->tabella = "prodotti";
 		
 		parent::main();
 		
@@ -1656,7 +1709,7 @@ class PagesController extends BaseController {
 			"pages_personalizzazioni.id_page"	=>	$clean['id'],
 		))->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = "prodotti";
 		
 		parent::main();
 		
@@ -1708,7 +1761,7 @@ class PagesController extends BaseController {
 			"pages_tag.id_page"	=>	$clean['id'],
 		))->save();
 		
-		$this->tabella = "pages";
+		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		

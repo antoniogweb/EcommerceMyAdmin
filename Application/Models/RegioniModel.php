@@ -36,6 +36,7 @@ class RegioniModel extends GenericModel {
 	public function relations() {
 		return array(
 			'nazione' => array("BELONGS_TO", 'NazioniModel', 'id_nazione',null,"CASCADE"),
+			'pagine' => array("HAS_MANY", 'PagesregioniModel', 'id_regione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
         );
     }
     
@@ -47,6 +48,13 @@ class RegioniModel extends GenericModel {
 				'nazione'	=>	array(
 					"type"	=>	"Select",
 					"options"	=>	$this->selectNazione(true),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'id_nazione'	=>	array(
+					"type"	=>	"Select",
+					'labelString'=>	'Nazione',
+					"options"	=>	$this->selectNazioneId(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -92,11 +100,39 @@ class RegioniModel extends GenericModel {
 			
 		$this->values["tipo"] = "CUS";
 		
-		return parent::insert();
+		$res = parent::insert();
+		
+		if ($res)
+		{
+			// Aggiungo direttamente dal prodotto
+			if ($_GET["id_page"] && isset($this->values["id_nazione"]))
+				$this->aggiungiaprodotto($this->lId);
+		}
+		
+		return $res;
 	}
 	
 	public function edit($record)
 	{
 		return "<a class='iframe action_iframe' href='".Url::getRoot()."/regioni/form/update/".$record["regioni"]["id_regione"]."?partial=Y&nobuttons=Y'>".$record["regioni"]["titolo"]."</a>";
 	}
+	
+	/* Importa la riga dell'offerta nella fattura */
+    public function aggiungiaprodotto($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_page"]))
+		{
+			$pr = new PagesregioniModel();
+			
+			$pr->setValues(array(
+				"id_page"		=>	(int)$_GET["id_page"],
+				"id_regione"	=>	(int)$id,
+				"id_nazione"	=>	$record["id_nazione"],
+			), "sanitizeDb");
+			
+			$pr->pInsert();
+		}
+    }
 }

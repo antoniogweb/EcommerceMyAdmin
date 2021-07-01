@@ -78,6 +78,9 @@
 	<?php if (v("abilita_feedback")) { ?>
 	<li <?php echo $posizioni['feedback'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/feedback/$id_page".$viewStatusTutti;?>"><?php echo gtext("Feedback");?></a></li>
 	<?php } ?>
+	<?php if (v("attiva_localizzazione_prodotto")) { ?>
+	<li <?php echo $posizioni['regioni'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/regioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Regioni");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } ?>
