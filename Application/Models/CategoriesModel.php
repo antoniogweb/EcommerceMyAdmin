@@ -626,6 +626,20 @@ class CategoriesModel extends HierarchicalModel {
 		return $this->linklinguaGeneric($record["categories"]["id_c"], $lingua, "id_c");
 	}
 	
+	public function numeroProdottiFull($id_c)
+	{
+		$children = $this->children((int)$id_c, true);
+		$catWhere = "in(".implode(",",$children).")";
+		
+		$p = new PagesModel();
+		
+		return $p->clear()->where(array(
+			"in" => array("-id_c" => $children),
+			"attivo"	=>	"Y",
+			"acquistabile"	=>	"Y",
+		))->rowNumber();
+	}
+	
 	public function numeroProdotti($id_c)
 	{
 		$p = new PagesModel();

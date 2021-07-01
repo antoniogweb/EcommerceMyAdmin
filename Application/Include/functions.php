@@ -1486,6 +1486,13 @@ function numeroProdottiCategoria($id_c)
 	return $c->numeroProdotti($id_c);
 }
 
+function numeroProdottiCategoriaFull($id_c)
+{
+	$c = new CategoriesModel();
+	
+	return $c->numeroProdottiFull($id_c);
+}
+
 function getShopCategoryId()
 {
 	$c = new CategoriesModel();
@@ -1749,20 +1756,20 @@ function parent($file)
 }
 
 function cartesian($input) {
-    $result = array(array());
+	$result = array(array());
 
-    foreach ($input as $key => $values) {
-        $append = array();
+	foreach ($input as $key => $values) {
+		$append = array();
 
-        foreach($result as $product) {
-            foreach($values as $item) {
-                $product[$key] = $item;
-                $append[] = $product;
-            }
-        }
+		foreach($result as $product) {
+			foreach($values as $item) {
+				$product[$key] = $item;
+				$append[] = $product;
+			}
+		}
 
-        $result = $append;
-    }
+		$result = $append;
+	}
 
-    return $result;
+	return $result;
 }
