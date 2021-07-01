@@ -24,7 +24,7 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 			<ul class="uk-list uk-list-divider">
 				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
-					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop);?>)</span>
+<!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop);?>)</span> -->
 				</li>
 				<?php foreach ($elencoCategorieFull as $c) {
 					$figlie = categorieFiglie($c["categories"]["id_c"]);
@@ -41,7 +41,7 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 						<a class="uk-text-meta uk-text-xsmall <?php if (count($figlie) > 0) { ?>uk-accordion-title"<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $c["categories"]["id_c"], "", $filtriUrlTuttiAltri);?>">
 							<?php echo cfield($c, "title");?>
 						</a>
-						<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoria;?>)</span>
+<!-- 						<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoria;?>)</span> -->
 						<?php if (count($figlie) > 0) { ?>
 						<ul class='uk-list uk-margin-left uk-accordion-content'>
 							<?php foreach ($figlie as $fg) { ?>
@@ -73,7 +73,7 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $m["marchi"]["id_marchio"], $id_categoria, "", $filtriUrlTuttiAltri);?>">
 						<?php echo mfield($m,"titolo");?>
 					</a>
-					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span>
+<!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span> -->
 				</li>
 				<?php } ?>
 			</ul>
@@ -94,7 +94,7 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($m["tag"]["id_tag"], $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri);?>">
 						<?php echo tagfield($m,"titolo");?>
 					</a>
-					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span>
+<!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span> -->
 				</li>
 				<?php } ?>
 			</ul>
@@ -122,7 +122,6 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 		
 		<?php
 		foreach ($filtriCaratteristiche as $fc) {
-			
 			$carAlias = carfield($fc, "alias");
 			$carVAlias = carvfield($fc, "alias");
 			
@@ -148,7 +147,7 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 			<?php } ?>
 						<li class="">
 							<a class="uk-text-meta uk-text-xsmall <?php if ($filtroSelezionato) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrl);?>"><?php echo carvfield($fc, "titolo");?></a>
-							<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $fc["aggregate"]["numero_prodotti"];?>)</span>
+<!-- 							<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $fc["aggregate"]["numero_prodotti"];?>)</span> -->
 						</li>
 		<?php } ?>
 		

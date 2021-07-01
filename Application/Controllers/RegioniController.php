@@ -32,7 +32,7 @@ class RegioniController extends BaseController {
 	{
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("titolo");
+		$this->m[$this->modelName]->setValuesFromPost("titolo,alias");
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_nazione", $this->viewArgs["id_nazione"]);

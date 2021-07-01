@@ -75,10 +75,21 @@ class RegioniModel extends GenericModel {
 		}
 	}
 	
+	public function update($id = NULL, $whereClause = NULL)
+	{
+		if (isset($this->values["alias"]))
+			$this->checkAliasAll($id, true);
+		
+		return parent::update($id, $whereClause);
+	}
+	
 	public function insert()
 	{
 		$this->impostaCodiceNazione();
 		
+		if (isset($this->values["alias"]))
+			$this->checkAliasAll(0, true);
+			
 		$this->values["tipo"] = "CUS";
 		
 		return parent::insert();

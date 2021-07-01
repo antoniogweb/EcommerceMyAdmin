@@ -118,7 +118,7 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
-	public function checkAliasAll($id)
+	public function checkAliasAll($id, $noTraduzione = false)
 	{
 		if (isset($this->values["alias"]) && !trim($this->values["alias"]))
 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
@@ -141,7 +141,7 @@ class GenericModel extends Model_Tree
 				$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
 		}
 		
-		if (!isset($id))
+		if (!isset($id) || $noTraduzione)
 			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."'");
 		else
 			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
