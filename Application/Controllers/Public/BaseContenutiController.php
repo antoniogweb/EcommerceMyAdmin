@@ -638,11 +638,11 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->sWhere($sWhereQuery);
 		}
 		
-		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->rowNumber();
+		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
 		
 		// Estraggo gli id delle pagine trovate
 		if (v("attiva_filtri_successivi"))
-			CategoriesModel::$arrayIdsPagineFiltrate = $this->m["PagesModel"]->save()->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+			CategoriesModel::$arrayIdsPagineFiltrate = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
 		
 		$this->estraiDatiFiltri();
 		
