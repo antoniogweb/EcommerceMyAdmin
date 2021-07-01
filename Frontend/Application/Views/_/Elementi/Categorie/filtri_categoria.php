@@ -57,17 +57,29 @@ if (!isset($idTag))
 	
 	if (count($filtriCaratteristiche) > 0) {
 		$lastIdCar = $filtriCaratteristiche[0]["caratteristiche"]["id_car"];
+		$filtriUrlTutti = CaratteristicheModel::getUrlCaratteristicheTutti(carfield($filtriCaratteristiche[0], "alias"));
 	?>
 		<section class="uk-margin-large-top js-accordion-section uk-open">
 			<h4 class="uk-accordion-title uk-margin-remove"><?php echo carfield($filtriCaratteristiche[0], "titolo");?></h4>
 			<div class="uk-accordion-content">
 				<ul class="uk-list uk-list-divider">
+					<li class="cat-item cat-item-49">
+						<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTutti);?>"><?php echo gtext("Tutti");?></a>
+					</li>
 	<?php } ?>
 	
 	<?php
 	foreach ($filtriCaratteristiche as $fc) {
+		
+		$carAlias = carfield($fc, "alias");
+		$carVAlias = carvfield($fc, "alias");
+		
+		$filtriUrl = CaratteristicheModel::getArrayUrlCaratteristiche($carAlias, $carVAlias);
+		$filtroSelezionato = CaratteristicheModel::filtroSelezionato($carAlias, $carVAlias);
+		
 		if ($fc["caratteristiche"]["id_car"] != $lastIdCar) {
 			$lastIdCar = $fc["caratteristiche"]["id_car"];
+			$filtriUrlTutti = CaratteristicheModel::getUrlCaratteristicheTutti($carAlias);
 		?>
 				</ul>
 			</div>
@@ -77,9 +89,13 @@ if (!isset($idTag))
 			<h4 class="uk-accordion-title uk-margin-remove"><?php echo carfield($fc, "titolo");?></h4>
 			<div class="uk-accordion-content">
 				<ul class="uk-list uk-list-divider">
+					<li class="cat-item cat-item-49">
+						<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTutti);?>"><?php echo gtext("Tutti");?></a>
+					</li>
 		<?php } ?>
 					<li class="">
-						<a class="uk-text-meta uk-text-xsmall" href=""><?php echo carvfield($fc, "titolo");?></a>
+						<a class="uk-text-meta uk-text-xsmall <?php if ($filtroSelezionato) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrl);?>"><?php echo carvfield($fc, "titolo");?></a>
+						<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $fc["aggregate"]["numero_prodotti"];?>)</span>
 					</li>
 	<?php } ?>
 	
