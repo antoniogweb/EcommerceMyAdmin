@@ -937,4 +937,31 @@ class GenericModel extends Model_Tree
 		if (isset($this->values[$campoDescrizione]) && !$metaModificato)
 			$this->values["meta_description"] = sanitizeDb(strip_tags(br2space(htmlentitydecode($this->values[$campoDescrizione]))));
 	}
+	
+	public function addWhereAttivo()
+	{
+		$this->aWhere(array(
+			"pages.attivo"	=>	"Y",
+			"pages.acquistabile"	=>	"Y",
+		));
+		
+		return $this;
+	}
+	
+	public function sWhereFiltriSuccessivi()
+	{
+		$whereIn = "";
+		
+		if (v("attiva_filtri_successivi"))
+		{
+			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
+				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
+			else
+				$whereIn = "1 =! 1";
+			
+			$this->sWhere($whereIn);
+		}
+		
+		return $this;
+	}
 }

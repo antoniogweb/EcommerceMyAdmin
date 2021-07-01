@@ -169,7 +169,8 @@ class CaratteristicheModel extends GenericModel {
 	{
 		$urlFiltriArray = array();
 		
-		$urlFiltriArray[] = v("divisorio_filtri_url");
+		if (count($filtri) > 0)
+			$urlFiltriArray[] = v("divisorio_filtri_url");
 		
 		foreach ($filtri as $car => $carVals)
 		{
@@ -185,11 +186,11 @@ class CaratteristicheModel extends GenericModel {
 	}
 	
 	// Restituisce un array per URL con filtri togliendo la caratteristica $aliasCar impostata a $aliasCarVal
-	public static function getUrlCaratteristicheTutti($aliasCar)
+	public static function getUrlCaratteristicheTutti($aliasCar = null)
 	{
 		$temp = self::$filtriUrl;
 		
-		if (isset($temp[$aliasCar]))
+		if ($aliasCar && isset($temp[$aliasCar]))
 			unset($temp[$aliasCar]);
 		
 		return self::getArrayFiltri($temp);
@@ -205,6 +206,14 @@ class CaratteristicheModel extends GenericModel {
 					return true;
 			}
 		}
+		
+		return false;
+	}
+	
+	public static function filtroTuttiSelezionato($aliasCar)
+	{
+		if (!isset(self::$filtriUrl[$aliasCar]))
+			return true;
 		
 		return false;
 	}

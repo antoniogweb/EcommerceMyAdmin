@@ -29,6 +29,8 @@ class CategoriesModel extends HierarchicalModel {
 	public static $elencoMarchi = null;
 	public static $idShop = 0;
 	
+	public static $arrayIdsPagineFiltrate = array();
+	
 	public $controller = "categories";
 	
 	public $checkAll = true;
@@ -635,9 +637,7 @@ class CategoriesModel extends HierarchicalModel {
 		
 		return $p->clear()->where(array(
 			"in" => array("-id_c" => $children),
-			"attivo"	=>	"Y",
-			"acquistabile"	=>	"Y",
-		))->rowNumber();
+		))->addWhereAttivo()->rowNumber();
 	}
 	
 	public function numeroProdotti($id_c)
@@ -646,9 +646,7 @@ class CategoriesModel extends HierarchicalModel {
 		
 		return $p->clear()->where(array(
 			"-id_c"		=>	(int)$id_c,
-			"attivo"	=>	"Y",
-			"acquistabile"	=>	"Y",
-		))->rowNumber();
+		))->addWhereAttivo()->rowNumber();
 	}
 	
 	public function categorieFiglie($id_c)

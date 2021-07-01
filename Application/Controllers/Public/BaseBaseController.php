@@ -451,38 +451,6 @@ class BaseBaseController extends Controller
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
 		
-// 		print_r($data["alberoCategorieProdottiConShop"]);die();
-		
-		if (v("usa_marchi"))
-		{
-			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
-			
-			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
-		}
-		
-		if (v("usa_tag"))
-		{
-			$data["elencoTagFull"] = $this->elencoTagFull = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
-				"attivo"	=>	"Y",
-			))->orderBy("tag.titolo")->send();
-		}
-		
-		$data["filtriCaratteristiche"] = array();
-		
-		if (v("attiva_filtri_caratteristiche"))
-		{
-			$data["filtriCaratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
-				->inner(array("caratteristica_valore"))
-				->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
-				->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-				->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
-				->groupBy("caratteristiche_valori.id_cv")
-				->send();
-		}
-		
-// 		$res = $this->m["MenuModel"]->getTreeWithDepth(2);
-		
 		$data["isPromo"] = self::$isPromo;
 		
 		$data["arrayLingue"] = array();
@@ -508,8 +476,6 @@ class BaseBaseController extends Controller
 				"ne"	=>	array("tipo_pagina" => ""),
 			))->toList("tipo_pagina", "id_page")->send();
 			
-// 			print_r($data["tipiPagina"]);
-			
 			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
 			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
 			
@@ -531,6 +497,57 @@ class BaseBaseController extends Controller
 		}
 		
 		$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
+	}
+	
+	protected function estraiDatiFiltri()
+	{
+		$whereIn = "";
+		
+		if (v("attiva_filtri_successivi"))
+		{
+			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
+				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
+			else
+				$whereIn = "1 =! 1";
+		}
+		
+		if (v("usa_marchi"))
+		{
+			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+			
+			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->send();
+		}
+		
+		if (v("usa_tag"))
+		{
+			$data["elencoTagFull"] = $this->elencoTagFull = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+				"attivo"	=>	"Y",
+			))->orderBy("tag.titolo")->send();
+			
+			$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
+				->inner(array("pagine"))
+				->inner("pages")->on("pages.id_page = pages_tag.id_page")
+				->addWhereAttivo()->groupBy("tag.id_tag")->send();
+		}
+		
+		$data["filtriCaratteristiche"] = array();
+		
+		if (v("attiva_filtri_caratteristiche"))
+		{
+			$data["filtriCaratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
+				->inner(array("caratteristica_valore"))
+				->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
+				->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+				->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+				->inner("pages")->on("pages.id_page = pages_caratteristiche_valori.id_page")
+				->addWhereAttivo()
+				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
+				->groupBy("caratteristiche_valori.id_cv")
+				->send();
+		}
+		
+		$this->append($data);
 	}
 	
 	protected function formRegistrazione()

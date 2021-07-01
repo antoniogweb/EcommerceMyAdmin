@@ -640,6 +640,14 @@ class BaseContenutiController extends BaseController
 		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->rowNumber();
 		
+		// Estraggo gli id delle pagine trovate
+		if (v("attiva_filtri_successivi"))
+			CategoriesModel::$arrayIdsPagineFiltrate = $this->m["PagesModel"]->save()->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+		
+		$this->estraiDatiFiltri();
+		
+		$this->m["PagesModel"]->clear()->restore(true);
+		
 		$data["linkAltri"] = null;
 		
 		if ($rowNumber > $this->elementsPerPage)

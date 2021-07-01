@@ -17,7 +17,7 @@
 				<?php if (isset($pages) && !isset($noNumeroProdotti)) { ?>
 				<div class="uk-text-meta uk-margin-xsmall-top">
 					<?php $numProdotti = count($pages);?>
-					<?php echo $numProdotti." ".singPlu($numProdotti, gtext("prodotto"), gtext("prodotti"))?>
+					<div><?php echo $numProdotti." ".singPlu($numProdotti, gtext("prodotto"), gtext("prodotti"))?></div>
 					
 					<?php if (User::$isMobile && !isset($noFiltri)) { ?>
 						<a href="#filtri-categoria" class="uk-button uk-button-default uk-margin-small-right uk-margin-top" uk-toggle="target: #filtri-categoria"><span class="uk-margin-xsmall-right" uk-icon="icon: settings; ratio: .75;"></span> <?php echo gtext("filtri");?></a>
