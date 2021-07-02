@@ -1755,7 +1755,7 @@ function parent($file)
 	return Domain::$parentRoot."/admin/Frontend/Application/Views/_".$file;
 }
 
-function cartesian($input) {
+function prodottoCartesiano($input) {
 	$result = array(array());
 
 	foreach ($input as $key => $values) {

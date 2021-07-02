@@ -18,7 +18,19 @@ $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 		<button class="uk-offcanvas-close" type="button" uk-close></button>
 	</div>
 	<?php } ?>
+	
+	<?php if (v("attiva_localizzazione_prodotto")) { ?>
 	<section class="js-accordion-section uk-open">
+		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Nazione")?></h4>
+		<div class="uk-accordion-content">
+			<ul class="uk-list uk-list-divider">
+				
+			</ul>
+		</div>
+	</section>
+	<?php } ?>
+	
+	<section class="<?php if (v("attiva_localizzazione_prodotto")) { ?>uk-margin-large-top<?php } ?> js-accordion-section uk-open">
 		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Categoria")?></h4>
 		<div class="uk-accordion-content">
 			<ul class="uk-list uk-list-divider">

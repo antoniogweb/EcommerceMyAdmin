@@ -42,5 +42,37 @@ class PagesregioniModel extends GenericModel {
 			'nazione' => array("BELONGS_TO", 'NazioniModel', 'id_nazione',null,"CASCADE"),
         );
     }
+    
+    public function pInsert()
+    {
+		if (isset($this->values["id_nazione"]))
+		{
+			$n = new NazioniModel();
+			
+			$this->values["alias_nazione"] = $n->clear()->where(array(
+				"id_nazione"	=>	(int)$this->values["id_nazione"],
+			))->field("iso_country_code");
+		}
+		
+		if (isset($this->values["id_regione"]))
+		{
+			$r = new RegioniModel();
+			
+			$this->values["alias_regione"] = $r->clear()->where(array(
+				"id_regione"	=>	(int)$this->values["id_regione"],
+			))->field("alias");
+		}
+		
+		return parent::pInsert();
+    }
+    
+    public function filtriNazioni()
+    {
+		$this->clear()->select("nazioni.*")->left(array("nazione"))->inner(array("page"))->addWhereAttivo()->groupBy("nazioni.id_nazione")->orderBy("nazioni.titolo")->send();
+    }
 	
+	public function filtriRegioni()
+    {
+		$this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo")->send();
+    }
 }

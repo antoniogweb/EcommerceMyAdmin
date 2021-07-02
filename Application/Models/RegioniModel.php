@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class RegioniModel extends GenericModel {
-
+	
+	public static $filtriUrl = array();
+	
 	public function __construct() {
 		$this->_tables='regioni';
 		$this->_idFields='id_regione';

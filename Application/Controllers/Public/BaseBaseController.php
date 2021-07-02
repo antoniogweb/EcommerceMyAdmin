@@ -107,6 +107,7 @@ class BaseBaseController extends Controller
 		$this->model("PersonalizzazioniModel");
 		$this->model("TagModel");
 		$this->model("TipiaziendaModel");
+		$this->model("PagesregioniModel");
 		
 		if (v("mostra_fasce_prezzo"))
 			$this->model("FasceprezzoModel");
@@ -545,6 +546,13 @@ class BaseBaseController extends Controller
 				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
 				->groupBy("caratteristiche_valori.id_cv")
 				->send();
+		}
+		
+		if (v("attiva_localizzazione_prodotto"))
+		{
+			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni();
+			
+			$data["filtriRegioni"] = $this->m["PagesregioniModel"]->filtriRegioni();
 		}
 		
 		$this->append($data);

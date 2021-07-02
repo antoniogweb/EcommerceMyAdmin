@@ -215,6 +215,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_filtri_caratteristiche"	=>	0,
 		"attiva_filtri_successivi"	=>	0, // Non viene usato, da sviluppare
 		"attiva_localizzazione_prodotto"	=>	0,
+		"label_nazione_url"			=>	"nazione",
+		"label_regione_url"			=>	"regione",
 	);
 	
 	public function __construct() {

@@ -76,6 +76,31 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
+	public function sistemaFiltriLocalita()
+	{
+		if (count($this->filtriRegione) > 0 && ((count($this->filtriRegione) % 2) === 0))
+		{
+			$tempCar = array_chunk($this->filtriRegione, 2);
+			
+			foreach ($tempCar as $carArray)
+			{
+				if ((int)count($carArray) === 2)
+				{
+					$carAlias = sanitizeAll($carArray[0]);
+					$carValoreAlias = sanitizeAll($carArray[1]);
+					
+					if (isset(RegioniModel::$filtriUrl[$carArray[0]]))
+					{
+						if (!in_array($carArray[1], RegioniModel::$filtriUrl[$carArray[0]]))
+							RegioniModel::$filtriUrl[$carArray[0]][] = $carArray[1];
+					}
+					else
+						RegioniModel::$filtriUrl[$carArray[0]] = array($carArray[1]);
+				}
+			}
+		}
+	}
+	
 	public function sistemaFiltriCaratteristiche()
 	{
 		if (count($this->filtriCaratteristiche) > 0 && ((count($this->filtriCaratteristiche) % 2) === 0))
@@ -90,12 +115,31 @@ class BaseContenutiController extends BaseController
 					$carValoreAlias = sanitizeAll($carArray[1]);
 					
 					if (isset(CaratteristicheModel::$filtriUrl[$carArray[0]]))
-						CaratteristicheModel::$filtriUrl[$carArray[0]][] = $carArray[1];
+					{
+						if (!in_array($carArray[1], CaratteristicheModel::$filtriUrl[$carArray[0]]))
+							CaratteristicheModel::$filtriUrl[$carArray[0]][] = $carArray[1];
+					}
 					else
 						CaratteristicheModel::$filtriUrl[$carArray[0]] = array($carArray[1]);
 				}
 			}
 		}
+	}
+	
+	public function checkFiltriOk()
+	{
+		$filtriOk = true;
+		
+		if (count($this->filtriCaratteristiche) > 0 && (count($this->filtriCaratteristiche) % 2) != 0)
+			$filtriOk = false;
+		
+		if (count($this->filtriRegione) > 0 && (count($this->filtriRegione) % 2) != 0)
+			$filtriOk = false;
+		
+		if (!$filtriOk)
+			$this->filtriCaratteristiche = $this->filtriRegione = array();
+		
+		return $filtriOk;
 	}
 	
 	public function index()
@@ -106,7 +150,7 @@ class BaseContenutiController extends BaseController
 		
 		$divisorioFiltriUrl = v("divisorio_filtri_url");
 		
-		if (in_array($divisorioFiltriUrl, $this->pageArgs))
+		if (in_array($divisorioFiltriUrl, $this->pageArgs) && (string)$this->pageArgs[count($this->pageArgs) - 1] !== (string)$divisorioFiltriUrl && (string)$this->pageArgs[count($this->pageArgs) - 1])
 		{
 			$indiciDivisori = array_keys($this->pageArgs, $divisorioFiltriUrl);
 			
@@ -114,10 +158,18 @@ class BaseContenutiController extends BaseController
 			{
 				$tempsPageArgs = $this->pageArgs;
 				
-				$this->pageArgs = array_slice($tempsPageArgs, 0, $indiciDivisori[0]);
-				
 				if ((int)count($indiciDivisori) === 1)
-					$this->filtriCaratteristiche = array_slice($tempsPageArgs, ($indiciDivisori[0] + 1));
+				{
+					$filtriUrl = array_slice($tempsPageArgs, ($indiciDivisori[0] + 1));
+					
+					if (count($filtriUrl) > 0)
+					{
+						if (strcmp($filtriUrl[0],gtext(v("label_nazione_url"))) === 0 || strcmp($filtriUrl[0],gtext(v("label_regione_url"))) === 0)
+							$this->filtriRegione = $filtriUrl;
+						else
+							$this->filtriCaratteristiche = $filtriUrl;
+					}
+				}
 				else if ((int)count($indiciDivisori) > 1)
 				{
 					$distanzaIndici = $indiciDivisori[1] - $indiciDivisori[0];
@@ -125,7 +177,11 @@ class BaseContenutiController extends BaseController
 					$this->filtriRegione = array_slice($tempsPageArgs, ($indiciDivisori[1] + 1));
 				}
 				
+				if ($this->checkFiltriOk())
+					$this->pageArgs = array_slice($tempsPageArgs, 0, $indiciDivisori[0]);
+				
 				$this->sistemaFiltriCaratteristiche();
+				$this->sistemaFiltriLocalita();
 			}
 		}
 		
@@ -599,7 +655,7 @@ class BaseContenutiController extends BaseController
 		// Filtri caratteristiche
 		if (!empty(CaratteristicheModel::$filtriUrl))
 		{
-			$combinazioniCaratteristiche = cartesian(CaratteristicheModel::$filtriUrl);
+			$combinazioniCaratteristiche = prodottoCartesiano(CaratteristicheModel::$filtriUrl);
 			
 			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',caratteristiche.alias,'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',caratteristiche_valori.alias,'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
 			
@@ -633,12 +689,48 @@ class BaseContenutiController extends BaseController
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
 			}
 			
-			$sWhereQuery = "(".implode(" OR ", $sWhereQueryArray).")";
+			if (count($sWhereQueryArray) > 1)
+				$sWhereQuery = "(".implode(" OR ", $sWhereQueryArray).")";
+			else if (count($sWhereQueryArray) > 0)
+				$sWhereQuery = $sWhereQueryArray[0];
+			
+			$this->m["PagesModel"]->sWhere($sWhereQuery);
+		}
+		
+		// Filtri località
+		if (!empty(RegioniModel::$filtriUrl))
+		{
+			$this->m["PagesModel"]->inner(array("regioni"));
+			
+			$combinazioniLocalita = prodottoCartesiano(RegioniModel::$filtriUrl);
+			
+			$sWhereQueryArray = array();
+			
+			foreach ($combinazioniLocalita as $combCar)
+			{
+				$tempWhere = array();
+				
+				foreach ($combCar as $k => $v)
+				{
+					$field = $k == v("label_nazione_url") ? "alias_nazione" : "alias_regione";
+					
+					$tempWhere[] = "$field = '$v'";
+				}
+				
+				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
+			}
+			
+			if (count($sWhereQueryArray) > 1)
+				$sWhereQuery = "(".implode(" OR ", $sWhereQueryArray).")";
+			else if (count($sWhereQueryArray) > 0)
+				$sWhereQuery = $sWhereQueryArray[0];
 			
 			$this->m["PagesModel"]->sWhere($sWhereQuery);
 		}
 		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
+		
+// 		echo $this->m["PagesModel"]->getQuery();die();
 		
 		// Estraggo gli id delle pagine trovate
 		if (v("attiva_filtri_successivi"))
