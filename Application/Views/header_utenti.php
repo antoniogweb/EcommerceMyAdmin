@@ -35,7 +35,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("mostra_tipi_documento")) { ?>
-			<li class="<?php echo $tm["tipidocumento"][0];?> treeview">
+			<li class="<?php echo tm($tm, "tipidocumento");?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>
 					<span><?php echo gtext("Tipi documenti");?></span>

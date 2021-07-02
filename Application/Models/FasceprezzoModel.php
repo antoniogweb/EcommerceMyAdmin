@@ -30,6 +30,59 @@ class FasceprezzoModel extends GenericModel
 		
 		$this->traduzione = true;
 		
+		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
+		
 		parent::__construct();
+	}
+	
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'da'		=>	array(
+					'labelString'=>	'Da prezzo IVA ESCLUSA (€)',
+				),
+				'a'		=>	array(
+					'labelString'=>	'A prezzo IVA ESCLUSA (€)',
+				),
+				'da_ivato'		=>	array(
+					'labelString'=>	'Da prezzo IVA INCLUSA (€)',
+				),
+				'a_ivato'		=>	array(
+					'labelString'=>	'A prezzo IVA INCLUSA (€)',
+				),
+			),
+			
+			'enctype'	=>	'multipart/form-data',
+		);
+	}
+	
+	public function setPriceNonIvato()
+	{
+		$valore = Parametri::$iva;
+		
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			if (isset($this->values["da_ivato"]))
+				$this->values["da"] = number_format(setPrice($this->values["da_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["a_ivato"]))
+				$this->values["a"] = number_format(setPrice($this->values["a_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+		}
+	}
+	
+	public function insert()
+	{
+		$this->setPriceNonIvato();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setPriceNonIvato();
+		
+		return parent::update($id, $where);
 	}
 }

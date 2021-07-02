@@ -43,22 +43,30 @@ class FasceprezzoController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("fasce_prezzo.titolo","fasce_prezzo.da","fasce_prezzo.a");
-		$this->mainHead = "Titolo,Da,A";
-// 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			$this->mainFields = array("fasce_prezzo.titolo","fasce_prezzo.da_ivato","fasce_prezzo.a_ivato");
+			$this->mainHead = "Titolo,Da € (IVA inclusa),A € (IVA inclusa)";
+		}
+		else
+		{
+			$this->mainFields = array("fasce_prezzo.titolo","fasce_prezzo.da","fasce_prezzo.a");
+			$this->mainHead = "Titolo,Da € (IVA esclusa),A € (IVA esclusa)";
+		}
 		
-		$this->m[$this->modelName]->clear()
-				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
-				))
-				->orderBy("da")->save();
+		$this->m[$this->modelName]->clear()->orderBy("da")->save();
 		
 		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,da,a');
+		$campiPrezzo = "da,a";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+			$campiPrezzo = "da_ivato,a_ivato";
+		
+		$this->m[$this->modelName]->setValuesFromPost('titolo,'.$campiPrezzo);
 		
 		parent::form($queryType, $id);
 	}

@@ -4,8 +4,12 @@
 				<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
-						<?php echo $form["da"];?>
-						<?php echo $form["a"];?>
+						
+						<?php echo $form["da"] ?? "";?>
+						<?php echo $form["a"] ?? "";?>
+						
+						<?php echo $form["da_ivato"];?>
+						<?php echo $form["a_ivato"];?>
 						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
