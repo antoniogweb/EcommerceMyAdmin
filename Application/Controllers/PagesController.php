@@ -1652,7 +1652,7 @@ class PagesController extends BaseController {
 		$this->mainHead = "Nazione,Regione";
 		
 		$this->m[$this->modelName]->clear()->select("regioni.*,nazioni.*,pages_regioni.id_page_regione")
-			->inner(array("regione"))
+			->left(array("regione"))
 			->left(array("nazione"))
 			->where(array(
 				"pages_regioni.id_page"	=>	$clean['id'],

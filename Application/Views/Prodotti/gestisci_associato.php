@@ -79,6 +79,10 @@
 
 <?php if ($this->action == "regioni" && v("attiva_localizzazione_prodotto")) { ?>
 
-<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/regioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi regione");?></a></p>
+<p>
+	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/regioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi regione");?></a>
+	
+	<a class="btn btn-info iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a>
+</p>
 
 <?php } ?>

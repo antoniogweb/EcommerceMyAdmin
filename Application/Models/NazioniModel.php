@@ -306,4 +306,22 @@ class NazioniModel extends GenericModel
 			"campo_p_iva"	=>	1
 		))->toList("iso_country_code")->send();
 	}
+	
+	public function aggiungiaprodotto($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_page"]))
+		{
+			$pr = new PagesregioniModel();
+			
+			$pr->setValues(array(
+				"id_page"		=>	(int)$_GET["id_page"],
+				"id_regione"	=>	0,
+				"id_nazione"	=>	(int)$id,
+			), "sanitizeDb");
+			
+			$pr->pInsert();
+		}
+    }
 }

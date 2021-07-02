@@ -117,7 +117,6 @@ class RegioniModel extends GenericModel {
 		return "<a class='iframe action_iframe' href='".Url::getRoot()."/regioni/form/update/".$record["regioni"]["id_regione"]."?partial=Y&nobuttons=Y'>".$record["regioni"]["titolo"]."</a>";
 	}
 	
-	/* Importa la riga dell'offerta nella fattura */
     public function aggiungiaprodotto($id)
     {
 		$record = $this->selectId((int)$id);

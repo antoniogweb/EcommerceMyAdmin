@@ -24,13 +24,15 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class NazioniController extends BaseController {
 	
-	public $mainFields = array("[[ledit]];nazioni.titolo;","nazioni.iso_country_code","tipo","attivaCrud","attivaSpedizioneCrud","pivaAttiva");
-	
-	public $mainHead = "Titolo,Codice nazione,Tipo,Attiva,Spedizione attiva,Attiva P.IVA";
-	
 	public $orderBy = "titolo";
 	
-	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'tipo:sanitizeAll'=>'tutti', 'attiva:sanitizeAll'=>'tutti', 'attiva_spedizione:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'titolo:sanitizeAll'=>'tutti',
+		'tipo:sanitizeAll'=>'tutti',
+		'attiva:sanitizeAll'=>'tutti',
+		'attiva_spedizione:sanitizeAll'=>'tutti',
+		'id_page:sanitizeAll'=>'tutti',
+	);
 	
 	public $useEditor = true;
 	
@@ -56,13 +58,27 @@ class NazioniController extends BaseController {
 		
 		$filtroTipo = array("tutti"=>"Tipo") + NazioniModel::$selectTipi;
 		
-		$this->filters = array("titolo",array(
-			"tipo",null,$filtroTipo),
-		array(
-			"attiva",null,$attivaDisattiva
-		),  array(
-			"attiva_spedizione",null,$attivaDisattivaSped
-		));
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->mainButtons = "";
+			$this->mainFields = array("[[ledit]];nazioni.titolo;","nazioni.iso_country_code");
+			$this->mainHead = "Titolo,Codice nazione";
+			
+			$this->filters = array("titolo");
+		}
+		else
+		{
+			$this->mainFields = array("[[ledit]];nazioni.titolo;","nazioni.iso_country_code","tipo","attivaCrud","attivaSpedizioneCrud","pivaAttiva");
+			$this->mainHead = "Titolo,Codice nazione,Tipo,Attiva,Spedizione attiva,Attiva P.IVA";
+			
+			$this->filters = array("titolo",array(
+				"tipo",null,$filtroTipo),
+			array(
+				"attiva",null,$attivaDisattiva
+			),  array(
+				"attiva_spedizione",null,$attivaDisattivaSped
+			));
+		}
 			
 		$this->m[$this->modelName]->where(array(
 				"OR"	=>	array(
@@ -72,7 +88,7 @@ class NazioniController extends BaseController {
 				"tipo"	=>	$this->viewArgs["tipo"],
 				"attiva"	=>	$this->viewArgs["attiva"],
 				"attiva_spedizione"	=>	$this->viewArgs["attiva_spedizione"],
-			))->orderBy($this->orderBy)->convert()->save();
+			))->orderBy($this->orderBy)->convert();
 		
 		$this->bulkQueryActions = "attiva,disattiva,attivasped,disattivasped";
 		
@@ -82,6 +98,19 @@ class NazioniController extends BaseController {
 			"  checkbox_nazioni_id_nazione"	=>	array("attivasped","ATTIVA SPEDIZIONE"),
 			"   checkbox_nazioni_id_nazione"	=>	array("disattivasped","DISATTIVA SPEDIZIONE"),
 		);
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->bulkQueryActions = "aggiungiaprodotto";
+			
+			$this->bulkActions = array(
+				"checkbox_nazioni_id_nazione"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("nazioni.id_nazione not in (select id_nazione from pages_regioni where id_nazione is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

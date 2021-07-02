@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo Params::$lang ? Params::$lang : "it";?>">
 <head>
 
 	<title><?php echo $title;?></title>

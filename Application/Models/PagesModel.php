@@ -1877,7 +1877,6 @@ class PagesModel extends GenericModel {
 		return self::$arrayImmagini;
 	}
 	
-	/* Importa la riga dell'offerta nella fattura */
     public function aggiungiaprodotto($id)
     {
 		$record = $this->selectId((int)$id);

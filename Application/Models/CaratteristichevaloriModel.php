@@ -217,7 +217,6 @@ class CaratteristichevaloriModel extends GenericModel {
 		return $this->linklinguaGeneric($record["caratteristiche_valori"]["id_cv"], $lingua, "id_cv");
 	}
 	
-	/* Importa la riga dell'offerta nella fattura */
     public function aggiungiaprodotto($id)
     {
 		$record = $this->selectId((int)$id);
