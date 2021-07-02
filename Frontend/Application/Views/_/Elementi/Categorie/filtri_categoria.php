@@ -213,7 +213,7 @@ $filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
 		<?php } ?>
 	<?php } ?>
 	
-	<?php if (v("mostra_fasce_prezzo") && count($fascePrezzo) > 0) { ?>
+	<?php if (false && v("mostra_fasce_prezzo") && count($fascePrezzo) > 0) { ?>
 	<section class="uk-margin-large-top js-accordion-section uk-open">
 		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Fasce prezzo")?></h4>
 		<div class="uk-accordion-content">
