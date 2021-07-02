@@ -9,8 +9,8 @@ if (!isset($idMarchio))
 if (!isset($idTag))
 	$idTag = 0;
 
-$nazioneAlias = v("label_nazione_url");
-$regioneAlias = v("label_regione_url");
+$nazioneAlias = RegioniModel::$nAlias;
+$regioneAlias = RegioniModel::$rAlias;
 
 $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 $filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
@@ -212,5 +212,26 @@ $filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
 			</section>
 		<?php } ?>
 	<?php } ?>
+	
+	<?php if (v("mostra_fasce_prezzo") && count($fascePrezzo) > 0) { ?>
+	<section class="uk-margin-large-top js-accordion-section uk-open">
+		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Fasce prezzo")?></h4>
+		<div class="uk-accordion-content">
+			<ul class="uk-list uk-list-divider">
+				<li class="cat-item cat-item-49 <?php if ($idMarchio == 0) { ?>uk-text-bold<?php } ?>">
+					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
+				</li>
+				<?php foreach ($fascePrezzo as $p) { ?>
+				<li class="">
+					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri);?>">
+						<?php echo fpfield($p,"titolo");?>
+					</a>
+				</li>
+				<?php } ?>
+			</ul>
+		</div>
+	</section>
+	<?php } ?>
+	
 	<?php if (User::$isMobile) { ?></div><?php } ?>
 </div>

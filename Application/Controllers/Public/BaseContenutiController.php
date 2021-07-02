@@ -150,6 +150,7 @@ class BaseContenutiController extends BaseController
 		
 		$divisorioFiltriUrl = v("divisorio_filtri_url");
 		
+		// Filtri
 		if (in_array($divisorioFiltriUrl, $this->pageArgs) && (string)$this->pageArgs[count($this->pageArgs) - 1] !== (string)$divisorioFiltriUrl && (string)$this->pageArgs[count($this->pageArgs) - 1])
 		{
 			$indiciDivisori = array_keys($this->pageArgs, $divisorioFiltriUrl);
@@ -164,7 +165,7 @@ class BaseContenutiController extends BaseController
 					
 					if (count($filtriUrl) > 0)
 					{
-						if (strcmp($filtriUrl[0],gtext(v("label_nazione_url"))) === 0 || strcmp($filtriUrl[0],gtext(v("label_regione_url"))) === 0)
+						if (strcmp($filtriUrl[0],RegioniModel::$nAlias) === 0 || strcmp($filtriUrl[0],RegioniModel::$rAlias) === 0)
 							$this->filtriRegione = $filtriUrl;
 						else
 							$this->filtriCaratteristiche = $filtriUrl;
@@ -417,14 +418,22 @@ class BaseContenutiController extends BaseController
 				array_unshift($tempParents, tagfield($tag,"alias"));
 		}
 		
+		$arrayUrl = array($this->cleanAlias);
+		
+		if (!empty(CaratteristicheModel::$filtriUrl))
+			$arrayUrl = array_merge($arrayUrl,CaratteristicheModel::getArrayUrlAll());
+		
+		if (!empty(RegioniModel::$filtriUrl))
+			$arrayUrl = array_merge($arrayUrl,RegioniModel::getArrayUrlAll());
+		
 		$baseUrl = $completeUrl ? $this->baseUrl."/" : null;
 		if (count($tempParents) > 0)
 		{
-			return $baseUrl.implode("/",$tempParents)."/".$this->cleanAlias.$ext;
+			return $baseUrl.implode("/",$tempParents)."/".implode("/",$arrayUrl).$ext;
 		}
 		else
 		{
-			return $baseUrl.$this->cleanAlias.$ext;
+			return $baseUrl.implode("/",$arrayUrl).$ext;
 		}
 	}
 	
@@ -657,7 +666,10 @@ class BaseContenutiController extends BaseController
 		{
 			$combinazioniCaratteristiche = prodottoCartesiano(CaratteristicheModel::$filtriUrl);
 			
-			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',caratteristiche.alias,'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',caratteristiche_valori.alias,'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
+			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
+			left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
+			left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
+			group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
 			
 			$this->m["PagesModel"]->inner($tabellaCaratterisitche)->on("pages.id_page = tabella_caratteristiche.id_page");
 			
@@ -712,7 +724,7 @@ class BaseContenutiController extends BaseController
 				
 				foreach ($combCar as $k => $v)
 				{
-					$field = $k == v("label_nazione_url") ? "alias_nazione" : "alias_regione";
+					$field = $k == RegioniModel::$nAlias ? "alias_nazione" : "alias_regione";
 					
 					$tempWhere[] = "$field = '$v'";
 				}

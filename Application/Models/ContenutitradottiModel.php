@@ -84,7 +84,13 @@ class ContenutitradottiModel extends GenericModel
 		$record = $this->selectId($clean["id"]);
 		
 		if (!isset($this->values["alias"]) || !trim($this->values["alias"]))
-			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["title"]));
+		{
+			if (isset($this->values["title"]))
+				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["title"]));
+			else if (isset($this->values["titolo"]))
+				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
+		}
+			
 		
 		if (!isset($id))
 		{

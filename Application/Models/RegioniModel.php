@@ -29,6 +29,8 @@ class RegioniModel extends GenericModel {
 	use Filtri;
 	
 	public static $filtriUrl = array();
+	public static $nAlias = "";
+	public static $rAlias = "";
 	
 	public function __construct() {
 		$this->_tables='regioni';

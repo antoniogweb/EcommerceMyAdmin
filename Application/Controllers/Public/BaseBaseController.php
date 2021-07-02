@@ -109,6 +109,9 @@ class BaseBaseController extends Controller
 		$this->model("TipiaziendaModel");
 		$this->model("PagesregioniModel");
 		
+		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
+		RegioniModel::$rAlias = gtext(v("label_regione_url"));
+		
 		if (v("mostra_fasce_prezzo"))
 			$this->model("FasceprezzoModel");
 		

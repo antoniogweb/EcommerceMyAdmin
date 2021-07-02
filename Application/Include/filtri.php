@@ -23,6 +23,11 @@ trait Filtri
 		return self::getArrayFiltri($filtri);
 	}
 	
+	public static function getArrayUrlAll()
+	{
+		return self::getArrayFiltri(self::$filtriUrl);
+	}
+	
 	public static function getArrayFiltri($filtri)
 	{
 		$urlFiltriArray = array();

@@ -75,7 +75,7 @@ class PagesregioniModel extends GenericModel {
     {
 		$this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo");
 		
-		$valoriNazione = RegioniModel::getValoriCaratteristica(v("label_nazione_url"));
+		$valoriNazione = RegioniModel::getValoriCaratteristica(RegioniModel::$nAlias);
 		
 		if (count($valoriNazione) > 0)
 		{
