@@ -75,4 +75,12 @@ trait Filtri
 		
 		return false;
 	}
+	
+	public static function getValoriCaratteristica($aliasCar)
+	{
+		if (isset(self::$filtriUrl[$aliasCar]))
+			return self::$filtriUrl[$aliasCar];
+		
+		return array();
+	}
 }

@@ -73,6 +73,21 @@ class PagesregioniModel extends GenericModel {
 	
 	public function filtriRegioni()
     {
-		return $this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo")->send();
+		$this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo");
+		
+		$valoriNazione = RegioniModel::getValoriCaratteristica(v("label_nazione_url"));
+		
+		if (count($valoriNazione) > 0)
+		{
+			$aWhere = array(
+				"in"	=>	array(
+					"regioni.nazione"	=>	$valoriNazione,
+				),
+			);
+			
+			$this->aWhere($aWhere);
+		}
+		
+		return $this->send();
     }
 }

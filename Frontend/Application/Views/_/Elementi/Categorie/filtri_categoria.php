@@ -24,7 +24,7 @@ $filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
 	<?php } ?>
 	
 	<?php if (v("attiva_localizzazione_prodotto")) { ?>
-		<?php if (isset($filtriNazioni)) {
+		<?php if (isset($filtriNazioni) && count($filtriNazioni) > 0) {
 			$filtriUrlLocTutti = RegioniModel::getUrlCaratteristicheTutti($nazioneAlias);
 			$filtroLocTuttiSelezionato = RegioniModel::filtroTuttiSelezionato($nazioneAlias);
 		?>
@@ -48,7 +48,7 @@ $filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
 		</section>
 		<?php } ?>
 		
-		<?php if (isset($filtriRegioni)) {
+		<?php if (isset($filtriRegioni) && count($filtriRegioni) > 0) {
 			$filtriUrlLocTutti = RegioniModel::getUrlCaratteristicheTutti($regioneAlias);
 			$filtroLocTuttiSelezionato = RegioniModel::filtroTuttiSelezionato($regioneAlias);
 		?>

@@ -66,7 +66,7 @@ class CorrierispeseModel extends GenericModel {
 		return self::sGetPrezzo($idCorriere, $peso, $nazione);
 	}
 	
-	public static function sGetPrezzo($idCorriere = null, $peso, $nazione)
+	public static function sGetPrezzo($idCorriere = null, $peso = null, $nazione = null)
 	{
 		$sp = new CorrierispeseModel();
 		
