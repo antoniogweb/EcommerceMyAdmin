@@ -68,11 +68,11 @@ class PagesregioniModel extends GenericModel {
     
     public function filtriNazioni()
     {
-		$this->clear()->select("nazioni.*")->left(array("nazione"))->inner(array("page"))->addWhereAttivo()->groupBy("nazioni.id_nazione")->orderBy("nazioni.titolo")->send();
+		return $this->clear()->select("nazioni.*")->left(array("nazione"))->inner(array("page"))->addWhereAttivo()->groupBy("nazioni.id_nazione")->orderBy("nazioni.titolo")->send();
     }
 	
 	public function filtriRegioni()
     {
-		$this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo")->send();
+		return $this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo")->send();
     }
 }

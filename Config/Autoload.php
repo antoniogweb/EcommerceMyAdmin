@@ -22,18 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-
 //class containing all the PHP files that have to be loaded at the beginning of the MvcMyLibrary execution
 //the files have to be saved in Application/Include
 //all the files have to be PHP files!!
 class Autoload
 {
-
 	public static $files = array(
 		'functions.php',
 		'user.php',
 		'parametri.php',
 		'language.php',
 	);
-
 }

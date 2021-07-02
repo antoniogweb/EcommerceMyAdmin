@@ -548,6 +548,8 @@ class BaseBaseController extends Controller
 				->send();
 		}
 		
+		$data["filtriNazioni"] = $data["filtriRegioni"] = array();
+		
 		if (v("attiva_localizzazione_prodotto"))
 		{
 			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni();

@@ -22,7 +22,11 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+require_once(LIBRARY."/Application/Include/filtri.php");
+
 class RegioniModel extends GenericModel {
+	
+	use Filtri;
 	
 	public static $filtriUrl = array();
 	
