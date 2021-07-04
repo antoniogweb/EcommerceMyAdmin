@@ -793,10 +793,10 @@ class BaseContenutiController extends BaseController
 					if (!empty($fasciaPrezzo))
 					{
 						$this->m["PagesModel"]->aWhere(array(
-							"gte"	=>	array(
+							"    gte"	=>	array(
 								"tabella_listini.prezzo_prodotto"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["da"]),
 							),
-							"lt"	=>	array(
+							"     lt"	=>	array(
 								"tabella_listini.prezzo_prodotto"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["a"]),
 							),
 						));
