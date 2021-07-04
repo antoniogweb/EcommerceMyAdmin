@@ -3,6 +3,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait Filtri
 {
+	public static $altriFiltri = array();
+	
 	// Restituisce i filtri nell'URL ma impostando la caratteristica $aliasCar impostata a $aliasCarVal
 	public static function getFiltriCaratteristica($aliasCar, $aliasCarVal)
 	{

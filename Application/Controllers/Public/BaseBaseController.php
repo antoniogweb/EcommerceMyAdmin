@@ -113,7 +113,11 @@ class BaseBaseController extends Controller
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
 		
 		if (v("mostra_fasce_prezzo"))
+		{
 			$this->model("FasceprezzoModel");
+			
+			Filtri::$altriFiltri[] = gtext(v("alias_fascia_prezzo"), true, "none", null, 0);
+		}
 		
 		$this->model("CaratteristichevaloriModel");
 		

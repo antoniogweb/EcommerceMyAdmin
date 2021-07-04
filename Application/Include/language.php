@@ -27,7 +27,7 @@ function getLinguaIso()
 }
 
 //get the text in the right language
-function gtext($string, $edit = true, $function = "none", $contesto = null)
+function gtext($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1)
 {
 	$t = new TraduzioniModel();
 	
@@ -58,6 +58,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null)
 			"valore"	=>	sanitizeDb($string),
 			"lingua"	=>	sanitizeDb($tempLang),
 			"contesto"	=>	sanitizeDb($contesto),
+			"gestibile"	=>	(int)$gestibile,
 		);
 		
 		$t->insert();

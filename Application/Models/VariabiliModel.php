@@ -217,6 +217,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_localizzazione_prodotto"	=>	0,
 		"label_nazione_url"			=>	"nazione",
 		"label_regione_url"			=>	"regione",
+		"alias_fascia_prezzo"		=>	"fascia-prezzo",
 	);
 	
 	public function __construct() {

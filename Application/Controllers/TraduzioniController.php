@@ -103,6 +103,7 @@ class TraduzioniController extends BaseController {
 					"tradotta"	=>	$this->viewArgs['tradotta'],
 					"lk" => array('valore' => $this->viewArgs['valore']),
 					"contesto"	=>	"front",
+					"gestibile"	=>	1,
 				))->orderBy("id_t")->save();
 		
 		parent::main();
