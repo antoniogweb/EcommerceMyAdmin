@@ -4,7 +4,7 @@
 	<div class="uk-grid-medium uk-grid main_cart" uk-grid="">
 		<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
 			<?php if (!checkQtaCartFull()) { ?>
-			<div class="alert alert-danger"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
+			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
 			<?php } ?>
 			<?php if (!User::$isMobile) { ?>
 			<div class="uk-visible@m">

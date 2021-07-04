@@ -232,17 +232,3 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		});
 	});
 </script>
-
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc."/Public/Js/"?>jquery.sticky.js'></script>
-
-<script>
-$(document).ready(function(){
-	if ($(window).width() >= 992 && $(window).height() >= ($(".sticker").height() - 100))
-	{
-		$(".sticker").sticky({
-			topSpacing:0,
-			bottomSpacing: 700
-		});
-	}
-});
-</script>
