@@ -654,7 +654,7 @@ class CategoriesModel extends HierarchicalModel {
 		return $this->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c, "attivo"=>"Y"))->orderBy("categories.lft")->send();
 	}
 	
-	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "", $filtri = array(), $filtriLoc = array())
+	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "", $filtri = array(), $filtriLoc = array(), $filtriAltri = array())
 	{
 		$urlArray = array();
 		
@@ -715,6 +715,10 @@ class CategoriesModel extends HierarchicalModel {
 		// Filtri URL Loc
 		if (count($filtriLoc) > 0)
 			$urlArray = array_merge($urlArray, $filtriLoc);
+		
+		// Filtri URL altri
+		if (count($filtriAltri) > 0)
+			$urlArray = array_merge($urlArray, $filtriAltri);
 		
 		$url = implode("/", $urlArray).".html";
 		

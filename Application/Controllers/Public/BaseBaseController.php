@@ -116,7 +116,11 @@ class BaseBaseController extends Controller
 		{
 			$this->model("FasceprezzoModel");
 			
-			Filtri::$altriFiltri[] = gtext(v("alias_fascia_prezzo"), true, "none", null, 0);
+			$aliasFasciaPrezzo = gtext(v("alias_fascia_prezzo"), true, "none", null, 0);
+			
+			Filtri::$altriFiltri[] = $aliasFasciaPrezzo;
+			
+			Filtri::$altriFiltriTipi["fascia-prezzo"] = $aliasFasciaPrezzo;
 		}
 		
 		$this->model("CaratteristichevaloriModel");

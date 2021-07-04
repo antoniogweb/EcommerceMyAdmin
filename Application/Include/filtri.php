@@ -4,6 +4,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 trait Filtri
 {
 	public static $altriFiltri = array();
+	public static $filtriUrl = array();
+	
+	public static $altriFiltriTipi = array();
 	
 	// Restituisce i filtri nell'URL ma impostando la caratteristica $aliasCar impostata a $aliasCarVal
 	public static function getFiltriCaratteristica($aliasCar, $aliasCarVal)
@@ -34,17 +37,22 @@ trait Filtri
 	{
 		$urlFiltriArray = array();
 		
-		if (count($filtri) > 0)
+		if (count($filtri) > 0 && __CLASS__ != "Filtri")
 			$urlFiltriArray[] = v("divisorio_filtri_url");
 		
 		foreach ($filtri as $car => $carVals)
 		{
 			$urlFiltriArray[] = $car;
 			
-			foreach ($carVals as $carVal)
+			if (is_array($carVals))
 			{
-				$urlFiltriArray[] = $carVal;
+				foreach ($carVals as $carVal)
+				{
+					$urlFiltriArray[] = $carVal;
+				}
 			}
+			else
+				$urlFiltriArray[] = $carVals;
 		}
 		
 		return $urlFiltriArray;
@@ -65,11 +73,16 @@ trait Filtri
 	{
 		if (isset(self::$filtriUrl[$aliasCar]))
 		{
-			foreach (self::$filtriUrl[$aliasCar] as $alVal)
+			if (is_array(self::$filtriUrl[$aliasCar]))
 			{
-				if ($alVal == $aliasCarVal)
-					return true;
+				foreach (self::$filtriUrl[$aliasCar] as $alVal)
+				{
+					if ($alVal == $aliasCarVal)
+						return true;
+				}
 			}
+			else if (self::$filtriUrl[$aliasCar] == $aliasCarVal)
+				return true;
 		}
 		
 		return false;

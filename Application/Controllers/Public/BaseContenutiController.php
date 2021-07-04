@@ -86,16 +86,16 @@ class BaseContenutiController extends BaseController
 			{
 				if ((int)count($carArray) === 2)
 				{
-					$carAlias = sanitizeAll($carArray[0]);
-					$carValoreAlias = sanitizeAll($carArray[1]);
+					$carAlias = sanitizeHtml($carArray[0]);
+					$carValoreAlias = sanitizeHtml($carArray[1]);
 					
-					if (isset(RegioniModel::$filtriUrl[$carArray[0]]))
+					if (isset(RegioniModel::$filtriUrl[$carAlias]))
 					{
-						if (!in_array($carArray[1], RegioniModel::$filtriUrl[$carArray[0]]))
-							RegioniModel::$filtriUrl[$carArray[0]][] = $carArray[1];
+						if (!in_array($carValoreAlias, RegioniModel::$filtriUrl[$carAlias]))
+							RegioniModel::$filtriUrl[$carAlias][] = $carValoreAlias;
 					}
 					else
-						RegioniModel::$filtriUrl[$carArray[0]] = array($carArray[1]);
+						RegioniModel::$filtriUrl[$carAlias] = array($carValoreAlias);
 				}
 			}
 		}
@@ -111,16 +111,16 @@ class BaseContenutiController extends BaseController
 			{
 				if ((int)count($carArray) === 2)
 				{
-					$carAlias = sanitizeAll($carArray[0]);
-					$carValoreAlias = sanitizeAll($carArray[1]);
+					$carAlias = sanitizeHtml($carArray[0]);
+					$carValoreAlias = sanitizeHtml($carArray[1]);
 					
-					if (isset(CaratteristicheModel::$filtriUrl[$carArray[0]]))
+					if (isset(CaratteristicheModel::$filtriUrl[$carAlias]))
 					{
-						if (!in_array($carArray[1], CaratteristicheModel::$filtriUrl[$carArray[0]]))
-							CaratteristicheModel::$filtriUrl[$carArray[0]][] = $carArray[1];
+						if (!in_array($carValoreAlias, CaratteristicheModel::$filtriUrl[$carAlias]))
+							CaratteristicheModel::$filtriUrl[$carAlias][] = $carValoreAlias;
 					}
 					else
-						CaratteristicheModel::$filtriUrl[$carArray[0]] = array($carArray[1]);
+						CaratteristicheModel::$filtriUrl[$carAlias] = array($carValoreAlias);
 				}
 			}
 		}
@@ -146,7 +146,36 @@ class BaseContenutiController extends BaseController
 	{
 		$divisorioFiltriUrl = v("divisorio_filtri_url");
 		
-		// Filtri
+		// Altri filtri
+		foreach (Filtri::$altriFiltri as $filtro)
+		{
+			$tempsPageArgs = $this->pageArgs;
+			
+			if (in_array($filtro, $this->pageArgs) && (string)$this->pageArgs[count($this->pageArgs) - 1] !== (string)$filtro && (string)$this->pageArgs[count($this->pageArgs) - 1])
+			{
+				$indiciDivisori = array_keys($this->pageArgs, $filtro);
+				
+				if (count($indiciDivisori) > 0)
+				{
+					if ((int)count($indiciDivisori) === 1)
+					{
+						$filtriUrl = array_slice($tempsPageArgs, $indiciDivisori[0]);
+						
+						if ((int)count($filtriUrl) === 2)
+						{
+							$carAlias = sanitizeHtml($filtriUrl[0]);
+							$carValoreAlias = sanitizeHtml($filtriUrl[1]);
+								
+							Filtri::$filtriUrl[$carAlias] = $carValoreAlias;
+							
+							$this->pageArgs = array_slice($tempsPageArgs, 0, $indiciDivisori[0]);
+						}
+					}
+				}
+			}
+		}
+		
+		// Filtri Caratteristiche e Località
 		if (in_array($divisorioFiltriUrl, $this->pageArgs) && (string)$this->pageArgs[count($this->pageArgs) - 1] !== (string)$divisorioFiltriUrl && (string)$this->pageArgs[count($this->pageArgs) - 1])
 		{
 			$indiciDivisori = array_keys($this->pageArgs, $divisorioFiltriUrl);
@@ -701,7 +730,7 @@ class BaseContenutiController extends BaseController
 				
 				foreach ($sWhereValori as $sWhereValore)
 				{
-					$tempWhere[] = "car_val_alias like '%#$sWhereValore#%'";
+					$tempWhere[] = "car_val_alias like '%#".sanitizeDb($sWhereValore)."#%'";
 				}
 				
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
@@ -732,7 +761,7 @@ class BaseContenutiController extends BaseController
 				{
 					$field = $k == RegioniModel::$nAlias ? "alias_nazione" : "alias_regione";
 					
-					$tempWhere[] = "$field = '$v'";
+					$tempWhere[] = "$field = '".sanitizeDb($v)."'";
 				}
 				
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
@@ -744,6 +773,36 @@ class BaseContenutiController extends BaseController
 				$sWhereQuery = $sWhereQueryArray[0];
 			
 			$this->m["PagesModel"]->sWhere($sWhereQuery);
+		}
+		
+		if (!empty(Filtri::$filtriUrl))
+		{
+			foreach (Filtri::$filtriUrl as $tipoFiltro => $valoreFiltro)
+			{
+				if ($tipoFiltro == Filtri::$altriFiltriTipi["fascia-prezzo"])
+				{
+					if (User::$nazione)
+						$tabellaListini = "(select id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_prodotto from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as tabella_listini";
+					else
+						$tabellaListini = "(select id_page,combinazioni.price as prezzo_prodotto from combinazioni group by combinazioni.id_page) as tabella_listini";
+					
+					$this->m["PagesModel"]->inner($tabellaListini)->on("pages.id_page = tabella_listini.id_page");
+					
+					$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(fasce_prezzo.alias,contenuti_tradotti.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
+					
+					if (!empty($fasciaPrezzo))
+					{
+						$this->m["PagesModel"]->aWhere(array(
+							"gte"	=>	array(
+								"tabella_listini.prezzo_prodotto"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["da"]),
+							),
+							"lt"	=>	array(
+								"tabella_listini.prezzo_prodotto"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["a"]),
+							),
+						));
+					}
+				}
+			}
 		}
 		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
