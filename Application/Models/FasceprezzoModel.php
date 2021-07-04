@@ -76,12 +76,18 @@ class FasceprezzoModel extends GenericModel
 	{
 		$this->setPriceNonIvato();
 		
+		if (isset($this->values["alias"]))
+			$this->checkAliasAll(0);
+		
 		return parent::insert();
 	}
 	
 	public function update($id = null, $where = null)
 	{
 		$this->setPriceNonIvato();
+		
+		if (isset($this->values["alias"]))
+			$this->checkAliasAll($id);
 		
 		return parent::update($id, $where);
 	}

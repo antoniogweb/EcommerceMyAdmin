@@ -66,7 +66,7 @@ class FasceprezzoController extends BaseController
 		if (v("prezzi_ivati_in_prodotti"))
 			$campiPrezzo = "da_ivato,a_ivato";
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo,'.$campiPrezzo);
+		$this->m[$this->modelName]->setValuesFromPost('titolo,alias,'.$campiPrezzo);
 		
 		parent::form($queryType, $id);
 	}

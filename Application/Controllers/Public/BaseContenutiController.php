@@ -63,7 +63,7 @@ class BaseContenutiController extends BaseController
 		$this->append($data);
 	}
 	
-	public function loadHeaderFooter($viewFile = null)
+	protected function loadHeaderFooter($viewFile = null)
 	{
 		if (Output::$html && !isset($_GET["vista_parziale"]))
 		{
@@ -76,7 +76,7 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	public function sistemaFiltriLocalita()
+	protected function sistemaFiltriLocalita()
 	{
 		if (count($this->filtriRegione) > 0 && ((count($this->filtriRegione) % 2) === 0))
 		{
@@ -101,7 +101,7 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	public function sistemaFiltriCaratteristiche()
+	protected function sistemaFiltriCaratteristiche()
 	{
 		if (count($this->filtriCaratteristiche) > 0 && ((count($this->filtriCaratteristiche) % 2) === 0))
 		{
@@ -126,7 +126,7 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	public function checkFiltriOk()
+	protected function checkFiltriOk()
 	{
 		$filtriOk = true;
 		
@@ -142,12 +142,8 @@ class BaseContenutiController extends BaseController
 		return $filtriOk;
 	}
 	
-	public function index()
+	protected function getFiltriDaUrl()
 	{
-		CategoriesModel::setAliases();
-		
-		$this->pageArgs = func_get_args();
-		
 		$divisorioFiltriUrl = v("divisorio_filtri_url");
 		
 		// Filtri
@@ -185,6 +181,16 @@ class BaseContenutiController extends BaseController
 				$this->sistemaFiltriLocalita();
 			}
 		}
+	}
+	
+	public function index()
+	{
+		CategoriesModel::setAliases();
+		
+		$this->pageArgs = func_get_args();
+		
+		// Recupera i filtri dall'URL
+		$this->getFiltriDaUrl();
 		
 		$titleTag = $titleMarchio = "";
 		

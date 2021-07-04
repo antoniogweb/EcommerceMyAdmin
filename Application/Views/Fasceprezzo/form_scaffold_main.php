@@ -4,6 +4,7 @@
 				<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
+						<?php echo $form["alias"];?>
 						
 						<?php echo $form["da"] ?? "";?>
 						<?php echo $form["a"] ?? "";?>
@@ -39,7 +40,7 @@
 				<div class="panel-body">
 					<?php
 					$section = "fasce_prezzo";
-					$nascondiLink = $nascondiAlias = true;
+					$nascondiLink = true;
 					include($this->viewPath("pages_traduzioni"));?>
 				</div>
 			</div>

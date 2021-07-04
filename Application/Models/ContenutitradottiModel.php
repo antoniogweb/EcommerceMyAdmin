@@ -90,7 +90,6 @@ class ContenutitradottiModel extends GenericModel
 			else if (isset($this->values["titolo"]))
 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
 		}
-			
 		
 		if (!isset($id))
 		{
@@ -100,6 +99,7 @@ class ContenutitradottiModel extends GenericModel
 			$idTag = isset($this->values["id_tag"]) ? $this->values["id_tag"] : 0;
 			$idCar = isset($this->values["id_car"]) ? $this->values["id_car"] : 0;
 			$idCv = isset($this->values["id_cv"]) ? $this->values["id_cv"] : 0;
+			$idFascia = isset($this->values["id_fascia_prezzo"]) ? $this->values["id_fascia_prezzo"] : 0;
 		}
 		else
 		{
@@ -109,6 +109,7 @@ class ContenutitradottiModel extends GenericModel
 			$idTag = $record["id_tag"];
 			$idCar = $record["id_car"];
 			$idCv = $record["id_cv"];
+			$idFascia = $record["id_fascia_prezzo"];
 		}
 		
 		if ($idPage)
@@ -141,14 +142,18 @@ class ContenutitradottiModel extends GenericModel
 			$whereClause = "id_cv != ".(int)$idCv;
 			$tabella = "caratteristiche_valori";
 		}
+		else if ($idFascia)
+		{
+			$whereClause = "id_fascia_prezzo != ".(int)$idFascia;
+			$tabella = "fasce_prezzo";
+		}
 		
 		if (!isset($id))
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
 		else
 			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
 		
-		if (count($res) > 0)
-			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789");
+		$this->addTokenAlias($res);
 		
 		if (isset($id))
 		{
@@ -163,17 +168,16 @@ class ContenutitradottiModel extends GenericModel
 			}
 			
 			$sql = implode(" UNION ", $arrayUnion);
-// 			echo $sql;die();
+			
 			$res = $this->query($sql);
 			
-			if (count($res) > 0)
-				$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
+			$this->addTokenAlias($res);
 		}
 	}
 	
 	public function sAlias($record, $id = null)
 	{
-		if ($record["id_page"] || $record["id_c"] || $record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"])
+		if ($record["id_page"] || $record["id_c"] || $record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"] || $record["id_fascia_prezzo"])
 			$this->alias($id);
 	}
 	
