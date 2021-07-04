@@ -6,9 +6,10 @@ if (isset($corr))
 
 $idPr = getPrincipale(field($p, "id_page"));
 $hasCombinations = hasCombinations($idPr);
+$hasSoloCombinations = hasCombinations($idPr, false);
 $urlAlias = getUrlAlias($p["pages"]["id_page"]);
 $prezzoMinimo = prezzoMinimo($idPr);
-$stringaDa = !$hasCombinations ? "" : gtext("da");
+$stringaDa = !$hasSoloCombinations ? "" : gtext("da");
 $prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
 $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);

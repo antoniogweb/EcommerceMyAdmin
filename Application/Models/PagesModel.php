@@ -1355,7 +1355,7 @@ class PagesModel extends GenericModel {
 		return false;
 	}
 	
-	public function hasCombinations($id_page)
+	public function hasCombinations($id_page, $personalizzazioni = true)
 	{
 		$clean['id_page'] = (int)$id_page;
 		
@@ -1368,11 +1368,14 @@ class PagesModel extends GenericModel {
 		if ($res > 0)
 			return true;
 		
-		$pp = new PagespersonalizzazioniModel();
-		
-		return $pp->clear()->where(array(
-			"id_page"	=>	$clean['id_page']
-		))->rowNumber();
+		if ($personalizzazioni)
+		{
+			$pp = new PagespersonalizzazioniModel();
+			
+			return $pp->clear()->where(array(
+				"id_page"	=>	$clean['id_page']
+			))->rowNumber();
+		}
 		
 		return false;
 	}

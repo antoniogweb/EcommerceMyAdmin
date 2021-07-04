@@ -788,7 +788,7 @@ class BaseContenutiController extends BaseController
 					
 					$this->m["PagesModel"]->inner($tabellaListini)->on("pages.id_page = tabella_listini.id_page");
 					
-					$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(fasce_prezzo.alias,contenuti_tradotti.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
+					$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
 					
 					if (!empty($fasciaPrezzo))
 					{

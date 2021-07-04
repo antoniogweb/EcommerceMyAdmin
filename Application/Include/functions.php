@@ -546,13 +546,13 @@ function inPromozioneTot($id_page, $page = null)
 	return $p->inPromozioneTot($clean['id_page'], $page);
 }
 
-function hasCombinations($id_page)
+function hasCombinations($id_page, $personalizzazioni = true)
 {
 	$clean['id_page'] = (int)$id_page;
 	
 	$p = new PagesModel();
 
-	return $p->hasCombinations($clean['id_page']);
+	return $p->hasCombinations($clean['id_page'], $personalizzazioni);
 }
 
 class Domain

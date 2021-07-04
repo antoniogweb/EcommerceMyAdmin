@@ -219,7 +219,7 @@ $filtriUrlAltriTuttiAltri = Filtri::getUrlCaratteristicheTutti();
 		$filtroAltriTuttiSelezionato = Filtri::filtroTuttiSelezionato(Filtri::$altriFiltriTipi["fascia-prezzo"]);
 	?>
 	<section class="uk-margin-large-top js-accordion-section uk-open">
-		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Fasce prezzo")?></h4>
+		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Fascia prezzo")?></h4>
 		<div class="uk-accordion-content">
 			<ul class="uk-list uk-list-divider">
 				<li class="cat-item cat-item-49 <?php if ($filtroAltriTuttiSelezionato) { ?>uk-text-bold<?php } ?>">
