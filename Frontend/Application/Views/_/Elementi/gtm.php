@@ -77,8 +77,10 @@ if (v("codice_gtm_analytics"))
 		<?php } ?>
 	<?php }
 	
-	if ($this->controller == "ordini" && $this->action == "index")
+	if (($this->controller == "ordini" || $this->controller == "cart") && $this->action == "index")
 	{
+		$gtmActionName = $this->controller == "cart" ? "begin_checkout" : "checkout_progress";
+		
 		echo "\n";
 		
 		$items = array(
@@ -98,7 +100,7 @@ if (v("codice_gtm_analytics"))
 		<script>
 			var checkout_items = <?php echo json_encode($items);?>
 			
-			gtag('event', 'begin_checkout', <?php echo json_encode($items);?>);
+			gtag('event', '<?php echo $gtmActionName;?>', <?php echo json_encode($items);?>);
 		</script>
 		<?php
 	}
