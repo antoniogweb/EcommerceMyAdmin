@@ -214,7 +214,7 @@ $filtriUrlAltriTuttiAltri = Filtri::getUrlCaratteristicheTutti();
 		<?php } ?>
 	<?php } ?>
 	
-	<?php if (v("mostra_fasce_prezzo") && count($fascePrezzo) > 0) {
+	<?php if (v("mostra_fasce_prezzo") && isset($fascePrezzo) && count($fascePrezzo) > 0) {
 		$filtriUrlAltriTutti = Filtri::getUrlCaratteristicheTutti(Filtri::$altriFiltriTipi["fascia-prezzo"]);
 		$filtroAltriTuttiSelezionato = Filtri::filtroTuttiSelezionato(Filtri::$altriFiltriTipi["fascia-prezzo"]);
 	?>

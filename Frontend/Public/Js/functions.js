@@ -506,4 +506,14 @@ $(document).ready(function(){
 	$('input').iCheck(icheckOptions);
 	
 	$(".image-picker").imagepicker();
+	
+	$("body").on("change", ".select_follow_url", function(e){
+		
+		e.preventDefault();
+		
+		var url = $(this).val();
+		
+		location.href = url;
+		
+	});
 });

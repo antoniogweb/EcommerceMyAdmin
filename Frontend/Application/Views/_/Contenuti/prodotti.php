@@ -36,6 +36,16 @@ include(tpf("/Elementi/Pagine/page_top.php"));?>
 	?>
 	<div class="uk-width-expand">
 		<?php if (count($pages) > 0) { ?>
+			<?php if (!isset($noFiltri)) { ?>
+			<div uk-grid>
+				<div class="uk-width-1-1 uk-width-1-2@s uk-text-left">
+					<?php include(tpf("Elementi/Categorie/filtri_attivi.php")); ?>
+				</div>
+				<div class="uk-width-1-1 uk-width-1-2@s uk-text-right">
+					<?php include(tpf("Elementi/Categorie/scelta_ordinamento.php")); ?>
+				</div>
+			</div>
+			<?php } ?>
 			<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center" uk-grid>
 				<?php foreach ($pages as $p) {
 					include(tpf($itemFile));

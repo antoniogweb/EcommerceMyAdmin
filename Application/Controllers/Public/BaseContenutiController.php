@@ -28,6 +28,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BaseContenutiController extends BaseController
 {
 	public $pageArgs = array();
+	public $originalPageArgs = array();
 	public $filtriCaratteristiche = array();
 	public $filtriRegione = array();
 	public $cleanAlias = null;
@@ -216,7 +217,7 @@ class BaseContenutiController extends BaseController
 	{
 		CategoriesModel::setAliases();
 		
-		$this->pageArgs = func_get_args();
+		$this->pageArgs = $this->originalPageArgs = func_get_args();
 		
 		// Recupera i filtri dall'URL
 		$this->getFiltriDaUrl();
@@ -455,11 +456,17 @@ class BaseContenutiController extends BaseController
 		
 		$arrayUrl = array($this->cleanAlias);
 		
+		// Caratteristiche
 		if (!empty(CaratteristicheModel::$filtriUrl))
 			$arrayUrl = array_merge($arrayUrl,CaratteristicheModel::getArrayUrlAll());
 		
+		// Località
 		if (!empty(RegioniModel::$filtriUrl))
 			$arrayUrl = array_merge($arrayUrl,RegioniModel::getArrayUrlAll());
+		
+		// Altri filtri
+		if (!empty(Filtri::$filtriUrl))
+			$arrayUrl = array_merge($arrayUrl,Filtri::getArrayUrlAll());
 		
 		$baseUrl = $completeUrl ? $this->baseUrl."/" : null;
 		if (count($tempParents) > 0)
@@ -547,7 +554,7 @@ class BaseContenutiController extends BaseController
 		);
 		
 		$this->setArgKeys($argKeys);
-		$this->shift(count($this->pageArgs));
+		$this->shift(count($this->originalPageArgs));
 		
 		$clean['id'] = $data["id_categoria"] = (int)$id;
 		
@@ -1440,6 +1447,8 @@ class BaseContenutiController extends BaseController
 		$this->setArgKeys($argKeys);
 		$this->shift(count($this->pageArgs));
 		
+		$data["url_ordinamento"] = $this->baseUrl."/risultati-ricerca";
+		
 		//load the Pages helper
 		$this->helper('Pages','risultati-ricerca','p');
 		
@@ -1462,7 +1471,6 @@ class BaseContenutiController extends BaseController
 					" lk" => array('pages.codice' => $this->viewArgs["s"]),
 					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["s"]),
 					),
-// 				"in" => array("-id_c" => $childrenProdotti),
 				"attivo" => "Y",
 				"principale" => "Y",
 				"acquistabile"	=>	"Y",
@@ -1483,15 +1491,7 @@ class BaseContenutiController extends BaseController
 				$this->m["PagesModel"]->aWhere($accWhere);
 			}
 		
-			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->select("distinct pages.codice_alfa, pages.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,categories.*")
-				->inner("categories")->on("categories.id_c = pages.id_c")
-				->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-				->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
-				->orderBy("pages.id_order")
-				->rowNumber();
-			
-			
-// 			$rowNumber = $data["rowNumber"] = count($data["pages"]);
+			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->orderBy("pages.id_order")->rowNumber();
 			
 			$this->elementsPerPage = 999999;
 			
