@@ -42,17 +42,19 @@ trait Filtri
 		
 		foreach ($filtri as $car => $carVals)
 		{
-			$urlFiltriArray[] = $car;
-			
 			if (is_array($carVals))
 			{
 				foreach ($carVals as $carVal)
 				{
+					$urlFiltriArray[] = $car;
 					$urlFiltriArray[] = $carVal;
 				}
 			}
 			else
+			{
+				$urlFiltriArray[] = $car;
 				$urlFiltriArray[] = $carVals;
+			}
 		}
 		
 		return $urlFiltriArray;

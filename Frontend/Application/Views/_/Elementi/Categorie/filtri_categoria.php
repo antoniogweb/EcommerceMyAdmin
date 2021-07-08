@@ -1,21 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php
-if (!isset($id_categoria))
-	$id_categoria = 0;
 
-if (!isset($idMarchio))
-	$idMarchio = 0;
-
-if (!isset($idTag))
-	$idTag = 0;
-
-$nazioneAlias = RegioniModel::$nAlias;
-$regioneAlias = RegioniModel::$rAlias;
-
-$filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
-$filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
-$filtriUrlAltriTuttiAltri = Filtri::getUrlCaratteristicheTutti();
-?>
 <div id="filtri-categoria" <?php if (User::$isMobile) { ?>uk-offcanvas<?php } ?> class="uk-text-left uk-width-1-4 uk-padding-remove uk-margin-remove <?php if (!User::$isMobile) { ?>uk-overflow-auto<?php } ?>" uk-accordion="multiple: true; targets: &gt; .js-accordion-section" style="flex-basis: auto">
 	<?php if (User::$isMobile) { ?>
 	<div class="uk-offcanvas-bar">

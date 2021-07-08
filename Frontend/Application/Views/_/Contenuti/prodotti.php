@@ -24,7 +24,11 @@ if (isset($tagCorrente) && !empty($tagCorrente))
 if (isset($marchioCorrente) && !empty($marchioCorrente))
 	$titoloAggiuntivo .= " - ".mfield($marchioCorrente,"titolo");
 
-include(tpf("/Elementi/Pagine/page_top.php"));?>
+include(tpf("/Elementi/Pagine/page_top.php"));
+
+if (!isset($noFiltri))
+	include(tpf("/Elementi/Categorie/filtri_variabili.php"));
+?>
 
 <div class="" uk-grid>
 	<?php
@@ -35,17 +39,18 @@ include(tpf("/Elementi/Pagine/page_top.php"));?>
 		$itemFile = "/Elementi/Categorie/prodotto.php";
 	?>
 	<div class="uk-width-expand">
-		<?php if (count($pages) > 0) { ?>
-			<?php if (!isset($noFiltri)) { ?>
-			<div uk-grid>
-				<div class="uk-width-1-1 uk-width-1-2@s uk-text-left">
-					<?php include(tpf("Elementi/Categorie/filtri_attivi.php")); ?>
-				</div>
-				<div class="uk-width-1-1 uk-width-1-2@s uk-text-right">
-					<?php include(tpf("Elementi/Categorie/scelta_ordinamento.php")); ?>
-				</div>
+		<?php if (!isset($noFiltri)) { ?>
+		<div class="uk-margin-bottom" uk-grid>
+			<div class="uk-width-1-1 uk-width-3-5@s uk-text-left">
+				<?php include(tpf("Elementi/Categorie/filtri_attivi.php")); ?>
 			</div>
-			<?php } ?>
+			<div class="uk-width-1-1 uk-width-2-5@s uk-text-right">
+				<?php include(tpf("Elementi/Categorie/scelta_ordinamento.php")); ?>
+			</div>
+		</div>
+		<?php } ?>
+		<?php if (count($pages) > 0) { ?>
+			
 			<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center" uk-grid>
 				<?php foreach ($pages as $p) {
 					include(tpf($itemFile));

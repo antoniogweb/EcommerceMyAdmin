@@ -36,10 +36,55 @@ class GenericModel extends Model_Tree
 	public $formStructAggiuntivoEntries = array();
 	public $salvaDataModifica = false;
 	
-	public static $tabelleConAlias = array("pages", "categories", "marchi", "tag", "caratteristiche", "caratteristiche_valori", "regioni", "fasce_prezzo");
+	public static $tabelleConAliasMap = array(
+		"pages"			=>	array(
+			"chiave"		=>	"id_page",
+			"campoTitolo"	=>	"title",
+			"tradotta"		=>	true,
+		),
+		"categories"	=>	array(
+			"chiave"		=>	"id_c",
+			"campoTitolo"	=>	"title",
+			"tradotta"		=>	true,
+		),
+		"marchi"		=>	array(
+			"chiave"		=>	"id_marchio",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
+		"tag"			=>	array(
+			"chiave"		=>	"id_tag",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
+		"caratteristiche"	=>	array(
+			"chiave"		=>	"id_car",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
+		"caratteristiche_valori" 	=>	array(
+			"chiave"		=>	"id_cv",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
+		"regioni"		=>	array(
+			"chiave"		=>	"id_regione",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	false,
+		),
+		"fasce_prezzo"	=>	array(
+			"chiave"		=>	"id_fascia_prezzo",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
+	);
+	
+	public static $tabelleConAlias = array();
 	
 	public function __construct() {
-
+		
+		self::$tabelleConAlias = array_keys(self::$tabelleConAliasMap);
+		
 		parent::__construct();
 
 // 		$this->uploadFields = array(
@@ -60,6 +105,37 @@ class GenericModel extends Model_Tree
 			$this->files->setParam('functionUponFileNane','sanitizeFileName');
 			$this->files->setParam('fileUploadBehaviour','add_token');
 		}
+	}
+	
+	public static function getNomeDaAlias($alias)
+	{
+		$arrayUnion = array();
+		
+		foreach (self::$tabelleConAliasMap as $table => $params)
+		{
+			$campoChiave = $params["chiave"];
+			$campoTitolo = $params["campoTitolo"];
+			
+			if ($params["tradotta"])
+				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."' where coalesce(contenuti_tradotti.alias,$table.alias) = '".sanitizeAll($alias)."'";
+			else
+				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = '".sanitizeAll($alias)."'";
+			
+			$arrayUnion[] = $sql;
+		}
+		
+		$arrayUnion[] = "select titolo from nazioni where iso_country_code = '".sanitizeAll($alias)."'";
+		
+		$sql = implode(" UNION ", $arrayUnion);
+		
+		$mysqli = Db_Mysqli::getInstance();
+		
+		$res = $mysqli->query($sql);
+		
+		if (count($res) > 0 && isset($res[0]["aggregate"]["titolo_filtro"]) && trim($res[0]["aggregate"]["titolo_filtro"]))
+			return $res[0]["aggregate"]["titolo_filtro"];
+		
+		return null;
 	}
 	
 	public function bulkAction($bulk_list)
@@ -138,15 +214,21 @@ class GenericModel extends Model_Tree
 		
 		$this->addTokenAlias($res);
 		
-		foreach (self::$tabelleConAlias as $table)
+		$arrayUnion = array();
+		
+		foreach (GenericModel::$tabelleConAlias as $table)
 		{
 			if ($table == $this->_tables)
 				continue;
 			
-			$res = $this->query("select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'");
-			
-			$this->addTokenAlias($res);
+			$arrayUnion[] = "select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'";
 		}
+		
+		$sql = implode(" UNION ", $arrayUnion);
+		
+		$res = $this->query($sql);
+		
+		$this->addTokenAlias($res);
 		
 		if (!isset($id) || $noTraduzione)
 			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."'");
