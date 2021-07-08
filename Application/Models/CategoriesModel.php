@@ -879,4 +879,13 @@ class CategoriesModel extends HierarchicalModel {
 		
 		return $htmlList;
 	}
+	
+	public static function checkSection($section)
+	{
+		$c = new CategoriesModel();
+		
+		return $c->clear()->where(array(
+			"section"	=>	sanitizeAll($section),
+		))->sWhere("section is not null and section != ''")->rowNumber();
+	}
 }

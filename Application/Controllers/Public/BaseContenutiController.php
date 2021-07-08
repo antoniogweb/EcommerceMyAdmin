@@ -684,24 +684,7 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->aWhere($wherePromo);
 		}
 		
-		$data["pages"] = $this->m["PagesModel"]->orderBy($this->gerOrderBy($section))->send();
-		
-		if ($firstSection == Parametri::$nomeSezioneProdotti)
-			$this->m["PagesModel"]->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
-		else
-			$this->m["PagesModel"]->orderBy($this->gerOrderBy($section));
-		
-		$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false);
-		
-		if ($firstSection == Parametri::$nomeSezioneProdotti)
-		{
-			if (User::$nazione)
-				$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
-			else
-				$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
-			
-			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
-		}
+		$this->addOrderByClause($firstSection);
 		
 		// Filtri caratteristiche
 		if (!empty(CaratteristicheModel::$filtriUrl))
@@ -888,6 +871,31 @@ class BaseContenutiController extends BaseController
 			$this->sectionLoad($section, "category", $template);
 		else
 			$this->load("api_output");
+	}
+	
+	protected function addOrderByClause($firstSection, $urlOrdinamento = null)
+	{
+		if ($firstSection == Parametri::$nomeSezioneProdotti)
+			$this->m["PagesModel"]->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
+		else
+			$this->m["PagesModel"]->orderBy($this->gerOrderBy($firstSection));
+		
+		if (!$urlOrdinamento)
+			$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false);
+		else
+			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
+		
+		if ($firstSection == Parametri::$nomeSezioneProdotti)
+		{
+			if (User::$nazione)
+				$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+			else
+				$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
+			
+			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
+		}
+		
+		$this->append($data);
 	}
 	
 	protected function gerOrderByProdotti($string)
@@ -1441,22 +1449,21 @@ class BaseContenutiController extends BaseController
 		$argKeys = array(
 			'p:forceNat'	=>	1,
 			's:sanitizeAll'	=>	"",
-			'sec:sanitizeAll'	=>	"prodotti",
+			'sec:sanitizeAll'	=>	Parametri::$nomeSezioneProdotti,
+			'o:sanitizeAll'	=>	"tutti",
 		);
 
 		$this->setArgKeys($argKeys);
 		$this->shift(count($this->pageArgs));
-		
-		$data["url_ordinamento"] = $this->baseUrl."/risultati-ricerca";
 		
 		//load the Pages helper
 		$this->helper('Pages','risultati-ricerca','p');
 		
 		$data["pages"] = array();
 		
-		if (strcmp($this->viewArgs["s"],"") !== 0)
+		if (strcmp($this->viewArgs["s"],"") !== 0 && CategoriesModel::checkSection($this->viewArgs["sec"]))
 		{
-			if ($this->viewArgs["sec"] == "prodotti")
+			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$clean["idSection"] = $this->m["CategoriesModel"]->getShopCategoryId();
 			else
 				$clean["idSection"] = $this->m['CategoriesModel']->clear()->where(array(
@@ -1490,8 +1497,10 @@ class BaseContenutiController extends BaseController
 				$accWhere = $this->m["PagesModel"]->getAccessibilityWhere();
 				$this->m["PagesModel"]->aWhere($accWhere);
 			}
-		
-			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->orderBy("pages.id_order")->rowNumber();
+			
+			$this->addOrderByClause($this->viewArgs["sec"], 'risultati-ricerca');
+			
+			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->rowNumber();
 			
 			$this->elementsPerPage = 999999;
 			
