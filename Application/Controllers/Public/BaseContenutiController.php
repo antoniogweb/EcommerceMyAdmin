@@ -40,6 +40,8 @@ class BaseContenutiController extends BaseController
 	public $elementsPerPage = 9; //number of elements per page
 	public $idMarchio = 0;
 	public $idTag = 0;
+	public $aliasMarchio = "";
+	public $aliasTag = "";
 	
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
@@ -224,6 +226,8 @@ class BaseContenutiController extends BaseController
 		
 		$titleTag = $titleMarchio = "";
 		
+		$data = array();
+		
 		if (v("usa_tag"))
 		{
 			$elencoTag = $this->m["TagModel"]->clear()->addJoinTraduzione()->send();
@@ -239,6 +243,7 @@ class BaseContenutiController extends BaseController
 			{
 				$this->idTag = $elencoTagEncoded[$this->pageArgs[0]];
 				$titleTag = $elencoTagTitle[$this->pageArgs[0]];
+				$this->aliasTag = $data["aliasTagCorrente"] = $this->pageArgs[0];
 				array_shift($this->pageArgs);
 			}
 		}
@@ -255,6 +260,7 @@ class BaseContenutiController extends BaseController
 			if (count($this->pageArgs) > 0 && isset($elencoMarchiEncoded[$this->pageArgs[0]]))
 			{
 				$this->idMarchio = $elencoMarchiEncoded[$this->pageArgs[0]];
+				$this->aliasMarchio = $data["aliasMarchioCorrente"] = $this->pageArgs[0];
 				
 				array_shift($this->pageArgs);
 			}
@@ -280,7 +286,7 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$args = $this->pageArgs;
-		$data = array();
+		
 		
 		if (count($args) > 0)
 		{
