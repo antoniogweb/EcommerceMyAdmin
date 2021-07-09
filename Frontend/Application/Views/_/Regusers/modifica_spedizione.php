@@ -36,7 +36,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <form action="<?php echo $this->baseUrl.$action;?>" method="POST">
 	
-	<?php include(tp()."/Regusers/form_dati_spedizione.php");?>
+	<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
 
 	<div class="uk-margin">
 		<?php if ($id === 0) { ?>

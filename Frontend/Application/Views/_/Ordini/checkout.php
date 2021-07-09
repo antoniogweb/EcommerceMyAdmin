@@ -71,7 +71,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 						<h2 style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
 
 						<div class="blocco_checkout">
-							<?php include(tp()."/Regusers/form_dati_cliente.php");?>
+							<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 						</div>
 					</div>
 					
@@ -79,7 +79,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 						
 						<h3><?php echo gtext("Indirizzo di spedizione");?></h3>
 						
-						<?php include(tp()."/Ordini/scelta_spedizione_fatturazione.php");?>
+						<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
 						
 					<?php } else if ($islogged) { ?>
 						
@@ -103,12 +103,12 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 								</div>
 							</div>
 							
-							<?php include(tp()."/Regusers/form_dati_spedizione.php");?>
+							<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
 						</div>
 						
 						<?php } else { ?>
 						
-						<?php include(tp()."/Ordini/scelta_spedizione_fatturazione.php");?>
+						<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
 						
 						<input type="hidden" name="id_spedizione" value="0" />
 						<?php } ?>

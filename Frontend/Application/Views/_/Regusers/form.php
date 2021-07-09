@@ -32,7 +32,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 </div>
 
 <form class="form_registrazione" action="<?php echo $this->baseUrl.$action;?>#main" method="POST">
-	<?php include(tp()."/Regusers/form_dati_cliente.php");?>
+	<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 	
 	<?php if (strcmp($this->action,"add") === 0) { ?>
 	

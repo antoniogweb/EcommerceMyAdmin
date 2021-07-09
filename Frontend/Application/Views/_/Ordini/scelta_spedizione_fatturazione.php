@@ -11,6 +11,6 @@
 	
 	
 	<div class="blocco_checkout">
-		<?php include(tp()."/Regusers/form_dati_spedizione.php");?>
+		<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
 	</div>
 </div>
