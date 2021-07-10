@@ -832,6 +832,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[gallery\]/', array($obj,'getGalleryFascia') ,$string);
 		$string = preg_replace_callback('/\[eventi\]/', array($obj,'getEventiFascia') ,$string);
 		$string = preg_replace_callback('/\[form-contatti\]/', array($obj,'getFasciaFormContatti') ,$string);
+		$string = preg_replace_callback('/\[marchi\]/', array($obj,'getFasciaMarchi') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{

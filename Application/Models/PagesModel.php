@@ -55,6 +55,7 @@ class PagesModel extends GenericModel {
 		"FILOSOFIA"		=>	"Pagina filosofia",
 		"B2B"			=>	"Pagina info B2B",
 		"HOME"			=>	"Home page",
+		"MARCHI"		=>	"Pagina elenco marchi",
 	);
 	
 	public function __construct() {
@@ -1844,6 +1845,15 @@ class PagesModel extends GenericModel {
 			$this->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*");
 		
 		return $this;
+	}
+	
+	public static function getPageDetails($idPage)
+	{
+		$p = new PagesModel();
+		
+		return $p->clear()->addJoinTraduzionePagina()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->first();
 	}
 	
 	public static function listaImmaginiPagina()

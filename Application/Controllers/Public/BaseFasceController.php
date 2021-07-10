@@ -238,6 +238,17 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaMarchi()
+	{
+		$pages = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		
+		ob_start();
+		include tpf("Fasce/fascia_marchi.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaFormContatti()
 	{
 		ob_start();
