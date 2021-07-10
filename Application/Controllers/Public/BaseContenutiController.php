@@ -1119,9 +1119,6 @@ class BaseContenutiController extends BaseController
 		
 		$data["prodotti_correlati"] = $this->m['PagesModel']->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 			->addJoinTraduzionePagina()
-// 			->inner("categories")->on("categories.id_c = pages.id_c")
-// 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array(
 				"prodotti_correlati.id_page"=>	$clean['id'],
 				"attivo"	=>	"Y",
@@ -1138,9 +1135,6 @@ class BaseContenutiController extends BaseController
 		// Pagine correlate
 		$data["pagine_correlate"] = $this->m['PagesModel']->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
 			->addJoinTraduzionePagina()
-// 			->inner("categories")->on("categories.id_c = pages.id_c")
-// 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array(
 				"pages_pages.id_page"=>	$clean['id'],
 				"attivo"	=>	"Y",
