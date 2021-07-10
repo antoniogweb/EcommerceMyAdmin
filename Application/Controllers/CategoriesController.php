@@ -563,15 +563,7 @@ class CategoriesController extends BaseController {
 	
 	public function ordina()
 	{
-		parent::ordina();
-		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->beginTransaction();
-		
-		$this->m["CategoriesModel"]->callRebuildTree();
-		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->commit();
+		parent::ordinaGerarchico();
 	}
 	
 }

@@ -853,27 +853,6 @@ class HierarchicalModel extends GenericModel {
 		return $right+1;   
 	}
 	
-// 	//get the URL of a node
-// 	public function getUrlAlias($id)
-// 	{
-// 		$clean["id"] = (int)$id;
-// 		
-// 		$parents = $this->parents($clean["id"], false, false, $this->aliaseFieldName);
-// 		
-// 		//remove the root node
-// 		array_shift($parents);
-// 		
-// 		$urlArray = array();
-// 		foreach ($parents as $node)
-// 		{
-// 			$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
-// 		}
-// 		
-// 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
-// 		
-// 		return implode("/",$urlArray).$ext;
-// 	}
-	
 	//get the URL of a node
 	public function getUrlAlias($id, $lingua = null)
 	{
@@ -898,5 +877,60 @@ class HierarchicalModel extends GenericModel {
 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
 		
 		return implode("/",$urlArray).$ext;
+	}
+	
+	//create the HTML of the menu
+	//$tree: nodes as given by getTreeWithDepth
+	public function getCategoryUlLiTree($tree, $htmlData)
+	{
+		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		
+		if (count($tree) > 0)
+		{
+			$tree[] = $tree[count($tree) -1];
+			$depth = $tree[count($tree) -1]["aggregate"]["depth"] = $tree[0]["aggregate"]["depth"];
+			$tree[count($tree) -1]["is_last"] = 1;
+			
+			$count = 0;
+
+			$menuHtml = null;
+			
+			$menuHtml .= "<ul id='ul_".strtolower(get_class($this))."' class='ul_parent ul_parent_1 ul_category_tree ul_".strtolower(get_class($this))."'>";
+			
+			foreach ($tree as $node)
+			{
+				if ($node["aggregate"]["depth"] > $depth)
+				{
+					$depth = $node["aggregate"]["depth"];
+					
+					$menuHtml = substr($menuHtml, 0, -5);
+					
+					$menuHtml .= "<ul class='ul_parent ul_parent_".$node["node"]["id_p"]." ul_menu_level ul_menu_level_".$depth."'>";
+				}
+				if ($node["aggregate"]["depth"] < $depth)
+				{
+					$diff = (int)($depth - $node["aggregate"]["depth"]);
+					
+					$menuHtml .= str_repeat("</ul></li>", $diff);
+					$depth = $node["aggregate"]["depth"];
+				}
+				if (!isset($node["is_last"]))
+				{
+					$urlLang = isset(Params::$lang) ? "/".Params::$lang : null;
+					
+					$menuHtml .= "<li class='li_parent_".$node["node"]["id_p"]." li_menu_level li_menu_level_".$depth." ".$node["node"]["alias"]."'>";
+					
+					$menuHtml .= "<div><table style='width:100%;'><tr>".$htmlData[$count]."</tr></table></div>";
+					
+					$menuHtml .= "</li>";
+				}
+				$count++;
+			}
+			
+			$menuHtml .= "</ul>\n";
+			
+			return $menuHtml;
+		}
+		return "";
 	}
 }

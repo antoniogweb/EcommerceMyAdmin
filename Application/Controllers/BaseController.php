@@ -829,6 +829,11 @@ class BaseController extends Controller
 	
 	public function ordina()
 	{
+		$this->ordinaGeneric();
+	}
+	
+	public function ordinaGeneric()
+	{
 		$this->s['admin']->check();
 		
 		$this->clean();
@@ -885,5 +890,18 @@ class BaseController extends Controller
 					$this->m[$this->modelName]->db->commit();
 			}
 		}
+	}
+	
+	protected function ordinaGerarchico()
+	{
+		$this->ordinaGeneric();
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->m[$this->modelName]->callRebuildTree();
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
 	}
 }

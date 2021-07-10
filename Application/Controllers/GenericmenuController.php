@@ -26,6 +26,8 @@ class GenericmenuController extends BaseController {
 
 	public $mod = null;
 	
+	public $orderBy = "id_order";
+	
 // 	public $sezionePannello = "utenti";
 	
 	function __construct($model, $controller, $queryString) {
@@ -67,7 +69,7 @@ class GenericmenuController extends BaseController {
 		
 		$this->loadScaffold('main',$params);
 		
-		$this->scaffold->loadMain('[[checkbox]];'.$this->mod->getTableN().'.id_m;,'.$this->modelName.'.indent|'.$this->mod->getTableN().'.id_m,'.$this->modelName.'.arrowUp|'.$this->mod->getTableN().'.id_m,'.$this->modelName.'.arrowDown|'.$this->mod->getTableN().'.id_m',$this->mod->getTableN().':id_m','ldel,ledit');
+		$this->scaffold->loadMain('[[checkbox]];'.$this->mod->getTableN().'.id_m;,'.$this->modelName.'.indentList|'.$this->mod->getTableN().'.id_m',$this->mod->getTableN().'.id_m','ldel,ledit');
 
 		$this->scaffold->update('del');
 		
@@ -128,14 +130,7 @@ class GenericmenuController extends BaseController {
 				'width'	=>	'60px',
 			),
 			null,
-			array(
-				'width'	=>	'3%',
-			),
-			array(
-				'width'	=>	'3%',
-			),
 		);
-		$this->scaffold->itemList->setFilters(array(null,'title'));
 		
 		$data['scaffold'] = $this->scaffold->render();
 // 		echo $this->scaffold->model->getQuery();
@@ -210,5 +205,10 @@ class GenericmenuController extends BaseController {
 			$this->load('menu_form');
 		}
 	}
-
+	
+	public function ordina()
+	{
+		parent::ordinaGerarchico();
+	}
+	
 }

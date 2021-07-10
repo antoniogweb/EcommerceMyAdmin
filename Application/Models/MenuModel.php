@@ -299,7 +299,6 @@ class MenuModel extends HierarchicalModel {
 							include(tpf("_Menu/simple_node.php"));
 						else
 							include(tpf("_Menu/full_node.php"));
-						
 						$menuHtml .= ob_get_clean();
 					}
 					else
@@ -326,6 +325,18 @@ class MenuModel extends HierarchicalModel {
 	public function indent($id, $alias = true, $editLink = true, $useHtml = true)
 	{
 		return parent::indent($id, false, false);
+	}
+	
+	public function indentList($id, $alias = true, $editLink = true, $useHtml = true)
+	{
+		$str = "<div class='record_id' style='display:none'>$id</div><i title='Trascina per ordinare' class='ancora_ordinamento fa fa-arrows text text-warning' style='padding-right:3px;font-size:12px;'></i>";
+		
+		$clean["id"] = (int)$id;
+		
+		$field = isset(self::$currentRecord) ? self::$currentRecord["node"] : $this->clear()->selectId($clean["id"]);
+		$titolo = "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"]."'>".$field[$this->titleFieldName]."</a>";
+		
+		return $str." ".$titolo;
 	}
 	
 	public function buildSelect($id = null, $showRoot = true, $where = null)
@@ -404,6 +415,18 @@ class MenuModel extends HierarchicalModel {
 			$this->updateLinkAlias($this->values["link_to"], $r["menu"]["lingua"]);
 			$this->pUpdate($this->values[$this->_idFields]);
 		}
+	}
+	
+	public function getAllRowsList($queryResult, $htmlData, $numCol)
+	{
+		$res = $this->getTreeWithDepth(999, 1, self::$lingua);
+		array_shift($res);
+		
+		$htmlList = $this->getCategoryUlLiTree($res,$htmlData);
+		
+		$htmlList = "<tr class='listRow'><td class='td_no_padding' colspan='$numCol'>".$htmlList."</td></tr>";
+		
+		return $htmlList;
 	}
 
 }
