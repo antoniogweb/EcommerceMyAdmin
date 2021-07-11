@@ -1,15 +1,16 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php foreach ($pages as $p) { ?>
-<?php
-$titoloPagina = field($p, "title");
-$noNumeroProdotti = true;
-include(tpf("/Elementi/Pagine/page_top.php"));
+<?php foreach ($pages as $p) {
+	$titoloPagina = field($p, "title");
+	$noNumeroProdotti = true;
+	include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
-<div class="uk-text-left">
-	<?php echo htmlentitydecode(attivaModuli(field($p, "description")));?>
-	<?php echo $fasce;?>
-</div>
-<?php
-include(tpf("/Elementi/Pagine/page_bottom.php"));
-?>
-<?php } ?>
+	<?php if (trim(field($p, "description"))) { ?>
+	<div class="uk-section uk-text-left uk-padding-small">
+		<?php echo htmlentitydecode(attivaModuli(field($p, "description")));?>
+	</div>
+	<?php }
+
+	echo $fasce;
+
+	include(tpf("/Elementi/Pagine/page_bottom.php"));
+}

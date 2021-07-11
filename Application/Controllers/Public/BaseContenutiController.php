@@ -564,6 +564,9 @@ class BaseContenutiController extends BaseController
 		
 		$clean['id'] = $data["id_categoria"] = (int)$id;
 		
+		if (v("attiva_formn_contatti"))
+			$this->inviaMailFormContatti(0);
+		
 		$this->checkCategory($clean["id"]);
 		
 		$section = $this->section = $this->m["CategoriesModel"]->section($clean['id']);
@@ -1052,6 +1055,9 @@ class BaseContenutiController extends BaseController
 	protected function page($id)
 	{
 		$clean["realId"] = $data["realId"] = (int)$id;
+		
+		if (v("attiva_formn_contatti"))
+			$this->inviaMailFormContatti($clean["realId"]);
 		
 		$this->checkPage($clean["realId"]);
 		

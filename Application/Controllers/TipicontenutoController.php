@@ -30,6 +30,8 @@ class TipicontenutoController extends BaseController
 	
 	public $orderBy = "id_order";
 	
+	public $tabella = "tipologie fasce";
+	
 	public $sezionePannello = "utenti";
 	
 	function __construct($model, $controller, $queryString, $application, $action) {

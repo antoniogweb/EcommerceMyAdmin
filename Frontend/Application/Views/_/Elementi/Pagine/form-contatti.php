@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php echo Form::$notice;?>
 <form action="<?php echo Domain::$currentUrl;?>#contatti-form" method="post" novalidate="novalidate">
-	<fieldset class="uk-fieldset uk-width-2-3@m uk-width-1-1@s">
+	<fieldset class="uk-fieldset">
 		<div uk-grid class="uk-margin"> 
 			<div class="uk-width-1-2@m uk-width-1-2@s">
 				<?php echo Html_Form::input("nome",Form::$values["nome"],"uk-input class_nome","nome","placeholder='".gtext("Nome*")."'");?>
@@ -26,7 +26,7 @@
 		<?php echo Html_Form::hidden("invia","invia");?>
 		
 		<div class="uk-margin">
-			<button type='submit' class="uk-button uk-button-default background-yellow color-white"><?php echo gtext('Invia',false);?></button>
+			<button type='submit' class="uk-button uk-button-secondary background-yellow color-white"><?php echo gtext('Invia',false);?></button>
 		</div>
 	</fieldset>
 </form>

@@ -43,6 +43,9 @@ class BaseHomeController extends BaseController
 
 	public function index()
 	{
+		if (v("attiva_formn_contatti"))
+			$this->inviaMailFormContatti(0);
+		
 		$data["slide"] = $this->slide = $this->m["PagesModel"]->clear()->select("*")->inner("categories")->on("categories.id_c = pages.id_c")
 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array(

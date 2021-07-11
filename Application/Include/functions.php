@@ -1687,6 +1687,11 @@ function tpf($filePath = "")
 	if ($themeFolder && file_exists($subFolderFullPath))
 		return $subFolderFullPath;
 	
+	$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+	
+	if ($themeFolder && file_exists($subFolderFullPathParentFrontend))
+		return $subFolderFullPathParentFrontend;
+	
 	if ($themeFolder)
 		return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 	
@@ -1752,6 +1757,11 @@ function sanitizeJs($jsString)
 function parent($file)
 {
 	$file = str_replace(tp(),"",$file);
+	
+	$parentFrontend = Domain::$parentRoot."/Application/Views/_".$file;
+	
+	if (file_exists($parentFrontend))
+		return $parentFrontend;
 	
 	return Domain::$parentRoot."/admin/Frontend/Application/Views/_".$file;
 }
