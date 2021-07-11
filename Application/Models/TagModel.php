@@ -123,13 +123,13 @@ class TagModel extends GenericModel {
 		}
 	}
 	
-	public static function getUrlAlias($id)
+	public static function getUrlAlias($id, $lingua = null)
 	{
 		$t = new TagModel();
 		
 		$tag = $t->clear()->where(array(
 			"id_tag"	=>	(int)$id,
-		))->addJoinTraduzione()->send();
+		))->addJoinTraduzione($lingua)->send();
 		
 // 		$marchio = $this->selectId((int)$id);
 		
@@ -141,7 +141,7 @@ class TagModel extends GenericModel {
 		
 				$idShop = $c->getShopCategoryId();
 				
-				return tagfield($tag[0],"alias")."/".getCategoryUrlAlias($idShop);
+				return tagfield($tag[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
 			}
 			else
 				return tagfield($tag[0],"alias").".html";

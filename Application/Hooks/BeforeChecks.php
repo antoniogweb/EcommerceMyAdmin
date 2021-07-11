@@ -375,9 +375,6 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 				"placeholder"	=>	"Cerca ..",
 			),
-			"wrap"	=>	array(
-				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
-			),
 		),
 		"title"	=>	array(
 			"attributes"	=>	array(

@@ -418,6 +418,9 @@ class MenuModel extends HierarchicalModel {
 				$m = new MarchiModel();
 				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll($m->getUrlAlias($this->values["id_marchio"], false, $lingua));
 				break;
+			case "tag":
+				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll(TagModel::getUrlAlias($this->values["id_tag"], $lingua));
+				break;
 			case "home":
 				$this->values["link_alias"] = $parentUrl.$lingua;
 				break;
