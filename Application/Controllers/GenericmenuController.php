@@ -160,7 +160,7 @@ class GenericmenuController extends BaseController {
 		{
 			$clean['id'] = (int)$id;
 			
-			$this->m[$this->modelName]->setFields('title,id_p,link_to,link_alias,id_c,id_page,file_custom_html,active_link','sanitizeAll');
+			$this->m[$this->modelName]->setFields('title,id_p,link_to,link_alias,id_c,id_page,id_marchio,id_tag,file_custom_html,active_link','sanitizeAll');
 			
 			if ($queryType == "insert")
 				$this->m[$this->modelName]->setValue("lingua", $this->viewArgs["lingua"]);

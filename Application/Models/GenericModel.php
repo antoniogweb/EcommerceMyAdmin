@@ -947,18 +947,38 @@ class GenericModel extends Model_Tree
 		return $selectFiltro;
 	}
 	
-	public function selectMarchi()
+	public function addNonImpostato($select, $empty)
+	{
+		if ($empty)
+			$select += array(0 => gtext("-- NON IMPOSTATO --"));
+		
+		return $select;
+	}
+	
+	public function selectMarchi($empty = true)
 	{
 		$m = new MarchiModel();
 		
-		return array(0 => gtext("-- NON IMPOSTATO --")) + $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+		$select = array();
+		
+		$select = $this->addNonImpostato($select, $empty);
+		
+		$select += $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+		
+		return $select;
 	}
 	
-	public function selectTag()
+	public function selectTag($empty = true)
 	{
 		$t = new TagModel();
 		
-		return array(0 => gtext("-- NON IMPOSTATO --")) + $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
+		$select = array();
+		
+		$select = $this->addNonImpostato($select, $empty);
+		
+		$select += $t->clear()->orderBy("titolo")->toList("id_tag","titolo")->send();
+		
+		return $select;
 	}
 	
 	public function getLinkEntries()

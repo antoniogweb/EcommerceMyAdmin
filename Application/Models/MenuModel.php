@@ -75,6 +75,8 @@ class MenuModel extends HierarchicalModel {
 							"libero" => "Libero",
 							"esterno" => "Esterno",
 							"custom" => "Codice custom",
+							"marchio"=>gtext("Marchio"),
+							"tag"=>gtext("Tag"),
 						),
 					'reverse' => 'yes',
 					'idName'  => 'tipo_link',
@@ -114,6 +116,22 @@ class MenuModel extends HierarchicalModel {
 					'reverse' => 'yes',
 					'entryClass'  => 'form_input_text cont_Select',
 					'idName'	=>	'combobox2',
+				),
+				'id_marchio'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	gtext("Marchio"),
+					'options'	=>	$this->selectMarchi(false),
+					'reverse' => 'yes',
+					'idName'	=>	'combobox',
+					'entryClass'  => 'form_input_text marchi_Select',
+				),
+				'id_tag'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	gtext("Tag"),
+					'options'	=>	$this->selectTag(false),
+					'reverse' => 'yes',
+					'idName'	=>	'combobox',
+					'entryClass'  => 'form_input_text tag_Select',
 				),
 				'id_m'	=>	array(
 					'type'		=>	'Hidden'
@@ -304,7 +322,8 @@ class MenuModel extends HierarchicalModel {
 					else
 					{
 						ob_start();
-						include ROOT."/Application/Views/_Menu/".$node["node"]["file_custom_html"];
+						include(tpf("_Menu/".$node["node"]["file_custom_html"]));
+// 						include ROOT."/Application/Views/_Menu/".$node["node"]["file_custom_html"];
 						$menuHtml .= ob_get_clean();
 					}
 				}
@@ -394,6 +413,10 @@ class MenuModel extends HierarchicalModel {
 			case "cont":
 				$p = new PagesModel();
 				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll($p->getUrlAlias($this->values["id_page"], $lingua));
+				break;
+			case "marchio":
+				$m = new MarchiModel();
+				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll($m->getUrlAlias($this->values["id_marchio"], false, $lingua));
 				break;
 			case "home":
 				$this->values["link_alias"] = $parentUrl.$lingua;

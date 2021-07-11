@@ -136,11 +136,11 @@ class MarchiModel extends GenericModel {
 		$this->controllaLinguaGeneric($id, "id_marchio", "-marchio-");
 	}
 	
-	public function getUrlAlias($id, $paginaDettaglioMarchio = false)
+	public function getUrlAlias($id, $paginaDettaglioMarchio = false, $lingua = null)
 	{
 		$marchio = $this->clear()->where(array(
 			"id_marchio"	=>	(int)$id,
-		))->addJoinTraduzione()->send();
+		))->addJoinTraduzione($lingua)->send();
 		
 // 		$marchio = $this->selectId((int)$id);
 		
@@ -152,7 +152,7 @@ class MarchiModel extends GenericModel {
 		
 				$idShop = $c->getShopCategoryId();
 				
-				return mfield($marchio[0],"alias")."/".getCategoryUrlAlias($idShop);
+				return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
 			}
 			else
 				return mfield($marchio[0],"alias").".html";

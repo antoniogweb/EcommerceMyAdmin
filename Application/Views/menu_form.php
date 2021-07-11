@@ -2,51 +2,56 @@
 
 <script type="text/javascript">
 
+var arraySelettore = [
+	".cat_Select",
+	".cont_Select",
+	".alias_Select",
+	".file_Select",
+	".marchi_Select",
+	".tag_Select",
+];
+
+function displayItem(selettore)
+{
+	for (var i = 0; i < arraySelettore.length; i++)
+	{
+		if (selettore == arraySelettore[i])
+			$(arraySelettore[i]).css("display","block");
+		else
+			$(arraySelettore[i]).css("display","none");
+	}
+}
+
 function showItem(sel)
 {
 	switch(sel)
 	{
 		case "esterno":
-			$(".cat_Select").css("display","none");
-			$(".cont_Select").css("display","none");
-			$(".alias_Select").css("display","block");
-			$(".file_Select").css("display","none");
+			displayItem(".alias_Select");
 			break;
 		case "libero":
-			$(".cat_Select").css("display","none");
-			$(".cont_Select").css("display","none");
-			$(".alias_Select").css("display","block");
-			$(".file_Select").css("display","none");
+			displayItem(".alias_Select");
 			break;
 		case "cat":
-			$(".alias_Select").css("display","none");
-			$(".cont_Select").css("display","none");
-			$(".cat_Select").css("display","block");
-			$(".file_Select").css("display","none");
+			displayItem(".cat_Select");
 			break;
 		case "cont":
-			$(".cat_Select").css("display","none");
-			$(".alias_Select").css("display","none");
-			$(".cont_Select").css("display","block");
-			$(".file_Select").css("display","none");
+			displayItem(".cont_Select");
+			break;
+		case "marchio":
+			displayItem(".marchi_Select");
+			break;
+		case "tag":
+			displayItem(".tag_Select");
 			break;
 		case "custom":
-			$(".cat_Select").css("display","none");
-			$(".alias_Select").css("display","none");
-			$(".cont_Select").css("display","none");
-			$(".file_Select").css("display","block");
+			displayItem(".file_Select");
 			break;
 		case "home":
-			$(".cat_Select").css("display","none");
-			$(".alias_Select").css("display","none");
-			$(".cont_Select").css("display","none");
-			$(".file_Select").css("display","none");
+			displayItem("");
 			break;
 		case "nessuno":
-			$(".cat_Select").css("display","none");
-			$(".alias_Select").css("display","none");
-			$(".cont_Select").css("display","none");
-			$(".file_Select").css("display","none");
+			displayItem("");
 			break;
 	}
 }
