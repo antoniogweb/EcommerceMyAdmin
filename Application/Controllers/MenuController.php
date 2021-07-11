@@ -38,6 +38,8 @@ class MenuController extends GenericmenuController {
 	
 	public function form($queryType = 'insert',$id = 0)
 	{
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"title");
+		
 		parent::form($queryType, $id);
 		
 		$this->_topMenuClasses['menu1'] = array("active","in");
