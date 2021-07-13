@@ -54,6 +54,21 @@ class MenuModel extends HierarchicalModel {
 
 	public function setFormStruct($id = 0)
 	{
+		$opzioniVoceMenu =  array(
+			"cat"=>"Categoria",
+			"cont"=>"Contenuto",
+			"home"=>"Home Page",
+			"libero" => "Libero",
+			"esterno" => "Esterno",
+			"custom" => "Codice custom",
+		);
+		
+		if (v("usa_marchi"))
+			$opzioniVoceMenu["marchio"] = gtext("Marchio");
+		
+		if (v("usa_tag"))
+			$opzioniVoceMenu["tag"] = gtext("Tag");
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -68,16 +83,7 @@ class MenuModel extends HierarchicalModel {
 				'link_to'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Tipo di link',
-					'options'	=>	array(
-							"cat"=>"Categoria",
-							"cont"=>"Contenuto",
-							"home"=>"Home Page",
-							"libero" => "Libero",
-							"esterno" => "Esterno",
-							"custom" => "Codice custom",
-							"marchio"=>gtext("Marchio"),
-							"tag"=>gtext("Tag"),
-						),
+					'options'	=>	$opzioniVoceMenu,
 					'reverse' => 'yes',
 					'idName'  => 'tipo_link',
 				),

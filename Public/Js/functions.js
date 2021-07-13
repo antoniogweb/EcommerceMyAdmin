@@ -608,7 +608,7 @@ $(document).ready(function(){
 			$( "<a>" )
 			.attr( "tabIndex", -1 )
 			.attr( "title", "Mostra tutti" )
-			.html("<img src='"+baseUrl+"/Public/Img/ordina_decrescente.jpg' />")
+			.html("<img src='"+baseUrlSrc+"/Public/Img/ordina_decrescente.jpg' />")
 			.tooltip()
 			.appendTo( this.wrapper )
 			.button({
