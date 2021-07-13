@@ -815,6 +815,21 @@ class GenericModel extends Model_Tree
 		return $this->linklingua($record, "de");
 	}
 	
+	public function linkpl($record)
+	{
+		return $this->linklingua($record, "pl");
+	}
+	
+	public function linkpt($record)
+	{
+		return $this->linklingua($record, "pt");
+	}
+	
+	public function linkru($record)
+	{
+		return $this->linklingua($record, "ru");
+	}
+	
 	public function buildAllCatSelect()
 	{
 		$c = new CategoriesModel();

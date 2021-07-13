@@ -173,6 +173,21 @@ class TraduzioniModel extends GenericModel {
 		return $this->editLingua("de", $record);
 	}
 	
+	public function editPl($record)
+	{
+		return $this->editLingua("pl", $record);
+	}
+	
+	public function editPt($record)
+	{
+		return $this->editLingua("pt", $record);
+	}
+	
+	public function editRu($record)
+	{
+		return $this->editLingua("ru", $record);
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$this->values["tradotta"] = 1;
