@@ -39,14 +39,16 @@ if (!isset($noFiltri))
 		$itemFile = "/Elementi/Categorie/prodotto.php";
 	?>
 	<div class="uk-width-expand">
-		<?php if (!isset($noFiltri)) { ?>
+		<?php if (!isset($noFiltri) && !isset($noOrdinamento)) { ?>
 		<div class="uk-margin-bottom" uk-grid>
 			<div class="uk-width-1-1 uk-width-3-5@s uk-text-left">
 				<?php include(tpf("Elementi/Categorie/filtri_attivi.php")); ?>
 			</div>
+			<?php if (!isset($noOrdinamento)) { ?>
 			<div class="uk-width-1-1 uk-width-2-5@s uk-text-right">
 				<?php include(tpf("Elementi/Categorie/scelta_ordinamento.php")); ?>
 			</div>
+			<?php } ?>
 		</div>
 		<?php } ?>
 		<?php if (count($pages) > 0) { ?>

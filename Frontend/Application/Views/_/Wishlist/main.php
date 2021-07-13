@@ -7,6 +7,7 @@ $breadcrumb = array(
 
 $titoloPagina = gtext("La tua lista dei desideri");
 $descrizioneNoProdotti = gtext("La tua lista dei desideri è vuota");
+$noOrdinamento = true;
 
 include(tp()."/Contenuti/prodotti.php");
 ?>
