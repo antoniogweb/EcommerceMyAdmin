@@ -590,7 +590,7 @@ class BaseController extends Controller
 				$this->m[$this->modelName]->result = false;
 			}
 			
-			$data["titoloRecord"] = "inserimento nuovo elemento";
+			$data["titoloRecord"] = gtext("inserimento nuovo elemento");
 			
 			if (strcmp($queryType,'update') === 0)
 			{

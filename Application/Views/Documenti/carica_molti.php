@@ -52,7 +52,7 @@ $(document).ready(function() {
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione <?php echo $tabella;?>: <?php echo isset($caricaZip) ? gtext("carica uno o più file compressi") : gtext("carica molti elementi");?></h1>
+	<h1><?php echo gtext("Gestione");?> <?php echo gtext($tabella);?>: <?php echo isset($caricaZip) ? gtext("carica uno o più file compressi") : gtext("carica molti elementi");?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
