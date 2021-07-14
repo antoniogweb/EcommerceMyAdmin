@@ -33,6 +33,12 @@ class PagesModel extends GenericModel {
 
 	public $checkAll = true;
 	
+	public $fileTypeAllowed = array('jpg','jpeg','gif','png'); // File extensions
+	public $rielaboraImmagine = true;
+	
+	public $cartellaImmaginiContenuti = "images/contents";
+	public $fileNameRandom = false;
+	
 	public static $currentRecord = null;
 	
 	public static $arrayImmagini = null;

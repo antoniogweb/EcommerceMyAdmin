@@ -169,7 +169,7 @@ $(function () {
 			'is_main':'1'
 		},
 		done: function (e, data) {
-			$("input[name='immagine']").val(data.result);
+			$("input[name='immagine']").val(data.result.immagine);
 			show_preview();
 		},
 		change: function (e, data) {
@@ -217,7 +217,7 @@ $(function () {
 			'is_main':'1'
 		},
 		done: function (e, data) {
-			$("input[name='immagine_2']").val(data.result);
+			$("input[name='immagine_2']").val(data.result.immagine);
 			show_preview2();
 		},
 		change: function (e, data) {

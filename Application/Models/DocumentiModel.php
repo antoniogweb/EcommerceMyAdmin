@@ -152,6 +152,11 @@ class DocumentiModel extends GenericModel {
 		return "-";
 	}
 	
+	public function uploadArchivio($idPage = 0)
+	{
+	
+	}
+	
 	public function elaboraArchivio($id, $idPage = 0)
 	{
 		$record = $this->selectId((int)$id);

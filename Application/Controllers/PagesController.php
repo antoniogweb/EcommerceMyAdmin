@@ -281,10 +281,13 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->setFilters();
 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_pages"), 'mainMenu'=>$this->mainMenu));
 		
-		foreach (self::$traduzioni as $codiceLingua)
+		if ($this->addTraduzioniInMain)
 		{
-			$this->tableFields[] = "link".$codiceLingua;
-			$this->head .= ",".strtoupper($codiceLingua);
+			foreach (self::$traduzioni as $codiceLingua)
+			{
+				$this->tableFields[] = "link".$codiceLingua;
+				$this->head .= ",".strtoupper($codiceLingua);
+			}
 		}
 		
 		$azioni = "ldel,ledit";
@@ -673,7 +676,7 @@ class PagesController extends BaseController {
 					$this->scaffold->model->fields = $this->formFields;
 				}
 				
-				$this->scaffold->getFormValues('sanitizeHtml',$clean['id'],array());
+				$this->scaffold->getFormValues('sanitizeHtml',$clean['id'],$this->formDefaultValues);
 
 				if (strcmp($queryType,'update') === 0)
 				{
@@ -1891,6 +1894,8 @@ class PagesController extends BaseController {
 	
 	public function move()
 	{
+		header('Content-type: application/json');
+		
 		$this->clean();
 		$clean['token'] = $this->request->post("token","","sanitizeAll");
 		$clean['id_page'] = $this->request->post("id_page","0","forceInt");
@@ -1903,12 +1908,15 @@ class PagesController extends BaseController {
 // 			die("non permesso");
 // 		}
 		
+		$cartellaImmagini = $this->m[$this->modelName]->cartellaImmaginiContenuti;
+		
 		// Creo la cartella
-		GenericModel::creaCartellaImages(Parametri::$cartellaImmaginiContenuti);
+		GenericModel::creaCartellaImages($cartellaImmagini);
 		
 		$res = $this->m[$this->modelName]->query("select * from adminsessions where token = '".$clean['token']."';");
-
-		$cartellaImmagini = Parametri::$cartellaImmaginiContenuti;
+		
+		$result = "OK";
+		$immagine = "";
 		
 		if (count($res) > 0)
 		{
@@ -1926,29 +1934,39 @@ class PagesController extends BaseController {
 						
 						array_pop($extArray);
 						
-						$tempName = encodeUrl(implode(".",$extArray)).".$ext";
+						$tempNameSenzaEstensione = encodeUrl(implode(".",$extArray));
+						$tempName = $tempNameSenzaEstensione.".$ext";
 // 						$tempName = $this->m[$this->modelName]->getAlias($clean['id_page'])."_".generateString(1);
 						
 						$tree = new Files_Upload($targetPath);
-						$clean['fileName'] = strcmp($tempName,"") !==0 ? $tree->getUniqueName($tempName) : $tree->getUniqueName("file".".$ext");
+						$clean['fileName'] = $clean['fileName_clean'] = (strcmp($tempName,"") !== 0 && strcmp($tempNameSenzaEstensione,"") !== 0) ? $tree->getUniqueName($tempName) : $tree->getUniqueName("file".".$ext");
+						
+						if ($this->m[$this->modelName]->fileNameRandom)
+						{
+							$clean['fileName'] = md5(randString(22).microtime().uniqid(mt_rand(),true)).".$ext";
+						}
 						
 						$targetFile = rtrim($targetPath,'/') . '/' . $clean['fileName'];
 						
 						// Validate the file type
-						$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
+// 						$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
+						$fileTypes = $this->m[$this->modelName]->fileTypeAllowed;
 						
 						if (in_array($ext,$fileTypes)) {
 							if (!file_exists($targetFile))
 							{
 								if (@move_uploaded_file($tempFile,$targetFile))
 								{
-									$params = array(
-										'imgWidth'		=>	3000,
-										'imgHeight'		=>	3000,
-										'defaultImage'	=>  null,
-									);
-									$thumb = new Image_Gd_Thumbnail($targetPath,$params);
-									$thumb->render($clean['fileName'],$targetFile);
+									if ($this->m[$this->modelName]->rielaboraImmagine)
+									{
+										$params = array(
+											'imgWidth'		=>	3000,
+											'imgHeight'		=>	3000,
+											'defaultImage'	=>  null,
+										);
+										$thumb = new Image_Gd_Thumbnail($targetPath,$params);
+										$thumb->render($clean['fileName'],$targetFile);
+									}
 									
 									if ($clean['is_main'] === 0)
 									{
@@ -1956,11 +1974,19 @@ class PagesController extends BaseController {
 										$this->m['ImmaginiModel']->insert();
 									}
 									
-									echo $clean['fileName'];
+									echo json_encode(array(
+										"result"	=>	$result,
+										"immagine"	=>	$clean['fileName'],
+										"immagine_clean"	=>	$clean['fileName_clean'],
+									));
 								}
 							}
 						} else {
-							echo 'KO';
+							echo json_encode(array(
+								"result"	=>	$result,
+								"immagine"	=>	"",
+								"immagine_clean"	=>	"",
+							));
 						}
 					}
 				}

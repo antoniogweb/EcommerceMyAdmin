@@ -1,9 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 if (!isset($labelBlocco))
-	$labelBlocco = "Immagine";
+	$labelBlocco = gtext("Immagine");
 if (!isset($numeroImmagine))
 	$numeroImmagine = "";
+if (!isset($labelPulsante))
+	$labelPulsante = gtext("SELEZIONA IMMAGINE");
 
 $stringImmagine = $stringImmagine2 = "";
 
@@ -14,7 +16,7 @@ if ($numeroImmagine)
 }
 ?>
 <div class="panel-heading">
-	<?php echo gtext($labelBlocco);?>
+	<?php echo $labelBlocco;?>
 </div>
 <div class="panel-body image_panel">
 	<div class="preview_image<?php echo $stringImmagine;?>"></div>
@@ -27,7 +29,7 @@ if ($numeroImmagine)
 	</div>
 	<span class="btn btn-success fileinput-button">
 		<i class="fa fa-plus"></i>
-		<span><?php echo gtext("SELEZIONA IMMAGINE");?></span>
+		<span><?php echo $labelPulsante;?></span>
 		<!-- The file input field used as target for the file upload widget -->
 		<input id="userfile<?php echo $stringImmagine;?>" type="file" name="Filedata">
 	</span>

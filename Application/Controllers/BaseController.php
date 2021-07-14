@@ -155,6 +155,8 @@ class BaseController extends Controller
 	
 	public $closeModal = false;
 	
+	public $addTraduzioniInMain = true;
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
