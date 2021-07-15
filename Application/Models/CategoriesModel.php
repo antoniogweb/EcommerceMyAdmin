@@ -260,8 +260,14 @@ class CategoriesModel extends HierarchicalModel {
 			parent::update($id, $where);
 			
 			if ($this->queryResult)
+			{
 				$this->controllaLingua($id);
+				
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
 	public function insert()
@@ -276,8 +282,14 @@ class CategoriesModel extends HierarchicalModel {
 			parent::insert();
 			
 			if ($this->queryResult)
+			{
 				$this->controllaLingua($this->lId);
+				
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
 	// Controllo che la lingua esista

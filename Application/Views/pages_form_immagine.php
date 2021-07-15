@@ -14,6 +14,8 @@ if ($numeroImmagine)
 	$stringImmagine = "_".$numeroImmagine;
 	$stringImmagine2 = "-".$numeroImmagine;
 }
+if (!isset($arrayPulsanti))
+	$arrayPulsanti = array();
 ?>
 <div class="panel-heading">
 	<?php echo $labelBlocco;?>
@@ -33,6 +35,9 @@ if ($numeroImmagine)
 		<!-- The file input field used as target for the file upload widget -->
 		<input id="userfile<?php echo $stringImmagine;?>" type="file" name="Filedata">
 	</span>
+	<?php foreach ($arrayPulsanti as $pulsante) {
+		echo $pulsante;
+	} ?>
 	<div style="display:none;margin-top:10px;" id="progress<?php echo $stringImmagine2;?>" class="progress">
 		<div class="progress-bar progress-bar-success"></div>
 	</div>

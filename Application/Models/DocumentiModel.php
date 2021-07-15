@@ -172,7 +172,11 @@ class DocumentiModel extends GenericModel {
 			
 			self::creaCartellaImages("images/tmp", true);
 			
-			$extractPath = Domain::$parentRoot."/images/tmp/";
+			$tempFolder = md5(randString(22).microtime().uniqid(mt_rand(),true));
+			
+			GenericModel::creaCartellaImages("images/tmp/$tempFolder", false, false);
+			
+			$extractPath = Domain::$parentRoot."/images/tmp/$tempFolder/";
 			
 			if (file_exists($filePath) && $zip->open($filePath) === TRUE) {
 				$zip->extractTo($extractPath);
@@ -183,7 +187,7 @@ class DocumentiModel extends GenericModel {
 			
 			$items = scandir($extractPath);
 			foreach( $items as $this_file ) {
-				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"index.html") !== 0 && strcmp($this_file,".htaccess") !== 0) {
+				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0) {
 					$this_file = basename($this_file);
 					
 					if (@is_file($extractPath.$this_file))
@@ -218,6 +222,8 @@ class DocumentiModel extends GenericModel {
 					}
 				}
 			}
+			
+			@rmdir($extractPath);
 			
 			if ($okElaborazione)
 			{

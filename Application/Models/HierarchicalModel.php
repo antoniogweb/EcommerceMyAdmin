@@ -338,8 +338,12 @@ class HierarchicalModel extends GenericModel {
 			if (parent::update($id, $where))
 			{
 				$this->callRebuildTree();
+				
+				return true;
 			}
 		}
+		
+		return false;
 	}
 	
 	// Imposta l'alias della categora controllando che non ci sia un duplicato
@@ -406,11 +410,14 @@ class HierarchicalModel extends GenericModel {
 		
 		if (parent::insert())
 		{
-			$this->lId = $this->lastId();
+// 			$this->lId = $this->lastId();
 		
 			$this->callRebuildTree();
+			
+			return true;
 		}
 		
+		return false;
 // 		$this->callRebuildTree();
 	}
 	
