@@ -157,6 +157,8 @@ class BaseController extends Controller
 	
 	public $addTraduzioniInMain = true;
 	
+	public $tabViewFields = array();
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -431,7 +433,7 @@ class BaseController extends Controller
 			$mainHead = "[[bulkselect:checkbox_".$table."_".$primaryKey."]],".$this->mainHead;
 		}
 		
-		if ($this->m[$this->modelName]->traduzione)
+		if ($this->m[$this->modelName]->traduzione && $this->addTraduzioniInMain)
 		{
 			foreach (self::$traduzioni as $codiceLingua)
 			{

@@ -126,6 +126,14 @@ class DocumentiModel extends GenericModel {
 			return "<img width='100px;' src='".Url::getRoot()."documenti/thumb/immagine/".$record["documenti"]["id_doc"]."'/>";
     }
     
+    public function elaborato($record)
+    {
+		if ($record["documenti"]["elaborato"])
+			return "<i class='text text-success fa fa-check'></i>";
+		else
+			return "<i class='text text-danger fa fa-ban'></i>";
+    }
+    
 	public function update($id = NULL, $whereClause = NULL)
 	{
 		if ($this->upload("update"))
@@ -171,6 +179,8 @@ class DocumentiModel extends GenericModel {
 				$zip->close();
 			}
 			
+			$okElaborazione = true;
+			
 			$items = scandir($extractPath);
 			foreach( $items as $this_file ) {
 				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"index.html") !== 0 && strcmp($this_file,".htaccess") !== 0) {
@@ -200,23 +210,26 @@ class DocumentiModel extends GenericModel {
 						
 						if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
 						{
-							if ($this->insert())
-							{
-								$this->setValues(array(
-									"elaborato"	=>	1
-								));
-								
-								$this->pUpdate((int)$id);
-								
-								// Gestisci archivio
-								if (v("elimina_archivio_dopo_upload"))
-									@unlink($filePath);
-							}
+							if (!$this->insert())
+								$okElaborazione = false;
 							
 							@unlink($extractPath.$this_file);
 						}
 					}
 				}
+			}
+			
+			if ($okElaborazione)
+			{
+				$this->setValues(array(
+					"elaborato"	=>	1
+				));
+				
+				$this->pUpdate((int)$id);
+				
+				// Gestisci archivio
+				if (v("elimina_archivio_dopo_upload"))
+					@unlink($filePath);
 			}
 		}
 	}

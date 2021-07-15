@@ -240,7 +240,7 @@ class GenericModel extends Model_Tree
 	
 // 	public function alias($id = null) {}
 	
-	public static function creaCartellaImages($path = null, $htaccess = false)
+	public static function creaCartellaImages($path = null, $htaccess = false, $index = true)
 	{
 		//crea la cartella images se non c'è
 		if(!is_dir(Domain::$parentRoot."/images"))
@@ -260,8 +260,11 @@ class GenericModel extends Model_Tree
 		{
 			if (@mkdir(Domain::$parentRoot."/".$path))
 			{
-				$fp = fopen(Domain::$parentRoot."/".$path.'/index.html', 'w');
-				fclose($fp);
+				if ($index)
+				{
+					$fp = fopen(Domain::$parentRoot."/".$path.'/index.html', 'w');
+					fclose($fp);
+				}
 				
 				if ($htaccess)
 				{

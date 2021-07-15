@@ -1428,6 +1428,28 @@ class PagesController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function getTabViewFields($tab)
+	{
+		if (isset($this->tabViewFields[$tab]))
+		{
+			if (isset($this->tabViewFields[$tab]["filters"]))
+				$this->filters = $this->tabViewFields[$tab]["filters"];
+			
+			if (isset($this->tabViewFields[$tab]["mainFields"]))
+				$this->mainFields = $this->tabViewFields[$tab]["mainFields"];
+			
+			if (isset($this->tabViewFields[$tab]["mainHead"]))
+				$this->mainHead = $this->tabViewFields[$tab]["mainHead"];
+			
+			if (isset($this->tabViewFields[$tab]["colProperties"]))
+				$this->colProperties = $this->tabViewFields[$tab]["colProperties"];
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public function documenti($id = 0)
 	{
 		$this->orderBy = "documenti.id_order";
@@ -1445,28 +1467,50 @@ class PagesController extends BaseController {
 		
 		$this->mainButtons = "ldel";
 		
-		$this->modelName = "DocumentiModel";
+		$this->modelName = $this->m[$this->modelName]->documentiModelAssociato;//"DocumentiModel";
+		
+		if (!isset($this->m[$this->modelName]))
+			$this->model($this->modelName);
 		
 		$this->m[$this->modelName]->updateTable('del');
-		
-		$this->colProperties = array(
-			array(
-				'width'	=>	'60px',
-			),
-			array(
-				'width'	=>	'160px',
-			),
-		);
 		
 		$filtroLingua = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectLingua();
 		$filtroTipoDoc = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectTipo();
 		
-		$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
 		$this->aggregateFilters = false;
 		$this->showFilters = true;
 		
-		$this->mainFields = array("immagine","titoloDocumento","filename","lingua","tipi_documento.titolo");
-		$this->mainHead = "Thumb,Titolo,File,Visibile su lingua,Tipo";
+		if ($this->getTabViewFields("documenti"))
+		{
+
+		}
+		else if (v("attiva_immagine_in_documenti"))
+		{
+			$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
+			$this->mainFields = array("immagine","titoloDocumento","filename","lingua","tipi_documento.titolo");
+			$this->mainHead = "Thumb,Titolo,File,Visibile su lingua,Tipo";
+			
+			$this->colProperties = array(
+				array(
+					'width'	=>	'60px',
+				),
+				array(
+					'width'	=>	'160px',
+				),
+			);
+		}
+		else
+		{
+			$this->filters = array(null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
+			$this->mainFields = array("titoloDocumento","filename","lingua","tipi_documento.titolo");
+			$this->mainHead = "Titolo,File,Visibile su lingua,Tipo";
+			
+			$this->colProperties = array(
+				array(
+					'width'	=>	'60px',
+				),
+			);
+		}
 		
 		if (v("attiva_gruppi_documenti"))
 		{
@@ -1484,7 +1528,7 @@ class PagesController extends BaseController {
 			"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
 		))->convert()->save();
 		
-		$this->tabella = gtext("prodotti");
+// 		$this->tabella = gtext("prodotti");
 		
 		parent::main();
 		

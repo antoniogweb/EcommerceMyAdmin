@@ -49,7 +49,14 @@ class DocumentiController extends BaseController
 		
 // 		$this->m[$this->modelName]->setValuesFromPost("titolo,id_tipo,lingua,immagine_1,immagine_2,descrizione,link_contenuto,link_libero,target");
 		
-		$this->m[$this->modelName]->setValuesFromPost("titolo,id_tipo_doc,filename,data_documento,lingua,immagine,descrizione");
+		$fields = "titolo,id_tipo_doc,filename,data_documento,lingua";
+		
+		if (v("attiva_immagine_in_documenti"))
+			$fields .= ",immagine";
+		
+		$fields .= ",descrizione";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);

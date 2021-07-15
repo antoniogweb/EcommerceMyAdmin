@@ -39,6 +39,8 @@ class PagesModel extends GenericModel {
 	public $cartellaImmaginiContenuti = "images/contents";
 	public $fileNameRandom = false;
 	
+	public $documentiModelAssociato = "DocumentiModel";
+	
 	public static $currentRecord = null;
 	
 	public static $arrayImmagini = null;
