@@ -97,6 +97,7 @@ class PagesController extends BaseController {
 			'id_pcorr:sanitizeAll' => "tutti",
 			'pcorr_sec:sanitizeAll' => "tutti",
 			'cl_on_sv:sanitizeAll' => "tutti",
+			'nobuttons:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -224,6 +225,11 @@ class PagesController extends BaseController {
 			$this->m[$this->modelName]->pUpdate($clean['id']);
 			$this->m[$this->modelName]->sincronizza($clean['id']);
 		}
+	}
+	
+	protected function pmain()
+	{
+		parent::main();
 	}
 	
 	public function main()
@@ -659,13 +665,14 @@ class PagesController extends BaseController {
 				
 				$this->m[$this->modelName]->setUploadForms($clean["id"]);
 				
-				$menuLinks = 'back,save';
+				$this->menuLinks = 'back,save';
 				if ($queryType === "update")
-				{
-					$menuLinks = 'back,copia,save';
-				}
+					$this->menuLinks = 'back,copia,save';
+				
+				$this->getTabViewFields("form");
+				
 				$params = array(
-					'formMenu'=>$menuLinks,
+					'formMenu'=>$this->menuLinks,
 				);
 				
 				$this->loadScaffold('form',$params);
@@ -1432,22 +1439,11 @@ class PagesController extends BaseController {
 	{
 		if (isset($this->tabViewFields[$tab]))
 		{
-			if (isset($this->tabViewFields[$tab]["filters"]))
-				$this->filters = $this->tabViewFields[$tab]["filters"];
-			
-			if (isset($this->tabViewFields[$tab]["mainFields"]))
-				$this->mainFields = $this->tabViewFields[$tab]["mainFields"];
-			
-			if (isset($this->tabViewFields[$tab]["mainHead"]))
-				$this->mainHead = $this->tabViewFields[$tab]["mainHead"];
-			
-			if (isset($this->tabViewFields[$tab]["colProperties"]))
-				$this->colProperties = $this->tabViewFields[$tab]["colProperties"];
-			
-			return true;
+			foreach ($this->tabViewFields[$tab] as $k => $v)
+			{
+				$this->{$k} = $this->tabViewFields[$tab][$k];
+			}
 		}
-		
-		return false;
 	}
 	
 	public function documenti($id = 0)
@@ -1465,8 +1461,6 @@ class PagesController extends BaseController {
 		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_page";
 		
-		$this->mainButtons = "ldel";
-		
 		$this->modelName = $this->m[$this->modelName]->documentiModelAssociato;//"DocumentiModel";
 		
 		if (!isset($this->m[$this->modelName]))
@@ -1480,11 +1474,7 @@ class PagesController extends BaseController {
 		$this->aggregateFilters = false;
 		$this->showFilters = true;
 		
-		if ($this->getTabViewFields("documenti"))
-		{
-
-		}
-		else if (v("attiva_immagine_in_documenti"))
+		if (v("attiva_immagine_in_documenti"))
 		{
 			$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
 			$this->mainFields = array("immagine","titoloDocumento","filename","lingua","tipi_documento.titolo");
@@ -1517,6 +1507,10 @@ class PagesController extends BaseController {
 			$this->mainFields[] = "accessi";
 			$this->mainHead .= ",Accessi";
 		}
+		
+		$this->mainButtons = "ldel";
+		
+		$this->getTabViewFields("documenti");
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"documenti/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -1982,12 +1976,15 @@ class PagesController extends BaseController {
 						$tempName = $tempNameSenzaEstensione.".$ext";
 // 						$tempName = $this->m[$this->modelName]->getAlias($clean['id_page'])."_".generateString(1);
 						
-						$tree = new Files_Upload($targetPath);
-						$clean['fileName'] = $clean['fileName_clean'] = (strcmp($tempName,"") !== 0 && strcmp($tempNameSenzaEstensione,"") !== 0) ? $tree->getUniqueName($tempName) : $tree->getUniqueName("file".".$ext");
-						
 						if ($this->m[$this->modelName]->fileNameRandom)
 						{
 							$clean['fileName'] = md5(randString(22).microtime().uniqid(mt_rand(),true)).".$ext";
+							$clean['fileName_clean'] = sanitizeHtml(basename($_FILES['Filedata']['name']));
+						}
+						else
+						{
+							$tree = new Files_Upload($targetPath);
+							$clean['fileName'] = $clean['fileName_clean'] = (strcmp($tempName,"") !== 0 && strcmp($tempNameSenzaEstensione,"") !== 0) ? $tree->getUniqueName($tempName) : $tree->getUniqueName("file".".$ext");
 						}
 						
 						$targetFile = rtrim($targetPath,'/') . '/' . $clean['fileName'];

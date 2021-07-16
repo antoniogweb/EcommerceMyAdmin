@@ -908,4 +908,20 @@ class BaseController extends Controller
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
 	}
+	
+	protected function scaricaFile($filePath, $fileName)
+	{
+		if (file_exists($filePath))
+		{
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			$MIMEtype = finfo_file($finfo, $filePath);
+			finfo_close($finfo);
+			
+			$cd = "attachment";
+			
+			header('Content-type: '.$MIMEtype);
+			header('Content-Disposition: '.$cd.'; filename='.$fileName);
+			readfile($filePath);
+		}
+	}
 }

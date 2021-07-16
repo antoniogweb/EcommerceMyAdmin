@@ -13,10 +13,12 @@
 <!-- Main content -->
 <section class="content">
 	<!-- show the top menù -->
+	<?php if (!nobuttons()) { ?>
 	<div class='mainMenu'>
 		<?php echo $menu;?>
 	</div>
-
+	<?php } ?>
+	
 	<?php include($this->viewPath("categories_steps"));?>
 	
 	<div class="row">

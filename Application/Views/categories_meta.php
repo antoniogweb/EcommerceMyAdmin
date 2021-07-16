@@ -2,7 +2,7 @@
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione categoria: <?php echo $titoloPagina;?></h1>
+	<h1><?php echo gtext("Gestione");?>: <?php echo $titoloPagina;?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
@@ -12,11 +12,13 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
+			<?php if (!nobuttons()) { ?>
 			<!-- show the top menù -->
 			<div class='mainMenu'>
 				<?php echo $menu;?>
 			</div>
-
+			<?php } ?>
+			
 			<?php include($this->viewPath("categories_steps"));?>
 			
 			<div class="box">

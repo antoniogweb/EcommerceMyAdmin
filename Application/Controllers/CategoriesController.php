@@ -55,7 +55,16 @@ class CategoriesController extends BaseController {
 		$this->model("ContenutitradottiModel");
 		$this->model("ContenutiModel");
 		
-		$this->setArgKeys(array('page:forceNat'=>1,'title:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','titolo_contenuto:sanitizeAll' => "tutti",'lingua:sanitizeAll' => "tutti", 'tipocontenuto:sanitizeAll' => "tutti"));
+		$this->setArgKeys(array(
+			'page:forceNat'=>1,
+			'title:sanitizeAll'=>'tutti',
+			'token:sanitizeAll'=>'token',
+			'titolo_contenuto:sanitizeAll' => "tutti",
+			'lingua:sanitizeAll' => "tutti",
+			'tipocontenuto:sanitizeAll' => "tutti",
+			'partial:sanitizeAll' => "tutti",
+			'nobuttons:sanitizeAll' => "tutti",
+		));
 
 		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
