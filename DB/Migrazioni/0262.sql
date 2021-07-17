@@ -1,1 +1,1 @@
-INSERT INTO `lingue` (`id_lingua`, `data_creazione`, `codice`, `descrizione`, `id_order`, `principale`, `attiva`, `backend`) VALUES (NULL, CURRENT_TIMESTAMP, 'de', 'German', '5', '0', '0', '0'), (NULL, CURRENT_TIMESTAMP, 'pl', 'Polish', '6', '0', '0', '0'), (NULL, CURRENT_TIMESTAMP, 'pt', 'Portuguese', '7', '0', '0', '0'), (NULL, CURRENT_TIMESTAMP, 'ru', 'Russian', '8', '0', '0', '0')
+ALTER TABLE `lingue` ADD UNIQUE `codice` (`codice`);

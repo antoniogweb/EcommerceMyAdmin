@@ -164,13 +164,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 						</div>
 					</div>
 					
-					<div class="uk-margin">
-						<h3><?php echo gtext("Note d'acquisto")?></h3>
-						
-						<div class="blocco_checkout">
-							<?php echo Html_Form::textarea("note",$values["note"],"uk-textarea",null,"placeholder='".gtext("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
-						</div>
-					</div>
+					<?php include(tpf("Ordini/note_acquisto.php"));?>
 					
 					<?php if (!$islogged && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"]) { ?>
 					<div class="newsletter_checkbox"><?php echo Html_Form::checkbox("newsletter",$values['newsletter'],"Y");?> <?php echo gtext("Voglio essere iscritto alla newsletter per conoscere le promozioni e le novità del negozio");?></div> 
