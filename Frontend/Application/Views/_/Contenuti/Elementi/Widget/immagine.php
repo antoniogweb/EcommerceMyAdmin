@@ -6,14 +6,14 @@
 		<?php $ext = Files_Upload::sFileExtension($testo["immagine"]);?>
 		<?php if ($ext != "svg") { ?>
 			<?php if ($testo["immagine_2x"]) { ?>
-				<img srcset="
+				<img uk-img data-srcset="
 				<?php echo Domain::$publicUrl."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"];?> 1x, 
 				<?php echo Domain::$publicUrl."/thumb/widget2x/".$testo["id_t"]."/".$testo["immagine_2x"];?> 2x" />
 			<?php } else { ?>
 				<img <?php echo htmlentitydecode($testo["attributi"]);?> src="<?php echo Domain::$publicUrl."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"];?>" />
 			<?php } ?>
 		<?php } else { ?>
-			 <img uk-svg src="<?php echo Domain::$publicUrl."/images/widgets/".$testo["immagine"];?>" />
+			 <img src="<?php echo Domain::$publicUrl."/images/widgets/".$testo["immagine"];?>" />
 		<?php } ?>
 				<?php if ($testo["testo_link"]) { ?>
 				<span><?php echo $testo["testo_link"];?></span>

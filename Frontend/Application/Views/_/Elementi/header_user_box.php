@@ -1,5 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-padding-small uk-margin-remove" uk-dropdown="pos: bottom-right; offset: -10; delay-hide: 200;" style="min-width: 250px;">
+<?php
+if (!isset($ukdropdown))
+	$ukdropdown = "pos: bottom-right; offset: -10; delay-hide: 200;";
+?>
+<div class="uk-padding-small uk-margin-remove" uk-dropdown="<?php echo $ukdropdown;?>" style="min-width: 250px;">
 	<?php if ($islogged) { ?>
 	<ul class="uk-nav uk-dropdown-nav">
 		<li>

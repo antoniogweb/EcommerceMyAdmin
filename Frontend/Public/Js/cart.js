@@ -79,15 +79,6 @@ function reloadCartSecondario()
 				$(".link_carrello_num_prod").text("");
 				$(".link_carrello_num_prod").addClass("uk-hidden");
 			}
-			
-// 			if (num_prod > 0)
-// 			{
-// 				$(".link_carrello_num_prod").addClass("count");/*css({"color":colore_carrello_non_vuoto});*/
-// 			}
-// 			else
-// 			{
-// 				$(".link_carrello_num_prod").removeClass("count");/*css({"color":"#000"});*/
-// 			}
 		}
 	});
 }
