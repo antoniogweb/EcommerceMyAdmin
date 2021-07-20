@@ -30,6 +30,7 @@ class CategoriesModel extends HierarchicalModel {
 	public static $idShop = 0;
 	
 	public static $arrayIdsPagineFiltrate = array();
+	public static $elencoCategorieFull = array();
 	
 	public $controller = "categories";
 	
@@ -640,25 +641,45 @@ class CategoriesModel extends HierarchicalModel {
 		return $this->linklinguaGeneric($record["categories"]["id_c"], $lingua, "id_c");
 	}
 	
-	public function numeroProdottiFull($id_c)
+	public static function gCatWhere($id_c, $full = true)
 	{
-		$children = $this->children((int)$id_c, true);
-		$catWhere = "in(".implode(",",$children).")";
-		
+		if ($full)
+		{
+			$c = new CategoriesModel();
+			
+			$children = $c->children((int)$id_c, true);
+			$catWhere = "in(".implode(",",$children).")";
+			
+			return array(
+				"in" => array("-id_c" => $children),
+			);
+		}
+		else
+			array(
+				"-id_c"		=>	(int)$id_c,
+			);
+	}
+	
+	public static function gPage($id_c, $full = true, $traduzione = true)
+	{
 		$p = new PagesModel();
 		
-		return $p->clear()->where(array(
-			"in" => array("-id_c" => $children),
-		))->addWhereAttivo()->rowNumber();
+		$p->aWhere(self::gCatWhere($id_c, $full))->addWhereAttivo();
+		
+		if ($traduzione)
+			$p->addJoinTraduzionePagina();
+		
+		return $p;
+	}
+	
+	public function numeroProdottiFull($id_c)
+	{
+		return self::gPage($id_c, true, false)->rowNumber();
 	}
 	
 	public function numeroProdotti($id_c)
 	{
-		$p = new PagesModel();
-		
-		return $p->clear()->where(array(
-			"-id_c"		=>	(int)$id_c,
-		))->addWhereAttivo()->rowNumber();
+		return self::gPage($id_c, false, false)->rowNumber();
 	}
 	
 	public function categorieFiglie($id_c)

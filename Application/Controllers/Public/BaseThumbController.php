@@ -633,6 +633,36 @@ class BaseThumbController extends Controller {
 		}
 	}
 	
+	public function categoriamenu($fileName)
+	{
+		$this->clean();
+		
+		$params = array(
+			'imgWidth'		=>	71,
+			'imgHeight'		=>	218,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'useCache'		=>	true,
+		);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/categorie_2',$params);
+				$thumb->render($fileName);
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
 	public function tagbig($fileName)
 	{
 		$this->clean();
