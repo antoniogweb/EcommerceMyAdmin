@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
 
 if (!isset($id_categoria))
-	$id_categoria = 0;
+	$id_categoria = $idShop;
 
 if (!isset($idMarchio))
 	$idMarchio = 0;

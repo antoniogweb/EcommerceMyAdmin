@@ -42,7 +42,7 @@ class BaseBaseController extends Controller
 	
 	public static $isPromo = false;
 	
-	public function __construct($model, $controller, $queryString)
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		if (!defined("FRONT"))
 			define('FRONT', ROOT);
@@ -52,7 +52,7 @@ class BaseBaseController extends Controller
 		Domain::$parentRoot = FRONT;
 		Domain::$adminRoot = LIBRARY;
 		
-		parent::__construct($model, $controller, $queryString);
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		Domain::$adminName = $this->baseUrlSrc."/admin";
 		Domain::$publicUrl = $this->baseUrlSrc;
@@ -451,6 +451,9 @@ class BaseBaseController extends Controller
 			
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
+		
+		if ($controller != "contenuti" || $action != "category")
+			$this->estraiDatiFiltri();
 		
 		$data["meta_description"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
 		$data["keywords"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));

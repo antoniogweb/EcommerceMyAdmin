@@ -25,9 +25,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BaseWishlistController extends BaseController
 {
 
-	public function __construct($model, $controller, $queryString)
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
-		parent::__construct($model, $controller, $queryString);
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		if (Output::$html)
 		{
