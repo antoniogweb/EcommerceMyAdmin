@@ -94,6 +94,22 @@ class MarchiModel extends GenericModel {
 						"<div class='form_notice'>Indicazione del marchio nell'URL (se lasciato vuoto viene creato in automatico)</div>"
 					),
 				),
+				'nazione'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectNazione(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'in_evidenza'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'In evidenza?',
+					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà evidenziato nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -128,6 +144,14 @@ class MarchiModel extends GenericModel {
 			
 			return parent::insert();
 		}
+	}
+	
+	public function nazione($record)
+	{
+		if ($record["marchi"]["nazione"] != "")
+			return findTitoloDaCodice($record["marchi"]["nazione"]);
+		
+		return "";
 	}
 	
 	// Controllo che la lingua esista

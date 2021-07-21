@@ -678,10 +678,11 @@ class PagesController extends BaseController {
 				$this->loadScaffold('form',$params);
 				$this->scaffold->loadForm($queryType,$this->controller."/form/$queryType/".$clean['id']);
 				
+				if (isset($this->disabledFields))
+					$this->scaffold->model->disabilita($this->disabledFields);
+					
 				if (isset($this->formFields))
-				{
 					$this->scaffold->model->fields = $this->formFields;
-				}
 				
 				$this->scaffold->getFormValues('sanitizeHtml',$clean['id'],$this->formDefaultValues);
 

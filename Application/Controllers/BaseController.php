@@ -710,9 +710,7 @@ class BaseController extends Controller
 			}
 			
 			if (isset($this->disabledFields))
-			{
 				$this->scaffold->model->disabilita($this->disabledFields);
-			}
 			
 			$this->scaffold->model->fields = isset($this->formFields) ? $this->formFields : $this->scaffold->model->fields;
 			

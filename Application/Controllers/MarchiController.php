@@ -28,7 +28,7 @@ class MarchiController extends BaseController
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array();
+	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'tutti');
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -50,11 +50,23 @@ class MarchiController extends BaseController
 		$this->mainFields = array("marchi.titolo");
 		$this->mainHead = "Titolo";
 		
-// 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
+		if (v("attiva_nazione_marchi"))
+		{
+			$this->mainFields[] = "nazione";
+			$this->mainHead .= ",Nazione";
+		}
+		
+		if (v("attiva_in_evidenza_marchi"))
+		{
+			$this->mainFields[] = "marchi.in_evidenza";
+			$this->mainHead .= ",In evidenza";
+		}
+		
+		$this->filters = array("titolo");
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
+					"lk" => array('titolo' => $this->viewArgs['titolo']),
 				))
 				->orderBy("id_order")->convert()->save();
 		
@@ -74,7 +86,21 @@ class MarchiController extends BaseController
 		
 		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo,alias,descrizione,immagine,immagine_2x');
+		$campi = 'titolo,alias,descrizione,immagine,immagine_2x';
+		
+		if (v("attiva_nazione_marchi"))
+		{
+			$campi .= ",nazione";
+			
+			$this->formDefaultValues = array(
+				"nazione"	=>	v("nazione_default"),
+			);
+		}
+		
+		if (v("attiva_in_evidenza_marchi"))
+			$campi .= ",in_evidenza";
+		
+		$this->m[$this->modelName]->setValuesFromPost($campi);
 		
 		parent::form($queryType, $id);
 	}

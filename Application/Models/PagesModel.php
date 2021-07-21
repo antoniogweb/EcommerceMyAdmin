@@ -169,6 +169,17 @@ class PagesModel extends GenericModel {
 	
 	public function setFormStruct($id = 0)
 	{
+		$haCombinazioni = $this->hasCombinations((int)$id, false);
+		
+		$wrapCombinazioni = array();
+		
+// 		if ($haCombinazioni)
+// 			$wrapCombinazioni = array(
+// 				null,
+// 				null,
+// 				"<div class='form_notice'>".gtext("Il campo non è editabile perché il prodotto ha delle varianti e quindi delle combinazioni. Modificare il campo nella scheda 'Varianti'")."</div>"
+// 			);
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -183,6 +194,11 @@ class PagesModel extends GenericModel {
 				),
 				'alias'		=>	array(
 					'labelString'=>	'Alias (per URL)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Indica l'URL che avrà la pagina/prodotto nel sito. Se lasciato vuoto, viene generato in automatico dal titolo")."</div>"
+					),
 				),
 				'id_c'		=>	array(
 					'type'		=>	'Select',
@@ -207,26 +223,49 @@ class PagesModel extends GenericModel {
 				),
 				'price'		=>	array(
 					'labelString'=>	'Prezzo Iva esclusa (€)',
+					'wrap' =>	$wrapCombinazioni,
 				),
 				'price_ivato'	=>	array(
 					'labelString'=>	'Prezzo Iva inclusa (€)',
+					'wrap' =>	$wrapCombinazioni,
 				),
 				'codice'		=>	array(
 					'labelString'=>	'Codice prodotto',
+					'wrap' =>	$wrapCombinazioni,
 				),
 				'attivo'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Pubblicato?',
 					'options'	=>	array('sì'=>'Y','no'=>'N'),
-					
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se compare nel sito, quindi se è acquistabile")."</div>"
+					),
 				),
 				'in_evidenza'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'In evidenza?',
 					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà evidenziato nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
+					),
+				),
+				'nuovo'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Prodotto marcato come nuovo?',
+					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito")."</div>"
+					),
 				),
 				'peso'		=>	array(
 					'labelString'=>	'Peso (kg)',
+					'wrap' =>	$wrapCombinazioni,
 				),
 				'in_promozione'	=>	array(
 					'type'		=>	'Select',
@@ -287,6 +326,7 @@ class PagesModel extends GenericModel {
 				),
 				'giacenza'	=>	array(
 					'labelString'=>	'Giacenza (disponibilità a magazzino)',
+					'wrap' =>	$wrapCombinazioni,
 				),
 				'tipo_pagina'		=>	array(
 					'type'		=>	'Select',
@@ -320,7 +360,11 @@ class PagesModel extends GenericModel {
 					'labelString'=>	'Prodotto principale',
 					'options'	=>	$this->selectProdotti($id),
 					'reverse' => 'yes',
-					
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se è il prodotto canonical")."</div>"
+					),
 				),
 				'priorita_sitemap'	=>	array(
 					'labelString'=>	'Priorità sitemap',

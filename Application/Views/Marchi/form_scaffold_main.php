@@ -13,6 +13,10 @@ $().ready(function() {
 		<div class='col-md-8'>
 			<?php echo $form["titolo"];?>
 			<?php echo $form["alias"];?>
+			
+			<?php echo isset($form["nazione"]) ? $form["nazione"] : "";?>
+			<?php echo isset($form["in_evidenza"]) ? $form["in_evidenza"] : "";?>
+			
 			<?php echo $form["descrizione"];?>
 			<?php echo $form["immagine"];?>
 			<?php echo $form["immagine_2x"];?>

@@ -220,6 +220,9 @@ class VariabiliModel extends GenericModel {
 		"alias_fascia_prezzo"		=>	"fascia-prezzo",
 		"attiva_formn_contatti"		=>	0,
 		"attiva_immagine_in_documenti"	=>	1,
+		"attiva_nazione_marchi"		=>	0,
+		"attiva_campo_nuovo_in_pagine"	=>	0,
+		"attiva_in_evidenza_marchi"	=>	0,
 	);
 	
 	public function __construct() {

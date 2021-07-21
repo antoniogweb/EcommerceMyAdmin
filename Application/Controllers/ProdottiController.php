@@ -26,15 +26,16 @@ class ProdottiController extends PagesController {
 
 	public $voceMenu = "prodotti";
 	public $sezionePannello = "ecommerce";
+	public static $sCampoPrice = "price";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		$campoPrice = "price";
+		$campoPrice = self::$sCampoPrice;
 		
 		if (v("prezzi_ivati_in_prodotti"))
-			$campoPrice = "price_ivato";
+			$campoPrice = self::$sCampoPrice = "price_ivato";
 			
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
@@ -68,10 +69,56 @@ class ProdottiController extends PagesController {
 		
 		$this->head .= ',In promoz?,Pubbl?,In evid?';
 		
+// 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
+// 		
+// 		if (v("ecommerce_attivo"))
+// 			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
+// 		
+// 		if (v("abilita_blocco_acquisto_diretto"))
+// 			$this->queryFields .= ",acquisto_diretto";
+// 		
+// 		if (v("usa_marchi"))
+// 			$this->queryFields .= ",id_marchio";
+// 		
+// 		if (v("accessori_in_prodotti"))
+// 			$this->queryFields .= ",acquistabile,aggiungi_sempre_come_accessorio";
+// 		
+// 		if (v("mostra_descrizione_in_prodotti"))
+// 			$this->queryFields .= ",description,use_editor";
+// 		
+// 		if (v("mostra_tendina_prodotto_principale"))
+// 			$this->queryFields .= ",id_p";
+// 		
+// 		if (v("attiva_campo_nuovo_in_pagine"))
+// 			$this->queryFields .= ",nuovo";
+		
+		$data["tabella"] = "prodotti";
+		
+		$data["sezionePannello"] = "ecommerce";
+		
+		$this->append($data);
+	}
+	
+	public function form($queryType = 'insert',$id = 0)
+	{
+		$campoPrice = self::$sCampoPrice;
+		
+// 		$data = array("avviso_combinazioni" => "");
+		
+		$haCombinazioni = $this->m[$this->modelName]->hasCombinations((int)$id, false);
+		
+		if ($haCombinazioni)
+			$data["avviso_combinazioni"] = "<div class='alert alert-info'>".gtext("Il prodotto ha delle varianti.")."<br />".gtext("I campi prezzo, codice, peso e giacenza devono essere modificati nella scheda 'Varianti', tramite il pulsante 'Gestisci combinazioni'")."</div>";
+		
 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
 		
 		if (v("ecommerce_attivo"))
-			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
+		{
+			if ($haCombinazioni)
+				$this->queryFields .= ",id_iva,in_promozione,prezzo_promozione,dal,al";
+			else
+				$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
+		}
 		
 		if (v("abilita_blocco_acquisto_diretto"))
 			$this->queryFields .= ",acquisto_diretto";
@@ -88,9 +135,10 @@ class ProdottiController extends PagesController {
 		if (v("mostra_tendina_prodotto_principale"))
 			$this->queryFields .= ",id_p";
 		
-		$data["tabella"] = "prodotti";
+		if (v("attiva_campo_nuovo_in_pagine"))
+			$this->queryFields .= ",nuovo";
 		
-		$data["sezionePannello"] = "ecommerce";
+		parent::form($queryType, $id);
 		
 		$this->append($data);
 	}

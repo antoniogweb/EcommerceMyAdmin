@@ -30,6 +30,8 @@
 								<?php echo $flash;?>
 								<?php if (!$flash) echo $notice;?>
 
+								<?php echo $avviso_combinazioni; ?>
+								
 								<!-- show the table -->
 								<div class='scaffold_form'>
 
@@ -50,6 +52,8 @@
 											<?php echo $form["id_iva"];?>
 										</div>
 									</div>
+									<?php } else if (isset($form["id_iva"])) { ?>
+									<?php echo $form["id_iva"];?>
 									<?php } ?>
 									
 									<?php if (isset($form["codice"])) { ?>
@@ -137,6 +141,10 @@
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
 								<?php echo $form["in_evidenza"];?>
+								
+								<?php if (isset($form["nuovo"])) { ?>
+								<?php echo $form["nuovo"];?>
+								<?php } ?>
 								
 								<?php if (isset($form["id_p"])) { ?>
 								<?php echo $form["id_p"];?>
