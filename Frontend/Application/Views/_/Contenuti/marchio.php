@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('EG')) die('Direct access not allowed!');
+
 $titoloPagina = mfield($marchioCorrente, "titolo");
 
 $breadcrumb = array(
