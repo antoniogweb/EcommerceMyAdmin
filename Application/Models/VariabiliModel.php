@@ -223,6 +223,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_nazione_marchi"		=>	0,
 		"attiva_campo_nuovo_in_pagine"	=>	0,
 		"attiva_in_evidenza_marchi"	=>	0,
+		"attiva_in_evidenza_nazioni"=>	0,
 	);
 	
 	public function __construct() {

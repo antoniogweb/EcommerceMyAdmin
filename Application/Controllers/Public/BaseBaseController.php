@@ -455,6 +455,11 @@ class BaseBaseController extends Controller
 		if ($controller != "contenuti" || $action != "category")
 			$this->estraiDatiFiltri();
 		
+		if (v("attiva_in_evidenza_nazioni"))
+			NazioniModel::$elencoNazioniInEvidenza = $this->m["NazioniModel"]->clear()->where(array(
+				"in_evidenza"	=>	"Y"
+			))->toList("iso_country_code")->send();
+		
 		$data["meta_description"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
 		$data["keywords"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
 		
@@ -465,6 +470,21 @@ class BaseBaseController extends Controller
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
+		
+		if (Output::$html)
+		{
+			$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
+				"ne"	=>	array("tipo_pagina" => ""),
+			))->toList("tipo_pagina", "id_page")->send();
+			
+			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
+			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
+			
+			$data["selectRuoli"] = $this->m["RuoliModel"]->selectTipi(true);
+			
+			if (v("attiva_tipi_azienda"))
+				$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);
+		}
 		
 		$data["isPromo"] = self::$isPromo;
 		
@@ -485,20 +505,7 @@ class BaseBaseController extends Controller
 		
 		$data["langDb"] = $this->langDb = Lang::$langDb = null;
 		
-		if (Output::$html)
-		{
-			$data["tipiPagina"] = $this->m["PagesModel"]->clear()->where(array(
-				"ne"	=>	array("tipo_pagina" => ""),
-			))->toList("tipo_pagina", "id_page")->send();
-			
-			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
-			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
-			
-			$data["selectRuoli"] = $this->m["RuoliModel"]->selectTipi(true);
-			
-			if (v("attiva_tipi_azienda"))
-				$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);
-		}
+		
 		
 		$data["pagesCss"] = $data["paginaGenerica"] = "";
 		

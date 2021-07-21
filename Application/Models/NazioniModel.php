@@ -27,6 +27,7 @@ class NazioniModel extends GenericModel
 	public static $elenco = null;
 	
 	public static $elencoNazioni = null;
+	public static $elencoNazioniInEvidenza = array();
 	public static $elencoCoordinateNazioni = null;
 	
 	public static $selectTipi = array(
@@ -102,6 +103,16 @@ class NazioniModel extends GenericModel
 						null,
 						null,
 						"<div class='form_notice'>Soglia sotto alla quale si può applicare l'IVA italiana anche per vendite all'estero</div>"
+					),
+				),
+				'in_evidenza'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'In evidenza?',
+					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà evidenziata nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
 					),
 				),
 			),

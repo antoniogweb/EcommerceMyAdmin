@@ -1070,4 +1070,16 @@ class GenericModel extends Model_Tree
 		
 		return $this;
 	}
+	
+	public static function g($traduzione = true)
+	{
+		$className = get_called_class();
+		
+		$m = new $className;
+		
+		if ($traduzione && $m->traduzione)
+			$m->addJoinTraduzione();
+		
+		return $m;
+	}
 }

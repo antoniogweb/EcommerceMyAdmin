@@ -47,6 +47,8 @@ class PagesModel extends GenericModel {
 	
 	public static $pagineConFeedback = null;
 	
+	public static $tipiPaginaId = array();
+	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina grazie",
 		"GRAZIE_NEWSLETTER"	=>	"Pagina grazie iscrizione a newsletter",
