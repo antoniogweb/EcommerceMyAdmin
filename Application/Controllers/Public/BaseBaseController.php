@@ -112,16 +112,8 @@ class BaseBaseController extends Controller
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
 		
-		if (v("mostra_fasce_prezzo"))
-		{
-			$this->model("FasceprezzoModel");
-			
-			$aliasFasciaPrezzo = gtext(v("alias_fascia_prezzo"), true, "none", null, 0);
-			
-			Filtri::$altriFiltri[] = $aliasFasciaPrezzo;
-			
-			Filtri::$altriFiltriTipi["fascia-prezzo"] = $aliasFasciaPrezzo;
-		}
+		// Predisponi i filtri in coda nell'URL
+		$this->predisponiAltriFiltri();
 		
 		$this->model("CaratteristichevaloriModel");
 		
@@ -519,6 +511,45 @@ class BaseBaseController extends Controller
 		}
 		
 		$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
+	}
+	
+	protected function predisponiAltriFiltri()
+	{
+		// Filtro stato prodotto IN EVIDENZA
+		$aliasStatoProdotto = gtext(v("alias_stato_prodotto"), true, "none", null, 0);
+		AltriFiltri::$altriFiltri[] = $aliasStatoProdotto;
+		AltriFiltri::$altriFiltriTipi["stato-prodotto"] = $aliasStatoProdotto;
+		AltriFiltri::$aliasValoreTipoInEvidenza = array(
+			gtext(v("alias_valore_tipo_in_evidenza"), true, "none", null, 0),
+			gtext(v("valore_tipo_in_evidenza"), true, "none", null, 0),
+		);
+		
+		// Filtro stato prodotto NUOVO
+		$aliasStatoProdotto = gtext(v("alias_stato_prodotto_nuovo"), true, "none", null, 0);
+		AltriFiltri::$altriFiltri[] = $aliasStatoProdotto;
+		AltriFiltri::$altriFiltriTipi["stato-prodotto-nuovo"] = $aliasStatoProdotto;
+		AltriFiltri::$aliasValoreTipoNuovo = array(
+			gtext(v("alias_valore_tipo_nuovo"), true, "none", null, 0),
+			gtext(v("valore_tipo_nuovo"), true, "none", null, 0),
+		);
+		
+		// Filtro stato prodotto PROMO
+		$aliasStatoProdotto = gtext(v("alias_stato_prodotto_promo"), true, "none", null, 0);
+		AltriFiltri::$altriFiltri[] = $aliasStatoProdotto;
+		AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"] = $aliasStatoProdotto;
+		AltriFiltri::$aliasValoreTipoPromo = array(
+			gtext(v("alias_valore_tipo_promo"), true, "none", null, 0),
+			gtext(v("valore_tipo_promo"), true, "none", null, 0),
+		);
+		
+		if (v("mostra_fasce_prezzo"))
+		{
+			$this->model("FasceprezzoModel");
+			
+			$aliasFasciaPrezzo = gtext(v("alias_fascia_prezzo"), true, "none", null, 0);
+			AltriFiltri::$altriFiltri[] = $aliasFasciaPrezzo;
+			AltriFiltri::$altriFiltriTipi["fascia-prezzo"] = $aliasFasciaPrezzo;
+		}
 	}
 	
 	protected function estraiDatiFiltri()

@@ -135,6 +135,15 @@ class GenericModel extends Model_Tree
 		if (count($res) > 0 && isset($res[0]["aggregate"]["titolo_filtro"]) && trim($res[0]["aggregate"]["titolo_filtro"]))
 			return $res[0]["aggregate"]["titolo_filtro"];
 		
+		if ($alias == AltriFiltri::$aliasValoreTipoInEvidenza[0])
+			return AltriFiltri::$aliasValoreTipoInEvidenza[1];
+		
+		if ($alias == AltriFiltri::$aliasValoreTipoNuovo[0])
+			return AltriFiltri::$aliasValoreTipoNuovo[1];
+		
+		if ($alias == AltriFiltri::$aliasValoreTipoPromo[0])
+			return AltriFiltri::$aliasValoreTipoPromo[1];
+		
 		return null;
 	}
 	

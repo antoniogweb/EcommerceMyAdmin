@@ -199,8 +199,8 @@
 	<?php } ?>
 	
 	<?php if (v("mostra_fasce_prezzo") && isset($fascePrezzo) && count($fascePrezzo) > 0) {
-		$filtriUrlAltriTutti = Filtri::getUrlCaratteristicheTutti(Filtri::$altriFiltriTipi["fascia-prezzo"]);
-		$filtroAltriTuttiSelezionato = Filtri::filtroTuttiSelezionato(Filtri::$altriFiltriTipi["fascia-prezzo"]);
+		$filtriUrlAltriTutti = AltriFiltri::getUrlCaratteristicheTutti(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]);
+		$filtroAltriTuttiSelezionato = AltriFiltri::filtroTuttiSelezionato(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]);
 	?>
 	<section class="uk-margin-large-top js-accordion-section uk-open">
 		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Fascia prezzo")?></h4>
@@ -210,8 +210,8 @@
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTutti);?>"><?php echo gtext("Tutti");?></a>
 				</li>
 				<?php foreach ($fascePrezzo as $p) {
-					$filtriUrlAltriFiltri = Filtri::getArrayUrlCaratteristiche(Filtri::$altriFiltriTipi["fascia-prezzo"], fpfield($p,"alias"));
-					$filtroSelezionato = Filtri::filtroSelezionato(Filtri::$altriFiltriTipi["fascia-prezzo"], fpfield($p,"alias"));
+					$filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["fascia-prezzo"], fpfield($p,"alias"));
+					$filtroSelezionato = AltriFiltri::filtroSelezionato(AltriFiltri::$altriFiltriTipi["fascia-prezzo"], fpfield($p,"alias"));
 				?>
 				<li class="">
 					<a class="uk-text-meta uk-text-xsmall <?php if ($filtroSelezionato) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?>">
@@ -223,6 +223,30 @@
 		</div>
 	</section>
 	<?php } ?>
+	
+<!-- 	<hr> -->
+
+	<section class="uk-margin-large-top js-accordion-section uk-open">
+		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Offerte / Consigliati")?></h4>
+		<div class="uk-accordion-content">
+			<ul class="uk-list uk-list-divider">
+				<li>
+					<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto"], AltriFiltri::$aliasValoreTipoInEvidenza[0]); ?>
+					<a class=" uk-text-meta  " href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?>">Best seller</a>
+				</li>
+
+				<li>
+					<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"], AltriFiltri::$aliasValoreTipoPromo[0]); ?>
+					<a class=" uk-text-meta  " href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?>">In offerta</a>
+				</li>
+
+				<li>
+					<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto-nuovo"], AltriFiltri::$aliasValoreTipoNuovo[0]); ?>
+					<a class=" uk-text-meta  " href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?>">Novità</a>
+				</li>
+			</ul>
+		</div>
+	</section>
 	
 	<?php if (User::$isMobile) { ?></div><?php } ?>
 </div>

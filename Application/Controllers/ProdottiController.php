@@ -103,7 +103,7 @@ class ProdottiController extends PagesController {
 	{
 		$campoPrice = self::$sCampoPrice;
 		
-// 		$data = array("avviso_combinazioni" => "");
+		$data = array("avviso_combinazioni" => "");
 		
 		$haCombinazioni = $this->m[$this->modelName]->hasCombinations((int)$id, false);
 		

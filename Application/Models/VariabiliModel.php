@@ -224,6 +224,15 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_nuovo_in_pagine"	=>	0,
 		"attiva_in_evidenza_marchi"	=>	0,
 		"attiva_in_evidenza_nazioni"=>	0,
+		"alias_stato_prodotto"		=>	"st", // ALIAS in URL per IN EVIDENZA
+		"alias_stato_prodotto_nuovo"		=>	"pbl", // ALIAS in URL per NUOVO
+		"alias_stato_prodotto_promo"		=>	"pr", // ALIAS in URL per IN OFFERTA
+		"valore_tipo_promo"			=>	"In promozione",
+		"alias_valore_tipo_promo"	=>	"in-promozione",
+		"valore_tipo_nuovo"			=>	"Nuovo",
+		"alias_valore_tipo_nuovo"	=>	"nuovo",
+		"valore_tipo_in_evidenza"	=>	"In evidenza",
+		"alias_valore_tipo_in_evidenza"	=>	"in-evidenza",
 	);
 	
 	public function __construct() {

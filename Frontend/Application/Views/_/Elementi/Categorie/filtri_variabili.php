@@ -14,4 +14,4 @@ $regioneAlias = RegioniModel::$rAlias;
 
 $filtriUrlTuttiAltri = CaratteristicheModel::getUrlCaratteristicheTutti();
 $filtriUrlLocTuttiAltri = RegioniModel::getUrlCaratteristicheTutti();
-$filtriUrlAltriTuttiAltri = Filtri::getUrlCaratteristicheTutti();
+$filtriUrlAltriTuttiAltri = AltriFiltri::getUrlCaratteristicheTutti();

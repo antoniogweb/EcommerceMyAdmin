@@ -150,7 +150,7 @@ class BaseContenutiController extends BaseController
 		$divisorioFiltriUrl = v("divisorio_filtri_url");
 		
 		// Altri filtri
-		foreach (Filtri::$altriFiltri as $filtro)
+		foreach (AltriFiltri::$altriFiltri as $filtro)
 		{
 			$tempsPageArgs = $this->pageArgs;
 			
@@ -169,7 +169,7 @@ class BaseContenutiController extends BaseController
 							$carAlias = sanitizeHtml($filtriUrl[0]);
 							$carValoreAlias = sanitizeHtml($filtriUrl[1]);
 								
-							Filtri::$filtriUrl[$carAlias] = $carValoreAlias;
+							AltriFiltri::$filtriUrl[$carAlias] = $carValoreAlias;
 							
 							$this->pageArgs = array_slice($tempsPageArgs, 0, $indiciDivisori[0]);
 						}
@@ -471,8 +471,8 @@ class BaseContenutiController extends BaseController
 			$arrayUrl = array_merge($arrayUrl,RegioniModel::getArrayUrlAll());
 		
 		// Altri filtri
-		if (!empty(Filtri::$filtriUrl))
-			$arrayUrl = array_merge($arrayUrl,Filtri::getArrayUrlAll());
+		if (!empty(AltriFiltri::$filtriUrl))
+			$arrayUrl = array_merge($arrayUrl,AltriFiltri::getArrayUrlAll());
 		
 		$baseUrl = $completeUrl ? $this->baseUrl."/" : null;
 		if (count($tempParents) > 0)
@@ -682,16 +682,7 @@ class BaseContenutiController extends BaseController
 		
 		// Promozioni
 		if (self::$isPromo)
-		{
-			$nowDate = date("Y-m-d");
-			$wherePromo = array(
-				"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-				" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-				"in_promozione" => "Y",
-			);
-			
-			$this->m["PagesModel"]->aWhere($wherePromo);
-		}
+			$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
 		
 		$this->addOrderByClause($firstSection);
 		
@@ -774,11 +765,11 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->sWhere($sWhereQuery);
 		}
 		
-		if (!empty(Filtri::$filtriUrl))
+		if (!empty(AltriFiltri::$filtriUrl))
 		{
-			foreach (Filtri::$filtriUrl as $tipoFiltro => $valoreFiltro)
+			foreach (AltriFiltri::$filtriUrl as $tipoFiltro => $valoreFiltro)
 			{
-				if ($tipoFiltro == Filtri::$altriFiltriTipi["fascia-prezzo"])
+				if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"])
 				{
 					if (User::$nazione)
 						$tabellaListini = "(select id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_prodotto from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as tabella_listini";
@@ -801,6 +792,12 @@ class BaseContenutiController extends BaseController
 						));
 					}
 				}
+				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto"])
+					$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoInEvidenza[0]);
+				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto-nuovo"])
+					$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoNuovo[0]);
+				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"])
+					$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
 			}
 		}
 		
@@ -880,6 +877,42 @@ class BaseContenutiController extends BaseController
 			$this->sectionLoad($section, "category", $template);
 		else
 			$this->load("api_output");
+	}
+	
+	protected function addStatoWhereClause($tipo = "in-promozione")
+	{
+		$wherePromo = array();
+		
+		switch ($tipo)
+		{
+			case AltriFiltri::$aliasValoreTipoPromo[0]:
+				$nowDate = date("Y-m-d");
+				$wherePromo = array(
+					"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+					" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+					"pages.in_promozione" => "Y",
+				);
+				
+				self::$isPromo = true;
+				break;
+				
+			case AltriFiltri::$aliasValoreTipoNuovo[0]:
+				$wherePromo = array(
+					"pages.nuovo" => "Y",
+				);
+				
+				break;
+				
+			case AltriFiltri::$aliasValoreTipoInEvidenza[0]:
+				$wherePromo = array(
+					"pages.in_evidenza" => "Y",
+				);
+				
+				break;
+		}
+		
+		if (!empty($wherePromo))
+			$this->m["PagesModel"]->aWhere($wherePromo);
 	}
 	
 	protected function addOrderByClause($firstSection, $urlOrdinamento = null)

@@ -8,14 +8,21 @@ trait Filtri
 	
 	public static $altriFiltriTipi = array();
 	
+	public static $aliasValoreTipoPromo = "";
+	public static $aliasValoreTipoNuovo = "";
+	public static $aliasValoreTipoInEvidenza = "";
+	
 	// Restituisce i filtri nell'URL ma impostando la caratteristica $aliasCar impostata a $aliasCarVal
 	public static function getFiltriCaratteristica($aliasCar, $aliasCarVal)
 	{
 		$temp = self::$filtriUrl;
 		
-		$temp[$aliasCar] = array(
-			$aliasCarVal
-		);
+		if (get_called_class() != "AltriFiltri")
+			$temp[$aliasCar] = array(
+				$aliasCarVal
+			);
+		else
+			$temp[$aliasCar] = $aliasCarVal;
 		
 		return $temp;
 	}
@@ -37,23 +44,31 @@ trait Filtri
 	{
 		$urlFiltriArray = array();
 		
-		if (count($filtri) > 0 && __CLASS__ != "Filtri")
+		if (count($filtri) > 0 && get_called_class() != "AltriFiltri")
 			$urlFiltriArray[] = v("divisorio_filtri_url");
 		
-		foreach ($filtri as $car => $carVals)
+		if (!empty(self::$altriFiltri))
 		{
-			if (is_array($carVals))
+			$tempAltriFiltri = array_reverse(self::$altriFiltri);
+			
+			foreach ($tempAltriFiltri as $filtro)
+			{
+				if (isset($filtri[$filtro]))
+				{
+					$urlFiltriArray[] = $filtro;
+					$urlFiltriArray[] = $filtri[$filtro];
+				}
+			}
+		}
+		else
+		{
+			foreach ($filtri as $car => $carVals)
 			{
 				foreach ($carVals as $carVal)
 				{
 					$urlFiltriArray[] = $car;
 					$urlFiltriArray[] = $carVal;
 				}
-			}
-			else
-			{
-				$urlFiltriArray[] = $car;
-				$urlFiltriArray[] = $carVals;
 			}
 		}
 		

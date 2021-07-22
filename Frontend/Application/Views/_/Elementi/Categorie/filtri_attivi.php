@@ -2,6 +2,9 @@
 
 $viewStatusTogliFiltro = $this->getViewStatusUsingVariables(array("p"=>1));
 
+if (($id_categoria && $id_categoria != $idShop) || $idTag && isset($aliasTagCorrente) || ($idMarchio && isset($aliasMarchioCorrente)) || !empty(CaratteristicheModel::$filtriUrl) || !empty(CaratteristicheModel::$filtriUrl) || !empty(RegioniModel::$filtriUrl) || !empty(AltriFiltri::$filtriUrl))
+echo gtext("Filtri attivi").": ";
+
 if ($id_categoria && $id_categoria != $idShop)
 {
 	$filtroSelezionatoUrl = $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($id_categoria, $idMarchio, $idShop, $viewStatusTogliFiltro, $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri,$filtriUrlAltriTuttiAltri);
@@ -39,8 +42,8 @@ foreach (RegioniModel::$filtriUrl as $car => $carVs) {
 	}
 }
 
-foreach (Filtri::$filtriUrl as $car => $carV) {
-	$filtroSelezionatoUrlTutti = Filtri::getUrlCaratteristicheTutti($car);
+foreach (AltriFiltri::$filtriUrl as $car => $carV) {
+	$filtroSelezionatoUrlTutti = AltriFiltri::getUrlCaratteristicheTutti($car);
 	$filtroSelezionatoUrl = $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, $viewStatusTogliFiltro, $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri,$filtroSelezionatoUrlTutti);
 	include(tpf("/Elementi/Categorie/filtro_attivo.php"));
 }
