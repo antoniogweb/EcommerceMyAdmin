@@ -36,7 +36,7 @@ $(document).ready(function(){
 
 					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 					
-						<?php echo Html_Form::select("id_corr","",$listaProdotti,null,"combobox","yes");?>
+						<?php echo Html_Form::select("id_corr","",$listaProdotti,"correlati_combobox","combobox","yes");?>
 						
 						<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
 						

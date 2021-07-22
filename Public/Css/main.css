@@ -684,9 +684,13 @@ ul.third_level
 	font-size:14px;
 }
 
-.form_input_text .custom-combobox
+.form_input_text .custom-combobox, .correlati_combobox
 {
 	display:block;
+}
+.custom-combobox input
+{
+	min-width:300px;
 }
 .custom-combobox
 {
