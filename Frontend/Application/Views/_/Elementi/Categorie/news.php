@@ -6,7 +6,7 @@ $urlAliasCategoria = getCategoryUrlAlias($p["categories"]["id_c"]);
 ?>
 <div class="uk-card uk-card-default uk-card-small" style="box-shadow: none;">
 	<div class="uk-card-media-top">
-		<a href="<?php echo $this->baseUrl."/".$urlAlias;?>"><img src="<?php echo $this->baseUrlSrc."/thumb/blog/".$p["pages"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>"></a>
+		<a href="<?php echo $this->baseUrl."/".$urlAlias;?>"><img src="<?php echo $this->baseUrlSrc."/thumb/blog/".$p["pages"]["immagine"];?>" alt="<?php echo urlencode(field($p, "title"));?>"></a>
 	</div>
 	<div class="uk-card-header">
 		<h6 class="uk-margin-remove-bottom uk-text-bold"><a class="uk-link uk-text-secondary" href="<?php echo $this->baseUrl."/$urlAliasCategoria";?>"><?php echo cfield($p, "title");?></a></h6>
