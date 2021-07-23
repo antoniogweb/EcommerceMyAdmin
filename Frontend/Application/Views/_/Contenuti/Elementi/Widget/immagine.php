@@ -6,7 +6,7 @@
 		<?php $ext = Files_Upload::sFileExtension($testo["immagine"]);?>
 		<?php if ($ext != "svg") { ?>
 			<?php if ($testo["immagine_2x"]) { ?>
-				<img uk-img srcset="
+				<img uk-img data-srcset="
 				<?php echo Domain::$publicUrl."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"];?> 1x, 
 				<?php echo Domain::$publicUrl."/thumb/widget2x/".$testo["id_t"]."/".$testo["immagine_2x"];?> 2x" />
 			<?php } else { ?>
