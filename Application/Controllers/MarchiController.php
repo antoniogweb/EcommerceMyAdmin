@@ -86,7 +86,7 @@ class MarchiController extends BaseController
 		
 		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
-		$campi = 'titolo,alias,descrizione,immagine,immagine_2x';
+		$campi = 'titolo,alias,descrizione,immagine,immagine_2x,sottotitolo';
 		
 		if (v("attiva_nazione_marchi"))
 		{

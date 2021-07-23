@@ -27,7 +27,7 @@ class CategorieController extends CategoriesController {
 	public $voceMenu = "categorie";
 	public $sezionePannello = "ecommerce";
 	
-	public $queryFields = "title,alias,id_p,mostra_in_home,description,immagine";
+	public $queryFields = "title,alias,sottotitolo,id_p,mostra_in_home,description,immagine";
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);

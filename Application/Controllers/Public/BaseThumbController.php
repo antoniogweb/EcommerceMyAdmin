@@ -604,6 +604,35 @@ class BaseThumbController extends Controller {
 		}
 	}
 	
+	public function famigliabig($fileName)
+	{
+		$this->clean();
+		
+		$params = array(
+			'imgWidth'		=>	2880,
+			'imgHeight'		=>	1146,
+			'defaultImage'	=>  null,
+// 			'backgroundColor' => "#FFF",
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'useCache'		=>	true,
+		);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/marchi',$params);
+				$thumb->render($fileName);
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
 	public function categoria($fileName)
 	{
 		$this->clean();
