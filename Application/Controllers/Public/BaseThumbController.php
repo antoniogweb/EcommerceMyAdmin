@@ -42,7 +42,7 @@ class BaseThumbController extends Controller {
 	{
 		$path = FRONT . "/Application/Layout/".v("theme_folder")."/layout.php";
 		
-		if (file_exists($path));
+		if (file_exists($path))
 		{
 			$action = $this->action;
 			
