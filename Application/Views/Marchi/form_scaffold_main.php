@@ -17,6 +17,7 @@ $().ready(function() {
 			
 			<?php echo isset($form["nazione"]) ? $form["nazione"] : "";?>
 			<?php echo isset($form["in_evidenza"]) ? $form["in_evidenza"] : "";?>
+			<?php echo isset($form["nuovo"]) ? $form["nuovo"] : "";?>
 			
 			<?php echo $form["descrizione"];?>
 			<?php echo $form["immagine"];?>

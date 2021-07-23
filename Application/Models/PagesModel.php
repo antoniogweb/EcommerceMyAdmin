@@ -262,7 +262,7 @@ class PagesModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito")."</div>"
+						"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito, in funzione del tema")."</div>"
 					),
 				),
 				'peso'		=>	array(

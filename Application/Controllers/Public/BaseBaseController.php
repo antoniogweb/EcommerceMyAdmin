@@ -31,6 +31,7 @@ class BaseBaseController extends Controller
 	public $prodottiInEvidenza;
 	public $elencoCategorieFull;
 	public $elencoMarchiFull;
+	public $elencoMarchiNuoviFull;
 	public $elencoTagFull;
 	public $idShop = 0;
 	public $getNewsInEvidenza;
@@ -569,6 +570,10 @@ class BaseBaseController extends Controller
 			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
 			
 			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->where(array(
+				"nuovo"	=>	"Y",
+			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			
 			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->send();
 		}
 		

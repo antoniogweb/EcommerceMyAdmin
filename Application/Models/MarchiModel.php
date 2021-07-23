@@ -110,6 +110,16 @@ class MarchiModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Verrà evidenziato nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
 					),
 				),
+				'nuovo'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Marcato come nuovo?',
+					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito, in funzione del tema")."</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',

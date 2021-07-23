@@ -38,6 +38,23 @@ class BaseThumbController extends Controller {
 			VariabiliModel::ottieniVariabili();
 	}
 	
+	private function caricaParametri($params)
+	{
+		$path = FRONT . "/Application/Layout/".v("theme_folder")."/layout.php";
+		
+		if (file_exists($path));
+		{
+			$action = $this->action;
+			
+			require_once($path);
+			
+			if (isset(Layout::$thumb[$action]))
+				return Layout::$thumb[$action];
+		}
+		
+		return $params;
+	}
+	
 	public function contenuto($fileName)
 	{
 		$this->clean();
@@ -51,6 +68,8 @@ class BaseThumbController extends Controller {
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -118,6 +137,8 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -147,6 +168,8 @@ class BaseThumbController extends Controller {
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -178,6 +201,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -202,6 +227,8 @@ class BaseThumbController extends Controller {
 			'imgHeight'		=>	700,
 			'defaultImage'	=>  null,
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -234,6 +261,8 @@ class BaseThumbController extends Controller {
 			'backgroundColor' => "#FFF",
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -263,6 +292,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 			'backgroundColor' => "#FFF",
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -294,6 +325,8 @@ class BaseThumbController extends Controller {
 			'backgroundColor' => "#FFF",
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -323,6 +356,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 			'backgroundColor' => "#FFF",
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -354,6 +389,8 @@ class BaseThumbController extends Controller {
 			'backgroundColor' => "#FFF",
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -383,6 +420,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 			'backgroundColor' => "#FFF",
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -415,6 +454,8 @@ class BaseThumbController extends Controller {
 // 			'backgroundColor' => "#FFF",
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -441,6 +482,8 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 // 			'backgroundColor' => "#FFF",
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -472,6 +515,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -501,6 +546,8 @@ class BaseThumbController extends Controller {
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -532,6 +579,8 @@ class BaseThumbController extends Controller {
 			'backgroundColor' => "#FFF",
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -558,6 +607,8 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 // 			'backgroundColor' => "#FFF",
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -589,6 +640,8 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -617,6 +670,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 			'useCache'		=>	true,
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -648,6 +703,8 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -677,6 +734,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 			'useCache'		=>	true,
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -708,6 +767,8 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -737,6 +798,8 @@ class BaseThumbController extends Controller {
 // 				'horizAlign'	=>	'center',
 // 				'vertAlign'		=>	'center',
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -768,6 +831,8 @@ class BaseThumbController extends Controller {
 // 				'vertAlign'		=>	'center',
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -798,6 +863,8 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 		);
 		
+		$params = $this->caricaParametri($params);
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -827,6 +894,8 @@ class BaseThumbController extends Controller {
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{
@@ -917,6 +986,8 @@ class BaseThumbController extends Controller {
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
+		
+		$params = $this->caricaParametri($params);
 		
 		if (accepted($fileName))
 		{

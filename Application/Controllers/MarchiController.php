@@ -62,6 +62,12 @@ class MarchiController extends BaseController
 			$this->mainHead .= ",In evidenza";
 		}
 		
+		if (v("attiva_nuovo_marchi"))
+		{
+			$this->mainFields[] = "marchi.nuovo";
+			$this->mainHead .= ",Nuovo";
+		}
+		
 		$this->filters = array("titolo");
 		
 		$this->m[$this->modelName]->clear()
@@ -99,6 +105,9 @@ class MarchiController extends BaseController
 		
 		if (v("attiva_in_evidenza_marchi"))
 			$campi .= ",in_evidenza";
+		
+		if (v("attiva_nuovo_marchi"))
+			$campi .= ",nuovo";
 		
 		$this->m[$this->modelName]->setValuesFromPost($campi);
 		
