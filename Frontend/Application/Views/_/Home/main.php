@@ -8,3 +8,5 @@
 <?php include(tpf("/Fasce/carosello_categorie.php"));?>
 
 <?php include(tpf("/Fasce/ultimi_articoli.php"));?>
+
+<?php include(tpf("/Fasce/fascia_newsletter.php"));?>

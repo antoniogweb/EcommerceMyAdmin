@@ -13,28 +13,24 @@
 						<?php include(tpf("/Elementi/social_list.php"));?>
 					</ul>
 				</div>
-				<div>
-					<nav class="uk-grid-small uk-child-width-1-2" uk-grid>
-					<div>
-						<ul class="uk-nav uk-nav-default">
-							<?php include(tpf("/Elementi/footer_link_privacy.php"));?>
-						</ul>
-					</div>
-					<div>
-						<ul class="uk-nav uk-nav-default">
-							<?php include(tpf("/Elementi/footer_link_contenuti.php"));?>
-						</ul>
-					</div>
-					</nav>
-				</div>
+				<!--<div>
+					<nav class="uk-grid-small uk-child-width-1-2" uk-grid>-->
+						<div>
+							<ul class="uk-nav uk-nav-default">
+								<?php include(tpf("/Elementi/footer_link_privacy.php"));?>
+							</ul>
+						</div>
+						<div>
+							<ul class="uk-nav uk-nav-default">
+								<?php include(tpf("/Elementi/footer_link_contenuti.php"));?>
+							</ul>
+						</div>
+					<!--</nav>
+				</div>-->
 				<div>
 					<ul class="uk-list uk-text-small">
 						<?php include(tpf("/Elementi/footer_contatti_aziendali.php"));?>
 					</ul>
-				</div>
-				<div>
-					<?php include(tpf("/Elementi/footer_iscrizione_newsletter.php"));?>
-					<div class="uk-margin uk-text-small uk-text-muted"><?php echo t("Testo footer sotto newsletter");?></div>
 				</div>
 			</div>
 		</div>
