@@ -298,7 +298,9 @@ class MenuModel extends HierarchicalModel {
 					}
 					else if (strcmp($requestUri,"/") !== 0 and strcmp($node["node"]["link_to"],"home") !== 0)
 					{
-						$pattern = str_replace(".html",null,str_replace(DS, '\\'.DS, $node["node"]["link_alias"]));
+						$linkAlias = $node["node"]["link_alias"] ? $node["node"]["link_alias"] : $node["node"]["alias"];
+						
+						$pattern = str_replace(".html",null,str_replace(DS, '\\'.DS, $linkAlias));
 						$pattern = rtrim($pattern,"\/")."\/";
 						
 						$domain = isset($lingua) ? str_replace("/".$lingua,"",Domain::$name) : Domain::$name;
@@ -306,7 +308,6 @@ class MenuModel extends HierarchicalModel {
 						$subject = str_replace(".html",null,$domain.$requestUri);;
 						$subject = rtrim($subject,"/")."/";
 
-// 						echo $pattern . " - " . $subject . "<br />";
 						if (preg_match("/(".$pattern.")/",$subject))
 						{
 							$currClass = v("current_menu_item")." current_page_item current_item";
