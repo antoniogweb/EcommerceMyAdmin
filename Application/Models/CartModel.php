@@ -26,6 +26,7 @@ class CartModel extends Model_Tree {
 	
 	public static $ordinamento = 0;
 	public static $deletedExpired = false;
+	public static $checkCart = false;
 	
 	public function __construct() {
 		$this->_tables='cart';
@@ -39,6 +40,7 @@ class CartModel extends Model_Tree {
 		parent::__construct();
 
 		$this->deleteExpired();
+		$this->checkCart();
 	}
 	
 	public function relations() {
@@ -55,6 +57,13 @@ class CartModel extends Model_Tree {
 			$this->db->del('cart','creation_time < '.$limit);
 			self::$deletedExpired = true;
 		}
+	}
+	
+	public function checkCart()
+	{
+// 		$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c where combinazioni.id_c is null");
+		
+// 		print_r($daEliminare);
 	}
 	
 	// Totale scontato
