@@ -3,11 +3,13 @@
 <script>
 $ = jQuery;
 
+var myTimeOut;
+
 $(document).ready(function(){
 
-	setTimeout(function(){ 
+	myTimeOut = setTimeout(function(){ 
 	
-		$("#segnalazione_cookies_ext").animate({bottom: "0px"});
+		$(".segnalazione_cookies_ext").animate({bottom: "0px"});
 	
 	}, 2000);
 	
@@ -15,7 +17,7 @@ $(document).ready(function(){
 	
 		e.preventDefault();
 		
-		$("#segnalazione_cookies_ext").animate({bottom: "-150px"});
+		$("#segnalazione_cookies_ext").animate({bottom: "-250px"});
 		
 		$.ajax({
 			type: "GET",
@@ -23,7 +25,9 @@ $(document).ready(function(){
 			async: true,
 			cache:false,
 			dataType: "html",
-			success: function(content){}
+			success: function(content){
+				clearTimeout(myTimeOut);
+			}
 		});
 		
 	});
@@ -31,7 +35,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div id="segnalazione_cookies_ext">
+<div class="segnalazione_cookies_ext" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">
 		<?php echo gtext("Questo sito utilizza cookie per migliorare la tua esperienza di navigazione. Cliccando su OK o continuando a navigare ne consenti l'utilizzo.");?>
 		
