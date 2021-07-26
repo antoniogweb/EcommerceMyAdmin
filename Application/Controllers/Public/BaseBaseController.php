@@ -776,6 +776,13 @@ class BaseBaseController extends Controller
 		else
 			$campiForm = implode(",",array_unique(array_merge(explode(",",v("campo_form_newsletter")), explode(",",v("campo_form_contatti")))));
 		
+		$tipo = $isNewsletter ? "N" : "C";
+		
+		Form::$fields = array(
+			"C"	=>	v("campo_form_contatti"),
+			"N"	=>	v("campo_form_newsletter"),
+		);
+		
 		$this->model('ContattiModel');
 		$this->m['ContattiModel']->strongConditions['insert'] = array(
 			'checkNotEmpty'	=>	$campiForm,
@@ -784,7 +791,7 @@ class BaseBaseController extends Controller
 		
 		$this->m['ContattiModel']->setFields($campiForm,'strip_tags');
 		
-		Form::$notice = null;
+		Form::sNotice($tipo, null);
 		
 		if (isset($_POST['invia']))
 		{
@@ -851,17 +858,21 @@ class BaseBaseController extends Controller
 						else
 							$this->redirect("grazie.html");
 					} else {
-						Form::$notice = "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova pi&ugrave tardi</div>";
+						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova pi&ugrave tardi</div>");
 					}
 				}
 				else
 				{
-					Form::$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['ContattiModel']->notice;
+					Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['ContattiModel']->notice);
 				}
 			}
 		}
 		
-		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+// 		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+		
+		Form::sValues($tipo, $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml'));
+		
+// 		print_r(Form::$valuesNotice);die();
 	}
 	
 	protected function getCurrentUrl($completeUrl = true)

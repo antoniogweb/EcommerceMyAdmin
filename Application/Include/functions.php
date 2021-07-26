@@ -1107,10 +1107,78 @@ function getLayers($idPage)
 
 class Form
 {
-
 	static public $notice;
 	static public $values;
-
+	static public $tipo = "C"; // C: contatti, N: newsletter
+	static public $valuesTipo = array();
+	static public $valuesNotice = array();
+	static public $fields = array(
+		"C"	=>	"",
+		"N"	=>	"",
+	);
+	
+	static public $tipi = array();
+	
+	static public function gTipi()
+	{
+		self::$tipi = array_keys(self::$fields);
+	}
+	
+	static public function sValues($tipo, $values)
+	{
+		self::$values = $values;
+		
+		self::gTipi();
+		
+		foreach (self::$tipi as $t)
+		{
+			if ($t == $tipo)
+				self::$valuesTipo[$t] = $values;
+			else
+			{
+				$ae = new ArrayExt();
+				
+				self::$valuesTipo[$t] = $ae->subset(array(), self::$fields[$t]);
+			}
+		}
+	}
+	
+	static public function sNotice($tipo, $notice)
+	{
+		self::$notice = $notice;
+		
+		self::gTipi();
+		
+		foreach (self::$tipi as $t)
+		{
+			if ($t == $tipo)
+				self::$valuesNotice[$t] = $notice;
+			else
+				self::$valuesNotice[$t] = "";
+		}
+	}
+	
+	static public function gNotice()
+	{
+		if (isset(self::$valuesNotice[self::$tipo]))
+			return self::$valuesNotice[self::$tipo];
+		
+		if (isset(self::$notice))
+			return self::$notice;
+		
+		return "";
+	}
+	
+	static public function gValue($key)
+	{
+		if (isset(self::$valuesTipo[self::$tipo][$key]))
+			return self::$valuesTipo[self::$tipo][$key];
+		
+		if (isset(self::$values[$key]))
+			return self::$values[$key];
+		
+		return "";
+	}
 }
 
 function creaFormContatti($matches = "")

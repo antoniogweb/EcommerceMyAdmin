@@ -339,11 +339,24 @@ if (typeof evidenziaErrore !== 'function')
 {
 	window.evidenziaErrore = function(selettore)
 	{
-		if (input_error_style == "")
-			$(selettore).css(input_error_css);
-		
-		if (input_error_style != "")
-			$(selettore).attr("style", input_error_style);
+		if ($(".box_form_evidenzia").length > 0)
+		{
+// 			$(selettore).closest(".box_form_evidenzia").remove();
+			
+			if (input_error_style == "")
+				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).css(input_error_css);
+			
+			if (input_error_style != "")
+				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).attr("style", input_error_style);
+		}
+		else
+		{
+			if (input_error_style == "")
+				$(selettore).css(input_error_css);
+			
+			if (input_error_style != "")
+				$(selettore).attr("style", input_error_style);
+		}
 	}
 }
 
