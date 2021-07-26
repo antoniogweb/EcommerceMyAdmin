@@ -249,10 +249,32 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaMarchiNuovi()
+	{
+		$pages = $elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+			"nuovo"	=>	"Y",
+		))->orderBy("marchi.id_order")->send();
+		
+		ob_start();
+		include tpf("Fasce/fascia_marchi_nuovi.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaFormContatti()
 	{
 		ob_start();
 		include tpf("Fasce/fascia_form_contatti.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function getFasciaInfoSpedizioni()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_spedizioni.php");
 		$output = ob_get_clean();
 		
 		return $output;

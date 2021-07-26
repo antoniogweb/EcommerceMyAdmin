@@ -57,6 +57,8 @@ class BaseHomeController extends BaseController
 		
 		$data["marchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->send(false);
 		
+		$data["fasce"]  = "";
+		
 		// Estraggo le fasce
 		if (v("usa_fasce_in_home"))
 		{
@@ -64,7 +66,8 @@ class BaseHomeController extends BaseController
 				"tipo_pagina"	=>	"HOME",
 			))->field("id_page");
 			
-			$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['idPaginaHome'], 0, $this);
+			if ($clean["idPaginaHome"])
+				$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['idPaginaHome'], 0, $this);
 		}
 		
 		$this->append($data);

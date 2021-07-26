@@ -61,6 +61,8 @@
 										</div>
 									</div>
 									
+									<?php echo isset($form["description"]) ? $form["description"] : "";?>
+									
 									<?php if ($type === "update") { ?>
 									<input class="varchar_input form-control" type="hidden" value="<?php echo $id_page;?>" name="id_page">
 									<?php } ?>

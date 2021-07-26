@@ -833,6 +833,8 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[eventi\]/', array($obj,'getEventiFascia') ,$string);
 		$string = preg_replace_callback('/\[form-contatti\]/', array($obj,'getFasciaFormContatti') ,$string);
 		$string = preg_replace_callback('/\[marchi\]/', array($obj,'getFasciaMarchi') ,$string);
+		$string = preg_replace_callback('/\[marchi-nuovi\]/', array($obj,'getFasciaMarchiNuovi') ,$string);
+		$string = preg_replace_callback('/\[info-spedizioni\]/', array($obj,'getFasciaInfoSpedizioni') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
@@ -1005,9 +1007,9 @@ function t($chiave, $tags = null)
 }
 
 //chiama la traduzione di un blocco immagine
-function i($chiave, $tags = null)
+function i($chiave, $tags = null, $attrinuti = null)
 {
-	return getTesto(array("",$chiave),$tags, "IMMAGINE");
+	return getTesto(array("",$chiave, $attrinuti),$tags, "IMMAGINE");
 }
 
 //chiama la traduzione di un blocco immagine

@@ -234,6 +234,7 @@ class VariabiliModel extends GenericModel {
 		"valore_tipo_in_evidenza"	=>	"In evidenza",
 		"alias_valore_tipo_in_evidenza"	=>	"in-evidenza",
 		"attiva_nuovo_marchi"		=>	0,
+		"usa_descrizione_in_slide"	=>	0,
 	);
 	
 	public function __construct() {

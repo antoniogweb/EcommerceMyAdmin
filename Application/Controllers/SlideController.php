@@ -60,6 +60,9 @@ class SlideController extends PagesController {
 		if (v("usa_tag"))
 			$this->queryFields .= ",link_id_tag";
 		
+		if (v("usa_descrizione_in_slide"))
+			$this->queryFields .= ",description";
+		
 		$this->clean();
 		
 		$this->load('header_sito');
@@ -76,7 +79,7 @@ class SlideController extends PagesController {
 	{
 		parent::form($queryType, $id);
 		
-		$data["use_editor"] = "N";
+		$data["use_editor"] = "Y";
 		
 		$this->append($data);
 	}
