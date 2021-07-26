@@ -769,7 +769,7 @@ class BaseContenutiController extends BaseController
 		{
 			foreach (AltriFiltri::$filtriUrl as $tipoFiltro => $valoreFiltro)
 			{
-				if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"])
+				if (isset(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]) && $tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"])
 				{
 					if (User::$nazione)
 						$tabellaListini = "(select id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_prodotto from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as tabella_listini";
