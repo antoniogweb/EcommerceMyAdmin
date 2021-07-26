@@ -574,7 +574,7 @@ class BaseBaseController extends Controller
 				"nuovo"	=>	"Y",
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
-			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->send();
+			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->send();
 		}
 		
 		if (v("usa_tag"))
