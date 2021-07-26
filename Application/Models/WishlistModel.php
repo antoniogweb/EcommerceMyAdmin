@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class WishlistModel extends Model_Tree {
 	
 	public static $pagesInWishlist = null;
+	public static $deletedExpired = false;
 	
 	public function __construct() {
 		$this->_tables='wishlist';
@@ -48,8 +49,12 @@ class WishlistModel extends Model_Tree {
     
 	public function deleteExpired()
 	{
-		$limit = time() - Parametri::$durataWishlist; 
-		$this->db->del('wishlist','creation_time < '.$limit);
+		if (!self::$deletedExpired)
+		{
+			$limit = time() - Parametri::$durataWishlist; 
+			$this->db->del('wishlist','creation_time < '.$limit);
+			self::$deletedExpired = true;
+		}
 	}
 	
 	public function emptyWishlist()

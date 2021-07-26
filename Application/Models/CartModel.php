@@ -61,9 +61,20 @@ class CartModel extends Model_Tree {
 	
 	public function checkCart()
 	{
-// 		$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c where combinazioni.id_c is null");
-		
-// 		print_r($daEliminare);
+		if (!self::$checkCart)
+		{
+			$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c where combinazioni.id_c is null");
+			
+			if (count($daEliminare) > 0)
+			{
+				$daEliminare = $this->getList($daEliminare, "cart.id_cart");
+				$daEliminareWhere = implode(",", $daEliminare);
+				
+				$this->db->query("delete from cart where id_cart in ($daEliminareWhere)");
+				
+				self::$checkCart = true;
+			}
+		}
 	}
 	
 	// Totale scontato
