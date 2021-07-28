@@ -229,7 +229,7 @@ trait BaseFasceController
 			->where(array(
 				"attivo"	=>	"Y",
 				"id_c"		=>	(int)$idTest,
-			))->limit(v("numero_eventi_home"))->orderBy("pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento")->send();
+			))->limit(v("numero_eventi_home"))->orderBy("pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento,pages.data_news desc")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_eventi.php");
