@@ -1751,21 +1751,21 @@ function tpf($filePath = "")
 	$themeFolder = v("theme_folder");
 	
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
-	
+		
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
-	if ($themeFolder && file_exists($subFolderFullPath))
+	if (file_exists($subFolderFullPath))
 		return $subFolderFullPath;
 	
-	$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
-	
-	if ($themeFolder && file_exists($subFolderFullPathParentFrontend))
-		return $subFolderFullPathParentFrontend;
-	
 	if ($themeFolder)
-		return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+	{
+		$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+		
+		if (file_exists($subFolderFullPathParentFrontend))
+			return $subFolderFullPathParentFrontend;
+	}
 	
-	return Domain::$parentRoot."/Application/Views/".ltrim($filePath,"/");
+	return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 }
 
 function singPlu($numero, $sing, $plu)

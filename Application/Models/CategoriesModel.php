@@ -655,7 +655,7 @@ class CategoriesModel extends HierarchicalModel {
 			);
 		}
 		else
-			array(
+			return array(
 				"-id_c"		=>	(int)$id_c,
 			);
 	}
