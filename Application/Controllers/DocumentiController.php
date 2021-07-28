@@ -37,6 +37,7 @@ class DocumentiController extends BaseController
 		parent::__construct($model, $controller, $queryString);
 
 		$this->model("ReggroupsdocumentiModel");
+		$this->model("DocumentilingueModel");
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
@@ -62,6 +63,62 @@ class DocumentiController extends BaseController
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function lingue($id = 0)
+	{
+		$this->model("LingueModel");
+		
+		$this->orderBy = "documenti_lingue.codice";
+		
+		$this->_posizioni['lingue'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$data['id'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_doc";
+		
+		$this->modelName = "DocumentilingueModel";
+		
+		$this->m[$this->modelName]->setFields('id_lingua','sanitizeAll');
+		$this->m[$this->modelName]->values['id_doc'] = $clean['id'];
+		
+		if (isset($_POST["includi"]))
+			$this->m[$this->modelName]->values['includi'] = 1;
+		else if (isset($_POST["escludi"]))
+			$this->m[$this->modelName]->values['includi'] = 0;
+		
+		if (isset($_POST["includi"]) || isset($_POST["escludi"]))
+			$_POST["insertAction"] = $_REQUEST["insertAction"] = 1;
+		
+		$this->m[$this->modelName]->updateTable('insert,del');
+		
+		$this->mainFields = array("lingua","tipo");
+		$this->mainHead = "Lingua,Tipo";
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainButtons = "ldel";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"lingue/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("lingua"))->where(array(
+			"documenti_lingue.id_doc"	=>	$clean['id'],
+		))->orderBy("lingue.descrizione")->convert()->save();
+		
+		parent::main();
+		
+		$data["listaLingue"] = DocumentilingueModel::lingueCheMancano($clean['id']);
+		
+		$data["titoloRecord"] = $this->m["DocumentiModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 	
 	public function caricamolti($id = 0)

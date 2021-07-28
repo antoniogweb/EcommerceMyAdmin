@@ -4,6 +4,9 @@
 
 <ul class="nav_dettaglio nav nav-tabs">
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
+	<?php if (v("attiva_altre_lingue_documento")) { ?>
+	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/lingue/$id".$this->viewStatus;?>"><?php echo gtext("Altre lingue");?></a></li>
+	<?php } ?>
 	<?php if (v("attiva_gruppi_documenti")) { ?>
 	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtext("Accessi");?></a></li>
 	<?php } ?>
