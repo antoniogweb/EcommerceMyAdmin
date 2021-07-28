@@ -32,6 +32,18 @@ class CategoriesModel extends HierarchicalModel {
 	public static $arrayIdsPagineFiltrate = array();
 	public static $elencoCategorieFull = array();
 	
+	public static $sezioneVariabile = array(
+		"faq"			=>	"mostra_faq",
+		"testimonial"	=>	"mostra_testimonial",
+		"gallery"		=>	"mostra_gallery",
+		"eventi"		=>	"mostra_eventi",
+		"referenze"		=>	"referenze_attive",
+		"blog"			=>	"blog_attivo",
+		"team"			=>	"team_attivo",
+		"download"		=>	"download_attivi",
+		"avvisi"		=>	"mostra_avvisi",
+	);
+	
 	public $controller = "categories";
 	
 	public $checkAll = true;
@@ -865,5 +877,26 @@ class CategoriesModel extends HierarchicalModel {
 		return $c->clear()->where(array(
 			"section"	=>	sanitizeAll($section),
 		))->sWhere("section is not null and section != ''")->rowNumber();
+	}
+	
+	public function sistemaVisibilitaSezioni()
+	{
+		$sezioni = $this->clear()->sWhere("section != '' and section is not null")->send(false);
+		
+		foreach ($sezioni as $sez)
+		{
+			foreach (self::$sezioneVariabile as $sezione => $variabile)
+			{
+				if ($sez["section"] == $sezione && ((v($variabile) && !$sez["installata"]) || (!v($variabile) && $sez["installata"])))
+				{
+					$this->setValues(array(
+						"installata"	=>	v($variabile),
+					));
+					
+					$this->pUpdate($sez["id_c"]);
+				}
+			}
+			
+		}
 	}
 }

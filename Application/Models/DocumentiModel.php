@@ -72,6 +72,7 @@ class DocumentiModel extends GenericModel {
 	public function relations() {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_doc', null, "CASCADE"),
+			'lingue' => array("HAS_MANY", 'DocumentilingueModel', 'id_doc', null, "CASCADE"),
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipidocumentoModel', 'id_tipo_doc',null,"CASCADE"),
 			'gruppi' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReggroupsdocumentiModel","id_doc","id_group"), "CASCADE"),
@@ -158,6 +159,53 @@ class DocumentiModel extends GenericModel {
 			return implode("<br />", $gruppi);
 		
 		return "-";
+	}
+	
+	public function escludilingua($record)
+	{
+		$dl = new DocumentilingueModel();
+		
+		$altreLingue = $dl->clear()->where(array(
+			"id_doc"	=>	(int)$record[$this->_tables]["id_doc"],
+			"includi"	=>	0,
+		))->toList("lingua")->send();
+		
+		if (count($altreLingue) > 0)
+			return "<span class='text text-danger text-bold'>".strtoupper(implode(" + ", $altreLingue))."</span>";
+		
+		return "";
+	}
+	
+	public function lingua($record)
+	{
+		LingueModel::getValori();
+		
+		if ("attiva_altre_lingue_documento")
+		{
+			$str = strtoupper($record[$this->_tables]["lingua"]);
+			
+			if ($record[$this->_tables]["lingua"] != "tutte")
+			{
+				$dl = new DocumentilingueModel();
+				
+				$altreLingue = $dl->clear()->where(array(
+					"id_doc"	=>	(int)$record[$this->_tables]["id_doc"],
+					"includi"	=>	1,
+				))->toList("lingua")->send();
+				
+				if (count($altreLingue) > 0)
+					$str .= " + ".strtoupper(implode(" + ", $altreLingue));
+			}
+		}
+		else
+		{
+			if (isset(LingueModel::$valori[$record[$this->_tables]["lingua"]]))
+				$str = strtoupper(LingueModel::$valori[$record[$this->_tables]["lingua"]]);
+			else
+				$str = strtoupper($record[$this->_tables]["lingua"]);
+		}
+		
+		return "<span class='text text-success text-bold'>".$str."</span>";
 	}
 	
 	public function elaboraArchivio($id, $idPage = 0)

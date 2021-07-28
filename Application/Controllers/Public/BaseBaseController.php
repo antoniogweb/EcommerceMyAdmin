@@ -406,7 +406,7 @@ class BaseBaseController extends Controller
 		
 		if (v("mostra_faq"))
 		{
-			$idFaq = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idFaq = $data["idFaq"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
 				"section"	=>	"faq",
 			))->field("id_c");
 			

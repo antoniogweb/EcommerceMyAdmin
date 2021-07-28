@@ -1479,8 +1479,8 @@ class PagesController extends BaseController {
 		if (v("attiva_immagine_in_documenti"))
 		{
 			$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
-			$this->mainFields = array("immagine","titoloDocumento","filename","lingua","tipi_documento.titolo");
-			$this->mainHead = "Thumb,Titolo,File,Visibile su lingua,Tipo";
+			$this->mainFields = array("immagine","titoloDocumento","filename","lingua");
+			$this->mainHead = "Thumb,Titolo,File,Visibile su lingua";
 			
 			$this->colProperties = array(
 				array(
@@ -1494,8 +1494,8 @@ class PagesController extends BaseController {
 		else
 		{
 			$this->filters = array(null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
-			$this->mainFields = array("titoloDocumento","filename","lingua","tipi_documento.titolo");
-			$this->mainHead = "Titolo,File,Visibile su lingua,Tipo";
+			$this->mainFields = array("titoloDocumento","filename","lingua");
+			$this->mainHead = "Titolo,File,Visibile su lingua";
 			
 			$this->colProperties = array(
 				array(
@@ -1503,6 +1503,15 @@ class PagesController extends BaseController {
 				),
 			);
 		}
+		
+		if (v("attiva_altre_lingue_documento"))
+		{
+			$this->mainFields[] = "escludilingua";
+			$this->mainHead .= ",Escludi lingua";
+		}
+		
+		$this->mainFields[] = "tipi_documento.titolo";
+		$this->mainHead .= ",Tipo";
 		
 		if (v("attiva_gruppi_documenti"))
 		{
@@ -1516,13 +1525,21 @@ class PagesController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"documenti/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("documenti.*,tipi_documento.*")->inner(array("page"))->left(array("tipo"))->orderBy("documenti.id_order")->where(array(
-			"id_page"	=>	$clean['id'],
-			"lingua"	=>	$this->viewArgs["lingua_doc"],
-			"id_tipo_doc"	=>	$this->viewArgs["id_tipo_doc"],
-			"visibile"	=>	1,
-			"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
-		))->convert()->save();
+		$this->m[$this->modelName]->select("distinct documenti.id_doc,documenti.*,tipi_documento.*")
+			->inner(array("page"))
+			->left(array("tipo"))
+			->left("documenti_lingue")->on("documenti_lingue.id_doc = documenti.id_doc and documenti_lingue.includi = 1")
+			->orderBy("documenti.id_order")
+			->where(array(
+				"id_page"	=>	$clean['id'],
+				"OR"	=>	array(
+					"documenti.lingua"	=>	$this->viewArgs["lingua_doc"],
+					"documenti_lingue.lingua"	=>	$this->viewArgs["lingua_doc"],
+				),
+				"id_tipo_doc"	=>	$this->viewArgs["id_tipo_doc"],
+				"visibile"	=>	1,
+				"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
+			))->convert()->save();
 		
 // 		$this->tabella = gtext("prodotti");
 		

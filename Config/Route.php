@@ -371,6 +371,7 @@ class Route
 		'cron,migrazioni',
 		
 		'documenti,form',
+		'documenti,lingue',
 		'documenti,documento',
 		'documenti,thumb',
 		'documenti,gruppi',
