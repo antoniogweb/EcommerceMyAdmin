@@ -1478,7 +1478,7 @@ class PagesController extends BaseController {
 		
 		if (v("attiva_immagine_in_documenti"))
 		{
-			$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
+			$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua));
 			$this->mainFields = array("immagine","titoloDocumento","filename","lingua");
 			$this->mainHead = "Thumb,Titolo,File,Visibile su lingua";
 			
@@ -1493,7 +1493,7 @@ class PagesController extends BaseController {
 		}
 		else
 		{
-			$this->filters = array(null,"titolo_documento", null, array("lingua_doc","",$filtroLingua), array("id_tipo_doc","",$filtroTipoDoc));
+			$this->filters = array(null,"titolo_documento", null, array("lingua_doc","",$filtroLingua));
 			$this->mainFields = array("titoloDocumento","filename","lingua");
 			$this->mainHead = "Titolo,File,Visibile su lingua";
 			
@@ -1506,10 +1506,12 @@ class PagesController extends BaseController {
 		
 		if (v("attiva_altre_lingue_documento"))
 		{
+			$this->filters[] = null;
 			$this->mainFields[] = "escludilingua";
 			$this->mainHead .= ",Escludi lingua";
 		}
 		
+		$this->filters[] = array("id_tipo_doc","",$filtroTipoDoc);
 		$this->mainFields[] = "tipi_documento.titolo";
 		$this->mainHead .= ",Tipo";
 		
