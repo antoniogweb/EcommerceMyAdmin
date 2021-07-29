@@ -236,6 +236,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_nuovo_marchi"		=>	0,
 		"usa_descrizione_in_slide"	=>	0,
 		"attiva_altre_lingue_documento"	=>	0,
+		"mostra_icone"	=>	0,
+		"mostra_slide"	=>	1,
 	);
 	
 	public function __construct() {

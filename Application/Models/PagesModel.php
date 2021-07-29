@@ -242,7 +242,7 @@ class PagesModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Se compare nel sito, quindi se è acquistabile")."</div>"
+						"<div class='form_notice'>".gtext("Se compare nel sito")."</div>"
 					),
 				),
 				'in_evidenza'	=>	array(

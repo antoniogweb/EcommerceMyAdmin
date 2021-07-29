@@ -153,9 +153,9 @@
 								<?php include($this->viewPath("pages_link"));?>
 							</div>
 						</div>
-					</div>
+					
 					<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
-					<div class='col-md-4'>
+					
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								Traduzioni
@@ -164,9 +164,9 @@
 								<?php include($this->viewPath("pages_traduzioni"));?>
 							</div>
 						</div>
-					</div>
+					
 					<?php } ?>
-					<div class='col-md-4'>
+					
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								Categoria<?php if (v("usa_marchi")) { ?> / <?php echo gtext("famiglie",true,"ucfirst");?><?php } ?>
@@ -179,8 +179,7 @@
 								<?php } ?>
 							</div>
 						</div>
-					</div>
-					<div class='col-md-4'>
+					
 						<div class="panel panel-info">
 							<?php include($this->viewPath("pages_form_immagine"));?>
 						</div>

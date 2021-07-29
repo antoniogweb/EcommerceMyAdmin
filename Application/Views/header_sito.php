@@ -17,7 +17,7 @@ include(ROOT."/Application/Views/header.php");
 						<span>Slide</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_slide");?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_slide");?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/".v("url_inserisci_slide");?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
@@ -28,7 +28,7 @@ include(ROOT."/Application/Views/header.php");
 						<span><?php echo gtext("Blog");?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/blog/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/blog/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/blog/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 						<li class="dropdown-header">Categorie</li>
 						<li><a href="<?php echo $this->baseUrl."/blogcat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
@@ -42,7 +42,7 @@ include(ROOT."/Application/Views/header.php");
 						<span><?php echo gtext("Eventi");?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/eventi/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/eventi/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/eventi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 						<li class="dropdown-header">Categorie</li>
 						<li><a href="<?php echo $this->baseUrl."/eventicat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
@@ -61,7 +61,7 @@ include(ROOT."/Application/Views/header.php");
 						<span><?php echo gtext("Referenze");?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/referenze/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/referenze/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/referenze/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
@@ -73,7 +73,7 @@ include(ROOT."/Application/Views/header.php");
 						<span>Team</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/team/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/team/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/team/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
@@ -85,7 +85,7 @@ include(ROOT."/Application/Views/header.php");
 						<span><?php echo gtext("Downloads");?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/download/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/download/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/download/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 						<?php if (v("attiva_categorie_download")) { ?>
 						<li class="dropdown-header">Categorie</li>
@@ -101,7 +101,7 @@ include(ROOT."/Application/Views/header.php");
 						<span>Avvisi</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/avvisi/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/avvisi/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/avvisi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
@@ -113,7 +113,7 @@ include(ROOT."/Application/Views/header.php");
 						<span>Faq</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/faq/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/faq/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/faq/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
@@ -125,7 +125,7 @@ include(ROOT."/Application/Views/header.php");
 						<span>Testimonial</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/testimonial/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/testimonial/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/testimonial/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
@@ -137,8 +137,20 @@ include(ROOT."/Application/Views/header.php");
 						<span>Gallery</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/gallery/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+						<li><a href="<?php echo $this->baseUrl."/gallery/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 						<li><a href="<?php echo $this->baseUrl."/gallery/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+					</ul>
+				</li>
+				<?php } ?>
+				<?php if (v("mostra_icone")) { ?>
+				<li class="<?php echo tm($tm, "icone");?> treeview">
+					<a href="#">
+						<i class="fa fa-picture-o"></i>
+						<span><?php echo gtext("Icone");?></span>
+					</a>
+					<ul class="treeview-menu">
+						<li><a href="<?php echo $this->baseUrl."/icone/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
+						<li><a href="<?php echo $this->baseUrl."/icone/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
 					</ul>
 				</li>
 				<?php } ?>

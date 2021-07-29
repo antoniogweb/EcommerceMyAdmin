@@ -77,7 +77,8 @@ class TipicontenutoModel extends GenericModel
 		$sezioni = array(""=>"--") + $c->clear()->select("section, section as `Sezione|strtoupper`")->where(array(
 			"ne"	=>	array(
 				"section"	=>	"",
-			)
+			),
+			"installata"	=>	1,
 		))->process()->toList("section", "Sezione")->send();
 		
 		return $sezioni;

@@ -465,6 +465,14 @@ class Route
 		'gallery,inevidenza',
 		'gallery,updatevalue',
 		'gallery,ordina',
+		
+		'icone,main',
+		'icone,form',
+		'icone,move',
+		'icone,pubblica',
+		'icone,inevidenza',
+		'icone,updatevalue',
+		'icone,ordina',
 	);
 	
 	//it can be 'yes' or 'no'
