@@ -239,7 +239,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_icone"	=>	0,
 		"mostra_slide"	=>	1,
 		"abilita_traduzioni_documenti"	=>	1,
-		"abilita_visibilita_pagine"		=>	1,
+		"abilita_visibilita_pagine"		=>	0,
 	);
 	
 	public function __construct() {

@@ -882,7 +882,7 @@ class GenericModel extends Model_Tree
 	}
 	
 	//duplica gli elementi della pagina
-	public function duplica($from_id, $to_id)
+	public function duplica($from_id, $to_id, $field = "id_page")
 	{
 		$clean["from_id"] = (int)$from_id;
 		$clean["to_id"] = (int)$to_id;
@@ -891,12 +891,12 @@ class GenericModel extends Model_Tree
 		if ($this->_tables == 'combinazioni')
 			$this->pDel(null, "id_page = ".$clean["to_id"]);
 		
-		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send(false);
+		$res = $this->clear()->where(array($field=>$clean["from_id"]))->orderBy($this->_idFields)->send(false);
 		
 		foreach ($res as $r)
 		{
 			$this->setValues($r, "sanitizeDb");
-			$this->setValue("id_page", $to_id);
+			$this->setValue($field, $to_id);
 			
 			unset($this->values[$this->_idFields]);
 			
@@ -906,7 +906,7 @@ class GenericModel extends Model_Tree
 			if (isset($this->values["id_order"]))
 				unset($this->values["id_order"]);
 			
-			parent::insert();
+			$this->insert();
 		}
 	}
 	

@@ -288,4 +288,38 @@ class DocumentiModel extends GenericModel {
 		}
 	}
 	
+	//duplica gli elementi della pagina
+	public function duplica($from_id, $to_id, $field = "id_page")
+	{
+		$dl = new DocumentilingueModel();
+		
+		$clean["from_id"] = (int)$from_id;
+		$clean["to_id"] = (int)$to_id;
+		
+		// Elimino la combinazione creata in automatico
+		if ($this->_tables == 'combinazioni')
+			$this->pDel(null, "id_page = ".$clean["to_id"]);
+		
+		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy($this->_idFields)->send(false);
+		
+		foreach ($res as $r)
+		{
+			$this->setValues($r, "sanitizeDb");
+			$this->setValue("id_page", $to_id);
+			
+			unset($this->values[$this->_idFields]);
+			
+			if (isset($this->values["data_creazione"]))
+				unset($this->values["data_creazione"]);
+			
+			if (isset($this->values["id_order"]))
+				unset($this->values["id_order"]);
+			
+			if ($this->insert())
+			{
+				$dl->duplica($r["id_doc"], $this->lId, "id_doc");
+			}
+		}
+	}
+	
 }
