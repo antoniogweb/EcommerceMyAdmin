@@ -64,6 +64,15 @@ class DocumentilingueModel extends GenericModel {
 			))->field("codice");
 		}
 		
+		if (isset($this->values["id_doc"]))
+		{
+			$d = new DocumentiModel();
+			
+			$this->values["id_page"] = $d->clear()->where(array(
+				"id_doc"	=>	(int)$this->values["id_doc"],
+			))->field("id_page");
+		}
+		
 		return parent::insert();
 	}
 }

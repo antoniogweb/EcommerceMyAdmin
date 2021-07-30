@@ -1608,16 +1608,39 @@ class PagesModel extends GenericModel {
 		
 		$d->clear()->addJoinTraduzione()->select("distinct documenti.id_doc,documenti.*,tipi_documento.*,contenuti_tradotti.*")->left(array("tipo"))->where(array(
 			"id_page"	=>	(int)$id,
+		));
+		
+		$aWhere = array(
 			"OR"	=>	array(
 				"lingua" => "tutte",
-				" lingua" => $lingua,
+				" lingua" => sanitizeDb($lingua),
 			),
-		));
+		);
 		
 		if (v("attiva_gruppi_documenti"))
 			$d->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
 		
-		return $d->orderBy("documenti.id_order")->send();
+		if (v("attiva_altre_lingue_documento"))
+		{
+			$d->left(array("lingue"));
+			
+			// Includi
+			$aWhere["OR"]["AND"] = array(
+				"documenti_lingue.lingua"	=>	sanitizeDb($lingua),
+				"documenti_lingue.includi"	=>	1,
+			);
+			
+			// Escludi
+			$d->sWhere("documenti.id_doc not in (select id_doc from documenti_lingue where id_page = ".(int)$id." and id_doc is not null and lingua = '".sanitizeDb($lingua)."' and includi = 0)");
+		}
+		
+		$d->aWhere($aWhere);
+		
+		$res = $d->orderBy("documenti.id_order")->send();
+		
+// 		echo $d->getQuery();die();
+		
+		return $res;
 	}
 	
 	public static function getAttributoDaCol($idPage, $col)
