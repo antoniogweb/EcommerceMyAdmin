@@ -46,14 +46,18 @@ class PagescarvalModel extends GenericModel {
 	{
 		$clean["id_page"] = (int)$this->values["id_page"];
 		$clean["id_cv"] = (int)$this->values["id_cv"];
-		$clean["id_car"] = (int)$this->values["id_car"];
-		$clean["titolo"] = trim($this->values["titolo"]);
-		$this->delFields("titolo");
-		$this->delFields("id_car");
+		
+		if (isset($this->values["id_car"]) && isset($this->values["titolo"]))
+		{
+			$clean["id_car"] = (int)$this->values["id_car"];
+			$clean["titolo"] = trim($this->values["titolo"]);
+			$this->delFields("titolo");
+			$this->delFields("id_car");
+		}
 		
 		$cv = new CaratteristichevaloriModel();
 		
-		if (strcmp($clean["titolo"],"" ) !== 0)
+		if (isset($clean["titolo"]) && strcmp($clean["titolo"],"" ) !== 0)
 		{
 			$cv->values = array(
 				"titolo"	=>	$clean["titolo"],
