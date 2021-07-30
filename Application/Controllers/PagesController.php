@@ -1511,6 +1511,10 @@ class PagesController extends BaseController {
 			$this->mainHead .= ",Escludi lingua";
 		}
 		
+		// Traduzione documenti
+		if (!v("abilita_traduzioni_documenti"))
+			$this->addTraduzioniInMain = false;
+		
 		$this->filters[] = array("id_tipo_doc","",$filtroTipoDoc);
 		$this->mainFields[] = "tipi_documento.titolo";
 		$this->mainHead .= ",Tipo";

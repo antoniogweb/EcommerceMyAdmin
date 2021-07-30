@@ -238,6 +238,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_altre_lingue_documento"	=>	0,
 		"mostra_icone"	=>	0,
 		"mostra_slide"	=>	1,
+		"abilita_traduzioni_documenti"	=>	1,
 	);
 	
 	public function __construct() {
