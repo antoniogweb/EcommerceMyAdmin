@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class LingueModel extends GenericModel
 {
 	public static $valori = null;
+	public static $codici = null;
 	public static $lingueBackend = array();
 	
 	public function __construct() {
@@ -44,6 +45,16 @@ class LingueModel extends GenericModel
 			self::$valori = $l->clear()->orderBy("id_order")->toList("codice","descrizione")->send();
 		
 		return self::$valori;
+	}
+	
+	public static function getCodici()
+	{
+		$l = new LingueModel();
+		
+		if (!isset(self::$codici))
+			self::$codici = $l->clear()->orderBy("id_order")->toList("codice_clean","codice")->send();
+		
+		return self::$codici;
 	}
 	
 	public static function getPrincipale()

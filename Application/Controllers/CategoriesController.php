@@ -130,7 +130,7 @@ class CategoriesController extends BaseController {
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
-			$tabelFields[] = "link".$codiceLingua;
+			$tabelFields[] = "link".str_replace("-","",$codiceLingua);
 			$head .= ",".strtoupper($codiceLingua);
 		}
 		
