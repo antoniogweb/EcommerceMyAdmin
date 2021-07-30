@@ -164,6 +164,7 @@ class Route
 		'prodotti,feedback',
 		'prodotti,ordinafeedback',
 		'prodotti,regioni',
+		'prodotti,lingue',
 		
 		'testi,main',
 		'testi,form',

@@ -1100,4 +1100,24 @@ class GenericModel extends Model_Tree
 		
 		return $m->rowNumber();
 	}
+	
+	// Usato da DocumentilinguaModel e PageslinguaModel
+	public function tipoVisibilitaLingua($record)
+    {
+		if ($record[$this->_tables]["includi"])
+			return "<span class='text text-success text-bold'>".gtext("Includi")."</span>";
+		else
+			return "<span class='text text-danger text-bold'>".gtext("Escludi")."</span>";
+    }
+    
+    // Usato da DocumentilinguaModel e PageslinguaModel
+    public function recuperaCodiceLingua()
+    {
+		if (isset($this->values["id_lingua"]))
+		{
+			$this->values["lingua"] = LingueModel::g()->clear()->where(array(
+				"id_lingua"	=>	(int)$this->values["id_lingua"],
+			))->field("codice");
+		}
+    }
 }

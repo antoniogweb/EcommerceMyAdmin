@@ -130,6 +130,7 @@ class PagesModel extends GenericModel {
 			'tag' => array("HAS_MANY", 'PagestagModel', 'id_page', null, "CASCADE"),
 			'link' => array("HAS_MANY", 'PageslinkModel', 'id_page', null, "CASCADE"),
 			'regioni' => array("HAS_MANY", 'PagesregioniModel', 'id_page', null, "CASCADE"),
+			'lingue' => array("HAS_MANY", 'PageslingueModel', 'id_page', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
         );
     }

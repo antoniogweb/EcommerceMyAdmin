@@ -69,11 +69,7 @@ class DocumentiController extends BaseController
 	{
 		$this->model("LingueModel");
 		
-		$this->orderBy = "documenti_lingue.codice";
-		
 		$this->_posizioni['lingue'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
 		
 		$this->shift(1);
 		
@@ -95,7 +91,7 @@ class DocumentiController extends BaseController
 		
 		$this->m[$this->modelName]->updateTable('insert,del');
 		
-		$this->mainFields = array("lingua","tipo");
+		$this->mainFields = array("lingua","tipoVisibilitaLingua");
 		$this->mainHead = "Lingua,Tipo";
 		
 		$this->colProperties = array(

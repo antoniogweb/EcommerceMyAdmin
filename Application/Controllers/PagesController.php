@@ -127,6 +127,7 @@ class PagesController extends BaseController {
 		$this->model("SectionssectionsModel");
 		$this->model("FeedbackModel");
 		$this->model("PagesregioniModel");
+		$this->model("PageslingueModel");
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
@@ -1550,6 +1551,58 @@ class PagesController extends BaseController {
 // 		$this->tabella = gtext("prodotti");
 		
 		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function lingue($id = 0)
+	{
+		$this->model("LingueModel");
+		
+		$this->_posizioni['lingue'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->modelName = "PageslingueModel";
+		
+		$this->m[$this->modelName]->setFields('id_lingua','sanitizeAll');
+		$this->m[$this->modelName]->values['id_page'] = $clean['id'];
+		
+		if (isset($_POST["includi"]))
+			$this->m[$this->modelName]->values['includi'] = 1;
+		else if (isset($_POST["escludi"]))
+			$this->m[$this->modelName]->values['includi'] = 0;
+		
+		if (isset($_POST["includi"]) || isset($_POST["escludi"]))
+			$_POST["insertAction"] = $_REQUEST["insertAction"] = 1;
+		
+		$this->m[$this->modelName]->updateTable('insert,del');
+		
+		$this->mainFields = array("lingua","tipoVisibilitaLingua");
+		$this->mainHead = "Lingua,Tipo";
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainButtons = "ldel";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"lingue/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("lingua"))->where(array(
+			"pages_lingue.id_page"	=>	$clean['id'],
+		))->orderBy("lingue.descrizione")->convert()->save();
+		
+		parent::main();
+		
+		$data["listaLingue"] = PageslingueModel::lingueCheMancano($clean['id']);
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		

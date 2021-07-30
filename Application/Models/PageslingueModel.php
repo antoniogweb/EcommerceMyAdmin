@@ -22,39 +22,32 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class DocumentilingueModel extends GenericModel {
+class PageslingueModel extends GenericModel {
 
 	public function __construct() {
-		$this->_tables='documenti_lingue';
-		$this->_idFields='id_documento_lingua';
+		$this->_tables='pages_lingue';
+		$this->_idFields='id_page_lingua';
 		
 		parent::__construct();
 	}
 	
 	public function relations() {
         return array(
-			'documento' => array("BELONGS_TO", 'DocumentiModel', 'id_doc',null,"CASCADE"),
+			'pagina' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'lingua' => array("BELONGS_TO", 'LingueModel', 'id_lingua',null,"CASCADE"),
         );
     }
     
-    public static function lingueCheMancano($idDoc)
+    public static function lingueCheMancano($idPage)
     {
 		$l = new LingueModel();
 		
-		return $l->clear()->orderBy("descrizione")->sWhere("id_lingua not in (select id_lingua from documenti_lingue where id_doc = ".(int)$idDoc.")")->toList("id_lingua", "descrizione")->send();
+		return $l->clear()->orderBy("descrizione")->sWhere("id_lingua not in (select id_lingua from pages_lingue where id_page = ".(int)$idPage.")")->toList("id_lingua", "descrizione")->send();
     }
     
 	public function insert()
 	{
 		$this->recuperaCodiceLingua();
-		
-		if (isset($this->values["id_doc"]))
-		{
-			$this->values["id_page"] = DocumentiModel::g()->clear()->where(array(
-				"id_doc"	=>	(int)$this->values["id_doc"],
-			))->field("id_page");
-		}
 		
 		return parent::insert();
 	}

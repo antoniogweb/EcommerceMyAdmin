@@ -108,7 +108,7 @@ class ProdottiController extends PagesController {
 		$haCombinazioni = $this->m[$this->modelName]->hasCombinations((int)$id, false);
 		
 		if ($haCombinazioni)
-			$data["avviso_combinazioni"] = "<div class='alert alert-info'>".gtext("Il prodotto ha delle varianti.")."<br />".gtext("I campi prezzo, codice, peso e giacenza devono essere modificati nella scheda 'Varianti', tramite il pulsante 'Gestisci combinazioni'")."</div>";
+			$data["avviso_combinazioni"] = "<div class='callout callout-info'>".gtext("Il prodotto ha delle varianti.")."<br />".gtext("I campi prezzo, codice, peso e giacenza devono essere modificati nella scheda 'Varianti', tramite il pulsante 'Gestisci combinazioni'")."</div>";
 		
 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
 		
