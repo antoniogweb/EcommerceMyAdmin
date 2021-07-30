@@ -1091,4 +1091,13 @@ class GenericModel extends Model_Tree
 		
 		return $m;
 	}
+	
+	public static function numeroRecord()
+	{
+		$className = get_called_class();
+		
+		$m = new $className;
+		
+		return $m->rowNumber();
+	}
 }

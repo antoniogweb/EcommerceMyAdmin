@@ -146,6 +146,22 @@ class MenuModel extends HierarchicalModel {
 		);
 	}
 	
+	public function selectTag($empty = true)
+	{
+		if (!TagModel::numeroRecord())
+			$empty = true;
+		
+		return parent::selectTag($empty);
+	}
+	
+	public function selectMarchi($empty = true)
+	{
+		if (!MarchiModel::numeroRecord())
+			$empty = true;
+		
+		return parent::selectMarchi($empty);
+	}
+	
 	public function getTableN()
 	{
 		return $this->_tables;
