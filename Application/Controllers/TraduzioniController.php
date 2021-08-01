@@ -83,7 +83,7 @@ class TraduzioniController extends BaseController {
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
-			$this->mainFields[] = "edit".$codiceLingua;
+			$this->mainFields[] = "edit".str_replace("-","",$codiceLingua);
 			$this->mainHead .= ",".strtoupper($codiceLingua);
 		}
 		

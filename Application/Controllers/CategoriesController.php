@@ -130,7 +130,7 @@ class CategoriesController extends BaseController {
 		
 		foreach (self::$traduzioni as $codiceLingua)
 		{
-			$tabelFields[] = "link".$codiceLingua;
+			$tabelFields[] = "link".str_replace("-","",$codiceLingua);
 			$head .= ",".strtoupper($codiceLingua);
 		}
 		
@@ -422,6 +422,9 @@ class CategoriesController extends BaseController {
 			}
 		
 			$data['type'] = $queryType;
+			
+			if (!$this->m[$this->modelName]->section)
+				$this->queryFields = "title,alias,sottotitolo,immagine,description";
 			
 			$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 			

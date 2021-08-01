@@ -292,7 +292,7 @@ class PagesController extends BaseController {
 		{
 			foreach (self::$traduzioni as $codiceLingua)
 			{
-				$this->tableFields[] = "link".$codiceLingua;
+				$this->tableFields[] = "link".str_replace("-","",$codiceLingua);
 				$this->head .= ",".strtoupper($codiceLingua);
 			}
 		}

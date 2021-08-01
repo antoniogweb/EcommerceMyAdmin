@@ -437,7 +437,7 @@ class BaseController extends Controller
 		{
 			foreach (self::$traduzioni as $codiceLingua)
 			{
-				$mainFields[] = "link".$codiceLingua;
+				$mainFields[] = "link".str_replace("-","",$codiceLingua);
 				$mainHead .= ",".strtoupper($codiceLingua);
 			}
 		}

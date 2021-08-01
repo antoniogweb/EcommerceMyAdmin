@@ -148,50 +148,50 @@ class TraduzioniModel extends GenericModel {
 		return "";
 	}
 	
-	public function editEn($record)
-	{
-		return $this->editLingua("en", $record);
-	}
+// 	public function editEn($record)
+// 	{
+// 		return $this->editLingua("en", $record);
+// 	}
 	
 	public function editIt($record)
 	{
 		return $this->editLingua("it", $record);
 	}
-	
-	public function editFr($record)
-	{
-		return $this->editLingua("fr", $record);
-	}
-	
-	public function editEs($record)
-	{
-		return $this->editLingua("es", $record);
-	}
-	
-	public function editDe($record)
-	{
-		return $this->editLingua("de", $record);
-	}
-	
-	public function editPl($record)
-	{
-		return $this->editLingua("pl", $record);
-	}
-	
-	public function editPt($record)
-	{
-		return $this->editLingua("pt", $record);
-	}
-	
-	public function editRu($record)
-	{
-		return $this->editLingua("ru", $record);
-	}
-	
-	public function editSe($record)
-	{
-		return $this->editLingua("se", $record);
-	}
+// 	
+// 	public function editFr($record)
+// 	{
+// 		return $this->editLingua("fr", $record);
+// 	}
+// 	
+// 	public function editEs($record)
+// 	{
+// 		return $this->editLingua("es", $record);
+// 	}
+// 	
+// 	public function editDe($record)
+// 	{
+// 		return $this->editLingua("de", $record);
+// 	}
+// 	
+// 	public function editPl($record)
+// 	{
+// 		return $this->editLingua("pl", $record);
+// 	}
+// 	
+// 	public function editPt($record)
+// 	{
+// 		return $this->editLingua("pt", $record);
+// 	}
+// 	
+// 	public function editRu($record)
+// 	{
+// 		return $this->editLingua("ru", $record);
+// 	}
+// 	
+// 	public function editSe($record)
+// 	{
+// 		return $this->editLingua("se", $record);
+// 	}
 	
 	public function update($id = null, $where = null)
 	{

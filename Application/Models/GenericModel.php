@@ -107,6 +107,30 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
+	public function __call($method, $args)
+	{
+		$codici = LingueModel::getCodici();
+		
+		$lingue = array_keys($codici);
+		$lingueString = implode("|", $lingue);
+		
+		if (preg_match('/^link('.$lingueString.')$/',$method, $matches))
+		{
+			$nArgs = $args;
+			$nArgs[] = $codici[$matches[1]];
+			return call_user_func_array(array($this, "linklingua"), $nArgs);
+		}
+		
+		if (preg_match('/^edit('.$lingueString.')$/',$method, $matches))
+		{
+			$nArgs = $args;
+			array_unshift($nArgs, $codici[$matches[1]]);
+			return call_user_func_array(array($this, "editLingua"), $nArgs);
+		}
+
+		return null;
+	}
+	
 	public static function getNomeDaAlias($alias)
 	{
 		$arrayUnion = array();
@@ -807,45 +831,45 @@ class GenericModel extends Model_Tree
 		return "";
 	}
 	
-	public function linken($record)
-	{
-		return $this->linklingua($record, "en");
-	}
+// 	public function linken($record)
+// 	{
+// 		return $this->linklingua($record, "en");
+// 	}
 	
-	public function linkfr($record)
-	{
-		return $this->linklingua($record, "fr");
-	}
-	
-	public function linkes($record)
-	{
-		return $this->linklingua($record, "es");
-	}
-	
-	public function linkde($record)
-	{
-		return $this->linklingua($record, "de");
-	}
-	
-	public function linkpl($record)
-	{
-		return $this->linklingua($record, "pl");
-	}
-	
-	public function linkpt($record)
-	{
-		return $this->linklingua($record, "pt");
-	}
-	
-	public function linkru($record)
-	{
-		return $this->linklingua($record, "ru");
-	}
-	
-	public function linkse($record)
-	{
-		return $this->linklingua($record, "se");
-	}
+// 	public function linkfr($record)
+// 	{
+// 		return $this->linklingua($record, "fr");
+// 	}
+// 	
+// 	public function linkes($record)
+// 	{
+// 		return $this->linklingua($record, "es");
+// 	}
+// 	
+// 	public function linkde($record)
+// 	{
+// 		return $this->linklingua($record, "de");
+// 	}
+// 	
+// 	public function linkpl($record)
+// 	{
+// 		return $this->linklingua($record, "pl");
+// 	}
+// 	
+// 	public function linkpt($record)
+// 	{
+// 		return $this->linklingua($record, "pt");
+// 	}
+// 	
+// 	public function linkru($record)
+// 	{
+// 		return $this->linklingua($record, "ru");
+// 	}
+// 	
+// 	public function linkse($record)
+// 	{
+// 		return $this->linklingua($record, "se");
+// 	}
 	
 	public function buildAllCatSelect()
 	{

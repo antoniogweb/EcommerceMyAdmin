@@ -21,7 +21,7 @@ function aggiornaOrdinamento()
 	$.ajax({
 		type: "POST",
 		data: post_data,
-		url: "<?php echo $this->baseUrl.'/'.$this->controller.'/'.$ordinaAction.'/';?>",
+		url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/'.$ordinaAction.'/';?>",
 		async: false,
 		cache:false,
 		success: function(html){
