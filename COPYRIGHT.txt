@@ -28,3 +28,19 @@ FreeFont
 License:	GNU GPL version 3 or later
 Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 link: 		http://savannah.gnu.org/projects/freefont/
+
+Uikit
+-------
+link: 		https://getuikit.com/
+
+jQuery
+-------
+link:	https://jquery.com/
+
+iCheck
+-------
+link:	https://plugins.jquery.com/icheck/
+
+Image Picker
+-------
+link:	https://rvera.github.io/image-picker/
