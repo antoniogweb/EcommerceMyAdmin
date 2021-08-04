@@ -442,16 +442,23 @@ class CategoriesModel extends HierarchicalModel {
 	{
 		$clean["id_c"] = (int)$id_c;
 		
+		$record = $this->selectId($clean["id_c"]);
 		$p = new PagesModel();
 		$res = $p->clear()->where(array("-id_c"=>$clean["id_c"]))->rowNumber();
 		
-// 		if ($res > 0)
-// 		{
-// 			$this->notice = "<div class='alert'>Non è possibile eliminare questa categoria perché ci sono dei contenuti associati ad essa. Si prega di eliminare prima quei contenuti</div>";
-// 			return false;
-// 		}
-// 		else
-// 		{
+		if (trim($record["section"]))
+		{
+			$this->notice = "<div class='alert'>".gtext("Non è possibile eliminare questa categoria")."</div>";
+			return false;
+		}
+		
+		if ($res > 0)
+		{
+			$this->notice = "<div class='alert'>Non è possibile eliminare questa categoria perché ci sono dei contenuti associati ad essa. Si prega di eliminare prima quei contenuti</div>";
+			return false;
+		}
+		else
+		{
 			if ($this->checkOnDeleteIntegrity($id_c, $where))
 			{
 				//cancello tutti i gruppi a cui è associato
@@ -465,7 +472,7 @@ class CategoriesModel extends HierarchicalModel {
 			}
 		
 			return parent::del($id_c, $where);
-// 		}
+		}
 	}
 	
 	//return true if the category has active pages, otherwise return false
