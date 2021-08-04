@@ -238,36 +238,41 @@ class DocumentiModel extends GenericModel {
 				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0) {
 					$this_file = basename($this_file);
 					
-					if (@is_file($extractPath.$this_file))
-					{
-						$this->files->setBase($extractPath);
-						
-						$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
-						
-						$ext = $this->files->getFileExtension($this_file);
-						
-						$this->setValues(array(
-							"filename"			=>	$fileName.".".$ext,
-							"clean_filename"	=>	$this_file,
-							"titolo"			=>	$this->files->getNameWithoutFileExtension($this_file),
-							"data_documento"	=>	date("Y-m-d"),
-							"id_tipo_doc"		=>	TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext),
-							"estensione"		=>	$ext,
-							"content_type"		=>	$this->files->getContentType($extractPath.$this_file),
-							"id_page"			=>	$idPage,
-							"id_archivio"		=>	$id,
-						));
-						
-						DocumentiModel::$uploadFile = false;
-						
-						if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
-						{
-							if (!$this->insert())
-								$okElaborazione = false;
-							
-							@unlink($extractPath.$this_file);
-						}
-					}
+					$okElaborazione = $this->scDocumento($extractPath, $this_file, 0, array(
+						"id_page"		=>	$idPage,
+						"id_archivio"	=>	$id,
+					));
+					
+// 					if (@is_file($extractPath.$this_file))
+// 					{
+// 						$this->files->setBase($extractPath);
+// 						
+// 						$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+// 						
+// 						$ext = $this->files->getFileExtension($this_file);
+// 						
+// 						$this->setValues(array(
+// 							"filename"			=>	$fileName.".".$ext,
+// 							"clean_filename"	=>	$this_file,
+// 							"titolo"			=>	$this->files->getNameWithoutFileExtension($this_file),
+// 							"data_documento"	=>	date("Y-m-d"),
+// 							"id_tipo_doc"		=>	TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext),
+// 							"estensione"		=>	$ext,
+// 							"content_type"		=>	$this->files->getContentType($extractPath.$this_file),
+// 							"id_page"			=>	$idPage,
+// 							"id_archivio"		=>	$id,
+// 						));
+// 						
+// 						DocumentiModel::$uploadFile = false;
+// 						
+// 						if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
+// 						{
+// 							if (!$this->insert())
+// 								$okElaborazione = false;
+// 							
+// 							@unlink($extractPath.$this_file);
+// 						}
+// 					}
 				}
 			}
 			
@@ -286,6 +291,50 @@ class DocumentiModel extends GenericModel {
 					@unlink($filePath);
 			}
 		}
+	}
+	
+	public function scDocumento($extractPath, $this_file, $copia = 0, $params = array())
+	{
+		$idPage = isset($params["id_page"]) ? $params["id_page"] : 0;
+		$idArchivio = isset($params["id_archivio"]) ? $params["id_archivio"] : 0;
+		
+		$okElaborazione = true;
+		
+		if (@is_file($extractPath.$this_file))
+		{
+			$this->files->setBase($extractPath);
+			
+			$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+			
+			$ext = $this->files->getFileExtension($this_file);
+			
+			$idTipoDoc = isset($params["id_tipo_doc"]) ? $params["id_tipo_doc"] : TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext);
+			
+			$this->setValues(array(
+				"filename"			=>	$fileName.".".$ext,
+				"clean_filename"	=>	$this_file,
+				"titolo"			=>	$this->files->getNameWithoutFileExtension($this_file),
+				"data_documento"	=>	date("Y-m-d"),
+				"id_tipo_doc"		=>	$idTipoDoc,
+				"estensione"		=>	$ext,
+				"content_type"		=>	$this->files->getContentType($extractPath.$this_file),
+				"id_page"			=>	$idPage,
+				"id_archivio"		=>	$idArchivio,
+			));
+			
+			DocumentiModel::$uploadFile = false;
+			
+			if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
+			{
+				if (!$this->insert())
+					$okElaborazione = false;
+				
+				if (!$copia)
+					@unlink($extractPath.$this_file);
+			}
+		}
+		
+		return $okElaborazione;
 	}
 	
 	//duplica gli elementi della pagina
