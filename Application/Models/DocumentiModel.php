@@ -324,13 +324,15 @@ class DocumentiModel extends GenericModel {
 			
 			DocumentiModel::$uploadFile = false;
 			
-			if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
+			$function = $copia ? "copy" : "rename";
+
+			if (call_user_func_array($function, array(
+				$extractPath.$this_file,
+				Domain::$parentRoot."/images/documenti/$fileName".".$ext"
+			)))
 			{
 				if (!$this->insert())
 					$okElaborazione = false;
-				
-				if (!$copia)
-					@unlink($extractPath.$this_file);
 			}
 		}
 		

@@ -24,26 +24,29 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 require_once(ROOT."/Application/Include/import.php");
 
-class ImportController extends Controller {
+class ImportController extends BaseController {
 
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		ini_set("memory_limit","512M");
 		
-		$this->model("LingueModel");
-		
-		BaseController::$traduzioni = $this->m["LingueModel"]->clear()->where(array(
-			"principale"	=>	0,
-			"attiva"		=>	1,
-		))->orderBy("id_order")->toList("codice")->send();
-		
-		$this->model('ImpostazioniModel');
-		
-		$this->m["ImpostazioniModel"]->getImpostazioni();
+// 		$this->model("LingueModel");
+// 		
+// 		BaseController::$traduzioni = $this->m["LingueModel"]->clear()->where(array(
+// 			"principale"	=>	0,
+// 			"attiva"		=>	1,
+// 		))->orderBy("id_order")->toList("codice")->send();
+// 		
+// 		$this->model('ImpostazioniModel');
+// 		
+// 		$this->m["ImpostazioniModel"]->getImpostazioni();
 		
 		$this->session('admin');
 		$this->s['admin']->check();
+		
+		$this->clean();
 	}
 	
 	public function prodotti($c = "")
