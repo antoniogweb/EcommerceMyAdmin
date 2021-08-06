@@ -77,7 +77,7 @@ class OrdiniModel extends FormModel {
 			self::$pagamenti[$c] = self::$elencoPagamenti[$c] = gtext($d, false);
 		}
 		
-		VariabiliModel::$valori["pagamenti_permessi"] = implode(",", array_keys(self::$elencoPagamenti));
+		VariabiliModel::$valori["pagamenti_permessi"] = Parametri::$metodiPagamento = implode(",", array_keys(self::$elencoPagamenti));
 		
 		self::$pagamentiSettati = true;
 	}
