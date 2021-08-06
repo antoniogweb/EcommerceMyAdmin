@@ -1047,16 +1047,16 @@ class BaseOrdiniController extends BaseController
 										
 										$this->m['OrdiniModel']->update($clean['lastId']);
 										
-										//manda mail con credenziali al cliente
-										$mail->ClearAddresses();
-										$mail->AddAddress($ordine["email"]);
-										if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-											$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-										$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Invio credenziali nuovo utente");
-										$mail->IsHTML(true);
-										
 										try
 										{
+											//manda mail con credenziali al cliente
+											$mail->ClearAddresses();
+											$mail->AddAddress($ordine["email"]);
+											if (Parametri::$mailReplyTo && Parametri::$mailFromName)
+												$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+											$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Invio credenziali nuovo utente");
+											$mail->IsHTML(true);
+											
 											//mail con credenziali
 											ob_start();
 											include tp()."/Regusers/mail_credenziali.php";
@@ -1143,19 +1143,19 @@ class BaseOrdiniController extends BaseController
 
                             $ordine = $res[0]["orders"];
                             
-							$mail->ClearAddresses();
-							$mail->AddAddress($ordine["email"]);
-							if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-								$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-							$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Ordine")." N°" . $clean['lastId'];
-							$mail->IsHTML(true);
-							
 // 							$mail->WordWrap = 70;
 							
 							$righeOrdine = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean['lastId'],"cart_uid" => $clean["cart_uid"]))->send();
 							
 							try
 							{
+								$mail->ClearAddresses();
+								$mail->AddAddress($ordine["email"]);
+								if (Parametri::$mailReplyTo && Parametri::$mailFromName)
+									$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+								$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Ordine")." N°" . $clean['lastId'];
+								$mail->IsHTML(true);
+								
 								//mail al cliente
 								ob_start();
 								$tipoOutput = "mail_al_cliente";

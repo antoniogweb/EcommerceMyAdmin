@@ -30,7 +30,9 @@ require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/PHPMailer.php');
 require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
 
 class OrdiniModel extends FormModel {
-
+	
+	public static $pagamentiSettati = false;
+	
 	public static $stati = array(
 		"pending"	=>	"Ordine ricevuto",
 		"completed"	=>	"Ordine pagato e in lavorazione",
@@ -53,6 +55,32 @@ class OrdiniModel extends FormModel {
 		"closed"	=>	"success",
 		"deleted"	=>	"danger",
 	);
+	
+	public static function setPagamenti()
+	{
+		if (self::$pagamentiSettati)
+			return;
+		
+		if (empty(VariabiliModel::$valori))
+			VariabiliModel::ottieniVariabili();
+		
+		$p = new PagamentiModel();
+		
+		$res = $p->clear()->where(array(
+			"attivo"	=>	1
+		))->toList("codice", "titolo")->send();
+		
+		self::$elencoPagamenti = array();
+		
+		foreach ($res as $c => $d)
+		{
+			self::$pagamenti[$c] = self::$elencoPagamenti[$c] = gtext($d, false);
+		}
+		
+		VariabiliModel::$valori["pagamenti_permessi"] = implode(",", array_keys(self::$elencoPagamenti));
+		
+		self::$pagamentiSettati = true;
+	}
 	
 	public static function statiSuccessivi($stato)
 	{
@@ -129,13 +157,14 @@ class OrdiniModel extends FormModel {
 			"deleted"	=>	gtext("Ordine annullato", false),
 		);
 		
-		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
-		
-		foreach (self::$elencoPagamenti as $k => $v)
-		{
-			if (in_array($k, $pagamentiPermessi))
-				self::$pagamenti[$k] = gtext($v, false);
-		}
+		self::setPagamenti();
+// 		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
+// 		
+// 		foreach (self::$elencoPagamenti as $k => $v)
+// 		{
+// 			if (in_array($k, $pagamentiPermessi))
+// 				self::$pagamenti[$k] = gtext($v, false);
+// 		}
 	}
 	
 	public function relations() {

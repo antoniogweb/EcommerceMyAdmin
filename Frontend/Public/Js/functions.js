@@ -276,7 +276,7 @@ function impostaLabelPagamento(obj)
 	$(".payment_box").css("display","none");
 	
 	if (obj != undefined)
-		obj.parents(".payment_method_paypal").find(".payment_box").css("display","block");
+		obj.parents(".payment_method_box").find(".payment_box").css("display","block");
 }
 
 function sistemaPIva(nazione)

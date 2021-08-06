@@ -138,29 +138,13 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 						<div id="payment" class="">
 							<h3><?php echo gtext("Metodo di pagamento");?></h3>
 							<ul class="uk-list payment_methods modalita_pagamento class_pagamento">
-								<li class="payment_method_paypal"><?php echo Html_Form::radio("pagamento",$values["pagamento"],"paypal",null,"none");?> <span><?php echo gtext("Paypal / Carta di credito.");?> <a href="https://www.paypal.com/it/webapps/mpp/paypal-popup" class="about_paypal" onclick="javascript:window.open('https://www.paypal.com/it/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false; __gaTracker('send', 'event', 'outbound-article', 'https://www.paypal.com/it/webapps/mpp/paypal-popup', 'What is PayPal?');" title="What is PayPal?"><?php echo gtext("Cos'è PayPal?"); ?></a></span>
-									<div class="payment_box payment_method_paypal uk-margin" >
-										<div class="uk-text-small uk-text-muted"><?php echo testo("Paga con Paypal. Se non disponi di un account Paypal, selenzionando questa opzione, potrai pagare in sicurezza anche con la sola carta di credito.");?></div>
-									</div>
-								</li>
-								
-								<li class="payment_method_paypal">
-									<?php echo Html_Form::radio("pagamento",$values["pagamento"],"bonifico",null,"none");?> <span><?php echo gtext("Bonifico bancario.");?></span>
-									
-									<div class="payment_box payment_method_bacs" style="display: block;">
-	<!-- 																<p><?php echo testo("bonifico");?></p> -->
-									</div>
-								</li>
-
-								<!--<li class="payment_method_paypal">
-									<?php echo Html_Form::radio("pagamento",$values["pagamento"],"contrassegno",null,"none");?> <span><?php echo gtext("Contrassegno.");?></span>
-									
-									<div class="payment_box payment_method_bacs" style="display: block;">
-										<p><?php echo testo("contrassegno");?></p>
-									</div>
-								</li>-->
+								<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) {
+									if (file_exists(tpf("Elementi/Pagamenti/$codPag.php")))
+										include(tpf("Elementi/Pagamenti/$codPag.php"));
+									else
+										include(tpf("Elementi/Pagamenti/pagamento_generico.php"));
+								} ?>
 							</ul>
-
 						</div>
 					</div>
 					
