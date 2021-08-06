@@ -68,7 +68,7 @@ class OrdiniModel extends FormModel {
 		
 		$res = $p->clear()->where(array(
 			"attivo"	=>	1
-		))->toList("codice", "titolo")->send();
+		))->orderBy("id_order")->toList("codice", "titolo")->send();
 		
 		self::$elencoPagamenti = array();
 		
