@@ -98,6 +98,8 @@ class PagesController extends BaseController {
 			'pcorr_sec:sanitizeAll' => "tutti",
 			'cl_on_sv:sanitizeAll' => "tutti",
 			'nobuttons:sanitizeAll' => "tutti",
+			'lingua_page:sanitizeAll' => "tutti",
+			'lingua_page_escl:sanitizeAll' => "tutti",
 		));
 
 		$this->model("CategoriesModel");
@@ -346,6 +348,23 @@ class PagesController extends BaseController {
 			$this->scaffold->model->inner(array("tag"))->aWhere(array(
 				"pages_tag.id_tag"	=>	$this->viewArgs['id_tag'],
 			));
+		}
+		
+		if (strcmp($this->viewArgs['lingua_page'],'tutti') !== 0)
+		{
+			$this->scaffold->model->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
+			
+			if ($this->viewArgs['lingua_page'] == "tutte")
+				$this->scaffold->model->sWhere("lingue_includi.id_page is null");
+			else
+				$this->scaffold->model->sWhere("lingue_includi.lingua = '".$this->viewArgs['lingua_page']."'");
+		}
+		
+		if (strcmp($this->viewArgs['lingua_page_escl'],'tutti') !== 0)
+		{
+			$this->scaffold->model->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
+			
+			$this->scaffold->model->sWhere("lingue_escludi.lingua = '".$this->viewArgs['lingua_page_escl']."'");
 		}
 		
 		if (strcmp($this->viewArgs['id_c'],'tutti') !== 0)
@@ -1472,8 +1491,8 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$filtroLingua = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectLingua();
-		$filtroTipoDoc = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectTipo();
+		$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + array("tutte" => gtext("TUTTE LE LINGUE")) + $this->m[$this->modelName]->selectLingua();
+		$filtroTipoDoc = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectTipo("ecludi ");
 		
 		$this->aggregateFilters = false;
 		$this->showFilters = true;
@@ -1540,14 +1559,27 @@ class PagesController extends BaseController {
 			->orderBy("documenti.id_order")
 			->where(array(
 				"id_page"	=>	$clean['id'],
-				"OR"	=>	array(
-					"documenti.lingua"	=>	$this->viewArgs["lingua_doc"],
-					"documenti_lingue.lingua"	=>	$this->viewArgs["lingua_doc"],
-				),
 				"id_tipo_doc"	=>	$this->viewArgs["id_tipo_doc"],
 				"visibile"	=>	1,
 				"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
-			))->convert()->save();
+			))->convert();
+		
+		if ($this->viewArgs["lingua_doc"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"OR"	=>	array(
+					"lingua"	=>	$this->viewArgs["lingua_doc"],
+					"AND"	=>	array(
+						"documenti_lingue.lingua"	=>	$this->viewArgs["lingua_doc"],
+						"ne"	=>	array(
+							"lingua"	=>	"tutte",
+						),
+					),
+				),
+			));
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 // 		$this->tabella = gtext("prodotti");
 		

@@ -670,22 +670,15 @@ class GenericModel extends Model_Tree
 		))->toList("pages.id_page","pages.title")->send();
 	}
 	
-	public function selectLingua()
+	public function selectLingua($prefisso = "")
 	{
-		LingueModel::getValori();
-		
-		$lingue = array_merge(array("tutte"=> Params::$defaultFrontEndLanguage),BaseController::$traduzioni);
-		
-		$lingue = array_unique($lingue);
+		LingueModel::getValori(true);
 		
 		$temp = array();
 		
-		foreach ($lingue as $l)
+		foreach (LingueModel::$valori as $codice => $descrizione)
 		{
-			if (isset(LingueModel::$valori[$l]))
-				$temp[$l] = strtoupper(LingueModel::$valori[$l]);
-			else
-				$temp[$l] = strtoupper($l);
+			$temp[$codice] = $prefisso.strtoupper(gtext($descrizione));
 		}
 		
 		return $temp;

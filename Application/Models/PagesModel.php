@@ -2130,4 +2130,40 @@ class PagesModel extends GenericModel {
 		
 		return "";
     }
+    
+    public function lingua($record)
+	{
+		LingueModel::getValori();
+		
+		$str = "";
+		
+		$dl = new PageslingueModel();
+			
+		$altreLingue = $dl->clear()->where(array(
+			"id_page"	=>	(int)$record[$this->_tables]["id_page"],
+			"includi"	=>	1,
+		))->toList("lingua")->send();
+		
+		if (count($altreLingue) > 0)
+			$str .= strtoupper(implode(" + ", $altreLingue));
+		else
+			$str .= gtext("TUTTE");
+		
+		return "<span class='text text-success text-bold'>".$str."</span>";
+	}
+	
+	public function escludilingua($record)
+	{
+		$dl = new PageslingueModel();
+		
+		$altreLingue = $dl->clear()->where(array(
+			"id_page"	=>	(int)$record[$this->_tables]["id_page"],
+			"includi"	=>	0,
+		))->toList("lingua")->send();
+		
+		if (count($altreLingue) > 0)
+			return "<span class='text text-danger text-bold'>".strtoupper(implode(" + ", $altreLingue))."</span>";
+		
+		return "";
+	}
 }

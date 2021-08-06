@@ -37,12 +37,21 @@ class LingueModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public static function getValori()
+	public static function getValori($soloAttive = false)
 	{
 		$l = new LingueModel();
 		
 		if (!isset(self::$valori))
-			self::$valori = $l->clear()->orderBy("id_order")->toList("codice","descrizione")->send();
+		{
+			$l->clear()->orderBy("id_order")->toList("codice","descrizione");
+			
+			if ($soloAttive)
+				$l->where(array(
+					"attiva"	=>	1,
+				));
+			
+			self::$valori = $l->send();
+		}
 		
 		return self::$valori;
 	}

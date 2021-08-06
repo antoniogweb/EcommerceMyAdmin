@@ -442,6 +442,18 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"lingua_page"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"lingua_page_escl"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 		"titolo_documento"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
