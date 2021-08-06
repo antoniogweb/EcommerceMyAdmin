@@ -1632,7 +1632,7 @@ class PagesModel extends GenericModel {
 			);
 			
 			// Escludi
-			$d->sWhere("documenti.id_doc not in (select id_doc from documenti_lingue where id_page = ".(int)$id." and id_doc is not null and lingua = '".sanitizeDb($lingua)."' and includi = 0)");
+			$d->sWhere("documenti.id_doc not in (select documenti_lingue.id_doc from documenti_lingue inner join documenti on documenti_lingue.id_doc = documenti.id_doc where documenti.id_page = ".(int)$id." and documenti_lingue.id_doc is not null and documenti_lingue.lingua = '".sanitizeDb($lingua)."' and documenti_lingue.includi = 0)");
 		}
 		
 		$d->aWhere($aWhere);

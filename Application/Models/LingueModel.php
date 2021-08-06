@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class LingueModel extends GenericModel
 {
 	public static $valori = null;
+	public static $valoriAttivi = null;
 	public static $codici = null;
 	public static $lingueBackend = array();
 	
@@ -37,6 +38,24 @@ class LingueModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public static function getValoriAttivi()
+	{
+		$l = new LingueModel();
+		
+		if (!isset(self::$valoriAttivi))
+		{
+			$l->clear()->orderBy("id_order")->toList("codice","descrizione");
+			
+			$l->where(array(
+				"attiva"	=>	1,
+			));
+			
+			self::$valoriAttivi = $l->send();
+		}
+		
+		return self::$valoriAttivi;
+	}
+	
 	public static function getValori($soloAttive = false)
 	{
 		$l = new LingueModel();
@@ -44,11 +63,6 @@ class LingueModel extends GenericModel
 		if (!isset(self::$valori))
 		{
 			$l->clear()->orderBy("id_order")->toList("codice","descrizione");
-			
-			if ($soloAttive)
-				$l->where(array(
-					"attiva"	=>	1,
-				));
 			
 			self::$valori = $l->send();
 		}

@@ -42,7 +42,9 @@ class DocumentilingueModel extends GenericModel {
     {
 		$l = new LingueModel();
 		
-		return $l->clear()->orderBy("descrizione")->sWhere("id_lingua not in (select id_lingua from documenti_lingue where id_doc = ".(int)$idDoc.")")->toList("id_lingua", "descrizione")->send();
+		return $l->clear()->where(array(
+			"attiva"	=>	1,
+		))->orderBy("descrizione")->sWhere("id_lingua not in (select id_lingua from documenti_lingue where id_doc = ".(int)$idDoc.")")->toList("id_lingua", "descrizione")->send();
     }
     
 	public function insert()

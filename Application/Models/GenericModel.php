@@ -672,11 +672,11 @@ class GenericModel extends Model_Tree
 	
 	public function selectLingua($prefisso = "")
 	{
-		LingueModel::getValori(true);
+		LingueModel::getValoriAttivi();
 		
 		$temp = array();
 		
-		foreach (LingueModel::$valori as $codice => $descrizione)
+		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
 			$temp[$codice] = $prefisso.strtoupper(gtext($descrizione));
 		}
