@@ -3,7 +3,7 @@
 <?php include($this->viewPath("ordina"));?>
 
 <section class="content-header">
-	<h1>Gestione <?php echo $tabella;?>: <?php echo $titoloRecord;?></h1>
+	<h1><?php echo gtext("Gestione");?> <?php echo gtext($tabella);?>: <?php echo $titoloRecord;?></h1>
 </section>
 
 <!-- Main content -->
