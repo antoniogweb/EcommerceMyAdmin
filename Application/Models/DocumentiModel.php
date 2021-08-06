@@ -231,54 +231,25 @@ class DocumentiModel extends GenericModel {
 				$zip->close();
 			}
 			
-			$okElaborazione = true;
+			$okElaborazione = array();
 			
 			$items = scandir($extractPath);
 			foreach( $items as $this_file ) {
 				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0) {
 					$this_file = basename($this_file);
 					
-					$okElaborazione = $this->scDocumento($extractPath, $this_file, 0, array(
+					$okElaborazione[] = $this->scDocumento($extractPath, $this_file, 0, array(
 						"id_page"		=>	$idPage,
 						"id_archivio"	=>	$id,
 					));
-					
-// 					if (@is_file($extractPath.$this_file))
-// 					{
-// 						$this->files->setBase($extractPath);
-// 						
-// 						$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
-// 						
-// 						$ext = $this->files->getFileExtension($this_file);
-// 						
-// 						$this->setValues(array(
-// 							"filename"			=>	$fileName.".".$ext,
-// 							"clean_filename"	=>	$this_file,
-// 							"titolo"			=>	$this->files->getNameWithoutFileExtension($this_file),
-// 							"data_documento"	=>	date("Y-m-d"),
-// 							"id_tipo_doc"		=>	TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext),
-// 							"estensione"		=>	$ext,
-// 							"content_type"		=>	$this->files->getContentType($extractPath.$this_file),
-// 							"id_page"			=>	$idPage,
-// 							"id_archivio"		=>	$id,
-// 						));
-// 						
-// 						DocumentiModel::$uploadFile = false;
-// 						
-// 						if (rename($extractPath.$this_file, Domain::$parentRoot."/images/documenti/$fileName".".$ext"))
-// 						{
-// 							if (!$this->insert())
-// 								$okElaborazione = false;
-// 							
-// 							@unlink($extractPath.$this_file);
-// 						}
-// 					}
 				}
 			}
 			
 			@rmdir($extractPath);
 			
-			if ($okElaborazione)
+			$okElaborazione = array_unique($okElaborazione);
+			
+			if (count($okElaborazione) === 1 && $okElaborazione[0])
 			{
 				$this->setValues(array(
 					"elaborato"	=>	1
@@ -291,6 +262,31 @@ class DocumentiModel extends GenericModel {
 					@unlink($filePath);
 			}
 		}
+	}
+	
+	public static function cercaLinguaDaNomeFile($nomeFileCompleto)
+	{
+		if (!v("cerca_lingua_documento_da_nome_file"))
+			return v("lingua_default_documenti");
+		
+		$l = new LingueModel();
+		
+		$fileSenzaEstensione = $l->files->getNameWithoutFileExtension($nomeFileCompleto);
+		
+		$temp = explode(".", $fileSenzaEstensione);
+		
+		$lingua = end($temp);
+		$lingua = strtolower($lingua);
+		
+		if ($lingua)
+		{
+			LingueModel::getValori();
+			
+			if (isset(LingueModel::$valori[$lingua]))
+				return $lingua;
+		}
+		
+		return v("lingua_default_documenti");
 	}
 	
 	public function scDocumento($extractPath, $this_file, $copia = 0, $params = array())
@@ -322,6 +318,9 @@ class DocumentiModel extends GenericModel {
 				"id_archivio"		=>	$idArchivio,
 			));
 			
+			// Lingua
+			$this->setValue("lingua", DocumentiModel::cercaLinguaDaNomeFile($this_file));
+			
 			DocumentiModel::$uploadFile = false;
 			
 			$function = $copia ? "copy" : "rename";
@@ -335,6 +334,8 @@ class DocumentiModel extends GenericModel {
 					$okElaborazione = false;
 			}
 		}
+		else
+			$okElaborazione = false;
 		
 		return $okElaborazione;
 	}

@@ -39,6 +39,8 @@ class DocumentiController extends BaseController
 
 		$this->model("ReggroupsdocumentiModel");
 		$this->model("DocumentilingueModel");
+		
+		$this->m[$this->modelName]->uploadFields["filename"]["allowedExtensions"] = v("estensioni_accettate_documenti");
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
@@ -199,6 +201,9 @@ class DocumentiController extends BaseController
 			
 			$this->m["DocumentiModel"]->setValue("titolo", $this->m["DocumentiModel"]->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
 			$this->m["DocumentiModel"]->setValue("data_documento", date("Y-m-d"));
+			
+			// Lingua
+			$this->m["DocumentiModel"]->setValue("lingua", DocumentiModel::cercaLinguaDaNomeFile($_FILES["filename"]["name"]));
 			
 			if ($compresso)
 			{

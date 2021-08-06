@@ -240,6 +240,9 @@ class VariabiliModel extends GenericModel {
 		"mostra_slide"	=>	1,
 		"abilita_traduzioni_documenti"	=>	1,
 		"abilita_visibilita_pagine"		=>	0,
+		"cerca_lingua_documento_da_nome_file"	=>	1,
+		"lingua_default_documenti"	=>	"tutte",
+		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg",
 	);
 	
 	public function __construct() {
