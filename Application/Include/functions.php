@@ -1737,7 +1737,7 @@ function tpf($filePath = "")
 	$themeFolder = v("theme_folder");
 	
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
-		
+	
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
 	if (file_exists($subFolderFullPath))
