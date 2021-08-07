@@ -135,4 +135,13 @@ class LingueModel extends GenericModel
 		
 		return false;
 	}
+	
+	public static function getIdDaCodice($codice)
+	{
+		$l = new LingueModel();
+		
+		return $l->clear()->where(array(
+			"codice"	=>	sanitizeAll($codice),
+		))->field("id_lingua");
+	}
 }
