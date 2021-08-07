@@ -39,10 +39,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
 
 	<div class="uk-margin">
+		<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
 		<?php if ($id === 0) { ?>
-		<input class="uk-button uk-button-secondary" type="submit" name="insertAction" value="<?php echo gtext("Salva", false);?>" />
+		<input class="uk-button uk-button-secondary btn_submit_form" type="submit" name="insertAction" value="<?php echo gtext("Salva", false);?>" />
 		<?php } else { ?>
-		<input class="uk-button uk-button-secondary" type="submit" name="updateAction" value="<?php echo gtext("Salva", false);?>" />
+		<input class="uk-button uk-button-secondary btn_submit_form" type="submit" name="updateAction" value="<?php echo gtext("Salva", false);?>" />
 		<?php } ?>
 	</div>
 	

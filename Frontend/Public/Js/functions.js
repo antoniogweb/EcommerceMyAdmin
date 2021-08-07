@@ -516,6 +516,12 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".btn_submit_form", function(e){
+		
+		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		
+	});
+	
 	$('input').iCheck(icheckOptions);
 	
 	$(".image-picker").imagepicker();
