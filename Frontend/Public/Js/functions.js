@@ -276,7 +276,7 @@ function impostaLabelPagamento(obj)
 	$(".payment_box").css("display","none");
 	
 	if (obj != undefined)
-		obj.parents(".payment_method_paypal").find(".payment_box").css("display","block");
+		obj.parents(".payment_method_box").find(".payment_box").css("display","block");
 }
 
 function sistemaPIva(nazione)
@@ -513,6 +513,12 @@ $(document).ready(function(){
 			
 			gtag('event', 'checkout_progress', checkout_items);
 		}
+		
+	});
+	
+	$("body").on("click", ".btn_submit_form", function(e){
+		
+		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 	});
 	

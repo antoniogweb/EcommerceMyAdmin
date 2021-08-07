@@ -27,24 +27,10 @@ function labelStatoOrdine($type)
 
 function metodoPagamento($type)
 {
-	switch ($type)
-	{
-		case "bonifico":
-			return gtext("Bonifico bancario", false);
-			break;
-		case "contrassegno":
-			return gtext("Contrassegno (pagamento alla consegna)", false);
-			break;
-		case "paypal":
-			return gtext("Pagamento online tramite PayPal", false);
-			break;
-		case "carta_di_credito":
-			return gtext("Pagamento online tramite carta di credito", false);
-			break;
-		default:
-			return gtext("Nessuno", false);
-			break;
-	}
+	if (isset(OrdiniModel::$pagamenti[$type]))
+		return OrdiniModel::$pagamenti[$type];
+	
+	return gtext("Nessuno", false);
 }
 
 function getFirstImage($id_page)
@@ -1751,7 +1737,7 @@ function tpf($filePath = "")
 	$themeFolder = v("theme_folder");
 	
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
-		
+	
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
 	if (file_exists($subFolderFullPath))

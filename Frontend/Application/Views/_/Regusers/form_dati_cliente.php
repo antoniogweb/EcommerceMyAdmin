@@ -6,9 +6,11 @@ if (v("solo_utenti_privati"))
 	echo Html_Form::hidden("tipo_cliente",$values['tipo_cliente'],"privato");
 else
 {
+	$divisoreTipoCliente = User::$isPhone ? "<div class='tipo_cliente_divisore'></div>" : "";
+	
 	$tipoCliente = array(
-		"<span style='margin-left:8px;'></span>".gtext("Privato")."<span style='margin-right:20px;'></span>"=>"privato",
-		"<span style='margin-left:8px;'></span>".gtext("Azienda")."<span style='margin-right:20px;'></span>"=>"azienda",
+		"<span style='margin-left:8px;'></span>".gtext("Privato")."<span style='margin-right:20px;'></span>$divisoreTipoCliente"=>"privato",
+		"<span style='margin-left:8px;'></span>".gtext("Azienda")."<span style='margin-right:20px;'></span>$divisoreTipoCliente"=>"azienda",
 		"<span style='margin-left:8px;'></span>".gtext("Libero professionista")=>"libero_professionista",
 	);
 

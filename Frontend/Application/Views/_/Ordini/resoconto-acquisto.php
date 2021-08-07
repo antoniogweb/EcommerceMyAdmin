@@ -75,37 +75,7 @@ if (!isset($baseUrl))
 	</tr>
 </table>
 
-<?php if (strcmp($ordine["pagamento"],"bonifico") === 0 and strcmp($ordine["stato"],"pending") === 0) { ?>
-
-<h2><?php echo gtext("Dettagli pagamento:");?></h2>
-
-<p><?php echo testo("Esegua il bonifico alle seguenti coordinate bancarie ...");?></p>
-
-<?php } else if (strcmp($ordine["pagamento"],"contrassegno") === 0 and strcmp($ordine["stato"],"pending") === 0) { ?>
-
-<h2><?php echo gtext("Dettagli pagamento:");?></h2>
-
-<p><?php echo testo("Esegua il pagamento al corriere alla consegna della merce.");?></p>
-
-<?php } else if (strcmp($ordine["pagamento"],"paypal") === 0 and strcmp($ordine["stato"],"pending") === 0 and strcmp($tipoOutput,"web") === 0) { ?>
-
-	<?php if(!isset($actionFromAdmin)) { ?>
-	<div class="pulsante_paypal"><br /><?php echo $pulsantePaypal;?></div>
-	<?php } else { ?>
-	<h2>Dettagli pagamento:</h2>
-	<p>Pagamento tramite paypal ancora da eseguire</p>
-	<?php } ?>
-
-<?php } else if (strcmp($ordine["pagamento"],"carta_di_credito") === 0 and strcmp($ordine["stato"],"pending") === 0 and strcmp($tipoOutput,"web") === 0) { ?>
-
-	<?php if(!isset($actionFromAdmin)) { ?>
-	<div class="pulsante_paypal"><?php echo $pulsantePaga;?></div>
-	<?php } else { ?>
-	<h2>Dettagli pagamento:</h2>
-	<p>Pagamento tramite carta di credito ancora da eseguire</p>
-	<?php } ?>
-	
-<?php } ?>
+<?php include(tpf("Ordini/resoconto_pagamento.php"));?>
 
 <h2><?php echo gtext("Dettagli ordine", false); ?>:</h2>
 
