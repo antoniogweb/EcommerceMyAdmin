@@ -113,6 +113,16 @@
 						$notifiche = VariabiliModel::getNotifiche();
 					?>
 					<ul class="nav navbar-nav navbar-right">
+						<?php if (LingueModel::permettiCambioLinguaBackend()) { ?>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtext(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<?php foreach (LingueModel::$lingueBackend as $codiceLingua => $titoloLingua) { ?>
+								<li><a href="<?php echo $this->baseUrlSrc."/$codiceLingua/panel/main";?>"><?php echo gtext($titoloLingua)?></a></li>
+								<?php } ?>
+							</ul>
+						</li>
+						<?php } ?>
 						<?php if (count($notifiche) > 0 ) { ?>
 						<li class="dropdown notifications-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
@@ -132,16 +142,6 @@
 										<?php } ?>
 									</ul>
 								</li>
-							</ul>
-						</li>
-						<?php } ?>
-						<?php if (LingueModel::permettiCambioLinguaBackend()) { ?>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtext(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<?php foreach (LingueModel::$lingueBackend as $codiceLingua => $titoloLingua) { ?>
-								<li><a href="<?php echo $this->baseUrlSrc."/$codiceLingua/panel/main";?>"><?php echo gtext($titoloLingua)?></a></li>
-								<?php } ?>
 							</ul>
 						</li>
 						<?php } ?>
