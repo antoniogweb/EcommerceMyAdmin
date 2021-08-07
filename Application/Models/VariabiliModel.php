@@ -364,4 +364,23 @@ class VariabiliModel extends GenericModel {
 		
 		self::$valori = $values;
 	}
+	
+	public static function getNotifiche()
+	{
+		$notifiche = array();
+		
+		$files = scandir(ROOT."/DB/Migrazioni", SCANDIR_SORT_DESCENDING);
+		$ultimaMigrazione = $files[0];
+		$migrationNum = (int)basename($ultimaMigrazione, '.sql');
+		
+		if ($migrationNum > (int)v("db_version"))
+			$notifiche[] = array(
+				"testo"	=>	gtext("Attenzione, aggiorna il database!"),
+				"link"	=>	Url::getRoot()."cron/migrazioni/".v("codice_cron"),
+				"icona"	=>	"fa-warning",
+				"class"	=>	"text-yellow",
+			);
+		
+		return $notifiche;
+	}
 }

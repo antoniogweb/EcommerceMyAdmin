@@ -109,8 +109,32 @@
 					<span class="sr-only">Toggle navigation</span>
 				</a>
 				<div class="navbar-custom-menu">
-					<?php if (User::$logged and strcmp($this->action,'logout') !== 0) { ?>
+					<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {
+						$notifiche = VariabiliModel::getNotifiche();
+					?>
 					<ul class="nav navbar-nav navbar-right">
+						<?php if (count($notifiche) > 0 ) { ?>
+						<li class="dropdown notifications-menu">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								<i class="fa fa-bell-o"></i>
+								<span class="label label-warning"><?php echo count($notifiche);?></span>
+								</a>
+							<ul class="dropdown-menu">
+								<li>
+									<!-- inner menu: contains the actual data -->
+									<ul class="menu">
+										<?php foreach ($notifiche as $notif) { ?>
+										<li>
+											<a href="<?php echo $notif["link"];?>">
+											<i class="fa <?php echo $notif["icona"];?> <?php echo $notif["class"];?>"></i> <?php echo $notif["testo"];?>
+											</a>
+										</li>
+										<?php } ?>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<?php } ?>
 						<?php if (LingueModel::permettiCambioLinguaBackend()) { ?>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtext(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>

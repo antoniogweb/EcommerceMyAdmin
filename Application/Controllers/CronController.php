@@ -27,14 +27,14 @@ class CronController extends BaseController {
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
 		
-		$this->clean();
+// 		$this->clean();
 		
 		ini_set("memory_limit","512M");
 	}
 	
 	public function migrazioni($c = "", $mostra = 0)
 	{
-		$this->clean();
+// 		$this->clean();
 		
 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
@@ -58,6 +58,8 @@ class CronController extends BaseController {
 				$migrationNum = basename($sqlfile, '.sql');
 				$migrazioni[$migrationNum] =$sqlfile; 
 			}
+			
+			ob_start();
 			
 // 			echo $newVersion."<br />";
 			$mysqli = Db_Mysqli::getInstance();
@@ -105,6 +107,12 @@ class CronController extends BaseController {
 				
 				$version = $newVersion;
 			}
+			
+			$data["esitoMigrazioni"] = ob_get_clean();
+			$data["titoloPagina"] = gtext("Esito migrazioni");
+			
+			$this->append($data);
+			$this->load("output");
 			
 			fwrite($hand,date("Y-m-d H:i:s")." STOP MIGRAZIONI\n");
 			fwrite($hand,"\n");
