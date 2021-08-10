@@ -15,7 +15,11 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/panel.css?v='.rand(1,100000);?>">
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrlSrc.'/Public/Css/main.css?v='.rand(1,100000);?>">
 	<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseUrlSrc."/Public/Css/";?>print.css?v=<?php echo rand(1,100000);?>" />
-
+	
+	<?php if (file_exists(ROOT."/Theme/Css/style.css")) { ?>
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrlSrc.'/Theme/Css/style.css?v='.rand(1,100000);?>">
+	<?php } ?>
+	
 	<script>
 		var baseUrl = "<?php echo $this->baseUrl;?>";
 		var baseUrlSrc = "<?php echo $this->baseUrlSrc;?>";
