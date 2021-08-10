@@ -30,6 +30,7 @@ class CronController extends BaseController {
 // 		$this->clean();
 		
 		ini_set("memory_limit","512M");
+		ini_set("max_execution_time","300");
 	}
 	
 	public function migrazioni($c = "", $mostra = 0)
