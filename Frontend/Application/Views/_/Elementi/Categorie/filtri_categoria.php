@@ -62,7 +62,7 @@
 		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Categoria")?></h4>
 		<div class="uk-accordion-content">
 			<ul class="uk-list uk-list-divider">
-				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
+				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
 <!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop);?>)</span> -->
 				</li>
@@ -74,7 +74,7 @@
 					if (!$numeroProdottiCategoria)
 						continue;
 				?>
-				<li class="<?php if ($datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>" <?php if (count($figlie) > 0) { ?>uk-accordion<?php } ?>>
+				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>" <?php if (count($figlie) > 0) { ?>uk-accordion<?php } ?>>
 					<?php if (count($figlie) > 0) { ?>
 						<div class="<?php if (in_array($id_categoria,$figlieIds)) { ?>uk-open<?php } else { ?>uk-close<?php } ?>">
 					<?php } ?>
@@ -85,7 +85,7 @@
 						<?php if (count($figlie) > 0) { ?>
 						<ul class='uk-list uk-margin-left uk-accordion-content'>
 							<?php foreach ($figlie as $fg) { ?>
-							<li class="<?php if ($datiCategoria["categories"]["id_c"] == $fg["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>">
+							<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $fg["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>">
 								<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $fg["categories"]["id_c"], "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 									<?php echo cfield($fg, "title");?>
 								</a>
