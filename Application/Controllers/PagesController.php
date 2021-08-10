@@ -1724,6 +1724,16 @@ class PagesController extends BaseController {
 		$this->modelName = "PagescarvalModel";
 		$this->mainButtons = 'ldel';
 		
+		if (!v("nuova_modalita_caratteristiche"))
+		{
+			$this->m['PagescarvalModel']->setFields('id_cv,titolo,id_car','sanitizeAll');
+			$this->m['PagescarvalModel']->values['id_page'] = $clean['id'];
+			$this->m['PagescarvalModel']->updateTable('insert,del');
+			
+			if ($this->m['PagescarvalModel']->queryResult)
+				$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".$clean['id'].$this->viewStatus);
+		}
+		
 		$mainAction = "caratteristiche/".$clean['id'];
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
@@ -1737,7 +1747,7 @@ class PagesController extends BaseController {
 		$this->mainFields = array("caratteristiche.titolo", "edit");
 		$this->mainHead = "Caratteristica,Valore";
 		
-		if (!v("caratteristiche_in_tab_separate"))
+		if (!v("caratteristiche_in_tab_separate") && v("attiva_tipologie_caratteristiche"))
 		{
 			array_unshift($this->mainFields, "tipologie_caratteristiche.titolo");
 			$this->mainHead = "Tipologia,".$this->mainHead;
@@ -1764,6 +1774,15 @@ class PagesController extends BaseController {
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		if (!v("nuova_modalita_caratteristiche"))
+		{
+			$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
+			
+			$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
+			
+			$data["listaCarattVal"] = array("0"	=>	"-- seleziona --");
+		}
 		
 		$this->append($data);
 	}

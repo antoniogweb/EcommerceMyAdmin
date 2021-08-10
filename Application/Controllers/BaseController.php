@@ -474,7 +474,7 @@ class BaseController extends Controller
 // 		$this->scaffold->mainMenu->links['esporta']['url'] = "main";
 		
 		$this->scaffold->mainMenu->links['add']['url'] = $formAction.'/insert/0';
-		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci un nuovo elemento';
+		$this->scaffold->mainMenu->links['add']['title'] = gtext('inserisci un nuovo elemento');
 		
 		if (isset($this->scaffold->mainMenu->links['elimina']) and $this->id !== 0)
 		{

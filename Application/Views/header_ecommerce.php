@@ -50,10 +50,12 @@ include(ROOT."/Application/Views/header.php");
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="<?php echo $this->baseUrl."/caratteristiche/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi caratteristica</a></li>
-					<li <?php if ($this->controller === "caratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> Lista caratteristiche</a></li>
+					<li <?php if ($this->controller === "caratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista caratteristiche");?></a></li>
 					
+					<?php if (v("attiva_tipologie_caratteristiche")) { ?>
 					<li class="dropdown-header">Tipologie</li>
-					<li <?php if ($this->controller === "tipologiecaratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipologiecaratteristiche/main/1";?>"><i class="fa fa-list"></i> Tipologie</a></li>
+					<li <?php if ($this->controller === "tipologiecaratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipologiecaratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Tipologie");?></a></li>
+					<?php } ?>
 				</ul>
 			</li>
 			<?php } ?>

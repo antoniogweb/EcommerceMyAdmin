@@ -243,6 +243,8 @@ class VariabiliModel extends GenericModel {
 		"cerca_lingua_documento_da_nome_file"	=>	1,
 		"lingua_default_documenti"	=>	"tutte",
 		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg",
+		"nuova_modalita_caratteristiche"	=>	1,
+		"attiva_tipologie_caratteristiche"	=>	1,
 	);
 	
 	public function __construct() {

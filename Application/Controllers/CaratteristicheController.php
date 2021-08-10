@@ -59,18 +59,32 @@ class CaratteristicheController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo");
-		$this->mainHead = "Tipologia,Titolo";
+		$this->mainFields = array();
+		$this->mainHead = "";
+		
+		if (v("attiva_tipologie_caratteristiche"))
+		{
+			$this->mainFields[] = "tipologie_caratteristiche.titolo";
+			$this->mainHead = "Tipologia";
+		}
+		else
+			$this->mainHead .= "Titolo";
+		
+		$this->mainFields[] = "caratteristiche.titolo";
+		$this->mainHead .= ",Titolo";
+		
+		$this->filters = array();
 		
 		if (v("attiva_filtri_caratteristiche"))
 		{
 			$this->mainFields[] = "caratteristiche.filtro";
 			$this->mainHead .= ",Usata come filtro";
+			
+			$filtroTipologia = array("tutti" => "Tipologia") + $this->m[$this->modelName]->selectTipologia();
+			$this->filters[] = array("id_tipologia_caratteristica", null, $filtroTipologia);
 		}
 		
-		$filtroTipologia = array("tutti" => "Tipologia") + $this->m[$this->modelName]->selectTipologia();
-		
-		$this->filters = array(array("id_tipologia_caratteristica", null, $filtroTipologia), "titolo");
+		$this->filters[] = "titolo";
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
@@ -95,7 +109,7 @@ class CaratteristicheController extends BaseController {
 		if (v("attiva_filtri_caratteristiche"))
 			$fields .= ",filtro";
 		
-		if ($this->viewArgs["id_tip_car"] == "tutti")
+		if ($this->viewArgs["id_tip_car"] == "tutti" && v("attiva_tipologie_caratteristiche"))
 			$fields .= ",id_tipologia_caratteristica";
 		
 		if (v("mostra_tipo_caratteristica"))
