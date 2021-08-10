@@ -10,3 +10,4 @@ config.php
 /DB/Dump/dump.sql
 /Application/Apps
 /Library/*
+/Theme/*
