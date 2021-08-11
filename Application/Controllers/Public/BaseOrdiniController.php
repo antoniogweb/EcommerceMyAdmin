@@ -562,19 +562,12 @@ class BaseOrdiniController extends BaseController
 		}
 		
 		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
-		$data["conclusa"] = false;
 		
 		if ((int)count($res) === 0 && trim($clean['txn_id']))
 			$res = $this->m["OrdiniModel"]->clear()->where(array("txn_id" => $clean['txn_id']))->send();
 		
 		if (count($res) > 0)
 		{
-			if (strcmp($clean['st'],"Completed") === 0)
-				$data["conclusa"] = true;
-			
-			if (strcmp($res[0]["orders"]["stato"],"completed") === 0)
-				$data["conclusa"] = false;
-			
 			$data["ordine"] = $res[0]["orders"];
 			
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
@@ -585,7 +578,6 @@ class BaseOrdiniController extends BaseController
 		else if (trim($clean['txn_id']))
 		{
 			$this->append($data);
-			
 			$this->load("ritorno-da-paypal");
 		}
 	}
