@@ -553,12 +553,24 @@ class BaseOrdiniController extends BaseController
 			$clean['cart_uid'] = $this->request->get('item_number','','sanitizeAll');
 			$clean['txn_id'] = $this->request->get('tx','','sanitizeAll');
 			$clean['st'] = $this->request->get('st','','sanitizeAll');
+			
+			if (isset($_GET["txn_id"]))
+				$clean['txn_id'] = $this->request->get('txn_id','','sanitizeAll');
+			
+			if (isset($_GET["payment_status"]))
+				$clean['st'] = $this->request->get('payment_status','','sanitizeAll');
 		}
 		else
 		{
 			$clean['cart_uid'] = $this->request->post('item_number','','sanitizeAll');
 			$clean['txn_id'] = $this->request->post('tx','','sanitizeAll');
 			$clean['st'] = $this->request->post('st','','sanitizeAll');
+			
+			if (isset($_POST["txn_id"]))
+				$clean['txn_id'] = $this->request->post('txn_id','','sanitizeAll');
+			
+			if (isset($_POST["payment_status"]))
+				$clean['st'] = $this->request->post('payment_status','','sanitizeAll');
 		}
 		
 		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
