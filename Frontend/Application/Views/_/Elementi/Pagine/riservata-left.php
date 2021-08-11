@@ -20,9 +20,11 @@
 			<li class="<?php if ($attiva == "account") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/modifica-account";?>" title="<?php echo gtext("Modifica dati fatturazione", false);?>"><?php echo gtext("Modifica dati fatturazione");?></a>
 			</li>
+			<?php if (v("attiva_spedizione")) { ?>
 			<li class="<?php if ($attiva == "indirizzi") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/riservata/indirizzi";?>" title="<?php echo gtext("Indirizzi di spedizione", false);?>"><?php echo gtext("Indirizzi di spedizione");?></a>
 			</li>
+			<?php } ?>
 			<li class="<?php if ($attiva == "password") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/modifica-password";?>" title="<?php echo gtext("Modifica password", false);?>"><?php echo gtext("Modifica password");?></a>
 			</li>

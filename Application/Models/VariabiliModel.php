@@ -245,6 +245,7 @@ class VariabiliModel extends GenericModel {
 		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg",
 		"nuova_modalita_caratteristiche"	=>	1,
 		"attiva_tipologie_caratteristiche"	=>	1,
+		"attiva_spedizione"			=>	1,
 	);
 	
 	public function __construct() {

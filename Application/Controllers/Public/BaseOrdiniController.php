@@ -688,7 +688,7 @@ class BaseOrdiniController extends BaseController
 		$elencoCorrieri = $this->m["CorrieriModel"]->elencoCorrieri();
 		
 		//imposto spedizione uguale a fatturazione
-		if (isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0)
+		if ((isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0) || !v("attiva_spedizione"))
 		{
 			$_POST["indirizzo_spedizione"] = $this->request->post("indirizzo","","none");
 			$_POST["cap_spedizione"] = $this->request->post("cap","","none");
@@ -817,7 +817,7 @@ class BaseOrdiniController extends BaseController
 		
 		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
 		
-		if (isset($_POST["nazione_spedizione"]) && count($elencoCorrieri) > 0)
+		if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && count($elencoCorrieri) > 0)
 		{
 			$listaCorrieriNazione = implode(",",$this->m["CorrieriModel"]->getIdsCorrieriNazione($_POST["nazione_spedizione"]));
 			
@@ -1030,22 +1030,28 @@ class BaseOrdiniController extends BaseController
 									{
 										$clean['userId'] = (int)$this->m['RegusersModel']->lastId();
 										
-										//aggiungo l'indirizzo di spedizione
-										$this->m["SpedizioniModel"]->setValues(array(
-											"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
-											"cap_spedizione"	=>	$_POST["cap_spedizione"],
-											"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
-											"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
-											"citta_spedizione"	=>	$_POST["citta_spedizione"],
-											"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
-											"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
-											"id_user"	=>	$clean['userId'],
-											"ultimo_usato"	=>	"Y",
-										));
-										
-										$this->m["SpedizioniModel"]->insert();
-										
-										$idSpedizione = $this->m["SpedizioniModel"]->lId;
+										// Controllo che sia attiva la spedizione
+										if (v("attiva_spedizione"))
+										{
+											//aggiungo l'indirizzo di spedizione
+											$this->m["SpedizioniModel"]->setValues(array(
+												"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
+												"cap_spedizione"	=>	$_POST["cap_spedizione"],
+												"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
+												"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
+												"citta_spedizione"	=>	$_POST["citta_spedizione"],
+												"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
+												"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
+												"id_user"	=>	$clean['userId'],
+												"ultimo_usato"	=>	"Y",
+											));
+											
+											$this->m["SpedizioniModel"]->insert();
+											
+											$idSpedizione = $this->m["SpedizioniModel"]->lId;
+										}
+										else
+											$idSpedizione = 0;
 										
 										$this->m['OrdiniModel']->values = array(
 											"id_user" => $clean['userId'],
@@ -1091,32 +1097,38 @@ class BaseOrdiniController extends BaseController
 							{
 								$nuovoIndirizzo = $this->request->post("aggiungi_nuovo_indirizzo","Y","sanitizeAll");
 								
-								$idSpedizione = $this->request->post("id_spedizione","0","forceInt");
-								
-								if (strcmp($nuovoIndirizzo,"Y") === 0)
+								// Controllo che sia attiva la spedizione
+								if (v("attiva_spedizione"))
 								{
-									$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
+									$idSpedizione = $this->request->post("id_spedizione","0","forceInt");
 									
-									$this->m["SpedizioniModel"]->setValues(array(
-										"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
-										"cap_spedizione"	=>	$_POST["cap_spedizione"],
-										"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
-										"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
-										"citta_spedizione"	=>	$_POST["citta_spedizione"],
-										"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
-										"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
-										"id_user"	=>	$this->iduser,
-										"ultimo_usato"	=>	"Y",
-									));
-									
-									if ($this->m["SpedizioniModel"]->insert())
-										$idSpedizione = $this->m["SpedizioniModel"]->lId;
+									if (strcmp($nuovoIndirizzo,"Y") === 0)
+									{
+										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
+										
+										$this->m["SpedizioniModel"]->setValues(array(
+											"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
+											"cap_spedizione"	=>	$_POST["cap_spedizione"],
+											"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
+											"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
+											"citta_spedizione"	=>	$_POST["citta_spedizione"],
+											"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
+											"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
+											"id_user"	=>	$this->iduser,
+											"ultimo_usato"	=>	"Y",
+										));
+										
+										if ($this->m["SpedizioniModel"]->insert())
+											$idSpedizione = $this->m["SpedizioniModel"]->lId;
+									}
+									else if ($idSpedizione > 0)
+									{
+										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
+										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'Y' where id_spedizione = ".(int)$idSpedizione." and id_user = ".(int)User::$id);
+									}
 								}
-								else if ($idSpedizione > 0)
-								{
-									$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
-									$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'Y' where id_spedizione = ".(int)$idSpedizione." and id_user = ".(int)User::$id);
-								}
+								else
+									$idSpedizione = 0;
 								
 								//segna da che utente è stato eseguito l'ordine
 								$this->m['OrdiniModel']->values = array(

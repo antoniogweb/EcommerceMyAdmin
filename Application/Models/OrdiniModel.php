@@ -267,6 +267,13 @@ class OrdiniModel extends FormModel {
 		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
 			return parent::insert();
 		
+		// Se non c'è la spedizione attiva
+		if (!v("attiva_spedizione"))
+		{
+			$this->values["id_spedizione"] = 0;
+			$this->values["id_corriere"] = 0;
+		}
+		
 // 		$this->lId = (int)$this->lastId();
 		
 		return false;

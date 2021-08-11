@@ -417,6 +417,10 @@ function getPrezzoScontato($ivato = 0)
 
 function getSpedizioneN()
 {
+	// Controllo che sia attiva la spedizione
+	if (!v("attiva_spedizione"))
+		return 0;
+	
 	if (!v("prezzi_ivati_in_carrello"))
 		$subtotale = getPrezzoScontatoN(false);
 	else

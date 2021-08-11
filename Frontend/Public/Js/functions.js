@@ -14,6 +14,9 @@ if (typeof input_error_style == "undefined")
 if (typeof gtm_analytics == "undefined")
 	var gtm_analytics = false;
 
+if (typeof attiva_spedizione == "undefined")
+	var attiva_spedizione = true;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -154,6 +157,9 @@ function impostaCampiSpedizione(id_spedizione)
 
 function impostaSpedizioneNonLoggato(obj)
 {
+	if (!attiva_spedizione)
+		return;
+	
 	if (obj.val() == "Y")
 	{
 		$(".blocco_spedizione_non_loggato").css("display","none");
@@ -166,6 +172,9 @@ function impostaSpedizioneNonLoggato(obj)
 
 function impostaSpeseSpedizione(id_corriere, nazione)
 {
+	if (!attiva_spedizione)
+		return;
+	
 	var tipo_cliente = getTipoCliente();
 	
 	$.ajaxQueue({
@@ -208,6 +217,9 @@ var cercaSpeseSpedizione = true;
 
 function impostaCorrieriESpeseSpedizione()
 {
+	if (!attiva_spedizione)
+		return;
+	
 	if (!cercaSpeseSpedizione)
 		return;
 	
@@ -322,6 +334,9 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 {
 	window.sistemaTendinaProvinciaSpedizione = function(val)
 	{
+		if (!attiva_spedizione)
+			return;
+		
 		if (val == "IT")
 		{
 			$("[name='dprovincia_spedizione']").css("display","none");
@@ -411,10 +426,7 @@ $(document).ready(function(){
 		$(".white_content").css("display","none");
 		
 		return false;
-		
 	});
-	
-	
 	
 	$(".stampa_pagina").click(function(){
 		

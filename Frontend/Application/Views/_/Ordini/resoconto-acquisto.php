@@ -217,6 +217,7 @@ if (!isset($baseUrl))
 	</table>
 </div>
 
+<?php if (v("attiva_spedizione")) { ?>
 <h2><?php echo gtext("Dati di spedizione", false); ?></h2>
 
 <div class="uk-overflow-auto">
@@ -249,6 +250,7 @@ if (!isset($baseUrl))
 		</tr>
 	</table>
 </div>
+<?php } ?>
 <br /><br />
 <?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
 <p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/token";?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>

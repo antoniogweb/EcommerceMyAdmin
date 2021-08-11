@@ -13,6 +13,7 @@
 	var gtm_analytics = <?php echo v("codice_gtm_analytics") ? "true" : "false"; ?>;
 	var debug_js = <?php echo v("debug_js") ? "true" : "false"; ?>;
 	var input_border_color = "#e5e5e5";
+	var attiva_spedizione = <?php echo v("attiva_spedizione") ? "true" : "false";?>;
 </script>
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>

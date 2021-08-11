@@ -220,6 +220,7 @@
 							</td>
 						</tr>
 						<?php } ?>
+						<?php if (v("attiva_spedizione")) { ?>
 						<tr>
 							<td colspan="2">Spese di spedizione</td>
 							<td class="text-right"></td>
@@ -267,6 +268,7 @@
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
 							</td>
 						</tr>
+						<?php } ?>
 					</table>
 				</div>
 			</div>
@@ -302,6 +304,7 @@
 						</div>
 					</div>
 				</div>
+				<?php if (v("attiva_spedizione")) { ?>
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
@@ -326,6 +329,7 @@
 						</div>
 					</div>
 				</div>
+				<?php } ?>
 			</div>
 			
 			<?php if (trim($ordine["note"])) { ?>
@@ -412,6 +416,7 @@
 								<?php } ?>
 							</table>
 						</div>
+						<?php if (v("attiva_spedizione")) { ?>
 						<div class="col-lg-6">
 							<h3>Dati di spedizione:</h3>
 							
@@ -446,6 +451,7 @@
 								</tr>
 							</table>
 						</div>
+						<?php } ?>
 					</div>
 					
 					<div class="row">
