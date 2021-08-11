@@ -426,6 +426,10 @@ function getSpedizioneN()
 	if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
 		return 0;
 	
+	// Prendo le spese dall'account
+	if (User::$logged && isset(User::$dettagli["spese_spedizione"]) && User::$dettagli["spese_spedizione"] >= 0)
+		return User::$dettagli["spese_spedizione"];
+	
 	$c = new CartModel();
 	$corr = new CorrieriModel();
 	$corrSpese = new CorrierispeseModel();
