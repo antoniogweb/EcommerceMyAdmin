@@ -566,6 +566,11 @@ class BaseOrdiniController extends BaseController
 		if ((int)count($res) === 0 && trim($clean['txn_id']))
 			$res = $this->m["OrdiniModel"]->clear()->where(array("txn_id" => $clean['txn_id']))->send();
 		
+		$data["conclusa"] = false;
+		
+		if (strcmp($clean['st'],"Completed") === 0)
+			$data["conclusa"] = true;
+		
 		if (count($res) > 0)
 		{
 			$data["ordine"] = $res[0]["orders"];
