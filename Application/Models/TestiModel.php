@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class TestiModel extends GenericModel {
-
+	
+	public static $mostraIconaEdit = true;
+	
 	public function __construct() {
 		$this->_tables='testi';
 		$this->_idFields='id_t';

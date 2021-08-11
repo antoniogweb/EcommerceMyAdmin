@@ -937,7 +937,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 			$t = ob_get_clean();
 		}
 		
-		if (User::$adminLogged)
+		if (User::$adminLogged && TestiModel::$mostraIconaEdit)
 		{
 			return "<".v("tag_blocco_testo")." class='blocco_testo'>".$t."$iconaEdit</".v("tag_blocco_testo").">";
 		}

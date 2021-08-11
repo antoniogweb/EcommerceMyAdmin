@@ -48,9 +48,13 @@ class MailordiniModel extends GenericModel
 		
 		if (file_exists($path))
 		{
+			TestiModel::$mostraIconaEdit = false;
+			
 			ob_start();
 			include ($path);
 			$body = ob_get_clean();
+			
+			TestiModel::$mostraIconaEdit = true;
 		}
 		
 		return $body;
