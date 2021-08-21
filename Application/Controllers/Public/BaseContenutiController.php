@@ -557,6 +557,7 @@ class BaseContenutiController extends BaseController
 		$argKeys = array(
 			'p:forceNat'	=>	1,
 			'o:sanitizeAll'	=>	"tutti",
+			'search:sanitizeAll'	=>	"",
 		);
 		
 		$this->setArgKeys($argKeys);
@@ -810,6 +811,17 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
 			
 			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
+		}
+		
+		if ($this->viewArgs["search"] != "tutti")
+		{
+			$this->m["PagesModel"]->aWhere(array(
+				" OR"=> array(
+					"lk" => array('pages.title' => $this->viewArgs["search"]),
+					" lk" => array('pages.codice' => $this->viewArgs["search"]),
+					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["search"]),
+				),
+			));
 		}
 		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
