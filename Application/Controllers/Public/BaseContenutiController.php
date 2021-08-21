@@ -801,6 +801,17 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
+		// Visibilità pagina
+		if (v("abilita_visibilita_pagine"))
+		{
+			$this->m["PagesModel"]->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
+			$this->m["PagesModel"]->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
+			
+			$this->m["PagesModel"]->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
+			
+			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
+		}
+		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
 		
 // 		echo $this->m["PagesModel"]->getQuery();die();
@@ -1673,14 +1684,44 @@ class BaseContenutiController extends BaseController
 			$section = Parametri::$nomeSezioneProdotti;
 		
 		$idShopCat = (int)$this->m['CategoriesModel']->clear()->where(array(
-			"section"	=>	Parametri::$nomeSezioneProdotti
+			"section"	=>	$section,
 		))->field("id_c");
 		
 		$res = $this->m["CategoriesModel"]->recursiveTree($idShopCat,2);
 // 		$res = json_encode($res);
 		
+		Output::$json = true;
 		Output::setBodyValue("Type", "Menu");
 		Output::setBodyValue("Categories", $res);
+		
+		$this->load("api_output");
+	}
+	
+	public function jsoncategoriefiglie($idCat)
+	{
+		$this->clean();
+		
+		$c = new CategorieModel();
+		
+		$children = $c->clear()->where(array(
+			"id_p"	=>	(int)$idCat,
+		))->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
+		
+		$arrayFigli = array();
+		
+		foreach ($children as $c)
+		{
+			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
+		}
+// 		echo $c->getQuery();
+		
+// 		print_r($children);die();
+		
+// 		$arrayFigli = json_encode($arrayFigli);
+		
+		Output::$json = true;
+		Output::setBodyValue("Type", "Menu");
+		Output::setBodyValue("Data", $arrayFigli);
 		
 		$this->load("api_output");
 	}

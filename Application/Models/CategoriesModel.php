@@ -694,6 +694,13 @@ class CategoriesModel extends HierarchicalModel {
 		return $p;
 	}
 	
+	public function addJoinTraduzioneCategoria()
+	{
+		$this->addJoinTraduzione(null, "contenuti_tradotti_categoria");
+		
+		return $this;
+	}
+	
 	public function numeroProdottiFull($id_c)
 	{
 		return self::gPage($id_c, true, false)->rowNumber();
