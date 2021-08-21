@@ -28,6 +28,7 @@ class LingueModel extends GenericModel
 	public static $valoriAttivi = null;
 	public static $codici = null;
 	public static $lingueBackend = array();
+	public static $principaleFrontend = null;
 	
 	public function __construct() {
 		$this->_tables = 'lingue';
@@ -54,6 +55,26 @@ class LingueModel extends GenericModel
 		}
 		
 		return self::$valoriAttivi;
+	}
+	
+	public static function getPrincipaleFrontend()
+	{
+		$l = new LingueModel();
+		
+		if (!isset(self::$principaleFrontend))
+		{
+			$l->clear()->orderBy("id_order")->where(array(
+				"principale"	=>	1,
+				"attiva"		=>	1,
+			));
+			
+			$codice = $l->field("codice");
+			
+			if ($codice)
+				self::$principaleFrontend = $codice;
+		}
+		
+		return self::$principaleFrontend;
 	}
 	
 	public static function getValori($soloAttive = false)

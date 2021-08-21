@@ -67,8 +67,8 @@ class TraduzioniController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("editIt");
-		$this->mainHead = "IT";
+// 		$this->mainFields = array("editIt");
+// 		$this->mainHead = "";
 		$this->addBulkActions = false;
 		
 // 		$this->filters = array("valore", array("tradotta",null,array(
@@ -77,15 +77,19 @@ class TraduzioniController extends BaseController {
 // 			1	=>	"Tradotti",
 // 		)));
 		
+		$mainHeadArray = array();
+		
 		$this->filters = array("valore");
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>300, 'mainMenu'=>'esporta,importa');
 		
-		foreach (self::$traduzioni as $codiceLingua)
+		foreach ($this->elencoLingue as $codiceLingua => $descLingua)
 		{
 			$this->mainFields[] = "edit".str_replace("-","",$codiceLingua);
-			$this->mainHead .= ",".strtoupper($codiceLingua);
+			$mainHeadArray[] = strtoupper($codiceLingua);
 		}
+		
+		$this->mainHead = implode(",", $mainHeadArray);
 		
 		$this->mainFields[] = "elimina";
 		$this->mainHead .= ",";
@@ -99,7 +103,7 @@ class TraduzioniController extends BaseController {
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
-					"lingua"	=>	"it",
+					"lingua"	=>	LingueModel::getPrincipaleFrontend(),
 					"tradotta"	=>	$this->viewArgs['tradotta'],
 					"lk" => array('valore' => $this->viewArgs['valore']),
 					"contesto"	=>	"front",

@@ -246,6 +246,8 @@ class VariabiliModel extends GenericModel {
 		"nuova_modalita_caratteristiche"	=>	1,
 		"attiva_tipologie_caratteristiche"	=>	1,
 		"attiva_spedizione"			=>	1,
+		"lingua_default_frontend"	=>	"it",
+		"abilita_tutte_le_lingue_attive"	=>	0,
 	);
 	
 	public function __construct() {

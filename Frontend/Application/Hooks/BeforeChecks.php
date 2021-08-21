@@ -46,7 +46,16 @@ if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
 require(LIBRARY."/Application/Include/language.php");
 require(LIBRARY."/Application/Include/functions.php");
 
-if (v("lingue_abilitate_frontend"))
+// Lingua frontend principale
+if (v("lingua_default_frontend"))
+	Params::$defaultFrontEndLanguage = v("lingua_default_frontend");
+else
+	Params::$defaultFrontEndLanguage = LingueModel::getPrincipaleFrontend();
+
+// Se abilita tutte le lingue a DB o solo quelle da variabile di sistema
+if (v("abilita_tutte_le_lingue_attive"))
+	Params::$frontEndLanguages = array_keys(LingueModel::getValoriAttivi());
+else if (v("lingue_abilitate_frontend"))
 	Params::$frontEndLanguages = explode(",", v("lingue_abilitate_frontend"));
 
 require(LIBRARY."/Application/Include/parametri.php");
