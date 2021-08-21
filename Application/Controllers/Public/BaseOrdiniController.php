@@ -257,6 +257,9 @@ class BaseOrdiniController extends BaseController
 		{
 			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".$p->log_ipn_results(false, false)."</pre>", "IPN");
 		}
+		
+		// Reply with an empty 200 response to indicate to paypal the IPN was received correctly.
+		header("HTTP/1.1 200 OK");
 	}
 	
 	public function modifica($id_o = 0, $cart_uid = 0)
