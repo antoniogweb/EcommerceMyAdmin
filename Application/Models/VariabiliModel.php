@@ -248,6 +248,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_spedizione"			=>	1,
 		"lingua_default_frontend"	=>	"it",
 		"abilita_tutte_le_lingue_attive"	=>	0,
+		"applicativo_traduzioni"	=>	"",
 	);
 	
 	public function __construct() {

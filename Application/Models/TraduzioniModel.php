@@ -129,6 +129,7 @@ class TraduzioniModel extends GenericModel {
 				"valore"	=>	sanitizeDb($string),
 				"lingua"	=>	$lingua,
 				"contesto"	=>	"front",
+				"applicativo"	=>	$record["traduzioni"]["applicativo"],
 			);
 			
 			if ($this->insert())

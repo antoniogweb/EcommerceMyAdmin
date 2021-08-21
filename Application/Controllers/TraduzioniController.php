@@ -108,7 +108,14 @@ class TraduzioniController extends BaseController {
 					"lk" => array('valore' => $this->viewArgs['valore']),
 					"contesto"	=>	"front",
 					"gestibile"	=>	1,
-				))->orderBy("id_t")->save();
+				))->orderBy("id_t");
+		
+		if (v("applicativo_traduzioni"))
+			$this->m[$this->modelName]->aWhere(array(
+				"applicativo"	=>	sanitizeDb(v("applicativo_traduzioni")),
+			));
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}
@@ -133,7 +140,7 @@ class TraduzioniController extends BaseController {
 					$chiave = $data[0];
 // 					
 					$traduzione =  $this->m[$this->modelName]->clear()->where(array(
-						"lingua"	=>	"it",
+						"lingua"	=>	LingueModel::getPrincipaleFrontend(),
 						"chiave"	=>	sanitizeDb($chiave),
 						"contesto"	=>	"front",
 					))->record();

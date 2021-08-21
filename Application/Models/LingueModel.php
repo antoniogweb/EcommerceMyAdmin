@@ -127,13 +127,15 @@ class LingueModel extends GenericModel
 	{
 		$l = new LingueModel();
 		
-		$l->clear()->where(array(
-			"attiva"	=>	1,
-		))->orderBy("id_order")->toList("codice", "descrizione");
+		$l->clear()->orderBy("id_order")->toList("codice", "descrizione");
 		
 		if ($soloBackend)
 			$l->aWhere(array(
 				"backend"	=>	1,
+			));
+		else
+			$l->aWhere(array(
+				"attiva"	=>	1,
 			));
 		
 		return $l->send();

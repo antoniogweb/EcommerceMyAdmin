@@ -27,7 +27,7 @@ function getLinguaIso()
 }
 
 //get the text in the right language
-function gtext($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1)
+function gtext($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1, $applicativo = "")
 {
 	$t = new TraduzioniModel();
 	
@@ -59,6 +59,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 			"lingua"	=>	sanitizeDb($tempLang),
 			"contesto"	=>	sanitizeDb($contesto),
 			"gestibile"	=>	(int)$gestibile,
+			"applicativo"	=>	$applicativo,
 		);
 		
 		$t->insert();
@@ -67,6 +68,11 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		
 // 		return $string;
 	}
+}
+
+function gtexta($string, $applicativo = "")
+{
+	return gtext($string, true, "none", null, 1, $applicativo);
 }
 
 // //get the text in the right language
