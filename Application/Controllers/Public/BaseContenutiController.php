@@ -1713,11 +1713,6 @@ class BaseContenutiController extends BaseController
 		{
 			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
 		}
-// 		echo $c->getQuery();
-		
-// 		print_r($children);die();
-		
-// 		$arrayFigli = json_encode($arrayFigli);
 		
 		Output::$json = true;
 		Output::setBodyValue("Type", "Menu");
