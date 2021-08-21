@@ -63,7 +63,8 @@ class PaypalIPN
     public function verifyIPN()
     {
         if ( ! count($_POST)) {
-            throw new Exception("Missing POST Data");
+			$this->ipn_response = "Missing POST Data";
+            return false;
         }
 
         $raw_post_data = file_get_contents('php://input');
@@ -123,13 +124,15 @@ class PaypalIPN
             $errno = curl_errno($ch);
             $errstr = curl_error($ch);
             curl_close($ch);
-            throw new Exception("cURL error: [$errno] $errstr");
+            $this->ipn_response = "cURL error: [$errno] $errstr";
+            return false;
         }
 
         $info = curl_getinfo($ch);
         $http_code = $info['http_code'];
         if ($http_code != 200) {
-            throw new Exception("PayPal responded with http code $http_code");
+            $this->ipn_response = "PayPal responded with http code $http_code";
+            return false;
         }
 
         curl_close($ch);
