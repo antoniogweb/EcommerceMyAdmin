@@ -71,9 +71,9 @@ class CartModel extends Model_Tree {
 				$daEliminareWhere = implode(",", $daEliminare);
 				
 				$this->db->query("delete from cart where id_cart in ($daEliminareWhere)");
-				
-				self::$checkCart = true;
 			}
+			
+			self::$checkCart = true;
 		}
 	}
 	
