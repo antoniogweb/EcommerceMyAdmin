@@ -500,8 +500,6 @@ class BaseBaseController extends Controller
 		
 		$data["langDb"] = $this->langDb = Lang::$langDb = null;
 		
-		
-		
 		$data["pagesCss"] = $data["paginaGenerica"] = "";
 		
 		$this->append($data);

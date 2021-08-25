@@ -1715,16 +1715,20 @@ class BaseContenutiController extends BaseController
 		
 		$c = new CategorieModel();
 		
-		$children = $c->clear()->where(array(
-			"id_p"	=>	(int)$idCat,
-		))->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
+// 		$children = $c->categorieFiglie();
+// 		
+// 		$children = $c->clear()->where(array(
+// 			"id_p"	=>	(int)$idCat,
+// 		))->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
+// 		
+// 		$arrayFigli = array();
+// 		
+// 		foreach ($children as $c)
+// 		{
+// 			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
+// 		}
 		
-		$arrayFigli = array();
-		
-		foreach ($children as $c)
-		{
-			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
-		}
+		$arrayFigli = $c->categorieFiglieSelect($idCat);
 		
 		Output::$json = true;
 		Output::setBodyValue("Type", "Menu");
