@@ -488,6 +488,8 @@ class BaseBaseController extends Controller
 			$data["arrayLingue"][$l] = $l;
 		}
 		
+		$data["arrayLingueCompleto"] = LingueModel::getValoriAttivi();
+		
 		$res = $this->m["MenuModel"]->getTreeWithDepth(2, null, Params::$lang);
 		$data["menu"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang);
 		
