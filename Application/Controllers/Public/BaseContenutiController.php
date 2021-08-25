@@ -813,7 +813,7 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		}
 		
-		if ($this->viewArgs["search"] != "tutti")
+		if (trim($this->viewArgs["search"]))
 		{
 			$this->m["PagesModel"]->aWhere(array(
 				" OR"=> array(
@@ -1714,19 +1714,6 @@ class BaseContenutiController extends BaseController
 		$this->clean();
 		
 		$c = new CategorieModel();
-		
-// 		$children = $c->categorieFiglie();
-// 		
-// 		$children = $c->clear()->where(array(
-// 			"id_p"	=>	(int)$idCat,
-// 		))->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
-// 		
-// 		$arrayFigli = array();
-// 		
-// 		foreach ($children as $c)
-// 		{
-// 			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
-// 		}
 		
 		$arrayFigli = $c->categorieFiglieSelect($idCat);
 		
