@@ -813,7 +813,7 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		}
 		
-		if (trim($this->viewArgs["search"]))
+		if (strcmp($this->viewArgs["search"],"") !== 0)
 		{
 			$this->m["PagesModel"]->aWhere(array(
 				" OR"=> array(
