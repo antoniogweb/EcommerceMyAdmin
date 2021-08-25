@@ -42,6 +42,7 @@ class BaseContenutiController extends BaseController
 	public $idTag = 0;
 	public $aliasMarchio = "";
 	public $aliasTag = "";
+	public $documentiPagina = array();
 	
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
@@ -1247,7 +1248,7 @@ class BaseContenutiController extends BaseController
 			$data["personalizzazioni"] = $this->m['PagesModel']->selectPersonalizzazioni($clean['id']);
 		}
 		
-		$data["documenti"] = $this->m["PagesModel"]->getDocumenti($clean['id']);
+		$data["documenti"] = $this->documentiPagina = $this->m["PagesModel"]->getDocumenti($clean['id']);
 		
 		if (v("mostra_link_in_blog"))
 		{

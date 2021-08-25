@@ -1600,7 +1600,7 @@ class PagesModel extends GenericModel {
 		return $this->linklinguaGeneric($record["pages"]["id_page"], $lingua, "id_page");
 	}
 	
-	public function getDocumenti($id, $lingua = null)
+	public function getDocumenti($id, $lingua = null, $sWhere = "")
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
@@ -1636,6 +1636,9 @@ class PagesModel extends GenericModel {
 		}
 		
 		$d->aWhere($aWhere);
+		
+		if ($sWhere)
+			$d->sWhere($sWhere);
 		
 		$res = $d->orderBy("documenti.id_order")->send();
 		
