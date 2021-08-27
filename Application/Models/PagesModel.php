@@ -1881,6 +1881,7 @@ class PagesModel extends GenericModel {
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
+				"g:identifier_exists"	=>	"no",
 			);
 			
 			if ($r["pages"]["immagine"])
