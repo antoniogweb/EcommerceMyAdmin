@@ -164,6 +164,7 @@ include(ROOT."/Application/Views/header.php");
 						include($path);
 				}
 			} ?>
+			<?php if (v("attiva_standard_cms_menu")) { ?>
 			<li class="<?php echo $tm["menu1"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-list"></i>
@@ -174,6 +175,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/menu/form/insert/0?lingua=it";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 				</ul>
 			</li>
+			<?php } ?>
 		</ul>
 		<?php } ?>
 	</section>
