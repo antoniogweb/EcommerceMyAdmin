@@ -38,7 +38,7 @@ class BaseThumbController extends Controller {
 			VariabiliModel::ottieniVariabili();
 	}
 	
-	private function caricaParametri($params)
+	protected function caricaParametri($params)
 	{
 		$path = FRONT . "/Application/Layout/".v("theme_folder")."/layout.php";
 		

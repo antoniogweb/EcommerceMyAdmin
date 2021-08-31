@@ -1600,7 +1600,7 @@ class PagesModel extends GenericModel {
 		return $this->linklinguaGeneric($record["pages"]["id_page"], $lingua, "id_page");
 	}
 	
-	public function getDocumenti($id, $lingua = null)
+	public function getDocumenti($id, $lingua = null, $sWhere = "")
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
@@ -1636,6 +1636,9 @@ class PagesModel extends GenericModel {
 		}
 		
 		$d->aWhere($aWhere);
+		
+		if ($sWhere)
+			$d->sWhere($sWhere);
 		
 		$res = $d->orderBy("documenti.id_order")->send();
 		
@@ -1878,6 +1881,7 @@ class PagesModel extends GenericModel {
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
+				"g:identifier_exists"	=>	"no",
 			);
 			
 			if ($r["pages"]["immagine"])

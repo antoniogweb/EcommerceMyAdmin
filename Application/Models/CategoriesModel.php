@@ -711,9 +711,23 @@ class CategoriesModel extends HierarchicalModel {
 		return self::gPage($id_c, false, false)->rowNumber();
 	}
 	
-	public function categorieFiglie($id_c)
+	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*")
 	{
-		return $this->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c, "attivo"=>"Y"))->orderBy("categories.lft")->send();
+		return $this->clear()->select($select)->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c, "attivo"=>"Y"))->orderBy("categories.lft")->send();
+	}
+	
+	public function categorieFiglieSelect($id_c)
+	{
+		$children = $this->categorieFiglie($id_c, "categories.id_c,categories.title,contenuti_tradotti_categoria.title");
+		
+		$arrayFigli = array();
+		
+		foreach ($children as $c)
+		{
+			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
+		}
+		
+		return $arrayFigli;
 	}
 	
 	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "", $filtri = array(), $filtriLoc = array(), $filtriAltri = array())

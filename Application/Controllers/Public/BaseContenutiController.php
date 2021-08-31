@@ -42,6 +42,7 @@ class BaseContenutiController extends BaseController
 	public $idTag = 0;
 	public $aliasMarchio = "";
 	public $aliasTag = "";
+	public $documentiPagina = array();
 	
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
@@ -813,7 +814,7 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		}
 		
-		if ($this->viewArgs["search"] != "tutti")
+		if (strcmp($this->viewArgs["search"],"") !== 0)
 		{
 			$this->m["PagesModel"]->aWhere(array(
 				" OR"=> array(
@@ -1247,7 +1248,7 @@ class BaseContenutiController extends BaseController
 			$data["personalizzazioni"] = $this->m['PagesModel']->selectPersonalizzazioni($clean['id']);
 		}
 		
-		$data["documenti"] = $this->m["PagesModel"]->getDocumenti($clean['id']);
+		$data["documenti"] = $this->documentiPagina = $this->m["PagesModel"]->getDocumenti($clean['id']);
 		
 		if (v("mostra_link_in_blog"))
 		{
@@ -1715,16 +1716,7 @@ class BaseContenutiController extends BaseController
 		
 		$c = new CategorieModel();
 		
-		$children = $c->clear()->where(array(
-			"id_p"	=>	(int)$idCat,
-		))->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
-		
-		$arrayFigli = array();
-		
-		foreach ($children as $c)
-		{
-			$arrayFigli[$c["categories"]["id_c"]] = cfield($c, "title");
-		}
+		$arrayFigli = $c->categorieFiglieSelect($idCat);
 		
 		Output::$json = true;
 		Output::setBodyValue("Type", "Menu");
