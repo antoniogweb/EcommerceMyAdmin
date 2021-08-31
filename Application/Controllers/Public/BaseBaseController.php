@@ -38,6 +38,7 @@ class BaseBaseController extends Controller
 	public $team = array();
 	public $testimonial = array();
 	public $faq = array();
+	public $prodottiInPromozione = array();
 	
 	public $defaultRegistrazione = array();
 	
@@ -440,7 +441,7 @@ class BaseBaseController extends Controller
 			
 			$prodottiInPromo = $this->m["PagesModel"]->clear()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
 			
-			$data["inPromozione"] = getRandom($prodottiInPromo);
+			$data["inPromozione"] = $this->prodottiInPromozione = getRandom($prodottiInPromo);
 			
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}

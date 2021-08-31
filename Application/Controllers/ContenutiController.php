@@ -45,16 +45,16 @@ class ContenutiController extends BaseController
 		
 		$this->shift(2);
 		
-		$recordTipo = array();
+		$recordTipo = $data["recordTipo"] = array();
 		
 		if ($this->viewArgs["id_tipo"] != "tutti")
-			$recordTipo = $this->m["TipicontenutoModel"]->selectId($this->viewArgs["id_tipo"]);
+			$recordTipo = $data["recordTipo"] = $this->m["TipicontenutoModel"]->selectId($this->viewArgs["id_tipo"]);
 		else
 		{
 			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
 			
 			if ($recordContenuto)
-				$recordTipo = $this->m["TipicontenutoModel"]->selectId($recordContenuto["id_tipo"]);
+				$recordTipo = $data["recordTipo"] = $this->m["TipicontenutoModel"]->selectId($recordContenuto["id_tipo"]);
 		}
 		
 // 		$this->m[$this->modelName]->setValuesFromPost("titolo,id_tipo,lingua,immagine_1,immagine_2,descrizione,link_contenuto,link_libero,target");
@@ -100,9 +100,9 @@ class ContenutiController extends BaseController
 			$this->tabella = $recordTipo["titolo"];
 		
 		parent::form($queryType, $id);
+		
+		$this->append($data);
 	}
-	
-	
 	
 	public function thumb($field = "", $id = 0)
 	{

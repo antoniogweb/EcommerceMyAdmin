@@ -424,7 +424,7 @@ class ContenutiModel extends GenericModel {
 					
 					$htmlFinale .= " - LINGUA: <b>".strtoupper($f["contenuti"]["lingua"])."</b>";
 					
-					$htmlFinale .= "<a class='iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$f["contenuti"]["id_cont"]."?partial=Y'><img src='".Url::getFileRoot()."Public/Img/Icons/elementary_2_5/edit.png' /></a>";
+					$htmlFinale .= "<a class='iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$f["contenuti"]["id_cont"]."?partial=Y'><img src='".Url::getFileRoot()."admin/Public/Img/Icons/elementary_2_5/edit.png' /></a>";
 					
 					$htmlFinale .= "</div>";
 				}

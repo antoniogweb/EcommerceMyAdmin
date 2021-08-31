@@ -249,6 +249,17 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaCaroselloMarchi()
+	{
+		$marchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		
+		ob_start();
+		include tpf("Fasce/fascia_carosello_marchi.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaMarchiNuovi()
 	{
 		$pages = $elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
@@ -275,6 +286,17 @@ trait BaseFasceController
 	{
 		ob_start();
 		include tpf("Fasce/fascia_spedizioni.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function getFasciaProdottiInPromozione()
+	{
+		$inPromozione = $this->prodottiInPromozione;
+		
+		ob_start();
+		include tpf("Fasce/prodotti_in_promozione.php");
 		$output = ob_get_clean();
 		
 		return $output;

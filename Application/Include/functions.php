@@ -829,6 +829,8 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[marchi\]/', array($obj,'getFasciaMarchi') ,$string);
 		$string = preg_replace_callback('/\[marchi-nuovi\]/', array($obj,'getFasciaMarchiNuovi') ,$string);
 		$string = preg_replace_callback('/\[info-spedizioni\]/', array($obj,'getFasciaInfoSpedizioni') ,$string);
+		$string = preg_replace_callback('/\[prodotti-in-promozione\]/', array($obj,'getFasciaProdottiInPromozione') ,$string);
+		$string = preg_replace_callback('/\[carosello-marchi\]/', array($obj,'getFasciaCaroselloMarchi') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
