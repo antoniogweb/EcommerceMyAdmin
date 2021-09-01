@@ -1,6 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (!partial()) { ?>
 <header>
+	<?php include(tpf("/Elementi/header_fascia_demo.php"));?>
 	<div class="">
 		<div class="uk-navbar-container tm-toolbar-container uk-navbar-transparent">
 			<div class="uk-container top_nav" uk-navbar>
