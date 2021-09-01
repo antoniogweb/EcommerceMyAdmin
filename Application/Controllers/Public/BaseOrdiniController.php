@@ -592,14 +592,17 @@ class BaseOrdiniController extends BaseController
 			
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 			
-			$this->append($data);
-			$this->load("ritorno-da-paypal");
+// 			$this->append($data);
+// 			$this->load("ritorno-da-paypal");
 		}
-		else if (trim($clean['txn_id']))
-		{
-			$this->append($data);
-			$this->load("ritorno-da-paypal");
-		}
+// 		else if (trim($clean['txn_id']))
+// 		{
+// 			$this->append($data);
+// 			$this->load("ritorno-da-paypal");
+// 		}
+		
+		$this->append($data);
+		$this->load("ritorno-da-paypal");
 	}
 	
 	public function index()

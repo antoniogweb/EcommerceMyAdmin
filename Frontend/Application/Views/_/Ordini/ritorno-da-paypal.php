@@ -32,7 +32,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 	
 	<?php } else { ?>
 	
-	<p><?php echo gtext("Transazione in fase di verifica, riaggiorna la pagina tra quache minuto per controllare lo stato del pagamento dell'ordine.")?></p>
+	<p><?php echo gtext("Transazione in fase di verifica, lo stato del pagamento dell'ordine verrà aggiornato a breve.")?></p>
 	
 	<?php } ?>
 	
