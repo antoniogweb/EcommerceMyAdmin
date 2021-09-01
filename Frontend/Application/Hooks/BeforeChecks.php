@@ -61,6 +61,7 @@ else if (v("lingue_abilitate_frontend"))
 require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");
+require(LIBRARY."/Application/Include/tema.php");
 
 if (!v("traduzione_frontend"))
 	Lang::$edit = false;

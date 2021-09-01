@@ -69,6 +69,9 @@ class BaseBaseController extends Controller
 		if (empty(VariabiliModel::$valori))
 			VariabiliModel::ottieniVariabili();
 		
+		// Imposta il tema
+		Tema::set();
+		
 		$this->defaultRegistrazione = array(
 			"nazione"		=>	v("nazione_default"),
 			"tipo_cliente"	=>	v("tipo_cliente_default"),
