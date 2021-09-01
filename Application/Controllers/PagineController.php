@@ -37,6 +37,9 @@ class PagineController extends PagesController {
 		
 		$this->queryFields = "use_editor,title,alias,id_c,attivo,description,use_editor,immagine,tipo_pagina,sottotitolo";
 		
+		if (v("immagine_2_in_pagine"))
+			$this->queryFields .= ",immagine_2";
+		
 		$this->orderBy = "pages.id_order";
 		
 		$this->tableFields = array(

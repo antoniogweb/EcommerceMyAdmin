@@ -571,8 +571,8 @@ class BaseContenutiController extends BaseController
 		
 		$this->checkCategory($clean["id"]);
 		
-		$section = $this->section = $this->m["CategoriesModel"]->section($clean['id']);
-		$firstSection = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
+		$section = $data["section"] = $this->section = $this->m["CategoriesModel"]->section($clean['id']);
+		$firstSection = $data["fsection"] = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
 		
 		if ($firstSection == "prodotti")
 			$this->elementsPerPage = $data["elementsPerPage"] = v("prodotti_per_pagina");
@@ -1258,7 +1258,7 @@ class BaseContenutiController extends BaseController
 			))->orderBy("titolo")->send();
 		}
 		
-		$firstSection = $this->m["PagesModel"]->section($clean['id'], true);
+		$firstSection = $data["fsection"] = $this->m["PagesModel"]->section($clean['id'], true);
 		
 		if ($firstSection == "prodotti")
 		{

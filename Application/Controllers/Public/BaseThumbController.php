@@ -723,6 +723,34 @@ class BaseThumbController extends Controller {
 		}
 	}
 	
+	public function sfondocategoria($fileName)
+	{
+		$this->clean();
+		
+		$params = array(
+			'imgWidth'		=>	1920,
+			'imgHeight'		=>	600,
+			'defaultImage'	=>  null,
+			'useCache'		=>	true,
+		);
+		
+		$params = $this->caricaParametri($params);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/categorie',$params);
+				$thumb->render($fileName);
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
 	public function categoriamenu($fileName)
 	{
 		$this->clean();
