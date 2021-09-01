@@ -930,4 +930,11 @@ class CategoriesModel extends HierarchicalModel {
 			
 		}
 	}
+	
+	public static function getUrlAliasPromo()
+	{
+		$filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"], AltriFiltri::$aliasValoreTipoPromo[0]);
+		
+		return CategoriesModel::getUrlAliasTagMarchio(0, 0, self::$idShop, "", array(), array(), $filtriUrlAltriFiltri);
+	}
 }

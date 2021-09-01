@@ -18,7 +18,7 @@
 					<?php echo i("promozione");?>
 					<div class="uk-text-center uk-position-small uk-position-top uk-overlay uk-overlay-default">
 						<div class="uk-text-small"><?php echo t("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")?></div>
-						<a class="uk-button uk-button-secondary uk-margin" href="<?php echo $this->baseUrl."/prodotti-in-promozione.html";?>"><?php echo gtext("Vedi tutti");?></a>
+						<a class="uk-button uk-button-secondary uk-margin" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasPromo();?>"><?php echo gtext("Vedi tutti");?></a>
 					</div>
 				</div>
 			</div>
