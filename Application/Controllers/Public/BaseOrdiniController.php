@@ -386,7 +386,7 @@ class BaseOrdiniController extends BaseController
 					$p->paypal_mail = Parametri::$paypalSeller;
 				}
 				
-				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto");
+				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
 				$p->add_field('cancel_return', $this->baseUrl);
 				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
 				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
@@ -576,10 +576,15 @@ class BaseOrdiniController extends BaseController
 				$clean['st'] = $this->request->post('payment_status','','sanitizeAll');
 		}
 		
-		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+// 		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
-		if ((int)count($res) === 0 && trim($clean['txn_id']))
-			$res = $this->m["OrdiniModel"]->clear()->where(array("txn_id" => $clean['txn_id']))->send();
+// 		if ((int)count($res) === 0 && trim($clean['txn_id']))
+// 			$res = $this->m["OrdiniModel"]->clear()->where(array("txn_id" => $clean['txn_id']))->send();
+		
+		if (isset($_GET['cart_uid']))
+			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => sanitizeAll($_GET['cart_uid'])))->send();
+		else
+			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
 		$data["conclusa"] = false;
 		
@@ -591,15 +596,7 @@ class BaseOrdiniController extends BaseController
 			$data["ordine"] = $res[0]["orders"];
 			
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
-			
-// 			$this->append($data);
-// 			$this->load("ritorno-da-paypal");
 		}
-// 		else if (trim($clean['txn_id']))
-// 		{
-// 			$this->append($data);
-// 			$this->load("ritorno-da-paypal");
-// 		}
 		
 		$this->append($data);
 		$this->load("ritorno-da-paypal");
