@@ -301,4 +301,13 @@ trait BaseFasceController
 		
 		return $output;
 	}
+	
+	public function getFasciaChiSiamo()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_chi_siamo.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
 }

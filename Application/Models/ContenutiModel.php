@@ -424,9 +424,9 @@ class ContenutiModel extends GenericModel {
 					
 					$htmlFinale .= " - LINGUA: <b>".strtoupper($f["contenuti"]["lingua"])."</b>";
 					
-					$htmlFinale .= " <a style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$f["contenuti"]["id_cont"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
+					$htmlFinale .= " <a title='".gtext("Modifica fascia")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$f["contenuti"]["id_cont"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
 					
-					$htmlFinale .= " <a style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/pagine/contenuti/".(int)$idPage."?partial=Y&nobuttons=Y'><i class='fa fa-sort'></i></a>";
+					$htmlFinale .= " <a title='".gtext("Ordina / Aggiungi fasce")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/pagine/contenuti/".(int)$idPage."?partial=Y&nobuttons=Y'><i class='fa fa-sort'></i></a>";
 					
 					$htmlFinale .= "</div>";
 				}

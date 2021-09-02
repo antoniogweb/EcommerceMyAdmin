@@ -24,11 +24,11 @@
 		display:none;
 		position:absolute;
 		right:-2px;
-		top:-36px;
+		top:-32px;
 		background-color:#FFF;
 		padding:5px 10px;
 		color:#333;
-		border:2px solid #333;
+/* 		border:2px solid #333; */
 		border-bottom:none;
 	}
 	
@@ -58,18 +58,28 @@
 		top:0px;
 		z-index:999;
 	}
-	.edit_blocco_testo i
+	.edit_blocco_testo i.fa
 	{
 		display:none !important;
 		padding:3px;
 		background-color:red;
 /* 		border:1px solid #CCC; */
 		color:#FFF;
+		font-size:20px !important;
 	}
-	.blocco_testo:hover .edit_blocco_testo i, .fascia_contenuto:hover .edit_blocco_testo i
+	.blocco_testo:hover .edit_blocco_testo i.fa, .fascia_contenuto:hover .edit_blocco_testo i.fa
 	{
 		width:20px;
 		display:block !important;
+	}
+	
+	#cboxOverlay
+	{
+		z-index:99999 !important;
+	}
+	#colorbox
+	{
+		z-index:999999 !important;
 	}
 </style>
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
