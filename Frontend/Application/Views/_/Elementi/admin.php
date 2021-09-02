@@ -24,7 +24,7 @@
 		display:none;
 		position:absolute;
 		right:-2px;
-		top:-34px;
+		top:-36px;
 		background-color:#FFF;
 		padding:5px 10px;
 		color:#333;
@@ -35,7 +35,7 @@
 	.fascia_contenuto .titolo_fascia a img
 	{
 		background-color:#FFF;
-		width:15px;
+/* 		width:15px; */
 		margin-left:10px;
 	}
 	
@@ -58,19 +58,21 @@
 		top:0px;
 		z-index:999;
 	}
-	.edit_blocco_testo img
+	.edit_blocco_testo i
 	{
 		display:none !important;
 		padding:3px;
 		background-color:red;
-		border:1px solid #CCC;
+/* 		border:1px solid #CCC; */
+		color:#FFF;
 	}
-	.blocco_testo:hover .edit_blocco_testo img, .fascia_contenuto:hover .edit_blocco_testo img
+	.blocco_testo:hover .edit_blocco_testo i, .fascia_contenuto:hover .edit_blocco_testo i
 	{
 		width:20px;
 		display:block !important;
 	}
 </style>
+<link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/example1/colorbox.css">
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/jquery.colorbox.js"></script>
 <!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script> -->
@@ -133,7 +135,7 @@
 				onClosed: function(){
 					location.reload();
 				}
-			}); 
+			});
 			
 		});
 		
