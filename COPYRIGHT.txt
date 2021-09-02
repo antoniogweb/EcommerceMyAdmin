@@ -23,6 +23,12 @@ License:	GNU GPL version 3 or later
 Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 link: 		https://github.com/antoniogweb/MvcMyLibrary
 
+AdminLTE
+-------
+License:	The MIT License (MIT)
+Copyright (c) 2014-2021 ColorlibHQ
+link: 		https://github.com/ColorlibHQ/AdminLTE
+
 FreeFont
 -------
 License:	GNU GPL version 3 or later
