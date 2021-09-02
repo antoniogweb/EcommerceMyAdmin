@@ -864,7 +864,7 @@ class CategoriesModel extends HierarchicalModel {
 		
 		$strAlias = strcmp($strAlias,"") !== 0 ? $strAlias."&nbsp" : "";
 		
-		$titolo = $editLink ? "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"]."'>".$field[$this->titleFieldName]."</a>" : $field[$this->titleFieldName];
+		$titolo = $editLink ? "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"].self::$viewStatus."'>".$field[$this->titleFieldName]."</a>" : $field[$this->titleFieldName];
 		
 		if ($alias)
 		{

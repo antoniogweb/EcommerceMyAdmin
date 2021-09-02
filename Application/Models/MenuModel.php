@@ -376,7 +376,7 @@ class MenuModel extends HierarchicalModel {
 		$clean["id"] = (int)$id;
 		
 		$field = isset(self::$currentRecord) ? self::$currentRecord["node"] : $this->clear()->selectId($clean["id"]);
-		$titolo = "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"]."'>".$field[$this->titleFieldName]."</a>";
+		$titolo = "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"].self::$viewStatus."'>".$field[$this->titleFieldName]."</a>";
 		
 		return $str." ".$titolo;
 	}

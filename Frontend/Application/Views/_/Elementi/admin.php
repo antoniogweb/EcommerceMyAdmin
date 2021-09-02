@@ -1,123 +1,66 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if ($adminUser) { ?>
-<style>
-	.blocco_traduzione, .blocco_testo
-	{
-		display:inline;
-		position:relative;
-	}
 
-	.blocco_traduzione img
-	{
-		width:15px !important;
-		min-width:15px !important;
-		height: 15px !important;
-	}
-	
-	.fascia_contenuto
-	{
-		position:relative;
-	}
-	
-	.fascia_contenuto .titolo_fascia
-	{
-		display:none;
-		position:absolute;
-		right:-2px;
-		top:-32px;
-		background-color:#FFF;
-		padding:5px 10px;
-		color:#333;
-/* 		border:2px solid #333; */
-		border-bottom:none;
-	}
-	
-	.fascia_contenuto .titolo_fascia a img
-	{
-		background-color:#FFF;
-/* 		width:15px; */
-		margin-left:10px;
-	}
-	
-	.fascia_contenuto:hover
-	{
-/* 		background-color:#EFEFEF; */
-		border:2px solid #333;
-	}
-	
-	.fascia_contenuto:hover .titolo_fascia
-	{
-		display:block;
-	}
-	
-	.edit_traduzione, .edit_blocco_testo
-	{
-		cursor:pointer;
-		position:absolute;
-		left:0px;
-		top:0px;
-		z-index:999;
-	}
-	.edit_blocco_testo i.fa
-	{
-		display:none !important;
-		padding:3px;
-		background-color:red;
-/* 		border:1px solid #CCC; */
-		color:#FFF;
-		font-size:20px !important;
-	}
-	.blocco_testo:hover .edit_blocco_testo i.fa, .fascia_contenuto:hover .edit_blocco_testo i.fa
-	{
-		width:20px;
-		display:block !important;
-	}
-	
-	#cboxOverlay
-	{
-		z-index:99999 !important;
-	}
-	#colorbox
-	{
-		z-index:999999 !important;
-	}
-</style>
+<link href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/admin.css" rel="stylesheet">
+
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/example1/colorbox.css">
+
+<div class="sideslider" id="sideslider" style="margin-left: -265px;">
+    <div class="sideslider-tab"> <?php /*echo gtext("Configura");*/?> <i class='fa fa-cogs'></i></div>
+   
+	<div id="sideslider-smartbutton">
+		<div id="sideslider-text">
+			<span class="header"><?php echo gtext("Pannello gestione");?></span>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/categorie/main?partial=Y";?>" class="iframe"><?php echo gtext("Categorie prodotti");?></a></span>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/prodotti/main?partial=Y";?>" class="iframe"><?php echo gtext("Prodotti ecommerce");?></a></span>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/blog/main?partial=Y";?>" class="iframe"><?php echo gtext("Blog");?></a></span>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/menu/main?partial=Y";?>" class="iframe"><?php echo gtext("Menu navigazione");?></a></span>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/testi/main?partial=Y";?>" class="iframe"><?php echo gtext("Elementi tema");?></a></span>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/traduzioni/main?partial=Y";?>" class="iframe"><?php echo gtext("Traduzione testi");?></a></span>
+			<span class="line"><a target="_blank" href="<?php echo $this->baseUrlSrc."/admin/panel/main";?>"><?php echo gtext("Dashboard amministrativa");?></a></span>
+		</div>
+		<div class="sideclear"></div>
+	</div>
+	
+	<div class="sideslider-close sideslider-close_en"><?php echo gtext("Chiudi"); ?>&nbsp;</div>
+</div>
+
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/jquery.colorbox.js"></script>
-<!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script> -->
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery.side-slider.js"></script>
+
 <script>
 	$ = jQuery;
 	
 	var child;
 	var timer;
 	
-	function aggiornaOrdinamento()
-	{
-		var id_cont = "";
-		var order = "";
-		
-		$(".fascia_contenuto").each(function(){
-		
-			var id_cont = $(this).attr("id");
-		
-			order += id_cont + ",";
-		
-		});
-		
-		var post_data = "order="+order+"&ordinaPagine=Y";
-		
-		$.ajax({
-			type: "POST",
-			data: post_data,
-			url: "<?php echo $this->baseUrlSrc.'/admin/pages/ordinacontenuti';?>",
-			async: false,
-			cache:false,
-			success: function(html){
-				
-			}
-		});
-	}
+// 	function aggiornaOrdinamento()
+// 	{
+// 		var id_cont = "";
+// 		var order = "";
+// 		
+// 		$(".fascia_contenuto").each(function(){
+// 		
+// 			var id_cont = $(this).attr("id");
+// 		
+// 			order += id_cont + ",";
+// 		
+// 		});
+// 		
+// 		var post_data = "order="+order+"&ordinaPagine=Y";
+// 		
+// 		$.ajax({
+// 			type: "POST",
+// 			data: post_data,
+// 			url: "<?php echo $this->baseUrlSrc.'/admin/pages/ordinacontenuti';?>",
+// 			async: false,
+// 			cache:false,
+// 			success: function(html){
+// 				
+// 			}
+// 		});
+// 	}
 
 	function checkChild() {
 		if (child.closed) {
@@ -130,7 +73,9 @@
 	}
 
 	$(document).ready(function() {
-
+		
+		$('#sideslider').sideSlider();
+		
 		$(".edit_blocco_testo").click(function(e){
 			
 			e.preventDefault();
@@ -139,8 +84,8 @@
 			
 			$.colorbox({
 				iframe:true,
-				width:"90%",
-				height:"90%",
+				width:"95%",
+				height:"95%",
 				href:"<?php echo $this->baseUrlSrc;?>/admin/testi/form/update/" + id_t + "?part=Y&nobuttons=Y",
 				onClosed: function(){
 					location.reload();
@@ -157,18 +102,18 @@
 			
 			$.colorbox({
 				iframe:true,
-				width:"90%",
-				height:"90%",
+				width:"95%",
+				height:"95%",
 				href:url,
 				onClosed: function(){
 					location.reload();
 				}
-			}); 
+			});
 			
 		});
 		
 		$("body").on("click",".edit_traduzione", function(e){
-	
+		
 			e.preventDefault();
 			
 			var id_t = $(this).attr("data-id");

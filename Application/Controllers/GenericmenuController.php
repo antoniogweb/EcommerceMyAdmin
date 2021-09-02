@@ -37,7 +37,14 @@ class GenericmenuController extends BaseController {
 		$this->model();
 		$this->mod = $this->m[$this->modelName];
 		
-		$this->setArgKeys(array('page:forceInt'=>1,'title:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','lingua:sanitizeAll'=>'it'));
+		$this->setArgKeys(array(
+			'page:forceInt'=>1,
+			'title:sanitizeAll'=>'tutti',
+			'token:sanitizeAll'=>'token',
+			'lingua:sanitizeAll'=>'it',
+			'partial:sanitizeAll' => "tutti",
+			'nobuttons:sanitizeAll' => "tutti",
+		));
 
 // 		$data["sezionePannello"] = "utenti";
 		
