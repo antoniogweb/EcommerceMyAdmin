@@ -46,6 +46,28 @@ class ImpostazioniController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
+	public function tema()
+	{
+		$data["elencoTemi"] = Tema::getElencoTemi();
+		
+		$this->append($data);
+		
+		$this->load("tema");
+	}
+	
+	public function attivatema($tema)
+	{
+		$this->clean();
+		
+		if (Tema::check($tema))
+		{
+			VariabiliModel::setValore("theme_folder", $tema);
+			
+			if (isset($_COOKIE["demo_theme"]))
+				setcookie ("demo_theme", "", time() - 3600,"/");
+		}
+	}
+	
 	public function variabili($id = 0)
 	{
 		$this->model("VariabiliModel");

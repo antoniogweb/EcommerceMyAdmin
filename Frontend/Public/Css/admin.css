@@ -93,19 +93,21 @@
 }
 
 #sideslider .sideslider-tab {
-    background-color: #222;
+	background-color: #222;
     box-sizing: border-box;
     color: #fff;
     cursor: pointer;
-    height: 35px;
-    left: -33px;
-    padding-top: 10px;
-    padding-left: 25px;
+    height: 43px;
+    left: -10px;
+    padding-top: 11px;
+    padding-left: 15px;
     position: absolute;
     text-transform: uppercase;
-    top: 34px;
-    transform: rotate(-90deg);
-    width: 102px;
+    top: 2px;
+    transform: rotate( 
+		-90deg
+	);
+    width: 47px;
 }
 
 #sideslider a {

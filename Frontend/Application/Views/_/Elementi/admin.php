@@ -6,6 +6,7 @@
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/example1/colorbox.css">
 
+<?php if (v("configurazione_frontend_attiva")) { ?>
 <div class="sideslider" id="sideslider" style="margin-left: -265px;">
     <div class="sideslider-tab"> <?php /*echo gtext("Configura");*/?> <i class='fa fa-cogs'></i></div>
    
@@ -15,7 +16,13 @@
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/categorie/main?partial=Y";?>" class="iframe"><?php echo gtext("Categorie prodotti");?></a></span>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/prodotti/main?partial=Y";?>" class="iframe"><?php echo gtext("Prodotti ecommerce");?></a></span>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/blog/main?partial=Y";?>" class="iframe"><?php echo gtext("Blog");?></a></span>
+			<?php if (v("mostra_slide")) { ?>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/slide/main?partial=Y";?>" class="iframe"><?php echo gtext("Slide principale");?></a></span>
+			<?php } ?>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/menu/main?partial=Y";?>" class="iframe"><?php echo gtext("Menu navigazione");?></a></span>
+			<?php if (count(Tema::getElencoTemi()) > 1) { ?>
+			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/impostazioni/tema?partial=Y";?>" class="iframe"><?php echo gtext("Seleziona tema");?></a></span>
+			<?php } ?>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/testi/main?partial=Y";?>" class="iframe"><?php echo gtext("Elementi tema");?></a></span>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/traduzioni/main?partial=Y";?>" class="iframe"><?php echo gtext("Traduzione testi");?></a></span>
 			<span class="line"><a target="_blank" href="<?php echo $this->baseUrlSrc."/admin/panel/main";?>"><?php echo gtext("Dashboard amministrativa");?></a></span>
@@ -26,8 +33,11 @@
 	<div class="sideslider-close sideslider-close_en"><?php echo gtext("Chiudi"); ?>&nbsp;</div>
 </div>
 
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/jquery.colorbox.js"></script>
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery.side-slider.js"></script>
+<?php } ?>
+
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/jquery.colorbox.js"></script>
+
 
 <script>
 	$ = jQuery;
@@ -74,7 +84,9 @@
 
 	$(document).ready(function() {
 		
+		<?php if (v("configurazione_frontend_attiva")) { ?>
 		$('#sideslider').sideSlider();
+		<?php } ?>
 		
 		$(".edit_blocco_testo").click(function(e){
 			

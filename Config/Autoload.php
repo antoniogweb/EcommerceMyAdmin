@@ -32,5 +32,6 @@ class Autoload
 		'user.php',
 		'parametri.php',
 		'language.php',
+		'tema.php',
 	);
 }

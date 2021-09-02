@@ -3,19 +3,26 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Tema
 {
+	public static $elenco = array();
+	
+	public static function getRoot()
+	{
+		return Domain::$parentRoot."/Application/Views";
+	}
+	
 	public static function check($tema)
 	{
 		if ($tema)
 		{
 			$tema = basename($tema);
 			
-			$items = scandir(ROOT."/Application/Views/");
+			$items = scandir(self::getRoot());
 			
 			foreach( $items as $this_file )
 			{
 				if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0)
 				{
-					if (@is_dir(ROOT."/Application/Views/$this_file") && (string)$tema === (string)$this_file && ctype_alnum($tema))
+					if (@is_dir(self::getRoot()."/$this_file") && (string)$tema === (string)$this_file && ctype_alnum($tema))
 					{
 						return true;
 					}
@@ -24,6 +31,27 @@ class Tema
 		}
 		
 		return false;
+	}
+	
+	public static function getElencoTemi()
+	{
+		$items = scandir(self::getRoot());
+		
+		foreach( $items as $this_file )
+		{
+			if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0)
+			{
+				if (@is_dir(self::getRoot()."/$this_file"))
+				{
+					self::$elenco[] = array(
+						"nome"	=>	$this_file,
+						"preview"	=>	file_exists(self::getRoot()."/$this_file/_Preview/preview.png") ? true : false,
+					);
+				}
+			}
+		}
+		
+		return self::$elenco;
 	}
 	
 	public static function set()

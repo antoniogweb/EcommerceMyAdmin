@@ -1290,6 +1290,17 @@ tr.cart_head {
 	width: 10px;
 }
 
+.box-body-tema img
+{
+	width:100%;
+}
+
+.box-body-tema
+{
+	max-height:500px;
+	overflow-y:auto;
+}
+
 @media (max-width: 767px)
 {
 	.main-sidebar, .left-side {

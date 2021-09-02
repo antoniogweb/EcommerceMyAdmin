@@ -192,6 +192,8 @@ class Route
 		'impostazioni,form',
 		'impostazioni,variabili',
 		'impostazioni,svuotacache',
+		'impostazioni,tema',
+		'impostazioni,attivatema',
 		
 		'slide,main',
 		'slide,aggiungicategoria',
