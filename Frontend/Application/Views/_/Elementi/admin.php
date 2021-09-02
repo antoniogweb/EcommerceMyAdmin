@@ -71,7 +71,9 @@
 		display:block !important;
 	}
 </style>
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/example1/colorbox.css">
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/jquery.colorbox.js"></script>
+<!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/jquery/ui/js/jquery-ui-1.9.2.custom.min.js"></script> -->
 <script>
 	$ = jQuery;
 	
@@ -123,8 +125,15 @@
 			
 			var id_t = $(this).attr("rel");
 			
-			child = window.open("<?php echo $this->baseUrlSrc;?>/admin/testi/form/update/" + id_t + "?part=Y&nobuttons=Y", 'newwindow', 'width=900, height=600, top=100, left=250, scrollbars=1');
-			timer = setInterval(checkChild, 500);
+			$.colorbox({
+				iframe:true,
+				width:"90%",
+				height:"90%",
+				href:"<?php echo $this->baseUrlSrc;?>/admin/testi/form/update/" + id_t + "?part=Y&nobuttons=Y",
+				onClosed: function(){
+					location.reload();
+				}
+			}); 
 			
 		});
 		
@@ -132,10 +141,17 @@
 			
 			e.preventDefault();
 			
-			var href = $(this).attr("href");
+			var url = $(this).attr("href");
 			
-			child = window.open(href, 'newwindow', 'width=900, height=600, top=100, left=250, scrollbars=1');
-			timer = setInterval(checkChild, 500);
+			$.colorbox({
+				iframe:true,
+				width:"90%",
+				height:"90%",
+				href:url,
+				onClosed: function(){
+					location.reload();
+				}
+			}); 
 			
 		});
 		

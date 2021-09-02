@@ -20,7 +20,7 @@ EcommerceMyAdmin includes works distributed under the licenses listed below.
 MvcMyLibrary
 -------
 License:	GNU GPL version 3 or later
-Copyright (C) 2009 - 2020  Free Antonio Gallo (info@laboratoriolibero.com)
+Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
 link: 		https://github.com/antoniogweb/MvcMyLibrary
 
 FreeFont
@@ -44,3 +44,9 @@ link:	https://plugins.jquery.com/icheck/
 Image Picker
 -------
 link:	https://rvera.github.io/image-picker/
+
+FreeFont
+-------
+License:	MIT
+Copyright (c) 2016 Jack Moore
+link: 		https://github.com/jackmoore/colorbox
