@@ -1,7 +1,7 @@
 .blocco_traduzione, .blocco_testo
 {
 	display:inline;
-	position:relative;
+/* 	position:relative; */
 }
 
 .blocco_traduzione img
@@ -50,9 +50,9 @@
 .edit_traduzione, .edit_blocco_testo
 {
 	cursor:pointer;
-	position:absolute;
+/*	position:absolute;
 	left:0px;
-	top:0px;
+	top:0px;*/
 	z-index:999;
 }
 .edit_blocco_testo i.fa
@@ -67,7 +67,7 @@
 .blocco_testo:hover .edit_blocco_testo i.fa, .fascia_contenuto:hover .edit_blocco_testo i.fa
 {
 	width:20px;
-	display:block !important;
+	display:inline !important;
 }
 
 #cboxOverlay
