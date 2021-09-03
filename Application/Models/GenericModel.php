@@ -27,6 +27,7 @@ class GenericModel extends Model_Tree
 	use CommonModel;
 	
 	public static $apiMethod = "POST";
+	public static $uploadFileGeneric = true;
 	
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
@@ -311,101 +312,104 @@ class GenericModel extends Model_Tree
 	
 	public function upload($type = "update")
 	{
-		foreach ($this->uploadFields as $field => $params)
+		if (self::$uploadFileGeneric)
 		{
-			if (isset($this->values[$field]))
+			foreach ($this->uploadFields as $field => $params)
 			{
-				$this->delFields($field);
-				
-				if (isset($_FILES[$field]["name"]) and strcmp($_FILES[$field]["name"],'') !== 0)
+				if (isset($this->values[$field]))
 				{
-					$path = $params["path"];
-				
-					if (isset($params["allowedExtensions"]))
-					{
-						$this->files->setParam('allowedExtensions',$params["allowedExtensions"]);
-					}
+					$this->delFields($field);
 					
-					if (isset($params["allowedMimeTypes"]))
+					if (isset($_FILES[$field]["name"]) and strcmp($_FILES[$field]["name"],'') !== 0)
 					{
-						$this->files->setParam('allowedMimeTypes',$params["allowedMimeTypes"]);
-					}
+						$path = $params["path"];
 					
-					if (isset($params["maxFileSize"]))
-					{
-						$this->files->setParam('maxFileSize',$params["maxFileSize"]);
-					}
-					
-					if (isset($params["createImage"]) and $params["createImage"])
-					{
-						$this->files->setParam('createImage',true);
-					}
-					
-					if (strcmp($params["type"],"file") === 0)
-					{
-						$this->files->setParam('createImage',false);
-					}
-					
-					$this->files->setParam('fileUploadKey',$field);
-					$this->files->setBase(Domain::$parentRoot."/".$path);
-					
-					if (isset($params["clean_field"]))
-					{
-						$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
-					}
-					else
-					{
-						$fileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
-						$fileName = encodeUrl($fileName);
-						$fileName = $this->files->getUniqueName($fileName);
-					}
-					
-					self::creaCartellaImages($path);
-					
-					if ($this->files->uploadFile($fileName))
-					{
-						$this->values[$field] = sanitizeAll($this->files->fileName);
+						if (isset($params["allowedExtensions"]))
+						{
+							$this->files->setParam('allowedExtensions',$params["allowedExtensions"]);
+						}
+						
+						if (isset($params["allowedMimeTypes"]))
+						{
+							$this->files->setParam('allowedMimeTypes',$params["allowedMimeTypes"]);
+						}
+						
+						if (isset($params["maxFileSize"]))
+						{
+							$this->files->setParam('maxFileSize',$params["maxFileSize"]);
+						}
+						
+						if (isset($params["createImage"]) and $params["createImage"])
+						{
+							$this->files->setParam('createImage',true);
+						}
+						
+						if (strcmp($params["type"],"file") === 0)
+						{
+							$this->files->setParam('createImage',false);
+						}
+						
+						$this->files->setParam('fileUploadKey',$field);
+						$this->files->setBase(Domain::$parentRoot."/".$path);
 						
 						if (isset($params["clean_field"]))
 						{
-							$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
-							$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
-							
-							$cleanFileName = (!isValidImgName($cleanFileName)) ? encodeUrl($cleanFileName) : $cleanFileName;
-							
-							$this->values[$params["clean_field"]] = sanitizeAll($cleanFileName.".".$ext);
+							$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
 						}
-					}
-					else
-					{
-						$this->notice = $this->files->notice;
-						$this->result = false;
-						
-						return false;
-					}
-				}
-				else
-				{
-					if (isset($params["mandatory"]))
-					{
-						if (strcmp($type,"insert") === 0)
+						else
 						{
-							$vcs = new Lang_En_ValCondStrings();
+							$fileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+							$fileName = encodeUrl($fileName);
+							$fileName = $this->files->getUniqueName($fileName);
+						}
+						
+						self::creaCartellaImages($path);
+						
+						if ($this->files->uploadFile($fileName))
+						{
+							$this->values[$field] = sanitizeAll($this->files->fileName);
 							
-							$this->notice = "<div class='alert'>Si prega di selezionare un file per il campo ".getFieldLabel($field)."</div>\n".$vcs->getHiddenAlertElement($field);
-							
+							if (isset($params["clean_field"]))
+							{
+								$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+								$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
+								
+								$cleanFileName = (!isValidImgName($cleanFileName)) ? encodeUrl($cleanFileName) : $cleanFileName;
+								
+								$this->values[$params["clean_field"]] = sanitizeAll($cleanFileName.".".$ext);
+							}
+						}
+						else
+						{
+							$this->notice = $this->files->notice;
 							$this->result = false;
 							
 							return false;
 						}
 					}
-					else if (isset($_POST[$field."--del--"]))
+					else
 					{
-						$this->values[$field] = "";
-						
-						if (isset($params["clean_field"]))
+						if (isset($params["mandatory"]))
 						{
-							$this->values[$params["clean_field"]] = "";
+							if (strcmp($type,"insert") === 0)
+							{
+								$vcs = new Lang_En_ValCondStrings();
+								
+								$this->notice = "<div class='alert'>Si prega di selezionare un file per il campo ".getFieldLabel($field)."</div>\n".$vcs->getHiddenAlertElement($field);
+								
+								$this->result = false;
+								
+								return false;
+							}
+						}
+						else if (isset($_POST[$field."--del--"]))
+						{
+							$this->values[$field] = "";
+							
+							if (isset($params["clean_field"]))
+							{
+								$this->values[$params["clean_field"]] = "";
+							}
 						}
 					}
 				}
@@ -923,7 +927,9 @@ class GenericModel extends Model_Tree
 			if (isset($this->values["id_order"]))
 				unset($this->values["id_order"]);
 			
+			self::$uploadFileGeneric = false;
 			$this->insert();
+			self::$uploadFileGeneric = true;
 		}
 	}
 	

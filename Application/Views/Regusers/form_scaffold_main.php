@@ -37,6 +37,7 @@
 			</div>
 		</div>
 		<div class='col-md-4'>
+			<?php if (v("attiva_classi_sconto")) { ?>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					Scontistica
@@ -45,6 +46,7 @@
 					<?php echo $form["id_classe"];?>
 				</div>
 			</div>
+			<?php } ?>
 			
 			<div class="panel panel-info">
 				<div class="panel-heading">

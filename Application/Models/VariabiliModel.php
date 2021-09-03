@@ -253,6 +253,7 @@ class VariabiliModel extends GenericModel {
 		"piattaforma_di_demo"		=>	0,
 		"configurazione_frontend_attiva"	=>	1,
 		"immagine_2_in_team"		=>	0,
+		"attiva_classi_sconto"		=>	1,
 	);
 	
 	public function __construct() {

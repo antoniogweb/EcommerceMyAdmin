@@ -108,7 +108,7 @@
 						<?php if (v("immagine_2_in_slide")) { ?>
 						<div class="panel panel-info">
 							<?php
-							$labelBlocco = "Immagine 2";
+							$labelBlocco = "Immagine sfondo";
 							$numeroImmagine = "2";
 							include($this->viewPath("pages_form_immagine"));?>
 						</div>
