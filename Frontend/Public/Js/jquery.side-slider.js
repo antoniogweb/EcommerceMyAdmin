@@ -18,7 +18,7 @@
         var distance = $('.sideslider-close').width();
         var start =$('.sideslider').css(side).replace('px','');
 
-        $this.mouseenter(function(){
+        $this.click(function(){
             if($this.css(side).replace('px','')==start)
             {
                 if(side == 'marginRight'){
@@ -32,7 +32,7 @@
 
             }
         });
-       $('.sideslider-tab, #sideslider .sideslider-close').click(function()
+       $('#sideslider .sideslider-close').click(function()
         {
             if($this.css(side).replace('px','')==finish)
             {
