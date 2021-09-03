@@ -26,4 +26,21 @@ class TeamModel extends BasicsectionModel {
 	
 	public $hModelName = "TeamcatModel";
 	
+	public function __construct() {
+		parent::__construct();
+		
+		$this->formStructAggiuntivoEntries = array(
+			'email_contatto_evento'	=>	array(
+				'labelString'=>	'Email',
+			),
+			'telefono_contatto_evento'	=>	array(
+				'labelString'=>	'Telefono',
+			),
+			'indirizzo_localita_evento'	=>	array(
+				'labelString'=>	'Indirizzo',
+			),
+		);
+
+	}
+	
 }

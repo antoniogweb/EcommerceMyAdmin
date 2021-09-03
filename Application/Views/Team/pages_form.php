@@ -34,13 +34,25 @@
 								<div class='scaffold_form'>
 									<?php echo $form["title"];?>
 									
+									<?php echo $form["alias"];?>
+									
 									<?php echo $form["sottotitolo"];?>
+									
+									<?php echo $form["email_contatto_evento"];?>
+									
+									<?php echo $form["telefono_contatto_evento"];?>
+									
+									<?php echo $form["indirizzo_localita_evento"];?>
 									
 									<?php echo $form["link_pagina_facebook"];?>
 									
 									<?php echo $form["link_pagina_twitter"];?>
 									
 									<?php echo $form["link_pagina_youtube"];?>
+									
+									<?php echo $form["description"];?>
+									
+									<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
 									
 									<?php if ($type === "update") { ?>
 									<input class="varchar_input form-control" type="hidden" value="<?php echo $id_page;?>" name="id_page">
@@ -63,6 +75,8 @@
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
+								
+								<?php include($this->viewPath("pages_link"));?>
 							</div>
 						</div>
 						
@@ -81,8 +95,19 @@
 						<?php } ?>
 						
 						<div class="panel panel-info">
-							<?php include($this->viewPath("pages_form_immagine"));?>
+							<?php
+							$labelBlocco = "Immagine sfondo";
+							include($this->viewPath("pages_form_immagine"));?>
 						</div>
+						
+						<?php if (v("immagine_2_in_team")) { ?>
+						<div class="panel panel-info">
+							<?php
+							$labelBlocco = "Immagine persona";
+							$numeroImmagine = "2";
+							include($this->viewPath("pages_form_immagine"));?>
+						</div>
+						<?php } ?>
 					</div>
 				</div>
 			</form>

@@ -30,7 +30,8 @@ class BasicsectionModel extends PagesModel {
 		
 		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
 		
-		$this->values["alias"] = "";
+		if (!isset($this->values["alias"]) || !$this->values["alias"])
+			$this->values["alias"] = "";
 		
 		$this->values["id_c"] = $clean["id_c"];
 		
@@ -43,7 +44,8 @@ class BasicsectionModel extends PagesModel {
 		
 		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
 		
-		$this->values["alias"] = "";
+		if (!isset($this->values["alias"]) || !$this->values["alias"])
+			$this->values["alias"] = "";
 		
 		$this->values["id_c"] = $clean["id_c"];
 		
