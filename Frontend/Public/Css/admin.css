@@ -21,12 +21,16 @@
 	display:none;
 	position:absolute;
 	right:-2px;
-	top:-32px;
+	top:-2px;
 	background-color:#FFF;
 	padding:5px 10px;
 	color:#333;
-/* 		border:2px solid #333; */
-	border-bottom:none;
+	border:2px solid #333;
+	border-top:none;
+	border-right:none;
+	z-index:999999;
+	background-color:#000;
+	color:#FFF;
 }
 
 .fascia_contenuto .titolo_fascia a img
