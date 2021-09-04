@@ -65,13 +65,14 @@ class CaratteristicheController extends BaseController {
 		if (v("attiva_tipologie_caratteristiche"))
 		{
 			$this->mainFields[] = "tipologie_caratteristiche.titolo";
-			$this->mainHead = "Tipologia";
+			$this->mainFields[] = "caratteristiche.titolo";
+			$this->mainHead = "Tipologia,Titolo";
 		}
 		else
+		{
+			$this->mainFields[] = "caratteristiche.titolo";
 			$this->mainHead .= "Titolo";
-		
-		$this->mainFields[] = "caratteristiche.titolo";
-		$this->mainHead .= ",Titolo";
+		}
 		
 		$this->filters = array();
 		

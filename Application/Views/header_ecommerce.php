@@ -141,6 +141,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/promozioni/main/1/tutti/$token";?>"><i class="fa fa-list"></i> Lista promozioni</a></li>
 				</ul>
 			</li>
+			<?php if (v("attiva_classi_sconto")) { ?>
 			<li class="<?php echo $tm["classisconto"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-eur"></i>
@@ -151,6 +152,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/classisconto/main";?>"><i class="fa fa-list"></i> Lista classi</a></li>
 				</ul>
 			</li>
+			<?php } ?>
 			<li class="<?php echo $tm["corrieri"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-truck"></i>
