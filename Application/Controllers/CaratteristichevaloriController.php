@@ -71,6 +71,12 @@ class CaratteristichevaloriController extends BaseController {
 			$this->mainHead .= ",Immagine";
 		}
 		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->mainFields[] = "bulkaggiungiaprodotto";
+			$this->mainHead .= ",Aggiungi";
+		}
+		
 		$this->m[$this->modelName]->clear()->select("*")
 				->left(array("caratteristica"))
 				->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
