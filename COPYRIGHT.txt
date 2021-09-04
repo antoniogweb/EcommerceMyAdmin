@@ -56,3 +56,8 @@ FreeFont
 License:	MIT
 Copyright (c) 2016 Jack Moore
 link: 		https://github.com/jackmoore/colorbox
+
+Joyride2
+-------
+License:	MIT
+link: 		https://github.com/zurb/joyride

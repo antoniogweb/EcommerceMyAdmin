@@ -59,6 +59,9 @@
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     
+    <!--<link href="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/joyride.css?v=<?php echo rand(1,10000);?>" rel="stylesheet">
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/jquery.joyride.js"></script>-->
+    
     <?php if (defined("APPS")) {
 		foreach (APPS as $app)
 		{
