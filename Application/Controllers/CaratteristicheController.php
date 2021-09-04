@@ -81,8 +81,11 @@ class CaratteristicheController extends BaseController {
 			$this->mainFields[] = "caratteristiche.filtro";
 			$this->mainHead .= ",Usata come filtro";
 			
-			$filtroTipologia = array("tutti" => "Tipologia") + $this->m[$this->modelName]->selectTipologia();
-			$this->filters[] = array("id_tipologia_caratteristica", null, $filtroTipologia);
+			if (v("attiva_tipologie_caratteristiche"))
+			{
+				$filtroTipologia = array("tutti" => "Tipologia") + $this->m[$this->modelName]->selectTipologia();
+				$this->filters[] = array("id_tipologia_caratteristica", null, $filtroTipologia);
+			}
 		}
 		
 		$this->filters[] = "titolo";

@@ -80,7 +80,12 @@ class CaratteristichevaloriModel extends GenericModel {
 		(
 			'entries' 	=> 	array(
 				'titolo'		=>	array(
-					'labelString'=>	'Valore',
+					'labelString'=>	'Valore caratteristica',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Rappresenta il valore della caratteristica. Ex: rosso, XL, cuore")."</div>",
+					),
 				),
 				'id_car'	=>	array(
 					"type"	=>	"Select",
@@ -91,6 +96,14 @@ class CaratteristichevaloriModel extends GenericModel {
 // 					'wrap'	=>	array(
 // 						null,null," <a class='iframe pull-right' href='".Url::getRoot()."caratteristiche/form/insert/0?partial=Y&nobuttons=Y&cl_on_sv=Y&id_tip_car=$idTipo'><i class='fa fa-plus-square-o'></i> Nuovo</a>"
 // 					),
+				),
+				'alias'		=>	array(
+					'labelString'=>	"Alias (usato nell'URL)",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Quando si filtra nella sezione prodotti per tale caratteristica, nell'URL della pagina verrà usato l'alias indicato. Viene creato in automatico se lasciato vuoto.")."</div>",
+					),
 				),
 			),
 			

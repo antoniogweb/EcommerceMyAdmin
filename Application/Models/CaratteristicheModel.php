@@ -63,6 +63,11 @@ class CaratteristicheModel extends GenericModel {
 			'entries' 	=> 	array(
 				'titolo'		=>	array(
 					'labelString'=>	'Titolo caratteristica',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Rappresenta il nome della caratteristica. Ex: colore, taglia, forma")."</div>",
+					),
 				),
 				'id_car'	=>	array(
 					'type'		=>	'Hidden'
@@ -82,6 +87,22 @@ class CaratteristicheModel extends GenericModel {
 					"options"	=>	array(0 => 'Seleziona') + $this->selectTipologia(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+				),
+				'alias'		=>	array(
+					'labelString'=>	"Alias (usato nell'URL)",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Quando si filtra nella sezione prodotti per tale caratteristica, nell'URL della pagina verrà usato l'alias indicato. Viene creato in automatico se lasciato vuoto.")."</div>",
+					),
+				),
+				'filtro'		=>	array(
+					'labelString'=>	"Usata come filtro",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se si imposta su sì, la carratteristica apparirà come filtro nella sezione prodotti dell'ecommerce")."</div>",
+					),
 				),
 			),
 		);

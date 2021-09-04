@@ -52,7 +52,7 @@ class CaratteristichevaloriController extends BaseController {
 		$filtroTipologia = array("tutti" => "Tipologia") + $this->m["CaratteristicheModel"]->selectTipologia();
 		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica();
 		
-		if ($this->viewArgs["id_page"] != "tutti" && $this->viewArgs["id_tipo_car"] != "tutti")
+		if (($this->viewArgs["id_page"] != "tutti" && $this->viewArgs["id_tipo_car"] != "tutti") || !v("attiva_tipologie_caratteristiche"))
 		{
 			$this->filters = array(array("id_car_f", null, $filtroCaratteristica), "titolo");
 			$this->mainFields = array("caratteristiche.titolo", "caratteristiche_valori.titolo");
