@@ -21,7 +21,7 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<li class="<?php echo $tm["traduzioni"][0];?>"><a href="<?php echo $this->baseUrl."/traduzioni/main/1";?>"><i class="fa fa-language"></i> <?php echo gtext("Traduzioni");?></a></li>
-			<li class="<?php echo $tm["impostazioni"][0];?>"><a href="<?php echo $this->baseUrl."/impostazioni/form/update/1";?>"><i class="fa fa-cogs"></i> <?php echo gtext("Impostazioni");?></a></li>
+			<li class="<?php echo ($this->controller == "impostazioni" && $this->action == "form") ? "active" : "";?>"><a href="<?php echo $this->baseUrl."/impostazioni/form/update/1";?>"><i class="fa fa-cogs"></i> <?php echo gtext("Impostazioni");?></a></li>
 			<?php if (v("mostra_tipi_fasce")) { ?>
 			<li class="<?php echo $tm["tipicontenuto"][0];?> treeview">
 				<a href="#">
@@ -60,6 +60,9 @@ include(ROOT."/Application/Views/header.php");
 			<?php } ?>
 			<?php if (v("mostra_gestione_testi")) { ?>
 			<li class="<?php echo tm($tm, "testi");?>"><a href="<?php echo $this->baseUrl."/testi/main/1";?>"><i class="fa fa-pencil"></i> <?php echo gtext("Elementi tema");?></a></li>
+			<?php } ?>
+			<?php if (count(Tema::getElencoTemi()) > 1 && v("permetti_cambio_tema")) { ?>
+			<li class="<?php echo ($this->controller == "impostazioni" && $this->action == "tema") ? "active" : "";?>"><a href="<?php echo $this->baseUrl."/impostazioni/tema/1";?>"><i class="fa fa-eye"></i> <?php echo gtext("Cambia tema sito");?></a></li>
 			<?php } ?>
 			<?php if (v("attiva_tutte_le_categorie")) { ?>
 			<li class="<?php echo tm($tm, "categories");?>"><a href="<?php echo $this->baseUrl."/categories/main/1";?>"><i class="fa fa-folder-open"></i> <?php echo gtext("Sezioni sito");?></a></li>

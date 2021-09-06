@@ -53,6 +53,9 @@ class ImpostazioniController extends BaseController
 	
 	public function tema()
 	{
+		if (!v("permetti_cambio_tema"))
+			die();
+		
 		$data["elencoTemi"] = Tema::getElencoTemi();
 		
 		$this->append($data);
@@ -62,6 +65,9 @@ class ImpostazioniController extends BaseController
 	
 	public function attivatema($tema)
 	{
+		if (!v("permetti_cambio_tema"))
+			die();
+		
 		$this->clean();
 		
 		if (Tema::check($tema))

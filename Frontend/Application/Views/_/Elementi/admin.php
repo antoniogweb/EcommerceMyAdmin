@@ -20,7 +20,7 @@
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/slide/main?partial=Y";?>" class="iframe"><?php echo gtext("Slide principale");?></a></span>
 			<?php } ?>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/menu/main?partial=Y";?>" class="iframe"><?php echo gtext("Menu navigazione");?></a></span>
-			<?php if (count(Tema::getElencoTemi()) > 1) { ?>
+			<?php if (count(Tema::getElencoTemi()) > 1 && v("permetti_cambio_tema")) { ?>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/impostazioni/tema?partial=Y";?>" class="iframe"><?php echo gtext("Seleziona tema");?></a></span>
 			<?php } ?>
 			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/testi/main?partial=Y";?>" class="iframe"><?php echo gtext("Elementi tema");?></a></span>
