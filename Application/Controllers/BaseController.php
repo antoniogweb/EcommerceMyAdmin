@@ -212,8 +212,10 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
+		// Help wizard
 		$this->model("HelpModel");
 		$data["helpDaVedere"] = $this->m["HelpModel"]->daVedere();
+		$data["helpDaVedereTutti"] = $this->m["HelpModel"]->daVedere(false);
 		
 		Lang_It_UploadStrings::$staticStrings = array(
 			"error" => "<div class='alert'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",

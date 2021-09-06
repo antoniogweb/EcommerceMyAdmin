@@ -24,8 +24,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class HelpModel extends GenericModel
 {
-	public static $elementiDaVedere = null;
-	
 	public function __construct() {
 		$this->_tables = 'help';
 		$this->_idFields = 'id_help';
@@ -58,16 +56,33 @@ class HelpModel extends GenericModel
 		);
 	}
 	
-    public function daVedere()
+	public function daVedere($soloMaiVisti = true)
     {
-		if (isset(self::$elementiDaVedere))
-			return self::$elementiDaVedere;
+		if (v("attiva_help_wizard"))
+		{
+			$in = array(sanitizeAll($this->controller."/".$this->action));
+			
+			if (count($this->_queryString) > 0)
+				$in[] = sanitizeAll($this->controller."/".$this->action."/".$this->_queryString[0]);
+			
+			$this->clear()->select("*")->where(array(
+				"in"	=>	array(
+					"controlleraction"	=>	$in,
+				),
+			))->inner(array("elementi"))->orderBy("help_item.id_order");
+			
+			if ($soloMaiVisti)
+				$this->aWhere(array(
+					"mostra"	=>	1,
+				));
+			
+			$res = $this->send();
+			
+// 			echo $this->getQuery();die();
+			
+			return $res;
+		}
 		
-		self::$elementiDaVedere = $this->clear()->select("*")->where(array(
-			"controlleraction"	=>	sanitizeAll($this->controller."/".$this->action),
-			"mostra"			=>	1,
-		))->inner(array("elementi"))->orderBy("help_item.id_order")->send();
-		
-		return self::$elementiDaVedere;
+		return null;
     }
 }

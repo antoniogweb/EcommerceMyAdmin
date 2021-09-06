@@ -10,7 +10,7 @@ include(ROOT."/Application/Views/header.php");
 		<?php if (User::$logged and strcmp($this->action,'logout') !== 0) { ?>
 		<ul class="sidebar-menu">
 			<li class="header">MENÙ GENSTIONE ECOMMERCE</li>
-			<li class="<?php echo $tm["categorie"][0];?> treeview">
+			<li class="<?php echo $tm["categorie"][0];?> treeview help_categorie">
 				<a href="#">
 					<i class="fa fa-bookmark"></i>
 					<span>Categorie</span>
@@ -107,7 +107,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("usa_marchi")) { ?>
-			<li class="<?php echo $tm["marchi"][0];?> treeview">
+			<li class="<?php echo $tm["marchi"][0];?> treeview help_marchi">
 				<a href="#">
 					<i class="fa fa-font-awesome"></i>
 					<span><?php echo gtext("famiglie",true,"ucfirst");?></span>
@@ -119,7 +119,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("usa_tag")) { ?>
-			<li class="<?php echo $tm["tag"][0];?> treeview">
+			<li class="<?php echo $tm["tag"][0];?> treeview help_tag">
 				<a href="#">
 					<i class="fa fa-tags"></i>
 					<span><?php echo gtext("Tag / Linee",true,"ucfirst");?></span>

@@ -256,6 +256,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_classi_sconto"		=>	1,
 		"campi_impostazioni"		=>	"",
 		"permetti_cambio_tema"		=>	0,
+		"attiva_help_wizard"		=>	0,
 	);
 	
 	public function __construct() {

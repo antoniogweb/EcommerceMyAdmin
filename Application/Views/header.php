@@ -59,7 +59,7 @@
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     
-    <?php if ($helpDaVedere) { ?>
+    <?php if ($helpDaVedere && v("attiva_help_wizard")) { ?>
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/joyride.css?v=<?php echo rand(1,10000);?>" rel="stylesheet">
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/jquery.joyride.js"></script>
     <?php } ?>
@@ -163,6 +163,12 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<?php if ($helpDaVedereTutti) { ?>
+						<li class="help_help">
+							<a href="<?php echo $this->baseUrl."/help/mostranascondi/".$helpDaVedereTutti[0]["help_item"]["id_help"]."/1";?>" class="ajlink"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
+							</a>
+						</li>
+						<?php } ?>
 						<li class="<?php if (strcmp($sezionePannello,"sito") === 0) { ?>active<?php } ?> help_cms">
 							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><span class="glyphicon glyphicon-cloud"></span>
 							<?php if (!User::$isMobile) { ?>

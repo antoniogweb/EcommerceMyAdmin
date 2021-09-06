@@ -40,7 +40,7 @@ class ProdottiController extends PagesController {
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
-			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a> <br /><span class='get_title'>(alias: ;pages.alias;)</span><br />codice: <b>;pages.codice;</b><br />prezzo: <b>;setPriceReverse|pages.$campoPrice;€</b>",
+			"<div class='record_id' style='display:none'>;pages.id_page;</div><a class='help_titolo' href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a> <br /><span class='get_title'>(alias: ;pages.alias;)</span><br />codice: <b>;pages.codice;</b><br />prezzo: <b>;setPriceReverse|pages.$campoPrice;€</b>",
 			'PagesModel.categoriesS|pages.id_page',
 // 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);

@@ -85,7 +85,7 @@ Helper_Menu::$htmlLinks = array(
 	"add" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-info"',
+		"attributes" => 'role="button" class="btn btn-info help_nuovo_elemento"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Nuovo elemento",
 		"classIconBefore"	=>	'<i class="fa fa-plus"></i>',

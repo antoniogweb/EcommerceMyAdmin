@@ -55,7 +55,7 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
-<?php if ($helpDaVedere) { ?>
+<?php if ($helpDaVedere && v("attiva_help_wizard")) { ?>
 <ol id="joyRideTipContent">
 	<?php foreach ($helpDaVedere as $hdv) { ?>
 	<li data-options='tipLocation:<?php echo $hdv["help_item"]["posizione"];?>;' <?php if (trim($hdv["help_item"]["selettore"])) { ?>data-class="<?php echo $hdv["help_item"]["selettore"];?>"<?php } ?>>
