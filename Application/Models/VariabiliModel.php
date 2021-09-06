@@ -251,7 +251,7 @@ class VariabiliModel extends GenericModel {
 		"applicativo_traduzioni"	=>	"",
 		"immagine_2_in_pagine"		=>	0,
 		"piattaforma_di_demo"		=>	0,
-		"configurazione_frontend_attiva"	=>	1,
+		"configurazione_frontend_attiva"	=>	0,
 		"immagine_2_in_team"		=>	0,
 		"attiva_classi_sconto"		=>	1,
 		"campi_impostazioni"		=>	"",

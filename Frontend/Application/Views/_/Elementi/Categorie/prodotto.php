@@ -13,6 +13,7 @@ $stringaDa = !$hasSoloCombinations ? "" : gtext("da");
 $prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
 $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
+$isProdotto = isProdotto($idPr);
 ?>
 <article class="uk-transition-toggle">
 	<div class="uk-inline-clip " tabindex="0">
@@ -29,7 +30,7 @@ $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
 			</div>
 		</div>
 		<div class="uk-transition-slide-bottom uk-position-bottom uk-overlay uk-overlay-default uk-light uk-background-secondary">
-			<?php if (isProdotto($idPr) && acquistabile($idPr)) { ?>
+			<?php if ($isProdotto && acquistabile($idPr)) { ?>
 			<div class="uk-margin-remove">
 				<div class="spinner uk-hidden" uk-spinner="ratio: .70"></div>
 				<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="uk-text-small add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations) { ?>aggiungi_al_carrello_semplice<?php } ?>" rel="nofollow">
@@ -49,7 +50,7 @@ $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
 		<h2 class="uk-text-small uk-text-bold uk-margin-remove">
 			<a class="uk-text-secondary" href="<?php echo $this->baseUrl."/".$urlAlias;?>"><?php echo field($p, "title");?></a>
 		</h2>
-		<?php if (isProdotto($idPr)) { ?>
+		<?php if ($isProdotto) { ?>
 		<span class="price">
 			<span class="uk-text-small">
 				<?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?>
