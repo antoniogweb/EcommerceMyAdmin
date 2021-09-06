@@ -45,8 +45,8 @@ class HelpController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("help.titolo", "help.controlleraction", "help.tag");
-		$this->mainHead = "Titolo,Controller/Action,Tag";
+		$this->mainFields = array("help.titolo", "help.controlleraction", "help.tag", "help.mostra");
+		$this->mainHead = "Titolo,Controller/Action,Tag,Mostra";
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
@@ -59,7 +59,7 @@ class HelpController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = "titolo,controlleraction,tag";
+		$fields = "titolo,controlleraction,tag,mostra";
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
@@ -85,8 +85,8 @@ class HelpController extends BaseController
 		
 		$this->modelName = "HelpitemModel";
 		
-		$this->mainFields = array("edit", "help_item.selettore", "help_item.mostra", "help_item.letto");
-		$this->mainHead = "Titolo,Selettore,Mostra,Letto";
+		$this->mainFields = array("edit", "help_item.selettore");
+		$this->mainHead = "Titolo,Selettore";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"elementi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -105,5 +105,19 @@ class HelpController extends BaseController
 		$this->modelName = "HelpitemModel";
 		
 		parent::ordina();
+	}
+	
+	public function mostranascondi($id = 0, $valore = 0)
+	{
+		$this->clean();
+		
+		if ((int)$valore === 0 || (int)$valore === 1)
+		{
+			$this->m["HelpModel"]->setValues(array(
+				"mostra"	=>	(int)$valore,
+			));
+			
+			$this->m["HelpModel"]->update(null, (int)$id);
+		}
 	}
 }

@@ -77,6 +77,18 @@ $(window).load(function() {
 		preStepCallback: function(e)
 		{
 			$(".joyride-next-tip").text("<?php echo gtext("Successivo")?>");
+		},
+		postRideCallback: function(e)
+		{
+			$.ajaxQueue({
+				url: "<?php echo $this->baseUrl."/help/mostranascondi/".$helpDaVedere[0]["help_item"]["id_help"]."/0";?>",
+				cache:false,
+				async: true,
+				dataType: "html",
+				success: function(content){
+					
+				}
+			});
 		}
 	});
 });

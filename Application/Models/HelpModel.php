@@ -41,6 +41,23 @@ class HelpModel extends GenericModel
         );
     }
     
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'mostra'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Mostra',
+					'options'	=>	array(0=>'No',1=>'Sì'),
+					'reverse' => 'yes',
+				),
+			),
+			
+			'enctype'	=>	'',
+		);
+	}
+	
     public function daVedere()
     {
 		if (isset(self::$elementiDaVedere))
@@ -48,6 +65,7 @@ class HelpModel extends GenericModel
 		
 		self::$elementiDaVedere = $this->clear()->select("*")->where(array(
 			"controlleraction"	=>	sanitizeAll($this->controller."/".$this->action),
+			"mostra"			=>	1,
 		))->inner(array("elementi"))->orderBy("help_item.id_order")->send();
 		
 		return self::$elementiDaVedere;

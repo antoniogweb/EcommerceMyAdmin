@@ -481,6 +481,7 @@ class Route
 		'help,form',
 		'help,elementi',
 		'help,ordinaelementi',
+		'help,mostranascondi',
 		
 		'helpitem,form',
 	);
