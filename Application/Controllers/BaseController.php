@@ -212,6 +212,9 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
+		$this->model("HelpModel");
+		$data["helpDaVedere"] = $this->m["HelpModel"]->daVedere();
+		
 		Lang_It_UploadStrings::$staticStrings = array(
 			"error" => "<div class='alert'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
 			"executed"	=>	"<div class='alert alert-success'>".gtext("Operazione eseguita!")."</div>",

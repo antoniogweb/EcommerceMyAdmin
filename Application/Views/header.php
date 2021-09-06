@@ -59,8 +59,10 @@
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     
-    <!--<link href="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/joyride.css?v=<?php echo rand(1,10000);?>" rel="stylesheet">
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/jquery.joyride.js"></script>-->
+    <?php if ($helpDaVedere) { ?>
+    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/joyride.css?v=<?php echo rand(1,10000);?>" rel="stylesheet">
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/jquery.joyride.js"></script>
+    <?php } ?>
     
     <?php if (defined("APPS")) {
 		foreach (APPS as $app)
@@ -161,7 +163,7 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li <?php if (strcmp($sezionePannello,"sito") === 0) { ?>class="active"<?php } ?>>
+						<li class="<?php if (strcmp($sezionePannello,"sito") === 0) { ?>active<?php } ?> help_cms">
 							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><span class="glyphicon glyphicon-cloud"></span>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("CMS")?>
@@ -169,7 +171,7 @@
 							</a>
 						</li>
 						<?php if (v("attiva_menu_ecommerce")) { ?>
-						<li <?php if (strcmp($sezionePannello,"ecommerce") === 0) { ?>class="active"<?php } ?>>
+						<li class="<?php if (strcmp($sezionePannello,"ecommerce") === 0) { ?>active<?php } ?> help_ecommerce">
 							<a href="<?php echo $this->baseUrl.'/prodotti/main';?>"><span class="glyphicon glyphicon-shopping-cart"></span>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("E-commerce")?>
@@ -177,7 +179,7 @@
 							</a>
 						</li>
 						<?php } ?>
-						<li <?php if (strcmp($sezionePannello,"utenti") === 0) { ?>class="active"<?php } ?>>
+						<li class="<?php if (strcmp($sezionePannello,"utenti") === 0) { ?>active<?php } ?> help_configurazione">
 							<a href="<?php echo $this->baseUrl.'/users/main';?>"><span class="glyphicon glyphicon-cog"></span>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("Preferenze")?>

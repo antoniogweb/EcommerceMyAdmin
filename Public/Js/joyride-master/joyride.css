@@ -15,7 +15,7 @@
   background: rgba(0,0,0,0.8);
   display: none;
   color: #fff;
-  width: 300px;
+  width: 400px;
   z-index: 101;
   top: 0; /* keeps the page from scrolling when calculating position */
   left: 0;
@@ -27,7 +27,13 @@
 }
 
 .joyride-content-wrapper {
-  padding: 10px 10px 15px 15px;
+  padding: 20px 20px 25px 25px;
+}
+
+.joyride-content-wrapper div img
+{
+	width:100%;
+	height:auto !important;
 }
 
 /* Mobile */

@@ -11,7 +11,7 @@ include(ROOT."/Application/Views/header.php");
 		<ul class="sidebar-menu">
 			<li class="header"><?php echo gtext("MENÙ GESTIONE SITO")?></li>
 			<?php if (v("attiva_standard_cms_menu")) { ?>
-				<li class="<?php echo $tm["slide"][0];?> treeview">
+				<li class="<?php echo $tm["slide"][0];?> treeview help_slide">
 					<a href="#">
 						<i class="fa fa-picture-o"></i>
 						<span>Slide</span>
@@ -22,7 +22,7 @@ include(ROOT."/Application/Views/header.php");
 					</ul>
 				</li>
 				<?php if (v("blog_attivo")) { ?>
-				<li class="<?php echo $tm["blog"][0];?> treeview">
+				<li class="<?php echo $tm["blog"][0];?> treeview help_blog">
 					<a href="#">
 						<i class="fa fa-rss"></i>
 						<span><?php echo gtext("Blog");?></span>
@@ -49,7 +49,7 @@ include(ROOT."/Application/Views/header.php");
 					</ul>
 				</li>
 				<?php } ?>
-				<li class="<?php echo $tm["pagine"][0];?>">
+				<li class="<?php echo $tm["pagine"][0];?> help_pagine">
 					<a href="<?php echo $this->baseUrl."/pagine/main";?>">
 						<i class="fa fa-folder-open"></i> <span>Pagine</span>
 					</a>
@@ -95,7 +95,7 @@ include(ROOT."/Application/Views/header.php");
 				</li>
 				<?php } ?>
 				<?php if (v("mostra_avvisi")) { ?>
-				<li class="<?php echo tm($tm, "avvisi");?> treeview">
+				<li class="<?php echo tm($tm, "avvisi");?> treeview help_avvisi">
 					<a href="#">
 						<i class="fa fa-bullhorn"></i>
 						<span>Avvisi</span>
@@ -107,7 +107,7 @@ include(ROOT."/Application/Views/header.php");
 				</li>
 				<?php } ?>
 				<?php if (v("mostra_faq")) { ?>
-				<li class="<?php echo tm($tm, "faq");?> treeview">
+				<li class="<?php echo tm($tm, "faq");?> treeview help_faq">
 					<a href="#">
 						<i class="fa fa-question-circle"></i>
 						<span>Faq</span>
@@ -119,7 +119,7 @@ include(ROOT."/Application/Views/header.php");
 				</li>
 				<?php } ?>
 				<?php if (v("mostra_testimonial")) { ?>
-				<li class="<?php echo tm($tm, "testimonial");?> treeview">
+				<li class="<?php echo tm($tm, "testimonial");?> treeview help_testimonial">
 					<a href="#">
 						<i class="fa fa-star"></i>
 						<span>Testimonial</span>
@@ -165,7 +165,7 @@ include(ROOT."/Application/Views/header.php");
 				}
 			} ?>
 			<?php if (v("attiva_standard_cms_menu")) { ?>
-			<li class="<?php echo $tm["menu1"][0];?> treeview">
+			<li class="<?php echo $tm["menu1"][0];?> treeview help_menu">
 				<a href="#">
 					<i class="fa fa-list"></i>
 					<span><?php echo gtext("Menù");?></span>

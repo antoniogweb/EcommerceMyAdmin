@@ -55,6 +55,34 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
+<?php if ($helpDaVedere) { ?>
+<ol id="joyRideTipContent">
+	<?php foreach ($helpDaVedere as $hdv) { ?>
+	<li data-options='tipLocation:<?php echo $hdv["help_item"]["posizione"];?>;' <?php if (trim($hdv["help_item"]["selettore"])) { ?>data-class="<?php echo $hdv["help_item"]["selettore"];?>"<?php } ?>>
+		<div>
+			<?php if ($hdv["help_item"]["mostra_titolo"] == "Y") { ?>
+			<h1><?php echo htmlentitydecode($hdv["help_item"]["titolo"]);?></h1>
+			<?php } ?>
+			<?php echo htmlentitydecode($hdv["help_item"]["descrizione"]);?>
+		</div>
+		<br />
+	</li>
+	<?php } ?>
+</ol>
+
+<script>
+$(window).load(function() {
+	$("#joyRideTipContent").joyride({
+		autoStart: true,
+		preStepCallback: function(e)
+		{
+			$(".joyride-next-tip").text("<?php echo gtext("Successivo")?>");
+		}
+	});
+});
+</script>
+<?php } ?>
+
 </body>
 </html>
 <?php

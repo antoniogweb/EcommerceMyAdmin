@@ -476,6 +476,13 @@ class Route
 		'icone,inevidenza',
 		'icone,updatevalue',
 		'icone,ordina',
+		
+		'help,main',
+		'help,form',
+		'help,elementi',
+		'help,ordinaelementi',
+		
+		'helpitem,form',
 	);
 	
 	//it can be 'yes' or 'no'

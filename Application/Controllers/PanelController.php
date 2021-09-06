@@ -24,8 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PanelController extends BaseController {
 
-	public function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString, $application, $action) {
+		
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
 		$this->session('admin');
 		
 		$this->s['admin']->check();
