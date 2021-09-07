@@ -79,6 +79,12 @@ class UsersModel extends GenericModel {
 		$this->addSoftCondition("both",'checkEqual',"password,confirmation|Le due password non coincidono");
 	}
 	
+	public function relations() {
+        return array(
+			'help' => array("HAS_MANY", 'HelpuserModel', 'id_user', null, "CASCADE"),
+        );
+    }
+    
 	public function update($id = null, $where = null)
 	{
 		$clean['id'] = (int)$id;

@@ -86,8 +86,8 @@ class HelpController extends BaseController
 		
 		$this->modelName = "HelpitemModel";
 		
-		$this->mainFields = array("edit", "help_item.selettore");
-		$this->mainHead = "Titolo,Selettore";
+		$this->mainFields = array("edit", "help_item.selettore", "help_item.variabile");
+		$this->mainHead = "Titolo,Selettore,Variabile";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"elementi/".$clean['id'],'pageVariable'=>'page_fgl');
 		

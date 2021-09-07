@@ -62,7 +62,20 @@ class HelpModel extends GenericModel
 			
 // 			echo $this->getQuery();die();
 			
-			return $res;
+			$arrayFInale = array();
+			
+			foreach ($res as $r)
+			{
+				// Controllo che sia attivo quel modulo
+				$variabile = $r["help_item"]["variabile"];
+				
+				if ($variabile && !v($variabile))
+					continue;
+				
+				$arrayFInale[] = $r;
+			}
+			
+			return $arrayFInale;
 		}
 		
 		return null;
