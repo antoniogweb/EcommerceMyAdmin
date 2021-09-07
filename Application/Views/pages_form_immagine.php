@@ -9,6 +9,8 @@ if (!isset($labelPulsante))
 
 $stringImmagine = $stringImmagine2 = "";
 
+$classImg = $numeroImmagine ? "image_panel_".$numeroImmagine : "image_panel_1";
+
 if ($numeroImmagine)
 {
 	$stringImmagine = "_".$numeroImmagine;
@@ -20,7 +22,7 @@ if (!isset($arrayPulsanti))
 <div class="panel-heading">
 	<?php echo $labelBlocco;?>
 </div>
-<div class="panel-body image_panel">
+<div class="panel-body image_panel <?php echo $classImg;?>">
 	<div class="preview_image<?php echo $stringImmagine;?>"></div>
 	<?php echo $form["immagine".$stringImmagine];?>
 	<div class="cancella_immagine_box<?php echo $stringImmagine;?>">

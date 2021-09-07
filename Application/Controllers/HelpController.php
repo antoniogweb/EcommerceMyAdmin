@@ -60,7 +60,7 @@ class HelpController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = "titolo,controlleraction,tag";
+		$fields = "titolo,controlleraction,tag,larghezza";
 		
 		$this->_posizioni['main'] = 'class="active"';
 		

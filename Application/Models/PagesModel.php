@@ -188,6 +188,7 @@ class PagesModel extends GenericModel {
 			'entries' 	=> 	array(
 				'title'		=>	array(
 					'labelString'=>	'Titolo',
+					'entryClass'	=>	'form_input_text help_titolo',
 				),
 				'data_news'		=>	array(
 					'labelString'=>	'Data',
@@ -197,6 +198,7 @@ class PagesModel extends GenericModel {
 				),
 				'alias'		=>	array(
 					'labelString'=>	'Alias (per URL)',
+					'entryClass'	=>	'form_input_text help_alias',
 					'wrap'		=>	array(
 						null,
 						null,
@@ -205,6 +207,7 @@ class PagesModel extends GenericModel {
 				),
 				'id_c'		=>	array(
 					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_categoria',
 					'labelString'=>	'Categoria',
 					'options'	=>	$this->buildCategorySelect(),
 					'reverse' => 'yes',
@@ -212,6 +215,7 @@ class PagesModel extends GenericModel {
 				),
 				'id_iva'		=>	array(
 					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_iva',
 					'labelString'=>	'Aliquota Iva',
 					'options'	=>	$this->selectIva(),
 					'reverse' => 'yes',
@@ -219,6 +223,7 @@ class PagesModel extends GenericModel {
 				),
 				'id_marchio'	=>	array(
 					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_marchio',
 					'labelString'=>	gtext('famiglia',false,"ucfirst"),
 					'options'	=>	$this->selectMarchi(),
 					'reverse' => 'yes',
@@ -230,15 +235,18 @@ class PagesModel extends GenericModel {
 				),
 				'price_ivato'	=>	array(
 					'labelString'=>	'Prezzo Iva inclusa (€)',
+					'entryClass'	=>	'form_input_text help_prezzo',
 					'wrap' =>	$wrapCombinazioni,
 				),
 				'codice'		=>	array(
 					'labelString'=>	'Codice prodotto',
+					'entryClass'	=>	'form_input_text help_codice',
 					'wrap' =>	$wrapCombinazioni,
 				),
 				'attivo'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Pubblicato?',
+					'entryClass'	=>	'form_input_text help_attivo',
 					'options'	=>	array('sì'=>'Y','no'=>'N'),
 					'wrap'		=>	array(
 						null,
@@ -248,6 +256,7 @@ class PagesModel extends GenericModel {
 				),
 				'in_evidenza'	=>	array(
 					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_evidenza',
 					'labelString'=>	'In evidenza?',
 					'options'	=>	array('no'=>'N','sì'=>'Y'),
 					'wrap'		=>	array(
@@ -258,6 +267,7 @@ class PagesModel extends GenericModel {
 				),
 				'nuovo'	=>	array(
 					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_nuovo',
 					'labelString'=>	'Prodotto marcato come nuovo?',
 					'options'	=>	array('no'=>'N','sì'=>'Y'),
 					'wrap'		=>	array(
@@ -268,6 +278,7 @@ class PagesModel extends GenericModel {
 				),
 				'peso'		=>	array(
 					'labelString'=>	'Peso (kg)',
+					'entryClass'	=>	'form_input_text help_peso',
 					'wrap' =>	$wrapCombinazioni,
 				),
 				'in_promozione'	=>	array(
@@ -294,6 +305,7 @@ class PagesModel extends GenericModel {
 				),
 				'description'		=>	array(
 					'type'		 =>	'Textarea',
+					'entryClass'	=>	'form_textarea help_descrizione',
 					'labelString'=>	'Descrizione',
 					'className'		=>	'dettagli',
 				),
@@ -329,6 +341,7 @@ class PagesModel extends GenericModel {
 				),
 				'giacenza'	=>	array(
 					'labelString'=>	'Giacenza (disponibilità a magazzino)',
+					'entryClass'	=>	'form_input_text help_giacenza',
 					'wrap' =>	$wrapCombinazioni,
 				),
 				'tipo_pagina'		=>	array(
@@ -360,6 +373,7 @@ class PagesModel extends GenericModel {
 				),
 				'id_p'		=>	array(
 					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_principale',
 					'labelString'=>	'Prodotto principale',
 					'options'	=>	$this->selectProdotti($id),
 					'reverse' => 'yes',
