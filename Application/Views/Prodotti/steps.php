@@ -10,7 +10,7 @@
 	$temp["pcorr_sec"] = "tutti";
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
+	<li <?php echo $posizioni['main'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
 	<?php if (v("contenuti_in_prodotti")) { ?>
 	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".$viewStatusTutti;?>">Contenuti</a></li>
 	<?php } ?>
