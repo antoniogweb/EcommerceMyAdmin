@@ -37,7 +37,7 @@ class BaseContenutiController extends BaseController
 	public $parents = array(); //right parents array as taken by database
 	public $fullParents = array(); //right parents plus current element array as taken by database
 	public $currUrl = null; //the URL of the current page
-	public $elementsPerPage = 9; //number of elements per page
+	public $elementsPerPage = 9999999; //number of elements per page
 	public $idMarchio = 0;
 	public $idTag = 0;
 	public $aliasMarchio = "";

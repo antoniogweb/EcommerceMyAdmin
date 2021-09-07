@@ -214,6 +214,8 @@ class BaseController extends Controller
 		
 		$this->session('admin');
 		
+		$data['token'] = null;
+		
 		$this->s['admin']->checkStatus();
 		if ( strcmp($this->s['admin']->status['status'],'logged') === 0 ) { //check if already logged
 			User::$logged = true;
@@ -286,8 +288,6 @@ class BaseController extends Controller
 		
 		$this->_topMenuClasses[$controller] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
-		
-		$data['token'] = null;
 		
 		$data['logged'] = $this->s['admin']->getUsersLogged();
 		
