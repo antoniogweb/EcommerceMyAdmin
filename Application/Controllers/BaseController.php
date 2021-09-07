@@ -212,6 +212,21 @@ class BaseController extends Controller
 		$this->model('TraduzioniModel');
 		$this->m["TraduzioniModel"]->ottieniTraduzioni();
 		
+		$this->session('admin');
+		
+		$this->s['admin']->checkStatus();
+		if ( strcmp($this->s['admin']->status['status'],'logged') === 0 ) { //check if already logged
+			User::$logged = true;
+			User::$id = (int)$this->s['admin']->status['id_user'];
+			
+			User::$name = $this->s['admin']->status['user'];
+			
+			User::$groups = $this->s['admin']->status['groups'];
+			
+			$token = User::$token = $this->s['admin']->status['token'];
+			$data['token'] = $token;
+		}
+		
 		// Help wizard
 		$this->model("HelpModel");
 		$data["helpDaVedere"] = $this->m["HelpModel"]->daVedere();
@@ -260,17 +275,11 @@ class BaseController extends Controller
 		Domain::$adminName = $this->baseUrlSrc;
 		Domain::$publicUrl = str_replace("/admin",null,$this->baseUrlSrc);
 		
-		$this->session('admin');
-		
 		if (strcmp($controller,"users") !== 0)
-		{
 			$this->s['admin']->check();
-		}
 		
 		if (class_exists($model))
-		{
 			$this->model($model);
-		}
 		
 		$this->model('UsersModel');
 		$this->model("FattureModel");
@@ -279,19 +288,6 @@ class BaseController extends Controller
 		$data['tm'] = $this->_topMenuClasses;
 		
 		$data['token'] = null;
-		
-		$this->s['admin']->checkStatus();
-		if ( strcmp($this->s['admin']->status['status'],'logged') === 0 ) { //check if already logged
-			User::$logged = true;
-			User::$id = (int)$this->s['admin']->status['id_user'];
-			
-			User::$name = $this->s['admin']->status['user'];
-			
-			User::$groups = $this->s['admin']->status['groups'];
-			
-			$token = User::$token = $this->s['admin']->status['token'];
-			$data['token'] = $token;
-		}
 		
 		$data['logged'] = $this->s['admin']->getUsersLogged();
 		

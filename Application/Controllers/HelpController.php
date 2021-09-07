@@ -37,6 +37,7 @@ class HelpController extends BaseController
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->model("HelpitemModel");
+		$this->model("HelpuserModel");
 		
 		$this->s["admin"]->check();
 	}
@@ -45,8 +46,8 @@ class HelpController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("help.titolo", "help.controlleraction", "help.tag", "help.mostra");
-		$this->mainHead = "Titolo,Controller/Action,Tag,Mostra";
+		$this->mainFields = array("help.titolo", "help.controlleraction", "help.tag");
+		$this->mainHead = "Titolo,Controller/Action,Tag";
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
@@ -59,7 +60,7 @@ class HelpController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = "titolo,controlleraction,tag,mostra";
+		$fields = "titolo,controlleraction,tag";
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
@@ -113,11 +114,17 @@ class HelpController extends BaseController
 		
 		if ((int)$valore === 0 || (int)$valore === 1)
 		{
-			$this->m["HelpModel"]->setValues(array(
-				"mostra"	=>	(int)$valore,
-			));
-			
-			$this->m["HelpModel"]->update(null, (int)$id);
+			if (!$valore)
+			{
+				$this->m["HelpuserModel"]->setValues(array(
+					"id_help"	=>	(int)$id,
+					"id_user"	=>	User::$id,
+				));
+				
+				$this->m["HelpuserModel"]->insert();
+			}
+			else
+				$this->m["HelpuserModel"]->del(null, "id_help = ".(int)$id." AND id_user = ".(int)User::$id);
 		}
 	}
 }

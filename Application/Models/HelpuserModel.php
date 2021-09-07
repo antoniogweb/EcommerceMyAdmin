@@ -22,49 +22,19 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class HelpModel extends GenericModel
+class HelpuserModel extends GenericModel
 {
 	public function __construct() {
-		$this->_tables = 'help';
-		$this->_idFields = 'id_help';
-		
-		$this->_idOrder = 'id_order';
+		$this->_tables = 'help_user';
+		$this->_idFields = 'id_help_user';
 		
 		parent::__construct();
 	}
 	
 	public function relations() {
         return array(
-			'elementi' => array("HAS_MANY", 'HelpitemModel', 'id_help', null, "CASCADE"),
-			'utenti' => array("HAS_MANY", 'HelpuserModel', 'id_help', null, "CASCADE"),
+			'help' => array("BELONGS_TO", 'HelpModel', 'id_help',null,"CASCADE"),
         );
     }
 	
-	public function daVedere($soloMaiVisti = true)
-    {
-		if (v("attiva_help_wizard"))
-		{
-			$in = array(sanitizeAll($this->controller."/".$this->action));
-			
-			if (count($this->_queryString) > 0)
-				$in[] = sanitizeAll($this->controller."/".$this->action."/".$this->_queryString[0]);
-			
-			$this->clear()->select("*")->where(array(
-				"in"	=>	array(
-					"controlleraction"	=>	$in,
-				),
-			))->inner(array("elementi"))->orderBy("help_item.id_order");
-			
-			if ($soloMaiVisti)
-				$this->left(array("utenti"))->sWhere("(help_user.id_user IS NULL OR help_user.id_user != ".User::$id." )");
-			
-			$res = $this->send();
-			
-// 			echo $this->getQuery();die();
-			
-			return $res;
-		}
-		
-		return null;
-    }
 }
