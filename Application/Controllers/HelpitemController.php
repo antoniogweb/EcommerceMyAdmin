@@ -36,7 +36,7 @@ class HelpitemController extends BaseController
 		
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("titolo,mostra_titolo,selettore,posizione,variabile,descrizione");
+		$this->m[$this->modelName]->setValuesFromPost("titolo,mostra_titolo,selettore,posizione,variabile,anche_vista_parziale,descrizione");
 		
 		if ($this->viewArgs["id_help"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_help", $this->viewArgs["id_help"]);

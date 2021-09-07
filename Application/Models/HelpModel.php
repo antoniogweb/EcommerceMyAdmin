@@ -55,6 +55,11 @@ class HelpModel extends GenericModel
 				),
 			))->inner(array("elementi"))->orderBy("help_item.id_order");
 			
+			if (partial())
+				$this->aWhere(array(
+					"help_item.anche_vista_parziale"	=>	"Y",
+				));
+			
 			if ($soloMaiVisti)
 				$this->left(array("utenti"))->sWhere("(help_user.id_user IS NULL OR help_user.id_user != ".User::$id." )");
 			
