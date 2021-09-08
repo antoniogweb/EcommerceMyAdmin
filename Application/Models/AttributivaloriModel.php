@@ -76,7 +76,16 @@ class AttributivaloriModel extends GenericModel {
 	{
 		$this->formStruct = array
 		(
-			'entries' 	=> 	array(),
+			'entries' 	=> 	array(
+				'titolo'		=>	array(
+					'labelString'=>	'Valore variante',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Rappresenta il valore della variante. Ex: rosso, XL, cuore")."</div>",
+					),
+				),
+			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);

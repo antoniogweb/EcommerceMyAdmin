@@ -30,8 +30,9 @@ class ContenutiController extends BaseController
 	
 	public $argKeys = array('id_page:sanitizeAll'=>'tutti', 'id_c:sanitizeAll'=>'tutti', 'tipo:sanitizeAll'=>'tutti', 'id_tipo:sanitizeAll'=>'tutti');
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->model("ReggroupscontenutiModel");
 		$this->model("TipicontenutoModel");

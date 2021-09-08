@@ -34,11 +34,11 @@ class CaratteristicheController extends BaseController {
 		'id_tip_car:sanitizeAll'=>'tutti',
 	);
 	
-	function __construct($model, $controller, $queryString) {
-		
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
 		$this->orderBy = v("attiva_filtri_caratteristiche") ? "id_order" : "titolo";
 		
-		parent::__construct($model, $controller, $queryString);
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->session('admin');
 		$this->model();
