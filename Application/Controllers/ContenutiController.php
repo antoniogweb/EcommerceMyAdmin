@@ -96,8 +96,8 @@ class ContenutiController extends BaseController
 			$this->m[$this->modelName]->setValue("id_tipo", $this->viewArgs["id_tipo"]);
 		}
 		
-		if ($recordTipo)
-			$this->tabella = $recordTipo["titolo"];
+// 		if ($recordTipo)
+// 			$this->tabella = $recordTipo["titolo"];
 		
 		parent::form($queryType, $id);
 		
