@@ -61,7 +61,7 @@ class HelpModel extends GenericModel
 				));
 			
 			if ($soloMaiVisti)
-				$this->left(array("utenti"))->sWhere("(help_user.id_user IS NULL OR help_user.id_user != ".User::$id." )");
+				$this->left("help_user")->on("help.id_help = help_user.id_help and help_user.id_user = ".User::$id)->sWhere("help_user.id_user is null");
 			
 			$res = $this->send();
 			
