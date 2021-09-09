@@ -43,8 +43,8 @@ class RegioniModel extends GenericModel {
 	
 	public function relations() {
 		return array(
-			'nazione' => array("BELONGS_TO", 'NazioniModel', 'id_nazione',null,"CASCADE"),
 			'pagine' => array("HAS_MANY", 'PagesregioniModel', 'id_regione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'nazione' => array("BELONGS_TO", 'NazioniModel', 'id_nazione',null,"CASCADE"),
         );
     }
     
@@ -113,7 +113,7 @@ class RegioniModel extends GenericModel {
 		if ($res)
 		{
 			// Aggiungo direttamente dal prodotto
-			if ($_GET["id_page"] && isset($this->values["id_nazione"]))
+			if ($_GET["id_page"] && $_GET["id_page"] != "tutti" && is_numeric($_GET["id_page"]) && isset($this->values["id_nazione"]))
 				$this->aggiungiaprodotto($this->lId);
 		}
 		
