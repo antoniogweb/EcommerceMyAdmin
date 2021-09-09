@@ -2184,4 +2184,19 @@ class PagesModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function getLocalizzazione($idPage)
+    {
+		$pr = new PagesregioniModel();
+		
+		$regioni = $pr->clear()->select("distinct pages_regioni.id_regione,regioni.*")->inner(array("regione"))->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->send();
+		
+		$nazioni = $pr->clear()->select("distinct pages_regioni.id_nazione,nazioni.*")->inner(array("nazione"))->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->send();
+		
+		return array($nazioni, $regioni);
+    }
 }

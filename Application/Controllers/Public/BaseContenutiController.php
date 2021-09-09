@@ -1328,6 +1328,11 @@ class BaseContenutiController extends BaseController
 			))->orderBy("feedback.id_order")->send();
 		}
 		
+		if (v("attiva_localizzazione_prodotto"))
+			list($data["nazioni_prodotto"], $data["regioni_prodotto"]) = $this->m["PagesModel"]->getLocalizzazione($clean['id']);
+		
+// 		print_r
+		
 		$this->append($data);
 		
 		$template = strcmp($data['pages'][0]["pages"]["template"],"") === 0 ? null : $data['pages'][0]["pages"]["template"];
