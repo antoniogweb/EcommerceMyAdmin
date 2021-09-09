@@ -193,7 +193,7 @@ class CaratteristichevaloriModel extends GenericModel {
 				$this->controllaLingua($this->lId);
 				
 				// Aggiungo direttamente dal prodotto
-				if ($_GET["id_page"] && isset($this->values["id_car"]))
+				if ($_GET["id_page"] && is_numeric($_GET["id_page"]) && isset($this->values["id_car"]))
 					$this->aggiungiaprodotto($this->lId);
 			}
 		}
