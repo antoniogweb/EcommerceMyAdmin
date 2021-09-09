@@ -81,6 +81,8 @@ class BaseController extends Controller
 	
 	public $menuLinksInsert = "back,save";
 	
+	public $mainMenuAssociati = "back,copia";
+	
 	public $insertSubmitText = "Continua";
 	
 	public $updateRedirect = false;
