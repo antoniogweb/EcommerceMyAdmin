@@ -10,7 +10,7 @@
 		<strong><?php echo field($p, "title");?></strong>
 		<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
 		<?php if ($p["cart"]["codice"]) { ?>
-			<br />Codice: <?php echo $p["cart"]["codice"];?>
+			<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
 		<?php } ?>
 		<br />
 		<?php echo setPriceReverse($prezzoUnitario);?> €

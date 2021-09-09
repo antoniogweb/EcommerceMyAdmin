@@ -291,7 +291,8 @@ function aggiornaDatiVariante(obj)
 			
 			$(".giacenza").css("display", "block");
 			
-			$(".valore_giacenza").text(t_giacenza);
+			if ($(".valore_giacenza").length > 0)
+				$(".valore_giacenza").text(t_giacenza);
 			
 			if (t_prezzo_pieno != "")
 				$(".price_full").text(t_prezzo_pieno);
