@@ -1513,7 +1513,7 @@ class BaseContenutiController extends BaseController
 	{
 		$clean["s"] = $data["s"] = $this->request->get("s","","sanitizeAll");
 		
-		$data["title"] = Parametri::$nomeNegozio . " - Cerca";
+		$data["title"] = Parametri::$nomeNegozio . " - ".gtext("Cerca");
 		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
@@ -1530,7 +1530,7 @@ class BaseContenutiController extends BaseController
 		
 		$data["pages"] = array();
 		
-		if (strcmp($this->viewArgs["s"],"") !== 0 && CategoriesModel::checkSection($this->viewArgs["sec"]))
+		if (strcmp($this->viewArgs["s"],"") !== 0 && ($this->viewArgs["sec"] == "tutti" || CategoriesModel::checkSection($this->viewArgs["sec"])))
 		{
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$clean["idSection"] = $this->m["CategoriesModel"]->getShopCategoryId();
