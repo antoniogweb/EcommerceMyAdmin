@@ -324,7 +324,7 @@ Helper_List::$filtersFormLayout = array(
 	"filters"	=>	array(
 		"titolo"	=>	array(
 			"attributes"	=>	array(
-				"class"	=>	"form-control",
+				"class"	=>	"form-control help_cerca",
 				"placeholder"	=>	"Cerca ..",
 			),
 // 			"wrap"	=>	array(
@@ -535,7 +535,7 @@ Helper_List::$filtersFormLayout = array(
 		"id_car_f"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
-				"class"	=>	"form-control",
+				"class"	=>	"form-control help_filtro_caratteristica",
 			),
 		),
 		"tipo_testo"		=>	array(

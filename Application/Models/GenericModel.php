@@ -1146,6 +1146,6 @@ class GenericModel extends Model_Tree
     
     public function bulkaggiungiaprodotto($record)
     {
-		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto fa fa-plus-circle text text-primary'></i>";
     }
 }
