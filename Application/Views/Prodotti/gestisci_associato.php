@@ -28,7 +28,7 @@
 
 <form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 
-	<?php echo Html_Form::select("id_pers","",$lista,"form-control",null,"yes");?>
+	<?php echo Html_Form::select("id_pers","",$lista,"form-control help_tendina_personalizzazioni",null,"yes");?>
 	
 	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
 	
