@@ -248,6 +248,9 @@ class BaseRegusersController extends BaseController
 									$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
 									$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
 									$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
+									
+									if (ImpostazioniModel::$valori["smtp_secure"])
+										$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];
 								}
 
 								$mail->From       = Parametri::$mailFrom;

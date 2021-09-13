@@ -111,6 +111,22 @@ class ImpostazioniModel extends GenericModel {
 				'smtp_nome'		=>	array(
 					'labelString'=>	'Campo NOME (FROM NAME) nelle mail di sistema',
 				),
+				'smtp_secure'		=>	array(
+					'labelString'=>	'Protocollo sicuro per il servizio esterno SMTP',
+					"type"	=>	"Select",
+					"options"	=>	array(
+						""		=>	"Nessuno",
+						"ssl"	=>	"SSL",
+						"tls"	=>	"STARTTLS",
+					),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Compilare solo se si impostano le porte 465 o 587")."</div>",
+					),
+				),
 				'reply_to_mail'		=>	array(
 					'labelString'=>	'Reply To nelle mail di sistema',
 				),
