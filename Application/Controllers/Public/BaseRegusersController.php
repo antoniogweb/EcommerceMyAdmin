@@ -245,7 +245,7 @@ class BaseRegusersController extends BaseController
 									"emails"	=>	array($e_mail),
 									"oggetto"	=>	"Richiesta di modifica password",
 									"testo"		=>	$output,
-									"tipologia"	=>	"REGISTRAZIONE",
+									"tipologia"	=>	"FORGOT",
 									"id_user"	=>	(int)User::$id,
 									"id_page"	=>	0,
 								));
