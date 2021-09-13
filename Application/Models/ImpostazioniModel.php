@@ -135,7 +135,7 @@ class ImpostazioniModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Se riempito con una singola mail ,tutte le mail di sistema verranno inviate in copia nascosta a quella mail")."</div>",
+						"<div class='form_notice'>".gtext("Se riempito con una singola mail, tutte le mail di sistema verranno inviate in copia nascosta a quella mail")."</div>",
 					),
 				),
 				'usa_smtp'		=>	array(
