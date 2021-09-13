@@ -235,55 +235,22 @@ class BaseRegusersController extends BaseController
 								$forgot_time = time();
 								$updateArray = array($forgot_token, $forgot_time);
 								$this->m["RegusersModel"]->db->update('regusers','forgot_token,forgot_time',$updateArray,'username="'.$clean['username'].'"');
-
-// 								require_once(ROOT."/External/phpmailer/class.phpmailer.php");
-
-								$mail = new PHPMailer(true); //New instance, with exceptions enabled
-
-								if (Parametri::$useSMTP)
-								{
-									$mail->IsSMTP();                         // tell the class to use SMTP
-									$mail->SMTPAuth   = true;                  // enable SMTP authentication
-									$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
-									$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
-									$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
-									$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
-									
-									if (ImpostazioniModel::$valori["smtp_secure"])
-										$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];
-								}
-
-								$mail->From       = Parametri::$mailFrom;
-								$mail->FromName   = Parametri::$mailFromName;
-								$mail->CharSet = 'UTF-8';
-
-								$mail->AddAddress($e_mail);
-								
-								$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-								
-								$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("richiesta di modifica password");
-
-								$mail->IsHTML(true);
-
-								$mail->SMTPOptions = array(
-									'ssl' => array(
-										'verify_peer' => false,
-										'verify_peer_name' => false,
-										'allow_self_signed' => true
-									)
-								);
 								
 								ob_start();
 								include tp()."/Regusers/mail_richiesta_cambio_password.php";
 
 								$output = ob_get_clean();
 								
-								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+								$res = MailordiniModel::inviaMail(array(
+									"emails"	=>	array($e_mail),
+									"oggetto"	=>	"Richiesta di modifica password",
+									"testo"		=>	$output,
+									"tipologia"	=>	"REGISTRAZIONE",
+									"id_user"	=>	(int)User::$id,
+									"id_page"	=>	0,
+								));
 								
-								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
-								$mail->MsgHTML($output);
-								
-								if($mail->Send())
+								if($res)
 								{
 									$_SESSION['result'] = 'send_mail_to_change_password';
 								} else {
