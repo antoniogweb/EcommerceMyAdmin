@@ -663,7 +663,7 @@ class BaseController extends Controller
 					$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.'/update/'.$clean["id"].$this->viewStatus."&insert=ok");
 			}
 			
-			$this->m[$this->modelName]->setFormStruct();
+			$this->m[$this->modelName]->setFormStruct($clean["id"]);
 			
 			$this->m[$this->modelName]->setUploadForms($clean["id"]);
 			

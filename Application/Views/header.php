@@ -72,6 +72,10 @@
 			if (file_exists($path."app_editor.js")) { ?>
 				<script src="<?php echo $this->baseUrlSrc."/Application/Apps/".ucfirst($app);?>/Public/app_editor.js?v=<?php echo rand(1,100000);?>"></script>
 			<?php }
+			
+			if (file_exists($path."style.css")) { ?>
+				 <link href="<?php echo $this->baseUrlSrc."/Application/Apps/".ucfirst($app);?>/Public/style.css?v=<?php echo rand(1,100000);?>" rel="stylesheet">
+			<?php }
 		}
 	} ?>
     
