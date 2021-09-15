@@ -26,7 +26,7 @@
 
 <?php if ($this->action === "personalizzazioni") { ?>
 
-<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 
 	<?php echo Html_Form::select("id_pers","",$lista,"form-control help_tendina_personalizzazioni",null,"yes");?>
 	
@@ -38,7 +38,7 @@
 
 <?php if ($this->action === "tag") { ?>
 
-<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 
 	<?php echo Html_Form::select("id_tag","",$lista,"form-control",null,"yes");?>
 	
