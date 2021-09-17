@@ -81,7 +81,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					
 					<div class="uk-container uk-margin">
 						<div id="payment" class="">
-							<h2><?php echo gtext("Metodo di pagamento");?></h2>
+							<h3><?php echo gtext("Metodo di pagamento");?></h3>
 							<ul class="uk-list payment_methods modalita_pagamento class_pagamento">
 								<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) {
 									if (file_exists(tpf("Elementi/Pagamenti/$codPag.php")))
