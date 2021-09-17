@@ -159,13 +159,13 @@ $(document).ready(function(){
 
 					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
 						
-						<?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control',null,"yes");?>
+						<?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control help_select_attributo',null,"yes");?>
 						<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi">
 						
 					</form>
 					<br />
 					<!-- show the table -->
-					<div class='recordsBox'>
+					<div class='recordsBox help_elenco_varianti_associate'>
 						<?php if ($numeroAttributi > 0) { ?>
 						<?php echo $main;?>
 						<?php } else {  ?>
@@ -180,12 +180,12 @@ $(document).ready(function(){
 			</div>
 			<div class="box">
 				<div class="box-header with-border main">
-					<div class="box_lista_combinazioni">	
+					<div class="box_lista_combinazioni help_elenco_combinazioni">	
 						<div id="form_opzioni">Combinazioni di questo prodotto</div>
 						
 						<a class="link_aggiorna_combinazioni btn btn-warning" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
 						
-						<a class="iframe btn btn-primary" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
+						<a class="iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
 						
 						<div class="lista_combinazioni">
 						<?php if ($numeroCombinazioni > 0) { ?>

@@ -26,9 +26,9 @@
 
 <?php if ($this->action === "personalizzazioni") { ?>
 
-<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 
-	<?php echo Html_Form::select("id_pers","",$lista,"form-control",null,"yes");?>
+	<?php echo Html_Form::select("id_pers","",$lista,"form-control help_tendina_personalizzazioni",null,"yes");?>
 	
 	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
 	
@@ -38,7 +38,7 @@
 
 <?php if ($this->action === "tag") { ?>
 
-<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 
 	<?php echo Html_Form::select("id_tag","",$lista,"form-control",null,"yes");?>
 	
@@ -53,7 +53,7 @@
 <?php if (v("nuova_modalita_caratteristiche")) { ?>
 	<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione caratteristiche</a>
 
-	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
+	<a class="btn btn-success iframe help_aggiungi_caratteristiche" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
 <?php } else { ?>
 	
 	<script type="text/javascript">

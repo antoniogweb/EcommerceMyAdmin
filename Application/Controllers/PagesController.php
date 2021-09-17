@@ -1125,7 +1125,7 @@ class PagesController extends BaseController {
 		
 		$this->scaffold->fields = "attributi.*,pages_attributi.*";
 		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa','moveup,movedown,del');
-		$this->scaffold->setHead('ATTRIBUTO');
+		$this->scaffold->setHead('Variante');
 		
 		$this->scaffold->model->clear()->inner("attributi")->on("attributi.id_a = pages_attributi.id_a")->orderBy("pages_attributi.id_order")->where(array("n!pages_attributi.id_page"=>$clean['id']));
 		
@@ -1550,7 +1550,7 @@ class PagesController extends BaseController {
 		
 		$this->getTabViewFields("documenti");
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"documenti/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$this->mainMenuAssociati,'mainAction'=>"documenti/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("distinct documenti.id_doc,documenti.*,tipi_documento.*")
 			->inner(array("page"))

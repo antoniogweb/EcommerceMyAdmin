@@ -27,8 +27,8 @@ include(ROOT."/Application/Views/header.php");
 				</a>
 				<ul class="treeview-menu">
 					<li class="dropdown-header">Prodotti</li>
-					<li><a href="<?php echo $this->baseUrl."/prodotti/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi prodotto</a></li>
-					<li class="icon_list <?php if ($this->controller === "prodotti") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/prodotti/main/1";?>"><i class="fa fa-list"></i> Lista prodotti</a></li>
+					<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_prodotti")."/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi prodotto</a></li>
+					<li class="icon_list <?php if ($this->controller === "prodotti") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/".v("url_elenco_prodotti")."/main/1";?>"><i class="fa fa-list"></i> Lista prodotti</a></li>
 					
 					<?php if (v("combinazioni_in_prodotti")) { ?>
 					<li class="dropdown-header">Varianti prodotto</li>

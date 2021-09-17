@@ -81,6 +81,8 @@ class BaseController extends Controller
 	
 	public $menuLinksInsert = "back,save";
 	
+	public $mainMenuAssociati = "back,copia";
+	
 	public $insertSubmitText = "Continua";
 	
 	public $updateRedirect = false;
@@ -661,7 +663,7 @@ class BaseController extends Controller
 					$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.'/update/'.$clean["id"].$this->viewStatus."&insert=ok");
 			}
 			
-			$this->m[$this->modelName]->setFormStruct();
+			$this->m[$this->modelName]->setFormStruct($clean["id"]);
 			
 			$this->m[$this->modelName]->setUploadForms($clean["id"]);
 			

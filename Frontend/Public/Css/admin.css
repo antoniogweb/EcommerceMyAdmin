@@ -16,6 +16,11 @@
 	position:relative;
 }
 
+.fascia_contenuto .fascia_contenuto .titolo_fascia
+{
+	display:none !important;
+}
+
 .fascia_contenuto .titolo_fascia
 {
 	display:none;

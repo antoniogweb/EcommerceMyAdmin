@@ -363,7 +363,9 @@ class GenericModel extends Model_Tree
 							$fileName = $this->files->getUniqueName($fileName);
 						}
 						
-						self::creaCartellaImages($path);
+						$htaccess = (isset($params["disallow"]) && $params["disallow"]) ? true : false;
+						
+						self::creaCartellaImages($path, $htaccess);
 						
 						if ($this->files->uploadFile($fileName))
 						{
@@ -441,8 +443,8 @@ class GenericModel extends Model_Tree
 					
 					if (isset($params["clean_field"]))
 					{
-						$src = Url::getRoot().$this->controller."/thumb/".$field."/".$clean["id"];
-						$href = Url::getRoot().$this->controller."/documento/".$field."/".$clean["id"];
+						$src = Url::getRoot().$this->applicationUrl.$this->controller."/thumb/".$field."/".$clean["id"];
+						$href = Url::getRoot().$this->applicationUrl.$this->controller."/documento/".$field."/".$clean["id"];
 					}
 					
 					if (!isset($params["type"]) or strcmp(strtolower($params["type"]),"image") === 0)
@@ -1146,6 +1148,6 @@ class GenericModel extends Model_Tree
     
     public function bulkaggiungiaprodotto($record)
     {
-		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto fa fa-plus-circle text text-primary'></i>";
     }
 }

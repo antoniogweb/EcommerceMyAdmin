@@ -29,8 +29,9 @@ class CategorieController extends CategoriesController {
 	
 	public $queryFields = "title,alias,sottotitolo,id_p,mostra_in_home,description,immagine";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if (v("mostra_seconda_immagine_categoria_prodotti"))
 			$this->queryFields .= ",immagine_2";

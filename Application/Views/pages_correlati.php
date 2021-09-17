@@ -48,7 +48,7 @@ $(document).ready(function(){
 						<?php if ($numeroCorrelati > 0) { ?>
 						<?php echo $main;?>
 						<?php } else {  ?>
-						<span class="empty_list">Non è stato correlato alcun prodotto</span>
+						<span class="empty_list">Non è stato associato alcun prodotto</span>
 						<?php } ?>
 					</div>
 

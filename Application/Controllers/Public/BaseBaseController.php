@@ -69,6 +69,9 @@ class BaseBaseController extends Controller
 		if (empty(VariabiliModel::$valori))
 			VariabiliModel::ottieniVariabili();
 		
+		if (!class_exists("Tema"))
+			require(LIBRARY."/Application/Include/tema.php");
+		
 		// Imposta il tema
 		Tema::set();
 		

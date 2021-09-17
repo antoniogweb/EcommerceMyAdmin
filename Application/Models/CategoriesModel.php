@@ -152,12 +152,15 @@ class CategoriesModel extends HierarchicalModel {
 			'entries' 	=> 	array(
 				'title'		=>	array(
 					'labelString'=>	'Titolo',
+					'entryClass'	=>	'form_input_text help_titolo',
 				),
 				'description'	=>	array(
 					'labelString'=>	'Descrizione',
+					'entryClass'	=>	'form_textarea help_descrizione',
 				),
 				'alias'		=>	array(
 					'labelString'=>	'Alias (per URL)',
+					'entryClass'	=>	'form_input_text help_alias',
 				),
 				'attivo'	=>	array(
 					'type'		=>	'Select',
@@ -169,6 +172,7 @@ class CategoriesModel extends HierarchicalModel {
 					'labelString'=>	'Genitore',
 					'options'	=>	$this->buildSelect(),
 					'reverse' => 'yes',
+					'entryClass'	=>	'form_input_text help_padre',
 				),
 				'id_c'	=>	array(
 					'type'		=>	'Hidden'

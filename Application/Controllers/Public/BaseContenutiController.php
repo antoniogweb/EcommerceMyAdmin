@@ -806,12 +806,13 @@ class BaseContenutiController extends BaseController
 		// Visibilità pagina
 		if (v("abilita_visibilita_pagine"))
 		{
-			$this->m["PagesModel"]->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
-			$this->m["PagesModel"]->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
-			
-			$this->m["PagesModel"]->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
-			
-			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
+			$this->m["PagesModel"]->addWhereLingua();
+// 			$this->m["PagesModel"]->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
+// 			$this->m["PagesModel"]->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
+// 			
+// 			$this->m["PagesModel"]->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
+// 			
+// 			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		}
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
@@ -1512,7 +1513,7 @@ class BaseContenutiController extends BaseController
 	{
 		$clean["s"] = $data["s"] = $this->request->get("s","","sanitizeAll");
 		
-		$data["title"] = Parametri::$nomeNegozio . " - Cerca";
+		$data["title"] = Parametri::$nomeNegozio . " - ".gtext("Cerca");
 		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
@@ -1529,7 +1530,7 @@ class BaseContenutiController extends BaseController
 		
 		$data["pages"] = array();
 		
-		if (strcmp($this->viewArgs["s"],"") !== 0 && CategoriesModel::checkSection($this->viewArgs["sec"]))
+		if (strcmp($this->viewArgs["s"],"") !== 0 && ($this->viewArgs["sec"] == "tutti" || CategoriesModel::checkSection($this->viewArgs["sec"])))
 		{
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$clean["idSection"] = $this->m["CategoriesModel"]->getShopCategoryId();
