@@ -44,7 +44,4 @@
 		<?php include(tpf("/Cart/ajax_cart.php"));?>
 	</aside>
 </div>
-
-<?php include(tpf("/Elementi/cookies.php"));?>
-<?php include(tpf("/Elementi/admin.php"));?>
 <?php } ?>
