@@ -18,7 +18,7 @@
 
 .fascia_contenuto .fascia_contenuto .titolo_fascia
 {
-	display:none;
+	display:none !important;
 }
 
 .fascia_contenuto .titolo_fascia
