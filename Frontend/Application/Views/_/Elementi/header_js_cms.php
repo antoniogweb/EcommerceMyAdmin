@@ -16,5 +16,5 @@
 	var attiva_spedizione = <?php echo v("attiva_spedizione") ? "true" : "false";?>;
 </script>
 
-<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit.min.js"></script>
-
+<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit.min.js" defer></script>
+<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js" defer></script>
