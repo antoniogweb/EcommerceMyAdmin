@@ -547,4 +547,16 @@ $(document).ready(function(){
 		location.href = url;
 		
 	});
+	
+	$(".showcoupon").click(function(e){
+		e.preventDefault();
+		
+		$("#coupon").slideToggle();
+	});
+	
+	$(".showlogin").click(function(e){
+		e.preventDefault();
+		
+		$("#login").slideToggle();
+	});
 });
