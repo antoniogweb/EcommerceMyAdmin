@@ -87,6 +87,9 @@ Helper_Pages::$staticCurrentClass = "uk-text-secondary";
 Helper_Pages::$staticPreviousString = '<span uk-pagination-previous></span>';
 Helper_Pages::$staticNextString = '<span uk-pagination-next></span>';
 
+if (v("permessi_cartella_cache_immagini"))
+	Image_Gd_Thumbnail::$cacheFolderFilesPermission = octdec(v("permessi_cartella_cache_immagini"));
+
 if (v("attiva_ip_location"))
 {
 	if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
