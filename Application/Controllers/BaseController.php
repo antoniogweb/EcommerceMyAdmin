@@ -161,6 +161,18 @@ class BaseController extends Controller
 	
 	public $tabViewFields = array();
 	
+	public $baseArgsKeys = array(
+		'page:forceInt'=>1,
+		'attivo:sanitizeAll'=>'tutti',
+		'partial:sanitizeAll' => "tutti",
+		'nobuttons:sanitizeAll' => "tutti",
+		'report:sanitizeAll' => "tutti",
+		'skip:sanitizeAll' => "tutti",
+		'cl_on_sv:sanitizeAll' => "tutti",
+	);
+	
+	public $modelAssociati = array(); // Da caricare
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -254,22 +266,20 @@ class BaseController extends Controller
 			"file-exists" => "<div class='alert'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
 		);
 		
-		$baseArgsKeys = array(
-			'page:forceInt'=>1,
-			'attivo:sanitizeAll'=>'tutti',
-			'partial:sanitizeAll' => "tutti",
-			'nobuttons:sanitizeAll' => "tutti",
-			'report:sanitizeAll' => "tutti",
-			'skip:sanitizeAll' => "tutti",
-			'cl_on_sv:sanitizeAll' => "tutti",
-		);
+// 		$baseArgsKeys = array(
+// 			'page:forceInt'=>1,
+// 			'attivo:sanitizeAll'=>'tutti',
+// 			'partial:sanitizeAll' => "tutti",
+// 			'nobuttons:sanitizeAll' => "tutti",
+// 			'report:sanitizeAll' => "tutti",
+// 			'skip:sanitizeAll' => "tutti",
+// 			'cl_on_sv:sanitizeAll' => "tutti",
+// 		);
 		
 		if (isset($this->argKeys))
-		{
-			$baseArgsKeys = array_merge($baseArgsKeys, $this->argKeys);
-		}
+			$this->baseArgsKeys = array_merge($this->baseArgsKeys, $this->argKeys);
 		
-		$this->setArgKeys($baseArgsKeys);
+		$this->setArgKeys($this->baseArgsKeys);
 		
 		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin",null,$this->baseUrlSrc);
 		
@@ -287,6 +297,12 @@ class BaseController extends Controller
 		
 		$this->model('UsersModel');
 		$this->model("FattureModel");
+		
+		// Carico i model associati
+		foreach ($this->modelAssociati as $modelAssociato => $modelParams)
+		{
+			$this->model($modelAssociato);
+		}
 		
 		$this->_topMenuClasses[$controller] = array("active","in");
 		$data['tm'] = $this->_topMenuClasses;
