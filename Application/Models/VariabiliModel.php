@@ -315,7 +315,7 @@ class VariabiliModel extends GenericModel {
 				'type'			=>	'Textarea',
 			),
 			'piattaforma_in_sviluppo'	=>	array(
-				'labelString'	=>	'Ecommerce in sviluppo /blocca indicizzazione',
+				'labelString'	=>	'Ecommerce in sviluppo / blocca indicizzazione',
 				'type'			=>	'Select',
 				'options'	=>	$this->opzioniSiNo(),
 				"reverse"	=>	"yes",
