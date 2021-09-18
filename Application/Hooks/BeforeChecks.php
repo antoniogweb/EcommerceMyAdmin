@@ -582,3 +582,13 @@ foreach (Helper_List::$filtersFormLayout["filters"] as $key => $filter)
 }
 
 Helper_List::$filtersFormLayout["filters"] = $tempFilters;
+
+if (defined("APPS")) {
+	foreach (APPS as $app)
+	{
+		$path = ROOT."/Application/Apps/".ucfirst($app)."/Hooks/BeforeChecks.php";
+		
+		if (file_exists($path))
+			include($path);
+	}
+}

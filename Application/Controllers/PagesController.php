@@ -51,6 +51,33 @@ class PagesController extends BaseController {
 	
 	public $section = null;
 	
+	public $baseArgsKeys = array(
+		'page:forceInt'=>1,
+		'title:sanitizeAll'=>'tutti',
+		'attivo:sanitizeAll'=>'tutti',
+		'in_evidenza:sanitizeAll'=>'tutti',
+		'in_promozione:sanitizeAll'=>'tutti',
+		'id_c:sanitizeAll'=>'tutti',
+		'page_corr:forceNat'=>1,
+		'token:sanitizeAll'=>'token',
+		'partial:sanitizeAll' => "tutti",
+		'titolo_contenuto:sanitizeAll' => "tutti",
+		'lingua:sanitizeAll' => "tutti",
+		'tipocontenuto:sanitizeAll' => "tutti",
+		'titolo_documento:sanitizeAll' => "tutti",
+		'lingua_doc:sanitizeAll' => "tutti",
+		'id_tipo_doc:sanitizeAll' => "tutti",
+		'-id_marchio:sanitizeAll' => "tutti",
+		'id_tag:sanitizeAll' => "tutti",
+		'id_tipo_car:sanitizeAll' => "tutti",
+		'id_pcorr:sanitizeAll' => "tutti",
+		'pcorr_sec:sanitizeAll' => "tutti",
+		'cl_on_sv:sanitizeAll' => "tutti",
+		'nobuttons:sanitizeAll' => "tutti",
+		'lingua_page:sanitizeAll' => "tutti",
+		'lingua_page_escl:sanitizeAll' => "tutti",
+	);
+	
 	protected $_posizioni = array(
 		"main"		=>	null,
 		"immagini"	=>	null,
@@ -74,33 +101,6 @@ class PagesController extends BaseController {
 		
 		$data['posizioni'] = $this->_posizioni;
 		$data['sezione'] = $clean["section"] = $this->section = sanitizeAll($this->m[$this->modelName]->hModel->section); 
-		
-		$this->setArgKeys(array(
-			'page:forceInt'=>1,
-			'title:sanitizeAll'=>'tutti',
-			'attivo:sanitizeAll'=>'tutti',
-			'in_evidenza:sanitizeAll'=>'tutti',
-			'in_promozione:sanitizeAll'=>'tutti',
-			'id_c:sanitizeAll'=>'tutti',
-			'page_corr:forceNat'=>1,
-			'token:sanitizeAll'=>'token',
-			'partial:sanitizeAll' => "tutti",
-			'titolo_contenuto:sanitizeAll' => "tutti",
-			'lingua:sanitizeAll' => "tutti",
-			'tipocontenuto:sanitizeAll' => "tutti",
-			'titolo_documento:sanitizeAll' => "tutti",
-			'lingua_doc:sanitizeAll' => "tutti",
-			'id_tipo_doc:sanitizeAll' => "tutti",
-			'-id_marchio:sanitizeAll' => "tutti",
-			'id_tag:sanitizeAll' => "tutti",
-			'id_tipo_car:sanitizeAll' => "tutti",
-			'id_pcorr:sanitizeAll' => "tutti",
-			'pcorr_sec:sanitizeAll' => "tutti",
-			'cl_on_sv:sanitizeAll' => "tutti",
-			'nobuttons:sanitizeAll' => "tutti",
-			'lingua_page:sanitizeAll' => "tutti",
-			'lingua_page_escl:sanitizeAll' => "tutti",
-		));
 
 		$this->model("CategoriesModel");
 		$this->model('ImmaginiModel');
@@ -835,6 +835,13 @@ class PagesController extends BaseController {
 						$this->m["CombinazioniModel"]->duplica($clean['id'], $lId);
 						$this->m["PagesregioniModel"]->duplica($clean['id'], $lId);
 						$this->m["PageslingueModel"]->duplica($clean['id'], $lId);
+						
+						// Duplico i model associati
+						foreach ($this->modelAssociati as $modelAssociato => $modelParams)
+						{
+							if (isset($modelParams["duplica"]) && $modelParams["duplica"])
+								$this->m[$modelAssociato]->duplica($clean['id'], $lId);
+						}
 						
 						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 					}
