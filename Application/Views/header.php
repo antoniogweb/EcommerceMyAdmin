@@ -182,7 +182,7 @@
 						</li>
 						<?php if (v("attiva_menu_ecommerce")) { ?>
 						<li class="<?php if (strcmp($sezionePannello,"ecommerce") === 0) { ?>active<?php } ?> help_ecommerce">
-							<a href="<?php echo $this->baseUrl.'/prodotti/main';?>"><span class="glyphicon glyphicon-shopping-cart"></span>
+							<a href="<?php echo $this->baseUrl.'/'.v("url_elenco_prodotti").'/main';?>"><span class="glyphicon glyphicon-shopping-cart"></span>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("E-commerce")?>
 							<?php } ?>
