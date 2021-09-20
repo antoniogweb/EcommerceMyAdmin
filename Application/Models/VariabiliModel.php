@@ -262,6 +262,7 @@ class VariabiliModel extends GenericModel {
 		"permessi_cartella_cache_immagini"	=>	777,
 		"url_elenco_clienti"		=>	"regusers",
 		"permetti_acquisto_anonimo"	=>	1,
+		"hook_ordine_confermato"	=>	"",
 	);
 	
 	public function __construct() {
