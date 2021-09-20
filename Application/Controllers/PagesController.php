@@ -2148,7 +2148,7 @@ class PagesController extends BaseController {
 									
 									if ($clean['is_main'] === 0)
 									{
-										$this->m['ImmaginiModel']->values = array('immagine'=>$clean['fileName'],'id_page'=>$clean['id_page']);
+										$this->m['ImmaginiModel']->values = array('immagine'=>sanitizeDb($clean['fileName']),'id_page'=>$clean['id_page']);
 										$this->m['ImmaginiModel']->insert();
 									}
 									
