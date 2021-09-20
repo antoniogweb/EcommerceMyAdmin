@@ -31,6 +31,8 @@ require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
 
 class OrdiniModel extends FormModel {
 	
+	public $campoTitolo = "id_o";
+	
 	public static $pagamentiSettati = false;
 	
 	public static $stati = array(
@@ -286,7 +288,18 @@ class OrdiniModel extends FormModel {
 		$checkFiscale = v("abilita_codice_fiscale");
 		
 		if ($this->controllaCF($checkFiscale))
-			return parent::update($clean["id"]);
+		{
+			$res = parent::update($clean["id"]);
+			
+			if ($res)
+			{
+				// Hook ad aggiornamento dell'ordine
+				if (v("hook_update_ordine"))
+					callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
+				
+				return true;
+			}
+		}
 		
 		return false;
 	}
