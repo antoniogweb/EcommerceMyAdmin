@@ -834,6 +834,9 @@ class BaseOrdiniController extends BaseController
 		
 		if (!$this->islogged)
 		{
+			if (!v("permetti_acquisto_anonimo"))
+				$_POST["registrato"] = "Y";
+			
 			$_POST["aggiungi_nuovo_indirizzo"] = "N";
 			$_POST["id_spedizione"] = 0;
 			

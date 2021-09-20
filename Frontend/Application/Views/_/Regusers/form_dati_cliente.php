@@ -168,9 +168,18 @@ else
 		</div>
 	</div>
 	<?php } ?>
+	
+	<?php if (!$islogged && !v("permetti_acquisto_anonimo")) { ?>
+	<div class="first_of_grid uk-margin">
+		<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
+		<div class="uk-form-controls">
+			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='off' placeholder='".gtext("Password", false)."'");?>
+		</div>
+	</div>
+	<?php } ?>
 </div>
 
-	<?php if (!$islogged) { ?>
+	<?php if (!$islogged && v("permetti_acquisto_anonimo")) { ?>
 		<h3><?php echo gtext("Creazione account");?></h3>
 		
 		<div class="utente_registrato class_registrato">
