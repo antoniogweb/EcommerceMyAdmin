@@ -70,7 +70,12 @@ class RegusersController extends BaseController {
 		
 		$this->s['admin']->check();
 	}
-
+	
+	protected function pmain()
+	{
+		parent::main();
+	}
+	
 	public function main() { //view all the users
 
 		$this->shift();

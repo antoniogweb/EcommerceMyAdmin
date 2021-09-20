@@ -76,8 +76,8 @@ include(ROOT."/Application/Views/header.php");
 					<span>Clienti</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/regusers/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi cliente</a></li>
-					<li <?php if ($this->controller === "regusers" && $this->action == "main") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/regusers/main/1";?>"><i class="fa fa-list"></i> Lista clienti</a></li>
+					<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi cliente</a></li>
+					<li <?php if ($this->controller === "regusers" && $this->action == "main") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/main/1";?>"><i class="fa fa-list"></i> Lista clienti</a></li>
 					<?php if (v("attiva_ruoli")) { ?>
 					<li class="dropdown-header">Ruoli</li>
 					<li <?php if ($this->controller === "ruoli") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> Lista ruoli</a></li>

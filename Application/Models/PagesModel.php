@@ -407,7 +407,7 @@ class PagesModel extends GenericModel {
 			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
 	}
 	
-	public function selectProdotti($id)
+	public function selectProdotti($id, $withEmpty = true)
 	{
 		$clean['id'] = (int)$id;
 		
@@ -423,7 +423,10 @@ class PagesModel extends GenericModel {
 			"in" => array("-id_c" => $children),
 		))->orderBy("id_order")->toList("id_page", "title")->send();
 		
-		return array(0=>"--") + $res;
+		if ($withEmpty)
+			return array(0=>"--") + $res;
+		
+		return $res;
 	}
 	
 	public function selectTipiPagina()

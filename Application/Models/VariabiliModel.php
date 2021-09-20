@@ -260,6 +260,7 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_prodotti"		=>	"prodotti",
 		"attiva_cache_immagini"		=>	0,
 		"permessi_cartella_cache_immagini"	=>	777,
+		"url_elenco_clienti"		=>	"regusers",
 	);
 	
 	public function __construct() {
