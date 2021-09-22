@@ -32,17 +32,6 @@ class ImportController extends BaseController {
 
 		ini_set("memory_limit","512M");
 		
-// 		$this->model("LingueModel");
-// 		
-// 		BaseController::$traduzioni = $this->m["LingueModel"]->clear()->where(array(
-// 			"principale"	=>	0,
-// 			"attiva"		=>	1,
-// 		))->orderBy("id_order")->toList("codice")->send();
-// 		
-// 		$this->model('ImpostazioniModel');
-// 		
-// 		$this->m["ImpostazioniModel"]->getImpostazioni();
-		
 		$this->session('admin');
 		$this->s['admin']->check();
 		
@@ -70,6 +59,14 @@ class ImportController extends BaseController {
 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
 		{
 			Import::utenti();
+		}
+	}
+	
+	public function contenuti($c = "")
+	{
+		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
+		{
+			Import::contenuti();
 		}
 	}
 }

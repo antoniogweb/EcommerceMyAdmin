@@ -20,4 +20,10 @@ class Import
 	{
 		ImportContenuti::news();
 	}
+	
+	public static function contenuti()
+	{
+		if (method_exists("ImportContenuti", "contenuti"))
+			ImportContenuti::contenuti();
+	}
 }
