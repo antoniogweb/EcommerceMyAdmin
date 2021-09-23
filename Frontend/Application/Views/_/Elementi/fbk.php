@@ -71,6 +71,26 @@
 				fbq('track', 'ViewContent', <?php echo json_encode($arrayProprieta);?>);
 			<?php } else if (!empty($arrayProprieta)){ ?>
 				fbq('track', 'ViewContent',  <?php echo json_encode($arrayProprieta);?>);
+			<?php } else if ($this->controller == "ordini" && $this->action == "index") {
+			
+				$tempRigheGTM = array();
+				
+				foreach ($pages as $p)
+				{
+					$tempRigheGTM[] = array(
+						"id"	=>	$p["cart"]["id_page"],
+						"quantity"	=>	$p["cart"]["quantity"],
+					);
+				}
+				
+				$arrayProprieta = array(
+					"content_type"	=>	"product",
+					"currency"		=>	"EUR",
+					"contents"		=>	$tempRigheGTM,
+					"num_items"		=>	count($pages),
+				);
+			?>
+				fbq('track', 'InitiateCheckout', <?php echo json_encode($arrayProprieta);?>);
 			<?php } else { ?>
 				
 			<?php } ?>
