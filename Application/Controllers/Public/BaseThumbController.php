@@ -68,12 +68,17 @@ class BaseThumbController extends Controller {
 		return array($fileName, null, $this->percorsoCartellaCacheFisica(), $usaCacheDinamica);
 	}
 	
-	protected function percorsoCartellaCacheFisica()
+	protected function percorsoCartellaCacheFisica($id = null)
 	{
 		if (!v("attiva_cache_immagini"))
 			return null;
 		
-		return "thumb/".$this->action;
+		$path = "thumb/".$this->action;
+		
+		if ($id && is_numeric($id))
+			$path .= "/".(int)basename($id);
+		
+		return $path;
 	}
 	
 	public function contenuto($fileName)
@@ -1039,7 +1044,7 @@ class BaseThumbController extends Controller {
 				if (strcmp($fileName,'') !== 0)
 				{
 					$thumb = new Image_Gd_Thumbnail(FRONT.'/images/widgets',$params);
-					$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
+					$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica((int)$id));
 				}
 			}
 		}

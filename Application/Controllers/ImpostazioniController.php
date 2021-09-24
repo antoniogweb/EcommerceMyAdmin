@@ -158,4 +158,27 @@ class ImpostazioniController extends BaseController
 			Cache::deleteExpired();
 		}
 	}
+	
+	public function svuotacacheimmagini()
+	{
+		$this->clean();
+		
+		if (v("attiva_cache_immagini"))
+		{
+			$dir = Domain::$parentRoot."/thumb";
+			
+			$files = new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+				RecursiveIteratorIterator::CHILD_FIRST
+			);
+
+			foreach ($files as $fileinfo) {
+				$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+				
+				call_user_func($todo, $fileinfo->getRealPath());
+			}
+
+			rmdir($dir);
+		}
+	}
 }
