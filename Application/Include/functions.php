@@ -1004,9 +1004,9 @@ function t($chiave, $tags = null)
 }
 
 //chiama la traduzione di un blocco immagine
-function i($chiave, $tags = null, $attrinuti = null)
+function i($chiave, $tags = null, $attributi = null)
 {
-	return getTesto(array("",$chiave, $attrinuti),$tags, "IMMAGINE");
+	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE");
 }
 
 //chiama la traduzione di un blocco immagine
