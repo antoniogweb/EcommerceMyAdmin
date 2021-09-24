@@ -333,6 +333,8 @@ class MenuModel extends HierarchicalModel {
 					$notActiveClass = strcmp($node["node"]["active_link"],"N") === 0 ? "not_active_link" : null;
 					$target = strcmp($node["node"]["link_to"],"esterno") === 0 ? "target='_blank'" : null;
 					
+					$classeCssPersonalizzata = isset($node["node"]["classe_css_personalizzata"]) ? $node["node"]["classe_css_personalizzata"] : "";
+					
 					if ($node["node"]["link_to"] != "custom")
 					{
 						ob_start();
