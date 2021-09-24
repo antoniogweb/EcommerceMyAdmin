@@ -68,7 +68,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					</div>
 					
 					<div class="uk-container">
-						<h2 style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
+						<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large" style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
 
 						<div class="blocco_checkout">
 							<?php include(tpf("Regusers/form_dati_cliente.php"));?>
@@ -81,7 +81,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					
 					<div class="uk-container uk-margin">
 						<div id="payment" class="">
-							<h3><?php echo gtext("Metodo di pagamento");?></h3>
+							<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Metodo di pagamento");?></h2>
 							<ul class="uk-list payment_methods modalita_pagamento class_pagamento">
 								<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) {
 									if (file_exists(tpf("Elementi/Pagamenti/$codPag.php")))

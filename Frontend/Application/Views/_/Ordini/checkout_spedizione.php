@@ -2,7 +2,7 @@
 <?php if (v("attiva_spedizione")) { ?>
 	<?php if (!$islogged) { ?>
 		
-		<h3><?php echo gtext("Indirizzo di spedizione");?></h3>
+		<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Indirizzo di spedizione");?></h2>
 		
 		<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
 		
@@ -10,7 +10,7 @@
 		
 		<?php if (count($tendinaIndirizzi) > 0) { ?>
 		
-		<h3><?php echo gtext("Indirizzo di spedizione");?></h3>
+		<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Indirizzo di spedizione");?></h2>
 		
 		<div class="blocco_checkout">
 			<div class="blocco_scelta_indirizzo">

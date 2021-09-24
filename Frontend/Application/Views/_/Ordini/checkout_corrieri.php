@@ -3,7 +3,7 @@
 <div class="uk-container uk-margin-medium">
 	<?php if (count($corrieri) > 1) { ?>
 		<div class="box_corrieri">
-		<h3><?php echo gtext("Seleziona il corriere");?></h3>
+		<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Seleziona il corriere");?></h2>
 		
 		<?php foreach ($corrieri as $corriere) { ?>
 		<div class="radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">

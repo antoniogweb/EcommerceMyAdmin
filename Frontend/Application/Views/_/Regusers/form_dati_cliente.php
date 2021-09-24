@@ -180,7 +180,7 @@ else
 </div>
 
 	<?php if (!$islogged && v("permetti_acquisto_anonimo")) { ?>
-		<h3><?php echo gtext("Creazione account");?></h3>
+		<h2 class="uk-text-emphasis uk-text-large"><?php echo gtext("Creazione account");?></h2>
 		
 		<div class="utente_registrato class_registrato">
 			<div><?php echo Html_Form::radio("registrato",$values["registrato"],"N","radio_registrato","none");?> <?php echo gtext("Continua come utente ospite", false);?></div>
@@ -212,7 +212,7 @@ else
 <div class="clear"></div>
 
 <div class="blocco_fatturazione_elettronica uk-margin">
-	<h3 style="margin:20px 0;"><?php echo gtext("Dati per la fatturazione elettronica",false)?></h3>
+	<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large" style="margin:20px 0;"><?php echo gtext("Dati per la fatturazione elettronica",false)?></h2>
 	
 	<?php echo testo("testo_fatt_elettronica")?>
 	
