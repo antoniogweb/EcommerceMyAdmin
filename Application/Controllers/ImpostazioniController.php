@@ -157,11 +157,6 @@ class ImpostazioniController extends BaseController
 			Cache::$cleanCacheEveryXMinutes = 0;
 			Cache::deleteExpired();
 		}
-	}
-	
-	public function svuotacacheimmagini()
-	{
-		$this->clean();
 		
 		if (v("attiva_cache_immagini"))
 		{
