@@ -138,7 +138,7 @@ include(ROOT."/Application/Views/header.php");
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="<?php echo $this->baseUrl."/promozioni/form/insert/0/1/tutti/$token";?>"><i class="fa fa-plus-circle"></i> Aggiungi promozione</a></li>
-					<li><a href="<?php echo $this->baseUrl."/promozioni/main/1/tutti/$token";?>"><i class="fa fa-list"></i> Lista promozioni</a></li>
+					<li><a href="<?php echo $this->baseUrl."/promozioni/main/1/tutti/$token";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
 			<?php if (v("attiva_classi_sconto")) { ?>
@@ -148,8 +148,8 @@ include(ROOT."/Application/Views/header.php");
 					<span>Classi sconto</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/classisconto/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi classe</a></li>
-					<li><a href="<?php echo $this->baseUrl."/classisconto/main";?>"><i class="fa fa-list"></i> Lista classi</a></li>
+					<li><a href="<?php echo $this->baseUrl."/classisconto/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/classisconto/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
 			<?php } ?>
@@ -159,28 +159,40 @@ include(ROOT."/Application/Views/header.php");
 					<span>Corrieri</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/corrieri/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi corriere</a></li>
-					<li><a href="<?php echo $this->baseUrl."/corrieri/main";?>"><i class="fa fa-list"></i> Lista corrieri</a></li>
+					<li><a href="<?php echo $this->baseUrl."/corrieri/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/corrieri/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
 			<li class="<?php echo $tm["iva"][0];?> treeview">
 				<a href="#">
 					<i class="fa fa-folder"></i>
-					<span>Aliquote iva</span>
+					<span><?php echo gtext("Aliquote iva")?></span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/iva/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
-					<li><a href="<?php echo $this->baseUrl."/iva/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/iva/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/iva/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
+			<?php if (v("attiva_gestione_pagamenti")) { ?>
+			<li class="<?php echo tm($tm, "pagamenti");?> treeview">
+				<a href="#">
+					<i class="fa fa-credit-card"></i>
+					<span><?php echo gtext("Metodi di pagamento")?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/pagamenti/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/pagamenti/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<li class="<?php echo tm($tm, "nazioni");?> treeview">
 				<a href="#">
 					<i class="fa fa-globe"></i>
 					<span>Nazioni</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/nazioni/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
-					<li><a href="<?php echo $this->baseUrl."/nazioni/main";?>"><i class="fa fa-list"></i> Lista</a></li>
+					<li><a href="<?php echo $this->baseUrl."/nazioni/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>
+					<li><a href="<?php echo $this->baseUrl."/nazioni/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
 			<?php } ?>

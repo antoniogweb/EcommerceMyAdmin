@@ -3,5 +3,6 @@
 	<?php echo Html_Form::radio("pagamento",$values["pagamento"],$codPag,null,"none");?> <span><?php echo gtext($descPag);?></span>
 	
 	<div class="payment_box payment_method_bacs" style="display: block;">
+		
 	</div>
 </li>

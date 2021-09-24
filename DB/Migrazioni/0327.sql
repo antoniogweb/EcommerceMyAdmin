@@ -1,0 +1,1 @@
+UPDATE `pagamenti` SET `descrizione` = 'Hai selezionato il pagamento tramite bonifico bancario e appena completerai l’ordine ti invieremo una mail contenente le nostre coordinate bancarie. Ti preghiamo di riportare il numero dell’ordine come causale. Il tuo ordine verrà processato non appena riceveremo conferma del trasferimento avvenuto.' WHERE codice = 'bonifico';

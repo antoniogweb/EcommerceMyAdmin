@@ -29,6 +29,11 @@ class GenericModel extends Model_Tree
 	public static $apiMethod = "POST";
 	public static $uploadFileGeneric = true;
 	
+	public static $attivoSiNo = array(
+		"1"	=>	"Sì",
+		"0"	=>	"No",
+	);
+	
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
 	public $uploadFields = array();
@@ -737,6 +742,7 @@ class GenericModel extends Model_Tree
 				$id_doc = ($keyField == "id_doc") ? (int)$id : 0;
 				$id_cont = ($keyField == "id_cont") ? (int)$id : 0;
 				$id_tipologia_caratteristica = ($keyField == "id_tipologia_caratteristica") ? (int)$id : 0;
+				$id_pagamento = ($keyField == "id_pagamento") ? (int)$id : 0;
 				
 				$ct->setValues(array(
 					"lingua"		=>	sanitizeDb($lingua),
@@ -765,6 +771,7 @@ class GenericModel extends Model_Tree
 					"id_doc"		=>	$id_doc,
 					"id_cont"		=>	$id_cont,
 					"id_tipologia_caratteristica"	=>	$id_tipologia_caratteristica,
+					"id_pagamento"	=>	$id_pagamento,
 					"sezione"		=>	$sezione,
 				),"sanitizeDb");
 				

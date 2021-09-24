@@ -1,0 +1,1 @@
+UPDATE `pagamenti` SET `descrizione` = 'Paga con Paypal. Se non disponi di un account Paypal, selenzionando questa opzione, potrai pagare in sicurezza anche con la sola carta di credito.' WHERE codice = 'paypal';

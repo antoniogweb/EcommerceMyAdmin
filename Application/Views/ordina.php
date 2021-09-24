@@ -8,7 +8,9 @@ function aggiornaOrdinamento()
 	var id_page = "";
 	var order = "";
 	
-	$("input[data-primary-key]").each(function(){
+	var selettore = $("input[data-primary-key]").length > 0 ? "input[data-primary-key]" : ".data-record-id";
+	
+	$(selettore).each(function(){
 	
 		var id_page = $(this).attr("data-primary-key");
 	

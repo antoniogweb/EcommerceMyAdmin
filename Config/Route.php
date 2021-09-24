@@ -485,6 +485,10 @@ class Route
 		'help,mostranascondi',
 		
 		'helpitem,form',
+		
+		'pagamenti,main',
+		'pagamenti,form',
+		'pagamenti,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

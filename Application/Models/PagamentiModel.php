@@ -23,11 +23,41 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class PagamentiModel extends GenericModel {
-
+	
 	public function __construct() {
 		$this->_tables='pagamenti';
 		$this->_idFields='id_pagamento';
 		
+		$this->_idOrder = 'id_order';
+		
+		$this->traduzione = true;
+		
 		parent::__construct();
+	}
+	
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'attivo'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Attivo",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
+	public function attivo($record)
+	{
+		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+	}
+	
+	public function edit($record)
+	{
+		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
 	}
 }

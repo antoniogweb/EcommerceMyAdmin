@@ -70,13 +70,13 @@ class OrdiniModel extends FormModel {
 		
 		$res = $p->clear()->where(array(
 			"attivo"	=>	1
-		))->orderBy("id_order")->toList("codice", "titolo")->send();
+		))->orderBy("id_order")->send(false);
 		
 		self::$elencoPagamenti = array();
 		
-		foreach ($res as $c => $d)
+		foreach ($res as $pag)
 		{
-			self::$pagamenti[$c] = self::$elencoPagamenti[$c] = gtext($d, false);
+			self::$pagamenti[$pag["codice"]] = self::$elencoPagamenti[$pag["codice"]] = gtext($pag["titolo"], false);
 		}
 		
 		VariabiliModel::$valori["pagamenti_permessi"] = Parametri::$metodiPagamento = implode(",", array_keys(self::$elencoPagamenti));

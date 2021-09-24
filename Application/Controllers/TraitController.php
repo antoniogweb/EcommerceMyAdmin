@@ -54,7 +54,7 @@ trait TraitController
 			$fields = 'titolo,sottotitolo,alias,descrizione,keywords,meta_description';
 		else if ($section == "tag" || $section == "-marchio-")
 			$fields = 'titolo,alias,description,keywords,meta_description';
-		else if ($section == "documenti" || $section == "contenuti")
+		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti")
 			$fields = 'titolo,descrizione';
 		
 		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
