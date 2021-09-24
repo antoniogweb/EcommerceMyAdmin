@@ -130,56 +130,80 @@ class TraduzioniController extends BaseController {
 		$this->clean();
 		
 		$errori = array();
+		$arrayIndiciLingue = array();
 		
 		if (isset($_FILES['file']['tmp_name']))
 		{
 			if (($handle = fopen($_FILES['file']['tmp_name'], "r")) !== FALSE)
 			{
+				$indiceCsv = 0;
+				
 				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
 				{
-					$chiave = $data[0];
-// 					
-					$traduzione =  $this->m[$this->modelName]->clear()->where(array(
-						"lingua"	=>	LingueModel::getPrincipaleFrontend(),
-						"chiave"	=>	sanitizeDb($chiave),
-						"contesto"	=>	"front",
-					))->record();
-					
-					if (!empty($traduzione))
+					if ($indiceCsv == 0)
 					{
-						$indice = 1;
+						$indiceLingua = 0;
 						
-						foreach ($this->elencoLingue as $lingua => $descr)
+						foreach ($data as $lingua)
 						{
-							if (isset($data[$indice]))
+							$lingua = strtolower($lingua);
+							
+							if ($lingua)
+								$arrayIndiciLingue[$lingua] = $indiceLingua;
+							
+							$indiceLingua++;
+						}
+						
+// 						print_r($arrayIndiciLingue);
+					}
+					else
+					{
+						$chiave = $data[0];
+						
+						$traduzione =  $this->m[$this->modelName]->clear()->where(array(
+							"lingua"	=>	LingueModel::getPrincipaleFrontend(),
+							"chiave"	=>	sanitizeDb($chiave),
+							"contesto"	=>	"front",
+						))->record();
+						
+						if (!empty($traduzione))
+						{
+							foreach ($this->elencoLingue as $lingua => $descr)
 							{
-								$traduzione =  $this->m[$this->modelName]->clear()->where(array(
-									"lingua"	=>	$lingua,
-									"chiave"	=>	sanitizeDb($chiave),
-									"contesto"	=>	"front",
-								))->record();
-								
-								if (!empty($traduzione))
+								if (isset($arrayIndiciLingue[$lingua]))
 								{
-									$this->m[$this->modelName]->values = array(
-										"chiave"	=>	sanitizeDb($chiave),
-										"valore"	=>	sanitizeDb($data[$indice]),
-										"lingua"	=>	$lingua,
-										"contesto"	=>	"front",
-									);
+									$indice = $arrayIndiciLingue[$lingua];
 									
-									if (!$this->m[$this->modelName]->update($traduzione["id_t"]))
+									if (isset($data[$indice]))
 									{
-// 										print_r($this->m[$this->modelName]->values);
-// 										echo $this->m[$this->modelName]->getQUery();
-										$errori[] = $data[$indice]." - ".$this->m[$this->modelName]->notice;
+										$traduzione =  $this->m[$this->modelName]->clear()->where(array(
+											"lingua"	=>	$lingua,
+											"chiave"	=>	sanitizeDb($chiave),
+											"contesto"	=>	"front",
+										))->record();
+										
+										if (!empty($traduzione))
+										{
+											$this->m[$this->modelName]->values = array(
+												"chiave"	=>	sanitizeDb($chiave),
+												"valore"	=>	sanitizeDb($data[$indice]),
+												"lingua"	=>	$lingua,
+												"contesto"	=>	"front",
+											);
+											
+											if (!$this->m[$this->modelName]->update($traduzione["id_t"]))
+											{
+		// 										print_r($this->m[$this->modelName]->values);
+		// 										echo $this->m[$this->modelName]->getQUery();
+												$errori[] = $data[$indice]." - ".$this->m[$this->modelName]->notice;
+											}
+										}
 									}
 								}
 							}
-							
-							$indice++;
 						}
 					}
+					$indiceCsv++;
 				}
 			}
 		}
