@@ -263,6 +263,7 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_clienti"		=>	"regusers",
 		"permetti_acquisto_anonimo"	=>	1,
 		"hook_ordine_confermato"	=>	"",
+		"attiva_campo_classe_personalizzata_menu"	=>	0,
 	);
 	
 	public function __construct() {

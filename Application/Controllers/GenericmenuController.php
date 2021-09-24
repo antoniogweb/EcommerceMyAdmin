@@ -167,7 +167,12 @@ class GenericmenuController extends BaseController {
 		{
 			$clean['id'] = (int)$id;
 			
-			$this->m[$this->modelName]->setFields('title,id_p,link_to,link_alias,id_c,id_page,id_marchio,id_tag,file_custom_html,active_link','sanitizeAll');
+			$fields = 'title,id_p,link_to,link_alias,id_c,id_page,id_marchio,id_tag,file_custom_html,active_link';
+			
+			if (v("attiva_campo_classe_personalizzata_menu"))
+				$fields .= ",classe_css_personalizzata";
+			
+			$this->m[$this->modelName]->setFields($fields,'sanitizeAll');
 			
 			if ($queryType == "insert")
 				$this->m[$this->modelName]->setValue("lingua", $this->viewArgs["lingua"]);
