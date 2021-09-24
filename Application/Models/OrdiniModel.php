@@ -43,6 +43,7 @@ class OrdiniModel extends FormModel {
 	);
 	
 	public static $pagamenti = array();
+	public static $pagamentiFull = array();
 	
 	public static $elencoPagamenti = array(
 		"bonifico"		=>	"Bonifico bancario",
@@ -70,13 +71,14 @@ class OrdiniModel extends FormModel {
 		
 		$res = $p->clear()->where(array(
 			"attivo"	=>	1
-		))->orderBy("id_order")->send(false);
+		))->orderBy("id_order")->addJoinTraduzione()->send();
 		
 		self::$elencoPagamenti = array();
 		
 		foreach ($res as $pag)
 		{
-			self::$pagamenti[$pag["codice"]] = self::$elencoPagamenti[$pag["codice"]] = gtext($pag["titolo"], false);
+			self::$pagamenti[$pag["pagamenti"]["codice"]] = self::$elencoPagamenti[$pag["pagamenti"]["codice"]] = pfield($pag, "titolo");
+			self::$pagamentiFull[$pag["pagamenti"]["codice"]] = $pag;
 		}
 		
 		VariabiliModel::$valori["pagamenti_permessi"] = Parametri::$metodiPagamento = implode(",", array_keys(self::$elencoPagamenti));

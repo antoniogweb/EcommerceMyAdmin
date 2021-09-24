@@ -750,6 +750,11 @@ function fpfield($p, $field)
 	return genericField($p, $field, "fasce_prezzo");
 }
 
+function pfield($p, $field)
+{
+	return genericField($p, $field, "pagamenti");
+}
+
 function genericField($p, $field, $table, $tableTradotta = "contenuti_tradotti")
 {
 	if (isset($p[$tableTradotta][$field]) and strcmp($p[$tableTradotta][$field],"") !== 0)
