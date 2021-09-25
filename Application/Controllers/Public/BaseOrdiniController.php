@@ -265,6 +265,84 @@ class BaseOrdiniController extends BaseController
 		header("HTTP/1.1 200 OK");
 	}
 	
+	//IPN carta
+	public function ipncarta()
+	{
+		$fp = fopen(ROOT.'/Logs/.ipncarta.txt', 'a+');
+		fwrite($fp, date("Y-m-d H:i:s"));
+		fwrite($fp, print_r($_GET,true));
+		fwrite($fp, print_r($_POST,true));
+		fclose($fp);
+		
+		$this->clean();
+		
+		require (LIBRARY.'/Application/Modules/Nexi.php');
+		
+		$nexi = new Nexi();
+		
+		if ($nexi->validate())
+		{
+			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
+			$clean['amount'] = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
+			
+			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+
+			if (count($res) > 0)
+			{
+				$importo = str_replace(".","",$res[0]["orders"]["total"]);
+				
+				if (strcmp($clean['amount'],$importo) === 0 )
+				{
+					$this->model("FattureModel");
+					
+					$ordine = $res[0]["orders"];
+					$this->m["OrdiniModel"]->values = array();
+					$this->m["OrdiniModel"]->values["data_pagamento"] = date("d-m-Y");
+					
+					if (strcmp($_REQUEST['esito'],"OK") === 0)
+						$this->m["OrdiniModel"]->values["stato"] = "completed";
+					$this->m["OrdiniModel"]->update((int)$res[0]["orders"]["id_o"]);
+					
+					if (strcmp($_REQUEST['esito'],"OK") === 0)
+					{
+						if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
+						{
+							//genera la fattura
+							$this->m["FattureModel"]->crea($ordine["id_o"]);
+						}
+					}
+
+					switch ($_REQUEST['esito'])
+					{
+						case "OK":
+							
+							$mandaFattura = false;
+							
+							if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
+								$mandaFattura = true;
+							
+							$this->m["OrdiniModel"]->$this->mandaMailGeneric($ordine["id_o"], "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
+							
+							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
+							
+							$res = MailordiniModel::inviaMail(array(
+								"emails"	=>	array(Parametri::$mailInvioOrdine),
+								"oggetto"	=>	gtext("Conferma Pagamento Nº Ordine:")." ".$ordine["id_o"],
+								"testo"		=>	$output,
+								"tipologia"	=>	"PAGAMENTO ORDINE",
+							));
+							
+							break;
+					}
+				}
+			}
+		}
+		else
+		{
+			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".$nexi->scriviLog(false, false)."</pre>", "IPN CARTA");
+		}
+	}
+	
 	public function modifica($id_o = 0, $cart_uid = 0)
 	{
 		$data['notice'] = null;
