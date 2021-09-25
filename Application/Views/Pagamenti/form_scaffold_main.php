@@ -31,13 +31,30 @@ $().ready(function() {
 			<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					Traduzioni
+					<?php echo gtext("Traduzioni");?>
 				</div>
 				<div class="panel-body">
 					<?php
 					$section = "pagamenti";
 					$nascondiLink = $nascondiAlias = true;
 					include($this->viewPath("pages_traduzioni"));?>
+				</div>
+			</div>
+			<?php } ?>
+			
+			<?php if (isset($record["codice"]) && $record["codice"] == "carta_di_credito") { ?>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<?php echo gtext("Parametri carta");?>
+				</div>
+				<div class="panel-body">
+					<?php echo $form["gateway_pagamento"];?>
+					
+					<?php echo $form["test"];?>
+					
+					<?php echo $form["alias_account"];?>
+					
+					<?php echo $form["chiave_segreta"];?>
 				</div>
 			</div>
 			<?php } ?>

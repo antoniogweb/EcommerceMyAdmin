@@ -24,6 +24,15 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PagamentiModel extends GenericModel {
 	
+	public static $attivoSiNoGateway = array(
+		"1"	=>	"Sì, usa i pagamenti finti (solo per sviluppo)",
+		"0"	=>	"No, usa pagamenti veri (solo per produzione)",
+	);
+	
+	public static $elencoGateway = array(
+		"Nexi"	=>	"Circuito Nexi",
+	);
+	
 	public function __construct() {
 		$this->_tables='pagamenti';
 		$this->_idFields='id_pagamento';
@@ -44,6 +53,20 @@ class PagamentiModel extends GenericModel {
 					"type"	=>	"Select",
 					"labelString"	=>	"Attivo",
 					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'test'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Pagamento di test",
+					"options"	=>	self::$attivoSiNoGateway,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'gateway_pagamento'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Gateway di pagamento",
+					"options"	=>	self::$elencoGateway,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),

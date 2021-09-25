@@ -56,22 +56,29 @@ class PagamentiController extends BaseController
 		
 		$this->mainFields = array("edit","attivo");
 		$this->mainHead = "Titolo,Attivo";
-// 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
-		$this->m[$this->modelName]->clear()
-				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
-				))
-				->orderBy("id_order")->convert()->save();
+		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,attivo,descrizione');
+		if ($queryType != "update")
+			die();
+		
+		$fields = 'titolo,attivo,descrizione';
+		
+		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
+		
+		if ($record["codice"] == "carta_di_credito")
+			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+		
+		$this->append($data);
 	}
 	
 	public function ordina()
