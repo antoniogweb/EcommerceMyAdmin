@@ -1392,8 +1392,11 @@ class BaseOrdiniController extends BaseController
 								$this->m['OrdiniModel']->iscriviANewsletter($clean['lastId']);
 							}
 							
+							// Redirect immediato a gateway
+							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && (strcmp($ordine["pagamento"],"paypal") === 0 || strcmp($ordine["pagamento"],"carta_di_credito") === 0)) ? "?to_paypal" : "";
+							
 							// Redirect immediato a paypal oppure no
-							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && strcmp($ordine["pagamento"],"paypal") === 0) ? "?to_paypal" : "";
+// 							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && strcmp($ordine["pagamento"],"paypal") === 0) ? "?to_paypal" : "";
 							
 // 							$this->clean();
 
