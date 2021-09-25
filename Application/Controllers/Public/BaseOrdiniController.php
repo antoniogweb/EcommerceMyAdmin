@@ -329,7 +329,7 @@ class BaseOrdiniController extends BaseController
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	gtext("Conferma Pagamento Nº Ordine:")." ".$ordine["id_o"],
+								"oggetto"	=>	gtext("Conferma pagamento ordine N°")." ".$ordine["id_o"],
 								"testo"		=>	$output,
 								"tipologia"	=>	"PAGAMENTO ORDINE",
 							));
