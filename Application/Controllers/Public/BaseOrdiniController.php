@@ -268,6 +268,8 @@ class BaseOrdiniController extends BaseController
 	//IPN carta
 	public function ipncarta()
 	{
+		$this->createLogFolder();
+		
 		$fp = fopen(ROOT.'/Logs/.ipncarta.txt', 'a+');
 		fwrite($fp, date("Y-m-d H:i:s"));
 		fwrite($fp, print_r($_GET,true));
@@ -321,7 +323,7 @@ class BaseOrdiniController extends BaseController
 							if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
 								$mandaFattura = true;
 							
-							$this->m["OrdiniModel"]->$this->mandaMailGeneric($ordine["id_o"], "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
+							$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
 							
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 							
