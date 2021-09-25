@@ -422,7 +422,37 @@ class BaseOrdiniController extends BaseController
 			}
 			else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 			{
-				$data["pulsantePaga"] = "<a href='#'>Paga adesso</a></div>";
+				require (LIBRARY.'/Application/Modules/Nexi.php');
+				
+				$okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$data["ordine"]["cart_uid"];
+				$notifyUrl = $this->baseUrl."/notifica-pagamento-carta?cart_uid=".$data["ordine"]["cart_uid"];
+				$errorUrl = "";
+				$importo = str_replace(".","",$data["ordine"]["total"]);
+				
+				// Parametri facoltativi
+				$facoltativi = array(
+					'mail' => $data["ordine"]["email"],
+					'languageId' => "ITA",
+					'descrizione' => "Ordine ".$data["ordine"]["id_o"],
+					"nome"	=>	$data["ordine"]["nome"],
+					"cognome"	=>	$data["ordine"]["cognome"],
+					'OPTION_CF' => $data["ordine"]["codice_fiscale"],
+					'urlpost' => $notifyUrl,
+				);
+				
+	// 			print_r($facoltativi);die();
+				
+				$nexi = new Nexi($okUrl, $errorUrl);
+				$urlPagamento = $nexi->creaUrlPagamento($data["ordine"]["id_o"], $importo, "EUR", $facoltativi);
+				
+				$data["pulsantePaga"] = "<div><a href='$urlPagamento'>Paga adesso</a></div>";
+				$data["urlPagamento"] = $urlPagamento;
+				
+				if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0)
+				{
+					header('Location: '.$urlPagamento);
+					die();
+				}
 			}
 
 			$this->append($data);
@@ -579,11 +609,6 @@ class BaseOrdiniController extends BaseController
 				$clean['st'] = $this->request->post('payment_status','','sanitizeAll');
 		}
 		
-// 		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
-		
-// 		if ((int)count($res) === 0 && trim($clean['txn_id']))
-// 			$res = $this->m["OrdiniModel"]->clear()->where(array("txn_id" => $clean['txn_id']))->send();
-		
 		if (isset($_GET['cart_uid']))
 			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => sanitizeAll($_GET['cart_uid'])))->send();
 		else
@@ -596,9 +621,54 @@ class BaseOrdiniController extends BaseController
 		
 		if (count($res) > 0)
 		{
+			if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
+				$this->redirect("");
+			
 			$data["ordine"] = $res[0]["orders"];
 			
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
+		}
+		
+		$this->append($data);
+		$this->load("ritorno-da-paypal");
+	}
+	
+	public function ritornodacarta()
+	{
+		$fp = fopen(ROOT.'/Logs/back_carta.txt', 'a+');
+		fwrite($fp, date("Y-m-d H:i:s"));
+		fwrite($fp, print_r($_GET,true));
+		fwrite($fp, print_r($_POST,true));
+		fclose($fp);
+		
+		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
+		
+		if (isset($_GET["cart_uid"]))
+		{
+			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
+			
+			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			
+			$data["conclusa"] = false;
+		
+			if (count($res) > 0)
+			{
+				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
+					$this->redirect("");
+				
+				require (LIBRARY.'/Application/Modules/Nexi.php');
+				
+				$nexi = new Nexi();
+				
+				if ($nexi->validate(false))
+					$data["conclusa"] = true;
+				
+				$data["ordine"] = $res[0]["orders"];
+				
+				$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
+			}
+			else
+				$this->redirect("");
 		}
 		
 		$this->append($data);

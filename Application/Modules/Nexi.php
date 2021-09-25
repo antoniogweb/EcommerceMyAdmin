@@ -13,14 +13,14 @@ class Nexi
 	
 	public function __construct($okUrl = "", $errorUrl = "")
 	{
-// 		PagamentiModel::g(false)->where(array(
-// 			"codice"	=>	"carta_di_credito"
-// 		))->record();
+		$pagamento = PagamentiModel::g(false)->where(array(
+			"codice"	=>	"carta_di_credito"
+		))->record();
 		
-		$this->CHIAVESEGRETA = ImpostazioniModel::$valori["nexi_chiave_segreta"];
-		$this->ALIAS = ImpostazioniModel::$valori["nexi_alias"];
+		$this->CHIAVESEGRETA = $pagamento["chiave_segreta"];
+		$this->ALIAS = $pagamento["alias_account"];
 // 		echo $this->CHIAVESEGRETA;
-		if (ImpostazioniModel::$valori["usa_nexi_test"] == "Y")
+		if ((int)$pagamento["test"])
 			$this->requestUrl = "https://int-ecommerce.nexi.it/ecomm/ecomm/DispatcherServlet";
 		else
 			$this->requestUrl = "https://ecommerce.nexi.it/ecomm/ecomm/DispatcherServlet";

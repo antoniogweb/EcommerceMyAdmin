@@ -265,6 +265,7 @@ class VariabiliModel extends GenericModel {
 		"hook_ordine_confermato"	=>	"",
 		"attiva_campo_classe_personalizzata_menu"	=>	0,
 		"attiva_gestione_pagamenti"	=>	0,
+		"hook_update_ordine"		=>	"",
 	);
 	
 	public function __construct() {
