@@ -715,6 +715,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function ritornodacarta()
 	{
+		$this->createLogFolder();
+		
 		$fp = fopen(ROOT.'/Logs/back_carta.txt', 'a+');
 		fwrite($fp, date("Y-m-d H:i:s"));
 		fwrite($fp, print_r($_GET,true));
