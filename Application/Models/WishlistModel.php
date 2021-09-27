@@ -166,5 +166,12 @@ class WishlistModel extends Model_Tree {
 		return "0";
 	}
 	
-	
+	public function getProdotti()
+	{
+		$p = new PagesModel();
+		
+		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
+		
+		return $p->clear()->select("wishlist.*,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addJoinTraduzionePagina()->inner("wishlist")->on("wishlist.id_page = pages.id_page")->where(array("wishlist.wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("wishlist.id_order ASC, id_wishlist ASC")->send();
+	}
 }

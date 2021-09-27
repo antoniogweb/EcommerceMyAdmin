@@ -823,6 +823,21 @@ class CategoriesModel extends HierarchicalModel {
 		}
 	}
 	
+	public static function getClosestParentThatHasField($id, $field, $lingua = null)
+	{
+		$c = new CategoriesModel();
+		
+		$parents = $c->parents($id, false, false, $lingua);
+		
+		rsort($parents);
+		
+		foreach ($parents as $p)
+		{
+			if ($p["categories"][$field])
+				return $p;
+		}
+	}
+	
 	public static function sDepth($id = null)
 	{
 		$c = new CategorieModel();
