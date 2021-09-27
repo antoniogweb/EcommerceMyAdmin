@@ -16,6 +16,8 @@ $().ready(function() {
 			
 			<?php echo $form["descrizione"];?>
 			
+			<?php echo isset($form["istruzioni_pagamento"]) ? $form["istruzioni_pagamento"] : "";?>
+			
 			<?php if ($type === "update") { ?>
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 			<?php } ?>

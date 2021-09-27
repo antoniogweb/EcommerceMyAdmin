@@ -4,7 +4,7 @@
 	
 	<div class="payment_box payment_method_bacs uk-margin" style="display: block;">
 		<div class="uk-text-small uk-text-muted">
-			<?php echo pfield(OrdiniModel::$pagamentiFull[$codPag],"descrizione");?>
+			<?php echo htmlentitydecode(pfield(OrdiniModel::$pagamentiFull[$codPag],"descrizione"));?>
 		</div>
 	</div>
 </li>

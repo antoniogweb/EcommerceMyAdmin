@@ -74,6 +74,9 @@ class PagamentiController extends BaseController
 		if ($record["codice"] == "carta_di_credito")
 			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
 		
+		if ($record["codice"] != "carta_di_credito" && $record["codice"] != "paypal")
+			$fields .= ",istruzioni_pagamento";
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
