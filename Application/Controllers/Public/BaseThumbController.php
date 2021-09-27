@@ -81,6 +81,29 @@ class BaseThumbController extends Controller {
 		return $path;
 	}
 	
+	protected function genericthumb($fileName, $params, $folder)
+	{
+		$this->clean();
+		
+		$folder = rtrim(ltrim($folder, "/"),"/");
+		
+		$params = $this->caricaParametri($params);
+		
+		if (accepted($fileName))
+		{
+			if (strcmp($fileName,'') !== 0)
+			{
+				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.$folder,$params);
+				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
+			}
+		}
+		else
+		{
+			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+			$thumb->render('nofound.jpeg');
+		}
+	}
+	
 	public function contenuto($fileName)
 	{
 		$this->clean();
@@ -733,6 +756,22 @@ class BaseThumbController extends Controller {
 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
+	}
+	
+	public function categoria2x($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	550,
+			'imgHeight'		=>	600,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/categorie_2");
 	}
 	
 	public function categoria($fileName)
