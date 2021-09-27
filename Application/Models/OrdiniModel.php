@@ -78,7 +78,7 @@ class OrdiniModel extends FormModel {
 		foreach ($res as $pag)
 		{
 			// Se nuovo o vecchio sistema
-			$titoloPag = v("attiva_gestione_pagamenti") ? pfield($pag, "titolo") : gtext($pag["titolo"], false);
+			$titoloPag = v("attiva_gestione_pagamenti") ? pfield($pag, "titolo") : gtext($pag["pagamenti"]["titolo"], false);
 			
 			self::$pagamenti[$pag["pagamenti"]["codice"]] = self::$elencoPagamenti[$pag["pagamenti"]["codice"]] = $titoloPag;
 			self::$pagamentiFull[$pag["pagamenti"]["codice"]] = $pag;
