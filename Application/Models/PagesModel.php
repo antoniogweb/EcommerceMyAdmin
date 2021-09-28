@@ -66,6 +66,8 @@ class PagesModel extends GenericModel {
 		"B2B"			=>	"Pagina info B2B",
 		"HOME"			=>	"Home page",
 		"MARCHI"		=>	"Pagina elenco marchi",
+		"PACCO_REGALO"	=>	"Pagina descrizione pacchi regalo",
+		"PAGAMENTI"		=>	"Pagina descrizione pagamenti",
 	);
 	
 	public function __construct() {
