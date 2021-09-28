@@ -310,4 +310,13 @@ trait BaseFasceController
 		
 		return $output;
 	}
+	
+	public function getFasciaPaccoRegalo()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_pacco_regalo.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
 }

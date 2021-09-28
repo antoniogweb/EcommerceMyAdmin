@@ -43,6 +43,7 @@ class BaseContenutiController extends BaseController
 	public $aliasMarchio = "";
 	public $aliasTag = "";
 	public $documentiPagina = array();
+	public $breadcrumbHtml = "";
 	
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
@@ -638,7 +639,7 @@ class BaseContenutiController extends BaseController
 			$data["meta_description"] = tagfield($tagCorrente, "meta_description");
 		}
 		
-		$data["breadcrumb"] = $this->breadcrumb();
+		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb();
 		
 		$iChildrenGross = $this->m["CategoriesModel"]->immediateChildren($clean['id']);
 		
@@ -1137,7 +1138,7 @@ class BaseContenutiController extends BaseController
 		
 		$data["isPage"] = true;
 		
-		$data["breadcrumb"] = $this->breadcrumb("page");
+		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page");
 
 		$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
 		
@@ -1631,7 +1632,7 @@ class BaseContenutiController extends BaseController
 		foreach (Params::$frontEndLanguages as $l)
 			$data["arrayLingue"][$l] = $l."/prodotti-in-promozione.html";
 		
-		$data["breadcrumb"] = gtext("promozioni");
+		$data["breadcrumb"] = $this->breadcrumbHtml = gtext("promozioni");
 		
 		if (isset($data))
 			$this->append($data);

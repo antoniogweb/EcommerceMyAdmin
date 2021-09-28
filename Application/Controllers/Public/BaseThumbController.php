@@ -772,6 +772,17 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, $params, "images/categorie");
 	}
 	
+	public function gallery($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	550,
+			'imgHeight'		=>	600,
+			'defaultImage'	=>  null,
+		);
+		
+		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
+	}
+	
 	public function sfondocategoria($fileName)
 	{
 		$this->clean();
