@@ -27,6 +27,13 @@ if (!defined("FRONT"))
 
 class BaseThumbController extends Controller {
 	
+	public static $genericParams = array(
+		'imgWidth'		=>	600,
+		'imgHeight'		=>	600,
+		'defaultImage'	=>  null,
+		'useCache'		=>	true,
+	);
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -536,14 +543,7 @@ class BaseThumbController extends Controller {
 	
 	public function dettagliobig($fileName)
 	{
-		$params = array(
-			'imgWidth'		=>	600,
-			'imgHeight'		=>	600,
-			'defaultImage'	=>  null,
-			'useCache'		=>	true,
-		);
-		
-		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
+		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
 	public function team($fileName)
@@ -774,13 +774,7 @@ class BaseThumbController extends Controller {
 	
 	public function gallery($fileName)
 	{
-		$params = array(
-			'imgWidth'		=>	550,
-			'imgHeight'		=>	600,
-			'defaultImage'	=>  null,
-		);
-		
-		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
+		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
 	public function sfondocategoria($fileName)
@@ -843,6 +837,11 @@ class BaseThumbController extends Controller {
 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
+	}
+	
+	public function tag($fileName)
+	{
+		$this->genericthumb($fileName, self::$genericParams, 'images/tag_2');
 	}
 	
 	public function tagbig($fileName)
