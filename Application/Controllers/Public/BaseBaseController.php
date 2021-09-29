@@ -39,7 +39,7 @@ class BaseBaseController extends Controller
 	public $testimonial = array();
 	public $faq = array();
 	public $prodottiInPromozione = array();
-	public $idFaq = null;
+	public $sectionsId = array();
 	
 	public $defaultRegistrazione = array();
 	
@@ -370,7 +370,7 @@ class BaseBaseController extends Controller
 		
 		if (v("blog_attivo"))
 		{
-			$idBlog = $data["idBlog"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idBlog = $this->sectionsId["blog"] = $data["idBlog"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
 				"section"	=>	"blog",
 			))->field("id_c");
 			
@@ -414,7 +414,7 @@ class BaseBaseController extends Controller
 		
 		if (v("mostra_faq"))
 		{
-			$idFaq = $this->idFaq = $data["idFaq"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idFaq = $this->sectionsId["faq"] = $data["idFaq"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
 				"section"	=>	"faq",
 			))->field("id_c");
 			
