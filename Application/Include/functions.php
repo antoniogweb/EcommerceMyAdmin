@@ -838,6 +838,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[carosello-marchi\]/', array($obj,'getFasciaCaroselloMarchi') ,$string);
 		$string = preg_replace_callback('/\[chi-siamo\]/', array($obj,'getFasciaChiSiamo') ,$string);
 		$string = preg_replace_callback('/\[pacco-regalo\]/', array($obj,'getFasciaPaccoRegalo') ,$string);
+		$string = preg_replace_callback('/\[tag\]/', array($obj,'getFasciaTag') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{

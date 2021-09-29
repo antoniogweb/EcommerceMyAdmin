@@ -74,7 +74,7 @@ class TagController extends BaseController
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'titolo,alias,attivo,description';
+		$fields = 'titolo,alias,attivo,description,immagine';
 		
 		if (v("mostra_seconda_immagine_tag"))
 			$fields .= ",immagine_2";

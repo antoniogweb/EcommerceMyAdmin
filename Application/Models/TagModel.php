@@ -37,6 +37,23 @@ class TagModel extends GenericModel {
 		$this->traduzione = true;
 		
 		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/tag",
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+// 				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	300,
+					'imgHeight'		=>	300,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'no',
+				),
+			),
 			"immagine_2"	=>	array(
 				"type"	=>	"image",
 				"path"	=>	"images/tag_2",

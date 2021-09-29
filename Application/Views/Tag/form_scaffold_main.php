@@ -13,6 +13,9 @@ $().ready(function() {
 			<?php echo $form["titolo"];?>
 			<?php echo $form["alias"];?>
 			<?php echo $form["attivo"];?>
+			
+			<?php echo $form["immagine"];?>
+			
 			<?php if (isset($form["immagine_2"])) { ?>
 			<?php echo $form["immagine_2"];?>
 			<?php } ?>

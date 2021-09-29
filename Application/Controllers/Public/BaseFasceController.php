@@ -249,6 +249,17 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaTag()
+	{
+		$pages = $this->m["TagModel"]->clear()->addJoinTraduzione()->orderBy("tag.id_order")->send();
+		
+		ob_start();
+		include tpf("Fasce/fascia_tag.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaCaroselloMarchi()
 	{
 		$marchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();

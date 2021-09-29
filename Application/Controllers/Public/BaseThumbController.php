@@ -841,7 +841,7 @@ class BaseThumbController extends Controller {
 	
 	public function tag($fileName)
 	{
-		$this->genericthumb($fileName, self::$genericParams, 'images/tag_2');
+		$this->genericthumb($fileName, self::$genericParams, 'images/tag');
 	}
 	
 	public function tagbig($fileName)
