@@ -39,6 +39,7 @@ class BaseBaseController extends Controller
 	public $testimonial = array();
 	public $faq = array();
 	public $prodottiInPromozione = array();
+	public $idFaq = null;
 	
 	public $defaultRegistrazione = array();
 	
@@ -413,7 +414,7 @@ class BaseBaseController extends Controller
 		
 		if (v("mostra_faq"))
 		{
-			$idFaq = $data["idFaq"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idFaq = $this->idFaq = $data["idFaq"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
 				"section"	=>	"faq",
 			))->field("id_c");
 			
