@@ -1054,7 +1054,13 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
 						
 						$this->m['OrdiniModel']->values["creation_time"] = time();
-						$this->m['OrdiniModel']->values["stato"] = "pending";
+						
+						$statoOrdine = "pending";
+						
+						if (number_format(getTotalN(),2,".","") <= 0.00)
+							$statoOrdine = "completed";
+						
+						$this->m['OrdiniModel']->values["stato"] = $statoOrdine;
 						
 						$this->m['OrdiniModel']->values["prezzo_scontato"] = getPrezzoScontatoN();
 						$this->m['OrdiniModel']->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
@@ -1399,10 +1405,8 @@ class BaseOrdiniController extends BaseController
 							// Redirect immediato a gateway
 							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && (strcmp($ordine["pagamento"],"paypal") === 0 || strcmp($ordine["pagamento"],"carta_di_credito") === 0)) ? "?to_paypal" : "";
 							
-							// Redirect immediato a paypal oppure no
-// 							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && strcmp($ordine["pagamento"],"paypal") === 0) ? "?to_paypal" : "";
-							
-// 							$this->clean();
+							if ($statoOrdine != "pending")
+								$toPaypal = "";
 
 							if (Output::$html)
 								$this->redirect("resoconto-acquisto/".$clean['lastId']."/".$clean["cart_uid"]."/token".$toPaypal);

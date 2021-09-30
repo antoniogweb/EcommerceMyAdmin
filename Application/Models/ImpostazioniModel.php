@@ -211,7 +211,7 @@ class ImpostazioniModel extends GenericModel {
 					),
 				),
 				'mailchimp_list_id'		=>	array(
-					'labelString'=>	gtext("ID della lista Mailchim da collegare"),
+					'labelString'=>	gtext("ID della lista Mailchimp da collegare"),
 					'wrap'		=>	array(
 						null,
 						null,

@@ -76,7 +76,7 @@ class PagamentiModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Questo apparirà nella pagina di resoconto e nella mail al cliente una volta che l'ordine sarà confermato.")."</div>"
+						"<div class='form_notice'>".gtext("Questo testo apparirà nella pagina di resoconto e nella mail al cliente una volta che l'ordine sarà confermato.")."</div>"
 					),
 				),
 			),
