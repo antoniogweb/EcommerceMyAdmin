@@ -43,11 +43,8 @@ trait BaseFasceController
 		if (!isset($this->prodottiInEvidenza))
 			return "";
 		
-		if (!isset($this->elencoMarchiFull))
-			return "";
-		
 		$pages = $prodottiInEvidenza = $this->prodottiInEvidenza;
-		$elencoMarchiFull = $this->elencoMarchiFull;
+		$elencoMarchiFull = isset($this->elencoMarchiFull) ? $this->elencoMarchiFull : array();
 		$idShop = $this->idShop;
 		
 		ob_start();

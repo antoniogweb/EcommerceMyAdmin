@@ -283,6 +283,7 @@ class Route
 		'blogcat,meta',
 		'blogcat,gruppi',
 		'blogcat,ordina',
+		'blogcat,contenuti',
 		
 		'blog,main',
 		'blog,aggiungicategoria',
