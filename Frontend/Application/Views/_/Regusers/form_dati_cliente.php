@@ -157,14 +157,14 @@ else
 	<div class="uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"placeholder='".gtext("Email", false)."'");?>
+			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"autocomplete='off' placeholder='".gtext("Email", false)."'");?>
 		</div>
 	</div>
 	<?php if (v("account_attiva_conferma_username")) { ?>
 	<div class="uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Conferma email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"placeholder='".gtext("Conferma email", false)."'");?>
+			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"autocomplete='off' placeholder='".gtext("Conferma email", false)."'");?>
 		</div>
 	</div>
 	<?php } ?>
