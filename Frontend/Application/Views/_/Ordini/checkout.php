@@ -79,7 +79,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					
 					<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 					
-					<div class="uk-container uk-margin">
+					<div class="uk-container uk-margin-medium">
 						<div id="payment" class="">
 							<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Metodo di pagamento");?></h2>
 							<ul class="uk-list payment_methods modalita_pagamento class_pagamento">
