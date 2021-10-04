@@ -489,6 +489,7 @@ class BaseOrdiniController extends BaseController
 				$p->add_field('city', $data["ordine"]["citta"]);
 				$p->add_field('zip', $data["ordine"]["cap"]);
 				$p->add_field('country', $data["ordine"]["nazione"]);
+				$p->add_field('night_phone_b', $data["ordine"]["telefono"]);
 				
 				if ($data["ordine"]["nazione"] == "IT")
 					$p->add_field('state', $data["ordine"]["provincia"]);
