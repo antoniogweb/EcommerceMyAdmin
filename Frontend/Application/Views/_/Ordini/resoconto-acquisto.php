@@ -15,21 +15,7 @@ if (!isset($baseUrl))
 </div>-->
 <?php } ?>
 
-<?php if (strcmp($tipoOutput,"mail_al_negozio") !== 0 and !isset($_GET["n"])) { ?>
-<p class="uk-text-muted uk-text-small"><?php echo gtext("Grazie! Il suo ordine è stato ricevuto e verrà processato al più presto.");?></p>
-<?php } ?>
-
-<?php if (strcmp($tipoOutput,"mail_al_negozio") === 0 ) { ?>
-<p class="uk-text-muted uk-text-small"><?php echo gtext("Può controllare l'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
-<?php } ?>
-
-<?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
-<p class="uk-text-muted uk-text-small"><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al");?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/token";?>?n=y"><?php echo gtext("seguente indirizzo web");?></a>.</p>
-<?php } ?>
-
-<?php if (strcmp($tipoOutput,"web") === 0 and !isset($_GET["n"])) { ?>
-<p class="uk-text-muted uk-text-small"><?php echo gtext("Controlli la sua casella di posta elettronica, le è stata inviata una mail con il resoconto dell'ordine.");?></p>
-<?php } ?>
+<?php include(tpf("Elementi/Ordini/resoconto_top.php"));?>
 
 <?php if (strcmp($tipoOutput,"web") === 0 and strcmp($ordine["admin_token"],$admin_token) === 0) { ?>
 <!--<div id="admin_tools">
@@ -50,55 +36,77 @@ if (!isset($baseUrl))
 </div>-->
 <?php } ?>
 
-<table class="table table_2 table_left">
+<table class="table uk-width-1-2@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top">
 	<tr>
-		<td><?php echo gtext("Ordine", false); ?>:</td>
+		<td class="first_column"><?php echo gtext("Ordine", false); ?>:</td>
 		<td><b>#<?php echo $ordine["id_o"];?></b></td>
 	</tr>
 	<tr>
-		<td><?php echo gtext("Data", false); ?>:</td>
+		<td class="first_column"><?php echo gtext("Data", false); ?>:</td>
 		<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
 	</tr>
 	<tr>
-		<td><?php echo gtext("Totale", false); ?>:</td>
+		<td class="first_column"><?php echo gtext("Totale", false); ?>:</td>
 		<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
 	</tr>
 	<?php if (strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
 	<tr>
-		<td><?php echo gtext("Stato ordine", false); ?>:</td>
+		<td class="first_column"><?php echo gtext("Stato ordine", false); ?>:</td>
 		<td><b><?php echo statoOrdine($ordine["stato"]);?></b></td>
 	</tr>
 	<?php } ?>
 	<tr>
-		<td><?php echo gtext("Metodo di pagamento", false); ?>:</td>
+		<td class="first_column"><?php echo gtext("Metodo di pagamento", false); ?>:</td>
 		<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
 	</tr>
 </table>
 
+<?php include(tpf("Elementi/Ordini/resoconto_pagamento_top.php"));?>
+
 <?php include(tpf("Ordini/resoconto_pagamento.php"));?>
 
-<h2><?php echo gtext("Dettagli ordine", false); ?>:</h2>
+<h2 class="uk-heading-bullet"><?php echo gtext("Dettagli ordine", false); ?>:</h2>
 
 <?php include(tpf("Ordini/resoconto_prodotti.php"));?>
 
-<br />
-<p class="checkout_totali">
-	<?php
-	$strIvato = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
-	?>
-	<?php echo gtext("Totale merce", false); ?>: <strong>&euro; <?php echo setPriceReverse($ordine["subtotal".$strIvato]);?></strong>
-	<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-	<br /><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>): <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong>
-	<?php } ?>
-	<br /><?php echo gtext("Spese spedizione", false); ?>: <strong>&euro; <?php echo setPriceReverse($ordine["spedizione".$strIvato]);?></strong>
-	<?php if (!v("prezzi_ivati_in_carrello")) { ?>
-	<br /><?php echo gtext("Iva", false); ?>: <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong>
-	<?php } ?>
-	<br /><?php echo gtext("Totale ordine", false); ?>: <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong>
-	<?php if (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"]) { ?>
-	<br /><span style="color:#999;font-style:italic;"><?php echo gtext("Di cui IVA", false); ?> (<?php echo $ordine["stringa_iva_estera"];?>): <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></span>
-	<?php } ?>
-</p>
+<div class="uk-grid" uk-grid>
+	<div class="uk-width-1-2@m"></div>
+	<div class="uk-width-1-2@m">
+		<table class="table uk-table uk-table-divider uk-table-hover uk-margin-remove-top uk-table-striped">
+			<?php
+			$strIvato = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
+			?>
+			<?php if (v("attiva_spedizione") || $ordine["usata_promozione"] == "Y") { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Totale merce", false); ?>:</td> <td class="uk-text-right"><strong>&euro; <?php echo setPriceReverse($ordine["subtotal".$strIvato]);?></strong></td>
+			</tr>
+			<?php } ?>
+			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong></td>
+			</tr>
+			<?php } ?>
+			<?php if (v("attiva_spedizione")) { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Spese spedizione", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["spedizione".$strIvato]);?></strong></td>
+			</tr>
+			<?php } ?>
+			<?php if (!v("prezzi_ivati_in_carrello")) { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Iva", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></td>
+			</tr>
+			<?php } ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></td>
+			</tr>
+			<?php if (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"]) { ?>
+			<tr>
+				<td class="first_column"><span style="color:#999;font-style:italic;"><?php echo gtext("Di cui IVA", false); ?> (<?php echo $ordine["stringa_iva_estera"];?>):</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></span></td>
+			</tr>
+			<?php } ?>
+		</table>
+	</div>
+</div>
 
 <?php if (trim($ordine["note"])) { ?>
 <h2><?php echo gtext("Note d'acquisto");?></h2>
@@ -106,10 +114,10 @@ if (!isset($baseUrl))
 <br /><br />
 <?php } ?>
 
-<h2><?php echo gtext("Dati di fatturazione", false); ?></h2>
+<h2 class="uk-heading-bullet"><?php echo gtext("Dati di fatturazione", false); ?></h2>
 
 <div class="uk-overflow-auto">
-	<table class="uk-table uk-table-divider uk-table-hover">
+	<table class="table uk-table uk-table-divider uk-table-hover">
 		<?php if (strcmp($ordine["tipo_cliente"],"privato") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 		<tr>
 			<td class="first_column"><?php echo gtext("Nome", false); ?></td>
@@ -186,10 +194,10 @@ if (!isset($baseUrl))
 </div>
 
 <?php if (v("attiva_spedizione")) { ?>
-<h2><?php echo gtext("Dati di spedizione", false); ?></h2>
+<h2 class="uk-heading-bullet"><?php echo gtext("Dati di spedizione", false); ?></h2>
 
 <div class="uk-overflow-auto">
-	<table class="uk-table uk-table-divider uk-table-hover">
+	<table class="table uk-table uk-table-divider uk-table-hover">
 		<tr>
 			<td class="first_column"><?php echo gtext("Indirizzo", false); ?></td>
 			<td><?php echo $ordine["indirizzo_spedizione"];?></td>

@@ -59,6 +59,18 @@ class OrdiniModel extends FormModel {
 		"deleted"	=>	"danger",
 	);
 	
+	public static function isPagato($idO)
+	{
+		$o = new OrdiniModel();
+		
+		$record = $o->selectId($idO);
+		
+		if (!empty($record) && ($record["stato"] == "completed" || $record["stato"] == "closed"))
+			return false;
+		
+		return false;
+	}
+	
 	public static function setPagamenti()
 	{
 		if (self::$pagamentiSettati)

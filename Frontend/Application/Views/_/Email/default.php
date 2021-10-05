@@ -221,6 +221,10 @@ if (!defined('EG')) die('Direct access not allowed!');
         border: 0;
         border-bottom: 1px solid #f6f6f6;
         Margin: 20px 0; }
+		
+		td.first_column {  
+			width:40% !important;
+		}
 
       /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
