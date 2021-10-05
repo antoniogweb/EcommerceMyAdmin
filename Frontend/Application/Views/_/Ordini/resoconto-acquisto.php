@@ -36,7 +36,7 @@ if (!isset($baseUrl))
 </div>-->
 <?php } ?>
 
-<table class="table uk-width-1-2@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top">
+<table class="table uk-width-2-3@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top">
 	<tr>
 		<td class="first_column"><?php echo gtext("Ordine", false); ?>:</td>
 		<td><b>#<?php echo $ordine["id_o"];?></b></td>
