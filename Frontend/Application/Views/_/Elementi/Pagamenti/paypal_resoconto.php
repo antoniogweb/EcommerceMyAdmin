@@ -3,7 +3,7 @@
 	<?php if(!isset($actionFromAdmin)) { ?>
 		<div class="pulsante_paypal"><br /><?php echo $pulsantePaypal;?></div>
 	<?php } else { ?>
-		<h2><?php echo gtext("Dettagli pagamento:");?></h2>
+		<h2 class="uk-heading-bullet"><?php echo gtext("Dettagli pagamento:");?></h2>
 		<p><?php echo gtext("Pagamento tramite paypal ancora da eseguire");?></p>
 	<?php } ?>
 <?php } ?>
