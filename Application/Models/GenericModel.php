@@ -937,9 +937,23 @@ class GenericModel extends Model_Tree
 				unset($this->values["id_order"]);
 			
 			self::$uploadFileGeneric = false;
-			$this->insert();
+			
+			if ($this->insert())
+			{
+				$this->afterDuplica($to_id, $r[$this->_idFields], $this->lId);
+			}
+			
 			self::$uploadFileGeneric = true;
 		}
+	}
+	
+	// Azione dopo il duplica (dopo aver eseguito l'insert del nuovo)
+	// $toId: valore del nuovo elemento a cui è collegato
+	// $oldPk: valore della vecchia primary key
+	// $newPk: valore della nuova primary key
+	public function afterDuplica($toId, $oldPk, $newPk)
+	{
+	
 	}
 	
 	// Inserisci un gruppo
