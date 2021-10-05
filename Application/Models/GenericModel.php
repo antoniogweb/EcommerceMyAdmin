@@ -921,7 +921,9 @@ class GenericModel extends Model_Tree
 		if ($this->_tables == 'combinazioni')
 			$this->pDel(null, "id_page = ".$clean["to_id"]);
 		
-		$res = $this->clear()->where(array($field=>$clean["from_id"]))->orderBy($this->_idFields)->send(false);
+		$orderBy = isset($this->_idOrder) ? $this->_idOrder : $this->_idFields;
+		
+		$res = $this->clear()->where(array($field=>$clean["from_id"]))->orderBy($orderBy)->send(false);
 		
 		foreach ($res as $r)
 		{
