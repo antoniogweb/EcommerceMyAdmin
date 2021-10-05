@@ -234,9 +234,9 @@ function reverseData($data)
 	return $data;
 }
 
-function smartDate($uglyDate = null)
+function smartDate($uglyDate = null, $format = "d-m-Y")
 {
-	return date('d-m-Y',strtotime($uglyDate));
+	return date($format,strtotime($uglyDate));
 }
 
 function smartDateSlash($uglyDate = null)

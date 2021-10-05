@@ -15,7 +15,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 	<p><?php echo gtext("Ciao")?> <strong><?php echo $nomeCliente;?></strong> (<?php echo gtext("non sei")?> <strong><?php echo $nomeCliente;?></strong>? <a href="<?php echo $this->baseUrl."/esci";?>"><?php echo gtext("Esci")?></a>)</p>
 
-	<p><?php echo gtext("Dalla tua area riservata puoi vedere gli")?> <a href="<?php echo $this->baseUrl."/ordini-effettuati"?>"><?php echo gtext("ordini effettuati")?></a>, <?php echo gtext("gestire i tuoi")?>  <a href="<?php echo $this->baseUrl."/modifica-account"?>"><?php echo gtext("dati di fatturazione");?></a> <?php echo gtext("e i tuoi");?> <a href="<?php echo $this->baseUrl."/riservata/indirizzi"?>"><?php echo gtext("dati di spedizione");?></a>.</p>
+	<p><?php echo gtext("Dalla tua area riservata puoi vedere gli")?> <a href="<?php echo $this->baseUrl."/ordini-effettuati"?>"><?php echo gtext("ordini effettuati")?></a> <?php echo gtext("e gestire i tuoi")?>  <a href="<?php echo $this->baseUrl."/modifica-account"?>"><?php echo gtext("dati di fatturazione");?></a>.</p>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 
