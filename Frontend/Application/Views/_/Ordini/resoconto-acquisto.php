@@ -109,7 +109,7 @@ if (!isset($baseUrl))
 </div>
 
 <?php if (trim($ordine["note"])) { ?>
-<h2><?php echo gtext("Note d'acquisto");?></h2>
+<h2 class="uk-heading-bullet"><?php echo gtext("Note d'acquisto");?></h2>
 <?php echo nl2br($ordine["note"]);?>
 <br /><br />
 <?php } ?>
