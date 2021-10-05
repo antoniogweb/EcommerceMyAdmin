@@ -167,7 +167,7 @@ class RegusersController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = 'username,has_confirmed,password:sha1,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
+		$fields = 'username,has_confirmed,password,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
 		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
 		

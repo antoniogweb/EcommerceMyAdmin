@@ -45,7 +45,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		<div class="uk-margin">
 			<label class="uk-form-label"><?php echo gtext("Password");?></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("password","","uk-input class_password",null,"placeholder='".gtext("Inserisci la password", false)."'");?>
+				<?php echo Html_Form::password("password","","uk-input class_password",null,"placeholder='".gtext("Inserisci la password", false)."'");?>
 			</div>
 		</div>
 		

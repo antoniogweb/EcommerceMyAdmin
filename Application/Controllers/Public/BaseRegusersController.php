@@ -393,7 +393,7 @@ class BaseRegusersController extends BaseController
 					
 					$this->m['RegusersModel']->setPasswordCondition();
 				
-					$this->m['RegusersModel']->setFields("password","sha1");
+					$this->m['RegusersModel']->setFields("password",PASSWORD_HASH);
 
 					$data['notice'] = null;
 		
@@ -405,6 +405,9 @@ class BaseRegusersController extends BaseController
 							if ($this->m['RegusersModel']->checkConditions('insert'))
 							{
 								$this->m['RegusersModel']->values['forgot_time'] = 0;
+								
+								$this->m['RegusersModel']->sanitize("sanitizeDb");
+								
 								if ($this->m['RegusersModel']->pUpdate($clean['id_user']))
 								{
 									$_SESSION['result'] = 'password_cambiata';
@@ -450,14 +453,14 @@ class BaseRegusersController extends BaseController
 			$data["arrayLingue"][$l] = $l."/modifica-password";
 		}
 		
-		$this->m['RegusersModel']->setFields('password:sha1','none');
+		$this->m['RegusersModel']->setFields('password:'.PASSWORD_HASH,'none');
 
 		$this->m['RegusersModel']->setPasswordCondition();
 		
 		$id = (int)$this->s['registered']->status['id_user'];
 		if (isset($_POST['updateAction'])) {
 			$pass = $this->s['registered']->getPassword();
-			if (sha1($_POST['old']) === $pass)
+			if (passwordverify($_POST['old'], $pass))
 			{
 				$this->m['RegusersModel']->updateTable('update',$id);
 				if ($this->m['RegusersModel']->result)

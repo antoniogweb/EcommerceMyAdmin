@@ -1171,7 +1171,7 @@ class BaseOrdiniController extends BaseController
 									$sendPassword = true;
 									
 									$password = $this->request->post("password","","none");
-									$clean["password"] = sha1($password);
+									$clean["password"] = sanitizeAll(call_user_func(PASSWORD_HASH,$password));
 									
 									$this->m['RegusersModel']->values["password"] = $clean["password"];
 									

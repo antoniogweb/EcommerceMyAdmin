@@ -645,7 +645,7 @@ class BaseBaseController extends Controller
 		
 		// BASE: 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
 		
-		$fields = $baseFields.',password:sha1';
+		$fields = $baseFields.',password:'.PASSWORD_HASH;
 		
 		if (v("attiva_ruoli"))
 			$fields .= ",id_ruolo";

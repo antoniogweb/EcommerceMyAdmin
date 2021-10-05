@@ -171,7 +171,7 @@ class UsersController extends BaseController {
 		
 		$clean['id'] = (int)$id;
 		
-		$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,password:sha1','none');
+		$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,password','none');
 		
 		$this->formFields = 'username,has_confirmed,password,confirmation';
 		
@@ -189,63 +189,6 @@ class UsersController extends BaseController {
 	
 		$this->append($data);
 	}
-	
-// 	public function form($queryType = 'insert',$id = 0)
-// 	{
-// 		$this->shift(2);
-// 		
-// 		$this->_posizioni['main'] = 'class="active"';
-// 		$data['posizioni'] = $this->_posizioni;
-// 		
-// 		$qAllowed = array("insert","update");
-// 		
-// 		if (in_array($queryType,$qAllowed))
-// 		{
-// 			$clean['id'] = (int)$id;
-// 			
-// 			$data['type'] = $queryType;
-// 			
-// 			$this->s['admin']->check();
-// // 			if (!$this->s['admin']->checkCsrf($this->viewArgs['token'])) $this->redirect('panel/main',2,'wrong token');
-// 			
-// 			$this->m['UsersModel']->setFields('username:sanitizeAll,has_confirmed:sanitizeAll,password:sha1','none');
-// 			
-// 			$this->m['UsersModel']->updateTable('insert,update',$clean['id']);
-// 
-// 			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult)
-// 			{
-// 				$lId = $this->m[$this->modelName]->lId;
-// 				$this->redirect($this->controller.'/form/update/'.$lId.$this->viewStatus);
-// 			}
-// 			
-// 			$params = array(
-// 				'formMenu'=>"back,save",
-// 			);
-// 			
-// 			$this->loadScaffold('form', $params);
-// 			$this->scaffold->loadForm($queryType,"users/form/$queryType/".$clean['id']);
-// 			
-// 			$this->scaffold->model->fields = 'username,has_confirmed,password,confirmation';
-// 			
-// 			$this->scaffold->getFormValues('sanitizeHtml',$clean['id']);
-// 
-// 			$data['scaffold'] = $this->scaffold->render();
-// 			
-// 			$data['menu'] = $this->scaffold->html['menu'];
-// 			$data['main'] = $this->scaffold->html['main'];
-// 			$data['notice'] = $this->scaffold->model->notice;
-// 		
-// 			if (strcmp($queryType,'update') === 0)
-// 			{
-// 				$data['id_user'] = $clean['id'];
-// 				$data["titoloPagina"] = $this->m[$this->modelName]->where(array("id_user"=>$clean['id']))->field("username");
-// 				$data['numeroGruppi'] = $this->m["UsersgroupsModel"]->where(array("id_user"=>$clean['id']))->rowNumber();
-// 			}
-// 		
-// 			$this->append($data);
-// 			$this->load('form');
-// 		}
-// 	}
 	
 	public function gruppi($id = 0)
 	{

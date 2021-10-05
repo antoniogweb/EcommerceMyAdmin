@@ -171,10 +171,9 @@ class BaseRiservataController extends BaseController
 			
 			$user = $this->m["RegusersModel"]->where(array(
 				"id_user"	=>	User::$id,
-				"password"	=>	sha1($clean["password"]),
 			))->record();
 			
-			if (!empty($user))
+			if (!empty($user) && passwordverify($clean["password"], $user["password"]))
 			{
 				$this->m["RegusersModel"]->deleteAccount($user["id_user"]);
 				$this->s['registered']->logout();

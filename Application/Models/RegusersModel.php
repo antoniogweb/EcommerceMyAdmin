@@ -73,12 +73,31 @@ class RegusersModel extends FormModel {
 	{
 		$clean['id'] = (int)$id;
 		
-		if (strcmp($this->values['password'],sha1('')) === 0)
-		{
+		if (!$this->values['password'])
 			$this->delFields('password');
-		}
+		else
+			$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		
 		parent::update($clean['id']);
 	}
+	
+	public function insert()
+	{
+		$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		
+		return parent::insert();
+	}
+	
+// 	public function update($id = null, $where = null)
+// 	{
+// 		$clean['id'] = (int)$id;
+// 		
+// 		if (passwordverify($this->values['password'], call_user_func(PASSWORD_HASH,'')))
+// 		{
+// 			$this->delFields('password');
+// 		}
+// 		parent::update($clean['id']);
+// 	}
 
 // 	public function del($id = null, $whereClause = null)
 // 	{

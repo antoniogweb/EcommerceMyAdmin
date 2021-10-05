@@ -33,7 +33,7 @@ class PasswordController extends BaseController {
 		$this->session('admin');
 		$this->model('UsersModel');
 
-		$this->m['UsersModel']->setFields('password:sha1','none');
+		$this->m['UsersModel']->setFields('password','none');
 
 		$this->m['UsersModel']->strongConditions['update'] = array('checkEqual'=>'password,confirmation');
 
@@ -54,7 +54,7 @@ class PasswordController extends BaseController {
 		$id = (int)$this->s['admin']->status['id_user'];
 		if (isset($_POST['updateAction'])) {
 			$pass = $this->s['admin']->getPassword();
-			if (sha1($_POST['old']) === $pass)
+			if (passwordverify($_POST['old'], $pass))
 			{
 				$this->m['UsersModel']->updateTable('update',$id);
 				$data['notice'] = $this->m['UsersModel']->notice;
