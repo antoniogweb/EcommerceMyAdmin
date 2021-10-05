@@ -11,7 +11,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //define the hash algoritm to be used in order to protect your password
 //only md5 and sha1 are supported
-define('PASSWORD_HASH','sha1');
+if (!defined('PASSWORD_HASH'))
+	define('PASSWORD_HASH','sha1');
 
 
 
