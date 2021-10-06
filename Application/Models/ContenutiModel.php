@@ -384,7 +384,7 @@ class ContenutiModel extends GenericModel {
 		
 		if (count($fasce) > 0)
 		{
-			$htmlFinale = "<div class='blocco_fasce_contenuto'>";
+			$htmlFinale = User::$adminLogged ? "<div class='blocco_fasce_contenuto'>" : "";
 			
 			foreach ($fasce as $f)
 			{
@@ -437,7 +437,7 @@ class ContenutiModel extends GenericModel {
 					$htmlFinale .= "</div>";
 			}
 			
-			$htmlFinale .= "</div>";
+			$htmlFinale .= User::$adminLogged ? "</div>" : "";
 		}
 		
 		return $htmlFinale;
