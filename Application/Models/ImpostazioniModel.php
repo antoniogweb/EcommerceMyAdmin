@@ -219,7 +219,7 @@ class ImpostazioniModel extends GenericModel {
 					),
 				),
 				'mailchimp_api_key'		=>	array(
-					'labelString'=>	gtext("Chiave di sicurezza Mailochimp"),
+					'labelString'=>	gtext("Chiave di sicurezza Mailchimp"),
 					'wrap'		=>	array(
 						null,
 						null,
