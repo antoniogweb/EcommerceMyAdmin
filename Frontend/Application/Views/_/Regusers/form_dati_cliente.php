@@ -136,7 +136,7 @@ else
 		<div class="uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::password("password",$values['password'],"uk-input class_password",null,"autocomplete='off'  placeholder='".gtext("Password", false)."'");?>
+				<?php echo Html_Form::password("password",$values['password'],"uk-input class_password",null,"autocomplete='new-password'  placeholder='".gtext("Password", false)."'");?>
 			</div>
 		</div>
 		
@@ -144,7 +144,7 @@ else
 		<div class="uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation",null,"autocomplete='off'  placeholder='".gtext("Conferma password", false)."'");?>
+				<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation",null,"autocomplete='new-password'  placeholder='".gtext("Conferma password", false)."'");?>
 			</div>
 		</div>
 		<?php } ?>
@@ -157,14 +157,14 @@ else
 	<div class="uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"autocomplete='off' placeholder='".gtext("Email", false)."'");?>
+			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"autocomplete='new-password' placeholder='".gtext("Email", false)."'");?>
 		</div>
 	</div>
 	<?php if (v("account_attiva_conferma_username")) { ?>
 	<div class="uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Conferma email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"autocomplete='off' placeholder='".gtext("Conferma email", false)."'");?>
+			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"autocomplete='new-password' placeholder='".gtext("Conferma email", false)."'");?>
 		</div>
 	</div>
 	<?php } ?>
@@ -173,7 +173,7 @@ else
 	<div class="first_of_grid uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='off' placeholder='".gtext("Password", false)."'");?>
+			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='new-password' placeholder='".gtext("Password", false)."'");?>
 		</div>
 	</div>
 	<?php } ?>
@@ -192,14 +192,14 @@ else
 				<div class="first_of_grid uk-margin uk-margin-remove-bottom">
 					<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 					<div class="uk-form-controls">
-						<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='off' placeholder='".gtext("Password", false)."'");?>
+						<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='new-password' placeholder='".gtext("Password", false)."'");?>
 					</div>
 				</div>
 				<?php if (v("account_attiva_conferma_password")) { ?>
 				<div class="uk-margin uk-margin-remove-bottom">
 					<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
 					<div class="uk-form-controls">
-						<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation",null,"autocomplete='off' placeholder='".gtext("Conferma password", false)."'");?>
+						<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation",null,"autocomplete='new-password' placeholder='".gtext("Conferma password", false)."'");?>
 					</div>
 				</div>
 				<?php } ?>

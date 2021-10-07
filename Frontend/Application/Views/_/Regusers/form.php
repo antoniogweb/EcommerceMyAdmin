@@ -31,7 +31,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php echo $notice; ?>
 </div>
 
-<form class="form_registrazione" action="<?php echo $this->baseUrl.$action;?>#main" method="POST">
+<form class="form_registrazione" action="<?php echo $this->baseUrl.$action;?>#main" method="POST" autocomplete="new-password">
 	<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 	
 	<?php if (strcmp($this->action,"add") === 0) { ?>
