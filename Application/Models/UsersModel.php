@@ -53,6 +53,7 @@ class UsersModel extends GenericModel {
 			'entries' 	=> 	array(
 				'username'		=>	array(
 					'labelString'=>	'Username',
+					'attributes'=>	'autocomplete="off"',
 				),
 				'has_confirmed'		=>	array(
 					'type'		=>	'Select',
@@ -61,15 +62,18 @@ class UsersModel extends GenericModel {
 				),
 				'password'			=>	array(
 					'type'	=>	'Password',
+					'attributes'=>	'autocomplete="off"',
 				),
 				'confirmation'		=>	array(
 					'labelString'	=>	'Conferma la password',
 					'type'			=>	'Password',
+					'attributes'=>	'autocomplete="off"',
 				),
 				'id_user'	=>	array(
 					'type'		=>	'Hidden'
 				),
 			),
+			'attributes'	=>	'autocomplete="off"',
 		);
 		
 		parent::__construct();
