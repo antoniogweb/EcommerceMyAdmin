@@ -384,7 +384,7 @@ class ContenutiModel extends GenericModel {
 		
 		if (count($fasce) > 0)
 		{
-			$htmlFinale = "<div class='blocco_fasce_contenuto'>";
+			$htmlFinale = User::$adminLogged ? "<div class='blocco_fasce_contenuto'>" : "";
 			
 			foreach ($fasce as $f)
 			{
@@ -416,10 +416,10 @@ class ContenutiModel extends GenericModel {
 				
 				$html = preg_replace('/\[descrizione\]/', $f["contenuti"]["descrizione"], $html);
 				
-				$htmlFinale .= "<div id='".$f["contenuti"]["id_cont"]."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
-				
 				if (User::$adminLogged)
 				{
+					$htmlFinale .= "<div id='".$f["contenuti"]["id_cont"]."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
+					
 					$htmlFinale .= "<div class='titolo_fascia'>Fascia: <b>".$f["contenuti"]["titolo"]."</b> - Tipo: <b>".$f["tipi_contenuto"]["titolo"]."</b>";
 					
 					$htmlFinale .= " - LINGUA: <b>".strtoupper($f["contenuti"]["lingua"])."</b>";
@@ -431,10 +431,13 @@ class ContenutiModel extends GenericModel {
 					$htmlFinale .= "</div>";
 				}
 				
-				$htmlFinale .= attivaModuli($html, $obj)."</div>";
+				$htmlFinale .= attivaModuli($html, $obj);
+				
+				if (User::$adminLogged)
+					$htmlFinale .= "</div>";
 			}
 			
-			$htmlFinale .= "</div>";
+			$htmlFinale .= User::$adminLogged ? "</div>" : "";
 		}
 		
 		return $htmlFinale;
