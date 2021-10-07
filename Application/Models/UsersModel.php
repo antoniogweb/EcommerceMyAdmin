@@ -73,6 +73,7 @@ class UsersModel extends GenericModel {
 					'type'		=>	'Hidden'
 				),
 			),
+			
 			'attributes'	=>	'autocomplete="new-password"',
 		);
 		
