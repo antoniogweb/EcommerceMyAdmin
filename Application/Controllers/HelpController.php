@@ -30,6 +30,8 @@ class HelpController extends BaseController
 	
 	public $sezionePannello = "utenti";
 	
+	public $orderBy = "id_order";
+	
 	public $tabella = "help";
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
@@ -53,7 +55,7 @@ class HelpController extends BaseController
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("titolo")->save();
+				->orderBy("id_order")->save();
 		
 		parent::main();
 	}
@@ -126,5 +128,27 @@ class HelpController extends BaseController
 			else
 				$this->m["HelpuserModel"]->del(null, "id_help = ".(int)$id." AND id_user = ".(int)User::$id);
 		}
+	}
+	
+	public function pdf($idHelp = 0, $controller = "")
+	{
+		$this->clean();
+		
+		$this->m["HelpModel"]->clear()->inner(array("elementi"))->orderBy("help_item.id_order");
+		
+		if ($idHelp)
+			$this->m["HelpModel"]->aWhere(array(
+				"id_help"	=>	(int)$idHelp,
+			));
+		else if ($controller)
+			$this->m["HelpModel"]->aWhere(array(
+				"lk"	=>	array(
+					"controlleraction"	=>	sanitizeAll(rtrim($controller,"/")."/"),
+				)
+			));
+		
+		$elementi = $this->m["HelpModel"]->send();
+		
+		print_r($elementi);
 	}
 }
