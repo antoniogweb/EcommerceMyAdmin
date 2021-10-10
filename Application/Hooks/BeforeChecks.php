@@ -187,7 +187,7 @@ Helper_Menu::$htmlLinks = array(
 	"edit" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-primary"',
+		"attributes" => 'role="button" class="btn btn-primary help_modifica"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Modifica",
 		"classIconBefore"	=>	'<i class="fa fa-pencil"></i>',
@@ -195,7 +195,7 @@ Helper_Menu::$htmlLinks = array(
 	"manda_mail" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-warning"',
+		"attributes" => 'role="button" class="btn btn-warning help_manda_mail"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Invia mail",
 		"classIconBefore"	=>	'<i class="fa fa-envelope"></i>',
