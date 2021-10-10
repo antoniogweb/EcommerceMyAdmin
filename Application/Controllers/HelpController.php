@@ -134,7 +134,7 @@ class HelpController extends BaseController
 	{
 		$this->clean();
 		
-		$this->m["HelpModel"]->clear()->inner(array("elementi"))->orderBy("help_item.id_order");
+		$this->m["HelpModel"]->clear()->select("*")->inner(array("elementi"))->orderBy("help_item.id_order");
 		
 		if ($idHelp)
 			$this->m["HelpModel"]->aWhere(array(
@@ -149,6 +149,32 @@ class HelpController extends BaseController
 		
 		$elementi = $this->m["HelpModel"]->send();
 		
-		print_r($elementi);
+		require_once(ROOT."/External/libs/vendor/autoload.php");
+
+		ob_start();
+		include(ROOT."/Application/Views/Help/pdf.php");
+		$content = ob_get_clean();
+		
+		$params = [
+			'mode' => '',
+			'format' => 'A4',
+			'default_font_size' => "9",
+			'default_font' => "",
+			'margin_left' => "6",
+			'margin_right' => "6",
+			'margin_top' => "5",
+			'margin_bottom' => "10",
+			'margin_header' => "0",
+			'margin_footer' => "2",
+			'orientation'	=>	"P",
+		];
+		
+		$html2pdf = new \Mpdf\Mpdf($params);
+		
+		$html2pdf->setDefaultFont('Arial');
+		
+		$html2pdf->WriteHTML($content);
+		
+		$html2pdf->Output("guida.pdf","I");
 	}
 }
