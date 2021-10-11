@@ -906,6 +906,8 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		"lingua"	=>	$lingua,
 	))->record();
 	
+// 	echo $t->getQuery()."<br />";
+	
 	if (count($testo) > 0)
 	{
 		$clean["id"] = (int)$testo["id_t"];
@@ -979,9 +981,14 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		}
 		else
 		{
-			$t->values = array(
-				"valore"	=>	$clean["chiave"],
-			);
+			if ($tipo == "IMMAGINE" && file_exists(ROOT."/Public/Img/nofound.jpeg"))
+				$t->values = array(
+					"valore"	=>	sanitizeDb("<img width='200px' src='".Url::getFileRoot()."Public/Img/nofound.jpeg' />"),
+				);
+			else
+				$t->values = array(
+					"valore"	=>	$clean["chiave"],
+				);
 		}
 		
 		$t->values["chiave"] = $clean["chiave"];
@@ -992,7 +999,10 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 			$t->values["attributi"] = sanitizeAll($matches[2]);
 		
 		if ($t->insert())
+		{
+			unset(Cache::$cachedTables[array_search("testi", Cache::$cachedTables)]);
 			return getTesto($matches, $tags, $tipo);
+		}
 	}
 	
 	return "";
