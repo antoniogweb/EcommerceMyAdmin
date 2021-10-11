@@ -26,6 +26,8 @@ class VariabiliModel extends GenericModel {
 	
 	public static $valori = array();
 	
+	public static $placeholders = null;
+	
 	public static $variabili = array(
 		"usa_marchi"				=>	"1",
 		"db_version"				=>	0,
@@ -266,7 +268,33 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_classe_personalizzata_menu"	=>	0,
 		"attiva_gestione_pagamenti"	=>	0,
 		"hook_update_ordine"		=>	"",
+		"codice_fiscale_aziendale"	=>	"",
+		"partita_iva_aziendale"		=>	"",
+		"hook_set_placeholder"		=>	"",
+		"placeholder_prodotti_o_servizi"	=>	"",
+		"responsabile_trattamento_dati"	=>	"",
+		"email_responsabile_trattamento_dati"	=>	"",
 	);
+	
+	public static function setPlaceholders()
+	{
+		self::$placeholders = array(
+			"INDIRIZZO"			=>	v("indirizzo_aziendale"),
+			"NOME AZIENDA"		=>	Parametri::$nomeNegozio,
+			"CODICE FISCALE"	=>	v("codice_fiscale_aziendale"),
+			"PARTITA IVA"		=>	v("partita_iva_aziendale"),
+			"INDIRIZZO SITO WEB"	=>	DOMAIN_NAME,
+			"PRODOTTI/SERVIZI"	=>	v("placeholder_prodotti_o_servizi"),
+			"EMAIL AZIENDALE"	=>	v("email_aziendale"),
+			"NOMINATIVO RESPONSABILE TRATTAMENTO DATI"	=>	v("responsabile_trattamento_dati"),
+			"EMAIL RESPONSABILE TRATTAMENTO DATI"		=>	v("email_responsabile_trattamento_dati"),
+		);
+		
+		if (v("hook_set_placeholder") && function_exists(v("hook_set_placeholder")))
+			self::$placeholders = callFunction(v("hook_set_placeholder"), self::$placeholders, v("hook_set_placeholder"));
+		
+		return self::$placeholders;
+	}
 	
 	public function __construct() {
 		$this->_tables='variabili';

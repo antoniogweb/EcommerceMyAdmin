@@ -33,6 +33,7 @@ class FormModel extends GenericModel {
 				'username'		=>	array(
 					'labelString'=>	'Email',
 					'className'	=>	'for_print form-control',
+					'attributes'=>	'autocomplete="new-password"',
 				),
 				'has_confirmed'		=>	array(
 					'type'		=>	'Select',
@@ -52,12 +53,14 @@ class FormModel extends GenericModel {
 					'type'	=>	'Password',
 					'entryClass'	=>	'for_print form_input_text',
 					'className'		=> 'form-control',
+					'attributes'=>	'autocomplete="new-password"',
 				),
 				'confirmation'		=>	array(
 					'labelString'	=>	'Conferma la password',
 					'type'			=>	'Password',
 					'entryClass'	=>	'for_print form_input_text',
 					'className'		=> 'form-control',
+					'attributes'=>	'autocomplete="new-password"',
 				),
 				'tipo_cliente'		=>	array(
 					'type'		=>	'Select',

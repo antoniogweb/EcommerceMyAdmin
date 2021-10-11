@@ -30,6 +30,8 @@ class HelpController extends BaseController
 	
 	public $sezionePannello = "utenti";
 	
+	public $orderBy = "id_order";
+	
 	public $tabella = "help";
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
@@ -53,7 +55,7 @@ class HelpController extends BaseController
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("titolo")->save();
+				->orderBy("id_order")->save();
 		
 		parent::main();
 	}
@@ -126,5 +128,53 @@ class HelpController extends BaseController
 			else
 				$this->m["HelpuserModel"]->del(null, "id_help = ".(int)$id." AND id_user = ".(int)User::$id);
 		}
+	}
+	
+	public function pdf($idHelp = 0, $controller = "")
+	{
+		$this->clean();
+		
+		$this->m["HelpModel"]->clear()->select("*")->inner(array("elementi"))->orderBy("help_item.id_order");
+		
+		if ($idHelp)
+			$this->m["HelpModel"]->aWhere(array(
+				"id_help"	=>	(int)$idHelp,
+			));
+		else if ($controller)
+			$this->m["HelpModel"]->aWhere(array(
+				"lk"	=>	array(
+					"controlleraction"	=>	sanitizeAll(rtrim($controller,"/")."/"),
+				)
+			));
+		
+		$elementi = $this->m["HelpModel"]->send();
+		
+		require_once(ROOT."/External/libs/vendor/autoload.php");
+
+		ob_start();
+		include(ROOT."/Application/Views/Help/pdf.php");
+		$content = ob_get_clean();
+		
+		$params = [
+			'mode' => '',
+			'format' => 'A4',
+			'default_font_size' => "9",
+			'default_font' => "",
+			'margin_left' => "6",
+			'margin_right' => "6",
+			'margin_top' => "5",
+			'margin_bottom' => "10",
+			'margin_header' => "0",
+			'margin_footer' => "2",
+			'orientation'	=>	"P",
+		];
+		
+		$html2pdf = new \Mpdf\Mpdf($params);
+		
+		$html2pdf->setDefaultFont('Arial');
+		
+		$html2pdf->WriteHTML($content);
+		
+		$html2pdf->Output("guida.pdf","I");
 	}
 }

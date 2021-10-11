@@ -775,10 +775,6 @@ class PagesController extends BaseController {
 					$this->m[$this->modelName]->values["title"] = "(Copia di) " . $this->m[$this->modelName]->values["title"];
 					
 					$this->m[$this->modelName]->checkDates();
-// 					$this->m[$this->modelName]->values["dal"] = reverseData($this->m[$this->modelName]->values["dal"]);
-// 					$this->m[$this->modelName]->values["al"] = reverseData($this->m[$this->modelName]->values["al"]);
-			
-// 					$this->m[$this->modelName]->values["codice"] = "(copia)-".$this->m[$this->modelName]->values["codice"] . "-". generateString(8);
 					
 					$this->m[$this->modelName]->values["principale"] = "Y";
 					
@@ -787,25 +783,6 @@ class PagesController extends BaseController {
 					$this->m[$this->modelName]->delFields("id_order");
 					
 					$this->m[$this->modelName]->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
-					
-// 					$clean["id_c"] = 1;
-// 					
-// 					if (isset($this->m[$this->modelName]->hModel->section))
-// 					{
-// 						$section = $this->m[$this->modelName]->hModel->section;
-// 						
-// 						if (strcmp($section,$this->m[$this->modelName]->hModel->rootSectionName) !== 0)
-// 						{
-// 							$cat = $this->m[$this->modelName]->hModel->clear()->where(array("section"=>$this->m[$this->modelName]->hModel->section))->record();
-// 						
-// 							if (count($cat) > 0)
-// 							{
-// 								$clean["id_c"] = $cat["id_c"];
-// 							}
-// 						}
-// 					}
-// 					
-// 					$this->m[$this->modelName]->values["id_c"] = $clean["id_c"];
 					
 					$this->m[$this->modelName]->sanitize();
 

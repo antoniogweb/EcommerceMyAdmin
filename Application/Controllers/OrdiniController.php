@@ -88,7 +88,7 @@ class OrdiniController extends BaseController {
 			'totaleCrud',
 		);
 		
-		$headLabels = '#ID,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
+		$headLabels = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
 		
 		if (v("attiva_ip_location"))
 		{
@@ -348,10 +348,6 @@ class OrdiniController extends BaseController {
 		$this->helper("Menu",$this->applicationUrl.$this->controller,"panel");
 		
 		$this->h["Menu"]->links['edit']['url'] = 'form/update/'.$clean["id_o"];
-		$this->h["Menu"]->links['edit']['class'] = 'mainMenuItem';
-// 		$this->h["Menu"]->links['edit']['text'] = 'Modifica';
-		$this->h["Menu"]->links['edit']['queryString'] = '?n=y';
-		$this->h["Menu"]->links['edit']['icon'] = $this->baseUrl.'/Public/Img/Icons/elementary_2_5/edit.png';
 		$this->h["Menu"]->links['edit']['title'] = "Modifica ordine";
 		
 		$this->h["Menu"]->links['manda_mail']['url'] = 'vedi/'.$clean["id_o"];

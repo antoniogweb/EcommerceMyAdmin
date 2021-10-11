@@ -814,6 +814,15 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[video (.*?)\]/', 'getVideo' ,$string);
 	$string = preg_replace_callback('/\[variabile (.*?)\]/', 'getVariabile' ,$string);
 	
+	if (!isset(VariabiliModel::$placeholders))
+		VariabiliModel::setPlaceholders();
+	
+	foreach (VariabiliModel::$placeholders as $key => $value)
+	{
+		if ($value)
+			$string = str_replace('['.$key.']', $value ,$string);
+	}
+	
 	if ($obj)
 	{
 		$string = preg_replace_callback('/\[slide\]/', array($obj,'getSlide') ,$string);

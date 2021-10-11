@@ -3,7 +3,7 @@
 <?php include(ROOT."/Application/Views/anagrafiche_js.php")?>
 
 <div class='row'>
-	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
+	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data" autocomplete="new-password">
 		<div class='col-md-8'>
 			<?php echo $form["tipo_cliente"];?>
 			<?php if (isset($form["id_ruolo"])) { ?>

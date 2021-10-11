@@ -7745,7 +7745,7 @@ if (!class_exists('TCPDF', false)) {
 					$out .= ' /DR <<';
 					$out .= ' /Font <<';
 					foreach ($this->annotation_fonts as $font => $fontkey) {
-						$out .= ' /F'.($fontkey + 1).' '.$this->font_obj_ids[$font].' 0 R';
+						$out .= ' /F'.((int)$fontkey + 1).' '.$this->font_obj_ids[$font].' 0 R';
 					}
 					$out .= ' >> >>';
 				}

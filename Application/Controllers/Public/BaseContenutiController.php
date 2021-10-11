@@ -1415,7 +1415,7 @@ class BaseContenutiController extends BaseController
 				
 				extract($data);
 				
-				require_once(ROOT."/admin/External/mpdfPHP7/vendor/autoload.php");
+				require_once(ROOT."/admin/External/libs/vendor/autoload.php");
 
 				ob_start();
 				include(tpf("Contenuti/pdf.php"));
@@ -1440,8 +1440,6 @@ class BaseContenutiController extends BaseController
 				$html2pdf->setDefaultFont('Arial');
 				
 				$html2pdf->WriteHTML($content);
-				
-// 				$html2pdf->Output(ROOT . "/media/Documenti/" . $titoloDocumento,'F');
 				
 				$html2pdf->Output(field($pages[0],"title").".pdf","I");
 			}
