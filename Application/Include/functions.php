@@ -899,7 +899,7 @@ function getVideo($matches, $tags = null, $tipo = "TESTO")
 	return getTesto($matches, $tags, "VIDEO");
 }
 
-function getTesto($matches, $tags = null, $tipo = "TESTO")
+function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true)
 {
 	$clean["chiave"] = sanitizeDb($matches[1]);
 	
@@ -963,7 +963,10 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		{
 			ob_start();
 			include $path;
-			$t = ob_get_clean();
+			if ($cleanFlush)
+				$t = ob_get_clean();
+			else
+				$t = ob_get_flush();
 		}
 		
 		if (User::$adminLogged && TestiModel::$mostraIconaEdit)
@@ -1010,7 +1013,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		if ($t->insert())
 		{
 			unset(Cache::$cachedTables[array_search("testi", Cache::$cachedTables)]);
-			return getTesto($matches, $tags, $tipo);
+			return getTesto($matches, $tags, $tipo, $cleanFlush);
 		}
 	}
 	
@@ -1030,9 +1033,9 @@ function t($chiave, $tags = null)
 }
 
 //chiama la traduzione di un blocco immagine
-function i($chiave, $tags = null, $attributi = null)
+function i($chiave, $tags = null, $attributi = null, $cleanFlush = true)
 {
-	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE");
+	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE", $cleanFlush);
 }
 
 //chiama la traduzione di un blocco immagine

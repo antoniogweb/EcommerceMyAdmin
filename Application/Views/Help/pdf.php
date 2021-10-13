@@ -1,5 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <style>
+
+@page {
+	size: auto;
+	footer: myFooter1;
+}
+
 .h1, .h2
 {
 	font-size:13px;
@@ -24,14 +30,32 @@ img
 }
 </style>
 
+
+<htmlpagefooter name="myFooter1" style="display:none">
+	<table width="100%">
+		<tr>
+			<td width="33%">
+				<?php echo gtext("Scaricato il");?> <span style="font-weight: bold;o">{DATE d/m/Y}</span>
+			</td>
+			<td width="33%" align="center" style="font-weight: bold; font-style: italic;">
+				{PAGENO}/{nbpg}
+			</td>
+			<td width="33%" style="text-align: right;">
+				Guida ecommerce <b><?php echo Parametri::$nomeNegozio;?></b>
+			</td>
+		</tr>
+	</table>
+</htmlpagefooter>
+
 <?php
 $idHelp = 0;
+$idCiclo = 0;
 foreach ($elementi as $hdv) { ?>
 	
 	<?php if ($hdv["help"]["id_help"] != $idHelp) {
 		$idHelp = $hdv["help"]["id_help"];
 	?>
-	<h1><?php echo htmlentitydecode($hdv["help"]["titolo"]);?></h1>
+	<h1 style="margin-bottom:5mm;<?php if ($idCiclo) { echo "margin-top:10mm;";}?>"><?php echo htmlentitydecode($hdv["help"]["titolo"]);?></h1>
 	<?php } else { ?>
 	<h2><?php echo htmlentitydecode($hdv["help_item"]["titolo"]);?></h2>
 	<?php } ?>
@@ -40,4 +64,4 @@ foreach ($elementi as $hdv) { ?>
 	?>
 	
 	<div><?php echo $desc;?></div>
-<?php } ?>
+<?php $idCiclo++; } ?>

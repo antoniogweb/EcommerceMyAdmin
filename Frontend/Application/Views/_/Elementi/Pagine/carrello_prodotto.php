@@ -146,6 +146,8 @@
 		</div>
 		<?php } ?>
 		
+		<div class="uk-text-small uk-text-danger errore_giacenza"></div>
+		
 		<div class="uk-margin-remove">
 			<input name="quantita" class="uk-input uk-form-width-xsmall quantita_input" type="<?php if (User::$isMobile) { ?>hidden<?php } else { ?>number<?php } ?>" value="<?php echo getQtaDaCarrello();?>" min="1" style="font-size: 14px;">
 			<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
