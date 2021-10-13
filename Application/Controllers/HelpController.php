@@ -62,13 +62,17 @@ class HelpController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = "titolo,controlleraction,tag,larghezza";
+		$fields = "titolo,controlleraction,tag,larghezza,descrizione";
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+		
+		$data["useEditor"] = true;
+		
+		$this->append($data);
 	}
 	
 	public function elementi($id = 0)
