@@ -5,6 +5,7 @@
 	var errore_combinazione = "<?php echo gtext("Si prega di indicare:", false);?>";
 	var errore_quantita_minore_zero = "<?php echo gtext("Si prega di indicare una quantità maggiore di zero", false);?>";
 	var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
+	var variante_non_disponibile = "<?php echo gtext("Prodotto non disponibile", false);?>";
 	var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
 	var back_cart_error = "red";
 	var isMobile = <?php echo User::$isMobile ? "true" : "false";?>;
@@ -14,6 +15,7 @@
 	var debug_js = <?php echo v("debug_js") ? "true" : "false"; ?>;
 	var input_border_color = "#e5e5e5";
 	var attiva_spedizione = <?php echo v("attiva_spedizione") ? "true" : "false";?>;
+	var check_giacenza = <?php echo v("attiva_giacenza") ? "true" : "false";?>;
 </script>
 
 <script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit.min.js"></script>
