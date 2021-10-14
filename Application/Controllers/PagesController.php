@@ -2097,7 +2097,8 @@ class PagesController extends BaseController {
 		{
 			if ($clean['is_main'] === 1 or $this->m[$this->modelName]->recordExists($clean['id_page']))
 			{
-				if (!empty($_FILES)) {
+				if (!empty($_FILES))
+				{
 					if ($_FILES["Filedata"]["size"] <= Parametri::$maxUploadSize)
 					{
 						$tempFile = $_FILES['Filedata']['tmp_name'];
