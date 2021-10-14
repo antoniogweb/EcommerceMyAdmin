@@ -39,6 +39,22 @@ class HelpModel extends GenericModel
 			'utenti' => array("HAS_MANY", 'HelpuserModel', 'id_help', null, "CASCADE"),
         );
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'descrizione'		=>	array(
+					'type'		 =>	'Textarea',
+					'labelString'=>	'Descrizione',
+					'className'		=>	'form-control editor_textarea',
+				),
+			),
+			
+			'enctype'	=>	'',
+		);
+	}
 	
 	public function daVedere($soloMaiVisti = true)
     {

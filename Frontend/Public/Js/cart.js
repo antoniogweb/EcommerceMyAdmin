@@ -7,6 +7,9 @@ var vai_al_checkout = false;
 if (typeof variante_non_esistente == "undefined")
 	var variante_non_esistente = "Non esiste il prodotto con la combinazioni di varianti selezionate";
 
+if (typeof variante_non_disponibile == "undefined")
+	var variante_non_disponibile = "Prodotto non disponibile";
+
 if (typeof errore_combinazione == "undefined")
 	var errore_combinazione = "Si prega di selezionare la variante:";
 
@@ -33,6 +36,9 @@ if (typeof gtm_analytics == "undefined")
 
 if (typeof mostra_prezzo_accessori == "undefined")
 	var mostra_prezzo_accessori = false;
+
+if (typeof check_giacenza == "undefined")
+	var check_giacenza = false;
 
 var time;
 var arrayAccessori = [];
@@ -136,6 +142,15 @@ function checkCarrello()
 			$(this).find(".errore_combinazione").html("");
 	});
 	
+	if (okProcedi && $(".valore_giacenza").length > 0 && check_giacenza && $(".valore_giacenza").text() <= 0)
+	{
+		okProcedi = false;
+		$(".errore_giacenza").html(variante_non_disponibile);
+	}
+	
+	if (okProcedi)
+		$(".errore_giacenza").html("");
+	
 	return okProcedi;
 }
 
@@ -149,13 +164,13 @@ function attivaDisattivaCarrello()
 	if (okProcedi)
 	{
 		$(".pulsante_carrello").addClass("aggiungi_al_carrello").removeClass("disabled");
-		$(".acquista_prodotto").addClass("aggiungi_al_carrello_checkout").removeClass("disabled");
+		$(".acquista_prodotto").addClass("aggiungi_al_carrello_checkout").prop('disabled', false).removeClass("disabled");
 	}
 		
 	else
 	{
 		$(".pulsante_carrello").removeClass("aggiungi_al_carrello").addClass("disabled");
-		$(".acquista_prodotto").removeClass("aggiungi_al_carrello_checkout").addClass("disabled");
+		$(".acquista_prodotto").removeClass("aggiungi_al_carrello_checkout").prop('disabled', true).addClass("disabled");
 	}
 	
 	if (okProcedi)
@@ -448,8 +463,6 @@ function combinazione(obj)
 						
 						if (obj.find(".dati_variante").length > 0){
 							obj.find(".dati_variante").html(content);
-							
-// 							$(".pulsante_carrello").addClass("aggiungi_al_carrello").removeClass("disabled");
 							
 							aggiornaDatiVariante(obj);
 							attivaDisattivaCarrello();

@@ -22,25 +22,25 @@
 						<div class="col-lg-6">
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									Gestione stato ordine
+									<?php echo gtext("Gestione stato ordine");?>
 								</div>
 								<div class="panel-body">
-									L'ordine <b>#<?php echo $ordine["id_o"];?></b> è nello stato: <span class="label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span>
+									<div class="help_numero_ordine"><?php echo gtext("L'ordine");?> <b>#<?php echo $ordine["id_o"];?></b> <?php echo gtext("è nello stato");?>: <span class="help_stato_ordine label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span></div>
 									
 									<?php $statiSuccessivi = OrdiniModel::statiSuccessivi($ordine["stato"]);?>
 									<?php if (count($statiSuccessivi) > 0) { ?>
 										<br /><br />Imposta nuovo stato ordine:<br />
 										<?php foreach ($statiSuccessivi as $statoSucc) { ?>
-										<a class="btn-sm btn btn-<?php echo labelStatoOrdine($statoSucc);?>" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/$statoSucc".$this->viewStatus;?>">Imposta come <b><?php echo str_replace("ORDINE","",strtoupper(statoOrdine($statoSucc)));?></b></a>
+										<a class="help_cambia_stato btn-sm btn btn-<?php echo labelStatoOrdine($statoSucc);?>" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/$statoSucc".$this->viewStatus;?>">Imposta come <b><?php echo str_replace("ORDINE","",strtoupper(statoOrdine($statoSucc)));?></b></a>
 										<?php } ?>
 									<?php } ?>
 									
 									<?php if (count($mail_altre) > 0) { ?>
-									<h3>Storico invii mail</h3>
+									<br /><br /><h3 class="help_storico"><?php echo gtext("Storico invii mail");?></h3>
 									<table class="table table-striped">
 										<tr>
-											<th>Data invio</th>
-											<th>Tipo mail</th>
+											<th><?php echo gtext("Data invio");?></th>
+											<th><?php echo gtext("Tipo mail");?></th>
 											<th style="width:1%;"></th>
 										</tr>
 										<?php foreach ($mail_altre as $mailFatt) { ?>
@@ -98,36 +98,36 @@
 			</div>
 			
 			<div class="box">
-				<div class="box-header with-border main">
-					<a class="iframe pull-right" href="<?php echo Domain::$name."/".$ordine["lingua"]."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> Vedi ordine lato cliente</a>
-					<h3>Resoconto dell'ordine</h3>
+				<div class="box-header with-border main help_resoconto">
+					<a class="iframe pull-right help_ordine_lato_cliente" href="<?php echo Domain::$name."/".$ordine["lingua"]."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> <?php echo gtext("Vedi ordine lato cliente");?></a>
+					<h3><?php echo gtext("Resoconto dell'ordine");?></h3>
 					
 					<table class="table table-striped">
 						<tr>
-							<td>Ordine:</td>
+							<td><?php echo gtext("N° Ordine");?>:</td>
 							<td><b>#<?php echo $ordine["id_o"];?></b></td>
 						</tr>
 						<tr>
-							<td>Data:</td>
+							<td><?php echo gtext("Data");?>:</td>
 							<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
 						</tr>
 						<tr>
-							<td>Totale:</td>
+							<td><?php echo gtext("Totale");?>:</td>
 							<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
 						</tr>
 						<?php if (strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
 						<tr>
-							<td>Stato ordine:</td>
+							<td><?php echo gtext("Stato ordine");?>:</td>
 							<td><b><span class="label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span></b></td>
 						</tr>
 						<?php } ?>
 						<tr>
-							<td>Metodo di pagamento:</td>
+							<td><?php echo gtext("Metodo di pagamento");?>:</td>
 							<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
 						</tr>
 						<?php if (v("attiva_ip_location")) { ?>
 						<tr>
-							<td>Nazione navigazione:</td>
+							<td><?php echo gtext("Nazione navigazione");?>:</td>
 							<td><b><?php echo findTitoloDaCodice($ordine["nazione_navigazione"]);?></b></td>
 						</tr>
 						<?php } ?>
@@ -136,33 +136,33 @@
 			</div>
 			
 			<div class="box">
-				<div class="box-header with-border main">
-					<h3>Righe ordine:</h3>
+				<div class="box-header with-border main help_righe_ordine">
+					<h3><?php echo gtext("Righe ordine");?>:</h3>
 	
 					<table width="100%" class="table table-striped" cellspacing="0">
 						<thead>
 							<tr class="">
-								<th colspan="2" align="left" class="">Prodotto</th>
-								<th class="text-right">Codice</th>
-								<th class="text-right">Peso</th>
-								<th class="text-right">Quantità</th>
-								<th class="text-right colonne_non_ivate">Prezzo<br />IVA esclusa</th>
+								<th colspan="2" align="left" class=""><?php echo gtext("Prodotto");?></th>
+								<th class="text-right"><?php echo gtext("Codice");?></th>
+								<th class="text-right"><?php echo gtext("Peso");?></th>
+								<th class="text-right"><?php echo gtext("Quantità");?></th>
+								<th class="text-right colonne_non_ivate"><?php echo gtext("Prezzo");?><br /><?php echo gtext("IVA esclusa");?></th>
 								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-								<th class="text-right colonne_non_ivate">Sconto<br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
-								<th class="text-right colonne_non_ivate">Prezzo scontato<br />IVA esclusa</th>
+								<th class="text-right colonne_non_ivate"><?php echo gtext("Sconto");?><br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
+								<th class="text-right colonne_non_ivate"><?php echo gtext("Prezzo scontato");?><br /><?php echo gtext("IVA esclusa");?></th>
 								<?php } ?>
-								<th class="text-right colonne_non_ivate">Aliquota</th>
+								<th class="text-right colonne_non_ivate"><?php echo gtext("Aliquota");?></th>
 								<?php if (false) { ?>
 									<?php if (v("prezzi_ivati_in_carrello")) { ?>
-										<th class="text-right">Prezzo<br />IVA inclusa</th>
+										<th class="text-right"><?php echo gtext("Prezzo");?><br /><?php echo gtext("IVA inclusa");?></th>
 										<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-										<th class="text-right">Sconto<br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
-										<th class="text-right">Prezzo scontato<br />IVA inclusa</th>
+										<th class="text-right"><?php echo gtext("Sconto");?><br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
+										<th class="text-right"><?php echo gtext("Prezzo scontato");?><br /><?php echo gtext("IVA inclusa");?></th>
 										<?php } ?>
 									<?php } ?>
-									<th class="text-right">Totale IVA <?php if (v("prezzi_ivati_in_carrello")) { ?>inclusa<?php } else { ?>esclusa<?php } ?></th>
+									<th class="text-right"><?php echo gtext("Totale IVA");?> <?php if (v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("inclusa");?><?php } else { ?><?php echo gtext("esclusa");?><?php } ?></th>
 								<?php } ?>
-								<th class="text-right">Totale IVA esclusa</th>
+								<th class="text-right"><?php echo gtext("Totale IVA esclusa");?></th>
 							</tr>
 						</thead>
 						
@@ -222,7 +222,7 @@
 						<?php } ?>
 						<?php if (v("attiva_spedizione")) { ?>
 						<tr>
-							<td colspan="2">Spese di spedizione</td>
+							<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
 							<td class="text-right"></td>
 							<td class="text-right"></td>
 							<td class="text-right">
@@ -276,8 +276,8 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="box">
-						<div class="box-header with-border main">
-							<h3>Totali ordine:</h3>
+						<div class="box-header with-border main help_totali_ordine">
+							<h3><?php echo gtext("Totali ordine");?>:</h3>
 							
 							<?php
 							$arrayIva = OrdiniModel::getTotaliIva($ordine["id_o"]);
@@ -287,7 +287,7 @@
 							
 							<table class="table table-striped">
 								<tr>
-									<td>Imponibile</td>
+									<td><?php echo gtext("Imponibile");?></td>
 									<td class="text-right"><b><?php echo setPriceReverse($imponibile);?> €</b></td>
 								</tr>
 								<?php foreach ($arrayIva as $idAliquota => $totale) { ?>
@@ -297,7 +297,7 @@
 								</tr>
 								<?php } ?>
 								<tr>
-									<td>Totale ordine</td>
+									<td><?php echo gtext("Totale ordine");?></td>
 									<td class="text-right"><b><?php echo setPriceReverse($ordine["total"]);?> €</b></td>
 								</tr>
 							</table>
@@ -307,15 +307,15 @@
 				<?php if (v("attiva_spedizione")) { ?>
 				<div class="col-lg-6">
 					<div class="box">
-						<div class="box-header with-border main">
-							<h3>Spedizione</h3>
+						<div class="box-header with-border main help_spese_di_spedizione">
+							<h3><?php echo gtext("Spedizione");?></h3>
 							
 							<table class="table table-striped">
 								<tr>
 									<td>
-										Spese spedizione<br />
-										Peso totale: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?><br />
-										Corriere scelto: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
+										<?php echo gtext("Spese spedizione");?><br />
+										<?php echo gtext("Peso totale");?>: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?><br />
+										<?php echo gtext("Corriere scelto");?>: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
 									</td>
 									<td class="text-right">
 										<?php if (v("prezzi_ivati_in_carrello")) { ?>
@@ -335,82 +335,82 @@
 			<?php if (trim($ordine["note"])) { ?>
 			<div class="box">
 				<div class="box-header with-border main">
-					<h3>Note</h3>
+					<h3><?php echo gtext("Note");?></h3>
 					<?php echo nl2br($ordine["note"])?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<div class="box">
-				<div class="box-header with-border main">
+				<div class="box-header with-border main help_fatturazione">
 					<div class="row">
 						<div class="col-lg-6">
-							<h3>Dati di fatturazione:</h3>
+							<h3><?php echo gtext("Dati di fatturazione");?>:</h3>
 							
 							<table class="table table-striped">
 								<?php if ($cliente) { ?>
 								<tr>
-									<td class="first_column">ACCOUNT CLIENTE</td>
+									<td class="first_column"><?php echo gtext("ACCOUNT CLIENTE");?></td>
 									<td><a class="iframe label label-success" href="<?php echo $this->baseUrl."/regusers/form/update/".$cliente["id_user"]?>?partial=Y"><?php echo $cliente["username"];?></a></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"privato") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 								<tr>
-									<td class="first_column">NOME</td>
+									<td class="first_column"><?php echo gtext("NOME");?></td>
 									<td><?php echo $ordine["nome"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">COGNOME</td>
+									<td class="first_column"><?php echo gtext("COGNOME");?></td>
 									<td><?php echo $ordine["cognome"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0) { ?>
 								<tr>
-									<td class="first_column">RAGIONE SOCIALE</td>
+									<td class="first_column"><?php echo gtext("RAGIONE SOCIALE");?></td>
 									<td><?php echo $ordine["ragione_sociale"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 								<tr>
-									<td class="first_column">PARTITA IVA</td>
+									<td class="first_column"><?php echo gtext("PARTITA IVA");?></td>
 									<td><?php echo $ordine["p_iva"];?></td>
 								</tr>
 								<?php } ?>
 								<tr>
-									<td class="first_column">CODICE FISCALE</td>
+									<td class="first_column"><?php echo gtext("CODICE FISCALE");?></td>
 									<td><?php echo $ordine["codice_fiscale"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">INDIRIZZO</td>
+									<td class="first_column"><?php echo gtext("INDIRIZZO");?></td>
 									<td><?php echo $ordine["indirizzo"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">CAP</td>
+									<td class="first_column"><?php echo gtext("CAP");?></td>
 									<td><?php echo $ordine["cap"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">NAZIONE</td>
+									<td class="first_column"><?php echo gtext("NAZIONE");?></td>
 									<td><?php echo nomeNazione($ordine["nazione"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column">PROVINCIA</td>
+									<td class="first_column"><?php echo gtext("PROVINCIA");?></td>
 									<td><?php echo $ordine["provincia"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">CITTÀ</td>
+									<td class="first_column"><?php echo gtext("CITTÀ");?></td>
 									<td><?php echo $ordine["citta"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">TELEFONO</td>
+									<td class="first_column"><?php echo gtext("TELEFONO");?></td>
 									<td><?php echo $ordine["telefono"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">EMAIL</td>
+									<td class="first_column"><?php echo gtext("EMAIL");?></td>
 									<td><?php echo $ordine["email"];?></td>
 								</tr>
 								<?php if (strcmp($tipoOutput,"web") !== 0 and $sendPassword ) { ?>
 								<tr>
-									<td class="first_column">PASSWORD</td>
+									<td class="first_column"><?php echo gtext("PASSWORD");?></td>
 									<td><?php echo $password;?></td>
 								</tr>
 								<?php } ?>
@@ -418,27 +418,27 @@
 						</div>
 						<?php if (v("attiva_spedizione")) { ?>
 						<div class="col-lg-6">
-							<h3>Dati di spedizione:</h3>
+							<h3><?php echo gtext("Dati di spedizione");?>:</h3>
 							
 							<table class="table table-striped">
 								<tr>
-									<td class="first_column">INDIRIZZO</td>
+									<td class="first_column"><?php echo gtext("INDIRIZZO");?></td>
 									<td><?php echo $ordine["indirizzo_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">CAP</td>
+									<td class="first_column"><?php echo gtext("CAP");?></td>
 									<td><?php echo $ordine["cap_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">NAZIONE</td>
+									<td class="first_column"><?php echo gtext("NAZIONE");?></td>
 									<td><?php echo nomeNazione($ordine["nazione_spedizione"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column">PROVINCIA</td>
+									<td class="first_column"><?php echo gtext("PROVINCIA");?></td>
 									<td><?php echo $ordine["provincia_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column">CITTÀ</td>
+									<td class="first_column"><?php echo gtext("CITTÀ");?></td>
 									<td><?php echo $ordine["citta_spedizione"];?></td>
 								</tr>
 								<!--<tr>
@@ -446,7 +446,7 @@
 									<td><?php echo $ordine["nazione_spedizione"];?></td>
 								</tr>-->
 								<tr>
-									<td class="first_column">TELEFONO</td>
+									<td class="first_column"><?php echo gtext("TELEFONO");?></td>
 									<td><?php echo $ordine["telefono_spedizione"];?></td>
 								</tr>
 							</table>
@@ -457,15 +457,15 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<br />
-							<h3>Dati per fatturazione elettronica:</h3>
+							<h3><?php echo gtext("Dati per fatturazione elettronica");?>:</h3>
 							
 							<table class="table table-striped">
 								<tr>
-									<td class="first_column">PEC</td>
+									<td class="first_column"><?php echo gtext("PEC");?></td>
 									<td><?php echo $ordine["pec"] ? $ordine["pec"] : "--";?></td>
 								</tr>
 								<tr>
-									<td class="first_column">CODICE DESTINATARIO</td>
+									<td class="first_column"><?php echo gtext("CODICE DESTINATARIO");?></td>
 									<td><?php echo $ordine["codice_destinatario"] ? $ordine["codice_destinatario"] : "--";?></td>
 								</tr>
 							</table>

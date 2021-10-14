@@ -899,7 +899,7 @@ function getVideo($matches, $tags = null, $tipo = "TESTO")
 	return getTesto($matches, $tags, "VIDEO");
 }
 
-function getTesto($matches, $tags = null, $tipo = "TESTO")
+function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true)
 {
 	$clean["chiave"] = sanitizeDb($matches[1]);
 	
@@ -914,6 +914,8 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		"chiave"=>$clean["chiave"],
 		"lingua"	=>	$lingua,
 	))->record();
+	
+// 	echo $t->getQuery()."<br />";
 	
 	if (count($testo) > 0)
 	{
@@ -961,7 +963,10 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		{
 			ob_start();
 			include $path;
-			$t = ob_get_clean();
+			if ($cleanFlush)
+				$t = ob_get_clean();
+			else
+				$t = ob_get_flush();
 		}
 		
 		if (User::$adminLogged && TestiModel::$mostraIconaEdit)
@@ -988,9 +993,14 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 		}
 		else
 		{
-			$t->values = array(
-				"valore"	=>	$clean["chiave"],
-			);
+			if ($tipo == "IMMAGINE" && file_exists(ROOT."/Public/Img/nofound.jpeg"))
+				$t->values = array(
+					"valore"	=>	sanitizeDb("<img width='200px' src='".Url::getFileRoot()."Public/Img/nofound.jpeg' />"),
+				);
+			else
+				$t->values = array(
+					"valore"	=>	$clean["chiave"],
+				);
 		}
 		
 		$t->values["chiave"] = $clean["chiave"];
@@ -1001,7 +1011,10 @@ function getTesto($matches, $tags = null, $tipo = "TESTO")
 			$t->values["attributi"] = sanitizeAll($matches[2]);
 		
 		if ($t->insert())
-			return getTesto($matches, $tags, $tipo);
+		{
+			unset(Cache::$cachedTables[array_search("testi", Cache::$cachedTables)]);
+			return getTesto($matches, $tags, $tipo, $cleanFlush);
+		}
 	}
 	
 	return "";
@@ -1020,9 +1033,9 @@ function t($chiave, $tags = null)
 }
 
 //chiama la traduzione di un blocco immagine
-function i($chiave, $tags = null, $attributi = null)
+function i($chiave, $tags = null, $attributi = null, $cleanFlush = true)
 {
-	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE");
+	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE", $cleanFlush);
 }
 
 //chiama la traduzione di un blocco immagine
@@ -1866,4 +1879,9 @@ function prodottoCartesiano($input) {
 	}
 
 	return $result;
+}
+
+function altUrlencode($string)
+{
+	return str_replace("+", " ", urlencode($string));
 }

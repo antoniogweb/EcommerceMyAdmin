@@ -481,9 +481,11 @@ class Route
 		
 		'help,main',
 		'help,form',
+		'help,ordina',
 		'help,elementi',
 		'help,ordinaelementi',
 		'help,mostranascondi',
+		'help,pdf',
 		
 		'helpitem,form',
 		

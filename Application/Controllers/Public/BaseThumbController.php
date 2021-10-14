@@ -96,6 +96,14 @@ class BaseThumbController extends Controller {
 		
 		$params = $this->caricaParametri($params);
 		
+// 		if (file_exists(FRONT.'/Public/Img/nofound.jpeg'))
+// 		{
+// 			$params["defaultImage"] = FRONT.'/Public/Img/nofound.jpeg';
+// 			
+// 			if (!$fileName)
+// 				$fileName = "nofound.jpeg";
+// 		}
+		
 		if (accepted($fileName))
 		{
 			if (strcmp($fileName,'') !== 0)
@@ -677,8 +685,6 @@ class BaseThumbController extends Controller {
 	
 	public function famiglia($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	835,
 			'imgHeight'		=>	400,
@@ -690,22 +696,7 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/images/marchi',$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, "images/marchi");
 	}
 	
 	public function famigliabig($fileName)
