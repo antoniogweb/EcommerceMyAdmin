@@ -55,13 +55,17 @@ foreach ($elementi as $hdv) { ?>
 	<?php if ($hdv["help"]["id_help"] != $idHelp) {
 		$idHelp = $hdv["help"]["id_help"];
 	?>
-	<h1 style="margin-bottom:5mm;<?php if ($idCiclo) { echo "margin-top:10mm;";}?>"><?php echo htmlentitydecode($hdv["help"]["titolo"]);?></h1>
+	<?php if ($idCiclo) { ?>
+	<pagebreak>
+	<?php } ?>
+	<h1 style="margin-bottom:5mm;"><?php echo htmlentitydecode($hdv["help"]["titolo"]);?></h1>
+	
+	<?php $desc = preg_replace('/(<[^>]+) style=".*?"/i', '$1', htmlentitydecode($hdv["help"]["descrizione"])); ?>
+	<div style="margin-bottom:5mm;"><?php echo $desc;?></div>
+	
 	<?php } else { ?>
 	<h2><?php echo htmlentitydecode($hdv["help_item"]["titolo"]);?></h2>
 	<?php } ?>
-	<?php
-		$desc = preg_replace('/(<[^>]+) style=".*?"/i', '$1', htmlentitydecode($hdv["help_item"]["descrizione"]));
-	?>
-	
+	<?php $desc = preg_replace('/(<[^>]+) style=".*?"/i', '$1', htmlentitydecode($hdv["help_item"]["descrizione"])); ?>
 	<div><?php echo $desc;?></div>
 <?php $idCiclo++; } ?>
