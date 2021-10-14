@@ -1880,3 +1880,8 @@ function prodottoCartesiano($input) {
 
 	return $result;
 }
+
+function altUrlencode($string)
+{
+	return str_replace("+", " ", urlencode($string));
+}
