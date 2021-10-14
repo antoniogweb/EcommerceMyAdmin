@@ -199,10 +199,10 @@ $(function () {
 			var fileExt = fileName.split('.').pop();
 			var fileExt = fileExt.toLowerCase();
 			
-			if (allowed.indexOf(fileExt) == -1)
-			{
-				$(".alert-fileupload").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
-			}
+// 			if (allowed.indexOf(fileExt) == -1)
+// 			{
+// 				$(".alert-fileupload").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
+// 			}
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -257,10 +257,10 @@ $(function () {
 			var fileExt = fileName.split('.').pop();
 			var fileExt = fileExt.toLowerCase();
 			
-			if (allowed.indexOf(fileExt) == -1)
-			{
-				$(".alert-fileupload-2").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
-			}
+// 			if (allowed.indexOf(fileExt) == -1)
+// 			{
+// 				$(".alert-fileupload-2").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
+// 			}
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
