@@ -169,8 +169,17 @@ $(function () {
 			'is_main':'1'
 		},
 		done: function (e, data) {
-			$("input[name='immagine']").val(data.result.immagine);
-			show_preview();
+			if (data.result.result == "OK")
+			{
+				$("input[name='immagine']").val(data.result.immagine);
+				show_preview();
+			}
+			else
+			{
+				$(".alert-fileupload").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
+			}
+// 			$("input[name='immagine']").val(data.result.immagine);
+// 			show_preview();
 		},
 		change: function (e, data) {
 			
@@ -217,8 +226,18 @@ $(function () {
 			'is_main':'1'
 		},
 		done: function (e, data) {
-			$("input[name='immagine_2']").val(data.result.immagine);
-			show_preview2();
+			if (data.result.result == "OK")
+			{
+				$("input[name='immagine_2']").val(data.result.immagine);
+				show_preview2();
+			}
+			else
+			{
+				$(".alert-fileupload-2").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
+			}
+			
+// 			$("input[name='immagine_2']").val(data.result.immagine);
+// 			show_preview2();
 		},
 		change: function (e, data) {
 			

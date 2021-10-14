@@ -2068,7 +2068,8 @@ class PagesController extends BaseController {
 		$res = $this->m[$this->modelName]->query("select * from adminsessions where token = '".$clean['token']."';");
 		
 		$result = "OK";
-		$immagine = "";
+		$immagine = $immagine_clean = "";
+		$errorString = "";
 		
 		if (count($res) > 0)
 		{
@@ -2130,24 +2131,56 @@ class PagesController extends BaseController {
 										$this->m['ImmaginiModel']->insert();
 									}
 									
-									echo json_encode(array(
-										"result"	=>	$result,
-										"immagine"	=>	$clean['fileName'],
-										"immagine_clean"	=>	$clean['fileName_clean'],
-									));
+									$result = "OK";
+									$immagine = $clean['fileName'];
+									$immagine_clean = $clean['fileName_clean'];
+// 									echo json_encode(array(
+// 										"result"	=>	$result,
+// 										"immagine"	=>	$clean['fileName'],
+// 										"immagine_clean"	=>	$clean['fileName_clean'],
+// 									));
+								}
+								else
+								{
+									$result = "KO";
+									$errorString = gtext("Errore nel caricamento del file");
 								}
 							}
+							else
+							{
+								$result = "KO";
+								$errorString = gtext("File non esistente");
+							}
 						} else {
-							echo json_encode(array(
-								"result"	=>	$result,
-								"immagine"	=>	"",
-								"immagine_clean"	=>	"",
-							));
+							$result = "KO";
+							$errorString = gtext("L'estensione del file non è permessa");
 						}
 					}
+					else
+					{
+						$result = "KO";
+						$errorString = gtext("La dimensione del file è superiore a ".number_format(Parametri::$maxUploadSize/1000000,0,",",".")."MB");
+					}
+				}
+				else
+				{
+					$result = "KO";
+					$errorString = gtext("Non è stato caricato alcun file");
 				}
 			}
 		}
+		else
+		{
+			$result = "KO";
+			$errorString = gtext("Pagina non esistente");
+		}
+		
+		echo json_encode(array(
+			"result"	=>	$result,
+			"immagine"	=>	$immagine,
+			"immagine_clean"	=>	$immagine_clean,
+			"error"		=>	$errorString,
+		));
 	}
 	
 	public function esportaprodotti()

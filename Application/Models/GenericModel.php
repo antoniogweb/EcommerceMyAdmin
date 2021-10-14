@@ -279,6 +279,24 @@ class GenericModel extends Model_Tree
 	
 // 	public function alias($id = null) {}
 	
+	public static function eliminaCartella($path)
+	{
+		$dir = $path;
+		
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ($files as $fileinfo) {
+			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+			
+			call_user_func($todo, $fileinfo->getRealPath());
+		}
+
+		rmdir($dir);
+	}
+	
 	public static function creaCartellaImages($path = null, $htaccess = false, $index = true)
 	{
 		//crea la cartella images se non c'è
