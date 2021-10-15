@@ -67,6 +67,15 @@ include(ROOT."/Application/Views/header.php");
 			<?php if (v("attiva_tutte_le_categorie")) { ?>
 			<li class="<?php echo tm($tm, "categories");?>"><a href="<?php echo $this->baseUrl."/categories/main/1";?>"><i class="fa fa-folder-open"></i> <?php echo gtext("Sezioni sito");?></a></li>
 			<?php } ?>
+			<li class="<?php echo tm($tm, "captcha");?> treeview">
+				<a href="#">
+					<i class="fa fa-shield"></i>
+					<span><?php echo gtext("Gestione antispam")?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/captcha/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+				</ul>
+			</li>
 			<?php if (defined("CACHE_FOLDER") || v("attiva_cache_immagini")) { ?>
 			<li class=""><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-trash"></i> <?php echo gtext("Svuota cache");?></a></li>
 			<?php } ?>

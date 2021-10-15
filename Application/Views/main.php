@@ -3,7 +3,7 @@
 <?php include($this->viewPath("ordina"));?>
 
 <section class="content-header">
-	<h1>Gestione <?php echo $tabella;?> <?php if ($helpDaVedereTutti) { ?><small class="pull-right"><a class="label label-default" target="_blank" href="<?php echo $this->baseUrl."/help/pdf/0/".$this->controller;?>"><?php echo gtext("Scarica guida")?> <i class="fa fa-question-circle"></i></a></small><?php } ?></h1>
+	<h1>Gestione <?php echo $tabella;?> <?php include($this->viewPath("link_manuale"));?></h1>
 </section>
 
 <!-- Main content -->

@@ -118,7 +118,7 @@ $(function() {
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1><?php echo gtext("Gestione");?> <?php echo gtext($tabella);?></h1>
+	<h1><?php echo gtext("Gestione");?> <?php echo gtext($tabella);?> <?php include($this->viewPath("link_manuale"));?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>

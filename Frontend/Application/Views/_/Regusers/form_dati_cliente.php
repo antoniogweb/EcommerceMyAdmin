@@ -105,12 +105,7 @@ else
 		</div>
 	</div>
 	
-	<div class="uk-margin uk-margin-remove-bottom t">
-		<label class="uk-form-label">TESSERA</label>
-		<div class="uk-form-controls">
-			<?php echo Html_Form::input("tessera","","uk-input");?>
-		</div>
-	</div>
+	<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 
 <!-- registrazione o modificadati -->
 <?php if (strcmp($this->controller,"regusers") === 0) { ?>

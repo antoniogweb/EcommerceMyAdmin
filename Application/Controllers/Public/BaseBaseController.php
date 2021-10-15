@@ -117,6 +117,7 @@ class BaseBaseController extends Controller
 		$this->model("TagModel");
 		$this->model("TipiaziendaModel");
 		$this->model("PagesregioniModel");
+		$this->model("CaptchaModel");
 		
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
@@ -675,8 +676,7 @@ class BaseBaseController extends Controller
 		
 		if (isset($_POST['updateAction']))
 		{
-			$tessera = $this->request->post('tessera','');
-			if (strcmp($tessera,'') === 0)
+			if (CaptchaModel::getModulo()->checkRegistrazione())
 			{
 				if ($this->m['RegusersModel']->checkConditions('insert'))
 				{
@@ -803,9 +803,7 @@ class BaseBaseController extends Controller
 		
 		if (isset($_POST['invia']))
 		{
-			$campoCaptcha = $this->request->post(v("campo_captcha_form"),'');
-			
-			if (strcmp($campoCaptcha,'') === 0)
+			if (CaptchaModel::getModulo()->check())
 			{
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{

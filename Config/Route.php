@@ -492,6 +492,9 @@ class Route
 		'pagamenti,main',
 		'pagamenti,form',
 		'pagamenti,ordina',
+		
+		'captcha,main',
+		'captcha,form',
 	);
 	
 	//it can be 'yes' or 'no'
