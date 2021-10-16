@@ -217,7 +217,7 @@ class Nexi
 		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["id_o"]." \n";
 		
 		$this->statoNotifica = 'OK, pagamento non corretto';
-		$this->scriviLog(false, $scriviSuFileLog);
+		$this->scriviLog(false, true);
 		
 		return false;
 	}

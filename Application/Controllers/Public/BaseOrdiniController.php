@@ -335,7 +335,7 @@ class BaseOrdiniController extends BaseController
 				}
 				else
 				{
-					MailordiniModel::inviaMailLog("ERRORE PAGAMENTO DIVERSO DA ORDINE", "Discrepanza nel dovuto:<br />Dovuto: ".number_format($res[0]["orders"]["total"],2,",","")." Euro<br />Pagato:".number_format($_REQUEST["importo"]/100, 2, ",", "")." Euro", "Ordine N.".$res[0]["orders"]["id_o"]);
+					MailordiniModel::inviaMailLog("ERRORE PAGAMENTO DIVERSO DA ORDINE", "Discrepanza nel dovuto:<br />Dovuto: ".number_format($res[0]["orders"]["total"],2,",","")." Euro<br />Pagato: ".number_format($_REQUEST["importo"]/100, 2, ",", "")." Euro", "Ordine N.".$res[0]["orders"]["id_o"]);
 				}
 			}
 		}
