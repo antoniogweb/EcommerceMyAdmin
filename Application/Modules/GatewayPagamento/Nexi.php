@@ -9,6 +9,8 @@ class Nexi
 	public $okUrl = "";
 	public $errorUrl = "";
 	public $notifyUrl = "";
+	public $statoNotifica = "";
+	public $statoCheckOrdine = "";
 	
 	private $urlPagamento = null;
 	private $logFile = "";
@@ -128,6 +130,9 @@ class Nexi
 			$this->statoNotifica .= "REQUEST:$key=$value \n";
 		}
 		
+		if ($this->statoCheckOrdine)
+			$this->statoNotifica .= "CHECK ORDINE:".$this->statoCheckOrdine."\n";
+		
 		if ($scriviSuFileLog)
 		{
 			// Write to log
@@ -206,6 +211,10 @@ class Nexi
 		
 		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine["id_o"]) === 0)
 			return true;
+		
+		$this->statoCheckOrdine = "ORDINE NON TORNA:\n"
+		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $importo \n";
+		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["id_o"]." \n";
 		
 		return false;
 	}
