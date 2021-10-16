@@ -700,6 +700,8 @@ class BaseBaseController extends Controller
 						if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
 							$this->m['RegusersModel']->iscriviANewsletter($lId);
 						
+						$_SESSION['result'] = 'utente_creato';
+						
 						ob_start();
 						include (tpf("Regusers/mail_credenziali.php"));
 						$output = ob_get_clean();
@@ -727,19 +729,10 @@ class BaseBaseController extends Controller
 								"id_user"	=>	(int)$lId,
 								"id_page"	=>	0,
 							));
-							
-							$_SESSION['result'] = 'utente_creato';
-							
-							if (Output::$html)
-								$this->redirect("avvisi");
 						}
-						else
-						{
-							$_SESSION['result'] = 'error';
-							
-							if (Output::$html)
-								$this->redirect("avvisi");
-						}
+						
+						if (Output::$html)
+							$this->redirect("avvisi");
 					}
 					else
 					{

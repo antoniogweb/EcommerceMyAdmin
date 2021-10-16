@@ -3,7 +3,9 @@
 <p>Un cliente si è registrato nel vostro sito web. Ecco i suoi dati:</p>
 
 USERNAME: <b><?php echo $clean["username"];?></b><br />
+<?php if (false) { ?>
 PASSWORD: <b><?php echo $password;?></b><br />
+<?php } ?>
 <?php if (strcmp($datiCliente["tipo_cliente"],"privato") === 0 || strcmp($datiCliente["tipo_cliente"],"libero_professionista") === 0) { ?>
 NOME: <b><?php echo $datiCliente["nome"];?></b><br />
 COGNOME: <b><?php echo $datiCliente["cognome"];?></b><br />

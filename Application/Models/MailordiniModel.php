@@ -141,17 +141,22 @@ class MailordiniModel extends GenericModel
 				)
 			);
 			
-			if (ImpostazioniModel::$valori["bcc"])
+			// Svuoto tutte le mail
+			$mail->ClearAllRecipients();
+			
+			if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
 				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
 			
 			if (defined("BCC") && is_array(BCC))
 			{
 				foreach (BCC as $emailBcc)
 				{
-					$mail->addBCC($emailBcc);
+					if (!in_array($emailBcc, $emails))
+						$mail->addBCC($emailBcc);
 				}
 			}
 			
+			$testoClean = $testo;
 			$testo = MailordiniModel::loadTemplate($oggetto, $testo);
 // 				echo $output;die();
 			// Imposto le traduzioni del back
@@ -178,7 +183,7 @@ class MailordiniModel extends GenericModel
 					"id_user"	=>	$idUser,
 					"email"		=>	$email,
 					"oggetto"	=>	$oggetto,
-					"testo"		=>	$testo,
+					"testo"		=>	$tipologia != "ISCRIZIONE" ? $testoClean : "",
 					"inviata"	=>	$inviata,
 					"tipologia"	=>	$tipologia,
 					"id_page"	=>	$idPage,
