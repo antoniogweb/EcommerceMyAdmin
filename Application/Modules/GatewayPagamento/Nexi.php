@@ -213,7 +213,7 @@ class Nexi
 			return true;
 		
 		$this->statoCheckOrdine = "ORDINE NON TORNA:\n";
-		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $importo \n";
+		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $amount \n";
 		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["id_o"]." \n";
 		
 		$this->statoNotifica = 'OK, pagamento non corretto';

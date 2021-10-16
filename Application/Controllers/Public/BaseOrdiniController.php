@@ -278,24 +278,15 @@ class BaseOrdiniController extends BaseController
 		
 		$this->clean();
 		
-// 		require (LIBRARY.'/Application/Modules/Nexi.php');
-// 		
-// 		$nexi = new Nexi();
-		
-// 		if ($nexi->validate())
-		if (PagamentiModel::gateway($res[0]["orders"])->validate())
+		if (PagamentiModel::gateway()->validate())
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
-// 			$clean['amount'] = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
 			
 			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 
 			if (count($res) > 0)
 			{
-// 				$importo = str_replace(".","",$res[0]["orders"]["total"]);
-				
-// 				if (strcmp($clean['amount'],$importo) === 0 )
-				if (PagamentiModel::gateway()->checkOrdine())
+				if (PagamentiModel::gateway($res[0]["orders"], true)->checkOrdine())
 				{
 					$this->model("FattureModel");
 					
@@ -303,13 +294,11 @@ class BaseOrdiniController extends BaseController
 					$this->m["OrdiniModel"]->values = array();
 					$this->m["OrdiniModel"]->values["data_pagamento"] = date("d-m-Y");
 					
-// 					if (strcmp($_REQUEST['esito'],"OK") === 0)
 					if (PagamentiModel::gateway()->success())
 						$this->m["OrdiniModel"]->values["stato"] = "completed";
 					
 					$this->m["OrdiniModel"]->update((int)$res[0]["orders"]["id_o"]);
 					
-// 					if (strcmp($_REQUEST['esito'],"OK") === 0)
 					if (PagamentiModel::gateway()->success())
 					{
 						$mandaFattura = false;

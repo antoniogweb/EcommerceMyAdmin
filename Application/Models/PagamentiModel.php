@@ -95,11 +95,11 @@ class PagamentiModel extends GenericModel {
 		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
 	}
 	
-	public static function gateway($ordine = array(), $codice = "carta_di_credito")
+	public static function gateway($ordine = array(), $force = false, $codice = "carta_di_credito")
 	{
 		$p = new PagamentiModel();
 		
-		if (!isset(self::$gateway))
+		if (!isset(self::$gateway) || $force)
 		{
 			$attivo = $p->clear()->where(array(
 				"attivo"	=>	1,
