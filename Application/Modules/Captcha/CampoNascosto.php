@@ -32,11 +32,11 @@ class CampoNascosto
 	
 	public function getHiddenFieldIncludeFile()
 	{
-		return "campo-nascosto.php";
+		return "/Elementi/Captcha/campo-nascosto.php";
 	}
 	
 	public function getHiddenFieldRegistrazioneIncludeFile()
 	{
-		return "campo-nascosto-registrazione.php";
+		return "/Elementi/Captcha/campo-nascosto-registrazione.php";
 	}
 }
