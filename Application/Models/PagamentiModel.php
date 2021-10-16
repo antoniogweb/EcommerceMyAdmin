@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PagamentiModel extends GenericModel {
 	
+	public static $gateway = null;
+	
 	public static $attivoSiNoGateway = array(
 		"1"	=>	"Sì, usa i pagamenti finti (solo per sviluppo)",
 		"0"	=>	"No, usa pagamenti veri (solo per produzione)",
@@ -91,5 +93,38 @@ class PagamentiModel extends GenericModel {
 	public function edit($record)
 	{
 		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
+	}
+	
+	public static function gateway($ordine = array(), $codice = "carta_di_credito")
+	{
+		$p = new PagamentiModel();
+		
+		if (!isset(self::$gateway))
+		{
+			$attivo = $p->clear()->where(array(
+				"attivo"	=>	1,
+				"codice"	=>	sanitizeAll($codice),
+			))->record();
+			
+			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/GatewayPagamento/".$attivo["gateway_pagamento"].".php"))
+			{
+				require_once(LIBRARY."/Application/Modules/GatewayPagamento/".$attivo["gateway_pagamento"].".php");
+				
+				$objectReflection = new ReflectionClass($attivo["gateway_pagamento"]);
+				$object = $objectReflection->newInstanceArgs(array($ordine));
+				
+				self::$gateway = $object;
+			}
+		}
+		
+		return $p;
+	}
+	
+	public function __call($metodo, $argomenti)
+	{
+		if (isset(self::$gateway) && method_exists(self::$gateway, $metodo))
+			return call_user_func_array(array(self::$gateway, $metodo), $argomenti);
+
+		return false;
 	}
 }

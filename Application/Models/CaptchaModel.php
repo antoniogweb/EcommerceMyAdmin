@@ -76,7 +76,7 @@ class CaptchaModel extends GenericModel {
 	
 	public function attivo($record)
 	{
-		return $record[$this->_tables]["attivo"] ? "<i class='fa fa-check text text-success'></i>" : "";
+		return $record[$this->_tables]["attivo"] ? "<i class='fa fa-check text text-success'></i>" : "<i class='fa fa-ban text text-danger'></i>";
 	}
 	
 	public function edit($record)
@@ -96,23 +96,26 @@ class CaptchaModel extends GenericModel {
 	{
 		$c = new CaptchaModel();
 		
-		$attivo = $c->clear()->where(array(
-			"attivo"	=>	1,
-		))->record();
-		
-		if (empty($attivo))
-			$attivo = array(
-				"modulo"	=>	"NessunFiltro",
-			);
-		
-		if (file_exists(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php"))
+		if (!isset(self::$moduloCaptcha))
 		{
-			require_once(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php");
+			$attivo = $c->clear()->where(array(
+				"attivo"	=>	1,
+			))->record();
 			
-			$objectReflection = new ReflectionClass($attivo["modulo"]);
-			$object = $objectReflection->newInstanceArgs(array($attivo));
+			if (empty($attivo))
+				$attivo = array(
+					"modulo"	=>	"NessunFiltro",
+				);
 			
-			self::$moduloCaptcha = $object;
+			if (file_exists(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php"))
+			{
+				require_once(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php");
+				
+				$objectReflection = new ReflectionClass($attivo["modulo"]);
+				$object = $objectReflection->newInstanceArgs(array($attivo));
+				
+				self::$moduloCaptcha = $object;
+			}
 		}
 		
 		return $c;

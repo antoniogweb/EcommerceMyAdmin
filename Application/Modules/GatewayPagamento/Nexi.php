@@ -8,10 +8,13 @@ class Nexi
 	public $merchantServerUrl = "";
 	public $okUrl = "";
 	public $errorUrl = "";
-	public $statoNotifica = "";
-	private $logFile = "";
+	public $notifyUrl = "";
 	
-	public function __construct($okUrl = "", $errorUrl = "")
+	private $urlPagamento = null;
+	private $logFile = "";
+	private $ordine = null;
+	
+	public function __construct($ordine = array())
 	{
 		$pagamento = PagamentiModel::g(false)->where(array(
 			"codice"	=>	"carta_di_credito"
@@ -27,10 +30,55 @@ class Nexi
 		
 		$this->merchantServerUrl = Domain::$name;
 		
-		$this->okUrl = $okUrl;
-		$this->errorUrl = $errorUrl;
+		if (!empty($ordine) && isset($ordine["cart_uid"]))
+		{
+			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
+			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
+			$this->errorUrl = "";
+			$this->ordine = $ordine;
+		}
 		
 		$this->logFile = ROOT."/Logs/.ipncarta_results.log";
+	}
+	
+	public function getPulsantePaga()
+	{
+		if (!$this->urlPagamento)
+			$this->getUrlPagamento();
+		
+		$urlPagamento = $this->urlPagamento;
+		
+		$path = tpf("/Elementi/Pagamenti/Pulsanti/nexi.php");
+		
+		if (file_exists($path))
+		{
+			ob_start();
+			include $path;
+			$pulsante = ob_get_clean();
+		}
+		
+		return $pulsante;
+	}
+	
+	public function getUrlPagamento()
+	{
+		$notifyUrl = $this->notifyUrl;
+		$importo = str_replace(".","",$this->ordine["total"]);
+		
+		// Parametri facoltativi
+		$facoltativi = array(
+			'mail' => $this->ordine["email"],
+			'languageId' => "ITA",
+			'descrizione' => "Ordine ".$this->ordine["id_o"],
+			"nome"	=>	$this->ordine["nome"],
+			"cognome"	=>	$this->ordine["cognome"],
+			'OPTION_CF' => $this->ordine["codice_fiscale"],
+			'urlpost' => $notifyUrl,
+		);
+		
+		$this->urlPagamento = $this->creaUrlPagamento($this->ordine["id_o"], $importo, "EUR", $facoltativi);
+		
+		return $this->urlPagamento;
 	}
 	
 	public function creaUrlPagamento($codiceTransazione, $importo, $divisa = "EUR", $facoltativi = array())
@@ -100,7 +148,7 @@ class Nexi
 		$requiredParams = array('codTrans', 'esito', 'importo', 'divisa', 'data', 'orario', 'codAut', 'mac');
 		foreach ($requiredParams as $param) {
 			if (!isset($_REQUEST[$param])) {
-				$this->statoNotifica = 'Paramentro mancante ' . $param;
+				$this->statoNotifica = 'Parametro mancante ' . $param;
 				$this->scriviLog(false, $scriviSuFileLog);
 				return false;
 			}
@@ -108,13 +156,13 @@ class Nexi
 		
 		// Calcolo MAC con i parametri di ritorno
 		$macCalculated = sha1('codTrans=' . $_REQUEST['codTrans'] .
-				'esito=' . $_REQUEST['esito'] .
-				'importo=' . $_REQUEST['importo'] .
-				'divisa=' . $_REQUEST['divisa'] .
-				'data=' . $_REQUEST['data'] .
-				'orario=' . $_REQUEST['orario'] .
-				'codAut=' . $_REQUEST['codAut'] .
-				$this->CHIAVESEGRETA
+			'esito=' . $_REQUEST['esito'] .
+			'importo=' . $_REQUEST['importo'] .
+			'divisa=' . $_REQUEST['divisa'] .
+			'data=' . $_REQUEST['data'] .
+			'orario=' . $_REQUEST['orario'] .
+			'codAut=' . $_REQUEST['codAut'] .
+			$this->CHIAVESEGRETA
 		);
 
 		// Verifico corrispondenza tra MAC calcolato e MAC di ritorno
@@ -133,6 +181,31 @@ class Nexi
 			$this->statoNotifica = 'KO, pagamento non avvenuto, preso riscontro';
 			$this->scriviLog(true, $scriviSuFileLog);
 		}
+		
+		return false;
+	}
+	
+	public function redirect()
+	{
+		return true;
+	}
+	
+	public function success()
+	{
+		if (isset($_REQUEST['esito']) && strcmp($_REQUEST['esito'],"OK") === 0)
+			return true;
+		
+		return false;
+	}
+	
+	public function checkOrdine()
+	{
+		$importo = str_replace(".","",$this->ordine["total"]);
+		$amount = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
+		$codTrans = isset($_REQUEST["codTrans"]) ? $_REQUEST["codTrans"] : 0;
+		
+		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine["id_o"]) === 0)
+			return true;
 		
 		return false;
 	}

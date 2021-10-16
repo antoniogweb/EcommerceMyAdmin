@@ -278,22 +278,24 @@ class BaseOrdiniController extends BaseController
 		
 		$this->clean();
 		
-		require (LIBRARY.'/Application/Modules/Nexi.php');
+// 		require (LIBRARY.'/Application/Modules/Nexi.php');
+// 		
+// 		$nexi = new Nexi();
 		
-		$nexi = new Nexi();
-		
-		if ($nexi->validate())
+// 		if ($nexi->validate())
+		if (PagamentiModel::gateway($res[0]["orders"])->validate())
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
-			$clean['amount'] = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
+// 			$clean['amount'] = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
 			
 			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 
 			if (count($res) > 0)
 			{
-				$importo = str_replace(".","",$res[0]["orders"]["total"]);
+// 				$importo = str_replace(".","",$res[0]["orders"]["total"]);
 				
-				if (strcmp($clean['amount'],$importo) === 0 )
+// 				if (strcmp($clean['amount'],$importo) === 0 )
+				if (PagamentiModel::gateway()->checkOrdine())
 				{
 					$this->model("FattureModel");
 					
@@ -301,41 +303,39 @@ class BaseOrdiniController extends BaseController
 					$this->m["OrdiniModel"]->values = array();
 					$this->m["OrdiniModel"]->values["data_pagamento"] = date("d-m-Y");
 					
-					if (strcmp($_REQUEST['esito'],"OK") === 0)
+// 					if (strcmp($_REQUEST['esito'],"OK") === 0)
+					if (PagamentiModel::gateway()->success())
 						$this->m["OrdiniModel"]->values["stato"] = "completed";
+					
 					$this->m["OrdiniModel"]->update((int)$res[0]["orders"]["id_o"]);
 					
-					if (strcmp($_REQUEST['esito'],"OK") === 0)
+// 					if (strcmp($_REQUEST['esito'],"OK") === 0)
+					if (PagamentiModel::gateway()->success())
 					{
+						$mandaFattura = false;
+						
 						if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
 						{
+							$mandaFattura = true;
 							//genera la fattura
 							$this->m["FattureModel"]->crea($ordine["id_o"]);
 						}
+						
+						$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
+						
+						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
+						
+						$res = MailordiniModel::inviaMail(array(
+							"emails"	=>	array(Parametri::$mailInvioOrdine),
+							"oggetto"	=>	gtext("Conferma pagamento ordine N°")." ".$ordine["id_o"],
+							"testo"		=>	$output,
+							"tipologia"	=>	"PAGAMENTO ORDINE",
+						));
 					}
-
-					switch ($_REQUEST['esito'])
-					{
-						case "OK":
-							
-							$mandaFattura = false;
-							
-							if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
-								$mandaFattura = true;
-							
-							$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
-							
-							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
-							
-							$res = MailordiniModel::inviaMail(array(
-								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	gtext("Conferma pagamento ordine N°")." ".$ordine["id_o"],
-								"testo"		=>	$output,
-								"tipologia"	=>	"PAGAMENTO ORDINE",
-							));
-							
-							break;
-					}
+				}
+				else
+				{
+					MailordiniModel::inviaMailLog("ERRORE PAGAMENTO DIVERSO DA ORDINE", "Discrepanza nel dovuto:<br />Dovuto: ".$res[0]["orders"]["total"]." Euro<br />Pagato:".number_format($_REQUEST["importo"]/100, 2, ",", "")." Euro", "Ordine N.".$res[0]["orders"]["id_o"]);
 				}
 			}
 		}
@@ -503,33 +503,12 @@ class BaseOrdiniController extends BaseController
 			}
 			else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 			{
-				require (LIBRARY.'/Application/Modules/Nexi.php');
+				$urlPagamento = PagamentiModel::gateway($data["ordine"])->getUrlPagamento();
 				
-				$okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$data["ordine"]["cart_uid"];
-				$notifyUrl = $this->baseUrl."/notifica-pagamento-carta?cart_uid=".$data["ordine"]["cart_uid"];
-				$errorUrl = "";
-				$importo = str_replace(".","",$data["ordine"]["total"]);
-				
-				// Parametri facoltativi
-				$facoltativi = array(
-					'mail' => $data["ordine"]["email"],
-					'languageId' => "ITA",
-					'descrizione' => "Ordine ".$data["ordine"]["id_o"],
-					"nome"	=>	$data["ordine"]["nome"],
-					"cognome"	=>	$data["ordine"]["cognome"],
-					'OPTION_CF' => $data["ordine"]["codice_fiscale"],
-					'urlpost' => $notifyUrl,
-				);
-				
-	// 			print_r($facoltativi);die();
-				
-				$nexi = new Nexi($okUrl, $errorUrl);
-				$urlPagamento = $nexi->creaUrlPagamento($data["ordine"]["id_o"], $importo, "EUR", $facoltativi);
-				
-				$data["pulsantePaga"] = "<div><a href='$urlPagamento'>Paga adesso</a></div>";
+				$data["pulsantePaga"] = PagamentiModel::gateway($data["ordine"])->getPulsantePaga();
 				$data["urlPagamento"] = $urlPagamento;
 				
-				if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0)
+				if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
 				{
 					header('Location: '.$urlPagamento);
 					die();
@@ -739,11 +718,14 @@ class BaseOrdiniController extends BaseController
 				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
 					$this->redirect("");
 				
-				require (LIBRARY.'/Application/Modules/Nexi.php');
+// 				require (LIBRARY.'/Application/Modules/Nexi.php');
+// 				
+// 				$nexi = new Nexi();
+// 				
+// 				$urlPagamento = PagamentiModel::gateway($res[0]["orders"])->validate(false);
 				
-				$nexi = new Nexi();
-				
-				if ($nexi->validate(false))
+// 				if ($nexi->validate(false))
+				if (PagamentiModel::gateway($res[0]["orders"])->validate(false))
 					$data["conclusa"] = true;
 				
 				$data["ordine"] = $res[0]["orders"];

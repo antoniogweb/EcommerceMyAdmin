@@ -2,7 +2,7 @@
 <?php if (strcmp($tipoOutput,"web") === 0) { ?>
 	<?php if(!isset($actionFromAdmin)) { ?>
 		<div class="uk-margin">
-			<div><a class="uk-button uk-button-secondary" href='<?php echo $urlPagamento;?>'><span uk-icon="credit-card"></span> <?php echo gtext("Paga adesso");?></a></div>
+			<?php echo $pulsantePaga;?>
 		</div>
 	<?php } else { ?>
 		<h2 class="uk-heading-bullet"><?php echo gtext("Dettagli pagamento:");?></h2>
