@@ -1191,4 +1191,14 @@ class GenericModel extends Model_Tree
     {
 		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto fa fa-plus-circle text text-primary'></i>";
     }
+    
+    public function cleanDateTime($record)
+    {
+		$formato = "d/m/Y H:i";
+		
+		if (isset($record[$this->_tables]["data_creazione"]) && $record[$this->_tables]["data_creazione"])
+			return date($formato,strtotime($record[$this->_tables]["data_creazione"]));
+		
+		return "";
+    }
 }

@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CartModel extends Model_Tree {
+class CartModel extends GenericModel {
 	
 	public static $ordinamento = 0;
 	public static $deletedExpired = false;
@@ -931,5 +931,23 @@ class CartModel extends Model_Tree {
 			$this->values["json_personalizzazioni"] = "[]";
 		
 		return parent::insert();
+	}
+	
+	public function titolocompleto($record)
+	{
+		$titolo = $record["cart"]["title"];
+		
+		if ($record["cart"]["attributi"])
+			$titolo .= "<br />".$record["cart"]["attributi"];
+		
+		return $titolo;
+	}
+	
+	public function thumb($record)
+	{
+		if ($record["cart"]["immagine"])
+			return "<img width='70px' src='".Url::getFileRoot()."thumb/contenuto/".$record["cart"]["immagine"]."' />";
+		
+		return "";
 	}
 }

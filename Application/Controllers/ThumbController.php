@@ -47,6 +47,7 @@ class ThumbController extends BaseController {
 				'imgHeight'		=>	120,
 				'defaultImage'	=>  null,
 				'cropImage'		=>	'no',
+				'useCache'		=>	true,
 			);
 
 			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);

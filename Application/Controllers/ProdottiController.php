@@ -45,7 +45,7 @@ class ProdottiController extends PagesController {
 // 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Codice / Titolo,Categorie';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Immagine,Codice / Titolo,Categorie';
 		
 		$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->selectPerFiltro();
 		
