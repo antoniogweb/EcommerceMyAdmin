@@ -184,7 +184,7 @@ class Nexi
 			return true;
 		} else {
 			$this->statoNotifica = 'KO, pagamento non avvenuto, preso riscontro';
-			$this->scriviLog(true, $scriviSuFileLog);
+			$this->scriviLog(false, $scriviSuFileLog);
 		}
 		
 		return false;
@@ -215,6 +215,9 @@ class Nexi
 		$this->statoCheckOrdine = "ORDINE NON TORNA:\n";
 		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $importo \n";
 		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["id_o"]." \n";
+		
+		$this->statoNotifica = 'OK, pagamento non corretto';
+		$this->scriviLog(false, $scriviSuFileLog);
 		
 		return false;
 	}
