@@ -100,7 +100,12 @@ class CaptchaModel extends GenericModel {
 			"attivo"	=>	1,
 		))->record();
 		
-		if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php"))
+		if (empty($attivo))
+			$attivo = array(
+				"modulo"	=>	"NessunFiltro",
+			);
+		
+		if (file_exists(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php"))
 		{
 			require_once(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php");
 			

@@ -79,6 +79,8 @@ else
 		</div>
 	</div>
 	
+	<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
+	
 	<div class="uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Città");?> *</label>
 		<div class="uk-form-controls">
@@ -104,8 +106,6 @@ else
 			<?php echo Html_Form::input("telefono",$values['telefono'],"uk-input class_telefono",null,"placeholder='".gtext("Telefono", false)."'");?>
 		</div>
 	</div>
-	
-	<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 
 <!-- registrazione o modificadati -->
 <?php if (strcmp($this->controller,"regusers") === 0) { ?>
