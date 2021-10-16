@@ -2,9 +2,7 @@
 
 class NessunFiltro
 {
-	private $params = "";
-	
-	public function __construct($recordCaptcha = null)
+	public function __construct($recordCaptcha)
 	{
 		
 	}
