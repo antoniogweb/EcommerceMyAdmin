@@ -805,9 +805,18 @@ class BaseBaseController extends Controller
 			{
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{
-					$pagina = $this->m["PagesModel"]->selectId((int)$id);
-					
 					$valoriEmail = $this->m['ContattiModel']->values;
+
+					$idContatto = $this->m['ContattiModel']->getIdFromMail($valoriEmail["email"]);
+					
+					$this->m['ContattiModel']->sanitize("sanitizeAll");
+					
+					if ($idContatto)
+						$this->m['ContattiModel']->update($idContatto);
+					else if ($this->m['ContattiModel']->insert())
+						$idContatto = $this->m['ContattiModel']->lId;
+					
+					$pagina = $this->m["PagesModel"]->selectId((int)$id);
 					
 					if ($isNewsletter)
 						$oggetto = "form iscrizione a newsletter";
@@ -829,6 +838,7 @@ class BaseBaseController extends Controller
 						"id_user"	=>	(int)User::$id,
 						"id_page"	=>	(int)$id,
 						"reply_to"	=>	$valoriEmail["email"],
+						"id_contatto"	=>	$idContatto,
 					));
 					
 // 						$mail->SMTPDebug = 2;
