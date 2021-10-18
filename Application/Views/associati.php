@@ -14,12 +14,12 @@
 				<div class='mainMenu'>
 					<?php echo $menu;?>
 				</div>
+			<?php } ?>
 			
-				<?php if (isset($stepsAssociato)) { ?>
-				<?php include($this->viewPath($stepsAssociato));?>
-				<?php } else { ?>
-				<?php include($this->viewPath("steps"));?>
-				<?php } ?>
+			<?php if (isset($stepsAssociato)) { ?>
+			<?php include($this->viewPath($stepsAssociato));?>
+			<?php } else { ?>
+			<?php include($this->viewPath("steps"));?>
 			<?php } ?>
 			
 			<div class="box">
