@@ -731,7 +731,7 @@ class BaseBaseController extends Controller
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
 								"oggetto"	=>	gtext("invio credenziali nuovo utente"),
 								"testo"		=>	$output,
-								"tipologia"	=>	"ISCRIZIONE",
+								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
 								"id_user"	=>	(int)$lId,
 								"id_page"	=>	0,
 							));

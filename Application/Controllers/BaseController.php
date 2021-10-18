@@ -243,6 +243,9 @@ class BaseController extends Controller
 			$data['token'] = $token;
 		}
 		
+		if (strcmp($controller,"users") !== 0)
+			$this->s['admin']->check();
+		
 		// Help wizard
 		$this->model("HelpModel");
 		$data["helpDaVedere"] = $this->m["HelpModel"]->daVedere();
@@ -288,9 +291,6 @@ class BaseController extends Controller
 		Domain::$adminRoot = ROOT;
 		Domain::$adminName = $this->baseUrlSrc;
 		Domain::$publicUrl = str_replace("/admin",null,$this->baseUrlSrc);
-		
-		if (strcmp($controller,"users") !== 0)
-			$this->s['admin']->check();
 		
 		if (class_exists($model))
 			$this->model($model);

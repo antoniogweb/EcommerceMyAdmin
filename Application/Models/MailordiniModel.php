@@ -179,12 +179,15 @@ class MailordiniModel extends GenericModel
 				if ($mail->Send())
 					$inviata = 1;
 				
+				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO")
+					$testoClean = "";
+				
 				$mo->setValues(array(
 					"id_o"		=>	$idO,
 					"id_user"	=>	$idUser,
 					"email"		=>	$email,
 					"oggetto"	=>	$oggetto,
-					"testo"		=>	$tipologia != "ISCRIZIONE" ? $testoClean : "",
+					"testo"		=>	$testoClean,
 					"inviata"	=>	$inviata,
 					"tipologia"	=>	$tipologia,
 					"id_page"	=>	$idPage,
