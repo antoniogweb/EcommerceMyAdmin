@@ -194,7 +194,6 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/nazioni/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
-			<?php } ?>
 			<li class="<?php echo tm($tm, "cart");?> treeview">
 				<a href="#">
 					<i class="fa fa-shopping-cart"></i>
@@ -204,6 +203,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/cart/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
+			<?php } ?>
 			<?php if (defined("APPS")) {
 				foreach (APPS as $app)
 				{
