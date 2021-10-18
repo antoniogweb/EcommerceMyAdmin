@@ -24,9 +24,6 @@
 			
 			<div class="box">
 				<div class="box-header with-border main">
-					<!-- show the top menù -->
-					
-					
 					<div class="notice_box">
 						<?php echo $notice;?>
 					</div>
