@@ -1,0 +1,1 @@
+INSERT INTO `iva` (`id_iva`, `data_creazione`, `titolo`, `valore`, `id_order`, `tipo`, `commercio`) VALUES (NULL, CURRENT_TIMESTAMP, 'Ex art. 7 ter del DPR n. 633/1972', '0.00', '7', 'B2BUE', 'COMMERCIO DIRETTO'), (NULL, CURRENT_TIMESTAMP, 'Ex art. 7 ter del DPR n. 633/1972', '0.00', '8', 'B2BEX', 'COMMERCIO DIRETTO');

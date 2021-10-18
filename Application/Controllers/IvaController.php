@@ -58,7 +58,7 @@ class IvaController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio');
 		
 		parent::form($queryType, $id);
 	}

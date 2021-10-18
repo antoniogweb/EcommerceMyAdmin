@@ -38,7 +38,14 @@ class IvaModel extends GenericModel
 		""		=>	"--",
 		"B2BUE"	=>	"Acquisto B2B UE",
 		"B2BEX"	=>	"Acquisto B2B EXTRA UE",
+// 		"B2CUE"	=>	"Acquisto B2C UE",
 		"B2CEX"	=>	"Acquisto B2C EXTRA UE",
+	);
+	
+	public static $commercio = array(
+		""		=>	"--",
+		"COMMERCIO INDIRETTO"	=>	"Beni fisici (COMMERCIO INDIRETTO)",
+		"COMMERCIO DIRETTO"		=>	"Beni digitali (COMMERCIO DIRETTO)",
 	);
 	
 	public function __construct() {
@@ -68,6 +75,13 @@ class IvaModel extends GenericModel
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'commercio'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipo commercio",
+					"options"	=>	self::$commercio,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 		);
 	}
@@ -89,6 +103,8 @@ class IvaModel extends GenericModel
 			return null;
 		
 		$prezziCorretti = false;
+		
+		$commercio = v("attiva_spedizione") ? 'COMMERCIO INDIRETTO' : 'COMMERCIO DIRETTO';
 		
 		$c = new CartModel();
 		
@@ -113,7 +129,7 @@ class IvaModel extends GenericModel
 				
 				$ivaEstera = $im->clear()->where(array(
 					"tipo"		=>	sanitizeAll($chiaveIva),
-					"commercio"	=>	'COMMERCIO INDIRETTO',
+					"commercio"	=>	$commercio,
 				))->record();
 				
 				if (!empty($ivaEstera))
@@ -125,18 +141,35 @@ class IvaModel extends GenericModel
 					$c->correggiPrezzi();
 					$prezziCorretti = true;
 				}
-				else if ($nazione["tipo"] == "UE" && $tipo == "B2C")
+				else if ($tipo == "B2C")
 				{
-					$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
-// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
-					
-					$recordIva = $im->selectId((int)$nazione["id_iva"]);
-					
-					if (!empty($recordIva))
+					if ($nazione["tipo"] == "UE")
 					{
-						$totaleNazione += getPrezzoScontatoN();
+						$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
+	// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
 						
-						if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
+						$recordIva = $im->selectId((int)$nazione["id_iva"]);
+						
+						if (!empty($recordIva))
+						{
+							$totaleNazione += getPrezzoScontatoN();
+							echo $totaleNazione;
+							if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
+							{
+								self::$idIvaEstera = $recordIva["id_iva"];
+								self::$aliquotaEstera = $recordIva["valore"];
+								self::$titoloAliquotaEstera = $recordIva["titolo"];
+								
+								$c->correggiPrezzi();
+								$prezziCorretti = true;
+							}
+						}
+					}
+					else if ($commercio == 'COMMERCIO DIRETTO')
+					{
+						$recordIva = $im->selectId((int)$nazione["id_iva"]);
+						
+						if (!empty($recordIva) && $nazione["id_iva"])
 						{
 							self::$idIvaEstera = $recordIva["id_iva"];
 							self::$aliquotaEstera = $recordIva["valore"];

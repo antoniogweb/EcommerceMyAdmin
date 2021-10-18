@@ -172,8 +172,8 @@ function impostaSpedizioneNonLoggato(obj)
 
 function impostaSpeseSpedizione(id_corriere, nazione)
 {
-	if (!attiva_spedizione)
-		return;
+// 	if (!attiva_spedizione)
+// 		return;
 	
 	var tipo_cliente = getTipoCliente();
 	
@@ -200,6 +200,10 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 
 function getNazione()
 {
+	// Sempre nella nazione di fatturazione
+	if (!attiva_spedizione)
+		return $("[name='nazione']").val();
+	
 	if ($("[name='spedisci_dati_fatturazione']").length > 0)
 	{
 		if ($("[name='spedisci_dati_fatturazione']:checked").val() == "Y")
@@ -217,8 +221,8 @@ var cercaSpeseSpedizione = true;
 
 function impostaCorrieriESpeseSpedizione()
 {
-	if (!attiva_spedizione)
-		return;
+// 	if (!attiva_spedizione)
+// 		return;
 	
 	if (!cercaSpeseSpedizione)
 		return;
@@ -228,58 +232,66 @@ function impostaCorrieriESpeseSpedizione()
 	if (nazione == "" || nazione == undefined)
 		return;
 	
-	if ($(".box_corrieri").length > 0)
+	if (attiva_spedizione)
 	{
-		var id_corriere = $("[name='id_corriere']:checked").val();
-		
-		$.ajaxQueue({
-			url: baseUrl + "/ordini/corrieri/" + nazione,
-			cache:false,
-			async: true,
-			dataType: "json",
-			success: function(content){
-				
-				if (content.indexOf(id_corriere) == -1)
-					id_corriere = content[0];
-				
-				if (content.length == 0)
-				{
-					$(".radio_corriere").each(function(){
-						$(this).find("input").iCheck('uncheck');
-					});
+		if ($(".box_corrieri").length > 0)
+		{
+			var id_corriere = $("[name='id_corriere']:checked").val();
+			
+			$.ajaxQueue({
+				url: baseUrl + "/ordini/corrieri/" + nazione,
+				cache:false,
+				async: true,
+				dataType: "json",
+				success: function(content){
 					
-					$(".box_corrieri").css("display","none");
-				}
-				else
-					$(".box_corrieri").css("display","block");
-				
-				$(".radio_corriere").css("display","none");
-				
-				for (var i=0;i<content.length;i++)
-				{
-					$(".radio_corriere.corriere_"+content[i]).css("display","block");
+					if (content.indexOf(id_corriere) == -1)
+						id_corriere = content[0];
 					
-					if (id_corriere == content[i])
+					if (content.length == 0)
 					{
-						cercaSpeseSpedizione = false;
-						$(".radio_corriere.corriere_"+content[i]).find("input").iCheck('check');
-						cercaSpeseSpedizione = true;
+						$(".radio_corriere").each(function(){
+							$(this).find("input").iCheck('uncheck');
+						});
+						
+						$(".box_corrieri").css("display","none");
 					}
+					else
+						$(".box_corrieri").css("display","block");
+					
+					$(".radio_corriere").css("display","none");
+					
+					for (var i=0;i<content.length;i++)
+					{
+						$(".radio_corriere.corriere_"+content[i]).css("display","block");
+						
+						if (id_corriere == content[i])
+						{
+							cercaSpeseSpedizione = false;
+							$(".radio_corriere.corriere_"+content[i]).find("input").iCheck('check');
+							cercaSpeseSpedizione = true;
+						}
+					}
+					
+					if (id_corriere == "" || id_corriere == undefined)
+						id_corriere = 0;
+					
+					impostaSpeseSpedizione(id_corriere, nazione);
 				}
-				
-				if (id_corriere == "" || id_corriere == undefined)
-					id_corriere = 0;
-				
-				impostaSpeseSpedizione(id_corriere, nazione);
-			}
-		});
+			});
+		}
+		else
+		{
+			var nazione = getNazione();
+			var id_corriere = $("[name='id_corriere']").val();
+			
+			impostaSpeseSpedizione(id_corriere, nazione);
+		}
 	}
 	else
 	{
 		var nazione = getNazione();
-		var id_corriere = $("[name='id_corriere']").val();
-		
-		impostaSpeseSpedizione(id_corriere, nazione);
+		impostaSpeseSpedizione(0, nazione);
 	}
 }
 
