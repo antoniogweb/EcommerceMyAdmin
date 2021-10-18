@@ -815,8 +815,14 @@ class BaseBaseController extends Controller
 						
 						if ($idContatto)
 							$this->m['ContattiModel']->update($idContatto);
-						else if ($this->m['ContattiModel']->insert())
-							$idContatto = $this->m['ContattiModel']->lId;
+						else
+						{
+							$fonte = $isNewsletter ? "NEWSLETTER" : "CONTATTI";
+							$this->m['ContattiModel']->setValue("fonte", $fonte);
+							
+							if ($this->m['ContattiModel']->insert())
+								$idContatto = $this->m['ContattiModel']->lId;
+						}
 					}
 					
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);

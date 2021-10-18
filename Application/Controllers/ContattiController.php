@@ -26,7 +26,7 @@ class ContattiController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti');
+	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'fonte:sanitizeAll'=>'tutti');
 	
 	public $sezionePannello = "marketing";
 	
@@ -42,13 +42,19 @@ class ContattiController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("cleanDateTime", "contatti.email");
-		$this->mainHead = "Data creazione,Email";
+		$this->mainFields = array("cleanDateTime", "FORM ;contatti.fonte;", "contatti.email", "contatti.nome", "contatti.telefono");
+		$this->mainHead = "Data creazione,Fonte,Email,Nome,Telefono";
 		
-		$filtri = array("dal","al");
+		$filtroFonte = array(
+			"tutti"		=>	"Fonte",
+		) + ContattiModel::$elencoFonti;
+		
+		$filtri = array("dal","al",array("fonte",null,$filtroFonte));
 		$this->filters = $filtri;
 		
-		$this->m[$this->modelName]->clear()->orderBy("contatti.data_creazione desc")->convert();
+		$this->m[$this->modelName]->clear()->where(array(
+			"fonte"	=>	$this->viewArgs["fonte"],
+		))->orderBy("contatti.data_creazione desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);
 		

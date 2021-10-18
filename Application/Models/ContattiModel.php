@@ -3,7 +3,12 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class ContattiModel extends GenericModel {
-
+	
+	public static $elencoFonti = array(
+		"CONTATTI"		=>	"FORM CONTATTI",
+		"NEWSLETTER"	=>	"FORM NEWSLETTER",
+	);
+	
 	public function __construct() {
 		$this->_tables = 'contatti';
 		$this->_idFields = 'id_contatto';

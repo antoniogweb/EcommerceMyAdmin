@@ -58,7 +58,7 @@ class CartController extends BaseController
 			"utente"	=>	"Utente registrato",
 		);
 		
-		$filtri = array("dal","al", array("tipo_carrello",null,$filtroTipo));
+		$filtri = array("dal","al",array("tipo_carrello",null,$filtroTipo));
 		$this->filters = $filtri;
 		
 		$this->m[$this->modelName]->clear()
