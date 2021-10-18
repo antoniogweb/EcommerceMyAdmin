@@ -674,13 +674,18 @@ class OrdiniModel extends FormModel {
 		return $arrayIva;
 	}
 	
-	public static function totaleNazione($nazione)
+	public static function totaleNazione($nazione, $annoPrecedente = false)
 	{
+		$anno = date("Y");
+		
+		if ($annoPrecedente)
+			$anno = date("Y", strtotime("-1 year", time()));
+		
 		$o = new OrdiniModel();
 		
 		$res = $o->clear()->select("SUM(subtotal) as TOTALE")->where(array(
 			"nazione_spedizione"	=>	sanitizeAll($nazione),
-		))->sWhere("DATE_FORMAT(data_creazione, '%Y') = '".date("Y")."'")->send();
+		))->sWhere("DATE_FORMAT(data_creazione, '%Y') = '".$anno."'")->send();
 		
 		if (isset($res[0]["aggregate"]["TOTALE"]) && $res[0]["aggregate"]["TOTALE"])
 			return $res[0]["aggregate"]["TOTALE"];

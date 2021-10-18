@@ -43,8 +43,8 @@ class IvaController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo");
-		$this->mainHead = "Titolo,Valore,Tipo";
+		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio");
+		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio";
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
 		$this->m[$this->modelName]->clear()

@@ -112,7 +112,8 @@ class IvaModel extends GenericModel
 				$im = new IvaModel();
 				
 				$ivaEstera = $im->clear()->where(array(
-					"tipo"	=>	sanitizeAll($chiaveIva),
+					"tipo"		=>	sanitizeAll($chiaveIva),
+					"commercio"	=>	'COMMERCIO INDIRETTO',
 				))->record();
 				
 				if (!empty($ivaEstera))
@@ -126,8 +127,8 @@ class IvaModel extends GenericModel
 				}
 				else if ($nazione["tipo"] == "UE" && $tipo == "B2C")
 				{
-// 					print_r($nazione);
 					$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
+// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
 					
 					$recordIva = $im->selectId((int)$nazione["id_iva"]);
 					
