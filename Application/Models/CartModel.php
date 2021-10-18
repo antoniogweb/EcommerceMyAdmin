@@ -423,7 +423,6 @@ class CartModel extends GenericModel {
 			
 			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
 			
-// 			$rapporto = $this->calcolaPrezzoFinale($r["id_page"], 1, $r["quantity"], true, true);
 			if ($r["prezzo_intero_ivato"] > 0)
 				$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
 			else
@@ -949,5 +948,58 @@ class CartModel extends GenericModel {
 			return "<img width='70px' src='".Url::getFileRoot()."thumb/contenuto/".$record["cart"]["immagine"]."' />";
 		
 		return "";
+	}
+	
+	// Recupera dati nel carrello da cliente loggato
+	public function collegaDatiCliente()
+	{
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		if (User::$logged)
+		{
+			$numeroDaCollegare = $this->clear()->where(array(
+				"OR"	=>	array(
+					"id_user"	=>	0,
+					"email"		=>	"",
+				),
+				"cart_uid"	=>	$clean["cart_uid"],
+			))->rowNumber();
+			
+			if ($numeroDaCollegare > 0)
+			{
+				$this->setValues(array(
+					"id_user"	=>	User::$id,
+					"email"		=>	User::$dettagli["username"],
+				));
+				
+				$this->update(null, "cart_uid = '".$clean["cart_uid"]."'");
+			}
+		}
+		else if (v("recupera_dati_carrello_da_post"))
+		{
+			$r = new Request();
+			
+			$clean["email"] = $r->post("email","","sanitizeAll");
+			
+			if (!$clean["email"])
+				$clean["email"] = $r->post("username","","sanitizeAll");
+			
+			if ($clean["email"] && checkMail($clean["email"]))
+			{
+				$numeroDaCollegare = $this->clear()->where(array(
+					"email"		=>	"",
+					"cart_uid"	=>	$clean["cart_uid"],
+				))->rowNumber();
+				
+				if ($numeroDaCollegare > 0)
+				{
+					$this->setValues(array(
+						"email"		=>	$clean["email"],
+					));
+					
+					$this->update(null, "cart_uid = '".$clean["cart_uid"]."'");
+				}
+			}
+		}
 	}
 }

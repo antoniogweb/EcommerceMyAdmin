@@ -242,6 +242,9 @@ class BaseBaseController extends Controller
 			setcookie("cart_uid",User::$cart_uid,$time,"/");
 		}
 		
+		// Recuperta dati da cliente loggato
+		$this->m["CartModel"]->collegaDatiCliente();
+		
 		//set the cookie for the wishlist
 		if (isset($_COOKIE["wishlist_uid"]))
 		{

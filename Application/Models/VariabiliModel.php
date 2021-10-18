@@ -274,6 +274,7 @@ class VariabiliModel extends GenericModel {
 		"placeholder_prodotti_o_servizi"	=>	"",
 		"responsabile_trattamento_dati"	=>	"",
 		"email_responsabile_trattamento_dati"	=>	"",
+		"recupera_dati_carrello_da_post"	=>	0,
 	);
 	
 	public static function setPlaceholders()
