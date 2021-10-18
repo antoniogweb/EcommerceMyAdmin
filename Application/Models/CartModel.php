@@ -950,6 +950,21 @@ class CartModel extends GenericModel {
 		return "";
 	}
 	
+	public function datiutente($record)
+	{
+		if ($record["cart"]["email"])
+		{
+			if ($record["cart"]["id_user"])
+			{
+				
+			}
+			
+			return $record["cart"]["email"];
+		}
+		
+		return "";
+	}
+	
 	// Recupera dati nel carrello da cliente loggato
 	public function collegaDatiCliente()
 	{

@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+require(LIBRARY."/Application/Models/ContattiModel.php");
+
 class BaseBaseController extends Controller
 {
 	protected $islogged = false;
@@ -118,6 +120,7 @@ class BaseBaseController extends Controller
 		$this->model("TipiaziendaModel");
 		$this->model("PagesregioniModel");
 		$this->model("CaptchaModel");
+		$this->model('ContattiModel');
 		
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
@@ -787,7 +790,6 @@ class BaseBaseController extends Controller
 			"N"	=>	v("campo_form_newsletter"),
 		);
 		
-		$this->model('ContattiModel');
 		$this->m['ContattiModel']->strongConditions['insert'] = array(
 			'checkNotEmpty'	=>	$campiForm,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
@@ -804,6 +806,8 @@ class BaseBaseController extends Controller
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
+					
+					$valoriEmail = $this->m['ContattiModel']->values;
 					
 					if ($isNewsletter)
 						$oggetto = "form iscrizione a newsletter";
@@ -824,7 +828,7 @@ class BaseBaseController extends Controller
 						"tipologia"	=>	"PAGINA",
 						"id_user"	=>	(int)User::$id,
 						"id_page"	=>	(int)$id,
-						"reply_to"	=>	$this->m['ContattiModel']->values["email"],
+						"reply_to"	=>	$valoriEmail["email"],
 					));
 					
 // 						$mail->SMTPDebug = 2;
@@ -837,15 +841,15 @@ class BaseBaseController extends Controller
 						if ($isNewsletter && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
 						{
 							$dataMailChimp = array(
-								"email"	=>	$this->m['ContattiModel']->values["email"],
+								"email"	=>	$valoriEmail["email"],
 								"status"=>	"subscribed",
 							);
 							
-							if (isset($this->m['ContattiModel']->values["nome"]))
-								$dataMailChimp["firstname"] = $this->m['ContattiModel']->values["nome"];
+							if (isset($valoriEmail["nome"]))
+								$dataMailChimp["firstname"] = $valoriEmail["nome"];
 							
-							if (isset($this->m['ContattiModel']->values["cognome"]))
-								$dataMailChimp["lastname"] = $this->m['ContattiModel']->values["cognome"];
+							if (isset($valoriEmail["cognome"]))
+								$dataMailChimp["lastname"] = $valoriEmail["cognome"];
 							
 							syncMailchimp($dataMailChimp);
 						}

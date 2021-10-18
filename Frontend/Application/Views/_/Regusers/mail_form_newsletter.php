@@ -6,4 +6,4 @@ Pagina di registrazine: <a href="<?php echo $this->getCurrentUrl();?>"><?php ech
 <?php } ?>
 Ecco i suoi dati:<br /><br />
 
-Email: <?php echo $this->m['ContattiModel']->values["email"];?><br />
+Email: <?php echo $valoriEmail["email"];?><br />

@@ -48,8 +48,8 @@ class CartController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "cart.quantity", "cart.prezzo_intero_ivato", "cart.price_ivato");
-		$this->mainHead = "Immagine,Data creazione,Prodotto,Quantità,Prezzo intero, IVA inclusa (€),Prezzo finale, IVA inclusa (€)";
+		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "cart.quantity", "cart.prezzo_intero_ivato", "cart.price_ivato", "datiutente");
+		$this->mainHead = "Immagine,Data creazione,Prodotto,Quantità,Prezzo intero IVA inclusa (€),Prezzo finale IVA inclusa (€),Email";
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
 		$this->m[$this->modelName]->clear()
