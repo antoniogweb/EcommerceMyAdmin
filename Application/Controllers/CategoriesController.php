@@ -33,6 +33,8 @@ class CategoriesController extends BaseController {
 	
 	public $orderBy = "id_order";
 	
+	public $tabella = "categoria";
+	
 	protected $_posizioni = array(
 		"main"		=>	null,
 		"meta"		=> null,

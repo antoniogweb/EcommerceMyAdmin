@@ -1,14 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-	
-});
-
-</script>
-
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
 	<h1>Gestione categoria: <?php echo $titoloPagina;?></h1>

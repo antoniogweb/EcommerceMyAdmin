@@ -4,7 +4,7 @@
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1><?php if (strcmp($type,"update") === 0) { echo gtext("Gestione").": ".$titoloPagina; } else { echo gtext("Inserimento nuova categoria");}?></h1>
+	<h1><?php if (strcmp($type,"update") === 0) { echo gtext("Gestione")." $tabella: ".$titoloPagina; } else { echo gtext("Inserimento nuova categoria");}?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
