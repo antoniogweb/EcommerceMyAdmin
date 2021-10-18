@@ -497,6 +497,8 @@ class Route
 		'captcha,form',
 		
 		'cart,main',
+		
+		'contatti,main',
 	);
 	
 	//it can be 'yes' or 'no'

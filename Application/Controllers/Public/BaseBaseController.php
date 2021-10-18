@@ -806,15 +806,18 @@ class BaseBaseController extends Controller
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{
 					$valoriEmail = $this->m['ContattiModel']->values;
-
+					
 					$idContatto = $this->m['ContattiModel']->getIdFromMail($valoriEmail["email"]);
 					
-					$this->m['ContattiModel']->sanitize("sanitizeAll");
-					
-					if ($idContatto)
-						$this->m['ContattiModel']->update($idContatto);
-					else if ($this->m['ContattiModel']->insert())
-						$idContatto = $this->m['ContattiModel']->lId;
+					if (v("salva_contatti_in_db"))
+					{
+						$this->m['ContattiModel']->sanitize("sanitizeAll");
+						
+						if ($idContatto)
+							$this->m['ContattiModel']->update($idContatto);
+						else if ($this->m['ContattiModel']->insert())
+							$idContatto = $this->m['ContattiModel']->lId;
+					}
 					
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
 					

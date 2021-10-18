@@ -275,6 +275,9 @@ class VariabiliModel extends GenericModel {
 		"responsabile_trattamento_dati"	=>	"",
 		"email_responsabile_trattamento_dati"	=>	"",
 		"recupera_dati_carrello_da_post"	=>	0,
+		"salva_contatti_in_db"		=>	1,
+		"attiva_sezione_contatti"	=>	1,
+		"attiva_marketing"			=>	0,
 	);
 	
 	public static function setPlaceholders()

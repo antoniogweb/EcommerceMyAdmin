@@ -550,6 +550,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"tipo_carrello"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

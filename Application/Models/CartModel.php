@@ -954,12 +954,12 @@ class CartModel extends GenericModel {
 	{
 		if ($record["cart"]["email"])
 		{
-			if ($record["cart"]["id_user"])
-			{
-				
-			}
+			$html = $record["cart"]["email"];
 			
-			return $record["cart"]["email"];
+			if ($record["regusers"]["username"])
+				$html = "<a class='iframe' href='".Url::getRoot()."regusers/form/update/".$record["regusers"]["id_user"]."?partial=Y&nobuttons=Y'>$html</a>";
+			
+			return $html;
 		}
 		
 		return "";

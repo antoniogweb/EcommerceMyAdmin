@@ -60,6 +60,10 @@ class PanelController extends BaseController {
 				$this->load('header_utenti');
 				$data["sezionePannello"] = "utenti";
 				break;
+			case "marketing":
+				$this->load('header_marketing');
+				$data["sezionePannello"] = "marketing";
+				break;
 			default:
 				$this->load('header_sito');
 				$data["sezionePannello"] = "sito";

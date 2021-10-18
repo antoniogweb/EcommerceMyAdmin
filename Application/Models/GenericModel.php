@@ -1201,4 +1201,13 @@ class GenericModel extends Model_Tree
 		
 		return "";
     }
+    
+    public function setDalAlWhereClause($dal, $al)
+    {
+		if ($dal != "tutti")
+			$this->sWhere("DATE_FORMAT(".$this->_tables.".data_creazione, '%Y-%m-%d') >= '".getIsoDate($dal)."'");
+		
+		if ($al != "tutti")
+			$this->sWhere("DATE_FORMAT(".$this->_tables.".data_creazione, '%Y-%m-%d') <= '".getIsoDate($al)."'");
+    }
 }

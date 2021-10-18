@@ -22,15 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CartController extends BaseController
+class ContattiController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'tipo_carrello:sanitizeAll'=>'tutti');
+	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti');
 	
 	public $sezionePannello = "marketing";
-	
-	public $tabella = "carrelli abbandonati";
 	
 	public function main()
 	{
@@ -38,44 +36,21 @@ class CartController extends BaseController
 		$this->mainButtons = "";
 		$this->addBulkActions = false;
 		
-		$this->colProperties = array(
-			array(
-				'width'	=>	'80px',
-			),
-		);
+		$this->colProperties = array();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta');
 		
 		$this->shift();
 		
-		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "categories.title", "cart.quantity", "cart.prezzo_intero_ivato", "cart.price_ivato", "datiutente");
-		$this->mainHead = "Immagine,Data creazione,Prodotto,Categoria,Quantità,Prezzo intero IVA inclusa (€),Prezzo finale IVA inclusa (€),Email";
+		$this->mainFields = array("cleanDateTime", "contatti.email");
+		$this->mainHead = "Data creazione,Email";
 		
-		$filtroTipo = array(
-			"tutti"		=>	"Tipo carrello",
-			"anonimo"	=>	"Carrello anonimo",
-			"contatto"	=>	"Email conosciuta",
-			"utente"	=>	"Utente registrato",
-		);
-		
-		$filtri = array("dal","al", array("tipo_carrello",null,$filtroTipo));
+		$filtri = array("dal","al");
 		$this->filters = $filtri;
 		
-		$this->m[$this->modelName]->clear()
-				->select("*")
-				->left("regusers")->on("regusers.id_user = cart.id_user")
-				->left(array("pagina"))
-				->left("categories")->on("pages.id_c = categories.id_c")
-				->orderBy("cart.email desc, cart.data_creazione desc")->convert();
+		$this->m[$this->modelName]->clear()->orderBy("contatti.data_creazione desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);
-		
-		if ($this->viewArgs['tipo_carrello'] == "anonimo")
-			$this->m[$this->modelName]->sWhere("cart.email = ''");
-		else if ($this->viewArgs['tipo_carrello'] == "contatto")
-			$this->m[$this->modelName]->sWhere("cart.email != ''");
-		else if ($this->viewArgs['tipo_carrello'] == "utente")
-			$this->m[$this->modelName]->sWhere("cart.id_user != 0");
 		
 		$this->m[$this->modelName]->save();
 		

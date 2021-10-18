@@ -136,7 +136,7 @@
 							</ul>
 						</li>
 						<?php } ?>
-						<?php if (count($notifiche) > 0 ) { ?>
+						<?php if (count($notifiche) > 0) { ?>
 						<li class="dropdown notifications-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 								<i class="fa fa-bell-o"></i>
@@ -167,14 +167,14 @@
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<?php if ($helpDaVedereTutti) { ?>
+						<?php if ($helpDaVedereTutti && !User::$isMobile) { ?>
 						<li class="help_help">
 							<a href="<?php echo $this->baseUrl."/help/mostranascondi/".$helpDaVedereTutti[0]["help_item"]["id_help"]."/1";?>" class="ajlink"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
 							</a>
 						</li>
 						<?php } ?>
 						<li class="<?php if (strcmp($sezionePannello,"sito") === 0) { ?>active<?php } ?> help_cms">
-							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><span class="glyphicon glyphicon-cloud"></span>
+							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><i class="fa fa-cloud"></i>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("CMS")?>
 							<?php } ?>
@@ -182,15 +182,24 @@
 						</li>
 						<?php if (v("attiva_menu_ecommerce")) { ?>
 						<li class="<?php if (strcmp($sezionePannello,"ecommerce") === 0) { ?>active<?php } ?> help_ecommerce">
-							<a href="<?php echo $this->baseUrl.'/'.v("url_elenco_prodotti").'/main';?>"><span class="glyphicon glyphicon-shopping-cart"></span>
+							<a href="<?php echo $this->baseUrl.'/'.v("url_elenco_prodotti").'/main';?>"><i class="fa fa-shopping-cart"></i>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("E-commerce")?>
 							<?php } ?>
 							</a>
 						</li>
 						<?php } ?>
+						<?php if (v("attiva_marketing")) { ?>
+						<li class="<?php if (strcmp($sezionePannello,"marketing") === 0) { ?>active<?php } ?> help_ecommerce">
+							<a href="<?php echo $this->baseUrl.'/panel/main/marketing';?>"><i class="fa fa-line-chart"></i>
+							<?php if (!User::$isMobile) { ?>
+							<?php echo gtext("Marketing")?>
+							<?php } ?>
+							</a>
+						</li>
+						<?php } ?>
 						<li class="<?php if (strcmp($sezionePannello,"utenti") === 0) { ?>active<?php } ?> help_configurazione">
-							<a href="<?php echo $this->baseUrl.'/users/main';?>"><span class="glyphicon glyphicon-cog"></span>
+							<a href="<?php echo $this->baseUrl.'/users/main';?>"><i class="fa fa-cog"></i>
 							<?php if (!User::$isMobile) { ?>
 							<?php echo gtext("Preferenze")?>
 							<?php } ?>
