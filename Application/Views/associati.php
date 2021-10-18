@@ -11,15 +11,15 @@
 	<div class="row">
 		<div class="col-md-12">
 			<?php if (!nobuttons()) { ?>
-			<div class='mainMenu'>
-				<?php echo $menu;?>
-			</div>
-			<?php } ?>
+				<div class='mainMenu'>
+					<?php echo $menu;?>
+				</div>
 			
-			<?php if (isset($stepsAssociato)) { ?>
-			<?php include($this->viewPath($stepsAssociato));?>
-			<?php } else { ?>
-			<?php include($this->viewPath("steps"));?>
+				<?php if (isset($stepsAssociato)) { ?>
+				<?php include($this->viewPath($stepsAssociato));?>
+				<?php } else { ?>
+				<?php include($this->viewPath("steps"));?>
+				<?php } ?>
 			<?php } ?>
 			
 			<div class="box">
