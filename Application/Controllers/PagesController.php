@@ -646,6 +646,18 @@ class PagesController extends BaseController {
 					}
 				}
 				
+				// Campi aggiuntivi dalle APP
+				if (isset(PagesModel::$campiAggiuntivi[$sectionDetail]))
+				{
+					foreach (PagesModel::$campiAggiuntivi[$sectionDetail] as $campo => $form)
+					{
+						$this->queryFields .= ",$campo";
+						
+						if (!empty($form))
+							$this->m[$this->modelName]->formStructAggiuntivoEntries[$campo] = $form;
+					}
+				}
+				
 				$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 				
 				$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);

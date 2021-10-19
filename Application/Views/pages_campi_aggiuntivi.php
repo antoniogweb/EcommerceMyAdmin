@@ -8,3 +8,12 @@ if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section
 		echo $form[$sec];
 	}
 }
+
+if (isset(PagesModel::$campiAggiuntivi[$sectionCampiAggiuntivi]))
+{
+	foreach (PagesModel::$campiAggiuntivi[$sectionCampiAggiuntivi] as $sec => $el)
+	{
+		if (in_array($sec, PagesModel::$campiAggiuntiviMeta["traduzione"]))
+			echo $form[$sec];
+	}
+}

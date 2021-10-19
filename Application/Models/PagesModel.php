@@ -49,6 +49,11 @@ class PagesModel extends GenericModel {
 	
 	public static $tipiPaginaId = array();
 	
+	public static $campiAggiuntivi = array();
+	public static $campiAggiuntiviMeta = array(
+		"traduzione"	=>	array(),
+	);
+	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina grazie",
 		"GRAZIE_NEWSLETTER"	=>	"Pagina grazie iscrizione a newsletter",
@@ -91,28 +96,6 @@ class PagesModel extends GenericModel {
 		$this->addStrongCondition("both",'checkNotEmpty',"title");
 		
 		$this->salvaDataModifica = true;
-		
-// 		$this->addStrongCondition("both",'checkNotEmpty',"codice|Si prega di inserire il codice del prodotto");
-		
-// 		$inProm = isset($_POST["in_promozione"]) ? $_POST["in_promozione"] : "N";
-		
-// 		$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}(\,[0-9]{1,2})?$/',"price|Si prega di ricontrollare il campo <b>Prezzo</b>");
-// 		$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}(\,[0-9]{1,2})?$/',"peso|Si prega di ricontrollare il campo <b>Peso</b>");
-		
-// 		if (strcmp($inProm,"Y") === 0)
-// 		{
-// 			$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}(\,[0-9]{1,2})?$/',"prezzo_promozione|Si prega di ricontrollare il campo <b>Prezzo in promozione</b>");
-// 		}
-		
-// 		$this->addDatabaseCondition("both",'checkUnique',"codice");
-		
-// 		$this->databaseConditions['insert'] = array(
-// 			'checkUnique'=>'codice|Il valore del campo codice è già stato usato per un altro prodotto, si prega di sceglierne un altro',
-// 		);
-// 		
-// 		$this->databaseConditions['update'] = array(
-// 			'checkUniqueCompl'=>'codice|Il valore del campo codice è già stato usato per un altro prodotto, si prega di sceglierne un altro',
-// 		);
 		
 		$this->uploadFields = array();
 		
@@ -2215,5 +2198,22 @@ class PagesModel extends GenericModel {
 		$this->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		
 		return $this;
+    }
+    
+    public function setCampiAggiuntivi($sezione, $arrayCampi, $traduci = false)
+    {
+		if (isset(self::$campiAggiuntivi[$sezione]))
+			self::$campiAggiuntivi[$sezione] += $arrayCampi;
+		else
+			self::$campiAggiuntivi[$sezione] = $arrayCampi;
+		
+		if ($traduci)
+		{
+			foreach ($arrayCampi as $campo => $frm)
+			{
+				if (!in_array($campo, self::$campiAggiuntiviMeta["traduzione"]))
+					self::$campiAggiuntiviMeta["traduzione"][] = $campo;
+			}
+		}
     }
 }

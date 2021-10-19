@@ -67,6 +67,21 @@ trait TraitController
 			}
 		}
 		
+		// Campi aggiuntivi dalle APP
+		if (isset(PagesModel::$campiAggiuntivi[$section]))
+		{
+			foreach (PagesModel::$campiAggiuntivi[$section] as $campo => $form)
+			{
+				if (in_array($campo, PagesModel::$campiAggiuntiviMeta["traduzione"]))
+				{
+					$fields .= ",$campo";
+					
+					if (!empty($form))
+						$this->m[$this->modelName]->formStructAggiuntivoEntries[$campo] = $form;
+				}
+			}
+		}
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		// Lo imposto come salvato manualmente

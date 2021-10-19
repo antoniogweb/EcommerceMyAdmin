@@ -56,7 +56,9 @@
 					</form>
 				</div>
 				<div class="uk-visible@m">
-					<a type="submit" class="uk-align-right uk-button uk-button-default cart_button_aggiorna_carrello" name="update_cart" value="Update cart"><?php echo gtext("Aggiorna carrello");?></a>
+					<?php if (!v("carrello_monoprodotto")) { ?>
+						<a type="submit" class="uk-align-right uk-button uk-button-default cart_button_aggiorna_carrello" name="update_cart" value="Update cart"><?php echo gtext("Aggiorna carrello");?></a>
+					<?php } ?>
 				</div>
 			</div>
 		</div>

@@ -279,6 +279,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_sezione_contatti"	=>	1,
 		"attiva_marketing"			=>	0,
 		"mostra_codice_in_carrello"	=>	1,
+		"carrello_monoprodotto"		=>	0,
 	);
 	
 	public static function setPlaceholders()

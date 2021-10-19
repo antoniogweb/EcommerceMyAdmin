@@ -805,6 +805,19 @@ class GenericModel extends Model_Tree
 					}
 				}
 				
+				// Prendo i campi aggiuntivi dalle APP
+				if (is_array(PagesModel::$campiAggiuntivi))
+				{
+					foreach (PagesModel::$campiAggiuntivi as $struct)
+					{
+						foreach ($struct as $campo => $frm)
+						{
+							if (in_array($campo, PagesModel::$campiAggiuntiviMeta["traduzione"]))
+								$ct->setValue($campo, isset($record[$campo]) ? $record[$campo] : "", "sanitizeDb");
+						}
+					}
+				}
+				
 // 				print_r($ct->values);die();
 				
 				if (count($traduzione) === 0)

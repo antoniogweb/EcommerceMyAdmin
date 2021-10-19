@@ -132,6 +132,16 @@ class BaseCartController extends BaseController
 	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $id_cart = 0)
 	{
+		if (v("carrello_monoprodotto"))
+		{
+			// Imposto la quantità a 1
+			$quantity = 1;
+			
+			// Se non è una modifica del carrello svuoto il carrello
+			if (!$id_cart)
+				$this->m["CartModel"]->emptyCart();
+		}
+		
 		$result = "KO";
 		$idCart = 0;
 		$errore = "";
