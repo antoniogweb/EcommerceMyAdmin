@@ -13,7 +13,7 @@ if (isset(PagesModel::$campiAggiuntivi[$sectionCampiAggiuntivi]))
 {
 	foreach (PagesModel::$campiAggiuntivi[$sectionCampiAggiuntivi] as $sec => $el)
 	{
-		if (in_array($sec, PagesModel::$campiAggiuntiviMeta["traduzione"]))
+		if (isset($form[$sec]))
 			echo $form[$sec];
 	}
 }
