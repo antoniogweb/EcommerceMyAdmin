@@ -9,7 +9,7 @@
 	<div>
 		<strong><?php echo field($p, "title");?></strong>
 		<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
-		<?php if ($p["cart"]["codice"]) { ?>
+		<?php if (v("mostra_codice_in_carrello") && $p["cart"]["codice"]) { ?>
 			<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
 		<?php } ?>
 		<br />

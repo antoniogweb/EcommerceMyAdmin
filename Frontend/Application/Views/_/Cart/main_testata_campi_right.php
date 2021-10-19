@@ -3,9 +3,11 @@
 	<div class="uk-first-column">
 		<?php echo gtext("Prodotto");?>
 	</div>
+	<?php if (v("mostra_codice_in_carrello")) { ?>
 	<div>
 		<?php echo gtext("Codice");?>
 	</div>
+	<?php } ?>
 	<div>
 		<?php echo gtext("Prezzo");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("(Iva esclusa)");?><?php } ?>
 	</div>
