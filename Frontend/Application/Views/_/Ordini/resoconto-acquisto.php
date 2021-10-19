@@ -99,7 +99,7 @@ if (!isset($baseUrl))
 			<tr>
 				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></td>
 			</tr>
-			<?php if (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"]) { ?>
+			<?php if (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"] && !$ordine["nascondi_iva_estera"]) { ?>
 			<tr>
 				<td class="first_column"><span style="color:#999;font-style:italic;"><?php echo gtext("Di cui IVA", false); ?> (<?php echo $ordine["stringa_iva_estera"];?>):</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></span></td>
 			</tr>
