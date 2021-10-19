@@ -26,7 +26,7 @@
 <hr />
 <?php include(tpf("/Ordini/totali.php"));?>
 
-<?php if (v("prezzi_ivati_in_carrello") && isset(IvaModel::$titoloAliquotaEstera)) { ?>
+<?php if (v("prezzi_ivati_in_carrello") && isset(IvaModel::$titoloAliquotaEstera) && !IvaModel::$nascondiAliquotaEstera) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Di cui IVA")?><br />
 	(<?php echo IvaModel::$titoloAliquotaEstera;?>)</span></div>

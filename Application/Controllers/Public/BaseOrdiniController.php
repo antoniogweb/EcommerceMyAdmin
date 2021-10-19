@@ -1048,6 +1048,7 @@ class BaseOrdiniController extends BaseController
 							$this->m['OrdiniModel']->values["id_iva_estera"] = IvaModel::$idIvaEstera;
 							$this->m['OrdiniModel']->values["aliquota_iva_estera"] = IvaModel::$aliquotaEstera;
 							$this->m['OrdiniModel']->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
+							$this->m['OrdiniModel']->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
 						}
 						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");

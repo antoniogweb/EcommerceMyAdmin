@@ -27,10 +27,12 @@ class IvaModel extends GenericModel
 	public static $idIvaEstera = null;
 	public static $aliquotaEstera = null;
 	public static $titoloAliquotaEstera = null;
+	public static $nascondiAliquotaEstera = null;
 	
 	public static $bidIvaEstera = null;
 	public static $baliquotaEstera = null;
 	public static $btitoloAliquotaEstera = null;
+	public static $bnascondiAliquotaEstera = null;
 	
 	public static $cercaIvaEstera = true;
 	
@@ -81,6 +83,18 @@ class IvaModel extends GenericModel
 					"options"	=>	self::$commercio,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+				),
+				'nascondi'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Nascondi al checkout",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Solo per casistiche EXTRA Italia: non viene mostrata al cliente, anche se usata")."</div>"
+					),
 				),
 			),
 		);
@@ -134,9 +148,10 @@ class IvaModel extends GenericModel
 				
 				if (!empty($ivaEstera))
 				{
-					self::$idIvaEstera = $ivaEstera["id_iva"];
-					self::$aliquotaEstera = $ivaEstera["valore"];
-					self::$titoloAliquotaEstera = $ivaEstera["titolo"];
+					self::setIvaEstera($ivaEstera);
+// 					self::$idIvaEstera = $ivaEstera["id_iva"];
+// 					self::$aliquotaEstera = $ivaEstera["valore"];
+// 					self::$titoloAliquotaEstera = $ivaEstera["titolo"];
 					
 					$c->correggiPrezzi();
 					$prezziCorretti = true;
@@ -156,9 +171,7 @@ class IvaModel extends GenericModel
 							
 							if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
 							{
-								self::$idIvaEstera = $recordIva["id_iva"];
-								self::$aliquotaEstera = $recordIva["valore"];
-								self::$titoloAliquotaEstera = $recordIva["titolo"];
+								self::setIvaEstera($recordIva);
 								
 								$c->correggiPrezzi();
 								$prezziCorretti = true;
@@ -171,9 +184,7 @@ class IvaModel extends GenericModel
 						
 						if (!empty($recordIva) && $nazione["id_iva"])
 						{
-							self::$idIvaEstera = $recordIva["id_iva"];
-							self::$aliquotaEstera = $recordIva["valore"];
-							self::$titoloAliquotaEstera = $recordIva["titolo"];
+							self::setIvaEstera($recordIva);
 							
 							$c->correggiPrezzi();
 							$prezziCorretti = true;
@@ -189,15 +200,25 @@ class IvaModel extends GenericModel
 		return null;
     }
     
+    public static function setIvaEstera($recordIva)
+    {
+		self::$idIvaEstera = $recordIva["id_iva"];
+		self::$aliquotaEstera = $recordIva["valore"];
+		self::$titoloAliquotaEstera = $recordIva["titolo"];
+		self::$nascondiAliquotaEstera = $recordIva["nascondi"];
+    }
+    
     public static function resetIvaEstera()
     {
 		self::$bidIvaEstera = self::$idIvaEstera;
 		self::$baliquotaEstera = self::$aliquotaEstera;
 		self::$btitoloAliquotaEstera = self::$titoloAliquotaEstera;
+		self::$bnascondiAliquotaEstera = self::$nascondiAliquotaEstera;
 		
 		self::$idIvaEstera = null;
 		self::$aliquotaEstera = null;
 		self::$titoloAliquotaEstera = null;
+		self::$nascondiAliquotaEstera = null;
     }
     
     public static function restoreIvaEstera()
@@ -205,6 +226,7 @@ class IvaModel extends GenericModel
 		self::$idIvaEstera = self::$bidIvaEstera;
 		self::$aliquotaEstera = self::$baliquotaEstera;
 		self::$titoloAliquotaEstera = self::$btitoloAliquotaEstera;
+		self::$nascondiAliquotaEstera = self::$bnascondiAliquotaEstera;
     }
     
     public static function getTitoloDaId($id)
@@ -218,4 +240,9 @@ class IvaModel extends GenericModel
 		
 		return "";
     }
+    
+    public function nascondi($record)
+	{
+		return $record[$this->_tables]["nascondi"] ? gtext("Sì") : gtext("No");
+	}
 }

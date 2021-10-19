@@ -43,8 +43,8 @@ class IvaController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio");
-		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio";
+		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio","nascondi");
+		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio,Nascondi al cliente";
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
 		$this->m[$this->modelName]->clear()
@@ -58,7 +58,7 @@ class IvaController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio,nascondi');
 		
 		parent::form($queryType, $id);
 	}

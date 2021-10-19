@@ -1,0 +1,1 @@
+INSERT INTO `iva` (`id_iva`, `data_creazione`, `titolo`, `valore`, `id_order`, `tipo`, `commercio`, `nascondi`) VALUES (NULL, CURRENT_TIMESTAMP, 'B2CEX', '0.00', '9', 'B2CEX', 'COMMERCIO DIRETTO', '1')
