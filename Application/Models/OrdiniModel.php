@@ -740,4 +740,12 @@ class OrdiniModel extends FormModel {
 			"cart_uid"	=>	$clean["cartUid"],
 		))->record();
 	}
+	
+	public static function getNominativo($ordine)
+	{
+		if ($ordine["tipo_cliente"] == "azienda")
+			return $ordine["ragione_sociale"];
+		else
+			return $ordine["nome"]." ".$ordine["cognome"];
+	}
 }
