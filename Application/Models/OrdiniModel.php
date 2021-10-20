@@ -508,6 +508,7 @@ class OrdiniModel extends FormModel {
 			"id_o"	=>	$id_o,
 			"tipo"	=>	$tipo,
 			"email"	=>	isset($ordine["email"]) ? $ordine["email"] : "",
+			"id_user"	=>	isset($ordine["id_user"]) ? $ordine["id_user"] : 0,
 		));
 		
 		$mailOrdini->insert();

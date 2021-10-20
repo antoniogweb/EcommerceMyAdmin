@@ -321,6 +321,7 @@ class BaseOrdiniController extends BaseController
 							"tipologia"	=>	"PAGAMENTO ORDINE",
 							"id_o"		=>	$ordine["id_o"],
 							"tipo"		=>	"P",
+							"id_user"	=>	$ordine["id_user"],
 						));
 					}
 				}
@@ -1340,7 +1341,7 @@ class BaseOrdiniController extends BaseController
 								"oggetto"	=>	gtext("Ordine")." N°" . $clean['lastId'],
 								"testo"		=>	$output,
 								"tipologia"	=>	"ORDINE",
-								"id_user"	=>	(int)$clean['userId'],
+								"id_user"	=>	(int)$ordine['id_user'],
 								"tipo"		=>	"R",
 								"id_o"		=>	$clean['lastId'],
 							));
@@ -1356,7 +1357,7 @@ class BaseOrdiniController extends BaseController
 								"oggetto"	=>	gtext("Ordine")." N°" . $clean['lastId'],
 								"testo"		=>	$output,
 								"tipologia"	=>	"ORDINE NEGOZIO",
-								"id_user"	=>	(int)$clean['userId'],
+								"id_user"	=>	(int)$ordine['id_user'],
 								"tipo"		=>	"R",
 								"id_o"		=>	$clean['lastId'],
 							));
