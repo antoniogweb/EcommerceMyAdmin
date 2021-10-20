@@ -1,3 +1,4 @@
+<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (count($prodotti_correlati) > 0) { ?>
 <div class="uk-section">
 	<div class="uk-container">
