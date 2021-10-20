@@ -319,6 +319,7 @@ class BaseOrdiniController extends BaseController
 							"oggetto"	=>	gtext("Conferma pagamento ordine N°")." ".$ordine["id_o"],
 							"testo"		=>	$output,
 							"tipologia"	=>	"PAGAMENTO ORDINE",
+							"id_o"		=>	$ordine["id_o"],
 						));
 					}
 				}
