@@ -500,11 +500,14 @@ class OrdiniModel extends FormModel {
 	
 	public function aggiungiStoricoMail($id_o, $tipo = "F")
 	{
+		$ordine = $this->selectId((int)$id_o);
+		
 		$mailOrdini = new MailordiniModel();
 		
 		$mailOrdini->setValues(array(
 			"id_o"	=>	$id_o,
 			"tipo"	=>	$tipo,
+			"email"	=>	isset($ordine["email"]) ? $ordine["email"] : "",
 		));
 		
 		$mailOrdini->insert();

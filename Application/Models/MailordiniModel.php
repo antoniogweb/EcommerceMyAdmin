@@ -89,6 +89,7 @@ class MailordiniModel extends GenericModel
 		$idPage = isset($params["id_page"]) ? $params["id_page"] : 0;
 		$replyTo = isset($params["reply_to"]) ? $params["reply_to"] : "";
 		$idContatto = isset($params["id_contatto"]) ? $params["id_contatto"] : 0;
+		$tipo = isset($params["tipo"]) ? $params["tipo"] : "A";
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
@@ -179,7 +180,7 @@ class MailordiniModel extends GenericModel
 				if ($mail->Send())
 					$inviata = 1;
 				
-				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO")
+				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO")
 					$testoClean = "";
 				
 				$mo->setValues(array(
@@ -193,6 +194,7 @@ class MailordiniModel extends GenericModel
 					"id_page"	=>	$idPage,
 					"reply_to"	=>	$replyTo,
 					"id_contatto"	=>	$idContatto,
+					"tipo"		=>	$tipo,
 				));
 				
 				$mo->insert();

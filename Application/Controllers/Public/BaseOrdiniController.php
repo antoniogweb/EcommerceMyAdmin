@@ -1096,43 +1096,43 @@ class BaseOrdiniController extends BaseController
 		
 // 							require_once(ROOT."/External/phpmailer/class.phpmailer.php");
 
-							$mail = new PHPMailer(true); //New instance, with exceptions enabled
-
-							if (Parametri::$useSMTP)
-							{
-								$mail->IsSMTP();                         // tell the class to use SMTP
-								$mail->SMTPAuth   = true;                  // enable SMTP authentication
-								$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
-								$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
-								$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
-								$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
-								
-								if (ImpostazioniModel::$valori["smtp_secure"])
-									$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];
-							}
+// 							$mail = new PHPMailer(true); //New instance, with exceptions enabled
+// 
+// 							if (Parametri::$useSMTP)
+// 							{
+// 								$mail->IsSMTP();                         // tell the class to use SMTP
+// 								$mail->SMTPAuth   = true;                  // enable SMTP authentication
+// 								$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
+// 								$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
+// 								$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
+// 								$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
+// 								
+// 								if (ImpostazioniModel::$valori["smtp_secure"])
+// 									$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];
+// 							}
 							
-							$mail->From       = Parametri::$mailFrom;
-							$mail->FromName   = Parametri::$mailFromName;
-							$mail->CharSet = 'UTF-8';
+// 							$mail->From       = Parametri::$mailFrom;
+// 							$mail->FromName   = Parametri::$mailFromName;
+// 							$mail->CharSet = 'UTF-8';
 							
-							$mail->SMTPOptions = array(
-								'ssl' => array(
-									'verify_peer' => false,
-									'verify_peer_name' => false,
-									'allow_self_signed' => true
-								)
-							);
+// 							$mail->SMTPOptions = array(
+// 								'ssl' => array(
+// 									'verify_peer' => false,
+// 									'verify_peer_name' => false,
+// 									'allow_self_signed' => true
+// 								)
+// 							);
 							
-							if (ImpostazioniModel::$valori["bcc"])
-								$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-							
-							if (defined("BCC") && is_array(BCC))
-							{
-								foreach (BCC as $emailBcc)
-								{
-									$mail->addBCC($emailBcc);
-								}
-							}
+// 							if (ImpostazioniModel::$valori["bcc"])
+// 								$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+// 							
+// 							if (defined("BCC") && is_array(BCC))
+// 							{
+// 								foreach (BCC as $emailBcc)
+// 								{
+// 									$mail->addBCC($emailBcc);
+// 								}
+// 							}
 							
 							if (!$this->islogged)
 							{
@@ -1204,29 +1204,42 @@ class BaseOrdiniController extends BaseController
 										
 										$this->m['OrdiniModel']->update($clean['lastId']);
 										
-										try
-										{
-											//manda mail con credenziali al cliente
-											$mail->ClearAddresses();
-											$mail->AddAddress($ordine["email"]);
-											if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-												$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-											$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Invio credenziali nuovo utente");
-											$mail->IsHTML(true);
-											
-											//mail con credenziali
-											ob_start();
-											include tp()."/Regusers/mail_credenziali.php";
-
-											$output = ob_get_clean();
-											$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-											
-											$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
-											$mail->MsgHTML($output);
-											$mail->Send();
-										} catch (Exception $e) {
-											
-										}
+										// MAIL AL CLIENTE
+										ob_start();
+										include tp()."/Regusers/mail_credenziali.php";
+										$output = ob_get_clean();
+										
+										$res = MailordiniModel::inviaMail(array(
+											"emails"	=>	array($clean["username"]),
+											"oggetto"	=>	gtext("invio credenziali nuovo utente"),
+											"testo"		=>	$output,
+											"tipologia"	=>	"ISCRIZIONE",
+											"id_user"	=>	(int)$clean['userId'],
+											"id_page"	=>	0,
+										));
+						
+// 										try
+// 										{
+// 											//manda mail con credenziali al cliente
+// 											$mail->ClearAddresses();
+// 											$mail->AddAddress($ordine["email"]);
+// 											if (Parametri::$mailReplyTo && Parametri::$mailFromName)
+// 												$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+// 											$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Invio credenziali nuovo utente");
+// 											$mail->IsHTML(true);
+// 											
+// 											//mail con credenziali
+// 											ob_start();
+// 											include tp()."/Regusers/mail_credenziali.php";
+// 											$output = ob_get_clean();
+// 											$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+// 											
+// 											$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
+// 											$mail->MsgHTML($output);
+// 											$mail->Send();
+// 										} catch (Exception $e) {
+// 											
+// 										}
 										
 										//loggo l'utente
 										$this->s['registered']->login($clean["username"],$password);
@@ -1314,59 +1327,91 @@ class BaseOrdiniController extends BaseController
 							if (v("hook_ordine_confermato") && function_exists(v("hook_ordine_confermato")))
 								call_user_func(v("hook_ordine_confermato"), $clean['lastId']);
 							
-							try
-							{
-								$mail->ClearAddresses();
-								$mail->AddAddress($ordine["email"]);
-								if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-									$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-								$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Ordine")." N°" . $clean['lastId'];
-								$mail->IsHTML(true);
-								
-								//mail al cliente
-								ob_start();
-								$tipoOutput = "mail_al_cliente";
-								include tp()."/Ordini/resoconto-acquisto.php";
-
-								$output = ob_get_clean();
-								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-								
-								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
-								$mail->MsgHTML($output);
-								
-// 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
-									$mail->Send();
-
-								//mail al negozio
-								$mail->ClearAllRecipients();
-								
-								if (defined("BCC") && is_array(BCC))
-								{
-									foreach (BCC as $emailBcc)
-									{
-										$mail->addBCC($emailBcc);
-									}
-								}
-								
-								$mail->AddAddress(Parametri::$mailInvioOrdine);
-								
-								ob_start();
-								$tipoOutput = "mail_al_negozio";
-								include tp()."/Ordini/resoconto-acquisto.php";
-
-								$output = ob_get_clean();
-								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-								
-								$mail->MsgHTML($output);
-								$mail->Send();
-								
-								// Segna inviata mail ordine ricevuto
-// 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
-									$this->m['OrdiniModel']->aggiungiStoricoMail($clean['lastId'], "R");
-								
-							} catch (Exception $e) {
-								
-							}
+							// mail al cliente
+							ob_start();
+							$tipoOutput = "mail_al_cliente";
+							include tp()."/Ordini/resoconto-acquisto.php";
+							$output = ob_get_clean();
+							
+							$res = MailordiniModel::inviaMail(array(
+								"emails"	=>	array($ordine["email"]),
+								"oggetto"	=>	gtext("Ordine")." N°" . $clean['lastId'],
+								"testo"		=>	$output,
+								"tipologia"	=>	"ORDINE",
+								"id_user"	=>	(int)$clean['userId'],
+								"tipo"		=>	"R",
+								"id_o"		=>	$clean['lastId'],
+							));
+							
+							// mail al negozio
+							ob_start();
+							$tipoOutput = "mail_al_negozio";
+							include tp()."/Ordini/resoconto-acquisto.php";
+							$output = ob_get_clean();
+							
+							$res = MailordiniModel::inviaMail(array(
+								"emails"	=>	array(Parametri::$mailInvioOrdine),
+								"oggetto"	=>	gtext("Ordine")." N°" . $clean['lastId'],
+								"testo"		=>	$output,
+								"tipologia"	=>	"ORDINE NEGOZIO",
+								"id_user"	=>	(int)$clean['userId'],
+								"tipo"		=>	"R",
+								"id_o"		=>	$clean['lastId'],
+							));
+							
+// 							try
+// 							{
+// 								$mail->ClearAddresses();
+// 								$mail->AddAddress($ordine["email"]);
+// 								if (Parametri::$mailReplyTo && Parametri::$mailFromName)
+// 									$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+// 								$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Ordine")." N°" . $clean['lastId'];
+// 								$mail->IsHTML(true);
+// 								
+// 								//mail al cliente
+// 								ob_start();
+// 								$tipoOutput = "mail_al_cliente";
+// 								include tp()."/Ordini/resoconto-acquisto.php";
+// 
+// 								$output = ob_get_clean();
+// 								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+// 								
+// 								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
+// 								$mail->MsgHTML($output);
+// 								
+// // 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
+// 									$mail->Send();
+// 
+// 								//mail al negozio
+// 								$mail->ClearAllRecipients();
+// 								
+// 								if (defined("BCC") && is_array(BCC))
+// 								{
+// 									foreach (BCC as $emailBcc)
+// 									{
+// 										$mail->addBCC($emailBcc);
+// 									}
+// 								}
+// 								
+// 								$mail->AddAddress(Parametri::$mailInvioOrdine);
+// 								
+// 								ob_start();
+// 								$tipoOutput = "mail_al_negozio";
+// 								include tp()."/Ordini/resoconto-acquisto.php";
+// 
+// 								$output = ob_get_clean();
+// 								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
+// 								
+// 								$mail->MsgHTML($output);
+// 								$mail->Send();
+// 								
+// 								// Segna inviata mail ordine ricevuto
+// // 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
+// 									$this->m['OrdiniModel']->aggiungiStoricoMail($clean['lastId'], "R");
+// 								
+// 							} catch (Exception $e) {
+// 								
+// 							}
 							
 							// Iscrizione alla newsletter
 							if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])

@@ -402,6 +402,7 @@ class OrdiniController extends BaseController {
 			$data["mail_altre"] =  $this->m["MailordiniModel"]->clear()->where(array(
 				"id_o"	=>	$clean["id_o"],
 				"ne"	=>	array("tipo"=>	"F"),
+				"tipologia"	=>	"ORDINE",
 			))->orderBy("data_creazione desc")->send(false);
 			
 			$this->append($data);
