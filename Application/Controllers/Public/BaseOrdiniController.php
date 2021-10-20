@@ -320,6 +320,7 @@ class BaseOrdiniController extends BaseController
 							"testo"		=>	$output,
 							"tipologia"	=>	"PAGAMENTO ORDINE",
 							"id_o"		=>	$ordine["id_o"],
+							"tipo"		=>	"P",
 						));
 					}
 				}
