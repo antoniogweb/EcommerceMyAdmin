@@ -282,6 +282,7 @@ class VariabiliModel extends GenericModel {
 		"carrello_monoprodotto"		=>	0,
 		"abilita_log_piattaforma"	=>	0,
 		"tempo_log_ore"				=>	24,
+		"attiva_modali"				=>	0,
 	);
 	
 	public static function setPlaceholders()

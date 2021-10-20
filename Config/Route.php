@@ -499,6 +499,14 @@ class Route
 		'cart,main',
 		
 		'contatti,main',
+		
+		'modali,main',
+		'modali,form',
+		'modali,move',
+		'modali,pubblica',
+		'modali,inevidenza',
+		'modali,updatevalue',
+		'modali,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

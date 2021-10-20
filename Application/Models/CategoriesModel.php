@@ -45,6 +45,7 @@ class CategoriesModel extends HierarchicalModel {
 		"icone"			=>	"mostra_icone",
 		"prodotti"		=>	"attiva_menu_ecommerce",
 		"slide"			=>	"mostra_slide",
+		"modali"		=>	"attiva_modali",
 	);
 	
 	public $controller = "categories";

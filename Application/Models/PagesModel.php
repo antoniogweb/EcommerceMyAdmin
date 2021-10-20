@@ -383,6 +383,12 @@ class PagesModel extends GenericModel {
 				'ora_fine_evento'	=>	array(
 					"className"		=>	"form-control clockpicker",
 				),
+				'testo_link'	=>	array(
+					'labelString'	=>	'Testo pulsante',
+				),
+				'url'	=>	array(
+					'labelString'	=>	'Url libero',
+				),
 			),
 		);
 		
