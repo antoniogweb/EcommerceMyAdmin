@@ -318,7 +318,7 @@ class BaseOrdiniController extends BaseController
 							"emails"	=>	array(Parametri::$mailInvioOrdine),
 							"oggetto"	=>	gtext("Conferma pagamento ordine N°")." ".$ordine["id_o"],
 							"testo"		=>	$output,
-							"tipologia"	=>	"PAGAMENTO ORDINE",
+							"tipologia"	=>	"ORDINE NEGOZIO",
 							"id_o"		=>	$ordine["id_o"],
 							"tipo"		=>	"P",
 							"id_user"	=>	$ordine["id_user"],
@@ -737,6 +737,8 @@ class BaseOrdiniController extends BaseController
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		
+		$logSubmit = new LogModel();
+		
 		session_start();
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
@@ -747,6 +749,10 @@ class BaseOrdiniController extends BaseController
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
 		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		
+		$numeroProdottiInCarrello = $this->m["CartModel"]->numberOfItems();
+		
+		$logSubmit->setNumeroProdotti($numeroProdottiInCarrello);
 		
 		if (count($data["pages"]) === 0)
 		{
@@ -1428,6 +1434,8 @@ class BaseOrdiniController extends BaseController
 							if ($statoOrdine != "pending")
 								$toPaypal = "";
 
+							$logSubmit->write(LogModel::LOG_CHECKOUT, LogModel::ORDINE_ESEGUITO);
+							
 							if (Output::$html)
 								$this->redirect("resoconto-acquisto/".$clean['lastId']."/".$clean["cart_uid"]."/token".$toPaypal);
 						}
@@ -1458,7 +1466,14 @@ class BaseOrdiniController extends BaseController
 						Output::setBodyValue("Errori", $this->m['OrdiniModel']->errors);
 				}
 			}
+			else
+			{
+				$logSubmit->setSpam();
+			}
 		}
+		
+		$logSubmit->setErroriSubmit($data['notice']);
+		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
 		
 		$this->m['OrdiniModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,registrato,newsletter,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,spedisci_dati_fatturazione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,dprovincia,note";
 		
@@ -1561,7 +1576,7 @@ class BaseOrdiniController extends BaseController
 			
 			Output::setBodyValue("Type", "Cart");
 			Output::setBodyValue("Pages", $pagineConDecode);
-			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
+			Output::setHeaderValue("CartProductsNumber",$numeroProdottiInCarrello);
 			
 			$testi = array(
 				"TestoCondizioniVendita"	=>	'Confermando il tuo acquisto accetti i nostri termini e condizioni di vendita.',
