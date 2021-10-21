@@ -1344,7 +1344,7 @@ class BaseOrdiniController extends BaseController
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array($ordine["email"]),
-								"oggetto"	=>	gtext("Ordine")." N°" . $clean['lastId'],
+								"oggetto"	=>	"Ordine N° [ID_ORDINE]",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ORDINE",
 								"id_user"	=>	(int)$ordine['id_user'],
@@ -1360,7 +1360,7 @@ class BaseOrdiniController extends BaseController
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	gtext("Ordine")." N°" . $clean['lastId'],
+								"oggetto"	=>	"Ordine N° [ID_ORDINE]",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ORDINE NEGOZIO",
 								"id_user"	=>	(int)$ordine['id_user'],

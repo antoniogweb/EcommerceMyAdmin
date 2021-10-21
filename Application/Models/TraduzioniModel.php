@@ -28,6 +28,8 @@ class TraduzioniModel extends GenericModel {
 	
 	public static $edit = false;
 	
+	public $contestoCorrente = null;
+	
 	public function __construct() {
 		$this->_tables='traduzioni';
 		$this->_idFields='id_t';
@@ -79,12 +81,17 @@ class TraduzioniModel extends GenericModel {
 		if (!isset($contesto))
 			$contesto = self::$contestoStatic;
 		
+		$tempLang = getLinguaIso();
+		
+		if (isset($this->contestoCorrente) && isset(Lang::$i18n[$tempLang]) && !empty(Lang::$i18n[$tempLang]) && $contesto == $this->contestoCorrente)
+			return Lang::$i18n[$tempLang];
+		
+		$this->contestoCorrente = $contesto;
+		
 		$values = $this->clear()->where(array(
 			"lingua"	=>	sanitizeAll(getLinguaIso()),
 			"contesto"	=>	sanitizeDb($contesto),
 		))->toList("chiave", "valore")->send();
-		
-		$tempLang = getLinguaIso();
 		
 		Lang::$i18n[$tempLang] = $values;
 	}
@@ -95,10 +102,10 @@ class TraduzioniModel extends GenericModel {
 			$contesto = self::$contestoStatic;
 		
 		$res = $this->clear()->where(array(
-				"chiave"	=>	sanitizeDb($chiave),
-				"lingua"	=>	sanitizeAll(getLinguaIso()),
-				"contesto"	=>	sanitizeDb($contesto),
-			))->record();
+			"chiave"	=>	sanitizeDb($chiave),
+			"lingua"	=>	sanitizeAll(getLinguaIso()),
+			"contesto"	=>	sanitizeDb($contesto),
+		))->record();
 			
 		if (count($res) > 0)
 		{
@@ -149,50 +156,10 @@ class TraduzioniModel extends GenericModel {
 		return "";
 	}
 	
-// 	public function editEn($record)
-// 	{
-// 		return $this->editLingua("en", $record);
-// 	}
-	
 	public function editIt($record)
 	{
 		return $this->editLingua("it", $record);
 	}
-// 	
-// 	public function editFr($record)
-// 	{
-// 		return $this->editLingua("fr", $record);
-// 	}
-// 	
-// 	public function editEs($record)
-// 	{
-// 		return $this->editLingua("es", $record);
-// 	}
-// 	
-// 	public function editDe($record)
-// 	{
-// 		return $this->editLingua("de", $record);
-// 	}
-// 	
-// 	public function editPl($record)
-// 	{
-// 		return $this->editLingua("pl", $record);
-// 	}
-// 	
-// 	public function editPt($record)
-// 	{
-// 		return $this->editLingua("pt", $record);
-// 	}
-// 	
-// 	public function editRu($record)
-// 	{
-// 		return $this->editLingua("ru", $record);
-// 	}
-// 	
-// 	public function editSe($record)
-// 	{
-// 		return $this->editLingua("se", $record);
-// 	}
 	
 	public function update($id = null, $where = null)
 	{

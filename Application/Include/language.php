@@ -15,10 +15,7 @@ class Lang
 	
 	public static $langDb = "";
 	
-	public static $i18n = array(
-		'en'	=>	array(
-		),
-	);
+	public static $i18n = array();
 }
 
 function getLinguaIso()
