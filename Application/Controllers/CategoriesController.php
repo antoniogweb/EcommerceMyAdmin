@@ -116,7 +116,8 @@ class CategoriesController extends BaseController {
 		{
 			$tabelFields = array(
 				'[[checkbox]];categories.id_c;',
-				$this->modelName.'.indentList|categories.id_c',
+				"titoloElenco",
+// 				$this->modelName.'.indentList|categories.id_c',
 			);
 			
 			$head = '[[bulkselect:checkbox_categories_id_c]],Titolo';
@@ -124,7 +125,8 @@ class CategoriesController extends BaseController {
 		else
 		{
 			$tabelFields = array(
-				$this->modelName.'.indentList|categories.id_c',
+				"titoloElenco",
+// 				$this->modelName.'.indentList|categories.id_c',
 			);
 			
 			$head = 'Titolo';

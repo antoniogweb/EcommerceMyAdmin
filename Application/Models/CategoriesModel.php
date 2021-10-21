@@ -863,6 +863,11 @@ class CategoriesModel extends HierarchicalModel {
 // 		return "<td colspan='$numCol'><table style='width:100%;'><tr>$rowHtml</tr></table></td>";
 // 	}
 	
+	public function titoloElenco($record)
+	{
+		return $this->indentList($record["categories"]["id_c"]);
+	}
+	
 	//get the indentation of the row
 	public function indentList($id, $alias = true, $editLink = true, $useHtml = true)
 	{
@@ -884,7 +889,7 @@ class CategoriesModel extends HierarchicalModel {
 		
 		$strAlias = strcmp($strAlias,"") !== 0 ? $strAlias."&nbsp" : "";
 		
-		$titolo = $editLink ? "<a href='".Url::getRoot().$this->controller."/form/update/".$clean["id"].self::$viewStatus."'>".$field[$this->titleFieldName]."</a>" : $field[$this->titleFieldName];
+		$titolo = $editLink ? "<a href='".Url::getRoot().$this->applicationUrl.$this->controller."/form/update/".$clean["id"].self::$viewStatus."'>".$field[$this->titleFieldName]."</a>" : $field[$this->titleFieldName];
 		
 		if ($alias)
 		{
