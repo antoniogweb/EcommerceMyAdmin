@@ -213,7 +213,6 @@ class BaseOrdiniController extends BaseController
 							}
 							$Subject  = Parametri::$nomeNegozio." - ".gtext("Conferma Pagamento Nº Ordine: ").$ordine["id_o"];
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
-							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 							break;
 						case "Pending":
 							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
