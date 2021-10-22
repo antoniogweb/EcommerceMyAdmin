@@ -283,6 +283,7 @@ class VariabiliModel extends GenericModel {
 		"abilita_log_piattaforma"	=>	0,
 		"tempo_log_ore"				=>	24,
 		"attiva_modali"				=>	0,
+		"mostra_gestione_antispam"	=>	0,
 	);
 	
 	public static function setPlaceholders()
