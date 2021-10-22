@@ -305,13 +305,13 @@ class BaseOrdiniController extends BaseController
 							$this->m["FattureModel"]->crea($ordine["id_o"]);
 						}
 						
-						$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
+						$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], "Conferma Pagamento Nº Ordine [ID_ORDINE]", "mail-completed", "P", $mandaFattura);
 						
 						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 						
 						$res = MailordiniModel::inviaMail(array(
 							"emails"	=>	array(Parametri::$mailInvioOrdine),
-							"oggetto"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
+							"oggetto"	=>	"Conferma Pagamento Nº Ordine [ID_ORDINE]",
 							"testo"		=>	$output,
 							"tipologia"	=>	"ORDINE NEGOZIO",
 							"id_o"		=>	$ordine["id_o"],
