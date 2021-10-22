@@ -211,7 +211,7 @@ class BaseOrdiniController extends BaseController
 							} catch (Exception $e) {
 								
 							}
-							$Subject  = Parametri::$nomeNegozio." - "."Conferma Pagamento Nº Ordine [ID_ORDINE]";
+							$Subject  = "Conferma Pagamento Nº Ordine [ID_ORDINE]";
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 							break;
 						case "Pending":
