@@ -12,6 +12,7 @@ $noNumeroProdotti = true;
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
+<div id="content"></div>
 <?php if (count($pages) > 0) { ?>
 	<?php if (!$islogged) { ?>
 	<div class="">
