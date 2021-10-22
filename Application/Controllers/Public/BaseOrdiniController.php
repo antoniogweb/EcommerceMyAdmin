@@ -211,7 +211,7 @@ class BaseOrdiniController extends BaseController
 							} catch (Exception $e) {
 								
 							}
-							$Subject  = Parametri::$nomeNegozio." - ".gtext("Conferma Pagamento Nº Ordine: ").$ordine["id_o"];
+							$Subject  = Parametri::$nomeNegozio." - "."Conferma Pagamento Nº Ordine: ".$ordine["id_o"];
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 							break;
 						case "Pending":
