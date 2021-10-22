@@ -714,7 +714,7 @@ class BaseBaseController extends Controller
 						
 						$res = MailordiniModel::inviaMail(array(
 							"emails"	=>	array($clean["username"]),
-							"oggetto"	=>	gtext("invio credenziali nuovo utente"),
+							"oggetto"	=>	"invio credenziali nuovo utente",
 							"testo"		=>	$output,
 							"tipologia"	=>	"ISCRIZIONE",
 							"id_user"	=>	(int)$lId,
@@ -729,7 +729,7 @@ class BaseBaseController extends Controller
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	gtext("invio credenziali nuovo utente"),
+								"oggetto"	=>	"invio credenziali nuovo utente",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
 								"id_user"	=>	(int)$lId,

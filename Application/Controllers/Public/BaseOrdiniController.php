@@ -204,55 +204,51 @@ class BaseOrdiniController extends BaseController
 							
 							try
 							{
+								$mail->Send();
+								
 								// Segna inviata mail ordine pagato
 								$this->m['OrdiniModel']->aggiungiStoricoMail($ordine["id_o"], "P");
-								
-								$mail->Send();
 							} catch (Exception $e) {
 								
 							}
-							$mail->ClearAddresses();
-							$mail->AddAddress(Parametri::$mailInvioOrdine);
+							$Subject  = Parametri::$nomeNegozio." - ".gtext("Conferma Pagamento Nº Ordine: ").$ordine["id_o"];
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
 							break;
 						case "Pending":
-							$mail->Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
-							$mail->AddAddress(Parametri::$mailInvioOrdine);
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 							break;
 						case "Denied":
-							$mail->Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
-							$mail->AddAddress(Parametri::$mailInvioOrdine);
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 							break;
 						case "Failed":
-							$mail->Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
-							$mail->AddAddress(Parametri::$mailInvioOrdine);
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 							break;
 						default:
-							$mail->Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
-							$mail->AddAddress(Parametri::$mailInvioOrdine);
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 					}
 					
-					$mail->MsgHTML($output);
-					
-					try
-					{
-						$mail->Send();
-					} catch (Exception $e) {
-						
-					}
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array(Parametri::$mailInvioOrdine),
+						"oggetto"	=>	$Subject,
+						"testo"		=>	$output,
+						"tipologia"	=>	"ORDINE NEGOZIO",
+						"id_o"		=>	$ordine["id_o"],
+						"tipo"		=>	"P",
+						"id_user"	=>	$ordine["id_user"],
+					));
 				}
 			}
 		}
@@ -316,7 +312,7 @@ class BaseOrdiniController extends BaseController
 						
 						$res = MailordiniModel::inviaMail(array(
 							"emails"	=>	array(Parametri::$mailInvioOrdine),
-							"oggetto"	=>	gtext("Conferma pagamento ordine N°")." ".$ordine["id_o"],
+							"oggetto"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
 							"testo"		=>	$output,
 							"tipologia"	=>	"ORDINE NEGOZIO",
 							"id_o"		=>	$ordine["id_o"],
@@ -1220,35 +1216,12 @@ class BaseOrdiniController extends BaseController
 										
 										$res = MailordiniModel::inviaMail(array(
 											"emails"	=>	array($clean["username"]),
-											"oggetto"	=>	gtext("invio credenziali nuovo utente"),
+											"oggetto"	=>	"invio credenziali nuovo utente",
 											"testo"		=>	$output,
 											"tipologia"	=>	"ISCRIZIONE",
 											"id_user"	=>	(int)$clean['userId'],
 											"id_page"	=>	0,
 										));
-						
-// 										try
-// 										{
-// 											//manda mail con credenziali al cliente
-// 											$mail->ClearAddresses();
-// 											$mail->AddAddress($ordine["email"]);
-// 											if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-// 												$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-// 											$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Invio credenziali nuovo utente");
-// 											$mail->IsHTML(true);
-// 											
-// 											//mail con credenziali
-// 											ob_start();
-// 											include tp()."/Regusers/mail_credenziali.php";
-// 											$output = ob_get_clean();
-// 											$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-// 											
-// 											$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
-// 											$mail->MsgHTML($output);
-// 											$mail->Send();
-// 										} catch (Exception $e) {
-// 											
-// 										}
 										
 										//loggo l'utente
 										$this->s['registered']->login($clean["username"],$password);
@@ -1367,60 +1340,6 @@ class BaseOrdiniController extends BaseController
 								"tipo"		=>	"R",
 								"id_o"		=>	$clean['lastId'],
 							));
-							
-// 							try
-// 							{
-// 								$mail->ClearAddresses();
-// 								$mail->AddAddress($ordine["email"]);
-// 								if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-// 									$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-// 								$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Ordine")." N°" . $clean['lastId'];
-// 								$mail->IsHTML(true);
-// 								
-// 								//mail al cliente
-// 								ob_start();
-// 								$tipoOutput = "mail_al_cliente";
-// 								include tp()."/Ordini/resoconto-acquisto.php";
-// 
-// 								$output = ob_get_clean();
-// 								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-// 								
-// 								$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
-// 								$mail->MsgHTML($output);
-// 								
-// // 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
-// 									$mail->Send();
-// 
-// 								//mail al negozio
-// 								$mail->ClearAllRecipients();
-// 								
-// 								if (defined("BCC") && is_array(BCC))
-// 								{
-// 									foreach (BCC as $emailBcc)
-// 									{
-// 										$mail->addBCC($emailBcc);
-// 									}
-// 								}
-// 								
-// 								$mail->AddAddress(Parametri::$mailInvioOrdine);
-// 								
-// 								ob_start();
-// 								$tipoOutput = "mail_al_negozio";
-// 								include tp()."/Ordini/resoconto-acquisto.php";
-// 
-// 								$output = ob_get_clean();
-// 								$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-// 								
-// 								$mail->MsgHTML($output);
-// 								$mail->Send();
-// 								
-// 								// Segna inviata mail ordine ricevuto
-// // 								if (!$utenteRegistrato || $ordine["pagamento"] != "paypal")
-// 									$this->m['OrdiniModel']->aggiungiStoricoMail($clean['lastId'], "R");
-// 								
-// 							} catch (Exception $e) {
-// 								
-// 							}
 							
 							// Iscrizione alla newsletter
 							if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
