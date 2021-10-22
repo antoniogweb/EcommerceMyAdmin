@@ -108,6 +108,7 @@ if (typeof svuotaCampiSpedizione !== 'function')
 		$("[name='cap_spedizione']").val("");
 		$("[name='citta_spedizione']").val("");
 		$("[name='provincia_spedizione']").val("");
+		$("[name='dprovincia_spedizione']").val("");
 		$("[name='telefono_spedizione']").val("");
 		$("[name='nazione_spedizione']").val("IT");
 	}
