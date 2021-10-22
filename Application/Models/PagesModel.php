@@ -1114,14 +1114,6 @@ class PagesModel extends GenericModel {
 			$attr = new PagesattributiModel();
 			$attr->del(null,"id_page='".$clean["id"]."'");
 			
-			//cancello le combinazioni del prodotto
-// 			$comb = new CombinazioniModel();
-// 			$comb->del(null,"id_page='".$clean["id"]."'");
-			
-			//cancello le caratteristiche del prodotto
-// 			$pcv = new PagescarvalModel();
-// 			$pcv->del(null,"id_page='".$clean["id"]."'");
-			
 			//cancello gli scaglioni
 			$pcv = new ScaglioniModel();
 			$pcv->del(null,"id_page='".$clean["id"]."'");
@@ -2222,4 +2214,41 @@ class PagesModel extends GenericModel {
 			}
 		}
     }
+    
+    public static function gImmagine($id_page, $indice = 1)
+	{
+		$clean['id_page'] = (int)$id_page;
+
+		$p = new PagesModel();
+		$res = $p->clear()->select("*")->left("immagini")->on("immagini.id_page = pages.id_page")->where(array(
+			"pages.id_page"	=>	$clean['id_page'],
+		))->orderBy("immagini.id_order")->limit(2)->send();
+		
+		$arrayImmagini = array();
+		$i = 0;
+		foreach ($res as $r)
+		{
+			if (!$i)
+			{
+				if ($r["pages"]["immagine"])
+					$arrayImmagini[] = $r["pages"]["immagine"];
+			}
+			
+			if ($r["immagini"]["immagine"])
+				$arrayImmagini[] = $r["immagini"]["immagine"];
+			
+			$i++;
+		}
+		
+		$i = 1;
+		foreach ($arrayImmagini as $imm)
+		{
+			if ($i == $indice)
+				return $imm;
+			
+			$i++;
+		}
+		
+		return "";
+	}
 }
