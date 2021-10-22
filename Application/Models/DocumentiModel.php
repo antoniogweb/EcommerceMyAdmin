@@ -46,7 +46,7 @@ class DocumentiModel extends GenericModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	true,
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_documenti"),
 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
@@ -60,7 +60,7 @@ class DocumentiModel extends GenericModel {
 				"type"	=>	"file",
 				"path"	=>	"images/documenti",
 				"allowedExtensions"	=>	'pdf,png,jpg,jpeg',
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_documenti"),
 				"clean_field"	=>	"clean_filename",
 				"Content-Disposition"	=>	"inline",
 			),

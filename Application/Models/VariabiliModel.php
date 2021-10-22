@@ -284,6 +284,7 @@ class VariabiliModel extends GenericModel {
 		"tempo_log_ore"				=>	24,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
+		"dimensioni_upload_documenti"	=>	3000000,
 	);
 	
 	public static function setPlaceholders()
