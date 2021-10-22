@@ -211,29 +211,29 @@ class BaseOrdiniController extends BaseController
 							} catch (Exception $e) {
 								
 							}
-							$Subject  = Parametri::$nomeNegozio." - "."Conferma Pagamento Nº Ordine: ".$ordine["id_o"];
+							$Subject  = Parametri::$nomeNegozio." - "."Conferma Pagamento Nº Ordine [ID_ORDINE]";
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 							break;
 						case "Pending":
-							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine [ID_ORDINE]";
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 							break;
 						case "Denied":
-							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: [ID_ORDINE]";
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 							break;
 						case "Failed":
-							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: [ID_ORDINE]";
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
 							break;
 						default:
-							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: ".$ordine["id_o"];
+							$Subject  = "[".Parametri::$nomeNegozio."] Errore nella transazione del pagamento tramite PayPal Nº Ordine: [ID_ORDINE]";
 							$output = "Si è verificato un errore nella transazione del pagamento dell'ordine #".$ordine["id_o"]."<br />";
 							$output .= "Di seguito i dettagli della transazione:<br /><br />";
 							$output .= $p->ipn_status;
