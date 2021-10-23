@@ -294,6 +294,9 @@ class CategoriesController extends BaseController {
 	
 	public function gruppi($id = 0)
 	{
+		if (!v("attiva_accessibilita_categorie"))
+			die();
+		
 		$this->_posizioni['gruppi'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
 		

@@ -110,7 +110,7 @@ include(ROOT."/Application/Views/header.php");
 				<li class="<?php echo tm($tm, "modali");?> treeview">
 					<a href="#">
 						<i class="fa fa-flash"></i>
-						<span><?php echo gtext("Avvisi popup");?></span>
+						<span><?php echo gtext("Popup");?></span>
 					</a>
 					<ul class="treeview-menu">
 						<li><a href="<?php echo $this->baseUrl."/modali/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>

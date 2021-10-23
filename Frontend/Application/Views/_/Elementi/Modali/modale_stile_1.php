@@ -4,7 +4,7 @@
 $url = PagesModel::getUrlContenuto($p);
 ?>
  
- <div id="modale_principale" class="uk-modal-container" uk-modal>
+ <div id="modale_<?php echo $p["pages"]["id_page"];?>" class="uk-modal-container" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-padding-remove">
         <div class="uk-grid-collapse uk-child-width-1-2@s" uk-grid>
             <div class="uk-cover-container ">

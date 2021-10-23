@@ -56,6 +56,9 @@ class ContenutitradottiModel extends GenericModel
 					'labelString'=>	'Descrizione',
 					'className'		=>	'text_input form-control dettagli',
 				),
+				'testo_link'	=>	array(
+					'labelString'	=>	'Testo pulsante',
+				),
 			),
 		);
 		

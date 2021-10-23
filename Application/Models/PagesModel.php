@@ -387,7 +387,19 @@ class PagesModel extends GenericModel {
 					'labelString'	=>	'Testo pulsante',
 				),
 				'url'	=>	array(
-					'labelString'	=>	'Url libero',
+					'labelString'	=>	'Link libero',
+				),
+				'template_modale'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_principale',
+					'labelString'=>	'Tema grafico modale',
+					'options'	=>	Tema::getSelectElementi("Elementi/Modali"),
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Indica il tema grafico che avrà la modale. È possibile scegliere tra quelli definiti nel tema.")."</div>"
+					),
 				),
 			),
 		);
@@ -563,8 +575,11 @@ class PagesModel extends GenericModel {
 					$this->setAlias($id);
 					
 					//controllo che non esista già una pagina secondaria con la stessa categoria
-					$secondaria = $this->clear()->where(array("codice_alfa" => $record["codice_alfa"],"-id_c"=>$this->values["id_c"]))->record();
-					$secondarie = $this->clear()->where(array("codice_alfa" => $record["codice_alfa"]))->toList("id_page")->send();
+					if (v("attiva_multi_categoria"))
+					{
+						$secondaria = $this->clear()->where(array("codice_alfa" => $record["codice_alfa"],"-id_c"=>$this->values["id_c"]))->record();
+						$secondarie = $this->clear()->where(array("codice_alfa" => $record["codice_alfa"]))->toList("id_page")->send();
+					}
 				}
 				
 				// Salva informazioni meta della pagina
@@ -577,14 +592,12 @@ class PagesModel extends GenericModel {
 				
 				//aggiorno i permessi della pagina
 				if ($r)
-				{
 					$this->updatePageAccessibility($clean["id"]);
-				}
 				
 				if ($this->checkAll)
 				{
 					//e in caso la cancello
-					if ($r and count($secondaria) > 0)
+					if ($r && v("attiva_multi_categoria") && isset($secondaria) && count($secondaria) > 0)
 					{
 						$this->values = array(
 							"id_c" => $record["id_c"],
@@ -654,7 +667,10 @@ class PagesModel extends GenericModel {
 				if (empty($combinazione))
 					$c->insert();
 				else
+				{
+					$c->aggiornaGiacenzaPaginaQuandoSalvi = false;
 					$c->update($combinazione["id_c"]);
+				}
 			}
 		}
 		
@@ -672,6 +688,9 @@ class PagesModel extends GenericModel {
 	
 	public function updatePageAccessibility($id_page)
 	{
+		if (!v("attiva_accessibilita_categorie"))
+			return;
+		
 		$clean["id_page"] = (int)$id_page;
 		
 		$gruppi = $this->accessibility($id_page);
@@ -1355,6 +1374,9 @@ class PagesModel extends GenericModel {
 	
 	public function sincronizza($id_page)
 	{
+		if (!v("attiva_multi_categoria"))
+			return;
+		
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
 		$clean["id_page"] = (int)$id_page;

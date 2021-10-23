@@ -11,7 +11,9 @@
 	<?php if (v("ecommerce_attivo") && v("attiva_classi_sconto")) { ?>
 		<li <?php echo $posizioni['classisconto'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/classisconto/$id".$this->viewStatus;?>">Classi sconto applicate</a></li>
 	<?php } ?>
-	<!--   <li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>">Accessibilità</a></li> -->
+	<?php if (v("attiva_accessibilita_categorie")) { ?>
+	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>">Accessibilità</a></li>
+	<?php } ?>
 </ul>
 
 

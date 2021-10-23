@@ -36,6 +36,15 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
+									<div class='row'>
+										<div class='col-md-6'>
+											<?php echo $form["template_modale"];?>
+										</div>
+										<div class='col-md-6'>
+											<?php echo $form["giorni_durata_modale"];?>
+										</div>
+									</div>
+									
 									<?php echo $form["description"];?>
 									
 									<?php if ($type === "update") { ?>

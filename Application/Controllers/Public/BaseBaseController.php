@@ -341,10 +341,21 @@ class BaseBaseController extends Controller
 			))->send();
 		
 		if (v("attiva_modali"))
+		{
 			$data["modali_frontend"] = $this->m["PagesModel"]->where(array(
 				"categories.section"	=>	"modali",
 				"attivo"=>"Y",
-			))->send();
+			))->orderBy("pages.id_order desc")->limit(1)->send();
+			
+			// Preparo i cookie
+			foreach ($data["modali_frontend"] as $mod)
+			{
+				$idModale = $mod["pages"]["id_page"];
+				
+				if (!isset($_COOKIE["modale_".$idModale]))
+					setcookie("modale_".$idModale,$idModale,0,"/");
+			}
+		}
 		
 		$data["isHome"] = false;
 		$data['headerClass'] = "";

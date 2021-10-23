@@ -27,6 +27,7 @@ class CombinazioniModel extends GenericModel {
 	public $cart_uid = null;
 	public $colonne = null;
 	public $valori = null;
+	public $aggiornaGiacenzaPaginaQuandoSalvi = true;
 	
 	public function __construct() {
 		$this->_tables='combinazioni';
@@ -175,6 +176,9 @@ class CombinazioniModel extends GenericModel {
 	
 	public function aggiornaGiacenzaPagina($id)
 	{
+		if (!$this->aggiornaGiacenzaPaginaQuandoSalvi)
+			return;
+		
 		$record = $this->selectId((int)$id);
 		
 		if (!$record["col_1"] && !$record["col_2"] && !$record["col_3"] && !$record["col_4"] && !$record["col_5"] && !$record["col_6"] && !$record["col_7"] && !$record["col_8"])

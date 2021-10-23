@@ -41,9 +41,9 @@ class ReggroupscategoriesModel extends GenericModel {
 		$clean["id_c"] = (int)$this->values["id_c"];
 		$clean["id_group"] = (int)$this->values["id_group"];
 		
-		$u = new UsersModel();
+		$u = new ReggroupsModel();
 		
-		$ng = $u->clear()->from("reggroups")->select("*")->where(array("n!reggroups.id_group"=>$clean["id_group"]))->rowNumber();
+		$ng = $u->select("*")->where(array("n!reggroups.id_group"=>$clean["id_group"]))->rowNumber();
 		
 		if ($ng > 0)
 		{

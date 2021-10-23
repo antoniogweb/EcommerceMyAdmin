@@ -79,4 +79,61 @@ class Tema
 				setcookie ("demo_theme", "", time() - 3600,"/");
 		}
 	}
+	
+	public static function getSelectElementi($percorsoElemento)
+	{
+		// Cerco i temi del tema di default
+		$filesModel = new Files_Upload(LIBRARY."/Frontend/Application/Views/_/$percorsoElemento");
+		
+		$filesModel->listFiles();
+		
+		$fileCartella = $filesModel->getFiles();
+		
+		if (v("theme_folder"))
+		{
+			$path = Domain::$parentRoot."/Application/Views/".v("theme_folder")."/$percorsoElemento";
+			
+			if (@is_dir($path))
+			{
+				$filesModel->setBase($path);
+				
+				$filesModel->listFiles();
+			
+				$fileCartellaTema = $filesModel->getFiles();
+				
+				$fileCartella = array_merge($fileCartella, $fileCartellaTema);
+			}
+			
+			$path = Domain::$parentRoot."/Application/Views/_/$percorsoElemento";
+			
+			if (@is_dir($path))
+			{
+				$filesModel->setBase($path);
+				
+				$filesModel->listFiles();
+			
+				$fileCartellaTema = $filesModel->getFiles();
+				
+				$fileCartella = array_merge($fileCartella, $fileCartellaTema);
+			}
+		}
+		
+		$fileCartella = array_unique($fileCartella);
+		
+		$arraySelect = array();
+		
+		foreach ($fileCartella as $f)
+		{
+			$backFile = $f;
+			
+			$temp = explode(".", $f);
+			
+			if (count($temp) > 1)
+				array_pop($temp);
+				
+			$arraySelect[$backFile] = ucfirst(implode(" ",explode("_",implode(".",$temp))));
+		}
+		
+		return $arraySelect;
+	}
 }

@@ -37,11 +37,11 @@ class ModaliController extends GenericsectionController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.id_order";
+		$this->orderBy = "pages.id_order desc";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,immagine,immagine_2,sottotitolo,description,url,link_id_page,link_id_c,testo_link";
+		$this->queryFields = "title,attivo,immagine,immagine_2,sottotitolo,description,url,link_id_page,link_id_c,testo_link,giorni_durata_modale,template_modale";
 		
 		if (v("usa_marchi"))
 			$this->queryFields .= ",link_id_marchio";

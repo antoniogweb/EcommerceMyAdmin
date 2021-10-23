@@ -42,8 +42,8 @@ trait TraitController
 				$section = $data["sectionCampiAggiuntivi"] = $record["sezione"];
 		}
 		
-		if ($section == "slide_detail")
-			$fields = 'title,sottotitolo,url,testo_link';
+		if ($section == "slide_detail" || $section == "modali_detail")
+			$fields = 'title,sottotitolo,url,testo_link,description';
 		else if ($section == "blog_detail")
 			$fields = 'title,alias,sottotitolo,description,keywords,meta_description';
 		else if ($section == "-car-" || $section == "-cv-" || $section == "fasce_prezzo")
