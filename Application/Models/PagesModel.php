@@ -432,7 +432,7 @@ class PagesModel extends GenericModel {
 					),
 				),
 				'go_to'	=>	array(
-					'labelString'	=>	"Esegui lo scroll all'dentificatore",
+					'labelString'	=>	"Esegui lo scroll all'identificatore",
 				),
 			),
 		);

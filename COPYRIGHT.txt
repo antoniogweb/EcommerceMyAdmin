@@ -61,3 +61,8 @@ Joyride2
 -------
 License:	MIT
 link: 		https://github.com/zurb/joyride
+
+mPDF
+-------
+License:	GNU GPL version 2 or later
+link: 		https://mpdf.github.io/

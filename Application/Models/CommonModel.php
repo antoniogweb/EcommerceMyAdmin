@@ -98,4 +98,58 @@ trait CommonModel {
 		
 		return $url;
 	}
+	
+	public static function eliminaCartella($path)
+	{
+		$dir = $path;
+		
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ($files as $fileinfo) {
+			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+			
+			call_user_func($todo, $fileinfo->getRealPath());
+		}
+
+		rmdir($dir);
+	}
+	
+	public static function creaCartellaImages($path = null, $htaccess = false, $index = true)
+	{
+		//crea la cartella images se non c'è
+		if(!is_dir(Domain::$parentRoot."/images"))
+		{
+			if (@mkdir(Domain::$parentRoot."/images"))
+			{
+				$fp = fopen(Domain::$parentRoot."/images/index.html", 'w');
+				fclose($fp);
+			}
+		}
+		
+		if (!$path)
+			return;
+		
+		//crea la cartella se non c'è
+		if(!is_dir(Domain::$parentRoot."/".$path))
+		{
+			if (@mkdir(Domain::$parentRoot."/".$path))
+			{
+				if ($index)
+				{
+					$fp = fopen(Domain::$parentRoot."/".$path.'/index.html', 'w');
+					fclose($fp);
+				}
+				
+				if ($htaccess)
+				{
+					$fp = fopen(Domain::$parentRoot."/".$path.'/.htaccess', 'w');
+					fwrite($fp, 'deny from all');
+					fclose($fp);
+				}
+			}
+		}
+	}
 }

@@ -11,13 +11,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //you can access the whole set of classes and functions of MvcMyLibrary
 
-VariabiliModel::ottieniVariabili();
-
-VariabiliModel::$valori["alert_error_class"] = "alert";
-
-if (v("usa_https"))
-	Params::$useHttps = true;
-
 // Imposto le app
 if (defined("APPS"))
 {
@@ -29,15 +22,36 @@ if (defined("APPS"))
 		
 		if (file_exists($path))
 		{
-			unset($APP_ROUTE);
+			if (isset($APP_ROUTE))
+				unset($APP_ROUTE);
 			
 			include($path);
 			
 			if (isset($APP_ROUTE))
 				Route::$allowed = array_merge(Route::$allowed, $APP_ROUTE);
 		}
+		
+		$pathVariabili = ROOT."/Application/Apps/".ucfirst($app)."/variabili.php";
+		
+		if (file_exists($pathVariabili))
+		{
+			if (isset($APP_VARIABILI))
+				unset($APP_VARIABILI);
+			
+			include($pathVariabili);
+			
+			if (isset($APP_VARIABILI))
+				VariabiliModel::$variabili = VariabiliModel::$variabili + $APP_VARIABILI;
+		}
 	}
 }
+
+VariabiliModel::ottieniVariabili();
+
+VariabiliModel::$valori["alert_error_class"] = "alert";
+
+if (v("usa_https"))
+	Params::$useHttps = true;
 
 require(LIBRARY."/External/mobile_detect.php");
 

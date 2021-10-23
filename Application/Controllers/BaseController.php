@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseController extends Controller
 {
-	public static $traduzioni = array();
+	use InitController;
 	
 	protected $_posizioni = array();
 	
@@ -182,50 +182,6 @@ class BaseController extends Controller
 			session_start();
 		}
 		
-		$this->model("ContenutitradottiModel");
-		
-		// Estraggo le traduzioni
-		$this->model("LingueModel");
-		
-		self::$traduzioni = $data['elencoTraduzioniAttive'] = $this->m["LingueModel"]->clear()->where(array(
-			"principale"	=>	0,
-			"attiva"		=>	1,
-		))->orderBy("id_order")->toList("codice")->send();
-		
-		$data['elencoLingue'] = $this->elencoLingue = $this->m["LingueModel"]->clear()->where(array(
-			"attiva"	=>	1,
-		))->orderBy("id_order")->toList("codice", "descrizione")->send();
-		
-		$this->model('ImpostazioniModel');
-		
-		$this->m["ImpostazioniModel"]->getImpostazioni();
-		
-		// Leggi le impostazioni
-		if (ImpostazioniModel::$valori)
-		{
-			Parametri::$useSMTP = ImpostazioniModel::$valori["usa_smtp"] == "Y" ? true : false;
-			Parametri::$SMTPHost = ImpostazioniModel::$valori["smtp_host"];
-			Parametri::$SMTPPort = ImpostazioniModel::$valori["smtp_port"];
-			Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
-			Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
-			Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
-			Parametri::$mailFromName = ImpostazioniModel::$valori["smtp_nome"];
-			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
-			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
-			Parametri::$nomeNegozio = ImpostazioniModel::$valori["nome_sito"];
-			Parametri::$iva = ImpostazioniModel::$valori["iva"];
-			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
-			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
-		}
-		
-		// Variabili
-		$this->model('VariabiliModel');
-		
-		// Traduzioni
-		TraduzioniModel::checkTraduzioneAttiva();
-		$this->model('TraduzioniModel');
-		$this->m["TraduzioniModel"]->ottieniTraduzioni();
-		
 		$this->session('admin');
 		
 		$data['token'] = null;
@@ -246,51 +202,17 @@ class BaseController extends Controller
 		if (strcmp($controller,"users") !== 0)
 			$this->s['admin']->check();
 		
+		$this->init();
+		
 		// Help wizard
 		$this->model("HelpModel");
 		$data["helpDaVedere"] = $this->m["HelpModel"]->daVedere();
 		$data["helpDaVedereTutti"] = $this->m["HelpModel"]->daVedere(false);
 		
-		Lang_It_UploadStrings::$staticStrings = array(
-			"error" => "<div class='alert'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
-			"executed"	=>	"<div class='alert alert-success'>".gtext("Operazione eseguita!")."</div>",
-			"not-child" => "<div class='alert'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
-			"not-dir" => "<div class='alert'>".gtext("La cartella selezionata non è una directory")."</div>\n",
-			"not-empty" => "<div class='alert'>".gtext("La cartella selezionata non è vuota")."</div>\n",
-			"no-folder-specified" => "<div class='alert'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
-			"no-file-specified" => "<div class='alert'>".gtext("Non è stato specificato alcun file")."</div>\n",
-			"not-writable" => "<div class='alert'>".gtext("La cartella non è scrivibile")."</div>\n",
-			"not-writable-file" => "<div class='alert'>".gtext("Il file non è scrivibile")."</div>\n",
-			"dir-exists" => "<div class='alert'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
-			"no-upload-file" => "<div class='alert'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
-			"size-over" => "<div class='alert'>".gtext("La dimensione del file è troppo grande")."</div>\n",
-			"not-allowed-ext" => "<div class='alert'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
-			"not-allowed-mime-type" => "<div class='alert'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
-			"file-exists" => "<div class='alert'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
-		);
-		
-// 		$baseArgsKeys = array(
-// 			'page:forceInt'=>1,
-// 			'attivo:sanitizeAll'=>'tutti',
-// 			'partial:sanitizeAll' => "tutti",
-// 			'nobuttons:sanitizeAll' => "tutti",
-// 			'report:sanitizeAll' => "tutti",
-// 			'skip:sanitizeAll' => "tutti",
-// 			'cl_on_sv:sanitizeAll' => "tutti",
-// 		);
-		
 		if (isset($this->argKeys))
 			$this->baseArgsKeys = array_merge($this->baseArgsKeys, $this->argKeys);
 		
 		$this->setArgKeys($this->baseArgsKeys);
-		
-		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin",null,$this->baseUrlSrc);
-		
-		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = str_replace("/admin",null,ROOT);
-		
-		Domain::$adminRoot = ROOT;
-		Domain::$adminName = $this->baseUrlSrc;
-		Domain::$publicUrl = str_replace("/admin",null,$this->baseUrlSrc);
 		
 		if (class_exists($model))
 			$this->model($model);
@@ -325,10 +247,6 @@ class BaseController extends Controller
 		$data["tabella"] = isset($this->tabella) ? $this->tabella : "";
 		
 		$this->append($data);
-		
-		Params::$actionArray = "REQUEST";
-		
-		Params::$rewriteStatusVariables = false;
 		
 		$this->load('header_'.$this->sezionePannello);
 		$this->load('footer','last');

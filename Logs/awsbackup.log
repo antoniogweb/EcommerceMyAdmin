@@ -1,0 +1,41 @@
+[2021-10-24 01:13:26]	DUMP INVIATO AL BUCKET egs-easygiantshop
+[2021-10-24 01:13:28]	INVIATA MAIL LOG A antoniog.web@gmail.com
+[2021-10-24 01:14:04]	DUMP INVIATO AL BUCKET egs-easygiantshop
+[2021-10-24 01:14:05]	MAIL LOG INVIATA A antoniog.web@gmail.com
+[2021-10-24 01:18:43]	DUMP INVIATO AL BUCKET egs-easygiantshop
+[2021-10-24 01:18:44]	MAIL LOG INVIATA A antoniog.web@gmail.com
+[2021-10-24 01:19:06]	DUMP INVIATO AL BUCKET egs-easygiantshop
+[2021-10-24 01:19:07]	MAIL LOG INVIATA A antoniog.web@gmail.com
+[2021-10-24 01:22:24]	ERRORE INVIO DUMP A BUCKET egs-easygiantshop: Error executing "PutObject" on "https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip"; AWS HTTP error: Client error: `PUT https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip` resulted in a `404 Not Found` response:
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Mes (truncated...)
+ NoSuchBucket (client): The specified bucket does not exist - <?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>egs-easygiantshopaaa</BucketName><RequestId>YAYAE2AW10P2YATP</RequestId><HostId>7jsYwh1pBqcYlAi41q4ocEBl3rmFl8c3O69X0TNXmQEwAfW4ONEXfa5ZRFaMU8Qm9ZbX+c3feOQ=</HostId></Error>
+[2021-10-24 01:22:50]	ERRORE INVIO DUMP A BUCKET egs-easygiantshop: Error executing "PutObject" on "https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip"; AWS HTTP error: Client error: `PUT https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip` resulted in a `404 Not Found` response:
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Mes (truncated...)
+ NoSuchBucket (client): The specified bucket does not exist - <?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>egs-easygiantshopaaa</BucketName><RequestId>65Z28N43W7M6YKKX</RequestId><HostId>48v04faskBB5bs8oZvf9+AtRa9ZqEwo/QXMWX2yf7Vip0gKoXp+86etKBnqvr23DKMp0VDKbTPQ=</HostId></Error>
+[2021-10-24 01:23:05]	ERRORE INVIO DUMP A BUCKET egs-easygiantshop: Error executing "PutObject" on "https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip"; AWS HTTP error: Client error: `PUT https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip` resulted in a `404 Not Found` response:
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Mes (truncated...)
+ NoSuchBucket (client): The specified bucket does not exist - <?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>egs-easygiantshopaaa</BucketName><RequestId>AHGDJQ9XY8KR16Z9</RequestId><HostId>4j2aMxq45wA3JX9tMCtCr1bRkEY2npUuNI6I9iSVQWpl6DbtyP/+wCkpQAxOjrNrN9EtEr8rzGY=</HostId></Error>
+[2021-10-24 01:23:22]	ERRORE INVIO DUMP A BUCKET egs-easygiantshop: Error executing "PutObject" on "https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip"; AWS HTTP error: Client error: `PUT https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip` resulted in a `404 Not Found` response:
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Mes (truncated...)
+ NoSuchBucket (client): The specified bucket does not exist - <?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>egs-easygiantshopaaa</BucketName><RequestId>QQK4YF8VR717DRQV</RequestId><HostId>Lllp07VAlYt7+ukHAU7uCYEjsnOmtU8P8TDtv4P2MadWpLMJbo8L3GaS0LmjwLvYm3lnomuDlAQ=</HostId></Error>
+[2021-10-24 01:24:14]	ERRORE INVIO DUMP A BUCKET egs-easygiantshop: Error executing "PutObject" on "https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip"; AWS HTTP error: Client error: `PUT https://egs-easygiantshopaaa.s3.eu-west-2.amazonaws.com/20211024.sql.zip` resulted in a `404 Not Found` response:
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Mes (truncated...)
+ NoSuchBucket (client): The specified bucket does not exist - <?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>egs-easygiantshopaaa</BucketName><RequestId>0YV4K7MHHANMZDEJ</RequestId><HostId>aiAaSyelDtduhhgqJe/0HB3A8Pp7ThkrtyQE7jZueVxGau5AZ+WYID2gSk+EqZpA9FJhlGZP7K0=</HostId></Error>
+[2021-10-24 01:25:37]	DUMP INVIATO AL BUCKET egs-easygiantshop
+[2021-10-24 01:27:14]	ERRORE INVIO DUMP A BUCKET egs-easygiantshop: Error executing "PutObject" on "https://egs-easygiantshopbb.s3.eu-west-2.amazonaws.com/20211024.sql.zip"; AWS HTTP error: Client error: `PUT https://egs-easygiantshopbb.s3.eu-west-2.amazonaws.com/20211024.sql.zip` resulted in a `404 Not Found` response:
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Mes (truncated...)
+ NoSuchBucket (client): The specified bucket does not exist - <?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>egs-easygiantshopbb</BucketName><RequestId>RC0CCCPNCWV5RC2K</RequestId><HostId>B18OeA1jhZ2KaNcYJ2cz6qqyVquZUl2cF6TYZ1KqW5PvUg2oQZXA92j858vjba9E/8DGgw0+kk4=</HostId></Error>
+[2021-10-24 01:27:16]	MAIL LOG ERRORE INVIATA A antoniog.web@gmail.com
+[2021-10-24 01:27:51]	DUMP INVIATO AL BUCKET egs-easygiantshop
