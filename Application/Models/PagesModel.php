@@ -392,13 +392,43 @@ class PagesModel extends GenericModel {
 				'template_modale'		=>	array(
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_principale',
-					'labelString'=>	'Tema grafico modale',
+					'labelString'=>	'Tema grafico del popup',
 					'options'	=>	Tema::getSelectElementi("Elementi/Modali"),
 					'reverse' => 'yes',
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Indica il tema grafico che avrà la modale. È possibile scegliere tra quelli definiti nel tema.")."</div>"
+						"<div class='form_notice'>".gtext("Indica il tema grafico che avrà il popup. È possibile scegliere tra quelli definiti nel tema.")."</div>"
+					),
+				),
+				'giorni_durata_modale'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_principale',
+					'labelString'=>	'Giorni di durata del popup',
+					'options'	=>	array(
+						-1	=>	gtext("Mostra ogni volta che il cliente torna in home page"),
+						0	=>	gtext("Mostra nuovamente ogni volta che il cliente chiude il browser"),
+						1	=>	gtext("Mostra nuovamente dopo 1 giorno"),
+						2	=>	gtext("Mostra nuovamente dopo 2 giorni"),
+						3	=>	gtext("Mostra nuovamente dopo 3 giorni"),
+						4	=>	gtext("Mostra nuovamente dopo 4 giorni"),
+						5	=>	gtext("Mostra nuovamente dopo 5 giorni"),
+						6	=>	gtext("Mostra nuovamente dopo 6 giorni"),
+						7	=>	gtext("Mostra nuovamente dopo 1 settimana"),
+						14	=>	gtext("Mostra nuovamente dopo 2 settimane"),
+						21	=>	gtext("Mostra nuovamente dopo 3 settimane"),
+						28	=>	gtext("Mostra nuovamente dopo 4 settimane"),
+						30	=>	gtext("Mostra nuovamente dopo 30 giorni"),
+						60	=>	gtext("Mostra nuovamente dopo 60 giorni"),
+						120	=>	gtext("Mostra nuovamente dopo 120 giorni"),
+						180	=>	gtext("Mostra nuovamente dopo 6 mesi"),
+						180	=>	gtext("Mostra nuovamente dopo 1 anno"),
+					),
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Indica il tempo dopo il quale il popup verrà nuovamente mostrato.")."</div>"
 					),
 				),
 			),

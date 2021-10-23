@@ -340,7 +340,7 @@ class BaseBaseController extends Controller
 				"attivo"=>"Y",
 			))->send();
 		
-		if (v("attiva_modali"))
+		if (v("attiva_modali") && $controller == "home" && $action == "index")
 		{
 			$data["modali_frontend"] = $this->m["PagesModel"]->where(array(
 				"categories.section"	=>	"modali",
@@ -352,8 +352,16 @@ class BaseBaseController extends Controller
 			{
 				$idModale = $mod["pages"]["id_page"];
 				
-				if (!isset($_COOKIE["modale_".$idModale]))
-					setcookie("modale_".$idModale,$idModale,0,"/");
+				if ($mod["pages"]["giorni_durata_modale"] >= 0)
+				{
+					$tempoModale = 0;
+					
+					if ($mod["pages"]["giorni_durata_modale"] > 0)
+						$tempoModale = time() + $mod["pages"]["giorni_durata_modale"] * 3600 * 24;
+						
+					if (!isset($_COOKIE["modale_".$idModale]))
+						setcookie("modale_".$idModale,$idModale,$tempoModale,"/");
+				}
 			}
 		}
 		
