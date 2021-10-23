@@ -1092,4 +1092,26 @@ class BaseThumbController extends Controller {
 			$thumb->render('nofound.jpeg');
 		}
 	}
+	
+	public function modale($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	800,
+			'imgHeight'		=>	800,
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
+	}
+	
+	public function modalepiccola($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	60,
+			'imgHeight'		=>	60,
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
+	}
 }

@@ -17,7 +17,7 @@ $isProdotto = isProdotto($idPr);
 ?>
 <article class="uk-transition-toggle">
 	<div class="uk-inline-clip " tabindex="0">
-		<a href="<?php echo $this->baseUrl."/".$urlAlias;?>"><img src="<?php echo $this->baseUrlSrc."/thumb/dettaglio/".$p["pages"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>" /></a>
+		<a href="<?php echo $this->baseUrl."/".$urlAlias;?>"><img src="<?php echo $this->baseUrlSrc."/thumb/dettaglio/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>" /></a>
 		
 		<div class="uk-position-top-right blocco_wishlist">
 			<div class="uk-transition-fade">

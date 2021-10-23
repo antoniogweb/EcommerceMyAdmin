@@ -323,20 +323,26 @@ class BaseBaseController extends Controller
 		
 		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m["CategoriesModel"]->getShopCategoryId();
 		
-		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"], true);
+// 		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"], true);
 		
 		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = getRandom($this->m["PagesModel"]->clear()->select("*")
 			->addJoinTraduzionePagina()
 			->where(array(
-				"in" => array("-id_c" => $childrenProdotti),
-				"attivo"=>"Y",
 				"in_evidenza"=>"Y",
-				"acquistabile"	=>	"Y",
-			))->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza"));
+			))
+			->addWhereCategoria($clean["idShop"])
+			->addWhereAttivo()
+			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza"));
 		
 		if (v("mostra_avvisi"))
 			$data["avvisi"] = $this->m["PagesModel"]->where(array(
 				"categories.section"	=>	"avvisi",
+				"attivo"=>"Y",
+			))->send();
+		
+		if (v("attiva_modali"))
+			$data["modali_frontend"] = $this->m["PagesModel"]->where(array(
+				"categories.section"	=>	"modali",
 				"attivo"=>"Y",
 			))->send();
 		
@@ -377,18 +383,15 @@ class BaseBaseController extends Controller
 		
 		if (v("blog_attivo"))
 		{
-			$idBlog = $this->sectionsId["blog"] = $data["idBlog"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
-				"section"	=>	"blog",
-			))->field("id_c");
-			
-			$children = $this->m["CategoriesModel"]->children($idBlog, true);
+			$idBlog = (int)CategoriesModel::getIdCategoriaDaSezione("blog");
 
 			$data["ultimiArticoli"] = $this->getNewsInEvidenza = $this->m['PagesModel']->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo" => "Y",
-					"in" => array("-id_c" => $children),
-				))->orderBy("data_news desc")->limit(v("numero_news_in_evidenza"))->send();
+				))
+				->addWhereCategoria((int)$idBlog)
+				->orderBy("data_news desc")->limit(v("numero_news_in_evidenza"))->send();
 		}
 		
 		if (v("team_attivo"))
@@ -407,30 +410,24 @@ class BaseBaseController extends Controller
 		
 		if (v("mostra_testimonial"))
 		{
-			$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
-				"section"	=>	"testimonial",
-			))->field("id_c");
+			$idTest = (int)CategoriesModel::getIdCategoriaDaSezione("testimonial");
 			
 			$data["testimonial"] = $this->testimonial = $this->m['PagesModel']->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
-					"id_c"		=>	(int)$idTest,
+					"id_c"		=>	$idTest,
 				))->orderBy("pages.id_order")->send();
 		}
 		
 		if (v("mostra_faq"))
 		{
-			$idFaq = $this->sectionsId["faq"] = $data["idFaq"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
-				"section"	=>	"faq",
-			))->field("id_c");
-			
 			$data["faq"] = $this->faq = $this->m['PagesModel']->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
 					"in_evidenza"=>"Y",
-					"id_c"		=>	(int)$idFaq,
+					"id_c"		=>	(int)CategoriesModel::getIdCategoriaDaSezione("faq")
 				))->orderBy("pages.id_order")->send();
 		}
 		

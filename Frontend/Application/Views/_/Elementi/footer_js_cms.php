@@ -8,3 +8,10 @@
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
+
+<?php if (count($modali_frontend) > 0) { ?>
+<?php include(tpf("/Elementi/modali.php"));?>
+<script>
+UIkit.modal("#modale_principale").show();
+</script>
+<?php } ?>

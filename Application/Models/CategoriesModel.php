@@ -31,6 +31,7 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public static $arrayIdsPagineFiltrate = array();
 	public static $elencoCategorieFull = array();
+	public static $associazioneSezioneId = null;
 	
 	public static $sezioneVariabile = array(
 		"faq"			=>	"mostra_faq",
@@ -961,5 +962,20 @@ class CategoriesModel extends HierarchicalModel {
 		$filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"], AltriFiltri::$aliasValoreTipoPromo[0]);
 		
 		return CategoriesModel::getUrlAliasTagMarchio(0, 0, self::$idShop, "", array(), array(), $filtriUrlAltriFiltri);
+	}
+	
+	public static function getIdCategoriaDaSezione($sezione)
+	{
+		if (!isset(self::$associazioneSezioneId))
+			self::$associazioneSezioneId = CategoriesModel::g()->where(array(
+				"ne"	=>	array(
+					"section"	=>	"",
+				),
+			))->toList("section", "id_c")->send();
+		
+		if (isset(self::$associazioneSezioneId[$sezione]))
+			return self::$associazioneSezioneId[$sezione];
+		
+		return 0;
 	}
 }

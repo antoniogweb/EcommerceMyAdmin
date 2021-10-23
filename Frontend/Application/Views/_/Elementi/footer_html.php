@@ -44,4 +44,5 @@
 		<?php include(tpf("/Cart/ajax_cart.php"));?>
 	</aside>
 </div>
+
 <?php } ?>

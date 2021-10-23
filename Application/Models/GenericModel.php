@@ -1142,6 +1142,13 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
+	public function addWhereCategoria($idCat, $full = true)
+	{
+		$this->aWhere(CategoriesModel::gCatWhere($idCat, $full));
+		
+		return $this;
+	}
+	
 	public function sWhereFiltriSuccessivi()
 	{
 		$whereIn = "";
@@ -1168,7 +1175,7 @@ class GenericModel extends Model_Tree
 		if ($traduzione && $m->traduzione)
 			$m->addJoinTraduzione();
 		
-		return $m;
+		return $m->clear();
 	}
 	
 	public static function numeroRecord()
@@ -1177,7 +1184,7 @@ class GenericModel extends Model_Tree
 		
 		$m = new $className;
 		
-		return $m->rowNumber();
+		return $m->clear()->rowNumber();
 	}
 	
 	// Usato da DocumentilinguaModel e PageslinguaModel
