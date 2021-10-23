@@ -431,6 +431,9 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Indica il tempo dopo il quale il popup verrà nuovamente mostrato.")."</div>"
 					),
 				),
+				'go_to'	=>	array(
+					'labelString'	=>	"Esegui lo scroll all'dentificatore",
+				),
 			),
 		);
 		

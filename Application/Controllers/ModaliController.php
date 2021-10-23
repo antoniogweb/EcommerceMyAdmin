@@ -41,7 +41,7 @@ class ModaliController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,immagine,immagine_2,sottotitolo,description,url,link_id_page,link_id_c,testo_link,giorni_durata_modale,template_modale";
+		$this->queryFields = "title,attivo,immagine,immagine_2,sottotitolo,description,url,link_id_page,link_id_c,testo_link,giorni_durata_modale,template_modale,go_to";
 		
 		if (v("usa_marchi"))
 			$this->queryFields .= ",link_id_marchio";

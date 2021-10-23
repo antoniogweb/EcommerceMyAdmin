@@ -17,16 +17,16 @@ $url = PagesModel::getUrlContenuto($p);
 				<img src="<?php echo $this->baseUrlSrc."/thumb/modalepiccola/".$p["pages"]["immagine_2"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>">
 				<?php } ?>
 				
-                <h1><?php echo field($p, "title");?></h1>
+                <h1 class="uk-padding-small-bottom"><?php echo field($p, "title");?></h1>
                 
                 <?php if ($p["pages"]["sottotitolo"]) { ?>
-				<h4><?php echo field($p, "sottotitolo");?></h4>
+				<h4 class="uk-margin-remove uk-text-lead"><?php echo field($p, "sottotitolo");?></h4>
 				<?php } ?>
                 <div class="uk-margin uk-text-meta">
 					<?php echo htmlentitydecode(field($p, "description"));?>
                 </div>
                 <?php if ($url) { ?>
-                <a class="uk-button uk-button-secondary" href="<?php echo $url;?>">
+                <a  <?php if ($p["pages"]["go_to"]) { ?>uk-scroll<?php } ?> class="<?php if ($p["pages"]["go_to"]) { ?>uk-modal-close<?php } ?> uk-button uk-button-secondary" href="<?php echo $url;?>">
 					<?php echo field($p, "testo_link");?>
                 </a>
                 <?php } ?>
