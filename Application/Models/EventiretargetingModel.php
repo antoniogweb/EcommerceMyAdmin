@@ -50,6 +50,8 @@ class EventiretargetingModel extends GenericModel {
 		240	=>	"Dopo 10 giorni",
 	);
 	
+	public static $eventiAttivi = null;
+	
 	public function __construct() {
 		$this->_tables='eventi_retargeting';
 		$this->_idFields='id_evento';
@@ -147,5 +149,56 @@ class EventiretargetingModel extends GenericModel {
 	public function scattaDopoOre()
 	{
 		return gtextDeep(self::$scattaDopoOre);
+	}
+	
+	public static function processa($tipi = array(), $idElemento = 0)
+	{
+		$evModel = new EventiretargetingModel();
+		
+		if (!isset(self::$eventiAttivi))
+		{
+			self::$eventiAttivi = $evModel->clear()->where(array(
+				"attivo"	=>	1,
+			))
+			->inner(array("email"))->orderBy("eventi_retargeting.id_order")->send();
+		}
+		
+		if (!empty(self::$eventiAttivi))
+		{
+// 			print_r(self::$eventiAttivi);
+			foreach (self::$eventiAttivi as $evento)
+			{
+				$tipo = $evento["eventi_retargeting"]["tipo"];
+				$idPagina = $evento["eventi_retargeting"]["id_page"];
+				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
+				
+				$email = PagesModel::getPageDetails($idPagina);
+				
+// 				print_r($email);
+				
+				if ($tipo == "FORM_CONTATTO" || $tipo == "NEWSLETTER")
+				{
+					$cModel = ContattiModel::g();
+					
+					if ($idElemento)
+						$cModel->aWhere(array(
+							"id_contatto"	=>	(int)$idElemento,
+						));
+					
+					if ($tipo == "FORM_CONTATTO")
+						$cModel->aWhere(array(
+							"fonte"	=>	"CONTATTI",
+						));
+					else
+						$cModel->aWhere(array(
+							"fonte"	=>	"NEWSLETTER",
+						));
+					
+					$elementi = $cModel->send(false);
+					
+					
+				}
+			}
+		}
 	}
 }

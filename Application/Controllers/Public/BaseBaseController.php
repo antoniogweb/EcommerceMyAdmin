@@ -340,6 +340,7 @@ class BaseBaseController extends Controller
 				"attivo"=>"Y",
 			))->send();
 		
+		// Modali
 		if (v("attiva_modali") && $controller == "home" && $action == "index")
 		{
 			$data["modali_frontend"] = $this->m["PagesModel"]->where(array(
@@ -449,11 +450,6 @@ class BaseBaseController extends Controller
 					"id_c"		=>	(int)CategoriesModel::getIdCategoriaDaSezione("faq")
 				))->orderBy("pages.id_order")->send();
 		}
-		
-// 		$data["articoliRecenti"] = $this->m["PagesModel"]->clear()->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
-// 			"categories.section"	=>	"slide",
-// 			"attivo"=>"Y",
-// 		))->orderBy("pages.id_order desc")->send();
 		
 		$data["categorieBlog"] = $this->m["CategoriesModel"]->children(87, false, false);
 		
