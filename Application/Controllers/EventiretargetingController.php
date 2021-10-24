@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class IvaController extends BaseController
+class EventiretargetingController extends BaseController
 {
 	public $orderBy = "id_order";
 	
@@ -30,27 +30,28 @@ class IvaController extends BaseController
 	
 	public $argKeys = array();
 	
-	public $sezionePannello = "ecommerce";
-
+	public $sezionePannello = "marketing";
+	
+	public $tabella = "retargeting";
+	
 	public function main()
 	{
 		$this->shift();
 		
-		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio","nascondi");
-		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio,Nascondi al cliente";
+		$this->mainFields = array("eventi_retargeting.titolo","tipo","dopoquanto","<b>OGGETTO</b>: ;pages.title;","attivo");
+		$this->mainHead = "Titolo evento,Quale evento scatterà?,Dopo quanto?,Quale email verrà inviata?,Evento attivo?";
 		
 		$this->m[$this->modelName]->clear()
-				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
-				))
-				->orderBy("id_order")->convert()->save();
+				->select("*")
+				->inner(array("email"))
+				->orderBy("eventi_retargeting.id_order")->convert()->save();
 		
 		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio,nascondi');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,attivo,tipo,scatta_dopo_ore,id_page');
 		
 		parent::form($queryType, $id);
 	}

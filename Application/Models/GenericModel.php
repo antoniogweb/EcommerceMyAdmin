@@ -1174,4 +1174,6 @@ class GenericModel extends Model_Tree
 		if ($al != "tutti")
 			$this->sWhere("DATE_FORMAT(".$this->_tables.".data_creazione, '%Y-%m-%d') <= '".getIsoDate($al)."'");
     }
+    
+    public function overrideFormStruct() {}
 }

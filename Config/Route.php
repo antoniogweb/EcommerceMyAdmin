@@ -507,6 +507,18 @@ class Route
 		'modali,inevidenza',
 		'modali,updatevalue',
 		'modali,ordina',
+		
+		'templateemail,main',
+		'templateemail,form',
+		'templateemail,move',
+		'templateemail,pubblica',
+		'templateemail,inevidenza',
+		'templateemail,updatevalue',
+		'templateemail,ordina',
+		
+		'eventiretargeting,main',
+		'eventiretargeting,form',
+		'eventiretargeting,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

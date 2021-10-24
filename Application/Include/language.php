@@ -67,6 +67,11 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 	}
 }
 
+function gtextDeep($value) {
+	return array_map('gtext', $value);
+}
+
+
 function gtexta($string, $applicativo = "")
 {
 	return gtext($string, true, "none", null, 1, $applicativo);

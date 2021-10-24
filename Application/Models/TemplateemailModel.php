@@ -22,36 +22,34 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class IvaController extends BaseController
-{
-	public $orderBy = "id_order";
+class TemplateemailModel extends BasicsectionModel {
 	
-	public $setAttivaDisattivaBulkActions = false;
+	public $hModelName = "TemplateemailcatModel";
 	
-	public $argKeys = array();
-	
-	public $sezionePannello = "ecommerce";
-
-	public function main()
+	public function overrideFormStruct()
 	{
-		$this->shift();
+		$this->formStruct["entries"]['title'] = array(
+			'labelString'=>	'Oggetto email',
+			'entryClass'	=>	'form_input_text help_titolo',
+		);
 		
-		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio","nascondi");
-		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio,Nascondi al cliente";
+		$this->formStruct["entries"]['description'] = array(
+			'type'		 =>	'Textarea',
+			'entryClass'	=>	'form_textarea help_descrizione',
+			'labelString'=>	'Corpo mail',
+			'className'		=>	'dettagli',
+		);
 		
-		$this->m[$this->modelName]->clear()
-				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
-				))
-				->orderBy("id_order")->convert()->save();
-		
-		parent::main();
-	}
-
-	public function form($queryType = 'insert', $id = 0)
-	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio,nascondi');
-		
-		parent::form($queryType, $id);
+		$this->formStruct["entries"]['attivo'] = array(
+			'type'		=>	'Select',
+			'labelString'=>	'Attivo?',
+			'entryClass'	=>	'form_input_text help_attivo',
+			'options'	=>	array('sì'=>'Y','no'=>'N'),
+			'wrap'		=>	array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Se può essere utilizzata dal sistema")."</div>"
+			),
+		);
 	}
 }

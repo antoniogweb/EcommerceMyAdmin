@@ -22,36 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class IvaController extends BaseController
-{
-	public $orderBy = "id_order";
-	
-	public $setAttivaDisattivaBulkActions = false;
-	
-	public $argKeys = array();
-	
-	public $sezionePannello = "ecommerce";
+class TemplateemailcatModel extends CategoriesModel {
 
-	public function main()
-	{
-		$this->shift();
+	public function __construct() {
+
+		$this->section = "email";
+		$this->controller = "emailcat";
 		
-		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio","nascondi");
-		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio,Nascondi al cliente";
+		parent::__construct();
 		
-		$this->m[$this->modelName]->clear()
-				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
-				))
-				->orderBy("id_order")->convert()->save();
-		
-		parent::main();
 	}
 
-	public function form($queryType = 'insert', $id = 0)
-	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio,nascondi');
-		
-		parent::form($queryType, $id);
-	}
 }

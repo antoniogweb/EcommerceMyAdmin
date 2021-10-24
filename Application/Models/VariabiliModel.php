@@ -287,6 +287,8 @@ class VariabiliModel extends GenericModel {
 		"dimensioni_upload_documenti"	=>	3000000,
 		"attiva_accessibilita_categorie"	=>	0,
 		"attiva_multi_categoria"	=>	0,
+		"attiva_template_email"		=>	0,
+		"attiva_eventi_retargeting"	=>	0,
 	);
 	
 	public static function setPlaceholders()

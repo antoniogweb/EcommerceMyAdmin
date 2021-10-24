@@ -22,39 +22,26 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class GenericsectionController extends PagesController {
-
-	public $voceMenu = "";
+class TemplateemailController extends GenericsectionController {
+	
+	public $voceMenu = "email";
+	public $sezionePannello = "marketing";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
-			'PagesModel.categoriesS|pages.id_page',
-			'smartDate|pages.data_news',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.data_news desc";
+		$this->orderBy = "pages.id_order desc";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data,Pubblicato?';
-		$this->filters = array(null,null,'title');
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attivo';
 		
-		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,sottotitolo";
-		
-		$this->clean();
-		$this->load('header_'.$this->sezionePannello);
-		$this->load('footer','last');
-		
-		$data["sezionePannello"] = $this->sezionePannello;
-		
-		$data["tabella"] = $this->voceMenu;
-		
-		$this->append($data);
+		$this->queryFields = "title,attivo,description";
 	}
-
 }

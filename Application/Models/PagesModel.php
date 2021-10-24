@@ -100,12 +100,12 @@ class PagesModel extends GenericModel {
 		$this->uploadFields = array();
 		
 		parent::__construct();
-
 	}
 	
 	public function relations() {
 		return array(
 			'feedback' => array("HAS_MANY", 'FeedbackModel', 'id_page', null, "RESTRICT", "L'elemento ha dei feedback collegati e non può essere eliminato"),
+			'retargeting' => array("HAS_MANY", 'EventiretargetingModel', 'id_page', null, "RESTRICT", "La mail ha degli eventi retargeting collegati, eliminare prima tali eventi"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_page', null, "CASCADE"),
 			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),
 			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_page', null, "CASCADE"),
@@ -117,7 +117,7 @@ class PagesModel extends GenericModel {
 			'regioni' => array("HAS_MANY", 'PagesregioniModel', 'id_page', null, "CASCADE"),
 			'lingue' => array("HAS_MANY", 'PageslingueModel', 'id_page', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
-        );
+		);
     }
     
 	public function setFilters()
@@ -160,13 +160,6 @@ class PagesModel extends GenericModel {
 		$haCombinazioni = $this->hasCombinations((int)$id, false);
 		
 		$wrapCombinazioni = array();
-		
-// 		if ($haCombinazioni)
-// 			$wrapCombinazioni = array(
-// 				null,
-// 				null,
-// 				"<div class='form_notice'>".gtext("Il campo non è editabile perché il prodotto ha delle varianti e quindi delle combinazioni. Modificare il campo nella scheda 'Varianti'")."</div>"
-// 			);
 		
 		$this->formStruct = array
 		(
@@ -441,6 +434,9 @@ class PagesModel extends GenericModel {
 		
 		if ($this->formStructAggiuntivoEntries)
 			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
+		
+		// Override la struttura del form
+		$this->overrideFormStruct();
 	}
 	
 	public function selectProdotti($id, $withEmpty = true)
@@ -449,15 +445,32 @@ class PagesModel extends GenericModel {
 		
 		$cm = new CategoriesModel();
 		
-		$children = $cm->children((int)$cm->getShopCategoryId(), true);
-		
 		$res = $this->clear()->where(array(
-			"ne" => array("id_page" => $clean['id']),
-			"attivo" => "Y",
-			"principale"=>"Y",
-			"acquistabile"	=>	"Y",
-			"in" => array("-id_c" => $children),
-		))->orderBy("id_order")->toList("id_page", "title")->send();
+				"ne" => array("id_page" => $clean['id']),
+				"principale"=>"Y",
+			))
+			->addWhereAttivo()
+			->addWhereCategoria((int)$cm->getShopCategoryId())
+			->orderBy("id_order")
+			->toList("id_page", "title")
+			->send();
+		
+		if ($withEmpty)
+			return array(0=>"--") + $res;
+		
+		return $res;
+	}
+	
+	// Select di tuttu le pagine di una certa sezione
+	public function selectPagineSezione($sezione, $withEmpty = false)
+	{
+		$res = $this->clear()->where(array(
+				"attivo" => "Y",
+			))
+			->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($sezione))
+			->orderBy("pages.id_order")
+			->toList("id_page", "title")
+			->send();
 		
 		if ($withEmpty)
 			return array(0=>"--") + $res;
