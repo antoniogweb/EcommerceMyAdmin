@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class DocumentiModel extends GenericModel {
-
+	
+	public static $pathFiles = "images/documenti";
+	
 	public $parentRootFolder;
 	public static $uploadFile = true;
 	
@@ -58,7 +60,7 @@ class DocumentiModel extends GenericModel {
 			),
 			"filename"	=>	array(
 				"type"	=>	"file",
-				"path"	=>	"images/documenti",
+				"path"	=>	self::$pathFiles,
 				"allowedExtensions"	=>	'pdf,png,jpg,jpeg',
 				"maxFileSize"	=>	v("dimensioni_upload_documenti"),
 				"clean_field"	=>	"clean_filename",
@@ -372,6 +374,17 @@ class DocumentiModel extends GenericModel {
 				$dl->duplica($r["id_doc"], $this->lId, "id_doc");
 			}
 		}
+	}
+	
+	// Elimina tutti i file che non corrispondono più al DB
+	public function pulisciFile()
+	{
+		$this->files->setBase(Domain::$parentRoot."/".trim(self::$pathFiles,"/"),"/");
+		$list = $this->clear()->select("filename")->toList("filename")->send();
+		$list[] = "index.html";
+		$list[] = ".htaccess";
+		
+		$this->files->removeFilesNotInTheList($list);
 	}
 	
 }

@@ -414,15 +414,14 @@ class BaseController extends Controller
 		$this->scaffold->mainMenu->links['add']['title'] = gtext('inserisci un nuovo elemento');
 		
 		if (isset($this->scaffold->mainMenu->links['elimina']) and $this->id !== 0)
-		{
 			$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="'.$this->id_name.'" id="'.$clean['id'].'"';
-		}
 		
 		if (isset($this->scaffold->mainMenu->links['copia']) and isset($clean["id"]))
-		{
 			$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean["id"];
-		}
 		
+		if (isset($this->scaffold->mainMenu->links['pulisci']) and isset($clean["id"]))
+			$this->scaffold->mainMenu->links['pulisci']['url'] = $this->scaffold->mainMenu->links['pulisci']['url'].'/'.$clean["id"];
+
 		$this->scaffold->model->clear()->restore();
 		
 		$this->m[$this->modelName]->updateTable($this->queryActionsAfter);
