@@ -32,11 +32,6 @@ $().ready(function() {
 	$('.editor_textarea').tinymce(tiny_editor_config);
 	//$(".display_none").css({ 'display' : 'none' });
 });
-	
-$(document).ready(function() {
-
-	
-});
 </script>
 <?php } ?>
 
