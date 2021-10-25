@@ -25,7 +25,9 @@
 			<div class="box">
 				<div class="box-header with-border main">
 					<div class="notice_box">
-						<?php echo $notice;?>
+						<?php $flash = flash("notice");?>
+						<?php echo $flash;?>
+						<?php if (!$flash) echo $notice;?>
 					</div>
 
 					<?php include($this->viewPath("gestisci_associato"));?>

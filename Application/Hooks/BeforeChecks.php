@@ -114,6 +114,16 @@ Helper_Menu::$htmlLinks = array(
 		'queryString'	=>	'&esporta=Y',
 		"classIconBefore"	=>	'<i class="fa fa-download"></i>',
 	),
+	"pulisci" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-warning"',
+		"class"	=>	"btn btn-warning",
+		'text'	=>	"Pulisci",
+		'url'	=>	'documenti',
+		'queryString'	=>	'&pulisci_file=Y',
+		"classIconBefore"	=>	'<i class="fa fa-trash"></i>',
+	),
 	"importa" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',

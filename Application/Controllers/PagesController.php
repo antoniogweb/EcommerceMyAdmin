@@ -1485,6 +1485,15 @@ class PagesController extends BaseController {
 		if (!isset($this->m[$this->modelName]))
 			$this->model($this->modelName);
 		
+		if (isset($_GET["pulisci_file"]) && $_GET["pulisci_file"] == "Y")
+		{
+			$this->m[$this->modelName]->pulisciFile();
+			
+			flash("notice","<div class='alert alert-success'>".gtext("Pulizia avvenuta")."</div>");
+			
+			$this->redirect($this->applicationUrl.$this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
+		}
+		
 		$this->m[$this->modelName]->updateTable('del');
 		
 		$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + array("tutte" => gtext("TUTTE LE LINGUE")) + $this->m[$this->modelName]->selectLingua();
