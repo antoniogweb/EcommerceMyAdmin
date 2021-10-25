@@ -1,13 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-navbar-dropdown uk-padding-small uk-margin-remove" uk-drop="mode: click;cls-drop: uk-navbar-dropdown;boundary: .tm-navbar-container;boundary-align: true;pos: bottom-justify;flip: x">
-	<div class="uk-container">
-		<div class="uk-grid-small uk-flex-middle" uk-grid>
-			<div class="uk-width-expand">
-				<form class="uk-search uk-search-navbar uk-width-1-1" action="<?php echo $this->baseUrl."/risultati-ricerca";?>" method="get">
-					<input autocomplete="off" name="s" class="uk-search-input" type="search" placeholder="<?php echo gtext("Cerca un prodotto..", false)?>" autofocus/>
-				</form>
-			</div>
-			<div class="uk-width-auto"><a class="uk-navbar-dropdown-close" href="#" uk-close></a></div>
-		</div>
+<div class="uk-navbar-dropdown uk-container uk-container-large" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-right;offset: 0;" uk-dropdown>
+	<div>
+		<div class="uk-flex uk-flex-center">
+			<form class="uk-search uk-search-default" style="width:90%;" action="<?php echo $this->baseUrl."/risultati-ricerca";?>" method="get">
+				<button class="uk-search-icon-flip" uk-search-icon></button>
+				<input autocomplete="off" name="s" class="uk-input" type="search" placeholder="<?php echo gtext("Cerca..", false)?>" autofocus>
+			</form>
+		</div>   
 	</div>
 </div>
