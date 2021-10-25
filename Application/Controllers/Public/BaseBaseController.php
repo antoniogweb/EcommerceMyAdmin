@@ -533,6 +533,9 @@ class BaseBaseController extends Controller
 		
 		Params::$rewriteStatusVariables = false;
 		
+		if (!trim(v("token_schedulazione")))
+			VariabiliModel::setValore("token_schedulazione", md5(randString(10).uniqid(mt_rand(),true)));
+		
 		if (getSubTotalN() > 9999999)
 		{
 			$this->m["CartModel"]->emptyCart();

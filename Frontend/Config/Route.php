@@ -25,7 +25,8 @@ class Route
 		'contenuti,robots',
 		'contenuti,jsoncategorie',
 		'contenuti,jsoncategoriefiglie',
-		'contenuti,documento',
+		'contenuti,processaschedulazione',
+		'contenuti,index',
 		'cart,index',
 		'cart,ajax',
 		'cart,add',
@@ -199,6 +200,7 @@ class Route
 		'contenuti/jsoncategorie/(.*)'	=>	'contenuti/jsoncategorie/${1}',
 		'contenuti/jsoncategoriefiglie/(.*)'	=>	'contenuti/jsoncategoriefiglie/${1}',
 		'contenuti/documento/(.*)'	=>	'contenuti/documento/${1}',
+		'contenuti/processaschedulazione/(.*)'	=>	'contenuti/processaschedulazione/${1}',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',

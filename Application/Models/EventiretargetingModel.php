@@ -50,8 +50,6 @@ class EventiretargetingModel extends GenericModel {
 		240	=>	"Dopo 10 giorni",
 	);
 	
-	public static $eventiAttivi = null;
-	
 	public function __construct() {
 		$this->_tables='eventi_retargeting';
 		$this->_idFields='id_evento';
@@ -65,6 +63,7 @@ class EventiretargetingModel extends GenericModel {
 	
 	public function relations() {
 		return array(
+			'elementi' => array("HAS_MANY", 'EventiretargetingelementiModel', 'id_evento', null, "CASCADE"),
 			'email' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 		);
     }
@@ -151,30 +150,37 @@ class EventiretargetingModel extends GenericModel {
 		return gtextDeep(self::$scattaDopoOre);
 	}
 	
-	public static function processa($tipi = array(), $idElemento = 0)
+	public static function processa($tipiDaElaborare = array(), $idElemento = 0, $immediati = false)
 	{
 		$evModel = new EventiretargetingModel();
+		$evElModel = new EventiretargetingelementiModel();
 		
-		if (!isset(self::$eventiAttivi))
-		{
-			self::$eventiAttivi = $evModel->clear()->where(array(
-				"attivo"	=>	1,
-			))
-			->inner(array("email"))->orderBy("eventi_retargeting.id_order")->send();
-		}
+		$evModel->clear()->where(array(
+			"attivo"	=>	1,
+		))->inner(array("email"))->orderBy("eventi_retargeting.id_order");
 		
-		if (!empty(self::$eventiAttivi))
+		if ($immediati)
+			$evModel->sWhere("scatta_dopo_ore = 0");
+		else
+			$evModel->sWhere("scatta_dopo_ore > 0");
+		
+		$eventiAttivi = $evModel->send();
+		
+		if (!empty($eventiAttivi))
 		{
 // 			print_r(self::$eventiAttivi);
-			foreach (self::$eventiAttivi as $evento)
+			foreach ($eventiAttivi as $evento)
 			{
+				$idEvento = (int)$evento["eventi_retargeting"]["id_evento"];
+				
 				$tipo = $evento["eventi_retargeting"]["tipo"];
 				$idPagina = $evento["eventi_retargeting"]["id_page"];
 				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
 				
 				$email = PagesModel::getPageDetails($idPagina);
 				
-// 				print_r($email);
+				if (!empty($tipiDaElaborare) && !in_array($tipo, $tipiDaElaborare))
+					continue;
 				
 				if ($tipo == "FORM_CONTATTO" || $tipo == "NEWSLETTER")
 				{
@@ -189,14 +195,42 @@ class EventiretargetingModel extends GenericModel {
 						$cModel->aWhere(array(
 							"fonte"	=>	"CONTATTI",
 						));
-					else
+					else if ($tipo == "NEWSLETTER")
 						$cModel->aWhere(array(
 							"fonte"	=>	"NEWSLETTER",
 						));
 					
-					$elementi = $cModel->send(false);
-					
-					
+					$cModel->sWhere("id_contatto not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
+				}
+				
+				$elementi = $cModel->send(false);
+				
+				foreach ($elementi as $e)
+				{
+					if ($e["email"] && checkMail($e["email"]))
+					{
+						$oggetto = htmlentitydecode(field($email, "title"));
+						$testo = htmlentitydecode(field($email, "description"));
+						
+						$valoriMail = array(
+							"emails"	=>	array($e["email"]),
+							"oggetto"	=>	$oggetto,
+							"testo"		=>	$testo,
+							"tipologia"	=>	"RETARGETING",
+							"id_evento"	=>	$idEvento,
+						);
+						
+						if (MailordiniModel::inviaMail($valoriMail))
+						{
+							$evElModel->setValues(array(
+								"id_evento"		=>	$idEvento,
+								"id_elemento"	=>	$e[$cModel->getPrimaryKey()],
+								"id_page"		=>	$email["pages"]["id_page"],
+							));
+							
+							$evElModel->insert();
+						}
+					}
 				}
 			}
 		}

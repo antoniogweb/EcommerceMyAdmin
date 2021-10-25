@@ -1770,4 +1770,18 @@ class BaseContenutiController extends BaseController
 		else
 			$this->redirect("");
 	}
+	
+	public function processaschedulazione($c = "")
+	{
+		$this->clean();
+		
+		if (is_string($c) && trim(v("token_schedulazione")) && $c == v("token_schedulazione"))
+		{
+			
+			
+			
+			
+			EventiretargetingModel::processa();
+		}
+	}
 }
