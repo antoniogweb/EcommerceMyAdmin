@@ -50,7 +50,7 @@
 				</nav>
 			</div>
 			<div class="uk-navbar-right">
-				<a class="uk-navbar-toggle es-navbar-button" href="<?php echo $this->baseUrl."/risultati-ricerca";?>" uk-search-icon></a>
+				<a class="uk-navbar-toggle es-navbar-button" href="#" uk-search-icon></a>
 				<?php include(tpf("/Elementi/header_search_box.php"));?>
 				
 				<a class="uk-navbar-toggle es-navbar-button" href="<?php echo $this->baseUrl."/wishlist/vedi"?>">
