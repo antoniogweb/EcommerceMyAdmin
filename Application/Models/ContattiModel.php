@@ -28,6 +28,9 @@ class ContattiModel extends GenericModel {
 	{
 		$this->unsetDescrizione();
 		
+		if (isset(Params::$lang))
+			$this->values["lingua"] = Params::$lang;
+		
 		return parent::insert();
 	}
 	

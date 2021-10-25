@@ -929,6 +929,9 @@ class CartModel extends GenericModel {
 		if (isset($this->values["json_personalizzazioni"]) && !trim($this->values["json_personalizzazioni"]))
 			$this->values["json_personalizzazioni"] = "[]";
 		
+		if (isset(Params::$lang))
+			$this->values["lingua"] = Params::$lang;
+		
 		return parent::insert();
 	}
 	

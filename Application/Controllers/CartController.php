@@ -63,8 +63,8 @@ class CartController extends BaseController
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
+				->inner(array("pagina"))
 				->left("regusers")->on("regusers.id_user = cart.id_user")
-				->left(array("pagina"))
 				->left("categories")->on("pages.id_c = categories.id_c")
 				->orderBy("cart.email desc, cart.data_creazione desc")->convert();
 		
