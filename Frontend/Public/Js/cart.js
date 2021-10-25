@@ -40,6 +40,9 @@ if (typeof mostra_prezzo_accessori == "undefined")
 if (typeof check_giacenza == "undefined")
 	var check_giacenza = false;
 
+if (typeof carrello_monoprodotto == "undefined")
+	var carrello_monoprodotto = false;
+
 var time;
 var arrayAccessori = [];
 
@@ -546,17 +549,10 @@ function aggiungiAccessori()
 function togliSpinner(that)
 {
 	setTimeout(function(){ 
+		that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
 		
-// 		if (that.parents(".product-block").length > 0)
-// 		{
-// 			
-// 		}
-// 		else
-			that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
-			
-			if ($(".acquista_prodotto").length > 0)
-				$(".acquista_prodotto").removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
-			
+		if ($(".acquista_prodotto").length > 0)
+			$(".acquista_prodotto").removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
 	}, 500);
 }
 
@@ -602,7 +598,7 @@ function prodottiAggiunti(principale, content, id_cart)
 	{
 		location.href = baseUrl + "/carrello/vedi";
 	}
-	else if (vai_al_checkout)
+	else if (vai_al_checkout || carrello_monoprodotto)
 	{
 		location.href = baseUrl + "/checkout";
 	}
@@ -726,6 +722,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			{
 				alert(content.errore);
 				togliSpinner(principale);
+				vai_al_checkout = false;
 			}
 			
 			if (haAccessori() && !principale.hasClass("aggiungi_al_carrello_semplice"))

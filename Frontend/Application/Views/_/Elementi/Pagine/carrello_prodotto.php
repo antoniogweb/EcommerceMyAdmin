@@ -146,12 +146,27 @@
 		</div>
 		<?php } ?>
 		
+		
 		<div class="uk-text-small uk-text-danger errore_giacenza"></div>
 		
-		<div class="uk-margin-remove">
-			<input name="quantita" class="uk-input uk-form-width-xsmall quantita_input" type="<?php if (User::$isMobile) { ?>hidden<?php } else { ?>number<?php } ?>" value="<?php echo getQtaDaCarrello();?>" min="1" style="font-size: 14px;">
-			<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-			<a name="add-to-cart" id-cart="<?php echo isset($_GET["id_cart"]) ? (int)$_GET["id_cart"] : 0;?>" rel="<?php echo $p["pages"]["id_page"];?>" class="uk-button uk-button-secondary aggiungi_al_carrello pulsante_carrello single_add_to_cart_button" href="#">
+		<?php if (!User::$isMobile) { ?>
+		<div class="uk-width-1-1 uk-width-1-2@m">
+			<div class="uk-grid-small uk-text-right uk-flex uk-flex-middle" uk-grid>
+				<div class="uk-width-3-4 uk-text-small">
+					<?php echo gtext("Quantità");?>:
+				</div>
+				<div class="uk-width-1-4">
+					<input name="quantita" class="uk-input uk-form-width-xsmall quantita_input" type="number" value="<?php echo getQtaDaCarrello();?>" min="1" style="font-size: 14px;">
+				</div>
+			</div>
+		</div>
+		<?php } else { ?>
+			<input name="quantita" class="uk-input quantita_input" type="hidden" value="<?php echo getQtaDaCarrello();?>" min="1" style="font-size: 14px;">
+		<?php } ?>
+		
+		<div class="uk-margin-small uk-width-1-1 uk-width-1-2@m">
+			<div class="uk-width-1-1 uk-button uk-button-default spinner uk-hidden" uk-spinner="ratio: .70"></div>
+			<a name="add-to-cart" id-cart="<?php echo isset($_GET["id_cart"]) ? (int)$_GET["id_cart"] : 0;?>" rel="<?php echo $p["pages"]["id_page"];?>" class="uk-width-1-1 uk-button uk-button-default aggiungi_al_carrello pulsante_carrello single_add_to_cart_button" href="#">
 				<span>
 					<?php if (idCarrelloEsistente()) { ?>
 					<?php echo gtext("Aggiorna carrello", false); ?>
@@ -161,6 +176,13 @@
 				</span>
 			</a>
 		</div>
+		
+		<?php if (!idCarrelloEsistente()) { ?>
+		<div class="uk-width-1-1 uk-width-1-2@m">
+			<div class="uk-width-1-1 uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+			<button id="acquista" class="uk-width-1-1 uk-button uk-button-secondary acquista_prodotto"><?php echo gtext("Acquista ora");?></button>
+		</div>
+		<?php } ?>
 		
 		<div id="whishlist" class="uk-margin blocco_wishlist">
 			<div class="not_in_wishlist relative" style="<?php if (WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>display:none<?php } ?>;">
