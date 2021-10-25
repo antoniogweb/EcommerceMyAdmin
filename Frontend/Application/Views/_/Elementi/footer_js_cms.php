@@ -9,6 +9,6 @@
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
 
-<?php if ($this->controller == "home" && count($modali_frontend) > 0) { ?>
+<?php if ($this->controller == "home" && $this->action == "index" && isset($modali_frontend) && count($modali_frontend) > 0) { ?>
 <?php include(tpf("/Elementi/modali.php"));?>
 <?php } ?>
