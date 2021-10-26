@@ -46,6 +46,12 @@ class PagamentiModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_pagamento', null, "CASCADE"),
+        );
+    }
+    
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array

@@ -1,0 +1,1 @@
+INSERT INTO `tipi_clienti` (`id_tipo_cliente`, `data_creazione`, `titolo`, `codice`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Privato', 'privato', '1', '1'), (NULL, CURRENT_TIMESTAMP, 'Azienda', 'azienda', '1', '2'), (NULL, CURRENT_TIMESTAMP, 'Libero professionista', 'libero_professionista', '1', '3');

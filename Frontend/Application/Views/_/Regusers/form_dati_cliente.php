@@ -8,13 +8,24 @@ else
 {
 	$divisoreTipoCliente = User::$isPhone ? "<div class='tipo_cliente_divisore'></div>" : "";
 	
-	$tipoCliente = array(
-		"<span style='margin-left:8px;'></span>".gtext("Privato")."<span style='margin-right:20px;'></span>$divisoreTipoCliente"=>"privato",
-		"<span style='margin-left:8px;'></span>".gtext("Azienda")."<span style='margin-right:20px;'></span>$divisoreTipoCliente"=>"azienda",
-		"<span style='margin-left:8px;'></span>".gtext("Libero professionista")=>"libero_professionista",
-	);
-
-	echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente");
+	if (count($tipiClienti) > 1)
+	{
+		$tipoCliente = array();
+		
+		foreach ($tipiClienti as $codiceTipo => $titoloTipo)
+		{
+			$tipoCliente["<span style='margin-left:8px;'></span>".gtext($titoloTipo)."<span style='margin-right:20px;'></span>$divisoreTipoCliente"] = $codiceTipo; 
+		}
+		
+		echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente");
+	}
+	else
+	{
+		foreach ($tipiClienti as $codiceTipo => $titoloTipo)
+		{
+			echo Html_Form::hidden("tipo_cliente",$codiceTipo,$codiceTipo);
+		}
+	}
 }
 ?>
 </div>

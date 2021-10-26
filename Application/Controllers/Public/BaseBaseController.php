@@ -497,6 +497,8 @@ class BaseBaseController extends Controller
 				"ne"	=>	array("tipo_pagina" => ""),
 			))->toList("tipo_pagina", "id_page")->send();
 			
+			$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
+			
 			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
 			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
 			

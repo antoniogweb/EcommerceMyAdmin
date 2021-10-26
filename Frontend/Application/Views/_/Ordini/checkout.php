@@ -14,51 +14,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
 <div id="content"></div>
 <?php if (count($pages) > 0) { ?>
-	<?php if (!$islogged) { ?>
-	<div class="">
-		<div class="uk-margin">
-			<div class="uk-text-small">
-				<?php echo gtext("Hai già un account?");?> <a class="showlogin show_form_login_checkout" href="#"><?php echo gtext("Clicca qui per accedere");?></a><br />
-				<?php echo gtext("Altrimenti continua pure inserendo i tuoi dati.");?>
-			</div>
-		</div>
-		
-		<div id="login" style="display:none;">
-			<?php
-			$noLoginNotice = $noLoginRegistrati = true;
-			$action = $this->baseUrl."/regusers/login?redirect=/checkout";
-			include(tp()."/Regusers/login_form.php");?>
-			<br />
-		</div>
-	</div>
-	<?php } ?>
-
-	<?php if (!hasActiveCoupon()) { ?>
-	<div class="uk-margin">
-		<div class="uk-text-small">
-			<?php echo gtext("Possiedi il codice di una promozione attiva?");?> <a href="#" class="showcoupon"><?php echo gtext("Aggiungi il tuo codice all'ordine");?></a>	
-		</div>
-	</div>
+	<?php include(tpf("/Elementi/Ordini/resoconto_login.php"));?>
 	
-	<div id="coupon" class="uk-child-width-1-3@m uk-text-center" uk-grid style="display:none">
-		<div></div>
-		<div>
-			<form class="checkout_coupon" method="post" action="<?php echo $this->baseUrl."/checkout";?>">
-				<p class="uk-text-small uk-text-muted"><?php echo gtext("Se hai un codice promozione, inseriscilo sotto.");?></p>
-				
-				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold"><?php echo gtext("Codice promozione");?> *</label>
-					<div class="uk-form-controls">
-						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="il_coupon" type="text" placeholder="<?php echo gtext("Codice promozione", false)?>" />
-					</div>
-				</div>
-				
-				<input autocomplete="new-password" class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia_coupon" value="<?php echo gtext("Invia codice");?>" />
-			</form>
-		</div>
-		<div></div>
-	</div>
-	<?php } ?>
+	<?php include(tpf("/Elementi/Ordini/resoconto_coupon.php"));?>
 	
 	<div class="uk-section">
 		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">

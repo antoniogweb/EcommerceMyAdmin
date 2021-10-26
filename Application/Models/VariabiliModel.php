@@ -290,6 +290,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_template_email"		=>	0,
 		"attiva_eventi_retargeting"	=>	0,
 		"token_schedulazione"		=>	"",
+		"attiva_coupon_checkout"	=>	1,
 	);
 	
 	public static function setPlaceholders()
