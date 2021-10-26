@@ -46,4 +46,11 @@ class TipiclientiModel extends GenericModel
 		
 		return self::$tipi;
 	}
+	
+	public static function getListaTipi()
+	{
+		$arrayTipi = self::getArrayTipi();
+		
+		return implode(",",array_keys($arrayTipi));
+	}
 }
