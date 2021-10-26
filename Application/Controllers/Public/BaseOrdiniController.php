@@ -838,6 +838,9 @@ class BaseOrdiniController extends BaseController
 			$_POST["id_spedizione"] = 0;
 		}
 		
+		// Setta password
+		$this->m["RegusersModel"]->settaPassword();
+		
 		IvaModel::getAliquotaEstera();
 		
 		$campoObbligatoriProvincia = "dprovincia";

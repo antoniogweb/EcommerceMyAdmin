@@ -651,12 +651,8 @@ class BaseBaseController extends Controller
 	
 	protected function formRegistrazione()
 	{
-		// Se da App, genero la password e la invio all'utente
-		if (isset($_GET["fromApp"]))
-		{
-			$randPass = generateString(10);
-			$_POST["password"] = $_POST["confirmation"] = $randPass;
-		}
+		// Setta password
+		$this->m["RegusersModel"]->settaPassword();
 		
 		$data['notice'] = null;
 		$data['isRegistrazione'] = true;

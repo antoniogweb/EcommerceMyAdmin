@@ -175,7 +175,7 @@ else
 	</div>
 	<?php } ?>
 	
-	<?php if (!$islogged && !v("permetti_acquisto_anonimo")) { ?>
+	<?php if (!$islogged && !v("permetti_acquisto_anonimo") && !v("genera_e_invia_password")) { ?>
 	<div class="first_of_grid uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 		<div class="uk-form-controls">

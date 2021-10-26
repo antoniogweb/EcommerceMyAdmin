@@ -357,4 +357,13 @@ class BaseRegusersModel extends Model_Tree
 			}
 		}
 	}
+	
+	public function settaPassword()
+	{
+		if (v("genera_e_invia_password") && !v("permetti_acquisto_anonimo"))
+		{
+			$randPass = generateString(10, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-!");
+			$_POST["password"] = $_POST["confirmation"] = $randPass;
+		}
+	}
 }

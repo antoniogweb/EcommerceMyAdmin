@@ -292,6 +292,7 @@ class VariabiliModel extends GenericModel {
 		"token_schedulazione"		=>	"",
 		"attiva_coupon_checkout"	=>	1,
 		"attiva_note_acquisto_in_ordini"	=>	1,
+		"genera_e_invia_password"	=>	0,
 	);
 	
 	public static function setPlaceholders()
