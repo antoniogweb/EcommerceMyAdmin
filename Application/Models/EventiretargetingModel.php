@@ -109,6 +109,13 @@ class EventiretargetingModel extends GenericModel {
 		);
 	}
 	
+	public function insert()
+	{
+		$this->values["creation_time"] = time();
+		
+		return parent::insert();
+	}
+	
 	public function attivo($record)
 	{
 		return $record[$this->_tables]["attivo"] ? "<i class='fa fa-check text text-success'></i>" : "<i class='fa fa-ban text text-danger'></i>";
@@ -150,6 +157,11 @@ class EventiretargetingModel extends GenericModel {
 		return gtextDeep(self::$scattaDopoOre);
 	}
 	
+	public static function processaContatto($fonte, $idElemento)
+	{
+		self::processa(array($fonte), $idElemento, true);
+	}
+	
 	public static function processa($tipiDaElaborare = array(), $idElemento = 0, $immediati = false)
 	{
 		$evModel = new EventiretargetingModel();
@@ -176,6 +188,7 @@ class EventiretargetingModel extends GenericModel {
 				$tipo = $evento["eventi_retargeting"]["tipo"];
 				$idPagina = $evento["eventi_retargeting"]["id_page"];
 				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
+				$timeCreazioneEvento = $evento["eventi_retargeting"]["creation_time"];
 				
 				$email = PagesModel::getPageDetails($idPagina);
 				
@@ -183,53 +196,72 @@ class EventiretargetingModel extends GenericModel {
 					continue;
 				
 				if ($tipo == "FORM_CONTATTO" || $tipo == "NEWSLETTER")
-				{
-					$cModel = ContattiModel::g();
+					$modelName = "ContattiModel";
 					
-					if ($idElemento)
-						$cModel->aWhere(array(
-							"id_contatto"	=>	(int)$idElemento,
-						));
-					
-					if ($tipo == "FORM_CONTATTO")
-						$cModel->aWhere(array(
-							"fonte"	=>	"CONTATTI",
-						));
-					else if ($tipo == "NEWSLETTER")
-						$cModel->aWhere(array(
-							"fonte"	=>	"NEWSLETTER",
-						));
-					
-					$cModel->sWhere("id_contatto not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
-				}
+				$cModel = new $modelName;
+				$cModel->clear();
+				$primaryKey = $cModel->getPrimaryKey();
+				
+				if ($idElemento)
+					$cModel->aWhere(array(
+						"$primaryKey"	=>	(int)$idElemento,
+					));
+				
+				$cModel->aWhere(array(
+					"fonte"	=>	sanitizeDb($tipo),
+					"gt"	=>	array(
+						"creation_time"	=>	sanitizeDb($timeCreazioneEvento),
+					),
+				));
+				
+				$cModel->sWhere("$primaryKey not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
 				$elementi = $cModel->send(false);
 				
+// 				echo $cModel->getQuery();die();
+				
+				$elementiProcessati = array();
+				
 				foreach ($elementi as $e)
 				{
-					if ($e["email"] && checkMail($e["email"]))
+					$giaProcessato = false;
+					$emailElemento = $e["email"];
+					
+					if ($emailElemento && checkMail($emailElemento))
 					{
 						$oggetto = htmlentitydecode(field($email, "title"));
 						$testo = htmlentitydecode(field($email, "description"));
 						
-						$valoriMail = array(
-							"emails"	=>	array($e["email"]),
-							"oggetto"	=>	$oggetto,
-							"testo"		=>	$testo,
-							"tipologia"	=>	"RETARGETING",
-							"id_evento"	=>	$idEvento,
-						);
+						if (in_array($emailElemento, $elementiProcessati))
+							$giaProcessato = true;
 						
-						if (MailordiniModel::inviaMail($valoriMail))
+						$elementiProcessati[] = $emailElemento;
+						
+						$mailInviata = 0;
+						
+						if (!$giaProcessato)
 						{
-							$evElModel->setValues(array(
-								"id_evento"		=>	$idEvento,
-								"id_elemento"	=>	$e[$cModel->getPrimaryKey()],
-								"id_page"		=>	$email["pages"]["id_page"],
-							));
+							$valoriMail = array(
+								"emails"	=>	array($emailElemento),
+								"oggetto"	=>	$oggetto,
+								"testo"		=>	$testo,
+								"tipologia"	=>	"RETARGETING",
+								"id_evento"	=>	$idEvento,
+							);
 							
-							$evElModel->insert();
+							if (MailordiniModel::inviaMail($valoriMail))
+								$mailInviata = 1;
 						}
+						
+						$evElModel->setValues(array(
+							"id_evento"		=>	$idEvento,
+							"id_elemento"	=>	$e[$primaryKey],
+							"id_page"		=>	$email["pages"]["id_page"],
+							"duplicato"		=>	$giaProcessato ? 1 : 0,
+							"mail_inviata"	=>	$mailInviata,
+						));
+						
+						$evElModel->insert();
 					}
 				}
 			}

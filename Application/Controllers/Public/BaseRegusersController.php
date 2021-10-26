@@ -529,6 +529,8 @@ class BaseRegusersController extends BaseController
 	
 	public function infoaccount($loadViewFile = true)
 	{
+		return;
+		
 		$this->clean();
 		
 		if ($this->s['registered']->status['status'] === 'logged')

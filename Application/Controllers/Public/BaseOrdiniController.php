@@ -1102,46 +1102,6 @@ class BaseOrdiniController extends BaseController
 							
 							//se la password deve essere mandata via mail
 							$sendPassword = false;
-		
-// 							require_once(ROOT."/External/phpmailer/class.phpmailer.php");
-
-// 							$mail = new PHPMailer(true); //New instance, with exceptions enabled
-// 
-// 							if (Parametri::$useSMTP)
-// 							{
-// 								$mail->IsSMTP();                         // tell the class to use SMTP
-// 								$mail->SMTPAuth   = true;                  // enable SMTP authentication
-// 								$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
-// 								$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
-// 								$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
-// 								$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
-// 								
-// 								if (ImpostazioniModel::$valori["smtp_secure"])
-// 									$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];
-// 							}
-							
-// 							$mail->From       = Parametri::$mailFrom;
-// 							$mail->FromName   = Parametri::$mailFromName;
-// 							$mail->CharSet = 'UTF-8';
-							
-// 							$mail->SMTPOptions = array(
-// 								'ssl' => array(
-// 									'verify_peer' => false,
-// 									'verify_peer_name' => false,
-// 									'allow_self_signed' => true
-// 								)
-// 							);
-							
-// 							if (ImpostazioniModel::$valori["bcc"])
-// 								$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-// 							
-// 							if (defined("BCC") && is_array(BCC))
-// 							{
-// 								foreach (BCC as $emailBcc)
-// 								{
-// 									$mail->addBCC($emailBcc);
-// 								}
-// 							}
 							
 							if (!$this->islogged)
 							{

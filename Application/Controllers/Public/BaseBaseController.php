@@ -826,16 +826,20 @@ class BaseBaseController extends Controller
 					{
 						$this->m['ContattiModel']->sanitize("sanitizeAll");
 						
+						$fonte = $isNewsletter ? "NEWSLETTER" : "FORM_CONTATTO";
+						$this->m['ContattiModel']->setValue("fonte", $fonte);
+						
 						if ($idContatto)
 							$this->m['ContattiModel']->update($idContatto);
 						else
 						{
-							$fonte = $isNewsletter ? "NEWSLETTER" : "CONTATTI";
-							$this->m['ContattiModel']->setValue("fonte", $fonte);
-							
 							if ($this->m['ContattiModel']->insert())
 								$idContatto = $this->m['ContattiModel']->lId;
 						}
+						
+						// Processo gli eventi
+						if ($idContatto && $fonte && isset($valoriEmail["email"]) && $valoriEmail["email"] && checkMail($valoriEmail["email"]))
+							EventiretargetingModel::processaContatto($fonte, $idContatto);
 					}
 					
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);

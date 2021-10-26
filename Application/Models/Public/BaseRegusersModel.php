@@ -27,6 +27,7 @@ class BaseRegusersModel extends Model_Tree
 		
 		$this->values["lingua"] = Params::$lang;
 		
+		$this->values["creation_time"] = time();
 		$this->values["confirmation_time"] = time();
 		
 		if (!User::$nazioneNavigazione)

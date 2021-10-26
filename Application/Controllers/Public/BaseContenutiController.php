@@ -1763,7 +1763,6 @@ class BaseContenutiController extends BaseController
 				
 				header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
 				header('Content-Type: '.$contentType);
-// 					echo file_get_contents(ROOT."/".Parametri::$cartellaDocumenti."/".$documento['filename']);
 				readfile($path);
 			}
 		}
@@ -1777,11 +1776,7 @@ class BaseContenutiController extends BaseController
 		
 		if (is_string($c) && trim(v("token_schedulazione")) && $c == v("token_schedulazione"))
 		{
-			
-			
-			
-			
-			EventiretargetingModel::processa();
+// 			EventiretargetingModel::processa(array(), 0, true);
 		}
 	}
 }

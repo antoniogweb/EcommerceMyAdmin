@@ -5,8 +5,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ContattiModel extends GenericModel {
 	
 	public static $elencoFonti = array(
-		"CONTATTI"		=>	"FORM CONTATTI",
-		"NEWSLETTER"	=>	"FORM NEWSLETTER",
+		"FORM_CONTATTO"		=>	"FORM CONTATTI",
+		"NEWSLETTER"		=>	"FORM NEWSLETTER",
 	);
 	
 	public function __construct() {
@@ -28,8 +28,13 @@ class ContattiModel extends GenericModel {
 	{
 		$this->unsetDescrizione();
 		
+		$this->values["creation_time"] = time();
+		
 		if (isset(Params::$lang))
 			$this->values["lingua"] = Params::$lang;
+		
+		$fonte = isset($this->values["fonte"]) ? $this->values["fonte"] : null;
+		$valori = $this->values;
 		
 		return parent::insert();
 	}
