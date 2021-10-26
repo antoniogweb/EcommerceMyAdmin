@@ -164,6 +164,9 @@ class EventiretargetingModel extends GenericModel {
 	
 	public static function processa($tipiDaElaborare = array(), $idElemento = 0, $immediati = false)
 	{
+		if (!v("attiva_eventi_retargeting"))
+			return;
+		
 		$evModel = new EventiretargetingModel();
 		$evElModel = new EventiretargetingelementiModel();
 		
