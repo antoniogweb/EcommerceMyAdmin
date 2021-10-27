@@ -38,4 +38,5 @@ class EventiretargetingelementiModel extends GenericModel {
 			'evento' => array("BELONGS_TO", 'EventiretargetingModel', 'id_evento',null,"CASCADE"),
 		);
     }
+    
 }

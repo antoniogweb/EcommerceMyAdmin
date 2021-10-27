@@ -519,6 +519,7 @@ class Route
 		'eventiretargeting,main',
 		'eventiretargeting,form',
 		'eventiretargeting,ordina',
+		'eventiretargeting,invii',
 	);
 	
 	//it can be 'yes' or 'no'

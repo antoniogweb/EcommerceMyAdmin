@@ -29,7 +29,7 @@ class ContattiModel extends GenericModel {
 		$contatto = $this->selectId((int)$idContatto);
 		
 		if (!empty($contatto) && isset($contatto["email"]) && $contatto["email"] && checkMail($contatto["email"]))
-			EventiretargetingModel::processaContatto($this->lId);
+			EventiretargetingModel::processaContatto($idContatto);
 	}
 	
 	public function insertDaArray($dati, $fonte)

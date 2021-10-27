@@ -50,10 +50,11 @@ class EventiretargetinggruppiModel extends GenericModel {
 		return self::$arrayIdModel;
     }
     
-    public function getNomiFonti($idGruppoRetargeting)
+    public function getArrayFonti($idGruppoRetargeting)
     {
 		return EventiretargetinggruppifontiModel::g(false)->select("eventi_retargeting_fonti.fonte")->inner(array("fonti"))->where(array(
-			"id_gruppo_retargeting"	=>	(int)$idGruppoRetargeting,
+			"id_gruppo_retargeting"				=>	(int)$idGruppoRetargeting,
+			"eventi_retargeting_fonti.attivo"	=>	1,
 		))->toList("eventi_retargeting_fonti.fonte")->send();
     }
 }

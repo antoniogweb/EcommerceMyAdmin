@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_gruppi` (`id_gruppo_retargeting`, `data_creazione`, `titolo`, `model`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Il cliente ha messo nel carrello', 'CartModel', '1', '3');

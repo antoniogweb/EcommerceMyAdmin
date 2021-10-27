@@ -151,13 +151,15 @@ class EventiretargetingModel extends GenericModel {
 	
 	public static function processaContatto($idElemento)
 	{
-		self::processa($idElemento, true);
+		self::processa($idElemento, "ContattiModel", true);
 	}
 	
-	public static function processa($idElemento = 0, $immediati = false)
+	public static function processa($idElemento = 0, $limitaAModel = null, $immediati = false)
 	{
 		if (!v("attiva_eventi_retargeting"))
 			return;
+		
+		$arrayEmailIdLingua = array();
 		
 		$evModel = new EventiretargetingModel();
 		$evElModel = new EventiretargetingelementiModel();
@@ -184,15 +186,16 @@ class EventiretargetingModel extends GenericModel {
 				
 				$idGruppoRetargeting = $evento["eventi_retargeting"]["id_gruppo_retargeting"];
 				
-				$arrayFonti = $evGrModel->getNomiFonti($idGruppoRetargeting);
-				
 				$idPagina = $evento["eventi_retargeting"]["id_page"];
 				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
 				$timeCreazioneEvento = $evento["eventi_retargeting"]["creation_time"];
 				
-				$email = PagesModel::getPageDetails($idPagina);
-				
 				$modelName = EventiretargetinggruppiModel::$arrayIdModel[$idGruppoRetargeting];
+				
+				if ($limitaAModel && $modelName != $limitaAModel)
+					continue;
+				
+				$arrayFonti = $evGrModel->getArrayFonti($idGruppoRetargeting);
 				
 				$cModel = new $modelName;
 				$cModel->clear();
@@ -204,13 +207,26 @@ class EventiretargetingModel extends GenericModel {
 					));
 				
 				$cModel->aWhere(array(
-					"in"	=>	array(
-						"fonte"	=>	sanitizeDbDeep($arrayFonti),
-					),
 					"gt"	=>	array(
 						"creation_time"	=>	sanitizeDb($timeCreazioneEvento),
 					),
+					"ne"	=>	array(
+						"email"	=>	"",
+					),
 				));
+				
+				if (count($arrayFonti) > 0)
+					$cModel->aWhere(array(
+						"in"	=>	array(
+							"fonte"	=>	sanitizeDbDeep($arrayFonti),
+						),
+					));
+				
+				if ($scattaDopoOre > 0)
+				{
+					$tempoEvento = time() - ($scattaDopoOre * 3600);
+					$cModel->sWhere("creation_time <= $tempoEvento");
+				}
 				
 				$cModel->sWhere("$primaryKey not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
@@ -222,6 +238,11 @@ class EventiretargetingModel extends GenericModel {
 				
 				foreach ($elementi as $e)
 				{
+					if (!isset($arrayEmailIdLingua[$idPagina][$e["lingua"]]))
+						$arrayEmailIdLingua[$idPagina][$e["lingua"]] = PagesModel::getPageDetails($idPagina, $e["lingua"]);
+					
+					$email = $arrayEmailIdLingua[$idPagina][$e["lingua"]];
+					
 					$giaProcessato = false;
 					$emailElemento = $e["email"];
 					
@@ -239,12 +260,15 @@ class EventiretargetingModel extends GenericModel {
 						
 						if (!$giaProcessato)
 						{
+							MailordiniModel::$idMailInviate = array();
+							
 							$valoriMail = array(
 								"emails"	=>	array($emailElemento),
 								"oggetto"	=>	$oggetto,
 								"testo"		=>	$testo,
 								"tipologia"	=>	"RETARGETING",
 								"id_evento"	=>	$idEvento,
+								"lingua"	=>	$e["lingua"],
 							);
 							
 							if (MailordiniModel::inviaMail($valoriMail))
@@ -257,6 +281,8 @@ class EventiretargetingModel extends GenericModel {
 							"id_page"		=>	$email["pages"]["id_page"],
 							"duplicato"		=>	$giaProcessato ? 1 : 0,
 							"mail_inviata"	=>	$mailInviata,
+							"email"			=>	$emailElemento,
+							"id_mail"		=>	count(MailordiniModel::$idMailInviate) > 0 ? MailordiniModel::$idMailInviate[0] : 0,
 						));
 						
 						$evElModel->insert();
@@ -264,5 +290,7 @@ class EventiretargetingModel extends GenericModel {
 				}
 			}
 		}
+		
+// 		die();
 	}
 }

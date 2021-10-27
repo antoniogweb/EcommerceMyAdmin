@@ -51,8 +51,49 @@ class EventiretargetingController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->_posizioni['main'] = 'class="active"';
+		
 		$this->m[$this->modelName]->setValuesFromPost('titolo,attivo,id_gruppo_retargeting,scatta_dopo_ore,id_page');
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function invii($id = 0)
+	{
+		$this->model("EventiretargetingelementiModel");
+		
+		$this->_posizioni['invii'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_evento";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "EventiretargetingelementiModel";
+		
+		$this->mainFields = array("cleanDateTime", "eventi_retargeting_elemento.email");
+		$this->mainHead = "Data,Email";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"invii/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->orderBy("eventi_retargeting_elemento.data_creazione desc")->where(array(
+			"id_evento"	=>	$clean['id'],
+		))->convert()->save();
+		
+// 		$this->tabella = "corrieri";
+// 		
+// 		$data["elencoNazioniCorrieri"] = $this->m[$this->modelName]->clear()->select("distinct nazione")->where(array(
+// 			"id_corriere"	=>	$clean['id'],
+// 		))->orderBy("nazione")->toList("nazione")->send();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["EventiretargetingModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }

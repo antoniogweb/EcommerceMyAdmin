@@ -32,6 +32,7 @@ require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
 class MailordiniModel extends GenericModel
 {
 	public static $mailInstance = null;
+	public static $idMailInviate = array();
 	
 	public function __construct() {
 		$this->_tables = 'mail_ordini';
@@ -94,6 +95,8 @@ class MailordiniModel extends GenericModel
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
+		
+		self::$idMailInviate = array();
 		
 		try
 		{
@@ -199,7 +202,8 @@ class MailordiniModel extends GenericModel
 					"id_evento"	=>	$idEvento,
 				));
 				
-				$mo->insert();
+				if ($mo->insert())
+					self::$idMailInviate[] = $mo->lId;
 			}
 			
 			return true;
