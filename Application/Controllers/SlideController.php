@@ -52,6 +52,9 @@ class SlideController extends PagesController {
 		if (v("immagine_2_in_slide"))
 			$this->queryFields .= ",immagine_2";
 		
+		if (v("immagine_3_in_slide"))
+			$this->queryFields .= ",immagine_3";
+		
 		if (v("usa_marchi"))
 			$this->queryFields .= ",link_id_marchio";
 		

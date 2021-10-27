@@ -102,6 +102,18 @@ $(document).ready(function() {
 	
 	});
 	
+	show_preview3();
+	
+	$(".cancella_immagine_3").click(function(e){
+	
+		$("input[name='immagine_3']").val("");
+		
+		show_preview3();
+		
+		e.preventDefault();
+	
+	});
+	
 	$("select[name='use_editor']").change(function(){
 	
 		reloadPage();
@@ -114,44 +126,40 @@ $(document).ready(function() {
 	
 });
 
-//funzione per importare le immagini dei lavori
-function show_preview()
+function show_preview_generica(numero_slide)
 {
-	var immagine = $("input[name='immagine']").val();
+	var immagine = $("input[name='immagine"+numero_slide+"']").val();
 	
 	if (immagine != "")
 	{
-		$(".preview_image").html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
-		$(".cancella_immagine_box").css("display", "block");
-		$(".scarica_immagine_box").css("display", "block");
-		$(".scarica_immagine").attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
+		$(".preview_image"+numero_slide).html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
+		$(".cancella_immagine_box"+numero_slide).css("display", "block");
+		$(".scarica_immagine_box"+numero_slide).css("display", "block");
+		$(".scarica_immagine"+numero_slide).attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
 	}
 	else
 	{
-		$(".preview_image").html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
-		$(".cancella_immagine_box").css("display", "none");
-		$(".scarica_immagine_box").css("display", "none");
+		$(".preview_image"+numero_slide).html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
+		$(".cancella_immagine_box"+numero_slide).css("display", "none");
+		$(".scarica_immagine_box"+numero_slide).css("display", "none");
 	}
+}
+
+//funzione per importare le immagini dei lavori
+function show_preview()
+{
+	show_preview_generica("");
 }
 
 //funzione per importare le immagini dei lavori
 function show_preview2()
 {
-	var immagine = $("input[name='immagine_2']").val();
-	
-	if (immagine != "")
-	{
-		$(".preview_image_2").html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
-		$(".cancella_immagine_box_2").css("display", "block");
-		$(".scarica_immagine_box_2").css("display", "block");
-		$(".scarica_immagine_2").attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
-	}
-	else
-	{
-		$(".preview_image_2").html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
-		$(".cancella_immagine_box_2").css("display", "none");
-		$(".scarica_immagine_box_2").css("display", "none");
-	}
+	show_preview_generica("_2");
+}
+
+function show_preview3()
+{
+	show_preview_generica("_3");
 }
 
 var allowed = [ "jpg","jpeg","png","gif" ];
@@ -199,10 +207,6 @@ $(function () {
 			var fileExt = fileName.split('.').pop();
 			var fileExt = fileExt.toLowerCase();
 			
-// 			if (allowed.indexOf(fileExt) == -1)
-// 			{
-// 				$(".alert-fileupload").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
-// 			}
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -235,9 +239,6 @@ $(function () {
 			{
 				$(".alert-fileupload-2").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
 			}
-			
-// 			$("input[name='immagine_2']").val(data.result.immagine);
-// 			show_preview2();
 		},
 		change: function (e, data) {
 			
@@ -256,15 +257,60 @@ $(function () {
 			
 			var fileExt = fileName.split('.').pop();
 			var fileExt = fileExt.toLowerCase();
-			
-// 			if (allowed.indexOf(fileExt) == -1)
-// 			{
-// 				$(".alert-fileupload-2").append("<div class='alert alert-danger'><?php echo sanitizeJs(gtext("Attenzione, il file"));?> <b>" + fileName + "</b> <?php echo sanitizeJs(gtext("non può essere caricato perché la sua estensione non è ammessa"));?>");
-// 			}
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
 			$('#progress-2 .progress-bar').css(
+				'width',
+				progress + '%'
+			);
+		}
+	}).prop('disabled', !$.support.fileInput)
+		.parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+
+$(function () {
+    'use strict';
+	$('#userfile_3').fileupload({
+		url: url,
+		autoUpload: true,
+		formData: {
+			'token':'<?php echo $token;?>',
+			'id_page':'<?php echo $id_page; ?>',
+			'is_main':'1'
+		},
+		done: function (e, data) {
+			if (data.result.result == "OK")
+			{
+				$("input[name='immagine_3']").val(data.result.immagine);
+				show_preview3();
+			}
+			else
+			{
+				$(".alert-fileupload-3").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
+			}
+		},
+		change: function (e, data) {
+			
+			$(".alert-fileupload-3").html("");
+			
+			$('#progress-3').css("display","block");
+			
+			$('#progress-3 .progress-bar').css(
+				'width',
+				0 + '%'
+			);
+		},
+		processdone: function (e, data) {
+			
+			var fileName = data.files[0].name;
+			
+			var fileExt = fileName.split('.').pop();
+			var fileExt = fileExt.toLowerCase();
+		},
+		progressall: function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#progress-3 .progress-bar').css(
 				'width',
 				progress + '%'
 			);

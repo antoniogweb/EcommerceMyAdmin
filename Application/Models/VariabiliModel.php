@@ -75,6 +75,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_fasce_prezzo"		=>	0,
 		"estrai_materiali"			=>	0,
 		"immagine_2_in_slide"		=>	0,
+		"immagine_3_in_slide"		=>	0,
 		"mostra_seconda_immagine_categoria_prodotti"	=>	0,
 		"mostra_seconda_immagine_tag"	=>	0,
 		"mostra_colore_testo"		=>	0,

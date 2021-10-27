@@ -193,8 +193,6 @@ class BaseThumbController extends Controller {
 	
 	public function slidethumb($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	320,
 			'imgHeight'		=>	320,
@@ -203,88 +201,37 @@ class BaseThumbController extends Controller {
 			'useCache'		=>	true,
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
 	}
 	
 	public function slide($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	1920,
 			'imgHeight'		=>	700,
 			'defaultImage'	=>  null,
-// 			'useCache'		=>	true,
 			'backgroundColor' => "#FFF",
 			'cropImage'		=>	'yes',
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
 	}
 	
 	public function slidemobile($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	700,
 			'imgHeight'		=>	700,
 			'defaultImage'	=>  null,
-// 			'useCache'		=>	true,
 			'backgroundColor' => "#FFF",
 			'cropImage'		=>	'yes',
 			'horizAlign'	=>	'center',
 			'vertAlign'		=>	'center',
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
 	}
 	
 	public function slidelayer($fileName)
