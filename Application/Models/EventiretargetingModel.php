@@ -192,9 +192,6 @@ class EventiretargetingModel extends GenericModel {
 				
 				$email = PagesModel::getPageDetails($idPagina);
 				
-// 				if (!empty($tipiDaElaborare) && !in_array($tipo, $tipiDaElaborare))
-// 					continue;
-				
 				$modelName = EventiretargetinggruppiModel::$arrayIdModel[$idGruppoRetargeting];
 				
 				$cModel = new $modelName;
@@ -218,6 +215,8 @@ class EventiretargetingModel extends GenericModel {
 				$cModel->sWhere("$primaryKey not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
 				$elementi = $cModel->send(false);
+				
+// 				echo $cModel->getQuery()."<br />";continue;
 				
 				$elementiProcessati = array();
 				

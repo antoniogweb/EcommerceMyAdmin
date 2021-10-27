@@ -717,7 +717,12 @@ class BaseBaseController extends Controller
 						
 						// Iscrizione alla newsletter
 						if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+						{
 							$this->m['RegusersModel']->iscriviANewsletter($lId);
+							
+							// Inserisco il contatto
+							$this->m['ContattiModel']->insertDaArray($datiCliente, "NEWSLETTER_DA_REGISTRAZIONE");
+						}
 						
 						$_SESSION['result'] = 'utente_creato';
 						
@@ -833,6 +838,8 @@ class BaseBaseController extends Controller
 							$this->m['ContattiModel']->update($idContatto);
 						else
 						{
+							$this->m['ContattiModel']->setValue("fonte_iniziale", $fonte);
+							
 							if ($this->m['ContattiModel']->insert())
 								$idContatto = $this->m['ContattiModel']->lId;
 						}

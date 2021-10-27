@@ -1776,7 +1776,7 @@ class BaseContenutiController extends BaseController
 		
 		if (is_string($c) && trim(v("token_schedulazione")) && $c == v("token_schedulazione"))
 		{
-// 			EventiretargetingModel::processa(0, true);
+			EventiretargetingModel::processa(0, true);
 		}
 	}
 }

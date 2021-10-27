@@ -32,13 +32,40 @@ class ContattiModel extends GenericModel {
 			EventiretargetingModel::processaContatto($this->lId);
 	}
 	
+	public function insertDaArray($dati, $fonte)
+	{
+		$email = isset($dati["username"]) ? $dati["username"] : $dati["email"];
+		$idContatto = $this->getIdFromMail($email);
+		$dati = htmlentitydecodeDeep($dati);
+		
+		$this->setValues(array(
+			"email"	=>	$email,
+			"nome"	=>	isset($dati["nome"]) ? $dati["nome"] : "",
+			"cognome"	=>	isset($dati["cognome"]) ? $dati["cognome"] : "",
+			"telefono"	=>	isset($dati["telefono"]) ? $dati["telefono"] : "",
+			"citta"	=>	isset($dati["citta"]) ? $dati["citta"] : "",
+			"azienda"	=>	isset($dati["ragione_sociale"]) ? $dati["ragione_sociale"] : "",
+			"nazione"	=>	isset($dati["nazione"]) ? $dati["nazione"] : "",
+			"lingua"	=>	isset($dati["lingua"]) ? $dati["lingua"] : "",
+			"fonte"		=>	$fonte,
+		));
+		
+		if ($idContatto)
+			$this->update($idContatto);
+		else
+		{
+			$this->setValue("fonte_iniziale", $fonte);
+			$this->insert();
+		}
+	}
+	
 	public function insert()
 	{
 		$this->unsetDescrizione();
 		
 		$this->values["creation_time"] = time();
 		
-		if (isset(Params::$lang))
+		if (!isset($this->values["lingua"]) && isset(Params::$lang))
 			$this->values["lingua"] = Params::$lang;
 		
 		$res = parent::insert();
