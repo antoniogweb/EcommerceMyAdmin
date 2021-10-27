@@ -836,10 +836,6 @@ class BaseBaseController extends Controller
 							if ($this->m['ContattiModel']->insert())
 								$idContatto = $this->m['ContattiModel']->lId;
 						}
-						
-						// Processo gli eventi
-						if ($idContatto && $fonte && isset($valoriEmail["email"]) && $valoriEmail["email"] && checkMail($valoriEmail["email"]))
-							EventiretargetingModel::processaContatto($fonte, $idContatto);
 					}
 					
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);

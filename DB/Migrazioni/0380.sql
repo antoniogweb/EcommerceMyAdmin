@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_fonti` (`id_fonte`, `data_creazione`, `titolo`, `fonte`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Il contatto compila il form contatti', 'FORM_CONTATTO', '1', '1'), (NULL, CURRENT_TIMESTAMP, 'Il contatto compila il form di iscrizione alla newsletter', 'NEWSLETTER', '1', '2');

@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_gruppi` (`id_gruppo_retargeting`, `data_creazione`, `titolo`, `model`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Manda email dopo che il cliente ha compilato un FORM CONTATTO qualsiasi', 'ContattiModel', '1', '1'), (NULL, CURRENT_TIMESTAMP, 'Manda email dopo che il cliente si è iscritto alla NEWSLETTER', 'ContattiModel', '1', '2');

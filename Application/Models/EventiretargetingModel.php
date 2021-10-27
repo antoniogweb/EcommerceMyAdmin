@@ -24,11 +24,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class EventiretargetingModel extends GenericModel {
 	
-	public static $tipiRetargeting = array(
-		"FORM_CONTATTO"	=>	"Manda email dopo che il cliente ha compilato un FORM CONTATTO qualsiasi",
-		"NEWSLETTER"	=>	"Manda email dopo che il cliente si è iscritto alla NEWSLETTER",
-	);
-	
 	public static $scattaDopoOre = array(
 		0	=>	"Immediatamente",
 		1	=>	"Dopo 1 ora",
@@ -65,6 +60,7 @@ class EventiretargetingModel extends GenericModel {
 		return array(
 			'elementi' => array("HAS_MANY", 'EventiretargetingelementiModel', 'id_evento', null, "CASCADE"),
 			'email' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
+			'gruppo' => array("BELONGS_TO", 'EventiretargetinggruppiModel', 'id_gruppo_retargeting',null,"CASCADE"),
 		);
     }
     
@@ -77,10 +73,10 @@ class EventiretargetingModel extends GenericModel {
 					'labelString'=>	'Dai un titolo al tuo evento',
 					'entryClass'	=>	'form_input_text help_titolo',
 				),
-				'tipo'	=>	array(
+				'id_gruppo_retargeting'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Quale evento vuoi scatenare?",
-					"options"	=>	$this->tipoEvento(),
+					"options"	=>	$this->gruppiEventi(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -126,14 +122,6 @@ class EventiretargetingModel extends GenericModel {
 		return gtextDeep(self::$attivoSiNo);
 	}
 	
-	public function tipo($record)
-	{
-		if (isset(self::$tipiRetargeting[$record["eventi_retargeting"]["tipo"]]))
-			return gtext(self::$tipiRetargeting[$record["eventi_retargeting"]["tipo"]]);
-		
-		return "";
-	}
-	
 	public function dopoquanto($record)
 	{
 		if (isset(self::$scattaDopoOre[$record["eventi_retargeting"]["scatta_dopo_ore"]]))
@@ -147,9 +135,13 @@ class EventiretargetingModel extends GenericModel {
 		return PagesModel::g(false)->selectPagineSezione("email", false);
 	}
 	
-	public function tipoEvento()
+	public function gruppiEventi()
 	{
-		return gtextDeep(self::$tipiRetargeting);
+		$erg = new EventiretargetinggruppiModel();
+		
+		return $erg->clear()->where(array(
+			"attivo"	=>	1,
+		))->orderBy("id_order")->toList("id_gruppo_retargeting", "titolo")->send();
 	}
 	
 	public function scattaDopoOre()
@@ -157,18 +149,20 @@ class EventiretargetingModel extends GenericModel {
 		return gtextDeep(self::$scattaDopoOre);
 	}
 	
-	public static function processaContatto($fonte, $idElemento)
+	public static function processaContatto($idElemento)
 	{
-		self::processa(array($fonte), $idElemento, true);
+		self::processa($idElemento, true);
 	}
 	
-	public static function processa($tipiDaElaborare = array(), $idElemento = 0, $immediati = false)
+	public static function processa($idElemento = 0, $immediati = false)
 	{
 		if (!v("attiva_eventi_retargeting"))
 			return;
 		
 		$evModel = new EventiretargetingModel();
 		$evElModel = new EventiretargetingelementiModel();
+		$evGrModel = new EventiretargetinggruppiModel();
+		EventiretargetinggruppiModel::getIdGruppiModel();
 		
 		$evModel->clear()->where(array(
 			"attivo"	=>	1,
@@ -188,19 +182,21 @@ class EventiretargetingModel extends GenericModel {
 			{
 				$idEvento = (int)$evento["eventi_retargeting"]["id_evento"];
 				
-				$tipo = $evento["eventi_retargeting"]["tipo"];
+				$idGruppoRetargeting = $evento["eventi_retargeting"]["id_gruppo_retargeting"];
+				
+				$arrayFonti = $evGrModel->getNomiFonti($idGruppoRetargeting);
+				
 				$idPagina = $evento["eventi_retargeting"]["id_page"];
 				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
 				$timeCreazioneEvento = $evento["eventi_retargeting"]["creation_time"];
 				
 				$email = PagesModel::getPageDetails($idPagina);
 				
-				if (!empty($tipiDaElaborare) && !in_array($tipo, $tipiDaElaborare))
-					continue;
+// 				if (!empty($tipiDaElaborare) && !in_array($tipo, $tipiDaElaborare))
+// 					continue;
 				
-				if ($tipo == "FORM_CONTATTO" || $tipo == "NEWSLETTER")
-					$modelName = "ContattiModel";
-					
+				$modelName = EventiretargetinggruppiModel::$arrayIdModel[$idGruppoRetargeting];
+				
 				$cModel = new $modelName;
 				$cModel->clear();
 				$primaryKey = $cModel->getPrimaryKey();
@@ -211,7 +207,9 @@ class EventiretargetingModel extends GenericModel {
 					));
 				
 				$cModel->aWhere(array(
-					"fonte"	=>	sanitizeDb($tipo),
+					"in"	=>	array(
+						"fonte"	=>	sanitizeDbDeep($arrayFonti),
+					),
 					"gt"	=>	array(
 						"creation_time"	=>	sanitizeDb($timeCreazioneEvento),
 					),
@@ -220,8 +218,6 @@ class EventiretargetingModel extends GenericModel {
 				$cModel->sWhere("$primaryKey not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
 				$elementi = $cModel->send(false);
-				
-// 				echo $cModel->getQuery();die();
 				
 				$elementiProcessati = array();
 				

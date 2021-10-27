@@ -22,37 +22,20 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class EventiretargetingController extends BaseController
-{
-	public $orderBy = "id_order";
+class EventiretargetingfontiModel extends GenericModel {
 	
-	public $setAttivaDisattivaBulkActions = false;
-	
-	public $argKeys = array();
-	
-	public $sezionePannello = "marketing";
-	
-	public $tabella = "retargeting";
-	
-	public function main()
-	{
-		$this->shift();
+	public function __construct() {
+		$this->_tables='eventi_retargeting_fonti';
+		$this->_idFields='id_fonte';
 		
-		$this->mainFields = array("eventi_retargeting.titolo","eventi_retargeting_gruppi.titolo","dopoquanto","<b>OGGETTO</b>: ;pages.title;","attivo");
-		$this->mainHead = "Titolo evento,Quale evento scatterà?,Dopo quanto?,Quale email verrà inviata?,Evento attivo?";
+		$this->_idOrder = 'id_order';
 		
-		$this->m[$this->modelName]->clear()
-				->select("*")
-				->inner(array("email", "gruppo"))
-				->orderBy("eventi_retargeting.id_order")->convert()->save();
-		
-		parent::main();
+		parent::__construct();
 	}
-
-	public function form($queryType = 'insert', $id = 0)
-	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,attivo,id_gruppo_retargeting,scatta_dopo_ore,id_page');
-		
-		parent::form($queryType, $id);
-	}
+	
+	public function relations() {
+		return array(
+			'gruppi' => array("HAS_MANY", 'EventiretargetinggruppifontiModel', 'id_fonte', null, "CASCADE"),
+		);
+    }
 }

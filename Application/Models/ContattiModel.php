@@ -24,6 +24,14 @@ class ContattiModel extends GenericModel {
 			unset($this->values["messaggio"]);
 	}
 	
+	public function processaEventiContatto($idContatto)
+	{
+		$contatto = $this->selectId((int)$idContatto);
+		
+		if (!empty($contatto) && isset($contatto["email"]) && $contatto["email"] && checkMail($contatto["email"]))
+			EventiretargetingModel::processaContatto($this->lId);
+	}
+	
 	public function insert()
 	{
 		$this->unsetDescrizione();
@@ -33,17 +41,24 @@ class ContattiModel extends GenericModel {
 		if (isset(Params::$lang))
 			$this->values["lingua"] = Params::$lang;
 		
-		$fonte = isset($this->values["fonte"]) ? $this->values["fonte"] : null;
-		$valori = $this->values;
+		$res = parent::insert();
 		
-		return parent::insert();
+		if ($res)
+			$this->processaEventiContatto($this->lId);
+		
+		return $res;
 	}
 	
 	public function update($id = null, $where = null)
 	{
 		$this->unsetDescrizione();
 		
-		return parent::update($id, $where);
+		$res = parent::update($id, $where);
+		
+		if ($res)
+			$this->processaEventiContatto($id);
+		
+		return $res;
 	}
 	
 	public function getIdFromMail($email)
