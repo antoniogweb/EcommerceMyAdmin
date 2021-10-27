@@ -42,6 +42,9 @@ class SlideModel extends PagesModel {
 		
 		$this->values["id_c"] = $clean["id_c"];
 		
+		if (!v("attiva_in_evidenza_slide"))
+			$this->values["in_evidenza"] = "Y";
+		
 		return parent::insert();
 	}
 	

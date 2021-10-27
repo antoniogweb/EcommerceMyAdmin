@@ -117,6 +117,7 @@ class VariabiliModel extends GenericModel {
 		"twitter_link"				=>	"",
 		"youtube_link"				=>	"",
 		"instagram_link"			=>	"",
+		"linkedin_link"				=>	"",
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
 		"numero_in_evidenza"		=>	4,
@@ -226,6 +227,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_nuovo_in_pagine"	=>	0,
 		"attiva_in_evidenza_marchi"	=>	0,
 		"attiva_in_evidenza_nazioni"=>	0,
+		"attiva_in_evidenza_slide"	=>	0,
 		"alias_stato_prodotto"		=>	"st", // ALIAS in URL per IN EVIDENZA
 		"alias_stato_prodotto_nuovo"		=>	"pbl", // ALIAS in URL per NUOVO
 		"alias_stato_prodotto_promo"		=>	"pr", // ALIAS in URL per IN OFFERTA

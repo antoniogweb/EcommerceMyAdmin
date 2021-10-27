@@ -18,4 +18,5 @@
 		<?php include(tpf("/Elementi/gtm_no_script.php"));?>
 		
 		<div class="uk-offcanvas-content">
-			<?php include(tpf("/Elementi/header_html.php"));?>
+			<div id="container">
+				<?php include(tpf("/Elementi/header_html.php"));?>

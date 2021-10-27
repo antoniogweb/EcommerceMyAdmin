@@ -34,19 +34,17 @@ class SlideController extends PagesController {
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
-// 			'PagesModel.categoriesS|pages.id_page',
-// 			'PagesModel.inPromozioneText|pages.id_page',
-// 			'pages.settore',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
-// 			'PagesModel.getInEvidenzaCheckbox|pages.id_page',
-// 			'PagesModel.getInSlideCheckbox|pages.id_page',
-// 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
-		
-// 		$this->orderBy = "pages.id_order desc";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Attiva';
 		$this->filters = array(null,null,'title');
+		
+		if (v("attiva_in_evidenza_slide"))
+		{
+			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
+			$this->head .= ',In evidenza';
+		}
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
 		$this->queryFields = "title,attivo,immagine,sottotitolo,url,link_id_page,link_id_c,testo_link";
@@ -62,6 +60,9 @@ class SlideController extends PagesController {
 		
 		if (v("usa_descrizione_in_slide"))
 			$this->queryFields .= ",description";
+		
+		if (v("attiva_in_evidenza_slide"))
+			$this->queryFields .= ",in_evidenza";
 		
 		$this->clean();
 		

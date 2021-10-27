@@ -84,6 +84,10 @@
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
+								
+								<?php if (v("attiva_in_evidenza_slide")) { ?>
+								<?php echo $form["in_evidenza"];?>
+								<?php } ?>
 							</div>
 						</div>
 						

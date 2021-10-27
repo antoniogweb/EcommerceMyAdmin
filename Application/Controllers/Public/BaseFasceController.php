@@ -136,7 +136,14 @@ trait BaseFasceController
 	public function getSlide()
 	{
 		if (!isset($this->slide))
-			return "";
+		{
+			$this->slide = $this->m["PagesModel"]->clear()->addJoinTraduzionePagina()
+			->where(array(
+				"categories.section"	=>	"slide",
+				"attivo"=>"Y",
+				"in_evidenza"	=>	"Y",
+			))->orderBy(v("main_slide_order"))->send();
+		}
 		
 		$pages = $slide = $this->slide;
 		
