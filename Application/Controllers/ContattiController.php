@@ -42,7 +42,7 @@ class ContattiController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("cleanDateTime", "FORM ;contatti.fonte;", "contatti.email", "contatti.nome", "contatti.telefono");
+		$this->mainFields = array("cleanDateTime", "FORM ;contatti.fonte_iniziale;", "contatti.email", "contatti.nome", "contatti.telefono");
 		$this->mainHead = "Data creazione,Fonte,Email,Nome,Telefono";
 		
 		$filtroFonte = array(
@@ -53,7 +53,7 @@ class ContattiController extends BaseController
 		$this->filters = $filtri;
 		
 		$this->m[$this->modelName]->clear()->where(array(
-			"fonte"	=>	$this->viewArgs["fonte"],
+			"fonte_iniziale"	=>	$this->viewArgs["fonte"],
 		))->orderBy("contatti.data_creazione desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);
