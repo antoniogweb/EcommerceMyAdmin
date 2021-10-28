@@ -82,6 +82,7 @@ class EventiretargetingController extends BaseController
 		
 		$this->m[$this->modelName]->orderBy("eventi_retargeting_elemento.data_creazione desc")->where(array(
 			"id_evento"	=>	$clean['id'],
+			"duplicato"	=>	0,
 		))->convert()->save();
 		
 // 		$this->tabella = "corrieri";

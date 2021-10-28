@@ -1510,6 +1510,9 @@ class PagesModel extends GenericModel {
 	//controlla l'accesso alla pagina e restituisce vero o falso
 	public function check($id_page)
 	{
+		if (!v("attiva_accessibilita_categorie"))
+			return true;
+		
 		$clean['id_page'] = (int)$id_page;
 		
 		$parents = $this->parents($clean['id_page']);
@@ -1550,6 +1553,9 @@ class PagesModel extends GenericModel {
 	
 	public function getAccessibilityWhere()
 	{
+		if (!v("attiva_accessibilita_categorie"))
+			return array();
+		
 		$temp = array();
 			
 		$count = 1;

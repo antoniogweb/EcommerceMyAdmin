@@ -232,7 +232,9 @@ class EventiretargetingModel extends GenericModel {
 				
 				$elementi = $cModel->send(false);
 				
-// 				echo $cModel->getQuery()."<br />";continue;
+// 				echo $cModel->getQuery()."<br />";
+				
+// 				print_r($elementi);continue;
 				
 				$elementiProcessati = array();
 				
