@@ -217,8 +217,7 @@ class BaseRegusersController extends BaseController
 			
 			if (isset($_POST['invia']))
 			{
-				$tessera = $this->request->post('tessera','');
-				if (strcmp($tessera,'') === 0)
+				if (CaptchaModel::getModulo()->checkRegistrazione())
 				{
 					if (isset($_POST['username']))
 					{
