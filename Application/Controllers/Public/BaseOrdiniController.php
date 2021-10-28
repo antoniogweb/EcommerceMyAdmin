@@ -734,7 +734,8 @@ class BaseOrdiniController extends BaseController
 		
 		$logSubmit = new LogModel();
 		
-		session_start();
+		if( !session_id() )
+			session_start();
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
 		

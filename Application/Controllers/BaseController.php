@@ -178,9 +178,7 @@ class BaseController extends Controller
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if( !session_id() )
-		{
 			session_start();
-		}
 		
 		$this->session('admin');
 		

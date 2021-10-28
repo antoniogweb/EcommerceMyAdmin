@@ -32,6 +32,9 @@ class BaseRegusersController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if( !session_id() )
+			session_start();
+		
 		if (Output::$html)
 		{
 			$this->load('header');
@@ -203,8 +206,6 @@ class BaseRegusersController extends BaseController
 		
 		Output::setBodyValue("InvioMail", "KO");
 		
-		session_start();
-		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$this->redirect("area-riservata");
@@ -311,8 +312,6 @@ class BaseRegusersController extends BaseController
 		
 		$urlAdd = isset($_GET["eFromApp"]) ? "?eFromApp&ecommerce" : "";
 		
-		session_start();
-		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$this->redirect("area-riservata");
@@ -369,8 +368,6 @@ class BaseRegusersController extends BaseController
 		
 		$urlAdd = isset($_GET["eFromApp"]) ? "?eFromApp&ecommerce" : "";
 		
-		session_start();
-
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$this->redirect("area-riservata");
@@ -818,8 +815,6 @@ class BaseRegusersController extends BaseController
 	
 	public function add()
 	{
-		session_start();
-		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/crea-account";
@@ -852,8 +847,6 @@ class BaseRegusersController extends BaseController
 	
 	public function notice()
 	{
-		session_start();
-
 		$data['title'] = Parametri::$nomeNegozio . ' - Avvisi';
 		
 		foreach (Params::$frontEndLanguages as $l)

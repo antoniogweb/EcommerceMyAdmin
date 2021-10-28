@@ -969,8 +969,39 @@ class CartModel extends GenericModel {
 	}
 	
 	// Recupera dati nel carrello da cliente loggato
-	public function collegaDatiCliente()
+	public function collegaDatiCliente($prodottiInCart = array())
 	{
+		if( !session_id() )
+			session_start();
+		
+		$clean["email"] = null;
+		
+// 		print_r($_SESSION);
+		
+		if (v("recupera_dati_carrello_da_post"))
+		{
+			if (isset($_POST["email"]) || isset($_POST["username"]))
+			{
+				if (isset($_POST["email"]) && checkMail($_POST["email"]))
+					$clean["email"] = $_SESSION["email_carrello"] = sanitizeAll($_POST["email"]);
+				else if (isset($_POST["username"]) && checkMail($_POST["username"]))
+					$clean["email"] = $_SESSION["email_carrello"] = sanitizeAll($_POST["username"]);
+			}
+			else if (isset($_SESSION["email_carrello"]) && checkMail($_SESSION["email_carrello"]))
+				$clean["email"] = $_SESSION["email_carrello"];
+			else
+			{
+				foreach ($prodottiInCart as $p)
+				{
+					if ($p["cart"]["email"] && checkMail($p["cart"]["email"]))
+					{
+						$clean["email"] = $_SESSION["email_carrello"] = $p["cart"]["email"];
+						break;
+					}
+				}
+			}
+		}
+		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
 		if (User::$logged)
@@ -995,13 +1026,6 @@ class CartModel extends GenericModel {
 		}
 		else if (v("recupera_dati_carrello_da_post"))
 		{
-			$r = new Request();
-			
-			$clean["email"] = $r->post("email","","sanitizeAll");
-			
-			if (!$clean["email"])
-				$clean["email"] = $r->post("username","","sanitizeAll");
-			
 			if ($clean["email"] && checkMail($clean["email"]))
 			{
 				$numeroDaCollegare = $this->clear()->where(array(

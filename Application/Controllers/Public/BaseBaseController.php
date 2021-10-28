@@ -223,93 +223,17 @@ class BaseBaseController extends Controller
 		$data["isProdotto"] = false;
 		$data["title"] =  gtext(ImpostazioniModel::$valori["title_home_page"]);
 		
-		//set the cookie for the cart
-		if ((isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"]) || (isset($_GET["cart_uid"]) && $_GET["cart_uid"] && (int)strlen($_GET["cart_uid"]) === 32))
-		{
-			if (isset($_GET["cart_uid"]))
-				User::$cart_uid = sanitizeAll($_GET["cart_uid"]);
-			else
-				User::$cart_uid = sanitizeAll($_COOKIE["cart_uid"]);
-			
-			if ($this->m['OrdiniModel']->cartUidAlreadyPresent(User::$cart_uid))
-			{
-				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-				$time = time() + 3600*24*365*10;
-				setcookie("cart_uid",User::$cart_uid,$time,"/");
-			
-// 				setcookie("cart_uid", "", time()-3600,"/");
-// 				$this->redirect("");
-			}
-		}
-		else
-		{
-			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-			$time = time() + 3600*24*365*10;
-			setcookie("cart_uid",User::$cart_uid,$time,"/");
-		}
-		
-		// Recuperta dati da cliente loggato
-		$this->m["CartModel"]->collegaDatiCliente();
-		
-		//set the cookie for the wishlist
-		if (isset($_COOKIE["wishlist_uid"]))
-		{
-			User::$wishlist_uid = sanitizeAll($_COOKIE["wishlist_uid"]);
-		}
-		else
-		{
-			User::$wishlist_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-			$time = time() + 3600*24*365*10;
-			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
-		}
-		
-		if (Output::$json)
-		{
-			// Imposto il cart uid nell'header dell'output json
-			Output::setHeaderValue("CartUid",User::$cart_uid);
-			
-			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
-		}
-		
-		//setto il coupon se presente
-		User::$coupon = null;
-		
-		if (isset($_POST["invia_coupon"]))
-		{
-			User::$coupon = $this->request->post("il_coupon","","sanitizeAll");
-			
-			$time = time() + 3600*24*365*10;
-			setcookie("coupon",User::$coupon,$time,"/");
-		}
-		else
-		{
-			if (isset($_COOKIE["coupon"]))
-				User::$coupon = sanitizeAll($_COOKIE["coupon"]);
-		}
-		
-		if (User::$coupon)
-		{
-			if ($this->m["PromozioniModel"]->isActiveCoupon(User::$coupon))
-			{
-				// Estraggo tutti i prodotti della promozione
-				User::$prodottiInCoupon = $this->m["PromozioniModel"]->elencoProdottiPromozione(User::$coupon);
-			}
-			else
-			{
-				//setto il coupon se presente
-				User::$coupon = null;
-				
-				if (isset($_COOKIE["coupon"]))
-					setcookie("coupon", "", time()-3600,"/");
-			}
-		}
+		$this->initCookieEcommerce();
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
+		$data["carrello"] = $this->m["CartModel"]->getProdotti();
+		
+		// Recuperta dati da cliente loggato
+		$this->m["CartModel"]->collegaDatiCliente($data["carrello"]);
+		
 		// Correggi decimali imponibili sulla base dell'IVA estera
 		$this->m["CartModel"]->correggiPrezzi();
-		
-		$data["carrello"] = $this->m["CartModel"]->getProdotti();
 		
 		$data["prodInCart"] = $this->m["CartModel"]->numberOfItems();
 		$data["prodInWishlist"] = $this->m["WishlistModel"]->numberOfItems();
@@ -548,6 +472,90 @@ class BaseBaseController extends Controller
 		}
 		
 		$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
+	}
+	
+	protected function initCookieEcommerce()
+	{
+		if (!v("ecommerce_attivo"))
+			return;
+		
+		//set the cookie for the cart
+		if ((isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"]) || (isset($_GET["cart_uid"]) && $_GET["cart_uid"] && (int)strlen($_GET["cart_uid"]) === 32))
+		{
+			if (isset($_GET["cart_uid"]))
+				User::$cart_uid = sanitizeAll($_GET["cart_uid"]);
+			else
+				User::$cart_uid = sanitizeAll($_COOKIE["cart_uid"]);
+			
+			if ($this->m['OrdiniModel']->cartUidAlreadyPresent(User::$cart_uid))
+			{
+				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+				$time = time() + 3600*24*365*10;
+				setcookie("cart_uid",User::$cart_uid,$time,"/");
+			
+// 				setcookie("cart_uid", "", time()-3600,"/");
+// 				$this->redirect("");
+			}
+		}
+		else
+		{
+			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+			$time = time() + 3600*24*365*10;
+			setcookie("cart_uid",User::$cart_uid,$time,"/");
+		}
+		
+		//set the cookie for the wishlist
+		if (isset($_COOKIE["wishlist_uid"]))
+		{
+			User::$wishlist_uid = sanitizeAll($_COOKIE["wishlist_uid"]);
+		}
+		else
+		{
+			User::$wishlist_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+			$time = time() + 3600*24*365*10;
+			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
+		}
+		
+		if (Output::$json)
+		{
+			// Imposto il cart uid nell'header dell'output json
+			Output::setHeaderValue("CartUid",User::$cart_uid);
+			
+			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
+		}
+		
+		//setto il coupon se presente
+		User::$coupon = null;
+		
+		if (isset($_POST["invia_coupon"]))
+		{
+			User::$coupon = $this->request->post("il_coupon","","sanitizeAll");
+			
+			$time = time() + 3600*24*365*10;
+			setcookie("coupon",User::$coupon,$time,"/");
+		}
+		else
+		{
+			if (isset($_COOKIE["coupon"]))
+				User::$coupon = sanitizeAll($_COOKIE["coupon"]);
+		}
+		
+		if (User::$coupon)
+		{
+			if ($this->m["PromozioniModel"]->isActiveCoupon(User::$coupon))
+			{
+				// Estraggo tutti i prodotti della promozione
+				User::$prodottiInCoupon = $this->m["PromozioniModel"]->elencoProdottiPromozione(User::$coupon);
+			}
+			else
+			{
+				//setto il coupon se presente
+				User::$coupon = null;
+				
+				if (isset($_COOKIE["coupon"]))
+					setcookie("coupon", "", time()-3600,"/");
+			}
+		}
 	}
 	
 	protected function predisponiAltriFiltri()
