@@ -976,8 +976,6 @@ class CartModel extends GenericModel {
 		
 		$clean["email"] = null;
 		
-// 		print_r($_SESSION);
-		
 		if (v("recupera_dati_carrello_da_post"))
 		{
 			if (isset($_POST["email"]) || isset($_POST["username"]))

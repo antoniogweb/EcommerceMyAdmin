@@ -228,12 +228,12 @@ class EventiretargetingModel extends GenericModel {
 					$cModel->sWhere("creation_time <= $tempoEvento");
 				}
 				
-				$cModel->sWhere("$primaryKey not in (select id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
+				$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
 				$elementi = $cModel->send(false);
 				
 // 				echo $cModel->getQuery()."<br />";
-				
+// 				
 // 				print_r($elementi);continue;
 				
 				$elementiProcessati = array();
