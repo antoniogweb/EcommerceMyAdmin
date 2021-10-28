@@ -1,47 +1,35 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($tipo == "TESTO") { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrl?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+
+<?php if ($editor_visuale) { ?>
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+<?php } else { ?>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/ace.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/theme-dreamweaver.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/mode-ruby.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/jquery-ace.min.js"></script>
+<?php } ?>
 
 <script type="text/javascript">
-
-function ajaxfilemanager(field_name, url, type, win) {
-		var ajaxfilemanagerurl = "<?php echo $this->baseUrl."/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";?>";
-// 		switch (type) {
-// 			case "image":
-// 			ajaxfilemanagerurl = "<?php echo $this->baseUrl."/upload/main/1/1/1/1/0/0/0/0/1/0/1?base=";?>";
-// 			break;
-// 		}
-		var fileBrowserWindow = new Array();
-		fileBrowserWindow["file"] = ajaxfilemanagerurl;
-		fileBrowserWindow["title"] = "Ajax File Manager";
-		fileBrowserWindow["width"] = "782";
-		fileBrowserWindow["height"] = "440";
-		fileBrowserWindow["resizable "] = "yes";
-		fileBrowserWindow["inline"] = "yes";
-		fileBrowserWindow["close_previous"] = "no";
-		tinyMCE.activeEditor.windowManager.open(fileBrowserWindow, {
-			window : win,
-			input : field_name
-		});
-		
-		return false;
-	}
+$().ready(function() {
+	<?php if ($editor_visuale) { ?>
+	$('textarea').tinymce(tiny_editor_config);
+	<?php } else { ?>
+		$('textarea').ace({ theme: 'dreamweaver', lang: 'ruby' })
+	<?php } ?>
 	
-	$().ready(function() {
-		$('textarea').tinymce(tiny_editor_config);
-		//$(".display_none").css({ 'display' : 'none' });
+	$("select[name='editor_visuale']").change(function(){
+		reloadPage();
 	});
-	
-$(document).ready(function() {
-
-	
 });
 </script>
 <?php } ?>
 
 <form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 	<?php if ($tipo == "TESTO") { ?>
+		<?php echo isset($form["editor_visuale"]) ? $form["editor_visuale"] : "";?>
+		
 		<?php echo $form["valore"];?>
 	<?php } ?>
 	

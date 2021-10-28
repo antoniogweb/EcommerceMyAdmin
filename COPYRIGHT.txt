@@ -37,32 +37,45 @@ link: 		http://savannah.gnu.org/projects/freefont/
 
 Uikit
 -------
-link: 		https://getuikit.com/
+License:	The MIT License (MIT)
+link: 		https://getuikit.com
 
 jQuery
 -------
-link:	https://jquery.com/
+License:	The MIT License (MIT)
+link:		https://github.com/jquery/jquery
 
 iCheck
 -------
+License:	The MIT License (MIT)
 link:	https://plugins.jquery.com/icheck/
 
 Image Picker
 -------
+License:	The MIT License (MIT)
 link:	https://rvera.github.io/image-picker/
 
 FreeFont
 -------
-License:	MIT
+License:	The MIT License (MIT)
 Copyright (c) 2016 Jack Moore
 link: 		https://github.com/jackmoore/colorbox
 
 Joyride2
 -------
-License:	MIT
+License:	The MIT License (MIT)
 link: 		https://github.com/zurb/joyride
 
 mPDF
 -------
 License:	GNU GPL version 2 or later
 link: 		https://mpdf.github.io/
+
+Ace (Ajax.org Cloud9 Editor)
+-------
+License:	BSD License
+link: 		https://github.com/ajaxorg/ace
+
+jQuery-ace
+-------
+link: 		https://github.com/cheef/jquery-ace

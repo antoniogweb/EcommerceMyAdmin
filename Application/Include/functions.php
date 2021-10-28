@@ -797,6 +797,11 @@ function is($groups)
 	return false;
 }
 
+function m($string)
+{
+	return attivaModuli($string, null);
+}
+
 function attivaModuli($string, $obj = null)
 {
 	$string = preg_replace_callback('/(\[baseUrlSrc\])/', 'getBaseUrlSrc' ,$string);
@@ -813,6 +818,8 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[link (.*?)\]/', 'getLink' ,$string);
 	$string = preg_replace_callback('/\[video (.*?)\]/', 'getVideo' ,$string);
 	$string = preg_replace_callback('/\[variabile (.*?)\]/', 'getVariabile' ,$string);
+	
+	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
 	if (!isset(VariabiliModel::$placeholders))
 		VariabiliModel::setPlaceholders();
@@ -993,9 +1000,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true)
 		}
 		else
 		{
-			if ($tipo == "IMMAGINE" && file_exists(ROOT."/Public/Img/nofound.jpeg"))
+			if ($tipo == "IMMAGINE" && file_exists(LIBRARY."/Frontend/Public/Img/nofound.jpeg"))
 				$t->values = array(
-					"valore"	=>	sanitizeDb("<img width='200px' src='".Url::getFileRoot()."Public/Img/nofound.jpeg' />"),
+					"valore"	=>	sanitizeDb("<img width='200px' src='".Url::getFileRoot()."admin/Frontend/Public/Img/nofound.jpeg' />"),
 				);
 			else
 				$t->values = array(
@@ -1039,9 +1046,9 @@ function i($chiave, $tags = null, $attributi = null, $cleanFlush = true)
 }
 
 //chiama la traduzione di un blocco immagine
-function l($chiave, $tags = null)
+function l($chiave, $tags = null, $attributi = null)
 {
-	return getTesto(array("",$chiave),$tags, "LINK");
+	return getTesto(array("",$chiave, $attributi),$tags, "LINK");
 }
 
 function checkHttp($string)

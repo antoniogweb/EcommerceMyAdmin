@@ -127,7 +127,7 @@ trait BaseFasceController
 		$prezzoMinimo = $this->prezzoMinimo;
 		
 		ob_start();
-		include tpf("Fasce/carrello_prodotto.php");
+		include tpf("Elementi/Pagine/carrello_prodotto.php");
 		$output = ob_get_clean();
 		
 		return $output;

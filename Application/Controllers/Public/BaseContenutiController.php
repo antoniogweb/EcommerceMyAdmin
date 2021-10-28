@@ -45,8 +45,6 @@ class BaseContenutiController extends BaseController
 	public $documentiPagina = array();
 	public $breadcrumbHtml = "";
 	
-	public $pages = array(); // Array di pagina
-	public $p = array(); // singola pagina
 	public $altreImmagini = array(); // altre immagini
 	public $lista_attributi;
 	public $lista_valori_attributi;

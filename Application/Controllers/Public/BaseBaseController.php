@@ -43,6 +43,9 @@ class BaseBaseController extends Controller
 	public $prodottiInPromozione = array();
 	public $sectionsId = array();
 	
+	public $pages = array(); // Array di pagina
+	public $p = array(); // singola pagina
+	
 	public $defaultRegistrazione = array();
 	
 	public static $isPromo = false;
@@ -494,7 +497,8 @@ class BaseBaseController extends Controller
 		if (Output::$html)
 		{
 			$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
-				"ne"	=>	array("tipo_pagina" => ""),
+				"ne"		=>	array("tipo_pagina" => ""),
+				"attivo"	=>	"Y",
 			))->toList("tipo_pagina", "id_page")->send();
 			
 			$data["tipiClienti"] = TipiclientiModel::getArrayTipi();

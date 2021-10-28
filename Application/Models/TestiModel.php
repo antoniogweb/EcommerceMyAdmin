@@ -113,6 +113,13 @@ class TestiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'editor_visuale'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Usa editor visuale",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
