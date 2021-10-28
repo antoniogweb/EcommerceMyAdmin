@@ -38,6 +38,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					
 					<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 					
+					<?php if (count(OrdiniModel::$pagamenti) > 1) { ?>
 					<div class="uk-container uk-margin-medium">
 						<div id="payment" class="">
 							<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Metodo di pagamento");?></h2>
@@ -51,6 +52,13 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 							</ul>
 						</div>
 					</div>
+					<?php } else { ?>
+					<div class="uk-container uk-margin class_pagamento">
+						<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) {
+							echo Html_Form::hidden("pagamento",$codPag,$codPag);
+						} ?>
+					</div>
+					<?php } ?>
 					
 					<?php include(tpf("Ordini/note_acquisto.php"));?>
 					

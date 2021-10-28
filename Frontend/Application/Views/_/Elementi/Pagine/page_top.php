@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<main>
+<main class="<?php echo v("page_main_class");?>">
 	<section class="uk-section uk-section-small">
 		<?php if (!isset($noContainer)) { ?>
 		<div class="uk-container">

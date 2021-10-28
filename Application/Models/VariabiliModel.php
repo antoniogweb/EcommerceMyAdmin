@@ -296,6 +296,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_coupon_checkout"	=>	1,
 		"attiva_note_acquisto_in_ordini"	=>	1,
 		"genera_e_invia_password"	=>	0,
+		"page_main_class"			=>	"top_page_main",
 	);
 	
 	public static function setPlaceholders()
