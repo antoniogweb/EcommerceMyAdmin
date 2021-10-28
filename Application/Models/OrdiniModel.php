@@ -268,9 +268,26 @@ class OrdiniModel extends FormModel {
 		return $clean["uid"];
 	}
 	
+	//get a unique cod trans
+	public function getUniqueCodTrans($uid)
+	{
+		$clean["uid"] = sanitizeAll($uid);
+		
+		$res = $this->clear()->where(array("codice_transazione"=>$clean["uid"]))->send();
+		
+		if (count($res) > 0)
+		{
+			$nUid = generateString(30);
+			return $this->getUniqueCodTrans($nUid);
+		}
+		
+		return $clean["uid"];
+	}
+	
 	public function insert()
 	{
 		$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
+		$this->values["codice_transazione"] = $this->getUniqueCodTrans(generateString(30));
 		
 		if (!isset($this->values["lingua"]))
 			$this->values["lingua"] = Params::$lang;

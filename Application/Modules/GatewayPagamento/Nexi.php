@@ -78,7 +78,7 @@ class Nexi
 			'urlpost' => $notifyUrl,
 		);
 		
-		$this->urlPagamento = $this->creaUrlPagamento($this->ordine["id_o"], $importo, "EUR", $facoltativi);
+		$this->urlPagamento = $this->creaUrlPagamento($this->ordine["codice_transazione"], $importo, "EUR", $facoltativi);
 		
 		return $this->urlPagamento;
 	}
@@ -209,12 +209,12 @@ class Nexi
 		$amount = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
 		$codTrans = isset($_REQUEST["codTrans"]) ? $_REQUEST["codTrans"] : 0;
 		
-		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine["id_o"]) === 0)
+		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine["codice_transazione"]) === 0)
 			return true;
 		
 		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
 		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $amount \n";
-		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["id_o"]." \n";
+		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["codice_transazione"]." \n";
 		
 		$this->statoNotifica = 'OK, pagamento non corretto';
 		$this->scriviLog(false, true);
