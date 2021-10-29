@@ -387,4 +387,9 @@ class DocumentiModel extends GenericModel {
 		$this->files->removeFilesNotInTheList($list);
 	}
 	
+	public static function getUrlAlias($id)
+	{
+		return "contenuti/documento/".(int)$id;
+	}
+	
 }

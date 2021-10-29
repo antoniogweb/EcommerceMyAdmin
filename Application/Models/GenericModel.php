@@ -1036,6 +1036,19 @@ class GenericModel extends Model_Tree
 		return $select;
 	}
 	
+	public function selectDocumento($empty = true)
+	{
+		$d = new DocumentiModel();
+		
+		$select = array();
+		
+		$select = $this->addNonImpostato($select, $empty);
+		
+		$select += $d->clear()->orderBy("titolo")->toList("id_doc","titolo")->send();
+		
+		return $select;
+	}
+	
 	public function getLinkEntries()
 	{
 		return array(
@@ -1064,6 +1077,23 @@ class GenericModel extends Model_Tree
 				'type'		=>	'Select',
 				'labelString'=>	'Link a tag',
 				'options'	=>	$this->selectTag(),
+				'reverse' => 'yes',
+				"idName"	=>	"combobox",
+			),
+			'link_id_documento'	=>	array(
+				'type'		=>	'Select',
+				'labelString'=>	'Link a documento',
+				'options'	=>	$this->selectDocumento(),
+				'reverse' => 'yes',
+				"idName"	=>	"combobox",
+			),
+			'target'	=>	array(
+				'type'		=>	'Select',
+				'labelString'=>	'Target del link',
+				'options'	=>	array(
+					"_self"		=>	"Nella stessa scheda",
+					"_blank"	=>	"Su una nuova scheda",
+				),
 				'reverse' => 'yes',
 				"idName"	=>	"combobox",
 			),

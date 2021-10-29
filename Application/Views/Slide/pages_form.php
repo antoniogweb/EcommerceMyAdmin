@@ -36,31 +36,6 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
-									<div class='row'>
-										<div class='col-md-4'>
-											<?php echo $form["link_id_page"];?>
-										</div>
-										<div class='col-md-4'>
-											<?php echo $form["link_id_c"];?>
-										</div>
-										<?php if (v("usa_marchi")) { ?>
-										<div class='col-md-4'>
-											<?php echo $form["link_id_marchio"];?>
-										</div>
-										<?php } ?>
-										<?php if (v("usa_tag")) { ?>
-										<div class='col-md-4'>
-											<?php echo $form["link_id_tag"];?>
-										</div>
-										<?php } ?>
-										<div class='col-md-4'>
-											<?php echo $form["url"];?>
-										</div>
-										<div class='col-md-4'>
-											<?php echo $form["testo_link"];?>
-										</div>
-									</div>
-									
 									<?php echo isset($form["description"]) ? $form["description"] : "";?>
 									
 									<?php if ($type === "update") { ?>
@@ -72,6 +47,46 @@
 											<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit">Salva</button>
 											<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<?php echo gtext("Pulsante nella slide (call to action)")?>
+							</div>
+							<div class="panel-body">
+								<div class='row'>
+									<div class='col-md-4'>
+										<?php echo $form["link_id_page"];?>
+									</div>
+									<div class='col-md-4'>
+										<?php echo $form["link_id_c"];?>
+									</div>
+									<?php if (v("usa_marchi")) { ?>
+									<div class='col-md-4'>
+										<?php echo $form["link_id_marchio"];?>
+									</div>
+									<?php } ?>
+									<?php if (v("usa_tag")) { ?>
+									<div class='col-md-4'>
+										<?php echo $form["link_id_tag"];?>
+									</div>
+									<?php } ?>
+									<?php if (v("attiva_link_documenti")) { ?>
+									<div class='col-md-4'>
+										<?php echo $form["link_id_documento"];?>
+									</div>
+									<?php } ?>
+									<div class='col-md-4'>
+										<?php echo $form["url"];?>
+									</div>
+									<div class='col-md-4'>
+										<?php echo $form["target"];?>
+									</div>
+									<div class='col-md-4'>
+										<?php echo $form["testo_link"];?>
 									</div>
 								</div>
 							</div>
