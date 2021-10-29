@@ -298,6 +298,7 @@ class VariabiliModel extends GenericModel {
 		"genera_e_invia_password"	=>	0,
 		"page_main_class"			=>	"top_page_main",
 		"attiva_azioni_ajax"		=>	0,
+		"attiva_link_documenti"		=>	0,
 	);
 	
 	public static function setPlaceholders()

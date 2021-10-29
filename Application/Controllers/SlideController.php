@@ -47,7 +47,7 @@ class SlideController extends PagesController {
 		}
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
-		$this->queryFields = "title,attivo,immagine,sottotitolo,url,link_id_page,link_id_c,testo_link";
+		$this->queryFields = "title,attivo,immagine,sottotitolo,url,link_id_page,link_id_c,testo_link,target";
 		
 		if (v("immagine_2_in_slide"))
 			$this->queryFields .= ",immagine_2";
@@ -66,6 +66,9 @@ class SlideController extends PagesController {
 		
 		if (v("attiva_in_evidenza_slide"))
 			$this->queryFields .= ",in_evidenza";
+		
+		if (v("attiva_link_documenti"))
+			$this->queryFields .= ",link_id_documento";
 		
 		$this->clean();
 		
