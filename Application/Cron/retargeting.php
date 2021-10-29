@@ -1,13 +1,34 @@
 #!/usr/bin/php
 <?php
 
-define('ROOT', dirname(dirname(dirname(__FILE__))));
+define('APP_CONSOLE', true);
 
-require_once(ROOT . "/Library/Console.php");
+$options = getopt(null, array("prod::"));
 
+$default = array(
+	"prod"	=>	0,
+);
+
+$params = array_merge($default, $options);
+// var_dump($params);
+require_once(dirname(__FILE__) . "/../../../index.php");
+// echo v("mail_template");
 Files_Log::$logFolder = LIBRARY."/Logs";
 
-$log = Files_Log::getInstance("retargeting");
-$log->writeString("INIZIO LOG RETARGETING");
-$log->writeString("FINE LOG RETARGETING");
+if (!$params["prod"])
+	EventiretargetingModel::setDebug();
+
+if ($params["prod"])
+{
+	$log = Files_Log::getInstance("retargeting");
+	$log->writeString("INIZIO LOG RETARGETING");
+}
+
+EventiretargetingModel::processa();
+
+if ($params["prod"])
+	$log->writeString("FINE LOG RETARGETING");
+
+if (!$params["prod"])
+	print_r(EventiretargetingModel::$debugResult);
 

@@ -551,13 +551,25 @@ function hasCombinations($id_page, $personalizzazioni = true)
 
 class Domain
 {
-
+	static public $pathSettati = false;
+	
 	static public $name;
 	static public $publicUrl;
 	static public $parentRoot;
 	static public $adminRoot;
 	static public $adminName;
 	static public $currentUrl;
+	
+	public static function setPath()
+	{
+		if (self::$pathSettati)
+			return;
+		
+		self::$parentRoot = FRONT;
+		self::$adminRoot = LIBRARY;
+		
+		self::$pathSettati = true;
+	}
 	
 }
 

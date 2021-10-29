@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ImpostazioniModel extends GenericModel {
 
 	public static $valori = null;
+	public static $parametriImpostati = false;
 	
 	public function __construct() {
 		$this->_tables='impostazioni';
@@ -228,5 +229,36 @@ class ImpostazioniModel extends GenericModel {
 				),
 			),
 		);
+	}
+	
+	public static function init()
+	{
+		if (self::$parametriImpostati)
+			return;
+		
+		self::g(false)->getImpostazioni();
+		
+		//leggi le impostazioni
+		if (self::$valori)
+		{
+			Parametri::$useSMTP = self::$valori["usa_smtp"] == "Y" ? true : false;
+			Parametri::$SMTPHost = self::$valori["smtp_host"];
+			Parametri::$SMTPPort = self::$valori["smtp_port"];
+			Parametri::$SMTPUsername = self::$valori["smtp_user"];
+			Parametri::$SMTPPassword = self::$valori["smtp_psw"];
+			Parametri::$mailFrom = self::$valori["smtp_from"];
+			Parametri::$mailFromName = self::$valori["smtp_nome"];
+			Parametri::$mailInvioOrdine = self::$valori["mail_invio_ordine"];
+			Parametri::$mailInvioConfermaPagamento = self::$valori["mail_invio_conferma_pagamento"];
+			Parametri::$nomeNegozio = self::$valori["nome_sito"];
+			Parametri::$iva = self::$valori["iva"];
+			Parametri::$ivaInclusa = self::$valori["iva_inclusa"] == "Y" ? true : false;
+			Parametri::$useSandbox = self::$valori["usa_sandbox"] == "Y" ? true : false;
+			Parametri::$paypalSeller = self::$valori["paypal_seller"];
+			Parametri::$paypalSandBoxSeller = self::$valori["paypal_sandbox_seller"];
+			Parametri::$mailReplyTo = (isset(self::$valori["reply_to_mail"]) && self::$valori["reply_to_mail"]) ? self::$valori["reply_to_mail"] : Parametri::$mailFrom;
+		}
+		
+		self::$parametriImpostati = true;
 	}
 }

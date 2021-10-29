@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class EventiretargetingModel extends GenericModel {
 	
+	public static $debug = false;
+	public static $debugResult= array();
+	
 	public static $scattaDopoOre = array(
 		0	=>	"Immediatamente",
 		1	=>	"Dopo 1 ora",
@@ -103,6 +106,11 @@ class EventiretargetingModel extends GenericModel {
 				),
 			),
 		);
+	}
+	
+	public static function setDebug($valore = true)
+	{
+		self::$debug = $valore;
 	}
 	
 	public function insert()
@@ -233,8 +241,6 @@ class EventiretargetingModel extends GenericModel {
 				$elementi = $cModel->send(false);
 				
 // 				echo $cModel->getQuery()."<br />";
-// 				
-// 				print_r($elementi);continue;
 				
 				$elementiProcessati = array();
 				
@@ -246,7 +252,7 @@ class EventiretargetingModel extends GenericModel {
 					$email = $arrayEmailIdLingua[$idPagina][$e["lingua"]];
 					
 					$giaProcessato = false;
-					$emailElemento = $e["email"];
+					$emailElemento = strtolower(trim($e["email"]));
 					
 					if ($emailElemento && checkMail($emailElemento))
 					{
@@ -260,10 +266,10 @@ class EventiretargetingModel extends GenericModel {
 						
 						$mailInviata = 0;
 						
+						MailordiniModel::$idMailInviate = array();
+						
 						if (!$giaProcessato)
 						{
-							MailordiniModel::$idMailInviate = array();
-							
 							$valoriMail = array(
 								"emails"	=>	array($emailElemento),
 								"oggetto"	=>	$oggetto,
@@ -277,7 +283,7 @@ class EventiretargetingModel extends GenericModel {
 								$mailInviata = 1;
 						}
 						
-						$evElModel->setValues(array(
+						$valoriElemento = array(
 							"id_evento"		=>	$idEvento,
 							"id_elemento"	=>	$e[$primaryKey],
 							"id_page"		=>	$email["pages"]["id_page"],
@@ -285,14 +291,30 @@ class EventiretargetingModel extends GenericModel {
 							"mail_inviata"	=>	$mailInviata,
 							"email"			=>	$emailElemento,
 							"id_mail"		=>	count(MailordiniModel::$idMailInviate) > 0 ? MailordiniModel::$idMailInviate[0] : 0,
-						));
+						);
 						
-						$evElModel->insert();
+						if (!self::$debug)
+						{
+							$evElModel->setValues($valoriElemento);
+							
+							$evElModel->insert();
+						}
+						else
+						{
+							if (!$giaProcessato)
+							{
+								$valoriElemento += array(
+									"data_ora_elemento"	=>	date("Y-m-d H:i", $e["creation_time"]),
+									"numero_ore_evento"	=>	$scattaDopoOre,
+									"nome_evento"		=>	$evento["eventi_retargeting"]["titolo"]
+								);
+							
+								self::$debugResult[] = $valoriElemento;
+							}
+						}
 					}
 				}
 			}
 		}
-		
-// 		die();
 	}
 }

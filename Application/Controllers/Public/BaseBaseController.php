@@ -57,8 +57,9 @@ class BaseBaseController extends Controller
 		
 // 		$_GET["asJson"] = true;
 		
-		Domain::$parentRoot = FRONT;
-		Domain::$adminRoot = LIBRARY;
+		Domain::setPath();
+// 		Domain::$parentRoot = FRONT;
+// 		Domain::$adminRoot = LIBRARY;
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
@@ -133,28 +134,30 @@ class BaseBaseController extends Controller
 		
 		$this->model("CaratteristichevaloriModel");
 		
-		$this->m["ImpostazioniModel"]->getImpostazioni();
+// 		$this->m["ImpostazioniModel"]->getImpostazioni();
+		
+		ImpostazioniModel::init();
 		
 		//leggi le impostazioni
-		if (ImpostazioniModel::$valori)
-		{
-			Parametri::$useSMTP = ImpostazioniModel::$valori["usa_smtp"] == "Y" ? true : false;
-			Parametri::$SMTPHost = ImpostazioniModel::$valori["smtp_host"];
-			Parametri::$SMTPPort = ImpostazioniModel::$valori["smtp_port"];
-			Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
-			Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
-			Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
-			Parametri::$mailFromName = ImpostazioniModel::$valori["smtp_nome"];
-			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
-			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
-			Parametri::$nomeNegozio = ImpostazioniModel::$valori["nome_sito"];
-			Parametri::$iva = ImpostazioniModel::$valori["iva"];
-			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
-			Parametri::$useSandbox = ImpostazioniModel::$valori["usa_sandbox"] == "Y" ? true : false;
-			Parametri::$paypalSeller = ImpostazioniModel::$valori["paypal_seller"];
-			Parametri::$paypalSandBoxSeller = ImpostazioniModel::$valori["paypal_sandbox_seller"];
-			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
-		}
+// 		if (ImpostazioniModel::$valori)
+// 		{
+// 			Parametri::$useSMTP = ImpostazioniModel::$valori["usa_smtp"] == "Y" ? true : false;
+// 			Parametri::$SMTPHost = ImpostazioniModel::$valori["smtp_host"];
+// 			Parametri::$SMTPPort = ImpostazioniModel::$valori["smtp_port"];
+// 			Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
+// 			Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
+// 			Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
+// 			Parametri::$mailFromName = ImpostazioniModel::$valori["smtp_nome"];
+// 			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
+// 			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
+// 			Parametri::$nomeNegozio = ImpostazioniModel::$valori["nome_sito"];
+// 			Parametri::$iva = ImpostazioniModel::$valori["iva"];
+// 			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
+// 			Parametri::$useSandbox = ImpostazioniModel::$valori["usa_sandbox"] == "Y" ? true : false;
+// 			Parametri::$paypalSeller = ImpostazioniModel::$valori["paypal_seller"];
+// 			Parametri::$paypalSandBoxSeller = ImpostazioniModel::$valori["paypal_sandbox_seller"];
+// 			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
+// 		}
 		
 		$this->session('registered');
 		$this->s['registered']->checkStatus();
