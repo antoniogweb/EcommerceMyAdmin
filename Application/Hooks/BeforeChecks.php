@@ -336,6 +336,9 @@ Helper_List::$actionsLayout = array(
 	),
 );
 
+if (v("attiva_azioni_ajax"))
+	Helper_List::$actionsLayout["del"]["attributes"]["class"] .= " ajlink";
+
 Helper_List::$filtersFormLayout = array(
 	"form"	=>	array(
 		"attributes"	=>	array(
