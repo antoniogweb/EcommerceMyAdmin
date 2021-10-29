@@ -13,6 +13,7 @@ class Route
 	public static $allowed = array(
 		'home,index',
 		'home,settacookie',
+		'home,xmlprodotti',
 		'news,index',
 		'news,dettaglio',
 		'contenuti,index',
@@ -177,6 +178,7 @@ class Route
 		'thumb/modalepiccola/(.*)'	=>	'thumb/modalepiccola/${1}',
 		'home/index'				=>	'home/index',
 		'home/settacookie'			=>	'home/settacookie',
+		'home/xmlprodotti'			=>	'home/xmlprodotti',
 		'contenuti/notfound'		=>	'contenuti/notfound',
 		'contenuti/nonpermesso'		=>	'contenuti/nonpermesso',
 		'carrello/aggiorna'			=>	'cart/update',
