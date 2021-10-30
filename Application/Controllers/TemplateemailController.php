@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class TemplateemailController extends GenericsectionController {
 	
-	public $voceMenu = "email";
+	public $voceMenu = "template email";
 	public $sezionePannello = "marketing";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)

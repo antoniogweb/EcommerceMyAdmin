@@ -32,25 +32,17 @@ include(ROOT."/Application/Views/header.php");
 					</ul>
 				</li>
 				<?php } ?>
-				<?php if (v("attiva_template_email")) { ?>
-				<li class="<?php echo tm($tm, "templateemail");?> treeview">
-					<a href="#">
-						<i class="fa fa-envelope-open-o"></i>
-						<span><?php echo gtext("Email template")?></span>
-					</a>
-					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/templateemail/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
-					</ul>
-				</li>
-				<?php } ?>
 				<?php if (v("attiva_template_email") && v("attiva_eventi_retargeting")) { ?>
-				<li class="<?php echo tm($tm, "eventiretargeting");?> treeview">
+				<li class="<?php echo tm($tm, "eventiretargeting");?> <?php echo tm($tm, "templateemail");?> treeview">
 					<a href="#">
 						<i class="fa fa-phone"></i>
-						<span><?php echo gtext("Retargeting")?></span>
+						<span><?php echo gtext("Retargeting");?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/eventiretargeting/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+						<li class="dropdown-header"><?php echo gtext("Template");?></li>
+						<li class="<?php echo tm($tm, "templateemail");?>"><a href="<?php echo $this->baseUrl."/templateemail/main";?>"><i class="fa fa-envelope-open-o"></i> <?php echo gtext("Template email")?></a></li>
+						<li class="dropdown-header"><?php echo gtext("Eventi");?></li>
+						<li class="<?php echo tm($tm, "eventiretargeting");?>"><a href="<?php echo $this->baseUrl."/eventiretargeting/main";?>"><i class="fa fa-clock-o"></i> <?php echo gtext("Eventi scatenanti")?></a></li>
 					</ul>
 				</li>
 				<?php } ?>

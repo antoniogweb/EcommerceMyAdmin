@@ -32,7 +32,7 @@ class EventiretargetingController extends BaseController
 	
 	public $sezionePannello = "marketing";
 	
-	public $tabella = "retargeting";
+	public $tabella = "eventi scatenanti";
 	
 	public function main()
 	{

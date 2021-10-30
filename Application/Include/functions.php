@@ -1726,8 +1726,14 @@ function acquistabile($id_page)
 
 function tm($tm, $controller)
 {
-	if (isset($tm[$controller]))
-		return "active";
+	if (!is_array($controller))
+		$controller = array($controller);
+	
+	foreach ($controller as $c)
+	{
+		if (isset($tm[$c]))
+			return "active";
+	}
 	
 	return "";
 }

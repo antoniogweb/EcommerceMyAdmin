@@ -33,7 +33,6 @@ include(ROOT."/Application/Views/header.php");
 					<?php if (v("combinazioni_in_prodotti")) { ?>
 					<li class="dropdown-header">Varianti prodotto</li>
 					<li <?php if ($this->controller === "attributi") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/attributi/main/1";?>"><i class="fa fa-cogs"></i> Lista varianti</a></li>
-<!-- 					<li class="icon_list"><a href="<?php echo $this->baseUrl."/pages/esportaprodotti";?>"><i class="fa fa-table"></i> Scarica Excel</a></li> -->
 					<?php } ?>
 					
 					<?php if (v("attiva_personalizzazioni")) { ?>
