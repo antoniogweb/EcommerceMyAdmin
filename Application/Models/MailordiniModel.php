@@ -31,6 +31,10 @@ require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
 
 class MailordiniModel extends GenericModel
 {
+	const CLIENTE = 'CLIENTE';
+	const NEGOZIO = 'NEGOZIO';
+	const SISTEMISTA = 'SISTEMISTA';
+	
 	public static $mailInstance = null;
 	public static $idMailInviate = array();
 	
@@ -150,15 +154,23 @@ class MailordiniModel extends GenericModel
 			// Svuoto tutte le mail
 			$mail->ClearAllRecipients();
 			
+			$arrayBcc = array();
+			
 			if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
+			{
 				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+				$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
+			}
 			
 			if (defined("BCC") && is_array(BCC))
 			{
 				foreach (BCC as $emailBcc)
 				{
 					if (!in_array($emailBcc, $emails))
+					{
 						$mail->addBCC($emailBcc);
+						$arrayBcc[] = $emailBcc;
+					}
 				}
 			}
 			
@@ -200,6 +212,7 @@ class MailordiniModel extends GenericModel
 					"id_contatto"	=>	$idContatto,
 					"tipo"		=>	$tipo,
 					"id_evento"	=>	$idEvento,
+					"bcc"		=>	count($arrayBcc) > 0 ? implode(",",$arrayBcc) : "",
 				));
 				
 				if ($mo->insert())

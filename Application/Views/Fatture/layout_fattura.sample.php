@@ -132,7 +132,7 @@
 	
 	<?php } else { ?>
 	<div style="margin-top:10mm;">
-		Fattura non valida ai fini fiscali. La fattura elettronica verrà emessa elettronicamente secondo i termini di legge
+		Fattura non valida ai fini fiscali. La fattura elettronica verrà emessa elettronicamente secondo i termini di legge.
 	</div>
 	<?php } ?>
 </page>
