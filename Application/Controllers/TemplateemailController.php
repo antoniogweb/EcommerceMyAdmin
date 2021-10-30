@@ -38,7 +38,7 @@ class TemplateemailController extends GenericsectionController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.id_order desc";
+		$this->orderBy = "pages.id_order";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attivo';
 		

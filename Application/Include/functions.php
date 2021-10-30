@@ -570,7 +570,6 @@ class Domain
 		
 		self::$pathSettati = true;
 	}
-	
 }
 
 function htmlentitydecode($value)

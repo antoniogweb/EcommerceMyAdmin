@@ -164,7 +164,7 @@ class MailordiniModel extends GenericModel
 			
 			$testoClean = $testo;
 			$testo = MailordiniModel::loadTemplate($oggetto, $testo);
-// 				echo $output;die();
+// 				echo $testo;die();
 			// Imposto le traduzioni del back
 			Params::$lang = $bckLang;
 			TraduzioniModel::$contestoStatic = $bckContesto;

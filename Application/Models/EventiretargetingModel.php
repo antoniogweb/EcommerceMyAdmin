@@ -258,6 +258,8 @@ class EventiretargetingModel extends GenericModel {
 					{
 						$oggetto = htmlentitydecode(field($email, "title"));
 						$testo = htmlentitydecode(field($email, "description"));
+						$oggetto = $cModel->replacePlaceholders($e, $oggetto);
+						$testo = $cModel->replacePlaceholders($e, $testo);
 						
 						if (in_array($emailElemento, $elementiProcessati))
 							$giaProcessato = true;
@@ -268,7 +270,7 @@ class EventiretargetingModel extends GenericModel {
 						
 						MailordiniModel::$idMailInviate = array();
 						
-						if (!$giaProcessato)
+						if (!self::$debug && !$giaProcessato)
 						{
 							$valoriMail = array(
 								"emails"	=>	array($emailElemento),

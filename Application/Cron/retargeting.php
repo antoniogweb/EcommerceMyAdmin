@@ -10,9 +10,9 @@ $default = array(
 );
 
 $params = array_merge($default, $options);
-// var_dump($params);
+
 require_once(dirname(__FILE__) . "/../../../index.php");
-// echo v("mail_template");
+
 Files_Log::$logFolder = LIBRARY."/Logs";
 
 if (!$params["prod"])

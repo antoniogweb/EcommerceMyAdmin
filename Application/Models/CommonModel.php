@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait CommonModel {
 	
+	public $placeholdersMail = array("[NOME]","[EMAIL]");
+	
 	public function controllaCF($controlla = 1)
 	{
 		if ($controlla)
@@ -153,5 +155,27 @@ trait CommonModel {
 				}
 			}
 		}
+	}
+	
+	public function replacePlaceholders($record, $string)
+	{
+		foreach ($this->placeholdersMail as $placeholder)
+		{
+			$value = $this->getPlaceholderValue($record, $placeholder);
+			
+			$string = str_replace($placeholder, $value, $string);
+		}
+		
+		return $string;
+	}
+	
+	public function getPlaceholderValue($record, $placeholder)
+	{
+		$placeholder = str_replace("[","", $placeholder);
+		$placeholder = str_replace("]","", $placeholder);
+		$placeholder = strtolower($placeholder);
+		
+		if (isset($record[$placeholder]) && $record[$placeholder])
+			return $record[$placeholder];
 	}
 }
