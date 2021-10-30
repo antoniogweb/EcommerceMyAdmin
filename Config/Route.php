@@ -521,6 +521,10 @@ class Route
 		'eventiretargeting,form',
 		'eventiretargeting,ordina',
 		'eventiretargeting,invii',
+		
+		'sitemap,main',
+		'sitemap,form',
+		'sitemap,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

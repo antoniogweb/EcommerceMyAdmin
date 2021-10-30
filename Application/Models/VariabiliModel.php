@@ -300,6 +300,7 @@ class VariabiliModel extends GenericModel {
 		"page_main_class"			=>	"top_page_main",
 		"attiva_azioni_ajax"		=>	0,
 		"attiva_link_documenti"		=>	0,
+		"permetti_gestione_sitemap"	=>	0,
 	);
 	
 	public static function setPlaceholders()
@@ -469,6 +470,14 @@ class VariabiliModel extends GenericModel {
 				"testo"	=>	gtext("Indicizzazione non attiva."),
 				"link"	=>	Url::getRoot()."impostazioni/variabili/1",
 				"icona"	=>	"fa-warning",
+				"class"	=>	"text-yellow",
+			);
+		
+		if (v("permetti_gestione_sitemap") && !SitemapModel::g(false)->rowNumber())
+			$notifiche[] = array(
+				"testo"	=>	gtext("Sitemap vuota!"),
+				"link"	=>	Url::getRoot()."sitemap/main",
+				"icona"	=>	"fa-map-o",
 				"class"	=>	"text-yellow",
 			);
 		

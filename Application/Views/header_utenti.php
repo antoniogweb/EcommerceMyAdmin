@@ -78,6 +78,17 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("permetti_gestione_sitemap")) { ?>
+			<li class="<?php echo tm($tm, "sitemap");?> treeview">
+				<a href="#">
+					<i class="fa fa-map-o"></i>
+					<span><?php echo gtext("Gestione sitemap")?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/sitemap/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<?php if (defined("CACHE_FOLDER") || v("attiva_cache_immagini")) { ?>
 			<li class=""><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-trash"></i> <?php echo gtext("Svuota cache");?></a></li>
 			<?php } ?>

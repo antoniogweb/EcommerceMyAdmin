@@ -85,12 +85,6 @@ class EventiretargetingController extends BaseController
 			"duplicato"	=>	0,
 		))->convert()->save();
 		
-// 		$this->tabella = "corrieri";
-// 		
-// 		$data["elencoNazioniCorrieri"] = $this->m[$this->modelName]->clear()->select("distinct nazione")->where(array(
-// 			"id_corriere"	=>	$clean['id'],
-// 		))->orderBy("nazione")->toList("nazione")->send();
-		
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["EventiretargetingModel"]->titolo($clean['id']);

@@ -145,6 +145,7 @@ class CategoriesModel extends HierarchicalModel {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_c', null, "CASCADE"),
 			'classisconto' => array("HAS_MANY", 'ClassiscontocategoriesModel', 'id_c', null, "CASCADE"),
+			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_c', null, "CASCADE"),
         );
     }
     

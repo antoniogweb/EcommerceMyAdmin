@@ -40,7 +40,9 @@
 						include($path);
 					?>
 					
-					<?php echo $notice;?>
+					<?php $flash = flash("notice");?>
+					<?php echo $flash;?>
+					<?php if (!$flash) echo $notice;?>
 					
 					<div class="scroll-x">
 						<?php echo $main;?>

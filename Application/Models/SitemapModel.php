@@ -1,0 +1,195 @@
+<?php
+
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
+//
+// Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.txt.
+//
+// This file is part of EcommerceMyAdmin
+//
+// EcommerceMyAdmin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// EcommerceMyAdmin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
+
+if (!defined('EG')) die('Direct access not allowed!');
+
+class SitemapModel extends GenericModel {
+	
+	public static $categorie = null;
+	public static $pagine = null;
+	
+	public function __construct() {
+		$this->_tables='sitemap';
+		$this->_idFields='id_sitemap';
+		
+		$this->_idOrder = 'id_order';
+		
+		parent::__construct();
+	}
+	
+	public function relations() {
+		return array(
+			'categoria' => array("BELONGS_TO", 'CategoriesModel', 'id_c',null,"CASCADE"),
+			'pagina' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
+		);
+    }
+    
+    // Aggiorna la sitemap
+	public function aggiorna()
+	{
+		$nodi = self::getNodi();
+		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
+		foreach ($nodi as $n)
+		{
+			$idPage = (int)$n["aggregate"]["id_page"];
+			$idC = (int)$n["aggregate"]["id_c"];
+			
+			$numero = $this->clear()->where(array(
+				"id_page"	=>	$idPage,
+				"id_c"		=>	$idC,
+			))->rowNumber();
+			
+			if (!$numero)
+			{
+				$this->setValues(array(
+					"id_page"	=>	$idPage,
+					"id_c"		=>	$idC,
+					"ultima_modifica"	=>	$n["aggregate"]["ultima_modifica"],
+					"priorita"	=>	$n["aggregate"]["priorita"],
+				));
+				
+				$this->insert();
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
+	}
+    
+    public static function getNodiFrontend()
+    {
+		if (v("permetti_gestione_sitemap"))
+		{
+			$nodi = self::g(false)->select("sitemap.priorita, pages.id_page, categories.id_c,coalesce(pages.data_ultima_modifica, categories.data_ultima_modifica) as ultima_modifica")->left(array("categoria","pagina"))->orderBy("sitemap.id_order")->send(false);
+			
+			$dataModificaHome = self::dataModificaHome($nodi);
+			
+			for ($i=0; $i<count($nodi); $i++)
+			{
+				if (!$nodi[$i]["id_page"] && !$nodi[$i]["id_c"])
+					$nodi[$i]["ultima_modifica"] = date("Y-m-d H:i:s", $dataModificaHome);
+			}
+		}
+		else
+			$nodi =  self::getNodi();
+		
+// 		print_r($nodi);
+		
+		return $nodi;
+    }
+    
+    public static function dataModificaHome($nodi)
+    {
+		$dataModificaHome = 0;
+		
+		foreach ($nodi as $n)
+		{
+			$n = isset($n["aggregate"]) ? $n["aggregate"] : $n;
+			
+			if (strtotime($n["ultima_modifica"]) > $dataModificaHome)
+				$dataModificaHome = strtotime($n["ultima_modifica"]);
+		}
+		
+		return $dataModificaHome;
+    }
+    
+    public static function getNodi()
+    {
+		$c = new CategoriesModel();
+		$p = new PagesModel();
+		
+		// Where categorie
+		$c->clear()->where(array(
+			"attivo"			=>	"Y",
+			"bloccato"			=>	0,
+			"add_in_sitemap"	=>	"Y",
+			"ne"	=>	array(
+				"id_c"	=>	1,
+			),
+		));
+		
+		$elements = $c->treeQueryElements("categories");
+		
+		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica from categories where ".$elements["where"];
+		
+		// Where pagine
+		$p->clear()->where(array(
+			"add_in_sitemap"			=>	"Y",
+			"categories.add_in_sitemap"	=>	"Y",
+			"categories.bloccato"	=>	0,
+			"categories.attivo"		=>	"Y",
+		))->addWhereAttivo();
+		
+		$elements = $p->treeQueryElements("pages");
+		
+		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
+		
+		$sql = "$sqlCategorie union $sqlPages order by priorita desc, lft,id_c,id_page limit 500";
+		
+		$nodi = $c->query($sql, false);
+		
+		$dataModificaHome = self::dataModificaHome($nodi);
+		
+		array_unshift($nodi, array(
+			"aggregate"	=>	array(
+				"id_c"		=>	0,
+				"id_page"	=>	0,
+				"priorita"	=>	1,
+				"lft"		=>	0,
+				"ultima_modifica"	=>	date("Y-m-d H:i:s", $dataModificaHome),
+			),
+		));
+		
+		return $nodi;
+    }
+    
+    public function titolocrud($record)
+    {
+		$idPage = $record["sitemap"]["id_page"];
+		$idC = $record["sitemap"]["id_c"];
+		
+		if ($idPage)
+		{
+			if (!isset(self::$pagine))
+				self::$pagine = PagesModel::g(false)->toList("id_page", "title")->send();
+			
+			if (isset(self::$pagine[$idPage]))
+				return self::$pagine[$idPage];
+		}
+		else if ($idC)
+		{
+			if (!isset(self::$categorie))
+				self::$categorie = CategoriesModel::g(false)->toList("id_c", "title")->send();
+			
+			if (isset(self::$categorie[$idC]))
+				return self::$categorie[$idC];
+		}
+		else
+			return "HOME PAGE";
+		
+		return "";
+    }
+    
+}
