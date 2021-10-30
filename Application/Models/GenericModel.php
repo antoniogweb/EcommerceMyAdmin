@@ -1146,11 +1146,12 @@ class GenericModel extends Model_Tree
 		$className = get_called_class();
 		
 		$m = new $className;
+		$m->clear();
 		
 		if ($traduzione && $m->traduzione)
 			$m->addJoinTraduzione();
 		
-		return $m->clear();
+		return $m;
 	}
 	
 	public static function numeroRecord()
