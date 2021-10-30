@@ -1177,7 +1177,7 @@ class GenericModel extends Model_Tree
     {
 		if (isset($this->values["id_lingua"]))
 		{
-			$this->values["lingua"] = LingueModel::g()->clear()->where(array(
+			$this->values["lingua"] = LingueModel::g(false)->clear()->where(array(
 				"id_lingua"	=>	(int)$this->values["id_lingua"],
 			))->field("codice");
 		}

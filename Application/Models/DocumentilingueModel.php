@@ -53,7 +53,7 @@ class DocumentilingueModel extends GenericModel {
 		
 		if (isset($this->values["id_doc"]))
 		{
-			$this->values["id_page"] = DocumentiModel::g()->clear()->where(array(
+			$this->values["id_page"] = DocumentiModel::g(false)->clear()->where(array(
 				"id_doc"	=>	(int)$this->values["id_doc"],
 			))->field("id_page");
 		}
