@@ -102,6 +102,7 @@ class CronController extends BaseController {
 					$mysqli->query("update variabili set valore = ".(int)$newVersion." where chiave='db_version';");
 					fwrite($hand,date("Y-m-d H:i:s")." DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql\n");
 					echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />";
+					VariabiliModel::$valori["db_version"] = (int)$newVersion;
 				}
 				else
 					echo "<br />NUOVA VERSIONE: $newVersion";

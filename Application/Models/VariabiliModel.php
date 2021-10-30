@@ -303,6 +303,21 @@ class VariabiliModel extends GenericModel {
 		"permetti_gestione_sitemap"	=>	0,
 	);
 	
+	public static $daInizializzare = array(
+		"token_schedulazione",
+		"debug_get_variable",
+		"debug_retargeting_get_variable",
+	);
+	
+	public static function inizializza()
+	{
+		foreach (self::$daInizializzare as $var)
+		{
+			if (!trim(v($var)))
+				VariabiliModel::setValore($var, md5(randString(10).uniqid(mt_rand(),true)));
+		}
+	}
+	
 	public static function setPlaceholders()
 	{
 		self::$placeholders = array(

@@ -28,6 +28,8 @@ trait InitController
 	
 	public function init()
 	{
+		VariabiliModel::inizializza();
+		
 		$this->model("ContenutitradottiModel");
 		
 		// Estraggo le traduzioni
