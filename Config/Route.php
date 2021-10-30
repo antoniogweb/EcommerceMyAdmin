@@ -303,6 +303,7 @@ class Route
 		'blog,ordinacontenuti',
 		'blog,link',
 		'blog,testi',
+		'blog,lingue',
 		
 		'downloadcat,main',
 		'downloadcat,form',

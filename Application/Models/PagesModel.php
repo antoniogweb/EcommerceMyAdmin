@@ -2335,4 +2335,36 @@ class PagesModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function getArrayLingueAttiveFrontend($idPage)
+	{
+		$p = new PageslingueModel();
+		
+		$lingue = $p->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->send(false);
+		
+		if ((int)count($lingue) === 0)
+			return Params::$frontEndLanguages;
+		
+		$lingueIncludi = $lingueEscludi = array();
+		
+		foreach ($lingue as $l)
+		{
+			if ($l["includi"])
+				$lingueIncludi[] = $l["lingua"];
+			else
+				$lingueEscludi[] = $l["lingua"];
+		}
+		
+		$arrayLingueFrontend = array();
+		
+		foreach (Params::$frontEndLanguages as $lang)
+		{
+			if ((count($lingueIncludi) === 0 || in_array($lang, $lingueIncludi)) && !in_array($lang, $lingueEscludi))
+				$arrayLingueFrontend[] = $lang;
+		}
+		
+		return $arrayLingueFrontend;
+	}
 }

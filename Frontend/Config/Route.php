@@ -28,7 +28,6 @@ class Route
 		'contenuti,jsoncategoriefiglie',
 		'contenuti,processaschedulazione',
 		'contenuti,documento',
-		'contenuti,index',
 		'cart,index',
 		'cart,ajax',
 		'cart,add',

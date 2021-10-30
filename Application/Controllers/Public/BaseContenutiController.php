@@ -807,12 +807,6 @@ class BaseContenutiController extends BaseController
 		if (v("abilita_visibilita_pagine"))
 		{
 			$this->m["PagesModel"]->addWhereLingua();
-// 			$this->m["PagesModel"]->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
-// 			$this->m["PagesModel"]->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
-// 			
-// 			$this->m["PagesModel"]->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
-// 			
-// 			$this->m["PagesModel"]->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		}
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
@@ -1129,13 +1123,16 @@ class BaseContenutiController extends BaseController
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
+			if (v("abilita_visibilita_pagine"))
+			{
+				$linguePagina = $this->m["PagesModel"]->getArrayLingueAttiveFrontend($clean['realId']);
+				
+				if (!in_array($l, $linguePagina))
+					continue;
+			}
+			
 			$data["arrayLingue"][$l] = $l."/".$this->m["PagesModel"]->getUrlAlias($clean['realId'], $l);
 		}
-		
-// 		print_r($data["arrayLingue"]);
-// 		print_r($arrayLingue);
-// 		$data["itUrl"] = "it/$urlAlias";
-// 		$data["enUrl"] = "en/$urlAlias";
 		
 		$data["isPage"] = true;
 		

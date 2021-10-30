@@ -15,6 +15,9 @@
 	<?php if (v("mostra_link_in_blog")) { ?>
 	<li <?php echo $posizioni['link'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/link/$id_page".$this->viewStatus;?>"><?php echo gtext("Link");?></a></li>
 	<?php } ?>
+	<?php if (v("abilita_visibilita_pagine")) { ?>
+	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id_page".$this->viewStatus;?>"><?php echo gtext("Lingue");?></a></li>
+	<?php } ?>
 </ul>
 
 
