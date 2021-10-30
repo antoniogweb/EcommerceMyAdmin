@@ -11,7 +11,9 @@
 		
 		<?php if (!isset($_COOKIE["modale_".$p["pages"]["id_page"]])) { ?>
 			<script>
-			UIkit.modal("#modale_<?php echo $p["pages"]["id_page"];?>").show();
+			setTimeout(function(){
+				UIkit.modal("#modale_<?php echo $p["pages"]["id_page"];?>").show();
+			}, <?php echo (int)$p["pages"]["apri_dopo_secondi"] * 1000;?>);
 			</script>
 		<?php } ?>
 	<?php } ?>

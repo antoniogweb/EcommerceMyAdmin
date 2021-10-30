@@ -430,6 +430,14 @@ class PagesModel extends GenericModel {
 				'go_to'	=>	array(
 					'labelString'	=>	"Esegui lo scroll all'identificatore",
 				),
+				'apri_dopo_secondi'		=>	array(
+					'labelString'=>	'Mostra dopo secondi',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Indica il tema dopo il quale il popup verrà aperto")."</div>"
+					),
+				),
 			),
 		);
 		

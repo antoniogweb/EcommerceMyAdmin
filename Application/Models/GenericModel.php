@@ -448,9 +448,13 @@ class GenericModel extends Model_Tree
 		
 	}
 	
+	public function editData() {}
+	
 	public function update($id = null, $where = null)
 	{
 		$this->salvaDataUltimaModifica();
+		
+		$this->editData();
 		
 		$res = parent::update($id, $where);
 		
@@ -520,6 +524,8 @@ class GenericModel extends Model_Tree
 	public function insert()
 	{
 		$this->salvaDataUltimaModifica();
+		
+		$this->editData();
 		
 		parent::insert();
 		$res = $this->queryResult;

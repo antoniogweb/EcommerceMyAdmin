@@ -460,6 +460,14 @@ class VariabiliModel extends GenericModel {
 			$notifiche[] = array(
 				"testo"	=>	gtext("Attenzione, aggiorna il database!"),
 				"link"	=>	Url::getRoot()."cron/migrazioni/".v("codice_cron"),
+				"icona"	=>	"fa-database",
+				"class"	=>	"text-yellow",
+			);
+		
+		if (v("piattaforma_in_sviluppo"))
+			$notifiche[] = array(
+				"testo"	=>	gtext("Indicizzazione non attiva."),
+				"link"	=>	Url::getRoot()."impostazioni/variabili/1",
 				"icona"	=>	"fa-warning",
 				"class"	=>	"text-yellow",
 			);

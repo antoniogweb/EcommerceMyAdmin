@@ -26,4 +26,10 @@ class ModaliModel extends BasicsectionModel {
 	
 	public $hModelName = "ModalicatModel";
 	
+	public function editData()
+	{
+		if (isset($this->values["apri_dopo_secondi"]))
+			$this->values["apri_dopo_secondi"] = abs((int)$this->values["apri_dopo_secondi"]);
+	}
+	
 }

@@ -43,6 +43,9 @@
 										<div class='col-md-6'>
 											<?php echo $form["giorni_durata_modale"];?>
 										</div>
+										<div class='col-md-6'>
+											<?php echo $form["apri_dopo_secondi"];?>
+										</div>
 									</div>
 									
 									<?php echo $form["description"];?>
