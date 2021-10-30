@@ -69,29 +69,6 @@ class ProdottiController extends PagesController {
 		
 		$this->head .= ',In promoz?,Pubbl?,In evid?';
 		
-// 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
-// 		
-// 		if (v("ecommerce_attivo"))
-// 			$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
-// 		
-// 		if (v("abilita_blocco_acquisto_diretto"))
-// 			$this->queryFields .= ",acquisto_diretto";
-// 		
-// 		if (v("usa_marchi"))
-// 			$this->queryFields .= ",id_marchio";
-// 		
-// 		if (v("accessori_in_prodotti"))
-// 			$this->queryFields .= ",acquistabile,aggiungi_sempre_come_accessorio";
-// 		
-// 		if (v("mostra_descrizione_in_prodotti"))
-// 			$this->queryFields .= ",description,use_editor";
-// 		
-// 		if (v("mostra_tendina_prodotto_principale"))
-// 			$this->queryFields .= ",id_p";
-// 		
-// 		if (v("attiva_campo_nuovo_in_pagine"))
-// 			$this->queryFields .= ",nuovo";
-		
 		$data["tabella"] = "prodotti";
 		
 		$data["sezionePannello"] = "ecommerce";

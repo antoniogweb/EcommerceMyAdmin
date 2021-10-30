@@ -1774,7 +1774,18 @@ class BaseContenutiController extends BaseController
 		
 		if (is_string($c) && trim(v("token_schedulazione")) && $c == v("token_schedulazione"))
 		{
+			$debug = false;
+			
+			if (v("debug_retargeting_get_variable") && isset($_GET[v("debug_retargeting_get_variable")]))
+				$debug = true;
+			
+			if ($debug)
+				EventiretargetingModel::setDebug();
+			
 			EventiretargetingModel::processa();
+			
+			if ($debug)
+				print_r(EventiretargetingModel::$debugResult);
 		}
 	}
 }

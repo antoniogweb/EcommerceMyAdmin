@@ -34,6 +34,7 @@
 								<div class='scaffold_form'>
 									<?php echo $form["title"];?>
 									
+									<?php echo $form["use_editor"];?>
 									<?php echo $form["description"];?>
 									
 									<?php if ($type === "update") { ?>

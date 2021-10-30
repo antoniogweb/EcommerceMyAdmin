@@ -258,8 +258,9 @@ class EventiretargetingModel extends GenericModel {
 					{
 						$oggetto = htmlentitydecode(field($email, "title"));
 						$testo = htmlentitydecode(field($email, "description"));
-						$oggetto = $cModel->replacePlaceholders($e, $oggetto);
-						$testo = $cModel->replacePlaceholders($e, $testo);
+						
+						$oggetto = SegnapostoModel::sostituisci($oggetto, $e, $cModel);
+						$testo = SegnapostoModel::sostituisci($testo, $e, $cModel);
 						
 						if (in_array($emailElemento, $elementiProcessati))
 							$giaProcessato = true;
@@ -308,7 +309,9 @@ class EventiretargetingModel extends GenericModel {
 								$valoriElemento += array(
 									"data_ora_elemento"	=>	date("Y-m-d H:i", $e["creation_time"]),
 									"numero_ore_evento"	=>	$scattaDopoOre,
-									"nome_evento"		=>	$evento["eventi_retargeting"]["titolo"]
+									"nome_evento"		=>	$evento["eventi_retargeting"]["titolo"],
+									"oggetto"			=>	sanitizeAll($oggetto),
+									"testo"				=>	sanitizeAll($testo),
 								);
 							
 								self::$debugResult[] = $valoriElemento;

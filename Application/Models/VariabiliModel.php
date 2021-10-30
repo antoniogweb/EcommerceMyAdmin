@@ -148,6 +148,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_cache_prodotti"		=>	1,
 		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"",
+		"debug_retargeting_get_variable"		=>	"",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
 		"conferma_registrazione"	=>	0,
 		"ore_durata_link_conferma"	=>	24,
