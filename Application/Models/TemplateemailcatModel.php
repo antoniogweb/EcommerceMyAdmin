@@ -32,5 +32,18 @@ class TemplateemailcatModel extends CategoriesModel {
 		parent::__construct();
 		
 	}
-
+	
+	public function insert()
+	{
+		$this->forzaBloccato();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->forzaBloccato();
+		
+		return parent::update($id, $where);
+	}
 }

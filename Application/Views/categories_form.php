@@ -35,7 +35,7 @@
                 </div>
 			</div>
 		</div>
-		<?php if (isset($urlPagina)) { ?>
+		<?php if (isset($urlPagina) && isset($dettagliCategoria) && $dettagliCategoria["attivo"] == "Y" && !$dettagliCategoria["bloccato"]) { ?>
 		<div class='col-md-4'>
 			<div class="panel panel-info">
 				<div class="panel-body">

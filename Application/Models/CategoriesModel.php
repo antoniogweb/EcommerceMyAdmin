@@ -945,10 +945,16 @@ class CategoriesModel extends HierarchicalModel {
 		{
 			foreach (self::$sezioneVariabile as $sezione => $variabile)
 			{
-				if ($sez["section"] == $sezione && ((v($variabile) && !$sez["installata"]) || (!v($variabile) && $sez["installata"])))
+				if ($sez["section"] == $sezione && (
+					(v($variabile) && !$sez["installata"]) || 
+					(v($variabile) && !$sez["bloccato"] && $sez["attivo"] == "N") || 
+					(!v($variabile) && $sez["installata"]) ||
+					(!v($variabile) && $sez["attivo"] == "Y")
+				))
 				{
 					$this->setValues(array(
 						"installata"	=>	v($variabile),
+						"attivo"		=>	v($variabile) ? "Y" : "N",
 					));
 					
 					$this->pUpdate($sez["id_c"]);
@@ -968,15 +974,20 @@ class CategoriesModel extends HierarchicalModel {
 	public static function getIdCategoriaDaSezione($sezione)
 	{
 		if (!isset(self::$associazioneSezioneId))
-			self::$associazioneSezioneId = CategoriesModel::g()->where(array(
-				"ne"	=>	array(
-					"section"	=>	"",
-				),
-			))->toList("section", "id_c")->send();
+			self::associaSezioneId();
 		
 		if (isset(self::$associazioneSezioneId[$sezione]))
 			return self::$associazioneSezioneId[$sezione];
 		
 		return 0;
+	}
+	
+	public static function associaSezioneId()
+	{
+		self::$associazioneSezioneId = CategoriesModel::g()->where(array(
+			"ne"	=>	array(
+				"section"	=>	"",
+			),
+		))->toList("section", "id_c")->send();
 	}
 }

@@ -287,7 +287,6 @@ class BaseContenutiController extends BaseController
 		
 		$args = $this->pageArgs;
 		
-		
 		if (count($args) > 0)
 		{
 			//parents array as taken by the URL
@@ -551,6 +550,8 @@ class BaseContenutiController extends BaseController
 	
 	protected function category($id)
 	{
+		$this->m["CategoriesModel"]->checkBloccato($id);
+		
 		if (!in_array("combinazioni", Cache::$cachedTables))
 			Cache::$cachedTables[] = "combinazioni";
 		
@@ -1111,6 +1112,8 @@ class BaseContenutiController extends BaseController
 	
 	protected function page($id)
 	{
+		$this->m["PagesModel"]->checkBloccato($id);
+		
 		$clean["realId"] = $data["realId"] = (int)$id;
 		
 		if (v("attiva_formn_contatti"))
@@ -1661,10 +1664,9 @@ class BaseContenutiController extends BaseController
 		))->orderBy("categories.priorita_sitemap desc, lft")->limit(500)->send();
 		
 		$data["sitemap"] = $this->m["PagesModel"]->clear()->select("pages.*,categories.*,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica")->inner("categories")->on("categories.id_c = pages.id_c")->where(array(
-			"attivo"			=>	"Y",
 			"add_in_sitemap"	=>	"Y",
 			"categories.add_in_sitemap"	=>	"Y",
-		))->orderBy("categories.priorita_sitemap desc,pages.priorita_sitemap desc,coalesce(pages.data_ultima_modifica,pages.data_creazione) desc")->limit(500)->send();
+		))->addWhereAttivo()->orderBy("categories.priorita_sitemap desc,pages.priorita_sitemap desc,coalesce(pages.data_ultima_modifica,pages.data_creazione) desc")->limit(500)->send();
 		
 		$arrayConfronto = array($data["sitemapCat"], $data["sitemap"]);
 		

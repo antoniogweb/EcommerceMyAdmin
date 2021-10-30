@@ -161,4 +161,10 @@ trait CommonModel {
 		
 		return rtrim(Url::getFileRoot(),"/").$linguaUrl;
 	}
+	
+	public function forzaBloccato()
+	{
+		$this->values["bloccato"] = 1;
+		$this->values["attivo"] = "N";
+	}
 }

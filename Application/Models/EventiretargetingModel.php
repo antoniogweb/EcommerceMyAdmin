@@ -140,7 +140,7 @@ class EventiretargetingModel extends GenericModel {
 	
 	public function selectMail()
 	{
-		return PagesModel::g(false)->selectPagineSezione("email", false);
+		return PagesModel::g(false)->selectPagineSezione("email", false, false);
 	}
 	
 	public function gruppiEventi()

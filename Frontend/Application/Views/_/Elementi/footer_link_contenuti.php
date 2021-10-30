@@ -9,3 +9,7 @@
 <?php if ($idBlog) { ?>
 <li><a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idBlog);?>"><?php echo gtext("Blog");?></a></li>
 <?php } ?>
+<?php if (CategoriesModel::getIdCategoriaDaSezione("faq")) { ?>
+<li><a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias(CategoriesModel::getIdCategoriaDaSezione("faq"));?>"><?php echo gtext("Faq");?></a></li>
+<?php } ?>
+

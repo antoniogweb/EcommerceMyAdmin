@@ -475,21 +475,16 @@ class CategoriesController extends BaseController {
 			$this->scaffold->loadForm($queryType,$this->applicationUrl.$this->controller."/form/$queryType/".$clean['id']);
 			
 			if ($queryType === "update")
-			{
 				$this->m[$this->modelName]->form->entry["id_p"]->options = $this->m[$this->modelName]->buildSelect($clean['id']);
-			}
 			
 			if (isset($this->formFields))
-			{
 				$this->scaffold->model->fields = $this->formFields;
-			}
 			
 			$this->scaffold->getFormValues('sanitizeHtml',$clean['id']);
 
 			if (isset($_GET["insert"]))
-			{
 				$this->scaffold->model->notice = "<div class='alert alert-success'>operazione eseguita!</div>\n";
-			}
+			
 			$data['scaffold'] = $this->scaffold->render();
 			
 			$data['menu'] = $this->scaffold->html['menu'];
@@ -507,6 +502,8 @@ class CategoriesController extends BaseController {
 						"lingua"	=>	self::$traduzioni,
 					),
 				))->send(false);
+				
+				$data["dettagliCategoria"] = $this->m["CategoriesModel"]->selectId($clean['id']);
 				
 				$data["urlPagina"] = $this->m["CategoriesModel"]->getUrlAlias($clean['id']);
 			}

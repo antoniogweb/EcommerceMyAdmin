@@ -34,7 +34,7 @@ class TemplateemailController extends GenericsectionController {
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
-			'PagesModel.getPubblicatoCheckbox|pages.id_page',
+// 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
 		$this->colProperties = array(
@@ -43,10 +43,12 @@ class TemplateemailController extends GenericsectionController {
 			),
 		);
 		
+		$this->filters = array(null,'title');
+		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attivo';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo';
 		
-		$this->queryFields = "title,attivo,description,use_editor";
+		$this->queryFields = "title,description,use_editor";
 	}
 }

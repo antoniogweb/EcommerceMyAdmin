@@ -861,7 +861,7 @@ class GenericModel extends Model_Tree
 	
 	public function buildAllPagesSelect()
 	{
-		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->orderBy("title")->toList("id_page","title")->send();
+		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->addWhereAttivo()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
 	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true)
@@ -1111,6 +1111,7 @@ class GenericModel extends Model_Tree
 		$this->aWhere(array(
 			"pages.attivo"	=>	"Y",
 			"pages.acquistabile"	=>	"Y",
+			"pages.bloccato"	=>	0,
 		));
 		
 		return $this;
@@ -1206,4 +1207,12 @@ class GenericModel extends Model_Tree
     }
     
     public function overrideFormStruct() {}
+    
+    public function checkBloccato($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["bloccato"])
+			die("ELEMENTO BLOCCATO");
+    }
 }

@@ -668,7 +668,7 @@ class HierarchicalModel extends GenericModel {
 	
 	public function buildSelect($id = null, $showRoot = true, $where = null)
 	{
-		$res = $this->query("SELECT node.".$this->_idFields.",node.lft,node.rgt,CONCAT( REPEAT('- ', COUNT(parent.".$this->_idFields.") - 2), node.".$this->titleFieldName.") AS name FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE $where node.lft BETWEEN parent.lft AND parent.rgt GROUP BY node.".$this->_idFields." ORDER BY node.lft;");
+		$res = $this->query("SELECT node.".$this->_idFields.",node.lft,node.rgt,node.attivo,CONCAT( REPEAT('- ', COUNT(parent.".$this->_idFields.") - 2), node.".$this->titleFieldName.") AS name FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE $where node.lft BETWEEN parent.lft AND parent.rgt GROUP BY node.".$this->_idFields." ORDER BY node.lft;");
 		
 		$children = array();
 		if (isset($id))
@@ -679,6 +679,9 @@ class HierarchicalModel extends GenericModel {
 		$ret = array();
 		foreach ($res as $r)
 		{
+			if ($r["node"]["attivo"] == "N")
+				continue;
+			
 			if (!in_array($r["node"][$this->_idFields],$children))
 			{
 				if (!isset($this->section))

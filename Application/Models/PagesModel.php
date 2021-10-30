@@ -465,15 +465,19 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Select di tuttu le pagine di una certa sezione
-	public function selectPagineSezione($sezione, $withEmpty = false)
+	public function selectPagineSezione($sezione, $withEmpty = false, $soloAttivi = true)
 	{
-		$res = $this->clear()->where(array(
-				"attivo" => "Y",
-			))
+		$res = $this->clear()
 			->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($sezione))
 			->orderBy("pages.id_order")
-			->toList("id_page", "title")
-			->send();
+			->toList("id_page", "title");
+		
+		if ($soloAttivi)
+			$this->aWhere(array(
+				"attivo" => "Y",
+			));
+			
+		$res = $this->send();
 		
 		if ($withEmpty)
 			return array(0=>"--") + $res;
