@@ -945,16 +945,16 @@ class CategoriesModel extends HierarchicalModel {
 		{
 			foreach (self::$sezioneVariabile as $sezione => $variabile)
 			{
-				if ($sez["section"] == $sezione && (
-					(v($variabile) && !$sez["installata"]) || 
-					(v($variabile) && !$sez["bloccato"] && $sez["attivo"] == "N") || 
-					(!v($variabile) && $sez["installata"]) ||
-					(!v($variabile) && $sez["attivo"] == "Y")
-				))
+				if ($sez["section"] == $sezione)
 				{
+					$attivo = v($variabile) ? "Y" : "N";
+					
+					if ($sez["bloccato"])
+						$attivo = "N";
+					
 					$this->setValues(array(
 						"installata"	=>	v($variabile),
-						"attivo"		=>	v($variabile) ? "Y" : "N",
+						"attivo"		=>	$attivo,
 					));
 					
 					$this->pUpdate($sez["id_c"]);

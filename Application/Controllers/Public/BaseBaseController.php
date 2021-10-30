@@ -333,7 +333,7 @@ class BaseBaseController extends Controller
 		
 		if (v("blog_attivo"))
 		{
-			$idBlog = (int)CategoriesModel::getIdCategoriaDaSezione("blog");
+			$idBlog = $this->sectionsId["blog"] = $data["idBlog"] = (int)CategoriesModel::getIdCategoriaDaSezione("blog");
 
 			$data["ultimiArticoli"] = $this->getNewsInEvidenza = $this->m['PagesModel']->clear()->select("*")
 				->addJoinTraduzionePagina()
@@ -372,12 +372,14 @@ class BaseBaseController extends Controller
 		
 		if (v("mostra_faq"))
 		{
+			$idFaq = $this->sectionsId["faq"] = $data["idFaq"] = (int)CategoriesModel::getIdCategoriaDaSezione("faq");
+			
 			$data["faq"] = $this->faq = $this->m['PagesModel']->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
 					"in_evidenza"=>"Y",
-					"id_c"		=>	(int)CategoriesModel::getIdCategoriaDaSezione("faq")
+					"id_c"		=>	$idFaq,
 				))->orderBy("pages.id_order")->send();
 		}
 		

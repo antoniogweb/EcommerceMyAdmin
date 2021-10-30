@@ -80,7 +80,7 @@ class CategoriesController extends BaseController {
 		
 		$this->s['admin']->check();
 		
-		if ($model == "CategoriesModel")
+		if ($model == "CategoriesModel" && $action == "main")
 			$this->m[$this->modelName]->sistemaVisibilitaSezioni();
 	}
 
