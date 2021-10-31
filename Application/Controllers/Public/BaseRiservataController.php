@@ -162,7 +162,9 @@ class BaseRiservataController extends BaseController
 		if (isset($_GET["cancella_cookies"]))
 		{
 			setcookie("ok_cookie","OK",(time()-3600),"/");
-			setcookie("ok_cookie_terzi","OK",(time()-3600),"/");
+			if (isset($_COOKIE["ok_cookie_terzi"]))
+				setcookie("ok_cookie_terzi","OK",(time()-3600),"/");
+			
 			$this->redirect("riservata/privacy?ok_no_cookies");
 		}
 		
