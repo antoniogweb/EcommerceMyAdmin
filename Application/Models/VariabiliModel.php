@@ -301,6 +301,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_azioni_ajax"		=>	0,
 		"attiva_link_documenti"		=>	0,
 		"permetti_gestione_sitemap"	=>	0,
+		"attiva_blocco_cookie_terzi"=>	0,
+		"stile_popup_cookie"		=>	"cookie_stile_css",
 	);
 	
 	public static $daInizializzare = array(
@@ -315,6 +317,17 @@ class VariabiliModel extends GenericModel {
 		{
 			if (!trim(v($var)))
 				VariabiliModel::setValore($var, md5(randString(10).uniqid(mt_rand(),true)));
+		}
+	}
+	
+	public static function checkCookieTerzeParti()
+	{
+		if (v("attiva_blocco_cookie_terzi") && !isset($_COOKIE["ok_cookie_terzi"]))
+		{
+			VariabiliModel::$valori["codice_gtm_analytics"] = "";
+			VariabiliModel::$valori["codice_gtm_analytics_noscript"] = "";
+			VariabiliModel::$valori["codice_fbk"] = "";
+			VariabiliModel::$valori["codice_fbk_noscript"] = "";
 		}
 	}
 	

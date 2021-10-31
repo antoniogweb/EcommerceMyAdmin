@@ -115,6 +115,7 @@ class BaseHomeController extends BaseController
 		
 		$time = time() + 3600*24*365*10;
 		setcookie("ok_cookie","OK",$time,"/");
+		setcookie("ok_cookie_terzi","OK",$time,"/");
 	}
 	
 	public function xmlprodotti($p = null)

@@ -55,11 +55,7 @@ class BaseBaseController extends Controller
 		if (!defined("FRONT"))
 			define('FRONT', ROOT);
 		
-// 		$_GET["asJson"] = true;
-		
 		Domain::setPath();
-// 		Domain::$parentRoot = FRONT;
-// 		Domain::$adminRoot = LIBRARY;
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
@@ -469,6 +465,7 @@ class BaseBaseController extends Controller
 		Params::$rewriteStatusVariables = false;
 		
 		VariabiliModel::inizializza();
+		VariabiliModel::checkCookieTerzeParti();
 		
 		if (getSubTotalN() > 9999999)
 		{
