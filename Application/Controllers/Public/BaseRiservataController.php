@@ -181,6 +181,9 @@ class BaseRiservataController extends BaseController
 				$this->m["RegusersModel"]->deleteAccount($user["id_user"]);
 				$this->s['registered']->logout();
 				
+				setcookie("ok_cookie","OK",(time()-3600),"/");
+				setcookie("ok_cookie_terzi","OK",(time()-3600),"/");
+				
 				$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
 				
 				if ($idRedirect)

@@ -664,6 +664,9 @@ class BaseBaseController extends Controller
 	
 	protected function formRegistrazione()
 	{
+		if( !session_id() )
+			session_start();
+		
 		// Setta password
 		$this->m["RegusersModel"]->settaPassword();
 		
@@ -720,6 +723,8 @@ class BaseBaseController extends Controller
 						
 						$password = $this->request->post("password","","none");
 						$clean["username"] = $this->request->post("username","","sanitizeAll");
+						
+						$_SESSION["email_carrello"] = $clean["username"];
 						
 						//loggo l'utente
 						if (!v("conferma_registrazione"))
@@ -797,6 +802,9 @@ class BaseBaseController extends Controller
 	
 	protected function inviaMailFormContatti($id)
 	{
+		if( !session_id() )
+			session_start();
+		
 		Domain::$currentUrl =  $this->getCurrentUrl();
 		
 		$isNewsletter = false;
@@ -837,6 +845,8 @@ class BaseBaseController extends Controller
 				if ($this->m['ContattiModel']->checkConditions('insert'))
 				{
 					$valoriEmail = $this->m['ContattiModel']->values;
+					
+					$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
 					
 					$idContatto = $this->m['ContattiModel']->getIdFromMail($valoriEmail["email"]);
 					

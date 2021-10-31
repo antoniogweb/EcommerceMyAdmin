@@ -138,21 +138,23 @@ else
 			</div>
 		</div>
 		<?php } ?>
-	
-		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
-			<div class="uk-form-controls">
-				<?php echo Html_Form::password("password",$values['password'],"uk-input class_password",null,"autocomplete='new-password'  placeholder='".gtext("Password", false)."'");?>
-			</div>
-		</div>
 		
-		<?php if (v("account_attiva_conferma_password")) { ?>
-		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
-			<div class="uk-form-controls">
-				<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation",null,"autocomplete='new-password'  placeholder='".gtext("Conferma password", false)."'");?>
+		<?php if (!v("genera_e_invia_password")) { ?>
+			<div class="uk-margin uk-margin-remove-bottom">
+				<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
+				<div class="uk-form-controls">
+					<?php echo Html_Form::password("password",$values['password'],"uk-input class_password",null,"autocomplete='new-password'  placeholder='".gtext("Password", false)."'");?>
+				</div>
 			</div>
-		</div>
+			
+			<?php if (v("account_attiva_conferma_password")) { ?>
+			<div class="uk-margin uk-margin-remove-bottom">
+				<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
+				<div class="uk-form-controls">
+					<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation",null,"autocomplete='new-password'  placeholder='".gtext("Conferma password", false)."'");?>
+				</div>
+			</div>
+			<?php } ?>
 		<?php } ?>
 	<?php } ?>
 </div>
@@ -193,6 +195,7 @@ else
 			<div style="margin-top:10px;"><?php echo Html_Form::radio("registrato",$values["registrato"],"Y","radio_registrato","none");?> <?php echo gtext("Crea account", false);?></div>
 		</div>
 
+		<?php if (!v("genera_e_invia_password")) { ?>
 		<div class="table_password">
 			<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 				<div class="first_of_grid uk-margin uk-margin-remove-bottom">
@@ -211,6 +214,7 @@ else
 				<?php } ?>
 			</div>
 		</div>
+		<?php } ?>
 	<?php } ?>
 
 <?php } ?>
