@@ -232,6 +232,14 @@ Helper_Menu::$htmlLinks = array(
 		'text'	=>	"Aggiorna",
 		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
 	),
+	"rigenera" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-warning"',
+		"class"	=>	"btn btn-warning",
+		'text'	=>	"Rigenera",
+		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
+	),
 	'save'	=>	array(
 		'title'	=>	"salva",
 		'text'	=>	"Salva",

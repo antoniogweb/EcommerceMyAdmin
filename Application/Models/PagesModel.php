@@ -819,10 +819,35 @@ class PagesModel extends GenericModel {
 				
 				// Aggiungi tutti i prodotti sempre come accessori
 				$this->aggiungiAccesori($this->lId);
+				
+				// Aggiungi il contenuto alla sitemap
+				$this->aggiungiAllaSitemap($this->lId);
 			}
 		}
 		
 		return $r;
+	}
+	
+	public function aggiungiAllaSitemap($id)
+	{
+		if (v("permetti_gestione_sitemap"))
+		{
+			$pagina = PagesModel::getPageDetails($id);
+			
+			if (count($pagina) > 0 && $pagina["categories"]["id_c"] && !$pagina["pages"]["bloccato"] && !$pagina["categories"]["bloccato"] && $pagina["categories"]["add_in_sitemap"] == "Y")
+			{
+				$sm = new SitemapModel();
+				
+				$sm->setValues(array(
+					"id_page"	=>	$id,
+					"id_c"		=>	$pagina["categories"]["id_c"],
+					"ultima_modifica"	=>	$pagina["pages"]["data_ultima_modifica"],
+					"priorita"	=>	$pagina["pages"]["priorita_sitemap"],
+				));
+				
+				$sm->insert();
+			}
+		}
 	}
 	
 	public function getIdFromAlias($alias, $lingua = null)

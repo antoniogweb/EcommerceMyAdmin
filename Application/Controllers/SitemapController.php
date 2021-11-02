@@ -22,9 +22,19 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_Menu::$htmlLinks["refresh"]["attributes"] = 'class="btn btn-warning"';
+Helper_Menu::$htmlLinks["refresh"]["attributes"] = 'class="pull-right btn btn-info" title="Aggiungi alla sitemap le nuove pagine"';
 Helper_Menu::$htmlLinks["refresh"]["url"] = "main";
 Helper_Menu::$htmlLinks["refresh"]["queryString"] = "&aggiorna_sitemap=Y";
+
+Helper_Menu::$htmlLinks["rigenera"]["url"] = "main";
+Helper_Menu::$htmlLinks["rigenera"]["queryString"] = "&rigenera_sitemap=Y";
+Helper_Menu::$htmlLinks["rigenera"]["attributes"] = 'style="margin-left:10px;" class="pull-right btn btn-warning" title="Svuota e ricrea la sitemap completamente"';
+
+Helper_Menu::$htmlLinks["vedi"] = array(
+	"attributes" => 'role="button" class="btn btn-success" target="_blank"',
+	'text'	=>	"Vedi sitemap",
+	"classIconBefore"	=>	'<i class="fa fa-eye"></i>',
+);
 
 class SitemapController extends BaseController
 {
@@ -36,14 +46,30 @@ class SitemapController extends BaseController
 	
 	public $tabella = "sitemap";
 	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		Helper_Menu::$htmlLinks["vedi"]["absolute_url"] = Domain::$name."/sitemap.xml";
+	}
+	
 	public function main()
 	{
 		if (!v("permetti_gestione_sitemap"))
 			die();
 		
+		$recuperaBackup = 0;
+		
+		if (isset($_GET["rigenera_sitemap"]))
+		{
+			$this->m[$this->modelName]->query("truncate sitemap");
+			$_GET["aggiorna_sitemap"] = "Y";
+			$recuperaBackup = 1;
+		}
+		
 		if (isset($_GET["aggiorna_sitemap"]))
 		{
-			$this->m[$this->modelName]->aggiorna();
+			$this->m[$this->modelName]->aggiorna($recuperaBackup);
 			
 			flash("notice", wrap("Operazione eseguita", array(
 				"div"	=>	"alert alert-success"
@@ -62,7 +88,7 @@ class SitemapController extends BaseController
 				->left(array("categoria", "pagina"))
 				->orderBy("sitemap.id_order")->convert()->save();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'refresh');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'rigenera,refresh,vedi');
 		
 		parent::main();
 	}

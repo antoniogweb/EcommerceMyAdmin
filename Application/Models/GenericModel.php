@@ -1222,4 +1222,14 @@ class GenericModel extends Model_Tree
 		if (!empty($record) && $record["bloccato"])
 			die("ELEMENTO BLOCCATO");
     }
+    
+    // Aggiungi o togli l'elemento dalla sitemap
+    public function inserisciTogliSitemap($id, $valore = "Y")
+    {
+		$this->setValues(array(
+			"add_in_sitemap"	=>	$valore,
+		));
+		
+		$this->pUpdate((int)$id);
+    }
 }

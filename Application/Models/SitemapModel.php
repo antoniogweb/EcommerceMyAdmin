@@ -44,9 +44,9 @@ class SitemapModel extends GenericModel {
     }
     
     // Aggiorna la sitemap
-	public function aggiorna()
+	public function aggiorna($recuperaBackup = 0)
 	{
-		$nodi = self::getNodi();
+		$nodi = self::getNodi($recuperaBackup);
 		
 		if (v("usa_transactions"))
 			$this->db->beginTransaction();
@@ -77,6 +77,30 @@ class SitemapModel extends GenericModel {
 		if (v("usa_transactions"))
 			$this->db->commit();
 	}
+    
+    public function del($id = null, $where = null)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (empty($record))
+			return false;
+		
+		$idPage = $record["id_page"];
+		$idC = $record["id_c"];
+		
+		if ($idPage)
+		{
+			$p = new PagesModel();
+			$p->inserisciTogliSitemap($idPage, "N");
+		}
+		else if ($idC)
+		{
+			$c = new CategoriesModel();
+			$c->inserisciTogliSitemap($idC, "N");
+		}
+		
+		return parent::del($id, $where);
+    }
     
     public static function getNodiFrontend()
     {
@@ -115,7 +139,7 @@ class SitemapModel extends GenericModel {
 		return $dataModificaHome;
     }
     
-    public static function getNodi()
+    public static function getNodi($recuperaBackup = 0)
     {
 		$c = new CategoriesModel();
 		$p = new PagesModel();
@@ -124,11 +148,15 @@ class SitemapModel extends GenericModel {
 		$c->clear()->where(array(
 			"attivo"			=>	"Y",
 			"bloccato"			=>	0,
-			"add_in_sitemap"	=>	"Y",
 			"ne"	=>	array(
 				"id_c"	=>	1,
 			),
 		));
+		
+		if (!$recuperaBackup)
+			$c->aWhere(array(
+				"add_in_sitemap"	=>	"Y",
+			));
 		
 		$elements = $c->treeQueryElements("categories");
 		
@@ -136,11 +164,15 @@ class SitemapModel extends GenericModel {
 		
 		// Where pagine
 		$p->clear()->where(array(
-			"add_in_sitemap"			=>	"Y",
-			"categories.add_in_sitemap"	=>	"Y",
-			"categories.bloccato"	=>	0,
 			"categories.attivo"		=>	"Y",
+			"categories.bloccato"	=>	0,
 		))->addWhereAttivo();
+		
+		if (!$recuperaBackup)
+			$p->aWhere(array(
+				"add_in_sitemap"	=>	"Y",
+				"categories.add_in_sitemap"	=>	"Y",
+			));
 		
 		$elements = $p->treeQueryElements("pages");
 		
