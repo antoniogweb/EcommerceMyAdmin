@@ -157,9 +157,11 @@ class VariabiliModel extends GenericModel {
 		"abilita_solo_nazione_navigazione"	=>	1,
 		"abilita_blocco_acquisto_diretto"	=>	0,
 		"tipo_cliente_default"		=>	"privato",
+		"codice_gtm"				=>	"",
 		"codice_gtm_analytics"		=>	"",
 		"codice_gtm_analytics_noscript"	=>	"",
 		"codice_fbk"				=>	"",
+		"codice_verifica_fbk"		=>	"",
 		"codice_fbk_noscript"		=>	"",
 		"debug_js"					=>	0,
 		"email_log_errori"			=>	"",
@@ -395,16 +397,39 @@ class VariabiliModel extends GenericModel {
 				'options'	=>	$this->opzioniSiNo(),
 				"reverse"	=>	"yes",
 			),
-			'codice_gtm_analytics'	=>	array(
-				'labelString'	=>	"Codice analytics/GTM",
+			'codice_gtm'	=>	array(
+				'labelString'	=>	"Google Tag Manager",
 				'type'			=>	'Textarea',
+				'wrap'		=>	array(
+					null,
+					null,
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Google Tag Manager --&gt;</div>"
+				),
 			),
 			'codice_gtm_analytics_noscript'	=>	array(
-				'labelString'	=>	"Codice analytics/GTM (noscript)",
+				'labelString'	=>	"Google Tag Manager (noscript)",
 				'type'			=>	'Textarea',
+				'wrap'		=>	array(
+					null,
+					null,
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Google Tag Manager (noscript) --&gt;</div>"
+				),
+			),
+			'codice_gtm_analytics'	=>	array(
+				'labelString'	=>	"Global site tag (gtag.js) - Google Analytics",
+				'type'			=>	'Textarea',
+				'wrap'		=>	array(
+					null,
+					null,
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;</div>"
+				),
 			),
 			'codice_fbk'	=>	array(
 				'labelString'	=>	"Codice pixel Facebook",
+				'type'			=>	'Textarea',
+			),
+			'codice_verifica_fbk'	=>	array(
+				'labelString'	=>	"Meta tag verifica Facebook",
 				'type'			=>	'Textarea',
 			),
 			'codice_fbk_noscript'	=>	array(

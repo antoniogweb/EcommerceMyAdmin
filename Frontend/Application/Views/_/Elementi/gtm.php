@@ -1,5 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
-
+if (v("codice_gtm")) {
+	echo htmlentitydecode(v("codice_gtm"));
+}
 if (v("codice_gtm_analytics"))
 {
 	// Guida di riferimento Google

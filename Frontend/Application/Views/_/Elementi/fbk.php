@@ -1,5 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-
+<?php if (v("codice_verifica_fbk")) {
+	echo htmlentitydecode(v("codice_verifica_fbk"));
+} ?>
 <?php if (v("codice_fbk")) { ?>
 	<!-- Facebook Pixel Code -->
 	<script>
