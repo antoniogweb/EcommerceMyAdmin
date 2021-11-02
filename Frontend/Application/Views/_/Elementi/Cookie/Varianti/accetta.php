@@ -6,4 +6,4 @@
 <a class="" href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["COOKIE"]);?>"><?php echo gtext("Ulteriori informazioni");?></a>
 <?php } ?></p>
 
-<div class="uk-margin"><a class="ok_cookies uk-button uk-button-secondary" title="<?php echo gtext("accetto", false);?>" href="#"><?php echo gtext("Accetta");?></a></div>
+<div class="uk-margin"><a class="ok_cookies uk-button uk-button-primary" title="<?php echo gtext("accetto", false);?>" href="#"><?php echo gtext("Accetta");?></a></div>
