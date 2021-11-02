@@ -326,6 +326,7 @@ class VariabiliModel extends GenericModel {
 	{
 		if (v("attiva_blocco_cookie_terzi") && !isset($_COOKIE["ok_cookie_terzi"]))
 		{
+			VariabiliModel::$valori["codice_gtm"] = "";
 			VariabiliModel::$valori["codice_gtm_analytics"] = "";
 			VariabiliModel::$valori["codice_gtm_analytics_noscript"] = "";
 			VariabiliModel::$valori["codice_fbk"] = "";
