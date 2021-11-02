@@ -829,6 +829,7 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[link (.*?)\]/', 'getLink' ,$string);
 	$string = preg_replace_callback('/\[video (.*?)\]/', 'getVideo' ,$string);
 	$string = preg_replace_callback('/\[variabile (.*?)\]/', 'getVariabile' ,$string);
+	$string = preg_replace_callback('/\[scelta-cookie\]/', array("PagesModel", "loadTemplateSceltaCookie"), $string);
 	
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	

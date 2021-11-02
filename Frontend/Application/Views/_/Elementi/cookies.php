@@ -1,7 +1,7 @@
 <?php
 if (!defined('EG')) die('Direct access not allowed!');
 
-if (!isset($_COOKIE["ok_cookie"])) { ?>
+if (!isset($_COOKIE["ok_cookie"]) && !VariabiliModel::checkToken("var_query_string_no_cookie")) { ?>
 
 <script>
 $ = jQuery;

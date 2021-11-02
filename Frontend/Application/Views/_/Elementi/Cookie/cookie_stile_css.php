@@ -17,13 +17,7 @@ $(document).ready(function(){
 
 <div class="segnalazione_cookies_ext" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">
-		<?php echo gtext("Questo sito utilizza cookie per migliorare la tua esperienza di navigazione. Cliccando su OK o continuando a navigare ne consenti l'utilizzo.");?>
-		
-		<?php if (isset($tipiPagina["COOKIE"])) { ?>
-		<b><a class="uk-text-bold" href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["COOKIE"]);?>"><?php echo gtext("Ulteriori informazioni");?></a></b>
-		<?php } ?>
-		
-		<a class="ok_cookies" title="<?php echo gtext("accetto", false);?>" href="#">OK</a>
+		<?php include(tpf("Elementi/Cookie/Varianti/".v("stile_check_cookie").".php")); ?>
 	</div>
 </div>
 <?php } ?>

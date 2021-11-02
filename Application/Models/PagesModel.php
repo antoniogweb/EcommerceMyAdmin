@@ -2376,4 +2376,23 @@ class PagesModel extends GenericModel {
 		
 		return $arrayLingueFrontend;
 	}
+	
+	public static function loadTemplateFile($file)
+	{
+		if (file_exists(tpf($file)))
+		{
+			ob_start();
+			include tpf($file);
+			$output = ob_get_clean();
+			
+			return $output;
+		}
+		
+		return "";
+	}
+	
+	public static function loadTemplateSceltaCookie()
+	{
+		return self::loadTemplateFile("Elementi/Cookie/scelta_tipo.php");
+	}
 }

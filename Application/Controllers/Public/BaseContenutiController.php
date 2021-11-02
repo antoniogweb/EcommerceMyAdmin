@@ -1148,7 +1148,12 @@ class BaseContenutiController extends BaseController
 			->where(array("id_page"=>$clean['id']))->send();
 		
 		if (count($data["pages"]) > 0)
+		{
+			if ($data["pages"][0]["pages"]["tipo_pagina"] == "COOKIE" && VariabiliModel::checkToken("var_query_string_no_cookie"))
+				$data["pages"][0]["pages"]["description"] .= "[scelta-cookie]";
+				
 			$this->p = $data["pages"][0];
+		}
 		
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
 			"lt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
@@ -1749,7 +1754,7 @@ class BaseContenutiController extends BaseController
 		{
 			$debug = false;
 			
-			if (v("debug_retargeting_get_variable") && isset($_GET[v("debug_retargeting_get_variable")]))
+			if (VariabiliModel::checkToken("debug_retargeting_get_variable"))
 				$debug = true;
 			
 			if ($debug)
@@ -1760,5 +1765,19 @@ class BaseContenutiController extends BaseController
 			if ($debug)
 				print_r(EventiretargetingModel::$debugResult);
 		}
+	}
+	
+	public function accettacookie()
+	{
+		if (VariabiliModel::checkToken("var_query_string_no_cookie"))
+		{
+			$time = time() + 3600*24*365*10;
+			setcookie("ok_cookie","OK",$time,"/");
+			
+			if (isset($_GET["all_cookie"]))
+				setcookie("ok_cookie_terzi","OK",$time,"/");
+		}
+		
+		$this->redirect("");
 	}
 }

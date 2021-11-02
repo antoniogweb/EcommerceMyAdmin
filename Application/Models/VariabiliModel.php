@@ -305,12 +305,15 @@ class VariabiliModel extends GenericModel {
 		"permetti_gestione_sitemap"	=>	0,
 		"attiva_blocco_cookie_terzi"=>	0,
 		"stile_popup_cookie"		=>	"cookie_stile_css",
+		"stile_check_cookie"		=>	"accetta",
+		"var_query_string_no_cookie"		=>	"",
 	);
 	
 	public static $daInizializzare = array(
 		"token_schedulazione",
 		"debug_get_variable",
 		"debug_retargeting_get_variable",
+		"var_query_string_no_cookie",
 	);
 	
 	public static function inizializza()
@@ -320,6 +323,14 @@ class VariabiliModel extends GenericModel {
 			if (!trim(v($var)))
 				VariabiliModel::setValore($var, md5(randString(10).uniqid(mt_rand(),true)));
 		}
+	}
+	
+	public static function checkToken($tokenName)
+	{
+		if (v($tokenName) && isset($_GET[v($tokenName)]))
+			return true;
+		
+		return false;
 	}
 	
 	public static function checkCookieTerzeParti()
@@ -332,7 +343,7 @@ class VariabiliModel extends GenericModel {
 			VariabiliModel::$valori["codice_fbk"] = "";
 			VariabiliModel::$valori["codice_fbk_noscript"] = "";
 			
-			if (isset($_COOKIE["ok_cookie"]))
+			if (isset($_COOKIE["ok_cookie"]) && v("stile_check_cookie") == "accetta")
 			{
 				setcookie("ok_cookie","OK",(time()-3600),"/");
 				unset($_COOKIE["ok_cookie"]);
