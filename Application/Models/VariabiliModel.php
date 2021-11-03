@@ -520,4 +520,18 @@ class VariabiliModel extends GenericModel {
 		
 		self::$valori = $values;
 	}
+	
+	public static function verificaCondizioni($condizioni)
+	{
+		if (is_array($condizioni))
+		{
+			foreach ($condizioni as $k => $v)
+			{
+				if ((string)v($k) !== (string)$v)
+					return false;
+			}
+		}
+		
+		return true;
+	}
 }

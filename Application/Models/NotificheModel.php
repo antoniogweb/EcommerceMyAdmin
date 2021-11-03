@@ -77,12 +77,15 @@ class NotificheModel extends GenericModel {
 			$queryStringChar = strstr($r["url"], '?') ? "&" : "?";
 			$queryString = $queryStringChar . "id_notifica=".$r["id_notifica"];
 			
-			$notifiche[] = array(
-				"testo"	=>	gtext($r["titolo"]),
-				"link"	=>	Url::getRoot().$r["url"].$queryString,
-				"icona"	=>	$r["icona"],
-				"class"	=>	$r["classe"],
-			);
+			parse_str($r["condizioni"], $condizioni);
+			
+			if (VariabiliModel::verificaCondizioni($condizioni))
+				$notifiche[] = array(
+					"testo"	=>	gtext($r["titolo"]),
+					"link"	=>	Url::getRoot().$r["url"].$queryString,
+					"icona"	=>	$r["icona"],
+					"class"	=>	$r["classe"],
+				);
 		}
 		
 		return $notifiche;
