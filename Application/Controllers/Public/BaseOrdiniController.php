@@ -732,6 +732,9 @@ class BaseOrdiniController extends BaseController
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		
+		if (v("checkout_solo_loggato") && !User::$logged)
+			$this->redirect("regusers/login?redirect=/checkout");
+		
 		$logSubmit = new LogModel();
 		
 		if( !session_id() )
@@ -739,7 +742,7 @@ class BaseOrdiniController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
 		
-		$data['customHeaderClass'] = "page-template-default page page-id-9 logged-in custom-background wp-custom-logo theme-auros woocommerce-checkout woocommerce-page woocommerce-no-js opal-style chrome platform-linux woocommerce-active product-style-1 opal-layout-wide opal-pagination-6 opal-page-title-top-bottom-center opal-footer-skin-light opal-comment-4 opal-comment-form-2 elementor-default";
+		$data['customHeaderClass'] = "";
 // 		$data["inlineCssFile"] = "auros-css-inline-category.css";
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);

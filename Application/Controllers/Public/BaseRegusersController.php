@@ -65,35 +65,38 @@ class BaseRegusersController extends BaseController
 	{
 		$data['title'] = Parametri::$nomeNegozio . ' - Login';
 		
-		$data['headerClass'] = "woocommerce-account";
+		$data['headerClass'] = "";
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/regusers/login";
 		}
 		
-		$redirect = $this->request->get('redirect','','sanitizeAll');
-		$redirect = ltrim($redirect,"/");
+		$redirect = RegusersModel::getRedirect();
 		
-		//valori permessi per il redirect
-		$allowedRedirect = explode(",",v("redirect_permessi"));
+// 		$redirect = $this->request->get('redirect','','sanitizeAll');
+// 		$redirect = ltrim($redirect,"/");
+// 		
+// 		//valori permessi per il redirect
+// 		$allowedRedirect = explode(",",v("redirect_permessi"));
+// 		
+// 		if (is_numeric($redirect))
+// 		{
+// 			$page = $this->m["PagesModel"]->selectId((int)$redirect);
+// 			
+// 			if (!empty($page))
+// 				$redirect = (int)$redirect;
+// 			else
+// 				$redirect = '';
+// 		}
+// 		else
+// 		{
+// 			if (!in_array($redirect,$allowedRedirect))
+// 				$redirect = '';
+// 		}
 		
-		if (is_numeric($redirect))
-		{
-			$page = $this->m["PagesModel"]->selectId((int)$redirect);
-			
-			if (!empty($page))
-				$redirect = (int)$redirect;
-			else
-				$redirect = '';
-		}
-		else
-		{
-			if (!in_array($redirect,$allowedRedirect))
-				$redirect = '';
-		}
-		
-		$data['action'] = Url::getRoot("regusers/login?redirect=$redirect");
+		$data['action'] = Url::getRoot("regusers/login".RegusersModel::$redirectQueryString);
+		$data['redirectQueryString'] = RegusersModel::$redirectQueryString;
 		
 		$data['notice'] = null;
 		
@@ -120,19 +123,21 @@ class BaseRegusersController extends BaseController
 				case 'accepted':
 					if (Output::$html)
 					{
-						if (strcmp($redirect,'') !== 0)
-						{
-							if (is_numeric($redirect))
-								$urlRedirect = Url::getRoot().getUrlAlias((int)$redirect);
-							else
-								$urlRedirect = Url::getRoot().$redirect;
-							
+						$urlRedirect = RegusersModel::getUrlRedirect();
+						
+// 						if (strcmp($redirect,'') !== 0)
+// 						{
+// 							if (is_numeric($redirect))
+// 								$urlRedirect = Url::getRoot().getUrlAlias((int)$redirect);
+// 							else
+// 								$urlRedirect = Url::getRoot().$redirect;
+// 							
+// 							header('Location: '.$urlRedirect);
+// 						}
+						if ($urlRedirect)
 							header('Location: '.$urlRedirect);
-						}
 						else
-						{
 							$this->redirect("area-riservata");
-						}
 					}
 					else
 					{
@@ -820,7 +825,10 @@ class BaseRegusersController extends BaseController
 		}
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("registrati");
-		$data['action'] = "/crea-account";
+		
+		$redirect = RegusersModel::getRedirect();
+		
+		$data['action'] = "/crea-account".RegusersModel::$redirectQueryString;
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{

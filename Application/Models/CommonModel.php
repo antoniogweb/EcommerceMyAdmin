@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait CommonModel {
 	
+	public static $redirect = "";
+	public static $redirectQueryString = "";
+	
 	public function controllaCF($controlla = 1)
 	{
 		if ($controlla)
@@ -166,5 +169,53 @@ trait CommonModel {
 	{
 		$this->values["bloccato"] = 1;
 		$this->values["attivo"] = "N";
+	}
+	
+	public static function getRedirect()
+	{
+		$r = new Request();
+		
+		$redirect = $r->get('redirect','','sanitizeAll');
+		$redirect = ltrim($redirect,"/");
+		
+		//valori permessi per il redirect
+		$allowedRedirect = explode(",",v("redirect_permessi"));
+		
+		if (is_numeric($redirect))
+		{
+			$p = new PagesModel();
+			
+			$page = $p->selectId((int)$redirect);
+			
+			if (!empty($page))
+				$redirect = (int)$redirect;
+			else
+				$redirect = '';
+		}
+		else
+		{
+			if (!in_array($redirect,$allowedRedirect))
+				$redirect = '';
+		}
+		
+		self::$redirect = $redirect;
+		self::$redirectQueryString = $redirect ? "?redirect=$redirect" : "";
+		
+		return $redirect;
+	}
+	
+	public static function getUrlRedirect()
+	{
+		if (strcmp(self::$redirect,'') !== 0)
+		{
+			if (is_numeric(self::$redirect))
+				$urlRedirect = Url::getRoot().getUrlAlias((int)self::$redirect);
+			else
+				$urlRedirect = Url::getRoot().self::$redirect;
+			
+			return $urlRedirect;
+		}
+		
+		return '';
 	}
 }

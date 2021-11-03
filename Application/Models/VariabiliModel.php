@@ -307,6 +307,7 @@ class VariabiliModel extends GenericModel {
 		"stile_popup_cookie"		=>	"cookie_stile_css",
 		"stile_check_cookie"		=>	"accetta",
 		"var_query_string_no_cookie"		=>	"",
+		"checkout_solo_loggato"		=>	0,
 	);
 	
 	public static $daInizializzare = array(

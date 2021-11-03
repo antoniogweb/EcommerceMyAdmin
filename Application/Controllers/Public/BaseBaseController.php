@@ -774,7 +774,14 @@ class BaseBaseController extends Controller
 						}
 						
 						if (Output::$html)
-							$this->redirect("avvisi");
+						{
+							$urlRedirect = RegusersModel::getUrlRedirect();
+							
+							if ($urlRedirect && !v("conferma_registrazione"))
+								header('Location: '.$urlRedirect);
+							else
+								$this->redirect("avvisi");
+						}
 					}
 					else
 					{

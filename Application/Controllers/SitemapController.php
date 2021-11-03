@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_Menu::$htmlLinks["refresh"]["attributes"] = 'class="pull-right btn btn-info" title="Aggiungi alla sitemap le nuove pagine"';
+Helper_Menu::$htmlLinks["refresh"]["attributes"] = 'class="pull-right btn btn-info" title="Aggiungi alla sitemap le nuove pagine, se mancanti"';
 Helper_Menu::$htmlLinks["refresh"]["url"] = "main";
 Helper_Menu::$htmlLinks["refresh"]["queryString"] = "&aggiorna_sitemap=Y";
 
