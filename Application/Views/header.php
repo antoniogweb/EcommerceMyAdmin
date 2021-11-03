@@ -123,7 +123,7 @@
 				</a>
 				<div class="navbar-custom-menu">
 					<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {
-						$notifiche = VariabiliModel::getNotifiche();
+						$notifiche = NotificheModel::getNotifiche();
 					?>
 					<ul class="nav navbar-nav navbar-right">
 						<?php if (LingueModel::permettiCambioLinguaBackend()) { ?>

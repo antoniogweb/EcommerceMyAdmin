@@ -1,0 +1,1 @@
+INSERT INTO `notifiche` (`id_notifica`, `data_creazione`, `data_risoluzione`, `titolo`, `contesto`, `url`, `classe`, `icona`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, NULL, 'Attenzione, controllare la sitemap!', 'SITEMAP', 'sitemap/main', 'text-yellow', 'fa-map-o', '1');
