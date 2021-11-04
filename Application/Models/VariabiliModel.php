@@ -319,9 +319,14 @@ class VariabiliModel extends GenericModel {
 		"var_query_string_no_cookie",
 	);
 	
-	public static function inizializza()
+	public static function inizializza($variabili = array())
 	{
-		foreach (self::$daInizializzare as $var)
+		$daInizializzare = self::$daInizializzare;
+		
+		if (!empty($variabili))
+			$daInizializzare = array_merge(self::$daInizializzare, $variabili);
+		
+		foreach ($daInizializzare as $var)
 		{
 			if (!trim(v($var)))
 				VariabiliModel::setValore($var, md5(randString(10).uniqid(mt_rand(),true)));
