@@ -1752,6 +1752,9 @@ class BaseContenutiController extends BaseController
 		
 		if (is_string($c) && trim(v("token_schedulazione")) && $c == v("token_schedulazione"))
 		{
+			Files_Log::$logFolder = LIBRARY."/Logs";
+			$log = Files_Log::getInstance("retargeting");
+			
 			$debug = false;
 			
 			if (VariabiliModel::checkToken("debug_retargeting_get_variable"))
@@ -1760,10 +1763,25 @@ class BaseContenutiController extends BaseController
 			if ($debug)
 				EventiretargetingModel::setDebug();
 			
+			if (!$debug)
+				$log->writeString("INIZIO LOG RETARGETING");
+			
 			EventiretargetingModel::processa();
 			
+			if (!$debug)
+				$log->writeString("FINE LOG RETARGETING");
+			
 			if ($debug)
-				print_r(EventiretargetingModel::$debugResult);
+			{
+				$html = EventiretargetingModel::printDebugResult();
+				
+				if (v("email_debug_retargeting") && count(EventiretargetingModel::$debugResult) > 0)
+					MailordiniModel::inviaMailLog("Debut Retargeting", $html, "RETARGETING DEBUG", "email_debug_retargeting");
+				
+				echo $html;
+			}
+			else
+				echo "Processazione schedulazione avvenuta";
 		}
 	}
 	

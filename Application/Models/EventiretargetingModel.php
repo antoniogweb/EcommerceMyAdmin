@@ -240,7 +240,7 @@ class EventiretargetingModel extends GenericModel {
 				
 				$elementi = $cModel->send(false);
 				
-// 				echo $cModel->getQuery()."<br />";
+				$queryElementi = $cModel->getQuery();
 				
 				$elementiProcessati = array();
 				
@@ -312,6 +312,7 @@ class EventiretargetingModel extends GenericModel {
 									"nome_evento"		=>	$evento["eventi_retargeting"]["titolo"],
 									"oggetto"			=>	sanitizeAll($oggetto),
 									"testo"				=>	sanitizeAll($testo),
+									"queryElementi"		=>	$queryElementi,
 								);
 							
 								self::$debugResult[] = $valoriElemento;
@@ -321,5 +322,28 @@ class EventiretargetingModel extends GenericModel {
 				}
 			}
 		}
+	}
+	
+	public static function printDebugResult()
+	{
+		$html = "Niente da schedulare";
+		
+		if (count(self::$debugResult) > 0)
+		{
+			$html = "<table border='1'><tr><th>".implode("</th><th>",array_keys(self::$debugResult[0]))."</th></tr>";
+			
+			foreach (self::$debugResult as $r)
+			{
+				$r = htmlentitydecodeDeep($r);
+				
+				$html .= "<tr><td>".implode("</td><td>",array_values($r))."</td></tr>";
+			}
+			
+			$html .= "</table>";
+			
+			$html .= "<br /><a href='".Url::getRoot()."contenuti/processaschedulazione/".v("token_schedulazione")."'>Conferma e processa</a>";
+		}
+		
+		return $html;
 	}
 }

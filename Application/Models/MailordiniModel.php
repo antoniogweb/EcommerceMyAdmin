@@ -65,17 +65,18 @@ class MailordiniModel extends GenericModel
 		return $body;
 	}
 	
-	public static function inviaMailLog($oggetto, $testo, $tipologia)
+	public static function inviaMailLog($oggetto, $testo, $tipologia, $variabile = "email_log_errori")
 	{
-		if (v("email_log_errori"))
+		if (v($variabile))
 		{
-			$emails = explode(",", v("email_log_errori"));
+			$emails = explode(",", v($variabile));
 			
 			self::inviaMail(array(
 				"emails"	=>	$emails,
 				"oggetto"	=>	$oggetto,
 				"testo"		=>	$testo,
 				"tipologia"	=>	$tipologia,
+				"usa_template"	=>	false,
 			));
 		}
 	}
@@ -96,6 +97,7 @@ class MailordiniModel extends GenericModel
 		$idContatto = isset($params["id_contatto"]) ? $params["id_contatto"] : 0;
 		$tipo = isset($params["tipo"]) ? $params["tipo"] : "A";
 		$idEvento = isset($params["id_evento"]) ? $params["id_evento"] : 0;
+		$usaTemplate = isset($params["usa_template"]) ? $params["usa_template"] : true;
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
@@ -175,7 +177,10 @@ class MailordiniModel extends GenericModel
 			}
 			
 			$testoClean = $testo;
-			$testo = MailordiniModel::loadTemplate($oggetto, $testo);
+			
+			if ($usaTemplate)
+				$testo = MailordiniModel::loadTemplate($oggetto, $testo);
+			
 // 				echo $testo;die();
 			// Imposto le traduzioni del back
 			Params::$lang = $bckLang;
