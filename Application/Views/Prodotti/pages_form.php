@@ -142,6 +142,10 @@
 								<?php echo $form["attivo"];?>
 								<?php echo $form["in_evidenza"];?>
 								
+								<?php if (isset($form["test"])) { ?>
+								<?php echo $form["test"];?>
+								<?php } ?>
+								
 								<?php if (isset($form["nuovo"])) { ?>
 								<?php echo $form["nuovo"];?>
 								<?php } ?>

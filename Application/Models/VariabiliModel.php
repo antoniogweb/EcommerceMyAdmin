@@ -310,6 +310,7 @@ class VariabiliModel extends GenericModel {
 		"checkout_solo_loggato"		=>	0,
 		"stile_form_login"			=>	"stile_1_pp_base",
 		"email_debug_retargeting"	=>	"",
+		"attiva_campo_test_in_pagine"	=>	0,
 	);
 	
 	public static $daInizializzare = array(

@@ -115,6 +115,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_campo_nuovo_in_pagine"))
 			$this->queryFields .= ",nuovo";
 		
+		if (v("attiva_campo_test_in_pagine"))
+			$this->queryFields .= ",test";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

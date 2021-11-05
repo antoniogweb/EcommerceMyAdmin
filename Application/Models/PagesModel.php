@@ -233,6 +233,18 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Se compare nel sito")."</div>"
 					),
 				),
+				'test'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Prodotto di test?',
+					'entryClass'	=>	'form_input_text help_test',
+					'options'	=>	self::$attivoSiNo,
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se è settato come prodotto di test, non sarà indicizzato né presente nella categoria di riferimento, ma potrà comunque essere visualizzato conoscendo l'URL diretto")."</div>"
+					),
+				),
 				'in_evidenza'	=>	array(
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_evidenza',
@@ -1982,10 +1994,12 @@ class PagesModel extends GenericModel {
 		
 		$catWhere = "in(".implode(",",$children).")";
 		$res = $p->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
-			"in" => array("-id_c" => $children),
-			"pages.attivo"	=>	"Y",
-			"acquistabile"	=>	"Y",
-		))->inner("categories")->on("categories.id_c = pages.id_c")
+				"in" => array("-id_c" => $children),
+// 				"pages.attivo"	=>	"Y",
+// 				"acquistabile"	=>	"Y",
+			))
+			->addWhereAttivo()
+			->inner("categories")->on("categories.id_c = pages.id_c")
 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->orderBy("pages.title")->send();

@@ -659,9 +659,9 @@ class BaseContenutiController extends BaseController
 		$catWhere = "in(".implode(",",$children).")";
 		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
 			"in" => array("-id_c" => $children),
-			"pages.attivo"	=>	"Y",
-			"acquistabile"	=>	"Y",
-		));
+// 			"pages.attivo"	=>	"Y",
+// 			"acquistabile"	=>	"Y",
+		))->addWhereAttivo();
 		
 		if (Parametri::$hideNotAllowedNodesInLists)
 		{
