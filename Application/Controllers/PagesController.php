@@ -199,6 +199,7 @@ class PagesController extends BaseController {
 			);
 			$this->m[$this->modelName]->pUpdate($clean['id']);
 			$this->m[$this->modelName]->sincronizza($clean['id']);
+			$this->m[$this->modelName]->controllaElementoInSitemap($clean['id']);
 		}
 	}
 	

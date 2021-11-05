@@ -287,6 +287,9 @@ class CategoriesModel extends HierarchicalModel {
 			{
 				$this->controllaLingua($id);
 				
+				// Check sitemap
+				$this->controllaElementoInSitemap($id);
+				
 				return true;
 			}
 		}
@@ -309,7 +312,8 @@ class CategoriesModel extends HierarchicalModel {
 			{
 				$this->controllaLingua($this->lId);
 				
-				$this->aggiungiAllaSitemap($this->lId);
+				// Check sitemap
+				$this->controllaElementoInSitemap($this->lId);
 				
 				return true;
 			}
@@ -318,25 +322,31 @@ class CategoriesModel extends HierarchicalModel {
 		return false;
 	}
 	
-	public function aggiungiAllaSitemap($id)
+	public function checkDataPerSitemap($id)
+	{
+		return $this->clear()->addWhereAttivoCategoria()->aWhere(array(
+				"id_c"	=>	(int)$id,
+				"ne"	=>	array(
+					"id_c"	=>	1,
+				),
+				"add_in_sitemap"=>	"Y",
+			))->record();
+	}
+	
+	public function aggiungiAllaSitemap($category)
 	{
 		if (v("permetti_gestione_sitemap"))
 		{
-			$category = $this->selectId((int)$id);
+			$sm = new SitemapModel();
 			
-			if (!empty($category) && !$category["bloccato"] && $category["id_p"] != 1)
-			{
-				$sm = new SitemapModel();
-				
-				$sm->setValues(array(
-					"id_page"	=>	0,
-					"id_c"		=>	$category["id_c"],
-					"ultima_modifica"	=>	$category["data_ultima_modifica"],
-					"priorita"	=>	$category["priorita_sitemap"],
-				));
-				
-				$sm->insert();
-			}
+			$sm->setValues(array(
+				"id_page"	=>	0,
+				"id_c"		=>	$category["id_c"],
+				"ultima_modifica"	=>	$category["data_ultima_modifica"],
+				"priorita"	=>	$category["priorita_sitemap"],
+			));
+			
+			$sm->insert();
 		}
 	}
 	

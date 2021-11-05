@@ -684,6 +684,9 @@ class PagesModel extends GenericModel {
 					$this->controllaCombinazioni($id);
 					
 					$this->sincronizza($clean["id"]);
+					
+					// Check sitemap
+					$this->controllaElementoInSitemap($clean["id"]);
 				}
 			}
 		}
@@ -820,33 +823,41 @@ class PagesModel extends GenericModel {
 				// Aggiungi tutti i prodotti sempre come accessori
 				$this->aggiungiAccesori($this->lId);
 				
-				// Aggiungi il contenuto alla sitemap
-				$this->aggiungiAllaSitemap($this->lId);
+				// Check sitemap
+				$this->controllaElementoInSitemap($this->lId);
 			}
 		}
 		
 		return $r;
 	}
 	
-	public function aggiungiAllaSitemap($id)
+	public function checkDataPerSitemap($id)
+	{
+		return $this->clear()->select("distinct pages.codice_alfa,pages.id_page,categories.id_c,pages.data_ultima_modifica,pages.priorita_sitemap")
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->where(array(
+				"pages.id_page"	=>	(int)$id,
+				"pages.add_in_sitemap"=>	"Y",
+			))
+			->addWhereAttivo()
+			->addWhereAttivoCategoria()
+			->first();
+	}
+	
+	public function aggiungiAllaSitemap($pagina)
 	{
 		if (v("permetti_gestione_sitemap"))
 		{
-			$pagina = PagesModel::getPageDetails($id);
+			$sm = new SitemapModel();
 			
-			if (count($pagina) > 0 && $pagina["categories"]["id_c"] && !$pagina["pages"]["bloccato"] && !$pagina["categories"]["bloccato"] && $pagina["categories"]["add_in_sitemap"] == "Y")
-			{
-				$sm = new SitemapModel();
-				
-				$sm->setValues(array(
-					"id_page"	=>	$id,
-					"id_c"		=>	$pagina["categories"]["id_c"],
-					"ultima_modifica"	=>	$pagina["pages"]["data_ultima_modifica"],
-					"priorita"	=>	$pagina["pages"]["priorita_sitemap"],
-				));
-				
-				$sm->insert();
-			}
+			$sm->setValues(array(
+				"id_page"	=>	$pagina["pages"]["id_page"],
+				"id_c"		=>	$pagina["categories"]["id_c"],
+				"ultima_modifica"	=>	$pagina["pages"]["data_ultima_modifica"],
+				"priorita"	=>	$pagina["pages"]["priorita_sitemap"],
+			));
+			
+			$sm->insert();
 		}
 	}
 	

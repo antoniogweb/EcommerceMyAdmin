@@ -1118,9 +1118,36 @@ class GenericModel extends Model_Tree
 			"pages.attivo"	=>	"Y",
 			"pages.acquistabile"	=>	"Y",
 			"pages.bloccato"	=>	0,
+			"pages.test"		=>	0,
 		));
 		
 		return $this;
+	}
+	
+	public function addWhereAttivoCategoria()
+	{
+		$this->aWhere(array(
+			"categories.attivo"		=>	"Y",
+			"categories.bloccato"	=>	0,
+		));
+		
+		return $this;
+	}
+	
+	public function controllaElementoInSitemap($id)
+	{
+		if (v("permetti_gestione_sitemap"))
+		{
+			$record = $this->checkDataPerSitemap($id);
+			
+			if (empty($record))
+			{
+				$sm = new SitemapModel();
+				$sm->del(null, $this->_idFields."=".(int)$id);
+			}
+			else
+				$this->aggiungiAllaSitemap($record);
+		}
 	}
 	
 	public function addWhereCategoria($idCat, $full = true)

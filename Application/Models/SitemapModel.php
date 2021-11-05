@@ -80,23 +80,26 @@ class SitemapModel extends GenericModel {
     
     public function del($id = null, $where = null)
     {
-		$record = $this->selectId((int)$id);
-		
-		if (empty($record))
-			return false;
-		
-		$idPage = $record["id_page"];
-		$idC = $record["id_c"];
-		
-		if ($idPage)
+		if ($id)
 		{
-			$p = new PagesModel();
-			$p->inserisciTogliSitemap($idPage, "N");
-		}
-		else if ($idC)
-		{
-			$c = new CategoriesModel();
-			$c->inserisciTogliSitemap($idC, "N");
+			$record = $this->selectId((int)$id);
+			
+			if (empty($record))
+				return false;
+			
+			$idPage = $record["id_page"];
+			$idC = $record["id_c"];
+			
+			if ($idPage)
+			{
+				$p = new PagesModel();
+				$p->inserisciTogliSitemap($idPage, "N");
+			}
+			else if ($idC)
+			{
+				$c = new CategoriesModel();
+				$c->inserisciTogliSitemap($idC, "N");
+			}
 		}
 		
 		return parent::del($id, $where);
@@ -146,12 +149,10 @@ class SitemapModel extends GenericModel {
 		
 		// Where categorie
 		$c->clear()->where(array(
-			"attivo"			=>	"Y",
-			"bloccato"			=>	0,
 			"ne"	=>	array(
 				"id_c"	=>	1,
 			),
-		));
+		))->addWhereAttivoCategoria();
 		
 		if (!$recuperaBackup)
 			$c->aWhere(array(
@@ -164,9 +165,7 @@ class SitemapModel extends GenericModel {
 		
 		// Where pagine
 		$p->clear()->where(array(
-			"categories.attivo"		=>	"Y",
-			"categories.bloccato"	=>	0,
-		))->addWhereAttivo();
+		))->addWhereAttivo()->addWhereAttivoCategoria();
 		
 		if (!$recuperaBackup)
 			$p->aWhere(array(
