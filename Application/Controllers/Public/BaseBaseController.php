@@ -855,25 +855,10 @@ class BaseBaseController extends Controller
 					
 					$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
 					
-					$idContatto = $this->m['ContattiModel']->getIdFromMail($valoriEmail["email"]);
+					$fonte = $isNewsletter ? "NEWSLETTER" : "FORM_CONTATTO";
 					
-					if (v("salva_contatti_in_db"))
-					{
-						$this->m['ContattiModel']->sanitize("sanitizeAll");
-						
-						$fonte = $isNewsletter ? "NEWSLETTER" : "FORM_CONTATTO";
-						$this->m['ContattiModel']->setValue("fonte", $fonte);
-						
-						if ($idContatto)
-							$this->m['ContattiModel']->update($idContatto);
-						else
-						{
-							$this->m['ContattiModel']->setValue("fonte_iniziale", $fonte);
-							
-							if ($this->m['ContattiModel']->insert())
-								$idContatto = $this->m['ContattiModel']->lId;
-						}
-					}
+					// Inserisco il contatto
+					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
 					
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
 					

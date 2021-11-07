@@ -1023,6 +1023,8 @@ class BaseOrdiniController extends BaseController
 					if ($this->m['RegusersModel']->checkConditions('insert'))
 					{
 						$_SESSION = $_POST;
+						$_SESSION["email_carrello"] = sanitizeAll($this->m['OrdiniModel']->values["email"]);
+						
 						unset($_SESSION['accetto']);
 						
 						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();

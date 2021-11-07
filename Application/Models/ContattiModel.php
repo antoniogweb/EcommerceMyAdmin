@@ -55,8 +55,11 @@ class ContattiModel extends GenericModel {
 		else
 		{
 			$this->setValue("fonte_iniziale", $fonte);
-			$this->insert();
+			if ($this->insert())
+				$idContatto = $this->lId;
 		}
+		
+		return $idContatto;
 	}
 	
 	public function insert()
