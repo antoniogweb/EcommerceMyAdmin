@@ -388,12 +388,12 @@ class BaseBaseController extends Controller
 			$pWhere = array(
 				"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
 				" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-				"attivo" => "Y",
 				"in_promozione" => "Y",
-				"acquistabile"	=>	"Y",
+// 				"acquistabile"	=>	"Y",
+// 				"attivo" => "Y",
 			);
 			
-			$prodottiInPromo = $this->m["PagesModel"]->clear()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
+			$prodottiInPromo = $this->m["PagesModel"]->clear()->addWhereAttivo()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
 			
 			$data["inPromozione"] = $this->prodottiInPromozione = getRandom($prodottiInPromo);
 			
