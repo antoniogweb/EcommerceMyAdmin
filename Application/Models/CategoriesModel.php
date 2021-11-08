@@ -900,11 +900,6 @@ class CategoriesModel extends HierarchicalModel {
 // 		return "<td colspan='$numCol'><table style='width:100%;'><tr>$rowHtml</tr></table></td>";
 // 	}
 	
-	public function titoloElenco($record)
-	{
-		return $this->indentList($record["categories"]["id_c"]);
-	}
-	
 	//get the indentation of the row
 	public function indentList($id, $alias = true, $editLink = true, $useHtml = true)
 	{

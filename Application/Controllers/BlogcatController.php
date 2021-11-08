@@ -24,6 +24,4 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BlogcatController extends CategoriesController {
 
-	public $voceMenu = "blog";
-
 }

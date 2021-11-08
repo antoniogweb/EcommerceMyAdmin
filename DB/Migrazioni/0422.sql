@@ -1,0 +1,1 @@
+INSERT INTO `menu_admin` (`id_menu_admin`, `data_creazione`, `attivo`, `titolo`, `icona`, `controller`, `condizioni`, `tipo`, `url`, `id_p`, `lft`, `rgt`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 1, '-- root --', '', '', '', '', '', '0', '', '', '');

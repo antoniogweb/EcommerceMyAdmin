@@ -943,4 +943,9 @@ class HierarchicalModel extends GenericModel {
 		}
 		return "";
 	}
+	
+	public function titoloElenco($record)
+	{
+		return $this->indentList($record[$this->_tables][$this->_idFields]);
+	}
 }

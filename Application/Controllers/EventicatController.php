@@ -23,7 +23,5 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class EventicatController extends CategoriesController {
-
-	public $voceMenu = "eventi";
-
+	
 }

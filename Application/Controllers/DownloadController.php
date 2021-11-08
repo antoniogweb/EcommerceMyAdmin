@@ -26,8 +26,9 @@ class DownloadController extends PagesController {
 
 	public $voceMenu = "download";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',

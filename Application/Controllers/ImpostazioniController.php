@@ -50,10 +50,7 @@ class ImpostazioniController extends BaseController
 		
 		parent::form($queryType, $id);
 		
-		$this->_topMenuClasses['variabili'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
-		
-		$this->append($data);
+		$this->setMenuClass("variabili");
 	}
 	
 	public function tema()
@@ -63,8 +60,7 @@ class ImpostazioniController extends BaseController
 		
 		$data["elencoTemi"] = Tema::getElencoTemi();
 		
-		$this->_topMenuClasses['temi'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
+		$this->setMenuClass("temi");
 		
 		$this->append($data);
 		

@@ -45,7 +45,7 @@ class CategoriesController extends BaseController {
 	{
 		if ($model == "CategoriesModel")
 			$this->sezionePannello = "utenti";
-			
+		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->session('admin');
@@ -67,9 +67,8 @@ class CategoriesController extends BaseController {
 			'partial:sanitizeAll' => "tutti",
 			'nobuttons:sanitizeAll' => "tutti",
 		));
-
-		$this->_topMenuClasses[$this->voceMenu] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
+		
+		$this->setMenuClass($this->voceMenu);
 		
 		$data["sezionePannello"] = $this->sezionePannello;
 		

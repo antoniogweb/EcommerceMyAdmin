@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class DownloadcatController extends CategoriesController {
 
-	public $voceMenu = "download";
+// 	public $voceMenu = "download";
 	public $sezionePannello = "sito";
 
 }

@@ -525,6 +525,10 @@ class Route
 		'sitemap,main',
 		'sitemap,form',
 		'sitemap,ordina',
+		
+		'menuadmin,main',
+		'menuadmin,form',
+// 		'menuadmin,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

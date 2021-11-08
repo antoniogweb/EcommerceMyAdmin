@@ -311,6 +311,7 @@ class VariabiliModel extends GenericModel {
 		"stile_form_login"			=>	"stile_1_pp_base",
 		"email_debug_retargeting"	=>	"",
 		"attiva_campo_test_in_pagine"	=>	0,
+		"attiva_menu_db"			=>	0,
 	);
 	
 	public static $daInizializzare = array(
@@ -525,9 +526,14 @@ class VariabiliModel extends GenericModel {
 	
 	public static function verificaCondizioni($condizioni)
 	{
-		if (is_array($condizioni))
+		if (!is_array($condizioni))
+			parse_str($condizioni, $conds);
+		else
+			$conds = $condizioni;
+		
+		if (is_array($conds))
 		{
-			foreach ($condizioni as $k => $v)
+			foreach ($conds as $k => $v)
 			{
 				if ((string)v($k) !== (string)$v)
 					return false;
@@ -535,5 +541,12 @@ class VariabiliModel extends GenericModel {
 		}
 		
 		return true;
+	}
+	
+	public static function getVariabileMatches($matches)
+	{
+		$chiave = $matches[1];
+		
+		return v($chiave);
 	}
 }

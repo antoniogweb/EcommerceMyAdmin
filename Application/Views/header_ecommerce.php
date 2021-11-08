@@ -106,7 +106,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("usa_marchi")) { ?>
-			<li class="<?php echo tm($tm, array("marchi"));?> <?php echo $tm["marchi"][0];?> treeview help_marchi">
+			<li class="<?php echo tm($tm, array("marchi"));?> treeview help_marchi">
 				<a href="#">
 					<i class="fa fa-font-awesome"></i>
 					<span><?php echo gtext("famiglie",true,"ucfirst");?></span>

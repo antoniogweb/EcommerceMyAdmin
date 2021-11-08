@@ -197,14 +197,14 @@ class BaseController extends Controller
 			$this->model($modelAssociato);
 		}
 		
-		$this->_topMenuClasses[$controller] = array("active","in");
+		$this->setMenuClass($controller);
+		
+		MenuadminModel::$currentAction = $action;
 		
 		$data['logged'] = $this->s['admin']->getUsersLogged();
 		
 		$data['alertFatture'] = $this->m["FattureModel"]->noticeHtml;
 		$data['fattureOk'] = $this->m["FattureModel"]->fattureOk;
-		
-		$data['tm'] = $this->_topMenuClasses;
 		
 		$data['queryResult'] = $data['closeModal'] = false;
 		
@@ -827,5 +827,12 @@ class BaseController extends Controller
 			header('Content-Disposition: '.$cd.'; filename='.$fileName);
 			readfile($filePath);
 		}
+	}
+	
+	protected function setMenuClass($controller)
+	{
+		$this->_topMenuClasses[$controller] = MenuadminModel::$classiVociMenu[$controller] = MenuadminModel::$activeClass;
+		$data['tm'] = $this->_topMenuClasses;
+		$this->append($data);
 	}
 }
