@@ -33,7 +33,7 @@ include(ROOT."/Application/Views/header.php");
 				</li>
 				<?php } ?>
 				<?php if (v("attiva_template_email") && v("attiva_eventi_retargeting")) { ?>
-				<li class="<?php echo tm($tm, "eventiretargeting");?> <?php echo tm($tm, "templateemail");?> treeview">
+				<li class="<?php echo tm($tm, array("eventiretargeting","templateemail"));?> treeview">
 					<a href="#">
 						<i class="fa fa-phone"></i>
 						<span><?php echo gtext("Retargeting");?></span>

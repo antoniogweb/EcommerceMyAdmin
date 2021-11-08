@@ -10,7 +10,7 @@ include(ROOT."/Application/Views/header.php");
 		<?php if (User::$logged and strcmp($this->action,'logout') !== 0) { ?>
 		<ul class="sidebar-menu">
 			<li class="header">MENÙ GENSTIONE ECOMMERCE</li>
-			<li class="<?php echo $tm["categorie"][0];?> treeview help_categorie">
+			<li class="<?php echo tm($tm, "categorie");?> treeview help_categorie">
 				<a href="#">
 					<i class="fa fa-bookmark"></i>
 					<span>Categorie</span>
@@ -20,7 +20,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/categorie/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
 				</ul>
 			</li>
-			<li class="<?php echo $tm["prodotti"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("prodotti","attributi","personalizzazioni"));?> treeview">
 				<a href="#">
 					<i class="fa fa-briefcase"></i>
 					<span>Prodotti</span>
@@ -32,44 +32,44 @@ include(ROOT."/Application/Views/header.php");
 					
 					<?php if (v("combinazioni_in_prodotti")) { ?>
 					<li class="dropdown-header">Varianti prodotto</li>
-					<li <?php if ($this->controller === "attributi") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/attributi/main/1";?>"><i class="fa fa-cogs"></i> Lista varianti</a></li>
+					<li class="<?php echo tm($tm, array("attributi"));?>"><a href="<?php echo $this->baseUrl."/attributi/main/1";?>"><i class="fa fa-cogs"></i> Lista varianti</a></li>
 					<?php } ?>
 					
 					<?php if (v("attiva_personalizzazioni")) { ?>
 					<li class="dropdown-header">Personalizzazioni</li>
-					<li <?php if ($this->controller === "personalizzazioni") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/personalizzazioni/main/1";?>"><i class="fa fa-cogs"></i> Lista personalizzazioni</a></li>
+					<li class="<?php echo tm($tm, array("personalizzazioni"));?>"><a href="<?php echo $this->baseUrl."/personalizzazioni/main/1";?>"><i class="fa fa-cogs"></i> Lista personalizzazioni</a></li>
 					<?php } ?>
 				</ul>
 			</li>
 			<?php if (v("caratteristiche_in_prodotti")) { ?>
-			<li class="<?php if ($this->controller === "caratteristiche" || $this->controller === "tipologiecaratteristiche") { ?>active<?php } ?> treeview">
+			<li class="<?php echo tm($tm, array("caratteristiche","tipologiecaratteristiche"));?> treeview">
 				<a href="#">
 					<i class="fa fa-filter"></i>
 					<span>Caratteristiche</span>
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="<?php echo $this->baseUrl."/caratteristiche/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi caratteristica</a></li>
-					<li <?php if ($this->controller === "caratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista caratteristiche");?></a></li>
+					<li class="<?php echo tm($tm, array("caratteristiche"));?>"><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista caratteristiche");?></a></li>
 					
 					<?php if (v("attiva_tipologie_caratteristiche")) { ?>
 					<li class="dropdown-header">Tipologie</li>
-					<li <?php if ($this->controller === "tipologiecaratteristiche") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipologiecaratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Tipologie");?></a></li>
+					<li class="<?php echo tm($tm, array("tipologiecaratteristiche"));?>"><a href="<?php echo $this->baseUrl."/tipologiecaratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Tipologie");?></a></li>
 					<?php } ?>
 				</ul>
 			</li>
 			<?php } ?>
 			<?php if (v("ecommerce_attivo")) { ?>
-			<li class="<?php if ($this->controller === "combinazioni") { ?>active<?php } ?> treeview">
+			<li class="<?php echo tm($tm, array("combinazioni"));?> treeview">
 				<a href="#">
 					<i class="fa fa-archive"></i>
 					<span>Magazzino</span>
 				</a>
 				<ul class="treeview-menu">
-					<li <?php if ($this->controller === "combinazioni") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/combinazioni/main/1";?>"><fa class="fa fa-list"></fa> Elenco codici</a></li>
+					<li><a href="<?php echo $this->baseUrl."/combinazioni/main/1";?>"><fa class="fa fa-list"></fa> Elenco codici</a></li>
 				</ul>
 			</li>
 			<?php } ?>
-			<li class="<?php echo $tm["clienti"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("regusers","ruoli","tipiazienda","reggroups"));?> treeview">
 				<a href="#">
 					<i class="fa fa-users"></i>
 					<span>Clienti</span>
@@ -79,34 +79,34 @@ include(ROOT."/Application/Views/header.php");
 					<li <?php if ($this->controller === "regusers" && $this->action == "main") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/main/1";?>"><i class="fa fa-list"></i> Lista clienti</a></li>
 					<?php if (v("attiva_ruoli")) { ?>
 					<li class="dropdown-header">Ruoli</li>
-					<li <?php if ($this->controller === "ruoli") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> Lista ruoli</a></li>
+					<li class="<?php echo tm($tm, array("ruoli"));?>"><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> Lista ruoli</a></li>
 					<?php } ?>
 					<?php if (v("attiva_tipi_azienda")) { ?>
 					<li class="dropdown-header">Tipi azienda</li>
-					<li <?php if ($this->controller === "tipiazienda") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> Lista tipi aziende</a></li>
+					<li class="<?php echo tm($tm, array("tipiazienda"));?>"><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> Lista tipi aziende</a></li>
 					<?php } ?>
 					<?php if (v("attiva_gruppi")) { ?>
 					<li class="dropdown-header">Gruppi</li>
-					<li <?php if ($this->controller === "reggroups") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-users"></i> Lista gruppi</a></li>
+					<li class="<?php echo tm($tm, array("reggroups"));?>"><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-users"></i> Lista gruppi</a></li>
 					<?php } ?>
 				</ul>
 			</li>
 			<?php if (v("ecommerce_attivo")) { ?>
-			<li class="<?php echo $tm["ordini"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("ordini", "fatture"));?> treeview">
 				<a href="#">
 					<i class="fa fa-book"></i>
 					<span>Ordini</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_ordini")."/1";?>"><i class="fa fa-list"></i> Lista ordini</a></li>
+					<li class="<?php echo tm($tm, array("ordini"));?>"><a href="<?php echo $this->baseUrl."/".v("url_elenco_ordini")."/1";?>"><i class="fa fa-list"></i> Lista ordini</a></li>
 					<?php if (v("fatture_attive")) { ?>
-					<li><a href="<?php echo $this->baseUrl."/fatture/main/1";?>"><i class="fa fa-list"></i> Lista fatture</a></li>
+					<li class="<?php echo tm($tm, array("fatture"));?>"><a href="<?php echo $this->baseUrl."/fatture/main/1";?>"><i class="fa fa-list"></i> Lista fatture</a></li>
 					<?php } ?>
 				</ul>
 			</li>
 			<?php } ?>
 			<?php if (v("usa_marchi")) { ?>
-			<li class="<?php echo $tm["marchi"][0];?> treeview help_marchi">
+			<li class="<?php echo tm($tm, array("marchi"));?> <?php echo $tm["marchi"][0];?> treeview help_marchi">
 				<a href="#">
 					<i class="fa fa-font-awesome"></i>
 					<span><?php echo gtext("famiglie",true,"ucfirst");?></span>
@@ -118,7 +118,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("usa_tag")) { ?>
-			<li class="<?php echo $tm["tag"][0];?> treeview help_tag">
+			<li class="<?php echo tm($tm, array("tag"));?> treeview help_tag">
 				<a href="#">
 					<i class="fa fa-tags"></i>
 					<span><?php echo gtext("Tag / Linee",true,"ucfirst");?></span>
@@ -130,7 +130,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (v("ecommerce_attivo")) { ?>
-			<li class="<?php echo $tm["promozioni"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("promozioni"));?> treeview">
 				<a href="#">
 					<i class="fa fa-gift"></i>
 					<span>Promozioni</span>
@@ -141,7 +141,7 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php if (v("attiva_classi_sconto")) { ?>
-			<li class="<?php echo $tm["classisconto"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("classisconto"));?> treeview">
 				<a href="#">
 					<i class="fa fa-eur"></i>
 					<span>Classi sconto</span>
@@ -152,7 +152,7 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
-			<li class="<?php echo $tm["corrieri"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("corrieri"));?> treeview">
 				<a href="#">
 					<i class="fa fa-truck"></i>
 					<span>Corrieri</span>
@@ -162,7 +162,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/corrieri/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
-			<li class="<?php echo $tm["iva"][0];?> treeview">
+			<li class="<?php echo tm($tm, array("iva"));?> treeview">
 				<a href="#">
 					<i class="fa fa-folder"></i>
 					<span><?php echo gtext("Aliquote iva")?></span>

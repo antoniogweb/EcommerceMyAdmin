@@ -38,9 +38,6 @@ class FattureController extends BaseController {
 		
 		$this->s['admin']->check();
 		
-		$this->_topMenuClasses['ordini'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
-		
 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->append($data);

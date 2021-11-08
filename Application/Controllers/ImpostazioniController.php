@@ -49,6 +49,11 @@ class ImpostazioniController extends BaseController
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+		
+		$this->_topMenuClasses['variabili'] = array("active","in");
+		$data['tm'] = $this->_topMenuClasses;
+		
+		$this->append($data);
 	}
 	
 	public function tema()
@@ -57,6 +62,9 @@ class ImpostazioniController extends BaseController
 			die();
 		
 		$data["elencoTemi"] = Tema::getElencoTemi();
+		
+		$this->_topMenuClasses['temi'] = array("active","in");
+		$data['tm'] = $this->_topMenuClasses;
 		
 		$this->append($data);
 		

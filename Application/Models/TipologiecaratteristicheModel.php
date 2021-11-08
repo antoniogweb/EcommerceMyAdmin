@@ -37,7 +37,7 @@ class TipologiecaratteristicheModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'caratteristiche' => array("HAS_MANY", 'CaratteristicheModel', 'id_car', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'caratteristiche' => array("HAS_MANY", 'CaratteristicheModel', 'id_tipologia_caratteristica', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_tipologia_caratteristica', null, "CASCADE"),
         );
     }

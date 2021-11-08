@@ -34,11 +34,6 @@ class PersonalizzazioniController extends BaseController
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		$this->_topMenuClasses['prodotti'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
-		
-		$this->append($data);
-		
 		$this->s["admin"]->check();
 	}
 

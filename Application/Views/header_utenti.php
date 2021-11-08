@@ -8,7 +8,7 @@ include(ROOT."/Application/Views/header.php");
 		<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {?>
 		<ul class="sidebar-menu">
 			<li class="header"><?php echo gtext("MENÙ GENSTIONE PREFERENZE");?></li>
-			<li class="<?php echo $tm["utenti"][0];?> treeview">
+			<li class="<?php echo tm($tm, "users");?> treeview">
 				<a href="#">
 					<i class="fa fa-user-circle-o"></i>
 					<span><?php echo gtext("Amministratori");?></span>
@@ -18,10 +18,10 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/users/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista utenti");?></a></li>
 				</ul>
 			</li>
-			<li class="<?php echo $tm["traduzioni"][0];?>"><a href="<?php echo $this->baseUrl."/traduzioni/main/1";?>"><i class="fa fa-language"></i> <span><?php echo gtext("Traduzioni");?></span></a></li>
-			<li class="<?php echo ($this->controller == "impostazioni" && $this->action == "form") ? "active" : "";?>"><a href="<?php echo $this->baseUrl."/impostazioni/form/update/1";?>"><i class="fa fa-cogs"></i> <span><?php echo gtext("Impostazioni");?></span></a></li>
+			<li class="<?php echo tm($tm, "traduzioni");?>"><a href="<?php echo $this->baseUrl."/traduzioni/main/1";?>"><i class="fa fa-language"></i> <span><?php echo gtext("Traduzioni");?></span></a></li>
+			<li class="<?php echo tm($tm, "variabili");?>"><a href="<?php echo $this->baseUrl."/impostazioni/form/update/1";?>"><i class="fa fa-cogs"></i> <span><?php echo gtext("Impostazioni");?></span></a></li>
 			<?php if (v("mostra_tipi_fasce")) { ?>
-			<li class="<?php echo $tm["tipicontenuto"][0];?> treeview">
+			<li class="<?php echo tm($tm, "tipicontenuto");?> treeview">
 				<a href="#">
 					<i class="fa fa-code"></i>
 					<span><?php echo gtext("Tipologie fasce");?></span>
@@ -60,7 +60,7 @@ include(ROOT."/Application/Views/header.php");
 			<li class="<?php echo tm($tm, "testi");?>"><a href="<?php echo $this->baseUrl."/testi/main/1";?>"><i class="fa fa-pencil"></i> <span><?php echo gtext("Elementi tema");?></span></a></li>
 			<?php } ?>
 			<?php if (count(Tema::getElencoTemi()) > 1 && v("permetti_cambio_tema")) { ?>
-			<li class="<?php echo ($this->controller == "impostazioni" && $this->action == "tema") ? "active" : "";?>"><a href="<?php echo $this->baseUrl."/impostazioni/tema/1";?>"><i class="fa fa-eye"></i> <span><?php echo gtext("Cambia tema sito");?></span></a></li>
+			<li class="<?php echo tm($tm, "temi");?>"><a href="<?php echo $this->baseUrl."/impostazioni/tema/1";?>"><i class="fa fa-eye"></i> <span><?php echo gtext("Cambia tema sito");?></span></a></li>
 			<?php } ?>
 			<?php if (v("attiva_tutte_le_categorie")) { ?>
 			<li class="<?php echo tm($tm, "categories");?>"><a href="<?php echo $this->baseUrl."/categories/main/1";?>"><i class="fa fa-folder-open"></i> <span><?php echo gtext("Sezioni sito");?></span></a></li>

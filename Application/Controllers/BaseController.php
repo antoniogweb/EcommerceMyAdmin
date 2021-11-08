@@ -28,34 +28,7 @@ class BaseController extends Controller
 	
 	protected $_posizioni = array();
 	
-	protected $_topMenuClasses = array(
-		"categorie"		=>	array("",""),
-		"prodotti"		=>	array("",""),
-		"ordini"		=>	array("",""),
-		"promozioni"	=>	array("",""),
-		"notizie"		=>	array("",""),
-		"clienti"		=>	array("",""),
-		"menu1"			=>	array("",""),
-		"menu2"			=>	array("",""),
-		"utenti"		=>	array("",""),
-		"classisconto"	=>	array("",""),
-		"corrieri"		=>	array("",""),
-		"impostazioni"	=>	array("",""),
-		"blog"			=>	array("",""),
-		"slide"			=>	array("",""),
-		"home"			=>	array("",""),
-		"iva"			=>	array("",""),
-		"marchi"		=>	array("",""),
-		"pagine"		=>	array("",""),
-		"slidesotto"	=>	array("",""),
-		"traduzioni"	=>	array("",""),
-		"tipicontenuto"	=>	array("",""),
-		"referenze"		=>	array("",""),
-		"team"			=>	array("",""),
-		"tipitipidocumento"	=>	array("",""),
-		"download"		=>	array("",""),
-		"tag"			=>	array("",""),
-	);
+	protected $_topMenuClasses = array();
 	
 	public $id = 0;
 	
@@ -225,7 +198,6 @@ class BaseController extends Controller
 		}
 		
 		$this->_topMenuClasses[$controller] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
 		
 		$data['logged'] = $this->s['admin']->getUsersLogged();
 		

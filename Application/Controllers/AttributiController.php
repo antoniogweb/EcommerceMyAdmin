@@ -43,9 +43,6 @@ class AttributiController extends BaseController {
 		
 		$this->s['admin']->check();
 		
-		$this->_topMenuClasses['prodotti'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
-		
 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->tabella = "varianti";
