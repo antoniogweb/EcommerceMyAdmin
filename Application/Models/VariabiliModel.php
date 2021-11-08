@@ -351,12 +351,6 @@ class VariabiliModel extends GenericModel {
 			VariabiliModel::$valori["codice_gtm_analytics_noscript"] = "";
 			VariabiliModel::$valori["codice_fbk"] = "";
 			VariabiliModel::$valori["codice_fbk_noscript"] = "";
-			
-			if (isset($_COOKIE["ok_cookie"]) && v("stile_check_cookie") == "accetta")
-			{
-				setcookie("ok_cookie","OK",(time()-3600),"/");
-				unset($_COOKIE["ok_cookie"]);
-			}
 		}
 	}
 	
