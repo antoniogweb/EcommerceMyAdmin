@@ -81,6 +81,31 @@ class MailordiniModel extends GenericModel
 		}
 	}
 	
+	public static function setBcc($mail, $emails)
+	{
+		$arrayBcc = array();
+		
+		if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
+		{
+			$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+			$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
+		}
+		
+		if (defined("BCC") && is_array(BCC))
+		{
+			foreach (BCC as $emailBcc)
+			{
+				if (!in_array($emailBcc, $emails))
+				{
+					$mail->addBCC($emailBcc);
+					$arrayBcc[] = $emailBcc;
+				}
+			}
+		}
+		
+		return $arrayBcc;
+	}
+	
 	public static function inviaMail($params)
 	{
 		$mo = new MailordiniModel();
@@ -156,25 +181,25 @@ class MailordiniModel extends GenericModel
 			// Svuoto tutte le mail
 			$mail->ClearAllRecipients();
 			
-			$arrayBcc = array();
+			$arrayBcc = self::setBcc($mail, $emails);
 			
-			if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
-			{
-				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-				$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
-			}
-			
-			if (defined("BCC") && is_array(BCC))
-			{
-				foreach (BCC as $emailBcc)
-				{
-					if (!in_array($emailBcc, $emails))
-					{
-						$mail->addBCC($emailBcc);
-						$arrayBcc[] = $emailBcc;
-					}
-				}
-			}
+// 			if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
+// 			{
+// 				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+// 				$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
+// 			}
+// 			
+// 			if (defined("BCC") && is_array(BCC))
+// 			{
+// 				foreach (BCC as $emailBcc)
+// 				{
+// 					if (!in_array($emailBcc, $emails))
+// 					{
+// 						$mail->addBCC($emailBcc);
+// 						$arrayBcc[] = $emailBcc;
+// 					}
+// 				}
+// 			}
 			
 			$testoClean = $testo;
 			
@@ -201,7 +226,7 @@ class MailordiniModel extends GenericModel
 				if ($mail->Send())
 					$inviata = 1;
 				
-				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO")
+				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT")
 					$testoClean = "";
 				
 				$mo->setValues(array(

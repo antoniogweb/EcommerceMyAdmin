@@ -443,8 +443,31 @@ class OrdiniModel extends FormModel {
 					)
 				);
 				
-				if (ImpostazioniModel::$valori["bcc"])
-					$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+				// Svuoto tutte le mail BCC
+				$mail->ClearBCCs();
+				$emails = array($ordine["email"]);
+				$arrayBcc = $arrayBcc = MailordiniModel::setBcc($mail, $emails);
+				
+// 				if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
+// 				{
+// 					$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
+// 					$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
+// 				}
+// 				
+// 				if (defined("BCC") && is_array(BCC))
+// 				{
+// 					foreach (BCC as $emailBcc)
+// 					{
+// 						if (!in_array($emailBcc, $emails))
+// 						{
+// 							$mail->addBCC($emailBcc);
+// 							$arrayBcc[] = $emailBcc;
+// 						}
+// 					}
+// 				}
+			
+// 				if (ImpostazioniModel::$valori["bcc"])
+// 					$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
 				
 // 				$mail->addBCC(ImpostazioniModel::$valori["mail_invio_ordine"]);
 				
