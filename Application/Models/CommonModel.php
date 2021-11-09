@@ -235,6 +235,8 @@ trait CommonModel {
 	
 	public static function resettaCredenziali($idUser)
 	{
+		$res = false;
+		
 		$r = new RegusersModel();
 		
 		$password = self::generaPassword();
@@ -249,11 +251,13 @@ trait CommonModel {
 			
 			if ($r->pUpdate((int)$idUser))
 			{
-				MailordiniModel::inviaCredenziali($idUser, array(
+				$res = MailordiniModel::inviaCredenziali($idUser, array(
 					"username"	=>	$cliente["username"],
 					"password"	=>	$password,
 				));
 			}
 		}
+		
+		return $res;
 	}
 }

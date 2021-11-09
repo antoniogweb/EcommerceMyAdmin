@@ -814,12 +814,23 @@ class OrdiniModel extends FormModel {
 			
 			if ($ordine["id_user"])
 			{
+				$idUser = (int)$ordine["id_user"];
+				
 				$r = new RegusersModel();
 				
-				$cliente = $r->selectId((int)$ordine["id_user"]);
+				$cliente = $r->selectId($idUser);
 				
 				if (!empty($cliente) && !$cliente["credenziali_inviate"])
-					RegusersModel::resettaCredenziali($ordine["id_user"]);
+				{
+					if (RegusersModel::resettaCredenziali($idUser))
+					{
+						$r->setValues(array(
+							"credenziali_inviate"	=>	1,
+						));
+						
+						$r->pUpdate($idUser);
+					}
+				}
 			}
 		}
 	}
