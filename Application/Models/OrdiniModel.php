@@ -807,7 +807,7 @@ class OrdiniModel extends FormModel {
 			$this->mandaMail((int)$idO);
 			
 			$this->setValues(array(
-				"mail_da_inviare"	=>	1,
+				"mail_da_inviare"	=>	0,
 			));
 			
 			$this->update((int)$idO);
