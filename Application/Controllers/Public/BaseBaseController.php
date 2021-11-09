@@ -744,17 +744,10 @@ class BaseBaseController extends Controller
 						
 						$_SESSION['result'] = 'utente_creato';
 						
-						ob_start();
-						include (tpf("Regusers/mail_credenziali.php"));
-						$output = ob_get_clean();
-						
-						$res = MailordiniModel::inviaMail(array(
-							"emails"	=>	array($clean["username"]),
-							"oggetto"	=>	"invio credenziali nuovo utente",
-							"testo"		=>	$output,
-							"tipologia"	=>	"ISCRIZIONE",
-							"id_user"	=>	(int)$lId,
-							"id_page"	=>	0,
+						$res = MailordiniModel::inviaCredenziali($lId, array(
+							"username"	=>	$clean["username"],
+							"password"	=>	$password,
+							"tokenConferma"	=>	$tokenConferma,
 						));
 						
 						if ($res)

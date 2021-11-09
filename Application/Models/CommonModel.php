@@ -219,12 +219,41 @@ trait CommonModel {
 		return '';
 	}
 	
+	public static function generaPassword()
+	{
+		return generateString(10, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-!");
+	}
+	
 	public function settaPassword()
 	{
 		if (v("genera_e_invia_password") && !v("permetti_acquisto_anonimo"))
 		{
-			$randPass = generateString(10, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-!");
+			$randPass = self::generaPassword();
 			$_POST["password"] = $_POST["confirmation"] = $randPass;
+		}
+	}
+	
+	public static function resettaCredenziali($idUser)
+	{
+		$r = RegusersModel();
+		
+		$password = self::generaPassword();
+		
+		$cliente = $r->selectId((int)$idUser);
+		
+		if (!empty($cliente))
+		{
+			$r->setValues(array(
+				"password"	=>	sanitizeAll(call_user_func(PASSWORD_HASH,$password)),
+			));
+			
+			if ($r->pUpdate((int)$idUser))
+			{
+				MailOrdini::inviaCredenziali($idUser, array(
+					"username"	=>	$cliente["username"],
+					"password"	=>	$password,
+				));
+			}
 		}
 	}
 }

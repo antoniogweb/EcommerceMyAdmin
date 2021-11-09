@@ -446,30 +446,7 @@ class OrdiniModel extends FormModel {
 				// Svuoto tutte le mail BCC
 				$mail->ClearBCCs();
 				$emails = array($ordine["email"]);
-				$arrayBcc = $arrayBcc = MailordiniModel::setBcc($mail, $emails);
-				
-// 				if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
-// 				{
-// 					$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-// 					$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
-// 				}
-// 				
-// 				if (defined("BCC") && is_array(BCC))
-// 				{
-// 					foreach (BCC as $emailBcc)
-// 					{
-// 						if (!in_array($emailBcc, $emails))
-// 						{
-// 							$mail->addBCC($emailBcc);
-// 							$arrayBcc[] = $emailBcc;
-// 						}
-// 					}
-// 				}
-			
-// 				if (ImpostazioniModel::$valori["bcc"])
-// 					$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-				
-// 				$mail->addBCC(ImpostazioniModel::$valori["mail_invio_ordine"]);
+				$arrayBcc = MailordiniModel::setBcc($mail, $emails);
 				
 				ob_start();
 				$baseUrl = Url::getRoot();
@@ -478,6 +455,7 @@ class OrdiniModel extends FormModel {
 				include tpf("/Ordini/$template.php");
 // 				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
 				$output = ob_get_clean();
+				$testoClean = $output;
 				
 				$output = MailordiniModel::loadTemplate($oggetto, $output);
 // 				echo $output;die();
@@ -503,7 +481,14 @@ class OrdiniModel extends FormModel {
 				$mail->MsgHTML($output);
 				
 				$mail->Send();
-				$this->aggiungiStoricoMail($clean["id_o"], $tipo);
+				
+				$params = array(
+					"oggetto"	=>	$oggetto,
+					"bcc"		=>	implode(",",$arrayBcc),
+					"testo"		=>	$tipo != "R" ? $testoClean : "",
+				);
+				
+				$this->aggiungiStoricoMail($clean["id_o"], $tipo, $params);
 				
 				$this->notice = "<div class='alert alert-success'>Mail inviata con successo!</div>";
 			} catch (Exception $e) {
@@ -538,7 +523,7 @@ class OrdiniModel extends FormModel {
 		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE]", "resoconto-acquisto", "R", false);
 	}
 	
-	public function aggiungiStoricoMail($id_o, $tipo = "F")
+	public function aggiungiStoricoMail($id_o, $tipo = "F", $params = array())
 	{
 		$ordine = $this->selectId((int)$id_o);
 		
@@ -549,6 +534,9 @@ class OrdiniModel extends FormModel {
 			"tipo"	=>	$tipo,
 			"email"	=>	isset($ordine["email"]) ? $ordine["email"] : "",
 			"id_user"	=>	isset($ordine["id_user"]) ? $ordine["id_user"] : 0,
+			"oggetto"	=>	isset($params["oggetto"]) ? $params["oggetto"] : "",
+			"bcc"		=>	isset($params["bcc"]) ? $params["bcc"] : "",
+			"testo"		=>	isset($params["testo"]) ? $params["testo"] : "",
 		));
 		
 		$mailOrdini->insert();
@@ -791,5 +779,48 @@ class OrdiniModel extends FormModel {
 			return $ordine["ragione_sociale"];
 		else
 			return $ordine["nome"]." ".$ordine["cognome"];
+	}
+	
+	public static function conPagamentoOnline($ordine)
+	{
+		if ($ordine["pagamento"] == "paypal" || $ordine["pagamento"] == "carta_di_credito")
+			return true;
+		
+		return false;
+	}
+	
+	public function settaMailDaInviare($idO)
+	{
+		$this->setValues(array(
+			"mail_da_inviare"	=>	1,
+		));
+		
+		$this->update((int)$idO);
+	}
+	
+	public function mandaMailDopoPagamento($idO)
+	{
+		$ordine = $this->selectId($idO);
+		
+		if (!empty($ordine) && $ordine["mail_da_inviare"])
+		{
+			$this->mandaMail((int)$idO);
+			
+			$this->setValues(array(
+				"mail_da_inviare"	=>	1,
+			));
+			
+			$this->update((int)$idO);
+			
+			if ($ordine["id_user"])
+			{
+				$r = new RegusersModel();
+				
+				$cliente = $r->selectId((int)$ordine["id_user"]);
+				
+				if (!empty($cliente) && !$cliente["credenziali_inviate"])
+					RegusersModel::resettaCredenziali($ordine["id_user"]);
+			}
+		}
 	}
 }

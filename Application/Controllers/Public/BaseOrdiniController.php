@@ -182,8 +182,8 @@ class BaseOrdiniController extends BaseController
 					{
 						case "Completed":
 							
-// 							if ($ordine["registrato"] == "Y")
-// 								$this->m["OrdiniModel"]->mandaMail($ordine["id_o"]);
+							// Controlla e manda mail dopo pagamento
+							$this->m["OrdiniModel"]->mandaMailDopoPagamento($ordine["id_o"]);
 							
 							$mail->Subject  = Parametri::$nomeNegozio." - ".gtext("Conferma Pagamento Nº Ordine: ").$ordine["id_o"];
 							$mail->AddAddress($ordine["email"]);
@@ -296,6 +296,9 @@ class BaseOrdiniController extends BaseController
 					
 					if (PagamentiModel::gateway()->success())
 					{
+						// Controlla e manda mail dopo pagamento
+						$this->m["OrdiniModel"]->mandaMailDopoPagamento($ordine["id_o"]);
+						
 						$mandaFattura = false;
 						
 						if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
@@ -1131,8 +1134,6 @@ class BaseOrdiniController extends BaseController
 									$this->m['RegusersModel']->values["cap"] = $this->m['OrdiniModel']->values["cap"];
 									$this->m['RegusersModel']->values["provincia"] = $this->m['OrdiniModel']->values["provincia"];
 									$this->m['RegusersModel']->values["dprovincia"] = $this->m['OrdiniModel']->values["dprovincia"];
-									
-									$this->m['RegusersModel']->values["citta"] = $this->m['OrdiniModel']->values["citta"];
 									$this->m['RegusersModel']->values["citta"] = $this->m['OrdiniModel']->values["citta"];
 									$this->m['RegusersModel']->values["telefono"] = $this->m['OrdiniModel']->values["telefono"];
 									$this->m['RegusersModel']->values["tipo_cliente"] = $this->m['OrdiniModel']->values["tipo_cliente"];
@@ -1140,6 +1141,9 @@ class BaseOrdiniController extends BaseController
 									
 									$this->m['RegusersModel']->values["pec"] = $this->m['OrdiniModel']->values["pec"];
 									$this->m['RegusersModel']->values["codice_destinatario"] = $this->m['OrdiniModel']->values["codice_destinatario"];
+									
+									if (v("mail_credenziali_dopo_pagamento"))
+										$this->m['RegusersModel']->values["credenziali_inviate"] = 0;
 									
 // 									$this->m['RegusersModel']->values["indirizzo_spedizione"] = $this->m['OrdiniModel']->values["indirizzo_spedizione"];
 									
@@ -1180,18 +1184,11 @@ class BaseOrdiniController extends BaseController
 										$this->m['OrdiniModel']->update($clean['lastId']);
 										
 										// MAIL AL CLIENTE
-										ob_start();
-										include tp()."/Regusers/mail_credenziali.php";
-										$output = ob_get_clean();
-										
-										$res = MailordiniModel::inviaMail(array(
-											"emails"	=>	array($clean["username"]),
-											"oggetto"	=>	"invio credenziali nuovo utente",
-											"testo"		=>	$output,
-											"tipologia"	=>	"ISCRIZIONE",
-											"id_user"	=>	(int)$clean['userId'],
-											"id_page"	=>	0,
-										));
+										if (!v("mail_credenziali_dopo_pagamento"))
+											$res = MailordiniModel::inviaCredenziali($clean['userId'], array(
+												"username"	=>	$clean["username"],
+												"password"	=>	$password,
+											));
 										
 										//loggo l'utente
 										$this->s['registered']->login($clean["username"],$password);
@@ -1280,25 +1277,30 @@ class BaseOrdiniController extends BaseController
 								call_user_func(v("hook_ordine_confermato"), $clean['lastId']);
 							
 							// mail al cliente
-							ob_start();
-							$tipoOutput = "mail_al_cliente";
-							include tp()."/Ordini/resoconto-acquisto.php";
-							$output = ob_get_clean();
-							
-							$res = MailordiniModel::inviaMail(array(
-								"emails"	=>	array($ordine["email"]),
-								"oggetto"	=>	"Ordine N° [ID_ORDINE]",
-								"testo"		=>	$output,
-								"tipologia"	=>	"ORDINE",
-								"id_user"	=>	(int)$ordine['id_user'],
-								"tipo"		=>	"R",
-								"id_o"		=>	$clean['lastId'],
-							));
+							if (!v("mail_ordine_dopo_pagamento") || !$utenteRegistrato || !OrdiniModel::conPagamentoOnline($ordine))
+							{
+								ob_start();
+								$tipoOutput = "mail_al_cliente";
+								include tpf("/Ordini/resoconto-acquisto.php");
+								$output = ob_get_clean();
+								
+								$res = MailordiniModel::inviaMail(array(
+									"emails"	=>	array($ordine["email"]),
+									"oggetto"	=>	"Ordine N° [ID_ORDINE]",
+									"testo"		=>	$output,
+									"tipologia"	=>	"ORDINE",
+									"id_user"	=>	(int)$ordine['id_user'],
+									"tipo"		=>	"R",
+									"id_o"		=>	$clean['lastId'],
+								));
+							}
+							else
+								$this->m['OrdiniModel']->settaMailDaInviare($clean['lastId']);
 							
 							// mail al negozio
 							ob_start();
 							$tipoOutput = "mail_al_negozio";
-							include tp()."/Ordini/resoconto-acquisto.php";
+							include tpf("/Ordini/resoconto-acquisto.php");
 							$output = ob_get_clean();
 							
 							$res = MailordiniModel::inviaMail(array(
@@ -1321,7 +1323,7 @@ class BaseOrdiniController extends BaseController
 							}
 							
 							// Redirect immediato a gateway
-							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && (strcmp($ordine["pagamento"],"paypal") === 0 || strcmp($ordine["pagamento"],"carta_di_credito") === 0)) ? "?to_paypal" : "";
+							$toPaypal = (ImpostazioniModel::$valori["redirect_immediato_a_paypal"] == "Y" && OrdiniModel::conPagamentoOnline($ordine)) ? "?to_paypal" : "";
 							
 							if ($statoOrdine != "pending")
 								$toPaypal = "";

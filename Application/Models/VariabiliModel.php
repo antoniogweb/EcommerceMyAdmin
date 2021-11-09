@@ -312,6 +312,8 @@ class VariabiliModel extends GenericModel {
 		"email_debug_retargeting"	=>	"",
 		"attiva_campo_test_in_pagine"	=>	0,
 		"attiva_menu_db"			=>	0,
+		"mail_ordine_dopo_pagamento"	=>	0,
+		"mail_credenziali_dopo_pagamento"	=>	0,
 	);
 	
 	public static $daInizializzare = array(

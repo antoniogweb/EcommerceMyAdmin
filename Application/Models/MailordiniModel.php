@@ -106,6 +106,30 @@ class MailordiniModel extends GenericModel
 		return $arrayBcc;
 	}
 	
+	public static function inviaCredenziali($idUser, $variabili = array())
+	{
+		if (!isset($variabili["username"]) || !isset($variabili["password"]) || !$variabili["username"] || !$variabili["password"])
+			return;
+		
+		$username = $variabili["username"];
+		$password = $variabili["password"];
+		$tokenConferma = isset($variabili["tokenConferma"]) ? $variabili["tokenConferma"] : "";
+		
+		// MAIL AL CLIENTE
+		ob_start();
+		include tp()."/Regusers/mail_credenziali.php";
+		$output = ob_get_clean();
+		
+		return MailordiniModel::inviaMail(array(
+			"emails"	=>	array($username),
+			"oggetto"	=>	"invio credenziali nuovo utente",
+			"testo"		=>	$output,
+			"tipologia"	=>	"ISCRIZIONE",
+			"id_user"	=>	(int)$idUser,
+			"id_page"	=>	0,
+		));
+	}
+	
 	public static function inviaMail($params)
 	{
 		$mo = new MailordiniModel();
@@ -182,24 +206,6 @@ class MailordiniModel extends GenericModel
 			$mail->ClearAllRecipients();
 			
 			$arrayBcc = self::setBcc($mail, $emails);
-			
-// 			if (ImpostazioniModel::$valori["bcc"] && !in_array(ImpostazioniModel::$valori["bcc"], $emails))
-// 			{
-// 				$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-// 				$arrayBcc[] = ImpostazioniModel::$valori["bcc"];
-// 			}
-// 			
-// 			if (defined("BCC") && is_array(BCC))
-// 			{
-// 				foreach (BCC as $emailBcc)
-// 				{
-// 					if (!in_array($emailBcc, $emails))
-// 					{
-// 						$mail->addBCC($emailBcc);
-// 						$arrayBcc[] = $emailBcc;
-// 					}
-// 				}
-// 			}
 			
 			$testoClean = $testo;
 			
