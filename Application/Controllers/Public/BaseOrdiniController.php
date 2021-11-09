@@ -1142,7 +1142,7 @@ class BaseOrdiniController extends BaseController
 									$this->m['RegusersModel']->values["pec"] = $this->m['OrdiniModel']->values["pec"];
 									$this->m['RegusersModel']->values["codice_destinatario"] = $this->m['OrdiniModel']->values["codice_destinatario"];
 									
-									if (v("mail_credenziali_dopo_pagamento"))
+									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine))
 										$this->m['RegusersModel']->values["credenziali_inviate"] = 0;
 									
 // 									$this->m['RegusersModel']->values["indirizzo_spedizione"] = $this->m['OrdiniModel']->values["indirizzo_spedizione"];
@@ -1184,7 +1184,7 @@ class BaseOrdiniController extends BaseController
 										$this->m['OrdiniModel']->update($clean['lastId']);
 										
 										// MAIL AL CLIENTE
-										if (!v("mail_credenziali_dopo_pagamento"))
+										if (!v("mail_credenziali_dopo_pagamento") || !OrdiniModel::conPagamentoOnline($ordine))
 											$res = MailordiniModel::inviaCredenziali($clean['userId'], array(
 												"username"	=>	$clean["username"],
 												"password"	=>	$password,

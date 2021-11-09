@@ -798,6 +798,7 @@ class OrdiniModel extends FormModel {
 		$this->update((int)$idO);
 	}
 	
+	// Manda le mail dopo il pagamento
 	public function mandaMailDopoPagamento($idO)
 	{
 		$ordine = $this->selectId($idO);
