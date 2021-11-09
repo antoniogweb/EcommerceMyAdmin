@@ -111,7 +111,7 @@ class MailordiniModel extends GenericModel
 		if (!isset($variabili["username"]) || !isset($variabili["password"]) || !$variabili["username"] || !$variabili["password"])
 			return;
 		
-		$username = $variabili["username"];
+		$username = $clean["username"] = $variabili["username"];
 		$password = $variabili["password"];
 		$tokenConferma = isset($variabili["tokenConferma"]) ? $variabili["tokenConferma"] : "";
 		
