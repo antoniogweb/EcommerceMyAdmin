@@ -712,6 +712,11 @@ class GenericModel extends Model_Tree
 				$id_tipologia_caratteristica = ($keyField == "id_tipologia_caratteristica") ? (int)$id : 0;
 				$id_pagamento = ($keyField == "id_pagamento") ? (int)$id : 0;
 				
+				$editorVisuale = 1;
+				
+				if (isset($record["use_editor"]))
+					$editorVisuale = $record["use_editor"] == "Y" ? 1 : 0;
+				
 				$ct->setValues(array(
 					"lingua"		=>	sanitizeDb($lingua),
 					"title"			=>	isset($record["title"]) ? $record["title"] : "",
@@ -724,6 +729,7 @@ class GenericModel extends Model_Tree
 					"titolo"		=>	isset($record["titolo"]) ? $record["titolo"] : "",
 					"descrizione"	=>	isset($record["descrizione"]) ? $record["descrizione"] : "",
 					"testo_link"	=>	isset($record["testo_link"]) ? $record["testo_link"] : "",
+					"editor_visuale"	=>	$editorVisuale,
 					"id_page"		=>	$id_page,
 					"id_c"			=>	$id_c,
 					"id_car"		=>	$id_car,

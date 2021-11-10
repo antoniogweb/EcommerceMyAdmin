@@ -56,6 +56,8 @@ trait TraitController
 			$fields = 'titolo,alias,description,keywords,meta_description';
 		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti")
 			$fields = 'titolo,descrizione';
+		else if ($section == "email_detail")
+			$fields = 'title,editor_visuale,description';
 		
 		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
 		{
@@ -91,6 +93,8 @@ trait TraitController
 			$this->m[$this->modelName]->setValue("sezione",$section);
 		
 		parent::form($queryType, $id);
+		
+		$data["editor_visuale"] = $this->getUsaEditorVisuale($queryType, $id);
 		
 		$this->append($data);
 	}

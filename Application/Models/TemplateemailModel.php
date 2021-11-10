@@ -26,6 +26,11 @@ class TemplateemailModel extends BasicsectionModel {
 	
 	public $hModelName = "TemplateemailcatModel";
 	
+	public static $opzioniTemplate = array(
+		0	=>	"Nessun template",
+		1	=>	"Usa template standard delle e-mail dell'ecommerce"
+	);
+	
 	public function overrideFormStruct()
 	{
 		$this->formStruct["entries"]['title'] = array(
@@ -53,6 +58,14 @@ class TemplateemailModel extends BasicsectionModel {
 				null,
 				"<div class='form_notice'>".gtext("Se può essere utilizzata dal sistema")."</div>"
 			),
+		);
+		
+		$this->formStruct["entries"]['id_mail_template'] = array(
+			"type"	=>	"Select",
+			"labelString"	=>	"Quale template vuoi usare?",
+			"options"	=>	self::$opzioniTemplate,
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
 		);
 	}
 	

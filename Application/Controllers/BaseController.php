@@ -835,4 +835,21 @@ class BaseController extends Controller
 		$data['tm'] = $this->_topMenuClasses;
 		$this->append($data);
 	}
+	
+	protected function getUsaEditorVisuale($queryType, $id)
+	{
+		$editorVisuale = "1";
+		
+		if (strcmp($queryType,'update') === 0)
+		{
+			$record = $this->m[$this->modelName]->selectId((int)$id);
+			
+			if (count($record) > 0)
+				$editorVisuale = $record["editor_visuale"];
+		}
+		
+		$editorVisuale = (isset($_POST["editor_visuale"]) and in_array($_POST["editor_visuale"],array("1","0"))) ? sanitizeAll($_POST["editor_visuale"]) : $editorVisuale;
+		
+		return $editorVisuale;
+	}
 }

@@ -254,6 +254,8 @@ class EventiretargetingModel extends GenericModel {
 					$giaProcessato = false;
 					$emailElemento = strtolower(trim($e["email"]));
 					
+					$usaTemplate = ((int)$email["pages"]["id_mail_template"]) ? true : false;
+					
 					if ($emailElemento && checkMail($emailElemento))
 					{
 						$oggetto = htmlentitydecode(field($email, "title"));
@@ -280,6 +282,7 @@ class EventiretargetingModel extends GenericModel {
 								"tipologia"	=>	"RETARGETING",
 								"id_evento"	=>	$idEvento,
 								"lingua"	=>	$e["lingua"],
+								"usa_template"	=>	$usaTemplate,
 							);
 							
 							if (MailordiniModel::inviaMail($valoriMail))

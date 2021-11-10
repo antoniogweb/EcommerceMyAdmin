@@ -978,14 +978,6 @@ class CartModel extends GenericModel {
 		
 		if (v("recupera_dati_carrello_da_post"))
 		{
-// 			if (isset($_POST["email"]) || isset($_POST["username"]))
-// 			{
-// 				if (isset($_POST["email"]) && checkMail($_POST["email"]))
-// 					$clean["email"] = $_SESSION["email_carrello"] = sanitizeAll($_POST["email"]);
-// 				else if (isset($_POST["username"]) && checkMail($_POST["username"]))
-// 					$clean["email"] = $_SESSION["email_carrello"] = sanitizeAll($_POST["username"]);
-// 			}
-// 			else
 			if (isset($_SESSION["email_carrello"]) && checkMail($_SESSION["email_carrello"]))
 				$clean["email"] = $_SESSION["email_carrello"];
 			else
@@ -1016,8 +1008,9 @@ class CartModel extends GenericModel {
 			if ($numeroDaCollegare > 0)
 			{
 				$this->setValues(array(
-					"id_user"	=>	User::$id,
-					"email"		=>	User::$dettagli["username"],
+					"id_user"		=>	User::$id,
+					"email"			=>	User::$dettagli["username"],
+					"creation_time"	=>	time(),
 				));
 				
 				$this->update(null, "cart_uid = '".$clean["cart_uid"]."'");
@@ -1035,7 +1028,8 @@ class CartModel extends GenericModel {
 				if ($numeroDaCollegare > 0)
 				{
 					$this->setValues(array(
-						"email"		=>	$clean["email"],
+						"email"			=>	$clean["email"],
+						"creation_time"	=>	time(),
 					));
 					
 					$this->update(null, "cart_uid = '".$clean["cart_uid"]."'");

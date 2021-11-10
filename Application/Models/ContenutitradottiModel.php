@@ -59,6 +59,13 @@ class ContenutitradottiModel extends GenericModel
 				'testo_link'	=>	array(
 					'labelString'	=>	'Testo pulsante',
 				),
+				'editor_visuale'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Usa editor visuale",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 		);
 		
