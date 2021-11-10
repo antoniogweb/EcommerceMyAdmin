@@ -314,6 +314,11 @@ class VariabiliModel extends GenericModel {
 		"attiva_menu_db"			=>	0,
 		"mail_ordine_dopo_pagamento"	=>	0,
 		"mail_credenziali_dopo_pagamento"	=>	0,
+		"url_redirect_dopo_login"	=>	"area-riservata",
+		"oggetto_ordine_ricevuto"	=>	"Ordine N° [ID_ORDINE]",
+		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
+		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
+		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
 	);
 	
 	public static $daInizializzare = array(

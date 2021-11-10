@@ -505,22 +505,26 @@ class OrdiniModel extends FormModel {
 	
 	public function mandaMailCompleted($id_o)
 	{
-		$this->mandaMailGeneric($id_o, "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", false);
+		$this->mandaMailGeneric($id_o, v("oggetto_ordine_pagato"), "mail-completed", "P", false);
+// 		$this->mandaMailGeneric($id_o, "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", false);
 	}
 	
 	public function mandaMailClosed($id_o)
 	{
-		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE] spedito e chiuso", "mail-closed", "C", false);
+		$this->mandaMailGeneric($id_o, v("oggetto_ordine_spedito"), "mail-closed", "C", false);
+// 		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE] spedito e chiuso", "mail-closed", "C", false);
 	}
 	
 	public function mandaMailDeleted($id_o)
 	{
-		$this->mandaMailGeneric($id_o, "Annullamento ordine N° [ID_ORDINE]", "mail-deleted", "A", false);
+		$this->mandaMailGeneric($id_o, v("oggetto_ordine_annullato"), "mail-deleted", "A", false);
+// 		$this->mandaMailGeneric($id_o, "Annullamento ordine N° [ID_ORDINE]", "mail-deleted", "A", false);
 	}
 	
 	public function mandaMail($id_o)
 	{
-		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE]", "resoconto-acquisto", "R", false);
+		$this->mandaMailGeneric($id_o, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false);
+// 		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE]", "resoconto-acquisto", "R", false);
 	}
 	
 	public function aggiungiStoricoMail($id_o, $tipo = "F", $params = array())

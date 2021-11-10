@@ -74,27 +74,6 @@ class BaseRegusersController extends BaseController
 		
 		$redirect = RegusersModel::getRedirect();
 		
-// 		$redirect = $this->request->get('redirect','','sanitizeAll');
-// 		$redirect = ltrim($redirect,"/");
-// 		
-// 		//valori permessi per il redirect
-// 		$allowedRedirect = explode(",",v("redirect_permessi"));
-// 		
-// 		if (is_numeric($redirect))
-// 		{
-// 			$page = $this->m["PagesModel"]->selectId((int)$redirect);
-// 			
-// 			if (!empty($page))
-// 				$redirect = (int)$redirect;
-// 			else
-// 				$redirect = '';
-// 		}
-// 		else
-// 		{
-// 			if (!in_array($redirect,$allowedRedirect))
-// 				$redirect = '';
-// 		}
-		
 		$data['action'] = Url::getRoot("regusers/login".RegusersModel::$redirectQueryString);
 		$data['redirectQueryString'] = RegusersModel::$redirectQueryString;
 		
@@ -105,7 +84,7 @@ class BaseRegusersController extends BaseController
 		if ($this->s['registered']->status['status']=='logged') { //check if already logged
 			if (Output::$html)
 			{
-				$this->redirect('area-riservata',0);
+				$this->m['RegusersModel']->redirectVersoAreaRiservata();
 				die();
 			}
 		}
@@ -125,19 +104,10 @@ class BaseRegusersController extends BaseController
 					{
 						$urlRedirect = RegusersModel::getUrlRedirect();
 						
-// 						if (strcmp($redirect,'') !== 0)
-// 						{
-// 							if (is_numeric($redirect))
-// 								$urlRedirect = Url::getRoot().getUrlAlias((int)$redirect);
-// 							else
-// 								$urlRedirect = Url::getRoot().$redirect;
-// 							
-// 							header('Location: '.$urlRedirect);
-// 						}
 						if ($urlRedirect)
 							header('Location: '.$urlRedirect);
 						else
-							$this->redirect("area-riservata");
+							$this->m['RegusersModel']->redirectVersoAreaRiservata();
 					}
 					else
 					{

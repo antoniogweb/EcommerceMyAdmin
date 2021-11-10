@@ -260,4 +260,11 @@ trait CommonModel {
 		
 		return $res;
 	}
+	
+	public function redirectVersoAreaRiservata()
+	{
+		$h = new HeaderObj();
+		
+		$h->redirect(v("url_redirect_dopo_login"));
+	}
 }
