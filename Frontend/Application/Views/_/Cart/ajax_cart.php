@@ -63,4 +63,5 @@
 		</div>
 	</footer>
 	<?php } ?>
+	<?php include(tpf("/Elementi/Carrello/ajax_cart_bottom.php"));?>
 </div>

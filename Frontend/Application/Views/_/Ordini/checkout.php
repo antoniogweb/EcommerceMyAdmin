@@ -14,6 +14,8 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
 <div id="content"></div>
 <?php if (count($pages) > 0) { ?>
+	<?php include(tpf("/Elementi/Ordini/checkout_top.php"));?>
+	
 	<?php include(tpf("/Elementi/Ordini/resoconto_login.php"));?>
 	
 	<?php include(tpf("/Elementi/Ordini/resoconto_coupon.php"));?>
