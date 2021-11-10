@@ -36,14 +36,23 @@ class SegnapostoModel extends GenericModel {
 		parent::__construct();
 	}
     
-	public static function gValori()
+	public static function gValori($soloVisibili = false)
 	{
 		if (isset(self::$valori))
 			return self::$valori;
 		
-		self::$valori = SegnapostoModel::g()->where(array(
+		$s = new SegnapostoModel();
+		
+		$s->where(array(
 			"attivo"	=>	1,
-		))->orderBy("id_order")->send(false);
+		))->orderBy("id_order");
+		
+		if ($soloVisibili)
+			$s->aWhere(array(
+				"visibile"	=>	1,
+			));
+		
+		self::$valori = $s->send(false);
 		
 		foreach (self::$valori as $v)
 		{
@@ -60,19 +69,39 @@ class SegnapostoModel extends GenericModel {
 			$codice = $valore["codice"];
 			$metodo = $valore["metodo"];
 			$variabile = $valore["variabile"];
+			$hook = $valore["hook"];
+			$argomenti = $valore["argomenti"];
 			
 			$valoreSostituitoto = null;
 			$lingua = (isset($record["lingua"]) && $record["lingua"]) ? $record["lingua"] : "it";
 			
 			if ($metodo)
 			{
-				if (method_exists($model,$metodo))
+				if (isset($model) && method_exists($model,$metodo))
 					$valoreSostituitoto = call_user_func(array($model, $metodo), $lingua);
 			}
 			else if ($variabile)
 			{
 				if (isset(VariabiliModel::$valori[$variabile]))
 					$valoreSostituitoto = v($variabile);
+			}
+			else if ($hook)
+			{
+				$funcs = array($lingua);
+				
+				if ($argomenti)
+				{
+					$argKeys = explode(",",$argomenti);
+					
+					foreach ($argKeys as $k)
+					{
+						if (isset($record[$k]))
+							$funcs[] = $record[$k];
+					}
+				}
+				
+				if (callFunctionCheck($hook, $funcs, true))
+					$valoreSostituitoto = callFunctionCheck($hook, $funcs);
 			}
 			else
 			{
@@ -92,7 +121,7 @@ class SegnapostoModel extends GenericModel {
     // Crea la lagenda dei segnaposto usata nel pannello
 	public static function getLegenda($model = null)
 	{
-		self::gValori();
+		self::gValori(true);
 		
 		$wrap = "<div class='callout callout-info'>".gtext("È possibile utilizzare i seguenti SEGNAPOSTO, che  verranno poi riempiti con i valori corretti nella preparazione e invio della mail").":";
 		

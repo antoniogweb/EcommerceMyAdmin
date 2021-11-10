@@ -196,6 +196,7 @@ class BaseOrdiniController extends BaseController
 						"id_o"		=>	$ordine["id_o"],
 						"tipo"		=>	"P",
 						"id_user"	=>	$ordine["id_user"],
+						"array_variabili"	=>	$ordine,
 					));
 				}
 			}
@@ -269,6 +270,7 @@ class BaseOrdiniController extends BaseController
 							"id_o"		=>	$ordine["id_o"],
 							"tipo"		=>	"P",
 							"id_user"	=>	$ordine["id_user"],
+							"array_variabili"	=>	$ordine,
 						));
 					}
 				}
@@ -1241,6 +1243,7 @@ class BaseOrdiniController extends BaseController
 									"id_user"	=>	(int)$ordine['id_user'],
 									"tipo"		=>	"R",
 									"id_o"		=>	$clean['lastId'],
+									"array_variabili"	=>	$ordine,
 								));
 							}
 							else
@@ -1260,6 +1263,7 @@ class BaseOrdiniController extends BaseController
 								"id_user"	=>	(int)$ordine['id_user'],
 								"tipo"		=>	"R",
 								"id_o"		=>	$clean['lastId'],
+								"array_variabili"	=>	$ordine,
 							));
 							
 							// Iscrizione alla newsletter

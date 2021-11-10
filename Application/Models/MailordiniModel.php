@@ -147,6 +147,7 @@ class MailordiniModel extends GenericModel
 		$tipo = isset($params["tipo"]) ? $params["tipo"] : "A";
 		$idEvento = isset($params["id_evento"]) ? $params["id_evento"] : 0;
 		$usaTemplate = isset($params["usa_template"]) ? $params["usa_template"] : true;
+		$arrayVariabili = isset($params["array_variabili"]) ? $params["array_variabili"] : null;
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
@@ -190,6 +191,10 @@ class MailordiniModel extends GenericModel
 			
 			$oggetto = gtext($oggetto, false);
 			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
+			
+			// Segnaposti
+			if (isset($arrayVariabili))
+				$oggetto = SegnapostoModel::sostituisci($oggetto, $arrayVariabili, null);
 			
 			$mail->Subject  = Parametri::$nomeNegozio." - $oggetto";
 			$mail->IsHTML(true);
