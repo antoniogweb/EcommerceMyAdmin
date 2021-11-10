@@ -139,45 +139,6 @@ class BaseOrdiniController extends BaseController
 						}
 					}
 					
-// 					require_once(ROOT."/External/phpmailer/class.phpmailer.php");
-
-// 					$mail = new PHPMailer(true); //New instance, with exceptions enabled
-// 
-// 					if (Parametri::$useSMTP)
-// 					{
-// 						$mail->IsSMTP();                         // tell the class to use SMTP
-// 						$mail->SMTPAuth   = true;                  // enable SMTP authentication
-// 						$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
-// 						$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
-// 						$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
-// 						$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
-// 						
-// 						if (ImpostazioniModel::$valori["smtp_secure"])
-// 							$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];
-// 					}
-// 					
-// 					$mail->From       = Parametri::$mailFrom;
-// 					$mail->FromName   = Parametri::$mailFromName;
-// 					if (Parametri::$mailReplyTo && Parametri::$mailFromName)
-// 						$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
-// 					
-// 					$mail->CharSet = 'UTF-8';
-// 					
-// 					$mail->IsHTML(true);
-// 					
-// 					$mail->WordWrap = 70;
-// 					
-// 					$mail->SMTPOptions = array(
-// 						'ssl' => array(
-// 							'verify_peer' => false,
-// 							'verify_peer_name' => false,
-// 							'allow_self_signed' => true
-// 						)
-// 					);
-// 					
-// 					if (ImpostazioniModel::$valori["bcc"])
-// 						$mail->addBCC(ImpostazioniModel::$valori["bcc"]);
-					
 					switch ($clean['payment_status'])
 					{
 						case "Completed":
@@ -198,35 +159,6 @@ class BaseOrdiniController extends BaseController
 							}
 							
 							$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
-							
-// 							$oggetto = str_replace("[ID_ORDINE]",$ordine["id_o"], gtext($Subject));
-// 							
-// 							$mail->Subject  = Parametri::$nomeNegozio." - ".$oggetto;
-// 							$mail->AddAddress($ordine["email"]);
-// 							$output = gtext("Grazie per il suo acquisto!<br />Il pagamento dell'ordine #").$ordine["id_o"]." ".gtext("è andato a buon fine.")."<br />";
-// 							
-// 							$fattura = $this->m["FattureModel"]->where(array(
-// 								"id_o"	=>	$ordine["id_o"]
-// 							))->record();
-// 							
-// 							if (!empty($fattura) && file_exists(ROOT."/admin/media/Fatture/".$fattura["filename"]))
-// 							{
-// 								$output .= "<br />In allegato la fattura relativa al suo ordine.";
-// 								$mail->AddAttachment(ROOT."/admin/media/Fatture/".$fattura["filename"]);
-// 							}
-// 							
-// 							$output = MailordiniModel::loadTemplate($mail->Subject, $output);
-// 							$mail->MsgHTML($output);
-// 							
-// 							try
-// 							{
-// 								$mail->Send();
-// 								
-// 								// Segna inviata mail ordine pagato
-// 								$this->m['OrdiniModel']->aggiungiStoricoMail($ordine["id_o"], "P");
-// 							} catch (Exception $e) {
-// 								
-// 							}
 							
 							$Subject  = v("oggetto_ordine_pagato");
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
