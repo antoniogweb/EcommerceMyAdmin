@@ -319,6 +319,8 @@ class VariabiliModel extends GenericModel {
 		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
 		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
 		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
+		"mostra_impostazioni_smtp"	=>	1,
+		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1,
 	);
 	
 	public static $daInizializzare = array(

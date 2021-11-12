@@ -49,6 +49,6 @@ class TemplateemailController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo';
 		
-		$this->queryFields = "title,description,use_editor";
+		$this->queryFields = "title,description,id_mail_template,use_editor";
 	}
 }

@@ -27,26 +27,7 @@ class EventiretargetingModel extends GenericModel {
 	public static $debug = false;
 	public static $debugResult= array();
 	
-	public static $scattaDopoOre = array(
-		0	=>	"Immediatamente",
-		1	=>	"Dopo 1 ora",
-		2	=>	"Dopo 2 ore",
-		3	=>	"Dopo 3 ore",
-		4	=>	"Dopo 4 ore",
-		5	=>	"Dopo 5 ore",
-		6	=>	"Dopo 6 ore",
-		12	=>	"Dopo 12 ore",
-		24	=>	"Dopo 1 giorno",
-		48	=>	"Dopo 2 giorni",
-		72	=>	"Dopo 3 giorni",
-		96	=>	"Dopo 4 giorni",
-		120	=>	"Dopo 5 giorni",
-		144	=>	"Dopo 6 giorni",
-		168	=>	"Dopo 7 giorni",
-		192	=>	"Dopo 8 giorni",
-		216	=>	"Dopo 9 giorni",
-		240	=>	"Dopo 10 giorni",
-	);
+	public static $scattaDopoOre = array();
 	
 	public function __construct() {
 		$this->_tables='eventi_retargeting';
@@ -86,7 +67,7 @@ class EventiretargetingModel extends GenericModel {
 				'scatta_dopo_ore'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Dopo quante ore vuoi inviare la mail?",
-					"options"	=>	$this->scattaDopoOre(),
+					"options"	=>	OpzioniModel::codice("TIME_RETARGETING"),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -132,6 +113,9 @@ class EventiretargetingModel extends GenericModel {
 	
 	public function dopoquanto($record)
 	{
+		if (empty(self::$scattaDopoOre))
+			self::$scattaDopoOre = OpzioniModel::codice("TIME_RETARGETING");
+		
 		if (isset(self::$scattaDopoOre[$record["eventi_retargeting"]["scatta_dopo_ore"]]))
 			return gtext(self::$scattaDopoOre[$record["eventi_retargeting"]["scatta_dopo_ore"]]);
 		
@@ -254,6 +238,8 @@ class EventiretargetingModel extends GenericModel {
 					$giaProcessato = false;
 					$emailElemento = strtolower(trim($e["email"]));
 					
+					$usaTemplate = ((int)$email["pages"]["id_mail_template"]) ? true : false;
+					
 					if ($emailElemento && checkMail($emailElemento))
 					{
 						$oggetto = htmlentitydecode(field($email, "title"));
@@ -280,6 +266,7 @@ class EventiretargetingModel extends GenericModel {
 								"tipologia"	=>	"RETARGETING",
 								"id_evento"	=>	$idEvento,
 								"lingua"	=>	$e["lingua"],
+								"usa_template"	=>	$usaTemplate,
 							);
 							
 							if (MailordiniModel::inviaMail($valoriMail))

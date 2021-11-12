@@ -431,7 +431,7 @@ class PagesModel extends GenericModel {
 						60	=>	gtext("Mostra nuovamente dopo 60 giorni"),
 						120	=>	gtext("Mostra nuovamente dopo 120 giorni"),
 						180	=>	gtext("Mostra nuovamente dopo 6 mesi"),
-						180	=>	gtext("Mostra nuovamente dopo 1 anno"),
+						360	=>	gtext("Mostra nuovamente dopo 1 anno"),
 					),
 					'reverse' => 'yes',
 					'wrap'		=>	array(

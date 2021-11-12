@@ -1,4 +1,13 @@
+<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+
+<?php if ($editor_visuale) { ?>
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+<?php } else { ?>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/ace.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/theme-dreamweaver.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/mode-ruby.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/jquery-ace.min.js"></script>
+<?php } ?>
 
 <script type="text/javascript">
 
@@ -19,7 +28,15 @@ function updateForm()
 	}
 }
 $().ready(function() {
+	<?php if ($editor_visuale) { ?>
 	$('.dettagli').tinymce(tiny_editor_config);
+	<?php } else { ?>
+		$('.dettagli').ace({ theme: 'dreamweaver', lang: 'ruby' })
+	<?php } ?>
+	
+	$("select[name='editor_visuale']").change(function(){
+		reloadPage();
+	});
 });
 </script>
 <div class='row'>
@@ -39,6 +56,10 @@ $().ready(function() {
 			
 			<?php if (isset($form["sottotitolo"])) { ?>
 			<?php echo $form["sottotitolo"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["editor_visuale"])) { ?>
+			<?php echo $form["editor_visuale"];?>
 			<?php } ?>
 			
 			<?php if (isset($form["description"])) { ?>

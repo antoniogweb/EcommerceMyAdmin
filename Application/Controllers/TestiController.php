@@ -135,17 +135,7 @@ class TestiController extends BaseController {
 		
 		parent::form($queryType, $id);
 		
-		$data["use_editor"] = "1";
-		
-		if (strcmp($queryType,'update') === 0)
-		{
-			$record = $this->m[$this->modelName]->selectId((int)$id);
-			
-			if (count($record) > 0)
-				$data["editor_visuale"] = $record["editor_visuale"];
-		}
-		
-		$data["editor_visuale"] = (isset($_POST["editor_visuale"]) and in_array($_POST["editor_visuale"],array("1","0"))) ? sanitizeAll($_POST["editor_visuale"]) : $data["editor_visuale"];
+		$data["editor_visuale"] = $this->getUsaEditorVisuale($queryType, $id);
 		
 		$this->append($data);
 	}
