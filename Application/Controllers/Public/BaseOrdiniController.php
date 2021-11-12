@@ -197,6 +197,7 @@ class BaseOrdiniController extends BaseController
 						"tipo"		=>	"P",
 						"id_user"	=>	$ordine["id_user"],
 						"array_variabili"	=>	$ordine,
+						"lingua"	=>	v("lingua_default_frontend"),
 					));
 				}
 			}
@@ -271,6 +272,7 @@ class BaseOrdiniController extends BaseController
 							"tipo"		=>	"P",
 							"id_user"	=>	$ordine["id_user"],
 							"array_variabili"	=>	$ordine,
+							"lingua"	=>	v("lingua_default_frontend"),
 						));
 					}
 				}
