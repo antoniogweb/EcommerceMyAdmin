@@ -158,7 +158,8 @@ class BaseOrdiniController extends BaseController
 									$mandaFattura = true;
 							}
 							
-							$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+							if (v("manda_mail_avvenuto_pagamento_al_cliente"))
+								$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
 							
 							$Subject  = v("oggetto_ordine_pagato");
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
@@ -197,6 +198,7 @@ class BaseOrdiniController extends BaseController
 						"tipo"		=>	"P",
 						"id_user"	=>	$ordine["id_user"],
 						"array_variabili"	=>	$ordine,
+						"lingua"	=>	v("lingua_default_frontend"),
 					));
 				}
 			}
@@ -258,7 +260,8 @@ class BaseOrdiniController extends BaseController
 							$this->m["FattureModel"]->crea($ordine["id_o"]);
 						}
 						
-						$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+						if (v("manda_mail_avvenuto_pagamento_al_cliente"))
+							$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
 						
 						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 						
@@ -271,6 +274,7 @@ class BaseOrdiniController extends BaseController
 							"tipo"		=>	"P",
 							"id_user"	=>	$ordine["id_user"],
 							"array_variabili"	=>	$ordine,
+							"lingua"	=>	v("lingua_default_frontend"),
 						));
 					}
 				}

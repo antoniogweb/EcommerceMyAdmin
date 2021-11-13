@@ -123,14 +123,19 @@ class SegnapostoModel extends GenericModel {
 	{
 		self::gValori(true);
 		
-		$wrap = "<div class='callout callout-info'>".gtext("È possibile utilizzare i seguenti SEGNAPOSTO, che  verranno poi riempiti con i valori corretti nella preparazione e invio della mail").":";
+		$wrap = "";
 		
-		foreach (self::$valoriLista as $pl => $titolo)
+		if (isset(self::$valoriLista))
 		{
-			$wrap .= "<div><b>[$pl]</b>: ".gtext($titolo)."</div>";
+			$wrap = "<div class='callout callout-info'>".gtext("È possibile utilizzare i seguenti SEGNAPOSTO, che  verranno poi riempiti con i valori corretti nella preparazione e invio della mail").":";
+			
+			foreach (self::$valoriLista as $pl => $titolo)
+			{
+				$wrap .= "<div><b>[$pl]</b>: ".gtext($titolo)."</div>";
+			}
+			
+			$wrap .= "</div>";
 		}
-		
-		$wrap .= "</div>";
 		
 		return $wrap;
 	}
