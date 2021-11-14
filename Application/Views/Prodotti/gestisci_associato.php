@@ -51,9 +51,9 @@
 <?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>
 
 <?php if (v("nuova_modalita_caratteristiche")) { ?>
-	<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione caratteristiche</a>
+<!-- 	<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione caratteristiche</a> -->
 
-	<a class="btn btn-success iframe help_aggiungi_caratteristiche" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-plus"></i> Aggiungi</a></p>
+	<a class="btn btn-success iframe help_aggiungi_caratteristiche" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-plus"></i> <?php echo gtext("Seleziona");?></a></p>
 <?php } else { ?>
 	
 	<script type="text/javascript">

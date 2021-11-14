@@ -287,7 +287,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_codice_in_carrello"	=>	1,
 		"carrello_monoprodotto"		=>	0,
 		"abilita_log_piattaforma"	=>	0,
-		"tempo_log_ore"				=>	24,
+		"tempo_log_ore"				=>	240,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
 		"dimensioni_upload_documenti"	=>	3000000,

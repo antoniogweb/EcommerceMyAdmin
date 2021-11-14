@@ -1750,7 +1750,7 @@ class PagesController extends BaseController {
 			),
 		);
 		
-		$this->mainFields = array("caratteristiche.titolo", "caratteristiche_valori.titolo");
+		$this->mainFields = array("caratteristiche.titolo", "edit");
 		$this->mainHead = "Caratteristica,Valore";
 		
 		if (!v("caratteristiche_in_tab_separate") && v("attiva_tipologie_caratteristiche"))
