@@ -9,6 +9,10 @@
 						
 						<?php echo $form["titolo"];?>
 						
+						<?php if (isset($form["titolo_2"])) { ?>
+						<?php echo $form["titolo_2"];?>
+						<?php } ?>
+						
 						<?php echo $form["alias"];?>
 						
 						<?php if (isset($form["immagine"])) { ?>

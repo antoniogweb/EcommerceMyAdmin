@@ -87,6 +87,14 @@ class CaratteristichevaloriModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Rappresenta il valore della caratteristica. Ex: rosso, XL, cuore")."</div>",
 					),
 				),
+				'titolo_2'		=>	array(
+					'labelString'=>	'Valore aggiuntivo caratteristica',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Rappresenta un valore aggiuntivo per specificare meglio la caratteristica. Non è supportato da tutti i temi.")."</div>",
+					),
+				),
 				'id_car'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Caratteristica",

@@ -5,5 +5,3 @@
 <div class="blocco_totale_merce">
 	<?php include($this->viewPath("totale_merce"));?>
 </div>
-
-<!-- <input class="uk-button uk-button-secondary button_submit_cell" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" /></p> -->

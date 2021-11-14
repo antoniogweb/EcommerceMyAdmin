@@ -122,6 +122,9 @@ class CaratteristichevaloriController extends BaseController {
 		
 		$fields = "titolo,alias";
 		
+		if (v("attiva_titolo_2_valori_caratteristiche"))
+			$fields .= ",titolo_2";
+		
 		if (v("immagine_in_caratteristiche"))
 			$fields .= ",immagine";
 		

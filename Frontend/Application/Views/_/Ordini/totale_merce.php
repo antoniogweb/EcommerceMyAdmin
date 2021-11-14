@@ -37,3 +37,10 @@
 <?php if (v("attiva_spedizione") && isset($_POST["id_corriere"]) && isset($_POST["nazione_spedizione"]) && !spedibile($_POST["id_corriere"], $_POST["nazione_spedizione"])) { ?>
 	<div class="uk-text-danger uk-text-bold"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
 <?php } ?>
+
+<?php if (User::$isPhone && !v("piattaforma_di_demo")) { ?>
+<div class="uk-margin-medium uk-margin-large-bottom">
+	<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+	<input class="uk-button uk-button-secondary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" />
+</div>
+<?php } ?>
