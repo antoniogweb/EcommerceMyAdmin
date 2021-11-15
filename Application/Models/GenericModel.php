@@ -1265,4 +1265,22 @@ class GenericModel extends Model_Tree
 		
 		$this->pUpdate((int)$id);
     }
+    
+    public function insertOrUpdate($where)
+    {
+		$record = $this->clear()->where($where)->find();
+		
+		if (!empty($record))
+		{
+			if ($this->update($record[$this->_idFields]))
+				return $record[$this->_idFields];
+		}
+		else
+		{
+			if ($this->insert())
+				return $this->lId;
+		}
+		
+		return 0;
+    }
 }

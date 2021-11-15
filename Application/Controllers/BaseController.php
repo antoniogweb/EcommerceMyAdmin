@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BaseController extends Controller
 {
 	use InitController;
+	use JsonController;
 	
 	protected $_posizioni = array();
 	

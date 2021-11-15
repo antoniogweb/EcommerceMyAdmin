@@ -594,6 +594,16 @@ $(document).ready(function(){
 		
 		$(this).parents('table').find('.bulk_actions_select').val(azione).trigger('change');
 	});
+	
+	// Autocomplete typehead
+	$(".auto").each(function(){
+		var urlAuto = baseUrl + "/" + $(this).attr("source");
+		var that = $(this);
+		
+		$.get(urlAuto, function(data){
+			that.typeahead({ source:data });
+		},'json');
+	});
 
 });
 

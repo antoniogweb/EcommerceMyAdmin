@@ -64,6 +64,8 @@
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/jquery.joyride.js"></script>
     <?php } ?>
     
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/Bootstrap-3-Typeahead-master/bootstrap3-typeahead.min.js"></script>
+    
     <?php if (defined("APPS")) {
 		foreach (APPS as $app)
 		{

@@ -1704,6 +1704,71 @@ class PagesController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function aggiungicaratteristica($id)
+	{
+		$this->clean();
+		
+		$this->shift(1);
+		
+		$pagina = $this->m["PagesModel"]->selectId((int)$id);
+		
+		if (empty($pagina))
+			die();
+		
+		if (!isset($_POST["titolo_car"]) || !isset($_POST["titolo_carval"]))
+			die();
+		
+		if (!trim($_POST["titolo_car"]))
+			flash("notice",wrap(gtext("Indicare una caratteristica"),array(
+				"div"	=>	"alert alert-danger"
+			)));
+		
+		if (!trim($_POST["titolo_carval"]))
+			flash("notice",wrap(gtext("Indicare un valore"),array(
+				"div"	=>	"alert alert-danger"
+			)));
+		
+		if (trim($_POST["titolo_car"]) && trim($_POST["titolo_carval"]))
+		{
+			$_GET["id_page"] = $_GET["id_page_update"] = (int)$id;
+			
+			$this->m["CaratteristicheModel"]->setValues(array(
+				"titolo"	=>	$_POST["titolo_car"],
+				"alias"		=>	"",
+			));
+			
+			$where = array(
+				"titolo"	=>	$_POST["titolo_car"],
+			);
+			
+			if ($this->viewArgs["id_tipo_car"] != "tutti")
+			{
+				$this->m["CaratteristicheModel"]->setValue("id_tipologia_caratteristica", (int)$this->viewArgs["id_tipo_car"]);
+				
+				$where["id_tipologia_caratteristica"] = (int)$this->viewArgs["id_tipo_car"];
+			}
+			
+			$idCar = $this->m["CaratteristicheModel"]->insertOrUpdate($where);
+			
+			$this->m["CaratteristichevaloriModel"]->setValues(array(
+				"titolo"	=>	$_POST["titolo_carval"],
+				"id_car"	=>	$idCar,
+				"alias"		=>	"",
+			));
+			
+			$idCarVal = $this->m["CaratteristichevaloriModel"]->insertOrUpdate(array(
+				"titolo"	=>	$_POST["titolo_carval"],
+			));
+			
+			if ($idCar && $idCarVal)
+				flash("notice",wrap(gtext("Operazione eseguita"),array(
+					"div"	=>	"alert alert-success"
+				)));
+		}
+		
+		$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".(int)$id.$this->viewStatus);
+	}
+	
 	public function caratteristiche($id = 0)
 	{
 		$data["orderBy"] = $this->orderBy = "id_order";
@@ -1739,6 +1804,11 @@ class PagesController extends BaseController {
 			if ($this->m['PagescarvalModel']->queryResult)
 				$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".$clean['id'].$this->viewStatus);
 		}
+		
+		$data["aggiuntaLibera"] = false;
+		
+		if (!v("immagine_in_caratteristiche") && (!v("attiva_tipologie_caratteristiche") || v("caratteristiche_in_tab_separate")))
+			$data["aggiuntaLibera"] = true;
 		
 		$mainAction = "caratteristiche/".$clean['id'];
 		

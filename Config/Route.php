@@ -118,10 +118,12 @@ class Route
 		'caratteristiche,valori',
 		'caratteristiche,ordinavalori',
 		'caratteristiche,ordina',
+		'caratteristiche,elenco',
 		
 		'caratteristichevalori,main',
 		'caratteristichevalori,form',
 		'caratteristichevalori,thumb',
+		'caratteristichevalori,elenco',
 		
 		'categorie,main',
 		'categorie,form',
@@ -165,6 +167,7 @@ class Route
 		'prodotti,ordinafeedback',
 		'prodotti,regioni',
 		'prodotti,lingue',
+		'prodotti,aggiungicaratteristica',
 		
 		'testi,main',
 		'testi,form',

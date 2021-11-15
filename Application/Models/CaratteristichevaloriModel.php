@@ -80,7 +80,7 @@ class CaratteristichevaloriModel extends GenericModel {
 		(
 			'entries' 	=> 	array(
 				'titolo'		=>	array(
-					'labelString'=>	'Valore caratteristica',
+					'labelString'=>	'Valore',
 					'wrap'		=>	array(
 						null,
 						null,
@@ -88,7 +88,7 @@ class CaratteristichevaloriModel extends GenericModel {
 					),
 				),
 				'titolo_2'		=>	array(
-					'labelString'=>	'Valore aggiuntivo caratteristica',
+					'labelString'=>	'Valore aggiuntivo',
 					'wrap'		=>	array(
 						null,
 						null,
@@ -201,7 +201,7 @@ class CaratteristichevaloriModel extends GenericModel {
 				$this->controllaLingua($this->lId);
 				
 				// Aggiungo direttamente dal prodotto
-				if ($_GET["id_page"] && is_numeric($_GET["id_page"]) && isset($this->values["id_car"]))
+				if (isset($_GET["id_page"]) && $_GET["id_page"] && is_numeric($_GET["id_page"]) && isset($this->values["id_car"]))
 					$this->aggiungiaprodotto($this->lId);
 			}
 		}
@@ -221,7 +221,13 @@ class CaratteristichevaloriModel extends GenericModel {
 			$res = parent::update($id, $where);
 			
 			if ($res)
+			{
 				$this->controllalingua($id, "id_cv");
+				
+				// Aggiungo direttamente dal prodotto
+				if (isset($_GET["id_page_update"]) && $_GET["id_page_update"] && is_numeric($_GET["id_page_update"]) && isset($this->values["id_car"]))
+					$this->aggiungiaprodotto($id);
+			}
 		}
 		
 		return $res;
@@ -242,12 +248,14 @@ class CaratteristichevaloriModel extends GenericModel {
     {
 		$record = $this->selectId((int)$id);
 		
-		if (!empty($record) && isset($_GET["id_page"]))
+		if (!empty($record) && (isset($_GET["id_page"]) || isset($_GET["id_page_update"])))
 		{
+			$idPage = isset($_GET["id_page"]) ? $_GET["id_page"] : $_GET["id_page_update"];
+			
 			$pcv = new PagescarvalModel();
 			
 			$pcv->setValues(array(
-				"id_page"	=>	(int)$_GET["id_page"],
+				"id_page"	=>	(int)$idPage,
 				"id_cv"		=>	(int)$id,
 			), "sanitizeDb");
 			
