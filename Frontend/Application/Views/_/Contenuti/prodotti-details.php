@@ -21,7 +21,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));?>
 		</div>
 	</div>
 </div>
+
 <?php include(tpf("/Elementi/Pagine/dettagli_pagina.php"));?>
+<?php include(tpf("/Fasce/fascia_spedizioni.php"));?>
 <?php include(tpf("/Elementi/Pagine/prodotti_correlati.php"));?>
 <?php include(tpf("/Elementi/Pagine/page_bottom.php"));?>
 <?php } ?>

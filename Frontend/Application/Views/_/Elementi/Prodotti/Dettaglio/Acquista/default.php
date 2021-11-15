@@ -24,18 +24,9 @@ $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 		<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
 		<span class="uk-text-muted"><?php echo gtext("Iva inclusa");?></span>
 		<?php } ?>
-		
-		<?php if (count($lista_valori_attributi) === 0) { ?>
-		<div class="giacenza uk-text-small">
-			<?php $qtaAcc = giacenzaPrincipale($p["pages"]["id_page"]);?>
-			<?php echo gtext("Disponibilità");?>: <span class="valore_giacenza"><?php echo $qtaAcc;?></span>
-			<span class="sng" style='display:<?php echo $qtaAcc==1 ? "inline" : "none"; ?>'><?php echo gtext("pezzo", false);?></span>
-			<span class="plu" style='display:<?php echo $qtaAcc!=1 ? "inline" : "none"; ?>'><?php echo gtext("pezzi", false);?></span>
-		</div>
-		<?php } ?>
 	</div>
 	
-	<div class="uk-margin-medium">
+	<div class="uk-margin">
 		<?php echo htmlentitydecode(attivaModuli(field($p, "description")));?>
 	</div>
 	
