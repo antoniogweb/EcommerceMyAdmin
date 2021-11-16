@@ -128,6 +128,9 @@ class PagamentiModel extends GenericModel {
 	
 	public function __call($metodo, $argomenti)
 	{
+		if ($this->checkCallLingue($metodo, $argomenti))
+			return $this->callLingue($metodo, $argomenti);
+		
 		if (isset(self::$gateway) && method_exists(self::$gateway, $metodo))
 			return call_user_func_array(array(self::$gateway, $metodo), $argomenti);
 

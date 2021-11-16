@@ -115,6 +115,23 @@ class GenericModel extends Model_Tree
 	
 	public function __call($method, $args)
 	{
+		return $this->callLingue($method, $args);
+	}
+	
+	protected function checkCallLingue($metodo, $argomenti)
+	{
+		$codici = LingueModel::getCodici();
+		$lingue = array_keys($codici);
+		$lingueString = implode("|", $lingue);
+		
+		if (preg_match('/^link('.$lingueString.')$/',$metodo, $matches) || preg_match('/^edit('.$lingueString.')$/',$metodo, $matches))
+			return true;
+		
+		return false;
+	}
+	
+	protected function callLingue($method, $args)
+	{
 		$codici = LingueModel::getCodici();
 		
 		$lingue = array_keys($codici);
@@ -133,7 +150,7 @@ class GenericModel extends Model_Tree
 			array_unshift($nArgs, $codici[$matches[1]]);
 			return call_user_func_array(array($this, "editLingua"), $nArgs);
 		}
-
+		
 		return null;
 	}
 	
