@@ -1178,10 +1178,9 @@ class BaseContenutiController extends BaseController
 		
 		$data["lista_attributi"] = $this->lista_attributi = $colonne;
 		
-// 		print_r($colonne);
-// 		print_r($data["lista_valori_attributi"]);die();
-		
 		$this->lista_valori_attributi = $data["lista_valori_attributi"];
+		
+		$data["haVarianti"] = count($data["lista_valori_attributi"]) > 0 ? true : false;
 		
 		$data["prezzoMinimo"] = $this->prezzoMinimo = $this->m['PagesModel']->prezzoMinimo($clean['id']);
 		
@@ -1211,28 +1210,14 @@ class BaseContenutiController extends BaseController
 		$data["altreImmagini"] = array();
 		
 		if (count($data["pages"]) > 0)
-		{
 			$data["altreImmagini"] = $this->m["ImmaginiModel"]->clear()->where(array("id_page" => $clean['id']))->orderBy("id_order")->send(false);
-		}
 		
 		$this->altreImmagini = $data["altreImmagini"];
 		
 		$orderByCaratteristiche = v("caratteristiche_in_tab_separate") ? "tipologie_caratteristiche.id_order, pages_caratteristiche_valori.id_order" : "pages_caratteristiche_valori.id_order" ;
 		
 		// CARATTERISTICHE
-		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("caratteristiche_valori.*,caratteristiche.*,caratteristiche_tradotte.*,caratteristiche_valori_tradotte.*,tipologie_caratteristiche.*,tipologie_caratteristiche_tradotte.*")
-			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
-			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
-			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
-			->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as tipologie_caratteristiche_tradotte")->on("tipologie_caratteristiche_tradotte.id_tipologia_caratteristica = tipologie_caratteristiche.id_tipologia_caratteristica and tipologie_caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-			->orderBy("pages_caratteristiche_valori.id_order")
-			->where(array(
-				"pages_caratteristiche_valori.id_page"=>$clean['id']
-			))
-			->orderBy($orderByCaratteristiche)
-			->send();
+		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m["PagesModel"]->selectCaratteristiche($clean['id']);
 		
 		$data["lista_caratteristiche_tipologie"] = array();
 		
@@ -1247,10 +1232,15 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
+		$data["haPersonalizzazioni"] = false;
+		
 		// Personalizzazioni
 		if (v("attiva_personalizzazioni"))
 		{
 			$data["personalizzazioni"] = $this->m['PagesModel']->selectPersonalizzazioni($clean['id']);
+			
+			if (count($data["personalizzazioni"]) > 0)
+				$data["haPersonalizzazioni"] = true;
 		}
 		
 		$data["documenti"] = $this->documentiPagina = $this->m["PagesModel"]->getDocumenti($clean['id']);

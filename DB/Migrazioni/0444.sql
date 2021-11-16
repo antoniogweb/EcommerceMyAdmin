@@ -1,0 +1,1 @@
+INSERT INTO `elementi_tema` (`id_elemento_tema`, `data_creazione`, `titolo`, `codice`, `percorso`, `nome_file`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Pulsante aggiungi al carrello nel dettaglio', 'AGGIUNGI_AL_CARRELLO_DETTAGLIO', 'Elementi/Prodotti/Dettaglio/AggiungiAlCarrello', 'default', '10');

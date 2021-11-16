@@ -1815,6 +1815,29 @@ class PagesModel extends GenericModel {
 		return self::isAttributoTipo($idPage, $col, "RADIO");
 	}
 	
+	public function selectCaratteristiche($id_page)
+	{
+		$clean['id'] = (int)$id_page;
+		
+		$orderByCaratteristiche = v("caratteristiche_in_tab_separate") ? "tipologie_caratteristiche.id_order, pages_caratteristiche_valori.id_order" : "pages_caratteristiche_valori.id_order" ;
+		
+		$pcv = new PagescarvalModel();
+		
+		return $pcv->clear()->select("caratteristiche_valori.*,caratteristiche.*,caratteristiche_tradotte.*,caratteristiche_valori_tradotte.*,tipologie_caratteristiche.*,tipologie_caratteristiche_tradotte.*")
+			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
+			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
+			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
+			->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as tipologie_caratteristiche_tradotte")->on("tipologie_caratteristiche_tradotte.id_tipologia_caratteristica = tipologie_caratteristiche.id_tipologia_caratteristica and tipologie_caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->orderBy("pages_caratteristiche_valori.id_order")
+			->where(array(
+				"pages_caratteristiche_valori.id_page"=>$clean['id']
+			))
+			->orderBy($orderByCaratteristiche)
+			->send();
+	}
+	
 	public function selectAttributi($id_page)
 	{
 		$clean['id'] = (int)$id_page;
