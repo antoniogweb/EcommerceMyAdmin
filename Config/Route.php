@@ -532,6 +532,9 @@ class Route
 		'menuadmin,main',
 		'menuadmin,form',
 // 		'menuadmin,ordina',
+
+		'elementitema,main',
+		'elementitema,form',
 	);
 	
 	//it can be 'yes' or 'no'

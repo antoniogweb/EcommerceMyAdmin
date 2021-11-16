@@ -80,7 +80,7 @@ class Tema
 		}
 	}
 	
-	public static function getSelectElementi($percorsoElemento)
+	public static function getSelectElementi($percorsoElemento, $mantieniEstensionePhp = true)
 	{
 		// Cerco i temi del tema di default
 		$filesModel = new Files_Upload(LIBRARY."/Frontend/Application/Views/_/$percorsoElemento");
@@ -130,7 +130,10 @@ class Tema
 			
 			if (count($temp) > 1)
 				array_pop($temp);
-				
+			
+			if (!$mantieniEstensionePhp)
+				$backFile = implode(".",$temp);
+			
 			$arraySelect[$backFile] = ucfirst(implode(" ",explode("_",implode(".",$temp))));
 		}
 		

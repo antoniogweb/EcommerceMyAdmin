@@ -322,6 +322,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_impostazioni_smtp"	=>	1,
 		"attiva_titolo_2_valori_caratteristiche"	=>	0,
 		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1,
+		"attiva_elementi_tema"		=>	0,
 	);
 	
 	public static $daInizializzare = array(

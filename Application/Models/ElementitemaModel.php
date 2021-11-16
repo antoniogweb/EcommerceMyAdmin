@@ -35,6 +35,32 @@ class ElementitemaModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'nome_file'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Layout",
+					"options"	=>	$this->selectLayout($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
+	public function selectLayout($id)
+	{
+		$record = $this->clear()->selectId((int)$id);
+		
+		if (!empty($record))
+			return Tema::getSelectElementi($record["percorso"], false);
+		
+		return array();
+	}
+	
 	public static function p($codice)
 	{
 		if (!isset(self::$percorsi))
@@ -53,5 +79,10 @@ class ElementitemaModel extends GenericModel {
 			return self::$percorsi[$codice]["percorso"]."/".self::$percorsi[$codice]["nome_file"].".php";
 		
 		return "";
+	}
+	
+	public function edit($record)
+	{
+		return $record[$this->_tables][$this->campoTitolo];
 	}
 }
