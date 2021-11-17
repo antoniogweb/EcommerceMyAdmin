@@ -451,6 +451,9 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Indica il tema dopo il quale il popup verrà aperto")."</div>"
 					),
 				),
+				'codice_js'	=>	array(
+					'labelString'	=>	'Codice di conversione Google',
+				),
 			),
 		);
 		

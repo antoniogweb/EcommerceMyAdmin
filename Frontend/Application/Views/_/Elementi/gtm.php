@@ -22,6 +22,11 @@ if (v("codice_gtm_analytics"))
 			"items": <?php echo json_encode($itemGtag);?>
 		});
 	</script>
+	
+	<?php if ($codiceConversioneGoogle) {
+		echo $codiceConversioneGoogle;
+	} ?>
+	
 	<?php }
 
 	if (isset($idOrdineGtm))

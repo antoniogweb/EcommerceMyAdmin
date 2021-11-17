@@ -573,6 +573,9 @@ class PagesController extends BaseController {
 			die("non permesso");
 		}
 		
+		if (v("attiva_codice_js_pagina"))
+			$this->metaQueryFields .= ",codice_js";
+		
 		$this->m[$this->modelName]->setFields($this->metaQueryFields,'sanitizeAll');
 		$this->m[$this->modelName]->setValue("meta_modificato", 1);
 		

@@ -323,6 +323,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_titolo_2_valori_caratteristiche"	=>	0,
 		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1,
 		"attiva_elementi_tema"		=>	0,
+		"attiva_codice_js_pagina"	=>	1,
 	);
 	
 	public static $daInizializzare = array(
@@ -443,12 +444,12 @@ class VariabiliModel extends GenericModel {
 				),
 			),
 			'codice_gtm_analytics'	=>	array(
-				'labelString'	=>	"Global site tag (gtag.js) - Google Analytics",
+				'labelString'	=>	"Global site tag (gtag.js)",
 				'type'			=>	'Textarea',
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Global site tag (gtag.js) - XXX --&gt;</div>"
 				),
 			),
 			'codice_fbk'	=>	array(
