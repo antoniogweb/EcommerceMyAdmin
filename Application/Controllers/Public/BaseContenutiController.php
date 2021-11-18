@@ -31,7 +31,6 @@ class BaseContenutiController extends BaseController
 	public $originalPageArgs = array();
 	public $filtriCaratteristiche = array();
 	public $filtriRegione = array();
-	public $cleanAlias = null;
 	public $urlParent = array(); //parents array (only ALIAS) as taken by the URL
 	public $rParent = array(); //right parents array (only ALIAS) as taken by database
 	public $parents = array(); //right parents array as taken by database
@@ -1019,17 +1018,17 @@ class BaseContenutiController extends BaseController
 		
 		if (isset($viewFile) and file_exists(tp()."/Contenuti/$viewFile.php"))
 		{
-			$this->load($viewFile);
+			$this->cload($viewFile);
 		}
 		else
 		{
 			if ($type === "category")
 			{
-				$this->load("category");
+				$this->cload("category");
 			}
 			else
 			{
-				$this->load("page");
+				$this->cload("page");
 			}
 		}
 	}

@@ -51,6 +51,8 @@ class ContenutiModel extends GenericModel {
 		"y"			=>	"Entra dall'alto",
 	);
 	
+	public static $fascePagina = array();
+	
 	public function __construct() {
 		$this->_tables='contenuti';
 		$this->_idFields='id_cont';
@@ -391,6 +393,8 @@ class ContenutiModel extends GenericModel {
 			
 			foreach ($fasce as $f)
 			{
+				self::$fascePagina[] = $f;
+				
 				self::$contentData = $f;
 				
 				$html = htmlentitydecode($f["tipi_contenuto"]["descrizione"]);

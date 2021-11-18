@@ -26,10 +26,12 @@ require(LIBRARY."/Application/Models/ContattiModel.php");
 
 class BaseBaseController extends Controller
 {
+	protected static $adminPanelCaricato = false;
 	protected $islogged = false;
 	protected $iduser = 0;
 	protected $dettagliUtente = null;
 	
+	public $cleanAlias = null;
 	public $prodottiInEvidenza;
 	public $elencoCategorieFull;
 	public $elencoMarchiFull;
@@ -931,5 +933,28 @@ class BaseBaseController extends Controller
 	protected function getCurrentUrl($completeUrl = true)
 	{
 		return $this->currPage;
+	}
+	
+	protected function cload($viewFile,$option = 'none')
+	{
+		if (User::$adminLogged && isset($_GET[v("token_edit_frontend")]) && !User::$isPhone)
+		{
+			if (!self::$adminPanelCaricato)
+			{
+				$currentUrl = $this->getCurrentUrl();
+				$this->clean();
+				
+				ob_start();
+				$tipoOutput = "mail_al_cliente";
+				include tpf("/admin_panel.php");
+				$output = ob_get_clean();
+				
+				self::$adminPanelCaricato = true;
+				
+				echo $output;
+			}
+		}
+		else
+			$this->load($viewFile, $option);
 	}
 }

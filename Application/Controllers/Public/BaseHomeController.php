@@ -104,7 +104,7 @@ class BaseHomeController extends BaseController
 		Output::setBodyValue("Pages", $pagineConDecode);
 		
 		if (Output::$html)
-			$this->load('main');
+			$this->cload('main');
 		else
 			$this->load("api_output");
 	}

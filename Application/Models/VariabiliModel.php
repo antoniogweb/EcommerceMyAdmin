@@ -324,6 +324,7 @@ class VariabiliModel extends GenericModel {
 		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1,
 		"attiva_elementi_tema"		=>	0,
 		"attiva_codice_js_pagina"	=>	1,
+		"token_edit_frontend"		=>	"",
 	);
 	
 	public static $daInizializzare = array(
@@ -331,6 +332,7 @@ class VariabiliModel extends GenericModel {
 		"debug_get_variable",
 		"debug_retargeting_get_variable",
 		"var_query_string_no_cookie",
+		"token_edit_frontend",
 	);
 	
 	public static function inizializza($variabili = array())
