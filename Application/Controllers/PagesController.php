@@ -747,9 +747,15 @@ class PagesController extends BaseController {
 						}
 						
 						$data["altreCategorie"] = $this->m[$this->modelName]->clear()->select("categories.*,pages.id_page")->inner("categories")->using("id_c")->where(array("codice_alfa"=>$record["codice_alfa"],"ne"=>array("id_page" => $clean['id'])))->orderBy("categories.lft")->send();
+						
+						if ($record["tipo_pagina"] == "HOME")
+							$data["urlPagina"] = "";
+						else
+							$data["urlPagina"] = $this->m["PagesModel"]->getUrlAlias($clean['id']);
+						
+						if (v("attiva_gestione_fasce_frontend"))
+							$data["urlPaginaEditFrontend"] = $data["urlPagina"]."?".v("token_edit_frontend")."&em_edit_frontend";
 					}
-					
-					$data["urlPagina"] = $this->m["PagesModel"]->getUrlAlias($clean['id']);
 				}
 				
 				$data["form"] = array();

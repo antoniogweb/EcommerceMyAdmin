@@ -937,12 +937,10 @@ class BaseBaseController extends Controller
 	
 	protected function cload($viewFile,$option = 'none')
 	{
-		if (User::$adminLogged && isset($_GET[v("token_edit_frontend")]) && !User::$isPhone && isset($_GET["em_edit_frontend"]))
+		if (v("attiva_gestione_fasce_frontend") && User::$adminLogged && isset($_GET[v("token_edit_frontend")]) && !User::$isPhone && isset($_GET["em_edit_frontend"]))
 		{
 			if (!self::$adminPanelCaricato)
 			{
-				
-				
 				$currentUrl = $this->getCurrentUrl()."?".v("token_edit_frontend");
 				$this->clean();
 				

@@ -142,6 +142,8 @@
 							success: function(content){
 								that.geFasce();
 								aggiornaIframe();
+								
+								that.annullaAggiungi();
 							}
 						});
 					}
