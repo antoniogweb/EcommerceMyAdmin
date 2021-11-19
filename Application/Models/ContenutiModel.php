@@ -52,6 +52,8 @@ class ContenutiModel extends GenericModel {
 	);
 	
 	public static $fascePagina = array();
+	public static $idElementoCorrente = 0;
+	public static $tipoElementoCorrente = "";
 	
 	public function __construct() {
 		$this->_tables='contenuti';
@@ -382,6 +384,9 @@ class ContenutiModel extends GenericModel {
 		
 		$idElemento = $idPage ? $idPage : $idC;
 		$controller = $idPage ? "pagine" : "categories";
+		
+		self::$idElementoCorrente = $idElemento;
+		self::$tipoElementoCorrente = $controller;
 		
 		$fasce = $this->send();
 		

@@ -413,24 +413,7 @@ class BaseController extends Controller
 			$this->scaffold->itemList->showFilters = false;
 		}
 		
-		if (!isset($_GET["esporta"]))
-		{
-			$data['scaffold'] = $this->scaffold->render();
-			
-			$data['numeroElementi'] = $this->scaffold->model->rowNumber();
-			
-			$data['menu'] = $this->scaffold->html['menu'];
-			$data['popup'] = $this->scaffold->html['popup'];
-			$data['main'] = $this->scaffold->html['main'];
-			$data['pageList'] = $this->scaffold->html['pageList'];
-			$data['notice'] = $this->scaffold->model->notice;
-			
-			$data['recordPerPage'] = $this->scaffold->params["recordPerPage"];
-			$data["filtri"] = $this->scaffold->itemList->createFilters();
-			
-			$this->load($this->mainView);
-		}
-		else
+		if (isset($_GET["esporta"]))
 		{
 			$this->scaffold->itemList->renderToCsv = true;
 			$this->scaffold->itemList->csvColumnsSeparator = ";";
@@ -449,6 +432,35 @@ class BaseController extends Controller
 			
 			echo "\xEF\xBB\xBF"; // UTF-8 BOM
 			echo $data['main'];
+		}
+		else if (isset($_GET["esporta_json"]))
+		{
+			header('Content-type: application/json; charset=utf-8');
+			
+			$this->clean();
+			
+			$records = $this->scaffold->model->send();
+			
+// 			print_r($records);
+			
+			echo json_encode($records);
+		}
+		else
+		{
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['numeroElementi'] = $this->scaffold->model->rowNumber();
+			
+			$data['menu'] = $this->scaffold->html['menu'];
+			$data['popup'] = $this->scaffold->html['popup'];
+			$data['main'] = $this->scaffold->html['main'];
+			$data['pageList'] = $this->scaffold->html['pageList'];
+			$data['notice'] = $this->scaffold->model->notice;
+			
+			$data['recordPerPage'] = $this->scaffold->params["recordPerPage"];
+			$data["filtri"] = $this->scaffold->itemList->createFilters();
+			
+			$this->load($this->mainView);
 		}
 		
 		$this->append($data);

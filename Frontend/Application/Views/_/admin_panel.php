@@ -36,7 +36,7 @@
 				<iframe id="iframe" class="uk-height-1-1" src="<?php echo $currentUrl;?>"></iframe>
 <!-- 			</div> -->
 		</div>
-		<aside id="right-col" class="uk-background-muted">
+		<aside id="right-col" class="">
 			<div class="uk-padding-small">
 				<ul uk-accordion>
 					<?php if (count(ContenutiModel::$fascePagina) > 0) { ?>
@@ -45,29 +45,102 @@
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
 								<tbody class="sortable" uk-sortable="handle: .uk-sortable-handle">
-									<?php foreach (ContenutiModel::$fascePagina as $cont) { ?>
-									<tr>
-										<td class="fascia" data-id="<?php echo $cont["contenuti"]["id_cont"];?>"><?php echo contfield($cont,"titolo");?></td>
+									<tr v-for="f in fasce">
 										<td><span class="uk-sortable-handle" uk-icon="table"></span></td>
+										<td class="fascia" v-bind:data-id="f.contenuti.id_cont"><span class="uk-text-small">{{ f.contenuti.titolo }}</span></td>
+										<td><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
 									</tr>
-									<?php } ?>
 								</tbody>
 							</table>
+							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary">Aggiungi fascia</a>
+							<div v-if="!aggiungi">
+								<input class="uk-input" placeholder="Titolo fascia"/>
+							</div>
 						</div>
 					</li>
 					<?php } ?>
 				</ul>
 			</div>
-		</div>
+		</aside>
    		<?php include(tpf("/Elementi/footer_js_cms.php"));?>
    		
-   		<script>
+   		<?php
+   		$urlFasce = ContenutiModel::$tipoElementoCorrente == "pagine" ? "pagine/contenuti/" : "categorie/contenuti/";
+   		$urlFasce = $this->baseUrlSrc."/admin/".$urlFasce.ContenutiModel::$idElementoCorrente."?esporta_json";
+   		?>
+   		
+   		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+   		<script type="application/javascript">
+   		
+   		var urlGetFasce = "<?php echo $urlFasce;?>";
+   		
+   		var app = new Vue({
+			el: '#right-col',
+			data: {
+				aggiungi: true,
+				fasce: [
+					{
+						contenuti : {
+							id_cont: 0,
+							titolo: "",
+						}
+					}
+				],
+			},
+			methods:{
+				preparaAggiungi: function()
+				{
+					this.aggiungi = false;
+				},
+				eliminaFascia: function(id)
+				{
+					var that = this;
+					
+					$.ajaxQueue({
+						url: urlGetFasce+"&id_cont="+id+"&delAction=Y",
+						async: true,
+						cache:false,
+						dataType: "json",
+						success: function(content){
+							
+							that.geFasce();
+							aggiornaIframe();
+						}
+					});
+				},
+				geFasce: function() {
+					var that = this;
+					
+					$.ajaxQueue({
+						url: urlGetFasce,
+						async: true,
+						cache:false,
+						dataType: "json",
+						success: function(content){
+							
+							that.fasce = content;
+// 							console.log(that.fasce);
+						}
+					});
+				}
+			},
+			beforeMount(){
+				this.geFasce()
+			}
+		});
+
+   		
    		
    		function aggiornaIframe()
    		{
 			document.getElementById("iframe").contentDocument.location.reload(true);
    		}
-   		
+//    		
+//    		function aggiornaFasce()
+//    		{
+// 			
+//    		}
+//    		
    		function aggiornaOrdinamento()
 		{
 			var id_cont = "";
@@ -94,7 +167,7 @@
 				}
 			});
 		}
-
+// 
    		$(document).ready(function() {
 			UIkit.util.on('.sortable', 'moved', function (item) {
 				aggiornaOrdinamento();
