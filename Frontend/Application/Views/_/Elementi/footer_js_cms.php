@@ -32,3 +32,5 @@
 <?php if ($this->controller == "home" && $this->action == "index" && isset($modali_frontend) && count($modali_frontend) > 0) { ?>
 <?php include(tpf("/Elementi/modali.php"));?>
 <?php } ?>
+
+<?php include(tpf("/Elementi/footer_js_admin_panel.php"));?>

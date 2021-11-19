@@ -32,9 +32,7 @@
    </head>
    <body class="uk-height-1-1">
 		<div id="left-col" class="uk-height-1-1">
-<!-- 			<div class="uk-cover-container uk-height-1-1"> -->
-				<iframe id="iframe" class="uk-height-1-1" src="<?php echo $currentUrl;?>"></iframe>
-<!-- 			</div> -->
+			<iframe id="iframe" class="uk-height-1-1" src="<?php echo $currentUrl;?>"></iframe>
 		</div>
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
