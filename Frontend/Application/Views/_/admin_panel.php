@@ -52,9 +52,14 @@
 									</tr>
 								</tbody>
 							</table>
-							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary">Aggiungi fascia</a>
+							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuova fascia</a>
 							<div v-if="!aggiungi">
-								<input class="uk-input" placeholder="Titolo fascia"/>
+								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
+								<select v-bind:class="oggettoErroreIdTipo" v-model="idTipoFascia" class="uk-select uk-margin-small">
+									<option  v-for="(tipoFascia, index) in tipiFasce" v-bind:value="tipoFascia.tipi_contenuto.id_tipo">{{tipoFascia.tipi_contenuto.titolo}}</option>
+								</select>
+								<a @click.prevent="confermaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
+								<a @click.prevent="annullaAggiungi()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span uk-icon="arrow-left"></span> Annulla</a>
 							</div>
 						</div>
 					</li>
@@ -67,17 +72,23 @@
    		<?php
    		$urlFasce = ContenutiModel::$tipoElementoCorrente == "pagine" ? "pagine/contenuti/" : "categorie/contenuti/";
    		$urlFasce = $this->baseUrlSrc."/admin/".$urlFasce.ContenutiModel::$idElementoCorrente."?esporta_json";
+   		$queryStringIdElemento = ContenutiModel::$tipoElementoCorrente == "pagine" ? "id_page" : "id_c";
    		?>
    		
    		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
    		<script type="application/javascript">
    		
    		var urlGetFasce = "<?php echo $urlFasce;?>";
+   		var urlPostFasce = "<?php echo $this->baseUrlSrc."/admin/contenuti/form/insert?".$queryStringIdElemento."=".ContenutiModel::$idElementoCorrente;?>";
+   		var urlGetTipiFasce = "<?php echo $this->baseUrlSrc."/admin/tipicontenuto/main?tipo=FASCIA&esporta_json";?>";
    		
    		var app = new Vue({
 			el: '#right-col',
 			data: {
+				idTipoFascia: 0,
+				titoloNuovaFascia: "",
 				aggiungi: true,
+				confermataAggiunta: false,
 				fasce: [
 					{
 						contenuti : {
@@ -86,8 +97,62 @@
 						}
 					}
 				],
+				tipiFasce: [
+					{
+						tipi_contenuto:
+						{
+							id_tipo: 0,
+							titolo: "",
+						}
+					}
+				],
+			},
+			computed: {
+				oggettoErroreTitolo: function () {
+					return {
+						'uk-form-danger': this.titoloNuovaFascia == "" && this.confermataAggiunta,
+					}
+				},
+				oggettoErroreIdTipo: function () {
+					return {
+						'uk-form-danger': this.idTipoFascia == 0 && this.confermataAggiunta,
+					}
+				}
 			},
 			methods:{
+				confermaAggiungi: function()
+				{
+					this.confermataAggiunta = true;
+					
+					if (this.titoloNuovaFascia != "" && this.idTipoFascia != 0)
+					{
+						var that = this;
+						
+						$.ajaxQueue({
+							url: urlPostFasce,
+							async: true,
+							cache:false,
+							dataType: "html",
+							method: "POST",
+							data: {
+								titolo: this.titoloNuovaFascia,
+								id_tipo: this.idTipoFascia,
+								lingua: "tutte",
+								attivo: "Y",
+								insertAction: "Salva",
+							},
+							success: function(content){
+								that.geFasce();
+								aggiornaIframe();
+							}
+						});
+					}
+				},
+				annullaAggiungi: function()
+				{
+					this.aggiungi = true;
+					this.confermataAggiunta = false;
+				},
 				preparaAggiungi: function()
 				{
 					this.aggiungi = false;
@@ -122,10 +187,26 @@
 // 							console.log(that.fasce);
 						}
 					});
+				},
+				geTipiFasce: function() {
+					var that = this;
+					
+					$.ajaxQueue({
+						url: urlGetTipiFasce,
+						async: true,
+						cache:false,
+						dataType: "json",
+						success: function(content){
+							
+							that.tipiFasce = content;
+							console.log(that.tipiFasce);
+						}
+					});
 				}
 			},
 			beforeMount(){
-				this.geFasce()
+				this.geFasce();
+				this.geTipiFasce();
 			}
 		});
 
