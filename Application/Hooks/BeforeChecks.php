@@ -561,6 +561,12 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Cerca ..",
 			),
 		),
+		"imm_1"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Cerca ..",
+			),
+		),
 		"id_tipologia_caratteristica"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(

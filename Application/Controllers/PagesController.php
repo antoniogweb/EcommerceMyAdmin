@@ -76,6 +76,7 @@ class PagesController extends BaseController {
 		'nobuttons:sanitizeAll' => "tutti",
 		'lingua_page:sanitizeAll' => "tutti",
 		'lingua_page_escl:sanitizeAll' => "tutti",
+		'imm_1:sanitizeAll' => "tutti",
 	);
 	
 	protected $_posizioni = array(
@@ -1365,7 +1366,7 @@ class PagesController extends BaseController {
 		$filtroLingua = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectLingua();
 		$filtroTipo = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectTipo("GENERICO");
 		
-		$this->filters = array(null,"titolo_contenuto");
+		$this->filters = array(null,"titolo_contenuto","imm_1");
 		
 		if ((int)count($this->tabContenuti) === 0)
 			$this->filters[] = array("tipocontenuto","",$filtroTipo);
@@ -1375,8 +1376,8 @@ class PagesController extends BaseController {
 		$this->aggregateFilters = false;
 		$this->showFilters = true;
 		
-		$this->mainFields = array("titoloContenuto");
-		$this->mainHead = "Titolo";
+		$this->mainFields = array("titoloContenuto","contenuti.immagine_1");
+		$this->mainHead = "Titolo,File";
 		
 		if ((int)count($this->tabContenuti) === 0)
 		{
@@ -1401,6 +1402,7 @@ class PagesController extends BaseController {
 			"lingua"	=>	$this->viewArgs["lingua"],
 			"id_tipo"	=>	$this->viewArgs["tipocontenuto"],
 			"lk"		=>	array("contenuti.titolo" => $this->viewArgs["titolo_contenuto"]),
+			"lk"		=>	array("contenuti.immagine_1" => $this->viewArgs["imm_1"]),
 			"ne"		=>	array("tipo"	=>	"FASCIA"),
 		))->convert()->save();
 		
