@@ -1768,6 +1768,7 @@ class PagesController extends BaseController {
 			));
 			
 			$idCarVal = $this->m["CaratteristichevaloriModel"]->insertOrUpdate(array(
+				"id_car"	=>	$idCar,
 				"titolo"	=>	$_POST["titolo_carval"],
 			));
 			

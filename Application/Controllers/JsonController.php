@@ -31,7 +31,9 @@ trait JsonController
 		$this->clean();
 		$campoTitolo = $this->m[$this->modelName]->campoTitolo;
 		
-		$elementi = $this->m[$this->modelName]->clear()->orderBy($campoTitolo)->toList($campoTitolo)->send();
+		$elementi = $this->m[$this->modelName]->clear()->select("distinct $campoTitolo")->orderBy($campoTitolo)->toList($campoTitolo)->send();
+		
+		$elementi = htmlentitydecodeDeep($elementi);
 		
 		echo json_encode($elementi);
 	}
