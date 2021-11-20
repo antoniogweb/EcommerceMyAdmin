@@ -37,7 +37,7 @@
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
 				<ul uk-accordion>
-					<li class="uk-open">
+					<li v-if="mostraFasce" class="uk-open">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione fasce sito");?></a>
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
@@ -69,18 +69,28 @@
    		$urlFasce = ContenutiModel::$tipoElementoCorrente == "pagine" ? "pagine/contenuti/" : "categorie/contenuti/";
    		$urlFasce = $this->baseUrlSrc."/admin/".$urlFasce.ContenutiModel::$idElementoCorrente."?esporta_json";
    		$queryStringIdElemento = ContenutiModel::$tipoElementoCorrente == "pagine" ? "id_page" : "id_c";
+   		
+   		$mostraFasce = true;
+// 		if (ContenutiModel::$tipoElementoCorrente == "pagine" && isProdotto(ContenutiModel::$idElementoCorrente))
+// 			$mostraFasce = false;
    		?>
    		
    		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
    		<script type="application/javascript">
    		
-   		var urlGetFasce = "<?php echo $urlFasce;?>";
+//    		var urlGetFasce = "<?php echo $urlFasce;?>";
    		var urlPostFasce = "<?php echo $this->baseUrlSrc."/admin/contenuti/form/insert?".$queryStringIdElemento."=".ContenutiModel::$idElementoCorrente;?>";
    		var urlGetTipiFasce = "<?php echo $this->baseUrlSrc."/admin/tipicontenuto/main?tipo=FASCIA&esporta_json";?>";
    		
    		var app = new Vue({
 			el: '#right-col',
 			data: {
+				urlGetFasce: "<?php echo $urlFasce;?>",
+				urlPostFasce: "",
+				inizializzato: false,
+				tipoElemento: "",
+				idElemento: 0,
+				mostraFasce: true,
 				idTipoFascia: 0,
 				titoloNuovaFascia: "",
 				aggiungi: true,
@@ -125,7 +135,7 @@
 						var that = this;
 						
 						$.ajaxQueue({
-							url: urlPostFasce,
+							url: that.urlPostFasce,
 							async: true,
 							cache:false,
 							dataType: "html",
@@ -160,7 +170,7 @@
 					var that = this;
 					
 					$.ajaxQueue({
-						url: urlGetFasce+"&id_cont="+id+"&delAction=Y",
+						url: that.urlGetFasce+"&id_cont="+id+"&delAction=Y",
 						async: true,
 						cache:false,
 						dataType: "json",
@@ -175,7 +185,7 @@
 					var that = this;
 					
 					$.ajaxQueue({
-						url: urlGetFasce,
+						url: that.urlGetFasce,
 						async: true,
 						cache:false,
 						dataType: "json",
@@ -197,29 +207,61 @@
 						success: function(content){
 							
 							that.tipiFasce = content;
-							console.log(that.tipiFasce);
+// 							console.log(that.tipiFasce);
+						}
+					});
+				},
+				inizializza: function()
+				{
+					var that = this;
+					
+					$('#iframe_webpage').on("load", function() {
+						
+						if (!that.inizializzato)
+						{
+							var elementoFasce = $('#iframe_webpage').contents().find(".blocco_fasce_contenuto").length;
+							
+							if (elementoFasce == 0)
+								that.mostraFasce = false;
+							else
+								that.mostraFasce = true;
+							
+							that.idElemento = $('#iframe_webpage').contents().find(".class_id_contenuto").text();
+							that.tipoElemento = $('#iframe_webpage').contents().find(".class_tipo_elemento").text();
+							
+							if (that.idElemento != 0 && that.tipoElemento != "")
+							{
+	// 							console.log(that.tipoElemento);
+								
+								that.urlGetFasce = baseUrlSrc + "/admin/" + that.tipoElemento + "/contenuti/" + that.idElemento + "?esporta_json";
+								
+								var queryStringIdElemento = (that.tipoElemento == "pagine") ? "id_page" : "id_c";
+								
+								that.urlPostFasce = baseUrlSrc + "/admin/contenuti/form/insert?" + queryStringIdElemento + "=" + that.idElemento;
+								
+		// 						console.log(that.urlPostFasce);
+								
+								that.geFasce();
+								that.geTipiFasce();
+								
+								that.inizializzato = true;
+							}
 						}
 					});
 				}
 			},
 			beforeMount(){
-				this.geFasce();
-				this.geTipiFasce();
+				this.inizializza();
 			}
 		});
-
    		
+//    		app.inizializza();
    		
    		function aggiornaIframe()
    		{
 			document.getElementById("iframe_webpage").contentDocument.location.reload(true);
    		}
-//    		
-//    		function aggiornaFasce()
-//    		{
-// 			
-//    		}
-//    		
+
    		function aggiornaOrdinamento()
 		{
 			var id_cont = "";
@@ -253,5 +295,6 @@
 			});
 		});
 		</script>
+		<div style="display:none;" class="class_request_uri"><?php echo sanitizeAll($_SERVER['REQUEST_URI']);?></div>
    </body>
 </html>

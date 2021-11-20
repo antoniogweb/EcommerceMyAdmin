@@ -75,5 +75,7 @@ if (!isset($noFiltri))
 	</div>
 </div>
 
+<?php echo $fasce;?>
+
 <?php include(tpf("/Elementi/gtm_impressioni_lista.php"));?>
 <?php include(tpf("/Elementi/Pagine/page_bottom.php"));?>

@@ -1,6 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <script>
 	var baseUrl = "<?php echo $this->baseUrl;?>";
+	var baseUrlSrc = "<?php echo $this->baseUrlSrc;?>";
 	var variante_non_esistente = "<?php echo gtext("Non esiste il prodotto con la combinazione di varianti selezionate", false);?>";
 	var errore_combinazione = "<?php echo gtext("Si prega di indicare:", false);?>";
 	var errore_quantita_minore_zero = "<?php echo gtext("Si prega di indicare una quantità maggiore di zero", false);?>";

@@ -4,4 +4,4 @@
 	<div class="uk-container uk-container-small">
 		<?php include(tpf("Elementi/Pagine/form-contatti.php"));?>
 	</div>
-<div>
+</div>
