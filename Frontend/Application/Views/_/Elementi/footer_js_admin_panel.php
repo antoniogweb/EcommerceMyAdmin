@@ -2,7 +2,7 @@
 <?php if (v("attiva_gestione_fasce_frontend") && User::$adminLogged && isset($_GET[v("token_edit_frontend")]) && !User::$isPhone && !isset($_GET["em_edit_frontend"])) { ?>
 	<script>
 	$(document).ready(function(){
-		$("body").on("click", "a", function(e){
+		$("body").on("click", "a:not(.iframe)", function(e){
 			
 			e.preventDefault();
 			

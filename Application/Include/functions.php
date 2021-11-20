@@ -1020,6 +1020,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true)
 				$t->values = array(
 					"valore"	=>	$clean["chiave"],
 				);
+			
+			if (ContenutiModel::$idContenuto)
+				$t->values["id_cont"] = ContenutiModel::$idContenuto;
 		}
 		
 		$t->values["chiave"] = $clean["chiave"];

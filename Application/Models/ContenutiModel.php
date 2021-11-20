@@ -54,6 +54,7 @@ class ContenutiModel extends GenericModel {
 	public static $fascePagina = array();
 	public static $idElementoCorrente = 0;
 	public static $tipoElementoCorrente = "";
+	public static $idContenuto = 0;
 	
 	public function __construct() {
 		$this->_tables='contenuti';
@@ -110,6 +111,7 @@ class ContenutiModel extends GenericModel {
 	public function relations() {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_cont', null, "CASCADE"),
+			'testi' => array("HAS_MANY", 'TestiModel', 'id_cont', null, "CASCADE"),
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'category' => array("BELONGS_TO", 'CategoriesModel', 'id_c',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipicontenutoModel', 'id_tipo',null,"CASCADE"),
@@ -398,6 +400,10 @@ class ContenutiModel extends GenericModel {
 			
 			foreach ($fasce as $f)
 			{
+				$idCont = $f["contenuti"]["id_cont"];
+				
+				self::$idContenuto = $idCont;
+				
 				self::$fascePagina[] = $f;
 				
 				self::$contentData = $f;
@@ -417,26 +423,26 @@ class ContenutiModel extends GenericModel {
 				
 				$html = preg_replace('/\[srcImmagineResponsive\]/', Url::getFileRoot()."images/contenuti/".$immagineDispositivo ,$html);
 				
-				$html = preg_replace('/\[testo (.*?)\]/', '[testo ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
+				$html = preg_replace('/\[testo (.*?)\]/', '[testo ${1}_'.$idCont.']' ,$html);
 				
-				$html = preg_replace('/\[immagine (.*?) attributi (.*?)\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].' attributi ${2}]' ,$html);
-				$html = preg_replace('/\[link (.*?) attributi (.*?)\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].' attributi ${2}]' ,$html);
+				$html = preg_replace('/\[immagine (.*?) attributi (.*?)\]/', '[immagine ${1}_'.$idCont.' attributi ${2}]' ,$html);
+				$html = preg_replace('/\[link (.*?) attributi (.*?)\]/', '[link ${1}_'.$idCont.' attributi ${2}]' ,$html);
 				
-				$html = preg_replace('/\[immagine ([a-zA-Z0-9\_\-]{1,})\]/', '[immagine ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
-				$html = preg_replace('/\[link ([a-zA-Z0-9\_\-]{1,})\]/', '[link ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
-				$html = preg_replace('/\[video (.*?)\]/', '[video ${1}_'.$f["contenuti"]["id_cont"].']' ,$html);
+				$html = preg_replace('/\[immagine ([a-zA-Z0-9\_\-]{1,})\]/', '[immagine ${1}_'.$idCont.']' ,$html);
+				$html = preg_replace('/\[link ([a-zA-Z0-9\_\-]{1,})\]/', '[link ${1}_'.$idCont.']' ,$html);
+				$html = preg_replace('/\[video (.*?)\]/', '[video ${1}_'.$idCont.']' ,$html);
 				
 				$html = preg_replace('/\[descrizione\]/', $f["contenuti"]["descrizione"], $html);
 				
 				if (User::$adminLogged)
 				{
-					$htmlFinale .= "<div id='".$f["contenuti"]["id_cont"]."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
+					$htmlFinale .= "<div id='".$idCont."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
 					
 					$htmlFinale .= "<div class='titolo_fascia'>Fascia: <b>".$f["contenuti"]["titolo"]."</b> - Tipo: <b>".$f["tipi_contenuto"]["titolo"]."</b>";
 					
 					$htmlFinale .= " - LINGUA: <b>".strtoupper($f["contenuti"]["lingua"])."</b>";
 					
-					$htmlFinale .= " <a title='".gtext("Modifica fascia")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$f["contenuti"]["id_cont"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
+					$htmlFinale .= " <a title='".gtext("Modifica fascia")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$idCont."?partial=Y'><i class='fa fa-pencil'></i></a>";
 					
 					$htmlFinale .= " <a title='".gtext("Ordina / Aggiungi fasce")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/$controller/contenuti/".(int)$idElemento."?partial=Y&nobuttons=Y'><i class='fa fa-sort'></i></a>";
 					
@@ -451,6 +457,8 @@ class ContenutiModel extends GenericModel {
 			
 			$htmlFinale .= User::$adminLogged ? "</div>" : "";
 		}
+		
+		self::$idContenuto = 0;
 		
 		return $htmlFinale;
 	}

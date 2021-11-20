@@ -134,7 +134,7 @@ function reloadPage()
 
 function aggAlteIfr()
 {
-	if (partial && window.frameElement)
+	if (partial && window.frameElement && window.parent.$(".admin_panel").length > 0)
 	{
 		setTimeout(function(){
 			var altezza = $(".wrapper").height();

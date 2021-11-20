@@ -32,7 +32,7 @@
    </head>
    <body class="uk-height-1-1">
 		<div id="left-col" class="uk-height-1-1">
-			<iframe id="iframe" class="uk-height-1-1" src="<?php echo $currentUrl;?>"></iframe>
+			<iframe id="iframe_webpage" class="uk-height-1-1" src="<?php echo $currentUrl;?>"></iframe>
 		</div>
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
@@ -214,7 +214,7 @@
    		
    		function aggiornaIframe()
    		{
-			document.getElementById("iframe").contentDocument.location.reload(true);
+			document.getElementById("iframe_webpage").contentDocument.location.reload(true);
    		}
 //    		
 //    		function aggiornaFasce()

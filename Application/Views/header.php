@@ -104,7 +104,7 @@
 <!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <body class="hold-transition skin-blue sidebar-mini" <?php if (partial()) { ?>style="padding-top:0px;"<?php } ?> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <body class="admin_panel hold-transition skin-blue sidebar-mini" <?php if (partial()) { ?>style="padding-top:0px;"<?php } ?> <!--<![endif]-->
 	
 	<div class="wrapper">
 
