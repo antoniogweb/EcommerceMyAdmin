@@ -42,7 +42,7 @@
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
 								<tbody class="sortable" uk-sortable="handle: .uk-sortable-handle">
-									<tr v-for="f in fasce">
+									<tr v-for="f in fasce" :key="f.contenuti.id_cont">
 										<td><span class="uk-sortable-handle" uk-icon="table"></span></td>
 										<td class="fascia" v-bind:data-id="f.contenuti.id_cont"><span class="uk-text-small">{{ f.contenuti.titolo }}</span></td>
 										<td><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
@@ -216,9 +216,9 @@
 					var that = this;
 					
 					$('#iframe_webpage').on("load", function() {
-						
-						if (!that.inizializzato)
-						{
+// 						alert("aa");
+// 						if (!that.inizializzato)
+// 						{
 							var elementoFasce = $('#iframe_webpage').contents().find(".blocco_fasce_contenuto").length;
 							
 							if (elementoFasce == 0)
@@ -231,7 +231,7 @@
 							
 							if (that.idElemento != 0 && that.tipoElemento != "")
 							{
-	// 							console.log(that.tipoElemento);
+								console.log(that.tipoElemento);
 								
 								that.urlGetFasce = baseUrlSrc + "/admin/" + that.tipoElemento + "/contenuti/" + that.idElemento + "?esporta_json";
 								
@@ -242,11 +242,13 @@
 		// 						console.log(that.urlPostFasce);
 								
 								that.geFasce();
-								that.geTipiFasce();
+								
+								if (!that.inizializzato)
+									that.geTipiFasce();
 								
 								that.inizializzato = true;
 							}
-						}
+// 						}
 					});
 				}
 			},

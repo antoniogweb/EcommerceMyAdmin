@@ -394,10 +394,10 @@ class ContenutiModel extends GenericModel {
 		
 		$htmlFinale = "";
 		
+		$htmlFinale = User::$adminLogged ? "<div class='blocco_fasce_contenuto'>" : "";
+		
 		if (count($fasce) > 0)
 		{
-			$htmlFinale = User::$adminLogged ? "<div class='blocco_fasce_contenuto'>" : "";
-			
 			foreach ($fasce as $f)
 			{
 				$idCont = $f["contenuti"]["id_cont"];
@@ -454,9 +454,9 @@ class ContenutiModel extends GenericModel {
 				if (User::$adminLogged)
 					$htmlFinale .= "</div>";
 			}
-			
-			$htmlFinale .= User::$adminLogged ? "</div>" : "";
 		}
+		
+		$htmlFinale .= User::$adminLogged ? "</div>" : "";
 		
 		self::$idContenuto = 0;
 		
