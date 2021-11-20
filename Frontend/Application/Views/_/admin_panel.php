@@ -37,7 +37,6 @@
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
 				<ul uk-accordion>
-					<?php if (count(ContenutiModel::$fascePagina) > 0) { ?>
 					<li class="uk-open">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione fasce sito");?></a>
 						<div class="uk-accordion-content">
@@ -61,7 +60,6 @@
 							</div>
 						</div>
 					</li>
-					<?php } ?>
 				</ul>
 			</div>
 		</aside>
