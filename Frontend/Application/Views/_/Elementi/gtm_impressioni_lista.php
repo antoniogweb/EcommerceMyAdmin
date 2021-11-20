@@ -24,8 +24,9 @@ if (v("codice_gtm_analytics"))
 		<script>
 			gtag('event', 'view_item_list', <?php echo json_encode($items);?>);
 			
-			if (debug_js)
-				console.log(<?php echo json_encode($items);?>);
+			<?php if (v("debug_js")) { ?>
+			console.log(<?php echo json_encode($items);?>);
+			<?php } ?>
 		</script>
 		<?php
 	}
