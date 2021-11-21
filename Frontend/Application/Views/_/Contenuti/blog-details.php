@@ -34,7 +34,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));?>
 	<div class="uk-container uk-container-small">
 		<div class="uk-margin"><?php echo htmlentitydecode(attivaModuli(field($p, "description")));?></div>
 	</div>
-</div>
+</section>
+
+<?php echo $fasce;?>
 
 <?php include(tpf("/Fasce/ultimi_articoli.php"));?>
 

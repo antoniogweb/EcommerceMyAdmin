@@ -83,3 +83,8 @@ link: 		https://github.com/cheef/jquery-ace
 Bootstrap-3-Typeahead
 -------
 link: 		https://github.com/bassjobsen/Bootstrap-3-Typeahead
+
+Vue.js
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/vuejs/vue

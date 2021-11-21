@@ -11,12 +11,12 @@
 				overflow-x: hidden;
 				overflow-y: auto;
 /* 				background-color: #222; */
-				width: 300px;
+				width: 320px;
 				z-index:1;
 			}
 			
 			#left-col {
-				margin-right: 300px;
+				margin-right: 320px;
 			}
 			
 			iframe
@@ -25,6 +25,13 @@
 				width:100%;
 				height:100%;
 			}
+			
+			.uk-text-small
+			{
+				font-size:12px !important;
+				line-height:1em !important;
+			}
+			
 		</style>
 		<?php include(tpf("/Elementi/header_css_cms.php"));?>
 		
@@ -36,19 +43,30 @@
 		</div>
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
+				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtext("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
 				<ul uk-accordion>
-					<li v-if="mostraFasce" class="uk-open">
+					<li v-show="mostraFasce" class="uk-open">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione fasce sito");?></a>
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
 								<tbody class="sortable" uk-sortable="handle: .uk-sortable-handle">
 									<tr v-for="f in fasce" :key="f.contenuti.id_cont">
 										<td><span class="uk-sortable-handle" uk-icon="table"></span></td>
-										<td class="fascia" v-bind:data-id="f.contenuti.id_cont"><span class="uk-text-small">{{ f.contenuti.titolo }}</span></td>
+										<td class="fascia uk-padding-remove-left uk-padding-remove-right" v-bind:data-id="f.contenuti.id_cont">
+											<div>
+												<span class="uk-text-meta uk-text-small">{{ f.tipi_contenuto.titolo }}</span>
+											</div>
+											<div>
+												<span class="uk-text-small">{{ f.contenuti.titolo }}</span>
+											</div>
+										</td>
 										<td><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
 									</tr>
 								</tbody>
 							</table>
+							<div v-if="fasce.length == 0" class="uk-margin uk-alert uk-alert-primary">
+								<?php echo gtext("Nessuna fascia presente");?>
+							</div>
 							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuova fascia</a>
 							<div v-if="!aggiungi">
 								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
@@ -68,18 +86,11 @@
    		<?php
    		$urlFasce = ContenutiModel::$tipoElementoCorrente == "pagine" ? "pagine/contenuti/" : "categorie/contenuti/";
    		$urlFasce = $this->baseUrlSrc."/admin/".$urlFasce.ContenutiModel::$idElementoCorrente."?esporta_json";
-   		$queryStringIdElemento = ContenutiModel::$tipoElementoCorrente == "pagine" ? "id_page" : "id_c";
-   		
-   		$mostraFasce = true;
-// 		if (ContenutiModel::$tipoElementoCorrente == "pagine" && isProdotto(ContenutiModel::$idElementoCorrente))
-// 			$mostraFasce = false;
    		?>
    		
-   		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+   		<script src="<?php echo $this->baseUrlSrc."/admin/Public/Js/vue.min.js";?>"></script>
    		<script type="application/javascript">
-   		
-//    		var urlGetFasce = "<?php echo $urlFasce;?>";
-   		var urlPostFasce = "<?php echo $this->baseUrlSrc."/admin/contenuti/form/insert?".$queryStringIdElemento."=".ContenutiModel::$idElementoCorrente;?>";
+		
    		var urlGetTipiFasce = "<?php echo $this->baseUrlSrc."/admin/tipicontenuto/main?tipo=FASCIA&esporta_json";?>";
    		
    		var app = new Vue({
@@ -99,6 +110,9 @@
 					{
 						contenuti : {
 							id_cont: 0,
+							titolo: "",
+						},
+						tipi_contenuto: {
 							titolo: "",
 						}
 					}
@@ -160,6 +174,7 @@
 				{
 					this.aggiungi = true;
 					this.confermataAggiunta = false;
+					this.titoloNuovaFascia = "";
 				},
 				preparaAggiungi: function()
 				{
@@ -216,39 +231,35 @@
 					var that = this;
 					
 					$('#iframe_webpage').on("load", function() {
-// 						alert("aa");
-// 						if (!that.inizializzato)
-// 						{
-							var elementoFasce = $('#iframe_webpage').contents().find(".blocco_fasce_contenuto").length;
+						var elementoFasce = $('#iframe_webpage').contents().find(".blocco_fasce_contenuto").length;
+						
+						if (elementoFasce == 0)
+							that.mostraFasce = false;
+						else
+							that.mostraFasce = true;
+						
+						that.idElemento = $('#iframe_webpage').contents().find(".class_id_contenuto").text();
+						that.tipoElemento = $('#iframe_webpage').contents().find(".class_tipo_elemento").text();
+						
+						if (that.idElemento != 0 && that.tipoElemento != "")
+						{
+// 								console.log(that.tipoElemento);
 							
-							if (elementoFasce == 0)
-								that.mostraFasce = false;
-							else
-								that.mostraFasce = true;
+							that.urlGetFasce = baseUrlSrc + "/admin/" + that.tipoElemento + "/contenuti/" + that.idElemento + "?esporta_json";
 							
-							that.idElemento = $('#iframe_webpage').contents().find(".class_id_contenuto").text();
-							that.tipoElemento = $('#iframe_webpage').contents().find(".class_tipo_elemento").text();
+							var queryStringIdElemento = (that.tipoElemento == "pagine") ? "id_page" : "id_c";
 							
-							if (that.idElemento != 0 && that.tipoElemento != "")
-							{
-								console.log(that.tipoElemento);
-								
-								that.urlGetFasce = baseUrlSrc + "/admin/" + that.tipoElemento + "/contenuti/" + that.idElemento + "?esporta_json";
-								
-								var queryStringIdElemento = (that.tipoElemento == "pagine") ? "id_page" : "id_c";
-								
-								that.urlPostFasce = baseUrlSrc + "/admin/contenuti/form/insert?" + queryStringIdElemento + "=" + that.idElemento;
-								
-		// 						console.log(that.urlPostFasce);
-								
-								that.geFasce();
-								
-								if (!that.inizializzato)
-									that.geTipiFasce();
-								
-								that.inizializzato = true;
-							}
-// 						}
+							that.urlPostFasce = baseUrlSrc + "/admin/contenuti/form/insert?" + queryStringIdElemento + "=" + that.idElemento;
+							
+	// 						console.log(that.urlPostFasce);
+							
+							that.geFasce();
+							
+							if (!that.inizializzato)
+								that.geTipiFasce();
+							
+							that.inizializzato = true;
+						}
 					});
 				}
 			},
@@ -290,7 +301,7 @@
 				}
 			});
 		}
-// 
+
    		$(document).ready(function() {
 			UIkit.util.on('.sortable', 'moved', function (item) {
 				aggiornaOrdinamento();

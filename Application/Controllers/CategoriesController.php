@@ -505,6 +505,9 @@ class CategoriesController extends BaseController {
 				$data["dettagliCategoria"] = $this->m["CategoriesModel"]->selectId($clean['id']);
 				
 				$data["urlPagina"] = $this->m["CategoriesModel"]->getUrlAlias($clean['id']);
+				
+				if (v("attiva_gestione_fasce_frontend"))
+					$data["urlPaginaEditFrontend"] = $data["urlPagina"]."?".v("token_edit_frontend")."&em_edit_frontend";
 			}
 		
 			$this->append($data);

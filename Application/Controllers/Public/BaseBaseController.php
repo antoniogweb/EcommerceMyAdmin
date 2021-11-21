@@ -941,7 +941,12 @@ class BaseBaseController extends Controller
 		{
 			if (!self::$adminPanelCaricato)
 			{
-				$currentUrl = $this->getCurrentUrl()."?".v("token_edit_frontend");
+				if( !session_id() )
+					session_start();
+				
+				$_SESSION["modalita_edit_fronted"] = 1;
+				
+				$currentUrl = $data["currentUrl"] = $this->getCurrentUrl();
 				$this->clean();
 				
 				ob_start();
