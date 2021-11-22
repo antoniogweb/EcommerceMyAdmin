@@ -45,8 +45,23 @@
 			<div class="uk-padding-small">
 				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtext("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
 				<ul uk-accordion>
+					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
+						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione tema");?></a>
+						<div class="uk-accordion-content">
+							<div class="uk-text-meta"><?php echo gtext("Tema corrente");?></div>
+							<select v-model="temaSelezionato" class="uk-margin-remove uk-select uk-margin-small" v-on:change="cambiaTema()">
+								<option  v-for="(tema, index) in tendinaTemi" v-bind:value="tema.nome">{{tema.nome}}</option>
+							</select>
+						</div>
+					</li>
+					<li v-if="abilitaGestioneVarianti && varianti.length > 0" class="">
+						<a class="uk-accordion-title" href="#"><?php echo gtext("Varianti pagina");?></a>
+						<div class="uk-accordion-content">
+							<variante-item v-for="variante in varianti" v-bind:variante="variante"></variante-item>
+						</div>
+					</li>
 					<li v-show="mostraFasce" class="uk-open">
-						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione fasce sito");?></a>
+						<a class="uk-accordion-title" href="#"><?php echo gtext("Fasce pagina");?></a>
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
 								<tbody class="sortable" uk-sortable="handle: .uk-sortable-handle">
@@ -92,10 +107,66 @@
    		<script type="application/javascript">
 		
    		var urlGetTipiFasce = "<?php echo $this->baseUrlSrc."/admin/tipicontenuto/main?tipo=FASCIA&esporta_json";?>";
+   		var urlPostElementi = "<?php echo $this->baseUrlSrc."/admin/elementitema/form/update/";?>";
+   		var tendinaTemi = <?php echo json_encode(Tema::getElencoTemi());?>;
+   		
+   		console.log(tendinaTemi);
+   		Vue.component('variante-item', {
+			props: ['variante'],
+			data: function () {
+				return {
+					nomeFile: "",
+				}
+			},
+			methods: {
+				sendData: function(value)
+				{
+					var that = this;
+					var url = urlPostElementi + this.variante.id_elemento_tema;
+					
+					$.ajaxQueue({
+						url: url,
+						async: true,
+						cache:false,
+						dataType: "html",
+						method: "POST",
+						data: {
+							titolo: this.variante.titolo,
+							nome_file: this.nomeFile,
+							id_elemento_tema: this.variante.id_elemento_tema,
+							updateAction: "Salva",
+						},
+						success: function(content){
+							aggiornaIframe();
+						}
+					});
+				}
+			},
+			mounted(){
+// 				console.log(this.variante.codice);
+				this.nomeFile = this.variante.nome_file;
+			},
+			updated(){
+// 				console.log(this.variante.codice);
+				this.nomeFile = this.variante.nome_file;
+			},
+			template: `<div>
+							<div class='uk-text-meta'>{{variante.titolo}}</div>
+							<select class="uk-select uk-margin-small" v-model="nomeFile" v-on:change="sendData()">
+								<option v-for="(opzione, index) in variante.opzioni" v-bind:value="opzione.k" v-bind:key="variante.nome_file">{{opzione.v}}</option>
+							</select>
+						</div>
+					`
+		});
    		
    		var app = new Vue({
 			el: '#right-col',
 			data: {
+				temaSelezionato: "",
+				tendinaTemi: tendinaTemi,
+				varianti: [],
+				abilitaGestioneVarianti : <?php echo v("attiva_elementi_tema") ? "true" : "false"?>,
+				abilitaGestioneTemi : <?php echo v("permetti_cambio_tema") ? "true" : "false"?>,
 				urlGetFasce: "<?php echo $urlFasce;?>",
 				urlPostFasce: "",
 				inizializzato: false,
@@ -140,6 +211,21 @@
 				}
 			},
 			methods:{
+				cambiaTema: function()
+				{
+					var that = this;
+					
+					$.ajaxQueue({
+						url: baseUrlSrc + "/admin/impostazioni/attivatema/" + this.temaSelezionato,
+						async: true,
+						cache:false,
+						dataType: "html",
+						success: function(content){
+							
+							aggiornaIframe();
+						}
+					});
+				},
 				confermaAggiungi: function()
 				{
 					this.confermataAggiunta = true;
@@ -162,7 +248,6 @@
 								insertAction: "Salva",
 							},
 							success: function(content){
-								that.geFasce();
 								aggiornaIframe();
 								
 								that.annullaAggiungi();
@@ -191,7 +276,6 @@
 						dataType: "json",
 						success: function(content){
 							
-							that.geFasce();
 							aggiornaIframe();
 						}
 					});
@@ -240,6 +324,13 @@
 						
 						that.idElemento = $('#iframe_webpage').contents().find(".class_id_contenuto").text();
 						that.tipoElemento = $('#iframe_webpage').contents().find(".class_tipo_elemento").text();
+						
+						that.varianti = JSON.parse($('#iframe_webpage').contents().find(".class_json_varianti").text());
+						
+						that.temaSelezionato = $('#iframe_webpage').contents().find(".class_tema_default").text();
+// 						console.log(that.varianti);
+						
+// 						that.$forceUpdate();
 						
 						if (that.idElemento != 0 && that.tipoElemento != "")
 						{

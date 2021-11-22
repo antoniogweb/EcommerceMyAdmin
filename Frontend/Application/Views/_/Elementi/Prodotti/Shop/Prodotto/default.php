@@ -32,7 +32,7 @@ $isProdotto = isProdotto($idPr);
 			<?php if ($isProdotto && acquistabile($idPr)) { ?>
 			<div class="uk-margin-remove">
 				<div class="spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="uk-text-small add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations && !User::$isMobile) { ?>aggiungi_al_carrello_semplice<?php } ?>" rel="nofollow">
+				<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="uk-text-small add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations) { ?>aggiungi_al_carrello_semplice<?php } ?>" rel="nofollow">
 					<span uk-icon="icon: plus; ratio: .75;"></span>
 					<?php if (!$hasCombinations) { ?>
 					<?php echo gtext("Aggiungi al carrello", false);?>

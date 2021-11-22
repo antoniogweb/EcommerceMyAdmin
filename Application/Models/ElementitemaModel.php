@@ -26,6 +26,8 @@ class ElementitemaModel extends GenericModel {
 	
 	public static $percorsi = null;
 	
+	public static $variantiPagina = array();
+	
 	public function __construct() {
 		$this->_tables='elementi_tema';
 		$this->_idFields='id_elemento_tema';
@@ -76,9 +78,46 @@ class ElementitemaModel extends GenericModel {
 		}
 		
 		if (isset(self::$percorsi[$codice]))
+		{
+			if (!isset(self::$variantiPagina[$codice]))
+				self::$variantiPagina[$codice] = self::$percorsi[$codice];
+			
 			return self::$percorsi[$codice]["percorso"]."/".self::$percorsi[$codice]["nome_file"].".php";
+		}
 		
 		return "";
+	}
+	
+	public static function preparaStrutturaVarianti()
+	{
+		$struttura = array();
+		
+		foreach (self::$variantiPagina as $codice => $v)
+		{
+			$temp = $v;
+			
+			$opzioni = Tema::getSelectElementi($v["percorso"], false);
+			
+			if (count($opzioni) > 1)
+			{
+				$tt = array();
+				
+				foreach ($opzioni as $k	=>	$v)
+				{
+					$tt[] = array(
+						"k"	=>	$k,
+						"v"	=>	$v,
+					);
+				}
+				
+				$temp["opzioni"] = $tt;
+				
+				
+				$struttura[] = $temp;
+			}
+		}
+		
+		return $struttura;
 	}
 	
 	public function edit($record)
