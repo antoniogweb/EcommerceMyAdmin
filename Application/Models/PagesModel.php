@@ -2049,13 +2049,18 @@ class PagesModel extends GenericModel {
 			$temp = array(
 				"g:id"	=>	$r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
-				"g:description"	=>	htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8"),
+// 				"g:description"	=>	htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8"),
 // 				"g:google_product_category"	=>	htmlentitydecode(cfield($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
 				"g:identifier_exists"	=>	"no",
 			);
+			
+			if (isset($_GET["fbk"]))
+				$temp["g:description"] = strip_tags(htmlentitydecode(field($r,"description")));
+			else
+				$temp["g:description"] = htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8");
 			
 			if ($r["pages"]["codice_categoria_prodotto_google"])
 				$temp["g:google_product_category"] = $r["pages"]["codice_categoria_prodotto_google"];
