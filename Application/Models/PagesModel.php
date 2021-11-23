@@ -2064,7 +2064,7 @@ class PagesModel extends GenericModel {
 			
 			if ($r["pages"]["codice_categoria_prodotto_google"])
 				$temp["g:google_product_category"] = $r["pages"]["codice_categoria_prodotto_google"];
-			if ($r["categories"]["codice_categoria_prodotto_google"])
+			else if ($r["categories"]["codice_categoria_prodotto_google"])
 				$temp["g:google_product_category"] = $r["categories"]["codice_categoria_prodotto_google"];
 			else
 				$temp["g:google_product_category"] = htmlentitydecode(cfield($r,"title"));
