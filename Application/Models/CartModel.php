@@ -694,6 +694,24 @@ class CartModel extends GenericModel {
 				if (number_format($this->values["price"],2,".","") != number_format($res[0]["cart"]["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";
 				
+				// Recupero i valori della personalizzazione
+				if ($clean["id_c"])
+				{
+					$attributiArray = array();
+					
+					$combAttr = $comb->getStringa($clean["id_c"]);
+					if ($combAttr)
+						$attributiArray[] = $combAttr;
+					
+					$persAttr = $pers->getStringa($jsonPers);
+					if ($persAttr)
+						$attributiArray[] = $persAttr;
+					
+					$this->values["attributi"] = implode("<br />",$attributiArray);
+					$this->values["json_attributi"] = $comb->getStringa($clean["id_c"],"",true);
+					$this->values["json_personalizzazioni"] = $pers->getStringa($jsonPers,"",true);
+				}
+				
 				$this->sanitize();
 				$this->update($res[0]["cart"]["id_cart"]);
 				

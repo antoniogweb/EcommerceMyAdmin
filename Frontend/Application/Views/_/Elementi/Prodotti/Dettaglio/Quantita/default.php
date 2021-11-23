@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-grid-small uk-text-right uk-flex uk-flex-middle" uk-grid>
+<div class="uk-margin-small uk-grid-small uk-text-right uk-flex uk-flex-middle" uk-grid>
 	<div class="uk-width-3-4 uk-text-small">
 		<?php echo gtext("Quantità");?>:
 	</div>
