@@ -11,12 +11,12 @@
 				overflow-x: hidden;
 				overflow-y: auto;
 /* 				background-color: #222; */
-				width: 320px;
+				width: 340px;
 				z-index:1;
 			}
 			
 			#left-col {
-				margin-right: 320px;
+				margin-right: 340px;
 			}
 			
 			iframe
@@ -75,6 +75,7 @@
 												<span class="uk-text-small">{{ f.contenuti.titolo }}</span>
 											</div>
 										</td>
+										<td class="uk-padding-remove-left uk-padding-remove-right"><a title="<?php echo gtext("Modifica");?>" href="#" @click.prevent="modificaFascia(f.contenuti.id_cont)" class="iframe"><span class="" uk-icon="pencil"></span></a></td>
 										<td><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
 									</tr>
 								</tbody>
@@ -96,6 +97,15 @@
 				</ul>
 			</div>
 		</aside>
+		
+		<!-- This is the modal -->
+		<div id="modale-fascia" class="" uk-modal>
+			<div class="uk-height-1-1 uk-modal-dialog uk-modal-body uk-width-auto">
+				<button class="uk-modal-close-full uk-close large" type="button" uk-close></button>
+				<iframe class="" id="" src=""></iframe>
+			</div>
+		</div>
+
    		<?php include(tpf("/Elementi/footer_js_cms.php"));?>
    		
    		<?php
@@ -110,7 +120,8 @@
    		var urlPostElementi = "<?php echo $this->baseUrlSrc."/admin/elementitema/form/update/";?>";
    		var tendinaTemi = <?php echo json_encode(Tema::getElencoTemi());?>;
    		
-   		console.log(tendinaTemi);
+//    		console.log(tendinaTemi);
+   		
    		Vue.component('variante-item', {
 			props: ['variante'],
 			data: function () {
@@ -162,6 +173,7 @@
    		var app = new Vue({
 			el: '#right-col',
 			data: {
+				baseUrlSrc: baseUrlSrc,
 				temaSelezionato: "",
 				tendinaTemi: tendinaTemi,
 				varianti: [],
@@ -264,6 +276,15 @@
 				preparaAggiungi: function()
 				{
 					this.aggiungi = false;
+				},
+				modificaFascia: function(id)
+				{
+					var url = this.baseUrlSrc + "/admin/contenuti/form/update/" + id + "?partial=Y"
+					$("#modale-fascia").find("iframe").attr("src", url)
+					UIkit.modal("#modale-fascia",{}).show();
+// 					console.log("#" + id + " .class_edit_fascia");
+// 					console.log($('#iframe_webpage').contents().find("#" + id).length);
+// 					$('#iframe_webpage').contents().find("#" + id + " .class_edit_fascia").trigger("click");
 				},
 				eliminaFascia: function(id)
 				{
@@ -397,8 +418,11 @@
 			UIkit.util.on('.sortable', 'moved', function (item) {
 				aggiornaOrdinamento();
 			});
+			
+			UIkit.util.on('#modale-fascia', 'hide', function () {
+				aggiornaIframe();
+			});
 		});
 		</script>
-		<div style="display:none;" class="class_request_uri"><?php echo sanitizeAll($_SERVER['REQUEST_URI']);?></div>
    </body>
 </html>

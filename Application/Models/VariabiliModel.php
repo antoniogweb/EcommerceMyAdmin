@@ -461,7 +461,7 @@ class VariabiliModel extends GenericModel {
 				'type'			=>	'Textarea',
 			),
 			'codice_verifica_fbk'	=>	array(
-				'labelString'	=>	"Meta tag verifica Facebook",
+				'labelString'	=>	"Meta tag verifica Facebook / Google / Altri",
 				'type'			=>	'Textarea',
 			),
 			'codice_fbk_noscript'	=>	array(
