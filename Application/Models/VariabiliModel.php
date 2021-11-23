@@ -327,6 +327,8 @@ class VariabiliModel extends GenericModel {
 		"token_edit_frontend"		=>	"",
 		"attiva_gestione_fasce_frontend"	=>	0,
 		"mostra_errori_personalizzazione"	=>	1,
+		"attiva_strumenti_merchant_google"	=>	0,
+		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt",
 	);
 	
 	public static $daInizializzare = array(

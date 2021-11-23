@@ -118,6 +118,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_campo_test_in_pagine"))
 			$this->queryFields .= ",test";
 		
+		if (v("attiva_strumenti_merchant_google"))
+			$this->queryFields .= ",codice_categoria_prodotto_google";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

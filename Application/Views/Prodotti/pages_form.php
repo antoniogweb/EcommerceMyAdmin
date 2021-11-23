@@ -181,6 +181,10 @@
 								<?php if (v("usa_marchi")) { ?>
 								<?php echo $form["id_marchio"];?>
 								<?php } ?>
+								
+								<?php if (isset($form["codice_categoria_prodotto_google"])) { ?>
+								<?php echo $form["codice_categoria_prodotto_google"];?>
+								<?php } ?>
 							</div>
 						</div>
 					

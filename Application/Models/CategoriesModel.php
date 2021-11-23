@@ -187,6 +187,13 @@ class CategoriesModel extends HierarchicalModel {
 				'priorita_sitemap'	=>	array(
 					'labelString'=>	'Priorità sitemap',
 				),
+				'codice_categoria_prodotto_google'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Elenco codici")."</a></div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',

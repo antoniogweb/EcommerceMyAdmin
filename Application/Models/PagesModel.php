@@ -454,6 +454,13 @@ class PagesModel extends GenericModel {
 				'codice_js'	=>	array(
 					'labelString'	=>	'Codice di conversione Google',
 				),
+				'codice_categoria_prodotto_google'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Elenco codici")."</a></div>"
+					),
+				),
 			),
 		);
 		
@@ -2043,12 +2050,19 @@ class PagesModel extends GenericModel {
 				"g:id"	=>	$r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
 				"g:description"	=>	htmlentitydecode(field($r,"description")),
-				"g:google_product_category"	=>	htmlentitydecode(cfield($r,"title")),
+// 				"g:google_product_category"	=>	htmlentitydecode(cfield($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
 				"g:identifier_exists"	=>	"no",
 			);
+			
+			if ($r["pages"]["codice_categoria_prodotto_google"])
+				$temp["g:google_product_category"] = $r["pages"]["codice_categoria_prodotto_google"];
+			if ($r["categories"]["codice_categoria_prodotto_google"])
+				$temp["g:google_product_category"] = $r["categories"]["codice_categoria_prodotto_google"];
+			else
+				$temp["g:google_product_category"] = htmlentitydecode(cfield($r,"title"));
 			
 			if ($r["pages"]["immagine"])
 				$temp["g:image_link"] = Url::getRoot()."thumb/dettagliobig/".$r["pages"]["immagine"];
