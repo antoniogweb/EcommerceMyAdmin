@@ -326,6 +326,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_codice_js_pagina"	=>	1,
 		"token_edit_frontend"		=>	"",
 		"attiva_gestione_fasce_frontend"	=>	0,
+		"mostra_errori_personalizzazione"	=>	1,
 	);
 	
 	public static $daInizializzare = array(

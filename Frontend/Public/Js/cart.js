@@ -43,6 +43,9 @@ if (typeof check_giacenza == "undefined")
 if (typeof carrello_monoprodotto == "undefined")
 	var carrello_monoprodotto = false;
 
+if (typeof mostra_errori_personalizzazione == "undefined")
+	var mostra_errori_personalizzazione = true;
+
 var time;
 var arrayAccessori = [];
 
@@ -207,6 +210,9 @@ function checkPersonalizzazione(obj)
 		
 		errore_non_selez_stringa = errore_combinazione + " <span class='variante_non_presente'>" + errore_non_selez_array.join(", ") + "</span>";
 	}
+	
+	if (!mostra_errori_personalizzazione)
+		errore_non_selez_stringa = "";
 	
 	if (!ok_procedi)
 		obj.find(".errore_combinazione").html(errore_non_selez_stringa);
