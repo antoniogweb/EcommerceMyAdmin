@@ -712,7 +712,7 @@ class CategoriesModel extends HierarchicalModel {
 		return $this->linklinguaGeneric($record["categories"]["id_c"], $lingua, "id_c");
 	}
 	
-	public static function gCatWhere($id_c, $full = true)
+	public static function gCatWhere($id_c, $full = true, $key = "-id_c")
 	{
 		if ($full)
 		{
@@ -722,12 +722,12 @@ class CategoriesModel extends HierarchicalModel {
 			$catWhere = "in(".implode(",",$children).")";
 			
 			return array(
-				"in" => array("-id_c" => $children),
+				"in" => array($key => $children),
 			);
 		}
 		else
 			return array(
-				"-id_c"		=>	(int)$id_c,
+				$key		=>	(int)$id_c,
 			);
 	}
 	

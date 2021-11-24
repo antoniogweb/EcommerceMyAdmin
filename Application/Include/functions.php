@@ -1852,6 +1852,8 @@ function aToX($struct, $key = "", $cdata = true)
 		{
 			if (is_array($value))
 				$xml .= "<$key>".aToX($value, "", $cdata)."</$key>";
+			else
+				$xml .= "<$key>".cXmlC($value, $cdata)."</$key>";
 		}
 	}
 	

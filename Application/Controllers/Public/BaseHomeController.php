@@ -138,6 +138,8 @@ class BaseHomeController extends BaseController
 			"item"	=>	$prodotti,
 		);
 		
+// 		print_r($xmlArray);
+		
 		$xml = aToX($xmlArray);
 		
 		header ("Content-Type:text/xml");

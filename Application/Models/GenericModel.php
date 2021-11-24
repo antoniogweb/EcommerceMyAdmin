@@ -1173,9 +1173,9 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
-	public function addWhereCategoria($idCat, $full = true)
+	public function addWhereCategoria($idCat, $full = true, $key = "-id_c")
 	{
-		$this->aWhere(CategoriesModel::gCatWhere($idCat, $full));
+		$this->aWhere(CategoriesModel::gCatWhere($idCat, $full, $key));
 		
 		return $this;
 	}

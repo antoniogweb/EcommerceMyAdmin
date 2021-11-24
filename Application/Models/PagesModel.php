@@ -1982,16 +1982,19 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce il codice 
-	public function getFirstNotEmpty($idPage = 0, $field = "title")
+	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null)
 	{
-		$parents = $this->parents((int)$idPage, false, false, false, "id_c,$field");
-		
-		//elimino la categoria root
-		array_shift($parents);
-		
-		$parents = array_reverse($parents);
-		
-// 		print_r($parents);
+		if (!isset($parents))
+		{
+			$parents = $this->parents((int)$idPage, false, false, false, "id_c,$field");
+			
+			//elimino la categoria root
+			array_shift($parents);
+			
+			$parents = array_reverse($parents);
+			
+	// 		print_r($parents);
+		}
 		
 		foreach ($parents as $p)
 		{
@@ -2057,7 +2060,31 @@ class PagesModel extends GenericModel {
 			else
 				$temp["g:description"] = htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8");
 			
-			$codiceGoogle = $p->getFirstNotEmpty($r["pages"]["id_page"], "codice_categoria_prodotto_google");
+			$parents = $p->parents((int)$r["pages"]["id_page"], false, false, true);
+			
+			//elimino la categoria root
+			array_shift($parents);
+			
+			$productType = array();
+			
+			$indice = 0;
+			
+			foreach ($parents as $pr)
+			{
+				if ($indice && isset($pr["categories"]))
+					$productType[] = htmlentitydecode(cfield($pr,"title"));
+				
+				$indice++;
+			}
+			
+			$parents = array_reverse($parents);
+			
+// 			print_r($parents);
+			
+			if (count($productType) > 0)
+				$temp["g:product_type"] = implode(" &gt; ", $productType);
+			
+			$codiceGoogle = $p->getFirstNotEmpty($r["pages"]["id_page"], "codice_categoria_prodotto_google", $parents);
 			
 			if ($codiceGoogle)
 				$temp["g:google_product_category"] = $codiceGoogle;
@@ -2066,6 +2093,18 @@ class PagesModel extends GenericModel {
 			
 			if ($r["pages"]["immagine"])
 				$temp["g:image_link"] = Url::getRoot()."thumb/dettagliobig/".$r["pages"]["immagine"];
+			
+			$altreImmagini = ImmaginiModel::immaginiPagina($r["pages"]["id_page"]);
+			
+			if (count($altreImmagini) > 0)
+			{
+				$temp["g:additional_image_link"] = array();
+				
+				foreach ($altreImmagini as $k => $img)
+				{
+					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img;
+				}
+			}
 			
 			if ($r["pages"]["id_marchio"])
 			{

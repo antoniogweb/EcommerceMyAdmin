@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class ImmaginiModel extends Model_Tree {
-
+	
+	protected static $immaginiPagine = null;
+	
 	public function __construct() {
 
 		$this->_tables='immagini';
@@ -38,7 +40,13 @@ class ImmaginiModel extends Model_Tree {
 
 		$this->files->setBase(Domain::$parentRoot.'/'.Parametri::$cartellaImmaginiContenuti);
 	}
-
+	
+	public function relations() {
+		return array(
+			'pagina' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
+		);
+    }
+    
 	public function getIdContenuto($id_immagine)
 	{
 		$clean['id_immagine'] = (int)$id_immagine;
@@ -165,6 +173,42 @@ class ImmaginiModel extends Model_Tree {
 				parent::del($clean['id_immagine']);
 			}
 		}
+	}
+	
+	// Restituisce un array con tutte le immagini della pagina
+	public static function immaginiPagina($idPagina)
+	{
+		if (!isset(self::$immaginiPagine))
+		{
+			self::$immaginiPagine = array();
+			
+			$i = new ImmaginiModel();
+			
+			$elencoImmagini = $i->select("immagini.id_page,immagini.immagine")
+				->inner(array("pagina"))
+				->where(CategoriesModel::gCatWhere(CategoriesModel::$idShop, true, "pages.id_c"))
+				->orderBy("immagini.id_order")->send();
+			
+// 			echo $i->getQuery();
+			
+			foreach ($elencoImmagini as $recordImg)
+			{
+				$idPage = $recordImg["immagini"]["id_page"];
+				$immagine = $recordImg["immagini"]["immagine"];
+				
+				if (isset(self::$immaginiPagine[$idPage]))
+					self::$immaginiPagine[$idPage][] = $immagine;
+				else
+					self::$immaginiPagine[$idPage] = array($immagine);
+			}
+		}
+		
+// 		print_r(self::$immaginiPagine);
+		
+		if (isset(self::$immaginiPagine[$idPagina]))
+			return self::$immaginiPagine[$idPagina];
+		
+		return array();
 	}
 	
 }
