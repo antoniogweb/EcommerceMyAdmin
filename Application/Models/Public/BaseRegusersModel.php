@@ -292,7 +292,7 @@ class BaseRegusersModel extends Model_Tree
 		
 		$evidenziaT = Output::$html ? "<div class='evidenzia'>class_telefono</div>" : "";
 		
-		$this->addSoftCondition("both","checkMatch|/^[0-9\s]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."$evidenziaT");
+		$this->addSoftCondition("both","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."$evidenziaT");
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{

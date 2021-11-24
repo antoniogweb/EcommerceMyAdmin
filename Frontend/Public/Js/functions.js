@@ -17,6 +17,9 @@ if (typeof gtm_analytics == "undefined")
 if (typeof attiva_spedizione == "undefined")
 	var attiva_spedizione = true;
 
+if (typeof coupon_ajax == "undefined")
+	var coupon_ajax = false;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -169,6 +172,21 @@ function impostaSpedizioneNonLoggato(obj)
 	{
 		$(".blocco_spedizione_non_loggato").css("display","block");
 	}
+}
+
+function checkCouponAttivo()
+{
+	$.ajaxQueue({
+		url: baseUrl + "/ordini/couponattivo",
+		cache:false,
+		async: true,
+		dataType: "html",
+		success: function(content){
+			
+			if ($.trim(content) == "OK")
+				$(".box_coupon").remove();
+		}
+	});
 }
 
 function impostaSpeseSpedizione(id_corriere, nazione)
@@ -559,6 +577,43 @@ $(document).ready(function(){
 		
 		location.href = url;
 		
+	});
+	
+	$("body").on("click", "[name='invia_coupon']", function(e){
+		
+		if (coupon_ajax)
+		{
+			e.preventDefault();
+			
+			var url = $(this).closest("form").attr("action");
+			var il_coupon = $(this).closest("form").find("[name='il_coupon']").val();
+			
+			var that = $(this);
+			
+			that.addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+			
+			$.ajaxQueue({
+				url: url,
+				cache:false,
+				async: true,
+				dataType: "html",
+				method: "POST",
+				data: {
+					invia_coupon: "invia_coupon",
+					il_coupon: il_coupon,
+				},
+				success: function(content){
+					
+					setTimeout(function(){
+						that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+					}, 500);
+					
+					impostaCorrieriESpeseSpedizione();
+					checkCouponAttivo();
+					
+				}
+			});
+		}
 	});
 	
 	$(".showcoupon").click(function(e){

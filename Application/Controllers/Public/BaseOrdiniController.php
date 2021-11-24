@@ -901,7 +901,7 @@ class BaseOrdiniController extends BaseController
 		
 		$this->m['OrdiniModel']->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
 		
-		$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9\s]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
+		$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{
@@ -1519,5 +1519,12 @@ class BaseOrdiniController extends BaseController
 		$corrieri = $corr->getIdsCorrieriNazione($clean["nazione"]);
 		
 		echo json_encode($corrieri);
+	}
+	
+	public function couponattivo()
+	{
+		$this->clean();
+		
+		echo hasActiveCoupon() ? "OK" : "KO";
 	}
 }

@@ -19,6 +19,7 @@
 	var check_giacenza = <?php echo v("attiva_giacenza") ? "true" : "false";?>;
 	var carrello_monoprodotto = <?php echo v("carrello_monoprodotto") ? "true" : "false";?>;
 	var mostra_errori_personalizzazione = <?php echo v("mostra_errori_personalizzazione") ? "true" : "false";?>;
+	var coupon_ajax = <?php echo v("coupon_ajax") ? "true" : "false"; ?>;
 </script>
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
