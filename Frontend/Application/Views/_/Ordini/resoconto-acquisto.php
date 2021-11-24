@@ -147,10 +147,12 @@ if (!isset($baseUrl))
 			<td class="first_column"><?php echo gtext("Città", false); ?></td>
 			<td><?php echo $ordine["citta"];?></td>
 		</tr>
+		<?php if (trim($ordine["telefono"])) { ?>
 		<tr>
 			<td class="first_column"><?php echo gtext("Telefono", false); ?></td>
 			<td><?php echo $ordine["telefono"];?></td>
 		</tr>
+		<?php } ?>
 		<tr>
 			<td class="first_column"><?php echo gtext("Email", false); ?></td>
 			<td><?php echo $ordine["email"];?></td>
@@ -197,10 +199,12 @@ if (!isset($baseUrl))
 			<td class="first_column"><?php echo gtext("Città", false); ?></td>
 			<td><?php echo $ordine["citta_spedizione"];?></td>
 		</tr>
+		<?php if (trim($ordine["telefono_spedizione"])) { ?>
 		<tr>
 			<td class="first_column"><?php echo gtext("Telefono", false); ?></td>
 			<td><?php echo $ordine["telefono_spedizione"];?></td>
 		</tr>
+		<?php } ?>
 	</table>
 </div>
 <?php } ?>
