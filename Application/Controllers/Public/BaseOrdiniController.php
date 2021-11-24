@@ -826,7 +826,15 @@ class BaseOrdiniController extends BaseController
 		if (v("account_attiva_conferma_username"))
 			$campoConfermaEmail = "conferma_email,";
 		
-		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,telefono,email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,telefono_spedizione,nazione,nazione_spedizione,cap,cap_spedizione";
+		$campoTelefono = $campoTelefonoSpedizione = "";
+		
+		if (v("insert_ordine_telefono_obbligatorio"))
+		{
+			$campoTelefono .= "telefono,";
+			$campoTelefonoSpedizione .= "telefono_spedizione,";
+		}
+		
+		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";
@@ -893,7 +901,7 @@ class BaseOrdiniController extends BaseController
 		
 		$this->m['OrdiniModel']->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9\s]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
+		$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9\s]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{
@@ -1395,6 +1403,8 @@ class BaseOrdiniController extends BaseController
 		{
 			$data['values']["registrato"] = "Y";
 		}
+		
+		$data["tipoAzione"] = "insert";
 		
 		if (Output::$json)
 		{

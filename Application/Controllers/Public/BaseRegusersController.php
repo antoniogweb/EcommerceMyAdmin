@@ -651,6 +651,8 @@ class BaseRegusersController extends BaseController
 			
 			$data['province'] = $this->m['ProvinceModel']->selectTendina();
 			
+			$data["tipoAzione"] = "update";
+			
 			$this->append($data);
 			$this->load('form');
 		}
@@ -818,6 +820,8 @@ class BaseRegusersController extends BaseController
 				$this->load("api_output");
 			}
 		}
+		
+		$data["tipoAzione"] = "insert";
 		
 		$this->append($data);
 	}

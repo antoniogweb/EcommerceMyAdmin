@@ -143,6 +143,7 @@ class VariabiliModel extends GenericModel {
 		"insert_account_nazione_obbligatoria"	=>	1,
 		"insert_account_provincia_obbligatoria"	=>	1,
 		"insert_account_cap_obbligatorio"		=>	1,
+		"insert_ordine_telefono_obbligatorio"	=>	1,
 		"numero_per_pagina_magazzino"	=>	50,
 		"numero_per_pagina_pages"	=>	30,
 		"attiva_cache_prodotti"		=>	1,

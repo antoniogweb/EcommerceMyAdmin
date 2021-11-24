@@ -267,4 +267,25 @@ trait CommonModel {
 		
 		$h->redirect(v("url_redirect_dopo_login"));
 	}
+	
+	public static function camboObbligatorio($campo, $controller, $azione = "insert")
+	{
+		if ($campo == "telefono")
+		{
+			if ($controller == "ordini" && !v("insert_ordine_telefono_obbligatorio"))
+				return false;
+			else if ($controller == "regusers" && $azione == "insert" && !v("insert_account_telefono_obbligatorio"))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public static function asterisco($campo, $controller, $azione = "insert")
+	{
+		if (self::camboObbligatorio($campo, $controller, $azione))
+			return "*";
+		
+		return "";
+	}
 }
