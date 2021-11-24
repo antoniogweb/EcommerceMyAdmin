@@ -116,7 +116,7 @@ class paypal_class {
 		}
 		
 		if (isset($_GET["to_paypal"]))
-			$html .= '<input type="submit" value="Paga adesso" />'."\n";
+			$html .= '<input type="submit" value="'.gtext("Paga adesso").'" />'."\n";
 		else
 			$html .= "<input type='image' src='".Url::getFileRoot()."admin/External/paypal/Img/paga_adesso.gif' name='invia'>\n";
 		$html .= "</form>\n";
