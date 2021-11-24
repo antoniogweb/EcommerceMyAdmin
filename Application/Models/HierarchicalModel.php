@@ -537,7 +537,7 @@ class HierarchicalModel extends GenericModel {
 	
 	//get the parents of a node
 	//$id: primary_key of the node
-	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null)
+	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null)
 	{
 		$clean["id"] = (int)$id;
 		
@@ -575,14 +575,18 @@ class HierarchicalModel extends GenericModel {
 			{
 				if (!$lingua)
 				{
-					$parents = $this->select("*")->send();
+					$f = $fields ? $fields : "*";
+					
+					$parents = $this->select($f)->send();
 					
 // 					echo $this->getQuery();
 // 					die();
 				}
 				else
 				{
-					$parents = $this->select($this->_tables.".*,contenuti_tradotti.*")->left("contenuti_tradotti")->on("contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->send();
+					$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
+					
+					$parents = $this->select($f)->left("contenuti_tradotti")->on("contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->send();
 					
 // 					echo $this->getQuery();
 // 					die();

@@ -1035,51 +1035,23 @@ class PagesModel extends GenericModel {
 		return '';
 	}
 	
-// 	//get the parents
-// 	public function parents($id, $onlyIds = true, $onlyParents = true, $fields = null)
-// 	{
-// 		$clean["id"] = (int)$id;
-// 		
-// 		$res = $this->clear()->where(array($this->_idFields=>$clean["id"]))->send();
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			$clean['id_c'] = $res[0][$this->_tables]["id_c"];
-// 			$c = new CategoriesModel();
-// 			
-// 			$parents = $c->parents($clean['id_c'],$onlyIds,false, $fields);
-// 			
-// 			if ($onlyParents)
-// 			{
-// 				return $parents;
-// 			}
-// 			else
-// 			{
-// 				if ($onlyIds)
-// 				{
-// 					$parents[] = $res[0][$this->_tables][$this->_idFields];
-// 				}
-// 				else
-// 				{
-// 					$parents[] = $res[0];
-// 				}
-// 				return $parents;
-// 			}
-// 		}
-// 		
-// 		return array();
-// 	}
-	
 	//get the parents
-	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = false)
+	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = false, $fields = null)
 	{
 		$clean["id"] = (int)$id;
 		
-		$this->clear()->where(array($this->_idFields=>$clean["id"]))->send();
+		$this->clear()->where(array($this->_idFields=>$clean["id"]));
+		
+		if ($fields)
+			$this->select($fields);
 		
 		if ($lingua)
-			$this->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->select($this->_tables.".*,contenuti_tradotti.*");
+		{
+			$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
 			
+			$this->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->select($f);
+		}
+		
 		$res = $this->send();
 		
 		if (count($res) > 0)
@@ -1087,7 +1059,7 @@ class PagesModel extends GenericModel {
 			$clean['id_c'] = $res[0][$this->_tables]["id_c"];
 			$c = new CategoriesModel();
 			
-			$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua);
+			$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fields);
 			
 			if ($onlyParents)
 			{
@@ -2009,6 +1981,29 @@ class PagesModel extends GenericModel {
 		return 0;
 	}
 	
+	// Restituisce il codice 
+	public function getFirstNotEmpty($idPage = 0, $field = "title")
+	{
+		$parents = $this->parents((int)$idPage, false, false, false, "id_c,$field");
+		
+		//elimino la categoria root
+		array_shift($parents);
+		
+		$parents = array_reverse($parents);
+		
+// 		print_r($parents);
+		
+		foreach ($parents as $p)
+		{
+			$pr = isset($p["categories"]) ? $p["categories"] : $p["pages"];
+			
+			if ($pr[$field])
+				return $pr[$field];
+		}
+		
+		return "";
+	}
+	
 	public static function gXmlProdottiGoogle($p = null)
 	{
 		$c = new CategoriesModel();
@@ -2062,10 +2057,10 @@ class PagesModel extends GenericModel {
 			else
 				$temp["g:description"] = htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8");
 			
-			if ($r["pages"]["codice_categoria_prodotto_google"])
-				$temp["g:google_product_category"] = $r["pages"]["codice_categoria_prodotto_google"];
-			else if ($r["categories"]["codice_categoria_prodotto_google"])
-				$temp["g:google_product_category"] = $r["categories"]["codice_categoria_prodotto_google"];
+			$codiceGoogle = $p->getFirstNotEmpty($r["pages"]["id_page"], "codice_categoria_prodotto_google");
+			
+			if ($codiceGoogle)
+				$temp["g:google_product_category"] = $codiceGoogle;
 			else
 				$temp["g:google_product_category"] = htmlentitydecode(cfield($r,"title"));
 			
