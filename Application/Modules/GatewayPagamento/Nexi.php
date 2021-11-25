@@ -36,7 +36,7 @@ class Nexi
 		{
 			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
 			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
-			$this->errorUrl = "";
+			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["cart_uid"];
 			$this->ordine = $ordine;
 		}
 		

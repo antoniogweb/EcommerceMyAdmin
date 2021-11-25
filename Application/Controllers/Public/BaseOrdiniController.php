@@ -415,7 +415,7 @@ class BaseOrdiniController extends BaseController
 				}
 				
 				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
-				$p->add_field('cancel_return', $this->baseUrl);
+				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
 				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
 				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
 				$p->add_field('item_number', $data["ordine"]["cart_uid"]);
@@ -575,6 +575,48 @@ class BaseOrdiniController extends BaseController
 				fclose($fp);
 			}
 		}
+	}
+	
+	public function annullapagamento($tipo = "", $cartuUid = "")
+	{
+		$this->clean();
+		
+		$this->createLogFolder();
+		
+		$fp = fopen(ROOT.'/Logs/error_pagamento.txt', 'a+');
+		fwrite($fp, date("Y-m-d H:i:s"));
+		fwrite($fp, "\nTIPO:".sanitizeHtml($tipo)."\n");
+		fwrite($fp, print_r($_GET,true));
+		fwrite($fp, print_r($_POST,true));
+		fclose($fp);
+		
+		$clean['cart_uid'] = sanitizeAll($cartuUid);
+		
+		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+		
+		if (count($res) > 0)
+		{
+			$data["ordine"] = $res[0]["orders"];
+			
+			$codiceTransazione = $this->m["OrdiniModel"]->getUniqueCodTrans(generateString(30));
+			
+			$this->m["OrdiniModel"]->setValues(array(
+				"codice_transazione"	=>	$codiceTransazione,
+			));
+			
+			$this->m["OrdiniModel"]->pUpdate($data["ordine"]["id_o"]);
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array(Parametri::$mailInvioOrdine),
+				"oggetto"	=>	"Pagamento ordine ".$data["ordine"]["id_o"]." annullato",
+				"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è stato annullato annullato",
+				"tipologia"	=>	"PAGAMENTO ANNULLATO",
+				"id_user"	=>	(int)$data["ordine"]['id_user'],
+				"id_o"		=>	$data["ordine"]["id_o"],
+			));
+		}
+		
+		$this->redirect("");
 	}
 	
 	public function ritornodapaypal()
