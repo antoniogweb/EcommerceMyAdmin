@@ -2104,6 +2104,9 @@ class PagesModel extends GenericModel {
 				{
 					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img;
 				}
+				
+				if (isset($_GET["fbk"]))
+					$temp["g:additional_image_link"] = implode(",",$temp["g:additional_image_link"]);
 			}
 			
 			if ($r["pages"]["id_marchio"])
