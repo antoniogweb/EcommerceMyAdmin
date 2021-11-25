@@ -1,6 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (count($scaglioni) > 0) { ?>
-<div class="uk-width-2-3@m uk-margin-medium-bottom">
+<?php if (count($scaglioni) > 0) {
+if (!isset($widthScaglioni))
+	$widthScaglioni = "uk-width-2-3@m";
+?>
+<div class="<?php echo $widthScaglioni;?> uk-margin-medium-bottom">
 	<table class="uk-text-small uk-table uk-table-divider uk-table-striped uk-table-small">
 		<thead>
 			<tr>

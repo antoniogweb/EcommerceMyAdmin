@@ -63,7 +63,7 @@ class ElementitemaModel extends GenericModel {
 		return array();
 	}
 	
-	public static function p($codice)
+	public static function p($codice, $correlato = "")
 	{
 		if (!isset(self::$percorsi))
 		{
@@ -82,7 +82,7 @@ class ElementitemaModel extends GenericModel {
 			if (!isset(self::$variantiPagina[$codice]))
 				self::$variantiPagina[$codice] = self::$percorsi[$codice];
 			
-			return self::$percorsi[$codice]["percorso"]."/".self::$percorsi[$codice]["nome_file"].".php";
+			return self::$percorsi[$codice]["percorso"]."/".self::$percorsi[$codice]["nome_file"].$correlato.".php";
 		}
 		
 		return "";

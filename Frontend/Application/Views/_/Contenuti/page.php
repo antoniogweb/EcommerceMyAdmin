@@ -1,16 +1,14 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php foreach ($pages as $p) {
 	$titoloPagina = field($p, "title");
+	$sottotitoloPagina = trim(field($p, "sottotitolo")) ? field($p, "sottotitolo") : "";
 	$noNumeroProdotti = true;
+	$standardPage = false;
 	include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
-	<?php if (trim(field($p, "description"))) { ?>
-	<div class="uk-section uk-text-left uk-padding-small">
-		<?php echo htmlentitydecode(attivaModuli(field($p, "description")));?>
-	</div>
-	<?php }
+	<?php include(tpf(ElementitemaModel::p("FASCIA_TESTO_DESCRIZIONE")));?>
 
-	echo $fasce;
+	<?php echo $fasce;
 
 	include(tpf("/Elementi/Pagine/page_bottom.php"));
 }

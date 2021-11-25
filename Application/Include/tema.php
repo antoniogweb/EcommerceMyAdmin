@@ -124,17 +124,22 @@ class Tema
 		
 		foreach ($fileCartella as $f)
 		{
-			$backFile = $f;
+			$pos = strpos($f, "___");
 			
-			$temp = explode(".", $f);
-			
-			if (count($temp) > 1)
-				array_pop($temp);
-			
-			if (!$mantieniEstensionePhp)
-				$backFile = implode(".",$temp);
-			
-			$arraySelect[$backFile] = ucfirst(implode(" ",explode("_",implode(".",$temp))));
+			if ($pos === false)
+			{
+				$backFile = $f;
+				
+				$temp = explode(".", $f);
+				
+				if (count($temp) > 1)
+					array_pop($temp);
+				
+				if (!$mantieniEstensionePhp)
+					$backFile = implode(".",$temp);
+				
+				$arraySelect[$backFile] = ucfirst(implode(" ",explode("_",implode(".",$temp))));
+			}
 		}
 		
 		return $arraySelect;

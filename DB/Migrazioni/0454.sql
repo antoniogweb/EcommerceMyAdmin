@@ -1,0 +1,1 @@
+INSERT INTO `elementi_tema` (`id_elemento_tema`, `data_creazione`, `titolo`, `codice`, `percorso`, `nome_file`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Fascia di testo descrizione', 'FASCIA_TESTO_DESCRIZIONE', 'Elementi/Fasce/Testo', 'default', '16');

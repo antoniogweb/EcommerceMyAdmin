@@ -24,6 +24,8 @@ if (isset($tagCorrente) && !empty($tagCorrente))
 if (isset($marchioCorrente) && !empty($marchioCorrente))
 	$titoloAggiuntivo .= " - ".mfield($marchioCorrente,"titolo");
 
+$sottotitoloPagina = (isset($datiCategoria) && trim(cfield($datiCategoria, "sottotitolo"))) ? cfield($datiCategoria, "sottotitolo") : "";
+
 include(tpf("/Elementi/Pagine/page_top.php"));
 
 if (!isset($noFiltri))
