@@ -24,4 +24,12 @@
 					<?php } ?>
 				</div>
 				<?php } ?>
-				<div class="uk-section"> 
+			</div>
+		</div>
+	</div>
+	
+	<?php if (!isset($standardPage)) { ?>
+	<section class="uk-section uk-section-small">
+		<div class="uk-container">
+			<div class="uk-text-center">
+	<?php } ?>

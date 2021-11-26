@@ -1,14 +1,23 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php foreach ($pages as $p) {
-	$titoloPagina = field($p, "title");
-	$sottotitoloPagina = trim(field($p, "sottotitolo")) ? field($p, "sottotitolo") : "";
-	$noNumeroProdotti = true;
-	$standardPage = false;
-	include(tpf("/Elementi/Pagine/page_top.php"));
-?>
-	<?php include(tpf(ElementitemaModel::p("FASCIA_TESTO_DESCRIZIONE")));?>
+<?php
 
-	<?php echo $fasce;
+$standardPage = false;
+$noNumeroProdotti = $noContainer = $noContainer = true;
+
+foreach ($pages as $p) {
+	$datiCategoria = $p;
+	$urlAlias = getUrlAlias($p["pages"]["id_page"]);
+	$urlAliasCategoria = getCategoryUrlAlias($p["categories"]["id_c"]);
+
+	$titoloPagina = field($p, "title");
+	$sottotitoloPagina = field($p, "sottotitolo");
+	
+	if (!isset($noTopPagina))
+		include(tpf("/Elementi/Pagine/page_top.php"));
+	
+	include(tpf(ElementitemaModel::p("FASCIA_TESTO_DESCRIZIONE")));
+
+	echo $fasce;
 
 	include(tpf("/Elementi/Pagine/page_bottom.php"));
 }

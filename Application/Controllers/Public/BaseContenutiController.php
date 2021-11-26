@@ -1016,7 +1016,7 @@ class BaseContenutiController extends BaseController
 			$viewFile = $template;
 		}
 		
-		if (isset($viewFile) and file_exists(tp()."/Contenuti/$viewFile.php"))
+		if (isset($viewFile) and file_exists(tpf("/Contenuti/$viewFile.php")))
 		{
 			$this->cload($viewFile);
 		}
