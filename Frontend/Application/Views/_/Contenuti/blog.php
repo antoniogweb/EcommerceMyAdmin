@@ -1,7 +1,13 @@
-<?php if (!defined('EG')) die('Direct access not allowed!');
+<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-$descrizioneNoProdotti = gtext("Non è presente alcun articolo");
+<?php
+$standardPage = false;
 $itemFile = "/Elementi/Categorie/news.php";
-$noFiltri = $noNumeroProdotti = true;
 
-include(tp()."/Contenuti/prodotti.php");
+include(tpf("/Elementi/Pagine/page_top.php"));
+
+include(tpf(ElementitemaModel::p("BLOG_TOP")));
+
+echo $fasce;
+
+include(tpf("/Elementi/Pagine/page_bottom.php"));

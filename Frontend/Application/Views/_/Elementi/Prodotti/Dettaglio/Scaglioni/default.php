@@ -2,8 +2,11 @@
 <?php if (count($scaglioni) > 0) {
 if (!isset($widthScaglioni))
 	$widthScaglioni = "uk-width-2-3@m";
+
+if (!isset($classScaglioni))
+	$classScaglioni = "uk-margin-medium-bottom";
 ?>
-<div class="<?php echo $widthScaglioni;?> uk-margin-medium-bottom">
+<div class="<?php echo $widthScaglioni;?> <?php echo $classScaglioni;?>">
 	<table class="uk-text-small uk-table uk-table-divider uk-table-striped uk-table-small">
 		<thead>
 			<tr>

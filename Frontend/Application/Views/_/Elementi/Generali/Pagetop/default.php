@@ -26,7 +26,7 @@
 				<?php } ?>
 			</div>
 		</div>
-	</div>
+	</section>
 	
 	<?php if (!isset($standardPage)) { ?>
 	<section class="uk-section uk-section-small">
