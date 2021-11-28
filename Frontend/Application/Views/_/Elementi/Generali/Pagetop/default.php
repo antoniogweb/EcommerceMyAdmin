@@ -26,10 +26,10 @@
 				<?php } ?>
 			</div>
 		</div>
-	</section>
+	</div>
 	
 	<?php if (!isset($standardPage)) { ?>
-	<section class="uk-section uk-section-small">
+	<section class="uk-section uk-section-small uk-margin-medium">
 		<div class="uk-container">
 			<div class="uk-text-center">
 	<?php } ?>
