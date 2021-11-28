@@ -3,11 +3,11 @@
 <div class="uk-section">
 	<div class="uk-container">
 		<div class=" uk-margin-large-bottom">
-			<h2 class="uk-text-center uk-text-bold uk-margin-remove-top uk-margin-remove-bottom"><span><?php echo gtext("I nostri marchi"); ?></span></h2>
+			<h2 class="uk-text-center uk-text-bold uk-margin-remove-top uk-margin-remove-bottom"><span><?php echo t("I nostri marchi"); ?></span></h2>
 			<div class="uk-child-width-1-3@m uk-text-center" uk-grid>
 				<div></div>
 				<div>
-					<div class="uk-text-small"><?php echo gtext("Marchi: Lorem ipsum dolor sit amet, consectetur adipiscing elit.");?></div>
+					<div class="uk-text-small"><?php echo t("Marchi: Lorem ipsum dolor sit.");?></div>
 				</div>
 				<div></div>
 			</div>

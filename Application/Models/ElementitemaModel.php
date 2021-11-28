@@ -63,18 +63,35 @@ class ElementitemaModel extends GenericModel {
 		return array();
 	}
 	
-	public static function p($codice, $correlato = "")
+	public static function getPercorsi()
+	{
+		$et = new ElementitemaModel();
+		
+		$result = $et->clear()->findAll(false);
+		
+		foreach ($result as $r)
+		{
+			self::$percorsi[$r["codice"]] = $r;
+		}
+	}
+	
+	public static function p($codice, $correlato = "", $record = null)
 	{
 		if (!isset(self::$percorsi))
 		{
+			self::getPercorsi();
+		}
+		
+		if (!isset(self::$percorsi[$codice]) && is_array($record))
+		{
 			$et = new ElementitemaModel();
 			
-			$result = $et->clear()->findAll(false);
+			$record["codice"] = $codice;
 			
-			foreach ($result as $r)
-			{
-				self::$percorsi[$r["codice"]] = $r;
-			}
+			$et->setValues($record);
+			
+			if ($et->insert())
+				self::getPercorsi();
 		}
 		
 		if (isset(self::$percorsi[$codice]))
