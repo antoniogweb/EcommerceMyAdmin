@@ -331,6 +331,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_strumenti_merchant_google"	=>	0,
 		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt",
 		"coupon_ajax"				=>	0,
+		"attiva_gestione_integrazioni"	=>	0,
 	);
 	
 	public static $daInizializzare = array(

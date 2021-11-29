@@ -1,0 +1,1 @@
+INSERT INTO `integrazioni_sezioni` (`id_integrazione_sezione`, `data_creazione`, `sezione`, `id_integrazione`, `metodo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'ORDINE', '1', 'inviaOrdine', '1');

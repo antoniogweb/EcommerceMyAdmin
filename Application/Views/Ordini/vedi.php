@@ -10,6 +10,16 @@
 		<div class="col-md-12">
 			<?php if (!nobuttons()) { ?>
 			<div class="mainMenu">
+				<?php if (count($integrazioni) > 0) { ?>
+				<div class="text-right pull-right">
+					<?php
+					foreach ($integrazioni as $pulsanteI)
+					{
+						echo $pulsanteI;
+					}
+					?>
+				</div>
+				<?php } ?>
 				<?php echo $menu;?>
 			</div>
 			<?php } ?>

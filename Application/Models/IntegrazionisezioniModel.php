@@ -20,43 +20,22 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class CampoNascosto
-{
-	private $params = "";
+if (!defined('EG')) die('Direct access not allowed!');
+
+class IntegrazionisezioniModel extends GenericModel {
 	
-	public function __construct($recordCaptcha)
-	{
-		$this->params = $recordCaptcha;
-	}
-	
-	public function getParams()
-	{
-		return $this->params;
-	}
-	
-	public function check()
-	{
-		$r = new Request();
-		$campoCaptcha = $r->post($this->params["campo_nascosto"],'');
+	public function __construct() {
+		$this->_tables='integrazioni_sezioni';
+		$this->_idFields='id_integrazione_sezione';
 		
-		return strcmp($campoCaptcha,'') === 0 ? true : false;
-	}
-	
-	public function checkRegistrazione()
-	{
-		$r = new Request();
-		$campoCaptcha = $r->post($this->params["campo_nascosto_registrazione"],'');
+		$this->_idOrder = 'id_order';
 		
-		return strcmp($campoCaptcha,'') === 0 ? true : false;
+		parent::__construct();
 	}
 	
-	public function getHiddenFieldIncludeFile()
-	{
-		return "/Elementi/Captcha/campo-nascosto.php";
-	}
-	
-	public function getHiddenFieldRegistrazioneIncludeFile()
-	{
-		return "/Elementi/Captcha/campo-nascosto-registrazione.php";
-	}
+	public function relations() {
+        return array(
+			'integrazione' => array("BELONGS_TO", 'IntegrazioniModel', 'id_integrazione',null,"CASCADE"),
+        );
+    }
 }

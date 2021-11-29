@@ -842,4 +842,18 @@ class OrdiniModel extends FormModel {
 			}
 		}
 	}
+	
+	public function quantitaTotale($idO)
+	{
+		$r = new RigheModel();
+		
+		$res = $r->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"id_o"	=>	$idO,
+		))->findAll();
+		
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
+		return 1;
+	}
 }

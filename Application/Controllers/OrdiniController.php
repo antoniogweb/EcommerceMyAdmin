@@ -361,6 +361,7 @@ class OrdiniController extends BaseController {
 		
 		if (count($res) > 0)
 		{
+			$data["integrazioni"] = IntegrazioniModel::getElencoPulsantiIntegrazione($res[0]["orders"]["id_user"], "ORDINE");
 // 			if ()
 // 			if (isset($_POST["modifica_stato_ordine"]) and strcmp($clean["admin_token"],$res[0]["orders"]["admin_token"]) === 0)
 // 			{

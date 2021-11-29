@@ -535,6 +535,10 @@ class Route
 
 		'elementitema,main',
 		'elementitema,form',
+		
+		'integrazioni,main',
+		'integrazioni,form',
+		'integrazioni,invia',
 	);
 	
 	//it can be 'yes' or 'no'

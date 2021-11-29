@@ -1,0 +1,1 @@
+INSERT INTO `integrazioni` (`id_integrazione`, `data_creazione`, `titolo`, `codice`, `classe`, `secret_1`, `secret_2`, `api_endpoint`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Sendcloud', 'SENDCLOUD', 'Sendcloud', '', '', '', '0', '1');

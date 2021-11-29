@@ -105,6 +105,17 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("attiva_gestione_integrazioni")) { ?>
+			<li class="<?php echo tm($tm, "integrazioni");?> treeview">
+				<a href="#">
+					<i class="fa fa-exchange"></i>
+					<span><?php echo gtext("Gestione integrazioni")?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/integrazioni/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<?php if (defined("CACHE_FOLDER") || v("attiva_cache_immagini")) { ?>
 			<li class=""><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-trash"></i> <span><?php echo gtext("Svuota cache");?></span></a></li>
 			<?php } ?>
