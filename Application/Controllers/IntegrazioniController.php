@@ -91,7 +91,7 @@ class IntegrazioniController extends BaseController
 			$integrazione = $res[0]["integrazioni"];
 			$integrazioneSezione = $res[0]["integrazioni_sezioni"];
 			
-			if (!IntegrazionisezioniinviiModel::giaInviato($idIntegrazione, $integrazioneSezione["id_integrazione_sezione"]))
+			if (!IntegrazionisezioniinviiModel::numeroInviati($idIntegrazione, $integrazioneSezione["id_integrazione_sezione"], $idelemento))
 			{
 				$i = IntegrazioniModel::getModulo($integrazione["id_integrazione"]);
 				
@@ -103,7 +103,7 @@ class IntegrazioniController extends BaseController
 					{
 						flash("notice","<div class='alert alert-success'>".gtext($result["notice"])."</div>");
 						
-						IntegrazionisezioniinviiModel::aggiungi($idIntegrazione, $integrazioneSezione["id_integrazione_sezione"], $result["id"]);
+						IntegrazionisezioniinviiModel::aggiungi($idIntegrazione, $integrazioneSezione["id_integrazione_sezione"], $idelemento, $result["id"]);
 					}
 					else
 						flash("notice","<div class='alert alert-danger'>".gtext($result["notice"])."</div>");

@@ -22,6 +22,8 @@
 				<?php } ?>
 				<?php echo $menu;?>
 			</div>
+			
+			<?php include($this->viewPath("steps"));?>
 			<?php } ?>
 			<div class="box">
 				<div class="box-header with-border main">

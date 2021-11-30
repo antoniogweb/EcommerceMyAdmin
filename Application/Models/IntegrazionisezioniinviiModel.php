@@ -40,19 +40,20 @@ class IntegrazionisezioniinviiModel extends GenericModel {
         );
     }
     
-    // Se già inviato
-    public static function giaInviato($idIntegrazione, $idIntegrazioneSezione)
+    // Restituisce il numero di inviati
+    public static function numeroInviati($idIntegrazione, $idIntegrazioneSezione, $idElemento)
     {
 		$ii = new IntegrazionisezioniinviiModel();
 		
 		return $ii->clear()->where(array(
 			"id_integrazione"	=>	$idIntegrazione,
 			"id_integrazione_sezione"	=>	$idIntegrazioneSezione,
+			"id_elemento"	=>	$idElemento,
 		))->count();
     }
     
-    
-    public static function aggiungi($idIntegrazione, $idIntegrazioneSezione, $idPiattaforma)
+    // Aggiungi a quelli inviati
+    public static function aggiungi($idIntegrazione, $idIntegrazioneSezione, $idElemento, $idPiattaforma)
     {
 		$ii = new IntegrazionisezioniinviiModel();
 		$is = new IntegrazionisezioniModel();
@@ -63,26 +64,22 @@ class IntegrazionisezioniinviiModel extends GenericModel {
 		
 		if (!empty($sezione) && !empty($integrazione))
 		{
-			$numero = $ii->clear()->where(array(
-				"id_integrazione"	=>	$idIntegrazione,
-				"id_integrazione_sezione"	=>	$idIntegrazioneSezione,
-			))->count();
-			
-			if ((int)$numero === 0)
+			if (!self::numeroInviati($idIntegrazione, $idIntegrazioneSezione, $idElemento))
 			{
 				$ii->setValues(array(
 					"id_integrazione"	=>	$idIntegrazione,
 					"id_integrazione_sezione"	=>	$idIntegrazioneSezione,
+					"id_elemento"	=>	$idElemento,
 					"sezione"			=>	$sezione["sezione"],
 					"codice_piattaforma"	=>	$idPiattaforma
 				));
 				
-				$ii->insert();
-				
-				return true;
+				if ($ii->insert())
+					return true;
 			}
 		}
 		
 		return false;
     }
+    
 }

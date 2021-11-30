@@ -40,6 +40,7 @@ class IntegrazioniModel extends GenericModel {
 	public function relations() {
         return array(
 			'sezioni' => array("HAS_MANY", 'IntegrazionisezioniModel', 'id_integrazione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'invii' => array("HAS_MANY", 'IntegrazionisezioniinviiModel', 'id_integrazione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
         );
     }
     
@@ -69,16 +70,23 @@ class IntegrazioniModel extends GenericModel {
 		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
 	}
 	
-	public static function getElencoIntegrazioni($sezione)
+	public static function getElencoIntegrazioni($sezione, $idElemento = 0)
 	{
 		if (!isset(self::$elencoSezioni))
 		{
 			$i = new IntegrazioniModel();
 			
-			$integrazioni = $i->clear()->select("distinct integrazioni.id_integrazione,integrazioni.*")->inner(array("sezioni"))->where(array(
+			$i->clear()->select("distinct integrazioni.id_integrazione,integrazioni.*")->inner(array("sezioni"))->where(array(
 				"integrazioni_sezioni.sezione"	=>	$sezione,
 				"integrazioni.attivo"			=>	1,
-			))->orderBy("integrazioni_sezioni.id_order")->findAll();
+			))->orderBy("integrazioni_sezioni.id_order");
+			
+			if ($idElemento)
+				$i->sWhere("integrazioni_sezioni.id_integrazione_sezione not in (select id_integrazione_sezione from integrazioni_sezioni_invii where sezione = '".sanitizeAll($sezione)."' and id_elemento = ".(int)$idElemento.")");
+			
+			$integrazioni = $i->findAll();
+			
+// 			echo $i->getQuery();die();
 			
 			self::$elencoSezioni = array();
 			
@@ -93,7 +101,7 @@ class IntegrazioniModel extends GenericModel {
 	
 	public static function getElencoPulsantiIntegrazione($idElemento, $sezione)
 	{
-		$res = self::getElencoIntegrazioni($sezione);
+		$res = self::getElencoIntegrazioni($sezione, $idElemento);
 		
 		$arrayPulsanti = array();
 		

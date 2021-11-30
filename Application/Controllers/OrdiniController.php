@@ -66,6 +66,8 @@ class OrdiniController extends BaseController {
 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->append($data);
+		
+		$this->generaPosizioni();
 	}
 
 	public function main()
@@ -203,42 +205,43 @@ class OrdiniController extends BaseController {
 		parent::form($queryType, $id);
 	}
 	
-// 	public function form($queryType = 'update', $id = 0)
-// 	{
-// 		$this->shift(3);
-// 		
-// 		$qAllowed = array("update");
-// 		
-// 		if (in_array($queryType,$qAllowed))
-// 		{
-// 			$clean['id'] = (int)$id;
-// 			$clean["admin_token"] = $this->request->get("admin_token","","sanitizeAll");
-// 			
-// // 			if (!$this->s['admin']->checkCsrf($this->viewArgs['token'])) $this->redirect('panel/main',2,'wrong token');
-// 			
-// 			$this->m['OrdiniModel']->setFields('tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione','sanitizeAll');
-// 			
-// 			$this->m['OrdiniModel']->updateTable('update',$clean['id']);
-// 
-// 			$params = array(
-// 				'formMenu'=>'torna_ordine',
-// 			);
-// 		
-// 			$this->loadScaffold('form',$params);
-// 			$this->scaffold->loadForm($queryType,$this->applicationUrl.$this->controller."/form/$queryType/".$clean['id']."/".$clean["admin_token"]);
-// 			
-// 			$this->scaffold->mainMenu->links['torna_ordine']['url'] = 'vedi/'.$clean['id']."/".$clean["admin_token"];
-// // 			$this->scaffold->mainMenu->links['torna_ordine']['queryString'] = '?n=y';
-// 			$this->scaffold->mainMenu->links['torna_ordine']['title'] = "Torna alla pagina di dettaglio dell'ordine";
-// 			
-// 			$this->scaffold->getFormValues('sanitizeHtml',$clean['id']);
-// 
-// 			$data['scaffold'] = $this->scaffold->render();
-// 			
-// 			$this->append($data);
-// 			$this->load('form');
-// 		}
-// 	}
+	public function integrazioni($id = 0)
+	{
+		$this->model("IntegrazionisezioniinviiModel");
+		
+		$this->_posizioni['integrazioni'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_corriere";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "IntegrazionisezioniinviiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("integrazioni.titolo", "cleanDateTime", "integrazioni_sezioni_invii.codice_piattaforma");
+		$this->mainHead = "Piattaforma,Data / ora invio,ID elemento nella piattaforma esterna";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"integrazioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("integrazione"))->orderBy("integrazioni_sezioni_invii.data_creazione")->where(array(
+			"id_elemento"	=>	$clean['id'],
+			"sezione"		=>	"ORDINE",
+		))->convert()->save();
+		
+		$this->tabella = "integrazioni ordine";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
 	
 	public function righe($id = 0)
 	{
@@ -318,7 +321,7 @@ class OrdiniController extends BaseController {
 		
 		$data['notice'] = null;
 		
-		$clean["id_o"] = (int)$id_o;
+		$clean["id_o"] = $data["id"] = (int)$id_o;
 // 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		
 		$data["notice_send"] = null;
@@ -362,23 +365,9 @@ class OrdiniController extends BaseController {
 		if (count($res) > 0)
 		{
 			$data["integrazioni"] = IntegrazioniModel::getElencoPulsantiIntegrazione($res[0]["orders"]["id_o"], "ORDINE");
-// 			if ()
-// 			if (isset($_POST["modifica_stato_ordine"]) and strcmp($clean["admin_token"],$res[0]["orders"]["admin_token"]) === 0)
-// 			{
-// 				$clean['stato'] = $this->request->post("stato","pending","sanitizeAll");
-// 				$statiPermessi = array("pending","deleted","completed");
-// 				
-// 				if (in_array($clean['stato'],$statiPermessi))
-// 				{
-// 					$this->m["OrdiniModel"]->values = array("stato" => $clean['stato']);
-// 					$this->m["OrdiniModel"]->update($clean["id_o"]);
-// 					$data['notice'] = $this->m["OrdiniModel"]->notice;
-// 				}
-// 			}
 			
-// 			$res = $this->m["OrdiniModel"]->clear()
-// 								->where(array("id_o" => $clean["id_o"]))
-// 								->send();
+			$this->_posizioni['main'] = 'class="active"';
+			$data['posizioni'] = $this->_posizioni;
 			
 			$data["cliente"] = null;
 			

@@ -35,6 +35,7 @@ class IntegrazionisezioniModel extends GenericModel {
 	
 	public function relations() {
         return array(
+			'invii' => array("HAS_MANY", 'IntegrazionisezioniinviiModel', 'id_integrazione_sezione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'integrazione' => array("BELONGS_TO", 'IntegrazioniModel', 'id_integrazione',null,"CASCADE"),
         );
     }
