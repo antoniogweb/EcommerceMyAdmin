@@ -25,6 +25,7 @@
 			<?php } ?>
 			<div class="box">
 				<div class="box-header with-border main">
+					<?php echo flash("notice");?>
 					<?php echo $notice_send;?>
 					<?php echo flash("notice_send");?>
 					

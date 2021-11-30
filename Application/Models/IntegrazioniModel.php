@@ -99,7 +99,7 @@ class IntegrazioniModel extends GenericModel {
 		
 		foreach ($res as $i)
 		{
-			$arrayPulsanti[] = "<a class='btn btn-info' href='".Url::getRoot()."integrazioni/invia/".strtolower($sezione)."/$idElemento'><i class='fa fa-paper-plane-o'></i> ".gtext("Invia a")." ".$i["integrazioni"]["titolo"]."</a>";
+			$arrayPulsanti[] = "<a class='btn btn-info' href='".Url::getRoot()."integrazioni/invia/".$i["integrazioni"]["id_integrazione"]."/".strtolower($sezione)."/$idElemento'><i class='fa fa-paper-plane-o'></i> ".gtext("Invia a")." ".$i["integrazioni"]["titolo"]."</a>";
 		}
 		
 		return $arrayPulsanti;

@@ -29,8 +29,38 @@ class Sendcloud
 		$this->params = $record;
 	}
 	
+	protected function send($data, $action = "")
+	{
+		$username = $this->params["secret_1"];
+		$password = $this->params["secret_2"];
+		
+		$options_dett = array(
+			"http" => array(
+				"header"  => "Content-type: application/json\r\n".'Authorization: Basic '.base64_encode("$username:$password")."\r\n",
+				"method"  => "POST",
+				"content" => json_encode($data),
+				"timeout"	=>	5,
+				"ignore_errors"	=>	true
+			),
+			'ssl' => array(
+				'verify_peer'       => false,
+				'verify_peer_name'  => false,
+			)
+		);
+		
+		if ($action)
+			$action = "/".ltrim($action,"/");
+		
+		$context_dett  = stream_context_create($options_dett);
+		return @file_get_contents($this->params["api_endpoint"].$action, false, $context_dett);
+	}
+	
 	public function inviaOrdine($idO)
 	{
+		$result = 0;
+		$notice = "C'è stato un problema nell'invio a Sendcloud, si prega di riprovare più tardi";
+		$idPiattaforma = "";
+		
 		$o = new OrdiniModel();
 		
 		$ordine = $o->selectId($idO);
@@ -59,7 +89,31 @@ class Sendcloud
 			),
 		);
 		
-		return $parcel;
+// 		print_r($parcel);
+		
+		$res = json_decode($this->send($parcel), true);
+		
+		if (isset($res["parcel"]["id"]) && $res["parcel"]["id"])
+		{
+			$idPiattaforma = $res["parcel"]["id"];
+			$notice = "Ordine inviato correttamente a Sendcloud";
+			$result = 1;
+		}
+		else if (isset($res["error"]["message"]))
+		{
+			$notice = "RISPOSTA SENDCLOUT - ".sanitizeHtml($res["error"]["message"]);
+			$result = 0;
+		}
+		
+		$result = array(
+			"result"	=>	$result,
+			"notice"	=>	$notice,
+			"id"		=>	$idPiattaforma,
+		);
+		
+// 		print_r($result);die();
+		
+		return $result;
 	}
 	
 	public function configurato($record)

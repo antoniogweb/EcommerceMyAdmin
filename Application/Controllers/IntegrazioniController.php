@@ -74,7 +74,7 @@ class IntegrazioniController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
-	public function invia($tipo = "ORDINE", $idelemento = 0)
+	public function invia($idIntegrazione = 0, $tipo = "ORDINE", $idelemento = 0)
 	{
 		$this->clean();
 		
@@ -82,6 +82,7 @@ class IntegrazioniController extends BaseController
 		
 		$res = $this->m["IntegrazionisezioniModel"]->clear()->select("*")->inner(array("integrazione"))->where(array(
 			"sezione"	=>	$tipo,
+			"integrazioni.id_integrazione"	=>	$idIntegrazione,
 			"integrazioni.attivo"	=>	1,
 		))->findAll();
 		
@@ -90,15 +91,35 @@ class IntegrazioniController extends BaseController
 			$integrazione = $res[0]["integrazioni"];
 			$integrazioneSezione = $res[0]["integrazioni_sezioni"];
 			
-// 			print_r($integrazione);
-			$i = IntegrazioniModel::getModulo($integrazioneSezione["id_integrazione"]);
-			
-			if (call_user_func(array($i, "configurato"), $integrazione))
+			if (!IntegrazionisezioniinviiModel::giaInviato($idIntegrazione, $integrazioneSezione["id_integrazione_sezione"]))
 			{
-				$result = call_user_func(array($i, $integrazioneSezione["metodo"]), (int)$idelemento);
+				$i = IntegrazioniModel::getModulo($integrazione["id_integrazione"]);
+				
+				if (call_user_func(array($i, "configurato"), $integrazione))
+				{
+					$result = call_user_func(array($i, $integrazioneSezione["metodo"]), (int)$idelemento);
+					
+					if ($result["result"] && $result["id"])
+					{
+						flash("notice","<div class='alert alert-success'>".gtext($result["notice"])."</div>");
+						
+						IntegrazionisezioniinviiModel::aggiungi($idIntegrazione, $integrazioneSezione["id_integrazione_sezione"], $result["id"]);
+					}
+					else
+						flash("notice","<div class='alert alert-danger'>".gtext($result["notice"])."</div>");
+				}
+			}
+			else
+				flash("notice","<div class='alert alert-danger'>".gtext("Elemento già inviato a")." ".$integrazione["titolo"]."</div>");
 			
-				print_r($result);
+			if ($integrazioneSezione["return_to"])
+			{
+				$returnTo = str_replace("[ID_ELEMENTO]", (int)$idelemento, $integrazioneSezione["return_to"]);
+				
+				$this->redirect($returnTo);
 			}
 		}
+		
+		$this->redirect("panel/main");
 	}
 }
