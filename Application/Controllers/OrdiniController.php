@@ -207,6 +207,8 @@ class OrdiniController extends BaseController {
 	
 	public function integrazioni($id = 0)
 	{
+		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
+		
 		$this->model("IntegrazionisezioniinviiModel");
 		
 		$this->_posizioni['integrazioni'] = 'class="active"';
@@ -225,9 +227,9 @@ class OrdiniController extends BaseController {
 		$this->m[$this->modelName]->updateTable('del');
 		
 		$this->mainFields = array("integrazioni.titolo", "cleanDateTime", "integrazioni_sezioni_invii.codice_piattaforma");
-		$this->mainHead = "Piattaforma,Data / ora invio,ID elemento nella piattaforma esterna";
+		$this->mainHead = "Piattaforma esterna,Data / ora invio,ID elemento nella piattaforma esterna";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"integrazioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine','mainAction'=>"integrazioni/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("*")->inner(array("integrazione"))->orderBy("integrazioni_sezioni_invii.data_creazione")->where(array(
 			"id_elemento"	=>	$clean['id'],
