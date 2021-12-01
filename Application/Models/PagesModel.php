@@ -171,6 +171,14 @@ class PagesModel extends GenericModel {
 					'labelString'=>	'Titolo',
 					'entryClass'	=>	'form_input_text help_titolo',
 				),
+				'meta_title'		=>	array(
+					'labelString'=>	'Meta title della pagina',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se lasciato vuoto userà il titolo della pagina")."</div>"
+					),
+				),
 				'data_news'		=>	array(
 					'labelString'=>	'Data',
 				),

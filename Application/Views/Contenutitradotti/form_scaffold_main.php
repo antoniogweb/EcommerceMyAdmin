@@ -91,13 +91,15 @@ $().ready(function() {
 				</span>
 			</div>
 		</div>
-		<?php if (isset($form["keywords"]) && isset($form["meta_description"])) { ?>
+		<?php if (isset($form["meta_title"]) && isset($form["keywords"]) && isset($form["meta_description"])) { ?>
 		<div class='col-md-4'>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					Meta
 				</div>
 				<div class="panel-body">
+					<?php echo $form["meta_title"];?>
+					
 					<?php echo $form["keywords"];?>
 					
 					<?php echo $form["meta_description"];?>

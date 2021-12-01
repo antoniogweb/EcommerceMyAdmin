@@ -744,6 +744,7 @@ class GenericModel extends Model_Tree
 					"title"			=>	isset($record["title"]) ? $record["title"] : "",
 					"description"	=>	isset($record["description"]) ? $record["description"] : "",
 					"alias"			=>	isset($record["alias"]) ? $record["alias"] : "",
+					"meta_title"	=>	isset($record["meta_title"]) ? $record["meta_title"] : "",
 					"keywords"		=>	isset($record["keywords"]) ? $record["keywords"] : "",
 					"meta_description"	=>	isset($record["meta_description"]) ? $record["meta_description"] : "",
 					"url"			=>	isset($record["url"]) ? $record["url"] : "",

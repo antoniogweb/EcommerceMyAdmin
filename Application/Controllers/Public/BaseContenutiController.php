@@ -343,13 +343,20 @@ class BaseContenutiController extends BaseController
 						$this->fullParents = $parents[$id];
 						$clean["id"] = $id;
 						
-						if (isset($parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"]) && $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"])
-							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"];
-						else
-							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["pages"]["title"];
-// 						$stringLn = $parents[$id][count($parents[$id])-1]["pages"]["title".$this->langDb];
+						$metaTitlePagina = field($parents[$id][count($parents[$id])-1], "meta_title");
+						$titoloPagina = field($parents[$id][count($parents[$id])-1], "title");
 						
-						$data["title"] = Parametri::$nomeNegozio . " - " . strtolower(getField($stringLn,$stringIt));
+						$titleDaUsare = trim($metaTitlePagina) ? $metaTitlePagina : $titoloPagina;
+						
+						$data["title"] = Parametri::$nomeNegozio . " - ".$titleDaUsare;
+						
+// 						if (isset($parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"]) && $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"])
+// 							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"];
+// 						else
+// 							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["pages"]["title"];
+// // 						$stringLn = $parents[$id][count($parents[$id])-1]["pages"]["title".$this->langDb];
+// 						
+// 						$data["title"] = Parametri::$nomeNegozio . " - " . strtolower(getField($stringLn,$stringIt));
 					}
 				}
 
