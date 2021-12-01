@@ -332,6 +332,7 @@ class VariabiliModel extends GenericModel {
 		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt",
 		"coupon_ajax"				=>	0,
 		"attiva_gestione_integrazioni"	=>	0,
+		"identificatore_feed_default"	=>	"no",
 	);
 	
 	public static $daInizializzare = array(
@@ -477,6 +478,12 @@ class VariabiliModel extends GenericModel {
 				'labelString'	=>	'Ecommerce in sviluppo / blocca indicizzazione',
 				'type'			=>	'Select',
 				'options'	=>	$this->opzioniSiNo(),
+				"reverse"	=>	"yes",
+			),
+			'identificatore_feed_default'	=>	array(
+				'labelString'	=>	'Valore globale del campo "Esiste l\'identificatore?" (feed Google)',
+				'type'			=>	'Select',
+				'options'	=>	self::$yesNo,
 				"reverse"	=>	"yes",
 			),
 		);

@@ -34,6 +34,11 @@ class GenericModel extends Model_Tree
 		"0"	=>	"No",
 	);
 	
+	public static $yesNo = array(
+		"yes"	=>	"Sì",
+		"no"	=>	"No",
+	);
+	
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
 	public $uploadFields = array();

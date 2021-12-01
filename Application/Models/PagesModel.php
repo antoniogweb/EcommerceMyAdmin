@@ -162,6 +162,8 @@ class PagesModel extends GenericModel {
 		
 		$wrapCombinazioni = array();
 		
+		$testoLasciareVuotoSeNonPresente = "Lasciare vuoto se non presente o non conosciuto";
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -459,6 +461,34 @@ class PagesModel extends GenericModel {
 						null,
 						null,
 						"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Elenco codici")."</a></div>"
+					),
+				),
+				'gtin'	=>	array(
+					'labelString'	=>	'Codice internazione GTIN',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext($testoLasciareVuotoSeNonPresente)."</div>"
+					),
+				),
+				'mpn'	=>	array(
+					'labelString'	=>	'Codice MPN (Manufacturer Part Number)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Codice del prodottore.")." ".gtext($testoLasciareVuotoSeNonPresente)."</div>"
+					),
+				),
+				'identifier_exists'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_identifier_exists',
+					'labelString'=>	'Campo "Esiste l\'identificatore?" (feed Google)',
+					'options'	=>	array(""=>"--") + self::$yesNo,
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Indicate no solo se né i codici gtin e mpn non esitono. Ex: prodotto artigianale, prodotto unico, etc.")." ".gtext("Altrimenti se i suddetti codici esistono ma non li conoscete, mettete comunque sì (e cercate tali codici).")." ".gtext("Se lasciato vuoto verrà usato il valore globale.")."</div>"
 					),
 				),
 			),
@@ -2024,10 +2054,14 @@ class PagesModel extends GenericModel {
 		$children = $c->children($idShop, true);
 		
 		$catWhere = "in(".implode(",",$children).")";
+		
+		if (isset($_GET["id_page"]))
+			$p->aWhere(array(
+				"id_page"	=>	(int)$_GET["id_page"],
+			));
+		
 		$res = $p->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
 				"in" => array("-id_c" => $children),
-// 				"pages.attivo"	=>	"Y",
-// 				"acquistabile"	=>	"Y",
 			))
 			->addWhereAttivo()
 			->inner("categories")->on("categories.id_c = pages.id_c")
@@ -2047,13 +2081,22 @@ class PagesModel extends GenericModel {
 			$temp = array(
 				"g:id"	=>	$r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
-// 				"g:description"	=>	htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8"),
-// 				"g:google_product_category"	=>	htmlentitydecode(cfield($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
-				"g:identifier_exists"	=>	"no",
+// 				"g:identifier_exists"	=>	v("identificatore_feed_default"),
 			);
+			
+			if (!isset($_GET["fbk"]))
+			{
+				if ($r["pages"]["gtin"])
+					$temp["g:gtin"] = htmlentitydecode($r["pages"]["gtin"]);
+				
+				if ($r["pages"]["mpn"])
+					$temp["g:mpn"] = htmlentitydecode($r["pages"]["mpn"]);
+				
+				$temp["g:identifier_exists"] = $r["pages"]["identifier_exists"] ? $r["pages"]["identifier_exists"] : v("identificatore_feed_default");
+			}
 			
 			if (isset($_GET["fbk"]))
 				$temp["g:description"] = strip_tags(htmlentitydecode(field($r,"description")));
@@ -2100,9 +2143,18 @@ class PagesModel extends GenericModel {
 			{
 				$temp["g:additional_image_link"] = array();
 				
+				$count = 0;
+				
+				$numeroLimite = isset($_GET["fbk"]) ? 20 : 10;
+				
 				foreach ($altreImmagini as $k => $img)
 				{
+					if ($count >= $numeroLimite)
+						break;
+					
 					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img;
+					
+					$count++;
 				}
 				
 				if (isset($_GET["fbk"]))
@@ -2123,7 +2175,10 @@ class PagesModel extends GenericModel {
 				$temp["condition"] = "new";
 			
 			if ($p->inPromozione($r["pages"]["id_page"], $r))
+			{
 				$temp["g:sale_price"] = number_format(calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo),2,".",""). " EUR";
+				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["dal"]));
+			}
 			
 			$arrayProdotti[] = $temp;
 		}

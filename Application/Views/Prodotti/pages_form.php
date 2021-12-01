@@ -157,8 +157,8 @@
 								<?php include($this->viewPath("pages_link"));?>
 							</div>
 						</div>
-					
-					<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
+						
+						<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 					
 						<div class="panel panel-info">
 							<div class="panel-heading">
@@ -169,7 +169,7 @@
 							</div>
 						</div>
 					
-					<?php } ?>
+						<?php } ?>
 					
 						<div class="panel panel-info">
 							<div class="panel-heading">
@@ -181,13 +181,32 @@
 								<?php if (v("usa_marchi")) { ?>
 								<?php echo $form["id_marchio"];?>
 								<?php } ?>
-								
-								<?php if (isset($form["codice_categoria_prodotto_google"])) { ?>
-								<?php echo $form["codice_categoria_prodotto_google"];?>
-								<?php } ?>
 							</div>
 						</div>
-					
+						
+						<?php if (v("attiva_strumenti_merchant_google")) { ?>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<?php echo gtext("Codici per merchant (Google / Facebook)")?>
+							</div>
+							<div class="panel-body">
+								<?php echo $form["codice_categoria_prodotto_google"];?>
+								
+								<?php echo $form["gtin"];?>
+								
+								<?php echo $form["mpn"];?>
+								
+								<?php echo $form["identifier_exists"];?>
+								
+								<p>
+									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo Domain::$name."/it/home/xmlprodotti?fbk&id_page=$id_page;";?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
+									
+									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo Domain::$name."/it/home/xmlprodotti?id_page=$id_page";?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
+								</p>
+							</div>
+						</div>
+						<?php } ?>
+						
 						<div class="panel panel-info">
 							<?php include($this->viewPath("pages_form_immagine"));?>
 						</div>

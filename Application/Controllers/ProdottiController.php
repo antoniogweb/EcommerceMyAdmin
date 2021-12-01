@@ -119,7 +119,13 @@ class ProdottiController extends PagesController {
 			$this->queryFields .= ",test";
 		
 		if (v("attiva_strumenti_merchant_google"))
-			$this->queryFields .= ",codice_categoria_prodotto_google";
+		{
+			$this->queryFields .= ",codice_categoria_prodotto_google,gtin,mpn,identifier_exists";
+			
+			$this->formDefaultValues = array(
+				"identifier_exists"	=>	v("identificatore_feed_default"),
+			);
+		}
 		
 		parent::form($queryType, $id);
 		
