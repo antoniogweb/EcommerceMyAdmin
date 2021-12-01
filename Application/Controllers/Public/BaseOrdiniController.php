@@ -609,7 +609,7 @@ class BaseOrdiniController extends BaseController
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array(Parametri::$mailInvioOrdine),
 				"oggetto"	=>	"Pagamento ordine ".$data["ordine"]["id_o"]." annullato",
-				"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è stato annullato annullato",
+				"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è stato annullato",
 				"tipologia"	=>	"PAGAMENTO ANNULLATO",
 				"id_user"	=>	(int)$data["ordine"]['id_user'],
 				"id_o"		=>	$data["ordine"]["id_o"],
