@@ -346,7 +346,8 @@
 						that.idElemento = $('#iframe_webpage').contents().find(".class_id_contenuto").text();
 						that.tipoElemento = $('#iframe_webpage').contents().find(".class_tipo_elemento").text();
 						
-						that.varianti = JSON.parse($('#iframe_webpage').contents().find(".class_json_varianti").text());
+						if (that.abilitaGestioneVarianti)
+							that.varianti = JSON.parse($('#iframe_webpage').contents().find(".class_json_varianti").text());
 						
 						that.temaSelezionato = $('#iframe_webpage').contents().find(".class_tema_default").text();
 // 						console.log(that.varianti);
