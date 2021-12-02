@@ -98,7 +98,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 						echo Html_Form::hidden("post_error",2);
 					?>
 				</div>
-				<div class="uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left">
+				<div class="uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
 					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
 						<?php include(tp()."/Ordini/checkout_totali.php"); ?>
 					</div>

@@ -333,6 +333,7 @@ class VariabiliModel extends GenericModel {
 		"coupon_ajax"				=>	0,
 		"attiva_gestione_integrazioni"	=>	0,
 		"identificatore_feed_default"	=>	"no",
+		"resoconto_ordine_top_carrello"	=>	0,
 	);
 	
 	public static $daInizializzare = array(
