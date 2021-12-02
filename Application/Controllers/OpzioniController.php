@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class PagamentiController extends BaseController
+class OpzioniController extends BaseController
 {
 	public $orderBy = "id_order";
 	
@@ -31,16 +31,6 @@ class PagamentiController extends BaseController
 	public $argKeys = array();
 	
 	public $sezionePannello = "ecommerce";
-	
-	function __construct($model, $controller, $queryString, $application, $action) {
-		
-		parent::__construct($model, $controller, $queryString, $application, $action);
-		
-		$this->s["admin"]->check();
-		
-		if (!v("attiva_gestione_pagamenti"))
-			die();
-	}
 
 	public function main()
 	{
