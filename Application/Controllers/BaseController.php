@@ -441,6 +441,31 @@ class BaseController extends Controller
 			
 			$records = $this->scaffold->model->send();
 			
+			if (isset($_GET["formato_json"]))
+			{
+				$tableName = $this->scaffold->model->table();
+				$campoTitolo = $this->scaffold->model->campoTitolo;
+				$campoValore = $this->scaffold->model->campoValore;
+				
+				if ($_GET["formato_json"] == "select2")
+				{
+					$struct = array(
+						"results"	=>	array(),
+					);
+					
+					foreach ($records as $r)
+					{
+						if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
+							$struct["results"][] = array(
+								"id"	=>	$r[$tableName][$campoValore],
+								"text"	=>	$r[$tableName][$campoTitolo],
+							);
+					}
+					
+					$records = $struct;
+				}
+			}
+			
 // 			print_r($records);
 			
 			echo json_encode($records);

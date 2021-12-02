@@ -28,56 +28,55 @@ class OpzioniController extends BaseController
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array();
+	public $sezionePannello = "utenti";
 	
-	public $sezionePannello = "ecommerce";
-
+	public $argKeys = array('codice:sanitizeAll'=>'tutti','q:sanitizeAll'=>'tutti');
+	
 	public function main()
 	{
 		$this->shift();
 		
 		$this->queryActions = $this->bulkQueryActions = "";
-		$this->mainButtons = "ledit";
+		$this->mainButtons = "";
 		$this->addBulkActions = false;
 		
 		$this->colProperties = array();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->mainFields = array("edit","attivo");
-		$this->mainHead = "Titolo,Attivo";
+		$this->mainFields = array("opzioni.titolo", "opzioni.valore", "opzioni.codice");
+		$this->mainHead = "Titolo,Valore,Codice";
 		
-		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
+		$this->m[$this->modelName]->clear()->where(array(
+				"codice" => $this->viewArgs["codice"],
+				"lk"	=>	array("titolo" => $this->viewArgs["q"]),
+			))->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}
-
-	public function form($queryType = 'insert', $id = 0)
+	
+	public function importacategoriegoogle()
 	{
-		if ($queryType != "update")
-			die();
+		if (!v("usa_transactions"))
+			die("Importazione non permessa");
 		
-		$fields = 'titolo,attivo,descrizione';
+		OpzioniModel::importaCategorieGoogle();
 		
-		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
+		if (count(OpzioniModel::$erroriImportazione) > 0)
+		{
+			$esito = "<div class='alert alert-danger'>".gtext("Nonè stato possibile importare alcune categorie di Google.")."</div>";
+			$esito .= "<div>".gtext("Elenco categorie non importate")."</div>";
+			
+			$esito .= implode("<br />", OpzioniModel::$erroriImportazione);
+			
+			$data["esitoMigrazioni"] = $esito;
+		}
+		else
+			$data["esitoMigrazioni"] = "<div class='alert alert-success'>".gtext("Operazione eseguita con successo")."</div>";
 		
-		if ($record["codice"] == "carta_di_credito")
-			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
-		
-		if ($record["codice"] != "carta_di_credito" && $record["codice"] != "paypal")
-			$fields .= ",istruzioni_pagamento";
-		
-		$this->m[$this->modelName]->setValuesFromPost($fields);
-		
-		parent::form($queryType, $id);
+		$data["titoloPagina"] = gtext("Importazione categorie Google");
 		
 		$this->append($data);
-	}
-	
-	public function ordina()
-	{
-		$this->orderBy = "id_order";
-		
-		parent::ordina();
+		$this->load("output");
 	}
 }

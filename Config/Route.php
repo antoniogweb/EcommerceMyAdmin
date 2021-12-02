@@ -540,6 +540,9 @@ class Route
 		'integrazioni,main',
 		'integrazioni,form',
 		'integrazioni,invia',
+		
+		'opzioni,main',
+		'opzioni,importacategoriegoogle',
 	);
 	
 	//it can be 'yes' or 'no'

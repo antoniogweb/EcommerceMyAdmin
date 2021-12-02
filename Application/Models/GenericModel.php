@@ -44,6 +44,8 @@ class GenericModel extends Model_Tree
 	
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
+	public $campoValore = "valore";
+	
 	public $uploadFields = array();
 	public $lId = null;
 	public $traduzione = false;

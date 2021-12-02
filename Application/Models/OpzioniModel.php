@@ -24,6 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OpzioniModel extends GenericModel {
 	
+	const CATEGORIE_GOOGLE = 'CATEGORIE_GOOGLE';
+	
+	public static $erroriImportazione = array();
+	
 	public function __construct() {
 		$this->_tables='opzioni';
 		$this->_idFields='id_opzione';
@@ -45,11 +49,41 @@ class OpzioniModel extends GenericModel {
 	
 	public static function importaCategorieGoogle()
 	{
-		$doc = file_get_contents(v("url_codici_categorie_google"));
-		
-		$lines = explode("\n",$doc);
-		
-		print_r($lines);
+		if (v("usa_transactions"))
+		{
+			Params::$setValuesConditionsFromDbTableStruct = false;
+			
+			$doc = file_get_contents(v("url_codici_categorie_google"));
+			
+			$lines = explode("\n",$doc);
+			
+			if (count($lines) > 0)
+			{
+				$o = new OpzioniModel();
+				
+				$o->query("delete from opzioni where codice = '".self::CATEGORIE_GOOGLE."'");
+				
+				$o->db->beginTransaction();
+				
+				foreach ($lines as $l)
+				{
+					if (preg_match('/^([0-9]{1,})([\-\s]{2,})(.*?)$/',$l, $matches))
+					{
+						$o->setValues(array(
+							"valore"	=>	$matches["1"],
+							"titolo"	=>	$matches["3"],
+							"codice"	=>	self::CATEGORIE_GOOGLE,
+							"traduzione"=>	0,
+						),"sanitizeDb");
+						
+						if (!$o->insert())
+							self::$erroriImportazione = $matches["1"] . " - " . $matches["3"];
+					}
+				}
+				
+				$o->db->commit();
+			}
+		}
 	}
     
 }

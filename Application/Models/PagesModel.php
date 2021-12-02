@@ -156,10 +156,52 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
+	public function getOpzioniCategoriaGoogle($id)
+	{
+		if ($id)
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record))
+			{
+				$o = new OpzioniModel();
+				
+				return $o->clear()->where(array(
+					"valore"	=>	$record["codice_categoria_prodotto_google"],
+					"codice"	=>	OpzioniModel::CATEGORIE_GOOGLE,
+				))->toList("valore", "titolo")->findAll();
+			}
+		}
+		
+		return array();
+	}
+	
 	public function setFormStruct($id = 0)
 	{
 		$haCombinazioni = $this->hasCombinations((int)$id, false);
 		
+		$wrapCategorieGoogle = array(
+			null,
+			null,
+			"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a></div>"
+		);
+		
+		if (v("usa_transactions"))
+			$strutturaCategorieGoogle = array(
+				'type'		=>	'Select',
+				'entryClass'	=>	'form_input_text',
+				'options'	=>	$this->getOpzioniCategoriaGoogle($id),
+				'reverse' => 'yes',
+				'wrap'		=>	$wrapCategorieGoogle,
+				'entryAttributes'	=>	array(
+					"select2"	=>	"/opzioni/main?codice=CATEGORIE_GOOGLE&esporta_json&formato_json=select2",
+				),
+			);
+		else
+			$strutturaCategorieGoogle = array(
+				'wrap'		=>	$wrapCategorieGoogle,
+			);
+			
 		$wrapCombinazioni = array();
 		
 		$testoLasciareVuotoSeNonPresente = "Lasciare vuoto se non presente o non conosciuto";
@@ -464,13 +506,7 @@ class PagesModel extends GenericModel {
 				'codice_js'	=>	array(
 					'labelString'	=>	'Codice di conversione Google',
 				),
-				'codice_categoria_prodotto_google'	=>	array(
-					'wrap'		=>	array(
-						null,
-						null,
-						"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Elenco codici")."</a></div>"
-					),
-				),
+				'codice_categoria_prodotto_google'	=>	$strutturaCategorieGoogle,
 				'gtin'	=>	array(
 					'labelString'	=>	'Codice internazione GTIN',
 					'wrap'		=>	array(
