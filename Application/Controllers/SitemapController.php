@@ -99,7 +99,33 @@ class SitemapController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('priorita,tipo,titolo,url');
+		$fields = 'priorita';
+		
+		$libero = false;
+		
+		if ($queryType == "insert")
+		{
+			$fields .= ',titolo,url';
+			$libero = true;
+		}
+		else
+		{
+			$record = $this->m[$this->modelName]->selectId((int)$id);
+			
+			if (!empty($record) && $record["tipo"] == "L")
+			{
+				$fields .= ',titolo,url';
+				$libero = true;
+			}
+		}
+		
+		if ($libero)
+			$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"url");
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		if ($queryType == "insert")
+			$this->m[$this->modelName]->setValue("tipo", "L");
 		
 		parent::form($queryType, $id);
 	}
