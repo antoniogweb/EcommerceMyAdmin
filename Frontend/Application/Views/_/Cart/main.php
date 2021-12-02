@@ -44,6 +44,7 @@
 			<?php } ?>
 			<div class="uk-grid-small uk-child-width-expand@s uk-grid" uk-grid="">
 				<div>
+					<?php if (!hasActiveCoupon()) { ?>
 					<form action="<?php echo $this->baseUrl."/carrello/vedi";?>" method="POST">
 						<div class="uk-grid-small uk-child-width-expand@s uk-grid" uk-grid="">
 							<div>
@@ -54,6 +55,7 @@
 							</div>
 						</div>
 					</form>
+					<?php } ?>
 				</div>
 				<div class="uk-visible@m">
 					<?php if (!v("carrello_monoprodotto")) { ?>

@@ -581,7 +581,7 @@ $(document).ready(function(){
 	
 	$("body").on("click", "[name='invia_coupon']", function(e){
 		
-		if (coupon_ajax)
+		if (coupon_ajax && $(".cart_container").length == 0)
 		{
 			e.preventDefault();
 			
