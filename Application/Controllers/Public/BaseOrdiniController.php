@@ -998,8 +998,10 @@ class BaseOrdiniController extends BaseController
 				$clean["username"] = $this->request->post("email","","sanitizeAll");
 				$this->m['RegusersModel']->values["username"] = $clean["username"];
 				
+				$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente anonimo", false) : "";
+				
 				$this->m['RegusersModel']->databaseConditions['insert'] = array(
-					"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='http://".DOMAIN_NAME."/password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".gtext("oppure decidere di completare l'acquisto come utente anonimo", false)."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
+					"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='http://".DOMAIN_NAME."/password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
 				);
 				
 				if (v("account_attiva_conferma_password"))
