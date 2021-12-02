@@ -42,5 +42,14 @@ class OpzioniModel extends GenericModel {
 			"attivo"	=>	1,
 		))->toList("valore", "titolo")->findAll();
 	}
+	
+	public static function importaCategorieGoogle()
+	{
+		$doc = file_get_contents(v("url_codici_categorie_google"));
+		
+		$lines = explode("\n",$doc);
+		
+		print_r($lines);
+	}
     
 }
