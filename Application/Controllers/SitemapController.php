@@ -34,7 +34,11 @@ Helper_Menu::$htmlLinks["vedi"] = array(
 	"attributes" => 'role="button" class="btn btn-success" target="_blank"',
 	'text'	=>	"Vedi sitemap",
 	"classIconBefore"	=>	'<i class="fa fa-eye"></i>',
+	"htmlBefore"	=>	"",
+	"htmlAfter"		=>	"",
 );
+
+Helper_Menu::$htmlLinks["add"]["text"] = "aggiungi link libero";
 
 class SitemapController extends BaseController
 {
@@ -48,9 +52,9 @@ class SitemapController extends BaseController
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
-		parent::__construct($model, $controller, $queryString, $application, $action);
-		
 		Helper_Menu::$htmlLinks["vedi"]["absolute_url"] = Domain::$name."/sitemap.xml";
+		
+		parent::__construct($model, $controller, $queryString, $application, $action);
 	}
 	
 	public function main()
@@ -80,22 +84,22 @@ class SitemapController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("titolocrud", "sitemap.priorita");
-		$this->mainHead = "Titolo,Priorita";
+		$this->mainFields = array("titolocrud", "sitemap.priorita", "tipo", "sitemap.url");
+		$this->mainHead = "Titolo,Priorita,Tipo,Url";
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
 				->left(array("categoria", "pagina"))
 				->orderBy("sitemap.id_order")->convert()->save();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'rigenera,refresh,vedi');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'rigenera,refresh,add,vedi');
 		
 		parent::main();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('priorita');
+		$this->m[$this->modelName]->setValuesFromPost('priorita,tipo,titolo,url');
 		
 		parent::form($queryType, $id);
 	}

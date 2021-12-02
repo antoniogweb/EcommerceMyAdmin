@@ -72,8 +72,8 @@ class IntegrazioniModel extends GenericModel {
 	
 	public static function getElencoIntegrazioni($sezione, $idElemento = 0)
 	{
-		if (!isset(self::$elencoSezioni))
-		{
+// 		if (!isset(self::$elencoSezioni))
+// 		{
 			$i = new IntegrazioniModel();
 			
 			$i->clear()->select("distinct integrazioni.id_integrazione,integrazioni.*")->inner(array("sezioni"))->where(array(
@@ -94,7 +94,7 @@ class IntegrazioniModel extends GenericModel {
 			{
 				self::$elencoSezioni[$i["integrazioni"]["codice"]] = $i;
 			}
-		}
+// 		}
 		
 		return self::$elencoSezioni;
 	}

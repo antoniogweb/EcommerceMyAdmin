@@ -15,6 +15,8 @@
 			<?php echo $this->baseUrl."/".getUrlAlias($n["id_page"]);?>
 			<?php } else if ($n["id_c"]) { ?>
 			<?php echo $this->baseUrl."/".getCategoryUrlAlias($n["id_c"]);?>
+			<?php } else if ($n["url"]) { ?>
+			<?php echo $n["url"];?>
 			<?php } else { ?>
 			<?php echo $this->baseUrl;?>
 			<?php } ?>

@@ -26,6 +26,10 @@ class SitemapModel extends GenericModel {
 	
 	public static $categorie = null;
 	public static $pagine = null;
+	public static $tipi = array(
+		"S"	=>	"Pagina strutturata del CMS",
+		"L"	=>	"Url libero",
+	);
 	
 	public function __construct() {
 		$this->_tables='sitemap';
@@ -42,6 +46,34 @@ class SitemapModel extends GenericModel {
 			'pagina' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 		);
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$attributesVisibilita = array(
+			"visible-f"	=>	"tipo",
+			"visible-v"	=>	"L",
+		);
+		
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'tipo'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipo link",
+					"options"	=>	self::$tipi,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					"entryAttributes"	=> self::$onChanggeCheckVisibilityAttributes,
+				),
+				'titolo'	=>	array(
+					"entryAttributes"	=>	$attributesVisibilita,
+				),
+				'url'	=>	array(
+					"entryAttributes"	=>	$attributesVisibilita,
+				),
+			),
+		);
+	}
     
     // Aggiorna la sitemap
 	public function aggiorna($recuperaBackup = 0)
@@ -109,7 +141,7 @@ class SitemapModel extends GenericModel {
     {
 		if (v("permetti_gestione_sitemap"))
 		{
-			$nodi = self::g(false)->select("sitemap.priorita, pages.id_page, categories.id_c,coalesce(pages.data_ultima_modifica, categories.data_ultima_modifica) as ultima_modifica")->left(array("categoria","pagina"))->orderBy("sitemap.id_order")->send(false);
+			$nodi = self::g(false)->select("sitemap.priorita, pages.id_page, categories.id_c,coalesce(pages.data_ultima_modifica, categories.data_ultima_modifica) as ultima_modifica,sitemap.url")->left(array("categoria","pagina"))->orderBy("sitemap.id_order")->send(false);
 			
 			$dataModificaHome = self::dataModificaHome($nodi);
 			
@@ -162,7 +194,7 @@ class SitemapModel extends GenericModel {
 		
 		$elements = $c->treeQueryElements("categories");
 		
-		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica from categories where ".$elements["where"];
+		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica,0 as url from categories where ".$elements["where"];
 		
 		// Where pagine
 		$p->clear()->sWhere("categories.id_c not in (select id_c from categories where id_p = 1 and installata = 0)")->addWhereAttivo()->addWhereAttivoCategoria();
@@ -175,7 +207,7 @@ class SitemapModel extends GenericModel {
 		
 		$elements = $p->treeQueryElements("pages");
 		
-		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
+		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,0 as url from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
 		
 		$sql = "$sqlCategorie union $sqlPages order by priorita desc, lft,id_c,id_page limit 500";
 		
@@ -190,10 +222,31 @@ class SitemapModel extends GenericModel {
 				"priorita"	=>	1,
 				"lft"		=>	0,
 				"ultima_modifica"	=>	date("Y-m-d H:i:s", $dataModificaHome),
+				"home"		=>	1,
+				"url"		=>	"",
 			),
 		));
 		
 		return $nodi;
+    }
+    
+    public function titolo($id)
+    {
+		$record = $this->selectId($id);
+		
+		if (!empty($record))
+		{
+			if ($record["id_page"])
+				return PagesModel::g(false)->where(array("id_page"=>(int)$record["id_page"]))->field("title");
+			else if ($record["id_c"])
+				return CategoriesModel::g(false)->where(array("id_c"=>(int)$record["id_c"]))->field("title");
+			else if ($record["titolo"])
+				return $record["titolo"];
+			else
+				return gtext("HOME PAGE");
+		}
+		
+		return "";
     }
     
     public function titolocrud($record)
@@ -217,8 +270,20 @@ class SitemapModel extends GenericModel {
 			if (isset(self::$categorie[$idC]))
 				return self::$categorie[$idC];
 		}
-		else
+		else if ($record["sitemap"]["home"])
 			return "HOME PAGE";
+		else if ($record["sitemap"]["url"])
+			return $record["sitemap"]["titolo"] ? $record["sitemap"]["titolo"] : "Custom";
+		
+		return "";
+    }
+    
+    public function tipo($record)
+    {
+		$tipo = $record["sitemap"]["tipo"];
+		
+		if (isset(self::$tipi[$tipo]))
+			return self::$tipi[$tipo];
 		
 		return "";
     }

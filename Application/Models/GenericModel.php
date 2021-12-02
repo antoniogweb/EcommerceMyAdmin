@@ -28,6 +28,9 @@ class GenericModel extends Model_Tree
 	
 	public static $apiMethod = "POST";
 	public static $uploadFileGeneric = true;
+	public static $onChanggeCheckVisibilityAttributes = array(
+		"on-c"	=>	"check-v"
+	);
 	
 	public static $attivoSiNo = array(
 		"1"	=>	"Sì",

@@ -144,6 +144,27 @@ function aggAlteIfr()
 	}
 }
 
+function controllaVisibilita()
+{
+	if ($(".formClass").length > 0)
+	{
+		$(".formClass").find("[visible-f]").each(function(){
+			console.log("aa")
+			var field = $(this).attr("visible-f");
+			var value = $(this).attr("visible-v");
+			
+			if ($("[name='"+field+"']").length > 0)
+			{
+				if ($("[name='"+field+"']").val() == value)
+					$(this).css("display", "block");
+				else
+					$(this).css("display", "none");
+				
+			}
+		});
+	}
+}
+
 $(document).ready(function(){
 
 // 	$(".thumb").each(function(){
@@ -604,7 +625,14 @@ $(document).ready(function(){
 			that.typeahead({ source:data });
 		},'json');
 	});
-
+	
+	controllaVisibilita();
+	
+	$( "body" ).on( "change", "[on-c='check-v']", function(e){
+		controllaVisibilita();
+	});
+	
+	
 });
 
  (function( $ ) {
