@@ -16,37 +16,47 @@ class Tema
 		{
 			$tema = basename($tema);
 			
-			$items = scandir(self::getRoot());
+			$temi = self::getElencoTemi($tema);
 			
-			foreach( $items as $this_file )
-			{
-				if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0)
-				{
-					if (@is_dir(self::getRoot()."/$this_file") && (string)$tema === (string)$this_file && ctype_alnum($tema))
-					{
-						return true;
-					}
-				}
-			}
+			if (count($temi) > 0)
+				return true;
 		}
 		
 		return false;
 	}
 	
-	public static function getElencoTemi()
+	public static function getElencoTemi($tema = null)
 	{
-		$items = scandir(self::getRoot());
+		$arrayPercorsi = array(
+			LIBRARY."/Frontend/Application/Views" =>	array(
+				"frontend"	=>	Domain::$adminName . "/Frontend/Application/Views",
+			),
+			self::getRoot()	=>	array(
+				"frontend"	=>	Domain::$publicUrl . "/Application/Views",
+			),
+		);
 		
-		foreach( $items as $this_file )
+		foreach ($arrayPercorsi as $path => $valori)
 		{
-			if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0)
+			$items = scandir($path);
+		
+			foreach( $items as $this_file )
 			{
-				if (@is_dir(self::getRoot()."/$this_file"))
+				if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0)
 				{
-					self::$elenco[] = array(
-						"nome"	=>	$this_file,
-						"preview"	=>	file_exists(self::getRoot()."/$this_file/_Preview/preview.png") ? true : false,
-					);
+					if (@is_dir($path."/$this_file"))
+					{
+						if (!$tema || ((string)$tema === (string)$this_file && ctype_alnum($tema)))
+						{
+							$previewUrl = $valori["frontend"] . "/$this_file/_Preview/preview.png";
+							
+							self::$elenco[] = array(
+								"nome"	=>	$this_file,
+								"preview"	=>	file_exists($path."/$this_file/_Preview/preview.png") ? true : false,
+								"preview_url"	=>	$previewUrl,
+							);
+						}
+					}
 				}
 			}
 		}
