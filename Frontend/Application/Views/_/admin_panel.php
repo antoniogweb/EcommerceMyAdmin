@@ -337,7 +337,7 @@
 					
 					$('#iframe_webpage').on("load", function() {
 						var elementoFasce = $('#iframe_webpage').contents().find(".blocco_fasce_contenuto").length;
-						
+						console.log(elementoFasce);
 						if (elementoFasce == 0)
 							that.mostraFasce = false;
 						else

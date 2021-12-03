@@ -1805,26 +1805,29 @@ function tp($admin = false)
 
 function tpf($filePath = "", $public = false)
 {
-	$baseUrl = $public ? Domain::$publicUrl : Domain::$parentRoot;
-	
 	$themeFolder = v("theme_folder");
 	
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
 	
-	$subFolderFullPath = $baseUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+	$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
 	if (file_exists($subFolderFullPath))
-		return $subFolderFullPath;
+		return $public ? $subFolderFullPathPublic : $subFolderFullPath;
 	
 	if ($themeFolder)
 	{
-		$subFolderFullPathParentFrontend = $baseUrl."/Application/Views/_/".ltrim($filePath,"/");
+		$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
 		
 		if (file_exists($subFolderFullPathParentFrontend))
-			return $subFolderFullPathParentFrontend;
+			return $public ? $subFolderFullPathParentFrontendPublic : $subFolderFullPathParentFrontend;
 	}
 	
-	return $baseUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+	if ($public)
+		return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+	else
+		return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 }
 
 function singPlu($numero, $sing, $plu)
