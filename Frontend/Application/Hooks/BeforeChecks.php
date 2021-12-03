@@ -32,6 +32,10 @@ if (defined("CACHE_FOLDER"))
 	Cache::deleteExpired();
 }
 
+Theme::$alternativeViewFolders = array(
+	LIBRARY . "/Frontend/Application/Views/_",
+);
+
 VariabiliModel::ottieniVariabili();
 
 // Se arriva dalla app usa php://input
