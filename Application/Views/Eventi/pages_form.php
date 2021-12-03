@@ -38,6 +38,8 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
+									<?php echo $form["data_news"];?>
+									
 									<?php echo $form["description"];?>
 									
 									<?php if ($type === "update") { ?>

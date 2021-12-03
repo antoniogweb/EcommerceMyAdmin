@@ -196,7 +196,7 @@ class PagesModel extends GenericModel {
 					),
 				),
 				'data_news'		=>	array(
-					'labelString'=>	'Data',
+					'labelString'=>	'Data scrittura',
 				),
 				'coordinate'		=>	array(
 					'labelString'=>	'Coordinate (latitudine e longitudine divise da virgola)',

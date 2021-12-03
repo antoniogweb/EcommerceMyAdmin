@@ -67,7 +67,8 @@ class Sendcloud
 		
 		$ordine = htmlentitydecodeDeep($ordine);
 		
-		$quantita = $o->quantitaTotale($idO);
+// 		$quantita = $o->quantitaTotale($idO);
+		$quantita = 1;
 		
 		$parcel = array(
 			"parcel"	=>	array(
