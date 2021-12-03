@@ -36,6 +36,10 @@ Theme::$alternativeViewFolders = array(
 	LIBRARY . "/Frontend/Application/Views/_",
 );
 
+Controller::$alternativeControllerFolders = array(
+	LIBRARY . "/Frontend/Application/".getApplicationPath().'Controllers',
+);
+
 VariabiliModel::ottieniVariabili();
 
 // Se arriva dalla app usa php://input

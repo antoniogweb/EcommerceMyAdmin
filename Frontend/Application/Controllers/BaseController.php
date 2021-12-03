@@ -10,5 +10,5 @@ require_once(LIBRARY."/Application/Controllers/Public/BaseBaseController.php");
 
 class BaseController extends BaseBaseController
 {
-	
+	use FasceController;
 }
