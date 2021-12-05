@@ -68,7 +68,7 @@ class ApplicazioniModel extends GenericModel {
 			$migrationNum = (int)basename($ultimaMigrazione, '.sql');
 			
 			if ($migrationNum > (int)$record["applicazioni"]["db_version"])
-				return "<a class='iframe' title='".gtext("Aggiorna il database")."' href='".Url::getRoot()."applicazioni/migrazioni/".v("codice_cron")."/".$record["applicazioni"]["id_applicazione"]."?partial=Y'><i class='fa fa-refresh text text-danger'></i></a>";
+				return "<a class='iframe' title='".gtext("Aggiorna il database")."' href='".Url::getRoot()."applicazioni/migrazioni/".v("codice_cron")."/".$record["applicazioni"]["id_applicazione"]."?partial=Y'><i class='fa fa-refresh text text-warning'></i></a>";
 		}
 		
 		return "";
