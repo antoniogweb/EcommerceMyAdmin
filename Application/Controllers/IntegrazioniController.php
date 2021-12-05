@@ -74,7 +74,7 @@ class IntegrazioniController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
-	public function invia($idIntegrazione = 0, $tipo = "ORDINE", $idelemento = 0)
+	public function invia($idIntegrazione = 0, $tipo = "ORDINI", $idelemento = 0)
 	{
 		$this->clean();
 		

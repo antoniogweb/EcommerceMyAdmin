@@ -26,10 +26,14 @@ class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
+	public $addIntegrazioniInMain = false;
+	
+	public $tabella = "ordini";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
 		$this->session('admin');
 		$this->model();
 
@@ -74,11 +78,9 @@ class OrdiniController extends BaseController {
 	{
 		$this->shift();
 
-		Params::$nullQueryValue = 'tutti';
-
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>'panel'));
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$mainFields = array(
+		$this->mainFields = array(
 			'<a href="'.$this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>',
 			'smartDate|orders.data_creazione',
 			'OrdiniModel.getNome|orders.id_o',
@@ -90,24 +92,22 @@ class OrdiniController extends BaseController {
 			'totaleCrud',
 		);
 		
-		$headLabels = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
+		$this->mainButtons = "";
+		
+		$this->mainHead = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
 		
 		if (v("attiva_ip_location"))
 		{
-			$mainFields[] = 'nazionenavigazione';
-			$headLabels .= ',Nazione';
+			$this->mainFields[] = 'nazionenavigazione';
+			$this->mainHead .= ',Nazione';
 		}
 		
-		$this->scaffold->loadMain($mainFields,'orders.id_o','');
+		$this->aggiungiintegrazioni();
 		
-		$vediOrdineLink = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
+		$this->mainHead .= ",";
+		$this->mainFields[] = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
 		
-// 		$this->scaffold->addItem('text',";OrdiniModel.pulsanteFattura|orders.id_o;");
-		$this->scaffold->addItem('text',$vediOrdineLink);
-		
-		$this->scaffold->setHead($headLabels);
-		
-		$this->scaffold->model->clear()->orderBy("orders.id_o desc");
+		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
 		
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_o'],
@@ -118,7 +118,7 @@ class OrdiniController extends BaseController {
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 		);
 		
-		$this->scaffold->model->where($where);
+		$this->m[$this->modelName]->where($where);
 		
 		if (strcmp($this->viewArgs['email'],'tutti') !== 0)
 		{
@@ -126,7 +126,7 @@ class OrdiniController extends BaseController {
 				"lk" => array('orders.email' => $this->viewArgs['email']),
 			);
 
-			$this->scaffold->model->aWhere($where);
+			$this->m[$this->modelName]->aWhere($where);
 		}
 		
 		if (strcmp($this->viewArgs['codice_fiscale'],'tutti') !== 0)
@@ -138,24 +138,24 @@ class OrdiniController extends BaseController {
 					)
 			);
 
-			$this->scaffold->model->aWhere($where);
+			$this->m[$this->modelName]->aWhere($where);
 		}
 		
 		if ($this->viewArgs['id_comb'] != "tutti")
 		{
-			$this->scaffold->model->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o")->aWhere(array(
+			$this->m[$this->modelName]->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o")->aWhere(array(
 				"righe.id_c"	=>	$this->viewArgs['id_comb'],
 			));
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")
-			$this->scaffold->model->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= '".getIsoDate($this->viewArgs['dal'])."'");
+			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= '".getIsoDate($this->viewArgs['dal'])."'");
 		
 		if ($this->viewArgs['al'] != "tutti")
-			$this->scaffold->model->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= '".getIsoDate($this->viewArgs['al'])."'");
+			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= '".getIsoDate($this->viewArgs['al'])."'");
 		
-		$this->scaffold->itemList->aggregateFilters();
-		$this->scaffold->itemList->showFilters = false;
+		$this->m[$this->modelName]->save();
+		
 		$filtroTipo = array(
 			"tutti"		=>	"Tipo cliente",
 			"privato"	=>	"Privato",
@@ -167,29 +167,14 @@ class OrdiniController extends BaseController {
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$filtri = array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
+		$this->filters = array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
 		{
-			$filtri[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
+			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
 		}
 		
-		$this->scaffold->itemList->setFilters($filtri);
-		
-		$data['scaffold'] = $this->scaffold->render();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		
-		$data['notice'] = $this->scaffold->model->notice;
-		$data["filtri"] = $this->scaffold->itemList->createFilters();
-		
-		$data["tabella"] = "ordini";
-		
-		$this->append($data);
-		$this->load('main');
+		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
@@ -207,42 +192,7 @@ class OrdiniController extends BaseController {
 	
 	public function integrazioni($id = 0)
 	{
-		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
-		
-		$this->model("IntegrazionisezioniinviiModel");
-		
-		$this->_posizioni['integrazioni'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
-		
-		$this->shift(1);
-		
-		$clean['id'] = $data["id"] = $this->id = (int)$id;
-		$this->id_name = "id_corriere";
-		
-		$this->mainButtons = "ldel";
-		
-		$this->modelName = "IntegrazionisezioniinviiModel";
-		
-		$this->m[$this->modelName]->updateTable('del');
-		
-		$this->mainFields = array("integrazioni.titolo", "cleanDateTime", "integrazioni_sezioni_invii.codice_piattaforma");
-		$this->mainHead = "Piattaforma esterna,Data / ora invio,ID elemento nella piattaforma esterna";
-		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine','mainAction'=>"integrazioni/".$clean['id'],'pageVariable'=>'page_fgl');
-		
-		$this->m[$this->modelName]->select("*")->inner(array("integrazione"))->orderBy("integrazioni_sezioni_invii.data_creazione")->where(array(
-			"id_elemento"	=>	$clean['id'],
-			"sezione"		=>	"ORDINE",
-		))->convert()->save();
-		
-		$this->tabella = "integrazioni ordine";
-		
-		parent::main();
-		
-		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
-		
-		$this->append($data);
+		parent::integrazioni($id);
 	}
 	
 	public function righe($id = 0)
@@ -366,7 +316,7 @@ class OrdiniController extends BaseController {
 		
 		if (count($res) > 0)
 		{
-			$data["integrazioni"] = IntegrazioniModel::getElencoPulsantiIntegrazione($res[0]["orders"]["id_o"], "ORDINE");
+			$data["integrazioni"] = IntegrazioniModel::getElencoPulsantiIntegrazione($res[0]["orders"]["id_o"], $this->controller);
 			
 			$this->_posizioni['main'] = 'class="active"';
 			$data['posizioni'] = $this->_posizioni;

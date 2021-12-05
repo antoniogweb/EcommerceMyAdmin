@@ -133,6 +133,8 @@ class BaseController extends Controller
 	
 	public $addTraduzioniInMain = true;
 	
+	public $addIntegrazioniInMain = true;
+	
 	public $tabViewFields = array();
 	
 	public $baseArgsKeys = array(
@@ -332,21 +334,21 @@ class BaseController extends Controller
 		$this->m[$this->modelName]->setFilters();
 		$this->loadScaffold('main',$this->scaffoldParams);
 		
-		$mainFields = $this->mainFields;
-		$mainHead = $this->mainHead;
-		
 		if ($this->addBulkActions)
 		{
-			$mainFields = array_merge(array("[[checkbox]];$table.$primaryKey;"),$this->mainFields);
-			$mainHead = "[[bulkselect:checkbox_".$table."_".$primaryKey."]],".$this->mainHead;
+			$this->mainFields = array_merge(array("[[checkbox]];$table.$primaryKey;"),$this->mainFields);
+			$this->mainHead = "[[bulkselect:checkbox_".$table."_".$primaryKey."]],".$this->mainHead;
 		}
+		
+		if ($this->addIntegrazioniInMain)
+			$this->aggiungiintegrazioni();
 		
 		if ($this->m[$this->modelName]->traduzione && $this->addTraduzioniInMain)
 		{
 			foreach (self::$traduzioni as $codiceLingua)
 			{
-				$mainFields[] = "link".str_replace("-","",$codiceLingua);
-				$mainHead .= ",".strtoupper($codiceLingua);
+				$this->mainFields[] = "link".str_replace("-","",$codiceLingua);
+				$this->mainHead .= ",".strtoupper($codiceLingua);
 			}
 		}
 		
@@ -354,14 +356,14 @@ class BaseController extends Controller
 		{
 			if (isset($this->mainCsvFields) and isset($this->mainCsvHead))
 			{
-				$mainFields = $this->mainCsvFields;
-				$mainHead = $this->mainCsvHead;
+				$this->mainFields = $this->mainCsvFields;
+				$this->mainHead = $this->mainCsvHead;
 			}
 		}
 		
-		$this->scaffold->loadMain($mainFields,$table.'.'.$primaryKey,$this->mainButtons);
+		$this->scaffold->loadMain($this->mainFields,$table.'.'.$primaryKey,$this->mainButtons);
 		
-		$this->scaffold->setHead($mainHead);
+		$this->scaffold->setHead($this->mainHead);
 		
 		if ($this->addBulkActions)
 		{
@@ -773,6 +775,22 @@ class BaseController extends Controller
 		}
 	}
 	
+	protected function aggiungiintegrazioni()
+	{
+		$elencoIntegrazioni = IntegrazioniModel::getElencoIntegrazioni($this->controller);
+		
+		foreach ($elencoIntegrazioni as $i)
+		{
+			require_once(LIBRARY."/Application/Modules/Integrazioni/".$i["integrazioni"]["classe"].".php");
+			
+			call_user_func(array($i["integrazioni"]["classe"], "setIdSezione"), $i["integrazioni_sezioni"]["id_integrazione_sezione"]);
+			call_user_func(array($i["integrazioni"]["classe"], "setIdIntegrazione"), $i["integrazioni"]["id_integrazione"]);
+			
+			$this->mainFields[] = $i["integrazioni"]["classe"].'::checkInElenco|orders.id_o';
+			$this->mainHead .= ','.$i["integrazioni"]["titolo"];
+		}
+	}
+	
 	public function ordina()
 	{
 		$this->ordinaGeneric();
@@ -889,5 +907,43 @@ class BaseController extends Controller
 		$editorVisuale = (isset($_POST["editor_visuale"]) and in_array($_POST["editor_visuale"],array("1","0"))) ? sanitizeAll($_POST["editor_visuale"]) : $editorVisuale;
 		
 		return $editorVisuale;
+	}
+	
+	public function integrazioni($id = 0)
+	{
+		$this->model("IntegrazionisezioniinviiModel");
+		
+		$this->_posizioni['integrazioni'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_corriere";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "IntegrazionisezioniinviiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("integrazioni.titolo", "cleanDateTime", "integrazioni_sezioni_invii.codice_piattaforma");
+		$this->mainHead = "Piattaforma esterna,Data / ora invio,ID elemento nella piattaforma esterna";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine','mainAction'=>"integrazioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("integrazione"))->orderBy("integrazioni_sezioni_invii.data_creazione")->where(array(
+			"id_elemento"	=>	$clean['id'],
+			"sezione"		=>	$this->controller,
+		))->convert()->save();
+		
+		$this->tabella = "integrazioni ".$this->tabella;
+		
+		$this->main();
+		
+		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }

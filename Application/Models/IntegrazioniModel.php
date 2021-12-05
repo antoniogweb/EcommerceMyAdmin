@@ -72,29 +72,26 @@ class IntegrazioniModel extends GenericModel {
 	
 	public static function getElencoIntegrazioni($sezione, $idElemento = 0)
 	{
-// 		if (!isset(self::$elencoSezioni))
-// 		{
-			$i = new IntegrazioniModel();
-			
-			$i->clear()->select("distinct integrazioni.id_integrazione,integrazioni.*")->inner(array("sezioni"))->where(array(
-				"integrazioni_sezioni.sezione"	=>	$sezione,
-				"integrazioni.attivo"			=>	1,
-			))->orderBy("integrazioni_sezioni.id_order");
-			
-			if ($idElemento)
-				$i->sWhere("integrazioni_sezioni.id_integrazione_sezione not in (select id_integrazione_sezione from integrazioni_sezioni_invii where sezione = '".sanitizeAll($sezione)."' and id_elemento = ".(int)$idElemento.")");
-			
-			$integrazioni = $i->findAll();
-			
+		$i = new IntegrazioniModel();
+		
+		$i->clear()->select("distinct integrazioni.id_integrazione,integrazioni.*,integrazioni_sezioni.*")->inner(array("sezioni"))->where(array(
+			"integrazioni_sezioni.sezione"	=>	$sezione,
+			"integrazioni.attivo"			=>	1,
+		))->orderBy("integrazioni_sezioni.id_order");
+		
+		if ($idElemento)
+			$i->sWhere("integrazioni_sezioni.id_integrazione_sezione not in (select id_integrazione_sezione from integrazioni_sezioni_invii where sezione = '".sanitizeAll($sezione)."' and id_elemento = ".(int)$idElemento.")");
+		
+		$integrazioni = $i->findAll();
+		
 // 			echo $i->getQuery();die();
-			
-			self::$elencoSezioni = array();
-			
-			foreach ($integrazioni as $i)
-			{
-				self::$elencoSezioni[$i["integrazioni"]["codice"]] = $i;
-			}
-// 		}
+		
+		self::$elencoSezioni = array();
+		
+		foreach ($integrazioni as $i)
+		{
+			self::$elencoSezioni[$i["integrazioni"]["codice"]] = $i;
+		}
 		
 		return self::$elencoSezioni;
 	}
