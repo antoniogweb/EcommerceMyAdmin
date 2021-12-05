@@ -49,12 +49,16 @@ class IntegrazioniModel extends GenericModel {
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
-				'attivo'	=>	array(
-					"type"	=>	"Select",
-					"labelString"	=>	"Attivo",
-					"options"	=>	self::$attivoSiNo,
-					"reverse"	=>	"yes",
-					"className"	=>	"form-control",
+				'attivo'	=>	self::$entryAttivo,
+				'secret_1'		=>	array(
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
+				'secret_2'		=>	array(
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
 				),
 			),
 		);

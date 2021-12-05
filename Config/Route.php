@@ -543,6 +543,10 @@ class Route
 		
 		'opzioni,main',
 		'opzioni,importacategoriegoogle',
+		
+		'applicazioni,main',
+		'applicazioni,form',
+		'applicazioni,migrazioni',
 	);
 	
 	//it can be 'yes' or 'no'
