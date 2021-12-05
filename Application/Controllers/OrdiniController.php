@@ -170,9 +170,7 @@ class OrdiniController extends BaseController {
 		$this->filters = array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
-		{
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
-		}
 		
 		parent::main();
 	}
@@ -192,7 +190,15 @@ class OrdiniController extends BaseController {
 	
 	public function integrazioni($id = 0)
 	{
+		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
+		
 		parent::integrazioni($id);
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo((int)$id);
+		
+		$this->append($data);
 	}
 	
 	public function righe($id = 0)

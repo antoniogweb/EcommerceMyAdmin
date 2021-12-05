@@ -909,13 +909,11 @@ class BaseController extends Controller
 		return $editorVisuale;
 	}
 	
-	public function integrazioni($id = 0)
+	protected function integrazioni($id = 0)
 	{
 		$this->model("IntegrazionisezioniinviiModel");
 		
 		$this->_posizioni['integrazioni'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
 		
 		$this->shift(1);
 		
@@ -939,11 +937,5 @@ class BaseController extends Controller
 		))->convert()->save();
 		
 		$this->tabella = "integrazioni ".$this->tabella;
-		
-		$this->main();
-		
-		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
-		
-		$this->append($data);
 	}
 }
