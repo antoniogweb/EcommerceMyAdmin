@@ -775,22 +775,6 @@ class BaseController extends Controller
 		}
 	}
 	
-	protected function aggiungiintegrazioni()
-	{
-		$elencoIntegrazioni = IntegrazioniModel::getElencoIntegrazioni($this->controller);
-		
-		foreach ($elencoIntegrazioni as $i)
-		{
-			require_once(LIBRARY."/Application/Modules/Integrazioni/".$i["integrazioni"]["classe"].".php");
-			
-			call_user_func(array($i["integrazioni"]["classe"], "setIdSezione"), $i["integrazioni_sezioni"]["id_integrazione_sezione"]);
-			call_user_func(array($i["integrazioni"]["classe"], "setIdIntegrazione"), $i["integrazioni"]["id_integrazione"]);
-			
-			$this->mainFields[] = $i["integrazioni"]["classe"].'::checkInElenco|orders.id_o';
-			$this->mainHead .= ','.$i["integrazioni"]["titolo"];
-		}
-	}
-	
 	public function ordina()
 	{
 		$this->ordinaGeneric();
@@ -907,6 +891,22 @@ class BaseController extends Controller
 		$editorVisuale = (isset($_POST["editor_visuale"]) and in_array($_POST["editor_visuale"],array("1","0"))) ? sanitizeAll($_POST["editor_visuale"]) : $editorVisuale;
 		
 		return $editorVisuale;
+	}
+	
+	protected function aggiungiintegrazioni()
+	{
+		$elencoIntegrazioni = IntegrazioniModel::getElencoIntegrazioni($this->controller);
+		
+		foreach ($elencoIntegrazioni as $i)
+		{
+			require_once(LIBRARY."/Application/Modules/Integrazioni/".$i["integrazioni"]["classe"].".php");
+			
+			call_user_func(array($i["integrazioni"]["classe"], "setIdSezione"), $i["integrazioni_sezioni"]["id_integrazione_sezione"]);
+			call_user_func(array($i["integrazioni"]["classe"], "setIdIntegrazione"), $i["integrazioni"]["id_integrazione"]);
+			
+			$this->mainFields[] = $i["integrazioni"]["classe"].'::checkInElenco|orders.id_o';
+			$this->mainHead .= ','.$i["integrazioni"]["titolo"];
+		}
 	}
 	
 	protected function integrazioni($id = 0)
