@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-navbar-dropdown uk-container uk-container-large" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-right;offset: 0;" uk-dropdown>
+<div uk-dropdown="pos: bottom-right">
 	<div>
 		<div class="uk-flex uk-flex-center">
 			<form class="uk-search uk-search-default" style="width:90%;" action="<?php echo $this->baseUrl."/risultati-ricerca";?>" method="get">

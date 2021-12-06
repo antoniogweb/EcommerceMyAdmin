@@ -22,7 +22,7 @@
 						<div class="uk-card uk-card-default uk-card-small" style="box-shadow: none;">
 							<div class="uk-card-media-top">
 								<div class="uk-inline-clip uk-transition-toggle">
-									<a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($c["categories"]["id_c"]);?>" class="uk-link-muted uk-text-secondary"><img class="uk-transition-scale-up uk-transition-opaque" src="<?php echo $this->baseUrlSrc."/thumb/categoria/".$c["categories"]["immagine"];?>" alt="<?php echo encodeUrl(cfield($c, "title"));?>" /></a>
+									<a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($c["categories"]["id_c"]);?>" class="uk-link-muted uk-text-secondary"><img class="uk-transition-scale-up uk-transition-opaque" src="<?php echo $this->baseUrlSrc."/thumb/categoria/".$c["categories"]["immagine"];?>" alt="<?php echo altUrlencode(cfield($c, "title"));?>" /></a>
 								</div>
 							</div>
 							<div class="uk-card-body uk-padding-remove-left">

@@ -430,7 +430,12 @@ class CategoriesController extends BaseController {
 			$data['type'] = $queryType;
 			
 			if (!$this->m[$this->modelName]->section)
+			{
 				$this->queryFields = "title,alias,sottotitolo,immagine,description";
+				
+				if ((int)$id === 1)
+					$this->queryFields = "title,alias,sottotitolo,immagine,immagine_2,immagine_sfondo,description";
+			}
 			
 			$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 			

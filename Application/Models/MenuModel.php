@@ -226,15 +226,18 @@ class MenuModel extends HierarchicalModel {
 			$menuHtml = null;
 			
 			if ($complete)
-			{
 				$menuHtml .= "<ul id='ul_".strtolower(get_class($this))."' class='elementor-nav-menu menu ul_".strtolower(get_class($this))."'>";
-			}
+			
 			$indice = 0;
 			
 			$hasChildClass = "";
 			
 			$submenu_wrap_open = v("submenu_wrap_open");
 			$submenu_wrap_close = v("submenu_wrap_close");
+			
+			// Wrap HTML da file del tema
+			$submenu_wrap_open_full = $submenu_wrap_close_full = null;
+			
 			$linkTextWrapTag = v("linkTextWrapTag");
 			$linkTextWrapClass = v("linkTextWrapClass");
 			
@@ -243,6 +246,18 @@ class MenuModel extends HierarchicalModel {
 			
 			foreach ($tree as $node)
 			{
+				// Wrap HTML da file del tema
+				if (!$simple && file_exists(tpf("_Menu/submenu_wrap_open.php")) && file_exists(tpf("_Menu/submenu_wrap_close.php")))
+				{
+					ob_start();
+					include(tpf("_Menu/submenu_wrap_open.php"));
+					$submenu_wrap_open_full = ob_get_clean();
+					
+					ob_start();
+					include(tpf("_Menu/submenu_wrap_close.php"));
+					$submenu_wrap_close_full = ob_get_clean();
+				}
+				
 				$linkText = $node["node"][$this->titleFieldName];
 				
 				if ($linkTextWrapTag)
@@ -286,13 +301,22 @@ class MenuModel extends HierarchicalModel {
 					if ($simple)
 						$menuHtml .= $submenu_wrap_open."<ul>";
 					else
-						$menuHtml .= $submenu_wrap_open."<ul class='$subMenuClass ul_menu_level ul_menu_level_".$depth."'>";
+					{
+						if (isset($submenu_wrap_open_full))
+							$menuHtml .= $submenu_wrap_open_full;
+						else
+							$menuHtml .= $submenu_wrap_open."<ul class='$subMenuClass ul_menu_level ul_menu_level_".$depth."'>";
+					}
 				}
 				if ($node["aggregate"]["depth"] < $depth)
 				{
 					$diff = (int)($depth - $node["aggregate"]["depth"]);
 					
-					$menuHtml .= str_repeat("</ul>".$submenu_wrap_close."</li>", $diff);
+					if (isset($submenu_wrap_close_full))
+						$menuHtml .= str_repeat("</ul>".$submenu_wrap_close_full."</li>", $diff);
+					else
+						$menuHtml .= str_repeat("</ul>".$submenu_wrap_close."</li>", $diff);
+					
 					$depth = $node["aggregate"]["depth"];
 				}
 				if (!isset($node["is_last"]))
