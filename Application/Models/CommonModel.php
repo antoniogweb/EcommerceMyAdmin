@@ -288,4 +288,40 @@ trait CommonModel {
 		
 		return "";
 	}
+	
+	public function getWrapCategorieGoogle()
+	{
+		if (v("categorie_google_tendina"))
+			return array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a></div>"
+			);
+		else
+			return array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Vedi i codici")."</a></div>"
+			);
+	}
+	
+	public function getOpzioniCategoriaGoogle($id)
+	{
+		if ($id)
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record))
+			{
+				$o = new OpzioniModel();
+				
+				return $o->clear()->where(array(
+					"valore"	=>	$record["codice_categoria_prodotto_google"],
+					"codice"	=>	OpzioniModel::CATEGORIE_GOOGLE,
+				))->toList("valore", "titolo")->findAll();
+			}
+		}
+		
+		return array();
+	}
 }

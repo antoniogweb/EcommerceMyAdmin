@@ -100,6 +100,7 @@ class SitemapModel extends GenericModel {
 					"id_c"		=>	$idC,
 					"ultima_modifica"	=>	$n["aggregate"]["ultima_modifica"],
 					"priorita"	=>	$n["aggregate"]["priorita"],
+					"home"		=>	$n["aggregate"]["home"]
 				));
 				
 				$this->insert();
@@ -194,7 +195,7 @@ class SitemapModel extends GenericModel {
 		
 		$elements = $c->treeQueryElements("categories");
 		
-		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica,0 as url from categories where ".$elements["where"];
+		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica,0 as url,0 as home from categories where ".$elements["where"];
 		
 		// Where pagine
 		$p->clear()->sWhere("categories.id_c not in (select id_c from categories where id_p = 1 and installata = 0)")->addWhereAttivo()->addWhereAttivoCategoria();
@@ -207,7 +208,7 @@ class SitemapModel extends GenericModel {
 		
 		$elements = $p->treeQueryElements("pages");
 		
-		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,0 as url from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
+		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,0 as url,0 as home from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
 		
 		$sql = "$sqlCategorie union $sqlPages order by priorita desc, lft,id_c,id_page limit 500";
 		

@@ -14,7 +14,7 @@
 					<h3 class="box-title"><?php echo $tema["nome"];?></h3>
                 </div>
                 <div class="box-body box-body-tema">
-					<img src="<?php echo Domain::$publicUrl."/Application/Views/".$tema["nome"]."/_Preview/preview.png"?>" />
+					<img src="<?php echo $tema["preview_url"];?>" />
                 </div>
                 <div class="box-footer clearfix">
 					<?php if (v("theme_folder") == $tema["nome"]) { ?>

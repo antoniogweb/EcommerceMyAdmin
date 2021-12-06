@@ -149,7 +149,7 @@ function controllaVisibilita()
 	if ($(".formClass").length > 0)
 	{
 		$(".formClass").find("[visible-f]").each(function(){
-			console.log("aa")
+			
 			var field = $(this).attr("visible-f");
 			var value = $(this).attr("visible-v");
 			
@@ -631,6 +631,42 @@ $(document).ready(function(){
 	$( "body" ).on( "change", "[on-c='check-v']", function(e){
 		controllaVisibilita();
 	});
+	
+	if ($("[select2]").length > 0)
+	{
+		$("[select2]").each(function(){
+			
+			var url = $(this).attr("select2");
+			
+			$(this).find("select").select2({
+				ajax: {
+					url: baseUrl + url,
+					processResults: function (data) {
+						// Transforms the top-level key of the response object from 'items' to 'results'
+						return {
+							results: data.results
+						};
+					},
+					delay: 1000
+				},
+				minimumInputLength: 2,
+				language: {
+					inputTooShort: function(args) {
+						return "Digitare 2 o più caratteri";
+					},
+					searching: function() {
+						return "In attesa..";
+					},
+					noResults: function() {
+						return "Non ci sono risultati";
+					},
+					errorLoading: function() {
+						return "In attesa..";
+					}
+				}
+			});
+		});
+	}
 	
 	
 });

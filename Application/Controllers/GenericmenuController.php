@@ -179,7 +179,14 @@ class GenericmenuController extends BaseController {
 			
 			$this->s['admin']->check();
 // 			if (!$this->s['admin']->checkCsrf($this->viewArgs['token'])) $this->redirect('panel/main',2,'wrong token');
+
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->beginTransaction();
+			
 			$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
 			
 			if ($this->m[$this->modelName]->queryResult and $queryType === "insert")
 			{

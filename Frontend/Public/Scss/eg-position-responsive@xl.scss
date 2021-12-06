@@ -1,0 +1,152 @@
+@media (min-width: $breakpoint-xlarge) {
+	
+	
+
+	/* Edges
+	========================================================================== */
+
+	/* Don't use `width: 100%` because it is wrong if the parent has padding. */
+	.eg-position-top\@xl {
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.eg-position-bottom\@xl {
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+
+	.eg-position-left\@xl {
+		top: 0;
+		bottom: 0;
+		left: 0;
+	}
+
+	.eg-position-right\@xl {
+		top: 0;
+		bottom: 0;
+		right: 0;
+	}
+
+
+	/* Corners
+	========================================================================== */
+
+	.eg-position-top-left\@xl {
+		top: 0;
+		left: 0;
+	}
+
+	.eg-position-top-right\@xl {
+		top: 0;
+		right: 0;
+	}
+
+	.eg-position-bottom-left\@xl {
+		bottom: 0;
+		left: 0;
+	}
+
+	.eg-position-bottom-right\@xl {
+		bottom: 0;
+		right: 0;
+	}
+
+	/*
+	* Center
+	* 1. Fix text wrapping if content is larger than 50% of the container.
+	*/
+
+	.eg-position-center\@xl {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		/* 1 */
+		width: max-content;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	/* Vertical */
+	[class*='eg-position-center-left@xl'],
+	[class*='eg-position-center-right@xl'] {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.eg-position-center-left\@xl { left: 0; }
+	.eg-position-center-right\@xl { right: 0; }
+
+	.eg-position-center-left-out\@xl {
+		right: 100%;
+		width: max-content;
+	}
+
+	.eg-position-center-right-out\@xl {
+		left: 100%;
+		width: max-content;
+	}
+
+	/* Horizontal */
+	.eg-position-top-center\@xl,
+	.eg-position-bottom-center\@xl {
+		left: 50%;
+		transform: translateX(-50%);
+		/* 1 */
+		width: max-content;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	.eg-position-top-center\@xl { top: 0; }
+	.eg-position-bottom-center\@xl { bottom: 0; }
+
+
+	
+	/* Margin modifier
+	========================================================================== */
+
+	/*
+	* Small
+	*/
+
+
+	.eg-position-small.eg-position-center\@xl { transform: translate(-50%, -50%) translate(-$position-small-margin, (-$position-small-margin)); }
+
+	.eg-position-small[class*='eg-position-center-left@xl'],
+	.eg-position-small[class*='eg-position-center-right@xl'] { transform: translateY(-50%) translateY(-$position-small-margin); }
+
+	.eg-position-small.eg-position-top-center\@xl,
+	.eg-position-small.eg-position-bottom-center\@xl { transform: translateX(-50%) translateX(-$position-small-margin); }
+
+	/*
+	* Medium
+	*/
+
+
+
+	.eg-position-medium.eg-position-center\@xl { transform: translate(-50%, -50%) translate(-$position-medium-margin, (-$position-medium-margin)); }
+
+	.eg-position-medium[class*='eg-position-center-left@xl'],
+	.eg-position-medium[class*='eg-position-center-right@xl'] { transform: translateY(-50%) translateY(-$position-medium-margin); }
+
+	.eg-position-medium.eg-position-top-center\@xl,
+	.eg-position-medium.eg-position-bottom-center\@xl { transform: translateX(-50%) translateX(-$position-medium-margin); }
+
+	/*
+	* Large
+	*/
+
+
+
+	.eg-position-large.eg-position-center\@xl { transform: translate(-50%, -50%) translate(-$position-large-margin, (-$position-large-margin)); }
+
+	.eg-position-large[class*='eg-position-center-left@xl'],
+	.eg-position-large[class*='eg-position-center-right@xl'] { transform: translateY(-50%) translateY(-$position-large-margin); }
+
+	.eg-position-large.eg-position-top-center\@xl,
+	.eg-position-large.eg-position-bottom-center\@xl { transform: translateX(-50%) translateX(-$position-large-margin); }
+
+}

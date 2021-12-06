@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class Sendcloud
+class Sendcloud extends Integrazione
 {
 	private $params = "";
 	
@@ -67,7 +67,8 @@ class Sendcloud
 		
 		$ordine = htmlentitydecodeDeep($ordine);
 		
-		$quantita = $o->quantitaTotale($idO);
+// 		$quantita = $o->quantitaTotale($idO);
+		$quantita = 1;
 		
 		$parcel = array(
 			"parcel"	=>	array(

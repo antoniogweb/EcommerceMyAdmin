@@ -172,6 +172,20 @@ body {
 	width: 100% !important;
 }
 
+.select2-container--default .select2-selection--single
+{
+	border-radius: 0px !important;
+	border: 1px solid #d3d3d3 !important;
+	font-size: 14px  !important;
+    line-height: 1.42857143  !important;
+	height: 34px  !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow
+{
+	top: 5px !important;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

@@ -32,6 +32,17 @@ class GenericModel extends Model_Tree
 		"on-c"	=>	"check-v"
 	);
 	
+	public static $entryAttivo = array(
+		"type"	=>	"Select",
+		"labelString"	=>	"Attivo",
+		"options"	=>	array(
+			"1"	=>	"Sì",
+			"0"	=>	"No",
+		),
+		"reverse"	=>	"yes",
+		"className"	=>	"form-control",
+	);
+	
 	public static $attivoSiNo = array(
 		"1"	=>	"Sì",
 		"0"	=>	"No",
@@ -44,6 +55,8 @@ class GenericModel extends Model_Tree
 	
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
+	public $campoValore = "valore";
+	
 	public $uploadFields = array();
 	public $lId = null;
 	public $traduzione = false;
@@ -1309,4 +1322,9 @@ class GenericModel extends Model_Tree
 		
 		return 0;
     }
+    
+    public function edit($record)
+	{
+		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
+	}
 }

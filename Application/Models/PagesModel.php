@@ -160,6 +160,22 @@ class PagesModel extends GenericModel {
 	{
 		$haCombinazioni = $this->hasCombinations((int)$id, false);
 		
+		if (v("categorie_google_tendina"))
+			$strutturaCategorieGoogle = array(
+				'type'		=>	'Select',
+				'entryClass'	=>	'form_input_text',
+				'options'	=>	$this->getOpzioniCategoriaGoogle($id),
+				'reverse' => 'yes',
+				'wrap'		=>	$this->getWrapCategorieGoogle(),
+				'entryAttributes'	=>	array(
+					"select2"	=>	"/opzioni/main?codice=CATEGORIE_GOOGLE&esporta_json&formato_json=select2",
+				),
+			);
+		else
+			$strutturaCategorieGoogle = array(
+				'wrap'		=>	$this->getWrapCategorieGoogle(),
+			);
+			
 		$wrapCombinazioni = array();
 		
 		$testoLasciareVuotoSeNonPresente = "Lasciare vuoto se non presente o non conosciuto";
@@ -180,7 +196,7 @@ class PagesModel extends GenericModel {
 					),
 				),
 				'data_news'		=>	array(
-					'labelString'=>	'Data',
+					'labelString'=>	'Data scrittura',
 				),
 				'coordinate'		=>	array(
 					'labelString'=>	'Coordinate (latitudine e longitudine divise da virgola)',
@@ -464,13 +480,7 @@ class PagesModel extends GenericModel {
 				'codice_js'	=>	array(
 					'labelString'	=>	'Codice di conversione Google',
 				),
-				'codice_categoria_prodotto_google'	=>	array(
-					'wrap'		=>	array(
-						null,
-						null,
-						"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Elenco codici")."</a></div>"
-					),
-				),
+				'codice_categoria_prodotto_google'	=>	$strutturaCategorieGoogle,
 				'gtin'	=>	array(
 					'labelString'	=>	'Codice internazione GTIN',
 					'wrap'		=>	array(

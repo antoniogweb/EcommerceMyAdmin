@@ -1,0 +1,49 @@
+.eg-text-left { text-align: left !important; }
+.eg-text-right { text-align: right !important; }
+.eg-text-center { text-align: center !important; }
+.eg-text-justify { text-align: justify !important; }
+
+/* Phone portrait */
+@media (max-width: $breakpoint-small - 1px) {
+
+    .eg-text-left\@xs { text-align: left !important; }
+    .eg-text-right\@xs { text-align: right !important; }
+    .eg-text-center\@xs { text-align: center !important; }
+
+}
+
+/* Phone landscape and bigger */
+@media (min-width: $breakpoint-small) and (max-width: $breakpoint-medium - 1px) {
+
+    .eg-text-left\@s { text-align: left !important; }
+    .eg-text-right\@s { text-align: right !important; }
+    .eg-text-center\@s { text-align: center !important; }
+
+}
+
+/* Tablet landscape and bigger */
+@media (min-width: $breakpoint-medium) and (max-width: $breakpoint-large - 1px) {
+
+    .eg-text-left\@m { text-align: left !important; }
+    .eg-text-right\@m { text-align: right !important; }
+    .eg-text-center\@m { text-align: center !important; }
+
+}
+
+/* Desktop and bigger */
+@media (min-width: $breakpoint-large) and (max-width: $breakpoint-xlarge - 1px) {
+
+    .eg-text-left\@l { text-align: left !important; }
+    .eg-text-right\@l { text-align: right !important; }
+    .eg-text-center\@l { text-align: center !important; }
+
+}
+
+/* Large screen and bigger */
+@media (min-width: $breakpoint-xlarge) {
+
+    .eg-text-left\@xl { text-align: left !important; }
+    .eg-text-right\@xl { text-align: right !important; }
+    .eg-text-center\@xl { text-align: center !important; }
+
+}

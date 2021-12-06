@@ -358,7 +358,7 @@ class BaseOrdiniController extends BaseController
 		if (!$this->m["OrdiniModel"]->recordExists($clean["id_o"], $clean["cart_uid"]))
 		{
 			if (Output::$html)
-				$this->redirect("carrello");
+				$this->redirect("");
 			else
 				$esisteOrdine = false;
 		}

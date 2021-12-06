@@ -334,6 +334,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_integrazioni"	=>	0,
 		"identificatore_feed_default"	=>	"no",
 		"resoconto_ordine_top_carrello"	=>	0,
+		"categorie_google_tendina"	=>	1,
+		"profondita_menu_desktop"	=>	2,
+		"profondita_menu_mobile"	=>	2,
 	);
 	
 	public static $daInizializzare = array(

@@ -1,0 +1,54 @@
+[class*='eg-position-top'],
+[class*='eg-position-bottom'],
+[class*='eg-position-left'],
+[class*='eg-position-right'],
+[class*='eg-position-center'] {
+	position: absolute !important;
+	/* 1 */
+	max-width: 100%;
+}
+
+/* Cover
+========================================================================== */
+
+.eg-position-cover {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+/* utility
+========================================================================== */
+
+.eg-position-relative { position: relative !important; }
+
+.eg-position-absolute { position: absolute !important; }
+
+.eg-position-fixed { position: fixed !important; }
+
+.eg-position-z-index { z-index: 1; }
+
+
+/* margin modifier
+========================================================================== */
+
+/*
+* small
+*/
+
+.eg-position-small {
+	max-width: unquote('calc(100% - (#{$position-small-margin} * 2))');
+	margin: $position-small-margin;
+}
+
+.eg-position-medium {
+	max-width: unquote('calc(100% - (#{$position-medium-margin} * 2))');
+	margin: $position-medium-margin;
+}
+
+.eg-position-large {
+	max-width: unquote('calc(100% - (#{$position-large-margin} * 2))');
+	margin: $position-large-margin;
+}

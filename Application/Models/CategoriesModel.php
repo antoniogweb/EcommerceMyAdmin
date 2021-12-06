@@ -151,6 +151,28 @@ class CategoriesModel extends HierarchicalModel {
     
 	public function setFormStruct($id = 0)
 	{
+		$wrapCategorieGoogle = array(
+			null,
+			null,
+			"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a></div>"
+		);
+		
+		if (v("categorie_google_tendina"))
+			$strutturaCategorieGoogle = array(
+				'type'		=>	'Select',
+				'entryClass'	=>	'form_input_text',
+				'options'	=>	$this->getOpzioniCategoriaGoogle($id),
+				'reverse' => 'yes',
+				'wrap'		=>	$this->getWrapCategorieGoogle(),
+				'entryAttributes'	=>	array(
+					"select2"	=>	"/opzioni/main?codice=CATEGORIE_GOOGLE&esporta_json&formato_json=select2",
+				),
+			);
+		else
+			$strutturaCategorieGoogle = array(
+				'wrap'		=>	$this->getWrapCategorieGoogle(),
+			);
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -187,13 +209,7 @@ class CategoriesModel extends HierarchicalModel {
 				'priorita_sitemap'	=>	array(
 					'labelString'=>	'Priorità sitemap',
 				),
-				'codice_categoria_prodotto_google'	=>	array(
-					'wrap'		=>	array(
-						null,
-						null,
-						"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Elenco codici")."</a></div>"
-					),
-				),
+				'codice_categoria_prodotto_google'	=>	$strutturaCategorieGoogle,
 			),
 			
 			'enctype'	=>	'multipart/form-data',

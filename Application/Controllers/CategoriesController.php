@@ -264,7 +264,7 @@ class CategoriesController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('update',$clean["id"]);
 		
-		$this->m[$this->modelName]->setFormStruct();
+		$this->m[$this->modelName]->setFormStruct($clean['id']);
 		
 		$menuLinks = 'back,save';
 
@@ -430,7 +430,12 @@ class CategoriesController extends BaseController {
 			$data['type'] = $queryType;
 			
 			if (!$this->m[$this->modelName]->section)
+			{
 				$this->queryFields = "title,alias,sottotitolo,immagine,description";
+				
+				if ((int)$id === 1)
+					$this->queryFields = "title,alias,sottotitolo,immagine,immagine_2,immagine_sfondo,description";
+			}
 			
 			$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 			
@@ -462,7 +467,7 @@ class CategoriesController extends BaseController {
 				$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
 			}
 
-			$this->m[$this->modelName]->setFormStruct();
+			$this->m[$this->modelName]->setFormStruct($clean['id']);
 			
 			$this->m[$this->modelName]->setUploadForms($clean["id"]);
 			

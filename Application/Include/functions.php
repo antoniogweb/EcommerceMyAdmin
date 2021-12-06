@@ -1791,35 +1791,43 @@ function p($c, $prezzo)
 	}
 }
 
-function tp()
+function tp($admin = false)
 {
 	$themeFolder = v("theme_folder");
 	
-	$subfolder = $themeFolder ? DS . $themeFolder : "";
+	if (!$admin)
+		$subfolder = $themeFolder ? DS . $themeFolder : "";
+	else
+		$subfolder = DS . "_";
 	
 	return Domain::$parentRoot."/Application/Views$subfolder";
 }
 
-function tpf($filePath = "")
+function tpf($filePath = "", $public = false)
 {
 	$themeFolder = v("theme_folder");
 	
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
 	
 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+	$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
 	if (file_exists($subFolderFullPath))
-		return $subFolderFullPath;
+		return $public ? $subFolderFullPathPublic : $subFolderFullPath;
 	
 	if ($themeFolder)
 	{
 		$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
 		
 		if (file_exists($subFolderFullPathParentFrontend))
-			return $subFolderFullPathParentFrontend;
+			return $public ? $subFolderFullPathParentFrontendPublic : $subFolderFullPathParentFrontend;
 	}
 	
-	return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+	if ($public)
+		return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+	else
+		return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 }
 
 function singPlu($numero, $sing, $plu)
@@ -1880,13 +1888,13 @@ function sanitizeJs($jsString)
 	return $result;
 }
 
-function parent($file)
+function parent($file, $admin = false)
 {
-	$file = str_replace(tp(),"",$file);
+	$file = str_replace(tp($admin),"",$file);
 	
 	$parentFrontend = Domain::$parentRoot."/Application/Views/_".$file;
 	
-	if (file_exists($parentFrontend))
+	if (!$admin && file_exists($parentFrontend))
 		return $parentFrontend;
 	
 	return Domain::$parentRoot."/admin/Frontend/Application/Views/_".$file;

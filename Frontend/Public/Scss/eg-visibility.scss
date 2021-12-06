@@ -1,0 +1,36 @@
+.eg-hidden { display: none !important; }
+
+/* Phone portrait */
+@media (max-width: $breakpoint-small - 1px) {
+
+    .eg-hidden\@xs { display: none !important; }
+
+}
+
+/* Phone landscape and bigger */
+@media (min-width: $breakpoint-small) and (max-width: $breakpoint-medium - 1px) {
+
+    .eg-hidden\@s { display: none !important; }
+
+}
+
+/* Tablet landscape and bigger */
+@media (min-width: $breakpoint-medium) and (max-width: $breakpoint-large - 1px) {
+
+    .eg-hidden\@m { display: none !important; }
+
+}
+
+/* Desktop and bigger */
+@media (min-width: $breakpoint-large) and (max-width: $breakpoint-xlarge - 1px) {
+
+   .eg-hidden\@l { display: none !important; }
+
+}
+
+/* Large screen and bigger */
+@media (min-width: $breakpoint-xlarge) {
+
+   .eg-hidden\@xl { display: none !important; }
+
+}

@@ -21,7 +21,7 @@
 			<?php echo $this->baseUrl;?>
 			<?php } ?>
 		</loc>
-		<lastmod><?php echo date('Y-m-dTH:i:sP', strtotime($n["ultima_modifica"]));?></lastmod>
+		<lastmod><?php echo date('c', strtotime($n["ultima_modifica"]));?></lastmod>
 		<priority><?php echo number_format($n["priorita"],2,".","");?></priority>
 	</url>
 	<?php } ?>
