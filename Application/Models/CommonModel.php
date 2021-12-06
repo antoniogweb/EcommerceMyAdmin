@@ -291,11 +291,13 @@ trait CommonModel {
 	
 	public function getWrapCategorieGoogle()
 	{
+		$stringaImporta = v("usa_transactions") ? " <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a>" : "";
+		
 		if (v("categorie_google_tendina"))
 			return array(
 				null,
 				null,
-				"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a></div>"
+				"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." $stringaImporta</div>"
 			);
 		else
 			return array(
