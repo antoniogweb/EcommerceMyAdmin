@@ -12,7 +12,7 @@ $noNumeroProdotti = true;
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
-<div id="content"></div>
+
 <?php if (count($pages) > 0) { ?>
 	<?php include(tpf("/Elementi/Ordini/checkout_top.php"));?>
 	
@@ -24,6 +24,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
 			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
 				<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
+					<div style="position:relative;top:-150px;" id="content"></div>
 					<div class="uk-text-center">
 						<?php echo $notice; ?>
 					</div>
