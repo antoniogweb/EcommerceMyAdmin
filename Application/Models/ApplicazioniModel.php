@@ -97,7 +97,7 @@ class ApplicazioniModel extends GenericModel {
 				fclose($fp);
 			}
 			
-			$hand = fopen($appPath.'/migrazioni.txt','a+');
+			$hand = fopen($appPath.'/Logs/migrazioni.txt','a+');
 			
 			fwrite($hand,"\n");
 			fwrite($hand,date("Y-m-d H:i:s")." START MIGRAZIONI\n");
