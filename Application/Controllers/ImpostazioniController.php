@@ -86,73 +86,6 @@ class ImpostazioniController extends BaseController
 		}
 	}
 	
-	public function variabili($id = 0)
-	{
-		$this->model("VariabiliModel");
-		
-		$this->_posizioni['variabili'] = 'class="active"';
-		
-		$this->shift(1);
-		
-		$clean['id'] = $data["id"] = (int)$id;
-		
-		$data["notice"] = null;
-		
-		if (v("lista_variabili_gestibili"))
-		{
-			$variabili = explode(",", v("lista_variabili_gestibili"));
-			
-			if (isset($_POST["updateAction"]))
-			{
-				foreach ($variabili as $v)
-				{
-					if (isset($_POST[$v]))
-						VariabiliModel::setValore($v, $_POST[$v]);
-				}
-				
-				$data["notice"] = "<div class='alert alert-success'>operazione eseguita!</div>";
-			}
-		}
-		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'save','mainAction'=>"variabili/".$clean['id'],'pageVariable'=>'page_fgl');
-		
-		$this->mainView = "variabili";
-		
-		$form = new Form_Form("/impostazioni/variabili/".$clean['id'],array("updateAction"=>"Salva"), "POST");
-		
-		$entries = array();
-		$values = array();
-		
-		VariabiliModel::ottieniVariabili();
-		
-		if (v("lista_variabili_gestibili"))
-		{
-			$struct = $this->m["VariabiliModel"]->strutturaForm();
-			
-			foreach ($variabili as $v)
-			{
-				if (isset($struct[$v]))
-					$entries[$v] = $struct[$v];
-				else
-					$entries[$v] = array();
-				
-				$entries[$v]["className"] = "form-control";
-				
-				$values[$v] = v($v);
-			}
-		}
-		
-		$form->setEntries($entries);
-		
-		$data["formVariabili"] = $form->render($values);
-		
-		parent::main();
-		
-		$data["titoloRecord"] = "Impostazioni";
-		
-		$this->append($data);
-	}
-	
 	public function svuotacache()
 	{
 		$this->clean();
@@ -171,5 +104,10 @@ class ImpostazioniController extends BaseController
 			
 			GenericModel::eliminaCartella($dir);
 		}
+	}
+	
+	protected function pMain()
+	{
+		parent::main();
 	}
 }

@@ -547,6 +547,7 @@ class Route
 		'applicazioni,main',
 		'applicazioni,form',
 		'applicazioni,migrazioni',
+		'applicazioni,variabili',
 	);
 	
 	//it can be 'yes' or 'no'

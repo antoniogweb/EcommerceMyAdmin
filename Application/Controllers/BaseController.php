@@ -938,4 +938,77 @@ class BaseController extends Controller
 		
 		$this->tabella = "integrazioni ".$this->tabella;
 	}
+	
+	public function variabili($id = 0)
+	{
+		$this->model("VariabiliModel");
+		
+		$this->_posizioni['variabili'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data["id"] = (int)$id;
+		
+		$data["notice"] = null;
+		
+		$listaVariabiliGestibili = v("lista_variabili_gestibili");
+		
+		if ($this->controller == "applicazioni")
+			$listaVariabiliGestibili = ApplicazioniModel::variabiliGestibili($id);
+		
+		if ($listaVariabiliGestibili)
+		{
+			$variabili = explode(",", $listaVariabiliGestibili);
+			
+			if (isset($_POST["updateAction"]))
+			{
+				foreach ($variabili as $v)
+				{
+					if (isset($_POST[$v]))
+						VariabiliModel::setValore($v, $_POST[$v]);
+				}
+				
+				$data["notice"] = "<div class='alert alert-success'>operazione eseguita!</div>";
+			}
+		}
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'save','mainAction'=>"variabili/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->mainView = "variabili";
+		
+		$form = new Form_Form("/".$this->controller."/variabili/".$clean['id'],array("updateAction"=>"Salva"), "POST");
+		
+		$entries = array();
+		$values = array();
+		
+		VariabiliModel::ottieniVariabili();
+		
+		if ($listaVariabiliGestibili)
+		{
+			$struct = $this->m["VariabiliModel"]->strutturaForm();
+			
+			foreach ($variabili as $v)
+			{
+				if (isset($struct[$v]))
+					$entries[$v] = $struct[$v];
+				else
+					$entries[$v] = array();
+				
+				$entries[$v]["className"] = "form-control";
+				
+				$values[$v] = v($v);
+			}
+		}
+		
+		$form->setEntries($entries);
+		
+		$data["formVariabili"] = $form->render($values);
+		
+		$this->pMain();
+		
+		$data["titoloRecord"] = "Impostazioni";
+		
+		$this->append($data);
+	}
+
 }

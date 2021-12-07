@@ -74,6 +74,15 @@ class ApplicazioniModel extends GenericModel {
 		return "";
 	}
 	
+	public static function variabiliGestibili($id)
+	{
+		$a = new ApplicazioniModel();
+		
+		return $a->where(array(
+			"id_applicazione"	=>	(int)$id,
+		))->field("variabili_gestibili");
+	}
+	
 	public function migrazioni($c = "", $id = 0)
 	{
 		if ($id && is_string($c) && v("codice_cron") && $c == v("codice_cron"))
@@ -92,7 +101,7 @@ class ApplicazioniModel extends GenericModel {
 			{
 				mkdir($appPath.'/Logs');
 				
-				$fp = fopen($appPath.'/.htaccess', 'w');
+				$fp = fopen($appPath.'/Logs/.htaccess', 'w');
 				fwrite($fp, 'deny from all');
 				fclose($fp);
 			}

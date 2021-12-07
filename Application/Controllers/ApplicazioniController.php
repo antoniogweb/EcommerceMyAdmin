@@ -58,11 +58,13 @@ class ApplicazioniController extends BaseController
 		
 		parent::main();
 	}
-
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		if ($queryType != "update")
 			die();
+		
+		$this->_posizioni['main'] = 'class="active"';
 		
 		$fields = 'attivo';
 		
@@ -80,5 +82,10 @@ class ApplicazioniController extends BaseController
 		
 		$this->append($data);
 		$this->load("output");
+	}
+	
+	protected function pMain()
+	{
+		parent::main();
 	}
 }
