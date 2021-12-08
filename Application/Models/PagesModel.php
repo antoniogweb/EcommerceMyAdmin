@@ -2066,6 +2066,12 @@ class PagesModel extends GenericModel {
 		}
 		
 		$m = new MarchiModel();
+		$o = new OpzioniModel();
+		
+		$etichettePersonalizzate = $o->clear()->where(array(
+			"codice"	=>	"ETICHETTE_FEED_GOOGLE",
+			"attivo"	=>	1,
+		))->orderBy("id_order")->toList("valore")->send();
 		
 		$idShop = $c->getShopCategoryId();
 		
@@ -2196,6 +2202,23 @@ class PagesModel extends GenericModel {
 			{
 				$temp["g:sale_price"] = number_format(calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo),2,".",""). " EUR";
 				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["dal"]));
+				
+				$r["pages"]["in_promo_feed"] = true;
+			}
+			
+			if (!isset($_GET["fbk"]) && count($etichettePersonalizzate) > 0)
+			{
+				$indiceEtichetta = 0;
+				
+				foreach ($etichettePersonalizzate as $etP)
+				{
+					if (method_exists($p, $etP))
+					{
+						$temp["g:custom_label_".$indiceEtichetta] = call_user_func_array(array($p, $etP), array($r["pages"]["id_page"], $r["pages"]));
+						
+						$indiceEtichetta++;
+					}
+				}
 			}
 			
 			$arrayProdotti[] = $temp;
@@ -2599,5 +2622,33 @@ class PagesModel extends GenericModel {
 	public static function loadTemplateSceltaCookie()
 	{
 		return self::loadTemplateFile("Elementi/Cookie/scelta_tipo.php");
+	}
+	
+	public function etichettaInEvidenza($idPage, $page = null)
+	{
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		return $page["in_evidenza"] == "Y" ? "IN EVIDENZA" : "NON IN EVIDENZA";
+	}
+	
+	public function etichettaInPromozione($idPage, $page = null)
+	{
+		if ($page && isset($page["pages"]["in_promo_feed"]) && $page["pages"]["in_promo_feed"])
+			$inPromo = true;
+		else
+			$inPromo = $this->inPromozione($idPage);
+		
+		return $inPromo == "Y" ? "IN PROMOZIONE" : "NON IN PROMOZIONE";
+	}
+	
+	public function etichettaFasciaDiPrezzo($idPage, $page = null)
+	{
+		return "";
+	}
+	
+	public function etichettaMargine($idPage, $page = null)
+	{
+		return "";
 	}
 }

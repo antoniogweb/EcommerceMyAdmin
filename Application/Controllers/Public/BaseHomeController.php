@@ -120,6 +120,10 @@ class BaseHomeController extends BaseController
 	
 	public function xmlprodotti($p = null)
 	{
+		// controllo token
+		if (v("attiva_feed_solo_se_con_token") && !VariabiliModel::checkToken("token_feed_google_facebook"))
+			die();
+		
 		User::$nazione = null;
 		
 		if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))

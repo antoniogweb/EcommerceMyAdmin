@@ -307,36 +307,38 @@ class VariabiliModel extends GenericModel {
 		"attiva_blocco_cookie_terzi"=>	0,
 		"stile_popup_cookie"		=>	"cookie_stile_css",
 		"stile_check_cookie"		=>	"accetta",
-		"var_query_string_no_cookie"		=>	"",
-		"checkout_solo_loggato"		=>	0,
+		"var_query_string_no_cookie"		=>	"", // se messo nell'URL, non fa apparire il popup dei cookies, neanche se mai approvati
+		"checkout_solo_loggato"		=>	0, // costringe ad eseguire il login per poter andare al checkout
 		"stile_form_login"			=>	"stile_1_pp_base",
 		"email_debug_retargeting"	=>	"",
-		"attiva_campo_test_in_pagine"	=>	0,
-		"attiva_menu_db"			=>	0,
-		"mail_ordine_dopo_pagamento"	=>	0,
+		"attiva_campo_test_in_pagine"	=>	0, // permette di avere dei prodotti di test non elencati (neanche nella sitemap)
+		"attiva_menu_db"			=>	0, // menù in admin da db
+		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_credenziali_dopo_pagamento"	=>	0,
-		"url_redirect_dopo_login"	=>	"area-riservata",
+		"url_redirect_dopo_login"	=>	"area-riservata", // url di redirect dopo il login nel frontend
 		"oggetto_ordine_ricevuto"	=>	"Ordine N° [ID_ORDINE]",
 		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
 		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
 		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
-		"mostra_impostazioni_smtp"	=>	1,
-		"attiva_titolo_2_valori_caratteristiche"	=>	0,
-		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1,
-		"attiva_elementi_tema"		=>	0,
-		"attiva_codice_js_pagina"	=>	1,
-		"token_edit_frontend"		=>	"",
-		"attiva_gestione_fasce_frontend"	=>	0,
-		"mostra_errori_personalizzazione"	=>	1,
-		"attiva_strumenti_merchant_google"	=>	0,
-		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt",
-		"coupon_ajax"				=>	0,
-		"attiva_gestione_integrazioni"	=>	0,
-		"identificatore_feed_default"	=>	"no",
-		"resoconto_ordine_top_carrello"	=>	0,
-		"categorie_google_tendina"	=>	1,
-		"profondita_menu_desktop"	=>	2,
-		"profondita_menu_mobile"	=>	2,
+		"mostra_impostazioni_smtp"	=>	1, // Se mostra o nasconde le impostazioni della posta in impostazioni, in admin
+		"attiva_titolo_2_valori_caratteristiche"	=>	0, // descrizione aggiuntiva caratteristica
+		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1, // se mandare la mail di avvenuto pagamento al cliente, dopo l'ordine
+		"attiva_elementi_tema"		=>	0, // se permettere in admin o frontend di cambiare lo stile dei vari elementi del tema
+		"attiva_codice_js_pagina"	=>	1, // codice conversione JS della pagina (anche JS generico)
+		"token_edit_frontend"		=>	"", // token per attivare l'edit frontend
+		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
+		"mostra_errori_personalizzazione"	=>	1, // mostrare che manca personalizzazione oppure no
+		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
+		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
+		"coupon_ajax"				=>	0, // se inserire il coupon con una richiesta POST ajax
+		"attiva_gestione_integrazioni"	=>	0, // se mostra la gestione delle integrazioni
+		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
+		"resoconto_ordine_top_carrello"	=>	0, // se mostrare, in mobile, il resoconto in alto al checkout
+		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
+		"profondita_menu_desktop"	=>	2, // profondità menù desktop
+		"profondita_menu_mobile"	=>	2, // profondità menù mobile
+		"attiva_feed_solo_se_con_token"	=>	0, // mostra feed google facebook solo se con token
+		"token_feed_google_facebook"	=>	"", // token del feed
 	);
 	
 	public static $daInizializzare = array(
@@ -345,6 +347,7 @@ class VariabiliModel extends GenericModel {
 		"debug_retargeting_get_variable",
 		"var_query_string_no_cookie",
 		"token_edit_frontend",
+		"token_feed_google_facebook",
 	);
 	
 	public static function inizializza($variabili = array())
