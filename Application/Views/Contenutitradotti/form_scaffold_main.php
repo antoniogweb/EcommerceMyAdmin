@@ -70,6 +70,10 @@ $().ready(function() {
 			<?php echo $form["descrizione"];?>
 			<?php } ?>
 			
+			<?php echo isset($form["descrizione_2"]) ? $form["descrizione_2"] : ""; ?>
+			
+			<?php echo isset($form["descrizione_3"]) ? $form["descrizione_3"] : ""; ?>
+			
 			<?php if (isset($form["url"])) { ?>
 			<?php echo $form["url"];?>
 			<?php } ?>

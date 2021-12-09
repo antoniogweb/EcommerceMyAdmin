@@ -767,6 +767,8 @@ class GenericModel extends Model_Tree
 					"sottotitolo"	=>	isset($record["sottotitolo"]) ? $record["sottotitolo"] : "",
 					"titolo"		=>	isset($record["titolo"]) ? $record["titolo"] : "",
 					"descrizione"	=>	isset($record["descrizione"]) ? $record["descrizione"] : "",
+					"descrizione_2"	=>	isset($record["descrizione_2"]) ? $record["descrizione_2"] : "",
+					"descrizione_3"	=>	isset($record["descrizione_3"]) ? $record["descrizione_3"] : "",
 					"testo_link"	=>	isset($record["testo_link"]) ? $record["testo_link"] : "",
 					"editor_visuale"	=>	$editorVisuale,
 					"id_page"		=>	$id_page,

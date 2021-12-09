@@ -118,6 +118,12 @@ class ProdottiController extends PagesController {
 		if (v("attiva_campo_test_in_pagine"))
 			$this->queryFields .= ",test";
 		
+		if (v("attiva_descrizione_2_in_prodotti"))
+			$this->queryFields .= ",descrizione_2";
+		
+		if (v("attiva_descrizione_3_in_prodotti"))
+			$this->queryFields .= ",descrizione_3";
+		
 		if (v("attiva_strumenti_merchant_google"))
 		{
 			$this->queryFields .= ",codice_categoria_prodotto_google,gtin,mpn,identifier_exists";

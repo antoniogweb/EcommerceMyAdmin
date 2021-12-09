@@ -326,4 +326,9 @@ trait CommonModel {
 		
 		return array();
 	}
+	
+	public static function ne($field)
+	{
+		return trim(strip_tags(htmlentitydecode($field)));
+	}
 }

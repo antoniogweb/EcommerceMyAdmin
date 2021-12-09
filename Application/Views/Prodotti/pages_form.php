@@ -96,6 +96,10 @@
 										<?php echo $form["description"];?>
 									<?php } ?>
 									
+									<?php echo isset($form["descrizione_2"]) ? $form["descrizione_2"] : ""; ?>
+									
+									<?php echo isset($form["descrizione_3"]) ? $form["descrizione_3"] : ""; ?>
+									
 									<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
 									
 									<?php if ($type === "update") { ?>

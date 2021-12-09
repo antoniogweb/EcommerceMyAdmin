@@ -121,6 +121,7 @@ class VariabiliModel extends GenericModel {
 		"linkedin_link"				=>	"",
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
+		"telefono_aziendale_2"		=>	"",
 		"numero_in_evidenza"		=>	4,
 		"pagamenti_permessi"		=>	"bonifico,paypal",
 		"estrai_in_promozione_home"	=>	0,
@@ -339,6 +340,8 @@ class VariabiliModel extends GenericModel {
 		"profondita_menu_mobile"	=>	2, // profondità menù mobile
 		"attiva_feed_solo_se_con_token"	=>	0, // mostra feed google facebook solo se con token
 		"token_feed_google_facebook"	=>	"", // token del feed
+		"attiva_descrizione_2_in_prodotti"	=>	0, // attiva campo descrizione 2 nei prodotti
+		"attiva_descrizione_3_in_prodotti"	=>	0, // attiva campo descrizione 3 nei prodotti
 	);
 	
 	public static $daInizializzare = array(
