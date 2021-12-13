@@ -100,6 +100,8 @@
 									
 									<?php echo isset($form["descrizione_3"]) ? $form["descrizione_3"] : ""; ?>
 									
+									<?php echo isset($form["descrizione_4"]) ? $form["descrizione_4"] : ""; ?>
+									
 									<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
 									
 									<?php if ($type === "update") { ?>

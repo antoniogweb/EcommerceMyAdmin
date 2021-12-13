@@ -336,6 +336,11 @@ class PagesModel extends GenericModel {
 					'entryClass'	=>	'form_textarea help_descrizione_3',
 					'className'		=>	'dettagli',
 				),
+				'descrizione_4'		=>	array(
+					'type'		 =>	'Textarea',
+					'entryClass'	=>	'form_textarea help_descrizione_4',
+					'className'		=>	'dettagli',
+				),
 				'descrizione_breve'		=>	array(
 					'type'		 =>	'Textarea',
 					'labelString'=>	'Descrizione breve',

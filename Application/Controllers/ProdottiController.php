@@ -124,6 +124,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_descrizione_3_in_prodotti"))
 			$this->queryFields .= ",descrizione_3";
 		
+		if (v("attiva_descrizione_4_in_prodotti"))
+			$this->queryFields .= ",descrizione_4";
+		
 		if (v("attiva_strumenti_merchant_google"))
 		{
 			$this->queryFields .= ",codice_categoria_prodotto_google,gtin,mpn,identifier_exists";

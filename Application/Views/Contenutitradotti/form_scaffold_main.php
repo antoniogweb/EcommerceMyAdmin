@@ -74,6 +74,8 @@ $().ready(function() {
 			
 			<?php echo isset($form["descrizione_3"]) ? $form["descrizione_3"] : ""; ?>
 			
+			<?php echo isset($form["descrizione_4"]) ? $form["descrizione_4"] : ""; ?>
+			
 			<?php if (isset($form["url"])) { ?>
 			<?php echo $form["url"];?>
 			<?php } ?>
