@@ -548,6 +548,14 @@ class Route
 		'applicazioni,form',
 		'applicazioni,migrazioni',
 		'applicazioni,variabili',
+		
+		'servizi,main',
+		'servizi,form',
+		'servizi,move',
+		'servizi,pubblica',
+		'servizi,inevidenza',
+		'servizi,updatevalue',
+		'servizi,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

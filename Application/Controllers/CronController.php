@@ -103,6 +103,10 @@ class CronController extends BaseController {
 					fwrite($hand,date("Y-m-d H:i:s")." DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql\n");
 					echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />";
 					VariabiliModel::$valori["db_version"] = (int)$newVersion;
+					
+					// Rigenero l'albero delle categorie
+					$cModel = new CategoriesModel();
+					$cModel->callRebuildTree();
 				}
 				else
 					echo "<br />NUOVA VERSIONE: $newVersion";

@@ -7,7 +7,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_slide");?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/".v("url_inserisci_slide");?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/".v("url_inserisci_slide");?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php if (v("blog_attivo")) { ?>
@@ -18,7 +18,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/blog/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/blog/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/blog/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 			<li class="dropdown-header">Categorie</li>
 			<li class="<?php echo tm($tm, array("blogcat"));?>"><a href="<?php echo $this->baseUrl."/blogcat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
 		</ul>
@@ -32,7 +32,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/eventi/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/eventi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/eventi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 			<li class="dropdown-header">Categorie</li>
 			<li class="<?php echo tm($tm, array("eventicat"));?>"><a href="<?php echo $this->baseUrl."/eventicat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
 		</ul>
@@ -51,7 +51,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/referenze/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/referenze/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/referenze/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -63,7 +63,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/team/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/team/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/team/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -75,7 +75,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/download/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/download/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/download/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 			<?php if (v("attiva_categorie_download")) { ?>
 			<li class="dropdown-header">Categorie</li>
 			<li><a href="<?php echo $this->baseUrl."/downloadcat/main/1";?>"><i class="fa fa-list"></i> Lista categorie</a></li>
@@ -91,7 +91,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/avvisi/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/avvisi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/avvisi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -103,7 +103,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/modali/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/modali/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/modali/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -115,7 +115,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/faq/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/faq/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/faq/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -127,7 +127,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/testimonial/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/testimonial/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/testimonial/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -139,7 +139,7 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/gallery/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/gallery/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/gallery/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>
@@ -151,7 +151,19 @@
 		</a>
 		<ul class="treeview-menu">
 			<li><a href="<?php echo $this->baseUrl."/icone/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/icone/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi</a></li>
+			<li><a href="<?php echo $this->baseUrl."/icone/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
+		</ul>
+	</li>
+	<?php } ?>
+	<?php if (v("mostra_servizi")) { ?>
+	<li class="<?php echo tm($tm, "servizi");?> treeview">
+		<a href="#">
+			<i class="fa fa-rocket"></i>
+			<span><?php echo gtext("servizi");?></span>
+		</a>
+		<ul class="treeview-menu">
+			<li><a href="<?php echo $this->baseUrl."/servizi/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
+			<li><a href="<?php echo $this->baseUrl."/servizi/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 		</ul>
 	</li>
 	<?php } ?>

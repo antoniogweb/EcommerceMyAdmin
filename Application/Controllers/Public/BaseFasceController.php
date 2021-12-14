@@ -306,6 +306,15 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaInfoPagamenti()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_pagamenti.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaProdottiInPromozione()
 	{
 		$inPromozione = $this->prodottiInPromozione;

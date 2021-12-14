@@ -33,10 +33,9 @@
 		<script>
 		setTimeout(function(){
 			document.paypal_form.submit();
-		}, 1000);
+		}, 500);
 		</script>
-		
-		<?php } ?>
 	</div>
 </body>
 </html>
+<?php } ?>

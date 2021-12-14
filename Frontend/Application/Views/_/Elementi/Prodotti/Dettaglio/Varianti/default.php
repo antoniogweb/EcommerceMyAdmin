@@ -1,4 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php
+if (!isset($classeTendinaVarianti))
+	$classeTendinaVarianti = "uk-margin-small uk-width-2-3@m";
+?>
 <script>var sconto = <?php echo $p["pages"]["prezzo_promozione"];?></script>
 <?php if (count($lista_valori_attributi) > 0) { ?>
 <div class="lista_attributi_prodotto">
@@ -24,7 +28,7 @@
 					<?php } ?>
 				</select>
 			<?php } else { ?>
-				<div class="uk-margin-small uk-width-2-3@m">
+				<div class="<?php echo $classeTendinaVarianti;?>">
 					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,"uk-select form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),null,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>
 				</div>
 			<?php } ?>

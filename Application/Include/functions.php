@@ -867,6 +867,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[chi-siamo\]/', array($obj,'getFasciaChiSiamo') ,$string);
 		$string = preg_replace_callback('/\[pacco-regalo\]/', array($obj,'getFasciaPaccoRegalo') ,$string);
 		$string = preg_replace_callback('/\[tag\]/', array($obj,'getFasciaTag') ,$string);
+		$string = preg_replace_callback('/\[info-pagamenti\]/', array($obj,'getFasciaInfoPagamenti') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
@@ -918,7 +919,7 @@ function getVideo($matches, $tags = null, $tipo = "TESTO")
 	return getTesto($matches, $tags, "VIDEO");
 }
 
-function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true)
+function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $ritornaElemento = false)
 {
 	$clean["chiave"] = sanitizeDb($matches[1]);
 	
@@ -938,6 +939,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true)
 	
 	if (count($testo) > 0)
 	{
+		if ($ritornaElemento)
+			return $testo;
+		
 		$clean["id"] = (int)$testo["id_t"];
 		
 		$iconaEdit = User::$adminLogged ? "<span rel='".$clean["id"]."' title='modifica il testo' class='edit_blocco_testo' href='#'><i class='fa fa-pencil'></i></span>" : null;
@@ -1055,9 +1059,9 @@ function t($chiave, $tags = null)
 }
 
 //chiama la traduzione di un blocco immagine
-function i($chiave, $tags = null, $attributi = null, $cleanFlush = true)
+function i($chiave, $tags = null, $attributi = null, $cleanFlush = true, $ritornaElemento = false)
 {
-	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE", $cleanFlush);
+	return getTesto(array("",$chiave, $attributi),$tags, "IMMAGINE", $cleanFlush, $ritornaElemento);
 }
 
 //chiama la traduzione di un blocco immagine

@@ -638,33 +638,38 @@ $(document).ready(function(){
 			
 			var url = $(this).attr("select2");
 			
-			$(this).find("select").select2({
-				ajax: {
-					url: baseUrl + url,
-					processResults: function (data) {
-						// Transforms the top-level key of the response object from 'items' to 'results'
-						return {
-							results: data.results
-						};
+			if (url != "")
+			{
+				$(this).find("select").select2({
+					ajax: {
+						url: baseUrl + url,
+						processResults: function (data) {
+							// Transforms the top-level key of the response object from 'items' to 'results'
+							return {
+								results: data.results
+							};
+						},
+						delay: 1000
 					},
-					delay: 1000
-				},
-				minimumInputLength: 2,
-				language: {
-					inputTooShort: function(args) {
-						return "Digitare 2 o più caratteri";
-					},
-					searching: function() {
-						return "In attesa..";
-					},
-					noResults: function() {
-						return "Non ci sono risultati";
-					},
-					errorLoading: function() {
-						return "In attesa..";
+					minimumInputLength: 2,
+					language: {
+						inputTooShort: function(args) {
+							return "Digitare 2 o più caratteri";
+						},
+						searching: function() {
+							return "In attesa..";
+						},
+						noResults: function() {
+							return "Non ci sono risultati";
+						},
+						errorLoading: function() {
+							return "In attesa..";
+						}
 					}
-				}
-			});
+				});
+			}
+			else
+				$(this).find("select").select2();
 		});
 	}
 	

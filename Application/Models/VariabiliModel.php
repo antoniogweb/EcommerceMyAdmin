@@ -188,7 +188,8 @@ class VariabiliModel extends GenericModel {
 		"abilita_rich_snippet"		=>	1,
 		"abilita_codice_fiscale"	=>	1,
 		"mostra_eventi"				=>	0,
-		"mostra_gallery"			=>	0,
+		"mostra_gallery"			=>	0, // Attiva la sezione gallery
+		"mostra_servizi"			=>	0, // Attiva la sezione servizi
 		"attiva_immagine_sfondo"	=>	0,
 		"attiva_tutte_le_categorie"	=>	0,
 		"url_elenco_slide"			=>	"slide/main",
