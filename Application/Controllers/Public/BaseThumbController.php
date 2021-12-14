@@ -710,6 +710,38 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, $params, "images/categorie");
 	}
 	
+	public function servizio2x($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	550,
+			'imgHeight'		=>	600,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
+	}
+	
+	public function servizio($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	550,
+			'imgHeight'		=>	600,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
+	}
+	
 	public function gallery($fileName)
 	{
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);

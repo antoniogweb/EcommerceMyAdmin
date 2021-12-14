@@ -224,16 +224,18 @@ trait BaseFasceController
 	
 	public function getEventiFascia()
 	{
-		$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
-			"section"	=>	"eventi",
-		))->field("id_c");
+// 		$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
+// 			"section"	=>	"eventi",
+// 		))->field("id_c");
+// 		
+// 		$pages = $this->m['PagesModel']->clear()->select("*")
+// 			->addJoinTraduzionePagina()
+// 			->where(array(
+// 				"attivo"	=>	"Y",
+// 				"id_c"		=>	(int)$idTest,
+// 			))->limit(v("numero_eventi_home"))->orderBy("pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento,pages.data_news desc")->send();
 		
-		$pages = $this->m['PagesModel']->clear()->select("*")
-			->addJoinTraduzionePagina()
-			->where(array(
-				"attivo"	=>	"Y",
-				"id_c"		=>	(int)$idTest,
-			))->limit(v("numero_eventi_home"))->orderBy("pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento,pages.data_news desc")->send();
+		$pages = EventiModel::getElementiFascia();
 		
 		ob_start();
 		include tpf("Fasce/fascia_eventi.php");
@@ -266,7 +268,7 @@ trait BaseFasceController
 	
 	public function getFasciaCaroselloMarchi()
 	{
-		$marchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		$marchi = $elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_carosello_marchi.php");

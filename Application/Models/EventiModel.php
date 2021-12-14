@@ -68,4 +68,19 @@ class EventiModel extends PagesModel {
 		
 		return array(null, null);
 	}
+	
+	public static function getElementiFascia($numero = 0)
+	{
+		$e = new EventiModel();
+		
+		if (!$numero)
+			$numero = v("numero_eventi_home");
+		
+		return $e->clear()->select("*")
+			->addJoinTraduzionePagina()
+			->where(array(
+				"attivo"	=>	"Y",
+				"id_c"		=>	(int)CategoriesModel::getIdCategoriaDaSezione("eventi"),
+			))->limit($numero)->orderBy("pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento,pages.data_news desc")->send();
+	}
 }
