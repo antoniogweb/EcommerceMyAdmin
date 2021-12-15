@@ -2133,9 +2133,9 @@ class PagesModel extends GenericModel {
 				
 				if ($r["pages"]["mpn"])
 					$temp["g:mpn"] = htmlentitydecode($r["pages"]["mpn"]);
-				
-				$temp["g:identifier_exists"] = $r["pages"]["identifier_exists"] ? $r["pages"]["identifier_exists"] : v("identificatore_feed_default");
 			}
+			
+			$temp["g:identifier_exists"] = $r["pages"]["identifier_exists"] ? $r["pages"]["identifier_exists"] : v("identificatore_feed_default");
 			
 			if (isset($_GET["fbk"]))
 				$temp["g:description"] = strip_tags(htmlentitydecode(field($r,"description")));
