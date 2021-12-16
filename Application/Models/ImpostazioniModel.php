@@ -241,6 +241,8 @@ class ImpostazioniModel extends GenericModel {
 		//leggi le impostazioni
 		if (self::$valori)
 		{
+			self::$valori["smtp_psw"] = htmlentitydecode(self::$valori["smtp_psw"]);
+			
 			Parametri::$useSMTP = self::$valori["usa_smtp"] == "Y" ? true : false;
 			Parametri::$SMTPHost = self::$valori["smtp_host"];
 			Parametri::$SMTPPort = self::$valori["smtp_port"];
