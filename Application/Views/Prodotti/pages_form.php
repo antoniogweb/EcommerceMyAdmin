@@ -193,7 +193,7 @@
 						<?php if (v("attiva_strumenti_merchant_google")) { ?>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Codici per merchant (Google / Facebook)")?>
+								<?php echo gtext("Informazioni per adv (Google / Facebook)")?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["codice_categoria_prodotto_google"];?>
@@ -203,6 +203,8 @@
 								<?php echo $form["mpn"];?>
 								
 								<?php echo $form["identifier_exists"];?>
+								
+								<?php echo isset($form["margine"]) ? $form["margine"] : "";?>
 								
 								<p>
 									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo Domain::$name."/it/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>

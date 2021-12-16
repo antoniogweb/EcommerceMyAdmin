@@ -524,6 +524,14 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Indicate no solo se né i codici gtin e mpn non esitono. Ex: prodotto artigianale, prodotto unico, etc.")." ".gtext("Altrimenti se i suddetti codici esistono ma non li conoscete, mettete comunque sì (e cercate tali codici).")." ".gtext("Se lasciato vuoto verrà usato il valore globale.")."</div>"
 					),
 				),
+				'margine'		=>	array(
+					'labelString'=>	'Margine (%)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Margine in % del prodotto.")." ".gtext("Se lasciato a 0, prenderà il margine della prima categoria di appartenenza avente un margine maggiore di 0.")."</div>"
+					),
+				),
 			),
 		);
 		
@@ -2670,7 +2678,7 @@ class PagesModel extends GenericModel {
 		return "";
 	}
 	
-	// Restituisce gli elementi da essere usati nella fascia
+	// Restituisce gli elementi da usare nella fascia
 	public static function getElementiFascia($numero = 0)
 	{
 		$className = get_called_class();

@@ -136,6 +136,9 @@ class ProdottiController extends PagesController {
 			);
 		}
 		
+		if (v("attiva_margine_in_prodotti"))
+			$this->queryFields .= ",margine";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

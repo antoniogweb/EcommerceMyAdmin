@@ -344,6 +344,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_descrizione_2_in_prodotti"	=>	0, // attiva campo descrizione 2 nei prodotti
 		"attiva_descrizione_3_in_prodotti"	=>	0, // attiva campo descrizione 3 nei prodotti
 		"attiva_descrizione_4_in_prodotti"	=>	0, // attiva campo descrizione 4 nei prodotti
+		"attiva_margine_in_prodotti"		=>	0, // attiva oppure no il campo margine nei prodotti e nelle categorie
+		"scaglioni_margine_di_euro"		=>	10,
 	);
 	
 	public static $daInizializzare = array(

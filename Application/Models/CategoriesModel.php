@@ -211,6 +211,14 @@ class CategoriesModel extends HierarchicalModel {
 					'labelString'=>	'Priorità sitemap',
 				),
 				'codice_categoria_prodotto_google'	=>	$strutturaCategorieGoogle,
+				'margine'		=>	array(
+					'labelString'=>	'Margine (%)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Margine in % di tutti i prodotti della categoria.")." ".gtext("Se un prodotto ha un suo margine specificio, verrà usato il margine del prodotto.")."</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
