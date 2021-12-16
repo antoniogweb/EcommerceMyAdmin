@@ -97,6 +97,8 @@ class AttributiController extends BaseController {
 		
 		$tipo = AttributiModel::getTipo($clean['id']);
 		
+		$data["aggiuntaLibera"] = true;
+		
 		if ($tipo == "IMMAGINE")
 		{
 			$this->mainFields = array("thumb", "edit");
@@ -110,6 +112,8 @@ class AttributiController extends BaseController {
 					'width'	=>	'120px',
 				),
 			);
+			
+			$data["aggiuntaLibera"] = false;
 		}
 		else
 		{
