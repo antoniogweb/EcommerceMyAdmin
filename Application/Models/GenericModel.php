@@ -1330,4 +1330,10 @@ class GenericModel extends Model_Tree
 	{
 		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
 	}
+	
+	public function settaCifreDecimali()
+	{
+		if (!v("prezzi_ivati_in_prodotti") && isset($this->values["price"]))
+			$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
+	}
 }

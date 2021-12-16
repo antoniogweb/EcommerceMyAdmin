@@ -65,7 +65,9 @@ class CombinazionilistiniModel extends GenericModel {
 			if (!empty($comb))
 				$this->setPriceNonIvato($comb["id_page"]);
 		}
-			
+		
+		$this->settaCifreDecimali();
+		
 		return parent::insert();
 	}
 	
@@ -77,6 +79,8 @@ class CombinazionilistiniModel extends GenericModel {
 		
 		if (count($res) > 0)
 			$this->setPriceNonIvato($res[0]["combinazioni"]["id_page"]);
+		
+		$this->settaCifreDecimali();
 		
 		if (parent::update($id, $where))
 			return true;

@@ -165,6 +165,7 @@ class CombinazioniController extends BaseController
 					"  lk" => array('combinazioni.codice' => $this->viewArgs['codice']),
 					"id_page"	=>	$this->viewArgs['id_page']
 				))
+				->addWhereCategoria(CategoriesModel::getIdCategoriaDaSezione("prodotti"), true, "pages.id_c")
 				->orderBy("c1.title,pages.title");
 		
 		if ($this->viewArgs["st_giac"] != "tutti")

@@ -869,6 +869,8 @@ class PagesModel extends GenericModel {
 			if (!empty($aliquota))
 				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
 		}
+		else
+			$this->settaCifreDecimali();
 	}
 	
 	public function insert()
@@ -2312,8 +2314,9 @@ class PagesModel extends GenericModel {
     public function aggiungiaprodotto($id)
     {
 		$record = $this->selectId((int)$id);
+		$recordPagina = $this->selectId((int)$_GET["id_pcorr"]);
 		
-		if (!empty($record) && isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+		if (!empty($record) && !empty($recordPagina) && isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
 		{
 			$pp = new PagespagesModel();
 			

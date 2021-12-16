@@ -8,7 +8,7 @@
 			<?php } ?>
 			<?php if (!User::$isMobile) { ?>
 			<div class="uk-visible@m">
-				<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="" rel="<?php echo $p["cart"]["id_cart"];?>">
+				<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
 					<div class="uk-first-column">
 						
 					</div>

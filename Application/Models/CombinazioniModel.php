@@ -171,6 +171,8 @@ class CombinazioniModel extends GenericModel {
 		if (isset($this->values["id_page"]))
 			$this->setPriceNonIvato($this->values["id_page"]);
 		
+		$this->settaCifreDecimali();
+		
 		return parent::insert();
 	}
 	
@@ -203,6 +205,8 @@ class CombinazioniModel extends GenericModel {
 		
 		if (!empty($record))
 			$this->setPriceNonIvato($record["id_page"]);
+		
+		$this->settaCifreDecimali();
 		
 		if (parent::update($id, $where))
 		{
