@@ -49,18 +49,18 @@ class ProdottiController extends PagesController {
 		
 		$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->selectPerFiltro();
 		
-		$this->filters = array(null,null,'title',null,null,array("id_tag",null,$filtroTag));
-		
 		if (v("usa_marchi"))
 		{
 			$this->tableFields[] = 'marchio';
 			$this->head .= ',Marchio';
+			$this->filters = array(null,null,'title',null,null,array("id_tag",null,$filtroTag));
 		}
 		
 		if (v("usa_tag"))
 		{
 			$this->tableFields[] = 'tag';
 			$this->head .= ',Tag';
+			$this->filters = array(null,null,'title',null,array("id_tag",null,$filtroTag));
 		}
 		
 		$this->tableFields[] = 'PagesModel.inPromozioneText|pages.id_page';
