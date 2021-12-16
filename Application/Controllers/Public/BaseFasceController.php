@@ -345,4 +345,11 @@ trait BaseFasceController
 		
 		return $output;
 	}
+	
+	public function getFasciaServizi()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_servizi.php");
+		return ob_get_clean();
+	}
 }

@@ -2666,4 +2666,23 @@ class PagesModel extends GenericModel {
 	{
 		return "";
 	}
+	
+	// Restituisce gli elementi da essere usati nella fascia
+	public static function getElementiFascia($numero = 0)
+	{
+		$className = get_called_class();
+		
+		$c = new $className;
+		
+		$c->clear()->select("*")
+			->addJoinTraduzionePagina()
+			->addWhereAttivo()
+			->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($c->hModel->section))
+			->orderBy("pages.id_order desc");
+		
+		if ($numero)
+			$c->limit($numero);
+		
+		return $c->send();
+	}
 }
