@@ -1743,7 +1743,7 @@ class PagesModel extends GenericModel {
 		if (v("prezzi_ivati_in_prodotti"))
 		{
 			$iva = $this->getIva($id_page);
-		
+			
 			$prezzoMinimo = $prezzoMinimo + ($prezzoMinimo * (float)$iva / 100);
 		}
 		
@@ -2069,7 +2069,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce il codice 
-	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null)
+	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null, $funzione = null)
 	{
 		if (!isset($parents))
 		{
@@ -2087,8 +2087,16 @@ class PagesModel extends GenericModel {
 		{
 			$pr = isset($p["categories"]) ? $p["categories"] : $p["pages"];
 			
-			if ($pr[$field])
-				return $pr[$field];
+			if ($funzione)
+			{
+				if (call_user_func($funzione,$pr[$field]))
+					return $pr[$field];
+			}
+			else
+			{
+				if ($pr[$field])
+					return $pr[$field];
+			}
 		}
 		
 		return "";
@@ -2687,8 +2695,42 @@ class PagesModel extends GenericModel {
 		return "";
 	}
 	
+	public function etichettaTitolo($idPage, $page = null)
+	{
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		return $page["title"];
+	}
+	
+	public function margineEuro($idPage)
+	{
+		$prezzoMinimo = $this->prezzoMinimo($idPage, true);
+		
+		$margine = (float)$this->getFirstNotEmpty($idPage, "margine", null, "maggioreDiZero");
+		
+		return ($prezzoMinimo * $margine) / 100;
+	}
+	
 	public function etichettaMargine($idPage, $page = null)
 	{
+		$scaglione = (int)v("scaglioni_margine_di_euro");
+		
+		if ($scaglione > 0)
+		{
+			$margineEuro = $this->margineEuro($idPage);
+			
+			if ($margineEuro > 0)
+				$rapporto = floor($margineEuro / $scaglione);
+			else
+				$rapporto = 0;
+			
+			$min = $rapporto * $scaglione;
+			$max = ($rapporto + 1) * $scaglione;
+			
+			return "MARGINE $min - $max €";
+		}
+		
 		return "";
 	}
 	
