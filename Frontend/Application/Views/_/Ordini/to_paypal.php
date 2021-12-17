@@ -1,7 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (strcmp($ordine["pagamento"],"paypal") === 0 and strcmp($ordine["stato"],"pending") === 0 and strcmp($tipoOutput,"web") === 0) { ?>
-
-<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <!DOCTYPE html>
 <html lang="<?php echo Params::$lang;?>">
 <head>
@@ -22,20 +20,30 @@
 	</style>
 </head>
 <body>
-	<div style="text-align:center;margin-top:20px;">
-		<div style="padding:20px;font-size:14px;">
-			<?php echo gtext("Stai per essere reindirizzato al sito di Paypal per il pagamento.");?><br /><br />
-			<?php echo gtext("Se non vieni reindirizzato entro 10 secondi, premi il pulsante per pagare.")?>
+	<?php if (v("mostra_pagina_intermedia_paypal")) { ?>
+		<div style="text-align:center;margin-top:20px;">
+			<div style="padding:20px;font-size:14px;">
+				<?php echo gtext("Stai per essere reindirizzato al sito di Paypal per il pagamento.");?><br /><br />
+				<?php echo gtext("Se non vieni reindirizzato entro 10 secondi, premi il pulsante per pagare.")?>
+			</div>
+			
+			<?php echo $pulsantePaypal;?>
+			
+			<script>
+			setTimeout(function(){
+				document.paypal_form.submit();
+			}, 500);
+			</script>
 		</div>
-		
+	<?php } else { ?>
+		<div style="visibility:hidden;">
 		<?php echo $pulsantePaypal;?>
-		
-		<script>
-		setTimeout(function(){
-			document.paypal_form.submit();
-		}, 500);
+		</div>
+		<script>setTimeout(function(){
+				document.paypal_form.submit();
+			}, 100);
 		</script>
-	</div>
+	<?php } ?>
 </body>
 </html>
 <?php } ?>
