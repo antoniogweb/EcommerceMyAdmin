@@ -1736,6 +1736,20 @@ class PagesModel extends GenericModel {
 		return $section;
 	}
 	
+	public function prezzoMinimoDisplay($id_page)
+	{
+		$prezzoMinimo = $this->prezzoMinimo($id_page);
+		
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			$iva = $this->getIva($id_page);
+		
+			$prezzoMinimo = $prezzoMinimo + ($prezzoMinimo * (float)$iva / 100);
+		}
+		
+		return setPriceReverse($prezzoMinimo);
+	}
+	
 	public function prezzoMinimo($id_page, $forzaPrincipale = false)
 	{
 		$clean['id_page'] = (int)$id_page;
