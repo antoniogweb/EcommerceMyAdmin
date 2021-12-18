@@ -2344,9 +2344,11 @@ class PagesModel extends GenericModel {
     public function aggiungiaprodotto($id)
     {
 		$record = $this->selectId((int)$id);
-		$recordPagina = $this->selectId((int)$_GET["id_pcorr"]);
 		
-		if (!empty($record) && !empty($recordPagina) && isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+		if (isset($_GET["id_pcorr"]))
+			$recordPagina = $this->selectId((int)$_GET["id_pcorr"]);
+		
+		if (!empty($record) && isset($_GET["id_pcorr"]) && !empty($recordPagina) && isset($_GET["pcorr_sec"]))
 		{
 			$pp = new PagespagesModel();
 			
@@ -2703,11 +2705,16 @@ class PagesModel extends GenericModel {
 		return $page["title"];
 	}
 	
+	public function getMarginePercentuale($idPage)
+	{
+		return (float)$this->getFirstNotEmpty($idPage, "margine", null, "maggioreDiZero");
+	}
+	
 	public function margineEuro($idPage)
 	{
 		$prezzoMinimo = $this->prezzoMinimo($idPage, true);
 		
-		$margine = (float)$this->getFirstNotEmpty($idPage, "margine", null, "maggioreDiZero");
+		$margine = $this->getMarginePercentuale($idPage);
 		
 		return ($prezzoMinimo * $margine) / 100;
 	}
