@@ -104,6 +104,11 @@ trait InitController
 		
 		Params::$rewriteStatusVariables = false;
 		
+		$data["sidebarCollapsed"] = false;
+		
+		if (isset($_COOKIE["tipo_sidebar"]) && (int)$_COOKIE["tipo_sidebar"] === 2)
+			$data["sidebarCollapsed"] = true;
+		
 		$this->append($data);
 	}
 }

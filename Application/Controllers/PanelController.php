@@ -75,5 +75,17 @@ class PanelController extends BaseController {
 		$this->load('footer','last');
 		$this->load('panel');
 	}
-
+	
+	public function salvasidebar($tipo = 1)
+	{
+		$this->clean();
+		
+		$time = time() + 3600*24*365*10;
+		
+		if ((int)$tipo === 1)
+			setcookie("tipo_sidebar",1,$time,"/");
+		else
+			setcookie("tipo_sidebar",2,$time,"/");
+	}
+	
 }

@@ -108,24 +108,29 @@
 <!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <body class="admin_panel hold-transition skin-blue sidebar-mini" <?php if (partial()) { ?>style="padding-top:0px;"<?php } ?> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <body class="admin_panel hold-transition skin-blue sidebar-mini <?php if ($sidebarCollapsed && !partial()) { ?>sidebar-collapse<?php } ?>" <?php if (partial()) { ?>style="padding-top:0px;"<?php } ?> <!--<![endif]-->
 	
 	<div class="wrapper">
 
 		<?php if (!partial()) { ?>
 		<header class="main-header">
 			<!-- Logo -->
-			<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {?>
-			<a class="logo" href="<?php echo $this->baseUrlSrc;?>/panel/main"><?php echo Parametri::$nomeNegozio;?></a>
-			<?php } else { ?>
-			<a class="logo" href="<?php echo $this->baseUrlSrc;?>"><?php echo Parametri::$nomeNegozio;?></a>
-			<?php } ?>
+			<?php $urlLogo = (User::$logged and strcmp($this->action,'logout') !== 0) ? $this->baseUrlSrc."/panel/main" : $this->baseUrlSrc; ?>
+			
+			<a class="logo" href="<?php echo $urlLogo;?>">
+				<span class="logo-mini">
+					<?php echo substr(Parametri::$nomeNegozio,0,1);?>
+				</span>
+				<span class="logo-lg">
+					<?php echo Parametri::$nomeNegozio;?>
+				</span>
+			</a>
 
 			<!-- Header Navbar: style can be found in header.less -->
 			<nav class="navbar navbar-fixed-top" role="navigation">
 				<!-- Sidebar toggle button-->
 				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-					<span class="sr-only">Toggle navigation</span>
+					<span class="sr-only"></span>
 				</a>
 				<div class="navbar-custom-menu">
 					<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {

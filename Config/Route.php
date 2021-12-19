@@ -29,6 +29,7 @@ class Route
 	//set 'all' if you want that all the controller,action couples can be reached by the browser
 	public static $allowed = array(
 		'panel,main',
+		'panel,salvasidebar',
 		'users,login',
 		'users,logout',
 		'users,main',

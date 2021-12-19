@@ -694,6 +694,21 @@ $(document).ready(function(){
 		
 	});
 	
+	$( "body" ).on( "click", ".sidebar-toggle", function(e){
+		var display = $(".logo-lg").css("display");
+		var url = baseUrl + "/panel/salvasidebar/";
+		
+		var tipo = display == "none" ? 2 : 1;
+		
+		$.ajaxQueue({
+			url: url + tipo,
+			success: function(data)
+			{
+				
+			}
+		});
+	});
+	
 });
 
  (function( $ ) {

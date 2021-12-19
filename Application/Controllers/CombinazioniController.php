@@ -85,8 +85,16 @@ class CombinazioniController extends BaseController
 		else
 			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 		
-		$mainFields = array("c1.title", "prodotto");
-		$mainHead = "Categoria,Prodotto";
+		if (!partial())
+		{
+			$mainFields = array("c1.title", "prodotto");
+			$mainHead = "Categoria,Prodotto";
+		}
+		else
+		{
+			$mainFields = array();
+			$mainHead = "";
+		}
 		
 		if (v("immagine_in_varianti"))
 		{
@@ -110,8 +118,11 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Giacenza";
 		}
 		
-		$this->mainFields[] = "ordini";
-		$this->mainHead .= ",Acquisti";
+		if (!partial())
+		{
+			$this->mainFields[] = "ordini";
+			$this->mainHead .= ",Acquisti";
+		}
 		
 		if (v("attiva_giacenza"))
 			$this->colProperties = array(
