@@ -1928,3 +1928,8 @@ function altUrlencode($string)
 {
 	return str_replace("+", " ", urlencode($string));
 }
+
+function maggioreDiZero($numero)
+{
+	return $numero > 0 ? true : false;
+}

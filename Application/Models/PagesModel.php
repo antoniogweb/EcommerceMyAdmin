@@ -524,6 +524,14 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Indicate no solo se né i codici gtin e mpn non esitono. Ex: prodotto artigianale, prodotto unico, etc.")." ".gtext("Altrimenti se i suddetti codici esistono ma non li conoscete, mettete comunque sì (e cercate tali codici).")." ".gtext("Se lasciato vuoto verrà usato il valore globale.")."</div>"
 					),
 				),
+				'margine'		=>	array(
+					'labelString'=>	'Margine (%)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Margine in % del prodotto.")." ".gtext("Se lasciato a 0, prenderà il margine della prima categoria di appartenenza avente un margine maggiore di 0.")."</div>"
+					),
+				),
 			),
 		);
 		
@@ -1728,6 +1736,20 @@ class PagesModel extends GenericModel {
 		return $section;
 	}
 	
+	public function prezzoMinimoDisplay($id_page)
+	{
+		$prezzoMinimo = $this->prezzoMinimo($id_page);
+		
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			$iva = $this->getIva($id_page);
+			
+			$prezzoMinimo = $prezzoMinimo + ($prezzoMinimo * (float)$iva / 100);
+		}
+		
+		return setPriceReverse($prezzoMinimo);
+	}
+	
 	public function prezzoMinimo($id_page, $forzaPrincipale = false)
 	{
 		$clean['id_page'] = (int)$id_page;
@@ -2047,7 +2069,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce il codice 
-	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null)
+	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null, $funzione = null)
 	{
 		if (!isset($parents))
 		{
@@ -2065,8 +2087,16 @@ class PagesModel extends GenericModel {
 		{
 			$pr = isset($p["categories"]) ? $p["categories"] : $p["pages"];
 			
-			if ($pr[$field])
-				return $pr[$field];
+			if ($funzione)
+			{
+				if (call_user_func($funzione,$pr[$field]))
+					return $pr[$field];
+			}
+			else
+			{
+				if ($pr[$field])
+					return $pr[$field];
+			}
 		}
 		
 		return "";
@@ -2314,9 +2344,11 @@ class PagesModel extends GenericModel {
     public function aggiungiaprodotto($id)
     {
 		$record = $this->selectId((int)$id);
-		$recordPagina = $this->selectId((int)$_GET["id_pcorr"]);
 		
-		if (!empty($record) && !empty($recordPagina) && isset($_GET["id_pcorr"]) && isset($_GET["pcorr_sec"]))
+		if (isset($_GET["id_pcorr"]))
+			$recordPagina = $this->selectId((int)$_GET["id_pcorr"]);
+		
+		if (!empty($record) && isset($_GET["id_pcorr"]) && !empty($recordPagina) && isset($_GET["pcorr_sec"]))
 		{
 			$pp = new PagespagesModel();
 			
@@ -2665,12 +2697,51 @@ class PagesModel extends GenericModel {
 		return "";
 	}
 	
+	public function etichettaTitolo($idPage, $page = null)
+	{
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		return $page["title"];
+	}
+	
+	public function getMarginePercentuale($idPage)
+	{
+		return (float)$this->getFirstNotEmpty($idPage, "margine", null, "maggioreDiZero");
+	}
+	
+	public function margineEuro($idPage)
+	{
+		$prezzoMinimo = $this->prezzoMinimo($idPage, true);
+		
+		$margine = $this->getMarginePercentuale($idPage);
+		
+		return ($prezzoMinimo * $margine) / 100;
+	}
+	
 	public function etichettaMargine($idPage, $page = null)
 	{
+		$scaglione = (int)v("scaglioni_margine_di_euro");
+		
+		if ($scaglione > 0)
+		{
+			$margineEuro = $this->margineEuro($idPage);
+			
+			if ($margineEuro > 0)
+				$rapporto = floor($margineEuro / $scaglione);
+			else
+				$rapporto = 0;
+			
+			$min = $rapporto * $scaglione;
+			$max = ($rapporto + 1) * $scaglione;
+			
+			return "MARGINE $min - $max €";
+		}
+		
 		return "";
 	}
 	
-	// Restituisce gli elementi da essere usati nella fascia
+	// Restituisce gli elementi da usare nella fascia
 	public static function getElementiFascia($numero = 0)
 	{
 		$className = get_called_class();

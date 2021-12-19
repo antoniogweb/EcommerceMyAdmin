@@ -36,6 +36,9 @@ class CategorieController extends CategoriesController {
 		if (v("attiva_strumenti_merchant_google"))
 			$this->queryFields .= ",codice_categoria_prodotto_google";
 		
+		if (v("attiva_margine_in_prodotti"))
+			$this->queryFields .= ",margine";
+		
 		if (v("mostra_seconda_immagine_categoria_prodotti"))
 			$this->queryFields .= ",immagine_2";
 		
