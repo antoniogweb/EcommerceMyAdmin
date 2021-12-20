@@ -92,8 +92,8 @@ class CombinazioniController extends BaseController
 		}
 		else
 		{
-			$mainFields = array();
-			$mainHead = "";
+			$mainFields = array("prodotto");
+			$mainHead = "Prodotto";
 		}
 		
 		if (v("immagine_in_varianti"))
