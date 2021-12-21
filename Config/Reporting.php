@@ -36,7 +36,8 @@ define ('ERROR_REPORTING_DIRECTIVE',E_ALL);
 
 //set the php.ini display_errors directive
 //set to On or Off
-define ('DISPLAY_ERRORS','On');
+if (!defined('DISPLAY_ERRORS'))
+	define ('DISPLAY_ERRORS','On');
 
 //set if the error file (see the next directive) has to be created or not
 //set ERROR_REPORTING_FILE to true if you want that MvcMyLibrary saves the errors in the LOG_ERROR_FILE (next), otherwise set ERROR_REPORTING_FILE to false
