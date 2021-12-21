@@ -591,6 +591,9 @@ $(document).ready(function(){
 		
 		var url = $(this).attr("href");
 		
+		if ($(this).find("i").length > 0)
+			$(this).find("i").attr("class","fa fa-refresh fa-spin");
+		
 		$.ajaxQueue({
 			url: url,
 			cache:false,
