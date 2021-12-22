@@ -1786,10 +1786,10 @@ class BaseContenutiController extends BaseController
 		if (VariabiliModel::checkToken("var_query_string_no_cookie"))
 		{
 			$time = time() + 3600*24*365*10;
-			setcookie("ok_cookie","OK",$time,"/");
+			Cookie::set("ok_cookie", "OK", $time, "/");
 			
 			if (isset($_GET["all_cookie"]))
-				setcookie("ok_cookie_terzi","OK",$time,"/");
+				Cookie::set("ok_cookie_terzi", "OK", $time, "/");
 		}
 		
 		$this->redirect("");
