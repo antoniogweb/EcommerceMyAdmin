@@ -72,7 +72,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					<div class="uk-margin">
 						<?php $idCondizioni = PagineModel::gTipoPagina("CONDIZIONI"); ?>
 						<?php if ($idCondizioni) { ?>
-						<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small"><?php echo gtext("Ho letto e accettato i");?> <a href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioni);?>"><?php echo gtext("termini e condizioni di vendita");?></a></div>
+						<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small"><?php echo gtext("Ho letto e accettato i");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioni);?>"><?php echo gtext("termini e condizioni di vendita");?></a></div>
 						<?php } else { ?>
 						<div class="uk-alert uk-alert-danger"><?php echo gtext("Attenzione, definire le condizioni di vendita");?></div>
 						<?php } ?>
