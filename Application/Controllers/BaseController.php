@@ -972,11 +972,11 @@ class BaseController extends Controller
 			}
 		}
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'save','mainAction'=>"variabili/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'save','mainAction'=>"variabili".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->mainView = "variabili";
 		
-		$form = new Form_Form("/".$this->controller."/variabili/".$clean['id'],array("updateAction"=>"Salva"), "POST");
+		$form = new Form_Form($this->controller."/variabili/".$clean['id'],array("updateAction"=>"Salva"), "POST");
 		
 		$entries = array();
 		$values = array();
