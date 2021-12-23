@@ -311,7 +311,7 @@ Helper_Menu::$htmlLinks = array(
 		'url'	=>	'main',
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-success save_combinazioni menu_btn"',
+		"attributes" => 'role="button" class="btn btn-success save_combinazioni menu_btn btn_trigger_click"',
 		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
 	),
 );

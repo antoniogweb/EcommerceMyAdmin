@@ -205,9 +205,23 @@ $(document).ready(function(){
 	});
 	
 	$("td.delForm form,.del_row, td.ldel a").click(function () {
-
+		var that = $(this);
+		
 		if (window.confirm("vuoi veramente cancellare la riga?")) {
-			return true;
+			
+			if (that.find("i").length > 0)
+				that.find("i").attr("class", "fa fa-refresh fa-spin");
+			
+			if ($(".btn_trigger_click").length > 0)
+			{
+				$(".btn_trigger_click").trigger("click");
+				
+				setTimeout(function(){
+					window.location = that.attr("href");
+				}, 500);
+			}
+			else
+				return true;
 		}
 
 		return false;
