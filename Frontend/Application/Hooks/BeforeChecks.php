@@ -81,6 +81,7 @@ require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");
 require(LIBRARY."/Application/Include/tema.php");
+require(LIBRARY."/Application/Modules/F.php");
 
 if (!v("traduzione_frontend"))
 	Lang::$edit = false;

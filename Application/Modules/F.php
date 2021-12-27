@@ -37,4 +37,17 @@ class F
 		}
 		return $median;
 	}
+	
+	public static function getLimitiMinMax($valore, $scaglione)
+	{
+		if ($valore > 0)
+			$rapporto = floor($valore / $scaglione);
+		else
+			$rapporto = 0;
+		
+		$min = $rapporto * $scaglione;
+		$max = ($rapporto + 1) * $scaglione;
+		
+		return array($min, $max);
+	}
 }

@@ -2702,7 +2702,7 @@ class PagesModel extends GenericModel {
 		if (!$page)
 			$page = $this->selectId($page);
 		
-		return $page["title"];
+		return htmlentitydecode($page["title"]);
 	}
 	
 	public function getMarginePercentuale($idPage)
@@ -2713,6 +2713,9 @@ class PagesModel extends GenericModel {
 	public function margineEuro($idPage)
 	{
 		$prezzoMinimo = $this->prezzoMinimo($idPage, true);
+		
+		$c = new CartModel();
+		$prezzoMinimo = $c->calcolaPrezzoFinale($idPage, $prezzoMinimo, 1, true);
 		
 		$margine = $this->getMarginePercentuale($idPage);
 		
@@ -2727,18 +2730,42 @@ class PagesModel extends GenericModel {
 		{
 			$margineEuro = $this->margineEuro($idPage);
 			
-			if ($margineEuro > 0)
-				$rapporto = floor($margineEuro / $scaglione);
-			else
-				$rapporto = 0;
-			
-			$min = $rapporto * $scaglione;
-			$max = ($rapporto + 1) * $scaglione;
+			list($min, $max) = F::getLimitiMinMax($margineEuro, $scaglione);
 			
 			return "MARGINE $min - $max €";
 		}
 		
 		return "";
+	}
+	
+	public function etichettaCpc($idPage, $page = null)
+	{
+		$scaglione = (int)v("scaglioni_cpc_euro_centesimi") / 100;
+		
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		if ($scaglione > 0 && isset($page["cpc_medio_pesato"]))
+		{
+			$cpcMedioPesato = $page["cpc_medio_pesato"];
+			
+			list($min, $max) = F::getLimitiMinMax($cpcMedioPesato, $scaglione);
+			
+			return "CPC $min - $max €";
+		}
+		
+		return "";
+	}
+	
+	public function etichettaAttivoPassivo($idPage, $page = null)
+	{
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		if (isset($page["guadagno_previsto"]))
+			return $page["guadagno_previsto"] > 0 ? "GUADAGNO STIMATO POSITIVO" : "GUADAGNO STIMATO NEGATIVO";
+		
+		return "NON STIMATO";
 	}
 	
 	// Restituisce gli elementi da usare nella fascia

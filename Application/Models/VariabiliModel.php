@@ -345,8 +345,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_descrizione_3_in_prodotti"	=>	0, // attiva campo descrizione 3 nei prodotti
 		"attiva_descrizione_4_in_prodotti"	=>	0, // attiva campo descrizione 4 nei prodotti
 		"attiva_margine_in_prodotti"		=>	0, // attiva oppure no il campo margine nei prodotti e nelle categorie
-		"scaglioni_margine_di_euro"		=>	10,
-		"mostra_pagina_intermedia_paypal"	=>	0,
+		"scaglioni_margine_di_euro"		=>	10, // indica lo scaglione in euro del margine assoluto da mostrare nelle etichette del feed di google
+		"mostra_pagina_intermedia_paypal"	=>	0, // mostra la pagina di atterraggio intermedia prima di andare su paypal
+		"scaglioni_cpc_euro_centesimi"		=>	10, // indica lo scaglione in centesimi di euro del CPC da mostrare nelle etichette del feed di google
 	);
 	
 	public static $daInizializzare = array(

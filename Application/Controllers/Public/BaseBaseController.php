@@ -23,6 +23,7 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 require(LIBRARY."/Application/Models/ContattiModel.php");
+require_once(LIBRARY."/Application/Modules/F.php");
 
 class BaseBaseController extends Controller
 {
