@@ -1,0 +1,1 @@
+INSERT INTO `lingue` (`id_lingua`, `data_creazione`, `codice`, `descrizione`, `id_order`, `principale`, `attiva`, `backend`, codice_clean) VALUES (NULL, CURRENT_TIMESTAMP, 'fi', 'Finnish', '10', '0', '0', '0', 'fi');
