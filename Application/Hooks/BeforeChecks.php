@@ -135,6 +135,16 @@ Helper_Menu::$htmlLinks = array(
 		'queryString'	=>	'&esporta=Y',
 		"classIconBefore"	=>	'<i class="fa fa-download"></i>',
 	),
+	"esporta_xls" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-info"',
+		"class"	=>	"btn btn-info",
+		'text'	=>	"Esporta XLS",
+		'url'	=>	'main',
+		'queryString'	=>	'&esporta_xls=Y',
+		"classIconBefore"	=>	'<i class="fa fa-file-excel-o"></i>',
+	),
 	"pulisci" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',

@@ -2738,6 +2738,23 @@ class PagesModel extends GenericModel {
 		return "";
 	}
 	
+	public function etichettaMargineGuadagnoPrevisto($idPage, $page = null)
+	{
+		$scaglione = (int)v("scaglioni_margine_di_guadagno");
+		
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		if ($scaglione > 0 && isset($page["guadagno_previsto"]))
+		{
+			list($min, $max) = F::getLimitiMinMax($page["guadagno_previsto"], $scaglione);
+			
+			return "CPC $min - $max €";
+		}
+		
+		return "";
+	}
+	
 	public function etichettaCpc($idPage, $page = null)
 	{
 		$scaglione = (int)v("scaglioni_cpc_euro_centesimi") / 100;
@@ -2747,9 +2764,7 @@ class PagesModel extends GenericModel {
 		
 		if ($scaglione > 0 && isset($page["cpc_medio_pesato"]))
 		{
-			$cpcMedioPesato = $page["cpc_medio_pesato"];
-			
-			list($min, $max) = F::getLimitiMinMax($cpcMedioPesato, $scaglione);
+			list($min, $max) = F::getLimitiMinMax($page["cpc_medio_pesato"], $scaglione);
 			
 			return "CPC $min - $max €";
 		}

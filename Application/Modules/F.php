@@ -40,14 +40,14 @@ class F
 	
 	public static function getLimitiMinMax($valore, $scaglione)
 	{
-		if ($valore > 0)
-			$rapporto = floor($valore / $scaglione);
-		else
-			$rapporto = 0;
+		$rapporto = floor(abs($valore) / $scaglione);
 		
 		$min = $rapporto * $scaglione;
 		$max = ($rapporto + 1) * $scaglione;
 		
-		return array($min, $max);
+		if ($valore < 0)
+			return array($max * (-1), $min * (-1));
+		else
+			return array($min, $max);
 	}
 }

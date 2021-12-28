@@ -352,7 +352,7 @@ class BaseController extends Controller
 			}
 		}
 		
-		if (isset($_GET["esporta"]))
+		if (isset($_GET["esporta"]) || isset($_GET["esporta_xls"]))
 		{
 			if (isset($this->mainCsvFields) and isset($this->mainCsvHead))
 			{
@@ -431,6 +431,23 @@ class BaseController extends Controller
 			
 			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".csv");
 			header('Content-Type: application/vnd.ms-excel');
+			
+			echo "\xEF\xBB\xBF"; // UTF-8 BOM
+			echo $data['main'];
+		}
+		else if (isset($_GET["esporta_xls"]))
+		{
+			$this->scaffold->params["recordPerPage"] = 10000000000;
+			$this->scaffold->params['pageList'] = false;
+			
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['main'] = $this->scaffold->html['main'];
+			
+			$this->clean();
+			
+			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xls");
+			header('Content-Type: application/vnd.ms-excel; charset=utf-8');
 			
 			echo "\xEF\xBB\xBF"; // UTF-8 BOM
 			echo $data['main'];

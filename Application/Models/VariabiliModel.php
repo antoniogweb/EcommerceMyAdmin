@@ -348,6 +348,7 @@ class VariabiliModel extends GenericModel {
 		"scaglioni_margine_di_euro"		=>	10, // indica lo scaglione in euro del margine assoluto da mostrare nelle etichette del feed di google
 		"mostra_pagina_intermedia_paypal"	=>	0, // mostra la pagina di atterraggio intermedia prima di andare su paypal
 		"scaglioni_cpc_euro_centesimi"		=>	10, // indica lo scaglione in centesimi di euro del CPC da mostrare nelle etichette del feed di google
+		"scaglioni_margine_di_guadagno"		=>	10, // indica lo scaglione in euro del guadagno assoluto previsto da mostrare nelle etichette del feed di google
 	);
 	
 	public static $daInizializzare = array(
