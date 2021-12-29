@@ -2253,6 +2253,25 @@ class PagesModel extends GenericModel {
 				$r["pages"]["in_promo_feed"] = true;
 			}
 			
+			if (!isset($_GET["fbk"]) && v("aggiungi_dettagli_prodotto_al_feed"))
+			{
+				$caratteristiche = $p->selectCaratteristiche($r["pages"]["id_page"]);
+				
+				if (count($caratteristiche) > 0)
+				{
+					$temp["g:product_detail"] = array();
+					
+					foreach ($caratteristiche as $rc)
+					{
+						$temp["g:product_detail"][] = array(
+							"g:section_name"	=>	tcarfield($rc, "titolo") ? htmlentitydecode(tcarfield($rc, "titolo")) : gtext("Generale"),
+							"g:attribute_name"	=>	htmlentitydecode(carfield($rc, "titolo")),
+							"g:attribute_value"	=>	htmlentitydecode(carvfield($rc, "titolo")),
+						);
+					}
+				}
+			}
+			
 			if (!isset($_GET["fbk"]) && count($etichettePersonalizzate) > 0)
 			{
 				$indiceEtichetta = 0;
@@ -2749,7 +2768,7 @@ class PagesModel extends GenericModel {
 		{
 			list($min, $max) = F::getLimitiMinMax($page["guadagno_previsto"], $scaglione);
 			
-			return "CPC $min - $max €";
+			return "MARGINE GUADAGNO $min - $max €";
 		}
 		
 		return "";
@@ -2757,16 +2776,26 @@ class PagesModel extends GenericModel {
 	
 	public function etichettaCpc($idPage, $page = null)
 	{
+		return $this->etichettaCpcField($idPage, $page, "cpc_medio_pesato", "CPC");
+	}
+	
+	public function etichettaCpcMax($idPage, $page = null)
+	{
+		return $this->etichettaCpcField($idPage, $page, "cpc_max", "CPC MAX");
+	}
+	
+	public function etichettaCpcField($idPage, $page = null, $field = "cpc_medio_pesato", $etichetta = "CPC")
+	{
 		$scaglione = (int)v("scaglioni_cpc_euro_centesimi") / 100;
 		
 		if (!$page)
 			$page = $this->selectId($page);
 		
-		if ($scaglione > 0 && isset($page["cpc_medio_pesato"]))
+		if ($scaglione > 0 && isset($page[$field]))
 		{
-			list($min, $max) = F::getLimitiMinMax($page["cpc_medio_pesato"], $scaglione);
+			list($min, $max) = F::getLimitiMinMax($page[$field], $scaglione);
 			
-			return "CPC $min - $max €";
+			return "$etichetta $min - $max €";
 		}
 		
 		return "";

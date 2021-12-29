@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, CURRENT_TIMESTAMP, '0', 'Cpc Max', 'etichettaCpcMax', 'ETICHETTE_FEED_GOOGLE', '9', '0');
