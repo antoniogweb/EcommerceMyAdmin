@@ -2148,12 +2148,13 @@ class PagesModel extends GenericModel {
 			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 			
 			$prezzoMinimo = $p->prezzoMinimo($r["pages"]["id_page"]);
+			$prezzoMinimoIvato = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo);
 			
 			$temp = array(
 				"g:id"	=>	$r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
-				"g:price"	=>	number_format(calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo),2,".",""). " EUR",
+				"g:price"	=>	number_format($prezzoMinimoIvato,2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
 // 				"g:identifier_exists"	=>	v("identificatore_feed_default"),
 			);
@@ -2253,21 +2254,38 @@ class PagesModel extends GenericModel {
 				$r["pages"]["in_promo_feed"] = true;
 			}
 			
-			if (!isset($_GET["fbk"]) && v("aggiungi_dettagli_prodotto_al_feed"))
+			if (!isset($_GET["fbk"]))
 			{
-				$caratteristiche = $p->selectCaratteristiche($r["pages"]["id_page"]);
-				
-				if (count($caratteristiche) > 0)
+				if (v("aggiungi_dettagli_prodotto_al_feed"))
 				{
-					$temp["g:product_detail"] = array();
+					$caratteristiche = $p->selectCaratteristiche($r["pages"]["id_page"]);
 					
-					foreach ($caratteristiche as $rc)
+					if (count($caratteristiche) > 0)
 					{
-						$temp["g:product_detail"][] = array(
-							"g:section_name"	=>	tcarfield($rc, "titolo") ? htmlentitydecode(tcarfield($rc, "titolo")) : gtext("Generale"),
-							"g:attribute_name"	=>	htmlentitydecode(carfield($rc, "titolo")),
-							"g:attribute_value"	=>	htmlentitydecode(carvfield($rc, "titolo")),
-						);
+						$temp["g:product_detail"] = array();
+						
+						foreach ($caratteristiche as $rc)
+						{
+							$temp["g:product_detail"][] = array(
+								"g:section_name"	=>	tcarfield($rc, "titolo") ? htmlentitydecode(tcarfield($rc, "titolo")) : gtext("Generale"),
+								"g:attribute_name"	=>	htmlentitydecode(carfield($rc, "titolo")),
+								"g:attribute_value"	=>	htmlentitydecode(carvfield($rc, "titolo")),
+							);
+						}
+					}
+				}
+				
+				if (v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
+				{
+					$subtotaleSpedizione = (!v("prezzi_ivati_in_carrello")) ? $prezzoMinimo : $prezzoMinimoIvato;
+					
+					// Solo spedizioni gratuite e solo nazione default
+					if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+					{
+						$nazione = User::$nazioneNavigazione ? User::$nazioneNavigazione : v("nazione_default");
+						
+						$temp["g:shipping"]["g:country"] = $nazione;
+						$temp["g:shipping"]["g:price"] = "0 EUR";
 					}
 				}
 			}
