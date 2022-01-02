@@ -10,3 +10,4 @@ config.php
 /Application/Apps
 /Library/*
 /Theme/*
+/Frontend/Application/Views/Default/layout.json
