@@ -83,6 +83,8 @@ class ElementitemaController extends BaseController
 			$jsonVarianti = $this->m[$this->modelName]->clear()->send();
 			
 			$jsonVarianti = json_encode($jsonVarianti);
+			
+			
 		}
 	}
 }
