@@ -44,6 +44,9 @@
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
 				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtext("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
+				
+				<a v-if="abilitaGestioneVarianti && varianti.length > 0" href="" @click.prevent="esportaTema()" class="uk-margin-small uk-button uk-button-default uk-width-1-2"><?php echo gtext("Esporta")?></a>
+				
 				<ul uk-accordion>
 					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione tema");?></a>
@@ -276,6 +279,20 @@
 				preparaAggiungi: function()
 				{
 					this.aggiungi = false;
+				},
+				esportaTema: function()
+				{
+					var that = this;
+					
+					$.ajaxQueue({
+						url: this.baseUrlSrc + "/admin/elementitema/esporta",
+						async: true,
+						cache:false,
+						dataType: "html",
+						success: function(content){
+
+						}
+					});
 				},
 				modificaFascia: function(id)
 				{

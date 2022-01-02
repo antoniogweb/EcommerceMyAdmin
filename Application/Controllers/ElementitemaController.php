@@ -69,4 +69,20 @@ class ElementitemaController extends BaseController
 		
 		parent::form($queryType, $id);
 	}
+	
+	public function esporta()
+	{
+		$this->clean();
+		
+		$cartellaTema = v("theme_folder");
+		
+		$percorsoTema = Tema::getElencoTemi($cartellaTema);
+		
+		if (count($percorsoTema) > 0)
+		{
+			$jsonVarianti = $this->m[$this->modelName]->clear()->send();
+			
+			$jsonVarianti = json_encode($jsonVarianti);
+		}
+	}
 }
