@@ -40,20 +40,9 @@ if (!isset($noFiltri))
 		<div class="uk-text-center">
 			<div class="" uk-grid>
 				<?php if (!isset($noFiltri)) { ?>
-					<?php if (User::$isMobile) { ?>
-					<div id="filtri-categoria" uk-offcanvas="overlay: true" class="uk-text-small">
-						<div class="uk-offcanvas-bar">
-							<div class="uk-flex uk-flex-right">
-								<button uk-toggle="target: #filtri-categoria" type="button" uk-close></button>
-							</div>
-					<?php } ?>
-							<?php
-							include(tpf("/Elementi/Categorie/filtri_categoria.php"));
-							?>
-					<?php if (User::$isMobile) { ?>
-						</div>
-					</div>
-					<?php } ?>
+					<?php
+					include(tpf("/Elementi/Categorie/filtri_categoria.php"));
+					?>
 				<?php } ?>
 				
 				<?php if (!isset($itemFile))
