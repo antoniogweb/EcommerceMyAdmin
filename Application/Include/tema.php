@@ -61,7 +61,7 @@ class Tema
 		
 			foreach( $items as $this_file )
 			{
-				if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0)
+				if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0 && strpos($this_file, "__") === false)
 				{
 					if (@is_dir($path."/$this_file"))
 					{

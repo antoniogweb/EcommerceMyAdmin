@@ -352,6 +352,7 @@ class VariabiliModel extends GenericModel {
 		"rapporto_dollaro_euro"				=>	1.13, // proporzione euro dollaro
 		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
 		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
+		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 	);
 	
 	public static $daInizializzare = array(

@@ -1331,7 +1331,14 @@ class PagesController extends BaseController {
 			"id_tipo"	=>	$this->viewArgs["tipocontenuto"],
 			"lk"		=>	array("contenuti.titolo" => $this->viewArgs["titolo_contenuto"]),
 			"tipo"		=>	"FASCIA",
-		))->convert()->save();
+		))->convert();
+		
+		if (v("filtra_fasce_per_tema"))
+			$this->m[$this->modelName]->aWhere(array(
+				"contenuti.tema"	=>	sanitizeDb(v("theme_folder")),
+			));
+		
+		$this->m[$this->modelName]->save();
 		
 		$this->tabella = gtext("prodotti");
 		

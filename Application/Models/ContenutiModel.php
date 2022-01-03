@@ -332,6 +332,9 @@ class ContenutiModel extends GenericModel {
 	
 	public function insert()
 	{
+		if (v("theme_folder"))
+			$this->values["tema"] = v("theme_folder");
+		
 		if ($this->upload("insert"))
 			return parent::insert();
 	}
@@ -382,6 +385,11 @@ class ContenutiModel extends GenericModel {
 		else
 			$this->aWhere(array(
 				"contenuti.id_c"	=>	(int)$idC,
+			));
+		
+		if (v("filtra_fasce_per_tema"))
+			$this->aWhere(array(
+				"contenuti.tema"	=>	sanitizeDb(v("theme_folder")),
 			));
 		
 		$idElemento = $idPage ? $idPage : $idC;
