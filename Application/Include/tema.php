@@ -25,8 +25,27 @@ class Tema
 		return false;
 	}
 	
-	public static function getElencoTemi($tema = null)
+	// Ritorna il JSON del file layout.json nella cartella del tema
+	public static function getJsonLayout($tema)
 	{
+		$percorso = self::getElencoTemi($tema, true);
+		
+		if (count($percorso) > 0)
+		{
+			$path = $percorso[0]["path"];
+			
+			if (file_exists($path."/layout.json"))
+				return file_get_contents($path."/layout.json");
+		}
+		
+		return null;
+	}
+	
+	public static function getElencoTemi($tema = null, $empty = false)
+	{
+		if ($empty)
+			self::$elenco = array();
+		
 		$arrayPercorsi = array(
 			LIBRARY."/Frontend/Application/Views" =>	array(
 				"frontend"	=>	Domain::$adminName . "/Frontend/Application/Views",
@@ -54,6 +73,7 @@ class Tema
 								"nome"	=>	$this_file,
 								"preview"	=>	file_exists($path."/$this_file/_Preview/preview.png") ? true : false,
 								"preview_url"	=>	$previewUrl,
+								"path"	=>	$path."/$this_file",
 							);
 						}
 					}

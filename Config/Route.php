@@ -537,6 +537,8 @@ class Route
 
 		'elementitema,main',
 		'elementitema,form',
+		'elementitema,importa',
+		'elementitema,resetta',
 		'elementitema,esporta',
 		
 		'integrazioni,main',

@@ -45,7 +45,7 @@
 			<div class="uk-padding-small">
 				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtext("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
 				
-				<a v-if="abilitaGestioneVarianti && varianti.length > 0" href="" @click.prevent="esportaTema()" class="uk-margin-small uk-button uk-button-default uk-width-1-2"><?php echo gtext("Esporta")?></a>
+				
 				
 				<ul uk-accordion>
 					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
@@ -61,6 +61,9 @@
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Varianti pagina");?></a>
 						<div class="uk-accordion-content">
 							<variante-item v-for="variante in varianti" v-bind:variante="variante"></variante-item>
+							<div v-if="abilitaGestioneVarianti && varianti.length > 0" class="uk-margin-small">
+								<a href="#" @click.prevent="resettaTema()" class="uk-button uk-button-danger uk-width-1-1"><?php echo gtext("Resetta varianti")?></a>
+							</div>
 						</div>
 					</li>
 					<li v-show="mostraFasce" class="uk-open">
@@ -121,7 +124,7 @@
 		
    		var urlGetTipiFasce = "<?php echo $this->baseUrlSrc."/admin/tipicontenuto/main?tipo=FASCIA&esporta_json";?>";
    		var urlPostElementi = "<?php echo $this->baseUrlSrc."/admin/elementitema/form/update/";?>";
-   		var tendinaTemi = <?php echo json_encode(Tema::getElencoTemi());?>;
+   		var tendinaTemi = <?php echo json_encode(Tema::getElencoTemi(null, true));?>;
    		
 //    		console.log(tendinaTemi);
    		
@@ -176,6 +179,7 @@
    		var app = new Vue({
 			el: '#right-col',
 			data: {
+				layoutDaImportarePresente: false,
 				baseUrlSrc: baseUrlSrc,
 				temaSelezionato: "",
 				tendinaTemi: tendinaTemi,
@@ -237,7 +241,8 @@
 						dataType: "html",
 						success: function(content){
 							
-							aggiornaIframe();
+							that.importaTema();
+// 							aggiornaIframe();
 						}
 					});
 				},
@@ -280,6 +285,21 @@
 				{
 					this.aggiungi = false;
 				},
+				resettaTema: function()
+				{
+					if (confirm("Confermi che vuoi impostare tutte le varianti al valore di default?"))
+					{
+						$.ajaxQueue({
+							url: this.baseUrlSrc + "/admin/elementitema/resetta",
+							async: true,
+							cache:false,
+							dataType: "html",
+							success: function(content){
+								aggiornaIframe();
+							}
+						});
+					}
+				},
 				esportaTema: function()
 				{
 					var that = this;
@@ -290,18 +310,29 @@
 						cache:false,
 						dataType: "html",
 						success: function(content){
-
+							aggiornaIframe();
+						}
+					});
+				},
+				importaTema: function()
+				{
+					var that = this;
+					
+					$.ajaxQueue({
+						url: this.baseUrlSrc + "/admin/elementitema/importa",
+						async: true,
+						cache:false,
+						dataType: "html",
+						success: function(content){
+							aggiornaIframe();
 						}
 					});
 				},
 				modificaFascia: function(id)
 				{
-					var url = this.baseUrlSrc + "/admin/contenuti/form/update/" + id + "?partial=Y"
-					$("#modale-fascia").find("iframe").attr("src", url)
+					var url = this.baseUrlSrc + "/admin/contenuti/form/update/" + id + "?partial=Y";
+					$("#modale-fascia").find("iframe").attr("src", url);
 					UIkit.modal("#modale-fascia",{}).show();
-// 					console.log("#" + id + " .class_edit_fascia");
-// 					console.log($('#iframe_webpage').contents().find("#" + id).length);
-// 					$('#iframe_webpage').contents().find("#" + id + " .class_edit_fascia").trigger("click");
 				},
 				eliminaFascia: function(id)
 				{
@@ -354,7 +385,7 @@
 					
 					$('#iframe_webpage').on("load", function() {
 						var elementoFasce = $('#iframe_webpage').contents().find(".blocco_fasce_contenuto").length;
-						console.log(elementoFasce);
+						
 						if (elementoFasce == 0)
 							that.mostraFasce = false;
 						else
@@ -362,6 +393,11 @@
 						
 						that.idElemento = $('#iframe_webpage').contents().find(".class_id_contenuto").text();
 						that.tipoElemento = $('#iframe_webpage').contents().find(".class_tipo_elemento").text();
+						
+						if ($('#iframe_webpage').contents().find(".class_ok_importa").length > 0)
+							that.layoutDaImportarePresente = true;
+						else
+							that.layoutDaImportarePresente = false;
 						
 						if (that.abilitaGestioneVarianti)
 							that.varianti = JSON.parse($('#iframe_webpage').contents().find(".class_json_varianti").text());

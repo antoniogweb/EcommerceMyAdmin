@@ -65,26 +65,53 @@ class ElementitemaController extends BaseController
 		
 		$fields = 'titolo,nome_file';
 		
+		$this->m[$this->modelName]->esportaTema = true;
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function importa()
+	{
+		$this->clean();
+		
+		$cartellaTema = v("theme_folder");
+		
+		$layout = Tema::getJsonLayout($cartellaTema);
+		
+		if ($layout)
+		{
+			$elementi = json_decode($layout, true);
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->beginTransaction();
+			
+			foreach ($elementi as $e)
+			{
+				$this->m[$this->modelName]->setValues($e["elementi_tema"], "sanitizeDb");
+				
+				$this->m[$this->modelName]->delFields("id_elemento_tema, data_creazione");
+				
+				$this->m[$this->modelName]->update($e["elementi_tema"]["id_elemento_tema"]);
+			}
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
+		}
+	}
+	
+	public function resetta()
+	{
+		$this->clean();
+		
+		$this->m[$this->modelName]->resetta();
 	}
 	
 	public function esporta()
 	{
 		$this->clean();
 		
-		$cartellaTema = v("theme_folder");
-		
-		$percorsoTema = Tema::getElencoTemi($cartellaTema);
-		
-		if (count($percorsoTema) > 0)
-		{
-			$jsonVarianti = $this->m[$this->modelName]->clear()->send();
-			
-			$jsonVarianti = json_encode($jsonVarianti);
-			
-			
-		}
+		$this->m[$this->modelName]->esportaInTema();
 	}
 }

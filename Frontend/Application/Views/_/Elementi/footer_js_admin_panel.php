@@ -12,6 +12,10 @@
 // 		echo "</pre>";
 	?>
 	<div style="display:none;" class="class_json_varianti"><?php echo json_encode($struttura);?></div>
+	<?php if (Tema::getJsonLayout(v("theme_folder"))) { ?>
+	<div style="display:none;" class="class_ok_importa"></div>
+	<?php } ?>
+	
 	<?php } ?>
 	
 	<?php if (v("permetti_cambio_tema")) { ?>

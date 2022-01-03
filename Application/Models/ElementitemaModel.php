@@ -28,6 +28,8 @@ class ElementitemaModel extends GenericModel {
 	
 	public static $variantiPagina = array();
 	
+	public $esportaTema = false;
+	
 	public function __construct() {
 		$this->_tables='elementi_tema';
 		$this->_idFields='id_elemento_tema';
@@ -51,6 +53,45 @@ class ElementitemaModel extends GenericModel {
 				),
 			),
 		);
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$res = parent::update($id, $where);
+		
+		if ($res && $this->esportaTema)
+			$this->esportaInTema();
+		
+		return $res;
+	}
+	
+	public function esportaInTema()
+	{
+		$cartellaTema = v("theme_folder");
+		
+		$percorsoTema = Tema::getElencoTemi($cartellaTema, true);
+		
+		if (count($percorsoTema) > 0)
+		{
+			$jsonVarianti = $this->clear()->send();
+			
+			$path = $percorsoTema[0]["path"];
+			
+			if (@is_dir($path))
+				file_put_contents(rtrim($path,"/")."/layout.json", json_encode($jsonVarianti));
+		}
+	}
+	
+	// Imposta tutti i valori al default
+	public function resetta()
+	{
+		$this->setValues(array(
+			"nome_file"	=>	"default",
+		));
+		
+		$this->update(null, "id_elemento_tema > 1");
+		
+		$this->esportaInTema();
 	}
 	
 	public function selectLayout($id)
