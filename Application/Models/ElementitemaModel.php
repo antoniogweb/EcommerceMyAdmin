@@ -75,10 +75,14 @@ class ElementitemaModel extends GenericModel {
 		{
 			$jsonVarianti = $this->clear()->send();
 			
+			$strutt = array(
+				"varianti"	=>	$jsonVarianti,
+			);
+			
 			$path = $percorsoTema[0]["path"];
 			
 			if (@is_dir($path))
-				file_put_contents(rtrim($path,"/")."/layout.json", json_encode($jsonVarianti));
+				file_put_contents(rtrim($path,"/")."/layout.json", json_encode($strutt));
 		}
 	}
 	

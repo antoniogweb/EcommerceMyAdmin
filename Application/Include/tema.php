@@ -5,6 +5,8 @@ class Tema
 {
 	public static $elenco = array();
 	
+	public static $nomeTemaStartEmpty = "__EMPTY__";
+	
 	public static function getRoot()
 	{
 		return Domain::$parentRoot."/Application/Views";
@@ -39,6 +41,35 @@ class Tema
 		}
 		
 		return null;
+	}
+	
+	// Crea un nuovo tema
+	public static function crea($tema)
+	{
+		$tema = encodeUrl(basename($tema));
+		
+		$percorso = self::getElencoTemi($tema, true);
+		
+		$nomeTemaVuoto = self::$nomeTemaStartEmpty;
+		
+		if ((int)count($percorso) === 0 && file_exists(LIBRARY."/Frontend/media/Temi/$nomeTemaVuoto.zip"))
+		{
+			$pathFinale = Domain::$parentRoot."/Application/Views";
+			
+			if (copy(LIBRARY."/Frontend/media/Temi/$nomeTemaVuoto.zip", $pathFinale."/$nomeTemaVuoto.zip"))
+			{
+				$zip = new ZipArchive;
+				
+				if (file_exists($pathFinale."/$nomeTemaVuoto.zip") && $zip->open($pathFinale."/$nomeTemaVuoto.zip") === TRUE) {
+					$zip->extractTo($pathFinale);
+					$zip->close();
+				}
+				
+				rename($pathFinale."/__EMPTY__", $pathFinale."/$tema");
+				
+				@unlink($pathFinale."/$nomeTemaVuoto.zip");
+			}
+		}
 	}
 	
 	public static function getElencoTemi($tema = null, $empty = false)

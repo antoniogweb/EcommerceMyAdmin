@@ -84,20 +84,25 @@ class ElementitemaController extends BaseController
 		{
 			$elementi = json_decode($layout, true);
 			
-			if (v("usa_transactions"))
-				$this->m[$this->modelName]->db->beginTransaction();
+// 			print_r($elementi);
 			
-			foreach ($elementi as $e)
+			if (isset($elementi["varianti"]))
 			{
-				$this->m[$this->modelName]->setValues($e["elementi_tema"], "sanitizeDb");
+				if (v("usa_transactions"))
+					$this->m[$this->modelName]->db->beginTransaction();
 				
-				$this->m[$this->modelName]->delFields("id_elemento_tema, data_creazione");
+				foreach ($elementi["varianti"] as $e)
+				{
+					$this->m[$this->modelName]->setValues($e["elementi_tema"], "sanitizeDb");
+					
+					$this->m[$this->modelName]->delFields("id_elemento_tema, data_creazione");
+					
+					$this->m[$this->modelName]->update($e["elementi_tema"]["id_elemento_tema"]);
+				}
 				
-				$this->m[$this->modelName]->update($e["elementi_tema"]["id_elemento_tema"]);
+				if (v("usa_transactions"))
+					$this->m[$this->modelName]->db->commit();
 			}
-			
-			if (v("usa_transactions"))
-				$this->m[$this->modelName]->db->commit();
 		}
 	}
 	
@@ -113,5 +118,24 @@ class ElementitemaController extends BaseController
 		$this->clean();
 		
 		$this->m[$this->modelName]->esportaInTema();
+	}
+	
+	public function crea()
+	{
+		$this->clean();
+		
+		$nomeTema = $this->request->post("nome_tema","","sanitizeAll");
+		
+		if ($nomeTema)
+		{
+			Tema::crea($nomeTema);
+		}
+	}
+	
+	public function elencotemi()
+	{
+		$this->clean();
+		
+		echo json_encode(Tema::getElencoTemi(null, true));
 	}
 }

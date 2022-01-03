@@ -45,8 +45,6 @@
 			<div class="uk-padding-small">
 				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtext("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
 				
-				
-				
 				<ul uk-accordion>
 					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione tema");?></a>
@@ -55,6 +53,15 @@
 							<select v-model="temaSelezionato" class="uk-margin-remove uk-select uk-margin-small" v-on:change="cambiaTema()">
 								<option  v-for="(tema, index) in tendinaTemi" v-bind:value="tema.nome">{{tema.nome}}</option>
 							</select>
+							
+							<div class="uk-margin-small">
+								<a v-if="aggiungiTema" @click.prevent="preparaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuovo tema</a>
+								<div v-if="!aggiungiTema">
+									<input v-bind:class="oggettoErroreTitoloTema" v-model="titoloNuovoTema" class="uk-input uk-margin-small" placeholder="Titolo nuovo tema"/>
+									<a @click.prevent="confermaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
+									<a @click.prevent="annullaAggiungiTema()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span uk-icon="arrow-left"></span> Annulla</a>
+								</div>
+							</div>
 						</div>
 					</li>
 					<li v-if="abilitaGestioneVarianti && varianti.length > 0" class="">
@@ -179,6 +186,9 @@
    		var app = new Vue({
 			el: '#right-col',
 			data: {
+				aggiungiTema: true,
+				titoloNuovoTema: "",
+				confermataAggiuntaTema: false,
 				layoutDaImportarePresente: false,
 				baseUrlSrc: baseUrlSrc,
 				temaSelezionato: "",
@@ -218,6 +228,11 @@
 				],
 			},
 			computed: {
+				oggettoErroreTitoloTema: function () {
+					return {
+						'uk-form-danger': this.titoloNuovoTema == "" && this.confermataAggiuntaTema,
+					}
+				},
 				oggettoErroreTitolo: function () {
 					return {
 						'uk-form-danger': this.titoloNuovaFascia == "" && this.confermataAggiunta,
@@ -275,15 +290,50 @@
 						});
 					}
 				},
+				confermaAggiungiTema: function()
+				{
+					this.confermataAggiuntaTema = true;
+					
+					if (this.titoloNuovoTema != "")
+					{
+						var that = this;
+						
+						$.ajaxQueue({
+							url: this.baseUrlSrc + "/admin/elementitema/crea",
+							async: true,
+							cache:false,
+							dataType: "html",
+							method: "POST",
+							data: {
+								nome_tema: this.titoloNuovoTema,
+							},
+							success: function(content){
+								aggiornaIframe();
+								
+								that.annullaAggiungiTema();
+							}
+						});
+					}
+				},
 				annullaAggiungi: function()
 				{
 					this.aggiungi = true;
 					this.confermataAggiunta = false;
 					this.titoloNuovaFascia = "";
 				},
+				annullaAggiungiTema: function()
+				{
+					this.aggiungiTema = true;
+					this.confermataAggiuntaTema = false;
+					this.titoloNuovoTema = "";
+				},
 				preparaAggiungi: function()
 				{
 					this.aggiungi = false;
+				},
+				preparaAggiungiTema: function()
+				{
+					this.aggiungiTema = false;
 				},
 				resettaTema: function()
 				{
@@ -364,6 +414,21 @@
 						}
 					});
 				},
+				geTemi: function()
+				{
+					var that = this;
+					
+					$.ajaxQueue({
+						url: this.baseUrlSrc + "/admin/elementitema/elencotemi",
+						async: true,
+						cache:false,
+						dataType: "json",
+						success: function(content){
+							
+							that.tendinaTemi = content;
+						}
+					});
+				},
 				geTipiFasce: function() {
 					var that = this;
 					
@@ -406,6 +471,8 @@
 // 						console.log(that.varianti);
 						
 // 						that.$forceUpdate();
+						
+						that.geTemi();
 						
 						if (that.idElemento != 0 && that.tipoElemento != "")
 						{

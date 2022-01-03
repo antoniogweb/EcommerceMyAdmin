@@ -540,6 +540,8 @@ class Route
 		'elementitema,importa',
 		'elementitema,resetta',
 		'elementitema,esporta',
+		'elementitema,crea',
+		'elementitema,elencotemi',
 		
 		'integrazioni,main',
 		'integrazioni,form',
