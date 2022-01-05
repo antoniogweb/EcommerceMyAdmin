@@ -353,7 +353,6 @@ class VariabiliModel extends GenericModel {
 		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
 		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
-		"campi_da_copiare_da_ordine_a_cliente"=>	"nome,cognome,ragione_sociale,p_iva,codice_fiscale,nazione,indirizzo,cap,provincia,dprovincia,citta,telefono,tipo_cliente,accetto,pec,codice_destinatario", // campi che vengono copiati dall'ordine al cliente se l'account viene creato durante l'acquisto
 	);
 	
 	public static $daInizializzare = array(

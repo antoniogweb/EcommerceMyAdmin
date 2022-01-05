@@ -47,6 +47,16 @@ class OpzioniModel extends GenericModel {
 		))->toList("valore", "titolo")->findAll();
 	}
 	
+	public static function arrayValori($codice)
+	{
+		return array_keys(self::codice($codice)); 
+	}
+	
+	public static function stringaValori($codice)
+	{
+		return implode(",", array_keys(self::codice($codice))); 
+	}
+	
 	public static function importaCategorieGoogle()
 	{
 		if (v("usa_transactions"))

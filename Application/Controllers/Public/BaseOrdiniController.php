@@ -975,7 +975,8 @@ class BaseOrdiniController extends BaseController
 			$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
 		}
 		
-		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,note';
+		$fields = OpzioniModel::stringaValori("CAMPI_SALVATAGGIO_ORDINE");
+		//'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,email,pagamento,accetto,tipo_cliente,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,note';
 		
 		if (!$this->islogged)
 		{
@@ -1131,7 +1132,7 @@ class BaseOrdiniController extends BaseController
 									
 									$this->m['RegusersModel']->values["password"] = $clean["password"];
 									
-									$campiDaCopiare = explode(",", v("campi_da_copiare_da_ordine_a_cliente"));
+									$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
 									
 									foreach ($campiDaCopiare as $cdc)
 									{
@@ -1157,8 +1158,6 @@ class BaseOrdiniController extends BaseController
 									
 									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine))
 										$this->m['RegusersModel']->values["credenziali_inviate"] = 0;
-									
-// 									$this->m['RegusersModel']->values["indirizzo_spedizione"] = $this->m['OrdiniModel']->values["indirizzo_spedizione"];
 									
 									if ($this->m['RegusersModel']->insert())
 									{
@@ -1384,7 +1383,8 @@ class BaseOrdiniController extends BaseController
 		$logSubmit->setErroriSubmit($data['notice']);
 		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
 		
-		$this->m['OrdiniModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,registrato,newsletter,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,spedisci_dati_fatturazione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,dprovincia,note";
+		$this->m['OrdiniModel']->fields = OpzioniModel::stringaValori("CAMPI_FORM_CHECKOUT");
+		//"nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,registrato,newsletter,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,spedisci_dati_fatturazione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,dprovincia,note";
 		
 		// Elenco corrieri
 		$data['corrieri'] = $elencoCorrieri;
