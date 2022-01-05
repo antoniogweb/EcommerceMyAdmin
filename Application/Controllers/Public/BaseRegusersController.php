@@ -212,7 +212,7 @@ class BaseRegusersController extends BaseController
 								$this->m["RegusersModel"]->db->update('regusers','forgot_token,forgot_time',$updateArray,'username="'.$clean['username'].'"');
 								
 								ob_start();
-								include tp()."/Regusers/mail_richiesta_cambio_password.php";
+								include tpf("/Regusers/mail_richiesta_cambio_password.php");
 
 								$output = ob_get_clean();
 								

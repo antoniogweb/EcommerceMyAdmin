@@ -117,7 +117,7 @@ class MailordiniModel extends GenericModel
 		
 		// MAIL AL CLIENTE
 		ob_start();
-		include tp()."/Regusers/mail_credenziali.php";
+		include tpf("/Regusers/mail_credenziali.php");
 		$output = ob_get_clean();
 		
 		return MailordiniModel::inviaMail(array(

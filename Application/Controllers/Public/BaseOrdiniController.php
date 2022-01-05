@@ -1131,23 +1131,29 @@ class BaseOrdiniController extends BaseController
 									
 									$this->m['RegusersModel']->values["password"] = $clean["password"];
 									
-									$this->m['RegusersModel']->values["nome"] = $this->m['OrdiniModel']->values["nome"];
-									$this->m['RegusersModel']->values["cognome"] = $this->m['OrdiniModel']->values["cognome"];
-									$this->m['RegusersModel']->values["ragione_sociale"] = $this->m['OrdiniModel']->values["ragione_sociale"];
-									$this->m['RegusersModel']->values["p_iva"] = $this->m['OrdiniModel']->values["p_iva"];
-									$this->m['RegusersModel']->values["codice_fiscale"] = $this->m['OrdiniModel']->values["codice_fiscale"];
-									$this->m['RegusersModel']->values["nazione"] = $this->m['OrdiniModel']->values["nazione"];
-									$this->m['RegusersModel']->values["indirizzo"] = $this->m['OrdiniModel']->values["indirizzo"];
-									$this->m['RegusersModel']->values["cap"] = $this->m['OrdiniModel']->values["cap"];
-									$this->m['RegusersModel']->values["provincia"] = $this->m['OrdiniModel']->values["provincia"];
-									$this->m['RegusersModel']->values["dprovincia"] = $this->m['OrdiniModel']->values["dprovincia"];
-									$this->m['RegusersModel']->values["citta"] = $this->m['OrdiniModel']->values["citta"];
-									$this->m['RegusersModel']->values["telefono"] = $this->m['OrdiniModel']->values["telefono"];
-									$this->m['RegusersModel']->values["tipo_cliente"] = $this->m['OrdiniModel']->values["tipo_cliente"];
-									$this->m['RegusersModel']->values["accetto"] = $this->m['OrdiniModel']->values["accetto"];
+									$campiDaCopiare = explode(",", v("campi_da_copiare_da_ordine_a_cliente"));
 									
-									$this->m['RegusersModel']->values["pec"] = $this->m['OrdiniModel']->values["pec"];
-									$this->m['RegusersModel']->values["codice_destinatario"] = $this->m['OrdiniModel']->values["codice_destinatario"];
+									foreach ($campiDaCopiare as $cdc)
+									{
+										$this->m['RegusersModel']->values[$cdc] = $this->m['OrdiniModel']->values[$cdc];
+									}
+									
+// 									$this->m['RegusersModel']->values["nome"] = $this->m['OrdiniModel']->values["nome"];
+// 									$this->m['RegusersModel']->values["cognome"] = $this->m['OrdiniModel']->values["cognome"];
+// 									$this->m['RegusersModel']->values["ragione_sociale"] = $this->m['OrdiniModel']->values["ragione_sociale"];
+// 									$this->m['RegusersModel']->values["p_iva"] = $this->m['OrdiniModel']->values["p_iva"];
+// 									$this->m['RegusersModel']->values["codice_fiscale"] = $this->m['OrdiniModel']->values["codice_fiscale"];
+// 									$this->m['RegusersModel']->values["nazione"] = $this->m['OrdiniModel']->values["nazione"];
+// 									$this->m['RegusersModel']->values["indirizzo"] = $this->m['OrdiniModel']->values["indirizzo"];
+// 									$this->m['RegusersModel']->values["cap"] = $this->m['OrdiniModel']->values["cap"];
+// 									$this->m['RegusersModel']->values["provincia"] = $this->m['OrdiniModel']->values["provincia"];
+// 									$this->m['RegusersModel']->values["dprovincia"] = $this->m['OrdiniModel']->values["dprovincia"];
+// 									$this->m['RegusersModel']->values["citta"] = $this->m['OrdiniModel']->values["citta"];
+// 									$this->m['RegusersModel']->values["telefono"] = $this->m['OrdiniModel']->values["telefono"];
+// 									$this->m['RegusersModel']->values["tipo_cliente"] = $this->m['OrdiniModel']->values["tipo_cliente"];
+// 									$this->m['RegusersModel']->values["accetto"] = $this->m['OrdiniModel']->values["accetto"];
+// 									$this->m['RegusersModel']->values["pec"] = $this->m['OrdiniModel']->values["pec"];
+// 									$this->m['RegusersModel']->values["codice_destinatario"] = $this->m['OrdiniModel']->values["codice_destinatario"];
 									
 									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine))
 										$this->m['RegusersModel']->values["credenziali_inviate"] = 0;
