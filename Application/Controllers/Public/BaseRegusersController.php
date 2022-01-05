@@ -619,7 +619,9 @@ class BaseRegusersController extends BaseController
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 		
-		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
+// 		$fields = 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
+		
+		$fields = OpzioniModel::stringaValori("CAMPI_SALVATAGGIO_UTENTE");
 		
 		if (v("attiva_ruoli"))
 			$fields .= ",id_ruolo";

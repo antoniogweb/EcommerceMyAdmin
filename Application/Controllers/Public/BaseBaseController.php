@@ -683,7 +683,11 @@ class BaseBaseController extends Controller
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 		
-		$baseFields = v("insert_account_fields");
+// 		$baseFields = v("insert_account_fields");
+		
+		$baseFields = OpzioniModel::stringaValori("CAMPI_SALVATAGGIO_UTENTE");
+		
+		$baseFields .= ",accetto";
 		
 		// BASE: 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
 		
