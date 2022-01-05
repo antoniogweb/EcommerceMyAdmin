@@ -49,10 +49,12 @@
 					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione tema");?></a>
 						<div class="uk-accordion-content">
-							<div class="uk-text-meta"><?php echo gtext("Tema corrente");?></div>
-							<select v-model="temaSelezionato" class="uk-margin-remove uk-select uk-margin-small" v-on:change="cambiaTema()">
-								<option  v-for="(tema, index) in tendinaTemi" v-bind:value="tema.nome">{{tema.nome}}</option>
-							</select>
+							<div v-if="aggiungiTema">
+								<div class="uk-text-meta"><?php echo gtext("Tema corrente");?></div>
+								<select v-model="temaSelezionato" class="uk-margin-remove uk-select uk-margin-small" v-on:change="cambiaTema()">
+									<option  v-for="(tema, index) in tendinaTemi" v-bind:value="tema.nome">{{tema.nome}}</option>
+								</select>
+							</div>
 							
 							<div class="uk-margin-small">
 								<a v-if="aggiungiTema" @click.prevent="preparaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuovo tema</a>
