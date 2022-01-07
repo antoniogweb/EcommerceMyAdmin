@@ -878,8 +878,7 @@ class BaseOrdiniController extends BaseController
 		
 		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
 		
-// 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
-		if ($this->codiceFiscaleObbligatorio())
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";
 		
 // 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
@@ -1560,13 +1559,5 @@ class BaseOrdiniController extends BaseController
 		$this->clean();
 		
 		echo hasActiveCoupon() ? "OK" : "KO";
-	}
-	
-	protected function codiceFiscaleObbligatorio()
-	{
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
-			return true;
-		
-		return false;
 	}
 }
