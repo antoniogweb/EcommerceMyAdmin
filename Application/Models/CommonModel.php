@@ -35,7 +35,7 @@ trait CommonModel {
 			{
 				if ($this->values["tipo_cliente"] == "privato" || $this->values["tipo_cliente"] == "libero_professionista")
 				{
-					if (!codiceFiscale($this->values["codice_fiscale"]))
+					if (trim($this->values["codice_fiscale"]) && !codiceFiscale($this->values["codice_fiscale"]))
 					{
 						$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
 						$this->result = false;

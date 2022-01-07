@@ -57,6 +57,17 @@ class OpzioniModel extends GenericModel {
 		return implode(",", array_keys(self::codice($codice))); 
 	}
 	
+	// se l'opzione è attiva
+	public static function isAttiva($codice, $valore)
+	{
+		$op = new OpzioniModel();
+		
+		return (int)$op->clear()->where(array(
+			"codice"	=>	sanitizeDb($codice),
+			"valore"	=>	sanitizeDb($valore),
+		))->field("attivo");
+	}
+	
 	public static function importaCategorieGoogle()
 	{
 		if (v("usa_transactions"))

@@ -878,7 +878,8 @@ class BaseOrdiniController extends BaseController
 		
 		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
 		
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
+// 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
+		if ($this->codiceFiscaleObbligatorio())
 			$campiObbligatoriComuni .= ",codice_fiscale";
 		
 // 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
@@ -950,7 +951,7 @@ class BaseOrdiniController extends BaseController
 			$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
 			
 			if (v("abilita_codice_fiscale"))
-				$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
+				$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
 			
 			$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
 		}
@@ -1138,23 +1139,6 @@ class BaseOrdiniController extends BaseController
 									{
 										$this->m['RegusersModel']->values[$cdc] = $this->m['OrdiniModel']->values[$cdc];
 									}
-									
-// 									$this->m['RegusersModel']->values["nome"] = $this->m['OrdiniModel']->values["nome"];
-// 									$this->m['RegusersModel']->values["cognome"] = $this->m['OrdiniModel']->values["cognome"];
-// 									$this->m['RegusersModel']->values["ragione_sociale"] = $this->m['OrdiniModel']->values["ragione_sociale"];
-// 									$this->m['RegusersModel']->values["p_iva"] = $this->m['OrdiniModel']->values["p_iva"];
-// 									$this->m['RegusersModel']->values["codice_fiscale"] = $this->m['OrdiniModel']->values["codice_fiscale"];
-// 									$this->m['RegusersModel']->values["nazione"] = $this->m['OrdiniModel']->values["nazione"];
-// 									$this->m['RegusersModel']->values["indirizzo"] = $this->m['OrdiniModel']->values["indirizzo"];
-// 									$this->m['RegusersModel']->values["cap"] = $this->m['OrdiniModel']->values["cap"];
-// 									$this->m['RegusersModel']->values["provincia"] = $this->m['OrdiniModel']->values["provincia"];
-// 									$this->m['RegusersModel']->values["dprovincia"] = $this->m['OrdiniModel']->values["dprovincia"];
-// 									$this->m['RegusersModel']->values["citta"] = $this->m['OrdiniModel']->values["citta"];
-// 									$this->m['RegusersModel']->values["telefono"] = $this->m['OrdiniModel']->values["telefono"];
-// 									$this->m['RegusersModel']->values["tipo_cliente"] = $this->m['OrdiniModel']->values["tipo_cliente"];
-// 									$this->m['RegusersModel']->values["accetto"] = $this->m['OrdiniModel']->values["accetto"];
-// 									$this->m['RegusersModel']->values["pec"] = $this->m['OrdiniModel']->values["pec"];
-// 									$this->m['RegusersModel']->values["codice_destinatario"] = $this->m['OrdiniModel']->values["codice_destinatario"];
 									
 									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine))
 										$this->m['RegusersModel']->values["credenziali_inviate"] = 0;
@@ -1576,5 +1560,13 @@ class BaseOrdiniController extends BaseController
 		$this->clean();
 		
 		echo hasActiveCoupon() ? "OK" : "KO";
+	}
+	
+	protected function codiceFiscaleObbligatorio()
+	{
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
+			return true;
+		
+		return false;
 	}
 }

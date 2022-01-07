@@ -157,6 +157,8 @@ else
 			<?php } ?>
 		<?php } ?>
 	<?php } ?>
+	
+	<?php include(tpf("/Elementi/FormRegistrazioneCheckout/check_fattura.php")); ?>
 </div>
 
 <!-- checkout ordine -->
@@ -185,6 +187,8 @@ else
 		</div>
 	</div>
 	<?php } ?>
+	
+	<?php include(tpf("/Elementi/FormRegistrazioneCheckout/check_fattura.php")); ?>
 </div>
 
 	<?php if (!$islogged && v("permetti_acquisto_anonimo")) { ?>

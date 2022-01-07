@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '2022-01-05 17:13:40', '0', 'fattura', 'fattura', 'CAMPI_FORM_CHECKOUT', '34', '0');

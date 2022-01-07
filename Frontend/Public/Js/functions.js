@@ -43,6 +43,7 @@ function updateFormTipoCliente()
 		$(".tr_nome").removeClass("uk-hidden");
 		$(".tr_cognome").removeClass("uk-hidden");
 		$(".blocco_fatturazione_elettronica").addClass("uk-hidden");
+		$(".campo_check_fattura").removeClass("uk-hidden");
 	}
 	else if (tipo_cliente == "libero_professionista")
 	{
@@ -51,6 +52,7 @@ function updateFormTipoCliente()
 		$(".tr_nome").removeClass("uk-hidden");
 		$(".tr_cognome").removeClass("uk-hidden");
 		$(".blocco_fatturazione_elettronica").removeClass("uk-hidden");
+		$(".campo_check_fattura").addClass("uk-hidden");
 	}
 	else
 	{
@@ -59,6 +61,7 @@ function updateFormTipoCliente()
 		$(".tr_nome").addClass("uk-hidden");
 		$(".tr_cognome").addClass("uk-hidden");
 		$(".blocco_fatturazione_elettronica").removeClass("uk-hidden");
+		$(".campo_check_fattura").addClass("uk-hidden");
 	}
 	
 	sistemaPIva($("[name='nazione']").val());

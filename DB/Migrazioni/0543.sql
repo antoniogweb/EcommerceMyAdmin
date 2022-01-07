@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '2022-01-05 17:22:12', '1', 'fattura', 'fattura', 'CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE', '17', '0');
