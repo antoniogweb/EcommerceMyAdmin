@@ -190,7 +190,8 @@ class BaseRegusersModel extends Model_Tree
 		if (v("insert_account_cap_obbligatorio") || $queryType == "update")
 			$campiObbligatoriComuni .= ",cap";
 		
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && (v("insert_account_cf_obbligatorio") || $queryType == "update") && v("abilita_codice_fiscale"))
+// 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && (v("insert_account_cf_obbligatorio") || $queryType == "update") && v("abilita_codice_fiscale"))
+		if (self::camboObbligatorio("codice_fiscale", "regusers", $queryType))
 			$campiObbligatoriComuni .= ",codice_fiscale";
 		
 		$campoPIva = "";

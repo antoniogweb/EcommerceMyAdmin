@@ -22,4 +22,10 @@
 		<td class="first_column"><?php echo gtext("Metodo di pagamento", false); ?>:</td>
 		<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
 	</tr>
+	<?php if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura") && $ordine["tipo_cliente"] == "privato" && $ordine["fattura"]) { ?>
+	<tr>
+		<td><?php echo gtext("Fattura");?>:</td>
+		<td><b><?php echo gtext("Richiesta");?></b></td>
+	</tr>
+	<?php } ?>
 </table>

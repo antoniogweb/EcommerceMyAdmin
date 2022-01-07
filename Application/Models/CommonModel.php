@@ -278,6 +278,24 @@ trait CommonModel {
 				return false;
 		}
 		
+		if ($campo == "codice_fiscale")
+		{
+			if (!v("abilita_codice_fiscale"))
+				return false;
+			
+			if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+			{
+				if (v("codice_fiscale_obbligatorio_solo_se_fattura") && isset($_POST["tipo_cliente"]) && $_POST["tipo_cliente"] == "privato" && !isset($_POST["fattura"]))
+					return false;
+				
+				if ($controller == "ordini")
+					return true;
+				
+				if ($controller == "regusers" && $azione == "insert" && !v("insert_account_cf_obbligatorio"))
+					return false;
+			}
+		}
+		
 		return true;
 	}
 	

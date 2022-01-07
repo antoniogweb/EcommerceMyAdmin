@@ -50,4 +50,15 @@ class F
 		else
 			return array($min, $max);
 	}
+	
+	public static function meta($string, $num = 999999)
+	{
+		$string = strip_tags(htmlentitydecode($string));
+		
+		if (eg_strlen($string) > $num)
+		{
+			$string = mb_substr($string,0,$num)."...";
+		}
+		return htmlspecialchars($string, ENT_COMPAT, "UTF-8");
+	}
 }

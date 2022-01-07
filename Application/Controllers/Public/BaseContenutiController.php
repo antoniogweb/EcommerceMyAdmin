@@ -629,19 +629,19 @@ class BaseContenutiController extends BaseController
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
 		if (isset($r[0]["contenuti_tradotti_categoria"]["meta_description"]) && $r[0]["contenuti_tradotti_categoria"]["meta_description"])
-			$data["meta_description"] = htmlentitydecode($r[0]["contenuti_tradotti_categoria"]["meta_description"]);
+			$data["meta_description"] = F::meta($r[0]["contenuti_tradotti_categoria"]["meta_description"]);
 		else if (strcmp($r[0]["categories"]["meta_description"],"") !== 0)
-			$data["meta_description"] = htmlentitydecode($r[0]["categories"]["meta_description"]);
+			$data["meta_description"] = F::meta($r[0]["categories"]["meta_description"]);
 		
 		if (isset($r[0]["contenuti_tradotti_categoria"]["keywords"]) && $r[0]["contenuti_tradotti_categoria"]["keywords"])
-			$data["keywords"] = htmlentitydecode($r[0]["contenuti_tradotti_categoria"]["keywords"]);
+			$data["keywords"] = F::meta($r[0]["contenuti_tradotti_categoria"]["keywords"]);
 		else if (strcmp($r[0]["categories"]["keywords"],"") !== 0)
-			$data["keywords"] = htmlentitydecode($r[0]["categories"]["keywords"]);
+			$data["keywords"] = F::meta($r[0]["categories"]["keywords"]);
 		
 		if (isset($tagCorrente) && !empty($tagCorrente) && (int)$id === $this->idShop)
 		{
 			$data["keywords"] = tagfield($tagCorrente, "keywords");
-			$data["meta_description"] = tagfield($tagCorrente, "meta_description");
+			$data["meta_description"] = F::meta(tagfield($tagCorrente, "meta_description"));
 		}
 		
 		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb();
@@ -1098,7 +1098,7 @@ class BaseContenutiController extends BaseController
 					$data["arrayLingue"][$l] = $l."/".$marchiAlias[$l].".html";
 			}
 			
-			$data["meta_description"] = htmlentitydecode(mfield($marchioCorrente, "meta_description"));
+			$data["meta_description"] = F::meta(mfield($marchioCorrente, "meta_description"));
 			$data["keywords"] = mfield($marchioCorrente, "keywords");
 			$data["title"] = mfield($marchioCorrente, "titolo");
 			
@@ -1171,14 +1171,14 @@ class BaseContenutiController extends BaseController
 		
 // 		print_r($data["pages"]);
 		if ($data['pages'][0]["contenuti_tradotti"]["meta_description"])
-			$data["meta_description"] = htmlentitydecode($data['pages'][0]["contenuti_tradotti"]["meta_description"]);
+			$data["meta_description"] = F::meta($data['pages'][0]["contenuti_tradotti"]["meta_description"]);
 		else if (strcmp($data['pages'][0]["pages"]["meta_description"],"") !== 0)
-			$data["meta_description"] = htmlentitydecode($data['pages'][0]["pages"]["meta_description"]);
+			$data["meta_description"] = F::meta($data['pages'][0]["pages"]["meta_description"]);
 		
 		if ($data['pages'][0]["contenuti_tradotti"]["keywords"])
-			$data["keywords"] = htmlentitydecode($data['pages'][0]["contenuti_tradotti"]["keywords"]);
+			$data["keywords"] = F::meta($data['pages'][0]["contenuti_tradotti"]["keywords"]);
 		else if (strcmp($data['pages'][0]["pages"]["keywords"],"") !== 0)
-			$data["keywords"] = htmlentitydecode($data['pages'][0]["pages"]["keywords"]);
+			$data["keywords"] = F::meta($data['pages'][0]["pages"]["keywords"]);
 		
 		list ($colonne, $data["lista_valori_attributi"]) = $this->m['PagesModel']->selectAttributi($clean['id']);
 		

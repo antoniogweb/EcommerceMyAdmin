@@ -353,6 +353,7 @@ class VariabiliModel extends GenericModel {
 		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
 		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
+		"codice_fiscale_obbligatorio_solo_se_fattura"	=>	0, // per privati, il CF è obbligatorio solo se il cliente spunta il campo "fattura"
 	);
 	
 	public static $daInizializzare = array(

@@ -970,4 +970,9 @@ class BaseBaseController extends Controller
 		else
 			$this->load($viewFile, $option);
 	}
+	
+	protected function campoObbligatorio($campo, $queryType = "insert")
+	{
+		return CommonModel::camboObbligatorio($campo, $this->controller, $queryType);
+	}
 }
