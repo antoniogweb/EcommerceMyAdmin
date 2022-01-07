@@ -411,8 +411,8 @@ class BaseBaseController extends Controller
 				"in_evidenza"	=>	"Y"
 			))->toList("iso_country_code")->send();
 		
-		$data["meta_description"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
-		$data["keywords"] = gtext(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
+		$data["meta_description"] = F::meta(gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"])));
+		$data["keywords"] = F::meta(gtext(htmlentitydecode(ImpostazioniModel::$valori["keywords"])));
 		
 		Lang::$current = Params::$lang;
 		
