@@ -1,0 +1,121 @@
+.hc-nav-trigger
+{
+	position:relative;
+	top:0px;
+	z-index: 999;
+}
+
+.hc-nav-trigger span, .hc-nav-trigger span::before, .hc-nav-trigger span::after
+{
+	background: #888;
+	height: 2px;
+}
+
+.hc-offcanvas-nav .nav-container, .hc-offcanvas-nav .nav-wrapper, .hc-offcanvas-nav ul, .hc-offcanvas-nav .nav-content>.nav-close:first-child a, .hc-offcanvas-nav .nav-title+.nav-close a.has-label, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a
+{
+	background: #f8f8f8 !important;
+}
+
+.hc-offcanvas-nav .nav-item-link, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a
+{
+	color:#333;
+}
+
+.hc-offcanvas-nav .nav-next span::before, .hc-offcanvas-nav .nav-back span::before, .hc-offcanvas-nav .nav-close-button span::before, .hc-offcanvas-nav .nav-close-button span::after {
+    border-top: 2px solid #333;
+    border-left: 2px solid #333;
+}
+
+.hc-offcanvas-nav .nav-content>.nav-close:first-child a, .hc-offcanvas-nav .nav-title+.nav-close a.has-label, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a, .hc-offcanvas-nav a.nav-next
+{
+	border-color:#ccc;
+	border-top: none;
+}
+.hc-offcanvas-nav .nav-wrapper>.nav-content>ul:first-of-type>li:first-child:not(.nav-back):not(.nav-close)>.nav-item-wrapper>.nav-item-link, .hc-offcanvas-nav .nav-item-link, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a
+{
+	border-bottom: 1px solid #ccc;
+	border-top: none;
+}
+
+.es-navbar-container
+{
+	z-index:999;
+}
+.es-navbar-button {
+	position: relative;
+	padding: 0 10px !important;
+}
+
+.es-navbar-button .uk-badge {
+	font-size: .625rem;
+	position: absolute;
+	top: -8px;
+    right: -1px;
+	min-width: 18px;
+	height: 18px;
+}
+
+.box_info_registrazione a
+{
+	text-decoration:underline;
+}
+
+.evidenzia
+{
+	display:none;
+}
+
+.first_of_grid
+{
+	margin-top:20px;
+}
+
+.condizioni_privacy a
+{
+	text-decoration:underline;
+}
+
+.t
+{
+	display:none;
+}
+
+.td_edit
+{
+	min-width:20px;
+}
+
+/*a
+{
+	color:#333;
+}*/
+
+.top_nav nav li a
+{
+	min-height:50px;
+	padding:0 5px;
+}
+
+.image_picker_image
+{
+	width:50px;
+	cursor:pointer;
+}
+ul.thumbnails.image_picker_selector li .thumbnail
+{
+	padding: 2px !important;
+}
+
+@media (min-width: 960px) {
+	.detail_left
+	{
+		margin-right:50px;
+	}
+}
+
+@media (max-width: 600px) {
+	.top_nav
+	{
+		min-height:30px;
+	}
+}

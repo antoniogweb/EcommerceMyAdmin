@@ -1,191 +1,22 @@
-$global-link-color: #333;
-$offcanvas-bar-background: #fff;
-$offcanvas-bar-color-mode: none;
+@import "variabili.scss";
 
-// 2. Import default variables and available mixins.
-@import "../../../Scss/Uikit/variables-theme.scss";
-@import "../../../Scss/Uikit/mixins-theme.scss";
+//Import default variables and available mixins.
+@import "../../../../../../../Public/Scss/Uikit/variables-theme.scss";
+@import "../../../../../../../Public/Scss/Uikit/mixins-theme.scss";
 
-// 3. Your custom mixin overwrites.
-@mixin hook-card() { color: #000; }
+//Import UIkit.
+@import "../../../../../../../Public/Scss/Uikit/uikit-theme.scss";
+@import "../../../../../Public/Scss/cookies.scss";
 
-// 4. Import UIkit.
-@import "../../../Scss/Uikit/uikit-theme.scss";
-@import "../../../Scss/cookies.scss";
+@import "../../../../../Public/Scss/eg-position.scss";
+@import "../../../../../Public/Scss/eg-position-responsive@xs.scss";
+@import "../../../../../Public/Scss/eg-position-responsive@s.scss";
+@import "../../../../../Public/Scss/eg-position-responsive@m.scss";
+@import "../../../../../Public/Scss/eg-position-responsive@l.scss";
+@import "../../../../../Public/Scss/eg-position-responsive@xl.scss";
 
-@import "../../../Scss/eg-position.scss";
-@import "../../../Scss/eg-position-responsive@xs.scss";
-@import "../../../Scss/eg-position-responsive@s.scss";
-@import "../../../Scss/eg-position-responsive@m.scss";
-@import "../../../Scss/eg-position-responsive@l.scss";
-@import "../../../Scss/eg-position-responsive@xl.scss";
+@import "../../../../../Public/Scss/eg-text.scss";
+@import "../../../../../Public/Scss/eg-visibility.scss";
+@import "../../../../../Public/Scss/eg-correzioni.scss";
 
-@import "../../../Scss/eg-text.scss";
-@import "../../../Scss/eg-visibility.scss";
-
-.hc-nav-trigger
-{
-	position:relative;
-	top:0px;
-	z-index: 999;
-}
-
-.hc-nav-trigger span, .hc-nav-trigger span::before, .hc-nav-trigger span::after
-{
-	background: #888;
-	height: 2px;
-}
-
-.hc-offcanvas-nav .nav-container, .hc-offcanvas-nav .nav-wrapper, .hc-offcanvas-nav ul, .hc-offcanvas-nav .nav-content>.nav-close:first-child a, .hc-offcanvas-nav .nav-title+.nav-close a.has-label, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a
-{
-	background: #f8f8f8 !important;
-}
-
-.hc-offcanvas-nav .nav-item-link, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a
-{
-	color:#333;
-}
-
-.hc-offcanvas-nav .nav-next span::before, .hc-offcanvas-nav .nav-back span::before, .hc-offcanvas-nav .nav-close-button span::before, .hc-offcanvas-nav .nav-close-button span::after {
-    border-top: 2px solid #333;
-    border-left: 2px solid #333;
-}
-
-.hc-offcanvas-nav .nav-content>.nav-close:first-child a, .hc-offcanvas-nav .nav-title+.nav-close a.has-label, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a, .hc-offcanvas-nav a.nav-next
-{
-	border-color:#ccc;
-	border-top: none;
-}
-.hc-offcanvas-nav .nav-wrapper>.nav-content>ul:first-of-type>li:first-child:not(.nav-back):not(.nav-close)>.nav-item-wrapper>.nav-item-link, .hc-offcanvas-nav .nav-item-link, .hc-offcanvas-nav li.nav-close a, .hc-offcanvas-nav .nav-back a
-{
-	border-bottom: 1px solid #ccc;
-	border-top: none;
-}
-
-.es-navbar-container
-{
-	z-index:999;
-}
-.es-navbar-button {
-	position: relative;
-	padding: 0 10px !important;
-}
-
-.es-navbar-button .uk-badge {
-	font-size: .625rem;
-	position: absolute;
-	top: -8px;
-    right: -1px;
-	min-width: 18px;
-	height: 18px;
-}
-
-.box_info_registrazione a
-{
-	text-decoration:underline;
-}
-
-.evidenzia
-{
-	display:none;
-}
-
-.first_of_grid
-{
-	margin-top:20px;
-}
-
-.condizioni_privacy a
-{
-	text-decoration:underline;
-}
-
-.t
-{
-	display:none;
-}
-
-.td_edit
-{
-	min-width:20px;
-}
-
-/*a
-{
-	color:#333;
-}*/
-
-.top_nav nav li a
-{
-	min-height:50px;
-	padding:0 5px;
-}
-
-.image_picker_image
-{
-	width:50px;
-	cursor:pointer;
-}
-ul.thumbnails.image_picker_selector li .thumbnail
-{
-	padding: 2px !important;
-}
-
-/*#segnalazione_cookies_ext
-{
-	padding: 40px;
-    text-align: center;
-    width: 100%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-	position:fixed;
-	left:0px;
-	bottom:-150px;
-	z-index:9999;
-	background-color:#FFF;
-}
-#segnalazione_cookies
-{
-	font-size: 13px;
-    line-height: 20px;
-}*/
-
-/*.ok_cookies
-{
-	font-family: sans-serif;
-    line-height: 18px;
-    padding: 2px 12px;
-    background: linear-gradient(to bottom,#FEFEFE,#F4F4F4) repeat scroll 0 0 #F3F3F3;
-    border-color: #BBB;
-    color: #333;
-    text-shadow: 0 1px 0 #FFF;
-    -moz-box-sizing: border-box;
-    border-radius: 3px 3px 3px 3px;
-    border-style: solid;
-    border-width: 1px;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 12px;
-    font-style: normal;
-    text-decoration: none;
-    white-space: nowrap;
-    outline: none;
-	font-weight:bold;
-}*/
-
-@media (min-width: 960px) {
-	.detail_left
-	{
-		margin-right:50px;
-	}
-}
-
-@media (max-width: 600px) {
-	.top_nav
-	{
-		min-height:30px;
-	}
-}
-
-
+@import "stylep.scss";

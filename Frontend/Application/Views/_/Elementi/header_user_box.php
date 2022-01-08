@@ -3,7 +3,7 @@
 if (!isset($ukdropdown))
 	$ukdropdown = "pos: bottom-right; offset: -10; delay-hide: 200;";
 ?>
-<div class="uk-padding-small uk-margin-remove" uk-dropdown="<?php echo $ukdropdown;?>" style="min-width: 250px;">
+<div class="uk-padding-small uk-margin-remove uk-dropdown" uk-dropdown="<?php echo $ukdropdown;?>" style="min-width: 250px;">
 	<?php if ($islogged) { ?>
 	<ul class="uk-nav uk-dropdown-nav">
 		<li>

@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-section">
 	<div class="uk-container uk-container-large">
-		<div uk-grid>
+		<div class="uk-grid" uk-grid>
 			<div class="uk-width-1-2@m" id="description">
 				<header>
 					<nav style="overflow-x:auto;" class="nav-scroll">

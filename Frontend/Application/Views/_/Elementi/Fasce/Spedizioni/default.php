@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-container uk-container-expand uk-background-default uk-margin-large">
 	<div class="uk-container uk-container-large">
-		<div class="uk-text-center uk-grid-match" uk-grid >
+		<div class="uk-text-center uk-grid-match uk-grid" uk-grid >
 
 			<div class="uk-card uk-margin-remove uk-width-1-1 uk-width-1-2@m uk-width-1-1@s">
 				<div class="">  	

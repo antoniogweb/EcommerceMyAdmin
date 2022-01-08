@@ -38,7 +38,7 @@ if (!isset($noFiltri))
 <section class="uk-section uk-section-small">
 	<div class="uk-container">
 		<div class="uk-text-center">
-			<div class="" uk-grid>
+			<div class="uk-grid" uk-grid>
 				<?php if (!isset($noFiltri)) { ?>
 					<?php
 					include(tpf("/Elementi/Categorie/filtri_categoria.php"));
@@ -50,7 +50,7 @@ if (!isset($noFiltri))
 				?>
 				<div class="uk-width-expand">
 					<?php if (!isset($noFiltri) && !isset($noOrdinamento)) { ?>
-					<div class="uk-margin-bottom" uk-grid>
+					<div class="uk-margin-bottom uk-grid" uk-grid>
 						<div class="uk-width-1-1 uk-width-3-5@s uk-text-left">
 							<?php include(tpf("Elementi/Categorie/filtri_attivi.php")); ?>
 						</div>
@@ -62,7 +62,7 @@ if (!isset($noFiltri))
 					</div>
 					<?php } ?>
 					<?php if (count($pages) > 0) { ?>
-						<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center" uk-grid>
+						<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center uk-grid" uk-grid>
 							<?php foreach ($pages as $p) {
 								include(tpf($itemFile));
 							} ?>
