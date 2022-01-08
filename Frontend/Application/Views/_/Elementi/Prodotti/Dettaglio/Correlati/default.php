@@ -7,7 +7,7 @@
 		<br />
 		<div class="uk-slider-container-offset" uk-slider>
 
-			<div class="uk-position-relative uk-visible-toggle" tabindex="-1">
+			<div class="uk-position-relative uk-visible-toggle uk-slider-container" tabindex="-1">
 
 				<ul class="uk-slider-items uk-child-width-1-4@s uk-grid">
 					<?php foreach ($prodotti_correlati as $corr) { ?>

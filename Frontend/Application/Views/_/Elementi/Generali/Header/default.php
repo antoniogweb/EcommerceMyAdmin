@@ -17,7 +17,7 @@
 				<?php if (isset($avvisi) && count($avvisi) > 0) { ?>
 				<div class="uk-navbar-right">
 					<nav>
-						<div class="uk-position-relative" tabindex="-1" uk-slider="autoplay: true">
+						<div class="uk-slider-container uk-position-relative" tabindex="-1" uk-slider="autoplay: true">
 							<ul class="uk-text-small uk-slider-items uk-child-width-1-1@s uk-child-width-1-1@">
 								<?php foreach ($avvisi as $avv) { ?>
 								<li class="uk-text-center uk-text-small"><?php echo htmlentitydecode(field($avv, "description"));?></li>

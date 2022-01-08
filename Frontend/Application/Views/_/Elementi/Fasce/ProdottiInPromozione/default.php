@@ -25,7 +25,7 @@
 			<div class="uk-width-expand">
 				<div class="" uk-slider>
 
-					<div class="uk-position-relative uk-visible-toggle" tabindex="-1">
+					<div class="uk-position-relative uk-visible-toggle uk-slider-container" tabindex="-1">
 
 						<ul class="uk-text-center uk-slider-items uk-child-width-1-2@s uk-grid uk-grid-column-small">
 							<?php foreach ($inPromozione as $p) { ?>
