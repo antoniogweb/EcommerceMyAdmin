@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:<?php if (v("piattaforma_in_sviluppo")) { echo " / "; } echo "\n";?>
 <?php /*if (!v("piattaforma_in_sviluppo")) { echo "Allow: /"; } echo "\n";*/?>
-Sitemap: <?php echo $this->baseUrlSrc;?>/sitemap.xml 
+Sitemap: <?php echo $this->baseUrlSrc;?>/sitemap.xml
