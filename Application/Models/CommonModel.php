@@ -294,6 +294,8 @@ trait CommonModel {
 				if ($controller == "regusers" && $azione == "insert" && !v("insert_account_cf_obbligatorio"))
 					return false;
 			}
+			else
+				return false;
 		}
 		
 		return true;
