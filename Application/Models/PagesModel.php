@@ -2450,6 +2450,12 @@ class PagesModel extends GenericModel {
 		
 		if (!empty($p))
 		{
+			$giacenza = self::disponibilita($p["pages"]["id_page"]);
+			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";
+			
+			$prezzoMinimo = $pm->prezzoMinimo($p["pages"]["id_page"]);
+			$prezzoMinimoIvato = calcolaPrezzoIvato($p["pages"]["id_page"],$prezzoMinimo);
+			
 			$images = array();
 			
 			if ($p["pages"]["immagine"])
@@ -2466,6 +2472,12 @@ class PagesModel extends GenericModel {
 				"@context"	=>	"https://schema.org/",
 				"@type"		=>	"Product",
 				"name"		=>	sanitizeJs(field($p, "title")),
+				"offers"	=>	array(
+					"@type"	=>	"Offer",
+					"price"	=>	number_format($prezzoMinimoIvato,2,".",""),
+					"priceCurrency"	=>	"EUR",
+					"availability"	=>	$giacenza > 0 ? "https://schema.org/InStock" : $outOfStock,
+				),
 			);
 			
 			if (!empty($images))
