@@ -20,6 +20,9 @@ if (typeof attiva_spedizione == "undefined")
 if (typeof coupon_ajax == "undefined")
 	var coupon_ajax = false;
 
+if (typeof codice_fiscale_obbligatorio_solo_se_fattura == "undefined")
+	var codice_fiscale_obbligatorio_solo_se_fattura = false;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -65,6 +68,8 @@ function updateFormTipoCliente()
 	}
 	
 	sistemaPIva($("[name='nazione']").val());
+	
+	controllaCheckFattura();
 	
 	impostaCorrieriESpeseSpedizione();
 }
@@ -409,6 +414,16 @@ if (typeof evidenziaErrore !== 'function')
 	}
 }
 
+function controllaCheckFattura()
+{
+	if (!codice_fiscale_obbligatorio_solo_se_fattura)
+		return;
+	
+	if ((getTipoCliente() != "privato" || $("[name='fattura']").is(":checked")) && $("[name='nazione']").val() == "IT")
+		$(".campo_codice_fiscale").css("display","table-row");
+	else
+		$(".campo_codice_fiscale").css("display","none");
+}
 
 
 $(document).ready(function(){
@@ -547,6 +562,16 @@ $(document).ready(function(){
 		sistemaTendinaProvinciaSpedizione($(this).val());
 		
 	});
+	
+	if ($("[name='fattura']").length > 0)
+	{
+		controllaCheckFattura();
+		
+		$("body").on("ifChanged", "[name='fattura']", function(e){
+			
+			controllaCheckFattura();
+		});
+	}
 	
 	$("body").on("click", ".btn_completa_acquisto", function(e){
 		

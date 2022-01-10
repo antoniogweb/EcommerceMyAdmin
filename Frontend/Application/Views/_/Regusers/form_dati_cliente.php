@@ -29,6 +29,9 @@ else
 }
 ?>
 </div>
+
+<?php include(tpf("/Elementi/FormRegistrazioneCheckout/check_fattura.php")); ?>
+
 <div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 	<div class="first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Ragione sociale");?> *</label>
@@ -57,7 +60,7 @@ else
 	</div>
 	
 	<?php if (v("abilita_codice_fiscale")) { ?>
-	<div class="uk-margin uk-margin-remove-bottom nascondi_fuori_italia">
+	<div class="uk-margin uk-margin-remove-bottom nascondi_fuori_italia campo_codice_fiscale">
 		<label class="uk-form-label"><?php echo gtext("Codice fiscale");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::input("codice_fiscale",$values['codice_fiscale'],"uk-input class_codice_fiscale",null,"placeholder='".gtext("Codice fiscale", false)."'");?>
@@ -157,8 +160,6 @@ else
 			<?php } ?>
 		<?php } ?>
 	<?php } ?>
-	
-	<?php include(tpf("/Elementi/FormRegistrazioneCheckout/check_fattura.php")); ?>
 </div>
 
 <!-- checkout ordine -->
@@ -187,8 +188,6 @@ else
 		</div>
 	</div>
 	<?php } ?>
-	
-	<?php include(tpf("/Elementi/FormRegistrazioneCheckout/check_fattura.php")); ?>
 </div>
 
 	<?php if (!$islogged && v("permetti_acquisto_anonimo")) { ?>

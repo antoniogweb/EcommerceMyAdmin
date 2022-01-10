@@ -20,6 +20,7 @@
 	var carrello_monoprodotto = <?php echo v("carrello_monoprodotto") ? "true" : "false";?>;
 	var mostra_errori_personalizzazione = <?php echo v("mostra_errori_personalizzazione") ? "true" : "false";?>;
 	var coupon_ajax = <?php echo v("coupon_ajax") ? "true" : "false"; ?>;
+	var codice_fiscale_obbligatorio_solo_se_fattura = <?php echo v("codice_fiscale_obbligatorio_solo_se_fattura") ? "true" : "false";?>;
 </script>
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
