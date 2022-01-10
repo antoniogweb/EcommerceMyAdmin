@@ -1,10 +1,13 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
+if (!isset($classePersonalizzazioniBox))
+	$classePersonalizzazioniBox = "";
+
 if (!isset($classePersonalizzazioni))
 	$classePersonalizzazioni = "uk-margin-small uk-width-2-3@m";
 ?>
 <?php if (isset($personalizzazioni) && count($personalizzazioni) > 0) { ?>
-<div class="lista_personalizzazioni_prodotto">
+<div class="lista_personalizzazioni_prodotto <?php echo $classePersonalizzazioniBox;?>">
 	<?php foreach ($personalizzazioni as $pers) { ?>
 	<div class="<?php echo $classePersonalizzazioni;?>">
 		<?php

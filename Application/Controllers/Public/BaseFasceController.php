@@ -308,6 +308,15 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaInfoSpedizioniResi()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_spedizioni_resi.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaInfoPagamenti()
 	{
 		ob_start();

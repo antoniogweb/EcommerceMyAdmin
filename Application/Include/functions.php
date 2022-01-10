@@ -869,6 +869,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[tag\]/', array($obj,'getFasciaTag') ,$string);
 		$string = preg_replace_callback('/\[info-pagamenti\]/', array($obj,'getFasciaInfoPagamenti') ,$string);
 		$string = preg_replace_callback('/\[servizi\]/', array($obj,'getFasciaServizi') ,$string);
+		$string = preg_replace_callback('/\[info-spedizioni-resi\]/', array($obj,'getFasciaInfoSpedizioniResi') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
