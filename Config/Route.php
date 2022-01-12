@@ -199,6 +199,7 @@ class Route
 		'impostazioni,svuotacache',
 		'impostazioni,tema',
 		'impostazioni,attivatema',
+		'impostazioni,google',
 		
 		'slide,main',
 		'slide,aggiungicategoria',

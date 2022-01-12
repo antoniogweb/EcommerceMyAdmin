@@ -137,6 +137,8 @@ class BaseController extends Controller
 	
 	public $tabViewFields = array();
 	
+	public $campiVariabiliDaModificare = "";
+	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
 		'attivo:sanitizeAll'=>'tutti',
@@ -960,7 +962,7 @@ class BaseController extends Controller
 	{
 		$this->model("VariabiliModel");
 		
-		$this->_posizioni['variabili'] = 'class="active"';
+		$this->_posizioni[$this->action] = 'class="active"';
 		
 		$this->shift(1);
 		
@@ -968,11 +970,15 @@ class BaseController extends Controller
 		
 		$data["notice"] = null;
 		
-		$listaVariabiliGestibili = v("lista_variabili_gestibili");
+// 		$listaVariabiliGestibili = $this->campiVariabiliDaModificare ? $this->campiVariabiliDaModificare : v("lista_variabili_gestibili");
 		
-		if ($this->controller == "applicazioni")
+		if ($this->controller == "impostazioni" && $this->action == "variabili")
+			$listaVariabiliGestibili = implode(",",array_diff(explode(",", v("lista_variabili_gestibili")), explode(",", v("lista_variabili_opzioni_google"))));
+		else if ($this->controller == "applicazioni")
 			$listaVariabiliGestibili = ApplicazioniModel::variabiliGestibili($id);
-		
+		else
+			$listaVariabiliGestibili = $this->campiVariabiliDaModificare;
+			
 		if ($listaVariabiliGestibili)
 		{
 			$variabili = explode(",", $listaVariabiliGestibili);
@@ -989,11 +995,16 @@ class BaseController extends Controller
 			}
 		}
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'save','mainAction'=>"variabili".$clean['id'],'pageVariable'=>'page_fgl');
+		$mainMenu = 'back,save';
+		
+		if ($this->controller == "impostazioni")
+			$mainMenu = 'save';
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$mainMenu,'mainAction'=>"variabili".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->mainView = "variabili";
 		
-		$form = new Form_Form($this->controller."/variabili/".$clean['id'],array("updateAction"=>"Salva"), "POST");
+		$form = new Form_Form($this->controller."/".$this->action."/".$clean['id'],array("updateAction"=>"Salva"), "POST");
 		
 		$entries = array();
 		$values = array();
@@ -1023,7 +1034,7 @@ class BaseController extends Controller
 		
 		$this->pMain();
 		
-		$data["titoloRecord"] = "Impostazioni";
+		$data["titoloRecord"] = "Varibili";
 		
 		$this->append($data);
 	}

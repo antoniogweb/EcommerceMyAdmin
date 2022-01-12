@@ -106,6 +106,17 @@ class ImpostazioniController extends BaseController
 		}
 	}
 	
+	public function google($id = 0)
+	{
+		$this->campiVariabiliDaModificare = v("lista_variabili_opzioni_google");
+		
+		parent::variabili($id);
+		
+		$data["titoloRecord"] = "Google / Facebook";
+		
+		$this->append($data);
+	}
+	
 	protected function pMain()
 	{
 		parent::main();

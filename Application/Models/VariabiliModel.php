@@ -99,6 +99,7 @@ class VariabiliModel extends GenericModel {
 		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
+		"lista_variabili_opzioni_google"	=>	"codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default",
 		"submenu_class"				=>	"uk-nav uk-nav-default",
 		"current_menu_item"			=>	"uk-active",
 		"submenu_wrap_open"			=>	'<div class="uk-navbar-dropdown uk-margin-remove ">',
@@ -354,6 +355,8 @@ class VariabiliModel extends GenericModel {
 		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 		"codice_fiscale_obbligatorio_solo_se_fattura"	=>	0, // per privati, il CF è obbligatorio solo se il cliente spunta il campo "fattura"
+		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
+		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
 	);
 	
 	public static $daInizializzare = array(
@@ -503,10 +506,24 @@ class VariabiliModel extends GenericModel {
 				"reverse"	=>	"yes",
 			),
 			'identificatore_feed_default'	=>	array(
-				'labelString'	=>	'Valore globale del campo "Esiste l\'identificatore?" (feed Google)',
+				'labelString'	=>	'Valore globale del campo "Esiste l\'identificatore?" (feed Google / Facebook)',
 				'type'			=>	'Select',
 				'options'	=>	self::$yesNo,
 				"reverse"	=>	"yes",
+			),
+			'codice_account_merchant'	=>	array(
+				'wrap'		=>	array(
+					null,
+					null,
+					"<div class='form_notice'>".gtext("Il codice dell'account Merchant di Google, presente nel pannello Merchant")."</div>",
+				),
+			),
+			'campo_send_to_google_ads'	=>	array(
+				'wrap'		=>	array(
+					null,
+					null,
+					"<div class='form_notice'>".gtext("Il valore del campo send_to ottenuto dal codice di conversione di Google Ads")."</div>",
+				),
 			),
 		);
 		
