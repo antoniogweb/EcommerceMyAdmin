@@ -69,6 +69,12 @@ if (v("codice_gtm_analytics"))
 				"shipping"			=>	v("prezzi_ivati_in_carrello") ? $ordineGTML["spedizione_ivato"] : $ordineGTML["spedizione"],
 				"items"				=>	$tempRigheGTM,
 			);
+			
+			if (v("campo_send_to_google_ads"))
+				$purchase["send_to"] = v("campo_send_to_google_ads");
+			
+			if (v("codice_account_merchant"))
+				$purchase["aw_merchant_id"] = v("codice_account_merchant");
 			?>
 			<script>
 				gtag('event', 'purchase', <?php echo json_encode($purchase);?>);
