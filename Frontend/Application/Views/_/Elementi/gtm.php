@@ -85,6 +85,8 @@ if (v("codice_gtm_analytics"))
 			{
 				$purchaseAds = $purchase;
 				
+				$purchaseAds["transaction_id"] = $ordineGTML["id_o"]."-ADS";
+				
 				$purchaseAds["send_to"] = v("campo_send_to_google_ads");
 				
 				if (v("codice_account_merchant"))
