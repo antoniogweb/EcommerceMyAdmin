@@ -49,7 +49,6 @@
 						<?php if (v("abilita_feedback")) { ?>
 						<section class="uk-text-left">
 							<h2 class="uk-text-lead uk-text-uppercase uk-margin-medium-bottom"><?php echo gtext("Valutazioni clienti");?></h2>
-							
 							<div>
 								<?php foreach ($page_feedback as $pf) { ?>
 								<article class="uk-first-column">
@@ -72,7 +71,6 @@
 								</article>
 								<?php } ?>
 							</div>
-							
 						</section>
 						<?php } ?>
 					</div>
