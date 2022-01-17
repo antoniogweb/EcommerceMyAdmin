@@ -6,8 +6,8 @@ if (!isset($ratio))
 	$ratio = 0.7;
 ?>
 <?php for ($i=0; $i<$stellePiene; $i++) { ?>
-<div class="color-yellow" uk-icon="icon: filled-star; ratio: <?php echo $ratio;?>"></div>
+<div class="uk-text-warning" uk-icon="icon: star; ratio: <?php echo $ratio;?>"></div>
 <?php } ?>
 <?php for ($i=0; $i<$stelleVuote; $i++) { ?>
-<div class="color-yellow" uk-icon="icon: star; ratio: <?php echo $ratio;?>"></div>
+<!-- <div class="uk-text-warning" uk-icon="icon: star; ratio: <?php echo $ratio;?>"></div> -->
 <?php } ?>
