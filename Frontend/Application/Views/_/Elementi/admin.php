@@ -135,6 +135,17 @@
 			
 		});
 		
+		$(".fascia_contenuto").each(function(){
+			
+			if ($(this).width() <= 1200)
+			{
+				$(this).css("overflow", "visible");
+				var height = $(this).find(".titolo_fascia").outerHeight();
+				console.log(height);
+				$(this).find(".titolo_fascia").css("top","-" + height + "px");
+			}
+		});
+		
 // 		$( ".blocco_fasce_contenuto" ).sortable({
 // 			stop: function( event, ui ) {
 // 				aggiornaOrdinamento();
