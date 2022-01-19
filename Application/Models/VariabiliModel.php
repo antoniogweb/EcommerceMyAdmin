@@ -357,6 +357,8 @@ class VariabiliModel extends GenericModel {
 		"codice_fiscale_obbligatorio_solo_se_fattura"	=>	0, // per privati, il CF è obbligatorio solo se il cliente spunta il campo "fattura"
 		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
 		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
+		"pixel_nel_footer"			=>	1, // sposta il pixel di Facebook nel footer
+		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
 	);
 	
 	public static $daInizializzare = array(

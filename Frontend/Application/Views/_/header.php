@@ -12,7 +12,9 @@
 		
 		<?php include(tpf("/Elementi/header_js.php"));?>
 		
-		<?php include(tpf("/Elementi/fbk.php"));?>
+		<?php
+		if (!v("pixel_nel_footer"))
+			include(tpf("/Elementi/fbk.php"));?>
    </head>
    <body>
 		<?php include(tpf("/Elementi/gtm_no_script.php"));?>

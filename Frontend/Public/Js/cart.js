@@ -696,10 +696,13 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			{
 				if (pixel && typeof content.contens_fbk != "undefined" && content.contens_fbk != "")
 				{
-					if (debug_js)
-						console.log(content.contens_fbk);
-					
-					fbq('track', 'AddToCart', content.contens_fbk);
+					if (typeof fbq !== 'undefined')
+					{
+						if (debug_js)
+							console.log(content.contens_fbk);
+						
+						fbq('track', 'AddToCart', content.contens_fbk);
+					}
 				}
 				
 				if (gtm_analytics && typeof content.contens_gtm != "undefined" && content.contens_gtm != "")
@@ -948,10 +951,13 @@ $(document).ready(function(){
 				{
 					if (pixel && content.contens_fbk != undefined && content.contens_fbk != "")
 					{
-						if (debug_js)
-							console.log(content.contens_fbk);
-						
-						fbq('track', 'AddToWishlist', content.contens_fbk);
+						if (typeof fbq !== 'undefined')
+						{
+							if (debug_js)
+								console.log(content.contens_fbk);
+							
+							fbq('track', 'AddToWishlist', content.contens_fbk);
+						}
 					}
 					
 					if (that.parent().hasClass(classe_wish_presente))
