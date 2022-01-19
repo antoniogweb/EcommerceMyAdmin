@@ -1,4 +1,15 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php
+if (v("pixel_nel_footer") && !isset($cicloPrimo))
+{
+	$cicloPrimo = true;
+	return;
+}
+else if (!v("pixel_nel_footer") && isset($cicloPrimo))
+{
+	return;
+}
+?>
 <?php if (v("codice_verifica_fbk")) {
 	echo htmlentitydecode(v("codice_verifica_fbk"));
 } ?>
@@ -109,3 +120,4 @@
 		echo htmlentitydecode(v("codice_fbk_noscript"));
 	} ?>
 <?php } ?>
+<?php $cicloPrimo = true;?>

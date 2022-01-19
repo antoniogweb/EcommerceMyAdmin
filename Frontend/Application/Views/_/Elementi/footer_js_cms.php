@@ -33,9 +33,7 @@
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
 
-<?php
-if (v("pixel_nel_footer"))
-	include(tpf("/Elementi/fbk.php"));?>
+<?php include(tpf("/Elementi/fbk.php"));?>
 
 <?php if ($this->controller == "home" && $this->action == "index" && isset($modali_frontend) && count($modali_frontend) > 0) { ?>
 <?php include(tpf("/Elementi/modali.php"));?>
