@@ -734,6 +734,24 @@ class OrdiniModel extends FormModel {
 		return 0;
 	}
 	
+	public static function totaleFuoriItaliaEu()
+	{
+		$anno = date("Y");
+		
+		$o = new OrdiniModel();
+		
+		$res = $o->clear()->select("SUM(subtotal) as TOTALE")->where(array(
+			"ne"	=>	array(
+				"nazione_spedizione"	=>	"IT",
+			),
+		))->sWhere("nazione_spedizione in (select iso_country_code from nazioni where tipo = 'UE') AND DATE_FORMAT(data_creazione, '%Y') = '".$anno."'")->send();
+		
+		if (isset($res[0]["aggregate"]["TOTALE"]) && $res[0]["aggregate"]["TOTALE"])
+			return $res[0]["aggregate"]["TOTALE"];
+		
+		return 0;
+	}
+	
 	public function statoordinelabel($records)
 	{
 		if (isset(OrdiniModel::$stati[$records["orders"]["stato"]]))

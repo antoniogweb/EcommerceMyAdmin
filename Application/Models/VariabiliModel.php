@@ -359,6 +359,7 @@ class VariabiliModel extends GenericModel {
 		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
 		"pixel_nel_footer"			=>	1, // sposta il pixel di Facebook nel footer
 		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
+		"euro_iva_italiana_vendite_ue"	=>	10000, // totale euro massimo per vendite fuori dall'italia con IVA italiana
 	);
 	
 	public static $daInizializzare = array(

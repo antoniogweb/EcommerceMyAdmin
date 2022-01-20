@@ -160,16 +160,15 @@ class IvaModel extends GenericModel
 				{
 					if ($nazione["tipo"] == "UE")
 					{
-						$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
+						$totaleFuroiItalia = OrdiniModel::totaleFuoriItaliaEu();
 	// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
-						
 						$recordIva = $im->selectId((int)$nazione["id_iva"]);
 						
 						if (!empty($recordIva))
 						{
-							$totaleNazione += getPrezzoScontatoN();
+							$totaleFuroiItalia += getPrezzoScontatoN();
 							
-							if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
+							if (($totaleFuroiItalia > v("euro_iva_italiana_vendite_ue")) && $nazione["id_iva"])
 							{
 								self::setIvaEstera($recordIva);
 								
@@ -177,6 +176,23 @@ class IvaModel extends GenericModel
 								$prezziCorretti = true;
 							}
 						}
+						
+// 						$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
+// 	// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
+// 						$recordIva = $im->selectId((int)$nazione["id_iva"]);
+// 						
+// 						if (!empty($recordIva))
+// 						{
+// 							$totaleNazione += getPrezzoScontatoN();
+// 							
+// 							if (($totaleNazione > $nazione["soglia_iva_italiana"]) && $nazione["id_iva"])
+// 							{
+// 								self::setIvaEstera($recordIva);
+// 								
+// 								$c->correggiPrezzi();
+// 								$prezziCorretti = true;
+// 							}
+// 						}
 					}
 					else if ($commercio == 'COMMERCIO DIRETTO')
 					{
