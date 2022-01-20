@@ -1119,6 +1119,9 @@ class BaseContenutiController extends BaseController
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti($clean["realId"]);
 		
+		// Controlla e in caso aggiungi feedback
+		$this->inserisciFeedback($clean["realId"]);
+		
 		$this->checkPage($clean["realId"]);
 		
 		$clean['id'] = $this->m['PagesModel']->getPrincipale($clean["realId"]);
@@ -1321,7 +1324,6 @@ class BaseContenutiController extends BaseController
 		
 		if (v("abilita_feedback"))
 		{
-			$this->model("FeedbackModel");
 			$data["page_feedback"] = $this->m["FeedbackModel"]->clear()->where(array(
 				"id_page"	=>	$clean['id'],
 				"is_admin"	=>	0,

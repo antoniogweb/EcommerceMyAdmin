@@ -99,6 +99,9 @@ class PagesModel extends GenericModel {
 		
 		$this->uploadFields = array();
 		
+		if (v("abilita_feedback"))
+			self::$tipiPagina["FORM_FEEDBACK"] = "Pagina inserimento feedback cliente";
+		
 		parent::__construct();
 	}
 	

@@ -125,6 +125,9 @@ class BaseBaseController extends Controller
 		$this->model("CaptchaModel");
 		$this->model('ContattiModel');
 		
+		if (v("abilita_feedback"))
+			$this->model("FeedbackModel");
+		
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
 		
@@ -808,6 +811,43 @@ class BaseBaseController extends Controller
 		}
 		
 		$this->append($data);
+	}
+	
+	protected function inserisciFeedback($id)
+	{
+// 		if (!v("abilita_feedback"))
+// 			$this->redirect("");
+// 		
+// 		if( !session_id() )
+// 			session_start();
+// 		
+// 		Domain::$currentUrl =  $this->getCurrentUrl();
+// 		
+// 		$campiForm = "autore,testo";
+// 		
+// 		$this->m['FeedbackModel']->strongConditions['insert'] = array(
+// 			'checkNotEmpty'	=>	$campiForm,
+// // 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+// 		);
+// 		
+// 		$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
+// 		
+// 		if (isset($_POST['inviaFeedback']))
+// 		{
+// 			if (CaptchaModel::getModulo()->check())
+// 			{
+// 				if ($this->m['FeedbackModel']->checkConditions('insert'))
+// 				{
+// 					
+// 				}
+// 				else
+// 				{
+// 					FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+// 				}
+// 			}
+// 		}
+// 		
+// 		FeedbackModel::$sValues = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
 	}
 	
 	protected function inviaMailFormContatti($id)

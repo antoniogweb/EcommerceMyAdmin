@@ -26,6 +26,9 @@ class FeedbackModel extends GenericModel {
 	
 	public $campoTitolo = "autore";
 	
+	public static $sValues = array();
+	public static $sNotice = null;
+	
 	public static $tendinaPunteggi = array(
 		"0_0"	=>	"0",
 // 		"0_5"	=>	"0,5",
@@ -68,6 +71,14 @@ class FeedbackModel extends GenericModel {
 				),
 			),
 		);
+	}
+	
+	static public function gValue($key)
+	{
+		if (isset(self::$sValues[$key]))
+			return self::$sValues[$key];
+		
+		return "";
 	}
 	
 	public function relations() {

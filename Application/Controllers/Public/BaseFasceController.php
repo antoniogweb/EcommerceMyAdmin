@@ -299,6 +299,15 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getFasciaFormFeedback()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_form_feedback.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getFasciaInfoSpedizioni()
 	{
 		ob_start();
