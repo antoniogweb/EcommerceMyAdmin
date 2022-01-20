@@ -815,8 +815,6 @@ class BaseOrdiniController extends BaseController
 			}
 		}
 		
-		$descrizioneAcquisto = serialize($data["pages"]);
-		
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
@@ -846,6 +844,11 @@ class BaseOrdiniController extends BaseController
 		$this->m["RegusersModel"]->settaPassword();
 		
 		IvaModel::getAliquotaEstera();
+		
+		if (isset(IvaModel::$aliquotaEstera))
+			$data["pages"] = $this->m["CartModel"]->getProdotti();
+		
+		$descrizioneAcquisto = serialize($data["pages"]);
 		
 		$campoObbligatoriProvincia = "dprovincia";
 		

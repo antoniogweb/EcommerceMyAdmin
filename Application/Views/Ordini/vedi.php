@@ -305,10 +305,12 @@
 							?>
 							
 							<table class="table table-striped">
+								<?php if (count($arrayIva) === 1) { ?>
 								<tr>
 									<td><?php echo gtext("Imponibile");?></td>
 									<td class="text-right"><b><?php echo setPriceReverse($imponibile);?> €</b></td>
 								</tr>
+								<?php } ?>
 								<?php foreach ($arrayIva as $idAliquota => $totale) { ?>
 								<tr>
 									<td><?php echo IvaModel::getTitoloDaId($idAliquota);?></td>

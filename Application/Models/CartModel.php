@@ -211,11 +211,13 @@ class CartModel extends GenericModel {
 				
 				$subtotale = number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 				
-				$ivaRiga = number_format($r["cart"]["iva"],$cifre,".","");
+				$ivaRiga = $r["cart"]["iva"];
 				
 				// Controllo l'aliquota estera
 				if (isset(IvaModel::$aliquotaEstera))
 					$ivaRiga = IvaModel::$aliquotaEstera;
+				
+				$ivaRiga = number_format($ivaRiga,2,".","");
 				
 				if (isset($arraySubtotale[$ivaRiga]))
 					$arraySubtotale[$ivaRiga] += $subtotale;
@@ -231,7 +233,7 @@ class CartModel extends GenericModel {
 		{
 			$ivaSped = self::getAliquotaIvaSpedizione();
 			
-			$ivaSped = number_format($ivaSped,$cifre,".","");
+			$ivaSped = number_format($ivaSped,2,".","");
 			
 			if (isset($arraySubtotale[$ivaSped]))
 				$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),$cifre,".","");
@@ -239,13 +241,15 @@ class CartModel extends GenericModel {
 				$arraySubtotale[$ivaSped] = number_format(getSpedizioneN(),$cifre,".","");
 		}
 		
+// 		print_r($arraySubtotale);
+		
 		foreach ($arraySubtotale as $iva => $sub)
 		{
 			$arrayIva[$iva] = number_format($sub*$iva/100,$cifre,".","");
 		}
 		
 // 		if (isset($_GET["dev"]))
-// 			print_r($arrayIva);
+// 		echo "NUMERO ".count($arrayIva)."<br />"; print_r($arrayIva);
 		
 // 		$subtotale = number_format(getSpedizioneN(),2,".","");
 // 		$iva = $subtotale*(Parametri::$iva/100);
