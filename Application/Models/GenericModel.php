@@ -63,6 +63,8 @@ class GenericModel extends Model_Tree
 	public $formStructAggiuntivoEntries = array();
 	public $salvaDataModifica = false;
 	
+	public $cViewStatus = "";
+	
 	public static $tabelleConAliasMap = array(
 		"pages"			=>	array(
 			"chiave"		=>	"id_page",

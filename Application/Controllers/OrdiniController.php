@@ -77,11 +77,12 @@ class OrdiniController extends BaseController {
 	public function main()
 	{
 		$this->shift();
-
+		$this->m[$this->modelName]->cViewStatus = $this->viewStatus;
+		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
 		$this->mainFields = array(
-			'<a href="'.$this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/vedi/;orders.id_o;'.$this->viewStatus.'">#;orders.id_o;</a>',
+			'linkcrud',
 			'smartDate|orders.data_creazione',
 			'OrdiniModel.getNome|orders.id_o',
 			'orders.email',

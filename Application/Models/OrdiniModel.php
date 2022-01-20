@@ -874,4 +874,9 @@ class OrdiniModel extends FormModel {
 		
 		return 1;
 	}
+	
+	public function linkcrud($record)
+	{
+		return '<a href="'.Url::getRoot().$this->applicationUrl.$this->controller.'/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">#'.$record["orders"]["id_o"].'</a>';
+	}
 }
