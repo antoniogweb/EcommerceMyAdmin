@@ -28,6 +28,8 @@ class FeedbackModel extends GenericModel {
 	
 	public static $sValues = array();
 	public static $sNotice = null;
+	public static $idProdotto = 0;
+	public static $datiProdotto = array();
 	
 	public static $tendinaPunteggi = array(
 		"0_0"	=>	"0",
@@ -73,7 +75,21 @@ class FeedbackModel extends GenericModel {
 		);
 	}
 	
-	static public function gValue($key)
+	public static function gIdProdotto()
+	{
+		self::$idProdotto = isset($_GET["id_prodotto"]) ? (int)$_GET["id_prodotto"] : 0;
+		
+		return self::$idProdotto;
+	}
+	
+	public static function gDatiProdotto()
+	{
+		self::$datiProdotto = PagesModel::getPageDetails(self::gIdProdotto());
+		
+		return self::$datiProdotto;
+	}
+	
+	public static function gValue($key)
 	{
 		if (isset(self::$sValues[$key]))
 			return self::$sValues[$key];

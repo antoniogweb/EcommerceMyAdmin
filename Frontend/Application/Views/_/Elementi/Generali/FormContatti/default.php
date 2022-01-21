@@ -6,7 +6,7 @@
 	?>
 	<form action="<?php echo Domain::$currentUrl;?>#contatti-form" method="post" novalidate="novalidate">
 		<fieldset class="uk-fieldset">
-			<div uk-grid class="uk-margin"> 
+			<div uk-grid class="uk-margin uk-grid"> 
 				<div class="uk-width-1-2@m uk-width-1-2@s">
 					<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","nome","placeholder='".gtext("Nome*")."'");?>
 				</div>
@@ -22,9 +22,9 @@
 			
 			<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
 			
-			<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
+			<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 				<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-				<label><?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?> <?php echo gtext("Ho letto e accetto le condizione della");?> <a href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></label>
+				<label><?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></span></label>
 			</div>
 			
 			<?php echo Html_Form::hidden("invia","invia");?>

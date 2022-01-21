@@ -100,7 +100,10 @@ class PagesModel extends GenericModel {
 		$this->uploadFields = array();
 		
 		if (v("abilita_feedback"))
+		{
 			self::$tipiPagina["FORM_FEEDBACK"] = "Pagina inserimento feedback cliente";
+			self::$tipiPagina["CONDIZIONI_FEEDBACK"] = "Pagina condizioni inserimento feedback";
+		}
 		
 		parent::__construct();
 	}
@@ -2055,6 +2058,17 @@ class PagesModel extends GenericModel {
 			"tipo_pagina"		=>	sanitizeAll($tipo),
 			"principale"	=>	"Y",
 		))->field("id_page");
+	}
+	
+	// Controlla che esista una pagina di $id e $tipo
+	public function checkTipoPagina($id, $tipo)
+	{
+		return $this->clear()->where(array(
+			"attivo"		=>	"Y",
+			"tipo_pagina"	=>	sanitizeAll($tipo),
+			"principale"	=>	"Y",
+			"id_page"		=>	(int)$id,
+		))->rowNumber();
 	}
 	
 	public static function disponibilita($idPage = 0)

@@ -19,7 +19,7 @@
         <?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
         <br />
         <div class="class_accetto">
-			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></span>
+			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></span>
 		</div>
     </form>
 </div> 

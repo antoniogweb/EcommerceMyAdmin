@@ -491,7 +491,7 @@ class BaseContenutiController extends BaseController
 	}
 	
 	//create the HTML of the breadcrumb
-	private function breadcrumb($type = "category", $linkInLast = false, $separator = "&raquo;")
+	protected function breadcrumb($type = "category", $linkInLast = false, $separator = "&raquo;", $fullParents = null)
 	{
 		switch($type)
 		{
@@ -506,7 +506,11 @@ class BaseContenutiController extends BaseController
 			case "menu":
 				break;
 		}
-		$tempParents = $this->fullParents;
+		
+		if ($fullParents)
+			$tempParents = $fullParents;
+		else
+			$tempParents = $this->fullParents;
 		
 // 		print_r($this->fullParents);
 // 		die();
@@ -1119,9 +1123,6 @@ class BaseContenutiController extends BaseController
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti($clean["realId"]);
 		
-		// Controlla e in caso aggiungi feedback
-		$this->inserisciFeedback($clean["realId"]);
-		
 		$this->checkPage($clean["realId"]);
 		
 		$clean['id'] = $this->m['PagesModel']->getPrincipale($clean["realId"]);
@@ -1145,8 +1146,12 @@ class BaseContenutiController extends BaseController
 		
 		$data["isPage"] = true;
 		
-		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page");
-
+		if (!$this->m['PagesModel']->checkTipoPagina($clean["realId"], "FORM_FEEDBACK"))
+			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page");
+		
+		// Controlla e in caso aggiungi feedback
+		$this->inserisciFeedback($clean["realId"]);
+		
 		$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
 		
 		$data["pages"] = $this->pages = $this->m['PagesModel']->clear()->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,marchi.*")

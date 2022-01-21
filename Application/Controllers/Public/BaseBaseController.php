@@ -815,39 +815,58 @@ class BaseBaseController extends Controller
 	
 	protected function inserisciFeedback($id)
 	{
-// 		if (!v("abilita_feedback"))
-// 			$this->redirect("");
-// 		
-// 		if( !session_id() )
-// 			session_start();
-// 		
-// 		Domain::$currentUrl =  $this->getCurrentUrl();
-// 		
-// 		$campiForm = "autore,testo";
-// 		
-// 		$this->m['FeedbackModel']->strongConditions['insert'] = array(
-// 			'checkNotEmpty'	=>	$campiForm,
-// // 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
-// 		);
-// 		
-// 		$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
-// 		
-// 		if (isset($_POST['inviaFeedback']))
-// 		{
-// 			if (CaptchaModel::getModulo()->check())
-// 			{
-// 				if ($this->m['FeedbackModel']->checkConditions('insert'))
-// 				{
-// 					
-// 				}
-// 				else
-// 				{
-// 					FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
-// 				}
-// 			}
-// 		}
-// 		
-// 		FeedbackModel::$sValues = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+		if (!v("abilita_feedback"))
+			$this->redirect("");
+		
+		if( !session_id() )
+			session_start();
+		
+		FeedbackModel::gIdProdotto();
+		
+		if ($this->m['PagesModel']->checkTipoPagina($id, "FORM_FEEDBACK"))
+		{
+			if (!isset(FeedbackModel::$idProdotto) || !$this->m['PagesModel']->isProdotto((int)FeedbackModel::$idProdotto))
+				$this->redirect("");
+			
+			$par = $this->m["PagesModel"]->parents((int)FeedbackModel::$idProdotto,false,false,Params::$lang);
+			
+			//tolgo la root
+			array_shift($par);
+			
+// 			print_r($par);
+			
+			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page", true, "&raquo;", $par).v("divisone_breadcrum").$this->breadcrumb("page");
+			
+			$this->append($data);
+		}
+		
+		Domain::$currentUrl =  $this->getCurrentUrl();
+		
+		$campiForm = "autore,testo,email,accetto,accetto_feedback";
+		
+		$this->m['FeedbackModel']->strongConditions['insert'] = array(
+			'checkNotEmpty'	=>	$campiForm,
+			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+		);
+		
+		$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
+		
+		if (isset($_POST['inviaFeedback']))
+		{
+			if (CaptchaModel::getModulo()->check())
+			{
+				if ($this->m['FeedbackModel']->checkConditions('insert'))
+				{
+					
+				}
+				else
+				{
+					FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+				}
+			}
+		}
+		
+		FeedbackModel::$sValues = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
 	}
 	
 	protected function inviaMailFormContatti($id)
