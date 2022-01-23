@@ -128,6 +128,16 @@ class FeedbackModel extends GenericModel {
 		return parent::update($id, $where);
 	}
 	
+	public function setUserData()
+	{
+		$this->values["data_feedback"] = date("Y-m-d");
+		$this->values["id_user"] = User::$id;
+		$this->values["is_admin"] = 0;
+		$this->values["attivo"] = 0;
+		$this->values["id_page"] = self::$idProdotto;
+		$this->values["da_approvare"] = 1;
+	}
+	
 	public function dataora($record)
 	{
 		return date("d/m/Y H:i", strtotime($record["feedback"]["data_creazione"]));
@@ -136,6 +146,11 @@ class FeedbackModel extends GenericModel {
 	public function attivo($record)
 	{
 		return $record["feedback"]["attivo"] ? "Sì" : "No";
+	}
+	
+	public function daapprovare($record)
+	{
+		return $record["feedback"]["da_approvare"] ? "Sì" : "--";
 	}
 	
 	public function edit($record)

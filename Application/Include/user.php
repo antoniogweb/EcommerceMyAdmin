@@ -19,6 +19,7 @@ class User
 	public static $isMobile = false;
 	public static $isTablet = false;
 	public static $isPhone = false;
+	public static $nomeCliente = '';
 	
 	public static $adminLogged = false;
 	public static $asJson = false;

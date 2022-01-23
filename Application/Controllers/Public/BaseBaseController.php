@@ -140,27 +140,6 @@ class BaseBaseController extends Controller
 		
 		ImpostazioniModel::init();
 		
-		//leggi le impostazioni
-// 		if (ImpostazioniModel::$valori)
-// 		{
-// 			Parametri::$useSMTP = ImpostazioniModel::$valori["usa_smtp"] == "Y" ? true : false;
-// 			Parametri::$SMTPHost = ImpostazioniModel::$valori["smtp_host"];
-// 			Parametri::$SMTPPort = ImpostazioniModel::$valori["smtp_port"];
-// 			Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
-// 			Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
-// 			Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
-// 			Parametri::$mailFromName = ImpostazioniModel::$valori["smtp_nome"];
-// 			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
-// 			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
-// 			Parametri::$nomeNegozio = ImpostazioniModel::$valori["nome_sito"];
-// 			Parametri::$iva = ImpostazioniModel::$valori["iva"];
-// 			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
-// 			Parametri::$useSandbox = ImpostazioniModel::$valori["usa_sandbox"] == "Y" ? true : false;
-// 			Parametri::$paypalSeller = ImpostazioniModel::$valori["paypal_seller"];
-// 			Parametri::$paypalSandBoxSeller = ImpostazioniModel::$valori["paypal_sandbox_seller"];
-// 			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
-// 		}
-		
 		$this->session('registered');
 		$this->s['registered']->checkStatus();
 		
@@ -198,7 +177,7 @@ class BaseBaseController extends Controller
 			
 			User::$groups = $this->s['registered']->status['groups'];
 			
-			$data['nomeCliente'] = (strcmp($data['dettagliUtente']["tipo_cliente"],"privato") === 0 || strcmp($data['dettagliUtente']["tipo_cliente"],"libero_professionista") === 0) ?  $data['dettagliUtente']["nome"] : $data['dettagliUtente']["ragione_sociale"];
+			$data['nomeCliente'] = User::$nomeCliente = (strcmp($data['dettagliUtente']["tipo_cliente"],"privato") === 0 || strcmp($data['dettagliUtente']["tipo_cliente"],"libero_professionista") === 0) ?  $data['dettagliUtente']["nome"] : $data['dettagliUtente']["ragione_sociale"];
 			
 			// Estraggo lo sconto dell'utente
 			User::$classeSconto = $this->m["ClassiscontoModel"]->selectId(User::$dettagli["id_classe"]);
@@ -842,11 +821,15 @@ class BaseBaseController extends Controller
 		
 		Domain::$currentUrl =  $this->getCurrentUrl();
 		
-		$campiForm = "autore,testo,email,accetto,accetto_feedback";
+		if (User::$id)
+			$_POST["email"] = User::$dettagli["username"];
+		
+		$campiForm = "autore,testo,email,accetto,accetto_feedback,voto";
 		
 		$this->m['FeedbackModel']->strongConditions['insert'] = array(
 			'checkNotEmpty'	=>	$campiForm,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+			'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
 		);
 		
 		$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
@@ -857,7 +840,70 @@ class BaseBaseController extends Controller
 			{
 				if ($this->m['FeedbackModel']->checkConditions('insert'))
 				{
+					$this->m['FeedbackModel']->setUserData();
 					
+					if ($this->m['FeedbackModel']->insert())
+					{
+						$lId = $this->m['FeedbackModel']->lastId();
+						
+						$valoriEmail = $this->m['FeedbackModel']->values;
+					
+						$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
+						
+						$fonte = "FORM_FEEDBACK";
+						
+						// Inserisco il contatto
+// 						$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
+						
+						$pagina = $this->m["PagesModel"]->selectId((int)FeedbackModel::$idProdotto);
+						
+						$oggetto = "inserimento valutazione prodotto";
+						
+						ob_start();
+						include (tpf("Elementi/Mail/mail_form_feedback_negozio.php"));
+						$output = ob_get_clean();
+						
+						$res = MailordiniModel::inviaMail(array(
+							"emails"	=>	array(Parametri::$mailInvioOrdine),
+							"oggetto"	=>	$oggetto,
+							"testo"		=>	$output,
+							"tipologia"	=>	"FEEDBACK",
+							"id_user"	=>	(int)User::$id,
+							"id_page"	=>	(int)FeedbackModel::$idProdotto,
+							"reply_to"	=>	$valoriEmail["email"],
+// 							"id_contatto"	=>	$idContatto,
+						));
+						
+						if ($res)
+						{
+							ob_start();
+							include tpf("Elementi/Mail/mail_form_feedback_cliente.php");
+							$output = ob_get_clean();
+							
+							$res = MailordiniModel::inviaMail(array(
+								"emails"	=>	array(Parametri::$mailInvioOrdine),
+								"oggetto"	=>	$oggetto,
+								"testo"		=>	$output,
+								"tipologia"	=>	"FEEDBACK",
+								"id_user"	=>	(int)User::$id,
+								"id_page"	=>	(int)FeedbackModel::$idProdotto,
+							));
+						}
+						
+// 						if (Output::$html)
+// 						{
+// 							$urlRedirect = RegusersModel::getUrlRedirect();
+// 							
+// 							if ($urlRedirect && !v("conferma_registrazione"))
+// 								header('Location: '.$urlRedirect);
+// 							else
+// 								$this->redirect("avvisi");
+// 						}
+					}
+					else
+					{
+						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+					}
 				}
 				else
 				{
@@ -866,7 +912,14 @@ class BaseBaseController extends Controller
 			}
 		}
 		
-		FeedbackModel::$sValues = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+		$defaultValues = array(
+			"voto"	=>	0,
+		);
+		
+		if (User::$id)
+			$defaultValues["autore"] = User::$nomeCliente;
+		
+		FeedbackModel::$sValues = $this->m['FeedbackModel']->getFormValues('insert','sanitizeHtml', 0, $defaultValues);
 	}
 	
 	protected function inviaMailFormContatti($id)

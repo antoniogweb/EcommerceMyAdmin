@@ -93,3 +93,9 @@ Select2
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/select2/select2
+
+
+Star-rating-svg
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/nashio/star-rating-svg

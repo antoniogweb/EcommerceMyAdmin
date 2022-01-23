@@ -15,14 +15,18 @@
 			<?php echo FeedbackModel::$sNotice; ?>
 			<form action="<?php echo Domain::$currentUrl."?id_prodotto=".(int)FeedbackModel::gIdProdotto();?>#form-feedback" method="post" novalidate="novalidate">
 				<fieldset class="uk-fieldset">
+					<div class="my-rating"></div>
+					
 					<div class="uk-margin"> 
 						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","placeholder='".gtext("Il tuo nome*")."'");?>
 					</div>
 					
+					<?php if (!User::$id) { ?>
 					<div class="uk-margin"> 
 						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","email","placeholder='".gtext("Email*")."'");?>
 					</div>
-
+					<?php } ?>
+					
 					<div class="uk-margin">
 						<?php echo Html_Form::textarea("testo",FeedbackModel::gValue("testo"),"uk-textarea class_testo","testo","rows='5' placeholder='".gtext("Il tuo commento*")."'");?>
 					</div>
@@ -49,6 +53,8 @@
 					</div>
 					
 					<?php echo Html_Form::hidden("inviaFeedback","inviaFeedback");?>
+					
+					<?php echo Html_Form::hidden("voto",FeedbackModel::gValue("voto"));?>
 					
 					<div class="uk-margin">
 						<button type='submit' class="uk-button uk-button-secondary background-yellow color-white"><?php echo gtext('Invia',false);?></button>

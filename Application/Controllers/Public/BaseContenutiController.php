@@ -1167,6 +1167,8 @@ class BaseContenutiController extends BaseController
 				$data["pages"][0]["pages"]["description"] .= "[scelta-cookie]";
 				
 			$this->p = $data["pages"][0];
+			
+			$data["tipoPagina"] = $data["pages"][0]["pages"]["tipo_pagina"];
 		}
 		
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(

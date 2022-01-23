@@ -7,3 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/skins/minimal/minimal.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.css">
+
+<?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/star-rating-svg-master/src/css/star-rating-svg.css">
+<?php } ?>
