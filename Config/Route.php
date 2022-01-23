@@ -182,6 +182,7 @@ class Route
 		
 		'scaglioni,form',
 		'feedback,form',
+		'feedback,approvarifiuta',
 		
 		'classisconto,main',
 		'classisconto,form',

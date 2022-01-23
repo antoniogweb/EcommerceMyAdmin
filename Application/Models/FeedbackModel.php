@@ -32,7 +32,7 @@ class FeedbackModel extends GenericModel {
 	public static $datiProdotto = array();
 	
 	public static $tendinaPunteggi = array(
-		"0_0"	=>	"0",
+// 		"0_0"	=>	"0",
 // 		"0_5"	=>	"0,5",
 		"1_0"	=>	"1",
 // 		"1_5"	=>	"1,5",
@@ -70,6 +70,13 @@ class FeedbackModel extends GenericModel {
 					'labelString'=>	'Punteggio',
 					'options'	=>	self::$tendinaPunteggi,
 					"reverse"	=>	"yes",
+				),
+				'commento_negozio'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Inserisci un commento al feedback. Apparirà sotto al feedback del cliente.")."</div>"
+					),
 				),
 			),
 		);
@@ -150,12 +157,56 @@ class FeedbackModel extends GenericModel {
 	
 	public function daapprovare($record)
 	{
-		return $record["feedback"]["da_approvare"] ? "Sì" : "--";
+		$html = "";
+		
+		if ($record["feedback"]["id_user"] && !$record["feedback"]["da_approvare"])
+		{
+			if ($record["feedback"]["approvato"])
+				$html .= "<i class='fa fa-thumbs-up text-success'></i>";
+			else
+				$html .= "<i class='fa fa-thumbs-down text-danger'></i>";
+		}
+		
+		return $html;
+	}
+	
+	public function gestisci($record)
+	{
+		$label = $record["feedback"]["da_approvare"] ? "info" : "default";
+		
+		if ($record["feedback"]["id_user"])
+			return "<a href='".Url::getRoot()."feedback/approvarifiuta/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y' class='iframe label label-$label'><i class='fa fa-pencil'></i> ".gtext("gestisci")."</a>";
+		
+		return "";
+	}
+	
+	public function datagestione($record)
+	{
+		if ($record["feedback"]["dataora_approvazione_rifiuto"])
+			return date("d/m/Y H:i", strtotime($record["feedback"]["dataora_approvazione_rifiuto"]));
+		
+		return "";
 	}
 	
 	public function edit($record)
 	{
-		return "<a class='iframe action_iframe' href='".Url::getRoot()."feedback/form/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["autore"]."</a>";
+		if ($record["feedback"]["id_user"])
+			return $record["feedback"]["autore"];
+		else
+			return "<a class='iframe action_iframe' href='".Url::getRoot()."feedback/form/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["autore"]."</a>";
+	}
+	
+	public function editutente($record)
+	{
+		if ($record["feedback"]["email"])
+		{
+			if ($record["feedback"]["id_user"])
+				return "<a class='iframe' href='".Url::getRoot()."regusers/form/update/".$record["feedback"]["id_user"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["email"]."</a>";
+			else
+				return $record["feedback"]["email"];
+		}
+		
+		return "";
 	}
 	
 	public function punteggio($record)

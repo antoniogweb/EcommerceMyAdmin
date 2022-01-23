@@ -43,4 +43,48 @@ class FeedbackController extends BaseController {
 		
 		parent::form($queryType, $id);
 	}
+	
+	public function approvarifiuta($queryType = 'insert', $id = 0)
+	{
+		if ($queryType != "update")
+			die();
+		
+		$data["feedback"] = $this->m[$this->modelName]->selectId((int)$id);
+		
+		if (empty($data["feedback"]))
+			die();
+		
+		$this->shift(2);
+		
+		$campiDisabilitati = "autore,email,data_feedback,testo,voto";
+		
+		$this->m[$this->modelName]->setValuesFromPost($campiDisabilitati.",commento_negozio");
+		
+		$this->m[$this->modelName]->setValue("da_approvare", 0);
+		$this->m[$this->modelName]->setValue("dataora_approvazione_rifiuto", date("Y-m-d H:i:s"));
+		$this->m[$this->modelName]->setValue("da_approvare", 0);
+		
+		$azione = $this->request->post("updateAction", "");
+		
+		if ($azione)
+		{
+			if ($azione == "approvaFeedback")
+			{
+				$this->m[$this->modelName]->setValue("approvato", 1);
+				$this->m[$this->modelName]->setValue("attivo", 1);
+			}
+			else
+			{
+				$this->m[$this->modelName]->setValue("approvato", 0);
+				$this->m[$this->modelName]->setValue("attivo", 0);
+			}
+		}
+		
+		$this->disabledFields = $campiDisabilitati;
+		$this->m[$this->modelName]->delFields($campiDisabilitati);
+		
+		parent::form($queryType, $id);
+		
+		$this->append($data);
+	}
 }

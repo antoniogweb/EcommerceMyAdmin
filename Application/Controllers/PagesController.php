@@ -2063,8 +2063,8 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("feedback.data_feedback", "edit", "punteggio", "attivo", "daapprovare");
-		$this->mainHead = "Data feedback,Autore,Punteggio,Pubblicato,Approva / Rifiuta";
+		$this->mainFields = array("feedback.data_feedback", "edit", "editutente", "punteggio", "attivo", "daapprovare", "datagestione", "gestisci");
+		$this->mainHead = "Data feedback,Autore,Email,Punteggio,Pubblicato,Approvazione,Data approvazione/rifiuto,";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"feedback/".$clean['id'],'pageVariable'=>'page_fgl');
 		
