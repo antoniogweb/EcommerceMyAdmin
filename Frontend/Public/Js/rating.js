@@ -15,9 +15,14 @@ $(document).ready(function(){
 			initialRating: voto,
 			useGradient: false,
 			ratedColor: 'gold',
+			hoverColor: 'gold',
 			ratedColors: ['gold', 'gold', 'gold', 'gold', 'gold'],
+			forceRoundUp: true,
 			callback: function(currentRating, $el){
 				$("[name='voto']").val(currentRating);
+				
+				$el.starRating('setReadOnly', true);
+// 				$el.starRating('setRating', 1);
 			}
 		});
 	}
