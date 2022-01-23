@@ -6,6 +6,10 @@
 			<h2><?php echo field($datiPrototto, "title");?></h2>
 			
 			<img src="<?php echo $this->baseUrlSrc."/thumb/dettagliobig/".$datiPrototto["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($datiPrototto, "title"));?>" />
+			
+			<div class="uk-margin">
+				<a href="<?php echo Url::getRoot().getUrlAlias(field($datiPrototto, "id_page"));?>" class="uk-button uk-button-primary uk-button-small"><span uk-icon="icon: arrow-left"></span> <?php echo gtext("Torna al prodotto");?></a>
+			</div>
 		</div>
 		<div id="form-feedback" class="uk-width-1-2@m uk-width-1-2@s">
 			<h4 class="uk-margin"><?php echo t("Scrivi la tua valutazione");?></h4>
