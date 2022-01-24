@@ -55,8 +55,8 @@ class PagesModel extends GenericModel {
 	);
 	
 	public static $tipiPagina = array(
-		"GRAZIE"		=>	"Pagina grazie",
-		"GRAZIE_NEWSLETTER"	=>	"Pagina grazie iscrizione a newsletter",
+		"GRAZIE"		=>	"Pagina ringraziamento form richiesta informazioni",
+		"GRAZIE_NEWSLETTER"	=>	"Pagina ringraziamento iscrizione a newsletter",
 		"COOKIE"		=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
@@ -103,6 +103,7 @@ class PagesModel extends GenericModel {
 		{
 			self::$tipiPagina["FORM_FEEDBACK"] = "Pagina inserimento feedback cliente";
 			self::$tipiPagina["CONDIZIONI_FEEDBACK"] = "Pagina condizioni inserimento feedback";
+			self::$tipiPagina["GRAZIE_FEEDBACK"] = "Pagina ringraziamento feedback";
 		}
 		
 		parent::__construct();

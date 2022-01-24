@@ -21,7 +21,7 @@ $(document).ready(function(){
 			callback: function(currentRating, $el){
 				$("[name='voto']").val(currentRating);
 				
-				$el.starRating('setReadOnly', true);
+// 				$el.starRating('setReadOnly', true);
 // 				$el.starRating('setRating', 1);
 			}
 		});

@@ -109,9 +109,9 @@
     applyRating: function(rating){
       var index = rating - 1;
       // paint selected and remove hovered color
-      this.paintStars(index, 'rated');
+      this.paintStars(index, 'hovered');
       this._state.rating = index + 1;
-      this._state.rated = true;
+//       this._state.rated = true;
     },
 
     restoreState: function(e){

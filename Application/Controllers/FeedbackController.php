@@ -41,6 +41,9 @@ class FeedbackController extends BaseController {
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
 		
+		if ($queryType == "insert")
+			$this->m[$this->modelName]->setValue("is_admin", 1);
+		
 		parent::form($queryType, $id);
 	}
 	

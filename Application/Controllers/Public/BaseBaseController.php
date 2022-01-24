@@ -842,12 +842,14 @@ class BaseBaseController extends Controller
 				{
 					$this->m['FeedbackModel']->setUserData();
 					
+					$valoriEmail = $this->m['FeedbackModel']->values;
+					
+					$this->m['FeedbackModel']->sanitize("sanitizeAll");
+					
 					if ($this->m['FeedbackModel']->insert())
 					{
 						$lId = $this->m['FeedbackModel']->lastId();
 						
-						$valoriEmail = $this->m['FeedbackModel']->values;
-					
 						$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
 						
 						$fonte = "FORM_FEEDBACK";
@@ -860,45 +862,44 @@ class BaseBaseController extends Controller
 						$oggetto = "inserimento valutazione prodotto";
 						
 						ob_start();
-						include (tpf("Elementi/Mail/mail_form_feedback_negozio.php"));
+						include tpf("Elementi/Mail/mail_form_feedback_cliente.php");
 						$output = ob_get_clean();
 						
 						$res = MailordiniModel::inviaMail(array(
-							"emails"	=>	array(Parametri::$mailInvioOrdine),
+							"emails"	=>	array($valoriEmail["email"]),
 							"oggetto"	=>	$oggetto,
 							"testo"		=>	$output,
-							"tipologia"	=>	"FEEDBACK",
+							"tipologia"	=>	"FEEDBACK_CLIENTE",
 							"id_user"	=>	(int)User::$id,
 							"id_page"	=>	(int)FeedbackModel::$idProdotto,
-							"reply_to"	=>	$valoriEmail["email"],
-// 							"id_contatto"	=>	$idContatto,
 						));
 						
 						if ($res)
 						{
 							ob_start();
-							include tpf("Elementi/Mail/mail_form_feedback_cliente.php");
+							include (tpf("Elementi/Mail/mail_form_feedback_negozio.php"));
 							$output = ob_get_clean();
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
 								"oggetto"	=>	$oggetto,
 								"testo"		=>	$output,
-								"tipologia"	=>	"FEEDBACK",
+								"tipologia"	=>	"FEEDBACK_NEGOZIO",
 								"id_user"	=>	(int)User::$id,
 								"id_page"	=>	(int)FeedbackModel::$idProdotto,
+								"reply_to"	=>	$valoriEmail["email"],
 							));
 						}
 						
-// 						if (Output::$html)
-// 						{
-// 							$urlRedirect = RegusersModel::getUrlRedirect();
-// 							
-// 							if ($urlRedirect && !v("conferma_registrazione"))
-// 								header('Location: '.$urlRedirect);
-// 							else
-// 								$this->redirect("avvisi");
-// 						}
+						$idGrazieFeedback = PagineModel::gTipoPagina("GRAZIE_FEEDBACK");
+						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+						
+						if ($idGrazieFeedback)
+							$this->redirect(getUrlAlias($idGrazieFeedback));
+						else if ($idGrazie)
+							$this->redirect(getUrlAlias($idGrazie));
+						else
+							$this->redirect("grazie.html");
 					}
 					else
 					{

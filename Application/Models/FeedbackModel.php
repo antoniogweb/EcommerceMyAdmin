@@ -130,9 +130,58 @@ class FeedbackModel extends GenericModel {
 	
 	public function update($id = null, $where = null)
 	{
+		$record = $this->selectId((int)$id);
+		
+		if (empty($record))
+			return;
+		
 		$this->sistemaVoto();
 		
-		return parent::update($id, $where);
+		$res = parent::update($id, $where);
+		
+		if ($res && isset($_POST["updateAction"]) && isset($_POST["approvaAction"]) && $record["da_approvare"])
+		{
+			$approvato = ($_POST["updateAction"] == "approvaFeedback") ? 1 : 0;
+			
+			$this->mandaMailApprovazione($id, $approvato);
+		}
+		
+		return $res;
+	}
+	
+	public function mandaMailApprovazione($id, $approvato)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (empty($record))
+			return;
+		
+		$pagina = PagesModel::getPageDetails((int)$record["id_page"], $record["lingua"]);
+		$p = new PagesModel();
+		
+		if ($approvato)
+			$oggetto = "la sua valutazione è stata approvata";
+		else
+			$oggetto = "la sua valutazione è stata rifiutata";
+		
+		if ($approvato)
+			$testoPath = "Elementi/Mail/mail_approvazione_feedback.php";
+		else
+			$testoPath = "Elementi/Mail/mail_disapprovazione_feedback.php";
+		
+		$res = MailordiniModel::inviaMail(array(
+			"emails"	=>	array($record["email"]),
+			"oggetto"	=>	$oggetto,
+			"tipologia"	=>	"FEEDBACK_APPR_CLIENTE",
+			"id_page"	=>	(int)$record["id_page"],
+			"lingua"	=>	$record["lingua"],
+			"testo_path"	=>	$testoPath,
+			"array_variabili_tema"	=>	array(
+				"LINK_PRODOTTO"	=>	Domain::$publicUrl."/".$record["lingua"]."/".$p->getUrlAlias($pagina["pages"]["id_page"], $record["lingua"]),
+				"NOME_PRODOTTO"	=>	field($pagina, "title"),
+				"COMMENTO"	=>	$record["commento_negozio"],
+			),
+		));
 	}
 	
 	public function setUserData()
@@ -143,6 +192,7 @@ class FeedbackModel extends GenericModel {
 		$this->values["attivo"] = 0;
 		$this->values["id_page"] = self::$idProdotto;
 		$this->values["da_approvare"] = 1;
+		$this->values["lingua"] = Params::$lang;
 	}
 	
 	public function dataora($record)
@@ -159,7 +209,7 @@ class FeedbackModel extends GenericModel {
 	{
 		$html = "";
 		
-		if ($record["feedback"]["id_user"] && !$record["feedback"]["da_approvare"])
+		if (!$record["feedback"]["is_admin"] && !$record["feedback"]["da_approvare"])
 		{
 			if ($record["feedback"]["approvato"])
 				$html .= "<i class='fa fa-thumbs-up text-success'></i>";
@@ -174,7 +224,7 @@ class FeedbackModel extends GenericModel {
 	{
 		$label = $record["feedback"]["da_approvare"] ? "info" : "default";
 		
-		if ($record["feedback"]["id_user"])
+		if (!$record["feedback"]["is_admin"])
 			return "<a href='".Url::getRoot()."feedback/approvarifiuta/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y' class='iframe label label-$label'><i class='fa fa-pencil'></i> ".gtext("gestisci")."</a>";
 		
 		return "";
@@ -190,7 +240,7 @@ class FeedbackModel extends GenericModel {
 	
 	public function edit($record)
 	{
-		if ($record["feedback"]["id_user"])
+		if (!$record["feedback"]["is_admin"])
 			return $record["feedback"]["autore"];
 		else
 			return "<a class='iframe action_iframe' href='".Url::getRoot()."feedback/form/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["autore"]."</a>";

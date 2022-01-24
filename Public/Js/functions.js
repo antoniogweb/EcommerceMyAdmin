@@ -600,6 +600,11 @@ $(document).ready(function(){
 		aggAlteIfr();
 	});
 	
+	$( "body" ).on( "click", ".make_spinner", function(e){
+		if ($(this).find("i").length > 0)
+			$(this).find("i").attr("class","fa fa-refresh fa-spin");
+	});
+	
 	$( "body" ).on( "click", ".ajlink", function(e){
 		e.preventDefault();  //prevent form from submitting
 		

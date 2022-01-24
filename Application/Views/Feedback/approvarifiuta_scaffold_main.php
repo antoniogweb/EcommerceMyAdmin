@@ -44,12 +44,14 @@ $().ready(function() {
 			<?php echo $form["commento_negozio"];?>
 			
 			<?php if ($feedback["da_approvare"] || $feedback["approvato"]) { ?>
-			<button id="updateAction" class="btn btn-danger pull-right" name="updateAction" type="submit" value="rifiutaFeedback"><i class="fa fa-check"></i> <?php echo gtext("Rifiuta");?></button>
+			<button id="updateAction" class="btn btn-danger pull-right make_spinner" name="updateAction" type="submit" value="rifiutaFeedback"><i class="fa fa-check"></i> <?php echo gtext("Rifiuta");?></button>
 			<?php } ?>
 			
 			<?php if ($feedback["da_approvare"] || !$feedback["approvato"]) { ?>
-			<button id="updateAction" class="btn btn-success" name="updateAction" type="submit" value="approvaFeedback"><i class="fa fa-check"></i> <?php echo gtext("Approva");?></button>
+			<button id="updateAction" class="btn btn-success make_spinner" name="updateAction" type="submit" value="approvaFeedback"><i class="fa fa-check"></i> <?php echo gtext("Approva");?></button>
 			<?php } ?>
+			
+			<input type="hidden" value="approvaAction" name="approvaAction">
 		</div>
 	</div>
 </form>

@@ -37,6 +37,7 @@ class MailordiniModel extends GenericModel
 	
 	public static $mailInstance = null;
 	public static $idMailInviate = array();
+	public static $variabiliTema = array();
 	
 	public function __construct() {
 		$this->_tables = 'mail_ordini';
@@ -140,6 +141,7 @@ class MailordiniModel extends GenericModel
 		$idO = isset($params["id_o"]) ? $params["id_o"] : 0;
 		$idUser = isset($params["id_user"]) ? $params["id_user"] : 0;
 		$testo = isset($params["testo"]) ? $params["testo"] : "";
+		$pathTestoMail = isset($params["testo_path"]) ? $params["testo_path"] : "";
 		$tipologia = isset($params["tipologia"]) ? $params["tipologia"] : "ORDINE";
 		$idPage = isset($params["id_page"]) ? $params["id_page"] : 0;
 		$replyTo = isset($params["reply_to"]) ? $params["reply_to"] : "";
@@ -148,6 +150,9 @@ class MailordiniModel extends GenericModel
 		$idEvento = isset($params["id_evento"]) ? $params["id_evento"] : 0;
 		$usaTemplate = isset($params["usa_template"]) ? $params["usa_template"] : true;
 		$arrayVariabili = isset($params["array_variabili"]) ? $params["array_variabili"] : null;
+		$arrayVariabiliTema = isset($params["array_variabili_tema"]) ? $params["array_variabili_tema"] :  array();
+		
+		self::$variabiliTema = $arrayVariabiliTema;
 		
 		$bckLang = Params::$lang;
 		$bckContesto = TraduzioniModel::$contestoStatic;
@@ -212,12 +217,25 @@ class MailordiniModel extends GenericModel
 			
 			$arrayBcc = self::setBcc($mail, $emails);
 			
+			// Se imposto un file di tema per il testo della mail
+			if ($pathTestoMail)
+			{
+				ob_start();
+				include tpf($pathTestoMail);
+				$testo = ob_get_clean();
+				
+				foreach ($arrayVariabiliTema as $k => $v)
+				{
+					$testo = str_replace("[$k]", $v, $testo);
+				}
+			}
+			
 			$testoClean = $testo;
 			
 			if ($usaTemplate)
 				$testo = MailordiniModel::loadTemplate($oggetto, $testo);
 			
-// 				echo $testo;die();
+// 			echo $testo;die();
 			// Imposto le traduzioni del back
 			Params::$lang = $bckLang;
 			TraduzioniModel::$contestoStatic = $bckContesto;

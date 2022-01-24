@@ -40,7 +40,7 @@
 <?php } ?>
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/star-rating-svg-master/dist/';?>jquery.star-rating-svg.min.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/star-rating-svg-master/src/';?>jquery.star-rating-svg.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>rating.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 

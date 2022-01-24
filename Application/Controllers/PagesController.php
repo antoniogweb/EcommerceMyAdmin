@@ -2073,7 +2073,7 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->orderBy("feedback.id_order")->where(array(
 			"id_page"	=>	$clean['id'],
-			"is_admin"	=>	0,
+// 			"is_admin"	=>	0,
 		))->convert()->save();
 		
 		parent::main();
