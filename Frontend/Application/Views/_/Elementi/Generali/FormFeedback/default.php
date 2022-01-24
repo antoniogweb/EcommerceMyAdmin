@@ -19,7 +19,7 @@
 			<?php echo FeedbackModel::$sNotice; ?>
 			<form action="<?php echo Domain::$currentUrl."?id_prodotto=".(int)FeedbackModel::gIdProdotto();?>#form-feedback" method="post" novalidate="novalidate">
 				<fieldset class="uk-fieldset">
-					<div class="my-rating"></div>
+					<div class="my-rating class_voto"></div>
 					
 					<div class="uk-margin"> 
 						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","placeholder='".gtext("Il tuo nome*")."'");?>
@@ -61,7 +61,9 @@
 					<?php echo Html_Form::hidden("voto",FeedbackModel::gValue("voto"));?>
 					
 					<div class="uk-margin">
-						<button type='submit' class="uk-button uk-button-secondary background-yellow color-white"><?php echo gtext('Invia',false);?></button>
+						<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+						<button type='submit' class="uk-button uk-button-secondary btn_submit_form"><?php echo gtext('Invia',false);?></button>
+<!-- 						<input class="uk-button uk-button-secondary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" /> -->
 					</div>
 				</fieldset>
 			</form>
