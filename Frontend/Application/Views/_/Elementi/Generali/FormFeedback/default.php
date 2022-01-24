@@ -63,7 +63,6 @@
 					<div class="uk-margin">
 						<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
 						<button type='submit' class="uk-button uk-button-secondary btn_submit_form"><?php echo gtext('Invia',false);?></button>
-<!-- 						<input class="uk-button uk-button-secondary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" /> -->
 					</div>
 				</fieldset>
 			</form>
