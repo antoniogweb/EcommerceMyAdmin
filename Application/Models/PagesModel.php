@@ -2193,6 +2193,12 @@ class PagesModel extends GenericModel {
 			else
 				$temp["g:description"] = htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8");
 			
+			if (v("elimina_emoticons_da_feed"))
+			{
+				$temp["g:title"] = F::removeEmoji($temp["g:title"]);
+				$temp["g:description"] = F::removeEmoji($temp["g:description"]);
+			}
+			
 			$parents = $p->parents((int)$r["pages"]["id_page"], false, false, true);
 			
 			//elimino la categoria root

@@ -361,6 +361,7 @@ class VariabiliModel extends GenericModel {
 		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
 		"euro_iva_italiana_vendite_ue"	=>	10000, // totale euro massimo per vendite fuori dall'italia con IVA italiana
 		"no_tag_descrizione_feed"	=>	0,
+		"elimina_emoticons_da_feed"	=>	1,
 	);
 	
 	public static $daInizializzare = array(
