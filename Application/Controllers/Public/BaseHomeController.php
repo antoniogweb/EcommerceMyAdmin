@@ -144,6 +144,12 @@ class BaseHomeController extends BaseController
 			"item"	=>	$prodotti,
 		);
 		
+		if (v("elimina_emoticons_da_feed"))
+		{
+			$xmlArray["channel"]["title"] = F::removeEmoji($xmlArray["channel"]["title"]);
+			$xmlArray["channel"]["description"] = F::removeEmoji($xmlArray["channel"]["description"]);
+		}
+		
 // 		print_r($xmlArray);
 		
 		$xml = aToX($xmlArray);
