@@ -141,7 +141,7 @@
 			{
 				$(this).css("overflow", "visible");
 				var height = $(this).find(".titolo_fascia").outerHeight();
-				console.log(height);
+// 				console.log(height);
 				$(this).find(".titolo_fascia").css("top","-" + height + "px");
 			}
 		});
