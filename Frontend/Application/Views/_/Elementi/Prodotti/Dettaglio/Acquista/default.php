@@ -2,6 +2,14 @@
 <div class="info-product">
 	<h1><?php echo field($p, "title");?></h1>
 	
+	<?php if (v("abilita_feedback")) { ?>
+	<?php include(tpf(ElementitemaModel::p("FEEDBACK_MEDIO_PRODOTTO","", array(
+		"titolo"	=>	"Valutazione media prodotto",
+		"percorso"	=>	"Elementi/Prodotti/Dettaglio/FeedbackMedio",
+	)))); ?>
+	<?php } ?>
+	
+	
 	<?php include(tpf(ElementitemaModel::p("PREZZO_DETTAGLIO")));?>
 	
 	<div class="uk-margin">

@@ -1,11 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-section">
+	<div id="tab-dettagli_pagina" style="position:relative;top:-100px;"></div>
 	<div class="uk-container uk-container-large">
 		<div class="uk-grid" uk-grid>
 			<div class="uk-width-1-2@m" id="description">
 				<header>
 					<nav style="overflow-x:auto;" class="nav-scroll">
-						<ul class="uk-flex uk-flex-left uk-flex-nowrap uk-subnav uk-subnav-pill" uk-switcher="connect: .js-tabs">
+						<ul class="uk-flex uk-flex-left uk-flex-nowrap uk-subnav uk-subnav-pill" uk-switcher="connect: .js-tabs;">
 							<?php foreach ($contenuti_tab as $tab => $aa) { ?>
 							<li aria-expanded="true" class="uk-active"><a href=""><?php echo gtext($tab);?></a></li>
 							<?php } ?>
@@ -13,7 +14,7 @@
 							<li aria-expanded="false" class=""><a href=""><?php echo gtext("Caratteristiche");?></a></li>
 							<?php } ?>
 							<?php if (v("abilita_feedback")) { ?>
-							<li aria-expanded="false" class=""><a href=""><?php echo gtext("Valutazioni clienti");?></a></li>
+							<li id="tab-feedback" aria-expanded="false" class=""><a href=""><?php echo gtext("Valutazioni clienti");?></a></li>
 							<?php } ?>
 						</ul>
 					</nav>
@@ -55,12 +56,11 @@
 			</div>
 			<div class="uk-width-1-2@m" id="contatti-form">
 				<div class="uk-background-muted uk-padding uk-text-left">
-<!-- 					<div class="uk-padding-large uk-card uk-card-body uk-background-muted">    -->
-					    	<h3 class="uk-text-uppercase uk-margin-remove uk-text-default">Contattaci</h3>  	
-							<h2 class="uk-margin-remove uk-margin uk-text-emphasis uk-text-large">Hai bisogno di maggiori info? </h2>
+					<h3 class="uk-text-uppercase uk-margin-remove uk-text-default"><?php echo t("Contattaci");?></h3> 
+					<h2 class="uk-margin-remove uk-margin uk-text-emphasis uk-text-large"><?php echo t("Hai bisogno di maggiori info?");?></h2>
 
-							<hr>
-							<p>Se hai dubbi o domande compila il seguente form. Ti risponderemo al più presto!</p>
+					<hr>
+					<p><?php echo t("Se hai dubbi o domande compila il seguente form. Ti risponderemo al più presto!");?></p>
 					<?php include(tpf("/Elementi/Pagine/form-contatti.php"));?>
 				</div>
 			</div>
