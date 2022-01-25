@@ -2188,7 +2188,7 @@ class PagesModel extends GenericModel {
 			
 			$temp["g:identifier_exists"] = $r["pages"]["identifier_exists"] ? $r["pages"]["identifier_exists"] : v("identificatore_feed_default");
 			
-			if (isset($_GET["fbk"]))
+			if (isset($_GET["fbk"]) || v("no_tag_descrizione_feed"))
 				$temp["g:description"] = strip_tags(htmlentitydecode(field($r,"description")));
 			else
 				$temp["g:description"] = htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8");
