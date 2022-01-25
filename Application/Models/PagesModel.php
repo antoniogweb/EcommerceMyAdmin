@@ -2799,7 +2799,7 @@ class PagesModel extends GenericModel {
 			
 			list($min, $max) = F::getLimitiMinMax($margineEuro, $scaglione);
 			
-			return "MARGINE $min - $max €";
+			return "MARG $min - $max";
 		}
 		
 		return "";
@@ -2816,7 +2816,7 @@ class PagesModel extends GenericModel {
 		{
 			list($min, $max) = F::getLimitiMinMax($page["guadagno_previsto"], $scaglione);
 			
-			return "MARGINE GUADAGNO $min - $max €";
+			return "MARG GUAD $min - $max";
 		}
 		
 		return "";
@@ -2843,7 +2843,7 @@ class PagesModel extends GenericModel {
 		{
 			list($min, $max) = F::getLimitiMinMax($page[$field], $scaglione);
 			
-			return "$etichetta $min - $max €";
+			return "$etichetta $min - $max";
 		}
 		
 		return "";
