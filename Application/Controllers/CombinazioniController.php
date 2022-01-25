@@ -45,7 +45,7 @@ class CombinazioniController extends BaseController
 		
 		$this->model("PagesattributiModel");
 		
-		$this->arrayAttributi = $this->m["PagesattributiModel"]->clear()->select("distinct pages_attributi.id_a, attributi.titolo")->inner(array("attributo"))->toList("pages_attributi.id_a","attributi.titolo");
+		$this->arrayAttributi = $this->m["PagesattributiModel"]->clear()->select("distinct pages_attributi.id_a, concat(attributi.titolo,' (', attributi.nota_interna,')') as t")->inner(array("attributo"))->toList("pages_attributi.id_a","aggregate.t");
 		
 		if (isset($_GET["id_page"]) && $_GET["id_page"] != "tutti")
 			$this->m["PagesattributiModel"]->where(array(
@@ -138,7 +138,7 @@ class CombinazioniController extends BaseController
 		if ($this->viewArgs['id_page'] == "tutti")
 			$this->filters = array("categoria", "prodotto", "codice");
 		
-		$attributi = $this->m["PagesattributiModel"]->clear()->select("distinct pages_attributi.id_a, attributi.titolo")->inner(array("attributo"))->toList("pages_attributi.id_a","attributi.titolo")->send();
+// 		$attributi = $this->m["PagesattributiModel"]->clear()->select("distinct pages_attributi.id_a, if (attributi.nota_interna != '',concat(attributi.titolo,' (', attributi.nota_interna,')'),attributi.titolo) as t")->inner(array("attributo"))->toList("pages_attributi.id_a","aggregate.t")->send();
 		
 		foreach ($this->arrayAttributi as $idA => $titoloA)
 		{
