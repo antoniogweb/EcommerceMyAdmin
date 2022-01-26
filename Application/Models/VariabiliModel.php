@@ -360,9 +360,10 @@ class VariabiliModel extends GenericModel {
 		"pixel_nel_footer"			=>	1, // sposta il pixel di Facebook nel footer
 		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
 		"euro_iva_italiana_vendite_ue"	=>	10000, // totale euro massimo per vendite fuori dall'italia con IVA italiana
-		"no_tag_descrizione_feed"	=>	0,
-		"elimina_emoticons_da_feed"	=>	1,
-		"attiva_reggroups_tipi"		=>	0,
+		"no_tag_descrizione_feed"	=>	0, // non usare i tag nel campo descrizione del feed
+		"elimina_emoticons_da_feed"	=>	1, // togli le emoticons dal feed
+		"attiva_reggroups_tipi"		=>	0, // attiva la possibilità di legare i gruppi ai tipi di contenuti in automatico
+		"marchio_rich_snippet"		=>	"", // il marchio del negozio, da usare solo se è un produttore diretto e non usa i marchi
 	);
 	
 	public static $daInizializzare = array(

@@ -2492,6 +2492,9 @@ class PagesModel extends GenericModel {
 				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$imm["immagine"];
 			}
 			
+			$now = new dateTime();
+			$now->modify("+10 days");
+			
 			$snippetArray = array(
 				"@context"	=>	"https://schema.org/",
 				"@type"		=>	"Product",
@@ -2501,6 +2504,8 @@ class PagesModel extends GenericModel {
 					"price"	=>	number_format($prezzoMinimoIvato,2,".",""),
 					"priceCurrency"	=>	"EUR",
 					"availability"	=>	$giacenza > 0 ? "https://schema.org/InStock" : $outOfStock,
+					"url"	=>	Url::getRoot().$pm->getUrlAlias($p["pages"]["id_page"]),
+					"priceValidUntil"	=>	$now->format("Y-m-d"),
 				),
 			);
 			
@@ -2527,6 +2532,13 @@ class PagesModel extends GenericModel {
 						"name"	=>	 sanitizeJs(mfield($marchio, "titolo")),
 					);
 				}
+			}
+			else if (v("marchio_rich_snippet"))
+			{
+				$snippetArray["brand"] = array(
+					"@type"	=>	"Brand",
+					"name"	=>	 sanitizeJs(v("marchio_rich_snippet")),
+				);
 			}
 			
 			if (v("abilita_feedback") && self::hasFeedback((int)$id))
