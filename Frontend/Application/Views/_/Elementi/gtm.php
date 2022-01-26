@@ -65,6 +65,7 @@ if (v("codice_gtm_analytics"))
 				"transaction_id"	=>	$ordineGTML["id_o"],
 				"affiliation"		=>	sanitizeJs(Parametri::$nomeNegozio),
 				"value"				=>	$ordineGTML["total"],
+				"currency"			=>	"EUR",
 				"tax"				=>	$ordineGTML["iva"],
 				"shipping"			=>	v("prezzi_ivati_in_carrello") ? $ordineGTML["spedizione_ivato"] : $ordineGTML["spedizione"],
 				"items"				=>	$tempRigheGTM,
