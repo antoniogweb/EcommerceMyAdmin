@@ -139,14 +139,48 @@ class DocumentiModel extends GenericModel {
     
 	public function update($id = NULL, $whereClause = NULL)
 	{
+		if (v("attiva_reggroups_tipi"))
+			$old = $this->selectId((int)$id);
+		
 		if ($this->upload("update"))
-			return parent::update($id, $whereClause);
+		{
+			$res = parent::update($id, $whereClause);
+			
+			if ($res && v("attiva_reggroups_tipi"))
+			{
+				$new = $this->selectId((int)$id);
+				
+				if ((int)$new["id_tipo_doc"] !== (int)$old["id_tipo_doc"])
+				{
+					$rgt = new ReggroupstipiModel();
+					
+					$rgd = new ReggroupsdocumentiModel();
+					
+					$rgd->del(null, "id_doc = ".(int)$id);
+					
+					$rgt->elaboraTutto("INSERT", $id);
+				}
+			}
+			
+			return $res;
+		}
 	}
 	
 	public function insert()
 	{
 		if (!self::$uploadFile || $this->upload("insert"))
-			return parent::insert();
+		{
+			$res = parent::insert();
+			
+			if ($res && v("attiva_reggroups_tipi"))
+			{
+				$rgt = new ReggroupstipiModel();
+				
+				$rgt->elaboraTutto("INSERT", $this->lId);
+			}
+			
+			return $res;
+		}
 	}
 	
 	public function accessi($record)

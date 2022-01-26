@@ -26,7 +26,9 @@ class TipidocumentoController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array();
+	public $argKeys = array(
+		'id_group:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "utenti";
 	
@@ -52,7 +54,22 @@ class TipidocumentoController extends BaseController
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("titolo")->save();
+				->orderBy("titolo");
+		
+		if ($this->viewArgs["id_group"] != "tutti")
+		{
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungiagruppo";
+			
+			$this->bulkActions = array(
+				"checkbox_tipi_documento_id_tipo_doc"	=>	array("aggiungiagruppo","Aggiungi al gruppo"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("tipi_documento.id_tipo_doc not in (select id_tipo from reggroups_tipi where tipo='DO' and id_group = ".(int)$this->viewArgs["id_group"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

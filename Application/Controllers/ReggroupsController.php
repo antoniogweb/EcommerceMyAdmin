@@ -46,6 +46,7 @@ class ReggroupsController extends BaseController
 		$this->append($data);
 		
 		$this->model("ContenutitradottiModel");
+		$this->model("ReggroupstipiModel");
 	}
 
 	public function main()
@@ -67,8 +68,45 @@ class ReggroupsController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->_posizioni['main'] = 'class="active"';
+		
 		$this->m[$this->modelName]->setValuesFromPost('name');
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function tipi($id = 0)
+	{
+		$this->_posizioni['tipi'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_group";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "ReggroupstipiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("tipologiacontenuto","categoriacontenuto");
+		$this->mainHead = "Tipo,Tipologia contenuto / documento";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"tipi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->orderBy("reggroups_tipi.tipo,reggroups_tipi.id_order")->where(array(
+			"id_group"	=>	$clean['id'],
+		))->convert()->save();
+		
+		$this->tabella = "gruppi";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["ReggroupsModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }

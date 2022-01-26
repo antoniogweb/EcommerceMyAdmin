@@ -90,4 +90,9 @@ class TipicontenutoModel extends GenericModel
 		
 		return $t->clear()->selectId($id);
 	}
+	
+	public function aggiungiagruppo($id)
+    {
+		$this->aggiungiAGruppoTipo($id, "CO");
+    }
 }

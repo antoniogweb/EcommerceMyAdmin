@@ -97,6 +97,7 @@ class Route
 		
 		'reggroups,main',
 		'reggroups,form',
+		'reggroups,tipi',
 		
 		'news,main',
 		'news,form',

@@ -146,6 +146,7 @@ class BaseController extends Controller
 		'nobuttons:sanitizeAll' => "tutti",
 		'report:sanitizeAll' => "tutti",
 		'skip:sanitizeAll' => "tutti",
+		'nofiltri:sanitizeAll' => "tutti",
 		'cl_on_sv:sanitizeAll' => "tutti",
 	);
 	

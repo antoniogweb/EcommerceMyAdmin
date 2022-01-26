@@ -1108,6 +1108,16 @@ function nobuttons()
 	return false;
 }
 
+function nofiltri()
+{
+	if (isset($_GET["nofiltri"]) and strcmp($_GET["nofiltri"],"Y") === 0)
+	{
+		return true;
+	}
+	
+	return false;
+}
+
 function showreport()
 {
 	if (isset($_GET["report"]) and strcmp($_GET["report"],"Y") === 0)

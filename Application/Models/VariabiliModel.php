@@ -362,6 +362,7 @@ class VariabiliModel extends GenericModel {
 		"euro_iva_italiana_vendite_ue"	=>	10000, // totale euro massimo per vendite fuori dall'italia con IVA italiana
 		"no_tag_descrizione_feed"	=>	0,
 		"elimina_emoticons_da_feed"	=>	1,
+		"attiva_reggroups_tipi"		=>	0,
 	);
 	
 	public static $daInizializzare = array(

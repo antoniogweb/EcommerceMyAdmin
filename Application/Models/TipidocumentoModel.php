@@ -38,4 +38,9 @@ class TipidocumentoModel extends GenericModel
         );
     }
     
+    public function aggiungiagruppo($id)
+    {
+		$this->aggiungiAGruppoTipo($id, "DO");
+    }
+    
 }

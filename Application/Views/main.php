@@ -24,6 +24,7 @@
 			<?php } ?>
 			<div class="box">
 				<div class="box-header with-border main">
+					<?php if (!nofiltri()) { ?>
 					<?php
 					$path = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_filtri.php";
 					
@@ -32,6 +33,7 @@
 					else if (isset($filtri))
 						echo $filtri;
 					?>
+					<?php } ?>
 					
 					<?php
 					$path = ROOT."/Application/Views/".ucfirst($this->controller)."/main_action.php";

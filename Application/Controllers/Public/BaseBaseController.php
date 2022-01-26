@@ -795,7 +795,7 @@ class BaseBaseController extends Controller
 	protected function inserisciFeedback($id)
 	{
 		if (!v("abilita_feedback"))
-			$this->redirect("");
+			return;
 		
 		if( !session_id() )
 			session_start();
@@ -816,111 +816,111 @@ class BaseBaseController extends Controller
 			
 			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page", true, "&raquo;", $par).v("divisone_breadcrum").$this->breadcrumb("page");
 			
-			$this->append($data);
-		}
-		
-		Domain::$currentUrl =  $this->getCurrentUrl();
-		
-		if (User::$id)
-			$_POST["email"] = User::$dettagli["username"];
-		
-		$campiForm = "autore,testo,email,accetto,accetto_feedback,voto";
-		
-		$this->m['FeedbackModel']->strongConditions['insert'] = array(
-			'checkNotEmpty'	=>	$campiForm,
-			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
-			'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
-		);
-		
-		$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
-		
-		if (isset($_POST['inviaFeedback']))
-		{
-			if (CaptchaModel::getModulo()->check())
+			Domain::$currentUrl =  $this->getCurrentUrl();
+			
+			if (User::$id)
+				$_POST["email"] = User::$dettagli["username"];
+			
+			$campiForm = "autore,testo,email,accetto,accetto_feedback,voto";
+			
+			$this->m['FeedbackModel']->strongConditions['insert'] = array(
+				'checkNotEmpty'	=>	$campiForm,
+				'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+				'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
+			);
+			
+			$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
+			
+			if (isset($_POST['inviaFeedback']))
 			{
-				if ($this->m['FeedbackModel']->checkConditions('insert'))
+				if (CaptchaModel::getModulo()->check())
 				{
-					$this->m['FeedbackModel']->setUserData();
-					
-					$valoriEmail = $this->m['FeedbackModel']->values;
-					
-					$this->m['FeedbackModel']->sanitize("sanitizeAll");
-					
-					if ($this->m['FeedbackModel']->insert())
+					if ($this->m['FeedbackModel']->checkConditions('insert'))
 					{
-						$lId = $this->m['FeedbackModel']->lastId();
+						$this->m['FeedbackModel']->setUserData();
 						
-						$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
+						$valoriEmail = $this->m['FeedbackModel']->values;
 						
-						$fonte = "FORM_FEEDBACK";
+						$this->m['FeedbackModel']->sanitize("sanitizeAll");
 						
-						// Inserisco il contatto
-// 						$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
-						
-						$pagina = $this->m["PagesModel"]->selectId((int)FeedbackModel::$idProdotto);
-						
-						$oggetto = "inserimento valutazione prodotto";
-						
-						ob_start();
-						include tpf("Elementi/Mail/mail_form_feedback_cliente.php");
-						$output = ob_get_clean();
-						
-						$res = MailordiniModel::inviaMail(array(
-							"emails"	=>	array($valoriEmail["email"]),
-							"oggetto"	=>	$oggetto,
-							"testo"		=>	$output,
-							"tipologia"	=>	"FEEDBACK_CLIENTE",
-							"id_user"	=>	(int)User::$id,
-							"id_page"	=>	(int)FeedbackModel::$idProdotto,
-						));
-						
-						if ($res)
+						if ($this->m['FeedbackModel']->insert())
 						{
+							$lId = $this->m['FeedbackModel']->lastId();
+							
+							$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
+							
+							$fonte = "FORM_FEEDBACK";
+							
+							// Inserisco il contatto
+	// 						$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
+							
+							$pagina = $this->m["PagesModel"]->selectId((int)FeedbackModel::$idProdotto);
+							
+							$oggetto = "inserimento valutazione prodotto";
+							
 							ob_start();
-							include (tpf("Elementi/Mail/mail_form_feedback_negozio.php"));
+							include tpf("Elementi/Mail/mail_form_feedback_cliente.php");
 							$output = ob_get_clean();
 							
 							$res = MailordiniModel::inviaMail(array(
-								"emails"	=>	array(Parametri::$mailInvioOrdine),
+								"emails"	=>	array($valoriEmail["email"]),
 								"oggetto"	=>	$oggetto,
 								"testo"		=>	$output,
-								"tipologia"	=>	"FEEDBACK_NEGOZIO",
+								"tipologia"	=>	"FEEDBACK_CLIENTE",
 								"id_user"	=>	(int)User::$id,
 								"id_page"	=>	(int)FeedbackModel::$idProdotto,
-								"reply_to"	=>	$valoriEmail["email"],
 							));
+							
+							if ($res)
+							{
+								ob_start();
+								include (tpf("Elementi/Mail/mail_form_feedback_negozio.php"));
+								$output = ob_get_clean();
+								
+								$res = MailordiniModel::inviaMail(array(
+									"emails"	=>	array(Parametri::$mailInvioOrdine),
+									"oggetto"	=>	$oggetto,
+									"testo"		=>	$output,
+									"tipologia"	=>	"FEEDBACK_NEGOZIO",
+									"id_user"	=>	(int)User::$id,
+									"id_page"	=>	(int)FeedbackModel::$idProdotto,
+									"reply_to"	=>	$valoriEmail["email"],
+								));
+							}
+							
+							$idGrazieFeedback = PagineModel::gTipoPagina("GRAZIE_FEEDBACK");
+							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+							
+							if ($idGrazieFeedback)
+								$this->redirect(getUrlAlias($idGrazieFeedback));
+							else if ($idGrazie)
+								$this->redirect(getUrlAlias($idGrazie));
+							else
+								$this->redirect("grazie.html");
 						}
-						
-						$idGrazieFeedback = PagineModel::gTipoPagina("GRAZIE_FEEDBACK");
-						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
-						
-						if ($idGrazieFeedback)
-							$this->redirect(getUrlAlias($idGrazieFeedback));
-						else if ($idGrazie)
-							$this->redirect(getUrlAlias($idGrazie));
 						else
-							$this->redirect("grazie.html");
+						{
+							$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+						}
 					}
 					else
 					{
-						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+						FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
 					}
 				}
-				else
-				{
-					FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
-				}
 			}
+			
+			$defaultValues = array(
+				"voto"	=>	0,
+			);
+			
+			if (User::$id)
+				$defaultValues["autore"] = User::$nomeCliente;
+			
+			FeedbackModel::$sValues = $this->m['FeedbackModel']->getFormValues('insert','sanitizeHtml', 0, $defaultValues);
+			
+			$this->append($data);
 		}
-		
-		$defaultValues = array(
-			"voto"	=>	0,
-		);
-		
-		if (User::$id)
-			$defaultValues["autore"] = User::$nomeCliente;
-		
-		FeedbackModel::$sValues = $this->m['FeedbackModel']->getFormValues('insert','sanitizeHtml', 0, $defaultValues);
 	}
 	
 	protected function inviaMailFormContatti($id)

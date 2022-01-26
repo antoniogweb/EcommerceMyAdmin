@@ -336,7 +336,18 @@ class ContenutiModel extends GenericModel {
 			$this->values["tema"] = v("theme_folder");
 		
 		if ($this->upload("insert"))
-			return parent::insert();
+		{
+			$res = parent::insert();
+			
+			if ($res && v("attiva_reggroups_tipi"))
+			{
+				$rgt = new ReggroupstipiModel();
+				
+				$rgt->elaboraTutto("INSERT", $this->lId);
+			}
+			
+			return $res;
+		}
 	}
 	
 	//duplica i contenuti

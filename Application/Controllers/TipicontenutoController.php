@@ -39,6 +39,7 @@ class TipicontenutoController extends BaseController
 		$this->argKeys = array(
 			'titolo:sanitizeAll'=>'tutti',
 			'tipo:sanitizeAll'=>'tutti',
+			'id_group:sanitizeAll'=>'tutti',
 		);
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -60,7 +61,25 @@ class TipicontenutoController extends BaseController
 					"lk" => array('titolo' => $this->viewArgs['titolo']),
 					"tipo"	=>	$this->viewArgs['tipo'],
 				))
-				->orderBy("id_order")->save();
+				->orderBy("id_order");
+		
+		if ($this->viewArgs["id_group"] != "tutti")
+		{
+			if (!v("attiva_reggroups_tipi"))
+				die();
+			
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungiagruppo";
+			
+			$this->bulkActions = array(
+				"checkbox_tipi_contenuto_id_tipo"	=>	array("aggiungiagruppo","Aggiungi al gruppo"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("tipi_contenuto.id_tipo not in (select id_tipo from reggroups_tipi where tipo='CO' and id_group = ".(int)$this->viewArgs["id_group"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

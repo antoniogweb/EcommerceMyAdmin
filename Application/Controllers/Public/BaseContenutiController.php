@@ -1146,11 +1146,11 @@ class BaseContenutiController extends BaseController
 		
 		$data["isPage"] = true;
 		
+		// Elaborazione feedback
 		if (!$this->m['PagesModel']->checkTipoPagina($clean["realId"], "FORM_FEEDBACK"))
 			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page");
-		
-		// Controlla e in caso aggiungi feedback
-		$this->inserisciFeedback($clean["realId"]);
+		else
+			$this->inserisciFeedback($clean["realId"]);
 		
 		$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
 		

@@ -524,7 +524,11 @@ class GenericModel extends Model_Tree
 	
 	public function pInsert()
 	{
-		return parent::insert();
+		$res = parent::insert();
+		
+		$this->lId = $this->lastId();
+		
+		return $res;
 	}
 	
 	public function pUpdate($id = null, $where = null)
@@ -1338,4 +1342,23 @@ class GenericModel extends Model_Tree
 		if (!v("prezzi_ivati_in_prodotti") && isset($this->values["price"]))
 			$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
 	}
+	
+	public function aggiungiAGruppoTipo($id, $tipo = "CO")
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_group"]))
+		{
+			$rgt = new ReggroupstipiModel();
+			
+			$rgt->setValues(array(
+				"id_group"	=>	(int)$_GET["id_group"],
+				"id_tipo"	=>	(int)$id,
+				"tipo"		=>	$tipo,
+			), "sanitizeDb");
+			
+			if ($rgt->pInsert())
+				$rgt->elabora($rgt->lId, "INSERT");
+		}
+    }
 }
