@@ -52,9 +52,9 @@ class SitemapController extends BaseController
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
-		Helper_Menu::$htmlLinks["vedi"]["absolute_url"] = Domain::$publicUrl."/sitemap.xml";
-		
 		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		Helper_Menu::$htmlLinks["vedi"]["absolute_url"] = Domain::$publicUrl."/sitemap.xml";
 	}
 	
 	public function main()
