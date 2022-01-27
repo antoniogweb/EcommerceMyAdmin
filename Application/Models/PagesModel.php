@@ -2429,7 +2429,7 @@ class PagesModel extends GenericModel {
 		
 		return $f->clear()->where(array(
 			"id_page"	=>	(int)$id,
-			"is_admin"	=>	0,
+// 			"is_admin"	=>	0,
 			"attivo"	=>	1,
 		))->getAvg("voto");
     }
@@ -2440,7 +2440,7 @@ class PagesModel extends GenericModel {
 		
 		return $f->clear()->where(array(
 			"id_page"	=>	(int)$id,
-			"is_admin"	=>	0,
+// 			"is_admin"	=>	0,
 			"attivo"	=>	1,
 		))->rowNumber();
     }
@@ -2547,7 +2547,7 @@ class PagesModel extends GenericModel {
 				
 				$feedback = $fm->clear()->where(array(
 					"id_page"	=>	(int)$id,
-					"is_admin"	=>	0,
+// 					"is_admin"	=>	0,
 					"attivo"	=>	1,
 				))->orderBy("feedback.voto desc")->limit(1)->send(false);
 				
