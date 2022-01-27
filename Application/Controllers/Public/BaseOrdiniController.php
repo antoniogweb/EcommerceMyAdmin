@@ -629,6 +629,8 @@ class BaseOrdiniController extends BaseController
 		fwrite($fp, print_r($_POST,true));
 		fclose($fp);
 		
+		VariabiliModel::noCookieAlert();
+		
 		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
 		
 		if (isset($_GET["item_number"]) || isset($_GET["tx"]))
@@ -689,6 +691,8 @@ class BaseOrdiniController extends BaseController
 		fwrite($fp, print_r($_GET,true));
 		fwrite($fp, print_r($_POST,true));
 		fclose($fp);
+		
+		VariabiliModel::noCookieAlert();
 		
 		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
 		

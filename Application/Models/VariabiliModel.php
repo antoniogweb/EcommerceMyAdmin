@@ -409,6 +409,12 @@ class VariabiliModel extends GenericModel {
 		}
 	}
 	
+	public static function noCookieAlert()
+	{
+		if (v("var_query_string_no_cookie"))
+			$_GET[v("var_query_string_no_cookie")] = "";
+	}
+	
 	public static function setPlaceholders()
 	{
 		self::$placeholders = array(
