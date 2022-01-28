@@ -2549,27 +2549,34 @@ class PagesModel extends GenericModel {
 					"id_page"	=>	(int)$id,
 // 					"is_admin"	=>	0,
 					"attivo"	=>	1,
-				))->orderBy("feedback.voto desc")->limit(1)->send(false);
+				))->orderBy("feedback.voto desc")->send(false);
 				
 				if (count($feedback) > 0)
 				{
-					$snippetArray["review"] = array(
-						"@type"	=>	"Review",
-						"reviewRating"	=>	array(
-							"@type"	=>	"Rating",
-							"ratingValue"	=>	$feedback[0]["voto"],
-						),
-						"author"	=>	array(
-							"@type"	=>	"Person",
-							"name"	=>	sanitizeJs($feedback[0]["autore"]),
-						),
-					);
+					$snippetArray["review"] = array();
+					
+					foreach ($feedback as $fd)
+					{
+						$snippetArray["review"][] = array(
+							"@type"	=>	"Review",
+							"reviewRating"	=>	array(
+								"@type"	=>	"Rating",
+								"ratingValue"	=>	$fd["voto"],
+							),
+							"author"	=>	array(
+								"@type"	=>	"Person",
+								"name"	=>	sanitizeJs($fd["autore"]),
+							),
+							"reviewBody"	=>	sanitizeJs(strip_tags(htmlentitydecode($fd["testo"]))),
+						);
+					}
 				}
 				
 				$snippetArray["aggregateRating"] = array(
 					"@type"	=>	"AggregateRating",
-					"ratingValue"	=>	number_format(self::punteggio((int)$id),1,".",""),
-					"reviewCount"	=>	self::numeroFeedback((int)$id),
+					"ratingValue"	=>	(string)number_format(self::punteggio((int)$id),1,".",""),
+					"reviewCount"	=>	(string)self::numeroFeedback((int)$id),
+					"bestRating"	=>	(string)5,
 				);
 			}
 		}
