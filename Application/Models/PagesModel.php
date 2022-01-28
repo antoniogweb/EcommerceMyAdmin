@@ -2807,6 +2807,11 @@ class PagesModel extends GenericModel {
 		return ($prezzoMinimo * $margine) / 100;
 	}
 	
+	public function etichettaMargineEuro($idPage, $page = null)
+	{
+		return (int)$this->margineEuro($idPage);
+	}
+	
 	public function etichettaMargine($idPage, $page = null)
 	{
 		$scaglione = (int)v("scaglioni_margine_di_euro");

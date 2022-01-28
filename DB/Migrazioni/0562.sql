@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, CURRENT_TIMESTAMP, '0', 'Margine in euro (valore no range)', 'etichettaMargineEuro', 'ETICHETTE_FEED_GOOGLE', '10', '0');
