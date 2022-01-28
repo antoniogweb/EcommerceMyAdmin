@@ -2797,14 +2797,19 @@ class PagesModel extends GenericModel {
 	
 	public function margineEuro($idPage)
 	{
-		$prezzoMinimo = $this->prezzoMinimo($idPage, true);
+		$prezzoMinimoPieno = $this->prezzoMinimo($idPage, true);
 		
 		$c = new CartModel();
-		$prezzoMinimo = $c->calcolaPrezzoFinale($idPage, $prezzoMinimo, 1, true);
+		$prezzoMinimo = $c->calcolaPrezzoFinale($idPage, $prezzoMinimoPieno, 1, true);
+		
+		// Calcolo lo sconto in euro
+		$scontoEuro = $prezzoMinimoPieno - $prezzoMinimo;
 		
 		$margine = $this->getMarginePercentuale($idPage);
 		
-		return ($prezzoMinimo * $margine) / 100;
+		$margineEuro = ($prezzoMinimoPieno * $margine) / 100;
+		
+		return $margineEuro - $scontoEuro;
 	}
 	
 	public function etichettaMargineEuro($idPage, $page = null)
