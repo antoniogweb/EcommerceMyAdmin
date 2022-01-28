@@ -2577,6 +2577,7 @@ class PagesModel extends GenericModel {
 					"ratingValue"	=>	(string)number_format(self::punteggio((int)$id),1,".",""),
 					"reviewCount"	=>	(string)self::numeroFeedback((int)$id),
 					"bestRating"	=>	(string)5,
+					"worstRating"	=>	(string)1,
 				);
 			}
 		}
