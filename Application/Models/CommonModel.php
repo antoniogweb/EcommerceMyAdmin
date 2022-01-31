@@ -351,4 +351,13 @@ trait CommonModel {
 	{
 		return trim(strip_tags(htmlentitydecode($field)));
 	}
+	
+	//restituisci il nome del cliente dell'ordine (nome cognome o ragione sociale)
+	public function nome($row)
+	{
+		if (strcmp($row["regusers"]["tipo_cliente"],"privato") === 0)
+			return $row["regusers"]["nome"]." ".$row["regusers"]["cognome"];
+		else
+			return $row["regusers"]["ragione_sociale"];
+	}
 }

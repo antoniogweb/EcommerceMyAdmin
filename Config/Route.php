@@ -99,6 +99,8 @@ class Route
 		'reggroups,form',
 		'reggroups,tipi',
 		
+		'regusersgroupstemp,main',
+		
 		'news,main',
 		'news,form',
 		'news,ordina',

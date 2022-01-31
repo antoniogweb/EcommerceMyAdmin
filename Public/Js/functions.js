@@ -630,8 +630,8 @@ $(document).ready(function(){
 		e.preventDefault();  //prevent form from submitting
 		
 		var azione = $(this).attr("data-azione");
-		
-		$(this).removeClass("fa-plus-circle").addClass("fa-refresh").addClass("fa-spin");
+// 		var classefa = $(this).attr("class");
+		$(this).attr("class","fa fa-refresh fa-spin")
 		
 		$(this).closest('tr').find("td").first().find("input").prop('checked', true);
 		

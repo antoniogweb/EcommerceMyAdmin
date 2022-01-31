@@ -310,8 +310,6 @@ class OrdiniModel extends FormModel {
 			$this->values["id_corriere"] = 0;
 		}
 		
-// 		$this->lId = (int)$this->lastId();
-		
 		return false;
 	}
 	

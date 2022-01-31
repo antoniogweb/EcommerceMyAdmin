@@ -63,6 +63,7 @@ class RegusersModel extends FormModel {
         return array(
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'sedi' => array("HAS_MANY", 'SpedizioniModel', 'id_user', null, "CASCADE"),
+			'gruppi_temp' => array("HAS_MANY", 'RegusersgroupstempModel', 'id_user', null, "CASCADE"),
 			'groups' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("RegusersgroupsModel","id_user","id_group"), "CASCADE"),
 			'tipo_azienda' => array("BELONGS_TO", 'TipiaziendaModel', 'id_tipo_azienda',null,"CASCADE"),
 			'ruolo' => array("BELONGS_TO", 'RuoliModel', 'id_ruolo',null,"CASCADE"),
@@ -123,19 +124,6 @@ class RegusersModel extends FormModel {
 		else
 		{
 			return "P.IVA: ".$row["regusers"]["p_iva"];
-		}
-	}
-	
-	//restituisci il nome del cliente dell'ordine (nome cognome o ragione sociale)
-	public function nome($row)
-	{
-		if (strcmp($row["regusers"]["tipo_cliente"],"privato") === 0)
-		{
-			return $row["regusers"]["nome"]." ".$row["regusers"]["cognome"];
-		}
-		else
-		{
-			return $row["regusers"]["ragione_sociale"];
 		}
 	}
 	

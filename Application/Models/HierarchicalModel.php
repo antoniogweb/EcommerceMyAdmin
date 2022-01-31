@@ -410,8 +410,6 @@ class HierarchicalModel extends GenericModel {
 		
 		if (parent::insert())
 		{
-// 			$this->lId = $this->lastId();
-		
 			$this->callRebuildTree();
 			
 			return true;

@@ -526,9 +526,15 @@ class GenericModel extends Model_Tree
 	{
 		$res = parent::insert();
 		
-		$this->lId = $this->lastId();
+		$this->lId = $this->lastId(true);
 		
 		return $res;
+	}
+	
+	// 	Retrieves the ID generated for an AUTO_INCREMENT column by the previous query (usually INSERT). 
+	public function lastId($forzaDb = false)
+	{
+		return !$forzaDb ? $this->lId : $this->db->lastId();
 	}
 	
 	public function pUpdate($id = null, $where = null)
@@ -574,7 +580,7 @@ class GenericModel extends Model_Tree
 		parent::insert();
 		$res = $this->queryResult;
 		
-		$this->lId = $this->lastId();
+		$this->lId = $this->lastId(true);
 		
 		if ($this->traduzione)
 		{

@@ -6,6 +6,8 @@ class BaseRegusersModel extends Model_Tree
 {
 	use CommonModel;
 	
+	public $lId = null;
+	
 	public function __construct()
 	{
 		$this->_tables='regusers';
@@ -16,6 +18,12 @@ class BaseRegusersModel extends Model_Tree
 		parent::__construct();
 		
 		$this->_resultString->string["executed"] = "<div class='".v("alert_success_class")."'>".gtext("operazione eseguita!")."</div>\n";
+	}
+	
+	// 	Retrieves the ID generated for an AUTO_INCREMENT column by the previous query (usually INSERT). 
+	public function lastId($forzaDb = false)
+	{
+		return !$forzaDb ? $this->lId : $this->db->lastId();
 	}
 	
 	public function insert()
@@ -38,7 +46,37 @@ class BaseRegusersModel extends Model_Tree
 		$checkFiscale = v("insert_account_cf_obbligatorio") && v("abilita_codice_fiscale");
 		
 		if ($this->controllaCF($checkFiscale) && $this->controllaPIva(v("insert_account_p_iva_obbligatorio")))
-			return parent::insert();
+		{
+			$res = parent::insert();
+			
+			$this->lId = $this->lastId(true);
+			
+			// Gruppi temporanei
+			if ($res && v("gruppi_inseriti_da_approvare_alla_registrazione"))
+			{
+				$rgt = new RegusersgroupstempModel();
+				$rg = new ReggroupsModel();
+				
+				$gruppiTemp = explode(",",v("gruppi_inseriti_da_approvare_alla_registrazione"));
+				
+				foreach ($gruppiTemp as $idgt)
+				{
+					$record = $rg->selectId((int)$idgt);
+					
+					if (!empty($record))
+					{
+						$rgt->setValues(array(
+							"id_user"	=>	$this->lId,
+							"id_group"	=>	$idgt,
+						));
+						
+						$rgt->insert();
+					}
+				}
+			}
+			
+			return $res;
+		}
 		
 		return false;
 	}
@@ -319,6 +357,7 @@ class BaseRegusersModel extends Model_Tree
 		if (!empty($user))
 		{
 			$this->query("delete from spedizioni where id_user = ".(int)$idUser);
+			$this->query("delete from regusers_groups_temp where id_user = ".(int)$idUser);
 			$this->query("delete from regusers_groups where id_user = ".(int)$idUser);
 			$this->query("update orders set id_user = 0 where id_user = ".(int)$idUser);
 			$this->query("delete from regusers where id_user = ".(int)$idUser);
