@@ -2822,7 +2822,7 @@ class PagesModel extends GenericModel {
 	
 	public function etichettaMargineEuro($idPage, $page = null)
 	{
-		return (int)$this->margineEuro($idPage);
+		return number_format($this->margineEuro($idPage),0,".","");
 	}
 	
 	public function etichettaMargine($idPage, $page = null)
