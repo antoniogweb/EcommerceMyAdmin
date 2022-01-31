@@ -108,7 +108,7 @@ class RegusersgroupstempModel extends GenericModel {
 				
 				$gruppo = $rg->selectId($idGroup);
 				
-				if (!empty($gruppo))
+				if (!empty($gruppo) && !$soloaccount)
 				{
 					$rug->setValues(array(
 						"id_user"	=>	$idUser,
@@ -163,5 +163,13 @@ class RegusersgroupstempModel extends GenericModel {
 		$rugt = new RegusersgroupstempModel();
 		
 		return $rugt->clear()->groupBy("id_user")->rowNumber();
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		$record = $this->selectId($id);
+		
+		if (!empty($record))
+			return parent::del(null, "id_user = ".(int)$record["id_user"]);
 	}
 }
