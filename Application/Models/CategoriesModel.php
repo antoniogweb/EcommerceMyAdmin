@@ -785,14 +785,21 @@ class CategoriesModel extends HierarchicalModel {
 		return self::gPage($id_c, false, false)->rowNumber();
 	}
 	
-	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*")
+	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true)
 	{
-		return $this->clear()->select($select)->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c, "attivo"=>"Y"))->orderBy("categories.lft")->send();
+		$this->clear()->select($select)->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>(int)$id_c))->orderBy("categories.lft");
+		
+		if ($soloAttivi)
+			$this->aWhere(array(
+				"attivo"=>"Y",
+			));
+		
+		return $this->send();
 	}
 	
-	public function categorieFiglieSelect($id_c)
+	public function categorieFiglieSelect($id_c, $soloAttivi = true)
 	{
-		$children = $this->categorieFiglie($id_c, "categories.id_c,categories.title,contenuti_tradotti_categoria.title");
+		$children = $this->categorieFiglie($id_c, "categories.id_c,categories.title,contenuti_tradotti_categoria.title", $soloAttivi);
 		
 		$arrayFigli = array();
 		
