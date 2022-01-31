@@ -52,7 +52,7 @@ class RegusersgroupstempModel extends GenericModel {
 	
 	public function gruppidaapprovare($record)
 	{
-		$gruppi = $this->clear()->select("reggroups.name")->inner(array("gruppo"))->where(array("id_user"=>(int)$record[$this->_tables]["id_user"]))->toList("reggroups.name")->send();
+		$gruppi = $this->clear()->select("if(reggroups.name != '',concat('Aggiunta a gruppo: <b>',reggroups.name,'</b>'),'<b>Attivazione account</b>') as nome_gruppo")->left(array("gruppo"))->where(array("id_user"=>(int)$record[$this->_tables]["id_user"]))->toList("aggregate.nome_gruppo")->send();
 		
 		if (count($gruppi) > 0)
 			return implode("<br />",$gruppi);
@@ -65,25 +65,23 @@ class RegusersgroupstempModel extends GenericModel {
 		return "<i data-azione='approvagruppi' title='".gtext("Approva")."' class='bulk_trigger fa fa-thumbs-up text text-success'></i>";
     }
     
-    public function disapprovacrud($record)
+    public function approvasoloaccountcrud($record)
     {
-		return "<i data-azione='disapprovagruppi' title='".gtext("Disapprova")."' class='bulk_trigger fa fa-thumbs-down text text-danger'></i>";
+		return "<i data-azione='approvasoloaccountgruppi' title='".gtext("Disapprova")."' class='bulk_trigger fa fa-thumbs-up text text-info'></i>";
     }
     
-	public function disapprovagruppi($id, $disapprova = false)
+	public function approvasoloaccountgruppi($id)
     {
 		$this->approvagruppi($id, true);
 	} 
     
-    public function approvagruppi($id, $disapprova = false)
+    public function approvagruppi($id, $soloaccount = false)
     {
 		$rg = new ReggroupsModel();
 		$ru = new RegusersModel();
 		$rug = new RegusersgroupsModel();
 		
 		$record = $this->selectId($id);
-		
-		$mandaMail = false;
 		
 		if (!empty($record))
 		{
@@ -93,6 +91,12 @@ class RegusersgroupstempModel extends GenericModel {
 			
 			if (empty($user))
 				return;
+			
+			$ru->setValues(array(
+				Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
+			));
+			
+			$ru->pUpdate($idUser);
 			
 			$righeDaCopiare = $this->clear()->where(array(
 				"id_user"	=>	(int)$idUser,
@@ -106,25 +110,18 @@ class RegusersgroupstempModel extends GenericModel {
 				
 				if (!empty($gruppo))
 				{
-					if ($disapprova)
-						$this->del($r["id_ugt"]);
-					else
-					{
-						$rug->setValues(array(
-							"id_user"	=>	$idUser,
-							"id_group"	=>	$idGroup,
-						));
-						
-						if ($rug->insert())
-							$this->del($r["id_ugt"]);
-					}
+					$rug->setValues(array(
+						"id_user"	=>	$idUser,
+						"id_group"	=>	$idGroup,
+					));
 					
-					$mandaMail = true;
+					$rug->insert();
 				}
+				
+				$this->del($r["id_ugt"]);
 			}
 			
-			if ($mandaMail)
-				$this->mandaMailApprovazione($idUser, !$disapprova);
+			$this->mandaMailApprovazione($idUser, !$soloaccount);
 		}
     }
     
@@ -139,12 +136,12 @@ class RegusersgroupstempModel extends GenericModel {
 		if ($approvato)
 			$oggetto = "la sua iscrizione al sito è stata approvata";
 		else
-			$oggetto = "la sua iscrizione al sito è stata approvata con riserva";
+			$oggetto = "la sua iscrizione al sito è stata approvata";
 		
 		if ($approvato)
 			$testoPath = "Elementi/Mail/mail_approvazione_gruppi_utente.php";
 		else
-			$testoPath = "Elementi/Mail/mail_disapprovazione_gruppi_utente.php";
+			$testoPath = "Elementi/Mail/mail_approvazione_solo_account_utente.php";
 		
 		$nome = $this->nome(array("regusers"=>$record));
 		

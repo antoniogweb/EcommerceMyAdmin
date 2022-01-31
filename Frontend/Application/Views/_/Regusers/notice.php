@@ -112,7 +112,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<p><?php echo gtext("Cordiali saluti<br />");?></p>
 		<?php } ?>
 	<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0) { ?>
-		<?php if (!v("conferma_registrazione")) { ?>
+		<?php if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
 			<p><?php echo gtext("L'account è stato creato correttamente. Le è stata inviata una mail con le credenziali d'accesso che ha scelto");?>.</p>
 			
 			<?php if (!isset($_GET["eFromApp"])) { ?>
@@ -122,10 +122,15 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 			<p>
 				<?php echo gtext("La registrazione è avventuta correttamente, ma il suo account non è ancora attivo.");?>
 				<br />
-				<span class="uk-text-bold"><?php echo gtext("Le è stata inviata una mail con un link per confermare la registrazione."); ?></span><br />
-				<?php echo gtext("Segua tale link per attivare l'account"); ?>
-				<br />
-				<?php echo gtext("Il link avrà una validità di ".v("ore_durata_link_conferma")." ore"); ?><br />
+				<?php if (v("conferma_registrazione")) { ?>
+					<span class="uk-text-bold"><?php echo gtext("Le è stata inviata una mail con un link per confermare la registrazione."); ?></span><br />
+					<?php echo gtext("Segua tale link per attivare l'account"); ?>
+					<br />
+					<?php echo gtext("Il link avrà una validità di ".v("ore_durata_link_conferma")." ore"); ?><br />
+				<?php } else if (v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
+					<?php echo gtext("La sua richiesta di iscrizione è stata inoltrata con successo."); ?><br />
+					<?php echo gtext("Quanto prima ci prenderemo cura della richiesta e le invieremo un feedback."); ?>
+				<?php } ?>
 			</p>
 			
 			<?php if (!isset($_GET["eFromApp"])) { ?>

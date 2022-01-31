@@ -30,7 +30,7 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$this->values['forgot_token'] = $this->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
 		
-		if (v("conferma_registrazione"))
+		if (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione"))
 			$this->values["has_confirmed"] = 1;
 		
 		$this->values["lingua"] = Params::$lang;
@@ -63,11 +63,11 @@ class BaseRegusersModel extends Model_Tree
 				{
 					$record = $rg->selectId((int)$idgt);
 					
-					if (!empty($record))
+					if ((int)$idgt === -1 || !empty($record))
 					{
 						$rgt->setValues(array(
 							"id_user"	=>	$this->lId,
-							"id_group"	=>	$idgt,
+							"id_group"	=>	$idgt > 0 ? $idgt : 0,
 						));
 						
 						$rgt->insert();

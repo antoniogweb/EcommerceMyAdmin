@@ -719,7 +719,7 @@ class BaseBaseController extends Controller
 						$_SESSION["email_carrello"] = $clean["username"];
 						
 						//loggo l'utente
-						if (!v("conferma_registrazione"))
+						if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
 							$this->s['registered']->login($clean["username"],$password);
 						
 						if (Output::$json)

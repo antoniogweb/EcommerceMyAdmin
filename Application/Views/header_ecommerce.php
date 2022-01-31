@@ -71,7 +71,7 @@ include(ROOT."/Application/Views/header.php");
 			<?php } ?>
 			<li class="<?php echo tm($tm, array("regusers","ruoli","tipiazienda","reggroups", "regusersgroupstemp"));?> treeview">
 				<a href="#">
-					<i class="fa fa-users"></i>
+					<i class="fa fa-user-o"></i>
 					<span>Clienti</span>
 				</a>
 				<ul class="treeview-menu">
@@ -87,13 +87,13 @@ include(ROOT."/Application/Views/header.php");
 					<?php } ?>
 					<?php if (v("attiva_gruppi")) { ?>
 					<li class="dropdown-header">Gruppi</li>
-					<li class="<?php echo tm($tm, array("reggroups"));?>"><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-users"></i> Lista gruppi</a></li>
+					<li class="<?php echo tm($tm, array("reggroups"));?>"><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-group"></i> Lista gruppi</a></li>
 						<?php if (v("gruppi_inseriti_da_approvare_alla_registrazione")) {
 							$numeroDaApprovare = RegusersgroupstempModel::numerodaapprovare();
 						?>
 						<li class="<?php echo tm($tm, array("regusersgroupstemp"));?>">
 							<a href="<?php echo $this->baseUrl."/regusersgroupstemp/main/1";?>">
-								<i class="fa fa-users"></i> <?php echo gtext("Da approvare")?>
+								<i class="fa fa-thumbs-up"></i> <?php echo gtext("Da approvare")?>
 								<?php if ($numeroDaApprovare) { ?>
 								<span class="label label-warning"><?php echo $numeroDaApprovare;?></span>
 								<?php } ?>

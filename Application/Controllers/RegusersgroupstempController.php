@@ -45,23 +45,23 @@ class RegusersgroupstempController extends BaseController
 	{
 		$this->shift();
 		
-		$this->queryActions = $this->bulkQueryActions = "";
-		$this->mainButtons = "";
+		$this->queryActions = "del";
+		$this->mainButtons = "ldel";
 // 		$this->addBulkActions = false;
 		
 // 		$this->colProperties = array();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->mainFields = array("edit","nome","gruppidaapprovare","approvacrud","disapprovacrud");
-		$this->mainHead = "Email,Nome,Gruppi da approvare,Approva,Disapprova";
+		$this->mainFields = array("edit","nome","gruppidaapprovare","approvacrud","approvasoloaccountcrud");
+		$this->mainHead = "Email,Nome,Permessi da approvare,Approva tutto,Approva solo attivazione account";
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
-		$this->bulkQueryActions = "approvagruppi,disapprovagruppi";
+		$this->bulkQueryActions = "approvagruppi,approvasoloaccountgruppi";
 		
 		$this->bulkActions = array(
 			"checkbox_regusers_groups_temp_id_ugt"	=>	array("approvagruppi","APPROVA"),
-			"+checkbox_regusers_groups_temp_id_ugt"	=>	array("disapprovagruppi","DISAPPROVA"),
+			"+checkbox_regusers_groups_temp_id_ugt"	=>	array("approvasoloaccountgruppi","DISAPPROVA"),
 		);
 		
 		$this->m[$this->modelName]->clear()->select("*")->inner(array("cliente"))->groupBy("regusers_groups_temp.id_user")->orderBy("regusers.id_user")->convert()->save();
