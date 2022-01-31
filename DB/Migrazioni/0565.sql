@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '2022-01-02 19:10:29', '0', 'Etichetta disponibilità', 'etichettaDisponibilita', 'ETICHETTE_FEED_GOOGLE', '12', '0');

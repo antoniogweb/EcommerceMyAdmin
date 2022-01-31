@@ -2868,6 +2868,17 @@ class PagesModel extends GenericModel {
 		return $this->etichettaCpcField($idPage, $page, "cpc_max", "CPC MAX");
 	}
 	
+	public function etichettaCpcMedioEMax($idPage, $page = null)
+	{
+		if (!$page)
+			$page = $this->selectId($page);
+		
+		if (isset($page["guadagno_previsto"]) && $page["guadagno_previsto"] > 0)
+			return $this->etichettaCpcField($idPage, $page, "cpc_medio_pesato", "CPC MEDIO");
+		else
+			return $this->etichettaCpcField($idPage, $page, "cpc_max", "CPC MAX");
+	}
+	
 	public function etichettaCpcField($idPage, $page = null, $field = "cpc_medio_pesato", $etichetta = "CPC")
 	{
 		$scaglione = (int)v("scaglioni_cpc_euro_centesimi") / 100;
@@ -2895,6 +2906,14 @@ class PagesModel extends GenericModel {
 		
 		return "NON STIMATO";
 	}
+	
+	public function etichettaDisponibilita($idPage, $page = null)
+	{
+		$giacenza = self::disponibilita($idPage);
+		
+		return $giacenza > 0 ? "DISPONIBILE" : "NON DISPONIBILE";
+	}
+	
 	
 	// Restituisce gli elementi da usare nella fascia
 	public static function getElementiFascia($numero = 0)
