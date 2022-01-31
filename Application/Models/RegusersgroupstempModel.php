@@ -62,12 +62,12 @@ class RegusersgroupstempModel extends GenericModel {
 	
 	public function approvacrud($record)
     {
-		return "<i data-azione='approvagruppi' title='".gtext("Approva")."' class='bulk_trigger fa fa-thumbs-up text text-success'></i>";
+		return "<i data-azione='approvagruppi' title='".gtext("Approva tutto")."' class='bulk_trigger fa fa-thumbs-up text text-success'></i>";
     }
     
     public function approvasoloaccountcrud($record)
     {
-		return "<i data-azione='approvasoloaccountgruppi' title='".gtext("Disapprova")."' class='bulk_trigger fa fa-thumbs-up text text-info'></i>";
+		return "<i data-azione='approvasoloaccountgruppi' title='".gtext("Approva solo attivazione account")."' class='bulk_trigger fa fa-thumbs-up text text-info'></i>";
     }
     
 	public function approvasoloaccountgruppi($id)
