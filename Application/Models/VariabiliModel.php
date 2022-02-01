@@ -365,6 +365,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_reggroups_tipi"		=>	0, // attiva la possibilità di legare i gruppi ai tipi di contenuti in automatico
 		"marchio_rich_snippet"		=>	"", // il marchio del negozio, da usare solo se è un produttore diretto e non usa i marchi
 		"gruppi_inseriti_da_approvare_alla_registrazione"		=>	"", // alla registrazione, i seguenti gruppi temporanei verranno aggiunti, saranno da approvare (inserire gli id dei gruppi divisi da virgola)
+		"checkbox_css_path"			=>	"admin/Frontend/Public/Css/skins/minimal/minimal.css",
 	);
 	
 	public static $daInizializzare = array(
