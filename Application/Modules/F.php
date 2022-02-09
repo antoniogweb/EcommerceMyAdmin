@@ -62,6 +62,11 @@ class F
 		return htmlspecialchars($string, ENT_COMPAT, "UTF-8");
 	}
 	
+	public static function partial($char = "?")
+	{
+		return partial() ? $char."partial=Y" : "";
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{

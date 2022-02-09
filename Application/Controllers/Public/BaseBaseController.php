@@ -1028,11 +1028,11 @@ class BaseBaseController extends Controller
 							$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
 						
 						if ($idGrazieNewsletter)
-							$this->redirect(getUrlAlias($idGrazieNewsletter));
+							$this->redirect(getUrlAlias($idGrazieNewsletter).F::partial());
 						else if ($idGrazie)
-							$this->redirect(getUrlAlias($idGrazie));
+							$this->redirect(getUrlAlias($idGrazie).F::partial());
 						else
-							$this->redirect("grazie.html");
+							$this->redirect("grazie.html".F::partial());
 					} else {
 						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova pi&ugrave tardi</div>");
 					}
