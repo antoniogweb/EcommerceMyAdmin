@@ -367,6 +367,7 @@ class VariabiliModel extends GenericModel {
 		"gruppi_inseriti_da_approvare_alla_registrazione"		=>	"", // alla registrazione, i seguenti gruppi temporanei verranno aggiunti, saranno da approvare (inserire gli id dei gruppi divisi da virgola)
 		"checkbox_css_path"			=>	"admin/Frontend/Public/Css/skins/minimal/minimal.css",
 		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
+		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
 	);
 	
 	public static $daInizializzare = array(
@@ -409,6 +410,7 @@ class VariabiliModel extends GenericModel {
 			VariabiliModel::$valori["codice_gtm_analytics_noscript"] = "";
 			VariabiliModel::$valori["codice_fbk"] = "";
 			VariabiliModel::$valori["codice_fbk_noscript"] = "";
+			VariabiliModel::$valori["codice_js_ok_cookie"] = "";
 		}
 	}
 	
@@ -539,6 +541,15 @@ class VariabiliModel extends GenericModel {
 					null,
 					null,
 					"<div class='form_notice'>".gtext("Il valore del campo send_to ottenuto dal codice di conversione di Google Ads")."</div>",
+				),
+			),
+			'codice_js_ok_cookie'	=>	array(
+				'labelString'	=>	'Altri codici JS di tracciamento',
+				'type'			=>	'Textarea',
+				'wrap'		=>	array(
+					null,
+					null,
+					"<div class='form_notice'>".gtext("Verranno attivati solo se il cliente approva tutti i cookie.")."</div>",
 				),
 			),
 		);
