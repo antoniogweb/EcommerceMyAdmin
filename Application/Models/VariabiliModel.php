@@ -366,6 +366,7 @@ class VariabiliModel extends GenericModel {
 		"marchio_rich_snippet"		=>	"", // il marchio del negozio, da usare solo se è un produttore diretto e non usa i marchi
 		"gruppi_inseriti_da_approvare_alla_registrazione"		=>	"", // alla registrazione, i seguenti gruppi temporanei verranno aggiunti, saranno da approvare (inserire gli id dei gruppi divisi da virgola)
 		"checkbox_css_path"			=>	"admin/Frontend/Public/Css/skins/minimal/minimal.css",
+		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
 	);
 	
 	public static $daInizializzare = array(

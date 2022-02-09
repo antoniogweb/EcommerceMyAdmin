@@ -2599,6 +2599,24 @@ class PagesModel extends GenericModel {
 		return "";
     }
     
+    public function nazioneCrud($record)
+	{
+		$str = "";
+		
+		$pr = new PagesregioniModel();
+			
+		$nazioni = $pr->clear()->where(array(
+			"id_page"	=>	(int)$record[$this->_tables]["id_page"],
+		))->toList("alias_nazione")->send();
+		
+		if (count($nazioni) > 0)
+			$str .= strtoupper(implode(" + ", $nazioni));
+		else if (v("prodotto_tutte_regioni_se_nessuna_regione"))
+			$str .= gtext("TUTTE");
+		
+		return "<span class='text text-success text-bold'>".$str."</span>";
+	}
+    
     public function lingua($record)
 	{
 		LingueModel::getValori();

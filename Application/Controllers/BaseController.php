@@ -518,6 +518,11 @@ class BaseController extends Controller
 	
 	protected function form($queryType = 'insert', $id = 0)
 	{
+		$this->baseForm($queryType, $id);
+	}
+	
+	protected function baseForm($queryType = 'insert', $id = 0)
+	{
 		if (isset($this->formValuesToDb))
 		{
 			$this->m[$this->modelName]->setFields($this->formValuesToDb,'sanitizeAll');
@@ -1038,6 +1043,17 @@ class BaseController extends Controller
 		$data["titoloRecord"] = "Varibili";
 		
 		$this->append($data);
+	}
+	
+	public function getTabViewFields($tab)
+	{
+		if (isset($this->tabViewFields[$tab]))
+		{
+			foreach ($this->tabViewFields[$tab] as $k => $v)
+			{
+				$this->{$k} = $this->tabViewFields[$tab][$k];
+			}
+		}
 	}
 
 }

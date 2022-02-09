@@ -73,13 +73,13 @@ class NazioniController extends BaseController {
 			
 			$this->filters = array("titolo",array(
 				"tipo",null,$filtroTipo),
-			array(
-				"attiva",null,$attivaDisattiva
-			),  array(
-				"attiva_spedizione",null,$attivaDisattivaSped
-			));
+				array(
+					"attiva",null,$attivaDisattiva
+				),  array(
+					"attiva_spedizione",null,$attivaDisattivaSped
+				));
 		}
-			
+		
 		$this->m[$this->modelName]->where(array(
 				"OR"	=>	array(
 					"lk" => array("titolo" => $this->viewArgs["titolo"]),
@@ -109,6 +109,8 @@ class NazioniController extends BaseController {
 			
 			$this->m[$this->modelName]->sWhere("nazioni.id_nazione not in (select id_nazione from pages_regioni where id_nazione is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
 		}
+		
+		$this->getTabViewFields("main");
 		
 		$this->m[$this->modelName]->save();
 		

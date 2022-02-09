@@ -1473,17 +1473,6 @@ class PagesController extends BaseController {
 		$this->append($data);
 	}
 	
-	public function getTabViewFields($tab)
-	{
-		if (isset($this->tabViewFields[$tab]))
-		{
-			foreach ($this->tabViewFields[$tab] as $k => $v)
-			{
-				$this->{$k} = $this->tabViewFields[$tab][$k];
-			}
-		}
-	}
-	
 	public function documenti($id = 0)
 	{
 		$this->orderBy = "documenti.id_order";

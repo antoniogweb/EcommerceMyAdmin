@@ -749,7 +749,12 @@ class BaseContenutiController extends BaseController
 		// Filtri località
 		if (!empty(RegioniModel::$filtriUrl))
 		{
-			$this->m["PagesModel"]->inner(array("regioni"));
+			$prodottoTutteLeRegioni = v("prodotto_tutte_regioni_se_nessuna_regione");
+			
+			if ($prodottoTutteLeRegioni)
+				$this->m["PagesModel"]->left(array("regioni"));
+			else
+				$this->m["PagesModel"]->inner(array("regioni"));
 			
 			$combinazioniLocalita = prodottoCartesiano(RegioniModel::$filtriUrl);
 			
@@ -763,7 +768,12 @@ class BaseContenutiController extends BaseController
 				{
 					$field = $k == RegioniModel::$nAlias ? "alias_nazione" : "alias_regione";
 					
-					$tempWhere[] = "$field = '".sanitizeDb($v)."'";
+					$tmpSql = "$field = '".sanitizeDb($v)."'";
+					
+					if ($prodottoTutteLeRegioni)
+						$tmpSql .= " OR $field IS NULL";
+					
+					$tempWhere[] = $tmpSql;
 				}
 				
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
