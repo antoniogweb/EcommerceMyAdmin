@@ -154,6 +154,7 @@ class RegusersgroupstempModel extends GenericModel {
 			"testo_path"	=>	$testoPath,
 			"array_variabili_tema"	=>	array(
 				"NOME_CLIENTE"	=>	$nome,
+				"LINGUA"		=>	$record["lingua"],
 			),
 		));
 	}
