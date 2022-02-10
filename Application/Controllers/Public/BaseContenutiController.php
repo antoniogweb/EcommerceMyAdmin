@@ -1814,8 +1814,43 @@ class BaseContenutiController extends BaseController
 		$this->redirect("");
 	}
 	
-	public function confermacontatto($token)
+	public function confermacontatto($token = 0)
 	{
 		$this->clean();
+		
+		$clean["token"] = sanitizeAll($token);
+		
+		if (!trim((string)$clean["token"]) || !v("attiva_verifica_contatti"))
+			$this->redirect("");
+		
+		$limit = time() - (int)v("tempo_conferma_uid_contatto");
+		
+		$contatto = $this->m["ContattiModel"]->clear()->where(array(
+			"uid_contatto"	=> $clean["token"],
+			"gt"	=>	array(
+				"time_conferma"	=>	(int)$limit,
+			),
+		))->record();
+		
+		if (!empty($contatto))
+		{
+			$this->m["ContattiModel"]->settaCookie($clean["token"]);
+			
+			$this->redirectDopoConfermaContatto($clean["token"]);
+		}
+		else
+		{
+			$idPaginaConfermaScaduta = PagineModel::gTipoPagina("CONF_CONT_SCADUTO");
+			
+			if ($idPaginaConfermaScaduta)
+				$this->redirect(getUrlAlias($idPaginaConfermaScaduta).F::partial());
+			else
+				$this->redirect("".F::partial());
+		}
+	}
+	
+	public function redirectDopoConfermaContatto($token)
+	{
+		return;
 	}
 }

@@ -106,6 +106,9 @@ class PagesModel extends GenericModel {
 			self::$tipiPagina["GRAZIE_FEEDBACK"] = "Pagina ringraziamento feedback";
 		}
 		
+		if (v("attiva_verifica_contatti"))
+			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
+		
 		parent::__construct();
 	}
 	

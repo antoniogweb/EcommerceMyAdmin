@@ -941,8 +941,6 @@ class BaseBaseController extends Controller
 				"id_contatto"	=>	$idContatto,
 			));
 		}
-		
-		die();
 	}
 	
 	protected function inviaMailFormContatti($id)
@@ -1071,9 +1069,7 @@ class BaseBaseController extends Controller
 		
 // 		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
 		
-		Form::sValues($tipo, $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml'));
-		
-// 		print_r(Form::$valuesNotice);die();
+		Form::sValues($tipo, $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml',null,Form::$defaultValues));
 	}
 	
 	protected function getCurrentUrl($completeUrl = true)

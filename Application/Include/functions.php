@@ -1183,6 +1183,7 @@ class Form
 		"C"	=>	"",
 		"N"	=>	"",
 	);
+	static public $defaultValues = array();
 	
 	static public $tipi = array();
 	

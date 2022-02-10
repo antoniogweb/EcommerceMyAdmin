@@ -26,7 +26,7 @@ class ContattiController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'fonte:sanitizeAll'=>'tutti');
+	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'fonte:sanitizeAll'=>'tutti', 'verificato:sanitizeAll'=>'tutti');
 	
 	public $sezionePannello = "marketing";
 	
@@ -54,11 +54,14 @@ class ContattiController extends BaseController
 		
 		$this->m[$this->modelName]->clear()->where(array(
 			"fonte_iniziale"	=>	$this->viewArgs["fonte"],
+			"verificato"		=>	$this->viewArgs["verificato"],
 		))->orderBy("contatti.data_creazione desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);
 		
 		$this->m[$this->modelName]->save();
+		
+		$this->getTabViewFields("main");
 		
 		parent::main();
 	}

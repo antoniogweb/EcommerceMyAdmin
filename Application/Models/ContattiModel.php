@@ -70,6 +70,8 @@ class ContattiModel extends GenericModel {
 			"nazione"	=>	isset($dati["nazione"]) ? $dati["nazione"] : "",
 			"lingua"	=>	isset($dati["lingua"]) ? $dati["lingua"] : "",
 			"accetto"	=>	isset($dati["accetto"]) ? $dati["accetto"] : 0,
+			"redirect_to_url"	=>	isset($dati["redirect_to_url"]) ? $dati["redirect_to_url"] : 0,
+			"redirect_query_string"	=>	isset($dati["redirect_query_string"]) ? $dati["redirect_query_string"] : 0,
 			"fonte"		=>	$fonte,
 		));
 		
@@ -83,6 +85,22 @@ class ContattiModel extends GenericModel {
 		}
 		
 		return $idContatto;
+	}
+	
+	public function settaCookie($cookieUid)
+	{
+		$chean["cookieUid"] = sanitizeAll($cookieUid);
+		
+		$time = time() + v("tempo_durata_uid_contatto");
+		self::$uidc = $chean["cookieUid"];
+		Cookie::set("contact_uid", $chean["cookieUid"], $time, "/");
+		
+		$this->setValues(array(
+			"time_conferma"	=>	0,
+			"verificato"	=>	1,
+		));
+		
+		$this->pUpdate(null, "uid_contatto = '".$chean["cookieUid"]."'");
 	}
 	
 	private function setContactUid()
