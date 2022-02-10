@@ -62,18 +62,26 @@ class ContattiModel extends GenericModel {
 		
 		$this->setValues(array(
 			"email"	=>	$email,
-			"nome"	=>	isset($dati["nome"]) ? $dati["nome"] : "",
-			"cognome"	=>	isset($dati["cognome"]) ? $dati["cognome"] : "",
-			"telefono"	=>	isset($dati["telefono"]) ? $dati["telefono"] : "",
-			"citta"	=>	isset($dati["citta"]) ? $dati["citta"] : "",
+// 			"nome"	=>	isset($dati["nome"]) ? $dati["nome"] : "",
+// 			"cognome"	=>	isset($dati["cognome"]) ? $dati["cognome"] : "",
+// 			"telefono"	=>	isset($dati["telefono"]) ? $dati["telefono"] : "",
+// 			"citta"	=>	isset($dati["citta"]) ? $dati["citta"] : "",
 			"azienda"	=>	isset($dati["ragione_sociale"]) ? $dati["ragione_sociale"] : "",
-			"nazione"	=>	isset($dati["nazione"]) ? $dati["nazione"] : "",
-			"lingua"	=>	isset($dati["lingua"]) ? $dati["lingua"] : "",
+// 			"nazione"	=>	isset($dati["nazione"]) ? $dati["nazione"] : "",
+			"lingua"	=>	isset($dati["lingua"]) ? $dati["lingua"] : Params::$lang,
 			"accetto"	=>	isset($dati["accetto"]) ? $dati["accetto"] : 0,
-			"redirect_to_url"	=>	isset($dati["redirect_to_url"]) ? $dati["redirect_to_url"] : 0,
-			"redirect_query_string"	=>	isset($dati["redirect_query_string"]) ? $dati["redirect_query_string"] : 0,
+// 			"redirect_to_url"	=>	isset($dati["redirect_to_url"]) ? $dati["redirect_to_url"] : "",
+// 			"redirect_query_string"	=>	isset($dati["redirect_query_string"]) ? $dati["redirect_query_string"] : "",
 			"fonte"		=>	$fonte,
 		));
+		
+		$arrayCampi = array("nome", "cognome", "telefono", "citta", "nazione", "redirect_to_url", "redirect_query_string");
+		
+		foreach ($arrayCampi as $campo)
+		{
+			if (isset($dati[$campo]) && $dati[$campo])
+				$this->setValue($campo, $dati[$campo]);
+		}
 		
 		if ($idContatto)
 			$this->update($idContatto);
