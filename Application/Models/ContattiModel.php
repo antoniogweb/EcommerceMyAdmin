@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ContattiModel extends GenericModel {
 	
+	public static $uidc = null;
+	
 	public static $elencoFonti = array(
 		"FORM_CONTATTO"		=>	"FORM CONTATTI",
 		"NEWSLETTER"		=>	"FORM NEWSLETTER",
@@ -67,6 +69,7 @@ class ContattiModel extends GenericModel {
 			"azienda"	=>	isset($dati["ragione_sociale"]) ? $dati["ragione_sociale"] : "",
 			"nazione"	=>	isset($dati["nazione"]) ? $dati["nazione"] : "",
 			"lingua"	=>	isset($dati["lingua"]) ? $dati["lingua"] : "",
+			"accetto"	=>	isset($dati["accetto"]) ? $dati["accetto"] : 0,
 			"fonte"		=>	$fonte,
 		));
 		
@@ -82,6 +85,14 @@ class ContattiModel extends GenericModel {
 		return $idContatto;
 	}
 	
+	private function setContactUid()
+	{
+		self::$uidc = md5(randString(9).microtime().uniqid(mt_rand(),true));
+		
+		$this->values["time_conferma"] = time();
+		$this->values["uid_contatto"] = sanitizeDb(self::$uidc);
+	}
+	
 	public function insert()
 	{
 		$this->unsetDescrizione();
@@ -90,6 +101,9 @@ class ContattiModel extends GenericModel {
 		
 		if (!isset($this->values["lingua"]) && isset(Params::$lang))
 			$this->values["lingua"] = Params::$lang;
+		
+		// Imposta l'uid del contatto
+		$this->setContactUid();
 		
 		$res = parent::insert();
 		
@@ -102,6 +116,9 @@ class ContattiModel extends GenericModel {
 	public function update($id = null, $where = null)
 	{
 		$this->unsetDescrizione();
+		
+		// Imposta l'uid del contatto
+		$this->setContactUid();
 		
 		$res = parent::update($id, $where);
 		

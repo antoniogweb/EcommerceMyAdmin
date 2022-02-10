@@ -923,6 +923,28 @@ class BaseBaseController extends Controller
 		}
 	}
 	
+	protected function inviaMailConfermaContatto($idContatto)
+	{
+		$contatto = $this->m['ContattiModel']->selectId((int)$idContatto);
+		
+		if (!empty($contatto))
+		{
+			ob_start();
+			include (tpf("Elementi/Mail/mail_conferma_contatto.php"));
+			$output = ob_get_clean();
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($contatto["email"]),
+				"oggetto"	=>	"conferma la tua mail",
+				"testo"		=>	$output,
+				"tipologia"	=>	"CONFERMA_CONTATTO",
+				"id_contatto"	=>	$idContatto,
+			));
+		}
+		
+		die();
+	}
+	
 	protected function inviaMailFormContatti($id)
 	{
 		if( !session_id() )
@@ -977,6 +999,9 @@ class BaseBaseController extends Controller
 					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
 					
 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
+					
+					if (v("attiva_verifica_contatti") && $idContatto)
+						$this->inviaMailConfermaContatto($idContatto);
 					
 					if ($isNewsletter)
 						$oggetto = "form iscrizione a newsletter";

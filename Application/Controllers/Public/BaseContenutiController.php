@@ -1813,4 +1813,9 @@ class BaseContenutiController extends BaseController
 		
 		$this->redirect("");
 	}
+	
+	public function confermacontatto($token)
+	{
+		$this->clean();
+	}
 }

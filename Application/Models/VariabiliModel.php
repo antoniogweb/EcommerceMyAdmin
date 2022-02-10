@@ -368,6 +368,9 @@ class VariabiliModel extends GenericModel {
 		"checkbox_css_path"			=>	"admin/Frontend/Public/Css/skins/minimal/minimal.css",
 		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
+		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
+		"tempo_conferma_uid_contatto"	=>	86400, // manda oppure no la mail di conferma della mail del contatto
+		"tempo_durata_uid_contatto"	=>	1036800, // manda oppure no la mail di conferma della mail del contatto
 	);
 	
 	public static $daInizializzare = array(
