@@ -545,6 +545,9 @@ class BaseBaseController extends Controller
 					setcookie("coupon", "", time()-3600,"/");
 			}
 		}
+		
+		// Recupero il cookie di contatto
+		$this->m["ContattiModel"]->getCookie();
 	}
 	
 	protected function predisponiAltriFiltri()
@@ -871,8 +874,8 @@ class BaseBaseController extends Controller
 								"id_page"	=>	(int)FeedbackModel::$idProdotto,
 							));
 							
-							if ($res)
-							{
+// 							if ($res)
+// 							{
 								ob_start();
 								include (tpf("Elementi/Mail/mail_form_feedback_negozio.php"));
 								$output = ob_get_clean();
@@ -886,7 +889,7 @@ class BaseBaseController extends Controller
 									"id_page"	=>	(int)FeedbackModel::$idProdotto,
 									"reply_to"	=>	$valoriEmail["email"],
 								));
-							}
+// 							}
 							
 							$idGrazieFeedback = PagineModel::gTipoPagina("GRAZIE_FEEDBACK");
 							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
@@ -952,15 +955,21 @@ class BaseBaseController extends Controller
 		
 		$isNewsletter = false;
 		
+		$campiObbligatori = "";
+		
 		if (isset($_POST['invia']))
 		{
 			if ($_POST["invia"] == "newsletter")
 			{
 				$isNewsletter = true;
 				$campiForm = v("campo_form_newsletter");
+				$campiObbligatori = v("campo_form_newsletter_obbligatori");
 			}
 			else
+			{
 				$campiForm = v("campo_form_contatti");
+				$campiObbligatori = v("campo_form_contatti_obbligatori");
+			}
 		}
 		else
 			$campiForm = implode(",",array_unique(array_merge(explode(",",v("campo_form_newsletter")), explode(",",v("campo_form_contatti")))));
@@ -973,7 +982,7 @@ class BaseBaseController extends Controller
 		);
 		
 		$this->m['ContattiModel']->strongConditions['insert'] = array(
-			'checkNotEmpty'	=>	$campiForm,
+			'checkNotEmpty'	=>	$campiObbligatori ? $campiObbligatori : $campiForm,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
 		);
 		
@@ -1017,7 +1026,7 @@ class BaseBaseController extends Controller
 						"emails"	=>	array(Parametri::$mailInvioOrdine),
 						"oggetto"	=>	$oggetto,
 						"testo"		=>	$output,
-						"tipologia"	=>	"PAGINA",
+						"tipologia"	=>	"CONTATTO_NEWSLETT",
 						"id_user"	=>	(int)User::$id,
 						"id_page"	=>	(int)$id,
 						"reply_to"	=>	$valoriEmail["email"],

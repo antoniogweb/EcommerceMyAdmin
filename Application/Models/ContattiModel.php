@@ -62,25 +62,28 @@ class ContattiModel extends GenericModel {
 		
 		$this->setValues(array(
 			"email"	=>	$email,
-// 			"nome"	=>	isset($dati["nome"]) ? $dati["nome"] : "",
-// 			"cognome"	=>	isset($dati["cognome"]) ? $dati["cognome"] : "",
-// 			"telefono"	=>	isset($dati["telefono"]) ? $dati["telefono"] : "",
-// 			"citta"	=>	isset($dati["citta"]) ? $dati["citta"] : "",
 			"azienda"	=>	isset($dati["ragione_sociale"]) ? $dati["ragione_sociale"] : "",
-// 			"nazione"	=>	isset($dati["nazione"]) ? $dati["nazione"] : "",
-			"lingua"	=>	isset($dati["lingua"]) ? $dati["lingua"] : Params::$lang,
 			"accetto"	=>	isset($dati["accetto"]) ? $dati["accetto"] : 0,
-// 			"redirect_to_url"	=>	isset($dati["redirect_to_url"]) ? $dati["redirect_to_url"] : "",
-// 			"redirect_query_string"	=>	isset($dati["redirect_query_string"]) ? $dati["redirect_query_string"] : "",
 			"fonte"		=>	$fonte,
 		));
 		
-		$arrayCampi = array("nome", "cognome", "telefono", "citta", "nazione", "redirect_to_url", "redirect_query_string");
+		$arrayCampi = array(
+			"nome"		=>	"",
+			"cognome"	=>	"",
+			"telefono"	=>	"",
+			"citta"		=>	"",
+			"redirect_to_url"	=>	"",
+			"redirect_query_string"	=>	"",
+			"nazione"	=>	v("nazione_default"),
+			"lingua"	=>	Params::$lang,
+		);
 		
-		foreach ($arrayCampi as $campo)
+		foreach ($arrayCampi as $campo => $valore)
 		{
 			if (isset($dati[$campo]) && $dati[$campo])
 				$this->setValue($campo, $dati[$campo]);
+			else if ($valore)
+				$this->setValue($campo, $valore);
 		}
 		
 		if ($idContatto)
@@ -95,20 +98,57 @@ class ContattiModel extends GenericModel {
 		return $idContatto;
 	}
 	
+	// Ottieni il contatto
+	public function getDatiContatto()
+	{
+		$this->getCookie();
+		
+		if (isset(self::$uidc))
+		{
+			return $this->clear()->where(array(
+				"uid_contatto"	=>	sanitizeAll(self::$uidc),
+				"verificato"	=> 1,
+			))->record();
+		}
+		
+		return array();
+	}
+	
+	// Recupero il cookie
+	public function getCookie()
+	{
+		if (v("attiva_verifica_contatti") && isset($_COOKIE["uid_contatto"]))
+		{
+			$clean["uid_contatto"] = sanitizeAll($_COOKIE["uid_contatto"]);
+			
+			$numero = $this->clear()->where(array(
+				"uid_contatto"	=>	$clean["uid_contatto"],
+				"verificato"	=>	1,
+			))->rowNumber();
+			
+			if ($numero)
+				self::$uidc = $clean["uid_contatto"];
+			else
+				Cookie::set("uid_contatto", "", (time()-3600), "/");
+		}
+		
+		return self::$uidc;
+	}
+	
 	public function settaCookie($cookieUid)
 	{
-		$chean["cookieUid"] = sanitizeAll($cookieUid);
+		$clean["cookieUid"] = sanitizeAll($cookieUid);
 		
 		$time = time() + v("tempo_durata_uid_contatto");
-		self::$uidc = $chean["cookieUid"];
-		Cookie::set("contact_uid", $chean["cookieUid"], $time, "/");
+		self::$uidc = $clean["cookieUid"];
+		Cookie::set("uid_contatto", $clean["cookieUid"], $time, "/");
 		
 		$this->setValues(array(
 			"time_conferma"	=>	0,
 			"verificato"	=>	1,
 		));
 		
-		$this->pUpdate(null, "uid_contatto = '".$chean["cookieUid"]."'");
+		$this->pUpdate(null, "uid_contatto = '".$clean["cookieUid"]."'");
 	}
 	
 	private function setContactUid()

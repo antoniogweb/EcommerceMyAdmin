@@ -180,6 +180,7 @@ class VariabiliModel extends GenericModel {
 		"current_menu_item_link"	=>	"",
 		"mostra_testimonial"		=>	0,
 		"campo_form_contatti"		=>	"nome,email,messaggio,accetto",
+		"campo_form_contatti_obbligatori"		=>	"",
 		"curl_curlopt_interface"	=>	"",
 		"messenger_link"			=>	"",
 		"fascia_contenuto_class"	=>	"",
@@ -206,6 +207,7 @@ class VariabiliModel extends GenericModel {
 		"linkTextWrapClass"			=>	"",
 		"mostra_autore_in_blog"		=>	0,
 		"campo_form_newsletter"		=>	"email,accetto",
+		"campo_form_newsletter_obbligatori"		=>	"",
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
 		"campo_captcha_form"		=>	"cognome",
@@ -370,7 +372,7 @@ class VariabiliModel extends GenericModel {
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
 		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_conferma_uid_contatto"	=>	86400, // manda oppure no la mail di conferma della mail del contatto
-		"tempo_durata_uid_contatto"	=>	1036800, // manda oppure no la mail di conferma della mail del contatto
+		"tempo_durata_uid_contatto"	=>	15552000, // manda oppure no la mail di conferma della mail del contatto
 	);
 	
 	public static $daInizializzare = array(

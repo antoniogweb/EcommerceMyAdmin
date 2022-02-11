@@ -1851,6 +1851,6 @@ class BaseContenutiController extends BaseController
 	
 	public function redirectDopoConfermaContatto($token)
 	{
-		return;
+		$this->redirect("");
 	}
 }
