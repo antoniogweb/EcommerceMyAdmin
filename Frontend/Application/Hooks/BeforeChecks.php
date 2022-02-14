@@ -40,6 +40,21 @@ Controller::$alternativeControllerFolders = array(
 	LIBRARY . "/Frontend/Application/".getApplicationPath().'Controllers',
 );
 
+// Carica le App
+if (!defined("APPS"))
+	ApplicazioniModel::carica();
+
+// Imposto le app
+if (defined("APPS"))
+{
+	Params::$installed = APPS;
+	
+	foreach (APPS as $app)
+	{
+		include(LIBRARY."/Application/Hooks/BeforeChecksVariabili.php");
+	}
+}
+
 VariabiliModel::ottieniVariabili();
 
 // Se arriva dalla app usa php://input

@@ -52,18 +52,7 @@ if (defined("APPS"))
 				Route::$allowed = array_merge(Route::$allowed, $APP_ROUTE);
 		}
 		
-		$pathVariabili = ROOT."/Application/Apps/".ucfirst($app)."/variabili.php";
-		
-		if (file_exists($pathVariabili))
-		{
-			if (isset($APP_VARIABILI))
-				unset($APP_VARIABILI);
-			
-			include($pathVariabili);
-			
-			if (isset($APP_VARIABILI))
-				VariabiliModel::$variabili = VariabiliModel::$variabili + $APP_VARIABILI;
-		}
+		include(LIBRARY."/Application/Hooks/BeforeChecksVariabili.php");
 	}
 }
 
