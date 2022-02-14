@@ -66,7 +66,7 @@ class PagesstatsController extends BaseController
 					)
 				)
 			))
-			->groupBy("pages_stats.id_page,pages_stats.data_stat,pages_stats.uid_stats")
+			->groupBy("pages_stats.id_page,pages_stats.data_stat,pages_stats.uid_stats,pages_stats.id_contatto,pages_stats.id_user")
 			->orderBy("pages_stats.data_creazione desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);

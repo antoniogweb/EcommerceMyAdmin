@@ -92,19 +92,19 @@ class PagesstatsModel extends GenericModel {
 			return $contatto["nome"]." ".$contatto["cognome"]." ".$contatto["email"];
 		}
 		
-		return "";
+		return "--";
 	}
 	
 	public function cliente($record)
 	{
 		if ($record["regusers"]["username"])
 		{
-			$contatto = $record["contatti"];
+			$contatto = $record["regusers"];
 			
 			return $contatto["nome"]." ".$contatto["cognome"]." ".$contatto["username"];
 		}
 		
-		return "";
+		return "--";
 	}
 	
 }
