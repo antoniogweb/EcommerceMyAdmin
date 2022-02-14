@@ -17,7 +17,7 @@ include(ROOT."/Application/Views/header.php");
 						<span><?php echo gtext("Carrelli abbandonati")?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/cart/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+						<li><a href="<?php echo $this->baseUrl."/cart/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 					</ul>
 				</li>
 				<?php } ?>
@@ -28,7 +28,7 @@ include(ROOT."/Application/Views/header.php");
 						<span><?php echo gtext("Contatti")?></span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="<?php echo $this->baseUrl."/contatti/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+						<li><a href="<?php echo $this->baseUrl."/contatti/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 					</ul>
 				</li>
 				<?php } ?>
@@ -43,6 +43,17 @@ include(ROOT."/Application/Views/header.php");
 						<li class="<?php echo tm($tm, "templateemail");?>"><a href="<?php echo $this->baseUrl."/templateemail/main";?>"><i class="fa fa-envelope-open-o"></i> <?php echo gtext("Template email")?></a></li>
 						<li class="dropdown-header"><?php echo gtext("Eventi");?></li>
 						<li class="<?php echo tm($tm, "eventiretargeting");?>"><a href="<?php echo $this->baseUrl."/eventiretargeting/main";?>"><i class="fa fa-clock-o"></i> <?php echo gtext("Eventi scatenanti")?></a></li>
+					</ul>
+				</li>
+				<?php } ?>
+				<?php if (v("pannello_statistiche_attivo")) { ?>
+				<li class="<?php echo tm($tm, "pagesstats");?> treeview">
+					<a href="#">
+						<i class="fa fa-signal"></i>
+						<span><?php echo gtext("Statistiche")?></span>
+					</a>
+					<ul class="treeview-menu">
+						<li><a href="<?php echo $this->baseUrl."/pagesstats/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Visualizzazioni");?></a></li>
 					</ul>
 				</li>
 				<?php } ?>

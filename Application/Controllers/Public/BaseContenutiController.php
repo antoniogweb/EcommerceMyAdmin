@@ -1124,11 +1124,21 @@ class BaseContenutiController extends BaseController
 			$this->redirect("contenuti/notfound");
 	}
 	
+	protected function salvaStatisticheVisualizzazione($id)
+	{
+		$this->model("PagesstatsModel");
+		
+		$this->m["PagesstatsModel"]->aggiungi($id);
+	}
+	
 	protected function page($id)
 	{
 		$this->m["PagesModel"]->checkBloccato($id);
 		
 		$clean["realId"] = $data["realId"] = (int)$id;
+		
+		if (v("salva_satistiche_visualizzazione_pagina"))
+			$this->salvaStatisticheVisualizzazione($id);
 		
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti($clean["realId"]);

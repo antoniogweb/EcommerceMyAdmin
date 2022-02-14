@@ -465,6 +465,9 @@ class BaseBaseController extends Controller
 	
 	protected function initCookieEcommerce()
 	{
+		// Recupero il cookie di contatto
+		$this->m["ContattiModel"]->getCookie();
+		
 		if (!v("ecommerce_attivo"))
 			return;
 		
@@ -545,9 +548,6 @@ class BaseBaseController extends Controller
 					setcookie("coupon", "", time()-3600,"/");
 			}
 		}
-		
-		// Recupero il cookie di contatto
-		$this->m["ContattiModel"]->getCookie();
 	}
 	
 	protected function predisponiAltriFiltri()

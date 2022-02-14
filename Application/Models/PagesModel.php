@@ -127,6 +127,7 @@ class PagesModel extends GenericModel {
 			'regioni' => array("HAS_MANY", 'PagesregioniModel', 'id_page', null, "CASCADE"),
 			'lingue' => array("HAS_MANY", 'PageslingueModel', 'id_page', null, "CASCADE"),
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_page', null, "CASCADE"),
+			'stats' => array("HAS_MANY", 'PagesstatsModel', 'id_page', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
 		);
     }

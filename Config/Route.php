@@ -508,7 +508,7 @@ class Route
 		'captcha,form',
 		
 		'cart,main',
-		
+		'pagesstats,main',
 		'contatti,main',
 		
 		'modali,main',

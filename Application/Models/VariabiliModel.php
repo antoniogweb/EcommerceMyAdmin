@@ -373,6 +373,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_conferma_uid_contatto"	=>	86400, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_durata_uid_contatto"	=>	15552000, // manda oppure no la mail di conferma della mail del contatto
+		"salva_satistiche_visualizzazione_pagina"	=>	0,
+		"pannello_statistiche_attivo"	=>	0,
 	);
 	
 	public static $daInizializzare = array(
