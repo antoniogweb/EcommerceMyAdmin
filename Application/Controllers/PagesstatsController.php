@@ -46,8 +46,8 @@ class PagesstatsController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("pages_stats.data_stat", "pages.title","aggregate.numero", "contatto", "cliente");
-		$this->mainHead = "Data,Pagina,Visualizzazioni,Contatto,Utente";
+		$this->mainFields = array("pages_stats.data_stat", "pages.title", "contatto", "cliente", "aggregate.numero");
+		$this->mainHead = "Data,Pagina,Contatto,Utente,Visualizzazioni";
 		
 		$filtri = array("dal","al","email");
 		$this->filters = $filtri;
