@@ -398,7 +398,7 @@ Helper_List::$filtersFormLayout = array(
 		"username"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
-				"placeholder"	=>	"Cerca ..",
+				"placeholder"	=>	"Email ..",
 			),
 		),
 		"codice_fiscale"	=>	array(
@@ -428,7 +428,7 @@ Helper_List::$filtersFormLayout = array(
 		"p_iva"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
-				"placeholder"	=>	"Cerca ..",
+				"placeholder"	=>	"P.IVA ..",
 			),
 		),
 		"title"	=>	array(
