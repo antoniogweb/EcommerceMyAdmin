@@ -336,4 +336,11 @@ class NazioniModel extends GenericModel
 			$pr->pInsert();
 		}
     }
+    
+    public function elencoClientiDaCodice($codiceNazione)
+    {
+		return $this->clear()->select("regusers.username")->inner(array("clienti"))->inner("regusers")->on("regusers_nazioni.id_user = regusers.id_user")->where(array(
+			"nazioni.iso_country_code"	=>	sanitizeAll($codiceNazione),
+		))->toList("regusers.username")->send();
+    }
 }

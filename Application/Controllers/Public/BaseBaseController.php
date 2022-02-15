@@ -946,6 +946,46 @@ class BaseBaseController extends Controller
 		}
 	}
 	
+	protected function inviaMailContatto($id, $idContatto, $valoriEmail, $fonte)
+	{
+		$pagina = $this->m["PagesModel"]->selectId((int)$id);
+		
+		if ($fonte == "NEWSLETTER")
+			$oggetto = "form iscrizione a newsletter";
+		else
+			$oggetto = "form richiesta informazioni";
+		
+		ob_start();
+		if ($fonte == "NEWSLETTER")
+			include (tpf("Regusers/mail_form_newsletter.php"));
+		else
+			include (tpf("Regusers/mail_form_contatti.php"));
+		$output = ob_get_clean();
+		
+		$emails = array(Parametri::$mailInvioOrdine);
+		
+		if (isset($valoriEmail["nazione"]) && $valoriEmail["nazione"])
+		{
+			$clientiNazioni = $this->m["NazioniModel"]->elencoClientiDaCodice($valoriEmail["nazione"]);
+			
+			if (count($clientiNazioni) > 0)
+				$emails = array_merge($emails, $clientiNazioni);
+			
+			$emails = array_unique($emails);
+		}
+		
+		return MailordiniModel::inviaMail(array(
+			"emails"	=>	$emails,
+			"oggetto"	=>	$oggetto,
+			"testo"		=>	$output,
+			"tipologia"	=>	"CONTATTO_NEWSLETT",
+			"id_user"	=>	(int)User::$id,
+			"id_page"	=>	(int)$id,
+			"reply_to"	=>	$valoriEmail["email"],
+			"id_contatto"	=>	$idContatto,
+		));
+	}
+	
 	protected function inviaMailFormContatti($id)
 	{
 		if( !session_id() )
@@ -1010,28 +1050,30 @@ class BaseBaseController extends Controller
 					if (v("attiva_verifica_contatti") && $idContatto)
 						$this->inviaMailConfermaContatto($idContatto);
 					
-					if ($isNewsletter)
-						$oggetto = "form iscrizione a newsletter";
-					else
-						$oggetto = "form richiesta informazioni";
+					$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
 					
-					ob_start();
-					if ($isNewsletter)
-						include (tpf("Regusers/mail_form_newsletter.php"));
-					else
-						include (tpf("Regusers/mail_form_contatti.php"));
-					$output = ob_get_clean();
-					
-					$res = MailordiniModel::inviaMail(array(
-						"emails"	=>	array(Parametri::$mailInvioOrdine),
-						"oggetto"	=>	$oggetto,
-						"testo"		=>	$output,
-						"tipologia"	=>	"CONTATTO_NEWSLETT",
-						"id_user"	=>	(int)User::$id,
-						"id_page"	=>	(int)$id,
-						"reply_to"	=>	$valoriEmail["email"],
-						"id_contatto"	=>	$idContatto,
-					));
+// 					if ($isNewsletter)
+// 						$oggetto = "form iscrizione a newsletter";
+// 					else
+// 						$oggetto = "form richiesta informazioni";
+// 					
+// 					ob_start();
+// 					if ($isNewsletter)
+// 						include (tpf("Regusers/mail_form_newsletter.php"));
+// 					else
+// 						include (tpf("Regusers/mail_form_contatti.php"));
+// 					$output = ob_get_clean();
+// 					
+// 					$res = MailordiniModel::inviaMail(array(
+// 						"emails"	=>	array(Parametri::$mailInvioOrdine),
+// 						"oggetto"	=>	$oggetto,
+// 						"testo"		=>	$output,
+// 						"tipologia"	=>	"CONTATTO_NEWSLETT",
+// 						"id_user"	=>	(int)User::$id,
+// 						"id_page"	=>	(int)$id,
+// 						"reply_to"	=>	$valoriEmail["email"],
+// 						"id_contatto"	=>	$idContatto,
+// 					));
 					
 // 						$mail->SMTPDebug = 2;
 					
