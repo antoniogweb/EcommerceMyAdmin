@@ -1045,7 +1045,7 @@ class BaseBaseController extends Controller
 					// Inserisco il contatto
 					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
 					
-					$pagina = $this->m["PagesModel"]->selectId((int)$id);
+// 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
 					
 					if (v("attiva_verifica_contatti") && $idContatto)
 						$this->inviaMailConfermaContatto($idContatto);
