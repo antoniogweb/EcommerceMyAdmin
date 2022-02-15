@@ -64,6 +64,7 @@ class RegusersModel extends FormModel {
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'sedi' => array("HAS_MANY", 'SpedizioniModel', 'id_user', null, "CASCADE"),
 			'gruppi_temp' => array("HAS_MANY", 'RegusersgroupstempModel', 'id_user', null, "CASCADE"),
+			'nazioni' => array("HAS_MANY", 'RegusersnazioniModel', 'id_user', null, "CASCADE"),
 			'groups' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("RegusersgroupsModel","id_user","id_group"), "CASCADE"),
 			'tipo_azienda' => array("BELONGS_TO", 'TipiaziendaModel', 'id_tipo_azienda',null,"CASCADE"),
 			'ruolo' => array("BELONGS_TO", 'RuoliModel', 'id_ruolo',null,"CASCADE"),
@@ -86,7 +87,15 @@ class RegusersModel extends FormModel {
 	{
 		$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
 		
-		return parent::insert();
+		$res = parent::insert();
+		
+		if ($res)
+		{
+			if (isset($_GET["id_nazione"]) && $_GET["id_nazione"] && is_numeric($_GET["id_nazione"]))
+				$this->aggiungianazione($this->lId);
+		}
+		
+		return $res;
 	}
 	
 // 	public function update($id = null, $where = null)
@@ -156,4 +165,26 @@ class RegusersModel extends FormModel {
 		
 		return "";
 	}
+	
+	public function aggiungianazione($id)
+    {
+		$record = $this->selectId((int)$id);
+		$nModel = new NazioniModel();
+		
+		if (isset($_GET["id_nazione"]))
+			$nazione = $nModel->selectId((int)$_GET["id_nazione"]);
+		
+		if (!empty($nazione))
+		{
+			$rn = new RegusersnazioniModel();
+			
+			$rn->setValues(array(
+				"id_user"	=>	(int)$id,
+				"id_nazione"	=>	(int)$_GET["id_nazione"],
+			), "sanitizeAll");
+			
+			$rn->insert();
+		}
+    }
+	
 }

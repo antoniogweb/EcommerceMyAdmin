@@ -425,6 +425,7 @@ class Route
 		'nazioni,main',
 		'nazioni,form',
 		'nazioni,regioni',
+		'nazioni,regusers',
 // 		'nazioni,importa',
 		
 		'regioni,main',

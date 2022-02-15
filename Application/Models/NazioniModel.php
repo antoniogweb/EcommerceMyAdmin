@@ -45,6 +45,7 @@ class NazioniModel extends GenericModel
 	public function relations() {
         return array(
 			'pages' => array("HAS_MANY", 'RegioniModel', 'id_nazione', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'clienti' => array("HAS_MANY", 'RegusersnazioniModel', 'id_nazione', null, "CASCADE"),
         );
     }
 	

@@ -42,6 +42,7 @@ class RegusersController extends BaseController {
 // 		'partial:sanitizeAll'=>'tutti',
 		'p_iva:sanitizeAll'=>'tutti',
 		'nazione_utente:sanitizeAll'=>'tutti',
+		'id_nazione:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -115,97 +116,25 @@ class RegusersController extends BaseController {
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 		))->convert();
 		
+		if ($this->viewArgs["id_nazione"] != "tutti")
+		{
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungianazione";
+			
+			$this->bulkActions = array(
+				"checkbox_regusers_id_user"	=>	array("aggiungianazione","Aggiungi alla nazione"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("regusers.id_user not in (select id_user from regusers_nazioni where id_nazione = ".(int)$this->viewArgs["id_nazione"].")");
+		}
+		
 		$this->getTabViewFields("main");
 		
 		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}
-	
-// 	public function main() { //view all the users
-// 
-// 		$this->shift();
-// 
-// 		Params::$nullQueryValue = 'tutti';
-// 		
-// 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'add'));
-// 		
-// 		$mainFields = '[[checkbox]];regusers.id_user;,[[ledit]];regusers.username;,nome,regusers.tipo_cliente,regusers.codice_fiscale,regusers.p_iva,getYesNoUtenti|regusers:has_confirmed';
-// 		$headLabels = '[[bulkselect:checkbox_regusers_id_user]],Email,Nome/r.soc,Tipo cliente,C.F., P.IVA,Attivo?';
-// 		
-// 		$filtri = array(null,'username',null,null,'codice_fiscale','p_iva',null);
-// 		
-// 		if (v("attiva_gruppi_utenti"))
-// 		{
-// 			$mainFields .= ',RegusersModel.listaGruppi|regusers.id_user';
-// 			$headLabels .= ',Gruppi';
-// 			$filtri[] = null;
-// 		}
-// 		
-// 		if (v("attiva_ip_location"))
-// 		{
-// 			$mainFields .= ',nazionenavigazione';
-// 			$headLabels .= ',Nazione';
-// 			
-// 			$filtri[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new RegusersModel()));
-// 		}
-// 		
-// 		$this->scaffold->itemList->setFilters($filtri);
-// 		
-// 		$this->scaffold->itemList->setBulkActions(array(
-// 			"checkbox_regusers_id_user"	=>	array("del","Elimina selezionati","confirm"),
-// 		));
-// 		
-// 		$this->scaffold->loadMain($mainFields,'regusers:id_user','ldel,ledit');
-// 
-// 		$this->scaffold->update('del');
-// 		
-// 		$this->m[$this->modelName]->bulkAction("del");
-// 		
-// 		$this->scaffold->setHead($headLabels);
-// 		
-// 		$whereClauseArray = array(
-// 			'has_confirmed'	=>	$this->viewArgs['has_confirmed'],
-// 			'tipo_cliente'	=>	$this->viewArgs['tipo_cliente'],
-// 			"lk" => array('n!regusers.codice_fiscale' => $this->viewArgs['codice_fiscale']),
-// 			" lk" => array('n!regusers.p_iva' => $this->viewArgs['p_iva']),
-// 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
-// 		);
-// 		$this->scaffold->model->where($whereClauseArray);
-// 		
-// // 		print_r($this->scaffold->model->foreignKeys);
-// 		
-// 		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
-// 		
-// 		if (strcmp($this->viewArgs['username'],'tutti') !== 0)
-// 		{
-// 			$where = array(
-// 				"lk" => array('n!regusers.username' => $this->viewArgs['username']),
-// 			);
-// 
-// 			$this->scaffold->model->aWhere($where);
-// 		}
-// 
-// 		$this->scaffold->itemList->colProperties = array(
-// 			array(
-// 				'width'	=>	'60px',
-// 			),
-// 		);
-// 		
-// 		$data['scaffold'] = $this->scaffold->render();
-// 		
-// 		$data['menu'] = $this->scaffold->html['menu'];
-// 		$data['popup'] = $this->scaffold->html['popup'];
-// 		$data['main'] = $this->scaffold->html['main'];
-// 		$data['pageList'] = $this->scaffold->html['pageList'];
-// 		
-// 		$data['notice'] = $this->scaffold->model->notice;
-// 		
-// 		$data['tabella'] = isset($this->tabella) ? $this->tabella : "clienti";
-// 		
-// 		$this->append($data);
-// 		$this->load('main');
-// 	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{

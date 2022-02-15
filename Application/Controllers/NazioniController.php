@@ -38,6 +38,13 @@ class NazioniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		$this->model("NazioniModel");
+	}
+	
 	public function main()
 	{
 		$this->shift();
@@ -156,6 +163,43 @@ class NazioniController extends BaseController {
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"regioni/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->orderBy("regioni.titolo")->where(array(
+			"id_nazione"	=>	$clean['id'],
+		))->convert()->save();
+		
+		$this->tabella = "nazioni";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["NazioniModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function regusers($id = 0)
+	{
+		$this->model("RegusersnazioniModel");
+		
+		$this->_posizioni['regusers'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_nazione";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "RegusersnazioniModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("regusers.username", "nome");
+		$this->mainHead = "Email,Nominativo";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"regusers/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("cliente"))->orderBy("regusers_nazioni.id_order")->where(array(
 			"id_nazione"	=>	$clean['id'],
 		))->convert()->save();
 		
