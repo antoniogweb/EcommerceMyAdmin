@@ -10,9 +10,6 @@ else if (!v("pixel_nel_footer") && isset($cicloPrimo))
 	return;
 }
 ?>
-<?php if (v("codice_verifica_fbk")) {
-	echo htmlentitydecode(v("codice_verifica_fbk"));
-} ?>
 <?php if (v("codice_fbk")) { ?>
 	<!-- Facebook Pixel Code -->
 	<script>
