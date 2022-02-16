@@ -309,6 +309,13 @@ class NazioniModel extends GenericModel
 		return array_keys($this->selectNazioniAttiveSpedizione());
 	}
 	
+	public static function gElencoNazioni()
+	{
+		$n = new NazioniModel();
+		
+		return $n->clear()->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
 	// Elenco nazioni che hanno la VAT
 	public static function elencoNazioniConVat()
 	{

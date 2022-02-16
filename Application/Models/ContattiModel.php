@@ -57,12 +57,20 @@ class ContattiModel extends GenericModel {
 	public function insertDaArray($dati, $fonte)
 	{
 		$email = isset($dati["username"]) ? $dati["username"] : $dati["email"];
+		
+		if (isset($dati["ragione_sociale"]))
+			$azienda = $dati["ragione_sociale"];
+		else if (isset($dati["azienda"]))
+			$azienda = $dati["azienda"];
+		else
+			$azienda = "";
+		
 		$idContatto = $this->getIdFromMail($email);
 		$dati = htmlentitydecodeDeep($dati);
 		
 		$this->setValues(array(
 			"email"	=>	$email,
-			"azienda"	=>	isset($dati["ragione_sociale"]) ? $dati["ragione_sociale"] : "",
+			"azienda"	=>	$azienda,
 			"accetto"	=>	isset($dati["accetto"]) ? $dati["accetto"] : 0,
 			"fonte"		=>	$fonte,
 		));
