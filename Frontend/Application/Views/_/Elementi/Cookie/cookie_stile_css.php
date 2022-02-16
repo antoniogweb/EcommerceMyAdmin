@@ -11,7 +11,7 @@ $(document).ready(function(){
 	
 		$(".segnalazione_cookies_ext").animate({bottom: "0px"});
 	
-	}, 2000);
+	}, 1000);
 });
 </script>
 

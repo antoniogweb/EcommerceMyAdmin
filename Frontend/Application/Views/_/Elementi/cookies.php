@@ -15,7 +15,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		
 		<?php if (!v("attiva_blocco_cookie_terzi")) { ?>
-		$("#segnalazione_cookies_ext").animate({bottom: "-250px"});
+		$("#segnalazione_cookies_ext").animate({bottom: "-1250px"});
 		<?php } ?>
 		
 		$.ajax({
