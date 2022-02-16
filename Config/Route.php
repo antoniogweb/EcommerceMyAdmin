@@ -203,6 +203,7 @@ class Route
 		'impostazioni,svuotacache',
 		'impostazioni,tema',
 		'impostazioni,attivatema',
+		'impostazioni,ecommerce',
 		'impostazioni,google',
 		
 		'slide,main',

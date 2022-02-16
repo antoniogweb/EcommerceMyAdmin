@@ -1527,6 +1527,8 @@ class BaseContenutiController extends BaseController
 			
 			if ($qty < 0)
 				$qty = 0;
+			else if ($qty >= v("giacenza_massima_mostrata"))
+				$qty = v("giacenza_massima_mostrata");
 			
 			echo '<span class="id_combinazione">'.$res[0]["combinazioni"]["id_c"].'</span><span class="codice_combinazione">'.$res[0]["combinazioni"]["codice"].'</span><span class="prezzo_combinazione">'.setPriceReverse(calcolaPrezzoFinale($clean["id_page"], $prezzoCombinazione)).'</span><span class="immagine_combinazione">'.$res[0]["combinazioni"]["immagine"].'</span><span class="prezzo_pieno_combinazione">'.$prezzoPieno.'</span><span class="giacenza_combinazione">'.$qty.'</span><span class="peso_combinazione">'.setPriceReverse($res[0]["combinazioni"]["peso"]).'</span>';
 		}

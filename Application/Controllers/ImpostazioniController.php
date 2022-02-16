@@ -106,6 +106,17 @@ class ImpostazioniController extends BaseController
 		}
 	}
 	
+	public function ecommerce($id = 0)
+	{
+		$this->campiVariabiliDaModificare = v("lista_variabili_funzionamento_ecommerce");
+		
+		parent::variabili($id);
+		
+		$data["titoloRecord"] = "Impostazioni pubblicazione";
+		
+		$this->append($data);
+	}
+	
 	public function google($id = 0)
 	{
 		$this->campiVariabiliDaModificare = v("lista_variabili_opzioni_google");

@@ -1994,7 +1994,7 @@ class PagesModel extends GenericModel {
 		$principale = $c->combinazionePrincipale((int)$id_page);
 			
 		if (!empty($principale))
-			return $principale["giacenza"];
+			return $principale["giacenza"] <= v("giacenza_massima_mostrata") ? $principale["giacenza"] : v("giacenza_massima_mostrata") ;
 		
 		return 0;
 	}

@@ -100,6 +100,7 @@ class VariabiliModel extends GenericModel {
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
 		"lista_variabili_opzioni_google"	=>	"codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default",
+		"lista_variabili_funzionamento_ecommerce"	=>	"ecommerce_online,piattaforma_in_sviluppo,traduzione_frontend,giacenza_massima_mostrata",
 		"submenu_class"				=>	"uk-nav uk-nav-default",
 		"current_menu_item"			=>	"uk-active",
 		"submenu_wrap_open"			=>	'<div class="uk-navbar-dropdown uk-margin-remove ">',
@@ -376,6 +377,7 @@ class VariabiliModel extends GenericModel {
 		"salva_satistiche_visualizzazione_pagina"	=>	0,
 		"pannello_statistiche_attivo"	=>	0,
 		"attiva_clienti_nazioni"	=>	0,
+		"giacenza_massima_mostrata"	=>	100,
 	);
 	
 	public static $daInizializzare = array(
