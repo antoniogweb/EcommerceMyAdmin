@@ -979,7 +979,7 @@ class BaseController extends Controller
 // 		$listaVariabiliGestibili = $this->campiVariabiliDaModificare ? $this->campiVariabiliDaModificare : v("lista_variabili_gestibili");
 		
 		if ($this->controller == "impostazioni" && $this->action == "variabili")
-			$listaVariabiliGestibili = implode(",",array_diff(explode(",", v("lista_variabili_gestibili")), explode(",", v("lista_variabili_opzioni_google"))));
+			$listaVariabiliGestibili = implode(",",array_diff(explode(",", v("lista_variabili_gestibili")), explode(",", v("lista_variabili_opzioni_google")), explode(",", v("lista_variabili_funzionamento_ecommerce"))));
 		else if ($this->controller == "applicazioni")
 			$listaVariabiliGestibili = ApplicazioniModel::variabiliGestibili($id);
 		else
