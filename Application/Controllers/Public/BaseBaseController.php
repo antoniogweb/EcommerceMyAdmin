@@ -949,6 +949,7 @@ class BaseBaseController extends Controller
 	protected function inviaMailContatto($id, $idContatto, $valoriEmail, $fonte)
 	{
 		$pagina = $this->m["PagesModel"]->selectId((int)$id);
+		$contatto = $this->m['ContattiModel']->selectId((int)$idContatto);
 		
 		if ($fonte == "NEWSLETTER")
 			$oggetto = "form iscrizione a newsletter";
@@ -1045,37 +1046,13 @@ class BaseBaseController extends Controller
 					// Inserisco il contatto
 					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
 					
-// 					$pagina = $this->m["PagesModel"]->selectId((int)$id);
-					
-					if (v("attiva_verifica_contatti") && $idContatto)
+					if (!$isNewsletter && v("attiva_verifica_contatti") && $idContatto)
 						$this->inviaMailConfermaContatto($idContatto);
 					
-					$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
+					$res = true;
 					
-// 					if ($isNewsletter)
-// 						$oggetto = "form iscrizione a newsletter";
-// 					else
-// 						$oggetto = "form richiesta informazioni";
-// 					
-// 					ob_start();
-// 					if ($isNewsletter)
-// 						include (tpf("Regusers/mail_form_newsletter.php"));
-// 					else
-// 						include (tpf("Regusers/mail_form_contatti.php"));
-// 					$output = ob_get_clean();
-// 					
-// 					$res = MailordiniModel::inviaMail(array(
-// 						"emails"	=>	array(Parametri::$mailInvioOrdine),
-// 						"oggetto"	=>	$oggetto,
-// 						"testo"		=>	$output,
-// 						"tipologia"	=>	"CONTATTO_NEWSLETT",
-// 						"id_user"	=>	(int)User::$id,
-// 						"id_page"	=>	(int)$id,
-// 						"reply_to"	=>	$valoriEmail["email"],
-// 						"id_contatto"	=>	$idContatto,
-// 					));
-					
-// 						$mail->SMTPDebug = 2;
+					if ($isNewsletter || v("invia_subito_mail_contatto"))
+						$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
 					
 					if($res) {
 						$idGrazie = PagineModel::gTipoPagina("GRAZIE");

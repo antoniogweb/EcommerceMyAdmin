@@ -77,7 +77,7 @@ class PagesstatsModel extends GenericModel {
 		{
 			$token = md5(randString(9).microtime().uniqid(mt_rand(),true));
 			$time = time() + 3600 * 24 * 30 * 6;
-			
+			$_COOKIE["uid_stats"] = $token;
 			Cookie::set("uid_stats", $token, $time, "/");
 			return $token;
 		}
