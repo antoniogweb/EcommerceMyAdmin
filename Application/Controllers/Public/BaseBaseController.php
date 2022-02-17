@@ -252,7 +252,7 @@ class BaseBaseController extends Controller
 			))->send();
 		
 		// Modali
-		if (v("attiva_modali") && $controller == "home" && $action == "index")
+		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
 		{
 			$data["modali_frontend"] = $this->m["PagesModel"]->where(array(
 				"categories.section"	=>	"modali",

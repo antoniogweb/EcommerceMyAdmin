@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (isset($modali_frontend) && (v("stile_popup_cookie") != "cookie_stile_modale" || isset($_COOKIE["ok_cookie"]))) { ?>
+<?php if (isset($modali_frontend) && isset($_COOKIE["ok_cookie"])) { ?>
 	<?php foreach ($modali_frontend as $p) { ?>
 		<?php if (!isset($_COOKIE["modale_".$p["pages"]["id_page"]])) { ?>
 			<?php 
