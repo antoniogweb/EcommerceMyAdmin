@@ -15,8 +15,16 @@
 }
 #segnalazione_cookies
 {
-	font-size: 13px;
+	font-size: 14px;
     line-height: 20px;
+}
+
+@media (max-width: $breakpoint-medium - 1px)
+{
+	#segnalazione_cookies_ext
+	{
+		padding: 20px;
+	}
 }
 
 /*.ok_cookies
