@@ -71,7 +71,7 @@ class ContattiModel extends GenericModel {
 		$this->setValues(array(
 			"email"	=>	$email,
 			"azienda"	=>	$azienda,
-			"accetto"	=>	isset($dati["accetto"]) ? $dati["accetto"] : 0,
+			"accetto"	=>	(isset($dati["accetto"]) && $dati["accetto"]) ? 1 : 0,
 			"fonte"		=>	$fonte,
 		));
 		

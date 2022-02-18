@@ -569,6 +569,9 @@ class Route
 		'servizi,inevidenza',
 		'servizi,updatevalue',
 		'servizi,ordina',
+		
+		'integrazioninewsletter,main',
+		'integrazioninewsletter,form',
 	);
 	
 	//it can be 'yes' or 'no'

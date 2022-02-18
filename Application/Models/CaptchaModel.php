@@ -32,8 +32,6 @@ class CaptchaModel extends GenericModel {
 		
 		$this->_idOrder = 'id_order';
 		
-		$this->traduzione = true;
-		
 		parent::__construct();
 	}
 	

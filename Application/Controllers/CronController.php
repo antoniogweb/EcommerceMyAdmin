@@ -114,6 +114,8 @@ class CronController extends BaseController {
 				$version = $newVersion;
 			}
 			
+			RoutineaggiornamentoModel::esegui();
+			
 			$data["esitoMigrazioni"] = ob_get_clean();
 			$data["titoloPagina"] = gtext("Esito migrazioni");
 			

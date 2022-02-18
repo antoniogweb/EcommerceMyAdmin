@@ -729,9 +729,11 @@ class BaseBaseController extends Controller
 							$this->setUserHead();
 						
 						// Iscrizione alla newsletter
-						if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+// 						if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+						if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())
 						{
-							$this->m['RegusersModel']->iscriviANewsletter($lId);
+							IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati($datiCliente));
+// 							$this->m['RegusersModel']->iscriviANewsletter($lId);
 							
 							// Inserisco il contatto
 							$this->m['ContattiModel']->insertDaArray($datiCliente, "NEWSLETTER_DA_REGISTRAZIONE");
@@ -1059,20 +1061,22 @@ class BaseBaseController extends Controller
 						$idGrazieNewsletter = 0;
 						
 						// Iscrivo a Mailchimp
-						if ($isNewsletter && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+// 						if ($isNewsletter && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
+						if ($isNewsletter && IntegrazioninewsletterModel::integrazioneAttiva())
 						{
-							$dataMailChimp = array(
-								"email"	=>	$valoriEmail["email"],
-								"status"=>	"subscribed",
-							);
-							
-							if (isset($valoriEmail["nome"]))
-								$dataMailChimp["firstname"] = $valoriEmail["nome"];
-							
-							if (isset($valoriEmail["cognome"]))
-								$dataMailChimp["lastname"] = $valoriEmail["cognome"];
-							
-							syncMailchimp($dataMailChimp);
+							IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati($valoriEmail));
+// 							$dataMailChimp = array(
+// 								"email"	=>	$valoriEmail["email"],
+// 								"status"=>	"subscribed",
+// 							);
+// 							
+// 							if (isset($valoriEmail["nome"]))
+// 								$dataMailChimp["firstname"] = $valoriEmail["nome"];
+// 							
+// 							if (isset($valoriEmail["cognome"]))
+// 								$dataMailChimp["lastname"] = $valoriEmail["cognome"];
+// 							
+// 							syncMailchimp($dataMailChimp);
 						}
 						
 						if ($isNewsletter)

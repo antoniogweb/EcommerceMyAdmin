@@ -1341,6 +1341,11 @@ function syncMailchimp($data)
     $apiKey = ImpostazioniModel::$valori["mailchimp_api_key"];
     $listId = ImpostazioniModel::$valori["mailchimp_list_id"];
 
+	return syncMailchimpKeys($data, $apiKey, $listId);
+}
+
+function syncMailchimpKeys($data, $apiKey, $listId)
+{
     $memberId = md5(strtolower($data['email']));
     $dataCenter = substr($apiKey,strpos($apiKey,'-')+1);
     $url = 'https://' . $dataCenter . '.api.mailchimp.com/3.0/lists/' . $listId . '/members/' . $memberId;
@@ -1370,7 +1375,7 @@ function syncMailchimp($data)
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-
+	
     return $httpCode;
 }
 

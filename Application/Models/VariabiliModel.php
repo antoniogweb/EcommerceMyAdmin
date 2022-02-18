@@ -379,6 +379,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_clienti_nazioni"	=>	0,
 		"giacenza_massima_mostrata"	=>	100,
 		"invia_subito_mail_contatto"=>	1,
+		"mostra_gestione_newsletter"	=>	1,
 	);
 	
 	public static $daInizializzare = array(

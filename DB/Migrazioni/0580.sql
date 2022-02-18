@@ -1,0 +1,1 @@
+INSERT INTO `routine_aggiornamento` (`id_routine`, `data_creazione`, `titolo`, `classe`, `metodo`, `eseguita`, `eseguita_il`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Aggiornamento tabelle mailchimp', 'IntegrazioninewsletterModel', 'sistemaMailchimp', '0', NULL, '1');
