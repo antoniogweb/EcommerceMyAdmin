@@ -1320,11 +1320,9 @@ class BaseOrdiniController extends BaseController
 							));
 							
 							// Iscrizione alla newsletter
-// 							if (isset($_POST["newsletter"]) && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"])
 							if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())
 							{
 								IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati(htmlentitydecodeDeep($ordine)));
-// 								$this->m['OrdiniModel']->iscriviANewsletter($clean['lastId']);
 								
 								// Inserisco il contatto
 								$this->m['ContattiModel']->insertDaArray($ordine, "NEWSLETTER_DA_ORDINE");
