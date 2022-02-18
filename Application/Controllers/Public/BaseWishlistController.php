@@ -153,7 +153,7 @@ class BaseWishlistController extends BaseController
 		// Se sono JSON, stampa in output il carrello completo
 		if (Output::$json)
 		{
-			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
+			Output::setHeaderValue("CartProductsNumber",$this->m["WishlistModel"]->numberOfItems());
 			
 			$this->load("api_output");
 		}
@@ -191,24 +191,24 @@ class BaseWishlistController extends BaseController
 	}
 	
 	//$quantita: id_page:quantity|id_page:quantity|...
-	public function update()
-	{
-		$this->clean();
-		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
-
-		$quantityArray = explode("|",$clean["quantity"]);
-		
-		foreach ($quantityArray as $q)
-		{
-			if (strcmp($q,"") !== 0 and strstr($q, ':'))
-			{
-				$temp = explode(":",$q);
-				$this->m["CartModel"]->set($temp[0], $temp[1]);
-			}
-		}
-		
-		// Se sono JSON, stampa in output il carrello completo
-		if (Output::$json)
-			$this->index();
-	}
+// 	public function update()
+// 	{
+// 		$this->clean();
+// 		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
+// 
+// 		$quantityArray = explode("|",$clean["quantity"]);
+// 		
+// 		foreach ($quantityArray as $q)
+// 		{
+// 			if (strcmp($q,"") !== 0 and strstr($q, ':'))
+// 			{
+// 				$temp = explode(":",$q);
+// 				$this->m["CartModel"]->set($temp[0], $temp[1]);
+// 			}
+// 		}
+// 		
+// 		// Se sono JSON, stampa in output il carrello completo
+// 		if (Output::$json)
+// 			$this->index();
+// 	}
 }

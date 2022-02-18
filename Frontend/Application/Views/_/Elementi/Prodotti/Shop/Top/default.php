@@ -85,4 +85,4 @@ if (!isset($noFiltri))
 			</div>
 		</div>
 	</div>
-</div>
+</section>
