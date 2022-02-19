@@ -987,6 +987,11 @@ class BaseBaseController extends Controller
 		));
 	}
 	
+	protected function setCondizioniContatti()
+	{
+		
+	}
+	
 	protected function inviaMailFormContatti($id)
 	{
 		if( !session_id() )
@@ -1026,6 +1031,9 @@ class BaseBaseController extends Controller
 			'checkNotEmpty'	=>	$campiObbligatori ? $campiObbligatori : $campiForm,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
 		);
+		
+		// aggiungi o sovrascrivi le condizioni
+		$this->setCondizioniContatti();
 		
 		$this->m['ContattiModel']->setFields($campiForm,'strip_tags');
 		

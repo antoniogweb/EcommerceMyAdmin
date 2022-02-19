@@ -84,6 +84,7 @@ class ContattiModel extends GenericModel {
 			"redirect_query_string"	=>	"",
 			"nazione"	=>	v("nazione_default"),
 			"lingua"	=>	Params::$lang,
+			"id_ruolo"	=>	"",
 		);
 		
 		foreach ($arrayCampi as $campo => $valore)
