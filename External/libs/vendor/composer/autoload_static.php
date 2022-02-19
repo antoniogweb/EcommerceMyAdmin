@@ -15,6 +15,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             'setasign\\Fpdi\\' => 14,
         ),
+        'S' => 
+        array (
+            'Sendpulse\\RestApi\\' => 18,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -33,6 +37,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'setasign\\Fpdi\\' => 
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
+        'Sendpulse\\RestApi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendpulse/rest-api/src',
         ),
         'Psr\\Log\\' => 
         array (

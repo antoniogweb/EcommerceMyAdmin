@@ -1,5 +1,6 @@
 {
     "require": {
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "sendpulse/rest-api": "^1.0"
     }
 }

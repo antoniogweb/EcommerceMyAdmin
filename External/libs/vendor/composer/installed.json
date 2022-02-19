@@ -212,6 +212,53 @@
         ]
     },
     {
+        "name": "sendpulse/rest-api",
+        "version": "1.0.26",
+        "version_normalized": "1.0.26.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sendpulse/sendpulse-rest-api-php.git",
+            "reference": "e20b957c9b3e88563f449622c1f963f81e47c2d8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sendpulse/sendpulse-rest-api-php/zipball/e20b957c9b3e88563f449622c1f963f81e47c2d8",
+            "reference": "e20b957c9b3e88563f449622c1f963f81e47c2d8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2021-09-28T11:23:20+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Sendpulse\\RestApi\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Maksym Ustymenko",
+                "email": "m.ustymenko@sendpulse.com"
+            },
+            {
+                "name": "Alexey Moroz",
+                "email": "a.moroz@sendpulse.com"
+            }
+        ],
+        "description": "Sendpulse REST API client library",
+        "keywords": [
+            "api",
+            "rest",
+            "sendpulse"
+        ]
+    },
+    {
         "name": "setasign/fpdi",
         "version": "v2.3.6",
         "version_normalized": "2.3.6.0",
