@@ -45,6 +45,10 @@ class CronController extends BaseController {
 				chmod(ROOT.'/Logs', 0777);
 				$fp = fopen(ROOT.'/Logs/index.html', 'w');
 				fclose($fp);
+				
+				$fp = fopen(ROOT.'/Logs/.htaccess', 'w');
+				fwrite($fp, 'deny from all');
+				fclose($fp);
 			}
 			
 			$hand = fopen(ROOT.'/Logs/migrazioni.txt','a+');
