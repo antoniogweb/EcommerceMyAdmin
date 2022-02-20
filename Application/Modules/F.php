@@ -67,6 +67,25 @@ class F
 		return partial() ? $char."partial=Y" : "";
 	}
 	
+	public static function cancellaCookiesGdpr()
+	{
+		setcookie("ok_cookie","OK",(time()-3600),"/");
+		setcookie("ok_cookie_terzi","OK",(time()-3600),"/");
+	}
+	
+	public static function settaCookiesGdpr($allCookies = false)
+	{
+		$time = time() + 3600*24*365*10;
+		Cookie::set("ok_cookie", "OK", $time, "/");
+		$_COOKIE["ok_cookie"] = "OK";
+		
+		if ($allCookies)
+		{
+			Cookie::set("ok_cookie_terzi", "OK", $time, "/");
+			$_COOKIE["ok_cookie_terzi"] = "OK";
+		}
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{

@@ -675,6 +675,9 @@ class BaseOrdiniController extends BaseController
 			
 			$data["ordine"] = $res[0]["orders"];
 			
+			if ($data["ordine"]["cookie_terzi"])
+				F::settaCookiesGdpr(true);
+			
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 		}
 		
@@ -720,6 +723,9 @@ class BaseOrdiniController extends BaseController
 					$data["conclusa"] = true;
 				
 				$data["ordine"] = $res[0]["orders"];
+				
+				if ($data["ordine"]["cookie_terzi"])
+					F::settaCookiesGdpr(true);
 				
 				$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 			}
@@ -1085,6 +1091,9 @@ class BaseOrdiniController extends BaseController
 							$this->m['OrdiniModel']->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
 							$this->m['OrdiniModel']->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
 						}
+						
+						if (isset($_COOKIE["ok_cookie_terzi"]))
+							$this->m['OrdiniModel']->values["cookie_terzi"] = 1;
 						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
 						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;

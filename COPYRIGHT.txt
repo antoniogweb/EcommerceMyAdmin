@@ -99,3 +99,10 @@ Star-rating-svg
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/nashio/star-rating-svg
+
+
+SendPulse REST client library
+-------
+License:	Apache License 2.0
+link: 		https://github.com/sendpulse/sendpulse-rest-api-php
+

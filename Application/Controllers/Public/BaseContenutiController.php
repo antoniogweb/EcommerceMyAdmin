@@ -1166,6 +1166,9 @@ class BaseContenutiController extends BaseController
 		
 		$data["isPage"] = true;
 		
+		PagesModel::$currentIdPage = (int)$clean['realId'];
+		RegusersModel::getRedirect();
+		
 		// Elaborazione feedback
 		if (!$this->m['PagesModel']->checkTipoPagina($clean["realId"], "FORM_FEEDBACK"))
 			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page");
@@ -1183,12 +1186,15 @@ class BaseContenutiController extends BaseController
 		
 		if (count($data["pages"]) > 0)
 		{
-			if ($data["pages"][0]["pages"]["tipo_pagina"] == "COOKIE" && VariabiliModel::checkToken("var_query_string_no_cookie"))
+			if ($data["pages"][0]["pages"]["tipo_pagina"] == "COOKIE")
+			{
+				VariabiliModel::noCookieAlert();
 				$data["pages"][0]["pages"]["description"] .= "[scelta-cookie]";
-				
+			}
+			
 			$this->p = $data["pages"][0];
 			
-			$data["tipoPagina"] = $data["pages"][0]["pages"]["tipo_pagina"];
+			$data["tipoPagina"] = PagesModel::$currentTipoPagina = $data["pages"][0]["pages"]["tipo_pagina"];
 		}
 		
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
@@ -1814,8 +1820,12 @@ class BaseContenutiController extends BaseController
 	
 	public function accettacookie()
 	{
+		$redirect = RegusersModel::getRedirect();
+		
 		if (VariabiliModel::checkToken("var_query_string_no_cookie"))
 		{
+			F::cancellaCookiesGdpr();
+			
 			$time = time() + 3600*24*365*10;
 			Cookie::set("ok_cookie", "OK", $time, "/");
 			
@@ -1823,7 +1833,12 @@ class BaseContenutiController extends BaseController
 				Cookie::set("ok_cookie_terzi", "OK", $time, "/");
 		}
 		
-		$this->redirect("");
+		$urlRedirect = RegusersModel::getUrlRedirect();
+		
+		if ($urlRedirect)
+			header('Location: '.$urlRedirect);
+		else
+			$this->redirect("");
 	}
 	
 	public function confermacontatto($token = 0)

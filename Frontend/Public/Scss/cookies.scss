@@ -11,7 +11,13 @@
 	left:0px;
 	bottom:-850px;
 	z-index:9999;
-	background-color:#f5f5f5;
+/* 	background-color:#f5f5f5; */
+}
+
+.segnalazione_cookies_ext_pag_cookies
+{
+	width: 100% !important;
+	margin:0% !important;
 }
 #segnalazione_cookies
 {
@@ -27,7 +33,13 @@
 		padding-top:40px;
 		width: 90%;
 		margin:5%;
-		margin-bottom:20%;
+		margin-bottom:5%;
+	}
+	
+	.segnalazione_cookies_ext_pag_cookies
+	{
+		width: 100% !important;
+		margin:0% !important;
 	}
 }
 

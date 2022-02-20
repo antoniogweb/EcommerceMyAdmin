@@ -12,7 +12,7 @@
 		<?php echo gtext("Accetta");?>
 	</a>
 	<?php if (isset($tipiPagina["COOKIE"])) { ?>
-	<a style="" class="cookie_personalizza uk-margin-top uk-width-1-1 uk-width-2-5@s uk-button uk-button-default" title="<?php echo gtext("personalizza", false);?>" href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["COOKIE"])."?".v("var_query_string_no_cookie");?>">
+	<a style="" class="cookie_personalizza uk-margin-top uk-width-1-1 uk-width-2-5@s uk-button uk-button-default" title="<?php echo gtext("personalizza", false);?>" href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["COOKIE"])."?".v("var_query_string_no_cookie").PagesModel::getRedirectQuery("&");?>">
 		<span uk-icon="icon: cog"></span>
 		<?php echo gtext("Personalizza");?>
 	</a>

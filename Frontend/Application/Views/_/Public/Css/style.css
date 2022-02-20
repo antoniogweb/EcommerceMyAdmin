@@ -12025,24 +12025,44 @@ h3 {
   }
 }
 #segnalazione_cookies_ext {
-  padding: 40px;
+  padding: 60px 20px;
   text-align: center;
-  width: 100%;
+  width: 70%;
+  margin: 15%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   position: fixed;
   left: 0px;
-  bottom: -450px;
+  bottom: -850px;
   z-index: 9999;
-  background-color: #FFF;
+  /* 	background-color:#f5f5f5; */
+}
+
+.segnalazione_cookies_ext_pag_cookies {
+  width: 100% !important;
+  margin: 0% !important;
 }
 
 #segnalazione_cookies {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 20px;
 }
 
+@media (max-width: 959px) {
+  #segnalazione_cookies_ext {
+    padding: 20px;
+    padding-top: 40px;
+    width: 90%;
+    margin: 5%;
+    margin-bottom: 5%;
+  }
+
+  .segnalazione_cookies_ext_pag_cookies {
+    width: 100% !important;
+    margin: 0% !important;
+  }
+}
 /*.ok_cookies
 {
 	font-family: sans-serif;

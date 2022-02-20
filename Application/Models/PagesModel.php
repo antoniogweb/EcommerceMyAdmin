@@ -49,6 +49,9 @@ class PagesModel extends GenericModel {
 	
 	public static $tipiPaginaId = array();
 	
+	public static $currentIdPage = null;
+	public static $currentTipoPagina = "";
+	
 	public static $campiAggiuntivi = array();
 	public static $campiAggiuntiviMeta = array(
 		"traduzione"	=>	array(),
@@ -2954,5 +2957,18 @@ class PagesModel extends GenericModel {
 			$c->limit($numero);
 		
 		return $c->send();
+	}
+	
+	public static function getRedirectQuery($char = "?")
+	{
+		if (self::$currentIdPage)
+		{
+			$page = self::getPageDetails((int)self::$currentIdPage);
+			
+			if (!empty($page))
+				return $char."redirect=".self::$currentIdPage;
+		}
+		
+		return "";
 	}
 }

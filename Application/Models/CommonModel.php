@@ -171,7 +171,7 @@ trait CommonModel {
 		$this->values["attivo"] = "N";
 	}
 	
-	public static function getRedirect()
+	public static function getRedirect($char = "?")
 	{
 		$r = new Request();
 		
@@ -199,7 +199,7 @@ trait CommonModel {
 		}
 		
 		self::$redirect = $redirect;
-		self::$redirectQueryString = $redirect ? "?redirect=$redirect" : "";
+		self::$redirectQueryString = $redirect ? $char."redirect=$redirect" : "";
 		
 		return $redirect;
 	}
