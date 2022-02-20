@@ -4,7 +4,7 @@
 	include(tpf("Elementi/Cookie/link_pagina_info_privacy.php"));
 ?>
 
-<div style="bottom:0px !important;" class="segnalazione_cookies_ext uk-background-secondary segnalazione_cookies_ext_pag_cookies" id="segnalazione_cookies_ext">
+<div style="bottom:0px !important;" class="<?php echo v("classe_ext_cookies_conf")?>" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">
 		<?php echo gtext("Seleziona le tue preferenze sui cookie.");?>
 		<form action="<?php echo Domain::$name."/accept-cookies?".v("var_query_string_no_cookie");?>" method="GET">
@@ -17,7 +17,7 @@
 				
 				echo Html_Form::checkbox("all_cookie",$valoreCookieTerzi,1);?> <span class="uk-margin-small-left"><?php echo gtext("Cookie terze parti");?></span>
 			</div>
-			<button type="submit" class="uk-button uk-button-secondary"><span uk-icon="check"></span> <?php echo gtext("Salva le preferenze");?></button>
+			<button type="submit" class="<?php echo v("cookies_save_pref")?>"><span uk-icon="check"></span> <?php echo gtext("Salva le preferenze");?></button>
 		</form>
 	</div>
 </div>

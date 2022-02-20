@@ -374,12 +374,17 @@ class VariabiliModel extends GenericModel {
 		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_conferma_uid_contatto"	=>	86400, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_durata_uid_contatto"	=>	15552000, // manda oppure no la mail di conferma della mail del contatto
-		"salva_satistiche_visualizzazione_pagina"	=>	0,
-		"pannello_statistiche_attivo"	=>	0,
-		"attiva_clienti_nazioni"	=>	0,
-		"giacenza_massima_mostrata"	=>	100,
-		"invia_subito_mail_contatto"=>	1,
-		"mostra_gestione_newsletter"	=>	1,
+		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
+		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
+		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
+		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
+		"invia_subito_mail_contatto"=>	1, // se inviate subito il contatto
+		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
+		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale
+		"classe_ext_cookies_conf"	=>	"segnalazione_cookies_ext uk-background-secondary uk-light segnalazione_cookies_ext_pag_cookies", // classe box esterno cookie preferenze
+		"cookies_preferenze_button"	=>	"cookie_personalizza uk-margin-top uk-width-1-1 uk-width-2-5@s uk-button uk-button-default", // classe pulsante preferenze cookies
+		"cookies_confirm_button"	=>	"uk-margin-top uk-width-1-1 uk-width-2-5@s ok_cookies cookie_accetta uk-button uk-button-primary", // classe pulsante ok cookie
+		"cookies_save_pref"			=>	"uk-button uk-button-secondary", // classe pulsante cookie in set preferenze
 	);
 	
 	public static $daInizializzare = array(
