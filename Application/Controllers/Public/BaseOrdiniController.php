@@ -676,7 +676,10 @@ class BaseOrdiniController extends BaseController
 			$data["ordine"] = $res[0]["orders"];
 			
 			if ($data["ordine"]["cookie_terzi"])
+			{
 				F::settaCookiesGdpr(true);
+				VariabiliModel::ottieniVariabili();
+			}
 			
 			$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 		}
@@ -725,7 +728,10 @@ class BaseOrdiniController extends BaseController
 				$data["ordine"] = $res[0]["orders"];
 				
 				if ($data["ordine"]["cookie_terzi"])
+				{
 					F::settaCookiesGdpr(true);
+					VariabiliModel::ottieniVariabili();
+				}
 				
 				$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 			}
