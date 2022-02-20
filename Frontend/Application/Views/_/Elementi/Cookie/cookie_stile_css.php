@@ -15,7 +15,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="segnalazione_cookies_ext uk-background-secondary uk-light" id="segnalazione_cookies_ext">
+<div class="segnalazione_cookies_ext" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">
 		<?php include(tpf("Elementi/Cookie/Varianti/".v("stile_check_cookie").".php")); ?>
 	</div>

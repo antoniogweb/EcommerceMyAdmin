@@ -17,7 +17,7 @@
 				
 				echo Html_Form::checkbox("all_cookie",$valoreCookieTerzi,1);?> <span class="uk-margin-small-left"><?php echo gtext("Cookie terze parti");?></span>
 			</div>
-			<button type="submit" class="uk-button uk-button-primary"><span uk-icon="check"></span> <?php echo gtext("Salva le preferenze");?></button>
+			<button type="submit" class="uk-button uk-button-secondary"><span uk-icon="check"></span> <?php echo gtext("Salva le preferenze");?></button>
 		</form>
 	</div>
 </div>
