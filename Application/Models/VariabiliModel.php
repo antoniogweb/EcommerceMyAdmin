@@ -385,6 +385,7 @@ class VariabiliModel extends GenericModel {
 		"cookies_preferenze_button"	=>	"cookie_personalizza uk-margin-top uk-width-1-1 uk-width-2-5@s uk-button uk-button-default", // classe pulsante preferenze cookies
 		"cookies_confirm_button"	=>	"uk-margin-top uk-width-1-1 uk-width-2-5@s ok_cookies cookie_accetta uk-button uk-button-primary", // classe pulsante ok cookie
 		"cookies_save_pref"			=>	"uk-button uk-button-secondary", // classe pulsante cookie in set preferenze
+		"informativa_privacy_in_pagina_cookie"	=>	1, // se 1, il testo della pagina privacy verrà mostrayo all'interno della pagina dei cookie
 	);
 	
 	public static $daInizializzare = array(
