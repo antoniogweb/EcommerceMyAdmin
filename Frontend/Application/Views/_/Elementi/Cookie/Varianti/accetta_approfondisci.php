@@ -2,7 +2,7 @@
 
 <?php include(tpf("Elementi/Cookie/testo_popup_cookies.php"));?>
 
-<div class="uk-margin <?php if (v("stile_popup_cookie") != "cookie_stile_modale") { ?>uk-container uk-container-small<?php } ?> <?php if (!User::$isPhone) { ?>uk-flex uk-flex-between<?php } ?>">
+<div class="<?php if (v("stile_popup_cookie") != "cookie_stile_modale") { ?>uk-container uk-container-small<?php } ?> <?php if (!User::$isPhone) { ?>uk-flex uk-flex-between<?php } ?>">
 	<a class="<?php echo v("cookies_confirm_button");?>" title="<?php echo gtext("accetto", false);?>" href="#">
 		<span uk-icon="icon: check"></span>
 		<?php echo gtext("Accetta");?>
