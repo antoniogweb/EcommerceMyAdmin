@@ -26,7 +26,7 @@ use Sendpulse\RestApi\Storage\FileStorage;
 Files_Log::$logFolder = LIBRARY."/Logs";
 Files_Log::$logPermission = 0644;
 
-class Sendpulse
+class Sendpulse extends Newsletter
 {
 	private $params = "";
 	
@@ -67,11 +67,26 @@ class Sendpulse
 		return $SPApiClient->addEmails($bookID, $emails);
 	}
 	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,secret_1,secret_2,codice_lista,codice_fonte';
+	}
+	
 	public function isAttiva()
 	{
 		if (trim($this->params["secret_1"]) && trim($this->params["secret_2"]) && trim($this->params["codice_lista"]))
 			return true;
 		
 		return false;
+	}
+	
+	public function gSecret1Label()
+	{
+		return "ID";
+	}
+	
+	public function gSecret2Label()
+	{
+		return "Secret";
 	}
 }

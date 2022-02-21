@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class Mailchimp
+class Mailchimp extends Newsletter
 {
 	private $params = "";
 	
@@ -51,12 +51,22 @@ class Mailchimp
 		syncMailchimpKeys($dataMailChimp, $this->params["secret_1"], $this->params["codice_lista"]);
 	}
 	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,secret_1,codice_lista';
+	}
+	
 	public function isAttiva()
 	{
 		if (trim($this->params["secret_1"]) && trim($this->params["codice_lista"]))
 			return true;
 		
 		return false;
+	}
+	
+	public function gSecret1Label()
+	{
+		return "Api key";
 	}
 	
 }

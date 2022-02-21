@@ -39,16 +39,20 @@ class IntegrazioninewsletterModel extends GenericModel {
     
 	public function setFormStruct($id = 0)
 	{
+		$record = $this->selectId($id);
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
 				'attivo'	=>	self::$entryAttivo,
 				'secret_1'		=>	array(
+					'labelString'	=>	self::getModulo($record["codice"])->gSecret1Label(),
 					'type'	=>	"Password",
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
 				'secret_2'		=>	array(
+					'labelString'	=>	self::getModulo($record["codice"])->gSecret2Label(),
 					'type'	=>	"Password",
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
@@ -83,15 +87,20 @@ class IntegrazioninewsletterModel extends GenericModel {
 		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
 	}
 	
-	public static function getModulo()
+	public static function getModulo($codice = null)
 	{
 		$i = new IntegrazioninewsletterModel();
 		
 		if (!isset(self::$modulo))
 		{
-			$attivo = $i->clear()->where(array(
-				"attivo"	=>	1,
-			))->record();
+			if ($codice)
+				$attivo = $i->clear()->where(array(
+					"codice"	=>	sanitizeDb($codice),
+				))->record();
+			else
+				$attivo = $i->clear()->where(array(
+					"attivo"	=>	1,
+				))->record();
 			
 			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php"))
 			{

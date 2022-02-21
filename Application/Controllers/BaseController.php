@@ -546,7 +546,16 @@ class BaseController extends Controller
 		if (in_array($queryType,$qAllowed))
 		{
 			$clean["id"] = $data["id"] = (int)$id;
-		
+			
+			// controllo che il record esista
+			if ($queryType == "update")
+			{
+				$recordDaModificare = $this->m[$this->modelName]->selectId($clean["id"]);
+				
+				if (empty($recordDaModificare))
+					die("ELEMENTO NON ESISTENTE");
+			}
+			
 			$table = $this->m[$this->modelName]->table();
 			
 			$data["tabella"] = isset($this->tabella) ? $this->tabella : $table;
