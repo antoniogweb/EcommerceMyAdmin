@@ -67,7 +67,7 @@ class IntegrazioninewsletterController extends BaseController
 		if ($queryType != "update")
 			die();
 		
-		$fields = 'titolo,attivo,secret_1,secret_2,api_endpoint,codice_lista';
+		$fields = 'titolo,attivo,secret_1,secret_2,api_endpoint,codice_lista,codice_fonte';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

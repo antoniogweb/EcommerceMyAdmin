@@ -20,7 +20,13 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class Mailchimp
+use Sendpulse\RestApi\ApiClient;
+use Sendpulse\RestApi\Storage\FileStorage;
+
+Files_Log::$logFolder = LIBRARY."/Logs";
+Files_Log::$logPermission = 0644;
+
+class Sendpulse
 {
 	private $params = "";
 	
@@ -36,20 +42,29 @@ class Mailchimp
 	
 	public function iscrivi($valori)
 	{
-		print_r($valori);
-// 		$dataMailChimp = array(
-// 			"email"	=>	$valori["email"],
-// 			"status"=>	"subscribed",
-// 		);
-// 		
-// 		if (isset($valori["nome"]) && trim($valori["nome"]))
-// 			$dataMailChimp["firstname"] = $valori["nome"];
-// 		
-// 		if (isset($valori["cognome"]) && trim($valori["cognome"]))
-// 			$dataMailChimp["lastname"] = $valori["cognome"];
-// 		
-// // 		print_r($dataMailChimp);die();
-// 		syncMailchimpKeys($dataMailChimp, $this->params["secret_1"], $this->params["codice_lista"]);
+		Files_Log::getInstance("sendpulse");
+		
+		require LIBRARY . '/External/libs/vendor/autoload.php';
+		
+		// API credentials from https://login.sendpulse.com/settings/#api
+		define('API_USER_ID', $this->params["secret_1"]);
+		define('API_SECRET', $this->params["secret_2"]);
+		define('PATH_TO_ATTACH_FILE', Files_Log::$logFolder);
+		
+		$SPApiClient = new ApiClient(API_USER_ID, API_SECRET, new FileStorage(Files_Log::$logFolder));
+		
+		$bookID = $this->params["codice_lista"];
+		$emails = array(
+			array(
+				'email' => $valori["email"],
+				'variables' => array(
+					'name' => $valori["nome"]." ".$valori["cognome"],
+					'origin' => $this->params["codice_fonte"],
+				)
+			)
+		);
+		
+		return $SPApiClient->addEmails($bookID, $emails);
 	}
 	
 	public function isAttiva()
@@ -59,5 +74,4 @@ class Mailchimp
 		
 		return false;
 	}
-	
 }

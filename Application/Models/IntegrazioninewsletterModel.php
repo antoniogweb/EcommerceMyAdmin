@@ -53,6 +53,14 @@ class IntegrazioninewsletterModel extends GenericModel {
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
+				'codice_fonte'		=>	array(
+					'labelString'	=>	"Codice della fonte di invio",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Codice libero che servirà per distingue i contatti aggiunti a Sendpulse tramite il sito")." ".Parametri::$nomeNegozio."</div>"
+					),
+				),
 			),
 		);
 	}
