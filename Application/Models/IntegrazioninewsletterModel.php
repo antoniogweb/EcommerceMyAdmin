@@ -104,6 +104,7 @@ class IntegrazioninewsletterModel extends GenericModel {
 			
 			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php"))
 			{
+				require_once(LIBRARY."/Application/Modules/Newsletter.php");
 				require_once(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php");
 				
 				$objectReflection = new ReflectionClass($attivo["classe"]);
