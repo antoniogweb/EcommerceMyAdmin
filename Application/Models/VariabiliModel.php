@@ -387,6 +387,8 @@ class VariabiliModel extends GenericModel {
 		"cookies_save_pref"			=>	"uk-button uk-button-secondary", // classe pulsante cookie in set preferenze
 		"informativa_privacy_in_pagina_cookie"	=>	1, // se 1, il testo della pagina privacy verrà mostrayo all'interno della pagina dei cookie
 		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti
+		"oggetto_form_contatti"		=>	"form richiesta informazioni", // oggetto della mail del form contatti
+		"oggetto_form_newsletter"	=>	"form iscrizione a newsletter", // oggetto della mail del form newsletter
 	);
 	
 	public static $daInizializzare = array(
