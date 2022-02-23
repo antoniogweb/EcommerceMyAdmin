@@ -1082,12 +1082,12 @@ class BaseBaseController extends Controller
 						else
 							$this->redirect("grazie.html".F::partial());
 					} else {
-						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova pi&ugrave tardi</div>");
+						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova più tardi</div>");
 					}
 				}
 				else
 				{
-					Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['ContattiModel']->notice);
+					Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m['ContattiModel']->notice);
 				}
 			}
 		}
