@@ -946,23 +946,8 @@ class BaseBaseController extends Controller
 		}
 	}
 	
-	protected function inviaMailContatto($id, $idContatto, $valoriEmail, $fonte)
+	protected function elencoIndirizziEmailACuiInviare($valoriEmail)
 	{
-		$pagina = $this->m["PagesModel"]->selectId((int)$id);
-		$contatto = $this->m['ContattiModel']->selectId((int)$idContatto);
-		
-		if ($fonte == "NEWSLETTER")
-			$oggetto = "form iscrizione a newsletter";
-		else
-			$oggetto = "form richiesta informazioni";
-		
-		ob_start();
-		if ($fonte == "NEWSLETTER")
-			include (tpf("Regusers/mail_form_newsletter.php"));
-		else
-			include (tpf("Regusers/mail_form_contatti.php"));
-		$output = ob_get_clean();
-		
 		$emails = array(Parametri::$mailInvioOrdine);
 		
 		if (isset($valoriEmail["nazione"]) && $valoriEmail["nazione"])
@@ -974,6 +959,28 @@ class BaseBaseController extends Controller
 			
 			$emails = array_unique($emails);
 		}
+		
+		return $emails;
+	}
+	
+	protected function inviaMailContatto($id, $idContatto, $valoriEmail, $fonte)
+	{
+		$pagina = $this->m["PagesModel"]->selectId((int)$id);
+		$contatto = $this->m['ContattiModel']->selectId((int)$idContatto);
+		
+		if ($fonte == "NEWSLETTER")
+			$oggetto = v("oggetto_form_newsletter");
+		else
+			$oggetto = v("oggetto_form_contatti");
+		
+		ob_start();
+		if ($fonte == "NEWSLETTER")
+			include (tpf("Regusers/mail_form_newsletter.php"));
+		else
+			include (tpf("Regusers/mail_form_contatti.php"));
+		$output = ob_get_clean();
+		
+		$emails = $this->elencoIndirizziEmailACuiInviare($valoriEmail);
 		
 		return MailordiniModel::inviaMail(array(
 			"emails"	=>	$emails,

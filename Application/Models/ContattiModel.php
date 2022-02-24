@@ -26,6 +26,8 @@ class ContattiModel extends GenericModel {
 	
 	public static $uidc = null;
 	
+	public static $campiContatti = null;
+	
 	public static $elencoFonti = array(
 		"FORM_CONTATTO"		=>	"FORM CONTATTI",
 		"NEWSLETTER"		=>	"FORM NEWSLETTER",
@@ -86,6 +88,9 @@ class ContattiModel extends GenericModel {
 			"lingua"	=>	Params::$lang,
 			"id_ruolo"	=>	"",
 		);
+		
+		if (isset(self::$campiContatti))
+			$arrayCampi = $arrayCampi + self::$campiContatti;
 		
 		foreach ($arrayCampi as $campo => $valore)
 		{
