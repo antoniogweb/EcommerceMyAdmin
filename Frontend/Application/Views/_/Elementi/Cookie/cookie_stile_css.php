@@ -15,7 +15,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="<?php echo v("classe_ext_cookies")?>" id="segnalazione_cookies_ext">
+<div class="box_esperno_cookies <?php echo v("classe_ext_cookies")?>" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">
 		<?php include(tpf("Elementi/Cookie/Varianti/".v("stile_check_cookie").".php")); ?>
 	</div>
