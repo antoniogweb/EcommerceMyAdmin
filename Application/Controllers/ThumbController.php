@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ThumbController extends BaseController {
+class ThumbController extends Controller {
 
 	public function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
@@ -74,6 +74,16 @@ class ThumbController extends BaseController {
 		}
 	}
 	
+	protected function percorsoCartellaCacheFisica($id = null)
+	{
+		if (!v("attiva_cache_immagini"))
+			return null;
+		
+		$path = "thumb/".$this->action;
+		
+		return $path;
+	}
+	
 	public function immagineinlistaprodotti($id_page, $fileName = null)
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -99,7 +109,7 @@ class ThumbController extends BaseController {
 			if (strcmp($fileName,'') !== 0)
 			{
 				$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName);
+				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
 			}
 			else
 			{

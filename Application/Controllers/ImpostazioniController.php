@@ -103,6 +103,10 @@ class ImpostazioniController extends BaseController
 			$dir = Domain::$parentRoot."/thumb";
 			
 			GenericModel::eliminaCartella($dir);
+			
+			$dir = LIBRARY."/thumb";
+			
+			GenericModel::eliminaCartella($dir);
 		}
 	}
 	

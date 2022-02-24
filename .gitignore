@@ -10,6 +10,7 @@ config.php
 /Application/Apps
 /Library/*
 /Theme/*
+/thumb/*
 /Frontend/Application/Views/Default/layout.json
 .directory
 # Unit test reports
