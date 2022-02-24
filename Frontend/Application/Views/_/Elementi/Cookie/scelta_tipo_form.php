@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<div class="<?php if (v("stile_popup_cookie") == "cookie_stile_css") { ?>uk-container<?php } ?> uk-text-left">
+<div class="<?php if (v("stile_popup_cookie") == "cookie_stile_css" || PagesModel::$currentTipoPagina == "COOKIE") { ?>uk-container<?php } ?> uk-text-left">
 	<div class="uk-margin"><b><?php echo gtext("Seleziona le tue preferenze sui cookie.");?></b></div>
 	<form action="<?php echo Domain::$name."/accept-cookies";?>" method="GET">
 		<?php echo Html_Form::hidden(v("var_query_string_no_cookie"),"Y");?>
