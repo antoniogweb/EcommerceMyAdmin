@@ -1824,13 +1824,22 @@ class BaseContenutiController extends BaseController
 		
 		if (VariabiliModel::checkToken("var_query_string_no_cookie"))
 		{
-			F::cancellaCookiesGdpr();
+			App::cancellaCookiesGdpr();
 			
-			$time = time() + 3600*24*365*10;
-			Cookie::set("ok_cookie", "OK", $time, "/");
+			$allCookies = isset($_GET["all_cookie"]) ? true : false;
 			
-			if (isset($_GET["all_cookie"]))
-				Cookie::set("ok_cookie_terzi", "OK", $time, "/");
+			if (!$allCookies)
+			{
+				$cookieTecnici = App::getCookieTecnici();
+				
+				foreach ($_COOKIE as $name => $value)
+				{
+					if (!isset($cookieTecnici[$name]))
+						setcookie($name,"OK",(time()-3600),"/",ltrim(DOMAIN_NAME,"www"));
+				}
+			}
+			
+			App::settaCookiesGdpr($allCookies);
 		}
 		
 		$urlRedirect = RegusersModel::getUrlRedirect();

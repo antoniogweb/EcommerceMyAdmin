@@ -24,6 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 require(LIBRARY."/Application/Models/ContattiModel.php");
 require_once(LIBRARY."/Application/Modules/F.php");
+require_once(LIBRARY."/Application/Modules/App.php");
 
 class BaseBaseController extends Controller
 {
@@ -482,7 +483,7 @@ class BaseBaseController extends Controller
 			if ($this->m['OrdiniModel']->cartUidAlreadyPresent(User::$cart_uid))
 			{
 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-				$time = time() + 3600*24*365*10;
+				$time = time() + v("durata_carrello_wishlist_coupon");
 				setcookie("cart_uid",User::$cart_uid,$time,"/");
 			
 // 				setcookie("cart_uid", "", time()-3600,"/");
@@ -492,7 +493,7 @@ class BaseBaseController extends Controller
 		else
 		{
 			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-			$time = time() + 3600*24*365*10;
+			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("cart_uid",User::$cart_uid,$time,"/");
 		}
 		
@@ -504,7 +505,7 @@ class BaseBaseController extends Controller
 		else
 		{
 			User::$wishlist_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-			$time = time() + 3600*24*365*10;
+			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
 		}
 		
@@ -523,7 +524,7 @@ class BaseBaseController extends Controller
 		{
 			User::$coupon = $this->request->post("il_coupon","","sanitizeAll");
 			
-			$time = time() + 3600*24*365*10;
+			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("coupon",User::$coupon,$time,"/");
 		}
 		else

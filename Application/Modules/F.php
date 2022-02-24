@@ -75,7 +75,7 @@ class F
 	
 	public static function settaCookiesGdpr($allCookies = false)
 	{
-		$time = time() + 3600*24*365*10;
+		$time = time() + v("durata_impostazioni_cookie");
 		Cookie::set("ok_cookie", "OK", $time, "/");
 		$_COOKIE["ok_cookie"] = "OK";
 		

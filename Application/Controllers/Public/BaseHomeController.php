@@ -113,11 +113,7 @@ class BaseHomeController extends BaseController
 	{
 		$this->clean();
 		
-		$time = time() + 3600*24*365*10;
-		Cookie::set("ok_cookie", "OK", $time, "/");
-		Cookie::set("ok_cookie_terzi", "OK", $time, "/");
-// 		setcookie("ok_cookie","OK",$time,"/");
-// 		setcookie("ok_cookie_terzi","OK",$time,"/");
+		App::settaCookiesGdpr(true);
 	}
 	
 	public function xmlprodotti($p = null)
