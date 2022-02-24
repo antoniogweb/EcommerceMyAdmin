@@ -11,13 +11,50 @@ $(document).ready(function(){
 	
 		$(".segnalazione_cookies_ext").animate({bottom: "0px"});
 	
-	}, 1000);
+	}, 2000);
+	
+	$("body").on("click", ".preferenze_cookies", function(e){
+		
+		e.preventDefault();
+		
+		$(".accetta_approfondisci").addClass("uk-hidden");
+		$(".form_scelta").removeClass("uk-hidden");
+		
+	});
+	
+	$("body").on("click", ".submit_preferenze", function(e){
+		
+		e.preventDefault();
+		
+		var url = $(this).closest("form").attr("action");
+		var datastring = $(this).closest("form").serialize();
+// 		console.log(datastring);
+		$.ajaxQueue({
+			url: url + "?" + datastring,
+			cache:false,
+			async: true,
+			dataType: "html",
+			method: "POST",
+			data: datastring,
+			success: function(content){
+				location.reload();
+			}
+		});
+		
+	});
 });
 </script>
 
 <div class="box_esterno_cookies <?php echo v("classe_ext_cookies")?>" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">
-		<?php include(tpf("Elementi/Cookie/Varianti/".v("stile_check_cookie").".php")); ?>
+		<?php include(tpf("Elementi/Cookie/testo_popup_cookies.php"));?>
+		
+		<div class="accetta_approfondisci">
+			<?php include(tpf("Elementi/Cookie/Varianti/".v("stile_check_cookie").".php")); ?>
+		</div>
+		<div class="form_scelta uk-hidden">
+			<?php include(tpf("Elementi/Cookie/scelta_tipo_form.php"));?>
+		</div>
 	</div>
 </div>
 <?php } ?>

@@ -384,7 +384,7 @@ class VariabiliModel extends GenericModel {
 		"classe_ext_cookies_conf"	=>	"segnalazione_cookies_ext uk-background-secondary uk-light segnalazione_cookies_ext_pag_cookies", // classe box esterno cookie preferenze
 		"cookies_preferenze_button"	=>	"cookie_personalizza uk-margin-top uk-width-1-1 uk-width-2-5@s uk-button uk-button-default", // classe pulsante preferenze cookies
 		"cookies_confirm_button"	=>	"uk-margin-top uk-width-1-1 uk-width-2-5@s ok_cookies cookie_accetta uk-button uk-button-primary", // classe pulsante ok cookie
-		"cookies_save_pref"			=>	"uk-button uk-button-secondary", // classe pulsante cookie in set preferenze
+		"cookies_save_pref"			=>	"uk-margin-top uk-button uk-button-default uk-width-1-1 uk-width-2-5@s", // classe pulsante cookie in set preferenze
 		"informativa_privacy_in_pagina_cookie"	=>	1, // se 1, il testo della pagina privacy verrà mostrayo all'interno della pagina dei cookie
 		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti
 		"oggetto_form_contatti"		=>	"form richiesta informazioni", // oggetto della mail del form contatti
