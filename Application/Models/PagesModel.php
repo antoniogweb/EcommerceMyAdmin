@@ -1392,11 +1392,15 @@ class PagesModel extends GenericModel {
 	
 	public function getThumb($id_page)
 	{
+		$im = new ImmaginiModel();
+		
 		$clean['id_page'] = (int)$id_page;
 		
 		$principale = $this->getPrincipale($clean['id_page']);
 		
-		return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$principale."' />";
+		$fileName = $im->getFirstImage($principale);
+		
+		return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$principale."/$fileName' />";
 	}
 	
 	public function inPromozioneText($id_page)
