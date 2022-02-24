@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<div class="uk-container uk-container-small uk-text-left">
+<div class="uk-container uk-text-left">
 	<div class="uk-margin"><b><?php echo gtext("Seleziona le tue preferenze sui cookie.");?></b></div>
 	<form action="<?php echo Domain::$name."/accept-cookies";?>" method="GET">
 		<?php echo Html_Form::hidden(v("var_query_string_no_cookie"),"Y");?>
