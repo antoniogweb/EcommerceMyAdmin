@@ -81,6 +81,10 @@ class FattureModel extends Model_Tree {
 			{
 				$fp = fopen(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture).'/index.html', 'w');
 				fclose($fp);
+				
+				$fp = fopen(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture).'/.htaccess', 'w');
+				fwrite($fp, 'deny from all');
+				fclose($fp);
 			}
 		}
 	}
