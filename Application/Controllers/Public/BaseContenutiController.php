@@ -1835,7 +1835,10 @@ class BaseContenutiController extends BaseController
 				foreach ($_COOKIE as $name => $value)
 				{
 					if (!isset($cookieTecnici[$name]))
+					{
 						setcookie($name,"OK",(time()-3600),"/",ltrim(DOMAIN_NAME,"www"));
+						setcookie($name,"OK",(time()-3600),"/",DOMAIN_NAME);
+					}
 				}
 			}
 			
