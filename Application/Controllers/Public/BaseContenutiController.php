@@ -1837,7 +1837,7 @@ class BaseContenutiController extends BaseController
 					if (!isset($cookieTecnici[$name]))
 					{
 						setcookie($name,"OK",(time()-3600),"/",ltrim(DOMAIN_NAME,"www"));
-						setcookie($name,"OK",(time()-3600),"/",DOMAIN_NAME);
+						unset($_COOKIE[$name]);
 					}
 				}
 			}
