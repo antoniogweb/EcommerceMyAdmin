@@ -36,6 +36,8 @@
 	<page_header>
 		<div style="height:151px;margin-bottom:40px;text-align:center;">
 			<br />
+			<img style="width:200px;" src="<?php echo LIBRARY."/Application/Views/Fatture/Assets/logo_azienda.png"?>" />
+			<br />
 			<br /><b>Ragione sociale riga 1</b><br />
 			Ragione sociale riga 2<br />
 			Indirizzo - email
