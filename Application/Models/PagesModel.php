@@ -388,6 +388,12 @@ class PagesModel extends GenericModel {
 					'options'	=>	$this->selectNazione(),
 					'reverse' => 'yes',
 				),
+				'id_regione'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Regione',
+					'options'	=>	$this->selectRegione(),
+					'reverse' => 'yes',
+				),
 				'giacenza'	=>	array(
 					'labelString'=>	'Giacenza (disponibilità a magazzino)',
 					'entryClass'	=>	'form_input_text help_giacenza',
@@ -2974,5 +2980,47 @@ class PagesModel extends GenericModel {
 		}
 		
 		return "";
+	}
+	
+	public function aggiornaTabellaLocalita($id)
+	{
+		$record = $this->selectId($id);
+		
+		if (!empty($record))
+		{
+			$pr = new PagesregioniModel();
+			
+			$pr->query("delete from pages_regioni where id_page = ".(int)$id);
+			
+			$idNazione = 0;
+			
+			if ($record["id_regione"])
+			{
+				$r = new RegioniModel();
+				
+				$idNazione = $r->clear()->select("id_nazione")->where(array(
+					"id_regione"	=>	sanitizeAll($record["id_regione"])
+				))->field("id_nazione");
+			}
+			else if ($record["codice_nazione"])
+			{
+				$n = new NazioniModel();
+				
+				$idNazione = $n->clear()->select("id_nazione")->where(array(
+					"iso_country_code"	=>	sanitizeAll($record["codice_nazione"])
+				))->field("id_nazione");
+			}
+			
+			if ($idNazione || $record["id_regione"])
+			{
+				$pr->setValues(array(
+					"id_page"		=>	$id,
+					"id_nazione"	=>	$idNazione,
+					"id_regione"	=>	$record["id_regione"],
+				));
+				
+				$pr->insert();
+			}
+		}
 	}
 }

@@ -605,6 +605,13 @@ class GenericModel extends Model_Tree
 		return "";
 	}
 	
+	public function selectRegione()
+	{
+		$r = new RegioniModel();
+		
+		return array("0" => "Seleziona") + $r->clear()->orderBy("titolo")->toList("id_regione", "titolo")->send();
+	}
+	
 	public function selectNazione($empty = false)
 	{
 		$n = new NazioniModel();

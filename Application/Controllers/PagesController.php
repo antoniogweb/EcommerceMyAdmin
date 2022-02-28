@@ -833,7 +833,10 @@ class PagesController extends BaseController {
 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
 						$this->m["PagesattributiModel"]->duplica($clean['id'], $lId);
 						$this->m["CombinazioniModel"]->duplica($clean['id'], $lId);
-						$this->m["PagesregioniModel"]->duplica($clean['id'], $lId);
+						
+						if ($data["section"] != "sedi")
+							$this->m["PagesregioniModel"]->duplica($clean['id'], $lId);
+						
 						$this->m["PageslingueModel"]->duplica($clean['id'], $lId);
 						
 						// Duplico i model associati

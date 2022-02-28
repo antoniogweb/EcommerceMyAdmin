@@ -572,6 +572,14 @@ class Route
 		
 		'integrazioninewsletter,main',
 		'integrazioninewsletter,form',
+		
+		'sedi,main',
+		'sedi,form',
+		'sedi,move',
+		'sedi,pubblica',
+		'sedi,inevidenza',
+		'sedi,updatevalue',
+		'sedi,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

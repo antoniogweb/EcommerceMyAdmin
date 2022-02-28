@@ -63,7 +63,7 @@ trait TraitController
 			$fields = 'titolo,sottotitolo,alias,descrizione,meta_title,keywords,meta_description';
 		else if ($section == "tag" || $section == "-marchio-")
 			$fields = 'titolo,alias,description,meta_title,keywords,meta_description';
-		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti")
+		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti" || $section == "sedi_detail")
 			$fields = 'titolo,descrizione';
 		else if ($section == "email_detail")
 			$fields = 'title,editor_visuale,description';
