@@ -766,7 +766,7 @@ class BaseBaseController extends Controller
 						{
 							$urlRedirect = RegusersModel::getUrlRedirect();
 							
-							if ($urlRedirect && !v("conferma_registrazione"))
+							if ($urlRedirect && !v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
 								header('Location: '.$urlRedirect);
 							else
 								$this->redirect("avvisi");
