@@ -104,11 +104,6 @@ $(window).load(function() {
 </body>
 </html>
 <?php
-if (v("check_fatture"))
-{
-	$ff = new FattureModel();
-	$ff->checkFiles();
-}
 // $mysqli = Db_Mysqli::getInstance();
 // print_r($mysqli->queries);
 ?>

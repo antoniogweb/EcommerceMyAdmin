@@ -86,6 +86,36 @@ class F
 		}
 	}
 	
+	public static function createFolder($relativePath, $basePath = null)
+	{
+		$relativePath = rtrim($relativePath,"/");
+		
+		if (!$basePath)
+			$basePath = LIBRARY;
+		
+		$relativePathArray = explode("/", $relativePath);
+		
+		$path = $basePath;
+		
+		foreach ($relativePathArray as $rPath)
+		{
+			$path .= "/$rPath";
+			
+			if (@!is_dir($path))
+			{
+				if (@mkdir($path))
+				{
+					$fp = fopen($path . "/index.html", 'w');
+					fclose($fp);
+					
+					$fp = fopen($path . "/.htaccess", 'w');
+					fwrite($fp, 'deny from all');
+					fclose($fp);
+				}
+			}
+		}
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{

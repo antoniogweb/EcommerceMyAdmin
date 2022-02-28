@@ -41,14 +41,10 @@ class FattureModel extends Model_Tree {
 		
 		$this->year = date("Y");
 		
+		$this->files->setBase(LIBRARY . "/../" . rtrim("/".Parametri::$cartellaFatture));
+// 		echo LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture);die();
 		if (v("check_fatture"))
-		{
-			$this->checkFolder();
-			
-			$this->files->setBase(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture));
-			
 			$this->checkFatture();
-		}
 	}
 
 	public function getNumeroFattura()
@@ -75,24 +71,15 @@ class FattureModel extends Model_Tree {
 	
 	public function checkFolder()
 	{
-		if (@!is_dir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
-		{
-			if (@mkdir(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture)))
-			{
-				$fp = fopen(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture).'/index.html', 'w');
-				fclose($fp);
-				
-				$fp = fopen(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture).'/.htaccess', 'w');
-				fwrite($fp, 'deny from all');
-				fclose($fp);
-			}
-		}
+		F::createFolder("media/Fatture");
 	}
 	
 	public function checkFatture()
 	{
 		if (!v("check_fatture"))
 			return;
+		
+		F::createFolder("media/Fatture");
 		
 		$max = (int)$this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->getMax("numero");
 		
@@ -198,8 +185,10 @@ class FattureModel extends Model_Tree {
 	
 	public function checkFiles()
 	{
-		$list = $this->clear()->select()->toList('filename')->send();
-		$this->files->removeFilesNotInTheList($list);
+		$this->checkFolder();
+		
+// 		$list = $this->clear()->select()->toList('filename')->send();
+// 		$this->files->removeFilesNotInTheList($list);
 	}
 	
 	public function del($id = null, $whereClause = null)
@@ -228,6 +217,9 @@ class FattureModel extends Model_Tree {
 			//$this->redirect("panel/main");
 			die();
 		}
+		
+		if (!file_exists(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php"))
+			die("ATTENZIONE MANCA IL FILE DI TEMPLATE DELLA FATTURA Application/Views/Fatture/layout_fattura.php, COPIARLO DA Application/Views/Fatture/layout_fattura.sample.php");
 		
 		$clean["id_o"] = (int)$id_o;
 		

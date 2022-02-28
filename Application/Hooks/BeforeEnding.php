@@ -16,3 +16,9 @@ if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
 	print_r($mysqli->queries);
 	echo "</pre>";
 }
+
+// if (v("check_fatture"))
+// {
+// 	$ff = new FattureModel();
+// 	$ff->checkFiles();
+// }
