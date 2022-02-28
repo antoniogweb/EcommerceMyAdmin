@@ -785,7 +785,7 @@ class BaseController extends Controller
 			$stringaTitolo = (!showreport()) ? "Gestione" : "Visualizzazione";
 			$data["title"] = $stringaTitolo . " " . $data["tabella"] . ": " . $data["titoloRecord"];
 			
-			if (!isset($_GET["pdf"]))
+			if (!isset($_GET["pdf"]) || !v("permetti_generazione_pdf_pagine_backend"))
 			{
 				$this->append($data);
 				$this->load($this->formView);
@@ -793,18 +793,10 @@ class BaseController extends Controller
 			else
 			{
 				$this->clean();
-				require_once(ROOT."/External/html2pdf_v4.03/html2pdf.class.php");
 				
-				ob_start();
-				include(ROOT."/Application/Views/pdf.php");
-				$content = ob_get_clean();
-				
-				$html2pdf = new HTML2PDF('P','A4','it', true, 'ISO-8859-15', array("0mm", "0mm", "0mm", "0mm"));
-				
-				$html2pdf->setDefaultFont('Arial');
-				$html2pdf->writeHTML($content);
-				
-				$html2pdf->Output(date("d-m-Y")."_".$data["tabella"].".pdf");
+				Pdf::output(LIBRARY."/Application/Views/pdf.php", date("d-m-Y")."_".encodeUrl($data["title"]).".pdf", array(
+					"mainContent"	=>	$mainContent,
+				));
 			}
 		}
 	}

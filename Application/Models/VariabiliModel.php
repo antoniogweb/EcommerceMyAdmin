@@ -393,6 +393,7 @@ class VariabiliModel extends GenericModel {
 		"durata_impostazioni_cookie"	=>	15552000, // durata dei cookie usati per le preferenze sui cookie
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
+		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
 	);
 	
 	public static $daInizializzare = array(

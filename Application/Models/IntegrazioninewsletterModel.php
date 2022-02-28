@@ -67,7 +67,7 @@ class IntegrazioninewsletterModel extends GenericModel {
 				),
 				"riempi_company"	=>	array(
 					"type"	=>	"Select",
-					"labelString"	=>	"Riempi il campo azienda con Nome e Cognome",
+					"labelString"	=>	"Riempi il 'company' di SendPulse con Nome e Cognome",
 					"options"	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",

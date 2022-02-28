@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(ROOT."/admin/External/libs/vendor/autoload.php");
+require_once(LIBRARY."/External/libs/vendor/autoload.php");
 
 class Pdf
 {
@@ -46,8 +46,6 @@ class Pdf
 		{
 			extract($data);
 			
-			require_once(ROOT."/admin/External/libs/vendor/autoload.php");
-
 			ob_start();
 			include($templatePath);
 			$content = ob_get_clean();
@@ -60,7 +58,7 @@ class Pdf
 			
 			$title = $title ? $title : gtext("esportazione_pdf_").date("Y-m-d").".pdf";
 			
-			$html2pdf->Output(field($pages[0],"title").".pdf","I");
+			$html2pdf->Output($title,$output);
 		}
 	}
 }
