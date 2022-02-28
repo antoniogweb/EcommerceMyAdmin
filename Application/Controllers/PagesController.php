@@ -1904,7 +1904,7 @@ class PagesController extends BaseController {
 		$this->mainFields = array("nazioni.titolo", "regioni.titolo");
 		$this->mainHead = "Nazione,Regione";
 		
-		$this->getTabViewFields("documenti");
+		$this->getTabViewFields("regioni");
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
 		
