@@ -1895,8 +1895,6 @@ class PagesController extends BaseController {
 		
 		$mainAction = "regioni/".$clean['id'];
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
-		
 		$this->colProperties = array(
 			array(
 				'width'	=>	'60px',
@@ -1905,6 +1903,10 @@ class PagesController extends BaseController {
 		
 		$this->mainFields = array("nazioni.titolo", "regioni.titolo");
 		$this->mainHead = "Nazione,Regione";
+		
+		$this->getTabViewFields("documenti");
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->clear()->select("regioni.*,nazioni.*,pages_regioni.id_page_regione")
 			->left(array("regione"))
