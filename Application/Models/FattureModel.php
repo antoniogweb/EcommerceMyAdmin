@@ -213,13 +213,12 @@ class FattureModel extends Model_Tree {
 	public function crea($id_o)
 	{
 		if (!$this->fattureOk)
-		{
-			//$this->redirect("panel/main");
 			die();
-		}
 		
 		if (!file_exists(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php"))
 			die("ATTENZIONE MANCA IL FILE DI TEMPLATE DELLA FATTURA Application/Views/Fatture/layout_fattura.php, COPIARLO DA Application/Views/Fatture/layout_fattura.sample.php");
+		
+		$this->checkFolder();
 		
 		$clean["id_o"] = (int)$id_o;
 		
@@ -275,17 +274,24 @@ class FattureModel extends Model_Tree {
 				ob_start();
 				include(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php");
 				$content = ob_get_clean();
-			
-				$html2pdf = new HTML2PDF('P','A4','it', true, 'ISO-8859-15', array("0mm", "0mm", "0mm", "0mm"));
 				
-// 				$html2pdf = new HTML2PDF('P', 'A4', 'it',true);
-		//      $html2pdf->setModeDebug();
-				$html2pdf->setDefaultFont('Helvetica');
-				$html2pdf->writeHTML($content);
+// 				echo $content;die();
+// 				echo LIBRARY . "/media/Fatture/" . $clean["fileName"];die();
+
+				Pdf::$params["margin_top"] = "40";
 				
-				$html2pdf->Output(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture) . "/" . $clean["fileName"],'F');
+				Pdf::output("", LIBRARY . "/media/Fatture/" . $clean["fileName"], array(), "F", $content);
 				
-				$this->checkFiles();
+// 				$html2pdf = new HTML2PDF('P','A4','it', true, 'ISO-8859-15', array("0mm", "0mm", "0mm", "0mm"));
+// 				
+// // 				$html2pdf = new HTML2PDF('P', 'A4', 'it',true);
+// 		//      $html2pdf->setModeDebug();
+// 				$html2pdf->setDefaultFont('Helvetica');
+// 				$html2pdf->writeHTML($content);
+// 				
+// 				$html2pdf->Output(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture) . "/" . $clean["fileName"],'F');
+				
+// 				$this->checkFiles();
 				//$this->redirect("ordini/vedi/".$ordine["id_o"]."/".$ordine["admin_token"]."?n=y");
 			}
 			catch(HTML2PDF_exception $e) {

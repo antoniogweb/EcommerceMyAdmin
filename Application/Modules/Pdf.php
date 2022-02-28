@@ -40,16 +40,22 @@ class Pdf
 		'orientation'	=>	"P",
 	];
 	
-	public static function output($templatePath, $title = "", $data = array(), $output = "I")
+	public static function output($templatePath = "", $title = "", $data = array(), $output = "I", $pdfContent = "")
 	{
 		if (class_exists("\Mpdf\Mpdf"))
 		{
-			extract($data);
+			if (!empty($data))
+				extract($data);
 			
-			ob_start();
-			include($templatePath);
-			$content = ob_get_clean();
-			
+			if ($templatePath)
+			{
+				ob_start();
+				include($templatePath);
+				$content = ob_get_clean();
+			}
+			else if ($pdfContent)
+				$content = $pdfContent;
+				
 			$html2pdf = new \Mpdf\Mpdf(self::$params);
 			
 			$html2pdf->setDefaultFont('Arial');
