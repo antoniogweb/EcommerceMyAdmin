@@ -1,7 +1,7 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 
 /Logs/*
-/media/Fatture/*
+/media/*
 config.php
 /Application/Views/Fatture/Assets/*
 /Application/Views/Fatture/layout_fattura.php
