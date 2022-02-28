@@ -230,75 +230,49 @@ class FattureModel extends Model_Tree {
 		//echo Domain::$adminName;die();
 		if (count($res) > 0)
 		{
-			require_once(Domain::$adminRoot."/External/html2pdf_v4.03/html2pdf.class.php");
-			
 			$ordine = $res[0]["orders"];
 			$numeroFattura = "";
 			
 			//controllo se esiste già la fattura relativa a quell'ordine
 			$fatt = $this->clear()->where(array("id_o"=>$clean["id_o"]))->orderBy("id_f desc")->send();
 			
-			try
+			if (count($fatt) > 0)
 			{
-				if (count($fatt) > 0)
-				{
-					$fattura = $fatt[0]["fatture"];
-					$clean["fileName"] =  sanitizeAll($fattura["filename"]);
-					$dataFattura = smartDate($fattura["data_creazione"]);
-					$numeroFattura = $clean["numeroFattura"] = (int)$fattura["numero"];
-				}
-				else
-				{
-					$numeroFattura = $clean["numeroFattura"] = (int)$this->getNumeroFattura();
-					$dataFattura = date("d-m-Y");
-					$clean["fileName"] = sanitizeAll($numeroFattura."W_".date("d-m-Y").".pdf");
-				}
-				
-				if (count($fatt) > 0)
-				{
-// 					$fileName = 
-				}
-				else
-				{
-					$this->values = array(
-						"id_o" => $clean["id_o"],
-						"numero" => $clean["numeroFattura"],
-						"filename" => $clean["fileName"],
-					);
-					$this->insert();
-// 					$fileName = $ordine["id_o"]."W_".smartDate($ordine["data_creazione"]);
-				}
-				
-				$righeOrdine = $righe->clear()->where(array("id_o"=>$clean["id_o"]))->send();
-				
-				ob_start();
-				include(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php");
-				$content = ob_get_clean();
-				
-// 				echo $content;die();
-// 				echo LIBRARY . "/media/Fatture/" . $clean["fileName"];die();
-
-				Pdf::$params["margin_top"] = "40";
-				
-				Pdf::output("", LIBRARY . "/media/Fatture/" . $clean["fileName"], array(), "F", $content);
-				
-// 				$html2pdf = new HTML2PDF('P','A4','it', true, 'ISO-8859-15', array("0mm", "0mm", "0mm", "0mm"));
-// 				
-// // 				$html2pdf = new HTML2PDF('P', 'A4', 'it',true);
-// 		//      $html2pdf->setModeDebug();
-// 				$html2pdf->setDefaultFont('Helvetica');
-// 				$html2pdf->writeHTML($content);
-// 				
-// 				$html2pdf->Output(LIBRARY . "/.." . rtrim("/".Parametri::$cartellaFatture) . "/" . $clean["fileName"],'F');
-				
-// 				$this->checkFiles();
-				//$this->redirect("ordini/vedi/".$ordine["id_o"]."/".$ordine["admin_token"]."?n=y");
+				$fattura = $fatt[0]["fatture"];
+				$clean["fileName"] =  sanitizeAll($fattura["filename"]);
+				$dataFattura = smartDate($fattura["data_creazione"]);
+				$numeroFattura = $clean["numeroFattura"] = (int)$fattura["numero"];
 			}
-			catch(HTML2PDF_exception $e) {
-				echo $e;
-				exit;
+			else
+			{
+				$numeroFattura = $clean["numeroFattura"] = (int)$this->getNumeroFattura();
+				$dataFattura = date("d-m-Y");
+				$clean["fileName"] = sanitizeAll($numeroFattura."W_".date("d-m-Y").".pdf");
 			}
+			
+			if (count($fatt) > 0)
+			{
+				
+			}
+			else
+			{
+				$this->values = array(
+					"id_o" => $clean["id_o"],
+					"numero" => $clean["numeroFattura"],
+					"filename" => $clean["fileName"],
+				);
+				$this->insert();
+			}
+			
+			$righeOrdine = $righe->clear()->where(array("id_o"=>$clean["id_o"]))->send();
+			
+			ob_start();
+			include(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php");
+			$content = ob_get_clean();
 
+			Pdf::$params["margin_top"] = "40";
+			
+			Pdf::output("", LIBRARY . "/media/Fatture/" . $clean["fileName"], array(), "F", $content);
 		}
 
 	}
