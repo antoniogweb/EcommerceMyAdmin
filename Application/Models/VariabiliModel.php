@@ -392,6 +392,7 @@ class VariabiliModel extends GenericModel {
 		"durata_carrello_wishlist_coupon"	=>	31536000, // durata dei cookie usati per carrello, wishlist e copupon
 		"durata_impostazioni_cookie"	=>	15552000, // durata dei cookie usati per le preferenze sui cookie
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine
+		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 	);
 	
 	public static $daInizializzare = array(

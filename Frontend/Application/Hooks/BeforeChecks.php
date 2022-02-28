@@ -97,6 +97,7 @@ require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");
 require(LIBRARY."/Application/Include/tema.php");
 require(LIBRARY."/Application/Modules/F.php");
+require(LIBRARY."/Application/Modules/Pdf.php");
 
 if (!v("traduzione_frontend"))
 	Lang::$edit = false;

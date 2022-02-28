@@ -1441,41 +1441,13 @@ class BaseContenutiController extends BaseController
 		
 		if (Output::$html)
 		{
-			if (!isset($_GET["pdf"]))
+			if (!isset($_GET["pdf"]) || !v("permetti_generazione_pdf_pagine_frontend"))
 				$this->sectionLoad($section, "page", $template);
 			else
 			{
 				$this->clean();
 				
-				extract($data);
-				
-				require_once(ROOT."/admin/External/libs/vendor/autoload.php");
-
-				ob_start();
-				include(tpf("Contenuti/pdf.php"));
-				$content = ob_get_clean();
-				
-				$params = [
-					'mode' => '',
-					'format' => 'A4',
-					'default_font_size' => "9",
-					'default_font' => "",
-					'margin_left' => "6",
-					'margin_right' => "6",
-					'margin_top' => "5",
-					'margin_bottom' => "10",
-					'margin_header' => "0",
-					'margin_footer' => "2",
-					'orientation'	=>	"P",
-				];
-				
-				$html2pdf = new \Mpdf\Mpdf($params);
-				
-				$html2pdf->setDefaultFont('Arial');
-				
-				$html2pdf->WriteHTML($content);
-				
-				$html2pdf->Output(field($pages[0],"title").".pdf","I");
+				Pdf::output(tpf("Contenuti/pdf.php"), field($pages[0],"title").".pdf", $data);
 			}
 		}
 		else
