@@ -5,7 +5,7 @@
 	<form action="<?php echo Domain::$name."/accept-cookies";?>" method="GET">
 		<?php echo Html_Form::hidden(v("var_query_string_no_cookie"),"Y");?>
 		<?php echo Html_Form::hidden("redirect",RegusersModel::$redirect);?>
-		<div class="uk-margin-top">
+		<div class="box_check_cookies uk-margin-top">
 			<?php echo Html_Form::checkbox("accetto",1,1,null,null,"disabled readonly");?> <span class="uk-margin-small-left uk-margin-small-right"><?php echo gtext("Cookie tecnici");?></span>
 			<br />
 			<?php
