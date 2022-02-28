@@ -44,32 +44,42 @@ class Sendpulse extends Newsletter
 	{
 		Files_Log::getInstance("sendpulse");
 		
-		require LIBRARY . '/External/libs/vendor/autoload.php';
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 		
 		// API credentials from https://login.sendpulse.com/settings/#api
 		define('API_USER_ID', $this->params["secret_1"]);
 		define('API_SECRET', $this->params["secret_2"]);
 		define('PATH_TO_ATTACH_FILE', Files_Log::$logFolder);
 		
-		$SPApiClient = new ApiClient(API_USER_ID, API_SECRET, new FileStorage(Files_Log::$logFolder));
-		
-		$bookID = $this->params["codice_lista"];
-		$emails = array(
-			array(
-				'email' => $valori["email"],
-				'variables' => array(
-					'name' => $valori["nome"]." ".$valori["cognome"],
-					'origin' => $this->params["codice_fonte"],
+		if (class_exists("Sendpulse\RestApi\ApiClient"))
+		{
+			$SPApiClient = new ApiClient(API_USER_ID, API_SECRET, new FileStorage(Files_Log::$logFolder));
+			
+			$variables = array(
+				'name' => $valori["nome"]." ".$valori["cognome"],
+				'origin' => $this->params["codice_fonte"],
+			);
+			
+			if ($this->params["riempi_company"])
+				$variables["company"] = $variables["name"];
+			
+			$bookID = $this->params["codice_lista"];
+			$emails = array(
+				array(
+					'email' => $valori["email"],
+					'variables' => $variables,
 				)
-			)
-		);
+			);
+			
+			return $SPApiClient->addEmails($bookID, $emails);
+		}
 		
-		return $SPApiClient->addEmails($bookID, $emails);
+		return null;
 	}
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,secret_1,secret_2,codice_lista,codice_fonte';
+		return 'titolo,attivo,secret_1,secret_2,codice_lista,codice_fonte,riempi_company';
 	}
 	
 	public function isAttiva()

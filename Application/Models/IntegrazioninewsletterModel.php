@@ -65,6 +65,13 @@ class IntegrazioninewsletterModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Codice libero che servirà per distingue i contatti aggiunti a Sendpulse tramite il sito")." ".Parametri::$nomeNegozio."</div>"
 					),
 				),
+				"riempi_company"	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Riempi il campo azienda con Nome e Cognome",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 		);
 	}
