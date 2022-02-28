@@ -102,17 +102,14 @@ class F
 			$path .= "/$rPath";
 			
 			if (@!is_dir($path))
-			{
-				if (@mkdir($path))
-				{
-					$fp = fopen($path . "/index.html", 'w');
-					fclose($fp);
-					
-					$fp = fopen($path . "/.htaccess", 'w');
-					fwrite($fp, 'deny from all');
-					fclose($fp);
-				}
-			}
+				@mkdir($path);
+			
+			$fp = @fopen($path . "/index.html", 'w');
+			fclose($fp);
+			
+			$fp = @fopen($path . "/.htaccess", 'w');
+			fwrite($fp, 'deny from all');
+			fclose($fp);
 		}
 	}
 	
