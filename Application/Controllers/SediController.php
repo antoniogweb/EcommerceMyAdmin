@@ -32,14 +32,22 @@ class SediController extends GenericsectionController {
 		
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
-			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			"pages.email_contatto_evento",
+			"pages.telefono_contatto_evento",
+			"pages.indirizzo_localita_evento",
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
+		);
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
 		);
 		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Email,Telefono,Indirizzo,Pubblicato?';
 		
 		$this->queryFields = "title,attivo,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,description,id_regione";
 	}
