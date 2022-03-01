@@ -2852,7 +2852,10 @@ class PagesModel extends GenericModel {
 		
 		$margineEuro = ($prezzoMinimoPieno * $margine) / 100;
 		
-		return $margineEuro - $scontoEuro;
+		if (v("considera_promo_in_margine_euro"))
+			return $margineEuro - $scontoEuro;
+		else
+			return $margineEuro;
 	}
 	
 	public function etichettaMargineEuro($idPage, $page = null)
