@@ -395,6 +395,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
+		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 	);
 	
 	public static $daInizializzare = array(

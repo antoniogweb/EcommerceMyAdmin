@@ -2290,7 +2290,7 @@ class PagesModel extends GenericModel {
 			if ($p->inPromozione($r["pages"]["id_page"], $r))
 			{
 				$temp["g:sale_price"] = number_format(calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo),2,".",""). " EUR";
-				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["dal"]));
+				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["al"]));
 				
 				$r["pages"]["in_promo_feed"] = true;
 			}
@@ -2852,7 +2852,10 @@ class PagesModel extends GenericModel {
 		
 		$margineEuro = ($prezzoMinimoPieno * $margine) / 100;
 		
-		return $margineEuro - $scontoEuro;
+		if (v("considera_promo_in_margine_euro"))
+			return $margineEuro - $scontoEuro;
+		else
+			return $margineEuro;
 	}
 	
 	public function etichettaMargineEuro($idPage, $page = null)
