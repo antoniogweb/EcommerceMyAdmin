@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
-$sedi = SediModel::getElementiFascia();
+$sedi = SediModel::getElementiFascia(0, "pages.id_order");
 
 if (isset($sedi) && count($sedi) > 0) { ?>
 <div uk-filter=".js-filter">
