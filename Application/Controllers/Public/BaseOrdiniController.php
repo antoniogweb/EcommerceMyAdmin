@@ -1020,11 +1020,16 @@ class BaseOrdiniController extends BaseController
 				$clean["username"] = $this->request->post("email","","sanitizeAll");
 				$this->m['RegusersModel']->values["username"] = $clean["username"];
 				
-				$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite", false) : "";
+				$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";
 				
-				$this->m['RegusersModel']->databaseConditions['insert'] = array(
-					"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='http://".DOMAIN_NAME."/password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
-				);
+				if (isset($_POST["email"]) && RegusersModel::utenteDaConfermare($_POST["email"]))
+					$this->m['RegusersModel']->databaseConditions['insert'] = array(
+						"checkUnique"		=>	"username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.",false)."<br />".gtext("Può procedere con la conferma del proprio account al seguente",false)." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web", false)."</a> ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
+					);
+				else
+					$this->m['RegusersModel']->databaseConditions['insert'] = array(
+						"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
+					);
 				
 				if (v("account_attiva_conferma_password"))
 					$this->m['RegusersModel']->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");

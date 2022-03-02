@@ -14,8 +14,11 @@
 
 <p class="uk-margin-large">
 	<span class="uk-text-emphasis"><?php echo gtext("Non ti è arrivata la mail con il link di conferma?");?></span>
-	<br />
-	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/send-confirmation";?>"><span uk-icon="mail"></span> <?php echo gtext("Invia nuovamente il link di conferma")?></a>
+	
+	<div>
+		<div class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+		<a class="uk-button uk-button-primary btn_submit_form" href="<?php echo $this->baseUrl."/send-confirmation";?>"><span uk-icon="mail"></span> <?php echo gtext("Invia nuovamente il link di conferma")?></a>
+	</div>
 </p>
 <?php } ?>
 

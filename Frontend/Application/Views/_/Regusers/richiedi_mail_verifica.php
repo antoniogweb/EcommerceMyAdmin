@@ -28,7 +28,10 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 				</div>
 				
-				<input class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtext("Invia il link di verifica account");?>" title="<?php echo gtext("Invia il link di verifica account");?>" />
+				<div>
+					<div class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
+					<input class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m btn_submit_form" type="submit" name="invia" value="<?php echo gtext("Invia il link di verifica account");?>" title="<?php echo gtext("Invia il link di verifica account");?>" />
+				</div>
 			</fieldset>
 		</form>
 	</div>
