@@ -2,7 +2,15 @@
 
 <p><?php echo gtext("Gentile cliente, di seguito le credenziali per l'accesso alla sua area riservata nel nostro sito web",false);?></p>
 
-<p><?php echo gtext("Username", false);?>: <?php echo isset($clean["username"]) ? $clean["username"] : $username;?><br /><?php echo gtext("Password", false);?>: <?php echo $password;?></p>
+<p>
+	<?php echo gtext("Username", false);?>: <?php echo isset($clean["username"]) ? $clean["username"] : $username;?>
+	<br />
+	<?php if (v("genera_e_invia_password")) { ?>
+		<?php echo gtext("Password", false);?>:  <?php echo $password;?>
+	<?php } else { ?>
+		<?php echo gtext("Utilizzi la password specificata in fase di registrazione.")?>
+	<?php } ?>
+</p>
 
 <?php if (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
 	<p><b><?php echo gtext("Le ricordiamo che il suo account non è ancora attivo.");?></b></p>

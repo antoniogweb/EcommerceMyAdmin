@@ -27,7 +27,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseRegusersController extends BaseController
 {
-
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -276,6 +275,84 @@ class BaseRegusersController extends BaseController
 
 	}
 	
+	public function reinviamailconferma()
+	{
+		if (!v("conferma_registrazione") || !isset($_SESSION["token_reinvio"]) || !trim($_SESSION["token_reinvio"]))
+			$this->redirect("");
+		
+		$this->clean();
+		
+		$validToken = false;
+		
+		if ($this->s['registered']->status['status'] === 'logged')
+		{
+			$this->redirect("area-riservata");
+		}
+		else
+		{
+			$clean["token_reinvio"] = sanitizeAll($_SESSION["token_reinvio"]);
+			
+			$res = $this->m['RegusersModel']->clear()->where(array(
+				"token_reinvio"	=>	$clean['token_reinvio'],
+				"has_confirmed"			=>	1,
+				"ha_confermato"			=>	0,
+				"ne"	=>	array(
+					"token_reinvio"	=>	"",
+				),
+			))->send();
+			
+			if (strcmp((string)$_SESSION["token_reinvio"],"") !== 0 && count($res) > 0)
+			{
+				$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
+				
+				$confirmSeconds = (int)v("ore_durata_link_conferma")*3600;
+				
+				$now = time();
+				$checkTime = $res[0]['regusers']['time_token_reinvio'] + $confirmSeconds;
+				
+				if ($checkTime > $now)
+				{
+					$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+					
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array($res[0]["regusers"]["username"]),
+						"oggetto"	=>	"conferma la tua mail",
+						"tipologia"	=>	"LINK CONFERMA",
+						"id_user"	=>	$clean['id_user'],
+						"id_page"	=>	0,
+						"testo_path"	=>	"Elementi/Mail/mail_link_conferma.php",
+						"array_variabili_tema"	=>	array(
+							"LINK_CONFERMA"	=>	Url::getRoot()."conferma-account/$tokenConferma",
+						),
+					));
+					
+					if ($res)
+					{
+						$_SESSION['result'] = 'utente_creato';
+						
+						$this->m['RegusersModel']->setValues(array(
+							"confirmation_token"	=>	$tokenConferma,
+							"confirmation_time"		=>	time(),
+							"time_token_reinvio"	=>	time(),
+						));
+						
+						$this->m['RegusersModel']->pUpdate($clean['id_user']);
+						
+						flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
+					}
+					
+					$this->redirect("avvisi");
+				}
+			}
+		}
+		
+		if (!$validToken)
+		{
+			$_SESSION['result'] = 'invalid_token';
+			$this->redirect("avvisi");
+		}
+	}
+	
 	public function conferma($conf_token = "")
 	{
 		$this->clean();
@@ -284,7 +361,8 @@ class BaseRegusersController extends BaseController
 		
 		$validToken = false;
 		
-		$urlAdd = isset($_GET["eFromApp"]) ? "?eFromApp&ecommerce" : "";
+		if (!v("conferma_registrazione"))
+			$this->redirect("");
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
@@ -296,7 +374,11 @@ class BaseRegusersController extends BaseController
 			{
 				$clean['conf_token'] = $data['conf_token'] = sanitizeAll($conf_token);
 
-				$res = $this->m['RegusersModel']->clear()->where(array("confirmation_token"=>$clean['conf_token'],"has_confirmed"=>1))->send();
+				$res = $this->m['RegusersModel']->clear()->where(array(
+					"confirmation_token"	=>	$clean['conf_token'],
+					"has_confirmed"			=>	1,
+					"ha_confermato"			=>	0,
+				))->send();
 
 				if (count($res) > 0)
 				{
@@ -315,13 +397,16 @@ class BaseRegusersController extends BaseController
 					
 						$this->m['RegusersModel']->setValues(array(
 							"has_confirmed"	=>	0,
+							"ha_confermato"	=>	1,
+							"confirmation_time"		=>	0,
+							"time_token_reinvio"	=>	0,
 						));
 						
 						$this->m['RegusersModel']->pUpdate($clean['id_user']);
 
 						$_SESSION['result'] = 'account_confermato';
 						
-						$this->redirect("avvisi".$urlAdd);
+						$this->redirect("avvisi");
 					}
 				}
 			}
@@ -330,7 +415,7 @@ class BaseRegusersController extends BaseController
 		if (!$validToken)
 		{
 			$_SESSION['result'] = 'invalid_token';
-			$this->redirect("avvisi".$urlAdd);
+			$this->redirect("avvisi");
 		}
 	}
 	

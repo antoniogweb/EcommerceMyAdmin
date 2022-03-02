@@ -2495,6 +2495,9 @@ class PagesModel extends GenericModel {
 			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";
 			
 			$prezzoMinimo = $pm->prezzoMinimo($p["pages"]["id_page"]);
+			$c = new CartModel();
+			$prezzoMinimo = $c->calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, 1, true);
+			
 			$prezzoMinimoIvato = calcolaPrezzoIvato($p["pages"]["id_page"],$prezzoMinimo);
 			
 			$images = array();
@@ -2509,8 +2512,15 @@ class PagesModel extends GenericModel {
 				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$imm["immagine"];
 			}
 			
-			$now = new dateTime();
-			$now->modify("+10 days");
+			if ($pm->inPromozione($p["pages"]["id_page"]))
+			{
+				$now = DateTime::createFromFormat('Y-m-d', $p["pages"]["al"]);
+			}
+			else
+			{
+				$now = new dateTime();
+				$now->modify("+10 days");
+			}
 			
 			$snippetArray = array(
 				"@context"	=>	"https://schema.org/",

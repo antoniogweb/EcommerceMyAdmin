@@ -169,7 +169,13 @@ class BaseBaseController extends Controller
 
 			$res = $this->m['RegusersModel']->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
 			$data['dettagliUtente'] = $this->dettagliUtente = User::$dettagli = $res[0]['regusers'];
-
+			
+			if (User::$dettagli["has_confirmed"])
+			{
+				$this->s['registered']->logout();
+				$this->redirect("");
+			}
+			
 			$this->iduser = User::$id = (int)$this->s['registered']->status['id_user'];
 			$data['iduser'] = $this->iduser;
 
@@ -712,6 +718,7 @@ class BaseBaseController extends Controller
 				if ($this->m['RegusersModel']->checkConditions('insert'))
 				{
 					$tokenConferma = $this->m['RegusersModel']->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
+					$tokenReinvio = $this->m['RegusersModel']->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
 					
 					if ($this->m['RegusersModel']->insert())
 					{
@@ -739,6 +746,7 @@ class BaseBaseController extends Controller
 						}
 						
 						$_SESSION['result'] = 'utente_creato';
+						$_SESSION['token_reinvio'] = $tokenReinvio;
 						
 						$res = MailordiniModel::inviaCredenziali($lId, array(
 							"username"	=>	$clean["username"],

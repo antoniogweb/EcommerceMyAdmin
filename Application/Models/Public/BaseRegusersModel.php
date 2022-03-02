@@ -33,10 +33,15 @@ class BaseRegusersModel extends Model_Tree
 		if (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione"))
 			$this->values["has_confirmed"] = 1;
 		
+		// Se serve la conferma via mail
+		if (v("conferma_registrazione"))
+			$this->values["ha_confermato"] = 0;
+		
 		$this->values["lingua"] = Params::$lang;
 		
 		$this->values["creation_time"] = time();
 		$this->values["confirmation_time"] = time();
+		$this->values["time_token_reinvio"] = time();
 		
 		if (!User::$nazioneNavigazione)
 			User::$nazioneNavigazione = v("nazione_default");
@@ -294,9 +299,16 @@ class BaseRegusersModel extends Model_Tree
 		$evidenziaE = Output::$html ? "<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>" : "";
 		
 		if (Output::$html)
+		{
+			if (isset($_POST["username"]) && RegusersModel::utenteDaConfermare($_POST["username"]))
+				$erroreUtenteGiaPresente = "username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.")."<br />".gtext("Proceda con la conferma del proprio account al seguente")." <a href='".Url::getRoot()."conferma-indirizzo'>".gtext("indirizzo web")."</a>$evidenziaE";
+			else
+				$erroreUtenteGiaPresente = "username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.<br />Se non ricorda la password può impostarne una nuova al seguente")." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web")."</a>$evidenziaE";
+			
 			$this->databaseConditions['insert'] = array(
-				"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.<br />Se non ricorda la password può impostarne una nuova al seguente")." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web")."</a>$evidenziaE",
+				"checkUnique"		=>	$erroreUtenteGiaPresente,
 			);
+		}
 		else
 			$this->databaseConditions['insert'] = array(
 				"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro database, significa che è già registrato nel nostro sistema.<br /> Se non ricorda la password può impostarne una nuova."),

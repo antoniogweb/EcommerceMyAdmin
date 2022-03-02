@@ -360,4 +360,15 @@ trait CommonModel {
 		else
 			return $row["regusers"]["ragione_sociale"];
 	}
+	
+	public function utenteDaConfermare($email)
+	{
+		$r = new RegusersModel();
+		
+		return $r->clear()->where(array(
+			"username"	=>	sanitizeAll($email),
+			"has_confirmed"			=>	1,
+			"ha_confermato"			=>	0,
+		))->rowNumber();
+	}
 }

@@ -15,8 +15,8 @@ $attiva = "privacy";
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
-<?php echo $noticecookies;?>
-<?php if (isset($_COOKIE["ok_cookie"])) { ?>
+<?php echo flash("noticecookies");?>
+<?php if (isset($_COOKIE["ok_cookie_terzi"])) { ?>
 <h2 id="privacy"><?php echo gtext("Cookie");?></h2>
 <div class="blocco_coupon">
 	<?php echo testo("Cookies");?><br />

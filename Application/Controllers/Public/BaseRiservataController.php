@@ -156,16 +156,15 @@ class BaseRiservataController extends BaseController
 		
 		$data["notice"] = $data["noticecookies"] = null;
 		
-		if (isset($_GET["ok_no_cookies"]))
-			$data["noticecookies"] = "<div class='executed'>".gtext("Approvazione all'utilizzo di cookies revocata correttamente.")."</div><br /><br />";
-			
 		if (isset($_GET["cancella_cookies"]))
 		{
 			setcookie("ok_cookie","OK",(time()-3600),"/");
 			if (isset($_COOKIE["ok_cookie_terzi"]))
 				setcookie("ok_cookie_terzi","OK",(time()-3600),"/");
 			
-			$this->redirect("riservata/privacy?ok_no_cookies");
+			flash("noticecookies","<div class='".v("alert_success_class")."'>".gtext("Approvazione all'utilizzo di cookies revocata correttamente.")."</div><br /><br />");
+			
+			$this->redirect("riservata/privacy");
 		}
 		
 		if (isset($_POST["cancella"]))
@@ -180,9 +179,6 @@ class BaseRiservataController extends BaseController
 			{
 				$this->m["RegusersModel"]->deleteAccount($user["id_user"]);
 				$this->s['registered']->logout();
-				
-				setcookie("ok_cookie","OK",(time()-3600),"/");
-				setcookie("ok_cookie_terzi","OK",(time()-3600),"/");
 				
 				$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
 				
