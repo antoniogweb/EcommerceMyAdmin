@@ -12,8 +12,15 @@ if (isset($sedi) && count($sedi) > 0) { ?>
 			<div class="uk-flex uk-flex-middle">
 				<div class="uk-text-small uk-margin-right uk-text-meta"><?php echo gtext("FIltra per regione");?>: </div>
 				<ul class="uk-subnav uk-subnav-pill">
-					<?php foreach ($sedi as $p) { ?>
-					<li uk-filter-control=".regione_<?php echo $p["pages"]["id_regione"];?>"><a href="#"><?php echo RegioniModel::g(false)->where(array("id_regione"=>$p["pages"]["id_regione"]))->field("titolo");?></a></li>
+					<?php
+					$arraySediFiltri = array();
+					foreach ($sedi as $p) {
+						if (!in_array($p["pages"]["id_regione"], $arraySediFiltri))
+						{
+							$arraySediFiltri[] = $p["pages"]["id_regione"];
+						?>
+						<li uk-filter-control=".regione_<?php echo $p["pages"]["id_regione"];?>"><a href="#"><?php echo RegioniModel::g(false)->where(array("id_regione"=>$p["pages"]["id_regione"]))->field("titolo");?></a></li>
+						<?php } ?>
 					<?php } ?>
 				</ul>
 			</div>
