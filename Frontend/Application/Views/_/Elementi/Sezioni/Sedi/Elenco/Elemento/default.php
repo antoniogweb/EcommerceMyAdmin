@@ -3,7 +3,7 @@
 $urlAlias = getUrlAlias($p["pages"]["id_page"]);
 $urlAliasCategoria = getCategoryUrlAlias($p["categories"]["id_c"]);
 ?>
-<div class="uk-card uk-card-default uk-card-small" style="box-shadow: none;">
+<div class="uk-card uk-card-default uk-card-small regione_<?php echo $p["pages"]["id_regione"];?>" style="box-shadow: none;">
 	<div class="uk-card-header">
 		<h6 class="uk-margin-remove-bottom uk-text-bold"><?php echo RegioniModel::g(false)->where(array("id_regione"=>$p["pages"]["id_regione"]))->field("titolo");?></h6>
 		<p class="uk-text-meta uk-margin-remove uk-text-small">
