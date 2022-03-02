@@ -19,7 +19,7 @@ if (isset($sedi) && count($sedi) > 0) { ?>
 						{
 							$arraySediFiltri[] = $p["pages"]["id_regione"];
 						?>
-						<li uk-filter-control=".regione_<?php echo $p["pages"]["id_regione"];?>"><a href="#"><?php echo RegioniModel::g(false)->where(array("id_regione"=>$p["pages"]["id_regione"]))->field("titolo");?></a></li>
+						<li uk-filter-control=".regione_<?php echo $p["pages"]["id_regione"];?>"><a href="#"><?php echo RegioniModel::g(false)->titolo($p["pages"]["id_regione"]);?></a></li>
 						<?php } ?>
 					<?php } ?>
 				</ul>

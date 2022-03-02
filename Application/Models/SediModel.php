@@ -52,4 +52,11 @@ class SediModel extends BasicsectionModel {
 		
 		return $res;
 	}
+	
+	public function regioneCrud($record)
+	{
+		$r = new RegioniModel();
+		
+		return $r->titolo($record["pages"]["id_regione"]);
+	}
 }

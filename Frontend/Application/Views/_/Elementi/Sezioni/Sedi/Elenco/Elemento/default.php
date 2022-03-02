@@ -5,7 +5,7 @@ $urlAliasCategoria = getCategoryUrlAlias($p["categories"]["id_c"]);
 ?>
 <div class="uk-card uk-card-default uk-card-small regione_<?php echo $p["pages"]["id_regione"];?>" style="box-shadow: none;">
 	<div class="uk-card-header">
-		<h6 class="uk-margin-remove-bottom uk-text-bold"><?php echo RegioniModel::g(false)->where(array("id_regione"=>$p["pages"]["id_regione"]))->field("titolo");?></h6>
+		<h6 class="uk-margin-remove-bottom uk-text-bold"><?php echo RegioniModel::g(false)->titolo($p["pages"]["id_regione"]);?></h6>
 		<p class="uk-text-meta uk-margin-remove uk-text-small">
 			<?php echo gtext("Email");?>: <?php echo field($p, "email_contatto_evento");?><br />
 			<?php echo gtext("Telefono");?>: <?php echo field($p, "telefono_contatto_evento");?><br />

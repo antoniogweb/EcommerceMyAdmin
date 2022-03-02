@@ -36,6 +36,7 @@ class SediController extends GenericsectionController {
 			"pages.email_contatto_evento",
 			"pages.telefono_contatto_evento",
 			"pages.indirizzo_localita_evento",
+			"regioneCrud",
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
@@ -47,7 +48,7 @@ class SediController extends GenericsectionController {
 		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Email,Telefono,Indirizzo,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Email,Telefono,Indirizzo,Regione,Pubblicato?';
 		
 		$this->queryFields = "title,attivo,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,description,id_regione";
 	}
