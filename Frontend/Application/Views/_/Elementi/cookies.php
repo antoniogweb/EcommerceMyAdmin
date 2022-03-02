@@ -18,9 +18,11 @@ $(document).ready(function(){
 		$("#segnalazione_cookies_ext").animate({bottom: "-1250px"});
 		<?php } ?>
 		
+		var url = $(this).attr("href");
+		
 		$.ajax({
 			type: "GET",
-			url: baseUrl + "/home/settacookie",
+			url: url,
 			async: true,
 			cache:false,
 			dataType: "html",

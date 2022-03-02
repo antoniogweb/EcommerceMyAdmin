@@ -1802,16 +1802,16 @@ class BaseContenutiController extends BaseController
 			
 			if (!$allCookies)
 			{
-				$cookieTecnici = App::getCookieTecnici();
-				
-				foreach ($_COOKIE as $name => $value)
-				{
-					if (!isset($cookieTecnici[$name]))
-					{
-						setcookie($name,"OK",(time()-3600),"/",ltrim(DOMAIN_NAME,"www"));
-						unset($_COOKIE[$name]);
-					}
-				}
+// 				$cookieTecnici = App::getCookieTecnici();
+// 				
+// 				foreach ($_COOKIE as $name => $value)
+// 				{
+// 					if (!isset($cookieTecnici[$name]))
+// 					{
+// 						setcookie($name,"OK",(time()-3600),"/",ltrim(DOMAIN_NAME,"www"));
+// 						unset($_COOKIE[$name]);
+// 					}
+// 				}
 			}
 			
 			App::settaCookiesGdpr($allCookies);

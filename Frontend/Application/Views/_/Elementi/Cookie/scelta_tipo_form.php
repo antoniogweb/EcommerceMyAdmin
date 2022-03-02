@@ -7,16 +7,18 @@
 		<?php echo Html_Form::hidden("redirect",RegusersModel::$redirect);?>
 		<div class="box_check_cookies uk-margin-top">
 			<?php echo Html_Form::checkbox("accetto",1,1,null,null,"disabled readonly");?> <span class="uk-margin-small-left uk-margin-small-right"><?php echo gtext("Cookie tecnici");?></span>
+			<?php if (VariabiliModel::$usatiCookieTerzi) { ?>
 			<br />
 			<?php
 			$valoreCookieTerzi = isset($_COOKIE["ok_cookie_terzi"]) ? 1 : 0;
 			
 			echo Html_Form::checkbox("all_cookie",$valoreCookieTerzi,1);?> <span class="uk-margin-small-left"><?php echo gtext("Cookie statistiche + marketing");?></span>
+			<?php } ?>
 		</div>
 		<div class="<?php if (!User::$isPhone) { ?>uk-flex uk-flex-between<?php } ?>">
 			<button type="submit" class="submit_preferenze <?php echo v("cookies_save_pref")?>"><!--<span uk-icon="check"></span>--> <?php echo gtext("Approva selezionati");?></button>
-			<?php if (!isset($_COOKIE["ok_cookie"]) && !VariabiliModel::checkToken("var_query_string_no_cookie")) { ?>
-			<a class="<?php echo v("cookies_confirm_button");?>" title="<?php echo gtext("accetto", false);?>" href="">
+			<?php if (!isset($_COOKIE["ok_cookie"]) && !VariabiliModel::checkToken("var_query_string_no_cookie") && VariabiliModel::$usatiCookieTerzi) { ?>
+			<a class="<?php echo v("cookies_confirm_button");?>" title="<?php echo gtext("accetto", false);?>" href="<?php echo $this->baseUrl."/accept-cookies?".v("var_query_string_no_cookie")."=Y".(VariabiliModel::$usatiCookieTerzi ? "&all_cookie=Y" : "");?>">
 				<?php echo gtext("Approva tutti");?>
 			</a>
 			<?php } ?>

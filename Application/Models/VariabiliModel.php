@@ -28,6 +28,17 @@ class VariabiliModel extends GenericModel {
 	
 	public static $placeholders = null;
 	
+	public static $usatiCookieTerzi = false;
+	
+	public static $variabiliCodiciCookieTerzi = array(
+		"codice_gtm",
+		"codice_gtm_analytics",
+		"codice_gtm_analytics_noscript",
+		"codice_fbk",
+		"codice_fbk_noscript",
+		"codice_js_ok_cookie",
+	);
+	
 	public static $variabili = array(
 		"usa_marchi"				=>	"1",
 		"db_version"				=>	0,
@@ -431,14 +442,18 @@ class VariabiliModel extends GenericModel {
 	
 	public static function checkCookieTerzeParti()
 	{
+		foreach (self::$variabiliCodiciCookieTerzi as $var)
+		{
+			if (trim(VariabiliModel::$valori[$var]))
+				self::$usatiCookieTerzi = true;
+		}
+		
 		if (v("attiva_blocco_cookie_terzi") && !isset($_COOKIE["ok_cookie_terzi"]))
 		{
-			VariabiliModel::$valori["codice_gtm"] = "";
-			VariabiliModel::$valori["codice_gtm_analytics"] = "";
-			VariabiliModel::$valori["codice_gtm_analytics_noscript"] = "";
-			VariabiliModel::$valori["codice_fbk"] = "";
-			VariabiliModel::$valori["codice_fbk_noscript"] = "";
-			VariabiliModel::$valori["codice_js_ok_cookie"] = "";
+			foreach (self::$variabiliCodiciCookieTerzi as $var)
+			{
+				VariabiliModel::$valori[$var] = "";
+			}
 		}
 	}
 	

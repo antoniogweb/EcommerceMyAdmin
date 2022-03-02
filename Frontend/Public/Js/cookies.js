@@ -23,8 +23,8 @@ $(document).ready(function(){
 			cache:false,
 			async: true,
 			dataType: "html",
-			method: "POST",
-			data: datastring,
+// 			method: "POST",
+// 			data: datastring,
 			success: function(content){
 				location.reload();
 			}
