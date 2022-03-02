@@ -9,7 +9,7 @@ if (isset($sedi) && count($sedi) > 0) { ?>
 			<div class=" uk-margin-large-bottom">
 				<h2 class="uk-text-center uk-text-bold uk-margin-remove-top uk-margin-remove-bottom"><span><?php echo t("Le nostre sedi"); ?></span></h2>
 			</div>
-			<div class="uk-flex uk-flex-middle">
+			<div class="uk-flex">
 				<div class="uk-text-small"><?php echo t("FIltra per regione");?>: </div>
 				<ul class="uk-subnav uk-subnav-pill uk-margin-remove">
 					<?php
