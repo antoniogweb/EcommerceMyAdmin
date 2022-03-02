@@ -164,13 +164,90 @@ class BaseRegusersController extends BaseController
 		else
 			$this->load("api_output");
 	}
+	
+	public function richieditokenconferma()
+	{
+		if (!v("conferma_registrazione"))
+			$this->redirect("");
+		
+		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi una nuova password");
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/account-verification";
+		}
+		
+		if ($this->s['registered']->status['status'] === 'logged')
+		{
+			$this->redirect("area-riservata");
+		}
+		else
+		{
+			$data['notice'] = null;
+			$this->m["RegusersModel"]->errors = array();
+			
+			if (isset($_POST['invia']))
+			{
+				if (CaptchaModel::getModulo()->checkRegistrazione())
+				{
+					if (isset($_POST['username']))
+					{
+						if (checkMail($_POST['username']))
+						{
+							$clean['username'] = sanitizeAll($_POST['username']);
+							
+							$res = RegusersModel::utenteDaConfermare($clean['username'], false);
 
+							if (count($res) > 0)
+							{
+								$e_mail = $res[0]['regusers']['username'];
+								$id_user = (int)$res[0]['regusers']['id_user'];
+								
+								$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+								$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
+								
+								$this->m['RegusersModel']->setValues(array(
+// 									"confirmation_token"	=>	$tokenConferma,
+// 									"confirmation_time"		=>	time(),
+									"token_reinvio"			=>	$tokenReinvio,
+									"time_token_reinvio"	=>	time(),
+								));
+								
+								$_SESSION['result'] = 'error';
+								
+								if ($this->m['RegusersModel']->pUpdate($id_user))
+								{
+									$_SESSION['result'] = 'utente_creato';
+									$_SESSION['token_reinvio'] = $tokenReinvio;
+									$_SESSION['conferma_utente'] = 1;
+								}
+								
+								$this->redirect("send-confirmation");
+							}
+							else
+							{
+								$error = gtext("Siamo spiacenti, non esiste alcun utente da confermare corrispondente all'email da lei inserita");
+								$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
+								$res = $this->m["RegusersModel"]->addError("username", $error);
+							}
+						}
+						else
+						{
+							$error = gtext("Si prega di ricontrollare l'indirizzo e-mail");
+							$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
+							$res = $this->m["RegusersModel"]->addError("username", $error);
+						}
+					}
+				}
+			}
+			
+			$this->append($data);
+			$this->load('richiedi_mail_verifica');
+		}
+	}
+	
 	public function forgot()
 	{
-		require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
-		require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
-		require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
-		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi una nuova password");
 		
 		foreach (Params::$frontEndLanguages as $l)
@@ -272,7 +349,6 @@ class BaseRegusersController extends BaseController
 				$this->load("api_output");
 			}
 		}
-
 	}
 	
 	public function reinviamailconferma()
@@ -296,6 +372,7 @@ class BaseRegusersController extends BaseController
 				"token_reinvio"	=>	$clean['token_reinvio'],
 				"has_confirmed"			=>	1,
 				"ha_confermato"			=>	0,
+				"bloccato"				=>	0,
 				"ne"	=>	array(
 					"token_reinvio"	=>	"",
 				),
@@ -340,6 +417,8 @@ class BaseRegusersController extends BaseController
 						
 						flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
 					}
+					else
+						$_SESSION['result'] = 'error';
 					
 					$this->redirect("avvisi");
 				}
@@ -378,6 +457,10 @@ class BaseRegusersController extends BaseController
 					"confirmation_token"	=>	$clean['conf_token'],
 					"has_confirmed"			=>	1,
 					"ha_confermato"			=>	0,
+					"bloccato"				=>	0,
+					"ne"	=>	array(
+						"confirmation_token"	=>	"",
+					),
 				))->send();
 
 				if (count($res) > 0)

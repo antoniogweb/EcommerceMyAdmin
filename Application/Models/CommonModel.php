@@ -361,14 +361,21 @@ trait CommonModel {
 			return $row["regusers"]["ragione_sociale"];
 	}
 	
-	public function utenteDaConfermare($email)
+	// Se è un utente da confermare
+	public static function utenteDaConfermare($email, $trueFalse = true)
 	{
 		$r = new RegusersModel();
 		
-		return $r->clear()->where(array(
+		$r->clear()->where(array(
 			"username"	=>	sanitizeAll($email),
 			"has_confirmed"			=>	1,
 			"ha_confermato"			=>	0,
-		))->rowNumber();
+			"bloccato"				=>	0,
+		));
+		
+		if ($trueFalse)
+			return $r->rowNumber();
+		else
+			return $r->send();
 	}
 }

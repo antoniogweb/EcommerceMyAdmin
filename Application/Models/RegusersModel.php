@@ -71,6 +71,15 @@ class RegusersModel extends FormModel {
         );
     }
 	
+	// se disattivato dall'admin, è bloccato nel frontend
+	public function setBloccato()
+	{
+		if (isset($this->values[Users_CheckAdmin::$statusFieldName]) && (int)$this->values[Users_CheckAdmin::$statusFieldName] !== (int)Users_CheckAdmin::$statusFieldActiveValue)
+			$this->values['bloccato'] = 1;
+		else
+			$this->values['bloccato'] = 0;
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$clean['id'] = (int)$id;
@@ -79,6 +88,8 @@ class RegusersModel extends FormModel {
 			$this->delFields('password');
 		else
 			$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		
+		$this->setBloccato();
 		
 		parent::update($clean['id']);
 	}
@@ -94,6 +105,8 @@ class RegusersModel extends FormModel {
 			if (isset($_GET["id_nazione"]) && $_GET["id_nazione"] && is_numeric($_GET["id_nazione"]))
 				$this->aggiungianazione($this->lId);
 		}
+		
+		$this->setBloccato();
 		
 		return $res;
 	}

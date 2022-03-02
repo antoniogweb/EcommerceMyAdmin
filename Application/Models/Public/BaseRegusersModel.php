@@ -301,7 +301,7 @@ class BaseRegusersModel extends Model_Tree
 		if (Output::$html)
 		{
 			if (isset($_POST["username"]) && RegusersModel::utenteDaConfermare($_POST["username"]))
-				$erroreUtenteGiaPresente = "username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.")."<br />".gtext("Proceda con la conferma del proprio account al seguente")." <a href='".Url::getRoot()."conferma-indirizzo'>".gtext("indirizzo web")."</a>$evidenziaE";
+				$erroreUtenteGiaPresente = "username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.")."<br />".gtext("Proceda con la conferma del proprio account al seguente")." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web")."</a>$evidenziaE";
 			else
 				$erroreUtenteGiaPresente = "username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.<br />Se non ricorda la password può impostarne una nuova al seguente")." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web")."</a>$evidenziaE";
 			

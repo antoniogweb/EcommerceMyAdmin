@@ -57,15 +57,6 @@ if (defined("APPS"))
 
 VariabiliModel::ottieniVariabili();
 
-// Se arriva dalla app usa php://input
-if (isset($_GET["fromApp"]))
-{
-	$rawData = file_get_contents("php://input");
-	
-	if ($rawData)
-		$_POST = json_decode($rawData, true);
-}
-
 Params::$exactUrlMatchRewrite = true;
 
 Params::$allowSessionIdFromGet = true;

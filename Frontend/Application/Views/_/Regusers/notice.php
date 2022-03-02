@@ -28,12 +28,14 @@ if (isset($_SESSION['result']))
 	}
 	else if (strcmp($_SESSION['result'],'utente_creato') === 0)
 	{
+		$titoloNotice = isset($_SESSION["conferma_utente"]) ? "Conferma account" : "Account creato";
+		
 		$breadcrumb = array(
 			gtext("Home") 		=> $this->baseUrl,
-			gtext("Account creato")	=>	"",
+			gtext($titoloNotice)	=>	"",
 		);
 		
-		$titoloPagina = gtext("Account creato");
+		$titoloPagina = gtext($titoloNotice);
 	}
 	else if (strcmp($_SESSION['result'],'account_confermato') === 0)
 	{
@@ -78,29 +80,16 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 <?php if (isset($_SESSION['result'])) { ?>
 	<?php if (strcmp($_SESSION['result'],'send_mail_to_change_password') === 0) { ?>
 		<p><?php echo gtext("Le è stata inviata una mail con un link. Segua tale link se vuole impostare una nuova password");?>.</p>
-		<?php if (!isset($_GET["eFromApp"])) { ?>
 		<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
-		<?php } ?>
 	<?php } else if (strcmp($_SESSION['result'],'error') === 0) { ?>
 		<p><?php echo gtext("Si è verificato un errore durante il processo, riprovi più tardi o contatti l'amministratore del sito");?>.</p>
-		<?php if (!isset($_GET["eFromApp"])) { ?>
 		<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
-		<?php } ?>
 	<?php } else if (strcmp($_SESSION['result'],'invalid_token') === 0) { ?>
-		<p><br /><?php echo gtext("Il link è scaduto");?>.</p>
-		<?php if (!isset($_GET["eFromApp"])) { ?>
+		<p><?php echo gtext("Il link è scaduto");?>.</p>
 		<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
-		<?php } ?>
 	<?php } else if (strcmp($_SESSION['result'],'password_cambiata') === 0) { ?>
-		<?php if (!isset($_GET["eFromApp"])) { ?>
 		<p><?php echo gtext("La password è stata correttamente impostata");?>.</p>
 		<p><?php echo gtext("Vai al");?> <a href="<?php echo $this->baseUrl."/regusers/login";?>">login</a></p>
-		<?php } else { ?>
-		<br />
-		<p><?php echo gtext("La password è stata correttamente impostata");?>.</p>
-		<p><?php echo gtext("Può continuare gli acquisti tramite la APP utilizzando la password che ha appena impostato.");?></p>
-		<p><?php echo gtext("Cordiali saluti<br />");?></p>
-		<?php } ?>
 	<?php } else if (strcmp($_SESSION['result'],'account_confermato') === 0) { ?>
 		<?php include(tpf("/Elementi/Registrazione/Resoconto/account_confermato.php")); ?>
 	<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0) { ?>
@@ -115,12 +104,12 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<?php } ?>
 	<?php } ?>
 <?php } else { ?>
-	<?php if (!isset($_GET["eFromApp"])) { ?>
 	<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
-	<?php } ?>
 <?php } ?>
 
-<?php if ( isset($_SESSION['result']) ) unset($_SESSION['result']); ?>
+<?php
+if ( isset($_SESSION['result']) ) unset($_SESSION['result']);
+?>
 
 <?php
 include(tpf("/Elementi/Pagine/page_bottom.php"));

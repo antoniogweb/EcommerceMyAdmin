@@ -748,6 +748,9 @@ class BaseBaseController extends Controller
 						$_SESSION['result'] = 'utente_creato';
 						$_SESSION['token_reinvio'] = $tokenReinvio;
 						
+						if (isset($_SESSION['conferma_utente']))
+							unset($_SESSION['conferma_utente']);
+						
 						$res = MailordiniModel::inviaCredenziali($lId, array(
 							"username"	=>	$clean["username"],
 							"password"	=>	$password,
