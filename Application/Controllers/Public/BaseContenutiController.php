@@ -1447,7 +1447,7 @@ class BaseContenutiController extends BaseController
 			{
 				$this->clean();
 				
-				Pdf::output(tpf("Contenuti/pdf.php"), field($pages[0],"title").".pdf", $data);
+				Pdf::output(tpf("Contenuti/pdf.php"), field($data["pages"][0],"title").".pdf", $data);
 			}
 		}
 		else
