@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Migrazioni
 {
-	public static function up()
+	public static function up($mostra = 0)
 	{
 		if (@!is_dir(ROOT.'/Logs'))
 		{
