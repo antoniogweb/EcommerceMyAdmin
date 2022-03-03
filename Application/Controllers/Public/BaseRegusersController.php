@@ -394,7 +394,7 @@ class BaseRegusersController extends BaseController
 					$res = MailordiniModel::inviaMail(array(
 						"emails"	=>	array($res[0]["regusers"]["username"]),
 						"oggetto"	=>	"conferma la tua mail",
-						"tipologia"	=>	"LINK CONFERMA",
+						"tipologia"	=>	"LINK_CONFERMA",
 						"id_user"	=>	$clean['id_user'],
 						"id_page"	=>	0,
 						"testo_path"	=>	"Elementi/Mail/mail_link_conferma.php",

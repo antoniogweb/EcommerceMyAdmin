@@ -249,6 +249,8 @@ class MailordiniModel extends GenericModel
 			$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 			$mail->MsgHTML($testo);
 			
+// 			$mail->SMTPDebug = 2;
+			
 			foreach ($emails as $email)
 			{
 				$mail->ClearAddresses();
@@ -259,7 +261,7 @@ class MailordiniModel extends GenericModel
 				if ($mail->Send())
 					$inviata = 1;
 				
-				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT")
+				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT" || $tipologia == "LINK_CONFERMA")
 					$testoClean = "";
 				
 				$mo->setValues(array(
