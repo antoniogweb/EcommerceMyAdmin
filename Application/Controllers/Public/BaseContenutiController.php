@@ -1190,6 +1190,9 @@ class BaseContenutiController extends BaseController
 			{
 				VariabiliModel::noCookieAlert();
 				$data["pages"][0]["pages"]["description"] .= "[scelta-cookie]";
+				
+				if (isset($data["pages"][0]["contenuti_tradotti"]["description"]))
+					$data["pages"][0]["contenuti_tradotti"]["description"] .= "[scelta-cookie]";
 			}
 			
 			$this->p = $data["pages"][0];
