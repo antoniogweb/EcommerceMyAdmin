@@ -10,7 +10,7 @@ $urlAliasCategoria = getCategoryUrlAlias($p["categories"]["id_c"]);
 		<p class="uk-text-meta uk-margin-remove uk-text-small">
 			<?php echo field($p, "indirizzo_localita_evento");?>
 			<?php if (field($p, "telefono_contatto_evento")) { ?>
-			<br /><?php echo field($p, "telefono_contatto_evento");?>
+			<br /><?php echo gtext("tel.")?> <?php echo field($p, "telefono_contatto_evento");?>
 			<?php } ?>
 			<?php if (field($p, "email_contatto_evento")) { ?>
 			<br /><a href="mailto:<?php echo field($p, "email_contatto_evento");?>"><?php echo field($p, "email_contatto_evento");?></a>
