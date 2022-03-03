@@ -129,14 +129,14 @@ class CronController extends BaseController {
 // 			fwrite($hand,date("Y-m-d H:i:s")." STOP MIGRAZIONI\n");
 // 			fwrite($hand,"\n");
 // 			fclose($hand);
-		
-		Migrazioni::up();
-		
-		$data["esitoMigrazioni"] = ob_get_clean();
-		$data["titoloPagina"] = gtext("Esito migrazioni");
-		
-		$this->append($data);
-		$this->load("output");
+			
+			Migrazioni::up();
+			
+			$data["esitoMigrazioni"] = ob_get_clean();
+			$data["titoloPagina"] = gtext("Esito migrazioni");
+			
+			$this->append($data);
+			$this->load("output");
 		}
 	}
 }
