@@ -12,6 +12,7 @@ if (isset($sedi) && count($sedi) > 0) { ?>
 			<div class="uk-flex">
 				<div class="uk-text-small"><?php echo t("FIltra per regione");?>: </div>
 				<ul class="uk-subnav uk-subnav-pill uk-margin-remove">
+					<li class="uk-active" uk-filter-control><a href="#"><?php echo gtext("Tutte");?></a></li>
 					<?php
 					$arraySediFiltri = array();
 					foreach ($sedi as $p) {
