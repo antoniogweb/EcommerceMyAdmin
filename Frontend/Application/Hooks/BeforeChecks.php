@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+date_default_timezone_set('Europe/Rome');
+
 Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti");
 
 if (defined("CACHE_FOLDER"))

@@ -28,6 +28,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //you can access the whole set of classes and functions of MvcMyLibrary
 
+date_default_timezone_set('Europe/Rome');
+
 // Carica le App
 if (!defined("APPS"))
 	ApplicazioniModel::carica();
