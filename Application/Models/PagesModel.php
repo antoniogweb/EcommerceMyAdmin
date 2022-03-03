@@ -2290,7 +2290,7 @@ class PagesModel extends GenericModel {
 			if ($p->inPromozione($r["pages"]["id_page"], $r))
 			{
 				$temp["g:sale_price"] = number_format(calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo),2,".",""). " EUR";
-				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["al"]));
+				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["al"]." 23:59:00"));
 				
 				$r["pages"]["in_promo_feed"] = true;
 			}
