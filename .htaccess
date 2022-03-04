@@ -1,11 +1,17 @@
 Options -Indexes
 
+
+
 # <IfModule mod_rewrite.c>
 # 	Options +FollowSymlinks
 #   RewriteBase /admin/
-  RewriteEngine on
+	RewriteEngine on
+	RedirectMatch 404 /(\.git|Logs|media)
+# 	RedirectMatch 404 /\Logs
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
+	
 	RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+	RewriteRule ^\.git/?$ - [F,L]
 # </IfModule>
  
