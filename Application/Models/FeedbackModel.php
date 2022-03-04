@@ -84,7 +84,7 @@ class FeedbackModel extends GenericModel {
 	
 	public static function gIdProdotto()
 	{
-		self::$idProdotto = isset($_GET["id_prodotto"]) ? (int)$_GET["id_prodotto"] : 0;
+		self::$idProdotto = isset($_GET[v("var_query_string_id_rif")]) ? (int)$_GET[v("var_query_string_id_rif")] : 0;
 		
 		return self::$idProdotto;
 	}

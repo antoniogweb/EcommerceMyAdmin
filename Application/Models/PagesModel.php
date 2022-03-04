@@ -2375,6 +2375,13 @@ class PagesModel extends GenericModel {
 		return $this;
 	}
 	
+	public static function isAttiva($idPage)
+	{
+		$record = self::getPageDetails($idPage);
+		
+		return !empty($record) ? true : false;
+	}
+	
 	public static function getPageDetails($idPage, $lingua = null)
 	{
 		$p = new PagesModel();

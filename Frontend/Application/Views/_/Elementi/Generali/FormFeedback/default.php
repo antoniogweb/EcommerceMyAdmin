@@ -16,8 +16,10 @@
 			<div class="uk-margin uk-text-meta">
 				<?php echo t("Descrivi la tua esperienza con questo prodotto.");?> <span class="uk-text-emphasis"><?php echo t("Le valutazioni verranno lette e pubblicate sul sito.");?></span>
 			</div>
+			
+			<?php if (!v("feedback_solo_se_loggato") || User::$logged) { ?>
 			<?php echo FeedbackModel::$sNotice; ?>
-			<form action="<?php echo Domain::$currentUrl."?id_prodotto=".(int)FeedbackModel::gIdProdotto();?>#form-feedback" method="post" novalidate="novalidate">
+			<form action="<?php echo Domain::$currentUrl."?".v("var_query_string_id_rif")."=".(int)FeedbackModel::gIdProdotto();?>#form-feedback" method="post" novalidate="novalidate">
 				<fieldset class="uk-fieldset">
 					<div class="my-rating class_voto"></div>
 					
@@ -66,6 +68,20 @@
 					</div>
 				</fieldset>
 			</form>
+			<?php } else { ?>
+			<?php
+			$notice = null;
+			$redirectQueryString = "?redirect=".PagesModel::$currentIdPage."-".FeedbackModel::$idProdotto;
+			$action = Url::getRoot("regusers/login".$redirectQueryString);
+			?>
+			<div class="uk-text-center">
+			<?php include(tpf(ElementitemaModel::p("FORM_LOGIN","", array(
+				"titolo"	=>	"Login form",
+				"percorso"	=>	"Elementi/Generali/Login",
+			))));
+			?>
+			</div>
+			<?php } ?>
 		</div>
 	</div>
 </div> 

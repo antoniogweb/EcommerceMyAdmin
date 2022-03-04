@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class App
 {
+	public static $isFrontend = false;
+	
 	public static $elencoCookieTecnici = array();
 	
 	public static function getCookieTecnici()

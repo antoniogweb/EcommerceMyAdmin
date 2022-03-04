@@ -23,8 +23,7 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 require(LIBRARY."/Application/Models/ContattiModel.php");
-require_once(LIBRARY."/Application/Modules/F.php");
-require_once(LIBRARY."/Application/Modules/App.php");
+require_once(LIBRARY."/Frontend/Application/Hooks/BeforeChecksLegacy.php");
 
 class BaseBaseController extends Controller
 {
@@ -846,7 +845,7 @@ class BaseBaseController extends Controller
 			
 			$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
 			
-			if (isset($_POST['inviaFeedback']))
+			if (isset($_POST['inviaFeedback']) && (!v("feedback_solo_se_loggato") || User::$logged))
 			{
 				if (CaptchaModel::getModulo()->check())
 				{

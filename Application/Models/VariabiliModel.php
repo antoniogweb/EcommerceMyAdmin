@@ -407,6 +407,8 @@ class VariabiliModel extends GenericModel {
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
+		"feedback_solo_se_loggato"	=>	0, // può aggiungere un feedback solo chi è loggato
+		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 	);
 	
 	public static $daInizializzare = array(

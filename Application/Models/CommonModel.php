@@ -183,14 +183,20 @@ trait CommonModel {
 		
 		if (is_numeric($redirect))
 		{
-			$p = new PagesModel();
-			
-			$page = $p->selectId((int)$redirect);
-			
-			if (!empty($page))
+			if (PagesModel::isAttiva((int)$redirect))
 				$redirect = (int)$redirect;
 			else
 				$redirect = '';
+		}
+		else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',$redirect, $matches))
+		{
+			$idPage = $matches[1];
+			$idProd = $matches[2];
+			
+			$redirect = '';
+			
+			if (PagesModel::isAttiva($idPage) && PagesModel::isAttiva($idProd))
+				$redirect = (int)$idPage."-".(int)$idProd;
 		}
 		else
 		{
@@ -210,6 +216,8 @@ trait CommonModel {
 		{
 			if (is_numeric(self::$redirect))
 				$urlRedirect = Url::getRoot().getUrlAlias((int)self::$redirect);
+			else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',self::$redirect, $matches))
+				$urlRedirect = Url::getRoot().getUrlAlias((int)$matches[1])."?".v("var_query_string_id_rif")."=".(int)$matches[2];
 			else
 				$urlRedirect = Url::getRoot().self::$redirect;
 			

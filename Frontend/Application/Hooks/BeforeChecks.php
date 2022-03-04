@@ -89,8 +89,7 @@ require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");
 require(LIBRARY."/Application/Include/tema.php");
-require(LIBRARY."/Application/Modules/F.php");
-require(LIBRARY."/Application/Modules/Pdf.php");
+require_once(LIBRARY."/Frontend/Application/Hooks/BeforeChecksLegacy.php");
 
 if (!v("traduzione_frontend"))
 	Lang::$edit = false;
