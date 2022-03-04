@@ -53,8 +53,6 @@
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/Respond-master/dest/respond.src.js"></script>
-    
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
