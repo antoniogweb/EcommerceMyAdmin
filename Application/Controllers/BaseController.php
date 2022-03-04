@@ -713,7 +713,7 @@ class BaseController extends Controller
 			{
 				foreach ($this->scaffold->values as $key => $value)
 				{
-					$this->scaffold->values[$key] = nl2br(strip_tags(br2nl(htmlentitydecode($this->scaffold->values[$key]))));
+					$this->scaffold->values[$key] = nl2br(sanitizeHtml(strip_tags(br2nl(htmlentitydecode($this->scaffold->values[$key])))));
 					
 					if (isset($this->scaffold->model->uploadFields[$key]))
 					{
