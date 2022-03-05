@@ -1362,9 +1362,8 @@ class BaseContenutiController extends BaseController
 		{
 			$data["page_feedback"] = $this->m["FeedbackModel"]->clear()->where(array(
 				"id_page"	=>	$clean['id'],
-// 				"is_admin"	=>	0,
 				"attivo"	=>	1,
-			))->orderBy("feedback.id_order")->send();
+			))->gOrderBy()->send();
 		}
 		
 		if (v("attiva_localizzazione_prodotto"))

@@ -821,6 +821,9 @@ class BaseBaseController extends Controller
 			if (!isset(FeedbackModel::$idProdotto) || !$this->m['PagesModel']->isProdotto((int)FeedbackModel::$idProdotto))
 				$this->redirect("");
 			
+			if (!v("permetti_aggiunta_feedback"))
+				$this->redirect("");
+			
 			$par = $this->m["PagesModel"]->parents((int)FeedbackModel::$idProdotto,false,false,Params::$lang);
 			
 			//tolgo la root

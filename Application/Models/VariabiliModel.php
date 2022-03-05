@@ -409,6 +409,7 @@ class VariabiliModel extends GenericModel {
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"feedback_solo_se_loggato"	=>	0, // può aggiungere un feedback solo chi è loggato
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
+		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
 	);
 	
 	public static $daInizializzare = array(

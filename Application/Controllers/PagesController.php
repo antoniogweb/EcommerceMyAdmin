@@ -2065,12 +2065,15 @@ class PagesController extends BaseController {
 // 		$this->h["Menu"]->links['copia']['url'] = 'form/copia/'.$clean['id'];
 // 		$this->h["Menu"]->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
-		$this->m[$this->modelName]->orderBy("feedback.id_order")->where(array(
+		$this->m[$this->modelName]->gOrderBy()->where(array(
 			"id_page"	=>	$clean['id'],
 // 			"is_admin"	=>	0,
 		))->convert()->save();
 		
 		parent::main();
+		
+		if (v("permetti_aggiunta_feedback"))
+			$data["orderBy"] = "";
 		
 		$data['tabella'] = "prodotti";
 		

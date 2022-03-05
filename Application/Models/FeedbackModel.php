@@ -286,4 +286,13 @@ class FeedbackModel extends GenericModel {
 		return implode(" ",$arrayIcone);
 	}
 	
+	public function gOrderBy()
+	{
+		$orderBy = v("permetti_aggiunta_feedback") ? "feedback.data_feedback desc,feedback.id_order" :"feedback.id_order";
+		
+		$this->orderBy($orderBy);
+		
+		return $this;
+	}
+	
 }

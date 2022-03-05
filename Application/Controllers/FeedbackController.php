@@ -76,7 +76,7 @@ class FeedbackController extends BaseController {
 				$this->m[$this->modelName]->setValue("approvato", 1);
 				$this->m[$this->modelName]->setValue("attivo", 1);
 			}
-			else
+			else if ($azione == "rifiutaFeedback")
 			{
 				$this->m[$this->modelName]->setValue("approvato", 0);
 				$this->m[$this->modelName]->setValue("attivo", 0);

@@ -29,7 +29,7 @@
 </div>
 
 <?php $idPaginaInserisciFeedback = PagineModel::gTipoPagina("FORM_FEEDBACK"); ?>
-<?php if ($idPaginaInserisciFeedback) { ?>
+<?php if ($idPaginaInserisciFeedback && v("permetti_aggiunta_feedback")) { ?>
 <div class="uk-margin-medium-top">
 	<a href="<?php echo $this->baseUrl."/".getUrlAlias($idPaginaInserisciFeedback)."?".v("var_query_string_id_rif")."=".$p["pages"]["id_page"];?>" class="uk-button uk-button-secondary"><span uk-icon="pencil"></span> <?php echo gtext("Inserisci valutazione");?></a>
 </div>

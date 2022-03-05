@@ -1374,4 +1374,9 @@ class GenericModel extends Model_Tree
 				$rgt->elabora($rgt->lId, "INSERT");
 		}
     }
+    
+    public function gOrderBy()
+    {
+		return $this;
+    }
 }

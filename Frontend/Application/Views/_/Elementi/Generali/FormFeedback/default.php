@@ -75,11 +75,12 @@
 			$action = Url::getRoot("regusers/login".$redirectQueryString);
 			?>
 			<div class="uk-text-center">
-			<?php include(tpf(ElementitemaModel::p("FORM_LOGIN","", array(
-				"titolo"	=>	"Login form",
-				"percorso"	=>	"Elementi/Generali/Login",
-			))));
-			?>
+				<div class="uk-text-small uk-alert uk-alert-primary"><?php echo gtext("Per inserire una valutazione devi eseguire il login.")?></div>
+				<?php include(tpf(ElementitemaModel::p("FORM_LOGIN","", array(
+					"titolo"	=>	"Login form",
+					"percorso"	=>	"Elementi/Generali/Login",
+				))));
+				?>
 			</div>
 			<?php } ?>
 		</div>
