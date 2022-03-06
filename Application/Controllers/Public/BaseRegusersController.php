@@ -170,7 +170,7 @@ class BaseRegusersController extends BaseController
 		if (!v("conferma_registrazione"))
 			$this->redirect("");
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi una nuova password");
+		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi l'invio del link di conferma dell'account");
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
@@ -203,12 +203,10 @@ class BaseRegusersController extends BaseController
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];
 								
-								$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+// 								$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
 								$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
 								
 								$this->m['RegusersModel']->setValues(array(
-// 									"confirmation_token"	=>	$tokenConferma,
-// 									"confirmation_time"		=>	time(),
 									"token_reinvio"			=>	$tokenReinvio,
 									"time_token_reinvio"	=>	time(),
 								));
@@ -358,8 +356,6 @@ class BaseRegusersController extends BaseController
 		
 		$this->clean();
 		
-		$validToken = false;
-		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$this->redirect("area-riservata");
@@ -377,6 +373,8 @@ class BaseRegusersController extends BaseController
 					"token_reinvio"	=>	"",
 				),
 			))->send();
+			
+			$_SESSION['result'] = 'error';
 			
 			if (strcmp((string)$_SESSION["token_reinvio"],"") !== 0 && count($res) > 0)
 			{
@@ -403,31 +401,26 @@ class BaseRegusersController extends BaseController
 						),
 					));
 					
+					
+					
 					if ($res)
 					{
-						$_SESSION['result'] = 'utente_creato';
-						
 						$this->m['RegusersModel']->setValues(array(
 							"confirmation_token"	=>	$tokenConferma,
 							"confirmation_time"		=>	time(),
 							"time_token_reinvio"	=>	time(),
 						));
 						
-						$this->m['RegusersModel']->pUpdate($clean['id_user']);
-						
-						flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
+						if ($this->m['RegusersModel']->pUpdate($clean['id_user']))
+						{
+							flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
+							
+							$_SESSION['result'] = 'utente_creato';
+						}
 					}
-					else
-						$_SESSION['result'] = 'error';
-					
-					$this->redirect("avvisi");
 				}
 			}
-		}
-		
-		if (!$validToken)
-		{
-			$_SESSION['result'] = 'invalid_token';
+			
 			$this->redirect("avvisi");
 		}
 	}

@@ -12,7 +12,7 @@
 <?php if (isset($_SESSION['token_reinvio'])) { ?>
 <?php echo flash("notice_reinvio");?>
 
-<p class="uk-margin-large">
+<p class="uk-margin-medium">
 	<span class="uk-text-emphasis"><?php echo gtext("Non ti è arrivata la mail con il link di conferma?");?></span>
 	
 	<div>
