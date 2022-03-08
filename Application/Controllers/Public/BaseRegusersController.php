@@ -209,6 +209,7 @@ class BaseRegusersController extends BaseController
 								$this->m['RegusersModel']->setValues(array(
 									"token_reinvio"			=>	$tokenReinvio,
 									"time_token_reinvio"	=>	time(),
+									"token_reinvio_usato_volte"	=>	0,
 								));
 								
 								$_SESSION['result'] = 'error';
@@ -379,41 +380,48 @@ class BaseRegusersController extends BaseController
 			if (strcmp((string)$_SESSION["token_reinvio"],"") !== 0 && count($res) > 0)
 			{
 				$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
+				$usatoVolte = (int)$res[0]["regusers"]["token_reinvio_usato_volte"];
 				
-				$confirmSeconds = (int)v("ore_durata_link_conferma")*3600;
-				
-				$now = time();
-				$checkTime = $res[0]['regusers']['time_token_reinvio'] + $confirmSeconds;
-				
-				if ($checkTime > $now)
+				if ($usatoVolte < 3)
 				{
-					$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+					$confirmSeconds = (int)v("ore_durata_link_conferma")*3600;
 					
-					$res = MailordiniModel::inviaMail(array(
-						"emails"	=>	array($res[0]["regusers"]["username"]),
-						"oggetto"	=>	"conferma la tua mail",
-						"tipologia"	=>	"LINK_CONFERMA",
-						"id_user"	=>	$clean['id_user'],
-						"id_page"	=>	0,
-						"testo_path"	=>	"Elementi/Mail/mail_link_conferma.php",
-						"array_variabili_tema"	=>	array(
-							"LINK_CONFERMA"	=>	Url::getRoot()."conferma-account/$tokenConferma",
-						),
-					));
+					$now = time();
+					$checkTime = $res[0]['regusers']['time_token_reinvio'] + $confirmSeconds;
 					
-					if ($res)
+					if ($checkTime > $now)
 					{
-						$this->m['RegusersModel']->setValues(array(
-							"confirmation_token"	=>	$tokenConferma,
-							"confirmation_time"		=>	time(),
-							"time_token_reinvio"	=>	time(),
+						$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+						
+						$resInvio = MailordiniModel::inviaMail(array(
+							"emails"	=>	array($res[0]["regusers"]["username"]),
+							"oggetto"	=>	"conferma la tua mail",
+							"tipologia"	=>	"LINK_CONFERMA",
+							"id_user"	=>	$clean['id_user'],
+							"id_page"	=>	0,
+							"testo_path"	=>	"Elementi/Mail/mail_link_conferma.php",
+							"array_variabili_tema"	=>	array(
+								"LINK_CONFERMA"	=>	Url::getRoot()."conferma-account/$tokenConferma",
+							),
 						));
 						
-						if ($this->m['RegusersModel']->pUpdate($clean['id_user']))
+						if ($resInvio)
 						{
-							flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
+							$usatoVolte++;
 							
-							$_SESSION['result'] = 'utente_creato';
+							$this->m['RegusersModel']->setValues(array(
+								"confirmation_token"	=>	$tokenConferma,
+								"confirmation_time"		=>	time(),
+								"time_token_reinvio"	=>	time(),
+								"token_reinvio_usato_volte"	=>	$usatoVolte,
+							));
+							
+							if ($this->m['RegusersModel']->pUpdate($clean['id_user']))
+							{
+								flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
+								
+								$_SESSION['result'] = 'utente_creato';
+							}
 						}
 					}
 				}
