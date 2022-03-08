@@ -401,8 +401,6 @@ class BaseRegusersController extends BaseController
 						),
 					));
 					
-					
-					
 					if ($res)
 					{
 						$this->m['RegusersModel']->setValues(array(
