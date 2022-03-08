@@ -113,6 +113,11 @@ class F
 		}
 	}
 	
+	public static function blank($string)
+	{
+		return trim(strip_tags(htmlentitydecode($string))) ? false : true;
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{
