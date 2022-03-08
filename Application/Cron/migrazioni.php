@@ -5,5 +5,6 @@ define('APP_CONSOLE', true);
 
 require_once(dirname(__FILE__) . "/../../index.php");
 
-Migrazioni::up();
+$res = Migrazioni::up();
 
+echo $res;
