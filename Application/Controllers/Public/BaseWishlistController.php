@@ -35,7 +35,7 @@ class BaseWishlistController extends BaseController
 			$this->load('footer','last');
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - Carrello';
+		$data['title'] = Parametri::$nomeNegozio . ' - '. gtext("Lista dei dsideri");
 		
 		$data["arrayLingue"] = array();
 		
