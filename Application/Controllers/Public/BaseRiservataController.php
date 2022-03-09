@@ -37,9 +37,9 @@ class BaseRiservataController extends BaseController
 		
 		$data["arrayLingue"] = array();
 		
-		$this->append($data);
-		
 		$this->s['registered']->check(null,0);
+		
+		$this->append($data);
 	}
 
 	public function index()
@@ -143,6 +143,20 @@ class BaseRiservataController extends BaseController
 		}
 		else
 			$this->load("api_output");
+	}
+	
+	public function feedback()
+	{
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/riservata/feedback";
+		}
+		
+		$data['title'] = Parametri::$nomeNegozio . ' - '.gtext("Elenco feedback inseriti");
+		
+		$this->append($data);
+		
+		$this->load('lista_feedback');
 	}
 	
 	public function privacy()

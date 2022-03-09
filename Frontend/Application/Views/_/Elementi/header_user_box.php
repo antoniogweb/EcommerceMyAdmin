@@ -12,6 +12,15 @@ if (!isset($ukdropdown))
 		<li>
 			<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 		</li>
+		<?php
+		if (v("abilita_feedback")) {
+			$user_feedback = FeedbackModel::get();
+			if (count($user_feedback) > 0) { ?>
+			<li>
+				<a href="<?php echo $this->baseUrl."/riservata/feedback";?>" title="<?php echo gtext("I miei feedback", false);?>"><?php echo gtext("I miei feedback");?></a>
+			</li>
+			<?php } ?>
+		<?php } ?>
 		<li>
 			<a href="<?php echo $this->baseUrl."/modifica-account";?>" title="<?php echo gtext("Modifica dati fatturazione", false);?>"><?php echo gtext("Modifica dati fatturazione");?></a>
 		</li>

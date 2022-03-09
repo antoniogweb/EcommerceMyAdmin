@@ -88,7 +88,7 @@ class BaseBaseController extends Controller
 		
 		$this->model("CategoriesModel");
 		$this->model("MenuModel");
-		$this->model("MenusecModel");
+// 		$this->model("MenusecModel");
 		$this->model("PagesModel");
 		$this->model("ImmaginiModel");
 		$this->model("CartModel");

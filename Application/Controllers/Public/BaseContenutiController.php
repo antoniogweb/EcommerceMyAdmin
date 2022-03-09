@@ -1359,12 +1359,7 @@ class BaseContenutiController extends BaseController
 		$data["page_feedback"] = array();
 		
 		if (v("abilita_feedback"))
-		{
-			$data["page_feedback"] = $this->m["FeedbackModel"]->clear()->where(array(
-				"id_page"	=>	$clean['id'],
-				"attivo"	=>	1,
-			))->gOrderBy()->send();
-		}
+			$data["page_feedback"] = FeedbackModel::get($clean['id']);
 		
 		if (v("attiva_localizzazione_prodotto"))
 			list($data["nazioni_prodotto"], $data["regioni_prodotto"]) = $this->m["PagesModel"]->getLocalizzazione($clean['id']);

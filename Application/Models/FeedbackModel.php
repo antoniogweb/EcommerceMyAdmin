@@ -295,4 +295,24 @@ class FeedbackModel extends GenericModel {
 		return $this;
 	}
 	
+	public static function get($idPage = 0)
+	{
+		$f = new FeedbackModel();
+		
+		$f->clear()->where(array(
+			"attivo"	=>	1,
+		))->gOrderBy();
+		
+		if ($idPage)
+			$f->aWhere(array(
+				"id_page"	=>	(int)$idPage,
+			));
+		else
+			$f->aWhere(array(
+				"id_user"	=>	(int)User::$id,
+			));
+		
+		return $f->send();
+	}
+	
 }

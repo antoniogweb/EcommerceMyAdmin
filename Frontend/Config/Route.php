@@ -109,6 +109,7 @@ class Route
 		'riservata,ordini',
 		'riservata,indirizzi',
 		'riservata,privacy',
+		'riservata,feedback',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -123,6 +124,7 @@ class Route
 		'ordini-effettuati'			=>	'riservata/ordini',
 		'riservata/indirizzi'		=>	'riservata/indirizzi',
 		'riservata/privacy'			=>	'riservata/privacy',
+		'riservata/feedback'		=>	'riservata/feedback',
 // 		'riservata/cancellaaccount'	=>	'riservata/cancellaaccount',
 		'regusers/login'			=>	'regusers/login',
 		'esci'						=>	'regusers/logout',
