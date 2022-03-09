@@ -567,7 +567,8 @@ $(document).ready(function(){
 			data: data,
 			success: function(content){
 				
-				location.reload();
+				window.location.href=window.location.href;
+// 				location.reload();
 				
 			}
 		});

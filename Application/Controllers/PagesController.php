@@ -1128,7 +1128,7 @@ class PagesController extends BaseController {
 		
 		$mainAction = "attributi/".$clean['id'];
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction));
+		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction, 'pageVariable'=>'page_fgl'));
 
 		$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
