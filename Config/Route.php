@@ -512,6 +512,7 @@ class Route
 		'cart,main',
 		'pagesstats,main',
 		'contatti,main',
+		'righe,main',
 		
 		'modali,main',
 		'modali,form',

@@ -62,57 +62,14 @@ class RigheModel extends GenericModel {
 		return $res;
 	}
 	
-// 	//get the total from the cart
-// 	public function total($id_o)
-// 	{
-// 		$clean["id_o"] = (int)$id_o;
-// 		
-// 		$res = $this->clear()->where(array("id_o"=>$clean["id_o"]))->send();
-// 		
-// 		$total = 0;
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			foreach ($res as $r)
-// 			{
-// 				$total = $total + ($r[$this->_tables]["price"] * $r[$this->_tables]["quantity"]);
-// 			}
-// 		}
-// 		
-// 		return $total;
-// 	}
-// 	
-// 	public function getPesoTotale($id_o)
-// 	{
-// 		$clean["id_o"] = (int)$id_o;
-// 		
-// 		$res = $this->clear()->where(array("id_o"=>$clean["id_o"]))->send();
-// 		
-// 		$total = 0;
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			foreach ($res as $r)
-// 			{
-// 				$total = $total + ($r[$this->_tables]["peso"] * $r[$this->_tables]["quantity"]);
-// 			}
-// 		}
-// 		
-// 		return $total;
-// 	}
-// 	
-// 	//numero prodotti nel carrello
-// 	public function numberOfItems($id_o)
-// 	{
-// 		$clean["id_o"] = (int)$id_o;
-// 		
-// 		$res = $this->clear()->select("sum(quantity) as q")->where(array("id_o"=>$clean["id_o"]))->groupBy("id_o")->send();
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			return $res[0]["aggregate"]["q"];
-// 		}
-// 
-// 		return "0";
-// 	}
+	public function titolocompleto($record)
+	{
+		$titolo = $record["pages"]["title"] ? $record["pages"]["title"] : $record[$this->_tables]["title"];
+		
+		if ($record[$this->_tables]["attributi"])
+			$titolo .= "<br />".$record[$this->_tables]["attributi"];
+		
+		return $titolo;
+	}
+	
 }

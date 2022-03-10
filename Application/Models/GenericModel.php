@@ -1379,4 +1379,43 @@ class GenericModel extends Model_Tree
     {
 		return $this;
     }
+    
+    public function titolocompleto($record)
+	{
+		$titolo = $record[$this->_tables]["title"];
+		
+		if ($record[$this->_tables]["attributi"])
+			$titolo .= "<br />".$record[$this->_tables]["attributi"];
+		
+		return $titolo;
+	}
+	
+	public function thumb($record)
+	{
+		if ($record[$this->_tables]["immagine"])
+			return "<img width='70px' src='".Url::getFileRoot()."thumb/contenuto/".$record[$this->_tables]["immagine"]."' />";
+		
+		return "";
+	}
+	
+	public function ordini($record)
+	{
+		$idC = (int)$record[$this->_tables]["id_c"];
+		
+		$r = new RigheModel();
+		
+		$res = $r->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"id_c"	=>	$idC,
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)
+		{
+			if (!isset($_GET["esporta"]))
+				return $res[0]["aggregate"]["SOMMA"]." <a title='Elenco ordini dove è stato acquistato' class='iframe' href='".Url::getRoot()."ordini/main?partial=Y&id_comb=$idC'><i class='fa fa-list'></i></a>";
+			else
+				return $res[0]["aggregate"]["SOMMA"];
+		}
+		
+		return "";
+	}
 }

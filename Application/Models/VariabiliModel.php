@@ -410,6 +410,7 @@ class VariabiliModel extends GenericModel {
 		"feedback_solo_se_loggato"	=>	0, // può aggiungere un feedback solo chi è loggato
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
+		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 	);
 	
 	public static $daInizializzare = array(
