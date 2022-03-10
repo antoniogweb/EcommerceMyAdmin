@@ -220,6 +220,53 @@ class FeedbackModel extends GenericModel {
 		return $html;
 	}
 	
+	public static function gStatoFeedback($record)
+	{
+		if (!$record["feedback"]["is_admin"])
+		{
+			if ($record["feedback"]["da_approvare"])
+				return "IN_GESTIONE";
+			else if ($record["feedback"]["approvato"])
+				return "APPROVATO";
+			else if (!$record["feedback"]["approvato"])
+				return "RIFIUTATO";
+		}
+		
+		return "ADMIN";
+	}
+	
+	public static function gHtmlStatoFeedback($record)
+	{
+		$stato = self::gStatoFeedback($record);
+		
+		$tpfFile = "";
+		
+		if ($stato == "IN_GESTIONE")
+			$tpfFile = tpf(ElementitemaModel::p("FEEDBACK_STATO_GESTIONE","", array(
+				"titolo"	=>	"Feedback in gestione",
+				"percorso"	=>	"Elementi/Generali/StatoFeedback/InGestione",
+			)));
+		else if ($stato == "APPROVATO")
+			$tpfFile = tpf(ElementitemaModel::p("FEEDBACK_STATO_APPROVATO","", array(
+				"titolo"	=>	"Feedback approvato",
+				"percorso"	=>	"Elementi/Generali/StatoFeedback/Approvato",
+			)));
+		else if ($stato == "RIFIUTATO")
+			$tpfFile = tpf(ElementitemaModel::p("FEEDBACK_STATO_RIFIUTATO","", array(
+				"titolo"	=>	"Feedback rifiutato",
+				"percorso"	=>	"Elementi/Generali/StatoFeedback/Rifiutato",
+			)));
+		
+		if ($tpfFile)
+		{
+			ob_start();
+			include ($tpfFile);
+			return ob_get_clean();
+		}
+		
+		return "";
+	}
+	
 	public function gestisci($record)
 	{
 		$label = $record["feedback"]["da_approvare"] ? "info" : "default";
@@ -295,13 +342,16 @@ class FeedbackModel extends GenericModel {
 		return $this;
 	}
 	
-	public static function get($idPage = 0)
+	public static function get($idPage = 0, $attivo = 1)
 	{
 		$f = new FeedbackModel();
 		
-		$f->clear()->where(array(
-			"attivo"	=>	1,
-		))->gOrderBy();
+		$f->clear()->gOrderBy();
+		
+		if ($attivo)
+			$f->aWhere(array(
+				"attivo"	=>	1,
+			));
 		
 		if ($idPage)
 			$f->aWhere(array(

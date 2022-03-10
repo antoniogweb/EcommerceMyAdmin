@@ -21,9 +21,14 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			
 			$pageDetails = PagesModel::getPageDetails((int)$idPage);
 		?>
-			<div><span class="uk-text-small uk-text-meta"><?php echo gtext("Nel prodotto:")?></span> <a href="<?php echo $this->baseUrl."/".getUrlAlias((int)$idPage);?>"><span class="uk-text-emphasis"><?php echo field($pageDetails, "title");?></span></a></div>
-			<?php include(tpf("/Elementi/Categorie/feedback.php"));
-		} ?>
+			<?php include(tpf("/Elementi/Categorie/feedback.php")); ?>
+			<hr class="uk-divider-small">
+			<div>
+				<span class="uk-text-small uk-text-meta"><?php echo gtext("Valutazione inserita nel prodotto:")?></span> <a href="<?php echo $this->baseUrl."/".getUrlAlias((int)$idPage);?>"><span class="uk-text-emphasis uk-text-small"><?php echo field($pageDetails, "title");?></span></a><br />
+				
+				<?php echo FeedbackModel::gHtmlStatoFeedback($pf);?>
+			</div>
+		<?php } ?>
 	<?php } else { ?>
 		<?php echo gtext("Non hai lasciato alcuna valutazione");?>
 	<?php } ?>

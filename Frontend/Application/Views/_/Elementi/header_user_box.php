@@ -14,10 +14,10 @@ if (!isset($ukdropdown))
 		</li>
 		<?php
 		if (v("abilita_feedback")) {
-			$user_feedback = FeedbackModel::get();
+			$user_feedback = FeedbackModel::get(0,0);
 			if (count($user_feedback) > 0) { ?>
 			<li>
-				<a href="<?php echo $this->baseUrl."/riservata/feedback";?>" title="<?php echo gtext("I miei feedback", false);?>"><?php echo gtext("I miei feedback");?></a>
+				<a href="<?php echo $this->baseUrl."/riservata/feedback";?>" title="<?php echo gtext("Le mie valutazioni", false);?>"><?php echo gtext("Le mie valutazioni");?></a>
 			</li>
 			<?php } ?>
 		<?php } ?>

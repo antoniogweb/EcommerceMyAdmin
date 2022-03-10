@@ -836,7 +836,12 @@ class BaseBaseController extends Controller
 			Domain::$currentUrl =  $this->getCurrentUrl();
 			
 			if (User::$id)
+			{
 				$_POST["email"] = User::$dettagli["username"];
+				
+				if (!v("feedback_permetti_di_editare_nome_se_loggato"))
+					$_POST["autore"] = User::$nomeCliente;
+			}
 			
 			$campiForm = "autore,testo,email,accetto,accetto_feedback,voto";
 			

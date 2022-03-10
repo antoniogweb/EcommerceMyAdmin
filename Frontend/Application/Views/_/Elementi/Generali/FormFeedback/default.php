@@ -23,8 +23,13 @@
 				<fieldset class="uk-fieldset">
 					<div class="my-rating class_voto"></div>
 					
+					<?php
+					$attributiNome = "";
+					if (User::$id && !v("feedback_permetti_di_editare_nome_se_loggato"))
+						$attributiNome = "disabled";
+					?>
 					<div class="uk-margin"> 
-						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","placeholder='".gtext("Il tuo nome*")."'");?>
+						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","$attributiNome placeholder='".gtext("Il tuo nome*")."'");?>
 					</div>
 					
 					<?php if (!User::$id) { ?>
