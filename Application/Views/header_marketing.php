@@ -24,7 +24,7 @@ include(ROOT."/Application/Views/header.php");
 				<?php if (v("attiva_prodotti_piu_venduti")) { ?>
 				<li class="<?php echo tm($tm, "righe");?> treeview">
 					<a href="#">
-						<i class="fa fa-money"></i>
+						<i class="fa fa-bar-chart"></i>
 						<span><?php echo gtext("Prodotti più venduti")?></span>
 					</a>
 					<ul class="treeview-menu">

@@ -48,8 +48,8 @@ class RigheController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("thumb", "titolocompleto", "categories.title", "aggregate.numero_totale", "ordini");
-		$this->mainHead = "Immagine,Prodotto,Categoria,Numero,Acquisti";
+		$this->mainFields = array("thumb", "titolocompleto", "categories.title", "ordini");
+		$this->mainHead = "Immagine,Prodotto,Categoria,Acquisti";
 		
 		$filtri = array("dal","al");
 		$this->filters = $filtri;
