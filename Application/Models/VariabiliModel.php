@@ -411,6 +411,7 @@ class VariabiliModel extends GenericModel {
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
 		"feedback_permetti_di_editare_nome_se_loggato"	=>	1, // permette all'utente che lascia la recensione di editare il nome se loggato
+		"feedback_visualizza_in_area_riservata"	=>	1, // se attivo, l'utente può vedere tutti i propri feedback nell'area riservata
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 	);
 	

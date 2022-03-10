@@ -18,7 +18,7 @@
 				<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 			</li>
 			<?php
-			if (v("abilita_feedback")) {
+			if (v("abilita_feedback") && v("feedback_visualizza_in_area_riservata")) {
 				$user_feedback = FeedbackModel::get(0,0);
 				if (count($user_feedback) > 0) { ?>
 				<li class="<?php if ($attiva == "feedback") { ?>uk-active<?php } ?>">

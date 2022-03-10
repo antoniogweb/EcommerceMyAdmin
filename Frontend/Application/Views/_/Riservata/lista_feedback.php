@@ -15,15 +15,14 @@ $attiva = "feedback";
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 <div class="box_feedback">
-	<?php if (count($user_feedback) > 0) { ?>
+	<?php if (isset($user_feedback) && count($user_feedback) > 0) { ?>
 		<?php foreach ($user_feedback as $pf) {
 			$idPage = $pf["feedback"]["id_page"];
 			
 			$pageDetails = PagesModel::getPageDetails((int)$idPage);
 		?>
 			<?php include(tpf("/Elementi/Categorie/feedback.php")); ?>
-			<hr class="uk-divider-small">
-			<div>
+			<div class="uk-margin-medium-bottom">
 				<span class="uk-text-small uk-text-meta"><?php echo gtext("Valutazione inserita nel prodotto:")?></span> <a href="<?php echo $this->baseUrl."/".getUrlAlias((int)$idPage);?>"><span class="uk-text-emphasis uk-text-small"><?php echo field($pageDetails, "title");?></span></a><br />
 				
 				<?php echo FeedbackModel::gHtmlStatoFeedback($pf);?>

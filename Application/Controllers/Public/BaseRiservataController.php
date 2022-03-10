@@ -147,6 +147,9 @@ class BaseRiservataController extends BaseController
 	
 	public function feedback()
 	{
+		if (!v("abilita_feedback") || !v("feedback_visualizza_in_area_riservata"))
+			$this->redirect("");
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/riservata/feedback";
