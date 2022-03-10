@@ -3,6 +3,7 @@
 $prezzoProdotto = $prezzoMinimo;
 $prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
 $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
+$percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 ?>
 <div class="">
 	<?php if ($haVarianti) { ?><div class="blocco-prezzo"><?php } ?>
@@ -12,13 +13,33 @@ $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 		<div class="uk-text-muted uk-margin-small-right" style="text-decoration:line-through;"><span class="price_full"><?php echo setPriceReverse($prezzoPienoIvato);?></span>€</div>
 		<?php } ?>
 		
-		<?php if (getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato) > 0) { ?>
-		<div class="uk-margin-small-right uk-text-bold"><?php echo getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);?>%</div>
+		<?php if ($percentualeSconto > 0) { ?>
+		<div class="uk-margin-small-right uk-text-bold uk-text-danger">- <?php echo getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);?>%</div>
 		<?php } ?>
 	</div>
 	<?php if ($haVarianti) { ?></div><?php } ?>
 	
 	<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
 	<span class="uk-text-muted"><?php echo gtext("Iva inclusa");?></span>
+	<?php } ?>
+	
+	<?php if ($percentualeSconto > 0) {
+		$earlier = new DateTime();
+		$later = new DateTime($p["pages"]["al"]);
+
+		$abs_diff = $later->diff($earlier, false)->format("%a") + 2; //3
+	?>
+	<div class="uk-margin-small uk-padding-remove-vertical uk-text-small uk-text-bold uk-text-danger">
+		<?php if ($p["pages"]["al"] == date("Y-m-d")) { ?>
+		<?php echo gtext("In promozione solo per oggi!")?>
+		<?php } else if ($abs_diff == 2) { ?>
+		<?php echo gtext("In promozione fino a domani!")?>
+		<?php } else { ?>
+		<?php echo gtext("In promozione fino al")?> <?php echo strtolower(traduci(date("j F", strtotime($p["pages"]["al"]))));?>.
+		<?php if ($abs_diff <= 6) { ?>
+		<br /><?php echo $abs_diff." ".gtext("giorni rimasti!")?>
+		<?php } ?>
+		<?php } ?>
+	</div>
 	<?php } ?>
 </div>
