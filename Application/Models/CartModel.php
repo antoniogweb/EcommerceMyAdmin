@@ -542,7 +542,7 @@ class CartModel extends GenericModel {
 			}
 			
 			//sconto scaglionamento
-			if ((int)$qty > 1)
+			if ((int)$qty >= 1)
 			{
 				$scontoScaglionamento = $sc->getSconto($clean["id_page"], $qty);
 				

@@ -2140,6 +2140,7 @@ class PagesModel extends GenericModel {
 	public static function gXmlProdottiGoogle($p = null)
 	{
 		$c = new CategoriesModel();
+		$cart = new CartModel();
 		
 		if (!isset($p))
 		{
@@ -2183,13 +2184,21 @@ class PagesModel extends GenericModel {
 			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 			
 			$prezzoMinimo = $p->prezzoMinimo($r["pages"]["id_page"]);
-			$prezzoMinimoIvato = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo);
+			$prezzoMinimoIvato = $prezzoFeed = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo);
 			
+			$prodottoInPromo = $p->inPromozione($r["pages"]["id_page"], $r);
+			
+			$prezzoFinale = $cart->calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo, 1, true);
+			$prezzoFinaleIvato = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoFinale);
+			
+			if (!$prodottoInPromo && number_format($prezzoMinimoIvato,2,".","") != number_format($prezzoFinaleIvato,2,".",""))
+				$prezzoFeed = $prezzoFinaleIvato;
+
 			$temp = array(
 				"g:id"	=>	$r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
-				"g:price"	=>	number_format($prezzoMinimoIvato,2,".",""). " EUR",
+				"g:price"	=>	number_format($prezzoFeed,2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
 // 				"g:identifier_exists"	=>	v("identificatore_feed_default"),
 			);
@@ -2287,9 +2296,9 @@ class PagesModel extends GenericModel {
 			if (isset($_GET["fbk"]))
 				$temp["condition"] = "new";
 			
-			if ($p->inPromozione($r["pages"]["id_page"], $r))
+			if ($prodottoInPromo)
 			{
-				$temp["g:sale_price"] = number_format(calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo),2,".",""). " EUR";
+				$temp["g:sale_price"] = number_format($prezzoFinaleIvato,2,".",""). " EUR";
 				$temp["g:sale_price_effective_date"] = date("c",strtotime($r["pages"]["dal"]))."/".date("c",strtotime($r["pages"]["al"]." 23:59:00"));
 				
 				$r["pages"]["in_promo_feed"] = true;
@@ -2318,7 +2327,7 @@ class PagesModel extends GenericModel {
 				
 				if (v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
 				{
-					$subtotaleSpedizione = (!v("prezzi_ivati_in_carrello")) ? $prezzoMinimo : $prezzoMinimoIvato;
+					$subtotaleSpedizione = (!v("prezzi_ivati_in_carrello")) ? $prezzoFinale : $prezzoFinaleIvato;
 					
 					// Solo spedizioni gratuite e solo nazione default
 					if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
