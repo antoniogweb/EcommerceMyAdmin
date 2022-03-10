@@ -4,16 +4,17 @@ $prezzoProdotto = $prezzoMinimo;
 $prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
 $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
+$inPromozioneTot = inPromozioneTot($p["pages"]["id_page"]);
 ?>
 <div class="">
 	<?php if ($haVarianti) { ?><div class="blocco-prezzo"><?php } ?>
 	<div class="uk-flex uk-flex-left uk-margin-small">
 		<div class="uk-text-bold uk-margin-small-right"><span class="price_value"><?php echo setPriceReverse($prezzoFinaleIvato);?></span>€</div>
-		<?php if (inPromozioneTot($p["pages"]["id_page"])) { ?>
+		<?php if ($inPromozioneTot) { ?>
 		<div class="uk-text-muted uk-margin-small-right" style="text-decoration:line-through;"><span class="price_full"><?php echo setPriceReverse($prezzoPienoIvato);?></span>€</div>
 		<?php } ?>
 		
-		<?php if ($percentualeSconto > 0) { ?>
+		<?php if ($percentualeSconto > 0 && $inPromozioneTot) { ?>
 		<div class="uk-margin-small-right uk-text-bold uk-text-danger">- <?php echo getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);?>%</div>
 		<?php } ?>
 	</div>
@@ -23,7 +24,7 @@ $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 	<span class="uk-text-muted"><?php echo gtext("Iva inclusa");?></span>
 	<?php } ?>
 	
-	<?php if ($percentualeSconto > 0) {
+	<?php if ($percentualeSconto > 0 && $inPromozioneTot) {
 		$earlier = new DateTime();
 		$later = new DateTime($p["pages"]["al"]);
 
