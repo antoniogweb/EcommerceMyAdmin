@@ -413,6 +413,7 @@ class VariabiliModel extends GenericModel {
 		"feedback_permetti_di_editare_nome_se_loggato"	=>	1, // permette all'utente che lascia la recensione di editare il nome se loggato
 		"feedback_visualizza_in_area_riservata"	=>	1, // se attivo, l'utente può vedere tutti i propri feedback nell'area riservata
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
+		"feedback_max_per_prodotto"	=>	1, // numero massimo di feedback per prodotto per utente (ha effetto solo se feedback_solo_se_loggato = 1)
 	);
 	
 	public static $daInizializzare = array(

@@ -54,6 +54,13 @@ class FeedbackModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
+			'utente' => array("BELONGS_TO", 'RegusersModel', 'id_user',null,"CASCADE","Si prega di selezionare la pagina"),
+        );
+    }
+    
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
@@ -108,12 +115,6 @@ class FeedbackModel extends GenericModel {
 		return "";
 	}
 	
-	public function relations() {
-        return array(
-			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
-        );
-    }
-	
 	public function sistemaVoto()
 	{
 		if (isset($this->values["voto"]))
@@ -135,6 +136,14 @@ class FeedbackModel extends GenericModel {
 			$this->aggiungiNotifica();
 		
 		return $res;
+	}
+	
+	public function numeroFeedbackPagina($idPage)
+	{
+		return $this->aWhere(array(
+			"id_page"	=>	(int)$idPage,
+			"id_user"	=>	User::$id,
+		))->rowNumber();
 	}
 	
 	public function aggiungiNotifica()
@@ -330,7 +339,7 @@ class FeedbackModel extends GenericModel {
 	{
 		if ($record["feedback"]["email"])
 		{
-			if ($record["feedback"]["id_user"])
+			if ($record["regusers"]["username"])
 				return "<a class='iframe' href='".Url::getRoot()."regusers/form/update/".$record["feedback"]["id_user"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["email"]."</a>";
 			else
 				return $record["feedback"]["email"];

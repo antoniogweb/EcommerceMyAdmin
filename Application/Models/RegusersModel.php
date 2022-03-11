@@ -62,6 +62,7 @@ class RegusersModel extends FormModel {
 	public function relations() {
         return array(
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'feedback' => array("HAS_MANY", 'FeedbackModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'sedi' => array("HAS_MANY", 'SpedizioniModel', 'id_user', null, "CASCADE"),
 			'gruppi_temp' => array("HAS_MANY", 'RegusersgroupstempModel', 'id_user', null, "CASCADE"),
 			'nazioni' => array("HAS_MANY", 'RegusersnazioniModel', 'id_user', null, "CASCADE"),
