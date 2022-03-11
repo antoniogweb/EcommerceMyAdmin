@@ -71,6 +71,10 @@ class FeedbackModel extends GenericModel {
 					'options'	=>	self::$tendinaPunteggi,
 					"reverse"	=>	"yes",
 				),
+				'testo'	=>	array(
+					'type'		=>	'Textarea',
+					'className'		=>	'testo_feedback',
+				),
 				'commento_negozio'	=>	array(
 					'wrap'		=>	array(
 						null,
@@ -125,7 +129,36 @@ class FeedbackModel extends GenericModel {
 	{
 		$this->sistemaVoto();
 		
-		return parent::insert();
+		$res = parent::insert();
+		
+		if ($res)
+			$this->aggiungiNotifica();
+		
+		return $res;
+	}
+	
+	public function aggiungiNotifica()
+	{
+		if (v("permetti_aggiunta_feedback") && App::$isFrontend && isset($this->values["id_user"]) && $this->values["id_user"] && isset($this->values["is_admin"]) && !$this->values["is_admin"] && isset($this->values["id_page"]))
+		{
+			$n = new NotificheModel();
+			
+			$pagina = PagesModel::getPageDetails($this->values["id_page"]);
+			
+			if (!empty($pagina))
+			{
+				$n->setValues(array(
+					"titolo"	=>	"Hai un nuovo feedback nella pagina<br /><b>".$pagina["pages"]["title"]."</b>",
+					"contesto"	=>	"FEEDBACK",
+					"url"		=>	"prodotti/feedback/".$pagina["pages"]["id_page"],
+					"classe"	=>	"text-yellow",
+					"icona"		=>	"fa-comment",
+					"condizioni"=>	"abilita_feedback=1",
+				));
+				
+				$n->insert();
+			}
+		}
 	}
 	
 	public function update($id = null, $where = null)

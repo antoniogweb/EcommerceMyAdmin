@@ -30,7 +30,7 @@ class RigheController extends BaseController
 	
 	public $sezionePannello = "marketing";
 	
-	public $tabella = "Prodotti acquistati";
+	public $tabella = "prodotti più venduti";
 	
 	public function main()
 	{

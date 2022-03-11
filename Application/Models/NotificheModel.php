@@ -81,7 +81,7 @@ class NotificheModel extends GenericModel {
 			
 			if (VariabiliModel::verificaCondizioni($condizioni))
 				$notifiche[] = array(
-					"testo"	=>	gtext($r["titolo"]),
+					"testo"	=>	gtext(htmlentitydecode($r["titolo"])),
 					"link"	=>	Url::getRoot().$r["url"].$queryString,
 					"icona"	=>	$r["icona"],
 					"class"	=>	$r["classe"],

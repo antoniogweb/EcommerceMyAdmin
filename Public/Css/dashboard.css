@@ -186,6 +186,11 @@ body {
 	top: 5px !important;
 }
 
+.testo_feedback
+{
+	min-height:130px;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {
