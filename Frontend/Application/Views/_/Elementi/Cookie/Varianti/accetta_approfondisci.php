@@ -5,8 +5,8 @@
 		<span uk-icon="icon: check"></span>
 		<?php echo gtext("Accetta");?>
 	</a>
-	<?php if (VariabiliModel::$usatiCookieTerzi && isset($tipiPagina["COOKIE"])) { ?>
-	<a style="" class="preferenze_cookies <?php echo v("cookies_preferenze_button");?>" title="<?php echo gtext("personalizza", false);?>" href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["COOKIE"])."?".v("var_query_string_no_cookie").PagesModel::getRedirectQuery("&");?>">
+	<?php if (VariabiliModel::$usatiCookieTerzi) { ?>
+	<a style="" class="preferenze_cookies <?php echo v("cookies_preferenze_button");?>" title="<?php echo gtext("personalizza", false);?>" href="#">
 		<span uk-icon="icon: cog"></span>
 		<?php echo gtext("Preferenze");?>
 	</a>
