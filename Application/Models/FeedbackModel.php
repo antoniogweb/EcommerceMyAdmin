@@ -368,7 +368,7 @@ class FeedbackModel extends GenericModel {
 	
 	public function gOrderBy()
 	{
-		$orderBy = v("permetti_aggiunta_feedback") ? "feedback.data_feedback desc,feedback.id_order" :"feedback.id_order";
+		$orderBy = v("permetti_aggiunta_feedback") ? "feedback.data_feedback desc,feedback.id_order desc" :"feedback.id_order";
 		
 		$this->orderBy($orderBy);
 		

@@ -997,6 +997,8 @@ class BaseRegusersController extends BaseController
 	
 	public function notice()
 	{
+		VariabiliModel::noCookieAlert();
+		
 		$data['title'] = Parametri::$nomeNegozio . ' - Avvisi';
 		
 		foreach (Params::$frontEndLanguages as $l)

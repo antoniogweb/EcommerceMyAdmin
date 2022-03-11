@@ -88,8 +88,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<p><?php echo gtext("Il link è scaduto");?>.</p>
 		<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
 	<?php } else if (strcmp($_SESSION['result'],'password_cambiata') === 0) { ?>
-		<p><?php echo gtext("La password è stata correttamente impostata");?>.</p>
-		<p><?php echo gtext("Vai al");?> <a href="<?php echo $this->baseUrl."/regusers/login";?>">login</a></p>
+		<?php include(tpf("/Elementi/Registrazione/Resoconto/password_cambiata.php")); ?>
 	<?php } else if (strcmp($_SESSION['result'],'account_confermato') === 0) { ?>
 		<?php include(tpf("/Elementi/Registrazione/Resoconto/account_confermato.php")); ?>
 	<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0) { ?>
