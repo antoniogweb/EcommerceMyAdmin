@@ -187,7 +187,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_tendina_prodotto_principale"	=>	0,
 		"usa_transactions"			=>	1,
 		"lingue_abilitate_frontend"	=>	"it",
-		"abilita_feedback"			=>	0,
 		"abilita_menu_semplice"		=>	0,
 		"current_menu_item_link"	=>	"",
 		"mostra_testimonial"		=>	0,
@@ -407,12 +406,14 @@ class VariabiliModel extends GenericModel {
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
-		"feedback_solo_se_loggato"	=>	0, // può aggiungere un feedback solo chi è loggato
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
-		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
-		"feedback_permetti_di_editare_nome_se_loggato"	=>	1, // permette all'utente che lascia la recensione di editare il nome se loggato
-		"feedback_visualizza_in_area_riservata"	=>	1, // se attivo, l'utente può vedere tutti i propri feedback nell'area riservata
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
+		## FEEDBACK ##
+		"abilita_feedback"			=>	0, // se i feedback sono abilitati o meno
+		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
+		"feedback_solo_se_loggato"	=>	0, // può aggiungere un feedback solo chi è loggato
+		"feedback_permetti_di_editare_nome_se_loggato"	=>	1, // permette all'utente che lascia la recensione di editare il nome se loggato (altrimenti usa il nome con cui è registrato)
+		"feedback_visualizza_in_area_riservata"	=>	1, // se attivo, l'utente può vedere tutti i propri feedback nell'area riservata
 		"feedback_max_per_prodotto"	=>	1, // numero massimo di feedback per prodotto per utente (ha effetto solo se feedback_solo_se_loggato = 1)
 	);
 	
