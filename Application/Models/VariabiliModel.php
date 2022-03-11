@@ -408,6 +408,7 @@ class VariabiliModel extends GenericModel {
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
+		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		## FEEDBACK ##
 		"abilita_feedback"			=>	0, // se i feedback sono abilitati o meno
 		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti

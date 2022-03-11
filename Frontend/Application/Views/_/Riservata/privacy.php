@@ -16,23 +16,49 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
 <?php echo flash("noticecookies");?>
-<?php if (isset($_COOKIE["ok_cookie_terzi"])) { ?>
-<h2 id="privacy"><?php echo gtext("Cookie");?></h2>
+<?php if (isset($_COOKIE["ok_cookie"])) { ?>
+<h2 id="privacy"><?php echo gtext("Le tue preferenze sui cookie");?></h2>
 <div class="blocco_coupon">
-	<?php echo testo("Cookies");?><br />
+	<div class="uk-overflow-auto">
+		<table class="uk-table uk-table-divider uk-table-small">
+			<tr>
+				<th><?php echo gtext("Tipologia cookie");?></th>
+				<th><?php echo gtext("Stato");?></th>
+				<th></th>
+			</tr>
+			<tr>
+				<td><?php echo gtext("Tecnici");?></td>
+				<td><span class="uk-text-success"><span uk-icon="check"></span> <?php echo gtext("attivi");?></span></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><?php echo gtext("Statistiche + Marketing");?></td>
+				<?php if (isset($_COOKIE["ok_cookie_terzi"])) { ?>
+				<td>
+					<span class="uk-text-success"><span uk-icon="check"></span> <?php echo gtext("attivi");?></span>
+				</td>
+				<td class="uk-text-right">
+					<a class="uk-text-small uk-text-danger" href="<?php echo $this->baseUrl."/riservata/privacy?cancella_cookies"?>"><i class="fa fa-trash"></i> <?php echo gtext("revoca l'approvazione");?></a>
+				</td>
+				<?php } else { ?>
+				<td>
+					<span class="uk-text-danger"><span uk-icon="ban"></span> <?php echo gtext("non attivi");?></span>
+				</td>
+				<td></td>
+				<?php } ?>
+			</tr>
+		</table>
+	</div>
 	<?php $idCookies = PagineModel::gTipoPagina("COOKIE"); ?>
 	<?php if ($idCookies) { ?>
-	<div class="uk-margin-bottom">
-		<a style="font-weight:bold;" href="<?php echo $this->baseUrl."/cookies.html"?>"><?php echo gtext("Vedi l'informativa sui cookie");?></a>
+	<div class="uk-margin">
+		<a href="<?php echo $this->baseUrl."/cookies.html"?>"><?php echo gtext("Leggi l'informativa sui cookie");?></a>
 	</div>
 	<?php } ?>
-	<div class="uk-margin">
-		<a style="font-weight:bold;" href="<?php echo $this->baseUrl."/riservata/privacy?cancella_cookies"?>"><i class="fa fa-trash"></i> <?php echo gtext("Revoca l'approvazione all'utilizzo dei cookies");?></a>
-	</div>
 </div>
 <?php } ?>
 
-
+<?php if (v("permetti_eliminazione_account")) { ?>
 <h2><?php echo gtext("Cancella account");?></h2>
 <div class="uk-text-center">
 	<?php echo $notice; ?>
@@ -52,6 +78,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		<input type="submit" class="uk-button uk-button-secondary" name="cancella" value="<?php echo gtext("Cancella account", false);?>">
 	</form>
 </div>
+<?php } ?>
 
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
