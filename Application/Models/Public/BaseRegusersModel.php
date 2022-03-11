@@ -372,6 +372,7 @@ class BaseRegusersModel extends Model_Tree
 			$this->query("delete from regusers_groups_temp where id_user = ".(int)$idUser);
 			$this->query("delete from regusers_groups where id_user = ".(int)$idUser);
 			$this->query("update orders set id_user = 0 where id_user = ".(int)$idUser);
+			$this->query("update feedback set id_user = 0 where id_user = ".(int)$idUser);
 			$this->query("delete from regusers where id_user = ".(int)$idUser);
 			$this->query("delete from contatti where email = '".sanitizeAll($user["username"])."'");
 		}
