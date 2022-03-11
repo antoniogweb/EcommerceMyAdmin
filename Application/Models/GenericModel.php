@@ -1404,8 +1404,11 @@ class GenericModel extends Model_Tree
 		
 		$r = new RigheModel();
 		
-		$res = $r->clear()->select("sum(quantity) as SOMMA")->where(array(
+		$res = $r->clear()->inner("orders")->on("orders.id_o = righe.id_o")->select("sum(righe.quantity) as SOMMA")->where(array(
 			"id_c"	=>	$idC,
+			"ne" => array(
+				"orders.stato"	=>	"deleted"
+			),
 		))->send();
 		
 		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)

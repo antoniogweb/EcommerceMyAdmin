@@ -59,6 +59,11 @@ class RigheController extends BaseController
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->left("pages")->on("pages.id_page = righe.id_page")
 				->left("categories")->on("pages.id_c = categories.id_c")
+				->where(array(
+					"ne" => array(
+						"orders.stato"	=>	"deleted"
+					),
+				))
 				->groupBy("righe.id_c")
 				->orderBy("sum(quantity) desc")->convert();
 		
