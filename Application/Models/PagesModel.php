@@ -2851,12 +2851,22 @@ class PagesModel extends GenericModel {
 		return "";
 	}
 	
-	public function etichettaTitolo($idPage, $page = null)
+	public function etichettaTitolo($idPage, $page = null, $numeroParole = 0)
 	{
 		if (!$page)
 			$page = $this->selectId($page);
 		
-		return htmlentitydecode($page["title"]);
+// 		print_r(explode(" ",htmlentitydecode($page["title"]), $numeroParole));
+		
+		if ($numeroParole)
+			return implode(" ",array_slice(explode(" ",htmlentitydecode($page["title"])),0,$numeroParole));
+		else
+			return htmlentitydecode($page["title"]);
+	}
+	
+	public function etichettaInizialiProdotto($idPage, $page = null)
+	{
+		return $this->etichettaTitolo($idPage, $page, (int)v("numero_parole_feed_iniziali_prodotto"));
 	}
 	
 	public function getMarginePercentuale($idPage)
@@ -2977,7 +2987,6 @@ class PagesModel extends GenericModel {
 		
 		return $giacenza > 0 ? "DISPONIBILE" : "NON DISPONIBILE";
 	}
-	
 	
 	// Restituisce gli elementi da usare nella fascia
 	public static function getElementiFascia($numero = 0, $orderBy = "pages.id_order desc")

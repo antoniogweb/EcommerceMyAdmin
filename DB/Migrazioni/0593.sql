@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '0', 'Etichetta iniziali prodotto', 'etichettaInizialiProdotto', 'ETICHETTE_FEED_GOOGLE', '13', '0');
