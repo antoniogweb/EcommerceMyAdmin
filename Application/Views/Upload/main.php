@@ -4,7 +4,8 @@
 <?php echo $notice;?>
 
 <!--jquery-->
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery/jquery-1.8.3.min.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-3.6.0.min.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
 
 <?php if ($this->viewArgs['is_popup']) { ?>
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/tiny_mce_popup.js"></script>
