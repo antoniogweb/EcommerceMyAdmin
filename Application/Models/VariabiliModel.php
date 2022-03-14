@@ -409,6 +409,8 @@ class VariabiliModel extends GenericModel {
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
+		## MODULO CONTATTI ##
+		"redirect_pagina_dopo_invio_se_prodotto"	=>	1, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
 		## ETICHETTE FEED GOOGLE ##
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## FEEDBACK ##

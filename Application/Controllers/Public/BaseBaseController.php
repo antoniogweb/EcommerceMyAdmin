@@ -1097,25 +1097,35 @@ class BaseBaseController extends Controller
 					if ($isNewsletter || v("invia_subito_mail_contatto"))
 						$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
 					
-					if($res) {
-						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
-						$idGrazieNewsletter = 0;
-						
+					if($res)
+					{
 						// Iscrivo a Mailchimp
 						if ($isNewsletter && IntegrazioninewsletterModel::integrazioneAttiva())
 						{
 							IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati($valoriEmail));
 						}
 						
-						if ($isNewsletter)
-							$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
-						
-						if ($idGrazieNewsletter)
-							$this->redirect(getUrlAlias($idGrazieNewsletter).F::partial());
-						else if ($idGrazie)
-							$this->redirect(getUrlAlias($idGrazie).F::partial());
-						else
-							$this->redirect("grazie.html".F::partial());
+// 						if (v("redirect_pagina_dopo_invio_se_prodotto") && $id && $this->m["PagesModel"]->isActive($id) && $this->m["PagesModel"]->isProdotto($id))
+// 						{
+// 							flash("notice_$tipo", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato!")."</div>");
+// 							
+// 							$this->redirect(getUrlAlias($id).F::partial());
+// 						}
+// 						else
+// 						{
+							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+							$idGrazieNewsletter = 0;
+							
+							if ($isNewsletter)
+								$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
+							
+							if ($idGrazieNewsletter)
+								$this->redirect(getUrlAlias($idGrazieNewsletter).F::partial());
+							else if ($idGrazie)
+								$this->redirect(getUrlAlias($idGrazie).F::partial());
+							else
+								$this->redirect("grazie.html".F::partial());
+// 						}
 					} else {
 						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova più tardi</div>");
 					}

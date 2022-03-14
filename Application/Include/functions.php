@@ -1214,6 +1214,9 @@ class Form
 	
 	static public function sNotice($tipo, $notice)
 	{
+		if (!isset($notice))
+			$notice = flash("notice_$tipo");
+		
 		self::$notice = $notice;
 		
 		self::gTipi();
@@ -1418,6 +1421,8 @@ function flash( $name = '', $message = '', $class = 'success fadeout-message' )
             unset($_SESSION[$name.'_class']);
             return $notice;
         }
+        
+        return null;
     }
 }
 
