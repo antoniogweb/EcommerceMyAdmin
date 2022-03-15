@@ -28,8 +28,6 @@ class App
 	
 	public static $elencoCookieTecnici = array();
 	
-	public static $scrollToFragment = "";
-	
 	public static function getCookieTecnici()
 	{
 		if (empty(self::$elencoCookieTecnici))
