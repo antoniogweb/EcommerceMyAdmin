@@ -4,7 +4,7 @@
 	Form::$tipo = "C";
 	echo Form::gNotice();
 	?>
-	<form action="<?php echo Domain::$currentUrl;?><?php echo F::partial();?>#contatti-form" method="post" novalidate="novalidate">
+	<form action="<?php echo Domain::$currentUrl;?><?php echo F::partial();?>#<?php echo v("fragment_form_contatti");?>" method="post" novalidate="novalidate">
 		<fieldset class="uk-fieldset">
 			<div uk-grid class="uk-margin uk-grid"> 
 				<div class="uk-width-1-2@m uk-width-1-2@s">

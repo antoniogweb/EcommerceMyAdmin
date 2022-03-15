@@ -411,6 +411,8 @@ class VariabiliModel extends GenericModel {
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		## MODULO CONTATTI ##
 		"redirect_pagina_dopo_invio_se_prodotto"	=>	1, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
+		"fragment_form_contatti"	=>	"contatti-form", // all'invio del form contatti verrà aggiunto un fragment # con quel valore
+		"fragment_form_newsletter"	=>	"newsletter-form", // all'invio del form newsletter verrà aggiunto un fragment # con quel valore
 		## ETICHETTE FEED GOOGLE ##
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## FEEDBACK ##

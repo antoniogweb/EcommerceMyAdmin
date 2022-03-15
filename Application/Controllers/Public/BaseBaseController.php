@@ -1094,8 +1094,8 @@ class BaseBaseController extends Controller
 					
 					$res = true;
 					
-					if ($isNewsletter || v("invia_subito_mail_contatto"))
-						$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
+// 					if ($isNewsletter || v("invia_subito_mail_contatto"))
+// 						$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
 					
 					if($res)
 					{
@@ -1105,14 +1105,14 @@ class BaseBaseController extends Controller
 							IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati($valoriEmail));
 						}
 						
-// 						if (v("redirect_pagina_dopo_invio_se_prodotto") && $id && $this->m["PagesModel"]->isActive($id) && $this->m["PagesModel"]->isProdotto($id))
-// 						{
-// 							flash("notice_$tipo", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato!")."</div>");
-// 							
-// 							$this->redirect(getUrlAlias($id).F::partial());
-// 						}
-// 						else
-// 						{
+						if (v("redirect_pagina_dopo_invio_se_prodotto") && $id && $this->m["PagesModel"]->isActive($id) && $this->m["PagesModel"]->isProdotto($id))
+						{
+							flash("notice_$tipo", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato!")."</div>");
+							
+							$this->redirect(getUrlAlias($id).F::partial()."#".v("fragment_form_contatti"));
+						}
+						else
+						{
 							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
 							$idGrazieNewsletter = 0;
 							
@@ -1125,7 +1125,7 @@ class BaseBaseController extends Controller
 								$this->redirect(getUrlAlias($idGrazie).F::partial());
 							else
 								$this->redirect("grazie.html".F::partial());
-// 						}
+						}
 					} else {
 						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova più tardi</div>");
 					}
