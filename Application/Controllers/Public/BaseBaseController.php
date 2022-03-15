@@ -1094,8 +1094,8 @@ class BaseBaseController extends Controller
 					
 					$res = true;
 					
-// 					if ($isNewsletter || v("invia_subito_mail_contatto"))
-// 						$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
+					if ($isNewsletter || v("invia_subito_mail_contatto"))
+						$res = $this->inviaMailContatto($id, $idContatto, $valoriEmail, $fonte);
 					
 					if($res)
 					{
