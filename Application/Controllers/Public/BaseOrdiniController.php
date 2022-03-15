@@ -594,7 +594,7 @@ class BaseOrdiniController extends BaseController
 		
 		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
-		if (count($res) > 0)
+		if (count($res) > 0 && $res[0]["orders"]["stato"] == "pending")
 		{
 			$data["ordine"] = $res[0]["orders"];
 			
