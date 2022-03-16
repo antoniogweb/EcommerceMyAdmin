@@ -254,8 +254,6 @@ class BaseRegusersController extends BaseController
 			$data["arrayLingue"][$l] = $l."/password-dimenticata";
 		}
 		
-		Output::setBodyValue("InvioMail", "KO");
-		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$this->redirect("area-riservata");
@@ -307,10 +305,7 @@ class BaseRegusersController extends BaseController
 									$_SESSION['result'] = 'error';
 								}
 								
-								if (Output::$html)
-									$this->redirect("avvisi");
-								else
-									Output::setBodyValue("InvioMail", "OK");
+								$this->redirect("avvisi");
 							}
 							else
 							{
@@ -329,24 +324,8 @@ class BaseRegusersController extends BaseController
 				}
 			}
 			
-			if (Output::$html)
-			{
-				$this->append($data);
-				$this->load('password_dimenticata');
-			}
-			else
-			{
-				Output::setBodyValue("Errori", $this->m['RegusersModel']->errors);
-				
-				$testi = array(
-					"InfoRecupera"	=>	"Inserisci l'indirizzo e-mail con il quale ti sei registrato, ti invieremo una mail attraverso la quale potrai ottenere una nuova password.",
-					"TestoInviata"	=>	"Le è stata inviata una mail con un link. Segua tale link se vuole impostare una nuova password.",
-				);
-				
-				Output::setBodyValue("Testi", $testi);
-				
-				$this->load("api_output");
-			}
+			$this->append($data);
+			$this->load('password_dimenticata');
 		}
 	}
 	
@@ -581,8 +560,6 @@ class BaseRegusersController extends BaseController
 	{
 		$this->s['registered']->check(null,0);
 		
-		Output::setBodyValue("PasswordModificata", "KO");
-		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica password");
 		$data['notice'] = null;
 		
@@ -604,7 +581,6 @@ class BaseRegusersController extends BaseController
 				if ($this->m['RegusersModel']->result)
 				{
 					$data['notice'] = $this->m['RegusersModel']->notice;
-					Output::setBodyValue("PasswordModificata", "OK");
 				}
 				else
 				{
@@ -625,24 +601,8 @@ class BaseRegusersController extends BaseController
 		
 		$data['values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml');
 		
-		if (Output::$html)
-		{
-			$this->append($data);
-			$this->load('cambia_password');
-		}
-		else
-		{
-			Output::setBodyValue("Errori", $this->m['RegusersModel']->errors);
-			
-			$testi = array(
-				"TestoModificata"	=>	"La password è stata correttamente modificata.",
-				"TestoInfo"			=>	"Imposta una nuova password riempiendo i campi sottostanti.",
-			);
-			
-			Output::setBodyValue("Testi", $testi);
-			
-			$this->load("api_output");
-		}
+		$this->append($data);
+		$this->load('cambia_password');
 	}
 	
 	public function indirizzo($idSpedizione = 0)
@@ -668,105 +628,6 @@ class BaseRegusersController extends BaseController
 	public function infoaccount($loadViewFile = true)
 	{
 		return;
-		
-		$this->clean();
-		
-		if ($this->s['registered']->status['status'] === 'logged')
-		{
-			$temp = User::$dettagli;
-			unset($temp["password"]);
-			unset($temp["forgot_token"]);
-			unset($temp["forgot_time"]);
-			unset($temp["last_failure"]);
-			unset($temp["has_confirmed"]);
-			unset($temp["ha_confermato"]);
-			unset($temp["confirmation_token"]);
-			unset($temp["creation_date"]);
-			unset($temp["creation_time"]);
-			unset($temp["temp_field"]);
-			unset($temp["deleted"]);
-			
-			Output::setBodyValue("Dettagli", htmlentitydecodeDeep($temp));
-		}
-		
-		if (Output::$json)
-		{
-			$whereArray = array();
-			$isSpedizione = false;
-			
-			if (isset($_GET["idSpedizione"]))
-			{
-				$whereArray = array(
-					"visibile_spedizione"	=>	1
-				);
-				
-				$isSpedizione = true;
-			}
-			
-			$res = $this->m["NazioniModel"]->clear()->select("iso_country_code,titolo")->where($whereArray)->orderBy("titolo")->send(false);
-			
-			$selectArray = array(
-				array(
-					"iso_country_code"	=>	"",
-					"titolo"	=>	"Seleziona",
-				)
-			);
-			
-			foreach ($res as $r)
-			{
-				$selectArray[] = array(
-					"iso_country_code"	=>	$r["iso_country_code"],
-					"titolo"	=>	htmlentitydecode($r["titolo"]),
-				);
-			}
-			
-			Output::setBodyValue("Nazioni", $selectArray);
-			Output::setBodyValue("Province", $this->m['ProvinceModel']->selectArray($isSpedizione));
-			
-			$testi = array(
-				"FatturaElettronica"	=>	"Per aziende o liberi professionisti la PEC o il CODICE DESTINATARIO sono obbligatori nella fatturazione elettronica. Nel caso non si possegga un CODICE DESTINATARIO, compilare solo il campo PEC. Se non si dispone del CODICE DESTINATARIO o in caso di esonero dalla fatturazione elettronica, indicare nel campo CODICE DESTINATARIO 7 zeri (0000000).Per i privati (non possessori di partita iva) tali dati non sono necessari.</br>Per soggetti con sede all'estero inserire all'interno del codice destinatario 7 X (XXXXXXX).",
-				"TestoPrivacy"	=>	"Confermando l'invio dei tuoi dati dichiari di aver prevo visione e di accettare le condizioni di privacy.",
-				"AlertTitleModificato"	=>	"Dati modificati",
-				"AlertTitleCreato"	=>	"Account creato",
-				"AlertSubtitleModificato"	=>	"I suoi dati di fatturazione sono stati correttamente modificati",
-				"AlertSubtitleCreato"	=>	"Il suo account è stato creato. Le è stata inviata una mail con le credenziali di accesso.",
-			);
-			
-			Output::setBodyValue("Testi", $testi);
-			
-			if (isset($_GET["idSpedizione"]))
-			{
-				$spedizione = $this->m["SpedizioniModel"]->clear()->where(array(
-					"id_user"	=>	User::$id,
-					"id_spedizione"	=>	(int)$_GET["idSpedizione"]
-				))->record();
-				
-				unset($spedizione["id_order"]);
-				unset($spedizione["id_user"]);
-				
-				if (!empty($spedizione))
-					Output::setBodyValue("Spedizione", htmlentitydecodeDeep($spedizione));
-			}
-			
-			$spedizioni = $this->m["SpedizioniModel"]->clear()->where(array(
-				"id_user"	=>	User::$id,
-			))->orderBy("id_spedizione desc")->send(false);
-			
-			$arraySpedizioni = array();
-			
-			foreach ($spedizioni as $sp)
-			{
-				$sp["nazione_spedizione"] = nomeNazione($sp["nazione_spedizione"]);
-// 				$sp["provincia_spedizione"] = nomeProvincia($sp["provincia_spedizione"]);
-				
-				$arraySpedizioni[] = htmlentitydecodeDeep($sp);
-			}
-			
-			Output::setBodyValue("Spedizioni", $arraySpedizioni);
-		}
-		
-		if ($loadViewFile)
-			$this->load("api_output");
 	}
 	
 	public function modify()
@@ -924,13 +785,10 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->m['SpedizioniModel']->queryResult)
 		{
-			if (Output::$html)
-			{
-				if (!empty($ordine))
-					$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
-				else
-					$this->redirect("riservata/indirizzi");
-			}
+			if (!empty($ordine))
+				$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
+			else
+				$this->redirect("riservata/indirizzi");
 		}
 		else
 		{
@@ -944,18 +802,8 @@ class BaseRegusersController extends BaseController
 		
 		$data['province'] = $this->m['ProvinceModel']->selectTendina();
 		
-		if (Output::$html)
-		{
-			$this->append($data);
-			$this->load('modifica_spedizione');
-		}
-		else
-		{
-			$this->infoaccount(false);
-			
-			Output::setBodyValue("Errori", $this->m['SpedizioniModel']->errors);
-			$this->load("api_output");
-		}
+		$this->append($data);
+		$this->load('modifica_spedizione');
 	}
 	
 	public function add()
@@ -979,15 +827,7 @@ class BaseRegusersController extends BaseController
 		{
 			$this->formRegistrazione();
 			
-			if (Output::$html)
-			{
-				$this->load('form');
-			}
-			else
-			{
-				Output::setBodyValue("Errori", $this->m['RegusersModel']->errors);
-				$this->load("api_output");
-			}
+			$this->load('form');
 		}
 		
 		$data["tipoAzione"] = "insert";

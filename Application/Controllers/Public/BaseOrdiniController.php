@@ -36,11 +36,8 @@ class BaseOrdiniController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if (Output::$html)
-		{
-			$this->load('header');
-			$this->load('footer','last');
-		}
+		$this->load('header');
+		$this->load('footer','last');
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Gestione ordine';
 
@@ -292,6 +289,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function modifica($id_o = 0, $cart_uid = 0)
 	{
+		$this->s['registered']->check(null,0);
+		
 		$data['notice'] = null;
 		
 		$data['title'] = Parametri::$nomeNegozio . " - Modifica resoconto ordine";
@@ -300,12 +299,7 @@ class BaseOrdiniController extends BaseController
 		$clean["id_o"] = (int)$id_o;
 		
 		if (!$this->m["OrdiniModel"]->recordExists($clean["id_o"], $clean["cart_uid"]))
-		{
-			if (Output::$html)
-				$this->redirect("carrello");
-			else
-				$esisteOrdine = false;
-		}
+			$this->redirect("carrello");
 		
 		$data["tendinaIndirizzi"] = $this->m["RegusersModel"]->getTendinaIndirizzi(User::$id);
 		
@@ -340,6 +334,7 @@ class BaseOrdiniController extends BaseController
 			$this->redirect("");
 		
 		$this->append($data);
+		
 		$this->load("modifica_ordine");
 	}
 	
@@ -353,15 +348,8 @@ class BaseOrdiniController extends BaseController
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
-		$esisteOrdine = true;
-		
 		if (!$this->m["OrdiniModel"]->recordExists($clean["id_o"], $clean["cart_uid"]))
-		{
-			if (Output::$html)
-				$this->redirect("");
-			else
-				$esisteOrdine = false;
-		}
+			$this->redirect("");
 		
 		$rightAdminToken = $this->m["OrdiniModel"]->getAdminToken($clean["id_o"], $clean["cart_uid"]);
 		
@@ -392,91 +380,81 @@ class BaseOrdiniController extends BaseController
 		
 		$data["tipoOutput"] = "web";
 		
-		if (Output::$html)
+		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
-			if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
+			if (isset($_GET["to_paypal"]))
 			{
-				if (isset($_GET["to_paypal"]))
-				{
-					$this->clean();
-				}
-				
-				require (LIBRARY.'/External/paypal/paypal_class.php');
-				
-				if (Parametri::$useSandbox)
-				{
-					$p = new paypal_class(true); //usa sandbox
-					$p->paypal_mail = Parametri::$paypalSandBoxSeller;
-				}
-				else
-				{
-					$p = new paypal_class(); //usa il vero paypal
-					$p->paypal_mail = Parametri::$paypalSeller;
-				}
-				
-				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
-				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
-				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
-				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
-				$p->add_field('item_number', $data["ordine"]["cart_uid"]);
-				$p->add_field('amount', $data["ordine"]["total"]);
-				$p->add_field('currency_code', 'EUR');
-				$p->add_field('lc', 'IT');
-				
-				$p->add_field('email', $data["ordine"]["email"]);
-
-				if (strcmp($data["ordine"]["tipo_cliente"], "privato") === 0) {
-					$p->add_field('first_name', $data["ordine"]["nome"]);
-					$p->add_field('last_name', $data["ordine"]["cognome"]);
-				}
-				
-				$p->add_field('address1', $data["ordine"]["indirizzo"]);
-				$p->add_field('city', $data["ordine"]["citta"]);
-				$p->add_field('zip', $data["ordine"]["cap"]);
-				$p->add_field('country', $data["ordine"]["nazione"]);
-				$p->add_field('night_phone_b', $data["ordine"]["telefono"]);
-				
-				if ($data["ordine"]["nazione"] == "IT")
-					$p->add_field('state', $data["ordine"]["provincia"]);
-				else
-					$p->add_field('state', $data["ordine"]["dprovincia"]);
-				
-				$p->add_field('cmd', '_xclick');
-				$p->add_field('rm', '2');   // Return method = POST
-				
-				$data["pulsantePaypal"] = $p->paypal_button();
+				$this->clean();
 			}
-			else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
-			{
-				$urlPagamento = PagamentiModel::gateway($data["ordine"])->getUrlPagamento();
-				
-				$data["pulsantePaga"] = PagamentiModel::gateway()->getPulsantePaga();
-				$data["urlPagamento"] = $urlPagamento;
-				
-				if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
-				{
-					header('Location: '.$urlPagamento);
-					die();
-				}
-			}
-
-			$this->append($data);
 			
-			if (!isset($_GET["to_paypal"]))
+			require (LIBRARY.'/External/paypal/paypal_class.php');
+			
+			if (Parametri::$useSandbox)
 			{
-				$this->load("top_resoconto");
-				$this->load("resoconto-acquisto");
+				$p = new paypal_class(true); //usa sandbox
+				$p->paypal_mail = Parametri::$paypalSandBoxSeller;
 			}
 			else
-				$this->load("to_paypal");
+			{
+				$p = new paypal_class(); //usa il vero paypal
+				$p->paypal_mail = Parametri::$paypalSeller;
+			}
+			
+			$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
+			$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
+			$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
+			$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
+			$p->add_field('item_number', $data["ordine"]["cart_uid"]);
+			$p->add_field('amount', $data["ordine"]["total"]);
+			$p->add_field('currency_code', 'EUR');
+			$p->add_field('lc', 'IT');
+			
+			$p->add_field('email', $data["ordine"]["email"]);
+
+			if (strcmp($data["ordine"]["tipo_cliente"], "privato") === 0) {
+				$p->add_field('first_name', $data["ordine"]["nome"]);
+				$p->add_field('last_name', $data["ordine"]["cognome"]);
+			}
+			
+			$p->add_field('address1', $data["ordine"]["indirizzo"]);
+			$p->add_field('city', $data["ordine"]["citta"]);
+			$p->add_field('zip', $data["ordine"]["cap"]);
+			$p->add_field('country', $data["ordine"]["nazione"]);
+			$p->add_field('night_phone_b', $data["ordine"]["telefono"]);
+			
+			if ($data["ordine"]["nazione"] == "IT")
+				$p->add_field('state', $data["ordine"]["provincia"]);
+			else
+				$p->add_field('state', $data["ordine"]["dprovincia"]);
+			
+			$p->add_field('cmd', '_xclick');
+			$p->add_field('rm', '2');   // Return method = POST
+			
+			$data["pulsantePaypal"] = $p->paypal_button();
+		}
+		else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
+		{
+			$urlPagamento = PagamentiModel::gateway($data["ordine"])->getUrlPagamento();
+			
+			$data["pulsantePaga"] = PagamentiModel::gateway()->getPulsantePaga();
+			$data["urlPagamento"] = $urlPagamento;
+			
+			if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
+			{
+				header('Location: '.$urlPagamento);
+				die();
+			}
+		}
+
+		$this->append($data);
+		
+		if (!isset($_GET["to_paypal"]))
+		{
+			$this->load("top_resoconto");
+			$this->load("resoconto-acquisto");
 		}
 		else
-		{
-			if ($esisteOrdine)
-				$this->infoordine($clean["id_o"]);
-			
-			$this->load("api_output");
-		}
+			$this->load("to_paypal");
 	}
 	
 	private function infoordine($id_o)
@@ -715,13 +693,6 @@ class BaseOrdiniController extends BaseController
 				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
 					$this->redirect("");
 				
-// 				require (LIBRARY.'/Application/Modules/Nexi.php');
-// 				
-// 				$nexi = new Nexi();
-// 				
-// 				$urlPagamento = PagamentiModel::gateway($res[0]["orders"])->validate(false);
-				
-// 				if ($nexi->validate(false))
 				if (PagamentiModel::gateway($res[0]["orders"])->validate(false))
 					$data["conclusa"] = true;
 				
@@ -1470,79 +1441,6 @@ class BaseOrdiniController extends BaseController
 		
 		if (Output::$json)
 		{
-			$pagineConDecode = array();
-			
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["cart"]["price"] = number_format($temp["cart"]["prezzo_intero"],2,",","");
-// 				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-				$page["cart"]["prezzo_scontato"] = number_format($temp["cart"]["price"],2,",","");
-				$page["cart"]["iva"] = number_format($page["cart"]["iva"],2,",","");
-				
-				$page["cart"] = htmlentitydecodeDeep($page["cart"]);
-				
-				$pagineConDecode[] = $page;
-			}
-			
-			$totali = array(
-				"pieno"			=>	getSubTotal(),
-				"imponibile"	=>	getPrezzoScontato(),
-				"spedizione"	=>	getSpedizione(),
-				"iva"			=>	getIva(),
-				"totale"		=>	getTotal(),
-			);
-			
-			Output::setBodyValue("Totali", $totali);
-			
-			Output::setBodyValue("Type", "Cart");
-			Output::setBodyValue("Pages", $pagineConDecode);
-			Output::setHeaderValue("CartProductsNumber",$numeroProdottiInCarrello);
-			
-			$testi = array(
-				"TestoCondizioniVendita"	=>	'Confermando il tuo acquisto accetti i nostri termini e condizioni di vendita.',
-			);
-			
-			Output::setBodyValue("Testi", $testi);
-			
-			if ($this->s['registered']->status['status'] === 'logged')
-			{
-				$temp = User::$dettagli;
-				unset($temp["password"]);
-				unset($temp["forgot_token"]);
-				unset($temp["forgot_time"]);
-				unset($temp["last_failure"]);
-				unset($temp["has_confirmed"]);
-				unset($temp["ha_confermato"]);
-				unset($temp["confirmation_token"]);
-				unset($temp["creation_date"]);
-				unset($temp["creation_time"]);
-				unset($temp["temp_field"]);
-				unset($temp["deleted"]);
-				
-				$temp["nazione"] = nomeNazione($temp["nazione"]);
-// 				$temp["provincia"] = nomeProvincia($temp["provincia"]);
-				
-				Output::setBodyValue("Dettagli", $temp);
-				
-				$idSpedizione = $this->m['RegusersModel']->getIndirizzoSpedizionePerAdd(User::$id);
-				
-				Output::setBodyValue("IdSpedizione", $idSpedizione);
-				
-				if ($idSpedizione > 0)
-				{
-					$spedizione = $this->m['SpedizioniModel']->selectId($idSpedizione);
-					
-					$spedizione["nazione_spedizione"] = nomeNazione($spedizione["nazione_spedizione"]);
-// 					$spedizione["provincia_spedizione"] = nomeProvincia($spedizione["provincia_spedizione"]);
-					
-					if (!empty($spedizione))
-						Output::setBodyValue("Spedizione", $spedizione);
-				}
-			}
-			
 			$this->load("api_output");
 		}
 		else

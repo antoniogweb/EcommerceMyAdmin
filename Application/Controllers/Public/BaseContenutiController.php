@@ -669,8 +669,6 @@ class BaseContenutiController extends BaseController
 		$catWhere = "in(".implode(",",$children).")";
 		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
 			"in" => array("-id_c" => $children),
-// 			"pages.attivo"	=>	"Y",
-// 			"acquistabile"	=>	"Y",
 		))->addWhereAttivo();
 		
 		if (Parametri::$hideNotAllowedNodesInLists)
@@ -885,30 +883,6 @@ class BaseContenutiController extends BaseController
 			$data["elencoMateriali"] = $this->m["CaratteristichevaloriModel"]->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
 				"caratteristiche.tipo" => "MATERIALE",
 			))->send();
-		
-		$pagineConDecode = array();
-		
-		if (Output::$json)
-		{
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["pages"]["price"] = number_format(calcolaPrezzoIvato($page["pages"]["id_page"], $page["pages"]["price"]),2,",",".");
-				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-				$page["pages"]["prezzo_scontato"] = prezzoPromozione($temp);
-				$page["pages"] = htmlentitydecodeDeep($page["pages"]);
-				$page["categories"] = htmlentitydecodeDeep($page["categories"]);
-				$page["contenuti_tradotti"] = htmlentitydecodeDeep($page["contenuti_tradotti"]);
-				$page["contenuti_tradotti_categoria"] = htmlentitydecodeDeep($page["contenuti_tradotti_categoria"]);
-				
-				$pagineConDecode[] = $page;
-			}
-		}
-		
-		Output::setBodyValue("Type", "Category");
-		Output::setBodyValue("Pages", $pagineConDecode);
 		
 		$this->append($data);
 		
@@ -1374,68 +1348,6 @@ class BaseContenutiController extends BaseController
 		
 // 		$this->sectionLoad($section, "page", $template);
 		
-		$pagineConDecode = array();
-		
-		if (Output::$json)
-		{
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["pages"] = htmlentitydecodeDeep($page["pages"]);
-				
-				$page["pages"]["caratteristiche"] = $data["lista_caratteristiche"];
-				
-				$scaglioni = array();
-				
-				foreach ($data["scaglioni"] as $qty => $sconto)
-				{
-					$sconto = number_format($sconto,2,",","");
-					$scaglioni[] = array($qty, $sconto);
-				}
-				
-				$correlati = array();
-				
-				foreach ($data["prodotti_correlati"] as $corr)
-				{
-					$tempCorr = $corr;
-					$corr["pages"]["price"] = number_format(calcolaPrezzoIvato($corr["pages"]["id_page"], $corr["pages"]["price"]),2,",",".");
-					$corr["pages"]["prezzo_promozione"] = number_format($corr["pages"]["prezzo_promozione"],2,",",".");
-					$corr["pages"]["prezzo_scontato"] = prezzoPromozione($tempCorr);
-					$corr["pages"]["url-alias"] = getUrlAlias($corr["pages"]["id_page"]);
-					
-					$corr["pages"] = htmlentitydecodeDeep($corr["pages"]);
-					$corr["categories"] = htmlentitydecodeDeep($corr["categories"]);
-					$corr["contenuti_tradotti"] = htmlentitydecodeDeep($corr["contenuti_tradotti"]);
-					$corr["contenuti_tradotti_categoria"] = htmlentitydecodeDeep($corr["contenuti_tradotti_categoria"]);
-				
-					$correlati[] = $corr;
-				}
-				
-				$page["pages"]["scaglioni"] = $scaglioni;
-				
-				$page["pages"]["price"] = number_format(calcolaPrezzoIvato($page["pages"]["id_page"], $page["pages"]["price"]),2,",",".");
-				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-				$page["pages"]["prezzo_scontato"] = prezzoPromozione($temp);
-				$page["pages"]["altre_immagini"] = $data["altreImmagini"];
-				$page["pages"]["correlati"] = $correlati;
-				
-				$page["categories"] = htmlentitydecodeDeep($page["categories"]);
-				$page["categories"]["url-alias"] = getCategoryUrlAlias($page["categories"]["id_c"]);
-				
-				$page["contenuti_tradotti"] = htmlentitydecodeDeep($page["contenuti_tradotti"]);
-				$page["contenuti_tradotti_categoria"] = htmlentitydecodeDeep($page["contenuti_tradotti_categoria"]);
-				
-				$page["marchi"] = htmlentitydecodeDeep($page["marchi"]);
-				
-				$pagineConDecode[] = $page;
-			}
-		}
-		
-		Output::setBodyValue("Type", "Page");
-		Output::setBodyValue("Pages", $pagineConDecode);
-		
 		if (Output::$html)
 		{
 			if (!isset($_GET["pdf"]) || !v("permetti_generazione_pdf_pagine_frontend"))
@@ -1551,12 +1463,9 @@ class BaseContenutiController extends BaseController
 					" lk" => array('pages.codice' => $this->viewArgs["s"]),
 					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["s"]),
 					),
-				"attivo" => "Y",
-				"principale" => "Y",
-				"acquistabile"	=>	"Y",
 			);
 			
-			$this->m['PagesModel']->clear()->where($where);
+			$this->m['PagesModel']->clear()->where($where)->addWhereAttivo();
 			
 			if ($this->viewArgs["sec"] != "tutti")
 				$this->m["PagesModel"]->aWhere(array(
@@ -1592,34 +1501,7 @@ class BaseContenutiController extends BaseController
 		
 		$this->append($data);
 		
-		$pagineConDecode = array();
-		
-		if (Output::$json)
-		{
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["pages"]["price"] = number_format(calcolaPrezzoIvato($page["pages"]["id_page"], $page["pages"]["price"]),2,",",".");
-				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-				$page["pages"]["prezzo_scontato"] = prezzoPromozione($temp);
-				$page["pages"] = htmlentitydecodeDeep($page["pages"]);
-				$page["categories"] = htmlentitydecodeDeep($page["categories"]);
-				$page["contenuti_tradotti"] = htmlentitydecodeDeep($page["contenuti_tradotti"]);
-				$page["contenuti_tradotti_categoria"] = htmlentitydecodeDeep($page["contenuti_tradotti_categoria"]);
-				
-				$pagineConDecode[] = $page;
-			}
-		}
-		
-		Output::setBodyValue("Type", "Search");
-		Output::setBodyValue("Pages", $pagineConDecode);
-		
-		if (Output::$html)
-			$this->load('search');
-		else
-			$this->load("api_output");
+		$this->load('search');
 	}
 	
 	public function promozione()

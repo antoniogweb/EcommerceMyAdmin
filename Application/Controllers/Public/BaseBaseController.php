@@ -288,32 +288,6 @@ class BaseBaseController extends Controller
 		$data['customHeaderClass'] = "";
 		$data['inlineCssFile'] = "";
 		
-		// In evidenza per APP
-		if ($controller == "home")
-		{
-			$data["isHome"] = true;
-			
-			$pagineConDecode = array();
-			
-			if (Output::$json)
-			{
-				foreach ($data["prodottiInEvidenza"] as $page)
-				{
-					$temp = $page;
-					$page["quantity"] = 1;
-					$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-					$page["pages"]["price"] = number_format(calcolaPrezzoIvato($page["pages"]["id_page"], $page["pages"]["price"]),2,",",".");
-					$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-					$page["pages"]["prezzo_scontato"] = prezzoPromozione($temp);
-					$page["pages"] = htmlentitydecodeDeep($page["pages"]);
-					
-					$pagineConDecode[] = $page;
-				}
-			}
-			
-			Output::setBodyValue("Evidenza", $pagineConDecode);
-		}
-		
 		$data["categoriaShop"] = $this->m["CategoriesModel"]->selectId($clean["idShop"]);
 		
 		$data["idBlog"] = 0;
@@ -410,23 +384,20 @@ class BaseBaseController extends Controller
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
 		
-		if (Output::$html)
-		{
-			$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
-				"ne"		=>	array("tipo_pagina" => ""),
-				"attivo"	=>	"Y",
-			))->toList("tipo_pagina", "id_page")->send();
-			
-			$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
-			
-			$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
-			$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
-			
-			$data["selectRuoli"] = $this->m["RuoliModel"]->selectTipi(true);
-			
-			if (v("attiva_tipi_azienda"))
-				$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);
-		}
+		$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
+			"ne"		=>	array("tipo_pagina" => ""),
+			"attivo"	=>	"Y",
+		))->toList("tipo_pagina", "id_page")->send();
+		
+		$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
+		
+		$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
+		$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
+		
+		$data["selectRuoli"] = $this->m["RuoliModel"]->selectTipi(true);
+		
+		if (v("attiva_tipi_azienda"))
+			$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);
 		
 		$data["isPromo"] = self::$isPromo;
 		
@@ -512,14 +483,6 @@ class BaseBaseController extends Controller
 			User::$wishlist_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
 			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
-		}
-		
-		if (Output::$json)
-		{
-			// Imposto il cart uid nell'header dell'output json
-			Output::setHeaderValue("CartUid",User::$cart_uid);
-			
-			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
 		}
 		
 		//setto il coupon se presente
@@ -732,9 +695,6 @@ class BaseBaseController extends Controller
 						if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
 							$this->s['registered']->login($clean["username"],$password);
 						
-						if (Output::$json)
-							$this->setUserHead();
-						
 						// Iscrizione alla newsletter
 						if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())
 						{
@@ -772,15 +732,12 @@ class BaseBaseController extends Controller
 							));
 						}
 						
-						if (Output::$html)
-						{
-							$urlRedirect = RegusersModel::getUrlRedirect();
-							
-							if ($urlRedirect && !v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
-								header('Location: '.$urlRedirect);
-							else
-								$this->redirect("avvisi");
-						}
+						$urlRedirect = RegusersModel::getUrlRedirect();
+						
+						if ($urlRedirect && !v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
+							header('Location: '.$urlRedirect);
+						else
+							$this->redirect("avvisi");
 					}
 					else
 					{

@@ -41,10 +41,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		</div>
 	</div>
 	
-	<div class="t">
-		<td width="200px">Scrivi la tessera</td>
-		<td><input class="login_username_input" type="text" name="tessera" value=""/></td>
-	</div>
+	<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 	
 	<input class="uk-button uk-button-secondary" type="submit" name="updateAction" value="<?php echo gtext("Modifica password", false);?>" title="<?php echo gtext("Modifica password", false);?>" />
 </form>

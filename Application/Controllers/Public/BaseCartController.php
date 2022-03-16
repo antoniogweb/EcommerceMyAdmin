@@ -28,11 +28,8 @@ class BaseCartController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 
-		if (Output::$html)
-		{
-			$this->load('header');
-			$this->load('footer','last');
-		}
+		$this->load('header');
+		$this->load('footer','last');
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Carrello';
 		
@@ -68,50 +65,12 @@ class BaseCartController extends BaseController
 		
 		$this->append($data);
 		
-		if (Output::$json)
+		if (strcmp($pageView,"partial") !== 0)
 		{
-			$pagineConDecode = array();
-			
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["cart"]["price"] = number_format($temp["cart"]["prezzo_intero"],2,",","");
-// 				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-				$page["cart"]["prezzo_scontato"] = number_format($temp["cart"]["price"],2,",","");
-				$page["cart"]["iva"] = number_format($page["cart"]["iva"],2,",","");
-				
-				$page["cart"] = htmlentitydecodeDeep($page["cart"]);
-				
-				$pagineConDecode[] = $page;
-			}
-			
-			$totali = array(
-				"pieno"			=>	getSubTotal(),
-				"imponibile"	=>	getPrezzoScontato(),
-				"spedizione"	=>	getSpedizione(),
-				"iva"			=>	getIva(),
-				"totale"		=>	getTotal(),
-			);
-			
-			Output::setBodyValue("Totali", $totali);
-			
-			Output::setBodyValue("Type", "Cart");
-			Output::setBodyValue("Pages", $pagineConDecode);
-			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
-			
-			$this->load("api_output");
+			$this->load("top_cart");
 		}
-		else
-		{
-			if (strcmp($pageView,"partial") !== 0)
-			{
-				$this->load("top_cart");
-			}
-			
-			$this->load('main');
-		}
+		
+		$this->load('main');
 	}
 
 	//HTML del carrello aggiornato via ajax
@@ -276,21 +235,13 @@ class BaseCartController extends BaseController
 			$errore = gtext("Si prega di indicare una quantità maggiore di zero", false);
 		}
 		
-		// Se sono JSON, stampa in output il carrello completo
-		if (Output::$json)
-		{
-			Output::setHeaderValue("CartProductsNumber",$this->m["CartModel"]->numberOfItems());
-			
-			$this->load("api_output");
-		}
-		else
-			echo json_encode(array(
-				"result"	=>	$result,
-				"idCart"	=>	$idCart,
-				"errore"	=>	$errore,
-				"contens_fbk"	=>	$contentsFbk,
-				"contens_gtm"	=>	$contentsGtm,
-			));
+		echo json_encode(array(
+			"result"	=>	$result,
+			"idCart"	=>	$idCart,
+			"errore"	=>	$errore,
+			"contens_fbk"	=>	$contentsFbk,
+			"contens_gtm"	=>	$contentsGtm,
+		));
 	}
 	
 	public function delete($id_cart)
@@ -311,12 +262,7 @@ class BaseCartController extends BaseController
 			$result = "KO";
 		}
 		
-		// Se sono JSON, stampa in output il carrello completo
-		if (Output::$json)
-			$this->index();
-		else
-			echo $result;
-			
+		$this->index();
 	}
 	
 	//$quantita: id_page:quantity|id_page:quantity|...
@@ -355,11 +301,6 @@ class BaseCartController extends BaseController
 		}
 		
 		// Se sono JSON, stampa in output il carrello completo
-		if (Output::$json)
-			$this->index();
-		else
-		{
-			echo json_encode($arrayIdErroriQta);
-		}
+		$this->index();
 	}
 }

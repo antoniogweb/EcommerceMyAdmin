@@ -30,11 +30,8 @@ class BaseHomeController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 
-		if (Output::$html)
-		{
-			$this->load('header');
-			$this->load('footer','last');
-		}
+		$this->load('header');
+		$this->load('footer','last');
 
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
 
@@ -72,41 +69,7 @@ class BaseHomeController extends BaseController
 		
 		$this->append($data);
 		
-		$pagineConDecode = array();
-		
-		if (Output::$json)
-		{
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["pages"]["price"] = number_format(calcolaPrezzoIvato($page["pages"]["id_page"], $page["pages"]["price"]),2,",",".");
-				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-				$page["pages"]["prezzo_scontato"] = prezzoPromozione($temp);
-				$page["pages"] = htmlentitydecodeDeep($page["pages"]);
-				
-				$pagineConDecode[] = $page;
-			}
-			
-			Parametri::$nomeSezioneProdotti;
-			
-			$idShopCat = (int)$this->m['CategoriesModel']->clear()->where(array(
-				"section"	=>	Parametri::$nomeSezioneProdotti
-			))->field("id_c");
-			
-			$res = $this->m["CategoriesModel"]->recursiveTree($idShopCat,2);
-			
-			Output::setBodyValue("Categories", $res);
-		}
-		
-		Output::setBodyValue("Type", "Home");
-		Output::setBodyValue("Pages", $pagineConDecode);
-		
-		if (Output::$html)
-			$this->cload('main');
-		else
-			$this->load("api_output");
+		$this->cload('main');
 	}
 	
 	public function settacookie()
