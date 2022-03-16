@@ -156,11 +156,11 @@ class BaseBaseController extends Controller
 		$data["adminUser"] = false;
 		
 		// Controlla se arriva dall'app
-		if (isset($_GET["asJson"]))
-		{
-			Output::$html = false;
-			Output::$json = true;
-		}
+// 		if (isset($_GET["asJson"]))
+// 		{
+// 			Output::$html = false;
+// 			Output::$json = true;
+// 		}
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
