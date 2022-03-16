@@ -9,7 +9,7 @@
 			<div class="uk-width-3-4@m uk-width-3-4@s"><?php echo Html_Form::input("email",Form::gValue("email"),"uk-width-expand uk-input uk-flex-first class_email","email","placeholder='".gtext("Il tuo indirizzo email*")."'");?></div>
 			
 			<div class="uk-width-1-4@m uk-width-1-4@s">
-				<button class="uk-button uk-button-secondary uk-text-bold uk-width-expand"><?php echo gtext("Iscriviti");?></button>
+				<button type='submit' class="uk-button uk-button-secondary uk-text-bold uk-width-expand"><?php echo gtext("Iscriviti");?></button>
 			</div>
         </div>
         
