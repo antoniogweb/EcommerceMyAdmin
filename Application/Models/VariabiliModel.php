@@ -399,6 +399,7 @@ class VariabiliModel extends GenericModel {
 		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti
 		"oggetto_form_contatti"		=>	"form richiesta informazioni", // oggetto della mail del form contatti
 		"oggetto_form_newsletter"	=>	"form iscrizione a newsletter", // oggetto della mail del form newsletter
+		"oggetto_mail_conferma_contatto"	=>	"conferma la tua mail", // oggetto della mail che chiede di confermare il proprio indirizzo email
 		"durata_carrello_wishlist_coupon"	=>	31536000, // durata dei cookie usati per carrello, wishlist e copupon
 		"durata_impostazioni_cookie"	=>	15552000, // durata dei cookie usati per le preferenze sui cookie
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine

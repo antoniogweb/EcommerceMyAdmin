@@ -915,7 +915,7 @@ class BaseBaseController extends Controller
 			
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($contatto["email"]),
-				"oggetto"	=>	"conferma la tua mail",
+				"oggetto"	=>	v("oggetto_mail_conferma_contatto"),
 				"testo"		=>	$output,
 				"tipologia"	=>	"CONFERMA_CONTATTO",
 				"id_contatto"	=>	$idContatto,
