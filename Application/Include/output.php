@@ -14,6 +14,12 @@ class Output
 	public static $body = array();
 	public static $contents = array();
 	
+	public static function setJson()
+	{
+		self::$html = false;
+		self::$json = true;
+	}
+	
 	public static function setHeaderValue($key, $value)
 	{
 		self::$header[$key] = $value;

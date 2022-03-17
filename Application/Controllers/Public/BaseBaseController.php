@@ -155,13 +155,6 @@ class BaseBaseController extends Controller
 		
 		$data["adminUser"] = false;
 		
-		// Controlla se arriva dall'app
-// 		if (isset($_GET["asJson"]))
-// 		{
-// 			Output::$html = false;
-// 			Output::$json = true;
-// 		}
-		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$data['username'] = $this->s['registered']->status['user'];
@@ -199,10 +192,9 @@ class BaseBaseController extends Controller
 			
 			// Imposto lo stato loggato su Output
 			Output::setHeaderValue("Status","logged");
-			Output::setHeaderValue("UserId",User::$ruid);
-			Output::setHeaderValue("Nome",$data['nomeCliente']);
-			Output::setHeaderValue("Email",User::$dettagli["username"]);
-// 			print_r(User::$categorieInClasseSconto);
+// 			Output::setHeaderValue("UserId",User::$ruid);
+// 			Output::setHeaderValue("Nome",$data['nomeCliente']);
+// 			Output::setHeaderValue("Email",User::$dettagli["username"]);
 		}
 		
 		if ($this->s['admin']->status['status'] === 'logged')
@@ -1031,8 +1023,17 @@ class BaseBaseController extends Controller
 		
 		Form::sNotice($tipo, null);
 		
+		$esitoInvio = "KO";
+		
 		if (isset($_POST['invia']))
 		{
+			// Imposto l'output in JSON
+			if (isset($_POST['ajaxsubmit']))
+			{
+				Output::setJson();
+				$this->clean();
+			}
+			
 			if (CaptchaModel::getModulo()->check())
 			{
 				if ($this->m['ContattiModel']->checkConditions('insert'))
@@ -1056,43 +1057,67 @@ class BaseBaseController extends Controller
 					
 					if($res)
 					{
+						$esitoInvio = "OK";
+						
 						// Iscrivo a Mailchimp
 						if ($isNewsletter && IntegrazioninewsletterModel::integrazioneAttiva())
 						{
 							IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati($valoriEmail));
 						}
 						
-						if (v("redirect_pagina_dopo_invio_se_prodotto") && $id && $this->m["PagesModel"]->isActive($id) && $this->m["PagesModel"]->isProdotto($id))
+						$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+						$idGrazieNewsletter = 0;
+						
+						if ($isNewsletter)
+							$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
+						
+						if ($idGrazieNewsletter)
+							$idGrazie = $idGrazieNewsletter;
+						
+						if (Output::$html)
 						{
-							flash("notice_$tipo", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato!")."</div>");
-							
-							$this->redirect(getUrlAlias($id).F::partial()."#".v("fragment_form_contatti"));
-						}
-						else
-						{
-							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
-							$idGrazieNewsletter = 0;
-							
-							if ($isNewsletter)
-								$idGrazieNewsletter = PagineModel::gTipoPagina("GRAZIE_NEWSLETTER");
-							
-							if ($idGrazieNewsletter)
-								$this->redirect(getUrlAlias($idGrazieNewsletter).F::partial());
-							else if ($idGrazie)
+							if ($idGrazie)
 								$this->redirect(getUrlAlias($idGrazie).F::partial());
 							else
 								$this->redirect("grazie.html".F::partial());
 						}
+						else
+						{
+							$pageGrazieDetails = null;
+							
+							if ($idGrazie)
+								$pageGrazieDetails = PagesModel::getPageDetails($idGrazie);
+								
+							if ($pageGrazieDetails)
+								Output::setBodyValue("Notice", "<div class='".v("alert_success_class")."'>".htmlentitydecode(field($pageGrazieDetails, "description"))."</div>");
+							else
+								Output::setBodyValue("Notice", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato")."</div>");
+						}
 					} else {
-						Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>errore nell'invio del messaggio, per favore riprova più tardi</div>");
+						$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+						
+						Form::sNotice($tipo, $erroreInvio);
+						Output::setBodyValue("Notice", $erroreInvio);
 					}
 				}
 				else
 				{
-					Form::sNotice($tipo, "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m['ContattiModel']->notice);
+					$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m['ContattiModel']->notice;
+					
+					Form::sNotice($tipo, $erroriValidazione);
+					Output::setBodyValue("Notice", $erroriValidazione);
 				}
 			}
+			else
+			{
+				$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+				
+				Form::sNotice($tipo, $erroreInvio);
+				Output::setBodyValue("Notice", $erroreInvio);
+			}
 		}
+		
+		Output::setBodyValue("Esito", $esitoInvio);
 		
 // 		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
 		

@@ -1,9 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="box_form_evidenzia">
-	<?php
-	Form::$tipo = "C";
-	echo Form::gNotice();
-	?>
+	<div class="box_notice">
+		<?php
+		Form::$tipo = "C";
+		echo Form::gNotice();
+		?>
+	</div>
 	<form action="<?php echo Domain::$currentUrl;?><?php echo F::partial();?>#<?php echo v("fragment_form_contatti");?>" method="post" novalidate="novalidate">
 		<fieldset class="uk-fieldset">
 			<div uk-grid class="uk-margin uk-grid"> 
@@ -28,9 +30,13 @@
 			</div>
 			
 			<?php echo Html_Form::hidden("invia","invia");?>
+			<?php
+			if (v("contatti_ajax_submit"))
+				echo Html_Form::hidden("ajaxsubmit","ajaxsubmit");?>
 			
 			<div class="uk-margin">
-				<button type='submit' class="uk-button uk-button-secondary background-yellow color-white"><?php echo gtext('Invia',false);?></button>
+				<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+				<button type='submit' class="uk-button uk-button-secondary btn_submit_form"><?php echo gtext('Invia',false);?></button>
 			</div>
 		</fieldset>
 	</form>

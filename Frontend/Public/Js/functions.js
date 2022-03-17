@@ -397,21 +397,44 @@ if (typeof evidenziaErrore !== 'function')
 		{
 // 			$(selettore).closest(".box_form_evidenzia").remove();
 			
-			if (input_error_style == "")
-				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).css(input_error_css);
+			$(".evidenzia").closest(".box_form_evidenzia").find(selettore).addClass("uk-form-danger");
 			
-			if (input_error_style != "")
-				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).attr("style", input_error_style);
+// 			if (input_error_style == "")
+// 				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).css(input_error_css);
+// 			
+// 			if (input_error_style != "")
+// 				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).attr("style", input_error_style);
 		}
 		else
 		{
-			if (input_error_style == "")
-				$(selettore).css(input_error_css);
+			$(selettore).addClass("uk-form-danger");
 			
-			if (input_error_style != "")
-				$(selettore).attr("style", input_error_style);
+// 			if (input_error_style == "")
+// 				$(selettore).css(input_error_css);
+// 			
+// 			if (input_error_style != "")
+// 				$(selettore).attr("style", input_error_style);
 		}
 	}
+}
+
+function nascondiErrori()
+{
+	$(".uk-form-danger").each(function(){
+		$(this).removeClass("uk-form-danger");
+	});
+}
+
+function evidenziaErrori(ajaxSubmit)
+{
+	if (typeof ajaxSubmit != "undefined")
+		nascondiErrori();
+	
+	$(".evidenzia").each(function(){
+		t_tag = $(this).text();
+		
+		evidenziaErrore("."+t_tag);
+	});
 }
 
 function controllaCheckFattura()
@@ -424,7 +447,6 @@ function controllaCheckFattura()
 	else
 		$(".campo_codice_fiscale").css("display","none");
 }
-
 
 $(document).ready(function(){
 	
@@ -457,11 +479,7 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$(".evidenzia").each(function(){
-		t_tag = $(this).text();
-		
-		evidenziaErrore("."+t_tag);
-	});
+	evidenziaErrori();
 	
 	$(".not_active_link").click(function(){
 	
@@ -642,6 +660,50 @@ $(document).ready(function(){
 				}
 			});
 		}
+	});
+	
+	$("body").on("submit", "form", function(e){
+		
+		var form = $(this);
+		
+		if (form.find("[name='ajaxsubmit']").length > 0)
+		{
+			var boxEvidenzia = form.closest(".box_form_evidenzia");
+			
+			if (boxEvidenzia.length > 0 && boxEvidenzia.find(".box_notice").length > 0)
+			{
+				e.preventDefault();
+				
+				var url = form.attr("action");
+				
+				$.ajaxQueue({
+					url: url,
+					cache:false,
+					async: true,
+					dataType: "json",
+					method: "POST",
+					data: form.serialize(),
+					success: function(content){
+						if ($(".btn_submit_form").length > 0)
+						{
+							setTimeout(function(){
+								$(".btn_submit_form").removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+							}, 500);
+						}
+						
+						$(".box_notice").html(content.Body.Notice);
+						
+						if (content.Body.Esito == "OK")
+						{
+							form.remove();
+						}
+						
+						evidenziaErrori(true);
+					}
+				});
+			}
+		}
+		
 	});
 	
 	$(".showcoupon").click(function(e){

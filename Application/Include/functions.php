@@ -1214,8 +1214,8 @@ class Form
 	
 	static public function sNotice($tipo, $notice)
 	{
-		if (!isset($notice))
-			$notice = flash("notice_$tipo");
+// 		if (!isset($notice))
+// 			$notice = flash("notice_$tipo");
 		
 		self::$notice = $notice;
 		

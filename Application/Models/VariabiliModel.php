@@ -410,9 +410,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		## MODULO CONTATTI ##
-		"redirect_pagina_dopo_invio_se_prodotto"	=>	0, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
+// 		"redirect_pagina_dopo_invio_se_prodotto"	=>	0, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
 		"fragment_form_contatti"	=>	"contatti-form", // all'invio del form contatti verrà aggiunto un fragment # con quel valore
 		"fragment_form_newsletter"	=>	"newsletter-form", // all'invio del form newsletter verrà aggiunto un fragment # con quel valore
+		"contatti_ajax_submit"	=>	0, // se impostato a 1, l'invio del form contatti sarà in modalità AJAX
 		## ETICHETTE FEED GOOGLE ##
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## FEEDBACK ##
