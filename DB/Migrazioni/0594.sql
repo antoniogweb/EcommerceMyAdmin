@@ -1,0 +1,1 @@
+INSERT INTO `captcha` (`id_captcha`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `campo_nascosto`, `campo_nascosto_registrazione`, `secret_client`, `secret_server`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'reCaptcha3', 0, 'RECAPTCHA3', 'ReCaptchaTre', 'recaptchatre', 'recaptchatre', '', '', '2');

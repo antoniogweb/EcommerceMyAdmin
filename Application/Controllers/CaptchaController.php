@@ -68,11 +68,7 @@ class CaptchaController extends BaseController
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if ($record["codice"] == "CAMPO_NASCOSTO")
-			$fields .= ",campo_nascosto,campo_nascosto_registrazione";
-		
-		if ($record["codice"] == "GOOGLE_CAPTCHA_V3")
-			$fields .= ",secret_client,secret_server";
+		$fields = CaptchaModel::getModulo($record["codice"])->gCampiForm();
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

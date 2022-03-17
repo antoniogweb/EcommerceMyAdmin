@@ -20,13 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class NessunFiltro extends Captcha
-{
-	public function __construct($recordCaptcha)
-	{
-		
-	}
-	
+class ReCaptchaTre extends Captcha
+{	
 	public function check()
 	{
 		return true;
@@ -39,16 +34,16 @@ class NessunFiltro extends Captcha
 	
 	public function getHiddenFieldIncludeFile()
 	{
-		return "/Elementi/Captcha/nessun-antispam.php";
+		return "/Elementi/Captcha/Html/recaptchatre.php";
 	}
 	
 	public function getHiddenFieldRegistrazioneIncludeFile()
 	{
-		return "/Elementi/Captcha/nessun-antispam.php";
+		return "/Elementi/Captcha/Html/recaptchatre.php";
 	}
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo';
+		return 'titolo,attivo,secret_client,secret_server';
 	}
 }

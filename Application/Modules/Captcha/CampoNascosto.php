@@ -20,20 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class CampoNascosto
+class CampoNascosto extends Captcha
 {
-	private $params = "";
-	
-	public function __construct($recordCaptcha)
-	{
-		$this->params = $recordCaptcha;
-	}
-	
-	public function getParams()
-	{
-		return $this->params;
-	}
-	
 	public function check()
 	{
 		$r = new Request();
@@ -58,5 +46,10 @@ class CampoNascosto
 	public function getHiddenFieldRegistrazioneIncludeFile()
 	{
 		return "/Elementi/Captcha/campo-nascosto-registrazione.php";
+	}
+	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,campo_nascosto,campo_nascosto_registrazione';
 	}
 }

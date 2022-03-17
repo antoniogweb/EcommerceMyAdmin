@@ -20,35 +20,39 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class NessunFiltro extends Captcha
+if (!defined('EG')) die('Direct access not allowed!');
+
+class Captcha
 {
+	protected $usato = false;
+	
+	protected $params = "";
+	
 	public function __construct($recordCaptcha)
 	{
+		$this->params = $recordCaptcha;
+	}
+	
+	public function getParams()
+	{
+		return $this->params;
+	}
+	
+	public function setUsato()
+	{
+		$this->usato = true;
+	}
+	
+	public function inPage()
+	{
+		return $this->usato;
+	}
+	
+	public function pathJs()
+	{
+		if (isset($this->params["modulo"]) && file_exists(tpf("/Elementi/Captcha/Js/".strtolower($this->params["modulo"]).".php")))
+			return tpf("/Elementi/Captcha/Js/".strtolower($this->params["modulo"]).".php");
 		
-	}
-	
-	public function check()
-	{
-		return true;
-	}
-	
-	public function checkRegistrazione()
-	{
-		return true;
-	}
-	
-	public function getHiddenFieldIncludeFile()
-	{
-		return "/Elementi/Captcha/nessun-antispam.php";
-	}
-	
-	public function getHiddenFieldRegistrazioneIncludeFile()
-	{
-		return "/Elementi/Captcha/nessun-antispam.php";
-	}
-	
-	public function gCampiForm()
-	{
-		return 'titolo,attivo';
+		return "";
 	}
 }

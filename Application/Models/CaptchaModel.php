@@ -90,15 +90,22 @@ class CaptchaModel extends GenericModel {
 		return parent::update($id, $where);
 	}
 	
-	public static function getModulo()
+	public static function getModulo($codice = null)
 	{
 		$c = new CaptchaModel();
 		
 		if (!isset(self::$moduloCaptcha))
 		{
-			$attivo = $c->clear()->where(array(
-				"attivo"	=>	1,
-			))->record();
+			if ($codice)
+				$where = array(
+					"codice"	=>	sanitizeDb($codice),
+				);
+			else
+				$where = array(
+					"attivo"	=>	1,
+				);
+			
+			$attivo = $c->clear()->where($where)->record();
 			
 			if (empty($attivo))
 				$attivo = array(
@@ -107,6 +114,7 @@ class CaptchaModel extends GenericModel {
 			
 			if (file_exists(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php"))
 			{
+				require_once(LIBRARY."/Application/Modules/Captcha.php");
 				require_once(LIBRARY."/Application/Modules/Captcha/".$attivo["modulo"].".php");
 				
 				$objectReflection = new ReflectionClass($attivo["modulo"]);

@@ -44,4 +44,8 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>rating.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 
+<?php if (CaptchaModel::getModulo()->inPage() && CaptchaModel::getModulo()->pathJs()) { ?>
+<?php include(CaptchaModel::getModulo()->pathJs());?>
+<?php } ?>
+
 <?php include(tpf("/Elementi/footer_js_admin_panel.php"));?>
