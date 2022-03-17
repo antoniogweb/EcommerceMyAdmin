@@ -403,11 +403,15 @@ class OrdiniModel extends FormModel {
 				if (Parametri::$useSMTP)
 				{
 					$mail->IsSMTP();                         // tell the class to use SMTP
-					$mail->SMTPAuth   = true;                  // enable SMTP authentication
 					$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
 					$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
-					$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
-					$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
+					
+					if (Parametri::$SMTPUsername && Parametri::$SMTPPassword)
+					{
+						$mail->SMTPAuth   = true;                  // enable SMTP authentication
+						$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
+						$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
+					}
 					
 					if (ImpostazioniModel::$valori["smtp_secure"])
 						$mail->SMTPSecure = ImpostazioniModel::$valori["smtp_secure"];

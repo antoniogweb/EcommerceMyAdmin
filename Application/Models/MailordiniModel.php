@@ -169,12 +169,12 @@ class MailordiniModel extends GenericModel
 			if (Parametri::$useSMTP)
 			{
 				$mail->IsSMTP();                         // tell the class to use SMTP
-				$mail->SMTPAuth   = true;                  // enable SMTP authentication
 				$mail->Port       = Parametri::$SMTPPort;                    // set the SMTP server port
 				$mail->Host       = Parametri::$SMTPHost; 		// SMTP server
 				
 				if (Parametri::$SMTPUsername && Parametri::$SMTPPassword)
 				{
+					$mail->SMTPAuth   = true;                  // enable SMTP authentication
 					$mail->Username   = Parametri::$SMTPUsername;     // SMTP server username
 					$mail->Password   = Parametri::$SMTPPassword;            // SMTP server password
 				}
