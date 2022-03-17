@@ -55,7 +55,7 @@ class PagesstatsModel extends GenericModel {
 		else if (isset($_SESSION["email_carrello"]))
 		{
 			$contatto = $c->clear()->where(array(
-				"email"	=>	$_SESSION["email_carrello"],
+				"email"	=>	sanitizeAll($_SESSION["email_carrello"]),
 			))->record();
 			
 			if (!empty($contatto))
