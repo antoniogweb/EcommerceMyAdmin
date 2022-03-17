@@ -388,7 +388,6 @@ class VariabiliModel extends GenericModel {
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
 		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
-		"invia_subito_mail_contatto"=>	1, // se inviate subito il contatto
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
 		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale
 		"classe_ext_cookies_conf"	=>	"segnalazione_cookies_ext uk-background-secondary uk-light segnalazione_cookies_ext_pag_cookies", // classe box esterno cookie preferenze
@@ -396,10 +395,6 @@ class VariabiliModel extends GenericModel {
 		"cookies_confirm_button"	=>	"uk-margin-top uk-width-1-1 uk-width-2-5@s ok_cookies cookie_accetta uk-button uk-button-primary", // classe pulsante ok cookie
 		"cookies_save_pref"			=>	"uk-margin-top uk-button uk-button-default uk-width-1-1 uk-width-2-5@s", // classe pulsante cookie in set preferenze
 		"informativa_privacy_in_pagina_cookie"	=>	1, // se 1, il testo della pagina privacy verrà mostrayo all'interno della pagina dei cookie
-		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti
-		"oggetto_form_contatti"		=>	"form richiesta informazioni", // oggetto della mail del form contatti
-		"oggetto_form_newsletter"	=>	"form iscrizione a newsletter", // oggetto della mail del form newsletter
-		"oggetto_mail_conferma_contatto"	=>	"conferma la tua mail", // oggetto della mail che chiede di confermare il proprio indirizzo email
 		"durata_carrello_wishlist_coupon"	=>	31536000, // durata dei cookie usati per carrello, wishlist e copupon
 		"durata_impostazioni_cookie"	=>	15552000, // durata dei cookie usati per le preferenze sui cookie
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine
@@ -412,9 +407,15 @@ class VariabiliModel extends GenericModel {
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		## MODULO CONTATTI ##
 // 		"redirect_pagina_dopo_invio_se_prodotto"	=>	0, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
+		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti
+		"oggetto_form_contatti"		=>	"form richiesta informazioni", // oggetto della mail del form contatti
+		"oggetto_form_newsletter"	=>	"form iscrizione a newsletter", // oggetto della mail del form newsletter
+		"oggetto_mail_conferma_contatto"	=>	"conferma la tua mail", // oggetto della mail che chiede di confermare il proprio indirizzo email
 		"fragment_form_contatti"	=>	"contatti-form", // all'invio del form contatti verrà aggiunto un fragment # con quel valore
 		"fragment_form_newsletter"	=>	"newsletter-form", // all'invio del form newsletter verrà aggiunto un fragment # con quel valore
 		"contatti_ajax_submit"	=>	0, // se impostato a 1, l'invio del form contatti sarà in modalità AJAX
+		"invia_subito_mail_contatto"=>	1, // se inviare subito il contatto
+		"invia_mail_contatto_a_piattaforma"	=>	1, // se inviare la mail di contatto anche alla piattaforma o solo ai referenti di nazione (se non ci sono referenti manda la mail alla piattaforma)
 		## ETICHETTE FEED GOOGLE ##
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## FEEDBACK ##

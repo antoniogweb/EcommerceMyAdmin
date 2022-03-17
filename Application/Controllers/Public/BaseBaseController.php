@@ -925,7 +925,10 @@ class BaseBaseController extends Controller
 	
 	protected function elencoIndirizziEmailACuiInviare($valoriEmail)
 	{
-		$emails = array(Parametri::$mailInvioOrdine);
+		$emails = array();
+		
+		if (v("invia_mail_contatto_a_piattaforma"))
+			$emails = array(Parametri::$mailInvioOrdine);
 		
 		if (isset($valoriEmail["nazione"]) && $valoriEmail["nazione"])
 		{
@@ -936,6 +939,9 @@ class BaseBaseController extends Controller
 			
 			$emails = array_unique($emails);
 		}
+		
+		if ((int)count($emails) === 0)
+			$emails = array(Parametri::$mailInvioOrdine);
 		
 		return $emails;
 	}
