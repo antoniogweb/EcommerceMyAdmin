@@ -32,11 +32,6 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					</div>
 				</div>
 				
-				<div class="t">
-					<td width="200px">Scrivi la tessera</td>
-					<td><input class="login_username_input" type="text" name="tessera" value=""/></td>
-				</div>
-				
 				<input class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtext("Imposta la password");?>" title="<?php echo gtext("Imposta la password");?>" />
 			</fieldset>
 		</form>
