@@ -7,6 +7,9 @@ $params = CaptchaModel::getModulo()->getParams();
 $(document).ready(function() {
 	$("body").on("click", "button,input[type='submit']", function(e){
 		
+		var that = $(this);
+		var value = that.attr("name");
+		console.log(value);
 		var thisForm = $(this).closest("form");
 		
 		if (thisForm.find("[name='<?php echo $params["campo_nascosto"];?>']").length > 0)
@@ -16,6 +19,9 @@ $(document).ready(function() {
 			grecaptcha.ready(function() {
 				grecaptcha.execute('<?php echo $params["secret_client"];?>', {action: 'submit'}).then(function(token) {
 					$("[name='<?php echo $params["campo_nascosto"];?>']").val(token);
+					
+					if (typeof value != "undefined")
+						thisForm.append("<input type='hidden' name='"+value+"' value='"+value+"' />")
 					
 					thisForm.trigger("submit");
 				});
