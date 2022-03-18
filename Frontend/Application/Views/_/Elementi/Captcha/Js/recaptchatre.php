@@ -9,13 +9,13 @@ $(document).ready(function() {
 		
 		var thisForm = $(this).closest("form");
 		
-		if (thisForm.find("[name='recaptchatre']").length > 0)
+		if (thisForm.find("[name='<?php echo $params["campo_nascosto"];?>']").length > 0)
 		{
 			e.preventDefault();
 			
 			grecaptcha.ready(function() {
 				grecaptcha.execute('<?php echo $params["secret_client"];?>', {action: 'submit'}).then(function(token) {
-					$("[name='recaptchatre']").val(token);
+					$("[name='<?php echo $params["campo_nascosto"];?>']").val(token);
 					
 					thisForm.trigger("submit");
 				});
