@@ -13107,6 +13107,10 @@ img:not([src]) {
   visibility: initial;
 }
 
+.uk-form-danger {
+  border: 1px solid #f0506e;
+}
+
 .hc-nav-trigger {
   position: relative;
   top: 0px;

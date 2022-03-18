@@ -18,7 +18,9 @@
 			</div>
 			
 			<?php if (!v("feedback_solo_se_loggato") || User::$logged) { ?>
-			<?php echo FeedbackModel::$sNotice; ?>
+			<div class="box_notice">
+				<?php echo FeedbackModel::$sNotice; ?>
+			</div>
 			<form action="<?php echo Domain::$currentUrl."?".v("var_query_string_id_rif")."=".(int)FeedbackModel::gIdProdotto();?>#form-feedback" method="post" novalidate="novalidate">
 				<fieldset class="uk-fieldset">
 					<div class="my-rating class_voto"></div>
@@ -64,7 +66,10 @@
 					</div>
 					
 					<?php echo Html_Form::hidden("inviaFeedback","inviaFeedback");?>
-					
+					<?php
+					if (v("feedback_ajax_submit"))
+						echo Html_Form::hidden("ajaxsubmit","ajaxsubmit");?>
+				
 					<?php echo Html_Form::hidden("voto",FeedbackModel::gValue("voto"));?>
 					
 					<div class="uk-margin">

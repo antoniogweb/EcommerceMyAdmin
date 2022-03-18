@@ -802,8 +802,17 @@ class BaseBaseController extends Controller
 			
 			$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
 			
+			$esitoInvio = "KO";
+			
 			if (isset($_POST['inviaFeedback']) && (!v("feedback_solo_se_loggato") || User::$logged))
 			{
+				// Imposto l'output in JSON
+				if (isset($_POST['ajaxsubmit']))
+				{
+					Output::setJson();
+					$this->clean();
+				}
+				
 				if (CaptchaModel::getModulo()->check())
 				{
 					if ($this->m['FeedbackModel']->checkConditions('insert'))
@@ -818,6 +827,8 @@ class BaseBaseController extends Controller
 						{
 							if ($this->m['FeedbackModel']->insert())
 							{
+								$esitoInvio = "OK";
+								
 								$lId = $this->m['FeedbackModel']->lastId();
 								
 								$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
@@ -865,28 +876,60 @@ class BaseBaseController extends Controller
 								$idGrazie = PagineModel::gTipoPagina("GRAZIE");
 								
 								if ($idGrazieFeedback)
-									$this->redirect(getUrlAlias($idGrazieFeedback));
-								else if ($idGrazie)
-									$this->redirect(getUrlAlias($idGrazie));
+									$idGrazie = $idGrazieFeedback;
+								
+								if (Output::$html)
+								{
+									if ($idGrazie)
+										$this->redirect(getUrlAlias($idGrazie));
+									else
+										$this->redirect("grazie.html");
+								}
 								else
-									$this->redirect("grazie.html");
+								{
+									$pageGrazieDetails = null;
+									
+									if ($idGrazie)
+										$pageGrazieDetails = PagesModel::getPageDetails($idGrazie);
+										
+									if ($pageGrazieDetails)
+										Output::setBodyValue("Notice", "<div class='".v("alert_success_class")."'>".htmlentitydecode(field($pageGrazieDetails, "description"))."</div>");
+									else
+										Output::setBodyValue("Notice", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato")."</div>");
+								}
 							}
 							else
 							{
-								FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+								$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+								
+								FeedbackModel::$sNotice = $erroreInvio;
+								Output::setBodyValue("Notice", $erroreInvio);
 							}
 						}
 						else
 						{
 							$this->m['FeedbackModel']->result = false;
 							
-							FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Hai già aggiunto una valutazione a questa pagina")."</div>";
+							$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Hai già aggiunto una valutazione a questa pagina")."</div>";
+							
+							FeedbackModel::$sNotice = $erroreInvio;
+							Output::setBodyValue("Notice", $erroreInvio);
 						}
 					}
 					else
 					{
-						FeedbackModel::$sNotice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+						$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+						
+						FeedbackModel::$sNotice = $erroreInvio;
+						Output::setBodyValue("Notice", $erroreInvio);
 					}
+				}
+				else
+				{
+					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+					
+					FeedbackModel::$sNotice = $erroreInvio;
+					Output::setBodyValue("Notice", $erroreInvio);
 				}
 			}
 			
@@ -896,6 +939,8 @@ class BaseBaseController extends Controller
 			
 			if (User::$id)
 				$defaultValues["autore"] = User::$nomeCliente;
+			
+			Output::setBodyValue("Esito", $esitoInvio);
 			
 			FeedbackModel::$sValues = $this->m['FeedbackModel']->getFormValues('insert','sanitizeHtml', 0, $defaultValues);
 			

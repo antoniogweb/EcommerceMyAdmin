@@ -30,9 +30,12 @@ class BaseHomeController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 
-		$this->load('header');
-		$this->load('footer','last');
-
+		if (Output::$html)
+		{
+			$this->load('header');
+			$this->load('footer','last');
+		}
+		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
 
 		$this->append($data);
@@ -69,7 +72,10 @@ class BaseHomeController extends BaseController
 		
 		$this->append($data);
 		
-		$this->cload('main');
+		if (Output::$html)
+			$this->cload('main');
+		else
+			$this->load("api_output");
 	}
 	
 	public function settacookie()

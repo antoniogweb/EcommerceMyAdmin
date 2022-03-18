@@ -148,7 +148,7 @@ class FeedbackModel extends GenericModel {
 	
 	public function aggiungiNotifica()
 	{
-		if (v("permetti_aggiunta_feedback") && App::$isFrontend && isset($this->values["id_user"]) && $this->values["id_user"] && isset($this->values["is_admin"]) && !$this->values["is_admin"] && isset($this->values["id_page"]))
+		if (v("permetti_aggiunta_feedback") && App::$isFrontend && isset($this->values["id_user"]) && isset($this->values["is_admin"]) && !$this->values["is_admin"] && isset($this->values["id_page"]))
 		{
 			$n = new NotificheModel();
 			

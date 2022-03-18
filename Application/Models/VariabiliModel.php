@@ -414,6 +414,7 @@ class VariabiliModel extends GenericModel {
 		"fragment_form_contatti"	=>	"contatti-form", // all'invio del form contatti verrà aggiunto un fragment # con quel valore
 		"fragment_form_newsletter"	=>	"newsletter-form", // all'invio del form newsletter verrà aggiunto un fragment # con quel valore
 		"contatti_ajax_submit"	=>	0, // se impostato a 1, l'invio del form contatti sarà in modalità AJAX
+		"newsletter_ajax_submit"	=>	0, // se impostato a 1, l'invio del form newsletter sarà in modalità AJAX
 		"invia_subito_mail_contatto"=>	1, // se inviare subito il contatto
 		"invia_mail_contatto_a_piattaforma"	=>	1, // se inviare la mail di contatto anche alla piattaforma o solo ai referenti di nazione (se non ci sono referenti manda la mail alla piattaforma)
 		## ETICHETTE FEED GOOGLE ##
@@ -425,6 +426,7 @@ class VariabiliModel extends GenericModel {
 		"feedback_permetti_di_editare_nome_se_loggato"	=>	1, // permette all'utente che lascia la recensione di editare il nome se loggato (altrimenti usa il nome con cui è registrato)
 		"feedback_visualizza_in_area_riservata"	=>	1, // se attivo, l'utente può vedere tutti i propri feedback nell'area riservata
 		"feedback_max_per_prodotto"	=>	1, // numero massimo di feedback per prodotto per utente (ha effetto solo se feedback_solo_se_loggato = 1)
+		"feedback_ajax_submit"	=>	0, // se impostato a 1, l'invio del form feedback sarà in modalità AJAX
 	);
 	
 	public static $daInizializzare = array(
