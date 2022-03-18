@@ -7,9 +7,8 @@ $params = CaptchaModel::getModulo()->getParams();
 $(document).ready(function() {
 	$("body").on("click", "button,input[type='submit']", function(e){
 		
-		var that = $(this);
-		var value = that.attr("name");
-		console.log(value);
+		var value = $(this).attr("name");
+// 		console.log(value);
 		var thisForm = $(this).closest("form");
 		
 		if (thisForm.find("[name='<?php echo $params["campo_nascosto"];?>']").length > 0)
