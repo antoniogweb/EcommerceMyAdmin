@@ -68,6 +68,16 @@ class CaptchaModel extends GenericModel {
 						"<div class='form_notice'><b>".gtext("Usato nel FORM DI REGISTRAZIONE e nel FORM AL CHECKOUT").":</b><br />".gtext("Campo nascosto invisibile ai clienti che, se riempito, bloccherà l'invio del form.")."<br />".gtext("Essendo nascosto, solo i bot riempiranno il campo, mentre gli utenti reali no.")."</div>"
 					),
 				),
+				'secret_client'		=>	array(
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
+				'secret_server'		=>	array(
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
 			),
 		);
 	}

@@ -24,12 +24,23 @@ class ReCaptchaTre extends Captcha
 {	
 	public function check()
 	{
-		return true;
+		$r = new Request();
+		$campoCaptcha = $r->post($this->params["campo_nascosto"],'');
+		
+		$secret   = $this->params["secret_server"];
+		$response = file_get_contents(
+			"https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $campoCaptcha,
+		);
+		
+		$response = json_decode($response, true);
+		
+	// 	print_r($response);
+		return $response["success"] ? true : false;
 	}
 	
 	public function checkRegistrazione()
 	{
-		return true;
+		return $this->check();
 	}
 	
 	public function getHiddenFieldIncludeFile()
