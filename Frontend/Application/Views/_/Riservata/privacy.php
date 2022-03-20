@@ -52,7 +52,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php $idCookies = PagineModel::gTipoPagina("COOKIE"); ?>
 	<?php if ($idCookies) { ?>
 	<div class="uk-margin">
-		<a href="<?php echo $this->baseUrl."/cookies.html"?>"><?php echo gtext("Leggi l'informativa sui cookie");?></a>
+		<a href="<?php echo $this->baseUrl."/".getUrlAlias($idCookies);?>"><?php echo gtext("Leggi l'informativa sui cookie");?></a>
 	</div>
 	<?php } ?>
 </div>
