@@ -172,8 +172,10 @@ class WishlistModel extends Model_Tree {
 		
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		return $this->clear()->select("wishlist.*,pages.*,contenuti_tradotti.*")->inner("pages")->on("wishlist.id_page = pages.id_page")
+		return $this->clear()->select("wishlist.*,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->inner("pages")->on("wishlist.id_page = pages.id_page")
 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("wishlist.id_order ASC, id_wishlist ASC")->send();
 	}
 }
