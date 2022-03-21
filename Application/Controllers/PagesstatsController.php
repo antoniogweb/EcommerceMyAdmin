@@ -30,6 +30,7 @@ class PagesstatsController extends BaseController
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
 		'email:sanitizeAll'=>'tutti',
+		'title:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "marketing";
@@ -49,7 +50,7 @@ class PagesstatsController extends BaseController
 		$this->mainFields = array("pages_stats.data_stat", "pages.title", "contatto", "cliente", "aggregate.numero");
 		$this->mainHead = "Data,Pagina,Contatto,Utente,Visualizzazioni";
 		
-		$filtri = array("dal","al","email");
+		$filtri = array("dal","al","email","title");
 		$this->filters = $filtri;
 		
 		$this->m[$this->modelName]->clear()
@@ -64,7 +65,10 @@ class PagesstatsController extends BaseController
 					" lk"	=>	array(
 						"regusers.username"	=>	$this->viewArgs["email"],
 					)
-				)
+				),
+				"lk"	=>	array(
+					"pages.title"	=>	$this->viewArgs["title"],
+				),
 			))
 			->groupBy("pages_stats.id_page,pages_stats.data_stat,pages_stats.uid_stats,pages_stats.id_contatto,pages_stats.id_user")
 			->orderBy("pages_stats.data_creazione desc")->convert();

@@ -89,7 +89,7 @@ class PagesstatsModel extends GenericModel {
 		{
 			$contatto = $record["contatti"];
 			
-			return $contatto["nome"]." ".$contatto["cognome"]." ".$contatto["email"];
+			return $contatto["nome"]." ".$contatto["cognome"]." - ".$contatto["email"];
 		}
 		
 		return "--";
@@ -101,7 +101,7 @@ class PagesstatsModel extends GenericModel {
 		{
 			$contatto = $record["regusers"];
 			
-			return $contatto["nome"]." ".$contatto["cognome"]." ".$contatto["username"];
+			return $contatto["nome"]." ".$contatto["cognome"]." - ".$contatto["username"];
 		}
 		
 		return "--";
