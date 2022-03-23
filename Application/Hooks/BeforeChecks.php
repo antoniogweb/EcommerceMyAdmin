@@ -62,6 +62,9 @@ VariabiliModel::ottieniVariabili();
 
 VariabiliModel::$valori["alert_error_class"] = "alert";
 
+// Imposto i pannelli dell'admin
+App::setPannelli();
+
 if (v("usa_https"))
 	Params::$useHttps = true;
 

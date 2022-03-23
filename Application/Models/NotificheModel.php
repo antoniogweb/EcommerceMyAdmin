@@ -54,7 +54,7 @@ class NotificheModel extends GenericModel {
 		if (v("piattaforma_in_sviluppo"))
 			$notifiche[] = array(
 				"testo"	=>	gtext("Indicizzazione non attiva."),
-				"link"	=>	Url::getRoot()."impostazioni/variabili/1",
+				"link"	=>	Url::getRoot()."impostazioni/ecommerce/1",
 				"icona"	=>	"fa-warning",
 				"class"	=>	"text-yellow",
 			);

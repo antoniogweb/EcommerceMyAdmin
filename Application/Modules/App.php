@@ -28,6 +28,74 @@ class App
 	
 	public static $elencoCookieTecnici = array();
 	
+	public static $pannelli = array();
+	
+	public static function setPannelli()
+	{
+		self::$pannelli = array(
+			"sito"	=>	array(
+				"titolo"	=>	"CMS",
+				"link"		=>	v("link_cms"),
+				"icona"		=>	"fa-cloud",
+				"classe"	=>	"help_cms",
+				"ordine"	=>	10,
+			),
+			"ecommerce"	=>	array(
+				"titolo"	=>	"E-commerce",
+				"link"		=>	v("url_elenco_prodotti").'/main',
+				"icona"		=>	"fa-shopping-cart",
+				"condizioni"	=>	array(
+					"attiva_menu_ecommerce"	=>	1,
+				),
+				"classe"	=>	"help_ecommerce",
+				"ordine"	=>	20,
+			),
+			"marketing"	=>	array(
+				"titolo"	=>	"Marketing",
+				"link"		=>	'panel/main/marketing',
+				"icona"		=>	"fa-line-chart",
+				"condizioni"	=>	array(
+					"attiva_marketing"	=>	1,
+				),
+				"classe"	=>	"help_marketing",
+				"ordine"	=>	30,
+			),
+			"utenti"	=>	array(
+				"titolo"	=>	"Preferenze",
+				"link"		=>	'users/main',
+				"icona"		=>	"fa-cog",
+				"classe"	=>	"help_configurazione",
+				"ordine"	=>	40,
+			),
+		);
+		
+		// Imposto le app
+		if (defined("APPS"))
+		{
+			Params::$installed = APPS;
+			
+			foreach (APPS as $app)
+			{
+				$path = ROOT."/Application/Apps/".ucfirst($app)."/pannelli.php";
+				
+				if (file_exists($path))
+				{
+					if (isset($APP_PANNELLI))
+						unset($APP_PANNELLI);
+					
+					include($path);
+					
+					if (isset($APP_PANNELLI))
+						self::$pannelli = array_merge(self::$pannelli, $APP_PANNELLI);
+				}
+			}
+		}
+		
+		uasort(self::$pannelli, function($a, $b){
+			return strcmp($a["ordine"], $b["ordine"]);
+		});
+	}
+	
 	public static function getCookieTecnici()
 	{
 		if (empty(self::$elencoCookieTecnici))

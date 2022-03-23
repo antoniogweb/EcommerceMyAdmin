@@ -182,38 +182,17 @@
 							</a>
 						</li>
 						<?php } ?>
-						<li class="<?php if (strcmp($sezionePannello,"sito") === 0) { ?>active<?php } ?> help_cms">
-							<a href="<?php echo $this->baseUrl.'/'.v("link_cms");?>"><i class="fa fa-cloud"></i>
-							<?php if (!User::$isMobile) { ?>
-							<?php echo gtext("CMS")?>
+						<?php foreach (App::$pannelli as $tipoPannello => $pannello) { ?>
+							<?php if (!isset($pannello["condizioni"]) || VariabiliModel::verificaCondizioni($pannello["condizioni"])) { ?>
+							<li class="<?php if (strcmp($sezionePannello,$tipoPannello) === 0) { ?>active<?php } ?> <?php echo $pannello["classe"];?>">
+								<a href="<?php echo $this->baseUrl.'/'.$pannello["link"];?>"><i class="fa <?php echo $pannello["icona"];?>"></i>
+								<?php if (!User::$isMobile) { ?>
+								<?php echo gtext($pannello["titolo"])?>
+								<?php } ?>
+								</a>
+							</li>
 							<?php } ?>
-							</a>
-						</li>
-						<?php if (v("attiva_menu_ecommerce")) { ?>
-						<li class="<?php if (strcmp($sezionePannello,"ecommerce") === 0) { ?>active<?php } ?> help_ecommerce">
-							<a href="<?php echo $this->baseUrl.'/'.v("url_elenco_prodotti").'/main';?>"><i class="fa fa-shopping-cart"></i>
-							<?php if (!User::$isMobile) { ?>
-							<?php echo gtext("E-commerce")?>
-							<?php } ?>
-							</a>
-						</li>
 						<?php } ?>
-						<?php if (v("attiva_marketing")) { ?>
-						<li class="<?php if (strcmp($sezionePannello,"marketing") === 0) { ?>active<?php } ?> help_ecommerce">
-							<a href="<?php echo $this->baseUrl.'/panel/main/marketing';?>"><i class="fa fa-line-chart"></i>
-							<?php if (!User::$isMobile) { ?>
-							<?php echo gtext("Marketing")?>
-							<?php } ?>
-							</a>
-						</li>
-						<?php } ?>
-						<li class="<?php if (strcmp($sezionePannello,"utenti") === 0) { ?>active<?php } ?> help_configurazione">
-							<a href="<?php echo $this->baseUrl.'/users/main';?>"><i class="fa fa-cog"></i>
-							<?php if (!User::$isMobile) { ?>
-							<?php echo gtext("Preferenze")?>
-							<?php } ?>
-							</a>
-						</li>
 					</ul>
 					<?php } ?>
 				</div>

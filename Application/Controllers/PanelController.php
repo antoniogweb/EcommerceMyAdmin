@@ -46,29 +46,13 @@ class PanelController extends BaseController {
 			}
 		}
 		
-		switch ($tipo)
-		{
-			case "sito":
-				$this->load('header_sito');
-				$data["sezionePannello"] = "sito";
-				break;
-			case "ecommerce":
-				$this->load('header_ecommerce');
-				$data["sezionePannello"] = "ecommerce";
-				break;
-			case "utenti":
-				$this->load('header_utenti');
-				$data["sezionePannello"] = "utenti";
-				break;
-			case "marketing":
-				$this->load('header_marketing');
-				$data["sezionePannello"] = "marketing";
-				break;
-			default:
-				$this->load('header_sito');
-				$data["sezionePannello"] = "sito";
-				break;
-		}
+		$clean["tipo"] = encodeUrl(basename((string)$tipo));
+		
+		if (!is_string($tipo) || !in_array($clean["tipo"], array_keys(App::$pannelli)) || !file_exists($this->theme->viewPath('header_'.$clean["tipo"])))
+			$clean["tipo"] = "sito";
+		
+		$this->load('header_'.$clean["tipo"]);
+		$data["sezionePannello"] = $clean["tipo"];
 		
 		$this->append($data);
 		
