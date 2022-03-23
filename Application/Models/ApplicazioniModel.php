@@ -155,6 +155,10 @@ class ApplicazioniModel extends GenericModel {
 				fwrite($hand,date("Y-m-d H:i:s")." DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql\n");
 				echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />";
 				
+				// Rigenero l'albero delle categorie
+				$cModel = new CategoriesModel();
+				$cModel->callRebuildTree();
+				
 				$version = $newVersion;
 			}
 			
