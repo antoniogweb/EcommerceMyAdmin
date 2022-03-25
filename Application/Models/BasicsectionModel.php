@@ -26,28 +26,32 @@ class BasicsectionModel extends PagesModel {
 	
 	public function insert()
 	{
-		$c = new CategoriesModel();
+		$this->setAliasAndCategory();
 		
-		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
-		
-		if (!isset($this->values["alias"]) || !$this->values["alias"])
-			$this->values["alias"] = "";
-		
-		$this->values["id_c"] = $clean["id_c"];
+// 		$c = new CategoriesModel();
+// 		
+// 		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
+// 		
+// 		if (!isset($this->values["alias"]) || !$this->values["alias"])
+// 			$this->values["alias"] = "";
+// 		
+// 		$this->values["id_c"] = $clean["id_c"];
 		
 		return parent::insert();
 	}
 	
 	public function update($id = null, $where = null)
 	{
-		$c = new CategoriesModel();
+		$this->setAliasAndCategory();
 		
-		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
-		
-		if (!isset($this->values["alias"]) || !$this->values["alias"])
-			$this->values["alias"] = "";
-		
-		$this->values["id_c"] = $clean["id_c"];
+// 		$c = new CategoriesModel();
+// 		
+// 		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
+// 		
+// 		if (!isset($this->values["alias"]) || !$this->values["alias"])
+// 			$this->values["alias"] = "";
+// 		
+// 		$this->values["id_c"] = $clean["id_c"];
 		
 		return parent::update($id, $where);
 	}

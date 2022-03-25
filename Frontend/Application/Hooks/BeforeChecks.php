@@ -133,3 +133,18 @@ if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
 Domain::setPath();
+
+Form_Entry::$defaultLabelClass = "uk-form-label";
+Form_Entry::$defaultWrap = array(null,null,'<div class="uk-form-controls">','</div>');
+
+Helper_Menu::$htmlLinks = array(
+	"back" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'class="uk-button uk-button-default"',
+		'text'	=>	"Torna",
+		"classIconBefore"	=>	'<span uk-icon="icon: arrow-left"></span>',
+	),
+);
+
+Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary";

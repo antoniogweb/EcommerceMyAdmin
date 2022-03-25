@@ -35,10 +35,7 @@ trait InitController
 		// Estraggo le traduzioni
 		$this->model("LingueModel");
 		
-		self::$traduzioni = $data['elencoTraduzioniAttive'] = $this->m["LingueModel"]->clear()->where(array(
-			"principale"	=>	0,
-			"attiva"		=>	1,
-		))->orderBy("id_order")->toList("codice")->send();
+		self::$traduzioni = $data['elencoTraduzioniAttive'] = LingueModel::getLingueNonPrincipali();
 		
 		$data['elencoLingue'] = $this->elencoLingue = $this->m["LingueModel"]->clear()->where(array(
 			"attiva"	=>	1,

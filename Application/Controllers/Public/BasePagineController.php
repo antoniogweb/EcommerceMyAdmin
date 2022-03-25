@@ -22,9 +22,38 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY."/Application/Controllers/Public/BaseFasceController.php");
+Cache::removeTablesFromCache(array("categories", "pages", "contenuti_tradotti"));
 
-trait FasceController
+class BasePagineController extends BaseController
 {
-	use BaseFasceController;
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if (!v("permetti_agli_utenti_di_aggiungere_pagine"))
+			$this->redirect("");
+		
+		if (Output::$html)
+		{
+			$this->load('header');
+			$this->load('footer','last');
+		}
+		
+		$data["arrayLingue"] = array();
+		
+		$this->s['registered']->check(null,0);
+		
+		if (class_exists($model))
+			$this->model($model);
+		
+		BaseController::$traduzioni = $data['elencoTraduzioniAttive'] = LingueModel::getLingueNonPrincipali();
+		
+		$this->append($data);
+	}
+	
+	protected function checkAccessoPagina($queryType = 'insert', $id = 0)
+	{
+		if (!$this->m[$this->modelName]->checkUtente($queryType, $id))
+			$this->redirect("");
+	}
 }

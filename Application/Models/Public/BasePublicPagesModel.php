@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
@@ -22,9 +22,36 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY."/Application/Controllers/Public/BasePagineController.php");
-
-class PagineController extends BasePagineController
+class BasePublicPagesModel extends PagesModel
 {
+	public function checkUtente($action = "insert", $idPage = 0)
+	{
+		if ($action == "insert")
+			return true;
+		else
+		{
+			$record = $this->selectId((int)$idPage);
+			
+			if (!empty($record) && (int)$record["id_user"] === (int)User::$id)
+				return true;
+		}
+		
+		return false;
+	}
 	
+	public function insert()
+	{
+		$this->setAliasAndCategory();
+		
+		$this->values["id_user"] = (int)User::$id;
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setAliasAndCategory();
+		
+		return parent::update($id, $where);
+	}
 }

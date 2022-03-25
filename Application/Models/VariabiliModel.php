@@ -427,6 +427,8 @@ class VariabiliModel extends GenericModel {
 		"feedback_visualizza_in_area_riservata"	=>	1, // se attivo, l'utente può vedere tutti i propri feedback nell'area riservata
 		"feedback_max_per_prodotto"	=>	1, // numero massimo di feedback per prodotto per utente (ha effetto solo se feedback_solo_se_loggato = 1)
 		"feedback_ajax_submit"	=>	0, // se impostato a 1, l'invio del form feedback sarà in modalità AJAX
+		## PORTALE ##
+		"permetti_agli_utenti_di_aggiungere_pagine"	=>	0, // se impostato a 1, gli utenti potranno aggiungere pagine
 	);
 	
 	public static $daInizializzare = array(

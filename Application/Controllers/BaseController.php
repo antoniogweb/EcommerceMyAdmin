@@ -24,6 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseController extends Controller
 {
+	use BaseCrudController;
 	use InitController;
 	use JsonController;
 	
@@ -37,33 +38,33 @@ class BaseController extends Controller
 	
 	public $parentRoot = null;
 	
-	public $formAction = null;
+// 	public $formAction = null;
 	
-	public $formView = "form";
+// 	public $formView = "form";
 	
-	public $mainView = "main";
+// 	public $mainView = "main";
 	
-	public $formFields = null;
+// 	public $formFields = null;
 	
 	public $disabledFields = null;
 	
 	public $menuLinksStruct = array();
 	
-	public $menuLinks = "back,save";
+// 	public $menuLinks = "back,save";
 	
 	public $menuLinksReport = "stampa";
 	
-	public $menuLinksInsert = "back,save";
+// 	public $menuLinksInsert = "back,save";
 	
 	public $mainMenuAssociati = "back,copia";
 	
 	public $insertSubmitText = "Continua";
 	
-	public $updateRedirect = false;
+// 	public $updateRedirect = false;
 	
-	public $updateRedirectUrl = null;
+// 	public $updateRedirectUrl = null;
 	
-	public $insertRedirect = true;
+// 	public $insertRedirect = true;
 	
 	public $insertRedirectUrl = null;
 	
@@ -107,9 +108,9 @@ class BaseController extends Controller
 	
 	public $sezionePannello = "sito";
 	
-	public $formDefaultValues = array();
+// 	public $formDefaultValues = array();
 	
-	public $functionsIfFromDb = array();
+// 	public $functionsIfFromDb = array();
 	
 	public $useEditor = false;
 	
@@ -539,7 +540,7 @@ class BaseController extends Controller
 		
 		$data['posizioni'] = $this->_posizioni;
 		
-		$qAllowed = array("insert","update");
+		$qAllowed = BaseCrudController::$azioniPermesse;
 		
 		$data["useEditor"] = $this->useEditor;
 		
@@ -609,36 +610,38 @@ class BaseController extends Controller
 			
 			$formAction = isset($this->formAction) ? $this->formAction : $this->applicationUrl.$this->controller."/".$this->action."/$queryType/".$clean["id"].$partial;
 			
-			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult and $this->insertRedirect)
-			{
-				if (isset($this->viewArgs["cl_on_sv"]) && $this->viewArgs["cl_on_sv"] != "Y")
-				{
-					$lId = $this->m[$this->modelName]->lId;
-					
-					flash("notice",$this->m[$this->modelName]->notice);
-					
-					if (isset($this->insertRedirectUrl))
-					{
-						$this->redirect($this->insertRedirectUrl);
-					}
-					else
-					{
-						$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU);
-					}
-				}
-			}
+			$this->redirectAfterInsertUpdate($queryType, $clean["id"], false, $partialU);
 			
-			if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
-			{
-				flash("notice",$this->m[$this->modelName]->notice);
-				
-				if ($this->updateRedirect or isset($_POST["redirectToList"]))
-					$this->redirect($this->controller.'/main/'.$this->viewStatus);
-				else if ($this->updateRedirectUrl)
-					$this->redirect($this->updateRedirectUrl);
-				else
-					$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.'/update/'.$clean["id"].$this->viewStatus."&insert=ok");
-			}
+// 			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult and $this->insertRedirect)
+// 			{
+// 				if (isset($this->viewArgs["cl_on_sv"]) && $this->viewArgs["cl_on_sv"] != "Y")
+// 				{
+// 					$lId = $this->m[$this->modelName]->lId;
+// 					
+// 					flash("notice",$this->m[$this->modelName]->notice);
+// 					
+// 					if (isset($this->insertRedirectUrl))
+// 					{
+// 						$this->redirect($this->insertRedirectUrl);
+// 					}
+// 					else
+// 					{
+// 						$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU);
+// 					}
+// 				}
+// 			}
+			
+// 			if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
+// 			{
+// 				flash("notice",$this->m[$this->modelName]->notice);
+// 				
+// 				if ($this->updateRedirect or isset($_POST["redirectToList"]))
+// 					$this->redirect($this->controller.'/main/'.$this->viewStatus);
+// 				else if ($this->updateRedirectUrl)
+// 					$this->redirect($this->updateRedirectUrl);
+// 				else
+// 					$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.'/update/'.$clean["id"].$this->viewStatus."&insert=ok");
+// 			}
 			
 			$this->m[$this->modelName]->setFormStruct($clean["id"]);
 			

@@ -88,7 +88,6 @@ class BaseBaseController extends Controller
 		
 		$this->model("CategoriesModel");
 		$this->model("MenuModel");
-// 		$this->model("MenusecModel");
 		$this->model("PagesModel");
 		$this->model("ImmaginiModel");
 		$this->model("CartModel");
@@ -98,7 +97,6 @@ class BaseBaseController extends Controller
 		$this->model("RegusersModel");
 		$this->model("PromozioniModel");
 		
-// 		$this->model("NewsModel");
 		$this->model("AttributiModel");
 		$this->model("AttributivaloriModel");
 		$this->model("CombinazioniModel");
@@ -130,6 +128,25 @@ class BaseBaseController extends Controller
 		
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
+		
+		// Traduzioni sezione crud
+		Lang_It_UploadStrings::$staticStrings = array(
+			"error" => "<div class='".v("alert_error_class")."'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
+			"executed"	=>	"<div class='".v("alert_success_class")."'>".gtext("Operazione eseguita!")."</div>",
+			"not-child" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
+			"not-dir" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una directory")."</div>\n",
+			"not-empty" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è vuota")."</div>\n",
+			"no-folder-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
+			"no-file-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stato specificato alcun file")."</div>\n",
+			"not-writable" => "<div class='".v("alert_error_class")."'>".gtext("La cartella non è scrivibile")."</div>\n",
+			"not-writable-file" => "<div class='".v("alert_error_class")."'>".gtext("Il file non è scrivibile")."</div>\n",
+			"dir-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
+			"no-upload-file" => "<div class='".v("alert_error_class")."'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
+			"size-over" => "<div class='".v("alert_error_class")."'>".gtext("La dimensione del file è troppo grande")."</div>\n",
+			"not-allowed-ext" => "<div class='".v("alert_error_class")."'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+			"not-allowed-mime-type" => "<div class='".v("alert_error_class")."'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
+			"file-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
+		);
 		
 		// Predisponi i filtri in coda nell'URL
 		$this->predisponiAltriFiltri();

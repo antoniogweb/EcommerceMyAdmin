@@ -3061,4 +3061,16 @@ class PagesModel extends GenericModel {
 			}
 		}
 	}
+	
+	public function setAliasAndCategory()
+	{
+		$c = new CategoriesModel();
+		
+		$clean["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
+		
+		if (!isset($this->values["alias"]) || !$this->values["alias"])
+			$this->values["alias"] = "";
+		
+		$this->values["id_c"] = $clean["id_c"];
+	}
 }

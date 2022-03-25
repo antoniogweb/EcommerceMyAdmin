@@ -393,27 +393,23 @@ if (typeof evidenziaErrore !== 'function')
 {
 	window.evidenziaErrore = function(selettore)
 	{
+		var nomeCampo = selettore.substring(7);
+		
 		if ($(".box_form_evidenzia").length > 0)
 		{
 // 			$(selettore).closest(".box_form_evidenzia").remove();
 			
-			$(".evidenzia").closest(".box_form_evidenzia").find(selettore).addClass("uk-form-danger");
-			
-// 			if (input_error_style == "")
-// 				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).css(input_error_css);
-// 			
-// 			if (input_error_style != "")
-// 				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).attr("style", input_error_style);
+			if ($(".evidenzia").closest(".box_form_evidenzia").find(selettore).length > 0)
+				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).addClass("uk-form-danger");
+			else
+				$(".evidenzia").closest(".box_form_evidenzia").find("[name='" + nomeCampo + "']").addClass("uk-form-danger");
 		}
 		else
 		{
-			$(selettore).addClass("uk-form-danger");
-			
-// 			if (input_error_style == "")
-// 				$(selettore).css(input_error_css);
-// 			
-// 			if (input_error_style != "")
-// 				$(selettore).attr("style", input_error_style);
+			if ($(selettore).length > 0)
+				$(selettore).addClass("uk-form-danger");
+			else
+				$("[name='" + nomeCampo + "']").addClass("uk-form-danger");
 		}
 	}
 }

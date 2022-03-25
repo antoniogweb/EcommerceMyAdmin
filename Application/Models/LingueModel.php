@@ -167,4 +167,14 @@ class LingueModel extends GenericModel
 			"codice"	=>	sanitizeAll($codice),
 		))->field("id_lingua");
 	}
+	
+	public static function getLingueNonPrincipali()
+	{
+		$l = new LingueModel();
+		
+		return $l->clear()->where(array(
+			"principale"	=>	0,
+			"attiva"		=>	1,
+		))->orderBy("id_order")->toList("codice")->send();
+	}
 }

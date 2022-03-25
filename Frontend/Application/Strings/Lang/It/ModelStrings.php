@@ -26,7 +26,7 @@ class Lang_It_ModelStrings extends Lang_ResultStrings {
 	
 	public $string = array(
 		"error" => "<div class='alert'>Errore nella query: contatta l'amministratore!</div>\n",
-		"executed" => "<div class='executed'>operazione eseguita!</div>\n",
+		"executed" => "<div class='uk-alert uk-alert-success'>operazione eseguita!</div>\n",
 		"associate" => "<div class='alert'>Problema di integrit&agrave referenziale: il record &egrave associato ad un record di una tabella figlia. Devi prima rompere l'associazione.</div>\n",
 		"no-id" => "<div class='alert'>Non &egrave definito alcun id della query</div>\n",
 		"not-linked" => "<div class='alert'>Il record non &egrave associato, non puoi dissociarlo</div>",
