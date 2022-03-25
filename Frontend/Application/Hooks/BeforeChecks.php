@@ -135,16 +135,27 @@ if (!defined("FRONT"))
 Domain::setPath();
 
 Form_Entry::$defaultLabelClass = "uk-form-label";
-Form_Entry::$defaultWrap = array(null,null,'<div class="uk-form-controls">','</div>');
+Form_Entry::$defaultWrap = array('<div class="uk-margin">',null,'<div class="uk-form-controls">','</div>',"</div>");
+Form_Entry::$defaultInputClasses["input"] = "uk-input";
+Form_Entry::$defaultInputClasses["select"] = "uk-select";
 
 Helper_Menu::$htmlLinks = array(
 	"back" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'class="uk-button uk-button-default"',
+		"attributes" => 'class="uk-button uk-button-primary uk-button-small"',
 		'text'	=>	"Torna",
 		"classIconBefore"	=>	'<span uk-icon="icon: arrow-left"></span>',
+	),
+	"add" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'class="uk-button uk-button-primary uk-button-small"',
+		'text'	=>	"Nuovo",
+		"classIconBefore"	=>	'<span uk-icon="icon: plus"></span>',
 	),
 );
 
 Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary";
+
+Helper_List::$tableAttributes = array('class'=>'uk-table uk-table-divider uk-table-striped uk-table-hover uk-table-small','cellspacing'=>'0');

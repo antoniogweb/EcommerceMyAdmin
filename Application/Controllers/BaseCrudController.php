@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait BaseCrudController
 {
+	protected $_posizioni = array();
+	
 	public static $azioniPermesse = array("insert","update");
 	public static $traduzioni = array();
 	
@@ -38,6 +40,25 @@ trait BaseCrudController
 	public $insertRedirect = true;
 	public $updateRedirect = false;
 	public $updateRedirectUrl = null;
+	public $id = 0;
+	public $nullQueryValue = "tutti";
+	public $ordinaAction = "ordina";
+	public $queryActions = "del";
+	public $bulkQueryActions = "del";
+	public $scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add');
+	public $addBulkActions = true;
+	public $addIntegrazioniInMain = true;
+	public $mainButtons = 'ldel,ledit';
+	public $queryActionsAfter = "";
+	public $colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+	public $filters = array();
+	public $aggregateFilters = true;
+	public $showFilters = false;
+	public $menuVariable = "menu";
 	
 	protected function getStringaErroreValidazione()
 	{
@@ -135,5 +156,240 @@ trait BaseCrudController
 		}
 		else
 			$this->redirect("");
+	}
+	
+	protected function main()
+	{
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->shift();
+		
+		if ($this->id !== 0)
+		{
+			$clean['id'] = $data['id'] = (int)$this->id;
+			$this->mainView = "associati";
+		}
+		
+		$data['posizioni'] = $this->_posizioni;
+		
+		Params::$nullQueryValue = $this->nullQueryValue;
+		
+		$primaryKey = $this->m[$this->modelName]->getPrimaryKey();
+		$table = $this->m[$this->modelName]->table();
+		
+		$data["tabella"] = isset($this->tabella) ? $this->tabella : $table;
+		
+		$data["ordinaAction"] = $this->ordinaAction;
+		
+		$data['type'] = $data['queryType'] = "main";
+		
+		$data["title"] = "Gestione " . $data["tabella"];
+		
+		$this->m[$this->modelName]->updateTable($this->queryActions);
+		
+		$this->m[$this->modelName]->bulkAction($this->bulkQueryActions);
+		
+		$this->m[$this->modelName]->setFilters();
+		$this->loadScaffold('main',$this->scaffoldParams);
+		
+		if ($this->addBulkActions)
+		{
+			$this->mainFields = array_merge(array("[[checkbox]];$table.$primaryKey;"),$this->mainFields);
+			$this->mainHead = "[[bulkselect:checkbox_".$table."_".$primaryKey."]],".$this->mainHead;
+		}
+		
+		if ($this->addIntegrazioniInMain)
+			$this->aggiungiintegrazioni();
+		
+		if ($this->m[$this->modelName]->traduzione && $this->addTraduzioniInMain)
+		{
+			foreach (self::$traduzioni as $codiceLingua)
+			{
+				$this->mainFields[] = "link".str_replace("-","",$codiceLingua);
+				$this->mainHead .= ",".strtoupper($codiceLingua);
+			}
+		}
+		
+		if (isset($_GET["esporta"]) || isset($_GET["esporta_xls"]))
+		{
+			if (isset($this->mainCsvFields) and isset($this->mainCsvHead))
+			{
+				$this->mainFields = $this->mainCsvFields;
+				$this->mainHead = $this->mainCsvHead;
+			}
+		}
+		
+		$this->scaffold->loadMain($this->mainFields,$table.'.'.$primaryKey,$this->mainButtons);
+		
+		$this->scaffold->setHead($this->mainHead);
+		
+		if ($this->addBulkActions)
+		{
+			if (!isset($this->bulkActions) or !is_array($this->bulkActions))
+			{
+				$this->scaffold->itemList->setBulkActions(array(
+					"checkbox_".$table."_".$primaryKey	=>	array("del","Elimina selezionati","confirm"),
+				));
+			}
+			else
+			{
+				$this->scaffold->itemList->setBulkActions($this->bulkActions);
+			}
+		}
+		
+		$formAction = isset($this->formMethod) ? $this->formMethod : "form";
+		
+// 		$this->scaffold->mainMenu->links['esporta']['url'] = "main";
+		
+		$this->scaffold->mainMenu->links['add']['url'] = $formAction.'/insert/0';
+		$this->scaffold->mainMenu->links['add']['title'] = gtext('inserisci un nuovo elemento');
+		
+		if (isset($this->scaffold->mainMenu->links['elimina']) and $this->id !== 0)
+			$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="'.$this->id_name.'" id="'.$clean['id'].'"';
+		
+		if (isset($this->scaffold->mainMenu->links['copia']) and isset($clean["id"]))
+			$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean["id"];
+		
+		if (isset($this->scaffold->mainMenu->links['pulisci']) and isset($clean["id"]))
+			$this->scaffold->mainMenu->links['pulisci']['url'] = $this->scaffold->mainMenu->links['pulisci']['url'].'/'.$clean["id"];
+
+		$this->scaffold->model->clear()->restore();
+		
+		if (App::$isFrontend)
+			$this->scaffold->model->aWhere(array(
+				"id_user"	=>	User::$id,
+			));
+		
+		$this->m[$this->modelName]->updateTable($this->queryActionsAfter);
+		
+		$this->scaffold->fields = $this->scaffold->model->select;
+		
+		$this->scaffold->itemList->colProperties = $this->colProperties;
+		
+		$this->scaffold->itemList->setFilters($this->filters);
+		
+		if ($this->aggregateFilters)
+		{
+			$this->scaffold->itemList->aggregateFilters();
+		}
+		
+		if (!$this->showFilters)
+		{
+			$this->scaffold->itemList->showFilters = false;
+		}
+		
+		if (isset($_GET["esporta"]))
+		{
+			$this->scaffold->itemList->renderToCsv = true;
+			$this->scaffold->itemList->csvColumnsSeparator = ";";
+			
+			$this->scaffold->params["recordPerPage"] = 10000000000;
+			$this->scaffold->params['pageList'] = false;
+			
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['main'] = $this->scaffold->html['main'];
+			
+			$this->clean();
+			
+			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".csv");
+			header('Content-Type: application/vnd.ms-excel');
+			
+			echo "\xEF\xBB\xBF"; // UTF-8 BOM
+			echo $data['main'];
+		}
+		else if (isset($_GET["esporta_xls"]))
+		{
+			$this->scaffold->params["recordPerPage"] = 10000000000;
+			$this->scaffold->params['pageList'] = false;
+			
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['main'] = $this->scaffold->html['main'];
+			
+			$this->clean();
+			
+			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xls");
+			header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+			
+			echo "\xEF\xBB\xBF"; // UTF-8 BOM
+			echo $data['main'];
+		}
+		else if (isset($_GET["esporta_json"]))
+		{
+			header('Content-type: application/json; charset=utf-8');
+			
+			$this->clean();
+			
+			$records = $this->scaffold->model->send();
+			
+			if (isset($_GET["formato_json"]))
+			{
+				$tableName = $this->scaffold->model->table();
+				$campoTitolo = $this->scaffold->model->campoTitolo;
+				$campoValore = $this->scaffold->model->campoValore;
+				
+				if ($_GET["formato_json"] == "select2")
+				{
+					$struct = array(
+						"results"	=>	array(),
+					);
+					
+					foreach ($records as $r)
+					{
+						if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
+							$struct["results"][] = array(
+								"id"	=>	$r[$tableName][$campoValore],
+								"text"	=>	$r[$tableName][$campoTitolo],
+							);
+					}
+					
+					$records = $struct;
+				}
+			}
+			
+// 			print_r($records);
+			
+			echo json_encode($records);
+		}
+		else
+		{
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['numeroElementi'] = $this->scaffold->model->rowNumber();
+			
+			$data[$this->menuVariable] = $this->scaffold->html['menu'];
+			$data['popup'] = $this->scaffold->html['popup'];
+			$data['main'] = $this->scaffold->html['main'];
+			$data['pageList'] = $this->scaffold->html['pageList'];
+			$data['notice'] = $this->scaffold->model->notice;
+			
+			$data['recordPerPage'] = $this->scaffold->params["recordPerPage"];
+			$data["filtri"] = $this->scaffold->itemList->createFilters();
+			
+			$this->load($this->mainView);
+		}
+		
+		$this->append($data);
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+	}
+	
+	protected function aggiungiintegrazioni()
+	{
+		$elencoIntegrazioni = IntegrazioniModel::getElencoIntegrazioni($this->controller);
+		
+		foreach ($elencoIntegrazioni as $i)
+		{
+			require_once(LIBRARY."/Application/Modules/Integrazioni/".$i["integrazioni"]["classe"].".php");
+			
+			call_user_func(array($i["integrazioni"]["classe"], "setIdSezione"), $i["integrazioni_sezioni"]["id_integrazione_sezione"]);
+			call_user_func(array($i["integrazioni"]["classe"], "setIdIntegrazione"), $i["integrazioni"]["id_integrazione"]);
+			
+			$this->mainFields[] = $i["integrazioni"]["classe"].'::checkInElenco|orders.id_o';
+			$this->mainHead .= ','.$i["integrazioni"]["titolo"];
+		}
 	}
 }

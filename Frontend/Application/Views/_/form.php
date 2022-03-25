@@ -16,26 +16,24 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 	<?php echo $azioni;?>
 	
-	<div class="box">
-		<div class="box-header with-border main">
-			<?php $flash = flash("notice");?>
-			<?php echo $flash;?>
-			<?php if (!$flash) echo $notice;?>
-			
-			<!-- show the table -->
-			<div class='scaffold_form'>
-				<?php
-				$applicationPath = $this->application ? "Apps/".ucfirst($this->application)."/" : "";
-				
-				$path = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_scaffold_main.php";
-				
-				if (file_exists($path))
-					include($path);
-				else
-					echo $main;
-				?>
-			</div>
-		</div>
+	<div class="uk-margin">
+		<?php $flash = flash("notice");?>
+		<?php echo $flash;?>
+		<?php if (!$flash) echo $notice;?>
+	</div>
+	
+	<!-- show the table -->
+	<div class='uk-margin'>
+		<?php
+		$applicationPath = $this->application ? "Apps/".ucfirst($this->application)."/" : "";
+		
+		$path = ROOT."/Application/Views/".ucfirst($this->controller)."/".$this->action."_scaffold_main.php";
+		
+		if (file_exists($path))
+			include($path);
+		else
+			echo $main;
+		?>
 	</div>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

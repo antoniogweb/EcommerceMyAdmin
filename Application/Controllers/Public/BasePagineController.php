@@ -26,6 +26,8 @@ Cache::removeTablesFromCache(array("categories", "pages", "contenuti_tradotti"))
 
 class BasePagineController extends BaseController
 {
+	public $menuVariable = "azioni";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
