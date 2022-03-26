@@ -877,7 +877,8 @@ function attivaModuli($string, $obj = null)
 		{
 			foreach (FASCE_TAGS as $reg => $metodo)
 			{
-				$string = preg_replace_callback('/\['.$reg.'\]/', array($obj,$metodo) ,$string);
+				if (method_exists($obj,$metodo))
+					$string = preg_replace_callback('/\['.$reg.'\]/', array($obj,$metodo) ,$string);
 			}
 		}
 	}

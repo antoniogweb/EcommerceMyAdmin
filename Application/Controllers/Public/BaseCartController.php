@@ -262,7 +262,7 @@ class BaseCartController extends BaseController
 			$result = "KO";
 		}
 		
-		$this->index();
+		echo $result;
 	}
 	
 	//$quantita: id_page:quantity|id_page:quantity|...
@@ -300,7 +300,6 @@ class BaseCartController extends BaseController
 			}
 		}
 		
-		// Se sono JSON, stampa in output il carrello completo
-		$this->index();
+		echo json_encode($arrayIdErroriQta);
 	}
 }
