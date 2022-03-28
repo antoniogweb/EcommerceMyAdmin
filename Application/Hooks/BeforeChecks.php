@@ -644,12 +644,14 @@ Helper_List::$filtersFormLayout = array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
+				"style"	=>	"max-width:150px;",
 			),
 		),
 		"id_reg"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
+				"style"	=>	"max-width:150px;",
 			),
 		),
 		"verificato"		=>	array(
