@@ -1091,17 +1091,25 @@ class PagesController extends BaseController {
 		
 		$children = $this->m["CategoriesModel"]->children((int)$idFirstParent, true);
 		
-		$res = $this->m['PagesModel']->clear()->where(array(
-			"ne" => array("id_page" => $clean['id']),
-			"attivo" => "Y",
-			"principale"=>"Y",
-			"acquistabile"	=>	$accessori ? "N" : "Y",
-			"in" => array("-id_c" => $children),
-		))->orderBy("id_order")->send();
+		$res = $this->m['PagesModel']->clear()->select("distinct pages.id_page,pages.id_page,pages.title,pages.codice,regioni.*,pages_regioni.alias_nazione")
+			->left(array("regioni"))
+			->left("regioni")->on("regioni.id_regione = pages_regioni.id_regione")
+			->where(array(
+				"ne" => array("id_page" => $clean['id']),
+				"attivo" => "Y",
+				"principale"=>"Y",
+				"acquistabile"	=>	$accessori ? "N" : "Y",
+				"in" => array("-id_c" => $children),
+			))->orderBy("pages.id_order")->send();
 		
 		foreach ($res as $r)
 		{
-			$data["listaProdotti"][$r["pages"]["id_page"]] = $r["pages"]["codice"] . " - " . $r["pages"]["title"];
+			$titoloTendina = $r["pages"]["codice"] . " - " . $r["pages"]["title"];
+			
+			if ($r["pages_regioni"]["alias_nazione"])
+				$titoloTendina = $r["regioni"]["titolo"]." ".$r["pages_regioni"]["alias_nazione"].": ".$titoloTendina;
+			
+			$data["listaProdotti"][$r["pages"]["id_page"]] = $titoloTendina;
 		}
 		
 // 		echo $this->scaffold->model->getQuery();
