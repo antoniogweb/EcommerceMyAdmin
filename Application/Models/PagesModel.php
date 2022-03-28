@@ -2652,12 +2652,30 @@ class PagesModel extends GenericModel {
 			"id_page"	=>	(int)$record[$this->_tables]["id_page"],
 		))->toList("alias_nazione")->send();
 		
+		$nazioni = array_unique($nazioni);
+		
 		if (count($nazioni) > 0)
-			$str .= strtoupper(implode(" + ", $nazioni));
+			$str .= strtoupper(implode("<br />", $nazioni));
 		else if (v("prodotto_tutte_regioni_se_nessuna_regione"))
 			$str .= gtext("TUTTE");
 		
 		return "<span class='text text-success text-bold'>".$str."</span>";
+	}
+	
+	public function regioneCrud($record)
+	{
+		$pr = new PagesregioniModel();
+			
+		$regioni = $pr->clear()->select("regioni.titolo")->inner(array("regione"))->where(array(
+			"id_page"	=>	(int)$record[$this->_tables]["id_page"],
+		))->toList("regioni.titolo")->send();
+		
+		$regioni = array_unique($regioni);
+		
+		if (count($regioni))
+			return "<span class='text text-success text-bold'>".strtoupper(implode("<br />", $regioni))."</span>";
+		
+		return "";
 	}
     
     public function lingua($record)

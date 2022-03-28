@@ -1421,4 +1421,9 @@ class GenericModel extends Model_Tree
 		
 		return "";
 	}
+	
+	public function filtro($idA = 0)
+	{
+		return $this->clear()->toList($this->_idFields,$this->campoTitolo)->orderBy($this->campoTitolo)->send();
+	}
 }

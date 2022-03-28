@@ -77,6 +77,8 @@ class PagesController extends BaseController {
 		'lingua_page:sanitizeAll' => "tutti",
 		'lingua_page_escl:sanitizeAll' => "tutti",
 		'imm_1:sanitizeAll' => "tutti",
+		'id_naz:sanitizeAll' => "tutti",
+		'id_reg:sanitizeAll' => "tutti",
 	);
 	
 	protected $_posizioni = array(
@@ -124,6 +126,7 @@ class PagesController extends BaseController {
 		$this->model("PersonalizzazioniModel");
 		$this->model("PagespersonalizzazioniModel");
 		$this->model("TagModel");
+		$this->model("MarchiModel");
 		$this->model("PagestagModel");
 		$this->model("TipologiecaratteristicheModel");
 		$this->model("PagespagesModel");
@@ -131,6 +134,12 @@ class PagesController extends BaseController {
 		$this->model("FeedbackModel");
 		$this->model("PagesregioniModel");
 		$this->model("PageslingueModel");
+		
+		if (v("attiva_localizzazione_prodotto"))
+		{
+			$this->model("NazioniModel");
+			$this->model("RegioniModel");
+		}
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
@@ -367,6 +376,19 @@ class PagesController extends BaseController {
 			$this->scaffold->model->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
 			
 			$this->scaffold->model->sWhere("lingue_escludi.lingua = '".$this->viewArgs['lingua_page_escl']."'");
+		}
+		
+		if (strcmp($this->viewArgs['id_naz'],'tutti') !== 0 || strcmp($this->viewArgs['id_reg'],'tutti') !== 0)
+		{
+			$this->scaffold->model->left(array("regioni"));
+			
+			$this->scaffold->model->aWhere(array(
+				"pages_regioni.id_nazione"	=>	$this->viewArgs['id_naz'],
+			));
+			
+			$this->scaffold->model->aWhere(array(
+				"pages_regioni.id_regione"	=>	$this->viewArgs['id_reg'],
+			));
 		}
 		
 		if (strcmp($this->viewArgs['id_c'],'tutti') !== 0)

@@ -47,21 +47,41 @@ class ProdottiController extends PagesController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Immagine,Codice / Titolo,Categorie';
 		
-		$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->selectPerFiltro();
-		
 		if (v("usa_marchi"))
 		{
 			$this->tableFields[] = 'marchio';
 			$this->head .= ',Marchio';
-			$this->filters = array(null,null,'title',null,null,array("id_tag",null,$filtroTag));
+			$filtroMarchio = array("tutti" => "Tutti") + $this->m["MarchiModel"]->filtro();
+			$this->filters = array(null,null,'title',null,array("-id_marchio",null,$filtroMarchio));
 		}
+		
+		$fTag = null;
 		
 		if (v("usa_tag"))
 		{
 			$this->tableFields[] = 'tag';
 			$this->head .= ',Tag';
-			$this->filters = array(null,null,'title',null,array("id_tag",null,$filtroTag));
+			$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->filtro();
+			$fTag = array("id_tag",null,$filtroTag);
 		}
+		
+		$this->filters[] = $fTag;
+		
+		$fNaz = $fReg = null;
+		
+		if (v("attiva_localizzazione_prodotto"))
+		{
+			$this->tableFields[] = 'nazioneCrud';
+			$this->head .= ',Nazione';
+			$fNaz = array("id_naz",null,array("tutti" => "Tutti") + $this->m["NazioniModel"]->filtro());
+			
+			$this->tableFields[] = 'regioneCrud';
+			$this->head .= ',Regione';
+			$fReg = array("id_reg",null,array("tutti" => "Tutti") + $this->m["RegioniModel"]->filtro());
+		}
+		
+		$this->filters[] = $fNaz;
+		$this->filters[] = $fReg;
 		
 		$this->tableFields[] = 'PagesModel.inPromozioneText|pages.id_page';
 		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';
