@@ -79,6 +79,8 @@ class OrdiniController extends BaseController {
 		$this->shift();
 		$this->m[$this->modelName]->cViewStatus = $this->viewStatus;
 		
+		$this->addBulkActions = false;
+		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
 		$this->mainFields = array(
