@@ -22,6 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Params::$actionArray = "REQUEST";
+Params::$rewriteStatusVariables = false;
+
 trait BaseCrudController
 {
 	protected $_posizioni = array();
@@ -114,6 +117,11 @@ trait BaseCrudController
 			$this->checkAccessoPagina($queryType, $clean["id"]);
 			
 			$this->m[$this->modelName]->updateTable('insert,update',$clean["id"]);
+			
+			$data["titoloRecord"] = gtext("inserimento nuovo elemento");
+			
+			if (strcmp($queryType,'update') === 0)
+				$data["titoloRecord"] = $this->m[$this->modelName]->titolo($clean["id"]);
 			
 			$this->redirectAfterInsertUpdate($queryType, $clean["id"], true);
 			

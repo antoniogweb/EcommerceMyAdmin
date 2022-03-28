@@ -27,6 +27,7 @@ class PagesModel extends GenericModel {
 	public $lId = 0;
 	public $titleFieldName = "title";
 	public $aliaseFieldName = "alias";
+	public $campoTitolo = "title";
 	
 	public $hModelName = "CategoriesModel";
 	public $hModel = null; //hierarchical model

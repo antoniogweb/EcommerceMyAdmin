@@ -159,3 +159,15 @@ Helper_Menu::$htmlLinks = array(
 Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary";
 
 Helper_List::$tableAttributes = array('class'=>'uk-table uk-table-divider uk-table-striped uk-table-hover uk-table-small','cellspacing'=>'0');
+
+Helper_List::$actionsLayout = array(
+	"edit"	=>	array(
+		"text"	=>	'<span uk-icon="pencil"></span>',
+	),
+	"del"	=>	array(
+		"attributes"	=>	array(
+			"title"	=>	"elimina",
+		),
+		"text"	=>	'<span class="uk-text-danger" uk-icon="trash"></span>',
+	),
+);

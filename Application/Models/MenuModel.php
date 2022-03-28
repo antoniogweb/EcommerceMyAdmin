@@ -427,7 +427,7 @@ class MenuModel extends HierarchicalModel {
 	public function buildContentSelect()
 	{
 		$c = new PagesModel();
-		return $c->clear()->where(array("attivo"=>"Y"))->orderBy("pages.id_order")->toList("id_page","title")->send();
+		return $c->clear()->addWhereAttivo()->sWhere("id_user = 0")->orderBy("pages.id_order")->toList("id_page","title")->send();
 	}
 	
 	public function update($id = null, $where = null)

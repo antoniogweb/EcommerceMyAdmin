@@ -97,10 +97,6 @@ trait InitController
 		Domain::$adminName = $this->baseUrlSrc;
 		Domain::$publicUrl = str_replace("/admin",null,$this->baseUrlSrc);
 		
-		Params::$actionArray = "REQUEST";
-		
-		Params::$rewriteStatusVariables = false;
-		
 		$data["sidebarCollapsed"] = false;
 		
 		if (isset($_COOKIE["tipo_sidebar"]) && (int)$_COOKIE["tipo_sidebar"] === 2)

@@ -3,10 +3,10 @@
 <?php
 $breadcrumb = array(
 	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	"",
+	$titoloRecord	=>	"",
 );
 
-$titoloPagina = gtext("Area riservata");
+$titoloPagina = $titoloRecord;
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
