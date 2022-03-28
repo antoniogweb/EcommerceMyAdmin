@@ -597,6 +597,34 @@ class HierarchicalModel extends GenericModel {
 		return array();
 	}
 	
+	public function childrenQuery($query = array(), $onlyIds = true)
+	{
+		$rows = $this->clear()->select("title,lft,rgt")->where(array(
+			"id_p"	=>	1,
+		))->aWhere($query)->findAll();
+		
+		$orQuery = array();
+		
+		foreach ($rows as $k => $r)
+		{
+			$orQuery[$k."AND"] = array(
+				"gte" => array("lft" => $r[$this->_tables]["lft"]),
+				"lte" => array("-lft" => $r[$this->_tables]["rgt"]),
+			);
+		}
+		
+		$this->clear()->where(array(
+			"OR"	=>	$orQuery,
+		));
+		
+		if ($onlyIds)
+			$this->select($this->_tables.".".$this->_idFields)->toList($this->_tables.".".$this->_idFields);
+		
+		$res = $this->findAll();
+		
+		return $res;
+	}
+	
 	public function children($id, $self = false, $onlyIds = true)
 	{
 		$clean["id"] = (int)$id;

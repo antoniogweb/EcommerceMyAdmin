@@ -172,6 +172,14 @@ body {
 	width: 100% !important;
 }
 
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0px;
+}
+.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single
+{
+	padding-left: 0px;
+}
+
 .select2-container--default .select2-selection--single
 {
 	border-radius: 0px !important;

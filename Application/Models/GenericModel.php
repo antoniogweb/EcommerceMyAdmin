@@ -1130,28 +1130,44 @@ class GenericModel extends Model_Tree
 				'labelString'=>	'Link a contenuto',
 				'options'	=>	$this->buildAllPagesSelect(),
 				'reverse' => 'yes',
-				"idName"	=>	"combobox",
+// 				"idName"	=>	"combobox",
+				'entryAttributes'	=>	array(
+					"select2"	=>	"",
+				),
+				'wrap'	=>	array(null,null,"<div>","</div>"),
 			),
 			'link_id_c'		=>	array(
 				'type'		=>	'Select',
 				'labelString'=>	'Link a categoria',
 				'options'	=>	$this->buildAllCatSelect(),
 				'reverse' => 'yes',
-				"idName"	=>	"combobox1",
+// 				"idName"	=>	"combobox1",
+				'entryAttributes'	=>	array(
+					"select2"	=>	"",
+				),
+				'wrap'	=>	array(null,null,"<div>","</div>"),
 			),
 			'link_id_marchio'		=>	array(
 				'type'		=>	'Select',
 				'labelString'=>	'Link a marchio',
 				'options'	=>	$this->selectMarchi(),
 				'reverse' => 'yes',
-				"idName"	=>	"combobox",
+// 				"idName"	=>	"combobox",
+				'entryAttributes'	=>	array(
+					"select2"	=>	"",
+				),
+				'wrap'	=>	array(null,null,"<div>","</div>"),
 			),
 			'link_id_tag'		=>	array(
 				'type'		=>	'Select',
 				'labelString'=>	'Link a tag',
 				'options'	=>	$this->selectTag(),
 				'reverse' => 'yes',
-				"idName"	=>	"combobox",
+// 				"idName"	=>	"combobox",
+				'entryAttributes'	=>	array(
+					"select2"	=>	"",
+				),
+				'wrap'	=>	array(null,null,"<div>","</div>"),
 			),
 			'link_id_documento'	=>	array(
 				'type'		=>	'Select',
@@ -1168,7 +1184,7 @@ class GenericModel extends Model_Tree
 					"_blank"	=>	"Su una nuova scheda",
 				),
 				'reverse' => 'yes',
-				"idName"	=>	"combobox",
+// 				"idName"	=>	"combobox",
 			),
 		);
 	}
@@ -1196,6 +1212,21 @@ class GenericModel extends Model_Tree
 		$this->aWhere(array(
 			"categories.attivo"		=>	"Y",
 			"categories.bloccato"	=>	0,
+		));
+		
+		return $this;
+	}
+	
+	public function addWhereCategoriaInstallata()
+	{
+		$c = new CategoriesModel();
+		
+		$this->aWhere(array(
+			"in"	=>	array(
+				"categories.id_c"	=>	array(1) + $c->childrenQuery(array(
+					"installata"	=>	1,
+				)),
+			),
 		));
 		
 		return $this;

@@ -79,7 +79,7 @@ class SitemapController extends BaseController
 				"div"	=>	"alert alert-success"
 			)));
 			
-			$this->redirect("sitemap/main");
+// 			$this->redirect("sitemap/main");
 		}
 		
 		$this->shift();
@@ -92,7 +92,7 @@ class SitemapController extends BaseController
 				->left(array("categoria", "pagina"))
 				->orderBy("sitemap.id_order")->convert()->save();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'rigenera,refresh,add,vedi');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'rigenera,add,vedi');
 		
 		parent::main();
 	}

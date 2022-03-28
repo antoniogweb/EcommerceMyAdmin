@@ -113,7 +113,10 @@ class MenuModel extends HierarchicalModel {
 					'options'	=>	$this->buildCategorySelect(),
 					'reverse' => 'yes',
 					'entryClass'  => 'form_input_text cat_Select',
-					'idName'	=>	'combobox1',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'id_page'		=>	array(
 					'type'		=>	'Select',
@@ -121,7 +124,10 @@ class MenuModel extends HierarchicalModel {
 					'options'	=>	$this->buildContentSelect(),
 					'reverse' => 'yes',
 					'entryClass'  => 'form_input_text cont_Select',
-					'idName'	=>	'combobox2',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'id_marchio'		=>	array(
 					'type'		=>	'Select',
