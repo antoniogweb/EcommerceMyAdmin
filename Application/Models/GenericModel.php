@@ -1474,4 +1474,13 @@ class GenericModel extends Model_Tree
 	{
 		return $this->clear()->toList($this->_idFields,$this->campoTitolo)->orderBy($this->campoTitolo)->send();
 	}
+	
+	public static function getFiltroAttivo()
+	{
+		return array("attivo",null,array(
+			"tutti"	=>	gtext("Visibilità"),
+			"Y"		=>	gtext("Pubblicato"),
+			"N"		=>	gtext("Non pubblicato"),
+		));
+	}
 }

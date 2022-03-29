@@ -26,6 +26,8 @@ class App
 {
 	public static $isFrontend = false;
 	
+	public static $isUsingCrud = false;
+	
 	public static $elencoCookieTecnici = array();
 	
 	public static $pannelli = array();

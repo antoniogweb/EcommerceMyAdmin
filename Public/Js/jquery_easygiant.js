@@ -7,24 +7,8 @@ var dataFormat = "dd-mm-yy";
 
 $(document).ready(function(){
 
-	//events binded to the checkbox for bulk selection
-	$(".bulk_select_checkbox").click(function(){
-
-		var bulk_select_class = $(this).attr("data-class");
-		
-		if ($(this).is(":checked"))
-		{
-			$("." + bulk_select_class).prop('checked', true);
-		}
-		else
-		{
-			$("." + bulk_select_class).prop('checked', false);
-		}
-		
-	});
-	
 	//events binded to the select of bulk actions
-	$(".bulk_actions_select").change(function(){
+	$(".bulk_actions_select").change(function() {
 		
 		var that = $(this);
 		
@@ -113,32 +97,6 @@ $(document).ready(function(){
 		}).prop('selected', true);
 
 	});
-
-	//events binded to alert notices
-	$( "div[rel='hidden_alert_notice']" ).each(function(){
-		
-		var t_name = $(this).text();
-		
-		var input = $("[name='"+t_name+"']");
-		
-		if (input.length > 0)
-		{
-			if (input.attr("type") == "checkbox" || input.attr("type") == "radio" )
-			{
-				input.parent().css("border",inputFieldErrorBorderStyle);
-			}
-			else
-			{
-				input.css("border",inputFieldErrorBorderStyle);
-			}
-		}
-		
-	});
-	
-	//automatically set jQueryUI datepicker
-	$( ".date_input" ).datepicker( {
-		dateFormat: dataFormat
-	} );
 });
 
 //-->

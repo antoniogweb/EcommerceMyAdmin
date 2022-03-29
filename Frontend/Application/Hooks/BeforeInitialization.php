@@ -29,6 +29,14 @@ Form_Entry::$defaultWrap = array('<div class="uk-margin">',null,'<div class="uk-
 Form_Entry::$defaultInputClasses["input"] = "uk-input";
 Form_Entry::$defaultInputClasses["select"] = "uk-select";
 
+Helper_List::$defaultFilterAttributes["input"] = array(
+	"class"	=>	"uk-input uk-form-width-medium uk-form-small",
+);
+
+Helper_List::$defaultFilterAttributes["select"] = array(
+	"class"	=>	"uk-select uk-form-width-medium uk-form-small",
+);
+
 Helper_Menu::$htmlLinks = array(
 	"back" => array(
 		"htmlBefore" => '',
@@ -62,5 +70,20 @@ Helper_List::$actionsLayout = array(
 			"title"	=>	gtext("Metti nel cestino"),
 		),
 		"text"	=>	'<span class="uk-text-danger" uk-icon="trash"></span>',
+	),
+);
+
+Helper_List::$filtersFormLayout = array(
+	"form"	=>	array(
+		"attributes"	=>	array(
+			"class"	=>	"form-inline list_filter_form",
+		)
+	),
+	"clear"	=>	"",
+	"submit"	=>	array(
+		"text"	=>	'<span class="uk-margin-small-right" uk-icon="icon: search"></span>'.gtext("Filtra"),
+		"attributes"	=>	array(
+			"class"	=>	"uk-button uk-button-small uk-button-secondary"
+		),
 	),
 );

@@ -57,8 +57,15 @@ class BasePublicPagesModel extends PagesModel
 		return parent::update($id, $where);
 	}
 	
+	public function check
+	
 	public function deletable($id)
 	{
+		$record = $this->selectId((int)$id);
+		
+		if (empty($record) || $record["cestino"])
+			return false;
+		
 		return $this->checkUtente("del", $id);
 	}
 	

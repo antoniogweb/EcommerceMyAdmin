@@ -53,6 +53,10 @@ class BasePagineController extends BaseController
 		
 		$this->setStatusVariables();
 		
+		$this->filters = array(
+			$this->getFiltroAttivo(),
+		);
+		
 		if (class_exists($model))
 			$this->model($model);
 		

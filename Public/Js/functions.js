@@ -403,8 +403,10 @@ $(document).ready(function(){
 		
 	});
 	
-	$( ".data_field" ).datepicker( {
-		dateFormat: 'dd-mm-yy'
+	var dataFormat = "dd-mm-yy";
+	
+	$( ".data_field,.date_input" ).datepicker( {
+		dateFormat: dataFormat
 	} );
 	
 	
@@ -730,6 +732,43 @@ $(document).ready(function(){
 				
 			}
 		});
+	});
+	
+	//events binded to alert notices
+	$( "div[rel='hidden_alert_notice']" ).each(function(){
+		
+		var t_name = $(this).text();
+		
+		var input = $("[name='"+t_name+"']");
+		
+		if (input.length > 0)
+		{
+			if (input.attr("type") == "checkbox" || input.attr("type") == "radio" )
+			{
+				input.parent().css("border",inputFieldErrorBorderStyle);
+			}
+			else
+			{
+				input.css("border",inputFieldErrorBorderStyle);
+			}
+		}
+		
+	});
+	
+	//events binded to the checkbox for bulk selection
+	$("body").on("click", ".bulk_select_checkbox", function(e){
+		
+		var bulk_select_class = $(this).attr("data-class");
+		
+		if ($(this).is(":checked"))
+		{
+			$("." + bulk_select_class).prop('checked', true);
+		}
+		else
+		{
+			$("." + bulk_select_class).prop('checked', false);
+		}
+		
 	});
 	
 });

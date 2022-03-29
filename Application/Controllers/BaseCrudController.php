@@ -76,6 +76,11 @@ trait BaseCrudController
 		$this->setArgKeys($this->baseArgsKeys);
 	}
 	
+	protected function getFiltroAttivo()
+	{
+		return GenericModel::getFiltroAttivo();
+	}
+	
 	protected function redirectAfterInsertUpdate($queryType = 'insert', $id = 0, $frontend = false, $queryString = "")
 	{
 		$clean["id"] = (int)$id;
@@ -187,6 +192,8 @@ trait BaseCrudController
 	
 	protected function baseMain()
 	{
+		App::$isUsingCrud = true;
+		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
 		

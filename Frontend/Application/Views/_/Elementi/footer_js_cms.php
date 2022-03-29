@@ -48,4 +48,12 @@
 <?php include(CaptchaModel::getModulo()->pathJs());?>
 <?php } ?>
 
+<?php if (App::$isUsingCrud) { ?>
+<script>
+	var checkbox_event = 'ifChanged';
+</script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>crud.js?v=<?php echo rand(1,10000);?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Public/Js/';?>jquery_easygiant.js?v=<?php echo rand(1,10000);?>"></script>
+<?php } ?>
+
 <?php include(tpf("/Elementi/footer_js_admin_panel.php"));?>
