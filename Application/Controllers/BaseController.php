@@ -187,10 +187,12 @@ class BaseController extends Controller
 		$data["helpDaVedere"] = $this->m["HelpModel"]->daVedere();
 		$data["helpDaVedereTutti"] = $this->m["HelpModel"]->daVedere(false);
 		
-		if (isset($this->argKeys))
-			$this->baseArgsKeys = array_merge($this->baseArgsKeys, $this->argKeys);
+		$this->setStatusVariables();
 		
-		$this->setArgKeys($this->baseArgsKeys);
+// 		if (isset($this->argKeys))
+// 			$this->baseArgsKeys = array_merge($this->baseArgsKeys, $this->argKeys);
+// 		
+// 		$this->setArgKeys($this->baseArgsKeys);
 		
 		if (class_exists($model))
 			$this->model($model);

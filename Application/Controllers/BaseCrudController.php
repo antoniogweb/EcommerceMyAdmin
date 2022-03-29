@@ -68,6 +68,14 @@ trait BaseCrudController
 		return "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>";
 	}
 	
+	protected function setStatusVariables()
+	{
+		if (isset($this->argKeys))
+			$this->baseArgsKeys = array_merge($this->baseArgsKeys, $this->argKeys);
+		
+		$this->setArgKeys($this->baseArgsKeys);
+	}
+	
 	protected function redirectAfterInsertUpdate($queryType = 'insert', $id = 0, $frontend = false, $queryString = "")
 	{
 		$clean["id"] = (int)$id;
@@ -282,6 +290,16 @@ trait BaseCrudController
 		
 		$this->m[$this->modelName]->updateTable($this->queryActionsAfter);
 		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+		
+		if ($this->m[$this->modelName]->queryResult)
+		{
+			flash("notice",$this->m[$this->modelName]->notice);
+			
+			$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.$this->viewStatus);
+		}
+		
 		$this->scaffold->fields = $this->scaffold->model->select;
 		
 		$this->scaffold->itemList->colProperties = $this->colProperties;
@@ -391,9 +409,6 @@ trait BaseCrudController
 		}
 		
 		$this->append($data);
-		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->commit();
 	}
 	
 	protected function aggiungiintegrazioni()

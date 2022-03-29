@@ -26,6 +26,12 @@ Cache::removeTablesFromCache(array("categories", "pages", "contenuti_tradotti"))
 
 class BasePagineController extends BaseController
 {
+	public $baseArgsKeys = array(
+		'page:forceInt'=>1,
+		'attivo:sanitizeAll'=>'tutti',
+		'cestino:sanitizeAll'=>0,
+	);
+	
 	public $menuVariable = "azioni";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -44,6 +50,8 @@ class BasePagineController extends BaseController
 		$data["arrayLingue"] = array();
 		
 		$this->s['registered']->check(null,0);
+		
+		$this->setStatusVariables();
 		
 		if (class_exists($model))
 			$this->model($model);
@@ -73,8 +81,12 @@ class BasePagineController extends BaseController
 	
 	protected function main()
 	{
+		$this->shift();
+		
 		$this->m[$this->modelName]->clear()->restore(true)->where(array(
 			"temp"	=>	0,
+			"cestino"	=>	$this->viewArgs["cestino"],
+			"attivo"	=>	$this->viewArgs["attivo"],
 		))->save();
 		
 		$this->baseMain();

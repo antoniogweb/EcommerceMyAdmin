@@ -54,11 +54,9 @@ if (file_exists($path))
 </div>
 
 <!-- show the list of pages -->
-<div class="btn-group pull-right">
-	<ul class="pagination no_vertical_margin">
-		<?php echo $pageList;?>
-	</ul>
-</div>
+<ul class="uk-pagination uk-flex-right uk-margin-medium-top">
+	<?php echo $pageList;?>
+</ul>
 
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
