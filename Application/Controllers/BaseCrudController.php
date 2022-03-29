@@ -107,6 +107,12 @@ trait BaseCrudController
 		}
 	}
 	
+	protected function checkAccessoPagina($queryType = 'insert', $id = 0)
+	{
+		if (!$this->m[$this->modelName]->checkUtente($queryType, $id))
+			$this->redirect("");
+	}
+	
 	protected function basePublicForm($queryType = 'insert', $id = 0)
 	{
 		if (in_array($queryType,CrudController::$azioniPermesse))
@@ -167,6 +173,11 @@ trait BaseCrudController
 	}
 	
 	protected function main()
+	{
+		$this->baseMain();
+	}
+	
+	protected function baseMain()
 	{
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();

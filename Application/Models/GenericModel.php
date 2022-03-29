@@ -1202,6 +1202,8 @@ class GenericModel extends Model_Tree
 			"pages.acquistabile"	=>	"Y",
 			"pages.bloccato"	=>	0,
 			"pages.test"		=>	0,
+			"pages.temp"		=>	0,
+			"pages.cestino"		=>	0,
 		));
 		
 		return $this;
@@ -1340,12 +1342,27 @@ class GenericModel extends Model_Tree
     
     public function overrideFormStruct() {}
     
-    public function checkBloccato($id)
+    public function checkBloccato($id, $tipo = "category")
     {
 		$record = $this->selectId((int)$id);
 		
-		if (!empty($record) && $record["bloccato"])
-			die("ELEMENTO BLOCCATO");
+		$bloccato = false;
+		
+		if (empty($record))
+			$bloccato = true;
+		
+		if ($record["bloccato"])
+			$bloccato = true;
+		
+		if ($tipo == "page" && ($record["temp"] || $record["cestino"]))
+			$bloccato = true;
+		
+		if ($bloccato)
+		{
+			$h = new HeaderObj();
+			$h->redirect("");
+			die();
+		}
     }
     
     // Aggiungi o togli l'elemento dalla sitemap

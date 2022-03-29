@@ -97,7 +97,7 @@ class PagesModel extends GenericModel {
 		
 		$this->addValuesCondition("both",'checkIsStrings|Y,N',"attivo,in_evidenza,in_promozione");
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"title");
+		$this->setConditions();
 		
 		$this->salvaDataModifica = true;
 		
@@ -114,6 +114,11 @@ class PagesModel extends GenericModel {
 			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
 		
 		parent::__construct();
+	}
+	
+	protected function setConditions()
+	{
+		$this->addStrongCondition("both",'checkNotEmpty',"title");
 	}
 	
 	public function relations() {
@@ -1049,7 +1054,9 @@ class PagesModel extends GenericModel {
 		$clean["alias"] = sanitizeAll($alias);
 		
 		$res = $this->clear()->select("id_page")->where(array(
-			$this->aliaseFieldName=>$clean['alias']
+			$this->aliaseFieldName=>$clean['alias'],
+			"pages.temp"		=>	0,
+			"pages.cestino"		=>	0,
 		));
 		
 		if (!User::$adminLogged)

@@ -52,12 +52,43 @@ class BasePublicPagesModel extends PagesModel
 	{
 		$this->setAliasAndCategory();
 		
+		$this->values["temp"] = 0;
+		
 		return parent::update($id, $where);
 	}
 	
 	public function deletable($id) {
 		
 		return $this->checkUtente("del", $id);
+	}
+	
+	protected function setConditions()
+	{
+		$this->addStrongCondition("update",'checkNotEmpty',"title");
+	}
+	
+	public function addTemporaneo()
+	{
+		$record = $this->clear()->where(array(
+			"id_user"	=>	User::$id,
+			"temp"		=>	1,
+		))->record();
 		
+		if (empty($record))
+		{
+			$this->setValues(array(
+				"title"	=>	"",
+				"alias"	=>	"",
+				"attivo"=>	"Y",
+				"temp"	=>	1,
+			));
+			
+			if ($this->insert())
+				return $this->lastId();
+		}
+		else
+			return $record["id_page"];
+		
+		return 0;
 	}
 }

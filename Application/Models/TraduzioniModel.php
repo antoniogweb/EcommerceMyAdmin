@@ -30,50 +30,49 @@ class TraduzioniModel extends GenericModel {
 	
 	public $contestoCorrente = null;
 	
+	private static $instance = null; //instance of this class
+	
 	public function __construct() {
 		$this->_tables='traduzioni';
 		$this->_idFields='id_t';
 		
 		$this->_lang = 'It';
-
-// 		$this->formStruct = array
-// 		(
-// 			'entries' 	=> 	array(
-// 				'valore'		=>	array(
-// 					'className'		=>	'dettagli',
-// 				),
-// 				'lingua'	=>	array(
-// 					"options" => Parametri::$opzioniCampoLingua,
-// 					"reverse" => "yes",
-// 				),
-// 			),
-// 		);
 		
 		parent::__construct();
 	}
 	
+	public static function getInstance()
+	{
+		if (!isset(self::$instance)) {
+			$className = __CLASS__;
+			self::$instance = new $className();
+		}
+
+		return self::$instance;
+	}
+	
 	public static function checkTraduzioneAttiva()
 	{
-		if (isset($_GET["traduzioni1234"]) and strcmp($_GET["traduzioni1234"],"Y") === 0)
-		{
-			setcookie("traduzioni", "Y", time() + 2592000, '/');
-			
-			$_COOKIE["traduzioni"] = "Y";
-			
-			self::$edit = true;
-		}
-		else if (isset($_GET["traduzioni1234"]) and strcmp($_GET["traduzioni1234"],"N") === 0)
-		{
-			setcookie("traduzioni", "Y", time() - 3600, '/');
-			
-			if (isset($_COOKIE["traduzioni"]))
-				unset($_COOKIE["traduzioni"]);
-			
-			self::$edit = false;
-		}
-		
-		if (isset($_COOKIE["traduzioni"]))
-			self::$edit = true;
+// 		if (isset($_GET["traduzioni1234"]) and strcmp($_GET["traduzioni1234"],"Y") === 0)
+// 		{
+// 			setcookie("traduzioni", "Y", time() + 2592000, '/');
+// 			
+// 			$_COOKIE["traduzioni"] = "Y";
+// 			
+// 			self::$edit = true;
+// 		}
+// 		else if (isset($_GET["traduzioni1234"]) and strcmp($_GET["traduzioni1234"],"N") === 0)
+// 		{
+// 			setcookie("traduzioni", "Y", time() - 3600, '/');
+// 			
+// 			if (isset($_COOKIE["traduzioni"]))
+// 				unset($_COOKIE["traduzioni"]);
+// 			
+// 			self::$edit = false;
+// 		}
+// 		
+// 		if (isset($_COOKIE["traduzioni"]))
+// 			self::$edit = true;
 	}
 	
 	public function ottieniTraduzioni($contesto = null)

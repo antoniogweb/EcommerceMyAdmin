@@ -53,9 +53,30 @@ class BasePagineController extends BaseController
 		$this->append($data);
 	}
 	
-	protected function checkAccessoPagina($queryType = 'insert', $id = 0)
+	protected function form($queryType = 'insert', $id = 0)
 	{
-		if (!$this->m[$this->modelName]->checkUtente($queryType, $id))
-			$this->redirect("");
+		if ((string)$queryType === "insert")
+		{
+			$idPage = $this->m[$this->modelName]->addTemporaneo();
+			
+			if ($idPage)
+				$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$idPage.$this->viewStatus);
+			else
+			{
+				$_SESSION['result'] = "error";
+				$this->redirect("avvisi");
+			}
+		}
+		
+		$this->basePublicForm($queryType, $id);
+	}
+	
+	protected function main()
+	{
+		$this->m[$this->modelName]->clear()->restore(true)->where(array(
+			"temp"	=>	0,
+		))->save();
+		
+		$this->baseMain();
 	}
 }

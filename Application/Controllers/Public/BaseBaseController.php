@@ -65,9 +65,7 @@ class BaseBaseController extends Controller
 		Domain::$adminName = $this->baseUrlSrc."/admin";
 		Domain::$publicUrl = $this->baseUrlSrc;
 		
-		$this->model("TraduzioniModel");
-		
-		$this->m["TraduzioniModel"]->ottieniTraduzioni();
+		TraduzioniModel::getInstance()->ottieniTraduzioni();
 		
 		// Variabili
 		$this->model('VariabiliModel');

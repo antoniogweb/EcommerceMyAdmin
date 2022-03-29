@@ -1107,7 +1107,7 @@ class BaseContenutiController extends BaseController
 	
 	protected function page($id)
 	{
-		$this->m["PagesModel"]->checkBloccato($id);
+		$this->m["PagesModel"]->checkBloccato($id, "page");
 		
 		$clean["realId"] = $data["realId"] = (int)$id;
 		

@@ -22,6 +22,45 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-//in this file you can write the PHP code that will be executed just before the controller initialization, after super global array have been sanitizied
+TraduzioniModel::getInstance()->ottieniTraduzioni();
 
-//you can access the whole set of classes of MvcMyLibrary
+Form_Entry::$defaultLabelClass = "uk-form-label";
+Form_Entry::$defaultWrap = array('<div class="uk-margin">',null,'<div class="uk-form-controls">','</div>',"</div>");
+Form_Entry::$defaultInputClasses["input"] = "uk-input";
+Form_Entry::$defaultInputClasses["select"] = "uk-select";
+
+Helper_Menu::$htmlLinks = array(
+	"back" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'class="uk-button uk-button-primary uk-button-small"',
+		'text'	=>	gtext("Torna"),
+		"classIconBefore"	=>	'<span uk-icon="icon: arrow-left"></span>',
+	),
+	"add" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'class="uk-button uk-button-primary uk-button-small"',
+		'text'	=>	gtext("Nuovo"),
+		"classIconBefore"	=>	'<span uk-icon="icon: plus"></span>',
+	),
+);
+
+Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary";
+
+Helper_List::$tableAttributes = array('class'=>'uk-table uk-table-divider uk-table-striped uk-table-hover uk-table-small','cellspacing'=>'0');
+
+Helper_List::$actionsLayout = array(
+	"edit"	=>	array(
+		"text"	=>	'<span uk-icon="pencil"></span>',
+		"attributes"	=>	array(
+			"title"	=>	gtext("Modifica"),
+		),
+	),
+	"del"	=>	array(
+		"attributes"	=>	array(
+			"title"	=>	gtext("Metti nel cestino"),
+		),
+		"text"	=>	'<span class="uk-text-danger" uk-icon="trash"></span>',
+	),
+);
