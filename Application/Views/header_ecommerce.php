@@ -164,6 +164,7 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("attiva_spedizione")) { ?>
 			<li class="<?php echo tm($tm, array("corrieri"));?> treeview">
 				<a href="#">
 					<i class="fa fa-truck"></i>
@@ -174,6 +175,7 @@ include(ROOT."/Application/Views/header.php");
 					<li><a href="<?php echo $this->baseUrl."/corrieri/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
 				</ul>
 			</li>
+			<?php } ?>
 			<li class="<?php echo tm($tm, array("iva"));?> treeview">
 				<a href="#">
 					<i class="fa fa-folder"></i>
