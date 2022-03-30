@@ -29,11 +29,8 @@ class BaseRiservataController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if (Output::$html)
-		{
-			$this->load('header');
-			$this->load('footer','last');
-		}
+		$this->load('header');
+		$this->load('footer','last');
 		
 		$data["arrayLingue"] = array();
 		
@@ -68,52 +65,9 @@ class BaseRiservataController extends BaseController
 
 		$data['ordini'] = $this->m["OrdiniModel"]->clear()->where(array("id_user"=>$this->iduser))->orderBy("id_o desc")->send();
 		
-		if (Output::$html)
-		{
-			$this->append($data);
-			
-			$this->load('lista_ordini');
-		}
-		else
-		{
-			$pagineConDecode = array();
-			
-			foreach ($data["ordini"] as $o)
-			{
-				$temp = $o["orders"];
-				
-				unset($temp["descrizione_acquisto"]);
-				unset($temp["creation_time"]);
-				unset($temp["id_order"]);
-				unset($temp["admin_token"]);
-				unset($temp["txn_id"]);
-				unset($temp["registrato"]);
-				unset($temp["banca_token"]);
-				unset($temp["descrizione_acquisto"]);
-				unset($temp["descrizione_acquisto"]);
-				
-				$temp = htmlentitydecodeDeep($temp);
-				
-				$temp["stato_desc"] = statoOrdine($temp["stato"]);
-				$temp["data_ordine"] = date("d/m/Y", strtotime($temp["data_creazione"]));
-				
-				$temp["total"] = number_format($temp["total"],2,",","");
-				$temp["subtotal"] = number_format($temp["subtotal"],2,",","");
-				$temp["spedizione"] = number_format($temp["spedizione"],2,",","");
-				$temp["iva"] = number_format($temp["iva"],2,",","");
-				$temp["prezzo_scontato"] = number_format($temp["prezzo_scontato"],2,",","");
-				$temp["peso"] = number_format($temp["peso"],2,",","");
-				if ($temp["promo"] && is_numeric($temp["promo"]))
-					$temp["promo"] = number_format($temp["promo"],2,",","");
-				
-				$pagineConDecode[] = $temp;
-			}
-			
-			Output::setBodyValue("Type", "Ordini");
-			Output::setBodyValue("Ordini", $pagineConDecode);
-			
-			$this->load("api_output");
-		}
+		$this->append($data);
+		
+		$this->load('lista_ordini');
 	}
 	
 	public function indirizzi()

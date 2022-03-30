@@ -30,12 +30,14 @@ Form_Entry::$defaultInputClasses["input"] = "uk-input";
 Form_Entry::$defaultInputClasses["select"] = "uk-select";
 
 Helper_List::$defaultFilterAttributes["input"] = array(
-	"class"	=>	"uk-input uk-form-width-medium uk-form-small",
+	"class"	=>	"uk-input uk-form-width-medium uk-form-small uk-margin-small-right",
 );
 
 Helper_List::$defaultFilterAttributes["select"] = array(
-	"class"	=>	"uk-select uk-form-width-medium uk-form-small",
+	"class"	=>	"uk-select uk-form-width-medium uk-form-small uk-margin-small-right",
 );
+
+Helper_List::$bulkActionsSelectAdditionalClass = "uk-select uk-form-width-medium uk-form-small";
 
 Helper_Menu::$htmlLinks = array(
 	"back" => array(
@@ -56,13 +58,14 @@ Helper_Menu::$htmlLinks = array(
 
 Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary";
 
-Helper_List::$tableAttributes = array('class'=>'uk-table uk-table-divider uk-table-striped uk-table-hover uk-table-small','cellspacing'=>'0');
+Helper_List::$tableAttributes = array('class'=>'uk-table uk-table-divider uk-table-striped uk-table-hover uk-table-small table-scaffolding','cellspacing'=>'0');
 
 Helper_List::$actionsLayout = array(
 	"edit"	=>	array(
 		"text"	=>	'<span uk-icon="pencil"></span>',
 		"attributes"	=>	array(
 			"title"	=>	gtext("Modifica"),
+			"class"	=>	'action_edit',
 		),
 	),
 	"del"	=>	array(

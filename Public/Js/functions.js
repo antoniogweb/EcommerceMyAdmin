@@ -50,6 +50,9 @@ if (typeof(ajaxfilemanager) !== typeof(Function))
 	}
 }
 
+var inputFieldErrorBorderStyle = "2px solid red";
+var dataFormat = "dd-mm-yy";
+
 //fa apparire la lightbox
 function open_lightbox(titolo, contenuto)
 {
@@ -203,29 +206,6 @@ $(document).ready(function(){
 		
 		$(this).parents(".thumb,.file").remove();
 	});
-	
-	$("td.delForm form,.del_row, td.ldel a").click(function () {
-		var that = $(this);
-		
-		if (window.confirm("vuoi veramente cancellare la riga?")) {
-			
-			if (that.find("i").length > 0)
-				that.find("i").attr("class", "fa fa-refresh fa-spin");
-			
-			if ($(".btn_trigger_click").length > 0)
-			{
-				$(".btn_trigger_click").trigger("click");
-				
-				setTimeout(function(){
-					window.location = that.attr("href");
-				}, 500);
-			}
-			else
-				return true;
-		}
-
-		return false;
-	});
 
 	$(".first_level_item").mouseover(function(){
 		$(this).find("ul").first().css("display","block");
@@ -376,34 +356,7 @@ $(document).ready(function(){
 		
 	});
 	
-	$(".table-scaffolding tr td").click(function(e){
-		
-		if(e.target != this) return;
-		
-		if ($(this).closest("tr").find("a.action_edit").length > 0)
-		{
-			var url = $(this).closest("tr").find("a.action_edit").attr("href");
-			location.href = url;
-		}
-		else if ($(this).closest("tr").find("a.action_iframe").length > 0)
-		{
-			$(this).closest("tr").find("a.action_iframe").trigger("click");
-		}
-// 		else if ($(this).parents("tr").find("a").last().length > 0)
-// 		{
-// 			var url = $(this).parents("tr").find("a").last().attr("href");
-// 			location.href = url;
-// 		}
-		
-	});
 	
-	$(".list_filter_form select").change(function(){
-		
-		$(this).parents(".list_filter_form").submit();
-		
-	});
-	
-	var dataFormat = "dd-mm-yy";
 	
 	$( ".data_field,.date_input" ).datepicker( {
 		dateFormat: dataFormat

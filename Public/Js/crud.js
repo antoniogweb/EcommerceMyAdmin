@@ -1,9 +1,11 @@
-<!--
+if (typeof doYouConfirmString == "undefined")
+	var doYouConfirmString = "Confermi l'azione: ";
 
-var noSelectedString = "Si prega di selezionare alcune righe";
-var doYouConfirmString = "Confermi l'azione: '";
-var inputFieldErrorBorderStyle = "2px solid red";
-var dataFormat = "dd-mm-yy";
+if (typeof noSelectedString == "undefined")
+	var noSelectedString = "Si prega di selezionare alcune righe";
+
+if (typeof stringaConfermiEliminazione == "undefined")
+	var stringaConfermiEliminazione = "Confermi l'eliminazione dell'elemento?";
 
 $(document).ready(function(){
 
@@ -73,7 +75,7 @@ $(document).ready(function(){
 				{
 					setTimeout(function(){
 						
-						if (window.confirm(doYouConfirmString + t_action_readable + "' ?")) {
+						if (window.confirm(doYouConfirmString + t_action_readable + "?")) {
 							$(".bulk_actions_form").submit();
 						}
 						
@@ -97,6 +99,47 @@ $(document).ready(function(){
 		}).prop('selected', true);
 
 	});
-});
+	
+	$(".list_filter_form select").change(function(){
+		
+		$(this).parents(".list_filter_form").submit();
+		
+	});
+	
+	$("td.delForm form,.del_row, td.ldel a").click(function () {
+		var that = $(this);
+		
+		if (window.confirm(stringaConfermiEliminazione)) {
+			
+			if (that.find("i").length > 0)
+				that.find("i").attr("class", "fa fa-refresh fa-spin");
+			
+			if ($(".btn_trigger_click").length > 0)
+			{
+				$(".btn_trigger_click").trigger("click");
+				
+				setTimeout(function(){
+					window.location = that.attr("href");
+				}, 500);
+			}
+			else
+				return true;
+		}
 
-//-->
+		return false;
+	});
+	
+	$(".table-scaffolding tr td").click(function(e){
+		if(e.target != this) return;
+		
+		if ($(this).closest("tr").find("a.action_edit").length > 0)
+		{
+			var url = $(this).closest("tr").find("a.action_edit").attr("href");
+			location.href = url;
+		}
+		else if ($(this).closest("tr").find("a.action_iframe").length > 0)
+		{
+			$(this).closest("tr").find("a.action_iframe").trigger("click");
+		}
+	});
+});

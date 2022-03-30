@@ -13205,6 +13205,10 @@ ul.thumbnails.image_picker_selector li .thumbnail {
   padding: 2px !important;
 }
 
+.table-scaffolding tr.listRow {
+  cursor: pointer;
+}
+
 @media (min-width: 960px) {
   .detail_left {
     margin-right: 50px;

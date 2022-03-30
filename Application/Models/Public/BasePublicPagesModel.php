@@ -24,20 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BasePublicPagesModel extends PagesModel
 {
-	public function checkUtente($action = "insert", $idPage = 0)
-	{
-		if ($action == "insert")
-			return true;
-		else
-		{
-			$record = $this->selectId((int)$idPage);
-			
-			if (!empty($record) && (int)$record["id_user"] === (int)User::$id)
-				return true;
-		}
-		
-		return false;
-	}
+	public $prefissoAlias = "p";
 	
 	public function insert()
 	{
@@ -52,6 +39,9 @@ class BasePublicPagesModel extends PagesModel
 	{
 		$this->setAliasAndCategory();
 		
+		if (isset($this->values["title"]))
+			$this->values["alias"] = $this->prefissoAlias.(int)$id."-".encodeUrl($this->values["title"]);
+		
 		$this->values["temp"] = 0;
 		
 		return parent::update($id, $where);
@@ -59,9 +49,7 @@ class BasePublicPagesModel extends PagesModel
 	
 	public function deletable($id)
 	{
-		$record = $this->selectId((int)$id);
-		
-		if (empty($record) || $record["cestino"])
+		if ($this->isDeleted($id))
 			return false;
 		
 		return $this->checkUtente("del", $id);
@@ -74,19 +62,12 @@ class BasePublicPagesModel extends PagesModel
 	
 	public function del($id = null, $where = null)
 	{
-		if ($this->checkUtente("update", $id))
-		{
-			$this->setValues(array(
-				"attivo"	=>	"N",
-				"cestino"	=>	1,
-			));
-			
-			$res = $this->pUpdate($id);
-			
-			return $res;
-		}
+		$this->setValues(array(
+			"attivo"	=>	"N",
+			"cestino"	=>	1,
+		));
 		
-		return false;
+		return $this->pUpdate($id);
 	}
 	
 	protected function setConditions()

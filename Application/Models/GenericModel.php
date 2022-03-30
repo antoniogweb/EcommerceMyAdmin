@@ -1483,4 +1483,52 @@ class GenericModel extends Model_Tree
 			"N"		=>	gtext("Non pubblicato"),
 		));
 	}
+	
+	public static function getFiltroCestino()
+	{
+		return array("cestino",null,array(
+			"0"		=>	gtext("Elementi presenti"),
+			"1"		=>	gtext("Cestino"),
+		));
+	}
+	
+	// Controlla l'utente frontend
+	public function checkUtente($action = "insert", $id = 0)
+	{
+		if ($action == "insert")
+			return true;
+		else
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record) && (int)$record["id_user"] === (int)User::$id)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	// se cestino = 1
+	public function isDeleted($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["cestino"])
+			return true;
+		
+		return false;
+	}
+	
+	// imposta cestino = 0
+	public function ripristina($id)
+	{
+		if ($this->isDeleted($id))
+		{
+			$this->setValues(array(
+				"cestino"	=>	0,
+			));
+			
+			return $this->pUpdate($id);
+		}
+	}
 }

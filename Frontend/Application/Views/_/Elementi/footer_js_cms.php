@@ -51,9 +51,12 @@
 <?php if (App::$isUsingCrud) { ?>
 <script>
 	var checkbox_event = 'ifChanged';
+	var doYouConfirmString = "<?php echo gtext("Confermi l'azione: ")?>";
+	var noSelectedString = "<?php echo gtext("Si prega di selezionare alcune righe")?>";
+	var stringaConfermiEliminazione = "<?php echo gtext("Confermi l'eliminazione dell'elemento?")?>";
 </script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>crud.js?v=<?php echo rand(1,10000);?>"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Public/Js/';?>jquery_easygiant.js?v=<?php echo rand(1,10000);?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Public/Js/';?>crud.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 
 <?php include(tpf("/Elementi/footer_js_admin_panel.php"));?>

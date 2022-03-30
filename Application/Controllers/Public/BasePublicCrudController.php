@@ -24,55 +24,54 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 Cache::removeTablesFromCache(array("categories", "pages", "contenuti_tradotti"));
 
-class BasePagineController extends PublicCrudController
+class BasePublicCrudController extends BaseController
 {
+	public $baseArgsKeys = array(
+		'page:forceInt'=>1,
+		'attivo:sanitizeAll'=>'tutti',
+		'cestino:sanitizeAll'=>0,
+	);
+	
+	public $menuVariable = "azioni";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
-		$this->filters = array(
-			GenericModel::getFiltroAttivo(),
-			GenericModel::getFiltroCestino(),
+		
+		if (!v("permetti_agli_utenti_di_aggiungere_pagine"))
+			$this->redirect("");
+		
+		$this->mainButtons = 'ledit,ldel';
+		
+		$this->load('header');
+		$this->load('footer','last');
+		
+		$data["arrayLingue"] = array();
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/".$this->controller."/".$this->action;
+		}
+		
+		$this->s['registered']->check(null,0);
+		
+		$this->setStatusVariables();
+		
+		if (class_exists($model))
+			$this->model($model);
+		
+		BaseController::$traduzioni = $data['elencoTraduzioniAttive'] = LingueModel::getLingueNonPrincipali();
+		
+		$this->inverseColProperties = array(
+			array(
+				"style"	=>	"width:20px;",
+				"class"	=>	"ldel",
+			),
+			array(
+				"style"	=>	"width:20px;",
+			),
 		);
-	}
-	
-	protected function form($queryType = 'insert', $id = 0)
-	{
-		if ((string)$queryType === "insert")
-		{
-			$idPage = $this->m[$this->modelName]->addTemporaneo();
-			
-			if ($idPage)
-				$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$idPage.$this->viewStatus);
-			else
-			{
-				$_SESSION['result'] = "error";
-				$this->redirect("avvisi");
-			}
-		}
 		
-		$this->basePublicForm($queryType, $id);
-	}
-	
-	protected function main()
-	{
-		$this->shift();
-		
-		if ((int)$this->viewArgs["cestino"] === 1)
-		{
-			$this->bulkQueryActions = "ripristina";
-			
-			$this->bulkActions = array(
-				"checkbox_pages_id_page"	=>	array("ripristina",gtext("Ripristina elementi selezionati"), "confirm"),
-			);
-		}
-		
-		$this->m[$this->modelName]->clear()->restore(true)->where(array(
-			"temp"	=>	0,
-			"cestino"	=>	$this->viewArgs["cestino"],
-			"attivo"	=>	$this->viewArgs["attivo"],
-		))->save();
-		
-		$this->baseMain();
+		$this->append($data);
 	}
 }

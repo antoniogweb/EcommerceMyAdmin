@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
@@ -22,4 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY."/Application/Strings/Lang/It/Generic.php");
+require_once(LIBRARY."/Application/Controllers/Public/BasePublicCrudController.php");
+
+class PublicCrudController extends BasePublicCrudController
+{
+	
+}

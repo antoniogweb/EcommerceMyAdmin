@@ -69,6 +69,9 @@ $mysqli = Db_Mysqli::getInstance();
 if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
 	$mysqli->query("set session sql_mode=''");
 
+Params::$language = "It";
+Params::$translatorFunction = "gtext";
+
 //includo il file di parametri dall'admin
 require(LIBRARY."/Application/Include/language.php");
 require(LIBRARY."/Application/Include/functions.php");

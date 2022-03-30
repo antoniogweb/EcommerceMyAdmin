@@ -82,7 +82,7 @@ class BaseController extends Controller
 	
 // 	public $addBulkActions = true;
 	
-	public $bulkActions = null;
+// 	public $bulkActions = null;
 	
 // 	public $queryActions = "del";
 	

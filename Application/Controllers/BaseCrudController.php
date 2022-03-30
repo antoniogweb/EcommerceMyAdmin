@@ -50,6 +50,7 @@ trait BaseCrudController
 	public $bulkQueryActions = "del";
 	public $scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add');
 	public $addBulkActions = true;
+	public $bulkActions = null;
 	public $addIntegrazioniInMain = true;
 	public $mainButtons = 'ldel,ledit';
 	public $queryActionsAfter = "";
@@ -58,6 +59,7 @@ trait BaseCrudController
 				'width'	=>	'60px',
 			),
 		);
+	public $inverseColProperties = array();
 	public $filters = array();
 	public $aggregateFilters = true;
 	public $showFilters = false;
@@ -74,11 +76,6 @@ trait BaseCrudController
 			$this->baseArgsKeys = array_merge($this->baseArgsKeys, $this->argKeys);
 		
 		$this->setArgKeys($this->baseArgsKeys);
-	}
-	
-	protected function getFiltroAttivo()
-	{
-		return GenericModel::getFiltroAttivo();
 	}
 	
 	protected function redirectAfterInsertUpdate($queryType = 'insert', $id = 0, $frontend = false, $queryString = "")
@@ -130,6 +127,8 @@ trait BaseCrudController
 	{
 		if (in_array($queryType,CrudController::$azioniPermesse))
 		{
+			$this->shift(2);
+			
 			$clean["id"] = $data["id"] = (int)$id;
 			
 			// Controllo l'accesso
@@ -263,7 +262,7 @@ trait BaseCrudController
 			if (!isset($this->bulkActions) or !is_array($this->bulkActions))
 			{
 				$this->scaffold->itemList->setBulkActions(array(
-					"checkbox_".$table."_".$primaryKey	=>	array("del","Elimina selezionati","confirm"),
+					"checkbox_".$table."_".$primaryKey	=>	array("del",gtext("Elimina selezionati"),"confirm"),
 				));
 			}
 			else
@@ -310,6 +309,7 @@ trait BaseCrudController
 		$this->scaffold->fields = $this->scaffold->model->select;
 		
 		$this->scaffold->itemList->colProperties = $this->colProperties;
+		$this->scaffold->itemList->inverseColProperties = $this->inverseColProperties;
 		
 		$this->scaffold->itemList->setFilters($this->filters);
 		

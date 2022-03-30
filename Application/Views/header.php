@@ -39,7 +39,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
-	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery_easygiant.js?v=<?php echo rand(1,100000);?>"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/crud.js?v=<?php echo rand(1,100000);?>"></script>
 	
 	<!-- 	CSS tema -->
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
