@@ -108,7 +108,10 @@ class OrdiniModel extends FormModel {
 			case "pending":
 				return array("completed","deleted");
 			case "completed":
-				return array("closed","deleted");
+				if (v("attiva_spedizione"))
+					return array("closed","deleted");
+				else
+					return array("deleted");
 			case "closed":
 				return array("deleted");
 			case "deleted":
@@ -175,6 +178,9 @@ class OrdiniModel extends FormModel {
 			"closed"	=>	gtext("Ordine completato e spedito", false),
 			"deleted"	=>	gtext("Ordine annullato", false),
 		);
+		
+		if (!v("attiva_spedizione"))
+			unset(self::$stati["closed"]);
 		
 		self::setPagamenti();
 // 		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
