@@ -262,7 +262,9 @@ trait BaseCrudController
 		{
 			flash("notice",$this->m[$this->modelName]->notice);
 			
-			$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.$this->viewStatus);
+			$urlId = (int)$this->id ? "/".$this->id : "";
+			
+			$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.$urlId.$this->viewStatus);
 		}
 		
 		$this->scaffold->fields = $this->scaffold->model->select;
