@@ -107,7 +107,7 @@ class CombinazioniController extends BaseController
 		$mainFields[] = "prezzo";
 		$mainFields[] = "peso";
 		
-		$mainHead .= ",Combinazione,Codice,$prezzoLabel,Peso#peso#";
+		$mainHead .= ",Combinazione,Codice,$prezzoLabel,Peso";
 		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $mainHead;
