@@ -923,7 +923,7 @@ class BaseOrdiniController extends BaseController
 			$this->m['OrdiniModel']->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
 		}
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di privacy</b>")."<div class='evidenzia'>class_accetto</div>");
+		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
 		
 		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.Parametri::$metodiPagamento,"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
 		
