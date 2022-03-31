@@ -58,6 +58,25 @@ class PagesModel extends GenericModel {
 		"traduzione"	=>	array(),
 	);
 	
+	public static $modelliDaDuplicare = array(
+		"ImmaginiModel",
+		"LayerModel",
+		"ScaglioniModel",
+		"ContenutiModel",
+		"DocumentiModel",
+		"PageslinkModel",
+		"CorrelatiModel",
+		"PagespersonalizzazioniModel",
+		"PagestagModel",
+		"PagespagesModel",
+		"PagescarvalModel",
+		"PagespersonalizzazioniModel",
+		"PagesattributiModel",
+		"CombinazioniModel",
+		"PagesregioniModel",
+		"PageslingueModel",
+	);
+	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina ringraziamento form richiesta informazioni",
 		"GRAZIE_NEWSLETTER"	=>	"Pagina ringraziamento iscrizione a newsletter",
@@ -3096,5 +3115,92 @@ class PagesModel extends GenericModel {
 		$c = new CategoriesModel();
 		
 		$this->values["id_c"] = (int)$c->clear()->where(array("section"=>$this->hModel->section))->field("id_c");
+	}
+	
+	// Duplica la pagina
+	public function duplicaPagina($id, $modelAssociati = array())
+	{
+		$clean['id'] = (int)$id;
+		
+		$res = $this->clear()->where(array("id_page"=>$clean['id']))->send();
+		
+		if (count($res) > 0)
+		{
+			$section = $this->hModel->section;
+			
+			$this->values = $res[0]["pages"];
+			
+			$this->values["title"] = "(Copia di) " . $this->values["title"];
+			
+			$this->checkDates();
+			
+			$this->values["principale"] = "Y";
+			
+			$this->delFields("id_page");
+			$this->delFields("data_creazione");
+			$this->delFields("id_order");
+			
+			$this->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
+			
+			$this->sanitize();
+
+			Params::$setValuesConditionsFromDbTableStruct = false;
+			
+			$this->clearConditions("values");
+			$this->clearConditions("strong");
+			$this->clearConditions("soft");
+			
+			$this->insert();
+			
+			if ($this->queryResult)
+			{
+				$lId = $this->lId;
+				
+				foreach (PagesModel::$modelliDaDuplicare as $daDuplicare)
+				{
+					if ($daDuplicare != "PagesregioniModel" || $section != "sedi")
+					{
+						$modelDaDuplicare = new $daDuplicare();
+						$modelDaDuplicare->duplica($clean['id'], $lId);
+					}
+				}
+				
+// 						$this->m["ImmaginiModel"]->duplica($clean['id'], $lId);
+// 						$this->m["LayerModel"]->duplica($clean['id'], $lId);
+// 						$this->m["ScaglioniModel"]->duplica($clean['id'], $lId);
+// 						$this->m["ContenutiModel"]->duplica($clean['id'], $lId);
+// 						$this->m["DocumentiModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PageslinkModel"]->duplica($clean['id'], $lId);
+// 						$this->m["CorrelatiModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PagestagModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PagespagesModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PagescarvalModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
+// 						$this->m["PagesattributiModel"]->duplica($clean['id'], $lId);
+// 						$this->m["CombinazioniModel"]->duplica($clean['id'], $lId);
+				
+// 						if ($data["section"] != "sedi")
+// 							$this->m["PagesregioniModel"]->duplica($clean['id'], $lId);
+				
+// 						$this->m["PageslingueModel"]->duplica($clean['id'], $lId);
+				
+				// Duplico i model associati
+				foreach ($modelAssociati as $modelAssociato => $modelParams)
+				{
+					if (isset($modelParams["duplica"]) && $modelParams["duplica"])
+					{
+						$modelDaDuplicare = new $modelAssociato();
+						$modelDaDuplicare->duplica($clean['id'], $lId);
+					}
+				}
+				
+// 				$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->lId.$this->viewStatus."&insert=ok");
+				
+				return $lId;
+			}
+			
+			return 0;
+		}
 	}
 }

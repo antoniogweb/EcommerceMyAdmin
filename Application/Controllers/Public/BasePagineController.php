@@ -34,6 +34,8 @@ class BasePagineController extends PublicCrudController
 			GenericModel::getFiltroAttivo(),
 			GenericModel::getFiltroCestino(),
 		);
+		
+		$this->menuLinks = "back,save,copia";
 	}
 	
 	protected function form($queryType = 'insert', $id = 0)

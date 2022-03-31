@@ -16,4 +16,11 @@ $(document).ready(function(){
 		
 	});
 	
+	$(".save_button_frontend").click(function(e){
+		
+		e.preventDefault();
+		
+		$(".submit_entry").trigger('click');
+	});
+	
 });

@@ -54,9 +54,25 @@ Helper_Menu::$htmlLinks = array(
 		'text'	=>	gtext("Nuovo"),
 		"classIconBefore"	=>	'<span uk-icon="icon: plus"></span>',
 	),
+	'save'	=>	array(
+		'title'	=>	gtext("Salva"),
+		'text'	=>	gtext("Salva"),
+		'url'	=>	'main',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="uk-button uk-button-default uk-button-small save_button_frontend menu_btn"',
+		"classIconBefore"	=>	'<span uk-icon="icon: check"></span>',
+	),
+	"copia" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="uk-button uk-button-default uk-button-small"',
+		'text'	=>	gtext("Duplica"),
+		"classIconBefore"	=>	'<span uk-icon="icon: copy"></span>',
+	),
 );
 
-Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary";
+Form_Form::$defaultEntryAttributes["submitClass"] = "uk-button uk-button-secondary submit_entry";
 
 Helper_List::$tableAttributes = array('class'=>'uk-table uk-table-divider uk-table-striped uk-table-hover uk-table-small table-scaffolding','cellspacing'=>'0');
 

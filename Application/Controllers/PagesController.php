@@ -810,67 +810,7 @@ class PagesController extends BaseController {
 			}
 			else if (strcmp($queryType,"copia") === 0)
 			{
-				$this->clean();
-				$res = $this->m[$this->modelName]->clear()->where(array("id_page"=>$clean['id']))->send();
-				
-				if (count($res) > 0)
-				{
-					$this->m[$this->modelName]->values = $res[0]["pages"];
-					
-					$this->m[$this->modelName]->values["title"] = "(Copia di) " . $this->m[$this->modelName]->values["title"];
-					
-					$this->m[$this->modelName]->checkDates();
-					
-					$this->m[$this->modelName]->values["principale"] = "Y";
-					
-					$this->m[$this->modelName]->delFields("id_page");
-					$this->m[$this->modelName]->delFields("data_creazione");
-					$this->m[$this->modelName]->delFields("id_order");
-					
-					$this->m[$this->modelName]->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
-					
-					$this->m[$this->modelName]->sanitize();
-
-					Params::$setValuesConditionsFromDbTableStruct = false;
-					$this->m[$this->modelName]->clearConditions("values");
-					$this->m[$this->modelName]->clearConditions("strong");
-					$this->m[$this->modelName]->clearConditions("soft");
-					
-					$this->m[$this->modelName]->insert();
-					if ($this->m[$this->modelName]->queryResult)
-					{
-						$lId = $this->m[$this->modelName]->lId;
-						
-						$this->m["ImmaginiModel"]->duplica($clean['id'], $lId);
-						$this->m["LayerModel"]->duplica($clean['id'], $lId);
-						$this->m["ScaglioniModel"]->duplica($clean['id'], $lId);
-						$this->m["ContenutiModel"]->duplica($clean['id'], $lId);
-						$this->m["DocumentiModel"]->duplica($clean['id'], $lId);
-						$this->m["PageslinkModel"]->duplica($clean['id'], $lId);
-						$this->m["CorrelatiModel"]->duplica($clean['id'], $lId);
-						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
-						$this->m["PagestagModel"]->duplica($clean['id'], $lId);
-						$this->m["PagespagesModel"]->duplica($clean['id'], $lId);
-						$this->m["PagescarvalModel"]->duplica($clean['id'], $lId);
-						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
-						$this->m["PagesattributiModel"]->duplica($clean['id'], $lId);
-						$this->m["CombinazioniModel"]->duplica($clean['id'], $lId);
-						
-						if ($data["section"] != "sedi")
-							$this->m["PagesregioniModel"]->duplica($clean['id'], $lId);
-						
-						$this->m["PageslingueModel"]->duplica($clean['id'], $lId);
-						
-						// Duplico i model associati
-						foreach ($this->modelAssociati as $modelAssociato => $modelParams)
-						{
-							if (isset($modelParams["duplica"]) && $modelParams["duplica"])
-								$this->m[$modelAssociato]->duplica($clean['id'], $lId);
-						}
-						
-						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus."&insert=ok");
-					}
-				}
+				$this->duplicaPagina($clean['id']);
 			}
 		}
 		else
