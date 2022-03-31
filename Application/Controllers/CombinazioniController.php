@@ -138,8 +138,6 @@ class CombinazioniController extends BaseController
 		if ($this->viewArgs['id_page'] == "tutti")
 			$this->filters = array("categoria", "prodotto", "codice");
 		
-// 		$attributi = $this->m["PagesattributiModel"]->clear()->select("distinct pages_attributi.id_a, if (attributi.nota_interna != '',concat(attributi.titolo,' (', attributi.nota_interna,')'),attributi.titolo) as t")->inner(array("attributo"))->toList("pages_attributi.id_a","aggregate.t")->send();
-		
 		foreach ($this->arrayAttributi as $idA => $titoloA)
 		{
 			Helper_List::$filtersFormLayout["filters"]["id_".$idA] = array(
@@ -159,8 +157,6 @@ class CombinazioniController extends BaseController
 			"0"	=>	"Esaurito",
 			"1"	=>	"Non esaurito",
 		));
-		
-// 		$this->addBulkActions = false;
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_magazzino"), 'mainMenu'=>'save_combinazioni,esporta');
 		

@@ -91,6 +91,29 @@ class BaseCartController extends BaseController
 	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $id_cart = 0)
 	{
+		$result = "KO";
+		$idCart = 0;
+		$errore = "";
+		$contentsFbk = $contentsGtm = "";
+		
+		$defaultErrorJson = array(
+			"result"	=>	$result,
+			"idCart"	=>	$idCart,
+			"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
+			"contens_fbk"	=>	"",
+			"contens_gtm"	=>	"",
+		);
+		
+		// Se non è un prodotto
+		if ($id_page && !$this->m["PagesModel"]->isProdotto((int)$id_page))
+		{
+			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
+			
+			echo json_encode($defaultErrorJson);
+			
+			die();
+		}
+		
 		if (v("carrello_monoprodotto"))
 		{
 			// Imposto la quantità a 1
@@ -101,20 +124,9 @@ class BaseCartController extends BaseController
 				$this->m["CartModel"]->emptyCart();
 		}
 		
-		$result = "KO";
-		$idCart = 0;
-		$errore = "";
-		$contentsFbk = $contentsGtm = "";
-		
 		if (!v("ecommerce_online"))
 		{
-			echo json_encode(array(
-				"result"	=>	$result,
-				"idCart"	=>	$idCart,
-				"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
-				"contens_fbk"	=>	"",
-				"contens_gtm"	=>	"",
-			));
+			echo json_encode($defaultErrorJson);
 			
 			die();
 		}

@@ -491,7 +491,7 @@ class CombinazioniModel extends GenericModel {
 	public function peso($record)
 	{
 		if (!isset($_GET["esporta"]))
-			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='peso' value='".$record["combinazioni"]["peso"]."' />";
+			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='peso' value='".number_format($record["combinazioni"]["peso"],2,",","")."' />";
 		else
 			return $record["combinazioni"]["peso"];
 	}
