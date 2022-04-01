@@ -54,7 +54,7 @@ class BasePublicCrudController extends BaseController
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/".$this->controller."/".$this->action;
+			$data["arrayLingue"][$l] = $l."/".$this->applicationUrl.$this->controller."/".$this->action;
 		}
 		
 		$this->s['registered']->check(null,0);
