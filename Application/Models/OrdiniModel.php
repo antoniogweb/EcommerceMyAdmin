@@ -401,7 +401,10 @@ class OrdiniModel extends FormModel {
 			$r = new RigheModel();
 			
 			$righeOrdine = $r->clear()->where(array("id_o"=>$clean["id_o"]))->send();
-
+			
+			$bckLang = Params::$lang;
+			$bckContesto = TraduzioniModel::$contestoStatic;
+			
 			try
 			{
 				$mail = new PHPMailer(true); //New instance, with exceptions enabled
@@ -471,8 +474,8 @@ class OrdiniModel extends FormModel {
 				$output = MailordiniModel::loadTemplate($oggetto, $output);
 // 				echo $output;die();
 				// Imposto le traduzioni del back
-				Params::$lang = null;
-				TraduzioniModel::$contestoStatic = "back";
+				Params::$lang = $bckLang;
+				TraduzioniModel::$contestoStatic = $bckContesto;
 				$tradModel = new TraduzioniModel();
 				$tradModel->ottieniTraduzioni();
 				
@@ -503,8 +506,8 @@ class OrdiniModel extends FormModel {
 				
 				$this->notice = "<div class='alert alert-success'>Mail inviata con successo!</div>";
 			} catch (Exception $e) {
-				Params::$lang = null;
-				TraduzioniModel::$contestoStatic = "back";
+				Params::$lang = $bckLang;
+				TraduzioniModel::$contestoStatic = $bckContesto;
 			}
 		}
 	}
