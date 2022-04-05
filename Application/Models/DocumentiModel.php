@@ -121,8 +121,10 @@ class DocumentiModel extends GenericModel {
 	
 	public function buildContentSelect()
 	{
-		$c = new PagesModel();
-		return $c->clear()->addWhereAttivo()->sWhere("id_user = 0")->orderBy("pages.id_order")->toList("id_page","title")->send();
+		$p = new PagesModel();
+		$c = new CategoriesModel();
+		
+		return $p->clear()->addWhereCategoria($c->getShopCategoryId())->addWhereAttivo()->sWhere("id_user = 0")->orderBy("pages.id_order")->toList("id_page","title")->send();
 	}
 	
 	public function selectTipo()
