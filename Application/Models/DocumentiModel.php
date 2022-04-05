@@ -26,6 +26,8 @@ class DocumentiModel extends GenericModel {
 	
 	public static $pathFiles = "images/documenti";
 	
+	public $elencaDocumentiPaginaImport = false;
+	
 	public $parentRootFolder;
 	public static $uploadFile = true;
 	
@@ -100,10 +102,27 @@ class DocumentiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'id_page'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Contenuto da linkare',
+					'options'	=>	$this->buildContentSelect(),
+					'reverse' => 'yes',
+					'entryClass'  => 'form_input_text cont_Select',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+	}
+	
+	public function buildContentSelect()
+	{
+		$c = new PagesModel();
+		return $c->clear()->addWhereAttivo()->sWhere("id_user = 0")->orderBy("pages.id_order")->toList("id_page","title")->send();
 	}
 	
 	public function selectTipo()
@@ -329,6 +348,8 @@ class DocumentiModel extends GenericModel {
 	{
 		$idPage = isset($params["id_page"]) ? $params["id_page"] : 0;
 		$idArchivio = isset($params["id_archivio"]) ? $params["id_archivio"] : 0;
+		$idImport = isset($params["id_import"]) ? $params["id_import"] : 0;
+		$lingua = isset($params["lingua"]) ? $params["lingua"] : null;
 		
 		$okElaborazione = true;
 		
@@ -352,10 +373,14 @@ class DocumentiModel extends GenericModel {
 				"content_type"		=>	$this->files->getContentType($extractPath.$this_file),
 				"id_page"			=>	$idPage,
 				"id_archivio"		=>	$idArchivio,
+				"id_import"			=>	$idImport,
 			));
 			
 			// Lingua
-			$this->setValue("lingua", DocumentiModel::cercaLinguaDaNomeFile($this_file));
+			if (!$lingua)
+				$lingua = DocumentiModel::cercaLinguaDaNomeFile($this_file);
+			
+			$this->setValue("lingua", $lingua);
 			
 			DocumentiModel::$uploadFile = false;
 			

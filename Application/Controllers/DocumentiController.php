@@ -60,6 +60,9 @@ class DocumentiController extends BaseController
 		
 		$fields .= ",descrizione";
 		
+		if ($queryType == "update" && !$this->m[$this->modelName]->hasPage((int)$id))
+			$fields .= ",id_page";
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_page"] != "tutti")

@@ -1539,16 +1539,29 @@ class PagesController extends BaseController {
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$this->mainMenuAssociati,'mainAction'=>"documenti/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("distinct documenti.id_doc,documenti.*,tipi_documento.*")
-			->inner(array("page"))
+// 			->inner(array("page"))
 			->left(array("tipo"))
 			->left("documenti_lingue")->on("documenti_lingue.id_doc = documenti.id_doc and documenti_lingue.includi = 1")
 			->orderBy("documenti.id_order")
 			->where(array(
-				"id_page"	=>	$clean['id'],
+// 				"id_page"	=>	$clean['id'],
 				"id_tipo_doc"	=>	$this->viewArgs["id_tipo_doc"],
 				"visibile"	=>	1,
 				"lk"		=>	array("documenti.titolo" => $this->viewArgs["titolo_documento"]),
 			))->convert();
+		
+		if ($this->m[$this->modelName]->elencaDocumentiPaginaImport)
+		{
+			$this->m[$this->modelName]->left(array("page"))->aWhere(array(
+				"id_import"	=>	$clean['id'],
+			));
+		}
+		else
+		{
+			$this->m[$this->modelName]->inner(array("page"))->aWhere(array(
+				"id_page"	=>	$clean['id'],
+			));
+		}
 		
 		if ($this->viewArgs["lingua_doc"] != "tutti")
 		{

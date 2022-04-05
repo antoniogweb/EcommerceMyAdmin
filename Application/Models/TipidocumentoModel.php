@@ -43,4 +43,13 @@ class TipidocumentoModel extends GenericModel
 		$this->aggiungiAGruppoTipo($id, "DO");
     }
     
+    public static function findIdByTitle($titolo)
+    {
+		$clean["titolo"] = sanitizeAll(F::togliSpazi($titolo));
+		
+		$td = new TipidocumentoModel();
+		
+		return $td->clear()->select("id_tipo_doc")->sWhere('REPLACE(titolo, " ", "") = "'.$clean["titolo"].'"')->field("id_tipo_doc");
+    }
+    
 }

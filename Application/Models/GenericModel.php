@@ -1531,4 +1531,11 @@ class GenericModel extends Model_Tree
 			return $this->pUpdate($id);
 		}
 	}
+	
+	public function hasPage($id)
+    {
+		return $this->clear()->where(array(
+			$this->_idFields	=>	(int)$id,
+		))->field("id_page");
+    }
 }

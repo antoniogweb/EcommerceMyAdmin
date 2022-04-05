@@ -118,6 +118,13 @@ class F
 		return trim(strip_tags(htmlentitydecode($string))) ? false : true;
 	}
 	
+	public static function togliSpazi($stringa)
+	{
+		$stringa = str_replace(" ","",$stringa);
+		
+		return strtolower($stringa);
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{
