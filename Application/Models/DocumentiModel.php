@@ -29,6 +29,9 @@ class DocumentiModel extends GenericModel {
 	public $elencaDocumentiPaginaImport = false;
 	
 	public $parentRootFolder;
+	
+	public $sectionDocumenti = null;
+	
 	public static $uploadFile = true;
 	
 	public function __construct() {
@@ -123,6 +126,11 @@ class DocumentiModel extends GenericModel {
 	{
 		$p = new PagesModel();
 		$c = new CategoriesModel();
+		
+		if ($this->sectionDocumenti)
+			$idC = (int)CategoriesModel::getIdCategoriaDaSezione($this->sectionDocumenti);
+		else
+			$idC = $c->getShopCategoryId();
 		
 		return $p->clear()->addWhereCategoria($c->getShopCategoryId())->addWhereAttivo()->sWhere("id_user = 0")->orderBy("pages.id_order")->toList("id_page","title")->send();
 	}
