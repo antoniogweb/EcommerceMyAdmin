@@ -723,8 +723,8 @@ class BaseBaseController extends Controller
 							"tokenConferma"	=>	$tokenConferma,
 						));
 						
-						if ($res)
-						{
+// 						if ($res)
+// 						{
 							ob_start();
 							include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
 							$output = ob_get_clean();
@@ -737,7 +737,7 @@ class BaseBaseController extends Controller
 								"id_user"	=>	(int)$lId,
 								"id_page"	=>	0,
 							));
-						}
+// 						}
 						
 						$urlRedirect = RegusersModel::getUrlRedirect();
 						
