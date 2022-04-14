@@ -386,4 +386,12 @@ trait CommonModel {
 		else
 			return $r->send();
 	}
+	
+	public static function getNominativo($ordine)
+	{
+		if ($ordine["tipo_cliente"] == "azienda")
+			return $ordine["ragione_sociale"];
+		else
+			return $ordine["nome"]." ".$ordine["cognome"];
+	}
 }

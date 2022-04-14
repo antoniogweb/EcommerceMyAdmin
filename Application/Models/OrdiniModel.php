@@ -809,14 +809,6 @@ class OrdiniModel extends FormModel {
 		))->record();
 	}
 	
-	public static function getNominativo($ordine)
-	{
-		if ($ordine["tipo_cliente"] == "azienda")
-			return $ordine["ragione_sociale"];
-		else
-			return $ordine["nome"]." ".$ordine["cognome"];
-	}
-	
 	public static function conPagamentoOnline($ordine)
 	{
 		if ($ordine["pagamento"] == "paypal" || $ordine["pagamento"] == "carta_di_credito")
