@@ -31,6 +31,7 @@ class SediModel extends BasicsectionModel {
 		$this->formStruct["entries"]["email_contatto_evento"]["labelString"] = gtext("Email");
 		$this->formStruct["entries"]["telefono_contatto_evento"]["labelString"] = gtext("Telefono");
 		$this->formStruct["entries"]["indirizzo_localita_evento"]["labelString"] = gtext("Indirizzo");
+		$this->formStruct["entries"]["localita_evento"]["labelString"] = gtext("Località");
 	}
 	
 	public function insert()
