@@ -77,7 +77,7 @@
 						//funzione per importare le immagini dei lavori
 						function import_thumb()
 						{
-							$.ajax({
+							$.ajaxQueue({
 								url: "<?php echo $this->baseUrl.'/immagini/view/'.$id_page;?>",
 								async: false,
 								cache:false,
@@ -89,6 +89,7 @@
 									partial_load(".a_moveup");
 									partial_load(".a_movedown");
 									partial_load(".a_del");
+									partial_load(".a_rotate_o");
 								}
 							});
 
@@ -97,7 +98,7 @@
 								$(className).click(function() {
 					// 				$(className).unbind();
 									var link_url = $(this).attr("href");
-									$.ajax({
+									$.ajaxQueue({
 										url: link_url,
 										async: false,
 										cache:false,

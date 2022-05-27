@@ -16,13 +16,15 @@
 			<?php } ?>
 		<?php } ?>
 		
-		<a title="scarica l'immagine" class="a_download" target="_blank" href="<?php echo Domain::$name."/images/contents/".$records[$i]['immagini']["immagine"];?>"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a>
+		<a title="scarica l'immagine" class="a_download" target="_blank" href="<?php echo Domain::$name."/images/contents/".$records[$i]['immagini']["immagine"];?>"><i class="fa fa-download" aria-hidden="true"></i></a>
 		
-		<a title="elimina l'immagine" class="a_del" href="<?php echo $this->baseUrl.'/immagini/erase/'.$records[$i]['immagini']['id_immagine'];?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+		<a title="elimina l'immagine" class="a_del" href="<?php echo $this->baseUrl.'/immagini/erase/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
+		
+		<a title="ruota in senso orario" class="a_rotate_o" href="<?php echo $this->baseUrl.'/immagini/rotateo/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-repeat" aria-hidden="true"></i></a>
 		
 	</div>
 	
-	<div class="box_thumb_down"><img src="<?php echo $this->baseUrl.'/thumb/contenuto/'.$records[$i]['immagini']['immagine'];?>"></div>
+	<div class="box_thumb_down"><img src="<?php echo $this->baseUrl.'/thumb/contenuto/'.$records[$i]['immagini']['immagine']."/".rand(1,999999);?>"></div>
 </div>
 
 <?php } ?>

@@ -474,7 +474,10 @@ class GenericModel extends Model_Tree
 // 						"<div class='$class' data-field='$field' data-field-path='".$params["path"]."'>;;value;;</div>",
 					),
 				);
-					
+				
+				if (isset($params["labelString"]))
+					$temp["labelString"] = $params["labelString"];
+				
 				if (!isset($this->formStruct["entries"][$field]))
 				{
 					$this->formStruct["entries"][$field] = $temp;

@@ -2770,7 +2770,7 @@ class PagesModel extends GenericModel {
 		return $this;
     }
     
-    public function setCampiAggiuntivi($sezione, $arrayCampi, $traduci = false)
+    public static function setCampiAggiuntivi($sezione, $arrayCampi, $traduci = false)
     {
 		if (isset(self::$campiAggiuntivi[$sezione]))
 			self::$campiAggiuntivi[$sezione] += $arrayCampi;
