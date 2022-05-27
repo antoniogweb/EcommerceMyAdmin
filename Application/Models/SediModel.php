@@ -28,6 +28,7 @@ class SediModel extends BasicsectionModel {
 	
 	public function overrideFormStruct()
 	{
+		$this->formStruct["entries"]["title"]["labelString"] = gtext("Rag. Soc.");
 		$this->formStruct["entries"]["email_contatto_evento"]["labelString"] = gtext("Email");
 		$this->formStruct["entries"]["telefono_contatto_evento"]["labelString"] = gtext("Telefono");
 		$this->formStruct["entries"]["indirizzo_localita_evento"]["labelString"] = gtext("Indirizzo");

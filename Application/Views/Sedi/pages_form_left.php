@@ -8,8 +8,8 @@
 
 <?php echo $form["indirizzo_localita_evento"];?>
 
-<?php echo $form["localita_evento"];?>
-
 <?php echo $form["id_regione"];?>
+
+<?php echo $form["localita_evento"];?>
 
 <?php echo $form["description"];?>
