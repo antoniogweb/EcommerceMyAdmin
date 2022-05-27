@@ -394,7 +394,7 @@
 						url: that.urlGetFasce+"&id_cont="+id+"&delAction=Y",
 						async: true,
 						cache:false,
-						dataType: "json",
+						dataType: "html",
 						success: function(content){
 							
 							aggiornaIframe();
