@@ -978,9 +978,11 @@ class PagesModel extends GenericModel {
 			->where(array(
 				"pages.id_page"	=>	(int)$id,
 				"pages.add_in_sitemap"=>	"Y",
+				"categories.add_in_sitemap"	=>	"Y",
 			))
 			->addWhereAttivo()
 			->addWhereAttivoCategoria()
+			->addWhereCategoriaInstallata()
 			->first();
 	}
 	
