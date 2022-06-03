@@ -252,6 +252,10 @@ class MenuModel extends HierarchicalModel {
 			
 			foreach ($tree as $node)
 			{
+				// Appiattisci il menù se è quello semplice e se l'opzione è attiva
+				if ($simple && v("appiattisci_menu_semplice"))
+					$node["aggregate"]["depth"] = 1;
+
 				// Wrap HTML da file del tema
 				if (!$simple && file_exists(tpf("_Menu/submenu_wrap_open.php")) && file_exists(tpf("_Menu/submenu_wrap_close.php")))
 				{
