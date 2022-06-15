@@ -466,7 +466,7 @@ class OrdiniModel extends FormModel {
 				$baseUrl = Url::getRoot();
 				$baseUrl = str_replace("admin/", "", $baseUrl);
 				$tipoOutput = "mail_al_cliente";
-				if ($tipo == "R" && file_exists(tpf("/Elementi/Mail/mail_ordine_ricevuto.php"))
+				if ($tipo == "R" && file_exists(tpf("/Elementi/Mail/mail_ordine_ricevuto.php")))
 					include tpf("/Elementi/Mail/mail_ordine_ricevuto.php");
 				else
 					include tpf("/Ordini/$template.php");
