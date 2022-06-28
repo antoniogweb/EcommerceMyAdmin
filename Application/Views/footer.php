@@ -27,7 +27,7 @@
 				<iframe class="iframe_dialog" src="" frameborder="0" height="500px" width="100%"></iframe>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo gtext("Chiudi");?></button>
 			</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
