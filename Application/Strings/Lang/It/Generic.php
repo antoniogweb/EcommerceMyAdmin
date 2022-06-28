@@ -61,7 +61,7 @@ class Lang_It_Generic extends Lang_En_Generic
 			return gtext($this->translations[$string], false);
 		}
 
-		return $string;
+		return gtext($string);
 	}
 
 }
