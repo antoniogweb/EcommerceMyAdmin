@@ -357,7 +357,7 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public function checkDataPerSitemap($id)
 	{
-		return $this->clear()->addWhereAttivoCategoria()->aWhere(array(
+		return $this->clear()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->aWhere(array(
 				"id_c"	=>	(int)$id,
 				"ne"	=>	array(
 					"id_c"	=>	1,
