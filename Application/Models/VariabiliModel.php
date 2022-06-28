@@ -353,6 +353,7 @@ class VariabiliModel extends GenericModel {
 		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
 		"profondita_menu_desktop"	=>	2, // profondità menù desktop
 		"profondita_menu_mobile"	=>	2, // profondità menù mobile
+		"appiattisci_menu_semplice"	=>	0, // se impostato a 1, vengono eliminati i livelli del menù e viene messo tutto a profondità 1
 		"attiva_feed_solo_se_con_token"	=>	0, // mostra feed google facebook solo se con token
 		"token_feed_google_facebook"	=>	"", // token del feed
 		"attiva_descrizione_2_in_prodotti"	=>	0, // attiva campo descrizione 2 nei prodotti

@@ -1276,7 +1276,10 @@ class BaseOrdiniController extends BaseController
 							{
 								ob_start();
 								$tipoOutput = "mail_al_cliente";
-								include tpf("/Ordini/resoconto-acquisto.php");
+								if (file_exists(tpf("/Elementi/Mail/mail_ordine_ricevuto.php")))
+									include tpf("/Elementi/Mail/mail_ordine_ricevuto.php");
+								else
+									include tpf("/Ordini/resoconto-acquisto.php");
 								$output = ob_get_clean();
 								
 								$res = MailordiniModel::inviaMail(array(
