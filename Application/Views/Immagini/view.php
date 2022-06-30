@@ -20,13 +20,23 @@
 		
 		<a title="scarica l'immagine" class="a_download" target="_blank" href="<?php echo Domain::$name."/images/contents/".$records[$i]['immagini']["immagine"];?>"><i class="fa fa-download" aria-hidden="true"></i></a>
 		
-		<a title="edita l'immagine" class="iframe" target="_blank" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/".$records[$i]['immagini']["id_immagine"];?>"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<a title="edita i meta tag dell'immagine" class="iframe" target="_blank" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/".$records[$i]['immagini']["id_immagine"];?>?partial=Y&nobuttons=Y"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 		
 		<a title="ruota in senso orario" class="a_rotate_o" href="<?php echo $this->baseUrl.'/immagini/rotateo/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-repeat" aria-hidden="true"></i></a>
 		
 	</div>
 	
-	<div class="box_thumb_down"><img src="<?php echo $this->baseUrl.'/thumb/contenuto/'.$records[$i]['immagini']['immagine']."/".rand(1,999999);?>"></div>
+	<div class="box_thumb_down">
+		<div class="row">
+			<div class="col-md-3">
+				<img src="<?php echo $this->baseUrl.'/thumb/contenuto/'.$records[$i]['immagini']['immagine']."/".rand(1,999999);?>">
+			</div>
+			<div class="col-md-9">
+				<b><?php echo gtext("Nome file");?></b>: <?php echo $records[$i]['immagini']['immagine'] ? $records[$i]['immagini']['immagine'] : "--";?><br />
+				<b><?php echo gtext("Alt tag");?></b>: <?php echo $records[$i]['immagini']['alt_tag'] ? $records[$i]['immagini']['alt_tag'] : "--";?>
+			</div>
+		</div>
+	</div>
 </div>
 
 <?php } ?>

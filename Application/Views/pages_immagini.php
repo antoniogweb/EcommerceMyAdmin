@@ -106,6 +106,9 @@ $(function () {
 			'id_page':'<?php echo $id_page; ?>'
 		},
 		done: function (e, data) {
+			if (data.result.result != "OK")
+				$(".alert-fileupload").append("<div class='alert alert-danger'>" + data.result.error + "</div>");
+			
 			import_thumb();
 		},
 		change: function (e, data) {
@@ -120,16 +123,18 @@ $(function () {
 			);
 		},
 		processdone: function (e, data) {
-			
-			if (data.result.result == "OK")
-			{
-				$("input[name='immagine']").val(data.result.immagine);
-				show_preview();
-			}
-			else
-			{
-				$(".alert-fileupload").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
-			}
+// 			console.log(data);
+// 			if (data._response.result.result != "OK")
+// 				$(".alert-fileupload").append("<div class='alert alert-danger'>" + data.result.error + "</div>");
+// 			if (data.result.result == "OK")
+// 			{
+// 				$("input[name='immagine']").val(data.result.immagine);
+// 				show_preview();
+// 			}
+// 			else
+// 			{
+// 				$(".alert-fileupload").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
+// 			}
 
 // 									var fileName = data.files[0].name;
 // 									

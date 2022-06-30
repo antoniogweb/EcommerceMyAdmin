@@ -26,6 +26,8 @@ class ImmaginiModel extends GenericModel {
 	
 	protected static $immaginiPagine = null;
 	
+	public $campoTitolo = "immagine";
+	
 	public function __construct() {
 
 		$this->_tables='immagini';

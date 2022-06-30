@@ -2224,7 +2224,11 @@ class PagesController extends BaseController {
 									
 									if ($clean['is_main'] === 0)
 									{
-										$this->m['ImmaginiModel']->values = array('immagine'=>sanitizeDb($clean['fileName']),'id_page'=>$clean['id_page']);
+										$this->m['ImmaginiModel']->values = array(
+											'immagine'	=>	sanitizeDb($clean['fileName']),
+											'id_page'	=>	$clean['id_page'],
+											'alt_tag'	=>	sanitizeDb(str_replace("_"," ",$tempNameSenzaEstensione)),
+										);
 										$this->m['ImmaginiModel']->insert();
 									}
 									
@@ -2250,7 +2254,7 @@ class PagesController extends BaseController {
 							}
 						} else {
 							$result = "KO";
-							$errorString = gtext("L'estensione del file non è permessa");
+							$errorString = gtext("L'estensione del file <i>".sanitizeHtml($_FILES['Filedata']['name'])."</i> non è permessa");
 						}
 					}
 					else

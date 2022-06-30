@@ -45,8 +45,8 @@ class ThumbController extends BaseThumbController {
 		{
 			$image = sanitizeAll($image);
 			$params = array(
-				'imgWidth'		=>	120,
-				'imgHeight'		=>	120,
+				'imgWidth'		=>	250,
+				'imgHeight'		=>	250,
 				'defaultImage'	=>  null,
 				'cropImage'		=>	'no',
 // 				'useCache'		=>	true,

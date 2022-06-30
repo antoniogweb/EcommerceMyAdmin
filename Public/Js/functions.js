@@ -281,7 +281,7 @@ $(document).ready(function(){
 		$('#my_modal').modal('hide');
 	};
 	
-	$(".iframe_td a, a.iframe, img.iframe").click(function(e){
+	$("body").on("click", ".iframe_td a, a.iframe, img.iframe", function(e){
 		
 		var t_href = $(this).attr("href");
 		
