@@ -31,6 +31,9 @@ class BaseRegusersController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!v("attiva_area_riservata") && $action != "notice")
+			die("Area riservata non attiva");
+		
 		if( !session_id() )
 			session_start();
 		

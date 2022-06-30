@@ -431,6 +431,8 @@ class VariabiliModel extends GenericModel {
 		"feedback_ajax_submit"	=>	0, // se impostato a 1, l'invio del form feedback sarà in modalità AJAX
 		## PORTALE ##
 		"permetti_agli_utenti_di_aggiungere_pagine"	=>	0, // se impostato a 1, gli utenti potranno aggiungere pagine
+		## AREA RISERVATA ##
+		"attiva_area_riservata"	=>	1, // se impostato a 1, gli utenti potranno creare un account, eseguire il login, modificare i propri dati
 	);
 	
 	public static $daInizializzare = array(
