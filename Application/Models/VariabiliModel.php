@@ -401,12 +401,14 @@ class VariabiliModel extends GenericModel {
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
-		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		"attiva_modifica_massiva_codici"	=>	0, // permetti la modifica massiva dei codici (solo singola pagina)
+		## SEDI ##
+		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
+		"attiva_categorie_sedi"	=>	0, // se attivare o disattivare le categorie delle sedi
 		## MODULO CONTATTI ##
 // 		"redirect_pagina_dopo_invio_se_prodotto"	=>	0, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
 		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti

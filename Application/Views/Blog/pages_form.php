@@ -91,14 +91,7 @@
 						</div>
 					</div>
 					<div class='col-md-4'>
-						<div class="panel panel-info">
-							<div class="panel-heading">
-								Categoria
-							</div>
-							<div class="panel-body">
-								<?php echo $form["id_c"];?>
-							</div>
-						</div>
+						<?php include($this->viewPath("pages_form_categorie"));?>
 					</div>
 					<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 					<div class='col-md-4'>

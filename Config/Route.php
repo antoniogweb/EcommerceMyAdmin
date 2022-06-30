@@ -583,6 +583,13 @@ class Route
 		'sedi,inevidenza',
 		'sedi,updatevalue',
 		'sedi,ordina',
+		
+		'sedicat,main',
+		'sedicat,form',
+		'sedicat,meta',
+		'sedicat,gruppi',
+		'sedicat,ordina',
+		'sedicat,contenuti',
 	);
 	
 	//it can be 'yes' or 'no'

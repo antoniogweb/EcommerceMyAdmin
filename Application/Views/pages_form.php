@@ -45,6 +45,8 @@
 					<div class='col-md-4'>
 						<?php include($this->viewPath("pages_form_visibility"));?>
 						
+						<?php include($this->viewPath("pages_form_categorie"));?>
+						
 						<?php include($this->viewPath("pages_form_traduzioni"));?>
 						
 						<?php include($this->viewPath("pages_form_immagini"));?>
