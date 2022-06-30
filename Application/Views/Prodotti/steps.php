@@ -10,28 +10,28 @@
 	$temp["pcorr_sec"] = "tutti";
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
-	<li <?php echo $posizioni['main'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
+	<li <?php echo $posizioni['main'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>"><?php echo gtext("Dettagli");?></a></li>
 	<?php if (v("contenuti_in_prodotti")) { ?>
-	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".$viewStatusTutti;?>">Contenuti</a></li>
+	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".$viewStatusTutti;?>"><?php echo gtext("Contenuti");?></a></a></li>
 	<?php } ?>
 	<?php if (v("fasce_in_prodotti")) { ?>
-	<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/contenuti/$id_page".$viewStatusTutti;?>">Fasce</a></li>
+	<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/contenuti/$id_page".$viewStatusTutti;?>"><?php echo gtext("Fasce");?></a></li>
 	<?php } ?>
 	<?php if (v("scaglioni_in_prodotti")) { ?>
-	<li <?php echo $posizioni['scaglioni'];?> ><a class="help_scaglioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/scaglioni/$id_page".$viewStatusTutti;?>">Sconti quantità</a></li>
+	<li <?php echo $posizioni['scaglioni'];?> ><a class="help_scaglioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/scaglioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Sconti quantità");?></a></li>
 	<?php } ?>
 	
-	<li <?php echo $posizioni['meta'];?> ><a class="help_meta" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/meta/$id_page".$viewStatusTutti;?>">Meta</a></li>
-	<li <?php echo $posizioni['immagini'];?> ><a class="help_immagini" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/immagini/$id_page".$viewStatusTutti;?>">Immagini</a></li>
+	<li <?php echo $posizioni['meta'];?> ><a class="help_meta" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/meta/$id_page".$viewStatusTutti;?>"><?php echo gtext("Meta");?></a></li>
+	<li <?php echo $posizioni['immagini'];?> ><a class="help_immagini" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/immagini/$id_page".$viewStatusTutti;?>"><?php echo gtext("Immagini");?></a></li>
 	<?php if (v("correlati_in_prodotti")) { ?>
-	<li <?php echo $posizioni['prod_corr'];?> ><a class="help_correlati" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/correlati/$id_page".$viewStatusTutti;?>">Prodotti correlati</a></li>
+	<li <?php echo $posizioni['prod_corr'];?> ><a class="help_correlati" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/correlati/$id_page".$viewStatusTutti;?>"><?php echo gtext("Prodotti correlati");?></a></li>
 	<?php } ?>
 	<?php if (v("accessori_in_prodotti")) { ?>
-	<li <?php echo $posizioni['accessori'];?>><a class="help_accessori" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/accessori/$id_page".$viewStatusTutti;?>">Accessori</a></li>
+	<li <?php echo $posizioni['accessori'];?>><a class="help_accessori" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/accessori/$id_page".$viewStatusTutti;?>"><?php echo gtext("Accessori");?></a></li>
 	<?php } ?>
 	<?php if (v("caratteristiche_in_prodotti")) { ?>
 		<?php if (!v("caratteristiche_in_tab_separate")) { ?>
-		<li <?php echo $posizioni['caratteristiche'];?>><a class="help_caratteristiche" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>">Caratteristiche</a></li>
+		<li <?php echo $posizioni['caratteristiche'];?>><a class="help_caratteristiche" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>"><?php echo gtext("Caratteristiche");?></a></li>
 		<?php } else {
 			foreach ($tabCaratteristiche as $idTipoCar => $titoloCar)
 			{
@@ -46,13 +46,13 @@
 		} ?>
 	<?php } ?>
 	<?php if (v("combinazioni_in_prodotti")) { ?>
-	<li <?php echo $posizioni['attributi'];?>><a class="help_varianti" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$viewStatusTutti;?>">Varianti</a></li>
+	<li <?php echo $posizioni['attributi'];?>><a class="help_varianti" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$viewStatusTutti;?>"><?php echo gtext("Varianti");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_personalizzazioni")) { ?>
-	<li <?php echo $posizioni['personalizzazioni'];?>><a class="help_personalizzazioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/personalizzazioni/$id_page".$viewStatusTutti;?>">Personalizzazioni</a></li>
+	<li <?php echo $posizioni['personalizzazioni'];?>><a class="help_personalizzazioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/personalizzazioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Personalizzazioni");?></a></li>
 	<?php } ?>
 	<?php if (v("usa_tag")) { ?>
-	<li <?php echo $posizioni['tag'];?>><a class="help_tag_prodotto" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/tag/$id_page".$viewStatusTutti;?>">Tag</a></li>
+	<li <?php echo $posizioni['tag'];?>><a class="help_tag_prodotto" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/tag/$id_page".$viewStatusTutti;?>"><?php echo gtext("Tag");?></a></li>
 	<?php } ?>
 	<?php if (v("documenti_in_prodotti")) { ?>
 	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/documenti/$id_page".$viewStatusTutti;?>"><?php echo gtext("Documenti");?></a></li>

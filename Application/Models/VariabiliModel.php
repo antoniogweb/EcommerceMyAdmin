@@ -63,7 +63,8 @@ class VariabiliModel extends GenericModel {
 		"nome_cognome_anche_azienda"=>	0,
 		"attiva_gruppi_utenti"		=>	1,
 		"accessori_in_prodotti"		=>	1,
-		"contenuti_in_pagine"		=>	1,
+		"contenuti_in_pagine"		=>	1, // se sono visibili oppure no i contenuti nelle pagine
+		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
 		"fasce_in_pagine"			=>	1,
 		"mostra_tipi_documento"		=>	1,
 		"download_attivi"			=>	1,

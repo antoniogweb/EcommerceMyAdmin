@@ -40,8 +40,8 @@ a
 
 .box_thumb_up
 {
-	background-color:#d3d3d3;
-	margin:0px 2px;
+/* 	background-color:#d3d3d3; */
+/* 	margin:0px 2px; */
 }
 .box_thumb_up img
 {
@@ -53,15 +53,26 @@ a
 .box_thumb_down
 {
 	text-align:center;
+	overflow:hidden;
+/* 	padding:5px; */
 }
+
+.box_thumb_down img
+{
+	width:100%;
+}
+
 /*cornice immagine di preview e delle immagini dei lavori*/
 .box_thumb, .box_thumb_preview, .box_who_preview
 {
 /* 	border:1px solid #d3d3d3; */
 	width:124px;
-	height:150px;
+	height:160px;
 	margin:3px;
 	float:left;
+	border-top: 3px solid #d2d6de;
+	background-color:#FFF;
+	overflow:hidden;
 }
 
 /*cornice immagine di preview*/

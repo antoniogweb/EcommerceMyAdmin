@@ -12,3 +12,5 @@
 
 <?php } ?>
 
+<?php include($this->viewPath("gestisci_associato_pagine_correlate"));?>
+

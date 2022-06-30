@@ -16,9 +16,9 @@
 			<?php } ?>
 		<?php } ?>
 		
-		<a title="scarica l'immagine" class="a_download" target="_blank" href="<?php echo Domain::$name."/images/contents/".$records[$i]['immagini']["immagine"];?>"><i class="fa fa-download" aria-hidden="true"></i></a>
+		<a title="elimina l'immagine" class="a_del pull-right" href="<?php echo $this->baseUrl.'/immagini/erase/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
 		
-		<a title="elimina l'immagine" class="a_del" href="<?php echo $this->baseUrl.'/immagini/erase/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-trash" aria-hidden="true"></i></a>
+		<a title="scarica l'immagine" class="a_download" target="_blank" href="<?php echo Domain::$name."/images/contents/".$records[$i]['immagini']["immagine"];?>"><i class="fa fa-download" aria-hidden="true"></i></a>
 		
 		<a title="ruota in senso orario" class="a_rotate_o" href="<?php echo $this->baseUrl.'/immagini/rotateo/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-repeat" aria-hidden="true"></i></a>
 		

@@ -301,6 +301,12 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->setFilters();
 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_pages"), 'mainMenu'=>$this->mainMenu));
 		
+		if ($this->viewArgs["id_pcorr"] != "tutti")
+		{
+			$this->tableFields[] = "bulkaggiungiaprodotto";
+			$this->head .= ",Aggiungi";
+		}
+		
 		if ($this->addTraduzioniInMain)
 		{
 			foreach (self::$traduzioni as $codiceLingua)

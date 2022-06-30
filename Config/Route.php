@@ -287,6 +287,8 @@ class Route
 		'pagine,contenuti',
 		'pagine,ordinacontenuti',
 		'pagine,testi',
+		'pagine,paginecorrelate',
+		'pagine,ordinacorrelate',
 		
 		'layer,form',
 		'layer,thumb',
