@@ -80,6 +80,7 @@ class Route
 		'immagini,erase',
 		'immagini,ordina',
 		'immagini,rotateo',
+		'immagini,form',
 // 		'immagini,rotatea',
 		'ordini,main',
 		'ordini,form',

@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ImmaginiModel extends Model_Tree {
+class ImmaginiModel extends GenericModel {
 	
 	protected static $immaginiPagine = null;
 	
@@ -113,7 +113,7 @@ class ImmaginiModel extends Model_Tree {
 	}
 	
 	//duplica le immagini della pagina avente id uguale a $from_id alla pagina avente id uguale a $to_id 
-	public function duplica($from_id, $to_id)
+	public function duplica($from_id, $to_id, $field = "id_page")
 	{
 		$clean["from_id"] = (int)$from_id;
 		$clean["to_id"] = (int)$to_id;

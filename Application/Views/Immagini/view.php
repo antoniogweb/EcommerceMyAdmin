@@ -20,6 +20,8 @@
 		
 		<a title="scarica l'immagine" class="a_download" target="_blank" href="<?php echo Domain::$name."/images/contents/".$records[$i]['immagini']["immagine"];?>"><i class="fa fa-download" aria-hidden="true"></i></a>
 		
+		<a title="edita l'immagine" class="iframe" target="_blank" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/".$records[$i]['immagini']["id_immagine"];?>"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+		
 		<a title="ruota in senso orario" class="a_rotate_o" href="<?php echo $this->baseUrl.'/immagini/rotateo/'.$records[$i]['immagini']['id_immagine'];?>"><i class="fa fa-repeat" aria-hidden="true"></i></a>
 		
 	</div>
