@@ -197,4 +197,20 @@ class CaratteristicheController extends BaseController {
 		$this->append($data);
 		$this->load("select_xml");
 	}
+	
+	public function elenco($section = "")
+	{
+		header('Content-type: application/json; charset=utf-8');
+		
+		$this->clean();
+		$campoTitolo = $this->m[$this->modelName]->campoTitolo;
+		
+		$elementi = $this->m[$this->modelName]->clear()->where(array(
+			"section"	=>	sanitizeAll($section),
+		))->select("distinct $campoTitolo")->orderBy($campoTitolo)->toList($campoTitolo)->send();
+		
+		$elementi = htmlentitydecodeDeep($elementi);
+		
+		echo json_encode($elementi);
+	}
 }

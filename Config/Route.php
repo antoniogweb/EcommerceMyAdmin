@@ -593,6 +593,27 @@ class Route
 		'sedicat,gruppi',
 		'sedicat,ordina',
 		'sedicat,contenuti',
+		
+		'soci,main',
+		'soci,aggiungicategoria',
+		'soci,form',
+		'soci,immagini',
+		'soci,eliminacategoria',
+		'soci,correlati',
+		'soci,attributi',
+		'soci,caratteristiche',
+		'soci,move',
+		'soci,pubblica',
+		'soci,inevidenza',
+		'soci,updatevalue',
+		'soci,meta',
+		'soci,ordina',
+		'soci,contenuti',
+		'soci,ordinacontenuti',
+		'soci,testi',
+		'soci,socicorrelate',
+		'soci,ordinacorrelate',
+		'soci,aggiungicaratteristica',
 	);
 	
 	//it can be 'yes' or 'no'

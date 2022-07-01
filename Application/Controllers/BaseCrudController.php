@@ -394,4 +394,9 @@ trait BaseCrudController
 			$this->mainHead .= ','.$i["integrazioni"]["titolo"];
 		}
 	}
+	
+	protected function getNomeMenu($voce = "prodotti")
+	{
+		return isset($this->voceMenu) ? $this->voceMenu : $voce;
+	}
 }

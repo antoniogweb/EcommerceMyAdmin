@@ -130,6 +130,17 @@ class CaratteristichevaloriModel extends GenericModel {
 				"id_tipologia_caratteristica"	=>	(int)$_GET["id_tipo_car"],
 			));
 		
+		if (isset($_GET["id_page"]) && $_GET["id_page"] != "tutti")
+		{
+			$p = new PagesModel();
+			
+			$section = $p->section((int)$_GET["id_page"], true);
+			
+			$t->inner(array("caratteristica"))->aWhere(array(
+				"caratteristiche.section"	=>	sanitizeAll($section),
+			));
+		}
+		
 		return $t->send();
 	}
 	
@@ -259,7 +270,24 @@ class CaratteristichevaloriModel extends GenericModel {
 				"id_cv"		=>	(int)$id,
 			), "sanitizeDb");
 			
-			$pcv->pInsert();
+			if ($pcv->pInsert() && (int)$record["id_car"])
+			{
+				$pageModel = new PagesModel();
+				$carModel = new CaratteristicheModel();
+				
+				$caratteristica = $carModel->selectId((int)$record["id_car"]);
+				
+				$section = (string)$pageModel->section((int)$idPage, true);
+				
+				if (!empty($caratteristica) && (string)$caratteristica["section"] !== (string)$section)
+				{
+					$carModel->setValues(array(
+						"section"	=>	$section,
+					));
+					
+					$carModel->pUpdate($record["id_car"]);
+				}
+			}
 		}
     }
     

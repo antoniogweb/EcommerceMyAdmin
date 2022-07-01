@@ -3104,7 +3104,7 @@ class PagesModel extends GenericModel {
 					"id_regione"	=>	$record["id_regione"],
 				));
 				
-				$pr->insert();
+				$pr->pInsert();
 			}
 		}
 	}
@@ -3160,32 +3160,12 @@ class PagesModel extends GenericModel {
 				
 				foreach (PagesModel::$modelliDaDuplicare as $daDuplicare)
 				{
-					if ($daDuplicare != "PagesregioniModel" || $section != "sedi")
+					if ($daDuplicare != "PagesregioniModel" || $section != "sedi" || $section != "soci")
 					{
 						$modelDaDuplicare = new $daDuplicare();
 						$modelDaDuplicare->duplica($clean['id'], $lId);
 					}
 				}
-				
-// 						$this->m["ImmaginiModel"]->duplica($clean['id'], $lId);
-// 						$this->m["LayerModel"]->duplica($clean['id'], $lId);
-// 						$this->m["ScaglioniModel"]->duplica($clean['id'], $lId);
-// 						$this->m["ContenutiModel"]->duplica($clean['id'], $lId);
-// 						$this->m["DocumentiModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PageslinkModel"]->duplica($clean['id'], $lId);
-// 						$this->m["CorrelatiModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PagestagModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PagespagesModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PagescarvalModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PagespersonalizzazioniModel"]->duplica($clean['id'], $lId);
-// 						$this->m["PagesattributiModel"]->duplica($clean['id'], $lId);
-// 						$this->m["CombinazioniModel"]->duplica($clean['id'], $lId);
-				
-// 						if ($data["section"] != "sedi")
-// 							$this->m["PagesregioniModel"]->duplica($clean['id'], $lId);
-				
-// 						$this->m["PageslingueModel"]->duplica($clean['id'], $lId);
 				
 				// Duplico i model associati
 				foreach ($modelAssociati as $modelAssociato => $modelParams)
@@ -3196,8 +3176,6 @@ class PagesModel extends GenericModel {
 						$modelDaDuplicare->duplica($clean['id'], $lId);
 					}
 				}
-				
-// 				$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->lId.$this->viewStatus."&insert=ok");
 				
 				return $lId;
 			}

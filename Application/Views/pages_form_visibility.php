@@ -6,5 +6,7 @@
 	</div>
 	<div class="panel-body">
 		<?php echo $form["attivo"];?>
+		
+		<?php include($this->viewPath("pages_link"));?>
 	</div>
 </div>

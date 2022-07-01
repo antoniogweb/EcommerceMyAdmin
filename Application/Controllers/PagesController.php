@@ -1319,7 +1319,7 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->save();
 		
-		$this->tabella = gtext("prodotti");
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -1398,7 +1398,7 @@ class PagesController extends BaseController {
 			"ne"		=>	array("tipo"	=>	"FASCIA"),
 		))->convert()->save();
 		
-		$this->tabella = gtext("prodotti");
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -1443,7 +1443,7 @@ class PagesController extends BaseController {
 			"id_page"	=>	$clean['id'],
 		))->convert()->save();
 		
-		$this->tabella = gtext("prodotti");
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -1694,7 +1694,7 @@ class PagesController extends BaseController {
 			))
 			->orderBy("pages_pages.id_order")->save();
 		
-		$this->tabella = gtext("prodotti");
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -1731,13 +1731,17 @@ class PagesController extends BaseController {
 		{
 			$_GET["id_page"] = $_GET["id_page_update"] = (int)$id;
 			
+			$section = $this->m["PagesModel"]->section((int)$id, true);
+			
 			$this->m["CaratteristicheModel"]->setValues(array(
 				"titolo"	=>	$_POST["titolo_car"],
 				"alias"		=>	"",
+				"section"	=>	$section,
 			));
 			
 			$where = array(
 				"titolo"	=>	$_POST["titolo_car"],
+				"section"	=>	$section,
 			);
 			
 			if ($this->viewArgs["id_tipo_car"] != "tutti")
@@ -1845,7 +1849,7 @@ class PagesController extends BaseController {
 			))
 			->orderBy("pages_caratteristiche_valori.id_order")->save();
 		
-		$this->tabella = "prodotti";
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -1908,7 +1912,7 @@ class PagesController extends BaseController {
 			))
 			->orderBy("nazioni.titolo,regioni.titolo")->save();
 		
-		$this->tabella = "prodotti";
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -1958,7 +1962,7 @@ class PagesController extends BaseController {
 			"pages_personalizzazioni.id_page"	=>	$clean['id'],
 		))->save();
 		
-		$this->tabella = "prodotti";
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		
@@ -2010,7 +2014,7 @@ class PagesController extends BaseController {
 			"pages_tag.id_page"	=>	$clean['id'],
 		))->save();
 		
-		$this->tabella = gtext("prodotti");
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		

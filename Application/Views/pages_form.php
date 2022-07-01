@@ -41,6 +41,8 @@
 								</div>
 							</div>
 						</div>
+						
+						<?php include($this->viewPath("pages_form_left_bottom"));?>
 					</div>
 					<div class='col-md-4'>
 						<?php include($this->viewPath("pages_form_visibility"));?>

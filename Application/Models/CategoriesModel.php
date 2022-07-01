@@ -50,6 +50,7 @@ class CategoriesModel extends HierarchicalModel {
 		"email"			=>	"attiva_template_email",
 		"servizi"		=>	"mostra_servizi",
 		"sedi"			=>	"mostra_sedi",
+		"soci"			=>	"mostra_soci",
 	);
 	
 	public $controller = "categories";

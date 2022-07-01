@@ -60,7 +60,7 @@
 						
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Video
+								<?php echo gtext("Video");?>
 							</div>
 							<div class="panel-body">
 								<div class='row'>
@@ -77,7 +77,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Visibilità
+								<?php echo gtext("Visibilità");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
@@ -97,7 +97,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Traduzioni
+								<?php echo gtext("Traduzioni");?>
 							</div>
 							<div class="panel-body">
 								<?php include($this->viewPath("pages_traduzioni"));?>

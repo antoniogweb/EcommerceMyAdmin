@@ -40,7 +40,8 @@ class CaratteristichevaloriController extends BaseController {
 		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->session('admin');
-
+		
+		$this->model("PagesModel");
 		$this->model("CaratteristicheModel");
 		
 		$this->s['admin']->check();
@@ -51,6 +52,12 @@ class CaratteristichevaloriController extends BaseController {
 		$this->shift();
 		
 		$filtroTipologia = array("tutti" => "Tipologia") + $this->m["CaratteristicheModel"]->selectTipologia();
+		
+		$section = "";
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+			$section = $this->m["PagesModel"]->section((int)$this->viewArgs["id_page"], true);
+			
 		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica();
 		
 		if (($this->viewArgs["id_page"] != "tutti" && $this->viewArgs["id_tipo_car"] != "tutti") || !v("attiva_tipologie_caratteristiche"))
@@ -99,6 +106,11 @@ class CaratteristichevaloriController extends BaseController {
 				"checkbox_caratteristiche_valori_id_cv"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
 			);
 			
+			if ($section)
+				$this->m[$this->modelName]->aWhere(array(
+					"caratteristiche.section"	=>	sanitizeAll($section),
+				));
+			
 			$this->m[$this->modelName]->sWhere("caratteristiche_valori.id_cv not in (select id_cv from pages_caratteristiche_valori where id_cv is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
 		}
 		
@@ -142,5 +154,21 @@ class CaratteristichevaloriController extends BaseController {
 	public function thumb($field = "", $id = 0)
 	{
 		parent::thumb($field, $id);
+	}
+	
+	public function elenco($section = "")
+	{
+		header('Content-type: application/json; charset=utf-8');
+		
+		$this->clean();
+		$campoTitolo = $this->m[$this->modelName]->campoTitolo;
+		
+		$elementi = $this->m[$this->modelName]->clear()->inner(array("caratteristica"))->where(array(
+			"caratteristiche.section"	=>	sanitizeAll($section),
+		))->select("distinct caratteristiche_valori.$campoTitolo")->orderBy("caratteristiche_valori.".$campoTitolo)->toList("caratteristiche_valori.".$campoTitolo)->send();
+		
+		$elementi = htmlentitydecodeDeep($elementi);
+		
+		echo json_encode($elementi);
 	}
 }
