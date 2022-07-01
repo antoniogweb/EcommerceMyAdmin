@@ -136,7 +136,7 @@ class CaratteristichevaloriModel extends GenericModel {
 			
 			$section = $p->section((int)$_GET["id_page"], true);
 			
-			$t->inner(array("caratteristica"))->aWhere(array(
+			$t->aWhere(array(
 				"caratteristiche.section"	=>	sanitizeAll($section),
 			));
 		}

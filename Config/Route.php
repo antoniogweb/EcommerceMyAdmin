@@ -614,6 +614,27 @@ class Route
 		'soci,socicorrelate',
 		'soci,ordinacorrelate',
 		'soci,aggiungicaratteristica',
+		
+		'progetti,main',
+		'progetti,aggiungicategoria',
+		'progetti,form',
+		'progetti,immagini',
+		'progetti,eliminacategoria',
+		'progetti,correlati',
+		'progetti,attributi',
+		'progetti,caratteristiche',
+		'progetti,move',
+		'progetti,pubblica',
+		'progetti,inevidenza',
+		'progetti,updatevalue',
+		'progetti,meta',
+		'progetti,ordina',
+		'progetti,contenuti',
+		'progetti,ordinacontenuti',
+		'progetti,testi',
+		'progetti,progetticorrelate',
+		'progetti,ordinacorrelate',
+		'progetti,aggiungicaratteristica',
 	);
 	
 	//it can be 'yes' or 'no'
