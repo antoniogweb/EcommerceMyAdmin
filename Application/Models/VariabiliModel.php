@@ -409,6 +409,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_modifica_massiva_codici"	=>	0, // permetti la modifica massiva dei codici (solo singola pagina)
 		"mostra_soci"	=>	0, // se mostrare la sezione "soci"
 		"mostra_progetti"	=>	0, // se mostrare la sezione "progetti"
+		"mostra_alimenti"	=>	0, // se mostrare la sezione "alimenti"
 		## SEDI ##
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"attiva_categorie_sedi"	=>	0, // se attivare o disattivare le categorie delle sedi

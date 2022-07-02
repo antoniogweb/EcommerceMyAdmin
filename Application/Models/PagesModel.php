@@ -234,6 +234,14 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Se lasciato vuoto userà il titolo della pagina")."</div>"
 					),
 				),
+				'video'		=>	array(
+					'labelString'=>	'Video',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Incollare il codice di condivisione di Youtube, Vimeo o altri portali")."</div>"
+					),
+				),
 				'data_news'		=>	array(
 					'labelString'=>	'Data scrittura',
 				),
