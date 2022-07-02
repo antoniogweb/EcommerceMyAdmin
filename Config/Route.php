@@ -473,6 +473,8 @@ class Route
 		'gallery,inevidenza',
 		'gallery,updatevalue',
 		'gallery,ordina',
+		'gallery,meta',
+		'gallery,immagini',
 		
 		'icone,main',
 		'icone,form',
@@ -636,7 +638,6 @@ class Route
 		'alimenti,testi',
 		'alimenti,paginecorrelate',
 		'alimenti,ordinacorrelate',
-		'alimenti,aggiungicaratteristica',
 		
 		'alimenticat,main',
 		'alimenticat,form',
@@ -644,6 +645,24 @@ class Route
 		'alimenticat,gruppi',
 		'alimenticat,ordina',
 		'alimenticat,contenuti',
+		
+		'ricette,main',
+		'ricette,aggiungicategoria',
+		'ricette,form',
+		'ricette,immagini',
+		'ricette,eliminacategoria',
+		'ricette,correlati',
+		'ricette,attributi',
+		'ricette,caratteristiche',
+		'ricette,move',
+		'ricette,pubblica',
+		'ricette,inevidenza',
+		'ricette,updatevalue',
+		'ricette,meta',
+		'ricette,ordina',
+		'ricette,contenuti',
+		'ricette,ordinacontenuti',
+		'ricette,testi',
 	);
 	
 	//it can be 'yes' or 'no'

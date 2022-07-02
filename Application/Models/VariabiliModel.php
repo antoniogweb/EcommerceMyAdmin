@@ -202,7 +202,6 @@ class VariabiliModel extends GenericModel {
 		"abilita_rich_snippet"		=>	1,
 		"abilita_codice_fiscale"	=>	1,
 		"mostra_eventi"				=>	0,
-		"mostra_gallery"			=>	0, // Attiva la sezione gallery
 		"mostra_servizi"			=>	0, // Attiva la sezione servizi
 		"attiva_immagine_sfondo"	=>	0,
 		"attiva_tutte_le_categorie"	=>	0,
@@ -410,9 +409,14 @@ class VariabiliModel extends GenericModel {
 		"mostra_soci"	=>	0, // se mostrare la sezione "soci"
 		"mostra_progetti"	=>	0, // se mostrare la sezione "progetti"
 		"mostra_alimenti"	=>	0, // se mostrare la sezione "alimenti"
+		"mostra_ricette"	=>	0, // se mostrare la sezione "ricette"
 		## SEDI ##
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"attiva_categorie_sedi"	=>	0, // se attivare o disattivare le categorie delle sedi
+		## GALLERY ##
+		"mostra_gallery"			=>	0, // Attiva la sezione gallery
+		"mostra_immagini_in_gallery"			=>	0, // Se attivare la scheda immagini nella gallery
+		"attiva_video_in_gallery"			=>	0, // Se attivare il campo video in gallery
 		## MODULO CONTATTI ##
 // 		"redirect_pagina_dopo_invio_se_prodotto"	=>	0, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
 		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti

@@ -34,6 +34,8 @@
 								<div class='scaffold_form'>
 									<?php echo $form["title"];?>
 									
+									<?php if (v("attiva_video_in_gallery")) echo $form["video"];?>
+									
 									<?php echo $form["description"];?>
 									
 									<?php if ($type === "update") { ?>

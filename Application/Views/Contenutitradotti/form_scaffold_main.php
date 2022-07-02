@@ -70,11 +70,11 @@ $().ready(function() {
 			<?php echo $form["descrizione"];?>
 			<?php } ?>
 			
-			<?php echo isset($form["descrizione_2"]) ? $form["descrizione_2"] : ""; ?>
+			<?php echo v("attiva_descrizione_2_in_prodotti") ? $form["descrizione_2"] : ""; ?>
 			
-			<?php echo isset($form["descrizione_3"]) ? $form["descrizione_3"] : ""; ?>
+			<?php echo v("attiva_descrizione_3_in_prodotti") ? $form["descrizione_3"] : ""; ?>
 			
-			<?php echo isset($form["descrizione_4"]) ? $form["descrizione_4"] : ""; ?>
+			<?php echo v("attiva_descrizione_4_in_prodotti") ? $form["descrizione_4"] : ""; ?>
 			
 			<?php if (isset($form["url"])) { ?>
 			<?php echo $form["url"];?>

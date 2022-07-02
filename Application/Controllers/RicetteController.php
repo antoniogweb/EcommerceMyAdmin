@@ -22,9 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class GalleryController extends GenericsectionController {
+class RicetteController extends GenericsectionController {
 	
-	public $voceMenu = "gallery";
+	public $voceMenu = "ricette";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
@@ -42,8 +42,5 @@ class GalleryController extends GenericsectionController {
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
 		$this->queryFields = "title,attivo,description,immagine";
-		
-		if (v("attiva_video_in_gallery"))
-			$this->queryFields .= ",video";
 	}
 }
