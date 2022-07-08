@@ -31,6 +31,10 @@ $().ready(function() {
 		<?php echo isset($form["editor_visuale"]) ? $form["editor_visuale"] : "";?>
 		
 		<?php echo $form["valore"];?>
+		
+		<?php echo isset($form["tag_elemento"]) ? $form["tag_elemento"] : "";?>
+		
+		<?php echo isset($form["attributi"]) ? $form["attributi"] : "";?>
 	<?php } ?>
 	
 	<?php if ($tipo == "IMMAGINE" || $tipo == "VIDEO") { ?>

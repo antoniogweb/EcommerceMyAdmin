@@ -1306,11 +1306,18 @@ class PagesController extends BaseController {
 		
 		$this->m[$this->modelName]->select("contenuti.*,tipi_contenuto.*")->inner(array("tipo"))->orderBy("contenuti.id_order")->where(array(
 			"id_page"	=>	$clean['id'],
-			"lingua"	=>	$this->viewArgs["lingua"],
 			"id_tipo"	=>	$this->viewArgs["tipocontenuto"],
 			"lk"		=>	array("contenuti.titolo" => $this->viewArgs["titolo_contenuto"]),
 			"tipo"		=>	"FASCIA",
 		))->convert();
+		
+		if ($this->viewArgs["lingua"] != "tutti")
+			$this->m[$this->modelName]->aWhere(array(
+				"OR"		=>	array(
+					"lingua"	=>	$this->viewArgs["lingua"],
+					" lingua"	=>	"tutte",
+				),
+			));
 		
 		if (v("filtra_fasce_per_tema"))
 			$this->m[$this->modelName]->aWhere(array(

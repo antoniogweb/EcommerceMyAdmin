@@ -463,7 +463,10 @@ class ContenutiModel extends GenericModel {
 					
 					$htmlFinale .= " <a title='".gtext("Modifica fascia")."' style='margin-left:5px;' class='class_edit_fascia iframe' href='".Url::getFileRoot()."admin/contenuti/form/update/".$idCont."?partial=Y'><i class='fa fa-pencil'></i></a>";
 					
-					$htmlFinale .= " <a title='".gtext("Ordina / Aggiungi fasce")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/$controller/contenuti/".(int)$idElemento."?partial=Y&nobuttons=Y'><i class='fa fa-sort'></i></a>";
+					if (TestiModel::numero($idCont))
+						$htmlFinale .= " <a title='".gtext("Edita testi fascia")."' style='margin-left:5px;' class='class_edit_fascia iframe' href='".Url::getFileRoot()."admin/testi/main?partial=Y&id_cont=".self::$idContenuto."&lingua=".Params::$lang."'><i class='fa fa-font'></i></a>";
+					
+// 					$htmlFinale .= " <a title='".gtext("Ordina / Aggiungi fasce")."' style='margin-left:5px;' class='iframe' href='".Url::getFileRoot()."admin/$controller/contenuti/".(int)$idElemento."?partial=Y&nobuttons=Y'><i class='fa fa-sort'></i></a>";
 					
 					$htmlFinale .= "</div>";
 				}

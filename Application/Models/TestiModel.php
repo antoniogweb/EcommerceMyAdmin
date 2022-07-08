@@ -120,6 +120,13 @@ class TestiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'tag_elemento'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipo elemento",
+					"options"	=>	OpzioniModel::codice("TAG_CONTENITORE"),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -158,5 +165,14 @@ class TestiModel extends GenericModel {
 			return "<img width='100px' src='".Domain::$publicUrl."/images/widgets/".$record["testi"]["immagine"]."' />";
 		
 		return "";
+	}
+	
+	public static function numero($idCont)
+	{
+		$t = new TestiModel();
+		
+		return $t->clear()->where(array(
+			"id_cont"	=>	(int)$idCont,
+		))->rowNumber();
 	}
 }

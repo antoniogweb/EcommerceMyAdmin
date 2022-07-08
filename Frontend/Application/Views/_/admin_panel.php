@@ -480,7 +480,7 @@
 						{
 // 								console.log(that.tipoElemento);
 							
-							that.urlGetFasce = baseUrlSrc + "/admin/" + that.tipoElemento + "/contenuti/" + that.idElemento + "?esporta_json";
+							that.urlGetFasce = baseUrlSrc + "/admin/" + that.tipoElemento + "/contenuti/" + that.idElemento + "?lingua=<?php echo Params::$lang;?>&esporta_json";
 							
 							var queryStringIdElemento = (that.tipoElemento == "pagine") ? "id_page" : "id_c";
 							

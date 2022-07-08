@@ -985,6 +985,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 			$t = "<a $target class='link_testi' href='".$urlLink."'>".$t."</a>";
 		}
 		
+		if ($testo["tag_elemento"])
+			$t = "<".$testo["tag_elemento"]." ".htmlentitydecode($testo["attributi"]).">$t</".$testo["tag_elemento"].">";
+		
 		$path = tpf("Contenuti/Elementi/Widget/".strtolower($tipo).".php");
 		
 		if (file_exists($path))

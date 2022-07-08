@@ -39,6 +39,7 @@ class TestiController extends BaseController {
 			'part:sanitizeAll'=>'tutti',
 			'lingua:sanitizeAll'=>'tutti',
 			'tipo_testo:sanitizeAll'=>'tutti',
+			'id_cont:sanitizeAll'=>'tutti',
 		);
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -81,6 +82,7 @@ class TestiController extends BaseController {
 					"lk"		=>	array('chiave' => $this->viewArgs['chiave']),
 					"lingua"	=>	$this->viewArgs['lingua'],
 					"tipo"	=>	$this->viewArgs['tipo_testo'],
+					"id_cont"	=>	$this->viewArgs['id_cont'],
 				))
 				->orderBy("id_t desc")->convert()->save();
 		
@@ -114,6 +116,10 @@ class TestiController extends BaseController {
 				{
 					case "TESTO":
 						$fields = "editor_visuale,valore";
+						
+						if (v("attiva_tag_in_testi"))
+							$fields .= ",tag_elemento,attributi";
+						
 						break;
 					
 					case "IMMAGINE":
