@@ -28,6 +28,26 @@ class TipidocumentoModel extends GenericModel
 		$this->_tables = 'tipi_documento';
 		$this->_idFields = 'id_tipo_doc';
 		
+		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/tipidocumento",
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+// 				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	300,
+					'imgHeight'		=>	300,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'no',
+				),
+			),
+		);
+		
 		parent::__construct();
 	}
 	
@@ -38,6 +58,16 @@ class TipidocumentoModel extends GenericModel
         );
     }
     
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(),
+			
+			'enctype'	=>	'multipart/form-data',
+		);
+	}
+	
     public function aggiungiagruppo($id)
     {
 		$this->aggiungiAGruppoTipo($id, "DO");
@@ -51,5 +81,21 @@ class TipidocumentoModel extends GenericModel
 		
 		return $td->clear()->select("id_tipo_doc")->sWhere('REPLACE(titolo, " ", "") = "'.$clean["titolo"].'"')->field("id_tipo_doc");
     }
+    
+    public function update($id = NULL, $whereClause = NULL)
+	{
+		if ($this->upload("update"))
+			return parent::update($id, $whereClause);
+		
+		return false;
+	}
+	
+	public function insert()
+	{
+		if ($this->upload("insert"))
+			return parent::insert();
+		
+		return false;
+	}
     
 }

@@ -124,6 +124,8 @@ class TagModel extends GenericModel {
 			
 			return parent::update($id, $whereClause);
 		}
+		
+		return false;
 	}
 	
 	public function insert()
@@ -138,6 +140,8 @@ class TagModel extends GenericModel {
 			
 			return parent::insert();
 		}
+		
+		return false;
 	}
 	
 	public static function getUrlAlias($id, $lingua = null)

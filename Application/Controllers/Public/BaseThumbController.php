@@ -1093,4 +1093,30 @@ class BaseThumbController extends Controller {
 		
 		$this->genericthumb($fileName, $params, "images/contents");
 	}
+	
+	public function tipodocumento($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	52,
+			'imgHeight'		=>	52,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/tipidocumento");
+	}
+	
+	public function tipodocumento2x($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	104,
+			'imgHeight'		=>	104,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/tipidocumento");
+	}
 }

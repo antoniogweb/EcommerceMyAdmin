@@ -76,7 +76,7 @@ class TipidocumentoController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = "titolo";
+		$fields = "titolo,immagine";
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
