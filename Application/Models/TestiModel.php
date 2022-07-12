@@ -95,6 +95,11 @@ class TestiModel extends GenericModel {
 					"options"	=>	$this->selectLinkContenuto(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+					'entryClass'  => 'form_input_text cat_Select',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'id_categoria'	=>	array(
 					"type"	=>	"Select",
@@ -102,6 +107,11 @@ class TestiModel extends GenericModel {
 					"options"	=>	$this->buildAllCatSelect(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+					'entryClass'  => 'form_input_text cat_Select',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'target_link'	=>	array(
 					"type"	=>	"Select",

@@ -819,7 +819,10 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/(\[baseUrl\])/', 'getBaseUrl' ,$string);
 	$string = preg_replace_callback('/\[themeFolder\]/', 'getThemeFolder' ,$string);
 // 	$string = preg_replace_callback('/\[(testo\=)([0-9]{1,})\]/', 'getTesto' ,$string);
-
+	
+	$string = preg_replace_callback('/\[testoaw (.*?) attributi (.*?) wrap (.*?)\]/', 'getTesto' ,$string);
+	$string = preg_replace_callback('/\[testoa (.*?) attributi (.*?)\]/', 'getTesto' ,$string);
+	
 	$string = preg_replace_callback('/\[testo (.*?)\]/', 'getTesto' ,$string);
 	
 	$string = preg_replace_callback('/\[immagine (.*?) attributi (.*?)\]/', 'getImmagine' ,$string);
@@ -960,7 +963,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 		
 		$urlLink = $target = "";
 		
-		if ($testo["id_contenuto"] || $testo["id_categoria"]|| $testo["url_link"])
+		if ($testo["id_contenuto"] || $testo["id_categoria"] || $testo["url_link"])
 		{
 			$target = "";
 			
@@ -1041,8 +1044,11 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 		$t->values["lingua"] = sanitizeDb($lingua);
 		$t->values["tipo"] = sanitizeDb($tipo);
 		
-		if ($tipo != "TESTO" && isset($matches[2]) && $matches[2])
+		if (isset($matches[2]) && $matches[2])
 			$t->values["attributi"] = sanitizeAll($matches[2]);
+		
+		if (isset($matches[3]) && $matches[3])
+			$t->values["tag_elemento"] = sanitizeAll($matches[3]);
 		
 		if ($t->insert())
 		{
@@ -1061,9 +1067,9 @@ function testo($chiave, $tags = null)
 }
 
 //chiama la traduzione di un blocco di testo
-function t($chiave, $tags = null)
+function t($chiave, $tags = null, $attributi = null, $wrap = null)
 {
-	return getTesto(array("",$chiave),$tags);
+	return getTesto(array("",$chiave, $attributi, $wrap),$tags);
 }
 
 //chiama la traduzione di un blocco immagine

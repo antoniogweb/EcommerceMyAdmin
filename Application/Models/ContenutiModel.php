@@ -442,6 +442,8 @@ class ContenutiModel extends GenericModel {
 				
 				$html = preg_replace('/\[srcImmagineResponsive\]/', Url::getFileRoot()."images/contenuti/".$immagineDispositivo ,$html);
 				
+				$html = preg_replace('/\[testoaw (.*?) attributi (.*?) wrap (.*?)\]/', '[testoaw ${1}_'.$idCont.' attributi ${2} wrap ${3}]' ,$html);
+				$html = preg_replace('/\[testoa (.*?) attributi (.*?)\]/', '[testoa ${1}_'.$idCont.' attributi ${2}]' ,$html);
 				$html = preg_replace('/\[testo (.*?)\]/', '[testo ${1}_'.$idCont.']' ,$html);
 				
 				$html = preg_replace('/\[immagine (.*?) attributi (.*?)\]/', '[immagine ${1}_'.$idCont.' attributi ${2}]' ,$html);
