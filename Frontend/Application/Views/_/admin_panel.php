@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="<?php echo Params::$lang;?>" class="uk-height-1-1" uk-height-viewport>
    <head>
+		<?php include(tpf("/Elementi/header_css_cms.php"));?>
 		<style>
 			#right-col {
 				position: fixed;
@@ -32,8 +33,23 @@
 				line-height:1em !important;
 			}
 			
+			.uk-accordion-title
+			{
+				font-size:18px !important;
+				line-height:1em !important;
+			}
+			
+			.uk-table
+			{
+				font-size:14px !important;
+			}
+			
+			.uk-table tbody tr
+			{
+				background-color:#EEE;
+			}
 		</style>
-		<?php include(tpf("/Elementi/header_css_cms.php"));?>
+		
 		
 		<?php include(tpf("/Elementi/header_js_cms.php"));?>
    </head>
@@ -91,7 +107,7 @@
 											</div>
 										</td>
 										<td class="uk-padding-remove-left uk-padding-remove-right"><a title="<?php echo gtext("Modifica");?>" href="#" @click.prevent="modificaFascia(f.contenuti.id_cont)" class="iframe"><span class="" uk-icon="pencil"></span></a></td>
-										<td><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
+										<td class="uk-padding-remove-right"><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
 									</tr>
 								</tbody>
 							</table>

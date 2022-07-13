@@ -27,8 +27,16 @@ $().ready(function() {
 			<?php echo $form["immagine_2"];?>
 			<?php } ?>
 			
-			<?php if (isset($form["descrizione"])) { ?>
-			<?php echo $form["descrizione"];?>
+			<?php if (isset($form["immagine_1"])) { ?>
+			<?php echo $form["immagine_1"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["margine_superiore"])) { ?>
+			<?php echo $form["margine_superiore"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["margine_inferiore"])) { ?>
+			<?php echo $form["margine_inferiore"];?>
 			<?php } ?>
 			
 			<?php if (isset($form["coordinate"])) { ?>

@@ -251,6 +251,20 @@ class ContenutiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'margine_superiore'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	array("" => "--") + OpzioniModel::codice("MARGINE_SUPERIORE_FASCIA"),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					"labelString"	=>	"Margine superiore fascia",
+				),
+				'margine_inferiore'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	array("" => "--") + OpzioniModel::codice("MARGINE_INFERIORE_FASCIA"),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					"labelString"	=>	"Margine inferiore fascia",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -337,6 +351,29 @@ class ContenutiModel extends GenericModel {
 		
 		if ($this->upload("insert"))
 		{
+			// Imposta i valori di default di margine_superiore e margine_inferiore se è una fascia
+			if (isset($this->values["id_tipo"]) && (!isset($this->values["tipo"]) || $this->values["tipo"] == "FASCIA"))
+			{
+				$tc = new TipicontenutoModel();
+				
+				$recordTipo = $tc->selectId((int)$this->values["id_tipo"]);
+				
+				if (!empty($recordTipo))
+				{
+					
+					$html = htmlentitydecode($recordTipo["descrizione"]);
+					
+					if (trim($html))
+					{
+						if (preg_match('/\[margineSuperiore\:(.*?)\]/', $html ,$matches))
+							$this->values["margine_superiore"] = sanitizeAll($matches[1]);
+						
+						if (preg_match('/\[margineInferiore\:(.*?)\]/', $html ,$matches))
+							$this->values["margine_inferiore"] = sanitizeAll($matches[1]);
+					}
+				}
+			}
+			
 			$res = parent::insert();
 			
 			if ($res && v("attiva_reggroups_tipi"))
@@ -434,6 +471,12 @@ class ContenutiModel extends GenericModel {
 				
 				if ($f["contenuti"]["immagine_2"])
 					$html = preg_replace('/\[srcImmagine2\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_2"] ,$html);
+				
+				if ($f["contenuti"]["margine_superiore"])
+					$html = preg_replace('/\[margineSuperiore\:(.*?)\]/', $f["contenuti"]["margine_superiore"] ,$html);
+				
+				if ($f["contenuti"]["margine_inferiore"])
+					$html = preg_replace('/\[margineInferiore\:(.*?)\]/', $f["contenuti"]["margine_inferiore"] ,$html);
 				
 				$immagineDispositivo = (!User::$isPhone) ? $f["contenuti"]["immagine_1"] : $f["contenuti"]["immagine_2"];
 				
