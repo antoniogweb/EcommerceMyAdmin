@@ -868,7 +868,7 @@ class BaseOrdiniController extends BaseController
 		
 		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
 		
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
+// 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
 		
 		if ($this->campoObbligatorio("codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";

@@ -577,10 +577,10 @@ $(document).ready(function(){
 		
 	});
 	
+	controllaCheckFattura();
+	
 	if ($("[name='fattura']").length > 0)
 	{
-		controllaCheckFattura();
-		
 		$("body").on("ifChanged", "[name='fattura']", function(e){
 			
 			controllaCheckFattura();
