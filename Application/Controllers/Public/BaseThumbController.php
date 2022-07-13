@@ -364,8 +364,6 @@ class BaseThumbController extends Controller {
 	
 	public function blog($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	600,
 			'imgHeight'		=>	390,
@@ -377,22 +375,7 @@ class BaseThumbController extends Controller {
 			'backgroundColor' => "#FFF",
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, "images/contents");
 	}
 	
 	public function blogdetail($fileName)
@@ -1118,5 +1101,21 @@ class BaseThumbController extends Controller {
 		);
 		
 		$this->genericthumb($fileName, $params, "images/tipidocumento");
+	}
+	
+	public function progetto($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	598,
+			'imgHeight'		=>	373,
+			'defaultImage'	=>  null,
+			'useCache'		=>	true,
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+			'backgroundColor' => "#FFF",
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
 	}
 }

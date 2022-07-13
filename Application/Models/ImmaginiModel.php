@@ -178,7 +178,7 @@ class ImmaginiModel extends GenericModel {
 	}
 	
 	// Restituisce un array con tutte le immagini della pagina
-	public static function immaginiPagina($idPagina)
+	public static function immaginiPagina($idPagina, $soloShop = true)
 	{
 		if (!isset(self::$immaginiPagine))
 		{
@@ -186,10 +186,14 @@ class ImmaginiModel extends GenericModel {
 			
 			$i = new ImmaginiModel();
 			
-			$elencoImmagini = $i->select("immagini.id_page,immagini.immagine")
+			$i->select("immagini.id_page,immagini.immagine")
 				->inner(array("pagina"))
-				->where(CategoriesModel::gCatWhere(CategoriesModel::$idShop, true, "pages.id_c"))
-				->orderBy("immagini.id_order")->send();
+				->orderBy("immagini.id_order");
+			
+			if ($soloShop)
+				 $i->where(CategoriesModel::gCatWhere(CategoriesModel::$idShop, true, "pages.id_c"));
+			
+			$elencoImmagini = $i->send();
 			
 // 			echo $i->getQuery();
 			

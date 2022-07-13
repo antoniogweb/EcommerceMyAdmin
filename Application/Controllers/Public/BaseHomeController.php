@@ -67,7 +67,10 @@ class BaseHomeController extends BaseController
 			))->field("id_page");
 			
 			if ($clean["idPaginaHome"])
+			{
+				PagesModel::$currentIdPage = $clean['idPaginaHome'];
 				$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['idPaginaHome'], 0, $this);
+			}
 		}
 		
 		$this->append($data);

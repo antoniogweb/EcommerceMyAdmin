@@ -1,7 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if ($adminUser) { ?>
 
+<?php if (file_exists(tpf("Public/Css/admin.css"))) { ?>
+<link rel="stylesheet" href="<?php echo tpf("Public/Css/admin.css", true);?>?v=<?php echo rand(1,10000);?>" />
+<?php } else { ?>
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/admin.css?v=<?php echo rand(1,10000);?>" rel="stylesheet">
+<?php } ?>
 
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/example1/colorbox.css">

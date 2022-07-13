@@ -377,4 +377,11 @@ trait BaseFasceController
 		include tpf("Fasce/fascia_sedi.php");
 		return ob_get_clean();
 	}
+	
+	public function getFasciaProgetti()
+	{
+		ob_start();
+		include tpf("Fasce/fascia_progetti.php");
+		return ob_get_clean();
+	}
 }

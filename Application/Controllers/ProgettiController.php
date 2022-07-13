@@ -37,7 +37,7 @@ class ProgettiController extends GenericsectionController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->orderBy = "pages.id_order";
+		$this->orderBy = "pages.id_order desc";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
