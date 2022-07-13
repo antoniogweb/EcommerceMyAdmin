@@ -123,16 +123,23 @@ class TestiController extends BaseController {
 						break;
 					
 					case "IMMAGINE":
-						$fields = "immagine,immagine_2x,width,height,crop,alt,url_link,id_contenuto,target_link,testo_link,attributi,id_categoria";
+						$fields = "immagine,immagine_2x,width,height,crop,alt,url_link,id_contenuto,target_link,testo_link,attributi,id_categoria,link_id_documento";
 						break;
 					
 					case "LINK":
-						$fields = "testo_link,url_link,id_contenuto,target_link,attributi,id_categoria";
+						$fields = "testo_link,url_link,id_contenuto,target_link,attributi,id_categoria,link_id_documento";
 						break;
 					
 					case "VIDEO":
 						$fields = "immagine,immagine_2x,width,height,crop,alt,url_link,attributi";
 						break;
+				}
+				
+				$templateElemento = Tema::getSelectElementi("Contenuti/Elementi/Widget/".ucfirst(strtolower($record["tipo"])));
+				
+				if (count($templateElemento) > 0)
+				{
+					$fields .= ",template";
 				}
 			}
 		}

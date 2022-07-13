@@ -857,9 +857,11 @@ class BaseContenutiController extends BaseController
 			//load the Pages helper
 			$this->helper('Pages',$this->getCurrentUrl(false),'p');
 			
-			$page = $this->viewArgs['p'];
+			$page = $data["numeroDiPagina"] = $this->viewArgs['p'];
 			
 			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
+			
+			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
 			$data["pages"] = $this->m['PagesModel']->send();
 			
 			$data['pageList'] = $this->h['Pages']->render($page-5,11);

@@ -85,6 +85,9 @@ $().ready(function() {
 				<?php echo $form["id_categoria"];?>
 			</div>
 			<div class='col-sm-6'>
+				<?php echo $form["link_id_documento"];?>
+			</div>
+			<div class='col-sm-6'>
 				<?php echo $form["target_link"];?>
 			</div>
 			<?php } ?>
@@ -94,6 +97,13 @@ $().ready(function() {
 			</div>
 		</div>
 	<?php } ?>
+	
+	<div class='row'>
+		<div class='col-sm-6'>
+			<?php echo isset($form["template"]) ? $form["template"] : "";?>
+		</div>
+	</div>
+	
 	
 	<?php if ($type === "update") { ?>
 	<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">

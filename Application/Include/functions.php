@@ -964,7 +964,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 		
 		$urlLink = $target = "";
 		
-		if ($testo["id_contenuto"] || $testo["id_categoria"] || $testo["url_link"])
+		if ($testo["id_contenuto"] || $testo["id_categoria"] || $testo["link_id_documento"] || $testo["url_link"])
 		{
 			$target = "";
 			
@@ -975,6 +975,8 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 				$urlLink = Url::getRoot().getUrlAlias($testo["id_contenuto"], sanitizeAll(getLinguaIso()));
 			else if ($testo["id_categoria"])
 				$urlLink = Url::getRoot().getCategoryUrlAlias($testo["id_categoria"], sanitizeAll(getLinguaIso()));
+			else if ($testo["link_id_documento"])
+				$urlLink = Url::getRoot().DocumentiModel::getUrlAlias($testo["link_id_documento"]);
 			else
 				$urlLink = $testo["url_link"];
 			
@@ -993,6 +995,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 			$t = "<".$testo["tag_elemento"]." ".htmlentitydecode($testo["attributi"]).">$t</".$testo["tag_elemento"].">";
 		
 		$path = tpf("Contenuti/Elementi/Widget/".strtolower($tipo).".php");
+		
+		if ($testo["template"])
+			$path = tpf("Contenuti/Elementi/Widget/".ucfirst(strtolower($tipo))."/".$testo["template"]);
 		
 		if (file_exists($path))
 		{

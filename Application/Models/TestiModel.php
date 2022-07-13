@@ -137,10 +137,19 @@ class TestiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'template'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Link alla categoria",
+					"options"	=>	$this->selectTemplateElemento($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+		
+		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
 	}
 	
 	public function update($id = NULL, $whereClause = NULL)
@@ -162,6 +171,18 @@ class TestiModel extends GenericModel {
 		{
 			return parent::insert();
 		}
+	}
+	
+	public function selectTemplateElemento($id)
+	{
+		$record = $this->selectId($id);
+		
+		if (!empty($record))
+		{
+			return array(""	=>	"Default") + Tema::getSelectElementi("Contenuti/Elementi/Widget/".ucfirst(strtolower($record["tipo"])));
+		}
+		
+		return array(""	=>	"Default");
 	}
 	
 	public function lingua($record)

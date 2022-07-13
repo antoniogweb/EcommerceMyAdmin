@@ -1177,7 +1177,10 @@ class GenericModel extends Model_Tree
 				'labelString'=>	'Link a documento',
 				'options'	=>	$this->selectDocumento(),
 				'reverse' => 'yes',
-				"idName"	=>	"combobox",
+				'entryAttributes'	=>	array(
+					"select2"	=>	"",
+				),
+				'wrap'	=>	array(null,null,"<div>","</div>"),
 			),
 			'target'	=>	array(
 				'type'		=>	'Select',
