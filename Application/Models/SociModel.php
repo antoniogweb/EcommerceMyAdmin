@@ -28,6 +28,7 @@ class SociModel extends BasicsectionModel {
 	
 	public function overrideFormStruct()
 	{
+		$this->formStruct["entries"]["url"]["labelString"] = gtext("Link sito web");
 		$this->formStruct["entries"]["email_contatto_evento"]["labelString"] = gtext("Email");
 		$this->formStruct["entries"]["telefono_contatto_evento"]["labelString"] = gtext("Telefono");
 		$this->formStruct["entries"]["indirizzo_localita_evento"]["labelString"] = gtext("Indirizzo");

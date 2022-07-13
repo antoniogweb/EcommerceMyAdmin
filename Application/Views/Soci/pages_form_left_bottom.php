@@ -21,6 +21,9 @@
 			<div class='col-md-4'>
 				<?php echo $form["id_regione"];?>
 			</div>
+			<div class='col-md-4'>
+				<?php echo $form["url"];?>
+			</div>
 		</div>
 		<div class='row'>
 			<div class='col-md-4'>
