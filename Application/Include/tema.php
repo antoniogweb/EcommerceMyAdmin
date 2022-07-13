@@ -165,12 +165,19 @@ class Tema
 	public static function getSelectElementi($percorsoElemento, $mantieniEstensionePhp = true)
 	{
 		// Cerco i temi del tema di default
-		$filesModel = new Files_Upload(LIBRARY."/Frontend/Application/Views/_/$percorsoElemento");
+		$path = LIBRARY."/Frontend/Application/Views/_/$percorsoElemento";
 		
-		$filesModel->listFiles();
-		
-		$fileCartella = $filesModel->getFiles();
-		
+		if (@is_dir($path))
+		{
+			$filesModel = new Files_Upload($path);
+			
+			$filesModel->listFiles();
+			
+			$fileCartella = $filesModel->getFiles();
+		}
+		else
+			$fileCartella = array();
+			
 		if (v("theme_folder"))
 		{
 			$path = Domain::$parentRoot."/Application/Views/".v("theme_folder")."/$percorsoElemento";
