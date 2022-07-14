@@ -1225,6 +1225,6 @@ class BaseBaseController extends Controller
 	
 	protected function campoObbligatorio($campo, $queryType = "insert")
 	{
-		return CommonModel::camboObbligatorio($campo, $this->controller, $queryType);
+		return GenericModel::camboObbligatorio($campo, $this->controller, $queryType);
 	}
 }

@@ -328,7 +328,7 @@ class BaseController extends Controller
 		
 		$data['posizioni'] = $this->_posizioni;
 		
-		$qAllowed = BaseCrudController::$azioniPermesse;
+		$qAllowed = BaseController::$azioniPermesse;
 		
 		$data["useEditor"] = $this->useEditor;
 		

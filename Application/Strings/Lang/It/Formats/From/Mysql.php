@@ -28,6 +28,8 @@ class Lang_It_Formats_From_Mysql
 	//convert the string from MySQL decimal format to It decimal format 
 	public function decimal($string)
 	{
+		$string = nullToBlank($string);
+		
 		return str_replace(".",",",$string);
 	}
 	

@@ -115,7 +115,7 @@ else
 	</div>
 	
 	<div class="uk-margin uk-margin-remove-bottom">
-		<label class="uk-form-label"><?php echo gtext("Telefono");?> <?php echo CommonModel::asterisco("telefono", $this->controller, $tipoAzione);?></label>
+		<label class="uk-form-label"><?php echo gtext("Telefono");?> <?php echo GenericModel::asterisco("telefono", $this->controller, $tipoAzione);?></label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::input("telefono",$values['telefono'],"uk-input class_telefono",null,"placeholder='".gtext("Telefono", false)."'");?>
 		</div>

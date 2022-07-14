@@ -1014,7 +1014,14 @@ class PagesModel extends GenericModel {
 				"priorita"	=>	$pagina["pages"]["priorita_sitemap"],
 			));
 			
-			$sm->insert();
+			try
+			{
+				$sm->insert();
+			}
+			catch (Exception $e)
+			{
+				
+			}
 		}
 	}
 	

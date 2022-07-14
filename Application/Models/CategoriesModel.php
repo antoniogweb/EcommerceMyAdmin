@@ -387,7 +387,14 @@ class CategoriesModel extends HierarchicalModel {
 				"priorita"	=>	$category["priorita_sitemap"],
 			));
 			
-			$sm->insert();
+			try
+			{
+				$sm->insert();
+			}
+			catch (Exception $e)
+			{
+				
+			}
 		}
 	}
 	

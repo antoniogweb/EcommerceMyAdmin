@@ -59,7 +59,15 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 			"applicativo"	=>	$applicativo,
 		);
 		
-		$t->insert();
+		try
+		{
+			$t->insert();
+		}
+		catch (Exception $e)
+		{
+			
+		}
+		
 		
 		return call_user_func($function,$string);
 		
