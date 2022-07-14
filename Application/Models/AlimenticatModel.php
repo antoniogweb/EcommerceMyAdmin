@@ -32,5 +32,10 @@ class AlimenticatModel extends CategoriesModel {
 		parent::__construct();
 		
 	}
+	
+	public function overrideFormStruct()
+	{
+		$this->formStruct["entries"]["colore_testo_in_slide"]["labelString"] = gtext("Colore");
+	}
 
 }

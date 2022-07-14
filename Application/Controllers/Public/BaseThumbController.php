@@ -488,8 +488,6 @@ class BaseThumbController extends Controller {
 	
 	public function team($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	263,
 			'imgHeight'		=>	364,
@@ -501,22 +499,7 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, "images/contents");
 	}
 	
 	public function referenza($fileName)

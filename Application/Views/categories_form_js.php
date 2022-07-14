@@ -25,6 +25,6 @@ function ajaxfilemanager(field_name, url, type, win) {
 }
 $().ready(function() {
 
-	$('textarea').tinymce(tiny_editor_config);
+	$('textarea.dettagli').tinymce(tiny_editor_config);
 });
 </script>

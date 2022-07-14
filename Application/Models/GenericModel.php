@@ -656,7 +656,7 @@ class GenericModel extends Model_Tree
 			return array(0	=>	"--") + $r->clear()->orderBy("titolo")->toList("id_ruolo", "titolo")->send();
 	}
 	
-	public function selectTipi($frontend = false)
+	public function selectTipi($frontend = false, $valoreDefault = 0, $testoDefault = "--")
 	{
 		if ($frontend)
 		{
@@ -672,7 +672,9 @@ class GenericModel extends Model_Tree
 			return $arrayRuoli;
 		}
 		else
-			return array(0	=>	"--") + $this->clear()->orderBy($this->table().".".$this->campoTitolo)->toList($this->getPrimaryKey(), $this->campoTitolo)->send();
+		{
+			return array($valoreDefault	=>	$testoDefault) + $this->clear()->orderBy($this->table().".".$this->campoTitolo)->toList($this->getPrimaryKey(), $this->campoTitolo)->send();
+		}
 	}
 	
 	public function selectProvince()
@@ -1543,5 +1545,12 @@ class GenericModel extends Model_Tree
 		return $this->clear()->where(array(
 			$this->_idFields	=>	(int)$id,
 		))->field("id_page");
+    }
+    
+    public function ruoloCrud($record)
+    {
+		$r = new RuoliModel();
+		
+		return $r->titolo($record[$this->_tables]["id_ruolo"]);
     }
 }

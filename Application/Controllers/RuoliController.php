@@ -34,6 +34,9 @@ class RuoliController extends BaseController
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
+		if (!v("attiva_menu_ecommerce"))
+			$this->sezionePannello = "sito";
+		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->s["admin"]->check();

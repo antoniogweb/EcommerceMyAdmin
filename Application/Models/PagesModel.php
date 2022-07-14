@@ -585,6 +585,13 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Margine in % del prodotto.")." ".gtext("Se lasciato a 0, prenderà il margine della prima categoria di appartenenza avente un margine maggiore di 0.")."</div>"
 					),
 				),
+				'id_ruolo'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectRuoli(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'labelString'=>	'Ruolo',
+				),
 			),
 		);
 		
@@ -3190,5 +3197,28 @@ class PagesModel extends GenericModel {
 			
 			return 0;
 		}
+	}
+	
+	// Restituisce le pagine correlate ad una pagina
+	public static function getElementiCorrelatiA($idPage, $section, $numero = 0, $orderBy = "pages.id_order desc")
+	{
+		$className = get_called_class();
+		
+		$c = new $className;
+		
+		$c->clear()->select("*")
+			->addJoinTraduzionePagina()
+			->addWhereAttivo()
+			->inner("pages_pages")->on("pages.id_page = pages_pages.id_corr")
+			->aWhere(array(
+				"pages_pages.section"	=>	sanitizeAll($section),
+				"pages_pages.id_page"	=>	(int)$idPage,
+			))
+			->orderBy($orderBy);
+		
+		if ($numero)
+			$c->limit($numero);
+		
+		return $c->send();
 	}
 }

@@ -38,6 +38,8 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
+									<?php echo isset($form["id_ruolo"]) ? $form["id_ruolo"] : "";?>
+									
 									<?php echo $form["email_contatto_evento"];?>
 									
 									<?php echo $form["telefono_contatto_evento"];?>
@@ -49,6 +51,10 @@
 									<?php echo $form["link_pagina_twitter"];?>
 									
 									<?php echo $form["link_pagina_youtube"];?>
+									
+									<?php echo $form["link_pagina_instagram"];?>
+									
+									<?php echo $form["link_pagina_linkedin"];?>
 									
 									<?php echo $form["description"];?>
 									

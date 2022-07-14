@@ -189,6 +189,7 @@ class CategoriesModel extends HierarchicalModel {
 				'description'	=>	array(
 					'labelString'=>	'Descrizione',
 					'entryClass'	=>	'form_textarea help_descrizione',
+					'className'		=>	'dettagli',
 				),
 				'alias'		=>	array(
 					'labelString'=>	'Alias (per URL)',
@@ -228,6 +229,9 @@ class CategoriesModel extends HierarchicalModel {
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+		
+		// Override la struttura del form
+		$this->overrideFormStruct();
 	}
 	
 	public static function setAliases()

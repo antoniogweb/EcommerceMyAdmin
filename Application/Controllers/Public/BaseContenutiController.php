@@ -539,6 +539,8 @@ class BaseContenutiController extends BaseController
 			{
 				$titolo = (isset($tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) && $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
 				
+				$titolo = $this->titoloBreadcrumb($titolo);
+				
 // 				print_r($tempParents[count($tempParents)-1]);
 				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<span class='breadcrumb_last_text'>".$titolo."</span>".v("breadcrumb_element_close"));
 			}
@@ -548,6 +550,8 @@ class BaseContenutiController extends BaseController
 				
 				$titolo = (isset($tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) && $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
 				
+				$titolo = $this->titoloBreadcrumb($titolo);
+				
 				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/$ref'>".$titolo."</a>".v("breadcrumb_element_close"));
 			}
 			
@@ -556,6 +560,11 @@ class BaseContenutiController extends BaseController
 			$i++;
 		}
 		return implode(v("divisone_breadcrum"), $breadcrumbArray);
+	}
+	
+	protected function titoloBreadcrumb($titolo)
+	{
+		return $titolo;
 	}
 	
 	protected function category($id)
@@ -585,11 +594,13 @@ class BaseContenutiController extends BaseController
 		$firstSection = $data["fsection"] = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
 		
 		if ($firstSection == "prodotti")
-			$this->elementsPerPage = $data["elementsPerPage"] = v("prodotti_per_pagina");
+			$this->elementsPerPage = v("prodotti_per_pagina");
 		else if ($firstSection == "blog")
-			$this->elementsPerPage = $data["elementsPerPage"] = v("news_per_pagina");
+			$this->elementsPerPage = v("news_per_pagina");
 		else if ($firstSection == "eventi")
-			$this->elementsPerPage = $data["elementsPerPage"] = v("eventi_per_pagina");
+			$this->elementsPerPage = v("eventi_per_pagina");
+		
+		$data["elementsPerPage"] = $this->elementsPerPage;
 		
 		$data["arrayLingue"] = array();
 		

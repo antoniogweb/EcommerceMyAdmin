@@ -23,5 +23,13 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class AlimenticatController extends CategoriesController {
-
+	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if (v("mostra_colore_testo"))
+			$this->queryFields .= ",colore_testo_in_slide";
+	}
+	
 }

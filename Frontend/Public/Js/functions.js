@@ -687,7 +687,7 @@ $(document).ready(function(){
 							}, 500);
 						}
 						
-						$(".box_notice").html(content.Body.Notice);
+						boxEvidenzia.find(".box_notice").html(content.Body.Notice);
 						
 						if (content.Body.Esito == "OK")
 						{

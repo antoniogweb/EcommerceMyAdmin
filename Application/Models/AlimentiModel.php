@@ -27,4 +27,15 @@ class AlimentiModel extends BasicsectionModel {
 	public $hModelName = "AlimenticatModel";
 	
 	public function setAliasAndCategory() {}
+	
+	public function setFilters()
+	{
+		parent::setFilters();
+		
+		$this->_popupItemNames["id_c"]	=	'id_c';
+		$this->_popupLabels["id_c"]	=	'CATEGORIA';
+		$this->_popupFunctions["id_c"]	=	'getCatNameForFilters';
+		$this->_popupOrderBy["id_c"]	=	'lft asc';
+		$this->_popupWhere["id_c"]	=	$this->hModel->getChildrenFilterWhere();
+	}
 }
