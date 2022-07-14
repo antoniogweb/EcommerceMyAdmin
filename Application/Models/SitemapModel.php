@@ -168,7 +168,7 @@ class SitemapModel extends GenericModel {
 		{
 			$n = isset($n["aggregate"]) ? $n["aggregate"] : $n;
 			
-			if (strtotime($n["ultima_modifica"]) > $dataModificaHome)
+			if ($n["ultima_modifica"] && strtotime($n["ultima_modifica"]) > $dataModificaHome)
 				$dataModificaHome = strtotime($n["ultima_modifica"]);
 		}
 		
