@@ -89,13 +89,13 @@ trait InitController
 			"file-exists" => "<div class='alert'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
 		);
 		
-		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin",null,$this->baseUrlSrc);
+		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin","",$this->baseUrlSrc);
 		
-		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = str_replace("/admin",null,ROOT);
+		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = str_replace("/admin","",ROOT);
 		
 		Domain::$adminRoot = ROOT;
 		Domain::$adminName = $this->baseUrlSrc;
-		Domain::$publicUrl = str_replace("/admin",null,$this->baseUrlSrc);
+		Domain::$publicUrl = str_replace("/admin","",$this->baseUrlSrc);
 		
 		$data["sidebarCollapsed"] = false;
 		

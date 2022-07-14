@@ -350,12 +350,12 @@ class MenuModel extends HierarchicalModel {
 					{
 						$linkAlias = $node["node"]["link_alias"] ? $node["node"]["link_alias"] : $node["node"]["alias"];
 						
-						$pattern = str_replace(".html",null,str_replace(DS, '\\'.DS, $linkAlias));
+						$pattern = str_replace(".html","",str_replace(DS, '\\'.DS, $linkAlias));
 						$pattern = rtrim($pattern,"\/")."\/";
 						
 						$domain = isset($lingua) ? str_replace("/".$lingua,"",Domain::$name) : Domain::$name;
 						
-						$subject = str_replace(".html",null,$domain.$requestUri);;
+						$subject = str_replace(".html","",$domain.$requestUri);;
 						$subject = rtrim($subject,"/")."/";
 
 						if (preg_match("/(".$pattern.")/",$subject))

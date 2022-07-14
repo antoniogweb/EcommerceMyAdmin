@@ -46,6 +46,8 @@ class Lang_It_Formats_From_Mysql
 	//convert the string from MySQL date format to It date format
 	public function date($date)
 	{
+		$date = nullToBlank($date);
+		
 		if (preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/',$date))
 		{
 			$dateArray = explode('-',$date);
@@ -69,6 +71,8 @@ class Lang_It_Formats_From_Mysql
 	
 	public function time($string)
 	{
+		$string = nullToBlank($string);
+		
 		if (preg_match('/^[0-9]{2}\:[0-9]{2}\:[0-9]{2}$/',$string))
 		{
 			$array = explode(":",$string);

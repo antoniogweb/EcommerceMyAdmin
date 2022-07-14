@@ -574,6 +574,7 @@ class Domain
 
 function htmlentitydecode($value)
 {
+	$value = nullToBlank($value);
 	return html_entity_decode($value, ENT_QUOTES, "UTF-8");
 }
 
@@ -954,6 +955,8 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 		$clean["id"] = (int)$testo["id_t"];
 		
 		$iconaEdit = User::$adminLogged ? "<span rel='".$clean["id"]."' title='modifica il testo' class='edit_blocco_testo' href='#'><i class='fa fa-pencil'></i></span>" : null;
+		
+		$tags = nullToBlank($tags);
 		
 		$t = strcmp($tags,"") !== 0 ? strip_tags(htmlentitydecode($testo["valore"]),$tags) : htmlentitydecode($testo["valore"]);
 		

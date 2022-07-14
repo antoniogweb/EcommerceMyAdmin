@@ -496,6 +496,8 @@ class ContenutiModel extends GenericModel {
 				$html = preg_replace('/\[link ([a-zA-Z0-9\_\-]{1,})\]/', '[link ${1}_'.$idCont.']' ,$html);
 				$html = preg_replace('/\[video (.*?)\]/', '[video ${1}_'.$idCont.']' ,$html);
 				
+				$f["contenuti"]["descrizione"] = nullToBlank($f["contenuti"]["descrizione"]);
+				
 				$html = preg_replace('/\[descrizione\]/', $f["contenuti"]["descrizione"], $html);
 				
 				if (User::$adminLogged)
