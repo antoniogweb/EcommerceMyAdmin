@@ -35,6 +35,12 @@
 			<div class='col-md-4'>
 				<?php echo $form["link_pagina_youtube"];?>
 			</div>
+			<div class='col-md-4'>
+				<?php echo $form["link_pagina_instagram"];?>
+			</div>
+			<div class='col-md-4'>
+				<?php echo $form["link_pagina_linkedin"];?>
+			</div>
 		</div>
 	</div>
 </div>

@@ -123,6 +123,16 @@ class F
 		return str_replace(" ","",$stringa);
 	}
 	
+	public static function attributi($html, $params = array())
+	{
+		foreach ($params as $attributo => $valore)
+		{
+			$html = preg_replace('/'.$attributo.'=(.*?)/', ' '.$attributo.'="'.$valore.'" ' ,$html);
+		}
+		
+		return $html;
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{

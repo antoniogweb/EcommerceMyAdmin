@@ -41,6 +41,6 @@ class SociController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,description,immagine,video,sottotitolo,link_pagina_facebook,link_pagina_twitter,link_pagina_youtube,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,localita_evento,id_regione,url";
+		$this->queryFields = "title,attivo,description,immagine,video,sottotitolo,link_pagina_facebook,link_pagina_twitter,link_pagina_youtube,link_pagina_instagram,link_pagina_linkedin,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,localita_evento,id_regione,url";
 	}
 }

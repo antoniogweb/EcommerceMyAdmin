@@ -362,6 +362,11 @@ class BaseThumbController extends Controller {
 		}
 	}
 	
+	public function socidetail($fileName)
+	{
+		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
+	}
+	
 	public function blog($fileName)
 	{
 		$params = array(
@@ -387,9 +392,6 @@ class BaseThumbController extends Controller {
 			'imgHeight'		=>	953,
 			'defaultImage'	=>  null,
 			'useCache'		=>	true,
-// 			'cropImage'		=>	'yes',
-// 			'horizAlign'	=>	'center',
-// 			'vertAlign'		=>	'center',
 			'backgroundColor' => "#FFF",
 		);
 		
@@ -726,6 +728,11 @@ class BaseThumbController extends Controller {
 	}
 	
 	public function gallery($fileName)
+	{
+		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
+	}
+	
+	public function gallerybig($fileName)
 	{
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
