@@ -60,6 +60,8 @@ class PagesModel extends GenericModel {
 	
 	public static $pagesStruct = array();
 	
+	public static $testoLabelSocial = "Lato frontend verrà mostrato se il tema lo prevede";
+	
 	public static $modelliDaDuplicare = array(
 		"ImmaginiModel",
 		"LayerModel",
@@ -248,7 +250,12 @@ class PagesModel extends GenericModel {
 					'labelString'=>	'Data scrittura',
 				),
 				'coordinate'		=>	array(
-					'labelString'=>	'Coordinate (latitudine e longitudine divise da virgola)',
+					'labelString'=>	'Coordinate',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Llatitudine e longitudine divise da virgola.")."</div>"
+					),
 				),
 				'alias'		=>	array(
 					'labelString'=>	'Alias (per URL)',
@@ -593,6 +600,41 @@ class PagesModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					'labelString'=>	'Ruolo',
+				),
+				'link_pagina_facebook'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+					),
+				),
+				'link_pagina_twitter'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+					),
+				),
+				'link_pagina_youtube'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+					),
+				),
+				'link_pagina_instagram'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+					),
+				),
+				'link_pagina_linkedin'		=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+					),
 				),
 			),
 		);

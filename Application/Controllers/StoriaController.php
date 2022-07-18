@@ -34,8 +34,8 @@ class StoriaController extends GenericsectionController {
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			'pages.sottotitolo',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
-			'pages.sottotitolo'
 		);
 		
 		$this->orderBy = "pages.id_order";

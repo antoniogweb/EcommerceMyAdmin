@@ -144,12 +144,22 @@ class TestiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'link_id_documento'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Link a documento',
+					'options'	=>	$this->selectDocumento(),
+					'reverse' => 'yes',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
 		
-		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
+// 		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
 	}
 	
 	public function update($id = NULL, $whereClause = NULL)

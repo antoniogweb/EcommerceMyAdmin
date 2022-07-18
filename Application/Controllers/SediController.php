@@ -50,7 +50,7 @@ class SediController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Email,Telefono,Indirizzo,Regione,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,description,localita_evento,id_regione";
+		$this->queryFields = "title,attivo,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,description,localita_evento,id_regione,coordinate,link_pagina_facebook,link_pagina_twitter,link_pagina_youtube,link_pagina_instagram,link_pagina_linkedin";
 		
 		if (v("attiva_categorie_sedi"))
 			$this->queryFields .= ",id_c";

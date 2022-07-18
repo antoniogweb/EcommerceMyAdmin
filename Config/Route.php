@@ -573,6 +573,8 @@ class Route
 		'sedi,inevidenza',
 		'sedi,updatevalue',
 		'sedi,ordina',
+		'sedi,paginecorrelate',
+		'sedi,ordinacorrelate',
 		
 		'sedicat,main',
 		'sedicat,form',

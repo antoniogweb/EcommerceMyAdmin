@@ -706,9 +706,11 @@ class GenericModel extends Model_Tree
 	{
 		$p = new PagesModel();
 		
-		return array(0	=>	gtext("-- NON IMPOSTATO --")) + $p->clear()->inner("categories")->on("pages.id_c = categories.id_c")->orderBy("pages.title")->where(array(
-			"nin"	=>	array("categories.alias"	=>	array("slide")),
-		))->toList("pages.id_page","pages.title")->send();
+		return $p->buildAllPagesSelect();
+		
+// 		return array(0	=>	gtext("-- NON IMPOSTATO --")) + $p->clear()->inner("categories")->on("pages.id_c = categories.id_c")->orderBy("pages.title")->where(array(
+// 			"nin"	=>	array("categories.alias"	=>	array("slide")),
+// 		))->toList("pages.id_page","pages.title")->send();
 	}
 	
 	public function selectLingua($prefisso = "")

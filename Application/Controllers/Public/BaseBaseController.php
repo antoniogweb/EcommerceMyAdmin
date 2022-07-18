@@ -401,7 +401,7 @@ class BaseBaseController extends Controller
 		$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
 		$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
 		
-		$data["selectRuoli"] = $this->m["RuoliModel"]->selectTipi(true);
+		$data["selectRuoli"] = RuoliModel::$listaElementi = $this->m["RuoliModel"]->selectTipi(true);
 		
 		if (v("attiva_tipi_azienda"))
 			$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);

@@ -74,7 +74,7 @@ class ContenutiController extends BaseController
 		
 		$fields .= ",titolo";
 		
-		if ($this->viewArgs["id_tipo"] == "tutti" && $queryType == "insert")
+		if (($this->viewArgs["id_tipo"] == "tutti" && $queryType == "insert") || (isset($recordTipo["tipo"]) && $recordTipo["tipo"] != "FASCIA" && $queryType == "update"))
 			$fields .= ",id_tipo";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);

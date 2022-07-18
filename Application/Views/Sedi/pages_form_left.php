@@ -12,4 +12,6 @@
 
 <?php echo $form["localita_evento"];?>
 
+<?php echo $form["coordinate"];?>
+
 <?php echo $form["description"];?>

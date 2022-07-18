@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class RuoliModel extends GenericModel
 {
+	public static $listaElementi = array();
+	
 	public function __construct() {
 		$this->_tables = 'ruoli';
 		$this->_idFields = 'id_ruolo';
