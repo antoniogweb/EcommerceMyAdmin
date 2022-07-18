@@ -44,4 +44,6 @@ if (!isset($arrayPulsanti))
 		<div class="progress-bar progress-bar-success"></div>
 	</div>
 	<div class="alert-fileupload<?php echo $stringImmagine2;?>"></div>
+	
+	<?php echo (isset($form["alt_tag_immagine"]) && !$numeroImmagine) ? $form["alt_tag_immagine"] : "";?>
 </div>

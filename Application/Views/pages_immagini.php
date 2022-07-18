@@ -13,8 +13,6 @@
 
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/jQuery-File-Upload-9.18.0/js/jquery.fileupload-validate.js"></script>
 
-<!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/jquery.uploadify.js?<?php echo date("U")?>"></script> -->
-
 <script>
 
 function aggiornaOrdinamento()
@@ -51,6 +49,23 @@ $(function() {
 			aggiornaOrdinamento();
 		}
 	});
+	
+	$("body").on("click", ".a_moveup,.a_movedown,.a_del,.a_rotate_o", function(e){
+// 				$(className).unbind();
+		var link_url = $(this).attr("href");
+		$.ajaxQueue({
+			url: link_url,
+			async: false,
+			cache:false,
+			success: function(html){
+				
+				import_thumb();
+			}
+		});
+		return false;
+	});
+	
+	import_thumb();
 });
 
 //funzione per importare le immagini dei lavori
@@ -64,32 +79,8 @@ function import_thumb()
 
 			$("#thumb_box_right").empty();
 			$("#thumb_box_right").append(html);
-
-			partial_load(".a_moveup");
-			partial_load(".a_movedown");
-			partial_load(".a_del");
-			partial_load(".a_rotate_o");
 		}
 	});
-
-	function partial_load(className)
-	{
-		$(className).click(function() {
-// 				$(className).unbind();
-			var link_url = $(this).attr("href");
-			$.ajaxQueue({
-				url: link_url,
-				async: false,
-				cache:false,
-				success: function(html){
-					
-// 						alert(html);
-					import_thumb();
-				}
-			});
-			return false;
-		});
-	}
 }
 	
 var allowed = [ "jpg","jpeg","png","gif" ];

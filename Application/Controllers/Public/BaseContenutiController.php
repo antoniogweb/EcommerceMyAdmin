@@ -882,6 +882,8 @@ class BaseContenutiController extends BaseController
 		
 		$this->pages = $data["pages"];
 		
+		PagesModel::setPagesStruct($data["pages"]);
+		
 // 		echo $this->m["PagesModel"]->getQuery();
 		
 		// Estraggo le fasce

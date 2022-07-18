@@ -178,7 +178,7 @@ class ImmaginiModel extends GenericModel {
 	}
 	
 	// Restituisce un array con tutte le immagini della pagina
-	public static function immaginiPagina($idPagina, $soloShop = true)
+	public static function immaginiPagina($idPagina, $soloShop = true, $soloImmagine = true)
 	{
 		if (!isset(self::$immaginiPagine))
 		{
@@ -186,7 +186,7 @@ class ImmaginiModel extends GenericModel {
 			
 			$i = new ImmaginiModel();
 			
-			$i->select("immagini.id_page,immagini.immagine")
+			$i->select("immagini.*")
 				->inner(array("pagina"))
 				->orderBy("immagini.id_order");
 			
@@ -200,7 +200,11 @@ class ImmaginiModel extends GenericModel {
 			foreach ($elencoImmagini as $recordImg)
 			{
 				$idPage = $recordImg["immagini"]["id_page"];
-				$immagine = $recordImg["immagini"]["immagine"];
+				
+				if ($soloImmagine)
+					$immagine = $recordImg["immagini"]["immagine"];
+				else
+					$immagine = $recordImg["immagini"];
 				
 				if (isset(self::$immaginiPagine[$idPage]))
 					self::$immaginiPagine[$idPage][] = $immagine;

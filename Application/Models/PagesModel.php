@@ -58,6 +58,8 @@ class PagesModel extends GenericModel {
 		"traduzione"	=>	array(),
 	);
 	
+	public static $pagesStruct = array();
+	
 	public static $modelliDaDuplicare = array(
 		"ImmaginiModel",
 		"LayerModel",
@@ -3227,5 +3229,37 @@ class PagesModel extends GenericModel {
 			$c->limit($numero);
 		
 		return $c->send();
+	}
+	
+	public static function setPagesStruct($pages)
+	{
+		$indice = 0;
+		
+		foreach ($pages as $page)
+		{
+			if ($indice > 0)
+				self::$pagesStruct[$page["pages"]["id_page"]]["prev"] = $pages[($indice - 1)];
+			
+			if ($indice < (count($pages) - 1))
+				self::$pagesStruct[$page["pages"]["id_page"]]["next"] = $pages[($indice + 1)];
+			
+			$indice++;
+		}
+	}
+	
+	public static function getNext($idPage)
+	{
+		if (isset(self::$pagesStruct[$idPage]) && isset(self::$pagesStruct[$idPage]["next"]))
+			return self::$pagesStruct[$idPage]["next"];
+		
+		return null;
+	}
+	
+	public static function getPrev($idPage)
+	{
+		if (isset(self::$pagesStruct[$idPage]) && isset(self::$pagesStruct[$idPage]["prev"]))
+			return self::$pagesStruct[$idPage]["prev"];
+		
+		return null;
 	}
 }

@@ -663,6 +663,24 @@ class Route
 		'ricette,contenuti',
 		'ricette,ordinacontenuti',
 		'ricette,testi',
+		
+		'storia,main',
+		'storia,aggiungicategoria',
+		'storia,form',
+		'storia,immagini',
+		'storia,eliminacategoria',
+		'storia,correlati',
+		'storia,attributi',
+		'storia,caratteristiche',
+		'storia,move',
+		'storia,pubblica',
+		'storia,inevidenza',
+		'storia,updatevalue',
+		'storia,meta',
+		'storia,ordina',
+		'storia,contenuti',
+		'storia,ordinacontenuti',
+		'storia,testi',
 	);
 	
 	//it can be 'yes' or 'no'

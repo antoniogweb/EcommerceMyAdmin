@@ -410,6 +410,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_progetti"	=>	0, // se mostrare la sezione "progetti"
 		"mostra_alimenti"	=>	0, // se mostrare la sezione "alimenti"
 		"mostra_ricette"	=>	0, // se mostrare la sezione "ricette"
+		"mostra_storia"	=>	0, // se mostrare la sezione "storia"
 		## SEDI ##
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"attiva_categorie_sedi"	=>	0, // se attivare o disattivare le categorie delle sedi

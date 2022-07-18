@@ -54,6 +54,7 @@ class CategoriesModel extends HierarchicalModel {
 		"progetti"		=>	"mostra_progetti",
 		"alimenti"		=>	"mostra_alimenti",
 		"ricette"		=>	"mostra_ricette",
+		"storia"		=>	"mostra_storia",
 	);
 	
 	public $controller = "categories";

@@ -1118,4 +1118,9 @@ class BaseThumbController extends Controller {
 	{
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
+	
+	public function storia($fileName)
+	{
+		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
+	}
 }

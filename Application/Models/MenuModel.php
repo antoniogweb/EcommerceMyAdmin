@@ -461,7 +461,7 @@ class MenuModel extends HierarchicalModel {
 		
 // 		$homeUrlLang = isset($this->menuLang) ? "/".$this->menuLang : null;
 		
-		$parentUrl = str_replace("/admin",null,Url::getFileRoot());
+		$parentUrl = str_replace("/admin","",Url::getFileRoot());
 		
 		switch ($link_to)
 		{
