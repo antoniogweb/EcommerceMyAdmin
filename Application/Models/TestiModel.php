@@ -139,7 +139,7 @@ class TestiModel extends GenericModel {
 				),
 				'template'	=>	array(
 					"type"	=>	"Select",
-					"labelString"	=>	"Link alla categoria",
+					"labelString"	=>	"Template elemento",
 					"options"	=>	$this->selectTemplateElemento($id),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",

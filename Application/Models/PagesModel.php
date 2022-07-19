@@ -3102,7 +3102,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce gli elementi da usare nella fascia
-	public static function getElementiFascia($numero = 0, $orderBy = "pages.id_order desc")
+	public static function getElementiFascia($numero = 0, $orderBy = "pages.id_order desc", $where = "")
 	{
 		$className = get_called_class();
 		
@@ -3113,6 +3113,9 @@ class PagesModel extends GenericModel {
 			->addWhereAttivo()
 			->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($c->hModel->section))
 			->orderBy($orderBy);
+		
+		if ($where)
+			$c->sWhere($where);
 		
 		if ($numero)
 			$c->limit($numero);
