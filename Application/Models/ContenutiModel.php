@@ -76,7 +76,7 @@ class ContenutiModel extends GenericModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif,svg',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	6000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
@@ -93,7 +93,7 @@ class ContenutiModel extends GenericModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif,svg',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	6000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
@@ -102,6 +102,13 @@ class ContenutiModel extends GenericModel {
 					'defaultImage'	=>  null,
 					'cropImage'		=>	'no',
 				),
+			),
+			"filename"	=>	array(
+				"type"	=>	"file",
+				"path"	=>	"images/contenuti",
+				"allowedExtensions"	=>	v("estensioni_upload_file_contenuti"),
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
+				"Content-Disposition"	=>	"inline",
 			),
 		);
 		

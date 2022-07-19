@@ -35,6 +35,10 @@ $().ready(function() {
 			<?php echo $form["tipo_layer"];?>
 			<?php } ?>
 			
+			<?php if (isset($form["filename"])) { ?>
+			<?php echo $form["filename"];?>
+			<?php } ?>
+			
 			<?php if (isset($form["immagine_1"])) { ?>
 			<?php echo $form["immagine_1"];?>
 			<?php } ?>
