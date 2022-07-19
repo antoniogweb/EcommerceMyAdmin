@@ -1,10 +1,26 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (isset($form["descrizione"])) { ?>
+
+<?php if ($editor_visuale) { ?>
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+<?php } else { ?>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/ace.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/theme-dreamweaver.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/ace/mode-ruby.js"></script>
+<script src="<?php echo $this->baseUrlSrc?>/Public/Js/cheef-jquery-ace/jquery-ace.min.js"></script>
+<?php } ?>
+
+<!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script> -->
 
 <script type="text/javascript">
 $().ready(function() {
+	<?php if ($editor_visuale) { ?>
 	$('textarea').tinymce(tiny_editor_config);
+	<?php } else { ?>
+		$('textarea').ace({ theme: 'dreamweaver', lang: 'ruby' })
+	<?php } ?>
+	
+// 	$('textarea').tinymce(tiny_editor_config);
 	//$(".display_none").css({ 'display' : 'none' });
 });
 </script>

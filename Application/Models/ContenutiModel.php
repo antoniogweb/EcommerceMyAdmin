@@ -123,6 +123,8 @@ class ContenutiModel extends GenericModel {
 	{
 		$tipo = (isset($_GET["tipo"]) && in_array($_GET["tipo"], array("FASCIA","GENERICO","MARKER"))) ? $_GET["tipo"] : "FASCIA";
 		
+		$contenuto = $this->selectId($id);
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -265,6 +267,9 @@ class ContenutiModel extends GenericModel {
 					"className"	=>	"form-control",
 					"labelString"	=>	"Margine inferiore fascia",
 				),
+				'descrizione'		=>	array(
+					'labelString'=>	(isset($contenuto["tipo"]) && $contenuto["tipo"] == "FASCIA") ? "HTML fascia" : "Descrizione",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -360,7 +365,6 @@ class ContenutiModel extends GenericModel {
 				
 				if (!empty($recordTipo))
 				{
-					
 					$html = htmlentitydecode($recordTipo["descrizione"]);
 					
 					if (trim($html))
@@ -371,6 +375,8 @@ class ContenutiModel extends GenericModel {
 						if (preg_match('/\[margineInferiore\:(.*?)\]/', $html ,$matches))
 							$this->values["margine_inferiore"] = sanitizeAll($matches[1]);
 					}
+					
+					$this->values["descrizione"] = sanitizeDb($html);
 				}
 			}
 			
@@ -464,7 +470,7 @@ class ContenutiModel extends GenericModel {
 				
 				self::$contentData = $f;
 				
-				$html = htmlentitydecode($f["tipi_contenuto"]["descrizione"]);
+				$html = trim(nullToBlank($f["contenuti"]["descrizione"])) ? htmlentitydecode(nullToBlank($f["contenuti"]["descrizione"])) : htmlentitydecode($f["tipi_contenuto"]["descrizione"]);
 				
 				if ($f["contenuti"]["immagine_1"])
 					$html = preg_replace('/\[srcImmagine1\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_1"] ,$html);

@@ -74,6 +74,14 @@ class ContenutiController extends BaseController
 		
 		$fields .= ",titolo";
 		
+		$data["editor_visuale"] = true;
+		
+		if (isset($recordTipo["tipo"]) && $recordTipo["tipo"] == "FASCIA" && $queryType == "update")
+		{
+			$fields .= ",descrizione";
+			$data["editor_visuale"] = false;
+		}
+		
 		if (($this->viewArgs["id_tipo"] == "tutti" && $queryType == "insert") || (isset($recordTipo["tipo"]) && $recordTipo["tipo"] != "FASCIA" && $queryType == "update"))
 			$fields .= ",id_tipo";
 		
