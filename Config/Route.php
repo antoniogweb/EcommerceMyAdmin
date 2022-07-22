@@ -305,6 +305,8 @@ class Route
 		'blog,link',
 		'blog,testi',
 		'blog,lingue',
+		'blog,tag',
+		'blog,ordinatag',
 		
 		'downloadcat,main',
 		'downloadcat,form',

@@ -138,13 +138,20 @@ class TagModel extends GenericModel {
 			// Salva informazioni meta della pagina
 			$this->salvaMeta(0);
 			
-			return parent::insert();
+			$res = parent::insert();
+			
+			if ($res && isset($_GET["id_page"]))
+			{
+				$this->aggiungiaprodotto($this->lId);
+			}
+			
+			return $res;
 		}
 		
 		return false;
 	}
 	
-	public static function getUrlAlias($id, $lingua = null)
+	public static function getUrlAlias($id, $lingua = null, $section = "prodotti")
 	{
 		$t = new TagModel();
 		
@@ -159,8 +166,11 @@ class TagModel extends GenericModel {
 			if (v("shop_in_alias_tag"))
 			{
 				$c = new CategoriesModel;
-		
-				$idShop = $c->getShopCategoryId();
+				
+				if ($section == "prodotti")
+					$idShop = $c->getShopCategoryId();
+				else
+					$idShop = (int)CategoriesModel::getIdCategoriaDaSezione($section);
 				
 				return tagfield($tag[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
 			}
@@ -170,6 +180,25 @@ class TagModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function aggiungiaprodotto($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_page"]))
+		{
+			$idPage = (int)$_GET["id_page"];
+			
+			$pt = new PagestagModel();
+			
+			$pt->setValues(array(
+				"id_page"	=>	(int)$idPage,
+				"id_tag"		=>	(int)$id,
+			), "sanitizeDb");
+			
+			$pt->pInsert();
+		}
+    }
 	
 // 	public function filtro()
 // 	{

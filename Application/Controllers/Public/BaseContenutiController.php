@@ -1136,6 +1136,8 @@ class BaseContenutiController extends BaseController
 		
 		$clean['id'] = $this->m['PagesModel']->getPrincipale($clean["realId"]);
 		
+		$firstSection = $data["fsection"] = $this->m["PagesModel"]->section($clean['id'], true);
+		
 // 		$urlAlias = $this->m["PagesModel"]->getUrlAlias($clean['realId']);
 		
 		$data["arrayLingue"] = array();
@@ -1191,11 +1193,11 @@ class BaseContenutiController extends BaseController
 		
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
 			"lt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
-		))->orderBy("pages.data_news desc")->limit(1)->send();
+		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc")->limit(1)->send();
 		
 		$data["paginaSuccessiva"] = $this->m['PagesModel']->where(array(
 			"gt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
-		))->orderBy("pages.data_news")->limit(1)->send();
+		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news")->limit(1)->send();
 		
 // 		print_r($data["pages"]);
 		if ($data['pages'][0]["contenuti_tradotti"]["meta_description"])
@@ -1287,8 +1289,6 @@ class BaseContenutiController extends BaseController
 			))->orderBy("titolo")->send();
 		}
 		
-		$firstSection = $data["fsection"] = $this->m["PagesModel"]->section($clean['id'], true);
-		
 		if ($firstSection == "prodotti")
 		{
 			if (v("abilita_rich_snippet"))
@@ -1342,6 +1342,11 @@ class BaseContenutiController extends BaseController
 			$this->model("PagestagModel");
 			$data["page_tags"] = $this->m["PagestagModel"]->clear()->select("*")->inner(array("tag"))->where(array(
 				"id_page"	=>	$clean['id'],
+			))->orderBy("pages_tag.id_order")->send();
+			
+			// Con traduzione
+			$data["page_tags_full"] = $this->m["TagModel"]->clear()->select("*")->inner(array("pagine"))->addJoinTraduzione()->where(array(
+				"pages_tag.id_page"	=>	$clean['id'],
 			))->orderBy("pages_tag.id_order")->send();
 		}
 		

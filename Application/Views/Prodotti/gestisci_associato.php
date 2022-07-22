@@ -36,17 +36,7 @@
 
 <?php } ?>
 
-<?php if ($this->action === "tag") { ?>
-
-<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
-
-	<?php echo Html_Form::select("id_tag","",$lista,"form-control",null,"yes");?>
-	
-	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
-	
-</form>
-
-<?php } ?>
+<?php include($this->viewPath("gestisci_associato_tag"));?>
 
 <?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>
 

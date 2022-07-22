@@ -36,13 +36,25 @@ class BlogController extends GenericsectionController {
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
 			'PagesModel.categoriesS|pages.id_page',
 			'smartDate|pages.data_news',
-			'PagesModel.getPubblicatoCheckbox|pages.id_page',
+// 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data,Pubblicato?';
-		$this->filters = array(null,null,'title');
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data';
+		$this->filters = array(null,null,'title',null,null);
 		
 		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,video,video_thumb,sottotitolo";
+		
+		$fTag = null;
+		
+		if (v("usa_tag") && v("tag_in_blog"))
+		{
+			$this->tableFields[] = 'tag';
+			$this->head .= ',Tag';
+			$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->filtro();
+			$fTag = array("id_tag",null,$filtroTag);
+		}
+		
+		$this->filters[] = $fTag;
 		
 		if (v("in_evidenza_blog"))
 		{
@@ -55,6 +67,10 @@ class BlogController extends GenericsectionController {
 		{
 			$this->queryFields .= ",autore";
 		}
+		
+		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';
+		
+		$this->head .= ',Pubblicato?';
 		
 		$data["tabella"] = "blog";
 		

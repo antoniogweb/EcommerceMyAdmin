@@ -69,7 +69,8 @@ class VariabiliModel extends GenericModel {
 		"mostra_tipi_documento"		=>	1,
 		"download_attivi"			=>	1,
 		"attiva_giacenza"			=>	0,
-		"usa_tag"					=>	0,
+		"usa_tag"					=>	0, // se attivare i tag
+		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
 		"shop_in_alias_marchio"		=>	1,
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default

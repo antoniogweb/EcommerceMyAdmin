@@ -28,7 +28,9 @@ class TagController extends BaseController
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array();
+	public $argKeys = array(
+		'id_page:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -50,13 +52,34 @@ class TagController extends BaseController
 		$this->mainFields = array("tag.titolo", "tag.attivo");
 		$this->mainHead = "Titolo,Attivo";
 		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->mainFields[] = "bulkaggiungiaprodotto";
+			$this->mainHead .= ",Aggiungi";
+		}
+		
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("id_order")->convert()->save();
+				->orderBy("id_order")->convert();
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungiaprodotto";
+			
+			$this->bulkActions = array(
+				"checkbox_tag_id_tag"	=>	array("aggiungiaprodotto","Aggiungi alla pagina"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("tag.id_tag not in (select id_tag from pages_tag where id_tag is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

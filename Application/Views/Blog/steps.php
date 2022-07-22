@@ -4,6 +4,9 @@
 
 <ul class="nav_dettaglio nav nav-tabs">
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id_page".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
+	<?php if (v("usa_tag") && v("tag_in_blog")) { ?>
+	<li <?php echo $posizioni['tag'];?>><a class="help_tag_prodotto" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/tag/$id_page".$this->viewStatus;?>"><?php echo gtext("Tag");?></a></li>
+	<?php } ?>
 	<?php if (v("contenuti_in_blog")) { ?>
 	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/testi/$id_page".$this->viewStatus;?>"><?php echo gtext("Contenuti");?></a></li>
 	<?php } ?>

@@ -14,3 +14,5 @@
 
 <?php include($this->viewPath("gestisci_associato_lingue"));?>
 
+<?php include($this->viewPath("gestisci_associato_tag"));?>
+
