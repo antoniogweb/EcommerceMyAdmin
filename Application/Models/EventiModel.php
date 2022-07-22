@@ -69,7 +69,7 @@ class EventiModel extends PagesModel {
 		return array(null, null);
 	}
 	
-	public static function getElementiFascia($numero = 0, $orderBy = "pages.id_order desc")
+	public static function getElementiFascia($numero = 0, $orderBy = "pages.id_order desc", $where = "")
 	{
 		$e = new EventiModel();
 		

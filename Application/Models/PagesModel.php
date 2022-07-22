@@ -2555,7 +2555,7 @@ class PagesModel extends GenericModel {
     {
 		$f = new FeedbackModel();
 		
-		return $f->clear()->where(array(
+		return (float)$f->clear()->where(array(
 			"id_page"	=>	(int)$id,
 // 			"is_admin"	=>	0,
 			"attivo"	=>	1,
