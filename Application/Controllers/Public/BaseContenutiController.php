@@ -1470,12 +1470,13 @@ class BaseContenutiController extends BaseController
 		{
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$clean["idSection"] = $this->m["CategoriesModel"]->getShopCategoryId();
-			else
+			else if ($this->viewArgs["sec"] != "tutti")
 				$clean["idSection"] = $this->m['CategoriesModel']->clear()->where(array(
 					"section"	=>	$this->viewArgs["sec"],
 				))->field("id_c");
-				
-			$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idSection"], true);
+			
+			if ($this->viewArgs["sec"] != "tutti")
+				$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idSection"], true);
 			
 			$where = array(
 				" OR"=> array(
@@ -1502,7 +1503,7 @@ class BaseContenutiController extends BaseController
 			
 			$this->addOrderByClause($this->viewArgs["sec"], 'risultati-ricerca');
 			
-			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->rowNumber();
+			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->rowNumber();
 			
 			$this->elementsPerPage = 999999;
 			
