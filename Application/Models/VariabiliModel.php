@@ -414,6 +414,9 @@ class VariabiliModel extends GenericModel {
 		"mostra_alimenti"	=>	0, // se mostrare la sezione "alimenti"
 		"mostra_ricette"	=>	0, // se mostrare la sezione "ricette"
 		"mostra_storia"	=>	0, // se mostrare la sezione "storia"
+		## immagini ##
+		"rielabora_width"	=>	3000, // larghezza massima entro cui viene rielaborata l'immagine dopo l'upload
+		"rielabora_height"	=>	3000, // altezza massima entro cui viene rielaborata l'immagine dopo l'upload
 		## SEDI ##
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"attiva_categorie_sedi"	=>	0, // se attivare o disattivare le categorie delle sedi

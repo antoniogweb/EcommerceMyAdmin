@@ -2225,8 +2225,8 @@ class PagesController extends BaseController {
 									if ($this->m[$this->modelName]->rielaboraImmagine)
 									{
 										$params = array(
-											'imgWidth'		=>	3000,
-											'imgHeight'		=>	3000,
+											'imgWidth'		=>	v("rielabora_width"),
+											'imgHeight'		=>	v("rielabora_height"),
 											'defaultImage'	=>  null,
 										);
 										$thumb = new Image_Gd_Thumbnail($targetPath,$params);

@@ -129,7 +129,7 @@
 						<?php if (v("immagine_2_in_slide")) { ?>
 						<div class="panel panel-info">
 							<?php
-							$labelBlocco = gtext("Immagine 2");
+							$labelBlocco = gtext("Immagine per mobile");
 							$numeroImmagine = "2";
 							include($this->viewPath("pages_form_immagine"));?>
 						</div>

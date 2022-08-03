@@ -353,7 +353,24 @@ class ContenutiModel extends GenericModel {
 	public function update($id = NULL, $whereClause = NULL)
 	{
 		if ($this->upload("update"))
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record) && $record["tipo"] == "FASCIA" && !$record["descrizione"])
+			{
+				$tc = new TipicontenutoModel();
+				
+				$recordTipo = $tc->selectId((int)$record["id_tipo"]);
+				
+				$html = htmlentitydecode($recordTipo["descrizione"]);
+				
+				$this->values["descrizione"] = sanitizeDb($html);
+			}
+			
 			return parent::update($id, $whereClause);
+		}
+		
+		return false;
 	}
 	
 	public function insert()
