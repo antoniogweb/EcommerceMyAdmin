@@ -208,15 +208,7 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
-			<?php if (defined("APPS")) {
-				foreach (APPS as $app)
-				{
-					$path = ROOT."/Application/Apps/".ucfirst($app)."/Menu/ecommerce.php";
-					
-					if (file_exists($path))
-						include($path);
-				}
-			} ?>
+			<?php include(ROOT."/Application/Views/header_menu_apps.php"); ?>
 		</ul>
 		<?php } ?>
 	</section>

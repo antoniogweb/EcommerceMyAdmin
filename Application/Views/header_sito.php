@@ -15,15 +15,9 @@ include(ROOT."/Application/Views/header.php");
 			} else {
 				include(ROOT."/Application/Views/header_sito_static.php");
 			} ?>
-			<?php if (defined("APPS")) {
-				foreach (APPS as $app)
-				{
-					$path = ROOT."/Application/Apps/".ucfirst($app)."/Menu/sito.php";
-					
-					if (file_exists($path))
-						include($path);
-				}
-			} ?>
+			<?php
+			$tipoMenu = "sito";
+			include(ROOT."/Application/Views/header_menu_apps.php"); ?>
 			<?php if (v("attiva_standard_cms_menu")) { ?>
 			<li class="<?php echo tm($tm, "menu1");?> treeview help_menu">
 				<a href="#">
