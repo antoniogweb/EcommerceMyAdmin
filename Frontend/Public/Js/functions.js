@@ -391,7 +391,7 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 
 if (typeof evidenziaErrore !== 'function')
 {
-	window.evidenziaErrore = function(selettore)
+	window.evidenziaErrore = function(selettore, form)
 	{
 		var nomeCampo = selettore.substring(7);
 		
@@ -399,10 +399,12 @@ if (typeof evidenziaErrore !== 'function')
 		{
 // 			$(selettore).closest(".box_form_evidenzia").remove();
 			
-			if ($(".evidenzia").closest(".box_form_evidenzia").find(selettore).length > 0)
-				$(".evidenzia").closest(".box_form_evidenzia").find(selettore).addClass("uk-form-danger");
+			var boxErrori = (typeof form == "undefined") ? $(".evidenzia").closest(".box_form_evidenzia") : form.closest(".box_form_evidenzia");
+			
+			if (boxErrori.find(selettore).length > 0)
+				boxErrori.find(selettore).addClass("uk-form-danger");
 			else
-				$(".evidenzia").closest(".box_form_evidenzia").find("[name='" + nomeCampo + "']").addClass("uk-form-danger");
+				boxErrori.find("[name='" + nomeCampo + "']").addClass("uk-form-danger");
 		}
 		else
 		{
@@ -414,22 +416,26 @@ if (typeof evidenziaErrore !== 'function')
 	}
 }
 
-function nascondiErrori()
+function nascondiErrori(form)
 {
-	$(".uk-form-danger").each(function(){
+	var boxErrori = (typeof form == "undefined") ? $(".uk-form-danger") : form.find(".uk-form-danger");
+	
+	boxErrori.each(function(){
 		$(this).removeClass("uk-form-danger");
 	});
 }
 
-function evidenziaErrori(ajaxSubmit)
+function evidenziaErrori(ajaxSubmit, form)
 {
 	if (typeof ajaxSubmit != "undefined")
-		nascondiErrori();
+		nascondiErrori(form);
 	
-	$(".evidenzia").each(function(){
+	var evidenziaTag = (typeof form == "undefined") ? $(".evidenzia") : form.closest(".box_form_evidenzia").find(".evidenzia");
+	
+	evidenziaTag.each(function(){
 		t_tag = $(this).text();
 		
-		evidenziaErrore("."+t_tag);
+		evidenziaErrore("."+t_tag, form);
 	});
 }
 
@@ -694,7 +700,7 @@ $(document).ready(function(){
 							form.remove();
 						}
 						
-						evidenziaErrori(true);
+						evidenziaErrori(true, form);
 					}
 				});
 			}
