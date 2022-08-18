@@ -687,8 +687,8 @@ class Route
 		'storia,testi',
 		
 		'redirect,main',
-// 		'redirect,ordina',
 		'redirect,form',
+		'redirect,rigenera',
 	);
 	
 	//it can be 'yes' or 'no'

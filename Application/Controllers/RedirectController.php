@@ -30,7 +30,7 @@ class RedirectController extends BaseController {
 	
 	public $filters = array("vecchio_url", "nuovo_url");
 	
-	public $formValuesToDb = 'vecchio_url,nuovo_url,codice_redirect';
+	public $formValuesToDb = 'vecchio_url,nuovo_url';
 	
 	public $orderBy = "vecchio_url";
 	
@@ -52,6 +52,8 @@ class RedirectController extends BaseController {
 	{
 		$this->shift();
 		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add,genera_redirect');
+		
 		$this->m[$this->modelName]->where(array(
 				"lk" => array("vecchio_url" => $this->viewArgs["vecchio_url"]),
 				" lk" => array("nuovo_url" => $this->viewArgs["nuovo_url"]),
@@ -64,5 +66,12 @@ class RedirectController extends BaseController {
 	public function form($queryType = 'insert', $id = 0)
 	{
 		parent::form($queryType, $id);
+	}
+	
+	public function rigenera()
+	{
+		$this->clean();
+		
+		RedirectModel::generaRedirectFile();
 	}
 }

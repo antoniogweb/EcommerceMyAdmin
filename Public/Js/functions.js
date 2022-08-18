@@ -418,6 +418,33 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".save_redirect", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+		that.parent().find("i.fa-refresh").addClass("fa-spin");
+		
+		$.ajaxQueue({
+			url: that.attr("href"),
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				
+				setTimeout(function(){
+				
+					that.find("i").removeClass("fa-spin");
+					
+					alert("File redirect rigenerato correttamente");
+					
+				}, 1000);
+			}
+		});
+		
+	});
+	
 	$("body").on("change", ".edit-traduzione", function(e){
 		
 		var that = $(this);

@@ -59,21 +59,42 @@ class RedirectModel extends GenericModel {
 	}
 	
 	// Esegue il redirect
-	public static function cerca()
+// 	public static function cerca()
+// 	{
+// 		if (isset($_SERVER["REQUEST_URI"]))
+// 		{
+// 			$r = new RedirectModel();
+// 			
+// 			$record = $r->clear()->where(array(
+// 				"vecchio_url"	=>	sanitizeAll(rtrim($_SERVER["REQUEST_URI"],"/"))
+// 			))->record();
+// 			
+// 			if (!empty($record))
+// 			{
+// 				header('Location: '.html_entity_decode($record["nuovo_url"], ENT_QUOTES, "UTF-8"), true, $record["codice_redirect"]);
+// 				exit();
+// 			}
+// 		}
+// 	}
+	
+	// Genera il file redirect.php nella root del frontend sito
+	public static function generaRedirectFile()
 	{
-		if (isset($_SERVER["REQUEST_URI"]))
+		$r = new RedirectModel();
+		
+		$stringaTemplate  = file_get_contents(ROOT."/Application/Views/Redirect/template.txt");
+		
+		$records = $r->clear()->orderBy("id_order")->send(false);
+		
+		$arrayRecords = array();
+		
+		foreach ($records as $record)
 		{
-			$r = new RedirectModel();
-			
-			$record = $r->clear()->where(array(
-				"vecchio_url"	=>	sanitizeAll(rtrim($_SERVER["REQUEST_URI"],"/"))
-			))->record();
-			
-			if (!empty($record))
-			{
-				header('Location: '.html_entity_decode($record["nuovo_url"], ENT_QUOTES, "UTF-8"), true, $record["codice_redirect"]);
-				exit();
-			}
+			$arrayRecords[] = '"'.htmlentitydecode($record["vecchio_url"]).'" => "'.htmlentitydecode($record["nuovo_url"]).'",';
 		}
+		
+		$stringaTemplate = str_replace("[DIZIONARIO_REDIRECT]", implode("\n", $arrayRecords), $stringaTemplate);
+		
+		file_put_contents(Domain::$parentRoot."/redirect_url.php", $stringaTemplate);
 	}
 }

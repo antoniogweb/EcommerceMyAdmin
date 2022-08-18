@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-RedirectModel::cerca();
+// RedirectModel::cerca();
 
 date_default_timezone_set('Europe/Rome');
 

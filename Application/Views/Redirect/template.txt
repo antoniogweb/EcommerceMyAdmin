@@ -1,0 +1,19 @@
+<?php
+
+if (!defined("EG")) die("Direct access not allowed!");
+
+$redirectArray = array(
+	[DIZIONARIO_REDIRECT]
+);
+
+if (isset($_SERVER["REQUEST_URI"]))
+{
+	foreach ($redirectArray as $oldS => $newS)
+	{
+		if (rtrim($_SERVER["REQUEST_URI"],"/") == $oldS)
+		{
+			header("Location: ".$newS, true, 301);
+			exit;
+		}
+	}
+}
