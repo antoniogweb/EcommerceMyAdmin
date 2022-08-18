@@ -30,7 +30,7 @@ class RedirectController extends BaseController {
 	
 	public $filters = array("vecchio_url", "nuovo_url");
 	
-	public $formValuesToDb = 'vecchio_url,nuovo_url';
+	public $formValuesToDb = 'vecchio_url,nuovo_url,attivo';
 	
 	public $orderBy = "vecchio_url";
 	

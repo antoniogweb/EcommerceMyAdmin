@@ -32,8 +32,8 @@ class RedirectModel extends GenericModel {
 		
 		$this->_idOrder='id_order';
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"vecchio_url,nuovo_url,codice_redirect");
-		$this->addStrongCondition("both",'checkIsStrings|301,302,303',"codice_redirect");
+		$this->addStrongCondition("both",'checkNotEmpty',"vecchio_url,nuovo_url");
+// 		$this->addStrongCondition("both",'checkIsStrings|301,302,303',"codice_redirect");
 		
 		parent::__construct();
 	}
@@ -84,7 +84,9 @@ class RedirectModel extends GenericModel {
 		
 		$stringaTemplate  = file_get_contents(ROOT."/Application/Views/Redirect/template.txt");
 		
-		$records = $r->clear()->orderBy("id_order")->send(false);
+		$records = $r->clear()->where(array(
+			"attivo"	=>	"Y",
+		))->orderBy("id_order")->send(false);
 		
 		$arrayRecords = array();
 		
