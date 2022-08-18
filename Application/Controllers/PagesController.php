@@ -99,7 +99,10 @@ class PagesController extends BaseController {
 // 		$this->load('footer','last');
 
 		$this->session('admin');
-		$this->model();
+		
+		if (!isset($this->m[$this->modelName]))
+			$this->model();
+		
 		$this->model("PagesModel");
 		
 		$data['posizioni'] = $this->_posizioni;
