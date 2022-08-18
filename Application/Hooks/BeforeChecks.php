@@ -666,6 +666,18 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"vecchio_url"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Vecchio URL ..",
+			),
+		),
+		"nuovo_url"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Nuovo URL ..",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

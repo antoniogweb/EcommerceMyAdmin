@@ -685,6 +685,10 @@ class Route
 		'storia,contenuti',
 		'storia,ordinacontenuti',
 		'storia,testi',
+		
+		'redirect,main',
+// 		'redirect,ordina',
+		'redirect,form',
 	);
 	
 	//it can be 'yes' or 'no'

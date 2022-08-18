@@ -392,7 +392,8 @@ class BaseContenutiController extends BaseController
 			}
 			else
 			{
-				$this->redirect("contenuti/notfound");
+				$this->notfound();
+// 				$this->redirect("contenuti/notfound");
 			}
 		}
 		else if ($this->idMarchio && v("attiva_pagina_produttore"))
@@ -400,7 +401,10 @@ class BaseContenutiController extends BaseController
 			$this->marchio($this->idMarchio);
 		}
 		else
-			$this->redirect("contenuti/notfound");
+		{
+			$this->notfound();
+// 			$this->redirect("contenuti/notfound");
+		}
 		
 		$data["currUrl"] = $this->getCurrentUrl();
 		

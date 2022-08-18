@@ -452,6 +452,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_area_riservata"	=>	1, // se impostato a 1, gli utenti potranno creare un account, eseguire il login, modificare i propri dati
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
+		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
 	);
 	
 	public static $daInizializzare = array(
