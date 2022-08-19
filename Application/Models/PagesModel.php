@@ -2200,11 +2200,11 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce il codice 
-	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null, $funzione = null)
+	public function getFirstNotEmpty($idPage = 0, $field = "title", $parents = null, $funzione = null, $onlyParents = false)
 	{
 		if (!isset($parents))
 		{
-			$parents = $this->parents((int)$idPage, false, false, false, "id_c,$field");
+			$parents = $this->parents((int)$idPage, false, $onlyParents, false, "id_c,$field");
 			
 			//elimino la categoria root
 			array_shift($parents);
