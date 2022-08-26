@@ -385,9 +385,6 @@ class VariabiliModel extends GenericModel {
 		"checkbox_css_path"			=>	"admin/Frontend/Public/Css/skins/minimal/minimal.css",
 		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
-		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
-		"tempo_conferma_uid_contatto"	=>	86400, // manda oppure no la mail di conferma della mail del contatto
-		"tempo_durata_uid_contatto"	=>	15552000, // manda oppure no la mail di conferma della mail del contatto
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
@@ -450,6 +447,11 @@ class VariabiliModel extends GenericModel {
 		"permetti_agli_utenti_di_aggiungere_pagine"	=>	0, // se impostato a 1, gli utenti potranno aggiungere pagine
 		## AREA RISERVATA ##
 		"attiva_area_riservata"	=>	1, // se impostato a 1, gli utenti potranno creare un account, eseguire il login, modificare i propri dati
+		## CONTATTI ##
+		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
+		"tempo_conferma_uid_contatto"	=>	86400, // tempo in secondi per confermare il contatto
+		"tempo_durata_uid_contatto"	=>	15552000, // durata in secondi del cookie del contatto
+		"fonti_contatti_da_mostrare_admin"	=>	"NEWSLETTER,FORM_CONTATTO,NEWSLETTER_DA_ORDINE,NEWSLETTER_DA_REGISTRAZIONE", // elenco delle fonti contatti da mostrare nella sezione contatti generica dell'admin
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

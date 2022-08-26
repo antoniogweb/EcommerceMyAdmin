@@ -31,6 +31,9 @@ class BaseBaseController extends Controller
 	protected $islogged = false;
 	protected $iduser = 0;
 	protected $dettagliUtente = null;
+	protected $fonteContatto = null;
+	protected $mantieniFonte = false;
+	protected $mantieniPagina = false;
 	
 	public $cleanAlias = null;
 	public $prodottiInEvidenza;
@@ -1110,8 +1113,12 @@ class BaseBaseController extends Controller
 					
 					$fonte = $isNewsletter ? "NEWSLETTER" : "FORM_CONTATTO";
 					
+					// Salvo la fonte dal controller
+					if ($this->fonteContatto)
+						$fonte = $this->fonteContatto;
+					
 					// Inserisco il contatto
-					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
+					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte, $id, $this->mantieniFonte, $this->mantieniPagina);
 					
 					if (!$isNewsletter && v("attiva_verifica_contatti") && $idContatto)
 						$this->inviaMailConfermaContatto($idContatto);

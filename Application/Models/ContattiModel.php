@@ -56,7 +56,9 @@ class ContattiModel extends GenericModel {
 			EventiretargetingModel::processaContatto($idContatto);
 	}
 	
-	public function insertDaArray($dati, $fonte)
+	// $mantieniFonte: se true, non permette che un contatto da una fonte venga sovrascritto se i dati vengono da una fonte differente
+	// $mantieniPagina: se true, non permette che un contatto da una pagina venga sovrascritto se i dati vengono da una pagina differente
+	public function insertDaArray($dati, $fonte, $idPage = 0, $mantieniFonte = false, $mantieniPagina = false)
 	{
 		$email = isset($dati["username"]) ? $dati["username"] : $dati["email"];
 		
@@ -67,7 +69,10 @@ class ContattiModel extends GenericModel {
 		else
 			$azienda = "";
 		
-		$idContatto = $this->getIdFromMail($email);
+		$fonteCerca = $mantieniFonte ? $fonte : null;
+		$idPaginaCerca = $mantieniPagina ? $idPage : null;
+		$idContatto = $this->getIdFromMail($email, $fonteCerca, $idPaginaCerca);
+		
 		$dati = htmlentitydecodeDeep($dati);
 		
 		$this->setValues(array(
@@ -105,6 +110,8 @@ class ContattiModel extends GenericModel {
 		else
 		{
 			$this->setValue("fonte_iniziale", $fonte);
+			$this->setValue("id_page", (int)$idPage);
+			
 			if ($this->insert())
 				$idContatto = $this->lId;
 		}
@@ -208,10 +215,22 @@ class ContattiModel extends GenericModel {
 		return $res;
 	}
 	
-	public function getIdFromMail($email)
+	public function getIdFromMail($email, $fonte = null, $idPagina = null)
 	{
-		return (int)$this->clear()->where(array(
+		$this->clear()->where(array(
 			"email"	=>	sanitizeAll($email),
-		))->field("id_contatto");
+		));
+		
+		if ($fonte)
+			$this->aWhere(array(
+				"fonte_iniziale"	=>	sanitizeAll($fonte),
+			));
+		
+		if (isset($idPagina))
+			$this->aWhere(array(
+				"id_page"	=>	(int)$idPagina,
+			));
+		
+		return (int)$this->field("id_contatto");
 	}
 }

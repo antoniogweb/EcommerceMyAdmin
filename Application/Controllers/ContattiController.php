@@ -55,6 +55,9 @@ class ContattiController extends BaseController
 		$this->m[$this->modelName]->clear()->where(array(
 			"fonte_iniziale"	=>	$this->viewArgs["fonte"],
 			"verificato"		=>	$this->viewArgs["verificato"],
+			"in"	=>	array(
+				"fonte_iniziale"	=>	explode(",", v("fonti_contatti_da_mostrare_admin")),
+			),
 		))->orderBy("contatti.data_creazione desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);

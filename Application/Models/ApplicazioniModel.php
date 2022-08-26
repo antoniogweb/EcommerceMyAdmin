@@ -165,11 +165,11 @@ class ApplicazioniModel extends GenericModel {
 			$esitoMigrazioni = ob_get_clean();
 			$titoloPagina = gtext("Esito migrazioni applicazione")." ".$record["titolo"];
 			
-			return array($titoloPagina, $esitoMigrazioni);
-			
 			fwrite($hand,date("Y-m-d H:i:s")." STOP MIGRAZIONI\n");
 			fwrite($hand,"\n");
 			fclose($hand);
+			
+			return array($titoloPagina, $esitoMigrazioni);
 		}
 	}
 }
