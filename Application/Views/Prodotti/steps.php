@@ -51,7 +51,7 @@
 	<?php if (v("attiva_personalizzazioni")) { ?>
 	<li <?php echo $posizioni['personalizzazioni'];?>><a class="help_personalizzazioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/personalizzazioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Personalizzazioni");?></a></li>
 	<?php } ?>
-	<?php if (v("usa_tag")) { ?>
+	<?php if (v("usa_tag") && v("tag_in_prodotti")) { ?>
 	<li <?php echo $posizioni['tag'];?>><a class="help_tag_prodotto" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/tag/$id_page".$viewStatusTutti;?>"><?php echo gtext("Tag");?></a></li>
 	<?php } ?>
 	<?php if (v("documenti_in_prodotti")) { ?>

@@ -71,6 +71,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_giacenza"			=>	0,
 		"usa_tag"					=>	0, // se attivare i tag
 		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
+		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
 		"shop_in_alias_marchio"		=>	1,
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default
@@ -452,6 +453,8 @@ class VariabiliModel extends GenericModel {
 		"tempo_conferma_uid_contatto"	=>	86400, // tempo in secondi per confermare il contatto
 		"tempo_durata_uid_contatto"	=>	15552000, // durata in secondi del cookie del contatto
 		"fonti_contatti_da_mostrare_admin"	=>	"NEWSLETTER,FORM_CONTATTO,NEWSLETTER_DA_ORDINE,NEWSLETTER_DA_REGISTRAZIONE", // elenco delle fonti contatti da mostrare nella sezione contatti generica dell'admin
+		## CLIENTI ##
+		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

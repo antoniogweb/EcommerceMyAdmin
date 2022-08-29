@@ -105,7 +105,11 @@ class MenuModel extends HierarchicalModel {
 					'labelString'=>	'Genitore',
 					'options'	=>	$this->buildSelect(),
 					'reverse' => 'yes',
-					'idName'	=>	'combobox',
+// 					'idName'	=>	'combobox',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'id_c'		=>	array(
 					'type'		=>	'Select',

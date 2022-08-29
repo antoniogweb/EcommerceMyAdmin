@@ -69,6 +69,7 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("attiva_clienti")) { ?>
 			<li class="<?php echo tm($tm, array("regusers","ruoli","tipiazienda","reggroups", "regusersgroupstemp"));?> treeview">
 				<a href="#">
 					<i class="fa fa-user-o"></i>
@@ -103,6 +104,7 @@ include(ROOT."/Application/Views/header.php");
 					<?php } ?>
 				</ul>
 			</li>
+			<?php } ?>
 			<?php if (v("ecommerce_attivo")) { ?>
 			<li class="<?php echo tm($tm, array("ordini", "fatture"));?> treeview">
 				<a href="#">
