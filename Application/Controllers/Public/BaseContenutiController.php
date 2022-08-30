@@ -992,7 +992,7 @@ class BaseContenutiController extends BaseController
 		switch ($section)
 		{
 			case "blog":
-				return "pages.data_news desc";
+				return "pages.data_news desc,pages.id_order desc";
 				break;
 			case "eventi":
 				return "pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento, pages.data_news desc";
