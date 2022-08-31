@@ -332,7 +332,8 @@ Helper_Menu::$htmlLinks = array(
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";
 
 Form_Form::$defaultEntryAttributes["className"] = "form-control";
-Form_Form::$defaultEntryAttributes["submitClass"] = "btn btn-success";
+Form_Form::$defaultEntryAttributes["submitClass"] = "btn btn-success make_spinner";
+Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-save'></i> Salva";
 
 if (!showreport())
 {
