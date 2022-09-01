@@ -720,6 +720,28 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
+	public function sfondopagina($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	1920,
+			'imgHeight'		=>	600,
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
+	}
+	
+	public function sfondocategoria2($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	1920,
+			'imgHeight'		=>	600,
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/categorie_2");
+	}
+	
 	public function sfondocategoria($fileName)
 	{
 		$this->clean();

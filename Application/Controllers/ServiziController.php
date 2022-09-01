@@ -41,6 +41,6 @@ class ServiziController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,description,immagine,immagine_2";
+		$this->queryFields = "title,sottotitolo,attivo,description,immagine,immagine_2";
 	}
 }

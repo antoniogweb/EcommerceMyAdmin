@@ -74,9 +74,6 @@ class CategoriesController extends BaseController {
 		
 		$this->append($data);
 		
-		if (v("attiva_immagine_sfondo"))
-			$this->queryFields .= ",immagine_sfondo";
-		
 		$this->s['admin']->check();
 		
 		if ($model == "CategoriesModel" && $action == "main")
@@ -431,10 +428,18 @@ class CategoriesController extends BaseController {
 			
 			if (!$this->m[$this->modelName]->section)
 			{
-				$this->queryFields = "title,alias,sottotitolo,immagine,description";
+				$this->queryFields = "title,alias,sottotitolo,description";
 				
 				if ((int)$id === 1)
-					$this->queryFields = "title,alias,sottotitolo,immagine,immagine_2,immagine_sfondo,description";
+					$this->queryFields = "title,alias,sottotitolo,description";
+				
+				$this->queryFields .= ",immagine";
+				
+				if (v("mostra_seconda_immagine_categoria_prodotti"))
+					$this->queryFields .= ",immagine_2";
+				
+				if (v("attiva_immagine_sfondo"))
+					$this->queryFields .= ",immagine_sfondo";
 			}
 			
 			$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');

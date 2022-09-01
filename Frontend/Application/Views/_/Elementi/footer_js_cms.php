@@ -22,8 +22,9 @@
 	var coupon_ajax = <?php echo v("coupon_ajax") ? "true" : "false"; ?>;
 	var codice_fiscale_obbligatorio_solo_se_fattura = <?php echo v("codice_fiscale_obbligatorio_solo_se_fattura") ? "true" : "false";?>;
 </script>
-
+<?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
+<?php } ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>

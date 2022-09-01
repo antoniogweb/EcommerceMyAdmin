@@ -564,6 +564,9 @@ class Route
 		'servizi,inevidenza',
 		'servizi,updatevalue',
 		'servizi,ordina',
+		'servizi,meta',
+		'servizi,paginecorrelate',
+		'servizi,ordinacorrelate',
 		
 		'integrazioninewsletter,main',
 		'integrazioninewsletter,form',

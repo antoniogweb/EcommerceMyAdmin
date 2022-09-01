@@ -1233,11 +1233,15 @@ class GenericModel extends Model_Tree
 	{
 		$c = new CategoriesModel();
 		
+		$arrayIdCatAttive =  $c->childrenQuery(array(
+			"installata"	=>	1,
+		));
+		
+		$arrayIdCatAttive[] = 1;
+		
 		$this->aWhere(array(
-			"in"	=>	array(
-				"categories.id_c"	=>	array(1) + $c->childrenQuery(array(
-					"installata"	=>	1,
-				)),
+			"  in"	=>	array(
+				"categories.id_c"	=>	$arrayIdCatAttive,
 			),
 		));
 		
