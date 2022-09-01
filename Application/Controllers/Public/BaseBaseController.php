@@ -312,7 +312,7 @@ class BaseBaseController extends Controller
 					"attivo" => "Y",
 				))
 				->addWhereCategoria((int)$idBlog)
-				->orderBy("data_news desc")->limit(v("numero_news_in_evidenza"))->send();
+				->orderBy("data_news desc,pages.id_order desc")->limit(v("numero_news_in_evidenza"))->send();
 		}
 		
 		if (v("team_attivo"))

@@ -992,7 +992,7 @@ class BaseContenutiController extends BaseController
 		switch ($section)
 		{
 			case "blog":
-				return "pages.data_news desc";
+				return "pages.data_news desc,pages.id_order desc";
 				break;
 			case "eventi":
 				return "pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento, pages.data_news desc";
@@ -1196,12 +1196,26 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
-			"lt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
-		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc")->limit(1)->send();
+			"OR"	=>	array(
+				"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
+				"AND"	=>	array(
+					"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
+					"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+				),
+			),
+// 			"lt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
+		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
 		
 		$data["paginaSuccessiva"] = $this->m['PagesModel']->where(array(
-			"gt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
-		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news")->limit(1)->send();
+// 			"gt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
+			"OR"	=>	array(
+				"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
+				"AND"	=>	array(
+					"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
+					"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+				),
+			),
+		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
 		
 // 		print_r($data["pages"]);
 		if ($data['pages'][0]["contenuti_tradotti"]["meta_description"])
