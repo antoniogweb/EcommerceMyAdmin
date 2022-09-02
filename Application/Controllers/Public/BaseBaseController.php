@@ -986,12 +986,20 @@ class BaseBaseController extends Controller
 		}
 	}
 	
-	protected function elencoIndirizziEmailACuiInviare($valoriEmail)
+	protected function elencoIndirizziEmailACuiInviare($valoriEmail, $pagina = array(), $fonte = "")
 	{
 		$emails = array();
 		
 		if (v("invia_mail_contatto_a_piattaforma"))
 			$emails = array(Parametri::$mailInvioOrdine);
+		
+		// Estraggo gli indirizzi dalla pagina
+		if ($fonte && $fonte != "NEWSLETTER" && !empty($pagina) && isset($pagina["indirizzi_to_form_contatti"]) && trim($pagina["indirizzi_to_form_contatti"]))
+		{
+			$indirizziHtml = nl2br(str_replace(" ","", $pagina["indirizzi_to_form_contatti"]));
+			$emails = explode("<br />", $indirizziHtml);
+			$emails = array_map('trim', $emails);
+		}
 		
 		if (isset($valoriEmail["nazione"]) && $valoriEmail["nazione"])
 		{
@@ -1026,7 +1034,7 @@ class BaseBaseController extends Controller
 			include (tpf("Regusers/mail_form_contatti.php"));
 		$output = ob_get_clean();
 		
-		$emails = $this->elencoIndirizziEmailACuiInviare($valoriEmail);
+		$emails = $this->elencoIndirizziEmailACuiInviare($valoriEmail, $pagina, $fonte);
 		
 		return MailordiniModel::inviaMail(array(
 			"emails"	=>	$emails,

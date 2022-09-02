@@ -637,6 +637,14 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
 					),
 				),
+				'indirizzi_to_form_contatti'		=>	array(
+					'labelString'=>	'Indirizzi email a cui verrà inviata la mail del form contatti',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Specificare un indirizzo email per riga.")."<br /><b>".gtext("Se lasciato vuoto, la mail verrà inviata all'indirizzo specificato nelle impostazioni.")."</b></div>"
+					),
+				),
 			),
 		);
 		
