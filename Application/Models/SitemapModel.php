@@ -187,7 +187,8 @@ class SitemapModel extends GenericModel {
 			),
 		))
 		->addWhereAttivoCategoria()
-		->addWhereCategoriaInstallata();
+		->addWhereCategoriaInstallata()
+		->addWhereOkSitemap();
 		
 // 		if (!$recuperaBackup)
 			$c->aWhere(array(
@@ -199,12 +200,12 @@ class SitemapModel extends GenericModel {
 		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica,0 as url,0 as home from categories where ".$elements["where"];
 		
 		// Where pagine
-		$p->clear()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata();
+		$p->clear()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap();
 		
 // 		if (!$recuperaBackup)
 			$p->aWhere(array(
 				"add_in_sitemap"	=>	"Y",
-				"categories.add_in_sitemap"	=>	"Y",
+				"categories.add_in_sitemap_children"	=>	"Y",
 			));
 		
 		$elements = $p->treeQueryElements("pages");

@@ -42,6 +42,7 @@ class Lang_It_Formats_Fields extends Lang_En_Formats_Fields
 			if (strcmp($fieldName,"keywords") === 0) return "Parole chiave (divise da virgola)";
 			if (strcmp($fieldName,"meta_description") === 0) return "Descrizione per motori di ricerca";
 			if (strcmp($fieldName,"add_in_sitemap") === 0) return "Mostra in sitemap";
+			if (strcmp($fieldName,"add_in_sitemap_children") === 0) return "Mostra in sitemap gli elementi figli e/o le pagine della categoria";
 			
 			$fieldName = str_replace("_"," ", $fieldName);
 			

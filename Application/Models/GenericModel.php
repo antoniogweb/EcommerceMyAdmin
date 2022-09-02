@@ -1229,6 +1229,21 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
+	public function addWhereOkSitemap()
+	{
+		$c = new CategoriesModel();
+		
+		$this->aWhere(array(
+			"   in"	=>	array(
+				"categories.id_c"	=>	$c->childrenQuery(array(
+					"add_in_sitemap"	=>	"Y",
+				)),
+			),
+		));
+		
+		return $this;
+	}
+	
 	public function addWhereCategoriaInstallata()
 	{
 		$c = new CategoriesModel();
