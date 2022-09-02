@@ -1229,14 +1229,14 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
-	public function addWhereOkSitemap()
+	public function addWhereOkSitemap($field = "id_c")
 	{
 		$c = new CategoriesModel();
 		
 		$this->aWhere(array(
-			"   in"	=>	array(
-				"categories.id_c"	=>	$c->childrenQuery(array(
-					"add_in_sitemap"	=>	"Y",
+			"   nin"	=>	array(
+				"categories.$field"	=>	$c->childrenQuery(array(
+					"add_in_sitemap_children"	=>	"N",
 				)),
 			),
 		));

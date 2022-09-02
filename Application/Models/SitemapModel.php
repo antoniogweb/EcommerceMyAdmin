@@ -188,7 +188,7 @@ class SitemapModel extends GenericModel {
 		))
 		->addWhereAttivoCategoria()
 		->addWhereCategoriaInstallata()
-		->addWhereOkSitemap();
+		->addWhereOkSitemap("id_p");
 		
 // 		if (!$recuperaBackup)
 			$c->aWhere(array(
@@ -205,7 +205,7 @@ class SitemapModel extends GenericModel {
 // 		if (!$recuperaBackup)
 			$p->aWhere(array(
 				"add_in_sitemap"	=>	"Y",
-				"categories.add_in_sitemap_children"	=>	"Y",
+// 				"categories.add_in_sitemap_children"	=>	"Y",
 			));
 		
 		$elements = $p->treeQueryElements("pages");
@@ -213,6 +213,8 @@ class SitemapModel extends GenericModel {
 		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,0 as url,0 as home from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
 		
 		$sql = "$sqlCategorie union $sqlPages order by priorita desc, lft,id_c,id_page limit 500";
+		
+// 		echo $sql;die();
 		
 		$nodi = $c->query($sql, false);
 		
