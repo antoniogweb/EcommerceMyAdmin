@@ -84,7 +84,7 @@ class SitemapController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("titolocrud", "sitemap.priorita", "tipo", "sitemap.url");
+		$this->mainFields = array("titolocrud", "sitemap.priorita", "tipo", "url");
 		$this->mainHead = "Titolo,Priorita,Tipo,Url";
 		
 		$this->m[$this->modelName]->clear()

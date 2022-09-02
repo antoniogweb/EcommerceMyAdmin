@@ -290,4 +290,18 @@ class SitemapModel extends GenericModel {
 		return "";
     }
     
+    public function url($record)
+    {
+		$n = $record["sitemap"];
+		
+		if ($n["id_page"])
+			return getUrlAlias($n["id_page"]);
+		else if ($n["id_c"])
+			return getCategoryUrlAlias($n["id_c"]);
+		else if ($n["url"])
+			return $n["url"];
+		else
+			return "/";
+    }
+    
 }
