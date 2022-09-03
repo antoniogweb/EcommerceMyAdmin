@@ -567,6 +567,9 @@ class Route
 		'servizi,meta',
 		'servizi,paginecorrelate',
 		'servizi,ordinacorrelate',
+		'servizi,contenuti',
+		'servizi,ordinacontenuti',
+		'servizi,testi',
 		
 		'integrazioninewsletter,main',
 		'integrazioninewsletter,form',

@@ -10,6 +10,12 @@
 	?>
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
 	<li <?php echo $posizioni['meta'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/meta/$id_page".$viewStatusTutti;?>">Meta</a></li>
+	<?php if (v("contenuti_in_pagine")) { ?>
+	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/testi/$id_page".$viewStatusTutti;?>">Contenuti</a></li>
+	<?php } ?>
+	<?php if (v("fasce_in_pagine")) { ?>
+	<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/contenuti/$id_page".$viewStatusTutti;?>">Fasce</a></li>
+	<?php } ?>
 	<?php foreach ($tabSezioni as $sec => $titleSection) {
 		$temp = $this->viewArgs;
 		$temp["pcorr_sec"] = $sec;
