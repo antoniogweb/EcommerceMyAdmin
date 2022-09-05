@@ -157,11 +157,11 @@ class ImmaginiModel extends GenericModel {
 					$tree = new Files_Upload(Domain::$parentRoot.'/'.Parametri::$cartellaImmaginiContenuti);
 					if (file_exists(Domain::$parentRoot.'/'.Parametri::$cartellaImmaginiContenuti."/".$fileName))
 					{
-						if ($tree->removeFile($fileName))
-						{
-							parent::del($clean['id_immagine']);
-						}
-						else
+// 						if ($tree->removeFile($fileName))
+// 						{
+// 							parent::del($clean['id_immagine']);
+// 						}
+// 						else
 							parent::del($clean['id_immagine']);
 					}
 					else

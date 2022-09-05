@@ -1574,4 +1574,14 @@ class GenericModel extends Model_Tree
 		
 		return $r->titolo($record[$this->_tables]["id_ruolo"]);
     }
+    
+    public function mDel($where)
+    {
+		$idS = $this->clear()->sWhere($where)->toList($this->_idFields)->send();
+		
+		foreach ($idS as $id)
+		{
+			$this->del($id);
+		}
+    }
 }
