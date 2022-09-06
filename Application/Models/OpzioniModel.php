@@ -47,6 +47,16 @@ class OpzioniModel extends GenericModel {
 		))->toList("valore", "titolo")->findAll();
 	}
 	
+	public static function label($codice, $valore)
+	{
+		$op = new OpzioniModel();
+		
+		return $op->clear()->where(array(
+			"codice"	=>	sanitizeAll($codice),
+			"valore"	=>	sanitizeAll($valore),
+		))->field("titolo");
+	}
+	
 	public static function arrayValori($codice)
 	{
 		return array_keys(self::codice($codice)); 

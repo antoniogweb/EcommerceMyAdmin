@@ -151,6 +151,7 @@ class MailordiniModel extends GenericModel
 		$usaTemplate = isset($params["usa_template"]) ? $params["usa_template"] : true;
 		$arrayVariabili = isset($params["array_variabili"]) ? $params["array_variabili"] : null;
 		$arrayVariabiliTema = isset($params["array_variabili_tema"]) ? $params["array_variabili_tema"] :  array();
+		$allegati = (isset($params["allegati"]) && is_array($params["allegati"])) ? $params["allegati"] : array();
 		
 		self::$variabiliTema = $arrayVariabiliTema;
 		
@@ -238,6 +239,13 @@ class MailordiniModel extends GenericModel
 			
 			if ($usaTemplate)
 				$testo = MailordiniModel::loadTemplate($oggetto, $testo);
+			
+			// Carico gli allegati
+			foreach ($allegati as $allegato)
+			{
+				if (file_exists($allegato))
+					$mail->AddAttachment($allegato);
+			}
 			
 // 			echo $testo;die();
 			// Imposto le traduzioni del back

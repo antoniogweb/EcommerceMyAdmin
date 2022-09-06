@@ -330,7 +330,7 @@ class GenericModel extends Model_Tree
 					if (isset($_FILES[$field]["name"]) and strcmp($_FILES[$field]["name"],'') !== 0)
 					{
 						$path = $params["path"];
-					
+						
 						if (isset($params["allowedExtensions"]))
 						{
 							$this->files->setParam('allowedExtensions',$params["allowedExtensions"]);

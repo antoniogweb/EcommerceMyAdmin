@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ContattiModel extends GenericModel {
 	
+	public $mantieniPagina = false;
+	public $fontiProtette = array();
+	
 	public static $uidc = null;
 	
 	public static $campiContatti = null;
@@ -32,6 +35,8 @@ class ContattiModel extends GenericModel {
 		"FORM_CONTATTO"		=>	"FORM CONTATTI",
 		"NEWSLETTER"		=>	"FORM NEWSLETTER",
 	);
+	
+	public static $campiAddizionaliDaSalvare = array();
 	
 	public function __construct() {
 		$this->_tables = 'contatti';
@@ -58,7 +63,7 @@ class ContattiModel extends GenericModel {
 	
 	// $mantieniFonte: se true, non permette che un contatto da una fonte venga sovrascritto se i dati vengono da una fonte differente
 	// $mantieniPagina: se true, non permette che un contatto da una pagina venga sovrascritto se i dati vengono da una pagina differente
-	public function insertDaArray($dati, $fonte, $idPage = 0, $mantieniFonte = false, $mantieniPagina = false)
+	public function insertDaArray($dati, $fonte, $idPage = 0)
 	{
 		$email = isset($dati["username"]) ? $dati["username"] : $dati["email"];
 		
@@ -69,13 +74,11 @@ class ContattiModel extends GenericModel {
 		else
 			$azienda = "";
 		
-		$fonteCerca = $mantieniFonte ? $fonte : null;
-		$idPaginaCerca = $mantieniPagina ? $idPage : null;
-		$idContatto = $this->getIdFromMail($email, $fonteCerca, $idPaginaCerca);
+		$idContatto = $this->getIdFromMail($email, $fonte, $idPage);
 		
 		$dati = htmlentitydecodeDeep($dati);
 		
-		$this->setValues(array(
+		$this->sValues(array(
 			"email"	=>	$email,
 			"azienda"	=>	$azienda,
 			"accetto"	=>	(isset($dati["accetto"]) && $dati["accetto"]) ? 1 : 0,
@@ -94,6 +97,11 @@ class ContattiModel extends GenericModel {
 			"id_ruolo"	=>	"",
 		);
 		
+		foreach (self::$campiAddizionaliDaSalvare as $k => $v)
+		{
+			$arrayCampi[$k] = $v;
+		}
+		
 		if (isset(self::$campiContatti))
 			$arrayCampi = $arrayCampi + self::$campiContatti;
 		
@@ -103,20 +111,28 @@ class ContattiModel extends GenericModel {
 				$this->setValue($campo, $dati[$campo]);
 			else if ($valore)
 				$this->setValue($campo, $valore);
+			else if (isset($this->uploadFields["$campo"]))
+				$this->setValue($campo, "");
 		}
 		
 		if ($idContatto)
-			$this->update($idContatto);
+			$res = $this->update($idContatto);
 		else
 		{
 			$this->setValue("fonte_iniziale", $fonte);
 			$this->setValue("id_page", (int)$idPage);
 			
-			if ($this->insert())
+			$res = $this->insert();
+			
+			if ($res)
 				$idContatto = $this->lId;
+			
 		}
 		
-		return $idContatto;
+		if ($res)
+			return $idContatto;
+		else
+			return 0;
 	}
 	
 	// Ottieni il contatto
@@ -182,55 +198,78 @@ class ContattiModel extends GenericModel {
 	
 	public function insert()
 	{
-		$this->unsetDescrizione();
+		if ($this->upload("insert"))
+		{
+			$this->unsetDescrizione();
+			
+			$this->values["creation_time"] = time();
+			
+			if (!isset($this->values["lingua"]) && isset(Params::$lang))
+				$this->values["lingua"] = Params::$lang;
+			
+			// Imposta l'uid del contatto
+			$this->setContactUid();
+			
+			$res = parent::insert();
+			
+			if ($res)
+				$this->processaEventiContatto($this->lId);
+			
+			return $res;
+		}
 		
-		$this->values["creation_time"] = time();
-		
-		if (!isset($this->values["lingua"]) && isset(Params::$lang))
-			$this->values["lingua"] = Params::$lang;
-		
-		// Imposta l'uid del contatto
-		$this->setContactUid();
-		
-		$res = parent::insert();
-		
-		if ($res)
-			$this->processaEventiContatto($this->lId);
-		
-		return $res;
+		return false;
 	}
 	
 	public function update($id = null, $where = null)
 	{
-		$this->unsetDescrizione();
+		if ($this->upload("update"))
+		{
+			$this->unsetDescrizione();
+			
+			// Imposta l'uid del contatto
+			$this->setContactUid();
+			
+			$res = parent::update($id, $where);
+			
+			if ($res)
+				$this->processaEventiContatto($id);
+			
+			return $res;
+		}
 		
-		// Imposta l'uid del contatto
-		$this->setContactUid();
-		
-		$res = parent::update($id, $where);
-		
-		if ($res)
-			$this->processaEventiContatto($id);
-		
-		return $res;
+		return false;
 	}
 	
-	public function getIdFromMail($email, $fonte = null, $idPagina = null)
+	public function getIdFromMail($email, $fonte = null, $idPagina = 0)
 	{
 		$this->clear()->where(array(
 			"email"	=>	sanitizeAll($email),
 		));
 		
 		if ($fonte)
-			$this->aWhere(array(
-				"fonte_iniziale"	=>	sanitizeAll($fonte),
-			));
+		{
+			if (in_array($fonte, $this->fontiProtette))
+				$this->aWhere(array(
+					"fonte_iniziale"	=>	sanitizeAll($fonte),
+				));
+			else
+				$this->aWhere(array(
+					"nin"	=>	array(
+						"fonte_iniziale"	=>	sanitizeAllDeep($this->fontiProtette),
+					),
+				));
+		}
 		
-		if (isset($idPagina))
+		if ($this->mantieniPagina && $idPagina)
 			$this->aWhere(array(
 				"id_page"	=>	(int)$idPagina,
 			));
 		
-		return (int)$this->field("id_contatto");
+		$res = (int)$this->field("id_contatto");
+		
+// 		echo $this->getQuery();
+		
+		return $res;
 	}
 }

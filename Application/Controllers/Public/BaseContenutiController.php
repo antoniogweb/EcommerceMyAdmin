@@ -1140,7 +1140,7 @@ class BaseContenutiController extends BaseController
 		
 		$clean['id'] = $this->m['PagesModel']->getPrincipale($clean["realId"]);
 		
-		$firstSection = $data["fsection"] = $this->m["PagesModel"]->section($clean['id'], true);
+		$firstSection = $data["fsection"] = $this->firstSection = $this->m["PagesModel"]->section($clean['id'], true);
 		
 // 		$urlAlias = $this->m["PagesModel"]->getUrlAlias($clean['realId']);
 		
