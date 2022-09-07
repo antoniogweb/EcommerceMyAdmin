@@ -41,6 +41,7 @@ class PagesModel extends GenericModel {
 	public $fileNameRandom = false;
 	
 	public $documentiModelAssociato = "DocumentiModel";
+	public $contattiModelAssociato = "ContattiModel";
 	
 	public static $currentRecord = null;
 	

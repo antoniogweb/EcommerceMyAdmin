@@ -137,6 +137,7 @@ class PagesController extends BaseController {
 		$this->model("FeedbackModel");
 		$this->model("PagesregioniModel");
 		$this->model("PageslingueModel");
+		$this->model("ContattiModel");
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
@@ -1421,6 +1422,46 @@ class PagesController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function contatti($id = 0)
+	{
+		$this->_posizioni['contatti'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->mainButtons = $this->queryActions = $this->bulkQueryActions = "";
+		$this->addBulkActions = false;
+		
+		$this->modelName = $this->m[$this->modelName]->contattiModelAssociato; //"ContattiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->colProperties = array();
+		
+		$this->mainFields = array("cleanDateTime", "FORM ;contatti.fonte_iniziale;", "contatti.email", "contatti.nome", "contatti.telefono");
+		$this->mainHead = "Data creazione,Fonte,Email,Nome,Telefono";
+		
+		$this->getTabViewFields("contatti");
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia,esporta','mainAction'=>"contatti/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("contatti.*")->orderBy("contatti.data_creazione desc")->where(array(
+			"id_page"	=>	$clean['id'],
+		))->convert()->save();
+		
+		$this->tabella = $this->getNomeMenu();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function link($id = 0)
 	{
 		$this->_posizioni['link'] = 'class="active"';
@@ -1477,7 +1518,7 @@ class PagesController extends BaseController {
 		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_page";
 		
-		$this->modelName = $this->m[$this->modelName]->documentiModelAssociato;//"DocumentiModel";
+		$this->modelName = $this->m[$this->modelName]->documentiModelAssociato; //"DocumentiModel";
 		
 		if (!isset($this->m[$this->modelName]))
 			$this->model($this->modelName);

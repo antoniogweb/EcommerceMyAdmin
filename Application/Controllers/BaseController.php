@@ -670,7 +670,7 @@ class BaseController extends Controller
 			$this->m[$this->modelName]->db->commit();
 	}
 	
-	protected function scaricaFile($filePath, $fileName)
+	protected function scaricaFile($filePath, $fileName, $cd = "attachment")
 	{
 		if (file_exists($filePath))
 		{
@@ -678,7 +678,7 @@ class BaseController extends Controller
 			$MIMEtype = finfo_file($finfo, $filePath);
 			finfo_close($finfo);
 			
-			$cd = "attachment";
+// 			$cd = "attachment";
 			
 			header('Content-type: '.$MIMEtype);
 			header('Content-Disposition: '.$cd.'; filename='.$fileName);
