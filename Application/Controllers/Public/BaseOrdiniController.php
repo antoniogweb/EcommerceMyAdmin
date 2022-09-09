@@ -1063,6 +1063,14 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
 						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
 						
+						$coupon = PromozioniModel::getCouponAttivo();
+						
+						if (!empty($coupon))
+						{
+							$this->m['OrdiniModel']->values["tipo_promozione"] = $coupon["tipo_sconto"];
+							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["subtotal_ivato"] - $this->m['OrdiniModel']->values["prezzo_scontato_ivato"];
+						}
+						
 						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
 						$this->m['OrdiniModel']->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
 						

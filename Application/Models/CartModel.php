@@ -102,13 +102,19 @@ class CartModel extends GenericModel {
 				{
 					$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 					
-					if (in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
-					{
+					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
 						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
-					}
 					
 					$total = $total + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 				}
+			}
+			
+			// Coupon assoluto
+			if ($coupon["tipo_sconto"] == "ASSOLUTO")
+			{
+				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+				
+				$total = $total - number_format($coupon["sconto"] / (1 + ($ivaSped/100)),$cifre,".","");
 			}
 			
 			if ($conSpedizione)
@@ -175,10 +181,13 @@ class CartModel extends GenericModel {
 // 		IvaModel::getAliquotaEstera();
 		
 		$sconto = 0;
+		$tipoSconto = "PERCENTUALE";
 		if (hasActiveCoupon() && !$pieno)
 		{
 			$p = new PromozioniModel();
 			$coupon = $p->getCoupon(User::$coupon);
+			
+			$tipoSconto = $coupon["tipo_sconto"];
 			$sconto = $coupon["sconto"];
 		}
 		
@@ -204,7 +213,7 @@ class CartModel extends GenericModel {
 			{
 				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 					
-				if (in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
+				if ($tipoSconto == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
 				{
 					$prezzo = number_format($prezzo - $prezzo*($sconto/100),$cifre,".","");
 				}
@@ -227,6 +236,17 @@ class CartModel extends GenericModel {
 				$iva = $subtotale*($ivaRiga/100);
 				$total += number_format($iva,$cifre,".","");
 			}
+		}
+		
+		// Sconto assoluto
+		if ($sconto > 0 && $tipoSconto == "ASSOLUTO")
+		{
+			$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+			
+			if (isset($arraySubtotale[$ivaSped]))
+				$arraySubtotale[$ivaSped] -= number_format($sconto / (1 + ($ivaSped/100)),$cifre,".","");
+			else
+				$arraySubtotale[$ivaSped] = (-1)*number_format($sconto / (1 + ($ivaSped/100)),$cifre,".","");
 		}
 		
 		if ($conSpedizione)

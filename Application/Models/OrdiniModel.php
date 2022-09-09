@@ -738,7 +738,7 @@ class OrdiniModel extends FormModel {
 		
 		$o = new OrdiniModel();
 		
-		$res = $o->clear()->select("SUM(subtotal) as TOTALE")->where(array(
+		$res = $o->clear()->select("SUM(prezzo_scontato) as TOTALE")->where(array(
 			"nazione_spedizione"	=>	sanitizeAll($nazione),
 		))->sWhere("DATE_FORMAT(data_creazione, '%Y') = '".$anno."'")->send();
 		
@@ -754,7 +754,7 @@ class OrdiniModel extends FormModel {
 		
 		$o = new OrdiniModel();
 		
-		$res = $o->clear()->select("SUM(subtotal) as TOTALE")->where(array(
+		$res = $o->clear()->select("SUM(prezzo_scontato) as TOTALE")->where(array(
 			"ne"	=>	array(
 				"nazione_spedizione"	=>	"IT",
 			),

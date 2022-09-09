@@ -24,12 +24,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PromozioniController extends BaseController {
 	
-	public $mainFields = array("[[ledit]];promozioni.titolo;","promozioni.codice","reverseData|promozioni.dal","reverseData|promozioni.al","promozioni.sconto","PromozioniModel.getNUsata|promozioni.id_p","getYesNo|promozioni.attivo");
-	
-	public $mainHead = "Titolo,Codice promozione,Dal,Al,Sconto (%),N° usata,Attiva?";
-	
-	public $formValuesToDb = 'titolo,codice,attivo,dal,al,sconto,numero_utilizzi';
-	
 	public $orderBy = "promozioni.dal desc,promozioni.al desc";
 	
 	public $argKeys = array('attivo:sanitizeAll'=>'tutti');
@@ -54,6 +48,20 @@ class PromozioniController extends BaseController {
 	{
 		$this->shift();
 		
+		$this->mainFields = array("[[ledit]];promozioni.titolo;","promozioni.codice","promozioni.dal","promozioni.al");
+		$this->mainHead = "Titolo,Codice promozione,Dal,Al";
+		
+		if (v("attiva_promo_sconto_assoluto"))
+		{
+			$this->mainFields[] = "promozioni.tipo_sconto";
+			$this->mainHead .= ",Tipo sconto";
+		}
+		
+		$this->mainFields[] = "sconto";
+		$this->mainFields[] = "PromozioniModel.getNUsata|promozioni.id_p";
+		$this->mainFields[] = "getYesNo|promozioni.attivo";
+		$this->mainHead .= ",Valore sconto,N° usata,Attiva?";
+		
 		$this->filters = array(array("attivo",null,$this->filtroAttivo));
 		
 		$this->m[$this->modelName]->where(array(
@@ -68,7 +76,18 @@ class PromozioniController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
+		$this->formValuesToDb = 'titolo,codice,attivo,dal,al';
+		
+		if (v("attiva_promo_sconto_assoluto"))
+			$this->formValuesToDb .= ',tipo_sconto';
+		
+		$this->formValuesToDb .= ',sconto,numero_utilizzi';
+		
 		parent::form($queryType, $id);
+		
+		$data["record"] = $this->m[$this->modelName]->selectId((int)$id);
+		
+		$this->append($data);
 	}
 	
 	public function categorie($id = 0)

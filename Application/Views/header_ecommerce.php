@@ -147,7 +147,7 @@ include(ROOT."/Application/Views/header.php");
 			<li class="<?php echo tm($tm, array("promozioni"));?> treeview">
 				<a href="#">
 					<i class="fa fa-gift"></i>
-					<span>Promozioni</span>
+					<span><?php echo gtext("Promo coupon");?></span>
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="<?php echo $this->baseUrl."/promozioni/form/insert/0/1/tutti/$token";?>"><i class="fa fa-plus-circle"></i> Aggiungi promozione</a></li>

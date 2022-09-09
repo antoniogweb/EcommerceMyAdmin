@@ -402,7 +402,6 @@ class VariabiliModel extends GenericModel {
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
-		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
@@ -455,6 +454,9 @@ class VariabiliModel extends GenericModel {
 		"fonti_contatti_da_mostrare_admin"	=>	"NEWSLETTER,FORM_CONTATTO,NEWSLETTER_DA_ORDINE,NEWSLETTER_DA_REGISTRAZIONE", // elenco delle fonti contatti da mostrare nella sezione contatti generica dell'admin
 		## CLIENTI ##
 		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
+		## PROMO ##
+		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
+		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

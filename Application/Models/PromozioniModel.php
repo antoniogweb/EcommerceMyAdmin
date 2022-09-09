@@ -47,6 +47,24 @@ class PromozioniModel extends GenericModel {
 // 			'attivo'=>	'getYesNo',
 // 		);
 		
+// 		$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}$/',"sconto|Si prega di verificare che il campo <i>Sconto promozione (in %)</i> contenga solo numeri");
+		
+		parent::__construct();
+
+	}
+	
+	public function setFormStruct($id = 0)
+	{
+		$labelSconto = 'Valore sconto';
+		
+		if (!v("attiva_promo_sconto_assoluto"))
+		{
+			$tipo = $this->clear()->where(array("id_p"=>(int)$id))->field("tipo_sconto");
+			
+			$labelSconto .= ($tipo == "ASSOLUTO") ? " (in €)" : " (in %)";
+		}
+			
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -65,23 +83,27 @@ class PromozioniModel extends GenericModel {
 					'className'	=>	'data_field form-control',
 				),
 				'sconto'		=>	array(
-					'labelString'=>	'Sconto promozione (in %)',
+					'labelString'=>	$labelSconto,
 				),
 				'attivo'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Promozione attiva?',
 					'options'	=>	array('sì'=>'Y','no'=>'N'),
 				),
+				'numero_utilizzi'		=>	array(
+					'labelString'=>	'Numero massimo di utilizzi',
+				),
+// 				'tipo_sconto'	=>	array(
+// 					'type'		=>	'Select',
+// 					'labelString'=>	'Tipo coupon',
+// 					'options'	=>	array('PERCENTUALE'=>'In percentuale','ASSOLUTO'=>'Assoluto'),
+// 					'reverse'	=>	'yes',
+// 				),
 				'id_p'	=>	array(
 					'type'		=>	'Hidden'
 				),
 			),
 		);
-		
-// 		$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}$/',"sconto|Si prega di verificare che il campo <i>Sconto promozione (in %)</i> contenga solo numeri");
-		
-		parent::__construct();
-
 	}
 	
 	public function relations() {
@@ -229,6 +251,17 @@ class PromozioniModel extends GenericModel {
 		return false;
 	}
 	
+	// Restituisce il coupon attivo
+	public static function getCouponAttivo($ido = null)
+	{
+		$p = new PromozioniModel();
+		
+		if (isset(User::$coupon) && $p->isActiveCoupon(User::$coupon, $ido))
+			return $p->getCoupon(User::$coupon);
+		
+		return array();
+	}
+	
 	//restituisce tutti i dati del coupon
 	public function getCoupon($codice)
 	{
@@ -315,5 +348,17 @@ class PromozioniModel extends GenericModel {
 		}
 		
 		return $idPages;
+	}
+	
+	public function sconto($record)
+	{
+		$valore = $record["promozioni"]["sconto"];
+		
+		if ($record["promozioni"]["tipo_sconto"] == "ASSOLUTO")
+			$valore .= " €";
+		else
+			$valore .= " %";
+		
+		return $valore;
 	}
 }
