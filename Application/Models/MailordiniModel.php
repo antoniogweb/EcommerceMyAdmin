@@ -248,7 +248,7 @@ class MailordiniModel extends GenericModel
 			}
 			
 // 			echo $testo;die();
-			// Imposto le traduzioni del back
+			// Recupero le traduzioni
 			Params::$lang = $bckLang;
 			TraduzioniModel::$contestoStatic = $bckContesto;
 			$tradModel = new TraduzioniModel();
