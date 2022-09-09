@@ -26,6 +26,7 @@ class ContattiModel extends GenericModel {
 	
 	public $mantieniPagina = false;
 	public $fontiProtette = array();
+	public $campiDaNonSincronizzare = array();
 	
 	public static $uidc = null;
 	
@@ -35,8 +36,6 @@ class ContattiModel extends GenericModel {
 		"FORM_CONTATTO"		=>	"FORM CONTATTI",
 		"NEWSLETTER"		=>	"FORM NEWSLETTER",
 	);
-	
-	public static $campiAddizionaliDaSalvare = array();
 	
 	public function __construct() {
 		$this->_tables = 'contatti';
@@ -61,8 +60,6 @@ class ContattiModel extends GenericModel {
 			EventiretargetingModel::processaContatto($idContatto);
 	}
 	
-	// $mantieniFonte: se true, non permette che un contatto da una fonte venga sovrascritto se i dati vengono da una fonte differente
-	// $mantieniPagina: se true, non permette che un contatto da una pagina venga sovrascritto se i dati vengono da una pagina differente
 	public function insertDaArray($dati, $fonte, $idPage = 0)
 	{
 		$email = isset($dati["username"]) ? $dati["username"] : $dati["email"];
@@ -96,11 +93,6 @@ class ContattiModel extends GenericModel {
 			"lingua"	=>	Params::$lang,
 			"id_ruolo"	=>	"",
 		);
-		
-		foreach (self::$campiAddizionaliDaSalvare as $k => $v)
-		{
-			$arrayCampi[$k] = $v;
-		}
 		
 		if (isset(self::$campiContatti))
 			$arrayCampi = $arrayCampi + self::$campiContatti;
@@ -196,6 +188,52 @@ class ContattiModel extends GenericModel {
 		$this->values["uid_contatto"] = sanitizeDb(self::$uidc);
 	}
 	
+	// Sincronizza i contatti con la stessa fonte iniziale
+	public function sincronizza($idContatto)
+	{
+		$contatto = $this->selectId((int)$idContatto);
+		
+		if (!empty($contatto) && $contatto["fonte_iniziale"])
+		{
+			$idS = $this->clear()->select("id_contatto")->where(array(
+				"email"				=>	sanitizeAll($contatto["email"]),
+				"fonte_iniziale"	=>	sanitizeAll($contatto["fonte_iniziale"]),
+				"ne"	=>	array(
+					"id_contatto"	=>	(int)$idContatto,
+				),
+			))->toList("id_contatto")->send();
+			
+			if (count($idS) > 0)
+			{
+				unset($contatto["id_contatto"]);
+				unset($contatto["data_creazione"]);
+				unset($contatto["id_order"]);
+				unset($contatto["accetto"]);
+				unset($contatto["creation_time"]);
+				unset($contatto["uid_contatto"]);
+				unset($contatto["time_conferma"]);
+				unset($contatto["verificato"]);
+				unset($contatto["redirect_to_url"]);
+				unset($contatto["redirect_to_url"]);
+				unset($contatto["redirect_query_string"]);
+				unset($contatto["id_page"]);
+				unset($contatto["id_c"]);
+				
+				foreach ($this->campiDaNonSincronizzare as $campo)
+				{
+					unset($contatto[$campo]);
+				}
+				
+				foreach ($idS as $id)
+				{
+					$this->sValues($contatto, "sanitizeDb");
+					
+					$this->pUpdate((int)$id);
+				}
+			}
+		}
+	}
+	
 	public function insert()
 	{
 		if ($this->upload("insert"))
@@ -213,7 +251,10 @@ class ContattiModel extends GenericModel {
 			$res = parent::insert();
 			
 			if ($res)
+			{
 				$this->processaEventiContatto($this->lId);
+				$this->sincronizza($this->lId);
+			}
 			
 			return $res;
 		}
@@ -233,7 +274,10 @@ class ContattiModel extends GenericModel {
 			$res = parent::update($id, $where);
 			
 			if ($res)
+			{
 				$this->processaEventiContatto($id);
+				$this->sincronizza($id);
+			}
 			
 			return $res;
 		}
@@ -247,7 +291,7 @@ class ContattiModel extends GenericModel {
 			"email"	=>	sanitizeAll($email),
 		));
 		
-		if ($fonte)
+		if ($fonte && count($this->fontiProtette) > 0)
 		{
 			if (in_array($fonte, $this->fontiProtette))
 				$this->aWhere(array(
