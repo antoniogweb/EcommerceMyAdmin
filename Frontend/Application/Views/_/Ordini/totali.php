@@ -6,9 +6,17 @@
 	<div><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
 </div>
 <?php } ?>
-<?php if ($haCouponAttivo) { ?>
+<?php if ($haCouponAttivo) {
+	$couponAttivo = PromozioniModel::getCouponAttivo();
+?>
 <div class="uk-grid-small uk-grid" uk-grid="">
-	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Prezzo scontato");?> (<i><?php echo getNomePromozione();?></i>)</div>
+	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Totale scontato");?> (<i><?php echo $couponAttivo["titolo"];?></i>)
+	<?php if ($couponAttivo["tipo_sconto"] == "ASSOLUTO") { ?>
+	<div class="uk-text-small uk-text-primary">
+	<?php echo gtext("Credito coupon");?>: <b><?php echo PromozioniModel::gNumeroEuroRimasti($couponAttivo["id_p"]);?> €</b>
+	</div>
+	<?php } ?>
+	</div>
 	<div><?php echo getPrezzoScontato(v("prezzi_ivati_in_carrello"));?> €</div>
 </div>
 <?php } ?>

@@ -614,7 +614,9 @@ class OrdiniModel extends FormModel {
 		{
 			$p = new PromozioniModel();
 			$coupon = $p->getCoupon(User::$coupon);
-			$sconto = $coupon["sconto"];
+			
+			if ($coupon["tipo_sconto"] == "PERCENTUALE")
+				$sconto = $coupon["sconto"];
 		}
 		
 		$pages = $c->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
@@ -702,6 +704,14 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($ordine))
 		{
+			if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO")
+			{
+				if (isset($arrayTotali[$ordine["id_iva"]]))
+					$arrayTotali[$ordine["id_iva"]] -= number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+				else
+					$arrayTotali[$ordine["id_iva"]] = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+			}
+			
 			if (isset($arrayTotali[$ordine["id_iva"]]))
 				$arrayTotali[$ordine["id_iva"]] += number_format($ordine["spedizione"],v("cifre_decimali"),".","");
 			else

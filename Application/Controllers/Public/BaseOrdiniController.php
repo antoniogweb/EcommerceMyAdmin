@@ -1069,6 +1069,7 @@ class BaseOrdiniController extends BaseController
 						{
 							$this->m['OrdiniModel']->values["tipo_promozione"] = $coupon["tipo_sconto"];
 							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["subtotal_ivato"] - $this->m['OrdiniModel']->values["prezzo_scontato_ivato"];
+							$this->m['OrdiniModel']->values["id_p"] = $coupon["id_p"];
 						}
 						
 						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();

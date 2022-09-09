@@ -218,6 +218,9 @@ class PromozioniModel extends GenericModel {
 			
 			if ($now >= $dal and $now <= $al)
 			{
+				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"]) <= 0)
+					return false;
+				
 				$numeroUtilizzi = (int)$res[0]["promozioni"]["numero_utilizzi"];
 				$numeroVolteUsata = (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido);
 				
@@ -294,6 +297,44 @@ class PromozioniModel extends GenericModel {
 				$res2 = $o->clear()->where(array("codice_promozione"=>$clean['coupon']))->send();
 			
 			return (count($res2));
+		}
+		
+		return 0;
+	}
+	
+	public static function gNumeroEuroUsati($id_p, $ido = null)
+	{
+		$clean["id_p"] = (int)$id_p;
+		
+		$o = new OrdiniModel();
+		
+		$o->clear()->select("sum(euro_promozione) as SOMMA")->where(array("id_p"=>$clean['id_p']));
+		
+		if ($ido)
+			$o->sWhere("id_o != ".(int)$ido);
+		
+		$res = $o->send();
+		
+		if (count($res) > 0)
+			return (float)$res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+	
+	public static function gNumeroEuroRimasti($id_p, $ido = null)
+	{
+		$clean["id_p"] = (int)$id_p;
+		
+		$p = new PromozioniModel();
+		
+		$promozione = $p->selectId($clean["id_p"]);
+		
+		if (!empty($promozione))
+		{
+			$usati = self::gNumeroEuroUsati($id_p, $ido);
+			
+			if ($promozione["tipo_sconto"] == "ASSOLUTO" && $promozione["sconto"] > $usati)
+				return ($promozione["sconto"] - $usati);
 		}
 		
 		return 0;

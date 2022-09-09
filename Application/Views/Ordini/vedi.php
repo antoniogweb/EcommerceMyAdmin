@@ -166,7 +166,7 @@
 								<th class="text-right"><?php echo gtext("Peso");?></th>
 								<th class="text-right"><?php echo gtext("Quantità");?></th>
 								<th class="text-right colonne_non_ivate"><?php echo gtext("Prezzo");?><br /><?php echo gtext("IVA esclusa");?></th>
-								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 								<th class="text-right colonne_non_ivate"><?php echo gtext("Sconto");?><br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
 								<th class="text-right colonne_non_ivate"><?php echo gtext("Prezzo scontato");?><br /><?php echo gtext("IVA esclusa");?></th>
 								<?php } ?>
@@ -174,7 +174,7 @@
 								<?php if (false) { ?>
 									<?php if (v("prezzi_ivati_in_carrello")) { ?>
 										<th class="text-right"><?php echo gtext("Prezzo");?><br /><?php echo gtext("IVA inclusa");?></th>
-										<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+										<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 										<th class="text-right"><?php echo gtext("Sconto");?><br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>
 										<th class="text-right"><?php echo gtext("Prezzo scontato");?><br /><?php echo gtext("IVA inclusa");?></th>
 										<?php } ?>
@@ -211,7 +211,7 @@
 									</div>
 								<?php } ?>
 							</td>
-							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 							<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
 							<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["prezzo_finale"], v("cifre_decimali"));?></td>
 							<?php } ?>
@@ -221,7 +221,7 @@
 									<td class="text-right">
 										<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse($p["righe"]["prezzo_intero_ivato"])." €</del>"; } ?> <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price_ivato"]);?></span> €
 									</td>
-									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 									<td class="text-right"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
 									<td class="text-right"><?php echo setPriceReverse($p["righe"]["prezzo_finale_ivato"]);?></td>
 									<?php } ?>
@@ -239,6 +239,25 @@
 							</td>
 						</tr>
 						<?php } ?>
+						<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
+						<tr class="text text-warning">
+							<td colspan="2"><?php echo gtext("Coupon");?>: <?php echo $ordine["nome_promozione"];?></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right">
+								1
+							</td>
+							<td class="text-right colonne_non_ivate">
+								- <?php echo setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
+							</td>
+							<td class="text-right colonne_non_ivate">
+								<?php echo setPriceReverse($ordine["iva_spedizione"], 2);?> %
+							</td>
+							<td class="text-right">
+								- <?php echo setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
+							</td>
+						</tr>
+						<?php } ?>
 						<?php if (v("attiva_spedizione")) { ?>
 						<tr>
 							<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
@@ -250,7 +269,7 @@
 							<td class="text-right colonne_non_ivate">
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
 							</td>
-							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 							<td class="text-right colonne_non_ivate">
 								0%
 							</td>
@@ -266,7 +285,7 @@
 									<td class="text-right">
 										<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
 									</td>
-									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 									<td class="text-right">
 										0%
 									</td>
