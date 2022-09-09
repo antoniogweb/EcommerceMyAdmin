@@ -709,7 +709,7 @@ class OrdiniModel extends FormModel {
 				if (isset($arrayTotali[$ordine["id_iva"]]))
 					$arrayTotali[$ordine["id_iva"]] -= number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
 				else
-					$arrayTotali[$ordine["id_iva"]] = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+					$arrayTotali[$ordine["id_iva"]] = (-1)*number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
 			}
 			
 			if (isset($arrayTotali[$ordine["id_iva"]]))
