@@ -1521,7 +1521,7 @@ class BaseContenutiController extends BaseController
 			
 			$this->addOrderByClause($this->viewArgs["sec"], 'risultati-ricerca');
 			
-			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->rowNumber();
+			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->rowNumber();
 			
 			$this->elementsPerPage = 999999;
 			
