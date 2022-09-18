@@ -394,10 +394,10 @@ function getSubTotal($ivato = 0)
 	return setPriceReverse(getSubTotalN($ivato));
 }
 
-function getPrezzoScontatoN($conSpedizione = false, $ivato = 0)
+function getPrezzoScontatoN($conSpedizione = false, $ivato = 0, $pieno = false)
 {
 	$c = new CartModel();
-	$totale = $c->totaleScontato($conSpedizione);
+	$totale = $c->totaleScontato($conSpedizione, $pieno);
 	
 // 	IvaModel::getAliquotaEstera();
 // 	
@@ -405,7 +405,7 @@ function getPrezzoScontatoN($conSpedizione = false, $ivato = 0)
 // 		$ivato = 0;
 	
 	if ($ivato)
-		$totale += $c->iva(false);
+		$totale += $c->iva(false, $pieno);
 	
 	return $totale;
 }
@@ -421,10 +421,12 @@ function getSpedizioneN()
 	if (!v("attiva_spedizione"))
 		return 0;
 	
+	$pieno = PromozioniModel::hasCouponAssoluto() ? true : false;
+	
 	if (!v("prezzi_ivati_in_carrello"))
-		$subtotale = getPrezzoScontatoN(false);
+		$subtotale = getPrezzoScontatoN(false, false, $pieno);
 	else
-		$subtotale = getPrezzoScontatoN(false, true);
+		$subtotale = getPrezzoScontatoN(false, true, $pieno);
 	
 	// Se il totale è sopra la soglia delle spedizioni gratuite, le spese di spedizione sono 0
 	if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
@@ -487,7 +489,7 @@ function spedibile($idCorriere, $nazione)
 	return $corr->spedibile($idCorriere, $nazione);
 }
 
-function getIvaN()
+function getIvaN($pieno = false)
 {
 	if (Parametri::$ivaInclusa)
 	{
@@ -496,7 +498,7 @@ function getIvaN()
 	else
 	{
 		$c = new CartModel();
-		$iva = $c->iva();
+		$iva = $c->iva(true, $pieno);
 // 		$iva = $iva + (getSpedizioneN() * Parametri::$iva)/100;
 		return $iva;
 	}
@@ -507,19 +509,19 @@ function getIva()
 	return setPriceReverse(getIvaN());
 }
 
-function getTotalN()
+function getTotalN($pieno = false)
 {
 	$cifre = v("cifre_decimali");
-	$totalConSpedizione = getPrezzoScontatoN(true);
-	$iva = getIvaN();
+	$totalConSpedizione = getPrezzoScontatoN(true, 0, $pieno);
+	$iva = getIvaN($pieno);
 	
 // 	return $iva;
 	return number_format($totalConSpedizione,$cifre,".","") + number_format($iva,$cifre,".","");
 }
 
-function getTotal()
+function getTotal($pieno = false)
 {
-	return setPriceReverse(getTotalN());
+	return setPriceReverse(getTotalN($pieno));
 }
 
 function inPromozione($id_page, $page = null)

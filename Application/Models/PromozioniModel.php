@@ -254,6 +254,13 @@ class PromozioniModel extends GenericModel {
 		return false;
 	}
 	
+	public static function hasCouponAssoluto($ido = null)
+	{
+		$coupon = self::getCouponAttivo($ido);
+		
+		return (!empty($coupon) && $coupon["tipo_sconto"] == "ASSOLUTO") ? true : false;
+	}
+	
 	// Restituisce il coupon attivo
 	public static function getCouponAttivo($ido = null)
 	{

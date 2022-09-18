@@ -239,25 +239,6 @@
 							</td>
 						</tr>
 						<?php } ?>
-						<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
-						<tr class="text text-warning">
-							<td colspan="2"><?php echo gtext("Coupon");?>: <?php echo $ordine["nome_promozione"];?></td>
-							<td class="text-right"></td>
-							<td class="text-right"></td>
-							<td class="text-right">
-								1
-							</td>
-							<td class="text-right colonne_non_ivate">
-								- <?php echo setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
-							</td>
-							<td class="text-right colonne_non_ivate">
-								<?php echo setPriceReverse($ordine["iva_spedizione"], 2);?> %
-							</td>
-							<td class="text-right">
-								- <?php echo setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
-							</td>
-						</tr>
-						<?php } ?>
 						<?php if (v("attiva_spedizione")) { ?>
 						<tr>
 							<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
@@ -304,6 +285,25 @@
 							<?php } ?>
 							<td class="text-right">
 								<?php echo setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
+							</td>
+						</tr>
+						<?php } ?>
+						<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
+						<tr class="text text-warning">
+							<td colspan="2"><?php echo gtext("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?>. <?php echo gtext("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right">
+								1
+							</td>
+							<td class="text-right colonne_non_ivate">
+								- <?php echo setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
+							</td>
+							<td class="text-right colonne_non_ivate">
+								<?php echo setPriceReverse($ordine["iva_spedizione"], 2);?> %
+							</td>
+							<td class="text-right">
+								- <?php echo setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
 							</td>
 						</tr>
 						<?php } ?>

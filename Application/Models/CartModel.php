@@ -78,13 +78,13 @@ class CartModel extends GenericModel {
 	}
 	
 	// Totale scontato
-	public function totaleScontato($conSpedizione = false)
+	public function totaleScontato($conSpedizione = false, $pieno = false)
 	{
 // 		IvaModel::getAliquotaEstera();
 		
 		$cifre = v("cifre_decimali");
 		
-		if (hasActiveCoupon())
+		if (hasActiveCoupon() && !$pieno)
 		{
 			$p = new PromozioniModel();
 			
@@ -114,6 +114,16 @@ class CartModel extends GenericModel {
 				}
 			}
 			
+			if ($conSpedizione)
+			{
+				$totaleSpedizione = number_format(getSpedizioneN(), $cifre,".","");
+				$total += $totaleSpedizione;
+				
+				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+				
+				$totaleIvato = $totaleIvato + number_format($totaleSpedizione * (1 + ($ivaRiga / 100)),$cifre,".","");
+			}
+			
 			// Coupon assoluto
 			if ($coupon["tipo_sconto"] == "ASSOLUTO")
 			{
@@ -128,9 +138,6 @@ class CartModel extends GenericModel {
 					$total = $total - number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
 				}
 			}
-			
-			if ($conSpedizione)
-				$total += number_format(getSpedizioneN(), $cifre,".","");
 			
 			return $total;
 		}
@@ -268,6 +275,22 @@ class CartModel extends GenericModel {
 			}
 		}
 		
+		if ($conSpedizione)
+		{
+			$ivaSped = self::getAliquotaIvaSpedizione();
+			
+			$ivaSped = number_format($ivaSped,2,".","");
+			
+			$totaleSpedizione = number_format(getSpedizioneN(),$cifre,".","");
+			
+			if (isset($arraySubtotale[$ivaSped]))
+				$arraySubtotale[$ivaSped] += $totaleSpedizione;
+			else
+				$arraySubtotale[$ivaSped] = $totaleSpedizione;
+			
+			$totaleIvato += $totaleSpedizione * (1 + ($ivaRiga / 100));
+		}
+		
 		// Sconto assoluto
 		if ($sconto > 0 && $tipoSconto == "ASSOLUTO")
 		{
@@ -284,18 +307,6 @@ class CartModel extends GenericModel {
 				else
 					$arraySubtotale[$ivaSped] = (-1)*number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
 			}
-		}
-		
-		if ($conSpedizione)
-		{
-			$ivaSped = self::getAliquotaIvaSpedizione();
-			
-			$ivaSped = number_format($ivaSped,2,".","");
-			
-			if (isset($arraySubtotale[$ivaSped]))
-				$arraySubtotale[$ivaSped] += number_format(getSpedizioneN(),$cifre,".","");
-			else
-				$arraySubtotale[$ivaSped] = number_format(getSpedizioneN(),$cifre,".","");
 		}
 		
 // 		print_r($arraySubtotale);
@@ -353,85 +364,6 @@ class CartModel extends GenericModel {
 		
 		return Parametri::$iva;
 	}
-	
-// 	// Totale scontato
-// 	public function totaleScontato()
-// 	{
-// 		if (hasActiveCoupon())
-// 		{
-// 			$p = new PromozioniModel();
-// 			
-// 			$coupon = $p->getCoupon(User::$coupon);
-// 			
-// 			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
-// 			
-// 			$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
-// 			
-// 			$total = 0;
-// 			
-// 			if (count($res) > 0)
-// 			{
-// 				foreach ($res as $r)
-// 				{
-// 					$priceScontato = $r["cart"]["price"] - ($r["cart"]["price"] * ($coupon["sconto"] / 100));
-// 					$total = $total + ($priceScontato * $r["cart"]["quantity"]);
-// 				}
-// 			}
-// 			
-// 			return $total;
-// 		}
-// 		else
-// 			return $this->total();
-// 	}
-// 	
-// 	//get the total from the cart
-// 	public function total()
-// 	{
-// 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
-// 		
-// 		$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
-// 		
-// 		$total = 0;
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			foreach ($res as $r)
-// 			{
-// 				$total = $total + ($r["cart"]["price"] * $r["cart"]["quantity"]);
-// 			}
-// 		}
-// 		
-// 		return $total;
-// 	}
-// 	
-// 	// Totale iva dal carrello
-// 	public function iva()
-// 	{
-// 		$sconto = 0;
-// 		if (hasActiveCoupon())
-// 		{
-// 			$p = new PromozioniModel();
-// 			$coupon = $p->getCoupon(User::$coupon);
-// 			$sconto = $coupon["sconto"];
-// 		}
-// 		
-// 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
-// 		
-// 		$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
-// 		
-// 		$total = 0;
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			foreach ($res as $r)
-// 			{
-// 				$priceScontato = $r["cart"]["price"] - ($r["cart"]["price"] * ($sconto / 100));
-// 				$total = $total + ($priceScontato * ($r["cart"]["iva"] / 100) * $r["cart"]["quantity"]);
-// 			}
-// 		}
-// 		
-// 		return $total;
-// 	}
 	
 	public function getPesoTotale()
 	{

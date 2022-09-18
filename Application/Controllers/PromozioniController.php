@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PromozioniController extends BaseController {
 	
-	public $orderBy = "promozioni.dal desc,promozioni.al desc";
+	public $orderBy = "promozioni.dal desc,promozioni.al desc,promozioni.id_p desc";
 	
 	public $argKeys = array('attivo:sanitizeAll'=>'tutti');
 	

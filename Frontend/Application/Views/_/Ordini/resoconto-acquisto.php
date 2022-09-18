@@ -51,6 +51,7 @@ if (!isset($baseUrl))
 	<div class="uk-width-1-2@m">
 		<table class="table uk-table uk-table-divider uk-table-hover uk-margin-remove-top uk-table-striped">
 			<?php
+			$scrittaFinaleTotale = "Totale ordine";
 			$strIvato = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
 			?>
 			<?php if (v("attiva_spedizione") || $ordine["usata_promozione"] == "Y") { ?>
@@ -58,7 +59,7 @@ if (!isset($baseUrl))
 				<td class="first_column"><?php echo gtext("Totale merce", false); ?>:</td> <td class="uk-text-right"><strong>&euro; <?php echo setPriceReverse($ordine["subtotal".$strIvato]);?></strong></td>
 			</tr>
 			<?php } ?>
-			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
+			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong></td>
 			</tr>
@@ -73,8 +74,18 @@ if (!isset($baseUrl))
 				<td class="first_column"><?php echo gtext("Iva", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></td>
 			</tr>
 			<?php } ?>
+			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO") {
+				$scrittaFinaleTotale = "Totale da pagare";
+			?>
 			<tr>
-				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></td>
+				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total_pieno"]);?></strong></td>
+			</tr>
+			<tr>
+				<td class="first_column"><?php echo gtext("Sconto coupon", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"] - $ordine["total_pieno"]);?></strong></td>
+			</tr>
+			<?php } ?>
+			<tr>
+				<td class="first_column"><?php echo gtext($scrittaFinaleTotale, false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></td>
 			</tr>
 			<?php if (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"] && !$ordine["nascondi_iva_estera"]) { ?>
 			<tr>

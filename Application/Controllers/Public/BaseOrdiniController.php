@@ -1047,6 +1047,8 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
 						
+						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"];
+						
 						$this->m['OrdiniModel']->values["creation_time"] = time();
 						
 						$statoOrdine = "pending";
@@ -1068,7 +1070,7 @@ class BaseOrdiniController extends BaseController
 						if (!empty($coupon))
 						{
 							$this->m['OrdiniModel']->values["tipo_promozione"] = $coupon["tipo_sconto"];
-							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["subtotal_ivato"] - $this->m['OrdiniModel']->values["prezzo_scontato_ivato"];
+							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["total_pieno"] - $this->m['OrdiniModel']->values["total"];
 							$this->m['OrdiniModel']->values["id_p"] = $coupon["id_p"];
 						}
 						
