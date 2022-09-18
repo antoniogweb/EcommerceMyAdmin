@@ -400,10 +400,10 @@ class PromozioniModel extends GenericModel {
 	
 	public function sconto($record)
 	{
-		$valore = $record["promozioni"]["sconto"];
+		$valore = "<b>".$record["promozioni"]["sconto"]."</b>";
 		
 		if ($record["promozioni"]["tipo_sconto"] == "ASSOLUTO")
-			$valore .= " €";
+			$valore .= " €<br /><span class='text text-primary'><i>usato: ".self::gNumeroEuroUsati($record["promozioni"]["id_p"])."€</i></span>";
 		else
 			$valore .= " %";
 		
