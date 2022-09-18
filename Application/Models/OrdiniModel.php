@@ -66,7 +66,7 @@ class OrdiniModel extends FormModel {
 		$record = $o->selectId($idO);
 		
 		if (!empty($record) && ($record["stato"] == "completed" || $record["stato"] == "closed"))
-			return false;
+			return true;
 		
 		return false;
 	}
@@ -331,6 +331,8 @@ class OrdiniModel extends FormModel {
 			
 			if ($res)
 			{
+				$this->triggersOrdine($id);
+				
 				// Hook ad aggiornamento dell'ordine
 				if (v("hook_update_ordine"))
 					callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
@@ -340,6 +342,30 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return false;
+	}
+	
+	public function triggersOrdine($idO)
+	{
+		if (v("attiva_gift_card"))
+		{
+			$ordine = $this->selectId((int)$idO);
+			
+			if (!empty($ordine))
+			{
+				$rModel = new RigheModel();
+				$pModel = new PromozioniModel();
+				
+				$righe = $rModel->clear()->where(array(
+					"id_o"		=>	(int)$idO,
+					"gift_card"	=>	1,
+				))->send(false);
+				
+				foreach ($righe as $r)
+				{
+					$pModel->aggiungiDaRigaOrdine($r["id_r"]);
+				}
+			}
+		}
 	}
 	
 	public function cartUidAlreadyPresent($cart_uid)

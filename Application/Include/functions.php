@@ -289,7 +289,7 @@ function isDate($date)
 		$dateArray = explode('-',$date);
 		if ((int)$dateArray[1] <= 12 and (int)$dateArray[1] >= 1 )
 		{
-			if ((int)$dateArray[0] >= 1970 or (int)$dateArray[0] <= 2030)
+			if ((int)$dateArray[0] >= 1970 or (int)$dateArray[0] <= 2150)
 			{
 				return true;
 			}
@@ -305,7 +305,7 @@ function isDateFull($date)
 		$dateArray = explode('-',$date);
 		if ((int)$dateArray[1] <= 12 and (int)$dateArray[1] >= 1 )
 		{
-			if ((int)$dateArray[0] >= 1970 and (int)$dateArray[0] <= 2030)
+			if ((int)$dateArray[0] >= 1970 and (int)$dateArray[0] <= 2150)
 			{
 				if ((int)$dateArray[2] >= 1 and (int)$dateArray[2] <= 31)
 				{

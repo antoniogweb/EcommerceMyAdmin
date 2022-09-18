@@ -400,37 +400,6 @@ class BaseController extends Controller
 			
 			$this->redirectAfterInsertUpdate($queryType, $clean["id"], false, $partialU);
 			
-// 			if (strcmp($queryType,'insert') === 0 and $this->m[$this->modelName]->queryResult and $this->insertRedirect)
-// 			{
-// 				if (isset($this->viewArgs["cl_on_sv"]) && $this->viewArgs["cl_on_sv"] != "Y")
-// 				{
-// 					$lId = $this->m[$this->modelName]->lId;
-// 					
-// 					flash("notice",$this->m[$this->modelName]->notice);
-// 					
-// 					if (isset($this->insertRedirectUrl))
-// 					{
-// 						$this->redirect($this->insertRedirectUrl);
-// 					}
-// 					else
-// 					{
-// 						$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$lId.$this->viewStatus.$partialU);
-// 					}
-// 				}
-// 			}
-			
-// 			if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
-// 			{
-// 				flash("notice",$this->m[$this->modelName]->notice);
-// 				
-// 				if ($this->updateRedirect or isset($_POST["redirectToList"]))
-// 					$this->redirect($this->controller.'/main/'.$this->viewStatus);
-// 				else if ($this->updateRedirectUrl)
-// 					$this->redirect($this->updateRedirectUrl);
-// 				else
-// 					$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.'/update/'.$clean["id"].$this->viewStatus."&insert=ok");
-// 			}
-			
 			$this->m[$this->modelName]->setFormStruct($clean["id"]);
 			
 			$this->m[$this->modelName]->setUploadForms($clean["id"]);

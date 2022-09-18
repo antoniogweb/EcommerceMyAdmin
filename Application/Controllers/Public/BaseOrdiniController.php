@@ -1280,6 +1280,9 @@ class BaseOrdiniController extends BaseController
 							
 							$righeOrdine = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean['lastId'],"cart_uid" => $clean["cart_uid"]))->send();
 							
+							// hook chiamato quando l'ordine è stato confermato
+							$this->m["OrdiniModel"]->triggersOrdine($clean['lastId']);
+							
 							// hook ordine confermato
 							if (v("hook_ordine_confermato") && function_exists(v("hook_ordine_confermato")))
 								call_user_func(v("hook_ordine_confermato"), $clean['lastId']);

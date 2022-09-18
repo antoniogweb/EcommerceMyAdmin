@@ -123,13 +123,13 @@ class PromozioniModel extends GenericModel {
 		$this->values["dal"] = reverseData($this->values["dal"]);
 		$this->values["al"] = reverseData($this->values["al"]);
 		
-		if (isDateFull($this->values["dal"]) and isDateFull($this->values["al"]))
+		if (checkIsoDate($this->values["dal"]) and checkIsoDate($this->values["al"]))
 		{
 			$res = $this->clear()->where(array("codice"=>$this->values["codice"]))->send();
 			
 			if (count($res) === 0)
 			{
-				parent::insert();
+				return parent::insert();
 			}
 			else
 			{
@@ -152,16 +152,16 @@ class PromozioniModel extends GenericModel {
 		$this->values["dal"] = reverseData($this->values["dal"]);
 		$this->values["al"] = reverseData($this->values["al"]);
 		
-		if (isDateFull($this->values["dal"]) and isDateFull($this->values["al"]))
+		if (checkIsoDate($this->values["dal"]) and checkIsoDate($this->values["al"]))
 		{
 			$res = $this->clear()->where(array(
-					"codice"	=>	$this->values["codice"],
-					"ne"	=>	array("id_p" => $clean["id"]),
-				))->send();
+				"codice"	=>	$this->values["codice"],
+				"ne"	=>	array("id_p" => $clean["id"]),
+			))->send();
 			
 			if (count($res) === 0)
 			{
-				parent::update($id);
+				return parent::update($id);
 			}
 			else
 			{
@@ -408,5 +408,65 @@ class PromozioniModel extends GenericModel {
 			$valore .= " %";
 		
 		return $valore;
+	}
+	
+	// Crea la promo dalla riga ordine
+	public function aggiungiDaRigaOrdine($idR)
+	{
+		$rModel = new RigheModel();
+		$oModel = new OrdiniModel();
+		
+		$riga = $rModel->selectId((int)$idR);
+		
+		if (empty($riga))
+			return;
+		
+		$attivo = $oModel->isPagato($riga["id_o"]) ? "Y" : "N";
+		
+		$promo = $this->clear()->where(array(
+			"id_r"	=>	(int)$idR,
+		))->send(false);
+		
+		$ora = new DateTime();
+		$ora->modify("+30 years");
+		
+		if (count($promo) > 0)
+		{
+			foreach ($promo as $p)
+			{
+				if ($p["attivo"] != $attivo)
+				{
+					$this->sValues(array(
+						"dal"	=>	date("d-m-Y", strtotime($p["dal"])),
+						"al"	=>	$ora->format("d-m-Y"),
+						"codice"	=>	$p["codice"],
+						"attivo"	=>	$attivo,
+					));
+					
+					$this->update((int)$p["id_p"]);
+				}
+			}
+		}
+		else if ($attivo == "Y")
+		{
+			for ($i = 0; $i < $riga["quantity"]; $i++)
+			{
+				$titolo = $riga["title"];
+				
+				$this->sValues(array(
+					"dal"	=>	date("d-m-Y"),
+					"al"	=>	$ora->format("d-m-Y"),
+					"sconto"	=>	$riga["prezzo_intero_ivato"],
+					"titolo"	=>	$titolo." - Ordine: ".$riga["id_o"],
+					"codice"	=>	md5(randString(20).microtime().uniqid(mt_rand(),true)),
+					"numero_utilizzi"	=>	9999,
+					"tipo_sconto"	=>	"ASSOLUTO",
+					"id_r"		=>	$idR,
+					"attivo"	=>	$attivo,
+				));
+				
+				$this->insert();
+			}
+		}
 	}
 }
