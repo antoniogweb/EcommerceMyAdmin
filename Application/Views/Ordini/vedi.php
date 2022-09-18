@@ -239,7 +239,7 @@
 							</td>
 						</tr>
 						<?php } ?>
-						<?php if (v("attiva_spedizione")) { ?>
+						<?php if ($ordine["da_spedire"]) { ?>
 						<tr>
 							<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
 							<td class="text-right"></td>
@@ -344,7 +344,7 @@
 						</div>
 					</div>
 				</div>
-				<?php if (v("attiva_spedizione")) { ?>
+				<?php if ($ordine["da_spedire"]) { ?>
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main help_spese_di_spedizione">
@@ -456,7 +456,7 @@
 								<?php } ?>
 							</table>
 						</div>
-						<?php if (v("attiva_spedizione")) { ?>
+						<?php if ($ordine["da_spedire"]) { ?>
 						<div class="col-lg-6">
 							<h3><?php echo gtext("Dati di spedizione");?>:</h3>
 							

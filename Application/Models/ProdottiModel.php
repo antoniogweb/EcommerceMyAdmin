@@ -32,6 +32,17 @@ class ProdottiModel extends PagesModel {
 
 	}
 	
+	public function overrideFormStruct()
+	{
+		$this->formStruct["entries"]["gift_card"] = array(
+			"type"	=>	"Select",
+			"options"	=>	self::$attivoSiNo,
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	'È un prodotto Gift Card',
+		);
+	}
+	
 	public function setFilters()
 	{
 		$this->_popupItemNames = array(

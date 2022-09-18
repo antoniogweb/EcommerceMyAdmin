@@ -895,4 +895,14 @@ class OrdiniModel extends FormModel {
 	{
 		return '<a href="'.Url::getRoot().$this->applicationUrl.$this->controller.'/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">#'.$record["orders"]["id_o"].'</a>';
 	}
+	
+	public static function sistemaDaSpedire()
+	{
+		if (!v("attiva_spedizione"))
+		{
+			$o = new OrdiniModel();
+			
+			$o->db->query("update orders set da_spedire = 0 where 1");
+		}
+	}
 }

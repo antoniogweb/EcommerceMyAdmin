@@ -1088,6 +1088,8 @@ class BaseOrdiniController extends BaseController
 						if (isset($_COOKIE["ok_cookie_terzi"]))
 							$this->m['OrdiniModel']->values["cookie_terzi"] = 1;
 						
+						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
+						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
 						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;
 						$this->m['OrdiniModel']->sanitize();

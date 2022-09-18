@@ -749,6 +749,7 @@ class CartModel extends GenericModel {
 				$this->values["json_personalizzazioni"] = $pers->getStringa($jsonPers,"",true);
 				$this->values["cart_uid"] = $clean["cart_uid"];
 				$this->values["creation_time"] = $this->getCreationTime();
+				$this->values["gift_card"] = $rPage[0]["pages"]["gift_card"];
 				
 				if ($p->inPromozioneTot($clean["id_page"]))
 				{
@@ -1029,5 +1030,28 @@ class CartModel extends GenericModel {
 				}
 			}
 		}
+	}
+	
+	public static function soloProdottiSenzaSpedizione()
+	{
+		if (!v("attiva_gift_card"))
+			return false;
+		
+		$c = new CartModel();
+		
+		if ($c->numberOfItems() > 0)
+		{
+			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+			
+			$numeroNoGiftCard = $c->clear()->select("cart.id_cart")->where(array(
+				"cart_uid"	=>	$clean["cart_uid"],
+				"gift_card"	=>	0,
+			))->rowNumber();
+			
+			if ((int)$numeroNoGiftCard === 0)
+				return true;
+		}
+		
+		return false;
 	}
 }

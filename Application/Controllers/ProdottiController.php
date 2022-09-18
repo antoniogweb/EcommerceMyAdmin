@@ -159,6 +159,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_margine_in_prodotti"))
 			$this->queryFields .= ",margine";
 		
+		if (v("attiva_gift_card"))
+			$this->queryFields .= ",gift_card";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

@@ -440,12 +440,15 @@ class BaseBaseController extends Controller
 		VariabiliModel::inizializza();
 		VariabiliModel::checkCookieTerzeParti();
 		
-		if (getSubTotalN() > 9999999)
+		if (v("ecommerce_attivo"))
 		{
-			$this->m["CartModel"]->emptyCart();
+			if (getSubTotalN() > 9999999)
+			{
+				$this->m["CartModel"]->emptyCart();
+			}
+			
+			$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
 		}
-		
-		$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
 	}
 	
 	protected function initCookieEcommerce()
@@ -525,6 +528,9 @@ class BaseBaseController extends Controller
 					setcookie("coupon", "", time()-3600,"/");
 			}
 		}
+		
+		if (CartModel::soloProdottiSenzaSpedizione())
+			VariabiliModel::$valori["attiva_spedizione"] = 0;
 	}
 	
 	protected function predisponiAltriFiltri()
