@@ -27,6 +27,7 @@ class CartModel extends GenericModel {
 	public static $ordinamento = 0;
 	public static $deletedExpired = false;
 	public static $checkCart = false;
+	public static $cartRows = null;
 	
 	public function __construct() {
 		$this->_tables='cart';
@@ -1032,6 +1033,7 @@ class CartModel extends GenericModel {
 		}
 	}
 	
+	// restituisce true se il carrello ha solo prodotti senza spedizione
 	public static function soloProdottiSenzaSpedizione()
 	{
 		if (!v("attiva_gift_card"))
@@ -1053,5 +1055,32 @@ class CartModel extends GenericModel {
 		}
 		
 		return false;
+	}
+	
+	public static function numeroGifCartInCarrello($idCart = 0)
+	{
+		if (!v("attiva_gift_card"))
+			return 0;
+		
+		$c = new CartModel();
+		
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$c->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"cart_uid"	=>	$clean["cart_uid"],
+			"gift_card"	=>	1,
+		));
+		
+		if ($idCart)
+			$c->aWhere(array(
+				"id_cart"	=>	(int)$idCart,
+			));
+		
+		$res = $c->send();
+		
+		if (count($res) > 0)
+			return $res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
 	}
 }

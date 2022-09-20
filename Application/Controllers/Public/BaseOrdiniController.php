@@ -746,7 +746,7 @@ class BaseOrdiniController extends BaseController
 				$this->redirect("carrello/vedi");
 		}
 		
-		if (!$this->m["CartModel"]->checkQtaFull())
+		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")))
 		{
 			if (Output::$html)
 				$this->redirect("carrello/vedi");

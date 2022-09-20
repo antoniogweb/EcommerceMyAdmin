@@ -6,6 +6,9 @@
 			<?php if (!checkQtaCartFull()) { ?>
 			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
 			<?php } ?>
+			<?php if (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) { ?>
+			<div class="<?php echo v("alert_error_class");?>"><?php echo str_replace("[N]",v("numero_massimo_gift_card"),gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card"));?></div>
+			<?php } ?>
 			<?php if (!User::$isMobile) { ?>
 			<div class="uk-visible@m">
 				<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">

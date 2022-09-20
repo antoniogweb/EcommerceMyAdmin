@@ -105,4 +105,17 @@ class ProdottiModel extends PagesModel {
 		return parent::update($id, $where);
 	}
 	
+	// restituisce true se la riga del carrello non è una gift card
+	public static function isGiftCart($idPage)
+	{
+		if (!v("attiva_gift_card"))
+			return false;
+		
+		$p = new ProdottiModel();
+		
+		return $p->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+			"gift_card"	=>	1,
+		))->rowNumber();
+	}
 }
