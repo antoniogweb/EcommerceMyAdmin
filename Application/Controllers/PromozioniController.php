@@ -26,7 +26,11 @@ class PromozioniController extends BaseController {
 	
 	public $orderBy = "promozioni.dal desc,promozioni.al desc,promozioni.id_p desc";
 	
-	public $argKeys = array('attivo:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'attivo:sanitizeAll'=>'tutti',
+		'tipo:sanitizeAll'=>'tutti',
+		'fonte:sanitizeAll'=>'MANUALE',
+	);
 	
 	public $useEditor = true;
 	
@@ -50,11 +54,19 @@ class PromozioniController extends BaseController {
 		
 		$this->mainFields = array("[[ledit]];promozioni.titolo;","promozioni.codice","promozioni.dal","promozioni.al");
 		$this->mainHead = "Titolo,Codice promozione,Dal,Al";
+		$this->filters = array(array("attivo",null,$this->filtroAttivo));
 		
 		if (v("attiva_promo_sconto_assoluto"))
 		{
 			$this->mainFields[] = "promozioni.tipo_sconto";
 			$this->mainHead .= ",Tipo sconto";
+			$this->filters[] = array("tipo",null,array(
+				"tutti"	=>	"Tipo sconto"
+			) + array("PERCENTUALE"=>"PERCENTUALE","ASSOLUTO"=>"ASSOLUTO"));
+			
+			$this->filters[] = array("fonte",null,array(
+				"tutti"	=>	"Fonte"
+			) + array("MANUALE"=>"Manuale","ORDINE"=>"Gift Card"));
 		}
 		
 		$this->mainFields[] = "sconto";
@@ -62,12 +74,35 @@ class PromozioniController extends BaseController {
 		$this->mainFields[] = "getYesNo|promozioni.attivo";
 		$this->mainHead .= ",Valore sconto,N° usata,Attiva?";
 		
-		$this->filters = array(array("attivo",null,$this->filtroAttivo));
+		if (v("attiva_promo_sconto_assoluto"))
+		{
+			$this->mainFields[] = "ordine";
+			$this->mainHead .= ",Ordine";
+		}
 		
-		$this->m[$this->modelName]->where(array(
+		$this->m[$this->modelName]->select("promozioni.*,orders.id_o")
+			->left(array("righe"))
+			->left("orders")->on("righe.id_o = orders.id_o")
+			->where(array(
 				'attivo'	=>	$this->viewArgs['attivo'],
-// 				"attivo"	=>	$this->viewArgs["attivo"],
-			))->orderBy($this->orderBy)->convert()->save();
+				'tipo_sconto'=>	$this->viewArgs['tipo'],
+			))->orderBy($this->orderBy)->convert();
+		
+		if ($this->viewArgs["fonte"] != "tutti")
+		{
+			if ($this->viewArgs["fonte"] == "MANUALE")
+				$this->m[$this->modelName]->aWhere(array(
+					"id_r"	=>	0,
+				));
+			else
+				$this->m[$this->modelName]->aWhere(array(
+					"ne"	=>	array(
+						"id_r"	=>	0,
+					),
+				));
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

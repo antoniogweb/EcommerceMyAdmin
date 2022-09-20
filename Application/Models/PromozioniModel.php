@@ -110,6 +110,7 @@ class PromozioniModel extends GenericModel {
         return array(
 			'categorie' => array("HAS_MANY", 'PromozionicategorieModel', 'id_p', null, "CASCADE"),
 			'pagine' => array("HAS_MANY", 'PromozionipagineModel', 'id_p', null, "CASCADE"),
+			'righe' => array("BELONGS_TO", 'RigheModel', 'id_r',null,"CASCADE"),
         );
     }
     
@@ -451,13 +452,13 @@ class PromozioniModel extends GenericModel {
 		{
 			for ($i = 0; $i < $riga["quantity"]; $i++)
 			{
-				$titolo = $riga["title"];
+				$titolo = htmlentitydecode($riga["title"]);
 				
 				$this->sValues(array(
 					"dal"	=>	date("d-m-Y"),
 					"al"	=>	$ora->format("d-m-Y"),
 					"sconto"	=>	$riga["prezzo_intero_ivato"],
-					"titolo"	=>	$titolo." - Ordine: ".$riga["id_o"],
+					"titolo"	=>	$titolo,
 					"codice"	=>	md5(randString(20).microtime().uniqid(mt_rand(),true)),
 					"numero_utilizzi"	=>	9999,
 					"tipo_sconto"	=>	"ASSOLUTO",
@@ -468,5 +469,13 @@ class PromozioniModel extends GenericModel {
 				$this->insert();
 			}
 		}
+	}
+	
+	public function ordine($record)
+	{
+		if ($record["orders"]["id_o"])
+			return "<a class='iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."?partial=Y&nobuttons=Y'>#".$record["orders"]["id_o"]."</a>";
+		
+		return "";
 	}
 }

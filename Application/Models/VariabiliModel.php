@@ -458,7 +458,7 @@ class VariabiliModel extends GenericModel {
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
 		"attiva_gift_card"		=>	0, // se impostato a 1, attiva i prodotti Gift card
-		"numero_massimo_gift_card"	=>	5, // numero massimo di gift card in un carrello
+		"numero_massimo_gift_card"	=>	8, // numero massimo di gift card in un carrello
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
