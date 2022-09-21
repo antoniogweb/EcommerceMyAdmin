@@ -1437,6 +1437,8 @@ class PagesModel extends GenericModel {
 			$c->del(null,"id_page=".$clean['id']);
 			$c->del(null,"id_corr=".$clean['id']);
 			
+			CombinazioniModel::$ricreaCombinazioneQuandoElimini = false;
+			
 // 			parent::del($clean['id']);
 			parent::del(null, "codice_alfa = '".$record["codice_alfa"]."'");
 		}
@@ -2109,9 +2111,12 @@ class PagesModel extends GenericModel {
 	
 	public function giacenzaPrincipale($id_page)
 	{
+		if (v("attiva_gift_card") && ProdottiModel::isGiftCart((int)$id_page))
+			return 99999;
+		
 		$c = new CombinazioniModel();
 		$principale = $c->combinazionePrincipale((int)$id_page);
-			
+		
 		if (!empty($principale))
 			return $principale["giacenza"] <= v("giacenza_massima_mostrata") ? $principale["giacenza"] : v("giacenza_massima_mostrata") ;
 		

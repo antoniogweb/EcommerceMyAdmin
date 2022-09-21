@@ -181,7 +181,7 @@ class BaseCartController extends BaseController
 			
 			if (!$isGiftCard || (($numeroInGiftCardCarrello + $clean["quantity"]) <= v("numero_massimo_gift_card")))
 			{
-				if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza)
+				if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza || $isGiftCard)
 				{
 					// OK giacenza
 					$idCart = $this->m["CartModel"]->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);

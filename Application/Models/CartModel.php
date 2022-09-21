@@ -581,6 +581,15 @@ class CartModel extends GenericModel {
 		$clean["id_c"] = (int)$id_c;
 		
 		$c = new CombinazioniModel();
+		
+		if (v("attiva_gift_card"))
+		{
+			$combinazione = $c->selectId($clean["id_c"]);
+			
+			if (!empty($combinazione) && ProdottiModel::isGiftCart($combinazione["id_page"]))
+				return true;
+		}
+		
 		$giacenza = $c->qta($clean["id_c"]);
 		
 		$qtaCarrello = $this->qta($clean["id_c"]);

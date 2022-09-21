@@ -17,6 +17,7 @@ $(document).ready(function() {
 	var myDropzone = new Dropzone(".dropzone", {
 		paramName: "filename",
 		url: "<?php echo $uploadUrl;?>",
+		timeout: 180000,
 		init: function () {
 			this.on("success", function (file, responseText) {
 				if ($.trim(responseText.result) == "OK")

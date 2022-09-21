@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class CombinazioniModel extends GenericModel {
-
+	
+	public static $ricreaCombinazioneQuandoElimini = true;
+	
 	public $cart_uid = null;
 	public $colonne = null;
 	public $valori = null;
@@ -390,7 +392,8 @@ class CombinazioniModel extends GenericModel {
 			{
 				if (parent::del($id, $where))
 				{
-					$this->controllaCombinazioniPagina($record["id_page"]);
+					if (self::$ricreaCombinazioneQuandoElimini)
+						$this->controllaCombinazioniPagina($record["id_page"]);
 					
 					return true;
 				}
