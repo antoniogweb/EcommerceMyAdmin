@@ -3,6 +3,7 @@ var classe_wish_presente = "in_wishlist";
 var classe_wish_non_presente = "not_in_wishlist";
 var box_pulsante_wishlist = "blocco_wishlist";
 var vai_al_checkout = false;
+var ok_aggiorna_carrello = true;
 
 if (typeof variante_non_esistente == "undefined")
 	var variante_non_esistente = "Non esiste il prodotto con la combinazioni di varianti selezionate";
@@ -792,6 +793,8 @@ function aggiornaCarrello()
 	
 	var post_data = "products_list="+encodeURIComponent(products_list);
 	
+	ok_aggiorna_carrello = false;
+	
 	$.ajaxQueue({
 		type: "POST",
 		url: baseUrl + "/carrello/aggiorna",
@@ -812,6 +815,8 @@ function aggiornaCarrello()
 				reloadCart();
 			else
 				alert(stringa_errore_giacenza_carrello);
+			
+			ok_aggiorna_carrello = true;
 		}
 	});
 }
@@ -877,24 +882,32 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var t_input = $(this).parent().find(".item_quantity");
-		
-		var new_quantity = parseInt(t_input.val()) + 1;
-		
-		t_input.val(new_quantity) ;
+		if (ok_aggiorna_carrello)
+		{
+			var t_input = $(this).parent().find(".item_quantity");
+			
+			var new_quantity = parseInt(t_input.val()) + 1;
+			
+			t_input.val(new_quantity) ;
+			aggiornaCarrello();
+		}
 	});
 	
 	$( "body" ).on( "click", ".cart_item_quantity_decrease", function(e) {
 		
 		e.preventDefault();
 		
-		var t_input = $(this).parent().find(".item_quantity");
-		
-		var t_current_quantity = parseInt(t_input.val());
-		
-		if (t_current_quantity > 0)
+		if (ok_aggiorna_carrello)
 		{
-			t_input.val( t_current_quantity - 1) ;
+			var t_input = $(this).parent().find(".item_quantity");
+			
+			var t_current_quantity = parseInt(t_input.val());
+			
+			if (t_current_quantity > 1)
+			{
+				t_input.val( t_current_quantity - 1) ;
+				aggiornaCarrello();
+			}
 		}
 	});
 	
