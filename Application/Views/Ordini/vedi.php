@@ -195,6 +195,17 @@
 							<td width="1%"><i class="fa fa-arrow-right"></i></td>
 							<?php } ?>
 							<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class=""><?php echo $p["righe"]["title"];?>
+							<?php if ($p["righe"]["gift_card"]) {
+								$promozioni = PromozioniModel::getPromoRigaOrdine($p["righe"]["id_r"]);
+								
+								if (count($promozioni) > 0)
+									echo "<br />------------<br /><b>".gtext("Codici delle Gift Card legate alla righa d'ordine").":</b>";
+								
+								foreach ($promozioni as $promo) { 
+							?>
+								<br /><?php echo gtext("Codice");?>: <span class="badge badge-info"><?php echo $promo["codice"];?></span> <?php echo gtext("Stato");?>: <?php echo $promo["attivo"] == "Y" ? "<span class='label label-success'>".gtext("Attivo")."</span>" : "<span class='label label-warning'>".gtext("Non attivo")."</span>";?>
+								<?php } ?>
+							<?php } ?>
 							<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 							</td>
 							<td class="text-right"><?php echo $p["righe"]["codice"];?></td>

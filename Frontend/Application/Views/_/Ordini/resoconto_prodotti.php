@@ -20,6 +20,27 @@
 			<?php } ?>
 			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
+			
+			<?php if ($p["righe"]["gift_card"]) {
+				$promozioni = PromozioniModel::getPromoRigaOrdine($p["righe"]["id_r"]);
+				
+				if (count($promozioni) > 0) { ?>
+					<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
+						<tr>
+							<th><?php echo gtext("Codice Gift Card");?></th>
+							<th><?php echo gtext("Stato");?></th>
+						</tr>
+				<?php } ?>
+				<?php
+				
+				foreach ($promozioni as $promo) { 
+			?>
+				<tr><td><span class="uk-label uk-label-default"><?php echo $promo["codice"];?></span></td><td><?php echo $promo["attivo"] == "Y" ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?></td></tr>
+				<?php } ?>
+				
+				<?php if (count($promozioni) > 0) { ?></table><?php } ?>
+			<?php } ?>
+			
 			</td>
 			<?php if (v("mostra_codice_in_carrello")) { ?>
 			<td style="vertical-align:top;" class="cart_item_product"><?php echo $p["righe"]["codice"];?></td>

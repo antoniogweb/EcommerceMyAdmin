@@ -415,14 +415,13 @@ class PromozioniModel extends GenericModel {
 	public function aggiungiDaRigaOrdine($idR)
 	{
 		$rModel = new RigheModel();
-		$oModel = new OrdiniModel();
 		
 		$riga = $rModel->selectId((int)$idR);
 		
 		if (empty($riga))
 			return;
 		
-		$attivo = $oModel->isPagato($riga["id_o"]) ? "Y" : "N";
+		$attivo = OrdiniModel::isPagato($riga["id_o"]) ? "Y" : "N";
 		
 		$promo = $this->clear()->where(array(
 			"id_r"	=>	(int)$idR,
@@ -477,5 +476,14 @@ class PromozioniModel extends GenericModel {
 			return "<a class='iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."?partial=Y&nobuttons=Y'>#".$record["orders"]["id_o"]."</a>";
 		
 		return "";
+	}
+	
+	public static function getPromoRigaOrdine($idR)
+	{
+		$p = new PromozioniModel();
+		
+		return $p->clear()->where(array(
+			"id_r"	=>	(int)$idR,
+		))->send(false);
 	}
 }

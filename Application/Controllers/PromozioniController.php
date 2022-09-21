@@ -30,6 +30,7 @@ class PromozioniController extends BaseController {
 		'attivo:sanitizeAll'=>'tutti',
 		'tipo:sanitizeAll'=>'tutti',
 		'fonte:sanitizeAll'=>'MANUALE',
+		'codice:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -54,7 +55,7 @@ class PromozioniController extends BaseController {
 		
 		$this->mainFields = array("[[ledit]];promozioni.titolo;","promozioni.codice","promozioni.dal","promozioni.al");
 		$this->mainHead = "Titolo,Codice promozione,Dal,Al";
-		$this->filters = array(array("attivo",null,$this->filtroAttivo));
+		$this->filters = array("codice",array("attivo",null,$this->filtroAttivo));
 		
 		if (v("attiva_promo_sconto_assoluto"))
 		{
@@ -84,6 +85,7 @@ class PromozioniController extends BaseController {
 			->left(array("righe"))
 			->left("orders")->on("righe.id_o = orders.id_o")
 			->where(array(
+				'codice'	=>	$this->viewArgs['codice'],
 				'attivo'	=>	$this->viewArgs['attivo'],
 				'tipo_sconto'=>	$this->viewArgs['tipo'],
 			))->orderBy($this->orderBy)->convert();
