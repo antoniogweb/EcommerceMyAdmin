@@ -35,20 +35,6 @@ class PromozioniModel extends GenericModel {
 		$this->orderBy = 'promozioni.dal desc,promozioni.al desc';
 		$this->_lang = 'It';
 		
-// 		$this->_popupItemNames = array(
-// 			'attivo'	=>	'attivo',
-// 		);
-// 
-// 		$this->_popupLabels = array(
-// 			'attivo'	=>	'PROMOZIONE ATTIVA?',
-// 		);
-// 
-// 		$this->_popupFunctions = array(
-// 			'attivo'=>	'getYesNo',
-// 		);
-		
-// 		$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}$/',"sconto|Si prega di verificare che il campo <i>Sconto promozione (in %)</i> contenga solo numeri");
-		
 		parent::__construct();
 
 	}

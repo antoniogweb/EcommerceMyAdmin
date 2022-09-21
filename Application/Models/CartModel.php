@@ -822,6 +822,19 @@ class CartModel extends GenericModel {
 		return 0;
 	}
 	
+	public function aggiornaElementi($idCart)
+	{
+		if (!v("attiva_gift_card"))
+			return;
+		
+// 		$record = $this->getCart($idCart);
+// 		
+// 		if (!empty($record))
+// 		{
+// 			if ($record["gift_card"])
+// 		}
+	}
+	
 	public function getCreationTime()
 	{
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
