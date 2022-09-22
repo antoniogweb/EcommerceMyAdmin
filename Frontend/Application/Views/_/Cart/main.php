@@ -63,7 +63,10 @@
 				</div>
 				<div class="uk-visible@m">
 					<?php if (!v("carrello_monoprodotto")) { ?>
-						<a type="submit" class="uk-align-right uk-button uk-button-default cart_button_aggiorna_carrello" name="update_cart" value="Update cart"><?php echo gtext("Aggiorna carrello");?></a>
+						<div>
+							<div class="uk-align-right uk-button uk-button-default spinner uk-hidden" uk-spinner="ratio: .70"></div>
+							<a type="submit" class="btn_submit_form uk-align-right uk-button uk-button-default cart_button_aggiorna_carrello" name="update_cart" value="<?php echo gtext("Aggiorna carrello");?>"><?php echo gtext("Aggiorna carrello");?></a>
+						</div>
 					<?php } ?>
 				</div>
 			</div>
@@ -78,7 +81,8 @@
 				<div class="uk-margin uk-text-small"><?php echo testo("Nota"); ?></div>
 
 				<div class="uk-margin">
-					<a class="uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
+					<div class="uk-button uk-button-secondary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
+					<a class="aggiorna_carrello btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
 				</div>
 			</div>
 		</div>

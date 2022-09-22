@@ -47,6 +47,9 @@ if (typeof carrello_monoprodotto == "undefined")
 if (typeof mostra_errori_personalizzazione == "undefined")
 	var mostra_errori_personalizzazione = true;
 
+if (typeof attiva_gift_card == "undefined")
+	var attiva_gift_card = false;
+
 var time;
 var arrayAccessori = [];
 
@@ -900,6 +903,13 @@ $(document).ready(function(){
 		
 		actionAggiungiAlCarrello($(this));
 	});
+	
+// 	$("body").on("click", ".aggiorna_carrello", function(e){
+// 		
+// 		if (attiva_gift_card)
+// 			aggiornaCarrello();
+// 		
+// 	});
 	
 	$( "body" ).on( "click", ".cart_item_quantity_increase", function(e) {
 		

@@ -194,6 +194,9 @@ class PromozioniModel extends GenericModel {
 	{
 		$clean["codice"] = sanitizeAll($codice);
 		
+		if (CartModel::numeroGifCartInCarrello() > 0)
+			return false;
+		
 		$res = $this->clear()->where(array("codice"=>$clean["codice"],"attivo"=>"Y"))->send();
 		
 		if (count($res) > 0)
