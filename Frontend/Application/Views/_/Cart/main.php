@@ -82,7 +82,7 @@
 
 				<div class="uk-margin">
 					<div class="uk-button uk-button-secondary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
-					<a class="aggiorna_carrello btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
+					<a class="btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
 				</div>
 			</div>
 		</div>
