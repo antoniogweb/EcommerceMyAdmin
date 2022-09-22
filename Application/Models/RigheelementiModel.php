@@ -22,11 +22,11 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CartelementiModel extends GenericModel
+class RigheelementiModel extends GenericModel
 {
 	public function __construct() {
-		$this->_tables = 'cart_elementi';
-		$this->_idFields = 'id_cart_elemento';
+		$this->_tables = 'righe_elementi';
+		$this->_idFields = 'id_riga_elemento';
 		
 		$this->_idOrder = 'id_order';
 		
@@ -35,16 +35,16 @@ class CartelementiModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'cart' => array("BELONGS_TO", 'CartModel', 'id_cart',null,"CASCADE"),
+			'riga' => array("BELONGS_TO", 'RigheModel', 'id_r',null,"CASCADE"),
         );
     }
     
-	public static function getElementiCarrello($idCart)
+    public static function getElementiRiga($idR)
 	{
-		$ce = new CartelementiModel();
+		$re = new RigheelementiModel();
 		
-		return $ce->clear()->where(array(
-			"id_cart"	=>	(int)$idCart,
+		return $re->clear()->where(array(
+			"id_r"	=>	(int)$idR,
 		))->send(false);
 	}
 }

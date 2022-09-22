@@ -13209,6 +13209,10 @@ ul.thumbnails.image_picker_selector li .thumbnail {
   cursor: pointer;
 }
 
+.elemento_gift_card {
+  border-top: 1px dashed #e5e5e5;
+}
+
 @media (min-width: 960px) {
   .detail_left {
     margin-right: 50px;

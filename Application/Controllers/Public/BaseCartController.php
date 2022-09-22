@@ -229,6 +229,9 @@ class BaseCartController extends BaseController
 									"price"		=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
 								));
 							}
+							
+							// Aggiorna gli elementi del carrello
+							$this->m["CartModel"]->aggiornaElementi();
 						}
 					}
 					else
@@ -299,7 +302,21 @@ class BaseCartController extends BaseController
 		
 		$this->clean();
 		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
-
+		$elementiCarrello = isset(Params::$rawPOST["elementi_carrello"]) ? Params::$rawPOST["elementi_carrello"] : array();
+		
+		$elementiPuliti = array();
+		
+		foreach ($elementiCarrello as $elC)
+		{
+			if (isset($elC["id_cart"]) && isset($elC["email"]) && isset($elC["testo"]))
+			{
+				$elementiPuliti["CART-".(int)$elC["id_cart"]][] = array(
+					"email"	=>	(string)$elC["email"],
+					"testo"	=>	(string)$elC["testo"],
+				);
+			}
+		}
+		
 		$quantityArray = explode("|",$clean["quantity"]);
 		
 		$arrayIdErroriQta = array();
@@ -335,6 +352,9 @@ class BaseCartController extends BaseController
 			{
 				$this->m["CartModel"]->set($temp[0], $temp[1]);
 			}
+			
+			// Aggiorna gli elementi del carrello
+			$this->m["CartModel"]->aggiornaElementi($elementiPuliti);
 		}
 		
 		echo json_encode($arrayIdErroriQta);

@@ -634,6 +634,7 @@ class OrdiniModel extends FormModel {
 		
 		$c = new CartModel();
 		$r = new RigheModel();
+		$re = new RigheelementiModel();
 		
 		$sconto = 0;
 		if (hasActiveCoupon($id_o))
@@ -677,7 +678,24 @@ class OrdiniModel extends FormModel {
 			$r->delFields("id_order");
 			
 			$r->sanitize();
-			$r->insert();
+			
+			if ($r->insert())
+			{
+				// Salvo gli elementi del carrello
+				$elementiCarrello = CartelementiModel::getElementiCarrello($p["cart"]["id_cart"]);
+				
+				foreach ($elementiCarrello as $elCart)
+				{
+					unset($elCart["id_cart_elemento"]);
+					unset($elCart["data_creazione"]);
+					unset($elCart["id_cart"]);
+					
+					$re->sValues($elCart, "sanitizeDb");
+					$re->setValue("id_r", $r->lId);
+					
+					$re->insert();
+				}
+			}
 		}
 	}
 	

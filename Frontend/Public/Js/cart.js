@@ -795,10 +795,33 @@ function aggiornaCarrello()
 	
 	ok_aggiorna_carrello = false;
 	
+	var elementi = [];
+	
+	if ($(".form_elemento_gift_card").length > 0)
+	{
+		$(".form_elemento_gift_card").each(function(){
+			
+			var idCart = $(this).attr("id-cart");
+			var email = $(this).find("[name='email']").val();
+			var testo = $(this).find("[name='testo']").val();
+			
+			elementi.push({
+				id_cart: idCart,
+				email: email,
+				testo: testo
+			});
+			
+		});
+	}
+	
 	$.ajaxQueue({
-		type: "POST",
 		url: baseUrl + "/carrello/aggiorna",
-		data: post_data,
+		type: "POST",
+		data: {
+			products_list: products_list,
+			elementi_carrello:  elementi
+		},
+// 		data: post_data,
 		async: true,
 		cache:false,
 		dataType: "json",

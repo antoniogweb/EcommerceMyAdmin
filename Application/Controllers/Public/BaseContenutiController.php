@@ -575,8 +575,7 @@ class BaseContenutiController extends BaseController
 	{
 		$this->m["CategoriesModel"]->checkBloccato($id);
 		
-		if (!in_array("combinazioni", Cache::$cachedTables))
-			Cache::$cachedTables[] = "combinazioni";
+		Cache::addTablesToCache(array("combinazioni","scaglioni"));
 		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
@@ -1127,6 +1126,8 @@ class BaseContenutiController extends BaseController
 	protected function page($id)
 	{
 		$this->m["PagesModel"]->checkBloccato($id, "page");
+		
+		Cache::addTablesToCache(array("combinazioni","scaglioni"));
 		
 		$clean["realId"] = $data["realId"] = (int)$id;
 		

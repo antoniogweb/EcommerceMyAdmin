@@ -435,21 +435,24 @@ class PromozioniModel extends GenericModel {
 		}
 		else if ($attivo == "Y")
 		{
+			$elementiRiga = RigheelementiModel::getElementiRiga($idR);
+			
 			for ($i = 0; $i < $riga["quantity"]; $i++)
 			{
-				$titolo = htmlentitydecode($riga["title"]);
-				
 				$this->sValues(array(
 					"dal"	=>	date("d-m-Y"),
 					"al"	=>	$ora->format("d-m-Y"),
 					"sconto"	=>	$riga["prezzo_intero_ivato"],
-					"titolo"	=>	$titolo,
+					"titolo"	=>	$riga["title"],
 					"codice"	=>	md5(randString(20).microtime().uniqid(mt_rand(),true)),
 					"numero_utilizzi"	=>	9999,
 					"tipo_sconto"	=>	"ASSOLUTO",
 					"id_r"		=>	$idR,
 					"attivo"	=>	$attivo,
-				));
+					"fonte"		=>	"ORDINE",
+					"email"		=>	isset($elementiRiga[$i]["email"]) ? $elementiRiga[$i]["email"] : "",
+					"testo"		=>	isset($elementiRiga[$i]["testo"]) ? $elementiRiga[$i]["testo"] : "",
+				), "sanitizeDb");
 				
 				$this->insert();
 			}

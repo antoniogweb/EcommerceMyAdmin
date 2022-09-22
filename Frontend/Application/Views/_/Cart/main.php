@@ -43,6 +43,7 @@
 					</div>
 				</div>
 			</div>
+			<?php include(tpf("Cart/main_elementi_riga.php"));?>
 			<hr>
 			<?php } ?>
 			<div class="uk-grid-small uk-child-width-expand@s uk-grid" uk-grid="">
@@ -68,8 +69,8 @@
 			</div>
 		</div>
 		<div class="uk-width-1-1 tm-aside-column uk-width-1-4@m uk-text-left">
-<!-- 			<div uk-sticky="offset: 100;bottom: true;"> -->
-			<div>
+			<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
+<!-- 			<div> -->
 				<h3><?php echo gtext("Totali carrello");?></h3>
 				
 				<?php include(tpf("/Ordini/totali.php"));?>

@@ -27,8 +27,8 @@
 				if (count($promozioni) > 0) { ?>
 					<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
 						<tr>
-							<th><?php echo gtext("Codice Gift Card");?></th>
-							<th><?php echo gtext("Stato");?></th>
+							<th style="text-align:left;"><?php echo gtext("Codice Gift Card");?></th>
+							<th style="text-align:left;"><?php echo gtext("Stato");?></th>
 						</tr>
 				<?php } ?>
 				<?php

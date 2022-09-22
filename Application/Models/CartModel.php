@@ -46,6 +46,7 @@ class CartModel extends GenericModel {
 	
 	public function relations() {
         return array(
+			'elementi' => array("HAS_MANY", 'CartelementiModel', 'id_cart', null, "CASCADE"),
 			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
@@ -822,17 +823,63 @@ class CartModel extends GenericModel {
 		return 0;
 	}
 	
-	public function aggiornaElementi($idCart)
+	// Restituisce le righe del proprio carrello
+	public function getRigheCart($sWhere = "")
+	{
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$c = new CartModel();
+		
+		$res = $c->clear()->where(array(
+			"cart_uid"	=>	$clean["cart_uid"],
+		));
+		
+		if ($sWhere)
+			$c->sWhere($sWhere);
+		
+		return $c->send(false);
+	}
+	
+	public function aggiornaElementi($elementiPost = array())
 	{
 		if (!v("attiva_gift_card"))
 			return;
 		
-// 		$record = $this->getCart($idCart);
-// 		
-// 		if (!empty($record))
-// 		{
-// 			if ($record["gift_card"])
-// 		}
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
+		$ce = new CartelementiModel();
+		
+		$righeCarrello = $this->getRigheCart("gift_card = 1");
+		
+		foreach ($righeCarrello as $riga)
+		{
+			if ($riga["gift_card"])
+			{
+				$numeroElementiCarrello = $ce->clear()->where(array(
+					"id_cart"	=>	(int)$riga["id_cart"],
+				))->rowNumber();
+				
+				if ((int)$numeroElementiCarrello !== (int)$riga["quantity"] || count($elementiPost) > 0)
+				{
+					$ce->del(null, "id_cart = ".(int)$riga["id_cart"]);
+					
+					for ($i = 0; $i < $riga["quantity"]; $i++)
+					{
+						$ce->sValues(array(
+							"email"		=>	isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "",
+							"testo"		=>	isset($elementiPost["CART-".$riga["id_cart"]][$i]["testo"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["testo"] : "",
+							"id_cart"	=>	$riga["id_cart"],
+						));
+						
+						$ce->insert();
+					}
+				}
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 	}
 	
 	public function getCreationTime()
