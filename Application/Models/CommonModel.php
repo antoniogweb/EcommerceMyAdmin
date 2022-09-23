@@ -162,7 +162,7 @@ trait CommonModel {
 	{
 		$linguaUrl = $lingua ? "/$lingua/" : "/";
 		
-		return rtrim(Url::getFileRoot(),"/").$linguaUrl;
+		return Domain::$publicUrl.$linguaUrl;
 	}
 	
 	public function forzaBloccato()

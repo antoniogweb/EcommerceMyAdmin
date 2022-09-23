@@ -78,7 +78,7 @@ class SegnapostoModel extends GenericModel {
 			if ($metodo)
 			{
 				if (isset($model) && method_exists($model,$metodo))
-					$valoreSostituitoto = call_user_func(array($model, $metodo), $lingua);
+					$valoreSostituitoto = call_user_func_array(array($model, $metodo), array($lingua, $record));
 			}
 			else if ($variabile)
 			{
@@ -127,7 +127,7 @@ class SegnapostoModel extends GenericModel {
 		
 		if (isset(self::$valoriLista))
 		{
-			$wrap = "<div class='callout callout-info'>".gtext("È possibile utilizzare i seguenti SEGNAPOSTO, che  verranno poi riempiti con i valori corretti nella preparazione e invio della mail").":";
+			$wrap = "<div class='callout callout-info'>".gtext("È possibile utilizzare i seguenti SEGNAPOSTO nell'oggetto e nel corpo della mail, che  verranno poi riempiti con i valori corretti nella preparazione e invio della mail").":";
 			
 			foreach (self::$valoriLista as $pl => $titolo)
 			{

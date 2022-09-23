@@ -111,18 +111,29 @@ class PromozioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$record = $this->m[$this->modelName]->selectId((int)$id);
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->formValuesToDb = 'titolo,codice,attivo,dal,al';
+		$campi = 'titolo,codice,attivo,dal,al';
 		
 		if (v("attiva_promo_sconto_assoluto"))
-			$this->formValuesToDb .= ',tipo_sconto';
+			$campi .= ',tipo_sconto';
 		
-		$this->formValuesToDb .= ',sconto,numero_utilizzi';
+		$campi .= ',sconto,numero_utilizzi';
+		
+		$this->m[$this->modelName]->setValuesFromPost($campi);
+		
+		if (!empty($record) && $record["id_r"])
+		{
+			$campiDisabilitati = "codice,sconto,tipo_sconto";
+			$this->disabledFields = $campiDisabilitati;
+			$this->m[$this->modelName]->delFields($campiDisabilitati);
+		}
 		
 		parent::form($queryType, $id);
 		
-		$data["record"] = $this->m[$this->modelName]->selectId((int)$id);
+		$data["record"] = $record;
 		
 		$this->append($data);
 	}
@@ -214,6 +225,48 @@ class PromozioniController extends BaseController {
 		{
 			$data["listaProdotti"][$r["pages"]["id_page"]] = $r["pages"]["codice"] . " - " . $r["pages"]["title"];
 		}
+		
+		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function invii($id = 0)
+	{
+		$this->model("EventiretargetingelementiModel");
+		
+		$this->_posizioni['invii'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->tabella = "promozioni";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array();
+		
+		$this->modelName = "EventiretargetingelementiModel";
+		
+		$this->mainFields = array("cleanDateTime", "eventi_retargeting_elemento.email", "mail_ordini.oggetto", "inviata");
+		$this->mainHead = "Data,Email,Oggetto,Inviata";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"invii/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("mail"))->orderBy("eventi_retargeting_elemento.data_creazione desc")->where(array(
+			"id_elemento"	=>	$clean['id'],
+			"duplicato"	=>	0,
+		))->convert()->save();
+		
+		parent::main();
 		
 		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
 		

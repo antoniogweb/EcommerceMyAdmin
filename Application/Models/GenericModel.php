@@ -513,11 +513,7 @@ class GenericModel extends Model_Tree
 			{
 				if(@is_dir(Domain::$parentRoot."/".trim($params["path"],"/")))
 				{
-// 					$this->files->setBase(Domain::$parentRoot."/".trim($params["path"],"/"));
-// 					$list = $this->clear()->select($field)->toList($field)->send();
-// 					$list[] = "index.html";
-// 					
-// 					$this->files->removeFilesNotInTheList($list);
+				
 				}
 			}
 		}

@@ -36,7 +36,6 @@ class PromozioniModel extends GenericModel {
 		$this->_lang = 'It';
 		
 		parent::__construct();
-
 	}
 	
 	public function setFormStruct($id = 0)
@@ -154,12 +153,15 @@ class PromozioniModel extends GenericModel {
 		
 		if (checkIsoDate($this->values["dal"]) and checkIsoDate($this->values["al"]))
 		{
-			$res = $this->clear()->where(array(
-				"codice"	=>	$this->values["codice"],
-				"ne"	=>	array("id_p" => $clean["id"]),
-			))->send();
+			$numero = 0;
 			
-			if (count($res) === 0)
+			if (isset($this->values["codice"]))
+				$numero = $this->clear()->where(array(
+					"codice"	=>	$this->values["codice"],
+					"ne"	=>	array("id_p" => $clean["id"]),
+				))->rowNumber();
+			
+			if ((int)$numero === 0)
 			{
 				$res = parent::update($id);
 				
@@ -476,6 +478,7 @@ class PromozioniModel extends GenericModel {
 					"testo"		=>	isset($elementiRiga[$i]["testo"]) ? $elementiRiga[$i]["testo"] : "",
 					"nome"		=>	$oModel->getNome($riga["id_o"]),
 					"creation_time"	=>	time(),
+					"lingua"	=>	$riga["lingua"],
 				), "sanitizeDb");
 				
 				$this->insert();
@@ -498,5 +501,20 @@ class PromozioniModel extends GenericModel {
 		return $p->clear()->where(array(
 			"id_r"	=>	(int)$idR,
 		))->send(false);
+	}
+	
+	public function gSconto($lingua, $record)
+	{
+		return setPriceReverse($record["sconto"]);
+	}
+	
+	public function gCodicePromo($lingua, $record)
+	{
+		return $record["codice"];
+	}
+	
+	public function gDedicaPromo($lingua, $record)
+	{
+		return nl2br($record["testo"]);
 	}
 }
