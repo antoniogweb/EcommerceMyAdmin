@@ -628,6 +628,8 @@ class OrdiniModel extends FormModel {
 	//$id_o: id dell'ordine
 	public function riempiRighe($id_o)
 	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
 		$clean["id_o"] = (int)$id_o;
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);

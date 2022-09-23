@@ -67,7 +67,7 @@ class PromozioniController extends BaseController {
 			
 			$this->filters[] = array("fonte",null,array(
 				"tutti"	=>	"Fonte"
-			) + array("MANUALE"=>"Manuale","ORDINE"=>"Gift Card"));
+			) + array("MANUALE"=>"Manuale","GIFT_CARD"=>"Gift Card"));
 		}
 		
 		$this->mainFields[] = "sconto";
@@ -163,6 +163,8 @@ class PromozioniController extends BaseController {
 		
 		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
 		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
+		
 		$this->append($data);
 	}
 	
@@ -214,6 +216,8 @@ class PromozioniController extends BaseController {
 		}
 		
 		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}

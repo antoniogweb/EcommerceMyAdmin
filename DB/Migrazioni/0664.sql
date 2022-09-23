@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_gruppi` (`id_gruppo_retargeting`, `data_creazione`, `titolo`, `model`, `attivo`, `id_order`) VALUES (NULL, '2021-10-27 23:16:02', 'Manda email con dedica dopo che la Gift Card è stata attivata', 'PromozioniModel', '1', '4');

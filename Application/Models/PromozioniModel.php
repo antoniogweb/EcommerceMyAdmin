@@ -100,6 +100,14 @@ class PromozioniModel extends GenericModel {
         );
     }
     
+    public function processaEventiPromozione($idPromozione)
+	{
+		$promozione = $this->selectId((int)$idPromozione);
+		
+		if (!empty($promozione) && isset($promozione["email"]) && $promozione["email"] && checkMail($promozione["email"]) && $promozione["testo"] && $promozione["attivo"] == "Y" && $promozione["tipo_sconto"] == "ASSOLUTO")
+			EventiretargetingModel::processaPromo($idPromozione);
+	}
+    
 	public function insert()
 	{
 		if (strcmp($this->values["codice"],"") === 0)
@@ -116,7 +124,12 @@ class PromozioniModel extends GenericModel {
 			
 			if (count($res) === 0)
 			{
-				return parent::insert();
+				$res = parent::insert();
+				
+				if ($res)
+					$this->processaEventiPromozione($this->lId);
+				
+				return $res;
 			}
 			else
 			{
@@ -148,7 +161,12 @@ class PromozioniModel extends GenericModel {
 			
 			if (count($res) === 0)
 			{
-				return parent::update($id);
+				$res = parent::update($id);
+				
+// 				if ($res)
+// 					$this->processaEventiPromozione($id);
+				
+				return $res;
 			}
 			else
 			{
@@ -406,6 +424,7 @@ class PromozioniModel extends GenericModel {
 		$rModel = new RigheModel();
 		
 		$riga = $rModel->selectId((int)$idR);
+		$oModel = new OrdiniModel();
 		
 		if (empty($riga))
 			return;
@@ -452,9 +471,11 @@ class PromozioniModel extends GenericModel {
 					"tipo_sconto"	=>	"ASSOLUTO",
 					"id_r"		=>	$idR,
 					"attivo"	=>	$attivo,
-					"fonte"		=>	"ORDINE",
+					"fonte"		=>	"GIFT_CARD",
 					"email"		=>	isset($elementiRiga[$i]["email"]) ? $elementiRiga[$i]["email"] : "",
 					"testo"		=>	isset($elementiRiga[$i]["testo"]) ? $elementiRiga[$i]["testo"] : "",
+					"nome"		=>	$oModel->getNome($riga["id_o"]),
+					"creation_time"	=>	time(),
 				), "sanitizeDb");
 				
 				$this->insert();

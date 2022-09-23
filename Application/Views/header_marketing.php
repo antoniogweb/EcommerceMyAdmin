@@ -47,7 +47,7 @@ include(ROOT."/Application/Views/header.php");
 				<li class="<?php echo tm($tm, array("eventiretargeting","templateemail"));?> treeview">
 					<a href="#">
 						<i class="fa fa-phone"></i>
-						<span><?php echo gtext("Retargeting");?></span>
+						<span><?php echo gtext("Remarketing");?></span>
 					</a>
 					<ul class="treeview-menu">
 						<li class="dropdown-header"><?php echo gtext("Template");?></li>
