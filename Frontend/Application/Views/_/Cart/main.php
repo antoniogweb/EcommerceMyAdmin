@@ -1,12 +1,14 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (strcmp($pageView,"partial") !== 0) { ?><div id="main" class="cart_container"><?php } ?>
-<?php if (count($pages) > 0) { ?>
+<?php if (count($pages) > 0) {
+	$numeroGiftCardInCarrello = CartModel::numeroGifCartInCarrello();
+?>
 	<div class="uk-grid-medium uk-grid main_cart" uk-grid="">
 		<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
 			<?php if (!checkQtaCartFull()) { ?>
 			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
 			<?php } ?>
-			<?php if (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) { ?>
+			<?php if ($numeroGiftCardInCarrello > v("numero_massimo_gift_card")) { ?>
 			<div class="<?php echo v("alert_error_class");?>"><?php echo str_replace("[N]",v("numero_massimo_gift_card"),gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card"));?></div>
 			<?php } ?>
 			<?php if (!User::$isMobile) { ?>
@@ -82,7 +84,11 @@
 
 				<div class="uk-margin">
 					<div class="uk-button uk-button-secondary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
+					<?php if ($this->controller == "cart" && $numeroGiftCardInCarrello > 0) { ?>
+					<div class="vai_la_checkout btn_submit_form uk-button uk-button-secondary uk-width-1-1""><?php echo gtext("PROCEDI ALL'ACQUISTO");?></div>
+					<?php } else { ?>
 					<a class="btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
+					<?php } ?>
 				</div>
 			</div>
 		</div>

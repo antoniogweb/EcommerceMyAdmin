@@ -13213,6 +13213,15 @@ ul.thumbnails.image_picker_selector li .thumbnail {
   border-top: 1px dashed #e5e5e5;
 }
 
+.box_elementi_ordine {
+  border-bottom: 1px dashed #e5e5e5;
+}
+
+.dedica_scroll {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
 @media (min-width: 960px) {
   .detail_left {
     margin-right: 50px;

@@ -22,6 +22,7 @@
 		<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €
 	</div>
 </div>
+<?php include(tpf("Ordini/totale_elementi.php"));?>
 <?php } ?>
 <hr />
 <?php include(tpf("/Ordini/totali.php"));?>

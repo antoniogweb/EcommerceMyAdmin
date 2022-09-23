@@ -780,7 +780,7 @@ if (typeof pulisciErroriCart !== 'function')
 	}
 }
 
-function aggiornaCarrello()
+function aggiornaCarrello(vai_la_checkout)
 {
 	var products_list = "";
 	var curr_item = "";
@@ -838,9 +838,21 @@ function aggiornaCarrello()
 			}
 			
 			if (content.length == 0)
-				reloadCart();
+			{
+				if (typeof vai_la_checkout == "undefined")
+					reloadCart();
+				else
+					location.href = baseUrl + "/checkout";
+			}
 			else
+			{
 				alert(stringa_errore_giacenza_carrello);
+				
+				if (typeof vai_la_checkout != "undefined")
+				{
+					togliSpinner($(".vai_la_checkout"));
+				}
+			}
 			
 			ok_aggiorna_carrello = true;
 		}
@@ -904,12 +916,11 @@ $(document).ready(function(){
 		actionAggiungiAlCarrello($(this));
 	});
 	
-// 	$("body").on("click", ".aggiorna_carrello", function(e){
-// 		
-// 		if (attiva_gift_card)
-// 			aggiornaCarrello();
-// 		
-// 	});
+	$("body").on("click", ".vai_la_checkout", function(e){
+		
+		aggiornaCarrello(true);
+		
+	});
 	
 	$( "body" ).on( "click", ".cart_item_quantity_increase", function(e) {
 		
