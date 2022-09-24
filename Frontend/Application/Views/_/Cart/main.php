@@ -48,6 +48,15 @@
 			<?php include(tpf("Cart/main_elementi_riga.php"));?>
 			<hr>
 			<?php } ?>
+			<?php if (CartelementiModel::haErrori()) { ?>
+			<div class="uk-grid uk-grid-small uk-child-width-expand@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?>" uk-grid="">
+				<div class="uk-first-column uk-width-1-1 uk-width-1-5@m">
+				</div>
+				<div class="uk-width-expand uk-text-right uk-text-small uk-text-danger">
+					<?php echo gtext("Si prega di verificare i campi evidenziati");?>
+				</div>
+			</div>
+			<?php } ?>
 			<div class="uk-grid-small uk-child-width-expand@s uk-grid" uk-grid="">
 				<div>
 					<?php if (!hasActiveCoupon()) { ?>

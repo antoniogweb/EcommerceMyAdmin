@@ -852,6 +852,8 @@ class CartModel extends GenericModel {
 		
 		$righeCarrello = $this->getRigheCart("gift_card = 1");
 		
+		
+		
 		foreach ($righeCarrello as $riga)
 		{
 			if ($riga["gift_card"])
@@ -866,8 +868,10 @@ class CartModel extends GenericModel {
 					
 					for ($i = 0; $i < $riga["quantity"]; $i++)
 					{
+						$email = isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "";
+						
 						$ce->sValues(array(
-							"email"		=>	isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "",
+							"email"		=>	trim($email),
 							"testo"		=>	isset($elementiPost["CART-".$riga["id_cart"]][$i]["testo"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["testo"] : "",
 							"id_cart"	=>	$riga["id_cart"],
 						));

@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CartelementiModel extends GenericModel
 {
+	public static $erroriElementi = null;
+	
 	public function __construct() {
 		$this->_tables = 'cart_elementi';
 		$this->_idFields = 'id_cart_elemento';
@@ -46,5 +48,80 @@ class CartelementiModel extends GenericModel
 		return $ce->clear()->where(array(
 			"id_cart"	=>	(int)$idCart,
 		))->send(false);
+	}
+	
+	public static function isOkField($idEl, $field)
+	{
+		if (!v("attiva_gift_card"))
+			return true;
+		
+		$arrayErrori = self::getErroriElementi();
+		
+		if (isset($arrayErrori[$idEl][$field]) && !$arrayErrori[$idEl][$field])
+			return false;
+		
+		return true;
+	}
+	
+	public static function haErrori($idEl = 0)
+	{
+		if (!v("attiva_gift_card"))
+			return false;
+		
+		$arrayErrori = self::getErroriElementi();
+		
+		foreach ($arrayErrori as $id => $struct)
+		{
+			if ($idEl && (int)$id !== (int)$idEl)
+				continue;
+			
+			foreach ($struct as $k => $v)
+			{
+				if (!$v)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static function getErroriElementi()
+	{
+		if (!isset(self::$erroriElementi))
+		{
+			$arrayErrori = array();
+			
+			if (!v("attiva_gift_card"))
+				return $arrayErrori;
+			
+			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+			
+			$ce = new CartelementiModel();
+			
+			$elementiCarrello = $ce->clear()->inner(array("cart"))->where(array(
+				"cart.cart_uid"	=>	$clean["cart_uid"],
+			))->send(false);
+			
+			foreach ($elementiCarrello as $el)
+			{
+				$temp = array();
+				
+				if (trim($el["email"]) && !checkMail($el["email"]))
+					$temp["email"] = 0;
+				else
+					$temp["email"] = 1;
+				
+				if (trim($el["email"]) && !trim($el["testo"]))
+					$temp["testo"] = 0;
+				else
+					$temp["testo"] = 1;
+				
+				$arrayErrori[$el["id_cart_elemento"]] = $temp;
+			}
+			
+			self::$erroriElementi = $arrayErrori;
+		}
+		
+		return self::$erroriElementi;
 	}
 }

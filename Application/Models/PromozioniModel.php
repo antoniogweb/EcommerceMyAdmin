@@ -474,7 +474,7 @@ class PromozioniModel extends GenericModel {
 					"id_r"		=>	$idR,
 					"attivo"	=>	$attivo,
 					"fonte"		=>	"GIFT_CARD",
-					"email"		=>	isset($elementiRiga[$i]["email"]) ? $elementiRiga[$i]["email"] : "",
+					"email"		=>	isset($elementiRiga[$i]["email"]) ? trim($elementiRiga[$i]["email"]) : "",
 					"testo"		=>	isset($elementiRiga[$i]["testo"]) ? $elementiRiga[$i]["testo"] : "",
 					"nome"		=>	$oModel->getNome($riga["id_o"]),
 					"creation_time"	=>	time(),

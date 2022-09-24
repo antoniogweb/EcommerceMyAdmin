@@ -832,12 +832,12 @@ function aggiornaCarrello(vai_la_checkout)
 			
 			pulisciErroriCart();
 			
-			for (var i=0; i<content.length; i++)
+			for (var i=0; i<content.qty.length; i++)
 			{
-				evidenziaErroreCart(".item_quantity[rel='"+content[i]+"']");
+				evidenziaErroreCart(".item_quantity[rel='"+content.qty[i]+"']");
 			}
 			
-			if (content.length == 0)
+			if (content.qty.length == 0)
 			{
 				if (typeof vai_la_checkout == "undefined")
 					reloadCart();
@@ -849,9 +849,9 @@ function aggiornaCarrello(vai_la_checkout)
 				alert(stringa_errore_giacenza_carrello);
 				
 				if (typeof vai_la_checkout != "undefined")
-				{
 					togliSpinner($(".vai_la_checkout"));
-				}
+				else
+					togliSpinner($(".cart_button_aggiorna_carrello"));
 			}
 			
 			ok_aggiorna_carrello = true;

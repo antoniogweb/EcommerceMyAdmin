@@ -346,6 +346,9 @@ class BaseCartController extends BaseController
 			}
 		}
 		
+// 		if (CartelementiModel::haErrori())
+// 			$arrayIdErroriQta[] = -9999;
+		
 		if ((int)count($arrayIdErroriQta) === 0)
 		{
 			foreach ($arrayIdQuantity as $temp)
@@ -357,6 +360,9 @@ class BaseCartController extends BaseController
 			$this->m["CartModel"]->aggiornaElementi($elementiPuliti);
 		}
 		
-		echo json_encode($arrayIdErroriQta);
+		echo json_encode(array(
+			"qty"		=>	$arrayIdErroriQta,
+			"elementi"	=>	CartelementiModel::getErroriElementi()
+		));
 	}
 }
