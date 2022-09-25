@@ -8,6 +8,7 @@
 	var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
 	var variante_non_disponibile = "<?php echo gtext("Prodotto non disponibile", false);?>";
 	var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
+	var stringa_errore_righe_carrello = "<?php echo gtext("Attenzione, controllare i campi evidenziati", false);?>";
 	var back_cart_error = "red";
 	var isMobile = <?php echo User::$isMobile ? "true" : "false";?>;
 	var nazioniConVat = ['<?php echo implode("','",NazioniModel::elencoNazioniConVat())?>'];

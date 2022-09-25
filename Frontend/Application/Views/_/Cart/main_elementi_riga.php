@@ -15,11 +15,11 @@
 								<div class="uk-inline">
 									<span class="uk-form-icon" uk-icon="icon: mail"></span>
 									<?php
-									$classeInput = !CartelementiModel::isOkField($elCart["id_cart_elemento"], "email") ? "uk-form-danger" : "";
+									$classeInput = (CartelementiModel::evidenzia($pageView) && !CartelementiModel::isOkField($elCart["id_cart_elemento"], "email")) ? "uk-form-danger" : "";
 									echo Html_Form::input("email",$elCart["email"],"$classeInput uk-input uk-form-width-large");?>
 								</div>
 							</div>
-							<div class="uk-width-1-1 uk-width-1-3@m uk-text-meta">
+							<div class="uk-width-1-1 uk-width-1-3@m uk-text-meta uk-margin-remove-top">
 								<?php echo gtext("Scrivi qui l'email della persona a cui vuoi regalare la gift card");?>
 							</div>
 						</div>
@@ -29,21 +29,12 @@
 					<label class="uk-form-label"><?php echo gtext("Testo della dedica e firma");?></label>
 					<div class="uk-form-controls">
 						<?php
-						$classeInput = !CartelementiModel::isOkField($elCart["id_cart_elemento"], "testo") ? "uk-form-danger" : "";
-						echo Html_Form::textarea("testo",$elCart["testo"],"$classeInput uk-textarea ",null);?>
+						$classeInput = (CartelementiModel::evidenzia($pageView) && !CartelementiModel::isOkField($elCart["id_cart_elemento"], "testo")) ? "uk-form-danger" : "";
+						echo Html_Form::textarea("testo",$elCart["testo"],"$classeInput uk-textarea");?>
 					</div>
 				</div>
 			</div>
 		</div>
-		<?php if (false && CartelementiModel::haErrori($elCart["id_cart_elemento"])) { ?>
-		<div class="uk-grid uk-grid-small uk-child-width-expand@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?>" uk-grid="">
-			<div class="uk-first-column uk-width-1-1 uk-width-1-5@m">
-			</div>
-			<div class="uk-width-expand uk-text-left uk-text-small uk-text-danger">
-				<?php echo gtext("Si prega di verificare i campi evidenziati");?>
-			</div>
-		</div>
-		<?php } ?>
 	</div>
 	<?php } ?>
 <?php } ?>

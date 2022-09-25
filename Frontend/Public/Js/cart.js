@@ -50,15 +50,26 @@ if (typeof mostra_errori_personalizzazione == "undefined")
 if (typeof attiva_gift_card == "undefined")
 	var attiva_gift_card = false;
 
+if (typeof stringa_errore_righe_carrello == "undefined")
+	var stringa_errore_righe_carrello = "Attenzione, controllare i campi evidenziati";
+
 var time;
 var arrayAccessori = [];
 
 if (typeof reloadCart !== 'function')
 {
-	window.reloadCart = function()
+	window.reloadCart = function(incrementa)
 	{
+		if (typeof incrementa == "undefined")
+			incrementa = false;
+		
+		var url = baseUrl + "/carrello/partial";
+		
+		if (incrementa)
+			url += "?incrementa";
+		
 		$.ajax({
-			url: baseUrl + "/carrello/partial",
+			url: url,
 			async: false,
 			cache:false,
 			dataType: "html",
@@ -780,8 +791,40 @@ if (typeof pulisciErroriCart !== 'function')
 	}
 }
 
-function aggiornaCarrello(vai_la_checkout)
+if (typeof evidenziaErroreGiftCard !== 'function')
 {
+	window.evidenziaErroreGiftCard = function(obj)
+	{
+		obj.addClass("uk-form-danger");
+	}
+}
+
+if (typeof pulisciErroriGiftCard !== 'function')
+{
+	window.pulisciErroriGiftCard = function()
+	{
+		$(".form_elemento_gift_card input").each(function(){
+			
+			$(this).removeClass("uk-form-danger");
+			
+		});
+		
+		$(".form_elemento_gift_card textarea").each(function(){
+			
+			$(this).removeClass("uk-form-danger");
+			
+		});
+	}
+}
+
+function aggiornaCarrello(vai_la_checkout, incrementa)
+{
+	if (typeof incrementa == "undefined")
+		incrementa = false;
+	
+// 	if (typeof is_gift_card == "undefined")
+// 		is_gift_card = false;
+	
 	var products_list = "";
 	var curr_item = "";
 	var curr_quantity = "";
@@ -817,8 +860,13 @@ function aggiornaCarrello(vai_la_checkout)
 		});
 	}
 	
+	var url  = baseUrl + "/carrello/aggiorna";
+	
+	if (incrementa)
+		url += "?incrementa";
+	
 	$.ajaxQueue({
-		url: baseUrl + "/carrello/aggiorna",
+		url: url,
 		type: "POST",
 		data: {
 			products_list: products_list,
@@ -829,7 +877,6 @@ function aggiornaCarrello(vai_la_checkout)
 		cache:false,
 		dataType: "json",
 		success: function(content){
-			
 			pulisciErroriCart();
 			
 			for (var i=0; i<content.qty.length; i++)
@@ -837,21 +884,40 @@ function aggiornaCarrello(vai_la_checkout)
 				evidenziaErroreCart(".item_quantity[rel='"+content.qty[i]+"']");
 			}
 			
-			if (content.qty.length == 0)
+			pulisciErroriGiftCard();
+			
+			if (content.errori_elementi == 1)
+			{
+				$(".form_elemento_gift_card").each(function(index){
+					if (typeof content.res_elementi[index] != "undefined" && content.res_elementi[index].email == 0)
+						evidenziaErroreGiftCard($(this).find("[name='email']"));
+					
+					if (typeof content.res_elementi[index] != "undefined" && content.res_elementi[index].testo == 0)
+						evidenziaErroreGiftCard($(this).find("[name='testo']"));
+				});
+			}
+			
+			if (content.qty.length == 0 && content.errori_elementi == 0)
 			{
 				if (typeof vai_la_checkout == "undefined")
-					reloadCart();
+					reloadCart(incrementa);
 				else
 					location.href = baseUrl + "/checkout";
 			}
 			else
 			{
-				alert(stringa_errore_giacenza_carrello);
+				if (content.errori_elementi == 0)
+					alert(stringa_errore_giacenza_carrello);
+				else
+					alert(stringa_errore_righe_carrello);
 				
 				if (typeof vai_la_checkout != "undefined")
 					togliSpinner($(".vai_la_checkout"));
 				else
 					togliSpinner($(".cart_button_aggiorna_carrello"));
+				
+				if (content.qty.length == 0)
+					reloadCart(incrementa);
 			}
 			
 			ok_aggiorna_carrello = true;
@@ -932,8 +998,11 @@ $(document).ready(function(){
 			
 			var new_quantity = parseInt(t_input.val()) + 1;
 			
-			t_input.val(new_quantity) ;
-			aggiornaCarrello();
+			t_input.val(new_quantity);
+			
+// 			var is_gift_card = $(this).closest(".cart_item_row").hasClass("gift_card_row") ? true : false;
+			
+			aggiornaCarrello(undefined, true,);
 		}
 	});
 	
@@ -950,14 +1019,17 @@ $(document).ready(function(){
 			if (t_current_quantity > 1)
 			{
 				t_input.val( t_current_quantity - 1) ;
-				aggiornaCarrello();
+				
+// 				var is_gift_card = $(this).closest(".cart_item_row").hasClass("gift_card_row") ? true : false;
+			
+				aggiornaCarrello(undefined, true);
 			}
 		}
 	});
 	
 	$( "body" ).on( "change", ".cart_item_row_mobile", function(e) {
 		
-		aggiornaCarrello();
+		aggiornaCarrello(undefined, true);
 		
 	});
 	

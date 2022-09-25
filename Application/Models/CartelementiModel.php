@@ -47,7 +47,7 @@ class CartelementiModel extends GenericModel
 		
 		return $ce->clear()->where(array(
 			"id_cart"	=>	(int)$idCart,
-		))->send(false);
+		))->orderBy("id_cart_elemento")->send(false);
 	}
 	
 	public static function isOkField($idEl, $field)
@@ -85,6 +85,27 @@ class CartelementiModel extends GenericModel
 		return false;
 	}
 	
+	public static function evidenzia($pageView)
+	{
+		return (isset($_GET["evidenzia"]) || $pageView == "partial") ? true : false;
+	}
+	
+	public static function asArray($errori)
+	{
+		$arrayReturn = array();
+		
+		foreach ($errori as $id => $struct)
+		{
+			$temp = $struct;
+			
+			$temp["id"] = $id;
+			
+			$arrayReturn[] = $temp;
+		}
+		
+		return $arrayReturn;
+	}
+	
 	public static function getErroriElementi()
 	{
 		if (!isset(self::$erroriElementi))
@@ -100,18 +121,18 @@ class CartelementiModel extends GenericModel
 			
 			$elementiCarrello = $ce->clear()->inner(array("cart"))->where(array(
 				"cart.cart_uid"	=>	$clean["cart_uid"],
-			))->send(false);
+			))->orderBy("cart.id_order ASC,id_cart ASC,id_cart_elemento")->send(false);
 			
 			foreach ($elementiCarrello as $el)
 			{
 				$temp = array();
 				
-				if (trim($el["email"]) && !checkMail($el["email"]))
+				if (!isset($_GET["incrementa"]) && !checkMail($el["email"]))
 					$temp["email"] = 0;
 				else
 					$temp["email"] = 1;
 				
-				if (trim($el["email"]) && !trim($el["testo"]))
+				if (!isset($_GET["incrementa"]) && !trim($el["testo"]))
 					$temp["testo"] = 0;
 				else
 					$temp["testo"] = 1;

@@ -1007,7 +1007,7 @@ class CartModel extends GenericModel {
 		
 		return $this->clear()->select("cart.*,pages.*,contenuti_tradotti.*")->inner("pages")->using("id_page")
 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("cart.id_order ASC, id_cart ASC")->send();
+			->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("cart.id_order ASC,id_cart ASC")->send();
 	}
 	
 	public function insert()

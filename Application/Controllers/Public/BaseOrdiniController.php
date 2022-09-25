@@ -746,10 +746,10 @@ class BaseOrdiniController extends BaseController
 				$this->redirect("carrello/vedi");
 		}
 		
-		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")))
+		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
 		{
 			if (Output::$html)
-				$this->redirect("carrello/vedi");
+				$this->redirect("carrello/vedi?evidenzia");
 		}
 		
 		// Prendo valori da account, per app

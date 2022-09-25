@@ -11,6 +11,9 @@
 			<?php if ($numeroGiftCardInCarrello > v("numero_massimo_gift_card")) { ?>
 			<div class="<?php echo v("alert_error_class");?>"><?php echo str_replace("[N]",v("numero_massimo_gift_card"),gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card"));?></div>
 			<?php } ?>
+			<?php if (isset($_GET["evidenzia"]) && CartelementiModel::haErrori()) { ?>
+			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, controllare i campi evidenziati relativi alle Gift Card.");?></div>
+			<?php } ?>
 			<?php if (!User::$isMobile) { ?>
 			<div class="uk-visible@m">
 				<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
@@ -48,7 +51,7 @@
 			<?php include(tpf("Cart/main_elementi_riga.php"));?>
 			<hr>
 			<?php } ?>
-			<?php if (CartelementiModel::haErrori()) { ?>
+			<?php if (CartelementiModel::evidenzia($pageView) && CartelementiModel::haErrori()) { ?>
 			<div class="uk-grid uk-grid-small uk-child-width-expand@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?>" uk-grid="">
 				<div class="uk-first-column uk-width-1-1 uk-width-1-5@m">
 				</div>
