@@ -46,7 +46,7 @@ class RigheModel extends GenericModel {
 			
 			$combinazione = $c->selectId((int)$this->values["id_c"]);
 			
-			if (!empty($combinazione))
+			if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
 			{
 				$c->setValues(array(
 					"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$this->values["quantity"]),

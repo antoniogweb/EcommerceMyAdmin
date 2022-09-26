@@ -30,7 +30,7 @@ Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "l
 
 if (defined("CACHE_FOLDER"))
 {
-	Cache::$cacheFolder = CACHE_FOLDER;
+	Cache::$cacheFolder = ROOT."/".ltrim(CACHE_FOLDER,"/");
 	Cache::$cacheMinutes = 60;
 	Cache::$cleanCacheEveryXMinutes = 70;
 	Cache::deleteExpired();

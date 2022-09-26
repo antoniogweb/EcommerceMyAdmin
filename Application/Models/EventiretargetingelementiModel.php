@@ -47,5 +47,15 @@ class EventiretargetingelementiModel extends GenericModel {
 		else
 			return "<i class='text text-danger fa fa-thumbs-down'></i>";
     }
-    
+	
+	public static function getElemento($idElemento, $tabellaElemento)
+	{
+		$ere = new EventiretargetingelementiModel();
+		
+		return $ere->clear()->where(array(
+			"id_elemento"		=>	(int)$idElemento,
+			"tabella_elemento"	=>	sanitizeAll($tabellaElemento),
+		))->record();
+	}
+	
 }

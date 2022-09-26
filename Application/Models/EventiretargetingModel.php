@@ -213,6 +213,7 @@ class EventiretargetingModel extends GenericModel {
 				$cModel = new $modelName;
 				$cModel->clear();
 				$primaryKey = $cModel->getPrimaryKey();
+				$tableName = $cModel->table();
 				
 				if ($idElemento)
 					$cModel->aWhere(array(
@@ -305,6 +306,7 @@ class EventiretargetingModel extends GenericModel {
 							"mail_inviata"	=>	$mailInviata,
 							"email"			=>	$emailElemento,
 							"id_mail"		=>	count(MailordiniModel::$idMailInviate) > 0 ? MailordiniModel::$idMailInviate[0] : 0,
+							"tabella_elemento"	=>	$tableName,
 						);
 						
 						if (!self::$debug)

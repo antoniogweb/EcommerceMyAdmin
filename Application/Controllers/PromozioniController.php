@@ -262,9 +262,47 @@ class PromozioniController extends BaseController {
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"invii/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("*")->inner(array("mail"))->orderBy("eventi_retargeting_elemento.data_creazione desc")->where(array(
-			"id_elemento"	=>	$clean['id'],
-			"duplicato"	=>	0,
+			"id_elemento"		=>	$clean['id'],
+			"tabella_elemento"	=>	"promozioni",
+			"duplicato"			=>	0,
 		))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function ordini($id = 0)
+	{
+		$this->model("OrdiniModel");
+		
+		$this->_posizioni['ordini'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "OrdiniModel";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrudPieno", "totaleCrud");
+		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale pieno,Totale scontato";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array("id_p"=>$clean['id']))->save();
 		
 		parent::main();
 		

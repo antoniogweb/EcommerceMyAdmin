@@ -203,7 +203,11 @@
 								
 								foreach ($promozioni as $promo) { 
 							?>
-								<br /><a title="<?php echo gtext("Vedi dettagli promo");?>" class="iframe" href="<?php echo $this->baseUrl."/promozioni/form/update/".$promo["id_p"];?>?partial=Y&nobuttons=Y"><i class="fa fa-info-circle"></i></a> <?php echo gtext("Codice");?>: <span class="badge badge-info"><?php echo $promo["codice"];?></span> <?php echo gtext("Stato");?>: <?php echo $promo["attivo"] == "Y" ? "<span class='label label-success'>".gtext("Attivo")."</span>" : "<span class='label label-warning'>".gtext("Non attivo")."</span>";?>
+									<br /><a title="<?php echo gtext("Vedi dettagli promo");?>" class="iframe" href="<?php echo $this->baseUrl."/promozioni/form/update/".$promo["id_p"];?>?partial=Y&nobuttons=Y"><i class="fa fa-info-circle"></i></a> <?php echo gtext("Codice");?>: <span class="badge badge-info"><?php echo $promo["codice"];?></span> <?php echo gtext("Stato");?>: <?php echo $promo["attivo"] == "Y" ? "<span class='label label-success'>".gtext("Attivo")."</span>" : "<span class='label label-warning'>".gtext("Non attivo")."</span>";?>
+									<?php $euroUsati = PromozioniModel::gNumeroEuroUsati($promo["id_p"]);?>
+									<?php if ($euroUsati > 0) { ?>
+									<?php echo gtext("Usati");?>: <strong><?php echo setPriceReverse($euroUsati);?> €</strong>
+									<?php } ?>
 								<?php } ?>
 							<?php } ?>
 							<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
@@ -301,7 +305,7 @@
 						<?php } ?>
 						<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
 						<tr class="text text-warning">
-							<td colspan="2"><?php echo gtext("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?>. <?php echo gtext("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b></td>
+							<td colspan="2"><?php echo gtext("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?></b>. <?php echo gtext("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b></td>
 							<td class="text-right"></td>
 							<td class="text-right"></td>
 							<td class="text-right">

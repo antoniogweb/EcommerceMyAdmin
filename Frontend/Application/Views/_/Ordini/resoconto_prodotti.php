@@ -35,11 +35,21 @@
 				
 				foreach ($promozioni as $promo) { 
 			?>
-				<tr><td><span class="uk-label uk-label-default"><?php echo $promo["codice"];?></span></td><td><?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?>
-					<?php if (PromozioniModel::gNumeroEuroRimasti($promo["id_p"]) <= 0) { ?>
-					<br /><span class="uk-text-meta"><?php echo gtext("Credito esaurito");?></span>
-					<?php } ?>
-				</td></tr>
+				<tr>
+					<td>
+						<span class="uk-text uk-text-primary"><?php echo $promo["codice"];?></span>
+						<?php $inviataA = EventiretargetingelementiModel::getElemento($promo["id_p"], "promozioni"); ?>
+						<?php if (!empty($inviataA)) { ?>
+						<br /><span class="uk-text-meta"><?php echo gtext("Inviato a");?>:</span> <span class="uk-text-small"><?php echo $inviataA["email"];?></span>
+						<?php } ?>
+					</td>
+					<td>
+						<?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?>
+						<?php if (PromozioniModel::gNumeroEuroRimasti($promo["id_p"]) <= 0) { ?>
+						<br /><span class="uk-text-meta"><?php echo gtext("Credito esaurito");?></span>
+						<?php } ?>
+					</td>
+				</tr>
 				<?php } ?>
 				
 				<?php if (count($promozioni) > 0) { ?></table><?php } ?>
