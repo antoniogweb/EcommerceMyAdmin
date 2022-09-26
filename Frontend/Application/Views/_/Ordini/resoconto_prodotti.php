@@ -35,7 +35,11 @@
 				
 				foreach ($promozioni as $promo) { 
 			?>
-				<tr><td><span class="uk-label uk-label-default"><?php echo $promo["codice"];?></span></td><td><?php echo $promo["attivo"] == "Y" ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?></td></tr>
+				<tr><td><span class="uk-label uk-label-default"><?php echo $promo["codice"];?></span></td><td><?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?>
+					<?php if (PromozioniModel::gNumeroEuroRimasti($promo["id_p"]) <= 0) { ?>
+					<br /><span class="uk-text-meta"><?php echo gtext("Credito esaurito");?></span>
+					<?php } ?>
+				</td></tr>
 				<?php } ?>
 				
 				<?php if (count($promozioni) > 0) { ?></table><?php } ?>

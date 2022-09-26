@@ -208,13 +208,13 @@ class PromozioniModel extends GenericModel {
 		}
 		return false;
 	}
-
+	
 	//controllo che il coupon sia attivo
-	public function isActiveCoupon($codice, $ido = null)
+	public function isActiveCoupon($codice, $ido = null, $checkCart = true)
 	{
 		$clean["codice"] = sanitizeAll($codice);
 		
-		if (CartModel::numeroGifCartInCarrello() > 0)
+		if ($checkCart && CartModel::numeroGifCartInCarrello() > 0)
 			return false;
 		
 		$res = $this->clear()->where(array("codice"=>$clean["codice"],"attivo"=>"Y"))->send();
@@ -236,6 +236,9 @@ class PromozioniModel extends GenericModel {
 				
 				if ($numeroUtilizzi > $numeroVolteUsata)
 				{
+					if (!$checkCart)
+						return true;
+					
 					$cart = new CartModel();
 					$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 					$prodottiCarrello = $cart->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->toList("id_page")->send();
