@@ -513,8 +513,13 @@ class PromozioniModel extends GenericModel {
 		return $record["codice"];
 	}
 	
-	public function gDedicaPromo($lingua, $record)
+	public function gDedicaPromo($lingua, $promo)
 	{
-		return nl2br($record["testo"]);
+		ob_start();
+		$tipoOutput = "mail_al_cliente";
+		include tpf("/Elementi/Placeholder/dedica_gift_card.php");
+		$output = ob_get_clean();
+		
+		return $output;
 	}
 }

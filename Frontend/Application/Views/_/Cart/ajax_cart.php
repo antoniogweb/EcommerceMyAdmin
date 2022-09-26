@@ -51,15 +51,21 @@
 		<?php } ?>
 		<div style="display:none;" class="ajax_cart_num_prod"><?php echo $prodInCart;?></div>
 	</div>
-	<?php if (count($carrello) > 0) { ?>
+	<?php if (count($carrello) > 0) {
+		$haErrori = CartelementiModel::haErrori();
+	?>
 	<footer class="uk-card-footer">
 		<div class="uk-grid-small" uk-grid>
 			<div class="uk-width-expand uk-text-muted uk-h4"><?php echo gtext("Subtotale");?></div>
 			<div class="uk-h4 uk-text-bolder"><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
 		</div>
-		<div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@m uk-margin-small" uk-grid>
-			<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Carrello");?></a></div>
-			<div><a class="uk-button uk-button-secondary uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("Checkout");?></a></div>
+		<div class="uk-grid-small uk-child-width-1-1 <?php if (!$haErrori) { ?>uk-child-width-1-2@m<?php } ?> uk-margin-small" uk-grid>
+			<?php if (!$haErrori) { ?>
+				<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Carrello");?></a></div>
+				<div><a class="uk-button uk-button-secondary uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("Checkout");?></a></div>
+			<?php } else { ?>
+				<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Vai al carrello");?> <span uk-icon="arrow-right"></span></a></div>
+			<?php } ?>
 		</div>
 	</footer>
 	<?php } ?>

@@ -46,7 +46,7 @@ include(ROOT."/Application/Views/header.php");
 				<?php if (v("attiva_template_email") && v("attiva_eventi_retargeting")) { ?>
 				<li class="<?php echo tm($tm, array("eventiretargeting","templateemail"));?> treeview">
 					<a href="#">
-						<i class="fa fa-phone"></i>
+						<i class="fa fa-plug"></i>
 						<span><?php echo gtext("Email automatiche");?></span>
 					</a>
 					<ul class="treeview-menu">

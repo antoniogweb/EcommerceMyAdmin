@@ -131,9 +131,23 @@ class EventiretargetingModel extends GenericModel {
 	{
 		$erg = new EventiretargetinggruppiModel();
 		
-		return $erg->clear()->where(array(
+// 		return $erg->clear()->where(array(
+// 			"attivo"	=>	1,
+// 		))->orderBy("id_order")->toList("id_gruppo_retargeting", "titolo")->send();
+		
+		$res = $erg->clear()->where(array(
 			"attivo"	=>	1,
-		))->orderBy("id_order")->toList("id_gruppo_retargeting", "titolo")->send();
+		))->orderBy("id_order")->send(false);
+		
+		$arrayEventi = array();
+		
+		foreach ($res as $r)
+		{
+			if (VariabiliModel::verificaCondizioni($r["condizioni"]))
+				$arrayEventi[$r["id_gruppo_retargeting"]] = $r["titolo"];
+		}
+		
+		return $arrayEventi;
 	}
 	
 	public function scattaDopoOre()
@@ -183,6 +197,8 @@ class EventiretargetingModel extends GenericModel {
 				
 				$idGruppoRetargeting = $evento["eventi_retargeting"]["id_gruppo_retargeting"];
 				
+				$dettagliGruppoRetargeting = $evGrModel->selectId($idGruppoRetargeting);
+				
 				$idPagina = $evento["eventi_retargeting"]["id_page"];
 				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
 				$timeCreazioneEvento = $evento["eventi_retargeting"]["creation_time"];
@@ -218,6 +234,9 @@ class EventiretargetingModel extends GenericModel {
 							"fonte"	=>	sanitizeDbDeep($arrayFonti),
 						),
 					));
+				
+				if (!empty($dettagliGruppoRetargeting) && $dettagliGruppoRetargeting["clausola_where"])
+					$cModel->sWhere($dettagliGruppoRetargeting["clausola_where"]);
 				
 				if ($scattaDopoOre > 0)
 				{
