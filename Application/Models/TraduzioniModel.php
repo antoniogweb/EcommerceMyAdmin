@@ -28,6 +28,9 @@ class TraduzioniModel extends GenericModel {
 	
 	public static $edit = false;
 	
+	public static $bckLingua = null;
+	public static $bckContesto = null;
+	
 	public $contestoCorrente = null;
 	
 	private static $instance = null; //instance of this class
@@ -170,5 +173,28 @@ class TraduzioniModel extends GenericModel {
 	public function elimina($record)
 	{
 		return "<a href='".Url::getRoot()."traduzioni/elimina/".$record["traduzioni"]["id_t"]."' class='text text-danger text_16 elimina_traduzione'><i class='fa fa-trash'></i></a>";
+	}
+	
+	public static function sLingua($lingua, $contesto = "front")
+	{
+		if (Params::$lang != $lingua || self::$contestoStatic !=  $contesto)
+		{
+			// salvo i valori
+			self::$bckLingua = Params::$lang;
+			self::$bckContesto = self::$contestoStatic;
+			
+			self::$contestoStatic = $contesto;
+			Params::$lang = $lingua;
+			$tradModel = new TraduzioniModel();
+			$tradModel->ottieniTraduzioni();
+		}
+	}
+	
+	public static function rLingua()
+	{
+		Params::$lang = self::$bckLingua;
+		self::$contestoStatic = self::$bckContesto;
+		$tradModel = new TraduzioniModel();
+		$tradModel->ottieniTraduzioni();
 	}
 }

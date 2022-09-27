@@ -273,8 +273,10 @@ class EventiretargetingModel extends GenericModel {
 						$oggetto = htmlentitydecode(field($email, "title"));
 						$testo = htmlentitydecode(field($email, "description"));
 						
+						TraduzioniModel::sLingua($e["lingua"], "front");
 						$oggetto = SegnapostoModel::sostituisci($oggetto, $e, $cModel);
 						$testo = SegnapostoModel::sostituisci($testo, $e, $cModel);
+						TraduzioniModel::rLingua();
 						
 						if (in_array($emailElemento, $elementiProcessati))
 							$giaProcessato = true;
