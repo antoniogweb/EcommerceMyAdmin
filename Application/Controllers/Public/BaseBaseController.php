@@ -1040,11 +1040,13 @@ class BaseBaseController extends Controller
 		
 		$emails = $this->elencoIndirizziEmailACuiInviare($valoriEmail, $pagina, $fonte);
 		
+		$tipologia = ($fonte == "NEWSLETTER") ? "NEWSLETTER" : "CONTATTO";
+		
 		return MailordiniModel::inviaMail(array(
 			"emails"	=>	$emails,
 			"oggetto"	=>	$oggetto,
 			"testo"		=>	$output,
-			"tipologia"	=>	"CONTATTO_NEWSLETT",
+			"tipologia"	=>	$tipologia,
 			"id_user"	=>	(int)User::$id,
 			"id_page"	=>	(int)$id,
 			"reply_to"	=>	$valoriEmail["email"],

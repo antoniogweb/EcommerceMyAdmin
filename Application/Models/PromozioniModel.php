@@ -165,8 +165,8 @@ class PromozioniModel extends GenericModel {
 			{
 				$res = parent::update($id);
 				
-// 				if ($res)
-// 					$this->processaEventiPromozione($id);
+				if ($res)
+					$this->processaEventiPromozione($id);
 				
 				return $res;
 			}

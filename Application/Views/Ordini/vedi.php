@@ -198,16 +198,39 @@
 							<?php if ($p["righe"]["gift_card"]) {
 								$promozioni = PromozioniModel::getPromoRigaOrdine($p["righe"]["id_r"]);
 								
-								if (count($promozioni) > 0)
+								if (count($promozioni) > 0) {
 									echo "<br />------------<br /><b>".gtext("Codici delle Gift Card legate alla righa d'ordine").":</b>";
 								
-								foreach ($promozioni as $promo) { 
-							?>
-									<br /><a title="<?php echo gtext("Vedi dettagli promo");?>" class="iframe" href="<?php echo $this->baseUrl."/promozioni/form/update/".$promo["id_p"];?>?partial=Y&nobuttons=Y"><i class="fa fa-info-circle"></i></a> <?php echo gtext("Codice");?>: <span class="badge badge-info"><?php echo $promo["codice"];?></span> <?php echo gtext("Stato");?>: <?php echo $promo["attivo"] == "Y" ? "<span class='label label-success'>".gtext("Attivo")."</span>" : "<span class='label label-warning'>".gtext("Non attivo")."</span>";?>
-									<?php $euroUsati = PromozioniModel::gNumeroEuroUsati($promo["id_p"]);?>
-									<?php if ($euroUsati > 0) { ?>
-									<?php echo gtext("Usati");?>: <strong><?php echo setPriceReverse($euroUsati);?> €</strong>
+									foreach ($promozioni as $promo) { 
+									?>
+										<br /><a title="<?php echo gtext("Vedi dettagli promo");?>" class="iframe" href="<?php echo $this->baseUrl."/promozioni/form/update/".$promo["id_p"];?>?partial=Y&nobuttons=Y"><i class="fa fa-info-circle"></i></a> <?php echo gtext("Codice");?>: <span class="badge badge-info"><?php echo $promo["codice"];?></span> <?php echo gtext("Stato");?>: <?php echo $promo["attivo"] == "Y" ? "<span class='label label-success'>".gtext("Attivo")."</span>" : "<span class='label label-warning'>".gtext("Non attivo")."</span>";?>
+										<?php $euroUsati = PromozioniModel::gNumeroEuroUsati($promo["id_p"]);?>
+										<?php if ($euroUsati > 0) { ?>
+										<?php echo gtext("Usati");?>: <strong><?php echo setPriceReverse($euroUsati);?> €</strong>
+										<?php } ?>
 									<?php } ?>
+								<?php } else {
+									$elementiRiga = RigheelementiModel::getElementiRiga($p["righe"]["id_r"]);
+			
+									if (count($elementiRiga) > 0) { ?>
+										<table width="100%" class="table" cellspacing="0">
+											<tr>
+												<th style="text-align:left;font-size:13px;"><?php echo gtext("Da inviare a");?></th>
+												<th style="text-align:left;font-size:13px;"><?php echo gtext("Dedica e firma");?></th>
+											</tr>
+										<?php foreach ($elementiRiga as $el) { ?>
+										<tr>
+											<td style="text-align:left;font-size:13px;">
+												<?php echo $el["email"];?>
+											</td>
+											<td style="text-align:left;font-size:13px;">
+												<?php echo nl2br($el["testo"]);?>
+											</td>
+										</tr>
+										<?php } ?>
+									</table>
+									<?php } ?>
+								
 								<?php } ?>
 							<?php } ?>
 							<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>

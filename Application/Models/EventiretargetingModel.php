@@ -42,7 +42,7 @@ class EventiretargetingModel extends GenericModel {
 	
 	public function relations() {
 		return array(
-			'elementi' => array("HAS_MANY", 'EventiretargetingelementiModel', 'id_evento', null, "CASCADE"),
+			'elementi' => array("HAS_MANY", 'EventiretargetingelementiModel', 'id_evento', null, "RESTRICT", "Attenzione, l'elemento ha delle restrizioni e non può essere eliminato. <br />Disattivarlo per fare in modo che non sia più attivo."),
 			'email' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'gruppo' => array("BELONGS_TO", 'EventiretargetinggruppiModel', 'id_gruppo_retargeting',null,"CASCADE"),
 		);
@@ -245,7 +245,10 @@ class EventiretargetingModel extends GenericModel {
 					$cModel->sWhere("creation_time <= $tempoEvento");
 				}
 				
-				$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
+				if (!empty($dettagliGruppoRetargeting) && $dettagliGruppoRetargeting["blocca_reinvio_mail_stesso"] == "EVENTO")
+					$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
+				else
+					$cModel->sWhere("(email,$primaryKey) not in (select email,id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
 				$elementi = $cModel->send(false);
 				

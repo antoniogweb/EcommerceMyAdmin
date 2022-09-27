@@ -21,39 +21,7 @@
 			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 			
-			<?php if ($p["righe"]["gift_card"]) {
-				$promozioni = PromozioniModel::getPromoRigaOrdine($p["righe"]["id_r"]);
-				
-				if (count($promozioni) > 0) { ?>
-					<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
-						<tr>
-							<th style="text-align:left;"><?php echo gtext("Codice Gift Card");?></th>
-							<th style="text-align:left;"><?php echo gtext("Stato");?></th>
-						</tr>
-				<?php } ?>
-				<?php
-				
-				foreach ($promozioni as $promo) { 
-			?>
-				<tr>
-					<td>
-						<span class="uk-text uk-text-primary"><?php echo $promo["codice"];?></span>
-						<?php $inviataA = EventiretargetingelementiModel::getElemento($promo["id_p"], "promozioni"); ?>
-						<?php if (!empty($inviataA)) { ?>
-						<br /><span class="uk-text-meta"><?php echo gtext("Inviato a");?>:</span> <span class="uk-text-small"><?php echo $inviataA["email"];?></span>
-						<?php } ?>
-					</td>
-					<td>
-						<?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?>
-						<?php if (PromozioniModel::gNumeroEuroRimasti($promo["id_p"]) <= 0) { ?>
-						<br /><span class="uk-text-meta"><?php echo gtext("Credito esaurito");?></span>
-						<?php } ?>
-					</td>
-				</tr>
-				<?php } ?>
-				
-				<?php if (count($promozioni) > 0) { ?></table><?php } ?>
-			<?php } ?>
+			<?php include(tpf("Ordini/resoconto_prodotto_gift_card.php"));?>
 			
 			</td>
 			<?php if (v("mostra_codice_in_carrello")) { ?>
