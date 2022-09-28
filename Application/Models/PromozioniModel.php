@@ -525,4 +525,13 @@ class PromozioniModel extends GenericModel {
 		
 		return $output;
 	}
+	
+	public function deletable($id) {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["id_r"])
+			return false;
+		
+		return true;
+	}
 }

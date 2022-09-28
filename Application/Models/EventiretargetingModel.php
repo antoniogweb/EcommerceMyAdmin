@@ -245,7 +245,9 @@ class EventiretargetingModel extends GenericModel {
 					$cModel->sWhere("creation_time <= $tempoEvento");
 				}
 				
-				if (!empty($dettagliGruppoRetargeting) && $dettagliGruppoRetargeting["blocca_reinvio_mail_stesso"] == "EVENTO")
+				$tipoControllo = (!empty($dettagliGruppoRetargeting)) ? $dettagliGruppoRetargeting["blocca_reinvio_mail_stesso"] : "EVENTO";
+				
+				if ($tipoControllo == "EVENTO")
 					$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
 				else
 					$cModel->sWhere("(email,$primaryKey) not in (select email,id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
@@ -255,6 +257,7 @@ class EventiretargetingModel extends GenericModel {
 				$queryElementi = $cModel->getQuery();
 				
 				$elementiProcessati = array();
+// 				$elementiProcessatiElemento = array();
 				
 				foreach ($elementi as $e)
 				{
@@ -278,10 +281,18 @@ class EventiretargetingModel extends GenericModel {
 						$testo = SegnapostoModel::sostituisci($testo, $e, $cModel);
 						TraduzioniModel::rLingua();
 						
-						if (in_array($emailElemento, $elementiProcessati))
+						if ($tipoControllo == "EVENTO" && in_array($emailElemento, $elementiProcessati))
 							$giaProcessato = true;
 						
+// 						if ($tipoControllo == "EVENTO_ELEMENTO" && isset($elementiProcessatiElemento[$e[$primaryKey]]) && in_array($emailElemento, $elementiProcessatiElemento[$e[$primaryKey]]))
+// 							$giaProcessato = true;
+						
 						$elementiProcessati[] = $emailElemento;
+						
+// 						if (isset($elementiProcessatiElemento[$e[$primaryKey]]))
+// 							$elementiProcessatiElemento[$e[$primaryKey]][] = $emailElemento;
+// 						else
+// 							$elementiProcessatiElemento[$e[$primaryKey]] = array($emailElemento);
 						
 						$mailInviata = 0;
 						
