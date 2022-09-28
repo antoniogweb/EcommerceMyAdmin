@@ -320,9 +320,12 @@ class BaseContenutiController extends BaseController
 					
 					$temp = array();
 					
-					foreach ($par as $p)
+					if (v("mostra_categorie_in_url_prodotto"))
 					{
-						$temp[] = isset(CategoriesModel::$aliases[$p["categories"]["alias"]]) ? CategoriesModel::$aliases[$p["categories"]["alias"]] : $p["categories"]["alias"];
+						foreach ($par as $p)
+						{
+							$temp[] = isset(CategoriesModel::$aliases[$p["categories"]["alias"]]) ? CategoriesModel::$aliases[$p["categories"]["alias"]] : $p["categories"]["alias"];
+						}
 					}
 					
 					$rParents[$id] = $temp;
@@ -516,28 +519,32 @@ class BaseContenutiController extends BaseController
 		else
 			$tempParents = $this->fullParents;
 		
-// 		print_r($this->fullParents);
+// 		print_r($tempParents);
 // 		die();
 		$breadcrumbArray = array();
-		
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
 		
 		$i = 0;
 		while (count($tempParents) > 0)
 		{
-			
 			$j = 0;
 			$hrefArray = array();
 			foreach($tempParents as $row)
 			{
 				$table = ($j === (count($tempParents)-1) and $type === "page" and $i === 0) ? "pages" : "categories";
-				$hrefArray[] = (isset($row["contenuti_tradotti"]["alias"]) && $row["contenuti_tradotti"]["alias"]) ? $row["contenuti_tradotti"]["alias"] : $row[$table]["alias"];
+				
+				if ($i > 0 || v("mostra_categorie_in_url_prodotto") || $table == "pages")
+					$hrefArray[] = (isset($row["contenuti_tradotti"]["alias"]) && $row["contenuti_tradotti"]["alias"]) ? $row["contenuti_tradotti"]["alias"] : $row[$table]["alias"];
+				
 				$j++;
 			}
-			$ref = implode("/",$hrefArray).$ext;
 			
 			$table = ($i === 0 and $type === "page") ? "pages" : "categories";
 			$lClass = $i === 0 ? "breadcrumb_last" : null;
+			
+			$estensioneTipo = ($table == "categories") ? v("estensione_url_categorie") : ".html";
+			$ext = Parametri::$useHtmlExtension ? $estensioneTipo : null;
+			
+			$ref = implode("/",$hrefArray).$ext;
 			
 			if ($i === 0 and !$linkInLast)
 			{

@@ -894,7 +894,7 @@ class CategoriesModel extends HierarchicalModel {
 		if (count($filtriAltri) > 0)
 			$urlArray = array_merge($urlArray, $filtriAltri);
 		
-		$url = implode("/", $urlArray).".html";
+		$url = implode("/", $urlArray).v("estensione_url_categorie");
 		
 		if ($viewStatus)
 			$url .= "$viewStatus";

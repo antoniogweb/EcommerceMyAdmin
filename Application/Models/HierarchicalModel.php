@@ -914,7 +914,7 @@ class HierarchicalModel extends GenericModel {
 				$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
 		}
 		
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		$ext = Parametri::$useHtmlExtension ? v("estensione_url_categorie") : null;
 		
 		return implode("/",$urlArray).$ext;
 	}
@@ -923,7 +923,7 @@ class HierarchicalModel extends GenericModel {
 	//$tree: nodes as given by getTreeWithDepth
 	public function getCategoryUlLiTree($tree, $htmlData)
 	{
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		$ext = Parametri::$useHtmlExtension ? v("estensione_url_categorie") : null;
 		
 		if (count($tree) > 0)
 		{

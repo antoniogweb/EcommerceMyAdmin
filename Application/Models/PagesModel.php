@@ -1329,36 +1329,46 @@ class PagesModel extends GenericModel {
 		$lingua = isset($lingua) ? $lingua : Params::$lang;
 		
 		$clean["id"] = (int)$id;
-
-		$parents = $this->parents($clean["id"], false, false, $lingua);
-		
-		//remove the root node
-		array_shift($parents);
 		
 		$urlArray = array();
 		
-		foreach ($parents as $node)
+		if (v("mostra_categorie_in_url_prodotto"))
 		{
-			if (isset($node["categories"][$this->aliaseFieldName]))
+			$parents = $this->parents($clean["id"], false, false, $lingua);
+			
+			//remove the root node
+			array_shift($parents);
+			
+			foreach ($parents as $node)
 			{
-				if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-					$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+				if (isset($node["categories"][$this->aliaseFieldName]))
+				{
+					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+					else
+						$urlArray[] = $node["categories"][$this->aliaseFieldName];
+				}
 				else
-					$urlArray[] = $node["categories"][$this->aliaseFieldName];
+				{
+					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+					else
+						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
+				}
 			}
-			else
-			{
-				if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-					$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
-				else
-					$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
-			}
+		}
+		else
+		{
+			$page = self::getPageDetails($clean["id"], $lingua);
+			
+			if (!empty($page))
+				$urlArray[] = field($page, "alias");
 		}
 		
 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
 		
 		// Appendo il marchio se presente
-		if (v("usa_marchi"))
+		if (v("usa_marchi") && v("aggiungi_marchio_in_url_prodotto"))
 		{
 			$m = new MarchiModel();
 			

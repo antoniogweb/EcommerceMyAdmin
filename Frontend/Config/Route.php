@@ -22,6 +22,10 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+// Estensioni per pagine e categorie
+if (!defined('ESTENSIONI_URL'))
+	define ('ESTENSIONI_URL','.html');
+
 class Route
 {
 
@@ -265,7 +269,7 @@ class Route
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',
 // 		'(.*)/(.*)/(.*)' 			=>	'contenuti/index/${1}/${2}/${3}',
 // 		'(.*)/(.*)' 				=>	'contenuti/index/${1}/${2}',
-		'([^.]*).html'				=>	'contenuti/index/${1}',
+		'([^.]*)'.ESTENSIONI_URL	=>	'contenuti/index/${1}',
 		'(.*)'						=>	'contenuti/notfound/${1}',
 	);
 }
