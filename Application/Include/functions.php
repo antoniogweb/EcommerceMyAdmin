@@ -1489,6 +1489,7 @@ function traduci($string, $forzaEsteso = false)
 	$string = preg_replace('/(Ottober)/', 'Ottobre',$string);
 	$string = preg_replace('/(November)/', 'Novembre',$string);
 	$string = preg_replace('/(December)/', 'Dicembre',$string);
+	$string = preg_replace('/(Dicember)/', 'Dicembre',$string);
 
 	$string = preg_replace('/(Friday)/', 'Venerdì',$string);
 	$string = preg_replace('/(Saturday)/', 'Sabato',$string);
