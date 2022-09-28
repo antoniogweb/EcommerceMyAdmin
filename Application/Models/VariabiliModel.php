@@ -463,8 +463,9 @@ class VariabiliModel extends GenericModel {
 		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number
 		## STRUTTURA URL ##
 		"estensione_url_categorie"	=>	".html", // cosa aggiungere come estensione nell'URL delle categorie
-		"aggiungi_marchio_in_url_prodotto"	=>	1, // se impostato a 1 il marchio apparirà nell'URL del prodotto
-		"mostra_categorie_in_url_prodotto"	=>	1, // se impostato a 1  l'albero delle categorie verrà mostrato nell'URL prima del prodotto
+		"aggiungi_marchio_in_url_prodotto"		=>	1, // se impostato a 1 il marchio apparirà nell'URL del prodotto
+		"mostra_categorie_in_url_prodotto"		=>	1, // se impostato a 1  l'albero delle categorie verrà mostrato nell'URL prima del prodotto
+		"usa_codice_prodotto_in_alias"			=>	0, // se impostato a 1 cerca il prodotto utilizzando il codice
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

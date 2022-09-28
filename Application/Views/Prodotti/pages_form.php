@@ -78,6 +78,14 @@
 											<?php } ?>
 										</div>
 									</div>
+									<?php } else { ?>
+									<div class='row'>
+										<div class='col-lg-12'>
+											<?php if (isset($form["gift_card"])) { ?>
+											<?php echo $form["gift_card"];?>
+											<?php } ?>
+										</div>
+									</div>
 									<?php } ?>
 									
 									<?php if (isset($form["in_promozione"])) { ?>

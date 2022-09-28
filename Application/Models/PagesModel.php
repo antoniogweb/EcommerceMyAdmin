@@ -1080,23 +1080,92 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
+// 	public function isActiveAlias($alias, $lingua = null)
+// 	{
+// 		if (strcmp($alias,"") === 0)
+// 			return 0;
+// 		
+// 		$clean["alias"] = sanitizeAll($alias);
+// 		
+// 		$res = $this->clear()->select("id_page")->where(array(
+// 			$this->aliaseFieldName=>$clean['alias'],
+// 			"pages.temp"		=>	0,
+// 			"pages.cestino"		=>	0,
+// 		));
+// 		
+// 		if (!User::$adminLogged)
+// 			$this->aWhere(array(
+// 				"attivo"=>"Y",
+// 			));
+// 		
+// 		$res = $this->send();
+// 		
+// 		if (count($res) > 0)
+// 		{
+// 			return true;
+// 		}
+// 		else
+// 		{
+// 			// Cerco la traduzione
+// 			$ct = new ContenutitradottiModel();
+// 			
+// 			$res = $ct->clear()->select("pages.id_page")->inner(array("page"))->where(array("alias"=>$clean['alias'],"pages.attivo"=>"Y"));
+// 			
+// 			if ($lingua)
+// 			{
+// 				$ct->aWhere(array(
+// 					"lingua"	=>	sanitizeAll($lingua),
+// 				));
+// 			}
+// 			
+// 			$res = $ct->send();
+// 			
+// 			if (count($res) > 0)
+// 			{
+// 				return true;
+// 			}
+// 		}
+// 		
+// 		return false;
+// 	}
+	
 	public function getIdFromAlias($alias, $lingua = null)
 	{
 		$clean['alias'] = sanitizeAll($alias);
 		
-		$res = $this->clear()->where(array($this->aliaseFieldName=>$clean['alias']))->toList($this->_idFields)->send();
+		$res = $this->clear()->where(array(
+			"alias"				=>	$clean['alias'],
+			"pages.temp"		=>	0,
+			"pages.cestino"		=>	0,
+		))->toList("pages.id_page");
+		
+		if (!User::$adminLogged)
+			$this->aWhere(array(
+				"attivo"=>"Y",
+			));
+		
+		$res = $this->send();
 		
 		if (count($res) > 0)
-		{
-// 			return $res[0];
 			return $res;
-		}
 		else
 		{
 			// Cerco la traduzione
 			$ct = new ContenutitradottiModel();
 			
-			$res = $ct->clear()->select("pages.id_page")->inner(array("page"))->where(array("alias"=>$clean['alias']))->toList("pages.id_page");
+			$res = $ct->clear()->select("pages.id_page")
+				->inner(array("page"))
+				->where(array(
+					"alias"=>$clean['alias'],
+					"pages.temp"		=>	0,
+					"pages.cestino"		=>	0,
+				))
+				->toList("pages.id_page");
+			
+			if (!User::$adminLogged)
+				$this->aWhere(array(
+					"pages.attivo"=>"Y",
+				));
 			
 			if ($lingua)
 			{
@@ -1108,12 +1177,10 @@ class PagesModel extends GenericModel {
 			$res = $ct->send();
 			
 			if (count($res) > 0)
-			{
 				return $res;
-			}
 		}
 		
-		return 0;
+		return array();
 	}
 	
 	public function isActive($id_page)
@@ -1139,57 +1206,6 @@ class PagesModel extends GenericModel {
 		{
 			return true;
 		}
-		return false;
-	}
-	
-	public function isActiveAlias($alias, $lingua = null)
-	{
-		if (strcmp($alias,"") === 0)
-		{
-			return 0;
-		}
-		
-		$clean["alias"] = sanitizeAll($alias);
-		
-		$res = $this->clear()->select("id_page")->where(array(
-			$this->aliaseFieldName=>$clean['alias'],
-			"pages.temp"		=>	0,
-			"pages.cestino"		=>	0,
-		));
-		
-		if (!User::$adminLogged)
-			$this->aWhere(array(
-				"attivo"=>"Y",
-			));
-		
-		$res = $this->send();
-		
-		if (count($res) > 0)
-		{
-			return true;
-		}
-		else
-		{
-			// Cerco la traduzione
-			$ct = new ContenutitradottiModel();
-			
-			$res = $ct->clear()->select("pages.id_page")->inner(array("page"))->where(array("alias"=>$clean['alias'],"pages.attivo"=>"Y"));
-			
-			if ($lingua)
-			{
-				$ct->aWhere(array(
-					"lingua"	=>	sanitizeAll($lingua),
-				));
-			}
-			
-			$res = $ct->send();
-			
-			if (count($res) > 0)
-			{
-				return true;
-			}
-		}
-		
 		return false;
 	}
 	

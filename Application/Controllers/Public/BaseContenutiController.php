@@ -295,9 +295,10 @@ class BaseContenutiController extends BaseController
 			
 			$clean['alias'] = $this->cleanAlias = sanitizeAll($args[(count($args)-1)]);
 			
-			if ($this->m["PagesModel"]->isActiveAlias($clean['alias'], Params::$lang))
+// 			if ($this->m["PagesModel"]->isActiveAlias($clean['alias'], Params::$lang))
+			if ($ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang))
 			{
-				$ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang);
+// 				$ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang);
 				
 // 				print_r($clean['id']);
 				
