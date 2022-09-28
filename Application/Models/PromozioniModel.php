@@ -103,7 +103,7 @@ class PromozioniModel extends GenericModel {
 	{
 		$promozione = $this->selectId((int)$idPromozione);
 		
-		if (!empty($promozione) && isset($promozione["email"]) && $promozione["email"] && checkMail($promozione["email"]) && $promozione["testo"] && $promozione["attivo"] == "Y" && $promozione["tipo_sconto"] == "ASSOLUTO")
+		if (!empty($promozione) && isset($promozione["email"]) && $promozione["email"] && checkMail($promozione["email"]) && $promozione["testo"] && $this->isActiveCoupon($promozione["codice"],null,false) && $promozione["tipo_sconto"] == "ASSOLUTO")
 			EventiretargetingModel::processaPromo($idPromozione);
 	}
     
