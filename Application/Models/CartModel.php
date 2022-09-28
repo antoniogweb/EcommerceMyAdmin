@@ -852,27 +852,38 @@ class CartModel extends GenericModel {
 		
 		$righeCarrello = $this->getRigheCart("gift_card = 1");
 		
-		
-		
 		foreach ($righeCarrello as $riga)
 		{
 			if ($riga["gift_card"])
 			{
-				$numeroElementiCarrello = $ce->clear()->where(array(
-					"id_cart"	=>	(int)$riga["id_cart"],
-				))->rowNumber();
+// 				$numeroElementiCarrello = $ce->clear()->where(array(
+// 					"id_cart"	=>	(int)$riga["id_cart"],
+// 				))->rowNumber();
 				
-				if ((int)$numeroElementiCarrello !== (int)$riga["quantity"] || count($elementiPost) > 0)
+				$elementiRigaCarrello = CartelementiModel::getElementiCarrello((int)$riga["id_cart"]);
+				
+				if ((int)count($elementiRigaCarrello) !== (int)$riga["quantity"] || count($elementiPost) > 0)
 				{
 					$ce->del(null, "id_cart = ".(int)$riga["id_cart"]);
 					
 					for ($i = 0; $i < $riga["quantity"]; $i++)
 					{
-						$email = isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "";
+						$email = $testo = "";
+						
+						if (count($elementiPost) > 0)
+						{
+							$email = isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "";
+							$testo = isset($elementiPost["CART-".$riga["id_cart"]][$i]["testo"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["testo"] : "";
+						}
+						else if (isset($elementiRigaCarrello[$i]))
+						{
+							$email = htmlentitydecode($elementiRigaCarrello[$i]["email"]);
+							$testo = htmlentitydecode($elementiRigaCarrello[$i]["testo"]);
+						}
 						
 						$ce->sValues(array(
 							"email"		=>	trim($email),
-							"testo"		=>	isset($elementiPost["CART-".$riga["id_cart"]][$i]["testo"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["testo"] : "",
+							"testo"		=>	$testo,
 							"id_cart"	=>	$riga["id_cart"],
 						));
 						
