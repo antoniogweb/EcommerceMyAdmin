@@ -2211,7 +2211,6 @@ class PagesModel extends GenericModel {
 		))->rowNumber();
 	}
 	
-	// Alias di getIdDaTipo, comportamento diverso
 	public static function gTipoPagina($tipo)
 	{
 		if (isset(self::$tipiPaginaId[$tipo]))
