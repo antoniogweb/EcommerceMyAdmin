@@ -32,6 +32,7 @@ class BaseBaseController extends Controller
 	protected $iduser = 0;
 	protected $dettagliUtente = null;
 	protected $fonteContatto = null;
+	protected $idRedirectContatti = null;
 	
 	public $cleanAlias = null;
 	public $prodottiInEvidenza;
@@ -1155,6 +1156,10 @@ class BaseBaseController extends Controller
 							}
 							
 							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+							
+							if ($this->idRedirectContatti)
+								$idGrazie = $this->idRedirectContatti;
+							
 							$idGrazieNewsletter = 0;
 							
 							if ($isNewsletter)

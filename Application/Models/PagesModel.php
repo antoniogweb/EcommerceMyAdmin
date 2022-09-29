@@ -82,6 +82,8 @@ class PagesModel extends GenericModel {
 		"PageslingueModel",
 	);
 	
+	public static $tipiPaginaAddizionali = array();
+	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina ringraziamento form richiesta informazioni",
 		"GRAZIE_NEWSLETTER"	=>	"Pagina ringraziamento iscrizione a newsletter",
@@ -136,6 +138,11 @@ class PagesModel extends GenericModel {
 		
 		if (v("attiva_verifica_contatti"))
 			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
+		
+		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
+		{
+			self::$tipiPagina[$tipo] = $label;
+		}
 		
 		parent::__construct();
 	}
@@ -2204,8 +2211,12 @@ class PagesModel extends GenericModel {
 		))->rowNumber();
 	}
 	
+	// Alias di getIdDaTipo, comportamento diverso
 	public static function gTipoPagina($tipo)
 	{
+		if (isset(self::$tipiPaginaId[$tipo]))
+			return self::$tipiPaginaId[$tipo];
+		
 		$p = new PagesModel();
 		
 		return $p->clear()->where(array(
