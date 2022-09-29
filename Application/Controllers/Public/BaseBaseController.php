@@ -396,6 +396,7 @@ class BaseBaseController extends Controller
 		$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
 			"ne"		=>	array("tipo_pagina" => ""),
 			"attivo"	=>	"Y",
+			"principale"	=>	"Y",
 		))->toList("tipo_pagina", "id_page")->send();
 		
 		$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
