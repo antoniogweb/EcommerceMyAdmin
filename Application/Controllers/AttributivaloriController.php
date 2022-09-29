@@ -34,7 +34,7 @@ class AttributivaloriController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = "titolo";
+		$fields = "titolo,alias";
 		
 		if ($this->viewArgs["id_a"] != "tutti")
 			$tipo = AttributiModel::getTipo($this->viewArgs["id_a"]);

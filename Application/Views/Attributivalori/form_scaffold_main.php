@@ -5,6 +5,10 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php if (isset($form["alias"])) { ?>
+						<?php echo $form["alias"];?>
+						<?php } ?>
+						
 						<?php if (isset($form["immagine"])) { ?>
 						<?php echo $form["immagine"];?>
 						<?php } ?>

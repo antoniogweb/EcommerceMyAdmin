@@ -112,7 +112,7 @@ $(document).ready(function(){
 		if (window.confirm(stringaConfermiEliminazione)) {
 			
 			if (that.find("i").length > 0)
-				that.find("i").attr("class", "fa fa-refresh fa-spin");
+				that.find("i").attr("class", "fa fa-spinner fa-spin");
 			
 			if ($(".btn_trigger_click").length > 0)
 			{

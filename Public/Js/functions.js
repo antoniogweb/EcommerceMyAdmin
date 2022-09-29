@@ -585,7 +585,7 @@ $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".make_spinner", function(e){
 		if ($(this).find("i").length > 0)
-			$(this).find("i").attr("class","fa fa-refresh fa-spin");
+			$(this).find("i").attr("class","fa fa-spinner fa-spin");
 	});
 	
 	$( "body" ).on( "click", ".ajlink", function(e){
@@ -594,7 +594,7 @@ $(document).ready(function(){
 		var url = $(this).attr("href");
 		
 		if ($(this).find("i").length > 0)
-			$(this).find("i").attr("class","fa fa-refresh fa-spin");
+			$(this).find("i").attr("class","fa fa-spinner fa-spin");
 		
 		$.ajaxQueue({
 			url: url,
@@ -614,7 +614,7 @@ $(document).ready(function(){
 		
 		var azione = $(this).attr("data-azione");
 // 		var classefa = $(this).attr("class");
-		$(this).attr("class","fa fa-refresh fa-spin")
+		$(this).attr("class","fa fa-spinner fa-spin")
 		
 		$(this).closest('tr').find("td").first().find("input").prop('checked', true);
 		

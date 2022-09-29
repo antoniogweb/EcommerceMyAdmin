@@ -271,7 +271,7 @@ Helper_Menu::$htmlLinks = array(
 		'url'	=>	'main',
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-success save_button menu_btn"',
+		"attributes" => 'role="button" class="btn btn-success save_button make_spinner menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
 	'save_2'	=>	array(

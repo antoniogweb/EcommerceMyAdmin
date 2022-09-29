@@ -106,6 +106,11 @@ class GenericModel extends Model_Tree
 			"campoTitolo"	=>	"titolo",
 			"tradotta"		=>	true,
 		),
+		"attributi_valori" 	=>	array(
+			"chiave"		=>	"id_av",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
 	);
 	
 	public static $tabelleConAlias = array();
