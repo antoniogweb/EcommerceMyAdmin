@@ -174,8 +174,19 @@ class AttributivaloriModel extends GenericModel {
 			if (isset($this->values["alias"]))
 				$this->checkAliasAll($id);
 			
-			return parent::update($id, $whereClause);
+			$res = parent::update($id, $whereClause);
+			
+			if ($res)
+			{
+				$c = new CombinazioniModel();
+				
+				$c->aggiornaAlias(0,0,$id);
+			}
+			
+			return $res;
 		}
+		
+		return false;
 	}
 	
 	public function insert()
@@ -187,6 +198,8 @@ class AttributivaloriModel extends GenericModel {
 			
 			return parent::insert();
 		}
+		
+		return false;
 	}
 	
 	public function thumb($record)

@@ -941,6 +941,7 @@ class PagesModel extends GenericModel {
 					"peso"		=>	$pagina["peso"],
 					"giacenza"	=>	$pagina["giacenza"],
 					"immagine"	=>	getFirstImage($id),
+					"alias"		=>	"",
 				));
 				
 				if (empty($combinazione))
@@ -1140,7 +1141,25 @@ class PagesModel extends GenericModel {
 	{
 		$clean['alias'] = sanitizeAll($alias);
 		
-		$res = $this->clear()->where(array(
+// 		if (v("usa_codice_combinazione_in_url_prodotto"))
+// 		{
+// 			$res = $this->clear()->select("pages.id_page")->inner(array("combinazioni"))->where(array(
+// 				"alias"				=>	$clean['alias'],
+// 				"pages.temp"		=>	0,
+// 				"pages.cestino"		=>	0,
+// 			))->sWhere("concat()")->orderBy("combinazioni.id_order")->limit(1);
+// 			
+// 			if (!User::$adminLogged)
+// 				$this->aWhere(array(
+// 					"pages.attivo"=>"Y",
+// 				));
+// 			
+// 			$res = $this->send();
+// 		}
+		
+		
+		
+		$res = $this->clear()->select("pages.id_page")->where(array(
 			"alias"				=>	$clean['alias'],
 			"pages.temp"		=>	0,
 			"pages.cestino"		=>	0,
@@ -1318,37 +1337,11 @@ class PagesModel extends GenericModel {
 		return 0;
 	}
 	
-// 	//get the URL of a content
-// 	public function getUrlAlias($id)
-// 	{
-// 		$clean["id"] = (int)$id;
-// 
-// 		$parents = $this->parents($clean["id"], false, false, "categories.alias");
-// 		
-// 		//remove the root node
-// 		array_shift($parents);
-// 		
-// 		$urlArray = array();
-// 		foreach ($parents as $node)
-// 		{
-// 			if (isset($node["categories"][$this->aliaseFieldName]))
-// 			{
-// 				$urlArray[] = $node["categories"][$this->aliaseFieldName];
-// 			}
-// 			else
-// 			{
-// 				$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
-// 			}
-// 		}
-// 		
-// 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
-// 		
-// 		return implode("/",$urlArray).$ext;
-// 	}
-	
 	//get the URL of a content
 	public function getUrlAlias($id, $lingua = null)
 	{
+		$c = new CombinazioniModel();
+		
 		$lingua = isset($lingua) ? $lingua : Params::$lang;
 		
 		$clean["id"] = (int)$id;
@@ -1374,9 +1367,9 @@ class PagesModel extends GenericModel {
 				else
 				{
 					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"]);
 					else
-						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
+						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"]);
 				}
 			}
 		}
@@ -1385,7 +1378,7 @@ class PagesModel extends GenericModel {
 			$page = self::getPageDetails($clean["id"], $lingua);
 			
 			if (!empty($page))
-				$urlArray[] = field($page, "alias");
+				$urlArray[] = field($page, "alias").$c->getAlias($clean["id"]);
 		}
 		
 		$ext = Parametri::$useHtmlExtension ? ".html" : null;

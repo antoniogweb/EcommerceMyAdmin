@@ -205,7 +205,16 @@ class ContenutitradottiModel extends GenericModel
 		
 		$this->sAlias($record, $id);
 		
-		return parent::update($id, $whereClause);
+		$res = parent::update($id, $whereClause);
+		
+		if ($res && $record["id_av"])
+		{
+			$c = new CombinazioniModel();
+			
+			$c->aggiornaAlias(0,0,$record["id_av"]);
+		}
+		
+		return $res;
 	}
 	
 	public function insert()

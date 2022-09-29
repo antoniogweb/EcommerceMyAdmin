@@ -31,6 +31,8 @@ class CombinazioniModel extends GenericModel {
 	public $valori = null;
 	public $aggiornaGiacenzaPaginaQuandoSalvi = true;
 	
+	public static $aggiornaAliasAdInserimento = true;
+	
 	public function __construct() {
 		$this->_tables='combinazioni';
 		$this->_idFields='id_c';
@@ -46,6 +48,7 @@ class CombinazioniModel extends GenericModel {
 	public function relations() {
         return array(
 			'listini' => array("HAS_MANY", 'CombinazionilistiniModel', 'id_c', null, "CASCADE"),
+			'alias' => array("HAS_MANY", 'CombinazionialiasModel', 'id_c', null, "CASCADE"),
 			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
@@ -175,7 +178,12 @@ class CombinazioniModel extends GenericModel {
 		
 		$this->settaCifreDecimali();
 		
-		return parent::insert();
+		$res = parent::insert();
+		
+		if ($res && self::$aggiornaAliasAdInserimento)
+			$this->aggiornaAlias(0,$this->lId);
+		
+		return $res;
 	}
 	
 	public function aggiornaGiacenzaPagina($id)
@@ -213,6 +221,9 @@ class CombinazioniModel extends GenericModel {
 		if (parent::update($id, $where))
 		{
 			$this->aggiornaGiacenzaPagina($id);
+			
+			if (self::$aggiornaAliasAdInserimento)
+				$this->aggiornaAlias(0,$id);
 			
 			return true;
 		}
@@ -340,6 +351,8 @@ class CombinazioniModel extends GenericModel {
 			
 			$this->del(null,"id_page='".$clean["id_page"]."'");
 			
+			CombinazioniModel::$aggiornaAliasAdInserimento = false;
+			
 			foreach ($val as $v)
 			{
 				$this->values = array();
@@ -350,14 +363,160 @@ class CombinazioniModel extends GenericModel {
 				$this->delFields("id_order");
 				
 				$this->sanitize();
+				
 				$this->insert();
 			}
 			
 			// Controllo che ci sia la combinazione base
 			$this->controllaCombinazioniPagina($dettagliPagina["id_page"]);
+			
+			// Genero gli alias di tutte le combinazioni coinvolte
+			$this->aggiornaAlias($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
+	}
+	
+	// Genera gli alias per tutte le righe di combinazione
+	public function aggiornaAlias($idPage = 0, $idC = 0, $idAV = 0)
+	{
+		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
+			return "";
+
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
+		LingueModel::getValoriAttivi();
+		
+		$ca = new CombinazionialiasModel();
+		
+// 		print_r(LingueModel::$valoriAttivi);
+		
+		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
+		{
+			$this->clear()->select("pages.alias as aliasp,pagest.alias as aliaspt,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
+				->left("attributi_valori as a1")->on("a1.id_av = combinazioni.col_1")->left("contenuti_tradotti as at1")->on("at1.id_av = a1.id_av and at1.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a2")->on("a2.id_av = combinazioni.col_2")->left("contenuti_tradotti as at2")->on("at2.id_av = a2.id_av and at2.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a3")->on("a3.id_av = combinazioni.col_3")->left("contenuti_tradotti as at3")->on("at3.id_av = a3.id_av and at3.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a4")->on("a4.id_av = combinazioni.col_4")->left("contenuti_tradotti as at4")->on("at4.id_av = a4.id_av and at4.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a5")->on("a5.id_av = combinazioni.col_5")->left("contenuti_tradotti as at5")->on("at5.id_av = a5.id_av and at5.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a6")->on("a6.id_av = combinazioni.col_6")->left("contenuti_tradotti as at6")->on("at6.id_av = a6.id_av and at6.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a7")->on("a7.id_av = combinazioni.col_7")->left("contenuti_tradotti as at7")->on("at7.id_av = a7.id_av and at7.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a8")->on("a8.id_av = combinazioni.col_8")->left("contenuti_tradotti as at8")->on("at8.id_av = a8.id_av and at8.lingua = '".sanitizeDb($codice)."'")
+				->inner(array("pagina"))
+				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
+			
+			if ($idC)
+				$this->where(array(
+					"id_c"	=>	(int)$idC,
+				));
+			else if ($idPage)
+				$this->where(array(
+					"id_page"	=>	(int)$idPage,
+				));
+			else if ($idAV)
+				$this->where(array(
+					"OR"	=>	array(
+						"combinazioni.col_1"	=>	(int)$idAV,
+						"combinazioni.col_2"	=>	(int)$idAV,
+						"combinazioni.col_3"	=>	(int)$idAV,
+						"combinazioni.col_4"	=>	(int)$idAV,
+						"combinazioni.col_5"	=>	(int)$idAV,
+						"combinazioni.col_6"	=>	(int)$idAV,
+						"combinazioni.col_7"	=>	(int)$idAV,
+						"combinazioni.col_8"	=>	(int)$idAV,
+					),
+				));
+			
+			$combinazioni = $this->send(false);
+			
+			$arrayCol = array(1,2,3,4,5,6,7,8);
+			
+			foreach ($combinazioni as $c)
+			{
+				$ca->del(null, array(
+					"lingua"	=>	sanitizeAll($codice),
+					"id_c"		=>	(int)$c["id_c"],
+				));
+				
+				$arrayAlias = array();
+				
+				foreach ($arrayCol as $col)
+				{
+					$alias = $c["alias_t".$col] ? $c["alias_t".$col] : $c["alias_".$col];
+					
+					if ($alias)
+						$arrayAlias[] = $alias;
+				}
+				
+				$aliasAttributi = (count($arrayAlias) > 0) ? implode("-", $arrayAlias) : "";
+				
+				$aliasPagina = $c["aliaspt"] ? $c["aliaspt"] : $c["aliasp"];
+				
+				$aliasPaginaCodice = $aliasPaginaAttributiCodice = $aliasPagina;
+				
+				if ($c["codice"])
+				{
+					$aliasPaginaCodice .= "-".$c["codice"];
+					
+					if ($aliasAttributi)
+						$aliasPaginaAttributiCodice .= "-".$aliasAttributi."-".$c["codice"];
+					else
+						$aliasPaginaAttributiCodice = $aliasPaginaCodice;
+				}
+				else
+				{
+					if ($aliasAttributi)
+						$aliasPaginaAttributiCodice .= "-".$aliasAttributi;
+				}
+				
+				$ca->sValues(array(
+					"alias_codice"	=>	$aliasPaginaCodice,
+					"alias_attributi_codice"	=>	$aliasPaginaAttributiCodice,
+					"lingua"		=>	$codice,
+					"id_c"			=>	$c["id_c"],
+				), "sanitizeDb");
+				
+				$ca->insert();
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
+	}
+	
+	
+	// Restituisce l'alias della combinazione
+	public function getAlias($idPage, $agiungiAlias= false, $idC = 0)
+	{
+		return "";
+		
+// 		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
+// 			return "";
+// 		
+// 		$this->clear()->select("codice,alias")->where(array(
+// 				"id_page"	=>	$idPage,
+// 			))->orderBy("id_order")->limit(1);
+// 		
+// 		if ($idC)
+// 			$this->aWhere(array(
+// 				"id_c"	=>	(int)$idC,
+// 			));
+// 		
+// 		$record = $this->record();
+// 		
+// 		if (!empty($record))
+// 		{
+// 			$alias = "";
+// 			
+// 			if ($agiungiAlias && v("usa_alias_combinazione_in_url_prodotto") && $record["alias"])
+// 				$alias .= "-".$record["alias"];
+// 			
+// 			if (v("usa_codice_combinazione_in_url_prodotto") && $record["codice"])
+// 				$alias .= "-".$record["codice"];
+// 		}
+// 		
+// 		return $alias;
 	}
 	
 	public function controllaCombinazioniPagina($idPage)
