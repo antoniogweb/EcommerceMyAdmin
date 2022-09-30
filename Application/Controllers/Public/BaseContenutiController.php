@@ -1476,7 +1476,11 @@ class BaseContenutiController extends BaseController
 			echo '<span class="id_combinazione">'.$res[0]["combinazioni"]["id_c"].'</span><span class="codice_combinazione">'.$res[0]["combinazioni"]["codice"].'</span><span class="prezzo_combinazione">'.setPriceReverse(calcolaPrezzoFinale($clean["id_page"], $prezzoCombinazione)).'</span><span class="immagine_combinazione">'.$res[0]["combinazioni"]["immagine"].'</span><span class="prezzo_pieno_combinazione">'.$prezzoPieno.'</span><span class="giacenza_combinazione">'.$qty.'</span><span class="peso_combinazione">'.setPriceReverse($res[0]["combinazioni"]["peso"]).'</span>';
 			
 			if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto") && (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")))
-				echo '<span class="url_redirect_combinazione">'.$this->m["PagesModel"]->getUrlAlias($res[0]["combinazioni"]["id_page"], null, $res[0]["combinazioni"]["id_c"])."#".v("fragmento_dettaglio_prodotto").'</span>';
+			{
+				echo '<span class="url_redirect_combinazione">'.$this->m["PagesModel"]->getUrlAlias($res[0]["combinazioni"]["id_page"], null, $res[0]["combinazioni"]["id_c"]).'</span>';
+				
+				echo '<span class="url_redirect_fragment">'.v("fragmento_dettaglio_prodotto").'</span>';
+			}
 		}
 		else
 		{

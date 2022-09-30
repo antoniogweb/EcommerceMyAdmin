@@ -53,6 +53,9 @@ if (typeof attiva_gift_card == "undefined")
 if (typeof stringa_errore_righe_carrello == "undefined")
 	var stringa_errore_righe_carrello = "Attenzione, controllare i campi evidenziati";
 
+if (typeof current_url == "undefined")
+	var current_url = "Attenzione, controllare i campi evidenziati";
+
 var time;
 var arrayAccessori = [];
 var redirectCombinazioneAttivo = false;
@@ -508,7 +511,14 @@ function combinazione(obj)
 							obj.find(".dati_variante").html(content);
 							
 							if (obj.find(".dati_variante .url_redirect_combinazione").length > 0 && redirectCombinazioneAttivo)
-								location.href = baseUrl + "/" + obj.find(".dati_variante .url_redirect_combinazione").text();
+							{
+								var redirectUrl =  baseUrl + "/" + obj.find(".dati_variante .url_redirect_combinazione").text();
+								
+								if (redirectUrl == current_url)
+									redirectUrl += "?" + Date.now();
+								
+								location.href = redirectUrl + "#" + obj.find(".dati_variante .url_redirect_fragment").text();
+							}
 							else
 							{
 								aggiornaDatiVariante(obj);
