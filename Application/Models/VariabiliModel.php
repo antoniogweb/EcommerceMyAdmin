@@ -470,7 +470,9 @@ class VariabiliModel extends GenericModel {
 		"usa_alias_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il l'alias della combinazione nell'URL del prodotto
 		"token_aggiorna_alias_combinazioni"		=>	"", // token per andare a rigenerare tutti gli alias delle combinazioni
 		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella pagina della nuova combinazione
+		## PAGINA DETTAGLIO PRODOTTO ##
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
+		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

@@ -381,6 +381,22 @@ function aggiornaDatiVariante(obj)
 	}
 }
 
+function mostraTendinaCaricamento()
+{
+	if (redirectCombinazioneAttivo && $("#tendina_caricamento").length > 0)
+		$("#tendina_caricamento").removeClass("uk-hidden");
+}
+
+function nascondiTendinaCaricamento()
+{
+	if ($("#tendina_caricamento").length > 0)
+	{
+		setTimeout(function(){ 
+			$("#tendina_caricamento").addClass("uk-hidden");
+		}, 500);
+	}
+}
+
 //lanciata ogni volta che seleziono una combinazione diversa
 function combinazione(obj)
 {
@@ -471,6 +487,8 @@ function combinazione(obj)
 		
 		if (ok_procedi)
 		{
+			mostraTendinaCaricamento();
+			
 			$.ajaxQueue({
 				type: "POST",
 				url: baseUrl + "/controlla/combinazione",
@@ -495,8 +513,11 @@ function combinazione(obj)
 							{
 								aggiornaDatiVariante(obj);
 								attivaDisattivaCarrello();
+								nascondiTendinaCaricamento();
 							}
 						}
+						else
+							nascondiTendinaCaricamento();
 					}
 					else
 					{
@@ -518,6 +539,8 @@ function combinazione(obj)
 						if (obj.find(".errore_combinazione").length > 0){
 							obj.find(".errore_combinazione").html(errore_stringa);
 						}
+						
+						nascondiTendinaCaricamento();
 					}
 				}
 			});

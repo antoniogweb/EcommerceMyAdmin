@@ -15,6 +15,8 @@
 		<?php include(tpf("/Elementi/fbk.php"));?>
    </head>
    <body>
+		<?php include(tpf("/Elementi/tendina_caricamento.php"));?>
+		
 		<?php include(tpf("/Elementi/gtm_no_script.php"));?>
 		
 		<div class="uk-offcanvas-content">
