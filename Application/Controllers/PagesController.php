@@ -783,7 +783,7 @@ class PagesController extends BaseController {
 						if ($record["tipo_pagina"] == "HOME")
 							$data["urlPagina"] = "";
 						else
-							$data["urlPagina"] = $this->m["PagesModel"]->getUrlAlias($clean['id']);
+							$data["urlPagina"] = $this->m["PagesModel"]->getUrlAlias($clean['id'], LingueModel::getPrincipaleFrontend());
 						
 						if (v("attiva_gestione_fasce_frontend") && !isProdotto($clean['id']))
 							$data["urlPaginaEditFrontend"] = $data["urlPagina"]."?".v("token_edit_frontend")."&em_edit_frontend";

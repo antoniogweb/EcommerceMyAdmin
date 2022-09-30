@@ -53,13 +53,13 @@ function getImages($id_page)
 	return $i->clear()->where(array("id_page"=>$clean['id_page']))->orderBy("immagini.id_order desc")->toList("immagine")->send();
 }
 
-function getUrlAlias($id_page)
+function getUrlAlias($id_page, $idC = 0)
 {
 	$clean["id_page"] = (int)$id_page;
 	
 	$p = new PagesModel();
 	
-	return $p->getUrlAlias($clean["id_page"]);
+	return $p->getUrlAlias($clean["id_page"], null, $idC);
 }
 
 function getCategoryUrlAlias($id_c)
@@ -1698,6 +1698,15 @@ function getAttributoDaCarrello($col, $idAcc = null)
 		$c = new CartModel();
 		
 		return $c->getAttributoDaCarrello((int)$_GET["id_cart"], $col, $idAcc);
+	}
+	else if (PagesModel::$IdCombinazione && !$idAcc)
+	{
+		$c = new CombinazioniModel();
+		
+		$combinazione = $c->selectId((int)PagesModel::$IdCombinazione);
+		
+		if (isset($combinazione[$col]))
+			return $combinazione[$col];
 	}
 	
 	return "";

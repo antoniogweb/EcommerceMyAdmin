@@ -403,6 +403,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
+		"var_query_string_id_comb"	=>	"id_comb", // id a cui si riferisce la combinazione in questione (ex id combinazione per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		"attiva_modifica_massiva_codici"	=>	0, // permetti la modifica massiva dei codici (solo singola pagina)
@@ -467,6 +468,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_categorie_in_url_prodotto"		=>	1, // se impostato a 1  l'albero delle categorie verrà mostrato nell'URL prima del prodotto
 		"usa_codice_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il codice della combinazione nell'URL del prodotto
 		"usa_alias_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il l'alias della combinazione nell'URL del prodotto
+		"token_aggiorna_alias_combinazioni"		=>	"", // token per andare a rigenerare tutti gli alias delle combinazioni
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
@@ -479,6 +481,7 @@ class VariabiliModel extends GenericModel {
 		"var_query_string_no_cookie",
 		"token_edit_frontend",
 		"token_feed_google_facebook",
+		"token_aggiorna_alias_combinazioni",
 	);
 	
 	public static function inizializza($variabili = array())

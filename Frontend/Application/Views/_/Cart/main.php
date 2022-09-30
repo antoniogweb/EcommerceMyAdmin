@@ -30,6 +30,7 @@
 			<?php foreach ($pages as $p) {
 				$prezzoUnitario = p($p["cart"],$p["cart"]["price"]);
 				$backColor = checkGiacenza($p["cart"]["id_cart"], $p["cart"]["quantity"]) ? v("input_ok_back_color") : "red";
+				$urlAliasProdotto = getUrlAlias($p["cart"]["id_page"], $p["cart"]["id_c"]);
 			?>
 			<div>
 				<div class="cart_item_row uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" rel="<?php echo $p["cart"]["id_cart"];?>">
@@ -38,7 +39,7 @@
 							<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
 						</div>
 						<?php if ($p["cart"]["immagine"]) { ?>
-						<?php if (!$p["cart"]["id_p"]) { ?><a href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"]);?>"><?php } ?>
+						<?php if (!$p["cart"]["id_p"]) { ?><a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><?php } ?>
 							<img width="100px" src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
 						<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
 						<?php } ?>

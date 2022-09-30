@@ -12,7 +12,7 @@
 		<?php if (count($carrello) > 0) { ?>
 		<ul class="uk-list uk-list-divider">
 			<?php foreach ($carrello as $p) { 
-				$cartUrlAlias = getUrlAlias($p["cart"]["id_page"]);
+				$cartUrlAlias = getUrlAlias($p["cart"]["id_page"], $p["cart"]["id_c"]);
 			?>
 			<li class="uk-visible-toggle cart_item_row" rel="<?php echo $p["cart"]["id_cart"];?>">
 				<article>

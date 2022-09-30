@@ -2,7 +2,7 @@
 <div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
 	<div class="uk-first-column">
 		<?php if (!$p["cart"]["id_p"]) { ?>
-			<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"]);?>">
+			<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>">
 			<?php } ?>
 				<?php echo field($p,"title");?>
 			<?php if (!$p["cart"]["id_p"]) { ?>
@@ -12,7 +12,7 @@
 			
 			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"]) { ?>
 			<div class="uk-margin">
-				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"])."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
+				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
 			</div>
 		<?php } ?>
 	</div>

@@ -394,7 +394,7 @@ class CombinazioniModel extends GenericModel {
 		
 		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
-			$this->clear()->select("pages.alias as aliasp,pagest.alias as aliaspt,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
+			$this->clear()->select("combinazioni.id_page,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
 				->left("attributi_valori as a1")->on("a1.id_av = combinazioni.col_1")->left("contenuti_tradotti as at1")->on("at1.id_av = a1.id_av and at1.lingua = '".sanitizeDb($codice)."'")
 				->left("attributi_valori as a2")->on("a2.id_av = combinazioni.col_2")->left("contenuti_tradotti as at2")->on("at2.id_av = a2.id_av and at2.lingua = '".sanitizeDb($codice)."'")
 				->left("attributi_valori as a3")->on("a3.id_av = combinazioni.col_3")->left("contenuti_tradotti as at3")->on("at3.id_av = a3.id_av and at3.lingua = '".sanitizeDb($codice)."'")
@@ -403,8 +403,8 @@ class CombinazioniModel extends GenericModel {
 				->left("attributi_valori as a6")->on("a6.id_av = combinazioni.col_6")->left("contenuti_tradotti as at6")->on("at6.id_av = a6.id_av and at6.lingua = '".sanitizeDb($codice)."'")
 				->left("attributi_valori as a7")->on("a7.id_av = combinazioni.col_7")->left("contenuti_tradotti as at7")->on("at7.id_av = a7.id_av and at7.lingua = '".sanitizeDb($codice)."'")
 				->left("attributi_valori as a8")->on("a8.id_av = combinazioni.col_8")->left("contenuti_tradotti as at8")->on("at8.id_av = a8.id_av and at8.lingua = '".sanitizeDb($codice)."'")
-				->inner(array("pagina"))
-				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
+				->inner(array("pagina"));
+// 				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
 			
 			if ($idC)
 				$this->where(array(
@@ -451,30 +451,11 @@ class CombinazioniModel extends GenericModel {
 				
 				$aliasAttributi = (count($arrayAlias) > 0) ? implode("-", $arrayAlias) : "";
 				
-				$aliasPagina = $c["aliaspt"] ? $c["aliaspt"] : $c["aliasp"];
-				
-				$aliasPaginaCodice = $aliasPaginaAttributiCodice = $aliasPagina;
-				
-				if ($c["codice"])
-				{
-					$aliasPaginaCodice .= "-".$c["codice"];
-					
-					if ($aliasAttributi)
-						$aliasPaginaAttributiCodice .= "-".$aliasAttributi."-".$c["codice"];
-					else
-						$aliasPaginaAttributiCodice = $aliasPaginaCodice;
-				}
-				else
-				{
-					if ($aliasAttributi)
-						$aliasPaginaAttributiCodice .= "-".$aliasAttributi;
-				}
-				
 				$ca->sValues(array(
-					"alias_codice"	=>	$aliasPaginaCodice,
-					"alias_attributi_codice"	=>	$aliasPaginaAttributiCodice,
+					"alias_attributi"	=>	$aliasAttributi,
 					"lingua"		=>	$codice,
 					"id_c"			=>	$c["id_c"],
+					"id_page"		=>	$c["id_page"],
 				), "sanitizeDb");
 				
 				$ca->insert();
@@ -487,36 +468,41 @@ class CombinazioniModel extends GenericModel {
 	
 	
 	// Restituisce l'alias della combinazione
-	public function getAlias($idPage, $agiungiAlias= false, $idC = 0)
+	public function getAlias($idPage = 0, $lingua = null, $idC = 0, $agiungiAlias = true)
 	{
-		return "";
+		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
+			return "";
 		
-// 		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
-// 			return "";
-// 		
-// 		$this->clear()->select("codice,alias")->where(array(
-// 				"id_page"	=>	$idPage,
-// 			))->orderBy("id_order")->limit(1);
-// 		
-// 		if ($idC)
-// 			$this->aWhere(array(
-// 				"id_c"	=>	(int)$idC,
-// 			));
-// 		
-// 		$record = $this->record();
-// 		
-// 		if (!empty($record))
-// 		{
-// 			$alias = "";
-// 			
-// 			if ($agiungiAlias && v("usa_alias_combinazione_in_url_prodotto") && $record["alias"])
-// 				$alias .= "-".$record["alias"];
-// 			
-// 			if (v("usa_codice_combinazione_in_url_prodotto") && $record["codice"])
-// 				$alias .= "-".$record["codice"];
-// 		}
-// 		
-// 		return $alias;
+		$alias = "";
+		
+		$this->clear()->select("combinazioni.codice,combinazioni_alias.alias_attributi")->inner(array("alias"))->where(array(
+				"combinazioni_alias.lingua"	=>	sanitizeAll($lingua),
+			))->orderBy("id_order")->limit(1);
+		
+		if ($idC)
+			$this->aWhere(array(
+				"combinazioni_alias.id_c"	=>	(int)$idC,
+			));
+		else if ($idPage)
+			$this->aWhere(array(
+				"combinazioni_alias.id_page"	=>	(int)$idPage,
+			));
+		
+		$res = $this->send();
+		
+		if (count($res) > 0)
+		{
+			$aliasAttributi = $res[0]["combinazioni_alias"]["alias_attributi"];
+			$codice = $res[0]["combinazioni"]["codice"];
+			
+			if ($agiungiAlias && v("usa_alias_combinazione_in_url_prodotto") && $aliasAttributi)
+				$alias .= "-".$aliasAttributi;
+			
+			if (v("usa_codice_combinazione_in_url_prodotto") && $codice)
+				$alias .= "-".$codice;
+		}
+		
+		return $alias;
 	}
 	
 	public function controllaCombinazioniPagina($idPage)

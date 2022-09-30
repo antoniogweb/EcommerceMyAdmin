@@ -69,6 +69,9 @@ class CombinazioniController extends BaseController
 
 	public function main()
 	{
+		if (VariabiliModel::checkToken("token_aggiorna_alias_combinazioni"))
+			$this->m[$this->modelName]->aggiornaAlias();
+		
 		$this->shift();
 		
 		$prezzoLabel = "Prezzo";
@@ -231,6 +234,7 @@ class CombinazioniController extends BaseController
 	public function salva()
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
+		CombinazioniModel::$aggiornaAliasAdInserimento = false;
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
@@ -246,15 +250,8 @@ class CombinazioniController extends BaseController
 		if (v("prezzi_ivati_in_prodotti"))
 			$campoPrice = "price_ivato";
 		
-		$arrayIdPages = array();
-		
 		foreach ($valori as $v)
 		{
-			$combinazione = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
-			
-			if (!empty($combinazione))
-				$arrayIdPages[] = $combinazione["id_page"];
-			
 			$this->m[$this->modelName]->setValues(array(
 				"codice"	=>	$v["codice"],
 				"peso"		=>	$v["peso"],
@@ -283,10 +280,5 @@ class CombinazioniController extends BaseController
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
-		
-		foreach ($arrayIdPages as $idPage)
-		{
-			$this->m[$this->modelName]->aggiornaAlias($idPage);
-		}
 	}
 }

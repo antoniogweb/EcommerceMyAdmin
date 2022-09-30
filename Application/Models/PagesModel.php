@@ -63,6 +63,8 @@ class PagesModel extends GenericModel {
 	
 	public static $testoLabelSocial = "Lato frontend verrà mostrato se il tema lo prevede";
 	
+	public static $IdCombinazione = 0;
+	
 	public static $modelliDaDuplicare = array(
 		"ImmaginiModel",
 		"LayerModel",
@@ -941,7 +943,6 @@ class PagesModel extends GenericModel {
 					"peso"		=>	$pagina["peso"],
 					"giacenza"	=>	$pagina["giacenza"],
 					"immagine"	=>	getFirstImage($id),
-					"alias"		=>	"",
 				));
 				
 				if (empty($combinazione))
@@ -1141,69 +1142,101 @@ class PagesModel extends GenericModel {
 	{
 		$clean['alias'] = sanitizeAll($alias);
 		
-// 		if (v("usa_codice_combinazione_in_url_prodotto"))
-// 		{
-// 			$res = $this->clear()->select("pages.id_page")->inner(array("combinazioni"))->where(array(
-// 				"alias"				=>	$clean['alias'],
-// 				"pages.temp"		=>	0,
-// 				"pages.cestino"		=>	0,
-// 			))->sWhere("concat()")->orderBy("combinazioni.id_order")->limit(1);
-// 			
-// 			if (!User::$adminLogged)
-// 				$this->aWhere(array(
-// 					"pages.attivo"=>"Y",
-// 				));
-// 			
-// 			$res = $this->send();
-// 		}
-		
-		
-		
-		$res = $this->clear()->select("pages.id_page")->where(array(
-			"alias"				=>	$clean['alias'],
-			"pages.temp"		=>	0,
-			"pages.cestino"		=>	0,
-		))->toList("pages.id_page");
-		
-		if (!User::$adminLogged)
-			$this->aWhere(array(
-				"attivo"=>"Y",
-			));
-		
-		$res = $this->send();
-		
-		if (count($res) > 0)
-			return $res;
-		else
+		if (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto"))
 		{
-			// Cerco la traduzione
-			$ct = new ContenutitradottiModel();
+			$res = $this->clear()->select("pages.id_page, combinazioni.id_c")->inner(array("combinazioni"))->where(array(
+				"pages.temp"		=>	0,
+				"pages.cestino"		=>	0,
+			))->limit(1);
 			
-			$res = $ct->clear()->select("pages.id_page")
-				->inner(array("page"))
-				->where(array(
-					"alias"=>$clean['alias'],
-					"pages.temp"		=>	0,
-					"pages.cestino"		=>	0,
-				))
-				->toList("pages.id_page");
+			$tableAlias = "pages";
+			
+			if ($lingua && $lingua != LingueModel::getPrincipaleFrontend())
+			{
+				$this->inner("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'");
+				$tableAlias = "contenuti_tradotti";
+			}
+			
+			if (v("usa_alias_combinazione_in_url_prodotto") && $lingua)
+				$this->inner("combinazioni_alias")->on("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = '".sanitizeDb($lingua)."'");
 			
 			if (!User::$adminLogged)
 				$this->aWhere(array(
 					"pages.attivo"=>"Y",
 				));
 			
-			if ($lingua)
-			{
-				$ct->aWhere(array(
-					"lingua"	=>	sanitizeAll($lingua),
-				));
-			}
+			if (v("usa_alias_combinazione_in_url_prodotto"))
+				$sWhere = "(
+					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi,'-',combinazioni.codice) = '".$clean['alias']."' OR 
+					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi) = '".$clean['alias']."' OR 
+					concat($tableAlias.alias,'-',combinazioni.codice) = '".$clean['alias']."' OR 
+					$tableAlias.alias = '".$clean['alias']."'
+				)";
+			else
+				$sWhere = "(
+					concat($tableAlias.alias,'-',combinazioni.codice) = '".$clean['alias']."' OR 
+					$tableAlias.alias = '".$clean['alias']."'
+				)";
 			
-			$res = $ct->send();
+			$this->sWhere($sWhere);
+			
+			$res = $this->toList("pages.id_page", "combinazioni.id_c")->send();
+			
+			if (count($res) > 0)
+			{
+				self::$IdCombinazione = reset($res);
+				
+				return array_keys($res);
+			}
+		}
+		else
+		{
+			$res = $this->clear()->select("pages.id_page")->where(array(
+				"alias"				=>	$clean['alias'],
+				"pages.temp"		=>	0,
+				"pages.cestino"		=>	0,
+			))->toList("pages.id_page");
+			
+			if (!User::$adminLogged)
+				$this->aWhere(array(
+					"attivo"=>"Y",
+				));
+			
+			$res = $this->send();
 			
 			if (count($res) > 0)
 				return $res;
+			else
+			{
+				// Cerco la traduzione
+				$ct = new ContenutitradottiModel();
+				
+				$res = $ct->clear()->select("pages.id_page")
+					->inner(array("page"))
+					->where(array(
+						"alias"=>$clean['alias'],
+						"pages.temp"		=>	0,
+						"pages.cestino"		=>	0,
+					))
+					->toList("pages.id_page");
+				
+				if (!User::$adminLogged)
+					$this->aWhere(array(
+						"pages.attivo"=>"Y",
+					));
+				
+				if ($lingua)
+				{
+					$ct->aWhere(array(
+						"lingua"	=>	sanitizeAll($lingua),
+					));
+				}
+				
+				$res = $ct->send();
+				
+				if (count($res) > 0)
+					return $res;
+			}
 		}
 		
 		return array();
@@ -1338,7 +1371,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	//get the URL of a content
-	public function getUrlAlias($id, $lingua = null)
+	public function getUrlAlias($id, $lingua = null, $idC = 0)
 	{
 		$c = new CombinazioniModel();
 		
@@ -1367,9 +1400,9 @@ class PagesModel extends GenericModel {
 				else
 				{
 					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"]);
+						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
 					else
-						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"]);
+						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
 				}
 			}
 		}
@@ -1378,7 +1411,7 @@ class PagesModel extends GenericModel {
 			$page = self::getPageDetails($clean["id"], $lingua);
 			
 			if (!empty($page))
-				$urlArray[] = field($page, "alias").$c->getAlias($clean["id"]);
+				$urlArray[] = field($page, "alias").$c->getAlias($clean["id"], $lingua, $idC);
 		}
 		
 		$ext = Parametri::$useHtmlExtension ? ".html" : null;

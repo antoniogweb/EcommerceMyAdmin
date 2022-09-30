@@ -501,6 +501,8 @@ class BaseContenutiController extends BaseController
 	//create the HTML of the breadcrumb
 	protected function breadcrumb($type = "category", $linkInLast = false, $separator = "&raquo;", $fullParents = null)
 	{
+		$c = new CombinazioniModel();
+		
 		switch($type)
 		{
 			case "category":
@@ -534,7 +536,14 @@ class BaseContenutiController extends BaseController
 				$table = ($j === (count($tempParents)-1) and $type === "page" and $i === 0) ? "pages" : "categories";
 				
 				if ($i > 0 || v("mostra_categorie_in_url_prodotto") || $table == "pages")
-					$hrefArray[] = (isset($row["contenuti_tradotti"]["alias"]) && $row["contenuti_tradotti"]["alias"]) ? $row["contenuti_tradotti"]["alias"] : $row[$table]["alias"];
+				{
+					$aliasAttributiCodice = "";
+					
+					if ($table == "pages" && FeedbackModel::gIdCombinazione())
+						$aliasAttributiCodice = $c->getAlias(0, Params::$lang, FeedbackModel::gIdCombinazione());
+					
+					$hrefArray[] = (isset($row["contenuti_tradotti"]["alias"]) && $row["contenuti_tradotti"]["alias"]) ? $row["contenuti_tradotti"]["alias"].$aliasAttributiCodice : $row[$table]["alias"].$aliasAttributiCodice;
+				}
 				
 				$j++;
 			}

@@ -29,6 +29,7 @@ class FeedbackModel extends GenericModel {
 	public static $sValues = array();
 	public static $sNotice = null;
 	public static $idProdotto = 0;
+	public static $idCombinazione = 0;
 	public static $datiProdotto = array();
 	
 	public static $tendinaPunteggi = array(
@@ -98,6 +99,13 @@ class FeedbackModel extends GenericModel {
 		self::$idProdotto = isset($_GET[v("var_query_string_id_rif")]) ? (int)$_GET[v("var_query_string_id_rif")] : 0;
 		
 		return self::$idProdotto;
+	}
+	
+	public static function gIdCombinazione()
+	{
+		self::$idCombinazione = isset($_GET[v("var_query_string_id_comb")]) ? (int)$_GET[v("var_query_string_id_comb")] : 0;
+		
+		return self::$idCombinazione;
 	}
 	
 	public static function gDatiProdotto()
