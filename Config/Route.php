@@ -373,6 +373,7 @@ class Route
 		'combinazioni,main',
 		'combinazioni,form',
 		'combinazioni,salva',
+		'combinazioni,rendicanonical',
 		
 		'tipicontenuto,main',
 		'tipicontenuto,form',

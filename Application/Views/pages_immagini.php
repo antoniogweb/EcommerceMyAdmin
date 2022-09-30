@@ -149,13 +149,15 @@ $(document).ready(function(){
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
+			<?php if (!nobuttons()) { ?>
 			<!-- show the top menù -->
 			<div class='mainMenu'>
 				<?php echo $menu;?>
 			</div>
-
+			
 			<?php include($this->viewPath("steps"));?>
-				
+			<?php } ?>
+			
 			<div class="box">
 				<div class="box-header with-border main">
 					

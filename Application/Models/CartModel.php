@@ -726,7 +726,19 @@ class CartModel extends GenericModel {
 				if (isset($datiCombinazione))
 				{
 					$this->values["codice"] = $datiCombinazione[0]["combinazioni"]["codice"];
-					$this->values["immagine"] = $datiCombinazione[0]["combinazioni"]["immagine"];
+					
+					if (v("immagini_separate_per_variante"))
+					{
+						$immagini = ImmaginiModel::immaginiCombinazione($datiCombinazione[0]["combinazioni"]["id_c"]);
+						
+						if (count($immagini) > 0)
+							$this->values["immagine"] = $immagini[0]["immagine"];
+						else
+							$this->values["immagine"] = $datiCombinazione[0]["combinazioni"]["immagine"];
+					}
+					else
+						$this->values["immagine"] = $datiCombinazione[0]["combinazioni"]["immagine"];
+					
 					$this->values["peso"] = $datiCombinazione[0]["combinazioni"]["peso"];
 				}
 				else

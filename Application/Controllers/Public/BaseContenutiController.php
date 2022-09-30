@@ -1221,11 +1221,9 @@ class BaseContenutiController extends BaseController
 					"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
 				),
 			),
-// 			"lt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
 		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
 		
 		$data["paginaSuccessiva"] = $this->m['PagesModel']->where(array(
-// 			"gt"	=>	array("pages.data_news"	=>	$data['pages'][0]["pages"]["data_news"]),
 			"OR"	=>	array(
 				"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
 				"AND"	=>	array(
@@ -1282,7 +1280,28 @@ class BaseContenutiController extends BaseController
 		$data["altreImmagini"] = array();
 		
 		if (count($data["pages"]) > 0)
-			$data["altreImmagini"] = $this->m["ImmaginiModel"]->clear()->where(array("id_page" => $clean['id']))->orderBy("id_order")->send(false);
+		{
+			$data["altreImmagini"] = $this->m["ImmaginiModel"]->clear()->where(array(
+				"id_page"	 => $clean['id'],
+				"id_c"		=>	0,
+			))->orderBy("id_order")->send(false);
+			
+			if (v("immagini_separate_per_variante") && PagesModel::$IdCombinazione && count($colonne) > 0)
+			{
+				$immaginiCombinazione = $this->m["ImmaginiModel"]->aWhere(array(
+					"id_c"	=>	(int)PagesModel::$IdCombinazione,
+				))->send(false);
+				
+				if (count($immaginiCombinazione) > 0)
+				{
+					$data["pages"][0]["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
+					
+					array_shift($immaginiCombinazione);
+					
+					$data["altreImmagini"] = $immaginiCombinazione;
+				}
+			}
+		}
 		
 		$this->altreImmagini = $data["altreImmagini"];
 		
@@ -1333,7 +1352,7 @@ class BaseContenutiController extends BaseController
 			$data["isProdotto"] = true;
 		}
 		
-		if (v("mostra_tendina_prodotto_principale"))
+		if (v("mostra_tendina_prodotto_principale") || v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
 			$data["tagCanonical"] = PagesModel::getTagCanonical((int)$id);
 		
 		//estrai i dati della categoria

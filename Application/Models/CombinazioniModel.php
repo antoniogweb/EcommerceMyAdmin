@@ -477,7 +477,7 @@ class CombinazioniModel extends GenericModel {
 		
 		$this->clear()->select("combinazioni.codice,combinazioni_alias.alias_attributi")->inner(array("alias"))->where(array(
 				"combinazioni_alias.lingua"	=>	sanitizeAll($lingua),
-			))->orderBy("id_order")->limit(1);
+			))->orderBy("canonical desc,id_order")->limit(1);
 		
 		if ($idC)
 			$this->aWhere(array(
@@ -673,10 +673,43 @@ class CombinazioniModel extends GenericModel {
 	{
 		$immagini = ImmaginiModel::immaginiCombinazione($record["combinazioni"]["id_c"]);
 		
-		if (count($immagini) > 0)
-			return "<img class='immagine_variante' src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagini[0]["immagine"]."' />";
+		$html = "";
 		
-		return "";
+		foreach ($immagini as $imm)
+		{
+			$html .= "<img class='immagine_variante' style='margin-right:5px;' src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$imm["immagine"]."' />";
+		}
+		
+		if (count($immagini) > 0)
+			$html .= "<br />";
+		
+		$html .= "<a class='iframe label label-primary' href='".Url::getRoot()."prodotti/immagini/".$record["combinazioni"]["id_page"]."?partial=Y&nobuttons=Y&id_cmb=".$record["combinazioni"]["id_c"]."'><small>".gtext("Gestisci")." <i class='fa fa-pencil'></i></small></a>"; 
+		
+		return $html;
+	}
+	
+	public function canonical($record)
+	{
+		if ($record["combinazioni"]["canonical"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "<a class='ajlink text text-muted' title='".gtext("Rendi il prodotto canonical")."' href='".Url::getRoot()."combinazioni/rendicanonical/".$record["combinazioni"]["id_c"]."'><i class='fa fa-ban'></i></a>";
+	}
+	
+	public function rendicanonical($idC)
+	{
+		$combinazione = $this->selectId((int)$idC);
+		
+		if (!empty($combinazione))
+		{
+			$this->query("update combinazioni set canonical = 0 where id_page = ".(int)$combinazione["id_page"]);
+			
+			$this->sValues(array(
+				"canonical"	=>	1,
+			));
+			
+			$this->pUpdate($combinazione["id_c"]);
+		}
 	}
 	
 // 	public function col2($record)

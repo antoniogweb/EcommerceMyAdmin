@@ -1153,13 +1153,13 @@ class PagesController extends BaseController {
 			if (strcmp($_GET["action"],"aggiorna") === 0)
 			{
 				$this->m["CombinazioniModel"]->creaCombinazioni($clean['id']);
-				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y#refresh_link");
+				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y");
 			}
 			else if (strcmp($_GET["action"],"del_comb") === 0)
 			{
 				$clean["id_c"] = $this->request->get("id",0,"forceInt");
 				$this->m["CombinazioniModel"]->del($clean["id_c"]);
-				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y#refresh_link");
+				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y");
 			}
 		}
 		$this->m['CombinazioniModel']->creaColonne($clean['id']);
@@ -1191,6 +1191,24 @@ class PagesController extends BaseController {
 		else if (v("immagini_separate_per_variante"))
 		{
 			$this->h['List']->addItem("text",";primaImmagineCrud;");
+			
+			$this->h['List']->colProperties = array(
+				array(
+					'width'	=>	'300px',
+				),
+			);
+		}
+		
+		$this->h['List']->inverseColProperties = array(
+			array(
+				'class'	=>	'text-right',
+				'width'	=>	'50px',
+			),
+		);
+		
+		foreach ($this->m['CombinazioniModel']->colonne as $col)
+		{
+			$this->h['List']->addItem("text",";AttributivaloriModel.getName|combinazioni.$col;");
 		}
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;combinazioni.codice;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='codice' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
@@ -1204,11 +1222,6 @@ class PagesController extends BaseController {
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.peso;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='peso' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
 		
-		foreach ($this->m['CombinazioniModel']->colonne as $col)
-		{
-			$this->h['List']->addItem("text",";AttributivaloriModel.getName|combinazioni.$col;");
-		}
-		
 // 		$this->h['List']->addItem("text","<a class='del_row' href='".$this->baseUrl."/".$this->controller."/attributi/".$clean['id'].$this->viewStatus."&action=del_comb&id=;combinazioni.id_c;#refresh_link'><img src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/delete.png' /></a>");
 		
 		$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean["id"]);
@@ -1216,21 +1229,29 @@ class PagesController extends BaseController {
 // 		$this->h['List']->addItem('delForm','pages/attributi/'.$clean['id'],';combinazioni.id_c;');
 		
 		if (v("immagine_in_varianti"))
-			$head = "Immagine,Codice,Prezzo,Peso";
+			$head = "Immagine";
 		else if (v("immagini_separate_per_variante"))
-			$head = "Immagini,Codice,Prezzo,Peso";
+			$head = "Immagini";
 		else
-			$head = 'Codice,Prezzo,Peso';
+			$head = "";
 		
 		foreach ($colonne as $col)
 		{
 			$head .= ",$col";
 		}
 		
+		$head .= ",Codice,Prezzo,Peso";
+		
 		if (v("attiva_giacenza"))
 		{
 			$this->h['List']->addItem("text",";combinazioni.giacenza;");
 			$head .= ",Giacenza";
+		}
+		
+		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
+		{
+			$this->h['List']->addItem("text",";canonical;");
+			$head .= ",Canonical";
 		}
 		
 		$this->h['List']->setHead($head);

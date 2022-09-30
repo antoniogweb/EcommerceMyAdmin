@@ -369,7 +369,7 @@ $(document).ready(function(){
 		
 		var that = $(this);
 		
-		that.find("i").addClass("fa-spin");
+		that.find("i").removeClass("fa-refresh").addClass("fa-spinner").addClass("fa-spin");
 		
 		var valori = [];
 		
@@ -411,7 +411,7 @@ $(document).ready(function(){
 			},
 			success: function(content){
 				
-				that.find("i").removeClass("fa-spin");
+				that.find("i").removeClass("fa-spin").removeClass("fa-spinner").addClass("fa-refresh");
 				
 			}
 		});

@@ -281,4 +281,9 @@ class CombinazioniController extends BaseController
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
 	}
+	
+	public function rendicanonical($idC)
+	{
+		$this->m[$this->modelName]->rendicanonical($idC);
+	}
 }

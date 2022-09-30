@@ -2810,7 +2810,10 @@ class PagesModel extends GenericModel {
 		))->field("id_p");
 		
 		if ($idP)
-			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias($idP).'" />';
+			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias((int)$idP).'" />';
+		
+		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
+			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias((int)$id).'" />';
 		
 		return "";
     }

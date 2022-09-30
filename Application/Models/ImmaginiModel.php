@@ -186,33 +186,27 @@ class ImmaginiModel extends GenericModel {
 			
 			$i = new ImmaginiModel();
 			
-			$i->select("immagini.*")
+			$elencoImmagini =  $i->select("immagini.*")
 				->inner(array("pagina"))
 				->where(array(
 					"ne"	=>	array(
 						"id_c"	=>	0,
 					),
 				))
-				->orderBy("immagini.id_order");
-			
-			$elencoImmagini = $i->send();
-			
-// 			echo $i->getQuery();
+				->orderBy("immagini.id_order")->send();
 			
 			foreach ($elencoImmagini as $recordImg)
 			{
-				$idc = $recordImg["immagini"]["id_c"];
+				$id_c = $recordImg["immagini"]["id_c"];
 
 				$immagine = $recordImg["immagini"];
 				
-				if (isset(self::$immaginiPagine[$idC]))
-					self::$immaginiCombinazioni[$idc][] = $immagine;
+				if (isset(self::$immaginiCombinazioni[$id_c]))
+					self::$immaginiCombinazioni[$id_c][] = $immagine;
 				else
-					self::$immaginiCombinazioni[$idc] = array($immagine);
+					self::$immaginiCombinazioni[$id_c] = array($immagine);
 			}
 		}
-		
-// 		print_r(self::$immaginiPagine);
 		
 		if (isset(self::$immaginiCombinazioni[$idC]))
 			return self::$immaginiCombinazioni[$idC];
@@ -238,8 +232,6 @@ class ImmaginiModel extends GenericModel {
 			
 			$elencoImmagini = $i->send();
 			
-// 			echo $i->getQuery();
-			
 			foreach ($elencoImmagini as $recordImg)
 			{
 				$idPage = $recordImg["immagini"]["id_page"];
@@ -256,12 +248,9 @@ class ImmaginiModel extends GenericModel {
 			}
 		}
 		
-// 		print_r(self::$immaginiPagine);
-		
 		if (isset(self::$immaginiPagine[$idPagina]))
 			return self::$immaginiPagine[$idPagina];
 		
 		return array();
 	}
-	
 }
