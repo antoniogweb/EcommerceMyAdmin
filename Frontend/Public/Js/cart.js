@@ -55,6 +55,7 @@ if (typeof stringa_errore_righe_carrello == "undefined")
 
 var time;
 var arrayAccessori = [];
+var redirectCombinazioneAttivo = false;
 
 if (typeof reloadCart !== 'function')
 {
@@ -488,8 +489,13 @@ function combinazione(obj)
 						if (obj.find(".dati_variante").length > 0){
 							obj.find(".dati_variante").html(content);
 							
-							aggiornaDatiVariante(obj);
-							attivaDisattivaCarrello();
+							if (obj.find(".dati_variante .url_redirect_combinazione").length > 0 && redirectCombinazioneAttivo)
+								location.href = baseUrl + "/" + obj.find(".dati_variante .url_redirect_combinazione").text();
+							else
+							{
+								aggiornaDatiVariante(obj);
+								attivaDisattivaCarrello();
+							}
 						}
 					}
 					else
@@ -950,7 +956,8 @@ $(document).ready(function(){
 	});
 	
 	$(".form_select_attributo").change(function(){
-	
+		
+		redirectCombinazioneAttivo = true;
 		combinazione($(this).parents(".box_accessorio"));
 	
 	});
@@ -970,7 +977,8 @@ $(document).ready(function(){
 	});
 	
 	$('.form_radio_attributo').on('ifChanged', function(event){
-	
+		
+		redirectCombinazioneAttivo = true;
 		combinazione($(this).parents(".box_accessorio"));
 	
 	});

@@ -8,7 +8,8 @@ $sottotitoloPagina = "";
 $noNumeroProdotti = $noTitolo = $noContainer = true;
 
 include(tpf("/Elementi/Pagine/page_top.php"));?>
-<div class="uk-margin-large-bottom">
+<div class="uk-margin-large-bottom uk-position-relative">
+	<div id="<?php echo v("fragmento_dettaglio_prodotto");?>" style="position:absolute;top:-100px;"></div>
 	<div class="uk-container">
 		<div class="uk-grid-large uk-grid uk-text-left" uk-grid="">
 			<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
