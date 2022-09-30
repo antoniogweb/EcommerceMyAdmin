@@ -669,6 +669,16 @@ class CombinazioniModel extends GenericModel {
 			return null;
 	}
 	
+	public function primaImmagineCrud($record)
+	{
+		$immagini = ImmaginiModel::immaginiCombinazione($record["combinazioni"]["id_c"]);
+		
+		if (count($immagini) > 0)
+			return "<img class='immagine_variante' src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagini[0]["immagine"]."' />";
+		
+		return "";
+	}
+	
 // 	public function col2($record)
 // 	{
 // 		$idAttr = $record["combinazioni"]["col_2"];

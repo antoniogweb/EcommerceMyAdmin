@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ImmaginiModel extends GenericModel {
 	
 	protected static $immaginiPagine = null;
+	protected static $immaginiCombinazioni= null;
 	
 	public $campoTitolo = "immagine";
 	
@@ -175,6 +176,48 @@ class ImmaginiModel extends GenericModel {
 				parent::del($clean['id_immagine']);
 			}
 		}
+	}
+	
+	public static function immaginiCombinazione($idC)
+	{
+		if (!isset(self::$immaginiCombinazioni))
+		{
+			self::$immaginiCombinazioni = array();
+			
+			$i = new ImmaginiModel();
+			
+			$i->select("immagini.*")
+				->inner(array("pagina"))
+				->where(array(
+					"ne"	=>	array(
+						"id_c"	=>	0,
+					),
+				))
+				->orderBy("immagini.id_order");
+			
+			$elencoImmagini = $i->send();
+			
+// 			echo $i->getQuery();
+			
+			foreach ($elencoImmagini as $recordImg)
+			{
+				$idc = $recordImg["immagini"]["id_c"];
+
+				$immagine = $recordImg["immagini"];
+				
+				if (isset(self::$immaginiPagine[$idC]))
+					self::$immaginiCombinazioni[$idc][] = $immagine;
+				else
+					self::$immaginiCombinazioni[$idc] = array($immagine);
+			}
+		}
+		
+// 		print_r(self::$immaginiPagine);
+		
+		if (isset(self::$immaginiCombinazioni[$idC]))
+			return self::$immaginiCombinazioni[$idC];
+		
+		return array();
 	}
 	
 	// Restituisce un array con tutte le immagini della pagina

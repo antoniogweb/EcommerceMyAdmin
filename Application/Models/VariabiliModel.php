@@ -143,7 +143,6 @@ class VariabiliModel extends GenericModel {
 		"estrai_in_promozione_home"	=>	0,
 		"news_per_pagina"			=>	16,
 		"email_aziendale"			=>	"",
-		"immagine_in_varianti"		=>	0,
 		"piattaforma_in_sviluppo"	=>	1,
 		"email_sviluppo"			=>	"",
 		"classe_variante_radio"		=>	"",
@@ -469,7 +468,9 @@ class VariabiliModel extends GenericModel {
 		"usa_codice_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il codice della combinazione nell'URL del prodotto
 		"usa_alias_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il l'alias della combinazione nell'URL del prodotto
 		"token_aggiorna_alias_combinazioni"		=>	"", // token per andare a rigenerare tutti gli alias delle combinazioni
-		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella pagina della nuova combinazione
+		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella
+		"immagine_in_varianti"		=>	0, // se settato a 1, mostra la colonna immagini nell'elenco delle combinazionipagina della nuova combinazione
+		"immagini_separate_per_variante"		=>	0, // se settato a 1, possibilità di caricare più immagini per ogni variante
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
