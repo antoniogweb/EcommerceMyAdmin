@@ -89,7 +89,7 @@ class ImmaginiModel extends GenericModel {
 			
 		}
 		
-		$res = $this->select('immagine')->where(array('id_page'=>$clean['id_page']))->toList('immagine')->limit(1)->send();
+		$res = $this->select('immagine')->where(array('id_page'=>$clean['id_page'],"id_c"=>0))->toList('immagine')->limit(1)->send();
 		
 		if (count($res) > 0)
 		{
@@ -178,6 +178,35 @@ class ImmaginiModel extends GenericModel {
 		}
 	}
 	
+	public static function altreImmaginiPagina($idPage)
+	{
+		$pModel = new PagesModel();
+		$i = new ImmaginiModel();
+		
+		$altreImmagini = $i->clear()->where(array(
+			"id_page"	 => (int)$idPage,
+			"id_c"		=>	0,
+		))->orderBy("id_order")->send(false);
+		
+		if (v("immagini_separate_per_variante"))
+		{
+			$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$idPage);
+			
+			$immaginiCombinazione = $i->aWhere(array(
+				"id_c"	=>	(int)$idC,
+			))->send(false);
+			
+			if (count($immaginiCombinazione) > 0)
+			{
+				array_shift($immaginiCombinazione);
+				
+				$altreImmagini = $immaginiCombinazione;
+			}
+		}
+		
+		return $altreImmagini;
+	}
+	
 	public static function immaginiCombinazione($idC)
 	{
 		if (!isset(self::$immaginiCombinazioni))
@@ -214,6 +243,20 @@ class ImmaginiModel extends GenericModel {
 		return array();
 	}
 	
+	public static function immaginiPaginaFull($idPage)
+	{
+		$p = new PagesModel();
+		
+		$pagina = $p->selectId((int)$idPage);
+		
+		$elencoImmagini = ImmaginiModel::immaginiPagina((int)$idPage, true);
+		
+		if (!empty($pagina) && $pagina["immagine"])
+			array_unshift($elencoImmagini, $pagina["immagine"]);
+		
+		return $elencoImmagini;
+	}
+	
 	// Restituisce un array con tutte le immagini della pagina
 	public static function immaginiPagina($idPagina, $soloShop = true, $soloImmagine = true)
 	{
@@ -225,6 +268,9 @@ class ImmaginiModel extends GenericModel {
 			
 			$i->select("immagini.*")
 				->inner(array("pagina"))
+				->where(array(
+					"id_c"	=>	0,
+				))
 				->orderBy("immagini.id_order");
 			
 			if ($soloShop)

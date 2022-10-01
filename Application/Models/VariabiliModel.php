@@ -768,6 +768,6 @@ class VariabiliModel extends GenericModel {
 	
 	public static function combinazioniLinkVeri()
 	{
-		return (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")) ? true : false;
+		return ((v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")) && v("aggiorna_pagina_al_cambio_combinazione_in_prodotto")) ? true : false;
 	}
 }

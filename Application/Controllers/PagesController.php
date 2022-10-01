@@ -1237,7 +1237,10 @@ class PagesController extends BaseController {
 		
 		foreach ($colonne as $col)
 		{
-			$head .= ",$col";
+			if ($head)
+				$head .= ",$col";
+			else
+				$head .= "$col";
 		}
 		
 		$head .= ",Codice,Prezzo,Peso";

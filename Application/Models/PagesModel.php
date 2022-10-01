@@ -64,6 +64,7 @@ class PagesModel extends GenericModel {
 	public static $testoLabelSocial = "Lato frontend verrà mostrato se il tema lo prevede";
 	
 	public static $IdCombinazione = 0;
+	public static $arrayIdCombinazioni = array();
 	
 	public static $modelliDaDuplicare = array(
 		"ImmaginiModel",
@@ -1141,18 +1142,25 @@ class PagesModel extends GenericModel {
 	
 	public function getIdCombinazioneCanonical($idPage)
 	{
+		if (isset(self::$arrayIdCombinazioni[$idPage]))
+			return self::$arrayIdCombinazioni[$idPage];
+		
 		$c = new CombinazioniModel();
 		
-		return (int)$c->clear()->select("combinazioni.id_c")->where(array(
+		$orderBy = VariabiliModel::combinazioniLinkVeri() ? "canonical desc,id_order" : "id_order";
+		
+		self::$arrayIdCombinazioni[$idPage] = (int)$c->clear()->select("combinazioni.id_c")->where(array(
 			"id_page"	=>	(int)$idPage,
-		))->orderBy("canonical desc,id_order")->limit(1)->field("id_c");
+		))->orderBy($orderBy)->limit(1)->field("id_c");
+		
+		return self::$arrayIdCombinazioni[$idPage];
 	}
 	
 	public function getIdFromAlias($alias, $lingua = null)
 	{
 		$clean['alias'] = sanitizeAll($alias);
 		
-		if (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto"))
+		if (VariabiliModel::combinazioniLinkVeri())
 		{
 			$res = $this->clear()->select("pages.id_page, combinazioni.id_c")->inner(array("combinazioni"))->where(array(
 				"pages.temp"		=>	0,
@@ -2434,20 +2442,20 @@ class PagesModel extends GenericModel {
 				"in" => array("-id_c" => $children),
 			))
 			->addWhereAttivo()
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzionePagina()
 			->orderBy("pages.title")->send();
+		
+		$res = PagesModel::impostaDatiCombinazionePagine($res);
 		
 		$arrayProdotti = array();
 		
 		foreach ($res as $r)
 		{
-			$giacenza = self::disponibilita($r["pages"]["id_page"]);
-			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
-			
 			if (!VariabiliModel::combinazioniLinkVeri())
 				PagesModel::$IdCombinazione = $p->getIdCombinazioneCanonical($r["pages"]["id_page"]);
+			
+			$giacenza = self::disponibilita($r["pages"]["id_page"]);
+			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 			
 			$prezzoMinimo = $p->prezzoMinimo($r["pages"]["id_page"]);
 			$prezzoMinimoIvato = $prezzoFeed = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo);
@@ -2525,7 +2533,7 @@ class PagesModel extends GenericModel {
 			if ($r["pages"]["immagine"])
 				$temp["g:image_link"] = Url::getRoot()."thumb/dettagliobig/".$r["pages"]["immagine"];
 			
-			$altreImmagini = ImmaginiModel::immaginiPagina($r["pages"]["id_page"]);
+			$altreImmagini = ImmaginiModel::altreImmaginiPagina((int)$r["pages"]["id_page"]);
 			
 			if (count($altreImmagini) > 0)
 			{
@@ -2540,7 +2548,7 @@ class PagesModel extends GenericModel {
 					if ($count >= $numeroLimite)
 						break;
 					
-					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img;
+					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img["immagine"];
 					
 					$count++;
 				}
@@ -2675,7 +2683,7 @@ class PagesModel extends GenericModel {
 		$i = new ImmaginiModel();
 		
 		// Immagine principale
-		$strImm = $p->clear()->select("distinct codice_alfa,pages.id_page,pages.immagine")->toList("id_page", "immagine")->send();
+		$strImm = $p->clear()->select("distinct codice_alfa,pages.id_page,pages.immagine")->where(array("id_c"=>0))->toList("id_page", "immagine")->send();
 		
 		$struttImmagini = array();
 		
@@ -2763,16 +2771,20 @@ class PagesModel extends GenericModel {
     {
 		$pm = new PagesModel();
 		
-		$p = $pm->clear()->addJoinTraduzionePagina()->where(array(
+		$pm->clear()->addJoinTraduzionePagina()->where(array(
 			"pages.id_page"	=>	(int)$id,
-		))->first();
+		));
+		
+		$pages = PagesModel::impostaDatiCombinazionePagine($pm->send());
 		
 		$i = new ImmaginiModel();
 		
 		$snippetArray = array();
 		
-		if (!empty($p))
+		if (count($pages) > 0)
 		{
+			$p = $pages[0];
+			
 			$giacenza = self::disponibilita($p["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";
 			
@@ -2787,7 +2799,12 @@ class PagesModel extends GenericModel {
 			if ($p["pages"]["immagine"])
 				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$p["pages"]["immagine"];
 			
-			$altreImmagini = $i->clear()->where(array("id_page" => (int)$id))->orderBy("id_order")->send(false);
+			$altreImmagini = ImmaginiModel::altreImmaginiPagina((int)$id);
+			
+// 			$altreImmagini = $i->clear()->where(array(
+// 				"id_page"	=>	(int)$id,
+// 				"id_c"		=>	0,
+// 			))->orderBy("id_order")->send(false);
 			
 			foreach ($altreImmagini as $imm)
 			{
@@ -3480,5 +3497,49 @@ class PagesModel extends GenericModel {
 			return self::$pagesStruct[$idPage]["prev"];
 		
 		return null;
+	}
+	
+	public function addWhereCombinazione($idC)
+	{
+		$this->left("combinazioni")->on("combinazioni.id_page = pages.id_page")->aWhere(array(
+			"combinazioni.id_c"	=>	(int)$idC,
+		));
+		
+		return $this;
+	}
+	
+	public static function impostaDatiCombinazionePagine($pages)
+	{
+		$pModel = new PagesModel();
+		$cModel = new CombinazioniModel();
+		
+		$pagesFinale = array();
+		
+		foreach ($pages as $p)
+		{
+			$temp = $p;
+			
+			$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$p["pages"]["id_page"]);
+			
+			$combinazione = $cModel->selectId((int)$idC);
+			
+			if (!empty($combinazione))
+			{
+				$temp["pages"]["codice"] = $combinazione["codice"];
+				$temp["pages"]["peso"] = $combinazione["peso"];
+				
+				if (v("immagini_separate_per_variante"))
+				{
+					$immaginiCombinazione = ImmaginiModel::immaginiCombinazione($idC);
+				
+					if (count($immaginiCombinazione) > 0)
+						$temp["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
+				}
+			}
+			
+			$pagesFinale[] = $temp;
+		}
+		
+		return $pagesFinale;
 	}
 }

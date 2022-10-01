@@ -383,7 +383,7 @@ class CombinazioniModel extends GenericModel {
 	// Genera gli alias per tutte le righe di combinazione
 	public function aggiornaAlias($idPage = 0, $idC = 0, $idAV = 0)
 	{
-		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
+		if (!VariabiliModel::combinazioniLinkVeri())
 			return "";
 
 		if (v("usa_transactions"))
@@ -488,7 +488,7 @@ class CombinazioniModel extends GenericModel {
 	// Restituisce l'alias della combinazione
 	public function getAlias($idPage = 0, $lingua = null, $idC = 0, $agiungiAlias = true)
 	{
-		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
+		if (!VariabiliModel::combinazioniLinkVeri())
 			return "";
 		
 		$alias = "";

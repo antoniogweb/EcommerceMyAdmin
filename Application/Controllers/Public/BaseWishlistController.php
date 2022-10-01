@@ -58,7 +58,8 @@ class BaseWishlistController extends BaseController
 		
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		$data["pages"] = $this->m["WishlistModel"]->getProdotti();
+		$data["pages"] = PagesModel::impostaDatiCombinazionePagine($this->m["WishlistModel"]->getProdotti());
+		
 // 		$data["pages"] = $this->m["WishlistModel"]->clear()->select("wishlist.*,pages.*")->inner("pages")->using("id_page")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("id_wishlist ASC")->send();
 		
 		$this->append($data);

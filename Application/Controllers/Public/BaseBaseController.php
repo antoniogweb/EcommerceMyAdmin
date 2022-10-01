@@ -450,6 +450,12 @@ class BaseBaseController extends Controller
 			}
 			
 			$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
+			
+			if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
+			{
+				VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
+				VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
+			}
 		}
 	}
 	

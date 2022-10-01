@@ -900,6 +900,9 @@ class BaseContenutiController extends BaseController
 		else
 			$data["pages"] = $this->m['PagesModel']->send();
 		
+		if ($firstSection == "prodotti")
+			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
+		
 		$this->pages = $data["pages"];
 		
 		PagesModel::setPagesStruct($data["pages"]);
@@ -1203,13 +1206,15 @@ class BaseContenutiController extends BaseController
 		if ($firstSection == "prodotti")
 			$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
 		
-		$data["pages"] = $this->pages = $this->m['PagesModel']->clear()->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,marchi.*")
+		$this->m['PagesModel']->clear()->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,marchi.*")
 			->addJoinTraduzionePagina()
-// 			->inner("categories")->on("categories.id_c = pages.id_c")
-// 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->left("marchi")->on("pages.id_marchio = marchi.id_marchio")
-			->where(array("id_page"=>$clean['id']))->send();
+			->where(array("id_page"=>$clean['id']));
+		
+		$data["pages"] = $this->pages = $this->m['PagesModel']->send();
+		
+		if ($firstSection == "prodotti")
+			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
 		
 		if (count($data["pages"]) > 0)
 		{
@@ -1297,28 +1302,7 @@ class BaseContenutiController extends BaseController
 		$data["altreImmagini"] = array();
 		
 		if (count($data["pages"]) > 0)
-		{
-			$data["altreImmagini"] = $this->m["ImmaginiModel"]->clear()->where(array(
-				"id_page"	 => $clean['id'],
-				"id_c"		=>	0,
-			))->orderBy("id_order")->send(false);
-			
-			if (v("immagini_separate_per_variante") && PagesModel::$IdCombinazione && count($colonne) > 0)
-			{
-				$immaginiCombinazione = $this->m["ImmaginiModel"]->aWhere(array(
-					"id_c"	=>	(int)PagesModel::$IdCombinazione,
-				))->send(false);
-				
-				if (count($immaginiCombinazione) > 0)
-				{
-					$data["pages"][0]["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
-					
-					array_shift($immaginiCombinazione);
-					
-					$data["altreImmagini"] = $immaginiCombinazione;
-				}
-			}
-		}
+			$data["altreImmagini"] = ImmaginiModel::altreImmaginiPagina($clean['id']);
 		
 		$this->altreImmagini = $data["altreImmagini"];
 		
