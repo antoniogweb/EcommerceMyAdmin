@@ -26,8 +26,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 date_default_timezone_set('Europe/Rome');
 
-Files_Log::$logFolder = ROOT."/Logs";
-Files_Log::getInstance("log_generico");
+// Files_Log::$logFolder = ROOT."/Logs";
+// Files_Log::getInstance("log_generico");
 
 Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "elementi_tema", "tipi_clienti", "fasce_prezzo", "documenti");
 
