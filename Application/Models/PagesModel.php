@@ -943,6 +943,7 @@ class PagesModel extends GenericModel {
 					"peso"		=>	$pagina["peso"],
 					"giacenza"	=>	$pagina["giacenza"],
 					"immagine"	=>	getFirstImage($id),
+					"canonical"	=>	1,
 				));
 				
 				if (empty($combinazione))
@@ -1138,6 +1139,15 @@ class PagesModel extends GenericModel {
 // 		return false;
 // 	}
 	
+	public function getIdCombinazioneCanonical($idPage)
+	{
+		$c = new CombinazioniModel();
+		
+		return (int)$c->clear()->select("combinazioni.id_c")->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->orderBy("canonical desc,id_order")->limit(1)->field("id_c");
+	}
+	
 	public function getIdFromAlias($alias, $lingua = null)
 	{
 		$clean['alias'] = sanitizeAll($alias);
@@ -1205,7 +1215,11 @@ class PagesModel extends GenericModel {
 			$res = $this->send();
 			
 			if (count($res) > 0)
+			{
+				self::$IdCombinazione = $this->getIdCombinazioneCanonical($res[0]);
+				
 				return $res;
+			}
 			else
 			{
 				// Cerco la traduzione
@@ -1235,7 +1249,11 @@ class PagesModel extends GenericModel {
 				$res = $ct->send();
 				
 				if (count($res) > 0)
+				{
+					self::$IdCombinazione = $this->getIdCombinazioneCanonical($res[0]);
+					
 					return $res;
+				}
 			}
 // 		}
 		
@@ -1968,10 +1986,17 @@ class PagesModel extends GenericModel {
 			}
 			else
 			{
-				$res = $c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
+				$c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
 					"id_page"	=>	$clean['id_page'],
-				))->send();
-			
+				));
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
 				if (count($res) > 0)
 					return $res[0]["aggregate"]["PREZZO_MINIMO"];
 			}
@@ -2000,10 +2025,17 @@ class PagesModel extends GenericModel {
 			}
 			else
 			{
-				$res = $c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
+				$c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
 					"id_page"	=>	$clean['id_page'],
 					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
-				))->send();
+				));
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"combinazioni.id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
 				
 				if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
 					return $res[0]["aggregate"]["PREZZO_MINIMO"];
@@ -2413,6 +2445,9 @@ class PagesModel extends GenericModel {
 		{
 			$giacenza = self::disponibilita($r["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
+			
+			if (!VariabiliModel::combinazioniLinkVeri())
+				PagesModel::$IdCombinazione = $p->getIdCombinazioneCanonical($r["pages"]["id_page"]);
 			
 			$prezzoMinimo = $p->prezzoMinimo($r["pages"]["id_page"]);
 			$prezzoMinimoIvato = $prezzoFeed = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo);

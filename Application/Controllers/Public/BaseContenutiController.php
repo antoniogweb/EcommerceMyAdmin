@@ -977,10 +977,22 @@ class BaseContenutiController extends BaseController
 		
 		if ($firstSection == Parametri::$nomeSezioneProdotti)
 		{
-			if (User::$nazione)
-				$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+			if (VariabiliModel::combinazioniLinkVeri())
+			{
+				if (User::$nazione)
+					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
+				else
+					$tabellaCombinazioni = "(select codice,peso,id_page,price as prezzo_minimo from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
+				
+				$this->m["PagesModel"]->select .= ",combinazioni_minime.*";
+			}
 			else
-				$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
+			{
+				if (User::$nazione)
+					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+				else
+					$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
+			}
 			
 			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
 		}
@@ -1188,12 +1200,14 @@ class BaseContenutiController extends BaseController
 		else
 			$this->inserisciFeedback($clean["realId"]);
 		
-		$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
+		if ($firstSection == "prodotti")
+			$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
 		
 		$data["pages"] = $this->pages = $this->m['PagesModel']->clear()->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,marchi.*")
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzionePagina()
+// 			->inner("categories")->on("categories.id_c = pages.id_c")
+// 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->left("marchi")->on("pages.id_marchio = marchi.id_marchio")
 			->where(array("id_page"=>$clean['id']))->send();
 		
@@ -1244,15 +1258,18 @@ class BaseContenutiController extends BaseController
 		else if (strcmp($data['pages'][0]["pages"]["keywords"],"") !== 0)
 			$data["keywords"] = F::meta($data['pages'][0]["pages"]["keywords"]);
 		
-		list ($colonne, $data["lista_valori_attributi"]) = $this->m['PagesModel']->selectAttributi($clean['id']);
-		
-		$data["lista_attributi"] = $this->lista_attributi = $colonne;
-		
-		$this->lista_valori_attributi = $data["lista_valori_attributi"];
-		
-		$data["haVarianti"] = count($data["lista_valori_attributi"]) > 0 ? true : false;
-		
-		$data["prezzoMinimo"] = $this->prezzoMinimo = $this->m['PagesModel']->prezzoMinimo($clean['id']);
+		if ($firstSection == "prodotti")
+		{
+			list ($colonne, $data["lista_valori_attributi"]) = $this->m['PagesModel']->selectAttributi($clean['id']);
+			
+			$data["lista_attributi"] = $this->lista_attributi = $colonne;
+			
+			$this->lista_valori_attributi = $data["lista_valori_attributi"];
+			
+			$data["haVarianti"] = count($data["lista_valori_attributi"]) > 0 ? true : false;
+			
+			$data["prezzoMinimo"] = $this->prezzoMinimo = $this->m['PagesModel']->prezzoMinimo($clean['id']);
+		}
 		
 		$data["prodotti_correlati"] = $this->m['PagesModel']->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 			->addJoinTraduzionePagina()
@@ -1326,7 +1343,7 @@ class BaseContenutiController extends BaseController
 		$data["haPersonalizzazioni"] = false;
 		
 		// Personalizzazioni
-		if (v("attiva_personalizzazioni"))
+		if ($firstSection == "prodotti" && v("attiva_personalizzazioni"))
 		{
 			$data["personalizzazioni"] = $this->m['PagesModel']->selectPersonalizzazioni($clean['id']);
 			

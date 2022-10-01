@@ -141,3 +141,5 @@ if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
 Domain::setPath();
+
+// User::$nazione = User::$nazioneNavigazione = "FR";

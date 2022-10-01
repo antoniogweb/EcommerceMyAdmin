@@ -372,6 +372,9 @@ class CombinazioniModel extends GenericModel {
 			
 			// Genero gli alias di tutte le combinazioni coinvolte
 			$this->aggiornaAlias($dettagliPagina["id_page"]);
+			
+			// Controlla che esista la combinazione canonical
+			$this->checkCanonical($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
@@ -464,16 +467,9 @@ class CombinazioniModel extends GenericModel {
 			$this->db->commit();
 	}
 	
-	
-	// Restituisce l'alias della combinazione
-	public function getAlias($idPage = 0, $lingua = null, $idC = 0, $agiungiAlias = true)
+	public function getCanonical($idPage = 0, $lingua = null, $idC = 0, $fields = "combinazioni.codice,combinazioni_alias.alias_attributi")
 	{
-		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
-			return "";
-		
-		$alias = "";
-		
-		$this->clear()->select("combinazioni.codice,combinazioni_alias.alias_attributi")->inner(array("alias"))->where(array(
+		$this->clear()->select($fields)->inner(array("alias"))->where(array(
 				"combinazioni_alias.lingua"	=>	sanitizeAll($lingua),
 			))->orderBy("canonical desc,id_order")->limit(1);
 		
@@ -486,7 +482,33 @@ class CombinazioniModel extends GenericModel {
 				"combinazioni_alias.id_page"	=>	(int)$idPage,
 			));
 		
-		$res = $this->send();
+		return $this->send();
+	}
+	
+	// Restituisce l'alias della combinazione
+	public function getAlias($idPage = 0, $lingua = null, $idC = 0, $agiungiAlias = true)
+	{
+		if (!v("usa_alias_combinazione_in_url_prodotto") && !v("usa_codice_combinazione_in_url_prodotto"))
+			return "";
+		
+		$alias = "";
+		
+		$res = $this->getCanonical($idPage, $lingua, $idC);
+		
+// 		$this->clear()->select("combinazioni.codice,combinazioni_alias.alias_attributi")->inner(array("alias"))->where(array(
+// 				"combinazioni_alias.lingua"	=>	sanitizeAll($lingua),
+// 			))->orderBy("canonical desc,id_order")->limit(1);
+// 		
+// 		if ($idC)
+// 			$this->aWhere(array(
+// 				"combinazioni_alias.id_c"	=>	(int)$idC,
+// 			));
+// 		else if ($idPage)
+// 			$this->aWhere(array(
+// 				"combinazioni_alias.id_page"	=>	(int)$idPage,
+// 			));
+// 		
+// 		$res = $this->send();
 		
 		if (count($res) > 0)
 		{
@@ -538,6 +560,9 @@ class CombinazioniModel extends GenericModel {
 					if (self::$ricreaCombinazioneQuandoElimini)
 						$this->controllaCombinazioniPagina($record["id_page"]);
 					
+					// Controlla che esista la combinazione canonical
+					$this->checkCanonical($record["id_page"]);
+					
 					return true;
 				}
 				
@@ -546,6 +571,26 @@ class CombinazioniModel extends GenericModel {
 		}
 		else
 			return parent::del($id, $where);
+	}
+	
+	// Controlla che esista la combinazione canonical
+	public function checkCanonical($idPage)
+	{
+		if (VariabiliModel::combinazioniLinkVeri())
+		{
+			$combinazione = $this->clear()->select("combinazioni.id_c,combinazioni.canonical")->where(array(
+				"id_page"	=>	(int)$idPage,
+			))->orderBy("canonical desc,id_order")->limit(1)->send(false);
+			
+			if (count($combinazione) > 0 && !$combinazione[0]["canonical"])
+			{
+				$this->sValues(array(
+					"canonical"	=>	1,
+				));
+				
+				$this->pUpdate($combinazione[0]["id_c"]);
+			}
+		}
 	}
 	
 	public function varianti($record)
