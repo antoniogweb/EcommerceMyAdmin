@@ -765,4 +765,9 @@ class VariabiliModel extends GenericModel {
 		
 		return v($chiave);
 	}
+	
+	public static function combinazioniLinkVeri()
+	{
+		return (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")) ? true : false;
+	}
 }

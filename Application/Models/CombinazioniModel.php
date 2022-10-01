@@ -390,8 +390,6 @@ class CombinazioniModel extends GenericModel {
 		
 		$ca = new CombinazionialiasModel();
 		
-// 		print_r(LingueModel::$valoriAttivi);
-		
 		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
 			$this->clear()->select("combinazioni.id_page,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")

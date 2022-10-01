@@ -1189,8 +1189,8 @@ class PagesModel extends GenericModel {
 				return array_keys($res);
 			}
 		}
-		else
-		{
+// 		else
+// 		{
 			$res = $this->clear()->select("pages.id_page")->where(array(
 				"alias"				=>	$clean['alias'],
 				"pages.temp"		=>	0,
@@ -1237,7 +1237,7 @@ class PagesModel extends GenericModel {
 				if (count($res) > 0)
 					return $res;
 			}
-		}
+// 		}
 		
 		return array();
 	}
@@ -1945,32 +1945,71 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id_page'] = (int)$id_page;
 		
+		$c = new CombinazioniModel();
+		
 		if (!User::$nazione || $forzaPrincipale)
 		{
 			// Listino principale
-			$c = new CombinazioniModel();
+			if (VariabiliModel::combinazioniLinkVeri())
+			{
+				$c->clear()->select("price as PREZZO_MINIMO")->where(array(
+					"id_page"	=>	$clean['id_page'],
+				))->orderBy("canonical desc,id_order")->limit(1);
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
+				if (count($res) > 0)
+					return $res[0]["combinazioni"]["PREZZO_MINIMO"];
+			}
+			else
+			{
+				$res = $c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
+					"id_page"	=>	$clean['id_page'],
+				))->send();
 			
-			$res = $c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
-				"id_page"	=>	$clean['id_page'],
-			))->send();
-			
-			if (count($res) > 0)
-				return $res[0]["aggregate"]["PREZZO_MINIMO"];
+				if (count($res) > 0)
+					return $res[0]["aggregate"]["PREZZO_MINIMO"];
+			}
 		}
 		else
 		{
 			// Listino nazione
-			$c = new CombinazioniModel();
-			
-			$res = $c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
-				"id_page"	=>	$clean['id_page'],
-				"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
-			))->send();
-			
-			if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
-				return $res[0]["aggregate"]["PREZZO_MINIMO"];
+			if (VariabiliModel::combinazioniLinkVeri())
+			{
+				$c->clear()->select("combinazioni_listini.price as PREZZO_MINIMO")->inner(array("listini"))->where(array(
+					"id_page"	=>	$clean['id_page'],
+					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
+				))->orderBy("combinazioni.canonical desc,combinazioni.id_order")->limit(1);
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
+				if (count($res) > 0 && isset($res[0]["combinazioni_listini"]["PREZZO_MINIMO"]) && $res[0]["combinazioni_listini"]["PREZZO_MINIMO"])
+					return $res[0]["combinazioni_listini"]["PREZZO_MINIMO"];
+				else
+					return $this->prezzoMinimo($clean['id_page'], true);
+			}
 			else
-				return $this->prezzoMinimo($clean['id_page'], true);
+			{
+				$res = $c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
+					"id_page"	=>	$clean['id_page'],
+					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
+				))->send();
+				
+				if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
+					return $res[0]["aggregate"]["PREZZO_MINIMO"];
+				else
+					return $this->prezzoMinimo($clean['id_page'], true);
+			}
 		}
 		
 		return 0;
@@ -2266,12 +2305,31 @@ class PagesModel extends GenericModel {
 	{
 		$c = new CombinazioniModel();
 		
-		$res = $c->clear()->select("max(giacenza) as GIACENZA")->where(array(
-			"id_page"	=>	(int)$idPage
-		))->send();
-		
-		if (count($res) > 0)
-			return (int)$res[0]["aggregate"]["GIACENZA"];
+		if (VariabiliModel::combinazioniLinkVeri())
+		{
+			$c->clear()->select("giacenza as GIACENZA")->where(array(
+				"id_page"	=>	(int)$idPage
+			))->orderBy("canonical desc,id_order")->limit(1);
+			
+			if (self::$IdCombinazione)
+				$c->aWhere(array(
+					"id_c"	=>	(int)self::$IdCombinazione,
+				));
+			
+			$res = $c->send();
+			
+			if (count($res) > 0)
+				return (int)$res[0]["combinazioni"]["GIACENZA"];
+		}
+		else
+		{
+			$res = $c->clear()->select("max(giacenza) as GIACENZA")->where(array(
+				"id_page"	=>	(int)$idPage
+			))->send();
+			
+			if (count($res) > 0)
+				return (int)$res[0]["aggregate"]["GIACENZA"];
+		}
 		
 		return 0;
 	}
