@@ -120,7 +120,8 @@ class CartelementiModel extends GenericModel
 			$ce = new CartelementiModel();
 			
 			$elementiCarrello = $ce->clear()->inner(array("cart"))->where(array(
-				"cart.cart_uid"	=>	$clean["cart_uid"],
+				"cart.cart_uid"		=>	$clean["cart_uid"],
+				"cart.gift_card"	=>	1,
 			))->orderBy("cart.id_order ASC,id_cart ASC,id_cart_elemento")->send(false);
 			
 			foreach ($elementiCarrello as $el)

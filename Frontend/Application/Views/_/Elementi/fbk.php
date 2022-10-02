@@ -40,7 +40,7 @@ else if (!v("pixel_nel_footer") && isset($cicloPrimo))
 							$catGTM = $c->clear()->where(array("id_c"=>$pagGTM["id_c"]))->field("title");
 						
 						$tempRigheGTM[] = array(
-							"id"	=>	$ro["id_page"],
+							"id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
 							"quantity"	=>	$ro["quantity"],
 						);
 					}
@@ -78,7 +78,7 @@ else if (!v("pixel_nel_footer") && isset($cicloPrimo))
 					$arrayProprieta["content_name"] = sanitizeJs(htmlentitydecode($nomePaginaPerTracking));
 				
 				if (isset($isPage) && $idPaginaPerTracking && isProdotto($idPaginaPerTracking)) {
-					$arrayProprieta["content_ids"] = array($idPaginaPerTracking);
+					$arrayProprieta["content_ids"] = v("usa_sku_come_id_item") ? array($codicePerTracking) : array($idPaginaPerTracking);
 					$arrayProprieta["content_type"] = "product";
 					?>
 					fbq('track', 'ViewContent', <?php echo json_encode($arrayProprieta);?>);

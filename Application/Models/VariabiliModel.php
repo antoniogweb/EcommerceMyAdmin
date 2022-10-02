@@ -474,6 +474,8 @@ class VariabiliModel extends GenericModel {
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
+		## GOOGLE E FACEBOOK ##
+		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

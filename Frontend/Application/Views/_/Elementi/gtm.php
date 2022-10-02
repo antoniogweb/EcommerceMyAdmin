@@ -12,17 +12,18 @@ if (v("codice_gtm_analytics"))
 	{
 		$itemGtag = array(
 			array(
-				"id"	=>	$idPaginaPerTracking,
+				"id"	=>	v("usa_sku_come_id_item") ? $codicePerTracking : $idPaginaPerTracking,
 				"name"	=>	sanitizeJs(htmlentitydecode($nomePaginaPerTracking)),
 			),
 		);
 	?>
+	<?php if (isProdotto($idPaginaPerTracking)) { ?>
 	<script>
 		gtag('event', 'view_item', {
 			"items": <?php echo json_encode($itemGtag);?>
 		});
 	</script>
-	
+	<?php } ?>
 	<?php if ($codiceConversioneGoogle) {
 		echo $codiceConversioneGoogle;
 	} ?>
@@ -52,7 +53,7 @@ if (v("codice_gtm_analytics"))
 					$catGTM = $c->clear()->where(array("id_c"=>$pagGTM["id_c"]))->field("title");
 				
 				$tempRigheGTM[] = array(
-					"id"	=>	$ro["id_page"],
+					"id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
 	// 				"sku"	=>	$ro["codice"],
 					"name"	=>	sanitizeJs(htmlentitydecode($ro["title"])),
 					"category"	=>	sanitizeJs(htmlentitydecode($catGTM)),
@@ -115,7 +116,7 @@ if (v("codice_gtm_analytics"))
 		foreach ($pages as $p)
 		{
 			$items["items"][] = array(
-				"id"	=>	$p["cart"]["id_page"],
+				"id"	=>	v("usa_sku_come_id_item") ? $p["cart"]["codice"] : $p["cart"]["id_page"],
 				"name"	=>	sanitizeJs(htmlentitydecode($p["cart"]["title"])),
 				"quantity"	=>	$p["cart"]["quantity"],
 				"price"		=>	v("prezzi_ivati_in_carrello") ? $p["cart"]["price_ivato"] : $p["cart"]["price"],

@@ -2,7 +2,7 @@
 
 $nomePaginaPerTracking = "";
 $idPaginaPerTracking = 0;
-$codicePerTracking = "";
+$codicePerTracking = 0;
 $codiceConversioneGoogle = "";
 
 if (isset($isPage)) {

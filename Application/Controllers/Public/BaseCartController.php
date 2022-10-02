@@ -216,14 +216,14 @@ class BaseCartController extends BaseController
 									"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
 									"contents"	=>	array(
 										array(
-											"id"		=>	$rcu["id_page"],
+											"id"		=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
 											"quantity"	=>	$clean["quantity"],
 										)
 									),
 								);
 								
 								$contentsGtm = array(array(
-									"id"	=>	$rcu["id_page"],
+									"id"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
 									"name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
 									"quantity"	=>	$clean["quantity"],
 									"price"		=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],

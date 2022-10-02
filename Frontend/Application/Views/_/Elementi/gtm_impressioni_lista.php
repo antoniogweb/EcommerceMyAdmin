@@ -14,7 +14,7 @@ if (v("codice_gtm_analytics"))
 			$prezzoFinaleIvato = number_format(calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo),2,".","");
 			
 			$items["items"][] = array(
-				"id"	=>	$p["pages"]["id_page"],
+				"id"	=>	v("usa_sku_come_id_item") ? $p["pages"]["codice"] : $p["pages"]["id_page"],
 				"name"	=>	sanitizeJs(htmlentitydecode(field($p, "title"))),
 				"quantity"	=>	1,
 				"price"		=>	$prezzoFinaleIvato,
