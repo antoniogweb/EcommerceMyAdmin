@@ -286,6 +286,8 @@ class BaseContenutiController extends BaseController
 		
 		$args = $this->pageArgs;
 		
+		$tipoContenuto = "pagina";
+		
 		if (count($args) > 0)
 		{
 			//parents array as taken by the URL
@@ -321,7 +323,7 @@ class BaseContenutiController extends BaseController
 					
 					$temp = array();
 					
-					if (v("mostra_categorie_in_url_prodotto"))
+					if (v("mostra_categorie_in_url_prodotto") || !isProdotto($clean["id"]))
 					{
 						foreach ($par as $p)
 						{
@@ -369,6 +371,8 @@ class BaseContenutiController extends BaseController
 			}
 			else if ($clean['id'] = (int)$this->m["CategoriesModel"]->getIdFromAlias($clean['alias'], Params::$lang))
 			{
+				$tipoContenuto = "categoria";
+				
 				$parents = $this->m["CategoriesModel"]->parents($clean['id'],false,false, Params::$lang);
 				array_shift($parents); //remove the root parent
 				
@@ -389,9 +393,11 @@ class BaseContenutiController extends BaseController
 				//build the array with the right parents
 				foreach ($parents as $p)
 				{
-					$this->rParent[] = isset(CategoriesModel::$aliases[$p["categories"]["alias"]]) ? CategoriesModel::$aliases[$p["categories"]["alias"]] : $p["categories"]["alias"];
+					// rimuovi l'alias della sezione prodotti
+					if (v("mantieni_alias_sezione_in_url_prodotti") || count($parents) <= 0 || $p["categories"]["section"] != Parametri::$nomeSezioneProdotti)
+						$this->rParent[] = isset(CategoriesModel::$aliases[$p["categories"]["alias"]]) ? CategoriesModel::$aliases[$p["categories"]["alias"]] : $p["categories"]["alias"];
 				}
-				$this->checkIfRigthParents();
+				$this->checkIfRigthParents($tipoContenuto);
 				$this->category($clean['id']);
 			}
 			else
@@ -410,7 +416,7 @@ class BaseContenutiController extends BaseController
 // 			$this->redirect("contenuti/notfound");
 		}
 		
-		$data["currUrl"] = $this->getCurrentUrl();
+		$data["currUrl"] = $this->getCurrentUrl(true, $tipoContenuto);
 		
 		$this->append($data);
 	}
@@ -435,19 +441,21 @@ class BaseContenutiController extends BaseController
 		$this->load("accesso_non_permesso");
 	}
 	
-	private function checkIfRigthParents()
+	private function checkIfRigthParents($tipo = "pagina")
 	{
 		if ($this->urlParent !== $this->rParent)
 		{
-			$ext = Parametri::$useHtmlExtension ? ".html" : null;
+			$estensioneTipo = ($tipo == "categoria") ? v("estensione_url_categorie") : ".html";
+			$ext = Parametri::$useHtmlExtension ? $estensioneTipo : null;
 			$rightUrl = ltrim(Url::createUrl(array_merge($this->rParent,array($this->cleanAlias)),null,true),"/");
 			$this->redirect($rightUrl.$ext);
 		}
 	}
 	
-	protected function getCurrentUrl($completeUrl = true)
+	protected function getCurrentUrl($completeUrl = true, $tipo = "pagina")
 	{
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		$estensioneTipo = ($tipo == "categoria") ? v("estensione_url_categorie") : ".html";
+		$ext = Parametri::$useHtmlExtension ? $estensioneTipo : null;
 		
 		$tempParents = $this->rParent;
 
@@ -529,11 +537,18 @@ class BaseContenutiController extends BaseController
 		$i = 0;
 		while (count($tempParents) > 0)
 		{
+			// usato nel ciclo interno
+			$tempParentsCiclo = $tempParents;
+			
+			// rimuovi l'alias della sezione prodotti
+			if (!v("mantieni_alias_sezione_in_url_prodotti") && count($tempParentsCiclo) > 1 && isset($tempParentsCiclo[0]["categories"]["section"]) && $tempParentsCiclo[0]["categories"]["section"] == Parametri::$nomeSezioneProdotti)
+				array_shift($tempParentsCiclo);
+			
 			$j = 0;
 			$hrefArray = array();
-			foreach($tempParents as $row)
+			foreach($tempParentsCiclo as $row)
 			{
-				$table = ($j === (count($tempParents)-1) and $type === "page" and $i === 0) ? "pages" : "categories";
+				$table = ($j === (count($tempParentsCiclo)-1) and $type === "page" and $i === 0) ? "pages" : "categories";
 				
 				if ($i > 0 || v("mostra_categorie_in_url_prodotto") || $table == "pages")
 				{
@@ -886,7 +901,7 @@ class BaseContenutiController extends BaseController
 		if ($rowNumber > $this->elementsPerPage)
 		{
 			//load the Pages helper
-			$this->helper('Pages',$this->getCurrentUrl(false),'p');
+			$this->helper('Pages',$this->getCurrentUrl(false, "categoria"),'p');
 			
 			$page = $data["numeroDiPagina"] = $this->viewArgs['p'];
 			
@@ -974,7 +989,7 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->orderBy($this->gerOrderBy($firstSection));
 		
 		if (!$urlOrdinamento)
-			$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false);
+			$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false, "categoria");
 		else
 			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
 		

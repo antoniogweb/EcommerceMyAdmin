@@ -830,6 +830,7 @@ class BaseBaseController extends Controller
 				'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
 			);
 			
+			$campiFormInsert = $campiForm .= ",id_c";
 			$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
 			
 			$esitoInvio = "KO";
@@ -965,6 +966,7 @@ class BaseBaseController extends Controller
 			
 			$defaultValues = array(
 				"voto"	=>	0,
+				"id_c"	=>	FeedbackModel::gIdCombinazione(),
 			);
 			
 			if (User::$id)

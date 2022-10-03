@@ -66,6 +66,8 @@
 					</div>
 					
 					<?php echo Html_Form::hidden("inviaFeedback","inviaFeedback");?>
+					<?php echo Html_Form::hidden("id_c",FeedbackModel::gValue("id_c"));?>
+					
 					<?php
 					if (v("feedback_ajax_submit"))
 						echo Html_Form::hidden("ajaxsubmit","ajaxsubmit");?>

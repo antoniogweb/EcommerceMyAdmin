@@ -1407,7 +1407,9 @@ class PagesModel extends GenericModel {
 		
 		$urlArray = array();
 		
-		if (v("mostra_categorie_in_url_prodotto"))
+		$isProdotto = isProdotto($clean["id"]);
+		
+		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
 			$parents = $this->parents($clean["id"], false, false, $lingua);
 			

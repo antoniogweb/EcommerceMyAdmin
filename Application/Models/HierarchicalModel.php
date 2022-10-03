@@ -905,6 +905,10 @@ class HierarchicalModel extends GenericModel {
 		//remove the root node
 		array_shift($parents);
 		
+		// rimuovi l'alias della sezione prodotti
+		if (!v("mantieni_alias_sezione_in_url_prodotti") && count($parents) > 1 && isset($parents[0]["categories"]["section"]) && $parents[0]["categories"]["section"] == Parametri::$nomeSezioneProdotti)
+			array_shift($parents);
+		
 		$urlArray = array();
 		foreach ($parents as $node)
 		{

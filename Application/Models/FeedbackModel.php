@@ -112,6 +112,15 @@ class FeedbackModel extends GenericModel {
 	{
 		self::$datiProdotto = PagesModel::getPageDetails(self::gIdProdotto());
 		
+		$idCombinazione = self::gIdCombinazione();
+		
+		if (self::$datiProdotto)
+		{
+			PagesModel::$IdCombinazione = $idCombinazione;
+			$pages = PagesModel::impostaDatiCombinazionePagine(array(self::$datiProdotto));
+			self::$datiProdotto = $pages[0];
+		}
+		
 		return self::$datiProdotto;
 	}
 	
@@ -227,7 +236,7 @@ class FeedbackModel extends GenericModel {
 			"lingua"	=>	$record["lingua"],
 			"testo_path"	=>	$testoPath,
 			"array_variabili_tema"	=>	array(
-				"LINK_PRODOTTO"	=>	Domain::$publicUrl."/".$record["lingua"]."/".$p->getUrlAlias($pagina["pages"]["id_page"], $record["lingua"]),
+				"LINK_PRODOTTO"	=>	Domain::$publicUrl."/".$record["lingua"]."/".$p->getUrlAlias($pagina["pages"]["id_page"], $record["lingua"], $record["id_c"]),
 				"NOME_PRODOTTO"	=>	field($pagina, "title"),
 				"COMMENTO"	=>	$record["commento_negozio"],
 			),
