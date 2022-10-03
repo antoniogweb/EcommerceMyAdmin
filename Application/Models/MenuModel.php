@@ -398,6 +398,10 @@ class MenuModel extends HierarchicalModel {
 			{
 				$menuHtml .= "</ul>\n";
 			}
+			
+			if (v("attiva_nazione_nell_url"))
+				$menuHtml = str_replace("[COUNTRY]", Params::$country, $menuHtml);
+			
 			return $menuHtml;
 		}
 		return "";
@@ -463,6 +467,11 @@ class MenuModel extends HierarchicalModel {
 		if (!isset($lingua))
 			$lingua = self::$lingua;
 		
+		$linguaNazione = $lingua;
+		
+		if (v("attiva_nazione_nell_url"))
+			$linguaNazione .= "_[COUNTRY]";
+		
 // 		$homeUrlLang = isset($this->menuLang) ? "/".$this->menuLang : null;
 		
 		$parentUrl = str_replace("/admin","",Url::getFileRoot());
@@ -471,21 +480,21 @@ class MenuModel extends HierarchicalModel {
 		{
 			case "cat":
 				$c = new CategoriesModel();
-				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll($c->getUrlAlias($this->values["id_c"], $lingua));
+				$this->values["link_alias"] = $parentUrl."$linguaNazione/".sanitizeAll($c->getUrlAlias($this->values["id_c"], $lingua));
 				break;
 			case "cont":
 				$p = new PagesModel();
-				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll($p->getUrlAlias($this->values["id_page"], $lingua));
+				$this->values["link_alias"] = $parentUrl."$linguaNazione/".sanitizeAll($p->getUrlAlias($this->values["id_page"], $lingua));
 				break;
 			case "marchio":
 				$m = new MarchiModel();
-				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll($m->getUrlAlias($this->values["id_marchio"], false, $lingua));
+				$this->values["link_alias"] = $parentUrl."$linguaNazione/".sanitizeAll($m->getUrlAlias($this->values["id_marchio"], false, $lingua));
 				break;
 			case "tag":
-				$this->values["link_alias"] = $parentUrl."$lingua/".sanitizeAll(TagModel::getUrlAlias($this->values["id_tag"], $lingua));
+				$this->values["link_alias"] = $parentUrl."$linguaNazione/".sanitizeAll(TagModel::getUrlAlias($this->values["id_tag"], $lingua));
 				break;
 			case "home":
-				$this->values["link_alias"] = $parentUrl.$lingua;
+				$this->values["link_alias"] = $parentUrl.$linguaNazione;
 				break;
 			case "nessuno":
 				$this->values["link_alias"] = "";

@@ -93,6 +93,9 @@ if (v("abilita_tutte_le_lingue_attive"))
 else if (v("lingue_abilitate_frontend"))
 	Params::$frontEndLanguages = explode(",", v("lingue_abilitate_frontend"));
 
+if (v("attiva_nazione_nell_url"))
+	Params::$frontEndCountries = array_map("strtolower",NazioniModel::g(false)->selectCodiciAttivi());
+
 require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
 require(LIBRARY."/Application/Include/output.php");

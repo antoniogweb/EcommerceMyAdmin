@@ -74,7 +74,6 @@ class VariabiliModel extends GenericModel {
 		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
 		"shop_in_alias_marchio"		=>	1,
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
-		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"referenze_attive"			=>	1,
 		"blog_attivo"				=>	1,
 		"divisone_breadcrum"		=>	" » ",
@@ -171,7 +170,6 @@ class VariabiliModel extends GenericModel {
 		"ore_durata_link_conferma"	=>	24,
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
-		"abilita_solo_nazione_navigazione"	=>	1,
 		"abilita_blocco_acquisto_diretto"	=>	0,
 		"tipo_cliente_default"		=>	"privato",
 		"codice_gtm"				=>	"",
@@ -477,6 +475,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
 		## GOOGLE E FACEBOOK ##
 		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
+		## NAZIONI ##
+		"nazione_default"			=>	"IT", // Codice ISO nazione di default
+		"abilita_solo_nazione_navigazione"	=>	1, // permetti al checkout o come nazioni permesse, solo la nazione di navigazione o quella di default
+		"attiva_nazione_nell_url"	=>	0, // se impostato a 1 nell'URL verrà aggiunto il codice della nazione
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
