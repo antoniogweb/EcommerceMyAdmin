@@ -861,9 +861,19 @@ class BaseContenutiController extends BaseController
 					
 					$this->m["PagesModel"]->inner($tabellaListini)->on("pages.id_page = tabella_listini.id_page");
 					
-					$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
+					if (v("mostra_fasce_prezzo"))
+						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
+					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
+					{
+						$fasciaPrezzo = $data["fasciaPrezzo"] = array(
+							"fasce_prezzo"	=>	array(
+								"da"	=>	sanitizeDb($matchesPrezzo[1]),
+								"a"	=>	sanitizeDb($matchesPrezzo[2]),
+							),
+						);
+					}
 					
-					if (!empty($fasciaPrezzo))
+					if (isset($fasciaPrezzo) && !empty($fasciaPrezzo))
 					{
 						$this->m["PagesModel"]->aWhere(array(
 							"    gte"	=>	array(
@@ -902,6 +912,12 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
+		
+		if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
+		{
+			$data["prezzoMinimoElenco"] = $this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+			$data["prezzoMassimoElenco"] = $this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+		}
 		
 // 		echo $this->m["PagesModel"]->getQuery();die();
 		
@@ -1010,21 +1026,21 @@ class BaseContenutiController extends BaseController
 		else
 			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
 		
-		if ($firstSection == Parametri::$nomeSezioneProdotti && ($this->viewArgs['o'] == "crescente" || $this->viewArgs['o'] == "decrescente"))
+		if ($firstSection == Parametri::$nomeSezioneProdotti || $this->action == "search")
 		{
 			if (VariabiliModel::combinazioniLinkVeri())
 			{
 				if (User::$nazione)
-					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_minimo,coalesce(combinazioni_listini.price_ivato,combinazioni.price_ivato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
 				else
-					$tabellaCombinazioni = "(select codice,peso,id_page,price as prezzo_minimo from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select codice,peso,id_page,price as prezzo_minimo,price_ivato as prezzo_minimo_ivato from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
 			}
 			else
 			{
 				if (User::$nazione)
-					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.price,combinazioni.price)) as prezzo_minimo,min(coalesce(combinazioni_listini.price_ivato,combinazioni.price_ivato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
 				else
-					$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo from combinazioni group by combinazioni.id_page) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,min(price) as prezzo_minimo,min(price_ivato) as prezzo_minimo_ivato from combinazioni group by combinazioni.id_page) as combinazioni_minime";
 			}
 			
 			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");

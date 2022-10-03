@@ -223,6 +223,25 @@
 	</section>
 	<?php } ?>
 	
+	<?php if (v("filtro_prezzo_slider") && isset($prezzoMinimoElenco) && isset($prezzoMassimoElenco)) { ?>
+	<section class="uk-margin-large-top js-accordion-section uk-open">
+		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Prezzo")?></h4>
+		<div class="uk-accordion-content">
+			<div class="nstSlider" data-range_min="<?php echo floor($prezzoMinimoElenco);?>" data-range_max="<?php echo ceil($prezzoMassimoElenco);?>" data-cur_min="<?php echo isset($fasciaPrezzo) ? floor($fasciaPrezzo["fasce_prezzo"]["da"]) : floor($prezzoMinimoElenco);?>"    data-cur_max="<?php echo isset($fasciaPrezzo) ? ceil($fasciaPrezzo["fasce_prezzo"]["a"]) :  ceil($prezzoMassimoElenco);?>">
+				<div class="bar"></div>
+				<div class="leftGrip">
+					<div class="uk-margin-top uk-text-small leftLabel"></div>
+				</div>
+				<div class="rightGrip">
+					<div class="uk-margin-top uk-text-small rightLabel"></div>
+				</div>
+			</div>
+		</div>
+		<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["fascia-prezzo"], gtext("da")."-[DA]-".gtext("a")."-[A]");?>
+		<div class="uk-hidden url_slider_prezzo"><?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?></div>
+	</section>
+	<?php } ?>
+	
 <!-- 	<hr> -->
 
 	<section class="uk-margin-large-top js-accordion-section uk-open">

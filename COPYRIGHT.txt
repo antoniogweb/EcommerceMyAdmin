@@ -109,3 +109,8 @@ TinyMCE 3.x
 -------
 License:	GNU GPL version 2 or later
 link: 		http://archive.tinymce.com/wiki.php/tinymce3x:tinymce_3.x
+
+jquery-nstslider
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/lokku/jquery-nstslider

@@ -23,6 +23,9 @@ if (typeof coupon_ajax == "undefined")
 if (typeof codice_fiscale_obbligatorio_solo_se_fattura == "undefined")
 	var codice_fiscale_obbligatorio_solo_se_fattura = false;
 
+if (typeof filtro_prezzo_slider == "undefined")
+	var filtro_prezzo_slider = false;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -719,4 +722,31 @@ $(document).ready(function(){
 		
 		$("#login").slideToggle();
 	});
+	
+	if (filtro_prezzo_slider)
+	{
+		$('.nstSlider').nstSlider({
+			"left_grip_selector": ".leftGrip",
+			"right_grip_selector": ".rightGrip",
+			"value_bar_selector": ".bar",
+			"value_changed_callback": function(cause, leftValue, rightValue) {
+				leftValue += "€";
+				rightValue += "€";
+				$(this).parent().find('.leftLabel').text(leftValue);
+				$(this).parent().find('.rightLabel').text(rightValue);
+			},
+			"user_mouseup_callback": function(leftValue, rightValue, left_grip_moved) {
+				
+// 				console.log(rightValue);
+				var urlSlider = $(".url_slider_prezzo").text();
+				
+				urlSlider = urlSlider.replace("[DA]", leftValue);
+				urlSlider = urlSlider.replace("[A]", rightValue);
+				
+// 				$(".url_slider_prezzo").text(urlSlider);
+				location.href = urlSlider;
+			}
+		});
+		
+	}
 });

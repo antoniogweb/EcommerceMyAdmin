@@ -24,6 +24,7 @@
 	var codice_fiscale_obbligatorio_solo_se_fattura = <?php echo v("codice_fiscale_obbligatorio_solo_se_fattura") ? "true" : "false";?>;
 	var attiva_gift_card = <?php echo v("attiva_gift_card") ? "true" : "false"; ?>;
 	var current_url = "<?php echo isset($currUrl) ? sanitizeHtml($currUrl) : "";?>";
+	var filtro_prezzo_slider = <?php echo v("filtro_prezzo_slider") ? "true" : "false"; ?>;
 </script>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
@@ -36,6 +37,10 @@
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
+
+<?php if (v("filtro_prezzo_slider")) { ?>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-nstslider-master/dist/';?>jquery.nstSlider.min.js"></script>
+<?php } ?>
 
 <?php include(tpf("/Elementi/fbk.php"));?>
 

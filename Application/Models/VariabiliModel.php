@@ -85,7 +85,6 @@ class VariabiliModel extends GenericModel {
 		"template_personalizzazione"=>	"",
 		"usa_https"					=>	0,
 		"codice_cron"				=>	"",
-		"mostra_fasce_prezzo"		=>	0,
 		"estrai_materiali"			=>	0,
 		"immagine_2_in_slide"		=>	0,
 		"immagine_3_in_slide"		=>	0,
@@ -479,6 +478,9 @@ class VariabiliModel extends GenericModel {
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"abilita_solo_nazione_navigazione"	=>	1, // permetti al checkout o come nazioni permesse, solo la nazione di navigazione o quella di default
 		"attiva_nazione_nell_url"	=>	0, // se impostato a 1 nell'URL verrà aggiunto il codice della nazione
+		## NAZIONI ##
+		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
+		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

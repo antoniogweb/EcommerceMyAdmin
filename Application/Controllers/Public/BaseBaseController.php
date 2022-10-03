@@ -570,7 +570,7 @@ class BaseBaseController extends Controller
 			gtext(v("valore_tipo_promo"), true, "none", null, 0),
 		);
 		
-		if (v("mostra_fasce_prezzo"))
+		if (v("mostra_fasce_prezzo") || v("filtro_prezzo_slider"))
 		{
 			$this->model("FasceprezzoModel");
 			
