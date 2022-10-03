@@ -302,8 +302,6 @@ class BaseContenutiController extends BaseController
 			{
 // 				$ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang);
 				
-// 				print_r($clean['id']);
-				
 				$clean["id"] = (int)$ids[0];
 				
 				$parents = array();
@@ -603,6 +601,18 @@ class BaseContenutiController extends BaseController
 		return $titolo;
 	}
 	
+	protected function setElementsPerPage($firstSection)
+	{
+		if ($firstSection == "prodotti")
+			$this->elementsPerPage = v("prodotti_per_pagina");
+		else if ($firstSection == "blog")
+			$this->elementsPerPage = v("news_per_pagina");
+		else if ($firstSection == "eventi")
+			$this->elementsPerPage = v("eventi_per_pagina");
+		else
+			$this->elementsPerPage = 9999999;
+	}
+	
 	protected function category($id)
 	{
 		$this->m["CategoriesModel"]->checkBloccato($id);
@@ -611,7 +621,7 @@ class BaseContenutiController extends BaseController
 		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
-			'o:sanitizeAll'	=>	"tutti",
+			'o:sanitizeAll'	=>	v("default_ordinamento_prodotti"),
 			'search:sanitizeAll'	=>	"",
 		);
 		
@@ -628,12 +638,13 @@ class BaseContenutiController extends BaseController
 		$section = $data["section"] = $this->section = $this->m["CategoriesModel"]->section($clean['id']);
 		$firstSection = $data["fsection"] = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
 		
-		if ($firstSection == "prodotti")
-			$this->elementsPerPage = v("prodotti_per_pagina");
-		else if ($firstSection == "blog")
-			$this->elementsPerPage = v("news_per_pagina");
-		else if ($firstSection == "eventi")
-			$this->elementsPerPage = v("eventi_per_pagina");
+		$this->setElementsPerPage($firstSection);
+// 		if ($firstSection == "prodotti")
+// 			$this->elementsPerPage = v("prodotti_per_pagina");
+// 		else if ($firstSection == "blog")
+// 			$this->elementsPerPage = v("news_per_pagina");
+// 		else if ($firstSection == "eventi")
+// 			$this->elementsPerPage = v("eventi_per_pagina");
 		
 		$data["elementsPerPage"] = $this->elementsPerPage;
 		
@@ -678,15 +689,21 @@ class BaseContenutiController extends BaseController
 		
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
-		if (isset($r[0]["contenuti_tradotti_categoria"]["meta_description"]) && $r[0]["contenuti_tradotti_categoria"]["meta_description"])
-			$data["meta_description"] = F::meta($r[0]["contenuti_tradotti_categoria"]["meta_description"]);
-		else if (strcmp($r[0]["categories"]["meta_description"],"") !== 0)
-			$data["meta_description"] = F::meta($r[0]["categories"]["meta_description"]);
+		if (cfield($r[0], "meta_description"))
+			$data["meta_description"] = F::meta(cfield($r[0], "meta_description"));
 		
-		if (isset($r[0]["contenuti_tradotti_categoria"]["keywords"]) && $r[0]["contenuti_tradotti_categoria"]["keywords"])
-			$data["keywords"] = F::meta($r[0]["contenuti_tradotti_categoria"]["keywords"]);
-		else if (strcmp($r[0]["categories"]["keywords"],"") !== 0)
-			$data["keywords"] = F::meta($r[0]["categories"]["keywords"]);
+		if (cfield($r[0], "keywords"))
+			$data["keywords"] = F::meta(cfield($r[0], "keywords"));
+		
+// 		if (isset($r[0]["contenuti_tradotti_categoria"]["meta_description"]) && $r[0]["contenuti_tradotti_categoria"]["meta_description"])
+// 			$data["meta_description"] = F::meta($r[0]["contenuti_tradotti_categoria"]["meta_description"]);
+// 		else if (strcmp($r[0]["categories"]["meta_description"],"") !== 0)
+// 			$data["meta_description"] = F::meta($r[0]["categories"]["meta_description"]);
+// 		
+// 		if (isset($r[0]["contenuti_tradotti_categoria"]["keywords"]) && $r[0]["contenuti_tradotti_categoria"]["keywords"])
+// 			$data["keywords"] = F::meta($r[0]["contenuti_tradotti_categoria"]["keywords"]);
+// 		else if (strcmp($r[0]["categories"]["keywords"],"") !== 0)
+// 			$data["keywords"] = F::meta($r[0]["categories"]["keywords"]);
 		
 		if (isset($tagCorrente) && !empty($tagCorrente) && (int)$id === $this->idShop)
 		{
@@ -993,7 +1010,7 @@ class BaseContenutiController extends BaseController
 		else
 			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
 		
-		if ($firstSection == Parametri::$nomeSezioneProdotti)
+		if ($firstSection == Parametri::$nomeSezioneProdotti && ($this->viewArgs['o'] == "crescente" || $this->viewArgs['o'] == "decrescente"))
 		{
 			if (VariabiliModel::combinazioniLinkVeri())
 			{
@@ -1001,8 +1018,6 @@ class BaseContenutiController extends BaseController
 					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_minimo from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
 				else
 					$tabellaCombinazioni = "(select codice,peso,id_page,price as prezzo_minimo from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
-				
-				$this->m["PagesModel"]->select .= ",combinazioni_minime.*";
 			}
 			else
 			{
@@ -1015,6 +1030,11 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
 		}
 		
+		if ($firstSection == Parametri::$nomeSezioneProdotti && $this->viewArgs['o'] == "piuvenduto")
+		{
+			$this->m["PagesModel"]->inner("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
+		}
+		
 		$this->append($data);
 	}
 	
@@ -1024,10 +1044,16 @@ class BaseContenutiController extends BaseController
 		{
 			case "tutti":
 				return "pages.id_order";
+			case "az":
+				return "coalesce(contenuti_tradotti.title,pages.title)";
+			case "za":
+				return "coalesce(contenuti_tradotti.title,pages.title) desc";
 			case "crescente":
 				return "combinazioni_minime.prezzo_minimo,pages.id_order";
 			case "decrescente":
 				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
+			case "piuvenduto":
+				return "numero_acquisti desc";
 			default:
 				return "pages.id_order";
 		}
@@ -1583,7 +1609,8 @@ class BaseContenutiController extends BaseController
 			
 			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->rowNumber();
 			
-			$this->elementsPerPage = 999999;
+			$this->setElementsPerPage($this->viewArgs["sec"]);
+			$data["elementsPerPage"] = $this->elementsPerPage;
 			
 			if ($rowNumber > $this->elementsPerPage)
 			{

@@ -66,8 +66,8 @@ class RigheModel extends GenericModel {
 	{
 		$titolo = $record["pages"]["title"] ? $record["pages"]["title"] : $record[$this->_tables]["title"];
 		
-		if ($record[$this->_tables]["attributi"])
-			$titolo .= "<br />".$record[$this->_tables]["attributi"];
+// 		if ($record[$this->_tables]["attributi"])
+// 			$titolo .= "<br />".$record[$this->_tables]["attributi"];
 		
 		return $titolo;
 	}

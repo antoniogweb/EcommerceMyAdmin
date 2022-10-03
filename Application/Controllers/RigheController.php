@@ -49,7 +49,7 @@ class RigheController extends BaseController
 		$this->shift();
 		
 		$this->mainFields = array("thumb", "titolocompleto", "categories.title", "ordini");
-		$this->mainHead = "Immagine,Prodotto,Categoria,Acquisti";
+		$this->mainHead = "Immagine,Prodotto,Categoria,Ordini";
 		
 		$filtri = array("dal","al");
 		$this->filters = $filtri;
@@ -64,7 +64,7 @@ class RigheController extends BaseController
 						"orders.stato"	=>	"deleted"
 					),
 				))
-				->groupBy("righe.id_c")
+				->groupBy("righe.id_page")
 				->orderBy("sum(quantity) desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);

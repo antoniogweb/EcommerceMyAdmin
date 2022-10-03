@@ -495,21 +495,6 @@ class CombinazioniModel extends GenericModel {
 		
 		$res = $this->getCanonical($idPage, $lingua, $idC);
 		
-// 		$this->clear()->select("combinazioni.codice,combinazioni_alias.alias_attributi")->inner(array("alias"))->where(array(
-// 				"combinazioni_alias.lingua"	=>	sanitizeAll($lingua),
-// 			))->orderBy("canonical desc,id_order")->limit(1);
-// 		
-// 		if ($idC)
-// 			$this->aWhere(array(
-// 				"combinazioni_alias.id_c"	=>	(int)$idC,
-// 			));
-// 		else if ($idPage)
-// 			$this->aWhere(array(
-// 				"combinazioni_alias.id_page"	=>	(int)$idPage,
-// 			));
-// 		
-// 		$res = $this->send();
-		
 		if (count($res) > 0)
 		{
 			$aliasAttributi = $res[0]["combinazioni_alias"]["alias_attributi"];
@@ -573,7 +558,34 @@ class CombinazioniModel extends GenericModel {
 			return parent::del($id, $where);
 	}
 	
-	// Controlla che esista la combinazione canonical
+	// Controlla che esista la combinazione canonical di tutte le pagine
+	public function checkCanonicalAll()
+	{
+		$p = new PagesModel();
+		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
+		$idS = $p->clear()
+			->select("pages.id_page")
+			->inner("(select id_page,max(canonical) as C from combinazioni group by id_page) as comb")->on("pages.id_page = comb.id_page")
+			->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione(Parametri::$nomeSezioneProdotti))
+			->aWhere(array(
+				"comb.C"	=>	0,
+			))
+			->toList("pages.id_page")
+			->send();
+		
+		foreach ($idS as $id)
+		{
+			$this->checkCanonical($id);
+		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
+	}
+	
+	// Controlla che esista la combinazione canonical della pagina
 	public function checkCanonical($idPage)
 	{
 		if (VariabiliModel::combinazioniLinkVeri())

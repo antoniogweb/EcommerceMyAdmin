@@ -158,6 +158,7 @@ class PagesModel extends GenericModel {
 	public function relations() {
 		return array(
 			'feedback' => array("HAS_MANY", 'FeedbackModel', 'id_page', null, "RESTRICT", "L'elemento ha dei feedback collegati e non può essere eliminato"),
+			'righe' => array("HAS_MANY", 'RigheModel', 'id_page', null, "RESTRICT", "L'elemento ha degli ordini collegati e non può essere eliminato"),
 			'retargeting' => array("HAS_MANY", 'EventiretargetingModel', 'id_page', null, "RESTRICT", "L'elemento ha degli eventi remarketing collegati, eliminare prima tali eventi"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_page', null, "CASCADE"),
 			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),

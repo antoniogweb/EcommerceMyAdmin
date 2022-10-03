@@ -28,49 +28,25 @@ class BaseController extends Controller
 	use InitController;
 	use JsonController;
 	
-// 	protected $_posizioni = array();
-	
 	protected $_topMenuClasses = array();
-	
-// 	public $id = 0;
 	
 	public $id_name = "";
 	
 	public $parentRoot = null;
 	
-// 	public $formAction = null;
-	
-// 	public $formView = "form";
-	
-// 	public $mainView = "main";
-	
-// 	public $formFields = null;
-	
 	public $disabledFields = null;
 	
 	public $menuLinksStruct = array();
 	
-// 	public $menuLinks = "back,save";
-	
 	public $menuLinksReport = "stampa";
-	
-// 	public $menuLinksInsert = "back,save";
 	
 	public $mainMenuAssociati = "back,copia";
 	
 	public $insertSubmitText = "Continua";
 	
-// 	public $updateRedirect = false;
-	
-// 	public $updateRedirectUrl = null;
-	
-// 	public $insertRedirect = true;
-	
 	public $insertRedirectUrl = null;
 	
 	public $formMethod = null;
-	
-// 	public $mainButtons = 'ldel,ledit';
 	
 	public $mainFields = array();
 	
@@ -80,49 +56,17 @@ class BaseController extends Controller
 	
 	public $mainCsvHead = null;
 	
-// 	public $addBulkActions = true;
-	
-// 	public $bulkActions = null;
-	
-// 	public $queryActions = "del";
-	
-// 	public $queryActionsAfter = "";
-	
-// 	public $bulkQueryActions = "del";
-	
-// 	public $nullQueryValue = "tutti";
-	
 	public $tabella = null;
-	
-// 	public $scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add');
-	
-// 	public $colProperties = array(
-// 			array(
-// 				'width'	=>	'60px',
-// 			),
-// 		);
 	
 	public $orderBy = "";
 	
-// 	public $filters = array();
-	
 	public $sezionePannello = "sito";
-	
-// 	public $formDefaultValues = array();
-	
-// 	public $functionsIfFromDb = array();
 	
 	public $useEditor = false;
 	
 	public $argKeys = null;
 	
 	public $formValuesToDb = null;
-	
-// 	public $aggregateFilters = true;
-	
-// 	public $showFilters = false;
-	
-// 	public $ordinaAction = "ordina";
 	
 	public $filtroAttivo = array("tutti"=>"Attivi / NON Attivi","Y"=>"Attivi","N"=>"NON Attivi");
 	
@@ -133,8 +77,6 @@ class BaseController extends Controller
 	public $closeModal = false;
 	
 	public $addTraduzioniInMain = true;
-	
-// 	public $addIntegrazioniInMain = true;
 	
 	public $tabViewFields = array();
 	
@@ -231,6 +173,10 @@ class BaseController extends Controller
 		$this->load('footer','last');
 		
 		$this->generaPosizioni();
+		
+		// Controlla che tutti i prodotti abbiano la combinazione canonical
+		if (v("ecommerce_attivo") && VariabiliModel::combinazioniLinkVeri())
+			CombinazioniModel::g(false)->checkCanonicalAll();
 	}
 	
 	protected function generaPosizioni()
