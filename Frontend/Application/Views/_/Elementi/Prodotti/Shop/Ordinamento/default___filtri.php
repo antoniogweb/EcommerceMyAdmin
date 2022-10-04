@@ -63,7 +63,7 @@
 			<ul class="uk-list uk-list-divider">
 				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
-<!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop);?>)</span> -->
+					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop);?>)</span>
 				</li>
 				<?php foreach ($elencoCategorieFull as $c) {
 					$figlie = categorieFiglie($c["categories"]["id_c"]);
@@ -73,20 +73,27 @@
 					if (!$numeroProdottiCategoria)
 						continue;
 				?>
-				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>" <?php if (count($figlie) > 0) { ?>uk-accordion<?php } ?>>
+				<li <?php if (count($figlie) > 0) { ?>uk-accordion<?php } ?>>
 					<?php if (count($figlie) > 0) { ?>
 						<div class="<?php if (in_array($id_categoria,$figlieIds)) { ?>uk-open<?php } else { ?>uk-close<?php } ?>">
 					<?php } ?>
-						<a class="uk-text-meta uk-text-xsmall <?php if (count($figlie) > 0) { ?>uk-accordion-title"<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $c["categories"]["id_c"], "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
+						<a class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?> uk-text-meta uk-text-xsmall <?php if (count($figlie) > 0) { ?>uk-accordion-title"<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $c["categories"]["id_c"], "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 							<?php echo cfield($c, "title");?>
+							<span class=" uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoria;?>)</span>
 						</a>
-<!-- 						<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoria;?>)</span> -->
+						
 						<?php if (count($figlie) > 0) { ?>
 						<ul class='uk-list uk-margin-left uk-accordion-content'>
-							<?php foreach ($figlie as $fg) { ?>
+							<?php foreach ($figlie as $fg) {
+								$numeroProdottiCategoriaFiglia = numeroProdottiCategoriaFull($fg["categories"]["id_c"]);
+								
+								if (!$numeroProdottiCategoriaFiglia)
+									continue;
+							?>
 							<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $fg["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>">
 								<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $fg["categories"]["id_c"], "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 									<?php echo cfield($fg, "title");?>
+									<span class="uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoriaFiglia;?>)</span>
 								</a>
 							</li>
 							<?php } ?>

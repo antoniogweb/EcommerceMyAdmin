@@ -639,12 +639,6 @@ class BaseContenutiController extends BaseController
 		$firstSection = $data["fsection"] = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
 		
 		$this->setElementsPerPage($firstSection);
-// 		if ($firstSection == "prodotti")
-// 			$this->elementsPerPage = v("prodotti_per_pagina");
-// 		else if ($firstSection == "blog")
-// 			$this->elementsPerPage = v("news_per_pagina");
-// 		else if ($firstSection == "eventi")
-// 			$this->elementsPerPage = v("eventi_per_pagina");
 		
 		$data["elementsPerPage"] = $this->elementsPerPage;
 		
@@ -694,16 +688,6 @@ class BaseContenutiController extends BaseController
 		
 		if (cfield($r[0], "keywords"))
 			$data["keywords"] = F::meta(cfield($r[0], "keywords"));
-		
-// 		if (isset($r[0]["contenuti_tradotti_categoria"]["meta_description"]) && $r[0]["contenuti_tradotti_categoria"]["meta_description"])
-// 			$data["meta_description"] = F::meta($r[0]["contenuti_tradotti_categoria"]["meta_description"]);
-// 		else if (strcmp($r[0]["categories"]["meta_description"],"") !== 0)
-// 			$data["meta_description"] = F::meta($r[0]["categories"]["meta_description"]);
-// 		
-// 		if (isset($r[0]["contenuti_tradotti_categoria"]["keywords"]) && $r[0]["contenuti_tradotti_categoria"]["keywords"])
-// 			$data["keywords"] = F::meta($r[0]["contenuti_tradotti_categoria"]["keywords"]);
-// 		else if (strcmp($r[0]["categories"]["keywords"],"") !== 0)
-// 			$data["keywords"] = F::meta($r[0]["categories"]["keywords"]);
 		
 		if (isset($tagCorrente) && !empty($tagCorrente) && (int)$id === $this->idShop)
 		{
@@ -854,13 +838,6 @@ class BaseContenutiController extends BaseController
 			{
 				if (isset(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]) && $tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"])
 				{
-// 					if (User::$nazione)
-// 						$tabellaListini = "(select id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_prodotto from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as tabella_listini";
-// 					else
-// 						$tabellaListini = "(select id_page,combinazioni.price as prezzo_prodotto from combinazioni group by combinazioni.id_page) as tabella_listini";
-// 					
-// 					$this->m["PagesModel"]->inner($tabellaListini)->on("pages.id_page = tabella_listini.id_page");
-					
 					$campoPrezzo = "prezzo_minimo";
 					
 					if (v("mostra_fasce_prezzo"))
