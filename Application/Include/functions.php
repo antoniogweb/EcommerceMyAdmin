@@ -1649,18 +1649,18 @@ function selectPersonalizzazioni($id_page)
 	return $p->selectPersonalizzazioni($id_page);
 }
 
-function numeroProdottiCategoria($id_c)
+function numeroProdottiCategoria($id_c, $filtriSuccessivi = false)
 {
 	$c = new CategoriesModel();
 	
-	return $c->numeroProdotti($id_c);
+	return $c->numeroProdotti($id_c, $filtriSuccessivi);
 }
 
-function numeroProdottiCategoriaFull($id_c)
+function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false)
 {
 	$c = new CategoriesModel();
 	
-	return $c->numeroProdottiFull($id_c);
+	return $c->numeroProdottiFull($id_c, $filtriSuccessivi);
 }
 
 function getShopCategoryId()

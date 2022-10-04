@@ -710,18 +710,109 @@ class BaseContenutiController extends BaseController
 		
 		//se solo prodotti categoria corrente!!
 // 		$data["pages"] = $this->m["PagesModel"]->clear()->where(array("-id_c"=>$clean['id'],"attivo"=>"Y"))->orderBy("id_order")->send();
-
-		//se tutti i prodotti figli!!
+		
+		// Estraggo gli id delle pagine trovate
+		if (($firstSection == "prodotti" || $this->controller == "search") && v("attiva_filtri_successivi"))
+		{
+			$arrayElementi = array("categoria", "marchio", "tag");
+			
+			foreach ($arrayElementi as $elemento)
+			{
+				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
+				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+				
+				
+			}
+// 			print_r(CategoriesModel::$arrayIdsPagineFiltrate["categoria"]);
+// 			$this->queryElencoProdotti($clean['id'], $firstSection, array("categoria"));
+// 			CategoriesModel::$arrayIdsPagineFiltrate["categoria"] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+// 			
+// 			$this->queryElencoProdotti($clean['id'], $firstSection, array("marchio"));
+// 			CategoriesModel::$arrayIdsPagineFiltrate["marchio"] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+// 			
+// 			$this->queryElencoProdotti($clean['id'], $firstSection, array("tag"));
+// 			CategoriesModel::$arrayIdsPagineFiltrate["tag"] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+			
+			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
+			{
+				$this->queryElencoProdotti($clean['id'], $firstSection, array("prezzo"));
+				$data["prezzoMinimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+				$data["prezzoMassimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+			}
+		}
+		
+		$this->queryElencoProdotti($clean['id'], $firstSection);
+		
+		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->save()->rowNumber();
+		
+// 		echo $this->m["PagesModel"]->getQuery();die();
+		
+		$this->estraiDatiFiltri();
+		
+		$this->m["PagesModel"]->clear()->restore(true);
+		
+// 		print_r($this->m["PagesModel"]->sWhere);
+// 		print_r($this->m["PagesModel"]->where);
+		
+		$data["linkAltri"] = null;
+		
+		if ($rowNumber > $this->elementsPerPage)
+		{
+			//load the Pages helper
+			$this->helper('Pages',$this->getCurrentUrl(false, "categoria"),'p');
+			
+			$page = $data["numeroDiPagina"] = $this->viewArgs['p'];
+			
+			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
+			
+			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
+			$data["pages"] = $this->m['PagesModel']->send();
+			
+			$data['pageList'] = $this->h['Pages']->render($page-5,11);
+		}
+		else
+			$data["pages"] = $this->m['PagesModel']->send();
+		
+		if ($firstSection == "prodotti")
+			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
+		
+		$this->pages = $data["pages"];
+		
+		PagesModel::setPagesStruct($data["pages"]);
+		
+// 		echo $this->m["PagesModel"]->getQuery();
+		
+		// Estraggo le fasce
+		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti(0, $clean['id'], $this);
+		
+		// Estraggo le fasce di prezzo
+		if (v("mostra_fasce_prezzo"))
+			$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
+		
+		// Estraggo i materiali
+		if (v("estrai_materiali"))
+			$data["elencoMateriali"] = $this->m["CaratteristichevaloriModel"]->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
+				"caratteristiche.tipo" => "MATERIALE",
+			))->send();
+		
+		$this->append($data);
+		
+		if (Output::$html)
+			$this->sectionLoad($section, "category", $template);
+		else
+			$this->load("api_output");
+	}
+	
+	protected function queryElencoProdotti($id, $firstSection, $escludi = array())
+	{
+		$clean['id'] = (int)$id;
 		
 		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
 		
 		$this->addOrderByClause($firstSection);
 		
-		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
-		$catWhere = "in(".implode(",",$children).")";
-		$this->m["PagesModel"]->aWhere(array(
-			"in" => array("-id_c" => $children),
-		));
+		if ($this->catSWhere)
+			$this->m["PagesModel"]->sWhere($this->catSWhere);
 		
 		if (Parametri::$hideNotAllowedNodesInLists)
 		{
@@ -729,18 +820,42 @@ class BaseContenutiController extends BaseController
 			$this->m["PagesModel"]->aWhere($accWhere);
 		}
 		
-		if ($this->idMarchio)
+		// Visibilità pagina
+		if (v("abilita_visibilita_pagine"))
+		{
+			$this->m["PagesModel"]->addWhereLingua();
+		}
+		
+		if (strcmp($this->viewArgs["search"],"") !== 0)
+		{
+			$this->m["PagesModel"]->aWhere(array(
+				" OR"=> array(
+					"lk" => array('pages.title' => $this->viewArgs["search"]),
+					" lk" => array('pages.codice' => $this->viewArgs["search"]),
+					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["search"]),
+				),
+			));
+		}
+		
+		// Where figli
+		if (in_array("categoria",$escludi))
+			$clean['id'] = (int)$this->idShop;
+		
+		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
+		$catWhere = "in(".implode(",",$children).")";
+		$this->m["PagesModel"]->aWhere(array(
+			"in" => array("-id_c" => $children),
+		));
+		
+		if ($this->idMarchio && !in_array("marchio",$escludi))
 			$this->m["PagesModel"]->aWhere(array(
 				"id_marchio"	=>	(int)$this->idMarchio,
 			));
 		
-		if ($this->idTag)
+		if ($this->idTag && !in_array("tag",$escludi))
 			$this->m["PagesModel"]->inner(array("tag"))->aWhere(array(
 				"pages_tag.id_tag"	=>	(int)$this->idTag,
 			));
-		
-		if ($this->catSWhere)
-			$this->m["PagesModel"]->sWhere($this->catSWhere);
 		
 		// Promozioni
 		if (self::$isPromo)
@@ -839,7 +954,7 @@ class BaseContenutiController extends BaseController
 		{
 			foreach (AltriFiltri::$filtriUrl as $tipoFiltro => $valoreFiltro)
 			{
-				if (isset(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]) && $tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"])
+				if (isset(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]) && $tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"] && !in_array("prezzo",$escludi))
 				{
 					$campoPrezzo = "prezzo_minimo";
 					
@@ -878,94 +993,10 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		// Visibilità pagina
-		if (v("abilita_visibilita_pagine"))
-		{
-			$this->m["PagesModel"]->addWhereLingua();
-		}
+		$this->m["PagesModel"]->addJoinTraduzionePagina();
 		
-		if (strcmp($this->viewArgs["search"],"") !== 0)
-		{
-			$this->m["PagesModel"]->aWhere(array(
-				" OR"=> array(
-					"lk" => array('pages.title' => $this->viewArgs["search"]),
-					" lk" => array('pages.codice' => $this->viewArgs["search"]),
-					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["search"]),
-				),
-			));
-		}
-		
-		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->addJoinTraduzionePagina()->save()->rowNumber();
-		
-		if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
-		{
-			$data["prezzoMinimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
-			$data["prezzoMassimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
-		}
-		
-// 		echo $this->m["PagesModel"]->getQuery();die();
-		
-		// Estraggo gli id delle pagine trovate
-		if (($firstSection == "prodotti" || $this->controller == "search") && v("attiva_filtri_successivi"))
-		{
-			$this->m["PagesModel"]->clear()->restore();
-			CategoriesModel::$arrayIdsPagineFiltrate = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
-		}
-		
-		$this->estraiDatiFiltri();
-		
-		$this->m["PagesModel"]->clear()->restore(true);
-		
-// 		print_r($this->m["PagesModel"]->sWhere);
-// 		print_r($this->m["PagesModel"]->where);
-		
-		$data["linkAltri"] = null;
-		
-		if ($rowNumber > $this->elementsPerPage)
-		{
-			//load the Pages helper
-			$this->helper('Pages',$this->getCurrentUrl(false, "categoria"),'p');
-			
-			$page = $data["numeroDiPagina"] = $this->viewArgs['p'];
-			
-			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
-			
-			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
-			$data["pages"] = $this->m['PagesModel']->send();
-			
-			$data['pageList'] = $this->h['Pages']->render($page-5,11);
-		}
-		else
-			$data["pages"] = $this->m['PagesModel']->send();
-		
-		if ($firstSection == "prodotti")
-			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
-		
-		$this->pages = $data["pages"];
-		
-		PagesModel::setPagesStruct($data["pages"]);
-		
-// 		echo $this->m["PagesModel"]->getQuery();
-		
-		// Estraggo le fasce
-		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti(0, $clean['id'], $this);
-		
-		// Estraggo le fasce di prezzo
-		if (v("mostra_fasce_prezzo"))
-			$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
-		
-		// Estraggo i materiali
-		if (v("estrai_materiali"))
-			$data["elencoMateriali"] = $this->m["CaratteristichevaloriModel"]->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
-				"caratteristiche.tipo" => "MATERIALE",
-			))->send();
-		
-		$this->append($data);
-		
-		if (Output::$html)
-			$this->sectionLoad($section, "category", $template);
-		else
-			$this->load("api_output");
+		if (isset($data))
+			$this->append($data);
 	}
 	
 	protected function addStatoWhereClause($tipo = "in-promozione")
@@ -1259,6 +1290,8 @@ class BaseContenutiController extends BaseController
 			->where(array("id_page"=>$clean['id']));
 		
 		$data["pages"] = $this->pages = $this->m['PagesModel']->send();
+		
+		$this->estraiDatiFiltri();
 		
 		if ($firstSection == "prodotti")
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);

@@ -63,12 +63,12 @@
 			<ul class="uk-list uk-list-divider">
 				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
-					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop);?>)</span>
+					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop, true);?>)</span>
 				</li>
 				<?php foreach ($elencoCategorieFull as $c) {
 					$figlie = categorieFiglie($c["categories"]["id_c"]);
 					$figlieIds = CategoriesModel::resultToIdList($figlie);
-					$numeroProdottiCategoria = numeroProdottiCategoriaFull($c["categories"]["id_c"]);
+					$numeroProdottiCategoria = numeroProdottiCategoriaFull($c["categories"]["id_c"], true);
 					
 					if (!$numeroProdottiCategoria)
 						continue;
@@ -85,7 +85,7 @@
 						<?php if (count($figlie) > 0) { ?>
 						<ul class='uk-list uk-margin-left uk-accordion-content'>
 							<?php foreach ($figlie as $fg) {
-								$numeroProdottiCategoriaFiglia = numeroProdottiCategoriaFull($fg["categories"]["id_c"]);
+								$numeroProdottiCategoriaFiglia = numeroProdottiCategoriaFull($fg["categories"]["id_c"], true);
 								
 								if (!$numeroProdottiCategoriaFiglia)
 									continue;
@@ -230,7 +230,7 @@
 	</section>
 	<?php } ?>
 	
-	<?php if (v("filtro_prezzo_slider") && isset($prezzoMinimoElenco) && isset($prezzoMassimoElenco)) {
+	<?php if (v("filtro_prezzo_slider") && isset($prezzoMinimoElenco) && isset($prezzoMassimoElenco) && isset($pages) && count($pages) > 1) {
 		$curMin = isset($fasciaPrezzo) ? floor($fasciaPrezzo["fasce_prezzo"]["da"]) : floor($prezzoMinimoElenco);
 		$curMax = isset($fasciaPrezzo) ? ceil($fasciaPrezzo["fasce_prezzo"]["a"]) :  ceil($prezzoMassimoElenco);
 		

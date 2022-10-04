@@ -1287,16 +1287,16 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
-	public function sWhereFiltriSuccessivi()
+	public function sWhereFiltriSuccessivi($elemento = "")
 	{
 		$whereIn = "";
 		
 		if (v("attiva_filtri_successivi"))
 		{
-			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
-				$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate)).")";
+			if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) && count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
+				$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento])).")";
 			else
-				$whereIn = "1 =! 1";
+				$whereIn = "1 = 1";
 			
 			$this->sWhere($whereIn);
 		}

@@ -792,14 +792,24 @@ class CategoriesModel extends HierarchicalModel {
 		return $this;
 	}
 	
-	public function numeroProdottiFull($id_c)
+	public function numeroProdottiFull($id_c, $filtriSuccessivi = false)
 	{
-		return self::gPage($id_c, true, false)->rowNumber();
+		$cat = self::gPage($id_c, true, false);
+		
+		if ($filtriSuccessivi)
+			$cat->sWhereFiltriSuccessivi("categoria");
+		
+		return $cat->rowNumber();
 	}
 	
-	public function numeroProdotti($id_c)
+	public function numeroProdotti($id_c, $filtriSuccessivi = false)
 	{
-		return self::gPage($id_c, false, false)->rowNumber();
+		$cat = self::gPage($id_c, false, false);
+		
+		if ($filtriSuccessivi)
+			$cat->sWhereFiltriSuccessivi("categoria");
+		
+		return $cat->rowNumber();
 	}
 	
 	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true)
