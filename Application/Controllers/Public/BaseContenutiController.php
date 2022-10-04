@@ -854,12 +854,14 @@ class BaseContenutiController extends BaseController
 			{
 				if (isset(AltriFiltri::$altriFiltriTipi["fascia-prezzo"]) && $tipoFiltro == AltriFiltri::$altriFiltriTipi["fascia-prezzo"])
 				{
-					if (User::$nazione)
-						$tabellaListini = "(select id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_prodotto from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as tabella_listini";
-					else
-						$tabellaListini = "(select id_page,combinazioni.price as prezzo_prodotto from combinazioni group by combinazioni.id_page) as tabella_listini";
+// 					if (User::$nazione)
+// 						$tabellaListini = "(select id_page,coalesce(combinazioni_listini.price,combinazioni.price) as prezzo_prodotto from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as tabella_listini";
+// 					else
+// 						$tabellaListini = "(select id_page,combinazioni.price as prezzo_prodotto from combinazioni group by combinazioni.id_page) as tabella_listini";
+// 					
+// 					$this->m["PagesModel"]->inner($tabellaListini)->on("pages.id_page = tabella_listini.id_page");
 					
-					$this->m["PagesModel"]->inner($tabellaListini)->on("pages.id_page = tabella_listini.id_page");
+					$campoPrezzo = "prezzo_minimo";
 					
 					if (v("mostra_fasce_prezzo"))
 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
@@ -871,16 +873,18 @@ class BaseContenutiController extends BaseController
 								"a"	=>	sanitizeDb($matchesPrezzo[2]),
 							),
 						);
+						
+						$campoPrezzo = "prezzo_minimo_ivato";
 					}
 					
 					if (isset($fasciaPrezzo) && !empty($fasciaPrezzo))
 					{
 						$this->m["PagesModel"]->aWhere(array(
 							"    gte"	=>	array(
-								"tabella_listini.prezzo_prodotto"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["da"]),
+								"combinazioni_minime.$campoPrezzo"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["da"]),
 							),
-							"     lt"	=>	array(
-								"tabella_listini.prezzo_prodotto"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["a"]),
+							"     lte"	=>	array(
+								"combinazioni_minime.$campoPrezzo"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["a"]),
 							),
 						));
 					}
@@ -915,8 +919,8 @@ class BaseContenutiController extends BaseController
 		
 		if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 		{
-			$data["prezzoMinimoElenco"] = $this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
-			$data["prezzoMassimoElenco"] = $this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+			$data["prezzoMinimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+			$data["prezzoMassimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
 		}
 		
 // 		echo $this->m["PagesModel"]->getQuery();die();

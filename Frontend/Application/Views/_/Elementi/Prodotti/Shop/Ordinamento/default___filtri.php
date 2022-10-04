@@ -223,11 +223,17 @@
 	</section>
 	<?php } ?>
 	
-	<?php if (v("filtro_prezzo_slider") && isset($prezzoMinimoElenco) && isset($prezzoMassimoElenco)) { ?>
-	<section class="uk-margin-large-top js-accordion-section uk-open">
-		<h4 class="uk-accordion-title uk-margin-remove"><?php echo gtext("Prezzo")?></h4>
-		<div class="uk-accordion-content">
-			<div class="nstSlider" data-range_min="<?php echo floor($prezzoMinimoElenco);?>" data-range_max="<?php echo ceil($prezzoMassimoElenco);?>" data-cur_min="<?php echo isset($fasciaPrezzo) ? floor($fasciaPrezzo["fasce_prezzo"]["da"]) : floor($prezzoMinimoElenco);?>"    data-cur_max="<?php echo isset($fasciaPrezzo) ? ceil($fasciaPrezzo["fasce_prezzo"]["a"]) :  ceil($prezzoMassimoElenco);?>">
+	<?php if (v("filtro_prezzo_slider") && isset($prezzoMinimoElenco) && isset($prezzoMassimoElenco)) {
+		$curMin = isset($fasciaPrezzo) ? floor($fasciaPrezzo["fasce_prezzo"]["da"]) : floor($prezzoMinimoElenco);
+		$curMax = isset($fasciaPrezzo) ? ceil($fasciaPrezzo["fasce_prezzo"]["a"]) :  ceil($prezzoMassimoElenco);
+		
+		$prezzoMinimoElenco = min($curMin, $prezzoMinimoElenco);
+		$prezzoMassimoElenco = max($curMax, $prezzoMassimoElenco);
+	?>
+	<section class="uk-margin-large-top">
+		<h4 class="uk-margin-remove"><?php echo gtext("Prezzo")?></h4>
+		<div class="uk-margin-top">
+			<div class="nstSlider" data-range_min="<?php echo floor($prezzoMinimoElenco);?>" data-range_max="<?php echo ceil($prezzoMassimoElenco);?>" data-cur_min="<?php echo $curMin;?>"    data-cur_max="<?php echo $curMax;?>">
 				<div class="bar"></div>
 				<div class="leftGrip">
 					<div class="uk-margin-top uk-text-small leftLabel"></div>
