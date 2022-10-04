@@ -1294,7 +1294,7 @@ class GenericModel extends Model_Tree
 		if (v("attiva_filtri_successivi"))
 		{
 			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
-				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
+				$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate)).")";
 			else
 				$whereIn = "1 =! 1";
 			

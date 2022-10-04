@@ -712,11 +712,16 @@ class BaseContenutiController extends BaseController
 // 		$data["pages"] = $this->m["PagesModel"]->clear()->where(array("-id_c"=>$clean['id'],"attivo"=>"Y"))->orderBy("id_order")->send();
 
 		//se tutti i prodotti figli!!
+		
+		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
+		
+		$this->addOrderByClause($firstSection);
+		
 		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
 		$catWhere = "in(".implode(",",$children).")";
-		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->aWhere(array(
+		$this->m["PagesModel"]->aWhere(array(
 			"in" => array("-id_c" => $children),
-		))->addWhereAttivo();
+		));
 		
 		if (Parametri::$hideNotAllowedNodesInLists)
 		{
@@ -740,8 +745,6 @@ class BaseContenutiController extends BaseController
 		// Promozioni
 		if (self::$isPromo)
 			$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
-		
-		$this->addOrderByClause($firstSection);
 		
 		// Filtri caratteristiche
 		if (!empty(CaratteristicheModel::$filtriUrl))
@@ -903,12 +906,18 @@ class BaseContenutiController extends BaseController
 // 		echo $this->m["PagesModel"]->getQuery();die();
 		
 		// Estraggo gli id delle pagine trovate
-		if (v("attiva_filtri_successivi"))
+		if (($firstSection == "prodotti" || $this->controller == "search") && v("attiva_filtri_successivi"))
+		{
+			$this->m["PagesModel"]->clear()->restore();
 			CategoriesModel::$arrayIdsPagineFiltrate = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+		}
 		
 		$this->estraiDatiFiltri();
 		
 		$this->m["PagesModel"]->clear()->restore(true);
+		
+// 		print_r($this->m["PagesModel"]->sWhere);
+// 		print_r($this->m["PagesModel"]->where);
 		
 		$data["linkAltri"] = null;
 		

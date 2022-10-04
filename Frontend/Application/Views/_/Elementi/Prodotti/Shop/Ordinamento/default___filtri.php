@@ -118,8 +118,8 @@
 				<li class="<?php if ($m["marchi"]["id_marchio"] == $idMarchio) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $m["marchi"]["id_marchio"], $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 						<?php echo mfield($m,"titolo");?>
+						<span class="uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span>
 					</a>
-<!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span> -->
 				</li>
 				<?php } ?>
 			</ul>
@@ -139,8 +139,8 @@
 				<li class="<?php if ($m["tag"]["id_tag"] == $idTag) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($m["tag"]["id_tag"], $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 						<?php echo tagfield($m,"titolo");?>
+						<span class="uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span>
 					</a>
-<!-- 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span> -->
 				</li>
 				<?php } ?>
 			</ul>

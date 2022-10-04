@@ -374,7 +374,7 @@ class BaseBaseController extends Controller
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
 		
-		if ($controller != "contenuti" || $action != "category")
+		if ($controller != "contenuti" || ($action != "category" && $action != "search"))
 			$this->estraiDatiFiltri();
 		
 		if (v("attiva_in_evidenza_nazioni"))
@@ -582,15 +582,15 @@ class BaseBaseController extends Controller
 	
 	protected function estraiDatiFiltri()
 	{
-		$whereIn = "";
-		
-		if (v("attiva_filtri_successivi"))
-		{
-			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
-				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
-			else
-				$whereIn = "1 =! 1";
-		}
+// 		$whereIn = "";
+// 		
+// 		if (v("attiva_filtri_successivi"))
+// 		{
+// 			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
+// 				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
+// 			else
+// 				$whereIn = "1 =! 1";
+// 		}
 		
 		if (v("usa_marchi"))
 		{
@@ -601,7 +601,9 @@ class BaseBaseController extends Controller
 				"nuovo"	=>	"Y",
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
-			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->send();
+			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi()->send();
+			
+// 			echo $this->m["MarchiModel"]->getQuery();
 		}
 		
 		if (v("usa_tag"))
@@ -613,7 +615,7 @@ class BaseBaseController extends Controller
 			$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
 				->inner(array("pagine"))
 				->inner("pages")->on("pages.id_page = pages_tag.id_page")
-				->addWhereAttivo()->groupBy("tag.id_tag")->send();
+				->addWhereAttivo()->groupBy("tag.id_tag")->sWhereFiltriSuccessivi()->send();
 		}
 		
 		$data["filtriCaratteristiche"] = array();
