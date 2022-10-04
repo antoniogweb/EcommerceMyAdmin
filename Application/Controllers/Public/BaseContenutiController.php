@@ -708,11 +708,8 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		//se solo prodotti categoria corrente!!
-// 		$data["pages"] = $this->m["PagesModel"]->clear()->where(array("-id_c"=>$clean['id'],"attivo"=>"Y"))->orderBy("id_order")->send();
-		
 		// Estraggo gli id delle pagine trovate
-		if (($firstSection == "prodotti" || $this->controller == "search") && v("attiva_filtri_successivi"))
+		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
 		{
 			$arrayElementi = array("categoria", "marchio", "tag");
 			
@@ -720,18 +717,7 @@ class BaseContenutiController extends BaseController
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
-				
-				
 			}
-// 			print_r(CategoriesModel::$arrayIdsPagineFiltrate["categoria"]);
-// 			$this->queryElencoProdotti($clean['id'], $firstSection, array("categoria"));
-// 			CategoriesModel::$arrayIdsPagineFiltrate["categoria"] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
-// 			
-// 			$this->queryElencoProdotti($clean['id'], $firstSection, array("marchio"));
-// 			CategoriesModel::$arrayIdsPagineFiltrate["marchio"] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
-// 			
-// 			$this->queryElencoProdotti($clean['id'], $firstSection, array("tag"));
-// 			CategoriesModel::$arrayIdsPagineFiltrate["tag"] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 			{
@@ -750,9 +736,6 @@ class BaseContenutiController extends BaseController
 		$this->estraiDatiFiltri();
 		
 		$this->m["PagesModel"]->clear()->restore(true);
-		
-// 		print_r($this->m["PagesModel"]->sWhere);
-// 		print_r($this->m["PagesModel"]->where);
 		
 		$data["linkAltri"] = null;
 		
