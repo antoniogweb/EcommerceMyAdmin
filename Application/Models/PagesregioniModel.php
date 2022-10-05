@@ -66,12 +66,21 @@ class PagesregioniModel extends GenericModel {
 		return parent::pInsert();
     }
     
-    public function filtriNazioni()
+    public function filtriNazioni($filtriSuccessivi = false)
     {
-		return $this->clear()->select("nazioni.*")->left(array("nazione"))->inner(array("page"))->addWhereAttivo()->groupBy("nazioni.id_nazione")->orderBy("nazioni.titolo")->send();
+		$this->clear()->select("nazioni.*")->left(array("nazione"))->inner(array("page"))->addWhereAttivo()->groupBy("nazioni.id_nazione")->orderBy("nazioni.titolo");
+		
+		if ($filtriSuccessivi)
+			$this->sWhereFiltriSuccessivi("nazione")->select("nazioni.*,count(nazioni.id_nazione) as numero_prodotti");
+		
+		$res = $this->send();
+		
+// 		echo $this->getQuery();
+		
+		return $res;
     }
 	
-	public function filtriRegioni()
+	public function filtriRegioni($filtriSuccessivi = false)
     {
 		$this->clear()->select("regioni.*")->inner(array("regione"))->inner(array("page"))->addWhereAttivo()->groupBy("regioni.id_regione")->orderBy("regioni.titolo");
 		
@@ -87,6 +96,9 @@ class PagesregioniModel extends GenericModel {
 			
 			$this->aWhere($aWhere);
 		}
+		
+		if ($filtriSuccessivi)
+			$this->sWhereFiltriSuccessivi("regione")->select("regioni.*,count(regioni.id_regione) as numero_prodotti");
 		
 		return $this->send();
     }

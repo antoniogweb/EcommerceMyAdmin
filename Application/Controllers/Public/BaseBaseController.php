@@ -586,21 +586,23 @@ class BaseBaseController extends Controller
 		{
 			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
 			
-			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->where(array(
 				"nuovo"	=>	"Y",
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
-			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("marchio")->send();
+			if (v("attiva_filtri_successivi"))
+				$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("marchio")->send();
 		}
 		
 		if (v("usa_tag"))
 		{
-			$data["elencoTagFull"] = $this->elencoTagFull = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+			$data["elencoTagFull"] = $this->elencoTagFull = $data["elencoTagFullFiltri"] = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
 				"attivo"	=>	"Y",
 			))->orderBy("tag.titolo")->send();
 			
-			$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
+			if (v("attiva_filtri_successivi"))
+				$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
 				->inner(array("pagine"))
 				->inner("pages")->on("pages.id_page = pages_tag.id_page")
 				->addWhereAttivo()->groupBy("tag.id_tag")->sWhereFiltriSuccessivi("tag")->send();
@@ -626,9 +628,9 @@ class BaseBaseController extends Controller
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
-			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni();
+			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni(v("attiva_filtri_successivi"));
 			
-			$data["filtriRegioni"] = $this->m["PagesregioniModel"]->filtriRegioni();
+			$data["filtriRegioni"] = $this->m["PagesregioniModel"]->filtriRegioni(v("attiva_filtri_successivi"));
 		}
 		
 		$this->append($data);

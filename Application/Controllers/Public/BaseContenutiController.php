@@ -711,13 +711,24 @@ class BaseContenutiController extends BaseController
 		// Estraggo gli id delle pagine trovate
 		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
 		{
-			$arrayElementi = array("categoria", "marchio", "tag");
+			$arrayElementi = array("categoria", "tag", "nazione", "regione");
+			
+			if (v("usa_marchi"))
+				$arrayElementi[] = "marchio";
+			
+			if (v("usa_tag"))
+				$arrayElementi[] = "tag";
+			
+			if (v("mostra_fasce_prezzo"))
+				$arrayElementi[] = "prezzo";
 			
 			foreach ($arrayElementi as $elemento)
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
 			}
+			
+// 			print_r(CategoriesModel::$arrayIdsPagineFiltrate["categoria"]);
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 			{
@@ -770,7 +781,7 @@ class BaseContenutiController extends BaseController
 		
 		// Estraggo le fasce di prezzo
 		if (v("mostra_fasce_prezzo"))
-			$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
+			$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->filtroFasce();
 		
 		// Estraggo i materiali
 		if (v("estrai_materiali"))
@@ -822,7 +833,7 @@ class BaseContenutiController extends BaseController
 		
 		// Where figli
 		if (in_array("categoria",$escludi))
-			$clean['id'] = (int)$this->idShop;
+			$clean['id'] = (int)CategoriesModel::getIdCategoriaDaSezione($firstSection);
 		
 		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
 		$catWhere = "in(".implode(",",$children).")";
@@ -914,6 +925,12 @@ class BaseContenutiController extends BaseController
 				{
 					$field = $k == RegioniModel::$nAlias ? "alias_nazione" : "alias_regione";
 					
+					if ($field == "alias_nazione" && in_array("nazione",$escludi))
+						continue;
+					
+					if ($field == "alias_regione" && in_array("regione",$escludi))
+						continue;
+					
 					$tmpSql = "$field = '".sanitizeDb($v)."'";
 					
 					if ($prodottoTutteLeRegioni)
@@ -922,15 +939,19 @@ class BaseContenutiController extends BaseController
 					$tempWhere[] = $tmpSql;
 				}
 				
-				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
+				if (count($tempWhere) > 0)
+					$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
 			}
+			
+			$sWhereQuery = "";
 			
 			if (count($sWhereQueryArray) > 1)
 				$sWhereQuery = "(".implode(" OR ", $sWhereQueryArray).")";
 			else if (count($sWhereQueryArray) > 0)
 				$sWhereQuery = $sWhereQueryArray[0];
 			
-			$this->m["PagesModel"]->sWhere($sWhereQuery);
+			if ($sWhereQuery)
+				$this->m["PagesModel"]->sWhere($sWhereQuery);
 		}
 		
 		if (!empty(AltriFiltri::$filtriUrl))
