@@ -63,7 +63,9 @@
 			<ul class="uk-list uk-list-divider">
 				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
+					<?php if (v("attiva_filtri_successivi")) { ?>
 					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop, v("attiva_filtri_successivi"));?>)</span>
+					<?php } ?>
 				</li>
 				<?php foreach ($elencoCategorieFull as $c) {
 					$figlie = categorieFiglie($c["categories"]["id_c"]);
@@ -79,7 +81,9 @@
 					<?php } ?>
 						<a class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $c["categories"]["id_c"]) { ?>uk-text-bold<?php } ?> uk-text-meta uk-text-xsmall <?php if (count($figlie) > 0) { ?>uk-accordion-title"<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $c["categories"]["id_c"], "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 							<?php echo cfield($c, "title");?>
+							<?php if (v("attiva_filtri_successivi")) { ?>
 							<span class=" uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoria;?>)</span>
+							<?php } ?>
 						</a>
 						
 						<?php if (count($figlie) > 0) { ?>
@@ -93,7 +97,9 @@
 							<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $fg["categories"]["id_c"]) { ?>uk-text-bold<?php } ?>">
 								<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $fg["categories"]["id_c"], "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 									<?php echo cfield($fg, "title");?>
+									<?php if (v("attiva_filtri_successivi")) { ?>
 									<span class="uk-text-small uk-text-meta">(<?php echo $numeroProdottiCategoriaFiglia;?>)</span>
+									<?php } ?>
 								</a>
 							</li>
 							<?php } ?>
@@ -118,7 +124,9 @@
 				<li class="<?php if ($m["marchi"]["id_marchio"] == $idMarchio) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $m["marchi"]["id_marchio"], $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 						<?php echo mfield($m,"titolo");?>
+						<?php if (v("attiva_filtri_successivi")) { ?>
 						<span class="uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span>
+						<?php } ?>
 					</a>
 				</li>
 				<?php } ?>
@@ -139,7 +147,9 @@
 				<li class="<?php if ($m["tag"]["id_tag"] == $idTag) { ?>uk-text-bold<?php } ?>">
 					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($m["tag"]["id_tag"], $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
 						<?php echo tagfield($m,"titolo");?>
+						<?php if (v("attiva_filtri_successivi")) { ?>
 						<span class="uk-text-small uk-text-meta">(<?php echo $m["aggregate"]["numero_prodotti"];?>)</span>
+						<?php } ?>
 					</a>
 				</li>
 				<?php } ?>
@@ -174,6 +184,8 @@
 			$filtriUrl = CaratteristicheModel::getArrayUrlCaratteristiche($carAlias, $carVAlias);
 			$filtroSelezionato = CaratteristicheModel::filtroSelezionato($carAlias, $carVAlias);
 			
+			$numeroProdottiCaratteristica = CaratteristichevaloriModel::numeroProdotti($carAlias, $carVAlias, v("attiva_filtri_successivi"));
+			
 			if ($fc["caratteristiche"]["id_car"] != $lastIdCar) {
 				$lastIdCar = $fc["caratteristiche"]["id_car"];
 				$filtriUrlTutti = CaratteristicheModel::getUrlCaratteristicheTutti($carAlias);
@@ -191,10 +203,14 @@
 							<a class="uk-text-meta uk-text-xsmall <?php if ($filtroTuttiSelezionato) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTutti, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
 						</li>
 			<?php } ?>
+			<?php if ($numeroProdottiCaratteristica > 0) { ?>
 						<li class="">
 							<a class="uk-text-meta uk-text-xsmall <?php if ($filtroSelezionato) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrl, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo carvfield($fc, "titolo");?></a>
-<!-- 							<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo $fc["aggregate"]["numero_prodotti"];?>)</span> -->
+							<?php if (v("attiva_filtri_successivi")) { ?>
+							<span class="uk-text-small uk-text-meta">(<?php echo $numeroProdottiCaratteristica;?>)</span>
+							<?php } ?>
 						</li>
+			<?php } ?>
 		<?php } ?>
 		
 		<?php if (count($filtriCaratteristiche) > 0) { ?>

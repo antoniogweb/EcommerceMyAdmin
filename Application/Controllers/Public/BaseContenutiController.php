@@ -220,6 +220,11 @@ class BaseContenutiController extends BaseController
 		
 		$this->pageArgs = $this->originalPageArgs = func_get_args();
 		
+// 		print_r($this->pageArgs);
+		
+		if( count($this->pageArgs) > 0 && strcmp($this->pageArgs[count($this->pageArgs)-1],"") === 0)
+			array_pop($this->pageArgs);
+		
 		// Recupera i filtri dall'URL
 		$this->getFiltriDaUrl();
 		
@@ -263,11 +268,6 @@ class BaseContenutiController extends BaseController
 				
 				array_shift($this->pageArgs);
 			}
-		}
-		
-		if( count($this->pageArgs) > 0 && strcmp($this->pageArgs[count($this->pageArgs)-1],"") === 0)
-		{
-			array_pop($this->pageArgs);
 		}
 		
 		// Controlla che non sia un marchio o un tag
@@ -711,7 +711,7 @@ class BaseContenutiController extends BaseController
 		// Estraggo gli id delle pagine trovate
 		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
 		{
-			$arrayElementi = array("categoria", "tag", "nazione", "regione");
+			$arrayElementi = array("categoria", "tag", "nazione", "regione", "[evidenza]", "[nuovo]", "[promozione]");
 			
 			if (v("usa_marchi"))
 				$arrayElementi[] = "marchio";
@@ -719,16 +719,16 @@ class BaseContenutiController extends BaseController
 			if (v("usa_tag"))
 				$arrayElementi[] = "tag";
 			
-			if (v("mostra_fasce_prezzo"))
-				$arrayElementi[] = "prezzo";
+			$arrayElementi = array_merge($arrayElementi, CaratteristicheModel::getAliasFiltri());
+			
+// 			if (v("mostra_fasce_prezzo"))
+// 				$arrayElementi[] = "prezzo";
 			
 			foreach ($arrayElementi as $elemento)
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
 			}
-			
-// 			print_r(CategoriesModel::$arrayIdsPagineFiltrate["categoria"]);
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 			{
@@ -855,10 +855,13 @@ class BaseContenutiController extends BaseController
 		if (self::$isPromo)
 			$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
 		
+		$temp = CaratteristicheModel::$filtriUrl;
+		$temp = array_diff_key($temp, array_combine($escludi, $escludi));
+		
 		// Filtri caratteristiche
-		if (!empty(CaratteristicheModel::$filtriUrl))
+		if (!empty($temp))
 		{
-			$combinazioniCaratteristiche = prodottoCartesiano(CaratteristicheModel::$filtriUrl);
+			$combinazioniCaratteristiche = prodottoCartesiano($temp);
 			
 			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
 			left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
@@ -968,8 +971,8 @@ class BaseContenutiController extends BaseController
 					{
 						$fasciaPrezzo = $data["fasciaPrezzo"] = array(
 							"fasce_prezzo"	=>	array(
-								"da"	=>	sanitizeDb($matchesPrezzo[1]),
-								"a"	=>	sanitizeDb($matchesPrezzo[2]),
+								"da"	=>	(int)$matchesPrezzo[1],
+								"a"		=>	(int)$matchesPrezzo[2],
 							),
 						);
 						
@@ -988,11 +991,11 @@ class BaseContenutiController extends BaseController
 						));
 					}
 				}
-				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto"])
+				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto"] && !in_array("[evidenza]", $escludi))
 					$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoInEvidenza[0]);
-				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto-nuovo"])
+				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto-nuovo"] && !in_array("[nuovo]", $escludi))
 					$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoNuovo[0]);
-				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"])
+				else if ($tipoFiltro == AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"] && !in_array("[promozioni]", $escludi))
 					$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
 			}
 		}

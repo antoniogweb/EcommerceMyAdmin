@@ -122,8 +122,8 @@ class CaratteristicheModel extends GenericModel {
 		
 		$res = parent::insert();
 		
-		if ($res)
-			$this->controllaLingua($this->lId, "id_car");
+// 		if ($res)
+// 			$this->controllaLingua($this->lId, "id_car");
 		
 		return $res;
 	}
@@ -153,8 +153,8 @@ class CaratteristicheModel extends GenericModel {
 		
 		$res = parent::update($id, $where);
 		
-		if ($res)
-			$this->controllalingua($id, "id_car");
+// 		if ($res)
+// 			$this->controllalingua($id, "id_car");
 		
 		return $res;
 	}
@@ -168,5 +168,12 @@ class CaratteristicheModel extends GenericModel {
 	public function linklingua($record, $lingua)
 	{
 		return $this->linklinguaGeneric($record["caratteristiche"]["id_car"], $lingua, "id_car");
+	}
+	
+	public static function getAliasFiltri()
+	{
+		return CaratteristicheModel::g()->select("coalesce(contenuti_tradotti.alias,caratteristiche.alias) as alias_caratteristica")->where(array(
+			"caratteristiche.filtro"	=>	"Y",
+		))->toList("aggregate.alias_caratteristica")->send();
 	}
 }
