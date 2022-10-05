@@ -3548,4 +3548,54 @@ class PagesModel extends GenericModel {
 		
 		return $pagesFinale;
 	}
+	
+	public function addWhereEvidenza()
+	{
+		$this->aWhere(array(
+			"in_evidenza"	=>	"Y",
+		));
+		
+		return $this;
+	}
+	
+	public function addWhereNuovo()
+	{
+		$this->aWhere(array(
+			"nuovo"	=>	"Y",
+		));
+		
+		return $this;
+	}
+	
+	public function addWherePromo()
+	{
+		$nowDate = date("Y-m-d");
+		
+		$this->aWhere(array(
+			"    gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+			"     gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+			"pages.in_promozione" => "Y",
+		));
+		
+		return $this;
+	}
+	
+	public static function numeroStato($stato = "evidenza", $filtriSuccessivi = false)
+	{
+		$p = new PagesModel();
+		
+		$p->clear()->addWhereAttivo()->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione("prodotti"));
+		
+		if ($stato == "evidenza")
+			$p->addWhereEvidenza();
+		else if ($stato == "nuovo")
+			$p->addWhereNuovo();
+		else if ($stato == "promozione")
+			$p->addWherePromo();
+		
+		if ($filtriSuccessivi)
+			$p->sWhereFiltriSuccessivi("[$stato]");
+		
+		return $p->rowNumber();
+	}
 }

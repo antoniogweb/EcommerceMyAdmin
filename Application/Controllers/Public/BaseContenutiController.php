@@ -1013,27 +1013,30 @@ class BaseContenutiController extends BaseController
 		switch ($tipo)
 		{
 			case AltriFiltri::$aliasValoreTipoPromo[0]:
-				$nowDate = date("Y-m-d");
-				$wherePromo = array(
-					"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-					" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-					"pages.in_promozione" => "Y",
-				);
+				$this->m["PagesModel"]->addWherePromo();
+// 				$nowDate = date("Y-m-d");
+// 				$wherePromo = array(
+// 					"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+// 					" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+// 					"pages.in_promozione" => "Y",
+// 				);
 				
 				self::$isPromo = true;
 				break;
 				
 			case AltriFiltri::$aliasValoreTipoNuovo[0]:
-				$wherePromo = array(
-					"pages.nuovo" => "Y",
-				);
+				$this->m["PagesModel"]->addWhereNuovo();
+// 				$wherePromo = array(
+// 					"pages.nuovo" => "Y",
+// 				);
 				
 				break;
 				
 			case AltriFiltri::$aliasValoreTipoInEvidenza[0]:
-				$wherePromo = array(
-					"pages.in_evidenza" => "Y",
-				);
+				$this->m["PagesModel"]->addWhereEvidenza();
+// 				$wherePromo = array(
+// 					"pages.in_evidenza" => "Y",
+// 				);
 				
 				break;
 		}
