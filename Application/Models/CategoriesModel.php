@@ -33,6 +33,8 @@ class CategoriesModel extends HierarchicalModel {
 	public static $elencoCategorieFull = array();
 	public static $associazioneSezioneId = null;
 	
+	public static $currentIdCategory = null;
+	
 	public static $sezioneVariabile = array(
 		"faq"			=>	"mostra_faq",
 		"testimonial"	=>	"mostra_testimonial",
@@ -153,6 +155,7 @@ class CategoriesModel extends HierarchicalModel {
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_c', null, "CASCADE"),
 			'classisconto' => array("HAS_MANY", 'ClassiscontocategoriesModel', 'id_c', null, "CASCADE"),
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_c', null, "CASCADE"),
+			'caratteristiche' => array("HAS_MANY", 'CategoriescaratteristicheModel', 'id_c', null, "CASCADE"),
         );
     }
     

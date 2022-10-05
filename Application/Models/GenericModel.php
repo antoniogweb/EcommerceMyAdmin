@@ -1346,6 +1346,11 @@ class GenericModel extends Model_Tree
 		}
     }
     
+    public function bulkaggiungiacategoria($record)
+    {
+		return "<i data-azione='aggiungiacategoria' title='".gtext("Aggiungi a categoria")."' class='bulk_trigger help_trigger_aggiungi_a_categoria fa fa-plus-circle text text-primary'></i>";
+    }
+    
     public function bulkaggiungiaprodotto($record)
     {
 		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto fa fa-plus-circle text text-primary'></i>";

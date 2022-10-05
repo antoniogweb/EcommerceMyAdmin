@@ -15,3 +15,9 @@
 <p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_c=<?php echo $id;?>">Aggiungi fascia</a></p>
 
 <?php } ?>
+
+<?php if ($this->action === "caratteristiche") { ?>
+
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/caratteristiche/main";?>?partial=Y&nobuttons=N&id_c=<?php echo $id;?>"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Aggiungi filtro");?></a></p>
+
+<?php } ?>

@@ -62,10 +62,13 @@
 		<div class="uk-accordion-content">
 			<ul class="uk-list uk-list-divider">
 				<li class="<?php if (isset($datiCategoria) && $datiCategoria["categories"]["id_c"] == $idShop) { ?>uk-text-bold<?php } ?>">
-					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>"><?php echo gtext("Tutti");?></a>
-					<?php if (v("attiva_filtri_successivi")) { ?>
-					<span class="uk-align-right uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop, v("attiva_filtri_successivi"));?>)</span>
-					<?php } ?>
+					<a class="uk-text-meta uk-text-xsmall" href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $idShop, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriTuttiAltri);?>">
+						<?php echo gtext("Tutti");?>
+						<?php if (false && v("attiva_filtri_successivi")) { ?>
+						<span class="uk-text-small uk-text-meta">(<?php echo numeroProdottiCategoriaFull($idShop, v("attiva_filtri_successivi"));?>)</span>
+						<?php } ?>
+					</a>
+					
 				</li>
 				<?php foreach ($elencoCategorieFull as $c) {
 					$figlie = categorieFiglie($c["categories"]["id_c"]);
@@ -294,7 +297,7 @@
 				<li>
 					<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto-promo"], AltriFiltri::$aliasValoreTipoPromo[0]); ?>
 					<a class=" uk-text-meta  " href="<?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?>">
-						<?php echo gtext("In offerta");?>
+						<?php echo gtext("In promozione");?>
 						<span class="uk-text-small uk-text-meta">(<?php echo $numeroPromo;?>)</span>
 					</a>
 				</li>

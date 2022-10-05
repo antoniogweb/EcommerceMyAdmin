@@ -628,7 +628,7 @@ class BaseContenutiController extends BaseController
 		$this->setArgKeys($argKeys);
 		$this->shift(count($this->originalPageArgs));
 		
-		$clean['id'] = $data["id_categoria"] = (int)$id;
+		$clean['id'] = $data["id_categoria"] = CategoriesModel::$currentIdCategory = (int)$id;
 		
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
@@ -719,7 +719,9 @@ class BaseContenutiController extends BaseController
 			if (v("usa_tag"))
 				$arrayElementi[] = "tag";
 			
-			$arrayElementi = array_merge($arrayElementi, CaratteristicheModel::getAliasFiltri());
+			$idCatFiltri = v("attiva_filtri_caratteristiche_separati_per_categoria") ? CategoriesModel::$currentIdCategory : 0;
+			
+			$arrayElementi = array_merge($arrayElementi, CaratteristicheModel::getAliasFiltri($idCatFiltri));
 			
 // 			if (v("mostra_fasce_prezzo"))
 // 				$arrayElementi[] = "prezzo";

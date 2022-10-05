@@ -321,10 +321,6 @@ class CaratteristichevaloriModel extends GenericModel {
 		if ($filtriSuccessivi)
 			$p->sWhereFiltriSuccessivi($aliasCar);
 		
-		$res = $p->rowNumber();
-		
-// 		echo $p->getQuery();
-		
-		return $res;
+		return $p->rowNumber();
 	}
 }

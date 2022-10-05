@@ -32,6 +32,7 @@ class CaratteristicheController extends BaseController {
 		'titolo:sanitizeAll'=>'tutti',
 		'id_tipologia_caratteristica:sanitizeAll'=>'tutti',
 		'id_tip_car:sanitizeAll'=>'tutti',
+		'id_c:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -90,6 +91,12 @@ class CaratteristicheController extends BaseController {
 		
 		$this->filters[] = "titolo";
 		
+		if ($this->viewArgs["id_c"] != "tutti")
+		{
+			$this->mainFields[] = "bulkaggiungiacategoria";
+			$this->mainHead .= ",Aggiungi";
+		}
+		
 		$this->m[$this->modelName]->clear()
 				->select("*")
 				->left(array("tipologia"))
@@ -97,7 +104,22 @@ class CaratteristicheController extends BaseController {
 					"lk" => array('caratteristiche.titolo'			=>	$this->viewArgs['titolo']),
 					"caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs['id_tipologia_caratteristica'],
 				))
-				->orderBy("caratteristiche.id_order")->convert()->save();
+				->orderBy("caratteristiche.id_order")->convert();
+		
+		if ($this->viewArgs["id_c"] != "tutti")
+		{
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungiacategoria";
+			
+			$this->bulkActions = array(
+				"checkbox_caratteristiche_id_car"	=>	array("aggiungiacategoria","Aggiungi alla categoria"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("caratteristiche.filtro = 'Y' and caratteristiche.id_car not in (select id_car from categories_caratteristiche where id_car is not null and id_c = ".(int)$this->viewArgs["id_c"].")");
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

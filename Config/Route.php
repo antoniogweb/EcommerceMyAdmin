@@ -143,6 +143,8 @@ class Route
 		'categorie,contenuti',
 		'categorie,ordinacontenuti',
 		'categorie,ordina',
+		'categorie,caratteristiche',
+		'categorie,ordinacaratteristiche',
 		
 		'prodotti,main',
 		'prodotti,aggiungicategoria',
