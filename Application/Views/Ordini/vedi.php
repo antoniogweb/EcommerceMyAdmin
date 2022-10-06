@@ -112,7 +112,10 @@
 			
 			<div class="box">
 				<div class="box-header with-border main help_resoconto">
-					<a class="iframe pull-right help_ordine_lato_cliente" href="<?php echo Domain::$name."/".$ordine["lingua"]."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> <?php echo gtext("Vedi ordine lato cliente");?></a>
+					<?php
+					$linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolower($ordine["nazione"]) : $ordine["lingua"];
+					?>
+					<a class="iframe pull-right help_ordine_lato_cliente" href="<?php echo Domain::$name."/".$linguaNazioneUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> <?php echo gtext("Vedi ordine lato cliente");?></a>
 					<h3><?php echo gtext("Resoconto dell'ordine");?></h3>
 					
 					<table class="table table-striped">

@@ -1,26 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if ($p["righe"]["gift_card"]) {
-	$elementiRiga = RigheelementiModel::getElementiRiga($p["righe"]["id_r"]);
-	
-	if (count($elementiRiga) > 0) { ?>
-		<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
-			<tr>
-				<th style="text-align:left;font-size:13px;"><?php echo gtext("Da inviare a");?></th>
-				<th style="text-align:left;font-size:13px;"><?php echo gtext("Dedica e firma");?></th>
-			</tr>
-		<?php foreach ($elementiRiga as $el) { ?>
-		<tr>
-			<td style="text-align:left;font-size:13px;">
-				<?php echo $el["email"];?>
-			</td>
-			<td style="text-align:left;font-size:13px;">
-				<?php echo nl2br($el["testo"]);?>
-			</td>
-		</tr>
-		<?php } ?>
-	</table>
-	<?php } ?>
-	
+<?php if ($p["righe"]["gift_card"]) { ?>
 	<?php $promozioni = PromozioniModel::getPromoRigaOrdine($p["righe"]["id_r"]);
 	
 	if (count($promozioni) > 0) { ?>
@@ -47,7 +26,30 @@
 			</tr>
 			<?php } ?>
 		</table>
+	<?php } else { ?>
+		<?php $elementiRiga = RigheelementiModel::getElementiRiga($p["righe"]["id_r"]);
+		
+		if (count($elementiRiga) > 0) { ?>
+			<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
+				<tr>
+					<th style="text-align:left;font-size:13px;"><?php echo gtext("Da inviare a");?></th>
+					<th style="text-align:left;font-size:13px;"><?php echo gtext("Dedica e firma");?></th>
+				</tr>
+			<?php foreach ($elementiRiga as $el) { ?>
+			<tr>
+				<td style="text-align:left;font-size:13px;">
+					<?php echo $el["email"];?>
+					<?php if ($tipoOutput == "web" && !OrdiniModel::g()->isPagato($p["righe"]["id_o"])) { ?>
+					<div class="uk-text-italic">(<?php echo gtext("Il codice della gift card verrà inviato alla mail indicata non appena il pagamento dell'ordine verrà effettuato.")?>)</div>
+					<?php } ?>
+				</td>
+				<td style="text-align:left;font-size:13px;">
+					<?php echo nl2br($el["testo"]);?>
+				</td>
+			</tr>
+			<?php } ?>
+		</table>
+		<?php } ?>
 	<?php } ?>
-	
 	
 <?php } ?>
