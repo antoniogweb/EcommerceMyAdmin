@@ -478,9 +478,11 @@ class VariabiliModel extends GenericModel {
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"abilita_solo_nazione_navigazione"	=>	1, // permetti al checkout o come nazioni permesse, solo la nazione di navigazione o quella di default
 		"attiva_nazione_nell_url"	=>	0, // se impostato a 1 nell'URL verrà aggiunto il codice della nazione
-		## NAZIONI ##
+		## FASCE PREZZO ##
 		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
+		## CACHE ##
+		"numero_massimo_file_cache"	=>	50000, // numero massimo di file in cache
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

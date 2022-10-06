@@ -26,8 +26,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 date_default_timezone_set('Europe/Rome');
 
-// Files_Log::$logFolder = ROOT."/Logs";
-// Files_Log::getInstance("log_generico");
+VariabiliModel::ottieniVariabili();
 
 Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "elementi_tema", "tipi_clienti", "fasce_prezzo", "documenti");
 
@@ -35,10 +34,14 @@ if (defined("CACHE_FOLDER"))
 {
 	Cache::$cacheFolder = ROOT."/".ltrim(CACHE_FOLDER,"/");
 	Cache::$cacheMinutes = 60;
+// 	Cache::$useRandomPeriods = true;
 	Cache::$cleanCacheEveryXMinutes = 70;
-	Cache::$maxNumberOfFilesCached = 0;
+	Cache::$maxNumberOfFilesCached = VariabiliModel::valore("numero_massimo_file_cache");
 	Cache::deleteExpired();
 }
+
+// Files_Log::$logFolder = ROOT."/Logs";
+// Files_Log::getInstance("log_generico");
 
 Theme::$alternativeViewFolders = array(
 	LIBRARY . "/Frontend/Application/Views/_",
@@ -62,8 +65,6 @@ if (defined("APPS"))
 		include(LIBRARY."/Application/Hooks/BeforeChecksVariabili.php");
 	}
 }
-
-VariabiliModel::ottieniVariabili();
 
 Params::$exactUrlMatchRewrite = true;
 

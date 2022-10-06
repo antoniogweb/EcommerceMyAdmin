@@ -971,6 +971,8 @@ class BaseContenutiController extends BaseController
 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
 					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
+						Cache::$skipWritingCache = true;
+						
 						$fasciaPrezzo = $data["fasciaPrezzo"] = array(
 							"fasce_prezzo"	=>	array(
 								"da"	=>	(int)$matchesPrezzo[1],

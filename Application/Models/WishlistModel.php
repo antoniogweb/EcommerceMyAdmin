@@ -168,8 +168,6 @@ class WishlistModel extends Model_Tree {
 	
 	public function getProdotti()
 	{
-		$p = new PagesModel();
-		
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
 		return $this->clear()->select("wishlist.*,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->inner("pages")->on("wishlist.id_page = pages.id_page")

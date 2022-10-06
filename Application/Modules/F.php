@@ -88,29 +88,34 @@ class F
 	
 	public static function createFolder($relativePath, $basePath = null)
 	{
-		$relativePath = rtrim($relativePath,"/");
-		
 		if (!$basePath)
 			$basePath = LIBRARY;
 		
-		$relativePathArray = explode("/", $relativePath);
+		return createFolderFull($relativePath, $basePath);
 		
-		$path = $basePath;
-		
-		foreach ($relativePathArray as $rPath)
-		{
-			$path .= "/$rPath";
-			
-			if (@!is_dir($path))
-				@mkdir($path);
-			
-			$fp = @fopen($path . "/index.html", 'w');
-			fclose($fp);
-			
-			$fp = @fopen($path . "/.htaccess", 'w');
-			fwrite($fp, 'deny from all');
-			fclose($fp);
-		}
+// 		$relativePath = rtrim($relativePath,"/");
+// 		
+// 		if (!$basePath)
+// 			$basePath = LIBRARY;
+// 		
+// 		$relativePathArray = explode("/", $relativePath);
+// 		
+// 		$path = $basePath;
+// 		
+// 		foreach ($relativePathArray as $rPath)
+// 		{
+// 			$path .= "/$rPath";
+// 			
+// 			if (@!is_dir($path))
+// 				@mkdir($path);
+// 			
+// 			$fp = @fopen($path . "/index.html", 'w');
+// 			fclose($fp);
+// 			
+// 			$fp = @fopen($path . "/.htaccess", 'w');
+// 			fwrite($fp, 'deny from all');
+// 			fclose($fp);
+// 		}
 	}
 	
 	public static function blank($string)
