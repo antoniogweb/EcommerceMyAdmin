@@ -48,7 +48,6 @@ class PromozioniModel extends GenericModel {
 			
 			$labelSconto .= ($tipo == "ASSOLUTO") ? " (in €)" : " (in %)";
 		}
-			
 		
 		$this->formStruct = array
 		(

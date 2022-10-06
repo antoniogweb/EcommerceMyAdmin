@@ -13,6 +13,10 @@
 						<?php echo $form["immagine"];?>
 						<?php } ?>
 						
+						<?php if (isset($form["colore"])) { ?>
+						<?php echo $form["colore"];?>
+						<?php } ?>
+						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 						<?php } ?>

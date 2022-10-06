@@ -42,7 +42,9 @@ class AttributivaloriController extends BaseController {
 			$tipo = AttributivaloriModel::getTipo($id);
 		
 		if ($tipo == "IMMAGINE")
-				$fields .= ",immagine";
+			$fields .= ",immagine";
+		else if ($tipo == "COLORE")
+			$fields .= ",colore";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

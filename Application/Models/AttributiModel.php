@@ -55,7 +55,7 @@ class AttributiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'tipo'		=>	array(
 					'type'		=>	'Select',
-					'options'	=>	"TENDINA,RADIO,IMMAGINE",
+					'options'	=>	"TENDINA,RADIO,IMMAGINE,COLORE",
 					'reverse' => 'yes',
 					
 				),

@@ -90,8 +90,11 @@ class AttributivaloriModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Può essere usato nell'URL del prodotto. Viene creato in automatico se lasciato vuoto.")."</div>",
+						"<div class='form_notice'>".gtext("Viene usato nell'URL del prodotto. Viene creato in automatico se lasciato vuoto.")."</div>",
 					),
+				),
+				'colore'	=>	array(
+					"className"	=>	"form-control colorpicker-element",
 				),
 			),
 			
