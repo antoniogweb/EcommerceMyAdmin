@@ -40,7 +40,7 @@ class RigheModel extends GenericModel {
 	{
 		$res = parent::insert();
 		
-		if ($res && v("attiva_giacenza") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
+		if ($res && v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
 		{
 			$c = new CombinazioniModel();
 			

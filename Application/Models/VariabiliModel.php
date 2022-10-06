@@ -385,7 +385,6 @@ class VariabiliModel extends GenericModel {
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
-		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
 		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale
 		"classe_ext_cookies_conf"	=>	"segnalazione_cookies_ext uk-background-secondary uk-light segnalazione_cookies_ext_pag_cookies", // classe box esterno cookie preferenze
@@ -483,6 +482,9 @@ class VariabiliModel extends GenericModel {
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
 		## CACHE ##
 		"numero_massimo_file_cache"	=>	50000, // numero massimo di file in cache
+		## GIACENZA / MAGAZZINO ##
+		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
+		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

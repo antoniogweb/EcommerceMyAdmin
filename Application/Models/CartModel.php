@@ -412,6 +412,9 @@ class CartModel extends GenericModel {
 		
 		foreach ($righe as $r)
 		{
+			if ($r["price_ivato"] <= 0)
+				continue;
+			
 			$aliquota = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : $r["iva"];
 			
 			$nuovoPrezzoUnitarioIvato = number_format(($r["price_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");
