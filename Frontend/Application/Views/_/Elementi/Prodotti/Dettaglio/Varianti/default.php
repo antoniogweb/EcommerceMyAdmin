@@ -17,23 +17,30 @@ if (!isset($classeTendinaVarianti))
 			<?php } else if ($tipoAttributo == "IMMAGINE" || $tipoAttributo == "COLORE") {
 				$actionImmagine = ($tipoAttributo == "IMMAGINE") ? "valoreattributo" : "colore";
 			?>
-				<div class="uk-text-small uk-text-bold"><?php echo $lista_attributi[$col];?></div>
-				<select class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi[$col]);?>" name="<?php echo $col;?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi[$col];?>">
-					<?php
-					$indice = 0;
-					foreach ($valori_attributo as $v => $i) {
-						if (!v("primo_attributo_selezionato") && $indice == 0)
-						{
-							$indice++;
-							continue;
-						}
-						
-						if ($tipoAttributo == "COLORE")
-							$i = str_replace("#","",$i);
-					?>
-					<option data-img-src="<?php echo $this->baseUrlSrc."/thumb/$actionImmagine/".$i;?>" <?php if (getAttributoDaCarrello($col) == $v) { ?>selected="selected"<?php } ?> value="<?php echo $v;?>"><?php echo $i;?></option>
-					<?php } ?>
-				</select>
+				<div class="box_attributo_immagine_colore">
+					<div class="uk-text-small uk-text-bold">
+						<?php echo $lista_attributi[$col];?>
+						<?php if ($tipoAttributo == "COLORE") { ?>
+						: <span class="uk-text-meta label_variante_colore"></span>
+						<?php } ?>
+					</div>
+					<select class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi[$col]);?>" name="<?php echo $col;?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi[$col];?>">
+						<?php
+						$indice = 0;
+						foreach ($valori_attributo as $v => $i) {
+							if (!v("primo_attributo_selezionato") && $indice == 0)
+							{
+								$indice++;
+								continue;
+							}
+							
+							if ($tipoAttributo == "COLORE")
+								$i = str_replace("#","",$i);
+						?>
+						<option data-img-title='<?php echo AttributivaloriModel::g(false)->getName($v);?>' data-img-src="<?php echo $this->baseUrlSrc."/thumb/$actionImmagine/".$i;?>" <?php if (getAttributoDaCarrello($col) == $v) { ?>selected="selected"<?php } ?> value="<?php echo $v;?>"><?php echo $i;?></option>
+						<?php } ?>
+					</select>
+				</div>
 			<?php } else { ?>
 				<div class="<?php echo $classeTendinaVarianti;?>">
 					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,"uk-select form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),null,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>

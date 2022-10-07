@@ -453,6 +453,17 @@ function controllaCheckFattura()
 		$(".campo_codice_fiscale").css("display","none");
 }
 
+function mostraLabelColore()
+{
+	$(".label_variante_colore").each(function(){
+		var that = $(this);
+		
+		var testoVariante = $(this).closest(".box_attributo_immagine_colore").find(".form_select_attributo option:selected").attr("data-img-title");
+		
+		that.text(testoVariante);
+	})
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -618,7 +629,14 @@ $(document).ready(function(){
 	
 	$('input').iCheck(icheckOptions);
 	
-	$(".image-picker").imagepicker();
+	mostraLabelColore();
+	
+	$(".image-picker").imagepicker({
+		selected: function(select, picker_option, event){
+			
+			mostraLabelColore();
+		}
+	});
 	
 	$("body").on("change", ".select_follow_url", function(e){
 		

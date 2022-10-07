@@ -143,7 +143,6 @@ class VariabiliModel extends GenericModel {
 		"email_aziendale"			=>	"",
 		"piattaforma_in_sviluppo"	=>	1,
 		"email_sviluppo"			=>	"",
-		"classe_variante_radio"		=>	"",
 		"insert_account_fields"		=>	"nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2",
 		"account_attiva_conferma_password"	=>	1,
 		"account_attiva_conferma_username"	=>	1,
@@ -485,6 +484,9 @@ class VariabiliModel extends GenericModel {
 		## GIACENZA / MAGAZZINO ##
 		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
+		## VARIANTI ##
+		"classe_variante_radio"		=>	"",
+		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
