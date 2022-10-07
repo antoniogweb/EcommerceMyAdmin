@@ -95,6 +95,7 @@ class BaseCartController extends BaseController
 		$idCart = 0;
 		$errore = "";
 		$contentsFbk = $contentsGtm = "";
+		$valueProdottoNelCarrello = 0;
 		
 		$defaultErrorJson = array(
 			"result"	=>	$result,
@@ -102,6 +103,7 @@ class BaseCartController extends BaseController
 			"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
 			"contens_fbk"	=>	"",
 			"contens_gtm"	=>	"",
+			"value"		=>	$valueProdottoNelCarrello,
 		);
 		
 		// Se non è un prodotto
@@ -222,12 +224,19 @@ class BaseCartController extends BaseController
 									),
 								);
 								
+								$campoId = v("versione_google_analytics") == 3 ? "id" : "item_id";
+								$campoName = v("versione_google_analytics") == 3 ? "name" : "item_name";
+								
+								$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"];
+								
 								$contentsGtm = array(array(
-									"id"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
-									"name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
+									"$campoId"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+									"$campoName"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
 									"quantity"	=>	$clean["quantity"],
-									"price"		=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
+									"price"		=>	$prezzoProdottoNelCarrello,
 								));
+								
+								$valueProdottoNelCarrello = number_format($prezzoProdottoNelCarrello * $clean["quantity"],2,".","");
 							}
 							
 							// Aggiorna gli elementi del carrello
@@ -268,6 +277,7 @@ class BaseCartController extends BaseController
 			"errore"	=>	$errore,
 			"contens_fbk"	=>	$contentsFbk,
 			"contens_gtm"	=>	$contentsGtm,
+			"value"		=>	$valueProdottoNelCarrello,
 		));
 	}
 	

@@ -56,6 +56,9 @@ if (typeof stringa_errore_righe_carrello == "undefined")
 if (typeof current_url == "undefined")
 	var current_url = "Attenzione, controllare i campi evidenziati";
 
+if (typeof versione_google_analytics == "undefined")
+	var versione_google_analytics = 3;
+
 var time;
 var arrayAccessori = [];
 var redirectCombinazioneAttivo = false;
@@ -759,12 +762,17 @@ function actionAggiungiAlCarrello(principale, accessorio)
 					}
 				}
 				
-				if (gtm_analytics && typeof content.contens_gtm != "undefined" && content.contens_gtm != "")
+				if (gtm_analytics && typeof content.contens_gtm != "undefined" && content.contens_gtm != "" && typeof content.value != "undefined" && content.value != "")
 				{
-					if (debug_js)
-						console.log(content.contens_gtm);
+					if (versione_google_analytics == 3)
+						var elementsAddToCart = {"items": content.contens_gtm};
+					else if (versione_google_analytics == 4)
+						var elementsAddToCart = {"currency" : "EUR", "value" : content.value, "items": content.contens_gtm};
 					
-					gtag('event', 'add_to_cart', {"items": content.contens_gtm});
+					if (debug_js)
+						console.log(elementsAddToCart);
+					
+					gtag('event', 'add_to_cart', elementsAddToCart);
 				}
 				
 				if (!haAccessori() || principale.hasClass("aggiungi_al_carrello_semplice"))

@@ -111,7 +111,6 @@ class VariabiliModel extends GenericModel {
 		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
-		"lista_variabili_opzioni_google"	=>	"codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default",
 		"lista_variabili_funzionamento_ecommerce"	=>	"ecommerce_online,piattaforma_in_sviluppo,traduzione_frontend,giacenza_massima_mostrata",
 		"submenu_class"				=>	"uk-nav uk-nav-default",
 		"current_menu_item"			=>	"uk-active",
@@ -343,13 +342,9 @@ class VariabiliModel extends GenericModel {
 		"token_edit_frontend"		=>	"", // token per attivare l'edit frontend
 		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
 		"mostra_errori_personalizzazione"	=>	1, // mostrare che manca personalizzazione oppure no
-		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
-		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
 		"coupon_ajax"				=>	0, // se inserire il coupon con una richiesta POST ajax
 		"attiva_gestione_integrazioni"	=>	0, // se mostra la gestione delle integrazioni
-		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
 		"resoconto_ordine_top_carrello"	=>	0, // se mostrare, in mobile, il resoconto in alto al checkout
-		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
 		"profondita_menu_desktop"	=>	2, // profondità menù desktop
 		"profondita_menu_mobile"	=>	2, // profondità menù mobile
 		"appiattisci_menu_semplice"	=>	0, // se impostato a 1, vengono eliminati i livelli del menù e viene messo tutto a profondità 1
@@ -364,12 +359,8 @@ class VariabiliModel extends GenericModel {
 		"scaglioni_cpc_euro_centesimi"		=>	10, // indica lo scaglione in centesimi di euro del CPC da mostrare nelle etichette del feed di google
 		"scaglioni_margine_di_guadagno"		=>	10, // indica lo scaglione in euro del guadagno assoluto previsto da mostrare nelle etichette del feed di google
 		"rapporto_dollaro_euro"				=>	1.13, // proporzione euro dollaro
-		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
-		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 		"codice_fiscale_obbligatorio_solo_se_fattura"	=>	0, // per privati, il CF è obbligatorio solo se il cliente spunta il campo "fattura"
-		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
-		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
 		"pixel_nel_footer"			=>	1, // sposta il pixel di Facebook nel footer
 		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
 		"euro_iva_italiana_vendite_ue"	=>	10000, // totale euro massimo per vendite fuori dall'italia con IVA italiana
@@ -428,8 +419,6 @@ class VariabiliModel extends GenericModel {
 		"newsletter_ajax_submit"	=>	0, // se impostato a 1, l'invio del form newsletter sarà in modalità AJAX
 		"invia_subito_mail_contatto"=>	1, // se inviare subito il contatto
 		"invia_mail_contatto_a_piattaforma"	=>	1, // se inviare la mail di contatto anche alla piattaforma o solo ai referenti di nazione (se non ci sono referenti manda la mail alla piattaforma)
-		## ETICHETTE FEED GOOGLE ##
-		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## FEEDBACK ##
 		"abilita_feedback"			=>	0, // se i feedback sono abilitati o meno
 		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
@@ -487,6 +476,19 @@ class VariabiliModel extends GenericModel {
 		## VARIANTI ##
 		"classe_variante_radio"		=>	"",
 		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE
+		## GOOGLE ##
+		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
+		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
+		"lista_variabili_opzioni_google"	=>	"codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default",
+		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
+		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
+		"versione_google_analytics"	=>	3, // versione di Google Analytics
+		## ETICHETTE FEED GOOGLE ##
+		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
+		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
+		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
+		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
+		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
@@ -621,7 +623,7 @@ class VariabiliModel extends GenericModel {
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Google Tag Manager --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google Tag Manager --&gt;</div>"
 				),
 			),
 			'codice_gtm_analytics_noscript'	=>	array(
@@ -630,7 +632,7 @@ class VariabiliModel extends GenericModel {
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Google Tag Manager (noscript) --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google Tag Manager (noscript) --&gt;</div>"
 				),
 			),
 			'codice_gtm_analytics'	=>	array(
@@ -639,7 +641,7 @@ class VariabiliModel extends GenericModel {
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Global site tag (gtag.js) - XXX --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google tag (gtag.js) - XXX --&gt;</div>"
 				),
 			),
 			'codice_fbk'	=>	array(
@@ -688,6 +690,15 @@ class VariabiliModel extends GenericModel {
 					null,
 					"<div class='form_notice'>".gtext("Verranno attivati solo se il cliente approva tutti i cookie.")."</div>",
 				),
+			),
+			'versione_google_analytics'	=>	array(
+				'labelString'	=>	gtext('Versione di Google Analytics usata'),
+				'type'			=>	'Select',
+				'options'	=>	array(
+					"3"	=>	"Universal Analytics",
+					"4"	=>	"Google Analytics 4",
+				),
+				"reverse"	=>	"yes",
 			),
 		);
 		
