@@ -197,7 +197,7 @@ class AttributivaloriModel extends GenericModel {
 		if ($this->upload("insert"))
 		{
 			if (isset($this->values["alias"]))
-				$this->checkAliasAll($id);
+				$this->checkAliasAll(0);
 			
 			return parent::insert();
 		}

@@ -510,7 +510,7 @@ function combinazione(obj)
 						if (obj.find(".dati_variante").length > 0){
 							obj.find(".dati_variante").html(content);
 							
-							if (obj.find(".dati_variante .url_redirect_combinazione").length > 0 && redirectCombinazioneAttivo)
+							if (obj.find(".dati_variante .url_redirect_combinazione").length > 0 && redirectCombinazioneAttivo && obj.hasClass("accessorio_principale"))
 							{
 								var redirectUrl =  baseUrl + "/" + obj.find(".dati_variante .url_redirect_combinazione").text();
 								

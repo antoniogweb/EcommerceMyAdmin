@@ -767,6 +767,17 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
+	public function afterDuplica($toId, $oldPk, $newPk)
+	{
+		$i = new ImmaginiModel();
+		
+		$i->sValues(array(
+			"id_c"	=>	$newPk,
+		));
+		
+		$i->pUpdate(null, "id_page = ".(int)$toId." and id_c = ".(int)$oldPk);
+	}
+	
 // 	public function col2($record)
 // 	{
 // 		$idAttr = $record["combinazioni"]["col_2"];

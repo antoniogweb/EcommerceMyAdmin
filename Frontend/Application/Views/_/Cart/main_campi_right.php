@@ -10,7 +10,7 @@
 			<?php } ?>
 			<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
 			
-			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"]) { ?>
+			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"] && !VariabiliModel::combinazioniLinkVeri()) { ?>
 			<div class="uk-margin">
 				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
 			</div>

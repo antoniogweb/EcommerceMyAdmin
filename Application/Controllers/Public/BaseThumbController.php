@@ -1145,4 +1145,13 @@ class BaseThumbController extends Controller {
 	{
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
+	
+	public function colore($colore = null)
+	{
+		if( !preg_match('/^#[a-f0-9]{6}$/i', "#".$colore) )
+			$colore = "EEEEEE";
+		
+		header( 'Content-type: image/svg+xml' );
+		include(tpf("/Elementi/colore_variante.php"));
+	}
 }

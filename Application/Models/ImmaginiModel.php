@@ -116,23 +116,23 @@ class ImmaginiModel extends GenericModel {
 	}
 	
 	//duplica le immagini della pagina avente id uguale a $from_id alla pagina avente id uguale a $to_id 
-	public function duplica($from_id, $to_id, $field = "id_page")
-	{
-		$clean["from_id"] = (int)$from_id;
-		$clean["to_id"] = (int)$to_id;
-		
-		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send();
-		
-		foreach ($res as $r)
-		{
-			$this->values = array();
-			$this->values["immagine"] = $r["immagini"]["immagine"];
-			$this->values["id_page"] = $clean["to_id"];
-			
-			$this->sanitize();
-			$this->insert();
-		}
-	}
+// 	public function duplica($from_id, $to_id, $field = "id_page")
+// 	{
+// 		$clean["from_id"] = (int)$from_id;
+// 		$clean["to_id"] = (int)$to_id;
+// 		
+// 		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send();
+// 		
+// 		foreach ($res as $r)
+// 		{
+// 			$this->values = array();
+// 			$this->values["immagine"] = $r["immagini"]["immagine"];
+// 			$this->values["id_page"] = $clean["to_id"];
+// 			
+// 			$this->sanitize();
+// 			$this->insert();
+// 		}
+// 	}
 	
 	public function del($id_immagine = null, $whereClause = null)
 	{

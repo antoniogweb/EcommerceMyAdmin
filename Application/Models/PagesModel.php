@@ -2202,7 +2202,7 @@ class PagesModel extends GenericModel {
 			$temp = array();
 			
 			$resValoriAttributi = $cm->clear()
-								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,contenuti_tradotti.titolo,attributi.tipo")
+								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo")
 								->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
 								->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
 								->left("contenuti_tradotti")->on("contenuti_tradotti.id_av = attributi_valori.id_av and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
@@ -2221,7 +2221,7 @@ class PagesModel extends GenericModel {
 				
 				$temp = array();
 				
-				if ($tipo == "TENDINA" || $tipo == "IMMAGINE")
+				if ($tipo == "TENDINA" || $tipo == "IMMAGINE" || $tipo == "COLORE")
 				{
 					if (!v("primo_attributo_selezionato"))
 						$temp = array("0" => $name);
@@ -2234,6 +2234,8 @@ class PagesModel extends GenericModel {
 					$arrayCombValori[$rva["combinazioni"][$c]] = "<span class='variante_radio_valore ".v("classe_variante_radio")."'>".avfield($rva, "titolo")."</span>";
 				else if ($tipo == "IMMAGINE")
 					$arrayCombValori[$rva["combinazioni"][$c]] = $rva["attributi_valori"]["immagine"];
+				else if ($tipo == "COLORE")
+					$arrayCombValori[$rva["combinazioni"][$c]] = $rva["attributi_valori"]["colore"];
 				else
 					$arrayCombValori[$rva["combinazioni"][$c]] = $name.": ".avfield($rva, "titolo");
 			}
