@@ -298,7 +298,7 @@ class CartModel extends GenericModel {
 			else
 				$arraySubtotale[$ivaSped] = ($totaleSpedizione + $totalePagamento);
 			
-			$totaleIvato += ($totaleSpedizione + $totalePagamento) * (1 + ($ivaRiga / 100));
+			$totaleIvato += ($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100));
 		}
 		
 		// Sconto assoluto
