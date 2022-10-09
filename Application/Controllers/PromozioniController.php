@@ -118,9 +118,9 @@ class PromozioniController extends BaseController {
 		$campi = 'titolo,codice,attivo,dal,al';
 		
 		if (v("attiva_promo_sconto_assoluto"))
-			$campi .= ',tipo_sconto';
+			$campi .= ',tipo_sconto,tipo_credito';
 		
-		$campi .= ',sconto,numero_utilizzi';
+		$campi .= ',sconto,sconto_valido_sopra_euro,numero_utilizzi,numero_utilizzi_per_email';
 		
 		$this->m[$this->modelName]->setValuesFromPost($campi);
 		

@@ -207,6 +207,11 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 	
 	var tipo_cliente = getTipoCliente();
 	
+	var email = "";
+	
+	if ($("[name='email']").length > 0)
+		email = $("[name='email']").val();
+	
 	$.ajaxQueue({
 		url: baseUrl + "/ordini/totale",
 		cache:false,
@@ -216,7 +221,8 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 		data: {
 			id_corriere: id_corriere,
 			nazione_spedizione: nazione,
-			tipo_cliente: tipo_cliente
+			tipo_cliente: tipo_cliente,
+			email: email
 		},
 		success: function(content){
 			

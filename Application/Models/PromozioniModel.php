@@ -75,16 +75,48 @@ class PromozioniModel extends GenericModel {
 					'options'	=>	array('sì'=>'Y','no'=>'N'),
 				),
 				'numero_utilizzi'		=>	array(
-					'labelString'=>	'Numero massimo di utilizzi',
+					'labelString'=>	'Numero massimo totale di utilizzi',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Numero massimo di utilizzi totale, considerando anche clienti diversi (diversi indirizzi email)")."</div>"
+					),
 				),
-// 				'tipo_sconto'	=>	array(
-// 					'type'		=>	'Select',
-// 					'labelString'=>	'Tipo coupon',
-// 					'options'	=>	array('PERCENTUALE'=>'In percentuale','ASSOLUTO'=>'Assoluto'),
-// 					'reverse'	=>	'yes',
-// 				),
+				'numero_utilizzi_per_email'		=>	array(
+					'labelString'=>	'Numero massimo di utilizzi per email',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato a 0, non viene considerato un numero massimo di utilizzo per singola mail.")."</div>"
+					),
+				),
+				'tipo_sconto'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipo di sconto',
+					'options'	=>	array('PERCENTUALE'=>'In percentuale','ASSOLUTO'=>'Assoluto'),
+					'reverse'	=>	'yes',
+					'attributes'=>	"on-c='check-v'",
+				),
+				'tipo_credito'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipo di credito',
+					'options'	=>	array('ESAURIMENTO'=>'AD ESAURIMENTO','INFINITO'=>'INFINITO'),
+					'reverse'	=>	'yes',
+					'entryAttributes'	=>	array(
+						"visible-f"	=>	"tipo_sconto",
+						"visible-v"	=>	"ASSOLUTO",
+					),
+				),
 				'id_p'	=>	array(
 					'type'		=>	'Hidden'
+				),
+				'sconto_valido_sopra_euro'		=>	array(
+					'labelString'=>	'Sconto valido se si spende almeno (€)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà applicato solo se il totale del carrello sarà maggiore o uguale alla cifra indicata (spese di spedizione escluse).")."</div>"
+					),
 				),
 			),
 		);
@@ -227,14 +259,21 @@ class PromozioniModel extends GenericModel {
 			
 			if ($now >= $dal and $now <= $al)
 			{
-				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"]) <= 0)
+				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"], $ido) <= 0)
 					return false;
 				
 				$numeroUtilizzi = (int)$res[0]["promozioni"]["numero_utilizzi"];
+				
 				$numeroVolteUsata = (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido);
 				
 				if ($numeroUtilizzi > $numeroVolteUsata)
 				{
+					$numeroUtilizziPerEmail = (int)$res[0]["promozioni"]["numero_utilizzi_per_email"];
+					
+					// controllo il numero di utilizzi per singola email
+					if ($numeroUtilizziPerEmail > 0 && isset($_POST["email"]) && checkMail($_POST["email"]) && $numeroUtilizziPerEmail <= (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido, $_POST["email"]))
+						return false;
+					
 					if (!$checkCart)
 						return true;
 					
@@ -244,15 +283,23 @@ class PromozioniModel extends GenericModel {
 					
 					if (count($prodottiCarrello) > 0)
 					{
-						$prodottiPromozione = $this->elencoProdottiPromozione($clean["codice"]);
+						$scontoValidoSopraEuro = $res[0]["promozioni"]["sconto_valido_sopra_euro"];
 						
-						if ((int)count($prodottiPromozione) === 0)
-							return false;
+						if ($scontoValidoSopraEuro > 0)
+							$totaleCarrello = ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO") ? getTotalN(true) : getSubTotalN(v("prezzi_ivati_in_carrello"));
 						
-						foreach ($prodottiCarrello as $idPage)
+						if ($scontoValidoSopraEuro <= 0 || $totaleCarrello >= $scontoValidoSopraEuro)
 						{
-							if (in_array($idPage, $prodottiPromozione))
-								return true;
+							$prodottiPromozione = $this->elencoProdottiPromozione($clean["codice"]);
+							
+							if ((int)count($prodottiPromozione) === 0)
+								return false;
+							
+							foreach ($prodottiCarrello as $idPage)
+							{
+								if (in_array($idPage, $prodottiPromozione))
+									return true;
+							}
 						}
 					}
 					
@@ -298,7 +345,7 @@ class PromozioniModel extends GenericModel {
 		return array();
 	}
 	
-	public function getNUsata($id_p, $ido = null)
+	public function getNUsata($id_p, $ido = null, $email = null)
 	{
 		$clean["id_p"] = (int)$id_p;
 		
@@ -310,12 +357,19 @@ class PromozioniModel extends GenericModel {
 			
 			$o = new OrdiniModel();
 			
-			if ($ido)
-				$res2 = $o->clear()->where(array("codice_promozione"=>$clean['coupon']))->sWhere("id_o != ".(int)$ido)->send();
-			else
-				$res2 = $o->clear()->where(array("codice_promozione"=>$clean['coupon']))->send();
+			$o->clear()->select("orders.id_o")->where(array("codice_promozione"=>$clean['coupon']));
 			
-			return (count($res2));
+			if ($ido)
+				$o->sWhere("id_o != ".(int)$ido);
+			
+			if ($email)
+				$o->aWhere(array(
+					"email"	=>	sanitizeAll($email),
+				));
+			
+			$res2 = $o->rowNumber();
+			
+			return $res2;
 		}
 		
 		return 0;
@@ -350,6 +404,9 @@ class PromozioniModel extends GenericModel {
 		
 		if (!empty($promozione))
 		{
+			if ($promozione["tipo_sconto"] == "ASSOLUTO" && $promozione["tipo_credito"] == "INFINITO" && $promozione["sconto"] > 0)
+				return $promozione["sconto"];
+			
 			$usati = self::gNumeroEuroUsati($id_p, $ido);
 			
 			if ($promozione["tipo_sconto"] == "ASSOLUTO" && $promozione["sconto"] > $usati)

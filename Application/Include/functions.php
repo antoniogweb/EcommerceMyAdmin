@@ -415,18 +415,21 @@ function getPrezzoScontato($ivato = 0)
 	return setPriceReverse(getPrezzoScontatoN(false, $ivato));
 }
 
-function getSpedizioneN()
+function getSpedizioneN($pieno = null)
 {
 	// Controllo che sia attiva la spedizione
 	if (!v("attiva_spedizione"))
 		return 0;
 	
-	$pieno = PromozioniModel::hasCouponAssoluto() ? true : false;
+	if (!isset($pieno))
+		$pieno = PromozioniModel::hasCouponAssoluto() ? true : false;
 	
 	if (!v("prezzi_ivati_in_carrello"))
 		$subtotale = getPrezzoScontatoN(false, false, $pieno);
 	else
 		$subtotale = getPrezzoScontatoN(false, true, $pieno);
+	
+	$subtotale = number_format($subtotale, 2, ".", "");
 	
 	// Se il totale è sopra la soglia delle spedizioni gratuite, le spese di spedizione sono 0
 	if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])

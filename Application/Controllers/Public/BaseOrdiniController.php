@@ -374,8 +374,8 @@ class BaseOrdiniController extends BaseController
 		
 		$data["ordine"] = $res[0]["orders"];
 		
-		// ID ordine per GTM e FBK (solo se bonifico)
-		if ($data["ordine"]["pagamento"] == "bonifico" || ($data["ordine"]["pagamento"] == "paypal" && $data["ordine"]["stato"] != "pending" && $data["ordine"]["stato"] != "deleted"))
+		// ID ordine per GTM e FBK
+		if (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"]))
 			$data['idOrdineGtm'] = (int)$id_o;
 		
 		$data["tipoOutput"] = "web";

@@ -86,7 +86,7 @@ class CartModel extends GenericModel {
 		
 		$cifre = v("cifre_decimali");
 		
-		if (hasActiveCoupon() && !$pieno)
+		if (!$pieno && hasActiveCoupon())
 		{
 			$p = new PromozioniModel();
 			
@@ -176,7 +176,7 @@ class CartModel extends GenericModel {
 		}
 		
 		if ($conSpedizione)
-			$total += number_format(getSpedizioneN(), $cifre,".","");
+			$total += number_format(getSpedizioneN(true), $cifre,".","");
 		
 		return $total;
 	}
@@ -215,7 +215,7 @@ class CartModel extends GenericModel {
 		$sconto = 0;
 		$tipoSconto = "PERCENTUALE";
 		$idPromo = 0;
-		if (hasActiveCoupon() && !$pieno)
+		if (!$pieno && hasActiveCoupon())
 		{
 			$p = new PromozioniModel();
 			$coupon = $p->getCoupon(User::$coupon);
@@ -283,7 +283,9 @@ class CartModel extends GenericModel {
 			
 			$ivaSped = number_format($ivaSped,2,".","");
 			
-			$totaleSpedizione = number_format(getSpedizioneN(),$cifre,".","");
+			$pienoSpedizione = $pieno ? true : null;
+			
+			$totaleSpedizione = number_format(getSpedizioneN($pienoSpedizione),$cifre,".","");
 			
 			if (isset($arraySubtotale[$ivaSped]))
 				$arraySubtotale[$ivaSped] += $totaleSpedizione;
