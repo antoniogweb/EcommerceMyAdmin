@@ -767,6 +767,8 @@ class OrdiniModel extends FormModel {
 				$arrayTotali[$ordine["id_iva"]] += number_format($ordine["spedizione"],v("cifre_decimali"),".","");
 			else
 				$arrayTotali[$ordine["id_iva"]] = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
+			
+			$arrayTotali[$ordine["id_iva"]] += number_format($ordine["costo_pagamento"],v("cifre_decimali"),".","");
 		}
 		
 		$arrayIva = array();

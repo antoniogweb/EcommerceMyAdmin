@@ -119,11 +119,13 @@ class CartModel extends GenericModel {
 			if ($conSpedizione)
 			{
 				$totaleSpedizione = number_format(getSpedizioneN(), $cifre,".","");
-				$total += $totaleSpedizione;
+				$totalePagamento = number_format(getPagamentoN(), $cifre,".","");
+				
+				$total += ($totaleSpedizione + $totalePagamento);
 				
 				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
 				
-				$totaleIvato = $totaleIvato + number_format($totaleSpedizione * (1 + ($ivaRiga / 100)),$cifre,".","");
+				$totaleIvato = $totaleIvato + number_format(($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100)),$cifre,".","");
 			}
 			
 			// Coupon assoluto
@@ -176,7 +178,10 @@ class CartModel extends GenericModel {
 		}
 		
 		if ($conSpedizione)
+		{
 			$total += number_format(getSpedizioneN(true), $cifre,".","");
+			$total += number_format(getPagamentoN(true), $cifre,".","");
+		}
 		
 		return $total;
 	}
@@ -286,13 +291,14 @@ class CartModel extends GenericModel {
 			$pienoSpedizione = $pieno ? true : null;
 			
 			$totaleSpedizione = number_format(getSpedizioneN($pienoSpedizione),$cifre,".","");
+			$totalePagamento = number_format(getPagamentoN(),$cifre,".","");
 			
 			if (isset($arraySubtotale[$ivaSped]))
-				$arraySubtotale[$ivaSped] += $totaleSpedizione;
+				$arraySubtotale[$ivaSped] += ($totaleSpedizione + $totalePagamento);
 			else
-				$arraySubtotale[$ivaSped] = $totaleSpedizione;
+				$arraySubtotale[$ivaSped] = ($totaleSpedizione + $totalePagamento);
 			
-			$totaleIvato += $totaleSpedizione * (1 + ($ivaRiga / 100));
+			$totaleIvato += ($totaleSpedizione + $totalePagamento) * (1 + ($ivaRiga / 100));
 		}
 		
 		// Sconto assoluto
@@ -322,10 +328,6 @@ class CartModel extends GenericModel {
 		
 // 		if (isset($_GET["dev"]))
 // 		echo "NUMERO ".count($arrayIva)."<br />"; print_r($arrayIva);
-		
-// 		$subtotale = number_format(getSpedizioneN(),2,".","");
-// 		$iva = $subtotale*(Parametri::$iva/100);
-// 		$total += number_format($iva,2,".","");
 		
 		$total = array_sum($arrayIva);
 		

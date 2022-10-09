@@ -126,7 +126,7 @@ class PromozioniController extends BaseController {
 		
 		if (!empty($record) && $record["id_r"])
 		{
-			$campiDisabilitati = "codice,sconto,tipo_sconto";
+			$campiDisabilitati = "codice,sconto,tipo_sconto,tipo_credito";
 			$this->disabledFields = $campiDisabilitati;
 			$this->m[$this->modelName]->delFields($campiDisabilitati);
 		}

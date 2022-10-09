@@ -1037,9 +1037,11 @@ class BaseOrdiniController extends BaseController
 						
 						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();
 						$this->m['OrdiniModel']->values["spedizione"] = getSpedizioneN();
+						$this->m['OrdiniModel']->values["costo_pagamento"] = getPagamentoN();
 						
 						$this->m['OrdiniModel']->values["subtotal_ivato"] = setPrice(getSubTotal(true));
 						$this->m['OrdiniModel']->values["spedizione_ivato"] = setPrice(getSpedizione(1));
+						$this->m['OrdiniModel']->values["costo_pagamento_ivato"] = setPrice(getPagamento(1));
 						
 						$this->m['OrdiniModel']->values["iva"] = setPrice(getIva());
 						$this->m['OrdiniModel']->values["total"] = setPrice(getTotal());
@@ -1047,7 +1049,7 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
 						
-						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"];
+						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"] + $this->m['OrdiniModel']->values["costo_pagamento_ivato"];
 						
 						$this->m['OrdiniModel']->values["creation_time"] = time();
 						

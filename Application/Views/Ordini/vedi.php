@@ -284,6 +284,55 @@
 							</td>
 						</tr>
 						<?php } ?>
+						<?php if ($ordine["costo_pagamento"]) { ?>
+						<tr>
+							<td colspan="2"><?php echo gtext("Spese pagamento");?> (<?php echo str_replace("_"," ",$ordine["pagamento"]);?>)</td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right">
+								1
+							</td>
+							<td class="text-right colonne_non_ivate">
+								<?php echo setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
+							</td>
+							<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
+							<td class="text-right colonne_non_ivate">
+								0%
+							</td>
+							<td class="text-right colonne_non_ivate">
+								<?php echo setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
+							</td>
+							<?php } ?>
+							<td class="text-right colonne_non_ivate">
+								<?php echo setPriceReverse($ordine["iva_spedizione"], 2);?> %
+							</td>
+							<?php if (false) { ?>
+								<?php if (v("prezzi_ivati_in_carrello")) { ?>
+									<td class="text-right">
+										<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+									</td>
+									<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
+									<td class="text-right">
+										0%
+									</td>
+									<td class="text-right">
+										<?php echo setPriceReverse($ordine["spedizione_ivato"]);?> €
+									</td>
+									<?php } ?>
+								<?php } ?>
+								<td class="text-right">
+									<?php if (!v("prezzi_ivati_in_carrello")) { ?>
+									<?php echo setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
+									<?php } else { ?>
+									<?php echo setPriceReverse($ordine["costo_pagamento_ivato"]);?> €
+									<?php } ?>
+								</td>
+							<?php } ?>
+							<td class="text-right">
+								<?php echo setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
+							</td>
+						</tr>
+						<?php } ?>
 						<?php if ($ordine["da_spedire"]) { ?>
 						<tr>
 							<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>

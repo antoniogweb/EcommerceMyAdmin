@@ -415,6 +415,19 @@ function getPrezzoScontato($ivato = 0)
 	return setPriceReverse(getPrezzoScontatoN(false, $ivato));
 }
 
+function getPagamentoN()
+{
+	return PagamentiModel::getCostoCarrello();
+}
+
+function getPagamento($ivato = false)
+{
+	if ($ivato)
+		return setPriceReverse(getPagamentoN() * (1 + (CartModel::getAliquotaIvaSpedizione() / 100)));
+	else
+		return setPriceReverse(getPagamentoN());
+}
+
 function getSpedizioneN($pieno = null)
 {
 	// Controllo che sia attiva la spedizione

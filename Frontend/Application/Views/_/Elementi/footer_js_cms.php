@@ -26,6 +26,8 @@
 	var current_url = "<?php echo isset($currUrl) ? sanitizeHtml($currUrl) : "";?>";
 	var filtro_prezzo_slider = <?php echo v("filtro_prezzo_slider") ? "true" : "false"; ?>;
 	var versione_google_analytics = <?php echo v("versione_google_analytics"); ?>;
+	var spesa_pagamento_possibile = <?php echo (PagamentiModel::getMaxPagamento() > 0) ? "true" : "false"; ?>;
+	
 </script>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>

@@ -1,11 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
+$costoPagamento = setPrice(getPagamento(v("prezzi_ivati_in_carrello")));
 $scrittaFinaleTotale = "Totale ordine";
 $haCouponAttivo = hasActiveCoupon();
 if ($haCouponAttivo)
 	$couponAttivo = PromozioniModel::getCouponAttivo();
 ?>
-<?php if (v("attiva_spedizione") || $haCouponAttivo) { ?>
+<?php if (v("attiva_spedizione") || $haCouponAttivo || $costoPagamento > 0) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Totale merce");?></div>
 	<div><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
@@ -15,6 +16,12 @@ if ($haCouponAttivo)
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Totale scontato");?> (<i><?php echo $couponAttivo["titolo"];?></i>) </div>
 	<div><?php echo getPrezzoScontato(v("prezzi_ivati_in_carrello"));?> €</div>
+</div>
+<?php } ?>
+<?php if ($costoPagamento > 0) { ?>
+<div class="uk-grid-small uk-grid" uk-grid="">
+	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Spese pagamento");?></div>
+	<div><?php echo setPriceReverse($costoPagamento);?> €</div>
 </div>
 <?php } ?>
 <?php if (v("attiva_spedizione")) { ?>
@@ -30,7 +37,7 @@ if ($haCouponAttivo)
 </div>
 <?php } ?>
 
-<?php if (v("attiva_spedizione") || $haCouponAttivo) { ?><hr><?php } ?>
+<?php if (v("attiva_spedizione") || $haCouponAttivo || $costoPagamento > 0) { ?><hr><?php } ?>
 
 <?php if ($haCouponAttivo && $couponAttivo["tipo_sconto"] == "ASSOLUTO") {
 	$scrittaFinaleTotale = "Totale da pagare";

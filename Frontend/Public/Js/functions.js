@@ -26,6 +26,9 @@ if (typeof codice_fiscale_obbligatorio_solo_se_fattura == "undefined")
 if (typeof filtro_prezzo_slider == "undefined")
 	var filtro_prezzo_slider = false;
 
+if (typeof spesa_pagamento_possibile == "undefined")
+	var spesa_pagamento_possibile = true;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -212,6 +215,11 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 	if ($("[name='email']").length > 0)
 		email = $("[name='email']").val();
 	
+	var pagamento = "bonifico";
+	
+	if ($("[name='pagamento']").length > 0)
+		pagamento = $("[name='pagamento']:checked").val();
+	
 	$.ajaxQueue({
 		url: baseUrl + "/ordini/totale",
 		cache:false,
@@ -222,7 +230,8 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 			id_corriere: id_corriere,
 			nazione_spedizione: nazione,
 			tipo_cliente: tipo_cliente,
-			email: email
+			email: email,
+			pagamento: pagamento
 		},
 		success: function(content){
 			
@@ -563,6 +572,13 @@ $(document).ready(function(){
 	$("body").on("ifChanged", "[name='id_corriere']", function(e){
 		
 		if ($(this).is(":checked"))
+			impostaCorrieriESpeseSpedizione();
+		
+	});
+	
+	$("body").on("ifChanged", "[name='pagamento']", function(e){
+		
+		if (spesa_pagamento_possibile && $(this).is(":checked"))
 			impostaCorrieriESpeseSpedizione();
 		
 	});

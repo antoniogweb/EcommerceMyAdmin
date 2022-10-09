@@ -64,6 +64,11 @@ if (!isset($baseUrl))
 				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong></td>
 			</tr>
 			<?php } ?>
+			<?php if ($ordine["costo_pagamento"] > 0) { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Spese pagamento", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["costo_pagamento".$strIvato]);?></strong></td>
+			</tr>
+			<?php } ?>
 			<?php if ($ordine["da_spedire"]) { ?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Spese spedizione", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["spedizione".$strIvato]);?></strong></td>
