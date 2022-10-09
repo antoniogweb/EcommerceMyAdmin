@@ -51,14 +51,19 @@ if (v("codice_gtm_analytics"))
 				if (!empty($pagGTM))
 					$catGTM = $c->clear()->where(array("id_c"=>$pagGTM["id_c"]))->field("title");
 				
-				$tempRigheGTM[] = array(
-					"id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
+				$temp = array(
+					"item_id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
 	// 				"sku"	=>	$ro["codice"],
-					"name"	=>	sanitizeJs(htmlentitydecode($ro["title"])),
+					"item_name"	=>	sanitizeJs(htmlentitydecode($ro["title"])),
 					"category"	=>	sanitizeJs(htmlentitydecode($catGTM)),
-					"price"	=>	v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"],
+// 					"price"	=>	v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"],
 					"quantity"	=>	$ro["quantity"],
 				);
+				
+				if (!$ordineGTML["nome_promozione"])
+					$temp["price"] = v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"];
+				
+				$tempRigheGTM[] = $temp;
 			}
 			
 			$purchase = array(
@@ -70,6 +75,9 @@ if (v("codice_gtm_analytics"))
 				"shipping"			=>	v("prezzi_ivati_in_carrello") ? $ordineGTML["spedizione_ivato"] : $ordineGTML["spedizione"],
 				"items"				=>	$tempRigheGTM,
 			);
+			
+			if ($ordineGTML["nome_promozione"])
+				$purchase["coupon"] = $ordineGTML["nome_promozione"];
 			?>
 			<script>
 				gtag('event', 'purchase', <?php echo json_encode($purchase);?>);
