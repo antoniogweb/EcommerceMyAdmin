@@ -467,7 +467,7 @@ function mostraLabelColore()
 		var testoVariante = $(this).closest(".box_attributo_immagine_colore").find(".form_select_attributo option:selected").attr("data-img-title");
 		
 		that.text(testoVariante);
-	})
+	});
 }
 
 $(document).ready(function(){
