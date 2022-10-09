@@ -288,7 +288,7 @@ class PromozioniModel extends GenericModel {
 						if ($scontoValidoSopraEuro > 0)
 							$totaleCarrello = ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO") ? getTotalN(true) : getSubTotalN(v("prezzi_ivati_in_carrello"));
 						
-						if ($scontoValidoSopraEuro <= 0 || $totaleCarrello >= $scontoValidoSopraEuro)
+						if ($scontoValidoSopraEuro <= 0 || number_format($totaleCarrello,2,".","") >= $scontoValidoSopraEuro)
 						{
 							$prodottiPromozione = $this->elencoProdottiPromozione($clean["codice"]);
 							

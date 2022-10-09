@@ -567,7 +567,7 @@ $(document).ready(function(){
 		
 	});
 	
-	$("body").on("change", "[name='nazione'],[name='nazione_spedizione']", function(e){
+	$("body").on("change", "[name='nazione'],[name='nazione_spedizione'],[name='email']", function(e){
 		impostaCorrieriESpeseSpedizione();
 	});
 	
