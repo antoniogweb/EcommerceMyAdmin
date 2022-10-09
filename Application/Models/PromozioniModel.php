@@ -432,7 +432,7 @@ class PromozioniModel extends GenericModel {
 			"id_p"	=>	(int)$promozione["id_p"],
 		))->toList("id_c")->send();
 		
-		$idPages = $pp->clear()->inner(array("pagina"))->where(array(
+		$idPages = $pp->clear()->select("promozioni_pages.id_page")->inner(array("pagina"))->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
 		))->toList("id_page")->send();
 		
