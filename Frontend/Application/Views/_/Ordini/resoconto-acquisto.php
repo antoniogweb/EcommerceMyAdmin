@@ -221,6 +221,10 @@ if (!isset($baseUrl))
 			<td><?php echo $ordine["telefono_spedizione"];?></td>
 		</tr>
 		<?php } ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Modalità di spedizione", false); ?></td>
+			<td><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></td>
+		</tr>
 	</table>
 </div>
 <?php } ?>

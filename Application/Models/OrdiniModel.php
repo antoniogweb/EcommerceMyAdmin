@@ -684,6 +684,7 @@ class OrdiniModel extends FormModel {
 			
 			$r->values["prezzo_finale_ivato"] = number_format($r->values["prezzo_finale"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
+			$r->delFields("data_creazione");
 			$r->delFields("id_user");
 			$r->delFields("email");
 			$r->delFields("id_cart");

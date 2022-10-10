@@ -154,19 +154,9 @@
          'getSliderWidthPx' : function () {
             var $this = this;
 			
-			if ($this.closest(".dropdown").length > 0)
+			if ($this.closest(".uk-offcanvas-bar").length > 0)
 			{
-				var clone = $this.closest(".dropdown").clone();
-				clone.css("visibility","hidden");
-				$('body').append(clone);
-				var width = clone.width();
-				clone.remove();
-				return Math.round(width);
-			}
-			
-			if ($this.closest("#menu-offcanvas").length > 0)
-			{
-				var clone = $this.closest("#menu-offcanvas").clone();
+				var clone = $this.closest(".uk-offcanvas-bar").clone();
 				clone.css("visibility","hidden");
 				$('body').append(clone);
 				var width = clone.width();
