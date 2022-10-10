@@ -1051,7 +1051,7 @@ $(document).ready(function(){
 			
 // 			var is_gift_card = $(this).closest(".cart_item_row").hasClass("gift_card_row") ? true : false;
 			
-			aggiornaCarrello(undefined, true,);
+			aggiornaCarrello(undefined, true);
 		}
 	});
 	

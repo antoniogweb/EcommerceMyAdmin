@@ -670,6 +670,32 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".elimina_coupon", function(e){
+		
+		e.preventDefault();
+		
+		var randomCoupon = $(this).attr("data-random");
+		
+		$.ajaxQueue({
+			url: baseUrl + "/carrello/vedi",
+			cache:false,
+			async: true,
+			dataType: "html",
+			method: "POST",
+			data: {
+				invia_coupon: "invia_coupon",
+				il_coupon: randomCoupon
+			},
+			success: function(content){
+				
+				if ($(".btn_completa_acquisto").length > 0)
+					impostaCorrieriESpeseSpedizione();
+				else
+					aggiornaCarrello(undefined, true);
+			}
+		});
+	});
+	
 	$("body").on("click", "[name='invia_coupon']", function(e){
 		
 		if (coupon_ajax && $(".cart_container").length == 0)
@@ -691,7 +717,7 @@ $(document).ready(function(){
 				method: "POST",
 				data: {
 					invia_coupon: "invia_coupon",
-					il_coupon: il_coupon,
+					il_coupon: il_coupon
 				},
 				success: function(content){
 					
