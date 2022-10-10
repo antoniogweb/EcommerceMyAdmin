@@ -89,11 +89,6 @@ class IntegrazioninewsletterModel extends GenericModel {
 		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
 	}
 	
-	public function edit($record)
-	{
-		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
-	}
-	
 	public static function getModulo($codice = null)
 	{
 		$i = new IntegrazioninewsletterModel();

@@ -142,7 +142,32 @@ class BaseRegusersController extends BaseController
 		else
 			$this->load("api_output");
 	}
-
+	
+	public function loginapp($codice = "")
+	{
+		$codice = sanitizeAll($codice);
+		
+		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($codice)->isAttiva())
+		{
+			$this->redirect("");
+			die();
+		}
+		
+		$this->s['registered']->checkStatus();
+		
+		if ($this->s['registered']->status['status']=='logged') { //check if already logged
+			if (Output::$html)
+			{
+				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+				die();
+			}
+		}
+		
+		$this->clean();
+		
+		IntegrazioniloginModel::getApp($codice)->getInfoOrGoToLogin();
+	}
+	
 	public function logout()
 	{
 		$res = $this->s['registered']->logout();

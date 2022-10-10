@@ -32,6 +32,8 @@ class IntegrazioninewsletterController extends BaseController
 	
 	public $sezionePannello = "utenti";
 	
+	public $tabella = "integrazioni con sistemi di newsletter";
+	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);

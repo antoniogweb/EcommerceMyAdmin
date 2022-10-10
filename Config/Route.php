@@ -700,6 +700,9 @@ class Route
 		'redirect,main',
 		'redirect,form',
 		'redirect,rigenera',
+		
+		'integrazionilogin,main',
+		'integrazionilogin,form',
 	);
 	
 	//it can be 'yes' or 'no'

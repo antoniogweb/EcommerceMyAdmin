@@ -489,6 +489,8 @@ class VariabiliModel extends GenericModel {
 		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
 		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
+		## LOGIN ESTERNI ##
+		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

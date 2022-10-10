@@ -32,6 +32,8 @@ class IntegrazioniController extends BaseController
 	
 	public $sezionePannello = "utenti";
 	
+	public $tabella = "integrazioni con software esterni";
+	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
