@@ -1149,7 +1149,7 @@ class CartModel extends GenericModel {
 		{
 			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 			
-			$numeroNoGiftCard = $c->clear()->select("cart.id_cart")->where(array(
+			$numeroNoGiftCard = $c->clear()->where(array(
 				"cart_uid"	=>	$clean["cart_uid"],
 				"gift_card"	=>	0,
 			))->rowNumber();

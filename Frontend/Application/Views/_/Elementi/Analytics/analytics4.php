@@ -72,7 +72,7 @@ if (v("codice_gtm_analytics"))
 				"value"				=>	$ordineGTML["total"],
 				"currency"			=>	"EUR",
 				"tax"				=>	$ordineGTML["iva"],
-				"shipping"			=>	v("prezzi_ivati_in_carrello") ? $ordineGTML["spedizione_ivato"] : $ordineGTML["spedizione"],
+				"shipping"			=>	v("prezzi_ivati_in_carrello") ? (string)($ordineGTML["spedizione_ivato"] + $ordineGTML["costo_pagamento_ivato"]) : (string)($ordineGTML["spedizione"] + $ordineGTML["costo_pagamento"]),
 				"items"				=>	$tempRigheGTM,
 			);
 			

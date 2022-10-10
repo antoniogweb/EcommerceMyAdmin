@@ -54,8 +54,8 @@ class PagamentiController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->mainFields = array("edit","pagamenti.prezzo_ivato","attivo");
-		$this->mainHead = "Titolo,Costo (€),Attivo";
+		$this->mainFields = array("edit","pagamenti.codice", "pagamenti.prezzo_ivato","attivo");
+		$this->mainHead = "Titolo,Codice,Costo (€),Attivo";
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		

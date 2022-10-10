@@ -81,9 +81,18 @@ class OrdiniModel extends FormModel {
 		
 		$p = new PagamentiModel();
 		
-		$res = $p->clear()->where(array(
+		$p->clear()->where(array(
 			"attivo"	=>	1
-		))->orderBy("id_order")->addJoinTraduzione()->send();
+		))->orderBy("id_order")->addJoinTraduzione();
+		
+		if (App::$isFrontend && CartModel::soloProdottiSenzaSpedizione())
+			$p->aWhere(array(
+				"ne"	=>	array(
+					"pagamenti.codice"	=>	"contrassegno",
+				),
+			));
+		
+		$res = $p->send();
 		
 		self::$elencoPagamenti = array();
 		
@@ -182,7 +191,8 @@ class OrdiniModel extends FormModel {
 		if (!v("attiva_spedizione"))
 			unset(self::$stati["closed"]);
 		
-		self::setPagamenti();
+		if (!App::$isFrontend)
+			self::setPagamenti();
 // 		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
 // 		
 // 		foreach (self::$elencoPagamenti as $k => $v)
