@@ -66,7 +66,7 @@ class FacebookLogin extends ExternalLogin
 		$this->helper = $this->client->getRedirectLoginHelper();
 	}
 	
-	public function getInfoOrGoToLogin()
+	public function getInfoOrGoToLogin($redirectUrl = "")
 	{
 		$this->getClient();
 
@@ -137,6 +137,9 @@ class FacebookLogin extends ExternalLogin
 				$fbfullname = $profile->getProperty('name');   // To Get Facebook full name
 
 				$fbemail = $profile->getProperty('email');    //  To Get Facebook email
+				
+				var_dump($fbfullname);
+				var_dump($fbemail);
 			
 
 			} catch(Facebook\Exceptions\FacebookResponseException $e) {
@@ -167,7 +170,7 @@ class FacebookLogin extends ExternalLogin
 
 			// replace your website URL same as added in the developers.Facebook.com/apps e.g. if you used http instead of https and you used            
 
-			$loginUrl = $this->helper->getLoginUrl('http://lachiocciola/', $permissions);
+			$loginUrl = $this->helper->getLoginUrl(Url::getRoot()."regusers/loginapp/".$this->params["codice"], $permissions);
 			echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
 
 		}
