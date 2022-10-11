@@ -49,7 +49,7 @@ class FacebookLogin extends ExternalLogin
 		return 'titolo,attivo,app_id,secret_key,app_version';
 	}
 	
-	public function getClient()
+	private function getClient()
 	{
 		if( !session_id() )
 			session_start();
@@ -66,69 +66,57 @@ class FacebookLogin extends ExternalLogin
 		$this->helper = $this->client->getRedirectLoginHelper();
 	}
 	
+	private function setErrore($codice, $messaggio)
+	{
+		$this->infoUtente["codice_errore"] = $codice;
+		$this->infoUtente["stringa_errore"] = $messaggio;
+		
+		if (isset($_SESSION["fat"]))
+			unset($_SESSION["fat"]);
+	}
+	
 	public function getInfoOrGoToLogin($redirectUrl = "")
 	{
+		if (isset($_GET["error"]))
+		{
+			$this->infoUtente["codice_errore"] = sanitizeAll($_GET["error"]);
+			$this->infoUtente["stringa_errore"] = isset($_GET["error_description"]) ? sanitizeAll($_GET["error_description"]) : "";
+			$this->infoUtente["codice_errore_piattaforma"] = isset($_GET["error_code"]) ? sanitizeAll($_GET["error_code"]) : "";
+			
+			return;
+		}
+		
 		$this->getClient();
 
 		$permissions = ['email']; // optional
 
 		try {
-
-			if (isset($_SESSION['fb_acc_tok'])) {
-
-				$accessToken = $_SESSION['fb_acc_tok'];
-
-			} else {
-
+			
+			if (isset($_SESSION["fat"]))
+				$accessToken = $_SESSION["fat"];
+			else
+			{
 				$accessToken = $this->helper->getAccessToken();
-
+				$_SESSION["fat"] = $accessToken;
 			}
-
+		
 		} catch(Facebook\Exceptions\facebookResponseException $e) {
-
-			// When Graph returns an error
-
-			echo 'Graph returned an error: ' . $e->getMessage();
-
-			exit;
-
+			
+			$this->setErrore("GRAPH", $e->getMessage());
+			
 		} catch(Facebook\Exceptions\FacebookSDKException $e) {
-
-			// When validation fails or other local issues
-
-			echo 'Facebook SDK returned an error: ' . $e->getMessage();
-
-			exit;
-
+			
+			$this->setErrore("SDK", $e->getMessage());
+			
 		}
 
 		if (isset($accessToken)) {
-
-			if (isset($_SESSION['fb_acc_tok'])) {
-
-				$this->client->setDefaultAccessToken($_SESSION['fb_acc_tok']);
-
-			} else {
-
-				$_SESSION['fb_acc_tok'] = (string) $accessToken;
-				
-				$authClient = $this->client->getOAuth2Client();
-
-				$accessTokenPermanente = $authClient->getLongLivedAccessToken($_SESSION['fb_acc_tok']);
-
-				$_SESSION['fb_acc_tok'] = (string) $accessTokenPermanente;
-
-				$this->client->setDefaultAccessToken($_SESSION['fb_acc_tok']);
-
-			}
+			
+			$this->client->setDefaultAccessToken((string)$accessToken);
 
 			try {
 
 				$profile_request = $this->client->get('/me?fields=name,first_name,last_name,email');
-
-				$requestPicture = $this->client->get('/me/picture?redirect=false&height=200'); //getting user picture
-
-				$picture = $requestPicture->getGraphUser();
 
 				$profile = $profile_request->getGraphUser();
 
@@ -138,41 +126,38 @@ class FacebookLogin extends ExternalLogin
 
 				$fbemail = $profile->getProperty('email');    //  To Get Facebook email
 				
-				var_dump($fbfullname);
-				var_dump($fbemail);
-			
+				$this->infoUtente["redirect"] = true;
+				$this->infoUtente["dati_utente"] = array(
+					"external_id"		=>	(string)$fbid,
+					"external_full_name"=>	(string)$fbfullname,
+					"external_email"	=>	(string)$fbemail,
+				);
+				$this->infoUtente["result"] = 1;
+				$this->infoUtente["utente_loggato"] = 1;
 
 			} catch(Facebook\Exceptions\FacebookResponseException $e) {
-
-				// When Graph returns an error
-
-				echo 'Graph returned an error: ' . $e->getMessage();
-
-				session_destroy();
-
-				// redirecting user back to app login page
-
-				header("Location: ./");
-
-				exit;
+				
+				$this->setErrore("GRAPH", $e->getMessage());
 
 			} catch(Facebook\Exceptions\FacebookSDKException $e) {
-
-				// When validation fails or other local issues
-
-				echo 'Facebook SDK returned an error: ' . $e->getMessage();
-
-				exit;
+				
+				$this->setErrore("SDK", $e->getMessage());
 
 			}
 
 		} else {
-
-			// replace your website URL same as added in the developers.Facebook.com/apps e.g. if you used http instead of https and you used            
-
-			$loginUrl = $this->helper->getLoginUrl(Url::getRoot()."regusers/loginapp/".$this->params["codice"], $permissions);
-			echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
-
+			if (!isset($_SESSION["test_login_effettuato"]))
+			{
+				$loginUrl = $this->helper->getLoginUrl(Url::getRoot()."regusers/loginapp/".$this->params["codice"], $permissions);
+				$this->infoUtente["redirect"] = 1;
+				$this->infoUtente["login_redirect"] = $loginUrl;
+				$this->infoUtente["result"] = 1;
+				$_SESSION["test_login_effettuato"] = 1;
+			}
+			else
+			{
+				$this->infoUtente["test_login_effettuato"] = 1;
+			}
 		}
 	}
 }

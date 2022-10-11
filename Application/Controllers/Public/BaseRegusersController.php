@@ -68,6 +68,9 @@ class BaseRegusersController extends BaseController
 	
 	public function login()
 	{
+		if (isset($_SESSION["test_login_effettuato"]))
+			unset($_SESSION["test_login_effettuato"]);
+		
 		$data['title'] = Parametri::$nomeNegozio . ' - Login';
 		
 		$data['headerClass'] = "";
@@ -92,6 +95,16 @@ class BaseRegusersController extends BaseController
 				$this->m['RegusersModel']->redirectVersoAreaRiservata();
 				die();
 			}
+		}
+		
+		if (!VariabiliModel::confermaUtenteRichiesta())
+		{
+			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
+			$this->model("IntegrazioniloginModel");
+			
+			$data["elencoAppLogin"] = $this->m["IntegrazioniloginModel"]->clear()->where(array(
+				"attivo"	=>	1,
+			))->send(false);
 		}
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
@@ -147,7 +160,7 @@ class BaseRegusersController extends BaseController
 	{
 		$codice = sanitizeAll($codice);
 		
-		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($codice)->isAttiva())
+		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($codice)->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
 		{
 			$this->redirect("");
 			die();
@@ -163,9 +176,47 @@ class BaseRegusersController extends BaseController
 			}
 		}
 		
+		if (!isset($_SESSION["ok_csrf"]))
+		{
+			if (App::checkCSRF("csrf_code"))
+				$_SESSION["ok_csrf"] = 1;
+			else
+			{
+				$this->redirect("");
+				die();
+			}
+		}
+		
+		$redirect = RegusersModel::getRedirect();
+		
 		$this->clean();
 		
 		IntegrazioniloginModel::getApp($codice)->getInfoOrGoToLogin();
+		
+		$infoUtente = IntegrazioniloginModel::getApp($codice)->getInfoUtente();
+		
+		if (!$infoUtente["result"])
+		{
+			$this->redirect("regusers/login");
+			die();
+		}
+		else if ($infoUtente["redirect"] && $infoUtente["login_redirect"])
+		{
+			header('Location: '.$infoUtente["login_redirect"]);
+			die();
+		}
+		else if ($infoUtente["utente_loggato"])
+		{
+			$utente = $this->m['RegusersModel']->clear()->where(array(
+				"username"	=>	sanitizeAll($infoUtente["dati_utente"]["external_email"]),
+			))->record();
+			
+			if (!empty($utente) && (int)$utente[Users_CheckAdmin::$statusFieldName] !== (int)Users_CheckAdmin::$statusFieldActiveValue)
+			{
+				$this->redirect("regusers/login");
+				die();
+			}
+		}
 	}
 	
 	public function logout()

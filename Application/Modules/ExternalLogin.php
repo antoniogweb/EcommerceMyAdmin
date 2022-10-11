@@ -24,6 +24,23 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ExternalLogin
 {
+	protected $infoUtente = array(
+		"redirect"		=>	0,
+		"login_redirect"=>	"",
+		"dati_utente"	=>	array(),
+		"result"		=>	0,
+		"codice_errore"	=>	"",
+		"stringa_errore"=>	"",
+		"utente_loggato"=>	0,
+		"test_login_effettuato"	=>	0,
+		"codice_errore_piattaforma"	=>	"",
+	);
+	
+	public function getInfoUtente()
+	{
+		return $this->infoUtente;
+	}
+	
 	public function gSecretLabel()
 	{
 		return "Secret key";

@@ -34,6 +34,8 @@ class IntegrazioniloginController extends BaseController
 	
 	public $tabella = "login tramite APP";
 	
+// 	public $useEditor = true;
+	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -75,6 +77,8 @@ class IntegrazioniloginController extends BaseController
 			die();
 		
 		$fields = IntegrazioniloginModel::getApp($record["codice"])->gCampiForm();
+		
+		$fields .= ",colore_background_in_esadecimale,html_icona";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

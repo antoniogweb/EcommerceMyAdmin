@@ -49,12 +49,22 @@ class IntegrazioniloginModel extends GenericModel {
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
-// 				'secret_2'		=>	array(
-// 					'labelString'	=>	self::getApp($record["codice"])->gSecret2Label(),
-// 					'type'	=>	"Password",
-// 					'fill'	=>	true,
-// 					'attributes'	=>	'autocomplete="new-password"',
-// 				),
+				'colore_background_in_esadecimale'	=>	array(
+					'labelString'=>	'Colore del pulsante',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Il colore, in esadecimale (compreso di #), dello sfondo del pulsante")."</div>"
+					),
+				),
+				'html_icona'	=>	array(
+					'labelString'=>	"Codice HTML dell'icona",
+				),
+				'testo_introduttivo' =>	array(
+					'type'		 =>	'Textarea',
+					'labelString'=>	'Testo introduttivo del pulsante',
+					'className'		=>	'text_input form-control editor_textarea',
+				),
 			),
 		);
 	}

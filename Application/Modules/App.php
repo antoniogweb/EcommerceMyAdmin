@@ -219,4 +219,15 @@ class App
 	{
 		F::settaCookiesGdpr($allCookies);
 	}
+	
+	public static function checkCSRF($key)
+	{
+		if( !session_id() )
+			session_start();
+		
+		if (isset($_SESSION[$key]) && isset($_GET[$key]) && (string)$_SESSION[$key] === (string)$_GET[$key])
+			return true;
+		
+		return false;
+	}
 }

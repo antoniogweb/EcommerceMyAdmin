@@ -1,1 +1,1 @@
-INSERT INTO `integrazioni_login` (`id_integrazione_login`, `data_creazione`, `titolo`, `codice`, `classe`, `app_id`, `secret_key`, `app_version`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Facebook login', 'FACEBOOK_LOGIN', 'FacebookLogin', '', '', 'v15.0', '0', '1');
+INSERT INTO `integrazioni_login` (`id_integrazione_login`, `data_creazione`, `titolo`, `codice`, `classe`, `app_id`, `secret_key`, `app_version`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Facebook', 'FACEBOOK_LOGIN', 'FacebookLogin', '', '', 'v15.0', '0', '1');

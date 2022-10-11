@@ -798,4 +798,9 @@ class VariabiliModel extends GenericModel {
 	{
 		return ((v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")) && v("aggiorna_pagina_al_cambio_combinazione_in_prodotto")) ? true : false;
 	}
+	
+	public static function confermaUtenteRichiesta()
+	{
+		return (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione")) ? true : false;
+	}
 }
