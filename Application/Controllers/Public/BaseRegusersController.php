@@ -194,7 +194,7 @@ class BaseRegusersController extends BaseController
 			"codice"	=>	$clean["codice"],
 		))->record();
 		
-		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin();
+		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin(RegusersModel::$redirectQueryString);
 		
 		$infoUtente = IntegrazioniloginModel::getApp($clean["codice"])->getInfoUtente();
 		
