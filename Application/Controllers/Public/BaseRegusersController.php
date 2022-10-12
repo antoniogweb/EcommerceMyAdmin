@@ -190,11 +190,13 @@ class BaseRegusersController extends BaseController
 			}
 		}
 		
+		$recordLoginApp = IntegrazioniloginModel::g()->where(array(
+			"codice"	=>	$clean["codice"],
+		))->record();
+		
 		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin();
-// 		
+		
 		$infoUtente = IntegrazioniloginModel::getApp($clean["codice"])->getInfoUtente();
-		
-		
 		
 		if (!$infoUtente["result"])
 		{
@@ -244,7 +246,25 @@ class BaseRegusersController extends BaseController
 					"codice_app"	=>	$codice,
 				));
 				
-				if (!$this->m['RegusersModel']->insert())
+				if ($this->m['RegusersModel']->insert())
+				{
+					$idCliente = (int)$this->m['RegusersModel']->lId;
+					$datiCliente = $this->m['RegusersModel']->selectId($idCliente);
+					
+					ob_start();
+					include tpf("Elementi/Mail/mail_al_negozio_registr_nuovo_cliente_tramite_app.php");
+					$output = ob_get_clean();
+					
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array(Parametri::$mailInvioOrdine),
+						"oggetto"	=>	"invio dati nuovo utente - registrazione tramite ".$recordLoginApp["titolo"],
+						"testo"		=>	$output,
+						"tipologia"	=>	"ISCRIZIONE ".$recordLoginApp["codice"],
+						"id_user"	=>	$idCliente,
+						"id_page"	=>	0,
+					));
+				}
+				else
 					$this->redirect("regusers/login");
 			}
 			

@@ -746,7 +746,7 @@ class BaseBaseController extends Controller
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	"invio credenziali nuovo utente",
+								"oggetto"	=>	"invio dati nuovo utente",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
 								"id_user"	=>	(int)$lId,
