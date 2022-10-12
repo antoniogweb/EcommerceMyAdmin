@@ -120,12 +120,13 @@ class BaseRegusersController extends BaseController
 				case 'accepted':
 					if (Output::$html)
 					{
-						$urlRedirect = RegusersModel::getUrlRedirect();
-						
-						if ($urlRedirect)
-							header('Location: '.$urlRedirect);
-						else
-							$this->m['RegusersModel']->redirectVersoAreaRiservata();
+						$this->redirectUser();
+// 						$urlRedirect = RegusersModel::getUrlRedirect();
+// 						
+// 						if ($urlRedirect)
+// 							header('Location: '.$urlRedirect);
+// 						else
+// 							$this->m['RegusersModel']->redirectVersoAreaRiservata();
 					}
 					else
 					{
@@ -156,8 +157,29 @@ class BaseRegusersController extends BaseController
 			$this->load("api_output");
 	}
 	
+	public function redirectUser()
+	{
+		$urlRedirect = RegusersModel::getUrlRedirect();
+		
+		if ($urlRedirect)
+			header('Location: '.$urlRedirect);
+		else
+			$this->m['RegusersModel']->redirectVersoAreaRiservata();
+	}
+	
 	public function loginapp($codice = "")
 	{
+		if (!isset($_SESSION["ok_csrf"]))
+		{
+			if (App::checkCSRF("csrf_code"))
+				$_SESSION["ok_csrf"] = 1;
+			else
+			{
+				$this->redirect("");
+				die();
+			}
+		}
+		
 		$codice = sanitizeAll($codice);
 		
 		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($codice)->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
@@ -172,17 +194,6 @@ class BaseRegusersController extends BaseController
 			if (Output::$html)
 			{
 				$this->m['RegusersModel']->redirectVersoAreaRiservata();
-				die();
-			}
-		}
-		
-		if (!isset($_SESSION["ok_csrf"]))
-		{
-			if (App::checkCSRF("csrf_code"))
-				$_SESSION["ok_csrf"] = 1;
-			else
-			{
-				$this->redirect("");
 				die();
 			}
 		}
@@ -216,6 +227,11 @@ class BaseRegusersController extends BaseController
 				$this->redirect("regusers/login");
 				die();
 			}
+		}
+		else
+		{
+			$this->redirect("regusers/login");
+			die();
 		}
 	}
 	
