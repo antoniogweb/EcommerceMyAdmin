@@ -752,6 +752,8 @@ class BaseOrdiniController extends BaseController
 				$this->redirect("carrello/vedi?evidenzia");
 		}
 		
+		$this->getAppLogin();
+		
 		// Prendo valori da account, per app
 		if ($this->s['registered']->status['status'] === 'logged')
 		{

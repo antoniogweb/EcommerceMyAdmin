@@ -97,15 +97,7 @@ class BaseRegusersController extends BaseController
 			}
 		}
 		
-		if (!VariabiliModel::confermaUtenteRichiesta())
-		{
-			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
-			$this->model("IntegrazioniloginModel");
-			
-			$data["elencoAppLogin"] = $this->m["IntegrazioniloginModel"]->clear()->where(array(
-				"attivo"	=>	1,
-			))->send(false);
-		}
+		$this->getAppLogin();
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
@@ -310,7 +302,10 @@ class BaseRegusersController extends BaseController
 		{
 			$data['notice'] = null;
 		}
-
+		
+		if (isset($_SESSION["access_token"]))
+			unset($_SESSION["access_token"]);
+		
 		if (Output::$html)
 		{
 			$this->append($data);

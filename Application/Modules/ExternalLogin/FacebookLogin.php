@@ -71,8 +71,8 @@ class FacebookLogin extends ExternalLogin
 		$this->infoUtente["codice_errore"] = $codice;
 		$this->infoUtente["stringa_errore"] = $messaggio;
 		
-		if (isset($_SESSION["fat"]))
-			unset($_SESSION["fat"]);
+		if (isset($_SESSION["access_token"]))
+			unset($_SESSION["access_token"]);
 	}
 	
 	public function getInfoOrGoToLogin($redirectQueryString = "")
@@ -92,12 +92,12 @@ class FacebookLogin extends ExternalLogin
 
 		try {
 			
-			if (isset($_SESSION["fat"]))
-				$accessToken = $_SESSION["fat"];
+			if (isset($_SESSION["access_token"]))
+				$accessToken = $_SESSION["access_token"];
 			else
 			{
 				$accessToken = $this->helper->getAccessToken();
-				$_SESSION["fat"] = $accessToken;
+				$_SESSION["access_token"] = $accessToken;
 			}
 		
 		} catch(Facebook\Exceptions\facebookResponseException $e) {

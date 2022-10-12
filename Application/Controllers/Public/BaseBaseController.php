@@ -1272,4 +1272,18 @@ class BaseBaseController extends Controller
 	{
 		return GenericModel::camboObbligatorio($campo, $this->controller, $queryType);
 	}
+	
+	protected function getAppLogin()
+	{
+		if (!VariabiliModel::confermaUtenteRichiesta())
+		{
+			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
+			
+			$data["elencoAppLogin"] = IntegrazioniloginModel::g()->clear()->where(array(
+				"attivo"	=>	1,
+			))->orderBy("id_order")->send(false);
+			
+			$this->append($data);
+		}
+	}
 }
