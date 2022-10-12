@@ -121,12 +121,6 @@ class BaseRegusersController extends BaseController
 					if (Output::$html)
 					{
 						$this->redirectUser();
-// 						$urlRedirect = RegusersModel::getUrlRedirect();
-// 						
-// 						if ($urlRedirect)
-// 							header('Location: '.$urlRedirect);
-// 						else
-// 							$this->m['RegusersModel']->redirectVersoAreaRiservata();
 					}
 					else
 					{
@@ -169,24 +163,22 @@ class BaseRegusersController extends BaseController
 	
 	public function loginapp($codice = "")
 	{
+		$this->clean();
+		
 		if (!isset($_SESSION["ok_csrf"]))
 		{
 			if (App::checkCSRF("csrf_code"))
 				$_SESSION["ok_csrf"] = 1;
 			else
-			{
 				$this->redirect("");
-				die();
-			}
 		}
 		
-		$codice = sanitizeAll($codice);
+		$clean["codice"] = sanitizeAll($codice);
 		
-		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($codice)->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
-		{
+		$redirect = RegusersModel::getRedirect();
+		
+		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
 			$this->redirect("");
-			die();
-		}
 		
 		$this->s['registered']->checkStatus();
 		
@@ -198,40 +190,85 @@ class BaseRegusersController extends BaseController
 			}
 		}
 		
-		$redirect = RegusersModel::getRedirect();
+		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin();
+// 		
+		$infoUtente = IntegrazioniloginModel::getApp($clean["codice"])->getInfoUtente();
 		
-		$this->clean();
 		
-		IntegrazioniloginModel::getApp($codice)->getInfoOrGoToLogin();
-		
-		$infoUtente = IntegrazioniloginModel::getApp($codice)->getInfoUtente();
 		
 		if (!$infoUtente["result"])
 		{
 			$this->redirect("regusers/login");
-			die();
 		}
 		else if ($infoUtente["redirect"] && $infoUtente["login_redirect"])
 		{
 			header('Location: '.$infoUtente["login_redirect"]);
 			die();
 		}
-		else if ($infoUtente["utente_loggato"])
+		else if ($infoUtente["utente_loggato"] && checkMail($infoUtente["dati_utente"]["external_email"]) && trim($infoUtente["dati_utente"]["external_full_name"]))
 		{
+			$clean["username"] = sanitizeAll($infoUtente["dati_utente"]["external_email"]);
+			
 			$utente = $this->m['RegusersModel']->clear()->where(array(
-				"username"	=>	sanitizeAll($infoUtente["dati_utente"]["external_email"]),
+				"username"	=>	$clean["username"],
 			))->record();
 			
 			if (!empty($utente) && (int)$utente[Users_CheckAdmin::$statusFieldName] !== (int)Users_CheckAdmin::$statusFieldActiveValue)
-			{
 				$this->redirect("regusers/login");
-				die();
+			
+			if (empty($utente))
+			{
+				VariabiliModel::$valori["insert_account_cf_obbligatorio"] = 0;
+				VariabiliModel::$valori["insert_account_p_iva_obbligatorio"] = 0;
+				
+				$fullNameArray = explode(" ", $infoUtente["dati_utente"]["external_full_name"]);
+				
+				if (count($fullNameArray) > 1)
+				{
+					$nome = array_shift($fullNameArray);
+					$cognome = implode(" ", $fullNameArray);
+				}
+				else
+				{
+					$nome = $infoUtente["dati_utente"]["external_full_name"];
+					$cognome = "";
+				}
+				
+				$this->m['RegusersModel']->sValues(array(
+					"username"	=>	$infoUtente["dati_utente"]["external_email"],
+					"password"	=>	RegusersModel::generaPassword(),
+					Users_CheckAdmin::$statusFieldName	=>	(int)Users_CheckAdmin::$statusFieldActiveValue,
+					"nome"		=>	$nome,
+					"cognome"	=>	$cognome,
+					"tipo_cliente"	=>	"privato",
+					"codice_app"	=>	$codice,
+				));
+				
+				if (!$this->m['RegusersModel']->insert())
+					$this->redirect("regusers/login");
+			}
+			
+			// Forza il login
+			$choice = $this->s['registered']->login($clean["username"],null,true);
+
+			switch($choice) {
+				case 'logged':
+					$this->redirect('area-riservata',0);
+					break;
+				case 'accepted':
+					$this->redirectUser();
+					break;
+				case 'login-error':
+					$this->redirect("regusers/login");
+					break;
+				case 'wait':
+					$this->redirect("regusers/login");
+					break;
 			}
 		}
 		else
 		{
 			$this->redirect("regusers/login");
-			die();
 		}
 	}
 	
