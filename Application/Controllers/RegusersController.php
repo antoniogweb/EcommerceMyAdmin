@@ -63,6 +63,7 @@ class RegusersController extends BaseController {
 		$this->model("RegusersgroupsModel");
 		$this->model("SpedizioniModel");
 		$this->model("OrdiniModel");
+		$this->model("IntegrazioniloginModel");
 		
 // 		$data["sezionePannello"] = "ecommerce";
 
@@ -173,6 +174,13 @@ class RegusersController extends BaseController {
 		if (strcmp($queryType,'update') === 0)
 		{
 			$data['numeroElementi'] = $this->m["RegusersgroupsModel"]->where(array("id_user"=>(int)$id))->rowNumber();
+			
+			$cliente = $this->m[$this->modelName]->selectId((int)$id);
+			
+			if (!empty($cliente) && $cliente["codice_app"])
+				$data["appLogin"] = $this->m["IntegrazioniloginModel"]->where(array(
+					"codice"	=>	sanitizeDb($cliente["codice_app"]),
+				))->record();
 			
 			$this->append($data);
 		}
