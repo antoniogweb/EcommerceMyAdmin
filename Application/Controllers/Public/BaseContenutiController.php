@@ -967,7 +967,7 @@ class BaseContenutiController extends BaseController
 				{
 					$campoPrezzo = "prezzo_minimo";
 					
-					if (v("mostra_fasce_prezzo"))
+					if (v("mostra_fasce_prezzo") && !v("filtro_prezzo_slider"))
 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
 					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
