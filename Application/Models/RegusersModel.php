@@ -200,5 +200,10 @@ class RegusersModel extends FormModel {
 			$rn->insert();
 		}
     }
+    
+    public function appCrud($record)
+    {
+		return $record["regusers"]["codice_app"];
+    }
 	
 }

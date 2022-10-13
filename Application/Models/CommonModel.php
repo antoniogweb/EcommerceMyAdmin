@@ -171,7 +171,7 @@ trait CommonModel {
 		$this->values["attivo"] = "N";
 	}
 	
-	public static function getRedirect($char = "?")
+	public static function getRedirect($char = "?", $soloRedirectPermessi = false)
 	{
 		$r = new Request();
 		
@@ -181,21 +181,21 @@ trait CommonModel {
 		//valori permessi per il redirect
 		$allowedRedirect = explode(",",v("redirect_permessi"));
 		
-		if (is_numeric($redirect))
+		if (is_numeric($redirect) && !$soloRedirectPermessi)
 		{
-			if (PagesModel::isAttiva((int)$redirect))
+			if (PagesModel::isAttivaTrue((int)$redirect))
 				$redirect = (int)$redirect;
 			else
 				$redirect = '';
 		}
-		else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',$redirect, $matches))
+		else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',$redirect, $matches) && !$soloRedirectPermessi)
 		{
 			$idPage = $matches[1];
 			$idProd = $matches[2];
 			
 			$redirect = '';
 			
-			if (PagesModel::isAttiva($idPage) && PagesModel::isAttiva($idProd))
+			if (PagesModel::isAttivaTrue($idPage) && PagesModel::isAttivaTrue($idProd))
 				$redirect = (int)$idPage."-".(int)$idProd;
 		}
 		else

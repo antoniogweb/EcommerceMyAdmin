@@ -70,6 +70,7 @@ class FacebookLogin extends ExternalLogin
 	{
 		$this->infoUtente["codice_errore"] = $codice;
 		$this->infoUtente["stringa_errore"] = $messaggio;
+		$this->infoUtente["result"] = 0;
 		
 		if (isset($_SESSION["access_token"]))
 			unset($_SESSION["access_token"]);
@@ -77,7 +78,7 @@ class FacebookLogin extends ExternalLogin
 	
 	public function getInfoOrGoToLogin($redirectQueryString = "")
 	{
-		if (isset($_GET["error"]))
+		if (isset($_GET["error"]) || isset($_GET["error_description"]) || isset($_GET["error_code"]))
 		{
 			$this->infoUtente["codice_errore"] = sanitizeAll($_GET["error"]);
 			$this->infoUtente["stringa_errore"] = isset($_GET["error_description"]) ? sanitizeAll($_GET["error_description"]) : "";
@@ -157,6 +158,7 @@ class FacebookLogin extends ExternalLogin
 			else
 			{
 				$this->infoUtente["test_login_effettuato"] = 1;
+				$this->setErrore("TEST_LOGIN_EFFETTUATO", "test login effettuato");
 			}
 		}
 	}

@@ -43,6 +43,7 @@ class RegusersController extends BaseController {
 		'p_iva:sanitizeAll'=>'tutti',
 		'nazione_utente:sanitizeAll'=>'tutti',
 		'id_nazione:sanitizeAll'=>'tutti',
+		'codice_app:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -103,6 +104,14 @@ class RegusersController extends BaseController {
 			$filtri[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new RegusersModel()));
 		}
 		
+		if (v("abilita_login_tramite_app"))
+		{
+			$mainFields[] = 'appCrud';
+			$headLabels .= ',APP';
+			
+			$filtri[] = array("codice_app",null,array("tutti"=>"Fonte account","sito"=>"Sito") + $this->m["IntegrazioniloginModel"]->toList("codice", "titolo")->send());
+		}
+		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		
@@ -128,6 +137,18 @@ class RegusersController extends BaseController {
 			);
 			
 			$this->m[$this->modelName]->sWhere("regusers.id_user not in (select id_user from regusers_nazioni where id_nazione = ".(int)$this->viewArgs["id_nazione"].")");
+		}
+		
+		if ($this->viewArgs["codice_app"] != "tutti")
+		{
+			$appWhere = $this->viewArgs["codice_app"];
+			
+			if ($this->viewArgs["codice_app"] == "sito")
+				$appWhere = "";
+			
+			$this->m[$this->modelName]->aWhere(array(
+				"codice_app"	=>	$appWhere,
+			));
 		}
 		
 		$this->getTabViewFields("main");

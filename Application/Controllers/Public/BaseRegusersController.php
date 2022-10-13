@@ -68,9 +68,6 @@ class BaseRegusersController extends BaseController
 	
 	public function login()
 	{
-		if (isset($_SESSION["test_login_effettuato"]))
-			unset($_SESSION["test_login_effettuato"]);
-		
 		$data['title'] = Parametri::$nomeNegozio . ' - Login';
 		
 		$data['headerClass'] = "";
@@ -167,7 +164,7 @@ class BaseRegusersController extends BaseController
 		
 		$clean["codice"] = sanitizeAll($codice);
 		
-		$redirect = RegusersModel::getRedirect();
+		$redirect = RegusersModel::getRedirect("?", true);
 		
 		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
 			$this->redirect("");

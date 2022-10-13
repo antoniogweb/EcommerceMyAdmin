@@ -1277,6 +1277,9 @@ class BaseBaseController extends Controller
 	{
 		if (!VariabiliModel::confermaUtenteRichiesta())
 		{
+			if (isset($_SESSION["ok_csrf"]))
+				unset($_SESSION["ok_csrf"]);
+			
 			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
 			
 			$data["elencoAppLogin"] = IntegrazioniloginModel::g()->clear()->where(array(

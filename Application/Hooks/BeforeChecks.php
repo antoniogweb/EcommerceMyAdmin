@@ -688,6 +688,12 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Nuovo URL ..",
 			),
 		),
+		"codice_app"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

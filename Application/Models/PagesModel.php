@@ -2666,6 +2666,13 @@ class PagesModel extends GenericModel {
 		return $this;
 	}
 	
+	public static function isAttivaTrue($idPage)
+	{
+		return PagesModel::g(false)->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->addWhereAttivo()->rowNumber();
+	}
+	
 	public static function isAttiva($idPage)
 	{
 		$record = self::getPageDetails($idPage);
