@@ -491,6 +491,9 @@ class VariabiliModel extends GenericModel {
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## LOGIN ESTERNI ##
 		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
+		## UTENTI ##
+		"elimina_record_utente_ad_autoeliminazione"	=>	1, // se impostato a 1, elimina il recorde. Altrimenti va a sovrascirverlo con dati random
+		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

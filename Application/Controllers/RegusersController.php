@@ -44,6 +44,7 @@ class RegusersController extends BaseController {
 		'nazione_utente:sanitizeAll'=>'tutti',
 		'id_nazione:sanitizeAll'=>'tutti',
 		'codice_app:sanitizeAll'=>'tutti',
+		'deleted:sanitizeAll'=>'no',
 	);
 	
 	public $tabella = "clienti";
@@ -112,6 +113,9 @@ class RegusersController extends BaseController {
 			$filtri[] = array("codice_app",null,array("tutti"=>"Fonte account","sito"=>"Sito") + $this->m["IntegrazioniloginModel"]->toList("codice", "titolo")->send());
 		}
 		
+		if (!v("elimina_record_utente_ad_autoeliminazione"))
+			$filtri[] = array("deleted",null,array("tutti" => "Stato utente", "no" => "Utenti in anagrafica", "yes" => "Utenti auto-eliminati"));
+		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		
@@ -124,6 +128,7 @@ class RegusersController extends BaseController {
 			" lk" => array('n!regusers.p_iva' => $this->viewArgs['p_iva']),
 			"  lk" => array('n!regusers.username' => $this->viewArgs['username']),
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
+			'deleted'	=>	$this->viewArgs['deleted'],
 		))->convert();
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")

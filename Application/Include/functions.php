@@ -853,6 +853,8 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[variabile (.*?)\]/', 'getVariabile' ,$string);
 	$string = preg_replace_callback('/\[scelta-cookie\]/', array("PagesModel", "loadTemplateSceltaCookie"), $string);
 	
+	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
+	
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
 	if (!isset(VariabiliModel::$placeholders))
@@ -907,6 +909,30 @@ function attivaModuli($string, $obj = null)
 	}
 	
 	return $string;
+}
+
+function getInfoEliminazione($matches)
+{
+	if (isset($_GET[v("variabile_token_eliminazione")]) && trim($_GET[v("variabile_token_eliminazione")]))
+	{
+		$ru = new RegusersModel();
+		
+		$cliente = $ru->clear()->where(array(
+			"deleted"	=>	"yes",
+			"token_eliminazione"	=>	sanitizeAll($_GET[v("variabile_token_eliminazione")]),
+		))->record();
+		
+		if (!empty($cliente))
+		{
+			ob_start();
+			include tpf("Elementi/Utenti/info_eliminazione_account.php");
+			$output = ob_get_clean();
+			
+			return $output;
+		}
+	}
+	
+	return "";
 }
 
 function getBaseUrlSrc($matches)
