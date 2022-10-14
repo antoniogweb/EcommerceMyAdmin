@@ -1,1 +1,1 @@
-alter table regusers add codice_id_esterno varchar(50) not null default '' after codice_app;
+alter table regusers add token_eliminazione char(32) not null default '' after time_eliminazione;

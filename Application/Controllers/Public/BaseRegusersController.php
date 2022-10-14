@@ -179,6 +179,8 @@ class BaseRegusersController extends BaseController
 			}
 		}
 		
+		$this->model("RegusersintegrazioniloginModel");
+		
 		$recordLoginApp = IntegrazioniloginModel::g()->where(array(
 			"codice"	=>	$clean["codice"],
 		))->record();
@@ -239,6 +241,15 @@ class BaseRegusersController extends BaseController
 				{
 					$idCliente = (int)$this->m['RegusersModel']->lId;
 					$datiCliente = $this->m['RegusersModel']->selectId($idCliente);
+					
+					$this->m["RegusersintegrazioniloginModel"]->sValues(array(
+						"id_user"	=>	$idCliente,
+						"id_integrazione_login"	=>	$recordLoginApp["id_integrazione_login"],
+						"codice"	=>	$codice,
+						"user_id_app"	=>	$infoUtente["dati_utente"]["external_id"],
+					));
+					
+					$this->m["RegusersintegrazioniloginModel"]->insert();
 					
 					ob_start();
 					include tpf("Elementi/Mail/mail_al_negozio_registr_nuovo_cliente_tramite_app.php");
