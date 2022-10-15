@@ -1,8 +1,4 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php
-if (isset($_SESSION["test_login_effettuato"]))
-	unset($_SESSION["test_login_effettuato"]);
-?>
 <div class="uk-child-width-1-3@m uk-text-center uk-flex uk-flex-center">
     <div>
 		<form class="" action = '<?php echo $action;?>' method = 'POST'>

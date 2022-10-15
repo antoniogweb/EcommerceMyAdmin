@@ -1277,6 +1277,9 @@ class BaseBaseController extends Controller
 	{
 		if (!VariabiliModel::confermaUtenteRichiesta())
 		{
+			if (isset($_SESSION["test_login_effettuato"]))
+				unset($_SESSION["test_login_effettuato"]);
+			
 			if (isset($_SESSION["ok_csrf"]))
 				unset($_SESSION["ok_csrf"]);
 			

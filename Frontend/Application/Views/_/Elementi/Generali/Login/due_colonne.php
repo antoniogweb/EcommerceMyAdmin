@@ -1,8 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
-if (isset($_SESSION["test_login_effettuato"]))
-	unset($_SESSION["test_login_effettuato"]);
-
 $widthPulsante = "uk-width-1-1 uk-width-2-3@s";
 ?>
 <div class="uk-child-width-expand@s uk-text-left uk-grid-divider uk-grid uk-grid-column-large" uk-grid>
