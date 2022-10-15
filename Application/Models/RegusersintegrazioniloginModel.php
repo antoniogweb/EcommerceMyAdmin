@@ -37,4 +37,12 @@ class RegusersintegrazioniloginModel extends GenericModel {
 		
 		return parent::insert();
 	}
+	
+	public function getIdUtenteDaIdApp($codiceApp, $idApp)
+	{
+		return (int)$this->clear()->where(array(
+			"codice"		=>	sanitizeAll($codiceApp),
+			"user_id_app"	=>	sanitizeAll($idApp),
+		))->field("id_user");
+	}
 }

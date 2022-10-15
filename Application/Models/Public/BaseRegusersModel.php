@@ -502,4 +502,9 @@ class BaseRegusersModel extends Model_Tree
 		else
 			return 'account-cancellato.html'.$queryStringEliminazione;
 	}
+	
+	public function getIdUtenteDaIdApp($codiceApp, $idApp)
+    {
+		return RegusersintegrazioniloginModel::g()->getIdUtenteDaIdApp($codiceApp, $idApp);
+    }
 }

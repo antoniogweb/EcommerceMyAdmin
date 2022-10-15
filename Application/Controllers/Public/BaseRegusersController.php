@@ -171,13 +171,15 @@ class BaseRegusersController extends BaseController
 		
 		$clean["codice"] = sanitizeAll($codice);
 		
-		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
-			$this->redirect("");
+// 		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
+// 			$this->redirect("");
+// 		
+// 		$this->checkNonLoggato();
+// 		
+// 		if (!VariabiliModel::checkToken("token_eliminazione_account_da_app"))
+// 			die();
 		
-		$this->checkNonLoggato();
-		
-		if (!VariabiliModel::checkToken("token_eliminazione_account_da_app"))
-			die();
+		echo $this->m['RegusersModel']->getIdUtenteDaIdApp($codice,"AABB1234");die();
 		
 		IntegrazioniloginModel::getApp($clean["codice"])->deleteAccountCallback($this->m['RegusersModel'], RegusersModel::getUrlAccountEliminato());
 	}
