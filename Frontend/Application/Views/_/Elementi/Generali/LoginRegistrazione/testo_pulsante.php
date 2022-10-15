@@ -5,3 +5,4 @@
 	<div class="uk-width-1-1 uk-width-1-3@s uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
 	<a class="uk-width-1-1 uk-width-1-3@s uk-button uk-button-secondary box_info_registrazione btn_submit_form" href="<?php echo $this->baseUrl."/crea-account".$redirectQueryString;?>"><?php echo gtext("Registrati");?></a>
 </div>
+<br />
