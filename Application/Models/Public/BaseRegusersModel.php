@@ -394,7 +394,6 @@ class BaseRegusersModel extends Model_Tree
 				
 				$this->sValues(array(
 					"username"	=>	randomToken()."@---.--",
-					"password"	=>	getPaswordHash(randomToken()),
 					Users_CheckAdmin::$statusFieldName	=>	1,
 					"bloccato"	=>	1,
 					"deleted"	=>	"yes",
@@ -418,6 +417,8 @@ class BaseRegusersModel extends Model_Tree
 					"time_eliminazione"	=>	time(),
 					"token_eliminazione"=>	$tokeEliminazione,
 				));
+				
+				$this->setValue("password", randomToken(), PASSWORD_HASH);
 				
 				if ($this->pUpdate((int)$idUser))
 				{

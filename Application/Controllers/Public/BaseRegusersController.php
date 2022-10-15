@@ -141,7 +141,7 @@ class BaseRegusersController extends BaseController
 			$this->load("api_output");
 	}
 	
-	public function redirectUser()
+	protected function redirectUser()
 	{
 		$urlRedirect = RegusersModel::getUrlRedirect();
 		
@@ -151,7 +151,7 @@ class BaseRegusersController extends BaseController
 			$this->m['RegusersModel']->redirectVersoAreaRiservata();
 	}
 	
-	public function checkNonLoggato()
+	protected function checkNonLoggato()
 	{
 		$this->s['registered']->checkStatus();
 		
@@ -251,13 +251,14 @@ class BaseRegusersController extends BaseController
 				
 				$this->m['RegusersModel']->sValues(array(
 					"username"	=>	$infoUtente["dati_utente"]["external_email"],
-					"password"	=>	RegusersModel::generaPassword(),
 					Users_CheckAdmin::$statusFieldName	=>	(int)Users_CheckAdmin::$statusFieldActiveValue,
 					"nome"		=>	$nome,
 					"cognome"	=>	$cognome,
 					"tipo_cliente"	=>	"privato",
 					"codice_app"	=>	$codice,
 				));
+				
+				$this->m['RegusersModel']->setValue("password", randomToken(), PASSWORD_HASH);
 				
 				if ($this->m['RegusersModel']->insert())
 				{
