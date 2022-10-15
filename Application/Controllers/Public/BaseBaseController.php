@@ -584,6 +584,9 @@ class BaseBaseController extends Controller
 	
 	protected function estraiDatiFiltri()
 	{
+		if (!v("ecommerce_attivo"))
+			return;
+			
 		if (v("usa_marchi"))
 		{
 			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
@@ -594,7 +597,7 @@ class BaseBaseController extends Controller
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
 			if (v("attiva_filtri_successivi"))
-				$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("marchio")->send();
+				$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("[marchio]")->send();
 		}
 		
 		if (v("usa_tag"))
@@ -607,7 +610,7 @@ class BaseBaseController extends Controller
 				$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
 				->inner(array("pagine"))
 				->inner("pages")->on("pages.id_page = pages_tag.id_page")
-				->addWhereAttivo()->groupBy("tag.id_tag")->sWhereFiltriSuccessivi("tag")->send();
+				->addWhereAttivo()->groupBy("tag.id_tag")->sWhereFiltriSuccessivi("[tag]")->send();
 		}
 		
 		$data["filtriCaratteristiche"] = array();

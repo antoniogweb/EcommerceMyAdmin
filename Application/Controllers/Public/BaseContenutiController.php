@@ -711,13 +711,13 @@ class BaseContenutiController extends BaseController
 		// Estraggo gli id delle pagine trovate
 		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
 		{
-			$arrayElementi = array("categoria", "tag", "nazione", "regione", "[evidenza]", "[nuovo]", "[promozione]");
+			$arrayElementi = array("[categoria]", "nazione", "regione", "[evidenza]", "[nuovo]", "[promozione]");
 			
 			if (v("usa_marchi"))
-				$arrayElementi[] = "marchio";
+				$arrayElementi[] = "[marchio]";
 			
 			if (v("usa_tag"))
-				$arrayElementi[] = "tag";
+				$arrayElementi[] = "[tag]";
 			
 			$idCatFiltri = v("attiva_filtri_caratteristiche_separati_per_categoria") ? CategoriesModel::$currentIdCategory : 0;
 			
@@ -834,7 +834,7 @@ class BaseContenutiController extends BaseController
 		}
 		
 		// Where figli
-		if (in_array("categoria",$escludi))
+		if (in_array("[categoria]",$escludi))
 			$clean['id'] = (int)CategoriesModel::getIdCategoriaDaSezione($firstSection);
 		
 		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
@@ -843,12 +843,12 @@ class BaseContenutiController extends BaseController
 			"in" => array("-id_c" => $children),
 		));
 		
-		if ($this->idMarchio && !in_array("marchio",$escludi))
+		if ($this->idMarchio && !in_array("[marchio]",$escludi))
 			$this->m["PagesModel"]->aWhere(array(
 				"id_marchio"	=>	(int)$this->idMarchio,
 			));
 		
-		if ($this->idTag && !in_array("tag",$escludi))
+		if ($this->idTag && !in_array("[tag]",$escludi))
 			$this->m["PagesModel"]->inner(array("tag"))->aWhere(array(
 				"pages_tag.id_tag"	=>	(int)$this->idTag,
 			));
@@ -1018,30 +1018,15 @@ class BaseContenutiController extends BaseController
 		{
 			case AltriFiltri::$aliasValoreTipoPromo[0]:
 				$this->m["PagesModel"]->addWherePromo();
-// 				$nowDate = date("Y-m-d");
-// 				$wherePromo = array(
-// 					"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-// 					" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-// 					"pages.in_promozione" => "Y",
-// 				);
-				
 				self::$isPromo = true;
 				break;
 				
 			case AltriFiltri::$aliasValoreTipoNuovo[0]:
 				$this->m["PagesModel"]->addWhereNuovo();
-// 				$wherePromo = array(
-// 					"pages.nuovo" => "Y",
-// 				);
-				
 				break;
 				
 			case AltriFiltri::$aliasValoreTipoInEvidenza[0]:
 				$this->m["PagesModel"]->addWhereEvidenza();
-// 				$wherePromo = array(
-// 					"pages.in_evidenza" => "Y",
-// 				);
-				
 				break;
 		}
 		

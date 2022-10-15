@@ -800,7 +800,7 @@ class CategoriesModel extends HierarchicalModel {
 		$cat = self::gPage($id_c, true, false);
 		
 		if ($filtriSuccessivi)
-			$cat->sWhereFiltriSuccessivi("categoria");
+			$cat->sWhereFiltriSuccessivi("[categoria]");
 		
 		return $cat->rowNumber();
 	}
@@ -810,7 +810,7 @@ class CategoriesModel extends HierarchicalModel {
 		$cat = self::gPage($id_c, false, false);
 		
 		if ($filtriSuccessivi)
-			$cat->sWhereFiltriSuccessivi("categoria");
+			$cat->sWhereFiltriSuccessivi("[categoria]");
 		
 		return $cat->rowNumber();
 	}
