@@ -84,15 +84,16 @@ class BaseRegusersController extends BaseController
 		
 		$data['notice'] = null;
 		
-		$this->s['registered']->checkStatus();
-		
-		if ($this->s['registered']->status['status']=='logged') { //check if already logged
-			if (Output::$html)
-			{
-				$this->m['RegusersModel']->redirectVersoAreaRiservata();
-				die();
-			}
-		}
+		$this->checkNonLoggato();
+// 		$this->s['registered']->checkStatus();
+// 		
+// 		if ($this->s['registered']->status['status']=='logged') { //check if already logged
+// 			if (Output::$html)
+// 			{
+// 				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+// 				die();
+// 			}
+// 		}
 		
 		$this->getAppLogin();
 		
@@ -150,6 +151,37 @@ class BaseRegusersController extends BaseController
 			$this->m['RegusersModel']->redirectVersoAreaRiservata();
 	}
 	
+	public function checkNonLoggato()
+	{
+		$this->s['registered']->checkStatus();
+		
+		if ($this->s['registered']->status['status']=='logged') { //check if already logged
+			if (Output::$html)
+			{
+				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+				die();
+			}
+		}
+	}
+	
+	// metodo chiamato da APP esterna per chiedere l'eliminazione dell'account
+	public function deleteaccountdaapp($codice = "")
+	{
+		$this->clean();
+		
+		$clean["codice"] = sanitizeAll($codice);
+		
+		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
+			$this->redirect("");
+		
+		$this->checkNonLoggato();
+		
+		if (!VariabiliModel::checkToken("token_eliminazione_account_da_app"))
+			die();
+		
+		IntegrazioniloginModel::getApp($clean["codice"])->deleteAccountCallback($this->m['RegusersModel'], RegusersModel::getUrlAccountEliminato());
+	}
+	
 	public function loginapp($codice = "")
 	{
 		$this->clean();
@@ -169,15 +201,7 @@ class BaseRegusersController extends BaseController
 		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
 			$this->redirect("");
 		
-		$this->s['registered']->checkStatus();
-		
-		if ($this->s['registered']->status['status']=='logged') { //check if already logged
-			if (Output::$html)
-			{
-				$this->m['RegusersModel']->redirectVersoAreaRiservata();
-				die();
-			}
-		}
+		$this->checkNonLoggato();
 		
 		$this->model("RegusersintegrazioniloginModel");
 		

@@ -74,20 +74,15 @@ class IntegrazioniloginModel extends GenericModel {
 		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
 	}
 	
-	public static function getApp($codice = null)
+	public static function getApp($codice)
 	{
 		$i = new IntegrazioniloginModel();
 		
 		if (!isset(self::$modulo))
 		{
-			if ($codice)
-				$attivo = $i->clear()->where(array(
-					"codice"	=>	sanitizeDb($codice),
-				))->record();
-			else
-				$attivo = $i->clear()->where(array(
-					"attivo"	=>	1,
-				))->record();
+			$attivo = $i->clear()->where(array(
+				"codice"	=>	sanitizeDb($codice),
+			))->record();
 			
 			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/ExternalLogin/".$attivo["classe"].".php"))
 			{

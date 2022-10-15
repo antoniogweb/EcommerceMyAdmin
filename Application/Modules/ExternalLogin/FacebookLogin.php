@@ -162,4 +162,54 @@ class FacebookLogin extends ExternalLogin
 			}
 		}
 	}
+	
+	public function deleteAccountCallback($userModel, $urlOutput)
+	{
+		header('Content-Type: application/json');
+		
+		$data = array(
+			'url' => Url::getRoot(),
+			'confirmation_code' => "ERROR",
+		);
+		
+		if (isset($_POST['signed_request']))
+		{
+			$signed_request = $_POST['signed_request'];
+			$data = $this->parseSignedRequest($signed_request);
+			$user_id = $data['user_id'];
+
+			// Start data deletion
+			$tokenEliminazione = $userModel->deleteAccount($user["id_user"]);
+			
+			$data = array(
+				'url' => Url::getRoot().$urlOutput.$tokenEliminazione,
+				'confirmation_code' => $tokenEliminazione,
+			);
+		}
+		
+		echo json_encode($data);
+	}
+	
+	private function parseSignedRequest($signed_request) {
+		list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+
+		$secret = $this->params["secret_key"]; // Use your app secret here
+
+		// decode the data
+		$sig = $this->base64UrlDecode($encoded_sig);
+		$data = json_decode($this->base64UrlDecode($payload), true);
+
+		// confirm the signature
+		$expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
+		if ($sig !== $expected_sig) {
+			error_log('Bad Signed JSON signature!');
+			return null;
+		}
+
+		return $data;
+	}
+	
+	private function base64UrlDecode($input) {
+		return base64_decode(strtr($input, '-_', '+/'));
+	}
 }

@@ -150,15 +150,17 @@ class BaseRiservataController extends BaseController
 				$tokenEliminazione = $this->m["RegusersModel"]->deleteAccount($user["id_user"]);
 				$this->s['registered']->logout();
 				
-				$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
+				$this->redirect(RegusersModel::getUrlAccountEliminato($tokenEliminazione));
 				
-				if (!v("elimina_record_utente_ad_autoeliminazione"))
-					$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
-				
-				if ($idRedirect)
-					$this->redirect(getUrlAlias($idRedirect).$queryStringEliminazione);
-				else
-					$this->redirect('account-cancellato.html'.$queryStringEliminazione,0);
+// 				$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
+// 				
+// 				if (!v("elimina_record_utente_ad_autoeliminazione"))
+// 					$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
+// 				
+// 				if ($idRedirect)
+// 					$this->redirect(getUrlAlias($idRedirect).$queryStringEliminazione);
+// 				else
+// 					$this->redirect('account-cancellato.html'.$queryStringEliminazione,0);
 			}
 			else
 				$data["notice"] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, password non corretta.")."</div><div class='evidenzia'>class_password</div>";
@@ -167,9 +169,4 @@ class BaseRiservataController extends BaseController
 		$this->append($data);
 		$this->load('privacy');
 	}
-	
-// 	public function cancellaaccount()
-// 	{
-// 		$this->clean();
-// 	}
 }

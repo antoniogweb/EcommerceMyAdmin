@@ -489,4 +489,17 @@ class BaseRegusersModel extends Model_Tree
 			}
 		}
 	}
+	
+	public static function getUrlAccountEliminato($tokenEliminazione = "")
+	{
+		$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
+		
+		if (!v("elimina_record_utente_ad_autoeliminazione"))
+			$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
+		
+		if ($idRedirect)
+			return getUrlAlias($idRedirect).$queryStringEliminazione;
+		else
+			return 'account-cancellato.html'.$queryStringEliminazione;
+	}
 }
