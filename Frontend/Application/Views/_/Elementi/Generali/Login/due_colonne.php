@@ -27,7 +27,10 @@ $widthPulsante = "uk-width-1-1 uk-width-2-3@s";
 					</div>
 				</div>
 				
-				<input autocomplete="new-password" class="uk-button uk-button-secondary uk-width-1-1 uk-width-1-3@s" type="submit" name="login" value="<?php echo gtext("Accedi");?>" />
+				<div>
+					<div class="uk-button uk-button-secondary uk-width-1-1 uk-width-1-3@s spinner uk-hidden" uk-spinner="ratio: .70"></div>
+					<input autocomplete="new-password" class="uk-button uk-button-secondary uk-width-1-1 uk-width-1-3@s btn_submit_form" type="submit" name="login" value="<?php echo gtext("Accedi");?>" />
+				</div>
 			</fieldset>
 		</form>
 		

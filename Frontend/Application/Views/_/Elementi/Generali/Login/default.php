@@ -21,7 +21,10 @@
 					</div>
 				</div>
 				
-				<input autocomplete="new-password" class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m" type="submit" name="login" value="<?php echo gtext("Accedi");?>" />
+				<div>
+					<div class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
+					<input autocomplete="new-password" class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m btn_submit_form" type="submit" name="login" value="<?php echo gtext("Accedi");?>" />
+				</div>
 			</fieldset>
 		</form>
 		
