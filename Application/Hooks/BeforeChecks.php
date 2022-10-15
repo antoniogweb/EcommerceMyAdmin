@@ -700,6 +700,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"token_eliminazione"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Codice eliminazione",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

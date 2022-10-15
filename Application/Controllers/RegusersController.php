@@ -45,6 +45,7 @@ class RegusersController extends BaseController {
 		'id_nazione:sanitizeAll'=>'tutti',
 		'codice_app:sanitizeAll'=>'tutti',
 		'deleted:sanitizeAll'=>'no',
+		'token_eliminazione:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -114,7 +115,16 @@ class RegusersController extends BaseController {
 		}
 		
 		if (!v("elimina_record_utente_ad_autoeliminazione"))
+		{
+			if ($this->viewArgs['deleted'] == "yes")
+			{
+				$mainFields[] = 'regusers.token_eliminazione';
+				$headLabels .= ',Codice eliminazione';
+			}
+			
+			$filtri[] = "token_eliminazione";
 			$filtri[] = array("deleted",null,array("tutti" => "Stato utente", "no" => "Utenti in anagrafica", "yes" => "Utenti auto-eliminati"));
+		}
 		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
@@ -129,6 +139,7 @@ class RegusersController extends BaseController {
 			"  lk" => array('n!regusers.username' => $this->viewArgs['username']),
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 			'deleted'	=>	$this->viewArgs['deleted'],
+			'token_eliminazione'	=>	$this->viewArgs['token_eliminazione'],
 		))->convert();
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
