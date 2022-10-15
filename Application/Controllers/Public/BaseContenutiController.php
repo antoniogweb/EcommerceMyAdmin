@@ -799,6 +799,22 @@ class BaseContenutiController extends BaseController
 			$this->load("api_output");
 	}
 	
+	protected function getSearchWhere($argName = "s")
+	{
+		$orWhere = array(
+			"lk" => array('pages.codice' => $this->viewArgs[$argName]),
+		);
+		
+		if (Params::$lang == Params::$defaultFrontEndLanguage)
+			$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
+		else
+			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
+		
+		return array(
+			" OR"	=>	$orWhere,
+		);
+	}
+	
 	protected function queryElencoProdotti($id, $firstSection, $escludi = array())
 	{
 		$clean['id'] = (int)$id;
@@ -824,13 +840,14 @@ class BaseContenutiController extends BaseController
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
 		{
-			$this->m["PagesModel"]->aWhere(array(
-				" OR"=> array(
-					"lk" => array('pages.title' => $this->viewArgs["search"]),
-					" lk" => array('pages.codice' => $this->viewArgs["search"]),
-					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["search"]),
-				),
-			));
+			$this->m["PagesModel"]->aWhere($this->getSearchWhere("search"));
+// 			$this->m["PagesModel"]->aWhere(array(
+// 				" OR"=> array(
+// 					"lk" => array('pages.title' => $this->viewArgs["search"]),
+// 					" lk" => array('pages.codice' => $this->viewArgs["search"]),
+// 					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["search"]),
+// 				),
+// 			));
 		}
 		
 		// Where figli
@@ -1620,13 +1637,20 @@ class BaseContenutiController extends BaseController
 			if ($this->viewArgs["sec"] != "tutti")
 				$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idSection"], true);
 			
-			$where = array(
-				" OR"=> array(
-					"lk" => array('pages.title' => $this->viewArgs["s"]),
-					" lk" => array('pages.codice' => $this->viewArgs["s"]),
-					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["s"]),
-					),
-			);
+// 			$orWhere = array(
+// 				"lk" => array('pages.codice' => $this->viewArgs["s"]),
+// 			);
+// 			
+// 			if (Params::$lang == Params::$defaultFrontEndLanguage)
+// 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs["s"]);
+// 			else
+// 				$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs["s"]);
+// 			
+// 			$where = array(
+// 				" OR"	=>	$orWhere,
+// 			);
+			
+			$where = $this->getSearchWhere("s");
 			
 			$this->m['PagesModel']->clear()->where($where)->addWhereAttivo();
 			
