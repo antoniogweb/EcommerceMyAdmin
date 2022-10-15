@@ -711,7 +711,7 @@ class BaseContenutiController extends BaseController
 		// Estraggo gli id delle pagine trovate
 		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
 		{
-			$arrayElementi = array("[categoria]", "nazione", "regione", "[evidenza]", "[nuovo]", "[promozione]");
+			$arrayElementi = array("[categoria]", "[nazione]", "[regione]", "[evidenza]", "[nuovo]", "[promozione]");
 			
 			if (v("usa_marchi"))
 				$arrayElementi[] = "[marchio]";
@@ -930,10 +930,10 @@ class BaseContenutiController extends BaseController
 				{
 					$field = $k == RegioniModel::$nAlias ? "alias_nazione" : "alias_regione";
 					
-					if ($field == "alias_nazione" && in_array("nazione",$escludi))
+					if ($field == "alias_nazione" && in_array("[nazione]",$escludi))
 						continue;
 					
-					if ($field == "alias_regione" && in_array("regione",$escludi))
+					if ($field == "alias_regione" && in_array("[regione]",$escludi))
 						continue;
 					
 					$tmpSql = "$field = '".sanitizeDb($v)."'";

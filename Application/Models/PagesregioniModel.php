@@ -71,7 +71,7 @@ class PagesregioniModel extends GenericModel {
 		$this->clear()->select("nazioni.*")->left(array("nazione"))->inner(array("page"))->addWhereAttivo()->groupBy("nazioni.id_nazione")->orderBy("nazioni.titolo");
 		
 		if ($filtriSuccessivi)
-			$this->sWhereFiltriSuccessivi("nazione")->select("nazioni.*,count(nazioni.id_nazione) as numero_prodotti");
+			$this->sWhereFiltriSuccessivi("[nazione]")->select("nazioni.*,count(nazioni.id_nazione) as numero_prodotti");
 		
 		$res = $this->send();
 		
@@ -98,7 +98,7 @@ class PagesregioniModel extends GenericModel {
 		}
 		
 		if ($filtriSuccessivi)
-			$this->sWhereFiltriSuccessivi("regione")->select("regioni.*,count(regioni.id_regione) as numero_prodotti");
+			$this->sWhereFiltriSuccessivi("[regione]")->select("regioni.*,count(regioni.id_regione) as numero_prodotti");
 		
 		return $this->send();
     }
