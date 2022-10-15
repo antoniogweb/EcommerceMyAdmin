@@ -33,9 +33,10 @@ Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "l
 if (defined("CACHE_FOLDER"))
 {
 	Cache::$cacheFolder = ROOT."/".ltrim(CACHE_FOLDER,"/");
-	Cache::$cacheMinutes = 60;
-// 	Cache::$useRandomPeriods = true;
-	Cache::$cleanCacheEveryXMinutes = 70;
+	Cache::$cacheMinutes = VariabiliModel::valore("query_cache_durata_massima");
+	Cache::$useRandomPeriods = VariabiliModel::valore("query_cache_usa_periodi_random");
+	Cache::$minutesOfPeriod = VariabiliModel::valore("query_cache_minuti_tra_periodi");
+	Cache::$cleanCacheEveryXMinutes = VariabiliModel::valore("query_cache_pulisci_ogni_x_minuti");
 	Cache::$maxNumberOfFilesCached = VariabiliModel::valore("numero_massimo_file_cache");
 	Cache::deleteExpired();
 }

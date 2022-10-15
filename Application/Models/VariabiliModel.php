@@ -158,7 +158,6 @@ class VariabiliModel extends GenericModel {
 		"insert_ordine_telefono_obbligatorio"	=>	1,
 		"numero_per_pagina_magazzino"	=>	50,
 		"numero_per_pagina_pages"	=>	30,
-		"attiva_cache_prodotti"		=>	1,
 		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
@@ -279,8 +278,6 @@ class VariabiliModel extends GenericModel {
 		"permetti_cambio_tema"		=>	0,
 		"attiva_help_wizard"		=>	0,
 		"url_elenco_prodotti"		=>	"prodotti",
-		"attiva_cache_immagini"		=>	0,
-		"permessi_cartella_cache_immagini"	=>	777,
 		"url_elenco_clienti"		=>	"regusers",
 		"permetti_acquisto_anonimo"	=>	1,
 		"hook_ordine_confermato"	=>	"",
@@ -470,6 +467,13 @@ class VariabiliModel extends GenericModel {
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
 		## CACHE ##
 		"numero_massimo_file_cache"	=>	50000, // numero massimo di file in cache
+		"attiva_cache_prodotti"		=>	1, // cache dei prodotti in admin
+		"attiva_cache_immagini"		=>	0, // cache della immagini
+		"permessi_cartella_cache_immagini"	=>	777, // permessi della cartella di cache delle immagini
+		"query_cache_durata_massima"	=>	60, // tempo di durata massima della cache
+		"query_cache_pulisci_ogni_x_minuti"	=>	70, // minuti dopo i quali pulisce la cache
+		"query_cache_usa_periodi_random"=>	0, // se suddivide il periodo di cache in sottoperiodi e ne sceglie uno random
+		"query_cache_minuti_tra_periodi"=>	5, // numero di minuti tra un periodo di cache e l'altro
 		## GIACENZA / MAGAZZINO ##
 		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
