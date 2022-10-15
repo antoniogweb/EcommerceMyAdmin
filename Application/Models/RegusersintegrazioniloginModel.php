@@ -43,6 +43,6 @@ class RegusersintegrazioniloginModel extends GenericModel {
 		return (int)$this->clear()->where(array(
 			"codice"		=>	sanitizeAll($codiceApp),
 			"user_id_app"	=>	sanitizeAll($idApp),
-		))->field("id_user");
+		))->orderBy("time_ultimo_accesso desc")->limit(1)->field("id_user");
 	}
 }

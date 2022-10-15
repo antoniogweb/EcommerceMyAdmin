@@ -169,7 +169,7 @@ class FacebookLogin extends ExternalLogin
 		
 		$data = array(
 			'url' => Url::getRoot(),
-			'confirmation_code' => "ERROR",
+			'confirmation_code' => "USER NOT FOUND",
 		);
 		
 		if (isset($_POST['signed_request']))

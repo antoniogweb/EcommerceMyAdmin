@@ -264,15 +264,6 @@ class BaseRegusersController extends BaseController
 					$idCliente = (int)$this->m['RegusersModel']->lId;
 					$datiCliente = $this->m['RegusersModel']->selectId($idCliente);
 					
-					$this->m["RegusersintegrazioniloginModel"]->sValues(array(
-						"id_user"	=>	$idCliente,
-						"id_integrazione_login"	=>	$recordLoginApp["id_integrazione_login"],
-						"codice"	=>	$codice,
-						"user_id_app"	=>	$infoUtente["dati_utente"]["external_id"],
-					));
-					
-					$this->m["RegusersintegrazioniloginModel"]->insert();
-					
 					ob_start();
 					include tpf("Elementi/Mail/mail_al_negozio_registr_nuovo_cliente_tramite_app.php");
 					$output = ob_get_clean();
@@ -289,6 +280,18 @@ class BaseRegusersController extends BaseController
 				else
 					$this->redirect("regusers/login");
 			}
+			else
+				$idCliente = (int)$utente["id_user"];
+			
+			// Aggiungo la voce del login nella tabella delle integrazioni
+			$this->m["RegusersintegrazioniloginModel"]->sValues(array(
+				"id_user"	=>	$idCliente,
+				"id_integrazione_login"	=>	$recordLoginApp["id_integrazione_login"],
+				"codice"	=>	$codice,
+				"user_id_app"	=>	$infoUtente["dati_utente"]["external_id"],
+			));
+			
+			$this->m["RegusersintegrazioniloginModel"]->insert();
 			
 			// Forza il login
 			$choice = $this->s['registered']->login($clean["username"],null,true);
