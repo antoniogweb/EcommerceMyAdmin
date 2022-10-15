@@ -440,6 +440,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
 		"attiva_gift_card"		=>	0, // se impostato a 1, attiva i prodotti Gift card
 		"numero_massimo_gift_card"	=>	8, // numero massimo di gift card in un carrello
+		"permetti_di_disattivare_promo_al_carrello"	=>	1, // se sì, attiva la possibilità di disattivare la promo applicata al carrello
 		## CARRELLO ##
 		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number
 		## STRUTTURA URL E COMBINAZIONI ##

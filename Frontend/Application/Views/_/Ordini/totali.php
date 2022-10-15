@@ -16,7 +16,7 @@ if ($haCouponAttivo)
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column">
 		<?php echo gtext("Totale scontato");?> (<i><?php echo $couponAttivo["titolo"];?></i>)
-		<div class="uk-text-left"><a data-random="<?php echo md5(randString(10).microtime().uniqid(mt_rand(),true));?>" class="uk-text-danger uk-text-small elimina_coupon" href=""><?php echo gtext("Disattiva promo");?> <span uk-icon="icon: close;ratio: 0.8;"></span></a></div>
+		<?php include(tpf("/Ordini/totale_promo_attiva.php"));?>
 	</div>
 	<div><?php echo getPrezzoScontato(v("prezzi_ivati_in_carrello"));?> €</div>
 </div>
@@ -50,7 +50,9 @@ if ($haCouponAttivo)
 	<div class="uk-text-lead uk-text-bolder"><?php echo getTotal(true);?> €</div>
 </div>
 <div class="uk-grid-small uk-grid" uk-grid="">
-	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Sconto coupon");?><br />(<i><?php echo $couponAttivo["titolo"];?></i>)
+	<div class="uk-width-expand uk-text-muted uk-first-column">
+		<?php echo gtext("Sconto coupon");?><br />(<i><?php echo $couponAttivo["titolo"];?></i>)
+		<?php include(tpf("/Ordini/totale_promo_attiva.php"));?>
 		<div class="uk-text-small uk-text-primary">
 		<?php echo gtext("Credito rimanente");?>: <b><?php echo setPriceReverse(PromozioniModel::gNumeroEuroRimasti($couponAttivo["id_p"]));?> €</b>
 		</div>
