@@ -1435,8 +1435,15 @@ class GenericModel extends Model_Tree
 	
 	public function settaCifreDecimali()
 	{
-		if (!v("prezzi_ivati_in_prodotti") && isset($this->values["price"]))
-			$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
+		if (!v("prezzi_ivati_in_prodotti"))
+		{
+			if (isset($this->values["price"]))
+				$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["prezzo_promozione_ass"]))
+				$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass"]), v("cifre_decimali"),".","");
+		}
+		
 	}
 	
 	public function aggiungiAGruppoTipo($id, $tipo = "CO")

@@ -535,7 +535,11 @@ class CartModel extends GenericModel {
 			//sconto promozione
 			if ($checkPromo && $p->inPromozione($clean["id_page"]))
 			{
-				$arraySconti[] = $page["prezzo_promozione"];
+				if ($page["tipo_sconto"] == "PERCENTUALE")
+					$arraySconti[] = $page["prezzo_promozione"];
+				else if ($page["price"] > 0)
+					$arraySconti[] = (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
+				
 				$arrayScontiDescrizione[] = "Prodotto in promozione, sconto ".$page["prezzo_promozione"]." %";
 			}
 			

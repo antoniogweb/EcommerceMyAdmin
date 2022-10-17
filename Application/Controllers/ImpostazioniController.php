@@ -95,7 +95,7 @@ class ImpostazioniController extends BaseController
 			Cache::$cacheFolder = Domain::$parentRoot."/".CACHE_FOLDER;
 			Cache::$cacheMinutes = 0;
 			Cache::$cleanCacheEveryXMinutes = 0;
-			Cache::deleteExpired();
+			Cache::deleteExpired(true);
 		}
 		
 		if (v("attiva_cache_immagini"))

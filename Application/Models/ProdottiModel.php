@@ -41,6 +41,15 @@ class ProdottiModel extends PagesModel {
 			"className"	=>	"form-control",
 			'labelString'=>	'È un prodotto Gift Card',
 		);
+		
+		$this->formStruct["entries"]["prezzo_promozione_ass_ivato"] = array(
+			'labelString'	=>	'Prezzo scontato IVA inclusa (€)',
+			'entryClass'	=>	'class_promozione form_input_text',
+		);
+		
+		$this->formStruct["entries"]["tipo_sconto"] = array(
+			'entryClass'	=>	'class_promozione form_input_text',
+		);
 	}
 	
 	public function setFilters()
@@ -74,15 +83,6 @@ class ProdottiModel extends PagesModel {
 		
 		if (isset($this->hModel->section))
 			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
-		
-// 		if (v("usa_marchi"))
-// 		{
-// 			$this->_popupItemNames["-id_marchio"] = "titolo";
-// 			$this->_popupLabels["-id_marchio"] = gtext("marchio",true,"strtoupper");
-// // 			$this->_popupWhere["-id_marchio"] = "id_marchio != 0";
-// // 			$this->_popupFunctions["-id_marchio"] = "getTitoloMarchio";
-// 			$this->_popupOrderBy["-id_marchio"] = "marchi.titolo";
-// 		}
 	}
 	
 	public function insert()

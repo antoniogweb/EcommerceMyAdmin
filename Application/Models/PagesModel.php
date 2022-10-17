@@ -375,7 +375,7 @@ class PagesModel extends GenericModel {
 					'entryClass'	=>	'form_input_text form_input_text_promozione',
 				),
 				'prezzo_promozione'		=>	array(
-					'labelString'=>	'Sconto (in %)',
+					'labelString'=>	'Percentuale sconto (in %)',
 					'entryClass'	=>	'class_promozione form_input_text',
 					'className'	=>	'input_corto form-control',
 				),
@@ -812,6 +812,8 @@ class PagesModel extends GenericModel {
 	
 	public function aggiornaStatoProdottiInPromozione()
 	{
+		Cache::$skipReadingCache = true;
+		
 		$res = $this->clear()->where(array("in_promozione"=>"Y"))->sWhere("al < '".date("Y-m-d")."'")->send();
 		
 		foreach ($res as $r)
@@ -827,6 +829,8 @@ class PagesModel extends GenericModel {
 				$this->pUpdate($r["pages"]["id_page"]);
 			}
 		}
+		
+		Cache::$skipReadingCache = false;
 	}
 	
 	// Imposta l'alias della pagina controllando che non ci sia un duplicato
@@ -995,13 +999,19 @@ class PagesModel extends GenericModel {
 	
 	public function setPriceNonIvato()
 	{
-		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]) && isset($this->values["id_iva"]))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_promozione_ass_ivato"])) && isset($this->values["id_iva"]))
 		{
 			$i = new IvaModel();
 			$aliquota = $i->selectId($this->values["id_iva"]);
 			
 			if (!empty($aliquota))
-				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+			{
+				if (isset($this->values["price_ivato"]))
+					$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+				
+				if (isset($this->values["prezzo_promozione_ass_ivato"]))
+					$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+			}
 		}
 		else
 			$this->settaCifreDecimali();
