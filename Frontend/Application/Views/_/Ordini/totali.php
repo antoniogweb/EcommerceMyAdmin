@@ -54,7 +54,7 @@ if ($haCouponAttivo)
 		<?php echo gtext("Sconto coupon");?><br />(<i><?php echo $couponAttivo["titolo"];?></i>)
 		<?php include(tpf("/Ordini/totale_promo_attiva.php"));?>
 		<div class="uk-text-small uk-text-primary">
-		<?php echo gtext("Credito rimanente");?>: <b><?php echo setPriceReverse(PromozioniModel::gNumeroEuroRimasti($couponAttivo["id_p"]));?> €</b>
+		<?php echo gtext("Credito utilizzabile");?>: <b><?php echo setPriceReverse(PromozioniModel::gNumeroEuroRimasti($couponAttivo["id_p"]));?> €</b>
 		</div>
 	</div>
 	<div><?php echo setPriceReverse(getTotalN() - getTotalN(true));?> €</div>
