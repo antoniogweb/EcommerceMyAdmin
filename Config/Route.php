@@ -703,6 +703,9 @@ class Route
 		
 		'integrazionilogin,main',
 		'integrazionilogin,form',
+		
+		'listeregalotipi,main',
+		'listeregalotipi,form',
 	);
 	
 	//it can be 'yes' or 'no'
