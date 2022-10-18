@@ -35,6 +35,8 @@ class BaseListeregaloController extends BaseController
 		
 		$this->s['registered']->check(null,0);
 		
+		$this->model("ListeregalotipiModel");
+		
 		$this->append($data);
 	}
 
@@ -63,7 +65,7 @@ class BaseListeregaloController extends BaseController
 // 			echo $this->m["SpedizioniModel"]->notice;
 		}
 		
-		$data['liste'] = $this->m["ListeregaloModel"]->clear()->where(array("id_user"=>$this->iduser))->orderBy("time_creazione desc")->send();
+		$data['liste'] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array("id_user"=>$this->iduser))->orderBy("time_creazione desc")->send();
 		
 		$this->append($data);
 		
@@ -92,6 +94,19 @@ class BaseListeregaloController extends BaseController
 		
 		$this->checkLista($id);
 		
+		$lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
+		
+		$idTipoLista = !empty($lista) ? $lista["id_lista_tipo"] : $this->request->post("id_lista_tipo",0,"forceInt");
+		
+		$data["selectTipi"] = ListeregalotipiModel::getSelectTipi($idTipoLista);
+		
+		if (!$idTipoLista)
+			$idTipoLista = count($data["selectTipi"]) > 0 ? key($data["selectTipi"]) : 0;
+		
+		$data["idTipoLista"] = $idTipoLista;
+		
+		$tipoLista = $this->m["ListeregalotipiModel"]->selectId((int)$idTipoLista);
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/listeregalo/modifica/".$clean["id"];
@@ -103,22 +118,36 @@ class BaseListeregaloController extends BaseController
 		
 		$campiObbligatori = "titolo";
 		
-// 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
-// 			$campiObbligatori .= ",cap_spedizione";
+		if (!$clean["id"])
+			$campiObbligatori .= ",id_lista_tipo";
 		
-		$fields = 'titolo,id_lista_tipo,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
+		if (!empty($tipoLista))
+		{
+			$fields = 'titolo,id_lista_tipo';
+			
+			if ($tipoLista["campi"])
+				$fields .= ','.$tipoLista["campi"];
+			
+			if ($tipoLista["campi_obbligatori"])
+				$campiObbligatori .= ','.$tipoLista["campi_obbligatori"];
+		}
+		else
+			$fields = 'titolo,id_lista_tipo,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
 		
 		$this->m['ListeregaloModel']->setFields($fields,'sanitizeAll');
 		
 		$this->m['ListeregaloModel']->setValue("id_user", User::$id);
 		
+		if (!empty($lista))
+			$this->m['ListeregaloModel']->delFields("id_lista_tipo");
+		
 		$this->m['ListeregaloModel']->clearConditions("strong");
 		$this->m['ListeregaloModel']->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
 		
-// 		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
-// 		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
-// 		
-// 		$this->m['SpedizioniModel']->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+		if (!$clean["id"])
+			$this->m['ListeregaloModel']->addStrongCondition("both",'checkIsStrings|'.implode(",",array_keys($data["selectTipi"])),"id_lista_tipo|".gtext("<b>Si prega di selezionare il tipo della lista</b>"));
+		
+		$this->m['ListeregaloModel']->addSoftCondition("both",'checkIsStrings|M,F',"sesso");
 		
 		$this->m['ListeregaloModel']->updateTable('insert,update',$clean["id"]);
 		
@@ -137,7 +166,7 @@ class BaseListeregaloController extends BaseController
 		
 		$submitAction = $id > 0 ? "update" : "insert";
 		
-		$data['values'] = $this->m['ListeregaloModel']->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("id_lista_tipo"=>1));
+		$data['values'] = $this->m['ListeregaloModel']->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("id_lista_tipo"=>$idTipoLista));
 		
 		$this->append($data);
 		$this->load('modifica');

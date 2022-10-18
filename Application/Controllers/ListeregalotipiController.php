@@ -59,7 +59,7 @@ class ListeregalotipiController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,attivo,campi,giorni_scadenza');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,attivo,campi,campi_obbligatori,giorni_scadenza');
 		
 		parent::form($queryType, $id);
 	}

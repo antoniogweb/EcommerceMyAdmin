@@ -16,10 +16,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 <?php if (count($liste) > 0) { ?>
 <div class="uk-overflow-auto">
-	<table class="uk-table uk-table-divider uk-table-hover" cellspacing="0">
+	<table class="uk-table uk-table-divider uk-table-hover uk-table-striped" cellspacing="0">
 		<thead>
 			<tr class="ordini_head">
 				<th><?php echo gtext("Titolo");?></th>
+				<th><?php echo gtext("Tipo");?></th>
 				<th width="1%"></th>
 				<th width="1%"></th>
 			</tr>
@@ -28,10 +29,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<?php foreach ($liste as $lista) { ?>
 			<tr class="">
 				<td><?php echo $lista["liste_regalo"]["titolo"];?></td>
+				<td><?php echo $lista["liste_regalo_tipi"]["titolo"];?></td>
 				<td><a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: pencil"></a></td>
 				<td>
 					<?php if ($lista["liste_regalo"]["attivo"] == "Y") { ?>
-					<a class="uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("La lista non è attiva. Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: close"></a>
+					<a class="uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: close"></a>
 					<?php } else { ?>
 					<a class="uk-text-bold td_edit" title="<?php echo gtext("Attiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=Y&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: ban"></a>
 					<?php } ?>

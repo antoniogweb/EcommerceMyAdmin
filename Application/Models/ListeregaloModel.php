@@ -35,7 +35,7 @@ class ListeregaloModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'lista_tipo' => array("BELONGS_TO", 'ListeregalotipiModel', 'id_lista_tipo',null,"CASCADE"),
+			'tipo' => array("BELONGS_TO", 'ListeregalotipiModel', 'id_lista_tipo',null,"CASCADE"),
         );
     }
     

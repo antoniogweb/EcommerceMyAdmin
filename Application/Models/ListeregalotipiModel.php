@@ -24,6 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ListeregalotipiModel extends GenericModel
 {
+	public static $tipi = array();
+	public static $tipiDelCampo = array();
+	public static $arrayIdCampi = null;
+	
 	public function __construct() {
 		$this->_tables = 'liste_regalo_tipi';
 		$this->_idFields = 'id_lista_tipo';
@@ -40,5 +44,53 @@ class ListeregalotipiModel extends GenericModel
         return array(
 			'liste' => array("HAS_MANY", 'ListeregaloModel', 'id_lista_tipo', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
         );
+    }
+    
+    public static function getSelectTipi($idTipo = 0)
+    {
+		$tipiAttivi = self::g()->where(array(
+			"OR"	=>	array(
+				"attivo"	=>	"Y",
+				"id_lista_tipo"	=>	(int)$idTipo,
+			)
+		))->orderBy("id_order")->toList("id_lista_tipo", "titolo")->send();
+		
+		return array_map('gtext', $tipiAttivi);
+    }
+    
+    public static function obbligatorio($idTipo, $campo)
+    {
+		if (!isset(self::$tipi[$idTipo]))
+			self::$tipi[$idTipo] = self::g()->selectId($idTipo);
+		
+		if (isset(self::$tipi[$idTipo]["campi_obbligatori"]) && self::$tipi[$idTipo]["campi_obbligatori"])
+		{
+			$campiArray = explode(",", self::$tipi[$idTipo]["campi_obbligatori"]);
+			
+			if (in_array($campo, $campiArray))
+				return true;
+		}
+		
+		return false;
+    }
+    
+    public static function campoPresenteInTipi($campo, $stringa = "tipo_lista_")
+    {
+		if (!isset(self::$tipiDelCampo[$campo]))
+		{
+			self::$tipiDelCampo[$campo] = array();
+			
+			$tipi = isset(self::$arrayIdCampi) ? self::$arrayIdCampi : self::g()->select("id_lista_tipo,campi")->toList("id_lista_tipo", "campi")->send();
+			
+			foreach ($tipi as $id => $campi)
+			{
+				$campiArray = explode(",", $campi);
+				
+				if (in_array($campo, $campiArray))
+					self::$tipiDelCampo[$campo][] = $stringa.$id;
+			}
+		}
+		
+		return self::$tipiDelCampo[$campo];
     }
 }

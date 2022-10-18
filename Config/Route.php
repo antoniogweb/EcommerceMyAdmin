@@ -706,6 +706,7 @@ class Route
 		
 		'listeregalotipi,main',
 		'listeregalotipi,form',
+		'listeregalotipi,ordina',
 	);
 	
 	//it can be 'yes' or 'no'
