@@ -17,6 +17,9 @@
 			<li class="<?php if ($attiva == "ordini") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 			</li>
+			<li class="<?php if ($attiva == "listeregalo") { ?>uk-active<?php } ?>">
+				<a href="<?php echo $this->baseUrl."/liste-regalo/";?>" title="<?php echo gtext("Liste nascita / regalo", false);?>"><?php echo gtext("Liste nascita / regalo");?></a>
+			</li>
 			<?php
 			if (v("abilita_feedback") && v("feedback_visualizza_in_area_riservata")) {
 				$user_feedback = FeedbackModel::get(0,0);

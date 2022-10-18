@@ -50,7 +50,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } ?>
 
 <div class="uk-margin">
-	<a class="uk-button uk-button-secondary" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>">+ <?php echo gtext("Aggiungi indirizzo");?></a>
+	<a class="uk-button uk-button-secondary" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>"><span uk-icon="plus"></span> <?php echo gtext("Aggiungi indirizzo");?></a>
 </div>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

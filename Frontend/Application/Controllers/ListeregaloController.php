@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
@@ -22,35 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ListeregaloModel extends GenericModel
+require_once(LIBRARY."/Application/Controllers/Public/BaseListeregaloController.php");
+
+class ListeregaloController extends BaseListeregaloController
 {
-	public function __construct() {
-		$this->_tables = 'liste_regalo';
-		$this->_idFields = 'id_lista_regalo';
-		
-		$this->_idOrder = 'id_order';
-		
-		parent::__construct();
-	}
-	
-	public function relations() {
-        return array(
-			'lista_tipo' => array("BELONGS_TO", 'ListeregalotipiModel', 'id_lista_tipo',null,"CASCADE"),
-        );
-    }
-    
-    public function insert()
-    {
-		$this->values["time_creazione"] = time();
-		
-		return parent::insert();
-    }
-    
-    public static function numeroListeUtente($idUser, $idLista)
-    {
-		return self::g()->where(array(
-			"id_lista_regalo"	=>	(int)$idLista,
-			"id_user"			=>	(int)$idUser,
-		))->rowNumber();
-    }
+
 }

@@ -123,6 +123,9 @@ class BaseBaseController extends Controller
 		$this->model("CaptchaModel");
 		$this->model('ContattiModel');
 		
+		if (v("attiva_liste_regalo"))
+			$this->model('ListeregaloModel');
+		
 		if (v("abilita_feedback"))
 			$this->model("FeedbackModel");
 		

@@ -32,7 +32,15 @@ class ListeregalotipiController extends BaseController
 	
 	public $tabella = "tipologie liste regalo";
 	
-	public $sezionePannello = "utenti";
+	public $sezionePannello = "ecommerce";
+	
+	public function __construct($model, $controller, $queryString, $application, $action) {
+		
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if (!v("attiva_liste_regalo"))
+			die();
+	}
 	
 	public function main()
 	{

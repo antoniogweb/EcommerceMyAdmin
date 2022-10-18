@@ -500,6 +500,8 @@ class VariabiliModel extends GenericModel {
 		## UTENTI ##
 		"elimina_record_utente_ad_autoeliminazione"	=>	1, // se impostato a 1, elimina il recorde. Altrimenti va a sovrascirverlo con dati random
 		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
+		## LISTE REGALO ##
+		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

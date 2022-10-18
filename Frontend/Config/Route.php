@@ -28,7 +28,6 @@ if (!defined('ESTENSIONI_URL'))
 
 class Route
 {
-
 	//controller,action couples that can be reached by the browser
 	//set 'all' if you want that all the controller,action couples can be reached by the browser
 	public static $allowed = array(
@@ -145,6 +144,8 @@ class Route
 		'riservata,indirizzi',
 		'riservata,privacy',
 		'riservata,feedback',
+		'listeregalo,index',
+		'listeregalo,modifica',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -161,6 +162,8 @@ class Route
 		'riservata/privacy'			=>	'riservata/privacy',
 		'riservata/feedback'		=>	'riservata/feedback',
 // 		'riservata/cancellaaccount'	=>	'riservata/cancellaaccount',
+		'liste-regalo/?'			=>	'listeregalo/index',
+		'listeregalo/modifica/([0-9]{1,9})'=>	'listeregalo/modifica/${1}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

@@ -11,7 +11,7 @@ if (isset($breadcrumb))
 			if ($link)
 				echo "<a href='$link'>";
 			
-			echo $text;
+			echo "<span class='uk-text-small'>".$text."</span>";
 			
 			if ($link)
 				echo "</a>";
