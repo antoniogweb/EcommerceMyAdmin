@@ -37,6 +37,8 @@ class BaseListeregaloController extends BaseController
 		
 		$this->model("ListeregalotipiModel");
 		
+		$data["isAreaRiservata"] = true;
+		
 		$this->append($data);
 	}
 

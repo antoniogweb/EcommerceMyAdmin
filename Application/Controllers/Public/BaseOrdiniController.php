@@ -341,7 +341,7 @@ class BaseOrdiniController extends BaseController
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$data['notice'] = null;
-		
+		$data["isAreaRiservata"] = true;
 		$data['title'] = Parametri::$nomeNegozio . " - Resoconto ordine";
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);

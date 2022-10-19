@@ -8,6 +8,13 @@
 				<ul class="uk-breadcrumb">
 					<?php include(tpf("/Elementi/breadcrumb.php"));?>
 				</ul>
+				<?php if (User::$isMobile && isset($isAreaRiservata)) { ?>
+					<?php if ($islogged) { ?>
+					<div class="uk-margin-large-bottom">
+						<a href="#filtri-categoria" class="uk-button uk-button-default uk-margin-small-right uk-margin-top" uk-toggle="target: #filtri-categoria"><span class="uk-margin-xsmall-right" uk-icon="icon: settings; ratio: .75;"></span> <?php echo gtext("Menù area riservata");?></a>
+					</div>
+					<?php } ?>
+				<?php } ?>
 				<?php if (!isset($noTitolo)) { ?>
 				<h1 class="uk-margin-small-top uk-margin-remove-bottom">
 					<?php echo isset($titoloPagina) ? $titoloPagina : cfield($datiCategoria, "title");?>

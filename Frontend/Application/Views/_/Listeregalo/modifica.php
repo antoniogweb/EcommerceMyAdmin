@@ -42,7 +42,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			</div>
 			
 			<div class="uk-margin uk-margin-remove-bottom">
-				<label class="uk-form-label"><?php echo gtext("Titolo della lista");?> *</label>
+				<label class="uk-form-label"><?php echo gtext("Nome della lista");?> *</label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::input("titolo",$values['titolo'],"uk-input class_titolo",null);?>
 				</div>

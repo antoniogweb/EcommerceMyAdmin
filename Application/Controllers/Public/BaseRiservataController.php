@@ -36,6 +36,8 @@ class BaseRiservataController extends BaseController
 		
 		$this->s['registered']->check(null,0);
 		
+		$data["isAreaRiservata"] = true;
+		
 		$this->append($data);
 	}
 

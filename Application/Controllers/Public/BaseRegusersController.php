@@ -746,7 +746,7 @@ class BaseRegusersController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica password");
 		$data['notice'] = null;
-		
+		$data["isAreaRiservata"] = true;
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/modifica-password";
@@ -826,7 +826,7 @@ class BaseRegusersController extends BaseController
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica account");
 		$data['notice'] = null;
 		$data['action'] = "/modifica-account";
-		
+		$data["isAreaRiservata"] = true;
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
@@ -906,7 +906,7 @@ class BaseRegusersController extends BaseController
 			$_POST["nazione_spedizione"] = User::$dettagli["nazione"];
 			$_POST["citta_spedizione"] = User::$dettagli["citta"];
 		}
-		
+		$data["isAreaRiservata"] = true;
 		$clean["id"] = $data["id"] = (int)$id;
 		
 		if ($clean["id"] > 0)

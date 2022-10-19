@@ -34,7 +34,7 @@ class ListeregalotipiModel extends GenericModel
 		
 		$this->_idOrder = 'id_order';
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"titolo,campi");
+		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
 		$this->addStrongCondition("both",'checkIsNotStrings|0',"giorni_scadenza");
 		
 		parent::__construct();

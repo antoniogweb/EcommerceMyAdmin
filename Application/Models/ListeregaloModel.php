@@ -157,4 +157,18 @@ class ListeregaloModel extends GenericModel
 		
 		return $idRigaLista;
     }
+    
+    public static function numeroProdotti($idLista)
+    {
+		$lrp = new ListeregalopagesModel();
+		
+		$res = $lrp->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"id_lista_regalo"	=>	(int)$idLista,
+		))->send();
+		
+		if (count($res) > 0)
+			return $res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+    }
 }
