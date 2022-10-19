@@ -13111,6 +13111,12 @@ img:not([src]) {
   border: 1px solid #f0506e;
 }
 
+.uk-button.disabled {
+  background-color: transparent !important;
+  color: #999 !important;
+  border-color: #e5e5e5 !important;
+}
+
 .hc-nav-trigger {
   position: relative;
   top: 0px;

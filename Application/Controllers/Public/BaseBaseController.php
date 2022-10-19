@@ -1298,4 +1298,24 @@ class BaseBaseController extends Controller
 			$this->append($data);
 		}
 	}
+	
+	protected function checkAggiuntaAlCarrello($id_page, $defaultErrorJson)
+	{
+		// Se non è un prodotto
+		if (!$id_page || !$this->m["PagesModel"]->isProdotto((int)$id_page))
+		{
+			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
+			
+			echo json_encode($defaultErrorJson);
+			
+			die();
+		}
+		
+		if (!v("ecommerce_online"))
+		{
+			echo json_encode($defaultErrorJson);
+			
+			die();
+		}
+	}
 }

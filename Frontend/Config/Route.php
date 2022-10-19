@@ -146,6 +146,7 @@ class Route
 		'riservata,feedback',
 		'listeregalo,index',
 		'listeregalo,modifica',
+		'listeregalo,aggiungi',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -164,6 +165,7 @@ class Route
 // 		'riservata/cancellaaccount'	=>	'riservata/cancellaaccount',
 		'liste-regalo/?'			=>	'listeregalo/index',
 		'listeregalo/modifica/([0-9]{1,9})'=>	'listeregalo/modifica/${1}',
+		'listeregalo/aggiungi/(.*)'=>	'listeregalo/aggiungi/${1}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

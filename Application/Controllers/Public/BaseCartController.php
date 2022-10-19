@@ -106,15 +106,23 @@ class BaseCartController extends BaseController
 			"value"		=>	$valueProdottoNelCarrello,
 		);
 		
-		// Se non è un prodotto
-		if ($id_page && !$this->m["PagesModel"]->isProdotto((int)$id_page))
-		{
-			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
-			
-			echo json_encode($defaultErrorJson);
-			
-			die();
-		}
+		$this->checkAggiuntaAlCarrello($id_page, $defaultErrorJson);
+// 		// Se non è un prodotto
+// 		if (!$id_page || !$this->m["PagesModel"]->isProdotto((int)$id_page))
+// 		{
+// 			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
+// 			
+// 			echo json_encode($defaultErrorJson);
+// 			
+// 			die();
+// 		}
+// 		
+// 		if (!v("ecommerce_online"))
+// 		{
+// 			echo json_encode($defaultErrorJson);
+// 			
+// 			die();
+// 		}
 		
 		if (v("carrello_monoprodotto"))
 		{
@@ -124,13 +132,6 @@ class BaseCartController extends BaseController
 			// Se non è una modifica del carrello svuoto il carrello
 			if (!$id_cart)
 				$this->m["CartModel"]->emptyCart();
-		}
-		
-		if (!v("ecommerce_online"))
-		{
-			echo json_encode($defaultErrorJson);
-			
-			die();
 		}
 		
 		$clean["id_page"] = (int)$id_page;

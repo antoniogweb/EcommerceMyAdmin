@@ -171,4 +171,57 @@ class BaseListeregaloController extends BaseController
 		$this->append($data);
 		$this->load('modifica');
 	}
+	
+	public function aggiungi($id_lista = 0, $id_page = 0, $id_c = 0, $quantity = 1)
+	{
+		$this->clean();
+		
+		$result = "KO";
+		$errore = "";
+		
+		$defaultErrorJson = array(
+			"result"	=>	$result,
+			"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
+		);
+		
+		if (!ListeregaloModel::numeroListeUtente(User::$id, (int)$id_lista))
+		{
+			echo json_encode(array(
+				"result"	=>	"KO",
+				"errore"	=>	gtext("Lista inesistente"),
+			));
+			
+			die();
+		}
+		
+		$this->checkAggiuntaAlCarrello($id_page, $defaultErrorJson);
+		
+		$clean["id_lista"] = (int)$id_lista;
+		$clean["id_page"] = (int)$id_page;
+		$clean["quantity"] = (int)$quantity;
+		$clean["id_c"] = (int)$id_c;
+		
+		if (!ProdottiModel::isGiftCart($clean["id_page"]))
+		{
+			$idRigaLista = $this->m["ListeregaloModel"]->aggiungi($clean["id_lista"], $clean["id_page"], $clean["id_c"], $clean["quantity"]);
+			
+			if ($idRigaLista)
+			{
+				$result = "OK";
+			}
+			else
+			{
+				$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
+			}
+		}
+		else
+		{
+			$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
+		}
+		
+		echo json_encode(array(
+			"result"	=>	$result,
+			"errore"	=>	$errore,
+		));
+	}
 }

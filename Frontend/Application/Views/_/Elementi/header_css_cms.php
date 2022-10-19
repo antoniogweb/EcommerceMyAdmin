@@ -1,8 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (file_exists(tpf("Public/Css/style.min.css"))) { ?>
-<link rel="stylesheet" href="<?php echo tpf("Public/Css/style.min.css", true);?>?v=<?php echo rand(1,10000);?>" />
+<link rel="stylesheet" href="<?php echo tpf("Public/Css/style.min.css", true);?>" />
 <?php } else { ?>
-<link rel="stylesheet" href="<?php echo tpf("Public/Css/style.css", true);?>?v=<?php echo rand(1,10000);?>" />
+<link rel="stylesheet" href="<?php echo tpf("Public/Css/style.css", true);?>" />
 <?php } ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc."/".v("checkbox_css_path");?>">

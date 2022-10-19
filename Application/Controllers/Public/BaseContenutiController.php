@@ -1510,6 +1510,9 @@ class BaseContenutiController extends BaseController
 		if (v("attiva_localizzazione_prodotto"))
 			list($data["nazioni_prodotto"], $data["regioni_prodotto"]) = $this->m["PagesModel"]->getLocalizzazione($clean['id']);
 		
+		if (v("attiva_liste_regalo") && $firstSection == "prodotti" && User::$logged)
+			$data["liste_regalo"] = ListeregaloModel::listeUtente(User::$id);
+		
 // 		print_r
 		
 		$this->append($data);

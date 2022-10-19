@@ -59,6 +59,11 @@
 		<?php include(tpf(ElementitemaModel::p("PULSANTE_ACQUISTA_DETTAGLIO")));?>
 		
 		<?php include(tpf(ElementitemaModel::p("WISHLIST_DETTAGLIO")));?>
+		
+		<?php include(tpf(ElementitemaModel::p("AGGIUNGI_ALLA_LISTA","", array(
+			"titolo"	=>	"Selezione aggiungi alla lista",
+			"percorso"	=>	"Elementi/Prodotti/Dettaglio/AggiungiAllaLista",
+		)))); ?>
 	<?php } ?>
 	
 	<hr class="uk-margin-medium-top">

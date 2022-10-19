@@ -193,12 +193,18 @@ function attivaDisattivaCarrello()
 	{
 		$(".pulsante_carrello").addClass("aggiungi_al_carrello").removeClass("disabled");
 		$(".acquista_prodotto").addClass("aggiungi_al_carrello_checkout").prop('disabled', false).removeClass("disabled");
+		
+		if (typeof attivaPulsanteAggiungiAllaLista === 'function')
+			attivaPulsanteAggiungiAllaLista();
 	}
 		
 	else
 	{
 		$(".pulsante_carrello").removeClass("aggiungi_al_carrello").addClass("disabled");
 		$(".acquista_prodotto").removeClass("aggiungi_al_carrello_checkout").prop('disabled', true).addClass("disabled");
+		
+		if (typeof disattivaPulsanteAggiungiAllaLista === 'function')
+			disattivaPulsanteAggiungiAllaLista();
 	}
 	
 	if (okProcedi)
