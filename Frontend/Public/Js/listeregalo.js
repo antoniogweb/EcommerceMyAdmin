@@ -52,6 +52,12 @@ $(document).ready(function(){
 		var id_c = $(this).attr("id-c");
 		var quantity = 1;
 		
+		if ($(".quantita_input").length > 0)
+			quantity = $(".quantita_input").val();
+
+		if (quantity == "")
+			quantity = 1;
+		
 		if ($(".accessorio_principale .id_combinazione").length > 0)
 			id_c = $(".accessorio_principale .id_combinazione").text();
 		
