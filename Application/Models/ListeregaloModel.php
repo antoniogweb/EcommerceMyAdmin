@@ -85,9 +85,19 @@ class ListeregaloModel extends GenericModel
 		return self::listeUtenteModel($idUser, $idLista)->rowNumber();
     }
     
-    public static function listeUtente($idUser, $idLista = 0)
+    public static function listeUtente($idUser, $idLista = 0, $soloAttive = true)
     {
-		return self::listeUtenteModel($idUser, $idLista)->send(false);
+		$model = self::listeUtenteModel($idUser, $idLista);
+		
+		if ($soloAttive)
+			$model->aWhere(array(
+				"attivo"	=>	"Y",
+				"gte"	=>	array(
+					"data_scadenza"	=>	date("Y-m-d"),
+				),
+			));
+		
+		return $model->toList("id_lista_regalo", "titolo")->send();
     }
     
     public function aggiungi($id_lista, $id_page, $id_c, $quantity)

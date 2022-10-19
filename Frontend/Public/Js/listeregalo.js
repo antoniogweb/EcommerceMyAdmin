@@ -1,3 +1,6 @@
+if (typeof stringa_errore_lista_non_selezionata == "undefined")
+	var stringa_errore_lista_non_selezionata = "Si prega di selezionare una lista regalo";
+
 function sistemaCampiFormLista()
 {
 	$(".form_lista_regalo").find(".btn_submit_form").attr("name","gAction");
@@ -54,27 +57,34 @@ $(document).ready(function(){
 		
 		var url = baseUrl + "/listeregalo/aggiungi/" + id_lista + "/" + id_page + "/" + id_c + "/" + quantity;
 		
-		beforeAggiungiAllaLista();
-		
-		$.ajaxQueue({
-			url: url,
-			async: true,
-			cache:false,
-			dataType: "json",
-			success: function(content){
-				
-				if (jQuery.trim(content.result) == "OK")
-				{
+		if (id_lista != 0)
+		{
+			beforeAggiungiAllaLista();
+			
+			$.ajaxQueue({
+				url: url,
+				async: true,
+				cache:false,
+				dataType: "json",
+				success: function(content){
 					
-				}
-				else
-				{
+					if (jQuery.trim(content.result) == "OK")
+					{
+						UIkit.modal("#modale-aggiunto-alla-lista").show();
+					}
+					else
+					{
+						alert(content.errore);
+					}
 					
+					aftereAggiungiAllaLista();
 				}
-				
-				aftereAggiungiAllaLista();
-			}
-		});
+			});
+		}
+		else
+		{
+			alert(stringa_errore_lista_non_selezionata);
+		}
 	});
 	
 });

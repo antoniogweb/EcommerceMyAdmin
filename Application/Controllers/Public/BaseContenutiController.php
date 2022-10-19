@@ -1513,8 +1513,6 @@ class BaseContenutiController extends BaseController
 		if (v("attiva_liste_regalo") && $firstSection == "prodotti" && User::$logged)
 			$data["liste_regalo"] = ListeregaloModel::listeUtente(User::$id);
 		
-// 		print_r
-		
 		$this->append($data);
 		
 		$template = strcmp($data['pages'][0]["pages"]["template"],"") === 0 ? null : $data['pages'][0]["pages"]["template"];
