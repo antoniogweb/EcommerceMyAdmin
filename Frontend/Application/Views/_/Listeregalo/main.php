@@ -53,16 +53,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-width-1-5@m">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">
 			<div class="uk-text-center@s">
-				<a class="uk-label uk-label-success uk-padding-small" title="<?php echo gtext("Vedi",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: link"></a>
+				<a class=" uk-padding-small" title="<?php echo gtext("Link",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: link"></a>
 			</div>
 			<div class="uk-text-center@s">
-				<a class="uk-label uk-padding-small" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: pencil"></a>
+				<a class="uk-padding-small" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: pencil"></a>
 			</div>
 			<div class="uk-text-center@s">
 				<?php if ($lista["liste_regalo"]["attivo"] == "Y") { ?>
-				<a class="uk-label uk-label-danger uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: close"></a>
+				<a class="uk-text-danger uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: close"></a>
 				<?php } else { ?>
-				<a class="uk-label uk-label-warning uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Attiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=Y&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: ban"></a>
+				<a class=" uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Attiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=Y&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: ban"></a>
 				<?php } ?>
 			</div>
 		</div>

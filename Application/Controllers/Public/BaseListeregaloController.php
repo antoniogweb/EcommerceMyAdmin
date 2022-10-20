@@ -90,11 +90,46 @@ class BaseListeregaloController extends BaseController
 		}
 	}
 	
+	public function gestisci($id = 0)
+	{
+		$clean["id"] = $data["id"] = (int)$id;
+		
+		$this->checkLista($id);
+		
+		$data['title'] = Parametri::$nomeNegozio . ' - '. gtext("Gestisci la tua lista");
+		
+		$data["lista"] = $lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
+		
+		$this->append($data);
+		$this->load('gestisci');
+	}
+	
+	public function elencoprodotti($id = 0)
+	{
+		$clean["id"] = $data["id"] = (int)$id;
+		
+		$this->checkLista($id);
+		
+		$this->clean();
+		
+		$data["prodotti_lista"] = $this->m["PagesModel"]->clear()->select("*")
+			->inner("liste_regalo_pages")->on("pages.id_page = liste_regalo_pages.id_page")
+			->addJoinTraduzionePagina()->aWhere(array(
+				"liste_regalo_pages.id_lista_regalo"	=>	$clean["id"],
+			))->send();
+		
+		$this->append($data);
+		$this->load('prodotti');
+	}
+	
 	public function modifica($id = 0)
 	{
 		$clean["id"] = $data["id"] = (int)$id;
 		
 		$this->checkLista($id);
+		
+		$title = $id ? gtext("Modifica la tua lista") : gtext("Crea la tua lista");
+		$data['title'] = Parametri::$nomeNegozio . ' - '. $title;
 		
 		$lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
 		
@@ -114,7 +149,6 @@ class BaseListeregaloController extends BaseController
 			$data["arrayLingue"][$l] = $l."/listeregalo/modifica/".$clean["id"];
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Gestisci lista nascita", false);
 		$data['notice'] = null;
 		$data['action'] = "/listeregalo/modifica/".$clean["id"];
 		
@@ -155,10 +189,12 @@ class BaseListeregaloController extends BaseController
 		
 		if ($this->m['ListeregaloModel']->queryResult)
 		{
+			if (!$clean["id"])
+				$clean["id"] = (int)$this->m['ListeregaloModel']->lId;
 // 			if (!empty($ordine))
 // 				$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
 // 			else
-				$this->redirect("liste-regalo/");
+				$this->redirect("listeregalo/gestisci/".$clean["id"]);
 		}
 		else
 		{

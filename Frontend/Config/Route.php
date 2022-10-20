@@ -145,8 +145,10 @@ class Route
 		'riservata,privacy',
 		'riservata,feedback',
 		'listeregalo,index',
+		'listeregalo,gestisci',
 		'listeregalo,modifica',
 		'listeregalo,aggiungi',
+		'listeregalo,elencoprodotti',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -164,7 +166,9 @@ class Route
 		'riservata/feedback'		=>	'riservata/feedback',
 // 		'riservata/cancellaaccount'	=>	'riservata/cancellaaccount',
 		'liste-regalo/?'			=>	'listeregalo/index',
+		'listeregalo/gestisci/([0-9]{1,9})'=>	'listeregalo/gestisci/${1}',
 		'listeregalo/modifica/([0-9]{1,9})'=>	'listeregalo/modifica/${1}',
+		'listeregalo/elencoprodotti/([0-9]{1,9})'=>	'listeregalo/elencoprodotti/${1}',
 		'listeregalo/aggiungi/(.*)'=>	'listeregalo/aggiungi/${1}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',

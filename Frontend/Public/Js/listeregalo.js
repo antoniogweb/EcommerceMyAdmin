@@ -29,6 +29,25 @@ function aftereAggiungiAllaLista()
 	}, 500);
 }
 
+function aggiornaListaProdotti()
+{
+	var id_lista = $("#id_lista_regalo").text();
+	
+	var url = baseUrl + "/listeregalo/elencoprodotti/" + id_lista;
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		success: function(content){
+			
+			$("#prodotti-lista").html(content);
+			
+		}
+	});
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "change", "[name='id_lista_tipo']", function(e) {
@@ -91,6 +110,12 @@ $(document).ready(function(){
 		{
 			alert(stringa_errore_lista_non_selezionata);
 		}
+	});
+	
+	aggiornaListaProdotti();
+	
+	UIkit.util.on('#prodotti-lista', 'show', function () {
+		aggiornaListaProdotti();
 	});
 	
 });
