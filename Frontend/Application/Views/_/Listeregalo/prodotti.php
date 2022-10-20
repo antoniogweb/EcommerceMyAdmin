@@ -46,10 +46,10 @@
 					</div>
 					<div></div>
 					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> 1
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> 
 					</div>
 					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> 2
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> 
 					</div>
 					<div class="uk-visible@m">
 						<a class="uk-text-danger remove lista_item_delete_link" title="<?php echo gtext("Elimina il prodotto dalla lista", false);?>" href="#" uk-icon="icon: trash"></a>
