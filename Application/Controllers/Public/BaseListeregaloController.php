@@ -36,6 +36,7 @@ class BaseListeregaloController extends BaseController
 		$this->s['registered']->check(null,0);
 		
 		$this->model("ListeregalotipiModel");
+		$this->model("ListeregalopagesModel");
 		
 		$data["isAreaRiservata"] = true;
 		
@@ -120,6 +121,29 @@ class BaseListeregaloController extends BaseController
 		
 		$this->append($data);
 		$this->load('prodotti');
+	}
+	
+	public function elimina($id = 0)
+	{
+		$this->clean();
+		
+		$clean["id"] = $data["id"] = (int)$id;
+		
+		$result = "KO";
+		
+		if ($this->m["ListeregalopagesModel"]->checkAccesso($id))
+		{
+			if ($id && $this->m["ListeregalopagesModel"]->elimina($clean["id"]))
+			{
+				$result = "OK";
+			}
+			else
+			{
+				$result = "KO";
+			}
+		}
+		
+		echo $result;
 	}
 	
 	public function modifica($id = 0)

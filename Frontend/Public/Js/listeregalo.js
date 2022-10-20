@@ -56,7 +56,29 @@ $(document).ready(function(){
 		
 	});
 	
-	$( "body" ).on( "click", ".pulsante_lista", function(e) {
+	$( "body" ).on( "click", ".lista_item_delete_link", function(e) {
+		
+		e.preventDefault();
+		
+		var idRiga = $(this).parents(".lista-riga").attr("id-lista-riga");
+		
+		var url = baseUrl + "/listeregalo/elimina/" + idRiga;
+	
+		$.ajaxQueue({
+			url: url,
+			async: true,
+			cache:false,
+			dataType: "html",
+			success: function(content){
+				
+				aggiornaListaProdotti();
+				
+			}
+		});
+		
+	});
+	
+	$( "body" ).on( "click", ".aggiungi_alla_lista", function(e) {
 		
 		e.preventDefault();
 		

@@ -13247,6 +13247,13 @@ ul.thumbnails.image_picker_selector li .thumbnail {
   margin-left: -5px;
 }
 
+.box_quantity {
+  border: 1px solid #e5e5e5;
+  max-width: 50px;
+  padding: 1px 5px;
+  margin: 0 auto;
+}
+
 @media (min-width: 960px) {
   .detail_left {
     margin-right: 50px;

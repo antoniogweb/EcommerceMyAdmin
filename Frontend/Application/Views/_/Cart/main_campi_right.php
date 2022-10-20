@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
+<div class="uk-flex uk-flex-middle uk-flex-center uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
 	<div class="uk-first-column">
 		<?php if (!$p["cart"]["id_p"]) { ?>
 			<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>">
@@ -35,10 +35,12 @@
 				<?php if (!v("mostra_piu_meno_modifica_quantita")) { ?>
 				<input rel="<?php echo $p["cart"]["id_cart"];?>" class="uk-input item_quantity" name="quantity" type="number" value="<?php echo $p["cart"]["quantity"];?>" min="1" 	style="background-color:<?php echo $backColor;?> !important" />
 				<?php } else { ?>
-				<div class="uk-flex uk-flex-middle">
-					<a style="display:block" class="uk-margin-small-right uk-text-meta cart_item_quantity_decrease" href=""><span uk-icon="icon: minus-circle;ratio: 1"></span></a>
-					<input rel="<?php echo $p["cart"]["id_cart"];?>" disabled class="uk-form-width-xsmall uk-input item_quantity" name="quantity" type="text" value="<?php echo $p["cart"]["quantity"];?>" min="1" 	style="background-color:<?php echo $backColor;?> !important" />
-					<a style="display:block" class="uk-margin-small-left uk-text-meta cart_item_quantity_increase" href=""><span uk-icon="icon: plus-circle;ratio: 1"></span></a>
+				<div class="uk-flex uk-flex-middle uk-flex-center box_quantity uk-border-rounded">
+					<input rel="<?php echo $p["cart"]["id_cart"];?>" disabled class="uk-padding-remove uk-form-width-xsmall uk-input item_quantity" name="quantity" type="text" value="<?php echo $p["cart"]["quantity"];?>" min="1" style="max-width:25px;border:none;background-color:<?php echo $backColor;?> !important" />
+					<div class="uk-text-center">
+						<a style="display:block" class="uk-text-meta cart_item_quantity_increase" href=""><span uk-icon="icon: chevron-up;ratio: 1"></span></a>
+						<a style="display:block" class="uk-text-meta cart_item_quantity_decrease" href=""><span uk-icon="icon: chevron-down;ratio: 1"></span></a>
+					</div>
 				</div>
 				<?php } ?>
 			<?php } ?>

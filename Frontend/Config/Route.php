@@ -149,6 +149,7 @@ class Route
 		'listeregalo,modifica',
 		'listeregalo,aggiungi',
 		'listeregalo,elencoprodotti',
+		'listeregalo,elimina',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -168,6 +169,7 @@ class Route
 		'liste-regalo/?'			=>	'listeregalo/index',
 		'listeregalo/gestisci/([0-9]{1,9})'=>	'listeregalo/gestisci/${1}',
 		'listeregalo/modifica/([0-9]{1,9})'=>	'listeregalo/modifica/${1}',
+		'listeregalo/elimina/([0-9]{1,9})'=>	'listeregalo/elimina/${1}',
 		'listeregalo/elencoprodotti/([0-9]{1,9})'=>	'listeregalo/elencoprodotti/${1}',
 		'listeregalo/aggiungi/(.*)'=>	'listeregalo/aggiungi/${1}',
 		'regusers/login'			=>	'regusers/login',

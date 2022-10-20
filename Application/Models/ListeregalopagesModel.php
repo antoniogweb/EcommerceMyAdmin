@@ -47,4 +47,22 @@ class ListeregalopagesModel extends GenericModel
 		
 		return parent::insert();
     }
+    
+    public function checkAccesso($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && ListeregaloModel::numeroListeUtente(User::$id, $record["id_lista_regalo"]))
+			return true;
+		
+		return false;
+    }
+    
+    public function elimina($id)
+	{
+		if ($this->checkAccesso((int)$id))
+			return $this->del((int)$id);
+		
+		return false;
+	}
 }

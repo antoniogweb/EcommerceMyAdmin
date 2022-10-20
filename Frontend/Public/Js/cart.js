@@ -1049,7 +1049,7 @@ $(document).ready(function(){
 		
 		if (ok_aggiorna_carrello)
 		{
-			var t_input = $(this).parent().find(".item_quantity");
+			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
 			
 			var new_quantity = parseInt(t_input.val()) + 1;
 			
@@ -1067,7 +1067,7 @@ $(document).ready(function(){
 		
 		if (ok_aggiorna_carrello)
 		{
-			var t_input = $(this).parent().find(".item_quantity");
+			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
 			
 			var t_current_quantity = parseInt(t_input.val());
 			
