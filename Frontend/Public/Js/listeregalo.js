@@ -1,3 +1,5 @@
+var ok_aggiorna_prodotti_lista = true;
+
 if (typeof stringa_errore_lista_non_selezionata == "undefined")
 	var stringa_errore_lista_non_selezionata = "Si prega di selezionare una lista regalo";
 
@@ -48,6 +50,45 @@ function aggiornaListaProdotti()
 	});
 }
 
+function aggiornaQuantitaLista()
+{
+	ok_aggiorna_prodotti_lista = false;
+	
+	var products_list = "";
+	var curr_item = "";
+	var curr_quantity = "";
+	
+	$(".box_righe_prodotti_lista .lista-riga").each(function(){
+		
+		curr_item = $(this).attr("id-lista-riga")
+		curr_quantity = $(this).find(".item_quantity").val();
+		
+		products_list += curr_item + ":" + curr_quantity + "|";
+	});
+	
+	var post_data = "products_list="+encodeURIComponent(products_list);
+	
+	console.log(post_data);
+	
+	var url  = baseUrl + "/listeregalo/aggiornaprodotti";
+	
+	$.ajaxQueue({
+		url: url,
+		type: "POST",
+		data: post_data,
+		async: true,
+		cache:false,
+		dataType: "json",
+		success: function(content){
+			
+			if (content.result == "OK")
+				aggiornaListaProdotti();
+			
+			ok_aggiorna_prodotti_lista = true;
+		}
+	});
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "change", "[name='id_lista_tipo']", function(e) {
@@ -76,6 +117,41 @@ $(document).ready(function(){
 			}
 		});
 		
+	});
+	
+	$( "body" ).on( "click", ".prodotti_lista_item_quantity_increase", function(e) {
+		
+		e.preventDefault();
+		
+		if (ok_aggiorna_prodotti_lista)
+		{
+			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+			
+			var new_quantity = parseInt(t_input.val()) + 1;
+			
+			t_input.val(new_quantity);
+			
+			aggiornaQuantitaLista();
+		}
+	});
+	
+	$( "body" ).on( "click", ".prodotti_lista_item_quantity_decrease", function(e) {
+		
+		e.preventDefault();
+		
+		if (ok_aggiorna_prodotti_lista)
+		{
+			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+			
+			var t_current_quantity = parseInt(t_input.val());
+			
+			if (t_current_quantity > 1)
+			{
+				t_input.val( t_current_quantity - 1) ;
+				
+				aggiornaQuantitaLista();
+			}
+		}
 	});
 	
 	$( "body" ).on( "click", ".aggiungi_alla_lista", function(e) {

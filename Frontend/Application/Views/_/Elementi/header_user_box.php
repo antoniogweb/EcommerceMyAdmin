@@ -12,9 +12,11 @@ if (!isset($ukdropdown))
 		<li>
 			<a href="<?php echo $this->baseUrl."/liste-regalo";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 		</li>
+		<?php if (v("attiva_liste_regalo")) { ?>
 		<li>
 			<a href="<?php echo $this->baseUrl."/liste-regalo/";?>" title="<?php echo gtext("Liste nascita / regalo", false);?>"><?php echo gtext("Liste nascita / regalo");?></a>
 		</li>
+		<?php } ?>
 		<?php
 		if (v("abilita_feedback") && v("feedback_visualizza_in_area_riservata")) {
 			$user_feedback = FeedbackModel::get(0,0);

@@ -1055,8 +1055,6 @@ $(document).ready(function(){
 			
 			t_input.val(new_quantity);
 			
-// 			var is_gift_card = $(this).closest(".cart_item_row").hasClass("gift_card_row") ? true : false;
-			
 			aggiornaCarrello(undefined, true);
 		}
 	});
@@ -1075,8 +1073,6 @@ $(document).ready(function(){
 			{
 				t_input.val( t_current_quantity - 1) ;
 				
-// 				var is_gift_card = $(this).closest(".cart_item_row").hasClass("gift_card_row") ? true : false;
-			
 				aggiornaCarrello(undefined, true);
 			}
 		}

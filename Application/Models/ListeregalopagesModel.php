@@ -65,4 +65,29 @@ class ListeregalopagesModel extends GenericModel
 		
 		return false;
 	}
+	
+	public function set($id, $quantity)
+	{
+		$clean["id"] = (int)$id;
+		$clean["quantity"] = abs((int)$quantity);
+		
+		if ($this->checkAccesso((int)$id))
+		{
+			if ($clean["quantity"] === 0)
+				$this->elimina($clean["id"]);
+			else
+			{
+				$riga = $this->selectId($clean["id"]);
+				
+				if (!empty($riga))
+				{
+					$this->values = array(
+						"quantity" => $clean["quantity"],
+					);
+					
+					$this->update($clean["id"]);
+				}
+			}
+		}
+	}
 }

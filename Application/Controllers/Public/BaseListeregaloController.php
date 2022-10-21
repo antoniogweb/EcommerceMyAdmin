@@ -28,6 +28,9 @@ class BaseListeregaloController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!v("attiva_liste_regalo"))
+			$this->redirect("");
+		
 		$this->load('header');
 		$this->load('footer','last');
 		
@@ -144,6 +147,44 @@ class BaseListeregaloController extends BaseController
 		}
 		
 		echo $result;
+	}
+	
+	public function aggiornaprodotti()
+	{
+		if (!v("attiva_liste_regalo"))
+		{
+			echo json_encode(array(
+				"result"	=>	"KO"
+			));
+			
+			die();
+		}
+		
+		$this->clean();
+		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
+		
+		$quantityArray = explode("|",$clean["quantity"]);
+		
+		foreach ($quantityArray as $q)
+		{
+			if (strcmp($q,"") !== 0 and strstr($q, ':'))
+			{
+				$temp = explode(":",$q);
+				
+				$arrayIdQuantity[] = array($temp[0], $temp[1]);
+			}
+		}
+		
+// 		print_r($arrayIdQuantity);
+		
+		foreach ($arrayIdQuantity as $temp)
+		{
+			$this->m["ListeregalopagesModel"]->set($temp[0], $temp[1]);
+		}
+		
+		echo json_encode(array(
+			"result"	=>	"OK"
+		));
 	}
 	
 	public function modifica($id = 0)
