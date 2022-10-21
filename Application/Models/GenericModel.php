@@ -284,11 +284,14 @@ class GenericModel extends Model_Tree
 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
 	}
 	
-	public function checkAliasAll($id, $noTraduzione = false)
+	public function checkAliasAll($id, $noTraduzione = false, $checkUnico = true)
 	{
 		if (isset($this->values["alias"]) && !trim($this->values["alias"]))
 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
-			
+		
+		if (!$checkUnico)
+			return;
+		
 		$clean["id"] = (int)$id;
 		
 		if (!$clean["id"])

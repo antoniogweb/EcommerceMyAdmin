@@ -59,7 +59,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			
 			<?php if (array_key_exists("genitore_1",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("genitore_1"));?>">
-				<label class="uk-form-label"><?php echo gtext("Nome della mamma");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_1")) {?>*<?php } ?></label>
+				<label class="uk-form-label"><?php echo gtext("Nome genitore 1");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_1")) {?>*<?php } ?></label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::input("genitore_1",$values['genitore_1'],"uk-input class_genitore_1",null);?>
 				</div>
@@ -68,7 +68,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			
 			<?php if (array_key_exists("genitore_2",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("genitore_2"));?>">
-				<label class="uk-form-label"><?php echo gtext("Nome del papà");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_2")) {?>*<?php } ?></label>
+				<label class="uk-form-label"><?php echo gtext("Nome genitore 2");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_2")) {?>*<?php } ?></label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::input("genitore_2",$values['genitore_2'],"uk-input class_genitore_2",null);?>
 				</div>

@@ -72,7 +72,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } ?>
 
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcun indirizzo configurato");?></p>
+<p><?php echo gtext("Non hai ancora creato alcuna lista nascita / regalo.");?></p>
 <?php } ?>
 
 <div class="uk-margin">

@@ -57,13 +57,57 @@ class ListeregaloModel extends GenericModel
 		}
     }
     
+    //get a unique cod trans
+	public function codiceUnivoco($codice, $numero = 7)
+	{
+		$res = $this->clear()->where(array("codice"=>sanitizeDb($codice)))->send();
+		
+		if (count($res) > 0)
+		{
+			$numero++;
+			$nUid = generateString($numero);
+			return $this->codiceUnivoco($nUid, $numero);
+		}
+		
+		return $codice;
+	}
+    
     public function insert()
     {
+		$this->values["alias"] = "";
+		
+		$this->checkAliasAll(0, true, false);
+		
 		$this->values["time_creazione"] = time();
 		
 		$this->settaDataScadenza();
 		
-		return parent::insert();
+		if (parent::insert())
+		{
+			if (isset($this->values["genitore_1"]))
+				$codice = encodeUrl(str_replace(" ","",htmlentitydecode($this->values["genitore_1"]))).$this->lId;
+			else if (isset($this->values["titolo"]))
+				$codice = encodeUrl(str_replace(" ","",htmlentitydecode($this->values["titolo"]))).$this->lId;
+			else
+				$codice = generateString(8).$this->lId;
+			
+			$codice = $this->codiceUnivoco($codice);
+			
+			$this->sValues(array(
+				"codice"	=>	$codice,
+			));
+			
+			$this->pUpdate($this->lId);
+		}
+    }
+    
+    public function update($id = null, $where = null)
+    {
+		$this->values["alias"] = "";
+		
+		$this->checkAliasAll((int)$id, true, false);
+		
+		return parent::update($id, $where);
     }
     
     public static function listeUtenteModel($idUser, $idLista = 0)
@@ -112,5 +156,19 @@ class ListeregaloModel extends GenericModel
 			return (int)$res[0]["aggregate"]["SOMMA"];
 		
 		return 0;
+    }
+    
+    public function getProdotti($idLista)
+    {
+		$lrp = new ListeregalopagesModel();
+		
+		return $lrp->clear()->select("*")
+			->inner(array("pagina"))
+			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->aWhere(array(
+				"liste_regalo_pages.id_lista_regalo"	=>	(int)$idLista,
+			))
+			->send();
     }
 }

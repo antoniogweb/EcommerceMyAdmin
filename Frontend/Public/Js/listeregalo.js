@@ -210,10 +210,10 @@ $(document).ready(function(){
 		}
 	});
 	
-// 	UIkit.util.on('#prodotti-lista', 'shown', function () {
-// 		aggiornaListaProdotti();
-// 	});
+	UIkit.util.on('#prodotti-lista', 'show', function () {
+		aggiornaListaProdotti();
+	});
 	
-	aggiornaListaProdotti();
+// 	aggiornaListaProdotti();
 	
 });

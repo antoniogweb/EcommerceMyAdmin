@@ -104,6 +104,8 @@ class BaseListeregaloController extends BaseController
 		
 		$data["lista"] = $lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
 		
+		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
+		
 		$this->append($data);
 		$this->load('gestisci');
 	}
@@ -116,11 +118,7 @@ class BaseListeregaloController extends BaseController
 		
 		$this->clean();
 		
-		$data["prodotti_lista"] = $this->m["PagesModel"]->clear()->select("*")
-			->inner("liste_regalo_pages")->on("pages.id_page = liste_regalo_pages.id_page")
-			->addJoinTraduzionePagina()->aWhere(array(
-				"liste_regalo_pages.id_lista_regalo"	=>	$clean["id"],
-			))->send();
+		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
 		
 		$this->append($data);
 		$this->load('prodotti');

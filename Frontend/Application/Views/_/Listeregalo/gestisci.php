@@ -19,22 +19,24 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <div class="uk-width-1-1 uk-flex uk-flex-middle uk-grid uk-grid-collapse" uk-grid>
     <div class="uk-width-1-2">
-        <?php echo gtext("Gestisci la tua lista");?>
+        <?php echo gtext("Codice della lista");?>: <span class="uk-label"><?php echo $lista["codice"];?></span>
     </div>
     <div class="uk-width-1-2 uk-text-right">
-		<a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-primary"><span uk-icon="icon: pencil"></span> <?php echo gtext("Modifica");?></a>
+		<a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span uk-icon="icon: pencil"></span> <?php echo gtext("Modifica");?></a>
     </div>
 </div>
 
 <div class="uk-margin-large-top">
-	<ul class="uk-subnav uk-subnav-pill" uk-switcher="animation: uk-animation-fade">
+	<ul class="uk-subnav uk-subnav-pill" uk-switcher="active:0">
 		<li><a href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="tag"></span> <?php echo gtext("Prodotti");?></a></li>
         <li><a href="#"><span class="uk-margin-small-right uk-visible@s" uk-icon="heart"></span> <?php echo gtext("Regali");?></a></li>
         <li><a href="#"><span class="uk-margin-small-right uk-visible@s" uk-icon="link"></span> <?php echo gtext("Invia link");?></a></li>
 	</ul>
 	
     <ul class="uk-switcher uk-margin">
-		<li id="prodotti-lista"></li>
+		<li id="prodotti-lista">
+			<?php include(tpf("/Listeregalo/prodotti.php"));?>
+		</li>
 		<li></li>
 		<li></li>
 	</ul>
