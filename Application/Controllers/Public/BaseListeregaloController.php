@@ -306,7 +306,7 @@ class BaseListeregaloController extends BaseController
 		
 		if (!ProdottiModel::isGiftCart($clean["id_page"]))
 		{
-			$idRigaLista = $this->m["ListeregaloModel"]->aggiungi($clean["id_lista"], $clean["id_page"], $clean["id_c"], $clean["quantity"]);
+			$idRigaLista = $this->m["ListeregalopagesModel"]->aggiungi($clean["id_lista"], $clean["id_page"], $clean["id_c"], $clean["quantity"]);
 			
 			if ($idRigaLista)
 			{

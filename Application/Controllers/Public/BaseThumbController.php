@@ -908,8 +908,6 @@ class BaseThumbController extends Controller {
 	
 	public function carrello($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	300,
 			'imgHeight'		=>	300,
@@ -921,22 +919,56 @@ class BaseThumbController extends Controller {
 			'vertAlign'		=>	'center',
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, "images/contents");
 	}
+	
+	public function listaregalo($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	300,
+			'imgHeight'		=>	300,
+			'defaultImage'	=>  null,
+			'backgroundColor' => "#FFF",
+			'useCache'		=>	true,
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+		);
+		
+		$this->genericthumb($fileName, $params, "images/contents");
+	}
+	
+// 	public function carrello($fileName)
+// 	{
+// 		$this->clean();
+// 		
+// 		$params = array(
+// 			'imgWidth'		=>	300,
+// 			'imgHeight'		=>	300,
+// 			'defaultImage'	=>  null,
+// 			'backgroundColor' => "#FFF",
+// 			'useCache'		=>	true,
+// 			'cropImage'		=>	'yes',
+// 			'horizAlign'	=>	'center',
+// 			'vertAlign'		=>	'center',
+// 		);
+// 		
+// 		$params = $this->caricaParametri($params);
+// 		
+// 		if (accepted($fileName))
+// 		{
+// 			if (strcmp($fileName,'') !== 0)
+// 			{
+// 				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+// 				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
+// 			}
+// 		}
+// 		else
+// 		{
+// 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+// 			$thumb->render('nofound.jpeg');
+// 		}
+// 	}
 	
 	public function valoreattributo($fileName)
 	{

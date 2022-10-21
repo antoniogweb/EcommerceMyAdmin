@@ -738,18 +738,20 @@ class CartModel extends GenericModel {
 				{
 					$this->values["codice"] = $datiCombinazione[0]["combinazioni"]["codice"];
 					
-					$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-					$elencoImmagini[] = "";
+					$this->values["immagine"] = ProdottiModel::immagineCarrello($clean["id_page"], $datiCombinazione[0]["combinazioni"]["id_c"], $datiCombinazione[0]["combinazioni"]["immagine"]);
 					
-					$this->values["immagine"] = in_array($datiCombinazione[0]["combinazioni"]["immagine"],$elencoImmagini) ? $datiCombinazione[0]["combinazioni"]["immagine"] : $elencoImmagini[0];
-					
-					if (v("immagini_separate_per_variante"))
-					{
-						$immagini = ImmaginiModel::immaginiCombinazione($datiCombinazione[0]["combinazioni"]["id_c"]);
-						
-						if (count($immagini) > 0)
-							$this->values["immagine"] = $immagini[0]["immagine"];
-					}
+// 					$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+// 					$elencoImmagini[] = "";
+// 					
+// 					$this->values["immagine"] = in_array($datiCombinazione[0]["combinazioni"]["immagine"],$elencoImmagini) ? $datiCombinazione[0]["combinazioni"]["immagine"] : $elencoImmagini[0];
+// 					
+// 					if (v("immagini_separate_per_variante"))
+// 					{
+// 						$immagini = ImmaginiModel::immaginiCombinazione($datiCombinazione[0]["combinazioni"]["id_c"]);
+// 						
+// 						if (count($immagini) > 0)
+// 							$this->values["immagine"] = $immagini[0]["immagine"];
+// 					}
 					
 					$this->values["peso"] = $datiCombinazione[0]["combinazioni"]["peso"];
 				}

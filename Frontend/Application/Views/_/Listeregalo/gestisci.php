@@ -7,7 +7,7 @@ $breadcrumb = array(
 	$lista["titolo"]	=>	"",
 );
 
-$titoloPagina = gtext("Liste nascita / regalo");
+$titoloPagina = gtext("Lista")." ".$lista["titolo"];
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -27,12 +27,12 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 </div>
 
 <div class="uk-margin-large-top">
-    <ul uk-switcher="animation: uk-animation-fade" class="uk-child-width-expand" uk-tab>
-        <li><a href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="tag"></span> <?php echo gtext("Prodotti");?></a></li>
+	<ul class="uk-subnav uk-subnav-pill" uk-switcher="animation: uk-animation-fade">
+		<li><a href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="tag"></span> <?php echo gtext("Prodotti");?></a></li>
         <li><a href="#"><span class="uk-margin-small-right uk-visible@s" uk-icon="heart"></span> <?php echo gtext("Regali");?></a></li>
         <li><a href="#"><span class="uk-margin-small-right uk-visible@s" uk-icon="link"></span> <?php echo gtext("Invia link");?></a></li>
-    </ul>
-    
+	</ul>
+	
     <ul class="uk-switcher uk-margin">
 		<li id="prodotti-lista"></li>
 		<li></li>

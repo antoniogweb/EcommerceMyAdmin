@@ -118,4 +118,27 @@ class ProdottiModel extends PagesModel {
 			"gift_card"	=>	1,
 		))->rowNumber();
 	}
+	
+	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)
+	{
+		$clean["id_page"] = (int)$idPage;
+		
+		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+		$elencoImmagini[] = "";
+		
+		if (!isset($immagineCombinazione))
+			$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
+		
+		$immagine = in_array($immagineCombinazione,$elencoImmagini) ? $immagineCombinazione : $elencoImmagini[0];
+		
+		if (v("immagini_separate_per_variante"))
+		{
+			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
+			
+			if (count($immagini) > 0)
+				$immagine = $immagini[0]["immagine"];
+		}
+		
+		return $immagine;
+	}
 }

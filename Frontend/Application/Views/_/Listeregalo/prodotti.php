@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-margin-medium-top box_righe_prodotti_lista">
+<div class="uk-margin-large-top box_righe_prodotti_lista">
 	<?php if (!User::$isMobile) { ?>
 	<div class="uk-visible@m">
 		<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
@@ -31,6 +31,8 @@
 	<?php } ?>
 	<?php foreach ($prodotti_lista as $p) {
 		$urlAliasProdotto = getUrlAlias($p["liste_regalo_pages"]["id_page"], $p["liste_regalo_pages"]["id_c"]);
+		$immagine = ProdottiModel::immagineCarrello($p["liste_regalo_pages"]["id_page"], $p["liste_regalo_pages"]["id_c"]);
+		$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 	?>
 	<div>
 		<div class="lista-riga uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
@@ -38,11 +40,17 @@
 				<div class="uk-hidden@m uk-text-left">
 					<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
 				</div>
+				<?php if ($immagine) { ?>
+				<a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><img width="100px" src="<?php echo $this->baseUrl."/thumb/listaregalo/".$immagine;?>" /></a>
+				<?php } ?>
 			</div>
 			<div class="uk-width-expand">
 				<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
 					<div class="uk-first-column">
 						<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><?php echo field($p,"title");?></a>
+						<?php if ($attributi) { ?>
+						<div class="uk-text-meta"><?php echo $attributi;?></div>
+						<?php } ?>
 					</div>
 					<div>
 						<?php

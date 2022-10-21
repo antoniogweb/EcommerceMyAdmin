@@ -100,64 +100,6 @@ class ListeregaloModel extends GenericModel
 		return $model->toList("id_lista_regalo", "titolo")->send();
     }
     
-    public function aggiungi($id_lista, $id_page, $id_c, $quantity)
-    {
-		$clean["id_lista"] = (int)$id_lista;
-		$clean["id_page"] = (int)$id_page;
-		$clean["quantity"] = abs((int)$quantity);
-		$clean["id_c"] = (int)$id_c;
-		
-		$idRigaLista = 0;
-		
-		if (!self::numeroListeUtente(User::$id, $clean["id_lista"]) || $clean["quantity"] <= 0)
-			return $idRigaLista;
-		
-		$p = new PagesModel();
-		
-		$res = $p->clear()->select("*")->inner(array("combinazioni"))->addJoinTraduzionePagina()->where(array(
-			"pages.id_page"		=>	$clean["id_page"],
-			"combinazioni.id_c"	=>	$clean["id_c"],
-		))->addWhereAttivo()->first();
-		
-		if (count($res) > 0)
-		{
-			$lrp = new ListeregalopagesModel();
-			
-			$rigaLista = $lrp->clear()->where(array(
-				"id_lista_regalo"	=>	$clean["id_lista"],
-				"id_page"	=>	$clean["id_page"],
-				"id_c"		=>	$clean["id_c"],
-			))->record();
-			
-			if (!empty($rigaLista))
-			{
-				$lrp->sValues(array(
-					"quantity"	=>	$rigaLista["quantity"] + $clean["quantity"],
-				));
-				
-				$lrp->update((int)$rigaLista["id_lista_regalo_page"]);
-				
-				$idRigaLista = (int)$rigaLista["id_lista_regalo_page"];
-			}
-			else
-			{
-				$lrp->sValues(array(
-					"id_lista_regalo"	=>	$clean["id_lista"],
-					"id_page"	=>	$clean["id_page"],
-					"id_c"		=>	$clean["id_c"],
-					"titolo"	=>	htmlentitydecode(field($res, "title")),
-					"quantity"	=>	$clean["quantity"],
-				));
-				
-				$lrp->insert();
-				
-				$idRigaLista = (int)$lrp->lId;
-			}
-		}
-		
-		return $idRigaLista;
-    }
-    
     public static function numeroProdotti($idLista)
     {
 		$lrp = new ListeregalopagesModel();

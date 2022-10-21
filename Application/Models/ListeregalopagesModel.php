@@ -66,6 +66,62 @@ class ListeregalopagesModel extends GenericModel
 		return false;
 	}
 	
+	public function aggiungi($id_lista, $id_page, $id_c, $quantity)
+    {
+		$clean["id_lista"] = (int)$id_lista;
+		$clean["id_page"] = (int)$id_page;
+		$clean["quantity"] = abs((int)$quantity);
+		$clean["id_c"] = (int)$id_c;
+		
+		$idRigaLista = 0;
+		
+		if (!ListeregaloModel::numeroListeUtente(User::$id, $clean["id_lista"]) || $clean["quantity"] <= 0)
+			return $idRigaLista;
+		
+		$p = new PagesModel();
+		
+		$res = $p->clear()->select("*")->inner(array("combinazioni"))->addJoinTraduzionePagina()->where(array(
+			"pages.id_page"		=>	$clean["id_page"],
+			"combinazioni.id_c"	=>	$clean["id_c"],
+		))->addWhereAttivo()->first();
+		
+		if (count($res) > 0)
+		{
+			$rigaLista = $this->clear()->where(array(
+				"id_lista_regalo"	=>	$clean["id_lista"],
+				"id_page"	=>	$clean["id_page"],
+				"id_c"		=>	$clean["id_c"],
+			))->record();
+			
+			if (!empty($rigaLista))
+			{
+				$this->sValues(array(
+					"quantity"	=>	$rigaLista["quantity"] + $clean["quantity"],
+				));
+				
+				$this->update((int)$rigaLista["id_lista_regalo_page"]);
+				
+				$idRigaLista = (int)$rigaLista["id_lista_regalo_page"];
+			}
+			else
+			{
+				$this->sValues(array(
+					"id_lista_regalo"	=>	$clean["id_lista"],
+					"id_page"	=>	$clean["id_page"],
+					"id_c"		=>	$clean["id_c"],
+					"titolo"	=>	htmlentitydecode(field($res, "title")),
+					"quantity"	=>	$clean["quantity"],
+				));
+				
+				$this->insert();
+				
+				$idRigaLista = (int)$this->lId;
+			}
+		}
+		
+		return $idRigaLista;
+    }
+    
 	public function set($id, $quantity)
 	{
 		$clean["id"] = (int)$id;
