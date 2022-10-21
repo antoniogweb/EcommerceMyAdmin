@@ -30,7 +30,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		<div><?php echo gtext("Tipo");?></div>
 		<div class="uk-width-1-5@m">
 			<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">
-				<div class="uk-text-center@s"><?php echo gtext("Vedi");?></div>
+				<div class="uk-text-center@s"><?php echo gtext("Link");?></div>
 				<div class="uk-text-center@s"><?php echo gtext("Gestisci");?></div>
 				<div class="uk-text-center@s"><?php echo gtext("Disattiva");?></div>
 			</div>
