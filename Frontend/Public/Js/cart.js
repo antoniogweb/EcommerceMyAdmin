@@ -978,6 +978,33 @@ function aggiornaCarrello(vai_la_checkout, incrementa)
 	});
 }
 
+function okQta(obj, valore, tipo)
+{
+	const lvalue = obj.attr('lvalue');
+	
+	if (typeof lvalue !== 'undefined' && lvalue !== false) {
+		
+		if (tipo == "min" && valore > lvalue)
+			return true;
+		else if (tipo == "max" && valore <= lvalue)
+			return true;
+		
+		return false;
+	}
+	
+	return true;
+}
+
+function checkPlusMinus(obj, valore, tipo)
+{
+	console.log(valore);
+	console.log(tipo);
+	if (okQta(obj, valore, tipo))
+		obj.removeClass("uk-text-meta");
+	else
+		obj.addClass("uk-text-meta");
+}
+
 $(document).ready(function(){
 	
 	$(".box_accessorio").each(function(){
@@ -1075,6 +1102,39 @@ $(document).ready(function(){
 				
 				aggiornaCarrello(undefined, true);
 			}
+		}
+	});
+	
+	$( "body" ).on( "click", ".generic_item_quantity_increase", function(e) {
+		
+		e.preventDefault();
+		
+		var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+		
+		var old_quantity = parseInt(t_input.val());
+		var new_quantity = old_quantity + 1;
+		
+		if (okQta($(this), new_quantity, "max"))
+		{
+			t_input.val(new_quantity);
+			checkPlusMinus($(this), (new_quantity + 1), "max");
+			checkPlusMinus($(this).next(), (new_quantity), "min");
+		}
+	});
+	
+	$( "body" ).on( "click", ".generic_lista_item_quantity_decrease", function(e) {
+		
+		e.preventDefault();
+		
+		var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+		
+		var t_current_quantity = parseInt(t_input.val());
+		
+		if (t_current_quantity > 1)
+		{
+			t_input.val( t_current_quantity - 1) ;
+			checkPlusMinus($(this), (t_current_quantity-2), "min");
+			checkPlusMinus($(this).prev(), (t_current_quantity), "max");
 		}
 	});
 	

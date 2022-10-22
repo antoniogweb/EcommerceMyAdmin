@@ -147,13 +147,20 @@ class ListeregaloModel extends GenericModel
 		return $model->toList("id_lista_regalo", "titolo")->send();
     }
     
-    public static function numeroProdotti($idLista)
+    public static function numeroProdotti($idLista, $idC = 0)
     {
 		$lrp = new ListeregalopagesModel();
 		
-		$res = $lrp->clear()->select("sum(quantity) as SOMMA")->where(array(
+		$lrp->clear()->select("sum(quantity) as SOMMA")->where(array(
 			"id_lista_regalo"	=>	(int)$idLista,
-		))->send();
+		));
+		
+		if ($idC)
+			$lrp->aWhere(array(
+				"id_c"	=>	(int)$idC,
+			));
+		
+		$res = $lrp->send();
 		
 		if (count($res) > 0)
 			return (int)$res[0]["aggregate"]["SOMMA"];
@@ -175,13 +182,13 @@ class ListeregaloModel extends GenericModel
 			->send();
     }
     
-    public static function numeroRegalati($idLista)
+    public static function numeroRegalati($idLista, $idC = 0)
     {
 		return 0;
     }
     
-    public static function numeroRimastiDaRegalare($idLista)
+    public static function numeroRimastiDaRegalare($idLista, $idC = 0)
     {
-		return self::numeroProdotti($idLista);
+		return self::numeroProdotti($idLista, $idC);
     }
 }

@@ -21,7 +21,7 @@
 						<?php echo gtext("Rimasti");?>
 					</div>
 					<div>
-						<?php echo gtext("Cancella");?>
+						<?php echo gtext("Elimina");?>
 					</div>
 				</div>
 			</div>
@@ -68,11 +68,11 @@
 						))));
 						?>
 					</div>
-					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo ListeregaloModel::numeroRegalati($idListaRegalo);?>
+					<div class="uk-text-small">
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);?>
 					</div>
-					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> <?php echo ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo);?>
+					<div class="uk-text-small">
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> <?php echo ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);?>
 					</div>
 					<div class="uk-visible@m">
 						<a class="uk-text-danger remove lista_item_delete_link" title="<?php echo gtext("Elimina il prodotto dalla lista", false);?>" href="#" uk-icon="icon: trash"></a>

@@ -12,7 +12,7 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 
 <div class="uk-text-left" uk-grid>
 	<div class="uk-width-1-1 uk-width-1-5@s">
-		aa
+		
 	</div>
 	<div class="uk-width-expand">
 		<?php include(tpf(ElementitemaModel::p("LISTA_REGALO_PRODOTTI","", array(

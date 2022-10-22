@@ -15,16 +15,13 @@
 						<?php echo gtext("Prezzo");?>
 					</div>
 					<div>
-						<?php echo gtext("Quantità desiderata");?>
+						<?php echo gtext("Quantità da acquistare");?>
 					</div>
 					<div>
-						<?php echo gtext("Regalati");?>
+						<?php echo gtext("Quantita desiderata");?>
 					</div>
 					<div>
-						<?php echo gtext("Rimasti");?>
-					</div>
-					<div>
-						<?php echo gtext("Cancella");?>
+						<?php echo gtext("Regala");?>
 					</div>
 				</div>
 			</div>
@@ -44,8 +41,8 @@
 		$immagine = ProdottiModel::immagineCarrello($p["liste_regalo_pages"]["id_page"], $p["liste_regalo_pages"]["id_c"]);
 		$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 		$idListaRegalo = $p["liste_regalo_pages"]["id_lista_regalo"];
-		$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo);
-		$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo);
+		$numeroDesiderati = ListeregaloModel::numeroProdotti($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
+		$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 	?>
 	<div>
 		<div class="lista-riga uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
@@ -68,14 +65,16 @@
 					<div class="uk-text-small">
 						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prezzo");?>:</span> <?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?> €
 					</div>
-					<div>
+					<div class="uk-text-small">
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita desiderata");?>:</span>
 						<?php
 						$idRigaCarrello = $p["liste_regalo_pages"]["id_lista_regalo_page"];
-						$quantitaRigaCarrello = $p["liste_regalo_pages"]["quantity"];
+						$quantitaRigaCarrello = 1;
 						$backColor = "#FFF";
-						$mobileCallbackClass = "prodotti_lista_item_mobile";
-						$increaseCallbackClass = "prodotti_lista_item_quantity_increase";
-						$decreaseCallbackClass = "prodotti_lista_item_quantity_decrease";
+						$mobileCallbackClass = "generic_item_mobile";
+						$increaseCallbackClass = "generic_item_quantity_increase";
+						$decreaseCallbackClass = "generic_lista_item_quantity_decrease";
+						$qtaMax = $qtaMaxSelect = $numeroRimastiDaRegalare;
 						
 						include(tpf(ElementitemaModel::p("INPUT_QUANTITA_CARRELLO","", array(
 							"titolo"	=>	"Campo input di modifica della quantità",
@@ -83,14 +82,11 @@
 						))));
 						?>
 					</div>
-					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> 
-					</div>
-					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> 
+					<div class="uk-text-small">
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita desiderata");?>:</span> <?php echo $numeroDesiderati;?>
 					</div>
 					<div class="uk-visible@m">
-						<a class="uk-text-danger remove lista_item_delete_link" title="<?php echo gtext("Elimina il prodotto dalla lista", false);?>" href="#" uk-icon="icon: trash"></a>
+						<a class="uk-button uk-button-primary uk-button-small" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
 					</div>
 				</div>
 			</div>
