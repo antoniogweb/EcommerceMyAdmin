@@ -254,10 +254,8 @@ class BaseListeregaloController extends BaseController
 		{
 			if (!$clean["id"])
 				$clean["id"] = (int)$this->m['ListeregaloModel']->lId;
-// 			if (!empty($ordine))
-// 				$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
-// 			else
-				$this->redirect("listeregalo/gestisci/".$clean["id"]);
+			
+			$this->redirect("listeregalo/gestisci/".$clean["id"]);
 		}
 		else
 		{

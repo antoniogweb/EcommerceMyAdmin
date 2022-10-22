@@ -12,6 +12,9 @@
 						<?php echo gtext("Descrizione");?>
 					</div>
 					<div>
+						<?php echo gtext("Prezzo");?>
+					</div>
+					<div>
 						<?php echo gtext("Quantità desiderata");?>
 					</div>
 					<div>
@@ -30,10 +33,19 @@
 	<hr>
 	<?php } ?>
 	<?php foreach ($prodotti_lista as $p) {
+		PagesModel::$IdCombinazione = $p["liste_regalo_pages"]["id_c"];
+		
+		include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
+			"titolo"	=>	"Genera le variabili del prodotto in elenco",
+			"percorso"	=>	"Elementi/Prodotti/Shop/VariabiliProdotto",
+		))));
+		
 		$urlAliasProdotto = getUrlAlias($p["liste_regalo_pages"]["id_page"], $p["liste_regalo_pages"]["id_c"]);
 		$immagine = ProdottiModel::immagineCarrello($p["liste_regalo_pages"]["id_page"], $p["liste_regalo_pages"]["id_c"]);
 		$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 		$idListaRegalo = $p["liste_regalo_pages"]["id_lista_regalo"];
+		$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo);
+		$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo);
 	?>
 	<div>
 		<div class="lista-riga uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
@@ -53,6 +65,9 @@
 						<div class="uk-text-meta"><?php echo $attributi;?></div>
 						<?php } ?>
 					</div>
+					<div class="uk-text-small">
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prezzo");?>:</span> <?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?> €
+					</div>
 					<div>
 						<?php
 						$idRigaCarrello = $p["liste_regalo_pages"]["id_lista_regalo_page"];
@@ -69,10 +84,10 @@
 						?>
 					</div>
 					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo ListeregaloModel::numeroRegalati($idListaRegalo);?>
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> 
 					</div>
 					<div>
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> <?php echo ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo);?>
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> 
 					</div>
 					<div class="uk-visible@m">
 						<a class="uk-text-danger remove lista_item_delete_link" title="<?php echo gtext("Elimina il prodotto dalla lista", false);?>" href="#" uk-icon="icon: trash"></a>
@@ -83,4 +98,4 @@
 	</div>
 	<hr>
 	<?php } ?>
-</div>
+</div> 

@@ -1932,4 +1932,26 @@ class BaseContenutiController extends BaseController
 	{
 		$this->redirect("");
 	}
+	
+	public function listaregalo($codice = "", $alias = "")
+	{
+		if (!v("attiva_liste_regalo") || !trim($codice))
+			$this->redirect("");
+		
+		$clean["codice"] = sanitizeAll($codice);
+		
+		$lista = $data["lista"] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array(
+			"codice"	=>	$clean["codice"],
+		))->first();
+		
+		if (count($lista) > 0)
+		{
+			$data["title"] = Parametri::$nomeNegozio . " - ".gtext("lista")." ".$lista["liste_regalo"]["titolo"];
+			
+			$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($lista["liste_regalo"]["id_lista_regalo"]);
+			
+			$this->append($data);
+			$this->load('lista-regalo');
+		}
+	}
 }

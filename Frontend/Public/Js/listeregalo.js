@@ -44,7 +44,7 @@ function aggiornaListaProdotti()
 		dataType: "html",
 		success: function(content){
 			
-			$("#prodotti-lista").html(content);
+			$(".prodotti-lista-box").html(content);
 			
 		}
 	});

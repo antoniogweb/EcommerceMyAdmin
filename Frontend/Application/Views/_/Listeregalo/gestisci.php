@@ -19,10 +19,14 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <div class="uk-width-1-1 uk-flex uk-flex-middle uk-grid uk-grid-collapse" uk-grid>
     <div class="uk-width-1-2">
-        <?php echo gtext("Codice della lista");?>: <span class="uk-label"><?php echo $lista["codice"];?></span>
+        <?php echo gtext("Codice della lista");?>: <span class="uk-label uk-text-lowercase"><?php echo $lista["codice"];?></span>
     </div>
     <div class="uk-width-1-2 uk-text-right">
-		<a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span uk-icon="icon: pencil"></span> <?php echo gtext("Modifica");?></a>
+		<ul class="uk-subnav uk-subnav-divider uk-flex-right">
+			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span uk-icon="icon: pencil"></span> <?php echo gtext("Modifica dati");?></a></li>
+		
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/lista-regalo/".$lista["codice"]."/".$lista["alias"].".html";?>" class="uk-button uk-button-link"><?php echo gtext("Vai alla lista");?> <span uk-icon="icon: arrow-right"></span></a></li>
+		</ul>
     </div>
 </div>
 
@@ -35,15 +39,14 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	
     <ul class="uk-switcher uk-margin">
 		<li id="prodotti-lista">
-			<?php include(tpf("/Listeregalo/prodotti.php"));?>
+			<div class="prodotti-lista-box uk-margin-large-top">
+				<?php include(tpf("/Listeregalo/prodotti.php"));?>
+			</div>
 		</li>
 		<li></li>
 		<li></li>
 	</ul>
 </div>
-
-
-
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 

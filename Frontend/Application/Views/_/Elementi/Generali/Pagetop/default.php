@@ -20,6 +20,9 @@
 					<?php echo isset($titoloPagina) ? $titoloPagina : cfield($datiCategoria, "title");?>
 					<?php if (isset($titoloAggiuntivo)) echo $titoloAggiuntivo;?>
 				</h1>
+				<?php if (isset($sottotitoloPagina)) { ?>
+				<h5 class="uk-margin-small-top"><?php echo $sottotitoloPagina;?></h5>
+				<?php } ?>
 				<?php } ?>
 				<?php if (isset($pages) && !isset($noNumeroProdotti)) { ?>
 				<div class="uk-text-meta uk-margin-xsmall-top">

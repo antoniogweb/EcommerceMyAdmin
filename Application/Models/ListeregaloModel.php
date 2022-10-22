@@ -74,9 +74,12 @@ class ListeregaloModel extends GenericModel
     
     public function insert()
     {
-		$this->values["alias"] = "";
+		if (!isset($this->values["alias"]))
+			$this->values["alias"] = "";
 		
 		$this->checkAliasAll(0, true, false);
+		
+		$this->values["alias"] = sanitizeAll($this->values["alias"]);
 		
 		$this->values["time_creazione"] = time();
 		
@@ -170,5 +173,15 @@ class ListeregaloModel extends GenericModel
 				"liste_regalo_pages.id_lista_regalo"	=>	(int)$idLista,
 			))
 			->send();
+    }
+    
+    public static function numeroRegalati($idLista)
+    {
+		return 0;
+    }
+    
+    public static function numeroRimastiDaRegalare($idLista)
+    {
+		return self::numeroProdotti($idLista);
     }
 }

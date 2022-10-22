@@ -50,6 +50,7 @@ class Route
 		'contenuti,documento',
 		'contenuti,accettacookie',
 		'contenuti,confermacontatto',
+		'contenuti,listaregalo',
 		'cart,index',
 		'cart,ajax',
 		'cart,add',
@@ -284,6 +285,7 @@ class Route
 		'contenuti/jsoncategoriefiglie/(.*)'	=>	'contenuti/jsoncategoriefiglie/${1}',
 		'contenuti/documento/(.*)'	=>	'contenuti/documento/${1}',
 		'contenuti/processaschedulazione/(.*)'	=>	'contenuti/processaschedulazione/${1}',
+		'lista-regalo/(.*)\/(.*)\.html'=>	'contenuti/listaregalo/${1}/${2}',
 		'conferma-contatto/(.*)'	=>	'contenuti/confermacontatto/${1}',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',

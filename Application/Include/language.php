@@ -28,6 +28,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 {
 	$t = new TraduzioniModel();
 	
+	$string = rtrim($string);
 	$string = str_replace("__"," ",$string);
 	
 	$tempLang = getLinguaIso();
