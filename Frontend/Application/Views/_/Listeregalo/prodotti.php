@@ -34,6 +34,7 @@
 		$immagine = ProdottiModel::immagineCarrello($p["liste_regalo_pages"]["id_page"], $p["liste_regalo_pages"]["id_c"]);
 		$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 		$idListaRegalo = $p["liste_regalo_pages"]["id_lista_regalo"];
+		$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 	?>
 	<div>
 		<div class="lista-riga uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
@@ -61,6 +62,7 @@
 						$mobileCallbackClass = "prodotti_lista_item_mobile";
 						$increaseCallbackClass = "prodotti_lista_item_quantity_increase";
 						$decreaseCallbackClass = "prodotti_lista_item_quantity_decrease";
+						$qtaMin = $numeroRegalati;
 						
 						include(tpf(ElementitemaModel::p("INPUT_QUANTITA_CARRELLO","", array(
 							"titolo"	=>	"Campo input di modifica della quantità",
@@ -69,7 +71,7 @@
 						?>
 					</div>
 					<div class="uk-text-small">
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);?>
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo $numeroRegalati;?>
 					</div>
 					<div class="uk-text-small">
 						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> <?php echo ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);?>

@@ -5,6 +5,12 @@
 ?>
 	<div class="uk-grid-medium uk-grid main_cart" uk-grid="">
 		<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
+			<?php
+			include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
+				"titolo"	=>	"Avviso quando hai una lista selezionata",
+				"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
+			))));
+			?>
 			<?php if (!checkQtaCartFull()) { ?>
 			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
 			<?php } ?>

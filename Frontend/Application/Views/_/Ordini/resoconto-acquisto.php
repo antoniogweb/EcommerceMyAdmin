@@ -4,10 +4,17 @@
 if (!isset($baseUrl))
 	$baseUrl = $this->baseUrl."/";
 ?>
-
 <?php if (strcmp($tipoOutput,"mail_al_negozio") === 0 || strcmp($tipoOutput,"mail_al_cliente") === 0) { ?>
 <h1><?php echo gtext("Resoconto dell'ordine");?></h1>
 <?php } ?>
+
+<?php
+$idListaRegalo = $ordine["id_lista_regalo"];
+include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
+	"titolo"	=>	"Avviso quando hai una lista selezionata",
+	"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
+))));
+?>
 
 <?php if (strcmp($tipoOutput,"web") === 0) { ?>
 <!--<div class="for_print">

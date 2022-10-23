@@ -113,9 +113,12 @@ class ListeregaloModel extends GenericModel
 		return parent::update($id, $where);
     }
     
-    public static function listeUtenteModel($idUser, $idLista = 0)
+    public static function listeUtenteModel($idUser = 0, $idLista = 0)
     {
-		$model = self::g()->where(array(
+		$model = self::g();
+		
+		if ($idUser)
+			$model->aWhere(array(
 			"id_user"	=>	(int)$idUser,
 		));
 		
@@ -127,24 +130,43 @@ class ListeregaloModel extends GenericModel
 		return $model;
     }
     
-    public static function numeroListeUtente($idUser, $idLista = 0)
+    public static function numeroListeUtente($idUser = 0, $idLista = 0)
     {
 		return self::listeUtenteModel($idUser, $idLista)->rowNumber();
     }
     
-    public static function listeUtente($idUser, $idLista = 0, $soloAttive = true)
+    public static function listeUtenteAttiveModel($idUser = 0, $idLista = 0)
     {
-		$model = self::listeUtenteModel($idUser, $idLista);
-		
+		return self::listeUtenteModel($idUser, $idLista)->aWhere(array(
+			"attivo"	=>	"Y",
+			"gte"	=>	array(
+				"data_scadenza"	=>	date("Y-m-d"),
+			),
+		));
+    }
+    
+    public static function listeUtente($idUser = 0, $idLista = 0, $soloAttive = true)
+    {
 		if ($soloAttive)
-			$model->aWhere(array(
-				"attivo"	=>	"Y",
-				"gte"	=>	array(
-					"data_scadenza"	=>	date("Y-m-d"),
-				),
-			));
+			$model = self::listeUtenteAttiveModel($idUser, $idLista);
+		else
+			$model = self::listeUtenteModel($idUser, $idLista);
 		
 		return $model->toList("id_lista_regalo", "titolo")->send();
+    }
+    
+    public static function scaduta($idLista)
+    {
+		return self::listeUtenteModel(0, $idLista)->aWhere(array(
+			"lt"	=>	array(
+				"data_scadenza"	=>	date("Y-m-d"),
+			),
+		))->rowNumber();
+    }
+    
+    public static function attiva($idLista)
+    {
+		return self::listeUtenteAttiveModel(0, $idLista)->rowNumber();
     }
     
     public static function numeroProdotti($idLista, $idC = 0)
@@ -190,5 +212,35 @@ class ListeregaloModel extends GenericModel
     public static function numeroRimastiDaRegalare($idLista, $idC = 0)
     {
 		return self::numeroProdotti($idLista, $idC);
+    }
+	
+	public static function getCookieIdLista()
+	{
+		if (isset($_COOKIE[v("nome_cookie_id_lista")]))
+		{
+			$idLista = (int)$_COOKIE[v("nome_cookie_id_lista")];
+			
+			if (self::attiva($idLista))
+			{
+				User::$idLista = $idLista;
+			}
+			else
+			{
+				setcookie(v("nome_cookie_id_lista"), "", time()-3600,"/");
+				unset($_COOKIE[v("nome_cookie_id_lista")]);
+			}
+		}
+	}
+	
+    public static function setCookieIdLista($idLista)
+    {
+		if (self::attiva((int)$idLista))
+		{
+			User::$idLista = (int)$idLista;
+			
+			$time = time() + v("tempo_durata_cookie_id_lista");
+			
+			Cookie::set(v("nome_cookie_id_lista"), User::$idLista, $time, "/", true, 'Lax');
+		}
     }
 }

@@ -1094,6 +1094,9 @@ class BaseOrdiniController extends BaseController
 						
 						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
 						
+						if (v("attiva_liste_regalo") && (int)User::$idLista)
+							$this->m['OrdiniModel']->values["id_lista_regalo"] = (int)User::$idLista;
+						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
 						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;
 						$this->m['OrdiniModel']->sanitize();

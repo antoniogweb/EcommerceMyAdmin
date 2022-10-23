@@ -1938,10 +1938,16 @@ class BaseContenutiController extends BaseController
 		if (!v("attiva_liste_regalo") || !trim($codice))
 			$this->redirect("");
 		
+		$data["loadJsListe"] = true;
+		
 		$clean["codice"] = sanitizeAll($codice);
 		
 		$lista = $data["lista"] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array(
 			"codice"	=>	$clean["codice"],
+			"attivo"	=>	"Y",
+			"gte"	=>	array(
+				"data_scadenza"	=>	date("Y-m-d"),
+			),
 		))->first();
 		
 		if (count($lista) > 0)
@@ -1953,5 +1959,7 @@ class BaseContenutiController extends BaseController
 			$this->append($data);
 			$this->load('lista-regalo');
 		}
+		else
+			$this->redirect("");
 	}
 }

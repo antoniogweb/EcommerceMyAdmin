@@ -44,7 +44,8 @@
 		$numeroDesiderati = ListeregaloModel::numeroProdotti($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 		$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 	?>
-	<div>
+	<div class="accessorio_principale">
+		<div class="id_combinazione uk-hidden"><?php echo $p["liste_regalo_pages"]["id_c"];?></div>
 		<div class="lista-riga uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
 			<div class="uk-first-column">
 				<div class="uk-hidden@m uk-text-left">
@@ -66,7 +67,7 @@
 						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prezzo");?>:</span> <?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?> €
 					</div>
 					<div class="uk-text-small">
-						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita desiderata");?>:</span>
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita da acquistare");?>:</span>
 						<?php
 						$idRigaCarrello = $p["liste_regalo_pages"]["id_lista_regalo_page"];
 						$quantitaRigaCarrello = 1;
@@ -85,8 +86,9 @@
 					<div class="uk-text-small">
 						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita desiderata");?>:</span> <?php echo $numeroDesiderati;?>
 					</div>
-					<div class="uk-visible@m">
-						<a class="uk-button uk-button-primary uk-button-small" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
+					<div>
+						<div class="uk-button uk-button-primary uk-button-small spinner uk-hidden" uk-spinner="ratio: .70"></div>
+						<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
 					</div>
 				</div>
 			</div>

@@ -35,7 +35,7 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
 
-<?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti")) { ?>
+<?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>listeregalo.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 

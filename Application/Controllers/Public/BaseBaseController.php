@@ -483,9 +483,6 @@ class BaseBaseController extends Controller
 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
 				$time = time() + v("durata_carrello_wishlist_coupon");
 				setcookie("cart_uid",User::$cart_uid,$time,"/");
-			
-// 				setcookie("cart_uid", "", time()-3600,"/");
-// 				$this->redirect("");
 			}
 		}
 		else
@@ -542,7 +539,10 @@ class BaseBaseController extends Controller
 			}
 		}
 		
-		if (CartModel::soloProdottiSenzaSpedizione())
+		if (v("attiva_liste_regalo"))
+			ListeregaloModel::getCookieIdLista();
+		
+		if (CartModel::soloProdottiSenzaSpedizione() || User::$idLista)
 			VariabiliModel::$valori["attiva_spedizione"] = 0;
 	}
 	

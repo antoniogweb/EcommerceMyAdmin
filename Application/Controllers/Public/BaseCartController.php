@@ -107,22 +107,6 @@ class BaseCartController extends BaseController
 		);
 		
 		$this->checkAggiuntaAlCarrello($id_page, $defaultErrorJson);
-// 		// Se non è un prodotto
-// 		if (!$id_page || !$this->m["PagesModel"]->isProdotto((int)$id_page))
-// 		{
-// 			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
-// 			
-// 			echo json_encode($defaultErrorJson);
-// 			
-// 			die();
-// 		}
-// 		
-// 		if (!v("ecommerce_online"))
-// 		{
-// 			echo json_encode($defaultErrorJson);
-// 			
-// 			die();
-// 		}
 		
 		if (v("carrello_monoprodotto"))
 		{
@@ -141,6 +125,10 @@ class BaseCartController extends BaseController
 		$clean["id_cart"] = (int)$id_cart;
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		$clean["json_pers"] = $this->request->post("json_pers","");
+		$clean["id_lista"] = $this->request->post("id_lista",0, "forceInt");
+		
+		if (v("attiva_liste_regalo"))
+			ListeregaloModel::setCookieIdLista($clean["id_lista"]);
 		
 		$c = new CombinazioniModel();
 		

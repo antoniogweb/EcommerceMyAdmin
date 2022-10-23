@@ -38,7 +38,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</div>
 </div>
 <hr>
-<?php foreach ($liste as $lista) { ?>
+<?php foreach ($liste as $lista) {
+	$listaScaduta = ListeregaloModel::scaduta($lista["liste_regalo"]["id_lista_regalo"]);
+?>
 <div class="uk-text-small uk-grid-collapse uk-child-width-expand@s uk-text-center@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="">
 	<div class="uk-first-column uk-text-left">
 		<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Nome");?>:</span> <?php echo $lista["liste_regalo"]["titolo"];?>
@@ -48,7 +50,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</div>
 	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Visualizzazioni");?>:</span></div>
 	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Creazione");?>:</span> <?php echo smartDate($lista["liste_regalo"]["data_creazione"]);?></div>
-	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Scadenza");?>:</span> <?php echo smartDate($lista["liste_regalo"]["data_scadenza"]);?></div>
+	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Scadenza");?>:</span>
+		<?php if ($listaScaduta) { ?><span class="uk-text-danger"><?php } else { ?><span><?php } ?> 
+		<?php echo smartDate($lista["liste_regalo"]["data_scadenza"]);?>
+		</span>
+	</div>
 	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipo");?>:</span> <?php echo gtext($lista["liste_regalo_tipi"]["titolo"]);?></div>
 	<div class="uk-width-1-5@m">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">

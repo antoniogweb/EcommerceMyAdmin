@@ -685,6 +685,7 @@ function actionAggiungiAlCarrello(principale, accessorio)
 	var id_c = 0;
 	var id_cart = 0;
 	var json_pers = "";
+	var id_lista = 0;
 	
 	if (accessorio == undefined)
 	{
@@ -694,8 +695,18 @@ function actionAggiungiAlCarrello(principale, accessorio)
 			id_cart = id_cart_pulsante;
 	}
 	
+	// Invio la lista se presente
+	if (typeof principale.attr('id-lista') !== typeof undefined && principale.attr('id-lista') !== false)
+		id_lista = principale.attr('id-lista');
+	
 	if (!principale.hasClass("aggiungi_al_carrello_semplice") && $(".accessorio_principale .id_combinazione").length > 0)
-		id_c = $(".accessorio_principale .id_combinazione").text();
+	{
+		if ($(".accessorio_principale .id_combinazione").length == 1)
+			id_c = $(".accessorio_principale .id_combinazione").text();
+		else
+			id_c = principale.closest(".accessorio_principale").find(".id_combinazione").text();
+	}
+		
 	
 	if (accessorio != undefined)
 	{
@@ -715,7 +726,9 @@ function actionAggiungiAlCarrello(principale, accessorio)
 	
 	if ($(".quantita_input").length > 0)
 		quantity = $(".quantita_input").val();
-
+	else if ($(".item_quantity").length > 0)
+		quantity = principale.closest(".accessorio_principale").find(".item_quantity").val();
+	
 	if (quantity == "")
 		quantity = 0;
 	
@@ -750,7 +763,8 @@ function actionAggiungiAlCarrello(principale, accessorio)
 		dataType: "json",
 		type: "POST",
 		data: {
-			json_pers: json_pers
+			json_pers: json_pers,
+			id_lista: id_lista
 		},
 		success: function(content){
 			clearTimeout(time);
@@ -997,8 +1011,6 @@ function okQta(obj, valore, tipo)
 
 function checkPlusMinus(obj, valore, tipo)
 {
-	console.log(valore);
-	console.log(tipo);
 	if (okQta(obj, valore, tipo))
 		obj.removeClass("uk-text-meta");
 	else

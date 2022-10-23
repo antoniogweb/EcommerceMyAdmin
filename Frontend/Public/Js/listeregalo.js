@@ -210,10 +210,24 @@ $(document).ready(function(){
 		}
 	});
 	
-	UIkit.util.on('#prodotti-lista', 'show', function () {
-		aggiornaListaProdotti();
+	$( "body" ).on( "click", ".tab_lista a", function(e) {
+		
+		e.preventDefault();
+		
+		var id = $(this).attr("href");
+		
+		$(".tab_lista > li").removeClass("uk-active");
+		$(".tab_lista_box > div").addClass("uk-hidden");
+		$(id).removeClass("uk-hidden");
+		$(this).parent().addClass("uk-active");
 	});
 	
-// 	aggiornaListaProdotti();
+	
+	$( "body" ).on( "click", ".aggiungi_al_carrello_lista", function(e) {
+		
+		e.preventDefault();
+		
+		actionAggiungiAlCarrello($(this));
+	});
 	
 });
