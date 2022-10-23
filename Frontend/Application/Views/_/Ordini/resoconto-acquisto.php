@@ -8,14 +8,6 @@ if (!isset($baseUrl))
 <h1><?php echo gtext("Resoconto dell'ordine");?></h1>
 <?php } ?>
 
-<?php
-$idListaRegalo = $ordine["id_lista_regalo"];
-include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
-	"titolo"	=>	"Avviso quando hai una lista selezionata",
-	"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
-))));
-?>
-
 <?php if (strcmp($tipoOutput,"web") === 0) { ?>
 <!--<div class="for_print">
 	<a href="#" class="stampa_pagina">Stampa</a>
@@ -42,6 +34,14 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 	</form>
 </div>-->
 <?php } ?>
+
+<?php
+$idListaRegalo = $ordine["id_lista_regalo"];
+include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
+	"titolo"	=>	"Avviso quando hai una lista selezionata",
+	"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
+))));
+?>
 
 <?php include(tpf("Elementi/Ordini/resoconto_acquisto_dettagli_generali.php"));?>
 
