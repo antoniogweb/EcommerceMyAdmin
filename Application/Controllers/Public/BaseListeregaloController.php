@@ -132,15 +132,13 @@ class BaseListeregaloController extends BaseController
 		
 		$result = "KO";
 		
-		if ($this->m["ListeregalopagesModel"]->checkAccesso($id))
+		if ($id && $this->m["ListeregalopagesModel"]->checkAccesso($id))
 		{
-			if ($id && $this->m["ListeregalopagesModel"]->elimina($clean["id"]))
+			$riga = $this->m["ListeregalopagesModel"]->selectId((int)$id);
+			
+			if (!empty($riga) && !ListeregaloModel::numeroRegalati($riga["id_lista_regalo"], $riga["id_c"]) && $this->m["ListeregalopagesModel"]->elimina($clean["id"]))
 			{
 				$result = "OK";
-			}
-			else
-			{
-				$result = "KO";
 			}
 		}
 		

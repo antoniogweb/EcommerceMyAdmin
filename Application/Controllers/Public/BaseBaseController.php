@@ -542,7 +542,7 @@ class BaseBaseController extends Controller
 		if (v("attiva_liste_regalo"))
 			ListeregaloModel::getCookieIdLista();
 		
-		if (CartModel::soloProdottiSenzaSpedizione() || User::$idLista)
+		if (CartModel::soloProdottiSenzaSpedizione())
 			VariabiliModel::$valori["attiva_spedizione"] = 0;
 	}
 	

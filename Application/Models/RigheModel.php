@@ -72,4 +72,12 @@ class RigheModel extends GenericModel {
 		return $titolo;
 	}
 	
+	public static function regalati($idLista, $idC)
+	{
+		return righeModel::g()->inner("orders")->on("orders.id_o = righe.id_o")->where(array(
+			"orders.id_lista_regalo"	=>	(int)$idLista,
+			"righe.id_c"				=>	(int)$idC
+		));
+	}
+	
 }

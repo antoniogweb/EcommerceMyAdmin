@@ -33,8 +33,8 @@ if (!isset($iconDown))
 	<div class="uk-flex uk-flex-middle uk-flex-center box_quantity uk-border-rounded">
 		<input rel="<?php echo $idRigaCarrello;?>" disabled class="uk-padding-remove uk-form-width-xsmall uk-input item_quantity" name="quantity" type="text" value="<?php echo $quantitaRigaCarrello;?>" min="1" style="max-width:25px;border:none;background-color:<?php echo $backColor;?> !important" />
 		<div class="uk-text-center">
-			<a lvalue="<?php echo $qtaMax;?>" style="display:block" class="<?php if ((int)$qtaMax === 1) { ?>uk-text-meta<?php } ?> <?php echo $increaseCallbackClass;?>" href="#"><span uk-icon="icon: <?php echo $iconUp;?>;ratio: 1"></span></a>
-			<a lvalue="<?php echo $qtaMin;?>" style="display:block" class="<?php if ((int)$quantitaRigaCarrello === 1) { ?>uk-text-meta<?php } ?> <?php echo $decreaseCallbackClass;?>" href="#"><span uk-icon="icon: <?php echo $iconDown;?>;ratio: 1"></span></a>
+			<a lvalue="<?php echo $qtaMax;?>" style="display:block" class="<?php if ((int)$qtaMax <= 1) { ?>uk-text-meta<?php } ?> <?php echo $increaseCallbackClass;?>" href="#"><span uk-icon="icon: <?php echo $iconUp;?>;ratio: 1"></span></a>
+			<a lvalue="<?php echo $qtaMin;?>" style="display:block" class="<?php if ((int)$quantitaRigaCarrello <= 1) { ?>uk-text-meta<?php } ?> <?php echo $decreaseCallbackClass;?>" href="#"><span uk-icon="icon: <?php echo $iconDown;?>;ratio: 1"></span></a>
 		</div>
 	</div>
 	<?php } ?>

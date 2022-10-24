@@ -755,54 +755,54 @@ class BaseOrdiniController extends BaseController
 		$this->getAppLogin();
 		
 		// Prendo valori da account, per app
-		if ($this->s['registered']->status['status'] === 'logged')
-		{
-			if (isset($_POST["datiFromAccount"]))
-			{
-				$tempDettagli = htmlentitydecodeDeep(User::$dettagli);
-				
-				$_POST["tipo_cliente"] = $tempDettagli["tipo_cliente"];
-				$_POST["nome"] = $tempDettagli["nome"];
-				$_POST["cognome"] = $tempDettagli["cognome"];
-				$_POST["ragione_sociale"] = $tempDettagli["ragione_sociale"];
-				$_POST["codice_fiscale"] = $tempDettagli["codice_fiscale"];
-				$_POST["p_iva"] = $tempDettagli["p_iva"];
-				$_POST["indirizzo"] = $tempDettagli["indirizzo"];
-				$_POST["cap"] = $tempDettagli["cap"];
-				$_POST["nazione"] = $tempDettagli["nazione"];
-				$_POST["provincia"] = $tempDettagli["provincia"];
-				$_POST["dprovincia"] = $tempDettagli["dprovincia"];
-				$_POST["citta"] = $tempDettagli["citta"];
-				$_POST["telefono"] = $tempDettagli["telefono"];
-				$_POST["email"] = $tempDettagli["username"];
-				$_POST["conferma_email"] = $tempDettagli["username"];
-				$_POST["pec"] = $tempDettagli["pec"];
-				$_POST["codice_destinatario"] = $tempDettagli["codice_destinatario"];
-				
-				if (isset($_POST["id_spedizione"]))
-				{
-					$clean["usaIdSpedizione"] = (int)$_POST["id_spedizione"];
-					
-					$spedizioneDaUsare = $this->m["SpedizioniModel"]->where(array(
-						"id_user"	=>	(int)User::$id,
-						"id_spedizione"	=>	$clean["usaIdSpedizione"],
-					))->record();
-					
-					if (!empty($spedizioneDaUsare))
-					{
-						$spedizioneDaUsare = htmlentitydecodeDeep($spedizioneDaUsare);
-						
-						$_POST["indirizzo_spedizione"] = $spedizioneDaUsare["indirizzo_spedizione"];
-						$_POST["cap_spedizione"] = $spedizioneDaUsare["cap_spedizione"];
-						$_POST["provincia_spedizione"] = $spedizioneDaUsare["provincia_spedizione"];
-						$_POST["dprovincia_spedizione"] = $spedizioneDaUsare["dprovincia_spedizione"];
-						$_POST["citta_spedizione"] = $spedizioneDaUsare["citta_spedizione"];
-						$_POST["telefono_spedizione"] = $spedizioneDaUsare["telefono_spedizione"];
-						$_POST["nazione_spedizione"] = $spedizioneDaUsare["nazione_spedizione"];
-					}
-				}
-			}
-		}
+// 		if ($this->s['registered']->status['status'] === 'logged')
+// 		{
+// 			if (isset($_POST["datiFromAccount"]))
+// 			{
+// 				$tempDettagli = htmlentitydecodeDeep(User::$dettagli);
+// 				
+// 				$_POST["tipo_cliente"] = $tempDettagli["tipo_cliente"];
+// 				$_POST["nome"] = $tempDettagli["nome"];
+// 				$_POST["cognome"] = $tempDettagli["cognome"];
+// 				$_POST["ragione_sociale"] = $tempDettagli["ragione_sociale"];
+// 				$_POST["codice_fiscale"] = $tempDettagli["codice_fiscale"];
+// 				$_POST["p_iva"] = $tempDettagli["p_iva"];
+// 				$_POST["indirizzo"] = $tempDettagli["indirizzo"];
+// 				$_POST["cap"] = $tempDettagli["cap"];
+// 				$_POST["nazione"] = $tempDettagli["nazione"];
+// 				$_POST["provincia"] = $tempDettagli["provincia"];
+// 				$_POST["dprovincia"] = $tempDettagli["dprovincia"];
+// 				$_POST["citta"] = $tempDettagli["citta"];
+// 				$_POST["telefono"] = $tempDettagli["telefono"];
+// 				$_POST["email"] = $tempDettagli["username"];
+// 				$_POST["conferma_email"] = $tempDettagli["username"];
+// 				$_POST["pec"] = $tempDettagli["pec"];
+// 				$_POST["codice_destinatario"] = $tempDettagli["codice_destinatario"];
+// 				
+// 				if (isset($_POST["id_spedizione"]))
+// 				{
+// 					$clean["usaIdSpedizione"] = (int)$_POST["id_spedizione"];
+// 					
+// 					$spedizioneDaUsare = $this->m["SpedizioniModel"]->where(array(
+// 						"id_user"	=>	(int)User::$id,
+// 						"id_spedizione"	=>	$clean["usaIdSpedizione"],
+// 					))->record();
+// 					
+// 					if (!empty($spedizioneDaUsare))
+// 					{
+// 						$spedizioneDaUsare = htmlentitydecodeDeep($spedizioneDaUsare);
+// 						
+// 						$_POST["indirizzo_spedizione"] = $spedizioneDaUsare["indirizzo_spedizione"];
+// 						$_POST["cap_spedizione"] = $spedizioneDaUsare["cap_spedizione"];
+// 						$_POST["provincia_spedizione"] = $spedizioneDaUsare["provincia_spedizione"];
+// 						$_POST["dprovincia_spedizione"] = $spedizioneDaUsare["dprovincia_spedizione"];
+// 						$_POST["citta_spedizione"] = $spedizioneDaUsare["citta_spedizione"];
+// 						$_POST["telefono_spedizione"] = $spedizioneDaUsare["telefono_spedizione"];
+// 						$_POST["nazione_spedizione"] = $spedizioneDaUsare["nazione_spedizione"];
+// 					}
+// 				}
+// 			}
+// 		}
 		
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");

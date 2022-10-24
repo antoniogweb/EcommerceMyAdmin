@@ -21,6 +21,9 @@
 						<?php echo gtext("Quantita desiderata");?>
 					</div>
 					<div>
+						<?php echo gtext("Regalati");?>
+					</div>
+					<div>
 						<?php echo gtext("Regala");?>
 					</div>
 				</div>
@@ -42,6 +45,7 @@
 		$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 		$idListaRegalo = $p["liste_regalo_pages"]["id_lista_regalo"];
 		$numeroDesiderati = ListeregaloModel::numeroProdotti($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
+		$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 		$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 	?>
 	<div class="accessorio_principale">
@@ -70,7 +74,7 @@
 						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita da acquistare");?>:</span>
 						<?php
 						$idRigaCarrello = $p["liste_regalo_pages"]["id_lista_regalo_page"];
-						$quantitaRigaCarrello = 1;
+						$quantitaRigaCarrello = ($numeroRimastiDaRegalare > 0) ? 1 : 0;
 						$backColor = "#FFF";
 						$mobileCallbackClass = "generic_item_mobile";
 						$increaseCallbackClass = "generic_item_quantity_increase";
@@ -86,9 +90,14 @@
 					<div class="uk-text-small">
 						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita desiderata");?>:</span> <?php echo $numeroDesiderati;?>
 					</div>
+					<div class="uk-text-small">
+						<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo $numeroRegalati;?>
+					</div>
 					<div>
+						<?php if ($numeroRimastiDaRegalare > 0) { ?>
 						<div class="uk-button uk-button-primary uk-button-small spinner uk-hidden" uk-spinner="ratio: .70"></div>
 						<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
+						<?php } ?>
 					</div>
 				</div>
 			</div>

@@ -127,7 +127,7 @@ class BaseCartController extends BaseController
 		$clean["json_pers"] = $this->request->post("json_pers","");
 		$clean["id_lista"] = $this->request->post("id_lista",0, "forceInt");
 		
-		if (v("attiva_liste_regalo"))
+		if (v("attiva_liste_regalo") && $clean["id_lista"])
 			ListeregaloModel::setCookieIdLista($clean["id_lista"]);
 		
 		$c = new CombinazioniModel();
@@ -361,5 +361,15 @@ class BaseCartController extends BaseController
 			"errori_elementi"	=>	CartelementiModel::haErrori() ? 1 : 0,
 			"res_elementi"		=>	CartelementiModel::asArray(CartelementiModel::getErroriElementi()),
 		));
+	}
+	
+	public function eliminacookielista()
+	{
+		$this->clean();
+		
+		if (!v("attiva_liste_regalo"))
+			die();
+		
+		ListeregaloModel::unsetCookieIdLista();
 	}
 }

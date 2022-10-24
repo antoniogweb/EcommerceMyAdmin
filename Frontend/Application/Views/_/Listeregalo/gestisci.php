@@ -44,11 +44,19 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="tab_lista_box">
 		<div id="prodotti-lista">
 			<div class="prodotti-lista-box uk-margin-large-top">
-				<?php include(tpf("/Listeregalo/prodotti.php"));?>
+				<?php
+				$regalati = false;
+				include(tpf("/Listeregalo/prodotti.php"));?>
 			</div>
 		</div>
-		<div id="regali-lista" class="uk-hidden">a</div>
-		<div id="link-lista" class="uk-hidden">b</div>
+		<div id="regali-lista" class="uk-hidden">
+			<div class="uk-margin-large-top">
+				<?php
+				$regalati = true;
+				include(tpf("/Listeregalo/prodotti.php"));?>
+			</div>
+		</div>
+		<div id="link-lista" class="uk-hidden"></div>
 	</div>
 </div>
 <?php

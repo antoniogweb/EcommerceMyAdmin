@@ -10,7 +10,7 @@ if (!isset($ukdropdown))
 			<a href="<?php echo $this->baseUrl."/area-riservata";?>" title="<?php echo gtext("Area riservata", false);?>"><?php echo gtext("Area riservata");?></a>
 		</li>
 		<li>
-			<a href="<?php echo $this->baseUrl."/liste-regalo";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
+			<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 		</li>
 		<?php if (v("attiva_liste_regalo")) { ?>
 		<li>

@@ -204,14 +204,24 @@ class ListeregaloModel extends GenericModel
 			->send();
     }
     
-    public static function numeroRegalati($idLista, $idC = 0)
+    public static function numeroRegalati($idLista, $idC)
     {
+		$res = RigheModel::regalati($idLista, $idC)->select("sum(quantity) as SOMMA")->send();
+		
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
 		return 0;
     }
     
     public static function numeroRimastiDaRegalare($idLista, $idC = 0)
     {
-		return self::numeroProdotti($idLista, $idC);
+		$numero = (self::numeroProdotti($idLista, $idC) - self::numeroRegalati($idLista, $idC));
+		
+		if ($numero < 0)
+			$numero = 0;
+		
+		return $numero;
     }
 	
 	public static function getCookieIdLista()
@@ -232,6 +242,16 @@ class ListeregaloModel extends GenericModel
 		}
 	}
 	
+	public static function unsetCookieIdLista()
+	{
+		if (isset($_COOKIE[v("nome_cookie_id_lista")]))
+		{
+			setcookie(v("nome_cookie_id_lista"), "", time()-3600,"/");
+			unset($_COOKIE[v("nome_cookie_id_lista")]);
+			User::$idLista = 0;
+		}
+	}
+	
     public static function setCookieIdLista($idLista)
     {
 		if (self::attiva((int)$idLista))
@@ -242,5 +262,10 @@ class ListeregaloModel extends GenericModel
 			
 			Cookie::set(v("nome_cookie_id_lista"), User::$idLista, $time, "/", true, 'Lax');
 		}
+    }
+    
+    public static function getRigheRegalate($idLista, $idC)
+    {
+		return RigheModel::regalati($idLista, $idC)->select("orders.*")->groupBy("orders.id_o")->send();
     }
 }

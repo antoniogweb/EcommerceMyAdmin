@@ -777,6 +777,24 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".disattiva_acquisto_lista", function(e){
+		e.preventDefault();
+		
+		$.ajaxQueue({
+			url: baseUrl + "/carrello/eliminacookielista",
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				if ($(".btn_completa_acquisto").length > 0)
+					location.href = location.href;
+				else
+					aggiornaCarrello(undefined, true);
+			}
+		});
+	});
+	
+	
 	$(".showcoupon").click(function(e){
 		e.preventDefault();
 		

@@ -1146,22 +1146,30 @@ class CartModel extends GenericModel {
 	// restituisce true se il carrello ha solo prodotti senza spedizione
 	public static function soloProdottiSenzaSpedizione()
 	{
-		if (!v("attiva_gift_card"))
-			return false;
-		
-		$c = new CartModel();
-		
-		if ($c->numberOfItems() > 0)
+		if (v("attiva_liste_regalo"))
 		{
-			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+			ListeregaloModel::getCookieIdLista();
 			
-			$numeroNoGiftCard = $c->clear()->where(array(
-				"cart_uid"	=>	$clean["cart_uid"],
-				"gift_card"	=>	0,
-			))->rowNumber();
-			
-			if ((int)$numeroNoGiftCard === 0)
+			if (User::$idLista)
 				return true;
+		}
+		
+		if (v("attiva_gift_card"))
+		{
+			$c = new CartModel();
+			
+			if ($c->numberOfItems() > 0)
+			{
+				$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+				
+				$numeroNoGiftCard = $c->clear()->where(array(
+					"cart_uid"	=>	$clean["cart_uid"],
+					"gift_card"	=>	0,
+				))->rowNumber();
+				
+				if ((int)$numeroNoGiftCard === 0)
+					return true;
+			}
 		}
 		
 		return false;
