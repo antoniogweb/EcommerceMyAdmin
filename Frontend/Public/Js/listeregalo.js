@@ -119,6 +119,12 @@ $(document).ready(function(){
 		
 	});
 	
+	$( "body" ).on( "change", ".prodotti_lista_item_mobile", function(e) {
+		
+		aggiornaQuantitaLista();
+		
+	});
+	
 	$( "body" ).on( "click", ".prodotti_lista_item_quantity_increase", function(e) {
 		
 		e.preventDefault();

@@ -9,7 +9,7 @@ $lista = ListeregaloModel::listeUtenteModel(0, $idLista)->record();?>
 	<a title="<?php echo gtext("Disattiva l'acquisto nella lista");?>"  class="disattiva_acquisto_lista uk-position-small uk-position-top-right uk-text-danger uk-flex uk-flex-middle uk-text-small" href="#"><span uk-icon="icon: close; ratio: 1"></span></a>
 	<?php } ?>
 	<dl class="uk-description-list uk-text-left uk-margin-remove-top">
-		<dt class="uk-text-primary">
+		<dt class="uk-text-danger">
 			<?php if (isset($idListaRegalo)) { ?>
 			<?php echo gtext("Attenzione: hai acquistato i seguenti prodotti partendo dalla lista");?>
 			<?php } else { ?>

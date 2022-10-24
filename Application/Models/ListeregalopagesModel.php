@@ -58,6 +58,16 @@ class ListeregalopagesModel extends GenericModel
 		return false;
     }
     
+    public function deletable($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && !ListeregaloModel::numeroRegalati($record["id_lista_regalo"], $record["id_c"]))
+			return true;
+		
+		return false;
+    }
+    
     public function elimina($id)
 	{
 		if ($this->checkAccesso((int)$id))

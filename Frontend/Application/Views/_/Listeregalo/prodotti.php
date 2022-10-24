@@ -1,8 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="box_righe_prodotti_lista">
+<div <?php if (!$regalati) { ?>class="box_righe_prodotti_lista"<?php } ?>>
 	<?php if (!User::$isMobile) { ?>
 	<div class="uk-visible@m">
-		<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
+		<div class="uk-text-emphasis uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-center">
 				<?php echo gtext("Prodotto");?>
 			</div>

@@ -119,6 +119,7 @@ class BaseListeregaloController extends BaseController
 		$this->clean();
 		
 		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
+		$data["regalati"] = false;
 		
 		$this->append($data);
 		$this->load('prodotti');
@@ -134,12 +135,8 @@ class BaseListeregaloController extends BaseController
 		
 		if ($id && $this->m["ListeregalopagesModel"]->checkAccesso($id))
 		{
-			$riga = $this->m["ListeregalopagesModel"]->selectId((int)$id);
-			
-			if (!empty($riga) && !ListeregaloModel::numeroRegalati($riga["id_lista_regalo"], $riga["id_c"]) && $this->m["ListeregalopagesModel"]->elimina($clean["id"]))
-			{
+			if ($this->m["ListeregalopagesModel"]->elimina($clean["id"]))
 				$result = "OK";
-			}
 		}
 		
 		echo $result;

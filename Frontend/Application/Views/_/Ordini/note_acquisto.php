@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (isset($values["note"])) { ?>
+<?php if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "note")) { ?>
 <div class="uk-margin">
 	<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Note d'acquisto")?></h2>
 	
