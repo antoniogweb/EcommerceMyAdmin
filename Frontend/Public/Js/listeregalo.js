@@ -228,12 +228,43 @@ $(document).ready(function(){
 		$(this).parent().addClass("uk-active");
 	});
 	
-	
 	$( "body" ).on( "click", ".aggiungi_al_carrello_lista", function(e) {
 		
 		e.preventDefault();
 		
 		actionAggiungiAlCarrello($(this));
+	});
+	
+	$( "body" ).on( "submit", ".form_invia_link", function(e) {
+		
+		e.preventDefault();
+		
+		var url = $(this).attr("action");
+		var valori = $(this).serialize();
+		
+		var that = $(this);
+		
+		$.ajaxQueue({
+			url: url,
+			async: true,
+			cache:false,
+			type: "POST",
+			data: valori,
+			dataType: "json",
+			success: function(content){
+				
+				$(".invia_link_notice").html(content.errore);
+				
+				evidenziaErrori(true, that);
+				
+				if (content.result == "OK")
+				{
+					$(".form_invia_link [name='nome']").val("");
+					$(".form_invia_link [name='cognome']").val("");
+					$(".form_invia_link [name='email']").val("");
+				}
+			}
+		});
 	});
 	
 });

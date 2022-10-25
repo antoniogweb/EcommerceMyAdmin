@@ -56,7 +56,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				include(tpf("/Listeregalo/prodotti.php"));?>
 			</div>
 		</div>
-		<div id="link-lista" class="uk-hidden"></div>
+		<div id="link-lista" class="uk-hidden">
+			<div class="uk-margin-large-top">
+				<?php include(tpf("/Listeregalo/link.php"));?>
+			</div>
+		</div>
 	</div>
 </div>
 <?php

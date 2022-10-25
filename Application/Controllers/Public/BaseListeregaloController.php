@@ -40,6 +40,7 @@ class BaseListeregaloController extends BaseController
 		
 		$this->model("ListeregalotipiModel");
 		$this->model("ListeregalopagesModel");
+		$this->model("ListeregalolinkModel");
 		
 		$data["isAreaRiservata"] = true;
 		
@@ -168,8 +169,6 @@ class BaseListeregaloController extends BaseController
 			}
 		}
 		
-// 		print_r($arrayIdQuantity);
-		
 		foreach ($arrayIdQuantity as $temp)
 		{
 			$this->m["ListeregalopagesModel"]->set($temp[0], $temp[1]);
@@ -177,6 +176,42 @@ class BaseListeregaloController extends BaseController
 		
 		echo json_encode(array(
 			"result"	=>	"OK"
+		));
+	}
+	
+	public function invialink($id = 0)
+	{
+		$this->clean();
+		
+		$clean["id"] = $data["id"] = (int)$id;
+		
+		$result = "KO";
+		$notice = "";
+		
+		if (ListeregaloModel::numeroListeUtente(User::$id, $clean["id"]))
+		{
+			$campi = "nome,cognome,email";
+			
+			$this->m['ListeregalolinkModel']->setFields($campi,'sanitizeAll');
+			$this->m['ListeregalolinkModel']->setValue("id_lista_regalo", $clean["id"]);
+			
+			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkNotEmpty',$campi);
+			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo email</b>")."<div class='evidenzia'>class_email</div>");
+			
+			$this->m['ListeregalolinkModel']->updateTable('insert',0);
+			
+			if ($this->m['ListeregalolinkModel']->queryResult)
+			{
+				$result = "OK";
+				$notice = "<div class='".v("alert_success_class")."'>".gtext("Il link è stato correttamente inviato alla mail indicata")."</div>";
+			}
+			else
+				$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['ListeregalolinkModel']->notice;
+		}
+		
+		echo json_encode(array(
+			"result"	=>	$result,
+			"errore"	=>	$notice,
 		));
 	}
 	
