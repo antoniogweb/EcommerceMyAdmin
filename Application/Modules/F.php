@@ -92,30 +92,14 @@ class F
 			$basePath = LIBRARY;
 		
 		return createFolderFull($relativePath, $basePath);
+	}
+	
+	public static function getNazioneUrl($nazione)
+	{
+		if (!$nazione)
+			$nazione = v("nazione_default");
 		
-// 		$relativePath = rtrim($relativePath,"/");
-// 		
-// 		if (!$basePath)
-// 			$basePath = LIBRARY;
-// 		
-// 		$relativePathArray = explode("/", $relativePath);
-// 		
-// 		$path = $basePath;
-// 		
-// 		foreach ($relativePathArray as $rPath)
-// 		{
-// 			$path .= "/$rPath";
-// 			
-// 			if (@!is_dir($path))
-// 				@mkdir($path);
-// 			
-// 			$fp = @fopen($path . "/index.html", 'w');
-// 			fclose($fp);
-// 			
-// 			$fp = @fopen($path . "/.htaccess", 'w');
-// 			fwrite($fp, 'deny from all');
-// 			fclose($fp);
-// 		}
+		return v("attiva_nazione_nell_url") ? "_".strtolower($nazione) : "";
 	}
 	
 	public static function blank($string)

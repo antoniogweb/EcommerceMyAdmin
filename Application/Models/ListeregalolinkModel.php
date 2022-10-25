@@ -78,4 +78,44 @@ class ListeregalolinkModel extends GenericModel
 		
 		return false;
     }
+    
+	public function inviaMail($id)
+    {
+		$record = $this->clear()->select("*")
+			->inner(array("lista"))
+			->inner("regusers")->on("regusers.id_user = liste_regalo.id_user")
+			->where(array(
+					"id_lista_regalo_link"	=>	(int)$id,
+				))->first();
+		
+		if (!empty($record))
+		{
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($record["liste_regalo_link"]["email"]),
+				"oggetto"	=>	"Nuova lista regalo condivisa!",
+				"tipologia"	=>	"LINK LISTA REGALO",
+				"tabella"	=>	"liste_regalo_link",
+				"id_elemento"	=>	(int)$id,
+				"testo_path"	=>	"Elementi/Mail/mail_link_lista_regalo.php",
+				"array_variabili_tema"	=>	array(
+					"NOME_CREATORE_LISTA"	=>	self::getNominativo($record["regusers"]),
+					"EMAIL_CREATORE_LISTA"	=>	$record["regusers"]["username"],
+					"LINK_LISTA"	=>	Domain::$publicUrl."/".$record["regusers"]["lingua"].F::getNazioneUrl($record["regusers"]["nazione_navigazione"])."/".ListeregaloModel::getUrlAlias($record["liste_regalo"]["id_lista_regalo"]),
+				),
+			));
+			
+			if ($res)
+			{
+				$this->sValues(array(
+					"inviato"	=>	1,
+				));
+				
+				$this->update((int)$id);
+			}
+			
+			return true;
+		}
+		
+		return false;
+    }
 }

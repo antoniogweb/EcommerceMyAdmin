@@ -60,7 +60,7 @@
 				</div>
 				<div class="uk-width-expand">
 					<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
-						<div class="uk-first-column">
+						<div class="uk-first-column uk-text-small uk-text-emphasis">
 							<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><?php echo field($p,"title");?></a>
 							<?php if ($attributi) { ?>
 							<div class="uk-text-meta"><?php echo $attributi;?></div>

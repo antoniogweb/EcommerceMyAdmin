@@ -152,6 +152,8 @@ class MailordiniModel extends GenericModel
 		$arrayVariabili = isset($params["array_variabili"]) ? $params["array_variabili"] : null;
 		$arrayVariabiliTema = isset($params["array_variabili_tema"]) ? $params["array_variabili_tema"] :  array();
 		$allegati = (isset($params["allegati"]) && is_array($params["allegati"])) ? $params["allegati"] : array();
+		$tabella = isset($params["tabella"]) ? $params["tabella"] : "";
+		$idElemento = isset($params["id_elemento"]) ? $params["id_elemento"] : 0;
 		
 		self::$variabiliTema = $arrayVariabiliTema;
 		
@@ -286,6 +288,8 @@ class MailordiniModel extends GenericModel
 					"tipo"		=>	$tipo,
 					"id_evento"	=>	$idEvento,
 					"bcc"		=>	count($arrayBcc) > 0 ? implode(",",$arrayBcc) : "",
+					"tabella"	=>	$tabella,
+					"id_elemento"	=>	$idElemento,
 				));
 				
 				if ($mo->insert())

@@ -50,6 +50,25 @@ function aggiornaListaProdotti()
 	});
 }
 
+function aggiornaListaLink()
+{
+	var id_lista = $("#id_lista_regalo").text();
+	
+	var url = baseUrl + "/listeregalo/elencolink/" + id_lista;
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		success: function(content){
+			
+			$(".box_elenco_link_inviati").html(content);
+			
+		}
+	});
+}
+
 function aggiornaQuantitaLista()
 {
 	ok_aggiorna_prodotti_lista = false;
@@ -262,7 +281,13 @@ $(document).ready(function(){
 					$(".form_invia_link [name='nome']").val("");
 					$(".form_invia_link [name='cognome']").val("");
 					$(".form_invia_link [name='email']").val("");
+					
+					aggiornaListaLink();
 				}
+				
+				setTimeout(function(){
+					$(".btn_submit_form").removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+				}, 300);
 			}
 		});
 	});

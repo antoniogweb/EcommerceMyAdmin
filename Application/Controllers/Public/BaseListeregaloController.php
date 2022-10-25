@@ -106,6 +106,7 @@ class BaseListeregaloController extends BaseController
 		$data["lista"] = $lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
 		
 		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
+		$data["link_lista"] = $this->m["ListeregaloModel"]->getLink($clean["id"]);
 		
 		$this->append($data);
 		$this->load('gestisci');
@@ -124,6 +125,20 @@ class BaseListeregaloController extends BaseController
 		
 		$this->append($data);
 		$this->load('prodotti');
+	}
+	
+	public function elencolink($id = 0)
+	{
+		$clean["id"] = $data["id"] = (int)$id;
+		
+		$this->checkLista($id);
+		
+		$this->clean();
+		
+		$data["link_lista"] = $this->m["ListeregaloModel"]->getLink($clean["id"]);
+		
+		$this->append($data);
+		$this->load('link_inviati');
 	}
 	
 	public function elimina($id = 0)
@@ -203,7 +218,11 @@ class BaseListeregaloController extends BaseController
 			if ($this->m['ListeregalolinkModel']->queryResult)
 			{
 				$result = "OK";
-				$notice = "<div class='".v("alert_success_class")."'>".gtext("Il link è stato correttamente inviato alla mail indicata")."</div>";
+				
+				if ($this->m['ListeregalolinkModel']->inviaMail($this->m['ListeregalolinkModel']->lId))
+					$notice = "<div class='".v("alert_success_class")."'>".gtext("Il link è stato correttamente inviato alla mail indicata")."</div>";
+				else
+					$notice = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, errore nell'invio della mail. Si prega di riprovare.")."</div>";
 			}
 			else
 				$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['ListeregalolinkModel']->notice;

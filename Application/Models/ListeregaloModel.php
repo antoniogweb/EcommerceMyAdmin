@@ -204,6 +204,15 @@ class ListeregaloModel extends GenericModel
 			->send();
     }
     
+    public function getLink($idLista)
+    {
+		$lrl = new ListeregalolinkModel();
+		
+		return $lrl->clear()->aWhere(array(
+				"id_lista_regalo"	=>	(int)$idLista,
+			))->orderBy("id_lista_regalo_link desc")->send();
+    }
+    
     public static function numeroRegalati($idLista, $idC)
     {
 		$res = RigheModel::regalati($idLista, $idC)->select("sum(quantity) as SOMMA")->send();
@@ -267,5 +276,15 @@ class ListeregaloModel extends GenericModel
     public static function getRigheRegalate($idLista, $idC)
     {
 		return RigheModel::regalati($idLista, $idC)->select("orders.*")->groupBy("orders.id_o")->send();
+    }
+    
+    public static function getUrlAlias($idLista)
+    {
+		$lista = self::g()->selectId((int)$idLista);
+		
+		if (!empty($lista))
+			return v("alias_pagina_lista")."/".$lista["codice"]."/".$lista["alias"].".html";
+		
+		return "";
     }
 }

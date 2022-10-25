@@ -28,7 +28,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span uk-icon="icon: pencil"></span> <?php echo gtext("Modifica dati");?></a></li>
 			
 			<?php if (ListeregaloModel::attiva($lista["id_lista_regalo"])) { ?>
-			<li><a target="_blank" href="<?php echo $this->baseUrl."/lista-regalo/".$lista["codice"]."/".$lista["alias"].".html";?>" class="uk-button uk-button-link"><?php echo gtext("Vai alla lista");?> <span uk-icon="icon: arrow-right"></span></a></li>
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" class="uk-button uk-button-link"><?php echo gtext("Vai alla lista");?> <span uk-icon="icon: arrow-right"></span></a></li>
 			<?php } ?>
 		</ul>
     </div>
