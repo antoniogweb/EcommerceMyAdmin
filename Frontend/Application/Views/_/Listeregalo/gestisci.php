@@ -36,13 +36,13 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <div class="uk-margin-large-top">
 	<ul class="uk-subnav uk-subnav-pill tab_lista">
-		<li class="uk-active"><a href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="tag"></span> <?php echo gtext("Prodotti");?></a></li>
+		<li><a class="link_prodotti" href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="tag"></span> <?php echo gtext("Prodotti");?></a></li>
         <li><a href="#regali-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="heart"></span> <?php echo gtext("Regali");?></a></li>
-        <li><a href="#link-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="link"></span> <?php echo gtext("Invia link");?></a></li>
+        <li><a class="link_lista" href="#link-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="link"></span> <?php echo gtext("Invia link");?></a></li>
 	</ul>
 	
 	<div class="tab_lista_box">
-		<div id="prodotti-lista">
+		<div id="prodotti-lista" class="uk-hidden">
 			<div class="prodotti-lista-box uk-margin-large-top">
 				<?php
 				$regalati = false;

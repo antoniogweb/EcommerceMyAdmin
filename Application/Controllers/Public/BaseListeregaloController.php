@@ -194,6 +194,30 @@ class BaseListeregaloController extends BaseController
 		));
 	}
 	
+	public function invianuovamentelink($idLink = 0)
+	{
+		$this->clean();
+		
+		$clean["id"] = $data["id"] = (int)$idLink;
+		
+		$result = "KO";
+		$notice = gtext("Errore nell'invio");
+		
+		if ($this->m['ListeregalolinkModel']->checkAccesso($clean["id"]))
+		{
+			if ($this->m['ListeregalolinkModel']->inviaMail($clean["id"]))
+			{
+				$result = "OK";
+				$notice = gtext("Link correttamente inviato");
+			}
+		}
+		
+		echo json_encode(array(
+			"result"	=>	$result,
+			"errore"	=>	$notice,
+		));
+	}
+	
 	public function invialink($id = 0)
 	{
 		$this->clean();

@@ -59,7 +59,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-width-1-5@m">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">
 			<div class="uk-text-center@s">
-				<a class=" uk-padding-small" title="<?php echo gtext("Link",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: link"></a>
+				<a class=" uk-padding-small" title="<?php echo gtext("Link",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>#link-lista" uk-icon="icon: link"></a>
 			</div>
 			<div class="uk-text-center@s">
 				<a class="uk-padding-small" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: pencil"></a>

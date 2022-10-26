@@ -247,6 +247,19 @@ $(document).ready(function(){
 		$(this).parent().addClass("uk-active");
 	});
 	
+	var hash = document.URL.substr(document.URL.indexOf('#')+1);
+	
+	if (hash == "link-lista" && $(".link_lista").length > 0)
+	{
+		$(".link_lista").trigger("click");
+	}
+	else
+	{
+		$(".link_prodotti").trigger("click");
+	}
+	
+	console.log(hash);
+	
 	$( "body" ).on( "click", ".aggiungi_al_carrello_lista", function(e) {
 		
 		e.preventDefault();
@@ -290,6 +303,31 @@ $(document).ready(function(){
 				}, 300);
 			}
 		});
+	});
+	
+	$( "body" ).on( "click", ".invia_nuovamente_link", function(e) {
+		
+		e.preventDefault();
+		
+		var url = $(this).attr("href");
+		
+		$.ajaxQueue({
+			url: url,
+			async: true,
+			cache:false,
+			dataType: "json",
+			success: function(content){
+				
+				alert(content.errore);
+				
+				aggiornaListaLink();
+				
+				setTimeout(function(){
+					$(".btn_submit_form").removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+				}, 300);
+			}
+		});
+		
 	});
 	
 });

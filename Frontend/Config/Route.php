@@ -156,6 +156,7 @@ class Route
 		'listeregalo,aggiornaprodotti',
 		'listeregalo,invialink',
 		'listeregalo,elencolink',
+		'listeregalo,invianuovamentelink',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -181,6 +182,7 @@ class Route
 		'listeregalo/aggiornaprodotti'=>	'listeregalo/aggiornaprodotti',
 		'listeregalo/invialink/(.*)'=>	'listeregalo/invialink/${1}',
 		'listeregalo/elencolink/(.*)'=>	'listeregalo/elencolink/${1}',
+		'listeregalo/invianuovamentelink/(.*)'=>	'listeregalo/invianuovamentelink/${1}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

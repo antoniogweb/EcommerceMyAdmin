@@ -85,10 +85,10 @@ class ListeregalolinkModel extends GenericModel
 			->inner(array("lista"))
 			->inner("regusers")->on("regusers.id_user = liste_regalo.id_user")
 			->where(array(
-					"id_lista_regalo_link"	=>	(int)$id,
-				))->first();
+				"id_lista_regalo_link"	=>	(int)$id,
+			))->first();
 		
-		if (!empty($record))
+		if (!empty($record) && $record["liste_regalo_link"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_link"))
 		{
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($record["liste_regalo_link"]["email"]),
@@ -108,6 +108,7 @@ class ListeregalolinkModel extends GenericModel
 			{
 				$this->sValues(array(
 					"inviato"	=>	1,
+					"numero_tentativi"	=>	($record["liste_regalo_link"]["numero_tentativi"] + 1),
 				));
 				
 				$this->update((int)$id);
