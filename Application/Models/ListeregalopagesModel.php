@@ -171,4 +171,9 @@ class ListeregalopagesModel extends GenericModel
 		
 		return setPriceReverse($prezzo);
 	}
+	
+	public function quantita($record)
+	{
+		return "<input id-riga='".$record["liste_regalo_pages"]["id_lista_regalo_page"]."' style='max-width:50px;' class='form-control' name='quantity' value='".$record["liste_regalo_pages"]["quantity"]."' />";
+	}
 }

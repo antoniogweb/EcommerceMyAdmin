@@ -115,11 +115,12 @@ class ListeregaloController extends BaseController
 			"variante",
 			"combinazioni.codice",
 			"prezzo",
+			"quantita",
 		);
 		
-		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo (€)";
+		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo (€),Quantità desiderata";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"pagine/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,save_regali','mainAction'=>"pagine/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("liste_regalo_pages.*,pages.*,combinazioni.*")->inner(array("pagina","combinazione"))->orderBy("liste_regalo_pages.id_lista_regalo_page")->where(array("id_lista_Regalo"=>$clean['id']))->save();
 		

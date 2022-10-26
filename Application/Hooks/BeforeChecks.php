@@ -327,6 +327,15 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_redirect menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
 	),
+	'save_regali'	=>	array(
+		'title'	=>	"Salva quantità",
+		'text'	=>	"Salva quantità",
+		'url'	=>	'main',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-success save_regali menu_btn"',
+		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";
