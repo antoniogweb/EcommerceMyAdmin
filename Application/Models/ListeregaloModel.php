@@ -35,9 +35,26 @@ class ListeregaloModel extends GenericModel
 	
 	public function relations() {
         return array(
+			'regali' => array("HAS_MANY", 'ListeregalopagesModel', 'id_lista_regalo', null, "RESTRICT", "La lista non è vuota, eliminare prima gli elementi della lista"),
 			'tipo' => array("BELONGS_TO", 'ListeregalotipiModel', 'id_lista_tipo',null,"CASCADE"),
         );
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'id_lista_tipo'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipo della lista",
+					"options"	=>	ListeregalotipiModel::getSelectTipi($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
     
     public function settaDataScadenza()
     {
@@ -201,6 +218,7 @@ class ListeregaloModel extends GenericModel
 			->aWhere(array(
 				"liste_regalo_pages.id_lista_regalo"	=>	(int)$idLista,
 			))
+			->orderBy("liste_regalo_pages.id_lista_regalo_page")
 			->send();
     }
     

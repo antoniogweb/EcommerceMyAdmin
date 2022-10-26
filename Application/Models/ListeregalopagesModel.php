@@ -156,4 +156,19 @@ class ListeregalopagesModel extends GenericModel
 			}
 		}
 	}
+	
+	public function variante($record)
+	{
+		return CombinazioniModel::g()->getStringa($record["combinazioni"]["id_c"]);
+	}
+	
+	public function prezzo($record)
+	{
+		if (v("prezzi_ivati_in_prodotti"))
+			$prezzo = $record["combinazioni"]["price_ivato"];
+		else
+			$prezzo = $record["combinazioni"]["price"];
+		
+		return setPriceReverse($prezzo);
+	}
 }

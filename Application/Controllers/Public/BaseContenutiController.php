@@ -1085,7 +1085,7 @@ class BaseContenutiController extends BaseController
 		
 		if ($firstSection == Parametri::$nomeSezioneProdotti && $this->viewArgs['o'] == "piuvenduto")
 		{
-			$this->m["PagesModel"]->inner("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
+			$this->m["PagesModel"]->left("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
 		}
 		
 		$this->append($data);
