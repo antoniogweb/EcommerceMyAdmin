@@ -265,7 +265,6 @@ class VariabiliModel extends GenericModel {
 		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg",
 		"nuova_modalita_caratteristiche"	=>	1,
 		"attiva_tipologie_caratteristiche"	=>	1,
-		"attiva_spedizione"			=>	1,
 		"lingua_default_frontend"	=>	"it",
 		"abilita_tutte_le_lingue_attive"	=>	0,
 		"applicativo_traduzioni"	=>	"",
@@ -506,6 +505,9 @@ class VariabiliModel extends GenericModel {
 		"tempo_durata_cookie_id_lista"	=>	31536000, // durata in secondi del cookie contenente l'ID della lista
 		"alias_pagina_lista"	=>	"lista-regalo", // alias usato in URL per la pagina delle liste
 		"numero_massimo_tentativi_invio_link"	=>	3, // numero massimo di tentativi di invio link per ogni elemento della tabella liste_regalo_link
+		## SPEDIZIONE ##
+		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
+		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

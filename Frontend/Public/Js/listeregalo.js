@@ -253,12 +253,10 @@ $(document).ready(function(){
 	{
 		$(".link_lista").trigger("click");
 	}
-	else
+	else if ($(".link_prodotti").length > 0)
 	{
 		$(".link_prodotti").trigger("click");
 	}
-	
-	console.log(hash);
 	
 	$( "body" ).on( "click", ".aggiungi_al_carrello_lista", function(e) {
 		
@@ -330,4 +328,7 @@ $(document).ready(function(){
 		
 	});
 	
+	$( ".datepicker" ).datepicker({
+		dateFormat: "dd-mm-yy"
+	});
 });

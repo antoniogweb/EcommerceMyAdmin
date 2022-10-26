@@ -17,27 +17,40 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 		<dl/>
 		
 		<div class="uk-grid uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Nome");?>:</div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["titolo"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Nome");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["titolo"]);?></div>
 		</div>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Tipo");?>:</div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo_tipi"]["titolo"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Tipo");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo_tipi"]["titolo"];?></div>
 		</div>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Codice");?>:</div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["codice"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Scadenza");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo smartDate($lista["liste_regalo"]["data_scadenza"]);?></div>
+		</div>
+		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
+			<div class="uk-text-small"><?php echo gtext("Codice");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["codice"];?></div>
 		</div>
 		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("nome_bambino", ""))) { ?>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Nome bimbo/a");?>:</div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["nome_bambino"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Nome bimbo/a");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["nome_bambino"];?></div>
 		</div>
 		<?php } ?>
 		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("genitore_1", ""))) { ?>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Genitore 1");?>:</div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["genitore_1"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Genitore 1");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["genitore_1"];?></div>
 		</div>
 		<?php } ?>
 		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("genitore_2", ""))) { ?>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Genitore 2");?>:</div> <div class="uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["genitore_2"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Genitore 2");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["genitore_2"];?></div>
+		</div>
+		<?php } ?>
+		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("data_nascita", "")) && $lista["liste_regalo"]["data_nascita"] != "0000-00-00") { ?>
+		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
+			<div class="uk-text-small"><?php echo gtext("Data evento");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo smartDate($lista["liste_regalo"]["data_nascita"]);?></div>
+		</div>
+		<?php } ?>
+		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("data_battesimo", "")) && $lista["liste_regalo"]["data_battesimo"] != "0000-00-00") { ?>
+		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
+			<div class="uk-text-small"><?php echo gtext("Data evento");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo smartDate($lista["liste_regalo"]["data_battesimo"]);?></div>
 		</div>
 		<?php } ?>
 	</div>

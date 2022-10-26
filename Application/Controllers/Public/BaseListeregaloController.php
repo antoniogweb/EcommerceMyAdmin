@@ -260,6 +260,10 @@ class BaseListeregaloController extends BaseController
 	
 	public function modifica($id = 0)
 	{
+		Params::$automaticConversionFromDbFormat = true;
+		Params::$automaticConversionToDbFormat = true;
+		Params::$setValuesConditionsFromDbTableStruct = true;
+		
 		$clean["id"] = $data["id"] = (int)$id;
 		
 		$this->checkLista($id);

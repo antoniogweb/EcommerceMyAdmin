@@ -39,6 +39,11 @@ jQuery
 License:	The MIT License (MIT)
 link:		https://github.com/jquery/jquery
 
+jQuery UI
+-------
+License:	The MIT License (MIT)
+link:		https://jqueryui.com/
+
 iCheck
 -------
 License:	The MIT License (MIT)

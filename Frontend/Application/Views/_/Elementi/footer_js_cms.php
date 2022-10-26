@@ -37,6 +37,12 @@
 
 <?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>listeregalo.js?v=<?php echo rand(1,10000);?>"></script>
+	<?php if ($this->controller == "listeregalo" && $this->action == "modifica") { ?>
+		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/';?>jquery-ui.min.js"></script>
+		<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
+		<script type="text/javascript" src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js';?>"></script>
+		<?php } ?>
+	<?php } ?>
 <?php } ?>
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>

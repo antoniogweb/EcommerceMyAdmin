@@ -34,7 +34,7 @@
 			<li class="<?php if ($attiva == "account") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/modifica-account";?>" title="<?php echo gtext("I miei dati", false);?>"><?php echo gtext("I miei dati");?></a>
 			</li>
-			<?php if (v("attiva_spedizione")) { ?>
+			<?php if (v("attiva_spedizione_area_riservata")) { ?>
 			<li class="<?php if ($attiva == "indirizzi") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/riservata/indirizzi";?>" title="<?php echo gtext("Spedizione", false);?>"><?php echo gtext("Spedizione");?></a>
 			</li>
