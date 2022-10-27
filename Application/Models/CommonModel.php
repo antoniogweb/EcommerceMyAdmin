@@ -394,4 +394,78 @@ trait CommonModel {
 		else
 			return $ordine["nome"]." ".$ordine["cognome"];
 	}
+	
+	public function deleteAccount($idUser, $codiceApp = "")
+	{
+		$user = $this->selectId($idUser);
+		
+		if (!empty($user))
+		{
+			if (!v("elimina_record_utente_ad_autoeliminazione"))
+			{
+				$tokeEliminazione = randomToken();
+				
+				$this->sValues(array(
+					"username"	=>	randomToken()."@---.--",
+					Users_CheckAdmin::$statusFieldName	=>	1,
+					"bloccato"	=>	1,
+					"deleted"	=>	"yes",
+					"nome"		=>	"--",
+					"cognome"	=>	"--",
+					"ragione_sociale"	=>	"--",
+					"p_iva"		=>	"--",
+					"codice_fiscale"	=>	"--",
+					"indirizzo"	=>	"--",
+					"cap"		=>	"--",
+					"provincia"	=>	"--",
+					"citta"		=>	"--",
+					"telefono"	=>	"--",
+					"email"		=>	"",
+					"indirizzo_spedizione"	=>	"--",
+					"codice_destinatario"	=>	"--",
+					"dprovincia"=>	"--",
+					"pec"		=>	"--",
+					"telefono_2"=>	"--",
+					"codice_app_eliminazione"	=>	$codiceApp,
+					"time_eliminazione"	=>	time(),
+					"token_eliminazione"=>	$tokeEliminazione,
+				));
+				
+				$this->setValue("password", randomToken(), PASSWORD_HASH);
+				
+				if ($this->pUpdate((int)$idUser))
+				{
+					$sp = new SpedizioniModel();
+					
+					$sp->sValues(array(
+						"indirizzo_spedizione"	=>	"--",
+						"cap_spedizione"		=>	"--",
+						"provincia_spedizione"	=>	"--",
+// 						"nazione_spedizione"	=>	"--",
+						"citta_spedizione"		=>	"--",
+						"telefono_spedizione"	=>	"--",
+						"dprovincia_spedizione"	=>	"--",
+					));
+					
+					$sp->pUpdate(null, "id_user = ".(int)$idUser);
+					
+					return $tokeEliminazione;
+				}
+			}
+			else
+			{
+				$this->query("delete from spedizioni where id_user = ".(int)$idUser);
+				$this->query("delete from regusers_groups_temp where id_user = ".(int)$idUser);
+				$this->query("delete from regusers_groups where id_user = ".(int)$idUser);
+				$this->query("update orders set id_user = 0 where id_user = ".(int)$idUser);
+				$this->query("update feedback set id_user = 0 where id_user = ".(int)$idUser);
+				$this->query("delete from regusers where id_user = ".(int)$idUser);
+				$this->query("delete from contatti where email = '".sanitizeAll($user["username"])."'");
+				
+				return 1;
+			}
+		}
+		
+		return 0;
+	}
 }

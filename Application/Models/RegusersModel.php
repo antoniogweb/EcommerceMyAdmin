@@ -124,20 +124,25 @@ class RegusersModel extends FormModel {
 // 		}
 // 		parent::update($clean['id']);
 // 	}
-
-// 	public function del($id = null, $whereClause = null)
-// 	{
-// 		$clean['id'] = (int)$id;
-// 		
+	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["deleted"] == "no")
+			return true;
+		
+		return false;
+	}
+	
+	public function del($id = null, $whereClause = null)
+	{
 // 		if ($this->checkOnDeleteIntegrity($id, $whereClause))
-// 		{
-// 			//cancello tutti i gruppi a cui è associato
-// 			$ug = new RegusersgroupsModel();
-// 			$ug->del(null,"id_user=".$clean['id']);
-// 		}
-// 		
-// 		return parent::del($clean['id']);
-// 	}
+		if ($id && v("permetti_sempre_eliminazione_account_backend") && !$this->checkOnDeleteIntegrity($id, $whereClause))
+			return $this->deleteAccount((int)$id);
+		else
+			return parent::del($id, $whereClause);
+	}
 	
 	//restituisci il codice fiscale o la partita iva
 	public function getCFoPIva($row)

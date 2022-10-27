@@ -123,7 +123,7 @@ class RegusersController extends BaseController {
 			}
 			
 			$filtri[] = "token_eliminazione";
-			$filtri[] = array("deleted",null,array("tutti" => "Stato utente", "no" => "Utenti in anagrafica", "yes" => "Utenti auto-eliminati"));
+			$filtri[] = array("deleted",null,array("tutti" => "Stato cliente", "no" => "Clienti in anagrafica", "yes" => "Clienti eliminati"));
 		}
 		
 		$this->mainFields = $mainFields;
