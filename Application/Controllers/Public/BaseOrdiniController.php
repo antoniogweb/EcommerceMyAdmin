@@ -995,13 +995,20 @@ class BaseOrdiniController extends BaseController
 				
 				$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";
 				
+				ob_start();
+				include(tpf(ElementitemaModel::p("ERRORE_UTENTE_PRESENTE","", array(
+					"titolo"	=>	"Messaggio di errore quando l'utente è già presente",
+					"percorso"	=>	"Elementi/FormRegistrazioneCheckout/UtenteGiaPresente",
+				))));
+				$erroreUtenteGiaPresente = ob_get_clean();
+				
 				if (isset($_POST["email"]) && RegusersModel::utenteDaConfermare($_POST["email"]))
 					$this->m['RegusersModel']->databaseConditions['insert'] = array(
 						"checkUnique"		=>	"username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.",false)."<br />".gtext("Può procedere con la conferma del proprio account al seguente",false)." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web", false)."</a> ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
 					);
 				else
 					$this->m['RegusersModel']->databaseConditions['insert'] = array(
-						"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
+						"checkUnique"		=>	"username|".$erroreUtenteGiaPresente,
 					);
 				
 				if (v("account_attiva_conferma_password"))
@@ -1128,6 +1135,9 @@ class BaseOrdiniController extends BaseController
 							{
 								setcookie("coupon", "", time()-3600,"/");
 							}
+							
+							// elimina il cookie con l'ID della liste regalo
+							ListeregaloModel::unsetCookieIdLista();
 							
 							$clean["cart_uid"] = sanitizeAll($this->m['OrdiniModel']->cart_uid);
 							
