@@ -418,6 +418,49 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".save_regali", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function(){
+			
+			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
+			var quantity = $(this).find("[name='quantity']").val();
+			
+			var temp = {
+				id_riga: id_riga,
+				quantity: quantity
+			};
+			
+			valori.push(temp);
+		});
+		
+// 		console.log(valori);
+		
+		$.ajaxQueue({
+			url: baseUrl + "/listeregalo/salvapagine",
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				
+				reloadPage();
+				
+			}
+		});
+		
+	});
+	
 	$("body").on("click", ".save_redirect", function(e){
 		
 		e.preventDefault();

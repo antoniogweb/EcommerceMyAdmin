@@ -41,6 +41,7 @@ class CombinazioniController extends BaseController
 			'id_page:sanitizeAll'=>'tutti',
 			'listino:sanitizeAll'=>'tutti',
 			'st_giac:sanitizeAll'=>'tutti',
+			'id_lista_regalo:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -110,7 +111,7 @@ class CombinazioniController extends BaseController
 		$mainFields[] = "prezzo";
 		$mainFields[] = "peso";
 		
-		$mainHead .= ",Combinazione,Codice,$prezzoLabel,Peso";
+		$mainHead .= ",Variante,Codice,$prezzoLabel,Peso";
 		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $mainHead;
@@ -125,6 +126,12 @@ class CombinazioniController extends BaseController
 		{
 			$this->mainFields[] = "ordini";
 			$this->mainHead .= ",Acquisti";
+		}
+		
+		if ($this->viewArgs["id_lista_regalo"] != "tutti")
+		{
+			$this->mainFields[] = "bulkaggiungialistaregalo";
+			$this->mainHead .= ",Aggiungi";
 		}
 		
 		if (v("attiva_giacenza"))
@@ -217,6 +224,19 @@ class CombinazioniController extends BaseController
 				
 				$indice++;
 			}
+		}
+		
+		if ($this->viewArgs["id_lista_regalo"] != "tutti")
+		{
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungialistaregalo";
+			
+			$this->bulkActions = array(
+				"checkbox_combinazioni_id_c"	=>	array("aggiungialistaregalo","Aggiungi alla lista regalo"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("combinazioni.id_c not in (select id_c from liste_regalo_pages where id_c is not null and id_lista_regalo = ".(int)$this->viewArgs["id_lista_regalo"].")");
 		}
 		
 		$this->m[$this->modelName]->save();

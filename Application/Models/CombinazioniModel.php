@@ -652,7 +652,7 @@ class CombinazioniModel extends GenericModel {
 	
 	public function codice($record)
 	{
-		if (!isset($_GET["esporta"]))
+		if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
 			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' />";
 		else
 			return $record["combinazioni"]["codice"];
@@ -682,7 +682,7 @@ class CombinazioniModel extends GenericModel {
 			
 			$prezzo = number_format($prezzo, $cifre, ",", "");
 			
-			if (!isset($_GET["esporta"]))
+			if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
 				return "<input id-c='".$record["combinazioni"]["id_c"]."' $attrIdCl style='max-width:120px;' class='form-control' name='price' value='".$prezzo."' />";
 			else
 				return $prezzo;
@@ -693,15 +693,17 @@ class CombinazioniModel extends GenericModel {
 	
 	public function peso($record)
 	{
-		if (!isset($_GET["esporta"]))
-			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='peso' value='".number_format($record["combinazioni"]["peso"],2,",","")."' />";
+		$peso = number_format($record["combinazioni"]["peso"],2,",","");
+		
+		if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
+			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='peso' value='".$peso."' />";
 		else
-			return $record["combinazioni"]["peso"];
+			return $peso;
 	}
 	
 	public function giacenza($record)
 	{
-		if (!isset($_GET["esporta"]))
+		if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
 			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='giacenza' value='".$record["combinazioni"]["giacenza"]."' />";
 		else
 			return $record["combinazioni"]["giacenza"];
@@ -778,6 +780,38 @@ class CombinazioniModel extends GenericModel {
 		$i->pUpdate(null, "id_page = ".(int)$toId." and id_c = ".(int)$oldPk);
 	}
 	
+	public function bulkaggiungialistaregalo($record)
+    {
+		return "<i data-azione='aggiungialistaregalo' title='".gtext("Aggiungi alla lista regalo")."' class='bulk_trigger help_trigger_aggiungi_a_liste_regalo fa fa-plus-circle text text-primary'></i>";
+    }
+    
+    public function aggiungialistaregalo($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_lista_regalo"]))
+		{
+			$pagina = PagesModel::g(false)->where(array(
+				"id_page"	=>	(int)$record["id_page"],
+			))->record();
+			
+			if (!empty($pagina))
+			{
+				$lrp = new ListeregalopagesModel();
+				
+				$lrp->sValues(array(
+					"id_lista_regalo"		=>	(int)$_GET["id_lista_regalo"],
+					"id_page"	=>	$pagina["id_page"],
+					"id_c"		=>	(int)$id,
+					"titolo"	=>	$pagina["title"],
+					"quantity"	=>	1,
+				), "sanitizeDb");
+				
+				$lrp->pInsert();
+			}
+		}
+    }
+    
 // 	public function col2($record)
 // 	{
 // 		$idAttr = $record["combinazioni"]["col_2"];

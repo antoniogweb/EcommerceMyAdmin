@@ -41,6 +41,7 @@ class ListeregaloController extends BaseController
 		
 		$this->model("ListeregalotipiModel");
 		$this->model("ListeregalopagesModel");
+		$this->model("ListeregalolinkModel");
 	}
 	
 	public function main()
@@ -100,8 +101,8 @@ class ListeregaloController extends BaseController
 		
 		$this->shift(1);
 		
-		$clean['id'] = $this->id = (int)$id;
-		$this->id_name = "id_car";
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_lista_regalo";
 		
 		$this->mainButtons = "ldel";
 		
@@ -122,7 +123,7 @@ class ListeregaloController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,save_regali','mainAction'=>"pagine/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("liste_regalo_pages.*,pages.*,combinazioni.*")->inner(array("pagina","combinazione"))->orderBy("liste_regalo_pages.id_lista_regalo_page")->where(array("id_lista_Regalo"=>$clean['id']))->save();
+		$this->m[$this->modelName]->select("liste_regalo_pages.*,pages.*,combinazioni.*")->inner(array("pagina","combinazione"))->orderBy("liste_regalo_pages.id_lista_regalo_page")->where(array("id_lista_regalo"=>$clean['id']))->save();
 		
 		$this->colProperties = array(
 			array(
@@ -138,5 +139,71 @@ class ListeregaloController extends BaseController
 		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
 		
 		$this->append($data);
+	}
+	
+	public function inviti($id = 0)
+	{
+		$this->_posizioni['inviti'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_lista_regalo";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "ListeregalolinkModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array(
+			'liste_regalo_link.nome',
+			'liste_regalo_link.cognome',
+			'liste_regalo_link.email',
+		);
+		
+		$this->mainHead = "Nome,Cognome,Email";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"inviti/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->orderBy("id_lista_regalo_link desc")->where(array("id_lista_regalo"=>$clean['id']))->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function salvapagine()
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		CombinazioniModel::$aggiornaAliasAdInserimento = false;
+		
+		if (v("usa_transactions"))
+			$this->m["ListeregalopagesModel"]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$valori = $this->request->post("valori","[]");
+		
+		$valori = json_decode($valori, true);
+		
+		foreach ($valori as $v)
+		{
+			if ((int)$v["quantity"] > 0)
+			{
+				$this->m["ListeregalopagesModel"]->sValues(array(
+					"quantity"	=>	(int)$v["quantity"],
+				));
+				
+				$this->m["ListeregalopagesModel"]->update($v["id_riga"]);
+			}
+			else
+				$this->m["ListeregalopagesModel"]->del($v["id_riga"]);
+		}
+		
+		if (v("usa_transactions"))
+			$this->m["ListeregalopagesModel"]->db->commit();
 	}
 }
