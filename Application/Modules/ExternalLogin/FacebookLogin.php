@@ -183,7 +183,7 @@ class FacebookLogin extends ExternalLogin
 			if ($idUserCms)
 			{
 				// Start data deletion
-				$tokenEliminazione = $userModel->deleteAccount($idUserCms);
+				$tokenEliminazione = $userModel->deleteAccount($idUserCms, $this->params["codice"]);
 				
 				$data = array(
 					'url' => Url::getRoot().$urlOutput.$tokenEliminazione,

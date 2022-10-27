@@ -403,53 +403,56 @@ trait CommonModel {
 		{
 			if (!v("elimina_record_utente_ad_autoeliminazione"))
 			{
-				$tokeEliminazione = randomToken();
-				
-				$this->sValues(array(
-					"username"	=>	randomToken()."@---.--",
-					Users_CheckAdmin::$statusFieldName	=>	1,
-					"bloccato"	=>	1,
-					"deleted"	=>	"yes",
-					"nome"		=>	"--",
-					"cognome"	=>	"--",
-					"ragione_sociale"	=>	"--",
-					"p_iva"		=>	"--",
-					"codice_fiscale"	=>	"--",
-					"indirizzo"	=>	"--",
-					"cap"		=>	"--",
-					"provincia"	=>	"--",
-					"citta"		=>	"--",
-					"telefono"	=>	"--",
-					"email"		=>	"",
-					"indirizzo_spedizione"	=>	"--",
-					"codice_destinatario"	=>	"--",
-					"dprovincia"=>	"--",
-					"pec"		=>	"--",
-					"telefono_2"=>	"--",
-					"codice_app_eliminazione"	=>	$codiceApp,
-					"time_eliminazione"	=>	time(),
-					"token_eliminazione"=>	$tokeEliminazione,
-				));
-				
-				$this->setValue("password", randomToken(), PASSWORD_HASH);
-				
-				if ($this->pUpdate((int)$idUser))
+				if ($user["deleted"] == "no")
 				{
-					$sp = new SpedizioniModel();
+					$tokeEliminazione = randomToken();
 					
-					$sp->sValues(array(
+					$this->sValues(array(
+						"username"	=>	randomToken()."@---.--",
+						Users_CheckAdmin::$statusFieldName	=>	1,
+						"bloccato"	=>	1,
+						"deleted"	=>	"yes",
+						"nome"		=>	"--",
+						"cognome"	=>	"--",
+						"ragione_sociale"	=>	"--",
+						"p_iva"		=>	"--",
+						"codice_fiscale"	=>	"--",
+						"indirizzo"	=>	"--",
+						"cap"		=>	"--",
+						"provincia"	=>	"--",
+						"citta"		=>	"--",
+						"telefono"	=>	"--",
+						"email"		=>	"",
 						"indirizzo_spedizione"	=>	"--",
-						"cap_spedizione"		=>	"--",
-						"provincia_spedizione"	=>	"--",
-// 						"nazione_spedizione"	=>	"--",
-						"citta_spedizione"		=>	"--",
-						"telefono_spedizione"	=>	"--",
-						"dprovincia_spedizione"	=>	"--",
+						"codice_destinatario"	=>	"--",
+						"dprovincia"=>	"--",
+						"pec"		=>	"--",
+						"telefono_2"=>	"--",
+						"codice_app_eliminazione"	=>	$codiceApp,
+						"time_eliminazione"	=>	time(),
+						"token_eliminazione"=>	$tokeEliminazione,
 					));
 					
-					$sp->pUpdate(null, "id_user = ".(int)$idUser);
+					$this->setValue("password", randomToken(), PASSWORD_HASH);
 					
-					return $tokeEliminazione;
+					if ($this->pUpdate((int)$idUser))
+					{
+						$sp = new SpedizioniModel();
+						
+						$sp->sValues(array(
+							"indirizzo_spedizione"	=>	"--",
+							"cap_spedizione"		=>	"--",
+							"provincia_spedizione"	=>	"--",
+	// 						"nazione_spedizione"	=>	"--",
+							"citta_spedizione"		=>	"--",
+							"telefono_spedizione"	=>	"--",
+							"dprovincia_spedizione"	=>	"--",
+						));
+						
+						$sp->pUpdate(null, "id_user = ".(int)$idUser);
+						
+						return $tokeEliminazione;
+					}
 				}
 			}
 			else
