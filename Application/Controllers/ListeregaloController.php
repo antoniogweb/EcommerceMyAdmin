@@ -49,8 +49,8 @@ class ListeregaloController extends BaseController
 		$this->shift();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "liste_regalo.genitore_2", "liste_regalo.data_scadenza", "liste_regalo.attivo");
-		$this->mainHead = "Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Genitore 2,Scadenza,Attivo";
+		$this->mainFields = array("liste_regalo.id_user", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "liste_regalo.data_scadenza", "liste_regalo.attivo");
+		$this->mainHead = "Cliente,Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Scadenza,Attivo";
 		
 		$this->m[$this->modelName]->clear()->select("*")->inner(array("tipo"))->orderBy("id_lista_regalo desc");
 		

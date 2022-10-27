@@ -36,6 +36,8 @@ class ListeregaloModel extends GenericModel
 	public function relations() {
         return array(
 			'regali' => array("HAS_MANY", 'ListeregalopagesModel', 'id_lista_regalo', null, "RESTRICT", "La lista non è vuota, eliminare prima gli elementi della lista"),
+			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_lista_regalo', null, "RESTRICT", "Esistono degli ordini collegati alla lista"),
+			'link' => array("HAS_MANY", 'ListeregalolinkModel', 'id_lista_regalo', null, "CASCADE"),
 			'tipo' => array("BELONGS_TO", 'ListeregalotipiModel', 'id_lista_tipo',null,"CASCADE"),
         );
     }

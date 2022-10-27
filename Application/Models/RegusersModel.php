@@ -137,7 +137,6 @@ class RegusersModel extends FormModel {
 	
 	public function del($id = null, $whereClause = null)
 	{
-// 		if ($this->checkOnDeleteIntegrity($id, $whereClause))
 		if ($id && v("permetti_sempre_eliminazione_account_backend") && !$this->checkOnDeleteIntegrity($id, $whereClause))
 			return $this->deleteAccount((int)$id);
 		else

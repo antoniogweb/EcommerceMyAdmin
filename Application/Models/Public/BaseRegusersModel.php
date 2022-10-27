@@ -434,4 +434,28 @@ class BaseRegusersModel extends Model_Tree
     {
 		return RegusersintegrazioniloginModel::g()->getIdUtenteDaIdApp($codiceApp, $idApp);
     }
+    
+    public function accountEliminabileANuovoOrdine($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			$numeroListe = ListeregaloModel::g()->where(array(
+				"id_user"	=>	(int)$id,
+			))->rowNumber();
+			
+			if ($numeroListe)
+				return false;
+			
+			$ordiniUtente = OrdiniModel::g()->select("stato,pagamento")->where(array(
+				"id_user"	=>	(int)$id,
+			))->send(false);
+			
+			if ((int)count($ordiniUtente) === 1 && $ordiniUtente[0]["stato"] === "pending" && OrdiniModel::conPagamentoOnline($ordiniUtente[0]))
+				return true;
+		}
+		
+		return false;
+    }
 }
