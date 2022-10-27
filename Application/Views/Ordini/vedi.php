@@ -482,7 +482,7 @@
 							<h3><?php echo gtext("Dati di fatturazione");?>:</h3>
 							
 							<table class="table table-striped">
-								<?php if ($cliente) { ?>
+								<?php if ($cliente && $cliente["deleted"] == "no") { ?>
 								<tr>
 									<td class="first_column"><?php echo gtext("ACCOUNT CLIENTE");?></td>
 									<td><a class="iframe label label-success" href="<?php echo $this->baseUrl."/regusers/form/update/".$cliente["id_user"]?>?partial=Y"><?php echo $cliente["username"];?></a></td>

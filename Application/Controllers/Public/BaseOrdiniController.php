@@ -1026,6 +1026,8 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_POST['invia']))
 		{
+			RegusersModel::checkEdEliminaAccount();
+			
 			if (CaptchaModel::getModulo()->checkRegistrazione())
 			{
 				if ($this->m['OrdiniModel']->checkConditions('insert'))

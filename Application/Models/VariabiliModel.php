@@ -497,6 +497,7 @@ class VariabiliModel extends GenericModel {
 		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
 		"token_eliminazione_account_da_app"	=>	"", // verrà utilizzato come accesso per l'eliminazione dell'utente da app esterna (Facebook, ...)
 		## UTENTI ##
+		"elimina_account_ad_ordine_se_parcheggiato"	=>	0, // se impostato ad 1, all'ordine il sistema controlla che non sia un account bloccante e in caso lo cancella
 		"permetti_sempre_eliminazione_account_backend"=>	0, // se impostato a 1, utilizza deleteAccount se non può eliminare il cliente
 		"elimina_record_utente_ad_autoeliminazione"	=>	1, // se impostato a 1, elimina il record. Altrimenti va a sovrascirverlo con dati random
 		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
