@@ -3,7 +3,8 @@
 $alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";?>
 
 <div>
-	<?php echo gtext("Il suo indirizzo email è già presente nel nostro sito web.",false)?>
+	<?php echo gtext("Il suo indirizzo email è già presente nel nostro sito web.",false)?><br />
+	<?php echo gtext("Può eseguire il login",false);?> <?php echo $alertAnonimo;?>
 </div>
 </div>
 <div class="uk-margin-top uk-grid" uk-grid>
