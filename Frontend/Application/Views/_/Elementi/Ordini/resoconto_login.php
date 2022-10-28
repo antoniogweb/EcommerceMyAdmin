@@ -12,6 +12,9 @@
 		<?php
 		$noLoginNotice = $noLoginRegistrati = true;
 		$action = $this->baseUrl."/regusers/login?redirect=/checkout";
+		RegusersModel::$redirectQueryString = "redirect=checkout";
+		ElementitemaModel::$percorsi["FORM_LOGIN"]["nome_file"] = "default";
+		ElementitemaModel::$percorsi["LOGIN_PASSWORD"]["nome_file"] = "default";
 		include(tpf("/Regusers/login_form.php"));?>
 		<br />
 	</div>

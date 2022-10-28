@@ -23,6 +23,12 @@ if (typeof coupon_ajax == "undefined")
 if (typeof codice_fiscale_obbligatorio_solo_se_fattura == "undefined")
 	var codice_fiscale_obbligatorio_solo_se_fattura = false;
 
+if (typeof filtro_prezzo_slider == "undefined")
+	var filtro_prezzo_slider = false;
+
+if (typeof spesa_pagamento_possibile == "undefined")
+	var spesa_pagamento_possibile = true;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -204,6 +210,16 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 	
 	var tipo_cliente = getTipoCliente();
 	
+	var email = "";
+	
+	if ($("[name='email']").length > 0)
+		email = $("[name='email']").val();
+	
+	var pagamento = "bonifico";
+	
+	if ($("[name='pagamento']").length > 0)
+		pagamento = $("[name='pagamento']:checked").val();
+	
 	$.ajaxQueue({
 		url: baseUrl + "/ordini/totale",
 		cache:false,
@@ -213,7 +229,9 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 		data: {
 			id_corriere: id_corriere,
 			nazione_spedizione: nazione,
-			tipo_cliente: tipo_cliente
+			tipo_cliente: tipo_cliente,
+			email: email,
+			pagamento: pagamento
 		},
 		success: function(content){
 			
@@ -450,6 +468,22 @@ function controllaCheckFattura()
 		$(".campo_codice_fiscale").css("display","none");
 }
 
+function mostraSpinner(obj)
+{
+	obj.addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+}
+
+function mostraLabelColore()
+{
+	$(".label_variante_colore").each(function(){
+		var that = $(this);
+		
+		var testoVariante = $(this).closest(".box_attributo_immagine_colore").find(".form_select_attributo option:selected").attr("data-img-title");
+		
+		that.text(testoVariante);
+	});
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -471,6 +505,18 @@ $(document).ready(function(){
 	$('.radio_registrato').on('ifChanged', function(event){
 		
 		updateFormRegistrato();
+		
+	});
+	
+	$("body").on("click", ".forza_acquisto_anonimo", function(e){
+		
+		e.preventDefault();
+		
+		$('.radio_registrato[value="N"]').iCheck('check');
+		
+		$(".btn_completa_acquisto").trigger("click");
+		
+		mostraSpinner($(this));
 		
 	});
 	
@@ -547,7 +593,14 @@ $(document).ready(function(){
 		
 	});
 	
-	$("body").on("change", "[name='nazione'],[name='nazione_spedizione']", function(e){
+	$("body").on("ifChanged", "[name='pagamento']", function(e){
+		
+		if (spesa_pagamento_possibile && $(this).is(":checked"))
+			impostaCorrieriESpeseSpedizione();
+		
+	});
+	
+	$("body").on("change", "[name='nazione'],[name='nazione_spedizione'],[name='email']", function(e){
 		impostaCorrieriESpeseSpedizione();
 	});
 	
@@ -595,7 +648,8 @@ $(document).ready(function(){
 	
 	$("body").on("click", ".btn_completa_acquisto", function(e){
 		
-		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		mostraSpinner($(this));
+// 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 		if (gtm_analytics && typeof checkout_items !== "undefined")
 		{
@@ -609,13 +663,21 @@ $(document).ready(function(){
 	
 	$("body").on("click", ".btn_submit_form", function(e){
 		
-		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		mostraSpinner($(this));
+// 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 	});
 	
 	$('input').iCheck(icheckOptions);
 	
-	$(".image-picker").imagepicker();
+	mostraLabelColore();
+	
+	$(".image-picker").imagepicker({
+		selected: function(select, picker_option, event){
+			
+			mostraLabelColore();
+		}
+	});
 	
 	$("body").on("change", ".select_follow_url", function(e){
 		
@@ -625,6 +687,32 @@ $(document).ready(function(){
 		
 		location.href = url;
 		
+	});
+	
+	$("body").on("click", ".elimina_coupon", function(e){
+		
+		e.preventDefault();
+		
+		var randomCoupon = $(this).attr("data-random");
+		
+		$.ajaxQueue({
+			url: baseUrl + "/carrello/vedi",
+			cache:false,
+			async: true,
+			dataType: "html",
+			method: "POST",
+			data: {
+				invia_coupon: "invia_coupon",
+				il_coupon: randomCoupon
+			},
+			success: function(content){
+				
+				if ($(".btn_completa_acquisto").length > 0)
+					impostaCorrieriESpeseSpedizione();
+				else
+					aggiornaCarrello(undefined, true);
+			}
+		});
 	});
 	
 	$("body").on("click", "[name='invia_coupon']", function(e){
@@ -648,7 +736,7 @@ $(document).ready(function(){
 				method: "POST",
 				data: {
 					invia_coupon: "invia_coupon",
-					il_coupon: il_coupon,
+					il_coupon: il_coupon
 				},
 				success: function(content){
 					
@@ -708,6 +796,24 @@ $(document).ready(function(){
 		
 	});
 	
+	$("body").on("click", ".disattiva_acquisto_lista", function(e){
+		e.preventDefault();
+		
+		$.ajaxQueue({
+			url: baseUrl + "/carrello/eliminacookielista",
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				if ($(".btn_completa_acquisto").length > 0)
+					location.href = location.href;
+				else
+					aggiornaCarrello(undefined, true);
+			}
+		});
+	});
+	
+	
 	$(".showcoupon").click(function(e){
 		e.preventDefault();
 		
@@ -719,4 +825,31 @@ $(document).ready(function(){
 		
 		$("#login").slideToggle();
 	});
+	
+	if (filtro_prezzo_slider)
+	{
+		$('.nstSlider').nstSlider({
+			"left_grip_selector": ".leftGrip",
+			"right_grip_selector": ".rightGrip",
+			"value_bar_selector": ".bar",
+			"value_changed_callback": function(cause, leftValue, rightValue) {
+				leftValue += "€";
+				rightValue += "€";
+				$(this).parent().find('.leftLabel').text(leftValue);
+				$(this).parent().find('.rightLabel').text(rightValue);
+			},
+			"user_mouseup_callback": function(leftValue, rightValue, left_grip_moved) {
+				
+// 				console.log(rightValue);
+				var urlSlider = $(".url_slider_prezzo").text();
+				
+				urlSlider = urlSlider.replace("[DA]", leftValue);
+				urlSlider = urlSlider.replace("[A]", rightValue);
+				
+// 				$(".url_slider_prezzo").text(urlSlider);
+				location.href = urlSlider;
+			}
+		});
+		
+	}
 });

@@ -41,6 +41,15 @@ class ProdottiModel extends PagesModel {
 			"className"	=>	"form-control",
 			'labelString'=>	'È un prodotto Gift Card',
 		);
+		
+		$this->formStruct["entries"]["prezzo_promozione_ass_ivato"] = array(
+			'labelString'	=>	'Prezzo scontato IVA inclusa (€)',
+			'entryClass'	=>	'class_promozione form_input_text',
+		);
+		
+		$this->formStruct["entries"]["tipo_sconto"] = array(
+			'entryClass'	=>	'class_promozione form_input_text',
+		);
 	}
 	
 	public function setFilters()
@@ -74,15 +83,6 @@ class ProdottiModel extends PagesModel {
 		
 		if (isset($this->hModel->section))
 			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
-		
-// 		if (v("usa_marchi"))
-// 		{
-// 			$this->_popupItemNames["-id_marchio"] = "titolo";
-// 			$this->_popupLabels["-id_marchio"] = gtext("marchio",true,"strtoupper");
-// // 			$this->_popupWhere["-id_marchio"] = "id_marchio != 0";
-// // 			$this->_popupFunctions["-id_marchio"] = "getTitoloMarchio";
-// 			$this->_popupOrderBy["-id_marchio"] = "marchi.titolo";
-// 		}
 	}
 	
 	public function insert()
@@ -105,4 +105,40 @@ class ProdottiModel extends PagesModel {
 		return parent::update($id, $where);
 	}
 	
+	// restituisce true se la riga del carrello non è una gift card
+	public static function isGiftCart($idPage)
+	{
+		if (!v("attiva_gift_card"))
+			return false;
+		
+		$p = new ProdottiModel();
+		
+		return $p->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+			"gift_card"	=>	1,
+		))->rowNumber();
+	}
+	
+	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)
+	{
+		$clean["id_page"] = (int)$idPage;
+		
+		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+		$elencoImmagini[] = "";
+		
+		if (!isset($immagineCombinazione))
+			$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
+		
+		$immagine = in_array($immagineCombinazione,$elencoImmagini) ? $immagineCombinazione : $elencoImmagini[0];
+		
+		if (v("immagini_separate_per_variante"))
+		{
+			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
+			
+			if (count($immagini) > 0)
+				$immagine = $immagini[0]["immagine"];
+		}
+		
+		return $immagine;
+	}
 }

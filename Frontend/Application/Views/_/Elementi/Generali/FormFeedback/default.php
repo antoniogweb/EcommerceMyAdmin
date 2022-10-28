@@ -8,7 +8,7 @@
 			<img src="<?php echo $this->baseUrlSrc."/thumb/dettagliobig/".$datiPrototto["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($datiPrototto, "title"));?>" />
 			
 			<div class="uk-margin">
-				<a href="<?php echo Url::getRoot().getUrlAlias(field($datiPrototto, "id_page"));?>" class="uk-button uk-button-primary uk-button-small"><span uk-icon="icon: arrow-left"></span> <?php echo gtext("Torna al prodotto");?></a>
+				<a href="<?php echo Url::getRoot().getUrlAlias(field($datiPrototto, "id_page"),FeedbackModel::gIdCombinazione());?>" class="uk-button uk-button-primary uk-button-small"><span uk-icon="icon: arrow-left"></span> <?php echo gtext("Torna al prodotto");?></a>
 			</div>
 		</div>
 		<div id="form-feedback" class="uk-width-1-2@m uk-width-1-2@s">
@@ -66,6 +66,8 @@
 					</div>
 					
 					<?php echo Html_Form::hidden("inviaFeedback","inviaFeedback");?>
+					<?php echo Html_Form::hidden("id_c",FeedbackModel::gValue("id_c"));?>
+					
 					<?php
 					if (v("feedback_ajax_submit"))
 						echo Html_Form::hidden("ajaxsubmit","ajaxsubmit");?>

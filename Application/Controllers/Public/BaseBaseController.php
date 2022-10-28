@@ -32,6 +32,7 @@ class BaseBaseController extends Controller
 	protected $iduser = 0;
 	protected $dettagliUtente = null;
 	protected $fonteContatto = null;
+	protected $idRedirectContatti = null;
 	
 	public $cleanAlias = null;
 	public $prodottiInEvidenza;
@@ -121,6 +122,9 @@ class BaseBaseController extends Controller
 		$this->model("PagesregioniModel");
 		$this->model("CaptchaModel");
 		$this->model('ContattiModel');
+		
+		if (v("attiva_liste_regalo"))
+			$this->model('ListeregaloModel');
 		
 		if (v("abilita_feedback"))
 			$this->model("FeedbackModel");
@@ -373,7 +377,7 @@ class BaseBaseController extends Controller
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
 		
-		if ($controller != "contenuti" || $action != "category")
+		if (!($controller == "contenuti" && $action == "index"))
 			$this->estraiDatiFiltri();
 		
 		if (v("attiva_in_evidenza_nazioni"))
@@ -381,8 +385,8 @@ class BaseBaseController extends Controller
 				"in_evidenza"	=>	"Y"
 			))->toList("iso_country_code")->send();
 		
-		$data["meta_description"] = F::meta(gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"])));
-		$data["keywords"] = F::meta(gtext(htmlentitydecode(ImpostazioniModel::$valori["keywords"])));
+		$data["meta_description"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
+		$data["keywords"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
 		
 		Lang::$current = Params::$lang;
 		
@@ -390,11 +394,12 @@ class BaseBaseController extends Controller
 		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
-		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->send();
+		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean["idShop"]))->orderBy("lft")->save()->send();
 		
 		$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
 			"ne"		=>	array("tipo_pagina" => ""),
 			"attivo"	=>	"Y",
+			"principale"	=>	"Y",
 		))->toList("tipo_pagina", "id_page")->send();
 		
 		$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
@@ -448,6 +453,12 @@ class BaseBaseController extends Controller
 			}
 			
 			$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
+			
+			if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
+			{
+				VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
+				VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
+			}
 		}
 	}
 	
@@ -472,9 +483,6 @@ class BaseBaseController extends Controller
 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
 				$time = time() + v("durata_carrello_wishlist_coupon");
 				setcookie("cart_uid",User::$cart_uid,$time,"/");
-			
-// 				setcookie("cart_uid", "", time()-3600,"/");
-// 				$this->redirect("");
 			}
 		}
 		else
@@ -483,6 +491,8 @@ class BaseBaseController extends Controller
 			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("cart_uid",User::$cart_uid,$time,"/");
 		}
+		
+		OrdiniModel::setPagamenti();
 		
 		//set the cookie for the wishlist
 		if (isset($_COOKIE["wishlist_uid"]))
@@ -529,6 +539,9 @@ class BaseBaseController extends Controller
 			}
 		}
 		
+		if (v("attiva_liste_regalo"))
+			ListeregaloModel::getCookieIdLista();
+		
 		if (CartModel::soloProdottiSenzaSpedizione())
 			VariabiliModel::$valori["attiva_spedizione"] = 0;
 	}
@@ -562,7 +575,7 @@ class BaseBaseController extends Controller
 			gtext(v("valore_tipo_promo"), true, "none", null, 0),
 		);
 		
-		if (v("mostra_fasce_prezzo"))
+		if (v("mostra_fasce_prezzo") || v("filtro_prezzo_slider"))
 		{
 			$this->model("FasceprezzoModel");
 			
@@ -574,45 +587,40 @@ class BaseBaseController extends Controller
 	
 	protected function estraiDatiFiltri()
 	{
-		$whereIn = "";
-		
-		if (v("attiva_filtri_successivi"))
-		{
-			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
-				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
-			else
-				$whereIn = "1 =! 1";
-		}
-		
+		if (!v("ecommerce_attivo"))
+			return;
+			
 		if (v("usa_marchi"))
 		{
 			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
 			
-			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->where(array(
 				"nuovo"	=>	"Y",
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
-			$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->send();
+			if (v("attiva_filtri_successivi"))
+				$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("[marchio]")->send();
 		}
 		
 		if (v("usa_tag"))
 		{
-			$data["elencoTagFull"] = $this->elencoTagFull = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+			$data["elencoTagFull"] = $this->elencoTagFull = $data["elencoTagFullFiltri"] = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
 				"attivo"	=>	"Y",
 			))->orderBy("tag.titolo")->send();
 			
-			$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
+			if (v("attiva_filtri_successivi"))
+				$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
 				->inner(array("pagine"))
 				->inner("pages")->on("pages.id_page = pages_tag.id_page")
-				->addWhereAttivo()->groupBy("tag.id_tag")->send();
+				->addWhereAttivo()->groupBy("tag.id_tag")->sWhereFiltriSuccessivi("[tag]")->send();
 		}
 		
 		$data["filtriCaratteristiche"] = array();
 		
 		if (v("attiva_filtri_caratteristiche"))
 		{
-			$data["filtriCaratteristiche"] = $this->m["PagescarvalModel"]->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
+			$this->m["PagescarvalModel"]->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
 				->inner(array("caratteristica_valore"))
 				->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
 				->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
@@ -620,17 +628,23 @@ class BaseBaseController extends Controller
 				->inner("pages")->on("pages.id_page = pages_caratteristiche_valori.id_page")
 				->addWhereAttivo()
 				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
-				->groupBy("caratteristiche_valori.id_cv")
-				->send();
+				->groupBy("caratteristiche_valori.id_cv");
+				
+			if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
+			{
+				$this->m["PagescarvalModel"]->inner("categories_caratteristiche")->on("caratteristiche.id_car = categories_caratteristiche.id_car")->sWhere("categories_caratteristiche.id_c = ".(int)CategoriesModel::$currentIdCategory)->orderBy("categories_caratteristiche.id_order,caratteristiche_valori.id_order");
+			}
+			
+			$data["filtriCaratteristiche"] = $this->m["PagescarvalModel"]->send();
 		}
 		
 		$data["filtriNazioni"] = $data["filtriRegioni"] = array();
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
-			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni();
+			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni(v("attiva_filtri_successivi"));
 			
-			$data["filtriRegioni"] = $this->m["PagesregioniModel"]->filtriRegioni();
+			$data["filtriRegioni"] = $this->m["PagesregioniModel"]->filtriRegioni(v("attiva_filtri_successivi"));
 		}
 		
 		$this->append($data);
@@ -738,7 +752,7 @@ class BaseBaseController extends Controller
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	"invio credenziali nuovo utente",
+								"oggetto"	=>	"invio dati nuovo utente",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
 								"id_user"	=>	(int)$lId,
@@ -822,6 +836,7 @@ class BaseBaseController extends Controller
 				'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
 			);
 			
+			$campiFormInsert = $campiForm .= ",id_c";
 			$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
 			
 			$esitoInvio = "KO";
@@ -957,6 +972,7 @@ class BaseBaseController extends Controller
 			
 			$defaultValues = array(
 				"voto"	=>	0,
+				"id_c"	=>	FeedbackModel::gIdCombinazione(),
 			);
 			
 			if (User::$id)
@@ -1040,11 +1056,13 @@ class BaseBaseController extends Controller
 		
 		$emails = $this->elencoIndirizziEmailACuiInviare($valoriEmail, $pagina, $fonte);
 		
+		$tipologia = ($fonte == "NEWSLETTER") ? "NEWSLETTER" : "CONTATTO";
+		
 		return MailordiniModel::inviaMail(array(
 			"emails"	=>	$emails,
 			"oggetto"	=>	$oggetto,
 			"testo"		=>	$output,
-			"tipologia"	=>	"CONTATTO_NEWSLETT",
+			"tipologia"	=>	$tipologia,
 			"id_user"	=>	(int)User::$id,
 			"id_page"	=>	(int)$id,
 			"reply_to"	=>	$valoriEmail["email"],
@@ -1153,6 +1171,10 @@ class BaseBaseController extends Controller
 							}
 							
 							$idGrazie = PagineModel::gTipoPagina("GRAZIE");
+							
+							if ($this->idRedirectContatti)
+								$idGrazie = $this->idRedirectContatti;
+							
 							$idGrazieNewsletter = 0;
 							
 							if ($isNewsletter)
@@ -1255,5 +1277,45 @@ class BaseBaseController extends Controller
 	protected function campoObbligatorio($campo, $queryType = "insert")
 	{
 		return GenericModel::camboObbligatorio($campo, $this->controller, $queryType);
+	}
+	
+	protected function getAppLogin()
+	{
+		if (!VariabiliModel::confermaUtenteRichiesta())
+		{
+			if (isset($_SESSION["test_login_effettuato"]))
+				unset($_SESSION["test_login_effettuato"]);
+			
+			if (isset($_SESSION["ok_csrf"]))
+				unset($_SESSION["ok_csrf"]);
+			
+			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
+			
+			$data["elencoAppLogin"] = IntegrazioniloginModel::g()->clear()->where(array(
+				"attivo"	=>	1,
+			))->orderBy("id_order")->send(false);
+			
+			$this->append($data);
+		}
+	}
+	
+	protected function checkAggiuntaAlCarrello($id_page, $defaultErrorJson)
+	{
+		// Se non è un prodotto
+		if (!$id_page || !$this->m["PagesModel"]->isProdotto((int)$id_page))
+		{
+			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
+			
+			echo json_encode($defaultErrorJson);
+			
+			die();
+		}
+		
+		if (!v("ecommerce_online"))
+		{
+			echo json_encode($defaultErrorJson);
+			
+			die();
+		}
 	}
 }

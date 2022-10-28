@@ -106,6 +106,11 @@ class GenericModel extends Model_Tree
 			"campoTitolo"	=>	"titolo",
 			"tradotta"		=>	true,
 		),
+		"attributi_valori" 	=>	array(
+			"chiave"		=>	"id_av",
+			"campoTitolo"	=>	"titolo",
+			"tradotta"		=>	true,
+		),
 	);
 	
 	public static $tabelleConAlias = array();
@@ -187,7 +192,7 @@ class GenericModel extends Model_Tree
 			$campoTitolo = $params["campoTitolo"];
 			
 			if ($params["tradotta"])
-				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."' where coalesce(contenuti_tradotti.alias,$table.alias) = '".sanitizeAll($alias)."'";
+				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."' where coalesce(contenuti_tradotti.alias,$table.alias) = '".sanitizeAll($alias)."'";
 			else
 				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = '".sanitizeAll($alias)."'";
 			
@@ -279,11 +284,14 @@ class GenericModel extends Model_Tree
 			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
 	}
 	
-	public function checkAliasAll($id, $noTraduzione = false)
+	public function checkAliasAll($id, $noTraduzione = false, $checkUnico = true)
 	{
 		if (isset($this->values["alias"]) && !trim($this->values["alias"]))
 			$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
-			
+		
+		if (!$checkUnico)
+			return;
+		
 		$clean["id"] = (int)$id;
 		
 		if (!$clean["id"])
@@ -513,11 +521,7 @@ class GenericModel extends Model_Tree
 			{
 				if(@is_dir(Domain::$parentRoot."/".trim($params["path"],"/")))
 				{
-// 					$this->files->setBase(Domain::$parentRoot."/".trim($params["path"],"/"));
-// 					$list = $this->clear()->select($field)->toList($field)->send();
-// 					$list[] = "index.html";
-// 					
-// 					$this->files->removeFilesNotInTheList($list);
+				
 				}
 			}
 		}
@@ -1286,16 +1290,16 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
-	public function sWhereFiltriSuccessivi()
+	public function sWhereFiltriSuccessivi($elemento = "")
 	{
 		$whereIn = "";
 		
 		if (v("attiva_filtri_successivi"))
 		{
-			if (count(CategoriesModel::$arrayIdsPagineFiltrate) > 0)
-				$whereIn = "pages.id_page in (".implode(",",CategoriesModel::$arrayIdsPagineFiltrate).")";
+			if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) && count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
+				$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento])).")";
 			else
-				$whereIn = "1 =! 1";
+				$whereIn = "1 = 1";
 			
 			$this->sWhere($whereIn);
 		}
@@ -1343,6 +1347,11 @@ class GenericModel extends Model_Tree
 				"id_lingua"	=>	(int)$this->values["id_lingua"],
 			))->field("codice");
 		}
+    }
+    
+    public function bulkaggiungiacategoria($record)
+    {
+		return "<i data-azione='aggiungiacategoria' title='".gtext("Aggiungi a categoria")."' class='bulk_trigger help_trigger_aggiungi_a_categoria fa fa-plus-circle text text-primary'></i>";
     }
     
     public function bulkaggiungiaprodotto($record)
@@ -1429,8 +1438,15 @@ class GenericModel extends Model_Tree
 	
 	public function settaCifreDecimali()
 	{
-		if (!v("prezzi_ivati_in_prodotti") && isset($this->values["price"]))
-			$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
+		if (!v("prezzi_ivati_in_prodotti"))
+		{
+			if (isset($this->values["price"]))
+				$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["prezzo_promozione_ass"]))
+				$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass"]), v("cifre_decimali"),".","");
+		}
+		
 	}
 	
 	public function aggiungiAGruppoTipo($id, $tipo = "CO")

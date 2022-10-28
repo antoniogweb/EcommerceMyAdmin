@@ -8,6 +8,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -26,6 +27,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'M' => 
         array (
             'Mpdf\\' => 5,
+        ),
+        'F' => 
+        array (
+            'Facebook\\' => 9,
         ),
         'D' => 
         array (
@@ -49,6 +54,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'Facebook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook',
         ),
         'DeepCopy\\' => 
         array (

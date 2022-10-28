@@ -71,7 +71,11 @@ class EventiretargetingController extends BaseController
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_evento";
 		
+		$this->queryActions = $this->bulkQueryActions = "";
 		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array();
 		
 		$this->modelName = "EventiretargetingelementiModel";
 		

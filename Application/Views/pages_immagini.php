@@ -62,17 +62,18 @@ $(function() {
 				import_thumb();
 			}
 		});
+		
 		return false;
 	});
 	
-	import_thumb();
+// 	import_thumb();
 });
 
 //funzione per importare le immagini dei lavori
 function import_thumb()
 {
 	$.ajaxQueue({
-		url: "<?php echo $this->baseUrl.'/immagini/view/'.$id_page;?>",
+		url: "<?php echo $this->baseUrl.'/immagini/view/'.$id_page."/".(int)$this->viewArgs["id_cmb"];?>",
 		async: false,
 		cache:false,
 		success: function(html){
@@ -94,7 +95,8 @@ $(function () {
 		autoUpload: true,
 		formData: {
 			'token':'<?php echo $token;?>',
-			'id_page':'<?php echo $id_page; ?>'
+			'id_page':'<?php echo $id_page; ?>',
+			'id_cmb':<?php echo (int)$this->viewArgs["id_cmb"];?>
 		},
 		done: function (e, data) {
 			if (data.result.result != "OK")
@@ -114,27 +116,7 @@ $(function () {
 			);
 		},
 		processdone: function (e, data) {
-// 			console.log(data);
-// 			if (data._response.result.result != "OK")
-// 				$(".alert-fileupload").append("<div class='alert alert-danger'>" + data.result.error + "</div>");
-// 			if (data.result.result == "OK")
-// 			{
-// 				$("input[name='immagine']").val(data.result.immagine);
-// 				show_preview();
-// 			}
-// 			else
-// 			{
-// 				$(".alert-fileupload").html("<div class='alert alert-danger'>" + data.result.error + "</div>");
-// 			}
-
-// 									var fileName = data.files[0].name;
-// 									
-// 									var fileExt = fileName.split('.').pop();
-// 									
-// 									if (allowed.indexOf(fileExt) == -1)
-// 									{
-// 										$(".alert-fileupload").append("<div class='alert alert-danger'>Attenzione, il file <b>" + fileName + "</b> non può essere caricato perché la sua estensione non è ammessa");
-// 									}
+			
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -167,13 +149,15 @@ $(document).ready(function(){
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
+			<?php if (!nobuttons()) { ?>
 			<!-- show the top menù -->
 			<div class='mainMenu'>
 				<?php echo $menu;?>
 			</div>
-
+			
 			<?php include($this->viewPath("steps"));?>
-				
+			<?php } ?>
+			
 			<div class="box">
 				<div class="box-header with-border main">
 					

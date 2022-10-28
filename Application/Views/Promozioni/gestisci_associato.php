@@ -2,6 +2,8 @@
 
 <?php if ($this->action == "categorie") { ?>
 
+<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuna categoria la promo sarà utilizzabile sui prodotti di tutte le categorie.");?></div>
+
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/categorie/$id".$this->viewStatus;?>' method='POST'>
 
 	<?php echo Html_Form::select("id_c","",$listaCategorie,null,"combobox","yes");?>
@@ -13,6 +15,8 @@
 <?php } ?>
 
 <?php if ($this->action == "pagine") { ?>
+
+<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuna prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/pagine/$id".$this->viewStatus;?>' method='POST'>
 

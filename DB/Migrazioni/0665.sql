@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_fonti` (`id_fonte`, `data_creazione`, `titolo`, `fonte`, `attivo`, `id_order`) VALUES (NULL, '2021-10-27 19:31:02', 'La gift card è stata attivata', 'GIFT_CARD', '1', '5');

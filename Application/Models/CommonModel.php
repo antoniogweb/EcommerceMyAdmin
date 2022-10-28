@@ -162,7 +162,7 @@ trait CommonModel {
 	{
 		$linguaUrl = $lingua ? "/$lingua/" : "/";
 		
-		return rtrim(Url::getFileRoot(),"/").$linguaUrl;
+		return Domain::$publicUrl.$linguaUrl;
 	}
 	
 	public function forzaBloccato()
@@ -171,7 +171,7 @@ trait CommonModel {
 		$this->values["attivo"] = "N";
 	}
 	
-	public static function getRedirect($char = "?")
+	public static function getRedirect($char = "?", $soloRedirectPermessi = false)
 	{
 		$r = new Request();
 		
@@ -181,21 +181,21 @@ trait CommonModel {
 		//valori permessi per il redirect
 		$allowedRedirect = explode(",",v("redirect_permessi"));
 		
-		if (is_numeric($redirect))
+		if (is_numeric($redirect) && !$soloRedirectPermessi)
 		{
-			if (PagesModel::isAttiva((int)$redirect))
+			if (PagesModel::isAttivaTrue((int)$redirect))
 				$redirect = (int)$redirect;
 			else
 				$redirect = '';
 		}
-		else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',$redirect, $matches))
+		else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',$redirect, $matches) && !$soloRedirectPermessi)
 		{
 			$idPage = $matches[1];
 			$idProd = $matches[2];
 			
 			$redirect = '';
 			
-			if (PagesModel::isAttiva($idPage) && PagesModel::isAttiva($idProd))
+			if (PagesModel::isAttivaTrue($idPage) && PagesModel::isAttivaTrue($idProd))
 				$redirect = (int)$idPage."-".(int)$idProd;
 		}
 		else
@@ -393,5 +393,82 @@ trait CommonModel {
 			return $ordine["ragione_sociale"];
 		else
 			return $ordine["nome"]." ".$ordine["cognome"];
+	}
+	
+	public function deleteAccount($idUser, $codiceApp = "")
+	{
+		$user = $this->selectId($idUser);
+		
+		if (!empty($user))
+		{
+			if (!v("elimina_record_utente_ad_autoeliminazione"))
+			{
+				if ($user["deleted"] == "no")
+				{
+					$tokeEliminazione = randomToken();
+					
+					$this->sValues(array(
+						"username"	=>	randomToken()."@---.--",
+						Users_CheckAdmin::$statusFieldName	=>	1,
+						"bloccato"	=>	1,
+						"deleted"	=>	"yes",
+						"nome"		=>	"--",
+						"cognome"	=>	"--",
+						"ragione_sociale"	=>	"--",
+						"p_iva"		=>	"--",
+						"codice_fiscale"	=>	"--",
+						"indirizzo"	=>	"--",
+						"cap"		=>	"--",
+						"provincia"	=>	"--",
+						"citta"		=>	"--",
+						"telefono"	=>	"--",
+						"email"		=>	"",
+						"indirizzo_spedizione"	=>	"--",
+						"codice_destinatario"	=>	"--",
+						"dprovincia"=>	"--",
+						"pec"		=>	"--",
+						"telefono_2"=>	"--",
+						"codice_app_eliminazione"	=>	$codiceApp,
+						"time_eliminazione"	=>	time(),
+						"token_eliminazione"=>	$tokeEliminazione,
+					));
+					
+					$this->setValue("password", randomToken(), PASSWORD_HASH);
+					
+					if ($this->pUpdate((int)$idUser))
+					{
+						$sp = new SpedizioniModel();
+						
+						$sp->sValues(array(
+							"indirizzo_spedizione"	=>	"--",
+							"cap_spedizione"		=>	"--",
+							"provincia_spedizione"	=>	"--",
+	// 						"nazione_spedizione"	=>	"--",
+							"citta_spedizione"		=>	"--",
+							"telefono_spedizione"	=>	"--",
+							"dprovincia_spedizione"	=>	"--",
+						));
+						
+						$sp->pUpdate(null, "id_user = ".(int)$idUser);
+						
+						return $tokeEliminazione;
+					}
+				}
+			}
+			else
+			{
+				$this->query("delete from spedizioni where id_user = ".(int)$idUser);
+				$this->query("delete from regusers_groups_temp where id_user = ".(int)$idUser);
+				$this->query("delete from regusers_groups where id_user = ".(int)$idUser);
+				$this->query("update orders set id_user = 0 where id_user = ".(int)$idUser);
+				$this->query("update feedback set id_user = 0 where id_user = ".(int)$idUser);
+				$this->query("delete from regusers where id_user = ".(int)$idUser);
+				$this->query("delete from contatti where email = '".sanitizeAll($user["username"])."'");
+				
+				return 1;
+			}
+		}
+		
+		return 0;
 	}
 }

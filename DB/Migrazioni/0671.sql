@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`) VALUES (NULL, 'Codice della Gift Card (variabile utilizzabile solo in caso di email su Gift Card)', 'CODICE_GIFT_CARD', 'gCodicePromo', '', '1', '5', '', '1', '');

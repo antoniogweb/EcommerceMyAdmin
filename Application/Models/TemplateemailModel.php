@@ -36,6 +36,9 @@ class TemplateemailModel extends BasicsectionModel {
 		$this->formStruct["entries"]['title'] = array(
 			'labelString'=>	'Oggetto email',
 			'entryClass'	=>	'form_input_text help_titolo',
+			'wrap'		=>	array(
+				SegnapostoModel::getLegenda($this),
+			),
 		);
 		
 		$this->formStruct["entries"]['description'] = array(
@@ -43,9 +46,6 @@ class TemplateemailModel extends BasicsectionModel {
 			'entryClass'	=>	'form_textarea help_descrizione',
 			'labelString'=>	'Corpo mail',
 			'className'		=>	'dettagli',
-			'wrap'		=>	array(
-				SegnapostoModel::getLegenda($this),
-			),
 		);
 		
 		$this->formStruct["entries"]['attivo'] = array(

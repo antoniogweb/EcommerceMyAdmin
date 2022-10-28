@@ -33,6 +33,8 @@ class CategoriesModel extends HierarchicalModel {
 	public static $elencoCategorieFull = array();
 	public static $associazioneSezioneId = null;
 	
+	public static $currentIdCategory = null;
+	
 	public static $sezioneVariabile = array(
 		"faq"			=>	"mostra_faq",
 		"testimonial"	=>	"mostra_testimonial",
@@ -153,6 +155,7 @@ class CategoriesModel extends HierarchicalModel {
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_c', null, "CASCADE"),
 			'classisconto' => array("HAS_MANY", 'ClassiscontocategoriesModel', 'id_c', null, "CASCADE"),
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_c', null, "CASCADE"),
+			'caratteristiche' => array("HAS_MANY", 'CategoriescaratteristicheModel', 'id_c', null, "CASCADE"),
         );
     }
     
@@ -792,14 +795,24 @@ class CategoriesModel extends HierarchicalModel {
 		return $this;
 	}
 	
-	public function numeroProdottiFull($id_c)
+	public function numeroProdottiFull($id_c, $filtriSuccessivi = false)
 	{
-		return self::gPage($id_c, true, false)->rowNumber();
+		$cat = self::gPage($id_c, true, false);
+		
+		if ($filtriSuccessivi)
+			$cat->sWhereFiltriSuccessivi("[categoria]");
+		
+		return $cat->rowNumber();
 	}
 	
-	public function numeroProdotti($id_c)
+	public function numeroProdotti($id_c, $filtriSuccessivi = false)
 	{
-		return self::gPage($id_c, false, false)->rowNumber();
+		$cat = self::gPage($id_c, false, false);
+		
+		if ($filtriSuccessivi)
+			$cat->sWhereFiltriSuccessivi("[categoria]");
+		
+		return $cat->rowNumber();
 	}
 	
 	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true)
@@ -894,7 +907,7 @@ class CategoriesModel extends HierarchicalModel {
 		if (count($filtriAltri) > 0)
 			$urlArray = array_merge($urlArray, $filtriAltri);
 		
-		$url = implode("/", $urlArray).".html";
+		$url = implode("/", $urlArray).v("estensione_url_categorie");
 		
 		if ($viewStatus)
 			$url .= "$viewStatus";

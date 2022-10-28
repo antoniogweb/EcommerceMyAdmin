@@ -1,0 +1,1 @@
+UPDATE `integrazioni_login` SET `colore_background_in_esadecimale` = '#484bf7', `html_icona` = '&lt;span uk-icon=&quot;icon: facebook;&quot;&gt;&lt;/span&gt;' WHERE `integrazioni_login`.codice = 'FACEBOOK_LOGIN';

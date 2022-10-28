@@ -54,8 +54,8 @@ class PagamentiController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->mainFields = array("edit","attivo");
-		$this->mainHead = "Titolo,Attivo";
+		$this->mainFields = array("edit","pagamenti.codice", "pagamenti.prezzo_ivato","attivo");
+		$this->mainHead = "Titolo,Codice,Costo (€),Attivo";
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
@@ -67,7 +67,9 @@ class PagamentiController extends BaseController
 		if ($queryType != "update")
 			die();
 		
-		$fields = 'titolo,attivo,descrizione';
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo_ivato");
+		
+		$fields = 'titolo,attivo,prezzo_ivato,descrizione';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		

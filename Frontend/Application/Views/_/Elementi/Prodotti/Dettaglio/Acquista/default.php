@@ -21,7 +21,7 @@
 			<?php if ($p["pages"]["codice"]) { ?>
 			<li><span class="uk-text-muted"><?php echo gtext("Codice");?>: </span><span class="codice_value"><?php echo $p["pages"]["codice"];?></span></li>
 			<?php } ?>
-			<li><span class="uk-text-muted"><?php echo gtext("Peso");?>: </span><span class="peso_value"><?php echo $p["pages"]["peso"];?></span> kg</li>
+			<li><span class="uk-text-muted"><?php echo gtext("Peso");?>: </span><span class="peso_value"><?php echo setPriceReverse($p["pages"]["peso"]);?></span> kg</li>
 			<?php if (isset($marchioCorrente) && count($marchioCorrente) > 0) { ?>
 			<li><span class="uk-text-muted"><?php echo gtext("Marchio");?>: </span><a href='<?php echo $this->baseUrl."/".getMarchioUrlAlias($marchioCorrente["marchi"]["id_marchio"]);?>'><?php echo mfield($marchioCorrente,"titolo");?></a></li>
 			<?php } ?>
@@ -59,6 +59,11 @@
 		<?php include(tpf(ElementitemaModel::p("PULSANTE_ACQUISTA_DETTAGLIO")));?>
 		
 		<?php include(tpf(ElementitemaModel::p("WISHLIST_DETTAGLIO")));?>
+		
+		<?php include(tpf(ElementitemaModel::p("AGGIUNGI_ALLA_LISTA","", array(
+			"titolo"	=>	"Selezione aggiungi alla lista",
+			"percorso"	=>	"Elementi/Prodotti/Dettaglio/AggiungiAllaLista",
+		)))); ?>
 	<?php } ?>
 	
 	<hr class="uk-margin-medium-top">

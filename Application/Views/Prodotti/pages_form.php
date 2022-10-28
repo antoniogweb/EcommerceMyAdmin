@@ -78,14 +78,30 @@
 											<?php } ?>
 										</div>
 									</div>
+									<?php } else { ?>
+									<div class='row'>
+										<div class='col-lg-12'>
+											<?php if (isset($form["gift_card"])) { ?>
+											<?php echo $form["gift_card"];?>
+											<?php } ?>
+										</div>
+									</div>
 									<?php } ?>
 									
 									<?php if (isset($form["in_promozione"])) { ?>
 									<?php echo $form["in_promozione"];?>
 									<?php } ?>
 									
+									<?php if (isset($form["tipo_sconto"])) { ?>
+									<?php echo $form["tipo_sconto"];?>
+									<?php } ?>
+									
 									<?php if (isset($form["prezzo_promozione"])) { ?>
 									<?php echo $form["prezzo_promozione"];?>
+									<?php } ?>
+									
+									<?php if (isset($form[$campoPriceSconto])) { ?>
+									<?php echo $form[$campoPriceSconto];?>
 									<?php } ?>
 									
 									<?php if (isset($form["dal"])) { ?>
@@ -115,7 +131,7 @@
 									
 									<div class="submit_entry">
 										<span class="submit_entry_Salva">
-											<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit">Salva</button>
+											<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva");?></button>
 											<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 										</span>
 									</div>

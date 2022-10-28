@@ -382,22 +382,6 @@ class BaseRegusersModel extends Model_Tree
 		}
 	}
 	
-	public function deleteAccount($idUser)
-	{
-		$user = $this->selectId($idUser);
-		
-		if (!empty($user))
-		{
-			$this->query("delete from spedizioni where id_user = ".(int)$idUser);
-			$this->query("delete from regusers_groups_temp where id_user = ".(int)$idUser);
-			$this->query("delete from regusers_groups where id_user = ".(int)$idUser);
-			$this->query("update orders set id_user = 0 where id_user = ".(int)$idUser);
-			$this->query("update feedback set id_user = 0 where id_user = ".(int)$idUser);
-			$this->query("delete from regusers where id_user = ".(int)$idUser);
-			$this->query("delete from contatti where email = '".sanitizeAll($user["username"])."'");
-		}
-	}
-	
 	// Iscrivi a newsletter l'utente
 	public function iscriviANewsletter($id_user)
 	{
@@ -432,4 +416,67 @@ class BaseRegusersModel extends Model_Tree
 			}
 		}
 	}
+	
+	public static function getUrlAccountEliminato($tokenEliminazione = "")
+	{
+		$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
+		
+		if (!v("elimina_record_utente_ad_autoeliminazione"))
+			$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
+		
+		if ($idRedirect)
+			return getUrlAlias($idRedirect).$queryStringEliminazione;
+		else
+			return 'account-cancellato.html'.$queryStringEliminazione;
+	}
+	
+	public function getIdUtenteDaIdApp($codiceApp, $idApp)
+    {
+		return RegusersintegrazioniloginModel::g()->getIdUtenteDaIdApp($codiceApp, $idApp);
+    }
+    
+    public function accountDaEliminareANuovoOrdine($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			$numeroListe = ListeregaloModel::g()->where(array(
+				"id_user"	=>	(int)$id,
+			))->rowNumber();
+			
+			if ($numeroListe)
+				return false;
+			
+			$ordiniUtente = OrdiniModel::g()->select("stato,pagamento")->where(array(
+				"id_user"	=>	(int)$id,
+			))->send(false);
+			
+			if ((int)count($ordiniUtente) === 0)
+				return true;
+			
+			if ((int)count($ordiniUtente) === 1 && $ordiniUtente[0]["stato"] === "pending" && OrdiniModel::conPagamentoOnline($ordiniUtente[0]))
+				return true;
+		}
+		
+		return false;
+    }
+    
+    public static function checkEdEliminaAccount()
+    {
+		if (!v("elimina_account_ad_ordine_se_parcheggiato"))
+			return;
+		
+		if (!User::$logged && isset($_POST["email"]))
+		{
+			$rModel = new RegusersModel();
+			
+			$utente = $rModel->clear()->where(array(
+				"username"	=>	sanitizeAll($_POST["email"]),
+			))->record();
+			
+			if (!empty($utente) && $rModel->accountDaEliminareANuovoOrdine($utente["id_user"]))
+				$rModel->deleteAccount($utente["id_user"]);
+		}
+    }
 }

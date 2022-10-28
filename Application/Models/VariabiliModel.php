@@ -74,7 +74,6 @@ class VariabiliModel extends GenericModel {
 		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
 		"shop_in_alias_marchio"		=>	1,
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
-		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"referenze_attive"			=>	1,
 		"blog_attivo"				=>	1,
 		"divisone_breadcrum"		=>	" » ",
@@ -86,7 +85,6 @@ class VariabiliModel extends GenericModel {
 		"template_personalizzazione"=>	"",
 		"usa_https"					=>	0,
 		"codice_cron"				=>	"",
-		"mostra_fasce_prezzo"		=>	0,
 		"estrai_materiali"			=>	0,
 		"immagine_2_in_slide"		=>	0,
 		"immagine_3_in_slide"		=>	0,
@@ -113,7 +111,6 @@ class VariabiliModel extends GenericModel {
 		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
-		"lista_variabili_opzioni_google"	=>	"codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default",
 		"lista_variabili_funzionamento_ecommerce"	=>	"ecommerce_online,piattaforma_in_sviluppo,traduzione_frontend,giacenza_massima_mostrata",
 		"submenu_class"				=>	"uk-nav uk-nav-default",
 		"current_menu_item"			=>	"uk-active",
@@ -143,10 +140,8 @@ class VariabiliModel extends GenericModel {
 		"estrai_in_promozione_home"	=>	0,
 		"news_per_pagina"			=>	16,
 		"email_aziendale"			=>	"",
-		"immagine_in_varianti"		=>	0,
 		"piattaforma_in_sviluppo"	=>	1,
 		"email_sviluppo"			=>	"",
-		"classe_variante_radio"		=>	"",
 		"insert_account_fields"		=>	"nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2",
 		"account_attiva_conferma_password"	=>	1,
 		"account_attiva_conferma_username"	=>	1,
@@ -163,7 +158,6 @@ class VariabiliModel extends GenericModel {
 		"insert_ordine_telefono_obbligatorio"	=>	1,
 		"numero_per_pagina_magazzino"	=>	50,
 		"numero_per_pagina_pages"	=>	30,
-		"attiva_cache_prodotti"		=>	1,
 		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
@@ -172,7 +166,6 @@ class VariabiliModel extends GenericModel {
 		"ore_durata_link_conferma"	=>	24,
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
-		"abilita_solo_nazione_navigazione"	=>	1,
 		"abilita_blocco_acquisto_diretto"	=>	0,
 		"tipo_cliente_default"		=>	"privato",
 		"codice_gtm"				=>	"",
@@ -272,7 +265,6 @@ class VariabiliModel extends GenericModel {
 		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg",
 		"nuova_modalita_caratteristiche"	=>	1,
 		"attiva_tipologie_caratteristiche"	=>	1,
-		"attiva_spedizione"			=>	1,
 		"lingua_default_frontend"	=>	"it",
 		"abilita_tutte_le_lingue_attive"	=>	0,
 		"applicativo_traduzioni"	=>	"",
@@ -285,8 +277,6 @@ class VariabiliModel extends GenericModel {
 		"permetti_cambio_tema"		=>	0,
 		"attiva_help_wizard"		=>	0,
 		"url_elenco_prodotti"		=>	"prodotti",
-		"attiva_cache_immagini"		=>	0,
-		"permessi_cartella_cache_immagini"	=>	777,
 		"url_elenco_clienti"		=>	"regusers",
 		"permetti_acquisto_anonimo"	=>	1,
 		"hook_ordine_confermato"	=>	"",
@@ -348,13 +338,9 @@ class VariabiliModel extends GenericModel {
 		"token_edit_frontend"		=>	"", // token per attivare l'edit frontend
 		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
 		"mostra_errori_personalizzazione"	=>	1, // mostrare che manca personalizzazione oppure no
-		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
-		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
 		"coupon_ajax"				=>	0, // se inserire il coupon con una richiesta POST ajax
 		"attiva_gestione_integrazioni"	=>	0, // se mostra la gestione delle integrazioni
-		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
 		"resoconto_ordine_top_carrello"	=>	0, // se mostrare, in mobile, il resoconto in alto al checkout
-		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
 		"profondita_menu_desktop"	=>	2, // profondità menù desktop
 		"profondita_menu_mobile"	=>	2, // profondità menù mobile
 		"appiattisci_menu_semplice"	=>	0, // se impostato a 1, vengono eliminati i livelli del menù e viene messo tutto a profondità 1
@@ -369,12 +355,8 @@ class VariabiliModel extends GenericModel {
 		"scaglioni_cpc_euro_centesimi"		=>	10, // indica lo scaglione in centesimi di euro del CPC da mostrare nelle etichette del feed di google
 		"scaglioni_margine_di_guadagno"		=>	10, // indica lo scaglione in euro del guadagno assoluto previsto da mostrare nelle etichette del feed di google
 		"rapporto_dollaro_euro"				=>	1.13, // proporzione euro dollaro
-		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
-		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 		"codice_fiscale_obbligatorio_solo_se_fattura"	=>	0, // per privati, il CF è obbligatorio solo se il cliente spunta il campo "fattura"
-		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
-		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
 		"pixel_nel_footer"			=>	1, // sposta il pixel di Facebook nel footer
 		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
 		"euro_iva_italiana_vendite_ue"	=>	10000, // totale euro massimo per vendite fuori dall'italia con IVA italiana
@@ -389,7 +371,6 @@ class VariabiliModel extends GenericModel {
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
-		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
 		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale
 		"classe_ext_cookies_conf"	=>	"segnalazione_cookies_ext uk-background-secondary uk-light segnalazione_cookies_ext_pag_cookies", // classe box esterno cookie preferenze
@@ -403,6 +384,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
+		"var_query_string_id_comb"	=>	"id_comb", // id a cui si riferisce la combinazione in questione (ex id combinazione per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		"attiva_modifica_massiva_codici"	=>	0, // permetti la modifica massiva dei codici (solo singola pagina)
@@ -433,8 +415,6 @@ class VariabiliModel extends GenericModel {
 		"newsletter_ajax_submit"	=>	0, // se impostato a 1, l'invio del form newsletter sarà in modalità AJAX
 		"invia_subito_mail_contatto"=>	1, // se inviare subito il contatto
 		"invia_mail_contatto_a_piattaforma"	=>	1, // se inviare la mail di contatto anche alla piattaforma o solo ai referenti di nazione (se non ci sono referenti manda la mail alla piattaforma)
-		## ETICHETTE FEED GOOGLE ##
-		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
 		## FEEDBACK ##
 		"abilita_feedback"			=>	0, // se i feedback sono abilitati o meno
 		"permetti_aggiunta_feedback"	=>	0, // permette oppure no l'aggiunta dei feedback da parte dei clienti
@@ -458,9 +438,83 @@ class VariabiliModel extends GenericModel {
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
 		"attiva_gift_card"		=>	0, // se impostato a 1, attiva i prodotti Gift card
+		"numero_massimo_gift_card"	=>	8, // numero massimo di gift card in un carrello
+		"permetti_di_disattivare_promo_al_carrello"	=>	1, // se sì, attiva la possibilità di disattivare la promo applicata al carrello
+		## CARRELLO ##
+		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number
+		## STRUTTURA URL E COMBINAZIONI ##
+		"estensione_url_categorie"	=>	".html", // cosa aggiungere come estensione nell'URL delle categorie
+		"aggiungi_marchio_in_url_prodotto"		=>	1, // se impostato a 1 il marchio apparirà nell'URL del prodotto
+		"mostra_categorie_in_url_prodotto"		=>	1, // se impostato a 1  l'albero delle categorie verrà mostrato nell'URL prima del prodotto
+		"mantieni_alias_sezione_in_url_prodotti"	=>	1, // se impostato a 1 mantiene l'alias della sezione negli URL del prodotto (prodotti, shop, ...)
+		"usa_codice_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il codice della combinazione nell'URL del prodotto
+		"usa_alias_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il l'alias della combinazione nell'URL del prodotto
+		"token_aggiorna_alias_combinazioni"		=>	"", // token per andare a rigenerare tutti gli alias delle combinazioni
+		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella
+		"immagine_in_varianti"		=>	0, // se settato a 1, mostra la colonna immagini nell'elenco delle combinazionipagina della nuova combinazione
+		"immagini_separate_per_variante"		=>	0, // se settato a 1, possibilità di caricare più immagini per ogni variante
+		## PAGINA DETTAGLIO PRODOTTO ##
+		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
+		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
+		## GOOGLE E FACEBOOK ##
+		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
+		## NAZIONI ##
+		"nazione_default"			=>	"IT", // Codice ISO nazione di default
+		"abilita_solo_nazione_navigazione"	=>	1, // permetti al checkout o come nazioni permesse, solo la nazione di navigazione o quella di default
+		"attiva_nazione_nell_url"	=>	0, // se impostato a 1 nell'URL verrà aggiunto il codice della nazione
+		## FASCE PREZZO ##
+		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
+		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
+		## CACHE ##
+		"numero_massimo_file_cache"	=>	50000, // numero massimo di file in cache
+		"attiva_cache_prodotti"		=>	1, // cache dei prodotti in admin
+		"attiva_cache_immagini"		=>	0, // cache della immagini
+		"permessi_cartella_cache_immagini"	=>	777, // permessi della cartella di cache delle immagini
+		"query_cache_durata_massima"	=>	60, // tempo di durata massima della cache
+		"query_cache_pulisci_ogni_x_minuti"	=>	70, // minuti dopo i quali pulisce la cache
+		"query_cache_usa_periodi_random"=>	0, // se suddivide il periodo di cache in sottoperiodi e ne sceglie uno random
+		"query_cache_minuti_tra_periodi"=>	5, // numero di minuti tra un periodo di cache e l'altro
+		## GIACENZA / MAGAZZINO ##
+		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
+		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
+		## VARIANTI ##
+		"classe_variante_radio"		=>	"",
+		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE
+		## GOOGLE ##
+		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
+		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
+		"lista_variabili_opzioni_google"	=>	"codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default",
+		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
+		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
+		"versione_google_analytics"	=>	3, // versione di Google Analytics
+		## ETICHETTE FEED GOOGLE ##
+		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
+		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
+		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
+		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
+		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
+		## LOGIN ESTERNI ##
+		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
+		"token_eliminazione_account_da_app"	=>	"", // verrà utilizzato come accesso per l'eliminazione dell'utente da app esterna (Facebook, ...)
+		## UTENTI ##
+		"elimina_account_ad_ordine_se_parcheggiato"	=>	0, // se impostato ad 1, all'ordine il sistema controlla che non sia un account bloccante e in caso lo cancella
+		"permetti_sempre_eliminazione_account_backend"=>	0, // se impostato a 1, utilizza deleteAccount se non può eliminare il cliente
+		"elimina_record_utente_ad_autoeliminazione"	=>	1, // se impostato a 1, elimina il record. Altrimenti va a sovrascirverlo con dati random
+		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
+		## LISTE REGALO ##
+		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
+		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo
+		"tempo_durata_cookie_id_lista"	=>	31536000, // durata in secondi del cookie contenente l'ID della lista
+		"alias_pagina_lista"	=>	"lista-regalo", // alias usato in URL per la pagina delle liste
+		"numero_massimo_tentativi_invio_link"	=>	3, // numero massimo di tentativi di invio link per ogni elemento della tabella liste_regalo_link
+		## SPEDIZIONE ##
+		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
+		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
+		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto)
+		"attiva_filtri_caratteristiche_separati_per_categoria"	=>	0, // se impostato a 1, sarà possibile aggiungere filtri di caratteristiche distini per ogni categoria
 	);
 	
 	public static $daInizializzare = array(
@@ -470,6 +524,8 @@ class VariabiliModel extends GenericModel {
 		"var_query_string_no_cookie",
 		"token_edit_frontend",
 		"token_feed_google_facebook",
+		"token_aggiorna_alias_combinazioni",
+		"token_eliminazione_account_da_app",
 	);
 	
 	public static function inizializza($variabili = array())
@@ -589,7 +645,7 @@ class VariabiliModel extends GenericModel {
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Google Tag Manager --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google Tag Manager --&gt;</div>"
 				),
 			),
 			'codice_gtm_analytics_noscript'	=>	array(
@@ -598,7 +654,7 @@ class VariabiliModel extends GenericModel {
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Google Tag Manager (noscript) --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google Tag Manager (noscript) --&gt;</div>"
 				),
 			),
 			'codice_gtm_analytics'	=>	array(
@@ -607,7 +663,7 @@ class VariabiliModel extends GenericModel {
 				'wrap'		=>	array(
 					null,
 					null,
-					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google commentato")."<br />&lt;!-- Global site tag (gtag.js) - XXX --&gt;</div>"
+					"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google tag (gtag.js) - XXX --&gt;</div>"
 				),
 			),
 			'codice_fbk'	=>	array(
@@ -656,6 +712,15 @@ class VariabiliModel extends GenericModel {
 					null,
 					"<div class='form_notice'>".gtext("Verranno attivati solo se il cliente approva tutti i cookie.")."</div>",
 				),
+			),
+			'versione_google_analytics'	=>	array(
+				'labelString'	=>	gtext('Versione di Google Analytics usata'),
+				'type'			=>	'Select',
+				'options'	=>	array(
+					"3"	=>	"Universal Analytics",
+					"4"	=>	"Google Analytics 4",
+				),
+				"reverse"	=>	"yes",
 			),
 		);
 		
@@ -747,5 +812,15 @@ class VariabiliModel extends GenericModel {
 		$chiave = $matches[1];
 		
 		return v($chiave);
+	}
+	
+	public static function combinazioniLinkVeri()
+	{
+		return ((v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")) && v("aggiorna_pagina_al_cambio_combinazione_in_prodotto")) ? true : false;
+	}
+	
+	public static function confermaUtenteRichiesta()
+	{
+		return (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione")) ? true : false;
 	}
 }

@@ -102,6 +102,8 @@ class ProdottiController extends PagesController {
 		
 		$data = array("avviso_combinazioni" => "");
 		
+		$campoPriceSconto = $data["campoPriceSconto"] = v("prezzi_ivati_in_prodotti") ? "prezzo_promozione_ass_ivato" : "prezzo_promozione_ass";
+		
 		$haCombinazioni = $this->m[$this->modelName]->hasCombinations((int)$id, false);
 		
 		if ($haCombinazioni)
@@ -112,9 +114,9 @@ class ProdottiController extends PagesController {
 		if (v("ecommerce_attivo"))
 		{
 			if ($haCombinazioni)
-				$this->queryFields .= ",id_iva,in_promozione,prezzo_promozione,dal,al";
+				$this->queryFields .= ",id_iva,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al";
 			else
-				$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,prezzo_promozione,dal,al,giacenza";
+				$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al,giacenza";
 		}
 		
 		if (v("abilita_blocco_acquisto_diretto"))

@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-
+<?php $nazioneUrl = v("attiva_nazione_nell_url") ? "_".strtolower(v("nazione_default")) : "";?>
 <?php
 $pmT = new PagesModel();
 $cmT = new CategoriesModel();
@@ -39,7 +39,7 @@ $cmT = new CategoriesModel();
 			else
 				$urlT = $cmT->getUrlAlias($trad["id_c"], $trad["lingua"]);
 			?>
-			<a target="_blank" title="Vedi pagina" href="<?php echo Domain::$name."/".$trad["lingua"]."/".$urlT;?>"><i class="fa fa-arrow-right"></i></a>
+			<a target="_blank" title="Vedi pagina" href="<?php echo Domain::$name."/".$trad["lingua"].$nazioneUrl."/".$urlT;?>"><i class="fa fa-arrow-right"></i></a>
 		</td>
 		<?php } ?>
 	</tr>

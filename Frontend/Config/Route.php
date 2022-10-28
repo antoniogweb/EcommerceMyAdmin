@@ -22,9 +22,12 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+// Estensioni per pagine e categorie
+if (!defined('ESTENSIONI_URL'))
+	define ('ESTENSIONI_URL','.html');
+
 class Route
 {
-
 	//controller,action couples that can be reached by the browser
 	//set 'all' if you want that all the controller,action couples can be reached by the browser
 	public static $allowed = array(
@@ -47,11 +50,13 @@ class Route
 		'contenuti,documento',
 		'contenuti,accettacookie',
 		'contenuti,confermacontatto',
+		'contenuti,listaregalo',
 		'cart,index',
 		'cart,ajax',
 		'cart,add',
 		'cart,delete',
 		'cart,update',
+		'cart,eliminacookielista',
 		'wishlist,index',
 		'wishlist,ajax',
 		'wishlist,add',
@@ -118,7 +123,11 @@ class Route
 		'thumb,socidetail',
 		'thumb,ricetta',
 		'thumb,storia',
+		'thumb,colore',
+		'thumb,listaregalo',
 		'regusers,login',
+		'regusers,loginapp',
+		'regusers,deleteaccountdaapp',
 		'regusers,logout',
 		'regusers,forgot',
 		'regusers,change',
@@ -138,6 +147,16 @@ class Route
 		'riservata,indirizzi',
 		'riservata,privacy',
 		'riservata,feedback',
+		'listeregalo,index',
+		'listeregalo,gestisci',
+		'listeregalo,modifica',
+		'listeregalo,aggiungi',
+		'listeregalo,elencoprodotti',
+		'listeregalo,elimina',
+		'listeregalo,aggiornaprodotti',
+		'listeregalo,invialink',
+		'listeregalo,elencolink',
+		'listeregalo,invianuovamentelink',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -154,7 +173,19 @@ class Route
 		'riservata/privacy'			=>	'riservata/privacy',
 		'riservata/feedback'		=>	'riservata/feedback',
 // 		'riservata/cancellaaccount'	=>	'riservata/cancellaaccount',
+		'liste-regalo/?'			=>	'listeregalo/index',
+		'listeregalo/gestisci/([0-9]{1,9})'=>	'listeregalo/gestisci/${1}',
+		'listeregalo/modifica/([0-9]{1,9})'=>	'listeregalo/modifica/${1}',
+		'listeregalo/elimina/([0-9]{1,9})'=>	'listeregalo/elimina/${1}',
+		'listeregalo/elencoprodotti/([0-9]{1,9})'=>	'listeregalo/elencoprodotti/${1}',
+		'listeregalo/aggiungi/(.*)'=>	'listeregalo/aggiungi/${1}',
+		'listeregalo/aggiornaprodotti'=>	'listeregalo/aggiornaprodotti',
+		'listeregalo/invialink/(.*)'=>	'listeregalo/invialink/${1}',
+		'listeregalo/elencolink/(.*)'=>	'listeregalo/elencolink/${1}',
+		'listeregalo/invianuovamentelink/(.*)'=>	'listeregalo/invianuovamentelink/${1}',
 		'regusers/login'			=>	'regusers/login',
+		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
+		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',
 		'esci'						=>	'regusers/logout',
 		'password-dimenticata'		=>	'regusers/forgot',
 		'account-verification'		=>	'regusers/richieditokenconferma',
@@ -227,10 +258,12 @@ class Route
 		'thumb/modale/(.*)'			=>	'thumb/modale/${1}',
 		'thumb/modalepiccola/(.*)'	=>	'thumb/modalepiccola/${1}',
 		'thumb/progetto/(.*)'		=>	'thumb/progetto/${1}',
-		'thumb/progettodetail/(.*)'		=>	'thumb/progettodetail/${1}',
+		'thumb/progettodetail/(.*)'	=>	'thumb/progettodetail/${1}',
 		'thumb/socidetail/(.*)'		=>	'thumb/socidetail/${1}',
 		'thumb/ricetta/(.*)'		=>	'thumb/ricetta/${1}',
 		'thumb/storia/(.*)'			=>	'thumb/storia/${1}',
+		'thumb/colore/(.*)'			=>	'thumb/colore/${1}',
+		'thumb/listaregalo/(.*)'	=>	'thumb/listaregalo/${1}',
 		'home/index'				=>	'home/index',
 		'home/settacookie'			=>	'home/settacookie',
 		'home/xmlprodotti'			=>	'home/xmlprodotti',
@@ -243,6 +276,7 @@ class Route
 		'carrello/semplificato'		=>	'cart/ajax',
 		'carrello/vedi'				=>	'cart/index/full',
 		'carrello/partial'			=>	'cart/index/partial',
+		'carrello/eliminacookielista'	=>	'cart/eliminacookielista',
 		'wishlist/elimina/(.*)'		=>	'wishlist/delete/${1}',
 		'wishlist/aggiungi/(.*)'	=>	'wishlist/add/${1}',
 		'wishlist/semplificato'		=>	'wishlist/ajax',
@@ -259,13 +293,14 @@ class Route
 		'contenuti/jsoncategoriefiglie/(.*)'	=>	'contenuti/jsoncategoriefiglie/${1}',
 		'contenuti/documento/(.*)'	=>	'contenuti/documento/${1}',
 		'contenuti/processaschedulazione/(.*)'	=>	'contenuti/processaschedulazione/${1}',
+		'lista-regalo/(.*)\/(.*)\.html'=>	'contenuti/listaregalo/${1}/${2}',
 		'conferma-contatto/(.*)'	=>	'contenuti/confermacontatto/${1}',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',
 // 		'(.*)/(.*)/(.*)' 			=>	'contenuti/index/${1}/${2}/${3}',
 // 		'(.*)/(.*)' 				=>	'contenuti/index/${1}/${2}',
-		'([^.]*).html'				=>	'contenuti/index/${1}',
+		'([^.]*)'.ESTENSIONI_URL	=>	'contenuti/index/${1}',
 		'(.*)'						=>	'contenuti/notfound/${1}',
 	);
 }

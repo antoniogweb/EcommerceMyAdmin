@@ -78,6 +78,14 @@ class PagamentiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'prezzo_ivato'	=>	array(
+					"labelString"	=>	"Costo (IVA inclusa)",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Il costo del pagamento verrà aggiunto al totale dell'ordine.")."</div>"
+					),
+				),
 				'istruzioni_pagamento'		=>	array(
 					'labelString'=>	'Istruzioni per il pagamento',
 					'entryClass'	=>	'form_input_text help_alias',
@@ -135,5 +143,44 @@ class PagamentiModel extends GenericModel {
 			return call_user_func_array(array(self::$gateway, $metodo), $argomenti);
 
 		return false;
+	}
+	
+	public function setPriceNonIvato()
+	{
+		if (isset($this->values["prezzo_ivato"]))
+			$this->values["prezzo"] = number_format(setPrice($this->values["prezzo_ivato"]) / (1 + (Parametri::$iva / 100)), v("cifre_decimali"),".","");
+	}
+	
+	public function insert()
+	{
+		$this->setPriceNonIvato();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setPriceNonIvato();
+		
+		return parent::update($id, $where);
+	}
+	
+	public static function getCostoCarrello()
+	{
+		if (isset($_POST["pagamento"]))
+			return (float)PagamentiModel::g(false)->select("pagamenti.prezzo")->where(array(
+				"codice"	=>	sanitizeAll($_POST["pagamento"]),
+			))->field("prezzo");
+		else
+			return (float)PagamentiModel::g(false)->where(array(
+				"attivo"	=>	1,
+			))->getMin("prezzo");
+	}
+	
+	public static function getMaxPagamento()
+	{
+		return (float)PagamentiModel::g(false)->where(array(
+			"attivo"	=>	1,
+		))->getMax("prezzo");
 	}
 }

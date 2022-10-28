@@ -1,8 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
+<div class="uk-flex uk-flex-middle uk-flex-center uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@m uk-text-left uk-grid" uk-grid="">
 	<div class="uk-first-column">
 		<?php if (!$p["cart"]["id_p"]) { ?>
-			<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"]);?>">
+			<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>">
 			<?php } ?>
 				<?php echo field($p,"title");?>
 			<?php if (!$p["cart"]["id_p"]) { ?>
@@ -10,9 +10,9 @@
 			<?php } ?>
 			<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
 			
-			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"]) { ?>
+			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"] && !VariabiliModel::combinazioniLinkVeri()) { ?>
 			<div class="uk-margin">
-				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".getUrlAlias($p["cart"]["id_page"])."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
+				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
 			</div>
 		<?php } ?>
 	</div>
@@ -29,11 +29,14 @@
 	</div>
 	<div>
 		<?php if (!v("carrello_monoprodotto")) { ?>
-			<?php if (User::$isMobile) { ?>
-			<div class="select_box cart_select_box" back-color="<?php echo $backColor;?>"><?php echo Html_Form::select("quantity", $p["cart"]["quantity"], array_combine(range(1,30),range(1,30)),"uk-select item_quantity cart_item_row_mobile", null, "yes", "rel='".$p["cart"]["id_cart"]."' style='background-color:$backColor; !important'");?></div>
-			<?php } else { ?>
-			<input rel="<?php echo $p["cart"]["id_cart"];?>" class="uk-input item_quantity" name="quantity" type="number" value="<?php echo $p["cart"]["quantity"];?>" min="1" style="background-color:<?php echo $backColor;?> !important" />
-			<?php } ?>
+			<?php
+			$idRigaCarrello = $p["cart"]["id_cart"];
+			$quantitaRigaCarrello = $p["cart"]["quantity"];
+			include(tpf(ElementitemaModel::p("INPUT_QUANTITA_CARRELLO","", array(
+				"titolo"	=>	"Campo input di modifica della quantità",
+				"percorso"	=>	"Elementi/Generali/QuantitaCarrello",
+			))));
+			?>
 		<?php } else { ?>
 			<?php if (User::$isMobile) { echo gtext("Qta").":"; } ?> <?php echo $p["cart"]["quantity"];?>
 		<?php } ?>

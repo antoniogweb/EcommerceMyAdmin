@@ -27,6 +27,7 @@ class CartModel extends GenericModel {
 	public static $ordinamento = 0;
 	public static $deletedExpired = false;
 	public static $checkCart = false;
+	public static $cartRows = null;
 	
 	public function __construct() {
 		$this->_tables='cart';
@@ -45,6 +46,7 @@ class CartModel extends GenericModel {
 	
 	public function relations() {
         return array(
+			'elementi' => array("HAS_MANY", 'CartelementiModel', 'id_cart', null, "CASCADE"),
 			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
@@ -84,7 +86,7 @@ class CartModel extends GenericModel {
 		
 		$cifre = v("cifre_decimali");
 		
-		if (hasActiveCoupon() && !$pieno)
+		if (!$pieno && hasActiveCoupon())
 		{
 			$p = new PromozioniModel();
 			
@@ -117,11 +119,13 @@ class CartModel extends GenericModel {
 			if ($conSpedizione)
 			{
 				$totaleSpedizione = number_format(getSpedizioneN(), $cifre,".","");
-				$total += $totaleSpedizione;
+				$totalePagamento = number_format(getPagamentoN(), $cifre,".","");
+				
+				$total += ($totaleSpedizione + $totalePagamento);
 				
 				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
 				
-				$totaleIvato = $totaleIvato + number_format($totaleSpedizione * (1 + ($ivaRiga / 100)),$cifre,".","");
+				$totaleIvato = $totaleIvato + number_format(($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100)),$cifre,".","");
 			}
 			
 			// Coupon assoluto
@@ -174,7 +178,10 @@ class CartModel extends GenericModel {
 		}
 		
 		if ($conSpedizione)
-			$total += number_format(getSpedizioneN(), $cifre,".","");
+		{
+			$total += number_format(getSpedizioneN(true), $cifre,".","");
+			$total += number_format(getPagamentoN(true), $cifre,".","");
+		}
 		
 		return $total;
 	}
@@ -213,7 +220,7 @@ class CartModel extends GenericModel {
 		$sconto = 0;
 		$tipoSconto = "PERCENTUALE";
 		$idPromo = 0;
-		if (hasActiveCoupon() && !$pieno)
+		if (!$pieno && hasActiveCoupon())
 		{
 			$p = new PromozioniModel();
 			$coupon = $p->getCoupon(User::$coupon);
@@ -281,14 +288,17 @@ class CartModel extends GenericModel {
 			
 			$ivaSped = number_format($ivaSped,2,".","");
 			
-			$totaleSpedizione = number_format(getSpedizioneN(),$cifre,".","");
+			$pienoSpedizione = $pieno ? true : null;
+			
+			$totaleSpedizione = number_format(getSpedizioneN($pienoSpedizione),$cifre,".","");
+			$totalePagamento = number_format(getPagamentoN(),$cifre,".","");
 			
 			if (isset($arraySubtotale[$ivaSped]))
-				$arraySubtotale[$ivaSped] += $totaleSpedizione;
+				$arraySubtotale[$ivaSped] += ($totaleSpedizione + $totalePagamento);
 			else
-				$arraySubtotale[$ivaSped] = $totaleSpedizione;
+				$arraySubtotale[$ivaSped] = ($totaleSpedizione + $totalePagamento);
 			
-			$totaleIvato += $totaleSpedizione * (1 + ($ivaRiga / 100));
+			$totaleIvato += ($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100));
 		}
 		
 		// Sconto assoluto
@@ -318,10 +328,6 @@ class CartModel extends GenericModel {
 		
 // 		if (isset($_GET["dev"]))
 // 		echo "NUMERO ".count($arrayIva)."<br />"; print_r($arrayIva);
-		
-// 		$subtotale = number_format(getSpedizioneN(),2,".","");
-// 		$iva = $subtotale*(Parametri::$iva/100);
-// 		$total += number_format($iva,2,".","");
 		
 		$total = array_sum($arrayIva);
 		
@@ -410,6 +416,9 @@ class CartModel extends GenericModel {
 		
 		foreach ($righe as $r)
 		{
+			if ($r["price_ivato"] <= 0)
+				continue;
+			
 			$aliquota = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : $r["iva"];
 			
 			$nuovoPrezzoUnitarioIvato = number_format(($r["price_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");
@@ -526,7 +535,11 @@ class CartModel extends GenericModel {
 			//sconto promozione
 			if ($checkPromo && $p->inPromozione($clean["id_page"]))
 			{
-				$arraySconti[] = $page["prezzo_promozione"];
+				if ($page["tipo_sconto"] == "PERCENTUALE")
+					$arraySconti[] = $page["prezzo_promozione"];
+				else if ($page["price"] > 0)
+					$arraySconti[] = (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
+				
 				$arrayScontiDescrizione[] = "Prodotto in promozione, sconto ".$page["prezzo_promozione"]." %";
 			}
 			
@@ -580,6 +593,15 @@ class CartModel extends GenericModel {
 		$clean["id_c"] = (int)$id_c;
 		
 		$c = new CombinazioniModel();
+		
+		if (v("attiva_gift_card"))
+		{
+			$combinazione = $c->selectId($clean["id_c"]);
+			
+			if (!empty($combinazione) && ProdottiModel::isGiftCart($combinazione["id_page"]))
+				return true;
+		}
+		
 		$giacenza = $c->qta($clean["id_c"]);
 		
 		$qtaCarrello = $this->qta($clean["id_c"]);
@@ -715,7 +737,22 @@ class CartModel extends GenericModel {
 				if (isset($datiCombinazione))
 				{
 					$this->values["codice"] = $datiCombinazione[0]["combinazioni"]["codice"];
-					$this->values["immagine"] = $datiCombinazione[0]["combinazioni"]["immagine"];
+					
+					$this->values["immagine"] = ProdottiModel::immagineCarrello($clean["id_page"], $datiCombinazione[0]["combinazioni"]["id_c"], $datiCombinazione[0]["combinazioni"]["immagine"]);
+					
+// 					$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+// 					$elencoImmagini[] = "";
+// 					
+// 					$this->values["immagine"] = in_array($datiCombinazione[0]["combinazioni"]["immagine"],$elencoImmagini) ? $datiCombinazione[0]["combinazioni"]["immagine"] : $elencoImmagini[0];
+// 					
+// 					if (v("immagini_separate_per_variante"))
+// 					{
+// 						$immagini = ImmaginiModel::immaginiCombinazione($datiCombinazione[0]["combinazioni"]["id_c"]);
+// 						
+// 						if (count($immagini) > 0)
+// 							$this->values["immagine"] = $immagini[0]["immagine"];
+// 					}
+					
 					$this->values["peso"] = $datiCombinazione[0]["combinazioni"]["peso"];
 				}
 				else
@@ -810,6 +847,80 @@ class CartModel extends GenericModel {
 		}
 		
 		return 0;
+	}
+	
+	// Restituisce le righe del proprio carrello
+	public function getRigheCart($sWhere = "")
+	{
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$c = new CartModel();
+		
+		$res = $c->clear()->where(array(
+			"cart_uid"	=>	$clean["cart_uid"],
+		));
+		
+		if ($sWhere)
+			$c->sWhere($sWhere);
+		
+		return $c->send(false);
+	}
+	
+	public function aggiornaElementi($elementiPost = array())
+	{
+		if (!v("attiva_gift_card"))
+			return;
+		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
+		$ce = new CartelementiModel();
+		
+		$righeCarrello = $this->getRigheCart("gift_card = 1");
+		
+		foreach ($righeCarrello as $riga)
+		{
+			if ($riga["gift_card"])
+			{
+// 				$numeroElementiCarrello = $ce->clear()->where(array(
+// 					"id_cart"	=>	(int)$riga["id_cart"],
+// 				))->rowNumber();
+				
+				$elementiRigaCarrello = CartelementiModel::getElementiCarrello((int)$riga["id_cart"]);
+				
+				if ((int)count($elementiRigaCarrello) !== (int)$riga["quantity"] || count($elementiPost) > 0)
+				{
+					$ce->del(null, "id_cart = ".(int)$riga["id_cart"]);
+					
+					for ($i = 0; $i < $riga["quantity"]; $i++)
+					{
+						$email = $testo = "";
+						
+						if (count($elementiPost) > 0)
+						{
+							$email = isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "";
+							$testo = isset($elementiPost["CART-".$riga["id_cart"]][$i]["testo"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["testo"] : "";
+						}
+						else if (isset($elementiRigaCarrello[$i]))
+						{
+							$email = htmlentitydecode($elementiRigaCarrello[$i]["email"]);
+							$testo = htmlentitydecode($elementiRigaCarrello[$i]["testo"]);
+						}
+						
+						$ce->sValues(array(
+							"email"		=>	trim($email),
+							"testo"		=>	$testo,
+							"id_cart"	=>	$riga["id_cart"],
+						));
+						
+						$ce->insert();
+					}
+				}
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 	}
 	
 	public function getCreationTime()
@@ -933,7 +1044,7 @@ class CartModel extends GenericModel {
 		
 		return $this->clear()->select("cart.*,pages.*,contenuti_tradotti.*")->inner("pages")->using("id_page")
 			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("cart.id_order ASC, id_cart ASC")->send();
+			->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("cart.id_order ASC,id_cart ASC")->send();
 	}
 	
 	public function insert()
@@ -1032,26 +1143,62 @@ class CartModel extends GenericModel {
 		}
 	}
 	
+	// restituisce true se il carrello ha solo prodotti senza spedizione
 	public static function soloProdottiSenzaSpedizione()
 	{
-		if (!v("attiva_gift_card"))
-			return false;
-		
-		$c = new CartModel();
-		
-		if ($c->numberOfItems() > 0)
+		if (v("attiva_liste_regalo"))
 		{
-			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+			ListeregaloModel::getCookieIdLista();
 			
-			$numeroNoGiftCard = $c->clear()->select("cart.id_cart")->where(array(
-				"cart_uid"	=>	$clean["cart_uid"],
-				"gift_card"	=>	0,
-			))->rowNumber();
-			
-			if ((int)$numeroNoGiftCard === 0)
+			if (User::$idLista)
 				return true;
 		}
 		
+		if (v("attiva_gift_card"))
+		{
+			$c = new CartModel();
+			
+			if ($c->numberOfItems() > 0)
+			{
+				$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+				
+				$numeroNoGiftCard = $c->clear()->where(array(
+					"cart_uid"	=>	$clean["cart_uid"],
+					"gift_card"	=>	0,
+				))->rowNumber();
+				
+				if ((int)$numeroNoGiftCard === 0)
+					return true;
+			}
+		}
+		
 		return false;
+	}
+	
+	public static function numeroGifCartInCarrello($idCart = 0)
+	{
+		if (!v("attiva_gift_card"))
+			return 0;
+		
+		$c = new CartModel();
+		
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$c->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"cart_uid"	=>	$clean["cart_uid"],
+			"gift_card"	=>	1,
+		));
+		
+		if ($idCart)
+			$c->aWhere(array(
+				"id_cart"	=>	(int)$idCart,
+			));
+		
+		$res = $c->send();
+		
+		if (count($res) > 0)
+			return $res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
 	}
 }

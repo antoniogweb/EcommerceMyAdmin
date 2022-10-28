@@ -20,6 +20,7 @@ class User
 	public static $isTablet = false;
 	public static $isPhone = false;
 	public static $nomeCliente = '';
+	public static $idLista = 0;
 	
 	public static $adminLogged = false;
 	public static $asJson = false;

@@ -85,6 +85,17 @@ class AttributivaloriModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Rappresenta il valore della variante. Ex: rosso, XL, cuore")."</div>",
 					),
 				),
+				'alias'		=>	array(
+					'labelString'=>	"Alias (usato nell'URL)",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Viene usato nell'URL del prodotto. Viene creato in automatico se lasciato vuoto.")."</div>",
+					),
+				),
+				'colore'	=>	array(
+					"className"	=>	"form-control colorpicker-element",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -163,16 +174,35 @@ class AttributivaloriModel extends GenericModel {
 	{
 		if ($this->upload("update"))
 		{
-			return parent::update($id, $whereClause);
+			if (isset($this->values["alias"]))
+				$this->checkAliasAll($id);
+			
+			$res = parent::update($id, $whereClause);
+			
+			if ($res)
+			{
+				$c = new CombinazioniModel();
+				
+				$c->aggiornaAlias(0,0,$id);
+			}
+			
+			return $res;
 		}
+		
+		return false;
 	}
 	
 	public function insert()
 	{
 		if ($this->upload("insert"))
 		{
+			if (isset($this->values["alias"]))
+				$this->checkAliasAll(0);
+			
 			return parent::insert();
 		}
+		
+		return false;
 	}
 	
 	public function thumb($record)

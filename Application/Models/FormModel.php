@@ -26,7 +26,6 @@ class FormModel extends GenericModel {
 
 	public function setFormStruct($id = 0)
 	{
-
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(

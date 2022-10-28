@@ -35,22 +35,7 @@ class PromozioniModel extends GenericModel {
 		$this->orderBy = 'promozioni.dal desc,promozioni.al desc';
 		$this->_lang = 'It';
 		
-// 		$this->_popupItemNames = array(
-// 			'attivo'	=>	'attivo',
-// 		);
-// 
-// 		$this->_popupLabels = array(
-// 			'attivo'	=>	'PROMOZIONE ATTIVA?',
-// 		);
-// 
-// 		$this->_popupFunctions = array(
-// 			'attivo'=>	'getYesNo',
-// 		);
-		
-// 		$this->addStrongCondition("both",'checkMatch|/^[0-9]{1,8}$/',"sconto|Si prega di verificare che il campo <i>Sconto promozione (in %)</i> contenga solo numeri");
-		
 		parent::__construct();
-
 	}
 	
 	public function setFormStruct($id = 0)
@@ -63,7 +48,6 @@ class PromozioniModel extends GenericModel {
 			
 			$labelSconto .= ($tipo == "ASSOLUTO") ? " (in €)" : " (in %)";
 		}
-			
 		
 		$this->formStruct = array
 		(
@@ -91,16 +75,48 @@ class PromozioniModel extends GenericModel {
 					'options'	=>	array('sì'=>'Y','no'=>'N'),
 				),
 				'numero_utilizzi'		=>	array(
-					'labelString'=>	'Numero massimo di utilizzi',
+					'labelString'=>	'Numero massimo totale di utilizzi',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Numero massimo di utilizzi totale, considerando anche clienti diversi (diversi indirizzi email)")."</div>"
+					),
 				),
-// 				'tipo_sconto'	=>	array(
-// 					'type'		=>	'Select',
-// 					'labelString'=>	'Tipo coupon',
-// 					'options'	=>	array('PERCENTUALE'=>'In percentuale','ASSOLUTO'=>'Assoluto'),
-// 					'reverse'	=>	'yes',
-// 				),
+				'numero_utilizzi_per_email'		=>	array(
+					'labelString'=>	'Numero massimo di utilizzi per email',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato a 0, non viene considerato un numero massimo di utilizzo per singola mail.")."</div>"
+					),
+				),
+				'tipo_sconto'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipo di sconto',
+					'options'	=>	array('PERCENTUALE'=>'In percentuale','ASSOLUTO'=>'Assoluto'),
+					'reverse'	=>	'yes',
+					'attributes'=>	"on-c='check-v'",
+				),
+				'tipo_credito'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipo di credito',
+					'options'	=>	array('ESAURIMENTO'=>'AD ESAURIMENTO','INFINITO'=>'INFINITO'),
+					'reverse'	=>	'yes',
+					'entryAttributes'	=>	array(
+						"visible-f"	=>	"tipo_sconto",
+						"visible-v"	=>	"ASSOLUTO",
+					),
+				),
 				'id_p'	=>	array(
 					'type'		=>	'Hidden'
+				),
+				'sconto_valido_sopra_euro'		=>	array(
+					'labelString'=>	'Sconto valido se si spende almeno (€)',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà applicato solo se il totale del carrello sarà maggiore o uguale alla cifra indicata (spese di spedizione escluse).")."</div>"
+					),
 				),
 			),
 		);
@@ -110,8 +126,17 @@ class PromozioniModel extends GenericModel {
         return array(
 			'categorie' => array("HAS_MANY", 'PromozionicategorieModel', 'id_p', null, "CASCADE"),
 			'pagine' => array("HAS_MANY", 'PromozionipagineModel', 'id_p', null, "CASCADE"),
+			'righe' => array("BELONGS_TO", 'RigheModel', 'id_r',null,"CASCADE"),
         );
     }
+    
+    public function processaEventiPromozione($idPromozione)
+	{
+		$promozione = $this->selectId((int)$idPromozione);
+		
+		if (!empty($promozione) && isset($promozione["email"]) && $promozione["email"] && checkMail($promozione["email"]) && $promozione["testo"] && $this->isActiveCoupon($promozione["codice"],null,false) && $promozione["tipo_sconto"] == "ASSOLUTO")
+			EventiretargetingModel::processaPromo($idPromozione);
+	}
     
 	public function insert()
 	{
@@ -123,13 +148,18 @@ class PromozioniModel extends GenericModel {
 		$this->values["dal"] = reverseData($this->values["dal"]);
 		$this->values["al"] = reverseData($this->values["al"]);
 		
-		if (isDateFull($this->values["dal"]) and isDateFull($this->values["al"]))
+		if (checkIsoDate($this->values["dal"]) and checkIsoDate($this->values["al"]))
 		{
 			$res = $this->clear()->where(array("codice"=>$this->values["codice"]))->send();
 			
 			if (count($res) === 0)
 			{
-				parent::insert();
+				$res = parent::insert();
+				
+				if ($res)
+					$this->processaEventiPromozione($this->lId);
+				
+				return $res;
 			}
 			else
 			{
@@ -152,16 +182,24 @@ class PromozioniModel extends GenericModel {
 		$this->values["dal"] = reverseData($this->values["dal"]);
 		$this->values["al"] = reverseData($this->values["al"]);
 		
-		if (isDateFull($this->values["dal"]) and isDateFull($this->values["al"]))
+		if (checkIsoDate($this->values["dal"]) and checkIsoDate($this->values["al"]))
 		{
-			$res = $this->clear()->where(array(
+			$numero = 0;
+			
+			if (isset($this->values["codice"]))
+				$numero = $this->clear()->where(array(
 					"codice"	=>	$this->values["codice"],
 					"ne"	=>	array("id_p" => $clean["id"]),
-				))->send();
+				))->rowNumber();
 			
-			if (count($res) === 0)
+			if ((int)$numero === 0)
 			{
-				parent::update($id);
+				$res = parent::update($id);
+				
+// 				if ($res)
+// 					$this->processaEventiPromozione($id);
+				
+				return $res;
 			}
 			else
 			{
@@ -201,11 +239,14 @@ class PromozioniModel extends GenericModel {
 		}
 		return false;
 	}
-
+	
 	//controllo che il coupon sia attivo
-	public function isActiveCoupon($codice, $ido = null)
+	public function isActiveCoupon($codice, $ido = null, $checkCart = true)
 	{
 		$clean["codice"] = sanitizeAll($codice);
+		
+		if ($checkCart && CartModel::numeroGifCartInCarrello() > 0)
+			return false;
 		
 		$res = $this->clear()->where(array("codice"=>$clean["codice"],"attivo"=>"Y"))->send();
 		
@@ -218,29 +259,47 @@ class PromozioniModel extends GenericModel {
 			
 			if ($now >= $dal and $now <= $al)
 			{
-				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"]) <= 0)
+				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"], $ido) <= 0)
 					return false;
 				
 				$numeroUtilizzi = (int)$res[0]["promozioni"]["numero_utilizzi"];
+				
 				$numeroVolteUsata = (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido);
 				
 				if ($numeroUtilizzi > $numeroVolteUsata)
 				{
+					$numeroUtilizziPerEmail = (int)$res[0]["promozioni"]["numero_utilizzi_per_email"];
+					
+					// controllo il numero di utilizzi per singola email
+					if ($numeroUtilizziPerEmail > 0 && isset($_POST["email"]) && checkMail($_POST["email"]) && $numeroUtilizziPerEmail <= (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido, $_POST["email"]))
+						return false;
+					
+					if (!$checkCart)
+						return true;
+					
 					$cart = new CartModel();
 					$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 					$prodottiCarrello = $cart->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->toList("id_page")->send();
 					
 					if (count($prodottiCarrello) > 0)
 					{
-						$prodottiPromozione = $this->elencoProdottiPromozione($clean["codice"]);
+						$scontoValidoSopraEuro = $res[0]["promozioni"]["sconto_valido_sopra_euro"];
 						
-						if ((int)count($prodottiPromozione) === 0)
-							return false;
+						if ($scontoValidoSopraEuro > 0)
+							$totaleCarrello = ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO") ? getTotalN(true) : getSubTotalN(v("prezzi_ivati_in_carrello"));
 						
-						foreach ($prodottiCarrello as $idPage)
+						if ($scontoValidoSopraEuro <= 0 || number_format($totaleCarrello,2,".","") >= $scontoValidoSopraEuro)
 						{
-							if (in_array($idPage, $prodottiPromozione))
-								return true;
+							$prodottiPromozione = $this->elencoProdottiPromozione($clean["codice"]);
+							
+							if ((int)count($prodottiPromozione) === 0)
+								return false;
+							
+							foreach ($prodottiCarrello as $idPage)
+							{
+								if (in_array($idPage, $prodottiPromozione))
+									return true;
+							}
 						}
 					}
 					
@@ -286,7 +345,7 @@ class PromozioniModel extends GenericModel {
 		return array();
 	}
 	
-	public function getNUsata($id_p, $ido = null)
+	public function getNUsata($id_p, $ido = null, $email = null)
 	{
 		$clean["id_p"] = (int)$id_p;
 		
@@ -298,12 +357,19 @@ class PromozioniModel extends GenericModel {
 			
 			$o = new OrdiniModel();
 			
-			if ($ido)
-				$res2 = $o->clear()->where(array("codice_promozione"=>$clean['coupon']))->sWhere("id_o != ".(int)$ido)->send();
-			else
-				$res2 = $o->clear()->where(array("codice_promozione"=>$clean['coupon']))->send();
+			$o->clear()->select("orders.id_o")->where(array("codice_promozione"=>$clean['coupon']));
 			
-			return (count($res2));
+			if ($ido)
+				$o->sWhere("id_o != ".(int)$ido);
+			
+			if ($email)
+				$o->aWhere(array(
+					"email"	=>	sanitizeAll($email),
+				));
+			
+			$res2 = $o->rowNumber();
+			
+			return $res2;
 		}
 		
 		return 0;
@@ -338,6 +404,9 @@ class PromozioniModel extends GenericModel {
 		
 		if (!empty($promozione))
 		{
+			if ($promozione["tipo_sconto"] == "ASSOLUTO" && $promozione["tipo_credito"] == "INFINITO" && $promozione["sconto"] > 0)
+				return $promozione["sconto"];
+			
 			$usati = self::gNumeroEuroUsati($id_p, $ido);
 			
 			if ($promozione["tipo_sconto"] == "ASSOLUTO" && $promozione["sconto"] > $usati)
@@ -363,7 +432,7 @@ class PromozioniModel extends GenericModel {
 			"id_p"	=>	(int)$promozione["id_p"],
 		))->toList("id_c")->send();
 		
-		$idPages = $pp->clear()->inner(array("pagina"))->where(array(
+		$idPages = $pp->clear()->select("promozioni_pages.id_page")->inner(array("pagina"))->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
 		))->toList("id_page")->send();
 		
@@ -408,5 +477,117 @@ class PromozioniModel extends GenericModel {
 			$valore .= " %";
 		
 		return $valore;
+	}
+	
+	// Crea la promo dalla riga ordine
+	public function aggiungiDaRigaOrdine($idR)
+	{
+		$rModel = new RigheModel();
+		
+		$riga = $rModel->selectId((int)$idR);
+		$oModel = new OrdiniModel();
+		
+		if (empty($riga))
+			return;
+		
+		$attivo = OrdiniModel::isPagato($riga["id_o"]) ? "Y" : "N";
+		
+		$promo = $this->clear()->where(array(
+			"id_r"	=>	(int)$idR,
+		))->send(false);
+		
+		$ora = new DateTime();
+		$ora->modify("+30 years");
+		
+		if (count($promo) > 0)
+		{
+			foreach ($promo as $p)
+			{
+				if ($p["attivo"] != $attivo)
+				{
+					$this->sValues(array(
+						"dal"	=>	date("d-m-Y", strtotime($p["dal"])),
+						"al"	=>	$ora->format("d-m-Y"),
+						"codice"	=>	$p["codice"],
+						"attivo"	=>	$attivo,
+					));
+					
+					$this->update((int)$p["id_p"]);
+				}
+			}
+		}
+		else if ($attivo == "Y")
+		{
+			$elementiRiga = RigheelementiModel::getElementiRiga($idR);
+			
+			for ($i = 0; $i < $riga["quantity"]; $i++)
+			{
+				$this->sValues(array(
+					"dal"	=>	date("d-m-Y"),
+					"al"	=>	$ora->format("d-m-Y"),
+					"sconto"	=>	$riga["prezzo_intero_ivato"],
+					"titolo"	=>	$riga["title"],
+					"codice"	=>	md5(randString(20).microtime().uniqid(mt_rand(),true)),
+					"numero_utilizzi"	=>	9999,
+					"tipo_sconto"	=>	"ASSOLUTO",
+					"id_r"		=>	$idR,
+					"attivo"	=>	$attivo,
+					"fonte"		=>	"GIFT_CARD",
+					"email"		=>	isset($elementiRiga[$i]["email"]) ? trim($elementiRiga[$i]["email"]) : "",
+					"testo"		=>	isset($elementiRiga[$i]["testo"]) ? $elementiRiga[$i]["testo"] : "",
+					"nome"		=>	$oModel->getNome($riga["id_o"]),
+					"creation_time"	=>	time(),
+					"lingua"	=>	$riga["lingua"],
+				), "sanitizeDb");
+				
+				$this->insert();
+			}
+		}
+	}
+	
+	public function ordine($record)
+	{
+		if ($record["orders"]["id_o"])
+			return "<a class='iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."?partial=Y&nobuttons=Y'>#".$record["orders"]["id_o"]."</a>";
+		
+		return "";
+	}
+	
+	public static function getPromoRigaOrdine($idR)
+	{
+		$p = new PromozioniModel();
+		
+		return $p->clear()->where(array(
+			"id_r"	=>	(int)$idR,
+		))->send(false);
+	}
+	
+	public function gSconto($lingua, $record)
+	{
+		return setPriceReverse($record["sconto"]);
+	}
+	
+	public function gCodicePromo($lingua, $record)
+	{
+		return $record["codice"];
+	}
+	
+	public function gDedicaPromo($lingua, $promo)
+	{
+		ob_start();
+		$tipoOutput = "mail_al_cliente";
+		include tpf("/Elementi/Placeholder/dedica_gift_card.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function deletable($id) {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["id_r"])
+			return false;
+		
+		return true;
 	}
 }

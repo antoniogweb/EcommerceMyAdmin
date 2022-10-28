@@ -4,7 +4,6 @@
 if (!isset($baseUrl))
 	$baseUrl = $this->baseUrl."/";
 ?>
-
 <?php if (strcmp($tipoOutput,"mail_al_negozio") === 0 || strcmp($tipoOutput,"mail_al_cliente") === 0) { ?>
 <h1><?php echo gtext("Resoconto dell'ordine");?></h1>
 <?php } ?>
@@ -36,6 +35,14 @@ if (!isset($baseUrl))
 </div>-->
 <?php } ?>
 
+<?php
+$idListaRegalo = $ordine["id_lista_regalo"];
+include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
+	"titolo"	=>	"Avviso quando hai una lista selezionata",
+	"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
+))));
+?>
+
 <?php include(tpf("Elementi/Ordini/resoconto_acquisto_dettagli_generali.php"));?>
 
 <?php include(tpf("Elementi/Ordini/resoconto_pagamento_top.php"));?>
@@ -62,6 +69,11 @@ if (!isset($baseUrl))
 			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong></td>
+			</tr>
+			<?php } ?>
+			<?php if ($ordine["costo_pagamento"] > 0) { ?>
+			<tr>
+				<td class="first_column"><?php echo gtext("Spese pagamento", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["costo_pagamento".$strIvato]);?></strong></td>
 			</tr>
 			<?php } ?>
 			<?php if ($ordine["da_spedire"]) { ?>
@@ -216,6 +228,10 @@ if (!isset($baseUrl))
 			<td><?php echo $ordine["telefono_spedizione"];?></td>
 		</tr>
 		<?php } ?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Modalità di spedizione", false); ?></td>
+			<td><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></td>
+		</tr>
 	</table>
 </div>
 <?php } ?>

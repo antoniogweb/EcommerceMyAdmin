@@ -38,6 +38,17 @@ function updateForm()
 		if (in_promozione == "Y")
 		{
 			$(".class_promozione").css("display","block");
+			
+			if ($("[name='tipo_sconto']").val() == "PERCENTUALE")
+			{
+				$("[name='prezzo_promozione']").closest(".class_promozione").css("display","block");
+				$("[name='prezzo_promozione_ass_ivato']").closest(".class_promozione").css("display","none");
+			}
+			else
+			{
+				$("[name='prezzo_promozione']").closest(".class_promozione").css("display","none");
+				$("[name='prezzo_promozione_ass_ivato']").closest(".class_promozione").css("display","block");
+			}
 		}
 		else
 		{
@@ -72,7 +83,7 @@ $(document).ready(function() {
 	
 	updateForm();
 	
-	$(".in_promozione").change(function(){
+	$(".in_promozione,[name='tipo_sconto']").change(function(){
 		
 		updateForm();
 	

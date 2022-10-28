@@ -175,7 +175,7 @@ class TagModel extends GenericModel {
 				return tagfield($tag[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
 			}
 			else
-				return tagfield($tag[0],"alias").".html";
+				return tagfield($tag[0],"alias").v("estensione_url_categorie");
 		}
 		
 		return "";

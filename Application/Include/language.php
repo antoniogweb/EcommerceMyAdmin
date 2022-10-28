@@ -28,6 +28,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 {
 	$t = new TraduzioniModel();
 	
+	$string = rtrim($string);
 	$string = str_replace("__"," ",$string);
 	
 	$tempLang = getLinguaIso();
@@ -59,15 +60,14 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 			"applicativo"	=>	$applicativo,
 		);
 		
-		try
-		{
+// 		try
+// 		{
 			$t->insert();
-		}
-		catch (Exception $e)
-		{
-			
-		}
-		
+// 		}
+// 		catch (Exception $e)
+// 		{
+// 			
+// 		}
 		
 		return call_user_func($function,$string);
 		

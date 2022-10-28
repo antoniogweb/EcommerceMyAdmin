@@ -63,6 +63,9 @@ class PagesModel extends GenericModel {
 	
 	public static $testoLabelSocial = "Lato frontend verrà mostrato se il tema lo prevede";
 	
+	public static $IdCombinazione = 0;
+	public static $arrayIdCombinazioni = array();
+	
 	public static $modelliDaDuplicare = array(
 		"ImmaginiModel",
 		"LayerModel",
@@ -81,6 +84,8 @@ class PagesModel extends GenericModel {
 		"PagesregioniModel",
 		"PageslingueModel",
 	);
+	
+	public static $tipiPaginaAddizionali = array();
 	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina ringraziamento form richiesta informazioni",
@@ -137,6 +142,11 @@ class PagesModel extends GenericModel {
 		if (v("attiva_verifica_contatti"))
 			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
 		
+		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
+		{
+			self::$tipiPagina[$tipo] = $label;
+		}
+		
 		parent::__construct();
 	}
 	
@@ -148,7 +158,9 @@ class PagesModel extends GenericModel {
 	public function relations() {
 		return array(
 			'feedback' => array("HAS_MANY", 'FeedbackModel', 'id_page', null, "RESTRICT", "L'elemento ha dei feedback collegati e non può essere eliminato"),
-			'retargeting' => array("HAS_MANY", 'EventiretargetingModel', 'id_page', null, "RESTRICT", "La mail ha degli eventi retargeting collegati, eliminare prima tali eventi"),
+			'righe' => array("HAS_MANY", 'RigheModel', 'id_page', null, "RESTRICT", "L'elemento ha degli ordini collegati e non può essere eliminato"),
+			'retargeting' => array("HAS_MANY", 'EventiretargetingModel', 'id_page', null, "RESTRICT", "L'elemento ha degli eventi remarketing collegati, eliminare prima tali eventi"),
+			'regali' => array("HAS_MANY", 'ListeregalopagesModel', 'id_page', null, "RESTRICT", "L'elemento è inserito in alcune liste regalo e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_page', null, "CASCADE"),
 			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),
 			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_page', null, "CASCADE"),
@@ -364,7 +376,7 @@ class PagesModel extends GenericModel {
 					'entryClass'	=>	'form_input_text form_input_text_promozione',
 				),
 				'prezzo_promozione'		=>	array(
-					'labelString'=>	'Sconto (in %)',
+					'labelString'=>	'Percentuale sconto (in %)',
 					'entryClass'	=>	'class_promozione form_input_text',
 					'className'	=>	'input_corto form-control',
 				),
@@ -801,6 +813,8 @@ class PagesModel extends GenericModel {
 	
 	public function aggiornaStatoProdottiInPromozione()
 	{
+		Cache::$skipReadingCache = true;
+		
 		$res = $this->clear()->where(array("in_promozione"=>"Y"))->sWhere("al < '".date("Y-m-d")."'")->send();
 		
 		foreach ($res as $r)
@@ -816,6 +830,8 @@ class PagesModel extends GenericModel {
 				$this->pUpdate($r["pages"]["id_page"]);
 			}
 		}
+		
+		Cache::$skipReadingCache = false;
 	}
 	
 	// Imposta l'alias della pagina controllando che non ci sia un duplicato
@@ -934,6 +950,7 @@ class PagesModel extends GenericModel {
 					"peso"		=>	$pagina["peso"],
 					"giacenza"	=>	$pagina["giacenza"],
 					"immagine"	=>	getFirstImage($id),
+					"canonical"	=>	1,
 				));
 				
 				if (empty($combinazione))
@@ -983,13 +1000,19 @@ class PagesModel extends GenericModel {
 	
 	public function setPriceNonIvato()
 	{
-		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]) && isset($this->values["id_iva"]))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_promozione_ass_ivato"])) && isset($this->values["id_iva"]))
 		{
 			$i = new IvaModel();
 			$aliquota = $i->selectId($this->values["id_iva"]);
 			
 			if (!empty($aliquota))
-				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+			{
+				if (isset($this->values["price_ivato"]))
+					$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+				
+				if (isset($this->values["prezzo_promozione_ass_ivato"]))
+					$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+			}
 		}
 		else
 			$this->settaCifreDecimali();
@@ -1080,40 +1103,181 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
+// 	public function isActiveAlias($alias, $lingua = null)
+// 	{
+// 		if (strcmp($alias,"") === 0)
+// 			return 0;
+// 		
+// 		$clean["alias"] = sanitizeAll($alias);
+// 		
+// 		$res = $this->clear()->select("id_page")->where(array(
+// 			$this->aliaseFieldName=>$clean['alias'],
+// 			"pages.temp"		=>	0,
+// 			"pages.cestino"		=>	0,
+// 		));
+// 		
+// 		if (!User::$adminLogged)
+// 			$this->aWhere(array(
+// 				"attivo"=>"Y",
+// 			));
+// 		
+// 		$res = $this->send();
+// 		
+// 		if (count($res) > 0)
+// 		{
+// 			return true;
+// 		}
+// 		else
+// 		{
+// 			// Cerco la traduzione
+// 			$ct = new ContenutitradottiModel();
+// 			
+// 			$res = $ct->clear()->select("pages.id_page")->inner(array("page"))->where(array("alias"=>$clean['alias'],"pages.attivo"=>"Y"));
+// 			
+// 			if ($lingua)
+// 			{
+// 				$ct->aWhere(array(
+// 					"lingua"	=>	sanitizeAll($lingua),
+// 				));
+// 			}
+// 			
+// 			$res = $ct->send();
+// 			
+// 			if (count($res) > 0)
+// 			{
+// 				return true;
+// 			}
+// 		}
+// 		
+// 		return false;
+// 	}
+	
+	public function getIdCombinazioneCanonical($idPage)
+	{
+		if (isset(self::$arrayIdCombinazioni[$idPage]))
+			return self::$arrayIdCombinazioni[$idPage];
+		
+		$c = new CombinazioniModel();
+		
+		$orderBy = VariabiliModel::combinazioniLinkVeri() ? "canonical desc,id_order" : "id_order";
+		
+		self::$arrayIdCombinazioni[$idPage] = (int)$c->clear()->select("combinazioni.id_c")->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->orderBy($orderBy)->limit(1)->field("id_c");
+		
+		return self::$arrayIdCombinazioni[$idPage];
+	}
+	
 	public function getIdFromAlias($alias, $lingua = null)
 	{
 		$clean['alias'] = sanitizeAll($alias);
 		
-		$res = $this->clear()->where(array($this->aliaseFieldName=>$clean['alias']))->toList($this->_idFields)->send();
-		
-		if (count($res) > 0)
+		if (VariabiliModel::combinazioniLinkVeri())
 		{
-// 			return $res[0];
-			return $res;
-		}
-		else
-		{
-			// Cerco la traduzione
-			$ct = new ContenutitradottiModel();
+			$res = $this->clear()->select("pages.id_page, combinazioni.id_c")->inner(array("combinazioni"))->where(array(
+				"pages.temp"		=>	0,
+				"pages.cestino"		=>	0,
+			))->limit(1);
 			
-			$res = $ct->clear()->select("pages.id_page")->inner(array("page"))->where(array("alias"=>$clean['alias']))->toList("pages.id_page");
+			$tableAlias = "pages";
 			
-			if ($lingua)
+			if ($lingua && $lingua != LingueModel::getPrincipaleFrontend())
 			{
-				$ct->aWhere(array(
-					"lingua"	=>	sanitizeAll($lingua),
-				));
+				$this->inner("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'");
+				$tableAlias = "contenuti_tradotti";
 			}
 			
-			$res = $ct->send();
+			if (v("usa_alias_combinazione_in_url_prodotto") && $lingua)
+				$this->inner("combinazioni_alias")->on("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = '".sanitizeDb($lingua)."'");
+			
+			if (!User::$adminLogged)
+				$this->aWhere(array(
+					"pages.attivo"=>"Y",
+				));
+			
+			if (v("usa_alias_combinazione_in_url_prodotto"))
+				$sWhere = "(
+					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi,'-',combinazioni.codice) = '".$clean['alias']."' OR 
+					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi) = '".$clean['alias']."' OR 
+					concat($tableAlias.alias,'-',combinazioni.codice) = '".$clean['alias']."' OR 
+					$tableAlias.alias = '".$clean['alias']."'
+				)";
+			else
+				$sWhere = "(
+					concat($tableAlias.alias,'-',combinazioni.codice) = '".$clean['alias']."' OR 
+					$tableAlias.alias = '".$clean['alias']."'
+				)";
+			
+			$this->sWhere($sWhere);
+			
+			$res = $this->toList("pages.id_page", "combinazioni.id_c")->send();
 			
 			if (count($res) > 0)
 			{
-				return $res;
+				self::$IdCombinazione = reset($res);
+				
+				return array_keys($res);
 			}
 		}
+// 		else
+// 		{
+			$res = $this->clear()->select("pages.id_page")->where(array(
+				"alias"				=>	$clean['alias'],
+				"pages.temp"		=>	0,
+				"pages.cestino"		=>	0,
+			))->toList("pages.id_page");
+			
+			if (!User::$adminLogged)
+				$this->aWhere(array(
+					"attivo"=>"Y",
+				));
+			
+			$res = $this->send();
+			
+			if (count($res) > 0)
+			{
+				self::$IdCombinazione = $this->getIdCombinazioneCanonical($res[0]);
+				
+				return $res;
+			}
+			else
+			{
+				// Cerco la traduzione
+				$ct = new ContenutitradottiModel();
+				
+				$res = $ct->clear()->select("pages.id_page")
+					->inner(array("page"))
+					->where(array(
+						"alias"=>$clean['alias'],
+						"pages.temp"		=>	0,
+						"pages.cestino"		=>	0,
+					))
+					->toList("pages.id_page");
+				
+				if (!User::$adminLogged)
+					$this->aWhere(array(
+						"pages.attivo"=>"Y",
+					));
+				
+				if ($lingua)
+				{
+					$ct->aWhere(array(
+						"lingua"	=>	sanitizeAll($lingua),
+					));
+				}
+				
+				$res = $ct->send();
+				
+				if (count($res) > 0)
+				{
+					self::$IdCombinazione = $this->getIdCombinazioneCanonical($res[0]);
+					
+					return $res;
+				}
+			}
+// 		}
 		
-		return 0;
+		return array();
 	}
 	
 	public function isActive($id_page)
@@ -1139,57 +1303,6 @@ class PagesModel extends GenericModel {
 		{
 			return true;
 		}
-		return false;
-	}
-	
-	public function isActiveAlias($alias, $lingua = null)
-	{
-		if (strcmp($alias,"") === 0)
-		{
-			return 0;
-		}
-		
-		$clean["alias"] = sanitizeAll($alias);
-		
-		$res = $this->clear()->select("id_page")->where(array(
-			$this->aliaseFieldName=>$clean['alias'],
-			"pages.temp"		=>	0,
-			"pages.cestino"		=>	0,
-		));
-		
-		if (!User::$adminLogged)
-			$this->aWhere(array(
-				"attivo"=>"Y",
-			));
-		
-		$res = $this->send();
-		
-		if (count($res) > 0)
-		{
-			return true;
-		}
-		else
-		{
-			// Cerco la traduzione
-			$ct = new ContenutitradottiModel();
-			
-			$res = $ct->clear()->select("pages.id_page")->inner(array("page"))->where(array("alias"=>$clean['alias'],"pages.attivo"=>"Y"));
-			
-			if ($lingua)
-			{
-				$ct->aWhere(array(
-					"lingua"	=>	sanitizeAll($lingua),
-				));
-			}
-			
-			$res = $ct->send();
-			
-			if (count($res) > 0)
-			{
-				return true;
-			}
-		}
-		
 		return false;
 	}
 	
@@ -1295,70 +1408,56 @@ class PagesModel extends GenericModel {
 		return 0;
 	}
 	
-// 	//get the URL of a content
-// 	public function getUrlAlias($id)
-// 	{
-// 		$clean["id"] = (int)$id;
-// 
-// 		$parents = $this->parents($clean["id"], false, false, "categories.alias");
-// 		
-// 		//remove the root node
-// 		array_shift($parents);
-// 		
-// 		$urlArray = array();
-// 		foreach ($parents as $node)
-// 		{
-// 			if (isset($node["categories"][$this->aliaseFieldName]))
-// 			{
-// 				$urlArray[] = $node["categories"][$this->aliaseFieldName];
-// 			}
-// 			else
-// 			{
-// 				$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
-// 			}
-// 		}
-// 		
-// 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
-// 		
-// 		return implode("/",$urlArray).$ext;
-// 	}
-	
 	//get the URL of a content
-	public function getUrlAlias($id, $lingua = null)
+	public function getUrlAlias($id, $lingua = null, $idC = 0)
 	{
+		$c = new CombinazioniModel();
+		
 		$lingua = isset($lingua) ? $lingua : Params::$lang;
 		
 		$clean["id"] = (int)$id;
-
-		$parents = $this->parents($clean["id"], false, false, $lingua);
-		
-		//remove the root node
-		array_shift($parents);
 		
 		$urlArray = array();
 		
-		foreach ($parents as $node)
+		$isProdotto = isProdotto($clean["id"]);
+		
+		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
-			if (isset($node["categories"][$this->aliaseFieldName]))
+			$parents = $this->parents($clean["id"], false, false, $lingua);
+			
+			//remove the root node
+			array_shift($parents);
+			
+			foreach ($parents as $node)
 			{
-				if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-					$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+				if (isset($node["categories"][$this->aliaseFieldName]))
+				{
+					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+					else
+						$urlArray[] = $node["categories"][$this->aliaseFieldName];
+				}
 				else
-					$urlArray[] = $node["categories"][$this->aliaseFieldName];
+				{
+					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
+					else
+						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
+				}
 			}
-			else
-			{
-				if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-					$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
-				else
-					$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
-			}
+		}
+		else
+		{
+			$page = self::getPageDetails($clean["id"], $lingua);
+			
+			if (!empty($page))
+				$urlArray[] = field($page, "alias").$c->getAlias($clean["id"], $lingua, $idC);
 		}
 		
 		$ext = Parametri::$useHtmlExtension ? ".html" : null;
 		
 		// Appendo il marchio se presente
-		if (v("usa_marchi"))
+		if (v("usa_marchi") && v("aggiungi_marchio_in_url_prodotto"))
 		{
 			$m = new MarchiModel();
 			
@@ -1398,47 +1497,52 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id'] = $this->getPrincipale((int)$id);
 		
-		$record = $this->selectId($clean['id']);
-		
-		if (count($record) > 0)
+		if ($this->checkOnDeleteIntegrity($clean['id'], $whereClause))
 		{
-			//cancello le immagini relative al prodotto
-			$im = new ImmaginiModel();
-			$res = $im->select()->where(array('id_page'=>$clean['id']))->toList('id_immagine','immagine')->send();
-			foreach ($res as $id_imm => $fileName)
+			$record = $this->selectId($clean['id']);
+			
+			if (count($record) > 0)
 			{
-	// 			$im->files->removeFile($fileName);
-				$im->del($id_imm);
+				//cancello le immagini relative al prodotto
+				$im = new ImmaginiModel();
+				$res = $im->select()->where(array('id_page'=>$clean['id']))->toList('id_immagine','immagine')->send();
+				foreach ($res as $id_imm => $fileName)
+				{
+		// 			$im->files->removeFile($fileName);
+					$im->del($id_imm);
+				}
+				
+				//cancello i prodotti correlati
+				$c = new CorrelatiModel();
+				$c->del(null,"id_page=".$clean['id']);
+				$c->del(null,"id_corr=".$clean['id']);
+				
+				//cancello il prodotto nel carrello
+				$cart = new CartModel();
+				$cart->del(null, "id_page=".$clean['id']);
+				
+				//cancello gli attributi
+				$attr = new PagesattributiModel();
+				$attr->del(null,"id_page='".$clean["id"]."'");
+				
+				//cancello gli scaglioni
+				$pcv = new ScaglioniModel();
+				$pcv->del(null,"id_page='".$clean["id"]."'");
+				
+				//cancello gli scaglioni
+				$pcv = new LayerModel();
+				$pcv->del(null,"id_page='".$clean["id"]."'");
+				
+				//cancello le pagine correlate
+				$c = new PagespagesModel();
+				$c->del(null,"id_page=".$clean['id']);
+				$c->del(null,"id_corr=".$clean['id']);
+				
+				CombinazioniModel::$ricreaCombinazioneQuandoElimini = false;
+				
+	// 			parent::del($clean['id']);
+				parent::del(null, "codice_alfa = '".$record["codice_alfa"]."'");
 			}
-			
-			//cancello i prodotti correlati
-			$c = new CorrelatiModel();
-			$c->del(null,"id_page=".$clean['id']);
-			$c->del(null,"id_corr=".$clean['id']);
-			
-			//cancello il prodotto nel carrello
-			$cart = new CartModel();
-			$cart->del(null, "id_page=".$clean['id']);
-			
-			//cancello gli attributi
-			$attr = new PagesattributiModel();
-			$attr->del(null,"id_page='".$clean["id"]."'");
-			
-			//cancello gli scaglioni
-			$pcv = new ScaglioniModel();
-			$pcv->del(null,"id_page='".$clean["id"]."'");
-			
-			//cancello gli scaglioni
-			$pcv = new LayerModel();
-			$pcv->del(null,"id_page='".$clean["id"]."'");
-			
-			//cancello le pagine correlate
-			$c = new PagespagesModel();
-			$c->del(null,"id_page=".$clean['id']);
-			$c->del(null,"id_corr=".$clean['id']);
-			
-// 			parent::del($clean['id']);
-			parent::del(null, "codice_alfa = '".$record["codice_alfa"]."'");
 		}
 	}
 	
@@ -1660,7 +1764,7 @@ class PagesModel extends GenericModel {
 	{
 		foreach ($this->values as $key => $value)
 		{
-			if (strcmp($value,"0000-00-00") === 0)
+			if (strcmp(nullToBlank($value),"0000-00-00") === 0)
 			{
 				$this->delFields($key);
 			}
@@ -1884,32 +1988,85 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id_page'] = (int)$id_page;
 		
+		$c = new CombinazioniModel();
+		
 		if (!User::$nazione || $forzaPrincipale)
 		{
 			// Listino principale
-			$c = new CombinazioniModel();
-			
-			$res = $c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
-				"id_page"	=>	$clean['id_page'],
-			))->send();
-			
-			if (count($res) > 0)
-				return $res[0]["aggregate"]["PREZZO_MINIMO"];
+			if (VariabiliModel::combinazioniLinkVeri())
+			{
+				$c->clear()->select("price as PREZZO_MINIMO")->where(array(
+					"id_page"	=>	$clean['id_page'],
+				))->orderBy("canonical desc,id_order")->limit(1);
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
+				if (count($res) > 0)
+					return $res[0]["combinazioni"]["PREZZO_MINIMO"];
+			}
+			else
+			{
+				$c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
+					"id_page"	=>	$clean['id_page'],
+				));
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
+				if (count($res) > 0)
+					return $res[0]["aggregate"]["PREZZO_MINIMO"];
+			}
 		}
 		else
 		{
 			// Listino nazione
-			$c = new CombinazioniModel();
-			
-			$res = $c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
-				"id_page"	=>	$clean['id_page'],
-				"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
-			))->send();
-			
-			if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
-				return $res[0]["aggregate"]["PREZZO_MINIMO"];
+			if (VariabiliModel::combinazioniLinkVeri())
+			{
+				$c->clear()->select("combinazioni_listini.price as PREZZO_MINIMO")->inner(array("listini"))->where(array(
+					"id_page"	=>	$clean['id_page'],
+					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
+				))->orderBy("combinazioni.canonical desc,combinazioni.id_order")->limit(1);
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
+				if (count($res) > 0 && isset($res[0]["combinazioni_listini"]["PREZZO_MINIMO"]) && $res[0]["combinazioni_listini"]["PREZZO_MINIMO"])
+					return $res[0]["combinazioni_listini"]["PREZZO_MINIMO"];
+				else
+					return $this->prezzoMinimo($clean['id_page'], true);
+			}
 			else
-				return $this->prezzoMinimo($clean['id_page'], true);
+			{
+				$c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
+					"id_page"	=>	$clean['id_page'],
+					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
+				));
+				
+				if (self::$IdCombinazione)
+					$c->aWhere(array(
+						"combinazioni.id_c"	=>	(int)self::$IdCombinazione,
+					));
+				
+				$res = $c->send();
+				
+				if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
+					return $res[0]["aggregate"]["PREZZO_MINIMO"];
+				else
+					return $this->prezzoMinimo($clean['id_page'], true);
+			}
 		}
 		
 		return 0;
@@ -2056,7 +2213,7 @@ class PagesModel extends GenericModel {
 			$temp = array();
 			
 			$resValoriAttributi = $cm->clear()
-								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,contenuti_tradotti.titolo,attributi.tipo")
+								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo")
 								->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
 								->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
 								->left("contenuti_tradotti")->on("contenuti_tradotti.id_av = attributi_valori.id_av and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
@@ -2075,7 +2232,7 @@ class PagesModel extends GenericModel {
 				
 				$temp = array();
 				
-				if ($tipo == "TENDINA" || $tipo == "IMMAGINE")
+				if ($tipo == "TENDINA" || $tipo == "IMMAGINE" || $tipo == "COLORE")
 				{
 					if (!v("primo_attributo_selezionato"))
 						$temp = array("0" => $name);
@@ -2088,6 +2245,8 @@ class PagesModel extends GenericModel {
 					$arrayCombValori[$rva["combinazioni"][$c]] = "<span class='variante_radio_valore ".v("classe_variante_radio")."'>".avfield($rva, "titolo")."</span>";
 				else if ($tipo == "IMMAGINE")
 					$arrayCombValori[$rva["combinazioni"][$c]] = $rva["attributi_valori"]["immagine"];
+				else if ($tipo == "COLORE")
+					$arrayCombValori[$rva["combinazioni"][$c]] = $rva["attributi_valori"]["colore"];
 				else
 					$arrayCombValori[$rva["combinazioni"][$c]] = $name.": ".avfield($rva, "titolo");
 			}
@@ -2109,9 +2268,12 @@ class PagesModel extends GenericModel {
 	
 	public function giacenzaPrincipale($id_page)
 	{
+		if (v("attiva_gift_card") && ProdottiModel::isGiftCart((int)$id_page))
+			return 99999;
+		
 		$c = new CombinazioniModel();
 		$principale = $c->combinazionePrincipale((int)$id_page);
-			
+		
 		if (!empty($principale))
 			return $principale["giacenza"] <= v("giacenza_massima_mostrata") ? $principale["giacenza"] : v("giacenza_massima_mostrata") ;
 		
@@ -2175,6 +2337,9 @@ class PagesModel extends GenericModel {
 	
 	public static function gTipoPagina($tipo)
 	{
+		if (isset(self::$tipiPaginaId[$tipo]))
+			return self::$tipiPaginaId[$tipo];
+		
 		$p = new PagesModel();
 		
 		return $p->clear()->where(array(
@@ -2199,12 +2364,31 @@ class PagesModel extends GenericModel {
 	{
 		$c = new CombinazioniModel();
 		
-		$res = $c->clear()->select("max(giacenza) as GIACENZA")->where(array(
-			"id_page"	=>	(int)$idPage
-		))->send();
-		
-		if (count($res) > 0)
-			return (int)$res[0]["aggregate"]["GIACENZA"];
+		if (VariabiliModel::combinazioniLinkVeri())
+		{
+			$c->clear()->select("giacenza as GIACENZA")->where(array(
+				"id_page"	=>	(int)$idPage
+			))->orderBy("canonical desc,id_order")->limit(1);
+			
+			if (self::$IdCombinazione)
+				$c->aWhere(array(
+					"id_c"	=>	(int)self::$IdCombinazione,
+				));
+			
+			$res = $c->send();
+			
+			if (count($res) > 0)
+				return (int)$res[0]["combinazioni"]["GIACENZA"];
+		}
+		else
+		{
+			$res = $c->clear()->select("max(giacenza) as GIACENZA")->where(array(
+				"id_page"	=>	(int)$idPage
+			))->send();
+			
+			if (count($res) > 0)
+				return (int)$res[0]["aggregate"]["GIACENZA"];
+		}
 		
 		return 0;
 	}
@@ -2277,15 +2461,18 @@ class PagesModel extends GenericModel {
 				"in" => array("-id_c" => $children),
 			))
 			->addWhereAttivo()
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_page = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzionePagina()
 			->orderBy("pages.title")->send();
+		
+		$res = PagesModel::impostaDatiCombinazionePagine($res);
 		
 		$arrayProdotti = array();
 		
 		foreach ($res as $r)
 		{
+			if (!VariabiliModel::combinazioniLinkVeri())
+				PagesModel::$IdCombinazione = $p->getIdCombinazioneCanonical($r["pages"]["id_page"]);
+			
 			$giacenza = self::disponibilita($r["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 			
@@ -2365,7 +2552,7 @@ class PagesModel extends GenericModel {
 			if ($r["pages"]["immagine"])
 				$temp["g:image_link"] = Url::getRoot()."thumb/dettagliobig/".$r["pages"]["immagine"];
 			
-			$altreImmagini = ImmaginiModel::immaginiPagina($r["pages"]["id_page"]);
+			$altreImmagini = ImmaginiModel::altreImmaginiPagina((int)$r["pages"]["id_page"]);
 			
 			if (count($altreImmagini) > 0)
 			{
@@ -2380,7 +2567,7 @@ class PagesModel extends GenericModel {
 					if ($count >= $numeroLimite)
 						break;
 					
-					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img;
+					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img["immagine"];
 					
 					$count++;
 				}
@@ -2490,6 +2677,13 @@ class PagesModel extends GenericModel {
 		return $this;
 	}
 	
+	public static function isAttivaTrue($idPage)
+	{
+		return PagesModel::g(false)->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->addWhereAttivo()->rowNumber();
+	}
+	
 	public static function isAttiva($idPage)
 	{
 		$record = self::getPageDetails($idPage);
@@ -2515,7 +2709,7 @@ class PagesModel extends GenericModel {
 		$i = new ImmaginiModel();
 		
 		// Immagine principale
-		$strImm = $p->clear()->select("distinct codice_alfa,pages.id_page,pages.immagine")->toList("id_page", "immagine")->send();
+		$strImm = $p->clear()->select("distinct codice_alfa,pages.id_page,pages.immagine")->where(array("id_c"=>0))->toList("id_page", "immagine")->send();
 		
 		$struttImmagini = array();
 		
@@ -2603,16 +2797,20 @@ class PagesModel extends GenericModel {
     {
 		$pm = new PagesModel();
 		
-		$p = $pm->clear()->addJoinTraduzionePagina()->where(array(
+		$pm->clear()->addJoinTraduzionePagina()->where(array(
 			"pages.id_page"	=>	(int)$id,
-		))->first();
+		));
+		
+		$pages = PagesModel::impostaDatiCombinazionePagine($pm->send());
 		
 		$i = new ImmaginiModel();
 		
 		$snippetArray = array();
 		
-		if (!empty($p))
+		if (count($pages) > 0)
 		{
+			$p = $pages[0];
+			
 			$giacenza = self::disponibilita($p["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";
 			
@@ -2627,7 +2825,12 @@ class PagesModel extends GenericModel {
 			if ($p["pages"]["immagine"])
 				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$p["pages"]["immagine"];
 			
-			$altreImmagini = $i->clear()->where(array("id_page" => (int)$id))->orderBy("id_order")->send(false);
+			$altreImmagini = ImmaginiModel::altreImmaginiPagina((int)$id);
+			
+// 			$altreImmagini = $i->clear()->where(array(
+// 				"id_page"	=>	(int)$id,
+// 				"id_c"		=>	0,
+// 			))->orderBy("id_order")->send(false);
 			
 			foreach ($altreImmagini as $imm)
 			{
@@ -2743,7 +2946,10 @@ class PagesModel extends GenericModel {
 		))->field("id_p");
 		
 		if ($idP)
-			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias($idP).'" />';
+			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias((int)$idP).'" />';
+		
+		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
+			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias((int)$id).'" />';
 		
 		return "";
     }
@@ -3317,5 +3523,99 @@ class PagesModel extends GenericModel {
 			return self::$pagesStruct[$idPage]["prev"];
 		
 		return null;
+	}
+	
+	public function addWhereCombinazione($idC)
+	{
+		$this->left("combinazioni")->on("combinazioni.id_page = pages.id_page")->aWhere(array(
+			"combinazioni.id_c"	=>	(int)$idC,
+		));
+		
+		return $this;
+	}
+	
+	public static function impostaDatiCombinazionePagine($pages)
+	{
+		$pModel = new PagesModel();
+		$cModel = new CombinazioniModel();
+		
+		$pagesFinale = array();
+		
+		foreach ($pages as $p)
+		{
+			$temp = $p;
+			
+			$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$p["pages"]["id_page"]);
+			
+			$combinazione = $cModel->selectId((int)$idC);
+			
+			if (!empty($combinazione))
+			{
+				$temp["pages"]["codice"] = $combinazione["codice"];
+				$temp["pages"]["peso"] = $combinazione["peso"];
+				
+				if (v("immagini_separate_per_variante"))
+				{
+					$immaginiCombinazione = ImmaginiModel::immaginiCombinazione($idC);
+				
+					if (count($immaginiCombinazione) > 0)
+						$temp["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
+				}
+			}
+			
+			$pagesFinale[] = $temp;
+		}
+		
+		return $pagesFinale;
+	}
+	
+	public function addWhereEvidenza()
+	{
+		$this->aWhere(array(
+			"in_evidenza"	=>	"Y",
+		));
+		
+		return $this;
+	}
+	
+	public function addWhereNuovo()
+	{
+		$this->aWhere(array(
+			"nuovo"	=>	"Y",
+		));
+		
+		return $this;
+	}
+	
+	public function addWherePromo()
+	{
+		$nowDate = date("Y-m-d");
+		
+		$this->aWhere(array(
+			"    gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+			"     gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+			"pages.in_promozione" => "Y",
+		));
+		
+		return $this;
+	}
+	
+	public static function numeroStato($stato = "evidenza", $filtriSuccessivi = false)
+	{
+		$p = new PagesModel();
+		
+		$p->clear()->addWhereAttivo()->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione("prodotti"));
+		
+		if ($stato == "evidenza")
+			$p->addWhereEvidenza();
+		else if ($stato == "nuovo")
+			$p->addWhereNuovo();
+		else if ($stato == "promozione")
+			$p->addWherePromo();
+		
+		if ($filtriSuccessivi)
+			$p->sWhereFiltriSuccessivi("[$stato]");
+		
+		return $p->rowNumber();
 	}
 }

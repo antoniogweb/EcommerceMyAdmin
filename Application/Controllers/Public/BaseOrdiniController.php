@@ -341,7 +341,7 @@ class BaseOrdiniController extends BaseController
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$data['notice'] = null;
-		
+		$data["isAreaRiservata"] = true;
 		$data['title'] = Parametri::$nomeNegozio . " - Resoconto ordine";
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
@@ -374,8 +374,8 @@ class BaseOrdiniController extends BaseController
 		
 		$data["ordine"] = $res[0]["orders"];
 		
-		// ID ordine per GTM e FBK (solo se bonifico)
-		if ($data["ordine"]["pagamento"] == "bonifico" || ($data["ordine"]["pagamento"] == "paypal" && $data["ordine"]["stato"] != "pending" && $data["ordine"]["stato"] != "deleted"))
+		// ID ordine per GTM e FBK
+		if (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"]))
 			$data['idOrdineGtm'] = (int)$id_o;
 		
 		$data["tipoOutput"] = "web";
@@ -746,61 +746,63 @@ class BaseOrdiniController extends BaseController
 				$this->redirect("carrello/vedi");
 		}
 		
-		if (!$this->m["CartModel"]->checkQtaFull())
+		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
 		{
 			if (Output::$html)
-				$this->redirect("carrello/vedi");
+				$this->redirect("carrello/vedi?evidenzia");
 		}
 		
+		$this->getAppLogin();
+		
 		// Prendo valori da account, per app
-		if ($this->s['registered']->status['status'] === 'logged')
-		{
-			if (isset($_POST["datiFromAccount"]))
-			{
-				$tempDettagli = htmlentitydecodeDeep(User::$dettagli);
-				
-				$_POST["tipo_cliente"] = $tempDettagli["tipo_cliente"];
-				$_POST["nome"] = $tempDettagli["nome"];
-				$_POST["cognome"] = $tempDettagli["cognome"];
-				$_POST["ragione_sociale"] = $tempDettagli["ragione_sociale"];
-				$_POST["codice_fiscale"] = $tempDettagli["codice_fiscale"];
-				$_POST["p_iva"] = $tempDettagli["p_iva"];
-				$_POST["indirizzo"] = $tempDettagli["indirizzo"];
-				$_POST["cap"] = $tempDettagli["cap"];
-				$_POST["nazione"] = $tempDettagli["nazione"];
-				$_POST["provincia"] = $tempDettagli["provincia"];
-				$_POST["dprovincia"] = $tempDettagli["dprovincia"];
-				$_POST["citta"] = $tempDettagli["citta"];
-				$_POST["telefono"] = $tempDettagli["telefono"];
-				$_POST["email"] = $tempDettagli["username"];
-				$_POST["conferma_email"] = $tempDettagli["username"];
-				$_POST["pec"] = $tempDettagli["pec"];
-				$_POST["codice_destinatario"] = $tempDettagli["codice_destinatario"];
-				
-				if (isset($_POST["id_spedizione"]))
-				{
-					$clean["usaIdSpedizione"] = (int)$_POST["id_spedizione"];
-					
-					$spedizioneDaUsare = $this->m["SpedizioniModel"]->where(array(
-						"id_user"	=>	(int)User::$id,
-						"id_spedizione"	=>	$clean["usaIdSpedizione"],
-					))->record();
-					
-					if (!empty($spedizioneDaUsare))
-					{
-						$spedizioneDaUsare = htmlentitydecodeDeep($spedizioneDaUsare);
-						
-						$_POST["indirizzo_spedizione"] = $spedizioneDaUsare["indirizzo_spedizione"];
-						$_POST["cap_spedizione"] = $spedizioneDaUsare["cap_spedizione"];
-						$_POST["provincia_spedizione"] = $spedizioneDaUsare["provincia_spedizione"];
-						$_POST["dprovincia_spedizione"] = $spedizioneDaUsare["dprovincia_spedizione"];
-						$_POST["citta_spedizione"] = $spedizioneDaUsare["citta_spedizione"];
-						$_POST["telefono_spedizione"] = $spedizioneDaUsare["telefono_spedizione"];
-						$_POST["nazione_spedizione"] = $spedizioneDaUsare["nazione_spedizione"];
-					}
-				}
-			}
-		}
+// 		if ($this->s['registered']->status['status'] === 'logged')
+// 		{
+// 			if (isset($_POST["datiFromAccount"]))
+// 			{
+// 				$tempDettagli = htmlentitydecodeDeep(User::$dettagli);
+// 				
+// 				$_POST["tipo_cliente"] = $tempDettagli["tipo_cliente"];
+// 				$_POST["nome"] = $tempDettagli["nome"];
+// 				$_POST["cognome"] = $tempDettagli["cognome"];
+// 				$_POST["ragione_sociale"] = $tempDettagli["ragione_sociale"];
+// 				$_POST["codice_fiscale"] = $tempDettagli["codice_fiscale"];
+// 				$_POST["p_iva"] = $tempDettagli["p_iva"];
+// 				$_POST["indirizzo"] = $tempDettagli["indirizzo"];
+// 				$_POST["cap"] = $tempDettagli["cap"];
+// 				$_POST["nazione"] = $tempDettagli["nazione"];
+// 				$_POST["provincia"] = $tempDettagli["provincia"];
+// 				$_POST["dprovincia"] = $tempDettagli["dprovincia"];
+// 				$_POST["citta"] = $tempDettagli["citta"];
+// 				$_POST["telefono"] = $tempDettagli["telefono"];
+// 				$_POST["email"] = $tempDettagli["username"];
+// 				$_POST["conferma_email"] = $tempDettagli["username"];
+// 				$_POST["pec"] = $tempDettagli["pec"];
+// 				$_POST["codice_destinatario"] = $tempDettagli["codice_destinatario"];
+// 				
+// 				if (isset($_POST["id_spedizione"]))
+// 				{
+// 					$clean["usaIdSpedizione"] = (int)$_POST["id_spedizione"];
+// 					
+// 					$spedizioneDaUsare = $this->m["SpedizioniModel"]->where(array(
+// 						"id_user"	=>	(int)User::$id,
+// 						"id_spedizione"	=>	$clean["usaIdSpedizione"],
+// 					))->record();
+// 					
+// 					if (!empty($spedizioneDaUsare))
+// 					{
+// 						$spedizioneDaUsare = htmlentitydecodeDeep($spedizioneDaUsare);
+// 						
+// 						$_POST["indirizzo_spedizione"] = $spedizioneDaUsare["indirizzo_spedizione"];
+// 						$_POST["cap_spedizione"] = $spedizioneDaUsare["cap_spedizione"];
+// 						$_POST["provincia_spedizione"] = $spedizioneDaUsare["provincia_spedizione"];
+// 						$_POST["dprovincia_spedizione"] = $spedizioneDaUsare["dprovincia_spedizione"];
+// 						$_POST["citta_spedizione"] = $spedizioneDaUsare["citta_spedizione"];
+// 						$_POST["telefono_spedizione"] = $spedizioneDaUsare["telefono_spedizione"];
+// 						$_POST["nazione_spedizione"] = $spedizioneDaUsare["nazione_spedizione"];
+// 					}
+// 				}
+// 			}
+// 		}
 		
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
@@ -993,13 +995,20 @@ class BaseOrdiniController extends BaseController
 				
 				$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";
 				
+				ob_start();
+				include(tpf(ElementitemaModel::p("ERRORE_UTENTE_PRESENTE","", array(
+					"titolo"	=>	"Messaggio di errore quando l'utente è già presente",
+					"percorso"	=>	"Elementi/FormRegistrazioneCheckout/UtenteGiaPresente",
+				))));
+				$erroreUtenteGiaPresente = ob_get_clean();
+				
 				if (isset($_POST["email"]) && RegusersModel::utenteDaConfermare($_POST["email"]))
 					$this->m['RegusersModel']->databaseConditions['insert'] = array(
 						"checkUnique"		=>	"username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.",false)."<br />".gtext("Può procedere con la conferma del proprio account al seguente",false)." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web", false)."</a> ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
 					);
 				else
 					$this->m['RegusersModel']->databaseConditions['insert'] = array(
-						"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)."<br />".gtext("Può eseguire il login (se non ricorda la password può impostarne una nuova al seguente",false)." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web", false)."</a>) ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
+						"checkUnique"		=>	"username|".$erroreUtenteGiaPresente,
 					);
 				
 				if (v("account_attiva_conferma_password"))
@@ -1024,6 +1033,8 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_POST['invia']))
 		{
+			RegusersModel::checkEdEliminaAccount();
+			
 			if (CaptchaModel::getModulo()->checkRegistrazione())
 			{
 				if ($this->m['OrdiniModel']->checkConditions('insert'))
@@ -1037,9 +1048,11 @@ class BaseOrdiniController extends BaseController
 						
 						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();
 						$this->m['OrdiniModel']->values["spedizione"] = getSpedizioneN();
+						$this->m['OrdiniModel']->values["costo_pagamento"] = getPagamentoN();
 						
 						$this->m['OrdiniModel']->values["subtotal_ivato"] = setPrice(getSubTotal(true));
 						$this->m['OrdiniModel']->values["spedizione_ivato"] = setPrice(getSpedizione(1));
+						$this->m['OrdiniModel']->values["costo_pagamento_ivato"] = setPrice(getPagamento(1));
 						
 						$this->m['OrdiniModel']->values["iva"] = setPrice(getIva());
 						$this->m['OrdiniModel']->values["total"] = setPrice(getTotal());
@@ -1047,7 +1060,7 @@ class BaseOrdiniController extends BaseController
 						$this->m['OrdiniModel']->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
 						
-						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"];
+						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"] + $this->m['OrdiniModel']->values["costo_pagamento_ivato"];
 						
 						$this->m['OrdiniModel']->values["creation_time"] = time();
 						
@@ -1090,6 +1103,9 @@ class BaseOrdiniController extends BaseController
 						
 						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
 						
+						if (v("attiva_liste_regalo") && (int)User::$idLista)
+							$this->m['OrdiniModel']->values["id_lista_regalo"] = (int)User::$idLista;
+						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
 						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;
 						$this->m['OrdiniModel']->sanitize();
@@ -1119,6 +1135,9 @@ class BaseOrdiniController extends BaseController
 							{
 								setcookie("coupon", "", time()-3600,"/");
 							}
+							
+							// elimina il cookie con l'ID della liste regalo
+							ListeregaloModel::unsetCookieIdLista();
 							
 							$clean["cart_uid"] = sanitizeAll($this->m['OrdiniModel']->cart_uid);
 							
@@ -1279,6 +1298,9 @@ class BaseOrdiniController extends BaseController
 // 							$mail->WordWrap = 70;
 							
 							$righeOrdine = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean['lastId'],"cart_uid" => $clean["cart_uid"]))->send();
+							
+							// hook chiamato quando l'ordine è stato confermato
+							$this->m["OrdiniModel"]->triggersOrdine($clean['lastId']);
 							
 							// hook ordine confermato
 							if (v("hook_ordine_confermato") && function_exists(v("hook_ordine_confermato")))

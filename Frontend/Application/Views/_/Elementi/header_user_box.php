@@ -12,6 +12,11 @@ if (!isset($ukdropdown))
 		<li>
 			<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 		</li>
+		<?php if (v("attiva_liste_regalo")) { ?>
+		<li>
+			<a href="<?php echo $this->baseUrl."/liste-regalo/";?>" title="<?php echo gtext("Liste nascita / regalo", false);?>"><?php echo gtext("Liste nascita / regalo");?></a>
+		</li>
+		<?php } ?>
 		<?php
 		if (v("abilita_feedback") && v("feedback_visualizza_in_area_riservata")) {
 			$user_feedback = FeedbackModel::get(0,0);
@@ -22,11 +27,13 @@ if (!isset($ukdropdown))
 			<?php } ?>
 		<?php } ?>
 		<li>
-			<a href="<?php echo $this->baseUrl."/modifica-account";?>" title="<?php echo gtext("Modifica dati fatturazione", false);?>"><?php echo gtext("Modifica dati fatturazione");?></a>
+			<a href="<?php echo $this->baseUrl."/modifica-account";?>" title="<?php echo gtext("I miei dati", false);?>"><?php echo gtext("I miei dati");?></a>
 		</li>
+		<?php if (v("attiva_spedizione_area_riservata")) { ?>
 		<li>
-			<a href="<?php echo $this->baseUrl."/riservata/indirizzi";?>" title="<?php echo gtext("Indirizzi di spedizione", false);?>"><?php echo gtext("Indirizzi di spedizione");?></a>
+			<a href="<?php echo $this->baseUrl."/riservata/indirizzi";?>" title="<?php echo gtext("Spedizione", false);?>"><?php echo gtext("Spedizione");?></a>
 		</li>
+		<?php } ?>
 		<li>
 			<a href="<?php echo $this->baseUrl."/modifica-password";?>" title="<?php echo gtext("Modifica password", false);?>"><?php echo gtext("Modifica password");?></a>
 		</li>

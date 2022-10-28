@@ -92,6 +92,8 @@ class Route
 		'promozioni,form',
 		'promozioni,categorie',
 		'promozioni,pagine',
+		'promozioni,invii',
+		'promozioni,ordini',
 		'regusers,main',
 		'regusers,form',
 		'regusers,gruppi',
@@ -141,6 +143,8 @@ class Route
 		'categorie,contenuti',
 		'categorie,ordinacontenuti',
 		'categorie,ordina',
+		'categorie,caratteristiche',
+		'categorie,ordinacaratteristiche',
 		
 		'prodotti,main',
 		'prodotti,aggiungicategoria',
@@ -371,6 +375,7 @@ class Route
 		'combinazioni,main',
 		'combinazioni,form',
 		'combinazioni,salva',
+		'combinazioni,rendicanonical',
 		
 		'tipicontenuto,main',
 		'tipicontenuto,form',
@@ -695,6 +700,19 @@ class Route
 		'redirect,main',
 		'redirect,form',
 		'redirect,rigenera',
+		
+		'integrazionilogin,main',
+		'integrazionilogin,form',
+		
+		'listeregalotipi,main',
+		'listeregalotipi,form',
+		'listeregalotipi,ordina',
+		
+		'listeregalo,main',
+		'listeregalo,form',
+		'listeregalo,pagine',
+		'listeregalo,inviti',
+		'listeregalo,salvapagine',
 	);
 	
 	//it can be 'yes' or 'no'

@@ -1,2 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php include(tpf("Elementi/Areariservata/Login/".v("stile_form_login").".php"));?>
+<?php include(tpf(ElementitemaModel::p("FORM_LOGIN","", array(
+	"titolo"	=>	"Login form",
+	"percorso"	=>	"Elementi/Generali/Login",
+)))); ?>

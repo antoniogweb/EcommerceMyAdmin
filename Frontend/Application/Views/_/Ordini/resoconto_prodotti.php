@@ -20,6 +20,9 @@
 			<?php } ?>
 			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
+			
+			<?php include(tpf("Ordini/resoconto_prodotto_gift_card.php"));?>
+			
 			</td>
 			<?php if (v("mostra_codice_in_carrello")) { ?>
 			<td style="vertical-align:top;" class="cart_item_product"><?php echo $p["righe"]["codice"];?></td>

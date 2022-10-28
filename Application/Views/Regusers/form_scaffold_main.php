@@ -2,6 +2,10 @@
 
 <?php include(ROOT."/Application/Views/anagrafiche_js.php")?>
 
+<?php if (isset($appLogin)) { ?>
+<div class="callout callout-info"><?php echo gtext("Questo cliente si è registrato tramite");?> <b><?php echo $appLogin["titolo"];?></b>.</div>
+<?php } ?>
+
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data" autocomplete="new-password">
 		<div class='col-md-8'>

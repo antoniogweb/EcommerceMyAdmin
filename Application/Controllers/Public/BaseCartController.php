@@ -95,6 +95,7 @@ class BaseCartController extends BaseController
 		$idCart = 0;
 		$errore = "";
 		$contentsFbk = $contentsGtm = "";
+		$valueProdottoNelCarrello = 0;
 		
 		$defaultErrorJson = array(
 			"result"	=>	$result,
@@ -102,17 +103,10 @@ class BaseCartController extends BaseController
 			"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
 			"contens_fbk"	=>	"",
 			"contens_gtm"	=>	"",
+			"value"		=>	$valueProdottoNelCarrello,
 		);
 		
-		// Se non è un prodotto
-		if ($id_page && !$this->m["PagesModel"]->isProdotto((int)$id_page))
-		{
-			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
-			
-			echo json_encode($defaultErrorJson);
-			
-			die();
-		}
+		$this->checkAggiuntaAlCarrello($id_page, $defaultErrorJson);
 		
 		if (v("carrello_monoprodotto"))
 		{
@@ -124,13 +118,6 @@ class BaseCartController extends BaseController
 				$this->m["CartModel"]->emptyCart();
 		}
 		
-		if (!v("ecommerce_online"))
-		{
-			echo json_encode($defaultErrorJson);
-			
-			die();
-		}
-		
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = (int)$quantity;
 		$clean["id_c"] = (int)$id_c;
@@ -138,6 +125,10 @@ class BaseCartController extends BaseController
 		$clean["id_cart"] = (int)$id_cart;
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		$clean["json_pers"] = $this->request->post("json_pers","");
+		$clean["id_lista"] = $this->request->post("id_lista",0, "forceInt");
+		
+		if (v("attiva_liste_regalo") && $clean["id_lista"])
+			ListeregaloModel::setCookieIdLista($clean["id_lista"]);
 		
 		$c = new CombinazioniModel();
 		
@@ -175,71 +166,93 @@ class BaseCartController extends BaseController
 		{
 			$giacenza = $c->qta($clean["id_c"]);
 			
-			if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza)
+			// controllo se è gift cart
+			$isGiftCard = ProdottiModel::isGiftCart($clean["id_page"]);
+			$numeroInGiftCardCarrello = CartModel::numeroGifCartInCarrello();
+			
+			if (!$isGiftCard || (($numeroInGiftCardCarrello + $clean["quantity"]) <= v("numero_massimo_gift_card")))
 			{
-				// OK giacenza
-				$idCart = $this->m["CartModel"]->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
-				
-				if ($idCart)
+				if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza || $isGiftCard)
 				{
-					if ($idCart == -1)
+					// OK giacenza
+					$idCart = $this->m["CartModel"]->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
+					
+					if ($idCart)
 					{
-						$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+						if ($idCart == -1)
+						{
+							$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+						}
+						else
+						{
+							if (!empty($recordCart))
+							{
+								$this->m["CartModel"]->setValues(array(
+									"id_order"	=>	$recordCart["id_order"],
+								));
+								
+								$this->m["CartModel"]->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+							}
+							
+							$result = "OK";
+							
+							$rcu = $this->m["CartModel"]->getCart($idCart);
+							
+							if (!empty($rcu))
+							{
+								$contentsFbk = array(
+									"value"	=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
+									"currency"	=>	"EUR",
+									"content_type"	=>	"product",
+									"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
+									"contents"	=>	array(
+										array(
+											"id"		=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+											"quantity"	=>	$clean["quantity"],
+										)
+									),
+								);
+								
+								$campoId = v("versione_google_analytics") == 3 ? "id" : "item_id";
+								$campoName = v("versione_google_analytics") == 3 ? "name" : "item_name";
+								
+								$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"];
+								
+								$contentsGtm = array(array(
+									"$campoId"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+									"$campoName"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
+									"quantity"	=>	$clean["quantity"],
+									"price"		=>	$prezzoProdottoNelCarrello,
+								));
+								
+								$valueProdottoNelCarrello = number_format($prezzoProdottoNelCarrello * $clean["quantity"],2,".","");
+							}
+							
+							// Aggiorna gli elementi del carrello
+							$this->m["CartModel"]->aggiornaElementi();
+						}
 					}
 					else
-					{
-						if (!empty($recordCart))
-						{
-							$this->m["CartModel"]->setValues(array(
-								"id_order"	=>	$recordCart["id_order"],
-							));
-							
-							$this->m["CartModel"]->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
-						}
-						
-						$result = "OK";
-						
-						$rcu = $this->m["CartModel"]->getCart($idCart);
-						
-						if (!empty($rcu))
-						{
-							$contentsFbk = array(
-								"value"	=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
-								"currency"	=>	"EUR",
-								"content_type"	=>	"product",
-								"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
-								"contents"	=>	array(
-									array(
-										"id"		=>	$rcu["id_page"],
-										"quantity"	=>	$clean["quantity"],
-									)
-								),
-							);
-							
-							$contentsGtm = array(array(
-								"id"	=>	$rcu["id_page"],
-								"name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
-								"quantity"	=>	$clean["quantity"],
-								"price"		=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
-							));
-						}
-					}
+						$errore = gtext("Si prega di selezionare la variante", false);
 				}
 				else
-					$errore = gtext("Si prega di selezionare la variante", false);
+				{
+					// KO giacenza
+					if ((int)$giacenza === 0)
+						$errore = gtext("Attenzione, prodotto esaurito", false);
+					else if ((int)$giacenza == 1)
+						$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
+					else if ((int)$giacenza > 1)
+					{
+						$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
+						$errore = str_replace("[N]", $giacenza, $errore);
+					}
+				}
 			}
 			else
 			{
-				// KO giacenza
-				if ((int)$giacenza === 0)
-					$errore = gtext("Attenzione, prodotto esaurito", false);
-				else if ((int)$giacenza == 1)
-					$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
-				else if ((int)$giacenza > 1)
-				{
-					$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
-					$errore = str_replace("[N]", $giacenza, $errore);
-				}
+				$errore = gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card", false);
+				$errore = str_replace("[N]", v("numero_massimo_gift_card"), $errore);
 			}
 		}
 		else
@@ -253,6 +266,7 @@ class BaseCartController extends BaseController
 			"errore"	=>	$errore,
 			"contens_fbk"	=>	$contentsFbk,
 			"contens_gtm"	=>	$contentsGtm,
+			"value"		=>	$valueProdottoNelCarrello,
 		));
 	}
 	
@@ -283,9 +297,25 @@ class BaseCartController extends BaseController
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		
+		$numeroGiftCard = 0;
+		
 		$this->clean();
 		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
-
+		$elementiCarrello = isset(Params::$rawPOST["elementi_carrello"]) ? Params::$rawPOST["elementi_carrello"] : array();
+		
+		$elementiPuliti = array();
+		
+		foreach ($elementiCarrello as $elC)
+		{
+			if (isset($elC["id_cart"]) && isset($elC["email"]) && isset($elC["testo"]))
+			{
+				$elementiPuliti["CART-".(int)$elC["id_cart"]][] = array(
+					"email"	=>	(string)$elC["email"],
+					"testo"	=>	(string)$elC["testo"],
+				);
+			}
+		}
+		
 		$quantityArray = explode("|",$clean["quantity"]);
 		
 		$arrayIdErroriQta = array();
@@ -296,6 +326,17 @@ class BaseCartController extends BaseController
 			if (strcmp($q,"") !== 0 and strstr($q, ':'))
 			{
 				$temp = explode(":",$q);
+				
+				// controllo se è gift cart
+				$isGiftCard = CartModel::numeroGifCartInCarrello($temp[0]);
+				
+				if ($isGiftCard)
+				{
+					$numeroGiftCard += $temp[1];
+					
+					if ($numeroGiftCard > v("numero_massimo_gift_card"))
+						$arrayIdErroriQta[] = $temp[0];
+				}
 				
 				if (!$this->m["CartModel"]->checkQtaFinale($temp[0], $temp[1]))
 					$arrayIdErroriQta[] = $temp[0];
@@ -312,6 +353,23 @@ class BaseCartController extends BaseController
 			}
 		}
 		
-		echo json_encode($arrayIdErroriQta);
+		// Aggiorna gli elementi del carrello
+		$this->m["CartModel"]->aggiornaElementi($elementiPuliti);
+		
+		echo json_encode(array(
+			"qty"				=>	$arrayIdErroriQta,
+			"errori_elementi"	=>	CartelementiModel::haErrori() ? 1 : 0,
+			"res_elementi"		=>	CartelementiModel::asArray(CartelementiModel::getErroriElementi()),
+		));
+	}
+	
+	public function eliminacookielista()
+	{
+		$this->clean();
+		
+		if (!v("attiva_liste_regalo"))
+			die();
+		
+		ListeregaloModel::unsetCookieIdLista();
 	}
 }

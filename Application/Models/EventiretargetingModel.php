@@ -42,7 +42,7 @@ class EventiretargetingModel extends GenericModel {
 	
 	public function relations() {
 		return array(
-			'elementi' => array("HAS_MANY", 'EventiretargetingelementiModel', 'id_evento', null, "CASCADE"),
+			'elementi' => array("HAS_MANY", 'EventiretargetingelementiModel', 'id_evento', null, "RESTRICT", "Attenzione, l'elemento ha delle restrizioni e non può essere eliminato. <br />Disattivarlo per fare in modo che non sia più attivo."),
 			'email' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'gruppo' => array("BELONGS_TO", 'EventiretargetinggruppiModel', 'id_gruppo_retargeting',null,"CASCADE"),
 		);
@@ -131,9 +131,23 @@ class EventiretargetingModel extends GenericModel {
 	{
 		$erg = new EventiretargetinggruppiModel();
 		
-		return $erg->clear()->where(array(
+// 		return $erg->clear()->where(array(
+// 			"attivo"	=>	1,
+// 		))->orderBy("id_order")->toList("id_gruppo_retargeting", "titolo")->send();
+		
+		$res = $erg->clear()->where(array(
 			"attivo"	=>	1,
-		))->orderBy("id_order")->toList("id_gruppo_retargeting", "titolo")->send();
+		))->orderBy("id_order")->send(false);
+		
+		$arrayEventi = array();
+		
+		foreach ($res as $r)
+		{
+			if (VariabiliModel::verificaCondizioni($r["condizioni"]))
+				$arrayEventi[$r["id_gruppo_retargeting"]] = $r["titolo"];
+		}
+		
+		return $arrayEventi;
 	}
 	
 	public function scattaDopoOre()
@@ -144,6 +158,11 @@ class EventiretargetingModel extends GenericModel {
 	public static function processaContatto($idElemento)
 	{
 		self::processa($idElemento, "ContattiModel", true);
+	}
+	
+	public static function processaPromo($idElemento)
+	{
+		self::processa($idElemento, "PromozioniModel", true);
 	}
 	
 	public static function processa($idElemento = 0, $limitaAModel = null, $immediati = false)
@@ -178,6 +197,8 @@ class EventiretargetingModel extends GenericModel {
 				
 				$idGruppoRetargeting = $evento["eventi_retargeting"]["id_gruppo_retargeting"];
 				
+				$dettagliGruppoRetargeting = $evGrModel->selectId($idGruppoRetargeting);
+				
 				$idPagina = $evento["eventi_retargeting"]["id_page"];
 				$scattaDopoOre = $evento["eventi_retargeting"]["scatta_dopo_ore"];
 				$timeCreazioneEvento = $evento["eventi_retargeting"]["creation_time"];
@@ -192,6 +213,7 @@ class EventiretargetingModel extends GenericModel {
 				$cModel = new $modelName;
 				$cModel->clear();
 				$primaryKey = $cModel->getPrimaryKey();
+				$tableName = $cModel->table();
 				
 				if ($idElemento)
 					$cModel->aWhere(array(
@@ -214,19 +236,28 @@ class EventiretargetingModel extends GenericModel {
 						),
 					));
 				
+				if (!empty($dettagliGruppoRetargeting) && $dettagliGruppoRetargeting["clausola_where"])
+					$cModel->sWhere($dettagliGruppoRetargeting["clausola_where"]);
+				
 				if ($scattaDopoOre > 0)
 				{
 					$tempoEvento = time() - ($scattaDopoOre * 3600);
 					$cModel->sWhere("creation_time <= $tempoEvento");
 				}
 				
-				$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
+				$tipoControllo = (!empty($dettagliGruppoRetargeting)) ? $dettagliGruppoRetargeting["blocca_reinvio_mail_stesso"] : "EVENTO";
+				
+				if ($tipoControllo == "EVENTO")
+					$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
+				else
+					$cModel->sWhere("(email,$primaryKey) not in (select email,id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
 				
 				$elementi = $cModel->send(false);
 				
 				$queryElementi = $cModel->getQuery();
 				
 				$elementiProcessati = array();
+// 				$elementiProcessatiElemento = array();
 				
 				foreach ($elementi as $e)
 				{
@@ -245,13 +276,23 @@ class EventiretargetingModel extends GenericModel {
 						$oggetto = htmlentitydecode(field($email, "title"));
 						$testo = htmlentitydecode(field($email, "description"));
 						
+						TraduzioniModel::sLingua($e["lingua"], "front");
 						$oggetto = SegnapostoModel::sostituisci($oggetto, $e, $cModel);
 						$testo = SegnapostoModel::sostituisci($testo, $e, $cModel);
+						TraduzioniModel::rLingua();
 						
-						if (in_array($emailElemento, $elementiProcessati))
+						if ($tipoControllo == "EVENTO" && in_array($emailElemento, $elementiProcessati))
 							$giaProcessato = true;
 						
+// 						if ($tipoControllo == "EVENTO_ELEMENTO" && isset($elementiProcessatiElemento[$e[$primaryKey]]) && in_array($emailElemento, $elementiProcessatiElemento[$e[$primaryKey]]))
+// 							$giaProcessato = true;
+						
 						$elementiProcessati[] = $emailElemento;
+						
+// 						if (isset($elementiProcessatiElemento[$e[$primaryKey]]))
+// 							$elementiProcessatiElemento[$e[$primaryKey]][] = $emailElemento;
+// 						else
+// 							$elementiProcessatiElemento[$e[$primaryKey]] = array($emailElemento);
 						
 						$mailInviata = 0;
 						
@@ -281,6 +322,7 @@ class EventiretargetingModel extends GenericModel {
 							"mail_inviata"	=>	$mailInviata,
 							"email"			=>	$emailElemento,
 							"id_mail"		=>	count(MailordiniModel::$idMailInviate) > 0 ? MailordiniModel::$idMailInviate[0] : 0,
+							"tabella_elemento"	=>	$tableName,
 						);
 						
 						if (!self::$debug)

@@ -52,6 +52,7 @@ class CaratteristicheModel extends GenericModel {
 	public function relations() {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_car', null, "CASCADE"),
+			'categorie' => array("HAS_MANY", 'CategoriescaratteristicheModel', 'id_car', null, "CASCADE"),
 			'tipologia' => array("BELONGS_TO", 'TipologiecaratteristicheModel', 'id_tipologia_caratteristica',null,"CASCADE"),
         );
     }
@@ -122,8 +123,8 @@ class CaratteristicheModel extends GenericModel {
 		
 		$res = parent::insert();
 		
-		if ($res)
-			$this->controllaLingua($this->lId, "id_car");
+// 		if ($res)
+// 			$this->controllaLingua($this->lId, "id_car");
 		
 		return $res;
 	}
@@ -153,8 +154,8 @@ class CaratteristicheModel extends GenericModel {
 		
 		$res = parent::update($id, $where);
 		
-		if ($res)
-			$this->controllalingua($id, "id_car");
+// 		if ($res)
+// 			$this->controllalingua($id, "id_car");
 		
 		return $res;
 	}
@@ -169,4 +170,38 @@ class CaratteristicheModel extends GenericModel {
 	{
 		return $this->linklinguaGeneric($record["caratteristiche"]["id_car"], $lingua, "id_car");
 	}
+	
+	public static function getAliasFiltri($idCategoria = 0)
+	{
+		$cm = CaratteristicheModel::g()->select("coalesce(contenuti_tradotti.alias,caratteristiche.alias) as alias_caratteristica")->where(array(
+			"caratteristiche.filtro"	=>	"Y",
+		))->toList("aggregate.alias_caratteristica");
+		
+		if ($idCategoria)
+			$cm->inner(array("categorie"))->aWhere(array(
+				"categories_caratteristiche.id_c"	=>	(int)$idCategoria,
+			));
+		
+		return $cm->send();
+	}
+	
+	public function aggiungiacategoria($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_c"]))
+		{
+			$cc = new CategoriescaratteristicheModel();
+			
+			$cc->sValues(array(
+				"id_c"		=>	(int)$_GET["id_c"],
+				"id_car"	=>	(int)$id,
+			), "sanitizeDb");
+			
+			if ($cc->pInsert())
+			{
+
+			}
+		}
+    }
 }

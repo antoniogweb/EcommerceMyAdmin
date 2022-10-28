@@ -132,7 +132,7 @@ $(document).ready(function(){
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione <?php echo $tabella;?>: <?php echo $titoloPagina; ?></h1>
+	<h1><?php echo gtext("Gestione");?> <?php echo $tabella;?>: <?php echo $titoloPagina; ?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
@@ -174,16 +174,16 @@ $(document).ready(function(){
 					</div>
 
 					<div id="refresh_link"></div>
-
-					<?php echo $noticeComb;?>
 				</div>
 			</div>
+			<?php if ($numeroAttributi > 0) { ?>
 			<div class="box">
 				<div class="box-header with-border main">
-					<div class="box_lista_combinazioni help_elenco_combinazioni">	
-						<div id="form_opzioni">Combinazioni di questo prodotto</div>
+					<div class="box_lista_combinazioni help_elenco_combinazioni">
+						<?php echo $noticeComb;?>
+						<div id="form_opzioni"><?php echo gtext("Combinazioni di questo prodotto");?></div>
 						
-						<a class="link_aggiorna_combinazioni btn btn-warning" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
+						<a class="link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
 						
 						<a class="iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
 						
@@ -203,6 +203,7 @@ $(document).ready(function(){
 					</div>
                 </div>
 			</div>
+			<?php } ?>
 		</div>
 	</div>
 </section>

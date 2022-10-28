@@ -121,6 +121,9 @@ class AttributiController extends BaseController {
 			$this->mainHead = "Titolo";
 		}
 		
+		if ($tipo == "COLORE")
+			$data["aggiuntaLibera"] = false;
+		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"valori/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("attributi_valori.*")->orderBy("attributi_valori.id_order")->where(array("id_a"=>$clean['id']))->save();

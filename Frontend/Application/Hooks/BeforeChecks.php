@@ -26,15 +26,23 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 date_default_timezone_set('Europe/Rome');
 
-Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti");
+VariabiliModel::ottieniVariabili();
+
+Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti");
 
 if (defined("CACHE_FOLDER"))
 {
-	Cache::$cacheFolder = CACHE_FOLDER;
-	Cache::$cacheMinutes = 60;
-	Cache::$cleanCacheEveryXMinutes = 70;
+	Cache::$cacheFolder = ROOT."/".ltrim(CACHE_FOLDER,"/");
+	Cache::$cacheMinutes = VariabiliModel::valore("query_cache_durata_massima");
+	Cache::$useRandomPeriods = VariabiliModel::valore("query_cache_usa_periodi_random");
+	Cache::$minutesOfPeriod = VariabiliModel::valore("query_cache_minuti_tra_periodi");
+	Cache::$cleanCacheEveryXMinutes = VariabiliModel::valore("query_cache_pulisci_ogni_x_minuti");
+	Cache::$maxNumberOfFilesCached = VariabiliModel::valore("numero_massimo_file_cache");
 	Cache::deleteExpired();
 }
+
+// Files_Log::$logFolder = ROOT."/Logs";
+// Files_Log::getInstance("log_generico");
 
 Theme::$alternativeViewFolders = array(
 	LIBRARY . "/Frontend/Application/Views/_",
@@ -58,8 +66,6 @@ if (defined("APPS"))
 		include(LIBRARY."/Application/Hooks/BeforeChecksVariabili.php");
 	}
 }
-
-VariabiliModel::ottieniVariabili();
 
 Params::$exactUrlMatchRewrite = true;
 
@@ -89,6 +95,9 @@ if (v("abilita_tutte_le_lingue_attive"))
 	Params::$frontEndLanguages = array_keys(LingueModel::getValoriAttivi());
 else if (v("lingue_abilitate_frontend"))
 	Params::$frontEndLanguages = explode(",", v("lingue_abilitate_frontend"));
+
+if (v("attiva_nazione_nell_url"))
+	Params::$frontEndCountries = array_map("strtolower",NazioniModel::g(false)->selectCodiciAttivi());
 
 require(LIBRARY."/Application/Include/parametri.php");
 require(LIBRARY."/Application/Include/user.php");
@@ -138,3 +147,5 @@ if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
 Domain::setPath();
+
+// User::$nazione = User::$nazioneNavigazione = "FR";

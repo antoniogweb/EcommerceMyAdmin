@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ImmaginiModel extends GenericModel {
 	
 	protected static $immaginiPagine = null;
+	protected static $immaginiCombinazioni= null;
 	
 	public $campoTitolo = "immagine";
 	
@@ -88,7 +89,7 @@ class ImmaginiModel extends GenericModel {
 			
 		}
 		
-		$res = $this->select('immagine')->where(array('id_page'=>$clean['id_page']))->toList('immagine')->limit(1)->send();
+		$res = $this->select('immagine')->where(array('id_page'=>$clean['id_page'],"id_c"=>0))->toList('immagine')->limit(1)->send();
 		
 		if (count($res) > 0)
 		{
@@ -115,23 +116,23 @@ class ImmaginiModel extends GenericModel {
 	}
 	
 	//duplica le immagini della pagina avente id uguale a $from_id alla pagina avente id uguale a $to_id 
-	public function duplica($from_id, $to_id, $field = "id_page")
-	{
-		$clean["from_id"] = (int)$from_id;
-		$clean["to_id"] = (int)$to_id;
-		
-		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send();
-		
-		foreach ($res as $r)
-		{
-			$this->values = array();
-			$this->values["immagine"] = $r["immagini"]["immagine"];
-			$this->values["id_page"] = $clean["to_id"];
-			
-			$this->sanitize();
-			$this->insert();
-		}
-	}
+// 	public function duplica($from_id, $to_id, $field = "id_page")
+// 	{
+// 		$clean["from_id"] = (int)$from_id;
+// 		$clean["to_id"] = (int)$to_id;
+// 		
+// 		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy("id_order")->send();
+// 		
+// 		foreach ($res as $r)
+// 		{
+// 			$this->values = array();
+// 			$this->values["immagine"] = $r["immagini"]["immagine"];
+// 			$this->values["id_page"] = $clean["to_id"];
+// 			
+// 			$this->sanitize();
+// 			$this->insert();
+// 		}
+// 	}
 	
 	public function del($id_immagine = null, $whereClause = null)
 	{
@@ -177,6 +178,85 @@ class ImmaginiModel extends GenericModel {
 		}
 	}
 	
+	public static function altreImmaginiPagina($idPage)
+	{
+		$pModel = new PagesModel();
+		$i = new ImmaginiModel();
+		
+		$altreImmagini = $i->clear()->where(array(
+			"id_page"	 => (int)$idPage,
+			"id_c"		=>	0,
+		))->orderBy("id_order")->send(false);
+		
+		if (v("immagini_separate_per_variante"))
+		{
+			$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$idPage);
+			
+			$immaginiCombinazione = $i->aWhere(array(
+				"id_c"	=>	(int)$idC,
+			))->send(false);
+			
+			if (count($immaginiCombinazione) > 0)
+			{
+				array_shift($immaginiCombinazione);
+				
+				$altreImmagini = $immaginiCombinazione;
+			}
+		}
+		
+		return $altreImmagini;
+	}
+	
+	public static function immaginiCombinazione($idC)
+	{
+		if (!isset(self::$immaginiCombinazioni))
+		{
+			self::$immaginiCombinazioni = array();
+			
+			$i = new ImmaginiModel();
+			
+			$elencoImmagini =  $i->select("immagini.*")
+				->inner(array("pagina"))
+				->where(array(
+					"ne"	=>	array(
+						"id_c"	=>	0,
+					),
+				))
+				->orderBy("immagini.id_order")->send();
+			
+			foreach ($elencoImmagini as $recordImg)
+			{
+				$id_c = $recordImg["immagini"]["id_c"];
+
+				$immagine = $recordImg["immagini"];
+				
+				if (isset(self::$immaginiCombinazioni[$id_c]))
+					self::$immaginiCombinazioni[$id_c][] = $immagine;
+				else
+					self::$immaginiCombinazioni[$id_c] = array($immagine);
+			}
+		}
+		
+		if (isset(self::$immaginiCombinazioni[$idC]))
+			return self::$immaginiCombinazioni[$idC];
+		
+		return array();
+	}
+	
+	public static function immaginiPaginaFull($idPage)
+	{
+		$p = new PagesModel();
+		
+		$pagina = $p->selectId((int)$idPage);
+		
+		$elencoImmagini = ImmaginiModel::immaginiPagina((int)$idPage, true);
+		
+		if (!empty($pagina) && $pagina["immagine"])
+			array_unshift($elencoImmagini, $pagina["immagine"]);
+		
+		return $elencoImmagini;
+	}
+	
 	// Restituisce un array con tutte le immagini della pagina
 	public static function immaginiPagina($idPagina, $soloShop = true, $soloImmagine = true)
 	{
@@ -188,14 +268,15 @@ class ImmaginiModel extends GenericModel {
 			
 			$i->select("immagini.*")
 				->inner(array("pagina"))
+				->where(array(
+					"id_c"	=>	0,
+				))
 				->orderBy("immagini.id_order");
 			
 			if ($soloShop)
 				 $i->where(CategoriesModel::gCatWhere(CategoriesModel::$idShop, true, "pages.id_c"));
 			
 			$elencoImmagini = $i->send();
-			
-// 			echo $i->getQuery();
 			
 			foreach ($elencoImmagini as $recordImg)
 			{
@@ -213,12 +294,9 @@ class ImmaginiModel extends GenericModel {
 			}
 		}
 		
-// 		print_r(self::$immaginiPagine);
-		
 		if (isset(self::$immaginiPagine[$idPagina]))
 			return self::$immaginiPagine[$idPagina];
 		
 		return array();
 	}
-	
 }

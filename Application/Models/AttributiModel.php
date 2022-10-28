@@ -50,12 +50,17 @@ class AttributiModel extends GenericModel {
     
     public function setFormStruct($id = 0)
 	{
+		$options = "TENDINA,RADIO,IMMAGINE";
+		
+		if (v("attiva_variante_colore"))
+			$options .= ",COLORE";
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
 				'tipo'		=>	array(
 					'type'		=>	'Select',
-					'options'	=>	"TENDINA,RADIO,IMMAGINE",
+					'options'	=>	$options,
 					'reverse' => 'yes',
 					
 				),

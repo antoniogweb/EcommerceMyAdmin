@@ -96,6 +96,8 @@ define('REG_PANEL_MAIN_ACTION', 'index');
 define('REG_USERS_CONTROLLER', 'regusers');
 define('REG_USERS_LOGIN_ACTION', 'login');
 
+define("REG_COOKIE_PERMANENT", true);
+
 //registered cookie:
 //NB: REG_COOKIE_NAME must be different from ADMIN_COOKIE_NAME!!!
 define('REG_COOKIE_NAME','uidr');
@@ -118,5 +120,5 @@ define('REG_HIJACKING_CHECK',true); //can be true or false
 //set ADMIN_ON_HIJACKING_EVENT equal to 'redirect' if you want to redirect the user to the ADMIN_HIJACKING_ACTION (see later) if there is the suspect of a session hijacking
 define('REG_ON_HIJACKING_EVENT','forceout');  //it can be 'forceout' or 'redirect'
 //only if ADMIN_ON_HIJACKING_EVENT = 'redirect'
-//redirect the user to ADMIN_USERS_CONTROLLER/ADMIN_HIJACKING_ACTION if there is the suspect of a session hijacking
+//redirect the user to REG_USERS_CONTROLLER/REG_HIJACKING_ACTION if there is the suspect of a session hijacking
 define('REG_HIJACKING_ACTION','retype');

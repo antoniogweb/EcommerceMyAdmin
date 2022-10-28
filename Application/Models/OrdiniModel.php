@@ -66,7 +66,7 @@ class OrdiniModel extends FormModel {
 		$record = $o->selectId($idO);
 		
 		if (!empty($record) && ($record["stato"] == "completed" || $record["stato"] == "closed"))
-			return false;
+			return true;
 		
 		return false;
 	}
@@ -81,9 +81,18 @@ class OrdiniModel extends FormModel {
 		
 		$p = new PagamentiModel();
 		
-		$res = $p->clear()->where(array(
+		$p->clear()->where(array(
 			"attivo"	=>	1
-		))->orderBy("id_order")->addJoinTraduzione()->send();
+		))->orderBy("id_order")->addJoinTraduzione();
+		
+		if (App::$isFrontend && CartModel::soloProdottiSenzaSpedizione())
+			$p->aWhere(array(
+				"ne"	=>	array(
+					"pagamenti.codice"	=>	"contrassegno",
+				),
+			));
+		
+		$res = $p->send();
 		
 		self::$elencoPagamenti = array();
 		
@@ -182,7 +191,8 @@ class OrdiniModel extends FormModel {
 		if (!v("attiva_spedizione"))
 			unset(self::$stati["closed"]);
 		
-		self::setPagamenti();
+		if (!App::$isFrontend)
+			self::setPagamenti();
 // 		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
 // 		
 // 		foreach (self::$elencoPagamenti as $k => $v)
@@ -331,6 +341,8 @@ class OrdiniModel extends FormModel {
 			
 			if ($res)
 			{
+				$this->triggersOrdine($id);
+				
 				// Hook ad aggiornamento dell'ordine
 				if (v("hook_update_ordine"))
 					callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
@@ -340,6 +352,30 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return false;
+	}
+	
+	public function triggersOrdine($idO)
+	{
+		if (v("attiva_gift_card"))
+		{
+			$ordine = $this->selectId((int)$idO);
+			
+			if (!empty($ordine))
+			{
+				$rModel = new RigheModel();
+				$pModel = new PromozioniModel();
+				
+				$righe = $rModel->clear()->where(array(
+					"id_o"		=>	(int)$idO,
+					"gift_card"	=>	1,
+				))->send(false);
+				
+				foreach ($righe as $r)
+				{
+					$pModel->aggiungiDaRigaOrdine($r["id_r"]);
+				}
+			}
+		}
 	}
 	
 	public function cartUidAlreadyPresent($cart_uid)
@@ -602,12 +638,15 @@ class OrdiniModel extends FormModel {
 	//$id_o: id dell'ordine
 	public function riempiRighe($id_o)
 	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
 		$clean["id_o"] = (int)$id_o;
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
 		$c = new CartModel();
 		$r = new RigheModel();
+		$re = new RigheelementiModel();
 		
 		$sconto = 0;
 		if (hasActiveCoupon($id_o))
@@ -645,14 +684,37 @@ class OrdiniModel extends FormModel {
 			
 			$r->values["prezzo_finale_ivato"] = number_format($r->values["prezzo_finale"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
+			$r->delFields("data_creazione");
 			$r->delFields("id_user");
 			$r->delFields("email");
 			$r->delFields("id_cart");
 			$r->delFields("id_order");
 			
 			$r->sanitize();
-			$r->insert();
+			
+			if ($r->insert())
+			{
+				// Salvo gli elementi del carrello
+				$elementiCarrello = CartelementiModel::getElementiCarrello($p["cart"]["id_cart"]);
+				
+				foreach ($elementiCarrello as $elCart)
+				{
+					unset($elCart["id_cart_elemento"]);
+					unset($elCart["data_creazione"]);
+					unset($elCart["id_cart"]);
+					
+					$re->sValues($elCart, "sanitizeDb");
+					$re->setValue("id_r", $r->lId);
+					
+					$re->insert();
+				}
+			}
 		}
+	}
+	
+	public function totaleCrudPieno($record)
+	{
+		return number_format($record["orders"]["subtotal_ivato"] + $record["orders"]["spedizione_ivato"],2,",",".");
 	}
 	
 	public function totaleCrud($record)
@@ -716,6 +778,8 @@ class OrdiniModel extends FormModel {
 				$arrayTotali[$ordine["id_iva"]] += number_format($ordine["spedizione"],v("cifre_decimali"),".","");
 			else
 				$arrayTotali[$ordine["id_iva"]] = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
+			
+			$arrayTotali[$ordine["id_iva"]] += number_format($ordine["costo_pagamento"],v("cifre_decimali"),".","");
 		}
 		
 		$arrayIva = array();

@@ -61,9 +61,11 @@ class RegusersModel extends FormModel {
 	
 	public function relations() {
         return array(
+			'liste' => array("HAS_MANY", 'ListeregaloModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'feedback' => array("HAS_MANY", 'FeedbackModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'sedi' => array("HAS_MANY", 'SpedizioniModel', 'id_user', null, "CASCADE"),
+			'integrazioni' => array("HAS_MANY", 'RegusersintegrazioniloginModel', 'id_user', null, "CASCADE"),
 			'gruppi_temp' => array("HAS_MANY", 'RegusersgroupstempModel', 'id_user', null, "CASCADE"),
 			'nazioni' => array("HAS_MANY", 'RegusersnazioniModel', 'id_user', null, "CASCADE"),
 			'groups' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("RegusersgroupsModel","id_user","id_group"), "CASCADE"),
@@ -122,20 +124,24 @@ class RegusersModel extends FormModel {
 // 		}
 // 		parent::update($clean['id']);
 // 	}
-
-// 	public function del($id = null, $whereClause = null)
-// 	{
-// 		$clean['id'] = (int)$id;
-// 		
-// 		if ($this->checkOnDeleteIntegrity($id, $whereClause))
-// 		{
-// 			//cancello tutti i gruppi a cui è associato
-// 			$ug = new RegusersgroupsModel();
-// 			$ug->del(null,"id_user=".$clean['id']);
-// 		}
-// 		
-// 		return parent::del($clean['id']);
-// 	}
+	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["deleted"] == "no")
+			return true;
+		
+		return false;
+	}
+	
+	public function del($id = null, $whereClause = null)
+	{
+		if ($id && v("permetti_sempre_eliminazione_account_backend") && !$this->checkOnDeleteIntegrity($id, $whereClause))
+			return $this->deleteAccount((int)$id);
+		else
+			return parent::del($id, $whereClause);
+	}
 	
 	//restituisci il codice fiscale o la partita iva
 	public function getCFoPIva($row)
@@ -199,6 +205,11 @@ class RegusersModel extends FormModel {
 			
 			$rn->insert();
 		}
+    }
+    
+    public function appCrud($record)
+    {
+		return $record["regusers"]["codice_app"];
     }
 	
 }

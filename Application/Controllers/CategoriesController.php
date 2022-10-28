@@ -56,6 +56,7 @@ class CategoriesController extends BaseController {
 		$this->model("ClassiscontoModel");
 		$this->model("ContenutitradottiModel");
 		$this->model("ContenutiModel");
+		$this->model("CategoriescaratteristicheModel");
 		
 		$this->setArgKeys(array(
 			'page:forceNat'=>1,
@@ -404,6 +405,47 @@ class CategoriesController extends BaseController {
 		$data["stepsAssociato"] = "categories_steps";
 		
 		$this->append($data);
+	}
+	
+	public function caratteristiche($id = 0)
+	{
+		$this->_posizioni['caratteristiche'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->ordinaAction = "ordinacaratteristiche";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_c";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "CategoriescaratteristicheModel";
+		
+		$this->mainFields = array("caratteristiche.titolo");
+		$this->mainHead = "Filtro";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"caratteristiche/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("caratteristiche.*,categories_caratteristiche.*")->inner(array("caratteristica"))->orderBy("categories_caratteristiche.id_order")->where(array("categories_caratteristiche.id_c"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["CategoriesModel"]->where(array("id_c"=>$clean['id']))->field("title");
+		$data["tabella"] = "categoria";
+		
+		$data["stepsAssociato"] = "categories_steps";
+		
+		$this->append($data);
+	}
+	
+	public function ordinacaratteristiche()
+	{
+		$this->modelName = "CategoriescaratteristicheModel";
+		
+		parent::ordina();
 	}
 	
 	public function form($queryType = 'insert',$id = 0)

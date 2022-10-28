@@ -91,4 +91,11 @@ class FasceprezzoModel extends GenericModel
 		
 		return parent::update($id, $where);
 	}
+	
+	public function filtroFasce()
+	{
+		$res = $this->clear()->addJoinTraduzione()->orderBy("fasce_prezzo.da")->send();
+		
+		return $res;
+	}
 }

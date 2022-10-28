@@ -84,15 +84,18 @@ class BaseRegusersController extends BaseController
 		
 		$data['notice'] = null;
 		
-		$this->s['registered']->checkStatus();
+		$this->checkNonLoggato();
+// 		$this->s['registered']->checkStatus();
+// 		
+// 		if ($this->s['registered']->status['status']=='logged') { //check if already logged
+// 			if (Output::$html)
+// 			{
+// 				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+// 				die();
+// 			}
+// 		}
 		
-		if ($this->s['registered']->status['status']=='logged') { //check if already logged
-			if (Output::$html)
-			{
-				$this->m['RegusersModel']->redirectVersoAreaRiservata();
-				die();
-			}
-		}
+		$this->getAppLogin();
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
@@ -107,12 +110,7 @@ class BaseRegusersController extends BaseController
 				case 'accepted':
 					if (Output::$html)
 					{
-						$urlRedirect = RegusersModel::getUrlRedirect();
-						
-						if ($urlRedirect)
-							header('Location: '.$urlRedirect);
-						else
-							$this->m['RegusersModel']->redirectVersoAreaRiservata();
+						$this->redirectUser();
 					}
 					else
 					{
@@ -142,7 +140,184 @@ class BaseRegusersController extends BaseController
 		else
 			$this->load("api_output");
 	}
+	
+	protected function redirectUser()
+	{
+		$urlRedirect = RegusersModel::getUrlRedirect();
+		
+		if ($urlRedirect)
+			header('Location: '.$urlRedirect);
+		else
+			$this->m['RegusersModel']->redirectVersoAreaRiservata();
+	}
+	
+	protected function checkNonLoggato()
+	{
+		$this->s['registered']->checkStatus();
+		
+		if ($this->s['registered']->status['status']=='logged') { //check if already logged
+			if (Output::$html)
+			{
+				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+				die();
+			}
+		}
+	}
+	
+	// metodo chiamato da APP esterna per chiedere l'eliminazione dell'account
+	public function deleteaccountdaapp($codice = "")
+	{
+		$this->clean();
+		
+		$clean["codice"] = sanitizeAll($codice);
+		
+		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
+			$this->redirect("");
+		
+		if (!VariabiliModel::checkToken("token_eliminazione_account_da_app"))
+			die();
+		
+		IntegrazioniloginModel::getApp($clean["codice"])->deleteAccountCallback($this->m['RegusersModel'], RegusersModel::getUrlAccountEliminato());
+	}
+	
+	public function loginapp($codice = "")
+	{
+		$this->clean();
+		
+		if (!isset($_SESSION["ok_csrf"]))
+		{
+			if (App::checkCSRF("csrf_code"))
+				$_SESSION["ok_csrf"] = 1;
+			else
+				$this->redirect("");
+		}
+		
+		$clean["codice"] = sanitizeAll($codice);
+		
+		$redirect = RegusersModel::getRedirect("?", true);
+		
+		if (!trim($codice) || !v("abilita_login_tramite_app") || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva() || VariabiliModel::confermaUtenteRichiesta())
+			$this->redirect("");
+		
+		$this->checkNonLoggato();
+		
+		$this->model("RegusersintegrazioniloginModel");
+		
+		$recordLoginApp = IntegrazioniloginModel::g()->where(array(
+			"codice"	=>	$clean["codice"],
+		))->record();
+		
+		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin(RegusersModel::$redirectQueryString);
+		
+		$infoUtente = IntegrazioniloginModel::getApp($clean["codice"])->getInfoUtente();
+		
+		if (!$infoUtente["result"])
+		{
+			$this->redirect("regusers/login");
+		}
+		else if ($infoUtente["redirect"] && $infoUtente["login_redirect"])
+		{
+			header('Location: '.$infoUtente["login_redirect"]);
+			die();
+		}
+		else if ($infoUtente["utente_loggato"] && checkMail($infoUtente["dati_utente"]["external_email"]) && trim($infoUtente["dati_utente"]["external_full_name"]))
+		{
+			$clean["username"] = sanitizeAll($infoUtente["dati_utente"]["external_email"]);
+			
+			$utente = $this->m['RegusersModel']->clear()->where(array(
+				"username"	=>	$clean["username"],
+			))->record();
+			
+			if (!empty($utente) && (int)$utente[Users_CheckAdmin::$statusFieldName] !== (int)Users_CheckAdmin::$statusFieldActiveValue)
+				$this->redirect("regusers/login");
+			
+			if (empty($utente))
+			{
+				VariabiliModel::$valori["insert_account_cf_obbligatorio"] = 0;
+				VariabiliModel::$valori["insert_account_p_iva_obbligatorio"] = 0;
+				
+				$fullNameArray = explode(" ", $infoUtente["dati_utente"]["external_full_name"]);
+				
+				if (count($fullNameArray) > 1)
+				{
+					$nome = array_shift($fullNameArray);
+					$cognome = implode(" ", $fullNameArray);
+				}
+				else
+				{
+					$nome = $infoUtente["dati_utente"]["external_full_name"];
+					$cognome = "";
+				}
+				
+				$this->m['RegusersModel']->sValues(array(
+					"username"	=>	$infoUtente["dati_utente"]["external_email"],
+					Users_CheckAdmin::$statusFieldName	=>	(int)Users_CheckAdmin::$statusFieldActiveValue,
+					"nome"		=>	$nome,
+					"cognome"	=>	$cognome,
+					"tipo_cliente"	=>	"privato",
+					"codice_app"	=>	$codice,
+				));
+				
+				$this->m['RegusersModel']->setValue("password", randomToken(), PASSWORD_HASH);
+				
+				if ($this->m['RegusersModel']->insert())
+				{
+					$idCliente = (int)$this->m['RegusersModel']->lId;
+					$datiCliente = $this->m['RegusersModel']->selectId($idCliente);
+					
+					ob_start();
+					include tpf("Elementi/Mail/mail_al_negozio_registr_nuovo_cliente_tramite_app.php");
+					$output = ob_get_clean();
+					
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array(Parametri::$mailInvioOrdine),
+						"oggetto"	=>	"invio dati nuovo utente - registrazione tramite ".$recordLoginApp["titolo"],
+						"testo"		=>	$output,
+						"tipologia"	=>	"ISCRIZIONE ".$recordLoginApp["codice"],
+						"id_user"	=>	$idCliente,
+						"id_page"	=>	0,
+					));
+				}
+				else
+					$this->redirect("regusers/login");
+			}
+			else
+				$idCliente = (int)$utente["id_user"];
+			
+			// Aggiungo la voce del login nella tabella delle integrazioni
+			$this->m["RegusersintegrazioniloginModel"]->sValues(array(
+				"id_user"	=>	$idCliente,
+				"id_integrazione_login"	=>	$recordLoginApp["id_integrazione_login"],
+				"codice"	=>	$codice,
+				"user_id_app"	=>	$infoUtente["dati_utente"]["external_id"],
+			));
+			
+			$this->m["RegusersintegrazioniloginModel"]->insert();
+			
+			// Forza il login
+			$choice = $this->s['registered']->login($clean["username"],null,true);
 
+			switch($choice) {
+				case 'logged':
+					$this->redirect('area-riservata',0);
+					break;
+				case 'accepted':
+					$this->redirectUser();
+					break;
+				case 'login-error':
+					$this->redirect("regusers/login");
+					break;
+				case 'wait':
+					$this->redirect("regusers/login");
+					break;
+			}
+		}
+		else
+		{
+			$this->redirect("regusers/login");
+		}
+	}
+	
 	public function logout()
 	{
 		$res = $this->s['registered']->logout();
@@ -161,7 +336,10 @@ class BaseRegusersController extends BaseController
 		{
 			$data['notice'] = null;
 		}
-
+		
+		if (isset($_SESSION["access_token"]))
+			unset($_SESSION["access_token"]);
+		
 		if (Output::$html)
 		{
 			$this->append($data);
@@ -568,7 +746,7 @@ class BaseRegusersController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica password");
 		$data['notice'] = null;
-		
+		$data["isAreaRiservata"] = true;
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/modifica-password";
@@ -648,7 +826,7 @@ class BaseRegusersController extends BaseController
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica account");
 		$data['notice'] = null;
 		$data['action'] = "/modifica-account";
-		
+		$data["isAreaRiservata"] = true;
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
@@ -728,7 +906,7 @@ class BaseRegusersController extends BaseController
 			$_POST["nazione_spedizione"] = User::$dettagli["nazione"];
 			$_POST["citta_spedizione"] = User::$dettagli["citta"];
 		}
-		
+		$data["isAreaRiservata"] = true;
 		$clean["id"] = $data["id"] = (int)$id;
 		
 		if ($clean["id"] > 0)

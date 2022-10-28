@@ -905,6 +905,10 @@ class HierarchicalModel extends GenericModel {
 		//remove the root node
 		array_shift($parents);
 		
+		// rimuovi l'alias della sezione prodotti
+		if (!v("mantieni_alias_sezione_in_url_prodotti") && count($parents) > 1 && isset($parents[0]["categories"]["section"]) && $parents[0]["categories"]["section"] == Parametri::$nomeSezioneProdotti)
+			array_shift($parents);
+		
 		$urlArray = array();
 		foreach ($parents as $node)
 		{
@@ -914,7 +918,7 @@ class HierarchicalModel extends GenericModel {
 				$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
 		}
 		
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		$ext = Parametri::$useHtmlExtension ? v("estensione_url_categorie") : null;
 		
 		return implode("/",$urlArray).$ext;
 	}
@@ -923,7 +927,7 @@ class HierarchicalModel extends GenericModel {
 	//$tree: nodes as given by getTreeWithDepth
 	public function getCategoryUlLiTree($tree, $htmlData)
 	{
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		$ext = Parametri::$useHtmlExtension ? v("estensione_url_categorie") : null;
 		
 		if (count($tree) > 0)
 		{

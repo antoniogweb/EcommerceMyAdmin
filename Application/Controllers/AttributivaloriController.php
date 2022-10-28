@@ -34,7 +34,7 @@ class AttributivaloriController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = "titolo";
+		$fields = "titolo,alias";
 		
 		if ($this->viewArgs["id_a"] != "tutti")
 			$tipo = AttributiModel::getTipo($this->viewArgs["id_a"]);
@@ -42,7 +42,9 @@ class AttributivaloriController extends BaseController {
 			$tipo = AttributivaloriModel::getTipo($id);
 		
 		if ($tipo == "IMMAGINE")
-				$fields .= ",immagine";
+			$fields .= ",immagine";
+		else if ($tipo == "COLORE")
+			$fields .= ",colore";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

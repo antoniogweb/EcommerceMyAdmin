@@ -57,7 +57,7 @@ class CaratteristichevaloriController extends BaseController {
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$section = $this->m["PagesModel"]->section((int)$this->viewArgs["id_page"], true);
-			
+		
 		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica();
 		
 		if (($this->viewArgs["id_page"] != "tutti" && $this->viewArgs["id_tipo_car"] != "tutti") || !v("attiva_tipologie_caratteristiche"))

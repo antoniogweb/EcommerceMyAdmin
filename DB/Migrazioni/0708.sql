@@ -1,0 +1,1 @@
+UPDATE `variabili` SET `valore` = 'versione_google_analytics,codice_gtm_analytics,codice_gtm,codice_gtm_analytics_noscript,codice_account_merchant,campo_send_to_google_ads,codice_fbk,codice_fbk_noscript,codice_verifica_fbk,identificatore_feed_default,codice_js_ok_cookie' WHERE `chiave` = 'lista_variabili_opzioni_google';

@@ -111,6 +111,56 @@ ul.thumbnails.image_picker_selector li .thumbnail
 	cursor:pointer;
 }
 
+.elemento_gift_card
+{
+	border-top:1px dashed #e5e5e5;
+}
+
+.box_elementi_ordine
+{
+	border-bottom:1px dashed #e5e5e5;
+}
+
+.dedica_scroll
+{
+	max-height:100px;
+	overflow-y:auto;
+}
+
+.nstSlider
+{
+	background-color: #999 !important;
+	height: 2px !important;
+	width:94% !important;
+	margin:0 auto;
+	
+	.bar
+	{
+		background-color: #333 !important;
+		height: 2px !important;
+		top: 0px !important;
+	}
+	
+	.leftGrip, .rightGrip
+	{
+		background-color: #333 !important;
+		top: -9px !important;
+	}
+	
+	.leftLabel, .rightLabel
+	{
+		margin-left:-5px;
+	}
+}
+
+.box_quantity
+{
+	border: 1px solid #e5e5e5;
+	max-width:50px;
+	padding:1px 5px;
+	margin: 0 auto;
+}
+
 @media (min-width: 960px) {
 	.detail_left
 	{

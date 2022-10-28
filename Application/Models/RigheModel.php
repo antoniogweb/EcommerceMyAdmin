@@ -40,13 +40,13 @@ class RigheModel extends GenericModel {
 	{
 		$res = parent::insert();
 		
-		if ($res && v("attiva_giacenza") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
+		if ($res && v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
 		{
 			$c = new CombinazioniModel();
 			
 			$combinazione = $c->selectId((int)$this->values["id_c"]);
 			
-			if (!empty($combinazione))
+			if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
 			{
 				$c->setValues(array(
 					"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$this->values["quantity"]),
@@ -66,10 +66,18 @@ class RigheModel extends GenericModel {
 	{
 		$titolo = $record["pages"]["title"] ? $record["pages"]["title"] : $record[$this->_tables]["title"];
 		
-		if ($record[$this->_tables]["attributi"])
-			$titolo .= "<br />".$record[$this->_tables]["attributi"];
+// 		if ($record[$this->_tables]["attributi"])
+// 			$titolo .= "<br />".$record[$this->_tables]["attributi"];
 		
 		return $titolo;
+	}
+	
+	public static function regalati($idLista, $idC)
+	{
+		return righeModel::g()->inner("orders")->on("orders.id_o = righe.id_o")->where(array(
+			"orders.id_lista_regalo"	=>	(int)$idLista,
+			"righe.id_c"				=>	(int)$idC
+		));
 	}
 	
 }

@@ -5,8 +5,16 @@
 					<div class='col-md-8'>
 						<?php echo $form["titolo"];?>
 						
+						<?php if (isset($form["alias"])) { ?>
+						<?php echo $form["alias"];?>
+						<?php } ?>
+						
 						<?php if (isset($form["immagine"])) { ?>
 						<?php echo $form["immagine"];?>
+						<?php } ?>
+						
+						<?php if (isset($form["colore"])) { ?>
+						<?php echo $form["colore"];?>
 						<?php } ?>
 						
 						<?php if ($type === "update") { ?>

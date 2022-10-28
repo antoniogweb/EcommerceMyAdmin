@@ -43,6 +43,9 @@ class RegusersController extends BaseController {
 		'p_iva:sanitizeAll'=>'tutti',
 		'nazione_utente:sanitizeAll'=>'tutti',
 		'id_nazione:sanitizeAll'=>'tutti',
+		'codice_app:sanitizeAll'=>'tutti',
+		'deleted:sanitizeAll'=>'no',
+		'token_eliminazione:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -63,6 +66,7 @@ class RegusersController extends BaseController {
 		$this->model("RegusersgroupsModel");
 		$this->model("SpedizioniModel");
 		$this->model("OrdiniModel");
+		$this->model("IntegrazioniloginModel");
 		
 // 		$data["sezionePannello"] = "ecommerce";
 
@@ -102,6 +106,26 @@ class RegusersController extends BaseController {
 			$filtri[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new RegusersModel()));
 		}
 		
+		if (v("abilita_login_tramite_app"))
+		{
+			$mainFields[] = 'appCrud';
+			$headLabels .= ',APP';
+			
+			$filtri[] = array("codice_app",null,array("tutti"=>"Fonte account","sito"=>"Sito") + $this->m["IntegrazioniloginModel"]->toList("codice", "titolo")->send());
+		}
+		
+		if (!v("elimina_record_utente_ad_autoeliminazione"))
+		{
+			if ($this->viewArgs['deleted'] == "yes")
+			{
+				$mainFields[] = 'regusers.token_eliminazione';
+				$headLabels .= ',Codice eliminazione';
+			}
+			
+			$filtri[] = "token_eliminazione";
+			$filtri[] = array("deleted",null,array("tutti" => "Stato cliente", "no" => "Clienti in anagrafica", "yes" => "Clienti eliminati"));
+		}
+		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		
@@ -114,6 +138,8 @@ class RegusersController extends BaseController {
 			" lk" => array('n!regusers.p_iva' => $this->viewArgs['p_iva']),
 			"  lk" => array('n!regusers.username' => $this->viewArgs['username']),
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
+			'deleted'	=>	$this->viewArgs['deleted'],
+			'token_eliminazione'	=>	$this->viewArgs['token_eliminazione'],
 		))->convert();
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
@@ -127,6 +153,18 @@ class RegusersController extends BaseController {
 			);
 			
 			$this->m[$this->modelName]->sWhere("regusers.id_user not in (select id_user from regusers_nazioni where id_nazione = ".(int)$this->viewArgs["id_nazione"].")");
+		}
+		
+		if ($this->viewArgs["codice_app"] != "tutti")
+		{
+			$appWhere = $this->viewArgs["codice_app"];
+			
+			if ($this->viewArgs["codice_app"] == "sito")
+				$appWhere = "";
+			
+			$this->m[$this->modelName]->aWhere(array(
+				"codice_app"	=>	$appWhere,
+			));
 		}
 		
 		$this->getTabViewFields("main");
@@ -173,6 +211,13 @@ class RegusersController extends BaseController {
 		if (strcmp($queryType,'update') === 0)
 		{
 			$data['numeroElementi'] = $this->m["RegusersgroupsModel"]->where(array("id_user"=>(int)$id))->rowNumber();
+			
+			$cliente = $this->m[$this->modelName]->selectId((int)$id);
+			
+			if (!empty($cliente) && $cliente["codice_app"])
+				$data["appLogin"] = $this->m["IntegrazioniloginModel"]->where(array(
+					"codice"	=>	sanitizeDb($cliente["codice_app"]),
+				))->record();
 			
 			$this->append($data);
 		}

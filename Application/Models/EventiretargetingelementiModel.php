@@ -36,7 +36,26 @@ class EventiretargetingelementiModel extends GenericModel {
 	public function relations() {
 		return array(
 			'evento' => array("BELONGS_TO", 'EventiretargetingModel', 'id_evento',null,"CASCADE"),
+			'mail' => array("BELONGS_TO", 'MailordiniModel', 'id_mail',null,"CASCADE"),
 		);
     }
     
+    public function inviata($record)
+    {
+		if ($record["mail_ordini"]["inviata"])
+			return "<i class='text text-success fa fa-thumbs-up'></i>";
+		else
+			return "<i class='text text-danger fa fa-thumbs-down'></i>";
+    }
+	
+	public static function getElemento($idElemento, $tabellaElemento)
+	{
+		$ere = new EventiretargetingelementiModel();
+		
+		return $ere->clear()->where(array(
+			"id_elemento"		=>	(int)$idElemento,
+			"tabella_elemento"	=>	sanitizeAll($tabellaElemento),
+		))->record();
+	}
+	
 }

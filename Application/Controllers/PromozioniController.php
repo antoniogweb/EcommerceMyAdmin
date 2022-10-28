@@ -26,7 +26,12 @@ class PromozioniController extends BaseController {
 	
 	public $orderBy = "promozioni.dal desc,promozioni.al desc,promozioni.id_p desc";
 	
-	public $argKeys = array('attivo:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'attivo:sanitizeAll'=>'tutti',
+		'tipo:sanitizeAll'=>'tutti',
+		'fonte:sanitizeAll'=>'MANUALE',
+		'codice:sanitizeAll'=>'tutti',
+	);
 	
 	public $useEditor = true;
 	
@@ -50,11 +55,19 @@ class PromozioniController extends BaseController {
 		
 		$this->mainFields = array("[[ledit]];promozioni.titolo;","promozioni.codice","promozioni.dal","promozioni.al");
 		$this->mainHead = "Titolo,Codice promozione,Dal,Al";
+		$this->filters = array("codice",array("attivo",null,$this->filtroAttivo));
 		
 		if (v("attiva_promo_sconto_assoluto"))
 		{
 			$this->mainFields[] = "promozioni.tipo_sconto";
 			$this->mainHead .= ",Tipo sconto";
+			$this->filters[] = array("tipo",null,array(
+				"tutti"	=>	"Tipo sconto"
+			) + array("PERCENTUALE"=>"PERCENTUALE","ASSOLUTO"=>"ASSOLUTO"));
+			
+			$this->filters[] = array("fonte",null,array(
+				"tutti"	=>	"Fonte"
+			) + array("MANUALE"=>"Manuale","GIFT_CARD"=>"Gift Card"));
 		}
 		
 		$this->mainFields[] = "sconto";
@@ -62,30 +75,65 @@ class PromozioniController extends BaseController {
 		$this->mainFields[] = "getYesNo|promozioni.attivo";
 		$this->mainHead .= ",Valore sconto,N° usata,Attiva?";
 		
-		$this->filters = array(array("attivo",null,$this->filtroAttivo));
+		if (v("attiva_promo_sconto_assoluto"))
+		{
+			$this->mainFields[] = "ordine";
+			$this->mainHead .= ",Ordine";
+		}
 		
-		$this->m[$this->modelName]->where(array(
+		$this->m[$this->modelName]->select("promozioni.*,orders.id_o")
+			->left(array("righe"))
+			->left("orders")->on("righe.id_o = orders.id_o")
+			->where(array(
+				'codice'	=>	$this->viewArgs['codice'],
 				'attivo'	=>	$this->viewArgs['attivo'],
-// 				"attivo"	=>	$this->viewArgs["attivo"],
-			))->orderBy($this->orderBy)->convert()->save();
+				'tipo_sconto'=>	$this->viewArgs['tipo'],
+			))->orderBy($this->orderBy)->convert();
+		
+		if ($this->viewArgs["fonte"] != "tutti")
+		{
+			if ($this->viewArgs["fonte"] == "MANUALE")
+				$this->m[$this->modelName]->aWhere(array(
+					"id_r"	=>	0,
+				));
+			else
+				$this->m[$this->modelName]->aWhere(array(
+					"ne"	=>	array(
+						"id_r"	=>	0,
+					),
+				));
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$record = $this->m[$this->modelName]->selectId((int)$id);
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->formValuesToDb = 'titolo,codice,attivo,dal,al';
+		$campi = 'titolo,codice,attivo,dal,al';
 		
 		if (v("attiva_promo_sconto_assoluto"))
-			$this->formValuesToDb .= ',tipo_sconto';
+			$campi .= ',tipo_sconto,tipo_credito';
 		
-		$this->formValuesToDb .= ',sconto,numero_utilizzi';
+		$campi .= ',sconto,sconto_valido_sopra_euro,numero_utilizzi,numero_utilizzi_per_email';
+		
+		$this->m[$this->modelName]->setValuesFromPost($campi);
+		
+		if (!empty($record) && $record["id_r"])
+		{
+			$campiDisabilitati = "codice,sconto,tipo_sconto,tipo_credito";
+			$this->disabledFields = $campiDisabilitati;
+			$this->m[$this->modelName]->delFields($campiDisabilitati);
+		}
 		
 		parent::form($queryType, $id);
 		
-		$data["record"] = $this->m[$this->modelName]->selectId((int)$id);
+		$data["record"] = $record;
 		
 		$this->append($data);
 	}
@@ -125,6 +173,8 @@ class PromozioniController extends BaseController {
 		$data["listaCategorie"] = $this->m["CategorieModel"]->buildSelect();
 		
 		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}
@@ -177,6 +227,88 @@ class PromozioniController extends BaseController {
 		}
 		
 		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function invii($id = 0)
+	{
+		$this->model("EventiretargetingelementiModel");
+		
+		$this->_posizioni['invii'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->tabella = "promozioni";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array();
+		
+		$this->modelName = "EventiretargetingelementiModel";
+		
+		$this->mainFields = array("cleanDateTime", "eventi_retargeting_elemento.email", "mail_ordini.oggetto", "inviata");
+		$this->mainHead = "Data,Email,Oggetto,Inviata";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"invii/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("mail"))->orderBy("eventi_retargeting_elemento.data_creazione desc")->where(array(
+			"id_elemento"		=>	$clean['id'],
+			"tabella_elemento"	=>	"promozioni",
+			"duplicato"			=>	0,
+		))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function ordini($id = 0)
+	{
+		$this->model("OrdiniModel");
+		
+		$this->_posizioni['ordini'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "OrdiniModel";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrudPieno", "totaleCrud");
+		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale pieno,Totale scontato";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array("id_p"=>$clean['id']))->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}

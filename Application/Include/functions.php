@@ -53,13 +53,13 @@ function getImages($id_page)
 	return $i->clear()->where(array("id_page"=>$clean['id_page']))->orderBy("immagini.id_order desc")->toList("immagine")->send();
 }
 
-function getUrlAlias($id_page)
+function getUrlAlias($id_page, $idC = 0)
 {
 	$clean["id_page"] = (int)$id_page;
 	
 	$p = new PagesModel();
 	
-	return $p->getUrlAlias($clean["id_page"]);
+	return $p->getUrlAlias($clean["id_page"], null, $idC);
 }
 
 function getCategoryUrlAlias($id_c)
@@ -289,7 +289,7 @@ function isDate($date)
 		$dateArray = explode('-',$date);
 		if ((int)$dateArray[1] <= 12 and (int)$dateArray[1] >= 1 )
 		{
-			if ((int)$dateArray[0] >= 1970 or (int)$dateArray[0] <= 2030)
+			if ((int)$dateArray[0] >= 1970 or (int)$dateArray[0] <= 2150)
 			{
 				return true;
 			}
@@ -305,7 +305,7 @@ function isDateFull($date)
 		$dateArray = explode('-',$date);
 		if ((int)$dateArray[1] <= 12 and (int)$dateArray[1] >= 1 )
 		{
-			if ((int)$dateArray[0] >= 1970 and (int)$dateArray[0] <= 2030)
+			if ((int)$dateArray[0] >= 1970 and (int)$dateArray[0] <= 2150)
 			{
 				if ((int)$dateArray[2] >= 1 and (int)$dateArray[2] <= 31)
 				{
@@ -415,18 +415,34 @@ function getPrezzoScontato($ivato = 0)
 	return setPriceReverse(getPrezzoScontatoN(false, $ivato));
 }
 
-function getSpedizioneN()
+function getPagamentoN()
+{
+	return PagamentiModel::getCostoCarrello();
+}
+
+function getPagamento($ivato = false)
+{
+	if ($ivato)
+		return setPriceReverse(getPagamentoN() * (1 + (CartModel::getAliquotaIvaSpedizione() / 100)));
+	else
+		return setPriceReverse(getPagamentoN());
+}
+
+function getSpedizioneN($pieno = null)
 {
 	// Controllo che sia attiva la spedizione
 	if (!v("attiva_spedizione"))
 		return 0;
 	
-	$pieno = PromozioniModel::hasCouponAssoluto() ? true : false;
+	if (!isset($pieno))
+		$pieno = PromozioniModel::hasCouponAssoluto() ? true : false;
 	
 	if (!v("prezzi_ivati_in_carrello"))
 		$subtotale = getPrezzoScontatoN(false, false, $pieno);
 	else
 		$subtotale = getPrezzoScontatoN(false, true, $pieno);
+	
+	$subtotale = number_format($subtotale, 2, ".", "");
 	
 	// Se il totale è sopra la soglia delle spedizioni gratuite, le spese di spedizione sono 0
 	if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
@@ -837,6 +853,8 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[variabile (.*?)\]/', 'getVariabile' ,$string);
 	$string = preg_replace_callback('/\[scelta-cookie\]/', array("PagesModel", "loadTemplateSceltaCookie"), $string);
 	
+	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
+	
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
 	if (!isset(VariabiliModel::$placeholders))
@@ -891,6 +909,30 @@ function attivaModuli($string, $obj = null)
 	}
 	
 	return $string;
+}
+
+function getInfoEliminazione($matches)
+{
+	if (isset($_GET[v("variabile_token_eliminazione")]) && trim($_GET[v("variabile_token_eliminazione")]))
+	{
+		$ru = new RegusersModel();
+		
+		$cliente = $ru->clear()->where(array(
+			"deleted"	=>	"yes",
+			"token_eliminazione"	=>	sanitizeAll($_GET[v("variabile_token_eliminazione")]),
+		))->record();
+		
+		if (!empty($cliente))
+		{
+			ob_start();
+			include tpf("Elementi/Utenti/info_eliminazione_account.php");
+			$output = ob_get_clean();
+			
+			return $output;
+		}
+	}
+	
+	return "";
 }
 
 function getBaseUrlSrc($matches)
@@ -1489,6 +1531,7 @@ function traduci($string, $forzaEsteso = false)
 	$string = preg_replace('/(Ottober)/', 'Ottobre',$string);
 	$string = preg_replace('/(November)/', 'Novembre',$string);
 	$string = preg_replace('/(December)/', 'Dicembre',$string);
+	$string = preg_replace('/(Dicember)/', 'Dicembre',$string);
 
 	$string = preg_replace('/(Friday)/', 'Venerdì',$string);
 	$string = preg_replace('/(Saturday)/', 'Sabato',$string);
@@ -1648,18 +1691,18 @@ function selectPersonalizzazioni($id_page)
 	return $p->selectPersonalizzazioni($id_page);
 }
 
-function numeroProdottiCategoria($id_c)
+function numeroProdottiCategoria($id_c, $filtriSuccessivi = false)
 {
 	$c = new CategoriesModel();
 	
-	return $c->numeroProdotti($id_c);
+	return $c->numeroProdotti($id_c, $filtriSuccessivi);
 }
 
-function numeroProdottiCategoriaFull($id_c)
+function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false)
 {
 	$c = new CategoriesModel();
 	
-	return $c->numeroProdottiFull($id_c);
+	return $c->numeroProdottiFull($id_c, $filtriSuccessivi);
 }
 
 function getShopCategoryId()
@@ -1697,6 +1740,15 @@ function getAttributoDaCarrello($col, $idAcc = null)
 		$c = new CartModel();
 		
 		return $c->getAttributoDaCarrello((int)$_GET["id_cart"], $col, $idAcc);
+	}
+	else if (PagesModel::$IdCombinazione && !$idAcc)
+	{
+		$c = new CombinazioniModel();
+		
+		$combinazione = $c->selectId((int)PagesModel::$IdCombinazione);
+		
+		if (isset($combinazione[$col]))
+			return $combinazione[$col];
 	}
 	
 	return "";

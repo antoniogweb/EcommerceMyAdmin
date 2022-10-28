@@ -8,6 +8,7 @@
 	var errore_selezionare_variante = "<?php echo gtext("Si prega di selezionare la variante del prodotto", false);?>";
 	var variante_non_disponibile = "<?php echo gtext("Prodotto non disponibile", false);?>";
 	var stringa_errore_giacenza_carrello = "<?php echo gtext("Attenzione, controllare la quantità delle righe evidenziate", false);?>";
+	var stringa_errore_righe_carrello = "<?php echo gtext("Attenzione, controllare i campi evidenziati", false);?>";
 	var back_cart_error = "red";
 	var isMobile = <?php echo User::$isMobile ? "true" : "false";?>;
 	var nazioniConVat = ['<?php echo implode("','",NazioniModel::elencoNazioniConVat())?>'];
@@ -21,18 +22,39 @@
 	var mostra_errori_personalizzazione = <?php echo v("mostra_errori_personalizzazione") ? "true" : "false";?>;
 	var coupon_ajax = <?php echo v("coupon_ajax") ? "true" : "false"; ?>;
 	var codice_fiscale_obbligatorio_solo_se_fattura = <?php echo v("codice_fiscale_obbligatorio_solo_se_fattura") ? "true" : "false";?>;
+	var attiva_gift_card = <?php echo v("attiva_gift_card") ? "true" : "false"; ?>;
+	var current_url = "<?php echo isset($currUrl) ? sanitizeHtml($currUrl) : "";?>";
+	var filtro_prezzo_slider = <?php echo v("filtro_prezzo_slider") ? "true" : "false"; ?>;
+	var versione_google_analytics = <?php echo v("versione_google_analytics"); ?>;
+	var spesa_pagamento_possibile = <?php echo (PagamentiModel::getMaxPagamento() > 0) ? "true" : "false"; ?>;
+	var stringa_errore_lista_non_selezionata = "<?php echo gtext("Si prega di selezionare una lista regalo");?>";
 </script>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
 <?php } ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
+
+<?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe)) { ?>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>listeregalo.js?v=<?php echo rand(1,10000);?>"></script>
+	<?php if ($this->controller == "listeregalo" && $this->action == "modifica") { ?>
+		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/';?>jquery-ui.min.js"></script>
+		<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
+		<script type="text/javascript" src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js';?>"></script>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>
+
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>
 
 <script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
+
+<?php if (v("filtro_prezzo_slider")) { ?>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-nstslider-master/dist/';?>jquery.nstSlider.min.js"></script>
+<?php } ?>
 
 <?php include(tpf("/Elementi/fbk.php"));?>
 

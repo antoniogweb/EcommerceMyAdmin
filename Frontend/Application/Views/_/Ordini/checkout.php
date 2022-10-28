@@ -24,6 +24,12 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
 			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
 				<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
+					<?php
+					include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
+						"titolo"	=>	"Avviso quando hai una lista selezionata",
+						"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
+					))));
+					?>
 					<div style="position:relative;top:-150px;" id="content"></div>
 					<div class="uk-text-center">
 						<?php echo $notice; ?>

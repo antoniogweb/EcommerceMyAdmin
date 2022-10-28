@@ -309,4 +309,18 @@ class CaratteristichevaloriModel extends GenericModel {
 		
 		return $html;
 	}
+	
+	public static function numeroProdotti($aliasCar, $aliasCarVal, $filtriSuccessivi = false)
+	{
+		$p = PagesModel::g(false)->addWhereAttivo()
+			->inner(array("caratteristiche"))
+			->inner("caratteristiche_valori")->on("pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv")
+			->left("contenuti_tradotti")->on("contenuti_tradotti.id_cv = caratteristiche_valori.id_cv and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->sWhere("coalesce(contenuti_tradotti.alias,caratteristiche_valori.alias) = '".sanitizeAll($aliasCarVal)."'");
+		
+		if ($filtriSuccessivi)
+			$p->sWhereFiltriSuccessivi($aliasCar);
+		
+		return $p->rowNumber();
+	}
 }

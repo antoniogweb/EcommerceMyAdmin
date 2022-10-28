@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`) VALUES (NULL, 'URL del vostro negozio/sito web (per eventuali link)', 'URL_SITO', 'gUrlSito', '', '1', '6', '', '1', '');

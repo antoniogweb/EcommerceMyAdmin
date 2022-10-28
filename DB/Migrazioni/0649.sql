@@ -1,1 +1,1 @@
-alter table orders add da_spedire INT UNSIGNED NOT NULL default 1;
+alter table orders add da_spedire tinyint UNSIGNED NOT NULL default 1;

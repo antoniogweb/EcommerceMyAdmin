@@ -55,9 +55,9 @@ trait TraitController
 			$fields = 'title,sottotitolo,url,testo_link,description';
 		else if ($section == "blog_detail")
 			$fields = 'title,alias,sottotitolo,description,meta_title,keywords,meta_description';
-		else if ($section == "-car-" || $section == "-cv-" || $section == "fasce_prezzo")
+		else if ($section == "-car-" || $section == "-cv-" || $section == "fasce_prezzo" || $section == "attributi_valori")
 			$fields = 'titolo,alias';
-		else if ($section == "-ruolo-" || $section == "attributi" || $section == "attributi_valori" || $section == "personalizzazioni" || $section == "tipi_azienda" || $section == "tipologie_caratteristiche")
+		else if ($section == "-ruolo-" || $section == "attributi" || $section == "personalizzazioni" || $section == "tipi_azienda" || $section == "tipologie_caratteristiche")
 			$fields = 'titolo';
 		else if ($section == "-marchio-")
 			$fields = 'titolo,sottotitolo,alias,descrizione,meta_title,keywords,meta_description';

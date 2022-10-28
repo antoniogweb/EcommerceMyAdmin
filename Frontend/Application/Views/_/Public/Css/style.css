@@ -13111,6 +13111,12 @@ img:not([src]) {
   border: 1px solid #f0506e;
 }
 
+.uk-button.disabled {
+  background-color: transparent !important;
+  color: #999 !important;
+  border-color: #e5e5e5 !important;
+}
+
 .hc-nav-trigger {
   position: relative;
   top: 0px;
@@ -13207,6 +13213,45 @@ ul.thumbnails.image_picker_selector li .thumbnail {
 
 .table-scaffolding tr.listRow {
   cursor: pointer;
+}
+
+.elemento_gift_card {
+  border-top: 1px dashed #e5e5e5;
+}
+
+.box_elementi_ordine {
+  border-bottom: 1px dashed #e5e5e5;
+}
+
+.dedica_scroll {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.nstSlider {
+  background-color: #999 !important;
+  height: 2px !important;
+  width: 94% !important;
+  margin: 0 auto;
+}
+.nstSlider .bar {
+  background-color: #333 !important;
+  height: 2px !important;
+  top: 0px !important;
+}
+.nstSlider .leftGrip, .nstSlider .rightGrip {
+  background-color: #333 !important;
+  top: -9px !important;
+}
+.nstSlider .leftLabel, .nstSlider .rightLabel {
+  margin-left: -5px;
+}
+
+.box_quantity {
+  border: 1px solid #e5e5e5;
+  max-width: 50px;
+  padding: 1px 5px;
+  margin: 0 auto;
 }
 
 @media (min-width: 960px) {
