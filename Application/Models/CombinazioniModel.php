@@ -652,7 +652,7 @@ class CombinazioniModel extends GenericModel {
 	
 	public function codice($record)
 	{
-		if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
+		if (!isset($_GET["esporta"]) && !self::isFromLista())
 			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' />";
 		else
 			return $record["combinazioni"]["codice"];
@@ -682,7 +682,7 @@ class CombinazioniModel extends GenericModel {
 			
 			$prezzo = number_format($prezzo, $cifre, ",", "");
 			
-			if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
+			if (!isset($_GET["esporta"]) && !self::isFromLista())
 				return "<input id-c='".$record["combinazioni"]["id_c"]."' $attrIdCl style='max-width:120px;' class='form-control' name='price' value='".$prezzo."' />";
 			else
 				return $prezzo;
@@ -691,11 +691,19 @@ class CombinazioniModel extends GenericModel {
 			return "!!";
 	}
 	
+	protected static function isFromLista()
+	{
+		if (isset($_GET["id_lista_regalo"]) && $_GET["id_lista_regalo"] != "tutti")
+			return true;
+		
+		return false;
+	}
+	
 	public function peso($record)
 	{
 		$peso = number_format($record["combinazioni"]["peso"],2,",","");
 		
-		if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
+		if (!isset($_GET["esporta"]) && !self::isFromLista())
 			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='peso' value='".$peso."' />";
 		else
 			return $peso;
@@ -703,7 +711,7 @@ class CombinazioniModel extends GenericModel {
 	
 	public function giacenza($record)
 	{
-		if (!isset($_GET["esporta"]) && !isset($_GET["id_lista_regalo"]))
+		if (!isset($_GET["esporta"]) && !self::isFromLista())
 			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='giacenza' value='".$record["combinazioni"]["giacenza"]."' />";
 		else
 			return $record["combinazioni"]["giacenza"];
@@ -789,7 +797,7 @@ class CombinazioniModel extends GenericModel {
     {
 		$record = $this->selectId((int)$id);
 		
-		if (!empty($record) && isset($_GET["id_lista_regalo"]))
+		if (!empty($record) && self::isFromLista())
 		{
 			$pagina = PagesModel::g(false)->where(array(
 				"id_page"	=>	(int)$record["id_page"],

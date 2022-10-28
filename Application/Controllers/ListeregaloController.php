@@ -26,7 +26,7 @@ class ListeregaloController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array();
+	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'titolo:sanitizeAll'=>'tutti');
 	
 	public $tabella = "liste regalo";
 	
@@ -52,7 +52,24 @@ class ListeregaloController extends BaseController
 		$this->mainFields = array("cliente", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "liste_regalo.data_scadenza", "liste_regalo.attivo");
 		$this->mainHead = "Cliente,Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Scadenza,Attivo";
 		
-		$this->m[$this->modelName]->clear()->select("*")->inner(array("tipo", "cliente"))->orderBy("id_lista_regalo desc");
+		$filtri = array("dal","al","titolo");
+		$this->filters = $filtri;
+		
+		$this->m[$this->modelName]->clear()
+			->select("*")
+			->where(array(
+				"OR"	=> array(
+					"lk" => array('liste_regalo.titolo' => $this->viewArgs['titolo']),
+					" lk" => array('liste_regalo.codice' => $this->viewArgs['titolo']),
+					"  lk" => array('liste_regalo.nome_bambino' => $this->viewArgs['titolo']),
+					"   lk" => array('liste_regalo.genitore_1' => $this->viewArgs['titolo']),
+					"    lk" => array('liste_regalo.genitore_2' => $this->viewArgs['titolo']),
+					)
+			))
+			->inner(array("tipo", "cliente"))
+			->orderBy("id_lista_regalo desc");
+		
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_scadenza");
 		
 		$this->m[$this->modelName]->convert()->save();
 		
