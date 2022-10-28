@@ -18,7 +18,8 @@ $alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di compl
 	</div>
 	<?php if (v("permetti_acquisto_anonimo")) { ?>
 	<div class="uk-width-1-1 uk-width-1-2@s uk-text-right">
-		<a href="" class="uk-width-1-1 uk-width-auto@s uk-button uk-button-default">
+		<div class="uk-width-1-1 uk-width-auto@s uk-button uk-button-default spinner uk-hidden" uk-spinner="ratio: .70"></div>
+		<a href="#" class="forza_acquisto_anonimo uk-width-1-1 uk-width-auto@s uk-button uk-button-default">
 			<?php echo gtext("Continua come utente ospite");?><span class="uk-margin-small-left" uk-icon="icon: check; ratio: 0.9"></span>
 		</a>
 	</div>

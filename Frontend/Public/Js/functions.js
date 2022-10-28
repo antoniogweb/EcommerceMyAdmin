@@ -468,6 +468,11 @@ function controllaCheckFattura()
 		$(".campo_codice_fiscale").css("display","none");
 }
 
+function mostraSpinner(obj)
+{
+	obj.addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+}
+
 function mostraLabelColore()
 {
 	$(".label_variante_colore").each(function(){
@@ -500,6 +505,18 @@ $(document).ready(function(){
 	$('.radio_registrato').on('ifChanged', function(event){
 		
 		updateFormRegistrato();
+		
+	});
+	
+	$("body").on("click", ".forza_acquisto_anonimo", function(e){
+		
+		e.preventDefault();
+		
+		$('.radio_registrato[value="N"]').iCheck('check');
+		
+		$(".btn_completa_acquisto").trigger("click");
+		
+		mostraSpinner($(this));
 		
 	});
 	
@@ -631,7 +648,8 @@ $(document).ready(function(){
 	
 	$("body").on("click", ".btn_completa_acquisto", function(e){
 		
-		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		mostraSpinner($(this));
+// 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 		if (gtm_analytics && typeof checkout_items !== "undefined")
 		{
@@ -645,7 +663,8 @@ $(document).ready(function(){
 	
 	$("body").on("click", ".btn_submit_form", function(e){
 		
-		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		mostraSpinner($(this));
+// 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 	});
 	
