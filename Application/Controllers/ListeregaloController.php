@@ -49,10 +49,10 @@ class ListeregaloController extends BaseController
 		$this->shift();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("liste_regalo.id_user", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "liste_regalo.data_scadenza", "liste_regalo.attivo");
+		$this->mainFields = array("cliente", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "liste_regalo.data_scadenza", "liste_regalo.attivo");
 		$this->mainHead = "Cliente,Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Scadenza,Attivo";
 		
-		$this->m[$this->modelName]->clear()->select("*")->inner(array("tipo"))->orderBy("id_lista_regalo desc");
+		$this->m[$this->modelName]->clear()->select("*")->inner(array("tipo", "cliente"))->orderBy("id_lista_regalo desc");
 		
 		$this->m[$this->modelName]->convert()->save();
 		
@@ -76,21 +76,30 @@ class ListeregaloController extends BaseController
 		
 		if (!empty($tipoLista))
 		{
-			$fields = 'id_lista_tipo,titolo,codice,data_scadenza,attivo';
+			$fields = 'id_lista_tipo,id_user,titolo,codice,data_scadenza,attivo';
 			
 			if ($tipoLista["campi"])
 				$fields .= ','.$tipoLista["campi"];
 		}
 		else
-			$fields = 'id_lista_tipo,titolo,codice,data_scadenza,attivo,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
+			$fields = 'id_lista_tipo,id_user,titolo,codice,data_scadenza,attivo,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
+		$disabledFields = "codice";
+		
 		if (!empty($lista))
-		{
-			$this->disabledFields = "id_lista_tipo,codice";
-			$this->m['ListeregaloModel']->delFields("id_lista_tipo,codice");
-		}
+			$disabledFields .= ",id_lista_tipo,id_user";
+		
+		$this->disabledFields = $disabledFields;
+		$this->m['ListeregaloModel']->delFields($disabledFields);
+		
+		$this->functionsIfFromDb = array(
+			"data_nascita"		=>	"svuotaData",
+			"data_battesimo"	=>	"svuotaData",
+		);
+		
+		$this->m['ListeregaloModel']->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
 		parent::form($queryType, $id);
 	}

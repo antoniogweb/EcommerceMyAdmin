@@ -39,11 +39,18 @@ class ListeregaloModel extends GenericModel
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_lista_regalo', null, "RESTRICT", "Esistono degli ordini collegati alla lista"),
 			'link' => array("HAS_MANY", 'ListeregalolinkModel', 'id_lista_regalo', null, "CASCADE"),
 			'tipo' => array("BELONGS_TO", 'ListeregalotipiModel', 'id_lista_tipo',null,"CASCADE"),
+			'cliente' => array("BELONGS_TO", 'RegusersModel', 'id_user',null,"CASCADE"),
         );
     }
     
     public function setFormStruct($id = 0)
 	{
+		$record = $this->selectId((int)$id);
+		
+		$idUser = (!empty($record)) ? $record["id_user"] : 0;
+		
+		$linkAggiungi = (empty($record)) ? "<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>" : "";
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -54,8 +61,31 @@ class ListeregaloModel extends GenericModel
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'id_user'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Cliente",
+					"options"	=>	$this->selectUtenti($idUser),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"$linkAggiungi<div>","</div>"),
+				),
+				'data_nascita'	=>	array(
+					"labelString"	=>	"Data prevista nascita",
+				),
+				'codice'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà creato in automatico")."</div>"
+					),
+				),
 			),
 		);
+		
+		
 	}
     
     public function settaDataScadenza()
@@ -106,9 +136,9 @@ class ListeregaloModel extends GenericModel
 		
 		if (parent::insert())
 		{
-			if (isset($this->values["genitore_1"]))
+			if (isset($this->values["genitore_1"]) && $this->values["genitore_1"])
 				$codice = encodeUrl(str_replace(" ","",htmlentitydecode($this->values["genitore_1"]))).$this->lId;
-			else if (isset($this->values["titolo"]))
+			else if (isset($this->values["titolo"]) && $this->values["titolo"])
 				$codice = encodeUrl(str_replace(" ","",htmlentitydecode($this->values["titolo"]))).$this->lId;
 			else
 				$codice = generateString(8).$this->lId;
@@ -307,4 +337,17 @@ class ListeregaloModel extends GenericModel
 		
 		return "";
     }
+    
+    public function svuotaData($valore)
+    {
+		if ($valore == "00-00-0000")
+			return "";
+		
+		return $valore;
+    }
+    
+    public function cliente($record)
+	{
+		return "<b>".self::getNominativo($record["regusers"])."</b><br />".$record["regusers"]["username"];;
+	}
 }

@@ -1600,4 +1600,28 @@ class GenericModel extends Model_Tree
 			$this->del($id);
 		}
     }
+    
+    public function selectUtenti($id = 0)
+    {
+		$ru = new RegusersModel();
+		
+		$res = $ru->clear()
+			->select("id_user,username,nome,cognome,ragione_sociale,tipo_cliente")
+			->where(array(
+				"OR"	=>	array(
+					"id_user"	=>	(int)$id,
+					"deleted"	=>	"no",
+				),
+			))
+			->orderBy("deleted,nome,cognome,ragione_sociale,email")->send(false);
+		
+		$select = array();
+		
+		foreach ($res as $r)
+		{
+			$select[$r["id_user"]] = self::getNominativo($r)." - ".$r["username"];
+		}
+		
+		return $select;
+    }
 }

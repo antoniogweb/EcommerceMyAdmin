@@ -91,7 +91,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("data_nascita"));?>">
 				<label class="uk-form-label"><?php echo gtext("Data prevista nascita");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "data_nascita")) {?>*<?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("data_nascita",$values['data_nascita'] == "00-00-0000" ? "" : $values['data_nascita'],"uk-input class_data_nascita datepicker",null);?>
+					<?php echo Html_Form::input("data_nascita",$values['data_nascita'] == "00-00-0000" ? "" : $values['data_nascita'],"uk-input class_data_nascita datepicker",null,"autocomplete='new-password'");?>
 				</div>
 			</div>
 			<?php } ?>
@@ -100,7 +100,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("data_battesimo"));?>">
 				<label class="uk-form-label"><?php echo gtext("Data battesimo");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "data_battesimo")) {?>*<?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("data_battesimo",$values['data_battesimo'] == "00-00-0000" ? "" : $values['data_battesimo'],"uk-input class_data_battesimo datepicker",null);?>
+					<?php echo Html_Form::input("data_battesimo",$values['data_battesimo'] == "00-00-0000" ? "" : $values['data_battesimo'],"uk-input class_data_battesimo datepicker",null,"autocomplete='new-password'");?>
 				</div>
 			</div>
 			<?php } ?>

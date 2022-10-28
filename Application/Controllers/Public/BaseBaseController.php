@@ -254,14 +254,14 @@ class BaseBaseController extends Controller
 		
 // 		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"], true);
 		
-		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = getRandom($this->m["PagesModel"]->clear()->select("*")
+		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::impostaDatiCombinazionePagine(getRandom($this->m["PagesModel"]->clear()->select("*")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"in_evidenza"=>"Y",
 			))
 			->addWhereCategoria($clean["idShop"])
 			->addWhereAttivo()
-			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza"));
+			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza")));
 		
 		if (v("mostra_avvisi"))
 			$data["avvisi"] = $this->m["PagesModel"]->where(array(
@@ -372,7 +372,7 @@ class BaseBaseController extends Controller
 			
 			$prodottiInPromo = $this->m["PagesModel"]->clear()->addWhereAttivo()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
 			
-			$data["inPromozione"] = $this->prodottiInPromozione = getRandom($prodottiInPromo);
+			$data["inPromozione"] = $this->prodottiInPromozione = PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
 			
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
