@@ -467,7 +467,7 @@ class BaseRegusersModel extends Model_Tree
 		if (!v("elimina_account_ad_ordine_se_parcheggiato"))
 			return;
 		
-		if (!User::$logged && isset($_POST["email"]))
+		if (!User::$logged && !VariabiliModel::confermaUtenteRichiesta() && isset($_POST["email"]))
 		{
 			$rModel = new RegusersModel();
 			
