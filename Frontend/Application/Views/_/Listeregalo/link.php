@@ -7,7 +7,7 @@
 		<div class="invia_link_notice"></div>
 		<div class="uk-grid-small uk-child-width-1-4@s uk-grid" uk-grid>
 			<div class="uk-margin-bottom"><?php echo Html_Form::input("nome","","uk-input class_nome",null, 'placeholder="'.gtext("Nome").'*"');?></div>
-			<div class="uk-margin-bottom"><?php echo Html_Form::input("cognome","","uk-input class_cognome",null, 'placeholder="'.gtext("Cognome").'*"');?></div>
+			<div class="uk-margin-bottom"><?php echo Html_Form::input("cognome","","uk-input class_cognome",null, 'placeholder="'.gtext("Cognome").'"');?></div>
 			<div class="uk-margin-bottom"><?php echo Html_Form::input("email","","uk-input class_email",null, 'placeholder="'.gtext("Email").'*"');?></div>
 			<div class="uk-margin-bottom">
 				<div class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>

@@ -234,7 +234,7 @@ class BaseListeregaloController extends BaseController
 			$this->m['ListeregalolinkModel']->setFields($campi,'sanitizeAll');
 			$this->m['ListeregalolinkModel']->setValue("id_lista_regalo", $clean["id"]);
 			
-			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkNotEmpty',$campi);
+			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkNotEmpty',"nome,email");
 			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo email</b>")."<div class='evidenzia'>class_email</div>");
 			
 			$this->m['ListeregalolinkModel']->updateTable('insert',0);

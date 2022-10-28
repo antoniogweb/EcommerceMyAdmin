@@ -58,7 +58,12 @@ class ListeregalolinkModel extends GenericModel
 		{
 			$this->values["time_creazione"] = time();
 			
-			return parent::insert();
+			$res = parent::insert();
+			
+			if ($res && !App::$isFrontend)
+				$this->inviaMail($this->lId);
+			
+			return $res;
 		}
 		else
 		{
@@ -104,19 +109,37 @@ class ListeregalolinkModel extends GenericModel
 				),
 			));
 			
+			$inviato = 0;
+			
 			if ($res)
-			{
-				$this->sValues(array(
-					"inviato"	=>	1,
-					"numero_tentativi"	=>	($record["liste_regalo_link"]["numero_tentativi"] + 1),
-				));
-				
-				$this->update((int)$id);
-			}
+				$inviato = 1;
+			
+			$this->sValues(array(
+				"inviato"	=>	$inviato,
+				"numero_tentativi"	=>	($record["liste_regalo_link"]["numero_tentativi"] + 1),
+			));
+			
+			$this->update((int)$id);
 			
 			return true;
 		}
 		
 		return false;
+    }
+    
+    public function inviata($record)
+    {
+		if ($record["liste_regalo_link"]["inviato"])
+			return '<i class="fa fa-check text text-success" aria-hidden="true"></i>';
+		else
+			return '<i class="fa fa-ban text text-danger" aria-hidden="true"></i>';
+    }
+    
+    public function invia($record)
+    {
+		if ($record["liste_regalo_link"]["numero_tentativi"] < 10)
+			return '<a title="'.gtext("Invia nuovamente il link all'indirizzo e-mail indicato nella riga.").'" class="ajlink" href="'.Url::getRoot().'listeregalolink/invia/'.$record["liste_regalo_link"]["id_lista_regalo_link"].'"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+		
+		return "";
     }
 }

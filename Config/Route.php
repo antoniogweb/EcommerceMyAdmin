@@ -713,6 +713,9 @@ class Route
 		'listeregalo,pagine',
 		'listeregalo,inviti',
 		'listeregalo,salvapagine',
+		
+		'listeregalolink,form',
+		'listeregalolink,invia',
 	);
 	
 	//it can be 'yes' or 'no'

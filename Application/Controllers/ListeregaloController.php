@@ -176,7 +176,10 @@ class ListeregaloController extends BaseController
 		$clean['id'] = $data["id"] = $this->id = (int)$id;
 		$this->id_name = "id_lista_regalo";
 		
-		$this->mainButtons = "ldel";
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
 		
 		$this->modelName = "ListeregalolinkModel";
 		
@@ -186,9 +189,11 @@ class ListeregaloController extends BaseController
 			'liste_regalo_link.nome',
 			'liste_regalo_link.cognome',
 			'liste_regalo_link.email',
+			'inviata',
+			'invia',
 		);
 		
-		$this->mainHead = "Nome,Cognome,Email";
+		$this->mainHead = "Nome,Cognome,Email,Stato invio,Invia nuovamente";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"inviti/".$clean['id'],'pageVariable'=>'page_fgl');
 		

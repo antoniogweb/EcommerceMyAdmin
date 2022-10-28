@@ -11,7 +11,7 @@ $sottotitoloPagina = gtext("Lista")." ".gtext(strtolower($lista["liste_regalo_ti
 include(tpf("/Elementi/Pagine/page_top.php")); ?>
 
 <div class="uk-text-left" uk-grid>
-	<div class="uk-width-1-1 uk-width-1-5@s uk-text-left">
+	<div class="uk-width-1-1 uk-width-1-4@s uk-text-left">
 		<dl class="uk-description-list">
 			<dt><?php echo gtext("Dettagli lista");?></dt>
 		<dl/>
