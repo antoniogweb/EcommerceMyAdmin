@@ -212,6 +212,15 @@ class BaseRegusersModel extends Model_Tree
 		return $arraySelect;
 	}
 	
+	public function getIndirizziSpedizione($id_user)
+	{
+		$sp = new SpedizioniModel();
+		
+		return $sp->where(array(
+			"id_user"	=>	(int)$id_user,
+		))->orderBy("ultimo_usato, indirizzo_spedizione")->send(false);
+	}
+	
 	public function setConditions($tipo_cliente, $queryType = "insert", $pec = "", $codiceDestinatario = "")
 	{
 		$campiObbligatoriAggiuntivi = "";

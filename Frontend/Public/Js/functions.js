@@ -94,6 +94,14 @@ function updateFormRegistrato()
 	}
 }
 
+function getIdSpedizione()
+{
+	if ($(".tendina_scelta_indirizzo").length > 0)
+		return $(".tendina_scelta_indirizzo").val();
+	else if ($(".radio_spedizione").length > 0)
+		return $(".radio_spedizione").val();
+}
+
 function impostaTipoSpedizione(obj)
 {
 	if (obj.val() == "Y")
@@ -113,7 +121,7 @@ function impostaTipoSpedizione(obj)
 	{
 		$(".link_indirizzo_come_fatturazione").css("display","none");
 		$(".blocco_tendina_scelta_indirizzo").css("display","block");
-		impostaCampiSpedizione($(".tendina_scelta_indirizzo").val());
+		impostaCampiSpedizione(getIdSpedizione());
 	}
 }
 
@@ -579,6 +587,17 @@ $(document).ready(function(){
 		
 		impostaCampiSpedizione($(this).val());
 		
+	});
+	
+	$("body").on("ifChanged", ".radio_spedizione", function(e){
+		
+		if ($(this).is(":checked"))
+		{
+			$("[name='post_error']").remove();
+			
+// 			console.log($(this).val());
+			impostaCampiSpedizione($(this).val());
+		}
 	});
 	
 	if ($("[name='id_corriere']:checked").length > 0)

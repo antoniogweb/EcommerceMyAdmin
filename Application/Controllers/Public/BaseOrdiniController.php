@@ -1419,6 +1419,7 @@ class BaseOrdiniController extends BaseController
 			$defaultValues["conferma_email"] = $defaultValues["username"];
 			
 			$data["tendinaIndirizzi"] = $this->m["RegusersModel"]->getTendinaIndirizzi(User::$id);
+			$data["elencoIndirizzi"] = $this->m["RegusersModel"]->getIndirizziSpedizione(User::$id);
 			
 			$defaultValues["aggiungi_nuovo_indirizzo"] = "Y";
 			
