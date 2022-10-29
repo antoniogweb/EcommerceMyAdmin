@@ -117,6 +117,7 @@ class ListeregalolinkModel extends GenericModel
 			$this->sValues(array(
 				"inviato"	=>	$inviato,
 				"numero_tentativi"	=>	($record["liste_regalo_link"]["numero_tentativi"] + 1),
+				"time_ultimo_invio"	=>	time(),
 			));
 			
 			$this->update((int)$id);
@@ -133,6 +134,14 @@ class ListeregalolinkModel extends GenericModel
 			return '<i class="fa fa-check text text-success" aria-hidden="true"></i>';
 		else
 			return '<i class="fa fa-ban text text-danger" aria-hidden="true"></i>';
+    }
+    
+    public function ultimoinvito($record)
+    {
+		if ($record["liste_regalo_link"]["time_ultimo_invio"])
+			return date("d-m-Y H:i", $record["liste_regalo_link"]["time_ultimo_invio"]);
+		
+		return "";
     }
     
     public function invia($record)

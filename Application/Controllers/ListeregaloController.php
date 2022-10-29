@@ -190,10 +190,11 @@ class ListeregaloController extends BaseController
 			'liste_regalo_link.cognome',
 			'liste_regalo_link.email',
 			'inviata',
+			'ultimoinvito',
 			'invia',
 		);
 		
-		$this->mainHead = "Nome,Cognome,Email,Stato invio,Invia nuovamente";
+		$this->mainHead = "Nome,Cognome,Email,Stato invio,Data ultimo invito,Invia nuovamente";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"inviti/".$clean['id'],'pageVariable'=>'page_fgl');
 		

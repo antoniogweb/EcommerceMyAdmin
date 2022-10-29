@@ -30,6 +30,8 @@ class ListeregalolinkController extends BaseController {
 		"voto"	=>	"sistemaVotoNumero",
 	);
 	
+	public $tabella = "invio link lista regalo";
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->shift(2);

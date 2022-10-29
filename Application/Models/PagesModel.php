@@ -817,6 +817,9 @@ class PagesModel extends GenericModel {
 		
 		$res = $this->clear()->where(array("in_promozione"=>"Y"))->sWhere("al < '".date("Y-m-d")."'")->send();
 		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
 		foreach ($res as $r)
 		{
 			if (!$this->inPromozione($r["pages"]["id_page"],$r))
@@ -830,6 +833,9 @@ class PagesModel extends GenericModel {
 				$this->pUpdate($r["pages"]["id_page"]);
 			}
 		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 		
 		Cache::$skipReadingCache = false;
 	}
