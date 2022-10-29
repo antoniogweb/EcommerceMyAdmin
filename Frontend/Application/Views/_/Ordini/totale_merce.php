@@ -39,9 +39,9 @@
 	<div class="uk-text-danger uk-text-bold"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
 <?php } ?>
 
-<?php if (User::$isPhone && !v("piattaforma_di_demo")) { ?>
-<div class="uk-margin-medium uk-margin-large-bottom">
-	<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-	<input class="uk-button uk-button-secondary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Completa acquisto", false);?>" />
-</div>
-<?php } ?>
+<?php if (User::$isPhone && !v("piattaforma_di_demo")) {
+include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(
+	"titolo"	=>	"Pulsante completa acquisto",
+	"percorso"	=>	"Elementi/Ordini/PulsanteCompletaAcquisto",
+))));
+} ?>
