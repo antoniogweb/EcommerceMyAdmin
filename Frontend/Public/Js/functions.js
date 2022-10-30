@@ -99,7 +99,7 @@ function getIdSpedizione()
 	if ($(".tendina_scelta_indirizzo").length > 0)
 		return $(".tendina_scelta_indirizzo").val();
 	else if ($(".radio_spedizione").length > 0)
-		return $(".radio_spedizione").val();
+		return $("[name='id_spedizione']").val();
 }
 
 function impostaTipoSpedizione(obj)
@@ -107,7 +107,12 @@ function impostaTipoSpedizione(obj)
 	if (obj.val() == "Y")
 	{
 		$(".link_indirizzo_come_fatturazione").css("display","block");
-		$(".blocco_tendina_scelta_indirizzo").css("display","none");
+		
+		if ($(".blocco_tendina_scelta_indirizzo").length > 0)
+			$(".blocco_tendina_scelta_indirizzo").css("display","none");
+		
+		if ($(".campi_nuovo_indirizzo").length > 0)
+			$(".campi_nuovo_indirizzo").css("display","block");
 		
 		if ($("[name='post_error']").length == 0)
 		{
@@ -120,7 +125,13 @@ function impostaTipoSpedizione(obj)
 	else
 	{
 		$(".link_indirizzo_come_fatturazione").css("display","none");
-		$(".blocco_tendina_scelta_indirizzo").css("display","block");
+		
+		if ($(".blocco_tendina_scelta_indirizzo").length > 0)
+			$(".blocco_tendina_scelta_indirizzo").css("display","block");
+		
+		if ($(".campi_nuovo_indirizzo").length > 0)
+			$(".campi_nuovo_indirizzo").css("display","none");
+		
 		impostaCampiSpedizione(getIdSpedizione());
 	}
 }
@@ -492,6 +503,17 @@ function mostraLabelColore()
 	});
 }
 
+function triggeraRadioSpedizione(obj)
+{
+	if (obj.val() == 0)
+		$('[name="aggiungi_nuovo_indirizzo"]').val("Y");
+	else
+		$('[name="aggiungi_nuovo_indirizzo"]').val("N");
+	
+	impostaTipoSpedizione($('[name="aggiungi_nuovo_indirizzo"]'));
+	
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -570,35 +592,43 @@ $(document).ready(function(){
 		}
 	});
 	
-	if ($("[name='aggiungi_nuovo_indirizzo']:checked").length > 0)
-		impostaTipoSpedizione($("[name='aggiungi_nuovo_indirizzo']:checked"));
-	
-	$("body").on("ifClicked", "[name='aggiungi_nuovo_indirizzo']", function(e){
+	if ($(".radio_spedizione").length > 0)
+	{
+		triggeraRadioSpedizione($("[name='id_spedizione']"));
 		
-		$("[name='post_error']").remove();
+		$("body").on("ifChanged", ".radio_spedizione", function(e){
+			
+			if ($(this).is(":checked"))
+			{
+				$("[name='post_error']").remove();
+				
+				$("[name='id_spedizione']").val($(this).val());
+				
+				triggeraRadioSpedizione($(this));
+			}
+		});
+	}
+	else
+	{
+		if ($("[name='aggiungi_nuovo_indirizzo']:checked").length > 0)
+			impostaTipoSpedizione($("[name='aggiungi_nuovo_indirizzo']:checked"));
 		
-		impostaTipoSpedizione($(this));
-		
-	});
-	
-	$("body").on("change", ".tendina_scelta_indirizzo", function(e){
-		
-		$("[name='post_error']").remove();
-		
-		impostaCampiSpedizione($(this).val());
-		
-	});
-	
-	$("body").on("ifChanged", ".radio_spedizione", function(e){
-		
-		if ($(this).is(":checked"))
-		{
+		$("body").on("ifClicked", "[name='aggiungi_nuovo_indirizzo']", function(e){
+			
 			$("[name='post_error']").remove();
 			
-// 			console.log($(this).val());
+			impostaTipoSpedizione($(this));
+			
+		});
+		
+		$("body").on("change", ".tendina_scelta_indirizzo", function(e){
+			
+			$("[name='post_error']").remove();
+			
 			impostaCampiSpedizione($(this).val());
-		}
-	});
+			
+		});
+	}
 	
 	if ($("[name='id_corriere']:checked").length > 0)
 		impostaCorrieriESpeseSpedizione();
