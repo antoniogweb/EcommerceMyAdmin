@@ -6,7 +6,7 @@
 	
 	<div class="">
 		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
-			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
+			<div class="uk-grid-medium uk-grid main_cart uk-text-left uk-text-small" uk-grid>
 				<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
 					<?php
 					include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
@@ -29,8 +29,6 @@
 					
 					<?php include(tpf("Ordini/checkout_spedizione.php"));?>
 					
-					<?php include(tpf("Ordini/checkout_corrieri.php"));?>
-					
 					<?php if (count(OrdiniModel::$pagamenti) > 1) { ?>
 					<div class="uk-container uk-margin-medium">
 						<div id="payment" class="">
@@ -52,6 +50,8 @@
 						} ?>
 					</div>
 					<?php } ?>
+					
+					<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 					
 					<?php include(tpf("Ordini/note_acquisto.php"));?>
 					

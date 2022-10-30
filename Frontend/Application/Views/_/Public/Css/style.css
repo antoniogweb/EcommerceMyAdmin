@@ -13117,6 +13117,14 @@ img:not([src]) {
   border-color: #e5e5e5 !important;
 }
 
+.spedizione_selezionata {
+  background-color: #f8f8f8;
+}
+
+.spedizione_box {
+  cursor: pointer;
+}
+
 .hc-nav-trigger {
   position: relative;
   top: 0px;

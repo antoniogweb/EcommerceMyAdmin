@@ -6,7 +6,7 @@
 				<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Seleziona il corriere");?></h2>
 				
 				<?php foreach ($corrieri as $corriere) { ?>
-				<div class="radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">
+				<div class="uk-margin-small radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">
 				<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?> <?php echo $corriere["titolo"];?>
 				</div>
 				<?php } ?>
