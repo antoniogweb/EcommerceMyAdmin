@@ -307,7 +307,6 @@ class VariabiliModel extends GenericModel {
 		"attiva_template_email"		=>	0,
 		"attiva_eventi_retargeting"	=>	0,
 		"token_schedulazione"		=>	"",
-		"attiva_coupon_checkout"	=>	1,
 		"attiva_note_acquisto_in_ordini"	=>	1,
 		"genera_e_invia_password"	=>	0,
 		"page_main_class"			=>	"top_page_main",
@@ -507,6 +506,10 @@ class VariabiliModel extends GenericModel {
 		"tempo_durata_cookie_id_lista"	=>	31536000, // durata in secondi del cookie contenente l'ID della lista
 		"alias_pagina_lista"	=>	"lista-regalo", // alias usato in URL per la pagina delle liste
 		"numero_massimo_tentativi_invio_link"	=>	3, // numero massimo di tentativi di invio link per ogni elemento della tabella liste_regalo_link
+		## CHECOUT ##
+		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
+		"classi_titoli_checkout_spedizione"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli della sezione spedizioni al checkout
+		"attiva_coupon_checkout"	=>	1, // se mostrare il form di inserimento coupon al checkout
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello

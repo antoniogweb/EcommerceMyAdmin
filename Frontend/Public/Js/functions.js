@@ -82,7 +82,10 @@ function updateFormTipoCliente()
 
 function updateFormRegistrato()
 {
-	var registrato = $(".radio_registrato:checked").val();
+	if ($(".checkbox_registrato").length > 0)
+		var registrato = $("[name='registrato']").val();
+	else
+		var registrato = $(".radio_registrato:checked").val();
 	
 	if (registrato == "Y")
 	{
@@ -551,6 +554,17 @@ $(document).ready(function(){
 	});
 	
 	$('.radio_registrato').on('ifChanged', function(event){
+		
+		updateFormRegistrato();
+		
+	});
+	
+	$("body").on("ifChanged", ".checkbox_registrato", function(e){
+		
+		if ($(this).is(":checked"))
+			$("[name='registrato']").val("N");
+		else
+			$("[name='registrato']").val("Y");
 		
 		updateFormRegistrato();
 		

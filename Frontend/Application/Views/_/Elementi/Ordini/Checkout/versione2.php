@@ -6,8 +6,8 @@
 	
 	<div class="">
 		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
-			<div class="uk-grid-medium uk-grid main_cart uk-text-left uk-text-small" uk-grid>
-				<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
+			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
+				<div class="uk-width-1-1 uk-width-expand@m uk-first-column uk-text-small">
 					<?php
 					include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 						"titolo"	=>	"Avviso quando hai una lista selezionata",
@@ -19,8 +19,8 @@
 						<?php echo $notice; ?>
 					</div>
 					
-					<div class="uk-container">
-						<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large" style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
+					<div class="uk-container uk-margin-small-bottom">
+						<h2 class="<?php echo v("classi_titoli_checkout");?>" style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
 
 						<div class="blocco_checkout">
 							<?php include(tpf("Regusers/form_dati_cliente.php"));?>
@@ -29,29 +29,19 @@
 					
 					<?php include(tpf("Ordini/checkout_spedizione.php"));?>
 					
-					<?php if (count(OrdiniModel::$pagamenti) > 1) { ?>
-					<div class="uk-container uk-margin-medium">
-						<div id="payment" class="">
-							<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Metodo di pagamento");?></h2>
-							<ul class="uk-list payment_methods modalita_pagamento class_pagamento">
-								<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) {
-									if (file_exists(tpf("Elementi/Pagamenti/$codPag.php")))
-										include(tpf("Elementi/Pagamenti/$codPag.php"));
-									else
-										include(tpf("Elementi/Pagamenti/pagamento_generico.php"));
-								} ?>
-							</ul>
+					<div class="uk-margin-large-top uk-margin-large-bottom uk-grid-large uk-grid-divider" uk-grid>
+						<div class="uk-width-1-1 uk-width-1-2@m">
+							<?php
+							include(tpf(ElementitemaModel::p("CHECKOUT_PAGAMENTI","", array(
+								"titolo"	=>	"Scelta del metodo di pagamento",
+								"percorso"	=>	"Elementi/Ordini/Pagamenti",
+							))));
+							?>
+						</div>
+						<div class="uk-width-1-1 uk-width-1-2@m">
+							<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 						</div>
 					</div>
-					<?php } else { ?>
-					<div class="uk-container uk-margin class_pagamento">
-						<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) {
-							echo Html_Form::hidden("pagamento",$codPag,$codPag);
-						} ?>
-					</div>
-					<?php } ?>
-					
-					<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 					
 					<?php include(tpf("Ordini/note_acquisto.php"));?>
 					

@@ -1,8 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-background-muted uk-card uk-card-default uk-card-small" style="box-shadow: none;border:1px solid #e5e5e5;">
+<div class="uk-background-muted uk-card uk-card-default uk-card-small" style="box-shadow: none;">
 	<div class="uk-card-body">
 		<form class="checkout_coupon" method="post" action="<?php echo $this->baseUrl."/checkout";?>">
-			<p class="uk-text-small"><?php echo gtext("Se hai un codice promozione, inseriscilo sotto.");?></p>
+			<p class="uk-text-small uk-text-emphasis"><?php echo gtext("Se hai un codice promozione, inseriscilo sotto.");?></p>
 			
 			<div class="uk-margin">
 <!-- 				<label class="uk-form-label uk-text-bold"><?php echo gtext("Codice promozione");?> *</label> -->
