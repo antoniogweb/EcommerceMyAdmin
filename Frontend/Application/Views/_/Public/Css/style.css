@@ -296,7 +296,7 @@ h2, .uk-h2 {
 }
 
 h3, .uk-h3 {
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.4;
 }
 
@@ -2021,7 +2021,7 @@ select.uk-form-width-xsmall {
   /* 3 */
   padding: 0;
   /* 4 */
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.4;
 }
 
@@ -3016,7 +3016,7 @@ select.uk-form-width-xsmall {
 /* Title
  ========================================================================== */
 .uk-card-title {
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.4;
 }
 
@@ -3917,7 +3917,7 @@ select.uk-form-width-xsmall {
 .uk-search-navbar .uk-search-input {
   height: 40px;
   background: transparent;
-  font-size: 22px !important;
+  font-size: 22px;
 }
 
 /*
@@ -5757,7 +5757,7 @@ ul.uk-nav-sub {
  * Items
  */
 .uk-nav-primary > li > a {
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.5;
   color: #999;
 }
@@ -8239,7 +8239,7 @@ ul.uk-nav-sub {
 /* Style modifiers
  ========================================================================== */
 .uk-text-lead {
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.5;
   color: #333;
 }
@@ -8265,7 +8265,7 @@ ul.uk-nav-sub {
 }
 
 .uk-text-large {
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.5;
 }
 
@@ -9358,7 +9358,7 @@ iframe.uk-cover {
  * 1. Required for `a`
  */
 .uk-logo {
-  font-size: 22px !important;
+  font-size: 22px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   color: #666;
   /* 1 */
