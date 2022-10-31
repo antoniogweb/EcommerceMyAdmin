@@ -1416,14 +1416,19 @@ function syncMailchimpKeys($data, $apiKey, $listId)
     $memberId = md5(strtolower($data['email']));
     $dataCenter = substr($apiKey,strpos($apiKey,'-')+1);
     $url = 'https://' . $dataCenter . '.api.mailchimp.com/3.0/lists/' . $listId . '/members/' . $memberId;
-
+	
+	$mergeFields = [
+		'FNAME'     => isset($data['firstname']) ? $data['firstname'] : "",
+		'LNAME'     => isset($data['lastname']) ? $data['lastname'] : "",
+	];
+	
+	if (isset($data["mergeFields"]))
+		$mergeFields = $data["mergeFields"];
+	
     $json = json_encode([
         'email_address' => $data['email'],
         'status'        => $data['status'], // "subscribed","unsubscribed","cleaned","pending"
-        'merge_fields'  => [
-            'FNAME'     => isset($data['firstname']) ? $data['firstname'] : "",
-            'LNAME'     => isset($data['lastname']) ? $data['lastname'] : "",
-        ]
+        'merge_fields'  => $mergeFields,
     ]);
 
     $ch = curl_init($url);
@@ -1440,6 +1445,7 @@ function syncMailchimpKeys($data, $apiKey, $listId)
 		curl_setopt($ch, CURLOPT_INTERFACE, v("curl_curlopt_interface"));
 	
     $result = curl_exec($ch);
+    
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 	

@@ -47,13 +47,23 @@ class Mailchimp extends Newsletter
 		if (isset($valori["cognome"]) && trim($valori["cognome"]))
 			$dataMailChimp["lastname"] = $valori["cognome"];
 		
-// 		print_r($dataMailChimp);die();
+		if (isset($valori["azienda"]) && trim($valori["azienda"]))
+			$dataMailChimp["company"] = $valori["azienda"];
+		
+		$dataMailChimp["mergeFields"] = [
+            'FNAME'     => isset($dataMailChimp['firstname']) ? $dataMailChimp['firstname'] : "",
+            'LNAME'     => isset($dataMailChimp['lastname']) ? $dataMailChimp['lastname'] : "",
+        ];
+		
+		if ($this->params["campo_company"] && isset($dataMailChimp['company']))
+			$dataMailChimp["mergeFields"][$this->params["campo_company"]] = $dataMailChimp['company'];
+		
 		syncMailchimpKeys($dataMailChimp, $this->params["secret_1"], $this->params["codice_lista"]);
 	}
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,secret_1,codice_lista';
+		return 'titolo,attivo,secret_1,codice_lista,campo_company';
 	}
 	
 	public function isAttiva()

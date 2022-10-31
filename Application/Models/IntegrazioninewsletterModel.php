@@ -158,6 +158,9 @@ class IntegrazioninewsletterModel extends GenericModel {
 			
 			if (isset($valori["cognome"]))
 				$valoriFinali["cognome"] = $valori["cognome"];
+			
+			if (isset($valori["azienda"]))
+				$valoriFinali["azienda"] = $valori["azienda"];
 		}
 		
 		return $valoriFinali;
