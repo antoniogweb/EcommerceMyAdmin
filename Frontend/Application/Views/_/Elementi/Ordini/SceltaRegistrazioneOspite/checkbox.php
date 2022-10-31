@@ -1,9 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php $ospite = ($values["registrato"] == "Y") ? "N" : "Y";?>
+<div class="uk-padding-small  uk-background-muted uk-width-1-1 uk-width-1-2@m uk-margin-top">
+	<h2 class="<?php echo v("classi_titoli_checkout");?>"><span uk-icon="icon:user;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Creazione account");?></h2>
 
-<h2 class="<?php echo v("classi_titoli_checkout");?>"><span uk-icon="icon:user;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Creazione account");?></h2>
-
-	<div class="uk-margin-top uk-width-1-1">
+	<div class=" uk-width-1-1 ">
 		<div class="uk-flex uk-flex-middle">
 			<div>
 				<?php echo Html_Form::checkbox("registrato_checkbox",$ospite,"Y","checkbox_registrato","none");?>
@@ -16,7 +16,7 @@
 
 	<?php echo Html_Form::hidden("registrato",$values["registrato"]);?>
 
-	<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
+	<div class="uk-grid-column-small uk-child-width-1-1" uk-grid>
 		<?php if (!v("genera_e_invia_password")) { ?>
 			<div class="table_password first_of_grid uk-margin uk-margin-remove-bottom">
 				<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
@@ -34,4 +34,4 @@
 			<?php } ?>
 		<?php } ?>
 	</div>
-
+</div>

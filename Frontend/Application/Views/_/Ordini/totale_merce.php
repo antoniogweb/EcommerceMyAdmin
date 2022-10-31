@@ -39,7 +39,7 @@
 	<div class="uk-text-danger uk-text-bold"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
 <?php } ?>
 
-<?php if (User::$isPhone && !v("piattaforma_di_demo")) {
+<?php if (User::$isPhone && !v("piattaforma_di_demo") && v("mostra_doppio_pulsante_acquista_mobile")) {
 include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(
 	"titolo"	=>	"Pulsante completa acquisto",
 	"percorso"	=>	"Elementi/Ordini/PulsanteCompletaAcquisto",

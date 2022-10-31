@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if (count(OrdiniModel::$pagamenti) > 1) { ?>
-<div class="uk-container uk-margin-medium">
+<div class="uk-container">
 	<div id="payment" class="">
 		<h2 class="<?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Metodo di pagamento");?></h2>
 		<ul class="uk-list payment_methods modalita_pagamento class_pagamento">

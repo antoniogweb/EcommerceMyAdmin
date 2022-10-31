@@ -2,101 +2,109 @@
 <?php if (count($pages) > 0) { ?>
 	<?php include(tpf("/Elementi/Ordini/checkout_top.php"));?>
 	
-	<?php include(tpf("/Elementi/Ordini/resoconto_login.php"));?>
-	
 	<div class="">
-		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
-			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
-				<div class="uk-width-1-1 uk-width-expand@m uk-first-column uk-text-small">
-					<?php
-					include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
-						"titolo"	=>	"Avviso quando hai una lista selezionata",
-						"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
-					))));
-					?>
-					<div style="position:relative;top:-150px;" id="content"></div>
-					<div class="uk-text-center">
-						<?php echo $notice; ?>
-					</div>
-					
-					<div class="uk-container uk-margin-small-bottom">
-						<h2 class="<?php echo v("classi_titoli_checkout");?>" style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
+		<?php if (!$islogged) { ?>
+		<ul class="uk-subnav uk-subnav-pill uk-margin-medium-bottom" uk-switcher>
+			<li><a href="#"><span class="uk-margin-small-right uk-visible@s" uk-icon="icon: check; ratio: 0.9"></span><?php echo gtext("Non sono registrato")?></a></li>
+			<li><a href="#" style="vertical-align:middle"><span class="uk-margin-small-right" uk-icon="icon: user; ratio: 0.9"></span><?php echo gtext("Login");?></a></li>
+		</ul>
+		
+		<div class="uk-switcher">
+			<div>
+		<?php } ?>
+				<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
+					<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
+						<div class="uk-width-1-1 uk-width-expand@m uk-first-column uk-text-small">
+							<?php
+							include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
+								"titolo"	=>	"Avviso quando hai una lista selezionata",
+								"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
+							))));
+							?>
+							<div style="position:relative;top:-150px;" id="content"></div>
+							<div class="uk-text-center">
+								<?php echo $notice; ?>
+							</div>
+							
+							<div class="uk-container uk-margin-small-bottom">
+								<h2 class="<?php echo v("classi_titoli_checkout");?>" style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
 
-						<div class="blocco_checkout">
-							<?php include(tpf("Regusers/form_dati_cliente.php"));?>
-						</div>
-					</div>
-					
-					<?php include(tpf("Ordini/checkout_spedizione.php"));?>
-					
-					<div class="uk-margin-large-top uk-margin-large-bottom uk-grid-large uk-grid-divider" uk-grid>
-						<div class="uk-width-1-1 uk-width-1-2@m">
+								<div class="blocco_checkout">
+									<?php include(tpf("Regusers/form_dati_cliente.php"));?>
+								</div>
+							</div>
+							
+							<?php include(tpf("Ordini/checkout_spedizione.php"));?>
+							
+							<div class="uk-margin-large-top uk-margin-large-bottom uk-grid-collapse" uk-grid>
+								<div class="uk-width-1-1 uk-width-1-2@m">
+									<div class="uk-padding uk-background-muted">
+										<?php
+										include(tpf(ElementitemaModel::p("CHECKOUT_PAGAMENTI","", array(
+											"titolo"	=>	"Scelta del metodo di pagamento",
+											"percorso"	=>	"Elementi/Ordini/Pagamenti",
+										))));
+										?>
+									</div>
+								</div>
+								<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isPhone ? "uk-margin-large-top" : "";?>">
+									<div class="<?php echo User::$isPhone ? "" : "uk-padding";?>">
+										<?php include(tpf("Ordini/checkout_corrieri.php"));?>
+									</div>
+								</div>
+							</div>
+							
 							<?php
-							include(tpf(ElementitemaModel::p("CHECKOUT_PAGAMENTI","", array(
-								"titolo"	=>	"Scelta del metodo di pagamento",
-								"percorso"	=>	"Elementi/Ordini/Pagamenti",
-							))));
+							if (!User::$isPhone)
+								include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(
+									"titolo"	=>	"Parte inferiore del checkout",
+									"percorso"	=>	"Elementi/Ordini/CheckoutBottom",
+								))));
+							?>
+							
+							<?php
+							if (isset($_POST['invia']))
+								echo Html_Form::hidden("post_error",2);
 							?>
 						</div>
-						<div class="uk-width-1-1 uk-width-1-2@m">
-							<?php include(tpf("Ordini/checkout_corrieri.php"));?>
-						</div>
-					</div>
-					
-					<?php include(tpf("Ordini/note_acquisto.php"));?>
-					
-					<?php if (!$islogged && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"]) { ?>
-					<div class="newsletter_checkbox"><?php echo Html_Form::checkbox("newsletter",$values['newsletter'],"Y");?> <?php echo gtext("Voglio essere iscritto alla newsletter per conoscere le promozioni e le novità del negozio");?></div> 
-					<?php } ?>
-					
-					<div class="uk-margin">
-						<?php $idCondizioni = PagineModel::gTipoPagina("CONDIZIONI"); ?>
-						<?php if ($idCondizioni) { ?>
-						<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small"><?php echo gtext("Ho letto e accettato i");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioni);?>"><?php echo gtext("termini e condizioni di vendita");?></a></div>
-						<?php } else { ?>
-						<div class="uk-alert uk-alert-danger"><?php echo gtext("Attenzione, definire le condizioni di vendita");?></div>
-						<?php } ?>
-						
-						<div class="class_accetto">
-							<?php echo Html_Form::radio("accetto",$values['accetto'],array("<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("NON ACCETTO")."</span><span style='margin-right:20px;'></span>" => "non_accetto", "<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("ACCETTO")."</span>" => "accetto"),"radio_2");?>
-						</div>
-					</div>
-					
-					<?php if (v("piattaforma_di_demo")) { ?>
-					<div class="uk-text-center uk-alert-danger uk-margin-remove" uk-alert>
-						<?php echo gtext("Attenzione, questa è una piattaforma di demo e non è possibile completare l'acquisto.");?>
-						<button class="uk-alert-close" type="button" uk-close></button>
-					</div>
-					<?php } else {
-						include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(
-							"titolo"	=>	"Pulsante completa acquisto",
-							"percorso"	=>	"Elementi/Ordini/PulsanteCompletaAcquisto",
-						))));
-					} ?>
-					
-					<?php
-					if (isset($_POST['invia']))
-						echo Html_Form::hidden("post_error",2);
-					?>
-				</div>
-				<div class="uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
-					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
-						<?php include(tpf("/Ordini/checkout_totali.php")); ?>
-						
-						<?php if (v("attiva_coupon_checkout") && !hasActiveCoupon()) { ?>
-						<div class="box_coupon uk-margin-medium">
+						<div class="uk-margin-remove-top uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
+							<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
+								<?php include(tpf("/Ordini/checkout_totali.php")); ?>
+								
+								<?php if (v("attiva_coupon_checkout") && !hasActiveCoupon()) { ?>
+								<div class="box_coupon uk-margin-medium">
+									<?php
+									include(tpf(ElementitemaModel::p("CHECKOUT_COUPON","", array(
+										"titolo"	=>	"Form coupon al checkout",
+										"percorso"	=>	"Elementi/Ordini/Coupon",
+									))));
+									?>
+								</div>
+								<?php } ?>
+							</div>
+							
 							<?php
-							include(tpf(ElementitemaModel::p("CHECKOUT_COUPON","", array(
-								"titolo"	=>	"Form coupon al checkout",
-								"percorso"	=>	"Elementi/Ordini/Coupon",
-							))));
+							if (User::$isPhone)
+								include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(
+									"titolo"	=>	"Parte inferiore del checkout",
+									"percorso"	=>	"Elementi/Ordini/CheckoutBottom",
+								))));
 							?>
 						</div>
-						<?php } ?>
 					</div>
-				</div>
+				</form>
+		<?php if (!$islogged) { ?>
 			</div>
-		</form>
+			<div class="">
+				<?php
+				include(tpf(ElementitemaModel::p("CHECKOUT_LOGIN","", array(
+					"titolo"	=>	"Form login al checkout",
+					"percorso"	=>	"Elementi/Ordini/Login",
+				))));
+				?>
+			</div>
+		</div>
+		<?php } ?>
 	</div>
 <?php } else { ?>
 	<p><?php echo gtext("Non ci sono prodotti nel carrello");?></p>

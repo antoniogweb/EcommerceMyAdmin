@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (v("attiva_spedizione")) { ?>
 	<?php if (count($corrieri) > 1) { ?>
-		<div class="uk-container uk-margin-medium">
+		<div class="uk-container">
 			<div class="box_corrieri">
 				<h2 class="<?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Tipo di spedizione");?></h2>
 				
