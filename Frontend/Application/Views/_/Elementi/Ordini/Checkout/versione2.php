@@ -29,13 +29,32 @@
 							<div class="uk-margin-right uk-visible@m">
 								<span uk-icon="icon:bookmark;ratio:1.2" class="uk-icon-button"></span>
 							</div>
-							<div>
+							<div class="uk-width-1-1">
 								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
 									<span uk-icon="icon:bookmark;ratio:1.2" class="uk-margin-right uk-icon-button uk-hidden@m"></span><?php echo gtext("Informazioni personali");?>
 								</h2>
 
 								<div class="blocco_checkout">
-									<?php include(tpf("Regusers/form_dati_cliente.php"));?>
+									<?php if ($islogged) { ?>
+									<div class="uk-margin uk-width-1-1">
+										<div class="uk-grid uk-grid-large" uk-grid>
+											<div class="uk-width-1-1 uk-width-1-2@m">
+												<span class="uk-text-emphasis"><?php echo OrdiniModel::getNominativo(User::$dettagli);?></span>
+												<br /><span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <?php echo User::$dettagli["indirizzo"];?>
+												<br /><?php echo User::$dettagli["cap"];?>, <?php echo User::$dettagli["citta"];?> (<?php echo User::$dettagli["nazione"] == "IT" ? User::$dettagli["provincia"] : User::$dettagli["dprovincia"];?>)
+												<br /><span class="uk-text-emphasis"><?php echo gtext("Nazione");?>:</span> <?php echo nomeNazione(User::$dettagli["nazione"]);?>
+											</div>
+											<div class="uk-width-1-1 uk-width-1-2@m">
+												<span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo User::$dettagli["telefono"];?><br />
+												<span class="uk-text-emphasis"><?php echo gtext("Email");?>:</span> <?php echo User::$dettagli["username"];?><br />
+												<?php echo User::$dettagli["fattura"] ? gtext("Voglio ricevere la fattura") : gtext("Voglio ricevere lo scontrino fiscale");?>
+											</div>
+										</div>
+									</div>
+									<?php } ?>
+									<div <?php if ($islogged) { ?>class="uk-hidden"<?php } ?>>
+										<?php include(tpf("Regusers/form_dati_cliente.php"));?>
+									</div>
 								</div>
 								
 								<hr class="uk-divider-icon uk-margin-medium-top">

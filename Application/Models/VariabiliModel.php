@@ -831,6 +831,6 @@ class VariabiliModel extends GenericModel {
 	
 	public static function paginaAutenticazione()
 	{
-		return v("pagina_di_autenticazione") ? "autenticazione" : "checkout";
+		return (v("pagina_di_autenticazione") && !User::$logged) ? "autenticazione" : "checkout";
 	}
 }
