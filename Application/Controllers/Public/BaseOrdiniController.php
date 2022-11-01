@@ -714,6 +714,39 @@ class BaseOrdiniController extends BaseController
 		$this->load("ritorno-da-paypal");
 	}
 	
+	public function checklogin()
+	{
+		if (!v("ecommerce_online"))
+			$this->redirect("");
+		
+		if (User::$logged)
+			$this->redirect("checkout");
+		
+		if( !session_id() )
+			session_start();
+		
+		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
+		
+		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		
+		if (count($data["pages"]) === 0)
+		{
+			if (Output::$html)
+				$this->redirect("carrello/vedi");
+		}
+		
+		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
+		{
+			if (Output::$html)
+				$this->redirect("carrello/vedi?evidenzia");
+		}
+		
+		$this->getAppLogin();
+		$this->load("autenticazione");
+		
+		
+	}
+	
 	public function index()
 	{
 		if (!v("ecommerce_online"))
@@ -870,13 +903,8 @@ class BaseOrdiniController extends BaseController
 		
 		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
 		
-// 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT" && v("abilita_codice_fiscale"))
-		
 		if ($this->campoObbligatorio("codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";
-		
-// 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
-// 			$campiObbligatoriComuni .= ",cap_spedizione";
 		
 		$campiObbligatoriAggiuntivi = "";
 		
@@ -891,7 +919,7 @@ class BaseOrdiniController extends BaseController
 			if (trim($pec) != "" || trim($codiceDestinatario) != "")
 				$campiObbligatoriAggiuntivi = "";
 		}
-// 		echo $codiceDestinatario;die();
+		
 		$campiObbligatoriComuni .= $campiObbligatoriAggiuntivi;
 		
 		$campoPIva = "";
@@ -1445,6 +1473,9 @@ class BaseOrdiniController extends BaseController
 			
 			if (!isset($defaultValues["nazione_spedizione"]))
 				$defaultValues["nazione_spedizione"] = $nazioneDefault;
+			
+			if (isset($_GET["default_email"]) && $_GET["default_email"] && checkMail($_GET["default_email"]))
+				$defaultValues["email"] = sanitizeAll((string)$_GET["default_email"]);
 		}
 		
 		if (isset($defaultValues["accetto"]))

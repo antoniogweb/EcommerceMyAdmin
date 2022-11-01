@@ -13125,6 +13125,23 @@ img:not([src]) {
   cursor: pointer;
 }
 
+.uk-accordion li a {
+  /* 	border:1px solid #EEE; */
+  color: #666;
+}
+
+.uk-accordion li.uk-open a {
+  color: #333;
+}
+
+.uk_progress {
+  height: 1px;
+}
+
+.uk_badge_meta {
+  background: #999;
+}
+
 .hc-nav-trigger {
   position: relative;
   top: 0px;

@@ -506,11 +506,12 @@ class VariabiliModel extends GenericModel {
 		"tempo_durata_cookie_id_lista"	=>	31536000, // durata in secondi del cookie contenente l'ID della lista
 		"alias_pagina_lista"	=>	"lista-regalo", // alias usato in URL per la pagina delle liste
 		"numero_massimo_tentativi_invio_link"	=>	3, // numero massimo di tentativi di invio link per ogni elemento della tabella liste_regalo_link
-		## CHECOUT ##
+		## CHECKOUT ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_titoli_checkout_spedizione"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli della sezione spedizioni al checkout
 		"attiva_coupon_checkout"	=>	1, // se mostrare il form di inserimento coupon al checkout
 		"mostra_doppio_pulsante_acquista_mobile"	=>	1, // se mostrare il doppio pulsante di acquista in mobile
+		"pagina_di_autenticazione"	=>	0, // attiva la pagina di autenticazione
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
@@ -826,5 +827,10 @@ class VariabiliModel extends GenericModel {
 	public static function confermaUtenteRichiesta()
 	{
 		return (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione")) ? true : false;
+	}
+	
+	public static function paginaAutenticazione()
+	{
+		return v("pagina_di_autenticazione") ? "autenticazione" : "checkout";
 	}
 }

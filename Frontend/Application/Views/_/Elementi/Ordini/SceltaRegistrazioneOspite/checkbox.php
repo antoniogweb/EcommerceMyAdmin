@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php $ospite = ($values["registrato"] == "Y") ? "N" : "Y";?>
-<div class="uk-padding-small  uk-background-muted uk-width-1-1 uk-width-1-2@m uk-margin-top">
-	<h2 class="<?php echo v("classi_titoli_checkout");?>"><span uk-icon="icon:user;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Creazione account");?></h2>
+<div class="uk-width-1-1 uk-width-1-2@m uk-margin-top">
+<!-- 	<h2 class="<?php echo v("classi_titoli_checkout");?>"><span uk-icon="icon:user;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Creazione account");?></h2> -->
 
 	<div class=" uk-width-1-1 ">
 		<div class="uk-flex uk-flex-middle">

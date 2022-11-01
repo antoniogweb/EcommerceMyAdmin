@@ -2,15 +2,17 @@
 <?php if (v("attiva_spedizione")) { ?>
 	<?php if (!$islogged) { ?>
 		
-		<h2 class="<?php echo v("classi_titoli_checkout_spedizione");?>"><span uk-icon="icon:location;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Indirizzo di spedizione");?></h2>
 		
-		<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
+		
+		<div class="uk-margin-medium">
+			<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
+		</div>
 		
 	<?php } else if ($islogged) { ?>
 		
 		<?php if (count($tendinaIndirizzi) > 0) { ?>
 		
-			<h2 class="<?php echo v("classi_titoli_checkout_spedizione");?>"><span uk-icon="icon:location;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Indirizzo di spedizione");?></h2>
+			
 			
 			<div class="blocco_checkout">
 				
@@ -68,7 +70,7 @@
 		
 		<?php } else { ?>
 			
-			<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><span uk-icon="icon:location;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Indirizzo di spedizione");?></h2>
+			
 			
 			<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
 		

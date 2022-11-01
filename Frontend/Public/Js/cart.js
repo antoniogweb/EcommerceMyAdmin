@@ -59,6 +59,9 @@ if (typeof current_url == "undefined")
 if (typeof versione_google_analytics == "undefined")
 	var versione_google_analytics = 3;
 
+if (typeof url_autenticati == "undefined")
+	var url_autenticati = "checkout";
+
 var time;
 var arrayAccessori = [];
 var redirectCombinazioneAttivo = false;
@@ -669,7 +672,7 @@ function prodottiAggiunti(principale, content, id_cart)
 	}
 	else if (vai_al_checkout || carrello_monoprodotto)
 	{
-		location.href = baseUrl + "/checkout";
+		location.href = baseUrl + "/" + url_autenticati;
 	}
 	else
 	{

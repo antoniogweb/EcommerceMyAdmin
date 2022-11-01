@@ -106,7 +106,7 @@
 					<?php if ($this->controller == "cart" && $numeroGiftCardInCarrello > 0) { ?>
 					<div class="vai_la_checkout btn_submit_form uk-button uk-button-secondary uk-width-1-1""><?php echo gtext("PROCEDI ALL'ACQUISTO");?></div>
 					<?php } else { ?>
-					<a class="btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/checkout"?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
+					<a class="btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
 					<?php } ?>
 				</div>
 			</div>

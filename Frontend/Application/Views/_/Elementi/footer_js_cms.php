@@ -28,6 +28,7 @@
 	var versione_google_analytics = <?php echo v("versione_google_analytics"); ?>;
 	var spesa_pagamento_possibile = <?php echo (PagamentiModel::getMaxPagamento() > 0) ? "true" : "false"; ?>;
 	var stringa_errore_lista_non_selezionata = "<?php echo gtext("Si prega di selezionare una lista regalo");?>";
+	var url_autenticati = "<?php echo VariabiliModel::paginaAutenticazione();?>";
 </script>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>

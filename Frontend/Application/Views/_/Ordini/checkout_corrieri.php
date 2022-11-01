@@ -3,7 +3,9 @@
 	<?php if (count($corrieri) > 1) { ?>
 		<div class="uk-container">
 			<div class="box_corrieri">
-				<h2 class="<?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Tipo di spedizione");?></h2>
+				<h2 class="<?php echo v("classi_titoli_checkout");?>">
+					<span uk-icon="icon:list;ratio:1.2" class="uk-margin-right uk-icon-button uk-hidden@m"></span><?php echo gtext("Tipo di spedizione");?>
+				</h2>
 				
 				<?php foreach ($corrieri as $corriere) { ?>
 				<div class="uk-margin-small radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">

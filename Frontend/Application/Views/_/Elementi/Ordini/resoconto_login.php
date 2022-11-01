@@ -10,6 +10,7 @@
 	
 	<div id="login" style="display:none;">
 		<?php
+		$noLoginRegistrati = true;
 		ElementitemaModel::$percorsi["FORM_LOGIN"]["nome_file"] = "default";
 		ElementitemaModel::$percorsi["LOGIN_PASSWORD"]["nome_file"] = "default";
 		include(tpf(ElementitemaModel::p("CHECKOUT_LOGIN","", array(

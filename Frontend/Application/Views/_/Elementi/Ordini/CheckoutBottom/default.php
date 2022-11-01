@@ -1,9 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php include(tpf("Ordini/note_acquisto.php"));?>
 
-<?php if (!$islogged && ImpostazioniModel::$valori["mailchimp_api_key"] && ImpostazioniModel::$valori["mailchimp_list_id"]) { ?>
-<div class="newsletter_checkbox"><?php echo Html_Form::checkbox("newsletter",$values['newsletter'],"Y");?> <?php echo gtext("Voglio essere iscritto alla newsletter per conoscere le promozioni e le novità del negozio");?></div> 
-<?php } ?>
+<?php
+include(tpf(ElementitemaModel::p("CHECKOUT_NEWSLETTER","", array(
+	"titolo"	=>	"Check iscrizione newsletter",
+	"percorso"	=>	"Elementi/Ordini/IscrizioneNewsletter",
+))));
+?>
 
 <div class="uk-margin">
 	<?php $idCondizioni = PagineModel::gTipoPagina("CONDIZIONI"); ?>
