@@ -31,7 +31,7 @@
 							</div>
 							<div class="uk-width-1-1">
 								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
-									<span uk-icon="icon:bookmark;ratio:1.2" class="uk-margin-right uk-icon-button uk-hidden@m"></span><?php echo gtext("Informazioni personali");?>
+									<span uk-icon="icon:bookmark;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Informazioni personali");?>
 								</h2>
 
 								<div class="blocco_checkout">
@@ -57,7 +57,7 @@
 									</div>
 								</div>
 								
-								<hr class="uk-divider-icon uk-margin-medium-top">
+								<hr class="uk-divider-icon uk-margin-medium-top uk-visible@m">
 							</div>
 						</div>
 					</div>
@@ -69,12 +69,12 @@
 							</div>
 							<div class="uk-width-expand">
 								<h2 class="<?php echo v("classi_titoli_checkout_spedizione");?>">
-									<span uk-icon="icon:location;ratio:1.2" class="uk-margin-right uk-icon-button uk-hidden@m"></span><?php echo gtext("Indirizzo di spedizione");?>
+									<span uk-icon="icon:location;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Indirizzo di spedizione");?>
 								</h2>
 								
 								<?php include(tpf("Ordini/checkout_spedizione.php"));?>
 								
-								<hr class="uk-divider-icon uk-margin-medium-top">
+								<hr class="uk-divider-icon uk-margin-medium-top uk-visible@m">
 							</div>
 						</div>
 					</div>
@@ -89,7 +89,7 @@
 									<div class="uk-width-1-1 uk-width-1-2@m">
 										<div class="">
 											<?php
-											$htmlIcona = '<span uk-icon="icon:credit-card;ratio:1.2" class="uk-margin-right uk-icon-button uk-hidden@m"></span>';
+											$htmlIcona = '<span uk-icon="icon:credit-card;ratio:1.3" class="uk-margin-right uk-hidden@m"></span>';
 											include(tpf(ElementitemaModel::p("CHECKOUT_PAGAMENTI","", array(
 												"titolo"	=>	"Scelta del metodo di pagamento",
 												"percorso"	=>	"Elementi/Ordini/Pagamenti",
@@ -104,7 +104,7 @@
 									</div>
 								</div>
 								
-								<hr class="uk-divider-icon uk-margin-medium-top">
+								<hr class="uk-divider-icon uk-margin-medium-top uk-visible@m">
 							</div>
 						</div>
 					</div>
@@ -154,7 +154,7 @@
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-width-expand">
 								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
-									<span uk-icon="icon:check;ratio:1.2" class="uk-margin-right uk-icon-button uk-hidden@m"></span><?php echo gtext("Conferma acquisto");?>
+									<span uk-icon="icon:check;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Conferma acquisto");?>
 								</h2>
 								
 								<?php include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(
