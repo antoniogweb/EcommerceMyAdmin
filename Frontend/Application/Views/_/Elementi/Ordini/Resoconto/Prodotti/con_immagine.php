@@ -74,5 +74,5 @@ foreach ($righeOrdine as $p) { ?>
 		</div>
 	</div>
 </div>
-<?php if ($indice < count($righeOrdine) || !User::$isMobile) { ?><hr class="uk-margin-remove-bottom"><?php } ?>
+<hr <?php if ($indice == count($righeOrdine)) { ?>class="uk-margin-remove-bottom"<?php } ?>>
 <?php $indice++; } ?>
