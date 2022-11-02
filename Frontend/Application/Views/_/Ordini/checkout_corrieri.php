@@ -1,10 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (v("attiva_spedizione")) { ?>
 	<?php if (count($corrieri) > 1) { ?>
+		<hr class="uk-divider-icon uk-margin-medium-bottom uk-hidden@m">
 		<div class="uk-container blocco_checkout">
 			<div class="box_corrieri">
 				<h2 class="<?php echo v("classi_titoli_checkout");?>">
-					<span uk-icon="icon:list;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Tipo di spedizione");?>
+					<span uk-icon="icon:clock;ratio:1" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Modalità di consegna");?>
 				</h2>
 				
 				<?php foreach ($corrieri as $corriere) { ?>
