@@ -8,7 +8,7 @@
 			<?php if (!$p["cart"]["id_p"]) { ?>
 			</a>
 			<?php } ?>
-			<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
+			<?php if ($p["cart"]["attributi"]) { echo "<br /><span class='uk-text-small'>".$p["cart"]["attributi"]."</span>"; } ?>
 			
 			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"] && !VariabiliModel::combinazioniLinkVeri()) { ?>
 			<div class="uk-margin">

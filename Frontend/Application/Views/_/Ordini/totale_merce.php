@@ -8,15 +8,16 @@
 	</div>
 	<div>
 		<strong><?php echo field($p, "title");?></strong>
-		<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
-		<?php if (v("mostra_codice_in_carrello") && $p["cart"]["codice"]) { ?>
-			<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
-		<?php } ?>
-		<br />
-		<?php echo setPriceReverse($prezzoUnitario);?> €
-		<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_intero"]))." €</del>"; } ?> &times; <?php echo $p["cart"]["quantity"];?>
-		<br />
-		
+		<span class="uk-text-small">
+			<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
+			<?php if (v("mostra_codice_in_carrello") && $p["cart"]["codice"]) { ?>
+				<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
+			<?php } ?>
+			<br />
+			<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitario);?> €</span>
+			<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_intero"]))." €</del>"; } ?> &times; <?php echo $p["cart"]["quantity"];?>
+			<br />
+		</span>
 	</div>
 	<div class="uk-text-right">
 		<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €

@@ -166,12 +166,12 @@ class ListeregaloModel extends GenericModel
     {
 		$model = self::g();
 		
-		if (isset($idUser))
+		if ($idUser)
 			$model->aWhere(array(
-			"id_user"	=>	(int)$idUser,
-		));
+				"id_user"	=>	(int)$idUser,
+			));
 		
-		if (isset($idLista))
+		if ($idLista)
 			$model->aWhere(array(
 				"id_lista_regalo"	=>	(int)$idLista,
 			));
