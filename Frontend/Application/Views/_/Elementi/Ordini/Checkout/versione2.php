@@ -61,7 +61,7 @@
 										</div>
 									</div>
 									<div class="<?php if (!User::$dettagli["completo"]) { ?>mostra_solo_dati_incompleti<?php } else { ?>uk-hidden<?php } ?>">
-										<?php if (!User::$dettagli["completo"]) { ?><span class="uk-text-primary"><?php echo gtext("Si prega di completare i campi di fatturazione");?></span><?php } ?>
+										<?php if (!User::$dettagli["completo"]) { ?><span class="uk-text-primary"><?php echo gtext("Si prega di completare i dati di fatturazione");?></span><?php } ?>
 										<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 									</div>
 									<?php } else { ?>
