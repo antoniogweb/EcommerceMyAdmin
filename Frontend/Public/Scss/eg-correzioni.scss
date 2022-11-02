@@ -68,17 +68,12 @@ img:not([src])
     border-color: #e5e5e5 !important;
 }
 
-.spedizione_box_select
-{
-	
-}
-
 .spedizione_selezionata
 {
 	background-color: #f8f8f8;
 }
 
-.spedizione_box
+.spedizione_box, .radio_corriere, .radio_pagamento
 {
 	cursor:pointer;
 }
@@ -101,5 +96,11 @@ img:not([src])
 .uk_badge_meta
 {
 	background: #999;
+}
+
+.radio_pagamento, .radio_corriere
+{
+	padding-top:7px !important;
+	padding-bottom:7px !important;
 }
 

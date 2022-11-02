@@ -529,8 +529,8 @@ function triggeraRadioSpedizione(obj)
 
 function setBoxSpedizioneSelezionata(obj)
 {
-	if ($(".spedizione_selezionata").length > 0)
-		$(".spedizione_selezionata").removeClass("spedizione_selezionata");
+	if (obj.closest(".blocco_checkout").find(".spedizione_selezionata").length > 0)
+		obj.closest(".blocco_checkout").find(".spedizione_selezionata").removeClass("spedizione_selezionata");
 	
 	obj.addClass("spedizione_selezionata");
 }
@@ -650,6 +650,28 @@ $(document).ready(function(){
 			}
 		});
 	}
+	
+	$("body").on("click", ".radio_corriere_select, .radio_pagamento_select", function(e){
+		
+		$(this).find("input").iCheck('check');
+		
+	});
+	
+	$("body").on("ifChanged", "[name='id_corriere']", function(e){
+		
+		if ($(this).is(":checked"))
+		{
+			setBoxSpedizioneSelezionata($(this).closest(".radio_corriere"));
+		}
+	});
+	
+	$("body").on("ifChanged", "[name='pagamento']", function(e){
+		
+		if ($(this).is(":checked"))
+		{
+			setBoxSpedizioneSelezionata($(this).closest(".radio_pagamento"));
+		}
+	});
 	
 	if ($(".radio_spedizione").length > 0)
 	{

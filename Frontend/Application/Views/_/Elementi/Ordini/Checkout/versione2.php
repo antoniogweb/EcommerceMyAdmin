@@ -84,7 +84,9 @@
 									<span uk-icon="icon:location;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Indirizzo di spedizione");?>
 								</h2>
 								
-								<?php include(tpf("Ordini/checkout_spedizione.php"));?>
+								<div class="blocco_checkout">
+									<?php include(tpf("Ordini/checkout_spedizione.php"));?>
+								</div>
 								
 								<hr class="uk-divider-icon uk-margin-medium-top uk-visible@m">
 							</div>
@@ -97,7 +99,7 @@
 								<span uk-icon="icon:credit-card;ratio:1.2" class="uk-icon-button"></span>
 							</div>
 							<div class="uk-width-expand">
-								<div class="uk-grid-large" uk-grid>
+								<div class="uk-grid-medium" uk-grid>
 									<div class="uk-width-1-1 uk-width-1-2@m">
 										<div class="">
 											<?php
@@ -110,7 +112,7 @@
 										</div>
 									</div>
 									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isPhone ? "uk-margin-large-top" : "";?>">
-										<div class="<?php echo User::$isPhone ? "" : "";?>">
+										<div class="">
 											<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 										</div>
 									</div>

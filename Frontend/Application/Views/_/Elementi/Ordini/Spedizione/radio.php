@@ -34,7 +34,7 @@
 					<?php } ?>
 				</div>
 				<div class="spedizione_box">
-					<div class="<?php if ($values["id_spedizione"] == 0) { ?>spedizione_selezionata<?php } ?> uk-padding-small uk-flex uk-flex-middle spedizione_box_select">
+					<div class="uk-width-1-1 uk-width-1-2@m <?php if ($values["id_spedizione"] == 0) { ?>spedizione_selezionata<?php } ?> uk-padding-small uk-flex uk-flex-middle spedizione_box_select">
 						<div>
 							<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],"0","radio_spedizione","none");?> 
 						</div>
