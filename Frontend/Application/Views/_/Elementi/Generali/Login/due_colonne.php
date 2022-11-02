@@ -9,6 +9,7 @@ $widthPulsante = "uk-width-1-1 uk-width-2-3@s";
 			<div class="uk-text-meta"><?php echo gtext("Inserisci Username e Password per continuare come utente loggato.");?></div>
 			
 			<?php
+			$nascondiPlaceholder = true;
 			include(tpf(ElementitemaModel::p("LOGIN_FORM","", array(
 				"titolo"	=>	"Form login",
 				"percorso"	=>	"Elementi/Generali/LoginForm",

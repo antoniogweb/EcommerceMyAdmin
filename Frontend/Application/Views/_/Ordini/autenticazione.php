@@ -27,6 +27,7 @@ include(tpf("/Elementi/Ordini/checkout_steps.php")); ?>
 			<div class="uk-text-meta"><?php echo gtext("Inserisci Username e Password per continuare come utente loggato.");?><br /><br /></div>
 			
 			<?php
+			$nascondiPlaceholder = true;
 			include(tpf(ElementitemaModel::p("LOGIN_FORM","", array(
 				"titolo"	=>	"Form login",
 				"percorso"	=>	"Elementi/Generali/LoginForm",
@@ -59,7 +60,7 @@ include(tpf("/Elementi/Ordini/checkout_steps.php")); ?>
 		<form class="" action = '<?php echo $this->baseUrl."/checkout";?>' method = 'GET'>
 			<fieldset class="uk-fieldset">
 				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?> *</label>
+					<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?></label>
 					<div class="uk-form-controls">
 						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" />
 					</div>
