@@ -115,8 +115,8 @@ if (!defined('EG')) die('Direct access not allowed!');
         margin-top: 20px;}
         
       h1 {
-        font-size: 20px;
-        font-weight: 300;
+        font-size: 22px;
+        font-weight: 400;
         text-align: center;
          }
 
