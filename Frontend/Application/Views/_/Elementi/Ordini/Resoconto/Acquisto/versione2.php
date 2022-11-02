@@ -49,7 +49,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 
 <?php include(tpf("Ordini/resoconto_pagamento.php"));?>
 
-<h4 class="uk-text-lead"><?php echo gtext("Prodotti acquistati", false); ?>:</h2>
+<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Prodotti acquistati", false); ?></h2>
 
 <?php include(tpf("Ordini/resoconto_prodotti.php"));?>
 
@@ -109,12 +109,12 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 </div>
 
 <?php if (trim($ordine["note"])) { ?>
-<h4 class="uk-text-lead"><?php echo gtext("Note d'acquisto");?></h2>
+<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Note d'acquisto");?></h2>
 <?php echo nl2br($ordine["note"]);?>
 <br /><br />
 <?php } ?>
 
-<h4 class="uk-text-lead"><?php echo gtext("Dati di fatturazione", false); ?></h2>
+<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di fatturazione", false); ?></h2>
 
 <div class="uk-overflow-auto">
 	<table class="table uk-table uk-table-divider uk-table-hover">
@@ -196,7 +196,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 </div>
 
 <?php if ($ordine["da_spedire"]) { ?>
-<h4 class="uk-text-lead"><?php echo gtext("Dati di spedizione", false); ?></h2>
+<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di spedizione", false); ?></h2>
 
 <div class="uk-overflow-auto">
 	<table class="table uk-table uk-table-divider uk-table-hover">

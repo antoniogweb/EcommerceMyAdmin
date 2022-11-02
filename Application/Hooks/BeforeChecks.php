@@ -244,7 +244,7 @@ Helper_Menu::$htmlLinks = array(
 	"manda_mail" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-warning help_manda_mail"',
+		"attributes" => 'role="button" class="btn btn-warning help_manda_mail make_spinner"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Invia mail",
 		"classIconBefore"	=>	'<i class="fa fa-envelope"></i>',
