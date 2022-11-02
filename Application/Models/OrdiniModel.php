@@ -511,7 +511,7 @@ class OrdiniModel extends FormModel {
 				$testoClean = $output;
 				
 				$output = MailordiniModel::loadTemplate($oggetto, $output);
-				echo $output;die();
+// 				echo $output;die();
 				// Imposto le traduzioni del back
 				Params::$lang = $bckLang;
 				TraduzioniModel::$contestoStatic = $bckContesto;
