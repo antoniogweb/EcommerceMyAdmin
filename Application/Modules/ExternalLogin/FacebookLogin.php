@@ -83,6 +83,7 @@ class FacebookLogin extends ExternalLogin
 			$this->infoUtente["codice_errore"] = sanitizeAll($_GET["error"]);
 			$this->infoUtente["stringa_errore"] = isset($_GET["error_description"]) ? sanitizeAll($_GET["error_description"]) : "";
 			$this->infoUtente["codice_errore_piattaforma"] = isset($_GET["error_code"]) ? sanitizeAll($_GET["error_code"]) : "";
+			$this->infoUtente["result"] = 0;
 			
 			return;
 		}

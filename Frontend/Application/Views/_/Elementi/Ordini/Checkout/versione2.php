@@ -31,30 +31,42 @@
 							</div>
 							<div class="uk-width-1-1">
 								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
-									<span uk-icon="icon:bookmark;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Informazioni personali");?>
+									<span uk-icon="icon:bookmark;ratio:1.2" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Dati di fatturazione");?>
 								</h2>
 
 								<div class="blocco_checkout">
 									<?php if ($islogged) { ?>
 									<div class="uk-margin uk-width-1-1">
-										<div class="uk-grid uk-grid-large" uk-grid>
+										<div class="uk-grid uk-grid-collapse" uk-grid>
 											<div class="uk-width-1-1 uk-width-1-2@m">
 												<span class="uk-text-emphasis"><?php echo OrdiniModel::getNominativo(User::$dettagli);?></span>
+												<?php if (User::$dettagli["completo"]) { ?>
 												<br /><span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <?php echo User::$dettagli["indirizzo"];?>
 												<br /><?php echo User::$dettagli["cap"];?>, <?php echo User::$dettagli["citta"];?> (<?php echo User::$dettagli["nazione"] == "IT" ? User::$dettagli["provincia"] : User::$dettagli["dprovincia"];?>)
+												<?php } ?>
 												<br /><span class="uk-text-emphasis"><?php echo gtext("Nazione");?>:</span> <?php echo nomeNazione(User::$dettagli["nazione"]);?>
 											</div>
 											<div class="uk-width-1-1 uk-width-1-2@m">
+												<?php if (User::$dettagli["completo"]) { ?>
 												<span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo User::$dettagli["telefono"];?><br />
+												<?php } ?>
 												<span class="uk-text-emphasis"><?php echo gtext("Email");?>:</span> <?php echo User::$dettagli["username"];?><br />
+												<?php if (User::$dettagli["completo"]) { ?>
 												<?php echo User::$dettagli["fattura"] ? gtext("Voglio ricevere la fattura") : gtext("Voglio ricevere lo scontrino fiscale");?>
+												<?php } ?>
+												<?php if (User::$dettagli["completo"]) { ?>
+												<div class="uk-margin-small-top"><a href="<?php echo $this->baseUrl."/modifica-account?redirect=checkout"?>" class="uk-button uk-button-primary uk-button-small"><span class="uk-margin-small-right" uk-icon="icon: pencil"></span><?php echo gtext("Modifica dati")?></a></div>
+												<?php } ?>
 											</div>
 										</div>
 									</div>
-									<?php } ?>
-									<div <?php if ($islogged) { ?>class="uk-hidden"<?php } ?>>
+									<div class="<?php if (!User::$dettagli["completo"]) { ?>mostra_solo_dati_incompleti<?php } else { ?>uk-hidden<?php } ?>">
+										<?php if (!User::$dettagli["completo"]) { ?><span class="uk-text-primary"><?php echo gtext("Si prega di completare i campi di fatturazione");?></span><?php } ?>
 										<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 									</div>
+									<?php } else { ?>
+										<?php include(tpf("Regusers/form_dati_cliente.php"));?>
+									<?php } ?>
 								</div>
 								
 								<hr class="uk-divider-icon uk-margin-medium-top uk-visible@m">

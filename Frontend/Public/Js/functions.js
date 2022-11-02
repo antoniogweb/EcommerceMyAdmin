@@ -535,6 +535,11 @@ function setBoxSpedizioneSelezionata(obj)
 	obj.addClass("spedizione_selezionata");
 }
 
+function setCampiDaNascondere()
+{
+	$("[name='nome'],[name='cognome'],[name='email']").closest(".box_entry_dati").addClass("uk-hidden");
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -545,6 +550,9 @@ $(document).ready(function(){
 	
 	updateFormRegistrato();
 	updateFormTipoCliente();
+	
+	if ($(".mostra_solo_dati_incompleti").length > 0)
+		setCampiDaNascondere();
 	
 	$('[name="tipo_cliente"]').on('ifChanged', function(event){
 		

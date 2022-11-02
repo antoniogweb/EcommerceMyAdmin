@@ -735,16 +735,27 @@ class BaseOrdiniController extends BaseController
 				$this->redirect("carrello/vedi");
 		}
 		
-		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
-		{
-			if (Output::$html)
-				$this->redirect("carrello/vedi?evidenzia");
-		}
+		$this->checkCheckout();
+		
+// 		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
+// 		{
+// 			if (Output::$html)
+// 				$this->redirect("carrello/vedi?evidenzia");
+// 		}
 		
 		$this->getAppLogin();
 		$this->load("autenticazione");
 		
 		
+	}
+	
+	private function checkCheckout()
+	{
+		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
+		{
+			if (Output::$html)
+				$this->redirect("carrello/vedi?evidenzia");
+		}
 	}
 	
 	public function index()
@@ -779,11 +790,13 @@ class BaseOrdiniController extends BaseController
 				$this->redirect("carrello/vedi");
 		}
 		
-		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
-		{
-			if (Output::$html)
-				$this->redirect("carrello/vedi?evidenzia");
-		}
+		$this->checkCheckout();
+		
+// 		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
+// 		{
+// 			if (Output::$html)
+// 				$this->redirect("carrello/vedi?evidenzia");
+// 		}
 		
 		$this->getAppLogin();
 		
@@ -1296,6 +1309,9 @@ class BaseOrdiniController extends BaseController
 									"id_spedizione" => $idSpedizione,
 								);
 								$this->m['OrdiniModel']->update($clean['lastId']);
+								
+								if (!$this->m['RegusersModel']->isCompleto(User::$id))
+									$this->m['RegusersModel']->sincronizzaDaOrdine(User::$id, $clean['lastId']);
 							}
 
 							// Se è nazione estera, salvo la dprovincia in provincia

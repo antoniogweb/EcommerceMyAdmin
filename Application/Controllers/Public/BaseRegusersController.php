@@ -259,6 +259,7 @@ class BaseRegusersController extends BaseController
 				));
 				
 				$this->m['RegusersModel']->setValue("password", randomToken(), PASSWORD_HASH);
+				$this->m['RegusersModel']->setValue("completo", 0);
 				
 				if ($this->m['RegusersModel']->insert())
 				{
@@ -818,6 +819,8 @@ class BaseRegusersController extends BaseController
 	{
 		$this->s['registered']->check(null,0);
 		
+		$redirect = RegusersModel::getRedirect();
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/modifica-account";
@@ -825,7 +828,7 @@ class BaseRegusersController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica account");
 		$data['notice'] = null;
-		$data['action'] = "/modifica-account";
+		$data['action'] = "/modifica-account".RegusersModel::$redirectQueryString;
 		$data["isAreaRiservata"] = true;
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
@@ -842,20 +845,28 @@ class BaseRegusersController extends BaseController
 			$fields .= ",id_tipo_azienda";
 		
 		$this->m['RegusersModel']->setFields($fields,'sanitizeAll');
+		$this->m['RegusersModel']->setValue("completo", 1);
 		
 		$this->m['RegusersModel']->setConditions($tipo_cliente, "update", $pec, $codiceDestinatario);
 		
 // 		$this->m['RegusersModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
 		
 		$this->m['RegusersModel']->updateTable('update',$this->iduser);
-		if ($this->m['RegusersModel']->result)
+		if ($this->m['RegusersModel']->queryResult)
 		{
 			if (Output::$html)
+			{
 				$data['notice'] = $this->m['RegusersModel']->notice;
+				
+				$urlRedirect = RegusersModel::getUrlRedirect();
+				
+				if ($urlRedirect)
+					header('Location: '.$urlRedirect);
+			}
 		}
 		else
 		{
-			if (Output::$html)
+			if (!$this->m['RegusersModel']->result)
 				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
 		}
 		

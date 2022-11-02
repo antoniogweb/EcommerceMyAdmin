@@ -9,7 +9,7 @@
 				
 				<?php foreach ($corrieri as $corriere) { ?>
 				<div class="uk-margin-small radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">
-				<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?> <?php echo $corriere["titolo"];?>
+					<label><?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?><span class="uk-margin-left"><?php echo $corriere["titolo"];?></span></label>
 				</div>
 				<?php } ?>
 			</div>

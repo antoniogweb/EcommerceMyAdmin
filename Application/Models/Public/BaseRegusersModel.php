@@ -488,4 +488,32 @@ class BaseRegusersModel extends Model_Tree
 				$rModel->deleteAccount($utente["id_user"]);
 		}
     }
+    
+    public function isCompleto($idCliente)
+    {
+		return (int)$this->clear()->where(array(
+			"id_user"	=>	(int)$idCliente,
+		))->field("completo");
+    }
+    
+    public function sincronizzaDaOrdine($idCliente, $idOrdine)
+    {
+		$ordine = OrdiniModel::g()->selectId($idOrdine);
+		
+		if (!empty($ordine))
+		{
+			$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+			
+			$this->sValues(array(
+				"completo"	=>	1,
+			));
+			
+			foreach ($campiDaCopiare as $cdc)
+			{
+				$this->setValue($cdc, $ordine[$cdc], "sanitizeDb");
+			}
+			
+			$this->pUpdate($idCliente);
+		}
+    }
 }
