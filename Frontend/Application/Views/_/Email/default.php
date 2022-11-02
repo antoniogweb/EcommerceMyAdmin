@@ -236,6 +236,11 @@ if (!defined('EG')) die('Direct access not allowed!');
 			width:50%;
 			float:left;
 		}
+		
+		.stringa_attributi_title
+		{
+			margin:0px !important;
+		}
       /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
       ------------------------------------- */
