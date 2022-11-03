@@ -63,5 +63,5 @@ if ($haCouponAttivo)
 
 <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext($scrittaFinaleTotale);?></div>
-	<div class="uk-text-lead uk-text-bolder"><?php echo getTotal();?> €</div>
+	<div class="uk-text-lead uk-text-bolder"><span class="totale_ordine"><?php echo getTotal();?></span> €</div>
 </div>

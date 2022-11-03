@@ -260,6 +260,11 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 			if (content)
 			{
 				$(".blocco_totale_merce").html(content);
+				
+				if ($(".prezzo_bottom").length > 0 && $(".totale_ordine").length > 0)
+				{
+					$(".prezzo_bottom").text($(".totale_ordine").text());
+				}
 			}
 		}
 	});

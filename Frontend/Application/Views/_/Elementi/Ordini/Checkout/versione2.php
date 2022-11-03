@@ -146,6 +146,24 @@
 					if (isset($_POST['invia']))
 						echo Html_Form::hidden("post_error",2);
 					?>
+					
+					<?php if (User::$isPhone) { ?>
+					<div class="uk-background-muted uk-width-1-1" style="box-shadow: 0px -2px 10px 0px #DDD;position:fixed;bottom:0px;left:0px;z-index:99999;">
+						<div class="uk-padding-small">
+							<div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
+								<div class="uk-width-2-3">
+									<div class="">
+										<div class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+										<input class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Conferma e paga", false);?>" />
+									</div>
+								</div>
+								<div class="uk-width-expand">
+									<div class="uk-text-lead uk-text-bolder"><span class="prezzo_bottom"><?php echo getTotal(true);?></span> €</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
 				</div>
 				<div class="uk-margin-remove-top uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
 					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
