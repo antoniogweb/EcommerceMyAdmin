@@ -153,6 +153,12 @@
 							<td><b class="text text-primary"><?php echo gtext("Richiesta");?></b></td>
 						</tr>
 						<?php } ?>
+						<?php if ($ordine["id_lista_regalo"]) { ?>
+						<tr>
+							<td><?php echo gtext("Lista regalo");?>:</td>
+							<td><?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?></td>
+						</tr>
+						<?php } ?>
 					</table>
 				</div>
 			</div>

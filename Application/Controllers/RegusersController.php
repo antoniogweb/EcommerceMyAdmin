@@ -258,8 +258,6 @@ class RegusersController extends BaseController {
 	{
 		$this->_posizioni['ordini'] = 'class="active"';
 		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
-		
 		$this->shift(1);
 		
 		$clean['id'] = $this->id = (int)$id;
@@ -270,8 +268,6 @@ class RegusersController extends BaseController {
 		$this->modelName = "OrdiniModel";
 		$this->addBulkActions = false;
 		$this->colProperties = array();
-		
-		$this->m[$this->modelName]->updateTable('del');
 		
 		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
 		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale";

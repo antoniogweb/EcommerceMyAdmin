@@ -713,6 +713,7 @@ class Route
 		'listeregalo,pagine',
 		'listeregalo,inviti',
 		'listeregalo,salvapagine',
+		'listeregalo,ordini',
 		
 		'listeregalolink,form',
 		'listeregalolink,invia',

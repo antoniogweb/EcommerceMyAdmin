@@ -42,6 +42,7 @@ class ListeregaloController extends BaseController
 		$this->model("ListeregalotipiModel");
 		$this->model("ListeregalopagesModel");
 		$this->model("ListeregalolinkModel");
+		$this->model("OrdiniModel");
 	}
 	
 	public function main()
@@ -143,9 +144,10 @@ class ListeregaloController extends BaseController
 			"combinazioni.codice",
 			"prezzo",
 			"quantita",
+			"ordini",
 		);
 		
-		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo (€),Quantità desiderata";
+		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo (€),Quantità desiderata,Regalati";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,save_regali','mainAction'=>"pagine/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -237,5 +239,34 @@ class ListeregaloController extends BaseController
 		
 		if (v("usa_transactions"))
 			$this->m["ListeregalopagesModel"]->db->commit();
+	}
+	
+	public function ordini($id = 0)
+	{
+		$this->_posizioni['ordini'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_lista_regalo";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "OrdiniModel";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->mainFields = array("vedi",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
+		$this->mainHead = "Ordine,Cliente,Email,Data,Promoz.,Stato,Totale";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array("id_lista_regalo"=>$clean['id']))->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }

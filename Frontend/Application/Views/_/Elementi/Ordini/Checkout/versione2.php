@@ -148,7 +148,7 @@
 					?>
 					
 					<?php if (User::$isMobile) { ?>
-					<div class="uk-background-muted uk-width-1-1" style="box-shadow: 0px -2px 10px 0px #DDD;position:fixed;bottom:0px;left:0px;z-index:99999;">
+					<div class="uk-background-muted uk-width-1-1 checkout_bottom_bar">
 						<div class="uk-padding-small">
 							<div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
 								<div class="uk-width-2-3">

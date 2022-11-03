@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["lista_regalo"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Lista regalo ..",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -51,7 +58,9 @@ class OrdiniController extends BaseController {
 			'id_comb:sanitizeAll'=>'tutti',
 			'dal:sanitizeAll'=>'tutti',
 			'al:sanitizeAll'=>'tutti',
-			'nazione_utente:sanitizeAll'=>'tutti'
+			'nazione_utente:sanitizeAll'=>'tutti',
+			'lista_regalo:sanitizeAll'=>'tutti',
+			'id_lista_regalo:sanitizeAll'=>'tutti',
 		));
 
 		$this->model("OrdiniModel");
@@ -105,6 +114,12 @@ class OrdiniController extends BaseController {
 			$this->mainHead .= ',Nazione';
 		}
 		
+		if (v("attiva_liste_regalo"))
+		{
+			$this->mainFields[] = 'listaregalo';
+			$this->mainHead .= ',Lista regalo';
+		}
+		
 		$this->aggiungiintegrazioni();
 		
 		$this->mainHead .= ",";
@@ -119,6 +134,7 @@ class OrdiniController extends BaseController {
 			'pagamento'	=>	$this->viewArgs['pagamento'],
 			'registrato'	=>	$this->viewArgs['registrato'],
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
+			'id_lista_regalo'	=>	$this->viewArgs['id_lista_regalo'],
 		);
 		
 		$this->m[$this->modelName]->where($where);
@@ -157,6 +173,19 @@ class OrdiniController extends BaseController {
 		if ($this->viewArgs['al'] != "tutti")
 			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= '".getIsoDate($this->viewArgs['al'])."'");
 		
+		if (strcmp($this->viewArgs['lista_regalo'],'tutti') !== 0)
+			$this->m[$this->modelName]->inner(array("lista"))->where(array(
+				" OR"	=>	array(
+					"lk"	=>	array(
+						"liste_regalo.titolo"	=>	$this->viewArgs['lista_regalo'],
+					),
+					" lk"	=>	array(
+						"liste_regalo.codice"	=>	$this->viewArgs['lista_regalo'],
+					),
+					
+				),
+			));
+		
 		$this->m[$this->modelName]->save();
 		
 		$filtroTipo = array(
@@ -174,6 +203,9 @@ class OrdiniController extends BaseController {
 		
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
+		
+		if (v("attiva_liste_regalo"))
+			$this->filters[] = "lista_regalo";
 		
 		parent::main();
 	}

@@ -350,4 +350,46 @@ class ListeregaloModel extends GenericModel
 	{
 		return "<b>".self::getNominativo($record["regusers"])."</b><br />".$record["regusers"]["username"];;
 	}
+	
+	public static function specchietto($idLista)
+	{
+		$res = self::listeUtenteModel(0, (int)$idLista)->select("*")->inner(array("cliente", "tipo"))->first();
+		
+		$html = "";
+		
+		if (!empty($res))
+		{
+			$html .= "<b>".gtext("Titolo").":</b> ".$res["liste_regalo"]["titolo"]." <a target='_blank' href='".Url::getRoot()."listeregalo/form/update/".(int)$idLista."' class='label label-primary text-bold'>".gtext("vai alla lista")." <i class='fa fa-arrow-right'></i></a>";
+			$html .= "<br /><b>".gtext("Tipo").":</b> ".$res["liste_regalo_tipi"]["titolo"];
+			$html .= "<br /><b>".gtext("Creatore lista").":</b> ".self::getNominativo($res["regusers"])." <a href='".Url::getRoot()."regusers/form/update/".(int)$res["regusers"]["id_user"]."?partial=Y&nobuttons=Y' class='iframe label label-info text-bold'><i class='fa fa-user'></i> ".gtext("dettagli utente")."</a>";
+		}
+		
+		return $html;
+	}
+	
+	public function ordini($idLista, $idC = 0)
+	{
+		$idLista = (int)$idLista;
+		$idC = (int)$idC;
+		
+		$r = new RigheModel();
+		
+		$res = $r->clear()->inner("orders")->on("orders.id_o = righe.id_o")->select("sum(righe.quantity) as SOMMA")->where(array(
+			"id_c"	=>	$idC,
+			"orders.id_lista_Regalo"	=>	$idLista,
+			"ne" => array(
+				"orders.stato"	=>	"deleted"
+			),
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)
+		{
+// 			if (!isset($_GET["esporta"]))
+				return $res[0]["aggregate"]["SOMMA"]." <a title='Elenco ordini dove è stato acquistato' class='iframe' href='".Url::getRoot()."ordini/main?partial=Y&id_lista_regalo=$idLista&id_comb=$idC'><i class='fa fa-list'></i></a>";
+// 			else
+// 				return $res[0]["aggregate"]["SOMMA"];
+		}
+		
+		return "";
+	}
 }

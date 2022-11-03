@@ -176,4 +176,14 @@ class ListeregalopagesModel extends GenericModel
 	{
 		return "<input id-riga='".$record["liste_regalo_pages"]["id_lista_regalo_page"]."' style='max-width:50px;' class='form-control' name='quantity' value='".$record["liste_regalo_pages"]["quantity"]."' />";
 	}
+	
+	public function regalati($record)
+	{
+		return ListeregaloModel::numeroRegalati($record["liste_regalo_pages"]["id_lista_regalo"], $record["liste_regalo_pages"]["id_c"]);
+	}
+	
+	public function ordini($record)
+	{
+		return ListeregaloModel::g()->ordini($record["liste_regalo_pages"]["id_lista_regalo"], $record["liste_regalo_pages"]["id_c"]);
+	}
 }

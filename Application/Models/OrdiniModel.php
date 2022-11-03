@@ -205,6 +205,7 @@ class OrdiniModel extends FormModel {
 	public function relations() {
         return array(
 			'pages' => array("HAS_MANY", 'MailordiniModel', 'id_o', null, "CASCADE"),
+			'lista' => array("BELONGS_TO", 'ListeregaloModel', 'id_lista_regalo',null,"CASCADE"),
         );
     }
     
@@ -968,5 +969,20 @@ class OrdiniModel extends FormModel {
 			
 			$o->db->query("update orders set da_spedire = 0 where 1");
 		}
+	}
+	
+	public function listaregalo($record)
+	{
+		if ($record["orders"]["id_lista_regalo"])
+		{
+			$lista = ListeregaloModel::g()->selectId((int)$record["orders"]["id_lista_regalo"]);
+			
+			if (!empty($lista))
+			{
+				return gtext("Titolo").": ". $lista["titolo"]."<br />".gtext("Codice").": <b>".$lista["codice"]."</b>";
+			}
+		}
+		
+		return "";
 	}
 }

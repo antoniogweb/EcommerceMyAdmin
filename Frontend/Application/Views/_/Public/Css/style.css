@@ -13147,6 +13147,14 @@ img:not([src]) {
   padding-bottom: 7px !important;
 }
 
+.checkout_bottom_bar {
+  box-shadow: 0px -2px 10px 0px #DDD;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 99999;
+}
+
 .hc-nav-trigger {
   position: relative;
   top: 0px;
