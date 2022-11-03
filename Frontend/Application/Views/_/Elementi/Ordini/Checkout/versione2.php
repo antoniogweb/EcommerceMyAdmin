@@ -111,7 +111,7 @@
 											?>
 										</div>
 									</div>
-									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isPhone ? "uk-margin-large-top" : "";?>">
+									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isMobile ? "uk-margin-large-top" : "";?>">
 										<div class="">
 											<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 										</div>
@@ -123,7 +123,7 @@
 						</div>
 					</div>
 					
-					<?php if (!User::$isPhone) { ?>
+					<?php if (!User::$isMobile) { ?>
 					<div class="uk-container uk-margin-large-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-margin-right">
@@ -147,7 +147,7 @@
 						echo Html_Form::hidden("post_error",2);
 					?>
 					
-					<?php if (User::$isPhone) { ?>
+					<?php if (User::$isMobile) { ?>
 					<div class="uk-background-muted uk-width-1-1" style="box-shadow: 0px -2px 10px 0px #DDD;position:fixed;bottom:0px;left:0px;z-index:99999;">
 						<div class="uk-padding-small">
 							<div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
@@ -157,7 +157,7 @@
 										<input class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Conferma e paga", false);?>" />
 									</div>
 								</div>
-								<div class="uk-width-expand">
+								<div class="uk-width-expand uk-text-right">
 									<div class="uk-text-lead uk-text-bolder"><span class="prezzo_bottom"><?php echo getTotal(true);?></span> €</div>
 								</div>
 							</div>
@@ -181,7 +181,7 @@
 						<?php } ?>
 					</div>
 					
-					<?php if (User::$isPhone) { ?>
+					<?php if (User::$isMobile) { ?>
 					<div class="uk-container uk-margin-large-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-width-expand">
