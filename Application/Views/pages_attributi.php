@@ -21,7 +21,7 @@ $(document).ready(function(){
 // 		
 // 	});
 
-	$(".immagine_event").click(function(){
+	$(".immagine_variante").click(function(){
 	
 		clicked_element = $(this);
 		
@@ -41,7 +41,7 @@ $(document).ready(function(){
 			
 			close_lightbox();
 			
-			var t_id = clicked_element.attr("id");
+			var t_id = clicked_element.parent().find(".immagine_event").attr("id");
 			var post_data = "id_c="+encodeURIComponent(t_id)+"&value="+encodeURIComponent(t_image)+"&field=immagine";
 			
 			$.ajax({
