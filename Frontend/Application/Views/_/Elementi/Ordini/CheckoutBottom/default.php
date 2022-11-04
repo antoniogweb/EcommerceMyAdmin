@@ -1,4 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php
+include(tpf(ElementitemaModel::p("CHECKOUT_REGALO","", array(
+	"titolo"	=>	"Blocco regalo: dedica e firma",
+	"percorso"	=>	"Elementi/Ordini/Regalo",
+))));
+?>
+
 <?php include(tpf("Ordini/note_acquisto.php"));?>
 
 <?php

@@ -42,7 +42,7 @@
 				<div class="cart_item_row uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" rel="<?php echo $p["cart"]["id_cart"];?>">
 					<div class="uk-first-column">
 						<div class="uk-hidden@m uk-text-left">
-							<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
+							<a class="uk-icon-button uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
 						</div>
 						<?php if ($p["cart"]["immagine"]) { ?>
 						<?php if (!$p["cart"]["id_p"]) { ?><a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><?php } ?>

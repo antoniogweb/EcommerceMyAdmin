@@ -88,6 +88,8 @@ if (typeof reloadCart !== 'function')
 				$(".cart_container").html(content);
 				
 				reloadCartSecondario();
+				
+				nascondiTendinaCaricamento();
 			}
 		});
 	}
@@ -889,6 +891,8 @@ if (typeof pulisciErroriGiftCard !== 'function')
 
 function aggiornaCarrello(vai_la_checkout, incrementa)
 {
+	mostraTendinaCaricamento();
+	
 	if (typeof incrementa == "undefined")
 		incrementa = false;
 	
@@ -988,6 +992,8 @@ function aggiornaCarrello(vai_la_checkout, incrementa)
 				
 				if (content.qty.length == 0)
 					reloadCart(incrementa);
+				else
+					nascondiTendinaCaricamento();
 			}
 			
 			ok_aggiorna_carrello = true;
@@ -1091,6 +1097,8 @@ $(document).ready(function(){
 		
 		if (ok_aggiorna_carrello)
 		{
+			redirectCombinazioneAttivo = true;
+			
 			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
 			
 			var new_quantity = parseInt(t_input.val()) + 1;
@@ -1107,6 +1115,8 @@ $(document).ready(function(){
 		
 		if (ok_aggiorna_carrello)
 		{
+			redirectCombinazioneAttivo = true;
+			
 			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
 			
 			var t_current_quantity = parseInt(t_input.val());
@@ -1155,6 +1165,8 @@ $(document).ready(function(){
 	
 	$( "body" ).on( "change", ".cart_item_row_mobile", function(e) {
 		
+		redirectCombinazioneAttivo = true;
+		
 		aggiornaCarrello(undefined, true);
 		
 	});
@@ -1162,6 +1174,9 @@ $(document).ready(function(){
 	$( "body" ).on( "click", ".cart_item_delete_link", function(e) {
 		
 		e.preventDefault();
+		
+		redirectCombinazioneAttivo = true;
+		mostraTendinaCaricamento();
 		
 		var t_tr = $(this).closest(".cart_item_row");
 		var id_page = t_tr.attr("rel");
@@ -1181,6 +1196,7 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
+		redirectCombinazioneAttivo = true;
 		aggiornaCarrello();
 		
 	});

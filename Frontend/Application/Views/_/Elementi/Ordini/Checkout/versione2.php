@@ -130,7 +130,7 @@
 								<span uk-icon="icon:check;ratio:1" class="uk-icon-button"></span>
 							</div>
 							<div class="uk-width-expand">
-								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Verifica e conferma acquisto");?></h2>
+								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Note e conferma acquisto");?></h2>
 								
 								<?php include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(
 										"titolo"	=>	"Parte inferiore del checkout",

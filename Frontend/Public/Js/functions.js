@@ -545,6 +545,14 @@ function setCampiDaNascondere()
 	$("[name='nome'],[name='cognome'],[name='email']").closest(".box_entry_dati").addClass("uk-hidden");
 }
 
+function mostraNascondiBloccoRegalo()
+{
+	if ($('[name="regalo"]').val() == 1)
+		$(".box_regalo").removeClass("uk-hidden");
+	else
+		$(".box_regalo").addClass("uk-hidden");
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -624,6 +632,22 @@ $(document).ready(function(){
 		
 		return false;
 	});
+	
+	if ($("[name='regalo_check']").length > 0)
+	{
+		mostraNascondiBloccoRegalo();
+		
+		$("body").on("ifChanged", "[name='regalo_check']", function(e){
+			
+			if ($(this).is(":checked"))
+				$("[name='regalo']").val(1);
+			else
+				$("[name='regalo']").val(0);
+			
+			mostraNascondiBloccoRegalo();
+			
+		});
+	}
 	
 	if ($("[name='spedizione_come_fatturazione']").length > 0)
 	{

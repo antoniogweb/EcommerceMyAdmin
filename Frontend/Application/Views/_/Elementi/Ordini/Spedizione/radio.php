@@ -2,8 +2,6 @@
 <?php if (v("attiva_spedizione")) { ?>
 	<?php if (!$islogged) { ?>
 		
-		
-		
 		<div class="uk-margin-medium">
 			<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
 		</div>
@@ -12,8 +10,6 @@
 		
 		<?php if (count($tendinaIndirizzi) > 0) { ?>
 		
-			
-			
 			<div class="blocco_checkout">
 				
 				<div class="uk-grid uk-grid-small" uk-grid>
@@ -69,8 +65,6 @@
 			</div>
 		
 		<?php } else { ?>
-			
-			
 			
 			<?php include(tpf("Ordini/scelta_spedizione_fatturazione.php"));?>
 		

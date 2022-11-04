@@ -1501,6 +1501,7 @@ class BaseOrdiniController extends BaseController
 			$defaultValues["id_corriere"] = $data['corrieri'][0]["id_corriere"];
 		
 		$defaultValues["newsletter"] = "N";
+		$defaultValues["regalo"] = 0;
 		
 		$data['values'] = $this->m['OrdiniModel']->getFormValues('insert','sanitizeHtml',null,$defaultValues);
 		
