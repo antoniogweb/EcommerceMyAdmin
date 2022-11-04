@@ -998,7 +998,7 @@ $(document).ready(function(){
 			var offset = $("#fragment-checkout-fatturazione").offset();
 			var offset2 = $("#fragment-checkout-conferma").offset();
 // 			console.log(offset.top);
-			if($(window).scrollTop() > offset.top && $(window).scrollTop() < (offset2.top - 300)) {
+			if($(window).scrollTop() > offset.top && $(window).scrollTop() < (offset2.top - 360)) {
 				$( ".checkout_bottom_bar" ).css("bottom", "0px");
 			} else {
 				$( ".checkout_bottom_bar" ).css("bottom", "-200px");
