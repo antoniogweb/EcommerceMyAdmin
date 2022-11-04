@@ -19,7 +19,7 @@ $temp["listino"] = "tutti";
 
 <?php echo $menu; ?>
 
-<?php if (v("attiva_giacenza")) { ?>
+<?php if (v("immagine_in_varianti")) { ?>
 <script>
 $(document).ready(function(){
 
@@ -64,7 +64,7 @@ $(document).ready(function(){
 				<h4 class="modal-title" id="myModalLabel">Seleziona immagine variante</h4>
 			</div>
 			<div class="modal-body">
-				aaa
+				
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
