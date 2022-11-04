@@ -46,6 +46,21 @@ function aggiornaListaProdotti()
 			
 			$(".prodotti-lista-box").html(content);
 			
+			nascondiTendinaCaricamento();
+		}
+	});
+	
+	var url = baseUrl + "/listeregalo/elencoprodotti/" + id_lista + "/1";
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		success: function(content){
+			
+			$(".prodotti-lista-regali").html(content);
+			
 		}
 	});
 }
@@ -65,12 +80,15 @@ function aggiornaListaLink()
 			
 			$(".box_elenco_link_inviati").html(content);
 			
+			nascondiTendinaCaricamento();
 		}
 	});
 }
 
 function aggiornaQuantitaLista()
 {
+	mostraTendinaCaricamento();
+	
 	ok_aggiorna_prodotti_lista = false;
 	
 	var products_list = "";
@@ -87,7 +105,7 @@ function aggiornaQuantitaLista()
 	
 	var post_data = "products_list="+encodeURIComponent(products_list);
 	
-	console.log(post_data);
+// 	console.log(post_data);
 	
 	var url  = baseUrl + "/listeregalo/aggiornaprodotti";
 	
@@ -123,7 +141,10 @@ $(document).ready(function(){
 		var idRiga = $(this).parents(".lista-riga").attr("id-lista-riga");
 		
 		var url = baseUrl + "/listeregalo/elimina/" + idRiga;
-	
+		
+		redirectCombinazioneAttivo = true;
+		mostraTendinaCaricamento();
+		
 		$.ajaxQueue({
 			url: url,
 			async: true,
@@ -140,6 +161,8 @@ $(document).ready(function(){
 	
 	$( "body" ).on( "change", ".prodotti_lista_item_mobile", function(e) {
 		
+		redirectCombinazioneAttivo = true;
+		
 		aggiornaQuantitaLista();
 		
 	});
@@ -150,6 +173,8 @@ $(document).ready(function(){
 		
 		if (ok_aggiorna_prodotti_lista)
 		{
+			redirectCombinazioneAttivo = true;
+			
 			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
 			
 			var new_quantity = parseInt(t_input.val()) + 1;
@@ -166,6 +191,8 @@ $(document).ready(function(){
 		
 		if (ok_aggiorna_prodotti_lista)
 		{
+			redirectCombinazioneAttivo = true;
+			
 			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
 			
 			var t_current_quantity = parseInt(t_input.val());

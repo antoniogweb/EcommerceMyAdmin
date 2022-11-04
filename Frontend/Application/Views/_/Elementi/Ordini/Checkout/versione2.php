@@ -24,7 +24,7 @@
 						<?php echo $notice; ?>
 					</div>
 					
-					<div class="uk-container uk-margin-bottom">
+					<div id="fragment-checkout-fatturazione" class="uk-container uk-margin-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-margin-right uk-visible@m">
 								<span uk-icon="icon:user;ratio:1" class="uk-icon-button"></span>
@@ -74,7 +74,7 @@
 						</div>
 					</div>
 					
-					<div class="uk-container uk-margin-bottom">
+					<div id="fragment-checkout-spedizione" class="uk-container uk-margin-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-margin-right uk-visible@m">
 								<span uk-icon="icon:location;ratio:1" class="uk-icon-button"></span>
@@ -166,7 +166,7 @@
 					<?php } ?>
 				</div>
 				<div class="uk-margin-remove-top uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
-					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
+					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } else { ?>id="fragment-checkout-carrello"<?php } ?>>
 						<?php include(tpf("/Ordini/checkout_totali.php")); ?>
 						
 						<?php if (v("attiva_coupon_checkout") && !hasActiveCoupon()) { ?>
@@ -185,7 +185,7 @@
 					<div class="uk-container uk-margin-large-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-width-expand">
-								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
+								<h2 id="fragment-checkout-conferma" class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
 									<span uk-icon="icon:check;ratio:1" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Conferma acquisto");?>
 								</h2>
 								

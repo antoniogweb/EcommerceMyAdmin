@@ -112,7 +112,7 @@ class BaseListeregaloController extends BaseController
 		$this->load('gestisci');
 	}
 	
-	public function elencoprodotti($id = 0)
+	public function elencoprodotti($id = 0, $regalati = 0)
 	{
 		$clean["id"] = $data["id"] = (int)$id;
 		
@@ -121,7 +121,11 @@ class BaseListeregaloController extends BaseController
 		$this->clean();
 		
 		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
-		$data["regalati"] = false;
+		
+		if ((int)$regalati === 1)
+			$data["regalati"] = true;
+		else
+			$data["regalati"] = false;
 		
 		$this->append($data);
 		$this->load('prodotti');
@@ -173,6 +177,7 @@ class BaseListeregaloController extends BaseController
 		$clean["quantity"] = $this->request->post("products_list","","sanitizeAll");
 		
 		$quantityArray = explode("|",$clean["quantity"]);
+		$arrayIdQuantity = array();
 		
 		foreach ($quantityArray as $q)
 		{

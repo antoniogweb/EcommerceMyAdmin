@@ -29,21 +29,23 @@
 	var spesa_pagamento_possibile = <?php echo (PagamentiModel::getMaxPagamento() > 0) ? "true" : "false"; ?>;
 	var stringa_errore_lista_non_selezionata = "<?php echo gtext("Si prega di selezionare una lista regalo");?>";
 	var url_autenticati = "<?php echo VariabiliModel::paginaAutenticazione();?>";
+	<?php if (v("attiva_liste_regalo")) { ?>
+	var stringa_testo_copiato_clipboard = "<?php echo gtext("Il link della lista è stato copiato negli appunti.");?>";
+	<?php } ?>
 </script>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
 <?php } ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cms.js?v=<?php echo rand(1,10000);?>"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>functions.js?v=<?php echo rand(1,10000);?>"></script>
 
 <?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>listeregalo.js?v=<?php echo rand(1,10000);?>"></script>
-	<?php if ($this->controller == "listeregalo" && $this->action == "modifica") { ?>
-		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/';?>jquery-ui.min.js"></script>
-		<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
-		<script type="text/javascript" src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js';?>"></script>
-		<?php } ?>
-	<?php } ?>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/';?>jquery-ui.min.js"></script>
+<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js';?>"></script>
+<?php } ?>
 <?php } ?>
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>

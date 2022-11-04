@@ -954,7 +954,6 @@ $(document).ready(function(){
 		});
 	});
 	
-	
 	$(".showcoupon").click(function(e){
 		e.preventDefault();
 		
@@ -981,16 +980,30 @@ $(document).ready(function(){
 			},
 			"user_mouseup_callback": function(leftValue, rightValue, left_grip_moved) {
 				
-// 				console.log(rightValue);
 				var urlSlider = $(".url_slider_prezzo").text();
 				
 				urlSlider = urlSlider.replace("[DA]", leftValue);
 				urlSlider = urlSlider.replace("[A]", rightValue);
 				
-// 				$(".url_slider_prezzo").text(urlSlider);
 				location.href = urlSlider;
 			}
 		});
 		
+	}
+	
+	if ($(".checkout_bottom_bar").length > 0)
+	{
+		$(window).scroll(function() {
+// 			console.log($(window).scrollTop());
+			var offset = $("#fragment-checkout-fatturazione").offset();
+			var offset2 = $("#fragment-checkout-conferma").offset();
+// 			console.log(offset.top);
+			if($(window).scrollTop() > offset.top && $(window).scrollTop() < (offset2.top - 300)) {
+				$( ".checkout_bottom_bar" ).css("bottom", "0px");
+			} else {
+				$( ".checkout_bottom_bar" ).css("bottom", "-200px");
+			}
+			
+		});
 	}
 });

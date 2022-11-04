@@ -108,7 +108,8 @@ img:not([src])
 {
 	box-shadow: 0px -2px 10px 0px #DDD;
 	position:fixed;
-	bottom:0px;
+	bottom:-200px;
 	left:0px;
 	z-index:99999;
+	transition: bottom 0.5s linear;
 }

@@ -1954,6 +1954,8 @@ class BaseContenutiController extends BaseController
 		{
 			$data["title"] = Parametri::$nomeNegozio . " - ".gtext("lista")." ".$lista["liste_regalo"]["titolo"];
 			
+			$data["meta_description"] = $lista["liste_regalo"]["titolo"];
+			
 			$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($lista["liste_regalo"]["id_lista_regalo"]);
 			
 			$this->append($data);
