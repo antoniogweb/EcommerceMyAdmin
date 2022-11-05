@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, CURRENT_TIMESTAMP, '0', 'con_note', 'con_note', 'CAMPI_FORM_CHECKOUT', '37', '0');

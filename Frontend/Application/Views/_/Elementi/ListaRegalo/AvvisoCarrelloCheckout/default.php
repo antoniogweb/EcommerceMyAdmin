@@ -5,7 +5,7 @@ $idLista = isset($idListaRegalo) ? (int)$idListaRegalo : (int)User::$idLista;
 
 $lista = ListeregaloModel::listeUtenteModel(0, $idLista)->record();?>
 	<?php if ($idLista && !empty($lista)) { ?>
-	<div class="uk-panel uk-background-muted uk-padding-small uk-position-relative uk-margin-medium-bottom">
+	<div class="uk-text-left uk-panel uk-background-muted uk-padding-small uk-position-relative uk-margin-medium-bottom">
 		<dl class="uk-description-list uk-text-left uk-margin-remove-top uk-margin-remove-bottom">
 			<dt class="uk-text-danger">
 				<?php if (isset($idListaRegalo)) { ?>

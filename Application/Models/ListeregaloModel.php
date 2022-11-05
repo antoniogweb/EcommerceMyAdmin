@@ -206,6 +206,9 @@ class ListeregaloModel extends GenericModel
     
     public static function scaduta($idLista)
     {
+		if (!$idLista)
+			return 0;
+		
 		return self::listeUtenteModel(0, $idLista)->aWhere(array(
 			"lt"	=>	array(
 				"data_scadenza"	=>	date("Y-m-d"),
@@ -215,6 +218,9 @@ class ListeregaloModel extends GenericModel
     
     public static function attiva($idLista)
     {
+		if (!$idLista)
+			return 0;
+		
 		return self::listeUtenteAttiveModel(0, $idLista)->rowNumber();
     }
     
@@ -321,6 +327,11 @@ class ListeregaloModel extends GenericModel
 			
 			Cookie::set(v("nome_cookie_id_lista"), User::$idLista, $time, "/", true, 'Lax');
 		}
+    }
+    
+    public static function hasIdLista()
+    {
+		return (v("attiva_liste_regalo") && (int)User::$idLista) ? true : false;
     }
     
     public static function getRigheRegalate($idLista, $idC)

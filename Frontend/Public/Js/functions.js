@@ -553,6 +553,14 @@ function mostraNascondiBloccoRegalo()
 		$(".box_regalo").addClass("uk-hidden");
 }
 
+function mostraNascondiBloccoNote()
+{
+	if ($('[name="con_note"]').val() == 1)
+		$(".box_note").removeClass("uk-hidden");
+	else
+		$(".box_note").addClass("uk-hidden");
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -648,6 +656,23 @@ $(document).ready(function(){
 			
 		});
 	}
+	
+	if ($("[name='con_note_check']").length > 0)
+	{
+		mostraNascondiBloccoNote();
+		
+		$("body").on("ifChanged", "[name='con_note_check']", function(e){
+			
+			if ($(this).is(":checked"))
+				$("[name='con_note']").val(1);
+			else
+				$("[name='con_note']").val(0);
+			
+			mostraNascondiBloccoNote();
+			
+		});
+	}
+	
 	
 	if ($("[name='spedizione_come_fatturazione']").length > 0)
 	{
@@ -1022,7 +1047,7 @@ $(document).ready(function(){
 			var offset = $("#fragment-checkout-fatturazione").offset();
 			var offset2 = $("#fragment-checkout-conferma").offset();
 // 			console.log(offset.top);
-			if($(window).scrollTop() > offset.top && $(window).scrollTop() < (offset2.top - 360)) {
+			if($(window).scrollTop() > offset.top && $(window).scrollTop() < (offset2.top - 400)) {
 				$( ".checkout_bottom_bar" ).css("bottom", "0px");
 			} else {
 				$( ".checkout_bottom_bar" ).css("bottom", "-200px");

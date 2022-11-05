@@ -241,6 +241,37 @@ if (!defined('EG')) die('Direct access not allowed!');
 		{
 			margin:0px !important;
 		}
+		
+		.uk-text-danger
+		{
+			color: #f0506e !important
+		}
+		
+		dd, dl, blockquote
+		{
+			margin:0px;
+		}
+		
+		blockquote footer
+		{
+			font-style:italic;
+		}
+		
+		.uk-padding-small
+		{
+			padding:15px;
+		}
+		
+		.uk-background-muted
+		{
+			background-color: #f8f8f8;
+		}
+		
+		.uk-margin-medium-bottom
+		{
+			margin-bottom:15px;
+		}
+		
       /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
       ------------------------------------- */

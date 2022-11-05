@@ -875,6 +875,9 @@ class BaseOrdiniController extends BaseController
 			$_POST["id_spedizione"] = 0;
 		}
 		
+		if (ListeregaloModel::hasIdLista())
+			$_POST["regalo"] = 1;
+		
 		// Setta password
 		$this->m["RegusersModel"]->settaPassword();
 		
@@ -918,6 +921,9 @@ class BaseOrdiniController extends BaseController
 		
 		if ($this->campoObbligatorio("codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";
+		
+		if (ListeregaloModel::hasIdLista())
+			$campiObbligatoriComuni .= ",dedica,firma";
 		
 		$campiObbligatoriAggiuntivi = "";
 		
@@ -1144,7 +1150,7 @@ class BaseOrdiniController extends BaseController
 						
 						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
 						
-						if (v("attiva_liste_regalo") && (int)User::$idLista)
+						if (ListeregaloModel::hasIdLista())
 							$this->m['OrdiniModel']->values["id_lista_regalo"] = (int)User::$idLista;
 						
 						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
@@ -1177,7 +1183,7 @@ class BaseOrdiniController extends BaseController
 								setcookie("coupon", "", time()-3600,"/");
 							}
 							
-							// elimina il cookie con l'ID della liste regalo
+							// elimina il cookie con l'ID della lista regalo
 							ListeregaloModel::unsetCookieIdLista();
 							
 							$clean["cart_uid"] = sanitizeAll($this->m['OrdiniModel']->cart_uid);
@@ -1501,7 +1507,7 @@ class BaseOrdiniController extends BaseController
 			$defaultValues["id_corriere"] = $data['corrieri'][0]["id_corriere"];
 		
 		$defaultValues["newsletter"] = "N";
-		$defaultValues["regalo"] = 0;
+		$defaultValues["regalo"] = ListeregaloModel::hasIdLista() ? 1 : 0;
 		
 		$data['values'] = $this->m['OrdiniModel']->getFormValues('insert','sanitizeHtml',null,$defaultValues);
 		

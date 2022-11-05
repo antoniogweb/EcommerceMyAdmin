@@ -108,6 +108,13 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 	</div>
 </div>
 
+<?php
+include(tpf(ElementitemaModel::p("RESOCONTO_REGALO","", array(
+	"titolo"	=>	"Dedica e firma nel resoconto dell'ordine",
+	"percorso"	=>	"Elementi/Ordini/Resoconto/Regalo",
+))));
+?>
+
 <?php if (trim($ordine["note"])) { ?>
 <h2 class="uk-heading-bullet"><?php echo gtext("Note d'acquisto");?></h2>
 <?php echo nl2br($ordine["note"]);?>

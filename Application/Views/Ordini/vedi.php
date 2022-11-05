@@ -472,14 +472,33 @@
 				<?php } ?>
 			</div>
 			
-			<?php if (trim($ordine["note"])) { ?>
-			<div class="box">
-				<div class="box-header with-border main">
-					<h3><?php echo gtext("Note");?></h3>
-					<?php echo nl2br($ordine["note"])?>
+			<div class="row">
+				<?php if (trim($ordine["dedica"]) || trim($ordine["firma"])) { ?>
+				<div class="col-lg-6">
+					<div class="box">
+						<div class="box-header with-border main">
+							<h3><?php echo gtext("Dedica e firma");?></h3>
+							<blockquote cite="#">
+								<div class="uk-margin-small-bottom"><?php echo nl2br($ordine["dedica"]);?></div>
+								<?php if (trim($ordine["firma"])) { ?>
+								<footer><?php echo $ordine["firma"];?></footer>
+								<?php } ?>
+							</blockquote>
+						</div>
+					</div>
 				</div>
+				<?php } ?>
+				<?php if (trim($ordine["note"])) { ?>
+				<div class="col-lg-6">
+					<div class="box">
+						<div class="box-header with-border main">
+							<h3><?php echo gtext("Note");?></h3>
+							<?php echo nl2br($ordine["note"])?>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
 			</div>
-			<?php } ?>
 			
 			<div class="box">
 				<div class="box-header with-border main help_fatturazione">
