@@ -3,10 +3,10 @@
 <div class="uk-section" uk-parallax="bgy: -200" style="background-image: url(<?php echo $this->baseUrlSrc."/thumb/sfondocategoria/".$pages[0]["categories"]["immagine"];?>);">
 	<div class="uk-light uk-container-expand" id="testimonial"> 
 		<div class="uk-container uk-container-xsmall">
-			<div class="">
-			<h2 class="uk-text-center uk-text-bold uk-margin-remove-top"><?php echo gtext("Testimonial");?></h2>
+			<div class="uk-overflow-hidden">
+				<h2 class="uk-text-center uk-text-bold uk-margin-remove-top"><?php echo gtext("Testimonial");?></h2>
 				
-				<div class="" uk-slider>
+				<div class="uk-slider" uk-slider>
 
 					<div class="uk-position-relative uk-visible-toggle" tabindex="-1">
 

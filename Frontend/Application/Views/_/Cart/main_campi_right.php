@@ -45,6 +45,11 @@
 		<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €
 	</div>
 	<div class="uk-visible@m">
-		<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
+		<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#"><span class="uk-icon"><?php
+		include(tpf(ElementitemaModel::p("ICONA_CLOSE","", array(
+			"titolo"	=>	"Icona close",
+			"percorso"	=>	"Elementi/Icone/Close",
+		))));
+		?></span></a>
 	</div>
 </div>

@@ -4,7 +4,7 @@
 	<div class="uk-container">
 <!-- 		<div class="uk-text-center uk-text-uppercase uk-text-lead uk-text-small"><?php echo gtext("Prodotti in"); ?></div> -->
 		<h2 class="uk-text-bold uk-text-center uk-margin-remove-top uk-margin-remove-bottom"><span><?php echo gtext("Promozione"); ?></span></h2>
-		<div class="uk-child-width-1-3@m uk-text-center" uk-grid>
+		<div class="uk-child-width-1-3@m uk-text-center uk-grid" uk-grid>
 			<div></div>
 			<div>
 				<div class="uk-text-small"><?php echo gtext("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");?></div>

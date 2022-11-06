@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (count($slide) > 0) { ?>
-<div class="uk-position-relative uk-visible-toggle uk-dark" tabindex="-1" uk-slideshow="animation: fade;<?php if (!User::$isPhone) { ?>ratio:1920:700<?php } else { ?>min-height: 400; max-height: 400;<?php } ?>">
+<div class="uk-position-relative uk-visible-toggle uk-dark uk-slideshow" tabindex="-1" uk-slideshow="animation: fade;<?php if (!User::$isPhone) { ?>ratio:1920:700<?php } else { ?>min-height: 400; max-height: 400;<?php } ?>">
     <ul class="uk-slideshow-items">
 		<?php foreach ($slide as $p) {
 			$layers = ContenutiModel::getContenutiPagina($p["pages"]["id_page"], "GENERICO");

@@ -99,7 +99,7 @@
 								<span uk-icon="icon:credit-card;ratio:1" class="uk-icon-button"></span>
 							</div>
 							<div class="uk-width-expand">
-								<div class="uk-grid-medium" uk-grid>
+								<div class="uk-grid-medium uk-grid" uk-grid>
 									<div class="uk-width-1-1 uk-width-1-2@m">
 										<div class="">
 											<?php

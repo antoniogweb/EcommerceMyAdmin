@@ -2,7 +2,7 @@
 <?php foreach ($pages as $p) {
 	$prezzoUnitario = p($p["cart"],$p["cart"]["price"]);
 ?>
-<div class="uk-grid-column-small uk-child-width-1-3" uk-grid>
+<div class="uk-grid-column-small uk-child-width-1-3 uk-grid" uk-grid>
 	<div>
 		<img src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
 	</div>
