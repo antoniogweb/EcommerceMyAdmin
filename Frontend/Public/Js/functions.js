@@ -1084,25 +1084,25 @@ $(document).ready(function(){
 				nascondiPosizioneStepCheckout("fatturazione");
 			}
 			
-			if(y > (offset2.top - 250) && y) {
+			if(y > (offset2.top - 200) && y) {
 				mostraPosizioneStepCheckout("spedizione")
 			} else {
 				nascondiPosizioneStepCheckout("spedizione");
 			}
 			
-			if(y > (offset3.top - 250) && y) {
+			if(y > (offset3.top - 200) && y) {
 				mostraPosizioneStepCheckout("pagamento")
 			} else {
 				nascondiPosizioneStepCheckout("pagamento");
 			}
 			
-			if(y > (offset4.top - 250) && y) {
+			if(y > (offset4.top - 200) && y) {
 				mostraPosizioneStepCheckout("carrello")
 			} else {
 				nascondiPosizioneStepCheckout("carrello");
 			}
 			
-			if(y > (offset5.top - 250) && y) {
+			if(y > (offset5.top - 200) && y) {
 				mostraPosizioneStepCheckout("conferma")
 			} else {
 				nascondiPosizioneStepCheckout("conferma");
