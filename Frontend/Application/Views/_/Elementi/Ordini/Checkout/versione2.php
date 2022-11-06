@@ -27,11 +27,11 @@
 					<div id="fragment-checkout-fatturazione" class="uk-container uk-margin-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-margin-right uk-visible@m">
-								<span uk-icon="icon:user;ratio:1" class="uk-icon-button"></span>
+								<span class="uk-icon uk-icon-button"><?php include tpf("Elementi/Icone/Svg/user.svg");?></span>
 							</div>
 							<div class="uk-width-1-1">
 								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
-									<span uk-icon="icon:user;ratio:1" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Dati di fatturazione");?>
+									<span class="uk-icon uk-margin-right uk-hidden@m"><?php include tpf("Elementi/Icone/Svg/user.svg");?></span><?php echo gtext("Dati di fatturazione");?>
 								</h2>
 
 								<div class="blocco_checkout">

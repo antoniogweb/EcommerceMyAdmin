@@ -1,0 +1,6 @@
+@media (max-width: $breakpoint-medium) {
+	.uk-grid:not(.uk-grid-collapse)  > div:not(:first-child)
+	{
+		margin-top: $grid-small-gutter-vertical;
+	}
+}

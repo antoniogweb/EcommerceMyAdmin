@@ -97,7 +97,7 @@ class BaseListeregaloController extends BaseController
 	
 	public function gestisci($id = 0)
 	{
-		$clean["id"] = $data["id"] = (int)$id;
+		$clean["id"] = $data["id"] = $data["idListaRegalo"] = (int)$id;
 		
 		$this->checkLista($id);
 		
@@ -114,7 +114,7 @@ class BaseListeregaloController extends BaseController
 	
 	public function elencoprodotti($id = 0, $regalati = 0)
 	{
-		$clean["id"] = $data["id"] = (int)$id;
+		$clean["id"] = $data["id"] = $data["idListaRegalo"] = (int)$id;
 		
 		$this->checkLista($id);
 		

@@ -13156,6 +13156,11 @@ img:not([src]) {
   transition: bottom 0.5s linear;
 }
 
+@media (max-width: 960px) {
+  .uk-grid:not(.uk-grid-collapse) > div:not(:first-child) {
+    margin-top: 15px;
+  }
+}
 .hc-nav-trigger {
   position: relative;
   top: 0px;
