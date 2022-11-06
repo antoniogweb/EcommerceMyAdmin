@@ -6,7 +6,7 @@
 			<div class="" uk-grid>
 				<div class="uk-width-expand">
 					<?php if (count($pages) > 0) { ?>
-						<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center" uk-grid>
+						<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center uk-grid" uk-grid>
 							<?php foreach ($pages as $p) {
 								include(tpf($itemFile));
 							} ?>

@@ -50,7 +50,7 @@
 
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>
 
-<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
+<script defer src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>

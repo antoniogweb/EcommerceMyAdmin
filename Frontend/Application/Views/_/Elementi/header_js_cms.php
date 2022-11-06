@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit.min.js"></script>
+<script defer src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit.min.js"></script>
 
 <?php if (v("codice_verifica_fbk")) {
 	echo htmlentitydecode(v("codice_verifica_fbk"));
