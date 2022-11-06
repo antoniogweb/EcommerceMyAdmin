@@ -395,7 +395,7 @@ class GenericModel extends Model_Tree
 								
 								$originalPath = rtrim($this->files->getBase());
 								
-								$newFileName = str_replace($ext, 'jpeg', $this->files->fileName);
+								$newFileName = str_replace(".$ext", '.jpeg', $this->files->fileName);
 								$newFileName = $this->files->getUniqueName($newFileName);
 								$targetFile = $originalPath."/".$newFileName;
 								

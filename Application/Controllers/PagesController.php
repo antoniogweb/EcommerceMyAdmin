@@ -2283,7 +2283,7 @@ class PagesController extends BaseController {
 										);
 										
 										$convertitaInJpeg = false;
-										$newTargetFile = str_replace($ext, "jpeg", $targetFile);
+										$newTargetFile = str_replace(".$ext", ".jpeg", $targetFile);
 										
 										if (v("converti_immagini_in_jpeg") && !Files_Upload::isJpeg($ext) && !file_exists($newTargetFile))
 										{
@@ -2297,8 +2297,8 @@ class PagesController extends BaseController {
 										
 										if ($convertitaInJpeg)
 										{
-											$clean['fileName'] = str_replace($ext, "jpeg", $clean['fileName']);
-											$clean['fileName_clean'] = str_replace($ext, "jpeg", $clean['fileName_clean']);
+											$clean['fileName'] = str_replace(".$ext", ".jpeg", $clean['fileName']);
+											$clean['fileName_clean'] = str_replace(".$ext", ".jpeg", $clean['fileName_clean']);
 										}
 									}
 									
