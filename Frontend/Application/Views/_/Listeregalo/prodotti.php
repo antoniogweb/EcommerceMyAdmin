@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (count($prodotti_lista) > 0) { ?>
+<?php if (count($prodotti_lista) > 0 && (!$regalati || ListeregaloModel::numeroRegalati($idListaRegalo))) { ?>
 	<div <?php if (!$regalati) { ?>class="box_righe_prodotti_lista"<?php } ?>>
 		<?php if (!User::$isMobile) { ?>
 		<div class="uk-visible@m">
@@ -44,6 +44,9 @@
 			$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 			$idListaRegalo = $p["liste_regalo_pages"]["id_lista_regalo"];
 			$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
+			
+			if ($regalati && !$numeroRegalati)
+				continue;
 			
 			if ($regalati)
 				$ordini = ListeregaloModel::getRigheRegalate($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);

@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div id="filtri-categoria" <?php if (User::$isMobile) { ?>uk-offcanvas<?php } ?> class="uk-text-left uk-width-1-4 uk-padding-remove uk-margin-remove <?php if (!User::$isMobile) { ?>uk-overflow-auto<?php } ?>" uk-accordion="multiple: true; targets: &gt; .js-accordion-section" style="flex-basis: auto">
+<div id="filtri-categoria" <?php if (User::$isMobile) { ?>uk-offcanvas<?php } ?> class="<?php if (User::$isMobile) { ?>uk-offcanvas<?php } ?> uk-text-left uk-width-1-4 uk-padding-remove uk-margin-remove <?php if (!User::$isMobile) { ?>uk-overflow-auto<?php } ?>" uk-accordion="multiple: true; targets: &gt; .js-accordion-section" style="flex-basis: auto">
 	<?php if (User::$isMobile) { ?>
 	<div class="uk-offcanvas-bar">
 	<div class="uk-margin-large-bottom">

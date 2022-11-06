@@ -269,7 +269,7 @@ class ListeregaloModel extends GenericModel
 			))->orderBy("id_lista_regalo_link desc")->send();
     }
     
-    public static function numeroRegalati($idLista, $idC)
+    public static function numeroRegalati($idLista, $idC = 0)
     {
 		$res = RigheModel::regalati($idLista, $idC)->select("sum(quantity) as SOMMA")->send();
 		
