@@ -55,7 +55,7 @@ if (!isset($noFiltri))
 							<?php include(tpf("Elementi/Categorie/filtri_attivi.php")); ?>
 						</div>
 						<?php if (!isset($noOrdinamento)) { ?>
-						<div class="uk-width-1-1 uk-width-2-5@s uk-text-right">
+						<div class="uk-width-1-1 uk-width-2-5@s uk-text-right uk-grid-margin">
 							<?php include(tpf("Elementi/Categorie/scelta_ordinamento.php")); ?>
 						</div>
 						<?php } ?>
