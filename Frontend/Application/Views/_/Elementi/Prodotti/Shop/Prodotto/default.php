@@ -12,11 +12,11 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 		<div class="uk-position-top-right blocco_wishlist">
 			<div class="uk-transition-fade">
 				<div class="not_in_wishlist  show" style="<?php if (WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>display:none<?php } ?>;">
-					<a title='<?php echo gtext("Aggiungi alla lista dei desideri", false);?>' href="<?php echo $this->baseUrl."/wishlist/aggiungi/".$p["pages"]["id_page"];?>" rel="nofollow" class="uk-text-secondary azione_wishlist"><span uk-icon="icon: heart; ratio: 1;"></span></a>
+					<a title='<?php echo gtext("Aggiungi alla lista dei desideri", false);?>' href="<?php echo $this->baseUrl."/wishlist/aggiungi/".$p["pages"]["id_page"];?>" rel="nofollow" class="uk-text-secondary azione_wishlist"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/cuore.svg");?></span></a>
 				</div>
 			</div>
 			<div class="in_wishlist  hide" style="<?php if (!WishlistModel::isInWishlist($p["pages"]["id_page"])) { ?>display:none<?php } ?>;">
-				<a class="uk-text-danger azione_wishlist" title='<?php echo gtext("Elimina dalla lista dei desideri", false);?>' href="<?php echo $this->baseUrl."/wishlist/elimina/".$p["pages"]["id_page"];?>" rel="nofollow"><span uk-icon="icon: heart; ratio: 1;"></span></a>
+				<a class="uk-text-danger azione_wishlist" title='<?php echo gtext("Elimina dalla lista dei desideri", false);?>' href="<?php echo $this->baseUrl."/wishlist/elimina/".$p["pages"]["id_page"];?>" rel="nofollow"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/cuore.svg");?></span></a>
 			</div>
 		</div>
 		<div class="uk-transition-slide-bottom uk-position-bottom uk-overlay uk-overlay-default uk-light uk-background-secondary">
