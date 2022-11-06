@@ -516,6 +516,9 @@ class VariabiliModel extends GenericModel {
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
+		## IMAGES ##
+		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
+		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento	
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

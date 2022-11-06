@@ -2281,8 +2281,25 @@ class PagesController extends BaseController {
 											'imgHeight'		=>	v("rielabora_height"),
 											'defaultImage'	=>  null,
 										);
+										
+										$convertitaInJpeg = false;
+										$newTargetFile = str_replace($ext, "jpeg", $targetFile);
+										
+										if (v("converti_immagini_in_jpeg") && !Files_Upload::isJpeg($ext) && !file_exists($newTargetFile))
+										{
+											$params["forceToFormat"] = 'jpeg';
+											$targetFile = $newTargetFile;
+											$convertitaInJpeg = true;
+										}
+										
 										$thumb = new Image_Gd_Thumbnail($targetPath,$params);
 										$thumb->render($clean['fileName'],$targetFile);
+										
+										if ($convertitaInJpeg)
+										{
+											$clean['fileName'] = str_replace($ext, "jpeg", $clean['fileName']);
+											$clean['fileName_clean'] = str_replace($ext, "jpeg", $clean['fileName_clean']);
+										}
 									}
 									
 									if ($clean['is_main'] === 0)

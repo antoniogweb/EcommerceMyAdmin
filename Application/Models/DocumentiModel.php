@@ -32,6 +32,8 @@ class DocumentiModel extends GenericModel {
 	
 	public $sectionDocumenti = null;
 	
+	public $convertiInJpeg = false;
+	
 	public static $uploadFile = true;
 	
 	public function __construct() {

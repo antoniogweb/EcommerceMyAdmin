@@ -384,12 +384,34 @@ class GenericModel extends Model_Tree
 						
 						if ($this->files->uploadFile($fileName))
 						{
+							$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+							$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
+							
+							if (strcmp($params["type"],"image") === 0 && !Files_Upload::isJpeg($ext) && v("converti_immagini_in_jpeg") && !isset($params["keepFormat"]))
+							{
+								$params = array(
+									'forceToFormat'	=>	'jpeg',
+								);
+								
+								$originalPath = rtrim($this->files->getBase());
+								
+								$newFileName = str_replace($ext, 'jpeg', $this->files->fileName);
+								$newFileName = $this->files->getUniqueName($newFileName);
+								$targetFile = $originalPath."/".$newFileName;
+								
+								$thumb = new Image_Gd_Thumbnail($originalPath, $params);
+								$thumb->render($this->files->fileName,$targetFile);
+								
+								$this->files->fileName = $newFileName;
+								$ext = 'jpeg';
+							}
+							
 							$this->values[$field] = sanitizeAll($this->files->fileName);
 							
 							if (isset($params["clean_field"]))
 							{
-								$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
-								$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
+// 								$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+// 								$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
 								
 								$cleanFileName = (!isValidImgName($cleanFileName)) ? encodeUrl($cleanFileName) : $cleanFileName;
 								

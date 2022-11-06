@@ -141,6 +141,8 @@ if (v("attiva_ip_location"))
 if (v("theme_folder"))
 	Params::$viewSubfolder = v("theme_folder");
 
+Image_Gd_Thumbnail::$defaultJpegImgQuality = v("qualita_immagini_jpeg_default");
+
 ImpostazioniModel::init();
 
 if (!defined("FRONT"))
