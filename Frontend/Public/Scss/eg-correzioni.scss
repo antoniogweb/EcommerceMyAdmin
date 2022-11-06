@@ -80,7 +80,6 @@ img:not([src])
 
 .uk-accordion li a
 {
-/* 	border:1px solid #EEE; */
 	color:#666;
 }
 
@@ -112,4 +111,27 @@ img:not([src])
 	left:0px;
 	z-index:99999;
 	transition: bottom 0.5s linear;
+}
+
+.checkout-step
+{
+	width:20px;
+	height:20px;
+	display:inline-block;
+/* 	background: #f8f8f8; */
+	padding:5px;
+}
+
+.checkout-steps
+{
+	background-color:#FFF;
+	padding-top:20px;
+	z-index:99999;
+}
+.checkout-steps.uk-sticky-fixed
+{
+	box-shadow: 0px 2px 10px 0px #DDD;
+	left:0px;
+	right:0px;
+	width:auto !important;
 }

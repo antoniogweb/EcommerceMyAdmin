@@ -12,15 +12,49 @@ if (!isset($classBadgeAutenticazione))
 if (!isset($classBadgeCheckout))
 	$classBadgeCheckout = "";
 ?>
-<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center uk-margin-large-bottom">
-	<div>
-		<progress id="js-progressbar" class="uk_progress uk-progress uk-margin-remove" value="<?php echo $percentuale;?>" max="100"></progress>
-		<div style="margin-top:-13px;" class="uk-grid uk-grid-collapse uk-text-center uk-child-width-expand" uk-grid>
+<div>
+	<div class="checkout-steps uk-margin-large-bottom" <?php if ($this->action == "index" && User::$isPhone) { ?>uk-sticky="offset: 80;bottom: true;"<?php } ?>>
+		<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center">
 			<div>
-				<a href="<?php echo $this->baseUrl."/autenticazione";?>"><span class="uk-badge <?php echo $classBadgeAutenticazione;?>">1</span><br /><span class="uk-text-meta <?php echo $textClassAutenticazione;?>"><?php echo gtext("Autenticazione");?></span></a>
-			</div>
-			<div>
-				<span class="uk-badge <?php echo $classBadgeCheckout;?>">2</span><br /><span class="uk-text-meta <?php echo $textClassCheckout;?>"><?php echo gtext("Checkout");?></span>
+				<progress id="js-progressbar" class="uk_progress uk-progress uk-margin-remove" value="<?php echo $percentuale;?>" max="100"></progress>
+				<div style="margin-top:-16px;" class="uk-grid uk-grid-collapse uk-text-center uk-child-width-expand" uk-grid>
+					<?php if (User::$isMobile) { ?>
+					<div class="step_active">
+						<a href="<?php echo $this->baseUrl."/autenticazione";?>"><span class="uk-light uk-background-primary uk-border-circle checkout-step <?php echo $classBadgeAutenticazione;?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/sign-in.svg");?></span></span>
+						<br />
+						<?php if ($this->action == "checklogin") { ?>
+						<span class="nome_step uk-text-meta <?php echo $textClassAutenticazione;?>"><?php echo gtext("Accedi");?></span>
+						<?php } ?>
+						</a>
+					</div>
+					<div pos="fatturazione">
+						<span class="checkout-step uk-border-circle <?php echo $classBadgeCheckout;?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/user.svg");?></span></span>
+						<br />
+						<?php if ($this->action == "index") { ?>
+						<span class="nome_step uk-text-small <?php echo $textClassCheckout;?>"><?php echo gtext("Fatturazione");?></span>
+						<?php } ?>
+					</div>
+					<div pos="spedizione">
+						<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/location.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Spedizione");?></span>
+					</div>
+					<div pos="pagamento">
+						<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/credit-card.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Pagamento");?></span>
+					</div>
+					<div pos="carrello">
+						<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/carrello.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Carrello");?></span>
+					</div>
+					<div pos="conferma">
+						<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/check.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Conferma");?></span>
+					</div>
+					<?php } else { ?>
+					<div class="step_active">
+						<a href="<?php echo $this->baseUrl."/autenticazione";?>"><span class="uk-light uk-background-primary uk-border-circle checkout-step <?php echo $classBadgeAutenticazione;?>">1</span><br /><span class="uk-visibile@m nome_step uk-text-meta <?php echo $textClassAutenticazione;?>"><?php echo gtext("Autenticazione");?></span></a>
+					</div>
+					<div>
+						<span class="checkout-step uk-border-circle <?php echo $classBadgeCheckout;?>">2</span><br /><span class="uk-visibile@m nome_step uk-text-meta <?php echo $textClassCheckout;?>"><?php echo gtext("Checkout");?></span>
+					</div>
+					<?php } ?>
+				</div>
 			</div>
 		</div>
 	</div>

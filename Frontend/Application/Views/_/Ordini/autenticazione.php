@@ -15,7 +15,7 @@ $noLoginNotice = true;
 $action = $this->baseUrl."/regusers/login?redirect=/checkout";
 RegusersModel::$redirectQueryString = "redirect=checkout";
 
-$percentuale = 25;
+$percentuale = User::$isMobile ? 10 : 25;
 $textClassAutenticazione = "uk-text-secondary";
 $classBadgeCheckout = "uk_badge_meta";
 include(tpf("/Elementi/Ordini/checkout_steps.php")); ?>

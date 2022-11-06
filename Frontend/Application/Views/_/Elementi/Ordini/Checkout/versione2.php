@@ -4,8 +4,9 @@
 	
 	<div class="">
 		<?php if (!$islogged) {
-			$percentuale = 75;
+			$percentuale = User::$isMobile ? 30 : 75;
 			$textClassCheckout = "uk-text-secondary";
+			$classBadgeCheckout = "uk-light uk-background-primary";
 			include(tpf("/Elementi/Ordini/checkout_steps.php"));
 		?>
 		<div class="uk-text-center uk-text-small uk-margin-large-bottom"><span uk-icon="pencil"></span> <?php echo gtext("Continua inserendo i tuoi dati");?></div>
@@ -100,7 +101,7 @@
 							</div>
 							<div class="uk-width-expand">
 								<div class="uk-grid-medium uk-grid" uk-grid>
-									<div class="uk-width-1-1 uk-width-1-2@m">
+									<div class="uk-width-1-1 uk-width-1-2@m" id="fragment-checkout-pagamento">
 										<div class="">
 											<?php
 											$htmlIcona = '<span uk-icon="icon:credit-card;ratio:1.3" class="uk-margin-right uk-hidden@m"></span>';

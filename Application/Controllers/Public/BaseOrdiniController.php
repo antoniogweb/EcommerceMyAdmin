@@ -737,16 +737,8 @@ class BaseOrdiniController extends BaseController
 		
 		$this->checkCheckout();
 		
-// 		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
-// 		{
-// 			if (Output::$html)
-// 				$this->redirect("carrello/vedi?evidenzia");
-// 		}
-		
 		$this->getAppLogin();
 		$this->load("autenticazione");
-		
-		
 	}
 	
 	private function checkCheckout()
@@ -791,12 +783,6 @@ class BaseOrdiniController extends BaseController
 		}
 		
 		$this->checkCheckout();
-		
-// 		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
-// 		{
-// 			if (Output::$html)
-// 				$this->redirect("carrello/vedi?evidenzia");
-// 		}
 		
 		$this->getAppLogin();
 		

@@ -561,6 +561,18 @@ function mostraNascondiBloccoNote()
 		$(".box_note").addClass("uk-hidden");
 }
 
+function mostraPosizioneStepCheckout(posizione)
+{
+	$( "[pos='"+posizione+"']" ).find(".checkout-step").removeClass("uk_badge_meta").addClass("uk-light uk-background-primary");
+	$(".nome_step").addClass("uk-hidden");
+	$( "[pos='"+posizione+"']" ).find(".nome_step").removeClass("uk-hidden");
+}
+
+function nascondiPosizioneStepCheckout(posizione)
+{
+	$( "[pos='"+posizione+"']" ).find(".checkout-step").removeClass("uk-light uk-background-primary").addClass("uk_badge_meta");
+}
+
 $(document).ready(function(){
 	
 	$( "body" ).on( "click", ".disabled", function(e) {
@@ -1043,16 +1055,58 @@ $(document).ready(function(){
 	if ($(".checkout_bottom_bar").length > 0)
 	{
 		$(window).scroll(function() {
-// 			console.log($(window).scrollTop());
 			var offset = $("#fragment-checkout-fatturazione").offset();
 			var offset2 = $("#fragment-checkout-conferma").offset();
-// 			console.log(offset.top);
+			
 			if($(window).scrollTop() > offset.top && $(window).scrollTop() < (offset2.top - 400)) {
 				$( ".checkout_bottom_bar" ).css("bottom", "0px");
 			} else {
 				$( ".checkout_bottom_bar" ).css("bottom", "-200px");
 			}
 			
+		});
+	}
+	
+	if ($(".checkout-steps").length > 0)
+	{
+		$(window).scroll(function() {
+			var offset = $("#fragment-checkout-fatturazione").offset();
+			var offset2 = $("#fragment-checkout-spedizione").offset();
+			var offset3 = $("#fragment-checkout-pagamento").offset();
+			var offset4 = $("#fragment-checkout-carrello").offset();
+			var offset5 = $("#fragment-checkout-conferma").offset();
+			
+			var y = $(window).scrollTop();
+			
+			if(y >= 0 && y) {
+				mostraPosizioneStepCheckout("fatturazione")
+			} else {
+				nascondiPosizioneStepCheckout("fatturazione");
+			}
+			
+			if(y > (offset2.top - 250) && y) {
+				mostraPosizioneStepCheckout("spedizione")
+			} else {
+				nascondiPosizioneStepCheckout("spedizione");
+			}
+			
+			if(y > (offset3.top - 250) && y) {
+				mostraPosizioneStepCheckout("pagamento")
+			} else {
+				nascondiPosizioneStepCheckout("pagamento");
+			}
+			
+			if(y > (offset4.top - 250) && y) {
+				mostraPosizioneStepCheckout("carrello")
+			} else {
+				nascondiPosizioneStepCheckout("carrello");
+			}
+			
+			if(y > (offset5.top - 250) && y) {
+				mostraPosizioneStepCheckout("conferma")
+			} else {
+				nascondiPosizioneStepCheckout("conferma");
+			}
 		});
 	}
 });
