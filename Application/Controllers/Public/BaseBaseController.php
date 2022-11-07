@@ -599,7 +599,7 @@ class BaseBaseController extends Controller
 				"nuovo"	=>	"Y",
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
-			if (v("attiva_filtri_successivi"))
+// 			if (v("attiva_filtri_successivi"))
 				$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("[marchio]")->send();
 		}
 		
@@ -609,7 +609,7 @@ class BaseBaseController extends Controller
 				"attivo"	=>	"Y",
 			))->orderBy("tag.titolo")->send();
 			
-			if (v("attiva_filtri_successivi"))
+// 			if (v("attiva_filtri_successivi"))
 				$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
 				->inner(array("pagine"))
 				->inner("pages")->on("pages.id_page = pages_tag.id_page")
