@@ -16,7 +16,7 @@
 			?>
 			<li class="uk-visible-toggle cart_item_row" rel="<?php echo $p["cart"]["id_cart"];?>">
 				<article>
-					<div class="uk-grid-small" uk-grid>
+					<div class="uk-grid uk-grid-small" uk-grid>
 						<div class="uk-width-1-4">
 							<?php if ($p["cart"]["immagine"]) { ?>
 							<?php if (!$p["cart"]["id_p"]) { ?><a class="" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } ?>
@@ -26,7 +26,7 @@
 							<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
 							<?php } ?>
 						</div>
-						<div class="uk-width-expand">
+						<div class="uk-width-expand uk-margin-remove-top">
 							<?php if (!$p["cart"]["id_p"]) { ?><a class="uk-text-small" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } else { ?><span class="uk-link uk-text-small"><?php } ?>
 								<?php echo field($p, "title");?>
 							<?php if (!$p["cart"]["id_p"]) { ?></a><?php } else { ?></span><?php } ?>
@@ -35,9 +35,9 @@
 							<?php echo $p["cart"]["attributi"];?>
 							<?php } ?>
 							
-							<div class="uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
+							<div class="uk-grid uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
 								<div class="uk-text-bolder uk-text-small"><?php echo setPriceReverse($p["cart"]["quantity"] * $p["cart"]["price"] * (1+($p["cart"]["iva"]/100)));?> €</div>
-								<div class="uk-text-meta uk-text-xsmall"><?php echo $p["cart"]["quantity"];?> × <?php echo setPriceReverse($p["cart"]["price"] * (1+($p["cart"]["iva"]/100)));?> €</div>
+								<div class="uk-margin-remove-top uk-text-meta uk-text-xsmall"><?php echo $p["cart"]["quantity"];?> × <?php echo setPriceReverse($p["cart"]["price"] * (1+($p["cart"]["iva"]/100)));?> €</div>
 							</div>
 						</div>
 						<div><a class="uk-icon-link uk-text-danger uk-invisible-hover cart_item_delete_link" href="#" uk-icon="icon: close; ratio: .75" uk-tooltip=""></a></div>
@@ -55,9 +55,9 @@
 		$haErrori = CartelementiModel::haErrori();
 	?>
 	<footer class="uk-card-footer">
-		<div class="uk-grid-small" uk-grid>
+		<div class="uk-grid-small uk-grid" uk-grid>
 			<div class="uk-width-expand uk-text-muted uk-h4"><?php echo gtext("Subtotale");?></div>
-			<div class="uk-h4 uk-text-bolder"><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
+			<div class="uk-margin-remove-top uk-h4 uk-text-bolder"><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
 		</div>
 		<div class="uk-grid-small uk-child-width-1-1 <?php if (!$haErrori) { ?>uk-child-width-1-2@m<?php } ?> uk-margin-small" uk-grid>
 			<?php if (!$haErrori) { ?>
