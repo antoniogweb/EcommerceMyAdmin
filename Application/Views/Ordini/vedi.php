@@ -25,141 +25,135 @@
 			
 			<?php include($this->viewPath("steps"));?>
 			<?php } ?>
+			<?php echo flash("notice");?>
+			<?php echo $notice_send;?>
+			<?php echo flash("notice_send");?>
+			
 			<div class="box">
-				<div class="box-header with-border main">
-					<?php echo flash("notice");?>
-					<?php echo $notice_send;?>
-					<?php echo flash("notice_send");?>
-					
+				<div class="box-header with-border main help_resoconto">
 					<div class="row">
 						<div class="col-lg-6">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<?php echo gtext("Gestione stato ordine");?>
+							<?php
+							$linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolower($ordine["nazione"]) : $ordine["lingua"];
+							?>
+							<table class="table table-striped">
+								<tr>
+									<td><?php echo gtext("N° Ordine");?>:</td>
+									<td><b>#<?php echo $ordine["id_o"];?></b> <a class="iframe pull-right help_ordine_lato_cliente" href="<?php echo Domain::$name."/".$linguaNazioneUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> <?php echo gtext("Vedi ordine lato cliente");?></a></td>
+								</tr>
+								<tr>
+									<td><?php echo gtext("Data");?>:</td>
+									<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
+								</tr>
+								<tr>
+									<td><?php echo gtext("Totale");?>:</td>
+									<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
+								</tr>
+								<?php if (strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
+								<tr>
+									<td><?php echo gtext("Stato ordine");?>:</td>
+									<td><b><span class="label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span></b></td>
+								</tr>
+								<?php } ?>
+								<tr>
+									<td><?php echo gtext("Metodo di pagamento");?>:</td>
+									<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
+								</tr>
+								<?php if (v("attiva_ip_location")) { ?>
+								<tr>
+									<td><?php echo gtext("Nazione navigazione");?>:</td>
+									<td><b><?php echo findTitoloDaCodice($ordine["nazione_navigazione"]);?></b></td>
+								</tr>
+								<?php } ?>
+								<?php if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura") && $ordine["tipo_cliente"] == "privato" && $ordine["fattura"]) { ?>
+								<tr>
+									<td><?php echo gtext("Fattura");?>:</td>
+									<td><b class="text text-primary"><?php echo gtext("Richiesta");?></b></td>
+								</tr>
+								<?php } ?>
+								<?php if ($ordine["id_lista_regalo"]) { ?>
+								<tr>
+									<td><?php echo gtext("Lista regalo");?>:</td>
+									<td><?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?></td>
+								</tr>
+								<?php } ?>
+							</table>
+						</div>
+						<div class="col-lg-6">
+							<?php if (v("fatture_attive") && $fattureOk) { ?>
+								<div style="margin-bottom:10px;" class="panel panel-default">
+									<div class="panel-heading">
+										<?php if (count($fatture) > 0) { ?>
+										<a style="margin-left:10px;" title="Invia mail con fattura in allegato" class="btn btn-primary btn-xs pull-right make_spinner" href="<?php echo $this->baseUrl."/ordini/vedi/" . $ordine["id_o"].$this->viewStatus."&invia_fattura=Y";?>"><i class="fa fa-envelope"></i> Invia</a>
+										
+										<a style="margin-left:10px;" class="btn btn-success btn-xs pull-right" href="<?php echo $this->baseUrl."/fatture/vedi/" . $ordine["id_o"];?>"><i class="fa fa-download"></i> Scarica</a>
+										<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Rigenera</a>
+										
+										<?php } else { ?>
+										<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera</a>
+										<?php } ?>
+										
+										<?php echo gtext("Gestione fattura");?>
+									</div>
 								</div>
-								<div class="panel-body">
-									<div class="help_numero_ordine"><?php echo gtext("L'ordine");?> <b>#<?php echo $ordine["id_o"];?></b> <?php echo gtext("è nello stato");?>: <span class="help_stato_ordine label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span></div>
-									
+							<?php } ?>
+							
+							<div class="panel panel-default no-margin">
+								<div class="panel-body no-padding">
 									<?php $statiSuccessivi = OrdiniModel::statiSuccessivi($ordine["stato"]);?>
 									<?php if (count($statiSuccessivi) > 0) { ?>
-										<br /><br />Imposta nuovo stato ordine:<br />
+									<table class="table no-margin">
+										<thead>
+										<tr>
+											<th><?php echo gtext("Modifica lo stato dell'ordine")?></th>
+											<th></th>
+										</tr>
+										</thead>
 										<?php foreach ($statiSuccessivi as $statoSucc) { ?>
-										<a class="help_cambia_stato btn-sm btn btn-<?php echo labelStatoOrdine($statoSucc);?>" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/$statoSucc".$this->viewStatus;?>">Imposta come <b><?php echo str_replace("ORDINE","",strtoupper(statoOrdine($statoSucc)));?></b></a>
-										<?php } ?>
-									<?php } ?>
-									
-									<?php if (count($mail_altre) > 0) { ?>
-									<br /><br /><h3 class="help_storico"><?php echo gtext("Storico invii mail");?></h3>
-									<table class="table table-striped">
-										<tr>
-											<th><?php echo gtext("Data invio");?></th>
-											<th><?php echo gtext("Tipo mail");?></th>
-											<th style="width:1%;"></th>
-										</tr>
-										<?php foreach ($mail_altre as $mailFatt) { ?>
-										<tr>
-											<td><?php echo date("d-m-Y H:i", strtotime($mailFatt["data_creazione"]));?></td>
-											<td><?php echo OrdiniModel::getTipoMail($mailFatt["tipo"]);?></td>
-											<td><i style="font-size:18px;" class="text text-success fa fa-check-circle"></i></td>
-										</tr>
+										<tbody class="no-border">
+											<tr>
+												<td><span class="label label-<?php echo labelStatoOrdine($statoSucc);?>"><?php echo statoOrdine($statoSucc);?></span></td>
+												<td class="text-right"><a class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/$statoSucc".$this->viewStatus;?>"><i class="fa fa-thumbs-up"></i> <?php echo gtext("Imposta")?></a></td>
+											</tr>
+										</tbody>
 										<?php } ?>
 									</table>
 									<?php } ?>
 								</div>
 							</div>
-						</div>
-						<?php if (v("fatture_attive")) { ?>
-						<div class="col-lg-6">
-							<?php if ($fattureOk) { ?>
-							<div class="panel panel-info">
-								<div class="panel-heading">
-									Gestione fattura ordine
-								</div>
-								<div class="panel-body">
-									<?php if (count($fatture) > 0) { ?>
-									<a title="Invia mail con fattura in allegato" class="btn btn-primary btn-sm pull-right" href="<?php echo $this->baseUrl."/ordini/vedi/" . $ordine["id_o"].$this->viewStatus."&invia_fattura=Y";?>"><i class="fa fa-envelope"></i> Invia fattura</a>
-									
-									<a class="btn btn-success btn-sm" href="<?php echo $this->baseUrl."/fatture/vedi/" . $ordine["id_o"];?>"><i class="fa fa-download"></i> Scarica fattura</a>
-									<a class="btn btn-default btn-sm" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Rigenera fattura</a>
-									
-									<?php } else { ?>
-									<a class="btn btn-default btn-sm" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera fattura</a>
-									<?php } ?>
-								
-									<?php if (count($mail_fatture) > 0) { ?>
-									<h3>Storico invii fatture</h3>
-									<table class="table table-striped">
+							
+							<?php if (count($mail_altre) > 0) { ?>
+							<div style="margin-top:10px;margin-bottom:0px;" class="panel panel-default">
+								<div class="panel-body no-padding">
+									<table class="table">
 										<tr>
-											<th>Data invio</th>
-											<th style="width:1%;"></th>
+											<th colspan="3">
+												<a class="pull-right" data-toggle="collapse" href="#collapseMail" role="button" aria-expanded="false" aria-controls="collapseMail">
+													<?php echo gtext("Mostra");?>
+												</a>
+												<?php echo gtext("Storico invii mail al cliente");?>
+											</th>
 										</tr>
-										<?php foreach ($mail_fatture as $mailFatt) { ?>
-										<tr>
-											<td><?php echo date("d-m-Y H:i", strtotime($mailFatt["data_creazione"]));?></td>
-											<td><i style="font-size:18px;" class="text text-success fa fa-check-circle"></i></td>
-										</tr>
-										<?php } ?>
+										<tbody class="collapse" id="collapseMail">
+											<tr>
+												<th><?php echo gtext("Data invio");?></th>
+												<th><?php echo gtext("Tipo mail");?></th>
+												<th style="width:1%;"></th>
+											</tr>
+											<?php foreach ($mail_altre as $mailFatt) { ?>
+											<tr>
+												<td><?php echo date("d-m-Y H:i", strtotime($mailFatt["data_creazione"]));?></td>
+												<td><?php echo OrdiniModel::getTipoMail($mailFatt["tipo"]);?></td>
+												<td><i style="font-size:18px;" class="text text-success fa fa-check-circle"></i></td>
+											</tr>
+											<?php } ?>
+										</tbody>
 									</table>
-									<?php } ?>
 								</div>
 							</div>
 							<?php } ?>
 						</div>
-						<?php } ?>
 					</div>
-				</div>
-			</div>
-			
-			<div class="box">
-				<div class="box-header with-border main help_resoconto">
-					<?php
-					$linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolower($ordine["nazione"]) : $ordine["lingua"];
-					?>
-					<a class="iframe pull-right help_ordine_lato_cliente" href="<?php echo Domain::$name."/".$linguaNazioneUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]?>"><i class="fa fa-eye"></i> <?php echo gtext("Vedi ordine lato cliente");?></a>
-					<h3><?php echo gtext("Resoconto dell'ordine");?></h3>
-					
-					<table class="table table-striped">
-						<tr>
-							<td><?php echo gtext("N° Ordine");?>:</td>
-							<td><b>#<?php echo $ordine["id_o"];?></b></td>
-						</tr>
-						<tr>
-							<td><?php echo gtext("Data");?>:</td>
-							<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
-						</tr>
-						<tr>
-							<td><?php echo gtext("Totale");?>:</td>
-							<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
-						</tr>
-						<?php if (strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
-						<tr>
-							<td><?php echo gtext("Stato ordine");?>:</td>
-							<td><b><span class="label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span></b></td>
-						</tr>
-						<?php } ?>
-						<tr>
-							<td><?php echo gtext("Metodo di pagamento");?>:</td>
-							<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
-						</tr>
-						<?php if (v("attiva_ip_location")) { ?>
-						<tr>
-							<td><?php echo gtext("Nazione navigazione");?>:</td>
-							<td><b><?php echo findTitoloDaCodice($ordine["nazione_navigazione"]);?></b></td>
-						</tr>
-						<?php } ?>
-						<?php if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura") && $ordine["tipo_cliente"] == "privato" && $ordine["fattura"]) { ?>
-						<tr>
-							<td><?php echo gtext("Fattura");?>:</td>
-							<td><b class="text text-primary"><?php echo gtext("Richiesta");?></b></td>
-						</tr>
-						<?php } ?>
-						<?php if ($ordine["id_lista_regalo"]) { ?>
-						<tr>
-							<td><?php echo gtext("Lista regalo");?>:</td>
-							<td><?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?></td>
-						</tr>
-						<?php } ?>
-					</table>
 				</div>
 			</div>
 			

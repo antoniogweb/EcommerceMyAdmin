@@ -48,6 +48,14 @@ class FormModel extends GenericModel {
 // 					'options'	=>	array('pending'=>'In lavorazione','completed'=>'Completo','deleted'=>'Eliminato'),
 					'reverse'	=>	"yes",
 				),
+				'pagamento'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipo di pagamento',
+					'className'	=>	'for_print form-control',
+					'options'	=>	OrdiniModel::$elencoPagamenti,
+// 					'options'	=>	array('pending'=>'In lavorazione','completed'=>'Completo','deleted'=>'Eliminato'),
+					'reverse'	=>	"yes",
+				),
 				'password'			=>	array(
 					'type'	=>	'Password',
 					'entryClass'	=>	'for_print form_input_text',

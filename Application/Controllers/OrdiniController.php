@@ -218,7 +218,7 @@ class OrdiniController extends BaseController {
 		
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost('tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario');
+		$this->m[$this->modelName]->setValuesFromPost('tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento');
 		
 		parent::form($queryType, $id);
 	}
@@ -384,7 +384,7 @@ class OrdiniController extends BaseController {
 			
 			$data["mail_altre"] =  $this->m["MailordiniModel"]->clear()->where(array(
 				"id_o"	=>	$clean["id_o"],
-				"ne"	=>	array("tipo"=>	"F"),
+// 				"ne"	=>	array("tipo"=>	"F"),
 				"tipologia"	=>	"ORDINE",
 			))->orderBy("data_creazione desc")->send(false);
 			

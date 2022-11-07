@@ -40,10 +40,12 @@
 		<div class='col-md-6'>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					Stato ordine
+					Opzioni ordine
 				</div>
 				<div class="panel-body">
 					<?php echo $form["stato"];?>
+					
+					<?php echo $form["pagamento"];?>
 				</div>
 			</div>
 			
