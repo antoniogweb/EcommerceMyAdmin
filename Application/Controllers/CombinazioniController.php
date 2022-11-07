@@ -89,22 +89,35 @@ class CombinazioniController extends BaseController
 		else
 			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 		
+		$mainFields = array();
+		$mainHeadArray = array();
+		
+		if (v("immagini_separate_per_variante") && !partial())
+		{
+			$mainFields[] = "primaImmagineCrud";
+			$mainHeadArray[] = "Immagine";
+		}
+		
 		if (!partial())
 		{
-			$mainFields = array("c1.title", "prodotto");
-			$mainHead = "Categoria,Prodotto";
+			$mainFields[] = "c1.title";
+			$mainFields[] = "prodotto";
+			$mainHeadArray[] = "Categoria";
+			$mainHeadArray[] = "Prodotto";
 		}
 		else
 		{
-			$mainFields = array("prodotto");
-			$mainHead = "Prodotto";
+			$mainFields[] = "prodotto";
+			$mainHeadArray[] = "Prodotto";
 		}
 		
 		if (v("immagine_in_varianti"))
 		{
 			$mainFields[] = "immagine";
-			$mainHead .= ",Immagine";
+			$mainHeadArray[] = "Immagine";
 		}
+		
+		$mainHead = implode(",", $mainHeadArray);
 		
 		$mainFields[] = "varianti";
 		$mainFields[] = "codice";

@@ -220,7 +220,7 @@ Helper_Menu::$htmlLinks = array(
 	"copia" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-primary"',
+		"attributes" => 'role="button" class="btn btn-primary make_spinner"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Duplica",
 		"classIconBefore"	=>	'<i class="fa fa-paste"></i>',
