@@ -5,11 +5,22 @@
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-6'>
-			<div class="panel panel-default">
+			<?php if (isset($form["id_user"])) { ?>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<?php echo gtext("Account");?>
+				</div>
+				<div class="panel-body">
+					<?php echo $form["id_user"];?>
+				</div>
+			</div>
+			<?php } ?>
+			<!--<div class="panel panel-default">
 				<div class="panel-heading">
 					Fatturazione
 				</div>
-				<div class="panel-body">
+				<div class="panel-body">-->
+					
 					<?php echo $form["tipo_cliente"];?>
 					<?php echo $form["nome"];?>
 					<?php echo $form["cognome"];?>
@@ -34,11 +45,11 @@
 							<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 						</span>
 					</div>
-				</div>
-			</div>
+				<!--</div>
+			</div>-->
 		</div>
 		<div class='col-md-6'>
-			<div class="panel panel-primary">
+			<div class="panel panel-default">
 				<div class="panel-heading">
 					Opzioni ordine
 				</div>
@@ -49,7 +60,7 @@
 				</div>
 			</div>
 			
-			<div class="panel panel-info">
+			<div class="panel panel-default">
 				<div class="panel-heading">
 					Fattura elettronica
 				</div>

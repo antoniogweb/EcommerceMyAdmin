@@ -148,7 +148,6 @@ class VariabiliModel extends GenericModel {
 		"insert_account_nominativo_obbligatorio"	=>	1,
 		"insert_account_cf_obbligatorio"			=>	1,
 		"insert_account_p_iva_obbligatorio"			=>	1,
-		"url_elenco_ordini"			=>	"ordini/main",
 		"insert_account_indirizzo_obbligatorio"	=>	1,
 		"insert_account_citta_obbligatoria"		=>	1,
 		"insert_account_telefono_obbligatorio"	=>	1,
@@ -506,6 +505,9 @@ class VariabiliModel extends GenericModel {
 		"tempo_durata_cookie_id_lista"	=>	31536000, // durata in secondi del cookie contenente l'ID della lista
 		"alias_pagina_lista"	=>	"lista-regalo", // alias usato in URL per la pagina delle liste
 		"numero_massimo_tentativi_invio_link"	=>	3, // numero massimo di tentativi di invio link per ogni elemento della tabella liste_regalo_link
+		## ORDINI ##
+		"url_elenco_ordini"			=>	"ordini/main", // controller/action della sezione ordini
+		"permetti_modifica_cliente_in_ordine"	=>	0, // se impostato ad 1, permette di modificare il cliente nell'ordine
 		## CHECKOUT ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_titoli_checkout_spedizione"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli della sezione spedizioni al checkout

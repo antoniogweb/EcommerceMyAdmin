@@ -26,6 +26,12 @@ class FormModel extends GenericModel {
 
 	public function setFormStruct($id = 0)
 	{
+		$record = $this->selectId((int)$id);
+		
+		$idUser = (!empty($record)) ? $record["id_user"] : 0;
+		
+		$linkAggiungi = (empty($record)) ? "<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>" : "";
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -166,8 +172,19 @@ class FormModel extends GenericModel {
 					'labelString'=>	'Tipo azienda',
 				),
 				'id_user'	=>	array(
-					'type'		=>	'Hidden'
+					"type"	=>	"Select",
+					"labelString"	=>	"Cliente",
+					"options"	=>	$this->selectUtenti($idUser),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"$linkAggiungi<div>","</div>"),
 				),
+// 				'id_user'	=>	array(
+// 					'type'		=>	'Hidden'
+// 				),
 				'lingua'	=>	array(
 					"type"	=>	"Select",
 					"options"	=>	LingueModel::getValori(),

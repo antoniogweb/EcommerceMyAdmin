@@ -9,7 +9,7 @@
 		<div class="uk-card-body">
 <?php } ?>
 	<nav>
-		<ul class="uk-nav-default uk-nav-parent-icon uk-list-divider" uk-nav>
+		<ul class="uk-nav uk-nav-default uk-nav-parent-icon uk-list-divider" uk-nav>
 			<?php if ($islogged) { ?>
 			<li class="<?php if ($attiva == "dashboard") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/area-riservata";?>" title="<?php echo gtext("Area riservata", false);?>"><?php echo gtext("Area riservata");?></a>

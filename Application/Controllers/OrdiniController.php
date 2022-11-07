@@ -212,13 +212,41 @@ class OrdiniController extends BaseController {
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$record = $this->m[$this->modelName]->selectId((int)$id);
+		
+		if (!empty($record) && isset($_POST["id_user"]) && (int)$_POST["id_user"] !== (int)$record["id_user"])
+		{
+			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
+			
+			if (!empty($cliente))
+			{
+// 				print_r($cliente);
+				$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+				
+				foreach ($campiDaCopiare as $cdc)
+				{
+					if (isset($cliente[$cdc]))
+						$_POST[$cdc] = $cliente[$cdc];
+				}
+				
+				$_POST["email"] = $cliente["username"];
+			}
+		}
+		
+// 		print_r($_POST);die();
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
 		$this->menuLinks = "torna_ordine,save";
 		
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost('tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento');
+		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento';
+		
+		if (v("permetti_modifica_cliente_in_ordine"))
+			$fields .= ",id_user";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}

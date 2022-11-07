@@ -29,7 +29,6 @@ function updateForm()
 		$(".cognome").css("display","none");
 		<?php } ?>
 	}
-
 }
 
 $(document).ready(function(){
@@ -40,6 +39,10 @@ $(document).ready(function(){
 		
 		updateForm();
 	
+	});
+	
+	$('[name="id_user"]').on('select2:select', function (e) {
+		reloadPage();
 	});
 	
 });
