@@ -30,7 +30,7 @@ class AttributiController extends BaseController {
 		'page:forceNat'		=>	1,
 		'titolo:sanitizeAll'=>	'tutti',
 		'token:sanitizeAll'	=>	'token',
-		'id_page:sanitizeAll'	=>	'token',
+		'id_page:sanitizeAll'	=>	'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
