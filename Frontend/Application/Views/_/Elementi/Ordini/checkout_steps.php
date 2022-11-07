@@ -12,20 +12,12 @@ if (!isset($classBadgeAutenticazione))
 if (!isset($classBadgeCheckout))
 	$classBadgeCheckout = "";
 ?>
-<div class="checkout-steps uk-margin-large-bottom" <?php if ($this->action == "index" && User::$isPhone) { ?>uk-sticky="offset: 0;bottom: true;"<?php } ?>>
-	<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center">
+<div class="checkout-steps uk-margin-large-bottom <?php echo User::$isMobile ? "checkout-steps-mobile" : "";?>" <?php if ($this->action == "index" && User::$isMobile) { ?>uk-sticky="offset: 0;bottom: true;"<?php } ?>>
+		<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center">
 		<div>
 			<progress id="js-progressbar" class="uk_progress uk-progress uk-margin-remove" value="<?php echo $percentuale;?>" max="100"></progress>
 			<div style="margin-top:-16px;" class="uk-grid uk-grid-collapse uk-text-center uk-child-width-expand" uk-grid>
 				<?php if (User::$isMobile) { ?>
-				<div class="step_active">
-					<a href="<?php echo $this->baseUrl."/autenticazione";?>"><span class="uk-light uk-background-primary uk-border-circle checkout-step <?php echo $classBadgeAutenticazione;?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/sign-in.svg");?></span></span>
-					<br />
-					<?php if ($this->action == "checklogin") { ?>
-					<span class="nome_step uk-text-meta <?php echo $textClassAutenticazione;?>"><?php echo gtext("Accedi");?></span>
-					<?php } ?>
-					</a>
-				</div>
 				<div pos="fatturazione">
 					<span class="checkout-step uk-border-circle <?php echo $classBadgeCheckout;?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/user.svg");?></span></span>
 					<br />
@@ -39,8 +31,13 @@ if (!isset($classBadgeCheckout))
 				<div pos="pagamento">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/credit-card.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Pagamento");?></span>
 				</div>
+				<?php if (count($corrieri) > 1) { ?>
+				<div pos="consegna">
+					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/clock.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Consegna");?></span>
+				</div>
+				<?php } ?>
 				<div pos="carrello">
-					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/carrello.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Carrello");?></span>
+					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/carrello.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Totali");?></span>
 				</div>
 				<div pos="conferma">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/check.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Conferma");?></span>

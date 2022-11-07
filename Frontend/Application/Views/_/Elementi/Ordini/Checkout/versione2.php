@@ -3,8 +3,8 @@
 	<?php include(tpf("/Elementi/Ordini/checkout_top.php"));?>
 	
 	<div class="">
-		<?php if (!$islogged) {
-			$percentuale = User::$isMobile ? 30 : 75;
+		<?php if (!$islogged || User::$isMobile || true) {
+			$percentuale = User::$isMobile ? 0 : 0;
 			$textClassCheckout = "uk-text-secondary";
 			$classBadgeCheckout = "uk-light uk-background-primary";
 			include(tpf("/Elementi/Ordini/checkout_steps.php"));
@@ -112,7 +112,7 @@
 											?>
 										</div>
 									</div>
-									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isMobile ? "uk-margin-large-top" : "";?>">
+									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isMobile ? "uk-margin-large-top" : "";?>" id="fragment-checkout-consegna">
 										<div class="">
 											<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 										</div>
@@ -131,7 +131,7 @@
 								<span uk-icon="icon:check;ratio:1" class="uk-icon-button"></span>
 							</div>
 							<div class="uk-width-expand">
-								<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Note e conferma acquisto");?></h2>
+								<h2 id="fragment-checkout-conferma" class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Note e conferma acquisto");?></h2>
 								
 								<?php include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(
 										"titolo"	=>	"Parte inferiore del checkout",
@@ -167,7 +167,7 @@
 					<?php } ?>
 				</div>
 				<div class="uk-margin-remove-top uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
-					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } else { ?>id="fragment-checkout-carrello"<?php } ?>>
+					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?> id="fragment-checkout-carrello">
 						<?php include(tpf("/Ordini/checkout_totali.php")); ?>
 						
 						<?php if (v("attiva_coupon_checkout") && !hasActiveCoupon()) { ?>

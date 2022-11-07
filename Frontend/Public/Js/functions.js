@@ -563,9 +563,12 @@ function mostraNascondiBloccoNote()
 
 function mostraPosizioneStepCheckout(posizione)
 {
-	$( "[pos='"+posizione+"']" ).find(".checkout-step").removeClass("uk_badge_meta").addClass("uk-light uk-background-primary");
-	$(".nome_step").addClass("uk-hidden");
-	$( "[pos='"+posizione+"']" ).find(".nome_step").removeClass("uk-hidden");
+	if ($( "[pos='"+posizione+"']" ).length > 0)
+	{
+		$( "[pos='"+posizione+"']" ).find(".checkout-step").removeClass("uk_badge_meta").addClass("uk-light uk-background-primary");
+		$(".nome_step").addClass("uk-hidden");
+		$( "[pos='"+posizione+"']" ).find(".nome_step").removeClass("uk-hidden");
+	}
 }
 
 function nascondiPosizioneStepCheckout(posizione)
@@ -1067,42 +1070,50 @@ $(document).ready(function(){
 		});
 	}
 	
-	if ($(".checkout-steps").length > 0)
+	if ($(".checkout-steps-mobile").length > 0)
 	{
 		$(window).scroll(function() {
 			var offset = $("#fragment-checkout-fatturazione").offset();
 			var offset2 = $("#fragment-checkout-spedizione").offset();
 			var offset3 = $("#fragment-checkout-pagamento").offset();
+			var offset35 = $("#fragment-checkout-consegna").offset();
 			var offset4 = $("#fragment-checkout-carrello").offset();
 			var offset5 = $("#fragment-checkout-conferma").offset();
 			
 			var y = $(window).scrollTop();
 			
-			if(y >= 0 && y) {
+			if(y >= 0) {
 				mostraPosizioneStepCheckout("fatturazione")
 			} else {
 				nascondiPosizioneStepCheckout("fatturazione");
 			}
 			
-			if(y > (offset2.top - 200) && y) {
+			if(y > (offset2.top - 200)) {
 				mostraPosizioneStepCheckout("spedizione")
 			} else {
 				nascondiPosizioneStepCheckout("spedizione");
 			}
 			
-			if(y > (offset3.top - 200) && y) {
+			if(y > (offset3.top - 200)) {
 				mostraPosizioneStepCheckout("pagamento")
 			} else {
 				nascondiPosizioneStepCheckout("pagamento");
 			}
 			
-			if(y > (offset4.top - 200) && y) {
+			if(y > (offset35.top - 200)) {
+				mostraPosizioneStepCheckout("consegna")
+			} else {
+				nascondiPosizioneStepCheckout("consegna");
+			}
+			
+			if(y > (offset4.top - 200)) {
 				mostraPosizioneStepCheckout("carrello")
 			} else {
 				nascondiPosizioneStepCheckout("carrello");
 			}
 			
-			if(y > (offset5.top - 200) && y) {
+			if(y > (offset5.top - 200)) {
+				console.log("aaa");
 				mostraPosizioneStepCheckout("conferma")
 			} else {
 				nascondiPosizioneStepCheckout("conferma");

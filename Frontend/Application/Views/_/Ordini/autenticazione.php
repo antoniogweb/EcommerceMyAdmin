@@ -15,10 +15,12 @@ $noLoginNotice = true;
 $action = $this->baseUrl."/regusers/login?redirect=/checkout";
 RegusersModel::$redirectQueryString = "redirect=checkout";
 
-$percentuale = User::$isMobile ? 10 : 25;
+$percentuale = User::$isMobile ? 0 : 25;
 $textClassAutenticazione = "uk-text-secondary";
 $classBadgeCheckout = "uk_badge_meta";
-include(tpf("/Elementi/Ordini/checkout_steps.php")); ?>
+if (!User::$isMobile)
+	include(tpf("/Elementi/Ordini/checkout_steps.php"));
+?>
 
 <div class="uk-child-width-expand@s uk-text-left uk-grid-divider uk-grid uk-grid-column-large" uk-grid>
 	<div class="uk-width-1-2@m uk-text-left">

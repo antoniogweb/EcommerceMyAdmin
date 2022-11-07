@@ -94,7 +94,7 @@ img:not([src])
 
 .uk_badge_meta
 {
-	background: #999;
+	background: #EEE;
 }
 
 .radio_pagamento, .radio_corriere
@@ -125,8 +125,10 @@ img:not([src])
 .checkout-steps
 {
 	background-color:#FFF;
-	padding-top:20px;
-	z-index:99999;
+}
+.checkout-step .uk-icon
+{
+	vertical-align: 6px;
 }
 .checkout-steps.uk-sticky-fixed
 {
@@ -134,4 +136,15 @@ img:not([src])
 	left:0px;
 	right:0px;
 	width:auto !important;
+	z-index:99999;
+	padding-top:25px;
+	padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media (min-width: $breakpoint-medium) {
+	.checkout-steps.uk-sticky-fixed
+	{
+		display:none;
+	}
 }
