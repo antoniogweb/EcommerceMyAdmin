@@ -151,7 +151,9 @@ $(document).ready(function(){
 			
 			<div class="box">
 				<div class="box-header with-border main">
-					<div id="form_opzioni">Varianti associate a questo prodotto</div>
+					<p><a class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti prodotto")?></a></p>
+					
+					<div id="form_opzioni"><?php echo gtext("Varianti associate a questo prodotto")?></div>
 					
 					<div class="notice_box">
 						<?php echo $notice;?>
@@ -176,7 +178,7 @@ $(document).ready(function(){
 					<div id="refresh_link"></div>
 				</div>
 			</div>
-			<?php if ($numeroAttributi > 0) { ?>
+			<?php if (true || $numeroAttributi > 0) { ?>
 			<div class="box">
 				<div class="box-header with-border main">
 					<div class="box_lista_combinazioni help_elenco_combinazioni">

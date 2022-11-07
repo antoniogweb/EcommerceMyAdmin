@@ -1115,24 +1115,42 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
 		$this->scaffold->fields = "attributi.*,pages_attributi.*";
-		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa','moveup,movedown,del');
+		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa','moveup,movedown,ldel');
 		$this->scaffold->setHead('Variante');
+		
+		$this->scaffold->itemList->inverseColProperties = array(
+			array(
+				'width'	=>	'2%',
+				'class'	=>	'ldel',
+			),
+			array(
+				'width'	=>	'2%',
+			),
+			array(
+				'width'	=>	'2%',
+			),
+		);
 		
 		$this->scaffold->model->clear()->inner("attributi")->on("attributi.id_a = pages_attributi.id_a")->orderBy("pages_attributi.id_order")->where(array("n!pages_attributi.id_page"=>$clean['id']));
 		
 		$this->scaffold->update('moveup,movedown');
 		
 		$this->scaffold->itemList->colProperties = array(
-			array(
-				'width'	=>	'60px',
-			),
+// 			array(
+// 				'width'	=>	'60px',
+// 			),
 		);
 		
 		$data['scaffold'] = $this->scaffold->render();
 		
 		$data['numeroAttributi'] = $this->scaffold->model->rowNumber();
 		
-		$resAttributi = $this->m['AttributiModel']->clear()->orderBy("titolo")->send();
+		$resAttributi = $this->m['AttributiModel']->clear()->where(array(
+			"OR"	=>	array(
+				"id_page"	=>	0,
+				" id_page"	=>	(int)$clean['id'],
+			),
+		))->orderBy("titolo")->send();
 		
 		$data["listaAttributi"] = array();
 		

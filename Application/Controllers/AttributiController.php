@@ -30,6 +30,7 @@ class AttributiController extends BaseController {
 		'page:forceNat'		=>	1,
 		'titolo:sanitizeAll'=>	'tutti',
 		'token:sanitizeAll'	=>	'token',
+		'id_page:sanitizeAll'	=>	'token',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -62,16 +63,36 @@ class AttributiController extends BaseController {
 				->where(array(
 					"lk" => array('titolo' => $this->viewArgs['titolo']),
 				))
-				->orderBy("id_order")->convert()->save();
+				->orderBy("id_order")->convert();
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->bulkQueryActions = "aggiungiapagina";
+			
+			$this->bulkActions = array(
+				"checkbox_caratteristiche_id_car"	=>	array("aggiungiapagina","Aggiungi alla pagina"),
+			);
+			
+			$this->m[$this->modelName]->aWhere(array(
+				"id_page"	=>	(int)$this->viewArgs["id_page"]
+			));
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->shift(2);
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
 		$this->m[$this->modelName]->setValuesFromPost('titolo,nota_interna,tipo');
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
 		
 		parent::form($queryType, $id);
 	}
