@@ -4,11 +4,11 @@
 
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
-		<div class='col-md-6'>
+		<div class='col-md-4'>
 			<?php if (isset($form["id_user"])) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<?php echo gtext("Account");?>
+					<?php echo gtext("Fatturazione");?>
 				</div>
 				<div class="panel-body">
 					<?php echo $form["id_user"];?>
@@ -34,7 +34,8 @@
 					<?php echo $form["citta"];?>
 					<?php echo $form["telefono"];?>
 					<?php echo $form["email"];?>
-					
+					<?php echo $form["pec"];?>
+					<?php echo $form["codice_destinatario"];?>
 					<?php if ($type === "update") { ?>
 					<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 					<?php } ?>
@@ -48,7 +49,25 @@
 				<!--</div>
 			</div>-->
 		</div>
-		<div class='col-md-6'>
+		<div class='col-md-4'>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<?php echo gtext("Spedizione");?>
+				</div>
+				<div class="panel-body">
+					<?php echo $form["id_spedizione"] ?? "";?>
+					
+				</div>
+			</div>
+			
+			<?php echo $form["indirizzo_spedizione"];?>
+			<?php echo $form["cap_spedizione"];?>
+			<?php echo $form["nazione_spedizione"];?>
+			<?php echo $form["provincia_spedizione"];?>
+			<?php echo $form["citta_spedizione"];?>
+			<?php echo $form["telefono_spedizione"];?>
+		</div>
+		<div class='col-md-4'>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Opzioni ordine
@@ -57,30 +76,6 @@
 					<?php echo $form["stato"];?>
 					
 					<?php echo $form["pagamento"];?>
-				</div>
-			</div>
-			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Fattura elettronica
-				</div>
-				<div class="panel-body">
-					<?php echo $form["pec"];?>
-					<?php echo $form["codice_destinatario"];?>
-				</div>
-			</div>
-			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Spedizione
-				</div>
-				<div class="panel-body">
-					<?php echo $form["indirizzo_spedizione"];?>
-					<?php echo $form["cap_spedizione"];?>
-					<?php echo $form["nazione_spedizione"];?>
-					<?php echo $form["provincia_spedizione"];?>
-					<?php echo $form["citta_spedizione"];?>
-					<?php echo $form["telefono_spedizione"];?>
 				</div>
 			</div>
 		</div>

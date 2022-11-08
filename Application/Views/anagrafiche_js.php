@@ -41,9 +41,10 @@ $(document).ready(function(){
 	
 	});
 	
-	$('[name="id_user"]').on('select2:select', function (e) {
-		reloadPage();
-	});
+	if ($('[name="id_user"]').length > 0 && $('[name="id_spedizione"]').length > 0)
+		$('[name="id_user"],[name="id_spedizione"]').on('select2:select', function (e) {
+			reloadPage();
+		});
 	
 });
 

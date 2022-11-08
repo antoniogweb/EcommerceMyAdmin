@@ -194,24 +194,6 @@ class BaseRegusersModel extends Model_Tree
 		return 0;
 	}
 	
-	public function getTendinaIndirizzi($id_user)
-	{
-		$sp = new SpedizioniModel();
-		
-		$indirizzi = $sp->where(array(
-			"id_user"	=>	(int)$id_user,
-		))->orderBy("indirizzo_spedizione")->send(false);
-		
-		$arraySelect = array();
-		
-		foreach ($indirizzi as $i)
-		{
-			$arraySelect[$i["id_spedizione"]] = $i["indirizzo_spedizione"]." ".$i["cap_spedizione"]." ".$i["citta_spedizione"];
-		}
-		
-		return $arraySelect;
-	}
-	
 	public function getIndirizziSpedizione($id_user)
 	{
 		$sp = new SpedizioniModel();

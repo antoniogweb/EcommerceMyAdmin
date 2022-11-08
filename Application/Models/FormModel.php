@@ -30,7 +30,16 @@ class FormModel extends GenericModel {
 		
 		$idUser = (!empty($record)) ? $record["id_user"] : 0;
 		
+		if (isset($_POST["id_user"]) && (int)$_POST["id_user"] && RegusersModel::g()->whereId((int)$_POST["id_user"])->rowNumber())
+			$idUser = $_POST["id_user"];
+		
 		$linkAggiungi = (empty($record)) ? "<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>" : "";
+		
+		$arrayAnonimo = (v("permetti_acquisto_anonimo") || ($id && !$idUser)) ? array("0" => gtext("-- cliente ospite --")) : array();
+		
+		$opzioniIdUser = $arrayAnonimo + $this->selectUtenti($idUser);
+		
+		$opzioniIdSpedizione = array("0" => gtext("-- non specificato --")) + $this->getTendinaIndirizzi($idUser);
 		
 		$this->formStruct = array
 		(
@@ -174,13 +183,23 @@ class FormModel extends GenericModel {
 				'id_user'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Cliente",
-					"options"	=>	$this->selectUtenti($idUser),
+					"options"	=>	$opzioniIdUser,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					'entryAttributes'	=>	array(
 						"select2"	=>	"",
 					),
 					'wrap'	=>	array(null,null,"$linkAggiungi<div>","</div>"),
+				),
+				'id_spedizione'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Spedizione",
+					"options"	=>	$opzioniIdSpedizione,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
 				),
 // 				'id_user'	=>	array(
 // 					'type'		=>	'Hidden'

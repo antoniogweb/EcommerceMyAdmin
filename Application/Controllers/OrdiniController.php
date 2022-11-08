@@ -68,6 +68,7 @@ class OrdiniController extends BaseController {
 		$this->model("RegusersModel");
 		$this->model("CorrieriModel");
 		$this->model("MailordiniModel");
+		$this->model("SpedizioniModel");
 		
 		$this->s['admin']->check();
 		
@@ -212,24 +213,53 @@ class OrdiniController extends BaseController {
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		if( !session_id() )
+			session_start();
+		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if (!empty($record) && isset($_POST["id_user"]) && (int)$_POST["id_user"] !== (int)$record["id_user"])
+		if (!empty($record))
 		{
-			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
+			if (!isset($_POST["id_user"]))
+				$_SESSION["id_user"] = (int)$record["id_user"];
 			
-			if (!empty($cliente))
+			if (isset($_POST["id_user"]))
 			{
-// 				print_r($cliente);
-				$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+				$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
 				
-				foreach ($campiDaCopiare as $cdc)
+				if (!empty($cliente))
 				{
-					if (isset($cliente[$cdc]))
-						$_POST[$cdc] = $cliente[$cdc];
+					if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
+					{
+						$_SESSION["id_user"] = (int)$_POST["id_user"];
+						
+						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+						
+						foreach ($campiDaCopiare as $cdc)
+						{
+							if (isset($cliente[$cdc]))
+								$_POST[$cdc] = $cliente[$cdc];
+						}
+						
+						$_POST["email"] = $cliente["username"];
+					}
+					
+					if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$record["id_spedizione"])
+					{
+						$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
+						
+						if (!empty($spedizione))
+						{
+							$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+							
+							foreach ($campiDaCopiare as $cdc)
+							{
+								if (isset($spedizione[$cdc]))
+									$_POST[$cdc] = $spedizione[$cdc];
+							}
+						}
+					}
 				}
-				
-				$_POST["email"] = $cliente["username"];
 			}
 		}
 		
@@ -244,7 +274,7 @@ class OrdiniController extends BaseController {
 		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento';
 		
 		if (v("permetti_modifica_cliente_in_ordine"))
-			$fields .= ",id_user";
+			$fields .= ",id_user,id_spedizione";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
