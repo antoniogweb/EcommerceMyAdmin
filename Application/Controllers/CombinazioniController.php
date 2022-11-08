@@ -312,7 +312,7 @@ class CombinazioniController extends BaseController
 				$this->m ["CombinazionilistiniModel"]->update($v["id_cl"]);
 			}
 			
-			if (!in_array($v["id_page"],$arrayIdPage))
+			if (isset($v["id_page"]) && !in_array($v["id_page"],$arrayIdPage))
 				$arrayIdPage[] = (int)$v["id_page"];
 		}
 		
