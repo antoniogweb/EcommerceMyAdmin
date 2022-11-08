@@ -162,12 +162,16 @@ class CombinazioniModel extends GenericModel {
 	
 	public function setPriceNonIvato($idPage = 0)
 	{
-		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["price_scontato_ivato"])))
 		{
 			$p = new PagesModel();
 			$valore = $p->getIva($idPage);
 			
-			$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			if (isset($this->values["price_ivato"]))
+				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["price_scontato"]))
+				$this->values["price"] = number_format(setPrice($this->values["price_scontato_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
 		}
 	}
 	
@@ -375,6 +379,9 @@ class CombinazioniModel extends GenericModel {
 			
 			// Controlla che esista la combinazione canonical
 			$this->checkCanonical($dettagliPagina["id_page"]);
+			
+			// Imosto i prezzi scontati
+			$page->aggiornaPrezziCombinazioni($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
@@ -653,7 +660,7 @@ class CombinazioniModel extends GenericModel {
 	public function codice($record)
 	{
 		if (!isset($_GET["esporta"]) && !self::isFromLista())
-			return "<input id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' />";
+			return "<input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' />";
 		else
 			return $record["combinazioni"]["codice"];
 	}

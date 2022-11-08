@@ -137,7 +137,6 @@ class VariabiliModel extends GenericModel {
 		"telefono_aziendale_2"		=>	"",
 		"numero_in_evidenza"		=>	4,
 		"pagamenti_permessi"		=>	"bonifico,paypal",
-		"estrai_in_promozione_home"	=>	0,
 		"news_per_pagina"			=>	16,
 		"email_aziendale"			=>	"",
 		"piattaforma_in_sviluppo"	=>	1,
@@ -506,6 +505,7 @@ class VariabiliModel extends GenericModel {
 		"alias_pagina_lista"	=>	"lista-regalo", // alias usato in URL per la pagina delle liste
 		"numero_massimo_tentativi_invio_link"	=>	3, // numero massimo di tentativi di invio link per ogni elemento della tabella liste_regalo_link
 		## ORDINI ##
+		"permetti_ordini_offline"	=>	0, // se impostato ad 1 permette la creazione di ordini dal backend
 		"url_elenco_ordini"			=>	"ordini/main", // controller/action della sezione ordini
 		"permetti_modifica_cliente_in_ordine"	=>	0, // se impostato ad 1, permette di modificare il cliente nell'ordine
 		## CHECKOUT ##
@@ -520,7 +520,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
-		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento	
+		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento
+		## PROMOZIONI ##
+		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
+		"estrai_in_promozione_home"	=>	0,
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

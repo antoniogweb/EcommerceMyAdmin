@@ -283,6 +283,8 @@ class CombinazioniController extends BaseController
 		if (v("prezzi_ivati_in_prodotti"))
 			$campoPrice = "price_ivato";
 		
+		$arrayIdPage = array();
+		
 		foreach ($valori as $v)
 		{
 			$this->m[$this->modelName]->setValues(array(
@@ -309,6 +311,15 @@ class CombinazioniController extends BaseController
 				
 				$this->m ["CombinazionilistiniModel"]->update($v["id_cl"]);
 			}
+			
+			if (!in_array($v["id_page"],$arrayIdPage))
+				$arrayIdPage[] = (int)$v["id_page"];
+		}
+		
+		// Aggiorno i prezzi delle combinazioni
+		foreach ($arrayIdPage as $idPage)
+		{
+			PagesModel::g()->aggiornaPrezziCombinazioni((int)$idPage);
 		}
 		
 		if (v("usa_transactions"))

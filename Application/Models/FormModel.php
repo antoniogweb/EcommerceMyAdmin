@@ -33,7 +33,7 @@ class FormModel extends GenericModel {
 		if (isset($_POST["id_user"]) && (int)$_POST["id_user"] && RegusersModel::g()->whereId((int)$_POST["id_user"])->rowNumber())
 			$idUser = $_POST["id_user"];
 		
-		$linkAggiungi = (empty($record)) ? "<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>" : "";
+		$linkAggiungi = "<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>";
 		
 		$arrayAnonimo = (v("permetti_acquisto_anonimo") || ($id && !$idUser)) ? array("0" => gtext("-- cliente ospite --")) : array();
 		

@@ -303,7 +303,11 @@ class OrdiniModel extends FormModel {
 	
 	public function insert()
 	{
-		$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
+		if (App::$isFrontend)
+			$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
+		else
+			$this->values["cart_uid"] = randomToken();
+		
 		$this->values["codice_transazione"] = $this->getUniqueCodTrans(generateString(30));
 		
 		if (!isset($this->values["lingua"]))
@@ -317,15 +321,18 @@ class OrdiniModel extends FormModel {
 		
 		$checkFiscale = v("abilita_codice_fiscale");
 		
-		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
-			return parent::insert();
-		
 		// Se non c'è la spedizione attiva
 		if (!v("attiva_spedizione"))
 		{
 			$this->values["id_spedizione"] = 0;
 			$this->values["id_corriere"] = 0;
 		}
+		
+		if (!App::$isFrontend)
+			$this->values["tipo_ordine"] = "B";
+		
+		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()))
+			return parent::insert();
 		
 		return false;
 	}
@@ -984,5 +991,20 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return "";
+	}
+	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["tipo_ordine"] == "W")
+			return false;
+		
+		return true;
+	}
+	
+	public static function tipoOrdine($id)
+	{
+		return self::g()->select("tipo_ordine")->whereId((int)$id)->field("tipo_ordine");
 	}
 }

@@ -46,12 +46,16 @@ class CombinazionilistiniModel extends GenericModel {
 	
 	public function setPriceNonIvato($idPage = 0)
 	{
-		if (v("prezzi_ivati_in_prodotti") && isset($this->values["price_ivato"]))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["price_scontato_ivato"])))
 		{
 			$p = new PagesModel();
 			$valore = $p->getIva($idPage);
 			
-			$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			if (isset($this->values["price_ivato"]))
+				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["price_scontato_ivato"]))
+				$this->values["price_scontato"] = number_format(setPrice($this->values["price_scontato_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
 		}
 	}
 	
@@ -96,10 +100,14 @@ class CombinazionilistiniModel extends GenericModel {
 		))->record();
 		
 		$campoPrice = "price";
+		$campoPriceScontato = "price_scontato";
 		
 		if (v("prezzi_ivati_in_prodotti"))
+		{
 			$campoPrice = "price_ivato";
-			
+			$campoPriceScontato = "price_scontato_ivato";
+		}
+		
 		if (empty($listino))
 		{
 			$c = new CombinazioniModel();
@@ -112,6 +120,7 @@ class CombinazionilistiniModel extends GenericModel {
 					"nazione"	=>	$nazione,
 					"id_c"		=>	$idC,
 					"$campoPrice"	=>	$combinazione[$campoPrice],
+					"$campoPriceScontato"	=>	$combinazione[$campoPriceScontato],
 				));
 				
 				if ($this->insert())

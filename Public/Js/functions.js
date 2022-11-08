@@ -375,6 +375,7 @@ $(document).ready(function(){
 		
 		$("table tr.listRow").each(function(){
 			
+			var id_page = $(this).find("[name='codice']").attr("id-page");
 			var id_c = $(this).find("[name='codice']").attr("id-c");
 			var id_cl = $(this).find("[name='price']").attr("id-cl");
 			var codice = $(this).find("[name='codice']").val();
@@ -382,6 +383,7 @@ $(document).ready(function(){
 			var peso = $(this).find("[name='peso']").val();
 			
 			var temp = {
+				id_page: id_page,
 				id_c: id_c,
 				id_cl: id_cl,
 				codice: codice,

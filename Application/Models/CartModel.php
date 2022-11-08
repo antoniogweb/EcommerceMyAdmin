@@ -535,12 +535,15 @@ class CartModel extends GenericModel {
 			//sconto promozione
 			if ($checkPromo && $p->inPromozione($clean["id_page"]))
 			{
-				if ($page["tipo_sconto"] == "PERCENTUALE")
-					$arraySconti[] = $page["prezzo_promozione"];
-				else if ($page["price"] > 0)
-					$arraySconti[] = (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
+				$scontoPromo = PagesModel::getPercSconto($page);
+// 				if ($page["tipo_sconto"] == "PERCENTUALE")
+// 					$arraySconti[] = $page["prezzo_promozione"];
+// 				else if ($page["price"] > 0)
+// 					$arraySconti[] = (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
 				
-				$arrayScontiDescrizione[] = "Prodotto in promozione, sconto ".$page["prezzo_promozione"]." %";
+				$arraySconti[] = $scontoPromo;
+				
+				$arrayScontiDescrizione[] = "Prodotto in promozione, sconto ".$scontoPromo." %";
 			}
 			
 			//sconto scaglionamento
@@ -739,19 +742,6 @@ class CartModel extends GenericModel {
 					$this->values["codice"] = $datiCombinazione[0]["combinazioni"]["codice"];
 					
 					$this->values["immagine"] = ProdottiModel::immagineCarrello($clean["id_page"], $datiCombinazione[0]["combinazioni"]["id_c"], $datiCombinazione[0]["combinazioni"]["immagine"]);
-					
-// 					$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-// 					$elencoImmagini[] = "";
-// 					
-// 					$this->values["immagine"] = in_array($datiCombinazione[0]["combinazioni"]["immagine"],$elencoImmagini) ? $datiCombinazione[0]["combinazioni"]["immagine"] : $elencoImmagini[0];
-// 					
-// 					if (v("immagini_separate_per_variante"))
-// 					{
-// 						$immagini = ImmaginiModel::immaginiCombinazione($datiCombinazione[0]["combinazioni"]["id_c"]);
-// 						
-// 						if (count($immagini) > 0)
-// 							$this->values["immagine"] = $immagini[0]["immagine"];
-// 					}
 					
 					$this->values["peso"] = $datiCombinazione[0]["combinazioni"]["peso"];
 				}

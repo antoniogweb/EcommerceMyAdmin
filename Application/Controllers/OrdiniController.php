@@ -37,6 +37,25 @@ class OrdiniController extends BaseController {
 	
 	public $tabella = "ordini";
 	
+	public $argKeys = array(
+		'page:forceInt'=>1,
+		'id_o:sanitizeAll'=>'tutti',
+		'pagamento:sanitizeAll'=>'tutti',
+		'stato:sanitizeAll'=>'tutti',
+		'tipo_cliente:sanitizeAll'=>'tutti',
+		'email:sanitizeAll'=>'tutti',
+		'codice_fiscale:sanitizeAll'=>'tutti',
+		'registrato:sanitizeAll'=>'tutti',
+		'token:sanitizeAll'=>'token',
+		'partial:sanitizeAll'=>'tutti',
+		'id_comb:sanitizeAll'=>'tutti',
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+		'nazione_utente:sanitizeAll'=>'tutti',
+		'lista_regalo:sanitizeAll'=>'tutti',
+		'id_lista_regalo:sanitizeAll'=>'tutti',
+	);
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -44,24 +63,24 @@ class OrdiniController extends BaseController {
 		$this->session('admin');
 		$this->model();
 
-		$this->setArgKeys(array(
-			'page:forceInt'=>1,
-			'id_o:sanitizeAll'=>'tutti',
-			'pagamento:sanitizeAll'=>'tutti',
-			'stato:sanitizeAll'=>'tutti',
-			'tipo_cliente:sanitizeAll'=>'tutti',
-			'email:sanitizeAll'=>'tutti',
-			'codice_fiscale:sanitizeAll'=>'tutti',
-			'registrato:sanitizeAll'=>'tutti',
-			'token:sanitizeAll'=>'token',
-			'partial:sanitizeAll'=>'tutti',
-			'id_comb:sanitizeAll'=>'tutti',
-			'dal:sanitizeAll'=>'tutti',
-			'al:sanitizeAll'=>'tutti',
-			'nazione_utente:sanitizeAll'=>'tutti',
-			'lista_regalo:sanitizeAll'=>'tutti',
-			'id_lista_regalo:sanitizeAll'=>'tutti',
-		));
+// 		$this->setArgKeys(array(
+// 			'page:forceInt'=>1,
+// 			'id_o:sanitizeAll'=>'tutti',
+// 			'pagamento:sanitizeAll'=>'tutti',
+// 			'stato:sanitizeAll'=>'tutti',
+// 			'tipo_cliente:sanitizeAll'=>'tutti',
+// 			'email:sanitizeAll'=>'tutti',
+// 			'codice_fiscale:sanitizeAll'=>'tutti',
+// 			'registrato:sanitizeAll'=>'tutti',
+// 			'token:sanitizeAll'=>'token',
+// 			'partial:sanitizeAll'=>'tutti',
+// 			'id_comb:sanitizeAll'=>'tutti',
+// 			'dal:sanitizeAll'=>'tutti',
+// 			'al:sanitizeAll'=>'tutti',
+// 			'nazione_utente:sanitizeAll'=>'tutti',
+// 			'lista_regalo:sanitizeAll'=>'tutti',
+// 			'id_lista_regalo:sanitizeAll'=>'tutti',
+// 		));
 
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
@@ -91,7 +110,9 @@ class OrdiniController extends BaseController {
 		
 		$this->addBulkActions = false;
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
+		$mainMenu = v("permetti_ordini_offline") ? "add" : "";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu, 'modifyAction'=>'vedi');
 		
 		$this->mainFields = array(
 			'linkcrud',
@@ -105,7 +126,7 @@ class OrdiniController extends BaseController {
 			'totaleCrud',
 		);
 		
-		$this->mainButtons = "";
+		$this->mainButtons = "ldel,ledit";
 		
 		$this->mainHead = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
 		
@@ -123,8 +144,8 @@ class OrdiniController extends BaseController {
 		
 		$this->aggiungiintegrazioni();
 		
-		$this->mainHead .= ",";
-		$this->mainFields[] = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
+// 		$this->mainHead .= ",";
+// 		$this->mainFields[] = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
 		
 		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
 		
@@ -218,52 +239,50 @@ class OrdiniController extends BaseController {
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if (!empty($record))
+		if (!isset($_POST["id_user"]))
+			$_SESSION["id_user"] = !empty($record) ? (int)$record["id_user"] : 0;
+		
+		if (!isset($_POST["id_spedizione"]))
+			$_SESSION["id_spedizione"] = !empty($record) ? (int)$record["id_spedizione"] : 0;
+		
+		if (isset($_POST["id_user"]))
 		{
-			if (!isset($_POST["id_user"]))
-				$_SESSION["id_user"] = (int)$record["id_user"];
+			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
 			
-			if (isset($_POST["id_user"]))
+			if (!empty($cliente))
 			{
-				$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
-				
-				if (!empty($cliente))
+				if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
 				{
-					if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
+					$_SESSION["id_user"] = (int)$_POST["id_user"];
+					
+					$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+					
+					foreach ($campiDaCopiare as $cdc)
 					{
-						$_SESSION["id_user"] = (int)$_POST["id_user"];
-						
-						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+						if (isset($cliente[$cdc]))
+							$_POST[$cdc] = $cliente[$cdc];
+					}
+					
+					$_POST["email"] = $cliente["username"];
+				}
+				
+				if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$_SESSION["id_spedizione"])
+				{
+					$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
+					
+					if (!empty($spedizione))
+					{
+						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
 						
 						foreach ($campiDaCopiare as $cdc)
 						{
-							if (isset($cliente[$cdc]))
-								$_POST[$cdc] = $cliente[$cdc];
-						}
-						
-						$_POST["email"] = $cliente["username"];
-					}
-					
-					if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$record["id_spedizione"])
-					{
-						$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
-						
-						if (!empty($spedizione))
-						{
-							$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
-							
-							foreach ($campiDaCopiare as $cdc)
-							{
-								if (isset($spedizione[$cdc]))
-									$_POST[$cdc] = $spedizione[$cdc];
-							}
+							if (isset($spedizione[$cdc]))
+								$_POST[$cdc] = $spedizione[$cdc];
 						}
 					}
 				}
 			}
 		}
-		
-// 		print_r($_POST);die();
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
@@ -279,6 +298,9 @@ class OrdiniController extends BaseController {
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+		
+		$data["tipoSteps"] = "modifica";
+		$this->append($data);
 	}
 	
 	public function integrazioni($id = 0)
@@ -291,11 +313,17 @@ class OrdiniController extends BaseController {
 		
 		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo((int)$id);
 		
+		$data["tipoSteps"] = "vedi";
 		$this->append($data);
 	}
 	
 	public function righe($id = 0)
 	{
+		if (OrdiniModel::tipoOrdine((int)$id) == "W")
+			$this->redirect("ordini/vedi/".(int)$id);
+		
+		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
+		
 		$this->_posizioni['righe'] = 'class="active"';
 		
 // 		$data["orderBy"] = $this->orderBy = "id_order";
@@ -305,22 +333,23 @@ class OrdiniController extends BaseController {
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_o";
 		
-		$this->mainButtons = "";
+		$this->mainButtons = "ldel";
 		
 		$this->modelName = "RigheModel";
 		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("righe.title");
-		$this->mainHead = "Articolo";
+		$this->mainFields = array("righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "prezzoFinaleCrud", "quantitaCrud", ";righe.iva;%");
+		$this->mainHead = "Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Prezzo finale,Quantità,Aliquota";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->orderBy("id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
 		
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
+		$data["tipoSteps"] = "modifica";
 		
 		$this->append($data);
 	}
@@ -445,6 +474,9 @@ class OrdiniController extends BaseController {
 // 				"ne"	=>	array("tipo"=>	"F"),
 				"tipologia"	=>	"ORDINE",
 			))->orderBy("data_creazione desc")->send(false);
+			
+			$data["tipoSteps"] = "vedi";
+			$this->append($data);
 			
 			$this->append($data);
 			$this->load('vedi');

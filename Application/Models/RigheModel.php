@@ -76,7 +76,6 @@ class RigheModel extends GenericModel {
 	{
 		$r = RigheModel::g()->inner("orders")->on("orders.id_o = righe.id_o")->where(array(
 			"orders.id_lista_regalo"	=>	(int)$idLista,
-// 			"righe.id_c"				=>	(int)$idC
 		));
 		
 		if ($idC)
@@ -87,4 +86,42 @@ class RigheModel extends GenericModel {
 		return $r;
 	}
 	
+	private function getPrezzoCampo($record, $field)
+	{
+		return v("prezzi_ivati_in_prodotti") ? setPriceReverse($record["righe"][$field."_ivato"]) : number_format($record["righe"][$field],v("cifre_decimali"),".","");
+	}
+	
+	public function prezzoInteroCrud($record)
+	{
+		$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
+		
+		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
+	}
+	
+	public function prezzoScontatoCrud($record)
+	{
+		$prezzo = $this->getPrezzoCampo($record, "price");
+		
+		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
+	}
+	
+	public function prezzoFinaleCrud($record)
+	{
+		$prezzo = $this->getPrezzoCampo($record, "prezzo_finale");
+		
+		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_finale' value='".$prezzo."' />";
+	}
+	
+	public function quantitaCrud($record)
+	{
+		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='price' value='".$record["righe"]["quantity"]."' />";
+	}
+	
+	public function attributiCrud($record)
+	{
+		if ($record["righe"]["attributi"])
+			return $record["righe"]["attributi"];
+		
+		return "--";
+	}
 }
