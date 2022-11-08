@@ -1216,16 +1216,29 @@ class BaseOrdiniController extends BaseController
 										{
 											//aggiungo l'indirizzo di spedizione
 											$this->m["SpedizioniModel"]->setValues(array(
-												"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
-												"cap_spedizione"	=>	$_POST["cap_spedizione"],
-												"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
-												"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
-												"citta_spedizione"	=>	$_POST["citta_spedizione"],
-												"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
-												"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
 												"id_user"	=>	$clean['userId'],
 												"ultimo_usato"	=>	"Y",
 											));
+											
+											$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+											
+											foreach ($campiSpedizione as $cs)
+											{
+												$this->m['SpedizioniModel']->setValue($cs, $_POST[$cs]);
+											}
+										
+// 											//aggiungo l'indirizzo di spedizione
+// 											$this->m["SpedizioniModel"]->setValues(array(
+// 												"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
+// 												"cap_spedizione"	=>	$_POST["cap_spedizione"],
+// 												"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
+// 												"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
+// 												"citta_spedizione"	=>	$_POST["citta_spedizione"],
+// 												"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
+// 												"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
+// 												"id_user"	=>	$clean['userId'],
+// 												"ultimo_usato"	=>	"Y",
+// 											));
 											
 											$this->m["SpedizioniModel"]->insert();
 											
@@ -1271,16 +1284,23 @@ class BaseOrdiniController extends BaseController
 										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
 										
 										$this->m["SpedizioniModel"]->setValues(array(
-											"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
-											"cap_spedizione"	=>	$_POST["cap_spedizione"],
-											"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
-											"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
-											"citta_spedizione"	=>	$_POST["citta_spedizione"],
-											"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
-											"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
+// 											"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
+// 											"cap_spedizione"	=>	$_POST["cap_spedizione"],
+// 											"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
+// 											"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
+// 											"citta_spedizione"	=>	$_POST["citta_spedizione"],
+// 											"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
+// 											"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
 											"id_user"	=>	$this->iduser,
 											"ultimo_usato"	=>	"Y",
 										));
+										
+										$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+										
+										foreach ($campiSpedizione as $cs)
+										{
+											$this->m['SpedizioniModel']->setValue($cs, $_POST[$cs]);
+										}
 										
 										if ($this->m["SpedizioniModel"]->insert())
 											$idSpedizione = $this->m["SpedizioniModel"]->lId;

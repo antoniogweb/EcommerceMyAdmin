@@ -124,6 +124,10 @@ class RegusersController extends BaseController {
 			
 			$filtri[] = "token_eliminazione";
 			$filtri[] = array("deleted",null,array("tutti" => "Stato cliente", "no" => "Clienti in anagrafica", "yes" => "Clienti eliminati"));
+			
+			$this->addBulkActions = false;
+			
+			$this->colProperties = array(null);
 		}
 		
 		$this->mainFields = $mainFields;
