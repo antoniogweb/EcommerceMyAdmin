@@ -61,10 +61,10 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<div class="uk-text-center@s">
 				<a class=" uk-padding-small" title="<?php echo gtext("Link",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>#link-lista" uk-icon="icon: link"></a>
 			</div>
-			<div class="uk-text-center@s">
+			<div class="uk-margin-remove-top uk-text-center@s">
 				<a class="uk-padding-small" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: pencil"></a>
 			</div>
-			<div class="uk-text-center@s">
+			<div class="uk-margin-remove-top uk-text-center@s">
 				<?php if ($lista["liste_regalo"]["attivo"] == "Y") { ?>
 				<a class="uk-text-danger uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: close"></a>
 				<?php } else { ?>

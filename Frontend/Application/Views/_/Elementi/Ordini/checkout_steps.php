@@ -25,13 +25,15 @@ if (!isset($classBadgeCheckout))
 					<span class="nome_step uk-text-small <?php echo $textClassCheckout;?>"><?php echo gtext("Fatturazione");?></span>
 					<?php } ?>
 				</div>
+				<?php if (v("attiva_spedizione")) { ?>
 				<div pos="spedizione">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/location.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Spedizione");?></span>
 				</div>
+				<?php } ?>
 				<div pos="pagamento">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/credit-card.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Pagamento");?></span>
 				</div>
-				<?php if (count($corrieri) > 1) { ?>
+				<?php if (count($corrieri) > 1 && v("attiva_spedizione")) { ?>
 				<div pos="consegna">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/clock.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Consegna");?></span>
 				</div>

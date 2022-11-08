@@ -75,6 +75,7 @@
 						</div>
 					</div>
 					
+					<?php if (v("attiva_spedizione")) { ?>
 					<div id="fragment-checkout-spedizione" class="uk-container uk-margin-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-margin-right uk-visible@m">
@@ -93,6 +94,7 @@
 							</div>
 						</div>
 					</div>
+					<?php } ?>
 					
 					<div class="uk-container uk-margin-medium-bottom">
 						<div class="uk-flex uk-flex-top">
@@ -112,11 +114,13 @@
 											?>
 										</div>
 									</div>
+									<?php if (v("attiva_spedizione")) { ?>
 									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isMobile ? "uk-margin-large-top" : "";?>" id="fragment-checkout-consegna">
 										<div class="">
 											<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 										</div>
 									</div>
+									<?php } ?>
 								</div>
 								
 								<hr class="uk-divider-icon uk-margin-medium-top uk-margin-remove-bottom">

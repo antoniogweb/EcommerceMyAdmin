@@ -48,12 +48,16 @@
 <?php } ?>
 <?php } ?>
 
+<?php if (v("ecommerce_attivo")) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo rand(1,10000);?>"></script>
+<?php } ?>
 
 <script defer src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
 
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
+<?php if (v("ecommerce_attivo")) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
+<?php } ?>
 
 <?php if (v("filtro_prezzo_slider")) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-nstslider-master/dist/';?>jquery.nstSlider.min.js"></script>

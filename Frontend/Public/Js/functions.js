@@ -1011,7 +1011,7 @@ $(document).ready(function(){
 			dataType: "html",
 			success: function(content){
 				if ($(".btn_completa_acquisto").length > 0)
-					location.href = location.href;
+					location.href = baseUrl + "/checkout";
 				else
 					aggiornaCarrello(undefined, true);
 			}
@@ -1074,9 +1074,15 @@ $(document).ready(function(){
 	{
 		$(window).scroll(function() {
 			var offset = $("#fragment-checkout-fatturazione").offset();
-			var offset2 = $("#fragment-checkout-spedizione").offset();
+			
+			if ($("#fragment-checkout-spedizione").length > 0)
+				var offset2 = $("#fragment-checkout-spedizione").offset();
+			
 			var offset3 = $("#fragment-checkout-pagamento").offset();
-			var offset35 = $("#fragment-checkout-consegna").offset();
+			
+			if ($("#fragment-checkout-consegna").length > 0)
+				var offset35 = $("#fragment-checkout-consegna").offset();
+			
 			var offset4 = $("#fragment-checkout-carrello").offset();
 			var offset5 = $("#fragment-checkout-conferma").offset();
 			
@@ -1088,10 +1094,13 @@ $(document).ready(function(){
 				nascondiPosizioneStepCheckout("fatturazione");
 			}
 			
-			if(y > (offset2.top - 200)) {
-				mostraPosizioneStepCheckout("spedizione")
-			} else {
-				nascondiPosizioneStepCheckout("spedizione");
+			if ($("#fragment-checkout-spedizione").length > 0)
+			{
+				if(y > (offset2.top - 200)) {
+					mostraPosizioneStepCheckout("spedizione")
+				} else {
+					nascondiPosizioneStepCheckout("spedizione");
+				}
 			}
 			
 			if(y > (offset3.top - 200)) {
@@ -1100,10 +1109,13 @@ $(document).ready(function(){
 				nascondiPosizioneStepCheckout("pagamento");
 			}
 			
-			if(y > (offset35.top - 200)) {
-				mostraPosizioneStepCheckout("consegna")
-			} else {
-				nascondiPosizioneStepCheckout("consegna");
+			if ($("#fragment-checkout-consegna").length > 0)
+			{
+				if(y > (offset35.top - 200)) {
+					mostraPosizioneStepCheckout("consegna")
+				} else {
+					nascondiPosizioneStepCheckout("consegna");
+				}
 			}
 			
 			if(y > (offset4.top - 200)) {
