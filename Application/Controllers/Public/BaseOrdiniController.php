@@ -1079,57 +1079,58 @@ class BaseOrdiniController extends BaseController
 						
 						unset($_SESSION['accetto']);
 						
-						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();
-						$this->m['OrdiniModel']->values["spedizione"] = getSpedizioneN();
-						$this->m['OrdiniModel']->values["costo_pagamento"] = getPagamentoN();
-						
-						$this->m['OrdiniModel']->values["subtotal_ivato"] = setPrice(getSubTotal(true));
-						$this->m['OrdiniModel']->values["spedizione_ivato"] = setPrice(getSpedizione(1));
-						$this->m['OrdiniModel']->values["costo_pagamento_ivato"] = setPrice(getPagamento(1));
-						
-						$this->m['OrdiniModel']->values["iva"] = setPrice(getIva());
-						$this->m['OrdiniModel']->values["total"] = setPrice(getTotal());
-						$this->m['OrdiniModel']->values["cart_uid"] = User::$cart_uid;
-						$this->m['OrdiniModel']->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
-						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
-						
-						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"] + $this->m['OrdiniModel']->values["costo_pagamento_ivato"];
-						
-						$this->m['OrdiniModel']->values["creation_time"] = time();
-						
+						$this->m['OrdiniModel']->aggiungiTotali();
+// 						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();
+// 						$this->m['OrdiniModel']->values["spedizione"] = getSpedizioneN();
+// 						$this->m['OrdiniModel']->values["costo_pagamento"] = getPagamentoN();
+// 						
+// 						$this->m['OrdiniModel']->values["subtotal_ivato"] = setPrice(getSubTotal(true));
+// 						$this->m['OrdiniModel']->values["spedizione_ivato"] = setPrice(getSpedizione(1));
+// 						$this->m['OrdiniModel']->values["costo_pagamento_ivato"] = setPrice(getPagamento(1));
+// 						
+// 						$this->m['OrdiniModel']->values["iva"] = setPrice(getIva());
+// 						$this->m['OrdiniModel']->values["total"] = setPrice(getTotal());
+// 						$this->m['OrdiniModel']->values["cart_uid"] = User::$cart_uid;
+// 						$this->m['OrdiniModel']->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
+// 						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
+// 						
+// 						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"] + $this->m['OrdiniModel']->values["costo_pagamento_ivato"];
+// 						
+// 						$this->m['OrdiniModel']->values["creation_time"] = time();
+// 						
 						$statoOrdine = "pending";
 						
 						if (number_format(getTotalN(),2,".","") <= 0.00)
 							$statoOrdine = "completed";
-						
-						$this->m['OrdiniModel']->values["stato"] = $statoOrdine;
-						
-						$this->m['OrdiniModel']->values["prezzo_scontato"] = getPrezzoScontatoN();
-						$this->m['OrdiniModel']->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
-						
-						$this->m['OrdiniModel']->values["codice_promozione"] = User::$coupon;
-						$this->m['OrdiniModel']->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
-						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
-						
-						$coupon = PromozioniModel::getCouponAttivo();
-						
-						if (!empty($coupon))
-						{
-							$this->m['OrdiniModel']->values["tipo_promozione"] = $coupon["tipo_sconto"];
-							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["total_pieno"] - $this->m['OrdiniModel']->values["total"];
-							$this->m['OrdiniModel']->values["id_p"] = $coupon["id_p"];
-						}
-						
-						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
-						$this->m['OrdiniModel']->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
-						
-						if (isset(IvaModel::$aliquotaEstera))
-						{
-							$this->m['OrdiniModel']->values["id_iva_estera"] = IvaModel::$idIvaEstera;
-							$this->m['OrdiniModel']->values["aliquota_iva_estera"] = IvaModel::$aliquotaEstera;
-							$this->m['OrdiniModel']->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
-							$this->m['OrdiniModel']->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
-						}
+// 						
+// 						$this->m['OrdiniModel']->values["stato"] = $statoOrdine;
+// 						
+// 						$this->m['OrdiniModel']->values["prezzo_scontato"] = getPrezzoScontatoN();
+// 						$this->m['OrdiniModel']->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
+// 						
+// 						$this->m['OrdiniModel']->values["codice_promozione"] = User::$coupon;
+// 						$this->m['OrdiniModel']->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
+// 						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
+// 						
+// 						$coupon = PromozioniModel::getCouponAttivo();
+// 						
+// 						if (!empty($coupon))
+// 						{
+// 							$this->m['OrdiniModel']->values["tipo_promozione"] = $coupon["tipo_sconto"];
+// 							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["total_pieno"] - $this->m['OrdiniModel']->values["total"];
+// 							$this->m['OrdiniModel']->values["id_p"] = $coupon["id_p"];
+// 						}
+// 						
+// 						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
+// 						$this->m['OrdiniModel']->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
+// 						
+// 						if (isset(IvaModel::$aliquotaEstera))
+// 						{
+// 							$this->m['OrdiniModel']->values["id_iva_estera"] = IvaModel::$idIvaEstera;
+// 							$this->m['OrdiniModel']->values["aliquota_iva_estera"] = IvaModel::$aliquotaEstera;
+// 							$this->m['OrdiniModel']->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
+// 							$this->m['OrdiniModel']->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
+// 						}
 						
 						if (isset($_COOKIE["ok_cookie_terzi"]))
 							$this->m['OrdiniModel']->values["cookie_terzi"] = 1;

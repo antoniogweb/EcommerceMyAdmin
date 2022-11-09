@@ -618,7 +618,10 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		$('.radio_registrato[value="N"]').iCheck('check');
+		if ($(".checkbox_registrato").length > 0)
+			$('.checkbox_registrato').iCheck('check');
+		else
+			$('.radio_registrato[value="N"]').iCheck('check');
 		
 		$(".btn_completa_acquisto").trigger("click");
 		

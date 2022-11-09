@@ -870,16 +870,110 @@ class OrdiniModel extends FormModel {
 	{
 		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W")
 		{
-			list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva((int)$idOrdine);
+// 			list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva((int)$idOrdine);
+			
+			$ordine = $this->selectId((int)$idOrdine);
 			
 			Params::$setValuesConditionsFromDbTableStruct = false;
 			Params::$automaticConversionToDbFormat = false;
 			
-			$this->sValues($arraySubtotali);
-			$this->pUpdate($idOrdine);
+			$c = new CartModel();
+			$r = new RigheModel();
+			
+			$bckUserId = User::$id;
+			
+			User::$cart_uid = $ordine["cart_uid"];
+			User::$id = (int)$ordine["id_user"];
+			VariabiliModel::$valori["attiva_giacenza"] = 0;
+			
+			$_POST["nazione"] = $ordine["nazione"];
+			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
+			$_POST["tipo_cliente"] = $ordine["tipo_cliente"];
+			
+			IvaModel::getAliquotaEstera();
+			
+			$righe = $r->clear()->where(array(
+				"id_o"	=>	(int)$idOrdine,
+			))->send(false);
+			
+			$totaleIva = $totaleProdotti = $totaleProdottiPieno = $spedizione = $pagamento = $totaleIvaProdotti = $totaleIvaProdottiPieno = 0;
+			
+			$arrayTotali = $arrayTotaliProdotti = $arrayTotaliProdottiPieno = array();
+			
+			$c->del(null, "cart_uid = '".User::$cart_uid."'");
+			
+			foreach ($righe as $r)
+			{
+				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], null, $r["price"]);
+			}
+			
+// 			$this->sValues(array(
+// 				
+// 			));
+			
+			$c->del(null, "cart_uid = '".User::$cart_uid."'");
+			
+			User::$id = $bckUserId;
+// 			$this->sValues($arraySubtotali);
+// 			$this->pUpdate($idOrdine);
 			
 			Params::$setValuesConditionsFromDbTableStruct = true;
 			Params::$automaticConversionToDbFormat = true;
+		}
+	}
+	
+	public function aggiungiTotali()
+	{
+		$this->values["subtotal"] = getSubTotalN();
+		$this->values["spedizione"] = getSpedizioneN();
+		$this->values["costo_pagamento"] = getPagamentoN();
+		
+		$this->values["subtotal_ivato"] = setPrice(getSubTotal(true));
+		$this->values["spedizione_ivato"] = setPrice(getSpedizione(1));
+		$this->values["costo_pagamento_ivato"] = setPrice(getPagamento(1));
+		
+		$this->values["iva"] = setPrice(getIva());
+		$this->values["total"] = setPrice(getTotal());
+		$this->values["cart_uid"] = User::$cart_uid;
+		$this->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
+		$this->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
+		
+		$this->values["total_pieno"] = $this->values["subtotal_ivato"] + $this->values["spedizione_ivato"] + $this->values["costo_pagamento_ivato"];
+		
+		$this->values["creation_time"] = time();
+		
+		$statoOrdine = "pending";
+		
+		if (number_format(getTotalN(),2,".","") <= 0.00)
+			$statoOrdine = "completed";
+		
+		$this->values["stato"] = $statoOrdine;
+		
+		$this->values["prezzo_scontato"] = getPrezzoScontatoN();
+		$this->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
+		
+		$this->values["codice_promozione"] = User::$coupon;
+		$this->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
+		$this->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
+		
+		$coupon = PromozioniModel::getCouponAttivo();
+		
+		if (!empty($coupon))
+		{
+			$this->values["tipo_promozione"] = $coupon["tipo_sconto"];
+			$this->values["euro_promozione"] = $this->values["total_pieno"] - $this->values["total"];
+			$this->values["id_p"] = $coupon["id_p"];
+		}
+		
+		$this->values["id_iva"] = CartModel::getIdIvaSpedizione();
+		$this->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
+		
+		if (isset(IvaModel::$aliquotaEstera))
+		{
+			$this->values["id_iva_estera"] = IvaModel::$idIvaEstera;
+			$this->values["aliquota_iva_estera"] = IvaModel::$aliquotaEstera;
+			$this->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
+			$this->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
 		}
 	}
 	

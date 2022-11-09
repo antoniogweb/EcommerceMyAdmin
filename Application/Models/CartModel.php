@@ -644,7 +644,7 @@ class CartModel extends GenericModel {
 		return 0;
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null)
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null)
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -820,8 +820,11 @@ class CartModel extends GenericModel {
 						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = $rPage[0]["pages"]["price_ivato"];
 				}
 				
-				//calcolo lo sconto dovuto allo scaglionamento
-				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true);
+				// prezzo scontato
+				if (isset($prScontato))
+					$this->values["price"] = number_format($prScontato,v("cifre_decimali"),".","");
+				else
+					$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true);
 				
 				if (v("prezzi_ivati_in_prodotti"))
 					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true);
