@@ -884,11 +884,14 @@ class OrdiniModel extends FormModel {
 			
 			User::$cart_uid = $ordine["cart_uid"];
 			User::$id = (int)$ordine["id_user"];
+			User::$coupon = $ordine["codice_promozione"];
+			
 			VariabiliModel::$valori["attiva_giacenza"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
 			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
 			$_POST["tipo_cliente"] = $ordine["tipo_cliente"];
+			$_POST["pagamento"] = $ordine["pagamento"];
 			
 			IvaModel::getAliquotaEstera();
 			
@@ -900,6 +903,9 @@ class OrdiniModel extends FormModel {
 			
 			$arrayTotali = $arrayTotaliProdotti = $arrayTotaliProdottiPieno = array();
 			
+			if (v("usa_transactions"))
+				$this->db->beginTransaction();
+			
 			$c->del(null, "cart_uid = '".User::$cart_uid."'");
 			
 			foreach ($righe as $r)
@@ -907,15 +913,17 @@ class OrdiniModel extends FormModel {
 				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], null, $r["price"]);
 			}
 			
-// 			$this->sValues(array(
-// 				
-// 			));
+			if (v("usa_transactions"))
+				$this->db->commit();
+			
+			$this->values = array();
+			$this->aggiungiTotali();
+			
+			$this->pUpdate($idOrdine);
 			
 			$c->del(null, "cart_uid = '".User::$cart_uid."'");
 			
 			User::$id = $bckUserId;
-// 			$this->sValues($arraySubtotali);
-// 			$this->pUpdate($idOrdine);
 			
 			Params::$setValuesConditionsFromDbTableStruct = true;
 			Params::$automaticConversionToDbFormat = true;
@@ -975,6 +983,8 @@ class OrdiniModel extends FormModel {
 			$this->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
 			$this->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
 		}
+		
+		$this->values["da_spedire"] = v("attiva_spedizione");
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)

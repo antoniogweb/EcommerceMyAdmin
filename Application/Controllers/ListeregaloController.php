@@ -138,7 +138,7 @@ class ListeregaloController extends BaseController
 		$this->m[$this->modelName]->updateTable('del');
 		
 		$this->mainFields = array(
-			'<a href="'.$this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
+			'primaImmagineCrud',
 			"pages.title",
 			"variante",
 			"combinazioni.codice",

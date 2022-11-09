@@ -1135,7 +1135,7 @@ class BaseOrdiniController extends BaseController
 						if (isset($_COOKIE["ok_cookie_terzi"]))
 							$this->m['OrdiniModel']->values["cookie_terzi"] = 1;
 						
-						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
+// 						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
 						
 						if (ListeregaloModel::hasIdLista())
 							$this->m['OrdiniModel']->values["id_lista_regalo"] = (int)User::$idLista;

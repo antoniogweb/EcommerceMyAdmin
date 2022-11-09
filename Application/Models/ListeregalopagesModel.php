@@ -132,6 +132,16 @@ class ListeregalopagesModel extends GenericModel
 		return $idRigaLista;
     }
     
+    public function primaImmagineCrud($record)
+    {
+		$immagine = ProdottiModel::immagineCarrello($record["liste_regalo_pages"]["id_page"], $record["liste_regalo_pages"]["id_c"]);
+		
+		if ($immagine)
+			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
+		
+		return "";
+    }
+    
 	public function set($id, $quantity)
 	{
 		$clean["id"] = (int)$id;

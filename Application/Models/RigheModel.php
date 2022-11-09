@@ -60,30 +60,35 @@ class RigheModel extends GenericModel {
 		}
 		
 		// aggiorna i totali dell'ordine
-		$this->aggiornaTotaliOrdine($this->lId);
+// 		$this->aggiornaTotaliOrdine($this->lId);
 		
 		return $res;
 	}
 	
-	public function update($id = null, $where = null)
-	{
-		$res = parent::update($id, $where);
-		
-		if ($res)
-			$this->aggiornaTotaliOrdine($id);
-		
-		return $res;
-	}
-	
-	public function del($id = null, $where = null)
-	{
-		$res = parent::del($id, $where);
-		
-		if ($res)
-			$this->aggiornaTotaliOrdine($id);
-		
-		return $res;
-	}
+// 	public function update($id = null, $where = null)
+// 	{
+// 		$res = parent::update($id, $where);
+// 		
+// 		if ($res)
+// 			$this->aggiornaTotaliOrdine($id);
+// 		
+// 		return $res;
+// 	}
+// 	
+// 	public function del($id = null, $where = null)
+// 	{
+// 		$record = $this->selectId((int)$id);
+// 		
+// 		if (empty($record))
+// 			return false;
+// 		
+// 		$res = parent::del($id, $where);
+// 		
+// 		if ($res)
+// 			OrdiniModel::g()->aggiornaTotali($record["id_o"]);
+// 		
+// 		return $res;
+// 	}
 	
 	public function aggiornaTotaliOrdine($idRiga)
 	{

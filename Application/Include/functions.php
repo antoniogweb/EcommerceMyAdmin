@@ -449,7 +449,7 @@ function getSpedizioneN($pieno = null)
 		return 0;
 	
 	// Prendo le spese dall'account
-	if (User::$logged && isset(User::$dettagli["spese_spedizione"]) && User::$dettagli["spese_spedizione"] >= 0)
+	if (App::$isFrontend && User::$logged && isset(User::$dettagli["spese_spedizione"]) && User::$dettagli["spese_spedizione"] >= 0)
 		return User::$dettagli["spese_spedizione"];
 	
 	$c = new CartModel();

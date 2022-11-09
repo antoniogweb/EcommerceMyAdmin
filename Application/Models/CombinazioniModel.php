@@ -863,6 +863,7 @@ class CombinazioniModel extends GenericModel {
 						"id_page"	=>	$pagina["pages"]["id_page"],
 						"id_c"		=>	(int)$id,
 						"title"		=>	field($pagina, "title"),
+						"immagine"	=>	ProdottiModel::immagineCarrello($pagina["pages"]["id_page"], (int)$id),
 						"quantity"	=>	1,
 						"codice"	=>	$record["codice"],
 						"peso"		=>	$record["peso"],

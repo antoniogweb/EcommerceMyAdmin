@@ -300,11 +300,17 @@ class OrdiniController extends BaseController {
 			$fields .= ",id_user,id_spedizione";
 		
 		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::tipoOrdine((int)$id) != "W"))
+		{
 			$fields .= ",id_iva";
+			$this->disabledFields = "id_iva";
+		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->m[$this->modelName]->setValue("lingua", $lingua);
+		
+		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::tipoOrdine((int)$id) != "W"))
+			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
 		parent::form($queryType, $id);
 		
@@ -331,6 +337,8 @@ class OrdiniController extends BaseController {
 		if (!v("permetti_ordini_offline") || OrdiniModel::tipoOrdine((int)$id) == "W")
 			$this->redirect("ordini/vedi/".(int)$id);
 		
+		OrdiniModel::g()->aggiornaTotali((int)$id);
+		
 		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
 		
 		$this->_posizioni['righe'] = 'class="active"';
@@ -348,8 +356,8 @@ class OrdiniController extends BaseController {
 		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
-		$this->mainHead = "Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Quantità,Aliquota";
+		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Quantità,Aliquota";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
