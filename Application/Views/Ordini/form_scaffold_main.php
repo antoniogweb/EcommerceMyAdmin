@@ -76,6 +76,8 @@
 					<?php echo $form["stato"];?>
 					
 					<?php echo $form["pagamento"];?>
+					
+					<?php echo $form["id_iva"] ?? "";?>
 				</div>
 			</div>
 		</div>

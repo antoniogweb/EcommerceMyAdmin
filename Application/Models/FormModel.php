@@ -201,6 +201,14 @@ class FormModel extends GenericModel {
 						"select2"	=>	"",
 					),
 				),
+				'id_iva'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_iva',
+					'labelString'=>	'Aliquota Iva',
+					'options'	=>	$this->selectIva(),
+					'reverse' => 'yes',
+					
+				),
 // 				'id_user'	=>	array(
 // 					'type'		=>	'Hidden'
 // 				),

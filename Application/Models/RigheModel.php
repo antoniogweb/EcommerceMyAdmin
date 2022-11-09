@@ -59,7 +59,41 @@ class RigheModel extends GenericModel {
 			}
 		}
 		
+		// aggiorna i totali dell'ordine
+		$this->aggiornaTotaliOrdine($this->lId);
+		
 		return $res;
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$res = parent::update($id, $where);
+		
+		if ($res)
+			$this->aggiornaTotaliOrdine($id);
+		
+		return $res;
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		$res = parent::del($id, $where);
+		
+		if ($res)
+			$this->aggiornaTotaliOrdine($id);
+		
+		return $res;
+	}
+	
+	public function aggiornaTotaliOrdine($idRiga)
+	{
+		if (!App::$isFrontend)
+		{
+			$idOrdine = (int)RigheModel::g()->whereId((int)$idRiga)->field("id_o");
+			
+			if ($idOrdine && OrdiniModel::tipoOrdine($idOrdine) != "W")
+				OrdiniModel::g()->aggiornaTotali($idOrdine);
+		}
 	}
 	
 	public function titolocompleto($record)
@@ -88,7 +122,7 @@ class RigheModel extends GenericModel {
 	
 	private function getPrezzoCampo($record, $field)
 	{
-		return v("prezzi_ivati_in_prodotti") ? setPriceReverse($record["righe"][$field."_ivato"]) : number_format($record["righe"][$field],v("cifre_decimali"),".","");
+		return v("prezzi_ivati_in_prodotti") ? setPriceReverse(setPrice($record["righe"][$field."_ivato"])) : number_format(setPrice($record["righe"][$field]),v("cifre_decimali"),".","");
 	}
 	
 	public function prezzoInteroCrud($record)

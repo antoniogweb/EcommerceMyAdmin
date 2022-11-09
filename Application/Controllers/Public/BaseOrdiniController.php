@@ -1461,7 +1461,6 @@ class BaseOrdiniController extends BaseController
 		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
 		
 		$this->m['OrdiniModel']->fields = OpzioniModel::stringaValori("CAMPI_FORM_CHECKOUT");
-		//"nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,conferma_email,pagamento,accetto,tipo_cliente,registrato,newsletter,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,aggiungi_nuovo_indirizzo,id_spedizione,spedisci_dati_fatturazione,id_corriere,nazione,nazione_spedizione,pec,codice_destinatario,dprovincia,note";
 		
 		// Elenco corrieri
 		$data['corrieri'] = $elencoCorrieri;

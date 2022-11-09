@@ -42,6 +42,7 @@ class CombinazioniController extends BaseController
 			'listino:sanitizeAll'=>'tutti',
 			'st_giac:sanitizeAll'=>'tutti',
 			'id_lista_regalo:sanitizeAll'=>'tutti',
+			'id_ordine:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -144,6 +145,12 @@ class CombinazioniController extends BaseController
 		if ($this->viewArgs["id_lista_regalo"] != "tutti")
 		{
 			$this->mainFields[] = "bulkaggiungialistaregalo";
+			$this->mainHead .= ",Aggiungi";
+		}
+		
+		if ($this->viewArgs["id_ordine"] != "tutti")
+		{
+			$this->mainFields[] = "bulkaggiungiaordine";
 			$this->mainHead .= ",Aggiungi";
 		}
 		
@@ -250,6 +257,19 @@ class CombinazioniController extends BaseController
 			);
 			
 			$this->m[$this->modelName]->sWhere("combinazioni.id_c not in (select id_c from liste_regalo_pages where id_c is not null and id_lista_regalo = ".(int)$this->viewArgs["id_lista_regalo"].")");
+		}
+		
+		if ($this->viewArgs["id_ordine"] != "tutti")
+		{
+			$this->mainButtons = "";
+			
+			$this->bulkQueryActions = "aggiungiaordine";
+			
+			$this->bulkActions = array(
+				"checkbox_combinazioni_id_c"	=>	array("aggiungiaordine","Aggiungi ad ordine"),
+			);
+			
+			$this->m[$this->modelName]->sWhere("combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ".(int)$this->viewArgs["id_ordine"].")");
 		}
 		
 		$this->m[$this->modelName]->save();

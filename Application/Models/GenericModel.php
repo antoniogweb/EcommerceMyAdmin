@@ -1646,4 +1646,11 @@ class GenericModel extends Model_Tree
 		
 		return $select;
     }
+    
+    public function selectIva()
+	{
+		$iva = new IvaModel();
+		
+		return $iva->clear()->orderBy("id_order")->toList("id_iva","titolo")->send();
+	}
 }

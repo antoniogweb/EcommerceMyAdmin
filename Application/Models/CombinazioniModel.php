@@ -700,7 +700,7 @@ class CombinazioniModel extends GenericModel {
 	
 	protected static function isFromLista()
 	{
-		if (isset($_GET["id_lista_regalo"]) && $_GET["id_lista_regalo"] != "tutti")
+		if ((isset($_GET["id_lista_regalo"]) && $_GET["id_lista_regalo"] != "tutti") || (isset($_GET["id_ordine"]) && $_GET["id_ordine"] != "tutti"))
 			return true;
 		
 		return false;
@@ -797,7 +797,12 @@ class CombinazioniModel extends GenericModel {
 	
 	public function bulkaggiungialistaregalo($record)
     {
-		return "<i data-azione='aggiungialistaregalo' title='".gtext("Aggiungi alla lista regalo")."' class='bulk_trigger help_trigger_aggiungi_a_liste_regalo fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungialistaregalo' title='".gtext("Aggiungi alla lista regalo")."' class='bulk_trigger help_trigger_aggiungi_a_lista_regalo fa fa-plus-circle text text-primary'></i>";
+    }
+    
+    public function bulkaggiungiaordine($record)
+    {
+		return "<i data-azione='aggiungiaordine' title='".gtext("Aggiungi ad ordine")."' class='bulk_trigger help_trigger_aggiungi_a_ordine fa fa-plus-circle text text-primary'></i>";
     }
     
     public function aggiungialistaregalo($id)
@@ -825,6 +830,74 @@ class CombinazioniModel extends GenericModel {
 				$lrp->pInsert();
 			}
 		}
+    }
+    
+    public function aggiungiaordine($id)
+    {
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		Params::$automaticConversionToDbFormat = false;
+		
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && self::isFromLista() && isset($_GET["id_ordine"]))
+		{
+// 			die();
+			$ordine = OrdiniModel::g()->selectId((int)$_GET["id_ordine"]);
+			
+			if (!empty($ordine))
+			{
+				$lingua = $ordine["lingua"] ? $ordine["lingua"] : LingueModel::getPrincipaleFrontend();
+				
+				$pagina = PagesModel::g(false)->addJoinTraduzionePagina($lingua)->where(array(
+					"id_page"	=>	(int)$record["id_page"],
+				))->first();
+				
+				if (!empty($pagina))
+				{
+					$r = new RigheModel();
+					
+					$r->sValues(array(
+						"id_o"		=>	(int)$_GET["id_ordine"],
+						"cart_uid"	=>	$ordine["cart_uid"],
+						"creation_time"	=>	time(),
+						"id_page"	=>	$pagina["pages"]["id_page"],
+						"id_c"		=>	(int)$id,
+						"title"		=>	field($pagina, "title"),
+						"quantity"	=>	1,
+						"codice"	=>	$record["codice"],
+						"peso"		=>	$record["peso"],
+						"attributi"	=>	$this->getStringa((int)$id),
+						"id_iva"	=>	$pagina["pages"]["id_iva"],
+						"iva"		=>	IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]),
+						"gift_card"	=>	$pagina["pages"]["gift_card"],
+						"prezzo_intero"	=>	$record["price"],
+						"prezzo_intero_ivato"	=> $record["price_ivato"],
+						"price"		=>	$record["price_scontato"],
+						"price_ivato"	=>	$record["price_scontato_ivato"],
+						"prezzo_finale"		=>	$record["price_scontato"],
+						"prezzo_finale_ivato"	=>	$record["price_scontato_ivato"],
+						"in_promozione"	=>	number_format($record["price_scontato"],2,".","") != number_format($record["price"],2,".","") ? "Y" : "N",
+						"percentuale_promozione"	=>	self::calcolaSconto($record["price"], $record["price_scontato"]),
+						"lingua"	=>	$lingua,
+						"json_personalizzazioni"=>	"[]",
+						"json_attributi"=>	$this->getStringa((int)$id,"",true),
+						"json_sconti"=>	"[]",
+						"fonte"		=>	"B",
+						"id_admin"	=>	User::$id,
+					), "sanitizeDb");
+					
+					$r->insert();
+				}
+			}
+		}
+		
+		Params::$setValuesConditionsFromDbTableStruct = true;
+		Params::$automaticConversionToDbFormat = true;
+    }
+    
+    public static function calcolaSconto($prezzoIntero, $prezzoScontato)
+    {
+		return $prezzoIntero > 0 ? (($prezzoIntero - $prezzoScontato) / $prezzoIntero * 100) : 0;
     }
     
 // 	public function col2($record)

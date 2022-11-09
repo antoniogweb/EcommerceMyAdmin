@@ -204,6 +204,7 @@ class OrdiniModel extends FormModel {
 	
 	public function relations() {
         return array(
+			'righe' => array("HAS_MANY", 'RigheModel', 'id_o', null, "RESTRICT", "L'elemento ha delle righe associate e non può essere eliminato"),
 			'pages' => array("HAS_MANY", 'MailordiniModel', 'id_o', null, "CASCADE"),
 			'lista' => array("BELONGS_TO", 'ListeregaloModel', 'id_lista_regalo',null,"CASCADE"),
         );
@@ -301,6 +302,18 @@ class OrdiniModel extends FormModel {
 		return $clean["uid"];
 	}
 	
+	public function setAliquotaIva($idOrdine = 0)
+	{
+		if (!App::$isFrontend)
+		{
+			if (!$idOrdine || OrdiniModel::tipoOrdine($idOrdine) != "W")
+			{
+				if (isset($this->values["id_iva"]))
+					$this->values["iva_spedizione"] = IvaModel::g(false)->getValore((int)$this->values["id_iva"]);
+			}
+		}
+	}
+	
 	public function insert()
 	{
 		if (App::$isFrontend)
@@ -331,6 +344,8 @@ class OrdiniModel extends FormModel {
 		if (!App::$isFrontend)
 			$this->values["tipo_ordine"] = "B";
 		
+		$this->setAliquotaIva();
+		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()))
 			return parent::insert();
 		
@@ -343,12 +358,16 @@ class OrdiniModel extends FormModel {
 		
 		$checkFiscale = v("abilita_codice_fiscale");
 		
-		if ($this->controllaCF($checkFiscale))
+		$this->setAliquotaIva($id);
+		
+		if (!App::$isFrontend || $this->controllaCF($checkFiscale))
 		{
 			$res = parent::update($clean["id"]);
 			
 			if ($res)
 			{
+				$this->aggiornaTotali($id);
+				
 				$this->triggersOrdine($id);
 				
 				// Hook ad aggiornamento dell'ordine
@@ -746,69 +765,122 @@ class OrdiniModel extends FormModel {
 			"id_o"	=>	(int)$id_o,
 		))->send(false);
 		
-		$arrayTotali = array();
+		$totaleIva = $totaleProdotti = $totaleProdottiPieno = $spedizione = $pagamento = $totaleIvaProdotti = $totaleIvaProdottiPieno = 0;
 		
-// 		foreach ($righe as $r)
-// 		{
-// 			if (isset($arrayTotali[$r["id_iva"]]))
-// 				$arrayTotali[$r["id_iva"]] += ($r["prezzo_finale_ivato"] * $r["quantity"]);
-// 			else
-// 				$arrayTotali[$r["id_iva"]] = ($r["prezzo_finale_ivato"] * $r["quantity"]);
-// 		}
+		$arrayTotali = $arrayTotaliProdotti = $arrayTotaliProdottiPieno = array();
 		
 		foreach ($righe as $r)
 		{
+			$subtotaleRiga = number_format($r["prezzo_finale"] * $r["quantity"],v("cifre_decimali"),".","");
+			$totaleProdotti += $subtotaleRiga;
+			
 			if (isset($arrayTotali[$r["id_iva"]]))
-				$arrayTotali[$r["id_iva"]] += number_format($r["prezzo_finale"] * $r["quantity"],v("cifre_decimali"),".","");
+				$arrayTotali[$r["id_iva"]] += $subtotaleRiga;
 			else
-				$arrayTotali[$r["id_iva"]] = number_format($r["prezzo_finale"] * $r["quantity"],v("cifre_decimali"),".","");
+				$arrayTotali[$r["id_iva"]] = $subtotaleRiga;
+			
+			$subtotaleRiga = number_format($r["price"] * $r["quantity"],v("cifre_decimali"),".","");
+			$totaleProdottiPieno += $subtotaleRiga;
+			
+			if (isset($arrayTotaliProdottiPieno[$r["id_iva"]]))
+				$arrayTotaliProdottiPieno[$r["id_iva"]] += $subtotaleRiga;
+			else
+				$arrayTotaliProdottiPieno[$r["id_iva"]] = $subtotaleRiga;
 		}
 		
-// 		if (!empty($ordine))
-// 		{
-// 			if (isset($arrayTotali[$ordine["id_iva"]]))
-// 				$arrayTotali[$ordine["id_iva"]] += $ordine["spedizione_ivato"];
-// 			else
-// 				$arrayTotali[$ordine["id_iva"]] = $ordine["spedizione_ivato"];
-// 		}
+		// salvo i totali dei prodotti
+		$arrayTotaliProdotti = $arrayTotali;
 		
 		if (!empty($ordine))
 		{
 			if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO")
 			{
+				$subtotaleRiga = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+				
 				if (isset($arrayTotali[$ordine["id_iva"]]))
-					$arrayTotali[$ordine["id_iva"]] -= number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+					$arrayTotali[$ordine["id_iva"]] -= $subtotaleRiga;
 				else
-					$arrayTotali[$ordine["id_iva"]] = (-1)*number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+					$arrayTotali[$ordine["id_iva"]] = (-1)*$subtotaleRiga;
 			}
 			
-			if (isset($arrayTotali[$ordine["id_iva"]]))
-				$arrayTotali[$ordine["id_iva"]] += number_format($ordine["spedizione"],v("cifre_decimali"),".","");
-			else
-				$arrayTotali[$ordine["id_iva"]] = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
+			$subtotaleRiga = $spedizione = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
 			
-			$arrayTotali[$ordine["id_iva"]] += number_format($ordine["costo_pagamento"],v("cifre_decimali"),".","");
+			if (isset($arrayTotali[$ordine["id_iva"]]))
+				$arrayTotali[$ordine["id_iva"]] += $subtotaleRiga;
+			else
+				$arrayTotali[$ordine["id_iva"]] = $subtotaleRiga;
+			
+			$subtotaleRiga = $pagamento = number_format($ordine["costo_pagamento"],v("cifre_decimali"),".","");
+			
+			$arrayTotali[$ordine["id_iva"]] += $subtotaleRiga;
 		}
 		
 		$arrayIva = array();
 		
 		$i = new IvaModel();
 		
-// 		foreach ($arrayTotali as $idAliquota => $totale)
-// 		{
-// 			$aliquota = $i->getValore($idAliquota);
-// 			
-// 			$arrayIva[$idAliquota] = $totale - ($totale / (1 + ($aliquota / 100)));
-// 		}
-		
 		foreach ($arrayTotali as $idAliquota => $totale)
 		{
 			$aliquota = $i->getValore($idAliquota);
 			
 			$arrayIva[$idAliquota] = $totale * ($aliquota / 100);
+			$totaleIva += $totale * ($aliquota / 100);
 		}
 		
-		return $arrayIva;
+		foreach ($arrayTotaliProdotti as $idAliquota => $totale)
+		{
+			$aliquota = $i->getValore($idAliquota);
+			
+			$totaleIvaProdotti += $totale * ($aliquota / 100);
+		}
+		
+		foreach ($arrayTotaliProdottiPieno as $idAliquota => $totale)
+		{
+			$aliquota = $i->getValore($idAliquota);
+			
+			$totaleIvaProdottiPieno += $totale * ($aliquota / 100);
+		}
+		
+		$aliquotaOrdine = $i->getValore($ordine["id_iva"]);
+		
+		$subtotalIvato = $totaleProdottiPieno + $totaleIvaProdottiPieno;
+		$prezzoScontatoIvato = $totaleProdotti + $totaleIvaProdotti;
+		$spedizioneIvato = $spedizione * (1 + $aliquotaOrdine / 100);
+		$costoPagamentoIvato = $pagamento * (1 + $aliquotaOrdine / 100);
+		$total = $subtotalIvato + $spedizioneIvato + $costoPagamentoIvato;
+		
+		$arraySubtotali = array(
+			"subtotal"	=>	$totaleProdottiPieno,
+			"prezzo_scontato"	=>	$totaleProdotti,
+			"spedizione"=>	$spedizione,
+			"costo_pagamento"	=>	$pagamento,
+			"subtotal_ivato"	=>	$subtotalIvato,
+			"prezzo_scontato_ivato"	=>	$prezzoScontatoIvato,
+			"spedizione_ivato"	=>	$spedizioneIvato,
+			"costo_pagamento_ivato"	=>	$costoPagamentoIvato,
+			"iva"			=>	$totaleIva,
+			"total"			=>	$total,
+			"total_pieno"	=>	$total,
+		);
+		
+		return array($arrayIva, $arraySubtotali);
+	}
+	
+	public function aggiornaTotali($idOrdine)
+	{
+		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W")
+		{
+			list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva((int)$idOrdine);
+			
+			Params::$setValuesConditionsFromDbTableStruct = false;
+			Params::$automaticConversionToDbFormat = false;
+			
+			$this->sValues($arraySubtotali);
+			$this->pUpdate($idOrdine);
+			
+			Params::$setValuesConditionsFromDbTableStruct = true;
+			Params::$automaticConversionToDbFormat = true;
+		}
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)
@@ -868,14 +940,21 @@ class OrdiniModel extends FormModel {
 		{
 			$o->setValues(array(
 				"id_spedizione"			=>	(int)$id_s,
-				"indirizzo_spedizione"	=>	$spedizione["indirizzo_spedizione"],
-				"cap_spedizione"		=>	$spedizione["cap_spedizione"],
-				"provincia_spedizione"	=>	$spedizione["provincia_spedizione"],
-				"nazione_spedizione"	=>	$spedizione["nazione_spedizione"],
-				"citta_spedizione"		=>	$spedizione["citta_spedizione"],
-				"telefono_spedizione"	=>	$spedizione["telefono_spedizione"],
-				"dprovincia_spedizione"	=>	$spedizione["dprovincia_spedizione"],
+// 				"indirizzo_spedizione"	=>	$spedizione["indirizzo_spedizione"],
+// 				"cap_spedizione"		=>	$spedizione["cap_spedizione"],
+// 				"provincia_spedizione"	=>	$spedizione["provincia_spedizione"],
+// 				"nazione_spedizione"	=>	$spedizione["nazione_spedizione"],
+// 				"citta_spedizione"		=>	$spedizione["citta_spedizione"],
+// 				"telefono_spedizione"	=>	$spedizione["telefono_spedizione"],
+// 				"dprovincia_spedizione"	=>	$spedizione["dprovincia_spedizione"],
 			), "sanitizeDb");
+			
+			$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+			
+			foreach ($campiSpedizione as $cs)
+			{
+				$o->setValue($cs, $spedizione[$cs], "sanitizeDb");
+			}
 			
 			return $o->update((int)$id_o);
 		}

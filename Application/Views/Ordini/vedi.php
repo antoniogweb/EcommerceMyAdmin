@@ -412,7 +412,7 @@
 							<h3><?php echo gtext("Totali ordine");?>:</h3>
 							
 							<?php
-							$arrayIva = OrdiniModel::getTotaliIva($ordine["id_o"]);
+							list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva($ordine["id_o"]);
 							$totaleIva = number_format(array_sum($arrayIva),2,".","");
 							$imponibile = $ordine["total"] - $totaleIva;
 							?>

@@ -718,13 +718,6 @@ class PagesModel extends GenericModel {
 		return array(""=>"--") + self::$tipiPagina;
 	}
 	
-	public function selectIva()
-	{
-		$iva = new IvaModel();
-		
-		return $iva->clear()->orderBy("id_order")->toList("id_iva","titolo")->send();
-	}
-	
 	public function getIva($idPage)
 	{
 		$iva = $this->clear()->select("iva.valore")->where(array("id_page"=>(int)$idPage))->inner("iva")->on("pages.id_iva = iva.id_iva")->send();

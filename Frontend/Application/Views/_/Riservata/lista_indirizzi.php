@@ -25,8 +25,8 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<th><?php echo gtext("Città");?></th>
 				<th><?php echo gtext("Provincia");?></th>
 				<th><?php echo gtext("Telefono");?></th>
-				<th width="1%"></th>
-				<th width="1%"></th>
+				<th width="25px"></th>
+				<th width="25px"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -38,8 +38,12 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<td><?php echo $indirizzo["spedizioni"]["citta_spedizione"];?></td>
 				<td><?php echo $indirizzo["spedizioni"]["nazione_spedizione"] == "IT" ? $indirizzo["spedizioni"]["provincia_spedizione"] : $indirizzo["spedizioni"]["dprovincia_spedizione"];?></td>
 				<td><?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?></td>
-				<td><a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>" uk-icon="icon: pencil"></a></td>
-				<td><a class="uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?>" uk-icon="icon: trash"></a></td>
+				<td>
+					<a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>">
+						<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
+					</a>
+				</td>
+				<td><a class="uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a></td>
 			</tr>
 			<?php } ?>
 		</tbody>
@@ -50,7 +54,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } ?>
 
 <div class="uk-margin">
-	<a class="uk-button uk-button-secondary" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>"><span uk-icon="plus"></span> <?php echo gtext("Aggiungi indirizzo");?></a>
+	<a class="uk-button uk-button-secondary" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span> <?php echo gtext("Aggiungi indirizzo");?></a>
 </div>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

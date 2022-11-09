@@ -489,4 +489,10 @@ trait CommonModel {
 		
 		return $arraySelect;
 	}
+	
+	public function getLingua($id)
+	{
+		$lingua = $this->clear()->whereId($id)->field("lingua");
+		return $lingua ? $lingua : LingueModel::getPrincipaleFrontend();
+	}
 }
