@@ -73,4 +73,55 @@ class RigheController extends BaseController
 		
 		parent::main();
 	}
+	
+	public function salva()
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		Params::$automaticConversionToDbFormat = false;
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$valori = $this->request->post("valori","[]");
+		
+		$valori = json_decode($valori, true);
+		
+		$campoPrice = "price";
+		$campoPriceIntero = "prezzo_intero";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			$campoPrice = "price_ivato";
+			$campoPriceIntero = "prezzo_intero_ivato";
+		}
+		
+		$arrayIdPage = array();
+		
+		foreach ($valori as $v)
+		{
+			if ($v["quantity"] > 0)
+			{
+				$this->m[$this->modelName]->setValues(array(
+					"quantity"			=>	$v["quantity"],
+					"$campoPrice"		=>	$v["price"],
+					"$campoPriceIntero"	=>	$v["prezzo_intero"],
+					"in_promozione"	=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
+				));
+				
+				$this->m[$this->modelName]->update($v["id_riga"]);
+			}
+			else
+				$this->m[$this->modelName]->del($v["id_riga"]);
+		}
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+		
+		$idOrdine = RigheModel::g()->whereId((int)$v["id_riga"])->field("id_o");
+		
+		if ((int)$idOrdine)
+			OrdiniModel::g()->aggiornaTotali((int)$idOrdine);
+	}
 }

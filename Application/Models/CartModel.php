@@ -1138,6 +1138,12 @@ class CartModel extends GenericModel {
 		}
 	}
 	
+	public static function attivaDisattivaSpedizione()
+	{
+		if (CartModel::soloProdottiSenzaSpedizione())
+			VariabiliModel::$valori["attiva_spedizione"] = 0;
+	}
+	
 	// restituisce true se il carrello ha solo prodotti senza spedizione
 	public static function soloProdottiSenzaSpedizione()
 	{

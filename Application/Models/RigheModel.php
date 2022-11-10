@@ -36,27 +36,35 @@ class RigheModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'elementi' => array("HAS_MANY", 'RigheelementiModel', 'id_r', null, "CASCADE"),
+        );
+    }
+    
 	public function insert()
 	{
 		$res = parent::insert();
 		
 		if ($res && v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
 		{
-			$c = new CombinazioniModel();
+			CombinazioniModel::g()->movimenta($this->values["id_c"], $this->values["quantity"]);
 			
-			$combinazione = $c->selectId((int)$this->values["id_c"]);
+// 			$c = new CombinazioniModel();
 			
-			if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
-			{
-				$c->setValues(array(
-					"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$this->values["quantity"]),
-				));
-				
-				$c->pUpdate($combinazione["id_c"]);
-				
-				// Aggiorno la combinazione della pagina
-				$c->aggiornaGiacenzaPagina($combinazione["id_c"]);
-			}
+// 			$combinazione = $c->selectId((int)$this->values["id_c"]);
+// 			
+// 			if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
+// 			{
+// 				$c->setValues(array(
+// 					"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$this->values["quantity"]),
+// 				));
+// 				
+// 				$c->pUpdate($combinazione["id_c"]);
+// 				
+// 				// Aggiorno la combinazione della pagina
+// 				$c->aggiornaGiacenzaPagina($combinazione["id_c"]);
+// 			}
 		}
 		
 		// aggiorna i totali dell'ordine
@@ -65,30 +73,55 @@ class RigheModel extends GenericModel {
 		return $res;
 	}
 	
-// 	public function update($id = null, $where = null)
-// 	{
-// 		$res = parent::update($id, $where);
-// 		
-// 		if ($res)
-// 			$this->aggiornaTotaliOrdine($id);
-// 		
-// 		return $res;
-// 	}
-// 	
-// 	public function del($id = null, $where = null)
-// 	{
-// 		$record = $this->selectId((int)$id);
-// 		
-// 		if (empty($record))
-// 			return false;
-// 		
-// 		$res = parent::del($id, $where);
-// 		
-// 		if ($res)
-// 			OrdiniModel::g()->aggiornaTotali($record["id_o"]);
-// 		
-// 		return $res;
-// 	}
+	public function setPriceNonIvato($id = 0)
+	{
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_intero_ivato"])))
+		{
+			$valore = (float)RigheModel::g()->whereId((int)$id)->field("iva");
+			
+			if (isset($this->values["price_ivato"]))
+				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["prezzo_intero_ivato"]))
+				$this->values["prezzo_intero"] = number_format(setPrice($this->values["prezzo_intero_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+		}
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$old = $this->selectId($id);
+		
+		$this->setPriceNonIvato($id);
+		
+		if (parent::update($id, $where))
+		{
+			$new = $this->selectId($id);
+			
+			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && $new["quantity"] != $old["quantity"])
+				CombinazioniModel::g()->movimenta($new["id_c"], ($new["quantity"] - $old["quantity"]));
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		$old = $this->selectId($id);
+		
+		if (parent::del($id, $where))
+		{
+			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine"))
+				CombinazioniModel::g()->movimenta($old["id_c"], (-1)*$old["quantity"]);
+			
+			$_SESSION["aggiorna_totali_ordine"] = true;
+			
+			return true;
+		}
+		
+		return false;
+	}
 	
 	public function aggiornaTotaliOrdine($idRiga)
 	{
@@ -153,7 +186,7 @@ class RigheModel extends GenericModel {
 	
 	public function quantitaCrud($record)
 	{
-		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='price' value='".$record["righe"]["quantity"]."' />";
+		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["righe"]["quantity"]."' />";
 	}
 	
 	public function attributiCrud($record)

@@ -358,7 +358,7 @@ class OrdiniController extends BaseController {
 		if (!v("permetti_ordini_offline") || OrdiniModel::tipoOrdine((int)$id) == "W")
 			$this->redirect("ordini/vedi/".(int)$id);
 		
-		OrdiniModel::g()->aggiornaTotali((int)$id);
+		$this->m["OrdiniModel"]->checkAggiorna((int)$id);
 		
 		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
 		
@@ -380,7 +380,7 @@ class OrdiniController extends BaseController {
 		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Quantità,Aliquota";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine,save_righe','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->orderBy("id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
 		

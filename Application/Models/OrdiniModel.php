@@ -716,6 +716,9 @@ class OrdiniModel extends FormModel {
 			
 			$r->values["prezzo_finale_ivato"] = number_format($r->values["prezzo_finale"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
+			$r->values["fonte"] = App::$isFrontend ? "W" : "B";
+			$r->values["id_admin"] = App::$isFrontend ? 0 : User::$id;
+			
 			$r->delFields("data_creazione");
 			$r->delFields("id_user");
 			$r->delFields("email");
@@ -871,12 +874,19 @@ class OrdiniModel extends FormModel {
 		return array($arrayIva, $arraySubtotali);
 	}
 	
+	public function checkAggiorna($idOrdine)
+	{
+		if( !session_id() )
+			session_start();
+		
+		if (isset($_SESSION["aggiorna_totali_ordine"]))
+			$this->aggiornaTotali($idOrdine);
+	}
+	
 	public function aggiornaTotali($idOrdine)
 	{
 		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W")
 		{
-// 			list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva((int)$idOrdine);
-			
 			$ordine = $this->selectId((int)$idOrdine);
 			
 			Params::$setValuesConditionsFromDbTableStruct = false;
@@ -889,6 +899,12 @@ class OrdiniModel extends FormModel {
 			
 			User::$cart_uid = $ordine["cart_uid"];
 			User::$id = (int)$ordine["id_user"];
+			
+			$bckLang = Params::$lang;
+			$lingua = $ordine["lingua"] ? $ordine["lingua"] : LingueModel::getPrincipaleFrontend();
+			Params::$lang = $lingua;
+			
+			$bckAttivaGiacenza = v("attiva_giacenza");
 			
 			VariabiliModel::$valori["attiva_giacenza"] = 0;
 			
@@ -915,8 +931,12 @@ class OrdiniModel extends FormModel {
 				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], null, $r["price"]);
 			}
 			
+			$c->aggiornaElementi();
+			
 			if (v("usa_transactions"))
 				$this->db->commit();
+			
+			CartModel::attivaDisattivaSpedizione();
 			
 			// CONTROLLO LA PROMO
 			$sconto = 0;
@@ -945,13 +965,22 @@ class OrdiniModel extends FormModel {
 			
 			$this->pUpdate($idOrdine);
 			
+			RigheModel::g()->mDel("id_o = ".(int)$ordine["id_o"]);
+			
+			$this->riempiRighe($ordine["id_o"]);
+			
 			$c->del(null, "cart_uid = '".User::$cart_uid."'");
+			
+			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			
 			User::$id = $bckUserId;
 			PromozioniModel::$staticIdO = null;
+			Params::$lang = $bckLang;
 			
 			Params::$setValuesConditionsFromDbTableStruct = true;
 			Params::$automaticConversionToDbFormat = true;
+			
+			unset($_SESSION["aggiorna_totali_ordine"]);
 		}
 	}
 	

@@ -834,6 +834,9 @@ class CombinazioniModel extends GenericModel {
     
     public function aggiungiaordine($id)
     {
+		if( !session_id() )
+			session_start();
+		
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		Params::$automaticConversionToDbFormat = false;
 		
@@ -866,28 +869,29 @@ class CombinazioniModel extends GenericModel {
 						"immagine"	=>	ProdottiModel::immagineCarrello($pagina["pages"]["id_page"], (int)$id),
 						"quantity"	=>	1,
 						"codice"	=>	$record["codice"],
-						"peso"		=>	$record["peso"],
+// 						"peso"		=>	$record["peso"],
 						"attributi"	=>	$this->getStringa((int)$id),
-						"id_iva"	=>	$pagina["pages"]["id_iva"],
-						"iva"		=>	IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]),
-						"gift_card"	=>	$pagina["pages"]["gift_card"],
+// 						"id_iva"	=>	$pagina["pages"]["id_iva"],
+// 						"iva"		=>	IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]),
+// 						"gift_card"	=>	$pagina["pages"]["gift_card"],
 						"prezzo_intero"	=>	$record["price"],
 						"prezzo_intero_ivato"	=> $record["price_ivato"],
 						"price"		=>	$record["price_scontato"],
 						"price_ivato"	=>	$record["price_scontato_ivato"],
-						"prezzo_finale"		=>	$record["price_scontato"],
-						"prezzo_finale_ivato"	=>	$record["price_scontato_ivato"],
-						"in_promozione"	=>	number_format($record["price_scontato"],2,".","") != number_format($record["price"],2,".","") ? "Y" : "N",
-						"percentuale_promozione"	=>	self::calcolaSconto($record["price"], $record["price_scontato"]),
-						"lingua"	=>	$lingua,
-						"json_personalizzazioni"=>	"[]",
-						"json_attributi"=>	$this->getStringa((int)$id,"",true),
-						"json_sconti"=>	"[]",
-						"fonte"		=>	"B",
-						"id_admin"	=>	User::$id,
+// 						"prezzo_finale"		=>	$record["price_scontato"],
+// 						"prezzo_finale_ivato"	=>	$record["price_scontato_ivato"],
+// 						"in_promozione"	=>	number_format($record["price_scontato"],2,".","") != number_format($record["price"],2,".","") ? "Y" : "N",
+// 						"percentuale_promozione"	=>	self::calcolaSconto($record["price"], $record["price_scontato"]),
+// 						"lingua"	=>	$lingua,
+// 						"json_personalizzazioni"=>	"[]",
+// 						"json_attributi"=>	$this->getStringa((int)$id,"",true),
+// 						"json_sconti"=>	"[]",
+// 						"fonte"		=>	"B",
+// 						"id_admin"	=>	User::$id,
 					), "sanitizeDb");
 					
-					$r->insert();
+					if ($r->insert())
+						$_SESSION["aggiorna_totali_ordine"] = true;
 				}
 			}
 		}
@@ -900,16 +904,21 @@ class CombinazioniModel extends GenericModel {
     {
 		return $prezzoIntero > 0 ? (($prezzoIntero - $prezzoScontato) / $prezzoIntero * 100) : 0;
     }
-    
-// 	public function col2($record)
-// 	{
-// 		$idAttr = $record["combinazioni"]["col_2"];
-// 		
-// 		$av = new AttributivaloriModel();
-// 		
-// 		$var = $av->selectId($idAttr);
-// 		
-// 		if (!empty($var))
-// 			return $var["titolo"];
-// 	}
+	
+	public function movimenta($idC, $qty)
+	{
+		$combinazione = $this->selectId((int)$idC);
+		
+		if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
+		{
+			$this->setValues(array(
+				"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$qty),
+			));
+			
+			$this->pUpdate($combinazione["id_c"]);
+			
+			// Aggiorno la combinazione della pagina
+			$this->aggiornaGiacenzaPagina($combinazione["id_c"]);
+		}
+	}
 }
