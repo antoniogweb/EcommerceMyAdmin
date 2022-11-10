@@ -105,7 +105,8 @@ class CartModel extends GenericModel {
 				{
 					$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 					
-					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
+// 					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
+					if ($coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
 					
 					$total = $total + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
@@ -254,7 +255,8 @@ class CartModel extends GenericModel {
 			{
 				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 				
-				if ($tipoSconto == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
+// 				if ($tipoSconto == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
+				if ($tipoSconto == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 				{
 					$prezzo = number_format($prezzo - $prezzo*($sconto/100),$cifre,".","");
 				}

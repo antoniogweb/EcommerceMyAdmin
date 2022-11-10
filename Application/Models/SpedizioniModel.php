@@ -71,6 +71,8 @@ class SpedizioniModel extends GenericModel {
 	
 	public function update($id = null, $where = null)
 	{
+		$this->setProvinciaSpedizione();
+		
 		$res = parent::update($id, $where);
 		
 		if ($res)
@@ -81,6 +83,8 @@ class SpedizioniModel extends GenericModel {
 	
 	public function insert()
 	{
+		$this->setProvinciaSpedizione();
+		
 		$res = parent::insert();
 		
 		if ($res)

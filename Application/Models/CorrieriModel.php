@@ -79,4 +79,9 @@ class CorrieriModel extends GenericModel {
 		
 		return true;
 	}
+	
+	public function selectTendina()
+	{
+		return array(0=>"Seleziona") + $this->orderBy("id_order")->toList("id_corriere","titolo")->send();
+	}
 }

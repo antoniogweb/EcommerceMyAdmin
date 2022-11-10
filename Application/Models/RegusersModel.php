@@ -94,12 +94,16 @@ class RegusersModel extends FormModel {
 		
 		$this->setBloccato();
 		
+		$this->setProvince();
+		
 		parent::update($clean['id']);
 	}
 	
 	public function insert()
 	{
 		$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		
+		$this->setProvince();
 		
 		$res = parent::insert();
 		

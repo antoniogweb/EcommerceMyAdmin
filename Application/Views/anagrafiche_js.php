@@ -31,6 +31,20 @@ function updateForm()
 	}
 }
 
+function sistemaTendinaProvincia(val)
+{
+	if (val == "IT")
+	{
+		$(".box_dprovincia").css("display","none");
+		$(".box_provincia").css("display","block");
+	}
+	else
+	{
+		$(".box_dprovincia").css("display","block");
+		$(".box_provincia").css("display","none");
+	}
+}
+
 $(document).ready(function(){
 
 	updateForm();
@@ -46,6 +60,14 @@ $(document).ready(function(){
 			reloadPage();
 		});
 	
+	if ($("[name='nazione']").length > 0)
+		sistemaTendinaProvincia($("[name='nazione']").val());
+	
+	$("body").on("change", "[name='nazione']", function(e){
+		
+		sistemaTendinaProvincia($(this).val());
+		
+	});
 });
 
 </script>

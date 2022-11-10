@@ -25,6 +25,7 @@
 			<?php echo $form["indirizzo"];?>
 			<?php echo $form["cap"];?>
 			<?php echo $form["provincia"];?>
+			<?php echo $form["dprovincia"];?>
 			<?php echo $form["citta"];?>
 			<?php echo $form["telefono"];?>
 			<?php echo $form["telefono_2"];?>

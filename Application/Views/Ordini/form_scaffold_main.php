@@ -31,6 +31,7 @@
 					<?php echo $form["cap"];?>
 					<?php echo $form["nazione"];?>
 					<?php echo $form["provincia"];?>
+					<?php echo $form["dprovincia"];?>
 					<?php echo $form["citta"];?>
 					<?php echo $form["telefono"];?>
 					<?php echo $form["email"];?>
@@ -64,6 +65,7 @@
 			<?php echo $form["cap_spedizione"];?>
 			<?php echo $form["nazione_spedizione"];?>
 			<?php echo $form["provincia_spedizione"];?>
+			<?php echo $form["dprovincia_spedizione"];?>
 			<?php echo $form["citta_spedizione"];?>
 			<?php echo $form["telefono_spedizione"];?>
 		</div>
@@ -78,6 +80,10 @@
 					<?php echo $form["pagamento"];?>
 					
 					<?php echo $form["id_iva"] ?? "";?>
+					
+					<?php echo $form["id_corriere"] ?? "";?>
+					
+					<?php echo $form["id_p"] ?? "";?>
 				</div>
 			</div>
 		</div>

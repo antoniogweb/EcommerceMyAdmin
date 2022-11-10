@@ -72,6 +72,8 @@ class BaseRegusersModel extends Model_Tree
 		
 		if ($this->controllaCF($checkFiscale) && $this->controllaPIva(v("insert_account_p_iva_obbligatorio")))
 		{
+			$this->setProvinciaFatturazione();
+			
 			$res = parent::insert();
 			
 			$this->lId = $this->lastId(true);
@@ -113,7 +115,11 @@ class BaseRegusersModel extends Model_Tree
 		$checkFiscale = v("abilita_codice_fiscale");
 		
 		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
+		{
+			$this->setProvinciaFatturazione();
+			
 			return parent::update($clean["id"]);
+		}
 		
 		return false;
 	}

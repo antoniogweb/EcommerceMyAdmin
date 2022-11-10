@@ -128,8 +128,17 @@ class FormModel extends GenericModel {
 					'className'	=>	'for_print form-control',
 				),
 				'provincia'		=>	array(
+					'type'		=>	'Select',
 					'labelString'=>	'Provincia',
 					'className'	=>	'for_print form-control',
+					'options'	=>	ProvinceModel::g()->selectTendina(),
+					'reverse' => 'yes',
+					"entryClass"	=>	"form_input_text box_provincia",
+				),
+				'dprovincia'		=>	array(
+					'labelString'=>	'Provincia',
+					'className'	=>	'for_print form-control',
+					"entryClass"	=>	"form_input_text box_dprovincia",
 				),
 				'citta'		=>	array(
 					'labelString'=>	'Città',
@@ -152,13 +161,25 @@ class FormModel extends GenericModel {
 					'labelString'=>	'Classe di sconto',
 					'options'	=>	$this->selectClasseSconto(),
 					'reverse' => 'yes',
-					
 				),
 				'nazione_spedizione'	=>	array(
 					"type"	=>	"Select",
 					"options"	=>	$this->selectNazione(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+				),
+				'provincia_spedizione'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Provincia spedizione',
+					'className'	=>	'for_print form-control',
+					'options'	=>	ProvinceModel::g()->selectTendina(),
+					'reverse' => 'yes',
+					"entryClass"	=>	"form_input_text provincia_spedizione",
+				),
+				'dprovincia_spedizione'		=>	array(
+					'labelString'=>	'Provincia spedizione',
+					'className'	=>	'for_print form-control',
+					"entryClass"	=>	"form_input_text dprovincia_spedizione",
 				),
 				'nazione'	=>	array(
 					"type"	=>	"Select",
@@ -207,7 +228,18 @@ class FormModel extends GenericModel {
 					'labelString'=>	'Aliquota Iva',
 					'options'	=>	$this->selectIva(),
 					'reverse' => 'yes',
-					
+				),
+				'id_corriere'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Corriere',
+					'options'	=>	CorrieriModel::g(false)->selectTendina(),
+					'reverse' => 'yes',
+				),
+				'id_p'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Promo / Coupon',
+					'options'	=>	$this->selectCouponUsabile($id),
+					'reverse' => 'yes',
 				),
 // 				'id_user'	=>	array(
 // 					'type'		=>	'Hidden'
@@ -243,5 +275,30 @@ class FormModel extends GenericModel {
 		
 		return array("0" => "-- Seleziona --") + $cl->clear()->select("id_classe,concat(titolo,' (',sconto,' %)') as label")->orderBy("sconto")->toList("id_classe","aggregate.label")->send();
 	}
-
+	
+	public function selectCouponUsabile($id = 0)
+	{
+		$p = new PromozioniModel();
+		
+		$res = $p->clear()->where(array(
+			"FONTE"	=>	"MANUALE",
+			"id_r"	=>	0,
+			"attivo"=>	"Y",
+			"lte"	=>	array(
+				"dal"	=>	date("Y-m-d"),
+			),
+			"gte"	=>	array(
+				"al"	=>	date("Y-m-d"),
+			),
+		))->send();
+		
+		$selectTendina = array();
+		
+		foreach ($res as $r)
+		{
+			$selectTendina[$r["promozioni"]["id_p"]] = $r["promozioni"]["titolo"]." (".$r["promozioni"]["codice"].")";
+		}
+		
+		return array("0" => gtext("-- Seleziona --")) + $selectTendina;
+	}
 }

@@ -26,6 +26,8 @@ class PromozioniModel extends GenericModel {
 
 	public $lId = 0;
 	
+	public static $staticIdO = null;
+	
 	public function __construct() {
 		$this->_tables='promozioni';
 		$this->_idFields='id_p';
@@ -243,6 +245,9 @@ class PromozioniModel extends GenericModel {
 	//controllo che il coupon sia attivo
 	public function isActiveCoupon($codice, $ido = null, $checkCart = true)
 	{
+		if (!isset($ido))
+			$ido = self::$staticIdO;
+			
 		$clean["codice"] = sanitizeAll($codice);
 		
 		if ($checkCart && CartModel::numeroGifCartInCarrello() > 0)
@@ -313,6 +318,14 @@ class PromozioniModel extends GenericModel {
 		return false;
 	}
 	
+	public static function checkProdottoInPromo($idPage)
+	{
+		if ((int)count(User::$prodottiInCoupon) === 0 || in_array($idPage, User::$prodottiInCoupon))
+			return true;
+		
+		return false;
+	}
+	
 	public static function hasCouponAssoluto($ido = null)
 	{
 		$coupon = self::getCouponAttivo($ido);
@@ -347,6 +360,9 @@ class PromozioniModel extends GenericModel {
 	
 	public function getNUsata($id_p, $ido = null, $email = null)
 	{
+		if (!isset($ido))
+			$ido = self::$staticIdO;
+		
 		$clean["id_p"] = (int)$id_p;
 		
 		$res = $this->clear()->where(array("id_p"=>$clean["id_p"]))->send();
@@ -377,6 +393,9 @@ class PromozioniModel extends GenericModel {
 	
 	public static function gNumeroEuroUsati($id_p, $ido = null)
 	{
+		if (!isset($ido))
+			$ido = self::$staticIdO;
+		
 		$clean["id_p"] = (int)$id_p;
 		
 		$o = new OrdiniModel();
@@ -396,6 +415,9 @@ class PromozioniModel extends GenericModel {
 	
 	public static function gNumeroEuroRimasti($id_p, $ido = null)
 	{
+		if (!isset($ido))
+			$ido = self::$staticIdO;
+		
 		$clean["id_p"] = (int)$id_p;
 		
 		$p = new PromozioniModel();

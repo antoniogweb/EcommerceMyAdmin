@@ -32,7 +32,7 @@ class SpedizioniController extends BaseController {
 	{
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione");
+		$this->m[$this->modelName]->setValuesFromPost("nazione_spedizione,provincia_spedizione,dprovincia_spedizione,indirizzo_spedizione,cap_spedizione,citta_spedizione,telefono_spedizione");
 		
 		if ($this->viewArgs["id_user"] != "tutti")
 		{

@@ -495,4 +495,26 @@ trait CommonModel {
 		$lingua = $this->clear()->whereId($id)->field("lingua");
 		return $lingua ? $lingua : LingueModel::getPrincipaleFrontend();
 	}
+	
+	public function setProvinciaFatturazione()
+	{
+		if (isset($this->values["nazione"]) && isset($this->values["provincia"]) && isset($this->values["dprovincia"]) && $this->values["nazione"] != "IT")
+			$this->values["provincia"] = $this->values["dprovincia"];
+	}
+	
+	public function setProvinciaSpedizione()
+	{
+		if (isset($this->values["nazione_spedizione"]) && isset($this->values["provincia_spedizione"]) && isset($this->values["dprovincia_spedizione"]) && $this->values["nazione_spedizione"] != "IT")
+			$this->values["provincia_spedizione"] = $this->values["dprovincia_spedizione"];
+	}
+	
+	public function setProvince()
+	{
+		if (App::$isFrontend)
+			return;
+		
+		$this->setProvinciaFatturazione();
+		
+		$this->setProvinciaSpedizione();
+	}
 }

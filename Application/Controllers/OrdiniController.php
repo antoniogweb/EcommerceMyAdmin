@@ -29,6 +29,13 @@ Helper_List::$filtersFormLayout["filters"]["lista_regalo"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["tipo_ordine"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -54,6 +61,7 @@ class OrdiniController extends BaseController {
 		'nazione_utente:sanitizeAll'=>'tutti',
 		'lista_regalo:sanitizeAll'=>'tutti',
 		'id_lista_regalo:sanitizeAll'=>'tutti',
+		'tipo_ordine:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -142,10 +150,13 @@ class OrdiniController extends BaseController {
 			$this->mainHead .= ',Lista regalo';
 		}
 		
-		$this->aggiungiintegrazioni();
+		if (v("permetti_ordini_offline"))
+		{
+			$this->mainFields[] = 'orders.tipo_ordine';
+			$this->mainHead .= ',Tipo';
+		}
 		
-// 		$this->mainHead .= ",";
-// 		$this->mainFields[] = "<a class='text_16 action_edit' title='vedi ordine ;orders.id_o;' href='".$this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/;orders.id_o;".$this->viewStatus."'><i class='verde fa fa-arrow-right'></i></a>";
+		$this->aggiungiintegrazioni();
 		
 		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
 		
@@ -157,6 +168,7 @@ class OrdiniController extends BaseController {
 			'registrato'	=>	$this->viewArgs['registrato'],
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 			'id_lista_regalo'	=>	$this->viewArgs['id_lista_regalo'],
+			'tipo_ordine'	=>	$this->viewArgs['tipo_ordine'],
 		);
 		
 		$this->m[$this->modelName]->where($where);
@@ -229,6 +241,13 @@ class OrdiniController extends BaseController {
 		if (v("attiva_liste_regalo"))
 			$this->filters[] = "lista_regalo";
 		
+		if (v("permetti_ordini_offline"))
+			$this->filters[] = array("tipo_ordine",null,array(
+				"tutti"	=>	gtext("Tipo ordine"),
+				"W"		=>	gtext("Ordini WEB"),
+				"B"		=>	gtext("Ordini Backend"),
+			));
+			
 		parent::main();
 	}
 
@@ -294,13 +313,15 @@ class OrdiniController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento';
+		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione';
 		
 		if (v("permetti_modifica_cliente_in_ordine"))
 			$fields .= ",id_user,id_spedizione";
 		
 		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::tipoOrdine((int)$id) != "W"))
 		{
+			$fields .= ",id_corriere,id_p";
+			
 			$fields .= ",id_iva";
 			$this->disabledFields = "id_iva";
 		}
@@ -309,7 +330,7 @@ class OrdiniController extends BaseController {
 		
 		$this->m[$this->modelName]->setValue("lingua", $lingua);
 		
-		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::tipoOrdine((int)$id) != "W"))
+		if ($this->disabledFields)
 			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
 		parent::form($queryType, $id);

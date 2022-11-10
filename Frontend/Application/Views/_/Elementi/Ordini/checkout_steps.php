@@ -12,6 +12,7 @@ if (!isset($classBadgeAutenticazione))
 if (!isset($classBadgeCheckout))
 	$classBadgeCheckout = "";
 ?>
+<?php if (!User::$logged || User::$isMobile) { ?>
 <div class="checkout-steps uk-margin-large-bottom <?php echo User::$isMobile ? "checkout-steps-mobile" : "";?>" <?php if ($this->action == "index" && User::$isMobile) { ?>uk-sticky="offset: 0;bottom: true;animation: uk-animation-slide-top;"<?php } ?>>
 		<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center">
 		<div>
@@ -56,3 +57,4 @@ if (!isset($classBadgeCheckout))
 		</div>
 	</div>
 </div>
+<?php } ?>
