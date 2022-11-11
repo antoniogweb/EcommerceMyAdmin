@@ -25,12 +25,12 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
     </div>
     <div class="uk-width-1-1 uk-width-2-3@m">
 		<ul class="uk-subnav uk-subnav-divider uk-flex-right@s">
-			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span uk-icon="icon: pencil"></span> <?php echo gtext("Modifica dati");?></a></li>
+			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span> <?php echo gtext("Modifica dati");?></a></li>
 			
 			<?php if (ListeregaloModel::attiva($lista["id_lista_regalo"])) { ?>
-			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" share-text="<?php echo gtext("Lista regalo");?>" share-title="<?php echo $lista["titolo"];?>" class="share-link uk-button uk-button-link"><span uk-icon="icon: social"></span> <?php echo gtext("Condividi");?></a></li>
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" share-text="<?php echo gtext("Lista regalo");?>" share-title="<?php echo $lista["titolo"];?>" class="share-link uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/social.svg");?></span> <?php echo gtext("Condividi");?></a></li>
 			
-			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" class="uk-button uk-button-link"><?php echo gtext("Vai alla lista");?> <span uk-icon="icon: arrow-right"></span></a></li>
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" class="uk-button uk-button-link"><?php echo gtext("Vai alla lista");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a></li>
 			<?php } ?>
 		</ul>
     </div>
@@ -38,9 +38,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <div class="uk-margin-large-top">
 	<ul class="uk-subnav uk-subnav-pill tab_lista">
-		<li><a class="link_prodotti" href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="tag"></span> <?php echo gtext("Prodotti");?></a></li>
-        <li><a href="#regali-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="heart"></span> <?php echo gtext("Regali");?></a></li>
-        <li><a class="link_lista" href="#link-lista"><span class="uk-margin-small-right uk-visible@s" uk-icon="link"></span> <?php echo gtext("Invia link");?></a></li>
+		<li><a class="link_prodotti" href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/tag.svg");?></span> <?php echo gtext("Prodotti");?></a></li>
+        <li><a href="#regali-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/cuore.svg");?></span> <?php echo gtext("Regali");?></a></li>
+        <li><a class="link_lista" href="#link-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/link.svg");?></span> <?php echo gtext("Invia link");?></a></li>
 	</ul>
 	
 	<div class="tab_lista_box">

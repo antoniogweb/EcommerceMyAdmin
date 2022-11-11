@@ -762,9 +762,14 @@ class OrdiniModel extends FormModel {
 		return number_format($record["orders"]["total"],2,",",".");
 	}
 	
-	public function vedi($record)
+	public function vedi($record, $queryString = "?partial=Y&nobuttons=Y")
 	{
-		return "<a title='Elenco ordini dove è stato acquistato' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."?partial=Y&nobuttons=Y'>".$record["orders"]["id_o"]."</a>";
+		return "<a title='".gtext("Dettaglio ordine")."' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."$queryString'>".$record["orders"]["id_o"]."</a>";
+	}
+	
+	public function vediFull($record, $queryString = "?partial=Y&nobuttons=Y")
+	{
+		return $this->vedi($record, "?partial=Y");
 	}
 	
 	public static function getTotaliIva($id_o)
@@ -958,7 +963,7 @@ class OrdiniModel extends FormModel {
 			if (v("usa_transactions"))
 				$this->db->commit();
 			
-			CartModel::attivaDisattivaSpedizione();
+			CartModel::attivaDisattivaSpedizione((int)$idOrdine);
 			
 			// CONTROLLO LA PROMO
 			$sconto = 0;

@@ -119,9 +119,12 @@ class RigheController extends BaseController
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
 		
-		$idOrdine = RigheModel::g()->whereId((int)$v["id_riga"])->field("id_o");
-		
-		if ((int)$idOrdine)
-			OrdiniModel::g()->aggiornaTotali((int)$idOrdine);
+		if (isset($v["id_riga"]))
+		{
+			$idOrdine = RigheModel::g()->whereId((int)$v["id_riga"])->field("id_o");
+			
+			if ((int)$idOrdine)
+				OrdiniModel::g()->aggiornaTotali((int)$idOrdine);
+		}
 	}
 }

@@ -1141,17 +1141,25 @@ class CartModel extends GenericModel {
 		}
 	}
 	
-	public static function attivaDisattivaSpedizione()
+	public static function attivaDisattivaSpedizione($idOrdine = null)
 	{
-		if (CartModel::soloProdottiSenzaSpedizione())
+		if (CartModel::soloProdottiSenzaSpedizione($idOrdine))
 			VariabiliModel::$valori["attiva_spedizione"] = 0;
 	}
 	
 	// restituisce true se il carrello ha solo prodotti senza spedizione
-	public static function soloProdottiSenzaSpedizione()
+	public static function soloProdottiSenzaSpedizione($idOrdine = null)
 	{
 		if (v("attiva_liste_regalo"))
 		{
+			if (isset($idOrdine))
+			{
+				$idLista = OrdiniModel::g()->whereId((int)$idOrdine)->field("id_lista_regalo");
+				
+				if ($idLista)
+					return true;
+			}
+			
 			ListeregaloModel::getCookieIdLista();
 			
 			if (User::$idLista)

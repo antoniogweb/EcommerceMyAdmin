@@ -62,6 +62,7 @@ class OrdiniController extends BaseController {
 		'lista_regalo:sanitizeAll'=>'tutti',
 		'id_lista_regalo:sanitizeAll'=>'tutti',
 		'tipo_ordine:sanitizeAll'=>'tutti',
+		'id_lista_insert:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -290,6 +291,7 @@ class OrdiniController extends BaseController {
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
+		$this->menuLinksInsert = partial() ? "save" : "back,save";
 		$this->menuLinks = "torna_ordine,save";
 		
 		$this->shift(2);
@@ -314,13 +316,13 @@ class OrdiniController extends BaseController {
 		
 		$this->m[$this->modelName]->setValue("lingua", $lingua);
 		
+		if ($queryType == "insert" && $this->viewArgs['id_lista_insert'] != "tutti")
+			$this->m[$this->modelName]->setValue("id_lista_regalo", $this->viewArgs['id_lista_insert']);
+		
 		if ($this->disabledFields)
 			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
 		parent::form($queryType, $id);
-		
-// 		if ($this->m[$this->modelName]->queryResult)
-// 			$_SESSION["aggiorna_totali_ordine"] = true;
 		
 		$data["tipoSteps"] = "modifica";
 		$this->append($data);
@@ -373,6 +375,7 @@ class OrdiniController extends BaseController {
 		
 		parent::main();
 		
+		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
 		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
 		
@@ -465,7 +468,9 @@ class OrdiniController extends BaseController {
 		$this->h["Menu"]->links['manda_mail']['icon'] = $this->baseUrl.'/Public/Img/Icons/mail_small.png';
 		$this->h["Menu"]->links['manda_mail']['title'] = "Invia nuovamente la mail dell'ordine al cliente";
 		
-		$data["menu"] = $this->h["Menu"]->render("back,edit,manda_mail");
+		$menuButtons = partial() ? "edit,manda_mail" : "back,edit,manda_mail";
+		
+		$data["menu"] = $this->h["Menu"]->render($menuButtons);
 		
 		if (count($res) > 0)
 		{

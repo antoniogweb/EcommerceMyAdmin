@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["id_lista_reg_filt"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -43,6 +50,8 @@ class CombinazioniController extends BaseController
 			'st_giac:sanitizeAll'=>'tutti',
 			'id_lista_regalo:sanitizeAll'=>'tutti',
 			'id_ordine:sanitizeAll'=>'tutti',
+			'id_lista_regalo_ordine:sanitizeAll'=>'tutti',
+			'id_lista_reg_filt:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -93,11 +102,11 @@ class CombinazioniController extends BaseController
 		$mainFields = array();
 		$mainHeadArray = array();
 		
-		if (v("immagini_separate_per_variante") && !partial())
-		{
-			$mainFields[] = "primaImmagineCrud";
-			$mainHeadArray[] = "Immagine";
-		}
+// 		if (v("immagini_separate_per_variante") && !partial())
+// 		{
+// 			$mainFields[] = "primaImmagineCrud";
+// 			$mainHeadArray[] = "Immagine";
+// 		}
 		
 		if (!partial())
 		{
@@ -188,7 +197,23 @@ class CombinazioniController extends BaseController
 			"1"	=>	"Non esaurito",
 		));
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_magazzino"), 'mainMenu'=>'save_combinazioni,esporta');
+		if (v("attiva_liste_regalo"))
+			$this->filters[] = array("id_lista_reg_filt",null,array(
+				"tutti"		=>	"Lista regalo",
+			) + ListeregaloModel::g()->filtroListe());
+		
+		$menuButtons = 'save_combinazioni,esporta';
+		
+		if ($this->viewArgs["id_lista_regalo_ordine"] != "tutti" && $this->viewArgs["id_ordine"] != "tutti")
+		{
+			$menuButtons = 'torna_ordine';
+			Helper_Menu::$htmlLinks["torna_ordine"]["absolute_url"] = $this->baseUrl.'/ordini/righe/'.(int)$this->viewArgs["id_ordine"]."?partial=Y";
+			
+			Helper_Menu::$htmlLinks["torna_ordine"]["text"] = "Torna";
+			Helper_Menu::$htmlLinks["torna_ordine"]["attributes"] = 'role="button" class="make_spinner btn btn-info"';
+		}
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>v("numero_per_pagina_magazzino"), 'mainMenu'=>$menuButtons);
 		
 		$this->mainButtons = 'ldel';
 		
@@ -219,7 +244,13 @@ class CombinazioniController extends BaseController
 				));
 		}
 		
-// 		print_r($this->viewArgs);die();
+		if ($this->viewArgs["id_lista_reg_filt"] != "tutti")
+		{
+			$this->m[$this->modelName]->where(array(
+				"liste_regalo_pages.id_lista_regalo"	=>	$this->viewArgs["id_lista_reg_filt"],
+			))
+			->inner("liste_regalo_pages")->on("combinazioni.id_c = liste_regalo_pages.id_c");
+		}
 		
 		$indice = 0;
 		
@@ -261,6 +292,8 @@ class CombinazioniController extends BaseController
 		
 		if ($this->viewArgs["id_ordine"] != "tutti")
 		{
+			$this->tabella = "articoli";
+			
 			$this->mainButtons = "";
 			
 			$this->bulkQueryActions = "aggiungiaordine";

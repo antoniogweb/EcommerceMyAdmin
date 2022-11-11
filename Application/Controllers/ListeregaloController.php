@@ -250,13 +250,13 @@ class ListeregaloController extends BaseController
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_lista_regalo";
 		
-		$this->mainButtons = "";
+		$this->mainButtons = "ldel";
 		
 		$this->modelName = "OrdiniModel";
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("vedi",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
+		$this->mainFields = array("vediFull",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
 		$this->mainHead = "Ordine,Cliente,Email,Data,Promoz.,Stato,Totale";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');

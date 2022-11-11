@@ -59,16 +59,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-width-1-5@m">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">
 			<div class="uk-text-center@s">
-				<a class=" uk-padding-small" title="<?php echo gtext("Link",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>#link-lista" uk-icon="icon: link"></a>
+				<a class=" uk-padding-small" title="<?php echo gtext("Link",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>#link-lista"><span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/link.svg");?></span></a>
 			</div>
 			<div class="uk-margin-remove-top uk-text-center@s">
-				<a class="uk-padding-small" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: pencil"></a>
+				<a class="uk-padding-small" title="<?php echo gtext("Modifica",false);?>" class="link_grigio" href="<?php echo $this->baseUrl."/listeregalo/gestisci/".$lista["liste_regalo"]["id_lista_regalo"];?>"><span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span></a>
 			</div>
 			<div class="uk-margin-remove-top uk-text-center@s">
 				<?php if ($lista["liste_regalo"]["attivo"] == "Y") { ?>
-				<a class="uk-text-danger uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: close"></a>
+				<a class="uk-text-danger uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Disattiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=N&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/close.svg");?></span></a>
 				<?php } else { ?>
-				<a class=" uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Attiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=Y&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>" uk-icon="icon: ban"></a>
+				<a class=" uk-padding-small uk-text-bold td_edit" title="<?php echo gtext("Attiva la lista",false);?>" href="<?php echo $this->baseUrl."/liste-regalo/?valore=Y&id_lista=".$lista["liste_regalo"]["id_lista_regalo"];?>"><span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/ban.svg");?></span></a>
 				<?php } ?>
 			</div>
 		</div>
@@ -82,7 +82,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } ?>
 
 <div class="uk-margin">
-	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/listeregalo/modifica/0";?>"><span uk-icon="plus"></span> <?php echo gtext("Crea lista nascita / regalo");?></a>
+	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/listeregalo/modifica/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea lista nascita / regalo");?></a>
 </div>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

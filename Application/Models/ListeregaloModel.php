@@ -403,4 +403,18 @@ class ListeregaloModel extends GenericModel
 		
 		return "";
 	}
+	
+	public function filtroListe()
+	{
+		$res = $this->clear()->orderBy("titolo")->send(false);
+		
+		$arrayFiltro = array();
+		
+		foreach ($res as $r)
+		{
+			$arrayFiltro[$r["id_lista_regalo"]] = $r["titolo"]." - ".$r["codice"];
+		}
+		
+		return $arrayFiltro;
+	}
 }
