@@ -521,6 +521,8 @@ class VariabiliModel extends GenericModel {
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento
+		## JAVASCRIPT ##
+		"usa_defear"	=>	0, // se impostato a 1, usa defear sui JS nell'header
 		## PROMOZIONI ##
 		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
 		"estrai_in_promozione_home"	=>	0,

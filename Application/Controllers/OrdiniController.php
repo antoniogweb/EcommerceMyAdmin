@@ -46,7 +46,7 @@ class OrdiniController extends BaseController {
 	
 	public $argKeys = array(
 		'page:forceInt'=>1,
-		'id_o:sanitizeAll'=>'tutti',
+		'id_ordine:sanitizeAll'=>'tutti',
 		'pagamento:sanitizeAll'=>'tutti',
 		'stato:sanitizeAll'=>'tutti',
 		'tipo_cliente:sanitizeAll'=>'tutti',
@@ -70,25 +70,6 @@ class OrdiniController extends BaseController {
 		
 		$this->session('admin');
 		$this->model();
-
-// 		$this->setArgKeys(array(
-// 			'page:forceInt'=>1,
-// 			'id_o:sanitizeAll'=>'tutti',
-// 			'pagamento:sanitizeAll'=>'tutti',
-// 			'stato:sanitizeAll'=>'tutti',
-// 			'tipo_cliente:sanitizeAll'=>'tutti',
-// 			'email:sanitizeAll'=>'tutti',
-// 			'codice_fiscale:sanitizeAll'=>'tutti',
-// 			'registrato:sanitizeAll'=>'tutti',
-// 			'token:sanitizeAll'=>'token',
-// 			'partial:sanitizeAll'=>'tutti',
-// 			'id_comb:sanitizeAll'=>'tutti',
-// 			'dal:sanitizeAll'=>'tutti',
-// 			'al:sanitizeAll'=>'tutti',
-// 			'nazione_utente:sanitizeAll'=>'tutti',
-// 			'lista_regalo:sanitizeAll'=>'tutti',
-// 			'id_lista_regalo:sanitizeAll'=>'tutti',
-// 		));
 
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
@@ -161,7 +142,7 @@ class OrdiniController extends BaseController {
 		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
 		
 		$where = array(
-			'id_o'	=>	$this->viewArgs['id_o'],
+			'id_o'	=>	$this->viewArgs['id_ordine'],
 			'stato'	=>	$this->viewArgs['stato'],
 			'tipo_cliente'	=>	$this->viewArgs['tipo_cliente'],
 			'pagamento'	=>	$this->viewArgs['pagamento'],
@@ -313,10 +294,13 @@ class OrdiniController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione';
+		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione,note';
 		
 		if (v("permetti_modifica_cliente_in_ordine"))
 			$fields .= ",id_user,id_spedizione";
+		
+		if (v("attiva_liste_regalo"))
+			$fields .= ",dedica,firma";
 		
 		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::tipoOrdine((int)$id) != "W"))
 		{
@@ -334,6 +318,9 @@ class OrdiniController extends BaseController {
 			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
 		parent::form($queryType, $id);
+		
+// 		if ($this->m[$this->modelName]->queryResult)
+// 			$_SESSION["aggiorna_totali_ordine"] = true;
 		
 		$data["tipoSteps"] = "modifica";
 		$this->append($data);
@@ -464,7 +451,7 @@ class OrdiniController extends BaseController {
 							->where(array("id_o" => $clean["id_o"]))
 							->send();
 		
-		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->send();
+		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->orderBy("id_order")->send();
 		
 		$this->helper("Menu",$this->applicationUrl.$this->controller,"panel");
 		

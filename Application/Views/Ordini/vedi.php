@@ -159,7 +159,7 @@
 			
 			<div class="box">
 				<div class="box-header with-border main help_righe_ordine">
-					<h3><?php echo gtext("Righe ordine");?>:</h3>
+					<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Righe ordine");?>:</h4>
 	
 					<table width="100%" class="table table-striped" cellspacing="0">
 						<thead>
@@ -206,14 +206,18 @@
 										<tr>
 											<th style="text-align:left;font-size:13px;"><?php echo gtext("Da inviare a");?></th>
 											<th style="text-align:left;font-size:13px;"><?php echo gtext("Dedica e firma");?></th>
+											<th></th>
 										</tr>
 									<?php foreach ($elementiRiga as $el) { ?>
 									<tr>
 										<td style="text-align:left;font-size:13px;">
-											<?php echo $el["email"];?>
+											<?php echo $el["email"] ? $el["email"] : "--";?>
 										</td>
 										<td style="text-align:left;font-size:13px;">
-											<?php echo nl2br($el["testo"]);?>
+											<?php echo $el["testo"] ? nl2br($el["testo"]) : "--";?>
+										</td>
+										<td style="text-align:left;font-size:13px;">
+											<a class="iframe" title="<?php echo gtext("Modifica email e dedica")?>" href="<?php echo $this->baseUrl."/righeelementi/form/update/".$el["id_riga_elemento"];?>?partial=Y&nobuttons=Y"><i class="fa fa-pencil"></i></a>
 										</td>
 									</tr>
 									<?php } ?>
@@ -409,7 +413,7 @@
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main help_totali_ordine">
-							<h3><?php echo gtext("Totali ordine");?>:</h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Totali ordine");?>:</h4>
 							
 							<?php
 							list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva($ordine["id_o"]);
@@ -442,7 +446,7 @@
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main help_spese_di_spedizione">
-							<h3><?php echo gtext("Spedizione");?></h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Spedizione");?></h4>
 							
 							<table class="table table-striped">
 								<tr>
@@ -471,7 +475,7 @@
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
-							<h3><?php echo gtext("Dedica e firma");?></h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dedica e firma");?></h4>
 							<blockquote cite="#">
 								<div class="uk-margin-small-bottom"><?php echo nl2br($ordine["dedica"]);?></div>
 								<?php if (trim($ordine["firma"])) { ?>
@@ -486,7 +490,7 @@
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
-							<h3><?php echo gtext("Note");?></h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Note");?></h4>
 							<?php echo nl2br($ordine["note"])?>
 						</div>
 					</div>
@@ -498,7 +502,7 @@
 				<div class="box-header with-border main help_fatturazione">
 					<div class="row">
 						<div class="col-lg-6">
-							<h3><?php echo gtext("Dati di fatturazione");?>:</h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati di fatturazione");?>:</h4>
 							
 							<table class="table table-striped">
 								<?php if ($cliente && $cliente["deleted"] == "no") { ?>
@@ -571,7 +575,7 @@
 						</div>
 						<?php if ($ordine["da_spedire"]) { ?>
 						<div class="col-lg-6">
-							<h3><?php echo gtext("Dati di spedizione");?>:</h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati di spedizione");?>:</h4>
 							
 							<table class="table table-striped">
 								<tr>
@@ -610,7 +614,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<br />
-							<h3><?php echo gtext("Dati per fatturazione elettronica");?>:</h3>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati per fatturazione elettronica");?>:</h4>
 							
 							<table class="table table-striped">
 								<tr>

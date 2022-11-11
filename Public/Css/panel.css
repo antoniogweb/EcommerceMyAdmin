@@ -326,7 +326,7 @@ a.linkItem {
 }
 .form_input_text
 {
-	margin-top:10px;
+/* 	margin-top:10px; */
 }
 .form_input_text_promozione
 {
@@ -379,7 +379,7 @@ a.linkItem {
 	}
 }
 
-.col-md-6 .form_input_text input,.col-md-6 .form_textarea textarea, .col-md-6 .entryinlinea input, .col-md-6 .alias_Select input, .col-md-6 .form_input_text select, .col-md-8 .form_input_text input,.col-md-8 .form_textarea textarea, .col-md-8 .entryinlinea input, .col-md-8 .alias_Select input, .col-md-8 .form_input_text select, .col-md-4 .form_input_text input,.col-md-4 .form_textarea textarea, .col-md-4 .entryinlinea input, .col-md-4 .alias_Select input, .col-md-4 .form_input_text select, .col-sm-4 .form_input_text input,.col-sm-4 .form_textarea textarea, .col-sm-4 .entryinlinea input, .col-sm-4 .alias_Select input, .col-sm-4 .form_input_text select, .col-sm-6 .form_input_text input,.col-sm-6 .form_textarea textarea, .col-sm-6 .entryinlinea input, .col-sm-6 .alias_Select input, .col-sm-6 .form_input_text select
+.col-md-6 .form_input_text input,.col-md-6 .form_textarea textarea, .col-md-6 .entryinlinea input, .col-md-6 .alias_Select input, .col-md-6 .form_input_text select, .col-md-8 .form_input_text input,.col-md-8 .form_textarea textarea, .col-md-8 .entryinlinea input, .col-md-8 .alias_Select input, .col-md-8 .form_input_text select, .col-md-4 .form_input_text input,.col-md-4 .form_textarea textarea, .col-md-4 .entryinlinea input, .col-md-4 .alias_Select input, .col-md-4 .form_input_text select, .col-sm-4 .form_input_text input,.col-sm-4 .form_textarea textarea, .col-sm-4 .entryinlinea input, .col-sm-4 .alias_Select input, .col-sm-4 .form_input_text select, .col-sm-6 .form_input_text input,.col-sm-6 .form_textarea textarea, .col-sm-6 .entryinlinea input, .col-sm-6 .alias_Select input, .col-sm-6 .form_input_text select, .col-md-3 .form_input_text input,.col-md-3 .form_textarea textarea, .col-md-3 .entryinlinea input, .col-md-3 .alias_Select input, .col-md-3 .form_input_text select
 {
 	width:100% !important;
 }

@@ -718,6 +718,8 @@ class Route
 		
 		'listeregalolink,form',
 		'listeregalolink,invia',
+		
+		'righeelementi,form',
 	);
 	
 	//it can be 'yes' or 'no'

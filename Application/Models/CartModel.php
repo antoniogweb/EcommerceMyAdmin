@@ -646,7 +646,7 @@ class CartModel extends GenericModel {
 		return 0;
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null)
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $idRif = null)
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -779,6 +779,9 @@ class CartModel extends GenericModel {
 				$this->values["cart_uid"] = $clean["cart_uid"];
 				$this->values["creation_time"] = $this->getCreationTime();
 				$this->values["gift_card"] = $rPage[0]["pages"]["gift_card"];
+				
+				if (isset($idRif))
+					$this->values["id_rif"] = (int)$idRif;
 				
 				if ($p->inPromozioneTot($clean["id_page"]))
 				{
@@ -1201,5 +1204,12 @@ class CartModel extends GenericModel {
 			return $res[0]["aggregate"]["SOMMA"];
 		
 		return 0;
+	}
+	
+	public function getRighePerOrdine()
+	{
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		return  $this->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 	}
 }

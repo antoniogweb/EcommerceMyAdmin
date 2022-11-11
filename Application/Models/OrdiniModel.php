@@ -689,7 +689,8 @@ class OrdiniModel extends FormModel {
 				$sconto = $coupon["sconto"];
 		}
 		
-		$pages = $c->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
+		$pages = $c->getRighePerOrdine();
+// 		$pages = $c->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 		
 		foreach ($pages as $p)
 		{
@@ -719,11 +720,15 @@ class OrdiniModel extends FormModel {
 			$r->values["fonte"] = App::$isFrontend ? "W" : "B";
 			$r->values["id_admin"] = App::$isFrontend ? 0 : User::$id;
 			
+			if (!App::$isFrontend && $r->values["id_rif"])
+				$r->values["id_r"] = (int)$r->values["id_rif"];
+			
 			$r->delFields("data_creazione");
 			$r->delFields("id_user");
 			$r->delFields("email");
 			$r->delFields("id_cart");
 			$r->delFields("id_order");
+			$r->delFields("id_rif");
 			
 			$r->sanitize();
 			
@@ -918,20 +923,37 @@ class OrdiniModel extends FormModel {
 			
 			$righe = $r->clear()->where(array(
 				"id_o"	=>	(int)$idOrdine,
-			))->send(false);
+			))->orderBy("id_order")->send(false);
 			
 			// AGGIUNGO AL CARRELLO
 			if (v("usa_transactions"))
 				$this->db->beginTransaction();
 			
+// 			$righeCarrello = $c->getRighePerOrdine();
+			
+			$elementiPuliti = array();
+			
 			$c->del(null, "cart_uid = '".User::$cart_uid."'");
 			
 			foreach ($righe as $r)
 			{
-				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], null, $r["price"]);
+				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], null, $r["price"], $r["id_r"]);
+				
+				$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
+				
+				foreach ($elementiRiga as $elRiga)
+				{
+					$elRiga = htmlentitydecodeDeep($elRiga);
+					
+					$elementiPuliti["CART-".(int)$idCart][] = array(
+						"email"	=>	(string)$elRiga["email"],
+						"testo"	=>	(string)$elRiga["testo"],
+					);
+				}
 			}
 			
-			$c->aggiornaElementi();
+			$c->correggiPrezzi();
+			$c->aggiornaElementi($elementiPuliti);
 			
 			if (v("usa_transactions"))
 				$this->db->commit();
@@ -958,10 +980,10 @@ class OrdiniModel extends FormModel {
 				}
 			}
 			
-			$this->ricalcolaPrezziRighe((int)$ordine["id_o"], $sconto);
+// 			$this->ricalcolaPrezziRighe((int)$ordine["id_o"], $sconto);
 			
 			$this->values = array();
-			$this->aggiungiTotali();
+			$this->aggiungiTotali($ordine["stato"]);
 			
 			$this->pUpdate($idOrdine);
 			
@@ -984,48 +1006,48 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
-	public function ricalcolaPrezziRighe($idOrdine, $sconto)
-	{
-		$rModel = new RigheModel();
-		$pModel = new PagesModel();
-		$iModel = new IvaModel();
-		
-		$righe = $rModel->clear()->where(array(
-			"id_o"	=>	(int)$idOrdine,
-		))->send(false);
-		
-		$idIvaGenerica = $iModel->clear()->orderBy("id_order")->limit(1)->field("id_iva");
-		
-		if (v("usa_transactions"))
-			$this->db->beginTransaction();
-		
-		foreach ($righe as $r)
-		{
-			$pagina = $pModel->selectId($r["id_page"]);
-			
-			$idIvaPagina = (!empty($pagina)) ? $pagina["id_iva"] : $idIvaGenerica;
-			
-			$prezzoFinale = number_format($r["price"] - ($r["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
-			
-			$idIva = isset(IvaModel::$idIvaEstera) ? IvaModel::$idIvaEstera : $idIvaPagina;
-			$iva = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : IvaModel::g()->getValore((int)$idIvaPagina);
-			
-			$rModel->sValues(array(
-				"id_iva"		=>	$idIva,
-				"iva"			=>	$iva,
-				"prezzo_finale"	=>	$prezzoFinale,
-				"prezzo_finale_ivato"	=>	number_format($prezzoFinale * (1 + ($iva / 100)),2,".",""),
-				"percentuale_promozione"=>	$sconto,
-			));
-			
-			$rModel->pUpdate($r["id_r"]);
-		}
-		
-		if (v("usa_transactions"))
-			$this->db->commit();
-	}
+// 	public function ricalcolaPrezziRighe($idOrdine, $sconto)
+// 	{
+// 		$rModel = new RigheModel();
+// 		$pModel = new PagesModel();
+// 		$iModel = new IvaModel();
+// 		
+// 		$righe = $rModel->clear()->where(array(
+// 			"id_o"	=>	(int)$idOrdine,
+// 		))->send(false);
+// 		
+// 		$idIvaGenerica = $iModel->clear()->orderBy("id_order")->limit(1)->field("id_iva");
+// 		
+// 		if (v("usa_transactions"))
+// 			$this->db->beginTransaction();
+// 		
+// 		foreach ($righe as $r)
+// 		{
+// 			$pagina = $pModel->selectId($r["id_page"]);
+// 			
+// 			$idIvaPagina = (!empty($pagina)) ? $pagina["id_iva"] : $idIvaGenerica;
+// 			
+// 			$prezzoFinale = number_format($r["price"] - ($r["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
+// 			
+// 			$idIva = isset(IvaModel::$idIvaEstera) ? IvaModel::$idIvaEstera : $idIvaPagina;
+// 			$iva = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : IvaModel::g()->getValore((int)$idIvaPagina);
+// 			
+// 			$rModel->sValues(array(
+// 				"id_iva"		=>	$idIva,
+// 				"iva"			=>	$iva,
+// 				"prezzo_finale"	=>	$prezzoFinale,
+// 				"prezzo_finale_ivato"	=>	number_format($prezzoFinale * (1 + ($iva / 100)),2,".",""),
+// 				"percentuale_promozione"=>	$sconto,
+// 			));
+// 			
+// 			$rModel->pUpdate($r["id_r"]);
+// 		}
+// 		
+// 		if (v("usa_transactions"))
+// 			$this->db->commit();
+// 	}
 	
-	public function aggiungiTotali()
+	public function aggiungiTotali($forzaAlloStato = null)
 	{
 		$this->values["subtotal"] = getSubTotalN();
 		$this->values["spedizione"] = getSpedizioneN();
@@ -1045,10 +1067,15 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["creation_time"] = time();
 		
-		$statoOrdine = "pending";
-		
-		if (number_format(getTotalN(),2,".","") <= 0.00)
-			$statoOrdine = "completed";
+		if (!isset($forzaAlloStato))
+		{
+			$statoOrdine = "pending";
+			
+			if (number_format(getTotalN(),2,".","") <= 0.00)
+				$statoOrdine = "completed";
+		}
+		else
+			$statoOrdine = $forzaAlloStato;
 		
 		$this->values["stato"] = $statoOrdine;
 		
