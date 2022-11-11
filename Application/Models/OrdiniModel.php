@@ -304,14 +304,14 @@ class OrdiniModel extends FormModel {
 	
 	public function setAliquotaIva($idOrdine = 0)
 	{
-		if (!App::$isFrontend)
-		{
-			if (!$idOrdine || OrdiniModel::tipoOrdine($idOrdine) != "W")
-			{
-				if (isset($this->values["id_iva"]))
-					$this->values["iva_spedizione"] = IvaModel::g(false)->getValore((int)$this->values["id_iva"]);
-			}
-		}
+// 		if (!App::$isFrontend)
+// 		{
+// 			if (!$idOrdine || OrdiniModel::tipoOrdine($idOrdine) != "W")
+// 			{
+// 				if (isset($this->values["id_iva"]))
+// 					$this->values["iva_spedizione"] = IvaModel::g(false)->getValore((int)$this->values["id_iva"]);
+// 			}
+// 		}
 	}
 	
 	public function insert()

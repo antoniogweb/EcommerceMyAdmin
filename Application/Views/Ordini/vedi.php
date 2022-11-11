@@ -59,6 +59,12 @@
 									<td><?php echo gtext("Metodo di pagamento");?>:</td>
 									<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
 								</tr>
+								<?php if (v("permetti_ordini_offline")) { ?>
+								<tr>
+									<td><?php echo gtext("Tipo ordine");?>:</td>
+									<td><b><?php echo $ordine["tipo_ordine"];?></b></td>
+								</tr>
+								<?php } ?>
 								<?php if (v("attiva_ip_location")) { ?>
 								<tr>
 									<td><?php echo gtext("Nazione navigazione");?>:</td>

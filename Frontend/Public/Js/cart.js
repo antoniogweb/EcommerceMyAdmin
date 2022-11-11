@@ -976,7 +976,7 @@ function aggiornaCarrello(vai_la_checkout, incrementa)
 				if (typeof vai_la_checkout == "undefined")
 					reloadCart(incrementa);
 				else
-					location.href = baseUrl + "/checkout";
+					location.href = baseUrl + "/" + url_autenticati;
 			}
 			else
 			{
