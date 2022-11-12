@@ -67,7 +67,7 @@ class ContenutiController extends BaseController
 		else
 		{
 			if ($this->viewArgs["tipo"] == "GENERICO")
-				$fields .= ",descrizione,immagine_1";
+				$fields .= ",descrizione,immagine_1,filename";
 			else if ($this->viewArgs["tipo"] == "MARKER")
 				$fields .= ",descrizione,coordinate";
 		}

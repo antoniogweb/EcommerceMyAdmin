@@ -880,12 +880,15 @@ $(document).ready(function(){
 	
 	mostraLabelColore();
 	
-	$(".image-picker").imagepicker({
-		selected: function(select, picker_option, event){
-			
-			mostraLabelColore();
-		}
-	});
+	if ($(".image-picker").length > 0)
+	{
+		$(".image-picker").imagepicker({
+			selected: function(select, picker_option, event){
+				
+				mostraLabelColore();
+			}
+		});
+	}
 	
 	$("body").on("change", ".select_follow_url", function(e){
 		
