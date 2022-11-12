@@ -418,6 +418,8 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
 		
+		$queryStringEliminazione = "";
+		
 		if (!v("elimina_record_utente_ad_autoeliminazione"))
 			$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
 		
