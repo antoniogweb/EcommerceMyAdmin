@@ -885,7 +885,7 @@ class CombinazioniModel extends GenericModel {
 // 						"lingua"	=>	$lingua,
 // 						"json_personalizzazioni"=>	"[]",
 // 						"json_attributi"=>	$this->getStringa((int)$id,"",true),
-// 						"json_sconti"=>	"[]",
+						"json_sconti"=>	"[]",
 // 						"fonte"		=>	"B",
 // 						"id_admin"	=>	User::$id,
 					), "sanitizeDb");

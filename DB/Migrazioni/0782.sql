@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `data_creazione`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`) VALUES (NULL, '2021-10-30 12:54:42', 'Nominativo della lista regalo (variabile utilizzabile solo in caso di email su Liste regalo)', 'NOMINATIVO', '', '', '1', '9', '', '1', '');

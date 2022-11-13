@@ -165,6 +165,11 @@ class EventiretargetingModel extends GenericModel {
 		self::processa($idElemento, "PromozioniModel", true);
 	}
 	
+	public static function processaLista($idElemento)
+	{
+		self::processa($idElemento, "ListeregaloemailModel", true);
+	}
+	
 	public static function processa($idElemento = 0, $limitaAModel = null, $immediati = false)
 	{
 		if (!v("attiva_eventi_retargeting"))

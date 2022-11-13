@@ -407,6 +407,24 @@ class OrdiniModel extends FormModel {
 				}
 			}
 		}
+		
+		if (v("attiva_liste_regalo"))
+		{
+			$ordine = !isset($ordine) ? $this->selectId((int)$idO) : $ordine;
+			
+			if (!empty($ordine) && $ordine["id_lista_regalo"] && trim($ordine["firma"]) && trim($ordine["dedica"]))
+			{
+				$lModel = new ListeregaloModel();
+				$lreModel = new ListeregaloemailModel();
+				
+				$lista = $lModel->selectId((int)$ordine["id_lista_regalo"]);
+				
+				if (!empty($lista) && trim($lista["email"]) && checkMail($lista["email"]))
+				{
+					$lreModel->aggiungiDaOrdine($ordine);
+				}
+			}
+		}
 	}
 	
 	public function cartUidAlreadyPresent($cart_uid)

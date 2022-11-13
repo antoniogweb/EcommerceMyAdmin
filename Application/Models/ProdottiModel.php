@@ -124,7 +124,7 @@ class ProdottiModel extends PagesModel {
 		$clean["id_page"] = (int)$idPage;
 		
 		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-		$elencoImmagini[] = "";
+// 		$elencoImmagini[] = "";
 		
 		if (!isset($immagineCombinazione))
 			$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
