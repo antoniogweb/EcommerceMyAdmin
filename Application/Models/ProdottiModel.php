@@ -124,14 +124,19 @@ class ProdottiModel extends PagesModel {
 		$clean["id_page"] = (int)$idPage;
 		
 		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-// 		$elencoImmagini[] = "";
+		$elencoImmagini[] = "";
 		
-		if (!isset($immagineCombinazione))
-			$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
+		$immagine = $elencoImmagini[0];
 		
-		$immagine = in_array($immagineCombinazione,$elencoImmagini) ? $immagineCombinazione : $elencoImmagini[0];
-		
-		if (v("immagini_separate_per_variante"))
+		if (!v("immagini_separate_per_variante"))
+		{
+			if (!isset($immagineCombinazione))
+				$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
+			
+			if (isset($immagineCombinazione) && $immagineCombinazione && in_array($immagineCombinazione,$elencoImmagini))
+				$immagine = $immagineCombinazione;
+		}
+		else
 		{
 			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
 			
