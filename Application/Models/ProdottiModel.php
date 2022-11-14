@@ -128,7 +128,7 @@ class ProdottiModel extends PagesModel {
 		
 		$immagine = $elencoImmagini[0];
 		
-		if (!v("immagini_separate_per_variante"))
+		if (v("immagine_in_varianti") && !v("immagini_separate_per_variante"))
 		{
 			if (!isset($immagineCombinazione))
 				$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
@@ -136,7 +136,7 @@ class ProdottiModel extends PagesModel {
 			if (isset($immagineCombinazione) && $immagineCombinazione && in_array($immagineCombinazione,$elencoImmagini))
 				$immagine = $immagineCombinazione;
 		}
-		else
+		else if (v("immagini_separate_per_variante"))
 		{
 			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
 			
