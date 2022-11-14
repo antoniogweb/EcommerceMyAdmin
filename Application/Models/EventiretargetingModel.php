@@ -328,6 +328,7 @@ class EventiretargetingModel extends GenericModel {
 							"email"			=>	$emailElemento,
 							"id_mail"		=>	count(MailordiniModel::$idMailInviate) > 0 ? MailordiniModel::$idMailInviate[0] : 0,
 							"tabella_elemento"	=>	$tableName,
+							"model"			=>	$modelName,
 						);
 						
 						if (!self::$debug)

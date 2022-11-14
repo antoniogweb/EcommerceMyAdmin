@@ -82,4 +82,11 @@ class ListeregaloemailModel extends GenericModel
 		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["dedica"] && ListeregaloModel::attiva($record["id_lista_regalo"]) )
 			EventiretargetingModel::processaLista($idListaEmail);
 	}
+	
+	public function dettagliElementoCrud($record)
+	{
+		$record["orders"]["id_o"] = $record["liste_regalo_email"]["id_o"];
+		
+		return OrdiniModel::g()->vedi($record);
+	}
 }

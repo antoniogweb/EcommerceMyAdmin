@@ -1400,4 +1400,28 @@ class OrdiniModel extends FormModel {
 	{
 		return self::getLabelTipoOrdine($record["orders"]["tipo_ordine"]);
 	}
+	
+	public function dedicaCrud($record)
+	{
+		$dedica = $this->getElemendoDedica($record["orders"]["id_o"]);
+		
+		if ($dedica)
+		{
+			return "<i class='fa fa-check text text-success'></i> <small>".gtext("Inviata il")." ".date("d/m/Y H:i", strtotime($dedica["data_creazione"]))."</small>";
+		}
+	}
+	
+	public function getElemendoDedica($idOrdine)
+	{
+		$idListaRegaloEmail = (int)ListeregaloemailModel::g()->where(array(
+			"id_o"	=>	(int)$idOrdine
+		))->field("id_lista_regalo_email");
+		
+		if ($idListaRegaloEmail)
+		{
+			return EventiretargetingelementiModel::getElemento((int)$idListaRegaloEmail, "liste_regalo_email");
+		}
+		
+		return array();
+	}
 }

@@ -488,6 +488,12 @@
 								<footer><?php echo $ordine["firma"];?></footer>
 								<?php } ?>
 							</blockquote>
+							<?php if (v("attiva_liste_regalo")) { ?>
+								<?php $dedica = OrdiniModel::g()->getElemendoDedica($ordine["id_o"]);?>
+								<?php if ($dedica) { ?>
+								<div class="alert alert-info"><?php echo gtext("La mail con la dedica e la firma è stata inviata all'utente creatore della lista")." (<b>".$dedica["email"]."</b>) ".gtext("in data")." ".date("d/m/Y H:i", strtotime($dedica["data_creazione"]));?></div>
+								<?php } ?>
+							<?php } ?>
 						</div>
 					</div>
 				</div>

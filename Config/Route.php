@@ -715,6 +715,7 @@ class Route
 		'listeregalo,inviti',
 		'listeregalo,salvapagine',
 		'listeregalo,ordini',
+		'listeregalo,invii',
 		
 		'listeregalolink,form',
 		'listeregalolink,invia',

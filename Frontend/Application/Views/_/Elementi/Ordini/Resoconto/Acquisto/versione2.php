@@ -110,14 +110,14 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 
 <?php if (trim($ordine["note"]) || trim($ordine["dedica"]) || trim($ordine["firma"])) { ?>
 <div class="uk-grid uk-grid-small uk-margin-medium-top" uk-grid>
+	<?php if (trim($ordine["note"])) { ?>
 	<div class="uk-width-1-1 uk-width-1-2@m">
-		<?php if (trim($ordine["note"])) { ?>
 		<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Note d'acquisto");?></h2>
 		<?php echo nl2br($ordine["note"]);?>
 		<br />
-		<?php } ?>
 	</div>
-	<div class="uk-width-1-1 uk-width-1-2@m">
+	<?php } ?>
+	<div class="uk-width-1-1 <?php if (trim($ordine["note"])) { ?>uk-width-1-2@m<?php } ?>">
 		<?php
 		include(tpf(ElementitemaModel::p("RESOCONTO_REGALO","", array(
 			"titolo"	=>	"Dedica e firma nel resoconto dell'ordine",

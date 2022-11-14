@@ -58,4 +58,19 @@ class EventiretargetingelementiModel extends GenericModel {
 		))->record();
 	}
 	
+	public function dettagliElementoCrud($record)
+	{
+		if ($record["eventi_retargeting_elemento"]["model"])
+		{
+			$eModel = new $record["eventi_retargeting_elemento"]["model"];
+			
+			if (method_exists($eModel, "dettagliElementoCrud"))
+			{
+				return $eModel->dettagliElementoCrud($record);
+			}
+		}
+		
+		return "";
+	}
+	
 }

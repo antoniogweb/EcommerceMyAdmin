@@ -256,8 +256,8 @@ class ListeregaloController extends BaseController
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("vediFull",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
-		$this->mainHead = "Ordine,Cliente,Email,Data,Promoz.,Stato,Totale";
+		$this->mainFields = array("vediFull",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud", "dedicaCrud");
+		$this->mainHead = "Ordine,Cliente,Email,Data,Promoz.,Stato,Totale,Dedica";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -266,6 +266,52 @@ class ListeregaloController extends BaseController
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function invii($id = 0)
+	{
+		$this->model("EventiretargetingelementiModel");
+		
+		$this->_posizioni['invii'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array();
+		
+		$this->modelName = "EventiretargetingelementiModel";
+		
+		$this->mainFields = array("cleanDateTime", "eventi_retargeting_elemento.email", "mail_ordini.oggetto", "inviata", "dettagliElementoCrud");
+		$this->mainHead = "Data,Email,Oggetto,Inviata,Ordine";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"invii/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")
+			->inner(array("mail"))
+			->inner("liste_regalo_email")->on("eventi_retargeting_elemento.id_elemento = liste_regalo_email.id_lista_regalo_email")
+			->orderBy("eventi_retargeting_elemento.data_creazione desc")
+			->where(array(
+				"liste_regalo_email.id_lista_regalo"		=>	$clean['id'],
+				"tabella_elemento"	=>	"liste_regalo_email",
+				"duplicato"			=>	0,
+			))
+			->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["ListeregaloModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}
