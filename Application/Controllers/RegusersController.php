@@ -273,7 +273,7 @@ class RegusersController extends BaseController {
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud");
+		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoordinelabel","totaleCrud");
 		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');

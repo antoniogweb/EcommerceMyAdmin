@@ -63,6 +63,7 @@ class OrdiniController extends BaseController {
 		'id_lista_regalo:sanitizeAll'=>'tutti',
 		'tipo_ordine:sanitizeAll'=>'tutti',
 		'id_lista_insert:sanitizeAll'=>'tutti',
+		'from:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -100,7 +101,7 @@ class OrdiniController extends BaseController {
 		
 		$this->addBulkActions = false;
 		
-		$mainMenu = v("permetti_ordini_offline") ? "add" : "";
+		$mainMenu = (v("permetti_ordini_offline") && !partial()) ? "add" : "";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu, 'modifyAction'=>'vedi');
 		
@@ -479,7 +480,7 @@ class OrdiniController extends BaseController {
 		$this->h["Menu"]->links['manda_mail']['icon'] = $this->baseUrl.'/Public/Img/Icons/mail_small.png';
 		$this->h["Menu"]->links['manda_mail']['title'] = "Invia nuovamente la mail dell'ordine al cliente";
 		
-		$menuButtons = partial() ? "edit,manda_mail" : "back,edit,manda_mail";
+		$menuButtons = $this->viewArgs["from"] == "liste" ? "edit,manda_mail" : "back,edit,manda_mail";
 		
 		$data["menu"] = $this->h["Menu"]->render($menuButtons);
 		

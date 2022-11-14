@@ -28,6 +28,11 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
 			<div class="uk-text-small"><?php echo gtext("Codice");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["codice"];?></div>
 		</div>
+		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("nominativo", ""))) { ?>
+		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
+			<div class="uk-text-small"><?php echo gtext("Nominativo");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["nominativo"];?></div>
+		</div>
+		<?php } ?>
 		<?php if(in_array($lista["liste_regalo_tipi"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("nome_bambino", ""))) { ?>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
 			<div class="uk-text-small"><?php echo gtext("Nome bimbo/a");?></div> <div class="uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["nome_bambino"];?></div>

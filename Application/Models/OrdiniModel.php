@@ -814,6 +814,11 @@ class OrdiniModel extends FormModel {
 		return $this->vedi($record, "?partial=Y");
 	}
 	
+	public function vediDaListe($record, $queryString = "?partial=Y&nobuttons=Y")
+	{
+		return $this->vedi($record, "?partial=Y&from=liste");
+	}
+	
 	public static function getTotaliIva($id_o)
 	{
 		$o = new OrdiniModel();

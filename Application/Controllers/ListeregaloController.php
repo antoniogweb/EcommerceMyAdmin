@@ -256,7 +256,7 @@ class ListeregaloController extends BaseController
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("vediFull",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoOrdineBreve|orders.stato","totaleCrud", "dedicaCrud");
+		$this->mainFields = array("vediDaListe",'OrdiniModel.getNome|orders.id_o','orders.email',"smartDate|orders.data_creazione","orders.nome_promozione","statoordinelabel","totaleCrud", "dedicaCrud");
 		$this->mainHead = "Ordine,Cliente,Email,Data,Promoz.,Stato,Totale,Dedica";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');

@@ -135,7 +135,10 @@ class ListeregaloModel extends GenericModel
 		$this->settaDataScadenza();
 		
 		if (isset($this->values["id_user"]))
-			$this->setValue("email", RegusersModel::g()->clear()->whereId($this->values["id_user"])->field("username"));
+		{
+			$ruModel = new RegusersModel;
+			$this->setValue("email", $ruModel->clear()->whereId($this->values["id_user"])->field("username"));
+		}
 		
 		if (parent::insert())
 		{
@@ -426,7 +429,7 @@ class ListeregaloModel extends GenericModel
 		$record = $this->selectId((int)$idLista);
 		
 		if (!empty($record))
-			return $record["genitore_1"];
+			return $record["genitore_1"] ? $record["genitore_1"] : $record["nominativo"];
 		
 		return "";
 	}

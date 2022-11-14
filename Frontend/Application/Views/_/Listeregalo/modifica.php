@@ -31,7 +31,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 </div>
 <form class="form_lista_regalo" action="<?php echo $this->baseUrl.$action;?>" method="POST">
 	<div class="">
-		<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
+		<div class="uk-grid uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 			<?php $attributiIdTipo = ($id === 0) ? "" : "disabled";?>
 			
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom">
@@ -101,6 +101,15 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<label class="uk-form-label"><?php echo gtext("Data battesimo");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "data_battesimo")) {?>*<?php } ?></label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::input("data_battesimo",$values['data_battesimo'] == "00-00-0000" ? "" : $values['data_battesimo'],"uk-input class_data_battesimo datepicker",null,"autocomplete='new-password'");?>
+				</div>
+			</div>
+			<?php } ?>
+			
+			<?php if (array_key_exists("nominativo",$values)) { ?>
+			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("nominativo"));?>">
+				<label class="uk-form-label"><?php echo gtext("Nominativo");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "nominativo")) {?>*<?php } ?></label>
+				<div class="uk-form-controls">
+					<?php echo Html_Form::input("nominativo",$values['nominativo'],"uk-input class_genitore_1",null);?>
 				</div>
 			</div>
 			<?php } ?>
