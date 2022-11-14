@@ -42,6 +42,11 @@ class OrdiniModel extends FormModel {
 		"deleted"	=>	"Ordine annullato",
 	);
 	
+	public static $labelTipoOrdine = array(
+		"W"	=>	"Web",
+		"B"	=>	"Backend",
+	);
+	
 	public static $pagamenti = array();
 	public static $pagamentiFull = array();
 	
@@ -58,6 +63,8 @@ class OrdiniModel extends FormModel {
 		"closed"	=>	"success",
 		"deleted"	=>	"danger",
 	);
+	
+	public static $isDeletable = null;
 	
 	public static function isPagato($idO)
 	{
@@ -210,6 +217,11 @@ class OrdiniModel extends FormModel {
         );
     }
     
+    public static function getLabelTipoOrdine($tipo)
+    {
+		return isset(self::$labelTipoOrdine[$tipo]) ? self::$labelTipoOrdine[$tipo] : $tipo;
+    }
+    
 	public function getAdminToken($id_order, $cart_uid)
 	{
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
@@ -358,6 +370,8 @@ class OrdiniModel extends FormModel {
 	{
 		$clean["id"] = (int)$id;
 		
+		$oldRecord = $this->selectId($clean["id"]);
+		
 		$checkFiscale = v("abilita_codice_fiscale");
 		
 		$this->setAliquotaIva($id);
@@ -370,7 +384,17 @@ class OrdiniModel extends FormModel {
 			
 			if ($res)
 			{
-				$this->aggiornaTotali($id);
+				if (!App::$isFrontend)
+				{
+					$newRecord = $this->selectId($clean["id"]);
+					
+					if (!empty($oldRecord) && !empty($newRecord) && ($oldRecord["stato"] == "pending" || $newRecord["stato"] == "pending"))
+						self::$isDeletable = true;
+					
+					$this->aggiornaTotali($id);
+					
+					self::$isDeletable = null;
+				}
 				
 				$this->triggersOrdine($id);
 				
@@ -913,7 +937,7 @@ class OrdiniModel extends FormModel {
 	
 	public function aggiornaTotali($idOrdine)
 	{
-		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W")
+		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W" && OrdiniModel::isDeletable($idOrdine))
 		{
 			$ordine = $this->selectId((int)$idOrdine);
 			
@@ -922,11 +946,18 @@ class OrdiniModel extends FormModel {
 			
 			$c = new CartModel();
 			$r = new RigheModel();
+			$ruModel = new RegusersModel();
 			
 			$bckUserId = User::$id;
 			
 			User::$cart_uid = $ordine["cart_uid"];
 			User::$id = (int)$ordine["id_user"];
+			
+			if ((int)$ordine["id_user"])
+			{
+				User::$dettagli = $ruModel->selectId($ordine["id_user"]);
+				User::setClasseSconto();
+			}
 			
 			$bckLang = Params::$lang;
 			$lingua = $ordine["lingua"] ? $ordine["lingua"] : LingueModel::getPrincipaleFrontend();
@@ -997,6 +1028,8 @@ class OrdiniModel extends FormModel {
 					
 					if (hasActiveCoupon($ordine["id_o"]))
 					{
+						User::$prodottiInCoupon = PromozioniModel::g()->elencoProdottiPromozione(User::$coupon);
+						
 						if ($coupon["tipo_sconto"] == "PERCENTUALE")
 							$sconto = $coupon["sconto"];
 					}
@@ -1338,14 +1371,33 @@ class OrdiniModel extends FormModel {
 	{
 		$record = $this->selectId((int)$id);
 		
-		if (!empty($record) && $record["tipo_ordine"] == "W")
-			return false;
+		if (!empty($record))
+		{
+			if ($record["tipo_ordine"] == "W")
+				return false;
+			
+			if ($record["stato"] != "pending")
+				return false;
+		}
 		
 		return true;
+	}
+	
+	public function isDeletable($id)
+	{
+		if (!isset(self::$isDeletable))
+			self::$isDeletable = $this->deletable($id);
+		
+		return self::$isDeletable;
 	}
 	
 	public static function tipoOrdine($id)
 	{
 		return self::g()->select("tipo_ordine")->whereId((int)$id)->field("tipo_ordine");
+	}
+	
+	public function tipoOrdineCrud($record)
+	{
+		return self::getLabelTipoOrdine($record["orders"]["tipo_ordine"]);
 	}
 }

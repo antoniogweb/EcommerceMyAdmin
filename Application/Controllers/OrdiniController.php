@@ -134,7 +134,7 @@ class OrdiniController extends BaseController {
 		
 		if (v("permetti_ordini_offline"))
 		{
-			$this->mainFields[] = 'orders.tipo_ordine';
+			$this->mainFields[] = 'tipoOrdineCrud';
 			$this->mainHead .= ',Tipo';
 		}
 		
@@ -215,7 +215,7 @@ class OrdiniController extends BaseController {
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$this->filters = array("dal","al",'id_o','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
+		$this->filters = array("dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
@@ -304,7 +304,7 @@ class OrdiniController extends BaseController {
 		if (v("attiva_liste_regalo"))
 			$fields .= ",dedica,firma";
 		
-		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::tipoOrdine((int)$id) != "W"))
+		if (v("permetti_ordini_offline") && (!$id || OrdiniModel::g()->isDeletable((int)$id)))
 		{
 			$fields .= ",id_corriere,id_p";
 			
@@ -364,12 +364,23 @@ class OrdiniController extends BaseController {
 		
 		$this->modelName = "RigheModel";
 		
+		if (!OrdiniModel::g()->isDeletable($id))
+		{
+			$this->addBulkActions = false;
+			$this->colProperties = array();
+		}
+		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
 		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Quantità,Aliquota";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'torna_ordine,save_righe','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		$pulsantiMenu = "torna_ordine";
+		
+		if (OrdiniModel::g()->isDeletable($id))
+			$pulsantiMenu .= ",save_righe";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->orderBy("id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
 		

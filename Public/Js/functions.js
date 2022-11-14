@@ -501,13 +501,13 @@ $(document).ready(function(){
 			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
 			var quantity = $(this).find("[name='quantity']").val();
 			var prezzo_intero = $(this).find("[name='prezzo_intero']").val();
-			var price = $(this).find("[name='price']").val();
+// 			var price = $(this).find("[name='price']").val();
 			
 			var temp = {
 				id_riga: id_riga,
 				quantity: quantity,
-				prezzo_intero: prezzo_intero,
-				price: price
+				prezzo_intero: prezzo_intero
+// 				price: price
 			};
 			
 			valori.push(temp);

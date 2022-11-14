@@ -62,7 +62,7 @@
 								<?php if (v("permetti_ordini_offline")) { ?>
 								<tr>
 									<td><?php echo gtext("Tipo ordine");?>:</td>
-									<td><b><?php echo $ordine["tipo_ordine"];?></b></td>
+									<td><b><?php echo OrdiniModel::getLabelTipoOrdine($ordine["tipo_ordine"]);?></b></td>
 								</tr>
 								<?php } ?>
 								<?php if (v("attiva_ip_location")) { ?>

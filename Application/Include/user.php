@@ -32,19 +32,24 @@ class User
 	
 	public static function getSpedizioneDefault()
 	{
-// 		if (User::$logged)
-// 		{
-// 			$sp = new SpedizioniModel();
-// 			
-// 			$spedizione = $sp->clear()->where(array(
-// 				"id_user"		=>	(int)User::$id,
-// 				"ultimo_usato"	=>	"Y",
-// 			))->record();
-// 			
-// 			if (!empty($spedizione))
-// 				return $spedizione["nazione_spedizione"];
-// 		}
-		
 		return v("nazione_default");
+	}
+	
+	public static function setClasseSconto()
+	{
+		if (isset(User::$dettagli["id_classe"]))
+		{
+			// Estraggo lo sconto dell'utente
+			User::$classeSconto = ClassiscontoModel::g()->selectId(User::$dettagli["id_classe"]);
+			
+			if (!empty(User::$classeSconto) && User::$classeSconto["sconto"] > 0 && User::$classeSconto["sconto"] < 100)
+			{
+				User::$sconto = User::$classeSconto["sconto"];
+				
+				$cModel = new CategoriesModel();
+				
+				User::$categorieInClasseSconto = $cModel->getListaCategorieInClasseSconto();
+			}
+		}
 	}
 }

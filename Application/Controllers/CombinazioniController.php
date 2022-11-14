@@ -83,6 +83,9 @@ class CombinazioniController extends BaseController
 		if (VariabiliModel::checkToken("token_aggiorna_alias_combinazioni"))
 			$this->m[$this->modelName]->aggiornaAlias();
 		
+		// Ricontrollo i prezzi scontati delle combinazioni
+		PagesModel::g()->aggiornaStatoProdottiInPromozione();
+		
 		$this->shift();
 		
 		$prezzoLabel = "Prezzo";

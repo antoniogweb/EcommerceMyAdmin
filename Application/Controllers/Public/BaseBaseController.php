@@ -199,14 +199,15 @@ class BaseBaseController extends Controller
 			$data['nomeCliente'] = User::$nomeCliente = (strcmp($data['dettagliUtente']["tipo_cliente"],"privato") === 0 || strcmp($data['dettagliUtente']["tipo_cliente"],"libero_professionista") === 0) ?  $data['dettagliUtente']["nome"] : $data['dettagliUtente']["ragione_sociale"];
 			
 			// Estraggo lo sconto dell'utente
-			User::$classeSconto = $this->m["ClassiscontoModel"]->selectId(User::$dettagli["id_classe"]);
-			
-			if (!empty(User::$classeSconto) && User::$classeSconto["sconto"] > 0 && User::$classeSconto["sconto"] < 100)
-			{
-				User::$sconto = User::$classeSconto["sconto"];
-				
-				User::$categorieInClasseSconto = $this->m["CategoriesModel"]->getListaCategorieInClasseSconto();
-			}
+			User::setClasseSconto();
+// 			User::$classeSconto = $this->m["ClassiscontoModel"]->selectId(User::$dettagli["id_classe"]);
+// 			
+// 			if (!empty(User::$classeSconto) && User::$classeSconto["sconto"] > 0 && User::$classeSconto["sconto"] < 100)
+// 			{
+// 				User::$sconto = User::$classeSconto["sconto"];
+// 				
+// 				User::$categorieInClasseSconto = $this->m["CategoriesModel"]->getListaCategorieInClasseSconto();
+// 			}
 			
 			User::$ruid = $this->s['registered']->getUid();
 			

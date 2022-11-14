@@ -99,13 +99,26 @@ class RigheController extends BaseController
 		
 		$arrayIdPage = array();
 		
+		if (count($valori) > 0 && isset($valori[0]["id_riga"]))
+		{
+			$idOrdine = RigheModel::g()->whereId((int)$valori[0]["id_riga"])->field("id_o");
+			
+			if (!OrdiniModel::g()->isDeletable($idOrdine))
+			{
+				if (v("usa_transactions"))
+					$this->m[$this->modelName]->db->commit();
+				
+				return;
+			}
+		}
+		
 		foreach ($valori as $v)
 		{
 			if ($v["quantity"] > 0)
 			{
 				$this->m[$this->modelName]->setValues(array(
 					"quantity"			=>	$v["quantity"],
-					"$campoPrice"		=>	$v["price"],
+// 					"$campoPrice"		=>	$v["price"],
 					"$campoPriceIntero"	=>	$v["prezzo_intero"],
 					"in_promozione"	=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
 				));
@@ -119,12 +132,7 @@ class RigheController extends BaseController
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
 		
-		if (isset($v["id_riga"]))
-		{
-			$idOrdine = RigheModel::g()->whereId((int)$v["id_riga"])->field("id_o");
-			
-			if ((int)$idOrdine)
-				OrdiniModel::g()->aggiornaTotali((int)$idOrdine);
-		}
+		if (isset($idOrdine))
+			OrdiniModel::g()->aggiornaTotali((int)$idOrdine);
 	}
 }

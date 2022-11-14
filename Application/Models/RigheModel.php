@@ -167,26 +167,36 @@ class RigheModel extends GenericModel {
 	{
 		$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 		
-		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
+		else
+			return $prezzo;
 	}
 	
 	public function prezzoScontatoCrud($record)
 	{
 		$prezzo = $this->getPrezzoCampo($record, "price");
 		
-		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
+		return $prezzo;
+// 		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
 	}
 	
 	public function prezzoFinaleCrud($record)
 	{
 		$prezzo = $this->getPrezzoCampo($record, "prezzo_finale");
 		
-		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_finale' value='".$prezzo."' />";
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_finale' value='".$prezzo."' />";
+		else
+			return $prezzo;
 	}
 	
 	public function quantitaCrud($record)
 	{
-		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["righe"]["quantity"]."' />";
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["righe"]["quantity"]."' />";
+		else
+			return $record["righe"]["quantity"];
 	}
 	
 	public function attributiCrud($record)
@@ -195,5 +205,12 @@ class RigheModel extends GenericModel {
 			return $record["righe"]["attributi"];
 		
 		return "--";
+	}
+	
+	public function deletable($id)
+	{
+		$idOrdine = (int)$this->whereId($id)->field("id_o");
+		
+		return OrdiniModel::g()->isDeletable($idOrdine);
 	}
 }

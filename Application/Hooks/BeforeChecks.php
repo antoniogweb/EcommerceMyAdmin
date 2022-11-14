@@ -512,7 +512,7 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Email..",
 			),
 		),
-		"id_o"	=>	array(
+		"id_ordine"	=>	array(
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
 				"placeholder"	=>	"Ordine..",
