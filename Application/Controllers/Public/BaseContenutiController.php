@@ -295,10 +295,11 @@ class BaseContenutiController extends BaseController
 			//remove the last element (content itself)
 			array_pop($this->urlParent);
 			
-			$clean['alias'] = $this->cleanAlias = sanitizeAll($args[(count($args)-1)]);
+			$dirtyAlias = $args[(count($args)-1)];
+			$clean['alias'] = $this->cleanAlias = sanitizeAll($dirtyAlias);
 			
 // 			if ($this->m["PagesModel"]->isActiveAlias($clean['alias'], Params::$lang))
-			if ($ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang))
+			if ($ids = $this->m["PagesModel"]->getIdFromAlias($dirtyAlias, Params::$lang))
 			{
 // 				$ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang);
 				
@@ -367,7 +368,7 @@ class BaseContenutiController extends BaseController
 				$this->checkIfRigthParents();
 				$this->page($clean['id']);
 			}
-			else if ($clean['id'] = (int)$this->m["CategoriesModel"]->getIdFromAlias($clean['alias'], Params::$lang))
+			else if ($clean['id'] = (int)$this->m["CategoriesModel"]->getIdFromAlias($dirtyAlias, Params::$lang))
 			{
 				$tipoContenuto = "categoria";
 				
