@@ -53,7 +53,7 @@
 					?>
 				</div>
 				<div class="uk-width-1-1 tm-aside-column uk-width-1-3@m uk-text-left <?php if (v("resoconto_ordine_top_carrello")) { ?>uk-flex-first uk-flex-last@s<?php } ?>">
-					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 100;bottom: true;"<?php } ?>>
+					<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 10;bottom: true;"<?php } ?>>
 						<?php include(tpf("/Ordini/checkout_totali.php")); ?>
 					</div>
 				</div>
