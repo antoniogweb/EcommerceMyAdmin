@@ -209,6 +209,16 @@ class CombinazioniModel extends GenericModel {
 				"giacenza"	=>	$record["giacenza"],
 			));
 			
+			if (v("gestisci_sconti_combinazioni_separatamente"))
+			{
+				$p->setValue("tipo_sconto", "ASSOLUTO");
+				$p->setValue("prezzo_promozione_ass",  $record["price_scontato"]);
+				$p->setValue("prezzo_promozione_ass_ivato", $record["price_scontato_ivato"]);
+				
+				if (number_format($record["price"],2,".","") == number_format($record["price_scontato"],2,".",""))
+					$p->setValue("in_promozione", "N");
+			}
+			
 			$p->pUpdate($record["id_page"]);
 		}
 	}
@@ -233,6 +243,21 @@ class CombinazioniModel extends GenericModel {
 		}
 		
 		return false;
+	}
+	
+	public function aggiungiValoriACombinazione($temp, $dettagliPagina)
+	{
+		$temp["codice"] = $dettagliPagina["codice"];
+		$temp["price"] = $dettagliPagina["price"];
+		$temp["price_ivato"] = $dettagliPagina["price_ivato"];
+		$temp["peso"] = $dettagliPagina["peso"];
+		$temp["giacenza"] = $dettagliPagina["giacenza"];
+		$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+		
+		$temp["price_scontato"] = PagesModel::getPrezzoScontato($dettagliPagina, $temp["price"]);
+		$temp["price_scontato_ivato"] = PagesModel::getPrezzoScontato($dettagliPagina, $temp["price_ivato"]);
+		
+		return $temp;
 	}
 	
 	public function creaCombinazioni($id_page)
@@ -293,12 +318,13 @@ class CombinazioniModel extends GenericModel {
 									}
 									else
 									{
-										$temp["codice"] = $dettagliPagina["codice"];
-										$temp["price"] = $dettagliPagina["price"];
-										$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-										$temp["peso"] = $dettagliPagina["peso"];
-										$temp["giacenza"] = $dettagliPagina["giacenza"];
-										$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+										$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+// 										$temp["codice"] = $dettagliPagina["codice"];
+// 										$temp["price"] = $dettagliPagina["price"];
+// 										$temp["price_ivato"] = $dettagliPagina["price_ivato"];
+// 										$temp["peso"] = $dettagliPagina["peso"];
+// 										$temp["giacenza"] = $dettagliPagina["giacenza"];
+// 										$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 										$val[] = $temp;
 									}
 								}
@@ -316,12 +342,13 @@ class CombinazioniModel extends GenericModel {
 								}
 								else
 								{
-									$temp["codice"] = $dettagliPagina["codice"];
-									$temp["price"] = $dettagliPagina["price"];
-									$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-									$temp["peso"] = $dettagliPagina["peso"];
-									$temp["giacenza"] = $dettagliPagina["giacenza"];
-									$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+									$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+// 									$temp["codice"] = $dettagliPagina["codice"];
+// 									$temp["price"] = $dettagliPagina["price"];
+// 									$temp["price_ivato"] = $dettagliPagina["price_ivato"];
+// 									$temp["peso"] = $dettagliPagina["peso"];
+// 									$temp["giacenza"] = $dettagliPagina["giacenza"];
+// 									$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 									$val[] = $temp;
 								}
 							}
@@ -340,12 +367,13 @@ class CombinazioniModel extends GenericModel {
 						}
 						else
 						{
-							$temp["codice"] = $dettagliPagina["codice"];
-							$temp["price"] = $dettagliPagina["price"];
-							$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-							$temp["peso"] = $dettagliPagina["peso"];
-							$temp["giacenza"] = $dettagliPagina["giacenza"];
-							$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+							$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+// 							$temp["codice"] = $dettagliPagina["codice"];
+// 							$temp["price"] = $dettagliPagina["price"];
+// 							$temp["price_ivato"] = $dettagliPagina["price_ivato"];
+// 							$temp["peso"] = $dettagliPagina["peso"];
+// 							$temp["giacenza"] = $dettagliPagina["giacenza"];
+// 							$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 							$val[] = $temp;
 						}
 						
@@ -665,23 +693,32 @@ class CombinazioniModel extends GenericModel {
 			return $record["combinazioni"]["codice"];
 	}
 	
-	public function prezzo($record)
+	public function prezzo($record, $fieldName = "price")
 	{
+		$disabled = "";
+		
 		if (!isset($_GET["listino"]) || $_GET["listino"] == "tutti")
 		{
 			if (v("prezzi_ivati_in_prodotti"))
-				$prezzo = $record["combinazioni"]["price_ivato"];
+				$prezzo = $record["combinazioni"][$fieldName."_ivato"];
 			else
-				$prezzo = $record["combinazioni"]["price"];
+				$prezzo = $record["combinazioni"][$fieldName];
 			
 			$attrIdCl = "id-cl='0'";
 		}
 		else
 		{
 			$cl = new CombinazionilistiniModel();
-			list($idCl, $prezzo) = $cl->getPrezzoListino($record["combinazioni"]["id_c"], $_GET["listino"]);
+			list($idCl, $prezzo, $prezzoScontato) = $cl->getPrezzoListino($record["combinazioni"]["id_c"], $_GET["listino"]);
+			
+			if ($fieldName == "price_scontato")
+				$prezzo = $prezzoScontato;
+			
 			$attrIdCl = "id-cl='$idCl'";
 		}
+		
+		if ($fieldName == "price_scontato" && isset($record["pages"]["in_promozione"]) && $record["pages"]["in_promozione"] == "N")
+			$disabled = "disabled";
 		
 		if (isset($prezzo))
 		{
@@ -690,12 +727,17 @@ class CombinazioniModel extends GenericModel {
 			$prezzo = number_format($prezzo, $cifre, ",", "");
 			
 			if (!isset($_GET["esporta"]) && !self::isFromLista())
-				return "<input id-c='".$record["combinazioni"]["id_c"]."' $attrIdCl style='max-width:120px;' class='form-control' name='price' value='".$prezzo."' />";
+				return "<input $disabled id-c='".$record["combinazioni"]["id_c"]."' $attrIdCl style='max-width:120px;' class='form-control' name='$fieldName' value='".$prezzo."' />";
 			else
 				return $prezzo;
 		}
 		else
 			return "!!";
+	}
+	
+	public function prezzoScontato($record)
+	{
+		return $this->prezzo($record, "price_scontato");
 	}
 	
 	protected static function isFromLista()
@@ -920,5 +962,19 @@ class CombinazioniModel extends GenericModel {
 			// Aggiorno la combinazione della pagina
 			$this->aggiornaGiacenzaPagina($combinazione["id_c"]);
 		}
+	}
+	
+	public static function campiPrezzo()
+	{
+		$campoPrice = "price";
+		$campoPriceScontato = "price_scontato";
+		
+		if (v("prezzi_ivati_in_prodotti"))
+		{
+			$campoPrice = "price_ivato";
+			$campoPriceScontato = "price_scontato_ivato";
+		}
+		
+		return array($campoPrice, $campoPriceScontato);
 	}
 }

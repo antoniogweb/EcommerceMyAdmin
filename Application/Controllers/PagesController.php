@@ -1231,12 +1231,21 @@ class PagesController extends BaseController {
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;combinazioni.codice;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='codice' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
 		
-		$campoPrice = "price";
+		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
 		
-		if (v("prezzi_ivati_in_prodotti"))
-			$campoPrice = "price_ivato";
+// 		$campoPrice = "price";
+// 		$campoPriceScontato = "price_scontato";
+// 		
+// 		if (v("prezzi_ivati_in_prodotti"))
+// 		{
+// 			$campoPrice = "price_ivato";
+// 			$campoPriceScontato = "price_scontato_ivato";
+// 		}
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.$campoPrice;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='price' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
+		
+		if (v("sconti_combinazioni_automatiche"))
+			$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.$campoPriceScontato;</span>");
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.peso;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='peso' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
 		
@@ -1261,7 +1270,12 @@ class PagesController extends BaseController {
 				$head .= "$col";
 		}
 		
-		$head .= ",Codice,Prezzo,Peso";
+		$head .= ",Codice,Prezzo";
+		
+		if (v("sconti_combinazioni_automatiche"))
+			$head .= ",Prezzo scontato";
+		
+		$head .= ",Peso";
 		
 		if (v("attiva_giacenza"))
 		{

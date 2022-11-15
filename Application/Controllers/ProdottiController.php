@@ -114,7 +114,12 @@ class ProdottiController extends PagesController {
 		if (v("ecommerce_attivo"))
 		{
 			if ($haCombinazioni)
-				$this->queryFields .= ",id_iva,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al";
+			{
+				if (v("gestisci_sconti_combinazioni_separatamente"))
+					$this->queryFields .= ",id_iva,in_promozione,dal,al";
+				else
+					$this->queryFields .= ",id_iva,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al";
+			}
 			else
 				$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al,giacenza";
 		}

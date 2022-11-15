@@ -420,6 +420,9 @@ $(document).ready(function(){
 			if ($(this).find("[name='immagine']").length > 0)
 				temp.immagine = $(this).find("[name='immagine']").val();
 			
+			if ($(this).find("[name='price_scontato']").length > 0)
+				temp.price_scontato = $(this).find("[name='price_scontato']").val();
+			
 			valori.push(temp);
 		});
 		

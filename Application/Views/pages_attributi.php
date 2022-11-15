@@ -162,7 +162,9 @@ $(document).ready(function(){
 					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
 						
 						<?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control help_select_attributo',null,"yes");?>
-						<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi">
+						<button class="submit_file btn btn-primary make_spinner" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi");?></button>
+						<input type="hidden" name="insertAction" value="Aggiungi"/>
+<!-- 						<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi"> -->
 						
 					</form>
 					<br />

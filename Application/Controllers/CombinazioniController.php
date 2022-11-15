@@ -89,18 +89,34 @@ class CombinazioniController extends BaseController
 		$this->shift();
 		
 		$prezzoLabel = "Prezzo";
+		$prezzoScontatoLabel = "Prezzo scontato";
 		
 		if (v("prezzi_ivati_in_prodotti"))
+		{
 			$prezzoLabel .= " IVA inclusa";
+			$prezzoScontatoLabel .= " IVA inclusa";
+		}
 		else
+		{
 			$prezzoLabel .= " IVA esclusa";
+			$prezzoScontatoLabel .= " IVA esclusa";
+		}
 		
 		if ($this->viewArgs["listino"] == "tutti")
+		{
 			$prezzoLabel .= " (Italia)";
+			$prezzoScontatoLabel .= " (Italia)";
+		}
 		else if ($this->viewArgs["listino"] == "W")
+		{
 			$prezzoLabel .= " (Mondo)";
+			$prezzoScontatoLabel .= " (Mondo)";
+		}
 		else
+		{
 			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
+			$prezzoScontatoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
+		}
 		
 		$mainFields = array();
 		$mainHeadArray = array();
@@ -135,9 +151,17 @@ class CombinazioniController extends BaseController
 		$mainFields[] = "varianti";
 		$mainFields[] = "codice";
 		$mainFields[] = "prezzo";
-		$mainFields[] = "peso";
 		
-		$mainHead .= ",Variante,Codice,$prezzoLabel,Peso";
+		$mainHead .= ",Variante,Codice,$prezzoLabel";
+		
+		if (v("gestisci_sconti_combinazioni_separatamente"))
+		{
+			$mainFields[] = "prezzoScontato";
+			$mainHead .= ",$prezzoScontatoLabel";
+		}
+		
+		$mainFields[] = "peso";
+		$mainHead .= ",Peso";
 		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $mainHead;
@@ -174,7 +198,12 @@ class CombinazioniController extends BaseController
 				null,null,null,
 				array(
 					'width'	=>	'160px',
-				)
+				),
+			);
+		
+		if (v("gestisci_sconti_combinazioni_separatamente"))
+			$this->colProperties[] = array(
+				'width'	=>	'160px',
 			);
 		
 		if ($this->viewArgs['id_page'] == "tutti")
@@ -200,7 +229,7 @@ class CombinazioniController extends BaseController
 			"1"	=>	"Non esaurito",
 		));
 		
-		if (v("attiva_liste_regalo"))
+		if (v("attiva_liste_regalo") && $this->viewArgs['id_page'] == "tutti")
 			$this->filters[] = array("id_lista_reg_filt",null,array(
 				"tutti"		=>	"Lista regalo",
 			) + ListeregaloModel::g()->filtroListe());
@@ -334,10 +363,16 @@ class CombinazioniController extends BaseController
 		
 		$valori = json_decode($valori, true);
 		
-		$campoPrice = "price";
+		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
 		
-		if (v("prezzi_ivati_in_prodotti"))
-			$campoPrice = "price_ivato";
+// 		$campoPrice = "price";
+// 		$campoPriceScontato = "price_scontato";
+// 		
+// 		if (v("prezzi_ivati_in_prodotti"))
+// 		{
+// 			$campoPrice = "price_ivato";
+// 			$campoPriceScontato = "price_scontato_ivato";
+// 		}
 		
 		$arrayIdPage = array();
 		
@@ -349,7 +384,12 @@ class CombinazioniController extends BaseController
 			));
 			
 			if (!$v["id_cl"])
+			{
 				$this->m[$this->modelName]->setValue($campoPrice, $v["prezzo"]);
+				
+				if (isset($v["price_scontato"]) && v("gestisci_sconti_combinazioni_separatamente"))
+					$this->m[$this->modelName]->setValue($campoPriceScontato, $v["price_scontato"]);
+			}
 			
 			if (isset($v["giacenza"]))
 				$this->m[$this->modelName]->setValue("giacenza", $v["giacenza"]);
@@ -361,16 +401,21 @@ class CombinazioniController extends BaseController
 			
 			if ($v["id_cl"])
 			{
-				$this->m ["CombinazionilistiniModel"]->setValues(array(
+				$this->m["CombinazionilistiniModel"]->setValues(array(
 					$campoPrice	=>	$v["prezzo"],
 				));
 				
-				$this->m ["CombinazionilistiniModel"]->update($v["id_cl"]);
+				if (isset($v["price_scontato"]) && v("gestisci_sconti_combinazioni_separatamente"))
+					$this->m["CombinazionilistiniModel"]->setValue($campoPriceScontato, $v["price_scontato"]);
+				
+				$this->m["CombinazionilistiniModel"]->update($v["id_cl"]);
 			}
 			
 			if (isset($v["id_page"]) && !in_array($v["id_page"],$arrayIdPage))
 				$arrayIdPage[] = (int)$v["id_page"];
 		}
+		
+		PagesModel::$aggiornaPrezziCombinazioniQuandoSalvi = false;
 		
 		// Aggiorno i prezzi delle combinazioni
 		foreach ($arrayIdPage as $idPage)

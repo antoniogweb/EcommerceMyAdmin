@@ -120,7 +120,10 @@ class PagesattributiModel extends GenericModel {
 					
 					if ($colonna !== 0)
 					{
-						parent::insert();
+						if (parent::insert() && v("aggiorna_combinazioni_automaticamente"))
+						{
+							CombinazioniModel::g()->creaCombinazioni($clean["id_page"]);
+						}
 					}
 				}
 			}
@@ -137,5 +140,45 @@ class PagesattributiModel extends GenericModel {
 			return $record["attributi"]["titolo"]." (".$record["attributi"]["nota_interna"].")";
 		
 		return $record["attributi"]["titolo"];
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		if ($id)
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record))
+			{
+				if (parent::del($id, $where) && v("aggiorna_combinazioni_automaticamente"))
+					CombinazioniModel::g()->creaCombinazioni($record["id_page"]);
+			}
+		}
+		else
+			return parent::del($id, $where);
+	}
+	
+	public function moveup($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		$res = parent::moveUp($id);
+		
+		if ($res && !empty($record) && v("aggiorna_combinazioni_automaticamente"))
+			CombinazioniModel::g()->creaCombinazioni($record["id_page"]);
+		
+		return $res;
+	}
+	
+	public function movedown($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		$res = parent::movedown($id);
+		
+		if ($res && !empty($record) && v("aggiorna_combinazioni_automaticamente"))
+			CombinazioniModel::g()->creaCombinazioni($record["id_page"]);
+		
+		return $res;
 	}
 }

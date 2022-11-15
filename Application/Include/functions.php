@@ -1388,7 +1388,7 @@ function getPercScontoF($pieno, $scontato)
 	if (round($sconto,1) > floor($sconto))
 		return number_format($sconto,1,",","");
 	
-	return $sconto;
+	return number_format($sconto,0,",","");
 }
 
 function calcolaPrezzoIvato($idPage, $prezzoIntero, $iva = null)

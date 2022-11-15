@@ -10,7 +10,7 @@ $inPromozioneTot = inPromozioneTot($p["pages"]["id_page"]);
 	<?php if ($haVarianti) { ?><div class="blocco-prezzo"><?php } ?>
 	<div class="uk-flex uk-flex-left uk-margin-small">
 		<div class="uk-text-bold uk-margin-small-right"><span class="price_value"><?php echo setPriceReverse($prezzoFinaleIvato);?></span>€</div>
-		<?php if ($inPromozioneTot) { ?>
+		<?php if ($percentualeSconto > 0 && $inPromozioneTot) { ?>
 		<div class="uk-text-muted uk-margin-small-right" style="text-decoration:line-through;"><span class="price_full"><?php echo setPriceReverse($prezzoPienoIvato);?></span>€</div>
 		<?php } ?>
 		

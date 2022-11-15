@@ -537,7 +537,7 @@ class CartModel extends GenericModel {
 			//sconto promozione
 			if ($checkPromo && $p->inPromozione($clean["id_page"]))
 			{
-				$scontoPromo = PagesModel::getPercSconto($page);
+				$scontoPromo = PagesModel::getPercSconto($page, $idC);
 // 				if ($page["tipo_sconto"] == "PERCENTUALE")
 // 					$arraySconti[] = $page["prezzo_promozione"];
 // 				else if ($page["price"] > 0)

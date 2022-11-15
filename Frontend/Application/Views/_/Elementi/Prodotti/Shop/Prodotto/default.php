@@ -43,7 +43,7 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 		<?php if ($isProdotto) { ?>
 		<span class="price">
 			<span class="uk-text-small">
-				<?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?>
+				<?php if ($percentualeSconto > 0 && inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?>
 				
 				<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
 				<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>

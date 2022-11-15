@@ -87,6 +87,8 @@ class PagesModel extends GenericModel {
 	
 	public static $tipiPaginaAddizionali = array();
 	
+	public static $aggiornaPrezziCombinazioniQuandoSalvi = true;
+	
 	public static $tipiPagina = array(
 		"GRAZIE"		=>	"Pagina ringraziamento form richiesta informazioni",
 		"GRAZIE_NEWSLETTER"	=>	"Pagina ringraziamento iscrizione a newsletter",
@@ -987,6 +989,7 @@ class PagesModel extends GenericModel {
 		
 		$cModel = new CombinazioniModel();
 		$clModel = new CombinazionilistiniModel();
+		$pa = new PagesattributiModel();
 		
 		if ($this->inPromozione($id))
 		{
@@ -996,37 +999,51 @@ class PagesModel extends GenericModel {
 				"id_page"	=>	(int)$id,
 			))->send(false);
 			
-			$combinazioniListini = $clModel->clear()->sWhere("id_c in (select id_c from combinazioni where id_page = ".(int)$id.")")->send(false);
+			$numeroVarianti = $pa->clear()->where(array(
+				"id_page"	=>	(int)$id,
+			))->rowNumber();
 			
-			if (v("usa_transactions"))
-				$this->db->beginTransaction();
-			
-			foreach ($combinazioni as $c)
+			if (!v("gestisci_sconti_combinazioni_separatamente") || ((int)$numeroVarianti === 0 && self::$aggiornaPrezziCombinazioniQuandoSalvi))
 			{
-				$cModel->sValues(array(
-					"price_scontato"		=>	self::getPrezzoScontato($pagina, $c["price"]),
-					"price_scontato_ivato"	=>	self::getPrezzoScontato($pagina, $c["price_ivato"]),
-				));
+				$combinazioniListini = $clModel->clear()->sWhere("id_c in (select id_c from combinazioni where id_page = ".(int)$id.")")->send(false);
 				
-				$cModel->pUpdate($c["id_c"]);
-			}
-			
-			foreach ($combinazioniListini as $c)
-			{
-				$clModel->sValues(array(
-					"price_scontato"		=>	self::getPrezzoScontato($pagina, $c["price"]),
-					"price_scontato_ivato"	=>	self::getPrezzoScontato($pagina, $c["price_ivato"]),
-				));
+				if (v("usa_transactions"))
+					$this->db->beginTransaction();
 				
-				$clModel->pUpdate($c["id_combinazione_listino"]);
+				foreach ($combinazioni as $c)
+				{
+					$cModel->sValues(array(
+						"price_scontato"		=>	self::getPrezzoScontato($pagina, $c["price"]),
+						"price_scontato_ivato"	=>	self::getPrezzoScontato($pagina, $c["price_ivato"]),
+					));
+					
+					$cModel->pUpdate($c["id_c"]);
+				}
+				
+				foreach ($combinazioniListini as $c)
+				{
+					$clModel->sValues(array(
+						"price_scontato"		=>	self::getPrezzoScontato($pagina, $c["price"]),
+						"price_scontato_ivato"	=>	self::getPrezzoScontato($pagina, $c["price_ivato"]),
+					));
+					
+					$clModel->pUpdate($c["id_combinazione_listino"]);
+				}
+				
+				if (v("usa_transactions"))
+					$this->db->commit();
 			}
-			
-			if (v("usa_transactions"))
-				$this->db->commit();
 		}
 		else
 		{
 			$this->query("update combinazioni set price_scontato = price, price_scontato_ivato = price_ivato where id_page = ".(int)$id);
+			
+			$idcS = $cModel->clear()->where(array(
+				"id_page"	=>	(int)$id,
+			))->toList("id_c")->send();
+			
+			if (count($idcS) > 0)
+				$this->query("update combinazioni_listini set price_scontato = price, price_scontato_ivato = price_ivato where id_c in (".implode(",",$idcS).")");
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
@@ -1041,12 +1058,22 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce la percentuale di sconto
-	public static function getPercSconto($page)
+	public static function getPercSconto($page, $idC = 0)
 	{
-		if ($page["tipo_sconto"] == "PERCENTUALE")
-			return $page["prezzo_promozione"];
-		else if ($page["price"] > 0)
-			return (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
+		if (v("gestisci_sconti_combinazioni_separatamente") && $idC)
+		{
+			$combinazione = CombinazioniModel::g()->selectId((int)$idC);
+			
+			if (!empty($combinazione) && $combinazione["price"] > 0)
+				return (($combinazione["price"] - $combinazione["price_scontato"]) / $combinazione["price"]) * 100;
+		}
+		else
+		{
+			if ($page["tipo_sconto"] == "PERCENTUALE")
+				return $page["prezzo_promozione"];
+			else if ($page["price"] > 0)
+				return (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
+		}
 		
 		return 0;
 	}
@@ -2897,7 +2924,7 @@ class PagesModel extends GenericModel {
 		{
 			$p = $pages[0];
 			
-			PagesModel::$IdCombinazione = $pm->getIdCombinazioneCanonical($p["pages"]["id_page"]);
+// 			PagesModel::$IdCombinazione = $pm->getIdCombinazioneCanonical($p["pages"]["id_page"]);
 			
 			$giacenza = self::disponibilita($p["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";

@@ -49,7 +49,6 @@ class VariabiliModel extends GenericModel {
 		"scaglioni_in_prodotti"		=>	1,
 		"correlati_in_prodotti"		=>	1,
 		"caratteristiche_in_prodotti"=>	1,
-		"combinazioni_in_prodotti"	=>	1,
 		"attiva_personalizzazioni"	=>	0,
 		"documenti_in_prodotti"		=>	1,
 		"ecommerce_attivo"			=>	1,
@@ -450,6 +449,8 @@ class VariabiliModel extends GenericModel {
 		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella
 		"immagine_in_varianti"		=>	0, // se settato a 1, mostra la colonna immagini nell'elenco delle combinazionipagina della nuova combinazione
 		"immagini_separate_per_variante"		=>	0, // se settato a 1, possibilità di caricare più immagini per ogni variante
+		"combinazioni_in_prodotti"	=>	1, // attiva le varianti
+		"aggiorna_combinazioni_automaticamente"	=>	0, // se impostato ad 1, aggiorna le combinazioni non appena vengono cambiate le varianti
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
@@ -525,6 +526,7 @@ class VariabiliModel extends GenericModel {
 		"usa_defear"	=>	0, // se impostato a 1, usa defear sui JS nell'header
 		## PROMOZIONI ##
 		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
+		"gestisci_sconti_combinazioni_separatamente"	=>	0, // se impostato ad 1, permette di impostare un prezzo scontatto per ogni combinazione
 		"estrai_in_promozione_home"	=>	0,
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento

@@ -99,14 +99,16 @@ class CombinazionilistiniModel extends GenericModel {
 			"id_c"		=>	(int)$idC,
 		))->record();
 		
-		$campoPrice = "price";
-		$campoPriceScontato = "price_scontato";
+		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
 		
-		if (v("prezzi_ivati_in_prodotti"))
-		{
-			$campoPrice = "price_ivato";
-			$campoPriceScontato = "price_scontato_ivato";
-		}
+// 		$campoPrice = "price";
+// 		$campoPriceScontato = "price_scontato";
+// 		
+// 		if (v("prezzi_ivati_in_prodotti"))
+// 		{
+// 			$campoPrice = "price_ivato";
+// 			$campoPriceScontato = "price_scontato_ivato";
+// 		}
 		
 		if (empty($listino))
 		{
@@ -124,13 +126,13 @@ class CombinazionilistiniModel extends GenericModel {
 				));
 				
 				if ($this->insert())
-					return array($this->lId,$combinazione[$campoPrice]);
+					return array($this->lId,$combinazione[$campoPrice],$combinazione[$campoPriceScontato]);
 			}
 		}
 		else
-			return array($listino["id_combinazione_listino"],$listino[$campoPrice]);
+			return array($listino["id_combinazione_listino"],$listino[$campoPrice],$listino[$campoPriceScontato]);
 		
-		return array(0,null);
+		return array(0,null,null);
 	}
 	
 	public static function listinoEsistente($nazione)
