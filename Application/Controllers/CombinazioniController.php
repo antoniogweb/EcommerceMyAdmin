@@ -121,7 +121,7 @@ class CombinazioniController extends BaseController
 		$mainFields = array();
 		$mainHeadArray = array();
 		
-		if (v("immagini_separate_per_variante") && !partial())
+		if (v("immagini_separate_per_variante"))
 		{
 			$mainFields[] = "primaImmagineCarrelloCrud";
 			$mainHeadArray[] = "Immagine";

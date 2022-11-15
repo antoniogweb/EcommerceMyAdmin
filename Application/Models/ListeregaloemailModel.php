@@ -89,4 +89,26 @@ class ListeregaloemailModel extends GenericModel
 		
 		return OrdiniModel::g()->vedi($record);
 	}
+	
+	public function gDedicaPromo($lingua, $record)
+	{
+		ob_start();
+		include tpf("/Elementi/Placeholder/dedica_lista_regalo.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	public function gElencoProdotti($lingua, $record)
+	{
+		$r = new RigheModel();
+		
+		$righeOrdine = $r->clear()->where(array("id_o"=>(int)$record["id_o"]))->send();
+		
+		ob_start();
+		include tpf("/Elementi/Placeholder/elenco_prodotti.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
 }

@@ -830,9 +830,9 @@ class CartModel extends GenericModel {
 				}
 				
 				// prezzo scontato
-				if (isset($prScontato))
-					$this->values["price"] = number_format($prScontato,v("cifre_decimali"),".","");
-				else
+// 				if (isset($prScontato))
+// 					$this->values["price"] = number_format($prScontato,v("cifre_decimali"),".","");
+// 				else
 					$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true, $idCombinazione);
 				
 				if (v("prezzi_ivati_in_prodotti"))

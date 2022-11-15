@@ -1058,14 +1058,29 @@ class PagesModel extends GenericModel {
 	}
 	
 	// Restituisce la percentuale di sconto
-	public static function getPercSconto($page, $idC = 0)
+	public static function getPercSconto($page, $idC = 0, $forzaPrincipale = false)
 	{
 		if (v("gestisci_sconti_combinazioni_separatamente") && $idC)
 		{
-			$combinazione = CombinazioniModel::g()->selectId((int)$idC);
-			
-			if (!empty($combinazione) && $combinazione["price"] > 0)
-				return (($combinazione["price"] - $combinazione["price_scontato"]) / $combinazione["price"]) * 100;
+			if (!User::$nazione || $forzaPrincipale)
+			{
+				$combinazione = CombinazioniModel::g()->selectId((int)$idC);
+				
+				if (!empty($combinazione) && $combinazione["price"] > 0)
+					return (($combinazione["price"] - $combinazione["price_scontato"]) / $combinazione["price"]) * 100;
+			}
+			else
+			{
+				$combListino = CombinazionilistiniModel::g()->clear()->where(array(
+					"id_c"		=>	(int)$idC,
+					"nazione"	=>	sanitizeAll(User::$nazione),
+				))->record();
+				
+				if (!empty($combListino))
+					return (($combListino["price"] - $combListino["price_scontato"]) / $combListino["price"]) * 100;
+				else
+					return self::getPercSconto($page, $idC, true);
+			}
 		}
 		else
 		{

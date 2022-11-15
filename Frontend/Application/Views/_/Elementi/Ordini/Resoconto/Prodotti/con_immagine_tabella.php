@@ -5,7 +5,7 @@
 	<div class="due_colonne">
 		<div class="due_colonne_col" style="text-align:left">
 			<?php if ($p["righe"]["immagine"]) { ?>
-			<img width="200px" src="<?php echo $this->baseUrl."/thumb/carrello/".$p["righe"]["immagine"];?>" />
+			<img width="200px" src="<?php echo Domain::$publicUrl."/thumb/carrello/".$p["righe"]["immagine"];?>" />
 			<?php } ?>
 		</div>
 		<div class="due_colonne_col" style="text-align:left">

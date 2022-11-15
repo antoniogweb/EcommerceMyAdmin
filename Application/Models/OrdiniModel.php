@@ -996,7 +996,7 @@ class OrdiniModel extends FormModel {
 			
 			foreach ($righe as $r)
 			{
-				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], null, $r["price"], $r["id_r"]);
+				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), null, null, null, $r["id_r"]);
 				
 				$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
 				
