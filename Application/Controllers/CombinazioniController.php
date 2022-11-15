@@ -121,11 +121,11 @@ class CombinazioniController extends BaseController
 		$mainFields = array();
 		$mainHeadArray = array();
 		
-// 		if (v("immagini_separate_per_variante") && !partial())
-// 		{
-// 			$mainFields[] = "primaImmagineCrud";
-// 			$mainHeadArray[] = "Immagine";
-// 		}
+		if (v("immagini_separate_per_variante") && !partial())
+		{
+			$mainFields[] = "primaImmagineCarrelloCrud";
+			$mainHeadArray[] = "Immagine";
+		}
 		
 		if (!partial())
 		{

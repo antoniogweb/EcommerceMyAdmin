@@ -138,7 +138,7 @@ class ListeregaloController extends BaseController
 		$this->m[$this->modelName]->updateTable('del');
 		
 		$this->mainFields = array(
-			'primaImmagineCrud',
+			'primaImmagineCarrelloCrud',
 			"pages.title",
 			"variante",
 			"combinazioni.codice",

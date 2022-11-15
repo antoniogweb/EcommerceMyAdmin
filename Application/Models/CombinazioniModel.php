@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CombinazioniModel extends GenericModel {
 	
+	use CrudModel;
+	
 	public static $ricreaCombinazioneQuandoElimini = true;
 	
 	public $cart_uid = null;
