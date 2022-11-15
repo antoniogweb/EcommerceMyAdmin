@@ -476,10 +476,10 @@ class CartModel extends GenericModel {
 					"quantity" => $clean["quantity"],
 				);
 				
-				$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true);
+				$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true, $cart["id_c"]);
 				
 				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true);
+					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true, $cart["id_c"]);
 				
 				if (number_format($this->values["price"],2,".","") != number_format($cart["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";
@@ -500,7 +500,7 @@ class CartModel extends GenericModel {
 		return $this->del(null, "(id_cart = " . $clean["id_cart"] . " OR id_p = " . $clean["id_cart"] . ") AND cart_uid = '" . $clean["cart_uid"] . "'");
 	}
 	
-	public function calcolaPrezzoFinale($idPage, $prezzoIntero, $qty = 1, $checkPromo = true, $checkUser = true)
+	public function calcolaPrezzoFinale($idPage, $prezzoIntero, $qty = 1, $checkPromo = true, $checkUser = true, $idC = 0)
 	{
 		$clean["id_page"] = (int)$idPage;
 		
@@ -704,12 +704,12 @@ class CartModel extends GenericModel {
 			
 			if (count($res) > 0)
 			{
-				$this->values["quantity"] = (int)$res[0]["cart"]["quantity"]  + $clean["quantity"];
+				$this->values["quantity"] = (int)$res[0]["cart"]["quantity"] + $clean["quantity"];
 				
-				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $res[0]["cart"]["prezzo_intero"], $this->values["quantity"], true, true);
+				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $res[0]["cart"]["prezzo_intero"], $this->values["quantity"], true, true, $res[0]["cart"]["id_c"]);
 				
 				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $res[0]["cart"]["prezzo_intero_ivato"], $this->values["quantity"], true, true);
+					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $res[0]["cart"]["prezzo_intero_ivato"], $this->values["quantity"], true, true, $res[0]["cart"]["id_c"]);
 				
 				if (number_format($this->values["price"],2,".","") != number_format($res[0]["cart"]["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";
@@ -739,6 +739,8 @@ class CartModel extends GenericModel {
 			}
 			else
 			{
+				$idCombinazione = null;
+				
 				if (isset($datiCombinazione))
 				{
 					$this->values["codice"] = $datiCombinazione[0]["combinazioni"]["codice"];
@@ -746,6 +748,8 @@ class CartModel extends GenericModel {
 					$this->values["immagine"] = ProdottiModel::immagineCarrello($clean["id_page"], $datiCombinazione[0]["combinazioni"]["id_c"], $datiCombinazione[0]["combinazioni"]["immagine"]);
 					
 					$this->values["peso"] = $datiCombinazione[0]["combinazioni"]["peso"];
+					
+					$idCombinazione = $datiCombinazione[0]["combinazioni"]["id_c"];
 				}
 				else
 				{
@@ -829,10 +833,10 @@ class CartModel extends GenericModel {
 				if (isset($prScontato))
 					$this->values["price"] = number_format($prScontato,v("cifre_decimali"),".","");
 				else
-					$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true);
+					$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true, $idCombinazione);
 				
 				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true);
+					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true, $idCombinazione);
 				
 				if (number_format($this->values["price"],2,".","") != number_format($this->values["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";

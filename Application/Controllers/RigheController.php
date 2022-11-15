@@ -119,7 +119,7 @@ class RigheController extends BaseController
 				$this->m[$this->modelName]->setValues(array(
 					"quantity"			=>	$v["quantity"],
 // 					"$campoPrice"		=>	$v["price"],
-					"$campoPriceIntero"	=>	$v["prezzo_intero"],
+// 					"$campoPriceIntero"	=>	$v["prezzo_intero"],
 					"in_promozione"	=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
 				));
 				

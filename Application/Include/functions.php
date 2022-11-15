@@ -1356,12 +1356,16 @@ function nomeProvincia($codice)
 
 function calcolaPrezzoFinale($idPage, $prezzoIntero, $checkPromo = true)
 {
+	$p = new PagesModel();
+	
+	$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $p->getIdCombinazioneCanonical((int)$idPage);
+	
 	$c = new CartModel();
-	$prezzoFinale = $c->calcolaPrezzoFinale($idPage, $prezzoIntero, 1, $checkPromo);
+	$prezzoFinale = $c->calcolaPrezzoFinale($idPage, $prezzoIntero, 1, $checkPromo, true, $idC);
 	
 	if (ImpostazioniModel::$valori["esponi_prezzi_ivati"] == "Y")
 	{
-		$p = new PagesModel();
+// 		$p = new PagesModel();
 		$iva = $p->getIva($idPage);
 		$prezzoFinale = $prezzoFinale + ($prezzoFinale * (float)$iva / 100);
 	}

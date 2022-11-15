@@ -167,9 +167,9 @@ class RigheModel extends GenericModel {
 	{
 		$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 		
-		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
-		else
+// 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+// 			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
+// 		else
 			return $prezzo;
 	}
 	

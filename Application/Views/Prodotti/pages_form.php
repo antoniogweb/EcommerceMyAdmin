@@ -228,9 +228,10 @@
 								<?php echo isset($form["margine"]) ? $form["margine"] : "";?>
 								
 								<p>
-									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo Domain::$name."/it/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
+									<?php $linguaNazioneUrl = v("attiva_nazione_nell_url") ? "it_it" : "it"; ?>
+									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
 									
-									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo Domain::$name."/it/home/xmlprodotti?id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
+									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
 								</p>
 							</div>
 						</div>

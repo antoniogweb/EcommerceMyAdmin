@@ -1246,7 +1246,7 @@ class PagesModel extends GenericModel {
 		
 		$c = new CombinazioniModel();
 		
-		$orderBy = VariabiliModel::combinazioniLinkVeri() ? "canonical desc,id_order" : "id_order";
+		$orderBy = VariabiliModel::combinazioniLinkVeri() ? "canonical desc,id_order" : "price";
 		
 		self::$arrayIdCombinazioni[$idPage] = (int)$c->clear()->select("combinazioni.id_c")->where(array(
 			"id_page"	=>	(int)$idPage,
@@ -2557,8 +2557,7 @@ class PagesModel extends GenericModel {
 		
 		foreach ($res as $r)
 		{
-			if (!VariabiliModel::combinazioniLinkVeri())
-				PagesModel::$IdCombinazione = $p->getIdCombinazioneCanonical($r["pages"]["id_page"]);
+			PagesModel::$IdCombinazione = $p->getIdCombinazioneCanonical($r["pages"]["id_page"]);
 			
 			$giacenza = self::disponibilita($r["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
@@ -2568,14 +2567,14 @@ class PagesModel extends GenericModel {
 			
 			$prodottoInPromo = $p->inPromozione($r["pages"]["id_page"], $r);
 			
-			$prezzoFinale = $cart->calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo, 1, true);
+			$prezzoFinale = $cart->calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo, 1, true, true, PagesModel::$IdCombinazione);
 			$prezzoFinaleIvato = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoFinale);
 			
 			if (!$prodottoInPromo && number_format($prezzoMinimoIvato,2,".","") != number_format($prezzoFinaleIvato,2,".",""))
 				$prezzoFeed = $prezzoFinaleIvato;
 
 			$temp = array(
-				"g:id"	=>	$r["pages"]["id_page"],
+				"g:id"	=>	v("usa_sku_come_id_item") ? $r["pages"]["codice"] : $r["pages"]["id_page"],
 				"g:title"	=>	htmlentitydecode(field($r,"title")),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format($prezzoFeed,2,".",""). " EUR",
@@ -2898,12 +2897,14 @@ class PagesModel extends GenericModel {
 		{
 			$p = $pages[0];
 			
+			PagesModel::$IdCombinazione = $pm->getIdCombinazioneCanonical($p["pages"]["id_page"]);
+			
 			$giacenza = self::disponibilita($p["pages"]["id_page"]);
 			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";
 			
 			$prezzoMinimo = $pm->prezzoMinimo($p["pages"]["id_page"]);
 			$c = new CartModel();
-			$prezzoMinimo = $c->calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, 1, true);
+			$prezzoMinimo = $c->calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, 1, true, true, PagesModel::$IdCombinazione);
 			
 			$prezzoMinimoIvato = calcolaPrezzoIvato($p["pages"]["id_page"],$prezzoMinimo);
 			
@@ -3293,10 +3294,13 @@ class PagesModel extends GenericModel {
 	
 	public function margineEuro($idPage)
 	{
+		if (!PagesModel::$IdCombinazione)
+			PagesModel::$IdCombinazione = $this->getIdCombinazioneCanonical($idPage);
+		
 		$prezzoMinimoPieno = $this->prezzoMinimo($idPage, true);
 		
 		$c = new CartModel();
-		$prezzoMinimo = $c->calcolaPrezzoFinale($idPage, $prezzoMinimoPieno, 1, true);
+		$prezzoMinimo = $c->calcolaPrezzoFinale($idPage, $prezzoMinimoPieno, 1, true, true, PagesModel::$IdCombinazione);
 		
 		// Calcolo lo sconto in euro
 		$scontoEuro = $prezzoMinimoPieno - $prezzoMinimo;
