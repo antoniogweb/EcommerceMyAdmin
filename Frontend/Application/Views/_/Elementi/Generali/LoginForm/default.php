@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 if (!isset($classePulsanteLogin))
-	$classePulsanteLogin = "uk-button uk-button-secondary uk-width-1-1 uk-width-1-3@s";
+	$classePulsanteLogin = v("classe_pulsanti_submit")." uk-width-1-1 uk-width-1-3@s";
 ?>
 <form class="uk-margin" action = '<?php echo $action;?>' method = 'POST'>
 	<?php
