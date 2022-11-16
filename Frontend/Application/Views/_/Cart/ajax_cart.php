@@ -62,7 +62,7 @@
 		<div class="uk-grid-small uk-child-width-1-1 <?php if (!$haErrori) { ?>uk-child-width-1-2@m<?php } ?> uk-margin-small" uk-grid>
 			<?php if (!$haErrori) { ?>
 				<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Carrello");?></a></div>
-				<div><a class="uk-button uk-button-secondary uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtext("Checkout");?></a></div>
+				<div><a class="<?php echo v("classe_pulsanti_submit");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtext("Checkout");?></a></div>
 			<?php } else { ?>
 				<div><a class="uk-button uk-button-default uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Vai al carrello");?> <span uk-icon="arrow-right"></span></a></div>
 			<?php } ?>

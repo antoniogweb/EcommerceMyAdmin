@@ -29,7 +29,7 @@ if (!User::$isMobile)
 			<div class="uk-text-meta"><?php echo gtext("Inserisci Username e Password per continuare come utente loggato.");?><br /><br /></div>
 			
 			<?php
-			$nascondiPlaceholder = true;
+// 			$nascondiPlaceholder = true;
 			include(tpf(ElementitemaModel::p("LOGIN_FORM","", array(
 				"titolo"	=>	"Form login",
 				"percorso"	=>	"Elementi/Generali/LoginForm",
@@ -64,7 +64,7 @@ if (!User::$isMobile)
 				<div class="uk-margin">
 					<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?></label>
 					<div class="uk-form-controls">
-						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" />
+						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" placeholder="<?php echo gtext("Scrivi qui il tuo indirizzo e-mail")?>"/>
 					</div>
 				</div>
 				

@@ -66,7 +66,7 @@ if (!isset($ukdropdown))
 					</div>
 				</div>
 				
-				<input autocomplete="new-password" class="uk-button uk-button-secondary uk-width-1-1" type="submit" name="" value="<?php echo gtext("Accedi");?>" />
+				<input autocomplete="new-password" class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1" type="submit" name="" value="<?php echo gtext("Accedi");?>" />
 			</fieldset>
 		</form>
 		<br />

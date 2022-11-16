@@ -76,7 +76,7 @@
 								<input type="text" name="il_coupon" class="uk-input uk-form-width-medium@m input-text" id="coupon_code" value="" placeholder="<?php echo gtext("Codice promozione", false);?>" />
 							</div>
 							<div>
-								<button type="submit" class="uk-button uk-width-1-1@s uk-button-secondary" name="invia_coupon" value="<?php echo gtext("Invia codice promozione", false);?>"><?php echo gtext("Invia codice");?></button>
+								<button type="submit" class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1@s" name="invia_coupon" value="<?php echo gtext("Invia codice promozione", false);?>"><?php echo gtext("Invia codice");?></button>
 							</div>
 						</div>
 					</form>
@@ -102,11 +102,11 @@
 				<div class="uk-margin uk-text-small"><?php echo testo("Nota"); ?></div>
 
 				<div class="uk-margin">
-					<div class="uk-button uk-button-secondary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
+					<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
 					<?php if ($this->controller == "cart" && $numeroGiftCardInCarrello > 0) { ?>
-					<div class="vai_la_checkout btn_submit_form uk-button uk-button-secondary uk-width-1-1""><?php echo gtext("PROCEDI ALL'ACQUISTO");?></div>
+					<div class="vai_la_checkout btn_submit_form <?php echo v("classe_pulsanti_submit");?> uk-width-1-1""><?php echo gtext("PROCEDI ALL'ACQUISTO");?></div>
 					<?php } else { ?>
-					<a class="btn_submit_form uk-button uk-button-secondary uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
+					<a class="btn_submit_form <?php echo v("classe_pulsanti_submit");?> uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtext("PROCEDI ALL'ACQUISTO");?></a>
 					<?php } ?>
 				</div>
 			</div>
