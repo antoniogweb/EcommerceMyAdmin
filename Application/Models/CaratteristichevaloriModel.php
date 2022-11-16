@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class CaratteristichevaloriModel extends GenericModel {
-
+	
+	use CrudModel;
+	
 	public $lId = 0;
 	
 	public static $names = array();
@@ -119,11 +121,14 @@ class CaratteristichevaloriModel extends GenericModel {
 		);
 	}
 	
-	public function selectCaratteristica()
+	public function selectCaratteristica($conNote = false, $orderBy = "id_order")
 	{
 		$t = new CaratteristicheModel();
 		
-		$t->clear()->orderBy("id_order")->toList("id_car","titolo");
+		$t->clear()->orderBy($orderBy);
+		
+		if (!$conNote)
+			$t->toList("id_car","titolo");
 		
 		if (isset($_GET["id_tipo_car"]) && $_GET["id_tipo_car"] != "tutti")
 			$t->aWhere(array(
@@ -141,7 +146,26 @@ class CaratteristichevaloriModel extends GenericModel {
 			));
 		}
 		
-		return $t->send();
+		$res = $t->send();
+		
+		if (!$conNote)
+			return $res;
+		else
+		{
+			$selectArray = array();
+			
+			foreach ($res as $r)
+			{
+				$titolo = $r["caratteristiche"]["titolo"];
+				
+				if ($r["caratteristiche"]["nota_interna"])
+					$titolo .= " (".$r["caratteristiche"]["nota_interna"].")";
+				
+				$selectArray[$r["caratteristiche"]["id_car"]] = $titolo;
+			}
+			
+			return $selectArray;
+		}
 	}
 	
 	//get the name of the attribute from the id

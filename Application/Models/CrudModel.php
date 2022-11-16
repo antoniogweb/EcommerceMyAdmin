@@ -33,4 +33,14 @@ trait CrudModel
 		
 		return "";
     }
+    
+    public function titoloCrud($record)
+	{
+		$html = $record["caratteristiche"]["titolo"];
+		
+		if ($record["caratteristiche"]["nota_interna"])
+			$html .= " (".$record["caratteristiche"]["nota_interna"].")";
+		
+		return $html;
+	}
 }

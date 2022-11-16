@@ -58,18 +58,20 @@ class CaratteristichevaloriController extends BaseController {
 		if ($this->viewArgs["id_page"] != "tutti")
 			$section = $this->m["PagesModel"]->section((int)$this->viewArgs["id_page"], true);
 		
-		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica();
+		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica(true, "caratteristiche.titolo");
+		
+		$campoTitoloCaratteristica = "titoloCrud";
 		
 		if (($this->viewArgs["id_page"] != "tutti" && $this->viewArgs["id_tipo_car"] != "tutti") || !v("attiva_tipologie_caratteristiche"))
 		{
 			$this->filters = array(array("id_car_f", null, $filtroCaratteristica), "titolo");
-			$this->mainFields = array("caratteristiche.titolo", "caratteristiche_valori.titolo");
+			$this->mainFields = array($campoTitoloCaratteristica, "caratteristiche_valori.titolo");
 			$this->mainHead = "Caratteristica,Valore";
 		}
 		else
 		{
 			$this->filters = array(array("id_tipologia_caratteristica", null, $filtroTipologia), array("id_car_f", null, $filtroCaratteristica), "titolo");
-			$this->mainFields = array("tipologie_caratteristiche.titolo", "caratteristiche.titolo", "caratteristiche_valori.titolo");
+			$this->mainFields = array("tipologie_caratteristiche.titolo", $campoTitoloCaratteristica, "caratteristiche_valori.titolo");
 			$this->mainHead = "Tipologia,Caratteristica,Valore";
 		}
 		

@@ -7,6 +7,8 @@
 						
 						<?php echo $form["alias"];?>
 						
+						<?php echo $form["nota_interna"];?>
+						
 						<?php if (isset($form["filtro"])) { ?>
 						<?php echo $form["filtro"];?>
 						<?php } ?>

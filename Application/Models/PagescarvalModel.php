@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class PagescarvalModel extends GenericModel {
-
+	
+	use CrudModel;
+	
 	public function __construct() {
 		$this->_tables='pages_caratteristiche_valori';
 		$this->_idFields='id_pcv';

@@ -1,11 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
+<a class="btn btn-success iframe help_aggiungi_caratteristiche <?php if (!v("nuova_modalita_caratteristiche") || $aggiuntaLibera) { ?>pull-right<?php } ?>" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci caratteristiche");?></a>
+
 <?php if (v("nuova_modalita_caratteristiche")) { ?>
 <!-- 	<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione caratteristiche</a> -->
 	
 	<div>
-		<a class="btn btn-success iframe help_aggiungi_caratteristiche <?php if ($aggiuntaLibera) { ?>pull-right<?php } ?>" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-check-square-o"></i> <?php echo gtext("Seleziona o aggiungi");?></a>
-		
 		<?php if ($aggiuntaLibera) { ?>
 		<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/aggiungicaratteristica/$id_page".$this->viewStatus;?>' method='POST'>
 			<?php echo Html_Form::input("titolo_car","","form-control auto","titolo_car",'data-provide="typeahead" autocomplete="off" placeholder="Caratteristica" source="caratteristiche/elenco/'.$sezione.'"');?>

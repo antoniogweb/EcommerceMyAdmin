@@ -75,6 +75,9 @@ class CaratteristicheController extends BaseController {
 			$this->mainHead .= "Titolo";
 		}
 		
+		$this->mainFields[] = "caratteristiche.nota_interna";
+		$this->mainHead .= ",Nota interna";
+		
 		$this->filters = array();
 		
 		if (v("attiva_filtri_caratteristiche"))
@@ -130,7 +133,7 @@ class CaratteristicheController extends BaseController {
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'titolo,alias';
+		$fields = 'titolo,alias,nota_interna';
 		
 		if (v("attiva_filtri_caratteristiche"))
 			$fields .= ",filtro";

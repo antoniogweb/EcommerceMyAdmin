@@ -424,8 +424,8 @@ class CategoriesController extends BaseController {
 		
 		$this->modelName = "CategoriescaratteristicheModel";
 		
-		$this->mainFields = array("caratteristiche.titolo");
-		$this->mainHead = "Filtro";
+		$this->mainFields = array("caratteristiche.titolo", "caratteristiche.nota_interna");
+		$this->mainHead = "Filtro,Nota interna";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"caratteristiche/".$clean['id'],'pageVariable'=>'page_fgl');
 		

@@ -1914,12 +1914,12 @@ class PagesController extends BaseController {
 			),
 		);
 		
-		$this->mainFields = array("caratteristiche.titolo", "edit");
+		$this->mainFields = array("titoloCrud", "edit");
 		$this->mainHead = "Caratteristica,Valore";
 		
 		if (!v("caratteristiche_in_tab_separate") && v("attiva_tipologie_caratteristiche"))
 		{
-			array_unshift($this->mainFields, "tipologie_caratteristiche.titolo");
+			array_unshift($this->mainFields, "titoloCrud");
 			$this->mainHead = "Tipologia,".$this->mainHead;
 		}
 		
@@ -1947,7 +1947,9 @@ class PagesController extends BaseController {
 		
 		if (!v("nuova_modalita_caratteristiche"))
 		{
-			$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
+// 			$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
+			
+			$data["listaCaratteristiche"] = $this->m['CaratteristichevaloriModel']->selectCaratteristica(true, "caratteristiche.titolo");
 			
 			$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
 			
