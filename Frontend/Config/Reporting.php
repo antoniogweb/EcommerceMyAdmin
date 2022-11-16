@@ -56,4 +56,4 @@ define ('MAX_POST_LENGTH',50000);
 
 //max length of the REQUEST_URI
 //set MAX_REQUEST_URI_LENGTH equal to 0 if you don't want to set an upper limit in the length of the REQUEST_URI
-define ('MAX_REQUEST_URI_LENGTH',1200);
+define ('MAX_REQUEST_URI_LENGTH',2000);
