@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="uk-card uk-card-default uk-card-small uk-flex uk-flex-column" style="min-height:100%;">
+<div class="card-cart-ajax uk-card uk-card-default uk-card-small uk-flex uk-flex-column" style="min-height:100%;">
 	<header class="uk-card-header">
 		<div class="uk-grid-small uk-flex-1" uk-grid>
 			<div class="uk-width-expand">
