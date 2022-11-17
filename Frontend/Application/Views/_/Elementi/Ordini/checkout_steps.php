@@ -13,7 +13,7 @@ if (!isset($classBadgeCheckout))
 	$classBadgeCheckout = "";
 ?>
 <?php if (!User::$logged || User::$isMobile) { ?>
-<div class="checkout-steps uk-margin-large-bottom <?php echo User::$isMobile ? "checkout-steps-mobile" : "";?>" <?php if ($this->action == "index" && User::$isMobile) { ?>uk-sticky="offset: 0;bottom: true;animation: uk-animation-slide-top;"<?php } ?>>
+<div class="checkout-steps uk-margin-medium-bottom <?php echo User::$isMobile ? "checkout-steps-mobile" : "";?>" <?php if ($this->action == "index" && User::$isMobile) { ?>uk-sticky="offset: 0;bottom: true;animation: uk-animation-slide-top;"<?php } ?>>
 		<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center">
 		<div>
 			<progress id="js-progressbar" class="uk_progress uk-progress uk-margin-remove" value="<?php echo $percentuale;?>" max="100"></progress>

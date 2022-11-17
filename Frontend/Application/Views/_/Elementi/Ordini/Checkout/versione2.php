@@ -9,7 +9,7 @@
 			$classBadgeCheckout = "uk-light uk-background-primary";
 			include(tpf("/Elementi/Ordini/checkout_steps.php"));
 		?>
-		<div class="uk-text-center uk-text-small uk-margin-large-bottom"><span uk-icon="pencil"></span> <?php echo gtext("Continua inserendo i tuoi dati");?></div>
+		<?php ?>
 		<?php } ?>
 		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
 			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>

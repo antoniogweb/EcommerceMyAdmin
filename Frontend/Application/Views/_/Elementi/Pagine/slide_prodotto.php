@@ -18,11 +18,11 @@
 	
 	<?php if (count($altreImmagini) > 0) { ?>
 	<ul class="uk-thumbnav">
-		<li class="uk-margin-small uk-margin-small-top" uk-slideshow-item="0"><a href="#"><img src="<?php echo $this->baseUrlSrc."/thumb/slidesottothumb/".$p["pages"]["immagine"];?>" width="100" alt=""></a></li>
+		<li class="uk-margin-small uk-margin-small-top" uk-slideshow-item="0"><a href="#"><img src="<?php echo $this->baseUrlSrc."/thumb/slidesottothumb/".$p["pages"]["immagine"];?>" width="100" alt="<?php echo altUrlencode(field($p, "title"));?>"></a></li>
 		<?php
 		$indiceSlide = 1;
 		foreach ($altreImmagini as $imm) { ?>
-		<li class="uk-margin-small" uk-slideshow-item="<?php echo $indiceSlide;?>"><a href="#"><img src="<?php echo $this->baseUrlSrc."/thumb/slidesottothumb/".$imm["immagine"];?>" width="100" alt=""></a></li>
+		<li class="uk-margin-small" uk-slideshow-item="<?php echo $indiceSlide;?>"><a href="#"><img src="<?php echo $this->baseUrlSrc."/thumb/slidesottothumb/".$imm["immagine"];?>" width="100" alt="<?php echo altUrlencode(field($p, "title"));?>"></a></li>
 		<?php $indiceSlide++;} ?>
 	</ul>
 	<?php } ?>
