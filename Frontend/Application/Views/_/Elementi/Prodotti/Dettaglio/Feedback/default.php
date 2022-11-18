@@ -18,6 +18,6 @@
 		$queryStringIdComb = "&".v("var_query_string_id_comb")."=".PagesModel::$IdCombinazione;
 ?>
 <div class="uk-margin-medium-top">
-	<a href="<?php echo $this->baseUrl."/".getUrlAlias($idPaginaInserisciFeedback)."?".v("var_query_string_id_rif")."=".$p["pages"]["id_page"].$queryStringIdComb;?>" class="uk-button uk-button-secondary"><span uk-icon="pencil"></span> <?php echo gtext("Inserisci valutazione");?></a>
+	<a href="<?php echo $this->baseUrl."/".getUrlAlias($idPaginaInserisciFeedback)."?".v("var_query_string_id_rif")."=".$p["pages"]["id_page"].$queryStringIdComb;?>" class="<?php echo v("classe_pulsanti_submit");?>"><span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span> <?php echo gtext("Inserisci valutazione");?></a>
 </div>
 <?php } ?>

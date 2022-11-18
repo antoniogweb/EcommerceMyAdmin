@@ -75,8 +75,8 @@
 					<?php echo Html_Form::hidden("voto",FeedbackModel::gValue("voto"));?>
 					
 					<div class="uk-margin">
-						<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-						<button type='submit' class="uk-button uk-button-secondary btn_submit_form"><?php echo gtext('Invia',false);?></button>
+						<div class="<?php echo v("classe_pulsanti_submit");?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
+						<button type='submit' class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form"><?php echo gtext('Invia',false);?></button>
 					</div>
 				</fieldset>
 			</form>
