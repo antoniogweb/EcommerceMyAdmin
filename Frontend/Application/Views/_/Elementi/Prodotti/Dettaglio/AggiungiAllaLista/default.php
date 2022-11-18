@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (v("attiva_liste_regalo") && User::$logged && isset($liste_regalo) && count($liste_regalo) > 0 && (!isset($personalizzazioni) || count($personalizzazioni) === 0) && !idCarrelloEsistente() && !ProdottiModel::isGiftCart((int)$p["pages"]["id_page"])) { ?>
+<?php if (v("attiva_liste_regalo") && User::$logged && isset($liste_regalo) && count($liste_regalo) > 0 && (!isset($personalizzazioni) || count($personalizzazioni) === 0) && !idCarrelloEsistente()) { ?>
 	<?php if ((int)count($liste_regalo) === 1) { ?>
 		<?php echo Html_Form::hidden("id_lista",key($liste_regalo));?>
 		

@@ -382,8 +382,8 @@ class BaseListeregaloController extends BaseController
 		$clean["quantity"] = (int)$quantity;
 		$clean["id_c"] = (int)$id_c;
 		
-		if (!ProdottiModel::isGiftCart($clean["id_page"]))
-		{
+// 		if (!ProdottiModel::isGiftCart($clean["id_page"]))
+// 		{
 			$idRigaLista = $this->m["ListeregalopagesModel"]->aggiungi($clean["id_lista"], $clean["id_page"], $clean["id_c"], $clean["quantity"]);
 			
 			if ($idRigaLista)
@@ -394,11 +394,11 @@ class BaseListeregaloController extends BaseController
 			{
 				$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
 			}
-		}
-		else
-		{
-			$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
-		}
+// 		}
+// 		else
+// 		{
+// 			$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
+// 		}
 		
 		echo json_encode(array(
 			"result"	=>	$result,
