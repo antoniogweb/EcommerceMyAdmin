@@ -2,6 +2,9 @@
 <?php
 if (!isset($classeTendinaVarianti))
 	$classeTendinaVarianti = "uk-margin-small uk-width-2-3@m";
+
+if (!isset($classeSelectVarianti))
+	$classeSelectVarianti = "uk-select";
 ?>
 <script>var sconto = <?php echo $p["pages"]["prezzo_promozione"];?></script>
 <?php if (count($lista_valori_attributi) > 0) { ?>
@@ -43,7 +46,7 @@ if (!isset($classeTendinaVarianti))
 				</div>
 			<?php } else { ?>
 				<div class="<?php echo $classeTendinaVarianti;?>">
-					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,"uk-select form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),null,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>
+					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,$classeSelectVarianti." form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),null,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>
 				</div>
 			<?php } ?>
 			

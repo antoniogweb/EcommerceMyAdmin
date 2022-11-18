@@ -1353,16 +1353,22 @@ class BaseContenutiController extends BaseController
 			),
 		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
 		
-// 		print_r($data["pages"]);
-		if ($data['pages'][0]["contenuti_tradotti"]["meta_description"])
-			$data["meta_description"] = F::meta($data['pages'][0]["contenuti_tradotti"]["meta_description"]);
-		else if (strcmp($data['pages'][0]["pages"]["meta_description"],"") !== 0)
-			$data["meta_description"] = F::meta($data['pages'][0]["pages"]["meta_description"]);
+		if (field($data['pages'][0], "meta_description"))
+			$data["meta_description"] = F::meta(field($data['pages'][0], "meta_description"));
 		
-		if ($data['pages'][0]["contenuti_tradotti"]["keywords"])
-			$data["keywords"] = F::meta($data['pages'][0]["contenuti_tradotti"]["keywords"]);
-		else if (strcmp($data['pages'][0]["pages"]["keywords"],"") !== 0)
-			$data["keywords"] = F::meta($data['pages'][0]["pages"]["keywords"]);
+		if (field($data['pages'][0], "keywords"))
+			$data["keywords"] = F::meta(field($data['pages'][0], "keywords"));
+		
+// 		print_r($data["pages"]);
+// 		if ($data['pages'][0]["contenuti_tradotti"]["meta_description"])
+// 			$data["meta_description"] = F::meta($data['pages'][0]["contenuti_tradotti"]["meta_description"]);
+// 		else if (strcmp($data['pages'][0]["pages"]["meta_description"],"") !== 0)
+// 			$data["meta_description"] = F::meta($data['pages'][0]["pages"]["meta_description"]);
+		
+// 		if ($data['pages'][0]["contenuti_tradotti"]["keywords"])
+// 			$data["keywords"] = F::meta($data['pages'][0]["contenuti_tradotti"]["keywords"]);
+// 		else if (strcmp($data['pages'][0]["pages"]["keywords"],"") !== 0)
+// 			$data["keywords"] = F::meta($data['pages'][0]["pages"]["keywords"]);
 		
 		if ($firstSection == "prodotti")
 		{
@@ -1485,7 +1491,7 @@ class BaseContenutiController extends BaseController
 		if (v("usa_marchi"))
 		{
 			$marchioCorrente =  $data["marchioCorrente"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
-				"marchi.id_marchio"	=>	(int)$this->idMarchio,
+				"marchi.id_marchio"	=>	(int)$data['pages'][0]["pages"]["id_marchio"],
 			))->first();
 			
 			if (count($marchioCorrente) > 0)

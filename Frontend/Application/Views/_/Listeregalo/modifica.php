@@ -117,11 +117,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</div>
 
 	<div class="uk-margin">
-		<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
+		<div class="<?php echo v("classe_pulsanti_submit");?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
 		<?php if ($id === 0) { ?>
-		<input class="uk-button uk-button-secondary btn_submit_form" type="submit" name="insertAction" value="<?php echo gtext("Salva", false);?>" />
+		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="insertAction" value="<?php echo gtext("Salva", false);?>" />
 		<?php } else { ?>
-		<input class="uk-button uk-button-secondary btn_submit_form" type="submit" name="updateAction" value="<?php echo gtext("Salva", false);?>" />
+		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="updateAction" value="<?php echo gtext("Salva", false);?>" />
 		<?php } ?>
 	</div>
 	
