@@ -228,6 +228,8 @@ class FeedbackModel extends GenericModel {
 		else
 			$testoPath = "Elementi/Mail/mail_disapprovazione_feedback.php";
 		
+		$linguaUrl = v("attiva_nazione_nell_url") ? $record["lingua"]."_".strtolower(v("nazione_default")) : $record["lingua"];
+		
 		$res = MailordiniModel::inviaMail(array(
 			"emails"	=>	array($record["email"]),
 			"oggetto"	=>	$oggetto,
@@ -236,7 +238,7 @@ class FeedbackModel extends GenericModel {
 			"lingua"	=>	$record["lingua"],
 			"testo_path"	=>	$testoPath,
 			"array_variabili_tema"	=>	array(
-				"LINK_PRODOTTO"	=>	Domain::$publicUrl."/".$record["lingua"]."/".$p->getUrlAlias($pagina["pages"]["id_page"], $record["lingua"], $record["id_c"]),
+				"LINK_PRODOTTO"	=>	Domain::$publicUrl."/".$linguaUrl."/".$p->getUrlAlias($pagina["pages"]["id_page"], $record["lingua"], $record["id_c"]),
 				"NOME_PRODOTTO"	=>	field($pagina, "title"),
 				"COMMENTO"	=>	$record["commento_negozio"],
 			),

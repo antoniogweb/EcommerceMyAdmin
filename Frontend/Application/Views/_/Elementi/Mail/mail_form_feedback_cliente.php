@@ -7,7 +7,7 @@
 <?php $idCondizioniFeedback = PagineModel::gTipoPagina("CONDIZIONI_FEEDBACK"); ?>
 <?php if ($idCondizioniFeedback) { ?>
 <p><?php echo gtext("La sua valutazione potrebbe essere rifiutata nel caso non rispetti le condizioni di pubblicazione della valutazione da lei approvate, che può trovare al",false);?>
- <a href="<?php echo Domain::$publicUrl."/".Params::$lang."/".getUrlAlias($idCondizioniFeedback);?>"><?php echo gtext("seguente link");?></a>
+ <a href="<?php echo Domain::$publicUrl."/".Params::$langCountry."/".getUrlAlias($idCondizioniFeedback);?>"><?php echo gtext("seguente link");?></a>
 </p>
 <?php } ?>
 

@@ -105,6 +105,9 @@ class RegusersModel extends FormModel {
 		
 		$this->setProvince();
 		
+		if (isset($this->values["nazione"]))
+			$this->setValue("nazione_navigazione", $this->values["nazione"]);
+		
 		$res = parent::insert();
 		
 		if ($res)
