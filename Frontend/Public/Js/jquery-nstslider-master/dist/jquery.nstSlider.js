@@ -156,11 +156,13 @@
 			
 			if ($this.closest(".uk-offcanvas-bar").length > 0)
 			{
-				var clone = $this.closest(".uk-offcanvas-bar").clone();
-				clone.css("visibility","hidden");
-				$('body').append(clone);
-				var width = clone.width();
-				clone.remove();
+				var width = $this.closest(".uk-offcanvas-bar").width()-10;
+				return Math.round(width);
+			}
+			
+			if ($this.closest(".uk-accordion").length > 0)
+			{
+				var width = $this.closest(".uk-accordion").width()-10;
 				return Math.round(width);
 			}
 			
