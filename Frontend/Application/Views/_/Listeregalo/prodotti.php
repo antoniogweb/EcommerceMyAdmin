@@ -124,7 +124,8 @@
 	</div>
 <?php } else { ?>
 	<?php if (!$regalati) { ?>
-	<?php echo gtext("Non hai ancora aggiunto alcun prodotto alla lista.");?>
+	<?php echo gtext("Non hai ancora aggiunto alcun prodotto alla lista.");?><br />
+	<?php echo gtext("Sfoglia i prodotti nelle categorie oppure cerca i tuoi prodotti tramite la ricerca.");?> <?php echo gtext("Clicca sul prodotto scelto. Nella pagina di dettaglio del prodotto troverai il tasto");?> <span class="uk-text-secondary"><?php echo gtext("Aggiungi alla lista");?></span>.
 	<?php } else { ?>
 	<?php echo gtext("Non hai ancora ricevuto alcun regalo nella lista.");?>
 	<?php } ?>
