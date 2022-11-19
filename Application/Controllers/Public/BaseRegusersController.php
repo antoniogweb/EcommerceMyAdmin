@@ -905,6 +905,8 @@ class BaseRegusersController extends BaseController
 	
 	public function spedizione($id = 0)
 	{
+		VariabiliModel::$valori["attiva_spedizione"] = 1;
+		
 		$this->s['registered']->check(null,0);
 		
 		if ((int)$id === 0 && (isset($_GET["impostaFatt"]) || isset($_POST["impostaFatt"])))

@@ -148,7 +148,10 @@ class PagesModel extends GenericModel {
 			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
 		
 		if (v("attiva_liste_regalo"))
-			self::$tipiPagina["LISTA_REGALO"] = "Pagina lista regalo";
+		{
+			self::$tipiPagina["LISTA_REGALO"] = "Pagina pubblica lista regalo";
+			self::$tipiPagina["LISTA_REGALO_NE"] = "Pagina lista regalo non esistente o scaduta";
+		}
 		
 		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
 		{

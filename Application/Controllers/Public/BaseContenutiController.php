@@ -1951,6 +1951,9 @@ class BaseContenutiController extends BaseController
 	
 	public function listaregalo($codice = "", $alias = "")
 	{
+		if (isset($_GET["codice_lista"]))
+			$codice = (string)$_GET["codice_lista"];
+		
 		if (!v("attiva_liste_regalo") || !trim($codice))
 			$this->redirect("");
 		
@@ -1978,6 +1981,13 @@ class BaseContenutiController extends BaseController
 			$this->load('lista-regalo');
 		}
 		else
-			$this->redirect("");
+		{
+			$idNonEsistente = PagineModel::gTipoPagina("LISTA_REGALO_NE");
+			
+			if ($idNonEsistente)
+				$this->redirect(getUrlAlias($idNonEsistente));
+			else
+				$this->redirect("");
+		}
 	}
 }

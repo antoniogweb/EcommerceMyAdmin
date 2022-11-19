@@ -295,6 +295,7 @@ class Route
 		'contenuti/jsoncategoriefiglie/(.*)'	=>	'contenuti/jsoncategoriefiglie/${1}',
 		'contenuti/documento/(.*)'	=>	'contenuti/documento/${1}',
 		'contenuti/processaschedulazione/(.*)'	=>	'contenuti/processaschedulazione/${1}',
+		'contenuti/listaregalo/?'	=>	'contenuti/listaregalo',
 		'lista-regalo/(.*)\/(.*)\.html'=>	'contenuti/listaregalo/${1}/${2}',
 		'conferma-contatto/(.*)'	=>	'contenuti/confermacontatto/${1}',
 		

@@ -14,7 +14,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 
 <?php echo $notice;?>
 
-<div class="uk-child-width-1-3@m uk-text-center" uk-grid>
+<div class="uk-grid uk-child-width-1-3@m uk-text-center" uk-grid>
     <div></div>
     <div>
 		<form action="<?php echo $this->baseUrl."/password-dimenticata";?>" method="POST">
@@ -28,7 +28,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 				</div>
 				
-				<input class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtext("Richiesta nuova password");?>" title="<?php echo gtext("Richiesta nuova password");?>" />
+				<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtext("Richiesta nuova password");?>" title="<?php echo gtext("Richiesta nuova password");?>" />
 			</fieldset>
 		</form>
 	</div>

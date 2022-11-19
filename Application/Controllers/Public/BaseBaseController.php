@@ -248,12 +248,7 @@ class BaseBaseController extends Controller
 			$this->redirect("");
 		}
 		
-		//estraggo i prodotti in evidenza
-// 		$data["inEvidenza"] = getRandom($this->m["PagesModel"]->clear()->where(array("attivo"=>"Y","in_evidenza"=>"Y"))->limit(20)->orderBy("pages.id_order")->send());
-		
 		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m["CategoriesModel"]->getShopCategoryId();
-		
-// 		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"], true);
 		
 		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::impostaDatiCombinazionePagine(getRandom($this->m["PagesModel"]->clear()->select("*")
 			->addJoinTraduzionePagina()

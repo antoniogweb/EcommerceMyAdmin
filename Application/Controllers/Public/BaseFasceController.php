@@ -384,4 +384,14 @@ trait BaseFasceController
 		include tpf("Fasce/fascia_progetti.php");
 		return ob_get_clean();
 	}
+	
+	public function getFasciaListeRegalo()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_LISTE_REGALO","", array(
+			"titolo"	=>	"Fascia liste regalo",
+			"percorso"	=>	"Elementi/Fasce/ListeRegalo",
+		))));
+		return ob_get_clean();
+	}
 }
