@@ -107,8 +107,10 @@ class PagesModel extends GenericModel {
 		"HOME"			=>	"Home page",
 		"MARCHI"		=>	"Pagina elenco marchi",
 		"PACCO_REGALO"	=>	"Pagina descrizione pacchi regalo",
-		"PAGAMENTI"		=>	"Pagina descrizione pagamenti",
-		"GARANZIA"		=>	"Pagina descrizione garanzia",
+		"PAGAMENTI"		=>	"Pagina informazioni pagamenti",
+		"GARANZIA"		=>	"Pagina informazioni garanzia",
+		"ASSISTENZA"	=>	"Pagina informazioni assistenza",
+		"GUIDA_ACQUISTO"=>	"Pagina Guida all'acquisto",
 	);
 	
 	public function __construct() {
@@ -144,6 +146,9 @@ class PagesModel extends GenericModel {
 		
 		if (v("attiva_verifica_contatti"))
 			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
+		
+		if (v("attiva_liste_regalo"))
+			self::$tipiPagina["LISTA_REGALO"] = "Pagina lista regalo";
 		
 		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
 		{
@@ -2981,7 +2986,7 @@ class PagesModel extends GenericModel {
 			$snippetArray = array(
 				"@context"	=>	"https://schema.org/",
 				"@type"		=>	"Product",
-				"name"		=>	sanitizeJs(field($p, "title")),
+				"name"		=>	sanitizeJs(F::meta(field($p, "title"))),
 				"offers"	=>	array(
 					"@type"	=>	"Offer",
 					"price"	=>	number_format($prezzoMinimoIvato,2,".",""),

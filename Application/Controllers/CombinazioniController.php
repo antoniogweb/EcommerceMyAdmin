@@ -166,7 +166,7 @@ class CombinazioniController extends BaseController
 		$this->mainFields = $mainFields;
 		$this->mainHead = $mainHead;
 		
-		if (v("attiva_giacenza"))
+		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
 		{
 			$this->mainFields[] = "giacenza";
 			$this->mainHead .= ",Giacenza";
@@ -190,7 +190,7 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Aggiungi";
 		}
 		
-		if (v("attiva_giacenza"))
+		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
 			$this->colProperties = array(
 				array(
 					'width'	=>	'60px',

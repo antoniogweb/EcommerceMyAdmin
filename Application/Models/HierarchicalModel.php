@@ -533,6 +533,16 @@ class HierarchicalModel extends GenericModel {
 // 		return array();
 // 	}
 	
+	public function getParentId($id)
+	{
+		$parents = $this->parents($id);
+		
+		if (count($parents) > 0)
+			return $parents[count($parents) - 1];
+		
+		return 0;
+	}
+	
 	//get the parents of a node
 	//$id: primary_key of the node
 	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null)

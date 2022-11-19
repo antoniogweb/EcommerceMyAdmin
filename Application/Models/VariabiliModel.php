@@ -67,7 +67,6 @@ class VariabiliModel extends GenericModel {
 		"fasce_in_pagine"			=>	1,
 		"mostra_tipi_documento"		=>	1,
 		"download_attivi"			=>	1,
-		"attiva_giacenza"			=>	0,
 		"usa_tag"					=>	0, // se attivare i tag
 		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
 		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
@@ -131,6 +130,7 @@ class VariabiliModel extends GenericModel {
 		"youtube_link"				=>	"",
 		"instagram_link"			=>	"",
 		"linkedin_link"				=>	"",
+		"pinterest_link"			=>	"",
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
 		"telefono_aziendale_2"		=>	"",
@@ -473,6 +473,8 @@ class VariabiliModel extends GenericModel {
 		"query_cache_usa_periodi_random"=>	0, // se suddivide il periodo di cache in sottoperiodi e ne sceglie uno random
 		"query_cache_minuti_tra_periodi"=>	5, // numero di minuti tra un periodo di cache e l'altro
 		## GIACENZA / MAGAZZINO ##
+		"attiva_giacenza"			=>	0,	// se considerare la giacenza per la messa nel carrello
+		"attiva_campo_giacenza"		=>	0,	// se permette comunque di gestire la giacenza (anche se attiva_giacenza = 0)
 		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
 		## VARIANTI ##

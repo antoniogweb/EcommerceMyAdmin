@@ -10,14 +10,14 @@ if (v("codice_gtm_analytics"))
 		$itemGtag = array(
 			array(
 				"item_id"	=>	v("usa_sku_come_id_item") ? $codicePerTracking : $idPaginaPerTracking,
-				"item_name"	=>	sanitizeJs(htmlentitydecode($nomePaginaPerTracking)),
+				"item_name"	=>	sanitizeJs(F::meta($nomePaginaPerTracking)),
 			),
 		);
 	?>
 	<?php if (isProdotto($idPaginaPerTracking)) { ?>
 	<script>
 		gtag('event', 'view_item', {
-			"items": <?php echo json_encode($itemGtag);?>,
+			"items": <?php echo F::jsonEncode($itemGtag);?>,
 			"currency": "EUR",
 			"value": <?php echo number_format(calcolaPrezzoFinale($idPaginaPerTracking, prezzoMinimo($idPaginaPerTracking)),2,".","");?>
 		});

@@ -353,7 +353,7 @@ class BaseContenutiController extends BaseController
 						
 						$titleDaUsare = trim($metaTitlePagina) ? $metaTitlePagina : $titoloPagina;
 						
-						$data["title"] = Parametri::$nomeNegozio . " - ".$titleDaUsare;
+						$data["title"] = Parametri::$nomeNegozio . " - ".F::meta($titleDaUsare);
 						
 // 						if (isset($parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"]) && $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"])
 // 							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"];
@@ -1331,6 +1331,9 @@ class BaseContenutiController extends BaseController
 			$this->p = $data["pages"][0];
 			
 			$data["tipoPagina"] = PagesModel::$currentTipoPagina = $data["pages"][0]["pages"]["tipo_pagina"];
+			
+			if ($data["tipoPagina"] == "LISTA_REGALO")
+				$this->getAppLogin();
 		}
 		
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
@@ -1455,7 +1458,7 @@ class BaseContenutiController extends BaseController
 		if ($firstSection == "prodotti")
 		{
 			if (v("abilita_rich_snippet"))
-				$data["richSnippet"] = json_encode(PagesModel::getRichSnippet((int)$id), JSON_UNESCAPED_SLASHES);
+				$data["richSnippet"] = F::jsonEncode(PagesModel::getRichSnippet((int)$id));
 			
 			$data["isProdotto"] = true;
 		}

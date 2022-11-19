@@ -512,6 +512,7 @@ class OrdiniModel extends FormModel {
 			$righeOrdine = $r->clear()->where(array("id_o"=>$clean["id_o"]))->send();
 			
 			$bckLang = Params::$lang;
+			$bckCountry = Params::$country;
 			$bckContesto = TraduzioniModel::$contestoStatic;
 			
 			try
@@ -546,6 +547,10 @@ class OrdiniModel extends FormModel {
 				// Imposto le traduzioni del front
 				TraduzioniModel::$contestoStatic = "front";
 				Params::$lang = $ordine["lingua"];
+				
+				if (v("attiva_nazione_nell_url"))
+					Params::$country = $ordine["nazione_navigazione"] ? strtolower($ordine["nazione_navigazione"]) : strtolower(v("nazione_default"));
+				
 				$tradModel = new TraduzioniModel();
 				$tradModel->ottieniTraduzioni();
 				
@@ -587,6 +592,7 @@ class OrdiniModel extends FormModel {
 // 				echo $output;die();
 				// Imposto le traduzioni del back
 				Params::$lang = $bckLang;
+				Params::$country = $bckCountry;
 				TraduzioniModel::$contestoStatic = $bckContesto;
 				$tradModel = new TraduzioniModel();
 				$tradModel->ottieniTraduzioni();
@@ -619,6 +625,7 @@ class OrdiniModel extends FormModel {
 				$this->notice = "<div class='alert alert-success'>Mail inviata con successo!</div>";
 			} catch (Exception $e) {
 				Params::$lang = $bckLang;
+				Params::$country = $bckCountry;
 				TraduzioniModel::$contestoStatic = $bckContesto;
 			}
 		}

@@ -136,6 +136,7 @@ class MailordiniModel extends GenericModel
 		$mo = new MailordiniModel();
 		
 		$lingua = isset($params["lingua"]) ? $params["lingua"] : Params::$lang;
+		$country = isset($params["country"]) ? $params["country"] : Params::$country;
 		$emails = $params["emails"];
 		$oggetto = $params["oggetto"];
 		$idO = isset($params["id_o"]) ? $params["id_o"] : 0;
@@ -158,6 +159,7 @@ class MailordiniModel extends GenericModel
 		self::$variabiliTema = $arrayVariabiliTema;
 		
 		$bckLang = Params::$lang;
+		$bckCountry = Params::$country;
 		$bckContesto = TraduzioniModel::$contestoStatic;
 		
 		self::$idMailInviate = array();
@@ -198,6 +200,10 @@ class MailordiniModel extends GenericModel
 			// Imposto le traduzioni del front
 			TraduzioniModel::$contestoStatic = "front";
 			Params::$lang = $lingua;
+			
+			if (v("attiva_nazione_nell_url"))
+				Params::$country = $country;
+			
 			$tradModel = new TraduzioniModel();
 			$tradModel->ottieniTraduzioni();
 			
@@ -252,6 +258,7 @@ class MailordiniModel extends GenericModel
 // 			echo $testo;die();
 			// Recupero le traduzioni
 			Params::$lang = $bckLang;
+			Params::$country = $bckCountry;
 			TraduzioniModel::$contestoStatic = $bckContesto;
 			$tradModel = new TraduzioniModel();
 			$tradModel->ottieniTraduzioni();
@@ -299,6 +306,7 @@ class MailordiniModel extends GenericModel
 			return true;
 		} catch (Exception $e) {
 			Params::$lang = $bckLang;
+			Params::$country = $bckCountry;
 			TraduzioniModel::$contestoStatic = $bckContesto;
 			return false;
 		}

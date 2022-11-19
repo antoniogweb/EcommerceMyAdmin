@@ -2033,7 +2033,7 @@ function prodottoCartesiano($input) {
 
 function altUrlencode($string)
 {
-	return str_replace("+", " ", urlencode($string));
+	return F::alt($string);
 }
 
 function maggioreDiZero($numero)
