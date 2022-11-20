@@ -78,7 +78,6 @@ class MailordiniModel extends GenericModel
 			{
 				$this->checkLimitiInvio = false;
 				$this->values["superato_limite_orario"] = 1;
-				$this->values["superato_limite_giornaliero"] = 1;
 			}
 			
 			if ($this->checkLimitiInvio)

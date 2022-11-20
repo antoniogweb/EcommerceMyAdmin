@@ -423,7 +423,7 @@ class BaseContenutiController extends BaseController
 	public function notfound()
 	{
 		$data["title"] = Parametri::$nomeNegozio . " - pagina non trovata";
-				
+		
 		header('HTTP/1.0 404 Not Found');
 		
 		$this->append($data);

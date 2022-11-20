@@ -46,6 +46,8 @@ class BaseRegusersController extends BaseController
 			$this->load('footer','last');
 		}
 		
+		IpcheckModel::check($controller.$action);
+		
 		$data['title'] = Parametri::$nomeNegozio . ' - Login';
 		
 		$data["arrayLingue"] = array();
