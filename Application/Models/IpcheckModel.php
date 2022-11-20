@@ -47,7 +47,7 @@ class IpcheckModel extends Model_Tree
 		{
 			$ipcModel = new IpcheckModel();
 			
-			$timeSecondi = time() - (3600 * 24);
+			$timeSecondi = time() - (3600 * 30);
 			
 			$ipcModel->query("delete from ip_check where time_creazione < $timeSecondi");
 			
