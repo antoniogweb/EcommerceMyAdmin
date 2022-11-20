@@ -143,8 +143,11 @@ class BaseOrdiniController extends BaseController
 							// Controlla e manda mail dopo pagamento
 							$this->m["OrdiniModel"]->mandaMailDopoPagamento($ordine["id_o"]);
 							
+							// Controlla e manda mail dopo pagamento al negozio
+							$this->m["OrdiniModel"]->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+							
 							$mandaFattura = false;
-						
+							
 							if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
 							{
 								$fattura = $this->m["FattureModel"]->where(array(
@@ -245,8 +248,11 @@ class BaseOrdiniController extends BaseController
 					
 					if (PagamentiModel::gateway()->success())
 					{
-						// Controlla e manda mail dopo pagamento
+						// Controlla e manda mail dopo pagamento al cliente
 						$this->m["OrdiniModel"]->mandaMailDopoPagamento($ordine["id_o"]);
+						
+						// Controlla e manda mail dopo pagamento al negozio
+						$this->m["OrdiniModel"]->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 						
 						$mandaFattura = false;
 						
@@ -1080,62 +1086,14 @@ class BaseOrdiniController extends BaseController
 						unset($_SESSION['accetto']);
 						
 						$this->m['OrdiniModel']->aggiungiTotali();
-// 						$this->m['OrdiniModel']->values["subtotal"] = getSubTotalN();
-// 						$this->m['OrdiniModel']->values["spedizione"] = getSpedizioneN();
-// 						$this->m['OrdiniModel']->values["costo_pagamento"] = getPagamentoN();
-// 						
-// 						$this->m['OrdiniModel']->values["subtotal_ivato"] = setPrice(getSubTotal(true));
-// 						$this->m['OrdiniModel']->values["spedizione_ivato"] = setPrice(getSpedizione(1));
-// 						$this->m['OrdiniModel']->values["costo_pagamento_ivato"] = setPrice(getPagamento(1));
-// 						
-// 						$this->m['OrdiniModel']->values["iva"] = setPrice(getIva());
-// 						$this->m['OrdiniModel']->values["total"] = setPrice(getTotal());
-// 						$this->m['OrdiniModel']->values["cart_uid"] = User::$cart_uid;
-// 						$this->m['OrdiniModel']->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
-// 						$this->m['OrdiniModel']->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
-// 						
-// 						$this->m['OrdiniModel']->values["total_pieno"] = $this->m['OrdiniModel']->values["subtotal_ivato"] + $this->m['OrdiniModel']->values["spedizione_ivato"] + $this->m['OrdiniModel']->values["costo_pagamento_ivato"];
-// 						
-// 						$this->m['OrdiniModel']->values["creation_time"] = time();
-// 						
+						
 						$statoOrdine = "pending";
 						
 						if (number_format(getTotalN(),2,".","") <= 0.00)
 							$statoOrdine = "completed";
-// 						
-// 						$this->m['OrdiniModel']->values["stato"] = $statoOrdine;
-// 						
-// 						$this->m['OrdiniModel']->values["prezzo_scontato"] = getPrezzoScontatoN();
-// 						$this->m['OrdiniModel']->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
-// 						
-// 						$this->m['OrdiniModel']->values["codice_promozione"] = User::$coupon;
-// 						$this->m['OrdiniModel']->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
-// 						$this->m['OrdiniModel']->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
-// 						
-// 						$coupon = PromozioniModel::getCouponAttivo();
-// 						
-// 						if (!empty($coupon))
-// 						{
-// 							$this->m['OrdiniModel']->values["tipo_promozione"] = $coupon["tipo_sconto"];
-// 							$this->m['OrdiniModel']->values["euro_promozione"] = $this->m['OrdiniModel']->values["total_pieno"] - $this->m['OrdiniModel']->values["total"];
-// 							$this->m['OrdiniModel']->values["id_p"] = $coupon["id_p"];
-// 						}
-// 						
-// 						$this->m['OrdiniModel']->values["id_iva"] = CartModel::getIdIvaSpedizione();
-// 						$this->m['OrdiniModel']->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
-// 						
-// 						if (isset(IvaModel::$aliquotaEstera))
-// 						{
-// 							$this->m['OrdiniModel']->values["id_iva_estera"] = IvaModel::$idIvaEstera;
-// 							$this->m['OrdiniModel']->values["aliquota_iva_estera"] = IvaModel::$aliquotaEstera;
-// 							$this->m['OrdiniModel']->values["stringa_iva_estera"] = IvaModel::$titoloAliquotaEstera;
-// 							$this->m['OrdiniModel']->values["nascondi_iva_estera"] = IvaModel::$nascondiAliquotaEstera;
-// 						}
 						
 						if (isset($_COOKIE["ok_cookie_terzi"]))
 							$this->m['OrdiniModel']->values["cookie_terzi"] = 1;
-						
-// 						$this->m['OrdiniModel']->values["da_spedire"] = v("attiva_spedizione");
 						
 						if (ListeregaloModel::hasIdLista())
 							$this->m['OrdiniModel']->values["id_lista_regalo"] = (int)User::$idLista;
@@ -1227,19 +1185,6 @@ class BaseOrdiniController extends BaseController
 											{
 												$this->m['SpedizioniModel']->setValue($cs, $_POST[$cs]);
 											}
-										
-// 											//aggiungo l'indirizzo di spedizione
-// 											$this->m["SpedizioniModel"]->setValues(array(
-// 												"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
-// 												"cap_spedizione"	=>	$_POST["cap_spedizione"],
-// 												"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
-// 												"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
-// 												"citta_spedizione"	=>	$_POST["citta_spedizione"],
-// 												"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
-// 												"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
-// 												"id_user"	=>	$clean['userId'],
-// 												"ultimo_usato"	=>	"Y",
-// 											));
 											
 											$this->m["SpedizioniModel"]->insert();
 											
@@ -1285,13 +1230,6 @@ class BaseOrdiniController extends BaseController
 										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
 										
 										$this->m["SpedizioniModel"]->setValues(array(
-// 											"indirizzo_spedizione"	=>	$_POST["indirizzo_spedizione"],
-// 											"cap_spedizione"	=>	$_POST["cap_spedizione"],
-// 											"provincia_spedizione"	=>	$_POST["provincia_spedizione"],
-// 											"dprovincia_spedizione"	=>	$_POST["dprovincia_spedizione"],
-// 											"citta_spedizione"	=>	$_POST["citta_spedizione"],
-// 											"telefono_spedizione"	=>	$_POST["telefono_spedizione"],
-// 											"nazione_spedizione"	=>	$_POST["nazione_spedizione"],
 											"id_user"	=>	$this->iduser,
 											"ultimo_usato"	=>	"Y",
 										));
@@ -1389,21 +1327,26 @@ class BaseOrdiniController extends BaseController
 								$this->m['OrdiniModel']->settaMailDaInviare($clean['lastId']);
 							
 							// mail al negozio
-							ob_start();
-							$tipoOutput = "mail_al_negozio";
-							include tpf("/Ordini/resoconto-acquisto.php");
-							$output = ob_get_clean();
-							
-							$res = MailordiniModel::inviaMail(array(
-								"emails"	=>	array(Parametri::$mailInvioOrdine),
-								"oggetto"	=>	v("oggetto_ordine_ricevuto"),
-								"testo"		=>	$output,
-								"tipologia"	=>	"ORDINE NEGOZIO",
-								"id_user"	=>	(int)$ordine['id_user'],
-								"tipo"		=>	"R",
-								"id_o"		=>	$clean['lastId'],
-								"array_variabili"	=>	$ordine,
-							));
+							if (!v("mail_ordine_dopo_pagamento_negozio") || !OrdiniModel::conPagamentoOnline($ordine))
+							{
+								ob_start();
+								$tipoOutput = "mail_al_negozio";
+								include tpf("/Ordini/resoconto-acquisto.php");
+								$output = ob_get_clean();
+								
+								$res = MailordiniModel::inviaMail(array(
+									"emails"	=>	array(Parametri::$mailInvioOrdine),
+									"oggetto"	=>	v("oggetto_ordine_ricevuto"),
+									"testo"		=>	$output,
+									"tipologia"	=>	"ORDINE NEGOZIO",
+									"id_user"	=>	(int)$ordine['id_user'],
+									"tipo"		=>	"R",
+									"id_o"		=>	$clean['lastId'],
+									"array_variabili"	=>	$ordine,
+								));
+							}
+							else
+								$this->m['OrdiniModel']->settaMailDaInviare($clean['lastId'], "mail_da_inviare_negozio");
 							
 							// Iscrizione alla newsletter
 							if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())

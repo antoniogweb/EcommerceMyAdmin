@@ -494,7 +494,7 @@ class OrdiniModel extends FormModel {
 		return "<a class='text_16' title='genera fattura' href='http://".DOMAIN_NAME."/fatture/crea/".$clean["id_o"]."'><b><i class='fa fa-refresh'></i></b></a>";
 	}
 	
-	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false)
+	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false, $forzaTemplate = false, $sendTo = null)
 	{
 		$clean["id_o"] = (int)$id_o;
 		$this->baseUrl = Domain::$name;
@@ -541,7 +541,11 @@ class OrdiniModel extends FormModel {
 				$mail->CharSet = 'UTF-8';
 				
 				$mail->ClearAddresses();
-				$mail->AddAddress($ordine["email"]);
+				
+				if (!isset($sendTo))
+					$sendTo = $ordine["email"];
+				
+				$mail->AddAddress($sendTo);
 				$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
 				
 				// Imposto le traduzioni del front
@@ -580,7 +584,7 @@ class OrdiniModel extends FormModel {
 				$baseUrl = Url::getRoot();
 				$baseUrl = str_replace("admin/", "", $baseUrl);
 				$tipoOutput = "mail_al_cliente";
-				if ($tipo == "R" && file_exists(tpf("/Elementi/Mail/mail_ordine_ricevuto.php")))
+				if ($tipo == "R" && file_exists(tpf("/Elementi/Mail/mail_ordine_ricevuto.php")) && !$forzaTemplate)
 					include tpf("/Elementi/Mail/mail_ordine_ricevuto.php");
 				else
 					include tpf("/Ordini/$template.php");
@@ -1307,13 +1311,29 @@ class OrdiniModel extends FormModel {
 		return false;
 	}
 	
-	public function settaMailDaInviare($idO)
+	public function settaMailDaInviare($idO, $field = "mail_da_inviare")
 	{
 		$this->setValues(array(
-			"mail_da_inviare"	=>	1,
+			$field	=>	1,
 		));
 		
 		$this->update((int)$idO);
+	}
+	
+	public function mandaMailDopoPagamentoNegozio($idO)
+	{
+		$ordine = $this->selectId($idO);
+		
+		if (!empty($ordine) && $ordine["mail_da_inviare_negozio"])
+		{
+			$this->mandaMailGeneric($id_o, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, Parametri::$mailInvioOrdine);
+			
+			$this->setValues(array(
+				"mail_da_inviare_negozio"	=>	0,
+			));
+			
+			$this->update((int)$idO);
+		}
 	}
 	
 	// Manda le mail dopo il pagamento

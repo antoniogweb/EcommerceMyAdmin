@@ -319,8 +319,6 @@ class VariabiliModel extends GenericModel {
 		"email_debug_retargeting"	=>	"",
 		"attiva_campo_test_in_pagine"	=>	0, // permette di avere dei prodotti di test non elencati (neanche nella sitemap)
 		"attiva_menu_db"			=>	0, // menù in admin da db
-		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
-		"mail_credenziali_dopo_pagamento"	=>	0,
 		"url_redirect_dopo_login"	=>	"area-riservata", // url di redirect dopo il login nel frontend
 		"oggetto_ordine_ricevuto"	=>	"Ordine N° [ID_ORDINE]",
 		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
@@ -540,6 +538,10 @@ class VariabiliModel extends GenericModel {
 		"max_numero_email_giorno"	=>	0, // massimo numero di email inviabili ogni giorno (0 = no limiti)
 		## PULSANTI ##
 		"classe_pulsanti_submit"	=>	"uk-button uk-button-secondary", // classe de ipulsanti submit
+		## ORDINE ##
+		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
+		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
+		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
