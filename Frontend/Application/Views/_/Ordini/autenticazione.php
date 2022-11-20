@@ -15,7 +15,7 @@ $noLoginNotice = true;
 $action = $this->baseUrl."/regusers/login?redirect=/checkout";
 RegusersModel::$redirectQueryString = "redirect=checkout";
 
-$percentuale = User::$isMobile ? 0 : 25;
+$percentuale = 0;
 $textClassAutenticazione = "uk-text-secondary";
 $classBadgeCheckout = "uk_badge_meta";
 if (!User::$isMobile)
