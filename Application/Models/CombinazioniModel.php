@@ -979,4 +979,24 @@ class CombinazioniModel extends GenericModel {
 		
 		return array($campoPrice, $campoPriceScontato);
 	}
+	
+	public function numeroRegalati($record)
+	{
+		if (isset($_GET["id_lista_reg_filt"]))
+		{
+			return ListeregaloModel::g()->numeroRegalati((int)$_GET["id_lista_reg_filt"], $record["combinazioni"]["id_c"]);
+		}
+		
+		return "";
+	}
+	
+	public function numeroRimastiDaRegalare($record)
+	{
+		if (isset($_GET["id_lista_reg_filt"]))
+		{
+			return ListeregaloModel::g()->numeroRimastiDaRegalare((int)$_GET["id_lista_reg_filt"], $record["combinazioni"]["id_c"]);
+		}
+		
+		return "";
+	}
 }
