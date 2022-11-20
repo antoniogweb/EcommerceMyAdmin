@@ -47,6 +47,10 @@ class IpcheckModel extends Model_Tree
 		{
 			$ipcModel = new IpcheckModel();
 			
+			$timeSecondi = time() - (3600 * 24);
+			
+			$ipcModel->query("delete from ip_check where time_creazione < $timeSecondi");
+			
 			$ipcModel->db->beginTransaction();
 			
 			$okLimite = true;
