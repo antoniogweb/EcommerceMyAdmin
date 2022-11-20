@@ -1326,7 +1326,7 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($ordine) && $ordine["mail_da_inviare_negozio"])
 		{
-			$this->mandaMailGeneric($id_o, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, Parametri::$mailInvioOrdine);
+			$this->mandaMailGeneric((int)$idO, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, Parametri::$mailInvioOrdine);
 			
 			$this->setValues(array(
 				"mail_da_inviare_negozio"	=>	0,
