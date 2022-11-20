@@ -1,0 +1,1 @@
+alter table mail_ordini add superato_limite_orario tinyint UNSIGNED not null default 0;

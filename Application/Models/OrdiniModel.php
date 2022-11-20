@@ -612,17 +612,33 @@ class OrdiniModel extends FormModel {
 				$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
 				$mail->MsgHTML($output);
 				
-				$mail->Send();
-				
 				$params = array(
 					"oggetto"	=>	$oggetto,
 					"bcc"		=>	implode(",",$arrayBcc),
-					"testo"		=>	$tipo != "R" ? $testoClean : "",
+					"testo"		=>	$testoClean,
+					"inviata"	=>	0,
 				);
 				
-				$this->aggiungiStoricoMail($clean["id_o"], $tipo, $params);
+				$mailOrdini = $this->aggiungiStoricoMail($clean["id_o"], $tipo, $params);
+				$lId = $mailOrdini->lId;
 				
-				$this->notice = "<div class='alert alert-success'>Mail inviata con successo!</div>";
+				if ($mailOrdini->checkLimitiInvio && $mail->Send())
+				{
+					$mailOrdini->sValues(array(
+						"inviata"	=>	1,
+					));
+					
+					if ($tipo == "R")
+						$mailOrdini->setValue("testo", "");
+					
+					$mailOrdini->update($lId);
+					
+					$this->notice = "<div class='alert alert-success'>Mail inviata con successo!</div>";
+				}
+				else
+				{
+					$this->notice = "<div class='alert alert-danger'>Errore nell'invio della mail.</div>";
+				}
 			} catch (Exception $e) {
 				Params::$lang = $bckLang;
 				Params::$country = $bckCountry;
@@ -674,9 +690,12 @@ class OrdiniModel extends FormModel {
 			"oggetto"	=>	isset($params["oggetto"]) ? $params["oggetto"] : "",
 			"bcc"		=>	isset($params["bcc"]) ? $params["bcc"] : "",
 			"testo"		=>	isset($params["testo"]) ? $params["testo"] : "",
+			"inviata"	=>	isset($params["inviata"]) ? $params["inviata"] : 1,
 		));
 		
 		$mailOrdini->insert();
+		
+		return $mailOrdini;
 	}
 	
 	// Iscrivi a newsletter l'utente dell'ordine

@@ -150,7 +150,7 @@
 											<tr>
 												<td><?php echo date("d-m-Y H:i", strtotime($mailFatt["data_creazione"]));?></td>
 												<td><?php echo OrdiniModel::getTipoMail($mailFatt["tipo"]);?></td>
-												<td><i style="font-size:18px;" class="text text-success fa fa-check-circle"></i></td>
+												<td><i style="font-size:18px;" class="text text-<?php if ($mailFatt["inviata"]) { ?>success<?php } else { ?>danger<?php } ?> fa <?php if ($mailFatt["inviata"]) { ?>fa-check-circle<?php } else { ?>fa-ban<?php } ?>"></i></td>
 											</tr>
 											<?php } ?>
 										</tbody>

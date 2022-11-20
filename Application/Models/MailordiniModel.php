@@ -39,11 +39,70 @@ class MailordiniModel extends GenericModel
 	public static $idMailInviate = array();
 	public static $variabiliTema = array();
 	
+	public $checkLimitiInvio = true;
+	
 	public function __construct() {
 		$this->_tables = 'mail_ordini';
 		$this->_idFields = 'id_mail';
 		
 		parent::__construct();
+	}
+	
+	public function insert()
+	{
+		$this->values["time_creazione"] = time();
+		
+		$bccArray = array();
+		
+		if ($this->values["bcc"] && trim($this->values["bcc"]))
+			$bccArray = explode(",", trim($this->values["bcc"]));
+		
+		$this->values["numero_inviate"] = (count($bccArray) + 1);
+		
+		if (VariabiliModel::checkNumeroMailInviate())
+		{
+			$this->checkLimitiInvio = true;
+			
+			$this->db->beginTransaction();
+			
+			$timeOra = time() - 3600;
+			$timeGiorno = time() - (3600 * 24);
+			
+			// CHECK ORA
+			$resOra = $this->query("select sum(numero_inviate) as NUMERO from mail_ordini where inviata = 1 and time_creazione > $timeOra for update");
+			
+			$numero = isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
+			$numero += $this->values["numero_inviate"];
+			
+			if ($numero > v("max_numero_email_ora"))
+			{
+				$this->checkLimitiInvio = false;
+				$this->values["superato_limite_orario"] = 1;
+				$this->values["superato_limite_giornaliero"] = 1;
+			}
+			
+			if ($this->checkLimitiInvio)
+			{
+				// CHECK GIORNO
+				$resOra = $this->query("select sum(numero_inviate) as NUMERO from mail_ordini where inviata = 1 and time_creazione > $timeGiorno for update");
+				
+				$numero = isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
+				$numero += $this->values["numero_inviate"];
+				
+				if ($numero > v("max_numero_email_giorno"))
+				{
+					$this->checkLimitiInvio = false;
+					$this->values["superato_limite_giornaliero"] = 1;
+				}
+			}
+		}
+		
+		$res = parent::insert();
+		
+		if (VariabiliModel::checkNumeroMailInviate())
+			$this->db->commit();
+		
+		return $res;
 	}
 	
 	public static function loadTemplate($oggetto, $body)
@@ -268,18 +327,14 @@ class MailordiniModel extends GenericModel
 			
 // 			$mail->SMTPDebug = 2;
 			
+			$arrayErrori = array();
+			
 			foreach ($emails as $email)
 			{
 				$mail->ClearAddresses();
 				$mail->AddAddress($email);
 				
 				$inviata = 0;
-				
-				if ($mail->Send())
-					$inviata = 1;
-				
-				if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT" || $tipologia == "LINK_CONFERMA")
-					$testoClean = "";
 				
 				$mo->setValues(array(
 					"id_o"		=>	$idO,
@@ -299,11 +354,31 @@ class MailordiniModel extends GenericModel
 					"id_elemento"	=>	$idElemento,
 				));
 				
-				if ($mo->insert())
+				$res = $mo->insert();
+				
+				if ($res)
+				{
 					self::$idMailInviate[] = $mo->lId;
+					
+					if ($mo->checkLimitiInvio && $mail->Send())
+					{
+						$mo->sValues(array(
+							"inviata"	=>	1,
+						));
+						
+						if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT" || $tipologia == "LINK_CONFERMA")
+							$mo->setValue("testo", "");
+						
+						$mo->update($mo->lId);
+					}
+					else
+						$arrayErrori[] = false;
+				}
+				else
+					$arrayErrori[] = false;
 			}
 			
-			return true;
+			return (int)count($arrayErrori) === 0 ? true : false;
 		} catch (Exception $e) {
 			Params::$lang = $bckLang;
 			Params::$country = $bckCountry;

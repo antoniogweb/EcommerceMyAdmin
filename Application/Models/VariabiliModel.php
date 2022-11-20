@@ -530,6 +530,9 @@ class VariabiliModel extends GenericModel {
 		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
 		"gestisci_sconti_combinazioni_separatamente"	=>	0, // se impostato ad 1, permette di impostare un prezzo scontatto per ogni combinazione
 		"estrai_in_promozione_home"	=>	0,
+		## MAIL ##
+		"max_numero_email_ora"		=>	0, // massimo numero di email inviabili ogni ora (0 = no limiti)
+		"max_numero_email_giorno"	=>	0, // massimo numero di email inviabili ogni giorno (0 = no limiti)
 		## PULSANTI ##
 		"classe_pulsanti_submit"	=>	"uk-button uk-button-secondary", // classe de ipulsanti submit
 		####
@@ -849,5 +852,10 @@ class VariabiliModel extends GenericModel {
 	public static function paginaAutenticazione()
 	{
 		return (v("pagina_di_autenticazione") && !User::$logged) ? "autenticazione" : "checkout";
+	}
+	
+	public static function checkNumeroMailInviate()
+	{
+		return (v("max_numero_email_ora") || v("max_numero_email_giorno")) ? true : false;
 	}
 }
