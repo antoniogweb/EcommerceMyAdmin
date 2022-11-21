@@ -289,7 +289,7 @@ class BaseOrdiniController extends BaseController
 		}
 		else
 		{
-			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".$nexi->scriviLog(false, false)."</pre>", "IPN CARTA");
+			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".PagamentiModel::gateway()->scriviLog(false, false)."</pre>", "IPN CARTA");
 		}
 	}
 	
