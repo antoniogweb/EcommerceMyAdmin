@@ -225,9 +225,6 @@ class BaseOrdiniController extends BaseController
 		
 		$this->clean();
 		
-		$this->m["OrdiniModel"]->mandaMailDopoPagamentoNegozio(50);
-		die();
-		
 		if (PagamentiModel::gateway()->validate())
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
