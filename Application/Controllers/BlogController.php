@@ -40,21 +40,21 @@ class BlogController extends GenericsectionController {
 		);
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data';
-		$this->filters = array(null,null,'title',null,null);
+		
+		$filtroCategoria = array("tutti" => BlogcatModel::g(false)->getTitoloCategoriaPadreSezione()) + BlogcatModel::g(false)->buildSelect(null,false);
+		$this->filters = array(null,null,'title',array("id_c",null,$filtroCategoria),null);
 		
 		$this->queryFields = "title,alias,attivo,description,immagine,data_news,id_c,video,video_thumb,sottotitolo";
-		
-		$fTag = null;
 		
 		if (v("usa_tag") && v("tag_in_blog"))
 		{
 			$this->tableFields[] = 'tag';
 			$this->head .= ',Tag';
 			$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->filtro();
-			$fTag = array("id_tag",null,$filtroTag);
+			$this->filters[] = array("id_tag",null,$filtroTag);
 		}
 		
-		$this->filters[] = $fTag;
+		$this->filters[] = array("attivo",null,SlideModel::$YN);
 		
 		if (v("in_evidenza_blog"))
 		{

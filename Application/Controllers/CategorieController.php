@@ -33,6 +33,9 @@ class CategorieController extends CategoriesController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (v("attiva_mostra_in_menu"))
+			$this->queryFields .= ",mostra_in_menu";
+		
 		if (v("attiva_strumenti_merchant_google"))
 			$this->queryFields .= ",codice_categoria_prodotto_google";
 		

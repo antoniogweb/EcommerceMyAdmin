@@ -38,7 +38,7 @@ class SlideController extends PagesController {
 		);
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Attiva';
-		$this->filters = array(null,null,'title');
+		$this->filters = array(null,null,'title',array("attivo",null,SlideModel::$YN));
 		
 		if (v("attiva_in_evidenza_slide"))
 		{
@@ -69,6 +69,9 @@ class SlideController extends PagesController {
 		
 		if (v("attiva_link_documenti"))
 			$this->queryFields .= ",link_id_documento";
+		
+		if (v("attiva_tipo_slide"))
+			$this->queryFields .= ",id_opzione";
 		
 		$this->clean();
 		

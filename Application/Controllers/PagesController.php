@@ -2323,6 +2323,8 @@ class PagesController extends BaseController {
 											$convertitaInJpeg = true;
 										}
 										
+										Image_Gd_Thumbnail::$defaultJpegImgQuality = 100;
+										
 										$thumb = new Image_Gd_Thumbnail($targetPath,$params);
 										$thumb->render($clean['fileName'],$targetFile);
 										

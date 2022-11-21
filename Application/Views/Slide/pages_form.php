@@ -36,6 +36,8 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
+									<?php echo isset($form["id_opzione"]) ? $form["id_opzione"] : "";?>
+									
 									<?php echo isset($form["description"]) ? $form["description"] : "";?>
 									
 									<?php if ($type === "update") { ?>

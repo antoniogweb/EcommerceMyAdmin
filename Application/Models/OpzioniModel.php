@@ -37,14 +37,14 @@ class OpzioniModel extends GenericModel {
 		parent::__construct();
 	}
 	
-	public static function codice($codice)
+	public static function codice($codice, $field = "valore")
 	{
 		$op = new OpzioniModel();
 		
 		return $op->clear()->where(array(
 			"codice"	=>	$codice,
 			"attivo"	=>	1,
-		))->toList("valore", "titolo")->findAll();
+		))->toList($field, "titolo")->findAll();
 	}
 	
 	public static function label($codice, $valore)

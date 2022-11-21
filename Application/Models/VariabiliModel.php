@@ -45,7 +45,6 @@ class VariabiliModel extends GenericModel {
 		"contenuti_in_prodotti"		=>	1,
 		"contenuti_in_categorie"	=>	0,
 		"fasce_in_prodotti"			=>	0,
-		"fasce_in_categorie"		=>	0,
 		"scaglioni_in_prodotti"		=>	1,
 		"correlati_in_prodotti"		=>	1,
 		"caratteristiche_in_prodotti"=>	1,
@@ -84,8 +83,6 @@ class VariabiliModel extends GenericModel {
 		"usa_https"					=>	0,
 		"codice_cron"				=>	"",
 		"estrai_materiali"			=>	0,
-		"immagine_2_in_slide"		=>	0,
-		"immagine_3_in_slide"		=>	0,
 		"mostra_seconda_immagine_categoria_prodotti"	=>	0,
 		"mostra_seconda_immagine_tag"	=>	0,
 		"mostra_colore_testo"		=>	0,
@@ -541,6 +538,13 @@ class VariabiliModel extends GenericModel {
 		"max_numero_email_giorno"	=>	0, // massimo numero di email inviabili ogni giorno (0 = no limiti)
 		## PULSANTI ##
 		"classe_pulsanti_submit"	=>	"uk-button uk-button-secondary", // classe de ipulsanti submit
+		## SLIDE ##
+		"attiva_tipo_slide"			=>	0, // attiva la tendina "tipo slide"
+		"immagine_2_in_slide"		=>	0, // mostra la seconda immagine nella slide
+		"immagine_3_in_slide"		=>	0, // mostra la terza immagine nella slide
+		## CATEGORIE ##
+		"fasce_in_categorie"		=>	0, // mostra il tab per la gestione delle fasce in categorie
+		"attiva_mostra_in_menu"		=>	0, // se impostato a 1, permette di gestire il campo mostra_in_menu nelle categorie
 		## ORDINE ##
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)

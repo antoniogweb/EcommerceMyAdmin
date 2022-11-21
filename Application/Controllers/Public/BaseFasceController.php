@@ -394,4 +394,14 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getFasciaGiftCard()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_GIFT_CARD","", array(
+			"titolo"	=>	"Fascia Gift card",
+			"percorso"	=>	"Elementi/Fasce/GiftCard",
+		))));
+		return ob_get_clean();
+	}
 }

@@ -229,6 +229,13 @@ class CategoriesModel extends HierarchicalModel {
 						"<div class='form_notice'>".gtext("Margine in % di tutti i prodotti della categoria.")." ".gtext("Se un prodotto ha un suo margine specificio, verrà usato il margine del prodotto.")."</div>"
 					),
 				),
+				'mostra_in_menu'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Mostra nel menù principale',
+					'options'	=>	self::$attivoSiNo,
+					'reverse' => 'yes',
+					'entryClass'	=>	'form_input_text help_mostra_in_menu',
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -1069,6 +1076,13 @@ class CategoriesModel extends HierarchicalModel {
 		return CategoriesModel::getUrlAliasTagMarchio(0, 0, self::$idShop, "", array(), array(), $filtriUrlAltriFiltri);
 	}
 	
+	public static function getUrlAliasNovita()
+	{
+		$filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto-nuovo"], AltriFiltri::$aliasValoreTipoNuovo[0]);
+		
+		return CategoriesModel::getUrlAliasTagMarchio(0, 0, self::$idShop, "", array(), array(), $filtriUrlAltriFiltri);
+	}
+	
 	public static function getIdCategoriaDaSezione($sezione)
 	{
 		if (!isset(self::$associazioneSezioneId))
@@ -1087,5 +1101,15 @@ class CategoriesModel extends HierarchicalModel {
 				"section"	=>	"",
 			),
 		))->toList("section", "id_c")->send();
+	}
+	
+	public function getTitoloCategoriaPadreSezione()
+	{
+		$idCat = (int)self::getIdCategoriaDaSezione($this->section);
+		
+		if ($idCat)
+			return CategoriesModel::g(false)->whereId($idCat)->field("title");
+		
+		return "";
 	}
 }

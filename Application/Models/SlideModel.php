@@ -66,10 +66,14 @@ class SlideModel extends PagesModel {
 		parent::setFormStruct($id);
 		
 		$plus = array(
-		
-// 			'sottotitolo'		=>	array(
-// 				'labelString'=>	'Copy',
-// 			),
+			'id_opzione'	=>	array(
+				'type'		=>	'Select',
+				'entryClass'	=>	'form_input_text help_iva',
+				'labelString'=>	'Tipologia',
+				'options'	=>	OpzioniModel::codice("TIPO_SLIDE", "id_opzione"),
+				'reverse' => 'yes',
+				
+			),
 			'url'		=>	array(
 				'labelString'=>	'Link libero',
 			),
@@ -80,41 +84,6 @@ class SlideModel extends PagesModel {
 	
 	public function setFilters()
 	{
-		$this->_popupItemNames = array(
-			'attivo'	=>	'attivo',
-// 			'id_c'	=>	'id_c',
-// 			'in_evidenza'	=>	'in_evidenza',
-// 			'in_promozione'	=>	'in_promozione',
-// 			'mostra_in_slide'	=>	'mostra_in_slide',
-// 			'settore'	=>	'settore',
-		);
-
-		$this->_popupLabels = array(
-			'attivo'	=>	'PUBBLICATO?',
-// 			'id_c'	=>	'CATEGORIA',
-// 			'in_evidenza'	=>	'IN EVIDENZA?',
-// 			'in_promozione'	=>	'IN PROMOZIONE?',
-// 			'mostra_in_slide'	=>	'IN SLIDE?',
-// 			'settore'	=>	'SETTORE',
-		);
-
-		$this->_popupFunctions = array(
-			'attivo'=>	'getYesNo',
-// 			'id_c'	=>	'getCatNameForFilters',
-// 			'in_evidenza'	=>	'getYesNo',
-// 			'in_promozione'	=>	'getYesNo',
-// 			'mostra_in_slide'	=>	'getYesNo',
-		);
 		
-// 		$this->_popupOrderBy = array(
-// 			'id_c'	=>	'lft asc',
-// 		);
-// 		
-// 		if (isset($this->hModel->section))
-// 		{
-// 			$this->_popupWhere = array(
-// 				'id_c'	=>	$this->hModel->getChildrenFilterWhere(),
-// 			);
-// 		}
 	}
 }

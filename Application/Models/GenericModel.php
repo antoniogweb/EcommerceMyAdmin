@@ -53,6 +53,12 @@ class GenericModel extends Model_Tree
 		"no"	=>	"No",
 	);
 	
+	public static $YN = array(
+		"tutti"	=>	"Tutti",
+		"Y"	=>	"Sì",
+		"N"	=>	"No",
+	);
+	
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
 	public $campoValore = "valore";

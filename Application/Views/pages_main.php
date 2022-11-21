@@ -136,10 +136,12 @@ $(function() {
 			<div class="box">
 				<div class="box-header with-border">
 					<!-- start the popup menù -->
+					<?php if (trim(strip_tags($popup))) { ?>
 					<div class="verticalMenu">
 						<?php echo $popup;?>
 					</div>
-
+					<?php } ?>
+					
 <!-- 					<div class="notice_box"> -->
 						<?php echo $notice;?>
 <!-- 					</div> -->
