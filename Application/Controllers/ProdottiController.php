@@ -47,12 +47,15 @@ class ProdottiController extends PagesController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Immagine,Codice / Titolo,Categorie';
 		
+		$filtroCategoria = array("tutti" => "Prodotti") + CategorieModel::g(false)->buildSelect(null,false);
+		$this->filters = array(null,null,'title',array("id_c",null,$filtroCategoria));
+		
 		if (v("usa_marchi"))
 		{
 			$this->tableFields[] = 'marchio';
 			$this->head .= ',Marchio';
 			$filtroMarchio = array("tutti" => "Tutti") + $this->m["MarchiModel"]->filtro();
-			$this->filters = array(null,null,'title',null,array("-id_marchio",null,$filtroMarchio));
+			$this->filters[] = array("-id_marchio",null,$filtroMarchio);
 		}
 		
 		$fTag = null;
