@@ -577,7 +577,7 @@ class OrdiniModel extends FormModel {
 				
 				// Svuoto tutte le mail BCC
 				$mail->ClearBCCs();
-				$emails = array($ordine["email"]);
+				$emails = array($sendTo);
 				$arrayBcc = MailordiniModel::setBcc($mail, $emails);
 				
 				ob_start();
@@ -621,6 +621,7 @@ class OrdiniModel extends FormModel {
 					"bcc"		=>	implode(",",$arrayBcc),
 					"testo"		=>	$testoClean,
 					"inviata"	=>	0,
+					"email"		=>	$sendTo,
 				);
 				
 				$mailOrdini = $this->aggiungiStoricoMail($clean["id_o"], $tipo, $params);
@@ -687,9 +688,9 @@ class OrdiniModel extends FormModel {
 		$mailOrdini = new MailordiniModel();
 		
 		$mailOrdini->setValues(array(
-			"id_o"	=>	$id_o,
-			"tipo"	=>	$tipo,
-			"email"	=>	isset($ordine["email"]) ? $ordine["email"] : "",
+			"id_o"		=>	$id_o,
+			"tipo"		=>	$tipo,
+			"email"		=>	isset($params["email"]) ? $params["email"] : $ordine["email"],
 			"id_user"	=>	isset($ordine["id_user"]) ? $ordine["id_user"] : 0,
 			"oggetto"	=>	isset($params["oggetto"]) ? $params["oggetto"] : "",
 			"bcc"		=>	isset($params["bcc"]) ? $params["bcc"] : "",
