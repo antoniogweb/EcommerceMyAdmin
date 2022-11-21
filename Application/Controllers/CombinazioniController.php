@@ -186,6 +186,13 @@ class CombinazioniController extends BaseController
 		
 		if ($this->viewArgs["id_ordine"] != "tutti")
 		{
+			if ($this->viewArgs["id_lista_reg_filt"] != "tutti")
+			{
+				$this->mainFields[] = "numeroRegalati";
+				$this->mainFields[] = "numeroRimastiDaRegalare";
+				$this->mainHead .= ",Regalati,Rimasti da regalare";
+			}
+			
 			$this->mainFields[] = "bulkaggiungiaordine";
 			$this->mainHead .= ",Aggiungi";
 		}

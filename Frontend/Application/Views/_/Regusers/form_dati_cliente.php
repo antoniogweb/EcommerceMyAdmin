@@ -32,7 +32,7 @@ else
 
 <?php include(tpf("/Elementi/FormRegistrazioneCheckout/check_fattura.php")); ?>
 
-<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
+<div class="uk-grid-column-small uk-child-width-1-2@s uk-grid" uk-grid>
 	<div class="box_entry_dati first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Ragione sociale");?> *</label>
 		<div class="uk-form-controls">

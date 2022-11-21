@@ -70,7 +70,7 @@ img:not([src])
 
 .spedizione_selezionata
 {
-	background-color: #f8f8f8;
+	background-color: $background-muted-background;
 }
 
 .spedizione_box, .radio_corriere, .radio_pagamento
@@ -120,6 +120,7 @@ img:not([src])
 	display:inline-block;
 /* 	background: #f8f8f8; */
 	padding:5px;
+	line-height: 20px;
 }
 
 .checkout-steps

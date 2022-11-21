@@ -331,7 +331,7 @@ class OrdiniModel extends FormModel {
 		if (App::$isFrontend)
 			$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
 		else
-			$this->values["cart_uid"] = randomToken();
+			$this->values["cart_uid"] = $this->getUniqueId(randomToken());
 		
 		$this->values["codice_transazione"] = $this->getUniqueCodTrans(generateString(30));
 		
@@ -1051,7 +1051,7 @@ class OrdiniModel extends FormModel {
 			CartModel::attivaDisattivaSpedizione((int)$idOrdine);
 			
 			// CONTROLLO LA PROMO
-			$sconto = 0;
+// 			$sconto = 0;
 			
 			if ($ordine["id_p"])
 			{
@@ -1063,12 +1063,9 @@ class OrdiniModel extends FormModel {
 					PromozioniModel::$staticIdO = $ordine["id_o"];
 					
 					if (hasActiveCoupon($ordine["id_o"]))
-					{
 						User::$prodottiInCoupon = PromozioniModel::g()->elencoProdottiPromozione(User::$coupon);
-						
-						if ($coupon["tipo_sconto"] == "PERCENTUALE")
-							$sconto = $coupon["sconto"];
-					}
+					else
+						User::$coupon = null;
 				}
 			}
 			

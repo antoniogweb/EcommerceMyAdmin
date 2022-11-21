@@ -511,6 +511,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_modifica_cliente_in_ordine"	=>	0, // se impostato ad 1, permette di modificare il cliente nell'ordine
 		## CHECKOUT ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
+		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout
 		"classi_titoli_checkout_spedizione"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli della sezione spedizioni al checkout
 		"classi_titoli_resoconto_ordine"	=>	"uk-heading-bullet", // classi usate nei titoli delle varie sezioni del resoconto ordine
 		"attiva_coupon_checkout"	=>	1, // se mostrare il form di inserimento coupon al checkout
