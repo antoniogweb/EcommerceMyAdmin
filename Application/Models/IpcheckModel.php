@@ -41,15 +41,29 @@ class IpcheckModel extends Model_Tree
 		return isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
 	}
 	
-	public static function check($chiave = "")
+	public static function deleteScaduti()
 	{
-		if (App::$isFrontend && v("attiva_check_ip") && !User::$adminLogged)
+		if (App::$isFrontend && v("attiva_check_ip"))
 		{
 			$ipcModel = new IpcheckModel();
 			
-			$timeSecondi = time() - (3600 * 30);
+			$timeSecondi = time() - (3600 * v("svuota_ip_ogni_x_ore"));
 			
-			$ipcModel->query("delete from ip_check where time_creazione < $timeSecondi");
+			if ((int)v("time_ultima_eliminazione_ip") < (int)$timeSecondi)
+			{
+				$ipcModel->query("delete from ip_check where time_creazione < $timeSecondi");
+				VariabiliModel::setValore("time_ultima_eliminazione_ip", time());
+			}
+		}
+	}
+	
+	public static function check($chiave = "")
+	{
+		self::deleteScaduti();
+		
+		if (App::$isFrontend && v("attiva_check_ip") && !User::$adminLogged)
+		{
+			$ipcModel = new IpcheckModel();
 			
 			$ipcModel->db->beginTransaction();
 			

@@ -64,6 +64,9 @@ class BaseBaseController extends Controller
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!empty($_POST))
+			IpcheckModel::check("POST");
+		
 		Domain::$adminName = $this->baseUrlSrc."/admin";
 		Domain::$publicUrl = $this->baseUrlSrc;
 		
@@ -844,8 +847,6 @@ class BaseBaseController extends Controller
 			
 			if (isset($_POST['inviaFeedback']) && (!v("feedback_solo_se_loggato") || User::$logged))
 			{
-				IpcheckModel::check("POST_FEEDBACK");
-				
 				// Imposto l'output in JSON
 				if (isset($_POST['ajaxsubmit']))
 				{
@@ -1129,8 +1130,6 @@ class BaseBaseController extends Controller
 		
 		if (isset($_POST['invia']))
 		{
-			IpcheckModel::check("POST_CONTATTI");
-			
 			// Imposto l'output in JSON
 			if (isset($_POST['ajaxsubmit']))
 			{

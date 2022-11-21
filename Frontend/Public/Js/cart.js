@@ -1207,7 +1207,10 @@ $(document).ready(function(){
 		
 		var that = $(this);
 		
-		var url = $(this).attr("href");
+		var url = $(this).attr('data-link');
+		
+		if (typeof url === 'undefined' || url === false || url === null)
+			var url = $(this).attr("href");
 		
 // 		that.parent().find("img").css("visibility","visible");
 		

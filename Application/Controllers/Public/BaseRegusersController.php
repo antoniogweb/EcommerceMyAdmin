@@ -46,7 +46,7 @@ class BaseRegusersController extends BaseController
 			$this->load('footer','last');
 		}
 		
-		IpcheckModel::check($controller.$action);
+// 		IpcheckModel::check($controller.$action);
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Login';
 		
