@@ -34,37 +34,7 @@ class PagineModel extends PagesModel {
 	
 	public function setFilters()
 	{
-		$this->_popupItemNames = array(
-			'attivo'	=>	'attivo',
-// 			'id_c'	=>	'id_c',
-// 			'in_evidenza'	=>	'in_evidenza',
-// 			'in_promozione'	=>	'in_promozione',
-		);
 
-		$this->_popupLabels = array(
-			'attivo'	=>	'PUBBLICATO?',
-// 			'id_c'	=>	'CATEGORIA',
-// 			'in_evidenza'	=>	'IN EVIDENZA?',
-// 			'in_promozione'	=>	'IN PROMOZIONE?',
-		);
-
-		$this->_popupFunctions = array(
-			'attivo'=>	'getYesNo',
-// 			'id_c'	=>	'getCatNameForFilters',
-// 			'in_evidenza'	=>	'getYesNo',
-// 			'in_promozione'	=>	'getYesNo',
-		);
-		
-// 		$this->_popupOrderBy = array(
-// 			'id_c'	=>	'lft asc',
-// 		);
-// 		
-// 		if (isset($this->hModel->section))
-// 		{
-// 			$this->_popupWhere = array(
-// 				'id_c'	=>	$this->hModel->getChildrenFilterWhere(),
-// 			);
-// 		}
 	}
 	
 	public function insert()

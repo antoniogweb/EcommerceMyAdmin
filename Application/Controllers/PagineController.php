@@ -46,11 +46,11 @@ class PagineController extends PagesController {
 			'[[checkbox]];pages.id_page;',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a> <br /><span class='get_title'>(alias: ;pages.alias;)</span>",
 			'tipopagina',
-// 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
+			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Tipo';
-		$this->filters = array(null,'title');
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Tipo,Attiva';
+		$this->filters = array(null,'title',null,array("attivo",null,SlideModel::$YN));
 		
 		$this->colProperties = array(
 			array(
