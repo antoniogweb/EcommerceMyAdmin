@@ -446,6 +446,7 @@ class VariabiliModel extends GenericModel {
 		"immagini_separate_per_variante"		=>	0, // se settato a 1, possibilità di caricare più immagini per ogni variante
 		"combinazioni_in_prodotti"	=>	1, // attiva le varianti
 		"aggiorna_combinazioni_automaticamente"	=>	0, // se impostato ad 1, aggiorna le combinazioni non appena vengono cambiate le varianti
+		"permetti_di_selezionare_estensione_url_pagine"	=>	0, // se impostato a 1, permette la scelta tra l'estensione .html e /
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento

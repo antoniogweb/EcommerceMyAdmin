@@ -38,6 +38,8 @@
 									
 									<?php echo $form["sottotitolo"];?>
 									
+									<?php echo $form["tipo_estensione_url"] ?? null;?>
+									
 									<?php echo $form["tipo_pagina"];?>
 									
 									<?php echo $form["use_editor"];?>

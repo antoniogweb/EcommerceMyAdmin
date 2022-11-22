@@ -669,6 +669,17 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Specificare un indirizzo email per riga.")."<br /><b>".gtext("Se lasciato vuoto, la mail verrà inviata all'indirizzo specificato nelle impostazioni.")."</b></div>"
 					),
 				),
+				'tipo_estensione_url'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_estensione',
+					'labelString'=>	'Parte finale URL',
+					'options'	=>	array(
+						"1"	=>	".html",
+						"2"	=>	"/",
+					),
+					'reverse' => 'yes',
+					
+				),
 			),
 		);
 		
@@ -1546,6 +1557,11 @@ class PagesModel extends GenericModel {
 		return 0;
 	}
 	
+	public static function getEstensioneUrl($tipo)
+	{
+		return ($tipo == 1) ? ".html" : "/";
+	}
+	
 	//get the URL of a content
 	public function getUrlAlias($id, $lingua = null, $idC = 0)
 	{
@@ -1559,12 +1575,16 @@ class PagesModel extends GenericModel {
 		
 		$isProdotto = isProdotto($clean["id"]);
 		
+		$estensionePagina = ".html";
+		
 		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
 			$parents = $this->parents($clean["id"], false, false, $lingua);
 			
 			//remove the root node
 			array_shift($parents);
+			
+			$indiceNode = 0;
 			
 			foreach ($parents as $node)
 			{
@@ -1581,7 +1601,12 @@ class PagesModel extends GenericModel {
 						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
 					else
 						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
+					
+					if ((int)$indiceNode === (count($parents)-1) && isset($node[$this->_tables]["tipo_estensione_url"]) && v("permetti_di_selezionare_estensione_url_pagine"))
+						$estensionePagina = self::getEstensioneUrl($node[$this->_tables]["tipo_estensione_url"]);
 				}
+				
+				$indiceNode++;
 			}
 		}
 		else
@@ -1592,7 +1617,7 @@ class PagesModel extends GenericModel {
 				$urlArray[] = field($page, "alias").$c->getAlias($clean["id"], $lingua, $idC);
 		}
 		
-		$ext = Parametri::$useHtmlExtension ? ".html" : null;
+		$ext = Parametri::$useHtmlExtension ? $estensionePagina : null;
 		
 		// Appendo il marchio se presente
 		if (v("usa_marchi") && v("aggiungi_marchio_in_url_prodotto"))
