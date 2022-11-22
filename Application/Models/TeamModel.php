@@ -40,7 +40,8 @@ class TeamModel extends BasicsectionModel {
 				'labelString'=>	'Indirizzo',
 			),
 		);
-
 	}
+	
+	public function setFilters() {}
 	
 }

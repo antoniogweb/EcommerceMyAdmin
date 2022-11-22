@@ -41,6 +41,8 @@ class ServiziController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
+		$this->filters = array(null,null,'title',array("attivo",null,SlideModel::$YN));
+		
 		$this->queryFields = "title,sottotitolo,attivo,description,immagine,immagine_2";
 	}
 }

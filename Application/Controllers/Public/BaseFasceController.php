@@ -80,10 +80,11 @@ trait BaseFasceController
 		$pages = $this->team;
 		
 		ob_start();
-		include tpf("Fasce/team.php");
-		$output = ob_get_clean();
-		
-		return $output;
+		include(tpf(ElementitemaModel::p("FASCIA_TEAM","", array(
+			"titolo"	=>	"Fascia Team",
+			"percorso"	=>	"Elementi/Fasce/Team",
+		))));
+		return ob_get_clean();
 	}
 	
 	public function getTestimonial()

@@ -576,7 +576,6 @@ class BaseContenutiController extends BaseController
 				
 				$titolo = $this->titoloBreadcrumb($titolo, true);
 				
-// 				print_r($tempParents[count($tempParents)-1]);
 				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<span class='breadcrumb_last_text'>".$titolo."</span>".v("breadcrumb_element_close")."\n");
 			}
 			else
@@ -594,7 +593,10 @@ class BaseContenutiController extends BaseController
 			
 			$i++;
 		}
-		return implode(v("divisone_breadcrum"), $breadcrumbArray);
+		
+		App::$currentBreadcrumb = implode(v("divisone_breadcrum"), $breadcrumbArray);
+		
+		return App::$currentBreadcrumb;
 	}
 	
 	protected function titoloBreadcrumb($titolo)

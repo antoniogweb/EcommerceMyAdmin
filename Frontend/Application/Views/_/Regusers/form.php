@@ -54,11 +54,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php } ?>
 	
 	<div class="uk-margin">
-		<div class="<?php echo v("classe_pulsanti_submit");?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
+		<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
 		<?php if (strcmp($this->action,"add") === 0) { ?>
-		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="updateAction" value="<?php echo gtext("Completa registrazione", false);?>" />
+		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Completa registrazione", false);?>" />
 		<?php } else { ?>
-		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />
+		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />
 		<?php } ?>
 	</div>
 </form>

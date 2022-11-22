@@ -26,4 +26,5 @@ class ServiziModel extends BasicsectionModel {
 	
 	public $hModelName = "ServizicatModel";
 	
+	public function setFilters() {}
 }

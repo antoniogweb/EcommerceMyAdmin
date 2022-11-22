@@ -32,6 +32,8 @@ class App
 	
 	public static $pannelli = array();
 	
+	public static $currentBreadcrumb = null;
+	
 	public static function setPannelli()
 	{
 		self::$pannelli = array(

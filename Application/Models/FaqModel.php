@@ -26,4 +26,5 @@ class FaqModel extends BasicsectionModel {
 	
 	public $hModelName = "FaqcatModel";
 	
+	public function setFilters() {}
 }

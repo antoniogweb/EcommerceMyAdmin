@@ -38,7 +38,7 @@ class AvvisiController extends PagesController {
 		$this->orderBy = "pages.id_order desc";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva';
-		$this->filters = array(null,null,'title');
+		$this->filters = array(null,'title',array("attivo",null,SlideModel::$YN));
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
 		$this->queryFields = "title,attivo,description";
@@ -50,7 +50,7 @@ class AvvisiController extends PagesController {
 		
 		$data["sezionePannello"] = "sito";
 		
-		$data["tabella"] = "slide";
+		$data["tabella"] = "avvisi";
 		
 		$this->colProperties = array(
 			array(

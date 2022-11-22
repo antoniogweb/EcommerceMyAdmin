@@ -53,6 +53,8 @@ class TeamController extends PagesController {
 			$this->filters[] = array("id_ruolo",null,$this->m["RuoliModel"]->selectTipi(false,"tutti","Ruolo"));
 		}
 		
+		$this->filters[] = array("attivo",null,SlideModel::$YN);
+		
 		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';
 		$this->head .= ",Attiva";
 		

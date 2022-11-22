@@ -143,7 +143,14 @@ function show_preview_generica(numero_slide)
 	
 	if (immagine != "")
 	{
-		$(".preview_image"+numero_slide).html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
+		var ext = immagine.split('.').pop();
+		ext = ext.toLowerCase();
+		
+		if (ext == "png" || ext == "jpg" || ext == "jpeg")
+			$(".preview_image"+numero_slide).html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
+		else
+			$(".preview_image"+numero_slide).html("<img src='<?php echo Domain::$publicUrl.'/images/contents/';?>" + immagine + "' />");
+		
 		$(".cancella_immagine_box"+numero_slide).css("display", "block");
 		$(".scarica_immagine_box"+numero_slide).css("display", "block");
 		$(".scarica_immagine"+numero_slide).attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);

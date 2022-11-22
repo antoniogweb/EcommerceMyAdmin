@@ -34,7 +34,7 @@ class PagesModel extends GenericModel {
 
 	public $checkAll = true;
 	
-	public $fileTypeAllowed = array('jpg','jpeg','gif','png'); // File extensions
+	public $fileTypeAllowed = array('jpg','jpeg','gif','png', 'svg'); // File extensions
 	public $rielaboraImmagine = true;
 	
 	public $cartellaImmaginiContenuti = "images/contents";
@@ -1754,7 +1754,10 @@ class PagesModel extends GenericModel {
 		
 		$fileName = $im->getFirstImage($principale);
 		
-		return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$principale."/$fileName' />";
+		if (Files_Upload::isJpeg(Files_Upload::sFileExtension($fileName)))
+			return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$principale."/$fileName' />";
+		else
+			return "<img src='".Domain::$publicUrl."/images/contents/$fileName' />";
 	}
 	
 	public function inPromozioneText($id_page)

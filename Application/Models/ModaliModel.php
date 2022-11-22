@@ -32,4 +32,5 @@ class ModaliModel extends BasicsectionModel {
 			$this->values["apri_dopo_secondi"] = abs((int)$this->values["apri_dopo_secondi"]);
 	}
 	
+	public function setFilters() {}
 }

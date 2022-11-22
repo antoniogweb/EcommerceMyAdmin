@@ -2305,7 +2305,7 @@ class PagesController extends BaseController {
 							{
 								if (@move_uploaded_file($tempFile,$targetFile))
 								{
-									if ($this->m[$this->modelName]->rielaboraImmagine)
+									if ($this->m[$this->modelName]->rielaboraImmagine && Files_Upload::isJpeg($ext))
 									{
 										$params = array(
 											'imgWidth'		=>	v("rielabora_width"),

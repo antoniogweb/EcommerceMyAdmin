@@ -57,18 +57,5 @@ class AvvisiModel extends PagesModel {
 		return parent::update($id, $where);
 	}
 	
-	public function setFilters()
-	{
-		$this->_popupItemNames = array(
-			'attivo'	=>	'attivo',
-		);
-
-		$this->_popupLabels = array(
-			'attivo'	=>	'PUBBLICATO?',
-		);
-
-		$this->_popupFunctions = array(
-			'attivo'=>	'getYesNo',
-		);
-	}
+	public function setFilters() {}
 }
