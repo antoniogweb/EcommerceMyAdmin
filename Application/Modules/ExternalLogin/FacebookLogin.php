@@ -177,19 +177,22 @@ class FacebookLogin extends ExternalLogin
 		{
 			$signed_request = $_POST['signed_request'];
 			$data = $this->parseSignedRequest($signed_request);
-			$user_id = $data['user_id'];
+			$user_id = isset($data['user_id']) ? $data['user_id'] : null;
 			
-			$idUserCms = $userModel->getIdUtenteDaIdApp($this->params["codice"], $user_id);
-			
-			if ($idUserCms)
+			if (isset($user_id))
 			{
-				// Start data deletion
-				$tokenEliminazione = $userModel->deleteAccount($idUserCms, $this->params["codice"]);
+				$idUserCms = $userModel->getIdUtenteDaIdApp($this->params["codice"], $user_id);
 				
-				$data = array(
-					'url' => Url::getRoot().$urlOutput.$tokenEliminazione,
-					'confirmation_code' => $tokenEliminazione,
-				);
+				if ($idUserCms)
+				{
+					// Start data deletion
+					$tokenEliminazione = $userModel->deleteAccount($idUserCms, $this->params["codice"]);
+					
+					$data = array(
+						'url' => Url::getRoot().$urlOutput.$tokenEliminazione,
+						'confirmation_code' => $tokenEliminazione,
+					);
+				}
 			}
 		}
 		

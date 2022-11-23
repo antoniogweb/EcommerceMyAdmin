@@ -3,7 +3,7 @@
 	<div uk-grid class="uk-margin uk-grid">
 		<div class="uk-width-1-2@m uk-width-1-2@s">
 			<?php $datiPrototto = FeedbackModel::gDatiProdotto();?>
-			<h2><?php echo field($datiPrototto, "title");?></h2>
+			<h3><?php echo field($datiPrototto, "title");?></h3>
 			
 			<img src="<?php echo $this->baseUrlSrc."/thumb/dettagliobig/".$datiPrototto["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($datiPrototto, "title"));?>" />
 			

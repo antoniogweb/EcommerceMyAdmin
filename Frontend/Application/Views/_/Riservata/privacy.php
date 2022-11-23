@@ -75,7 +75,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			</div>
 		</div>
 		
-		<input type="submit" class="uk-button uk-button-secondary" name="cancella" value="<?php echo gtext("Cancella account", false);?>">
+		<input type="submit" class="<?php echo v("classe_pulsanti_submit");?>" name="cancella" value="<?php echo gtext("Cancella account", false);?>">
 	</form>
 </div>
 <?php } ?>
