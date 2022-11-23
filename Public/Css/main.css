@@ -1237,7 +1237,10 @@ tr.cart_head {
 {
 	vertical-align:-2px !important
 }
-
+.list_filter_form select
+{
+	max-width:150px;
+}
 .box
 {
 	border-top:1px solid #ddd !important;
