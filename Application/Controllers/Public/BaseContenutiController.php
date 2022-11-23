@@ -1981,6 +1981,9 @@ class BaseContenutiController extends BaseController
 			
 			$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($lista["liste_regalo"]["id_lista_regalo"]);
 			
+			if (!empty($lista["liste_regalo"]) && in_array($lista["liste_regalo"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("sesso","")))
+				$data["sessoLista"] = $lista["liste_regalo"]["sesso"];
+			
 			$this->append($data);
 			$this->load('lista-regalo');
 		}

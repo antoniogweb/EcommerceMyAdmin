@@ -105,6 +105,9 @@ class BaseListeregaloController extends BaseController
 		
 		$data["lista"] = $lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
 		
+		if (!empty($data["lista"]) && in_array($data["lista"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("sesso","")))
+			$data["sessoLista"] = $data["lista"]["sesso"];
+		
 		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
 		$data["link_lista"] = $this->m["ListeregaloModel"]->getLink($clean["id"]);
 		
