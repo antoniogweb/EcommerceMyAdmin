@@ -26,7 +26,7 @@ $url = PagesModel::getUrlContenuto($p);
 					<?php echo htmlentitydecode(field($p, "description"));?>
                 </div>
                 <?php if ($url) { ?>
-                <a  <?php if ($p["pages"]["go_to"]) { ?>uk-scroll<?php } ?> class="<?php if ($p["pages"]["go_to"]) { ?>uk-modal-close<?php } ?> uk-button uk-button-secondary" href="<?php echo $url;?>">
+                <a  <?php if ($p["pages"]["go_to"]) { ?>uk-scroll<?php } ?> class="<?php if ($p["pages"]["go_to"]) { ?>uk-modal-close<?php } ?> <?php echo v("classe_pulsanti_submit");?>" href="<?php echo $url;?>">
 					<?php echo field($p, "testo_link");?>
                 </a>
                 <?php } ?>

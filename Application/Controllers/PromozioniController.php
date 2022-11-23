@@ -97,11 +97,16 @@ class PromozioniController extends BaseController {
 					"id_r"	=>	0,
 				));
 			else
+			{
 				$this->m[$this->modelName]->aWhere(array(
 					"ne"	=>	array(
 						"id_r"	=>	0,
 					),
 				));
+				
+				$this->addBulkActions = false;
+				$this->colProperties = array();
+			}
 		}
 		
 		$this->m[$this->modelName]->save();
