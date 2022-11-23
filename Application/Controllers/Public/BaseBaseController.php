@@ -64,7 +64,7 @@ class BaseBaseController extends Controller
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if (!empty($_POST))
+		if (!empty($_POST) && $action != "totale")
 			IpcheckModel::check("POST");
 		
 		Domain::$adminName = $this->baseUrlSrc."/admin";

@@ -530,9 +530,9 @@ class VariabiliModel extends GenericModel {
 		"svuota_ip_ogni_x_ore"		=>	30, // numero di ore dopo le quali svuota gli IP
 		"time_ultima_eliminazione_ip"	=>	0, // unix time stamp dell'ultima volta he ha svuotato gli IP
 		"attiva_check_ip"			=>	0, // se impostato a 1, limita l'accesso ad una stessa "chiave" oltre un certo limite temporale
-		"limite_ip_chiave_contemporanee"	=>	5, // massimo numero di richieste contemporanee dallo stesso IP alla stessa chiave
-		"limite_ip_chiave_minuto"	=>	40, // massimo numero di richieste nell'ultimo minuto dallo stesso IP alla stessa chiave
-		"limite_ip_chiave_orario"		=>	100, // massimo numero di richieste nell'ultima ora dallo stesso IP alla stessa chiave
+		"limite_ip_chiave_contemporanee"	=>	10, // massimo numero di richieste contemporanee dallo stesso IP alla stessa chiave
+		"limite_ip_chiave_minuto"	=>	50, // massimo numero di richieste nell'ultimo minuto dallo stesso IP alla stessa chiave
+		"limite_ip_chiave_orario"	=>	200, // massimo numero di richieste nell'ultima ora dallo stesso IP alla stessa chiave
 		## MAIL ##
 		"max_numero_email_ora"		=>	0, // massimo numero di email inviabili ogni ora (0 = no limiti)
 		"max_numero_email_giorno"	=>	0, // massimo numero di email inviabili ogni giorno (0 = no limiti)

@@ -78,6 +78,17 @@ class PagamentiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'utilizzo'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Utilizzo",
+					"options"	=>	array(
+						"W"	=>	"Web",
+						"B"	=>	"Backend",
+						"E"	=>	"Web + Backend",
+					),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 				'prezzo_ivato'	=>	array(
 					"labelString"	=>	"Costo (IVA inclusa)",
 					'wrap'		=>	array(
@@ -182,5 +193,15 @@ class PagamentiModel extends GenericModel {
 		return (float)PagamentiModel::g(false)->where(array(
 			"attivo"	=>	1,
 		))->getMax("prezzo");
+	}
+	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["tipo"] == "U")
+			return true;
+		
+		return false;
 	}
 }

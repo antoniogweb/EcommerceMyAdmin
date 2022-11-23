@@ -31,7 +31,6 @@ require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
 
 class BaseOrdiniController extends BaseController
 {
-
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);

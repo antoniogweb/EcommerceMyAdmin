@@ -46,13 +46,14 @@ class PagamentiController extends BaseController
 	{
 		$this->shift();
 		
-		$this->queryActions = $this->bulkQueryActions = "";
-		$this->mainButtons = "ledit";
+// 		$this->queryActions = $this->bulkQueryActions = "";
+// 		$this->mainButtons = "ledit";
 		$this->addBulkActions = false;
 		
 		$this->colProperties = array();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
+		$mainMenu = v("permetti_ordini_offline") ? "add" : "";
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu);
 		
 		$this->mainFields = array("edit","pagamenti.codice", "pagamenti.prezzo_ivato","attivo");
 		$this->mainHead = "Titolo,Codice,Costo (€),Attivo";
@@ -64,22 +65,39 @@ class PagamentiController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		if ($queryType != "update")
+		if ($queryType != "update" && !v("permetti_ordini_offline"))
 			die();
 		
 		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo_ivato");
 		
-		$fields = 'titolo,attivo,prezzo_ivato,descrizione';
+		$fields = 'titolo,attivo,prezzo_ivato,descrizione,codice';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if ($record["codice"] == "carta_di_credito")
+		if (isset($record["codice"]) && $record["codice"] == "carta_di_credito")
 			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
 		
-		if ($record["codice"] != "carta_di_credito" && $record["codice"] != "paypal")
+		if (isset($record["codice"]) && $record["codice"] != "carta_di_credito" && $record["codice"] != "paypal")
 			$fields .= ",istruzioni_pagamento";
 		
+		if (v("permetti_ordini_offline"))
+			$fields .= ",utilizzo";
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		if ($queryType == "insert")
+			$this->m[$this->modelName]->setValue("tipo", "U");
+		
+		if (isset($record["tipo"]) && $record["tipo"] == "S")
+		{
+			$this->disabledFields = "codice";
+			$this->m[$this->modelName]->delFields("codice");
+		}
+		else
+		{
+			$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"codice");
+			$this->m[$this->modelName]->addDatabaseCondition("both",'checkUnique',"codice");
+		}
 		
 		parent::form($queryType, $id);
 		

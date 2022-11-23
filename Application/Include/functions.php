@@ -29,6 +29,15 @@ function metodoPagamento($type)
 {
 	if (isset(OrdiniModel::$pagamenti[$type]))
 		return OrdiniModel::$pagamenti[$type];
+	else
+	{
+		$res = PagamentiModel::g(true)->clear()->where(array(
+			"codice"	=>	sanitizeAll($type),
+		))->first();
+		
+		if ($res)
+			return pfield($res, "titolo");
+	}
 	
 	return gtext("Nessuno", false);
 }

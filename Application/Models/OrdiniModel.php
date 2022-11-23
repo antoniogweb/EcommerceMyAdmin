@@ -99,6 +99,13 @@ class OrdiniModel extends FormModel {
 				),
 			));
 		
+		if (App::$isFrontend)
+			$p->aWhere(array(
+				"in"	=>	array(
+					"pagamenti.utilizzo"	=>	array("W", "E"),
+				),
+			));
+		
 		$res = $p->send();
 		
 		self::$elencoPagamenti = array();

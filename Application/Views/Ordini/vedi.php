@@ -65,6 +65,12 @@
 									<td><b><?php echo OrdiniModel::getLabelTipoOrdine($ordine["tipo_ordine"]);?></b></td>
 								</tr>
 								<?php } ?>
+								<?php if (!$ordine["da_spedire"] && !empty($corriere)) { ?>
+								<tr>
+									<td><?php echo gtext("Tipo di consegna");?>:</td>
+									<td><b><?php echo $corriere["titolo"];?></b></td>
+								</tr>
+								<?php } ?>
 								<?php if (v("attiva_ip_location")) { ?>
 								<tr>
 									<td><?php echo gtext("Nazione navigazione");?>:</td>
