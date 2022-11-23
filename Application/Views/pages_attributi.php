@@ -5,21 +5,6 @@
 $(document).ready(function(){
 
 	var clicked_element = "";
-	
-// 	$(".td_val_attr").mouseenter(function(){
-// 
-// 		var agg_img = $(this).find(".img_attributo_aggiorna");
-// 		
-// 		if (agg_img.attr("rel") != "N")
-// 		{
-// 			agg_img.css("display","inline-block");
-// 		}
-// 		
-// 	}).mouseleave(function(){
-// 	
-// 		$(this).find(".img_attributo_aggiorna").css("display","none");
-// 		
-// 	});
 
 	$(".immagine_variante").click(function(){
 	
@@ -67,65 +52,6 @@ $(document).ready(function(){
 		
 	});
 	
-// 	$(".attributo_event").click(function(){
-// 	
-// 		var t_val = $(this).parent().find(".valore_attributo").text();
-// 		$(this).parent().find(".update_attributo").val(t_val);
-// 		
-// 		$(this).attr("rel","N").css("display","none");
-// 		
-// 		$(this).parent().find(".valore_attributo").css("display","none");
-// 		$(this).parent().find(".edit_attrib_box").css("display","inline-block");
-// 		
-// 	});
-// 	
-// 	$(".attributo_close").click(function(){
-// 	
-// 		$(this).parent().parent().find(".img_attributo_aggiorna").attr("rel","Y");
-// 		$(this).parent().parent().find(".valore_attributo").css("display","inline-block");
-// 		$(this).parent().parent().find(".edit_attrib_box").css("display","none");
-// 		
-// 	});
-// 	
-// 	$(".attributo_edit").click(function(){
-// 	
-// 		var t_val = $(this).parent().find(".update_attributo").val();
-// 		var t_id = $(this).attr("id");
-// 		var t_field = $(this).attr("rel");
-// 		
-// 		var that = $(this).parent().parent().find(".valore_attributo");
-// 		
-// 		var post_data = "id_c="+encodeURIComponent(t_id)+"&value="+encodeURIComponent(t_val)+"&field="+encodeURIComponent(t_field);
-// 		
-// 		$(this).parent().find(".attributo_loading").css("display","inline-block");
-// 		
-// 		$.ajax({
-// 			type: "POST",
-// 			url: "<?php echo $this->baseUrl."/pages/updatevalue";?>",
-// 			data: post_data,
-// 			async: true,
-// 			cache:false,
-// 			dataType: "html",
-// 			success: function(content){
-// 				
-// 				if (jQuery.trim(content) == "OK")
-// 				{
-// 					that.text(t_val).css("display","inline-block");
-// 					that.parent().find(".edit_attrib_box").css("display","none");
-// 					that.parent().find(".img_attributo_aggiorna").attr("rel","Y");
-// 				}
-// 				else
-// 				{
-// 					alert(content);
-// 				}
-// 				
-// 				that.parent().find(".attributo_loading").css("display","none");
-// 				
-// 			}
-// 		});
-// 	
-// 	});
-	
 });
 
 </script>
@@ -151,25 +77,20 @@ $(document).ready(function(){
 			
 			<div class="box">
 				<div class="box-header with-border main">
-					<p><a class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti prodotto")?></a></p>
+					<a class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti")?></a>
 					
-					<div id="form_opzioni"><?php echo gtext("Varianti associate a questo prodotto")?></div>
+					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
+						<span select2=""><?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control help_select_attributo',null,"yes","select2=''");?></span>
+						<button class="submit_file btn btn-primary make_spinner" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi");?></button>
+						<input type="hidden" name="insertAction" value="Aggiungi"/>
+					</form>
 					
 					<div class="notice_box">
 						<?php echo $notice;?>
 					</div>
-
-					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
-						
-						<?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control help_select_attributo',null,"yes");?>
-						<button class="submit_file btn btn-primary make_spinner" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi");?></button>
-						<input type="hidden" name="insertAction" value="Aggiungi"/>
-<!-- 						<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi"> -->
-						
-					</form>
-					<br />
+					
 					<!-- show the table -->
-					<div class='recordsBox help_elenco_varianti_associate'>
+					<div style="margin-top:10px;" class='recordsBox help_elenco_varianti_associate'>
 						<?php if ($numeroAttributi > 0) { ?>
 						<?php echo $main;?>
 						<?php } else {  ?>

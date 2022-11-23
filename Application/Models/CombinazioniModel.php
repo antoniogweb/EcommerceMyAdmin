@@ -321,12 +321,6 @@ class CombinazioniModel extends GenericModel {
 									else
 									{
 										$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-// 										$temp["codice"] = $dettagliPagina["codice"];
-// 										$temp["price"] = $dettagliPagina["price"];
-// 										$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-// 										$temp["peso"] = $dettagliPagina["peso"];
-// 										$temp["giacenza"] = $dettagliPagina["giacenza"];
-// 										$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 										$val[] = $temp;
 									}
 								}
@@ -345,12 +339,6 @@ class CombinazioniModel extends GenericModel {
 								else
 								{
 									$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-// 									$temp["codice"] = $dettagliPagina["codice"];
-// 									$temp["price"] = $dettagliPagina["price"];
-// 									$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-// 									$temp["peso"] = $dettagliPagina["peso"];
-// 									$temp["giacenza"] = $dettagliPagina["giacenza"];
-// 									$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 									$val[] = $temp;
 								}
 							}
@@ -370,12 +358,6 @@ class CombinazioniModel extends GenericModel {
 						else
 						{
 							$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-// 							$temp["codice"] = $dettagliPagina["codice"];
-// 							$temp["price"] = $dettagliPagina["price"];
-// 							$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-// 							$temp["peso"] = $dettagliPagina["peso"];
-// 							$temp["giacenza"] = $dettagliPagina["giacenza"];
-// 							$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 							$val[] = $temp;
 						}
 						
@@ -401,20 +383,39 @@ class CombinazioniModel extends GenericModel {
 				$this->insert();
 			}
 			
-			// Controllo che ci sia la combinazione base
-			$this->controllaCombinazioniPagina($dettagliPagina["id_page"]);
+			$this->controlliDopoCreazioneCombinazione($dettagliPagina["id_page"]);
 			
-			// Genero gli alias di tutte le combinazioni coinvolte
-			$this->aggiornaAlias($dettagliPagina["id_page"]);
-			
-			// Controlla che esista la combinazione canonical
-			$this->checkCanonical($dettagliPagina["id_page"]);
-			
-			// Imosto i prezzi scontati
-			$page->aggiornaPrezziCombinazioni($dettagliPagina["id_page"]);
+// 			// Controllo che ci sia la combinazione base
+// 			$this->controllaCombinazioniPagina($dettagliPagina["id_page"]);
+// 			
+// 			// Genero gli alias di tutte le combinazioni coinvolte
+// 			$this->aggiornaAlias($dettagliPagina["id_page"]);
+// 			
+// 			// Controlla che esista la combinazione canonical
+// 			$this->checkCanonical($dettagliPagina["id_page"]);
+// 			
+// 			// Imosto i prezzi scontati
+// 			$page->aggiornaPrezziCombinazioni($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
+	}
+	
+	private function controlliDopoCreazioneCombinazione($idPage)
+	{
+		// Controllo che ci sia la combinazione base
+		$this->controllaCombinazioniPagina($idPage);
+		
+		// Genero gli alias di tutte le combinazioni coinvolte
+		$this->aggiornaAlias($idPage);
+		
+		// Controlla che esista la combinazione canonical
+		$this->checkCanonical($idPage);
+		
+		$page = new PagesModel();
+		
+		// Imosto i prezzi scontati
+		$page->aggiornaPrezziCombinazioni($idPage);
 	}
 	
 	// Genera gli alias per tutte le righe di combinazione
@@ -793,7 +794,7 @@ class CombinazioniModel extends GenericModel {
 		
 		foreach ($immagini as $imm)
 		{
-			$html .= "<img class='immagine_variante' style='margin-right:5px;' src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$imm["immagine"]."' />";
+			$html .= "<img style='margin-right:5px;' src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$imm["immagine"]."' />";
 		}
 		
 		if (count($immagini) > 0)
@@ -837,6 +838,8 @@ class CombinazioniModel extends GenericModel {
 		));
 		
 		$i->pUpdate(null, "id_page = ".(int)$toId." and id_c = ".(int)$oldPk);
+		
+		$this->controlliDopoCreazioneCombinazione((int)$toId);
 	}
 	
 	public function bulkaggiungialistaregalo($record)

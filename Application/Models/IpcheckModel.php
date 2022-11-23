@@ -75,7 +75,7 @@ class IpcheckModel extends Model_Tree
 				"chiave"			=>	$chiave,
 			));
 			
-			$numero = $ipcModel->getNumeroSecondi(5, $chiave);
+			$numero = $ipcModel->getNumeroSecondi(3, $chiave);
 			
 			if ($numero >= v("limite_ip_chiave_contemporanee"))
 			{

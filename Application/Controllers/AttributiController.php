@@ -67,15 +67,16 @@ class AttributiController extends BaseController {
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 		{
-			$this->bulkQueryActions = "aggiungiapagina";
+			$this->mainFields[] = "bulkaggiungiaprodotto";
+			$this->mainHead .= ",Aggiungi";
+			
+			$this->bulkQueryActions = "aggiungiaprodotto";
 			
 			$this->bulkActions = array(
-				"checkbox_caratteristiche_id_car"	=>	array("aggiungiapagina","Aggiungi alla pagina"),
+				"checkbox_attributi_id_a"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
 			);
 			
-			$this->m[$this->modelName]->aWhere(array(
-				"id_page"	=>	(int)$this->viewArgs["id_page"]
-			));
+			$this->m[$this->modelName]->sWhere("id_a not in (select id_a from pages_attributi where id_page = ".$this->viewArgs["id_page"].")");
 		}
 		
 		$this->m[$this->modelName]->save();

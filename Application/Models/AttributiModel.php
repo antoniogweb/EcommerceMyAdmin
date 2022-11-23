@@ -111,4 +111,23 @@ class AttributiModel extends GenericModel {
 			"id_a"	=>	(int)$idA,
 		))->field("tipo");
 	}
+	
+	public function aggiungiaprodotto($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_page"]))
+		{
+			$idPage = (int)$_GET["id_page"];
+			
+			$pa = new PagesattributiModel();
+			
+			$pa->setValues(array(
+				"id_page"	=>	(int)$idPage,
+				"id_a"		=>	(int)$id,
+			), "sanitizeDb");
+			
+			$pa->insert();
+		}
+    }
 }

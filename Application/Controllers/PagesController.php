@@ -1104,6 +1104,9 @@ class PagesController extends BaseController {
 		$this->m['PagesattributiModel']->values['id_page'] = $clean['id'];
 		$this->m['PagesattributiModel']->updateTable('insert,del');
 		
+		if ($this->m['PagesattributiModel']->queryResult)
+			$this->redirect($this->applicationUrl.$this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
+		
 		$mainAction = "attributi/".$clean['id'];
 		
 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction, 'pageVariable'=>'page_fgl'));
@@ -1142,12 +1145,7 @@ class PagesController extends BaseController {
 		
 		$data['numeroAttributi'] = $this->scaffold->model->rowNumber();
 		
-		$resAttributi = $this->m['AttributiModel']->clear()->where(array(
-			"OR"	=>	array(
-				"id_page"	=>	0,
-				" id_page"	=>	(int)$clean['id'],
-			),
-		))->orderBy("titolo")->send();
+		$resAttributi = $this->m['AttributiModel']->clear()->sWhere("id_a not in (select id_a from pages_attributi where id_page = ".$clean['id'].")")->orderBy("titolo")->send();
 		
 		$data["listaAttributi"] = array();
 		
@@ -1168,13 +1166,13 @@ class PagesController extends BaseController {
 			if (strcmp($_GET["action"],"aggiorna") === 0)
 			{
 				$this->m["CombinazioniModel"]->creaCombinazioni($clean['id']);
-				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y");
+				$this->redirect($this->applicationUrl.$this->controller."/attributi/".$clean['id'].$this->viewStatus."&refresh=y");
 			}
 			else if (strcmp($_GET["action"],"del_comb") === 0)
 			{
 				$clean["id_c"] = $this->request->get("id",0,"forceInt");
 				$this->m["CombinazioniModel"]->del($clean["id_c"]);
-				$this->redirect($this->applicationUrl.$this->controller."/attributi/$id".$this->viewStatus."&refresh=y");
+				$this->redirect($this->applicationUrl.$this->controller."/attributi/".$clean['id'].$this->viewStatus."&refresh=y");
 			}
 		}
 		$this->m['CombinazioniModel']->creaColonne($clean['id']);

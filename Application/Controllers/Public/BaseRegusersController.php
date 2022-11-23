@@ -31,6 +31,9 @@ class BaseRegusersController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!empty($_POST))
+			IpcheckModel::check("POST");
+		
 		if (!v("attiva_area_riservata") && $action != "notice")
 		{
 			$this->redirect("");
