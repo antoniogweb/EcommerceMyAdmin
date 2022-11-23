@@ -283,7 +283,6 @@ class VariabiliModel extends GenericModel {
 		"placeholder_prodotti_o_servizi"	=>	"",
 		"responsabile_trattamento_dati"	=>	"",
 		"email_responsabile_trattamento_dati"	=>	"",
-		"recupera_dati_carrello_da_post"	=>	0,
 		"salva_contatti_in_db"		=>	1,
 		"attiva_sezione_contatti"	=>	1,
 		"attiva_marketing"			=>	0,
@@ -546,6 +545,9 @@ class VariabiliModel extends GenericModel {
 		## CATEGORIE ##
 		"fasce_in_categorie"		=>	0, // mostra il tab per la gestione delle fasce in categorie
 		"attiva_mostra_in_menu"		=>	0, // se impostato a 1, permette di gestire il campo mostra_in_menu nelle categorie
+		## CARRELLO ##
+		"cart_sticky_top_offeset"	=>	100, // offset dello sticky del cart in desktop
+		"recupera_dati_carrello_da_post"	=>	0, // se impostato a 1, salva i dati inviati in post nel carrello (solo se l'utente ha approvato la privacy)
 		## ORDINE ##
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)

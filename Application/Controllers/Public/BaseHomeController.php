@@ -75,6 +75,8 @@ class BaseHomeController extends BaseController
 			}
 		}
 		
+		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().'" />';
+		
 		$this->append($data);
 		
 		if (Output::$html)

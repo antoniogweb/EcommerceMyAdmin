@@ -794,6 +794,8 @@ class BaseContenutiController extends BaseController
 				"caratteristiche.tipo" => "MATERIALE",
 			))->send();
 		
+		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().getCategoryUrlAlias($clean['id']).'" />';
+		
 		$this->append($data);
 		
 		if (Output::$html)
