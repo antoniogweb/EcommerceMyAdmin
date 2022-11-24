@@ -36,6 +36,18 @@
 
 <?php } ?>
 
+<?php if ($this->action === "categorie") { ?>
+
+<form class="form-inline list_filter_form_top" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+
+	<?php echo Html_Form::select("id_c","",$lista,"form-control help_tendina_categorie",null,"yes");?>
+	
+	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
+	
+</form>
+
+<?php } ?>
+
 <?php include($this->viewPath("gestisci_associato_tag"));?>
 
 <?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>

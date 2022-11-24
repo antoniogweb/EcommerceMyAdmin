@@ -136,6 +136,7 @@ class PagesController extends BaseController {
 		$this->model("PagesregioniModel");
 		$this->model("PageslingueModel");
 		$this->model("ContattiModel");
+		$this->model("PagescategoriesModel");
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
@@ -409,19 +410,21 @@ class PagesController extends BaseController {
 			
 			if (strcmp($this->viewArgs['id_c'],'1') === 0 or (!is_array($sId) and strcmp($this->viewArgs['id_c'],$sId) === 0))
 			{
-				$where = array(
-					"in" => array('-id_c' => $children),
-// 					'-id_c' =>	"in(".implode(',',$children).")",
-				);
+				$sWhere = "id_c in (".implode(",",$children).")";
+// 				$where = array(
+// 					"in" => array('-id_c' => $children),
+// // 					'-id_c' =>	"in(".implode(',',$children).")",
+// 				);
 			}
 			else
 			{
-				$where = array(
-					'-id_c' =>	$this->viewArgs['id_c'],
-				);
+				$sWhere = "id_c = ".(int)$this->viewArgs['id_c'];
+				
+				if (v("attiva_categorie_in_prodotto"))
+					$sWhere .= " OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$this->viewArgs['id_c'].")";
 			}
 			
-			$this->scaffold->model->aWhere($where);
+			$this->scaffold->model->sWhere($sWhere);
 		}
 		
 		if ($this->viewArgs["id_pcorr"] != "tutti")
@@ -2004,6 +2007,58 @@ class PagesController extends BaseController {
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function categorie($id = 0)
+	{
+		$this->orderBy = "categories.title";
+		
+		$this->_posizioni['categorie'] = 'class="active"';
+		
+// 		$this->ordinaAction = "ordinapersonalizzazioni";
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "PagescategoriesModel";
+		
+		$this->m[$this->modelName]->setFields('id_c','sanitizeAll');
+		$this->m[$this->modelName]->values['id_page'] = $clean['id'];		
+		$this->m[$this->modelName]->updateTable('insert,del');
+		
+		if ($this->m[$this->modelName]->queryResult)
+			$this->redirect($this->applicationUrl.$this->controller."/".$this->action."/".$clean['id'].$this->viewStatus);
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("titoloCrud");
+		$this->mainHead = "Titolo";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"categorie/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("categories.*,pages_categories.*")->inner(array("categoria"))->orderBy("categories.title")->where(array(
+			"pages_categories.id_page"	=>	$clean['id'],
+		))->save();
+		
+		$this->tabella = $this->getNomeMenu();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$data["lista"] = CategorieModel::g(false)->buildSelect(null,false, "node.id_c not in (select id_c from pages_categories where id_page = ".(int)$clean['id'].") AND ");
 		
 		$this->append($data);
 	}

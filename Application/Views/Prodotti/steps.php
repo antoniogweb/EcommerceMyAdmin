@@ -13,6 +13,9 @@
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
 	<li <?php echo $posizioni['main'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>"><?php echo gtext("Dettagli");?></a></li>
+	<?php if (v("attiva_categorie_in_prodotto")) { ?>
+	<li <?php echo $posizioni['categorie'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/categorie/$id_page".$viewStatusTutti;?>"><?php echo gtext("Categorie");?></a></li>
+	<?php } ?>
 	<?php if (v("contenuti_in_prodotti")) { ?>
 	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".$viewStatusTutti;?>"><?php echo gtext("Contenuti");?></a></a></li>
 	<?php } ?>

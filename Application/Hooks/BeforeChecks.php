@@ -596,6 +596,18 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"in_promozione"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"in_evidenza"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 		"nazione_utente"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(

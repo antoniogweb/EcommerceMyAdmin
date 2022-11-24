@@ -69,6 +69,9 @@ class ProdottiController extends PagesController {
 		}
 		
 		$this->filters[] = $fTag;
+		$this->filters[] = array("in_promozione",null,SlideModel::$YN);
+		$this->filters[] = array("attivo",null,SlideModel::$YN);
+		$this->filters[] = array("in_evidenza",null,SlideModel::$YN);
 		
 		$fNaz = $fReg = null;
 		
@@ -91,6 +94,12 @@ class ProdottiController extends PagesController {
 		$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
 		
 		$this->head .= ',In promoz?,Pubbl?,In evid?';
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'30px',
+			),
+		);
 		
 		$data["tabella"] = "prodotti";
 		

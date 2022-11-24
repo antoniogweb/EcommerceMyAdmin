@@ -180,6 +180,7 @@ class Route
 		'prodotti,regioni',
 		'prodotti,lingue',
 		'prodotti,aggiungicaratteristica',
+		'prodotti,categorie',
 		
 		'testi,main',
 		'testi,form',
