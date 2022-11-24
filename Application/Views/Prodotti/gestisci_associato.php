@@ -30,7 +30,9 @@
 
 	<?php echo Html_Form::select("id_pers","",$lista,"form-control help_tendina_personalizzazioni",null,"yes");?>
 	
-	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
+<!-- 	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi"> -->
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<input type="hidden" name="insertAction" value="Aggiungi" />
 	
 </form>
 
@@ -42,8 +44,8 @@
 
 	<?php echo Html_Form::select("id_c","",$lista,"form-control help_tendina_categorie",null,"yes");?>
 	
-	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
-	
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<input type="hidden" name="insertAction" value="Aggiungi" />
 </form>
 
 <?php } ?>

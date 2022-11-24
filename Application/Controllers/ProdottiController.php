@@ -68,7 +68,7 @@ class ProdottiController extends PagesController {
 			$fTag = array("id_tag",null,$filtroTag);
 		}
 		
-		$this->filters[] = $fTag;
+// 		$this->filters[] = $fTag;
 		$this->filters[] = array("in_promozione",null,SlideModel::$YN);
 		$this->filters[] = array("attivo",null,SlideModel::$YN);
 		$this->filters[] = array("in_evidenza",null,SlideModel::$YN);

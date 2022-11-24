@@ -677,7 +677,7 @@ class BaseContenutiController extends BaseController
 			if (count($tagCorrente) > 0)
 				$data["aliasTagCorrente"] = tagfield($tagCorrente, "alias")."/";
 		}
-			
+		
 		//estrai i dati della categoria
 		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
@@ -700,14 +700,17 @@ class BaseContenutiController extends BaseController
 		
 		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb();
 		
-		$iChildrenGross = $this->m["CategoriesModel"]->immediateChildren($clean['id']);
-		
-		$data["iChildren"] = array();
-		foreach ($iChildrenGross as $row)
+		if (v("mostra_categorie_figlie_in_griglia_prodotti"))
 		{
-			if ($this->m["CategoriesModel"]->hasActivePages($row["categories"]["id_c"]))
+			$iChildrenGross = $this->m["CategoriesModel"]->immediateChildren($clean['id']);
+			
+			$data["iChildren"] = array();
+			foreach ($iChildrenGross as $row)
 			{
-				$data["iChildren"][] = $row;
+				if ($this->m["CategoriesModel"]->hasActivePages($row["categories"]["id_c"]))
+				{
+					$data["iChildren"][] = $row;
+				}
 			}
 		}
 		
@@ -839,31 +842,26 @@ class BaseContenutiController extends BaseController
 		
 		// Visibilità pagina
 		if (v("abilita_visibilita_pagine"))
-		{
 			$this->m["PagesModel"]->addWhereLingua();
-		}
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
-		{
 			$this->m["PagesModel"]->aWhere($this->getSearchWhere("search"));
-// 			$this->m["PagesModel"]->aWhere(array(
-// 				" OR"=> array(
-// 					"lk" => array('pages.title' => $this->viewArgs["search"]),
-// 					" lk" => array('pages.codice' => $this->viewArgs["search"]),
-// 					"  lk" =>  array('contenuti_tradotti.title' => $this->viewArgs["search"]),
-// 				),
-// 			));
-		}
 		
 		// Where figli
 		if (in_array("[categoria]",$escludi))
 			$clean['id'] = (int)CategoriesModel::getIdCategoriaDaSezione($firstSection);
 		
 		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
-		$catWhere = "in(".implode(",",$children).")";
-		$this->m["PagesModel"]->aWhere(array(
-			"in" => array("-id_c" => $children),
-		));
+		
+		if (!in_array("[categoria]",$escludi) && v("attiva_categorie_in_prodotto"))
+		{
+			$catWhere = "in(".implode(",",$children).")";
+			$this->m["PagesModel"]->sWhere("(pages.id_c $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$clean['id']."))");
+		}
+		else
+			$this->m["PagesModel"]->aWhere(array(
+				"in" => array("-id_c" => $children),
+			));
 		
 		if ($this->idMarchio && !in_array("[marchio]",$escludi))
 			$this->m["PagesModel"]->aWhere(array(

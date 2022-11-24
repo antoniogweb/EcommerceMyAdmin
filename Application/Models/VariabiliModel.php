@@ -552,12 +552,14 @@ class VariabiliModel extends GenericModel {
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
+		## Categorie ##
+		"attiva_categorie_in_prodotto"	=>	0, // se impostato ad 1, attiva la scheda con le categorie secondarie nel prodotto
+		"mostra_categorie_figlie_in_griglia_prodotti"	=>	1, // se la navigazione è per sottoblocchi, quindi se una categoria ha delle sottocategorie, mostra le sottocategorie. L'alternativa è una griglia di prodotti esplosi
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
 		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto)
 		"attiva_filtri_caratteristiche_separati_per_categoria"	=>	0, // se impostato a 1, sarà possibile aggiungere filtri di caratteristiche distini per ogni categoria
-		"attiva_categorie_in_prodotto"	=>	0, // se impostato ad 1, attiva la scheda con le categorie secondarie nel prodotto
 	);
 	
 	public static $daInizializzare = array(

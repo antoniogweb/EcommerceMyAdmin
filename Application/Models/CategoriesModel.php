@@ -787,7 +787,25 @@ class CategoriesModel extends HierarchicalModel {
 	{
 		$p = new PagesModel();
 		
-		$p->aWhere(self::gCatWhere($id_c, $full))->addWhereAttivo();
+		if (v("attiva_categorie_in_prodotto"))
+		{
+			$c = new CategoriesModel();
+			
+			$children = $c->children((int)$id_c, true);
+			$catWhere = "in(".implode(",",$children).")";
+			
+			$p->sWhere("(pages.id_C $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$id_c."))");
+// 			$idCs = PagescategoriesModel::g(false)->clear()->select("pages_categories.id_c")
+// 				->where(array(
+// 					"pages_categories.id_c"	=>	(int)$id_c,
+// 				))
+// 				->toList("pages_categories.id_c")
+// 				->send();
+		}
+		else
+			$p->aWhere(self::gCatWhere($id_c, $full));
+		
+		$p->addWhereAttivo();
 		
 		if ($traduzione)
 			$p->addJoinTraduzionePagina();

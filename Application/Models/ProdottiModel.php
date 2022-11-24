@@ -80,21 +80,11 @@ class ProdottiModel extends PagesModel {
 	
 	public function insert()
 	{
-// 		if (strcmp($this->values["prezzo_promozione"],"") === 0)
-// 		{
-// 			$this->values["prezzo_promozione"] = $this->values["price"];
-// 		}
-		
 		return parent::insert();
 	}
 	
 	public function update($id = null, $where = null)
 	{
-// 		if (strcmp($this->values["in_promozione"],"N") === 0)
-// 		{
-// 			$this->values["prezzo_promozione"] = $this->values["price"];
-// 		}
-		
 		return parent::update($id, $where);
 	}
 	
