@@ -15,40 +15,62 @@ $attiva = "indirizzi";
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 <?php if (count($indirizzi) > 0) { ?>
-<div class="uk-overflow-auto">
-	<table class="uk-table uk-table-divider uk-table-hover" cellspacing="0">
-		<thead>
-			<tr class="ordini_head">
-				<th><?php echo gtext("Indirizzo");?></th>
-				<th><?php echo gtext("Cap");?></th>
-				<th><?php echo gtext("Nazione");?></th>
-				<th><?php echo gtext("Città");?></th>
-				<th><?php echo gtext("Provincia");?></th>
-				<th><?php echo gtext("Telefono");?></th>
-				<th width="25px"></th>
-				<th width="25px"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($indirizzi as $indirizzo) { ?>
-			<tr class="">
-				<td><?php echo $indirizzo["spedizioni"]["indirizzo_spedizione"];?></td>
-				<td><?php echo $indirizzo["spedizioni"]["cap_spedizione"];?></td>
-				<td><?php echo nomeNazione($indirizzo["spedizioni"]["nazione_spedizione"]);?></td>
-				<td><?php echo $indirizzo["spedizioni"]["citta_spedizione"];?></td>
-				<td><?php echo $indirizzo["spedizioni"]["nazione_spedizione"] == "IT" ? $indirizzo["spedizioni"]["provincia_spedizione"] : $indirizzo["spedizioni"]["dprovincia_spedizione"];?></td>
-				<td><?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?></td>
-				<td>
-					<a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>">
-						<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
-					</a>
-				</td>
-				<td><a class="uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a></td>
-			</tr>
-			<?php } ?>
-		</tbody>
-	</table>
-</div>
+	<div class="uk-visible@m">
+		<div class="uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
+			<div class="uk-first-column">
+				<?php echo gtext("Indirizzo");?>
+			</div>
+			<div class="uk-first-column">
+				<?php echo gtext("Cap");?>
+			</div>
+			<div class="uk-first-column">
+				<?php echo gtext("Nazione");?>
+			</div>
+			<div class="uk-first-column">
+				<?php echo gtext("Città");?>
+			</div>
+			<div class="uk-first-column">
+				<?php echo gtext("Provincia");?>
+			</div>
+			<div class="uk-first-column">
+				<?php echo gtext("Telefono");?>
+			</div>
+			<div class="uk-first-column"></div>
+		</div>
+	</div>
+	<hr>
+	<?php foreach ($indirizzi as $indirizzo) { ?>
+	<div>
+		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
+			<div class="uk-first-column">
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Indirizzo");?>:</span> <?php echo $indirizzo["spedizioni"]["indirizzo_spedizione"];?>
+			</div>
+			<div class="uk-first-column">
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Cap");?>:</span> <?php echo $indirizzo["spedizioni"]["cap_spedizione"];?>
+			</div>
+			<div class="uk-first-column">
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Nazione");?>:</span> <?php echo nomeNazione($indirizzo["spedizioni"]["nazione_spedizione"]);?>
+			</div>
+			<div class="uk-first-column">
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Città");?>:</span> <?php echo $indirizzo["spedizioni"]["citta_spedizione"];?>
+			</div>
+			<div class="uk-first-column">
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Provincia");?>:</span> <?php echo $indirizzo["spedizioni"]["nazione_spedizione"] == "IT" ? $indirizzo["spedizioni"]["provincia_spedizione"] : $indirizzo["spedizioni"]["dprovincia_spedizione"];?>
+			</div>
+			<div class="uk-first-column">
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Telefono");?>:</span> <?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?>
+			</div>
+			<div class="uk-first-column uk-text-left uk-text-right@m">
+				<a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>">
+					<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
+				</a>
+				
+				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<?php } ?>
 <?php } else { ?>
 <p><?php echo gtext("Non hai alcun indirizzo configurato");?></p>
 <?php } ?>
