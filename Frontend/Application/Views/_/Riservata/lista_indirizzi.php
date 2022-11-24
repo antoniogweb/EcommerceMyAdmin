@@ -17,7 +17,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php if (count($indirizzi) > 0) { ?>
 	<div class="uk-visible@m">
 		<div class="uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
-			<div class="uk-first-column">
+			<div class="uk-first-column uk-text-left">
 				<?php echo gtext("Indirizzo");?>
 			</div>
 			<div class="uk-first-column">
@@ -42,7 +42,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php foreach ($indirizzi as $indirizzo) { ?>
 	<div>
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
-			<div class="uk-first-column">
+			<div class="uk-first-column uk-text-left">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Indirizzo");?>:</span> <?php echo $indirizzo["spedizioni"]["indirizzo_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
