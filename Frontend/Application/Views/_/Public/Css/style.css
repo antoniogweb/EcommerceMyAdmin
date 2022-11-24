@@ -13125,14 +13125,14 @@ img:not([src]) {
   cursor: pointer;
 }
 
-.uk-accordion li a {
-  color: #666;
-}
-
-.uk-accordion li.uk-open a {
-  color: #333;
-}
-
+/*.uk-accordion li a
+{
+	color:#666;
+}*/
+/*.uk-accordion li.uk-open a
+{
+	color:#333;
+}*/
 .uk_progress {
   height: 1px;
 }
@@ -13161,6 +13161,7 @@ img:not([src]) {
   display: inline-block;
   /* 	background: #f8f8f8; */
   padding: 5px;
+  line-height: 20px;
 }
 
 .checkout-steps {
@@ -13187,7 +13188,7 @@ img:not([src]) {
     display: none;
   }
 }
-@media (max-width: 960px) {
+@media (max-width: 640px) {
   .uk-grid:not(.uk-grid-collapse) > div:not(:first-child) {
     margin-top: 15px;
   }
