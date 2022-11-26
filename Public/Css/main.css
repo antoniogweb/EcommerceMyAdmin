@@ -1316,6 +1316,11 @@ tr.cart_head {
 	overflow-y:auto;
 }
 
+td img
+{
+	max-width:100%;
+}
+
 @media (max-width: 767px)
 {
 	.main-sidebar, .left-side {

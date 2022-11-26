@@ -31,7 +31,7 @@ class PagesController extends BaseController {
 	public $filters = array(null,null,'title');
 	public $colProperties = array(
 			array(
-				'width'	=>	'60px',
+				'width'	=>	'30px',
 			),
 			array(
 				'width'	=>	'80px',

@@ -430,6 +430,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_gift_card"		=>	0, // se impostato a 1, attiva i prodotti Gift card
 		"numero_massimo_gift_card"	=>	8, // numero massimo di gift card in un carrello
 		"permetti_di_disattivare_promo_al_carrello"	=>	1, // se sì, attiva la possibilità di disattivare la promo applicata al carrello
+		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
+		"gestisci_sconti_combinazioni_separatamente"	=>	0, // se impostato ad 1, permette di impostare un prezzo scontatto per ogni combinazione
+		"estrai_in_promozione_home"	=>	0,
+		"permetti_promozione_assoluta_prodotto"	=>	0, // se impostato su 1, permette sconti assoluti al prodotto
 		## CARRELLO ##
 		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number
 		## STRUTTURA URL E COMBINAZIONI ##
@@ -522,10 +526,6 @@ class VariabiliModel extends GenericModel {
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento
 		## JAVASCRIPT ##
 		"usa_defear"	=>	0, // se impostato a 1, usa defear sui JS nell'header
-		## PROMOZIONI ##
-		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
-		"gestisci_sconti_combinazioni_separatamente"	=>	0, // se impostato ad 1, permette di impostare un prezzo scontatto per ogni combinazione
-		"estrai_in_promozione_home"	=>	0,
 		## DDOS ##
 		"svuota_ip_ogni_x_ore"		=>	30, // numero di ore dopo le quali svuota gli IP
 		"time_ultima_eliminazione_ip"	=>	0, // unix time stamp dell'ultima volta he ha svuotato gli IP

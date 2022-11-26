@@ -39,7 +39,7 @@ function updateForm()
 		{
 			$(".class_promozione").css("display","block");
 			
-			if ($("[name='tipo_sconto']").val() == "PERCENTUALE")
+			if ($("[name='tipo_sconto']").length <= 0 || $("[name='tipo_sconto']").val() == "PERCENTUALE")
 			{
 				$("[name='prezzo_promozione']").closest(".class_promozione").css("display","block");
 				$("[name='prezzo_promozione_ass_ivato']").closest(".class_promozione").css("display","none");
