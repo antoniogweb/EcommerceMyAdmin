@@ -14,7 +14,7 @@ $(document).ready(function(){
 	
 		e.preventDefault();
 		
-		<?php if ($this->controller != "home") { ?>
+		<?php if (true || $this->controller != "home") { ?>
 		$("#segnalazione_cookies_ext").animate({bottom: "-1250px"});
 		<?php } ?>
 		
@@ -29,7 +29,7 @@ $(document).ready(function(){
 			success: function(content){
 				clearTimeout(myTimeOut);
 				
-				<?php if ($this->controller == "home") { ?>
+				<?php if (true || $this->controller == "home") { ?>
 				location.reload();
 				<?php } ?>
 			}
