@@ -199,6 +199,17 @@ include(ROOT."/Application/Views/header.php");
 				</ul>
 			</li>
 			<?php } ?>
+			<?php if (v("attiva_gestione_stati_ordine")) { ?>
+			<li class="<?php echo tm($tm, "statiordine");?> treeview">
+				<a href="#">
+					<i class="fa fa-check-square-o"></i>
+					<span><?php echo gtext("Stati ordine")?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="<?php echo $this->baseUrl."/statiordine/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+				</ul>
+			</li>
+			<?php } ?>
 			<li class="<?php echo tm($tm, "nazioni");?> treeview">
 				<a href="#">
 					<i class="fa fa-globe"></i>

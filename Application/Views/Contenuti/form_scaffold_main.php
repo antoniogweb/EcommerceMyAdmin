@@ -208,10 +208,5 @@ $().ready(function() {
 	<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_ct">
 	<?php } ?>
 	
-	<div class="submit_entry">
-		<span class="submit_entry_Salva">
-			<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva");?></button>
-			<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
-		</span>
-	</div>
+	<?php include($this->viewPath("form_submit_button"));?>
 </form>

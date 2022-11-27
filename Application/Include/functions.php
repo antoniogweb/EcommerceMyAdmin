@@ -3,18 +3,17 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 function statoOrdine($type)
 {
+// 	echo OrdiniModel::$stati[$type];
+// 	print_r(OrdiniModel::$stati);
 	if (isset(OrdiniModel::$stati[$type]))
-		return OrdiniModel::$stati[$type];
+		return v("attiva_gestione_stati_ordine") ? OrdiniModel::$stati[$type] : gtext(OrdiniModel::$stati[$type]);
 	
 	return $type;
 }
 
 function statoOrdineBreve($type)
 {
-	if (isset(OrdiniModel::$stati[$type]))
-		return OrdiniModel::$stati[$type];
-	
-	return $type;
+	return statoOrdine($type);
 }
 
 function labelStatoOrdine($type)
@@ -793,6 +792,12 @@ function pfield($p, $field)
 {
 	return genericField($p, $field, "pagamenti");
 }
+
+function sofield($p, $field)
+{
+	return genericField($p, $field, "stati_ordine");
+}
+
 
 function genericField($p, $field, $table, $tableTradotta = "contenuti_tradotti")
 {

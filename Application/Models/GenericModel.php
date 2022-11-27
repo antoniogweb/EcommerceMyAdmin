@@ -807,6 +807,7 @@ class GenericModel extends Model_Tree
 				$id_cont = ($keyField == "id_cont") ? (int)$id : 0;
 				$id_tipologia_caratteristica = ($keyField == "id_tipologia_caratteristica") ? (int)$id : 0;
 				$id_pagamento = ($keyField == "id_pagamento") ? (int)$id : 0;
+				$id_stato_ordine = ($keyField == "id_stato_ordine") ? (int)$id : 0;
 				
 				$editorVisuale = 1;
 				
@@ -846,6 +847,7 @@ class GenericModel extends Model_Tree
 					"id_cont"		=>	$id_cont,
 					"id_tipologia_caratteristica"	=>	$id_tipologia_caratteristica,
 					"id_pagamento"	=>	$id_pagamento,
+					"id_stato_ordine"	=>	$id_stato_ordine,
 					"sezione"		=>	$sezione,
 				),"sanitizeDb");
 				

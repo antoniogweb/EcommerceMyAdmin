@@ -12,7 +12,7 @@
 		<td class="first_column"><?php echo gtext("Totale", false); ?>:</td>
 		<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
 	</tr>
-	<?php if (strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
+	<?php if (strcmp($tipoOutput,"web") === 0 || !OrdiniModel::conPagamentoOnline($ordine)) { ?>
 	<tr>
 		<td class="first_column"><?php echo gtext("Stato ordine", false); ?>:</td>
 		<td><b><?php echo statoOrdine($ordine["stato"]);?></b></td>

@@ -34,6 +34,7 @@ class OrdiniModel extends FormModel {
 	public $campoTitolo = "id_o";
 	
 	public static $pagamentiSettati = false;
+	public static $statiOrdineSettati = false;
 	
 	public static $stati = array(
 		"pending"	=>	"Ordine ricevuto",
@@ -76,6 +77,32 @@ class OrdiniModel extends FormModel {
 			return true;
 		
 		return false;
+	}
+	
+	public static function setStatiOrdine()
+	{
+		if (self::$statiOrdineSettati)
+			return;
+		
+		if (empty(VariabiliModel::$valori))
+			VariabiliModel::ottieniVariabili();
+		
+		$s = new StatiordineModel();
+		
+		$res = $s->clear()->orderBy("id_order")->addJoinTraduzione()->send();
+		
+		self::$stati = array();
+		
+		foreach ($res as $stato)
+		{
+			// Se nuovo o vecchio sistema
+			$titoloPag = v("attiva_gestione_stati_ordine") ? sofield($stato, "titolo") : gtext($stato["stati_ordine"]["titolo"], false);
+			
+			self::$stati[$stato["stati_ordine"]["codice"]] = $titoloPag;
+			self::$labelStati[$stato["stati_ordine"]["codice"]] = $stato["stati_ordine"]["classe"];
+		}
+		
+		self::$statiOrdineSettati = true;
 	}
 	
 	public static function setPagamenti()
@@ -195,18 +222,23 @@ class OrdiniModel extends FormModel {
 		
 		parent::__construct();
 		
-		self::$stati = array(
-			"pending"	=>	gtext("Ordine ricevuto", false),
-			"completed"	=>	gtext("Ordine pagato e in lavorazione", false),
-			"closed"	=>	gtext("Ordine completato e spedito", false),
-			"deleted"	=>	gtext("Ordine annullato", false),
-		);
+		if (!v("attiva_gestione_stati_ordine"))
+			self::$stati = array(
+				"pending"	=>	gtext("Ordine ricevuto", false),
+				"completed"	=>	gtext("Ordine pagato e in lavorazione", false),
+				"closed"	=>	gtext("Ordine completato e spedito", false),
+				"deleted"	=>	gtext("Ordine annullato", false),
+			);
 		
 		if (!v("attiva_spedizione"))
 			unset(self::$stati["closed"]);
 		
 		if (!App::$isFrontend)
+		{
+			self::setStatiOrdine();
 			self::setPagamenti();
+		}
+		
 // 		$pagamentiPermessi = explode(",", v("pagamenti_permessi"));
 // 		
 // 		foreach (self::$elencoPagamenti as $k => $v)
@@ -564,6 +596,12 @@ class OrdiniModel extends FormModel {
 				
 				$tradModel = new TraduzioniModel();
 				$tradModel->ottieniTraduzioni();
+				
+				self::$pagamentiSettati = false;
+				self::$statiOrdineSettati = false;
+				
+				self::setStatiOrdine();
+				self::setPagamenti();
 				
 				$oggetto = gtext($oggetto, false);
 				$oggetto = str_replace("[ID_ORDINE]",$clean["id_o"], $oggetto);

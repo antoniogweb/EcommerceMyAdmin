@@ -722,6 +722,10 @@ class Route
 		'listeregalolink,invia',
 		
 		'righeelementi,form',
+		
+		'statiordine,main',
+		'statiordine,form',
+		'statiordine,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

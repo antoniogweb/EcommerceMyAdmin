@@ -14,13 +14,7 @@ $().ready(function() {
 			<?php echo $form["titolo"];?>
 			<?php echo $form["attivo"];?>
 			<?php echo $form["codice"];?>
-			<?php echo $form["prezzo_ivato"];?>
-			
-			<?php echo $form["utilizzo"] ?? null;?>
-			
-			<?php echo $form["descrizione"];?>
-			
-			<?php echo isset($form["istruzioni_pagamento"]) ? $form["istruzioni_pagamento"] : "";?>
+			<?php echo $form["classe"];?>
 			
 			<?php if ($type === "update") { ?>
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
@@ -39,23 +33,6 @@ $().ready(function() {
 					$section = "pagamenti";
 					$nascondiLink = $nascondiAlias = true;
 					include($this->viewPath("pages_traduzioni"));?>
-				</div>
-			</div>
-			<?php } ?>
-			
-			<?php if (isset($record["codice"]) && $record["codice"] == "carta_di_credito") { ?>
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<?php echo gtext("Parametri carta");?>
-				</div>
-				<div class="panel-body">
-					<?php echo $form["gateway_pagamento"];?>
-					
-					<?php echo $form["test"];?>
-					
-					<?php echo $form["alias_account"];?>
-					
-					<?php echo $form["chiave_segreta"];?>
 				</div>
 			</div>
 			<?php } ?>

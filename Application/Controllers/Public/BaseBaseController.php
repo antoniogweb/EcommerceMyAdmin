@@ -488,6 +488,7 @@ class BaseBaseController extends Controller
 			setcookie("cart_uid",User::$cart_uid,$time,"/");
 		}
 		
+		OrdiniModel::setStatiOrdine();
 		OrdiniModel::setPagamenti();
 		
 		//set the cookie for the wishlist
