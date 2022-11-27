@@ -12,9 +12,9 @@ $().ready(function() {
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-8'>
 			<?php echo $form["titolo"];?>
-			<?php echo $form["attivo"];?>
 			<?php echo $form["codice"];?>
 			<?php echo $form["classe"];?>
+			<?php echo $form["pagato"];?>
 			
 			<?php if ($type === "update") { ?>
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">

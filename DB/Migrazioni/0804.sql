@@ -6,5 +6,6 @@ create table stati_ordine (
 	classe varchar(255) not null default '',
 	attivo tinyint NOT NULL default 1,
 	tipo char(1) not null default 'S',
+	pagato tinyint not null default 1,
 	id_order INT UNSIGNED NOT NULL default 0
 )engine=innodb;

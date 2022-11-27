@@ -199,6 +199,82 @@ body {
 	min-height:130px;
 }
 
+.label-purple
+{
+	background-color: #605ca8 !important;
+}
+.text-info
+{
+	color: #00c0ef !important;
+}
+.label-maroon
+{
+	background-color: #800000 !important;
+}
+.text-maroon
+{
+	color: #800000 !important;
+}
+.label-olive
+{
+	background-color: #808000 !important;
+}
+.text-olive
+{
+	color: #808000 !important;
+}
+.label-teal
+{
+	background-color: #008080 !important;
+}
+.text-teal
+{
+	color: #008080 !important;
+}
+.label-yellow
+{
+	background-color: #ffff00 !important;
+	color: #000 !important
+}
+.text-yellow
+{
+	color: #ffff00 !important;
+}
+.label-fuchsia
+{
+	background-color: #ff00ff !important;
+}
+.text-fuchsia
+{
+	color: #ff00ff !important;
+}
+.label-azzurrino
+{
+	background-color: #E3F2FD !important;
+}
+.text-azzurrino,.label-azzurrino
+{
+	color: #3c8dbc !important
+}
+.label-ciano
+{
+	background-color: cyan !important;
+	color: #000 !important
+}
+.text-ciano
+{
+	color: cyan !important
+}
+.label-nero
+{
+	background-color: #000 !important;
+	color: #FFF !important
+}
+.text-nero
+{
+	color: #000 !important
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

@@ -56,6 +56,19 @@
 								</tr>
 								<?php } ?>
 								<tr>
+									<td><?php echo gtext("Stato pagamento");?>:</td>
+									<td>
+										<?php if ($ordine["pagato"] || StatiordineModel::g(false)->pagato($ordine["stato"])) { ?>
+										<span class="label label-success"><?php echo gtext("Ordine pagato");?></span>
+											<?php if ($ordine["data_pagamento"]) { ?>
+											<?php echo gtext("in data");?> <b><?php echo date("d-m-Y H:i", strtotime($ordine["data_pagamento"]));?></b>
+											<?php } ?>
+										<?php } else { ?>
+										<span class="label label-warning"><?php echo gtext("Ordine NON pagato");?></span>
+										<?php } ?>
+									</td>
+								</tr>
+								<tr>
 									<td><?php echo gtext("Metodo di pagamento");?>:</td>
 									<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
 								</tr>
@@ -115,20 +128,24 @@
 									<?php $statiSuccessivi = OrdiniModel::statiSuccessivi($ordine["stato"]);?>
 									<?php if (count($statiSuccessivi) > 0) { ?>
 									<table class="table no-margin">
-										<thead>
 										<tr>
 											<th><?php echo gtext("Modifica lo stato dell'ordine")?></th>
-											<th></th>
+											<th>
+												<a class="pull-right" data-toggle="collapse" href="#collapseStati" role="button" aria-expanded="false" aria-controls="collapseStati">
+													<?php echo gtext("Mostra stati");?>
+												</a>
+											</th>
 										</tr>
-										</thead>
+										<tbody class="no-border collapse" id="collapseStati">
 										<?php foreach ($statiSuccessivi as $statoSucc) { ?>
-										<tbody class="no-border">
+										
 											<tr>
 												<td><span class="label label-<?php echo labelStatoOrdine($statoSucc);?>"><?php echo statoOrdine($statoSucc);?></span></td>
 												<td class="text-right"><a class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/$statoSucc".$this->viewStatus;?>"><i class="fa fa-thumbs-up"></i> <?php echo gtext("Imposta")?></a></td>
 											</tr>
-										</tbody>
+										
 										<?php } ?>
+										</tbody>
 									</table>
 									<?php } ?>
 								</div>
@@ -141,7 +158,7 @@
 										<tr>
 											<th colspan="3">
 												<a class="pull-right" data-toggle="collapse" href="#collapseMail" role="button" aria-expanded="false" aria-controls="collapseMail">
-													<?php echo gtext("Mostra");?>
+													<?php echo gtext("Mostra e-mail");?>
 												</a>
 												<?php echo gtext("Storico invii mail al cliente");?>
 											</th>

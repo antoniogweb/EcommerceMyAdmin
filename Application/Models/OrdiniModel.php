@@ -73,8 +73,14 @@ class OrdiniModel extends FormModel {
 		
 		$record = $o->selectId($idO);
 		
-		if (!empty($record) && ($record["stato"] == "completed" || $record["stato"] == "closed"))
-			return true;
+		if (!empty($record))
+		{
+			if (StatiordineModel::g(false)->pagato($record["stato"]) || (StatiordineModel::g(false)->neutro($record["stato"]) && $record["pagato"]))
+				return true;
+		}
+		
+// 		if (!empty($record) && ($record["stato"] == "completed" || $record["stato"] == "closed"))
+// 			return true;
 		
 		return false;
 	}
@@ -153,20 +159,32 @@ class OrdiniModel extends FormModel {
 	
 	public static function statiSuccessivi($stato)
 	{
-		switch ($stato)
-		{
-			case "pending":
-				return array("completed","deleted");
-			case "completed":
-				if (v("attiva_spedizione"))
-					return array("closed","deleted");
-				else
-					return array("deleted");
-			case "closed":
-				return array("deleted");
-			case "deleted":
-				return array("pending");
-		}
+		$query = StatiordineModel::g(false)->select("codice")->where(array(
+			"ne"	=>	array(
+				"codice"	=>	$stato
+			),
+		))->orderBy("id_order");
+		
+		if (!v("attiva_spedizione"))
+			$query->sWhere("codice != 'closed'");
+		
+		return $query->toList("codice")->findAll();
+// 		switch ($stato)
+// 		{
+// 			case "pending":
+// 				return array("completed","deleted");
+// 			case "completed":
+// 				if (v("attiva_spedizione"))
+// 					return array("closed","deleted");
+// 				else
+// 					return array("deleted");
+// 			case "closed":
+// 				return array("deleted");
+// 			case "deleted":
+// 				return array("pending");
+// 		}
+// 		
+// 		return array();
 	}
 	
 	public static function getTipoMail($tipo)
@@ -365,6 +383,20 @@ class OrdiniModel extends FormModel {
 // 		}
 	}
 	
+	public function setPagato($id = 0)
+	{
+		if (isset($this->values["stato"]) && StatiordineModel::g(false)->pagato($this->values["stato"]))
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (empty($record) || !$record["pagato"])
+			{
+				$this->values["pagato"] = 1;
+				$this->values["data_pagamento"] = date("Y-m-d H:i");
+			}
+		}
+	}
+	
 	public function insert()
 	{
 		if (App::$isFrontend)
@@ -399,6 +431,8 @@ class OrdiniModel extends FormModel {
 		
 		$this->setProvince();
 		
+		$this->setPagato();
+		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()))
 			return parent::insert();
 		
@@ -416,6 +450,8 @@ class OrdiniModel extends FormModel {
 		$this->setAliquotaIva($id);
 		
 		$this->setProvince();
+		
+		$this->setPagato($id);
 		
 		if (!App::$isFrontend || $this->controllaCF($checkFiscale))
 		{
@@ -1296,7 +1332,7 @@ class OrdiniModel extends FormModel {
 	public function statoordinelabel($records)
 	{
 		if (isset(OrdiniModel::$stati[$records["orders"]["stato"]]))
-			return "<span class='text-bold text text-".OrdiniModel::$labelStati[$records["orders"]["stato"]]."'>".OrdiniModel::$stati[$records["orders"]["stato"]]."<span>";
+			return "<span class='text-bold label label-".OrdiniModel::$labelStati[$records["orders"]["stato"]]."'>".OrdiniModel::$stati[$records["orders"]["stato"]]."<span>";
 		
 		return $records["orders"]["stato"];
 	}

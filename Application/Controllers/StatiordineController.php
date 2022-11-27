@@ -55,8 +55,8 @@ class StatiordineController extends BaseController
 		$mainMenu = "add";
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu);
 		
-		$this->mainFields = array("edit","stati_ordine.codice", "attivo");
-		$this->mainHead = "Titolo,Codice,Attivo";
+		$this->mainFields = array("edit","stati_ordine.codice", "pagatoCrud");
+		$this->mainHead = "Titolo,Codice,Pagato";
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
@@ -65,7 +65,7 @@ class StatiordineController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,attivo,classe,codice';
+		$fields = 'titolo,classe,codice,pagato';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		

@@ -24,6 +24,24 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class StatiordineModel extends GenericModel {
 	
+	public static $labelStati = array(
+		"default"	=>	"Grigio",
+		"primary"	=>	"Blu",
+		"success"	=>	"Verde",
+		"danger"	=>	"Danger",
+		"warning"	=>	"Warning",
+		"purple"	=>	"Porpora",
+		"info"		=>	"Azzurro",
+		"maroon"	=>	"Marrone",
+		"olive"		=>	"Oliva",
+		"teal"		=>	"Verde acqua",
+		"yellow"	=>	"Giallo",
+		"fuchsia"	=>	"Fucsia",
+		"azzurrino"	=>	"Azzurrino",
+		"ciano"		=>	"Ciano",
+		"nero"		=>	"Nero",
+	);
+	
 	public function __construct() {
 		$this->_tables='stati_ordine';
 		$this->_idFields='id_stato_ordine';
@@ -41,6 +59,11 @@ class StatiordineModel extends GenericModel {
         );
     }
     
+    public function edit($record)
+	{
+		return "<span class='text-bold label label-".$record[$this->_tables]["classe"]." data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
+	}
+    
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
@@ -50,6 +73,20 @@ class StatiordineModel extends GenericModel {
 					"type"	=>	"Select",
 					"labelString"	=>	"Attivo",
 					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'pagato'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine pagato?",
+					"options"	=>	self::$attivoSiNo + array("-1"=>gtext("Neutro")),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'classe'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Colore della label dello stato",
+					"options"	=>	self::$labelStati,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -77,5 +114,40 @@ class StatiordineModel extends GenericModel {
 			return true;
 		
 		return false;
+	}
+	
+	public static function getLabel($valore)
+	{
+		if ($valore > 0)
+			return "success";
+		else if ($valore < 0)
+			return "default";
+		else
+			return "danger";
+	}
+	
+	public function pagatoCrud($record)
+	{
+		$label = self::getLabel($record["stati_ordine"]["pagato"]);
+		
+		$text = self::$attivoSiNo[$record["stati_ordine"]["pagato"]] ?? "Neutro";
+		
+		return "<span class='text-bold text text-$label'>".$text."</span>";
+	}
+	
+	public function pagato($codiceStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::setRecordTabella("codice");
+		
+		return self::$recordTabella[$codiceStato]["pagato"] > 0 ? true : false;
+	}
+	
+	public function neutro($codiceStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::setRecordTabella("codice");
+		
+		return self::$recordTabella[$codiceStato]["pagato"] < 0 ? true : false;
 	}
 }

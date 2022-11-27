@@ -26,6 +26,7 @@ class GenericModel extends Model_Tree
 {
 	use CommonModel;
 	
+	public static $recordTabella = null;
 	public static $apiMethod = "POST";
 	public static $uploadFileGeneric = true;
 	public static $onChanggeCheckVisibilityAttributes = array(
@@ -1660,5 +1661,17 @@ class GenericModel extends Model_Tree
 		$iva = new IvaModel();
 		
 		return $iva->clear()->orderBy("id_order")->toList("id_iva","titolo")->send();
+	}
+	
+	public function setRecordTabella($key)
+	{
+		$res = $this->clear()->send(false);
+		
+		self::$recordTabella = array();
+		
+		foreach ($res as $r)
+		{
+			self::$recordTabella[$r[$key]] = $r;
+		}
 	}
 }
