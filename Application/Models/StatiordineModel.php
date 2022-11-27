@@ -35,7 +35,7 @@ class StatiordineModel extends GenericModel {
 		"maroon"	=>	"Marrone",
 		"olive"		=>	"Oliva",
 		"teal"		=>	"Verde acqua",
-		"yellow"	=>	"Giallo",
+		"gallo"		=>	"Giallo",
 		"fuchsia"	=>	"Fucsia",
 		"azzurrino"	=>	"Azzurrino",
 		"ciano"		=>	"Ciano",
