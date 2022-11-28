@@ -299,6 +299,19 @@ class FormModel extends GenericModel {
 			$selectTendina[$r["promozioni"]["id_p"]] = $r["promozioni"]["titolo"]." (".$r["promozioni"]["codice"].")";
 		}
 		
+		if ($id)
+		{
+			$ordine = $this->selectId($id);
+			
+			if (!empty($ordine) && isset($ordine["id_p"]) && $ordine["id_p"])
+			{
+				$promo = PromozioniModel::g(false)->selectId((int)$ordine["id_p"]);
+				
+				if (!empty($promo) && !isset($selectTendina[$ordine["id_p"]]))
+					$selectTendina[$ordine["id_p"]] = $promo["titolo"]." (".$promo["codice"].")";
+			}
+		}
+		
 		return array("0" => gtext("-- Seleziona --")) + $selectTendina;
 	}
 }
