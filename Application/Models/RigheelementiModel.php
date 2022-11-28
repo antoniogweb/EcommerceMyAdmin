@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class RigheelementiModel extends GenericModel
 {
+	public $campoTitolo = "email";
+	
 	public function __construct() {
 		$this->_tables = 'righe_elementi';
 		$this->_idFields = 'id_riga_elemento';

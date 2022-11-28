@@ -26,6 +26,8 @@ class RigheelementiController extends BaseController {
 	
 	public $argKeys = array('id_page:sanitizeAll'=>'tutti');
 	
+	public $tabella = "elementi riga ordine";
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		if ($queryType != "update")
