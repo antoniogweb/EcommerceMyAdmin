@@ -77,7 +77,6 @@ class VariabiliModel extends GenericModel {
 		"shop_in_alias_tag"			=>	0,
 		"menu_class_prefix"			=>	"",
 		"primo_attributo_selezionato"	=>	0,
-		"prodotti_per_pagina"		=>	999999,
 		"template_attributo"		=>	"",
 		"template_personalizzazione"=>	"",
 		"usa_https"					=>	0,
@@ -133,7 +132,6 @@ class VariabiliModel extends GenericModel {
 		"telefono_aziendale_2"		=>	"",
 		"numero_in_evidenza"		=>	4,
 		"pagamenti_permessi"		=>	"bonifico,paypal",
-		"news_per_pagina"			=>	16,
 		"email_aziendale"			=>	"",
 		"piattaforma_in_sviluppo"	=>	1,
 		"email_sviluppo"			=>	"",
@@ -150,8 +148,6 @@ class VariabiliModel extends GenericModel {
 		"insert_account_provincia_obbligatoria"	=>	1,
 		"insert_account_cap_obbligatorio"		=>	1,
 		"insert_ordine_telefono_obbligatorio"	=>	1,
-		"numero_per_pagina_magazzino"	=>	50,
-		"numero_per_pagina_pages"	=>	30,
 		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
@@ -212,7 +208,6 @@ class VariabiliModel extends GenericModel {
 		"tag_blocco_testo"			=>	"div",
 		"campo_captcha_form"		=>	"cognome",
 		"riconoscimento_tipo_documento_automatico"	=>	1,
-		"eventi_per_pagina"			=>	16,
 		"contenuti_in_eventi"		=>	1,
 		"permetti_upload_archivio"	=>	0,
 		"elimina_archivio_dopo_upload"	=>	1,
@@ -556,6 +551,13 @@ class VariabiliModel extends GenericModel {
 		## Categorie ##
 		"attiva_categorie_in_prodotto"	=>	0, // se impostato ad 1, attiva la scheda con le categorie secondarie nel prodotto
 		"mostra_categorie_figlie_in_griglia_prodotti"	=>	1, // se la navigazione è per sottoblocchi, quindi se una categoria ha delle sottocategorie, mostra le sottocategorie. L'alternativa è una griglia di prodotti esplosi
+		## PAGINAZIONE ##
+		"prodotti_per_pagina"		=>	999999, // FRONTEND
+		"news_per_pagina"			=>	16, // FRONTEND
+		"eventi_per_pagina"			=>	16, // FRONTEND
+		"numero_per_pagina_magazzino"	=>	50, // ADMIN
+		"numero_per_pagina_pages"	=>	30, // ADMIN
+		"attributi_link_pagina_2_in_poi"	=>	'', // attributi nei link alle pagine dalla 2 in poi nella griglia elementi
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
