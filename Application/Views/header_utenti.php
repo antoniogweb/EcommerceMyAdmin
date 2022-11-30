@@ -151,7 +151,16 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (defined("CACHE_FOLDER") || v("attiva_cache_immagini")) { ?>
-			<li class=""><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-trash"></i> <span><?php echo gtext("Svuota cache");?></span></a></li>
+			<li class="<?php echo tm($tm, "redirect");?> treeview">
+				<a href="#">
+					<i class="fa fa-trash"></i>
+					<span><?php echo gtext("Svuota cache")?></span>
+				</a>
+				<ul class="treeview-menu">
+					<li><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacache";?>"><i class="fa fa-database"></i> <?php echo gtext("Svuota cache database");?></a></li>
+					<li><a class="svuota_cache" href="<?php echo $this->baseUrl."/impostazioni/svuotacacheimmagini";?>"><i class="fa fa-picture-o"></i> <?php echo gtext("Svuota cache immagini");?></a></li>
+				</ul>
+			</li>
 			<?php } ?>
 		</ul>
 		<?php } ?>

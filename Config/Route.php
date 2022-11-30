@@ -209,6 +209,7 @@ class Route
 		'impostazioni,form',
 		'impostazioni,variabili',
 		'impostazioni,svuotacache',
+		'impostazioni,svuotacacheimmagini',
 		'impostazioni,tema',
 		'impostazioni,attivatema',
 		'impostazioni,ecommerce',
