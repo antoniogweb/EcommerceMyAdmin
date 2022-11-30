@@ -569,7 +569,7 @@ class OrdiniModel extends FormModel {
 		return "<a class='text_16' title='genera fattura' href='http://".DOMAIN_NAME."/fatture/crea/".$clean["id_o"]."'><b><i class='fa fa-refresh'></i></b></a>";
 	}
 	
-	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false, $forzaTemplate = false, $sendTo = null)
+	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false, $forzaTemplate = false, $sendTo = null, $tipologia = null)
 	{
 		$clean["id_o"] = (int)$id_o;
 		$this->baseUrl = Domain::$name;
@@ -703,6 +703,7 @@ class OrdiniModel extends FormModel {
 					"testo"		=>	$testoClean,
 					"inviata"	=>	0,
 					"email"		=>	$sendTo,
+					"tipologia"	=>	$tipologia ? $tipologia : "ORDINE",
 				);
 				
 				$mailOrdini = $this->aggiungiStoricoMail($clean["id_o"], $tipo, $params);
@@ -777,6 +778,7 @@ class OrdiniModel extends FormModel {
 			"bcc"		=>	isset($params["bcc"]) ? $params["bcc"] : "",
 			"testo"		=>	isset($params["testo"]) ? $params["testo"] : "",
 			"inviata"	=>	isset($params["inviata"]) ? $params["inviata"] : 1,
+			"tipologia"	=>	isset($params["tipologia"]) ? $params["tipologia"] : "ORDINE",
 		));
 		
 		$mailOrdini->insert();
@@ -1405,7 +1407,7 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($ordine) && $ordine["mail_da_inviare_negozio"])
 		{
-			$this->mandaMailGeneric((int)$idO, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, Parametri::$mailInvioOrdine);
+			$this->mandaMailGeneric((int)$idO, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, Parametri::$mailInvioOrdine, "ORDINE NEGOZIO");
 			
 			$this->setValues(array(
 				"mail_da_inviare_negozio"	=>	0,

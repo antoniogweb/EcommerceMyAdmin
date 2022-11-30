@@ -449,7 +449,6 @@ class OrdiniController extends BaseController {
 		if (isset($_GET["action"]))
 		{
 			$this->m["OrdiniModel"]->mandaMail($clean["id_o"]);
-// 			$data["notice_send"] = $this->m["OrdiniModel"]->notice;
 			flash("notice_send",$this->m["OrdiniModel"]->notice);
 			$this->redirect($this->applicationUrl.$this->controller."/vedi/".$clean["id_o"].$this->viewStatus);
 		}
@@ -457,7 +456,6 @@ class OrdiniController extends BaseController {
 		if (isset($_GET["invia_fattura"]))
 		{
 			$this->m["OrdiniModel"]->mandaMailFattura($clean["id_o"]);
-// 			$data["notice_send"] = $this->m["OrdiniModel"]->notice;
 			flash("notice_send",$this->m["OrdiniModel"]->notice);
 			$this->redirect($this->applicationUrl.$this->controller."/vedi/".$clean["id_o"].$this->viewStatus);
 		}
