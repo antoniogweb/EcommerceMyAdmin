@@ -42,7 +42,7 @@ if (v("codice_gtm_analytics"))
 		{
 			$rOrdine = $r->clear()->where(array("id_o"=>(int)$idOrdineGtm))->send(false);
 			
-			$tempRigheGTM = array();
+			$tempRigheGTM = $tempRigheADS = array();
 			
 			foreach ($rOrdine as $ro)
 			{
@@ -53,17 +53,22 @@ if (v("codice_gtm_analytics"))
 				
 				$temp = array(
 					"item_id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
-	// 				"sku"	=>	$ro["codice"],
 					"item_name"	=>	sanitizeJs(htmlentitydecode($ro["title"])),
-					"category"	=>	sanitizeJs(htmlentitydecode($catGTM)),
-// 					"price"	=>	v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"],
-					"quantity"	=>	$ro["quantity"],
 				);
 				
+				$tempAds = array(
+					"id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
+					"name"	=>	sanitizeJs(htmlentitydecode($ro["title"])),
+				);
+				
+				$temp["category"] = $tempAds["category"] = sanitizeJs(htmlentitydecode($catGTM));
+				$temp["quantity"] = $tempAds["quantity"] = $ro["quantity"];
+				
 				if (!$ordineGTML["nome_promozione"])
-					$temp["price"] = v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"];
+					$temp["price"] = $tempAds["price"] = v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"];
 				
 				$tempRigheGTM[] = $temp;
+				$tempRigheADS[] = $tempAds;
 			}
 			
 			$purchase = array(
@@ -97,6 +102,8 @@ if (v("codice_gtm_analytics"))
 				$purchaseAds["transaction_id"] = $ordineGTML["id_o"]."-ADS";
 				
 				$purchaseAds["send_to"] = v("campo_send_to_google_ads");
+				
+				$purchaseAds["items"] = $tempRigheADS;
 				
 				if (v("codice_account_merchant"))
 					$purchaseAds["aw_merchant_id"] = v("codice_account_merchant");
