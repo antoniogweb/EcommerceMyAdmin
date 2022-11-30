@@ -64,6 +64,8 @@ class BaseBaseController extends Controller
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		$this->setTabelleCacheAggiuntive($model, $controller, $queryString, $application, $action);
+		
 		Domain::$adminName = $this->baseUrlSrc."/admin";
 		Domain::$publicUrl = $this->baseUrlSrc;
 		
@@ -200,22 +202,11 @@ class BaseBaseController extends Controller
 			
 			// Estraggo lo sconto dell'utente
 			User::setClasseSconto();
-// 			User::$classeSconto = $this->m["ClassiscontoModel"]->selectId(User::$dettagli["id_classe"]);
-// 			
-// 			if (!empty(User::$classeSconto) && User::$classeSconto["sconto"] > 0 && User::$classeSconto["sconto"] < 100)
-// 			{
-// 				User::$sconto = User::$classeSconto["sconto"];
-// 				
-// 				User::$categorieInClasseSconto = $this->m["CategoriesModel"]->getListaCategorieInClasseSconto();
-// 			}
 			
 			User::$ruid = $this->s['registered']->getUid();
 			
 			// Imposto lo stato loggato su Output
 			Output::setHeaderValue("Status","logged");
-// 			Output::setHeaderValue("UserId",User::$ruid);
-// 			Output::setHeaderValue("Nome",$data['nomeCliente']);
-// 			Output::setHeaderValue("Email",User::$dettagli["username"]);
 		}
 		
 		if ($this->s['admin']->status['status'] === 'logged')
@@ -1319,5 +1310,11 @@ class BaseBaseController extends Controller
 			
 			die();
 		}
+	}
+	
+	protected function setTabelleCacheAggiuntive($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		if (($controller == "home" && ($action == "index" || $action == "xmlprodotti")) || ($controller == "contenuti" && $action == "index"))
+			Cache::addTablesToCache(array("combinazioni","scaglioni"));
 	}
 }

@@ -44,7 +44,7 @@ class BaseHomeController extends BaseController
 	public function index()
 	{
 		Cache::addTablesToCache(array("combinazioni","scaglioni"));
-			
+		
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
 		
