@@ -794,7 +794,7 @@ class CategoriesModel extends HierarchicalModel {
 			$children = $c->children((int)$id_c, true);
 			$catWhere = "in(".implode(",",$children).")";
 			
-			$p->sWhere("(pages.id_C $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$id_c."))");
+			$p->sWhere("(pages.id_c $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$id_c."))");
 // 			$idCs = PagescategoriesModel::g(false)->clear()->select("pages_categories.id_c")
 // 				->where(array(
 // 					"pages_categories.id_c"	=>	(int)$id_c,

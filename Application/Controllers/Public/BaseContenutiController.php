@@ -729,9 +729,6 @@ class BaseContenutiController extends BaseController
 			
 			$arrayElementi = array_merge($arrayElementi, CaratteristicheModel::getAliasFiltri($idCatFiltri));
 			
-// 			if (v("mostra_fasce_prezzo"))
-// 				$arrayElementi[] = "prezzo";
-			
 			foreach ($arrayElementi as $elemento)
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
@@ -797,7 +794,7 @@ class BaseContenutiController extends BaseController
 				"caratteristiche.tipo" => "MATERIALE",
 			))->send();
 		
-		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().getCategoryUrlAlias($clean['id']).'" />';
+		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().CategoriesModel::getUrlAliasTagMarchio($this->idTag, $this->idMarchio, $clean['id']).'" />';
 		
 		$this->append($data);
 		
