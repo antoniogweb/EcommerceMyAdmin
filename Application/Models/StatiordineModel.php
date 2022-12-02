@@ -110,10 +110,20 @@ class StatiordineModel extends GenericModel {
 	{
 		$record = $this->selectId((int)$id);
 		
-		if (!empty($record) && $record["tipo"] == "U")
-			return true;
+		if (!empty($record))
+		{
+			if ($record["tipo"] == "S")
+				return false;
+			
+			$numeroOrdini = OrdiniModel::g()->where(array(
+				"stato"	=>	$record["codice"]
+			))->count();
+			
+			if ($numeroOrdini > 0)
+				return false;
+		}
 		
-		return false;
+		return true;
 	}
 	
 	public static function getLabel($valore)
