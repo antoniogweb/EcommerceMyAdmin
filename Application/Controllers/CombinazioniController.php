@@ -216,18 +216,21 @@ class CombinazioniController extends BaseController
 		if ($this->viewArgs['id_page'] == "tutti")
 			$this->filters = array("categoria", "prodotto", "codice");
 		
-		foreach ($this->arrayAttributi as $idA => $titoloA)
+		if (v("mostra_filtri_varianti_in_magazzino"))
 		{
-			Helper_List::$filtersFormLayout["filters"]["id_".$idA] = array(
-				"type"	=>	"select",
-				"attributes"	=>	array(
-					"class"	=>	"form-control",
-				),
-			);
-			
-			$filtriIdA = array("tutti" => $titoloA) + $this->m["AttributivaloriModel"]->selectPerFiltro($idA);
-			
-			$this->filters[] = array("id_".$idA,null,$filtriIdA);
+			foreach ($this->arrayAttributi as $idA => $titoloA)
+			{
+				Helper_List::$filtersFormLayout["filters"]["id_".$idA] = array(
+					"type"	=>	"select",
+					"attributes"	=>	array(
+						"class"	=>	"form-control",
+					),
+				);
+				
+				$filtriIdA = array("tutti" => $titoloA) + $this->m["AttributivaloriModel"]->selectPerFiltro($idA);
+				
+				$this->filters[] = array("id_".$idA,null,$filtriIdA);
+			}
 		}
 		
 		$this->filters[] = array("st_giac",null,array(
