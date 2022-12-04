@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `data_creazione`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES (NULL, '2022-09-23 18:02:34', 'Nome e cognome del cliente (o ragione sociale se azienda)', 'NOME_CLIENTE', 'getNominativoInOrdineOCliente', '', '1', '11', '', '1', '', '1');

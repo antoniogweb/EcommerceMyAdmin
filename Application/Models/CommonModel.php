@@ -387,6 +387,11 @@ trait CommonModel {
 			return $r->send();
 	}
 	
+	public function getNominativoInOrdineOCliente($lingua, $record)
+	{
+		return self::getNominativo($record);
+	}
+	
 	public static function getNominativo($ordine)
 	{
 		if ($ordine["tipo_cliente"] == "azienda")

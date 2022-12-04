@@ -98,6 +98,9 @@ class StatiordineModel extends GenericModel {
 				),
 				'descrizione'	=>	array(
 					"labelString"	=>	"Testo della mail",
+					'wrap'		=>	array(
+						SegnapostoModel::getLegenda($this),
+					),
 				),
 			),
 		);

@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES (NULL, 'Riferimento dell\'ordine (solo per mail legate all\'ordine)', 'RIFERIMENTO_ORDINE', 'getRiferimentoOrdine', '', '1', '12', '', '1', '', '1');

@@ -667,7 +667,10 @@ class OrdiniModel extends FormModel {
 						))->first();
 						
 						if (!empty($recordStato))
+						{
 							$testoMail = htmlentitydecode(sofield($recordStato, "descrizione"));
+							$testoMail = SegnapostoModel::sostituisci($testoMail, $ordine, $this);
+						}
 					}
 					
 					if (isset($testoMail) && !F::blank($testoMail))
@@ -765,7 +768,7 @@ class OrdiniModel extends FormModel {
 		$titolo = StatiordineModel::getCampo($stato, "titolo");
 		
 		if ($titolo)
-			$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE] $titolo", "mail-$stato", "G", false);
+			$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE] - $titolo", "mail-$stato", "G", false);
 	}
 	
 	public function mandaMail($id_o)
@@ -1565,5 +1568,10 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return array();
+	}
+	
+	public function getRiferimentoOrdine($lingua, $record)
+	{
+		return $record["id_o"];
 	}
 }
