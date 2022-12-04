@@ -26,7 +26,7 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 				<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="uk-text-small add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations) { ?>aggiungi_al_carrello_semplice<?php } ?>">
 					<span uk-icon="icon: plus; ratio: .75;"></span>
 					<?php if (!$hasCombinations) { ?>
-					<?php echo gtext("Aggiungi al carrello", false);?>
+					<?php echo gtext("Acquista", false);?>
 					<?php } else { ?>
 					<?php echo gtext("Acquista", false);?>
 					<?php } ?>
