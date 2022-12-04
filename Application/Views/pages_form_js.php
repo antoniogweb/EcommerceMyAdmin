@@ -89,7 +89,8 @@ $(document).ready(function() {
 	
 	});
 	
-	show_preview();
+	if ($("input[name='immagine']").length > 0)
+		show_preview();
 	
 	$(".cancella_immagine").click(function(e){
 	
@@ -101,7 +102,8 @@ $(document).ready(function() {
 	
 	});
 	
-	show_preview2();
+	if ($("input[name='immagine_2']").length > 0)
+		show_preview2();
 	
 	$(".cancella_immagine_2").click(function(e){
 	
@@ -113,7 +115,8 @@ $(document).ready(function() {
 	
 	});
 	
-	show_preview3();
+	if ($("input[name='immagine_3']").length > 0)
+		show_preview3();
 	
 	$(".cancella_immagine_3").click(function(e){
 	

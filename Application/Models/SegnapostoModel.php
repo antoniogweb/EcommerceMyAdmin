@@ -36,7 +36,7 @@ class SegnapostoModel extends GenericModel {
 		parent::__construct();
 	}
     
-	public static function gValori($soloVisibili = false)
+	public static function gValori($soloVisibili = false, $soloOrdine = false)
 	{
 		if (isset(self::$valori))
 			return self::$valori;
@@ -50,6 +50,11 @@ class SegnapostoModel extends GenericModel {
 		if ($soloVisibili)
 			$s->aWhere(array(
 				"visibile"	=>	1,
+			));
+		
+		if ($soloOrdine)
+			$s->aWhere(array(
+				"ordine"	=>	1,
 			));
 		
 		self::$valori = $s->send(false);
@@ -124,7 +129,10 @@ class SegnapostoModel extends GenericModel {
     // Crea la lagenda dei segnaposto usata nel pannello
 	public static function getLegenda($model = null)
 	{
-		self::gValori(true);
+		if ($model->table() == "stati_ordine")
+			self::gValori(true, true);
+		else
+			self::gValori(true);
 		
 		$wrap = "";
 		
