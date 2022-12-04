@@ -159,7 +159,7 @@ class OrdiniModel extends FormModel {
 	
 	public static function statiSuccessivi($stato)
 	{
-		$query = StatiordineModel::g(false)->select("codice")->where(array(
+		$query = StatiordineModel::g(false)->select("codice,manda_mail_al_cambio_stato,descrizione")->where(array(
 			"ne"	=>	array(
 				"codice"	=>	$stato
 			),
@@ -168,23 +168,7 @@ class OrdiniModel extends FormModel {
 		if (!v("attiva_spedizione"))
 			$query->sWhere("codice != 'closed'");
 		
-		return $query->toList("codice")->findAll();
-// 		switch ($stato)
-// 		{
-// 			case "pending":
-// 				return array("completed","deleted");
-// 			case "completed":
-// 				if (v("attiva_spedizione"))
-// 					return array("closed","deleted");
-// 				else
-// 					return array("deleted");
-// 			case "closed":
-// 				return array("deleted");
-// 			case "deleted":
-// 				return array("pending");
-// 		}
-// 		
-// 		return array();
+		return $query->findAll(false);
 	}
 	
 	public static function getTipoMail($tipo)
@@ -201,6 +185,8 @@ class OrdiniModel extends FormModel {
 				return "Mail ordine consegnato";
 			case "R":
 				return "Mail ordine ricevuto";
+			case "G":
+				return "Mail ordine stato personalizzato";
 			default:
 				return "--";
 		}
@@ -668,8 +654,28 @@ class OrdiniModel extends FormModel {
 				if ($tipo == "R" && file_exists(tpf("/Elementi/Mail/mail_ordine_ricevuto.php")) && !$forzaTemplate)
 					include tpf("/Elementi/Mail/mail_ordine_ricevuto.php");
 				else
-					include tpf("/Ordini/$template.php");
-// 				include Domain::$parentRoot."/Application/Views/Ordini/$template.php";
+				{
+					if ($tipo == "R")
+						$statoOrdine = "pending";
+					else if (preg_match('/^mail\-([0-9a-zA-Z\-\_]{1,})$/',$template, $matches))
+						$statoOrdine = $matches[1];
+					
+					if (isset($statoOrdine) && isset(OrdiniModel::$stati[$statoOrdine]))
+					{
+						$recordStato = StatiordineModel::g()->where(array(
+							"codice"	=>	sanitizeAll($statoOrdine),
+						))->first();
+						
+						if (!empty($recordStato))
+							$testoMail = htmlentitydecode(sofield($recordStato, "descrizione"));
+					}
+					
+					if (isset($testoMail) && !F::blank($testoMail))
+						echo $testoMail;
+					else
+						include tpf("/Ordini/$template.php");
+				}
+				
 				$output = ob_get_clean();
 				$testoClean = $output;
 				
@@ -742,25 +748,29 @@ class OrdiniModel extends FormModel {
 	public function mandaMailCompleted($id_o)
 	{
 		$this->mandaMailGeneric($id_o, v("oggetto_ordine_pagato"), "mail-completed", "P", false);
-// 		$this->mandaMailGeneric($id_o, "Conferma pagamento ordine N° [ID_ORDINE]", "mail-completed", "P", false);
 	}
 	
 	public function mandaMailClosed($id_o)
 	{
 		$this->mandaMailGeneric($id_o, v("oggetto_ordine_spedito"), "mail-closed", "C", false);
-// 		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE] spedito e chiuso", "mail-closed", "C", false);
 	}
 	
 	public function mandaMailDeleted($id_o)
 	{
 		$this->mandaMailGeneric($id_o, v("oggetto_ordine_annullato"), "mail-deleted", "A", false);
-// 		$this->mandaMailGeneric($id_o, "Annullamento ordine N° [ID_ORDINE]", "mail-deleted", "A", false);
+	}
+	
+	public function mandaMailStatoGenerico($id_o, $stato)
+	{
+		$titolo = StatiordineModel::getCampo($stato, "titolo");
+		
+		if ($titolo)
+			$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE] $titolo", "mail-$stato", "G", false);
 	}
 	
 	public function mandaMail($id_o)
 	{
 		$this->mandaMailGeneric($id_o, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false);
-// 		$this->mandaMailGeneric($id_o, "Ordine N° [ID_ORDINE]", "resoconto-acquisto", "R", false);
 	}
 	
 	public function aggiungiStoricoMail($id_o, $tipo = "F", $params = array())

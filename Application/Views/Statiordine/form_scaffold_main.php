@@ -15,6 +15,8 @@ $().ready(function() {
 			<?php echo $form["codice"];?>
 			<?php echo $form["classe"];?>
 			<?php echo $form["pagato"];?>
+			<?php echo $form["manda_mail_al_cambio_stato"];?>
+			<?php echo $form["descrizione"];?>
 			
 			<?php if ($type === "update") { ?>
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">

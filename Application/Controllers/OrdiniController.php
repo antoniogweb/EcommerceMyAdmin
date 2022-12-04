@@ -408,7 +408,7 @@ class OrdiniController extends BaseController {
 				"stato"	=>	$stato,
 			));
 			
-			if ($this->m["OrdiniModel"]->update((int)$id_o))
+			if ($this->m["OrdiniModel"]->update((int)$id_o) && !isset($_GET["no_mail_stato"]))
 			{
 				switch ($stato)
 				{
@@ -423,6 +423,9 @@ class OrdiniController extends BaseController {
 						break;
 					case "deleted":
 						$this->m["OrdiniModel"]->mandaMailDeleted($id_o);
+						break;
+					default:
+						$this->m["OrdiniModel"]->mandaMailStatoGenerico($id_o, $stato);
 						break;
 				}
 			}

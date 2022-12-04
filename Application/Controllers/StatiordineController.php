@@ -65,7 +65,7 @@ class StatiordineController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,classe,codice,pagato';
+		$fields = 'titolo,classe,codice,pagato,manda_mail_al_cambio_stato,descrizione';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		

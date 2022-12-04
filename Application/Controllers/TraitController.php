@@ -57,13 +57,13 @@ trait TraitController
 			$fields = 'title,alias,sottotitolo,description,meta_title,keywords,meta_description';
 		else if ($section == "-car-" || $section == "-cv-" || $section == "fasce_prezzo" || $section == "attributi_valori")
 			$fields = 'titolo,alias';
-		else if ($section == "-ruolo-" || $section == "attributi" || $section == "personalizzazioni" || $section == "tipi_azienda" || $section == "tipologie_caratteristiche" || $section == "stati_ordine")
+		else if ($section == "-ruolo-" || $section == "attributi" || $section == "personalizzazioni" || $section == "tipi_azienda" || $section == "tipologie_caratteristiche")
 			$fields = 'titolo';
 		else if ($section == "-marchio-")
 			$fields = 'titolo,sottotitolo,alias,descrizione,meta_title,keywords,meta_description';
 		else if ($section == "tag" || $section == "-marchio-")
 			$fields = 'titolo,alias,description,meta_title,keywords,meta_description';
-		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti" || $section == "sedi_detail")
+		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti" || $section == "sedi_detail" || $section == "stati_ordine")
 			$fields = 'titolo,descrizione';
 		else if ($section == "email_detail")
 			$fields = 'title,editor_visuale,description';

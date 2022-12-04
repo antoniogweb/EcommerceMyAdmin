@@ -90,6 +90,15 @@ class StatiordineModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'manda_mail_al_cambio_stato'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'descrizione'	=>	array(
+					"labelString"	=>	"Testo della mail",
+				),
 			),
 		);
 	}
@@ -159,5 +168,13 @@ class StatiordineModel extends GenericModel {
 			self::setRecordTabella("codice");
 		
 		return self::$recordTabella[$codiceStato]["pagato"] < 0 ? true : false;
+	}
+	
+	public static function getCampo($codiceStato, $campo)
+	{
+		if (!isset(self::$recordTabella))
+			self::setRecordTabella("codice");
+		
+		return isset(self::$recordTabella[$codiceStato][$campo]) ? self::$recordTabella[$codiceStato][$campo] : null;
 	}
 }
