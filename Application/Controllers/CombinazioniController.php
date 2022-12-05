@@ -216,7 +216,7 @@ class CombinazioniController extends BaseController
 		if ($this->viewArgs['id_page'] == "tutti")
 			$this->filters = array("categoria", "prodotto", "codice");
 		
-		if (v("mostra_filtri_varianti_in_magazzino"))
+		if (v("mostra_filtri_varianti_in_magazzino") || $this->viewArgs['id_page'] != "tutti")
 		{
 			foreach ($this->arrayAttributi as $idA => $titoloA)
 			{

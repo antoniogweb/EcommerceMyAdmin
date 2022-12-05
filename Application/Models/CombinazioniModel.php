@@ -262,6 +262,25 @@ class CombinazioniModel extends GenericModel {
 		return $temp;
 	}
 	
+	private function aggiungiColonna($temp, $where, $id_page, $dettagliPagina)
+	{
+		$clean["id_page"] = (int)$id_page;
+		
+		$t = $this->clear()->where($where)->send();
+		if (count($t) > 0)
+		{
+			if (!ImmaginiModel::g()->imageExists($t[0]["combinazioni"]["immagine"],$clean["id_page"]))
+				$t[0]["combinazioni"]["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+			
+			return $t[0]["combinazioni"];
+		}
+		else
+		{
+			$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+			return $temp;
+		}
+	}
+	
 	public function creaCombinazioni($id_page)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
@@ -309,58 +328,44 @@ class CombinazioniModel extends GenericModel {
 									$temp[$colonne[2]] = $v3;
 									$where[$colonne[2]] = $v3;
 									
-									$t = $this->clear()->where($where)->send();
-									if (count($t) > 0)
+									if (count($colonne) > 3)
 									{
-										if (!$imm->imageExists($t[0]["combinazioni"]["immagine"],$clean["id_page"]))
+										foreach ($valori[3] as $v4)
 										{
-											$t[0]["combinazioni"]["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+											$temp[$colonne[3]] = $v4;
+											$where[$colonne[3]] = $v4;
+											
+											if (count($colonne) > 4)
+											{
+												foreach ($valori[4] as $v5)
+												{
+													$temp[$colonne[4]] = $v5;
+													$where[$colonne[4]] = $v5;
+											
+													$val[] = $this->aggiungiColonna($temp, $where, $clean["id_page"], $dettagliPagina);
+												}
+											}
+											else
+											{
+												$val[] = $this->aggiungiColonna($temp, $where, $clean["id_page"], $dettagliPagina);
+											}
 										}
-										$val[] = $t[0]["combinazioni"];
 									}
 									else
 									{
-										$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-										$val[] = $temp;
+										$val[] = $this->aggiungiColonna($temp, $where, $clean["id_page"], $dettagliPagina);
 									}
 								}
 							}
 							else
 							{
-								$t = $this->clear()->where($where)->send();
-								if (count($t) > 0)
-								{
-									if (!$imm->imageExists($t[0]["combinazioni"]["immagine"],$clean["id_page"]))
-									{
-										$t[0]["combinazioni"]["immagine"] = getFirstImage($dettagliPagina["id_page"]);
-									}
-									$val[] = $t[0]["combinazioni"];
-								}
-								else
-								{
-									$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-									$val[] = $temp;
-								}
+								$val[] = $this->aggiungiColonna($temp, $where, $clean["id_page"], $dettagliPagina);
 							}
 						}
 					}
 					else
 					{
-						$t = $this->clear()->where($where)->send();
-						if (count($t) > 0)
-						{
-							if (!$imm->imageExists($t[0]["combinazioni"]["immagine"],$clean["id_page"]))
-							{
-								$t[0]["combinazioni"]["immagine"] = getFirstImage($dettagliPagina["id_page"]);
-							}
-							$val[] = $t[0]["combinazioni"];
-						}
-						else
-						{
-							$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-							$val[] = $temp;
-						}
-						
+						$val[] = $this->aggiungiColonna($temp, $where, $clean["id_page"], $dettagliPagina);
 					}
 				}
 			}
@@ -645,7 +650,8 @@ class CombinazioniModel extends GenericModel {
 	
 	public function varianti($record)
 	{
-		$divisorio = v("immagine_in_varianti") ? "<br />" : " - ";
+// 		$divisorio = v("immagine_in_varianti") ? "<br />" : " - ";
+		$divisorio = "<br />";
 		
 		return $this->getStringa($record["combinazioni"]["id_c"], $divisorio);
 	}

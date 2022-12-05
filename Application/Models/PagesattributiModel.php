@@ -97,7 +97,7 @@ class PagesattributiModel extends GenericModel {
 		//controllo che l'attributo non sia già stato associato
 		if (count($res) > 0)
 		{
-			$this->notice = "<div class='alert'>Questo attributo è già stato associato</div>";
+			$this->notice = "<div class='alert'>".gtext("Questo attributo è già stato associato")."</div>";
 		}
 		else
 		{
@@ -107,11 +107,11 @@ class PagesattributiModel extends GenericModel {
 			
 			if (count($res2) > 0)
 			{
-				//controllo che non abbia associato più di due attributi
+				//controllo che non abbia associato più di tre attributi
 				$res3 = $this->clear()->where(array("id_page"=>$clean["id_page"]))->send();
-				if (count($res3) >= 3)
+				if (count($res3) >= v("numero_massimo_varianti_per_prodotto"))
 				{
-					$this->notice = "<div class='alert'>Non è possibile associare più di due attributi ad un singolo prodotto</div>";
+					$this->notice = "<div class='alert'>Non è possibile associare più di ".v("numero_massimo_varianti_per_prodotto")." attributi ad un singolo prodotto</div>";
 				}
 				else
 				{
