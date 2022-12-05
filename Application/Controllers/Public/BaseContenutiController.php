@@ -1390,12 +1390,13 @@ class BaseContenutiController extends BaseController
 		}
 		
 		// Pagine correlate
-		$data["pagine_correlate"] = $this->m['PagesModel']->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
-			->addJoinTraduzionePagina()
-			->where(array(
-				"pages_pages.id_page"=>	$clean['id'],
-				"attivo"	=>	"Y",
-			))->orderBy("pages_pages.section,pages_pages.id_order")->send();
+		if (v("estrai_sempre_correlati") || $firstSection == "prodotti")
+			$data["pagine_correlate"] = $this->m['PagesModel']->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
+				->addJoinTraduzionePagina()
+				->where(array(
+					"pages_pages.id_page"=>	$clean['id'],
+					"attivo"	=>	"Y",
+				))->orderBy("pages_pages.section,pages_pages.id_order")->send();
 		
 		$data["altreImmagini"] = array();
 		

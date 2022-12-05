@@ -446,6 +446,7 @@ class VariabiliModel extends GenericModel {
 		"aggiorna_combinazioni_automaticamente"	=>	0, // se impostato ad 1, aggiorna le combinazioni non appena vengono cambiate le varianti
 		"permetti_di_selezionare_estensione_url_pagine"	=>	0, // se impostato a 1, permette la scelta tra l'estensione .html e /
 		## PAGINA DETTAGLIO PRODOTTO ##
+		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
 		## GOOGLE E FACEBOOK ##
