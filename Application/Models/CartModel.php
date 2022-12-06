@@ -235,12 +235,6 @@ class CartModel extends GenericModel {
 		
 		$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
 		
-// 		$res2 = $this->clear()->select("*,sum((price - (price * ".(float)$sconto."/100)) * quantity) as SOMMA")->where(array("cart_uid"=>$clean["cart_uid"]))->groupBy("cart.iva")->orderBy("cart.iva")->send();
-		
-// 		echo "<pre>";
-// 		print_r($res2);
-// 		echo "</pre>";
-		
 		$total = 0;
 		
 		$trovata = false;
@@ -487,7 +481,13 @@ class CartModel extends GenericModel {
 					$this->values["in_promozione"] = "N";
 				
 				$this->sanitize();
-				$this->update(null, "id_cart = " . $clean["id_cart"] . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+				
+				$this->update(null, array(
+					"id_cart"	=>	$clean["id_cart"],
+					"cart_uid"	=>	$clean["cart_uid"],
+				));
+				
+// 				$this->update(null, "id_cart = " . $clean["id_cart"] . " AND cart_uid = '" . $clean["cart_uid"] . "'");
 			}
 		}
 	}
@@ -497,7 +497,13 @@ class CartModel extends GenericModel {
 		$clean["id_cart"] = (int)$id_cart;
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		return $this->del(null, "(id_cart = " . $clean["id_cart"] . " OR id_p = " . $clean["id_cart"] . ") AND cart_uid = '" . $clean["cart_uid"] . "'");
+		return $this->del(null, array("(id_cart = ? OR id_p = ?) AND cart_uid = ?", array(
+			$clean["id_cart"],
+			$clean["id_cart"],
+			$clean["cart_uid"]
+		)));
+		
+// 		return $this->del(null, "(id_cart = " . $clean["id_cart"] . " OR id_p = " . $clean["id_cart"] . ") AND cart_uid = '" . $clean["cart_uid"] . "'");
 	}
 	
 	public function calcolaPrezzoFinale($idPage, $prezzoIntero, $qty = 1, $checkPromo = true, $checkUser = true, $idC = 0)
