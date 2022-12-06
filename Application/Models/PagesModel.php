@@ -868,6 +868,44 @@ class PagesModel extends GenericModel {
 		$this->checkAliasAll($id);
 	}
 	
+	protected function setCampoCerca($id)
+	{
+		if (!v("mostra_filtro_ricerca_libera_in_magazzino"))
+			return;
+		
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			$c = new CategoriesModel();
+			
+			$parents = $c->parents($record["id_c"], false, false, null, "title");
+			array_shift($parents);
+			array_shift($parents);
+			
+			$stringSearchArray = array(
+				htmlentitydecode($record["title"])
+			);
+			
+			foreach ($parents as $p)
+			{
+				$stringSearchArray[] = htmlentitydecode($p["categories"]["title"]);
+			}
+			
+			if (isset($record["id_marchio"]) && $record["id_marchio"])
+			{
+				$m = new MarchiModel();
+				$stringSearchArray[] = htmlentitydecode($m->whereId($record["id_marchio"])->field("titolo"));
+			}
+			
+			$this->setValues(array(
+				"campo_cerca"	=>	implode(" ", $stringSearchArray),
+			));
+			
+			$this->pUpdate((int)$id);
+		}
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$clean["id"] = (int)$id;
@@ -938,6 +976,9 @@ class PagesModel extends GenericModel {
 					
 					// Check sitemap
 					$this->controllaElementoInSitemap($clean["id"]);
+					
+					// Imposta il campo per la ricerca libera
+					$this->setCampoCerca($clean["id"]);
 				}
 			}
 		}
@@ -1208,6 +1249,9 @@ class PagesModel extends GenericModel {
 				
 				// Check sitemap
 				$this->controllaElementoInSitemap($this->lId);
+				
+				// Imposta il campo per la ricerca libera
+				$this->setCampoCerca($this->lId);
 			}
 		}
 		

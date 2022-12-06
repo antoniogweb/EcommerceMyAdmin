@@ -474,6 +474,7 @@ class VariabiliModel extends GenericModel {
 		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
 		"mostra_filtri_varianti_in_magazzino"	=>	1, // mostra o nascondi i filtri delle varianti nel magazzino
+		"mostra_filtro_ricerca_libera_in_magazzino"	=>	0, // filtro ricerca libera
 		## VARIANTI ##
 		"classe_variante_radio"		=>	"",
 		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE

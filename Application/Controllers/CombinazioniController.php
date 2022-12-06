@@ -29,6 +29,14 @@ Helper_List::$filtersFormLayout["filters"]["id_lista_reg_filt"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["cerca"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca ..",
+	),
+);
+
+
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -52,6 +60,7 @@ class CombinazioniController extends BaseController
 			'id_ordine:sanitizeAll'=>'tutti',
 			'id_lista_regalo_ordine:sanitizeAll'=>'tutti',
 			'id_lista_reg_filt:sanitizeAll'=>'tutti',
+			'cerca:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -214,7 +223,16 @@ class CombinazioniController extends BaseController
 			);
 		
 		if ($this->viewArgs['id_page'] == "tutti")
-			$this->filters = array("categoria", "prodotto", "codice");
+		{
+			$this->filters = array();
+			
+			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
+				$this->filters[] = "cerca";
+			
+			$this->filters[] = "categoria";
+			$this->filters[] = "prodotto";
+			$this->filters[] = "codice";
+		}
 		
 		if (v("mostra_filtri_varianti_in_magazzino") || $this->viewArgs['id_page'] != "tutti")
 		{
@@ -284,6 +302,27 @@ class CombinazioniController extends BaseController
 				$this->m[$this->modelName]->aWhere(array(
 					"combinazioni.giacenza"	=>	0,
 				));
+		}
+		
+		if ($this->viewArgs["cerca"] != "tutti")
+		{
+			$cercaArray = explode(" ",$this->viewArgs["cerca"]);
+			
+			$andArray = array();
+			
+			$iCerca = 4;
+			
+			foreach ($cercaArray as $cercaTermine)
+			{
+				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+					"pages.campo_cerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
+				);
+				
+				$iCerca++;
+			}
+			
+			if (count($andArray) > 0)
+				$this->m[$this->modelName]->aWhere($andArray);
 		}
 		
 		if ($this->viewArgs["id_lista_reg_filt"] != "tutti")
