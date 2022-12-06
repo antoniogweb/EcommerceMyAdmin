@@ -1275,7 +1275,7 @@ class PagesController extends BaseController {
 		
 		$head .= ",Peso";
 		
-		if (v("attiva_giacenza"))
+		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
 		{
 			$this->h['List']->addItem("text",";combinazioni.giacenza;");
 			$head .= ",Giacenza";

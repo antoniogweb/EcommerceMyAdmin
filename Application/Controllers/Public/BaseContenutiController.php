@@ -1547,6 +1547,9 @@ class BaseContenutiController extends BaseController
 		$clean["id_page"] = $this->request->post("id_page",0,"forceInt");
 		$clean["strcomb"] = $this->request->post("strcomb","","sanitizeAll");
 		
+		// se col non è blank, mostra le combinazioni al livello di col
+		$clean["col"] = $this->request->post("col","","sanitizeAll");
+		
 		$where = array(
 			"id_page"	=>	$clean["id_page"],
 		);
@@ -1573,40 +1576,61 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$res = $this->m["CombinazioniModel"]->clear()->where($where)->send();
+		$this->m["CombinazioniModel"]->clear()->where($where);
 		
-		if (count($res) > 0)
+		if ($clean["col"] && in_array($clean["col"] , $allowedFields))
+			$this->m["CombinazioniModel"]->groupBy($clean["col"] );
+		
+		if (!$clean["col"] )
 		{
-			PagesModel::$IdCombinazione = $res[0]["combinazioni"]["id_c"];
+			$res = $this->m["CombinazioniModel"]->send();
 			
-			$prezzoPieno = "";
-			$prezzoCombinazione = $res[0]["combinazioni"]["price"];
-			
-			if (User::$nazione)
-				$prezzoCombinazione = $this->m["CombinazioniModel"]->getPrezzoListino($res[0]["combinazioni"]["id_c"], User::$nazione, $prezzoCombinazione);
-			
-			if (inPromozioneTot($clean["id_page"]))
-				$prezzoPieno = setPriceReverse(calcolaPrezzoIvato($clean["id_page"], $prezzoCombinazione));
-			
-			$qty = (int)$res[0]["combinazioni"]["giacenza"];
-			
-			if ($qty < 0)
-				$qty = 0;
-			else if ($qty >= v("giacenza_massima_mostrata"))
-				$qty = v("giacenza_massima_mostrata");
-			
-			echo '<span class="id_combinazione">'.$res[0]["combinazioni"]["id_c"].'</span><span class="codice_combinazione">'.$res[0]["combinazioni"]["codice"].'</span><span class="prezzo_combinazione">'.setPriceReverse(calcolaPrezzoFinale($clean["id_page"], $prezzoCombinazione,1,true,true)).'</span><span class="immagine_combinazione">'.$res[0]["combinazioni"]["immagine"].'</span><span class="prezzo_pieno_combinazione">'.$prezzoPieno.'</span><span class="giacenza_combinazione">'.$qty.'</span><span class="peso_combinazione">'.setPriceReverse($res[0]["combinazioni"]["peso"]).'</span>';
-			
-			if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto") && (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")))
+			if (count($res) > 0)
 			{
-				echo '<span class="url_redirect_combinazione">'.$this->m["PagesModel"]->getUrlAlias($res[0]["combinazioni"]["id_page"], null, $res[0]["combinazioni"]["id_c"]).'</span>';
+				PagesModel::$IdCombinazione = $res[0]["combinazioni"]["id_c"];
 				
-				echo '<span class="url_redirect_fragment">'.v("fragmento_dettaglio_prodotto").'</span>';
+				$prezzoPieno = "";
+				$prezzoCombinazione = $res[0]["combinazioni"]["price"];
+				
+				if (User::$nazione)
+					$prezzoCombinazione = $this->m["CombinazioniModel"]->getPrezzoListino($res[0]["combinazioni"]["id_c"], User::$nazione, $prezzoCombinazione);
+				
+				if (inPromozioneTot($clean["id_page"]))
+					$prezzoPieno = setPriceReverse(calcolaPrezzoIvato($clean["id_page"], $prezzoCombinazione));
+				
+				$qty = (int)$res[0]["combinazioni"]["giacenza"];
+				
+				if ($qty < 0)
+					$qty = 0;
+				else if ($qty >= v("giacenza_massima_mostrata"))
+					$qty = v("giacenza_massima_mostrata");
+				
+				echo '<span class="id_combinazione">'.$res[0]["combinazioni"]["id_c"].'</span><span class="codice_combinazione">'.$res[0]["combinazioni"]["codice"].'</span><span class="prezzo_combinazione">'.setPriceReverse(calcolaPrezzoFinale($clean["id_page"], $prezzoCombinazione,1,true,true)).'</span><span class="immagine_combinazione">'.$res[0]["combinazioni"]["immagine"].'</span><span class="prezzo_pieno_combinazione">'.$prezzoPieno.'</span><span class="giacenza_combinazione">'.$qty.'</span><span class="peso_combinazione">'.setPriceReverse($res[0]["combinazioni"]["peso"]).'</span>';
+				
+				if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto") && (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")))
+				{
+					echo '<span class="url_redirect_combinazione">'.$this->m["PagesModel"]->getUrlAlias($res[0]["combinazioni"]["id_page"], null, $res[0]["combinazioni"]["id_c"]).'</span>';
+					
+					echo '<span class="url_redirect_fragment">'.v("fragmento_dettaglio_prodotto").'</span>';
+				}
+			}
+			else
+			{
+				echo "KO";
 			}
 		}
 		else
 		{
-			echo "KO";
+			$res = $this->m["CombinazioniModel"]->send(false);
+			
+			$jsonArray = array();
+			
+			foreach ($res as $r)
+			{
+				$jsonArray[] = $r[$clean["col"]];
+			}
+			
+			echo json_encode($jsonArray);
 		}
 	}
 	
