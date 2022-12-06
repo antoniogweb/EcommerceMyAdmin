@@ -104,7 +104,10 @@ class ListeregalolinkModel extends GenericModel
 				"testo_path"	=>	"Elementi/Mail/mail_link_lista_regalo.php",
 				"array_variabili_tema"	=>	array(
 					"NOME_CREATORE_LISTA"	=>	self::getNominativo($record["regusers"]),
+					"TITOLO_LISTA"	=>	$record["liste_regalo"]["titolo"],
 					"EMAIL_CREATORE_LISTA"	=>	$record["regusers"]["username"],
+					"CODICE_LISTA"	=>	$record["liste_regalo"]["codice"],
+					"LINK_PAGINA_LISTA"	=>	Domain::$publicUrl."/".$record["regusers"]["lingua"].F::getNazioneUrl($record["regusers"]["nazione_navigazione"])."/".getUrlAlias(PagesModel::gTipoPagina("LISTA_REGALO")),
 					"LINK_LISTA"	=>	Domain::$publicUrl."/".$record["regusers"]["lingua"].F::getNazioneUrl($record["regusers"]["nazione_navigazione"])."/".ListeregaloModel::getUrlAlias($record["liste_regalo"]["id_lista_regalo"]),
 				),
 			));
