@@ -97,9 +97,9 @@ class StatiordineModel extends GenericModel {
 					"className"	=>	"form-control",
 				),
 				'descrizione'	=>	array(
-					"labelString"	=>	"Testo della mail",
+					"labelString"	=>	"Testo della mail al cambio stato",
 					'wrap'		=>	array(
-						SegnapostoModel::getLegenda($this),
+						null,null,SegnapostoModel::getLegenda($this),
 					),
 				),
 			),
