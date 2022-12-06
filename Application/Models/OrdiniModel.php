@@ -1570,6 +1570,11 @@ class OrdiniModel extends FormModel {
 		return array();
 	}
 	
+	public function getNominativoInOrdineOCliente($lingua, $record)
+	{
+		return self::getNominativo($record);
+	}
+	
 	public function getRiferimentoOrdine($lingua, $record)
 	{
 		return $record["id_o"];

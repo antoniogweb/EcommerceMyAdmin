@@ -130,14 +130,21 @@ class ListeregaloModel extends GenericModel
 		
 		$this->values["alias"] = sanitizeAll($this->values["alias"]);
 		
-		$this->values["time_creazione"] = time();
+		$this->values["creation_time"] = time();
 		
 		$this->settaDataScadenza();
 		
 		if (isset($this->values["id_user"]))
 		{
 			$ruModel = new RegusersModel;
-			$this->setValue("email", $ruModel->clear()->whereId($this->values["id_user"])->field("username"));
+			
+			$recordUser = $ruModel->clear()->selectId($this->values["id_user"]);
+			
+			if (!empty($recordUser))
+			{
+				$this->setValue("email", $recordUser["username"]);
+				$this->values["nazione"] = $recordUser["nazione"] ? $recordUser["nazione"] : v("nazione_default");
+			}
 		}
 		
 		if (parent::insert())
@@ -156,8 +163,18 @@ class ListeregaloModel extends GenericModel
 			));
 			
 			$this->pUpdate($this->lId);
+			
+			$this->processaEventiListaRegalo($this->lId);
 		}
     }
+    
+    public function processaEventiListaRegalo($idLista)
+	{
+		$record = $this->selectId((int)$idLista);
+		
+		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && ListeregaloModel::attiva((int)$idLista))
+			EventiretargetingModel::processa($idLista, "ListeregaloModel", true);
+	}
     
     public function update($id = null, $where = null)
     {
@@ -432,5 +449,15 @@ class ListeregaloModel extends GenericModel
 			return $record["genitore_1"] ? $record["genitore_1"] : $record["nominativo"];
 		
 		return "";
+	}
+	
+	public function gNominativoLista($lingua, $record)
+	{
+		return $record["genitore_1"] ? $record["genitore_1"] : $record["nominativo"];
+	}
+	
+	public function gCodiceLista($lingua, $record)
+	{
+		return $record["codice"];
 	}
 }

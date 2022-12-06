@@ -240,6 +240,9 @@ class FormModel extends GenericModel {
 					'labelString'=>	'Promo / Coupon',
 					'options'	=>	$this->selectCouponUsabile($id),
 					'reverse' => 'yes',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
 				),
 // 				'id_user'	=>	array(
 // 					'type'		=>	'Hidden'
@@ -281,8 +284,8 @@ class FormModel extends GenericModel {
 		$p = new PromozioniModel();
 		
 		$res = $p->clear()->where(array(
-			"FONTE"	=>	"MANUALE",
-			"id_r"	=>	0,
+// 			"FONTE"	=>	"MANUALE",
+// 			"id_r"	=>	0,
 			"attivo"=>	"Y",
 			"lte"	=>	array(
 				"dal"	=>	date("Y-m-d"),
@@ -296,7 +299,15 @@ class FormModel extends GenericModel {
 		
 		foreach ($res as $r)
 		{
-			$selectTendina[$r["promozioni"]["id_p"]] = $r["promozioni"]["titolo"]." (".$r["promozioni"]["codice"].")";
+			$valoreTendina = $r["promozioni"]["fonte"]." - ".$r["promozioni"]["titolo"]." (".$r["promozioni"]["codice"].")";
+			
+			if ($r["promozioni"]["email"])
+				$valoreTendina .= " - ".$r["promozioni"]["email"];
+			
+			if ($r["promozioni"]["tipo_sconto"] == "ASSOLUTO" && PromozioniModel::gNumeroEuroRimasti($r["promozioni"]["id_p"], $id) <= 0)
+				continue;
+			
+			$selectTendina[$r["promozioni"]["id_p"]] = $valoreTendina;
 		}
 		
 		if ($id)
@@ -308,7 +319,7 @@ class FormModel extends GenericModel {
 				$promo = PromozioniModel::g(false)->selectId((int)$ordine["id_p"]);
 				
 				if (!empty($promo) && !isset($selectTendina[$ordine["id_p"]]))
-					$selectTendina[$ordine["id_p"]] = $promo["titolo"]." (".$promo["codice"].")";
+					$selectTendina[$ordine["id_p"]] = $r["promozioni"]["fonte"]." - ".$promo["titolo"]." (".$promo["codice"].")";
 			}
 		}
 		

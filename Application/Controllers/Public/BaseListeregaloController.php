@@ -72,7 +72,7 @@ class BaseListeregaloController extends BaseController
 // 			echo $this->m["SpedizioniModel"]->notice;
 		}
 		
-		$data['liste'] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array("id_user"=>$this->iduser))->orderBy("time_creazione desc")->send();
+		$data['liste'] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array("id_user"=>$this->iduser))->orderBy("creation_time desc")->send();
 		
 		$this->append($data);
 		

@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_gruppi` (`id_gruppo_retargeting`, `data_creazione`, `titolo`, `model`, `attivo`, `id_order`, `condizioni`, `clausola_where`, `blocca_reinvio_mail_stesso`) VALUES (NULL, '2021-10-27 23:16:02', 'Manda email con istruzioni al creatore della lista regalo', 'ListeregaloModel', '1', '6', 'attiva_liste_regalo=1', '', 'EVENTO_ELEMENTO');

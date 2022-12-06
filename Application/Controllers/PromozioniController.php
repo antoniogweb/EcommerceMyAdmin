@@ -85,7 +85,9 @@ class PromozioniController extends BaseController {
 			->left(array("righe"))
 			->left("orders")->on("righe.id_o = orders.id_o")
 			->where(array(
-				'codice'	=>	$this->viewArgs['codice'],
+				'lk'	=>	array(
+					'codice'	=>	$this->viewArgs['codice'],
+				),
 				'attivo'	=>	$this->viewArgs['attivo'],
 				'tipo_sconto'=>	$this->viewArgs['tipo'],
 			))->orderBy($this->orderBy)->convert();

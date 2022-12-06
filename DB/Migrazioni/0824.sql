@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES (NULL, 'Codice della lista regalo (variabile utilizzabile solo in caso di email su Liste regalo)', 'CODICE_LISTA_REGALO', 'gCodiceLista', '', '1', '13', '', '1', '', '0');

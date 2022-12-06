@@ -79,7 +79,7 @@ class ListeregaloemailModel extends GenericModel
 	{
 		$record = $this->selectId((int)$idListaEmail);
 		
-		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["dedica"] && ListeregaloModel::attiva($record["id_lista_regalo"]) )
+		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["dedica"] && ListeregaloModel::attiva($record["id_lista_regalo"]))
 			EventiretargetingModel::processaLista($idListaEmail);
 	}
 	
@@ -110,5 +110,10 @@ class ListeregaloemailModel extends GenericModel
 		$output = ob_get_clean();
 		
 		return $output;
+	}
+	
+	public function gNominativoLista($lingua, $record)
+	{
+		return $record["nominativo"];
 	}
 }
