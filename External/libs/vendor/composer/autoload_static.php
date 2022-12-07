@@ -49,6 +49,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             'DeepCopy\\' => 9,
         ),
+        'A' => 
+        array (
+            'Amnuts\\' => 7,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -100,6 +104,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'Amnuts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amnuts/opcache-gui/src',
         ),
     );
 

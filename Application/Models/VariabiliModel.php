@@ -562,6 +562,8 @@ class VariabiliModel extends GenericModel {
 		"numero_per_pagina_magazzino"	=>	50, // ADMIN
 		"numero_per_pagina_pages"	=>	30, // ADMIN
 		"attributi_link_pagina_2_in_poi"	=>	'', // attributi nei link alle pagine dalla 2 in poi nella griglia elementi
+		## OPCACHE ##
+		"attiva_interfaccia_opcache"	=>	0, // se attivare o meno l'interfaccia opcache
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

@@ -727,6 +727,8 @@ class Route
 		'statiordine,main',
 		'statiordine,form',
 		'statiordine,ordina',
+		
+		'opcache,index',
 	);
 	
 	//it can be 'yes' or 'no'
