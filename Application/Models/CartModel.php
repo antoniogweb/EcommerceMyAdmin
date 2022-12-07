@@ -191,7 +191,10 @@ class CartModel extends GenericModel {
 	{
 // 		IvaModel::getAliquotaEstera();
 		
-		$ivaSped = self::getMaxIva();
+		if (IvaModel::getIvaSpedizione("valore"))
+			$ivaSped = IvaModel::getIvaSpedizione("valore");
+		else
+			$ivaSped = self::getMaxIva();
 		
 		// Controllo l'aliquota estera
 		if (isset(IvaModel::$aliquotaEstera))
@@ -332,7 +335,10 @@ class CartModel extends GenericModel {
 	
 	public static function getIdIvaSpedizione()
 	{
-		$idIvaSped = self::getMaxIva("id_iva");
+		if (IvaModel::getIvaSpedizione("id_iva"))
+			$idIvaSped = IvaModel::getIvaSpedizione("id_iva");
+		else
+			$idIvaSped = self::getMaxIva("id_iva");
 		
 		// Controllo l'aliquota estera
 		if (isset(IvaModel::$idIvaEstera))

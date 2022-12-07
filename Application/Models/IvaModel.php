@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class IvaModel extends GenericModel
 {
+	public static $aliquotaIvaSpedizione = null;
+	
 	public static $idIvaEstera = null;
 	public static $aliquotaEstera = null;
 	public static $titoloAliquotaEstera = null;
@@ -94,6 +96,18 @@ class IvaModel extends GenericModel
 						null,
 						null,
 						"<div class='form_notice'>".gtext("Solo per casistiche EXTRA Italia: non viene mostrata al cliente, anche se usata")."</div>"
+					),
+				),
+				'usata_per_spedizione'	=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_nuovo',
+					'labelString'=>	'Aliquota usata per la spedizione',
+					'options'	=>	self::$attivoSiNo,
+					'reverse'	=>	'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se deve essere usata come aliquota iva per la spedizione")."</div>"
 					),
 				),
 			),
@@ -260,5 +274,50 @@ class IvaModel extends GenericModel
     public function nascondi($record)
 	{
 		return $record[$this->_tables]["nascondi"] ? gtext("Sì") : gtext("No");
+	}
+	
+	public function usataperspedizione($record)
+	{
+		return $record[$this->_tables]["usata_per_spedizione"] ? "<i class='fa fa-check text text-success'></i>" : "";
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setUsataPerSpedizione();
+		
+		return parent::update($id, $where);
+	}
+	
+	public function insert()
+	{
+		$this->setUsataPerSpedizione();
+		
+		return parent::insert();
+	}
+	
+	public function setUsataPerSpedizione()
+	{
+		if (isset($this->values["usata_per_spedizione"]) && $this->values["usata_per_spedizione"])
+			$this->db->query("update iva set usata_per_spedizione = 0 where 1");
+	}
+	
+	public static function getIvaSpedizione($field = "valore")
+	{
+		if (!isset(self::$aliquotaIvaSpedizione))
+		{
+			$i = new IvaModel();
+			
+			$record = $i->select("id_iva,valore")->where(array(
+				"usata_per_spedizione"	=>	1,
+			))->record();
+			
+			if (!empty($record))
+				self::$aliquotaIvaSpedizione = $record;
+		}
+		
+		if (isset(self::$aliquotaIvaSpedizione[$field]))
+			return self::$aliquotaIvaSpedizione[$field];
+		else
+			return null;
 	}
 }
