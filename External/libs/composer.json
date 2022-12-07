@@ -2,6 +2,7 @@
     "require": {
         "mpdf/mpdf": "^8.0",
         "sendpulse/rest-api": "^1.0",
-        "facebook/graph-sdk": "^5.7"
+        "facebook/graph-sdk": "^5.7",
+        "sendinblue/api-v3-sdk": "8.x.x"
     }
 }

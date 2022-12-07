@@ -124,3 +124,8 @@ Facebook SDK for PHP (v5)
 -------
 License:	https://developers.facebook.com/docs/php/gettingstarted
 link: 		https://github.com/facebookarchive/php-graph-sdk
+
+Sendiblue SDK for PHP (v5)
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/sendinblue/APIv3-php-library
