@@ -151,7 +151,7 @@ include(ROOT."/Application/Views/header.php");
 			</li>
 			<?php } ?>
 			<?php if (defined("CACHE_FOLDER") || v("attiva_cache_immagini") || v("attiva_interfaccia_opcache")) { ?>
-			<li class="<?php echo tm($tm, "redirect");?> treeview">
+			<li class="treeview">
 				<a href="#">
 					<i class="fa fa-bar-chart"></i>
 					<span><?php echo gtext("Gestione cache")?></span>
