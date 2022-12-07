@@ -216,25 +216,43 @@ class CategoriesController extends BaseController {
 		
 		$data["section"] = $this->m[$this->modelName]->section;
 		
-// 		if ($this->m[$this->modelName]->section)
-// 			$this->scaffold->itemList->setFilters(array(null,'title'));
-// 		else
-// 			$this->scaffold->itemList->setFilters(array('title'));
-		
-		$data['scaffold'] = $this->scaffold->render();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		
-		$data['notice'] = $this->scaffold->model->notice;
-// 		echo $this->scaffold->model->getQuery();
-		
-		$data['notice'] = $this->scaffold->model->notice;
+		if (isset($_GET["esporta"]))
+		{
+			$this->scaffold->itemList->renderToCsv = true;
+			$this->scaffold->itemList->csvColumnsSeparator = ";";
 			
-		$this->append($data);
-		$this->load('categories_main');
+			$this->scaffold->params["recordPerPage"] = 10000000000;
+			$this->scaffold->params['pageList'] = false;
+			
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['main'] = $this->scaffold->html['main'];
+			
+			$this->clean();
+			
+			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_categorie_.csv");
+			header('Content-Type: application/vnd.ms-excel');
+			
+			echo "\xEF\xBB\xBF"; // UTF-8 BOM
+			echo $data['main'];
+		}
+		else
+		{
+			$data['scaffold'] = $this->scaffold->render();
+			
+			$data['menu'] = $this->scaffold->html['menu'];
+			$data['popup'] = $this->scaffold->html['popup'];
+			$data['main'] = $this->scaffold->html['main'];
+			$data['pageList'] = $this->scaffold->html['pageList'];
+			
+			$data['notice'] = $this->scaffold->model->notice;
+	// 		echo $this->scaffold->model->getQuery();
+			
+			$data['notice'] = $this->scaffold->model->notice;
+				
+			$this->append($data);
+			$this->load('categories_main');
+		}
 	}
 
 	public function meta($id = 0)

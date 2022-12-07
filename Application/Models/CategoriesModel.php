@@ -1010,7 +1010,7 @@ class CategoriesModel extends HierarchicalModel {
 			$strAlias .= $useHtml ? "<span style='padding-right:3px;'>&nbsp</span>" : "- ";
 		}
 		
-		if ($this->section)
+		if ($this->section && !isset($_GET["esporta"]))
 			$str = "<div class='record_id' style='display:none'>$id</div><i title='Trascina per ordinare' class='ancora_ordinamento fa fa-arrows text text-warning' style='padding-right:3px;font-size:12px;'></i>";
 		
 		$strAlias = strcmp($strAlias,"") !== 0 ? $strAlias."&nbsp" : "";
