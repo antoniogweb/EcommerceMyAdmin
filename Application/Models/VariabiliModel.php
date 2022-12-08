@@ -526,6 +526,7 @@ class VariabiliModel extends GenericModel {
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento
 		## JAVASCRIPT ##
 		"usa_defear"	=>	0, // se impostato a 1, usa defear sui JS nell'header
+		"usa_versione_random"	=>	0, // se impostato a 1, metti ?v=rand(1,10000) al caricamento (da usare solo in sviluppo)
 		## DDOS ##
 		"svuota_ip_ogni_x_ore"		=>	30, // numero di ore dopo le quali svuota gli IP
 		"time_ultima_eliminazione_ip"	=>	0, // unix time stamp dell'ultima volta he ha svuotato gli IP
