@@ -441,13 +441,16 @@ class BaseOrdiniController extends BaseController
 		{
 			$urlPagamento = PagamentiModel::gateway($data["ordine"])->getUrlPagamento();
 			
-			$data["pulsantePaga"] = PagamentiModel::gateway()->getPulsantePaga();
-			$data["urlPagamento"] = $urlPagamento;
-			
-			if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
+			if (isset($urlPagamento))
 			{
-				header('Location: '.$urlPagamento);
-				die();
+				$data["pulsantePaga"] = PagamentiModel::gateway()->getPulsantePaga();
+				$data["urlPagamento"] = $urlPagamento;
+				
+				if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
+				{
+					header('Location: '.$urlPagamento);
+					die();
+				}
 			}
 		}
 

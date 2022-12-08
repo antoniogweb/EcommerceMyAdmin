@@ -33,6 +33,7 @@ class PagamentiModel extends GenericModel {
 	
 	public static $elencoGateway = array(
 		"Nexi"	=>	"Circuito Nexi",
+// 		"Sella"	=>	"Circuito Banca Sella",
 	);
 	
 	public function __construct() {
@@ -54,6 +55,8 @@ class PagamentiModel extends GenericModel {
     
 	public function setFormStruct($id = 0)
 	{
+		$record = $this->selectId($id);
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -105,6 +108,12 @@ class PagamentiModel extends GenericModel {
 						null,
 						"<div class='form_notice'>".gtext("Questo testo apparirà nella pagina di resoconto e nella mail al cliente una volta che l'ordine sarà confermato.")."</div>"
 					),
+				),
+				'alias_account'		=>	array(
+					'labelString'=>	'Alias Account / Shop ID',
+				),
+				'chiave_segreta'		=>	array(
+					'labelString'=>	'Chiave segreta / API KEY',
 				),
 			),
 		);

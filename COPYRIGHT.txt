@@ -135,3 +135,7 @@ opcache-gui
 License:	The MIT License (MIT)
 link: 		https://github.com/amnuts/opcache-gui
 
+NuSOAP
+-------
+License:	GNU Library or Lesser General Public License version 2.0 (LGPLv2)
+link: 		https://github.com/f00b4r/nusoap
