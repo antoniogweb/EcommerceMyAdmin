@@ -12,7 +12,7 @@
 			
 			<div>
 				<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" name="invia_coupon"><?php echo gtext("Invia codice");?></button>
+				<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="button" name="invia_coupon"><?php echo gtext("Invia codice");?></button>
 			</div>
 		</form>
 	</div>
