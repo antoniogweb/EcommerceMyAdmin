@@ -15,7 +15,7 @@
 				</div>
 				<?php } ?>
 				<div>
-					<?php echo gtext("Prezzo");?>
+					<?php echo gtext("Prezzo");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("IVA esclusa")?><?php } ?>
 				</div>
 				<div>
 					<?php echo gtext("Quantita");?>
@@ -61,7 +61,7 @@ foreach ($righeOrdine as $p) { ?>
 			<div class="uk-text-small uk-margin-remove-top">
 				<span class="uk-hidden@s uk-text-bold"><?php echo gtext("Prezzo");?>:</span>
 				<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["price"]));?></span>
-				<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
+				<?php if (!v("prezzi_ivati_in_carrello")) { ?>
 				<div class="scritta_iva_carrello"><?php echo gtext("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
 				<?php } ?>
 			</div>

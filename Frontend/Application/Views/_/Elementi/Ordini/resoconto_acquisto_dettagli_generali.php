@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<table class="table uk-width-2-3@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top">
+<table class="table uk-width-2-3@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top uk-table-small">
 	<tr>
 		<td class="first_column"><?php echo gtext("Ordine", false); ?>:</td>
 		<td><b>#<?php echo $ordine["id_o"];?></b></td>
@@ -26,6 +26,12 @@
 	<tr>
 		<td><?php echo gtext("Fattura");?>:</td>
 		<td><b><?php echo gtext("Richiesta");?></b></td>
+	</tr>
+	<?php } ?>
+	<?php if ($ordine["da_spedire"]) { ?>
+	<tr>
+		<td><?php echo gtext("Modalità di spedizione", false); ?>:</td>
+		<td><b><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></b></td>
 	</tr>
 	<?php } ?>
 </table>

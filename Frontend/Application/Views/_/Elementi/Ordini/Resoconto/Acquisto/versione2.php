@@ -49,7 +49,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 
 <?php include(tpf("Ordini/resoconto_pagamento.php"));?>
 
-<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Prodotti acquistati", false); ?></h2>
+<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Prodotti acquistati", false); ?></h2>
 
 <?php include(tpf("Ordini/resoconto_prodotti.php"));?>
 
@@ -128,17 +128,8 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 </div>
 <?php } ?>
 
-<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di fatturazione", false); ?></h2>
-
-<?php
-include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
-	"titolo"	=>	"Dati di fatturazione nel resoconto dell'ordine",
-	"percorso"	=>	"Elementi/Ordini/Resoconto/Fatturazione",
-))));
-?>
-
 <?php if ($ordine["da_spedire"]) { ?>
-<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di spedizione", false); ?></h2>
+<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di spedizione", false); ?></h2>
 
 <?php
 include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
@@ -147,6 +138,14 @@ include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
 ))));
 ?>
 <?php } ?>
+<h2 class="uk-margin-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di fatturazione", false); ?></h2>
+
+<?php
+include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
+	"titolo"	=>	"Dati di fatturazione nel resoconto dell'ordine",
+	"percorso"	=>	"Elementi/Ordini/Resoconto/Fatturazione",
+))));
+?>
 <br /><br />
 <?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
 <p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/token";?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
