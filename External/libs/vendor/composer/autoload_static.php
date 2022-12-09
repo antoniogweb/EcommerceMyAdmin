@@ -35,6 +35,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             'Mpdf\\' => 5,
         ),
+        'H' => 
+        array (
+            'Http\\Message\\' => 13,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -84,6 +88,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
