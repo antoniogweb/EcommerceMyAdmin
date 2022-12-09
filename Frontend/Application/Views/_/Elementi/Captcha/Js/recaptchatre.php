@@ -5,7 +5,7 @@ $params = CaptchaModel::getModulo()->getParams();
 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $params["secret_client"];?>"></script>
 <script>
 $(document).ready(function() {
-	$("body").on("click", "button,input[type='submit']", function(e){
+	$("body").on("click", "button:not(.button_invia_coupon),input[type='submit']", function(e){
 		
 		var value = $(this).attr("name");
 // 		console.log(value);
