@@ -12,7 +12,7 @@
 			
 			<div>
 				<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<input autocomplete="new-password" class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia_coupon" value="<?php echo gtext("Invia codice");?>" />
+				<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" name="invia_coupon"><?php echo gtext("Invia codice");?></button>
 			</div>
 		</form>
 	</div>
