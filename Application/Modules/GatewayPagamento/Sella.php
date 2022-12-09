@@ -123,7 +123,7 @@ class Sella
 			'apikey'	=>	$this->CHIAVESEGRETA,
 			'uicCode'	=>	self::$uicodes["EUR"], 
 			'amount'	=>	$importo, 
-			'shopTransactionId' => $codiceTransazione,    
+			'shopTransactionId' => gtext("Ordine")." ".$this->ordine["id_o"]." ".gtext("del")." ".date("d/m/Y"),    
 			"paymentType" => "CREDITCARD",
 			'buyerName'	=>	OrdiniModel::getNominativo($this->ordine),
 			'buyerEmail'	=>	$this->ordine["email"],
