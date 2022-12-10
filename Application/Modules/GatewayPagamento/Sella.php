@@ -46,6 +46,11 @@ class Sella
 	private $logFile = "";
 	private $ordine = null;
 	
+	private static $contenutoDecriptato = null;
+	private static $erroreClient = null;
+	private static $cartUid = null;
+	private static $transazioneEffettuataCorrettamente = false;
+	
 	public function __construct($ordine = array())
 	{
 		$pagamento = PagamentiModel::g(false)->where(array(
@@ -122,12 +127,12 @@ class Sella
 			'shopLogin' =>	$this->ALIAS, 
 			'uicCode'	=>	self::$uicodes["EUR"], 
 			'amount'	=>	$importo, 
-			'shopTransactionId' => gtext("Ordine")." ".$this->ordine["id_o"]." ".gtext("del")." ".date("d/m/Y"),    
+			'shopTransactionId' => gtext("Ordine")." ".$this->ordine["id_o"]." ".gtext("del")." ".date("d/m/Y H:i"),    
 			"paymentType" => "CREDITCARD",
 			'buyerName'	=>	OrdiniModel::getNominativo($this->ordine),
 			'buyerEmail'	=>	$this->ordine["email"],
 			'languageId'	=>	self::getLanguageCode($this->ordine["lingua"]),
-			'customInfo' 	=> "cart_uid=".$this->ordine["cart_uid"]."&id_o=".$this->ordine["id_o"],
+			'customInfo' 	=> "cart_uid=".$this->ordine["cart_uid"],
 		);
 		
 		if (trim($this->CHIAVESEGRETA))
@@ -140,8 +145,9 @@ class Sella
 		if (!$errore)
 		{
 			$codiceErrore = $result['EncryptResult']['GestPayCryptDecrypt']['ErrorCode'];
+			$TransactionResult = $result['EncryptResult']['GestPayCryptDecrypt']['TransactionResult'];
 			
-			if ((int)$codiceErrore === 0)
+			if ((int)$codiceErrore === 0 && (string)$TransactionResult === "OK")
 			{
 				//the call returned the encrypted string
 				$stringaCriptata = $result['EncryptResult']['GestPayCryptDecrypt']['CryptDecryptString'];
@@ -153,6 +159,82 @@ class Sella
 		}
 		
 		return null;
+	}
+	
+	public function validate($scriviSuFileLog = true)
+	{
+		if (!isset($_GET["b"]))
+		{
+			$this->statoNotifica = "MANCA CODICE b IN URL";
+			$this->scriviLog(false, $scriviSuFileLog);
+			return false;
+		}
+		
+		if (!isset(self::$contenutoDecriptato) || !isset(self::$erroreClient))
+		{
+			require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+			
+			$client = new nusoap_client($this->requestUrl,true); 
+			
+			$parametri = array(
+				'shopLogin'		 =>	$this->ALIAS, 
+				'CryptedString'	=>	$_GET["b"],
+			);
+			
+			if (trim($this->CHIAVESEGRETA))
+				$parametri["apikey"] = $this->CHIAVESEGRETA;
+			
+			self::$contenutoDecriptato = $client->call('Decrypt', $parametri);
+			
+// 			print_r(self::$contenutoDecriptato);
+			
+			self::$erroreClient = $client->getError();
+		}
+		
+		if (!self::$erroreClient)
+		{
+			$codiceErrore = self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']['ErrorCode'];
+			$testoErrore = self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']['ErrorDescription'];
+			$TransactionResult = self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']['TransactionResult'];
+			
+			if ((int)$codiceErrore === 0 && (string)$TransactionResult === "OK")
+			{
+				$customInfo = self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']['CustomInfo'];
+				
+				$customInfoArray = explode("*", $customInfo);
+				
+				foreach($customInfoArray as $k => $v)
+				{
+					if(trim($v) != "")
+					{
+						$array = explode("=", $v);
+						
+						if(count($array) == 2 && (string)strtolower($array[0]) === "cart_uid")
+							self::$cartUid = $_GET["cart_uid"] = $array[1];
+					}
+				}
+				
+				self::$transazioneEffettuataCorrettamente = true;
+				
+				$this->statoNotifica = $testoErrore;
+				$this->scriviLog(false, $scriviSuFileLog);
+				return true;
+			}
+			else
+			{
+				$this->statoNotifica = $testoErrore;
+				$this->scriviLog(false, $scriviSuFileLog);
+				return false;
+			}
+		}
+		else
+		{
+			$this->statoNotifica = "ERRORE TENTATIVO DECRYPT";
+			$this->scriviLog(false, $scriviSuFileLog);
+			return false;
+		}
+		
+		return false;
 	}
 	
 	public function scriviLog($success, $scriviSuFileLog = true)
@@ -168,8 +250,24 @@ class Sella
 		
 		$this->statoNotifica .= "[From:" . $hostname . "|" . $_SERVER ['REMOTE_ADDR'] . "]REQUEST Vars Received:\n";
 		
-		foreach ( $_REQUEST as $key => $value ) {
+		foreach ( $_GET as $key => $value ) {
 			$this->statoNotifica .= "REQUEST:$key=$value \n";
+		}
+		
+		if (isset(self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']))
+		{
+			foreach (self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt'] as $key => $value)
+			{
+				if (is_array($value))
+				{
+					foreach ($value as $ks => $vs)
+					{
+						$this->statoNotifica .= "RISPOSTA:$ks=$vs \n";
+					}
+				}
+				else
+					$this->statoNotifica .= "RISPOSTA:$key=$value \n";
+			}
 		}
 		
 		if ($this->statoCheckOrdine)
@@ -189,11 +287,6 @@ class Sella
 		
 	}
 	
-	public function validate($scriviSuFileLog = true)
-	{
-		return false;
-	}
-	
 	public function redirect()
 	{
 		return true;
@@ -201,26 +294,45 @@ class Sella
 	
 	public function success()
 	{
-		return false;
+		return self::$transazioneEffettuataCorrettamente;
 	}
 	
 	public function checkOrdine()
 	{
-// 		$importo = str_replace(".","",$this->ordine["total"]);
-// 		$amount = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
-// 		$codTrans = isset($_REQUEST["codTrans"]) ? $_REQUEST["codTrans"] : 0;
-// 		
-// 		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine["codice_transazione"]) === 0)
-// 			return true;
-// 		
-// 		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
-// 		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $amount \n";
-// 		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["codice_transazione"]." \n";
-// 		
-// 		$this->statoNotifica = 'OK, pagamento non corretto';
-// 		$this->scriviLog(false, true);
+		if (!isset(self::$contenutoDecriptato) || !isset(self::$erroreClient) || !isset(self::$cartUid))
+		{
+			$this->statoCheckOrdine = "MANCANO DATI DECRYPT IN CONTROLLO TOTALI\n";
+			$this->scriviLog(false, true);
+			return false;
+		}
+		
+		$importo = $this->ordine["total"];
+		$amount = self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']['Amount'];
+		$codTrans = self::$cartUid;
+		
+		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine["cart_uid"]) === 0)
+			return true;
+		
+		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
+		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $amount \n";
+		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["codice_transazione"]." \n";
+		
+		$this->statoNotifica = 'OK, pagamento non corretto';
+		$this->scriviLog(false, true);
 		
 		return false;
 	}
 	
+	public function amountPagato()
+	{
+		if (!isset(self::$contenutoDecriptato) || !isset(self::$erroreClient) || !isset(self::$cartUid))
+			return 0;
+		
+		return self::$contenutoDecriptato['DecryptResult']['GestPayCryptDecrypt']['Amount'];
+	}
+	
+	public function getContenutoDecriptato()
+	{
+		return self::$contenutoDecriptato;
+	}
 }

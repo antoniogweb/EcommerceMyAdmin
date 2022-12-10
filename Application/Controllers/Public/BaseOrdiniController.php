@@ -282,7 +282,7 @@ class BaseOrdiniController extends BaseController
 				}
 				else
 				{
-					MailordiniModel::inviaMailLog("ERRORE PAGAMENTO DIVERSO DA ORDINE", "Discrepanza nel dovuto:<br />Dovuto: ".number_format($res[0]["orders"]["total"],2,",","")." Euro<br />Pagato: ".number_format($_REQUEST["importo"]/100, 2, ",", "")." Euro", "Ordine N.".$res[0]["orders"]["id_o"]);
+					MailordiniModel::inviaMailLog("ERRORE PAGAMENTO DIVERSO DA ORDINE", "Discrepanza nel dovuto:<br />Dovuto: ".number_format($res[0]["orders"]["total"],2,",","")." Euro<br />Pagato: ".number_format(PagamentiModel::gateway()->amountPagato(), 2, ",", "")." Euro", "Ordine N.".$res[0]["orders"]["id_o"]);
 				}
 			}
 		}
@@ -688,6 +688,8 @@ class BaseOrdiniController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
 		
+		PagamentiModel::gateway()->validate(false);
+		
 		if (isset($_GET["cart_uid"]))
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
@@ -701,7 +703,7 @@ class BaseOrdiniController extends BaseController
 				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
 					$this->redirect("");
 				
-				if (PagamentiModel::gateway($res[0]["orders"])->validate(false))
+				if (PagamentiModel::gateway($res[0]["orders"], true)->validate(false))
 					$data["conclusa"] = true;
 				
 				$data["ordine"] = $res[0]["orders"];

@@ -242,4 +242,12 @@ class Nexi
 		return false;
 	}
 	
+	public function amountPagato()
+	{
+		if (!isset($_REQUEST["importo"]))
+			return 0;
+		
+		return $_REQUEST["importo"] / 100;
+	}
+	
 }

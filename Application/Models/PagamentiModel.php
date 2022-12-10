@@ -33,7 +33,7 @@ class PagamentiModel extends GenericModel {
 	
 	public static $elencoGateway = array(
 		"Nexi"	=>	"Circuito Nexi",
-// 		"Sella"	=>	"Circuito Banca Sella",
+		"Sella"	=>	"Circuito Banca Sella",
 	);
 	
 	public function __construct() {
