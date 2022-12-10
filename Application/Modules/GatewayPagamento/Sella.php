@@ -217,7 +217,7 @@ class Sella
 				self::$transazioneEffettuataCorrettamente = true;
 				
 				$this->statoNotifica = $testoErrore;
-				$this->scriviLog(false, $scriviSuFileLog);
+				$this->scriviLog(true, $scriviSuFileLog);
 				return true;
 			}
 			else

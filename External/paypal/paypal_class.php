@@ -254,7 +254,13 @@ class paypal_class {
 		$this->ipn_status .= "IPN Response from Paypal Server:\n" . $this->ipn_response;
 		
 		if ($writeToLog)
+		{
 			$this->write_to_log ();
+			
+			// Salvo il response del gateway
+			$cartUid = isset($_GET["cart_uid"]) ? (string)$_GET["cart_uid"] : "";
+			OrdiniresponseModel::aggiungi($cartUid, $this->ipn_status, $success);
+		}
 		else
 			return $this->ipn_status;
 	}
