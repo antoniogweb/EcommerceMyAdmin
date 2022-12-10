@@ -139,6 +139,17 @@ class OrdiniController extends BaseController {
 			$this->mainHead .= ',Tipo';
 		}
 		
+		$this->mainFields[] = 'infoGatewayCrud';
+		$this->mainHead .= ',';
+		
+		$this->inverseColProperties = array(
+			null,
+			null,
+			array(
+				'width'	=>	'1%',
+			),
+		);
+		
 		$this->aggiungiintegrazioni();
 		
 		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
@@ -432,6 +443,18 @@ class OrdiniController extends BaseController {
 		}
 		
 		$this->redirect($this->applicationUrl.$this->controller."/vedi/".(int)$id_o.$this->viewStatus);
+	}
+	
+	public function vediresponse($cart_uid)
+	{
+		$this->model("OrdiniresponseModel");
+		
+		$data["responses"] = $this->m["OrdiniresponseModel"]->where(array(
+			"cart_uid"	=>	$cart_uid,
+		))->orderBy("id_order_gateway_response desc")->findAll(false);
+		
+		$this->append($data);
+		$this->load("vedi_response");
 	}
 	
 	public function vedi($id_o)

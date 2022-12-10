@@ -88,6 +88,7 @@ class Route
 		'ordini,integrazioni',
 		'ordini,righe',
 		'ordini,setstato',
+		'ordini,vediresponse',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',
