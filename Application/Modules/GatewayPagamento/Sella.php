@@ -120,7 +120,6 @@ class Sella
 		
 		$parametri = array(
 			'shopLogin' =>	$this->ALIAS, 
-			'apikey'	=>	$this->CHIAVESEGRETA,
 			'uicCode'	=>	self::$uicodes["EUR"], 
 			'amount'	=>	$importo, 
 			'shopTransactionId' => gtext("Ordine")." ".$this->ordine["id_o"]." ".gtext("del")." ".date("d/m/Y"),    
@@ -130,6 +129,9 @@ class Sella
 			'languageId'	=>	self::getLanguageCode($this->ordine["lingua"]),
 			'customInfo' 	=> "cart_uid=".$this->ordine["cart_uid"]."&id_o=".$this->ordine["id_o"],
 		);
+		
+		if (trim($this->CHIAVESEGRETA))
+			$parametri["apikey"] = $this->CHIAVESEGRETA;
 		
 		$result = $client->call('Encrypt', $parametri);
 		

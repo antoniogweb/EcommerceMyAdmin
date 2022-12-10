@@ -29,6 +29,9 @@ if (typeof filtro_prezzo_slider == "undefined")
 if (typeof spesa_pagamento_possibile == "undefined")
 	var spesa_pagamento_possibile = true;
 
+if (typeof attiva_icheck == "undefined")
+	var attiva_icheck = true;
+
 $ = jQuery;
 
 function getTipoCliente()
@@ -876,7 +879,8 @@ $(document).ready(function(){
 		
 	});
 	
-	$('input').iCheck(icheckOptions);
+	if (attiva_icheck)
+		$('input').iCheck(icheckOptions);
 	
 	mostraLabelColore();
 	

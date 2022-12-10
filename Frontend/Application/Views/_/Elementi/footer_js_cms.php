@@ -32,6 +32,7 @@
 	<?php if (v("attiva_liste_regalo")) { ?>
 	var stringa_testo_copiato_clipboard = "<?php echo gtext("Il link della lista è stato copiato negli appunti.");?>";
 	<?php } ?>
+	var attiva_icheck = <?php echo (!isset($skipIcheck)) ?  "true" : "false";  ?>
 </script>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
@@ -53,8 +54,9 @@
 <?php } ?>
 
 <script defer src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
-
+<?php if (!isset($skipIcheck)) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
+<?php } ?>
 <?php if (v("ecommerce_attivo")) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
 <?php } ?>
