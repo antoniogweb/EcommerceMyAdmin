@@ -280,6 +280,10 @@ class Sella
 			fwrite ( $fp, $this->statoNotifica . "\n\n" );
 			fclose ( $fp ); // close file
 			chmod ( $this->logFile , 0600 );
+			
+			// Salvo il response del gateway
+			OrdiniresponseModel::aggiungi((string)self::$cartUid, $this->statoNotifica, $success);
+			
 			$this->statoNotifica = "";
 		}
 		else

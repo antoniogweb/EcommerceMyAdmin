@@ -160,6 +160,11 @@ class Nexi
 			fwrite ( $fp, $this->statoNotifica . "\n\n" );
 			fclose ( $fp ); // close file
 			chmod ( $this->logFile , 0600 );
+			
+			// Salvo il response del gateway
+			$cartUid = isset($_GET["cart_uid"]) ? (string)$_GET["cart_uid"] : "";
+			OrdiniresponseModel::aggiungi($cartUid, $this->statoNotifica, $success);
+			
 			$this->statoNotifica = "";
 		}
 		else
