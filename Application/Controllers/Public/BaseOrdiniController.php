@@ -1411,7 +1411,15 @@ class BaseOrdiniController extends BaseController
 		$this->m['OrdiniModel']->fields = OpzioniModel::stringaValori("CAMPI_FORM_CHECKOUT");
 		
 		// Elenco corrieri
-		$data['corrieri'] = $elencoCorrieri;
+		if (!v("scegli_il_corriere_dalla_categoria_dei_prodotti"))
+			$data['corrieri'] = $elencoCorrieri;
+		else
+		{
+			// cerca il corriere dal carrello
+			$idCorriereDaCarrello = $this->m["CorrieriModel"]->getIdCorriereDaCarrello();
+			
+			$data['corrieri'] = $idCorriereDaCarrello ? $this->m["CorrieriModel"]->whereId((int)$idCorriereDaCarrello)->send(false) : $this->m["CorrieriModel"]->elencoCorrieri(true);
+		}
 		
 		$defaultValues = $_SESSION;
 		

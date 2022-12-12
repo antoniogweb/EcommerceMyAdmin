@@ -35,7 +35,13 @@ if ($haCouponAttivo)
 <?php } ?>
 <?php if (!v("prezzi_ivati_in_carrello")) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
-	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Iva");?></div>
+	<div class="uk-width-expand uk-text-muted uk-first-column">
+		<?php echo gtext("Iva");?>
+		<?php if (isset(IvaModel::$titoloAliquotaEstera) && !IvaModel::$nascondiAliquotaEstera) { ?>
+		<br />
+		(<?php echo IvaModel::$titoloAliquotaEstera;?>)</span>
+		<?php } ?>
+	</div>
 	<div class="uk-margin-remove-top"><?php echo getIva();?> €</div>
 </div>
 <?php } ?>

@@ -236,6 +236,12 @@ class CategoriesModel extends HierarchicalModel {
 					'reverse' => 'yes',
 					'entryClass'	=>	'form_input_text help_mostra_in_menu',
 				),
+				'id_corriere'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Corriere associato',
+					'options'	=>	CorrieriModel::g()->selectTendina(),
+					'reverse' => 'yes',
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',

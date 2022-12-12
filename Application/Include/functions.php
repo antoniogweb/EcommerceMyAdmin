@@ -473,8 +473,13 @@ function getSpedizioneN($pieno = null)
 	if (isset($_POST["nazione_spedizione"]))
 		$nazione = $_POST["nazione_spedizione"];
 	
+	// cerca il corriere dal carrello
+	$idCorriereDaCarrello = $corr->getIdCorriereDaCarrello();
+	
 	if (isset($_POST["id_corriere"]))
 		$corriere = $corr->selectId((int)$_POST["id_corriere"]);
+	else if (v("scegli_il_corriere_dalla_categoria_dei_prodotti") && $idCorriereDaCarrello)
+		$corriere = $corr->selectId((int)$idCorriereDaCarrello);
 	else
 	{
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->orderBy("corrieri.id_order")->send(false);

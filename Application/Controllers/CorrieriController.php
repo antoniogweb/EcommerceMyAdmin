@@ -24,13 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CorrieriController extends BaseController {
 	
-	public $mainFields = array("[[ledit]];corrieri.titolo;","corrieri.attivo");
-	
-	public $mainHead = "Titolo,Attivo";
-	
 	public $filters = array("titolo");
-	
-	public $formValuesToDb = 'titolo,attivo';
 	
 	public $orderBy = "id_order";
 	
@@ -43,6 +37,15 @@ class CorrieriController extends BaseController {
 	public function main()
 	{
 		$this->shift();
+		
+		$this->mainFields = array("[[ledit]];corrieri.titolo;","corrieri.attivo");
+		$this->mainHead = "Titolo,Attivo";
+		
+		if (v("scegli_il_corriere_dalla_categoria_dei_prodotti"))
+		{
+			$this->mainFields[] = "visibileCrud";
+			$this->mainHead .= ",Visibile";
+		}
 		
 		$this->m[$this->modelName]->where(array(
 				"lk" => array("titolo" => $this->viewArgs["titolo"]),
@@ -62,6 +65,13 @@ class CorrieriController extends BaseController {
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->_posizioni['main'] = 'class="active"';
+		
+		$fields = 'titolo,attivo';
+		
+		if (v("scegli_il_corriere_dalla_categoria_dei_prodotti"))
+			$fields .= ",visibile";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}

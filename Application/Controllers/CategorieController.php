@@ -36,6 +36,9 @@ class CategorieController extends CategoriesController {
 		if (v("attiva_mostra_in_menu"))
 			$this->queryFields .= ",mostra_in_menu";
 		
+		if (v("scegli_il_corriere_dalla_categoria_dei_prodotti"))
+			$this->queryFields .= ",id_corriere";
+		
 		if (v("attiva_strumenti_merchant_google"))
 			$this->queryFields .= ",codice_categoria_prodotto_google";
 		

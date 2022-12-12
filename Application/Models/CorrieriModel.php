@@ -43,6 +43,20 @@ class CorrieriModel extends GenericModel {
         );
     }
     
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'visibile'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+				),
+			),
+		);
+	}
+	
     public function getIdsCorrieriNazione($nazione)
 	{
 		$clean["nazione"] = sanitizeAll($nazione);
@@ -56,11 +70,61 @@ class CorrieriModel extends GenericModel {
 		))->toList("corrieri.id_corriere")->orderBy("corrieri.id_corriere")->send();
 	}
 	
-	public function elencoCorrieri()
+	// Cerca tra i corrieri legati alle categorie nel carrello e prendi quello che ha le spese di spedizione maggiori
+	public function getIdCorriereDaCarrello()
 	{
-		return $this->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->where(array(
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$nazione = User::getSpedizioneDefault();
+		
+		if (isset($_POST["nazione_spedizione"]))
+			$nazione = $_POST["nazione_spedizione"];
+		
+		$c = new CartModel();
+		$corrSpese = new CorrierispeseModel();
+		$peso = $c->getPesoTotale();
+		
+		$idCorrieri = $c->clear()->select("distinct categories.id_corriere")
+			->inner("pages")->on("cart.id_page = pages.id_page")
+			->inner("categories")->on("pages.id_c = categories.id_c")
+			->where(array(
+				"cart_uid"	=>	$clean["cart_uid"],
+			))
+			->sWhere("(categories.id_corriere is not null and categories.id_corriere != 0)")
+			->toList("categories.id_corriere")
+			->send();
+		
+		$idCorriereFinale = $spese = 0;
+		
+		if (count($idCorrieri) > 0)
+		{
+			foreach ($idCorrieri as $idCorriere)
+			{
+				$speseCorriere = $corrSpese->getPrezzo($idCorriere, $peso, $nazione);
+				
+				if ($speseCorriere >= $spese)
+				{
+					$spese = $speseCorriere;
+					$idCorriereFinale = $idCorriere;
+				}
+			}
+		}
+		
+		return $idCorriereFinale;
+	}
+	
+	public function elencoCorrieri($soloVisibili = false)
+	{
+		$this->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->using("id_corriere")->where(array(
 			"corrieri.attivo"	=>	"Y",
-		))->orderBy("corrieri.id_order")->send(false);
+		))->orderBy("corrieri.id_order");
+		
+		if ($soloVisibili)
+			$this->aWhere(array(
+				"corrieri.visibile"	=>	1,
+			));
+		
+		return $this->send(false);
 	}
 	
 	public function spedibile($idCorriere, $nazione)
@@ -83,5 +147,10 @@ class CorrieriModel extends GenericModel {
 	public function selectTendina()
 	{
 		return array(0=>"Seleziona") + $this->orderBy("id_order")->toList("id_corriere","titolo")->send();
+	}
+	
+	public function visibileCrud($record)
+	{
+		return $record["corrieri"]["visibile"] ? gtext("Sì") : gtext("No");
 	}
 }
