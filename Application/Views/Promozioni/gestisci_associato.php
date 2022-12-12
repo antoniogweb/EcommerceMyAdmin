@@ -6,12 +6,14 @@
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/categorie/$id".$this->viewStatus;?>' method='POST'>
 
-	<?php echo Html_Form::select("id_c","",$listaCategorie,null,"combobox","yes");?>
+	<span select2>
+		<?php echo Html_Form::select("id_c","",$listaCategorie,null,null,"yes","style='min-width:200px'");?>
+	</span>
 	
-	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
 	
 </form>
-
+<br />
 <?php } ?>
 
 <?php if ($this->action == "pagine") { ?>
@@ -19,19 +21,31 @@
 <div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuna prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/pagine/$id".$this->viewStatus;?>' method='POST'>
-
-	<?php echo Html_Form::select("id_page","",$listaProdotti,null,"combobox","yes");?>
 	
-	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
+	<span select2>
+		<?php echo Html_Form::select("id_page","",$listaProdotti,null,null,"yes","style='min-width:200px'");?>
+	</span>
+	
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
 	
 </form>
+<br />
 
-<style>
-.form-inline .form-control {
-    display: inline-block;
-    width: 600px !important;
-    vertical-align: middle;
-}
-</style>
+<?php } ?>
+
+<?php if ($this->action == "tipi") { ?>
+
+<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuntipo cliente la promo sarà utilizzabile su tutti i tipi cliente.");?></div>
+
+<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/tipi/$id".$this->viewStatus;?>' method='POST'>
+	
+	<span select2>
+		<?php echo Html_Form::select("id_tipo_cliente","",$listaTipi,null,null,"yes","style='min-width:200px'");?>
+	</span>
+	
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	
+</form>
+<br />
 
 <?php } ?>

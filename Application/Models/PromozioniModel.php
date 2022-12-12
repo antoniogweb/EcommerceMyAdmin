@@ -27,6 +27,7 @@ class PromozioniModel extends GenericModel {
 	public $lId = 0;
 	
 	public static $staticIdO = null;
+	public static $tipiClientiPromo = array();
 	
 	public function __construct() {
 		$this->_tables='promozioni';
@@ -128,6 +129,7 @@ class PromozioniModel extends GenericModel {
         return array(
 			'categorie' => array("HAS_MANY", 'PromozionicategorieModel', 'id_p', null, "CASCADE"),
 			'pagine' => array("HAS_MANY", 'PromozionipagineModel', 'id_p', null, "CASCADE"),
+			'tipi_clienti' => array("HAS_MANY", 'PromozionitipiclientiModel', 'id_p', null, "CASCADE"),
 			'righe' => array("BELONGS_TO", 'RigheModel', 'id_r',null,"CASCADE"),
         );
     }
@@ -242,6 +244,18 @@ class PromozioniModel extends GenericModel {
 		return false;
 	}
 	
+	public function elencoTipiClientiPromo($id_p)
+	{
+		if (!isset(self::$tipiClientiPromo[$id_p]))
+			self::$tipiClientiPromo[$id_p] =  $this->clear()->select("promozioni_tipi_clienti.codice")->inner(array("tipi_clienti"))->where(array(
+				"id_p"	=>	(int)$id_p,
+			))->toList("promozioni_tipi_clienti.codice")->send();
+		
+// 		print_r(self::$tipiClientiPromo[$id_p]);
+		
+		return self::$tipiClientiPromo[$id_p];
+	}
+	
 	//controllo che il coupon sia attivo
 	public function isActiveCoupon($codice, $ido = null, $checkCart = true)
 	{
@@ -277,6 +291,10 @@ class PromozioniModel extends GenericModel {
 					
 					// controllo il numero di utilizzi per singola email
 					if ($numeroUtilizziPerEmail > 0 && isset($_POST["email"]) && checkMail($_POST["email"]) && $numeroUtilizziPerEmail <= (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido, $_POST["email"]))
+						return false;
+					
+					// controllo il tipo cliente
+					if (count($this->elencoTipiClientiPromo($res[0]["promozioni"]["id_p"])) && isset($_POST["tipo_cliente"]) && !in_array($_POST["tipo_cliente"], $this->elencoTipiClientiPromo($res[0]["promozioni"]["id_p"])))
 						return false;
 					
 					if (!$checkCart)

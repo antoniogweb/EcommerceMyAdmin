@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class TipiclientiModel extends GenericModel
 {
 	public static $tipi = null;
+	public static $selectTipi = null;
 	
 	public function __construct() {
 		$this->_tables = 'tipi_clienti';
@@ -52,5 +53,19 @@ class TipiclientiModel extends GenericModel
 		$arrayTipi = self::getArrayTipi();
 		
 		return implode(",",array_keys($arrayTipi));
+	}
+	
+	public function selectTipiCliente()
+	{
+		if (!isset(self::$selectTipi))
+		{
+			$t = new TipiclientiModel();
+			
+			self::$selectTipi = $t->clear()->where(array(
+				"attivo"	=>	1,
+			))->orderBy("id_order")->toList("id_tipo_cliente", "titolo")->send();
+		}
+		
+		return self::$selectTipi;
 	}
 }

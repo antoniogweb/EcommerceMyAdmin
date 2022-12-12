@@ -23,5 +23,14 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class BlogcatController extends CategoriesController {
-
+	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if (v("mostra_seconda_immagine_categoria_prodotti"))
+			$this->queryFields .= ",immagine_2";
+		
+	}
+	
 }

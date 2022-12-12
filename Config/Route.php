@@ -95,6 +95,7 @@ class Route
 		'promozioni,pagine',
 		'promozioni,invii',
 		'promozioni,ordini',
+		'promozioni,tipi',
 		'regusers,main',
 		'regusers,form',
 		'regusers,gruppi',

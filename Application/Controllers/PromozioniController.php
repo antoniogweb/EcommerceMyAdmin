@@ -47,6 +47,7 @@ class PromozioniController extends BaseController {
 		$this->model("CategorieModel");
 		$this->model("PromozionipagineModel");
 		$this->model("PagesModel");
+		$this->model("PromozionitipiclientiModel");
 	}
 	
 	public function main()
@@ -141,6 +142,47 @@ class PromozioniController extends BaseController {
 		parent::form($queryType, $id);
 		
 		$data["record"] = $record;
+		
+		$this->append($data);
+	}
+	
+	public function tipi($id = 0)
+	{
+		$this->_posizioni['tipi'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->m['PromozionitipiclientiModel']->setFields('id_tipo_cliente','sanitizeAll');
+		$this->m['PromozionitipiclientiModel']->values['id_p'] = $clean['id'];
+		$this->m['PromozionitipiclientiModel']->updateTable('insert,del');
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "PromozionitipiclientiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("tipi_clienti.titolo");
+		$this->mainHead = "Tipo cliente";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"tipi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("promozioni_tipi_clienti.*,tipi_clienti.*")->inner(array("tipo_cliente"))->orderBy("tipi_clienti.titolo")->where(array("id_p"=>$clean['id']))->convert()->save();
+		
+		$this->tabella = "promozioni";
+		
+		parent::main();
+		
+		$data["listaTipi"] = TipiclientiModel::g()->selectTipiCliente();
+		
+		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}

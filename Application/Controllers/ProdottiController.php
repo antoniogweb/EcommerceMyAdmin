@@ -117,6 +117,11 @@ class ProdottiController extends PagesController {
 		
 		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
 		
+		$campiPromo = "id_iva,in_promozione,prezzo_promozione,dal,al";
+		
+		if (v("permetti_promozione_assoluta_prodotto"))
+			$campiPromo .= ",tipo_sconto,$campoPriceSconto";
+		
 		if (v("ecommerce_attivo"))
 		{
 			if ($haCombinazioni)
@@ -125,14 +130,15 @@ class ProdottiController extends PagesController {
 					$this->queryFields .= ",id_iva,in_promozione,dal,al";
 				else
 				{
-					if (v("permetti_promozione_assoluta_prodotto"))
-						$this->queryFields .= ",id_iva,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al";
-					else
-						$this->queryFields .= ",id_iva,in_promozione,prezzo_promozione,dal,al";
+					$this->queryFields .= ",$campiPromo";
+// 					if (v("permetti_promozione_assoluta_prodotto"))
+// 						$this->queryFields .= ",id_iva,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al";
+// 					else
+// 						$this->queryFields .= ",id_iva,in_promozione,prezzo_promozione,dal,al";
 				}
 			}
 			else
-				$this->queryFields .= ",$campoPrice,id_iva,codice,peso,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al,giacenza";
+				$this->queryFields .= ",$campoPrice,giacenza,codice,peso,$campiPromo";
 		}
 		
 		if (v("abilita_blocco_acquisto_diretto"))
