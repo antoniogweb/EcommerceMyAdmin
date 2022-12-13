@@ -28,6 +28,8 @@ class AttributivaloriModel extends GenericModel {
 	
 	public static $names = array();
 	
+	public static $uploadFile = true;
+	
 	public function __construct() {
 		$this->_tables='attributi_valori';
 		$this->_idFields='id_av';
@@ -172,7 +174,7 @@ class AttributivaloriModel extends GenericModel {
 	
 	public function update($id = NULL, $whereClause = NULL)
 	{
-		if ($this->upload("update"))
+		if (!self::$uploadFile || $this->upload("update"))
 		{
 			if (isset($this->values["alias"]))
 				$this->checkAliasAll($id);
@@ -194,7 +196,7 @@ class AttributivaloriModel extends GenericModel {
 	
 	public function insert()
 	{
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 		{
 			if (isset($this->values["alias"]))
 				$this->checkAliasAll(0);

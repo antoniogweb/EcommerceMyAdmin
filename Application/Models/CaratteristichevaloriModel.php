@@ -30,6 +30,8 @@ class CaratteristichevaloriModel extends GenericModel {
 	
 	public static $names = array();
 	
+	public static $uploadFile = true;
+	
 	public function __construct() {
 		$this->_tables='caratteristiche_valori';
 		$this->_idFields='id_cv';
@@ -224,7 +226,7 @@ class CaratteristichevaloriModel extends GenericModel {
 	{
 		$res = false;
 		
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 		{
 			if (isset($this->values["alias"]))
 				$this->checkAliasAll(0);
@@ -248,7 +250,7 @@ class CaratteristichevaloriModel extends GenericModel {
 	{
 		$res = false;
 		
-		if ($this->upload("update"))
+		if (!self::$uploadFile || $this->upload("update"))
 		{
 			if (isset($this->values["alias"]))
 				$this->checkAliasAll($id);
