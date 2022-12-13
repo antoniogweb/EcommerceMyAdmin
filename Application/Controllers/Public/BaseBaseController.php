@@ -622,7 +622,12 @@ class BaseBaseController extends Controller
 				->addWhereAttivo()
 				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
 				->groupBy("caratteristiche_valori.id_cv");
-				
+			
+			if (CategoriesModel::$currentIdCategory)
+				$this->m["PagescarvalModel"]->inner("categories")->on("categories.id_c = pages.id_c")->aWhere(array(
+					"categories.id_c"	=>	CategoriesModel::$currentIdCategory,
+				));
+			
 			if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
 			{
 				$this->m["PagescarvalModel"]->inner("categories_caratteristiche")->on("caratteristiche.id_car = categories_caratteristiche.id_car")->sWhere("categories_caratteristiche.id_c = ".(int)CategoriesModel::$currentIdCategory)->orderBy("categories_caratteristiche.id_order,caratteristiche_valori.id_order");

@@ -1327,8 +1327,13 @@ class GenericModel extends Model_Tree
 		
 		if (v("attiva_filtri_successivi"))
 		{
-			if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) && count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
-				$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento])).")";
+			if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]))
+			{
+				if (count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
+					$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento])).")";
+				else
+					$whereIn = "1 != 1";
+			}
 			else
 				$whereIn = "1 = 1";
 			
