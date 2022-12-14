@@ -423,41 +423,6 @@ class CategoriesModel extends HierarchicalModel {
 		$this->controllaLinguaGeneric($id, "id_c", $sezione);
 	}
 	
-// 	// Controllo che la lingua esista
-// 	public function controllaLingua($id)
-// 	{
-// 		$record = $this->selectId((int)$id);
-// 		
-// 		if (!empty($record))
-// 		{
-// 			$ct = new ContenutitradottiModel();
-// 			
-// 			foreach (BaseController::$traduzioni as $lingua)
-// 			{
-// 				$traduzione = $ct->clear()->where(array(
-// 					"id_c"	=>	(int)$id,
-// 					"lingua"	=>	sanitizeDb($lingua),
-// 				))->send(false);
-// 				
-// 				$ct->setValues(array(
-// 					"lingua"		=>	sanitizeDb($lingua),
-// 					"title"			=>	$record["title"],
-// 					"description"	=>	$record["description"],
-// 					"alias"			=>	$record["alias"],
-// 					"keywords"		=>	$record["keywords"],
-// 					"meta_description"	=>	$record["meta_description"],
-// 					"id_c"			=>	($id),
-// 					"id_page"		=>	0,
-// 				),"sanitizeDb");
-// 				
-// 				if (count($traduzione) === 0)
-// 					$ct->insert();
-// 				else if (!$traduzione[0]["salvato"])
-// 					$ct->update($traduzione[0]["id_ct"]);
-// 			}
-// 		}
-// 	}
-	
 	//create the HTML of the menu
 	//$tree: nodes as given by getTreeWithDepth
 	//$complete: if true returns also the opening and closing <ul>

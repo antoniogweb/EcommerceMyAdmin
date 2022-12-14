@@ -66,6 +66,7 @@ class ProdottiController extends PagesController {
 			$this->head .= ',Tag';
 			$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->filtro();
 			$fTag = array("id_tag",null,$filtroTag);
+			$this->filters[] = $fTag;
 		}
 		
 // 		$this->filters[] = $fTag;

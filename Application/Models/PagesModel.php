@@ -43,6 +43,8 @@ class PagesModel extends GenericModel {
 	public $documentiModelAssociato = "DocumentiModel";
 	public $contattiModelAssociato = "ContattiModel";
 	
+	public static $uploadFile = true;
+	
 	public static $currentRecord = null;
 	
 	public static $arrayImmagini = null;
@@ -912,7 +914,7 @@ class PagesModel extends GenericModel {
 		
 		$r = false;
 		
-		if ($this->upload("update"))
+		if (!self::$uploadFile || $this->upload("update"))
 		{
 			$record = $this->selectId($clean["id"]);
 			
@@ -1211,7 +1213,7 @@ class PagesModel extends GenericModel {
 	{
 		$r = false;
 		
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 		{
 			$this->setAlias(0);
 			
