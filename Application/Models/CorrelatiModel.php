@@ -68,12 +68,16 @@ class CorrelatiModel extends GenericModel {
 				else
 				{
 					parent::insert();
+					
+					return true;
 				}
 			}
 		}
 		else
 		{
 			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
-		}		
+		}
+		
+		return false;
 	}
 }

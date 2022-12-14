@@ -883,7 +883,9 @@ class PagesModel extends GenericModel {
 			
 			$parents = $c->parents($record["id_c"], false, false, null, "title");
 			array_shift($parents);
-			array_shift($parents);
+			
+			if (count($parents) > 0)
+				array_shift($parents);
 			
 			$stringSearchArray = array(
 				htmlentitydecode($record["title"])
