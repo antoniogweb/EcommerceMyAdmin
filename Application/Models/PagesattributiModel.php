@@ -125,6 +125,8 @@ class PagesattributiModel extends GenericModel {
 							CombinazioniModel::g()->creaCombinazioni($clean["id_page"]);
 						}
 					}
+					
+					return true;
 				}
 			}
 			else
@@ -132,6 +134,8 @@ class PagesattributiModel extends GenericModel {
 				$this->notice = "<div class='alert'>Questo attributo non può essere associato perché non contiene alcun valore</div>";
 			}
 		}
+		
+		return false;
 	}
 	
 	public function titoloConNota($record)

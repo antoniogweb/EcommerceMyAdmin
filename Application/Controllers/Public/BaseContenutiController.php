@@ -167,7 +167,7 @@ class BaseContenutiController extends BaseController
 						{
 							$carAlias = sanitizeHtml($filtriUrl[0]);
 							$carValoreAlias = sanitizeHtml($filtriUrl[1]);
-								
+							
 							AltriFiltri::$filtriUrl[$carAlias] = $carValoreAlias;
 							
 							$this->pageArgs = array_slice($tempsPageArgs, 0, $indiciDivisori[0]);
