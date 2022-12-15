@@ -35,6 +35,8 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public static $currentIdCategory = null;
 	
+	public static $uploadFile = true;
+	
 	public static $sezioneVariabile = array(
 		"faq"			=>	"mostra_faq",
 		"testimonial"	=>	"mostra_testimonial",
@@ -337,7 +339,7 @@ class CategoriesModel extends HierarchicalModel {
 			$this->checkPagesAlias($id);
 		}
 		
-		if ($this->upload("update"))
+		if (!self::$uploadFile || $this->upload("update"))
 		{
 			parent::update($id, $where);
 			
@@ -362,7 +364,7 @@ class CategoriesModel extends HierarchicalModel {
 			$this->checkPagesAlias();
 		}
 		
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 		{
 			parent::insert();
 			

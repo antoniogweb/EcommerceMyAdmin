@@ -66,6 +66,8 @@ class PagesModel extends GenericModel {
 	public static $testoLabelSocial = "Lato frontend verrà mostrato se il tema lo prevede";
 	
 	public static $IdCombinazione = 0;
+	public static $bckIdCombinazione = 0;
+	
 	public static $arrayIdCombinazioni = array();
 	
 	public static $modelliDaDuplicare = array(
@@ -3873,5 +3875,17 @@ class PagesModel extends GenericModel {
 			$p->sWhereFiltriSuccessivi("[$stato]");
 		
 		return $p->rowNumber();
+	}
+	
+	public static function clearIdCombinazione()
+	{
+		PagesModel::$bckIdCombinazione = PagesModel::$IdCombinazione;
+		PagesModel::$IdCombinazione = 0;
+	}
+	
+	public static function restoreIdCombinazione()
+	{
+		PagesModel::$IdCombinazione = PagesModel::$bckIdCombinazione;
+		PagesModel::$bckIdCombinazione = 0;
 	}
 }

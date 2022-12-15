@@ -1,7 +1,10 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 if (isset($corr))
+{
+	PagesModel::clearIdCombinazione();
 	$p = $corr;
+}
 
 $idPr = getPrincipale(field($p, "id_page"));
 $hasCombinations = hasCombinations($idPr);
@@ -14,3 +17,6 @@ $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
 $isProdotto = isProdotto($idPr);
+
+if (isset($corr))
+	PagesModel::restoreIdCombinazione();
