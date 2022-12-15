@@ -35,7 +35,7 @@
 
 <?php if ($this->action == "tipi") { ?>
 
-<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuntipo cliente la promo sarà utilizzabile su tutti i tipi cliente.");?></div>
+<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcun tipo cliente la promo sarà utilizzabile per tutti i tipi di cliente.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/tipi/$id".$this->viewStatus;?>' method='POST'>
 	
