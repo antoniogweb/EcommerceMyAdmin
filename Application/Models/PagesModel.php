@@ -3203,10 +3203,10 @@ class PagesModel extends GenericModel {
 		if ($idP)
 			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias((int)$idP).'" />';
 		
-		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
+// 		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
 			return '<link rel="canonical" href="'.Url::getRoot().getUrlAlias((int)$id).'" />';
 		
-		return "";
+// 		return "";
     }
     
     public function nazioneCrud($record)

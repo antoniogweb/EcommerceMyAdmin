@@ -1452,7 +1452,7 @@ class BaseContenutiController extends BaseController
 			$data["isProdotto"] = true;
 		}
 		
-		if (v("mostra_tendina_prodotto_principale") || v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
+// 		if (v("mostra_tendina_prodotto_principale") || v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
 			$data["tagCanonical"] = PagesModel::getTagCanonical((int)$id);
 		
 		//estrai i dati della categoria
