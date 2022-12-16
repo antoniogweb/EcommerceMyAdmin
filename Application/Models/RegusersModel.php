@@ -96,7 +96,7 @@ class RegusersModel extends FormModel {
 		
 		$this->setProvince();
 		
-		parent::update($clean['id']);
+		return parent::update($clean['id']);
 	}
 	
 	public function insert()

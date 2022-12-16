@@ -33,6 +33,8 @@ class OrdiniModel extends FormModel {
 	
 	public $campoTitolo = "id_o";
 	
+	public static $ordineImportato = false;
+	
 	public static $pagamentiSettati = false;
 	public static $statiOrdineSettati = false;
 	
@@ -385,12 +387,16 @@ class OrdiniModel extends FormModel {
 	
 	public function insert()
 	{
-		if (App::$isFrontend)
-			$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
-		else
-			$this->values["cart_uid"] = $this->getUniqueId(randomToken());
+		if (!self::$ordineImportato)
+		{
+			if (App::$isFrontend)
+				$this->values["cart_uid"] = $this->getUniqueId($this->values["cart_uid"]);
+			else
+				$this->values["cart_uid"] = $this->getUniqueId(randomToken());
+		}
 		
-		$this->values["codice_transazione"] = $this->getUniqueCodTrans(generateString(30));
+		if (!self::$ordineImportato)
+			$this->values["codice_transazione"] = $this->getUniqueCodTrans(generateString(30));
 		
 		if (!isset($this->values["lingua"]))
 			$this->values["lingua"] = Params::$lang;
@@ -410,7 +416,7 @@ class OrdiniModel extends FormModel {
 			$this->values["id_corriere"] = 0;
 		}
 		
-		if (!App::$isFrontend)
+		if (!App::$isFrontend && !self::$ordineImportato)
 			$this->values["tipo_ordine"] = "B";
 		
 		$this->setAliquotaIva();
@@ -419,7 +425,7 @@ class OrdiniModel extends FormModel {
 		
 		$this->setPagato();
 		
-		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()))
+		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
 			return parent::insert();
 		
 		return false;

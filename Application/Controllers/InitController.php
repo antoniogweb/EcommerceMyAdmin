@@ -89,6 +89,10 @@ trait InitController
 			"file-exists" => "<div class='alert'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
 		);
 		
+		Lang_It_ModelStrings::$staticStrings = array(
+			"error" => "<div class='alert'>".gtext("Errore nella query: contatta l'amministratore!")."</div>\n",
+		);
+		
 		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin","",$this->baseUrlSrc);
 		
 		$this->parentRootFolder = $data['parentRootFolder'] = Domain::$parentRoot = str_replace("/admin","",ROOT);

@@ -32,7 +32,6 @@ class SpedizioniModel extends GenericModel {
 		$this->addStrongCondition("both",'checkNotEmpty',"indirizzo_spedizione");
 		
 		parent::__construct();
-
 	}
 	
 	public function setFormStruct($id = 0)

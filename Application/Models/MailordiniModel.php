@@ -54,7 +54,7 @@ class MailordiniModel extends GenericModel
 		
 		$bccArray = array();
 		
-		if ($this->values["bcc"] && trim($this->values["bcc"]))
+		if (isset($this->values["bcc"]) && $this->values["bcc"] && trim($this->values["bcc"]))
 			$bccArray = explode(",", trim($this->values["bcc"]));
 		
 		$this->values["numero_inviate"] = (count($bccArray) + 1);
