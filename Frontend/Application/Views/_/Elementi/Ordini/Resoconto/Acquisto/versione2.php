@@ -152,7 +152,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
 <?php } ?>
 
 <?php
-if (isset($isFromAreariservata))
+// if (isset($isFromAreariservata))
 	include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 
 include(tpf("/Elementi/Pagine/page_bottom.php"));

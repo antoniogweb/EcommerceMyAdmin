@@ -968,7 +968,9 @@ class BaseRegusersController extends BaseController
 // 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
 // 			$campiObbligatori .= ",cap_spedizione";
 		
-		$fields = 'indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,nazione_spedizione';
+		$fields = OpzioniModel::stringaValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+		
+// 		$fields = 'indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,nazione_spedizione';
 		
 		$this->m['SpedizioniModel']->setFields($fields,'sanitizeAll');
 		

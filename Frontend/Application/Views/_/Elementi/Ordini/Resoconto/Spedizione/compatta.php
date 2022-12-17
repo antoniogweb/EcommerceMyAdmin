@@ -9,6 +9,9 @@
 		</div>
 		<div class="uk-width-1-1 uk-width-1-2@m">
 			<span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $ordine["telefono_spedizione"];?><br />
+			<?php if (trim($ordine["destinatario_spedizione"])) { ?>
+				<span class="uk-text-emphasis"><?php echo gtext("Destinatario");?>:</span> <?php echo $ordine["destinatario_spedizione"];?><br />
+			<?php } ?>
 			<span class="uk-text-emphasis"><?php echo gtext("Modalità di spedizione", false); ?>: </span> <?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?>
 		</div>
 	</div>

@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '2022-11-05 11:57:59', '0', 'destinatario_spedizione', 'destinatario_spedizione', 'CAMPI_SALVATAGGIO_ORDINE', '34', '0');

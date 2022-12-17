@@ -310,6 +310,9 @@ class OrdiniController extends BaseController {
 		
 		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione,note';
 		
+		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
+			$fields .= ",destinatario_spedizione";
+		
 		if (v("permetti_modifica_cliente_in_ordine"))
 			$fields .= ",id_user,id_spedizione";
 		

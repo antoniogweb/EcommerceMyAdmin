@@ -113,6 +113,11 @@
 				<div class='col-md-3'>
 					<?php echo $form["telefono_spedizione"];?>
 				</div>
+				<?php if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione")) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["destinatario_spedizione"];?>
+				</div>
+				<?php } ?>
 			</div>
 		</div>
 		<div class='col-md-12'>

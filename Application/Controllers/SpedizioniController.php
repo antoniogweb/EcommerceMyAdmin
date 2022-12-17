@@ -32,7 +32,12 @@ class SpedizioniController extends BaseController {
 	{
 		$this->shift(2);
 		
-		$this->m[$this->modelName]->setValuesFromPost("nazione_spedizione,provincia_spedizione,dprovincia_spedizione,indirizzo_spedizione,cap_spedizione,citta_spedizione,telefono_spedizione");
+		$fields = "nazione_spedizione,provincia_spedizione,dprovincia_spedizione,indirizzo_spedizione,cap_spedizione,citta_spedizione,telefono_spedizione";
+		
+		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
+			$fields .= ",destinatario_spedizione";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_user"] != "tutti")
 		{

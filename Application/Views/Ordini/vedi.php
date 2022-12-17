@@ -650,6 +650,12 @@
 									<td class="first_column"><?php echo gtext("TELEFONO");?></td>
 									<td><?php echo $ordine["telefono_spedizione"];?></td>
 								</tr>
+								<?php if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione")) { ?>
+								<tr>
+									<td class="first_column"><?php echo gtext("DESTINATARIO");?></td>
+									<td><?php echo $ordine["destinatario_spedizione"];?></td>
+								</tr>
+								<?php } ?>
 							</table>
 						</div>
 						<?php } ?>

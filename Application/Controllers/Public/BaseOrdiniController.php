@@ -857,13 +857,20 @@ class BaseOrdiniController extends BaseController
 		//imposto spedizione uguale a fatturazione
 		if ((isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0) || !v("attiva_spedizione"))
 		{
-			$_POST["indirizzo_spedizione"] = $this->request->post("indirizzo","","none");
-			$_POST["cap_spedizione"] = $this->request->post("cap","","none");
-			$_POST["provincia_spedizione"] = $this->request->post("provincia","","none");
-			$_POST["dprovincia_spedizione"] = $this->request->post("dprovincia","","none");
-			$_POST["citta_spedizione"] = $this->request->post("citta","","none");
-			$_POST["telefono_spedizione"] = $this->request->post("telefono","","none");
-			$_POST["nazione_spedizione"] = $this->request->post("nazione","","none");
+			$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+			
+			foreach ($campiSpedizione as $cs)
+			{
+				$_POST[$cs] = $this->request->post(str_replace("_spedizione","",$cs),"","none");
+			}
+			
+// 			$_POST["indirizzo_spedizione"] = $this->request->post("indirizzo","","none");
+// 			$_POST["cap_spedizione"] = $this->request->post("cap","","none");
+// 			$_POST["provincia_spedizione"] = $this->request->post("provincia","","none");
+// 			$_POST["dprovincia_spedizione"] = $this->request->post("dprovincia","","none");
+// 			$_POST["citta_spedizione"] = $this->request->post("citta","","none");
+// 			$_POST["telefono_spedizione"] = $this->request->post("telefono","","none");
+// 			$_POST["nazione_spedizione"] = $this->request->post("nazione","","none");
 			
 			if (!in_array($_POST["nazione_spedizione"], $codiciSpedizioneAttivi))
 				$_POST["spedisci_dati_fatturazione"] = "N";

@@ -153,6 +153,9 @@ if (typeof svuotaCampiSpedizione !== 'function')
 		$("[name='dprovincia_spedizione']").val("");
 		$("[name='telefono_spedizione']").val("");
 		$("[name='nazione_spedizione']").val("IT");
+		
+		if ($("[name='destinatario_spedizione']").length > 0)
+			$("[name='destinatario_spedizione']").val("");
 	}
 }
 
@@ -167,6 +170,9 @@ if (typeof riempiCampiSpedizione !== 'function')
 		$("[name='dprovincia_spedizione']").val(content.dprovincia_spedizione);
 		$("[name='telefono_spedizione']").val(content.telefono_spedizione);
 		$("[name='nazione_spedizione']").val(content.nazione_spedizione);
+		
+		if ($("[name='destinatario_spedizione']").length > 0)
+			$("[name='destinatario_spedizione']").val(content.destinatario_spedizione);
 	}
 }
 
