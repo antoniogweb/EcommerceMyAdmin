@@ -25,10 +25,6 @@ use PHPMailer\PHPMailer\Exception;
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/Exception.php');
-require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/PHPMailer.php');
-require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
-
 class OrdiniModel extends FormModel {
 	
 	public $campoTitolo = "id_o";
@@ -563,6 +559,10 @@ class OrdiniModel extends FormModel {
 	
 	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false, $forzaTemplate = false, $sendTo = null, $tipologia = null)
 	{
+		require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/Exception.php');
+		require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/PHPMailer.php');
+		require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
+		
 		$clean["id_o"] = (int)$id_o;
 		$this->baseUrl = Domain::$name;
 		$sendPassword = false;

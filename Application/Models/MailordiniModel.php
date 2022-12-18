@@ -25,10 +25,6 @@ use PHPMailer\PHPMailer\Exception;
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
-require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
-require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
-
 class MailordiniModel extends GenericModel
 {
 	const CLIENTE = 'CLIENTE';
@@ -191,6 +187,10 @@ class MailordiniModel extends GenericModel
 	
 	public static function inviaMail($params)
 	{
+		require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
+		require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
+		require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
+		
 		$mo = new MailordiniModel();
 		
 		$lingua = isset($params["lingua"]) ? $params["lingua"] : Params::$lang;
