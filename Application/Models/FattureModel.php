@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class FattureModel extends GenericModel {
 
+	public static $generaDopoUpdate = true;
+	public static $checkFattureEseguito = false;
+	
 	public $fattureOk = true;
 	public $noticeHtml = null;
 	public $year = "";
@@ -88,7 +91,7 @@ class FattureModel extends GenericModel {
 	
 	public function checkFatture()
 	{
-		if (!v("check_fatture"))
+		if (!v("check_fatture") || self::$checkFattureEseguito)
 			return;
 		
 		F::createFolder("media/Fatture");
@@ -190,14 +193,15 @@ class FattureModel extends GenericModel {
 		$this->noticeHtml = $htmlNotice;
 		
 		if (count($buchi) > 0 or count($doppie) > 0 or count($stessoOrdine) > 0)
-		{
 			$this->fattureOk = false;
-		}
+		
+		self::$checkFattureEseguito = true;
 	}
 	
 	public function insert()
 	{
-		$this->values["data_fattura"] = date("Y-m-d");
+		if (!isset($this->values["data_fattura"]))
+			$this->values["data_fattura"] = date("Y-m-d");
 		
 		return parent::insert();
 	}
@@ -210,33 +214,33 @@ class FattureModel extends GenericModel {
 // 		$this->files->removeFilesNotInTheList($list);
 	}
 	
-	public function del($id = null, $whereClause = null)
-	{
-		$clean["id"] = (int)$id;
-		$ultimaFattura = (int)$this->getUltimaFattura();
-		
-// 		echo $ultimaFattura;
-// 		die();
-		
-		if ($clean["id"] === $ultimaFattura)
-		{
-			return parent::del($clean["id"], $whereClause);
-		}
-		else
-		{
-			$this->notice = "<div class='alert'>Non è possibile cancellare questa fattura perché non è l'ultima</div>";
-		}
-		return false;
-	}
+// 	public function del($id = null, $whereClause = null)
+// 	{
+// 		$clean["id"] = (int)$id;
+// 		$ultimaFattura = (int)$this->getUltimaFattura();
+// 		
+// 		if ($clean["id"] === $ultimaFattura)
+// 		{
+// 			return parent::del($clean["id"], $whereClause);
+// 		}
+// 		else
+// 		{
+// 			$this->notice = "<div class='alert'>Non è possibile cancellare questa fattura perché non è l'ultima</div>";
+// 		}
+// 		return false;
+// 	}
 	
 	public function update($id = null, $where = null)
 	{
 		if (parent::update($id, $where))
 		{
-			$record = $this->selectId((int)$id);
-			
-			if (!empty($record))
-				$this->crea($record["id_o"]);
+			if (self::$generaDopoUpdate)
+			{
+				$record = $this->selectId((int)$id);
+				
+				if (!empty($record))
+					$this->crea($record["id_o"]);
+			}
 			
 			return true;
 		}

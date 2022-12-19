@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_List::$filtersFormLayout["filters"]["id_f"] = array(
+Helper_List::$filtersFormLayout["filters"]["id_fattura"] = array(
 	"attributes"	=>	array(
 		"class"	=>	"form-control",
 		"placeholder"	=>	"Numero fattura ..",
@@ -42,7 +42,7 @@ class FattureController extends BaseController {
 	
 	public $argKeys = array(
 		'page:forceInt'		=>	1,
-		'id_f:sanitizeAll'	=>	'tutti',
+		'id_fattura:sanitizeAll'	=>	'tutti',
 		'id_o:sanitizeAll'	=>	'tutti',
 		'token:sanitizeAll'	=>	'token',
 	);
@@ -55,7 +55,7 @@ class FattureController extends BaseController {
 		
 		$this->model();
 
-// 		$this->setArgKeys(array('page:forceInt'=>1,'id_f:sanitizeAll'=>'tutti','id_o:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
+// 		$this->setArgKeys(array('page:forceInt'=>1,'id_fattura:sanitizeAll'=>'tutti','id_o:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
 
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
@@ -94,15 +94,14 @@ class FattureController extends BaseController {
 		$this->m[$this->modelName]->clear()->select("fatture.*,orders.*,year(fatture.data_fattura) as anno_fattura")
 			->inner(array("ordine"))
 			->where(array(
-				'numero'	=>	$this->viewArgs['id_f'],
+				'numero'	=>	$this->viewArgs['id_fattura'],
 				'id_o'	=>	$this->viewArgs['id_o'],
 			))
 			->orderBy("year(fatture.data_fattura) desc,fatture.numero desc")
 			->convert()
 			->save();
 		
-		$this->filters = array('id_f','id_o');
-		
+		$this->filters = array('id_fattura','id_o');
 		
 		parent::main();
 	}

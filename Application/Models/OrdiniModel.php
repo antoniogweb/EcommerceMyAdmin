@@ -548,7 +548,7 @@ class OrdiniModel extends FormModel {
 		
 		$fatt = new FattureModel();
 		
-		$record = $fatt->clear()->where(array("id_o"=>$clean["id_o"]))->record();
+		$record = $fatt->clear()->select("numero")->where(array("id_o"=>$clean["id_o"]))->record();
 		
 		if (!empty($record))
 			return "<a class='text_16' title='scarica fattura' href='".Url::getRoot()."fatture/vedi/".$clean["id_o"]."'><b>".$record["numero"]." <i class='fa fa-download'></i></b></a>";
@@ -1074,7 +1074,7 @@ class OrdiniModel extends FormModel {
 	
 	public function aggiornaTotali($idOrdine)
 	{
-		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W" && OrdiniModel::isDeletable($idOrdine))
+		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W" && OrdiniModel::isDeletable($idOrdine) && !App::$ordineImportato)
 		{
 			$ordine = $this->selectId((int)$idOrdine);
 			
