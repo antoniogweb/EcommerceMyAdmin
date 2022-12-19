@@ -1237,6 +1237,10 @@ tr.cart_head {
 {
 	vertical-align:-2px !important
 }
+.list_filter_form > div, .list_filter_form > input, .list_filter_form > select, .list_filter_form > button
+{
+	margin-bottom:10px !important;
+}
 .list_filter_form select
 {
 	max-width:150px;
@@ -1328,7 +1332,7 @@ td img
 	}
 }
 
-@media (min-width: 992px)
+@media (min-width: 1300px)
 {
 	body .modal-lg {
 		width: 80% !important;

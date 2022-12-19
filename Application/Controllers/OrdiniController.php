@@ -80,10 +80,14 @@ class OrdiniController extends BaseController {
 		'from:sanitizeAll'=>'tutti',
 		'fattura:sanitizeAll'=>'tutti',
 		'gestionale:sanitizeAll'=>'tutti',
+		'prezzi:sanitizeAll'=>'I',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
+		if (!v("prezzi_ivati_in_prodotti"))
+			$this->argKeys['prezzi:sanitizeAll'] = 'NI';
+		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->session('admin');

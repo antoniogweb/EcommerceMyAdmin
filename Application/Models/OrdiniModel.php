@@ -1074,7 +1074,7 @@ class OrdiniModel extends FormModel {
 	
 	public function aggiornaTotali($idOrdine)
 	{
-		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W" && OrdiniModel::isDeletable($idOrdine) && !App::$ordineImportato)
+		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W" && OrdiniModel::isDeletable($idOrdine) && !OrdiniModel::$ordineImportato)
 		{
 			$ordine = $this->selectId((int)$idOrdine);
 			
