@@ -34,4 +34,18 @@ class FattureInCloud extends Gestionali
 		
 		return false;
 	}
+	
+	public function descOrdineInviato($ordine)
+	{
+		$f = new FattureModel();
+		
+		$numero = $f->clear()->where(array(
+			"id_o"	=>	(int)$ordine["id_o"]
+		))->field("numero");
+		
+		if ($numero)
+			return "<span class='text text-success text-bold'>".sprintf("Fattura %s inviata a", $ordine["id_o"])." ".$this->titolo()."</span>";
+		else
+			return "<span class='text text-danger text-bold'>".sprintf("Fattura assente nel gestionale ma segnata come inviata a")." ".$this->titolo()."?!?</span>";
+	}
 }

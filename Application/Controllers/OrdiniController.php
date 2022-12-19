@@ -43,6 +43,13 @@ Helper_List::$filtersFormLayout["filters"]["fattura"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["gestionale"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -72,6 +79,7 @@ class OrdiniController extends BaseController {
 		'id_lista_insert:sanitizeAll'=>'tutti',
 		'from:sanitizeAll'=>'tutti',
 		'fattura:sanitizeAll'=>'tutti',
+		'gestionale:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -172,6 +180,16 @@ class OrdiniController extends BaseController {
 			);
 		}
 		
+		// Colonna del gestionale
+		if (GestionaliModel::getModulo()->integrazioneAttiva())
+		{
+			$this->mainFields[] = 'inviatoGestionaleCrud';
+			$this->mainHead .= ',Gest.';
+			$this->inverseColProperties[] = array(
+				'width'	=>	'1%',
+			);
+		}
+		
 		$this->aggiungiintegrazioni();
 		
 		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
@@ -244,6 +262,14 @@ class OrdiniController extends BaseController {
 				$this->m[$this->modelName]->left(array("fatture"))->sWhere("fatture.id_f IS NULL");
 		}
 		
+		if ($this->viewArgs['gestionale'] != "tutti")
+		{
+			if ($this->viewArgs['gestionale'] == "I")
+				$this->m[$this->modelName]->sWhere("orders.codice_gestionale != '' and orders.errore_gestionale = ''");
+			else if ($this->viewArgs['gestionale'] == "N")
+				$this->m[$this->modelName]->sWhere("orders.codice_gestionale = ''");
+		}
+		
 		$this->m[$this->modelName]->save();
 		
 		$filtroTipo = array(
@@ -276,7 +302,15 @@ class OrdiniController extends BaseController {
 			$this->filters[] = array("fattura",null,array(
 				"tutti"	=>	gtext("Fatturazione"),
 				"F"		=>	gtext("Fatturati"),
-				"N"		=>	gtext("Da fatturare"),
+				"N"		=>	gtext("NON fatturato"),
+			));
+		
+		// Colonna del gestionale
+		if (GestionaliModel::getModulo()->integrazioneAttiva())
+			$this->filters[] = array("gestionale",null,array(
+				"tutti"	=>	gtext("Gestionale"),
+				"I"		=>	gtext("Inviato"),
+				"N"		=>	gtext("NON inviato"),
 			));
 		
 		parent::main();

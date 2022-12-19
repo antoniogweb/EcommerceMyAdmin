@@ -124,7 +124,12 @@
 										$fattura = $fatture[0]["fatture"];
 									?>
 									<div class="panel-body">
-										<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a>
+										<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <?php if (FattureModel::g()->manageable($fattura["id_f"])) { ?><a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a><?php } ?>
+										<?php if (GestionaliModel::getModulo()->integrazioneAttiva()) { ?>
+										<div>
+											<?php echo GestionaliModel::getModulo()->specchiettoOrdine($ordine);?>
+										</div>
+										<?php } ?>
 									</div>
 									<?php } ?>
 								</div>
@@ -208,6 +213,7 @@
 					<table width="100%" class="table table-striped" cellspacing="0">
 						<thead>
 							<tr class="">
+								<th class="text-left"><?php echo gtext("Immagine");?></th>
 								<th colspan="2" align="left" class=""><?php echo gtext("Prodotto");?></th>
 								<th class="text-right"><?php echo gtext("Codice");?></th>
 								<th class="text-right"><?php echo gtext("Peso");?></th>
@@ -238,6 +244,13 @@
 							$pesoTotale += $p["righe"]["peso"] * $p["righe"]["quantity"];
 						?>
 						<tr class="">
+							<td>
+							<?php
+							$immagine = ProdottiModel::immagineCarrello($p["righe"]["id_page"], $p["righe"]["id_c"]);
+							if ($immagine) { ?>
+								<img src='<?php echo Url::getRoot()."thumb/immagineinlistaprodotti/0/$immagine";?>' />
+							<?php } ?>
+							</td>
 							<?php if ($p["righe"]["id_p"]) { ?>
 							<td width="1%"><i class="fa fa-arrow-right"></i></td>
 							<?php } ?>
@@ -334,6 +347,7 @@
 						<?php } ?>
 						<?php if ($ordine["costo_pagamento"]) { ?>
 						<tr>
+							<td></td>
 							<td colspan="2"><?php echo gtext("Spese pagamento");?> (<?php echo str_replace("_"," ",$ordine["pagamento"]);?>)</td>
 							<td class="text-right"></td>
 							<td class="text-right"></td>
@@ -383,6 +397,7 @@
 						<?php } ?>
 						<?php if ($ordine["da_spedire"]) { ?>
 						<tr>
+							<td></td>
 							<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
 							<td class="text-right"></td>
 							<td class="text-right"></td>

@@ -1606,4 +1606,22 @@ class OrdiniModel extends FormModel {
 			return "<a class='iframe ext text-$label' href='".Url::getRoot()."/ordini/vediresponse/".$res[0]["orders_gateway_response"]["cart_uid"]."?partial=Y'><i class='fa fa-info-circle'></i></a>";
 		}
 	}
+	
+	public static function statoGestionale($ordine)
+	{
+		if (trim($ordine["codice_gestionale"]) && !trim($ordine["errore_gestionale"]))
+			return 1;
+		else if (trim($ordine["errore_gestionale"]))
+			return -1;
+		else
+			return 0;
+	}
+	
+	public function inviatoGestionaleCrud($record)
+	{
+		if (self::statoGestionale($record["orders"]) > 0)
+			return "<i style='font-size:16px;' class='fa fa-check text text-success'></i>";
+		else if (self::statoGestionale($record["orders"]) < 0)
+			return "<i style='font-size:16px;' class='fa fa-ban text text-danger'></i>";
+	}
 }

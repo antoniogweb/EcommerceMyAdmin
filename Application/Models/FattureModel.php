@@ -248,6 +248,18 @@ class FattureModel extends GenericModel {
 		return false;
 	}
 	
+	public function manageable($id)
+	{
+		return $this->deletable($id);
+	}
+	
+	public function deletable($id)
+	{
+		return !$this->clear()->select("orders.codice_gestionale,orders.errore_gestionale")->inner(array("ordine"))->where(array(
+			"fatture.id_f"	=>	$id,
+		))->sWhere("(orders.codice_gestionale != '' OR orders.errore_gestionale != '')")->rowNumber();
+	}
+	
 	public function crea($id_o)
 	{
 		if (!$this->fattureOk)

@@ -50,4 +50,31 @@ class Gestionali
 	{
 		return 'titolo,attivo';
 	}
+	
+	public function titolo()
+	{
+		return $this->params["titolo"];
+	}
+	
+	public function descOrdineInviato($ordine)
+	{
+		return "<span class='text text-success text-bold'>".sprintf("Ordine %s inviato a", $ordine["id_o"])." ".$this->titolo()."</span>";
+	}
+	
+	public function descOrdineErrore($ordine)
+	{
+		return "<span class='text text-danger text-bold'>".sprintf("Errore nell'invio dell'ordine %s inviato a", $ordine["id_o"])." verso ".$this->titolo()."</span>";
+	}
+	
+	public function specchiettoOrdine($ordine)
+	{
+		$html = "";
+		
+		if (OrdiniModel::statoGestionale($ordine) > 0)
+			$html .= $this->descOrdineInviato($ordine);
+		else if (OrdiniModel::statoGestionale($ordine) < 0)
+			$html .= $this->descOrdineErrore($ordine);
+		
+		return $html;
+	}
 }
