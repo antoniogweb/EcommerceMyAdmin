@@ -34,11 +34,8 @@
 <htmlpageheader name="myHeader1">
 	<table style="width:100%;padding-top:5mm;">
 		<tr>
-			<td><img style="width:200px;" src="<?php echo LIBRARY."/Application/Views/Fatture/Assets/logo_azienda.png"?>" /></td>
-			<td><b>Ragione sociale riga 1</b><br />
-			Ragione sociale riga 2<br />
-			Indirizzo - email
-			<br />P.IVA e C.F.: </td>
+			<td><?php echo i("__LOGO_IN_FATTURA__");?></td>
+			<td><?php echo t("__INTESTAZIONE_FATTURA__");?></td>
 		</tr>
 	</table>
 </htmlpageheader>
@@ -117,6 +114,11 @@
 	<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
 	<div class="riga_informazioni">
 		Prezzo scontato (<i><?php echo htmlentitydecode($ordine["nome_promozione"]);?></i>): <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato"]);?></strong>
+	</div>
+	<?php } ?>
+	<?php if ($ordine["costo_pagamento"] > 0) { ?>
+	<div class="riga_informazioni">
+		Spese pagamento: <strong>&euro; <?php echo setPriceReverse($ordine["costo_pagamento"]);?></strong>
 	</div>
 	<?php } ?>
 	<div class="riga_informazioni">

@@ -1008,4 +1008,12 @@ class CombinazioniModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function attivoCrud($record)
+	{
+		if ($record["pages"]["attivo"] == "Y")
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "<i class='fa fa-ban text text-danger'></i>";
+	}
 }

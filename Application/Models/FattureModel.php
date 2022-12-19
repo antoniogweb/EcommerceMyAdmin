@@ -249,8 +249,8 @@ class FattureModel extends GenericModel {
 		if (!$this->fattureOk)
 			die();
 		
-		if (!file_exists(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php"))
-			die("ATTENZIONE MANCA IL FILE DI TEMPLATE DELLA FATTURA Application/Views/Fatture/layout_fattura.php, COPIARLO DA Application/Views/Fatture/layout_fattura.sample.php");
+// 		if (!file_exists(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php"))
+// 			die("ATTENZIONE MANCA IL FILE DI TEMPLATE DELLA FATTURA Application/Views/Fatture/layout_fattura.php, COPIARLO DA Application/Views/Fatture/layout_fattura.sample.php");
 		
 		$this->checkFolder();
 		
@@ -276,7 +276,7 @@ class FattureModel extends GenericModel {
 				$clean["fileName"] =  sanitizeAll($fattura["filename"]);
 				
 				if (file_exists(LIBRARY . "/media/Fatture/" . $clean["fileName"]))
-					var_dump(unlink(LIBRARY . "/media/Fatture/" . $clean["fileName"]));
+					unlink(LIBRARY . "/media/Fatture/" . $clean["fileName"]);
 				
 				$dataFattura = smartDate($fattura["data_fattura"]);
 				$numeroFattura = $clean["numeroFattura"] = (int)$fattura["numero"];
@@ -303,7 +303,10 @@ class FattureModel extends GenericModel {
 			$righeOrdine = $righe->clear()->where(array("id_o"=>$clean["id_o"]))->send();
 			
 			ob_start();
-			include(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php");
+			if (file_exists(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php"))
+				include(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.php");
+			else
+				include(Domain::$adminRoot."/Application/Views/Fatture/layout_fattura.sample.php");
 			$content = ob_get_clean();
 
 			Pdf::$params["margin_top"] = "40";

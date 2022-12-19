@@ -61,6 +61,7 @@ class CombinazioniController extends BaseController
 			'id_lista_regalo_ordine:sanitizeAll'=>'tutti',
 			'id_lista_reg_filt:sanitizeAll'=>'tutti',
 			'cerca:sanitizeAll'=>'tutti',
+			'attivo:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -148,6 +149,9 @@ class CombinazioniController extends BaseController
 			$mainFields[] = "prodotto";
 			$mainHeadArray[] = "Prodotto";
 		}
+		
+		$mainHeadArray[] = "Attivo";
+		$mainFields[] = "attivoCrud";
 		
 		if (v("immagine_in_varianti"))
 		{
@@ -257,6 +261,13 @@ class CombinazioniController extends BaseController
 			"1"	=>	"Non esaurito",
 		));
 		
+		if (!partial())
+			$this->filters[] = array("attivo",null,array(
+				"tutti"		=>	"Attivo / Non attivo",
+				"Y"	=>	"Attivo",
+				"N"	=>	"Non attivo",
+			));
+		
 		if (v("attiva_liste_regalo") && $this->viewArgs['id_page'] == "tutti")
 			$this->filters[] = array("id_lista_reg_filt",null,array(
 				"tutti"		=>	"Lista regalo",
@@ -285,7 +296,8 @@ class CombinazioniController extends BaseController
 					"lk" => array('pages.title' => $this->viewArgs['prodotto']),
 					" lk" => array('c1.title' => $this->viewArgs['categoria']),
 					"  lk" => array('combinazioni.codice' => $this->viewArgs['codice']),
-					"id_page"	=>	$this->viewArgs['id_page']
+					"id_page"	=>	$this->viewArgs['id_page'],
+					"pages.attivo"	=>	$this->viewArgs['attivo'],
 				))
 				->addWhereCategoria(CategoriesModel::getIdCategoriaDaSezione("prodotti"), true, "pages.id_c")
 				->orderBy("c1.title,pages.title,combinazioni.id_order");
@@ -383,7 +395,7 @@ class CombinazioniController extends BaseController
 				"checkbox_combinazioni_id_c"	=>	array("aggiungiaordine","Aggiungi ad ordine"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ".(int)$this->viewArgs["id_ordine"].")");
+			$this->m[$this->modelName]->sWhere("pages.attivo = 'Y' and combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ".(int)$this->viewArgs["id_ordine"].")");
 		}
 		
 		$this->m[$this->modelName]->save();
