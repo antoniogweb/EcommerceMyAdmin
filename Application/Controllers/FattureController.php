@@ -22,6 +22,20 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["id_f"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Numero fattura ..",
+	),
+);
+
+Helper_List::$filtersFormLayout["filters"]["id_o"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Numero ordine ..",
+	),
+);
+
 class FattureController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -70,11 +84,25 @@ class FattureController extends BaseController {
 			"<a href='".$this->baseUrl."/ordini/vedi/;orders.id_o;/;orders.admin_token;'>Ordine #;orders.id_o;</a>",
 			"aggregate.anno_fattura",
 			"smartDate|fatture.data_fattura",
+			'OrdiniModel.getNome|orders.id_o',
+			'orders.email',
+			'orders.tipo_cliente',
 			"€ ;orders.total;",
 		);
-		$this->mainHead = "Fattura,Ordine,Anno fattura,Data fattura,Totale";
+		$this->mainHead = "Fattura,Ordine,Anno fattura,Data fattura,Nome/Rag.Soc,Email,Tipo,Totale";
 		
-		$this->m[$this->modelName]->clear()->select("fatture.*,orders.*,year(fatture.data_fattura) as anno_fattura")->inner(array("ordine"))->orderBy("year(fatture.data_fattura) desc,fatture.numero desc")->convert()->save();
+		$this->m[$this->modelName]->clear()->select("fatture.*,orders.*,year(fatture.data_fattura) as anno_fattura")
+			->inner(array("ordine"))
+			->where(array(
+				'numero'	=>	$this->viewArgs['id_f'],
+				'id_o'	=>	$this->viewArgs['id_o'],
+			))
+			->orderBy("year(fatture.data_fattura) desc,fatture.numero desc")
+			->convert()
+			->save();
+		
+		$this->filters = array('id_f','id_o');
+		
 		
 		parent::main();
 	}
