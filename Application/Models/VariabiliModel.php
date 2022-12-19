@@ -90,7 +90,6 @@ class VariabiliModel extends GenericModel {
 		"attiva_gruppi_documenti"	=>	0,
 		"mostra_descrizione_in_prodotti"=>	1,
 		"mostra_pulsanti_ordinamenti"	=>	0,
-		"fatture_attive"			=>	1,
 		"favicon_url"				=>	"",
 		"cifre_decimali"			=>	2,
 		"link_cms"					=>	"blog/main",
@@ -148,7 +147,6 @@ class VariabiliModel extends GenericModel {
 		"insert_account_provincia_obbligatoria"	=>	1,
 		"insert_account_cap_obbligatorio"		=>	1,
 		"insert_ordine_telefono_obbligatorio"	=>	1,
-		"check_fatture"				=>	0,
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
@@ -567,6 +565,11 @@ class VariabiliModel extends GenericModel {
 		"attributi_link_pagina_2_in_poi"	=>	'', // attributi nei link alle pagine dalla 2 in poi nella griglia elementi
 		## OPCACHE ##
 		"attiva_interfaccia_opcache"	=>	0, // se attivare o meno l'interfaccia opcache
+		## GESTIONALI ##
+		"attiva_collegamento_gestionali"	=>	0, // se attivare o meno l'interfaccia di gestione e il collegamento con i gestionali
+		## FATTURE ##
+		"fatture_attive"			=>	1, // attiva la sezione per la generazione della fattura
+		"check_fatture"				=>	0, // fai i controlli sulle fatture
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

@@ -20,32 +20,18 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-if (!defined('EG')) die('Direct access not allowed!');
-
-trait CrudModel
+class FattureInCloud extends Gestionali
 {
-	public function primaImmagineCarrelloCrud($record)
-    {
-		$immagine = ProdottiModel::immagineCarrello($record[$this->_tables]["id_page"], $record[$this->_tables]["id_c"]);
-		
-		if ($immagine)
-			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
-		
-		return "";
-    }
-    
-    public function titoloCrud($record)
+	public function gCampiForm()
 	{
-		$html = $record["caratteristiche"]["titolo"];
-		
-		if ($record["caratteristiche"]["nota_interna"])
-			$html .= " (".$record["caratteristiche"]["nota_interna"].")";
-		
-		return $html;
+		return 'titolo,attivo,param_1,param_2';
 	}
 	
-	public function attivo($record)
+	public function isAttiva()
 	{
-		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+		if (trim($this->params["param_1"]) && trim($this->params["param_2"]))
+			return true;
+		
+		return false;
 	}
 }

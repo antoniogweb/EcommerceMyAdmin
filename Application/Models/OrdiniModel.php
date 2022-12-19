@@ -253,6 +253,7 @@ class OrdiniModel extends FormModel {
 	public function relations() {
         return array(
 			'righe' => array("HAS_MANY", 'RigheModel', 'id_o', null, "RESTRICT", "L'elemento ha delle righe associate e non può essere eliminato"),
+			'fatture' => array("HAS_MANY", 'FattureModel', 'id_o', null, "RESTRICT", "L'elemento ha delle fatture associate e non può essere eliminato"),
 			'pages' => array("HAS_MANY", 'MailordiniModel', 'id_o', null, "CASCADE"),
 			'lista' => array("BELONGS_TO", 'ListeregaloModel', 'id_lista_regalo',null,"CASCADE"),
         );
@@ -547,14 +548,12 @@ class OrdiniModel extends FormModel {
 		
 		$fatt = new FattureModel();
 		
-		$res = $fatt->clear()->where(array("id_o"=>$clean["id_o"]))->send();
+		$record = $fatt->clear()->where(array("id_o"=>$clean["id_o"]))->record();
 		
-		if (count($res) > 0)
-		{
-			return "<a class='text_16' title='scarica fattura' href='http://".DOMAIN_NAME."/fatture/vedi/".$clean["id_o"]."'><b><i class='fa fa-file'></i></b></a>";
-		}
+		if (!empty($record))
+			return "<a class='text_16' title='scarica fattura' href='".Url::getRoot()."fatture/vedi/".$clean["id_o"]."'><b>".$record["numero"]." <i class='fa fa-download'></i></b></a>";
 		
-		return "<a class='text_16' title='genera fattura' href='http://".DOMAIN_NAME."/fatture/crea/".$clean["id_o"]."'><b><i class='fa fa-refresh'></i></b></a>";
+		return "<a class='text_16' title='genera fattura' href='".Url::getRoot()."fatture/crea/".$clean["id_o"]."'><b><i class='fa fa-refresh'></i></b></a>";
 	}
 	
 	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false, $forzaTemplate = false, $sendTo = null, $tipologia = null)
@@ -1528,6 +1527,13 @@ class OrdiniModel extends FormModel {
 				return false;
 			
 			if ($record["stato"] != "pending")
+				return false;
+			
+			$fModel = new FattureModel();
+			
+			if ($fModel->clear()->where(array(
+				"id_o"	=>	(int)$id,
+			))->rowNumber())
 				return false;
 		}
 		

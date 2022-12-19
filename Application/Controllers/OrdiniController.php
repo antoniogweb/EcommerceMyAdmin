@@ -36,6 +36,13 @@ Helper_List::$filtersFormLayout["filters"]["tipo_ordine"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["fattura"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -64,6 +71,7 @@ class OrdiniController extends BaseController {
 		'tipo_ordine:sanitizeAll'=>'tutti',
 		'id_lista_insert:sanitizeAll'=>'tutti',
 		'from:sanitizeAll'=>'tutti',
+		'fattura:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -117,9 +125,14 @@ class OrdiniController extends BaseController {
 			'totaleCrud',
 		);
 		
-		$this->mainButtons = "ldel,ledit";
+		$mainButtons = "ledit";
 		
-		$this->mainHead = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Totale';
+		if (v("permetti_ordini_offline"))
+			$mainButtons = "ldel,ledit";
+		
+		$this->mainButtons = $mainButtons;
+		
+		$this->mainHead = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Tot.';
 		
 		if (v("attiva_ip_location"))
 		{
@@ -149,6 +162,15 @@ class OrdiniController extends BaseController {
 				'width'	=>	'1%',
 			),
 		);
+		
+		if (v("fatture_attive"))
+		{
+			$this->mainFields[] = 'OrdiniModel.pulsanteFattura|orders.id_o';
+			$this->mainHead .= ',Fatt.';
+			$this->inverseColProperties[] = array(
+				'width'	=>	'1%',
+			);
+		}
 		
 		$this->aggiungiintegrazioni();
 		
@@ -214,6 +236,14 @@ class OrdiniController extends BaseController {
 				),
 			));
 		
+		if ($this->viewArgs['fattura'] != "tutti")
+		{
+			if ($this->viewArgs['fattura'] == "F")
+				$this->m[$this->modelName]->inner(array("fatture"));
+			else if ($this->viewArgs['fattura'] == "N")
+				$this->m[$this->modelName]->left(array("fatture"))->sWhere("fatture.id_f IS NULL");
+		}
+		
 		$this->m[$this->modelName]->save();
 		
 		$filtroTipo = array(
@@ -241,7 +271,14 @@ class OrdiniController extends BaseController {
 				"W"		=>	gtext("Ordini WEB"),
 				"B"		=>	gtext("Ordini Backend"),
 			));
-			
+		
+		if (v("fatture_attive"))
+			$this->filters[] = array("fattura",null,array(
+				"tutti"	=>	gtext("Fatturazione"),
+				"F"		=>	gtext("Fatturati"),
+				"N"		=>	gtext("Da fatturare"),
+			));
+		
 		parent::main();
 	}
 

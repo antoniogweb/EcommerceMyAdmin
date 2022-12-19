@@ -22,30 +22,32 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-trait CrudModel
+class Gestionali
 {
-	public function primaImmagineCarrelloCrud($record)
-    {
-		$immagine = ProdottiModel::immagineCarrello($record[$this->_tables]["id_page"], $record[$this->_tables]["id_c"]);
-		
-		if ($immagine)
-			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
-		
-		return "";
-    }
-    
-    public function titoloCrud($record)
+	protected $params = "";
+	
+	public function __construct($record)
 	{
-		$html = $record["caratteristiche"]["titolo"];
-		
-		if ($record["caratteristiche"]["nota_interna"])
-			$html .= " (".$record["caratteristiche"]["nota_interna"].")";
-		
-		return $html;
+		$this->params = $record;
 	}
 	
-	public function attivo($record)
+	public function getParams()
 	{
-		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+		return $this->params;
+	}
+	
+	public function gParam1Label()
+	{
+		return "Param 1";
+	}
+	
+	public function gParam2Label()
+	{
+		return "Param 2";
+	}
+	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo';
 	}
 }

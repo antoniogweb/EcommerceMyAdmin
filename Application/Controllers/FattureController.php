@@ -26,12 +26,22 @@ class FattureController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
-	function __construct($model, $controller, $queryString) {
+	public $argKeys = array(
+		'page:forceInt'		=>	1,
+		'id_f:sanitizeAll'	=>	'tutti',
+		'id_o:sanitizeAll'	=>	'tutti',
+		'token:sanitizeAll'	=>	'token',
+	);
+	
+	public function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
-
+		
+		if (!v("fatture_attive"))
+			die("Modulo non attivo");
+		
 		$this->model();
 
-		$this->setArgKeys(array('page:forceInt'=>1,'id_f:sanitizeAll'=>'tutti','id_o:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
+// 		$this->setArgKeys(array('page:forceInt'=>1,'id_f:sanitizeAll'=>'tutti','id_o:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
 
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
@@ -42,65 +52,104 @@ class FattureController extends BaseController {
 		
 		$this->append($data);
 	}
-
+	
 	public function main()
 	{
 		$this->shift();
-
-		Params::$nullQueryValue = 'tutti';
 		
-		if (isset($_GET["delete"]))
-		{
-			$clean["id_f"] = $this->request->get("delete","0","forceInt");
-			
-			$this->m["FattureModel"]->del($clean["id_f"]);
-		}
+		$this->bulkQueryActions = "";
+		$this->mainButtons = "ldel,ledit";
+		$this->addBulkActions = false;
 		
-		$data["ultimaFattura"] = (int)$this->m["FattureModel"]->clear()->where(array("n!YEAR(data_creazione)"=>date("Y")))->getMax("numero");
-		$data["idUltimaFattura"] = (int)$this->m["FattureModel"]->getUltimaFattura();
+		$this->colProperties = array();
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>''));
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$tableFields = array(
+		$this->mainFields = array(
 			"<a href='".$this->baseUrl."/fatture/vedi/;orders.id_o;'>Fattura #;fatture.numero;</a>",
 			"<a href='".$this->baseUrl."/ordini/vedi/;orders.id_o;/;orders.admin_token;'>Ordine #;orders.id_o;</a>",
 			"aggregate.anno_fattura",
-			"smartDate|fatture.data_creazione",
+			"smartDate|fatture.data_fattura",
 			"€ ;orders.total;",
 		);
+		$this->mainHead = "Fattura,Ordine,Anno fattura,Data fattura,Totale";
 		
-		$this->scaffold->loadMain($tableFields,'fatture:id_f','');
+		$this->m[$this->modelName]->clear()->select("fatture.*,orders.*,year(fatture.data_fattura) as anno_fattura")->inner(array("ordine"))->orderBy("year(fatture.data_fattura) desc,fatture.numero desc")->convert()->save();
 		
-		$this->scaffold->setHead('FATTURA,ORDINE,ANNO FATTURA,DATA FATTURA,TOTALE');
+		parent::main();
+	}
+	
+// 	public function main()
+// 	{
+// 		$this->shift();
+// 
+// 		Params::$nullQueryValue = 'tutti';
+// 		
+// 		if (isset($_GET["delete"]))
+// 		{
+// 			$clean["id_f"] = $this->request->get("delete","0","forceInt");
+// 			
+// 			$this->m["FattureModel"]->del($clean["id_f"]);
+// 		}
+// 		
+// 		$data["ultimaFattura"] = (int)$this->m["FattureModel"]->clear()->where(array("n!YEAR(data_creazione)"=>date("Y")))->getMax("numero");
+// 		$data["idUltimaFattura"] = (int)$this->m["FattureModel"]->getUltimaFattura();
+// 		
+// 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>''));
+// 		
+// 		$tableFields = array(
+// 			"<a href='".$this->baseUrl."/fatture/vedi/;orders.id_o;'>Fattura #;fatture.numero;</a>",
+// 			"<a href='".$this->baseUrl."/ordini/vedi/;orders.id_o;/;orders.admin_token;'>Ordine #;orders.id_o;</a>",
+// 			"aggregate.anno_fattura",
+// 			"smartDate|fatture.data_creazione",
+// 			"€ ;orders.total;",
+// 		);
+// 		
+// 		$this->scaffold->loadMain($tableFields,'fatture:id_f','');
+// 		
+// 		$this->scaffold->setHead('FATTURA,ORDINE,ANNO FATTURA,DATA FATTURA,TOTALE');
+// 		
+// 		$this->scaffold->fields = "fatture.*,orders.*,year(fatture.data_creazione) as anno_fattura";
+// 		$this->scaffold->model->clear()->inner("orders")->using("id_o")->orderBy("anno_fattura desc,fatture.numero desc");
+// 		
+// 		$where = array(
+// 			'numero'	=>	$this->viewArgs['id_f'],
+// 			'id_o'	=>	$this->viewArgs['id_o'],
+// 		);
+// 		
+// 		$this->scaffold->model->where($where);
+// 		
+// 		$this->scaffold->itemList->setFilters(array('id_f','id_o'));
+// 		
+// 		$data['scaffold'] = $this->scaffold->render();
+// // 		echo $this->scaffold->model->getQuery();
+// 		
+// 		$data['menu'] = $this->scaffold->html['menu'];
+// 		$data['popup'] = $this->scaffold->html['popup'];
+// 		$data['main'] = $this->scaffold->html['main'];
+// 		$data['pageList'] = $this->scaffold->html['pageList'];
+// 		
+// 		$data['notice'] = $this->scaffold->model->notice;
+// 		
+// 		$data["tabella"] = "fatture";
+// 		
+// 		$this->append($data);
+// 		$this->load('main');
+// 		
+// 		$this->m["FattureModel"]->checkFiles();
+// 	}
+	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$fields = "numero,data_fattura";
 		
-		$this->scaffold->fields = "fatture.*,orders.*,year(fatture.data_creazione) as anno_fattura";
-		$this->scaffold->model->clear()->inner("orders")->using("id_o")->orderBy("anno_fattura desc,fatture.numero desc");
+// 		$this->functionsIfFromDb = array(
+// 			"data_creazione"	=>	"getAnnoDaDatetime",
+// 		);
 		
-		$where = array(
-			'numero'	=>	$this->viewArgs['id_f'],
-			'id_o'	=>	$this->viewArgs['id_o'],
-		);
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$this->scaffold->model->where($where);
-		
-		$this->scaffold->itemList->setFilters(array('id_f','id_o'));
-		
-		$data['scaffold'] = $this->scaffold->render();
-// 		echo $this->scaffold->model->getQuery();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		
-		$data['notice'] = $this->scaffold->model->notice;
-		
-		$data["tabella"] = "fatture";
-		
-		$this->append($data);
-		$this->load('main');
-		
-		$this->m["FattureModel"]->checkFiles();
+		parent::form($queryType, $id);
 	}
 	
 	public function vedi($id_o)

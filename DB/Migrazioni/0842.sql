@@ -1,0 +1,1 @@
+INSERT INTO `gestionali` (`id_gestionale`, `data_creazione`, `titolo`, `codice`, `classe`, `param_1`, `param_2`, `api_endpoint`, `attivo`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'FattureInCloud', 'FATTUREINCLOUD', 'FattureInCloud', '', '', 'https://api-v2.fattureincloud.it', '0', '1');

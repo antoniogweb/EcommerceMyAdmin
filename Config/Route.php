@@ -121,6 +121,7 @@ class Route
 		'attributivalori,form',
 		'attributivalori,thumb',
 		'fatture,main',
+		'fatture,form',
 		'fatture,vedi',
 		'fatture,crea',
 		'caratteristiche,main',
@@ -731,6 +732,9 @@ class Route
 		'statiordine,ordina',
 		
 		'opcache,index',
+		
+		'gestionali,main',
+		'gestionali,form',
 	);
 	
 	//it can be 'yes' or 'no'

@@ -22,11 +22,12 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class FattureModel extends Model_Tree {
+class FattureModel extends GenericModel {
 
 	public $fattureOk = true;
 	public $noticeHtml = null;
 	public $year = "";
+	public $campoTitolo = "numero";
 	
 	public function __construct() {
 		$this->_tables='fatture';
@@ -46,19 +47,30 @@ class FattureModel extends Model_Tree {
 		if (v("check_fatture"))
 			$this->checkFatture();
 	}
-
+	
+	public function relations() {
+        return array(
+			'ordine' => array("BELONGS_TO", 'OrdiniModel', 'id_o',null,"CASCADE"),
+        );
+    }
+	
+	public function getAnnoDaDatetime($datetime)
+	{
+		return date("d-m-Y", strtotime($datetime));
+	}
+	
 	public function getNumeroFattura()
 	{
-		return (int)$this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->getMax("numero") + 1;
+		return (int)$this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->getMax("numero") + 1;
 	}
 	
 	public function getUltimaFattura()
 	{
-		$clean["ultimoNumero"] = (int)$this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->getMax("numero");
+		$clean["ultimoNumero"] = (int)$this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->getMax("numero");
 		
 		if ($clean["ultimoNumero"] > 0)
 		{
-			$res = $this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year,"numero"=>$clean["ultimoNumero"]))->send();
+			$res = $this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year,"numero"=>$clean["ultimoNumero"]))->send();
 			
 			if (count($res) > 0)
 			{
@@ -81,10 +93,10 @@ class FattureModel extends Model_Tree {
 		
 		F::createFolder("media/Fatture");
 		
-		$max = (int)$this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->getMax("numero");
+		$max = (int)$this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->getMax("numero");
 		
 		//controllo che non ci siano buchi e che non ci siano fatture doppie
-		$numeriFatture = $this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->orderBy("id_f")->toList("numero")->send();
+		$numeriFatture = $this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->orderBy("id_f")->toList("numero")->send();
 		
 		$buchi = array();
 		$doppie = array();
@@ -97,7 +109,7 @@ class FattureModel extends Model_Tree {
 		{
 			if (!in_array($i, $numeriFatture))
 			{
-				$buchi[] = $i;
+// 				$buchi[] = $i;
 			}
 			
 			if (in_array($i, $numeriFatture))
@@ -110,7 +122,7 @@ class FattureModel extends Model_Tree {
 		}
 		
 		//controllo che non ci siano file mancanti
-		$fatture = $this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->orderBy("id_f")->send();
+		$fatture = $this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->orderBy("id_f")->send();
 		$fattureRoot = $this->files->getBase();
 
 		foreach ($fatture as $f)
@@ -118,13 +130,13 @@ class FattureModel extends Model_Tree {
 			
 			if (!file_exists($fattureRoot . $f["fatture"]["filename"]))
 			{
-				$fileMancanti[] = $f["fatture"]["id_o"];
+// 				$fileMancanti[] = $f["fatture"]["id_o"];
 			}
 			
 		}
 		
 		//controllo che non ci siano due fatture relative allo stesso ordine
-		$ordini = $this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->orderBy("id_f")->toList("id_o")->send();
+		$ordini = $this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->orderBy("id_f")->toList("id_o")->send();
 		$numeriOrdini = array_count_values($ordini);
 		foreach ($numeriOrdini as $no => $nv)
 		{
@@ -137,18 +149,18 @@ class FattureModel extends Model_Tree {
 		$htmlNotice = "";
 		
 		//controllo che le date abbiano lo stesso ordine dei numeri di fattura
-		$ordinaPerNumero = $this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->orderBy("numero")->toList("filename")->send();
-		$ordinaPerData = $this->clear()->where(array("n!YEAR(data_creazione)"=>$this->year))->orderBy("data_creazione")->toList("filename")->send();
-		
-		for ($i=0;$i<count($ordinaPerNumero);$i++)
-		{
-			if (strcmp($ordinaPerNumero[$i], $ordinaPerData[$i]) !== 0)
-			{
-				$htmlNotice .= "<div class='alert'>Attenzione ci sono dei problemi nelle date delle fatture!</div>";
-				$this->fattureOk = false;
-				break;
-			}
-		}
+// 		$ordinaPerNumero = $this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->orderBy("numero")->toList("filename")->send();
+// 		$ordinaPerData = $this->clear()->where(array("n!YEAR(data_fattura)"=>$this->year))->orderBy("data_creazione")->toList("filename")->send();
+// 		
+// 		for ($i=0;$i<count($ordinaPerNumero);$i++)
+// 		{
+// 			if (strcmp($ordinaPerNumero[$i], $ordinaPerData[$i]) !== 0)
+// 			{
+// 				$htmlNotice .= "<div class='alert'>Attenzione ci sono dei problemi nelle date delle fatture!</div>";
+// 				$this->fattureOk = false;
+// 				break;
+// 			}
+// 		}
 		
 		if (count($fileMancanti) > 0)
 		{
@@ -183,6 +195,13 @@ class FattureModel extends Model_Tree {
 		}
 	}
 	
+	public function insert()
+	{
+		$this->values["data_fattura"] = date("Y-m-d");
+		
+		return parent::insert();
+	}
+	
 	public function checkFiles()
 	{
 		$this->checkFolder();
@@ -207,6 +226,21 @@ class FattureModel extends Model_Tree {
 		{
 			$this->notice = "<div class='alert'>Non è possibile cancellare questa fattura perché non è l'ultima</div>";
 		}
+		return false;
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		if (parent::update($id, $where))
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record))
+				$this->crea($record["id_o"]);
+			
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -240,8 +274,13 @@ class FattureModel extends Model_Tree {
 			{
 				$fattura = $fatt[0]["fatture"];
 				$clean["fileName"] =  sanitizeAll($fattura["filename"]);
-				$dataFattura = smartDate($fattura["data_creazione"]);
+				
+				if (file_exists(LIBRARY . "/media/Fatture/" . $clean["fileName"]))
+					var_dump(unlink(LIBRARY . "/media/Fatture/" . $clean["fileName"]));
+				
+				$dataFattura = smartDate($fattura["data_fattura"]);
 				$numeroFattura = $clean["numeroFattura"] = (int)$fattura["numero"];
+				$clean["fileName"] = sanitizeAll($numeroFattura."W_".$dataFattura.".pdf");
 			}
 			else
 			{
@@ -250,19 +289,16 @@ class FattureModel extends Model_Tree {
 				$clean["fileName"] = sanitizeAll($numeroFattura."W_".date("d-m-Y").".pdf");
 			}
 			
-			if (count($fatt) > 0)
-			{
-				
-			}
-			else
-			{
-				$this->values = array(
-					"id_o" => $clean["id_o"],
-					"numero" => $clean["numeroFattura"],
-					"filename" => $clean["fileName"],
-				);
+			$this->values = array(
+				"id_o" => $clean["id_o"],
+				"numero" => $clean["numeroFattura"],
+				"filename" => $clean["fileName"],
+			);
+			
+			if (count($fatt) === 0)
 				$this->insert();
-			}
+			else
+				$this->pUpdate($fattura["id_f"]);
 			
 			$righeOrdine = $righe->clear()->where(array("id_o"=>$clean["id_o"]))->send();
 			
@@ -274,6 +310,5 @@ class FattureModel extends Model_Tree {
 			
 			Pdf::output("", LIBRARY . "/media/Fatture/" . $clean["fileName"], array(), "F", $content);
 		}
-
 	}
 }

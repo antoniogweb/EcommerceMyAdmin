@@ -118,8 +118,15 @@
 										<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera</a>
 										<?php } ?>
 										
-										<?php echo gtext("Gestione fattura");?>
+										<b><?php echo gtext("Gestione fattura");?></b>
 									</div>
+									<?php if (count($fatture) > 0) {
+										$fattura = $fatture[0]["fatture"];
+									?>
+									<div class="panel-body">
+										<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a>
+									</div>
+									<?php } ?>
 								</div>
 							<?php } ?>
 							
@@ -642,10 +649,6 @@
 									<td class="first_column"><?php echo gtext("CITTÀ");?></td>
 									<td><?php echo $ordine["citta_spedizione"];?></td>
 								</tr>
-								<!--<tr>
-									<td class="first_column">PROVINCIA</td>
-									<td><?php echo $ordine["nazione_spedizione"];?></td>
-								</tr>-->
 								<tr>
 									<td class="first_column"><?php echo gtext("TELEFONO");?></td>
 									<td><?php echo $ordine["telefono_spedizione"];?></td>
