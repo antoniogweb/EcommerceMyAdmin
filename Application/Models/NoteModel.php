@@ -34,8 +34,6 @@ class NoteModel extends GenericModel
 		
 		$this->_idOrder = 'id_order';
 		
-// 		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
-		
 		parent::__construct();
 	}
 	
@@ -50,11 +48,6 @@ class NoteModel extends GenericModel
 		$this->values["id_admin"] = (int)User::$id;
 		
 		return parent::insert();
-    }
-    
-    public function dataoraCrud($record)
-    {
-		return date("d/m/Y H:i", strtotime($record["note"]["data_creazione"]));
     }
     
     public function manageable($id)
@@ -72,7 +65,7 @@ class NoteModel extends GenericModel
 		return false;
     }
     
-    public function noteCrud($tabellaRif, $idRif)
+    public function noteCrudHtml($tabellaRif, $idRif)
     {
 		$html = "";
 		
@@ -82,13 +75,12 @@ class NoteModel extends GenericModel
 		))->orderBy("id_nota desc")->limit(1)->first();
 		
 		if (!empty($ultimaNota))
-		{
-			$html .= "<div><small>Ultima nota di <b>".$ultimaNota["adminusers"]["username"]."</b> alle <b>".date("d/m/y H:i",strtotime($ultimaNota["note"]["data_creazione"]))."</b><br /><i>".$ultimaNota["note"]["testo"]."</i></small></div>";
-		}
+			$html .= "<div><small>".gtext("Ultima nota di")." <b>".$ultimaNota["adminusers"]["username"]."</b> ".gtext("il")." <b>".date("d/m/y H:i",strtotime($ultimaNota["note"]["data_creazione"]))."</b><br /><i>".$ultimaNota["note"]["testo"]."</i></small></div>";
 		
-		$html .= "<small><a class='iframe label label-info' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-plus-square-o'></i> Aggiungi nota</a></small>";
+		$html .= "<small><a class='iframe label label-info' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-plus-square-o'></i> ".gtext("Aggiungi nota")."</a></small>";
 		
-		$html .= "<small style='margin-left:10px;'><a class='iframe label label-default' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/main?partial=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-list'></i> Tutte le note</a></small>";
+		if (!empty($ultimaNota))
+			$html .= "<small style='margin-left:10px;'><a class='iframe label label-default' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/main?partial=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-list'></i> ".gtext("Tutte le note")."</a></small>";
 		
 		return $html;
     }

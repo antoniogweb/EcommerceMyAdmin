@@ -1679,4 +1679,18 @@ class GenericModel extends Model_Tree
 			self::$recordTabella[$r[$key]] = $r;
 		}
 	}
+	
+	public function noteCrud($record)
+	{
+		$nModel = new NoteModel();
+		
+		return $nModel->noteCrudHtml($this->_tables, $record[$this->_tables][$this->_idFields]);
+	}
+	
+	public function statoElementoCrud($record)
+	{
+		$seModel = new StatielementiModel();
+		
+		return $seModel->statiElementiCrudHtml($this->_tables, $record[$this->_tables][$this->_idFields]);
+	}
 }

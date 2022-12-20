@@ -739,6 +739,9 @@ class Route
 		
 		'note,main',
 		'note,form',
+		
+		'statielementi,main',
+		'statielementi,form',
 	);
 	
 	//it can be 'yes' or 'no'

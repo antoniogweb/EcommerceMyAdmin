@@ -174,5 +174,4 @@ class OpzioniModel extends GenericModel {
 			}
 		}
 	}
-    
 }

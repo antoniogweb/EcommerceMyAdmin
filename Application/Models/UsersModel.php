@@ -112,7 +112,7 @@ class UsersModel extends GenericModel {
 	public function del($id = null, $whereClause = null)
 	{
 		$clean['id'] = (int)$id;
-			
+		
 		//cancello tutti i gruppi a cui è associato
 		$ug = new UsersgroupsModel();
 		$lug = $ug->clear()->where(array("id_user"=>$clean['id']))->toList("id_ug")->send();

@@ -145,10 +145,11 @@ class ListeregaloController extends BaseController
 			"prezzo",
 			"quantita",
 			"ordini",
-			"noteCrud"
+			"noteCrud",
+			"statoElementoCrud",
 		);
 		
-		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo (€),Quantità desiderata,Regalati,Note";
+		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo (€),Quantità desiderata,Regalati,Note,Stato";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,save_regali','mainAction'=>"pagine/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -166,9 +167,11 @@ class ListeregaloController extends BaseController
 		$this->inverseColProperties = array(
 			array(
 				'width'	=>	'1%',
+				'class'	=>	'ldel',
 			),
+			null,
 			array(
-				'width'	=>	'30%',
+				'width'	=>	'20%',
 			),
 		);
 		

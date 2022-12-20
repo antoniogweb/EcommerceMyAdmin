@@ -22,9 +22,11 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class NoteController extends BaseController {
+class StatielementiController extends BaseController {
 	
-	public $orderBy = "id_nota";
+	public $orderBy = "id_stato_elemento";
+	
+	public $tabella = "stato elemento";
 	
 	public $argKeys = array(
 		'tabella:sanitizeAll'=>'tutti',
@@ -39,16 +41,16 @@ class NoteController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->bulkQueryActions = "";
+		$this->queryActions = $this->bulkQueryActions = "";
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("note.testo", "adminusers.username", "cleanDateTime");
-		$this->mainHead = "Testo,Aggiunta da,Data ora";
+		$this->mainFields = array("labelStatoCrud", "adminusers.username", "cleanDateTime");
+		$this->mainHead = "Stato,Impostato da,Data ora";
 		
 		$this->m[$this->modelName]->select("*")->inner(array("utente"))->orderBy($this->orderBy)->convert();
 		
-		if (in_array($this->viewArgs["tabella"], NoteModel::$elencoTabellePermesse) && $this->viewArgs["id_tabella"] != "tutti")
+		if (in_array($this->viewArgs["tabella"], StatielementiModel::$elencoTabellePermesse) && $this->viewArgs["id_tabella"] != "tutti")
 		{
 			$this->m[$this->modelName]->aWhere(array(
 				"tabella_rif"	=>	$this->viewArgs["tabella"],
@@ -65,13 +67,13 @@ class NoteController extends BaseController {
 	{
 		$this->shift(2);
 		
-		$fields = 'testo';
+		$fields = 'id_stato';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($queryType == "insert")
 		{
-			if (in_array($this->viewArgs["tabella"], NoteModel::$elencoTabellePermesse) && $this->viewArgs["id_tabella"] != "tutti")
+			if (in_array($this->viewArgs["tabella"], StatielementiModel::$elencoTabellePermesse) && $this->viewArgs["id_tabella"] != "tutti")
 			{
 				$this->m[$this->modelName]->setValue("tabella_rif", $this->viewArgs["tabella"]);
 				$this->m[$this->modelName]->setValue("id_rif", (int)$this->viewArgs["id_tabella"]);
