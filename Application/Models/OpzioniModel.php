@@ -136,6 +136,28 @@ class OpzioniModel extends GenericModel {
 		))->field("attivo");
 	}
 	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			switch($record["codice"])
+			{
+				case "STATI_ELEMENTI":
+					$se = new StatielementiModel();
+					
+					return !$se->clear()->where(array(
+						"id_stato"	=>	(int)$id
+					))->rowNumber();
+				default:
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public static function importaCategorieGoogle()
 	{
 		if (v("usa_transactions"))
