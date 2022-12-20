@@ -742,6 +742,10 @@ class Route
 		
 		'statielementi,main',
 		'statielementi,form',
+		
+		'spedizionieri,main',
+		'spedizionieri,ordina',
+		'spedizionieri,form',
 	);
 	
 	//it can be 'yes' or 'no'
