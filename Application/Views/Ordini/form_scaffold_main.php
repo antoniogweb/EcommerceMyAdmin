@@ -118,6 +118,19 @@
 					<?php echo $form["destinatario_spedizione"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["id_corriere"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["id_corriere"];?>
+				</div>
+				<?php } ?>
+				<?php if (isset($form["id_spedizioniere"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["id_spedizioniere"];?>
+				</div>
+				<?php } ?>
+				<div class='col-md-3'>
+					<?php echo $form["link_tracking"];?>
+				</div>
 			</div>
 		</div>
 		<div class='col-md-12'>
@@ -135,11 +148,6 @@
 				<?php if (isset($form["id_iva"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["id_iva"];?>
-				</div>
-				<?php } ?>
-				<?php if (isset($form["id_corriere"])) { ?>
-				<div class='col-md-3'>
-					<?php echo $form["id_corriere"];?>
 				</div>
 				<?php } ?>
 				<?php if (isset($form["id_p"])) { ?>

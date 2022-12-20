@@ -59,4 +59,9 @@ class SpedizionieriModel extends GenericModel {
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_page', null, "RESTRICT", "L'elemento è collegato ad alcuni ordini e non può essere eliminato."),
         );
     }
+    
+    public function selectTendina()
+	{
+		return array(0=>"Seleziona") + $this->orderBy("id_order")->toList("id_spedizioniere","titolo")->send();
+	}
 }

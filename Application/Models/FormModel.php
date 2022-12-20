@@ -231,8 +231,14 @@ class FormModel extends GenericModel {
 				),
 				'id_corriere'		=>	array(
 					'type'		=>	'Select',
-					'labelString'=>	'Corriere',
+					'labelString'=>	'Corriere (Espresso / Standard / ...)',
 					'options'	=>	CorrieriModel::g(false)->selectTendina(),
+					'reverse' => 'yes',
+				),
+				'id_spedizioniere'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Spedizioniere (GLS / BRT / ...)',
+					'options'	=>	SpedizionieriModel::g(false)->selectTendina(),
 					'reverse' => 'yes',
 				),
 				'id_p'		=>	array(

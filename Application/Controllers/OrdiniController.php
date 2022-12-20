@@ -383,7 +383,7 @@ class OrdiniController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione,note';
+		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione,note,link_tracking';
 		
 		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
 			$fields .= ",destinatario_spedizione";
@@ -401,6 +401,9 @@ class OrdiniController extends BaseController {
 			$fields .= ",id_iva";
 			$this->disabledFields = "id_iva";
 		}
+		
+		if (v("attiva_gestione_spedizionieri"))
+			$fields .= ",id_spedizioniere";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
