@@ -130,7 +130,7 @@ function reloadPage()
 	}
 	else
 	{
-		location.reload();
+		location.reload(true);
 // 		window.location=window.location;
 	}
 }

@@ -53,10 +53,6 @@ class FattureController extends BaseController {
 		if (!v("fatture_attive"))
 			die("Modulo non attivo");
 		
-		$this->model();
-
-// 		$this->setArgKeys(array('page:forceInt'=>1,'id_fattura:sanitizeAll'=>'tutti','id_o:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token'));
-
 		$this->model("OrdiniModel");
 		$this->model("RigheModel");
 		

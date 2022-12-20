@@ -188,4 +188,11 @@ class ListeregalopagesModel extends GenericModel
 	{
 		return ListeregaloModel::g()->ordini($record["liste_regalo_pages"]["id_lista_regalo"], $record["liste_regalo_pages"]["id_c"]);
 	}
+	
+	public function noteCrud($record)
+	{
+		$nModel = new NoteModel();
+		
+		return $nModel->noteCrud($this->_tables, $record[$this->_tables][$this->_idFields]);
+	}
 }

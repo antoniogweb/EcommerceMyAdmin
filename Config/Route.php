@@ -735,6 +735,9 @@ class Route
 		
 		'gestionali,main',
 		'gestionali,form',
+		
+		'note,main',
+		'note,form',
 	);
 	
 	//it can be 'yes' or 'no'
