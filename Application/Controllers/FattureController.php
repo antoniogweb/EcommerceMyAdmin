@@ -47,8 +47,9 @@ class FattureController extends BaseController {
 		'token:sanitizeAll'	=>	'token',
 	);
 	
-	public function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString, $application, $action)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if (!v("fatture_attive"))
 			die("Modulo non attivo");

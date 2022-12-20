@@ -43,7 +43,7 @@ class ListeregaloModel extends GenericModel
         );
     }
     
-    public function setFormStruct($id = 0)
+	public function setFormStruct($id = 0)
 	{
 		$record = $this->selectId((int)$id);
 		
@@ -84,8 +84,6 @@ class ListeregaloModel extends GenericModel
 				),
 			),
 		);
-		
-		
 	}
     
     public function settaDataScadenza()

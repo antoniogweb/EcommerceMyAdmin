@@ -561,6 +561,7 @@ class Route
 		'integrazioni,invia',
 		
 		'opzioni,main',
+		'opzioni,form',
 		'opzioni,importacategoriegoogle',
 		
 		'applicazioni,main',

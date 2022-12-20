@@ -32,20 +32,32 @@ class OpzioniController extends BaseController
 	
 	public $argKeys = array('codice:sanitizeAll'=>'tutti','q:sanitizeAll'=>'tutti');
 	
+	public function __construct($model, $controller, $queryString, $application, $action)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		$this->tabella = OpzioniModel::labelTabella();
+	}
+	
+	private function checkCodice()
+	{
+		if (!isset($this->viewArgs["codice"]) || !in_array($this->viewArgs["codice"], OpzioniModel::$codiciGestibili))
+			die("NON PERMESSO");
+	}
+	
 	public function main()
 	{
 		$this->shift();
 		
-		$this->queryActions = $this->bulkQueryActions = "";
-		$this->mainButtons = "";
+		$this->checkCodice();
+		
+		$this->bulkQueryActions = "";
 		$this->addBulkActions = false;
 		
 		$this->colProperties = array();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
-		
-		$this->mainFields = array("opzioni.titolo", "opzioni.valore", "opzioni.codice");
-		$this->mainHead = "Titolo,Valore,Codice";
+		$this->mainFields = array("opzioni.titolo", "opzioni.valore");
+		$this->mainHead = "Titolo,Valore";
 		
 		$this->m[$this->modelName]->clear()->where(array(
 				"codice" => $this->viewArgs["codice"],
@@ -53,6 +65,22 @@ class OpzioniController extends BaseController
 			))->orderBy("id_order")->convert()->save();
 		
 		parent::main();
+	}
+	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$this->shift(2);
+		
+		$this->checkCodice();
+		
+		$this->m[$this->modelName]->setValuesFromPost('titolo,valore');
+		
+		if ($queryType == "insert" && $this->viewArgs["codice"] != "tutti")
+			$this->m[$this->modelName]->setValue("codice", $this->viewArgs["codice"]);
+		
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo,valore");
+		
+		parent::form($queryType, $id);
 	}
 	
 	public function importacategoriegoogle()

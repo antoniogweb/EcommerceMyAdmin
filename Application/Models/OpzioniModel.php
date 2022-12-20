@@ -26,6 +26,8 @@ class OpzioniModel extends GenericModel {
 	
 	const CATEGORIE_GOOGLE = 'CATEGORIE_GOOGLE';
 	
+	public static $codiciGestibili = array();
+	
 	public static $erroriImportazione = array();
 	
 	public function __construct() {
@@ -34,7 +36,63 @@ class OpzioniModel extends GenericModel {
 		
 		$this->_idOrder = 'id_order';
 		
+		self::$codiciGestibili = array_keys(self::getElencoCodiciLabel());
+		
 		parent::__construct();
+	}
+	
+	public function setFormStruct($id = 0)
+	{
+		$codice = self::getCodice();
+		
+		$labelValore = "Valore";
+		$className = "form-control";
+		
+		switch($codice)
+		{
+			case "STATI_ELEMENTI":
+				$labelValore = "Colore";
+				$className = "form-control colorpicker-element";
+		}
+		
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'valore'	=>	array(
+					"labelString"	=>	$labelValore,
+					"className"		=>	$className,
+				),
+			),
+		);
+	}
+	
+	public static function getCodice()
+	{
+		return $_GET["codice"] ?? "";
+	}
+	
+	public static function getElencoCodiciLabel()
+	{
+		$elenco = explode(";", v("codici_opzioni_gestibili"));
+		
+		$arrayFinale = [];
+		
+		foreach ($elenco as $e)
+		{
+			list($codice, $label) = explode(":", $e);
+			
+			$arrayFinale[$codice] = $label;
+		}
+		
+		return $arrayFinale;
+	}
+	
+	public static function labelTabella()
+	{
+		if (isset($_GET["codice"]) && in_array($_GET["codice"], OpzioniModel::$codiciGestibili))
+			return strtolower(sanitizeAll(str_replace("_"," ",$_GET["codice"])));
+		
+		return "opzioni";
 	}
 	
 	public static function codice($codice, $field = "valore")
