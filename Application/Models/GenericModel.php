@@ -1014,7 +1014,13 @@ class GenericModel extends Model_Tree
 		
 		$strAlias = " as $alias";
 		
-		$this->select("*")->left("contenuti_tradotti $strAlias")->on("$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = '".sanitizeDb($lingua)."'");
+// 		$this->select("*")->left("contenuti_tradotti $strAlias")->on("$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = '".sanitizeDb($lingua)."'");
+		$this->select("*")->left("contenuti_tradotti $strAlias")->on(array(
+			"$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = ?",
+			array(
+				sanitizeDb($lingua),
+			),
+		));
 		
 		return $this;
 	}

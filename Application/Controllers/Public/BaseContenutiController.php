@@ -679,10 +679,12 @@ class BaseContenutiController extends BaseController
 		}
 		
 		//estrai i dati della categoria
-		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_c"=>$clean['id']))->send();
+// 		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_c"=>$clean['id']))->send();
+		
+		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
 		
-		$data["categorieFiglie"] = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
+		$data["categorieFiglie"] = $this->m['CategoriesModel']->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
@@ -882,10 +884,21 @@ class BaseContenutiController extends BaseController
 		{
 			$combinazioniCaratteristiche = prodottoCartesiano($temp);
 			
-			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
-			left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
-			left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
-			group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
+// 			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
+// 			left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
+// 			left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
+// 			group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
+			
+			$tabellaCaratterisitche = array(
+				"(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
+				left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = ? 
+				left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ? 
+				group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche",
+				array(
+					sanitizeDb(Params::$lang),
+					sanitizeDb(Params::$lang)
+				),
+			);
 			
 			$this->m["PagesModel"]->inner($tabellaCaratterisitche)->on("pages.id_page = tabella_caratteristiche.id_page");
 			
@@ -905,13 +918,17 @@ class BaseContenutiController extends BaseController
 			
 			$sWhereQueryArray = array();
 			
+			$bindedValues = array();
+			
 			foreach ($sWhereArray as $sWhereValori)
 			{
 				$tempWhere = array();
 				
 				foreach ($sWhereValori as $sWhereValore)
 				{
-					$tempWhere[] = "car_val_alias like '%#".sanitizeDb($sWhereValore)."#%'";
+// 					$tempWhere[] = "car_val_alias like '%#".sanitizeDb($sWhereValore)."#%'";
+					$tempWhere[] = "car_val_alias like ?";
+					$bindedValues[] = "%#".addBackSlashLike(sanitizeDb($sWhereValore))."#%";
 				}
 				
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
@@ -922,7 +939,8 @@ class BaseContenutiController extends BaseController
 			else if (count($sWhereQueryArray) > 0)
 				$sWhereQuery = $sWhereQueryArray[0];
 			
-			$this->m["PagesModel"]->sWhere($sWhereQuery);
+// 			$this->m["PagesModel"]->sWhere($sWhereQuery);
+			$this->m["PagesModel"]->sWhere(array($sWhereQuery, $bindedValues));
 		}
 		
 		// Filtri località
@@ -937,7 +955,7 @@ class BaseContenutiController extends BaseController
 			
 			$combinazioniLocalita = prodottoCartesiano(RegioniModel::$filtriUrl);
 			
-			$sWhereQueryArray = array();
+			$sWhereQueryArray = $bindedValues = array();
 			
 			foreach ($combinazioniLocalita as $combCar)
 			{
@@ -953,7 +971,10 @@ class BaseContenutiController extends BaseController
 					if ($field == "alias_regione" && in_array("[regione]",$escludi))
 						continue;
 					
-					$tmpSql = "$field = '".sanitizeDb($v)."'";
+// 					$tmpSql = "$field = '".sanitizeDb($v)."'";
+					$tmpSql = "$field = ?";
+					
+					$bindedValues[] = sanitizeDb($v);
 					
 					if ($prodottoTutteLeRegioni)
 						$tmpSql .= " OR $field IS NULL";
@@ -973,7 +994,8 @@ class BaseContenutiController extends BaseController
 				$sWhereQuery = $sWhereQueryArray[0];
 			
 			if ($sWhereQuery)
-				$this->m["PagesModel"]->sWhere($sWhereQuery);
+				$this->m["PagesModel"]->sWhere(array($sWhereQuery,$bindedValues));
+// 				$this->m["PagesModel"]->sWhere($sWhereQuery);
 		}
 		
 		if (!empty(AltriFiltri::$filtriUrl))
@@ -985,7 +1007,8 @@ class BaseContenutiController extends BaseController
 					$campoPrezzo = "prezzo_minimo";
 					
 					if (v("mostra_fasce_prezzo") && !v("filtro_prezzo_slider"))
-						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
+						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere(array("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = ?",array(sanitizeDb($valoreFiltro))))->first();
+// 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
 					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
 						Cache::$skipWritingCache = true;
@@ -1069,22 +1092,35 @@ class BaseContenutiController extends BaseController
 			
 			$campoPrezzoMinimo = v("sconti_combinazioni_automatiche") ? "price_scontato" : "price";
 			
+			$bindedValues = array();
+			
 			if (VariabiliModel::combinazioniLinkVeri())
 			{
 				if (User::$nazione)
-					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
+				{
+// 					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.canonical = 1) as combinazioni_minime";
+					
+					$bindedValues[] = sanitizeAll(User::$nazione);
+				}
 				else
 					$tabellaCombinazioni = "(select codice,peso,id_page,$campoPrezzoMinimo as prezzo_minimo,$campoPrezzoMinimoIvato as prezzo_minimo_ivato from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
 			}
 			else
 			{
 				if (User::$nazione)
-					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+				{
+// 					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? group by combinazioni.id_page) as combinazioni_minime";
+					
+					$bindedValues[] = sanitizeAll(User::$nazione);
+				}
 				else
 					$tabellaCombinazioni = "(select id_page,min($campoPrezzoMinimo) as prezzo_minimo,min($campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni group by combinazioni.id_page) as combinazioni_minime";
 			}
-// 			echo $tabellaCombinazioni;die();
-			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
+			
+// 			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
+			$this->m["PagesModel"]->inner(array($tabellaCombinazioni,$bindedValues))->on("pages.id_page = combinazioni_minime.id_page");
 		}
 		
 		if ($firstSection == Parametri::$nomeSezioneProdotti && $this->viewArgs['o'] == "piuvenduto")

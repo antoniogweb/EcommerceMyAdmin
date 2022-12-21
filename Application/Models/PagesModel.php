@@ -1384,32 +1384,42 @@ class PagesModel extends GenericModel {
 			
 			if ($lingua && $lingua != LingueModel::getPrincipaleFrontend())
 			{
-				$this->inner("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'");
+				$this->inner("contenuti_tradotti")->on(array("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = ?",array(sanitizeDb($lingua))));
 				$tableAlias = "contenuti_tradotti";
 			}
 			
 			if (v("usa_alias_combinazione_in_url_prodotto") && $lingua)
-				$this->inner("combinazioni_alias")->on("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = '".sanitizeDb($lingua)."'");
+				$this->inner("combinazioni_alias")->on(array("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = ?",array(sanitizeDb($lingua))));
 			
 			if (!User::$adminLogged)
 				$this->aWhere(array(
 					"pages.attivo"=>"Y",
 				));
 			
-			if (v("usa_alias_combinazione_in_url_prodotto"))
-				$sWhere = "(
-					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi,'-',combinazioni.codice) = '".$clean['alias']."' OR 
-					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi) = '".$clean['alias']."' OR 
-					concat($tableAlias.alias,'-',combinazioni.codice) = '".$clean['alias']."' OR 
-					$tableAlias.alias = '".$clean['alias']."'
-				)";
-			else
-				$sWhere = "(
-					concat($tableAlias.alias,'-',combinazioni.codice) = '".$clean['alias']."' OR 
-					$tableAlias.alias = '".$clean['alias']."'
-				)";
+			$bindedValues = array();
 			
-			$this->sWhere($sWhere);
+			if (v("usa_alias_combinazione_in_url_prodotto"))
+			{
+				$sWhere = "(
+					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi,'-',combinazioni.codice) = ? OR 
+					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi) = ? OR 
+					concat($tableAlias.alias,'-',combinazioni.codice) = ? OR 
+					$tableAlias.alias = ?
+				)";
+				
+				$bindedValues = array($clean['alias'], $clean['alias'], $clean['alias'], $clean['alias']);
+			}
+			else
+			{
+				$sWhere = "(
+					concat($tableAlias.alias,'-',combinazioni.codice) = ? OR 
+					$tableAlias.alias = ?
+				)";
+				
+				$bindedValues = array($clean['alias'], $clean['alias']);
+			}
+			
+			$this->sWhere(array($sWhere, $bindedValues));
 			
 			$res = $this->toList("pages.id_page", "combinazioni.id_c")->send();
 			
