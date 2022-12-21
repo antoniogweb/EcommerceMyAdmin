@@ -1592,6 +1592,18 @@ class OrdiniModel extends FormModel {
 		return $record["id_o"];
 	}
 	
+	public function getLinkTrackingOrdine($lingua, $record)
+	{
+		return $record["link_tracking"];
+	}
+	
+	public function getNomeSpedizioniereOrdine($lingua, $record)
+	{
+		$sp = new SpedizionieriModel();
+		
+		return (string)$sp->clear()->whereId($record["id_spedizioniere"])->field("titolo");
+	}
+	
 	public function infoGatewayCrud($record)
 	{
 		$or = new OrdiniresponseModel();

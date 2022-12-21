@@ -469,6 +469,9 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 										<?php echo gtext("Spese spedizione");?><br />
 										<?php echo gtext("Peso totale");?>: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?><br />
 										<?php echo gtext("Corriere scelto");?>: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
+										<?php if ($ordine["id_spedizioniere"]) { ?>
+										<br /><?php echo gtext("Spedizioniere");?>: <b><?php echo SpedizionieriModel::g()->titolo($ordine["id_spedizioniere"]);?></b>
+										<?php } ?>
 									</td>
 									<td class="text-right">
 										<?php if (v("prezzi_ivati_in_carrello")) { ?>
@@ -479,6 +482,10 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									</td>
 								</tr>
 							</table>
+							
+							<?php if ($ordine["link_tracking"]) { ?>
+							<div style="margin-top:10px;"><a target="_blank" href="<?php echo $ordine["link_tracking"];?>"><i class="fa fa-truck"></i> <?php echo gtext("Link tracking");?></a></div>
+							<?php } ?>
 						</div>
 					</div>
 				</div>

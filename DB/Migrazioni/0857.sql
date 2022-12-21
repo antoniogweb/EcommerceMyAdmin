@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `data_creazione`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES (NULL, '2022-12-04 13:56:59', 'Link per tracking relativo alla spedizione dell\'ordine (solo per mail legate all\'ordine)', 'LINK_TRACKING', 'getLinkTrackingOrdine', '', '1', '14', '', '1', '', '1');
