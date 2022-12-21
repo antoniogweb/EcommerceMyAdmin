@@ -41,9 +41,9 @@ class UsersgroupsModel extends GenericModel {
 		$clean["id_user"] = (int)$this->values["id_user"];
 		$clean["id_group"] = (int)$this->values["id_group"];
 		
-		$u = new UsersModel();
+		$u = new GroupsModel();
 		
-		$ng = $u->clear()->from("admingroups")->select("*")->where(array("n!admingroups.id_group"=>$clean["id_group"]))->rowNumber();
+		$ng = $u->clear()->select("*")->where(array("n!admingroups.id_group"=>$clean["id_group"]))->rowNumber();
 		
 		if ($ng > 0)
 		{

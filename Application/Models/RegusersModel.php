@@ -87,10 +87,13 @@ class RegusersModel extends FormModel {
 	{
 		$clean['id'] = (int)$id;
 		
-		if (!$this->values['password'])
-			$this->delFields('password');
-		else
-			$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		if (isset($this->values['password']))
+		{
+			if (!$this->values['password'])
+				$this->delFields('password');
+			else
+				$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		}
 		
 		$this->setBloccato();
 		

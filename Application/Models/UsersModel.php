@@ -48,6 +48,21 @@ class UsersModel extends GenericModel {
 			'has_confirmed'	=>	'getYesNoUtenti',
 		);
 		
+		parent::__construct();
+
+		$this->addStrongCondition("both",'checkAlphaNum',"username|L'username deve essere una stringa alfanumerica");
+		$this->addStrongCondition("insert",'checkNotEmpty',"password,confirmation");
+		$this->addSoftCondition("both",'checkEqual',"password,confirmation|Le due password non coincidono");
+	}
+	
+	public function relations() {
+        return array(
+			'help' => array("HAS_MANY", 'HelpuserModel', 'id_user', null, "CASCADE"),
+        );
+    }
+    
+    public function setFormStruct($id = 0)
+	{
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -76,28 +91,19 @@ class UsersModel extends GenericModel {
 			
 			'attributes'	=>	'autocomplete="new-password"',
 		);
-		
-		parent::__construct();
-
-		$this->addStrongCondition("both",'checkAlphaNum',"username|L'username deve essere una stringa alfanumerica");
-		$this->addStrongCondition("insert",'checkNotEmpty',"password,confirmation");
-		$this->addSoftCondition("both",'checkEqual',"password,confirmation|Le due password non coincidono");
 	}
-	
-	public function relations() {
-        return array(
-			'help' => array("HAS_MANY", 'HelpuserModel', 'id_user', null, "CASCADE"),
-        );
-    }
     
 	public function update($id = null, $where = null)
 	{
 		$clean['id'] = (int)$id;
 		
-		if (!$this->values['password'])
-			$this->delFields('password');
-		else
-			$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		if (isset($this->values['password']))
+		{
+			if (!$this->values['password'])
+				$this->delFields('password');
+			else
+				$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		}
 		
 		parent::update($clean['id']);
 	}
