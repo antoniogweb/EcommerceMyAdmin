@@ -2377,7 +2377,15 @@ class PagesModel extends GenericModel {
 		);
 		
 		if (v("attiva_gruppi_documenti"))
-			$d->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+		{
+			if (count(User::$groups) > 0)
+				$d->left(array("gruppi"))->sWhere(array(
+					"(reggroups.name is null OR reggroups.name in (".str_repeat ('?, ',  count (User::$groups) - 1) . '?'."))",
+					User::$groups
+				));
+			else
+				$d->left(array("gruppi"))->sWhere("reggroups.name is null");
+		}
 		
 		if (v("attiva_altre_lingue_documento"))
 		{
@@ -2390,7 +2398,14 @@ class PagesModel extends GenericModel {
 			);
 			
 			// Escludi
-			$d->sWhere("documenti.id_doc not in (select documenti_lingue.id_doc from documenti_lingue inner join documenti on documenti_lingue.id_doc = documenti.id_doc where documenti.id_page = ".(int)$id." and documenti_lingue.id_doc is not null and documenti_lingue.lingua = '".sanitizeDb($lingua)."' and documenti_lingue.includi = 0)");
+// 			$d->sWhere("documenti.id_doc not in (select documenti_lingue.id_doc from documenti_lingue inner join documenti on documenti_lingue.id_doc = documenti.id_doc where documenti.id_page = ".(int)$id." and documenti_lingue.id_doc is not null and documenti_lingue.lingua = '".sanitizeDb($lingua)."' and documenti_lingue.includi = 0)");
+			
+			$d->sWhere(array(
+				"documenti.id_doc not in (select documenti_lingue.id_doc from documenti_lingue inner join documenti on documenti_lingue.id_doc = documenti.id_doc where documenti.id_page = ".(int)$id." and documenti_lingue.id_doc is not null and documenti_lingue.lingua = ? and documenti_lingue.includi = 0)",
+				array(
+					sanitizeDb($lingua)
+				)
+			));
 		}
 		
 		$d->aWhere($aWhere);
@@ -3311,9 +3326,21 @@ class PagesModel extends GenericModel {
 		$this->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
 		$this->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
 		
-		$this->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
+// 		$this->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
+		$this->sWhere(array(
+			"(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = ? and includi = 1))",
+			array(
+				sanitizeDb(Params::$lang)
+			),
+		));
 		
-		$this->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
+// 		$this->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
+		$this->sWhere(array(
+			"(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = ? and includi = 0))",
+			array(
+				sanitizeDb(Params::$lang)
+			),
+		));
 		
 		return $this;
     }

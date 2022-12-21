@@ -25,7 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 // RedirectModel::cerca();
 
 Users_CheckAdmin::$usersModel = "RegusersModel";
-Users_CheckAdmin::$groupsModel = "RegusersgroupsModel";
+Users_CheckAdmin::$groupsModel = "ReggroupsModel";
 Users_CheckAdmin::$sessionsModel = "RegsessioniModel";
 Users_CheckAdmin::$accessesModel = "RegaccessiModel";
 

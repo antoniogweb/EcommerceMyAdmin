@@ -443,9 +443,14 @@ class HierarchicalModel extends GenericModel {
 	public function getTreeWithDepth($untilDepth, $id_cat = null, $lingua = null)
 	{
 		$whereLingua = "";
+		$bindedValues = array();
 		
 		if (isset($lingua))
-			$whereLingua = " (node.lingua='".$lingua."' OR node.lingua='') and ";
+		{
+			$whereLingua = " (node.lingua = ? OR node.lingua='') and ";
+			$bindedValues[] = $lingua;
+// 			$whereLingua = " (node.lingua='".$lingua."' OR node.lingua='') and ";
+		}
 		
 		$clean["untilDepth"] = (int)$untilDepth;
 		$clean["id_cat"] = (int)$id_cat;
@@ -460,7 +465,7 @@ class HierarchicalModel extends GenericModel {
 		}
 // 		echo $sql;die();
 		
-		return $res = $this->query($sql);
+		return $res = $this->query(array($sql,$bindedValues));
 	}
 	
 	public function recursiveTree($id_cat, $depth = 2)
@@ -586,18 +591,16 @@ class HierarchicalModel extends GenericModel {
 					$f = $fields ? $fields : "*";
 					
 					$parents = $this->select($f)->send();
-					
-// 					echo $this->getQuery();
-// 					die();
 				}
 				else
 				{
 					$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
 					
-					$parents = $this->select($f)->left("contenuti_tradotti")->on("contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->send();
-					
-// 					echo $this->getQuery();
-// 					die();
+// 					$parents = $this->select($f)->left("contenuti_tradotti")->on("contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->send();
+					$parents = $this->select($f)->left("contenuti_tradotti")->on(array(
+						"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
+						array(sanitizeDb($lingua))
+					))->send();
 				}
 			}
 			
