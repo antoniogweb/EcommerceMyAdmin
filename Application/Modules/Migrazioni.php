@@ -54,7 +54,8 @@ class Migrazioni
 		ob_start();
 		
 // 			echo $newVersion."<br />";
-		$mysqli = Db_Mysqli::getInstance();
+// 		$mysqli = Db_Mysqli::getInstance();
+		$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
 // 			print_r($migrazioni);
 		
 		foreach ($migrazioni as $numero => $file)

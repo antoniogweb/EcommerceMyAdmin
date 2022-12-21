@@ -61,7 +61,10 @@ class WishlistModel extends Model_Tree {
 	{
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		$this->del(null, "wishlist_uid = '" . $clean["wishlist_uid"] . "'");
+// 		$this->del(null, "wishlist_uid = '" . $clean["wishlist_uid"] . "'");
+		$this->del(null, array(
+			"wishlist_uid"	=>	$clean["wishlist_uid"],
+		));
 	}
 	
 	public function delete($id_page)
@@ -69,9 +72,13 @@ class WishlistModel extends Model_Tree {
 		$clean["id_page"] = (int)$id_page;
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		$sql = "id_page = " . $clean["id_page"] . " AND wishlist_uid = '" . $clean["wishlist_uid"] . "'";
+// 		$sql = "id_page = " . $clean["id_page"] . " AND wishlist_uid = '" . $clean["wishlist_uid"] . "'";
 		
-		return $this->del(null, $sql);
+// 		return $this->del(null, $sql);
+		return $this->del(null, array(
+			"id_page"		=>	$clean["id_page"],
+			"wishlist_uid"	=>	$clean["wishlist_uid"],
+		));
 	}
 	
 	public function add($id_page = 0)

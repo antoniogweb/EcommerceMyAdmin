@@ -744,7 +744,7 @@ class CategoriesModel extends HierarchicalModel {
 			$c = new CategoriesModel();
 			
 			$children = $c->children((int)$id_c, true);
-			$catWhere = "in(".implode(",",$children).")";
+// 			$catWhere = "in(".implode(",",$children).")";
 			
 			return array(
 				"in" => array($key => $children),

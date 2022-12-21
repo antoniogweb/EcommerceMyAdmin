@@ -40,8 +40,9 @@ define('DEFAULT_ACTION','index');
 define('DOMAIN_NAME',$website_domain_name);
 
 /*type of database.*/
-//it can be: Mysql, Mysqli or None (first letter in uppercase)
-define('DATABASE_TYPE','Mysqli');
+//it can be: Mysql, Mysqli, PDOMysql, PDOMssql or None (first letter in uppercase)
+if (!defined('DATABASE_TYPE'))
+	define('DATABASE_TYPE','Mysqli');
 
 /*error controller*/
 /*if you set ERROR_CONTROLLER to false, than EasyGiant will set ERROR_CONTROLLER equal to DEFAULT_CONTROLLER*/

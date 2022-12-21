@@ -193,25 +193,53 @@ class GenericModel extends Model_Tree
 	{
 		$arrayUnion = array();
 		
+// 		foreach (self::$tabelleConAliasMap as $table => $params)
+// 		{
+// 			$campoChiave = $params["chiave"];
+// 			$campoTitolo = $params["campoTitolo"];
+// 			
+// 			if ($params["tradotta"])
+// 				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."' where coalesce(contenuti_tradotti.alias,$table.alias) = '".sanitizeAll($alias)."'";
+// 			else
+// 				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = '".sanitizeAll($alias)."'";
+// 			
+// 			$arrayUnion[] = $sql;
+// 		}
+		
+		$arrayValori = array();
+		
 		foreach (self::$tabelleConAliasMap as $table => $params)
 		{
 			$campoChiave = $params["chiave"];
 			$campoTitolo = $params["campoTitolo"];
 			
 			if ($params["tradotta"])
-				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."' where coalesce(contenuti_tradotti.alias,$table.alias) = '".sanitizeAll($alias)."'";
+			{
+				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = ? where coalesce(contenuti_tradotti.alias,$table.alias) = ?";
+				
+				$arrayValori[] = sanitizeDb(Params::$lang);
+				$arrayValori[] = sanitizeAll($alias);
+			}
 			else
-				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = '".sanitizeAll($alias)."'";
+			{
+				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = ?";
+				
+				$arrayValori[] = sanitizeAll($alias);
+			}
 			
 			$arrayUnion[] = $sql;
 		}
 		
-		$arrayUnion[] = "select titolo from nazioni where iso_country_code = '".sanitizeAll($alias)."'";
+		$arrayUnion[] = "select titolo from nazioni where iso_country_code = ?";
+		$arrayValori[] = sanitizeAll($alias);
 		
 		$sql = implode(" UNION ", $arrayUnion);
 		
-		$mysqli = Db_Mysqli::getInstance();
+		$queryArray = array($sql, $arrayValori);
+		$sql = self::g()->arrayToWhereClause($queryArray);
 		
+// 		$mysqli = Db_Mysqli::getInstance();
+		$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
 		$res = $mysqli->query($sql);
 		
 		if (count($res) > 0 && isset($res[0]["aggregate"]["titolo_filtro"]) && trim($res[0]["aggregate"]["titolo_filtro"]))

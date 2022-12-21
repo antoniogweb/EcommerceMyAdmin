@@ -1255,6 +1255,7 @@ class BaseContenutiController extends BaseController
 	
 	protected function page($id)
 	{
+		
 		$this->m["PagesModel"]->checkBloccato($id, "page");
 		
 		Cache::addTablesToCache(array("combinazioni","scaglioni"));
@@ -1334,7 +1335,7 @@ class BaseContenutiController extends BaseController
 			if ($data["tipoPagina"] == "LISTA_REGALO")
 				$this->getAppLogin();
 		}
-		
+// 		var_dump($firstSection);die();
 		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
 			"OR"	=>	array(
 				"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),

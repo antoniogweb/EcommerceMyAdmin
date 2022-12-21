@@ -78,7 +78,8 @@ require(LIBRARY."/External/mobile_detect.php");
 $detect = new Mobile_Detect();
 User::$isMobile = $detect->isMobile();
 
-$mysqli = Db_Mysqli::getInstance();
+$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
+// $mysqli = Db_Mysqli::getInstance();
 $mysqli->query("set session sql_mode=''");
 
 Params::$language = "It";

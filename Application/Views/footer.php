@@ -103,7 +103,3 @@ $(window).load(function() {
 
 </body>
 </html>
-<?php
-// $mysqli = Db_Mysqli::getInstance();
-// print_r($mysqli->queries);
-?>

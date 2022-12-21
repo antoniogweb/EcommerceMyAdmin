@@ -77,7 +77,8 @@ Params::$exactUrlMatchRewrite = true;
 Params::$allowSessionIdFromGet = true;
 Params::$errorStringClassName = "uk-alert uk-alert-danger";
 
-$mysqli = Db_Mysqli::getInstance();
+// $mysqli = Db_Mysqli::getInstance();
+$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
 
 if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
 	$mysqli->query("set session sql_mode=''");
