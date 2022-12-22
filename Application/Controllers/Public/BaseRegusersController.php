@@ -499,9 +499,13 @@ class BaseRegusersController extends BaseController
 							}
 							else
 							{
-								$error = gtext("Siamo spiacenti, non esiste alcun utente attivo corrispondente all'email da lei inserita");
-								$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
-								$res = $this->m("RegusersModel")->addError("username", $error);
+								sleep(3);
+								$_SESSION['result'] = 'send_mail_to_change_password';
+								$this->redirect("avvisi");
+								
+// 								$error = gtext("Siamo spiacenti, non esiste alcun utente attivo corrispondente all'email da lei inserita");
+// 								$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
+// 								$res = $this->m("RegusersModel")->addError("username", $error);
 							}
 						}
 						else
