@@ -341,8 +341,8 @@ class CaratteristichevaloriModel extends GenericModel {
 		$p = PagesModel::g(false)->addWhereAttivo()
 			->inner(array("caratteristiche"))
 			->inner("caratteristiche_valori")->on("pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_cv = caratteristiche_valori.id_cv and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
-			->sWhere("coalesce(contenuti_tradotti.alias,caratteristiche_valori.alias) = '".sanitizeAll($aliasCarVal)."'");
+			->addJoinTraduzione(null, "contenuti_tradotti", false, (new CaratteristichevaloriModel()))
+			->sWhere(array("coalesce(contenuti_tradotti.alias,caratteristiche_valori.alias) = ?",array(sanitizeAll($aliasCarVal))));
 		
 		if ($filtriSuccessivi)
 			$p->sWhereFiltriSuccessivi($aliasCar);

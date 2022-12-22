@@ -133,7 +133,7 @@ class PagescarvalModel extends GenericModel {
 		
 		$pcv->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
 			->inner(array("caratteristica_valore"))
-			->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
+			->inner("caratteristiche")->on(array("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = ?",array("Y")))
 			->left("contenuti_tradotti as caratteristiche_tradotte")->on(array("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = ?", array(sanitizeDb(Params::$lang))))
 			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on(array("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ?",array(sanitizeDb(Params::$lang))))
 			->inner("pages")->on("pages.id_page = pages_caratteristiche_valori.id_page")

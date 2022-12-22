@@ -134,6 +134,17 @@ class F
 		return $html;
 	}
 	
+	public static function checkPreparedStatement(array $queries)
+	{
+		foreach ($queries as $query)
+		{
+			if (preg_match('/\=(\s?)\'([a-zA-Z]{1,})\'/',$query, $matches))
+				echo $query."<br />\n";
+			
+			
+		}
+	}
+	
 	// https://stackoverflow.com/questions/61481567/remove-emojis-from-string
 	public static function removeEmoji($text)
 	{

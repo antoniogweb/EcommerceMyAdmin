@@ -821,9 +821,12 @@ function fullcategory($idC)
 {
 	$c = new CategoriesModel();
 	
-	$res = $c->clear()->select("categories.*, contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array(
-		"id_c"	=>	(int)$idC,
-	))->send();
+	$res = $c->clear()->select("categories.*, contenuti_tradotti_categoria.*")
+		->addJoinTraduzioneCategoria()
+// 		->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+		->where(array(
+			"id_c"	=>	(int)$idC,
+		))->send();
 	
 	if (count($res) > 0)
 		return $res[0];

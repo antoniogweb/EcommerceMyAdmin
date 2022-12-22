@@ -193,19 +193,6 @@ class GenericModel extends Model_Tree
 	{
 		$arrayUnion = array();
 		
-// 		foreach (self::$tabelleConAliasMap as $table => $params)
-// 		{
-// 			$campoChiave = $params["chiave"];
-// 			$campoTitolo = $params["campoTitolo"];
-// 			
-// 			if ($params["tradotta"])
-// 				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."' where coalesce(contenuti_tradotti.alias,$table.alias) = '".sanitizeAll($alias)."'";
-// 			else
-// 				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = '".sanitizeAll($alias)."'";
-// 			
-// 			$arrayUnion[] = $sql;
-// 		}
-		
 		$arrayValori = array();
 		
 		foreach (self::$tabelleConAliasMap as $table => $params)
@@ -330,32 +317,33 @@ class GenericModel extends Model_Tree
 		$clean["id"] = (int)$id;
 		
 		if (!$clean["id"])
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."'");
+			$res = $this->query(array("select alias from ".$this->_tables." where alias = ?",array(sanitizeDb($this->values["alias"]))));
 		else
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
+			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$this->_idFields."!=".$clean["id"],array(sanitizeDb($this->values["alias"]))));
 		
 		$this->addTokenAlias($res);
 		
-		$arrayUnion = array();
+		$arrayUnion = $dataValues = array();
 		
 		foreach (GenericModel::$tabelleConAlias as $table)
 		{
 			if ($table == $this->_tables)
 				continue;
 			
-			$arrayUnion[] = "select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'";
+			$arrayUnion[] = "select alias from $table where alias = ?";
+			$dataValues[] = sanitizeDb($this->values["alias"]);
 		}
 		
 		$sql = implode(" UNION ", $arrayUnion);
 		
-		$res = $this->query($sql);
+		$res = $this->query(array($sql, $dataValues));
 		
 		$this->addTokenAlias($res);
 		
 		if (!isset($id) || $noTraduzione)
-			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."'");
+			$res = $this->query(array("select alias from contenuti_tradotti where alias = ?",array(sanitizeDb($this->values["alias"]))));
 		else
-			$res = $this->query("select alias from contenuti_tradotti where alias = '".sanitizeDb($this->values["alias"])."' and ".$this->_idFields."!=".$clean["id"]);
+			$res = $this->query(array("select alias from contenuti_tradotti where alias = ? and ".$this->_idFields."!=".$clean["id"],array(sanitizeDb($this->values["alias"]))));
 		
 		$this->addTokenAlias($res);
 	}
@@ -702,7 +690,11 @@ class GenericModel extends Model_Tree
 		
 		if ($frontend)
 		{
-			$ruoli = $r->clear()->select("*")->left("contenuti_tradotti")->on("contenuti_tradotti.id_ruolo = ruoli.id_ruolo and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")->orderBy("ruoli.titolo")->send();
+			$ruoli = $r->clear()->select("*")
+// 				->left("contenuti_tradotti")->on("contenuti_tradotti.id_ruolo = ruoli.id_ruolo and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+				->addJoinTraduzione(null, "contenuti_tradotti", false)
+				->orderBy("ruoli.titolo")
+				->send();
 			
 			$arrayRuoli = array(0	=>	"--");
 			

@@ -709,9 +709,9 @@ class HierarchicalModel extends GenericModel {
 		return $res = $this->query($sql);
 	}
 	
-	public function buildSelect($id = null, $showRoot = true, $where = null)
+	public function buildSelect($id = null, $showRoot = true, $where = null, $bindValues = array())
 	{
-		$res = $this->query("SELECT node.".$this->_idFields.",node.lft,node.rgt,node.attivo,CONCAT( REPEAT('- ', COUNT(parent.".$this->_idFields.") - 2), node.".$this->titleFieldName.") AS name FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE $where node.lft BETWEEN parent.lft AND parent.rgt GROUP BY node.".$this->_idFields." ORDER BY node.lft;");
+		$res = $this->query(array("SELECT node.".$this->_idFields.",node.lft,node.rgt,node.attivo,CONCAT( REPEAT('- ', COUNT(parent.".$this->_idFields.") - 2), node.".$this->titleFieldName.") AS name FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE $where node.lft BETWEEN parent.lft AND parent.rgt GROUP BY node.".$this->_idFields." ORDER BY node.lft;", $bindValues));
 		
 		$children = array();
 		if (isset($id))
