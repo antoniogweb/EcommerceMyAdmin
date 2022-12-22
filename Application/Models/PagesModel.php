@@ -2454,9 +2454,12 @@ class PagesModel extends GenericModel {
 			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
 			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
 			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
-			->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-			->left("contenuti_tradotti as tipologie_caratteristiche_tradotte")->on("tipologie_caratteristiche_tradotte.id_tipologia_caratteristica = tipologie_caratteristiche.id_tipologia_caratteristica and tipologie_caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzione(null, "caratteristiche_tradotte", false, (new CaratteristicheModel()))
+// 			->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzione(null, "caratteristiche_valori_tradotte", false, (new CaratteristichevaloriModel()))
+// 			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzione(null, "tipologie_caratteristiche_tradotte", false, (new TipologiecaratteristicheModel()))
+// 			->left("contenuti_tradotti as tipologie_caratteristiche_tradotte")->on("tipologie_caratteristiche_tradotte.id_tipologia_caratteristica = tipologie_caratteristiche.id_tipologia_caratteristica and tipologie_caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
 			->orderBy("pages_caratteristiche_valori.id_order")
 			->where(array(
 				"pages_caratteristiche_valori.id_page"=>$clean['id']

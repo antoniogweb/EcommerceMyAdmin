@@ -1007,16 +1007,22 @@ class GenericModel extends Model_Tree
 		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->addWhereAttivo()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
-	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true)
+	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true, $modelTabella = null)
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
 		
 		$strAlias = " as $alias";
 		
+		if (!isset($modelTabella))
+			$modelTabella = $this;
+		
+		if ($selectAll)
+			$this->select("*");
+		
 // 		$this->select("*")->left("contenuti_tradotti $strAlias")->on("$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = '".sanitizeDb($lingua)."'");
-		$this->select("*")->left("contenuti_tradotti $strAlias")->on(array(
-			"$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = ?",
+		$this->left("contenuti_tradotti $strAlias")->on(array(
+			"$alias.".$modelTabella->_idFields." = ".$modelTabella->_tables.".".$modelTabella->_idFields." and $alias.lingua = ?",
 			array(
 				sanitizeDb($lingua),
 			),
