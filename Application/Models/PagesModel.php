@@ -2377,7 +2377,7 @@ class PagesModel extends GenericModel {
 		);
 		
 		if (v("attiva_gruppi_documenti"))
-			$d->->addAccessoGruppiWhereClase();
+			$d->addAccessoGruppiWhereClase();
 		
 		if (v("attiva_altre_lingue_documento"))
 		{
