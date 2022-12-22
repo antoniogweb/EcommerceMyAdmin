@@ -258,7 +258,7 @@ class paypal_class {
 			$this->write_to_log ();
 			
 			// Salvo il response del gateway
-			$cartUid = isset($_REQUEST["cart_uid"]) ? (string)$_REQUEST["cart_uid"] : "";
+			$cartUid = isset($_POST["item_number"]) ? (string)$_POST["item_number"] : "";
 			OrdiniresponseModel::aggiungi($cartUid, $this->ipn_status, $success);
 		}
 		else
