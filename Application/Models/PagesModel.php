@@ -122,7 +122,10 @@ class PagesModel extends GenericModel {
 		$this->_tables='pages';
 		$this->_idFields='id_page';
 		
-		$this->hModel = new $this->hModelName();
+		$objectReflection = new ReflectionClass($this->hModelName);
+		$this->hModel = $objectReflection->newInstanceArgs();
+		
+// 		$this->hModel = new $this->hModelName();
 		
 		$this->_where = array(
 			"id_c"			=>	"categories",

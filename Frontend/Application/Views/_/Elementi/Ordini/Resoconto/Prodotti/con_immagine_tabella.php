@@ -28,6 +28,12 @@
 				<b><?php echo gtext("Quantita");?>:</b> <?php echo $p["righe"]["quantity"];?>
 				<b><br /><?php echo gtext("Totale");?>:</b> &euro; <span class="item_price_subtotal"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["quantity"] * $p["righe"]["price"]));?></span>
 			<?php } ?>
+			
+			<?php if (isset($conLinkPerFeedback) && isset($linguaUrl)) {
+				$idPaginaInserisciFeedback = PagesModel::gTipoPagina("FORM_FEEDBACK");
+			?>
+			<br /><a href="<?php echo Domain::$publicUrl.$linguaUrl.getUrlAlias($idPaginaInserisciFeedback)."?".v("var_query_string_id_rif")."=".$p["righe"]["id_page"]."&".v("var_query_string_id_comb")."=".$p["righe"]["id_c"];?>"><?php echo gtext("Lascia un feedback");?></a>
+			<?php } ?>
 		</div>
 	</div>
 	<hr />

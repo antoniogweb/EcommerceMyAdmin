@@ -27,6 +27,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdiniModel extends FormModel {
 	
+	public $campoTimeEventoRemarketing = "time_pagamento";
+	
 	public $campoTitolo = "id_o";
 	
 	public static $ordineImportato = false;
@@ -378,6 +380,7 @@ class OrdiniModel extends FormModel {
 			{
 				$this->values["pagato"] = 1;
 				$this->values["data_pagamento"] = date("Y-m-d H:i");
+				$this->values["time_pagamento"] = time();
 			}
 		}
 	}
@@ -414,7 +417,10 @@ class OrdiniModel extends FormModel {
 		}
 		
 		if (!App::$isFrontend && !self::$ordineImportato)
+		{
 			$this->values["tipo_ordine"] = "B";
+			$this->values["fonte"] = "ORDINE_NEGOZIO";
+		}
 		
 		$this->setAliquotaIva();
 		
@@ -1635,5 +1641,23 @@ class OrdiniModel extends FormModel {
 			return "<i style='font-size:16px;' class='fa fa-check text text-success'></i>";
 		else if (self::statoGestionale($record["orders"]) < 0)
 			return "<i style='font-size:16px;' class='fa fa-ban text text-danger'></i>";
+	}
+	
+	public function gElencoProdottiPerFeedback($lingua, $record)
+	{
+		if (!isset($record["id_o"]))
+			return "";
+		
+		$r = new RigheModel();
+		
+		$righeOrdine = $r->clear()->where(array("id_o"=>(int)$record["id_o"]))->send();
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		ob_start();
+		include tpf("/Elementi/Placeholder/elenco_prodotti_per_feedback.php");
+		$output = ob_get_clean();
+		
+		return $output;
 	}
 }

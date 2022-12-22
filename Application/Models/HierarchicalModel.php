@@ -177,6 +177,8 @@ class HierarchicalModel extends GenericModel {
 			))->send();
 			$this->restore();
 			
+			$this->sLeft = [];
+			
 			if (count($res) > 0)
 			{
 				foreach ($res as $r)

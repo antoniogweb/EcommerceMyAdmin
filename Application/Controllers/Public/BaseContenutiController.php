@@ -1885,7 +1885,7 @@ class BaseContenutiController extends BaseController
 	{
 		$this->clean();
 		
-		if (is_string($c) && trim(v("token_schedulazione")) && $c == v("token_schedulazione"))
+		if (is_string($c) && trim(v("token_schedulazione")) && (string)$c === (string)v("token_schedulazione"))
 		{
 			Files_Log::$logFolder = LIBRARY."/Logs";
 			$log = Files_Log::getInstance("retargeting");

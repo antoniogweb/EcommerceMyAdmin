@@ -72,6 +72,8 @@ class GenericModel extends Model_Tree
 	
 	public $cViewStatus = "";
 	
+	public $campoTimeEventoRemarketing = "creation_time";
+	
 	public static $tabelleConAliasMap = array(
 		"pages"			=>	array(
 			"chiave"		=>	"id_page",
@@ -947,46 +949,6 @@ class GenericModel extends Model_Tree
 		return "";
 	}
 	
-// 	public function linken($record)
-// 	{
-// 		return $this->linklingua($record, "en");
-// 	}
-	
-// 	public function linkfr($record)
-// 	{
-// 		return $this->linklingua($record, "fr");
-// 	}
-// 	
-// 	public function linkes($record)
-// 	{
-// 		return $this->linklingua($record, "es");
-// 	}
-// 	
-// 	public function linkde($record)
-// 	{
-// 		return $this->linklingua($record, "de");
-// 	}
-// 	
-// 	public function linkpl($record)
-// 	{
-// 		return $this->linklingua($record, "pl");
-// 	}
-// 	
-// 	public function linkpt($record)
-// 	{
-// 		return $this->linklingua($record, "pt");
-// 	}
-// 	
-// 	public function linkru($record)
-// 	{
-// 		return $this->linklingua($record, "ru");
-// 	}
-// 	
-// 	public function linkse($record)
-// 	{
-// 		return $this->linklingua($record, "se");
-// 	}
-	
 	public function buildAllCatSelect()
 	{
 		$c = new CategoriesModel();
@@ -1723,5 +1685,21 @@ class GenericModel extends Model_Tree
 		$seModel = new StatielementiModel();
 		
 		return $seModel->statiElementiCrudHtml($this->_tables, $record[$this->_tables][$this->_idFields]);
+	}
+	
+	public function gElencoProdotti($lingua, $record)
+	{
+		if (!isset($record["id_o"]))
+			return "";
+		
+		$r = new RigheModel();
+		
+		$righeOrdine = $r->clear()->where(array("id_o"=>(int)$record["id_o"]))->send();
+		
+		ob_start();
+		include tpf("/Elementi/Placeholder/elenco_prodotti.php");
+		$output = ob_get_clean();
+		
+		return $output;
 	}
 }

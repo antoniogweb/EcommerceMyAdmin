@@ -247,7 +247,8 @@ class EventiretargetingModel extends GenericModel {
 				if ($scattaDopoOre > 0)
 				{
 					$tempoEvento = time() - ($scattaDopoOre * 3600);
-					$cModel->sWhere("creation_time <= $tempoEvento");
+// 					$cModel->sWhere("creation_time <= $tempoEvento");
+					$cModel->sWhere(array($cModel->campoTimeEventoRemarketing." <= ?",array((int)$tempoEvento)));
 				}
 				
 				$tipoControllo = (!empty($dettagliGruppoRetargeting)) ? $dettagliGruppoRetargeting["blocca_reinvio_mail_stesso"] : "EVENTO";
