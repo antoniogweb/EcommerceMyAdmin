@@ -2377,15 +2377,7 @@ class PagesModel extends GenericModel {
 		);
 		
 		if (v("attiva_gruppi_documenti"))
-		{
-			if (count(User::$groups) > 0)
-				$d->left(array("gruppi"))->sWhere(array(
-					"(reggroups.name is null OR reggroups.name in (".str_repeat ('?, ',  count (User::$groups) - 1) . '?'."))",
-					User::$groups
-				));
-			else
-				$d->left(array("gruppi"))->sWhere("reggroups.name is null");
-		}
+			$d->->addAccessoGruppiWhereClase();
 		
 		if (v("attiva_altre_lingue_documento"))
 		{

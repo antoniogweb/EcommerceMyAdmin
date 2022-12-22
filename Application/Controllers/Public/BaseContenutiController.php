@@ -1846,10 +1846,8 @@ class BaseContenutiController extends BaseController
 		
 		if (v("attiva_gruppi_documenti"))
 			$this->m["DocumentiModel"]->addAccessoGruppiWhereClase();
-// 			$this->m["DocumentiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
 		
 		$documento = $this->m["DocumentiModel"]->record();
-// 		$documento = $this->m["DocumentiModel"]->selectId((int)$id);
 		
 		if (!empty($documento))
 		{
