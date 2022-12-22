@@ -126,4 +126,33 @@ class PagescarvalModel extends GenericModel {
 		
 		return $cv->thumb($record);
 	}
+	
+	public static function getFiltriCaratteristiche()
+	{
+		$pcv = new PagescarvalModel();
+		
+		$pcv->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
+			->inner(array("caratteristica_valore"))
+			->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
+// 				->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as caratteristiche_tradotte")->on(array("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = ?", array(sanitizeDb(Params::$lang))))
+// 				->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
+			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on(array("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ?",array(sanitizeDb(Params::$lang))))
+			->inner("pages")->on("pages.id_page = pages_caratteristiche_valori.id_page")
+			->addWhereAttivo()
+			->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
+			->groupBy("caratteristiche_valori.id_cv");
+		
+		if (CategoriesModel::$currentIdCategory)
+			$pcv->inner("categories")->on("categories.id_c = pages.id_c")->aWhere(array(
+				"categories.id_c"	=>	CategoriesModel::$currentIdCategory,
+			));
+		
+		if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
+		{
+			$pcv->inner("categories_caratteristiche")->on("caratteristiche.id_car = categories_caratteristiche.id_car")->sWhere("categories_caratteristiche.id_c = ".(int)CategoriesModel::$currentIdCategory)->orderBy("categories_caratteristiche.id_order,caratteristiche_valori.id_order");
+		}
+		
+		return $pcv->send();
+	}
 }

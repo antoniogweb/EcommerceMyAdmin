@@ -463,4 +463,16 @@ class DocumentiModel extends GenericModel {
 		return "contenuti/documento/".(int)$id;
 	}
 	
+	public function addAccessoGruppiWhereClase()
+	{
+		if (count(User::$groups) > 0)
+			$this->left(array("gruppi"))->sWhere(array(
+				"(reggroups.name is null OR reggroups.name in (".str_repeat ('?, ',  count (User::$groups) - 1) . '?'."))",
+				User::$groups
+			));
+		else
+			$this->left(array("gruppi"))->sWhere("reggroups.name is null");
+		
+		return $this;
+	}
 }

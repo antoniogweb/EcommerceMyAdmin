@@ -274,7 +274,8 @@ class BaseContenutiController extends BaseController
 		if (count($this->pageArgs) === 0 && (($this->idMarchio && !v("attiva_pagina_produttore")) || $this->idTag))
 		{
 			$catProdotti = $this->m['CategoriesModel']->clear()
-				->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+				->addJoinTraduzioneCategoria()
+// 				->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 				->where(array(
 					"section"	=>	Parametri::$nomeSezioneProdotti
 				))
@@ -354,14 +355,6 @@ class BaseContenutiController extends BaseController
 						$titleDaUsare = trim($metaTitlePagina) ? $metaTitlePagina : $titoloPagina;
 						
 						$data["title"] = Parametri::$nomeNegozio . " - ".F::meta($titleDaUsare);
-						
-// 						if (isset($parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"]) && $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"])
-// 							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["contenuti_tradotti"]["title"];
-// 						else
-// 							$stringIt = $stringLn = $parents[$id][count($parents[$id])-1]["pages"]["title"];
-// // 						$stringLn = $parents[$id][count($parents[$id])-1]["pages"]["title".$this->langDb];
-// 						
-// 						$data["title"] = Parametri::$nomeNegozio . " - " . strtolower(getField($stringLn,$stringIt));
 					}
 				}
 
@@ -679,8 +672,6 @@ class BaseContenutiController extends BaseController
 		}
 		
 		//estrai i dati della categoria
-// 		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("id_c"=>$clean['id']))->send();
-		
 		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
 		
@@ -1493,7 +1484,7 @@ class BaseContenutiController extends BaseController
 			$data["tagCanonical"] = PagesModel::getTagCanonical((int)$id);
 		
 		//estrai i dati della categoria
-		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")->where(array("section"=>sanitizeAll($firstSection)))->send();
+		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("section"=>sanitizeAll($firstSection)))->send();
 		$data["datiCategoriaPrincipale"] = $r[0];
 		
 		$data["pagesCss"] = $data['pages'][0]["pages"]["css"];
@@ -1854,7 +1845,8 @@ class BaseContenutiController extends BaseController
 		));
 		
 		if (v("attiva_gruppi_documenti"))
-			$this->m["DocumentiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+			$this->m["DocumentiModel"]->addAccessoGruppiWhereClase();
+// 			$this->m["DocumentiModel"]->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
 		
 		$documento = $this->m["DocumentiModel"]->record();
 // 		$documento = $this->m["DocumentiModel"]->selectId((int)$id);

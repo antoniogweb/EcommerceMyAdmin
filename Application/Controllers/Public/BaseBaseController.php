@@ -382,9 +382,9 @@ class BaseBaseController extends Controller
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m['CategoriesModel']->clear()
-// 			->addJoinTraduzioneCategoria()
-			->select("categories.*,contenuti_tradotti_categoria.*")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzioneCategoria()
+// 			->select("categories.*,contenuti_tradotti_categoria.*")
+// 			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 			->where(array("id_p"=>$clean["idShop"]))
 			->orderBy("lft")
 			->save()
@@ -619,29 +619,7 @@ class BaseBaseController extends Controller
 		$data["filtriCaratteristiche"] = array();
 		
 		if (v("attiva_filtri_caratteristiche"))
-		{
-			$this->m["PagescarvalModel"]->clear()->select("count(caratteristiche_valori.id_cv) as numero_prodotti,caratteristiche.titolo,caratteristiche.alias,caratteristiche.id_car,caratteristiche_valori.titolo,caratteristiche_valori.alias,caratteristiche_valori.id_cv,caratteristiche_tradotte.titolo,caratteristiche_tradotte.alias,caratteristiche_valori_tradotte.titolo,caratteristiche_valori_tradotte.alias")
-				->inner(array("caratteristica_valore"))
-				->inner("caratteristiche")->on("caratteristiche_valori.id_car = caratteristiche.id_car and filtro = 'Y'")
-				->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-				->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
-				->inner("pages")->on("pages.id_page = pages_caratteristiche_valori.id_page")
-				->addWhereAttivo()
-				->orderBy("caratteristiche.id_order,caratteristiche_valori.id_order")
-				->groupBy("caratteristiche_valori.id_cv");
-			
-			if (CategoriesModel::$currentIdCategory)
-				$this->m["PagescarvalModel"]->inner("categories")->on("categories.id_c = pages.id_c")->aWhere(array(
-					"categories.id_c"	=>	CategoriesModel::$currentIdCategory,
-				));
-			
-			if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
-			{
-				$this->m["PagescarvalModel"]->inner("categories_caratteristiche")->on("caratteristiche.id_car = categories_caratteristiche.id_car")->sWhere("categories_caratteristiche.id_c = ".(int)CategoriesModel::$currentIdCategory)->orderBy("categories_caratteristiche.id_order,caratteristiche_valori.id_order");
-			}
-			
-			$data["filtriCaratteristiche"] = $this->m["PagescarvalModel"]->send();
-		}
+			$data["filtriCaratteristiche"] = PagescarvalModel::getFiltriCaratteristiche();
 		
 		$data["filtriNazioni"] = $data["filtriRegioni"] = array();
 		
