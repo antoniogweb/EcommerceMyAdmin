@@ -1572,7 +1572,7 @@ class PagesModel extends GenericModel {
 		{
 			$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
 			
-			$this->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->select($f);
+			$this->addJoinTraduzione(null, "contenuti_tradotti", false)->select($f);
 		}
 		
 		$res = $this->send();
@@ -2455,11 +2455,8 @@ class PagesModel extends GenericModel {
 			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
 			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
 			->addJoinTraduzione(null, "caratteristiche_tradotte", false, (new CaratteristicheModel()))
-// 			->left("contenuti_tradotti as caratteristiche_tradotte")->on("caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
 			->addJoinTraduzione(null, "caratteristiche_valori_tradotte", false, (new CaratteristichevaloriModel()))
-// 			->left("contenuti_tradotti as caratteristiche_valori_tradotte")->on("caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
 			->addJoinTraduzione(null, "tipologie_caratteristiche_tradotte", false, (new TipologiecaratteristicheModel()))
-// 			->left("contenuti_tradotti as tipologie_caratteristiche_tradotte")->on("tipologie_caratteristiche_tradotte.id_tipologia_caratteristica = tipologie_caratteristiche.id_tipologia_caratteristica and tipologie_caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."'")
 			->orderBy("pages_caratteristiche_valori.id_order")
 			->where(array(
 				"pages_caratteristiche_valori.id_page"=>$clean['id']
@@ -2491,7 +2488,6 @@ class PagesModel extends GenericModel {
 								->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
 								->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
 								->addJoinTraduzione(null, "contenuti_tradotti", false, (new AttributivaloriModel()))
-// 								->left("contenuti_tradotti")->on("contenuti_tradotti.id_av = attributi_valori.id_av and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
 								->where(array("id_page"=>$clean['id']))
 								->orderBy("attributi_valori.id_order")
 								->groupBy("combinazioni.$c,attributi_valori.id_av")

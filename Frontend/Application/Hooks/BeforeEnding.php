@@ -28,7 +28,7 @@ if (count($mysqli->queries) > 0 && v("salva_conteggio_query"))
 	ConteggioqueryModel::aggiungi(count($mysqli->queries) + 1);
 
 if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
-{
-// 	print_r($mysqli->queries);
-	F::checkPreparedStatement($mysqli->queries);
-}
+	print_r($mysqli->queries);
+
+// $mysqli = Factory_Db::getInstance(DATABASE_TYPE);
+// F::checkPreparedStatement($mysqli->queries);

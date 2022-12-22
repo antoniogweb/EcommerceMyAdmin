@@ -141,7 +141,8 @@ class F
 			if (preg_match('/\=(\s?)\'([a-zA-Z]{1,})\'/',$query, $matches))
 				echo $query."<br />\n";
 			
-			
+			if (preg_match('/\=(\s?)\"([a-zA-Z]{1,})\"/',$query, $matches))
+				echo $query."<br />\n";
 		}
 	}
 	

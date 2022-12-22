@@ -272,7 +272,7 @@ class ListeregaloModel extends GenericModel
 		
 		return $lrp->clear()->select("*")
 			->inner(array("pagina"))
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
+			->addJoinTraduzione(null, "contenuti_tradotti", false, (new PagesModel()))
 			->inner("categories")->on("categories.id_c = pages.id_c")
 			->aWhere(array(
 				"liste_regalo_pages.id_lista_regalo"	=>	(int)$idLista,

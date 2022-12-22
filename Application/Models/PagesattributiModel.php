@@ -72,7 +72,7 @@ class PagesattributiModel extends GenericModel {
 		$res = $this->clear()
 				->select("pages_attributi.colonna,attributi.titolo,contenuti_tradotti.titolo")
 				->inner("attributi")->on("attributi.id_a = pages_attributi.id_a")
-				->left("contenuti_tradotti")->on("contenuti_tradotti.id_a = attributi.id_a and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
+				->addJoinTraduzione(null, "contenuti_tradotti", false, (new AttributiModel()))
 				->where(array("id_page"=>$clean["id_page"]))
 				->orderBy("pages_attributi.id_order")
 				->send();
