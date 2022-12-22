@@ -189,7 +189,7 @@ class MarchiModel extends GenericModel {
 				return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
 			}
 			else
-				return mfield($marchio[0],"alias").".html";
+				return mfield($marchio[0],"alias").v("estensione_url_categorie");
 		}
 		
 		return "";

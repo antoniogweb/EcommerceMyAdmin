@@ -275,7 +275,6 @@ class BaseContenutiController extends BaseController
 		{
 			$catProdotti = $this->m['CategoriesModel']->clear()
 				->addJoinTraduzioneCategoria()
-// 				->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb(Params::$lang)."'")
 				->where(array(
 					"section"	=>	Parametri::$nomeSezioneProdotti
 				))
@@ -473,7 +472,12 @@ class BaseContenutiController extends BaseController
 				array_unshift($tempParents, tagfield($tag,"alias"));
 		}
 		
-		$arrayUrl = array($this->cleanAlias);
+		$aliasShop = CategoriesModel::getAliasShop();
+		
+		$arrayUrl = array();
+		
+		if (!$this->idMarchio || (string)trim($this->cleanAlias,"/") !== (string)$aliasShop)
+			$arrayUrl = array($this->cleanAlias);
 		
 		// Caratteristiche
 		if (!empty(CaratteristicheModel::$filtriUrl))
@@ -490,7 +494,10 @@ class BaseContenutiController extends BaseController
 		$baseUrl = $completeUrl ? $this->baseUrl."/" : null;
 		if (count($tempParents) > 0)
 		{
-			return $baseUrl.implode("/",$tempParents)."/".implode("/",$arrayUrl).$ext;
+			if (count($arrayUrl) > 0)
+				return $baseUrl.implode("/",$tempParents)."/".implode("/",$arrayUrl).$ext;
+			else
+				return $baseUrl.implode("/",$tempParents).$ext;
 		}
 		else
 		{
@@ -1282,7 +1289,6 @@ class BaseContenutiController extends BaseController
 	
 	protected function page($id)
 	{
-		
 		$this->m["PagesModel"]->checkBloccato($id, "page");
 		
 		Cache::addTablesToCache(array("combinazioni","scaglioni"));

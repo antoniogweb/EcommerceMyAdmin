@@ -2490,7 +2490,8 @@ class PagesModel extends GenericModel {
 								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo")
 								->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
 								->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
-								->left("contenuti_tradotti")->on("contenuti_tradotti.id_av = attributi_valori.id_av and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
+								->addJoinTraduzione(null, "contenuti_tradotti", false, (new AttributivaloriModel()))
+// 								->left("contenuti_tradotti")->on("contenuti_tradotti.id_av = attributi_valori.id_av and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
 								->where(array("id_page"=>$clean['id']))
 								->orderBy("attributi_valori.id_order")
 								->groupBy("combinazioni.$c,attributi_valori.id_av")
@@ -2941,8 +2942,8 @@ class PagesModel extends GenericModel {
 			$lingua = Params::$lang;
 		
 		$this->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = '".sanitizeDb($lingua)."'");
+			->left("contenuti_tradotti")->on(array("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = ?", array(sanitizeDb($lingua))))
+			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on(array("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = ?", array(sanitizeDb($lingua))));
 		
 		if (!$this->select)
 			$this->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*");
@@ -3321,7 +3322,6 @@ class PagesModel extends GenericModel {
 		$this->left("pages_lingue as lingue_includi")->on("pages.id_page = lingue_includi.id_page and lingue_includi.includi = 1");
 		$this->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
 		
-// 		$this->sWhere("(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 1))");
 		$this->sWhere(array(
 			"(lingue_includi.id_page is null or pages.id_page in (select id_page from pages_lingue where lingua = ? and includi = 1))",
 			array(
@@ -3329,7 +3329,6 @@ class PagesModel extends GenericModel {
 			),
 		));
 		
-// 		$this->sWhere("(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = '".sanitizeDb(Params::$lang)."' and includi = 0))");
 		$this->sWhere(array(
 			"(lingue_escludi.id_page is null or pages.id_page not in (select id_page from pages_lingue where lingua = ? and includi = 0))",
 			array(

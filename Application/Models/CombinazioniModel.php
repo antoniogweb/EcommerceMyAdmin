@@ -439,14 +439,14 @@ class CombinazioniModel extends GenericModel {
 		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
 			$this->clear()->select("combinazioni.id_page,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
-				->left("attributi_valori as a1")->on("a1.id_av = combinazioni.col_1")->left("contenuti_tradotti as at1")->on("at1.id_av = a1.id_av and at1.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a2")->on("a2.id_av = combinazioni.col_2")->left("contenuti_tradotti as at2")->on("at2.id_av = a2.id_av and at2.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a3")->on("a3.id_av = combinazioni.col_3")->left("contenuti_tradotti as at3")->on("at3.id_av = a3.id_av and at3.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a4")->on("a4.id_av = combinazioni.col_4")->left("contenuti_tradotti as at4")->on("at4.id_av = a4.id_av and at4.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a5")->on("a5.id_av = combinazioni.col_5")->left("contenuti_tradotti as at5")->on("at5.id_av = a5.id_av and at5.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a6")->on("a6.id_av = combinazioni.col_6")->left("contenuti_tradotti as at6")->on("at6.id_av = a6.id_av and at6.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a7")->on("a7.id_av = combinazioni.col_7")->left("contenuti_tradotti as at7")->on("at7.id_av = a7.id_av and at7.lingua = '".sanitizeDb($codice)."'")
-				->left("attributi_valori as a8")->on("a8.id_av = combinazioni.col_8")->left("contenuti_tradotti as at8")->on("at8.id_av = a8.id_av and at8.lingua = '".sanitizeDb($codice)."'")
+				->left("attributi_valori as a1")->on("a1.id_av = combinazioni.col_1")->left("contenuti_tradotti as at1")->on(array("at1.id_av = a1.id_av and at1.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a2")->on("a2.id_av = combinazioni.col_2")->left("contenuti_tradotti as at2")->on(array("at2.id_av = a2.id_av and at2.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a3")->on("a3.id_av = combinazioni.col_3")->left("contenuti_tradotti as at3")->on(array("at3.id_av = a3.id_av and at3.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a4")->on("a4.id_av = combinazioni.col_4")->left("contenuti_tradotti as at4")->on(array("at4.id_av = a4.id_av and at4.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a5")->on("a5.id_av = combinazioni.col_5")->left("contenuti_tradotti as at5")->on(array("at5.id_av = a5.id_av and at5.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a6")->on("a6.id_av = combinazioni.col_6")->left("contenuti_tradotti as at6")->on(array("at6.id_av = a6.id_av and at6.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a7")->on("a7.id_av = combinazioni.col_7")->left("contenuti_tradotti as at7")->on(array("at7.id_av = a7.id_av and at7.lingua = ?",array(sanitizeDb($codice))))
+				->left("attributi_valori as a8")->on("a8.id_av = combinazioni.col_8")->left("contenuti_tradotti as at8")->on(array("at8.id_av = a8.id_av and at8.lingua = ?",array(sanitizeDb($codice))))
 				->inner(array("pagina"));
 // 				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
 			

@@ -1020,7 +1020,6 @@ class GenericModel extends Model_Tree
 		if ($selectAll)
 			$this->select("*");
 		
-// 		$this->select("*")->left("contenuti_tradotti $strAlias")->on("$alias.".$this->_idFields." = ".$this->_tables.".".$this->_idFields." and $alias.lingua = '".sanitizeDb($lingua)."'");
 		$this->left("contenuti_tradotti $strAlias")->on(array(
 			"$alias.".$modelTabella->_idFields." = ".$modelTabella->_tables.".".$modelTabella->_idFields." and $alias.lingua = ?",
 			array(

@@ -28,6 +28,7 @@ class CategoriesModel extends HierarchicalModel {
 	public static $elencoTag = null;
 	public static $elencoMarchi = null;
 	public static $idShop = 0;
+	public static $aliasShop = null;
 	
 	public static $arrayIdsPagineFiltrate = array();
 	public static $elencoCategorieFull = array();
@@ -1102,5 +1103,21 @@ class CategoriesModel extends HierarchicalModel {
 			return CategoriesModel::g(false)->whereId($idCat)->field("title");
 		
 		return "";
+	}
+	
+	public static function getAliasShop()
+	{
+		if (!self::$idShop)
+			self::$idShop = CategoriesModel::g(false)->getShopCategoryId();
+		
+		if (!isset(self::$aliasShop))
+		{
+			$record = CategoriesModel::g(false)->addJoinTraduzioneCategoria()->select("categories.alias,contenuti_tradotti_categoria.alias")->whereId((int)self::$idShop)->first();
+			
+			if (!empty($record))
+				self::$aliasShop = cfield($record, "alias");
+		}
+		
+		return self::$aliasShop;
 	}
 }
