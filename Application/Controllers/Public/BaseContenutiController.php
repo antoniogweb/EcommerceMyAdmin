@@ -234,7 +234,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_tag"))
 		{
-			$elencoTag = $this->m["TagModel"]->clear()->addJoinTraduzione()->send();
+			$elencoTag = $this->m("TagModel")->clear()->addJoinTraduzione()->send();
 			$elencoTagEncoded = array();
 			$elencoTagTitle = array();
 			foreach ($elencoTag as $tag)
@@ -254,7 +254,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_marchi"))
 		{
-			$elencoMarchi = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->send();
+			$elencoMarchi = $this->m("MarchiModel")->clear()->addJoinTraduzione()->send();
 			$elencoMarchiEncoded = array();
 			foreach ($elencoMarchi as $marchio)
 			{
@@ -273,7 +273,7 @@ class BaseContenutiController extends BaseController
 		// Controlla che non sia un marchio o un tag
 		if (count($this->pageArgs) === 0 && (($this->idMarchio && !v("attiva_pagina_produttore")) || $this->idTag))
 		{
-			$catProdotti = $this->m['CategoriesModel']->clear()
+			$catProdotti = $this->m('CategoriesModel')->clear()
 				->addJoinTraduzioneCategoria()
 				->where(array(
 					"section"	=>	Parametri::$nomeSezioneProdotti
@@ -298,10 +298,10 @@ class BaseContenutiController extends BaseController
 			$dirtyAlias = $args[(count($args)-1)];
 			$clean['alias'] = $this->cleanAlias = sanitizeAll($dirtyAlias);
 			
-// 			if ($this->m["PagesModel"]->isActiveAlias($clean['alias'], Params::$lang))
-			if ($ids = $this->m["PagesModel"]->getIdFromAlias($dirtyAlias, Params::$lang))
+// 			if ($this->m("PagesModel")->isActiveAlias($clean['alias'], Params::$lang))
+			if ($ids = $this->m("PagesModel")->getIdFromAlias($dirtyAlias, Params::$lang))
 			{
-// 				$ids = $this->m["PagesModel"]->getIdFromAlias($clean['alias'], Params::$lang);
+// 				$ids = $this->m("PagesModel")->getIdFromAlias($clean['alias'], Params::$lang);
 				
 				$clean["id"] = (int)$ids[0];
 				
@@ -310,7 +310,7 @@ class BaseContenutiController extends BaseController
 				
 				foreach ($ids as $id)
 				{
-					$par = $this->m["PagesModel"]->parents((int)$id,false,false,Params::$lang);
+					$par = $this->m("PagesModel")->parents((int)$id,false,false,Params::$lang);
 					
 					//tolgo la root
 					array_shift($par);
@@ -335,7 +335,7 @@ class BaseContenutiController extends BaseController
 				
 				if (count($rParents) > 0)
 				{
-					$idPrincipale = $this->m["PagesModel"]->getPrincipale($ids[0]);
+					$idPrincipale = $this->m("PagesModel")->getPrincipale($ids[0]);
 					$this->fullParents = $parents[$idPrincipale];
 					$this->rParent = $rParents[$idPrincipale];
 				}
@@ -360,11 +360,11 @@ class BaseContenutiController extends BaseController
 				$this->checkIfRigthParents();
 				$this->page($clean['id']);
 			}
-			else if ($clean['id'] = (int)$this->m["CategoriesModel"]->getIdFromAlias($dirtyAlias, Params::$lang))
+			else if ($clean['id'] = (int)$this->m("CategoriesModel")->getIdFromAlias($dirtyAlias, Params::$lang))
 			{
 				$tipoContenuto = "categoria";
 				
-				$parents = $this->m["CategoriesModel"]->parents($clean['id'],false,false, Params::$lang);
+				$parents = $this->m("CategoriesModel")->parents($clean['id'],false,false, Params::$lang);
 				array_shift($parents); //remove the root parent
 				
 				if (isset($parents[count($parents)-1]["contenuti_tradotti"]["title"]) && $parents[count($parents)-1]["contenuti_tradotti"]["title"])
@@ -618,7 +618,7 @@ class BaseContenutiController extends BaseController
 	
 	protected function category($id)
 	{
-		$this->m["CategoriesModel"]->checkBloccato($id);
+		$this->m("CategoriesModel")->checkBloccato($id);
 		
 		Cache::addTablesToCache(array("combinazioni","scaglioni"));
 		
@@ -638,8 +638,8 @@ class BaseContenutiController extends BaseController
 		
 		$this->checkCategory($clean["id"]);
 		
-		$section = $data["section"] = $this->section = $this->m["CategoriesModel"]->section($clean['id']);
-		$firstSection = $data["fsection"] = $this->firstSection = $this->m["CategoriesModel"]->section($clean['id'], true);
+		$section = $data["section"] = $this->section = $this->m("CategoriesModel")->section($clean['id']);
+		$firstSection = $data["fsection"] = $this->firstSection = $this->m("CategoriesModel")->section($clean['id'], true);
 		
 		$this->setElementsPerPage($firstSection);
 		
@@ -649,7 +649,7 @@ class BaseContenutiController extends BaseController
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/".$this->m["CategoriesModel"]->getUrlAlias($clean['id'], $l);
+			$data["arrayLingue"][$l] = $l."/".$this->m("CategoriesModel")->getUrlAlias($clean['id'], $l);
 		}
 		
 		$data["idMarchio"] = $this->idMarchio;
@@ -658,7 +658,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_marchi"))
 		{
-			$marchioCorrente =  $data["marchioCorrente"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+			$marchioCorrente =  $data["marchioCorrente"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
 				"marchi.id_marchio"	=>	(int)$this->idMarchio,
 			))->first();
 			
@@ -670,7 +670,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_tag"))
 		{
-			$tagCorrente =  $data["tagCorrente"] = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+			$tagCorrente =  $data["tagCorrente"] = $this->m("TagModel")->clear()->addJoinTraduzione()->where(array(
 				"tag.id_tag"	=>	(int)$this->idTag,
 			))->first();
 			
@@ -679,10 +679,10 @@ class BaseContenutiController extends BaseController
 		}
 		
 		//estrai i dati della categoria
-		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
+		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
 		
-		$data["categorieFiglie"] = $this->m['CategoriesModel']->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
+		$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
@@ -702,12 +702,12 @@ class BaseContenutiController extends BaseController
 		
 		if (v("mostra_categorie_figlie_in_griglia_prodotti"))
 		{
-			$iChildrenGross = $this->m["CategoriesModel"]->immediateChildren($clean['id']);
+			$iChildrenGross = $this->m("CategoriesModel")->immediateChildren($clean['id']);
 			
 			$data["iChildren"] = array();
 			foreach ($iChildrenGross as $row)
 			{
-				if ($this->m["CategoriesModel"]->hasActivePages($row["categories"]["id_c"]))
+				if ($this->m("CategoriesModel")->hasActivePages($row["categories"]["id_c"]))
 				{
 					$data["iChildren"][] = $row;
 				}
@@ -732,26 +732,26 @@ class BaseContenutiController extends BaseController
 			foreach ($arrayElementi as $elemento)
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
-				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m["PagesModel"]->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m("PagesModel")->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
 			}
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array("prezzo"));
-				$data["prezzoMinimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo_ivato")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
-				$data["prezzoMassimoElenco"] = (float)$this->m["PagesModel"]->orderBy("combinazioni_minime.prezzo_minimo_ivato desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+				$data["prezzoMinimoElenco"] = (float)$this->m("PagesModel")->orderBy("combinazioni_minime.prezzo_minimo_ivato")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+				$data["prezzoMassimoElenco"] = (float)$this->m("PagesModel")->orderBy("combinazioni_minime.prezzo_minimo_ivato desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
 			}
 		}
 		
 		$this->queryElencoProdotti($clean['id'], $firstSection);
 		
-		$rowNumber = $data["rowNumber"] = $this->m["PagesModel"]->save()->rowNumber();
+		$rowNumber = $data["rowNumber"] = $this->m("PagesModel")->save()->rowNumber();
 		
-// 		echo $this->m["PagesModel"]->getQuery();die();
+// 		echo $this->m("PagesModel")->getQuery();die();
 		
 		$this->estraiDatiFiltri();
 		
-		$this->m["PagesModel"]->clear()->restore(true);
+		$this->m("PagesModel")->clear()->restore(true);
 		
 		$data["linkAltri"] = null;
 		
@@ -762,15 +762,15 @@ class BaseContenutiController extends BaseController
 			
 			$page = $data["numeroDiPagina"] = $this->viewArgs['p'];
 			
-			$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
+			$this->m('PagesModel')->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
 			
 			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
-			$data["pages"] = $this->m['PagesModel']->send();
+			$data["pages"] = $this->m('PagesModel')->send();
 			
 			$data['pageList'] = $this->h['Pages']->render($page-5,11);
 		}
 		else
-			$data["pages"] = $this->m['PagesModel']->send();
+			$data["pages"] = $this->m('PagesModel')->send();
 		
 		if ($firstSection == "prodotti")
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
@@ -779,18 +779,18 @@ class BaseContenutiController extends BaseController
 		
 		PagesModel::setPagesStruct($data["pages"]);
 		
-// 		echo $this->m["PagesModel"]->getQuery();
+// 		echo $this->m("PagesModel")->getQuery();
 		
 		// Estraggo le fasce
-		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti(0, $clean['id'], $this);
+		$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti(0, $clean['id'], $this);
 		
 		// Estraggo le fasce di prezzo
 		if (v("mostra_fasce_prezzo"))
-			$data["fascePrezzo"] = $this->m["FasceprezzoModel"]->filtroFasce();
+			$data["fascePrezzo"] = $this->m("FasceprezzoModel")->filtroFasce();
 		
 		// Estraggo i materiali
 		if (v("estrai_materiali"))
-			$data["elencoMateriali"] = $this->m["CaratteristichevaloriModel"]->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
+			$data["elencoMateriali"] = $this->m("CaratteristichevaloriModel")->clear()->addJoinTraduzione(null, "caratteristiche_valori_tradotte")->inner(array("caratteristica"))->orderBy("caratteristiche_valori.id_order")->aWhere(array(
 				"caratteristiche.tipo" => "MATERIALE",
 			))->send();
 		
@@ -824,49 +824,49 @@ class BaseContenutiController extends BaseController
 	{
 		$clean['id'] = (int)$id;
 		
-		$this->m["PagesModel"]->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
+		$this->m("PagesModel")->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
 		
 		$this->addOrderByClause($firstSection);
 		
 		if ($this->catSWhere)
-			$this->m["PagesModel"]->sWhere($this->catSWhere);
+			$this->m("PagesModel")->sWhere($this->catSWhere);
 		
 		if (Parametri::$hideNotAllowedNodesInLists)
 		{
-			$accWhere = $this->m["PagesModel"]->getAccessibilityWhere();
-			$this->m["PagesModel"]->aWhere($accWhere);
+			$accWhere = $this->m("PagesModel")->getAccessibilityWhere();
+			$this->m("PagesModel")->aWhere($accWhere);
 		}
 		
 		// Visibilità pagina
 		if (v("abilita_visibilita_pagine"))
-			$this->m["PagesModel"]->addWhereLingua();
+			$this->m("PagesModel")->addWhereLingua();
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
-			$this->m["PagesModel"]->aWhere($this->getSearchWhere("search"));
+			$this->m("PagesModel")->aWhere($this->getSearchWhere("search"));
 		
 		// Where figli
 		if (in_array("[categoria]",$escludi))
 			$clean['id'] = (int)CategoriesModel::getIdCategoriaDaSezione($firstSection);
 		
-		$children = $this->m["CategoriesModel"]->children($clean['id'], true);
+		$children = $this->m("CategoriesModel")->children($clean['id'], true);
 		
 		if (!in_array("[categoria]",$escludi) && v("attiva_categorie_in_prodotto"))
 		{
 			$catWhere = "in(".implode(",",$children).")";
-			$this->m["PagesModel"]->sWhere("(pages.id_c $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$clean['id']."))");
+			$this->m("PagesModel")->sWhere("(pages.id_c $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$clean['id']."))");
 		}
 		else
-			$this->m["PagesModel"]->aWhere(array(
+			$this->m("PagesModel")->aWhere(array(
 				"in" => array("-id_c" => $children),
 			));
 		
 		if ($this->idMarchio && !in_array("[marchio]",$escludi))
-			$this->m["PagesModel"]->aWhere(array(
+			$this->m("PagesModel")->aWhere(array(
 				"id_marchio"	=>	(int)$this->idMarchio,
 			));
 		
 		if ($this->idTag && !in_array("[tag]",$escludi))
-			$this->m["PagesModel"]->inner(array("tag"))->aWhere(array(
+			$this->m("PagesModel")->inner(array("tag"))->aWhere(array(
 				"pages_tag.id_tag"	=>	(int)$this->idTag,
 			));
 		
@@ -898,7 +898,7 @@ class BaseContenutiController extends BaseController
 				),
 			);
 			
-			$this->m["PagesModel"]->inner($tabellaCaratterisitche)->on("pages.id_page = tabella_caratteristiche.id_page");
+			$this->m("PagesModel")->inner($tabellaCaratterisitche)->on("pages.id_page = tabella_caratteristiche.id_page");
 			
 			$indice = 6;
 			
@@ -937,8 +937,8 @@ class BaseContenutiController extends BaseController
 			else if (count($sWhereQueryArray) > 0)
 				$sWhereQuery = $sWhereQueryArray[0];
 			
-// 			$this->m["PagesModel"]->sWhere($sWhereQuery);
-			$this->m["PagesModel"]->sWhere(array($sWhereQuery, $bindedValues));
+// 			$this->m("PagesModel")->sWhere($sWhereQuery);
+			$this->m("PagesModel")->sWhere(array($sWhereQuery, $bindedValues));
 		}
 		
 		// Filtri località
@@ -947,9 +947,9 @@ class BaseContenutiController extends BaseController
 			$prodottoTutteLeRegioni = v("prodotto_tutte_regioni_se_nessuna_regione");
 			
 			if ($prodottoTutteLeRegioni)
-				$this->m["PagesModel"]->left(array("regioni"));
+				$this->m("PagesModel")->left(array("regioni"));
 			else
-				$this->m["PagesModel"]->inner(array("regioni"));
+				$this->m("PagesModel")->inner(array("regioni"));
 			
 			$combinazioniLocalita = prodottoCartesiano(RegioniModel::$filtriUrl);
 			
@@ -992,8 +992,8 @@ class BaseContenutiController extends BaseController
 				$sWhereQuery = $sWhereQueryArray[0];
 			
 			if ($sWhereQuery)
-				$this->m["PagesModel"]->sWhere(array($sWhereQuery,$bindedValues));
-// 				$this->m["PagesModel"]->sWhere($sWhereQuery);
+				$this->m("PagesModel")->sWhere(array($sWhereQuery,$bindedValues));
+// 				$this->m("PagesModel")->sWhere($sWhereQuery);
 		}
 		
 		if (!empty(AltriFiltri::$filtriUrl))
@@ -1005,8 +1005,8 @@ class BaseContenutiController extends BaseController
 					$campoPrezzo = "prezzo_minimo";
 					
 					if (v("mostra_fasce_prezzo") && !v("filtro_prezzo_slider"))
-						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere(array("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = ?",array(sanitizeDb($valoreFiltro))))->first();
-// 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m["FasceprezzoModel"]->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
+						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m("FasceprezzoModel")->clear()->addJoinTraduzione()->sWhere(array("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = ?",array(sanitizeDb($valoreFiltro))))->first();
+// 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m("FasceprezzoModel")->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
 					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
 						Cache::$skipWritingCache = true;
@@ -1023,7 +1023,7 @@ class BaseContenutiController extends BaseController
 					
 					if (isset($fasciaPrezzo) && !empty($fasciaPrezzo))
 					{
-						$this->m["PagesModel"]->aWhere(array(
+						$this->m("PagesModel")->aWhere(array(
 							"    gte"	=>	array(
 								"combinazioni_minime.$campoPrezzo"	=>	sanitizeDb($fasciaPrezzo["fasce_prezzo"]["da"]),
 							),
@@ -1042,7 +1042,7 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$this->m["PagesModel"]->addJoinTraduzionePagina();
+		$this->m("PagesModel")->addJoinTraduzionePagina();
 		
 		if (isset($data))
 			$this->append($data);
@@ -1055,29 +1055,29 @@ class BaseContenutiController extends BaseController
 		switch ($tipo)
 		{
 			case AltriFiltri::$aliasValoreTipoPromo[0]:
-				$this->m["PagesModel"]->addWherePromo();
+				$this->m("PagesModel")->addWherePromo();
 				self::$isPromo = true;
 				break;
 				
 			case AltriFiltri::$aliasValoreTipoNuovo[0]:
-				$this->m["PagesModel"]->addWhereNuovo();
+				$this->m("PagesModel")->addWhereNuovo();
 				break;
 				
 			case AltriFiltri::$aliasValoreTipoInEvidenza[0]:
-				$this->m["PagesModel"]->addWhereEvidenza();
+				$this->m("PagesModel")->addWhereEvidenza();
 				break;
 		}
 		
 		if (!empty($wherePromo))
-			$this->m["PagesModel"]->aWhere($wherePromo);
+			$this->m("PagesModel")->aWhere($wherePromo);
 	}
 	
 	protected function addOrderByClause($firstSection, $urlOrdinamento = null)
 	{
 		if ($firstSection == Parametri::$nomeSezioneProdotti)
-			$this->m["PagesModel"]->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
+			$this->m("PagesModel")->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
 		else
-			$this->m["PagesModel"]->orderBy($this->gerOrderBy($firstSection));
+			$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection));
 		
 		if (!$urlOrdinamento)
 			$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false, "categoria");
@@ -1117,13 +1117,13 @@ class BaseContenutiController extends BaseController
 					$tabellaCombinazioni = "(select id_page,min($campoPrezzoMinimo) as prezzo_minimo,min($campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni group by combinazioni.id_page) as combinazioni_minime";
 			}
 			
-// 			$this->m["PagesModel"]->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
-			$this->m["PagesModel"]->inner(array($tabellaCombinazioni,$bindedValues))->on("pages.id_page = combinazioni_minime.id_page");
+// 			$this->m("PagesModel")->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
+			$this->m("PagesModel")->inner(array($tabellaCombinazioni,$bindedValues))->on("pages.id_page = combinazioni_minime.id_page");
 		}
 		
 		if ($firstSection == Parametri::$nomeSezioneProdotti && $this->viewArgs['o'] == "piuvenduto")
 		{
-			$this->m["PagesModel"]->left("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
+			$this->m("PagesModel")->left("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
 		}
 		
 		$this->append($data);
@@ -1167,7 +1167,7 @@ class BaseContenutiController extends BaseController
 	
 	private function sectionLoad($section, $type = "category", $template = null)
 	{
-		$alloweSections = $this->m["CategoriesModel"]->clear()->select("section")->where(array(
+		$alloweSections = $this->m("CategoriesModel")->clear()->select("section")->where(array(
 			"ne" => array("section" => ""),
 			" ne" => array("section" => Parametri::$hierarchicalRootTitle),
 		))->toList("section")->send();
@@ -1214,7 +1214,7 @@ class BaseContenutiController extends BaseController
 	{
 		$clean['id'] = (int)$id;
 		
-		if (!$this->m['PagesModel']->check($clean["id"]))
+		if (!$this->m('PagesModel')->check($clean["id"]))
 		{
 			if ($this->islogged)
 			{
@@ -1231,7 +1231,7 @@ class BaseContenutiController extends BaseController
 	{
 		$clean['id'] = (int)$id;
 		
-		if (!$this->m['CategoriesModel']->check($clean["id"]))
+		if (!$this->m('CategoriesModel')->check($clean["id"]))
 		{
 			if ($this->islogged)
 			{
@@ -1248,11 +1248,11 @@ class BaseContenutiController extends BaseController
 	{
 		$linguaPrincipale = LingueModel::getPrincipale();
 		
-		$marchiAlias = $this->m["MarchiModel"]->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->left("contenuti_tradotti")->on("contenuti_tradotti.id_marchio = marchi.id_marchio")->where(array(
+		$marchiAlias = $this->m("MarchiModel")->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->left("contenuti_tradotti")->on("contenuti_tradotti.id_marchio = marchi.id_marchio")->where(array(
 			"marchi.id_marchio"	=>	(int)$id,
 		))->toList("contenuti_tradotti.lingua", "contenuti_tradotti.alias")->send();
 		
-		$marchioCorrente = $data["marchioCorrente"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+		$marchioCorrente = $data["marchioCorrente"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
 			"marchi.id_marchio"	=>	(int)$this->idMarchio,
 		))->first();
 		
@@ -1284,12 +1284,12 @@ class BaseContenutiController extends BaseController
 	{
 		$this->model("PagesstatsModel");
 		
-		$this->m["PagesstatsModel"]->aggiungi($id);
+		$this->m("PagesstatsModel")->aggiungi($id);
 	}
 	
 	protected function page($id)
 	{
-		$this->m["PagesModel"]->checkBloccato($id, "page");
+		$this->m("PagesModel")->checkBloccato($id, "page");
 		
 		Cache::addTablesToCache(array("combinazioni","scaglioni"));
 		
@@ -1303,11 +1303,11 @@ class BaseContenutiController extends BaseController
 		
 		$this->checkPage($clean["realId"]);
 		
-		$clean['id'] = $this->m['PagesModel']->getPrincipale($clean["realId"]);
+		$clean['id'] = $this->m('PagesModel')->getPrincipale($clean["realId"]);
 		
-		$firstSection = $data["fsection"] = $this->firstSection = $this->m["PagesModel"]->section($clean['id'], true);
+		$firstSection = $data["fsection"] = $this->firstSection = $this->m("PagesModel")->section($clean['id'], true);
 		
-// 		$urlAlias = $this->m["PagesModel"]->getUrlAlias($clean['realId']);
+// 		$urlAlias = $this->m("PagesModel")->getUrlAlias($clean['realId']);
 		
 		$data["arrayLingue"] = array();
 		
@@ -1315,13 +1315,13 @@ class BaseContenutiController extends BaseController
 		{
 			if (v("abilita_visibilita_pagine"))
 			{
-				$linguePagina = $this->m["PagesModel"]->getArrayLingueAttiveFrontend($clean['realId']);
+				$linguePagina = $this->m("PagesModel")->getArrayLingueAttiveFrontend($clean['realId']);
 				
 				if (!in_array($l, $linguePagina))
 					continue;
 			}
 			
-			$data["arrayLingue"][$l] = $l."/".$this->m["PagesModel"]->getUrlAlias($clean['realId'], $l);
+			$data["arrayLingue"][$l] = $l."/".$this->m("PagesModel")->getUrlAlias($clean['realId'], $l);
 		}
 		
 		$data["isPage"] = true;
@@ -1330,20 +1330,20 @@ class BaseContenutiController extends BaseController
 		RegusersModel::getRedirect();
 		
 		// Elaborazione feedback
-		if (!$this->m['PagesModel']->checkTipoPagina($clean["realId"], "FORM_FEEDBACK"))
+		if (!$this->m('PagesModel')->checkTipoPagina($clean["realId"], "FORM_FEEDBACK"))
 			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page");
 		else
 			$this->inserisciFeedback($clean["realId"]);
 		
 		if ($firstSection == "prodotti")
-			$data["scaglioni"] = $this->scaglioni = $this->m["ScaglioniModel"]->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
+			$data["scaglioni"] = $this->scaglioni = $this->m("ScaglioniModel")->clear()->where(array("id_page"=>$clean['id']))->toList("quantita","sconto")->send();
 		
-		$this->m['PagesModel']->clear()->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,marchi.*")
+		$this->m('PagesModel')->clear()->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,marchi.*")
 			->addJoinTraduzionePagina()
 			->left("marchi")->on("pages.id_marchio = marchi.id_marchio")
 			->where(array("id_page"=>$clean['id']));
 		
-		$data["pages"] = $this->pages = $this->m['PagesModel']->send();
+		$data["pages"] = $this->pages = $this->m('PagesModel')->send();
 		
 		$this->estraiDatiFiltri();
 		
@@ -1369,7 +1369,7 @@ class BaseContenutiController extends BaseController
 				$this->getAppLogin();
 		}
 		
-		$data["paginaPrecedente"] = $this->m['PagesModel']->where(array(
+		$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
 			"OR"	=>	array(
 				"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
 				"AND"	=>	array(
@@ -1379,7 +1379,7 @@ class BaseContenutiController extends BaseController
 			),
 		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
 		
-		$data["paginaSuccessiva"] = $this->m['PagesModel']->where(array(
+		$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
 			"OR"	=>	array(
 				"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
 				"AND"	=>	array(
@@ -1397,7 +1397,7 @@ class BaseContenutiController extends BaseController
 		
 		if ($firstSection == "prodotti")
 		{
-			list ($colonne, $data["lista_valori_attributi"]) = $this->m['PagesModel']->selectAttributi($clean['id']);
+			list ($colonne, $data["lista_valori_attributi"]) = $this->m('PagesModel')->selectAttributi($clean['id']);
 			
 			$data["lista_attributi"] = $this->lista_attributi = $colonne;
 			
@@ -1405,10 +1405,10 @@ class BaseContenutiController extends BaseController
 			
 			$data["haVarianti"] = count($data["lista_valori_attributi"]) > 0 ? true : false;
 			
-			$data["prezzoMinimo"] = $this->prezzoMinimo = $this->m['PagesModel']->prezzoMinimo($clean['id']);
+			$data["prezzoMinimo"] = $this->prezzoMinimo = $this->m('PagesModel')->prezzoMinimo($clean['id']);
 		}
 		
-		$data["prodotti_correlati"] = $this->m['PagesModel']->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
+		$data["prodotti_correlati"] = $this->m('PagesModel')->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"prodotti_correlati.id_page"=>	$clean['id'],
@@ -1418,14 +1418,14 @@ class BaseContenutiController extends BaseController
 		
 		if (v("accessori_in_prodotti"))
 		{
-			$this->m['PagesModel']->where["prodotti_correlati.accessorio"] = 1;
-			$data["accessori"] = $this->m['PagesModel']->send();
-// 			echo $this->m['PagesModel']->getQuery();die();
+			$this->m('PagesModel')->where["prodotti_correlati.accessorio"] = 1;
+			$data["accessori"] = $this->m('PagesModel')->send();
+// 			echo $this->m('PagesModel')->getQuery();die();
 		}
 		
 		// Pagine correlate
 		if (v("estrai_sempre_correlati") || $firstSection == "prodotti")
-			$data["pagine_correlate"] = $this->m['PagesModel']->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
+			$data["pagine_correlate"] = $this->m('PagesModel')->clear()->select("pages.*,pages_pages.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("pages_pages")->inner("pages")->on("pages.id_page=pages_pages.id_corr")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"pages_pages.id_page"=>	$clean['id'],
@@ -1442,7 +1442,7 @@ class BaseContenutiController extends BaseController
 		$orderByCaratteristiche = v("caratteristiche_in_tab_separate") ? "tipologie_caratteristiche.id_order, pages_caratteristiche_valori.id_order" : "pages_caratteristiche_valori.id_order" ;
 		
 		// CARATTERISTICHE
-		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m["PagesModel"]->selectCaratteristiche($clean['id']);
+		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m("PagesModel")->selectCaratteristiche($clean['id']);
 		
 		$data["lista_caratteristiche_tipologie"] = array();
 		
@@ -1462,18 +1462,18 @@ class BaseContenutiController extends BaseController
 		// Personalizzazioni
 		if ($firstSection == "prodotti" && v("attiva_personalizzazioni"))
 		{
-			$data["personalizzazioni"] = $this->m['PagesModel']->selectPersonalizzazioni($clean['id']);
+			$data["personalizzazioni"] = $this->m('PagesModel')->selectPersonalizzazioni($clean['id']);
 			
 			if (count($data["personalizzazioni"]) > 0)
 				$data["haPersonalizzazioni"] = true;
 		}
 		
-		$data["documenti"] = $this->documentiPagina = $this->m["PagesModel"]->getDocumenti($clean['id']);
+		$data["documenti"] = $this->documentiPagina = $this->m("PagesModel")->getDocumenti($clean['id']);
 		
 		if (v("mostra_link_in_blog"))
 		{
 			$this->model("PageslinkModel");
-			$data["links"] = $this->m["PageslinkModel"]->clear()->where(array(
+			$data["links"] = $this->m("PageslinkModel")->clear()->where(array(
 				"id_page"	=>	$clean['id'],
 			))->orderBy("titolo")->send();
 		}
@@ -1490,13 +1490,13 @@ class BaseContenutiController extends BaseController
 			$data["tagCanonical"] = PagesModel::getTagCanonical((int)$id);
 		
 		//estrai i dati della categoria
-		$r = $this->m['CategoriesModel']->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("section"=>sanitizeAll($firstSection)))->send();
+		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("section"=>sanitizeAll($firstSection)))->send();
 		$data["datiCategoriaPrincipale"] = $r[0];
 		
 		$data["pagesCss"] = $data['pages'][0]["pages"]["css"];
 		
 		// Estraggo le fasce
-		$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['id'], 0, $this);
+		$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti($clean['id'], 0, $this);
 		
 		// Estraggo i contenuti generici
 		$data["contenuti"] = ContenutiModel::getContenutiPagina($clean['id'], "GENERICO");
@@ -1516,7 +1516,7 @@ class BaseContenutiController extends BaseController
 		
 		if (v("usa_marchi"))
 		{
-			$marchioCorrente =  $data["marchioCorrente"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+			$marchioCorrente =  $data["marchioCorrente"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
 				"marchi.id_marchio"	=>	(int)$data['pages'][0]["pages"]["id_marchio"],
 			))->first();
 			
@@ -1529,12 +1529,12 @@ class BaseContenutiController extends BaseController
 		if (v("usa_tag"))
 		{
 			$this->model("PagestagModel");
-			$data["page_tags"] = $this->m["PagestagModel"]->clear()->select("*")->inner(array("tag"))->where(array(
+			$data["page_tags"] = $this->m("PagestagModel")->clear()->select("*")->inner(array("tag"))->where(array(
 				"id_page"	=>	$clean['id'],
 			))->orderBy("pages_tag.id_order")->send();
 			
 			// Con traduzione
-			$data["page_tags_full"] = $this->m["TagModel"]->clear()->select("*")->inner(array("pagine"))->addJoinTraduzione()->where(array(
+			$data["page_tags_full"] = $this->m("TagModel")->clear()->select("*")->inner(array("pagine"))->addJoinTraduzione()->where(array(
 				"pages_tag.id_page"	=>	$clean['id'],
 			))->orderBy("pages_tag.id_order")->send();
 		}
@@ -1545,7 +1545,7 @@ class BaseContenutiController extends BaseController
 			$data["page_feedback"] = FeedbackModel::get($clean['id']);
 		
 		if (v("attiva_localizzazione_prodotto"))
-			list($data["nazioni_prodotto"], $data["regioni_prodotto"]) = $this->m["PagesModel"]->getLocalizzazione($clean['id']);
+			list($data["nazioni_prodotto"], $data["regioni_prodotto"]) = $this->m("PagesModel")->getLocalizzazione($clean['id']);
 		
 		if (v("attiva_liste_regalo") && $firstSection == "prodotti" && User::$logged)
 			$data["liste_regalo"] = ListeregaloModel::listeUtente(User::$id);
@@ -1554,7 +1554,7 @@ class BaseContenutiController extends BaseController
 		
 		$template = strcmp($data['pages'][0]["pages"]["template"],"") === 0 ? null : $data['pages'][0]["pages"]["template"];
 		
-		$section = $this->m["PagesModel"]->section($clean['id']);
+		$section = $this->m("PagesModel")->section($clean['id']);
 		
 // 		$this->sectionLoad($section, "page", $template);
 		
@@ -1610,14 +1610,14 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$this->m["CombinazioniModel"]->clear()->where($where);
+		$this->m("CombinazioniModel")->clear()->where($where);
 		
 		if ($clean["col"] && in_array($clean["col"] , $allowedFields))
-			$this->m["CombinazioniModel"]->groupBy($clean["col"] );
+			$this->m("CombinazioniModel")->groupBy($clean["col"] );
 		
 		if (!$clean["col"] )
 		{
-			$res = $this->m["CombinazioniModel"]->send();
+			$res = $this->m("CombinazioniModel")->send();
 			
 			if (count($res) > 0)
 			{
@@ -1627,7 +1627,7 @@ class BaseContenutiController extends BaseController
 				$prezzoCombinazione = $res[0]["combinazioni"]["price"];
 				
 				if (User::$nazione)
-					$prezzoCombinazione = $this->m["CombinazioniModel"]->getPrezzoListino($res[0]["combinazioni"]["id_c"], User::$nazione, $prezzoCombinazione);
+					$prezzoCombinazione = $this->m("CombinazioniModel")->getPrezzoListino($res[0]["combinazioni"]["id_c"], User::$nazione, $prezzoCombinazione);
 				
 				if (inPromozioneTot($clean["id_page"]))
 					$prezzoPieno = setPriceReverse(calcolaPrezzoIvato($clean["id_page"], $prezzoCombinazione));
@@ -1643,7 +1643,7 @@ class BaseContenutiController extends BaseController
 				
 				if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto") && (v("usa_codice_combinazione_in_url_prodotto") || v("usa_alias_combinazione_in_url_prodotto")))
 				{
-					echo '<span class="url_redirect_combinazione">'.$this->m["PagesModel"]->getUrlAlias($res[0]["combinazioni"]["id_page"], null, $res[0]["combinazioni"]["id_c"]).'</span>';
+					echo '<span class="url_redirect_combinazione">'.$this->m("PagesModel")->getUrlAlias($res[0]["combinazioni"]["id_page"], null, $res[0]["combinazioni"]["id_c"]).'</span>';
 					
 					echo '<span class="url_redirect_fragment">'.v("fragmento_dettaglio_prodotto").'</span>';
 				}
@@ -1655,7 +1655,7 @@ class BaseContenutiController extends BaseController
 		}
 		else
 		{
-			$res = $this->m["CombinazioniModel"]->send(false);
+			$res = $this->m("CombinazioniModel")->send(false);
 			
 			$jsonArray = array();
 			
@@ -1692,14 +1692,14 @@ class BaseContenutiController extends BaseController
 		if (strcmp($this->viewArgs["s"],"") !== 0 && ($this->viewArgs["sec"] == "tutti" || CategoriesModel::checkSection($this->viewArgs["sec"])))
 		{
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
-				$clean["idSection"] = $this->m["CategoriesModel"]->getShopCategoryId();
+				$clean["idSection"] = $this->m("CategoriesModel")->getShopCategoryId();
 			else if ($this->viewArgs["sec"] != "tutti")
-				$clean["idSection"] = $this->m['CategoriesModel']->clear()->where(array(
+				$clean["idSection"] = $this->m('CategoriesModel')->clear()->where(array(
 					"section"	=>	$this->viewArgs["sec"],
 				))->field("id_c");
 			
 			if ($this->viewArgs["sec"] != "tutti")
-				$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idSection"], true);
+				$childrenProdotti = $this->m("CategoriesModel")->children($clean["idSection"], true);
 			
 // 			$orWhere = array(
 // 				"lk" => array('pages.codice' => $this->viewArgs["s"]),
@@ -1716,24 +1716,24 @@ class BaseContenutiController extends BaseController
 			
 			$where = $this->getSearchWhere("s");
 			
-			$this->m['PagesModel']->clear()->where($where)->addWhereAttivo();
+			$this->m('PagesModel')->clear()->where($where)->addWhereAttivo();
 			
 			if ($this->viewArgs["sec"] != "tutti")
-				$this->m["PagesModel"]->aWhere(array(
+				$this->m("PagesModel")->aWhere(array(
 					"in" => array("-id_c" => $childrenProdotti),
 				));
 			
-// 			$data["pages"] = $this->m['PagesModel']->clear()->where($where);
+// 			$data["pages"] = $this->m('PagesModel')->clear()->where($where);
 			
 			if (Parametri::$hideNotAllowedNodesInLists)
 			{
-				$accWhere = $this->m["PagesModel"]->getAccessibilityWhere();
-				$this->m["PagesModel"]->aWhere($accWhere);
+				$accWhere = $this->m("PagesModel")->getAccessibilityWhere();
+				$this->m("PagesModel")->aWhere($accWhere);
 			}
 			
 			$this->addOrderByClause($this->viewArgs["sec"], 'risultati-ricerca');
 			
-			$rowNumber = $data["rowNumber"] = $this->m['PagesModel']->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->rowNumber();
+			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->rowNumber();
 			
 			$this->setElementsPerPage($this->viewArgs["sec"]);
 			$data["elementsPerPage"] = $this->elementsPerPage;
@@ -1742,13 +1742,13 @@ class BaseContenutiController extends BaseController
 			{
 				$page = $this->viewArgs['p'];
 				
-				$this->m['PagesModel']->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
+				$this->m('PagesModel')->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
 				
 				$data['pageList'] = $this->h['Pages']->render($page-5,11);
 			}
 			
-			$data["pages"] = $this->m['PagesModel']->send();
-// 			echo $this->m['PagesModel']->getQuery();die();
+			$data["pages"] = $this->m('PagesModel')->send();
+// 			echo $this->m('PagesModel')->getQuery();die();
 		}
 		
 		$this->append($data);
@@ -1813,11 +1813,11 @@ class BaseContenutiController extends BaseController
 		if (!$section)
 			$section = Parametri::$nomeSezioneProdotti;
 		
-		$idShopCat = (int)$this->m['CategoriesModel']->clear()->where(array(
+		$idShopCat = (int)$this->m('CategoriesModel')->clear()->where(array(
 			"section"	=>	$section,
 		))->field("id_c");
 		
-		$res = $this->m["CategoriesModel"]->recursiveTree($idShopCat,2);
+		$res = $this->m("CategoriesModel")->recursiveTree($idShopCat,2);
 // 		$res = json_encode($res);
 		
 		Output::$json = true;
@@ -1846,14 +1846,14 @@ class BaseContenutiController extends BaseController
 	{
 		$this->clean();
 		
-		$this->m["DocumentiModel"]->clear()->select("distinct documenti.id_doc,documenti.*")->where(array(
+		$this->m("DocumentiModel")->clear()->select("distinct documenti.id_doc,documenti.*")->where(array(
 			"id_doc"	=>	(int)$id,
 		));
 		
 		if (v("attiva_gruppi_documenti"))
-			$this->m["DocumentiModel"]->addAccessoGruppiWhereClase();
+			$this->m("DocumentiModel")->addAccessoGruppiWhereClase();
 		
-		$documento = $this->m["DocumentiModel"]->record();
+		$documento = $this->m("DocumentiModel")->record();
 		
 		if (!empty($documento))
 		{
@@ -1966,7 +1966,7 @@ class BaseContenutiController extends BaseController
 		
 		$limit = time() - (int)v("tempo_conferma_uid_contatto");
 		
-		$contatto = $this->m["ContattiModel"]->clear()->where(array(
+		$contatto = $this->m("ContattiModel")->clear()->where(array(
 			"uid_contatto"	=> $clean["token"],
 			"gt"	=>	array(
 				"time_conferma"	=>	(int)$limit,
@@ -1975,7 +1975,7 @@ class BaseContenutiController extends BaseController
 		
 		if (!empty($contatto))
 		{
-			$this->m["ContattiModel"]->settaCookie($clean["token"]);
+			$this->m("ContattiModel")->settaCookie($clean["token"]);
 			
 			$this->redirectDopoConfermaContatto($clean["token"]);
 		}
@@ -2007,7 +2007,7 @@ class BaseContenutiController extends BaseController
 		
 		$clean["codice"] = sanitizeAll($codice);
 		
-		$lista = $data["lista"] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array(
+		$lista = $data["lista"] = $this->m("ListeregaloModel")->clear()->select("*")->inner(array("tipo"))->where(array(
 			"codice"	=>	$clean["codice"],
 			"attivo"	=>	"Y",
 			"gte"	=>	array(
@@ -2021,7 +2021,7 @@ class BaseContenutiController extends BaseController
 			
 			$data["meta_description"] = $lista["liste_regalo"]["titolo"];
 			
-			$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($lista["liste_regalo"]["id_lista_regalo"]);
+			$data["prodotti_lista"] = $this->m("ListeregaloModel")->getProdotti($lista["liste_regalo"]["id_lista_regalo"]);
 			
 			if (!empty($lista["liste_regalo"]) && in_array($lista["liste_regalo"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("sesso","")))
 				$data["sessoLista"] = $lista["liste_regalo"]["sesso"];

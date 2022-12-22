@@ -88,48 +88,48 @@ class BaseBaseController extends Controller
 			"tipo_cliente"	=>	v("tipo_cliente_default"),
 		);
 		
-		$this->model("CategoriesModel");
-		$this->model("MenuModel");
-		$this->model("PagesModel");
-		$this->model("ImmaginiModel");
-		$this->model("CartModel");
-		$this->model("WishlistModel");
-		$this->model("RigheModel");
-		$this->model("OrdiniModel");
-		$this->model("RegusersModel");
-		$this->model("PromozioniModel");
+// 		$this->model("CategoriesModel");
+// 		$this->model("MenuModel");
+// 		$this->model("PagesModel");
+// 		$this->model("ImmaginiModel");
+// 		$this->model("CartModel");
+// 		$this->model("WishlistModel");
+// 		$this->model("RigheModel");
+// 		$this->model("OrdiniModel");
+// 		$this->model("RegusersModel");
+// 		$this->model("PromozioniModel");
+// 		
+// 		$this->model("AttributiModel");
+// 		$this->model("AttributivaloriModel");
+// 		$this->model("CombinazioniModel");
+// 		$this->model("PagesattributiModel");
+// 		$this->model("PagescarvalModel");
+// 		
+// 		$this->model("SpedizioniModel");
+// 		$this->model("ScaglioniModel");
+// 		$this->model("ImpostazioniModel");
+// 		$this->model("LayerModel");
+// 		$this->model("CorrieriModel");
+// 		$this->model("CorrierispeseModel");
+// 		$this->model("NazioniModel");
+// 		$this->model("ClassiscontoModel");
+// 		$this->model("ProvinceModel");
+// 		$this->model("MarchiModel");
+// 		$this->model("ContenutiModel");
+// 		$this->model("DocumentiModel");
+// 		$this->model("RuoliModel");
+// 		$this->model("PersonalizzazioniModel");
+// 		$this->model("TagModel");
+// 		$this->model("TipiaziendaModel");
+// 		$this->model("PagesregioniModel");
+// 		$this->model("CaptchaModel");
+// 		$this->model('ContattiModel');
 		
-		$this->model("AttributiModel");
-		$this->model("AttributivaloriModel");
-		$this->model("CombinazioniModel");
-		$this->model("PagesattributiModel");
-		$this->model("PagescarvalModel");
-		
-		$this->model("SpedizioniModel");
-		$this->model("ScaglioniModel");
-		$this->model("ImpostazioniModel");
-		$this->model("LayerModel");
-		$this->model("CorrieriModel");
-		$this->model("CorrierispeseModel");
-		$this->model("NazioniModel");
-		$this->model("ClassiscontoModel");
-		$this->model("ProvinceModel");
-		$this->model("MarchiModel");
-		$this->model("ContenutiModel");
-		$this->model("DocumentiModel");
-		$this->model("RuoliModel");
-		$this->model("PersonalizzazioniModel");
-		$this->model("TagModel");
-		$this->model("TipiaziendaModel");
-		$this->model("PagesregioniModel");
-		$this->model("CaptchaModel");
-		$this->model('ContattiModel');
-		
-		if (v("attiva_liste_regalo"))
-			$this->model('ListeregaloModel');
-		
-		if (v("abilita_feedback"))
-			$this->model("FeedbackModel");
+// 		if (v("attiva_liste_regalo"))
+// 			$this->model('ListeregaloModel');
+// 		
+// 		if (v("abilita_feedback"))
+// 			$this->model("FeedbackModel");
 		
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
@@ -158,7 +158,7 @@ class BaseBaseController extends Controller
 		
 		$this->model("CaratteristichevaloriModel");
 		
-// 		$this->m["ImpostazioniModel"]->getImpostazioni();
+// 		$this->m("ImpostazioniModel")->getImpostazioni();
 		
 		ImpostazioniModel::init();
 		
@@ -181,7 +181,7 @@ class BaseBaseController extends Controller
 		{
 			$data['username'] = $this->s['registered']->status['user'];
 
-			$res = $this->m['RegusersModel']->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
+			$res = $this->m('RegusersModel')->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
 			$data['dettagliUtente'] = $this->dettagliUtente = User::$dettagli = $res[0]['regusers'];
 			
 			if (User::$dettagli["has_confirmed"])
@@ -221,16 +221,16 @@ class BaseBaseController extends Controller
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$data["carrello"] = $this->m["CartModel"]->getProdotti();
+		$data["carrello"] = $this->m("CartModel")->getProdotti();
 		
 		// Recuperta dati da cliente loggato
-		$this->m["CartModel"]->collegaDatiCliente($data["carrello"]);
+		$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
 		
 		// Correggi decimali imponibili sulla base dell'IVA estera
-		$this->m["CartModel"]->correggiPrezzi();
+		$this->m("CartModel")->correggiPrezzi();
 		
-		$data["prodInCart"] = $this->m["CartModel"]->numberOfItems();
-		$data["prodInWishlist"] = $this->m["WishlistModel"]->numberOfItems();
+		$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
+		$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();
 		
 		Domain::$name = $this->baseUrl;
 		
@@ -239,9 +239,9 @@ class BaseBaseController extends Controller
 			$this->redirect("");
 		}
 		
-		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m["CategoriesModel"]->getShopCategoryId();
+		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m("CategoriesModel")->getShopCategoryId();
 		
-		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::impostaDatiCombinazionePagine(getRandom($this->m["PagesModel"]->clear()->select("*")
+		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::impostaDatiCombinazionePagine(getRandom($this->m("PagesModel")->clear()->select("*")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"in_evidenza"=>"Y",
@@ -251,7 +251,7 @@ class BaseBaseController extends Controller
 			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza")));
 		
 		if (v("mostra_avvisi"))
-			$data["avvisi"] = $this->m["PagesModel"]->where(array(
+			$data["avvisi"] = $this->m("PagesModel")->where(array(
 				"categories.section"	=>	"avvisi",
 				"attivo"=>"Y",
 			))->send();
@@ -259,7 +259,7 @@ class BaseBaseController extends Controller
 		// Modali
 		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
 		{
-			$data["modali_frontend"] = $this->m["PagesModel"]->where(array(
+			$data["modali_frontend"] = $this->m("PagesModel")->where(array(
 				"categories.section"	=>	"modali",
 				"attivo"=>"Y",
 			))->orderBy("pages.id_order desc")->limit(1)->send();
@@ -287,7 +287,7 @@ class BaseBaseController extends Controller
 		$data['customHeaderClass'] = "";
 		$data['inlineCssFile'] = "";
 		
-		$data["categoriaShop"] = $this->m["CategoriesModel"]->selectId($clean["idShop"]);
+		$data["categoriaShop"] = $this->m("CategoriesModel")->selectId($clean["idShop"]);
 		
 		$data["idBlog"] = 0;
 		
@@ -295,7 +295,7 @@ class BaseBaseController extends Controller
 		{
 			$idBlog = $this->sectionsId["blog"] = $data["idBlog"] = (int)CategoriesModel::getIdCategoriaDaSezione("blog");
 
-			$data["ultimiArticoli"] = $this->getNewsInEvidenza = $this->m['PagesModel']->clear()->select("*")
+			$data["ultimiArticoli"] = $this->getNewsInEvidenza = $this->m('PagesModel')->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo" => "Y",
@@ -306,11 +306,11 @@ class BaseBaseController extends Controller
 		
 		if (v("team_attivo"))
 		{
-			$idTeam = (int)$this->m["CategoriesModel"]->clear()->where(array(
+			$idTeam = (int)$this->m("CategoriesModel")->clear()->where(array(
 				"section"	=>	"team",
 			))->field("id_c");
 			
-			$data["team"] = $this->team = $this->m['PagesModel']->clear()->select("*")
+			$data["team"] = $this->team = $this->m('PagesModel')->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
@@ -322,7 +322,7 @@ class BaseBaseController extends Controller
 		{
 			$idTest = (int)CategoriesModel::getIdCategoriaDaSezione("testimonial");
 			
-			$data["testimonial"] = $this->testimonial = $this->m['PagesModel']->clear()->select("*")
+			$data["testimonial"] = $this->testimonial = $this->m('PagesModel')->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
@@ -334,7 +334,7 @@ class BaseBaseController extends Controller
 		{
 			$idFaq = $this->sectionsId["faq"] = $data["idFaq"] = (int)CategoriesModel::getIdCategoriaDaSezione("faq");
 			
-			$data["faq"] = $this->faq = $this->m['PagesModel']->clear()->select("*")
+			$data["faq"] = $this->faq = $this->m('PagesModel')->clear()->select("*")
 				->addJoinTraduzionePagina()
 				->where(array(
 					"attivo"	=>	"Y",
@@ -343,7 +343,7 @@ class BaseBaseController extends Controller
 				))->orderBy("pages.id_order")->send();
 		}
 		
-		$data["categorieBlog"] = $this->m["CategoriesModel"]->children(87, false, false);
+		$data["categorieBlog"] = $this->m("CategoriesModel")->children(87, false, false);
 		
 		if (v("estrai_in_promozione_home"))
 		{
@@ -357,7 +357,7 @@ class BaseBaseController extends Controller
 // 				"attivo" => "Y",
 			);
 			
-			$prodottiInPromo = $this->m["PagesModel"]->clear()->addWhereAttivo()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
+			$prodottiInPromo = $this->m("PagesModel")->clear()->addWhereAttivo()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
 			
 			$data["inPromozione"] = $this->prodottiInPromozione = PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
 			
@@ -368,7 +368,7 @@ class BaseBaseController extends Controller
 			$this->estraiDatiFiltri();
 		
 		if (v("attiva_in_evidenza_nazioni"))
-			NazioniModel::$elencoNazioniInEvidenza = $this->m["NazioniModel"]->clear()->where(array(
+			NazioniModel::$elencoNazioniInEvidenza = $this->m("NazioniModel")->clear()->where(array(
 				"in_evidenza"	=>	"Y"
 			))->toList("iso_country_code")->send();
 		
@@ -377,18 +377,18 @@ class BaseBaseController extends Controller
 		
 		Lang::$current = Params::$lang;
 		
-		$data["alberoCategorieProdotti"] = $this->m["CategoriesModel"]->recursiveTree($clean["idShop"],2);
+		$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree($clean["idShop"],2);
 		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
-		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m['CategoriesModel']->clear()
+		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m('CategoriesModel')->clear()
 			->addJoinTraduzioneCategoria()
 			->where(array("id_p"=>$clean["idShop"]))
 			->orderBy("lft")
 			->save()
 			->send();
 		
-		$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m["PagesModel"]->clear()->where(array(
+		$data["tipiPagina"] = PagesModel::$tipiPaginaId = $this->m("PagesModel")->clear()->where(array(
 			"ne"		=>	array("tipo_pagina" => ""),
 			"attivo"	=>	"Y",
 			"principale"	=>	"Y",
@@ -396,13 +396,13 @@ class BaseBaseController extends Controller
 		
 		$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
 		
-		$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttive();
-		$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m["NazioniModel"]->selectNazioniAttiveSpedizione();
+		$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttive();
+		$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttiveSpedizione();
 		
-		$data["selectRuoli"] = RuoliModel::$listaElementi = $this->m["RuoliModel"]->selectTipi(true);
+		$data["selectRuoli"] = RuoliModel::$listaElementi = $this->m("RuoliModel")->selectTipi(true);
 		
 		if (v("attiva_tipi_azienda"))
-			$data["selectTipiAziende"] = $this->m["TipiaziendaModel"]->selectTipi(true);
+			$data["selectTipiAziende"] = $this->m("TipiaziendaModel")->selectTipi(true);
 		
 		$data["isPromo"] = self::$isPromo;
 		
@@ -415,16 +415,16 @@ class BaseBaseController extends Controller
 		
 		$data["arrayLingueCompleto"] = LingueModel::getValoriAttivi();
 		
-		$res = $resMobile = $this->m["MenuModel"]->getTreeWithDepth(v("profondita_menu_desktop"), null, Params::$lang);
-		$data["menu"] = $this->m["MenuModel"]->getMenu($res,false, Params::$lang);
+		$res = $resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_desktop"), null, Params::$lang);
+		$data["menu"] = $this->m("MenuModel")->getMenu($res,false, Params::$lang);
 		
 		if (v("profondita_menu_mobile") != v("profondita_menu_desktop"))
-			$resMobile = $this->m["MenuModel"]->getTreeWithDepth(v("profondita_menu_mobile"), null, Params::$lang);
+			$resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_mobile"), null, Params::$lang);
 		
 		if (v("abilita_menu_semplice"))
-			$data["menuSemplice"] = $this->m["MenuModel"]->getMenu($resMobile,false, Params::$lang, true);
+			$data["menuSemplice"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, true);
 		
-		$data["menuMobile"] = $this->m["MenuModel"]->getMenu($resMobile,false, Params::$lang, false, true);
+		$data["menuMobile"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, false, true);
 		
 		$data["langDb"] = $this->langDb = Lang::$langDb = null;
 		
@@ -441,10 +441,10 @@ class BaseBaseController extends Controller
 		{
 			if (getSubTotalN() > 9999999)
 			{
-				$this->m["CartModel"]->emptyCart();
+				$this->m("CartModel")->emptyCart();
 			}
 			
-			$this->m["PagesModel"]->aggiornaStatoProdottiInPromozione();
+			$this->m("PagesModel")->aggiornaStatoProdottiInPromozione();
 			
 			if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
 			{
@@ -457,7 +457,7 @@ class BaseBaseController extends Controller
 	protected function initCookieEcommerce()
 	{
 		// Recupero il cookie di contatto
-		$this->m["ContattiModel"]->getCookie();
+		$this->m("ContattiModel")->getCookie();
 		
 		if (!v("ecommerce_attivo"))
 			return;
@@ -470,7 +470,7 @@ class BaseBaseController extends Controller
 			else
 				User::$cart_uid = sanitizeAll($_COOKIE["cart_uid"]);
 			
-			if ($this->m['OrdiniModel']->cartUidAlreadyPresent(User::$cart_uid))
+			if ($this->m('OrdiniModel')->cartUidAlreadyPresent(User::$cart_uid))
 			{
 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
 				$time = time() + v("durata_carrello_wishlist_coupon");
@@ -517,10 +517,10 @@ class BaseBaseController extends Controller
 		
 		if (User::$coupon)
 		{
-			if ($this->m["PromozioniModel"]->isActiveCoupon(User::$coupon))
+			if ($this->m("PromozioniModel")->isActiveCoupon(User::$coupon))
 			{
 				// Estraggo tutti i prodotti della promozione
-				User::$prodottiInCoupon = $this->m["PromozioniModel"]->elencoProdottiPromozione(User::$coupon);
+				User::$prodottiInCoupon = $this->m("PromozioniModel")->elencoProdottiPromozione(User::$coupon);
 			}
 			else
 			{
@@ -584,12 +584,12 @@ class BaseBaseController extends Controller
 	{
 		if (v("usa_tag"))
 		{
-			$data["elencoTagFull"] = $this->elencoTagFull = $data["elencoTagFullFiltri"] = $this->m["TagModel"]->clear()->addJoinTraduzione()->where(array(
+			$data["elencoTagFull"] = $this->elencoTagFull = $data["elencoTagFullFiltri"] = $this->m("TagModel")->clear()->addJoinTraduzione()->where(array(
 				"attivo"	=>	"Y",
 			))->orderBy("tag.titolo")->send();
 			
 // 			if (v("attiva_filtri_successivi"))
-				$data["elencoTagFullFiltri"] = $this->m["TagModel"]->select("*,count(tag.id_tag) as numero_prodotti")
+				$data["elencoTagFullFiltri"] = $this->m("TagModel")->select("*,count(tag.id_tag) as numero_prodotti")
 				->inner(array("pagine"))
 				->inner("pages")->on("pages.id_page = pages_tag.id_page")
 				->addWhereAttivo()->groupBy("tag.id_tag")->sWhereFiltriSuccessivi("[tag]")->send();
@@ -597,15 +597,15 @@ class BaseBaseController extends Controller
 		
 		if (v("usa_marchi"))
 		{
-			$data["elencoMarchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+			$data["elencoMarchi"] = $this->m("MarchiModel")->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
 			
-			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
-			$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->where(array(
+			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $data["elencoMarchiFullFiltri"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m("MarchiModel")->clear()->where(array(
 				"nuovo"	=>	"Y",
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
 // 			if (v("attiva_filtri_successivi"))
-				$data["elencoMarchiFullFiltri"] = $this->m["MarchiModel"]->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("[marchio]")->send();
+				$data["elencoMarchiFullFiltri"] = $this->m("MarchiModel")->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("[marchio]")->send();
 		}
 		
 		if (!v("ecommerce_attivo"))
@@ -623,9 +623,9 @@ class BaseBaseController extends Controller
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
-			$data["filtriNazioni"] = $this->m["PagesregioniModel"]->filtriNazioni(v("attiva_filtri_successivi"));
+			$data["filtriNazioni"] = $this->m("PagesregioniModel")->filtriNazioni(v("attiva_filtri_successivi"));
 			
-			$data["filtriRegioni"] = $this->m["PagesregioniModel"]->filtriRegioni(v("attiva_filtri_successivi"));
+			$data["filtriRegioni"] = $this->m("PagesregioniModel")->filtriRegioni(v("attiva_filtri_successivi"));
 		}
 		
 		$this->append($data);
@@ -637,7 +637,7 @@ class BaseBaseController extends Controller
 			session_start();
 		
 		// Setta password
-		$this->m["RegusersModel"]->settaPassword();
+		$this->m("RegusersModel")->settaPassword();
 		
 		$data['notice'] = null;
 		$data['isRegistrazione'] = true;
@@ -662,38 +662,38 @@ class BaseBaseController extends Controller
 		if (v("attiva_tipi_azienda"))
 			$fields .= ",id_tipo_azienda";
 		
-		$this->m['RegusersModel']->setFields($fields,'strip_tags');
-		$datiCliente = $this->m['RegusersModel']->values;
-		$this->m['RegusersModel']->sanitize("sanitizeAll");
+		$this->m('RegusersModel')->setFields($fields,'strip_tags');
+		$datiCliente = $this->m('RegusersModel')->values;
+		$this->m('RegusersModel')->sanitize("sanitizeAll");
 		
-		$this->m['RegusersModel']->setConditions($tipo_cliente, "insert", $pec, $codiceDestinatario);
+		$this->m('RegusersModel')->setConditions($tipo_cliente, "insert", $pec, $codiceDestinatario);
 		
-		$this->m['RegusersModel']->fields = "$baseFields,newsletter,password";
+		$this->m('RegusersModel')->fields = "$baseFields,newsletter,password";
 		
 		if (v("account_attiva_conferma_password"))
-			$this->m['RegusersModel']->fields .= ",confirmation";
+			$this->m('RegusersModel')->fields .= ",confirmation";
 		
 		if (v("account_attiva_conferma_username"))
-			$this->m['RegusersModel']->fields .= ",conferma_username";
+			$this->m('RegusersModel')->fields .= ",conferma_username";
 		
 		if (v("attiva_ruoli"))
-			$this->m['RegusersModel']->fields .= ",id_ruolo";
+			$this->m('RegusersModel')->fields .= ",id_ruolo";
 		
 		if (v("attiva_tipi_azienda"))
-			$this->m['RegusersModel']->fields .= ",id_tipo_azienda";
+			$this->m('RegusersModel')->fields .= ",id_tipo_azienda";
 		
 		if (isset($_POST['updateAction']))
 		{
 			if (CaptchaModel::getModulo()->checkRegistrazione())
 			{
-				if ($this->m['RegusersModel']->checkConditions('insert'))
+				if ($this->m('RegusersModel')->checkConditions('insert'))
 				{
-					$tokenConferma = $this->m['RegusersModel']->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
-					$tokenReinvio = $this->m['RegusersModel']->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
+					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
+					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
 					
-					if ($this->m['RegusersModel']->insert())
+					if ($this->m('RegusersModel')->insert())
 					{
-						$lId = $this->m['RegusersModel']->lastId();
+						$lId = $this->m('RegusersModel')->lastId();
 						
 						$password = $this->request->post("password","","none");
 						$clean["username"] = $this->request->post("username","","sanitizeAll");
@@ -710,7 +710,7 @@ class BaseBaseController extends Controller
 							IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati($datiCliente));
 							
 							// Inserisco il contatto
-							$this->m['ContattiModel']->insertDaArray($datiCliente, "NEWSLETTER_DA_REGISTRAZIONE");
+							$this->m('ContattiModel')->insertDaArray($datiCliente, "NEWSLETTER_DA_REGISTRAZIONE");
 						}
 						
 						$_SESSION['result'] = 'utente_creato';
@@ -750,19 +750,19 @@ class BaseBaseController extends Controller
 					}
 					else
 					{
-						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
 					}
 				}
 				else
 				{
-					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
 				}
 			}
 		}
 		
-		$data['values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml',null,$this->defaultRegistrazione);
+		$data['values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml',null,$this->defaultRegistrazione);
 		
-		$data['province'] = $this->m['ProvinceModel']->selectTendina();
+		$data['province'] = $this->m('ProvinceModel')->selectTendina();
 		
 		if (strcmp($data['values']["tipo_cliente"],"") === 0)
 		{
@@ -782,15 +782,15 @@ class BaseBaseController extends Controller
 		
 		FeedbackModel::gIdProdotto();
 		
-		if ($this->m['PagesModel']->checkTipoPagina($id, "FORM_FEEDBACK"))
+		if ($this->m('PagesModel')->checkTipoPagina($id, "FORM_FEEDBACK"))
 		{
-			if (!isset(FeedbackModel::$idProdotto) || !$this->m['PagesModel']->isProdotto((int)FeedbackModel::$idProdotto))
+			if (!isset(FeedbackModel::$idProdotto) || !$this->m('PagesModel')->isProdotto((int)FeedbackModel::$idProdotto))
 				$this->redirect("");
 			
 			if (!v("permetti_aggiunta_feedback"))
 				$this->redirect("");
 			
-			$par = $this->m["PagesModel"]->parents((int)FeedbackModel::$idProdotto,false,false,Params::$lang);
+			$par = $this->m("PagesModel")->parents((int)FeedbackModel::$idProdotto,false,false,Params::$lang);
 			
 			//tolgo la root
 			array_shift($par);
@@ -811,14 +811,14 @@ class BaseBaseController extends Controller
 			
 			$campiForm = "autore,testo,email,accetto,accetto_feedback,voto";
 			
-			$this->m['FeedbackModel']->strongConditions['insert'] = array(
+			$this->m('FeedbackModel')->strongConditions['insert'] = array(
 				'checkNotEmpty'	=>	$campiForm,
 				'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
 				'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
 			);
 			
 			$campiFormInsert = $campiForm .= ",id_c";
-			$this->m['FeedbackModel']->setFields($campiForm,'strip_tags');
+			$this->m('FeedbackModel')->setFields($campiForm,'strip_tags');
 			
 			$esitoInvio = "KO";
 			
@@ -833,30 +833,30 @@ class BaseBaseController extends Controller
 				
 				if (CaptchaModel::getModulo()->check())
 				{
-					if ($this->m['FeedbackModel']->checkConditions('insert'))
+					if ($this->m('FeedbackModel')->checkConditions('insert'))
 					{
-						$this->m['FeedbackModel']->setUserData();
+						$this->m('FeedbackModel')->setUserData();
 						
-						$valoriEmail = $this->m['FeedbackModel']->values;
+						$valoriEmail = $this->m('FeedbackModel')->values;
 						
-						$this->m['FeedbackModel']->sanitize("sanitizeAll");
+						$this->m('FeedbackModel')->sanitize("sanitizeAll");
 						
-						if (!v("feedback_solo_se_loggato") || $this->m['FeedbackModel']->numeroFeedbackPagina(FeedbackModel::$idProdotto) < v("feedback_max_per_prodotto"))
+						if (!v("feedback_solo_se_loggato") || $this->m('FeedbackModel')->numeroFeedbackPagina(FeedbackModel::$idProdotto) < v("feedback_max_per_prodotto"))
 						{
-							if ($this->m['FeedbackModel']->insert())
+							if ($this->m('FeedbackModel')->insert())
 							{
 								$esitoInvio = "OK";
 								
-								$lId = $this->m['FeedbackModel']->lastId();
+								$lId = $this->m('FeedbackModel')->lastId();
 								
 								$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
 								
 								$fonte = "FORM_FEEDBACK";
 								
 								// Inserisco il contatto
-		// 						$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte);
+		// 						$idContatto = $this->m('ContattiModel')->insertDaArray($valoriEmail, $fonte);
 								
-								$pagina = $this->m["PagesModel"]->selectId((int)FeedbackModel::$idProdotto);
+								$pagina = $this->m("PagesModel")->selectId((int)FeedbackModel::$idProdotto);
 								
 								$oggetto = "inserimento valutazione prodotto";
 								
@@ -918,7 +918,7 @@ class BaseBaseController extends Controller
 							}
 							else
 							{
-								$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+								$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('FeedbackModel')->notice;
 								
 								FeedbackModel::$sNotice = $erroreInvio;
 								Output::setBodyValue("Notice", $erroreInvio);
@@ -926,7 +926,7 @@ class BaseBaseController extends Controller
 						}
 						else
 						{
-							$this->m['FeedbackModel']->result = false;
+							$this->m('FeedbackModel')->result = false;
 							
 							$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Hai già aggiunto una valutazione a questa pagina")."</div>";
 							
@@ -936,7 +936,7 @@ class BaseBaseController extends Controller
 					}
 					else
 					{
-						$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['FeedbackModel']->notice;
+						$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('FeedbackModel')->notice;
 						
 						FeedbackModel::$sNotice = $erroreInvio;
 						Output::setBodyValue("Notice", $erroreInvio);
@@ -961,7 +961,7 @@ class BaseBaseController extends Controller
 			
 			Output::setBodyValue("Esito", $esitoInvio);
 			
-			FeedbackModel::$sValues = $this->m['FeedbackModel']->getFormValues('insert','sanitizeHtml', 0, $defaultValues);
+			FeedbackModel::$sValues = $this->m('FeedbackModel')->getFormValues('insert','sanitizeHtml', 0, $defaultValues);
 			
 			$this->append($data);
 		}
@@ -969,7 +969,7 @@ class BaseBaseController extends Controller
 	
 	protected function inviaMailConfermaContatto($idContatto)
 	{
-		$contatto = $this->m['ContattiModel']->selectId((int)$idContatto);
+		$contatto = $this->m('ContattiModel')->selectId((int)$idContatto);
 		
 		if (!empty($contatto))
 		{
@@ -1004,7 +1004,7 @@ class BaseBaseController extends Controller
 		
 		if (isset($valoriEmail["nazione"]) && $valoriEmail["nazione"])
 		{
-			$clientiNazioni = $this->m["NazioniModel"]->elencoClientiDaCodice($valoriEmail["nazione"]);
+			$clientiNazioni = $this->m("NazioniModel")->elencoClientiDaCodice($valoriEmail["nazione"]);
 			
 			if (count($clientiNazioni) > 0)
 				$emails = array_merge($emails, $clientiNazioni);
@@ -1020,8 +1020,8 @@ class BaseBaseController extends Controller
 	
 	protected function inviaMailContatto($id, $idContatto, $valoriEmail, $fonte)
 	{
-		$pagina = $this->m["PagesModel"]->selectId((int)$id);
-		$contatto = $this->m['ContattiModel']->selectId((int)$idContatto);
+		$pagina = $this->m("PagesModel")->selectId((int)$id);
+		$contatto = $this->m('ContattiModel')->selectId((int)$idContatto);
 		
 		if ($fonte == "NEWSLETTER")
 			$oggetto = v("oggetto_form_newsletter");
@@ -1091,7 +1091,7 @@ class BaseBaseController extends Controller
 			"N"	=>	v("campo_form_newsletter"),
 		);
 		
-		$this->m['ContattiModel']->strongConditions['insert'] = array(
+		$this->m('ContattiModel')->strongConditions['insert'] = array(
 			'checkNotEmpty'	=>	$campiObbligatori ? $campiObbligatori : $campiForm,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
 		);
@@ -1099,7 +1099,7 @@ class BaseBaseController extends Controller
 		// aggiungi o sovrascrivi le condizioni
 		$this->setCondizioniContatti();
 		
-		$this->m['ContattiModel']->setFields($campiForm,'strip_tags');
+		$this->m('ContattiModel')->setFields($campiForm,'strip_tags');
 		
 		Form::sNotice($tipo, null);
 		
@@ -1116,9 +1116,9 @@ class BaseBaseController extends Controller
 			
 			if (CaptchaModel::getModulo()->check())
 			{
-				if ($this->m['ContattiModel']->checkConditions('insert'))
+				if ($this->m('ContattiModel')->checkConditions('insert'))
 				{
-					$valoriEmail = $this->m['ContattiModel']->values;
+					$valoriEmail = $this->m('ContattiModel')->values;
 					
 					$_SESSION["email_carrello"] = sanitizeAll($valoriEmail["email"]);
 					
@@ -1129,7 +1129,7 @@ class BaseBaseController extends Controller
 						$fonte = $this->fonteContatto;
 					
 					// Inserisco il contatto
-					$idContatto = $this->m['ContattiModel']->insertDaArray($valoriEmail, $fonte, $id);
+					$idContatto = $this->m('ContattiModel')->insertDaArray($valoriEmail, $fonte, $id);
 					
 					if ($idContatto)
 					{
@@ -1192,7 +1192,7 @@ class BaseBaseController extends Controller
 					}
 					else
 					{
-						$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m['ContattiModel']->notice;
+						$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m('ContattiModel')->notice;
 						
 						Form::sNotice($tipo, $erroriValidazione);
 						Output::setBodyValue("Notice", $erroriValidazione);
@@ -1200,7 +1200,7 @@ class BaseBaseController extends Controller
 				}
 				else
 				{
-					$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m['ContattiModel']->notice;
+					$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m('ContattiModel')->notice;
 					
 					Form::sNotice($tipo, $erroriValidazione);
 					Output::setBodyValue("Notice", $erroriValidazione);
@@ -1217,9 +1217,9 @@ class BaseBaseController extends Controller
 		
 		Output::setBodyValue("Esito", $esitoInvio);
 		
-// 		Form::$values = $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml');
+// 		Form::$values = $this->m('ContattiModel')->getFormValues('insert','sanitizeHtml');
 		
-		Form::sValues($tipo, $this->m['ContattiModel']->getFormValues('insert','sanitizeHtml',null,Form::$defaultValues));
+		Form::sValues($tipo, $this->m('ContattiModel')->getFormValues('insert','sanitizeHtml',null,Form::$defaultValues));
 	}
 	
 	protected function getCurrentUrl($completeUrl = true)
@@ -1283,7 +1283,7 @@ class BaseBaseController extends Controller
 	protected function checkAggiuntaAlCarrello($id_page, $defaultErrorJson)
 	{
 		// Se non è un prodotto
-		if (!$id_page || !$this->m["PagesModel"]->isProdotto((int)$id_page))
+		if (!$id_page || !$this->m("PagesModel")->isProdotto((int)$id_page))
 		{
 			$defaultErrorJson["errore"] = gtext("Il seguente prodotto non può essere aggiunto al carrello.");
 			

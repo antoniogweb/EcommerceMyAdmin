@@ -61,7 +61,7 @@ trait BaseFasceController
 		
 		$pages = $ultimiArticoli = $this->getNewsInEvidenza;
 		
-		$idBlog = $data["idBlog"] = (int)$this->m["CategoriesModel"]->clear()->where(array(
+		$idBlog = $data["idBlog"] = (int)$this->m("CategoriesModel")->clear()->where(array(
 			"section"	=>	"blog",
 		))->field("id_c");
 	
@@ -138,7 +138,7 @@ trait BaseFasceController
 	{
 		if (!isset($this->slide))
 		{
-			$this->slide = $this->m["PagesModel"]->clear()->addJoinTraduzionePagina()
+			$this->slide = $this->m("PagesModel")->clear()->addJoinTraduzionePagina()
 			->where(array(
 				"categories.section"	=>	"slide",
 				"attivo"=>"Y",
@@ -205,11 +205,11 @@ trait BaseFasceController
 	
 	public function getGalleryFascia()
 	{
-		$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
+		$idTest = (int)$this->m("CategoriesModel")->clear()->where(array(
 			"section"	=>	"gallery",
 		))->field("id_c");
 		
-		$pages = $this->m['PagesModel']->clear()->select("*")
+		$pages = $this->m('PagesModel')->clear()->select("*")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"attivo"	=>	"Y",
@@ -225,11 +225,11 @@ trait BaseFasceController
 	
 	public function getEventiFascia()
 	{
-// 		$idTest = (int)$this->m["CategoriesModel"]->clear()->where(array(
+// 		$idTest = (int)$this->m("CategoriesModel")->clear()->where(array(
 // 			"section"	=>	"eventi",
 // 		))->field("id_c");
 // 		
-// 		$pages = $this->m['PagesModel']->clear()->select("*")
+// 		$pages = $this->m('PagesModel')->clear()->select("*")
 // 			->addJoinTraduzionePagina()
 // 			->where(array(
 // 				"attivo"	=>	"Y",
@@ -247,7 +247,7 @@ trait BaseFasceController
 	
 	public function getFasciaMarchi()
 	{
-		$pages = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		$pages = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_marchi.php");
@@ -258,7 +258,7 @@ trait BaseFasceController
 	
 	public function getFasciaTag()
 	{
-		$pages = $this->m["TagModel"]->clear()->addJoinTraduzione()->orderBy("tag.id_order")->send();
+		$pages = $this->m("TagModel")->clear()->addJoinTraduzione()->orderBy("tag.id_order")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_tag.php");
@@ -269,7 +269,7 @@ trait BaseFasceController
 	
 	public function getFasciaCaroselloMarchi()
 	{
-		$marchi = $elencoMarchiFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		$marchi = $elencoMarchiFull = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_carosello_marchi.php");
@@ -280,7 +280,7 @@ trait BaseFasceController
 	
 	public function getFasciaMarchiNuovi()
 	{
-		$pages = $elencoMarchiNuoviFull = $this->m["MarchiModel"]->clear()->addJoinTraduzione()->where(array(
+		$pages = $elencoMarchiNuoviFull = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
 			"nuovo"	=>	"Y",
 		))->orderBy("marchi.id_order")->send();
 		

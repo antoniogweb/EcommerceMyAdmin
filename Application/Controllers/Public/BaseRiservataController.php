@@ -43,7 +43,7 @@ class BaseRiservataController extends BaseController
 
 	public function index()
 	{
-// 		var_dump($this->m["RegusersModel"]->accountEliminabileANuovoOrdine(User::$id));
+// 		var_dump($this->m("RegusersModel")->accountEliminabileANuovoOrdine(User::$id));
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
@@ -67,7 +67,7 @@ class BaseRiservataController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - '.gtext("Lista ordini effettuati");
 
-		$data['ordini'] = $this->m["OrdiniModel"]->clear()->where(array("id_user"=>$this->iduser))->orderBy("id_o desc")->send();
+		$data['ordini'] = $this->m("OrdiniModel")->clear()->where(array("id_user"=>$this->iduser))->orderBy("id_o desc")->send();
 		
 		$this->append($data);
 		
@@ -87,11 +87,11 @@ class BaseRiservataController extends BaseController
 		
 		if ($clean["id_spedizione"] > 0)
 		{
-			$this->m["SpedizioniModel"]->del(null, "id_spedizione = ".$clean["id_spedizione"]." AND id_user = ".User::$id);
-// 			echo $this->m["SpedizioniModel"]->notice;
+			$this->m("SpedizioniModel")->del(null, "id_spedizione = ".$clean["id_spedizione"]." AND id_user = ".User::$id);
+// 			echo $this->m("SpedizioniModel")->notice;
 		}
 		
-		$data['indirizzi'] = $this->m["SpedizioniModel"]->clear()->where(array("id_user"=>$this->iduser))->orderBy("indirizzo_spedizione desc")->send();
+		$data['indirizzi'] = $this->m("SpedizioniModel")->clear()->where(array("id_user"=>$this->iduser))->orderBy("indirizzo_spedizione desc")->send();
 		
 		if (Output::$html)
 		{
@@ -145,13 +145,13 @@ class BaseRiservataController extends BaseController
 		{
 			$clean["password"] = $this->request->post("password","","sanitizeDb");
 			
-			$user = $this->m["RegusersModel"]->where(array(
+			$user = $this->m("RegusersModel")->where(array(
 				"id_user"	=>	User::$id,
 			))->record();
 			
 			if (!empty($user) && passwordverify($clean["password"], $user["password"]))
 			{
-				$tokenEliminazione = $this->m["RegusersModel"]->deleteAccount($user["id_user"]);
+				$tokenEliminazione = $this->m("RegusersModel")->deleteAccount($user["id_user"]);
 				$this->s['registered']->logout();
 				
 				$this->redirect(RegusersModel::getUrlAccountEliminato($tokenEliminazione));

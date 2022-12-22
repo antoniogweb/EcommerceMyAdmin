@@ -63,7 +63,7 @@ class BaseRegusersController extends BaseController
 		Output::setHeaderValue("Status","logged");
 		Output::setHeaderValue("UserId",$this->s['registered']->getUid());
 		
-		$res = $this->m['RegusersModel']->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
+		$res = $this->m('RegusersModel')->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
 		User::$dettagli = $res[0]['regusers'];
 		
 		$nomeCliente = (strcmp(User::$dettagli["tipo_cliente"],"privato") === 0 || strcmp(User::$dettagli["tipo_cliente"],"libero_professionista") === 0) ?  User::$dettagli["nome"] : User::$dettagli["ragione_sociale"];
@@ -95,7 +95,7 @@ class BaseRegusersController extends BaseController
 // 		if ($this->s['registered']->status['status']=='logged') { //check if already logged
 // 			if (Output::$html)
 // 			{
-// 				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+// 				$this->m('RegusersModel')->redirectVersoAreaRiservata();
 // 				die();
 // 			}
 // 		}
@@ -153,7 +153,7 @@ class BaseRegusersController extends BaseController
 		if ($urlRedirect)
 			header('Location: '.$urlRedirect);
 		else
-			$this->m['RegusersModel']->redirectVersoAreaRiservata();
+			$this->m('RegusersModel')->redirectVersoAreaRiservata();
 	}
 	
 	protected function checkNonLoggato()
@@ -163,7 +163,7 @@ class BaseRegusersController extends BaseController
 		if ($this->s['registered']->status['status']=='logged') { //check if already logged
 			if (Output::$html)
 			{
-				$this->m['RegusersModel']->redirectVersoAreaRiservata();
+				$this->m('RegusersModel')->redirectVersoAreaRiservata();
 				die();
 			}
 		}
@@ -182,7 +182,7 @@ class BaseRegusersController extends BaseController
 		if (!VariabiliModel::checkToken("token_eliminazione_account_da_app"))
 			die();
 		
-		IntegrazioniloginModel::getApp($clean["codice"])->deleteAccountCallback($this->m['RegusersModel'], RegusersModel::getUrlAccountEliminato());
+		IntegrazioniloginModel::getApp($clean["codice"])->deleteAccountCallback($this->m('RegusersModel'), RegusersModel::getUrlAccountEliminato());
 	}
 	
 	public function loginapp($codice = "")
@@ -229,7 +229,7 @@ class BaseRegusersController extends BaseController
 		{
 			$clean["username"] = sanitizeAll($infoUtente["dati_utente"]["external_email"]);
 			
-			$utente = $this->m['RegusersModel']->clear()->where(array(
+			$utente = $this->m('RegusersModel')->clear()->where(array(
 				"username"	=>	$clean["username"],
 			))->record();
 			
@@ -254,7 +254,7 @@ class BaseRegusersController extends BaseController
 					$cognome = "";
 				}
 				
-				$this->m['RegusersModel']->sValues(array(
+				$this->m('RegusersModel')->sValues(array(
 					"username"	=>	$infoUtente["dati_utente"]["external_email"],
 					Users_CheckAdmin::$statusFieldName	=>	(int)Users_CheckAdmin::$statusFieldActiveValue,
 					"nome"		=>	$nome,
@@ -263,13 +263,13 @@ class BaseRegusersController extends BaseController
 					"codice_app"	=>	$codice,
 				));
 				
-				$this->m['RegusersModel']->setValue("password", randomToken(), PASSWORD_HASH);
-				$this->m['RegusersModel']->setValue("completo", 0);
+				$this->m('RegusersModel')->setValue("password", randomToken(), PASSWORD_HASH);
+				$this->m('RegusersModel')->setValue("completo", 0);
 				
-				if ($this->m['RegusersModel']->insert())
+				if ($this->m('RegusersModel')->insert())
 				{
-					$idCliente = (int)$this->m['RegusersModel']->lId;
-					$datiCliente = $this->m['RegusersModel']->selectId($idCliente);
+					$idCliente = (int)$this->m('RegusersModel')->lId;
+					$datiCliente = $this->m('RegusersModel')->selectId($idCliente);
 					
 					ob_start();
 					include tpf("Elementi/Mail/mail_al_negozio_registr_nuovo_cliente_tramite_app.php");
@@ -291,14 +291,14 @@ class BaseRegusersController extends BaseController
 				$idCliente = (int)$utente["id_user"];
 			
 			// Aggiungo la voce del login nella tabella delle integrazioni
-			$this->m["RegusersintegrazioniloginModel"]->sValues(array(
+			$this->m("RegusersintegrazioniloginModel")->sValues(array(
 				"id_user"	=>	$idCliente,
 				"id_integrazione_login"	=>	$recordLoginApp["id_integrazione_login"],
 				"codice"	=>	$codice,
 				"user_id_app"	=>	$infoUtente["dati_utente"]["external_id"],
 			));
 			
-			$this->m["RegusersintegrazioniloginModel"]->insert();
+			$this->m("RegusersintegrazioniloginModel")->insert();
 			
 			// Forza il login
 			$choice = $this->s['registered']->login($clean["username"],null,true);
@@ -374,7 +374,7 @@ class BaseRegusersController extends BaseController
 		else
 		{
 			$data['notice'] = null;
-			$this->m["RegusersModel"]->errors = array();
+			$this->m("RegusersModel")->errors = array();
 			
 			if (isset($_POST['invia']))
 			{
@@ -396,7 +396,7 @@ class BaseRegusersController extends BaseController
 // 								$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
 								$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
 								
-								$this->m['RegusersModel']->setValues(array(
+								$this->m('RegusersModel')->setValues(array(
 									"token_reinvio"			=>	$tokenReinvio,
 									"time_token_reinvio"	=>	time(),
 									"token_reinvio_usato_volte"	=>	0,
@@ -404,7 +404,7 @@ class BaseRegusersController extends BaseController
 								
 								$_SESSION['result'] = 'error';
 								
-								if ($this->m['RegusersModel']->pUpdate($id_user))
+								if ($this->m('RegusersModel')->pUpdate($id_user))
 								{
 									$_SESSION['result'] = 'utente_creato';
 									$_SESSION['token_reinvio'] = $tokenReinvio;
@@ -417,14 +417,14 @@ class BaseRegusersController extends BaseController
 							{
 								$error = gtext("Siamo spiacenti, non esiste alcun utente da confermare corrispondente all'email da lei inserita");
 								$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
-								$res = $this->m["RegusersModel"]->addError("username", $error);
+								$res = $this->m("RegusersModel")->addError("username", $error);
 							}
 						}
 						else
 						{
 							$error = gtext("Si prega di ricontrollare l'indirizzo e-mail");
 							$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
-							$res = $this->m["RegusersModel"]->addError("username", $error);
+							$res = $this->m("RegusersModel")->addError("username", $error);
 						}
 					}
 				}
@@ -451,7 +451,7 @@ class BaseRegusersController extends BaseController
 		else
 		{
 			$data['notice'] = null;
-			$this->m["RegusersModel"]->errors = array();
+			$this->m("RegusersModel")->errors = array();
 			
 			if (isset($_POST['invia']))
 			{
@@ -463,16 +463,16 @@ class BaseRegusersController extends BaseController
 						{
 							$clean['username'] = sanitizeAll($_POST['username']);
 							
-							$res = $this->m["RegusersModel"]->db->select('regusers','*','username="'.$clean['username'].'" and has_confirmed = 0');
+							$res = $this->m("RegusersModel")->db->select('regusers','*','username="'.$clean['username'].'" and has_confirmed = 0');
 
 							if (count($res) > 0)
 							{
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];
-								$forgot_token = $this->m["RegusersModel"]->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
+								$forgot_token = $this->m("RegusersModel")->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
 								$forgot_time = time();
 								$updateArray = array($forgot_token, $forgot_time);
-								$this->m["RegusersModel"]->db->update('regusers','forgot_token,forgot_time',$updateArray,'username="'.$clean['username'].'"');
+								$this->m("RegusersModel")->db->update('regusers','forgot_token,forgot_time',$updateArray,'username="'.$clean['username'].'"');
 								
 								ob_start();
 								include tpf("/Regusers/mail_richiesta_cambio_password.php");
@@ -501,14 +501,14 @@ class BaseRegusersController extends BaseController
 							{
 								$error = gtext("Siamo spiacenti, non esiste alcun utente attivo corrispondente all'email da lei inserita");
 								$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
-								$res = $this->m["RegusersModel"]->addError("username", $error);
+								$res = $this->m("RegusersModel")->addError("username", $error);
 							}
 						}
 						else
 						{
 							$error = gtext("Si prega di ricontrollare l'indirizzo e-mail");
 							$data['notice'] = "<div class='".v("alert_error_class")."'>".$error."</div><span class='evidenzia'>class_username</span>";
-							$res = $this->m["RegusersModel"]->addError("username", $error);
+							$res = $this->m("RegusersModel")->addError("username", $error);
 						}
 					}
 				}
@@ -534,7 +534,7 @@ class BaseRegusersController extends BaseController
 		{
 			$clean["token_reinvio"] = sanitizeAll($_SESSION["token_reinvio"]);
 			
-			$res = $this->m['RegusersModel']->clear()->where(array(
+			$res = $this->m('RegusersModel')->clear()->where(array(
 				"token_reinvio"	=>	$clean['token_reinvio'],
 				"has_confirmed"			=>	1,
 				"ha_confermato"			=>	0,
@@ -578,14 +578,14 @@ class BaseRegusersController extends BaseController
 						{
 							$usatoVolte++;
 							
-							$this->m['RegusersModel']->setValues(array(
+							$this->m('RegusersModel')->setValues(array(
 								"confirmation_token"	=>	$tokenConferma,
 								"confirmation_time"		=>	time(),
 								"time_token_reinvio"	=>	time(),
 								"token_reinvio_usato_volte"	=>	$usatoVolte,
 							));
 							
-							if ($this->m['RegusersModel']->pUpdate($clean['id_user']))
+							if ($this->m('RegusersModel')->pUpdate($clean['id_user']))
 							{
 								flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
 								
@@ -621,7 +621,7 @@ class BaseRegusersController extends BaseController
 			{
 				$clean['conf_token'] = $data['conf_token'] = sanitizeAll($conf_token);
 
-				$res = $this->m['RegusersModel']->clear()->where(array(
+				$res = $this->m('RegusersModel')->clear()->where(array(
 					"confirmation_token"	=>	$clean['conf_token'],
 					"has_confirmed"			=>	1,
 					"ha_confermato"			=>	0,
@@ -644,16 +644,16 @@ class BaseRegusersController extends BaseController
 						
 						$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
 						
-						$this->m['RegusersModel']->setPasswordCondition();
+						$this->m('RegusersModel')->setPasswordCondition();
 					
-						$this->m['RegusersModel']->setValues(array(
+						$this->m('RegusersModel')->setValues(array(
 							"has_confirmed"	=>	0,
 							"ha_confermato"	=>	1,
 							"confirmation_time"		=>	0,
 							"time_token_reinvio"	=>	0,
 						));
 						
-						$this->m['RegusersModel']->pUpdate($clean['id_user']);
+						$this->m('RegusersModel')->pUpdate($clean['id_user']);
 
 						$_SESSION['result'] = 'account_confermato';
 						
@@ -686,7 +686,7 @@ class BaseRegusersController extends BaseController
 		{
 			$clean['forgot_token'] = $data['forgot_token'] = sanitizeAll($forgot_token);
 
-			$res = $this->m['RegusersModel']->clear()->where(array("forgot_token"=>$clean['forgot_token'],"has_confirmed"=>0))->send();
+			$res = $this->m('RegusersModel')->clear()->where(array("forgot_token"=>$clean['forgot_token'],"has_confirmed"=>0))->send();
 
 			if (count($res) > 0)
 			{
@@ -698,9 +698,9 @@ class BaseRegusersController extends BaseController
 					
 					$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
 					
-					$this->m['RegusersModel']->setPasswordCondition();
+					$this->m('RegusersModel')->setPasswordCondition();
 				
-					$this->m['RegusersModel']->setFields("password",PASSWORD_HASH);
+					$this->m('RegusersModel')->setFields("password",PASSWORD_HASH);
 
 					$data['notice'] = null;
 		
@@ -709,13 +709,13 @@ class BaseRegusersController extends BaseController
 						$tessera = $this->request->post('tessera','');
 						if (strcmp($tessera,'') === 0)
 						{
-							if ($this->m['RegusersModel']->checkConditions('insert'))
+							if ($this->m('RegusersModel')->checkConditions('insert'))
 							{
-								$this->m['RegusersModel']->values['forgot_time'] = 0;
+								$this->m('RegusersModel')->values['forgot_time'] = 0;
 								
-								$this->m['RegusersModel']->sanitize("sanitizeDb");
+								$this->m('RegusersModel')->sanitize("sanitizeDb");
 								
-								if ($this->m['RegusersModel']->pUpdate($clean['id_user']))
+								if ($this->m('RegusersModel')->pUpdate($clean['id_user']))
 								{
 									$_SESSION['result'] = 'password_cambiata';
 									
@@ -724,14 +724,14 @@ class BaseRegusersController extends BaseController
 							}
 							else
 							{
-								$data['notice'] = $this->m['RegusersModel']->notice;
+								$data['notice'] = $this->m('RegusersModel')->notice;
 							}
 						}
 					}
 					
-					$this->m['RegusersModel']->fields = "password,confirmation";
+					$this->m('RegusersModel')->fields = "password,confirmation";
 		
-					$data['values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml');
+					$data['values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml');
 				
 					$this->append($data);
 					$this->load('reimposta_password');
@@ -758,38 +758,38 @@ class BaseRegusersController extends BaseController
 			$data["arrayLingue"][$l] = $l."/modifica-password";
 		}
 		
-		$this->m['RegusersModel']->setFields('password:'.PASSWORD_HASH,'none');
+		$this->m('RegusersModel')->setFields('password:'.PASSWORD_HASH,'none');
 
-		$this->m['RegusersModel']->setPasswordCondition();
+		$this->m('RegusersModel')->setPasswordCondition();
 		
 		$id = (int)$this->s['registered']->status['id_user'];
 		if (isset($_POST['updateAction'])) {
 			$pass = $this->s['registered']->getPassword();
 			if (passwordverify($_POST['old'], $pass))
 			{
-				$this->m['RegusersModel']->updateTable('update',$id);
-				if ($this->m['RegusersModel']->result)
+				$this->m('RegusersModel')->updateTable('update',$id);
+				if ($this->m('RegusersModel')->result)
 				{
-					$data['notice'] = $this->m['RegusersModel']->notice;
+					$data['notice'] = $this->m('RegusersModel')->notice;
 				}
 				else
 				{
-					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
 				}
 			}
 			else
 			{
 				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Vecchia password sbagliata")."</div><span class='evidenzia'>class_old</span>\n";
 				
-				$this->m['RegusersModel']->addError("old",gtext("Vecchia password sbagliata"));
+				$this->m('RegusersModel')->addError("old",gtext("Vecchia password sbagliata"));
 				
-				$this->m['RegusersModel']->result = false;
+				$this->m('RegusersModel')->result = false;
 			}
 		}
 		
-		$this->m['RegusersModel']->fields = "old,password,confirmation";
+		$this->m('RegusersModel')->fields = "old,password,confirmation";
 		
-		$data['values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml');
+		$data['values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml');
 		
 		$this->append($data);
 		$this->load('cambia_password');
@@ -801,7 +801,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->islogged)
 		{
-			$spedizione = $this->m["SpedizioniModel"]->clear()->where(array(
+			$spedizione = $this->m("SpedizioniModel")->clear()->where(array(
 				"id_spedizione"	=>	(int)$idSpedizione,
 				"id_user"	=>	User::$id,
 			))->record();
@@ -849,19 +849,19 @@ class BaseRegusersController extends BaseController
 		if (v("attiva_tipi_azienda"))
 			$fields .= ",id_tipo_azienda";
 		
-		$this->m['RegusersModel']->setFields($fields,'sanitizeAll');
-		$this->m['RegusersModel']->setValue("completo", 1);
+		$this->m('RegusersModel')->setFields($fields,'sanitizeAll');
+		$this->m('RegusersModel')->setValue("completo", 1);
 		
-		$this->m['RegusersModel']->setConditions($tipo_cliente, "update", $pec, $codiceDestinatario);
+		$this->m('RegusersModel')->setConditions($tipo_cliente, "update", $pec, $codiceDestinatario);
 		
-// 		$this->m['RegusersModel']->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
+// 		$this->m('RegusersModel')->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
 		
-		$this->m['RegusersModel']->updateTable('update',$this->iduser);
-		if ($this->m['RegusersModel']->queryResult)
+		$this->m('RegusersModel')->updateTable('update',$this->iduser);
+		if ($this->m('RegusersModel')->queryResult)
 		{
 			if (Output::$html)
 			{
-				$data['notice'] = $this->m['RegusersModel']->notice;
+				$data['notice'] = $this->m('RegusersModel')->notice;
 				
 				$urlRedirect = RegusersModel::getUrlRedirect();
 				
@@ -871,15 +871,15 @@ class BaseRegusersController extends BaseController
 		}
 		else
 		{
-			if (!$this->m['RegusersModel']->result)
-				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['RegusersModel']->notice;
+			if (!$this->m('RegusersModel')->result)
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
 		}
 		
 		if (Output::$html)
 		{
-			$data['values'] = $this->m['RegusersModel']->getFormValues('update','sanitizeHtml',$this->iduser);
+			$data['values'] = $this->m('RegusersModel')->getFormValues('update','sanitizeHtml',$this->iduser);
 			
-			$data['province'] = $this->m['ProvinceModel']->selectTendina();
+			$data['province'] = $this->m('ProvinceModel')->selectTendina();
 			
 			$data["tipoAzione"] = "update";
 			
@@ -888,7 +888,7 @@ class BaseRegusersController extends BaseController
 		}
 		else
 		{
-			Output::setBodyValue("Errori", $this->m['RegusersModel']->errors);
+			Output::setBodyValue("Errori", $this->m('RegusersModel')->errors);
 			$this->load("api_output");
 		}
 	}
@@ -901,7 +901,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($clean["id"] > 0)
 		{
-			$this->m['SpedizioniModel']->setDaUsarePerApp($clean["id"]);
+			$this->m('SpedizioniModel')->setDaUsarePerApp($clean["id"]);
 		}
 		
 		if (Output::$json)
@@ -929,7 +929,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($clean["id"] > 0)
 		{
-			$numero = $this->m['SpedizioniModel']->clear()->where(array(
+			$numero = $this->m('SpedizioniModel')->clear()->where(array(
 				"id_spedizione"	=>	$clean["id"],
 				"id_user"		=>	User::$id,
 			))->rowNumber();
@@ -972,22 +972,22 @@ class BaseRegusersController extends BaseController
 		
 // 		$fields = 'indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,citta_spedizione,telefono_spedizione,nazione_spedizione';
 		
-		$this->m['SpedizioniModel']->setFields($fields,'sanitizeAll');
+		$this->m('SpedizioniModel')->setFields($fields,'sanitizeAll');
 		
 		if (isset(User::$id))
-			$this->m['SpedizioniModel']->values["id_user"] = User::$id;
+			$this->m('SpedizioniModel')->values["id_user"] = User::$id;
 		
-		$this->m['SpedizioniModel']->clearConditions("strong");
-		$this->m['SpedizioniModel']->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
+		$this->m('SpedizioniModel')->clearConditions("strong");
+		$this->m('SpedizioniModel')->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
 		
-		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
+		$codiciSpedizioneAttivi = $this->m("NazioniModel")->selectCodiciAttiviSpedizione();
 		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
 		
-		$this->m['SpedizioniModel']->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+		$this->m('SpedizioniModel')->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
 		
-		$this->m['SpedizioniModel']->updateTable('insert,update',$clean["id"]);
+		$this->m('SpedizioniModel')->updateTable('insert,update',$clean["id"]);
 		
-		if ($this->m['SpedizioniModel']->queryResult)
+		if ($this->m('SpedizioniModel')->queryResult)
 		{
 			if (!empty($ordine))
 				$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
@@ -996,15 +996,15 @@ class BaseRegusersController extends BaseController
 		}
 		else
 		{
-			if (!$this->m['SpedizioniModel']->result)
-				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['SpedizioniModel']->notice;
+			if (!$this->m('SpedizioniModel')->result)
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('SpedizioniModel')->notice;
 		}
 		
 		$submitAction = $id > 0 ? "update" : "insert";
 		
-		$data['values'] = $this->m['SpedizioniModel']->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("nazione_spedizione"=>"IT"));
+		$data['values'] = $this->m('SpedizioniModel')->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("nazione_spedizione"=>"IT"));
 		
-		$data['province'] = $this->m['ProvinceModel']->selectTendina();
+		$data['province'] = $this->m('ProvinceModel')->selectTendina();
 		
 		$this->append($data);
 		$this->load('modifica_spedizione');

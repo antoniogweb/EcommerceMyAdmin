@@ -48,30 +48,30 @@ class BaseHomeController extends BaseController
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
 		
-		$data["slide"] = $this->slide = $this->m["PagesModel"]->clear()->addJoinTraduzionePagina()
+		$data["slide"] = $this->slide = $this->m("PagesModel")->clear()->addJoinTraduzionePagina()
 			->where(array(
 				"categories.section"	=>	"slide",
 				"attivo"=>"Y",
 				"in_evidenza"	=>	"Y",
 			))->orderBy(v("main_slide_order"))->send();
 		
-		$clean["idShop"] = $this->m["CategoriesModel"]->getShopCategoryId();
+		$clean["idShop"] = $this->m("CategoriesModel")->getShopCategoryId();
 		
-		$data["marchi"] = $this->m["MarchiModel"]->clear()->orderBy("titolo")->send(false);
+		$data["marchi"] = $this->m("MarchiModel")->clear()->orderBy("titolo")->send(false);
 		
 		$data["fasce"]  = "";
 		
 		// Estraggo le fasce
 		if (v("usa_fasce_in_home"))
 		{
-			$clean["idPaginaHome"] = (int)$this->m["PagesModel"]->clear()->where(array(
+			$clean["idPaginaHome"] = (int)$this->m("PagesModel")->clear()->where(array(
 				"tipo_pagina"	=>	"HOME",
 			))->field("id_page");
 			
 			if ($clean["idPaginaHome"])
 			{
 				PagesModel::$currentIdPage = $clean['idPaginaHome'];
-				$data["fasce"] = $this->m["ContenutiModel"]->elaboraContenuti($clean['idPaginaHome'], 0, $this);
+				$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti($clean['idPaginaHome'], 0, $this);
 			}
 		}
 		

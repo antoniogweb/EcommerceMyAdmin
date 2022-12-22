@@ -63,16 +63,16 @@ class BaseListeregaloController extends BaseController
 		{
 			$valoreAttivo = (string)$clean["valore"] === "Y" ? "Y" : "N";
 			
-			$this->m["ListeregaloModel"]->sValues(array(
+			$this->m("ListeregaloModel")->sValues(array(
 				"attivo"	=>	$valoreAttivo,
 			));
-			$this->m["ListeregaloModel"]->pUpdate($clean["id_lista"]);
+			$this->m("ListeregaloModel")->pUpdate($clean["id_lista"]);
 			
 			$this->redirect("liste-regalo/");
-// 			echo $this->m["SpedizioniModel"]->notice;
+// 			echo $this->m("SpedizioniModel")->notice;
 		}
 		
-		$data['liste'] = $this->m["ListeregaloModel"]->clear()->select("*")->inner(array("tipo"))->where(array("id_user"=>$this->iduser))->orderBy("creation_time desc")->send();
+		$data['liste'] = $this->m("ListeregaloModel")->clear()->select("*")->inner(array("tipo"))->where(array("id_user"=>$this->iduser))->orderBy("creation_time desc")->send();
 		
 		$this->append($data);
 		
@@ -103,13 +103,13 @@ class BaseListeregaloController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - '. gtext("Gestisci la tua lista");
 		
-		$data["lista"] = $lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
+		$data["lista"] = $lista = $this->m('ListeregaloModel')->selectId($clean["id"]);
 		
 		if (!empty($data["lista"]) && in_array($data["lista"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("sesso","")))
 			$data["sessoLista"] = $data["lista"]["sesso"];
 		
-		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
-		$data["link_lista"] = $this->m["ListeregaloModel"]->getLink($clean["id"]);
+		$data["prodotti_lista"] = $this->m("ListeregaloModel")->getProdotti($clean["id"]);
+		$data["link_lista"] = $this->m("ListeregaloModel")->getLink($clean["id"]);
 		
 		$this->append($data);
 		$this->load('gestisci');
@@ -123,7 +123,7 @@ class BaseListeregaloController extends BaseController
 		
 		$this->clean();
 		
-		$data["prodotti_lista"] = $this->m["ListeregaloModel"]->getProdotti($clean["id"]);
+		$data["prodotti_lista"] = $this->m("ListeregaloModel")->getProdotti($clean["id"]);
 		
 		if ((int)$regalati === 1)
 			$data["regalati"] = true;
@@ -142,7 +142,7 @@ class BaseListeregaloController extends BaseController
 		
 		$this->clean();
 		
-		$data["link_lista"] = $this->m["ListeregaloModel"]->getLink($clean["id"]);
+		$data["link_lista"] = $this->m("ListeregaloModel")->getLink($clean["id"]);
 		
 		$this->append($data);
 		$this->load('link_inviati');
@@ -156,9 +156,9 @@ class BaseListeregaloController extends BaseController
 		
 		$result = "KO";
 		
-		if ($id && $this->m["ListeregalopagesModel"]->checkAccesso($id))
+		if ($id && $this->m("ListeregalopagesModel")->checkAccesso($id))
 		{
-			if ($this->m["ListeregalopagesModel"]->elimina($clean["id"]))
+			if ($this->m("ListeregalopagesModel")->elimina($clean["id"]))
 				$result = "OK";
 		}
 		
@@ -194,7 +194,7 @@ class BaseListeregaloController extends BaseController
 		
 		foreach ($arrayIdQuantity as $temp)
 		{
-			$this->m["ListeregalopagesModel"]->set($temp[0], $temp[1]);
+			$this->m("ListeregalopagesModel")->set($temp[0], $temp[1]);
 		}
 		
 		echo json_encode(array(
@@ -211,9 +211,9 @@ class BaseListeregaloController extends BaseController
 		$result = "KO";
 		$notice = gtext("Errore nell'invio");
 		
-		if ($this->m['ListeregalolinkModel']->checkAccesso($clean["id"]))
+		if ($this->m('ListeregalolinkModel')->checkAccesso($clean["id"]))
 		{
-			if ($this->m['ListeregalolinkModel']->inviaMail($clean["id"]))
+			if ($this->m('ListeregalolinkModel')->inviaMail($clean["id"]))
 			{
 				$result = "OK";
 				$notice = gtext("Link correttamente inviato");
@@ -239,25 +239,25 @@ class BaseListeregaloController extends BaseController
 		{
 			$campi = "nome,cognome,email";
 			
-			$this->m['ListeregalolinkModel']->setFields($campi,'sanitizeAll');
-			$this->m['ListeregalolinkModel']->setValue("id_lista_regalo", $clean["id"]);
+			$this->m('ListeregalolinkModel')->setFields($campi,'sanitizeAll');
+			$this->m('ListeregalolinkModel')->setValue("id_lista_regalo", $clean["id"]);
 			
-			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkNotEmpty',"nome,email");
-			$this->m['ListeregalolinkModel']->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo email</b>")."<div class='evidenzia'>class_email</div>");
+			$this->m('ListeregalolinkModel')->addStrongCondition("both",'checkNotEmpty',"nome,email");
+			$this->m('ListeregalolinkModel')->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo email</b>")."<div class='evidenzia'>class_email</div>");
 			
-			$this->m['ListeregalolinkModel']->updateTable('insert',0);
+			$this->m('ListeregalolinkModel')->updateTable('insert',0);
 			
-			if ($this->m['ListeregalolinkModel']->queryResult)
+			if ($this->m('ListeregalolinkModel')->queryResult)
 			{
 				$result = "OK";
 				
-				if ($this->m['ListeregalolinkModel']->inviaMail($this->m['ListeregalolinkModel']->lId))
+				if ($this->m('ListeregalolinkModel')->inviaMail($this->m('ListeregalolinkModel')->lId))
 					$notice = "<div class='".v("alert_success_class")."'>".gtext("Il link è stato correttamente inviato alla mail indicata")."</div>";
 				else
 					$notice = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, errore nell'invio della mail. Si prega di riprovare.")."</div>";
 			}
 			else
-				$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['ListeregalolinkModel']->notice;
+				$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('ListeregalolinkModel')->notice;
 		}
 		
 		echo json_encode(array(
@@ -279,7 +279,7 @@ class BaseListeregaloController extends BaseController
 		$title = $id ? gtext("Modifica la tua lista") : gtext("Crea la tua lista");
 		$data['title'] = Parametri::$nomeNegozio . ' - '. $title;
 		
-		$lista = $this->m['ListeregaloModel']->selectId($clean["id"]);
+		$lista = $this->m('ListeregaloModel')->selectId($clean["id"]);
 		
 		$idTipoLista = !empty($lista) ? $lista["id_lista_tipo"] : $this->request->post("id_lista_tipo",0,"forceInt");
 		
@@ -290,7 +290,7 @@ class BaseListeregaloController extends BaseController
 		
 		$data["idTipoLista"] = $idTipoLista;
 		
-		$tipoLista = $this->m["ListeregalotipiModel"]->selectId((int)$idTipoLista);
+		$tipoLista = $this->m("ListeregalotipiModel")->selectId((int)$idTipoLista);
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
@@ -318,39 +318,39 @@ class BaseListeregaloController extends BaseController
 		else
 			$fields = 'titolo,id_lista_tipo,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
 		
-		$this->m['ListeregaloModel']->setFields($fields,'sanitizeAll');
+		$this->m('ListeregaloModel')->setFields($fields,'sanitizeAll');
 		
-		$this->m['ListeregaloModel']->setValue("id_user", User::$id);
+		$this->m('ListeregaloModel')->setValue("id_user", User::$id);
 		
 		if (!empty($lista))
-			$this->m['ListeregaloModel']->delFields("id_lista_tipo");
+			$this->m('ListeregaloModel')->delFields("id_lista_tipo");
 		
-		$this->m['ListeregaloModel']->clearConditions("strong");
-		$this->m['ListeregaloModel']->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
+		$this->m('ListeregaloModel')->clearConditions("strong");
+		$this->m('ListeregaloModel')->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
 		
 		if (!$clean["id"])
-			$this->m['ListeregaloModel']->addStrongCondition("both",'checkIsStrings|'.implode(",",array_keys($data["selectTipi"])),"id_lista_tipo|".gtext("<b>Si prega di selezionare il tipo della lista</b>"));
+			$this->m('ListeregaloModel')->addStrongCondition("both",'checkIsStrings|'.implode(",",array_keys($data["selectTipi"])),"id_lista_tipo|".gtext("<b>Si prega di selezionare il tipo della lista</b>"));
 		
-		$this->m['ListeregaloModel']->addSoftCondition("both",'checkIsStrings|M,F',"sesso");
+		$this->m('ListeregaloModel')->addSoftCondition("both",'checkIsStrings|M,F',"sesso");
 		
-		$this->m['ListeregaloModel']->updateTable('insert,update',$clean["id"]);
+		$this->m('ListeregaloModel')->updateTable('insert,update',$clean["id"]);
 		
-		if ($this->m['ListeregaloModel']->queryResult)
+		if ($this->m('ListeregaloModel')->queryResult)
 		{
 			if (!$clean["id"])
-				$clean["id"] = (int)$this->m['ListeregaloModel']->lId;
+				$clean["id"] = (int)$this->m('ListeregaloModel')->lId;
 			
 			$this->redirect("listeregalo/gestisci/".$clean["id"]);
 		}
 		else
 		{
-			if (!$this->m['ListeregaloModel']->result)
-				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m['ListeregaloModel']->notice;
+			if (!$this->m('ListeregaloModel')->result)
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('ListeregaloModel')->notice;
 		}
 		
 		$submitAction = $id > 0 ? "update" : "insert";
 		
-		$data['values'] = $this->m['ListeregaloModel']->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("id_lista_tipo"=>$idTipoLista));
+		$data['values'] = $this->m('ListeregaloModel')->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("id_lista_tipo"=>$idTipoLista));
 		
 		$this->append($data);
 		$this->load('modifica');
@@ -387,7 +387,7 @@ class BaseListeregaloController extends BaseController
 		
 // 		if (!ProdottiModel::isGiftCart($clean["id_page"]))
 // 		{
-			$idRigaLista = $this->m["ListeregalopagesModel"]->aggiungi($clean["id_lista"], $clean["id_page"], $clean["id_c"], $clean["quantity"]);
+			$idRigaLista = $this->m("ListeregalopagesModel")->aggiungi($clean["id_lista"], $clean["id_page"], $clean["id_c"], $clean["quantity"]);
 			
 			if ($idRigaLista)
 			{

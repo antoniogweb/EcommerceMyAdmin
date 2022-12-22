@@ -162,7 +162,7 @@ class BaseThumbController extends Controller {
 		
 		$this->clean();
 		
-		$layer = $this->m["LayerModel"]->clear()->where(array(
+		$layer = $this->m("LayerModel")->clear()->where(array(
 			"id_layer"	=>	(int)$idLayer,
 		))->record(false);
 		
@@ -1023,7 +1023,7 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$this->model("TestiModel");
-		$testo = $this->m["TestiModel"]->selectId((int)$id);
+		$testo = $this->m("TestiModel")->selectId((int)$id);
 		
 		if (!empty($testo) && $testo[$field])
 		{

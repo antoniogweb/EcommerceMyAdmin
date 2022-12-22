@@ -53,7 +53,7 @@ class BaseOrdiniController extends BaseController
 		
 		$this->model("FattureModel");
 		
-		$res = $this->m["FattureModel"]->inner("orders")->using("id_o")->where(array("id_o"=>$clean["id_o"],"orders.id_user"=>User::$id))->send();
+		$res = $this->m("FattureModel")->inner("orders")->using("id_o")->where(array("id_o"=>$clean["id_o"],"orders.id_user"=>User::$id))->send();
 		
 		if (count($res) > 0)
 		{
@@ -102,7 +102,7 @@ class BaseOrdiniController extends BaseController
 			$p->paypal_mail = Parametri::$paypalSeller;
 		}
 		
-		$p->txn_id = $this->m["OrdiniModel"]->clear()->toList("txn_id")->send();
+		$p->txn_id = $this->m("OrdiniModel")->clear()->toList("txn_id")->send();
 		
 		if ($p->validate_ipn())
 		{
@@ -111,7 +111,7 @@ class BaseOrdiniController extends BaseController
 			$clean['codiceTransazione'] = $this->request->post('txn_id','','sanitizeAll');
 			$clean['amount'] = $this->request->post('mc_gross','0','none');
 			
-			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 
 			if (count($res) > 0)
 			{
@@ -120,18 +120,18 @@ class BaseOrdiniController extends BaseController
 					$this->model("FattureModel");
 					
 					$ordine = $res[0]["orders"];
-					$this->m["OrdiniModel"]->values = array();
-					$this->m["OrdiniModel"]->values["txn_id"] = $clean['codiceTransazione'];
+					$this->m("OrdiniModel")->values = array();
+					$this->m("OrdiniModel")->values["txn_id"] = $clean['codiceTransazione'];
 					if (strcmp($clean['payment_status'],"Completed") === 0)
-						$this->m["OrdiniModel"]->values["stato"] = "completed";
-					$this->m["OrdiniModel"]->update((int)$res[0]["orders"]["id_o"]);
+						$this->m("OrdiniModel")->values["stato"] = "completed";
+					$this->m("OrdiniModel")->update((int)$res[0]["orders"]["id_o"]);
 					
 					if (strcmp($clean['payment_status'],"Completed") === 0)
 					{
 						if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
 						{
 							//genera la fattura
-							$this->m["FattureModel"]->crea($ordine["id_o"]);
+							$this->m("FattureModel")->crea($ordine["id_o"]);
 						}
 					}
 					
@@ -140,16 +140,16 @@ class BaseOrdiniController extends BaseController
 						case "Completed":
 							
 							// Controlla e manda mail dopo pagamento
-							$this->m["OrdiniModel"]->mandaMailDopoPagamento($ordine["id_o"]);
+							$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
 							
 							// Controlla e manda mail dopo pagamento al negozio
-							$this->m["OrdiniModel"]->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+							$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 							
 							$mandaFattura = false;
 							
 							if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
 							{
-								$fattura = $this->m["FattureModel"]->where(array(
+								$fattura = $this->m("FattureModel")->where(array(
 									"id_o"	=>	$ordine["id_o"]
 								))->record();
 								
@@ -158,7 +158,7 @@ class BaseOrdiniController extends BaseController
 							}
 							
 							if (v("manda_mail_avvenuto_pagamento_al_cliente"))
-								$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+								$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
 							
 							$Subject  = v("oggetto_ordine_pagato");
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
@@ -228,7 +228,7 @@ class BaseOrdiniController extends BaseController
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
 			
-			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 
 			if (count($res) > 0)
 			{
@@ -237,21 +237,21 @@ class BaseOrdiniController extends BaseController
 					$this->model("FattureModel");
 					
 					$ordine = $res[0]["orders"];
-					$this->m["OrdiniModel"]->values = array();
-					$this->m["OrdiniModel"]->values["data_pagamento"] = date("d-m-Y");
+					$this->m("OrdiniModel")->values = array();
+					$this->m("OrdiniModel")->values["data_pagamento"] = date("d-m-Y");
 					
 					if (PagamentiModel::gateway()->success())
-						$this->m["OrdiniModel"]->values["stato"] = "completed";
+						$this->m("OrdiniModel")->values["stato"] = "completed";
 					
-					$this->m["OrdiniModel"]->update((int)$res[0]["orders"]["id_o"]);
+					$this->m("OrdiniModel")->update((int)$res[0]["orders"]["id_o"]);
 					
 					if (PagamentiModel::gateway()->success())
 					{
 						// Controlla e manda mail dopo pagamento al cliente
-						$this->m["OrdiniModel"]->mandaMailDopoPagamento($ordine["id_o"]);
+						$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
 						
 						// Controlla e manda mail dopo pagamento al negozio
-						$this->m["OrdiniModel"]->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+						$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 						
 						$mandaFattura = false;
 						
@@ -259,11 +259,11 @@ class BaseOrdiniController extends BaseController
 						{
 							$mandaFattura = true;
 							//genera la fattura
-							$this->m["FattureModel"]->crea($ordine["id_o"]);
+							$this->m("FattureModel")->crea($ordine["id_o"]);
 						}
 						
 						if (v("manda_mail_avvenuto_pagamento_al_cliente"))
-							$this->m["OrdiniModel"]->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+							$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
 						
 						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 						
@@ -303,25 +303,25 @@ class BaseOrdiniController extends BaseController
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		$clean["id_o"] = (int)$id_o;
 		
-		if (!$this->m["OrdiniModel"]->recordExists($clean["id_o"], $clean["cart_uid"]))
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
 			$this->redirect("carrello");
 		
-		$data["tendinaIndirizzi"] = $this->m["RegusersModel"]->getTendinaIndirizzi(User::$id);
+		$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
 		
-		$this->m['OrdiniModel']->addStrongCondition("update",'checkIsStrings|'.v("pagamenti_permessi"),"pagamento|".gtext("<b>Si prega di selezionare il pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+		$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.v("pagamenti_permessi"),"pagamento|".gtext("<b>Si prega di selezionare il pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
 		
-		$this->m['OrdiniModel']->addStrongCondition("update",'checkIsStrings|'.implode(",",array_keys($data["tendinaIndirizzi"])),"id_spedizione|".gtext("<b>Si prega di selezionare l'indirizzo</b>")."<div class='evidenzia'>class_id_spedizione</div>");
+		$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.implode(",",array_keys($data["tendinaIndirizzi"])),"id_spedizione|".gtext("<b>Si prega di selezionare l'indirizzo</b>")."<div class='evidenzia'>class_id_spedizione</div>");
 		
-		$this->m['OrdiniModel']->setFields("pagamento,id_spedizione",'sanitizeAll');
-		$this->m['OrdiniModel']->updateTable('update',$clean["id_o"]);
-		$data['notice'] = $this->m['OrdiniModel']->notice;
+		$this->m('OrdiniModel')->setFields("pagamento,id_spedizione",'sanitizeAll');
+		$this->m('OrdiniModel')->updateTable('update',$clean["id_o"]);
+		$data['notice'] = $this->m('OrdiniModel')->notice;
 		
-		if ($this->m['OrdiniModel']->queryResult)
+		if ($this->m('OrdiniModel')->queryResult)
 		{
 			$result = false;
 			
 			if (isset($_POST["id_spedizione"]) && in_array($_POST["id_spedizione"], array_keys($data["tendinaIndirizzi"])))
-				$result = $this->m['OrdiniModel']->importaSpedizione($clean["id_o"], $_POST["id_spedizione"]);
+				$result = $this->m('OrdiniModel')->importaSpedizione($clean["id_o"], $_POST["id_spedizione"]);
 			
 			if ($result)
 				$this->redirect("resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."?n=y");
@@ -329,7 +329,7 @@ class BaseOrdiniController extends BaseController
 				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile cambiare i dati di spedizione. Contattare il negozio")."</div>";
 		}
 		
-		$res = $this->m["OrdiniModel"]->clear()
+		$res = $this->m("OrdiniModel")->clear()
 							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
 							->send();
 		
@@ -353,10 +353,10 @@ class BaseOrdiniController extends BaseController
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
-		if (!$this->m["OrdiniModel"]->recordExists($clean["id_o"], $clean["cart_uid"]))
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
 			$this->redirect("");
 		
-		$rightAdminToken = $this->m["OrdiniModel"]->getAdminToken($clean["id_o"], $clean["cart_uid"]);
+		$rightAdminToken = $this->m("OrdiniModel")->getAdminToken($clean["id_o"], $clean["cart_uid"]);
 		
 		if (isset($_POST["modifica_stato_ordine"]) and strcmp($clean["admin_token"],$rightAdminToken) === 0)
 		{
@@ -365,17 +365,17 @@ class BaseOrdiniController extends BaseController
 			
 			if (in_array($clean['stato'],$statiPermessi))
 			{
-				$this->m["OrdiniModel"]->values = array("stato" => $clean['stato']);
-				$this->m["OrdiniModel"]->update(null, "id_o=".$clean["id_o"]." and cart_uid='".$clean["cart_uid"]."'");
-				$data['notice'] = $this->m["OrdiniModel"]->notice;
+				$this->m("OrdiniModel")->values = array("stato" => $clean['stato']);
+				$this->m("OrdiniModel")->update(null, "id_o=".$clean["id_o"]." and cart_uid='".$clean["cart_uid"]."'");
+				$data['notice'] = $this->m("OrdiniModel")->notice;
 			}
 		}
 		
-		$res = $this->m["OrdiniModel"]->clear()
+		$res = $this->m("OrdiniModel")->clear()
 							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
 							->send();
 		
-		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"],"cart_uid" => $clean["cart_uid"]))->send();
+		$data["righeOrdine"] = $this->m("RigheModel")->clear()->where(array("id_o"=>$clean["id_o"],"cart_uid" => $clean["cart_uid"]))->send();
 		
 		$data["ordine"] = $res[0]["orders"];
 		
@@ -469,7 +469,7 @@ class BaseOrdiniController extends BaseController
 	{
 		$clean["id_o"] = (int)$id_o;
 		
-		$ordine = $this->m["OrdiniModel"]->selectId($clean["id_o"]);
+		$ordine = $this->m("OrdiniModel")->selectId($clean["id_o"]);
 		
 		if (!empty($ordine))
 		{
@@ -514,7 +514,7 @@ class BaseOrdiniController extends BaseController
 			
 			Output::setBodyValue("Totali", $totali);
 			
-			$pages = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->send(false);
+			$pages = $this->m("RigheModel")->clear()->where(array("id_o"=>$clean["id_o"]))->send(false);
 			
 			$pagineConDecode = array();
 			
@@ -578,19 +578,19 @@ class BaseOrdiniController extends BaseController
 		
 		$clean['cart_uid'] = sanitizeAll($cartuUid);
 		
-		$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+		$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
 		if (count($res) > 0 && $res[0]["orders"]["stato"] == "pending")
 		{
 			$data["ordine"] = $res[0]["orders"];
 			
-			$codiceTransazione = $this->m["OrdiniModel"]->getUniqueCodTrans(generateString(30));
+			$codiceTransazione = $this->m("OrdiniModel")->getUniqueCodTrans(generateString(30));
 			
-			$this->m["OrdiniModel"]->setValues(array(
+			$this->m("OrdiniModel")->setValues(array(
 				"codice_transazione"	=>	$codiceTransazione,
 			));
 			
-			$this->m["OrdiniModel"]->pUpdate($data["ordine"]["id_o"]);
+			$this->m("OrdiniModel")->pUpdate($data["ordine"]["id_o"]);
 			
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array(Parametri::$mailInvioOrdine),
@@ -645,9 +645,9 @@ class BaseOrdiniController extends BaseController
 		}
 		
 		if (isset($_GET['cart_uid']))
-			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => sanitizeAll($_GET['cart_uid'])))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => sanitizeAll($_GET['cart_uid'])))->send();
 		else
-			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
 		$data["conclusa"] = false;
 		
@@ -694,7 +694,7 @@ class BaseOrdiniController extends BaseController
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
 			
-			$res = $this->m["OrdiniModel"]->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 			
 			$data["conclusa"] = false;
 		
@@ -737,7 +737,7 @@ class BaseOrdiniController extends BaseController
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
 		
-		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		$data["pages"] = $this->m("CartModel")->getProdotti();
 		
 		if (count($data["pages"]) === 0)
 		{
@@ -753,7 +753,7 @@ class BaseOrdiniController extends BaseController
 	
 	private function checkCheckout()
 	{
-		if (!$this->m["CartModel"]->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
+		if (!$this->m("CartModel")->checkQtaFull() || (CartModel::numeroGifCartInCarrello() > v("numero_massimo_gift_card")) || CartelementiModel::haErrori())
 		{
 			if (Output::$html)
 				$this->redirect("carrello/vedi?evidenzia");
@@ -780,9 +780,9 @@ class BaseOrdiniController extends BaseController
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		$data["pages"] = $this->m("CartModel")->getProdotti();
 		
-		$numeroProdottiInCarrello = $this->m["CartModel"]->numberOfItems();
+		$numeroProdottiInCarrello = $this->m("CartModel")->numberOfItems();
 		
 		$logSubmit->setNumeroProdotti($numeroProdottiInCarrello);
 		
@@ -825,7 +825,7 @@ class BaseOrdiniController extends BaseController
 // 				{
 // 					$clean["usaIdSpedizione"] = (int)$_POST["id_spedizione"];
 // 					
-// 					$spedizioneDaUsare = $this->m["SpedizioniModel"]->where(array(
+// 					$spedizioneDaUsare = $this->m("SpedizioniModel")->where(array(
 // 						"id_user"	=>	(int)User::$id,
 // 						"id_spedizione"	=>	$clean["usaIdSpedizione"],
 // 					))->record();
@@ -850,9 +850,9 @@ class BaseOrdiniController extends BaseController
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
 		
-		$codiciSpedizioneAttivi = $this->m["NazioniModel"]->selectCodiciAttiviSpedizione();
+		$codiciSpedizioneAttivi = $this->m("NazioniModel")->selectCodiciAttiviSpedizione();
 		
-		$elencoCorrieri = $this->m["CorrieriModel"]->elencoCorrieri();
+		$elencoCorrieri = $this->m("CorrieriModel")->elencoCorrieri();
 		
 		//imposto spedizione uguale a fatturazione
 		if ((isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0) || !v("attiva_spedizione"))
@@ -882,12 +882,12 @@ class BaseOrdiniController extends BaseController
 			$_POST["regalo"] = 1;
 		
 		// Setta password
-		$this->m["RegusersModel"]->settaPassword();
+		$this->m("RegusersModel")->settaPassword();
 		
 		IvaModel::getAliquotaEstera();
 		
 		if (isset(IvaModel::$aliquotaEstera))
-			$data["pages"] = $this->m["CartModel"]->getProdotti();
+			$data["pages"] = $this->m("CartModel")->getProdotti();
 		
 		$descrizioneAcquisto = serialize($data["pages"]);
 		
@@ -951,72 +951,72 @@ class BaseOrdiniController extends BaseController
 		
 		if (strcmp($tipo_cliente,"privato") === 0)
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,".$campiObbligatoriComuni);
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,".$campiObbligatoriComuni);
 		}
 		else if (strcmp($tipo_cliente,"libero_professionista") === 0)
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,$campoPIva".$campiObbligatoriComuni);
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,$campoPIva".$campiObbligatoriComuni);
 		}
 		else
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkNotEmpty',"ragione_sociale,$campoPIva".$campiObbligatoriComuni);
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"ragione_sociale,$campoPIva".$campiObbligatoriComuni);
 		}
 		
-		$this->m['OrdiniModel']->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>")."<div class='evidenzia'>class_pec</div>");
+		$this->m('OrdiniModel')->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>")."<div class='evidenzia'>class_pec</div>");
 		
-		$this->m['OrdiniModel']->addSoftCondition("both",'checkLength|7',"codice_destinatario|".gtext("Si prega di ricontrollare <b>il Codice Destinatario</b>")."<div class='evidenzia'>class_codice_destinatario</div>");
+		$this->m('OrdiniModel')->addSoftCondition("both",'checkLength|7',"codice_destinatario|".gtext("Si prega di ricontrollare <b>il Codice Destinatario</b>")."<div class='evidenzia'>class_codice_destinatario</div>");
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>")."<div class='evidenzia'>class_email</div>");
+		$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>")."<div class='evidenzia'>class_email</div>");
 		
 		if (v("account_attiva_conferma_username"))
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
 			
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
 		}
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
+		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.Parametri::$metodiPagamento,"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.Parametri::$metodiPagamento,"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
 		
-// 		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|privato,azienda,libero_professionista',"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+// 		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|privato,azienda,libero_professionista',"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
 		
-		$this->m['OrdiniModel']->addSoftCondition("insert",'checkLength|255',"note|<b>".gtext("Le note non possono superare i 255 caratteri")."</b><div class='evidenzia'>class_note</div>");
+		$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"note|<b>".gtext("Le note non possono superare i 255 caratteri")."</b><div class='evidenzia'>class_note</div>");
 		
-		$this->m['OrdiniModel']->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
+		$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
 		
-		$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
+		$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
+			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
 			
 			if (v("abilita_codice_fiscale"))
-				$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
+				$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
 			
-			$this->m['OrdiniModel']->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
+			$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
 		}
 		
 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
 		{
-			$this->m['OrdiniModel']->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
+			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
 		}
 		
-		$codiciNazioniAttive = implode(",",$this->m["NazioniModel"]->selectCodiciAttivi());
+		$codiciNazioniAttive = implode(",",$this->m("NazioniModel")->selectCodiciAttivi());
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
 		
 		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
 		
-		$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
 		
 		if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && count($elencoCorrieri) > 0)
 		{
-			$listaCorrieriNazione = implode(",",$this->m["CorrieriModel"]->getIdsCorrieriNazione($_POST["nazione_spedizione"]));
+			$listaCorrieriNazione = implode(",",$this->m("CorrieriModel")->getIdsCorrieriNazione($_POST["nazione_spedizione"]));
 			
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
 		}
 		
 		$fields = OpzioniModel::stringaValori("CAMPI_SALVATAGGIO_ORDINE");
@@ -1030,7 +1030,7 @@ class BaseOrdiniController extends BaseController
 			$_POST["aggiungi_nuovo_indirizzo"] = "N";
 			$_POST["id_spedizione"] = 0;
 			
-			$this->m['OrdiniModel']->addStrongCondition("insert",'checkIsStrings|Y,N',"registrato|<b>".gtext("Si prega di indicare se volete continuare come utente ospite oppure creare un account", false)."</b><div class='evidenzia'>class_registrato</div>");
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|Y,N',"registrato|<b>".gtext("Si prega di indicare se volete continuare come utente ospite oppure creare un account", false)."</b><div class='evidenzia'>class_registrato</div>");
 			
 			$fields .= ",registrato";
 			
@@ -1038,10 +1038,10 @@ class BaseOrdiniController extends BaseController
 			
 			if (strcmp($registrato, "Y") === 0)
 			{
-				$this->m['RegusersModel']->setFields("username",'sanitizeAll');
+				$this->m('RegusersModel')->setFields("username",'sanitizeAll');
 				
 				$clean["username"] = $this->request->post("email","","sanitizeAll");
-				$this->m['RegusersModel']->values["username"] = $clean["username"];
+				$this->m('RegusersModel')->values["username"] = $clean["username"];
 				
 				$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";
 				
@@ -1053,24 +1053,24 @@ class BaseOrdiniController extends BaseController
 				$erroreUtenteGiaPresente = ob_get_clean();
 				
 				if (isset($_POST["email"]) && RegusersModel::utenteDaConfermare($_POST["email"]))
-					$this->m['RegusersModel']->databaseConditions['insert'] = array(
+					$this->m('RegusersModel')->databaseConditions['insert'] = array(
 						"checkUnique"		=>	"username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.",false)."<br />".gtext("Può procedere con la conferma del proprio account al seguente",false)." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web", false)."</a> ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
 					);
 				else
-					$this->m['RegusersModel']->databaseConditions['insert'] = array(
+					$this->m('RegusersModel')->databaseConditions['insert'] = array(
 						"checkUnique"		=>	"username|".$erroreUtenteGiaPresente,
 					);
 				
 				if (v("account_attiva_conferma_password"))
-					$this->m['RegusersModel']->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");
+					$this->m('RegusersModel')->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");
 				else
-					$this->m['RegusersModel']->addStrongCondition("insert",'checkNotEmpty',"password");
+					$this->m('RegusersModel')->addStrongCondition("insert",'checkNotEmpty',"password");
 				
-				$this->m['RegusersModel']->addStrongCondition("insert",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>Tutte le lettere, maiuscole o minuscole (a, A, b, B, ...)</li><li>Tutti i numeri (0,1,2,...)</li><li>I seguenti caratteri: <b>_ - ! , .</b></li></ul><span class='evidenzia'>class_password</span>");
+				$this->m('RegusersModel')->addStrongCondition("insert",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>Tutte le lettere, maiuscole o minuscole (a, A, b, B, ...)</li><li>Tutti i numeri (0,1,2,...)</li><li>I seguenti caratteri: <b>_ - ! , .</b></li></ul><span class='evidenzia'>class_password</span>");
 			}
 		}
 		
-		$this->m['OrdiniModel']->setFields($fields,'strip_tags');
+		$this->m('OrdiniModel')->setFields($fields,'strip_tags');
 
 		$data['notice'] = null;
 
@@ -1087,16 +1087,16 @@ class BaseOrdiniController extends BaseController
 			
 			if (CaptchaModel::getModulo()->checkRegistrazione())
 			{
-				if ($this->m['OrdiniModel']->checkConditions('insert'))
+				if ($this->m('OrdiniModel')->checkConditions('insert'))
 				{
-					if ($this->m['RegusersModel']->checkConditions('insert'))
+					if ($this->m('RegusersModel')->checkConditions('insert'))
 					{
 						$_SESSION = $_POST;
-						$_SESSION["email_carrello"] = sanitizeAll($this->m['OrdiniModel']->values["email"]);
+						$_SESSION["email_carrello"] = sanitizeAll($this->m('OrdiniModel')->values["email"]);
 						
 						unset($_SESSION['accetto']);
 						
-						$this->m['OrdiniModel']->aggiungiTotali();
+						$this->m('OrdiniModel')->aggiungiTotali();
 						
 						$statoOrdine = "pending";
 						
@@ -1104,33 +1104,33 @@ class BaseOrdiniController extends BaseController
 							$statoOrdine = "completed";
 						
 						if (isset($_COOKIE["ok_cookie_terzi"]))
-							$this->m['OrdiniModel']->values["cookie_terzi"] = 1;
+							$this->m('OrdiniModel')->values["cookie_terzi"] = 1;
 						
 						if (ListeregaloModel::hasIdLista())
-							$this->m['OrdiniModel']->values["id_lista_regalo"] = (int)User::$idLista;
+							$this->m('OrdiniModel')->values["id_lista_regalo"] = (int)User::$idLista;
 						
-						$this->m['OrdiniModel']->sanitize("sanitizeHtml");
-						$this->m['OrdiniModel']->values["descrizione_acquisto"] = $descrizioneAcquisto;
-						$this->m['OrdiniModel']->sanitize();
+						$this->m('OrdiniModel')->sanitize("sanitizeHtml");
+						$this->m('OrdiniModel')->values["descrizione_acquisto"] = $descrizioneAcquisto;
+						$this->m('OrdiniModel')->sanitize();
 						
-						if ($this->m['OrdiniModel']->insert())
+						if ($this->m('OrdiniModel')->insert())
 						{
 							Output::setBodyValue("Risultato", "OK");
 							
 							// Salvo la dprovincia
-							$dprovincia = $this->m['OrdiniModel']->values["dprovincia"];
+							$dprovincia = $this->m('OrdiniModel')->values["dprovincia"];
 							
 							// Salvo la dprovincia spedizione
-							$dprovincia_spedizione = $this->m['OrdiniModel']->values["dprovincia_spedizione"];
+							$dprovincia_spedizione = $this->m('OrdiniModel')->values["dprovincia_spedizione"];
 							
-							$clean['lastId'] = (int)$this->m['OrdiniModel']->lId;
+							$clean['lastId'] = (int)$this->m('OrdiniModel')->lId;
 							
 							Output::setBodyValue("IdOrdine", $clean['lastId']);
 							
 							//riempie la tabella delle righe
-							$this->m['OrdiniModel']->riempiRighe($clean['lastId']);
+							$this->m('OrdiniModel')->riempiRighe($clean['lastId']);
 							
-							$this->m["CartModel"]->del(null, "cart_uid = '".$clean["cart_uid"]."'");
+							$this->m("CartModel")->del(null, "cart_uid = '".$clean["cart_uid"]."'");
 							setcookie("cart_uid", "", time()-3600,"/");
 							
 							//distruggi il cookie del coupon
@@ -1142,11 +1142,11 @@ class BaseOrdiniController extends BaseController
 							// elimina il cookie con l'ID della lista regalo
 							ListeregaloModel::unsetCookieIdLista();
 							
-							$clean["cart_uid"] = sanitizeAll($this->m['OrdiniModel']->cart_uid);
+							$clean["cart_uid"] = sanitizeAll($this->m('OrdiniModel')->cart_uid);
 							
 							Output::setBodyValue("CartUid", $clean['cart_uid']);
 							
-							$res = $this->m["OrdiniModel"]->clear()
+							$res = $this->m("OrdiniModel")->clear()
 								->where(array("id_o" => $clean['lastId'], "cart_uid" => $clean["cart_uid"] ))
 								->send();
 							
@@ -1165,27 +1165,27 @@ class BaseOrdiniController extends BaseController
 									$password = $this->request->post("password","","none");
 									$clean["password"] = sanitizeAll(call_user_func(PASSWORD_HASH,$password));
 									
-									$this->m['RegusersModel']->values["password"] = $clean["password"];
+									$this->m('RegusersModel')->values["password"] = $clean["password"];
 									
 									$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
 									
 									foreach ($campiDaCopiare as $cdc)
 									{
-										$this->m['RegusersModel']->values[$cdc] = $this->m['OrdiniModel']->values[$cdc];
+										$this->m('RegusersModel')->values[$cdc] = $this->m('OrdiniModel')->values[$cdc];
 									}
 									
 									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine))
-										$this->m['RegusersModel']->values["credenziali_inviate"] = 0;
+										$this->m('RegusersModel')->values["credenziali_inviate"] = 0;
 									
-									if ($this->m['RegusersModel']->insert())
+									if ($this->m('RegusersModel')->insert())
 									{
-										$clean['userId'] = (int)$this->m['RegusersModel']->lastId();
+										$clean['userId'] = (int)$this->m('RegusersModel')->lastId();
 										
 										// Controllo che sia attiva la spedizione
 										if (v("attiva_spedizione"))
 										{
 											//aggiungo l'indirizzo di spedizione
-											$this->m["SpedizioniModel"]->setValues(array(
+											$this->m("SpedizioniModel")->setValues(array(
 												"id_user"	=>	$clean['userId'],
 												"ultimo_usato"	=>	"Y",
 											));
@@ -1194,24 +1194,24 @@ class BaseOrdiniController extends BaseController
 											
 											foreach ($campiSpedizione as $cs)
 											{
-												$this->m['SpedizioniModel']->setValue($cs, $_POST[$cs]);
+												$this->m('SpedizioniModel')->setValue($cs, $_POST[$cs]);
 											}
 											
-											$this->m["SpedizioniModel"]->insert();
+											$this->m("SpedizioniModel")->insert();
 											
-											$idSpedizione = $this->m["SpedizioniModel"]->lId;
+											$idSpedizione = $this->m("SpedizioniModel")->lId;
 										}
 										else
 											$idSpedizione = 0;
 										
-										$this->m['OrdiniModel']->values = array(
+										$this->m('OrdiniModel')->values = array(
 											"id_user" => $clean['userId'],
 											"registrato" => "Y",
 											"id_spedizione" => $idSpedizione,
 											"aggiungi_nuovo_indirizzo"	=>	"Y",
 										);
 										
-										$this->m['OrdiniModel']->update($clean['lastId']);
+										$this->m('OrdiniModel')->update($clean['lastId']);
 										
 										// MAIL AL CLIENTE
 										if (!v("mail_credenziali_dopo_pagamento") || !OrdiniModel::conPagamentoOnline($ordine))
@@ -1238,9 +1238,9 @@ class BaseOrdiniController extends BaseController
 									
 									if (strcmp($nuovoIndirizzo,"Y") === 0)
 									{
-										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
+										$this->m("SpedizioniModel")->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
 										
-										$this->m["SpedizioniModel"]->setValues(array(
+										$this->m("SpedizioniModel")->setValues(array(
 											"id_user"	=>	$this->iduser,
 											"ultimo_usato"	=>	"Y",
 										));
@@ -1249,53 +1249,53 @@ class BaseOrdiniController extends BaseController
 										
 										foreach ($campiSpedizione as $cs)
 										{
-											$this->m['SpedizioniModel']->setValue($cs, $_POST[$cs]);
+											$this->m('SpedizioniModel')->setValue($cs, $_POST[$cs]);
 										}
 										
-										if ($this->m["SpedizioniModel"]->insert())
-											$idSpedizione = $this->m["SpedizioniModel"]->lId;
+										if ($this->m("SpedizioniModel")->insert())
+											$idSpedizione = $this->m("SpedizioniModel")->lId;
 									}
 									else if ($idSpedizione > 0)
 									{
-										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
-										$this->m["SpedizioniModel"]->query("update spedizioni set ultimo_usato = 'Y' where id_spedizione = ".(int)$idSpedizione." and id_user = ".(int)User::$id);
+										$this->m("SpedizioniModel")->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
+										$this->m("SpedizioniModel")->query("update spedizioni set ultimo_usato = 'Y' where id_spedizione = ".(int)$idSpedizione." and id_user = ".(int)User::$id);
 									}
 								}
 								else
 									$idSpedizione = 0;
 								
 								//segna da che utente è stato eseguito l'ordine
-								$this->m['OrdiniModel']->values = array(
+								$this->m('OrdiniModel')->values = array(
 									"id_user" => $this->iduser,
 									"registrato" => "Y",
 									"id_spedizione" => $idSpedizione,
 								);
-								$this->m['OrdiniModel']->update($clean['lastId']);
+								$this->m('OrdiniModel')->update($clean['lastId']);
 								
-								if (!$this->m['RegusersModel']->isCompleto(User::$id))
-									$this->m['RegusersModel']->sincronizzaDaOrdine(User::$id, $clean['lastId']);
+								if (!$this->m('RegusersModel')->isCompleto(User::$id))
+									$this->m('RegusersModel')->sincronizzaDaOrdine(User::$id, $clean['lastId']);
 							}
 
 							// Se è nazione estera, salvo la dprovincia in provincia
                             if (isset($_POST["nazione"]) && $_POST["nazione"] != "IT")
                             {
-								$this->m['OrdiniModel']->values = array(
+								$this->m('OrdiniModel')->values = array(
                                     "provincia" => $dprovincia,
                                 );
-                                $this->m['OrdiniModel']->update($clean['lastId']);
+                                $this->m('OrdiniModel')->update($clean['lastId']);
                             }
                             
                             // Se è nazione estera, salvo la dprovincia_spedizione in provincia_spedizione
                             if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] != "IT")
                             {
-								$this->m['OrdiniModel']->values = array(
+								$this->m('OrdiniModel')->values = array(
                                     "provincia_spedizione" => $dprovincia_spedizione,
                                 );
-                                $this->m['OrdiniModel']->update($clean['lastId']);
+                                $this->m('OrdiniModel')->update($clean['lastId']);
                             }
                             
                             // Estraggo nuovamente l'ordine
-                            $res = $this->m["OrdiniModel"]->clear()
+                            $res = $this->m("OrdiniModel")->clear()
                                 ->where(array("id_o" => $clean['lastId']))
                                 ->send();
 
@@ -1303,10 +1303,10 @@ class BaseOrdiniController extends BaseController
                             
 // 							$mail->WordWrap = 70;
 							
-							$righeOrdine = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean['lastId'],"cart_uid" => $clean["cart_uid"]))->send();
+							$righeOrdine = $this->m("RigheModel")->clear()->where(array("id_o"=>$clean['lastId'],"cart_uid" => $clean["cart_uid"]))->send();
 							
 							// hook chiamato quando l'ordine è stato confermato
-							$this->m["OrdiniModel"]->triggersOrdine($clean['lastId']);
+							$this->m("OrdiniModel")->triggersOrdine($clean['lastId']);
 							
 							// hook ordine confermato
 							if (v("hook_ordine_confermato") && function_exists(v("hook_ordine_confermato")))
@@ -1335,7 +1335,7 @@ class BaseOrdiniController extends BaseController
 								));
 							}
 							else
-								$this->m['OrdiniModel']->settaMailDaInviare($clean['lastId']);
+								$this->m('OrdiniModel')->settaMailDaInviare($clean['lastId']);
 							
 							// mail al negozio
 							if (!v("mail_ordine_dopo_pagamento_negozio") || !OrdiniModel::conPagamentoOnline($ordine))
@@ -1357,7 +1357,7 @@ class BaseOrdiniController extends BaseController
 								));
 							}
 							else
-								$this->m['OrdiniModel']->settaMailDaInviare($clean['lastId'], "mail_da_inviare_negozio");
+								$this->m('OrdiniModel')->settaMailDaInviare($clean['lastId'], "mail_da_inviare_negozio");
 							
 							// Iscrizione alla newsletter
 							if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())
@@ -1365,7 +1365,7 @@ class BaseOrdiniController extends BaseController
 								IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati(htmlentitydecodeDeep($ordine)));
 								
 								// Inserisco il contatto
-								$this->m['ContattiModel']->insertDaArray($ordine, "NEWSLETTER_DA_ORDINE");
+								$this->m('ContattiModel')->insertDaArray($ordine, "NEWSLETTER_DA_ORDINE");
 							}
 							
 							// Redirect immediato a gateway
@@ -1381,29 +1381,29 @@ class BaseOrdiniController extends BaseController
 						}
 						else
 						{
-							$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['OrdiniModel']->notice;
-							$this->m['RegusersModel']->result = false;
+							$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('OrdiniModel')->notice;
+							$this->m('RegusersModel')->result = false;
 							
 							if (Output::$json)
-								Output::setBodyValue("Errori", $this->m['OrdiniModel']->errors);
+								Output::setBodyValue("Errori", $this->m('OrdiniModel')->errors);
 						}
 					}
 					else
 					{
-						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['RegusersModel']->notice;
-						$this->m['OrdiniModel']->result = false;
+						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('RegusersModel')->notice;
+						$this->m('OrdiniModel')->result = false;
 						
 						if (Output::$json)
-							Output::setBodyValue("Errori", $this->m['RegusersModel']->errors);
+							Output::setBodyValue("Errori", $this->m('RegusersModel')->errors);
 					}
 				}
 				else
 				{
-					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m['OrdiniModel']->notice;
-					$this->m['RegusersModel']->result = false;
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('OrdiniModel')->notice;
+					$this->m('RegusersModel')->result = false;
 					
 					if (Output::$json)
-						Output::setBodyValue("Errori", $this->m['OrdiniModel']->errors);
+						Output::setBodyValue("Errori", $this->m('OrdiniModel')->errors);
 				}
 			}
 			else
@@ -1415,7 +1415,7 @@ class BaseOrdiniController extends BaseController
 		$logSubmit->setErroriSubmit($data['notice']);
 		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
 		
-		$this->m['OrdiniModel']->fields = OpzioniModel::stringaValori("CAMPI_FORM_CHECKOUT");
+		$this->m('OrdiniModel')->fields = OpzioniModel::stringaValori("CAMPI_FORM_CHECKOUT");
 		
 		// Elenco corrieri
 		if (!v("scegli_il_corriere_dalla_categoria_dei_prodotti"))
@@ -1423,9 +1423,9 @@ class BaseOrdiniController extends BaseController
 		else
 		{
 			// cerca il corriere dal carrello
-			$idCorriereDaCarrello = $this->m["CorrieriModel"]->getIdCorriereDaCarrello();
+			$idCorriereDaCarrello = $this->m("CorrieriModel")->getIdCorriereDaCarrello();
 			
-			$data['corrieri'] = $idCorriereDaCarrello ? $this->m["CorrieriModel"]->whereId((int)$idCorriereDaCarrello)->send(false) : $this->m["CorrieriModel"]->elencoCorrieri(true);
+			$data['corrieri'] = $idCorriereDaCarrello ? $this->m("CorrieriModel")->whereId((int)$idCorriereDaCarrello)->send(false) : $this->m("CorrieriModel")->elencoCorrieri(true);
 		}
 		
 		$defaultValues = $_SESSION;
@@ -1436,15 +1436,15 @@ class BaseOrdiniController extends BaseController
 			$defaultValues["email"] = $defaultValues["username"];
 			$defaultValues["conferma_email"] = $defaultValues["username"];
 			
-			$data["tendinaIndirizzi"] = $this->m["RegusersModel"]->getTendinaIndirizzi(User::$id);
-			$data["elencoIndirizzi"] = $this->m["RegusersModel"]->getIndirizziSpedizione(User::$id);
+			$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
+			$data["elencoIndirizzi"] = $this->m("RegusersModel")->getIndirizziSpedizione(User::$id);
 			
 			$defaultValues["aggiungi_nuovo_indirizzo"] = "Y";
 			
 			if (count($data["tendinaIndirizzi"]) > 0)
 			{
 				$defaultValues["aggiungi_nuovo_indirizzo"] = "N";
-				$defaultValues["id_spedizione"] = $this->m["RegusersModel"]->getIdSpedizioneUsatoNellUltimoOrdine(User::$id);
+				$defaultValues["id_spedizione"] = $this->m("RegusersModel")->getIdSpedizioneUsatoNellUltimoOrdine(User::$id);
 			}
 			else
 				$defaultValues["spedisci_dati_fatturazione"] = "Y";
@@ -1477,16 +1477,16 @@ class BaseOrdiniController extends BaseController
 		$defaultValues["newsletter"] = "N";
 		$defaultValues["regalo"] = ListeregaloModel::hasIdLista() ? 1 : 0;
 		
-		$data['values'] = $this->m['OrdiniModel']->getFormValues('insert','sanitizeHtml',null,$defaultValues);
+		$data['values'] = $this->m('OrdiniModel')->getFormValues('insert','sanitizeHtml',null,$defaultValues);
 		
-		$data['province'] = $this->m['ProvinceModel']->selectTendina();
+		$data['province'] = $this->m('ProvinceModel')->selectTendina();
 		
-		$this->m['RegusersModel']->fields = "password";
+		$this->m('RegusersModel')->fields = "password";
 		
 		if (v("account_attiva_conferma_password"))
-			$this->m['RegusersModel']->fields .= ",confirmation";
+			$this->m('RegusersModel')->fields .= ",confirmation";
 		
-		$data['regusers_values'] = $this->m['RegusersModel']->getFormValues('insert','sanitizeHtml');
+		$data['regusers_values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml');
 		
 		if (strcmp($data['values']["tipo_cliente"],"") === 0)
 		{
@@ -1518,7 +1518,7 @@ class BaseOrdiniController extends BaseController
 		
 		$this->clean();
 		
-		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		$data["pages"] = $this->m("CartModel")->getProdotti();
 		$this->append($data);
 		
 		$this->load("totale_merce");

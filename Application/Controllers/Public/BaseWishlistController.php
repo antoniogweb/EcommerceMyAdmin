@@ -58,9 +58,9 @@ class BaseWishlistController extends BaseController
 		
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		$data["pages"] = PagesModel::impostaDatiCombinazionePagine($this->m["WishlistModel"]->getProdotti());
+		$data["pages"] = PagesModel::impostaDatiCombinazionePagine($this->m("WishlistModel")->getProdotti());
 		
-// 		$data["pages"] = $this->m["WishlistModel"]->clear()->select("wishlist.*,pages.*")->inner("pages")->using("id_page")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("id_wishlist ASC")->send();
+// 		$data["pages"] = $this->m("WishlistModel")->clear()->select("wishlist.*,pages.*")->inner("pages")->using("id_page")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("id_wishlist ASC")->send();
 		
 		$this->append($data);
 		
@@ -85,7 +85,7 @@ class BaseWishlistController extends BaseController
 			
 			Output::setBodyValue("Type", "Wishlist");
 			Output::setBodyValue("Pages", $pagineConDecode);
-			Output::setHeaderValue("CartProductsNumber",$this->m["WishlistModel"]->numberOfItems());
+			Output::setHeaderValue("CartProductsNumber",$this->m("WishlistModel")->numberOfItems());
 			
 			$this->load("api_output");
 		}
@@ -109,7 +109,7 @@ class BaseWishlistController extends BaseController
 		
 		$clean["wishlist_uid"] = sanitizeAll(User::$wishlist_uid);
 		
-		$data["pages"] = $this->m["WishlistModel"]->clear()->select("wishlist.*,pages.id_page")->inner("pages")->using("id_page")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("id_wishlist ASC")->send();
+		$data["pages"] = $this->m("WishlistModel")->clear()->select("wishlist.*,pages.id_page")->inner("pages")->using("id_page")->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("id_wishlist ASC")->send();
 		
 		$this->append($data);
 		
@@ -124,7 +124,7 @@ class BaseWishlistController extends BaseController
 		
 		$contentsFbk = "";
 		
-		if ($this->m["WishlistModel"]->add($clean["id_cart"]))
+		if ($this->m("WishlistModel")->add($clean["id_cart"]))
 		{
 			$result = "OK";
 			
@@ -154,7 +154,7 @@ class BaseWishlistController extends BaseController
 		// Se sono JSON, stampa in output il carrello completo
 		if (Output::$json)
 		{
-			Output::setHeaderValue("CartProductsNumber",$this->m["WishlistModel"]->numberOfItems());
+			Output::setHeaderValue("CartProductsNumber",$this->m("WishlistModel")->numberOfItems());
 			
 			$this->load("api_output");
 		}
@@ -171,7 +171,7 @@ class BaseWishlistController extends BaseController
 		
 		$this->clean();
 		
-		if ($this->m["WishlistModel"]->delete($clean["id_cart"]))
+		if ($this->m("WishlistModel")->delete($clean["id_cart"]))
 		{
 			$result = "OK";
 		}
@@ -204,7 +204,7 @@ class BaseWishlistController extends BaseController
 // 			if (strcmp($q,"") !== 0 and strstr($q, ':'))
 // 			{
 // 				$temp = explode(":",$q);
-// 				$this->m["CartModel"]->set($temp[0], $temp[1]);
+// 				$this->m("CartModel")->set($temp[0], $temp[1]);
 // 			}
 // 		}
 // 		

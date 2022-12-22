@@ -61,7 +61,7 @@ class BaseCartController extends BaseController
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$data["pages"] = $this->m["CartModel"]->getProdotti();
+		$data["pages"] = $this->m("CartModel")->getProdotti();
 		
 		$this->append($data);
 		
@@ -82,7 +82,7 @@ class BaseCartController extends BaseController
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$data["pages"] = $this->m["CartModel"]->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
+		$data["pages"] = $this->m("CartModel")->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 		
 		$this->append($data);
 		
@@ -115,7 +115,7 @@ class BaseCartController extends BaseController
 			
 			// Se non è una modifica del carrello svuoto il carrello
 			if (!$id_cart)
-				$this->m["CartModel"]->emptyCart();
+				$this->m("CartModel")->emptyCart();
 		}
 		
 		$clean["id_page"] = (int)$id_page;
@@ -151,12 +151,12 @@ class BaseCartController extends BaseController
 		// Se sto modificando dal carrello
 		if ((int)$clean["id_cart"] !== 0)
 		{
-			$recordCart = $this->m["CartModel"]->getCart($clean["id_cart"]);
+			$recordCart = $this->m("CartModel")->getCart($clean["id_cart"]);
 			
 			if (!empty($recordCart))
 			{
-				if ($this->m["CartModel"]->checkQta($clean["id_c"], ($clean["quantity"] - $recordCart["quantity"])))
-					$this->m["CartModel"]->delete($clean["id_cart"]);
+				if ($this->m("CartModel")->checkQta($clean["id_c"], ($clean["quantity"] - $recordCart["quantity"])))
+					$this->m("CartModel")->delete($clean["id_cart"]);
 			}
 		}
 		
@@ -175,7 +175,7 @@ class BaseCartController extends BaseController
 				if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza || $isGiftCard)
 				{
 					// OK giacenza
-					$idCart = $this->m["CartModel"]->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
+					$idCart = $this->m("CartModel")->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
 					
 					if ($idCart)
 					{
@@ -187,16 +187,16 @@ class BaseCartController extends BaseController
 						{
 							if (!empty($recordCart))
 							{
-								$this->m["CartModel"]->setValues(array(
+								$this->m("CartModel")->setValues(array(
 									"id_order"	=>	$recordCart["id_order"],
 								));
 								
-								$this->m["CartModel"]->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+								$this->m("CartModel")->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
 							}
 							
 							$result = "OK";
 							
-							$rcu = $this->m["CartModel"]->getCart($idCart);
+							$rcu = $this->m("CartModel")->getCart($idCart);
 							
 							if (!empty($rcu))
 							{
@@ -229,7 +229,7 @@ class BaseCartController extends BaseController
 							}
 							
 							// Aggiorna gli elementi del carrello
-							$this->m["CartModel"]->aggiornaElementi();
+							$this->m("CartModel")->aggiornaElementi();
 						}
 					}
 					else
@@ -279,7 +279,7 @@ class BaseCartController extends BaseController
 		
 		$this->clean();
 		
-		if ($id_cart && $this->m["CartModel"]->delete($clean["id_cart"]))
+		if ($id_cart && $this->m("CartModel")->delete($clean["id_cart"]))
 		{
 			$result = "OK";
 		}
@@ -338,7 +338,7 @@ class BaseCartController extends BaseController
 						$arrayIdErroriQta[] = $temp[0];
 				}
 				
-				if (!$this->m["CartModel"]->checkQtaFinale($temp[0], $temp[1]))
+				if (!$this->m("CartModel")->checkQtaFinale($temp[0], $temp[1]))
 					$arrayIdErroriQta[] = $temp[0];
 				
 				$arrayIdQuantity[] = array($temp[0], $temp[1]);
@@ -349,12 +349,12 @@ class BaseCartController extends BaseController
 		{
 			foreach ($arrayIdQuantity as $temp)
 			{
-				$this->m["CartModel"]->set($temp[0], $temp[1]);
+				$this->m("CartModel")->set($temp[0], $temp[1]);
 			}
 		}
 		
 		// Aggiorna gli elementi del carrello
-		$this->m["CartModel"]->aggiornaElementi($elementiPuliti);
+		$this->m("CartModel")->aggiornaElementi($elementiPuliti);
 		
 		echo json_encode(array(
 			"qty"				=>	$arrayIdErroriQta,
