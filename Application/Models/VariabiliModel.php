@@ -579,6 +579,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
 		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto)
 		"attiva_filtri_caratteristiche_separati_per_categoria"	=>	0, // se impostato a 1, sarà possibile aggiungere filtri di caratteristiche distini per ogni categoria
+		"carica_tutti_i_model"	=>	1, // carica subito tutti i model
 	);
 	
 	public static $daInizializzare = array(

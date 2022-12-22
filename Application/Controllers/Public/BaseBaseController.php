@@ -88,48 +88,51 @@ class BaseBaseController extends Controller
 			"tipo_cliente"	=>	v("tipo_cliente_default"),
 		);
 		
-// 		$this->model("CategoriesModel");
-// 		$this->model("MenuModel");
-// 		$this->model("PagesModel");
-// 		$this->model("ImmaginiModel");
-// 		$this->model("CartModel");
-// 		$this->model("WishlistModel");
-// 		$this->model("RigheModel");
-// 		$this->model("OrdiniModel");
-// 		$this->model("RegusersModel");
-// 		$this->model("PromozioniModel");
-// 		
-// 		$this->model("AttributiModel");
-// 		$this->model("AttributivaloriModel");
-// 		$this->model("CombinazioniModel");
-// 		$this->model("PagesattributiModel");
-// 		$this->model("PagescarvalModel");
-// 		
-// 		$this->model("SpedizioniModel");
-// 		$this->model("ScaglioniModel");
-// 		$this->model("ImpostazioniModel");
-// 		$this->model("LayerModel");
-// 		$this->model("CorrieriModel");
-// 		$this->model("CorrierispeseModel");
-// 		$this->model("NazioniModel");
-// 		$this->model("ClassiscontoModel");
-// 		$this->model("ProvinceModel");
-// 		$this->model("MarchiModel");
-// 		$this->model("ContenutiModel");
-// 		$this->model("DocumentiModel");
-// 		$this->model("RuoliModel");
-// 		$this->model("PersonalizzazioniModel");
-// 		$this->model("TagModel");
-// 		$this->model("TipiaziendaModel");
-// 		$this->model("PagesregioniModel");
-// 		$this->model("CaptchaModel");
-// 		$this->model('ContattiModel');
-		
-// 		if (v("attiva_liste_regalo"))
-// 			$this->model('ListeregaloModel');
-// 		
-// 		if (v("abilita_feedback"))
-// 			$this->model("FeedbackModel");
+		if (v("carica_tutti_i_model"))
+		{
+			$this->model("CategoriesModel");
+			$this->model("MenuModel");
+			$this->model("PagesModel");
+			$this->model("ImmaginiModel");
+			$this->model("CartModel");
+			$this->model("WishlistModel");
+			$this->model("RigheModel");
+			$this->model("OrdiniModel");
+			$this->model("RegusersModel");
+			$this->model("PromozioniModel");
+			
+			$this->model("AttributiModel");
+			$this->model("AttributivaloriModel");
+			$this->model("CombinazioniModel");
+			$this->model("PagesattributiModel");
+			$this->model("PagescarvalModel");
+			
+			$this->model("SpedizioniModel");
+			$this->model("ScaglioniModel");
+			$this->model("ImpostazioniModel");
+			$this->model("LayerModel");
+			$this->model("CorrieriModel");
+			$this->model("CorrierispeseModel");
+			$this->model("NazioniModel");
+			$this->model("ClassiscontoModel");
+			$this->model("ProvinceModel");
+			$this->model("MarchiModel");
+			$this->model("ContenutiModel");
+			$this->model("DocumentiModel");
+			$this->model("RuoliModel");
+			$this->model("PersonalizzazioniModel");
+			$this->model("TagModel");
+			$this->model("TipiaziendaModel");
+			$this->model("PagesregioniModel");
+			$this->model("CaptchaModel");
+			$this->model('ContattiModel');
+			
+			if (v("attiva_liste_regalo"))
+				$this->model('ListeregaloModel');
+			
+			if (v("abilita_feedback"))
+				$this->model("FeedbackModel");
+		}
 		
 		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
 		RegioniModel::$rAlias = gtext(v("label_regione_url"));
