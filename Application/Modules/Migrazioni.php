@@ -75,7 +75,13 @@ class Migrazioni
 					}
 					else
 					{
-						echo $mysqli->getError()."<br />";
+						$errori = $mysqli->getError();
+						
+						if (is_array($errori))
+							print_r($errori);
+						else
+							echo $errori;
+						
 						fwrite($hand,date("Y-m-d H:i:s")." ERRORE MIGRAZIONE ".$numero.".sql\n");
 						echo "ERRORE MIGRAZIONE ".$numero.".sql<br />";
 					}
