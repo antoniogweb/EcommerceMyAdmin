@@ -98,7 +98,7 @@ class BaseController extends Controller
 		{
 			$this->s['admin']->check();
 			
-			if (!$this->m("UsersModel")->checkAccessoAlController($controller))
+			if (!ControllersModel::checkAccessoAlController(array($controller)))
 				$this->responseCode(403);
 		}
 		

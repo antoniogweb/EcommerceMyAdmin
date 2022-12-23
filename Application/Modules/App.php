@@ -232,4 +232,27 @@ class App
 		
 		return false;
 	}
+	
+	public static function caricaMenu($pannello = "ecommerce")
+	{
+		$controllerPrincipali = ControllersModel::getControllerAbilitati(true);
+		
+		$path = ROOT . "/Application/Views/Vocimenu/".ucfirst($pannello);
+		
+		$files = array_diff(scandir($path), array('.', '..'));
+		natsort($files);
+		
+		$filesDaImportare = array();
+		
+		foreach ($files as $file)
+		{
+			if (preg_match('/^[0-9]{1,}\-([a-zA-Z\_]{1,})\.(php)$/',$file, $matches))
+			{
+				if (ControllersModel::checkAccessoAlController(array($matches[1])))
+					$filesDaImportare[] = $path."/".$file;
+			}
+		}
+		
+		return $filesDaImportare;
+	}
 }

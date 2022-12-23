@@ -24,6 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ControllersModel extends GenericModel
 {
+	public static $elencoControllerAttivi = null;
+	public static $controllerPermessi = null;
+	public static $controllerPermessiPrincipali = null;
+	
 	public function __construct() {
 		$this->_tables = 'controllers';
 		$this->_idFields = 'id_controller';
@@ -87,5 +91,96 @@ class ControllersModel extends GenericModel
 			
 			$gc->insert();
 		}
+    }
+    
+    public static function getControllerAbilitati($soloPrincipali = false)
+    {
+		if (!isset(self::$controllerPermessi) || !isset(self::$controllerPermessiPrincipali))
+		{
+			$uModel = new UsersModel();
+			$cModel = new ControllersModel();
+			
+			self::$controllerPermessiPrincipali = $uModel->clear()->select("controllers.codice")
+				->inner("adminusers_groups")->on("adminusers.id_user = adminusers_groups.id_user")
+				->inner("admingroups_controllers")->on("adminusers_groups.id_group = admingroups_controllers.id_group")
+				->inner("controllers")->on("admingroups_controllers.id_controller = controllers.id_controller")
+				->where(array(
+					"adminusers.id_user"	=>	(int)User::$id,
+					"controllers.attivo"	=>	1,
+				))->toList("controllers.codice")->send();
+			
+			self::$controllerPermessi = $cModel->clear()->select("controllers.codice")->where(array(
+				"controllers.attivo"	=>	1,
+				"OR"	=>	array(
+					"in"	=>	array(
+						"codice"	=>	array_map("sanitizeAll", self::$controllerPermessiPrincipali),
+					),
+					"	in"	=>	array(
+						"codice_padre"	=>	array_map("sanitizeAll", self::$controllerPermessiPrincipali),
+					),
+				),
+			))->toList("controllers.codice")->orderBy("id_order")->send();
+		}
+		
+		if ($soloPrincipali)
+			return self::$controllerPermessiPrincipali;
+		else
+			return self::$controllerPermessi;
+    }
+    
+    // Controlla l'accesso al controller
+    public static function checkAccessoAlController($controllers)
+    {
+		if (!v("attiva_gruppi_admin"))
+			return true;
+		
+		$controllersFinali = ControllersModel::getControllerAbilitati();
+		
+		if ((int)count($controllersFinali) === 0)
+			return true;
+		
+		// Controllo che sia un controller non mappato
+		$elencoAttivi = ControllersModel::getElencoControllers();
+		
+		$arrayBool = array();
+		
+		foreach ($controllers as $c)
+		{
+			$arrayBool[] = !in_array($c, $elencoAttivi) ? true : false;
+		}
+		
+		$arrayBool = array_unique($arrayBool);
+		
+		if ((int)count($arrayBool) === 1 && $arrayBool[0])
+			return true;
+		
+		// Controllo che sia un controller dell'utente attivo
+		$arrayBool = array();
+		
+		foreach ($controllers as $c)
+		{
+			$arrayBool[] = in_array($c, $controllersFinali) ? true : false;
+		}
+
+		$arrayBool = array_unique($arrayBool);
+		
+		$res = ((int)count($arrayBool) === 1 && $arrayBool[0]) ? true : false;
+		
+		return $res;
+    }
+    
+    // Restituisce tutti i controller attivi
+    public static function getElencoControllers()
+    {
+		if (isset(self::$elencoControllerAttivi))
+			return self::$elencoControllerAttivi;
+		
+		$cModel = new ControllersModel();
+		
+		self::$elencoControllerAttivi = $cModel->clear()->where(array(
+			"controllers.attivo"	=>	1,
+		))->toList("codice")->send();
+		
+		return self::$elencoControllerAttivi;
     }
 }

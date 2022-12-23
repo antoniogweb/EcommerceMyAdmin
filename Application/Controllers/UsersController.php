@@ -40,6 +40,8 @@ class UsersController extends BaseController {
 	
 	public $tabella = "amministratori";
 	
+	public $argKeys = array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1);
+	
 	function __construct($model, $controller, $queryString, $application, $action)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -48,7 +50,7 @@ class UsersController extends BaseController {
 		{
 			$this->s['admin']->check();
 			
-			if (!$this->m("UsersModel")->checkAccessoAlController($controller))
+			if (!ControllersModel::checkAccessoAlController(array($controller)))
 				$this->responseCode(403);
 		}
 		
@@ -60,10 +62,6 @@ class UsersController extends BaseController {
 		$this->model("UsersgroupsModel");
 
 		$data["sezionePannello"] = "utenti";
-		
-		$data['posizioni'] = $this->_posizioni;
-		
-		$this->setArgKeys(array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1));
 		
 		$this->append($data);
 	}

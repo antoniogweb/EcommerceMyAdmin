@@ -75,7 +75,7 @@ class NoteModel extends GenericModel
 		))->orderBy("id_nota desc")->limit(1)->first();
 		
 		if (!empty($ultimaNota))
-			$html .= "<div><small>".gtext("Ultima nota di")." <b>".$ultimaNota["adminusers"]["username"]."</b> ".gtext("il")." <b>".date("d/m/y H:i",strtotime($ultimaNota["note"]["data_creazione"]))."</b><br /><i>".$ultimaNota["note"]["testo"]."</i></small></div>";
+			$html .= "<div><small>".gtext("Ultima nota di")." <b>".$ultimaNota["adminusers"]["username"]."</b> ".gtext("del")." <b>".date("d/m/y H:i",strtotime($ultimaNota["note"]["data_creazione"]))."</b><br /><i>".$ultimaNota["note"]["testo"]."</i></small></div>";
 		
 		$html .= "<small><a class='iframe label label-info' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-plus-square-o'></i> ".gtext("Aggiungi nota")."</a></small>";
 		

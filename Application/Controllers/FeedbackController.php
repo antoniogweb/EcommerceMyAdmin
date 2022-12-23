@@ -36,6 +36,8 @@ class FeedbackController extends BaseController {
 	{
 		$this->shift(2);
 		
+		$this->m['FeedbackModel']->addStrongCondition("both",'checkNotEmpty',"autore,testo");
+		
 		$this->m[$this->modelName]->setValuesFromPost("autore,data_feedback,testo,attivo,voto");
 		
 		if ($this->viewArgs["id_page"] != "tutti")
