@@ -35,8 +35,8 @@ class IpcheckModel extends Model_Tree
 	{
 		$timeSecondi = time() - (int)$secondi;
 		
-		$sql = "select count(id_ip_check) as NUMERO from ip_check where ip='".getIp()."' and chiave = '".sanitizeAll($chiave)."' and time_creazione > $timeSecondi for update";
-		$resOra = $this->query($sql);
+		$sql = "select count(id_ip_check) as NUMERO from ip_check where ip='".getIp()."' and chiave = ? and time_creazione > ? for update";
+		$resOra = $this->query(array($sql, array(sanitizeAll($chiave), $timeSecondi)));
 		
 		return isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
 	}
@@ -51,7 +51,7 @@ class IpcheckModel extends Model_Tree
 			
 			if ((int)v("time_ultima_eliminazione_ip") < (int)$timeSecondi)
 			{
-				$ipcModel->query("delete from ip_check where time_creazione < $timeSecondi");
+				$ipcModel->query(array("delete from ip_check where time_creazione < ?",array($timeSecondi)));
 				VariabiliModel::setValore("time_ultima_eliminazione_ip", time());
 			}
 		}

@@ -30,5 +30,4 @@ if (count($mysqli->queries) > 0 && v("salva_conteggio_query"))
 if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
 	print_r($mysqli->queries);
 
-// $mysqli = Factory_Db::getInstance(DATABASE_TYPE);
-// F::checkPreparedStatement($mysqli->queries);
+F::checkPreparedStatement();

@@ -18,11 +18,4 @@ if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
 	echo "</pre>";
 }
 
-// $mysqli = Factory_Db::getInstance(DATABASE_TYPE);
-// F::checkPreparedStatement($mysqli->queries);
-
-// if (v("check_fatture"))
-// {
-// 	$ff = new FattureModel();
-// 	$ff->checkFiles();
-// }
+F::checkPreparedStatement();

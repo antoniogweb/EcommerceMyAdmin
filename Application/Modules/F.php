@@ -134,15 +134,24 @@ class F
 		return $html;
 	}
 	
-	public static function checkPreparedStatement(array $queries)
+	public static function checkPreparedStatement()
 	{
-		foreach ($queries as $query)
+		if ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && v("token_attiva_check_queries") && isset($_COOKIE[v("token_attiva_check_queries")]))
 		{
-			if (preg_match('/\=(\s?)\'([a-zA-Z]{1,})\'/',$query, $matches))
-				echo $query."<br />\n";
+			Files_Log::$logFolder = ROOT."/Logs";
+			Files_Log::$logPermission = 0644;
+			$log = Files_Log::getInstance("log_check_query");
 			
-			if (preg_match('/\=(\s?)\"([a-zA-Z]{1,})\"/',$query, $matches))
-				echo $query."<br />\n";
+			$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
+			
+			foreach ($mysqli->queries as $query)
+			{
+				if (preg_match('/\=(\s?)\'([a-zA-Z]{1,})\'/',$query, $matches))
+					$log->writeString($query);
+				
+				if (preg_match('/\=(\s?)\"([a-zA-Z]{1,})\"/',$query, $matches))
+					$log->writeString($query);
+			}
 		}
 	}
 	

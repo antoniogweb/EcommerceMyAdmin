@@ -580,6 +580,7 @@ class VariabiliModel extends GenericModel {
 		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto)
 		"attiva_filtri_caratteristiche_separati_per_categoria"	=>	0, // se impostato a 1, sarà possibile aggiungere filtri di caratteristiche distini per ogni categoria
 		"carica_tutti_i_model"	=>	1, // carica subito tutti i model
+		"token_attiva_check_queries"	=>	"", // se esiste un cookie uguale al token in questione, il sistema fa un check sulle query inviate (da attivare solo in modalità debug)
 	);
 	
 	public static $daInizializzare = array(
@@ -591,6 +592,7 @@ class VariabiliModel extends GenericModel {
 		"token_feed_google_facebook",
 		"token_aggiorna_alias_combinazioni",
 		"token_eliminazione_account_da_app",
+		"token_attiva_check_queries",
 	);
 	
 	public static function inizializza($variabili = array())
