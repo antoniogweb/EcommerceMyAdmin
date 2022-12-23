@@ -111,7 +111,7 @@ class IpcheckModel extends Model_Tree
 			
 			if (!$okLimite)
 			{
-				header('HTTP/1.0 404 Not Found');
+				header('HTTP/1.0 403 Not Found');
 				die();
 			}
 		}

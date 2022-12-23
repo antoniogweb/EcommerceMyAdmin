@@ -124,12 +124,17 @@ class BaseRegusersModel extends Model_Tree
 		return false;
 	}
 	
-	public function pUpdate($id)
+	public function pUpdate($id = null, $where = null)
 	{
-		$clean["id"] = (int)$id;
-		
-		return parent::update($clean["id"]);
+		return parent::update($id, $where);
 	}
+	
+// 	public function pUpdate($id)
+// 	{
+// 		$clean["id"] = (int)$id;
+// 		
+// 		return parent::update($clean["id"]);
+// 	}
 
 	//get a unique token
 	public function getUniqueToken($forgotToken)

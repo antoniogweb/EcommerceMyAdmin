@@ -24,7 +24,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseRiservataController extends BaseController
 {
-
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -86,10 +85,7 @@ class BaseRiservataController extends BaseController
 		$clean["id_spedizione"] = $this->request->get("del",0,"forceInt");
 		
 		if ($clean["id_spedizione"] > 0)
-		{
-			$this->m("SpedizioniModel")->del(null, "id_spedizione = ".$clean["id_spedizione"]." AND id_user = ".User::$id);
-// 			echo $this->m("SpedizioniModel")->notice;
-		}
+			$this->m("SpedizioniModel")->del(null, array("id_spedizione = ? AND id_user = ?",array($clean["id_spedizione"], User::$id)));
 		
 		$data['indirizzi'] = $this->m("SpedizioniModel")->clear()->where(array("id_user"=>$this->iduser))->orderBy("indirizzo_spedizione desc")->send();
 		
@@ -155,16 +151,6 @@ class BaseRiservataController extends BaseController
 				$this->s['registered']->logout();
 				
 				$this->redirect(RegusersModel::getUrlAccountEliminato($tokenEliminazione));
-				
-// 				$idRedirect = PagineModel::gTipoPagina("ACCOUNT_ELIMINATO");
-// 				
-// 				if (!v("elimina_record_utente_ad_autoeliminazione"))
-// 					$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
-// 				
-// 				if ($idRedirect)
-// 					$this->redirect(getUrlAlias($idRedirect).$queryStringEliminazione);
-// 				else
-// 					$this->redirect('account-cancellato.html'.$queryStringEliminazione,0);
 			}
 			else
 				$data["notice"] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, password non corretta.")."</div><div class='evidenzia'>class_password</div>";

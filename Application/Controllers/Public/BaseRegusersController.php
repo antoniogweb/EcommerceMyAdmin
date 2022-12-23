@@ -90,15 +90,6 @@ class BaseRegusersController extends BaseController
 		$data['notice'] = null;
 		
 		$this->checkNonLoggato();
-// 		$this->s['registered']->checkStatus();
-// 		
-// 		if ($this->s['registered']->status['status']=='logged') { //check if already logged
-// 			if (Output::$html)
-// 			{
-// 				$this->m('RegusersModel')->redirectVersoAreaRiservata();
-// 				die();
-// 			}
-// 		}
 		
 		$this->getAppLogin();
 		
@@ -463,8 +454,11 @@ class BaseRegusersController extends BaseController
 						{
 							$clean['username'] = sanitizeAll($_POST['username']);
 							
-							$res = $this->m("RegusersModel")->db->select('regusers','*','username="'.$clean['username'].'" and has_confirmed = 0');
-
+							$res = $this->m("RegusersModel")->clear()->where(array(
+								"username"		=>	$clean['username'],
+								"has_confirmed"	=>	0,
+							))->send();
+							
 							if (count($res) > 0)
 							{
 								$e_mail = $res[0]['regusers']['username'];
@@ -472,7 +466,15 @@ class BaseRegusersController extends BaseController
 								$forgot_token = $this->m("RegusersModel")->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
 								$forgot_time = time();
 								$updateArray = array($forgot_token, $forgot_time);
-								$this->m("RegusersModel")->db->update('regusers','forgot_token,forgot_time',$updateArray,'username="'.$clean['username'].'"');
+
+								$this->m("RegusersModel")->sValues(array(
+									"forgot_token"	=>	$forgot_token,
+									"forgot_time"	=>	$forgot_time,
+								));
+								
+								$this->m("RegusersModel")->pUpdate(null, array(
+									"username"	=>	$clean['username'],
+								));
 								
 								ob_start();
 								include tpf("/Regusers/mail_richiesta_cambio_password.php");
