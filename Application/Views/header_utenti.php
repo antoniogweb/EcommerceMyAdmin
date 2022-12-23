@@ -1,21 +1,24 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
 include(ROOT."/Application/Views/header.php");
 ?>
-	
 	<?php if (!partial()) { ?>
 	<aside class="main-sidebar">
 		<section class="sidebar">
 		<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {?>
 		<ul class="sidebar-menu">
 			<li class="header"><?php echo gtext("MENÙ GENSTIONE PREFERENZE");?></li>
-			<li class="<?php echo tm($tm, "users");?> treeview">
+			<li class="<?php echo tm($tm, array("users","groups"));?> treeview">
 				<a href="#">
 					<i class="fa fa-user-circle-o"></i>
 					<span><?php echo gtext("Amministratori");?></span>
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="<?php echo $this->baseUrl."/users/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi utente");?></a></li>
-					<li><a href="<?php echo $this->baseUrl."/users/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista utenti");?></a></li>
+					<li class="<?php echo tm($tm, array("users"));?>"><a href="<?php echo $this->baseUrl."/users/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista utenti");?></a></li>
+					<?php if (v("attiva_gruppi_admin")) { ?>
+					<li class="dropdown-header">Gruppi</li>
+					<li class="<?php echo tm($tm, array("groups"));?>"><a href="<?php echo $this->baseUrl."/groups/main/1";?>"><i class="fa fa-group"></i> Lista gruppi</a></li>
+					<?php } ?>
 				</ul>
 			</li>
 			<li class="<?php echo tm($tm, "traduzioni");?>"><a href="<?php echo $this->baseUrl."/traduzioni/main/1";?>"><i class="fa fa-language"></i> <span><?php echo gtext("Traduzioni");?></span></a></li>

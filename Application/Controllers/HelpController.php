@@ -130,7 +130,10 @@ class HelpController extends BaseController
 				$this->m["HelpuserModel"]->insert();
 			}
 			else
-				$this->m["HelpuserModel"]->del(null, "id_help = ".(int)$id." AND id_user = ".(int)User::$id);
+				$this->m["HelpuserModel"]->del(null, array(
+					"id_help"	=>	(int)$id,
+					"id_user"	=>	(int)User::$id,
+				));
 		}
 	}
 	

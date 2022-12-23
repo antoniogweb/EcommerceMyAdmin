@@ -31,55 +31,30 @@ class BaseController extends Controller
 	protected $_topMenuClasses = array();
 	
 	public $id_name = "";
-	
 	public $parentRoot = null;
-	
 	public $disabledFields = null;
-	
 	public $menuLinksStruct = array();
-	
 	public $menuLinksReport = "stampa";
-	
 	public $mainMenuAssociati = "back,copia";
-	
 	public $insertSubmitText = "Continua";
-	
 	public $insertRedirectUrl = null;
-	
 	public $formMethod = null;
-	
 	public $mainFields = array();
-	
 	public $mainCsvFields = null;
-	
 	public $mainHead = "";
-	
 	public $mainCsvHead = null;
-	
 	public $tabella = null;
-	
 	public $orderBy = "";
-	
 	public $sezionePannello = "sito";
-	
 	public $useEditor = false;
-	
 	public $argKeys = null;
-	
 	public $formValuesToDb = null;
-	
 	public $filtroAttivo = array("tutti"=>"Attivi / NON Attivi","Y"=>"Attivi","N"=>"NON Attivi");
-	
 	public $elencoLingue = array();
-	
 	public $mainMenu = "add";
-	
 	public $closeModal = false;
-	
 	public $addTraduzioniInMain = true;
-	
 	public $tabViewFields = array();
-	
 	public $campiVariabiliDaModificare = "";
 	
 	public $baseArgsKeys = array(
@@ -120,7 +95,12 @@ class BaseController extends Controller
 		}
 		
 		if (strcmp($controller,"users") !== 0)
+		{
 			$this->s['admin']->check();
+			
+			if (!$this->m("UsersModel")->checkAccessoAlController($controller))
+				$this->responseCode(403);
+		}
 		
 		$this->init();
 		

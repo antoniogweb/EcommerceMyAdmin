@@ -151,6 +151,15 @@ class F
 				
 				if (preg_match('/\=(\s?)\"([a-zA-Z]{1,})\"/',$query, $matches))
 					$log->writeString($query);
+				
+				if (preg_match('/\=(\s?)\'([0-9]{1,})\'/',$query, $matches))
+					$log->writeString($query);
+				
+				if (preg_match('/\=(\s?)\"([0-9]{1,})\"/',$query, $matches))
+					$log->writeString($query);
+				
+				if (preg_match('/\=(\s?)([0-9]{1,})/',$query, $matches))
+					$log->writeString($query);
 			}
 		}
 	}

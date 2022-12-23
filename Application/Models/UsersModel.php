@@ -93,6 +93,36 @@ class UsersModel extends GenericModel {
 		);
 	}
     
+    // Controlla l'accesso al controller
+    public function checkAccessoAlController($controller)
+    {
+		if (!v("attiva_gruppi_admin"))
+			return true;
+		
+		$controllersPermessi = $this->clear()->select("controllers.codice")
+			->inner("adminusers_groups")->on("adminusers.id_user = adminusers_groups.id_user")
+			->inner("admingroups_controllers")->on("adminusers_groups.id_group = admingroups_controllers.id_group")
+			->inner("controllers")->on("admingroups_controllers.id_controller = controllers.id_controller")
+			->where(array(
+				"adminusers.id_user"	=>	(int)User::$id,
+			))->toList("controllers.codice")->send();
+		
+		$cModel = new ControllersModel();
+		
+		$controllersFinali = $cModel->clear()->select("controllers.codice")->where(array(
+			"OR"	=>	array(
+				"in"	=>	array(
+					"codice"	=>	array_map("sanitizeAll", $controllersPermessi),
+				),
+				"	in"	=>	array(
+					"codice_padre"	=>	array_map("sanitizeAll", $controllersPermessi),
+				),
+			),
+		))->toList("controllers.codice")->orderBy("id_order")->send();
+		
+		return ((int)count($controllersFinali) === 0 || in_array($controller, $controllersFinali)) ? true : false;
+    }
+    
 	public function update($id = null, $where = null)
 	{
 		$clean['id'] = (int)$id;

@@ -380,7 +380,7 @@ class CombinazioniController extends BaseController
 				"checkbox_combinazioni_id_c"	=>	array("aggiungialistaregalo","Aggiungi alla lista regalo"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("combinazioni.id_c not in (select id_c from liste_regalo_pages where id_c is not null and id_lista_regalo = ".(int)$this->viewArgs["id_lista_regalo"].")");
+			$this->m[$this->modelName]->sWhere(array("combinazioni.id_c not in (select id_c from liste_regalo_pages where id_c is not null and id_lista_regalo = ?)",array((int)$this->viewArgs["id_lista_regalo"])));
 		}
 		
 		if ($this->viewArgs["id_ordine"] != "tutti")
@@ -395,7 +395,7 @@ class CombinazioniController extends BaseController
 				"checkbox_combinazioni_id_c"	=>	array("aggiungiaordine","Aggiungi ad ordine"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("pages.attivo = 'Y' and combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ".(int)$this->viewArgs["id_ordine"].")");
+			$this->m[$this->modelName]->sWhere(array("pages.attivo = ? and combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ?)",array('Y', (int)$this->viewArgs["id_ordine"])));
 		}
 		
 		$this->m[$this->modelName]->save();

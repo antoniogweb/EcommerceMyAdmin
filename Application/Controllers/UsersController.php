@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["username"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Username ..",
+	),
+);
+
 class UsersController extends BaseController {
 
 	protected $_posizioni = array(
@@ -31,9 +38,20 @@ class UsersController extends BaseController {
 	
 	public $sezionePannello = "utenti";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
-
+	public $tabella = "amministratori";
+	
+	function __construct($model, $controller, $queryString, $application, $action)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if ($action != "login" && $action != "logout")
+		{
+			$this->s['admin']->check();
+			
+			if (!$this->m("UsersModel")->checkAccessoAlController($controller))
+				$this->responseCode(403);
+		}
+		
 		$this->helper('Menu','users','panel/main');
 		$this->helper('Array');
 
@@ -46,12 +64,8 @@ class UsersController extends BaseController {
 		$data['posizioni'] = $this->_posizioni;
 		
 		$this->setArgKeys(array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1));
-
-		$this->_topMenuClasses['utenti'] = array("active","in");
-		$data['tm'] = $this->_topMenuClasses;
 		
 		$this->append($data);
-		
 	}
 
 	public function login()
@@ -100,74 +114,26 @@ class UsersController extends BaseController {
 		}
 
 	}
-
-	public function main() { //view all the users
-
+	
+	public function main()
+	{
 		$this->shift();
-
-		Params::$nullQueryValue = 'tutti';
 		
-		$this->s['admin']->check();
-// 		if (!$this->s['admin']->checkCsrf($this->viewArgs['token'])) $this->redirect('panel/main',2,'wrong token');
+		$this->mainFields = array('[[ledit]];adminusers.username;','getYesNoUtenti|adminusers:has_confirmed');
+		$this->mainHead = 'Nome utente,Attivo?';
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>20, 'mainMenu'=>'add'));
+		$this->filters = array("username");
 		
-		$this->scaffold->loadMain('[[checkbox]];adminusers.id_user;,[[ledit]];adminusers.username;,getYesNoUtenti|adminusers:has_confirmed','adminusers:id_user','ldel,ledit');
-
-		$this->scaffold->update('del');
+		$this->m[$this->modelName]->clear()->where(array(
+			"lk" => array('adminusers.username' => $this->viewArgs['username']),
+		))->convert()->save();
 		
-		$this->m[$this->modelName]->bulkAction("del");
-		
-		$this->scaffold->setHead('[[bulkselect:checkbox_adminusers_id_user]],NOME UTENTE,ATTIVO?');
-		$this->scaffold->itemList->setFilters(array(null,'username'));
-
-		$this->scaffold->itemList->setBulkActions(array(
-			"checkbox_adminusers_id_user"	=>	array("del","Elimina selezionati","confirm"),
-		));
-		
-		$whereClauseArray = array(
-			'has_confirmed'	=>	$this->viewArgs['has_confirmed'],
-		);
-		$this->scaffold->model->clear()->where($whereClauseArray);
-		
-		if (strcmp($this->viewArgs['username'],'tutti') !== 0)
-		{
-			$where = array(
-				"lk" => array('n!adminusers.username' => $this->viewArgs['username']),
-// 				'n!adminusers.username' =>	"like '%".$this->viewArgs['username']."%'",
-			);
-
-			$this->scaffold->model->aWhere($where);
-		}
-		
-		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
-		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci un nuovo utente';
-		
-		$this->scaffold->itemList->colProperties = array(
-			array(
-				'width'	=>	'60px',
-			),
-		);
-		
-		$data['scaffold'] = $this->scaffold->render();
-// 		echo $this->scaffold->model->getQuery();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		
-		$data['notice'] = $this->scaffold->model->notice;
-		
-		$data["tabella"] = "amministratori";
-		
-		$this->append($data);
-		$this->load('main');
+		parent::main();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->s['admin']->check();
+		$this->_posizioni['main'] = 'class="active"';
 		
 		$clean['id'] = (int)$id;
 		
@@ -176,86 +142,36 @@ class UsersController extends BaseController {
 		$this->formFields = 'username,has_confirmed,password,confirmation';
 		
 		parent::form($queryType, $id);
-		
-		$this->_posizioni['main'] = 'class="active"';
-		$data['posizioni'] = $this->_posizioni;
-
-		if (strcmp($queryType,'update') === 0)
-		{
-			$data['id_user'] = $clean['id'];
-			$data["titoloPagina"] = $this->m[$this->modelName]->where(array("id_user"=>$clean['id']))->field("username");
-			$data['numeroGruppi'] = $this->m["UsersgroupsModel"]->where(array("id_user"=>$clean['id']))->rowNumber();
-		}
-	
-		$this->append($data);
 	}
 	
 	public function gruppi($id = 0)
 	{
-		$this->s['admin']->check();
-		
 		$this->_posizioni['gruppi'] = 'class="active"';
-		$data['posizioni'] = $this->_posizioni;
-		
-		$this->m["UsersgroupsModel"]->bulkAction("del");
-		
-		$data['type'] = "gruppi";
 		
 		$this->shift(1);
 		
-		$clean['id'] = (int)$id;
-		$data['id_user'] = $clean['id'];
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_group";
 		
-		$data["titoloPagina"] = $this->m[$this->modelName]->where(array("id_user"=>$clean['id']))->field("username");
+		$this->mainButtons = "ldel";
 		
 		$this->modelName = "UsersgroupsModel";
 		
-		Params::$nullQueryValue = 'tutti';
+		$this->m($this->modelName)->updateTable('del');
 		
-		$this->m['UsersgroupsModel']->setFields('id_group','sanitizeAll');
-		$this->m['UsersgroupsModel']->values['id_user'] = $clean['id'];
-		$this->m['UsersgroupsModel']->updateTable('insert,del');
+		$this->mainFields = array("admingroups.name");
+		$this->mainHead = "Nome gruppo";
 		
-		$mainAction = "gruppi/".$clean['id'];
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"gruppi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>$mainAction,'pageVariable'=>'page_fgl'));
-
-		$this->scaffold->fields = "adminusers_groups.*,admingroups.*";
-		$this->scaffold->loadMain('[[checkbox]];adminusers_groups.id_ug;,admingroups.name','adminusers_groups:id_ug','del');
-		$this->scaffold->setHead('[[bulkselect:checkbox_adminusers_groups_id_ug]],GRUPPO');
+		$this->m($this->modelName)->select("*")->inner(array("gruppo"))->orderBy("admingroups.name")->where(array(
+			"id_user"	=>	$clean['id'],
+		))->convert()->save();
 		
-		$this->scaffold->itemList->setBulkActions(array(
-			"checkbox_adminusers_groups_id_ug"	=>	array("del","Elimina selezionati","confirm"),
-		));
+		parent::main();
 		
-		$this->scaffold->model->clear()->inner("admingroups")->using("id_group")->orderBy("admingroups.name")->where(array("id_user"=>$clean['id']))->convert();
-		
-// 		$this->scaffold->update('moveup,movedown');
-		
-		$this->scaffold->itemList->colProperties = array(
-			array(
-				'width'	=>	'60px',
-			),
-		);
-		
-		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_user" id="'.$clean['id'].'"';
-		
-		$data['scaffold'] = $this->scaffold->render();
-		
-		$data['numeroGruppi'] = $this->scaffold->model->rowNumber();
-		
-// 		echo $this->scaffold->model->getQuery();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		$data['notice'] = $this->scaffold->model->notice;
-		
-		$data["listaGruppi"] = $this->scaffold->model->clear()->from("admingroups")->select("admingroups.name,admingroups.id_group")->orderBy("admingroups.name")->toList("admingroups.id_group","admingroups.name")->send();
+		$data["titoloRecord"] = $this->m["UsersModel"]->titolo($clean['id']);
 		
 		$this->append($data);
-		$this->load('gruppi');
 	}
-
 }

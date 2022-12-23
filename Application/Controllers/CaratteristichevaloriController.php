@@ -113,7 +113,7 @@ class CaratteristichevaloriController extends BaseController {
 					"caratteristiche.section"	=>	sanitizeAll($section),
 				));
 			
-			$this->m[$this->modelName]->sWhere("caratteristiche_valori.id_cv not in (select id_cv from pages_caratteristiche_valori where id_cv is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+			$this->m[$this->modelName]->sWhere(array("caratteristiche_valori.id_cv not in (select id_cv from pages_caratteristiche_valori where id_cv is not null and id_page = ? )",array((int)$this->viewArgs["id_page"])));
 		}
 		
 		$this->m[$this->modelName]->save();

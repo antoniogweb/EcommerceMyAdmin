@@ -581,6 +581,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_filtri_caratteristiche_separati_per_categoria"	=>	0, // se impostato a 1, sarà possibile aggiungere filtri di caratteristiche distini per ogni categoria
 		"carica_tutti_i_model"	=>	1, // carica subito tutti i model
 		"token_attiva_check_queries"	=>	"", // se esiste un cookie uguale al token in questione, il sistema fa un check sulle query inviate (da attivare solo in modalità debug)
+		"attiva_gruppi_admin"	=>	0, // if impostato a 1 permette di creare gruppi di utenti e di decidere l'accesso a determinati controller per ogni gruppo di utenti
 	);
 	
 	public static $daInizializzare = array(

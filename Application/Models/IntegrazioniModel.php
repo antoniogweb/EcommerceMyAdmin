@@ -84,7 +84,7 @@ class IntegrazioniModel extends GenericModel {
 		))->orderBy("integrazioni_sezioni.id_order");
 		
 		if ($idElemento)
-			$i->sWhere("integrazioni_sezioni.id_integrazione_sezione not in (select id_integrazione_sezione from integrazioni_sezioni_invii where sezione = '".sanitizeAll($sezione)."' and id_elemento = ".(int)$idElemento.")");
+			$i->sWhere(array("integrazioni_sezioni.id_integrazione_sezione not in (select id_integrazione_sezione from integrazioni_sezioni_invii where sezione = ? and id_elemento = ?)",array(sanitizeAll($sezione), (int)$idElemento)));
 		
 		$integrazioni = $i->findAll();
 		

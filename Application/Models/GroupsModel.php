@@ -30,6 +30,49 @@ class GroupsModel extends GenericModel {
 		$this->_tables='admingroups';
 		$this->_idFields='id_group';
 		
+		$this->addStrongCondition("both",'checkNotEmpty',"name");
+		
 		parent::__construct();
-	}	
+	}
+	
+	public function relations() {
+		return array(
+			'utenti' => array("HAS_MANY", 'UsersgroupsModel', 'id_group', null, "RESTRICT", "L'elemento non può essere eliminato perché ha degli utenti collegati"),
+			'controller' => array("HAS_MANY", 'GroupscontrollersModel', 'id_group', null, "CASCADE"),
+		);
+    }
+	
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'name'	=>	array(
+					"labelString"	=>	"Titolo gruppo",
+				),
+			),
+		);
+	}
+	
+	public function bulkaggiungiauser($record)
+    {
+		return "<i data-azione='aggiungiauser' title='".gtext("Aggiungi al gruppo")."' class='bulk_trigger help_trigger_aggiungi_a_user fa fa-plus-circle text text-primary'></i>";
+    }
+    
+    public function aggiungiauser($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_user"]))
+		{
+			$ug = new UsersgroupsModel();
+			
+			$ug->sValues(array(
+				"id_user"	=>	(int)$_GET["id_user"],
+				"id_group"	=>	(int)$id,
+			), "sanitizeDb");
+			
+			$ug->insert();
+		}
+    }
 }

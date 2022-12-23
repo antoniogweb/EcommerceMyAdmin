@@ -36,6 +36,13 @@ class UsersgroupsModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+		return array(
+			'gruppo' => array("BELONGS_TO", 'GroupsModel', 'id_group',null,"CASCADE"),
+			'user' => array("BELONGS_TO", 'UsersModel', 'id_user',null,"CASCADE"),
+		);
+    }
+	
 	public function insert()
 	{
 		$clean["id_user"] = (int)$this->values["id_user"];

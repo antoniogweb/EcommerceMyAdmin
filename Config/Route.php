@@ -746,6 +746,12 @@ class Route
 		'spedizionieri,main',
 		'spedizionieri,ordina',
 		'spedizionieri,form',
+		
+		'controllers,main',
+		
+		'groups,main',
+		'groups,form',
+		'groups,controllers',
 	);
 	
 	//it can be 'yes' or 'no'
