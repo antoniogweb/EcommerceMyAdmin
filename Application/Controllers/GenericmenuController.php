@@ -32,7 +32,10 @@ class GenericmenuController extends BaseController {
 	
 	function __construct($model, $controller, $queryString) {
 		parent::__construct($model, $controller, $queryString);
-
+		
+		if (!v("attiva_gestione_menu"))
+			$this->responseCode(403);
+		
 		$this->session('admin');
 		$this->model();
 		$this->mod = $this->m[$this->modelName];

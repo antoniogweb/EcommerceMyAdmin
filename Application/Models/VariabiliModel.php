@@ -52,7 +52,6 @@ class VariabiliModel extends GenericModel {
 		"documenti_in_prodotti"		=>	1,
 		"ecommerce_attivo"			=>	1,
 		"mostra_link_in_blog"		=>	0,
-		"has_child_class"			=>	"menu-item-has-children",
 		"attiva_ruoli"				=>	0,
 		"in_evidenza_blog"			=>	0,
 		"contenuti_in_blog"			=>	0,
@@ -571,6 +570,9 @@ class VariabiliModel extends GenericModel {
 		## FATTURE ##
 		"fatture_attive"			=>	1, // attiva la sezione per la generazione della fattura
 		"check_fatture"				=>	0, // fai i controlli sulle fatture
+		## MENU ##
+		"attiva_gestione_menu"		=>	1, // se attivare o meno la gestione del menù
+		"has_child_class"			=>	"menu-item-has-children", // classe dell'elemento <li> del menù se ha figli
 		## OPZIONI ##
 		"attiva_gestione_opzioni"	=>	0, // attiva la sezione per la gestione delle opzioni
 		"codici_opzioni_gestibili"	=>	"STATI_ELEMENTI:stati elementi", // elenco dei codici opzioni gestibili da pannello (dividere con ;)

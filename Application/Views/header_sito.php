@@ -18,7 +18,7 @@ include(ROOT."/Application/Views/header.php");
 			<?php
 			$tipoMenu = "sito";
 			include(ROOT."/Application/Views/header_menu_apps.php"); ?>
-			<?php if (v("attiva_standard_cms_menu")) { ?>
+			<?php if (v("attiva_standard_cms_menu") && v("attiva_gestione_menu")) { ?>
 			<li class="<?php echo tm($tm, "menu1");?> treeview help_menu">
 				<a href="#">
 					<i class="fa fa-list"></i>
