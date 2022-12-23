@@ -233,6 +233,24 @@ class App
 		return false;
 	}
 	
+	public static function primoLinkPannello($pannello = "ecommerce", $link = "")
+	{
+		if (!v("attiva_gruppi_admin"))
+			return $link;
+		
+		$controllersTotali = ControllersModel::getControllerAbilitati();
+// 		print_r($controllersTotali);die();
+		if ((int)count($controllersTotali) === 0)
+			return $link;
+		
+		$controllerPrincipali = ControllersModel::getControlliPrincipaliAbilitati(false, $pannello);
+		
+		if (count($controllerPrincipali) > 0)
+			return $controllerPrincipali[0]["controllers"]["codice"]."/".$controllerPrincipali[0]["controllers"]["action_per_link"];
+		
+		return null;
+	}
+	
 	public static function caricaMenu($pannello = "ecommerce")
 	{
 		$controllerPrincipali = ControllersModel::getControllerAbilitati(true);

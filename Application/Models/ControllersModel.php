@@ -93,33 +93,58 @@ class ControllersModel extends GenericModel
 		}
     }
     
-    public static function getControllerAbilitati($soloPrincipali = false)
+    public static function getControlliPrincipaliAbilitati($soloListaController = true, $pannello = null)
     {
-		if (!isset(self::$controllerPermessi) || !isset(self::$controllerPermessiPrincipali))
-		{
-			$uModel = new UsersModel();
-			$cModel = new ControllersModel();
-			
-			self::$controllerPermessiPrincipali = $uModel->clear()->select("controllers.codice")
+		$uModel = new UsersModel();
+		
+		$uModel->clear()->select("controllers.*")
 				->inner("adminusers_groups")->on("adminusers.id_user = adminusers_groups.id_user")
 				->inner("admingroups_controllers")->on("adminusers_groups.id_group = admingroups_controllers.id_group")
 				->inner("controllers")->on("admingroups_controllers.id_controller = controllers.id_controller")
 				->where(array(
 					"adminusers.id_user"	=>	(int)User::$id,
 					"controllers.attivo"	=>	1,
-				))->toList("controllers.codice")->send();
+				))
+				->orderBy("controllers.id_order");
+		
+		if ($soloListaController)
+			$uModel->select("controllers.codice")->toList("controllers.codice");
+		
+		if ($pannello)
+			$uModel->aWhere(array(
+				"controllers.pannello"	=>	sanitizeAll($pannello),
+			));
+		
+		$res = $uModel->send();
+		
+// 		echo $uModel->getQuery();
+		
+		return $res;
+    }
+    
+    public static function getControllerAbilitati($soloPrincipali = false)
+    {
+		if (!isset(self::$controllerPermessi) || !isset(self::$controllerPermessiPrincipali))
+		{
+			$cModel = new ControllersModel();
 			
-			self::$controllerPermessi = $cModel->clear()->select("controllers.codice")->where(array(
-				"controllers.attivo"	=>	1,
-				"OR"	=>	array(
-					"in"	=>	array(
-						"codice"	=>	array_map("sanitizeAll", self::$controllerPermessiPrincipali),
+			self::$controllerPermessiPrincipali = self::getControlliPrincipaliAbilitati();
+			
+			if (count(self::$controllerPermessiPrincipali) > 0)
+				self::$controllerPermessi = $cModel->clear()->select("controllers.codice")->where(array(
+					"controllers.attivo"	=>	1,
+					"OR"	=>	array(
+						"in"	=>	array(
+							"codice"	=>	sanitizeAllDeep(self::$controllerPermessiPrincipali),
+						),
+						" in"	=>	array(
+							"codice_padre"	=>	sanitizeAllDeep(self::$controllerPermessiPrincipali),
+						),
 					),
-					"	in"	=>	array(
-						"codice_padre"	=>	array_map("sanitizeAll", self::$controllerPermessiPrincipali),
-					),
-				),
-			))->toList("controllers.codice")->orderBy("id_order")->send();
+				))->toList("controllers.codice")->orderBy("id_order")->send();
+			else
+				self::$controllerPermessi = array();
+// 			echo $cModel->getQuery();
 		}
 		
 		if ($soloPrincipali)
