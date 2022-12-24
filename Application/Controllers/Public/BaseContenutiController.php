@@ -852,8 +852,9 @@ class BaseContenutiController extends BaseController
 		
 		if (!in_array("[categoria]",$escludi) && v("attiva_categorie_in_prodotto"))
 		{
-			$catWhere = "in(".implode(",",$children).")";
-			$this->m("PagesModel")->sWhere("(pages.id_c $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$clean['id']."))");
+			$bindedValues = $children;
+			$bindedValues[] = (int)$clean['id'];
+			$this->m("PagesModel")->sWhere(array("(pages.id_c in(".$this->m("PagesModel")->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues));
 		}
 		else
 			$this->m("PagesModel")->aWhere(array(
@@ -888,11 +889,12 @@ class BaseContenutiController extends BaseController
 // 			group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
 			
 			$tabellaCaratterisitche = array(
-				"(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
+				"(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = ? 
 				left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = ? 
 				left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ? 
 				group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche",
 				array(
+					'Y',
 					sanitizeDb(Params::$lang),
 					sanitizeDb(Params::$lang)
 				),
@@ -1006,7 +1008,6 @@ class BaseContenutiController extends BaseController
 					
 					if (v("mostra_fasce_prezzo") && !v("filtro_prezzo_slider"))
 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m("FasceprezzoModel")->clear()->addJoinTraduzione()->sWhere(array("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = ?",array(sanitizeDb($valoreFiltro))))->first();
-// 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m("FasceprezzoModel")->clear()->addJoinTraduzione()->sWhere("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = '".sanitizeDb($valoreFiltro)."'")->first();
 					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
 						Cache::$skipWritingCache = true;
@@ -1096,7 +1097,6 @@ class BaseContenutiController extends BaseController
 			{
 				if (User::$nazione)
 				{
-// 					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' where combinazioni.canonical = 1) as combinazioni_minime";
 					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.canonical = 1) as combinazioni_minime";
 					
 					$bindedValues[] = sanitizeAll(User::$nazione);
@@ -1108,7 +1108,6 @@ class BaseContenutiController extends BaseController
 			{
 				if (User::$nazione)
 				{
-// 					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = '".sanitizeAll(User::$nazione)."' group by combinazioni.id_page) as combinazioni_minime";
 					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? group by combinazioni.id_page) as combinazioni_minime";
 					
 					$bindedValues[] = sanitizeAll(User::$nazione);
@@ -1117,7 +1116,6 @@ class BaseContenutiController extends BaseController
 					$tabellaCombinazioni = "(select id_page,min($campoPrezzoMinimo) as prezzo_minimo,min($campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni group by combinazioni.id_page) as combinazioni_minime";
 			}
 			
-// 			$this->m("PagesModel")->inner($tabellaCombinazioni)->on("pages.id_page = combinazioni_minime.id_page");
 			$this->m("PagesModel")->inner(array($tabellaCombinazioni,$bindedValues))->on("pages.id_page = combinazioni_minime.id_page");
 		}
 		

@@ -86,7 +86,6 @@ class HierarchicalModel extends GenericModel {
 				$this->aWhere(array(
 					"gte" => array("lft" => $this->sLeft),
 					"lte" => array("-lft" => $this->sRight),
-// 					"lft"=>">=".$this->sLeft,"-lft"=>"<=".$this->sRight
 				));
 			}
 			else
@@ -99,8 +98,6 @@ class HierarchicalModel extends GenericModel {
 							str_repeat("+", $i)."OR" => array(
 									"lt" => array("lft" => $this->sLeft[$i]),
 									"gt" => array("-lft" => $this->sRight[$i]),
-// 									"lft"=>"<".$this->sLeft[$i],
-// 									"-lft"=>">".$this->sRight[$i])
 									)
 								));
 					}
@@ -126,7 +123,6 @@ class HierarchicalModel extends GenericModel {
 				$whereArray = array(
 					"gte" => array("n!".$this->_tables.".lft" => $this->sLeft),
 					"lte" => array("-n!".$this->_tables.".lft" => $this->sRight),
-// 					"n!".$this->_tables.".lft"=>">=".$this->sLeft,"-n!".$this->_tables.".lft"=>"<=".$this->sRight
 				);
 			}
 			else
@@ -139,8 +135,6 @@ class HierarchicalModel extends GenericModel {
 						$whereArray[str_repeat("+", $i)."OR"] = array(
 									"lt" => array("n!".$this->_tables.".lft" => $this->sLeft[$i]),
 									"gt" => array("-n!".$this->_tables.".lft" => $this->sRight[$i]),
-// 									"n!".$this->_tables.".lft"=>"<".$this->sLeft[$i],
-// 									"-n!".$this->_tables.".lft"=>">".$this->sRight[$i]);
 									);
 					}
 				}
@@ -320,21 +314,6 @@ class HierarchicalModel extends GenericModel {
 			if ($this->checkAll)
 			{
 				$this->setAlias($id);
-				
-// 				if (isset($this->values[$this->aliaseFieldName]))
-// 				{
-// 					if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
-// 					{
-// 						$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-// 					}
-// 					
-// 					$res = $this->clear()->where(array($this->aliaseFieldName=>$this->values[$this->aliaseFieldName],"ne" => array((string)$this->_idFields => $clean["id"])))->send();
-// 				
-// 					if (count($res) > 0)
-// 					{
-// 						$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-// 					}
-// 				}
 			}
 			
 			if (parent::update($id, $where))
@@ -371,44 +350,14 @@ class HierarchicalModel extends GenericModel {
 			}
 			else
 			{
-// 				$res = $this->query("select alias from contenuti_tradotti where alias = '".$this->values[$this->aliaseFieldName]."'");
-// 				
-// 				if (count($res) > 0)
-// 					$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
+
 			}
 		}
-		
-// 		if (count($res) > 0)
-// 		{
-// 			$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-// 		}
-// 		else
-// 		{
-// 			$res = $this->query("select alias from contenuti_tradotti where alias = '".$this->values["alias"]."'");
-// 			
-// 			if (count($res) > 0)
-// 				$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-// 		}
 	}
 	
 	public function insert()
 	{
 		$this->setAlias(0);
-		
-// 		if (isset($this->values[$this->aliaseFieldName]))
-// 		{
-// 			if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
-// 			{
-// 				$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-// 			}
-// 			
-// 			$res = $this->clear()->where(array($this->aliaseFieldName=>$this->values[$this->aliaseFieldName]))->send();
-// 		
-// 			if (count($res) > 0)
-// 			{
-// 				$this->values[$this->aliaseFieldName] = $this->values[$this->aliaseFieldName] . "-".generateString(4,"123456789");
-// 			}
-// 		}
 		
 		if (parent::insert())
 		{
@@ -418,7 +367,6 @@ class HierarchicalModel extends GenericModel {
 		}
 		
 		return false;
-// 		$this->callRebuildTree();
 	}
 	
 	public function depth($id = null)
@@ -445,29 +393,39 @@ class HierarchicalModel extends GenericModel {
 	public function getTreeWithDepth($untilDepth, $id_cat = null, $lingua = null)
 	{
 		$whereLingua = "";
+		
+		$clean["id_cat"] = (int)$id_cat;
+		$clean["untilDepth"] = (int)$untilDepth;
+		
 		$bindedValues = array();
+		
+		if (isset($id_cat))
+			$bindedValues[] = $clean["id_cat"];
 		
 		if (isset($lingua))
 		{
-			$whereLingua = " (node.lingua = ? OR node.lingua='') and ";
+			$whereLingua = " (node.lingua = ? OR node.lingua = ?) and ";
 			$bindedValues[] = $lingua;
+			$bindedValues[] = '';
 // 			$whereLingua = " (node.lingua='".$lingua."' OR node.lingua='') and ";
 		}
 		
-		$clean["untilDepth"] = (int)$untilDepth;
-		$clean["id_cat"] = (int)$id_cat;
+		$bindedValues[] = $clean["untilDepth"];
 		
 		if (isset($id_cat))
 		{
-			$sql = "SELECT node.*, (COUNT(parent.".$this->_idFields.") - (sub_tree.depth + 1)) AS depth FROM ".$this->_tables." AS node, ".$this->_tables." AS parent, ".$this->_tables." AS sub_parent, (SELECT node.".$this->_idFields.", (COUNT(parent.".$this->_idFields.") - 1) AS depth FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE node.lft BETWEEN parent.lft AND parent.rgt AND node.".$this->_idFields." = ".$clean["id_cat"]." GROUP BY node.".$this->_idFields." ORDER BY node.lft) AS sub_tree WHERE $whereLingua node.lft BETWEEN parent.lft AND parent.rgt AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt AND sub_parent.".$this->_idFields." = sub_tree.".$this->_idFields." GROUP BY node.".$this->_idFields." HAVING depth <= ".$clean["untilDepth"]." ORDER BY node.lft;";
+			$sql = "SELECT node.*, (COUNT(parent.".$this->_idFields.") - (sub_tree.depth + 1)) AS depth FROM ".$this->_tables." AS node, ".$this->_tables." AS parent, ".$this->_tables." AS sub_parent, (SELECT node.".$this->_idFields.", (COUNT(parent.".$this->_idFields.") - 1) AS depth FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE node.lft BETWEEN parent.lft AND parent.rgt AND node.".$this->_idFields." = ? GROUP BY node.".$this->_idFields." ORDER BY node.lft) AS sub_tree WHERE $whereLingua node.lft BETWEEN parent.lft AND parent.rgt AND node.lft BETWEEN sub_parent.lft AND sub_parent.rgt AND sub_parent.".$this->_idFields." = sub_tree.".$this->_idFields." GROUP BY node.".$this->_idFields." HAVING depth <= ? ORDER BY node.lft;";
 		}
 		else
 		{
-			$sql = "SELECT node.*, (COUNT(parent.".$this->_idFields.") - 1) AS depth FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE $whereLingua node.lft BETWEEN parent.lft AND parent.rgt GROUP BY node.".$this->_idFields." HAVING depth > 0 AND depth <= ".$clean["untilDepth"]." ORDER BY node.lft;";
+			$sql = "SELECT node.*, (COUNT(parent.".$this->_idFields.") - 1) AS depth FROM ".$this->_tables." AS node, ".$this->_tables." AS parent WHERE $whereLingua node.lft BETWEEN parent.lft AND parent.rgt GROUP BY node.".$this->_idFields." HAVING depth > 0 AND depth <= ? ORDER BY node.lft;";
 		}
-// 		echo $sql;die();
 		
-		return $res = $this->query(array($sql,$bindedValues));
+		$res = $res = $this->query(array($sql,$bindedValues));
+		
+// 		echo $this->getQuery();
+		
+		return $res;
 	}
 	
 	public function recursiveTree($id_cat, $depth = 2)
@@ -569,7 +527,6 @@ class HierarchicalModel extends GenericModel {
 				$this->clear()->where(array(
 					"lt" => array("lft" => $lft),
 					"gt" => array("rgt" => $rgt),
-// 					"lft"=>"<$lft","rgt"=>">$rgt"
 				))->orderBy("lft");
 			}
 			else
@@ -578,7 +535,6 @@ class HierarchicalModel extends GenericModel {
 				$this->clear()->where(array(
 					"lte" => array("lft" => $lft),
 					"gte" => array("rgt" => $rgt),
-// 					"lft"=>"<=$lft","rgt"=>">=$rgt"
 				))->orderBy("lft");
 			}
 			
@@ -697,7 +653,7 @@ class HierarchicalModel extends GenericModel {
 				FROM ".$this->_tables." AS ".$this->_tables.",
 				".$this->_tables." AS parent
 				WHERE ".$this->_tables.".lft BETWEEN parent.lft AND parent.rgt
-				AND ".$this->_tables.".".$this->_idFields." = ".$clean["id"]."
+				AND ".$this->_tables.".".$this->_idFields." = ?
 				GROUP BY ".$this->_tables.".".$this->_idFields."
 				ORDER BY ".$this->_tables.".lft
 			)AS sub_tree
@@ -708,7 +664,7 @@ class HierarchicalModel extends GenericModel {
 		HAVING depth = 1
 		ORDER BY ".$this->_tables.".lft;";
 		
-		return $res = $this->query($sql);
+		return $res = $this->query(array($sql,array($clean["id"])));
 	}
 	
 	public function buildSelect($id = null, $showRoot = true, $where = null, $bindValues = array())

@@ -148,7 +148,7 @@ class PagescarvalModel extends GenericModel {
 		
 		if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
 		{
-			$pcv->inner("categories_caratteristiche")->on("caratteristiche.id_car = categories_caratteristiche.id_car")->sWhere("categories_caratteristiche.id_c = ".(int)CategoriesModel::$currentIdCategory)->orderBy("categories_caratteristiche.id_order,caratteristiche_valori.id_order");
+			$pcv->inner("categories_caratteristiche")->on("caratteristiche.id_car = categories_caratteristiche.id_car")->sWhere(array("categories_caratteristiche.id_c = ?",array((int)CategoriesModel::$currentIdCategory)))->orderBy("categories_caratteristiche.id_order,caratteristiche_valori.id_order");
 		}
 		
 		return $pcv->send();

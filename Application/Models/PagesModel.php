@@ -3880,8 +3880,8 @@ class PagesModel extends GenericModel {
 		$nowDate = date("Y-m-d");
 		
 		$this->aWhere(array(
-			"    gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-			"     gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+			"    lte"	=>	array("pages.dal"	=>	$nowDate),
+			"     gte"	=>	array("pages.al" 	=>	$nowDate),
 			"pages.in_promozione" => "Y",
 		));
 		

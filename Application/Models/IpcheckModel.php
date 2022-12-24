@@ -35,8 +35,8 @@ class IpcheckModel extends Model_Tree
 	{
 		$timeSecondi = time() - (int)$secondi;
 		
-		$sql = "select count(id_ip_check) as NUMERO from ip_check where ip='".getIp()."' and chiave = ? and time_creazione > ? for update";
-		$resOra = $this->query(array($sql, array(sanitizeAll($chiave), $timeSecondi)));
+		$sql = "select count(id_ip_check) as NUMERO from ip_check where ip=? and chiave = ? and time_creazione > ? for update";
+		$resOra = $this->query(array($sql, array(getIp(), sanitizeAll($chiave), $timeSecondi)));
 		
 		return isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
 	}
