@@ -533,7 +533,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati di fatturazione");?>:</h4>
 							
 							<table class="table table-striped">
-								<?php if ($cliente && $cliente["deleted"] == "no") { ?>
+								<?php if ($cliente && $cliente["deleted"] == "no" && ControllersModel::checkAccessoAlController(array("regusers"))) { ?>
 								<tr>
 									<td class="first_column"><?php echo gtext("ACCOUNT CLIENTE");?></td>
 									<td><a class="iframe label label-success" href="<?php echo $this->baseUrl."/regusers/form/update/".$cliente["id_user"]?>?partial=Y"><?php echo $cliente["username"];?></a></td>
