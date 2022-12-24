@@ -61,8 +61,8 @@ class ControllersController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>200, 'mainMenu'=>"");
 		
-		$this->mainFields = array("controllers.titolo", "controllers.codice");
-		$this->mainHead = "Titolo,Codice";
+		$this->mainFields = array("controllers.titolo", "controllers.codice", "controllers.pannello");
+		$this->mainHead = "Titolo,Codice,Sezione";
 		
 		if ($this->viewArgs["id_group"] != "tutti")
 		{
@@ -73,7 +73,7 @@ class ControllersController extends BaseController
 		$this->m[$this->modelName]->clear()->where(array(
 			"visibile"	=>	1,
 			"codice_padre"	=>	"",
-		))->orderBy("id_order")->convert();
+		))->orderBy("pannello,id_order")->convert();
 		
 		if ($this->viewArgs["id_group"] != "tutti")
 		{

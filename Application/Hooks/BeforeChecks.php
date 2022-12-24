@@ -258,8 +258,8 @@ Helper_Menu::$htmlLinks = array(
 	"refresh" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-primary"',
-		"class"	=>	"btn btn-default",
+		"attributes" => 'role="button" class="btn btn-primary make_spinner"',
+		"class"	=>	"btn btn-default make_spinner",
 		'text'	=>	"Aggiorna",
 		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
 	),

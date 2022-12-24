@@ -43,7 +43,7 @@ class NotificheModel extends GenericModel {
 		$ultimaMigrazione = $files[0];
 		$migrationNum = (int)basename($ultimaMigrazione, '.sql');
 		
-		if ($migrationNum > (int)v("db_version"))
+		if ($migrationNum > (int)v("db_version") && ControllersModel::checkAccessoAlController(array("cron")))
 			$notifiche[] = array(
 				"testo"	=>	gtext("Attenzione, aggiorna il database!"),
 				"link"	=>	Url::getRoot()."cron/migrazioni/".v("codice_cron"),
@@ -51,7 +51,7 @@ class NotificheModel extends GenericModel {
 				"class"	=>	"text-yellow",
 			);
 		
-		if (v("piattaforma_in_sviluppo"))
+		if (v("piattaforma_in_sviluppo") && ControllersModel::checkAccessoAlController(array("impostazioni")))
 			$notifiche[] = array(
 				"testo"	=>	gtext("Indicizzazione non attiva."),
 				"link"	=>	Url::getRoot()."impostazioni/ecommerce/1",
@@ -59,7 +59,7 @@ class NotificheModel extends GenericModel {
 				"class"	=>	"text-yellow",
 			);
 		
-		if (v("permetti_gestione_sitemap") && !SitemapModel::g(false)->rowNumber())
+		if (v("permetti_gestione_sitemap") && !SitemapModel::g(false)->rowNumber() && ControllersModel::checkAccessoAlController(array("sitemap")))
 			$notifiche[] = array(
 				"testo"	=>	gtext("Sitemap vuota!"),
 				"link"	=>	Url::getRoot()."sitemap/main",

@@ -18,8 +18,6 @@ include(ROOT."/Application/Views/header.php");
 				foreach ($vociMenu as $pathVoce) {
 					include($pathVoce);
 				}
-				
-				include(ROOT."/Application/Views/header_sito_static.php");
 			} ?>
 			<?php
 			$tipoMenu = "sito";

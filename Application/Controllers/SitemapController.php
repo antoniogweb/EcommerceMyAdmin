@@ -28,7 +28,7 @@ Helper_Menu::$htmlLinks["refresh"]["queryString"] = "&aggiorna_sitemap=Y";
 
 Helper_Menu::$htmlLinks["rigenera"]["url"] = "main";
 Helper_Menu::$htmlLinks["rigenera"]["queryString"] = "&rigenera_sitemap=Y";
-Helper_Menu::$htmlLinks["rigenera"]["attributes"] = 'style="margin-left:10px;" class="pull-right btn btn-warning" title="Svuota e ricrea la sitemap completamente"';
+Helper_Menu::$htmlLinks["rigenera"]["attributes"] = 'style="margin-left:10px;" class="pull-right btn btn-warning make_spinner" title="Svuota e ricrea la sitemap completamente"';
 
 Helper_Menu::$htmlLinks["vedi"] = array(
 	"attributes" => 'role="button" class="btn btn-success" target="_blank"',

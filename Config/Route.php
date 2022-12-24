@@ -211,8 +211,6 @@ class Route
 		'corrierispese,form',
 		'impostazioni,form',
 		'impostazioni,variabili',
-		'impostazioni,svuotacache',
-		'impostazioni,svuotacacheimmagini',
 		'impostazioni,tema',
 		'impostazioni,attivatema',
 		'impostazioni,ecommerce',
@@ -752,6 +750,9 @@ class Route
 		'groups,main',
 		'groups,form',
 		'groups,controllers',
+		
+		'cache,svuotacache',
+		'cache,svuotacacheimmagini',
 	);
 	
 	//it can be 'yes' or 'no'
