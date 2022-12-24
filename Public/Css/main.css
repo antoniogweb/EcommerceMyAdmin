@@ -1241,6 +1241,10 @@ tr.cart_head {
 {
 	margin-bottom:10px !important;
 }
+.table-scaffolding .list_filter_form > div, .table-scaffolding .list_filter_form > input, .table-scaffolding .list_filter_form > select
+{
+	margin-bottom:0px !important;
+}
 .list_filter_form select
 {
 	max-width:150px;

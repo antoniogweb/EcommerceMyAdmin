@@ -82,4 +82,9 @@ class TemplateemailModel extends BasicsectionModel {
 		
 		return parent::update($id, $where);
 	}
+	
+	public function setFilters()
+	{
+		
+	}
 }
