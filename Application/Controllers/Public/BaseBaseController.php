@@ -165,10 +165,22 @@ class BaseBaseController extends Controller
 		
 		ImpostazioniModel::init();
 		
-		$this->session('registered');
+		$this->session('registered', array(
+			new RegusersModel(),
+			new RegsessioniModel(),
+			new RegaccessiModel(),
+			new ReggroupsModel(),
+		));
+		
 		$this->s['registered']->checkStatus();
 		
-		$this->session('admin');
+		$this->session('admin',array(
+			new UsersModel(),
+			new SessioniModel(),
+			new AccessiModel(),
+			new GroupsModel(),
+		));
+		
 		$this->s['admin']->checkStatus();
 		
 		//controllo login
@@ -183,7 +195,7 @@ class BaseBaseController extends Controller
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
 			$data['username'] = $this->s['registered']->status['user'];
-
+			
 			$res = $this->m('RegusersModel')->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
 			$data['dettagliUtente'] = $this->dettagliUtente = User::$dettagli = $res[0]['regusers'];
 			
