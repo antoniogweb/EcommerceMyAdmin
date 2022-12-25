@@ -907,7 +907,7 @@ class PagesModel extends GenericModel {
 				$stringSearchArray[] = htmlentitydecode($m->whereId($record["id_marchio"])->field("titolo"));
 			}
 			
-			$this->setValues(array(
+			$this->sValues(array(
 				"campo_cerca"	=>	implode(" ", $stringSearchArray),
 			));
 			

@@ -256,12 +256,42 @@ class BaseBaseController extends Controller
 		
 		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m("CategoriesModel")->getShopCategoryId();
 		
+		$this->estratiDatiGenerali($controller, $action);
+		
+		Lang::$current = Params::$lang;
+		
+		$this->append($data);
+		
+		Params::$rewriteStatusVariables = false;
+		
+		VariabiliModel::inizializza();
+		VariabiliModel::checkCookieTerzeParti();
+		
+		if (v("ecommerce_attivo"))
+		{
+			if (getSubTotalN() > 9999999)
+			{
+				$this->m("CartModel")->emptyCart();
+			}
+			
+			$this->m("PagesModel")->aggiornaStatoProdottiInPromozione();
+			
+			if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
+			{
+				VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
+				VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
+			}
+		}
+	}
+	
+	protected function estratiDatiGenerali($controller, $action)
+	{
 		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::impostaDatiCombinazionePagine(getRandom($this->m("PagesModel")->clear()->select("*")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"in_evidenza"=>"Y",
 			))
-			->addWhereCategoria($clean["idShop"])
+			->addWhereCategoria(CategoriesModel::$idShop)
 			->addWhereAttivo()
 			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza")));
 		
@@ -302,7 +332,7 @@ class BaseBaseController extends Controller
 		$data['customHeaderClass'] = "";
 		$data['inlineCssFile'] = "";
 		
-		$data["categoriaShop"] = $this->m("CategoriesModel")->selectId($clean["idShop"]);
+		$data["categoriaShop"] = $this->m("CategoriesModel")->selectId(CategoriesModel::$idShop);
 		
 		$data["idBlog"] = 0;
 		
@@ -379,26 +409,13 @@ class BaseBaseController extends Controller
 			$data["prodottiInPromozione"] = $prodottiInPromo;
 		}
 		
-		if (!($controller == "contenuti" && $action == "index"))
-			$this->estraiDatiFiltri();
-		
-		if (v("attiva_in_evidenza_nazioni"))
-			NazioniModel::$elencoNazioniInEvidenza = $this->m("NazioniModel")->clear()->where(array(
-				"in_evidenza"	=>	"Y"
-			))->toList("iso_country_code")->send();
-		
-		$data["meta_description"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
-		$data["keywords"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
-		
-		Lang::$current = Params::$lang;
-		
-		$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree($clean["idShop"],2);
+		$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree(CategoriesModel::$idShop,2);
 		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m('CategoriesModel')->clear()
 			->addJoinTraduzioneCategoria()
-			->where(array("id_p"=>$clean["idShop"]))
+			->where(array("id_p"=>CategoriesModel::$idShop))
 			->orderBy("lft")
 			->save()
 			->send();
@@ -445,28 +462,18 @@ class BaseBaseController extends Controller
 		
 		$data["pagesCss"] = $data["paginaGenerica"] = "";
 		
+		if (!($controller == "contenuti" && $action == "index"))
+			$this->estraiDatiFiltri();
+		
+		if (v("attiva_in_evidenza_nazioni"))
+			NazioniModel::$elencoNazioniInEvidenza = $this->m("NazioniModel")->clear()->where(array(
+				"in_evidenza"	=>	"Y"
+			))->toList("iso_country_code")->send();
+		
+		$data["meta_description"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
+		$data["keywords"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
+		
 		$this->append($data);
-		
-		Params::$rewriteStatusVariables = false;
-		
-		VariabiliModel::inizializza();
-		VariabiliModel::checkCookieTerzeParti();
-		
-		if (v("ecommerce_attivo"))
-		{
-			if (getSubTotalN() > 9999999)
-			{
-				$this->m("CartModel")->emptyCart();
-			}
-			
-			$this->m("PagesModel")->aggiornaStatoProdottiInPromozione();
-			
-			if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
-			{
-				VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
-				VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
-			}
-		}
 	}
 	
 	protected function initCookieEcommerce()
