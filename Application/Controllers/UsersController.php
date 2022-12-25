@@ -68,6 +68,9 @@ class UsersController extends BaseController {
 
 	public function login()
 	{
+		if (!empty($_POST))
+			IpcheckModel::check("POST_ADMIN");
+		
 		$data['action'] = $this->baseUrl."/users/login";
 		$data['notice'] = null;
 		

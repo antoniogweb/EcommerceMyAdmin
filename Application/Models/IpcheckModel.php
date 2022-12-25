@@ -43,7 +43,7 @@ class IpcheckModel extends Model_Tree
 	
 	public static function deleteScaduti()
 	{
-		if (App::$isFrontend && v("attiva_check_ip"))
+		if (v("attiva_check_ip"))
 		{
 			$ipcModel = new IpcheckModel();
 			
@@ -61,7 +61,7 @@ class IpcheckModel extends Model_Tree
 	{
 		self::deleteScaduti();
 		
-		if (App::$isFrontend && v("attiva_check_ip") && !User::$adminLogged)
+		if (v("attiva_check_ip") && ((App::$isFrontend && !User::$adminLogged) || !App::$isFrontend))
 		{
 			$ipcModel = new IpcheckModel();
 			
