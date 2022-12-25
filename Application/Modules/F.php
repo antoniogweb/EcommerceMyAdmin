@@ -136,7 +136,7 @@ class F
 	
 	public static function checkPreparedStatement()
 	{
-		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && v("token_attiva_check_queries") && isset($_COOKIE[v("token_attiva_check_queries")])))
+		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))
 		{
 			Files_Log::$logFolder = ROOT."/Logs";
 			Files_Log::$logPermission = 0644;
