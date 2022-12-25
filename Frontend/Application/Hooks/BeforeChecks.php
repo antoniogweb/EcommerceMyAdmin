@@ -22,16 +22,17 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-// RedirectModel::cerca();
+date_default_timezone_set('Europe/Rome');
+
+VariabiliModel::ottieniVariabili();
+
+if (VariabiliModel::valore("usa_transactions"))
+	Users_CheckAdmin::$useConcurrencyCheckInLastFailureTime = true;
 
 Users_CheckAdmin::$usersModel = "RegusersModel";
 Users_CheckAdmin::$groupsModel = "ReggroupsModel";
 Users_CheckAdmin::$sessionsModel = "RegsessioniModel";
 Users_CheckAdmin::$accessesModel = "RegaccessiModel";
-
-date_default_timezone_set('Europe/Rome');
-
-VariabiliModel::ottieniVariabili();
 
 Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti", "captcha");
 

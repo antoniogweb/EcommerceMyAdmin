@@ -28,10 +28,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //you can access the whole set of classes and functions of MvcMyLibrary
 
-// Users_CheckAdmin::$usersModel = "UsersModel";
-// Users_CheckAdmin::$groupsModel = "GroupsModel";
-// Users_CheckAdmin::$sessionsModel = "SessioniModel";
-// Users_CheckAdmin::$accessesModel = "AccessiModel";
+Users_CheckAdmin::$usersModel = "UsersModel";
+Users_CheckAdmin::$groupsModel = "GroupsModel";
+Users_CheckAdmin::$sessionsModel = "SessioniModel";
+Users_CheckAdmin::$accessesModel = "AccessiModel";
 
 date_default_timezone_set('Europe/Rome');
 
@@ -64,6 +64,9 @@ if (defined("APPS"))
 }
 
 VariabiliModel::ottieniVariabili();
+
+if (VariabiliModel::valore("usa_transactions"))
+	Users_CheckAdmin::$useConcurrencyCheckInLastFailureTime = true;
 
 VariabiliModel::$valori["alert_error_class"] = "alert";
 

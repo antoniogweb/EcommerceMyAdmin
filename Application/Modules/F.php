@@ -136,33 +136,42 @@ class F
 	
 	public static function checkPreparedStatement()
 	{
-		if ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && v("token_attiva_check_queries") && isset($_COOKIE[v("token_attiva_check_queries")]))
+		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && v("token_attiva_check_queries") && isset($_COOKIE[v("token_attiva_check_queries")])))
 		{
 			Files_Log::$logFolder = ROOT."/Logs";
 			Files_Log::$logPermission = 0644;
-			$log = Files_Log::getInstance("log_check_query");
+			
+			if (defined('PRINT_ALL_QUERY'))
+				$log = Files_Log::getInstance("log_query_all");
+			else
+				$log = Files_Log::getInstance("log_check_query");
 			
 			$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
 			
 			foreach ($mysqli->queries as $query)
 			{
-				$queryToTest = str_replace("1 = 1", "", $query);
-				$queryToTest = str_replace("canonical = 1", "", $queryToTest);
-				$queryToTest = str_replace("(col_1 != 0 OR col_2 != 0 OR col_3 != 0 OR col_4 != 0 OR col_5 != 0 OR col_6 != 0 OR col_7 != 0 OR col_8 != 0)", "", $queryToTest);
-				$queryToTest = str_replace("gift_card = 1", "", $queryToTest);
-				$queryToTest = str_replace("id_corriere != 0", "", $queryToTest);
-				$queryToTest = str_replace("col_1 = 0 and col_2 = 0 and col_3 = 0 and col_4 = 0 and col_5 = 0 and col_6 = 0 and col_7 = 0 and col_8 = 0", "", $queryToTest);
-				
-				if (preg_match('/\=(\s?)\'([a-zA-Z]{1,})\'/',$queryToTest, $matches))
+				if (defined('PRINT_ALL_QUERY'))
 					$log->writeString($query);
-				else if (preg_match('/\=(\s?)\"([a-zA-Z]{1,})\"/',$queryToTest, $matches))
-					$log->writeString($query);
-				else if (preg_match('/\=(\s?)\'([0-9\.]{1,})\'/',$queryToTest, $matches))
-					$log->writeString($query);
-				else if (preg_match('/\=(\s?)\"([0-9\.]{1,})\"/',$queryToTest, $matches))
-					$log->writeString($query);
-				else if (preg_match('/\=(\s?)([0-9\.]{1,})/',$queryToTest, $matches))
-					$log->writeString($query);
+				else
+				{
+					$queryToTest = str_replace("1 = 1", "", $query);
+					$queryToTest = str_replace("canonical = 1", "", $queryToTest);
+					$queryToTest = str_replace("(col_1 != 0 OR col_2 != 0 OR col_3 != 0 OR col_4 != 0 OR col_5 != 0 OR col_6 != 0 OR col_7 != 0 OR col_8 != 0)", "", $queryToTest);
+					$queryToTest = str_replace("gift_card = 1", "", $queryToTest);
+					$queryToTest = str_replace("id_corriere != 0", "", $queryToTest);
+					$queryToTest = str_replace("col_1 = 0 and col_2 = 0 and col_3 = 0 and col_4 = 0 and col_5 = 0 and col_6 = 0 and col_7 = 0 and col_8 = 0", "", $queryToTest);
+					
+					if (preg_match('/\=(\s?)\'([a-zA-Z]{1,})\'/',$queryToTest, $matches))
+						$log->writeString($query);
+					else if (preg_match('/\=(\s?)\"([a-zA-Z]{1,})\"/',$queryToTest, $matches))
+						$log->writeString($query);
+					else if (preg_match('/\=(\s?)\'([0-9\.]{1,})\'/',$queryToTest, $matches))
+						$log->writeString($query);
+					else if (preg_match('/\=(\s?)\"([0-9\.]{1,})\"/',$queryToTest, $matches))
+						$log->writeString($query);
+					else if (preg_match('/\=(\s?)([0-9\.]{1,})/',$queryToTest, $matches))
+						$log->writeString($query);
+				}
 			}
 		}
 	}
