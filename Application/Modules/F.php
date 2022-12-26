@@ -160,6 +160,7 @@ class F
 					$queryToTest = str_replace("gift_card = 1", "", $queryToTest);
 					$queryToTest = str_replace("id_corriere != 0", "", $queryToTest);
 					$queryToTest = str_replace("col_1 = 0 and col_2 = 0 and col_3 = 0 and col_4 = 0 and col_5 = 0 and col_6 = 0 and col_7 = 0 and col_8 = 0", "", $queryToTest);
+					$queryToTest = str_replace("depth > 0", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);
@@ -176,6 +177,10 @@ class F
 					else if (preg_match('/\>(\s?)\'([0-9\.\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);
 					else if (preg_match('/\>(\s?)\"([0-9\.\-]{1,})\"/',$queryToTest, $matches))
+						$log->writeString($query);
+					else if (preg_match('/\>(\s?)([0-9\.\-]{1,})/',$queryToTest, $matches))
+						$log->writeString($query);
+					else if (preg_match('/\<(\s?)([0-9\.\-]{1,})/',$queryToTest, $matches))
 						$log->writeString($query);
 					else if (preg_match('/\=(\s?)([0-9\.\-]{1,})/',$queryToTest, $matches))
 						$log->writeString($query);

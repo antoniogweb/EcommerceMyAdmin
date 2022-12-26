@@ -1778,34 +1778,52 @@ class PagesModel extends GenericModel {
 				
 				//cancello i prodotti correlati
 				$c = new CorrelatiModel();
-				$c->del(null,"id_page=".$clean['id']);
-				$c->del(null,"id_corr=".$clean['id']);
+				$c->del(null,array(
+					"id_page"	=>	$clean['id'],
+				));
+				$c->del(null,array(
+					"id_corr"	=>	$clean['id'],
+				));
 				
 				//cancello il prodotto nel carrello
 				$cart = new CartModel();
-				$cart->del(null, "id_page=".$clean['id']);
+				$cart->del(null, array(
+					"id_page"	=>	$clean['id'],
+				));
 				
 				//cancello gli attributi
 				$attr = new PagesattributiModel();
-				$attr->del(null,"id_page='".$clean["id"]."'");
+				$attr->del(null,array(
+					"id_page"	=>	$clean["id"],
+				));
 				
 				//cancello gli scaglioni
 				$pcv = new ScaglioniModel();
-				$pcv->del(null,"id_page='".$clean["id"]."'");
+				$pcv->del(null,array(
+					"id_page"	=>	$clean["id"],
+				));
 				
 				//cancello gli scaglioni
 				$pcv = new LayerModel();
-				$pcv->del(null,"id_page='".$clean["id"]."'");
+				$pcv->del(null,array(
+					"id_page"	=>	$clean["id"],
+				));
 				
 				//cancello le pagine correlate
 				$c = new PagespagesModel();
-				$c->del(null,"id_page=".$clean['id']);
-				$c->del(null,"id_corr=".$clean['id']);
+				$c->del(null,array(
+					"id_page"	=>	$clean['id'],
+				));
+				$c->del(null,array(
+					"id_corr"	=>	$clean['id'],
+				));
 				
 				CombinazioniModel::$ricreaCombinazioneQuandoElimini = false;
 				
 	// 			parent::del($clean['id']);
-				parent::del(null, "codice_alfa = '".$record["codice_alfa"]."'");
+				parent::del(null, array(
+					"codice_alfa"	=>	$record["codice_alfa"],
+				));
 			}
 		}
 	}

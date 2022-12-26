@@ -52,7 +52,15 @@ class WishlistModel extends GenericModel {
 		if (!self::$deletedExpired)
 		{
 			$limit = time() - Parametri::$durataWishlist; 
-			$this->db->del('wishlist','creation_time < '.$limit);
+			
+			$this->del(null, array(
+				'creation_time < ?',
+				array(
+					$limit,
+				)
+			));
+			
+// 			$this->db->del('wishlist','creation_time < '.$limit);
 			self::$deletedExpired = true;
 		}
 	}

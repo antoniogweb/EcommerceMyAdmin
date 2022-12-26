@@ -26,6 +26,8 @@ class TestiModel extends GenericModel {
 	
 	public static $mostraIconaEdit = true;
 	
+	public static $uploadFile = true;
+	
 	public function __construct() {
 		$this->_tables='testi';
 		$this->_idFields='id_t';
@@ -164,7 +166,7 @@ class TestiModel extends GenericModel {
 	
 	public function update($id = NULL, $whereClause = NULL)
 	{
-		if ($this->upload("update"))
+		if (!self::$uploadFile || $this->upload("update"))
 		{
 			$record = $this->selectId((int)$id);
 			
@@ -177,7 +179,7 @@ class TestiModel extends GenericModel {
 	
 	public function insert()
 	{
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 		{
 			return parent::insert();
 		}

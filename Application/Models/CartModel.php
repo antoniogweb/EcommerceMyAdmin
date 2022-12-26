@@ -55,8 +55,15 @@ class CartModel extends GenericModel {
 	{
 		if (!self::$deletedExpired)
 		{
-			$limit = time() - Parametri::$durataCarrello; 
-			$this->db->del('cart','creation_time < '.$limit);
+			$limit = time() - Parametri::$durataCarrello;
+			
+			$this->del(null, array(
+				'creation_time < ?',
+				array(
+					$limit,
+				)
+			));
+			
 			self::$deletedExpired = true;
 		}
 	}
