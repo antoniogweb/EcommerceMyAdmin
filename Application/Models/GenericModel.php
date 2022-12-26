@@ -321,7 +321,7 @@ class GenericModel extends Model_Tree
 		if (!$clean["id"])
 			$res = $this->query(array("select alias from ".$this->_tables." where alias = ?",array(sanitizeDb($this->values["alias"]))));
 		else
-			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$this->_idFields."!=".$clean["id"],array(sanitizeDb($this->values["alias"]))));
+			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$this->_idFields."!=?",array(sanitizeDb($this->values["alias"]),$clean["id"])));
 		
 		$this->addTokenAlias($res);
 		
@@ -345,7 +345,7 @@ class GenericModel extends Model_Tree
 		if (!isset($id) || $noTraduzione)
 			$res = $this->query(array("select alias from contenuti_tradotti where alias = ?",array(sanitizeDb($this->values["alias"]))));
 		else
-			$res = $this->query(array("select alias from contenuti_tradotti where alias = ? and ".$this->_idFields."!=".$clean["id"],array(sanitizeDb($this->values["alias"]))));
+			$res = $this->query(array("select alias from contenuti_tradotti where alias = ? and ".$this->_idFields."!=?",array(sanitizeDb($this->values["alias"]),$clean["id"])));
 		
 		$this->addTokenAlias($res);
 	}
@@ -1300,7 +1300,9 @@ class GenericModel extends Model_Tree
 			if (empty($record))
 			{
 				$sm = new SitemapModel();
-				$sm->del(null, $this->_idFields."=".(int)$id);
+				$sm->del(null, array(
+					$this->_idFields	=>	(int)$id,
+				));
 			}
 			else
 				$this->aggiungiAllaSitemap($record);

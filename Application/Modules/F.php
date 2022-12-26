@@ -179,6 +179,9 @@ class F
 						$log->writeString($query);
 					else if (preg_match('/\=(\s?)([0-9\.\-]{1,})/',$queryToTest, $matches))
 						$log->writeString($query);
+					
+// 					if (strstr($queryToTest, 'update'))
+// 						$log->writeString($query);
 				}
 			}
 		}

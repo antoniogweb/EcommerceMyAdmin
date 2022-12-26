@@ -766,6 +766,8 @@ class BaseBaseController extends Controller
 							));
 // 						}
 						
+						F::checkPreparedStatement();
+						
 						$urlRedirect = RegusersModel::getUrlRedirect();
 						
 						if ($urlRedirect && !v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))

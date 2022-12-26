@@ -1077,7 +1077,7 @@ class PagesModel extends GenericModel {
 			
 			if (!v("gestisci_sconti_combinazioni_separatamente") || ((int)$numeroVarianti === 0 && self::$aggiornaPrezziCombinazioniQuandoSalvi))
 			{
-				$combinazioniListini = $clModel->clear()->sWhere("id_c in (select id_c from combinazioni where id_page = ".(int)$id.")")->send(false);
+				$combinazioniListini = $clModel->clear()->sWhere(array("id_c in (select id_c from combinazioni where id_page = ?)",array((int)$id)))->send(false);
 				
 				if (v("usa_transactions"))
 					$this->db->beginTransaction();
@@ -1108,14 +1108,14 @@ class PagesModel extends GenericModel {
 		}
 		else
 		{
-			$this->query("update combinazioni set price_scontato = price, price_scontato_ivato = price_ivato where id_page = ".(int)$id);
+			$this->query(array("update combinazioni set price_scontato = price, price_scontato_ivato = price_ivato where id_page = ?", array((int)$id)));
 			
 			$idcS = $cModel->clear()->where(array(
 				"id_page"	=>	(int)$id,
 			))->toList("id_c")->send();
 			
 			if (count($idcS) > 0)
-				$this->query("update combinazioni_listini set price_scontato = price, price_scontato_ivato = price_ivato where id_c in (".implode(",",$idcS).")");
+				$this->query(array("update combinazioni_listini set price_scontato = price, price_scontato_ivato = price_ivato where id_c in (".$this->placeholdersFromArray($idcS).")",$idcS));
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;

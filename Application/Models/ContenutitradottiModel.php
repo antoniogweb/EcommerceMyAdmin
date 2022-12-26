@@ -99,8 +99,6 @@ class ContenutitradottiModel extends GenericModel
 	{
 		$clean["id"] = (int)$id;
 		
-		$record = $this->selectId($clean["id"]);
-		
 		if (!isset($this->values["alias"]) || !trim($this->values["alias"]))
 		{
 			if (isset($this->values["title"]))
@@ -108,6 +106,8 @@ class ContenutitradottiModel extends GenericModel
 			else if (isset($this->values["titolo"]))
 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
 		}
+		
+		$record = $this->selectId($clean["id"]);
 		
 		if (!isset($id))
 		{
@@ -130,64 +130,85 @@ class ContenutitradottiModel extends GenericModel
 			$idFascia = $record["id_fascia_prezzo"];
 		}
 		
+		$bindedValues = array($this->values["alias"]);
+		
 		if ($idPage)
 		{
-			$whereClause = "id_page != ".(int)$idPage;
+			$bindedValues[] = (int)$idPage;
+			$whereClause = "id_page != ?";
 			$tabella = "pages";
 		}
 		else if ($idC)
 		{
-			$whereClause = "id_c != ".(int)$idC;
+			$bindedValues[] = (int)$idC;
+			$whereClause = "id_c != ?";
 			$tabella = "categories";
 		}
 		else if ($idMarchio)
 		{
-			$whereClause = "id_marchio != ".(int)$idMarchio;
+			$bindedValues[] = (int)$idMarchio;
+			$whereClause = "id_marchio != ?";
 			$tabella = "marchi";
 		}
 		else if ($idTag)
 		{
-			$whereClause = "id_tag != ".(int)$idTag;
+			$bindedValues[] = (int)$idTag;
+			$whereClause = "id_tag != ?";
 			$tabella = "tag";
 		}
 		else if ($idCar)
 		{
-			$whereClause = "id_car != ".(int)$idCar;
+			$bindedValues[] = (int)$idCar;
+			$whereClause = "id_car != ?";
 			$tabella = "caratteristiche";
 		}
 		else if ($idCv)
 		{
-			$whereClause = "id_cv != ".(int)$idCv;
+			$bindedValues[] = (int)$idCv;
+			$whereClause = "id_cv != ?";
 			$tabella = "caratteristiche_valori";
 		}
 		else if ($idFascia)
 		{
-			$whereClause = "id_fascia_prezzo != ".(int)$idFascia;
+			$bindedValues[] = (int)$idFascia;
+			$whereClause = "id_fascia_prezzo != ?";
 			$tabella = "fasce_prezzo";
 		}
 		
+		$idBelow = $bindedValues[1];
+		
 		if (!isset($id))
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and ".$whereClause);
+			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$whereClause,$bindedValues));
 		else
-			$res = $this->query("select alias from ".$this->_tables." where alias = '".$this->values["alias"]."' and $whereClause and ".$this->_idFields."!=".$clean["id"]);
+		{
+			$bindedValues[] = $clean["id"];
+			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and $whereClause and ".$this->_idFields."!=?",$bindedValues));
+		}
 		
 		$this->addTokenAlias($res);
 		
 		if (isset($id))
 		{
-			$arrayUnion = array();
+			$arrayUnion = $bindedValues = array();
 			
 			foreach (GenericModel::$tabelleConAlias as $table)
 			{
 				if ($table == $tabella)
-					$arrayUnion[] = "select alias from $table where $whereClause and alias = '".sanitizeDb($this->values["alias"])."'";
+				{
+					$bindedValues[] = $idBelow;
+					$bindedValues[] = sanitizeDb($this->values["alias"]);
+					$arrayUnion[] = "select alias from $table where $whereClause and alias = ?";
+				}
 				else
-					$arrayUnion[] = "select alias from $table where alias = '".sanitizeDb($this->values["alias"])."'";
+				{
+					$bindedValues[] = sanitizeDb($this->values["alias"]);
+					$arrayUnion[] = "select alias from $table where alias = ?";
+				}
 			}
 			
 			$sql = implode(" UNION ", $arrayUnion);
-			
-			$res = $this->query($sql);
+// 			echo $sql;print_r($bindedValues);
+			$res = $this->query(array($sql, $bindedValues));
 			
 			$this->addTokenAlias($res);
 		}
