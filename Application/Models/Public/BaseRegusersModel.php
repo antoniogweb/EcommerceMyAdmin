@@ -74,6 +74,8 @@ class BaseRegusersModel extends Model_Tree
 		{
 			$this->setProvinciaFatturazione();
 			
+			$this->sistemaMaiuscole();
+			
 			$res = parent::insert();
 			
 			$this->lId = $this->lastId(true);
@@ -113,6 +115,8 @@ class BaseRegusersModel extends Model_Tree
 		$clean["id"] = (int)$id;
 		
 		$checkFiscale = v("abilita_codice_fiscale");
+		
+		$this->sistemaMaiuscole();
 		
 		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
 		{

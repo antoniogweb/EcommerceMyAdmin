@@ -428,6 +428,8 @@ class OrdiniModel extends FormModel {
 		
 		$this->setPagato();
 		
+		$this->sistemaMaiuscole();
+		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
 			return parent::insert();
 		

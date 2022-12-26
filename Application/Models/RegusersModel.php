@@ -26,6 +26,8 @@ class RegusersModel extends FormModel {
 	
 	public $applySoftConditionsOnPost = true;
 	
+	public static $clienteImportato = false;
+	
 	public function __construct() {
 		$this->_tables='regusers';
 		$this->_idFields='id_user';
@@ -99,17 +101,22 @@ class RegusersModel extends FormModel {
 		
 		$this->setProvince();
 		
+		$this->sistemaMaiuscole();
+		
 		return parent::update($clean['id']);
 	}
 	
 	public function insert()
 	{
-		$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
+		if (!self::$clienteImportato)
+			$this->values['password'] = call_user_func(PASSWORD_HASH,$this->values['password']);
 		
 		$this->setProvince();
 		
 		if (isset($this->values["nazione"]))
 			$this->setValue("nazione_navigazione", $this->values["nazione"]);
+		
+		$this->sistemaMaiuscole();
 		
 		$res = parent::insert();
 		

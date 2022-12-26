@@ -26,6 +26,7 @@ class FattureModel extends GenericModel {
 
 	public static $generaDopoUpdate = true;
 	public static $checkFattureEseguito = false;
+	public static $fatturaImportata = false;
 	
 	public $fattureOk = true;
 	public $noticeHtml = null;
@@ -250,6 +251,9 @@ class FattureModel extends GenericModel {
 	
 	public function manageable($id)
 	{
+		if (self::$fatturaImportata)
+			return true;
+		
 		return $this->deletable($id);
 	}
 	
