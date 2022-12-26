@@ -1369,6 +1369,9 @@ class BaseContenutiController extends BaseController
 			if ($data["tipoPagina"] == "LISTA_REGALO")
 				$this->getAppLogin();
 			
+			if (!$data["pages"][0]["pages"]["carica_header_footer"])
+				$this->clean();
+			
 			$cache = Cache_Html::getInstance();
 			$cache->saveHtml = true;
 		}

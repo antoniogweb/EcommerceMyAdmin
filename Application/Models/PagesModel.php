@@ -687,7 +687,18 @@ class PagesModel extends GenericModel {
 						"2"	=>	"/",
 					),
 					'reverse' => 'yes',
-					
+				),
+				'carica_header_footer'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Carica header e footer?',
+					'entryClass'	=>	'form_input_text help_test',
+					'options'	=>	self::$attivoSiNo,
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su no, non verranno caricati l'header e il footer del sito")."</div>"
+					),
 				),
 			),
 		);
