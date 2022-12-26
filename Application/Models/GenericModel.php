@@ -927,7 +927,7 @@ class GenericModel extends Model_Tree
 		
 		if (empty($contenuto))
 		{
-			Cache::$cachedTables = array();
+			Cache_Db::$cachedTables = array();
 			$this->controllaLingua($idPage);
 		}
 		

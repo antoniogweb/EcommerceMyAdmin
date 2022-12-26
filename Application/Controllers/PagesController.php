@@ -252,7 +252,7 @@ class PagesController extends BaseController {
 	public function main()
 	{
 		if (v("attiva_cache_prodotti") && empty($_POST))
-			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
@@ -644,7 +644,7 @@ class PagesController extends BaseController {
 	public function form($queryType = 'insert',$id = 0)
 	{
 		if (v("attiva_cache_prodotti") && empty($_POST))
-			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
 		$this->_posizioni['main'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
@@ -967,7 +967,7 @@ class PagesController extends BaseController {
 	private function correlatigeneric($id = 0, $accessori = 0)
 	{
 		if (v("attiva_cache_prodotti") && empty($_POST))
-			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
 		$posizione = $accessori ? "accessori" : "prod_corr";
 		$action = $accessori ? "accessori" : "correlati";

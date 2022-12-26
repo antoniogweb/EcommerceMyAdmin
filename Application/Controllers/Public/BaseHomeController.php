@@ -43,7 +43,7 @@ class BaseHomeController extends BaseController
 
 	public function index()
 	{
-		Cache::addTablesToCache(array("combinazioni","scaglioni"));
+		Cache_Db::addTablesToCache(array("combinazioni","scaglioni"));
 		
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
@@ -77,6 +77,9 @@ class BaseHomeController extends BaseController
 		
 		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().'" />';
 		
+		$cache = Cache_Html::getInstance();
+		$cache->saveHtml = true;
+		
 		$this->append($data);
 		
 		if (Output::$html)
@@ -98,7 +101,7 @@ class BaseHomeController extends BaseController
 		if (v("attiva_feed_solo_se_con_token") && !VariabiliModel::checkToken("token_feed_google_facebook"))
 			die();
 		
-		Cache::addTablesToCache(array("combinazioni","scaglioni"));
+		Cache_Db::addTablesToCache(array("combinazioni","scaglioni"));
 		
 		User::$nazione = null;
 		

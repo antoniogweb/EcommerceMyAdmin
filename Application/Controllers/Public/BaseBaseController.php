@@ -60,6 +60,8 @@ class BaseBaseController extends Controller
 		if (!defined("FRONT"))
 			define('FRONT', ROOT);
 		
+		$cache = Cache_Html::getInstance();
+		
 		Domain::setPath();
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -156,13 +158,6 @@ class BaseBaseController extends Controller
 			"file-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
 		);
 		
-		// Predisponi i filtri in coda nell'URL
-		$this->predisponiAltriFiltri();
-		
-		$this->model("CaratteristichevaloriModel");
-		
-// 		$this->m("ImpostazioniModel")->getImpostazioni();
-		
 		ImpostazioniModel::init();
 		
 		$this->session('registered', array(
@@ -227,7 +222,14 @@ class BaseBaseController extends Controller
 		if ($this->s['admin']->status['status'] === 'logged')
 		{
 			$data["adminUser"] = User::$adminLogged = true;
+			$cache->loadHtml = false;
 		}
+		
+		// Predisponi i filtri in coda nell'URL
+		if (!$cache->saved())
+			$this->predisponiAltriFiltri();
+		
+		$this->model("CaratteristichevaloriModel");
 		
 		$data["isProdotto"] = false;
 		$data["title"] =  gtext(ImpostazioniModel::$valori["title_home_page"]);
@@ -256,7 +258,8 @@ class BaseBaseController extends Controller
 		
 		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m("CategoriesModel")->getShopCategoryId();
 		
-		$this->estratiDatiGenerali($controller, $action);
+		if (!$cache->saved())
+			$this->estratiDatiGenerali($controller, $action);
 		
 		Lang::$current = Params::$lang;
 		
@@ -1325,6 +1328,6 @@ class BaseBaseController extends Controller
 	protected function setTabelleCacheAggiuntive($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		if (($controller == "home" && ($action == "index" || $action == "xmlprodotti")) || ($controller == "contenuti" && $action == "index"))
-			Cache::addTablesToCache(array("combinazioni","scaglioni"));
+			Cache_Db::addTablesToCache(array("combinazioni","scaglioni"));
 	}
 }

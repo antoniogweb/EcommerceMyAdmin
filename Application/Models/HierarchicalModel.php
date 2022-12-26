@@ -46,6 +46,7 @@ class HierarchicalModel extends GenericModel {
 	public static $actionName = "";
 	public static $viewStatus = "";
 	public static $orderWhere = array();
+	public static $rebuildTreeOnUpdate = true;
 	
 	public static $currentRecord = null;
 	

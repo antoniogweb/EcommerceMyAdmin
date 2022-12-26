@@ -34,17 +34,17 @@ Users_CheckAdmin::$groupsModel = "ReggroupsModel";
 Users_CheckAdmin::$sessionsModel = "RegsessioniModel";
 Users_CheckAdmin::$accessesModel = "RegaccessiModel";
 
-Cache::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti", "captcha");
+Cache_Db::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti", "captcha");
 
 if (defined("CACHE_FOLDER"))
 {
-	Cache::$cacheFolder = ROOT."/".ltrim(CACHE_FOLDER,"/");
-	Cache::$cacheMinutes = VariabiliModel::valore("query_cache_durata_massima");
-	Cache::$useRandomPeriods = VariabiliModel::valore("query_cache_usa_periodi_random");
-	Cache::$minutesOfPeriod = VariabiliModel::valore("query_cache_minuti_tra_periodi");
-	Cache::$cleanCacheEveryXMinutes = VariabiliModel::valore("query_cache_pulisci_ogni_x_minuti");
-	Cache::$maxNumberOfFilesCached = VariabiliModel::valore("numero_massimo_file_cache");
-	Cache::deleteExpired();
+	Cache_Db::$cacheFolder = ROOT."/".ltrim(CACHE_FOLDER,"/");
+	Cache_Db::$cacheMinutes = VariabiliModel::valore("query_cache_durata_massima");
+	Cache_Db::$useRandomPeriods = VariabiliModel::valore("query_cache_usa_periodi_random");
+	Cache_Db::$minutesOfPeriod = VariabiliModel::valore("query_cache_minuti_tra_periodi");
+	Cache_Db::$cleanCacheEveryXMinutes = VariabiliModel::valore("query_cache_pulisci_ogni_x_minuti");
+	Cache_Db::$maxNumberOfFilesCached = VariabiliModel::valore("numero_massimo_file_cache");
+	Cache_Db::deleteExpired();
 }
 
 // Files_Log::$logFolder = ROOT."/Logs";
@@ -126,6 +126,25 @@ $detect = new Mobile_Detect();
 User::$isMobile = $detect->isMobile();
 User::$isTablet = $detect->isTablet();
 User::$isPhone = ($detect->isMobile() && !$detect->isTablet());
+
+if (defined("SAVE_CACHE_HTML"))
+{
+	$cache = Cache_Html::getInstance();
+	$cache->absolutePath = ROOT."/Logs";
+	$cache->folder = "cachehtml";
+	$cache->loadHtml = true;
+	
+	$cacheKey = $_SERVER["REQUEST_URI"];
+	
+	if (User::$isPhone)
+		$cacheKey .= "_MOBILE";
+	else if (User::$isTablet)
+		$cacheKey .= "_TABLET";
+	else
+		$cacheKey .= "_DESK";
+	
+	$cache->cacheKey = $cacheKey;
+}
 
 Helper_Pages::$pageLinkWrap = array("li");
 Helper_Pages::$pageLinkWrapClass = array("");

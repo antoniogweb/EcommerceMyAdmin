@@ -191,7 +191,12 @@ class BaseCartController extends BaseController
 									"id_order"	=>	$recordCart["id_order"],
 								));
 								
-								$this->m("CartModel")->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+// 								$this->m("CartModel")->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+								
+								$this->m("CartModel")->update(null, array(
+									"id_cart"	=>	(int)$idCart,
+									"cart_uid"	=>	$clean["cart_uid"],
+								));
 							}
 							
 							$result = "OK";

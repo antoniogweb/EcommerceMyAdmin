@@ -837,9 +837,9 @@ class PagesModel extends GenericModel {
 	
 	public function aggiornaStatoProdottiInPromozione()
 	{
-		Cache::$skipReadingCache = true;
+		Cache_Db::$skipReadingCache = true;
 		
-		$res = $this->clear()->where(array("in_promozione"=>"Y"))->sWhere("al < '".date("Y-m-d")."'")->send();
+		$res = $this->clear()->where(array("in_promozione"=>"Y"))->sWhere(array("al < ?",array(date("Y-m-d"))))->send();
 		
 		if (v("usa_transactions"))
 			$this->db->beginTransaction();
@@ -863,7 +863,7 @@ class PagesModel extends GenericModel {
 		if (v("usa_transactions"))
 			$this->db->commit();
 		
-		Cache::$skipReadingCache = false;
+		Cache_Db::$skipReadingCache = false;
 	}
 	
 	// Imposta l'alias della pagina controllando che non ci sia un duplicato
@@ -1903,7 +1903,7 @@ class PagesModel extends GenericModel {
 				
 				if ($now >= $dal and $now <= $al)
 				{
-					return "<span class='text text-success'><b>In corso</b></span><br />(".smartDate($res[0]["pages"]["dal"])." / ".smartDate($res[0]["pages"]["al"]).")<br /><b>".setPriceReverse($res[0]["pages"]["prezzo_promozione"])." %</b>";
+					return "<span class='text text-success'><b>In corso</b></span><br />(".smartDate($res[0]["pages"]["dal"])." / ".smartDate($res[0]["pages"]["al"]).")";
 				}
 				if ($now < $dal)
 				{
@@ -1924,19 +1924,22 @@ class PagesModel extends GenericModel {
 		
 		if (isset($page))
 		{
-			$res[0] = $page;
+			$record = $page["pages"];
+// 			$res[0] = $page;
 		}
 		else
 		{
-			$res = $this->clear()->select()->where(array('id_page'=>$clean['id_page']))->send();
+			$record = $this->selectId($id_page);
+// 			$res = $this->clear()->select("dal,al,in_promozione")->where(array('id_page'=>$clean['id_page']))->send();
 		}
 		
-		if (count($res) > 0)
+// 		if (count($res) > 0)
+		if (!empty($record))
 		{
-			if (strcmp($res[0]["pages"]["in_promozione"],"Y") === 0)
+			if (strcmp($record["in_promozione"],"Y") === 0)
 			{
-				$dal = getTimeStampComplete($res[0]["pages"]["dal"]);
-				$al = getTimeStampComplete($res[0]["pages"]["al"]) + 86400;
+				$dal = getTimeStampComplete($record["dal"]);
+				$al = getTimeStampComplete($record["al"]) + 86400;
 				
 				$now = time();
 				

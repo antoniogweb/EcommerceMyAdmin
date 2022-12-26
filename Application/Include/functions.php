@@ -1129,7 +1129,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 		
 		if ($t->insert())
 		{
-			unset(Cache::$cachedTables[array_search("testi", Cache::$cachedTables)]);
+			unset(Cache_Db::$cachedTables[array_search("testi", Cache_Db::$cachedTables)]);
 			return getTesto($matches, $tags, $tipo, $cleanFlush);
 		}
 	}
@@ -1939,8 +1939,10 @@ function tp($admin = false)
 	return Domain::$parentRoot."/Application/Views$subfolder";
 }
 
-function tpf($filePath = "", $public = false)
+function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "")
 {
+	$cache = Cache_Html::getInstance();
+	
 	$themeFolder = v("theme_folder");
 	
 	$subfolder = $themeFolder ? DS . $themeFolder : "";
@@ -1949,7 +1951,7 @@ function tpf($filePath = "", $public = false)
 	$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
 	if (file_exists($subFolderFullPath))
-		return $public ? $subFolderFullPathPublic : $subFolderFullPath;
+		return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache);
 	
 	if ($themeFolder)
 	{
@@ -1957,13 +1959,13 @@ function tpf($filePath = "", $public = false)
 		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
 		
 		if (file_exists($subFolderFullPathParentFrontend))
-			return $public ? $subFolderFullPathParentFrontendPublic : $subFolderFullPathParentFrontend;
+			return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache);
 	}
 	
 	if ($public)
 		return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 	else
-		return Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+		return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache);
 }
 
 function singPlu($numero, $sing, $plu)

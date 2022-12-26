@@ -84,7 +84,7 @@ class CategoriesController extends BaseController {
 	public function main()
 	{
 		if (v("attiva_cache_prodotti") && empty($_POST))
-			Cache::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
 		$this->shift();
 
@@ -278,7 +278,13 @@ class CategoriesController extends BaseController {
 					
 		$data["type"] = "meta";
 		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
 		$this->m[$this->modelName]->updateTable('update',$clean["id"]);
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
 		
 		$this->m[$this->modelName]->setFormStruct($clean['id']);
 		

@@ -620,7 +620,7 @@ class BaseContenutiController extends BaseController
 	{
 		$this->m("CategoriesModel")->checkBloccato($id);
 		
-		Cache::addTablesToCache(array("combinazioni","scaglioni"));
+		Cache_Db::addTablesToCache(array("combinazioni","scaglioni"));
 		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
@@ -681,6 +681,9 @@ class BaseContenutiController extends BaseController
 		//estrai i dati della categoria
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
+		
+		$cache = Cache_Html::getInstance();
+		$cache->saveHtml = true;
 		
 		$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
@@ -1010,7 +1013,7 @@ class BaseContenutiController extends BaseController
 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m("FasceprezzoModel")->clear()->addJoinTraduzione()->sWhere(array("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = ?",array(sanitizeDb($valoreFiltro))))->first();
 					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
-						Cache::$skipWritingCache = true;
+						Cache_Db::$skipWritingCache = true;
 						
 						$fasciaPrezzo = $data["fasciaPrezzo"] = array(
 							"fasce_prezzo"	=>	array(
@@ -1289,7 +1292,7 @@ class BaseContenutiController extends BaseController
 	{
 		$this->m("PagesModel")->checkBloccato($id, "page");
 		
-		Cache::addTablesToCache(array("combinazioni","scaglioni"));
+		Cache_Db::addTablesToCache(array("combinazioni","scaglioni"));
 		
 		$clean["realId"] = $data["realId"] = (int)$id;
 		
@@ -1365,6 +1368,9 @@ class BaseContenutiController extends BaseController
 			
 			if ($data["tipoPagina"] == "LISTA_REGALO")
 				$this->getAppLogin();
+			
+			$cache = Cache_Html::getInstance();
+			$cache->saveHtml = true;
 		}
 		
 		$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(

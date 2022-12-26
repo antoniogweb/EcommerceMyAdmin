@@ -36,10 +36,10 @@ class CacheController extends BaseController
 		
 		if (defined("CACHE_FOLDER"))
 		{
-			Cache::$cacheFolder = Domain::$parentRoot."/".CACHE_FOLDER;
-			Cache::$cacheMinutes = 0;
-			Cache::$cleanCacheEveryXMinutes = 0;
-			Cache::deleteExpired(true);
+			Cache_Db::$cacheFolder = Domain::$parentRoot."/".CACHE_FOLDER;
+			Cache_Db::$cacheMinutes = 0;
+			Cache_Db::$cleanCacheEveryXMinutes = 0;
+			Cache_Db::deleteExpired(true);
 		}
 	}
 	

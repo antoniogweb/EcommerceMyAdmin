@@ -772,14 +772,6 @@ class CategoriesModel extends HierarchicalModel {
 			$bindedValues[] = (int)$id_c;
 			
 			$p->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues));
-			
-// 			$p->sWhere("(pages.id_c $catWhere OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$id_c."))");
-// 			$idCs = PagescategoriesModel::g(false)->clear()->select("pages_categories.id_c")
-// 				->where(array(
-// 					"pages_categories.id_c"	=>	(int)$id_c,
-// 				))
-// 				->toList("pages_categories.id_c")
-// 				->send();
 		}
 		else
 			$p->aWhere(self::gCatWhere($id_c, $full));

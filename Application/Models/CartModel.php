@@ -396,7 +396,10 @@ class CartModel extends GenericModel {
 	{
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$this->del(null, "cart_uid = '" . $clean["cart_uid"] . "'");
+// 		$this->del(null, "cart_uid = '" . $clean["cart_uid"] . "'");
+		$this->del(null, array(
+			"cart_uid"	=>	$clean["cart_uid"],
+		));
 	}
 	
 	public function correggiPrezzi()

@@ -86,37 +86,6 @@ class ImpostazioniController extends BaseController
 		}
 	}
 	
-	public function svuotacache()
-	{
-		$this->clean();
-		
-		if (defined("CACHE_FOLDER"))
-		{
-			Cache::$cacheFolder = Domain::$parentRoot."/".CACHE_FOLDER;
-			Cache::$cacheMinutes = 0;
-			Cache::$cleanCacheEveryXMinutes = 0;
-			Cache::deleteExpired(true);
-		}
-	}
-	
-	public function svuotacacheimmagini()
-	{
-		$this->clean();
-		
-		if (v("attiva_cache_immagini"))
-		{
-			$dir = Domain::$parentRoot."/thumb";
-			
-			if (@is_dir($dir))
-				GenericModel::eliminaCartella($dir);
-			
-			$dir = LIBRARY."/thumb";
-			
-			if (@is_dir($dir))
-				GenericModel::eliminaCartella($dir);
-		}
-	}
-	
 	public function ecommerce($id = 0)
 	{
 		$this->campiVariabiliDaModificare = v("lista_variabili_funzionamento_ecommerce");

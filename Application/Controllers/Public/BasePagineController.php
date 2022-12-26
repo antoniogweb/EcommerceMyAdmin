@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Cache::removeTablesFromCache(array("categories", "pages", "contenuti_tradotti"));
+Cache_Db::removeTablesFromCache(array("categories", "pages", "contenuti_tradotti"));
 
 class BasePagineController extends PublicCrudController
 {
