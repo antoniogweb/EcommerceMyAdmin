@@ -20,11 +20,21 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class FattureInCloud extends Gestionali
+class FattureInCloud extends Gestionale
 {
 	public function gCampiForm()
 	{
 		return 'titolo,attivo,param_1,param_2';
+	}
+	
+	public function gParam1Label()
+	{
+		return "ID azienda";
+	}
+	
+	public function gParam2Label()
+	{
+		return "Accesso Token";
 	}
 	
 	public function isAttiva()
@@ -44,8 +54,15 @@ class FattureInCloud extends Gestionali
 		))->field("numero");
 		
 		if ($numero)
-			return "<span class='text text-success text-bold'>".sprintf("Fattura %s inviata a", $ordine["id_o"])." ".$this->titolo()."</span>";
+			return "<span class='text text-success text-bold'>".sprintf(gtext("Fattura %s inviata a"), $numero)." ".$this->titolo()."</span>";
 		else
-			return "<span class='text text-danger text-bold'>".sprintf("Fattura assente nel gestionale ma segnata come inviata a")." ".$this->titolo()."?!?</span>";
+			return "<span class='text text-danger text-bold'>".sprintf(gtext("Fattura assente nel gestionale ma segnata come inviata a"))." ".$this->titolo()."?!?</span>";
+	}
+	
+	public function inviaOrdine($idO)
+	{
+		$ordine = $this->infoOrdine((int)$idO);
+		
+// 		print_r($ordine);
 	}
 }

@@ -80,4 +80,11 @@ class GestionaliController extends BaseController
 		
 		parent::form($queryType, $id);
 	}
+	
+	public function invia($elemento = "ordine", $id_elemento = 0)
+	{
+		$this->clean();
+		
+		GestionaliModel::invia($elemento, $id_elemento);
+	}
 }

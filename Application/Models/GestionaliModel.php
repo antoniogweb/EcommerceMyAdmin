@@ -47,18 +47,18 @@ class GestionaliModel extends GenericModel {
 		(
 			'entries' 	=> 	array(
 				'attivo'	=>	self::$entryAttivo,
-// 				'secret_1'		=>	array(
-// 					'labelString'	=>	self::getModulo($record["codice"])->gSecret1Label(),
-// 					'type'	=>	"Password",
-// 					'fill'	=>	true,
-// 					'attributes'	=>	'autocomplete="new-password"',
-// 				),
-// 				'secret_2'		=>	array(
-// 					'labelString'	=>	self::getModulo($record["codice"])->gSecret2Label(),
-// 					'type'	=>	"Password",
-// 					'fill'	=>	true,
-// 					'attributes'	=>	'autocomplete="new-password"',
-// 				),
+				'param_1'		=>	array(
+					'labelString'	=>	self::getModulo($record["codice"])->gParam1Label(),
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
+				'param_2'		=>	array(
+					'labelString'	=>	self::getModulo($record["codice"])->gParam2Label(),
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
 			),
 		);
 	}
@@ -88,7 +88,7 @@ class GestionaliModel extends GenericModel {
 			
 			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Gestionali/".$attivo["classe"].".php"))
 			{
-				require_once(LIBRARY."/Application/Modules/Gestionali.php");
+				require_once(LIBRARY."/Application/Modules/Gestionale.php");
 				require_once(LIBRARY."/Application/Modules/Gestionali/".$attivo["classe"].".php");
 				
 				$objectReflection = new ReflectionClass($attivo["classe"]);
@@ -112,5 +112,28 @@ class GestionaliModel extends GenericModel {
 	public static function integrazioneAttiva()
 	{
 		return self::getModulo()->isAttiva();
+	}
+	
+	public function metodo($metodo)
+	{
+		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
+			return true;
+
+		return false;
+	}
+	
+	public static function invia($elemento, $id_elemento)
+	{
+		if (array_key_exists($elemento, Gestionale::$tabellaElementi))
+		{
+			$metodo = Gestionale::$tabellaElementi[$elemento];
+			
+			self::getModulo();
+			
+			if (method_exists(self::$modulo, $metodo))
+			{
+				call_user_func_array(array(self::$modulo, $metodo), array($id_elemento));
+			}
+		}
 	}
 }
