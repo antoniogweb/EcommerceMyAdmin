@@ -23,20 +23,22 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class SpedizioniModel extends GenericModel {
-
+	
+	public static $spedizioneImportata = false;
+	
 	public function __construct() {
 		$this->_tables='spedizioni';
 		$this->_idFields='id_spedizione';
 		$this->_idOrder = 'id_order';
 		
-		$this->addStrongCondition("both",'checkNotEmpty',"indirizzo_spedizione");
+		if (!self::$spedizioneImportata)
+			$this->addStrongCondition("both",'checkNotEmpty',"indirizzo_spedizione");
 		
 		parent::__construct();
 	}
 	
 	public function setFormStruct($id = 0)
 	{
-
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -59,13 +61,15 @@ class SpedizioniModel extends GenericModel {
 				),
 			),
 		);
-
 	}
 	
 	public function setDaUsarePerApp($id)
 	{
-		$this->query("update spedizioni set da_usare = 0 where id_user = ".(int)User::$id." AND da_usare != 0");
-		$this->query("update spedizioni set da_usare = 1 where id_user = ".(int)User::$id." AND id_spedizione = ".(int)$id);
+		if (self::$spedizioneImportata)
+			return;
+		
+		$this->query(array("update spedizioni set da_usare = 0 where id_user = ? AND da_usare != 0", array((int)User::$id)));
+		$this->query(array("update spedizioni set da_usare = 1 where id_user = ? AND id_spedizione = ?", array((int)User::$id, (int)$id)));
 	}
 	
 	public function update($id = null, $where = null)

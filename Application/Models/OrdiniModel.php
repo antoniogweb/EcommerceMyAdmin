@@ -1662,4 +1662,34 @@ class OrdiniModel extends FormModel {
 		
 		return $output;
 	}
+	
+	public static function analizzaErroriCheckout($strutturaErrori)
+	{
+		$mostraCampiFatturazione = $mostraCampiSpedizione = false;
+		
+		if (isset($strutturaErrori["Fields"]))
+		{
+			$fields = array_keys($strutturaErrori["Fields"]);
+			
+			$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
+			
+			foreach ($fields as $f)
+			{
+				if ($f == "accetto")
+					continue;
+				
+				$type = $mysqli->getTypes("regusers", $f, false, true);
+				
+				if ($type !== false && $f != "indirizzo_spedizione")
+					$mostraCampiFatturazione = true;
+				
+				$type = $mysqli->getTypes("spedizioni", $f, false, true);
+				
+				if ($type !== false)
+					$mostraCampiSpedizione = true;
+			}
+		}
+		
+		return array($mostraCampiFatturazione, $mostraCampiSpedizione);
+	}
 }

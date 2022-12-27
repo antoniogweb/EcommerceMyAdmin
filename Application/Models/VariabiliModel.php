@@ -352,7 +352,6 @@ class VariabiliModel extends GenericModel {
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
-		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
 		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale
 		"classe_ext_cookies_conf"	=>	"segnalazione_cookies_ext uk-background-secondary uk-light segnalazione_cookies_ext_pag_cookies", // classe box esterno cookie preferenze
@@ -417,6 +416,8 @@ class VariabiliModel extends GenericModel {
 		## CLIENTI ##
 		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
 		"sistema_maiuscole_clienti"	=>	0, // se impostato  a 1, Nome e Cognome verranno forzati con la prima lettera maiuscola mentre codice fiscale tutto in maiuscolo
+		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
+		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
 		## PROMO ##
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto

@@ -13,14 +13,17 @@
 			<div class="blocco_checkout">
 				
 				<div class="uk-grid uk-grid-small" uk-grid>
-					<?php foreach ($elencoIndirizzi as $indirizzo) { ?>
+					<?php foreach ($elencoIndirizzi as $indirizzo) {
+						if ($values["id_spedizione"] == $indirizzo["id_spedizione"] && !empty($erroriInvioOrdine))
+							$indirizzo = array_merge($indirizzo, $values);
+					?>
 					<div class="uk-width-1-1 uk-width-1-2@m">
 						<div class="spedizione_box spedizione_box_select uk-padding-small uk-flex uk-flex-middle <?php if ($values["id_spedizione"] == $indirizzo["id_spedizione"]) { ?>spedizione_selezionata<?php } ?>">
 							<div>
 								<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],$indirizzo["id_spedizione"],"radio_spedizione","none");?>
 							</div>
 							<div class="uk-margin-left uk-text-small">
-								<span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <span class="uk-text-bold"></span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo $indirizzo["provincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
+								<span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <span class="uk-text-bold"></span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo $indirizzo["nazione_spedizione"] == "IT" ? $indirizzo["provincia_spedizione"] : $indirizzo["dprovincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
 								<?php if (trim($indirizzo["telefono_spedizione"])) { ?>
 								<br /><span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $indirizzo["telefono_spedizione"];?>
 								<?php } ?>
@@ -38,7 +41,7 @@
 							<?php echo gtext("Aggiungi un nuovo indirizzo di spedizione");?>
 						</div>
 					</div>
-					<div class="campi_nuovo_indirizzo">
+					<div class="campi_nuovo_indirizzo <?php if ($mostraCampiSpedizione) { ?>errori_campo_indirizzo<?php } ?>">
 						<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
 					</div>
 				</div>

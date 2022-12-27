@@ -1081,6 +1081,8 @@ class BaseOrdiniController extends BaseController
 		if ($this->islogged)
 			$utenteRegistrato = true;
 		
+		$erroriInvioOrdine = array();
+		
 		if (isset($_POST['invia']))
 		{
 			RegusersModel::checkEdEliminaAccount();
@@ -1238,7 +1240,7 @@ class BaseOrdiniController extends BaseController
 									
 									if (strcmp($nuovoIndirizzo,"Y") === 0)
 									{
-										$this->m("SpedizioniModel")->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
+										$this->m("SpedizioniModel")->query(array("update spedizioni set ultimo_usato = 'N' where id_user = ?",array((int)User::$id)));
 										
 										$this->m("SpedizioniModel")->setValues(array(
 											"id_user"	=>	$this->iduser,
@@ -1257,8 +1259,8 @@ class BaseOrdiniController extends BaseController
 									}
 									else if ($idSpedizione > 0)
 									{
-										$this->m("SpedizioniModel")->query("update spedizioni set ultimo_usato = 'N' where id_user = ".(int)User::$id);
-										$this->m("SpedizioniModel")->query("update spedizioni set ultimo_usato = 'Y' where id_spedizione = ".(int)$idSpedizione." and id_user = ".(int)User::$id);
+										$this->m("SpedizioniModel")->query(array("update spedizioni set ultimo_usato = 'N' where id_user = ?",array((int)User::$id)));
+										$this->m("SpedizioniModel")->query(array("update spedizioni set ultimo_usato = 'Y' where id_spedizione = ? and id_user = ?",array((int)$idSpedizione, (int)User::$id)));
 									}
 								}
 								else
@@ -1272,7 +1274,7 @@ class BaseOrdiniController extends BaseController
 								);
 								$this->m('OrdiniModel')->update($clean['lastId']);
 								
-								if (!$this->m('RegusersModel')->isCompleto(User::$id))
+								if (v("aggiorna_sempre_i_dati_del_cliente_al_checkout") || !$this->m('RegusersModel')->isCompleto(User::$id))
 									$this->m('RegusersModel')->sincronizzaDaOrdine(User::$id, $clean['lastId']);
 							}
 
@@ -1384,6 +1386,8 @@ class BaseOrdiniController extends BaseController
 							$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('OrdiniModel')->notice;
 							$this->m('RegusersModel')->result = false;
 							
+							$erroriInvioOrdine = $this->m('OrdiniModel')->errors;
+							
 							if (Output::$json)
 								Output::setBodyValue("Errori", $this->m('OrdiniModel')->errors);
 						}
@@ -1392,6 +1396,8 @@ class BaseOrdiniController extends BaseController
 					{
 						$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('RegusersModel')->notice;
 						$this->m('OrdiniModel')->result = false;
+						
+						$erroriInvioOrdine = $this->m('RegusersModel')->errors;
 						
 						if (Output::$json)
 							Output::setBodyValue("Errori", $this->m('RegusersModel')->errors);
@@ -1402,6 +1408,8 @@ class BaseOrdiniController extends BaseController
 					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('OrdiniModel')->notice;
 					$this->m('RegusersModel')->result = false;
 					
+					$erroriInvioOrdine = $this->m('OrdiniModel')->errors;
+					
 					if (Output::$json)
 						Output::setBodyValue("Errori", $this->m('OrdiniModel')->errors);
 				}
@@ -1411,6 +1419,11 @@ class BaseOrdiniController extends BaseController
 				$logSubmit->setSpam();
 			}
 		}
+		
+		$data["erroriInvioOrdine"] = $erroriInvioOrdine;
+		list($data["mostraCampiFatturazione"], $data["mostraCampiSpedizione"]) = OrdiniModel::analizzaErroriCheckout($erroriInvioOrdine);
+		
+// 		var_dump($data["mostraCampiSpedizione"]);
 		
 		$logSubmit->setErroriSubmit($data['notice']);
 		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");

@@ -154,13 +154,25 @@ class F
 					$log->writeString($query);
 				else
 				{
-					$queryToTest = str_replace("1 = 1", "", $query);
+					if (strstr($query, 'VALUES:'))
+					{
+						$queryToTest = explode("VALUES:", $query);
+						$queryToTest= $queryToTest[0];
+					}
+					else
+						$queryToTest = $query;
+					
+					$queryToTest = str_replace("1 = 1", "", $queryToTest);
 					$queryToTest = str_replace("canonical = 1", "", $queryToTest);
 					$queryToTest = str_replace("(col_1 != 0 OR col_2 != 0 OR col_3 != 0 OR col_4 != 0 OR col_5 != 0 OR col_6 != 0 OR col_7 != 0 OR col_8 != 0)", "", $queryToTest);
 					$queryToTest = str_replace("gift_card = 1", "", $queryToTest);
 					$queryToTest = str_replace("id_corriere != 0", "", $queryToTest);
 					$queryToTest = str_replace("col_1 = 0 and col_2 = 0 and col_3 = 0 and col_4 = 0 and col_5 = 0 and col_6 = 0 and col_7 = 0 and col_8 = 0", "", $queryToTest);
 					$queryToTest = str_replace("depth > 0", "", $queryToTest);
+					$queryToTest = str_replace("da_usare != 0", "", $queryToTest);
+					$queryToTest = str_replace("da_usare = 0", "", $queryToTest);
+					$queryToTest = str_replace("da_usare = 1", "", $queryToTest);
+					$queryToTest = str_replace("attivo = 0 where 1", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);

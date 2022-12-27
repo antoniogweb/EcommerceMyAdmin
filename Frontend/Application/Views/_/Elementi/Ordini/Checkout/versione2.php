@@ -36,7 +36,10 @@
 								</h2>
 
 								<div class="blocco_checkout">
-									<?php if ($islogged) { ?>
+									<?php if ($islogged && !$mostraCampiFatturazione) {
+										if (!empty($erroriInvioOrdine))
+											User::$dettagli = array_merge(User::$dettagli, $values);
+									?>
 									<div class="uk-margin uk-width-1-1">
 										<div class="uk-grid uk-grid-collapse" uk-grid>
 											<div class="uk-width-1-1 uk-width-1-2@m">

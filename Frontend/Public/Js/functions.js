@@ -135,7 +135,7 @@ function impostaTipoSpedizione(obj)
 		if ($(".blocco_tendina_scelta_indirizzo").length > 0)
 			$(".blocco_tendina_scelta_indirizzo").css("display","block");
 		
-		if ($(".campi_nuovo_indirizzo").length > 0)
+		if ($(".campi_nuovo_indirizzo").length > 0 && !$(".campi_nuovo_indirizzo").hasClass("errori_campo_indirizzo"))
 			$(".campi_nuovo_indirizzo").css("display","none");
 		
 		impostaCampiSpedizione(getIdSpedizione());

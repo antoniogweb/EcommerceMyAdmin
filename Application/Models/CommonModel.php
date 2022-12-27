@@ -439,17 +439,27 @@ trait CommonModel {
 					{
 						$sp = new SpedizioniModel();
 						
-						$sp->sValues(array(
-							"indirizzo_spedizione"	=>	"--",
-							"cap_spedizione"		=>	"--",
-							"provincia_spedizione"	=>	"--",
-	// 						"nazione_spedizione"	=>	"--",
-							"citta_spedizione"		=>	"--",
-							"telefono_spedizione"	=>	"--",
-							"dprovincia_spedizione"	=>	"--",
-						));
+						$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
 						
-						$sp->pUpdate(null, "id_user = ".(int)$idUser);
+						foreach ($campiSpedizione as $cs)
+						{
+							if ($cs != "nazione_spedizione")
+								$sp->setValue($cs, "");
+						}
+						
+// 						$sp->sValues(array(
+// 							"indirizzo_spedizione"	=>	"--",
+// 							"cap_spedizione"		=>	"--",
+// 							"provincia_spedizione"	=>	"--",
+// 	// 						"nazione_spedizione"	=>	"--",
+// 							"citta_spedizione"		=>	"--",
+// 							"telefono_spedizione"	=>	"--",
+// 							"dprovincia_spedizione"	=>	"--",
+// 						));
+						
+						$sp->pUpdate(null, array(
+							"id_user"	=>	(int)$idUser
+						));
 						
 						return $tokeEliminazione;
 					}
@@ -457,13 +467,13 @@ trait CommonModel {
 			}
 			else
 			{
-				$this->query("delete from spedizioni where id_user = ".(int)$idUser);
-				$this->query("delete from regusers_groups_temp where id_user = ".(int)$idUser);
-				$this->query("delete from regusers_groups where id_user = ".(int)$idUser);
-				$this->query("update orders set id_user = 0 where id_user = ".(int)$idUser);
-				$this->query("update feedback set id_user = 0 where id_user = ".(int)$idUser);
-				$this->query("delete from regusers where id_user = ".(int)$idUser);
-				$this->query("delete from contatti where email = '".sanitizeAll($user["username"])."'");
+				$this->query(array("delete from spedizioni where id_user = ?",array((int)$idUser)));
+				$this->query(array("delete from regusers_groups_temp where id_user = ?",array((int)$idUser)));
+				$this->query(array("delete from regusers_groups where id_user = ?",array((int)$idUser)));
+				$this->query(array("update orders set id_user = 0 where id_user = ?",array((int)$idUser)));
+				$this->query(array("update feedback set id_user = 0 where id_user = ?",array((int)$idUser)));
+				$this->query(array("delete from regusers where id_user = ?",array((int)$idUser)));
+				$this->query(array("delete from contatti where email = ?",array(sanitizeAll($user["username"]))));
 				
 				return 1;
 			}
