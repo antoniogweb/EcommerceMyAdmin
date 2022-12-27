@@ -1423,8 +1423,6 @@ class BaseOrdiniController extends BaseController
 		$data["erroriInvioOrdine"] = $erroriInvioOrdine;
 		list($data["mostraCampiFatturazione"], $data["mostraCampiSpedizione"]) = OrdiniModel::analizzaErroriCheckout($erroriInvioOrdine);
 		
-// 		var_dump($data["mostraCampiSpedizione"]);
-		
 		$logSubmit->setErroriSubmit($data['notice']);
 		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
 		
