@@ -76,9 +76,40 @@ class GestionaliController extends BaseController
 		
 		$fields = GestionaliModel::getModulo($record["codice"])->gCampiForm();
 		
+		$data["fields"] = explode(",", $fields);
+		$data["record"] = $record;
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+		
+		$this->append($data);
+	}
+	
+	public function infoaccount()
+	{
+		$this->clean();
+		
+		if (GestionaliModel::getModulo()->isAttiva())
+		{
+			$gestionale = $this->m("GestionaliModel")->where(array(
+				"attivo"	=>	1,
+			))->record();
+			
+			if (!empty($gestionale))
+			{
+				$jsonAccount = GestionaliModel::getModulo()->info();
+				
+				if (trim($jsonAccount))
+				{
+					$this->m("GestionaliModel")->sValues(array(
+						"info_account"	=>	$jsonAccount,
+					));
+					
+					$this->m("GestionaliModel")->update($gestionale["id_gestionale"]);
+				}
+			}
+		}
 	}
 	
 	public function invia($elemento = "ordine", $id_elemento = 0)

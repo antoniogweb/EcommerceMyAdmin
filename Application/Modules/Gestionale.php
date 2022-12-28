@@ -33,7 +33,7 @@ class Gestionale
 	
 	public function __construct($record)
 	{
-		$this->params = $record;
+		$this->params = htmlentitydecodeDeep($record);
 	}
 	
 	public function getParams()

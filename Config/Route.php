@@ -735,6 +735,7 @@ class Route
 		'gestionali,main',
 		'gestionali,form',
 		'gestionali,invia',
+		'gestionali,infoaccount',
 		
 		'note,main',
 		'note,form',
