@@ -31,7 +31,7 @@ class IvaController extends BaseController
 	public $argKeys = array();
 	
 	public $sezionePannello = "ecommerce";
-
+	
 	public function main()
 	{
 		$this->shift();
@@ -39,18 +39,21 @@ class IvaController extends BaseController
 		$this->mainFields = array("iva.titolo","iva.valore","iva.tipo","iva.commercio","nascondi","usataperspedizione");
 		$this->mainHead = "Titolo,Valore,Tipo,Tipo commercio,Nascondi al cliente,Usata per la spedizione";
 		
-		$this->m[$this->modelName]->clear()
-				->where(array(
-// 					"lk" => array('titolo' => $this->viewArgs['cerca']),
-				))
-				->orderBy("id_order")->convert()->save();
+		$this->aggiungiCodiceGestionale();
+		
+		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore,tipo,commercio,usata_per_spedizione,nascondi');
+		$fields = 'titolo,valore,tipo,commercio,usata_per_spedizione,nascondi';
+		
+		if (v("attiva_collegamento_gestionali"))
+			$fields .= ",codice_gestionale";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}

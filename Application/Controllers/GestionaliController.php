@@ -41,7 +41,7 @@ class GestionaliController extends BaseController
 		$this->s["admin"]->check();
 		
 		if (!v("attiva_collegamento_gestionali"))
-			die("Modulo non attivo");
+			$this->responseCode(403);
 	}
 
 	public function main()

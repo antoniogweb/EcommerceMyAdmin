@@ -169,6 +169,8 @@ class ApplicazioniModel extends GenericModel {
 				$version = $newVersion;
 			}
 			
+			RoutineaggiornamentoModel::esegui();
+			
 			$esitoMigrazioni = ob_get_clean();
 			$titoloPagina = gtext("Esito migrazioni applicazione")." ".$record["titolo"];
 			

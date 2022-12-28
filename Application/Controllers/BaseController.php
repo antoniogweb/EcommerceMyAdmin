@@ -726,5 +726,13 @@ class BaseController extends Controller
 			}
 		}
 	}
-
+	
+	protected function aggiungiCodiceGestionale()
+	{
+		if (v("attiva_collegamento_gestionali"))
+		{
+			$this->mainFields[] = $this->m($this->modelName)->table().".codice_gestionale";
+			$this->mainHead .= ",Codice gestionale";
+		}
+	}
 }

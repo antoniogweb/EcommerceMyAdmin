@@ -18,6 +18,17 @@ $().ready(function() {
 			
 			<?php echo $form["utilizzo"] ?? null;?>
 			
+			<?php if (v("attiva_collegamento_gestionali")) { ?>
+			<div class='row'>
+				<div class='col-md-6'>
+					<?php echo $form["codice_gestionale"];?>
+				</div>
+				<div class='col-md-6'>
+					<?php echo $form["codice_pagamento_pa"];?>
+				</div>
+			</div>
+			<?php } ?>
+			
 			<?php echo $form["descrizione"];?>
 			
 			<?php echo isset($form["istruzioni_pagamento"]) ? $form["istruzioni_pagamento"] : "";?>

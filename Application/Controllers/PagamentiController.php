@@ -58,6 +58,8 @@ class PagamentiController extends BaseController
 		$this->mainFields = array("edit","pagamenti.codice", "pagamenti.prezzo_ivato","attivo");
 		$this->mainHead = "Titolo,Codice,Costo (€),Attivo";
 		
+		$this->aggiungiCodiceGestionale();
+		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
 		parent::main();
@@ -82,6 +84,9 @@ class PagamentiController extends BaseController
 		
 		if (v("permetti_ordini_offline"))
 			$fields .= ",utilizzo";
+		
+		if (v("attiva_collegamento_gestionali"))
+			$fields .= ",codice_gestionale,codice_pagamento_pa";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

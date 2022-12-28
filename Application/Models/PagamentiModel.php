@@ -115,8 +115,34 @@ class PagamentiModel extends GenericModel {
 				'chiave_segreta'		=>	array(
 					'labelString'=>	'Chiave segreta / API KEY',
 				),
+				'codice_pagamento_pa'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Codice pagamento pubblica amministrazione",
+					"options"	=>	$this->opzioniPagamentiPa(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 		);
+	}
+	
+	public function opzioniPagamentiPa()
+	{
+		$op = new OpzioniModel();
+		
+		$res = $op->clear()->where(array(
+			"codice"	=>	"CODICE_PAGAMENTO_PA",
+			"attivo"	=>	1,
+		))->findAll(false);
+		
+		$arraySelect = [""=>"--seleziona--"];
+		
+		foreach ($res as $r)
+		{
+			$arraySelect[$r["valore"]] = $r["valore"]." - ".$r["titolo"];
+		}
+		
+		return $arraySelect;
 	}
 	
 	public function attivo($record)
