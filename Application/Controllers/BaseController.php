@@ -653,6 +653,8 @@ class BaseController extends Controller
 			$listaVariabiliGestibili = implode(",",array_diff(explode(",", v("lista_variabili_gestibili")), explode(",", v("lista_variabili_opzioni_google")), explode(",", v("lista_variabili_funzionamento_ecommerce"))));
 		else if ($this->controller == "applicazioni")
 			$listaVariabiliGestibili = ApplicazioniModel::variabiliGestibili($id);
+		else if ($this->controller == "gestionali")
+			$listaVariabiliGestibili = GestionaliModel::variabiliGestibili($id);
 		else
 			$listaVariabiliGestibili = $this->campiVariabiliDaModificare;
 			

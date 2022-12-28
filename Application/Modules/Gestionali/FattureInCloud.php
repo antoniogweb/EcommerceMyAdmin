@@ -110,6 +110,22 @@ class FattureInCloud extends Gestionale
 		return json_encode($result);
 	}
 	
+	public function infoPagamenti()
+	{
+		$this->setUrl("/c/".$this->params["param_1"]."/info/payment_methods");
+		$result = $this->send("GET");
+		
+		return json_encode($result);
+	}
+	
+	public function infoContiDiSaldo()
+	{
+		$this->setUrl("/c/".$this->params["param_1"]."/info/payment_accounts");
+		$result = $this->send("GET");
+		
+		return json_encode($result);
+	}
+	
 	public function inviaOrdine($idO)
 	{
 		$ordine = $this->infoOrdine((int)$idO);

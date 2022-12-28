@@ -48,4 +48,13 @@ trait CrudModel
 	{
 		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
 	}
+	
+	public static function variabiliGestibili($id)
+	{
+		$model = self::g(false);
+		
+		return $model->where(array(
+			$model->_idFields	=>	(int)$id,
+		))->field("variabili_gestibili");
+	}
 }

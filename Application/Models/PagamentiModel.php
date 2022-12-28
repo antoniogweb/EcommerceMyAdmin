@@ -92,6 +92,14 @@ class PagamentiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'prezzo'	=>	array(
+					"labelString"	=>	"Costo (IVA esclusa)",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Il costo del pagamento verrà aggiunto al totale dell'ordine.")."</div>"
+					),
+				),
 				'prezzo_ivato'	=>	array(
 					"labelString"	=>	"Costo (IVA inclusa)",
 					'wrap'		=>	array(

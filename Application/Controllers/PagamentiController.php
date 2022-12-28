@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PagamentiController extends BaseController
 {
+	public static $campoPrezzo = "prezzo_ivato";
+	
 	public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
@@ -37,6 +39,9 @@ class PagamentiController extends BaseController
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->s["admin"]->check();
+		
+		if (!v("prezzi_ivati_in_prodotti"))
+			self::$campoPrezzo = "prezzo";
 		
 		if (!v("attiva_gestione_pagamenti"))
 			die();
@@ -55,7 +60,7 @@ class PagamentiController extends BaseController
 		$mainMenu = v("permetti_ordini_offline") ? "add" : "";
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu);
 		
-		$this->mainFields = array("edit","pagamenti.codice", "pagamenti.prezzo_ivato","attivo");
+		$this->mainFields = array("edit","pagamenti.codice", "pagamenti.".self::$campoPrezzo,"attivo");
 		$this->mainHead = "Titolo,Codice,Costo (€),Attivo";
 		
 		$this->aggiungiCodiceGestionale();
@@ -70,9 +75,9 @@ class PagamentiController extends BaseController
 		if ($queryType != "update" && !v("permetti_ordini_offline"))
 			die();
 		
-		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo_ivato");
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',self::$campoPrezzo);
 		
-		$fields = 'titolo,attivo,prezzo_ivato,descrizione,codice';
+		$fields = 'titolo,attivo,'.self::$campoPrezzo.',descrizione,codice';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		
@@ -114,5 +119,17 @@ class PagamentiController extends BaseController
 		$this->orderBy = "id_order";
 		
 		parent::ordina();
+	}
+	
+	public function infogestionale()
+	{
+		$this->clean();
+		
+		if (GestionaliModel::getModulo()->isAttiva())
+		{
+			$json = GestionaliModel::getModulo()->infoPagamenti();
+			
+			echo $json;
+		}
 	}
 }

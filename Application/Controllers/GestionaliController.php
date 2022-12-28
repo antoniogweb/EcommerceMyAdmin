@@ -69,6 +69,8 @@ class GestionaliController extends BaseController
 		if ($queryType != "update")
 			die();
 		
+		$this->_posizioni['main'] = 'class="active"';
+		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
 		if (empty($record))
@@ -112,10 +114,27 @@ class GestionaliController extends BaseController
 		}
 	}
 	
+	public function infocontidisaldo()
+	{
+		$this->clean();
+		
+		if (GestionaliModel::getModulo()->isAttiva())
+		{
+			$json = GestionaliModel::getModulo()->infoContiDiSaldo();
+			
+			echo $json;
+		}
+	}
+	
 	public function invia($elemento = "ordine", $id_elemento = 0)
 	{
 		$this->clean();
 		
 		GestionaliModel::invia($elemento, $id_elemento);
+	}
+	
+	protected function pMain()
+	{
+		parent::main();
 	}
 }

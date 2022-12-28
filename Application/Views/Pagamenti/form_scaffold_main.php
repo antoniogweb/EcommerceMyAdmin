@@ -14,7 +14,7 @@ $().ready(function() {
 			<?php echo $form["titolo"];?>
 			<?php echo $form["attivo"];?>
 			<?php echo $form["codice"];?>
-			<?php echo $form["prezzo_ivato"];?>
+			<?php echo $form[PagamentiController::$campoPrezzo];?>
 			
 			<?php echo $form["utilizzo"] ?? null;?>
 			

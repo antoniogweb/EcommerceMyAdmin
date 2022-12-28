@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ApplicazioniModel extends GenericModel {
 	
+	use CrudModel;
+	
 	public function __construct() {
 		$this->_tables='applicazioni';
 		$this->_idFields='id_applicazione';
@@ -72,15 +74,6 @@ class ApplicazioniModel extends GenericModel {
 		}
 		
 		return "";
-	}
-	
-	public static function variabiliGestibili($id)
-	{
-		$a = new ApplicazioniModel();
-		
-		return $a->where(array(
-			"id_applicazione"	=>	(int)$id,
-		))->field("variabili_gestibili");
 	}
 	
 	public function migrazioni($c = "", $id = 0)

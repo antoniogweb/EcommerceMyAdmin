@@ -507,6 +507,7 @@ class Route
 		'pagamenti,main',
 		'pagamenti,form',
 		'pagamenti,ordina',
+		'pagamenti,infogestionale',
 		
 		'captcha,main',
 		'captcha,form',
@@ -736,6 +737,8 @@ class Route
 		'gestionali,form',
 		'gestionali,invia',
 		'gestionali,infoaccount',
+		'gestionali,variabili',
+		'gestionali,infocontidisaldo',
 		
 		'note,main',
 		'note,form',

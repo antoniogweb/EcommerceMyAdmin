@@ -21,7 +21,8 @@
 			} ?>
 			<div class="submit_entry">
 				<span class="submit_entry_Salva">
-					<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit">
+					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit">
+						<i class="fa fa-save"></i>
 						<?php if ($this->viewArgs["procedi"]) { ?>
 						<?php echo gtext("Salva");?>
 						<?php } else { ?>
