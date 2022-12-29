@@ -88,6 +88,43 @@ class GestionaliController extends BaseController
 		$this->append($data);
 	}
 	
+	public function opzioni($id = 0)
+	{
+		$this->_posizioni['opzioni'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_gestionale";
+		
+		$record = $this->m("GestionaliModel")->selectId((int)$id);
+		
+		if (empty($record))
+			$this->responseCode(404);
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->modelName = "GestionalivariabiliModel";
+		
+		$this->mainFields = array("edit","gestionali_variabili.valore");
+		$this->mainHead = "Titolo,Valore";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"opzioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->orderBy("id_order")->where(array(
+			"codice_gestionale"	=>	sanitizeAll($record["codice"]),
+		))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["GestionaliModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function infoaccount()
 	{
 		$this->clean();
@@ -130,11 +167,23 @@ class GestionaliController extends BaseController
 	{
 		$this->clean();
 		
-		GestionaliModel::invia($elemento, $id_elemento);
+		$backUrl = GestionaliModel::invia($elemento, $id_elemento);
+		
+		if (trim($backUrl))
+			$this->redirect($backUrl);
+		else
+			$this->responseCode(403);
 	}
 	
-	protected function pMain()
+	public function annullainvio($elemento = "ordine", $id_elemento = 0)
 	{
-		parent::main();
+		$this->clean();
+		
+		$backUrl = GestionaliModel::invia($elemento, $id_elemento, "metodo_annulla");
+		
+		if (trim($backUrl))
+			$this->redirect($backUrl);
+		else
+			$this->responseCode(403);
 	}
 }

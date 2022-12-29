@@ -47,6 +47,11 @@ class FattureInCloud extends Gestionale
 		return false;
 	}
 	
+	public function descInviaAlGestionale($ordine, $testo = "Invia la fattura a")
+	{
+		return parent::descInviaAlGestionale($ordine, $testo);
+	}
+	
 	public function descOrdineInviato($ordine)
 	{
 		$f = new FattureModel();
@@ -56,7 +61,7 @@ class FattureInCloud extends Gestionale
 		))->field("numero");
 		
 		if ($numero)
-			return "<span class='text text-success text-bold'>".sprintf(gtext("Fattura %s inviata a"), $numero)." ".$this->titolo()."</span>";
+			return "<span class='text text-success text-bold'>".sprintf(gtext("Fattura %s inviata a"), $numero)." ".$this->titolo()."</span><br />".$this->descInviaAlGestionale($ordine, "Invia nuovamente a");
 		else
 			return "<span class='text text-danger text-bold'>".sprintf(gtext("Fattura assente nel gestionale ma segnata come inviata a"))." ".$this->titolo()."?!?</span>";
 	}
@@ -130,6 +135,164 @@ class FattureInCloud extends Gestionale
 	{
 		$ordine = $this->infoOrdine((int)$idO);
 		
-// 		print_r($ordine);
+		$f = new FattureModel();
+		$o = new OrdiniModel();
+		
+		$fattura = $f->clear()->where(array(
+			"id_o"	=>	(int)$ordine["id_o"],
+		))->record();
+		
+		if (empty($fattura))
+			return $this->impostaErrori($ordine["id_o"], array(gtext("Fattura mancante")));
+		
+		$errori = $this->checkCampi($ordine, array("codice_pagamento", "codice_pagamento_pa"));
+		
+		if ($errori)
+			return $this->impostaErrori($ordine["id_o"], $errori);
+		
+		$articoli = array();
+		
+		foreach ($ordine["righe"] as $riga)
+		{
+			if (!$riga["codice_iva"])
+				return $this->impostaErrori($ordine["id_o"], array(gtext("Codice IVA gestionale mancante per iva"." ".$riga["iva"]."%")));
+			
+			$articoli[] = array(
+				"product_id"=>"0",
+				"code"=>$riga["codice"],
+				"name"=>htmlentitydecode($riga["titolo"]),
+				"measure"=>"N",
+				"qty"=>$riga["quantity"],
+				"description"=>$riga["attributi"] ? strip_tags($riga["attributi"]) : "",
+				"category"=>"",
+				"net_price"=>$riga["prezzo_finale"],
+				"gross_price"=>number_format($riga["prezzo_finale"]*(1 + ($riga["iva"]/100)), 2, ".",""),
+				"vat"=>array(
+					"id"	=>	$riga["codice_iva"],
+				),
+				"not_taxable"=>false,
+				"discount"=>0,
+				"apply_withholding_taxes"=>false,
+				"discount_highlight"=>0,
+				"in_ddt"=>false,
+				"stock"=>false
+			);
+		}
+		
+		$pagamenti = [];
+		
+		foreach ($ordine["pagamenti"] as $pagamento)
+		{
+			$metodo = "not";
+			$statoPagamento = $ordine["pagato_finale"] ? "paid" : "not_paid";
+			
+			$tempPagamenti = array(
+				"due_date"	=>	date("Y-m-d"),
+				"amount"	=>	number_format($pagamento["importo"],2,".",""),
+				"status"	=>	$statoPagamento,
+			);
+			
+			if ($statoPagamento == "paid")
+			{
+				$tempPagamenti["payment_account"] = array(
+					"id"		=>	$this->getVariabile("conto_di_saldo"),
+					"paid_date"	=>	$pagamento["data_pagamento"] ? $pagamento["data_pagamento"] : date("Y-m-d"),
+				);
+				
+				$tempPagamenti["paid_date"] = $pagamento["data_pagamento"] ? $pagamento["data_pagamento"] : date("Y-m-d");
+			}
+			
+			$pagamenti[] = $tempPagamenti;
+		}
+		
+		$pec = ($ordine["codice_destinatario"] && $ordine["codice_destinatario"] != "0000000" && $ordine["codice_destinatario"] != "000000") ? "" : $ordine["pec"];
+		
+		$codiceDestinatario = ($ordine["codice_destinatario"] && $ordine["codice_destinatario"] != "0000000" && $ordine["codice_destinatario"] != "000000") ? $ordine["codice_destinatario"] : "";
+		
+		$valori = array(
+			"type"	=>	"invoice",
+			"entity"	=>	array(
+				"name"	=>	htmlentitydecode($ordine["nominativo"]),
+				"vat_number"	=>	$ordine["p_iva"],
+				"tax_code"		=>	$ordine["codice_fiscale"],
+				"address_street"=>	htmlentitydecode($ordine["indirizzo"]),
+				"address_postal_code"	=>	$ordine["cap"],
+				"address_city"	=>	htmlentitydecode($ordine["citta"]),
+				"address_province"	=>	$ordine["provincia"],
+				"address_extra"	=>	"",
+				"country"		=>	nomeNazione($ordine["nazione"]),
+				"certified_email"=>$pec,
+				"ei_code"=>$codiceDestinatario,
+			),
+			"language"	=>	array(
+				"code"	=>	"it",
+				"name"	=>	"Italiano",
+			),
+			"number"	=>$fattura["numero"],
+			"date"		=>$fattura["data_fattura"] ? $fattura["data_fattura"] : date("Y-m-d", strtotime($fattura["data_creazione"])),
+			"currency"	=>	array(
+				"id"	=>	"EUR",
+				"exchange_rate"	=>	"1.00000",
+				"symbol"	=>	"€",
+			),
+			"use_gross_prices"=>false,
+			"rivalsa"=>0,
+			"cassa"=>0,
+			"show_payments"=>false,
+			"show_paypal_button"=>false,
+			"show_tspay_button"=>false,
+			"show_notification_button"=>false,
+			"items_list"=>$articoli,
+			"payments_list"=>$pagamenti,
+			"e_invoice"=>true,
+			"PA_tipo_cliente"=>"B2B",
+			"payment_method"	=>	array(
+				"id"	=>	$ordine["codice_pagamento"],
+			),
+			"ei_data"	=>	array(
+				"payment_method"	=>	$ordine["codice_pagamento_pa"],
+				"vat_kind"=>"I",
+				"bank_name"=>htmlentitydecode($this->getVariabile("istituto_di_credito")),
+				"bank_iban"=>str_replace(" ","",$this->getVariabile("iban")),
+				"bank_beneficiary"=>htmlentitydecode($this->getVariabile("beneficiario")),
+			),
+			"use_split_payment"=>false
+		);
+		
+		if ($this->getVariabile("sezionale"))
+			$valori["numeration"] = $this->getVariabile("sezionale");
+		
+		$valori = array(
+			"data"	=>	$valori,
+		);
+		
+		if ($ordine["codice_gestionale"])
+		{
+			$this->setUrl("/c/".$this->params["param_1"]."/issued_documents/".$ordine["codice_gestionale"]);
+			$result = $this->send("PUT", $valori);
+		}
+		else
+		{
+			$this->setUrl("/c/".$this->params["param_1"]."/issued_documents");
+			$result = $this->send("POST", $valori);
+		}
+		
+		if (isset($result["data"]["id"]))
+		{
+			$o->sValues(array(
+				"codice_gestionale"			=>	$result["data"]["id"],
+				"errore_gestionale"			=>	"",
+				"versione_api_gestionale"	=>	"v2",
+			), "sanitizeDb");
+		}
+		else
+		{
+			$o->sValues(array(
+				"errore_gestionale"=>	json_encode($result),
+				"versione_api_gestionale"	=>	"v2",
+			), "sanitizeDb");
+		}
+		
+		$o->pUpdate((int)$idO);
 	}
 }

@@ -122,11 +122,12 @@ class GestionaliModel extends GenericModel {
 		return false;
 	}
 	
-	public static function invia($elemento, $id_elemento)
+	public static function invia($elemento, $id_elemento, $azione = "metodo")
 	{
 		if (array_key_exists($elemento, Gestionale::$tabellaElementi))
 		{
-			$metodo = Gestionale::$tabellaElementi[$elemento];
+			$metodo = Gestionale::$tabellaElementi[$elemento][$azione];
+			$backRoute = Gestionale::$tabellaElementi[$elemento]["bak_route"];
 			
 			self::getModulo();
 			
@@ -134,6 +135,11 @@ class GestionaliModel extends GenericModel {
 			{
 				call_user_func_array(array(self::$modulo, $metodo), array($id_elemento));
 			}
+			
+			// restituisce l'URL per tornare all'ordine
+			return Url::routeToUrl($backRoute, array($id_elemento));
 		}
+		
+		return "";
 	}
 }

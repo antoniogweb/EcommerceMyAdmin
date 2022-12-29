@@ -33,6 +33,10 @@ Users_CheckAdmin::$groupsModel = "GroupsModel";
 Users_CheckAdmin::$sessionsModel = "SessioniModel";
 Users_CheckAdmin::$accessesModel = "AccessiModel";
 
+Url::$routes = array(
+	"ordine"	=>	"ordini/vedi/%d",
+);
+
 date_default_timezone_set('Europe/Rome');
 
 // Carica le App

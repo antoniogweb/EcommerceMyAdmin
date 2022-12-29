@@ -578,8 +578,6 @@ class VariabiliModel extends GenericModel {
 		## OPZIONI ##
 		"attiva_gestione_opzioni"	=>	0, // attiva la sezione per la gestione delle opzioni
 		"codici_opzioni_gestibili"	=>	"STATI_ELEMENTI:stati elementi", // elenco dei codici opzioni gestibili da pannello (dividere con ;)
-		## FATTURE IN CLOUD ##
-		"fatture_in_cloud_conto_di_saldo"	=>	"", // codice conto da usare nel collegamento con fatture in cloud
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

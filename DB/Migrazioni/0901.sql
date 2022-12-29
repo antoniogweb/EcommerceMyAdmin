@@ -1,0 +1,1 @@
+INSERT INTO `gestionali_variabili` (`id_gestionale_variabile`, `data_creazione`, `titolo`, `valore`, `codice_gestionale`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'sezionale', '', 'FATTUREINCLOUD', '5');
