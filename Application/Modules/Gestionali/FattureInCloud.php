@@ -49,7 +49,18 @@ class FattureInCloud extends Gestionale
 	
 	public function descInviaAlGestionale($ordine, $testo = "Invia la fattura a")
 	{
-		return parent::descInviaAlGestionale($ordine, $testo);
+		if ($ordine["versione_api_gestionale"] != "v1")
+			return parent::descInviaAlGestionale($ordine, $testo);
+		
+		return "";
+	}
+	
+	public function descAnnullaInvioAlGestionale($ordine, $testo = "Invia l'invio a")
+	{
+		if ($ordine["versione_api_gestionale"] != "v1")
+			return parent::descAnnullaInvioAlGestionale($ordine, $testo);
+		
+		return "";
 	}
 	
 	public function descOrdineInviato($ordine)
