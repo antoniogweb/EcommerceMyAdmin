@@ -77,8 +77,11 @@ class BaseHomeController extends BaseController
 		
 		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().'" />';
 		
-		$cache = Cache_Html::getInstance();
-		$cache->saveHtml = true;
+		if (!User::$adminLogged)
+		{
+			$cache = Cache_Html::getInstance();
+			$cache->saveHtml = true;
+		}
 		
 		$this->append($data);
 		

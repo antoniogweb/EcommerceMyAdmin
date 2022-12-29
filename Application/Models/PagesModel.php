@@ -3098,6 +3098,18 @@ class PagesModel extends GenericModel {
 		return false;
     }
     
+    public static function getRichSnippetPage($id)
+    {
+		$p = new PagesModel();
+		
+		$firstSection = $p->section((int)$id, true);
+		
+		if ($id && $firstSection == "prodotti" && v("abilita_rich_snippet"))
+			return F::jsonEncode(PagesModel::getRichSnippet((int)$id));
+		
+		return null;
+    }
+    
     public static function getRichSnippet($id)
     {
 		$pm = new PagesModel();

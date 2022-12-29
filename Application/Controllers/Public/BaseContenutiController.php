@@ -682,8 +682,11 @@ class BaseContenutiController extends BaseController
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
 		
-		$cache = Cache_Html::getInstance();
-		$cache->saveHtml = true;
+		if (!User::$adminLogged)
+		{
+			$cache = Cache_Html::getInstance();
+			$cache->saveHtml = true;
+		}
 		
 		$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
@@ -1373,7 +1376,9 @@ class BaseContenutiController extends BaseController
 				$this->clean();
 			
 			$cache = Cache_Html::getInstance();
-			$cache->saveHtml = true;
+			
+			if (!User::$adminLogged)
+				$cache->saveHtml = true;
 		}
 		
 		$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
@@ -1486,12 +1491,9 @@ class BaseContenutiController extends BaseController
 		}
 		
 		if ($firstSection == "prodotti")
-		{
-			if (v("abilita_rich_snippet"))
-				$data["richSnippet"] = F::jsonEncode(PagesModel::getRichSnippet((int)$id));
-			
 			$data["isProdotto"] = true;
-		}
+		
+		$data["richSnippet"] = PagesModel::getRichSnippetPage((int)$id);
 		
 // 		if (v("mostra_tendina_prodotto_principale") || v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
 			$data["tagCanonical"] = PagesModel::getTagCanonical((int)$id);

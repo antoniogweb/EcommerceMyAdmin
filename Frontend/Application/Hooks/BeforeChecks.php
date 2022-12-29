@@ -134,16 +134,19 @@ if (defined("SAVE_CACHE_HTML"))
 	$cache->folder = "cachehtml";
 	$cache->loadHtml = true;
 	
-	$cacheKey = $_SERVER["REQUEST_URI"];
-	
-	if (User::$isPhone)
-		$cacheKey .= "_MOBILE";
-	else if (User::$isTablet)
-		$cacheKey .= "_TABLET";
-	else
-		$cacheKey .= "_DESK";
-	
-	$cache->cacheKey = $cacheKey;
+	if ($_SERVER["REQUEST_URI"])
+	{
+		$cacheKey = $_SERVER["REQUEST_URI"];
+		
+		if (User::$isPhone)
+			$cacheKey .= "_MOBILE";
+		else if (User::$isTablet)
+			$cacheKey .= "_TABLET";
+		else
+			$cacheKey .= "_DESK";
+		
+		$cache->cacheKey = $cacheKey;
+	}
 }
 
 Helper_Pages::$pageLinkWrap = array("li");

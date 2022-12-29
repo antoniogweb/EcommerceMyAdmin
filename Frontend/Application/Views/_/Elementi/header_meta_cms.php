@@ -3,11 +3,10 @@
 <meta name="description" content="<?php echo $meta_description;?>" />
 <meta name="keywords" content="<?php echo $keywords;?>" />
 
-<?php if (isset($richSnippet)) { ?>
-<script type="application/ld+json">
-<?php echo $richSnippet;?>
-</script>
-<?php } ?>
+<?php
+$stringaCache = 'PagesModel::$IdCombinazione = '.(int)PagesModel::$IdCombinazione.';';
+$stringaCache .= '$richSnippet = PagesModel::getRichSnippetPage('.(int)$idPaginaPerTracking.');';
+include(tpf("Elementi/header_rich_snippet.php", false, false, $stringaCache));?>
 
 <?php if (isset($tagCanonical)) { ?>
 <?php echo $tagCanonical;?>
