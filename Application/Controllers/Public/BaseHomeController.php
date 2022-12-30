@@ -48,6 +48,12 @@ class BaseHomeController extends BaseController
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
 		
+		if (!User::$adminLogged)
+		{
+			$cache = Cache_Html::getInstance();
+			$cache->saveHtml = true;
+		}
+		
 		$data["slide"] = $this->slide = $this->m("PagesModel")->clear()->addJoinTraduzionePagina()
 			->where(array(
 				"categories.section"	=>	"slide",
@@ -76,12 +82,6 @@ class BaseHomeController extends BaseController
 		}
 		
 		$data["tagCanonical"] = '<link rel="canonical" href="'.Url::getRoot().'" />';
-		
-		if (!User::$adminLogged)
-		{
-			$cache = Cache_Html::getInstance();
-			$cache->saveHtml = true;
-		}
 		
 		$this->append($data);
 		

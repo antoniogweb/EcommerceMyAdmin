@@ -53,6 +53,14 @@ class PagineController extends PagesController {
 		);
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Tipo,Attiva';
+		
+		if (defined("SAVE_CACHE_HTML"))
+		{
+			$this->queryFields .= ",crea_cache";
+			$this->tableFields[] = 'seCacheCrud';
+			$this->head .= ",Cache attivabile";
+		}
+		
 		$this->filters = array(null,'title',null,array("attivo",null,SlideModel::$YN));
 		
 		$this->colProperties = array(

@@ -1375,10 +1375,11 @@ class BaseContenutiController extends BaseController
 			if (!$data["pages"][0]["pages"]["carica_header_footer"])
 				$this->clean();
 			
-			$cache = Cache_Html::getInstance();
-			
-			if (!User::$adminLogged)
+			if (!User::$adminLogged && $data["pages"][0]["pages"]["crea_cache"])
+			{
+				$cache = Cache_Html::getInstance();
 				$cache->saveHtml = true;
+			}
 		}
 		
 		$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(

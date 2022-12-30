@@ -57,4 +57,12 @@ trait CrudModel
 			$model->_idFields	=>	(int)$id,
 		))->field("variabili_gestibili");
 	}
+	
+	public function seCacheCrud($record)
+	{
+		if ($record[$this->_tables]["crea_cache"])
+			return "<i class='text text-success fa fa-check'></i>";
+		
+		return "";
+	}
 }

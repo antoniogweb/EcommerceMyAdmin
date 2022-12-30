@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class PagesModel extends GenericModel {
-
+	
+	use CrudModel;
+	
 	public $lId = 0;
 	public $titleFieldName = "title";
 	public $aliaseFieldName = "alias";
@@ -698,6 +700,18 @@ class PagesModel extends GenericModel {
 						null,
 						null,
 						"<div class='form_notice'>".gtext("Se settato su no, non verranno caricati l'header e il footer del sito")."</div>"
+					),
+				),
+				'crea_cache'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'La pagina può essere salvata in cache?',
+					'entryClass'	=>	'form_input_text help_test',
+					'options'	=>	self::$attivoSiNo,
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, al primo accesso verrà creato l'HTML della pagina che verrà riproposto ai successivi accessi.")."</div>"
 					),
 				),
 			),

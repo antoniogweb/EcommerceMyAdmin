@@ -127,24 +127,23 @@ User::$isMobile = $detect->isMobile();
 User::$isTablet = $detect->isTablet();
 User::$isPhone = ($detect->isMobile() && !$detect->isTablet());
 
-if (defined("SAVE_CACHE_HTML"))
+// Cache HTML
+if (defined("SAVE_CACHE_HTML") && isset($_SERVER["REQUEST_URI"]))
 {
-	$cache = Cache_Html::getInstance();
-	$cache->absolutePath = ROOT."/Logs";
-	$cache->folder = "cachehtml";
-	$cache->loadHtml = true;
+	$cacheKey = $_SERVER["REQUEST_URI"];
 	
-	if ($_SERVER["REQUEST_URI"])
+	if (User::$isPhone)
+		$cacheKey .= "_MOBILE";
+	else if (User::$isTablet)
+		$cacheKey .= "_TABLET";
+	else
+		$cacheKey .= "_DESK";
+	
+	if (empty($_POST))
 	{
-		$cacheKey = $_SERVER["REQUEST_URI"];
-		
-		if (User::$isPhone)
-			$cacheKey .= "_MOBILE";
-		else if (User::$isTablet)
-			$cacheKey .= "_TABLET";
-		else
-			$cacheKey .= "_DESK";
-		
+		Cache_Html::$maxNumberOfFilesCached = v("numero_massimo_file_cache_html");
+		$cache = Cache_Html::getInstance(ROOT."/Logs", "cachehtml");
+		$cache->loadHtml = true;
 		$cache->cacheKey = $cacheKey;
 	}
 }

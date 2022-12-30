@@ -458,7 +458,7 @@ class VariabiliModel extends GenericModel {
 		## FASCE PREZZO ##
 		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
-		## CACHE ##
+		## CACHE DB ##
 		"numero_massimo_file_cache"	=>	50000, // numero massimo di file in cache
 		"attiva_cache_prodotti"		=>	1, // cache dei prodotti in admin
 		"attiva_cache_immagini"		=>	0, // cache della immagini
@@ -467,6 +467,8 @@ class VariabiliModel extends GenericModel {
 		"query_cache_pulisci_ogni_x_minuti"	=>	70, // minuti dopo i quali pulisce la cache
 		"query_cache_usa_periodi_random"=>	0, // se suddivide il periodo di cache in sottoperiodi e ne sceglie uno random
 		"query_cache_minuti_tra_periodi"=>	5, // numero di minuti tra un periodo di cache e l'altro
+		## CACHE HTML ##
+		"numero_massimo_file_cache_html"	=>	10000, // numero massimo di file in cache
 		## GIACENZA / MAGAZZINO ##
 		"attiva_giacenza"			=>	0,	// se considerare la giacenza per la messa nel carrello
 		"attiva_campo_giacenza"		=>	0,	// se permette comunque di gestire la giacenza (anche se attiva_giacenza = 0)

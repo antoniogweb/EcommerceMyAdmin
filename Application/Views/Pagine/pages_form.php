@@ -63,10 +63,12 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Visibilità
+								<?php echo gtext("Visibilità");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
+								
+								<?php include($this->viewPath("pages_cache"));?>
 								
 								<?php include($this->viewPath("pages_link"));?>
 							</div>
