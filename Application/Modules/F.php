@@ -163,6 +163,7 @@ class F
 						$queryToTest = $query;
 					
 					$queryToTest = str_replace("1 = 1", "", $queryToTest);
+					$queryToTest = str_replace("1 != 1", "", $queryToTest);
 					$queryToTest = str_replace("canonical = 1", "", $queryToTest);
 					$queryToTest = str_replace("(col_1 != 0 OR col_2 != 0 OR col_3 != 0 OR col_4 != 0 OR col_5 != 0 OR col_6 != 0 OR col_7 != 0 OR col_8 != 0)", "", $queryToTest);
 					$queryToTest = str_replace("gift_card = 1", "", $queryToTest);
