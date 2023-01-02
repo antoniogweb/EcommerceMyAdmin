@@ -254,9 +254,9 @@ class EventiretargetingModel extends GenericModel {
 				$tipoControllo = (!empty($dettagliGruppoRetargeting)) ? $dettagliGruppoRetargeting["blocca_reinvio_mail_stesso"] : "EVENTO";
 				
 				if ($tipoControllo == "EVENTO")
-					$cModel->sWhere("email not in (select email from eventi_retargeting_elemento where id_evento = $idEvento)");
+					$cModel->sWhere(array("email not in (select email from eventi_retargeting_elemento where id_evento = ?)",array($idEvento)));
 				else
-					$cModel->sWhere("(email,$primaryKey) not in (select email,id_elemento from eventi_retargeting_elemento where id_evento = $idEvento)");
+					$cModel->sWhere(array("(email,$primaryKey) not in (select email,id_elemento from eventi_retargeting_elemento where id_evento = ?)",array($idEvento)));
 				
 				$elementi = $cModel->send(false);
 				

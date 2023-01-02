@@ -175,6 +175,8 @@ class F
 					$queryToTest = str_replace("da_usare = 1", "", $queryToTest);
 					$queryToTest = str_replace("attivo = 0 where 1", "", $queryToTest);
 					$queryToTest = str_replace("usata_per_spedizione = 0 where 1", "", $queryToTest);
+					$queryToTest = str_replace("scatta_dopo_ore = 0", "", $queryToTest);
+					$queryToTest = str_replace("scatta_dopo_ore > 0", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);

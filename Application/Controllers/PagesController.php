@@ -1152,7 +1152,7 @@ class PagesController extends BaseController {
 		
 		$data['numeroAttributi'] = $this->scaffold->model->rowNumber();
 		
-		$resAttributi = $this->m['AttributiModel']->clear()->sWhere("id_a not in (select id_a from pages_attributi where id_page = ".$clean['id'].")")->orderBy("titolo")->send();
+		$resAttributi = $this->m['AttributiModel']->clear()->sWhere(array("id_a not in (select id_a from pages_attributi where id_page = ?)",array($clean['id'])))->orderBy("titolo")->send();
 		
 		$data["listaAttributi"] = array();
 		

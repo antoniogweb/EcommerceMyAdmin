@@ -76,7 +76,7 @@ class AttributiController extends BaseController {
 				"checkbox_attributi_id_a"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("id_a not in (select id_a from pages_attributi where id_page = ".$this->viewArgs["id_page"].")");
+			$this->m[$this->modelName]->sWhere(array("id_a not in (select id_a from pages_attributi where id_page = ?)",array((int)$this->viewArgs["id_page"])));
 		}
 		
 		$this->m[$this->modelName]->save();
