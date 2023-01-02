@@ -1142,7 +1142,9 @@ class OrdiniModel extends FormModel {
 			
 			$elementiPuliti = array();
 			
-			$c->del(null, "cart_uid = '".User::$cart_uid."'");
+			$c->del(null, array(
+				"cart_uid"	=>	User::$cart_uid,
+			));
 			
 			foreach ($righe as $r)
 			{
@@ -1199,7 +1201,9 @@ class OrdiniModel extends FormModel {
 			
 			$this->riempiRighe($ordine["id_o"]);
 			
-			$c->del(null, "cart_uid = '".User::$cart_uid."'");
+			$c->del(null, array(
+				"cart_uid"	=>	User::$cart_uid,
+			));
 			
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			

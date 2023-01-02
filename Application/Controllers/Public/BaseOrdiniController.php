@@ -1132,7 +1132,9 @@ class BaseOrdiniController extends BaseController
 							//riempie la tabella delle righe
 							$this->m('OrdiniModel')->riempiRighe($clean['lastId']);
 							
-							$this->m("CartModel")->del(null, "cart_uid = '".$clean["cart_uid"]."'");
+							$this->m("CartModel")->del(null, array(
+								"cart_uid"	=>	$clean["cart_uid"],
+							));
 							setcookie("cart_uid", "", time()-3600,"/");
 							
 							//distruggi il cookie del coupon
