@@ -77,12 +77,12 @@ class Gestionale
 		return "<span class='text text-danger text-bold'>".sprintf(gtext("Errore nell'invio dell'ordine %s inviato a"), $ordine["id_o"])." ".$this->titolo()."</span><pre>".$ordine["errore_gestionale"]."</pre>";
 	}
 	
-	public function descAnnullaInvioAlGestionale($ordine, $testo = "Invia l'invio a")
+	public function descAnnullaInvioAlGestionale($ordine, $testo = "Annulla l'invio a")
 	{
 		$html = "";
 		
 		if (method_exists($this, "annullaOrdine"))
-			$html .= "<a style='margin-left:10px;' class='label label-danger' href='".Url::getRoot()."gestionali/annullainvio/ordine/".$ordine["id_o"]."'>".gtext($testo)." ".$this->titolo()."</a>";
+			$html .= "<a style='margin-left:10px;' class='label label-danger' href='".Url::getRoot()."gestionali/annullainvio/ordine/".$ordine["id_o"]."'><i class='fa fa-trash'></i> ".gtext($testo)." ".$this->titolo()."</a>";
 		
 		return $html;
 	}

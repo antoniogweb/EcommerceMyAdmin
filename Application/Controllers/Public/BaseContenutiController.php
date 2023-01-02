@@ -1665,6 +1665,8 @@ class BaseContenutiController extends BaseController
 		}
 		else
 		{
+			header('Content-type: application/json; charset=utf-8');
+			
 			$res = $this->m("CombinazioniModel")->send(false);
 			
 			$jsonArray = array();

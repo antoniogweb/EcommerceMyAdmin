@@ -140,6 +140,8 @@ class MarchiModel extends GenericModel {
 			
 			return parent::update($id, $whereClause);
 		}
+		
+		return false;
 	}
 	
 	public function insert()
@@ -154,6 +156,8 @@ class MarchiModel extends GenericModel {
 			
 			return parent::insert();
 		}
+		
+		return false;
 	}
 	
 	public function nazione($record)

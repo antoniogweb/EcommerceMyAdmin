@@ -511,7 +511,7 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_ordini"			=>	"ordini/main", // controller/action della sezione ordini
 		"permetti_modifica_cliente_in_ordine"	=>	0, // se impostato ad 1, permette di modificare il cliente nell'ordine
 		"attiva_gestione_stati_ordine"	=>	0, // se impostato a 1 si attiva la possibilità di gestire gli stati dell'ordine
-		## CHECKOUT ##
+		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout
 		"classi_titoli_checkout_spedizione"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli della sezione spedizioni al checkout
@@ -519,6 +519,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_coupon_checkout"	=>	1, // se mostrare il form di inserimento coupon al checkout
 		"mostra_doppio_pulsante_acquista_mobile"	=>	1, // se mostrare il doppio pulsante di acquista in mobile
 		"pagina_di_autenticazione"	=>	0, // attiva la pagina di autenticazione
+		"mostra_modalita_spedizione_in_resoconto"	=>	1, // se mostrare la modalità di spedizione nel resoconto dell'ordine
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello

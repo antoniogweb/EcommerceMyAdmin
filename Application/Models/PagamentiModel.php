@@ -44,6 +44,26 @@ class PagamentiModel extends GenericModel {
 		
 		$this->traduzione = true;
 		
+		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/pagamenti",
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	false,
+				"maxFileSize"	=>	3000000,
+// 				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	100,
+					'imgHeight'		=>	100,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'yes',
+				),
+			),
+		);
+		
 		parent::__construct();
 	}
 	
@@ -131,6 +151,8 @@ class PagamentiModel extends GenericModel {
 					"className"	=>	"form-control",
 				),
 			),
+			
+			'enctype'	=>	'multipart/form-data',
 		);
 	}
 	
@@ -209,14 +231,20 @@ class PagamentiModel extends GenericModel {
 	{
 		$this->setPriceNonIvato();
 		
-		return parent::insert();
+		if ($this->upload("update"))
+			return parent::insert();
+		
+		return false;
 	}
 	
 	public function update($id = null, $where = null)
 	{
 		$this->setPriceNonIvato();
 		
-		return parent::update($id, $where);
+		if ($this->upload("insert"))
+			return parent::update($id, $where);
+		
+		return false;
 	}
 	
 	public static function getCostoCarrello()

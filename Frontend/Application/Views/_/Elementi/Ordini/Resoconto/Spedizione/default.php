@@ -36,9 +36,11 @@
 			<td><?php echo $ordine["destinatario_spedizione"];?></td>
 		</tr>
 		<?php } ?>
+		<?php if (v("mostra_modalita_spedizione_in_resoconto")) { ?>
 		<tr>
 			<td class="first_column"><?php echo gtext("Modalità di spedizione", false); ?></td>
 			<td><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></td>
 		</tr>
+		<?php } ?>
 	</table>
 </div>

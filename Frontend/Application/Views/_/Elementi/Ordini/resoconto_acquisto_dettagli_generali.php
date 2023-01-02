@@ -28,7 +28,7 @@
 		<td><b><?php echo gtext("Richiesta");?></b></td>
 	</tr>
 	<?php } ?>
-	<?php if ($ordine["da_spedire"]) { ?>
+	<?php if (v("mostra_modalita_spedizione_in_resoconto") && $ordine["da_spedire"]) { ?>
 	<tr>
 		<td><?php echo gtext("Modalità di spedizione", false); ?>:</td>
 		<td><b><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></b></td>

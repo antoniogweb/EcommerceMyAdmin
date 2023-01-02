@@ -84,6 +84,7 @@ class ContattiModel extends GenericModel {
 		
 		$arrayCampi = array(
 			"nome"		=>	"",
+			"oggetto"	=>	"",
 			"cognome"	=>	"",
 			"telefono"	=>	"",
 			"citta"		=>	"",

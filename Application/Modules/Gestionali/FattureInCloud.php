@@ -165,7 +165,7 @@ class FattureInCloud extends Gestionale
 		
 		foreach ($ordine["righe"] as $riga)
 		{
-			if (!$riga["codice_iva"])
+			if ($riga["codice_iva"] == "")
 				return $this->impostaErrori($ordine["id_o"], array(gtext("Codice IVA gestionale mancante per iva"." ".$riga["iva"]."%")));
 			
 			$articoli[] = array(
@@ -220,6 +220,8 @@ class FattureInCloud extends Gestionale
 		
 		$codiceDestinatario = ($ordine["codice_destinatario"] && $ordine["codice_destinatario"] != "0000000" && $ordine["codice_destinatario"] != "000000") ? $ordine["codice_destinatario"] : "";
 		
+		$note = ($ordine["usata_promozione"] == "Y" && $ordine["nome_promozione"]) ? "Usata promozione ".htmlentitydecode($ordine["nome_promozione"]) : "";
+		
 		$valori = array(
 			"type"	=>	"invoice",
 			"entity"	=>	array(
@@ -267,6 +269,7 @@ class FattureInCloud extends Gestionale
 				"bank_iban"=>str_replace(" ","",$this->getVariabile("iban")),
 				"bank_beneficiary"=>htmlentitydecode($this->getVariabile("beneficiario")),
 			),
+			"notes"	=>	$note,
 			"use_split_payment"=>false
 		);
 		

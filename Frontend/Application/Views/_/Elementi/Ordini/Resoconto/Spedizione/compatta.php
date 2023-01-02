@@ -12,7 +12,9 @@
 			<?php if (trim($ordine["destinatario_spedizione"])) { ?>
 				<span class="uk-text-emphasis"><?php echo gtext("Destinatario");?>:</span> <?php echo $ordine["destinatario_spedizione"];?><br />
 			<?php } ?>
+			<?php if (v("mostra_modalita_spedizione_in_resoconto")) { ?>
 			<span class="uk-text-emphasis"><?php echo gtext("Modalità di spedizione", false); ?>: </span> <?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?>
+			<?php } ?>
 		</div>
 	</div>
 </div>

@@ -29,6 +29,8 @@ $().ready(function() {
 			</div>
 			<?php } ?>
 			
+			<?php echo $form["immagine"];?>
+			
 			<?php echo $form["descrizione"];?>
 			
 			<?php echo isset($form["istruzioni_pagamento"]) ? $form["istruzioni_pagamento"] : "";?>

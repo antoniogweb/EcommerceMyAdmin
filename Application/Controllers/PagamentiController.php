@@ -77,7 +77,7 @@ class PagamentiController extends BaseController
 		
 		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',self::$campoPrezzo);
 		
-		$fields = 'titolo,attivo,'.self::$campoPrezzo.',descrizione,codice';
+		$fields = 'titolo,attivo,'.self::$campoPrezzo.',descrizione,codice,immagine';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		

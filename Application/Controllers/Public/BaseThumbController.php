@@ -1183,6 +1183,17 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
+	public function pagamento($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	300,
+			'imgHeight'		=>	100,
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/pagamenti");
+	}
+	
 	public function colore($colore = null)
 	{
 		if( !preg_match('/^#[a-f0-9]{6}$/i', "#".$colore) )

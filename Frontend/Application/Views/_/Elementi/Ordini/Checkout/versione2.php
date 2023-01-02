@@ -118,7 +118,7 @@
 							</div>
 							<div class="uk-width-expand">
 								<div class="uk-grid-medium uk-grid" uk-grid>
-									<div class="uk-width-1-1 uk-width-1-2@m" id="fragment-checkout-pagamento">
+									<div class="uk-width-1-1 <?php if (count($corrieri) > 1) { ?>uk-width-1-2@m<?php } ?>" id="fragment-checkout-pagamento">
 										<div class="">
 											<?php
 											$htmlIcona = '<span uk-icon="icon:credit-card;ratio:1.3" class="uk-margin-right uk-hidden@m '.v("classi_icona_checkout").'"></span>';
@@ -129,7 +129,7 @@
 											?>
 										</div>
 									</div>
-									<?php if (v("attiva_spedizione")) { ?>
+									<?php if (v("attiva_spedizione") && count($corrieri) > 1) { ?>
 									<div class="uk-width-1-1 uk-width-1-2@m <?php echo User::$isMobile ? "uk-margin-large-top" : "";?>" id="fragment-checkout-consegna">
 										<div class="">
 											<?php include(tpf("Ordini/checkout_corrieri.php"));?>
@@ -137,6 +137,10 @@
 									</div>
 									<?php } ?>
 								</div>
+								
+								<?php if (v("attiva_spedizione") && count($corrieri) <= 0) { ?>
+								<?php include(tpf("Ordini/checkout_corrieri.php"));?>
+								<?php } ?>
 								
 								<hr class="uk-divider-icon uk-margin-medium-top uk-margin-remove-bottom">
 							</div>

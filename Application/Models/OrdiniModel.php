@@ -157,6 +157,16 @@ class OrdiniModel extends FormModel {
 		self::$pagamentiSettati = true;
 	}
 	
+	public static function getImmaginePagamento($codice)
+	{
+		if (isset(self::$pagamentiFull[$codice]))
+		{
+			return self::$pagamentiFull[$codice]["pagamenti"]["immagine"];
+		}
+		
+		return "";
+	}
+	
 	public static function statiSuccessivi($stato)
 	{
 		$query = StatiordineModel::g(false)->select("codice,manda_mail_al_cambio_stato,descrizione")->where(array(
