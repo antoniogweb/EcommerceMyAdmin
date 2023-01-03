@@ -186,6 +186,8 @@ class F
 					$queryToTest = str_replace("tipo='CO'", "", $queryToTest);
 					$queryToTest = str_replace("documenti_lingue.includi = 1", "", $queryToTest);
 					$queryToTest = str_replace("documenti_lingue.includi = 0", "", $queryToTest);
+					$queryToTest = str_replace("includi = 1", "", $queryToTest);
+					$queryToTest = str_replace("includi = 0", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);
