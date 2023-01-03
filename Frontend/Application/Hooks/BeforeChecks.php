@@ -132,19 +132,22 @@ if (defined("SAVE_CACHE_HTML") && isset($_SERVER["REQUEST_URI"]))
 {
 	$cacheKey = $_SERVER["REQUEST_URI"];
 	
+	$partialKey = "";
+	
 	if (User::$isPhone)
-		$cacheKey .= "_MOBILE";
+		$partialKey = "_PHONE";
 	else if (User::$isTablet)
-		$cacheKey .= "_TABLET";
+		$partialKey = "_TABLET";
 	else
-		$cacheKey .= "_DESK";
+		$partialKey = "_DESK";
 	
 	if (empty($_POST))
 	{
 		Cache_Html::$maxNumberOfFilesCached = v("numero_massimo_file_cache_html");
 		$cache = Cache_Html::getInstance(ROOT."/Logs", "cachehtml");
 		$cache->loadHtml = true;
-		$cache->cacheKey = $cacheKey;
+		$cache->cacheKey = $cacheKey.$partialKey;
+		$cache->partialKey = $partialKey;
 	}
 }
 

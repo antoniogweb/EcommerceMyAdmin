@@ -1939,7 +1939,7 @@ function tp($admin = false)
 	return Domain::$parentRoot."/Application/Views$subfolder";
 }
 
-function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "")
+function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
 {
 	$cache = Cache_Html::getInstance();
 	
@@ -1951,7 +1951,7 @@ function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = 
 	$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 	
 	if (file_exists($subFolderFullPath))
-		return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache);
+		return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
 	
 	if ($themeFolder)
 	{
@@ -1959,13 +1959,13 @@ function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = 
 		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
 		
 		if (file_exists($subFolderFullPathParentFrontend))
-			return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache);
+			return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
 	}
 	
 	if ($public)
 		return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
 	else
-		return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache);
+		return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
 }
 
 function singPlu($numero, $sing, $plu)
