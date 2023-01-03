@@ -196,6 +196,7 @@ class SitemapModel extends GenericModel {
 			));
 		
 		$elements = $c->treeQueryElements("categories");
+		$binded = $elements["binded"];
 		
 		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica,0 as url,0 as home from categories where ".$elements["where"];
 		
@@ -209,6 +210,7 @@ class SitemapModel extends GenericModel {
 			));
 		
 		$elements = $p->treeQueryElements("pages");
+		$binded = array_merge($binded, $elements["binded"]);
 		
 		$sqlPages = "select categories.id_c as id_c, id_page, pages.priorita_sitemap as priorita, 99999 as lft, coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,0 as url,0 as home from pages inner join categories on categories.id_c = pages.id_c where ".$elements["where"];
 		
@@ -216,7 +218,7 @@ class SitemapModel extends GenericModel {
 		
 // 		echo $sql;die();
 		
-		$nodi = $c->query($sql, false);
+		$nodi = $c->query(array($sql,$binded), false);
 		
 		$dataModificaHome = self::dataModificaHome($nodi);
 		

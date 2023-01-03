@@ -914,7 +914,9 @@ class CartModel extends GenericModel {
 				
 				if ((int)count($elementiRigaCarrello) !== (int)$riga["quantity"] || count($elementiPost) > 0)
 				{
-					$ce->del(null, "id_cart = ".(int)$riga["id_cart"]);
+					$ce->del(null, array(
+						"id_cart"	=>	(int)$riga["id_cart"]
+					));
 					
 					for ($i = 0; $i < $riga["quantity"]; $i++)
 					{
