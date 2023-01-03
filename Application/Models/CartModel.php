@@ -64,6 +64,9 @@ class CartModel extends GenericModel {
 				)
 			));
 			
+			$this->notice = "";
+			$this->queryResult = false;
+			
 			self::$deletedExpired = true;
 		}
 	}
@@ -997,7 +1000,9 @@ class CartModel extends GenericModel {
 		$clean["id_cart"] = (int)$idCart;
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$this->clear()->sWhere("(id_cart = " . $clean["id_cart"] . " OR id_p = " . $clean["id_cart"] . ") AND cart_uid = '" . $clean["cart_uid"] . "'");
+// 		$this->clear()->sWhere("(id_cart = " . $clean["id_cart"] . " OR id_p = " . $clean["id_cart"] . ") AND cart_uid = '" . $clean["cart_uid"] . "'");
+		
+		$this->clear()->sWhere(array("(id_cart = ? OR id_p = ?) AND cart_uid = ?",array($clean["id_cart"], $clean["id_cart"], $clean["cart_uid"])));
 		
 		if ($idAcc)
 			$this->aWhere(array(
@@ -1046,7 +1051,7 @@ class CartModel extends GenericModel {
 		$clean["id_cart"] = (int)$idCart;
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		return $this->clear()->select("id_page")->sWhere("id_p = " . $clean["id_cart"] . " AND cart_uid = '" . $clean["cart_uid"] . "'")->toList("id_page")->send();
+		return $this->clear()->select("id_page")->sWhere(array("id_p = ? AND cart_uid = ?",array($clean["id_cart"], $clean["cart_uid"])))->toList("id_page")->send();
 	}
 	
 	public function accessorioInCarrello($idCart, $idAcc)
@@ -1144,7 +1149,9 @@ class CartModel extends GenericModel {
 					"creation_time"	=>	time(),
 				));
 				
-				$this->update(null, "cart_uid = '".$clean["cart_uid"]."'");
+				$this->update(null, array(
+					"cart_uid"	=>	$clean["cart_uid"],
+				));
 			}
 		}
 		else if (v("recupera_dati_carrello_da_post"))
@@ -1163,7 +1170,9 @@ class CartModel extends GenericModel {
 						"creation_time"	=>	time(),
 					));
 					
-					$this->update(null, "cart_uid = '".$clean["cart_uid"]."'");
+					$this->update(null, array(
+						"cart_uid"	=>	$clean["cart_uid"],
+					));
 				}
 			}
 		}

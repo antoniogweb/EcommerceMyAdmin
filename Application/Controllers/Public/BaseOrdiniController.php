@@ -1380,6 +1380,8 @@ class BaseOrdiniController extends BaseController
 
 							$logSubmit->write(LogModel::LOG_CHECKOUT, LogModel::ORDINE_ESEGUITO);
 							
+							F::checkPreparedStatement();
+							
 							if (Output::$html)
 								$this->redirect("resoconto-acquisto/".$clean['lastId']."/".$clean["cart_uid"]."/token".$toPaypal);
 						}

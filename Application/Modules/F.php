@@ -177,6 +177,11 @@ class F
 					$queryToTest = str_replace("usata_per_spedizione = 0 where 1", "", $queryToTest);
 					$queryToTest = str_replace("scatta_dopo_ore = 0", "", $queryToTest);
 					$queryToTest = str_replace("scatta_dopo_ore > 0", "", $queryToTest);
+					$queryToTest = str_replace("HAVING depth = 1", "", $queryToTest);
+					$queryToTest = str_replace("cart.id_user != 0", "", $queryToTest);
+					$queryToTest = str_replace("set ultimo_usato = 'N'", "", $queryToTest);
+					$queryToTest = str_replace("set ultimo_usato = 'Y'", "", $queryToTest);
+					$queryToTest = str_replace("time_inserimento <", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);
