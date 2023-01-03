@@ -149,7 +149,7 @@ class CombinazioniController extends BaseController
 			$mainHeadArray[] = "Prodotto";
 		}
 		
-		$mainHeadArray[] = "Attivo";
+		$mainHeadArray[] = "Prodotto attivo";
 		$mainFields[] = "attivoCrud";
 		
 		if (v("immagine_in_varianti"))

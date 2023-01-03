@@ -371,7 +371,11 @@ class CombinazioniModel extends GenericModel {
 				}
 			}
 			
-			$this->del(null,"id_page='".$clean["id_page"]."'");
+			$combPrincipale = $this->combinazionePrincipale($clean["id_page"]);
+			
+			$this->del(null, array(
+				"id_page"	=>	$clean["id_page"]
+			));
 			
 			CombinazioniModel::$aggiornaAliasAdInserimento = false;
 			
@@ -389,19 +393,10 @@ class CombinazioniModel extends GenericModel {
 				$this->insert();
 			}
 			
-			$this->controlliDopoCreazioneCombinazione($dettagliPagina["id_page"]);
+			if (!empty($combPrincipale))
+				PagesModel::$IdCmb = $combPrincipale["id_c"];
 			
-// 			// Controllo che ci sia la combinazione base
-// 			$this->controllaCombinazioniPagina($dettagliPagina["id_page"]);
-// 			
-// 			// Genero gli alias di tutte le combinazioni coinvolte
-// 			$this->aggiornaAlias($dettagliPagina["id_page"]);
-// 			
-// 			// Controlla che esista la combinazione canonical
-// 			$this->checkCanonical($dettagliPagina["id_page"]);
-// 			
-// 			// Imosto i prezzi scontati
-// 			$page->aggiornaPrezziCombinazioni($dettagliPagina["id_page"]);
+			$this->controlliDopoCreazioneCombinazione($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
@@ -826,7 +821,7 @@ class CombinazioniModel extends GenericModel {
 		
 		if (!empty($combinazione))
 		{
-			$this->query("update combinazioni set canonical = 0 where id_page = ".(int)$combinazione["id_page"]);
+			$this->query(array("update combinazioni set canonical = 0 where id_page = ?",array((int)$combinazione["id_page"])));
 			
 			$this->sValues(array(
 				"canonical"	=>	1,
@@ -1055,5 +1050,24 @@ class CombinazioniModel extends GenericModel {
 			return "<a title='".gtext("Elenco movimentazioni prodotto")."' class='iframe' href='".Url::getRoot()."combinazionimovimenti/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-history'></i></a>";
 		
 		return "";
+	}
+	
+	public function deletable($idC)
+	{
+		$rModel = new RigheModel();
+		
+		if ($rModel->clear()->where(array(
+			"id_c"	=>	(int)$idC,
+		))->rowNumber())
+			return false;
+		
+		$lrpModel = new ListeregalopagesModel();
+		
+		if ($lrpModel->clear()->where(array(
+			"id_c"	=>	(int)$idC,
+		))->rowNumber())
+			return false;
+		
+		return true;
 	}
 }

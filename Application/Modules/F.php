@@ -188,6 +188,7 @@ class F
 					$queryToTest = str_replace("documenti_lingue.includi = 0", "", $queryToTest);
 					$queryToTest = str_replace("includi = 1", "", $queryToTest);
 					$queryToTest = str_replace("includi = 0", "", $queryToTest);
+					$queryToTest = str_replace("canonical = 0", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);

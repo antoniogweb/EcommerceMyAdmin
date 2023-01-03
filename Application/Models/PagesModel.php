@@ -67,7 +67,8 @@ class PagesModel extends GenericModel {
 	
 	public static $testoLabelSocial = "Lato frontend verrà mostrato se il tema lo prevede";
 	
-	public static $IdCombinazione = 0;
+	public static $IdCombinazione = 0; // usata nel frontend quando voglio avere i dettagli di un singolo prodotto
+	public static $IdCmb = 0; // usata quando ricreo la combinazione nel caso non esistano varianti
 	public static $bckIdCombinazione = 0;
 	
 	public static $arrayIdCombinazioni = array();
@@ -1059,7 +1060,14 @@ class PagesModel extends GenericModel {
 				));
 				
 				if (empty($combinazione))
+				{
+					if (PagesModel::$IdCmb)
+						$c->setValue("id_c", PagesModel::$IdCmb);
+					
 					$c->insert();
+					
+					PagesModel::$IdCmb = 0;
+				}
 				else
 				{
 					$c->aggiornaGiacenzaPaginaQuandoSalvi = false;
