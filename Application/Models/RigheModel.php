@@ -47,30 +47,19 @@ class RigheModel extends GenericModel {
 		$res = parent::insert();
 		
 		if ($res && v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
-		{
 			CombinazioniModel::g()->movimenta($this->values["id_c"], $this->values["quantity"]);
-			
-// 			$c = new CombinazioniModel();
-			
-// 			$combinazione = $c->selectId((int)$this->values["id_c"]);
-// 			
-// 			if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
-// 			{
-// 				$c->setValues(array(
-// 					"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$this->values["quantity"]),
-// 				));
-// 				
-// 				$c->pUpdate($combinazione["id_c"]);
-// 				
-// 				// Aggiorno la combinazione della pagina
-// 				$c->aggiornaGiacenzaPagina($combinazione["id_c"]);
-// 			}
-		}
-		
-		// aggiorna i totali dell'ordine
-// 		$this->aggiornaTotaliOrdine($this->lId);
 		
 		return $res;
+	}
+	
+	// imposta il campo "movimentato"
+	public function setMovimentato($idR, $valore = 1)
+	{
+		$this->sValues(array(
+			"movimentato"	=>	$valore,
+		));
+		
+		$this->pUpdate((int)$idR);
 	}
 	
 	public function setPriceNonIvato($id = 0)
@@ -97,7 +86,7 @@ class RigheModel extends GenericModel {
 		{
 			$new = $this->selectId($id);
 			
-			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && $new["quantity"] != $old["quantity"])
+			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && $new["quantity"] != $old["quantity"] && $old["movimentato"])
 				CombinazioniModel::g()->movimenta($new["id_c"], ($new["quantity"] - $old["quantity"]));
 			
 			return true;
@@ -112,7 +101,7 @@ class RigheModel extends GenericModel {
 		
 		if (parent::del($id, $where))
 		{
-			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine"))
+			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && $old["movimentato"])
 				CombinazioniModel::g()->movimenta($old["id_c"], (-1)*$old["quantity"]);
 			
 			$_SESSION["aggiorna_totali_ordine"] = true;

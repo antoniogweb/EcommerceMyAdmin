@@ -480,6 +480,9 @@ class OrdiniModel extends FormModel {
 				
 				$this->triggersOrdine($id);
 				
+				// controlla se deve movimentare l'ordine
+				$this->checkMovimentazioni($clean["id"]);
+				
 				// Hook ad aggiornamento dell'ordine
 				if (v("hook_update_ordine"))
 					callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
@@ -489,6 +492,49 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return false;
+	}
+	
+	public function checkMovimentazioni($id)
+	{
+		if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine"))
+		{
+			$ordine = $this->selectId((int)$id);
+			
+			if (empty($ordine))
+				return;
+			
+			$scarica = self::isPagato((int)$id);
+			
+			if ($ordine["stato"] == "pending")
+				$scarica = true;
+			
+// 			var_dump($scarica);die();
+			
+			$rModel = new RigheModel();
+			
+			$righe = $rModel->clear()->where(array(
+				"id_o"	=>	(int)$id,
+			))->send(false);
+			
+			foreach ($righe as $r)
+			{
+				if (!$r["id_c"])
+					continue;
+				
+				if ($scarica && !$r["movimentato"])
+				{
+					CombinazioniModel::g()->movimenta($r["id_c"], $r["quantity"]);
+					
+					$rModel->setMovimentato($r["id_r"], 1);
+				}
+				else if (!$scarica && $r["movimentato"])
+				{
+					CombinazioniModel::g()->movimenta($r["id_c"], (-1) * $r["quantity"]);
+					
+					$rModel->setMovimentato($r["id_r"], 0);
+				}
+			}
+		}
 	}
 	
 	public function triggersOrdine($idO)
@@ -859,7 +905,7 @@ class OrdiniModel extends FormModel {
 	
 	//riempi la tabella righe con le righe relative all'ordine in questione
 	//$id_o: id dell'ordine
-	public function riempiRighe($id_o)
+	public function riempiRighe($id_o, $movimentato = 1)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
@@ -898,7 +944,6 @@ class OrdiniModel extends FormModel {
 			$r->values["price_ivato"] = number_format($r->values["price"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			$r->values["prezzo_intero_ivato"] = number_format($r->values["prezzo_intero"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
-// 			if (in_array($p["cart"]["id_page"], User::$prodottiInCoupon))
 			if (PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
 			{
 				$r->values["prezzo_finale"] = number_format($r->values["price"] - ($r->values["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
@@ -914,6 +959,8 @@ class OrdiniModel extends FormModel {
 			
 			if (!App::$isFrontend && $r->values["id_rif"])
 				$r->values["id_r"] = (int)$r->values["id_rif"];
+			
+			$r->values["movimentato"] = (int)$movimentato;
 			
 			$r->delFields("data_creazione");
 			$r->delFields("id_user");
@@ -1146,6 +1193,8 @@ class OrdiniModel extends FormModel {
 				"cart_uid"	=>	User::$cart_uid,
 			));
 			
+			$movimentato = 1;
+			
 			foreach ($righe as $r)
 			{
 				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), null, null, null, $r["id_r"]);
@@ -1161,6 +1210,8 @@ class OrdiniModel extends FormModel {
 						"testo"	=>	(string)$elRiga["testo"],
 					);
 				}
+				
+				$movimentato = $r["movimentato"];
 			}
 			
 			$c->correggiPrezzi();
@@ -1197,9 +1248,9 @@ class OrdiniModel extends FormModel {
 			
 			$this->pUpdate($idOrdine);
 			
-			RigheModel::g()->mDel("id_o = ".(int)$ordine["id_o"]);
+			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
 			
-			$this->riempiRighe($ordine["id_o"]);
+			$this->riempiRighe($ordine["id_o"], $movimentato);
 			
 			$c->del(null, array(
 				"cart_uid"	=>	User::$cart_uid,
