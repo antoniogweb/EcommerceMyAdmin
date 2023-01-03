@@ -34,6 +34,38 @@ class CombinazionimovimentiModel extends GenericModel {
 	public function relations() {
         return array(
 			'combinazione' => array("BELONGS_TO", 'CombinazioniModel', 'id_c',null,"CASCADE","Si prega di selezionare la comnbinazione"),
+			'riga' => array("BELONGS_TO", 'RigheModel', 'id_r',null,"CASCADE"),
         );
+    }
+    
+    public function tipoCrud($record)
+    {
+		if ($record["combinazioni_movimenti"]["titolo"] == "CARICO")
+			return "<i class='text text-primary fa fa-arrow-up'></i>";
+		else if ($record["combinazioni_movimenti"]["titolo"] == "SCARICO")
+			return "<i class='text text-success fa fa-arrow-down'></i>";
+		else
+			return $record["combinazioni_movimenti"]["titolo"];
+    }
+    
+    public function resettaCrud($record)
+    {
+		if ($record["combinazioni_movimenti"]["resetta"])
+			return "<i class='text text-success fa fa-check'></i>";
+		
+		return "";
+    }
+    
+    public function statoOrdineCrud($record)
+    {
+		if (!isset(StatiordineModel::$recordTabella))
+			StatiordineModel::g(false)->setRecordTabella("codice");
+		
+// 		print_r(self::$recordTabella);
+		
+		if (isset(StatiordineModel::$recordTabella[$record["combinazioni_movimenti"]["stato_ordine"]]))
+			return "<span class='text-bold label label-".StatiordineModel::$recordTabella[$record["combinazioni_movimenti"]["stato_ordine"]]["classe"]."'>".StatiordineModel::$recordTabella[$record["combinazioni_movimenti"]["stato_ordine"]]["titolo"]."</span>";
+		
+		return "";
     }
 }

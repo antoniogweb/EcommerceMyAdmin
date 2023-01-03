@@ -160,7 +160,7 @@ class StatiordineModel extends GenericModel {
 	public function pagato($codiceStato)
 	{
 		if (!isset(self::$recordTabella))
-			self::setRecordTabella("codice");
+			self::g(false)->setRecordTabella("codice");
 		
 		return self::$recordTabella[$codiceStato]["pagato"] > 0 ? true : false;
 	}
@@ -168,7 +168,7 @@ class StatiordineModel extends GenericModel {
 	public function neutro($codiceStato)
 	{
 		if (!isset(self::$recordTabella))
-			self::setRecordTabella("codice");
+			self::g(false)->setRecordTabella("codice");
 		
 		return self::$recordTabella[$codiceStato]["pagato"] < 0 ? true : false;
 	}
@@ -176,7 +176,7 @@ class StatiordineModel extends GenericModel {
 	public static function getCampo($codiceStato, $campo)
 	{
 		if (!isset(self::$recordTabella))
-			self::setRecordTabella("codice");
+			self::g(false)->setRecordTabella("codice");
 		
 		return isset(self::$recordTabella[$codiceStato][$campo]) ? self::$recordTabella[$codiceStato][$campo] : null;
 	}

@@ -380,6 +380,8 @@ class Route
 		'combinazioni,salva',
 		'combinazioni,rendicanonical',
 		
+		'combinazionimovimenti,main',
+		
 		'tipicontenuto,main',
 		'tipicontenuto,form',
 		'tipicontenuto,ordina',

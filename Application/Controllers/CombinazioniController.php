@@ -36,7 +36,6 @@ Helper_List::$filtersFormLayout["filters"]["cerca"] = array(
 	),
 );
 
-
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -208,6 +207,12 @@ class CombinazioniController extends BaseController
 			
 			$this->mainFields[] = "bulkaggiungiaordine";
 			$this->mainHead .= ",Aggiungi";
+		}
+		
+		if (VariabiliModel::movimenta() && !partial())
+		{
+			$this->mainFields[] = "linkMovimentiCrud";
+			$this->mainHead .= ",Movimenti";
 		}
 		
 		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
