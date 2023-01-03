@@ -44,7 +44,7 @@ class PageslingueModel extends GenericModel {
 		
 		return $l->clear()->where(array(
 			"attiva"	=>	1,
-		))->orderBy("descrizione")->sWhere("id_lingua not in (select id_lingua from pages_lingue where id_page = ".(int)$idPage.")")->toList("id_lingua", "descrizione")->send();
+		))->orderBy("descrizione")->sWhere(array("id_lingua not in (select id_lingua from pages_lingue where id_page = ?)",array((int)$idPage)))->toList("id_lingua", "descrizione")->send();
     }
     
 	public function insert()
