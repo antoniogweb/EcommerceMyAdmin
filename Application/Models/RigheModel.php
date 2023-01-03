@@ -46,8 +46,8 @@ class RigheModel extends GenericModel {
 	{
 		$res = parent::insert();
 		
-		if ($res && v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && isset($this->values["quantity"]) && isset($this->values["id_c"]))
-			CombinazioniModel::g()->movimenta($this->values["id_c"], $this->values["quantity"]);
+		if ($res && VariabiliModel::movimenta() && isset($this->values["quantity"]) && isset($this->values["id_c"]))
+			CombinazioniModel::g()->movimenta($this->values["id_c"], $this->values["quantity"], $this->lId);
 		
 		return $res;
 	}
@@ -86,8 +86,8 @@ class RigheModel extends GenericModel {
 		{
 			$new = $this->selectId($id);
 			
-			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && $new["quantity"] != $old["quantity"] && $old["movimentato"])
-				CombinazioniModel::g()->movimenta($new["id_c"], ($new["quantity"] - $old["quantity"]));
+			if (VariabiliModel::movimenta() && $new["quantity"] != $old["quantity"] && $old["movimentato"])
+				CombinazioniModel::g()->movimenta($new["id_c"], ($new["quantity"] - $old["quantity"]), (int)$id);
 			
 			return true;
 		}
@@ -101,8 +101,8 @@ class RigheModel extends GenericModel {
 		
 		if (parent::del($id, $where))
 		{
-			if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine") && $old["movimentato"])
-				CombinazioniModel::g()->movimenta($old["id_c"], (-1)*$old["quantity"]);
+			if (VariabiliModel::movimenta() && $old["movimentato"])
+				CombinazioniModel::g()->movimenta($old["id_c"], (-1)*$old["quantity"], (int)$id);
 			
 			$_SESSION["aggiorna_totali_ordine"] = true;
 			

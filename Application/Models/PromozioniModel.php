@@ -394,7 +394,7 @@ class PromozioniModel extends GenericModel {
 			$o->clear()->select("orders.id_o")->where(array("codice_promozione"=>$clean['coupon']));
 			
 			if ($ido)
-				$o->sWhere("id_o != ".(int)$ido);
+				$o->sWhere(array("id_o != ?",array((int)$ido)));
 			
 			if ($email)
 				$o->aWhere(array(
@@ -421,7 +421,7 @@ class PromozioniModel extends GenericModel {
 		$o->clear()->select("sum(euro_promozione) as SOMMA")->where(array("id_p"=>$clean['id_p']));
 		
 		if ($ido)
-			$o->sWhere("id_o != ".(int)$ido);
+			$o->sWhere(array("id_o != ?",array((int)$ido)));
 		
 		$res = $o->send();
 		

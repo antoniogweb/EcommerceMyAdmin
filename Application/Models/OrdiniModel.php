@@ -496,7 +496,7 @@ class OrdiniModel extends FormModel {
 	
 	public function checkMovimentazioni($id)
 	{
-		if (v("attiva_giacenza") && v("scala_giacenza_ad_ordine"))
+		if (VariabiliModel::movimenta())
 		{
 			$ordine = $this->selectId((int)$id);
 			
@@ -523,15 +523,15 @@ class OrdiniModel extends FormModel {
 				
 				if ($scarica && !$r["movimentato"])
 				{
-					CombinazioniModel::g()->movimenta($r["id_c"], $r["quantity"]);
+					CombinazioniModel::g()->movimenta($r["id_c"], $r["quantity"], (int)$r["id_r"]);
 					
-					$rModel->setMovimentato($r["id_r"], 1);
+					$rModel->setMovimentato((int)$r["id_r"], 1);
 				}
 				else if (!$scarica && $r["movimentato"])
 				{
-					CombinazioniModel::g()->movimenta($r["id_c"], (-1) * $r["quantity"]);
+					CombinazioniModel::g()->movimenta($r["id_c"], (-1) * $r["quantity"], (int)$r["id_r"]);
 					
-					$rModel->setMovimentato($r["id_r"], 0);
+					$rModel->setMovimentato((int)$r["id_r"], 0);
 				}
 			}
 		}

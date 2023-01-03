@@ -906,4 +906,9 @@ class VariabiliModel extends GenericModel {
 	{
 		return (v("max_numero_email_ora") || v("max_numero_email_giorno")) ? true : false;
 	}
+	
+	public static function movimenta()
+	{
+		return (v("attiva_giacenza") && v("scala_giacenza_ad_ordine")) ? true : false;
+	}
 }

@@ -426,19 +426,12 @@ class CombinazioniController extends BaseController
 		
 		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
 		
-// 		$campoPrice = "price";
-// 		$campoPriceScontato = "price_scontato";
-// 		
-// 		if (v("prezzi_ivati_in_prodotti"))
-// 		{
-// 			$campoPrice = "price_ivato";
-// 			$campoPriceScontato = "price_scontato_ivato";
-// 		}
-		
 		$arrayIdPage = array();
 		
 		foreach ($valori as $v)
 		{
+			$record = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
+			
 			$this->m[$this->modelName]->setValues(array(
 				"codice"	=>	$v["codice"],
 				"peso"		=>	$v["peso"],
@@ -458,7 +451,8 @@ class CombinazioniController extends BaseController
 			if (isset($v["immagine"]))
 				$this->m[$this->modelName]->setValue("immagine", $v["immagine"]);
 			
-			$this->m[$this->modelName]->update($v["id_c"]);
+			if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"])
+				$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
 			
 			if ($v["id_cl"])
 			{

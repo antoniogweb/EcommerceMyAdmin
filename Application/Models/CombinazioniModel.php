@@ -51,6 +51,7 @@ class CombinazioniModel extends GenericModel {
         return array(
 			'listini' => array("HAS_MANY", 'CombinazionilistiniModel', 'id_c', null, "CASCADE"),
 			'alias' => array("HAS_MANY", 'CombinazionialiasModel', 'id_c', null, "CASCADE"),
+			'movimenti' => array("HAS_MANY", 'CombinazionimovimentiModel', 'id_c', null, "CASCADE"),
 			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
@@ -958,17 +959,44 @@ class CombinazioniModel extends GenericModel {
 		return $prezzoIntero > 0 ? (($prezzoIntero - $prezzoScontato) / $prezzoIntero * 100) : 0;
     }
 	
-	public function movimenta($idC, $qty)
+	// $idC: id combinazione
+	// $qty: quantità movimentata
+	// $idR: id riga
+	// $resetta: se 1, imposta la giacenza manualmente, se 0 è un carico o uno scarico
+	public function movimenta($idC, $qty, $idR = 0, $resetta = 0)
 	{
 		$combinazione = $this->selectId((int)$idC);
 		
 		if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
 		{
+			$valoreFinale = ((int)$combinazione["giacenza"] - (int)$qty);
+			
 			$this->setValues(array(
-				"giacenza"	=>	((int)$combinazione["giacenza"] - (int)$qty),
+				"giacenza"	=>	$valoreFinale,
 			));
 			
-			$this->pUpdate($combinazione["id_c"]);
+			if ($resetta || $this->pUpdate($combinazione["id_c"]))
+			{
+				// Salvo la movimentazione
+				$cmModel = new CombinazionimovimentiModel();
+				
+				$ordine = RigheModel::g()->select("orders.id_o,orders.stato")->inner("orders")->on("righe.id_o = orders.id_o")->where(array(
+					"id_r"	=>	(int)$idR,
+				))->first();
+				
+				$cmModel->sValues(array(
+					"titolo"	=>	$qty > 0 ? "SCARICO" : "CARICO",
+					"valore"	=>	(-1) * $qty,
+					"id_c"		=>	$combinazione["id_c"],
+					"id_r"		=>	$idR,
+					"id_o"		=>	!empty($ordine) ? $ordine["orders"]["id_o"] : 0,
+					"stato_ordine"	=>	!empty($ordine) ? $ordine["orders"]["stato"] : "",
+					"giacenza"	=>	$resetta ? $combinazione["giacenza"] : $valoreFinale,
+					"resetta"	=>	$resetta,
+				));
+				
+				$cmModel->insert();
+			}
 			
 			// Aggiorno la combinazione della pagina
 			$this->aggiornaGiacenzaPagina($combinazione["id_c"]);
