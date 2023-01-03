@@ -66,7 +66,7 @@ class TipidocumentoController extends BaseController
 				"checkbox_tipi_documento_id_tipo_doc"	=>	array("aggiungiagruppo","Aggiungi al gruppo"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("tipi_documento.id_tipo_doc not in (select id_tipo from reggroups_tipi where tipo='DO' and id_group = ".(int)$this->viewArgs["id_group"].")");
+			$this->m[$this->modelName]->sWhere(array("tipi_documento.id_tipo_doc not in (select id_tipo from reggroups_tipi where tipo='DO' and id_group = ?)",array((int)$this->viewArgs["id_group"])));
 		}
 		
 		$this->m[$this->modelName]->save();

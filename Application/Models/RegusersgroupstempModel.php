@@ -171,6 +171,8 @@ class RegusersgroupstempModel extends GenericModel {
 		$record = $this->selectId($id);
 		
 		if (!empty($record))
-			return parent::del(null, "id_user = ".(int)$record["id_user"]);
+			return parent::del(null, array(
+				"id_user"	=>	(int)$record["id_user"],
+			));
 	}
 }

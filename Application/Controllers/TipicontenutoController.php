@@ -76,7 +76,7 @@ class TipicontenutoController extends BaseController
 				"checkbox_tipi_contenuto_id_tipo"	=>	array("aggiungiagruppo","Aggiungi al gruppo"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("tipi_contenuto.id_tipo not in (select id_tipo from reggroups_tipi where tipo='CO' and id_group = ".(int)$this->viewArgs["id_group"].")");
+			$this->m[$this->modelName]->sWhere(array("tipi_contenuto.id_tipo not in (select id_tipo from reggroups_tipi where tipo='CO' and id_group = ?)",array((int)$this->viewArgs["id_group"])));
 		}
 		
 		$this->m[$this->modelName]->save();

@@ -130,7 +130,10 @@ class ReggroupstipiModel extends GenericModel {
 					}
 					else
 					{
-						$rgc->del(null, "id_group = ".(int)$record["id_group"]." and id_cont = ".(int)$idC);
+						$rgc->del(null, array(
+							"id_group"	=>	(int)$record["id_group"],
+							"id_cont"	=>	(int)$idC,
+						));
 					}
 				}
 			}
@@ -165,7 +168,10 @@ class ReggroupstipiModel extends GenericModel {
 					}
 					else
 					{
-						$rgd->del(null, "id_group = ".(int)$record["id_group"]." and id_doc = ".(int)$idD);
+						$rgd->del(null, array(
+							"id_group"	=>	(int)$record["id_group"],
+							"id_doc"	=>	(int)$idD,
+						));
 					}
 				}
 			}
