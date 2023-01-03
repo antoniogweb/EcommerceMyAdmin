@@ -1053,5 +1053,7 @@ class CombinazioniModel extends GenericModel {
 			"id_c"	=>	(int)$record["combinazioni"]["id_c"],
 		))->rowNumber())
 			return "<a title='".gtext("Elenco movimentazioni prodotto")."' class='iframe' href='".Url::getRoot()."combinazionimovimenti/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-history'></i></a>";
+		
+		return "";
 	}
 }
