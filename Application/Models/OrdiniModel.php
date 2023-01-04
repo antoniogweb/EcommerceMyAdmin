@@ -1166,8 +1166,10 @@ class OrdiniModel extends FormModel {
 			Params::$lang = $lingua;
 			
 			$bckAttivaGiacenza = v("attiva_giacenza");
+			$bckAttivaMovimentazioniGiacenza = v("scala_giacenza_ad_ordine");
 			
 			VariabiliModel::$valori["attiva_giacenza"] = 0;
+			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
 			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
@@ -1257,6 +1259,7 @@ class OrdiniModel extends FormModel {
 			));
 			
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
+			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = $bckAttivaMovimentazioniGiacenza;
 			
 			User::$id = $bckUserId;
 			PromozioniModel::$staticIdO = null;

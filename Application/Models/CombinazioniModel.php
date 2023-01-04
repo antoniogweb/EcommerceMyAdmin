@@ -991,7 +991,13 @@ class CombinazioniModel extends GenericModel {
 	// $resetta: se 1, imposta la giacenza manualmente, se 0 è un carico o uno scarico
 	public function movimenta($idC, $qty, $idR = 0, $resetta = 0)
 	{
-		$combinazione = $this->selectId((int)$idC);
+		if (v("usa_transactions"))
+		{
+			$this->db->beginTransaction();
+			$combinazione = $this->clear()->whereId((int)$idC)->forUpdate()->record();
+		}
+		else
+			$combinazione = $this->selectId((int)$idC);
 		
 		if (!empty($combinazione) && !ProdottiModel::isGiftCart($combinazione["id_page"]))
 		{
@@ -1027,6 +1033,9 @@ class CombinazioniModel extends GenericModel {
 			// Aggiorno la combinazione della pagina
 			$this->aggiornaGiacenzaPagina($combinazione["id_c"]);
 		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 	}
 	
 	public static function campiPrezzo()
