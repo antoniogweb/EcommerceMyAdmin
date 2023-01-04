@@ -1430,6 +1430,7 @@ class PagesModel extends GenericModel {
 			if (!User::$adminLogged)
 				$this->aWhere(array(
 					"pages.attivo"=>"Y",
+					"combinazioni.acquistabile"	=>	1,
 				));
 			
 			$bindedValues = array();
@@ -2544,15 +2545,22 @@ class PagesModel extends GenericModel {
 		{
 			$temp = array();
 			
-			$resValoriAttributi = $cm->clear()
-								->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo")
-								->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
-								->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
-								->addJoinTraduzione(null, "contenuti_tradotti", false, (new AttributivaloriModel()))
-								->where(array("id_page"=>$clean['id']))
-								->orderBy("attributi_valori.id_order")
-								->groupBy("combinazioni.$c,attributi_valori.id_av")
-								->send();
+			$cm->clear()->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo")
+				->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
+				->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
+				->addJoinTraduzione(null, "contenuti_tradotti", false, (new AttributivaloriModel()))
+				->where(array(
+					"id_page"		=>	$clean['id'],
+				))
+				->orderBy("attributi_valori.id_order")
+				->groupBy("combinazioni.$c,attributi_valori.id_av");
+			
+			if (!User::$adminLogged)
+				$this->aWhere(array(
+					"combinazioni.acquistabile"	=>	1,
+				));
+			
+			$resValoriAttributi = $cm->send();
 			
 			$arrayCombValori = array();
 			

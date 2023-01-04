@@ -19,7 +19,7 @@
 							<?php echo gtext("Quantità da acquistare");?>
 						</div>
 						<div>
-							<?php echo gtext("Quantita desiderata");?>
+							<?php echo gtext("Quantità desiderata");?>
 						</div>
 						<div>
 							<?php echo gtext("Regalati");?>
@@ -96,8 +96,12 @@
 						</div>
 						<div>
 							<?php if ($numeroRimastiDaRegalare > 0) { ?>
-							<div class="uk-button uk-button-primary uk-button-small spinner uk-hidden" uk-spinner="ratio: .70"></div>
-							<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
+								<?php if (CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"])) { ?>
+								<div class="uk-button uk-button-primary uk-button-small spinner uk-hidden" uk-spinner="ratio: .70"></div>
+								<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
+								<?php } else { ?>
+									<?php echo gtext("Il prodotto non è più acquistabile");?>
+								<?php } ?>
 							<?php } ?>
 						</div>
 					</div>

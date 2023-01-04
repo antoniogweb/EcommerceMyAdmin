@@ -75,7 +75,7 @@ class CartModel extends GenericModel {
 	{
 		if (!self::$checkCart)
 		{
-			$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c where combinazioni.id_c is null");
+			$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null");
 			
 			if (count($daEliminare) > 0)
 			{
@@ -865,6 +865,13 @@ class CartModel extends GenericModel {
 				
 				if (number_format($this->values["price"],2,".","") != number_format($this->values["prezzo_intero"],2,".",""))
 					$this->values["in_promozione"] = "Y";
+				else
+					$this->values["in_promozione"] = "N";
+				
+// 				echo number_format($this->values["price"],2,".","")." ".number_format($this->values["prezzo_intero"],2,".","");
+// 				
+// 				echo $this->values["in_promozione"];
+// 				die();
 				
 				$this->sanitize();
 				$this->insert();

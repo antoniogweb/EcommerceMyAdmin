@@ -423,6 +423,9 @@ $(document).ready(function(){
 			if ($(this).find("[name='price_scontato']").length > 0)
 				temp.price_scontato = $(this).find("[name='price_scontato']").val();
 			
+			if ($(this).find("[name='acquistabile']").length > 0)
+				temp.acquistabile = $(this).find("[name='acquistabile']").is(":checked") ? 1 : 0;
+			
 			valori.push(temp);
 		});
 		

@@ -1311,8 +1311,6 @@ class BaseContenutiController extends BaseController
 		
 		$firstSection = $data["fsection"] = $this->firstSection = $this->m("PagesModel")->section($clean['id'], true);
 		
-// 		$urlAlias = $this->m("PagesModel")->getUrlAlias($clean['realId']);
-		
 		$data["arrayLingue"] = array();
 		
 		foreach (Params::$frontEndLanguages as $l)
@@ -1566,8 +1564,6 @@ class BaseContenutiController extends BaseController
 		
 		$section = $this->m("PagesModel")->section($clean['id']);
 		
-// 		$this->sectionLoad($section, "page", $template);
-		
 		if (Output::$html)
 		{
 			if (!isset($_GET["pdf"]) || !v("permetti_generazione_pdf_pagine_frontend"))
@@ -1713,19 +1709,6 @@ class BaseContenutiController extends BaseController
 			if ($this->viewArgs["sec"] != "tutti")
 				$childrenProdotti = $this->m("CategoriesModel")->children($clean["idSection"], true);
 			
-// 			$orWhere = array(
-// 				"lk" => array('pages.codice' => $this->viewArgs["s"]),
-// 			);
-// 			
-// 			if (Params::$lang == Params::$defaultFrontEndLanguage)
-// 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs["s"]);
-// 			else
-// 				$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs["s"]);
-// 			
-// 			$where = array(
-// 				" OR"	=>	$orWhere,
-// 			);
-			
 			$where = $this->getSearchWhere("s");
 			
 			$this->m('PagesModel')->clear()->where($where)->addWhereAttivo();
@@ -1734,8 +1717,6 @@ class BaseContenutiController extends BaseController
 				$this->m("PagesModel")->aWhere(array(
 					"in" => array("-id_c" => $childrenProdotti),
 				));
-			
-// 			$data["pages"] = $this->m('PagesModel')->clear()->where($where);
 			
 			if (Parametri::$hideNotAllowedNodesInLists)
 			{

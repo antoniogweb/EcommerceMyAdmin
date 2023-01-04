@@ -1220,7 +1220,7 @@ class PagesController extends BaseController {
 			
 			$this->h['List']->colProperties = array(
 				array(
-					'width'	=>	'300px',
+					'style'	=>	'max-width:300px;',
 				),
 			);
 		}
@@ -1240,15 +1240,6 @@ class PagesController extends BaseController {
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;combinazioni.codice;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='codice' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
 		
 		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
-		
-// 		$campoPrice = "price";
-// 		$campoPriceScontato = "price_scontato";
-// 		
-// 		if (v("prezzi_ivati_in_prodotti"))
-// 		{
-// 			$campoPrice = "price_ivato";
-// 			$campoPriceScontato = "price_scontato_ivato";
-// 		}
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.$campoPrice;</span><img title='modifica valore' class='img_attributo_aggiorna attributo_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><div class='edit_attrib_box'><input class='update_attributo' type='text' name='update_attributo' value='' /><img title='conferma modifica' id=';combinazioni.id_c;' rel='price' class='attributo_edit' src='".$this->baseUrl."/Public/Img/Icons/view-refresh.png'/><img title='annulla modifica' class='attributo_close' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/clear_filter.png'/><img class='attributo_loading' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' /></div>");
 		
@@ -1290,6 +1281,9 @@ class PagesController extends BaseController {
 			$this->h['List']->addItem("text",";combinazioni.giacenza;");
 			$head .= ",Giacenza";
 		}
+		
+		$this->h['List']->addItem("text",";acquistabileCrudText;");
+		$head .= ",Acquistabile";
 		
 		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
 		{

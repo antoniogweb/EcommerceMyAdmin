@@ -70,6 +70,9 @@
 							<?php if ($attributi) { ?>
 							<div class="uk-text-meta"><?php echo $attributi;?></div>
 							<?php } ?>
+							<?php if (CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"])) { ?>
+							<br /><span class="uk-text-warning"><?php echo gtext("Il prodotto non è più acquistabile");?></span>
+							<?php } ?>
 						</div>
 						<?php if (!$regalati) { ?>
 						<div>

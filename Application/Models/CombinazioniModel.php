@@ -690,6 +690,37 @@ class CombinazioniModel extends GenericModel {
 		return $html;
 	}
 	
+	public function attivoCrud($record)
+	{
+		if (!isset($_GET["esporta"]) && !self::isFromLista())
+		{
+			if ($record["pages"]["attivo"] == "Y")
+				return "<i class='fa fa-check text text-success'></i>";
+			else
+				return "<i class='fa fa-ban text text-danger'></i>";
+		}
+		else
+			return $record["pages"]["attivo"] == "Y" ? gtext("Sì") : gtext("No");
+	}
+	
+	public function visibileCrud($record)
+	{
+		$checked = $record["combinazioni"]["acquistabile"] ? "checked" : "";
+		
+		if (!isset($_GET["esporta"]) && !self::isFromLista())
+			return "<input $checked type='checkbox' id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' name='acquistabile' value='".$record["combinazioni"]["acquistabile"]."' />";
+		else
+			return $record["combinazioni"]["acquistabile"];
+	}
+	
+	public function acquistabileCrudText($record)
+	{
+		if ($record["combinazioni"]["acquistabile"])
+			return "<i class='text text-success fa fa-check'></i>";
+		else
+			return "<i class='text text-danger fa fa-ban'></i>";
+	}
+	
 	public function codice($record)
 	{
 		if (!isset($_GET["esporta"]) && !self::isFromLista())
@@ -1032,14 +1063,6 @@ class CombinazioniModel extends GenericModel {
 		return "";
 	}
 	
-	public function attivoCrud($record)
-	{
-		if ($record["pages"]["attivo"] == "Y")
-			return "<i class='fa fa-check text text-success'></i>";
-		else
-			return "<i class='fa fa-ban text text-danger'></i>";
-	}
-	
 	public function linkMovimentiCrud($record)
 	{
 		$cmModel = new CombinazionimovimentiModel();
@@ -1055,5 +1078,15 @@ class CombinazioniModel extends GenericModel {
 	public function deletable($idC)
 	{
 		return $this->elementoNonUsato($idC);
+	}
+	
+	static public function acquistabile($idC)
+	{
+		$cModel = new CombinazioniModel();
+		
+		return $cModel->clear()->where(array(
+			"id_c"			=>	(int)$idC,
+			"acquistabile"	=>	1,
+		))->rowNumber();
 	}
 }

@@ -184,6 +184,9 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Giac.";
 		}
 		
+		$this->mainFields[] = "visibileCrud";
+		$this->mainHead .= ",Acq.";
+		
 		if (!partial())
 		{
 			$this->mainFields[] = "ordini";
@@ -400,7 +403,7 @@ class CombinazioniController extends BaseController
 				"checkbox_combinazioni_id_c"	=>	array("aggiungiaordine","Aggiungi ad ordine"),
 			);
 			
-			$this->m[$this->modelName]->sWhere(array("pages.attivo = ? and combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ?)",array('Y', (int)$this->viewArgs["id_ordine"])));
+			$this->m[$this->modelName]->sWhere(array("combinazioni.acquistabile = ? and pages.attivo = ? and combinazioni.id_c not in (select id_c from righe where id_c is not null and id_o = ?)",array(1, 'Y', (int)$this->viewArgs["id_ordine"])));
 		}
 		
 		$this->m[$this->modelName]->save();
@@ -455,6 +458,9 @@ class CombinazioniController extends BaseController
 			
 			if (isset($v["immagine"]))
 				$this->m[$this->modelName]->setValue("immagine", $v["immagine"]);
+			
+			if (isset($v["acquistabile"]))
+				$this->m[$this->modelName]->setValue("acquistabile", $v["acquistabile"]);
 			
 			if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"] && VariabiliModel::movimenta())
 				$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
