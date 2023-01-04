@@ -438,7 +438,10 @@ class CombinazioniController extends BaseController
 		
 		foreach ($valori as $v)
 		{
-			$record = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
+			if (v("usa_transactions"))
+				$record = $this->m[$this->modelName]->whereId((int)$v["id_c"])->forUpdate()->record();
+			else
+				$record = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
 			
 			$this->m[$this->modelName]->setValues(array(
 				"codice"	=>	$v["codice"],
