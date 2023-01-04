@@ -154,7 +154,7 @@ class AttributivaloriModel extends GenericModel {
 			),
 		);
 		
-		$res = $comb->clear()->select("distinct pages.id_page")->inner("pages")->using("id_page")->where($where)->send();
+		$res = $comb->clear()->select("distinct pages.id_page,pages.title")->inner("pages")->using("id_page")->where($where)->send();
 		
 		if (count($res) > 0)
 		{

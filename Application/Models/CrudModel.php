@@ -65,4 +65,23 @@ trait CrudModel
 		
 		return "";
 	}
+	
+	public function elementoNonUsato($idElemento)
+	{
+		$rModel = new RigheModel();
+		
+		if ($rModel->clear()->where(array(
+			$this->_idFields	=>	(int)$idElemento,
+		))->rowNumber())
+			return false;
+		
+		$lrpModel = new ListeregalopagesModel();
+		
+		if ($lrpModel->clear()->where(array(
+			$this->_idFields	=>	(int)$idElemento,
+		))->rowNumber())
+			return false;
+		
+		return true;
+	}
 }

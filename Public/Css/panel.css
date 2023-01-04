@@ -134,7 +134,11 @@ td.simpleLink
 }
 .alert a
 {
-	color: #000;
+	color: #000 !important;
+}
+.alert li
+{
+	list-style:none;
 }
 /*executed operation string*/
 .executed {

@@ -1122,7 +1122,13 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
 		$this->scaffold->fields = "attributi.*,pages_attributi.*";
-		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa','moveup,movedown,ldel');
+		
+		$azioni = 'moveup,movedown,ldel';
+		
+		if (!PagesModel::variantiModificabili($clean['id']))
+			$azioni = '';
+		
+		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa',$azioni);
 		$this->scaffold->setHead('Variante');
 		
 		$this->scaffold->itemList->inverseColProperties = array(

@@ -77,14 +77,20 @@ $(document).ready(function(){
 			
 			<div class="box">
 				<div class="box-header with-border main">
-					<a style="margin-bottom:10px;" class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti")?></a>
-					
-					<?php if (count($listaAttributi) > 0) { ?>
-					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
-						<span select2=""><?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control help_select_attributo',null,"yes","select2=''");?></span>
-						<button class="submit_file btn btn-primary make_spinner" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi");?></button>
-						<input type="hidden" name="insertAction" value="Aggiungi"/>
-					</form>
+					<?php if (PagesModel::variantiModificabili((int)$id_page)) { ?>
+						<a style="margin-bottom:10px;" class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti")?></a>
+						
+						<?php if (count($listaAttributi) > 0) { ?>
+						<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>' method='POST'>
+							<span select2=""><?php echo Html_Form::select("id_a","",$listaAttributi,'form_select form-control help_select_attributo',null,"yes","select2=''");?></span>
+							<button class="submit_file btn btn-primary make_spinner" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi");?></button>
+							<input type="hidden" name="insertAction" value="Aggiungi"/>
+						</form>
+						<?php } ?>
+					<?php } else { ?>
+					<div class="callout callout-info"><i class="fa fa-exclamation-triangle"></i> <?php
+					$stringaLista = v("attiva_liste_regalo") ? "o è inserito in quale lista regalo." : ".";
+					echo gtext("Non è possibile aggiungere o eliminare varianti a questo prodotto in quanto ha già ordini $stringaLista");?></div>
 					<?php } ?>
 					
 					<div class="notice_box">

@@ -3988,4 +3988,11 @@ class PagesModel extends GenericModel {
 		PagesModel::$IdCombinazione = PagesModel::$bckIdCombinazione;
 		PagesModel::$bckIdCombinazione = 0;
 	}
+	
+	public static function variantiModificabili($idPage)
+	{
+		$p = new PagesModel();
+		
+		return $p->elementoNonUsato($idPage);
+	}
 }

@@ -474,6 +474,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_giacenza"		=>	0,	// se permette comunque di gestire la giacenza (anche se attiva_giacenza = 0)
 		"giacenza_massima_mostrata"	=>	100, // massima giacenza mostrata in frontend
 		"scala_giacenza_ad_ordine"	=>	1, // se deve scalare la giacenza di un prodotto quando questo viene ordinato (GIFT card escluse)
+		"mostra_link_storico_movimentazioni"	=>	0, // se impostato su 1, mostra il link per vedere lo storico delle movimentazioni
 		"mostra_filtri_varianti_in_magazzino"	=>	1, // mostra o nascondi i filtri delle varianti nel magazzino
 		"mostra_filtro_ricerca_libera_in_magazzino"	=>	0, // filtro ricerca libera
 		## VARIANTI ##
@@ -909,6 +910,6 @@ class VariabiliModel extends GenericModel {
 	
 	public static function movimenta()
 	{
-		return (v("attiva_giacenza") && v("scala_giacenza_ad_ordine")) ? true : false;
+		return v("scala_giacenza_ad_ordine") ? true : false;
 	}
 }

@@ -92,46 +92,51 @@ class PagesattributiModel extends GenericModel {
 		$clean["id_page"] = (int)$this->values["id_page"];
 		$clean["id_a"] = (int)$this->values["id_a"];
 		
-		$res = $this->clear()->where(array("id_page"=>$clean["id_page"],"id_a"=>$clean["id_a"]))->send();
-		
-		//controllo che l'attributo non sia già stato associato
-		if (count($res) > 0)
-		{
-			$this->notice = "<div class='alert'>".gtext("Questo attributo è già stato associato")."</div>";
-		}
+		if (!PagesModel::variantiModificabili($clean['id_page']))
+			$this->notice = "<div class='alert'>".gtext("Non è possibile aggiungere una variante ad un prodotto che ha già ordini")."</div>";
 		else
 		{
-			//controllo di non associare un attributo che non abbia valori
-			$a = new AttributivaloriModel();
-			$res2 = $a->clear()->where(array("id_a"=>$clean["id_a"]))->send();
+			$res = $this->clear()->where(array("id_page"=>$clean["id_page"],"id_a"=>$clean["id_a"]))->send();
 			
-			if (count($res2) > 0)
+			//controllo che l'attributo non sia già stato associato
+			if (count($res) > 0)
 			{
-				//controllo che non abbia associato più di tre attributi
-				$res3 = $this->clear()->where(array("id_page"=>$clean["id_page"]))->send();
-				if (count($res3) >= v("numero_massimo_varianti_per_prodotto"))
-				{
-					$this->notice = "<div class='alert'>Non è possibile associare più di ".v("numero_massimo_varianti_per_prodotto")." attributi ad un singolo prodotto</div>";
-				}
-				else
-				{
-					$colonna = $this->getColonna($clean["id_page"]);
-					$this->values["colonna"] = $colonna;
-					
-					if ($colonna !== 0)
-					{
-						if (parent::insert() && v("aggiorna_combinazioni_automaticamente"))
-						{
-							CombinazioniModel::g()->creaCombinazioni($clean["id_page"]);
-						}
-					}
-					
-					return true;
-				}
+				$this->notice = "<div class='alert'>".gtext("Questo attributo è già stato associato")."</div>";
 			}
 			else
 			{
-				$this->notice = "<div class='alert'>Questo attributo non può essere associato perché non contiene alcun valore</div>";
+				//controllo di non associare un attributo che non abbia valori
+				$a = new AttributivaloriModel();
+				$res2 = $a->clear()->where(array("id_a"=>$clean["id_a"]))->send();
+				
+				if (count($res2) > 0)
+				{
+					//controllo che non abbia associato più di tre attributi
+					$res3 = $this->clear()->where(array("id_page"=>$clean["id_page"]))->send();
+					if (count($res3) >= v("numero_massimo_varianti_per_prodotto"))
+					{
+						$this->notice = "<div class='alert'>Non è possibile associare più di ".v("numero_massimo_varianti_per_prodotto")." attributi ad un singolo prodotto</div>";
+					}
+					else
+					{
+						$colonna = $this->getColonna($clean["id_page"]);
+						$this->values["colonna"] = $colonna;
+						
+						if ($colonna !== 0)
+						{
+							if (parent::insert() && v("aggiorna_combinazioni_automaticamente"))
+							{
+								CombinazioniModel::g()->creaCombinazioni($clean["id_page"]);
+							}
+						}
+						
+						return true;
+					}
+				}
+				else
+				{
+					$this->notice = "<div class='alert'>Questo attributo non può essere associato perché non contiene alcun valore</div>";
+				}
 			}
 		}
 		

@@ -181,7 +181,7 @@ class CombinazioniController extends BaseController
 		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
 		{
 			$this->mainFields[] = "giacenza";
-			$this->mainHead .= ",Giacenza";
+			$this->mainHead .= ",Giac.";
 		}
 		
 		if (!partial())
@@ -209,10 +209,10 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Aggiungi";
 		}
 		
-		if (VariabiliModel::movimenta() && !partial())
+		if (VariabiliModel::movimenta() && !partial() && v("mostra_link_storico_movimentazioni"))
 		{
 			$this->mainFields[] = "linkMovimentiCrud";
-			$this->mainHead .= ",Movimenti";
+			$this->mainHead .= ",Mov.";
 		}
 		
 		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
@@ -456,7 +456,7 @@ class CombinazioniController extends BaseController
 			if (isset($v["immagine"]))
 				$this->m[$this->modelName]->setValue("immagine", $v["immagine"]);
 			
-			if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"])
+			if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"] && VariabiliModel::movimenta())
 				$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
 			
 			if ($v["id_cl"])

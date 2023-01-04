@@ -415,7 +415,7 @@ class CombinazioniModel extends GenericModel {
 		
 		$page = new PagesModel();
 		
-		// Imosto i prezzi scontati
+		// Imposto i prezzi scontati
 		$page->aggiornaPrezziCombinazioni($idPage);
 	}
 	
@@ -1054,20 +1054,6 @@ class CombinazioniModel extends GenericModel {
 	
 	public function deletable($idC)
 	{
-		$rModel = new RigheModel();
-		
-		if ($rModel->clear()->where(array(
-			"id_c"	=>	(int)$idC,
-		))->rowNumber())
-			return false;
-		
-		$lrpModel = new ListeregalopagesModel();
-		
-		if ($lrpModel->clear()->where(array(
-			"id_c"	=>	(int)$idC,
-		))->rowNumber())
-			return false;
-		
-		return true;
+		return $this->elementoNonUsato($idC);
 	}
 }
