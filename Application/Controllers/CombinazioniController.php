@@ -215,21 +215,21 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Mov.";
 		}
 		
-		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
-			$this->colProperties = array(
-				array(
-					'width'	=>	'60px',
-				),
-				null,null,null,
-				array(
-					'width'	=>	'160px',
-				),
-			);
-		
-		if (v("gestisci_sconti_combinazioni_separatamente"))
-			$this->colProperties[] = array(
-				'width'	=>	'160px',
-			);
+// 		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
+// 			$this->colProperties = array(
+// 				array(
+// 					'width'	=>	'30px',
+// 				),
+// 				null,null,null,
+// 				array(
+// 					'width'	=>	'160px',
+// 				),
+// 			);
+// 		
+// 		if (v("gestisci_sconti_combinazioni_separatamente"))
+// 			$this->colProperties[] = array(
+// 				'width'	=>	'160px',
+// 			);
 		
 		if ($this->viewArgs['id_page'] == "tutti")
 		{

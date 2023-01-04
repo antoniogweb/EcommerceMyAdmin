@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Movimenti magazzino', 'combinazionimovimenti', 'prodotti', '1', '', '6', '1', 'ecommerce', 'main');
