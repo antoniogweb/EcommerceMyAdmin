@@ -202,4 +202,17 @@ class RigheModel extends GenericModel {
 		
 		return OrdiniModel::g()->isDeletable($idOrdine);
 	}
+	
+	public function ordiniCrud($record)
+	{
+		if ($record["aggregate"]["numero_totale"] > 0)
+		{
+			if (!isset($_GET["esporta"]))
+				return $record["aggregate"]["numero_totale"]." <a title='Elenco ordini dove è stato acquistato' class='iframe' href='".Url::getRoot()."ordini/main?partial=Y&id_page=".$record["righe"]["id_page"]."'><i class='fa fa-list'></i></a>";
+			else
+				return $record["aggregate"]["numero_totale"];
+		}
+		
+		return "";
+	}
 }

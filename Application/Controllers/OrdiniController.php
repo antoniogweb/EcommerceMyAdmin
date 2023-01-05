@@ -81,6 +81,7 @@ class OrdiniController extends BaseController {
 		'fattura:sanitizeAll'=>'tutti',
 		'gestionale:sanitizeAll'=>'tutti',
 		'prezzi:sanitizeAll'=>'I',
+		'id_page:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -232,11 +233,19 @@ class OrdiniController extends BaseController {
 			$this->m[$this->modelName]->aWhere($where);
 		}
 		
-		if ($this->viewArgs['id_comb'] != "tutti")
+		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti")
 		{
-			$this->m[$this->modelName]->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o")->aWhere(array(
-				"righe.id_c"	=>	$this->viewArgs['id_comb'],
-			));
+			$this->m[$this->modelName]->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o");
+			
+			if ($this->viewArgs['id_comb'] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"righe.id_c"	=>	$this->viewArgs['id_comb'],
+				));
+			
+			if ($this->viewArgs['id_page'] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"righe.id_page"	=>	$this->viewArgs['id_page'],
+				));
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")

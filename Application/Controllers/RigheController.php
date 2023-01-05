@@ -48,14 +48,14 @@ class RigheController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("thumb", "titolocompleto", "categories.title", "ordini");
+		$this->mainFields = array("thumb", "titolocompleto", "categories.title", "ordiniCrud");
 		$this->mainHead = "Immagine,Prodotto,Categoria,Ordini";
 		
 		$filtri = array("dal","al");
 		$this->filters = $filtri;
 		
 		$this->m[$this->modelName]->clear()
-				->select("sum(quantity) as numero_totale,righe.id_r,righe.title,righe.attributi,righe.immagine,categories.title,righe.id_c,pages.title")
+				->select("sum(quantity) as numero_totale,righe.id_page,righe.id_r,righe.title,righe.attributi,righe.immagine,categories.title,righe.id_c,pages.title")
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->left("pages")->on("pages.id_page = righe.id_page")
 				->left("categories")->on("pages.id_c = categories.id_c")
