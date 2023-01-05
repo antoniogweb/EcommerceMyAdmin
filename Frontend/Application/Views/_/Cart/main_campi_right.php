@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-flex uk-flex-middle uk-flex-center uk-grid-small uk-child-width-1-1 uk-child-width-expand@m uk-text-center@m uk-text-left uk-grid" uk-grid="">
-	<div class="uk-first-column">
+	<div class="uk-first-column descrizione_prodotto_carrello">
 		<?php if (!$p["cart"]["id_p"]) { ?>
 			<a class="uk-link-heading <?php if (User::$isMobile) { ?>uk-text-bold<?php } ?>" href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>">
 			<?php } ?>

@@ -36,8 +36,8 @@
 							<?php } ?>
 							
 							<div class="uk-grid uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
-								<div class="uk-text-bolder uk-text-small"><?php echo setPriceReverse($p["cart"]["quantity"] * $p["cart"]["price"] * (1+($p["cart"]["iva"]/100)));?> €</div>
-								<div class="uk-margin-remove-top uk-text-meta uk-text-xsmall"><?php echo $p["cart"]["quantity"];?> × <?php echo setPriceReverse($p["cart"]["price"] * (1+($p["cart"]["iva"]/100)));?> €</div>
+								<div class="uk-text-bolder uk-text-small"><?php echo setPriceReverse($p["cart"]["quantity"] * p($p["cart"],$p["cart"]["price"]));?> €</div>
+								<div class="uk-margin-remove-top uk-text-meta uk-text-xsmall"><?php echo $p["cart"]["quantity"];?> × <?php echo setPriceReverse(p($p["cart"],$p["cart"]["price"]));?> €</div>
 							</div>
 						</div>
 						<div><a class="uk-icon-link uk-text-danger uk-invisible-hover cart_item_delete_link" href="#" uk-icon="icon: close; ratio: .75" uk-tooltip=""></a></div>

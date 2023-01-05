@@ -6,7 +6,7 @@
 	<div>
 		<img src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
 	</div>
-	<div>
+	<div class="descrizione_prodotto_totali">
 		<strong><?php echo field($p, "title");?></strong>
 		<span class="uk-text-small">
 			<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>

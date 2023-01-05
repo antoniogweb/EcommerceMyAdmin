@@ -1398,9 +1398,16 @@ class PagesModel extends GenericModel {
 		
 		$orderBy = VariabiliModel::combinazioniLinkVeri() ? "canonical desc,id_order" : "price";
 		
-		self::$arrayIdCombinazioni[$idPage] = (int)$c->clear()->select("combinazioni.id_c")->where(array(
+		$c->clear()->select("combinazioni.id_c")->where(array(
 			"id_page"	=>	(int)$idPage,
-		))->orderBy($orderBy)->limit(1)->field("id_c");
+		))->orderBy($orderBy)->limit(1);
+		
+		if (!VariabiliModel::combinazioniLinkVeri())
+			$c->aWhere(array(
+				"combinazioni.acquistabile"	=>	1,
+			));
+		
+		self::$arrayIdCombinazioni[$idPage] = (int)$c->field("id_c");
 		
 		return self::$arrayIdCombinazioni[$idPage];
 	}
@@ -2338,6 +2345,7 @@ class PagesModel extends GenericModel {
 			{
 				$c->clear()->select("min(price) as PREZZO_MINIMO")->where(array(
 					"id_page"	=>	$clean['id_page'],
+					"combinazioni.acquistabile"	=>	1,
 				));
 				
 				if (self::$IdCombinazione)
@@ -2377,6 +2385,7 @@ class PagesModel extends GenericModel {
 			{
 				$c->clear()->select("min(combinazioni_listini.price) as PREZZO_MINIMO")->inner(array("listini"))->where(array(
 					"id_page"	=>	$clean['id_page'],
+					"combinazioni.acquistabile"	=>	1,
 					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
 				));
 				

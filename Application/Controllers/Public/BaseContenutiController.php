@@ -1594,6 +1594,9 @@ class BaseContenutiController extends BaseController
 			"id_page"	=>	$clean["id_page"],
 		);
 		
+		if (!User::$adminLogged)
+			$where["combinazioni.acquistabile"] = 1;
+		
 		$allowedFields = array("col_1","col_2","col_3","col_4","col_5","col_6","col_7","col_8");
 		
 		$arrayComb = explode("|",$clean["strcomb"]);
