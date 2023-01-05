@@ -4012,4 +4012,20 @@ class PagesModel extends GenericModel {
 		
 		return $p->elementoNonUsato($idPage);
 	}
+	
+	public static function getProdottiInPromo()
+	{
+		$p = new PagesModel();
+		
+		$nowDate = date("Y-m-d");
+		$pWhere = array(
+			"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
+			" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
+			"in_promozione" => "Y",
+		);
+		
+		$prodottiInPromo = $p->clear()->addWhereAttivo()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
+		
+		return PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
+	}
 }

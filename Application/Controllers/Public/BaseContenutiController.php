@@ -682,11 +682,10 @@ class BaseContenutiController extends BaseController
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = $r[0];
 		
+		$cache = Cache_Html::getInstance();
+		
 		if (!User::$adminLogged)
-		{
-			$cache = Cache_Html::getInstance();
 			$cache->saveHtml = true;
-		}
 		
 		$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
@@ -756,6 +755,9 @@ class BaseContenutiController extends BaseController
 // 		echo $this->m("PagesModel")->getQuery();die();
 		
 		$this->estraiDatiFiltri();
+		
+		if (self::$isPromo)
+			$cache->saveHtml = false;
 		
 		$this->m("PagesModel")->clear()->restore(true);
 		
@@ -879,7 +881,9 @@ class BaseContenutiController extends BaseController
 		
 		// Promozioni
 		if (self::$isPromo)
+		{
 			$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
+		}
 		
 		$temp = CaratteristicheModel::$filtriUrl;
 		$temp = array_diff_key($temp, array_combine($escludi, $escludi));

@@ -45,7 +45,7 @@ class BaseBaseController extends Controller
 	public $team = array();
 	public $testimonial = array();
 	public $faq = array();
-	public $prodottiInPromozione = array();
+	public $prodottiInPromozione = null;
 	public $sectionsId = array();
 	
 	public $pages = array(); // Array di pagina
@@ -226,8 +226,7 @@ class BaseBaseController extends Controller
 		}
 		
 		// Predisponi i filtri in coda nell'URL
-		if (!$cache->saved())
-			$this->predisponiAltriFiltri();
+		$this->predisponiAltriFiltri();
 		
 		$this->model("CaratteristichevaloriModel");
 		
@@ -394,23 +393,7 @@ class BaseBaseController extends Controller
 		$data["categorieBlog"] = $this->m("CategoriesModel")->children(87, false, false);
 		
 		if (v("estrai_in_promozione_home"))
-		{
-			//estraggo i prodotti in promozione
-			$nowDate = date("Y-m-d");
-			$pWhere = array(
-				"gte"	=>	array("n!datediff('$nowDate',pages.dal)" => 0),
-				" gte"	=>	array("n!datediff(pages.al,'$nowDate')" => 0),
-				"in_promozione" => "Y",
-// 				"acquistabile"	=>	"Y",
-// 				"attivo" => "Y",
-			);
-			
-			$prodottiInPromo = $this->m("PagesModel")->clear()->addWhereAttivo()->addJoinTraduzionePagina()->where($pWhere)->orderBy("pages.id_order")->send();
-			
-			$data["inPromozione"] = $this->prodottiInPromozione = PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
-			
-			$data["prodottiInPromozione"] = $prodottiInPromo;
-		}
+			$data["inPromozione"] = $data["prodottiInPromozione"] = $this->prodottiInPromozione = PagesModel::getProdottiInPromo();
 		
 		$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree(CategoriesModel::$idShop,2);
 		

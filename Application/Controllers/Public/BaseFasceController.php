@@ -338,10 +338,13 @@ trait BaseFasceController
 	
 	public function getFasciaProdottiInPromozione()
 	{
+		if (!isset($this->prodottiInPromozione))
+			$this->prodottiInPromozione = PagesModel::getProdottiInPromo();
+		
 		$inPromozione = $this->prodottiInPromozione;
 		
 		ob_start();
-		include tpf("Fasce/prodotti_in_promozione.php");
+		include tpf("Fasce/prodotti_in_promozione.php",false,false);
 		$output = ob_get_clean();
 		
 		return $output;

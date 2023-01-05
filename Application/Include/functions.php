@@ -1941,31 +1941,33 @@ function tp($admin = false)
 
 function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
 {
-	$cache = Cache_Html::getInstance();
+	return Tema::tpf($filePath, $public, $cachable, $stringaCache, $cachedTemplateFile);
 	
-	$themeFolder = v("theme_folder");
-	
-	$subfolder = $themeFolder ? DS . $themeFolder : "";
-	
-	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
-	$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
-	
-	if (file_exists($subFolderFullPath))
-		return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
-	
-	if ($themeFolder)
-	{
-		$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
-		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
-		
-		if (file_exists($subFolderFullPathParentFrontend))
-			return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
-	}
-	
-	if ($public)
-		return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
-	else
-		return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
+// 	$cache = Cache_Html::getInstance();
+// 	
+// 	$themeFolder = v("theme_folder");
+// 	
+// 	$subfolder = $themeFolder ? DS . $themeFolder : "";
+// 	
+// 	$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+// 	$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+// 	
+// 	if (file_exists($subFolderFullPath))
+// 		return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
+// 	
+// 	if ($themeFolder)
+// 	{
+// 		$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+// 		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
+// 		
+// 		if (file_exists($subFolderFullPathParentFrontend))
+// 			return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
+// 	}
+// 	
+// 	if ($public)
+// 		return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+// 	else
+// 		return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
 }
 
 function singPlu($numero, $sing, $plu)

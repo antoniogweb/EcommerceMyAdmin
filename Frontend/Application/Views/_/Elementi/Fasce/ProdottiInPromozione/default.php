@@ -1,5 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (count($inPromozione) > 0) { ?>
+<?php
+if (!isset($inPromozionee))
+	$inPromozione = PagesModel::getProdottiInPromo();
+
+if (count($inPromozione) > 0) { ?>
 <div class="uk-section uk-section-muted">
 	<div class="uk-container">
 <!-- 		<div class="uk-text-center uk-text-uppercase uk-text-lead uk-text-small"><?php echo gtext("Prodotti in"); ?></div> -->

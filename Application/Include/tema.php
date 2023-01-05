@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Tema
 {
+	public static $noCacheForChildren = false;
+	public static $staticCachable = null;
+	
 	public static $elenco = array();
 	
 	public static $nomeTemaStartEmpty = "__EMPTY__";
@@ -232,5 +235,57 @@ class Tema
 		}
 		
 		return $arraySelect;
+	}
+	
+	public static function tpfc($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
+	{
+		if (isset(self::$staticCachable))
+			$cachable = self::$staticCachable;
+		
+		if (self::$noCacheForChildren)
+			self::$staticCachable = false;
+		
+		return Tema::tpf($filePath, $public, $cachable, $stringaCache, $cachedTemplateFile);
+	}
+	
+	public static function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
+	{
+		if (isset(Tema::$staticCachable))
+			$cachable = Tema::$staticCachable;
+		
+		if (Tema::$noCacheForChildren)
+			Tema::$staticCachable = true;
+		
+		$cache = Cache_Html::getInstance();
+	
+		$themeFolder = v("theme_folder");
+		
+		$subfolder = $themeFolder ? DS . $themeFolder : "";
+		
+		$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+		$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+		
+		if (file_exists($subFolderFullPath))
+			return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
+		
+		if ($themeFolder)
+		{
+			$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+			$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
+			
+			if (file_exists($subFolderFullPathParentFrontend))
+				return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
+		}
+		
+		if ($public)
+			return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+		else
+			return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
+	}
+	
+	public static function resetStaticCachable()
+	{
+		Tema::$noCacheForChildren = false;
+		Tema::$staticCachable = null;
 	}
 }
