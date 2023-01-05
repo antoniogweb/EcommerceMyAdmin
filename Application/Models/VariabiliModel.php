@@ -30,6 +30,8 @@ class VariabiliModel extends GenericModel {
 	
 	public static $usatiCookieTerzi = false;
 	
+	public static $strutturaFormCampiAggiuntivi = array();
+	
 	public static $variabiliCodiciCookieTerzi = array(
 		"codice_gtm",
 		"codice_gtm_analytics",
@@ -797,6 +799,8 @@ class VariabiliModel extends GenericModel {
 				"reverse"	=>	"yes",
 			),
 		);
+		
+		$formFields = $formFields + self::$strutturaFormCampiAggiuntivi;
 		
 		return $formFields;
 	}
