@@ -51,7 +51,7 @@ class CombinazioniModel extends GenericModel {
         return array(
 			'listini' => array("HAS_MANY", 'CombinazionilistiniModel', 'id_c', null, "CASCADE"),
 			'alias' => array("HAS_MANY", 'CombinazionialiasModel', 'id_c', null, "CASCADE"),
-			'movimenti' => array("HAS_MANY", 'CombinazionimovimentiModel', 'id_c', null, "CASCADE"),
+// 			!! NO !! 'movimenti' => array("HAS_MANY", 'CombinazionimovimentiModel', 'id_c', null, "CASCADE"),
 			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
         );
     }
