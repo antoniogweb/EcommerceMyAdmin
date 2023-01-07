@@ -1131,18 +1131,19 @@ class PagesController extends BaseController {
 		$this->scaffold->loadMain('titoloConNota','pages_attributi:id_pa',$azioni);
 		$this->scaffold->setHead('Variante');
 		
-		$this->scaffold->itemList->inverseColProperties = array(
-			array(
-				'width'	=>	'2%',
-				'class'	=>	'ldel',
-			),
-			array(
-				'width'	=>	'2%',
-			),
-			array(
-				'width'	=>	'2%',
-			),
-		);
+		if (PagesModel::variantiModificabili($clean['id']))
+			$this->scaffold->itemList->inverseColProperties = array(
+				array(
+					'width'	=>	'2%',
+					'class'	=>	'ldel',
+				),
+				array(
+					'width'	=>	'2%',
+				),
+				array(
+					'width'	=>	'2%',
+				),
+			);
 		
 		$this->scaffold->model->clear()->inner("attributi")->on("attributi.id_a = pages_attributi.id_a")->orderBy("pages_attributi.id_order")->where(array("n!pages_attributi.id_page"=>$clean['id']));
 		

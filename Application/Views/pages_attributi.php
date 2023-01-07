@@ -102,7 +102,7 @@ $(document).ready(function(){
 						<?php if ($numeroAttributi > 0) { ?>
 						<?php echo $main;?>
 						<?php } else {  ?>
-						<span class="empty_list">Non è stato associato alcun attributo</span>
+						<span class="empty_list"><?php echo gtext("Non è stata associata alcuna variante");?></span>
 						<?php } ?>
 					</div>
 

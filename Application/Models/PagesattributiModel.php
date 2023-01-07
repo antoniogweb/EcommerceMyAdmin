@@ -145,10 +145,12 @@ class PagesattributiModel extends GenericModel {
 	
 	public function titoloConNota($record)
 	{
-		if ($record["attributi"]["nota_interna"])
-			return $record["attributi"]["titolo"]." (".$record["attributi"]["nota_interna"].")";
+		$html = $record["attributi"]["titolo"];
 		
-		return $record["attributi"]["titolo"];
+		if ($record["attributi"]["nota_interna"])
+			$html .= " (".$record["attributi"]["nota_interna"].")";
+		
+		return "<a class='action_iframe iframe' href='".Url::getRoot()."attributi/form/update/".$record["attributi"]["id_a"]."?partial=Y&nobuttons=Y'>".$html."</a>";
 	}
 	
 	public function del($id = null, $where = null)
@@ -189,5 +191,15 @@ class PagesattributiModel extends GenericModel {
 			CombinazioniModel::g()->creaCombinazioni($record["id_page"]);
 		
 		return $res;
+	}
+	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && !PagesModel::variantiModificabili((int)$record["id_page"]))
+			return false;
+		
+		return true;
 	}
 }
