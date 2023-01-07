@@ -95,7 +95,7 @@ class CombinazioniController extends BaseController
 		// Ricontrollo i prezzi scontati delle combinazioni
 		PagesModel::g()->aggiornaStatoProdottiInPromozione();
 		
-// 		$this->addBulkActions = false;
+		$this->addBulkActions = false;
 		
 		$this->shift();
 		
