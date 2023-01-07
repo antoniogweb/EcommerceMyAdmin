@@ -373,25 +373,28 @@ class CombinazioniModel extends GenericModel {
 			
 			$combPrincipale = $this->combinazionePrincipale($clean["id_page"]);
 			
-			$this->del(null, array(
-				"id_page"	=>	$clean["id_page"]
-			));
-			
-			CombinazioniModel::$aggiornaAliasAdInserimento = false;
-			
-			foreach ($val as $v)
-			{
-				$this->values = array();
-				$this->values = $v;
-				$this->values["id_page"] = $dettagliPagina["id_page"];
+// 			if (count($val) > 0)
+// 			{
+				$this->del(null, array(
+					"id_page"	=>	$clean["id_page"]
+				));
 				
-// 				$this->delFields("id_c");
-				$this->delFields("id_order");
+				CombinazioniModel::$aggiornaAliasAdInserimento = false;
 				
-				$this->sanitize();
-				
-				$this->insert();
-			}
+				foreach ($val as $v)
+				{
+					$this->values = array();
+					$this->values = $v;
+					$this->values["id_page"] = $dettagliPagina["id_page"];
+					
+	// 				$this->delFields("id_c");
+					$this->delFields("id_order");
+					
+					$this->sanitize();
+					
+					$this->insert();
+				}
+// 			}
 			
 			if (!empty($combPrincipale))
 				PagesModel::$IdCmb = $combPrincipale["id_c"];
@@ -1086,7 +1089,18 @@ class CombinazioniModel extends GenericModel {
 	
 	public function deletable($idC)
 	{
-		return $this->elementoNonUsato($idC);
+		$res = $this->elementoNonUsato($idC);
+		
+		if (!$res)
+			return false;
+		
+		$record = $this->clear()->select("id_page")->whereId((int)$idC)->record();
+		$p = new PagesModel();
+		
+		if (!empty($record) && (int)$p->numeroVarianti((int)$record["id_page"]) === 0)
+			return false;
+		
+		return true;
 	}
 	
 	static public function acquistabile($idC)

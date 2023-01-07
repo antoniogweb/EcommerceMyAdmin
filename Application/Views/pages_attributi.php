@@ -116,7 +116,9 @@ $(document).ready(function(){
 						<?php echo $noticeComb;?>
 						<a style="margin-bottom:10px;" class="pull-right iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
 						
+						<?php if ($numeroCombinazioni > 1) { ?>
 						<a style="margin-bottom:10px;margin-right:10px;" class="pull-right link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
+						<?php } ?>
 						
 						<div id="form_opzioni"><small><b><?php echo gtext("Combinazioni di questo prodotto");?></b></small></div>
 						

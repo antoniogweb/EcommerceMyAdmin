@@ -95,6 +95,8 @@ class CombinazioniController extends BaseController
 		// Ricontrollo i prezzi scontati delle combinazioni
 		PagesModel::g()->aggiornaStatoProdottiInPromozione();
 		
+// 		$this->addBulkActions = false;
+		
 		$this->shift();
 		
 		$prezzoLabel = "Prezzo";
@@ -380,6 +382,8 @@ class CombinazioniController extends BaseController
 		
 		if ($this->viewArgs["id_lista_regalo"] != "tutti")
 		{
+			$this->addBulkActions = true;
+			
 			$this->mainButtons = "";
 			
 			$this->bulkQueryActions = "aggiungialistaregalo";
@@ -393,6 +397,8 @@ class CombinazioniController extends BaseController
 		
 		if ($this->viewArgs["id_ordine"] != "tutti")
 		{
+			$this->addBulkActions = true;
+			
 			$this->tabella = "articoli";
 			
 			$this->mainButtons = "";

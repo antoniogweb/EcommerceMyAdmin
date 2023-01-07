@@ -1146,7 +1146,8 @@ class PagesController extends BaseController {
 		
 		$this->scaffold->model->clear()->inner("attributi")->on("attributi.id_a = pages_attributi.id_a")->orderBy("pages_attributi.id_order")->where(array("n!pages_attributi.id_page"=>$clean['id']));
 		
-		$this->scaffold->update('moveup,movedown');
+		if (PagesModel::variantiModificabili($clean['id']))
+			$this->scaffold->update('moveup,movedown');
 		
 		$this->scaffold->itemList->colProperties = array(
 // 			array(
@@ -1228,7 +1229,7 @@ class PagesController extends BaseController {
 		$this->h['List']->inverseColProperties = array(
 			array(
 				'class'	=>	'text-right',
-				'width'	=>	'50px',
+				'width'	=>	'70px',
 			),
 		);
 		
@@ -1269,7 +1270,10 @@ class PagesController extends BaseController {
 				$head .= "$col";
 		}
 		
-		$head .= ",Codice,Prezzo";
+		if ($head)
+			$head .= ",";
+		
+		$head .= "Codice,Prezzo";
 		
 		if (v("sconti_combinazioni_automatiche"))
 			$head .= ",Prezzo scontato";
@@ -1283,12 +1287,18 @@ class PagesController extends BaseController {
 		}
 		
 		$this->h['List']->addItem("text",";acquistabileCrudText;");
-		$head .= ",Acquistabile";
+		$head .= ",Acquist.?";
 		
 		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
 		{
 			$this->h['List']->addItem("text",";canonical;");
 			$head .= ",Canonical";
+		}
+		
+		if (!partial())
+		{
+			$this->h['List']->addItem("text",";ordini;");
+			$head .= ",N° Acq.";
 		}
 		
 		$this->h['List']->setHead($head);

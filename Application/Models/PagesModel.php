@@ -1021,6 +1021,15 @@ class PagesModel extends GenericModel {
 		return $r;
 	}
 	
+	public function numeroVarianti($id)
+	{
+		$pa = new PagesattributiModel();
+		
+		return (int)$pa->clear()->where(array(
+			"id_page"	=>	(int)$id,
+		))->rowNumber();
+	}
+	
 	public function controllaCombinazioni($id)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
@@ -1030,11 +1039,13 @@ class PagesModel extends GenericModel {
 			return;
 		
 		$c = new CombinazioniModel();
-		$pa = new PagesattributiModel();
+// 		$pa = new PagesattributiModel();
 		
-		$numeroVarianti = $pa->clear()->where(array(
-			"id_page"	=>	(int)$id,
-		))->rowNumber();
+// 		$numeroVarianti = $pa->clear()->where(array(
+// 			"id_page"	=>	(int)$id,
+// 		))->rowNumber();
+		
+		$numeroVarianti = $this->numeroVarianti((int)$id);
 		
 		if ((int)$numeroVarianti === 0)
 		{
