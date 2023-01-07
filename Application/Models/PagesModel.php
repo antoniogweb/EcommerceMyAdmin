@@ -4039,4 +4039,18 @@ class PagesModel extends GenericModel {
 		
 		return PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
 	}
+	
+	public static function getProdottiInEvidenza($campo = "in_evidenza")
+	{
+		$p = new PagesModel();
+		
+		return PagesModel::impostaDatiCombinazionePagine(getRandom($p->clear()->select("*")
+			->addJoinTraduzionePagina()
+			->where(array(
+				$campo=>"Y",
+			))
+			->addWhereCategoria(CategoriesModel::$idShop)
+			->addWhereAttivo()
+			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza")));
+	}
 }
