@@ -9,7 +9,7 @@ if ($haCouponAttivo)
 <?php if (v("attiva_spedizione") || $haCouponAttivo || $costoPagamento > 0) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Totale merce");?></div>
-	<div class="uk-margin-remove-top"><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
+	<div class="uk-width-1-3 uk-text-right uk-margin-remove-top"><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
 </div>
 <?php } ?>
 <?php if ($haCouponAttivo && $couponAttivo["tipo_sconto"] == "PERCENTUALE") { ?>
@@ -18,19 +18,19 @@ if ($haCouponAttivo)
 		<?php echo gtext("Totale scontato");?> (<i><?php echo $couponAttivo["titolo"];?></i>)
 		<?php include(tpf("/Ordini/totale_promo_attiva.php"));?>
 	</div>
-	<div class="uk-margin-remove-top"><?php echo getPrezzoScontato(v("prezzi_ivati_in_carrello"));?> €</div>
+	<div class="uk-width-1-3 uk-text-right uk-margin-remove-top"><?php echo getPrezzoScontato(v("prezzi_ivati_in_carrello"));?> €</div>
 </div>
 <?php } ?>
 <?php if ($costoPagamento > 0) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Spese pagamento");?></div>
-	<div class="uk-margin-remove-top"><?php echo setPriceReverse($costoPagamento);?> €</div>
+	<div class="uk-width-1-3 uk-text-right uk-margin-remove-top"><?php echo setPriceReverse($costoPagamento);?> €</div>
 </div>
 <?php } ?>
 <?php if (v("attiva_spedizione")) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
 	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Spese spedizione");?></div>
-	<div class="uk-margin-remove-top"><?php echo getSpedizione(v("prezzi_ivati_in_carrello"));?> €</div>
+	<div class="uk-width-1-3 uk-text-right uk-margin-remove-top"><?php echo getSpedizione(v("prezzi_ivati_in_carrello"));?> €</div>
 </div>
 <?php } ?>
 <?php if (!v("prezzi_ivati_in_carrello")) { ?>
@@ -42,7 +42,7 @@ if ($haCouponAttivo)
 		(<?php echo IvaModel::$titoloAliquotaEstera;?>)</span>
 		<?php } ?>
 	</div>
-	<div class="uk-margin-remove-top"><?php echo getIva();?> €</div>
+	<div class="uk-width-1-3 uk-text-right uk-margin-remove-top"><?php echo getIva();?> €</div>
 </div>
 <?php } ?>
 
