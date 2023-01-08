@@ -37,6 +37,8 @@ Url::$routes = array(
 	"ordine"	=>	"ordini/vedi/%d",
 );
 
+Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
+
 date_default_timezone_set('Europe/Rome');
 
 // Carica le App

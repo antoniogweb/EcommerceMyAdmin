@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 date_default_timezone_set('Europe/Rome');
 
+Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
+
 VariabiliModel::ottieniVariabili();
 
 if (VariabiliModel::valore("usa_transactions"))

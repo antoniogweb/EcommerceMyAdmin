@@ -55,23 +55,22 @@ if (!User::$isMobile)
 	</div>
 	<div class="uk-width-1-2@m uk-text-left uk-flex-first uk-flex-last@s">
 		<div class="<?php if (!User::$isPhone) { ?>uk-margin-medium-top<?php } ?> uk-margin-bottom">
-			<h3><?php echo !User::$isPhone ? gtext("Continua come ospite o crea un account") : gtext("Non sei ancora registrato?");?></h3>
+			<h3><?php echo gtext("Continua come ospite o crea un account");?></h3>
 			<div class="uk-text-meta"><?php echo gtext("Continua l'acquisto inserendo i tuoi dati. Se lo desideri, potrai creare un account in fase di checkout.");?></div>
 		</div>
 		
 		<form class="" action = '<?php echo $this->baseUrl."/checkout";?>' method = 'GET'>
 			<fieldset class="uk-fieldset">
-				<?php if (!User::$isPhone) { ?>
 				<div class="uk-margin">
 					<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?></label>
 					<div class="uk-form-controls">
 						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" placeholder="<?php echo gtext("Scrivi qui il tuo indirizzo e-mail")?>"/>
 					</div>
 				</div>
-				<?php } ?>
+				
 				<div>
 					<div class="uk-button uk-button-primary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
-					<input autocomplete="new-password" class="uk-button uk-button-primary uk-width-1-1 btn_submit_form" type="submit" name="login" value="<?php echo !User::$isPhone ? gtext("Procedi come ospite") : gtext("Continua inserendo i tuoi dati");?>" />
+					<input autocomplete="new-password" class="uk-button uk-button-primary uk-width-1-1 btn_submit_form" type="submit" name="login" value="<?php echo !User::$isPhone ? gtext("Procedi inserendo i tuoi dati") : gtext("Procedi inserendo i tuoi dati");?>" />
 				</div>
 			</fieldset>
 		</form>

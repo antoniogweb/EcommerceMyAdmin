@@ -34,6 +34,16 @@ if (typeof attiva_icheck == "undefined")
 
 $ = jQuery;
 
+function isInArray(elemento,haystack)
+{
+    var count=haystack.length;
+    for(var i=0;i<count;i++)
+    {
+        if(haystack[i]==elemento){return true;}
+    }
+    return false;
+}
+
 function getTipoCliente()
 {
 	if ($(".radio_cliente").length > 0)
@@ -335,8 +345,7 @@ function impostaCorrieriESpeseSpedizione()
 				async: true,
 				dataType: "json",
 				success: function(content){
-					
-					if (content.indexOf(id_corriere) == -1)
+					if (!isInArray(id_corriere, content))
 						id_corriere = content[0];
 					
 					if (content.length == 0)

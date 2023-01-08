@@ -65,7 +65,7 @@ class MailordiniModel extends GenericModel
 			$timeGiorno = time() - (3600 * 24);
 			
 			// CHECK ORA
-			$resOra = $this->query("select sum(numero_inviate) as NUMERO from mail_ordini where inviata = 1 and time_creazione > $timeOra for update");
+			$resOra = $this->query(array("select sum(numero_inviate) as NUMERO from mail_ordini where inviata = 1 and time_creazione > ? for update",array($timeOra)));
 			
 			$numero = isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
 			$numero += $this->values["numero_inviate"];
@@ -79,7 +79,7 @@ class MailordiniModel extends GenericModel
 			if ($this->checkLimitiInvio)
 			{
 				// CHECK GIORNO
-				$resOra = $this->query("select sum(numero_inviate) as NUMERO from mail_ordini where inviata = 1 and time_creazione > $timeGiorno for update");
+				$resOra = $this->query(array("select sum(numero_inviate) as NUMERO from mail_ordini where inviata = 1 and time_creazione > ? for update",array($timeGiorno)));
 				
 				$numero = isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
 				$numero += $this->values["numero_inviate"];
