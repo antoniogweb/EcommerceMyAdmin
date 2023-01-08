@@ -191,6 +191,7 @@ class F
 					$queryToTest = str_replace("canonical = 0", "", $queryToTest);
 					$queryToTest = str_replace("combinazioni.acquistabile = 1", "", $queryToTest);
 					$queryToTest = str_replace("inviata = 1", "", $queryToTest);
+					$queryToTest = str_replace("tipo = 'UE'", "", $queryToTest);
 					
 					if (preg_match('/\=(\s?)\'([a-zA-Z\-]{1,})\'/',$queryToTest, $matches))
 						$log->writeString($query);

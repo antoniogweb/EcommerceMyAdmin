@@ -1399,7 +1399,7 @@ class OrdiniModel extends FormModel {
 		
 		$res = $o->clear()->select("SUM(prezzo_scontato) as TOTALE")->where(array(
 			"nazione_spedizione"	=>	sanitizeAll($nazione),
-		))->sWhere("DATE_FORMAT(data_creazione, '%Y') = '".$anno."'")->send();
+		))->sWhere(array("DATE_FORMAT(data_creazione, '%Y') = ?",array($anno)))->send();
 		
 		if (isset($res[0]["aggregate"]["TOTALE"]) && $res[0]["aggregate"]["TOTALE"])
 			return $res[0]["aggregate"]["TOTALE"];
@@ -1417,7 +1417,7 @@ class OrdiniModel extends FormModel {
 			"ne"	=>	array(
 				"nazione_spedizione"	=>	"IT",
 			),
-		))->sWhere("nazione_spedizione in (select iso_country_code from nazioni where tipo = 'UE') AND DATE_FORMAT(data_creazione, '%Y') = '".$anno."'")->send();
+		))->sWhere(array("nazione_spedizione in (select iso_country_code from nazioni where tipo = 'UE') AND DATE_FORMAT(data_creazione, '%Y') = ?",array($anno)))->send();
 		
 		if (isset($res[0]["aggregate"]["TOTALE"]) && $res[0]["aggregate"]["TOTALE"])
 			return $res[0]["aggregate"]["TOTALE"];
