@@ -45,6 +45,8 @@ class PagesModel extends GenericModel {
 	public $documentiModelAssociato = "DocumentiModel";
 	public $contattiModelAssociato = "ContattiModel";
 	
+	public static $controllaCombinazioniQuandoSalvi = true;
+	
 	public static $uploadFile = true;
 	
 	public static $currentRecord = null;
@@ -1001,11 +1003,14 @@ class PagesModel extends GenericModel {
 					// Controllo che esista il contenuto in lingua
 					$this->controllaLingua($id);
 					
-					// Controllo che esista la combinazione
-					$this->controllaCombinazioni($id);
-					
-					// Controllo i prezzi scontati delle combinazioni
-					$this->aggiornaPrezziCombinazioni($id);
+					if (self::$controllaCombinazioniQuandoSalvi)
+					{
+						// Controllo che esista la combinazione
+						$this->controllaCombinazioni($id);
+						
+						// Controllo i prezzi scontati delle combinazioni
+						$this->aggiornaPrezziCombinazioni($id);
+					}
 					
 					$this->sincronizza($clean["id"]);
 					
@@ -1039,11 +1044,6 @@ class PagesModel extends GenericModel {
 			return;
 		
 		$c = new CombinazioniModel();
-// 		$pa = new PagesattributiModel();
-		
-// 		$numeroVarianti = $pa->clear()->where(array(
-// 			"id_page"	=>	(int)$id,
-// 		))->rowNumber();
 		
 		$numeroVarianti = $this->numeroVarianti((int)$id);
 		
@@ -1289,11 +1289,14 @@ class PagesModel extends GenericModel {
 				// Controllo che esista il contenuto in lingua
 				$this->controllaLingua($this->lId);
 				
-				// Controllo che esista la combinazione
-				$this->controllaCombinazioni($this->lId);
-				
-				// Controllo i prezzi scontati delle combinazioni
-				$this->aggiornaPrezziCombinazioni($this->lId);
+				if (self::$controllaCombinazioniQuandoSalvi)
+				{
+					// Controllo che esista la combinazione
+					$this->controllaCombinazioni($this->lId);
+					
+					// Controllo i prezzi scontati delle combinazioni
+					$this->aggiornaPrezziCombinazioni($this->lId);
+				}
 				
 				$this->updatePageAccessibility($this->lId);
 				
