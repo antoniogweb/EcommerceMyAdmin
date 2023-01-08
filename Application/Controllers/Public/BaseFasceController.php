@@ -41,14 +41,14 @@ trait BaseFasceController
 	public function getProdottiInEvidenza()
 	{
 		if (!isset($this->prodottiInEvidenza))
-			return "";
+			$this->prodottiInEvidenza = PagesModel::getProdottiInEvidenza();
 		
 		$pages = $prodottiInEvidenza = $this->prodottiInEvidenza;
 		$elencoMarchiFull = isset($this->elencoMarchiFull) ? $this->elencoMarchiFull : array();
 		$idShop = $this->idShop;
 		
 		ob_start();
-		include tpf("Fasce/prodotti_in_evidenza.php");
+		include tpf("Fasce/prodotti_in_evidenza.php",false,false);
 		$output = ob_get_clean();
 		
 		return $output;

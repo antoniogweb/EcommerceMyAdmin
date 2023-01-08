@@ -429,6 +429,7 @@ class VariabiliModel extends GenericModel {
 		"sconti_combinazioni_automatiche"	=>	0, // se impostato ad 1, va ad impostare in automatico gli sconti sulla tabella delle combinazioni
 		"gestisci_sconti_combinazioni_separatamente"	=>	0, // se impostato ad 1, permette di impostare un prezzo scontatto per ogni combinazione
 		"estrai_in_promozione_home"	=>	0,
+		"estrai_in_evidenza_home"	=>	1, // se estrarre i prodotti in evidenza sempre
 		"permetti_promozione_assoluta_prodotto"	=>	0, // se impostato su 1, permette sconti assoluti al prodotto
 		## CARRELLO ##
 		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number

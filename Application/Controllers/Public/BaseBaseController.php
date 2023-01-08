@@ -288,14 +288,8 @@ class BaseBaseController extends Controller
 	
 	protected function estratiDatiGenerali($controller, $action)
 	{
-		$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::impostaDatiCombinazionePagine(getRandom($this->m("PagesModel")->clear()->select("*")
-			->addJoinTraduzionePagina()
-			->where(array(
-				"in_evidenza"=>"Y",
-			))
-			->addWhereCategoria(CategoriesModel::$idShop)
-			->addWhereAttivo()
-			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza")));
+		if (v("estrai_in_evidenza_home"))
+			$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::getProdottiInEvidenza();
 		
 		if (v("mostra_avvisi"))
 			$data["avvisi"] = $this->m("PagesModel")->where(array(
