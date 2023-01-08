@@ -292,7 +292,7 @@ class BaseBaseController extends Controller
 			$data["prodottiInEvidenza"] = $this->prodottiInEvidenza = PagesModel::getProdottiInEvidenza();
 		
 		if (v("mostra_avvisi"))
-			$data["avvisi"] = $this->m("PagesModel")->where(array(
+			$data["avvisi"] = $this->m("PagesModel")->clear()->getQueryClauseProdotti()->where(array(
 				"categories.section"	=>	"avvisi",
 				"attivo"=>"Y",
 			))->send();
@@ -300,7 +300,7 @@ class BaseBaseController extends Controller
 		// Modali
 		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
 		{
-			$data["modali_frontend"] = $this->m("PagesModel")->where(array(
+			$data["modali_frontend"] = $this->m("PagesModel")->clear()->getQueryClauseProdotti()->where(array(
 				"categories.section"	=>	"modali",
 				"attivo"=>"Y",
 			))->orderBy("pages.id_order desc")->limit(1)->send();

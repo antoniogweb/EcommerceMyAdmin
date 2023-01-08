@@ -4043,17 +4043,25 @@ class PagesModel extends GenericModel {
 		return PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
 	}
 	
+	public function getQueryClauseProdotti()
+	{
+		$this->select("*")
+			->addJoinTraduzionePagina()
+			->addWhereAttivo()
+			->orderBy("pages.id_order desc");
+		
+		return $this;
+	}
+	
 	public static function getProdottiInEvidenza($campo = "in_evidenza")
 	{
 		$p = new PagesModel();
 		
-		return PagesModel::impostaDatiCombinazionePagine(getRandom($p->clear()->select("*")
-			->addJoinTraduzionePagina()
-			->where(array(
-				$campo=>"Y",
+		return PagesModel::impostaDatiCombinazionePagine(getRandom($p->clear()
+			->aWhere(array(
+				$campo	=>	"Y",
 			))
 			->addWhereCategoria(CategoriesModel::$idShop)
-			->addWhereAttivo()
-			->orderBy("pages.id_order desc")->send(), v("numero_in_evidenza")));
+			->send(), v("numero_in_evidenza")));
 	}
 }
