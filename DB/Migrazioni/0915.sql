@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`id_controller`, `titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES (NULL, 'Gestione feed', 'feed', '', '1', 'attiva_gestione_feed=1', '86', '1', 'utenti', 'main');

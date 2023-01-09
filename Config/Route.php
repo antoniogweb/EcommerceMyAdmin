@@ -763,6 +763,9 @@ class Route
 		
 		'cache,svuotacache',
 		'cache,svuotacacheimmagini',
+		
+		'feed,main',
+		'feed,form',
 	);
 	
 	//it can be 'yes' or 'no'
