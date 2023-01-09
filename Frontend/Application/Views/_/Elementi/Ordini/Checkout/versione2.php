@@ -45,8 +45,12 @@
 											<div class="uk-width-1-1 uk-width-1-2@m">
 												<span class="uk-text-emphasis"><?php echo OrdiniModel::getNominativo(User::$dettagli);?></span>
 												<?php if (User::$dettagli["completo"]) { ?>
-												<br /><span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <?php echo User::$dettagli["indirizzo"];?>
-												<br /><?php echo User::$dettagli["cap"];?>, <?php echo User::$dettagli["citta"];?> (<?php echo User::$dettagli["nazione"] == "IT" ? User::$dettagli["provincia"] : User::$dettagli["dprovincia"];?>)
+													<?php if (User::$dettagli["indirizzo"]) { ?>
+													<br /><span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <?php echo User::$dettagli["indirizzo"];?>
+													<?php } ?>
+													<?php if (User::$dettagli["cap"] || User::$dettagli["citta"] || User::$dettagli["provincia"]) { ?>
+													<br /><?php echo User::$dettagli["cap"];?>, <?php echo User::$dettagli["citta"];?> (<?php echo User::$dettagli["nazione"] == "IT" ? User::$dettagli["provincia"] : User::$dettagli["dprovincia"];?>)
+													<?php } ?>
 												<?php } ?>
 												<br /><span class="uk-text-emphasis"><?php echo gtext("Nazione");?>:</span> <?php echo nomeNazione(User::$dettagli["nazione"]);?>
 												<?php if (User::$dettagli["tipo_cliente"] != "azienda" && User::$dettagli["codice_fiscale"]) { ?>
