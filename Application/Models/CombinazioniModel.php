@@ -1112,4 +1112,24 @@ class CombinazioniModel extends GenericModel {
 			"acquistabile"	=>	1,
 		))->rowNumber();
 	}
+	
+	public function getTitoloCombinazione($idC, $lingua = null)
+	{
+		$record = $this->selectId((int)$idC);
+		
+		if (empty($record))
+			return "";
+		
+		$titoli = AttributivaloriModel::getArrayIdTitolo($lingua);
+		
+		$arrayTitoli = array();
+		
+		for ($i = 1; $i < 9; $i++)
+		{
+			if (isset($record["col_".$i]) && $record["col_".$i] && isset($titoli[$record["col_".$i]]) && $titoli[$record["col_".$i]])
+				$arrayTitoli[] = $titoli[$record["col_".$i]];
+		}
+		
+		return count($arrayTitoli) > 0 ? implode(" ", $arrayTitoli) : "";
+	}
 }

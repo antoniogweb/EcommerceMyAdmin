@@ -20,13 +20,30 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class TrovaPrezzi extends Feed
+if (!defined('EG')) die('Direct access not allowed!');
+
+class BaseFeedController extends BaseController
 {
-	public function feedProdotti($p = null)
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
-		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p);
+		parent::__construct($model, $controller, $queryString, $application, $action);
+
+		if (!v("attiva_gestione_feed"))
+			$this->responseCode(403);
+	}
+
+	public function prodotti($modulo = "", $token = "")
+	{
+		$modulo = strtoupper((string)$modulo);
 		
-		// da completare
-// 		print_r($strutturaFeedProdotti);
+		if (trim($modulo) && FeedModel::g()->checkModulo($modulo, $token))
+		{
+			$isAttivo = FeedModel::getModulo($modulo)->isAttivo();
+			
+			if ($isAttivo)
+			{
+				FeedModel::getModulo($modulo)->feedProdotti();
+			}
+		}
 	}
 }

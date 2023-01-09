@@ -101,6 +101,23 @@ class FeedModel extends GenericModel {
 		return "<span class='data-record-id' data-primary-key='".$record[$this->_tables][$this->_idFields]."'>".$record[$this->_tables][$this->campoTitolo]."</span>";
 	}
 	
+	public function checkModulo($codice, $token = "")
+	{
+		return $this->clear()->where(array(
+			"codice"	=>	sanitizeDb((string)$codice),
+			"attivo"	=>	1,
+			"OR"	=>	array(
+				"usa_token_sicurezza"	=>	0,
+				"AND"	=>	array(
+					"token_sicurezza"	=>	sanitizeDb((string)$token),
+					"ne"	=>	array(
+						"token_sicurezza"	=>	"",
+					)
+				)
+			)
+		))->rowNumber();
+	}
+	
 	public static function getModulo($codice)
 	{
 		$c = new FeedModel();

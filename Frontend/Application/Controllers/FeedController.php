@@ -20,13 +20,11 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class TrovaPrezzi extends Feed
+if (!defined('EG')) die('Direct access not allowed!');
+
+require_once(LIBRARY."/Application/Controllers/Public/BaseFeedController.php");
+
+class FeedController extends BaseFeedController
 {
-	public function feedProdotti($p = null)
-	{
-		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p);
-		
-		// da completare
-// 		print_r($strutturaFeedProdotti);
-	}
+
 }

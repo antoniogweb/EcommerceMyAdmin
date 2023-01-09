@@ -42,4 +42,67 @@ class Feed
 	{
 		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza';
 	}
+	
+	public function isAttivo()
+	{
+		return $this->params["attivo"];
+	}
+	
+	protected function strutturaFeedProdotti($p = null)
+	{
+		$c = new CategoriesModel();
+		$comb = new CombinazioniModel();
+		
+		if (!isset($p))
+		{
+			$p = new PagesModel();
+			$p->clear();
+		}
+		
+		$idShop = $c->getShopCategoryId();
+		
+		$children = $c->children($idShop, true);
+		
+		if (isset($_GET["id_page"]))
+			$p->aWhere(array(
+				"id_page"	=>	(int)$_GET["id_page"],
+			));
+		
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description";
+		
+		if (VariabiliModel::combinazioniLinkVeri())
+			$select .= ",combinazioni.*";
+		
+		$p->select($select)
+			->addWhereAttivo()
+			->addJoinTraduzionePagina()
+			->addWhereCategoria((int)$idShop)
+			->orderBy("pages.title");
+		
+		if (VariabiliModel::combinazioniLinkVeri())
+			$p->inner(array("combinazioni"))->aWhere(array(
+				"combinazioni.acquistabile"	=>	1,
+			));
+		
+		$res = $p->send();
+		
+		if (!VariabiliModel::combinazioniLinkVeri())
+			$res = PagesModel::impostaDatiCombinazionePagine($res);
+		
+		$strutturaFeed = array();
+		
+		foreach ($res as $r)
+		{
+			$titoloCombinazione = VariabiliModel::combinazioniLinkVeri() ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
+			
+			$strutturaFeed[] = array(
+				"id_page"	=>	$r["pages"]["id_page"],
+				"titolo"	=>	trim(F::alt(field($r, "title").$titoloCombinazione)),
+				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
+				"descrizione"	=>	trim(F::alt(field($r, "description"))),
+			);
+		}
+		
+		return $strutturaFeed;
+	}
 }

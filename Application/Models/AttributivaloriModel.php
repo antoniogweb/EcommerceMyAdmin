@@ -30,6 +30,8 @@ class AttributivaloriModel extends GenericModel {
 	
 	public static $uploadFile = true;
 	
+	public static $arrayIdTitolo = null;
+	
 	public function __construct() {
 		$this->_tables='attributi_valori';
 		$this->_idFields='id_av';
@@ -230,5 +232,17 @@ class AttributivaloriModel extends GenericModel {
 		return $av->select("attributi.tipo")->inner(array("attributo"))->where(array(
 			"id_av"	=>	(int)$idAV,
 		))->field("attributi.tipo");
+	}
+	
+	public static function getArrayIdTitolo($lingua = null)
+	{
+		if (isset(self::$arrayIdTitolo))
+			return self::$arrayIdTitolo;
+		
+		$av = new AttributivaloriModel();
+		
+		self::$arrayIdTitolo = $av->clear()->addJoinTraduzione($lingua)->select("attributi_valori.id_av,coalesce(contenuti_tradotti.titolo,attributi_valori.titolo) as titolo")->toList("attributi_valori.id_av", "aggregate.titolo")->send();
+		
+		return self::$arrayIdTitolo;
 	}
 }
