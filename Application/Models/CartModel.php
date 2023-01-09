@@ -1193,9 +1193,9 @@ class CartModel extends GenericModel {
 	}
 	
 	// restituisce true se il carrello ha solo prodotti senza spedizione
-	public static function soloProdottiSenzaSpedizione($idOrdine = null)
+	public static function soloProdottiSenzaSpedizione($idOrdine = null, $checkLista = true, $checkGiftCard = true)
 	{
-		if (v("attiva_liste_regalo"))
+		if (v("attiva_liste_regalo") && $checkLista)
 		{
 			if (isset($idOrdine))
 			{
@@ -1211,7 +1211,7 @@ class CartModel extends GenericModel {
 				return true;
 		}
 		
-		if (v("attiva_gift_card"))
+		if (v("attiva_gift_card") && $checkGiftCard)
 		{
 			$c = new CartModel();
 			

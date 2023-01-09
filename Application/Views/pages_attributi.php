@@ -89,7 +89,7 @@ $(document).ready(function(){
 						<?php } ?>
 					<?php } else { ?>
 					<div class="callout callout-info"><i class="fa fa-exclamation-triangle"></i> <?php
-					$stringaLista = v("attiva_liste_regalo") ? "o è inserito in quale lista regalo." : ".";
+					$stringaLista = v("attiva_liste_regalo") ? "o è inserito in qualche lista regalo." : ".";
 					echo gtext("Non è possibile aggiungere o eliminare varianti a questo prodotto in quanto ha già ordini $stringaLista");?></div>
 					<?php } ?>
 					

@@ -1733,7 +1733,9 @@ class OrdiniModel extends FormModel {
 	
 	public static function analizzaErroriCheckout($strutturaErrori)
 	{
-		$mostraCampiFatturazione = $mostraCampiSpedizione = false;
+		$mostraCampiFatturazione = $mostraCampiSpedizione = $mostraCampiIndirizzoFatturazione = false;
+		
+		$fields = array();
 		
 		if (isset($strutturaErrori["Fields"]))
 		{
@@ -1755,9 +1757,12 @@ class OrdiniModel extends FormModel {
 				
 				if ($type !== false)
 					$mostraCampiSpedizione = true;
+				
+				if (in_array($f, array("nazione","provincia","dprovincia","citta","indirizzo","cap")))
+					$mostraCampiIndirizzoFatturazione = true;
 			}
 		}
 		
-		return array($mostraCampiFatturazione, $mostraCampiSpedizione);
+		return array($mostraCampiFatturazione, $mostraCampiSpedizione, $mostraCampiIndirizzoFatturazione);
 	}
 }

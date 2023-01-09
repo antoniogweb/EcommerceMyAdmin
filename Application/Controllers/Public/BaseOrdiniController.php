@@ -796,56 +796,6 @@ class BaseOrdiniController extends BaseController
 		
 		$this->getAppLogin();
 		
-		// Prendo valori da account, per app
-// 		if ($this->s['registered']->status['status'] === 'logged')
-// 		{
-// 			if (isset($_POST["datiFromAccount"]))
-// 			{
-// 				$tempDettagli = htmlentitydecodeDeep(User::$dettagli);
-// 				
-// 				$_POST["tipo_cliente"] = $tempDettagli["tipo_cliente"];
-// 				$_POST["nome"] = $tempDettagli["nome"];
-// 				$_POST["cognome"] = $tempDettagli["cognome"];
-// 				$_POST["ragione_sociale"] = $tempDettagli["ragione_sociale"];
-// 				$_POST["codice_fiscale"] = $tempDettagli["codice_fiscale"];
-// 				$_POST["p_iva"] = $tempDettagli["p_iva"];
-// 				$_POST["indirizzo"] = $tempDettagli["indirizzo"];
-// 				$_POST["cap"] = $tempDettagli["cap"];
-// 				$_POST["nazione"] = $tempDettagli["nazione"];
-// 				$_POST["provincia"] = $tempDettagli["provincia"];
-// 				$_POST["dprovincia"] = $tempDettagli["dprovincia"];
-// 				$_POST["citta"] = $tempDettagli["citta"];
-// 				$_POST["telefono"] = $tempDettagli["telefono"];
-// 				$_POST["email"] = $tempDettagli["username"];
-// 				$_POST["conferma_email"] = $tempDettagli["username"];
-// 				$_POST["pec"] = $tempDettagli["pec"];
-// 				$_POST["codice_destinatario"] = $tempDettagli["codice_destinatario"];
-// 				
-// 				if (isset($_POST["id_spedizione"]))
-// 				{
-// 					$clean["usaIdSpedizione"] = (int)$_POST["id_spedizione"];
-// 					
-// 					$spedizioneDaUsare = $this->m("SpedizioniModel")->where(array(
-// 						"id_user"	=>	(int)User::$id,
-// 						"id_spedizione"	=>	$clean["usaIdSpedizione"],
-// 					))->record();
-// 					
-// 					if (!empty($spedizioneDaUsare))
-// 					{
-// 						$spedizioneDaUsare = htmlentitydecodeDeep($spedizioneDaUsare);
-// 						
-// 						$_POST["indirizzo_spedizione"] = $spedizioneDaUsare["indirizzo_spedizione"];
-// 						$_POST["cap_spedizione"] = $spedizioneDaUsare["cap_spedizione"];
-// 						$_POST["provincia_spedizione"] = $spedizioneDaUsare["provincia_spedizione"];
-// 						$_POST["dprovincia_spedizione"] = $spedizioneDaUsare["dprovincia_spedizione"];
-// 						$_POST["citta_spedizione"] = $spedizioneDaUsare["citta_spedizione"];
-// 						$_POST["telefono_spedizione"] = $spedizioneDaUsare["telefono_spedizione"];
-// 						$_POST["nazione_spedizione"] = $spedizioneDaUsare["nazione_spedizione"];
-// 					}
-// 				}
-// 			}
-// 		}
-		
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
@@ -863,14 +813,6 @@ class BaseOrdiniController extends BaseController
 			{
 				$_POST[$cs] = $this->request->post(str_replace("_spedizione","",$cs),"","none");
 			}
-			
-// 			$_POST["indirizzo_spedizione"] = $this->request->post("indirizzo","","none");
-// 			$_POST["cap_spedizione"] = $this->request->post("cap","","none");
-// 			$_POST["provincia_spedizione"] = $this->request->post("provincia","","none");
-// 			$_POST["dprovincia_spedizione"] = $this->request->post("dprovincia","","none");
-// 			$_POST["citta_spedizione"] = $this->request->post("citta","","none");
-// 			$_POST["telefono_spedizione"] = $this->request->post("telefono","","none");
-// 			$_POST["nazione_spedizione"] = $this->request->post("nazione","","none");
 			
 			if (!in_array($_POST["nazione_spedizione"], $codiciSpedizioneAttivi))
 				$_POST["spedisci_dati_fatturazione"] = "N";
@@ -920,7 +862,12 @@ class BaseOrdiniController extends BaseController
 			$campoTelefonoSpedizione .= "telefono_spedizione,";
 		}
 		
-		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
+// 		$campiObbligatoriComuni = "indirizzo,$campoObbligatoriProvincia,citta,".$campoTelefono."email,".$campoConfermaEmail."pagamento,accetto,tipo_cliente,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,citta_spedizione,".$campoTelefonoSpedizione."nazione,nazione_spedizione,cap,cap_spedizione";
+		
+		$campiObbligatoriComuni = $campoTelefono."email,".$campoConfermaEmail.$campoTelefonoSpedizione."pagamento,accetto,tipo_cliente";
+		
+		if (!CartModel::soloProdottiSenzaSpedizione(null, true, false))
+			$campiObbligatoriComuni .= ",nazione,indirizzo,$campoObbligatoriProvincia,cap,citta,nazione_spedizione,indirizzo_spedizione,$campoObbligatoriProvinciaSpedizione,cap_spedizione,citta_spedizione";
 		
 		if ($this->campoObbligatorio("codice_fiscale"))
 			$campiObbligatoriComuni .= ",codice_fiscale";
@@ -991,7 +938,7 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 		{
-			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
+// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
 			
 			if (v("abilita_codice_fiscale"))
 				$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
@@ -1001,7 +948,7 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
 		{
-			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
+// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
 		}
 		
 		$codiciNazioniAttive = implode(",",$this->m("NazioniModel")->selectCodiciAttivi());
@@ -1425,7 +1372,7 @@ class BaseOrdiniController extends BaseController
 		}
 		
 		$data["erroriInvioOrdine"] = $erroriInvioOrdine;
-		list($data["mostraCampiFatturazione"], $data["mostraCampiSpedizione"]) = OrdiniModel::analizzaErroriCheckout($erroriInvioOrdine);
+		list($data["mostraCampiFatturazione"], $data["mostraCampiSpedizione"], $data["mostraCampiIndirizzoFatturazione"]) = OrdiniModel::analizzaErroriCheckout($erroriInvioOrdine);
 		
 		$logSubmit->setErroriSubmit($data['notice']);
 		$logSubmit->write(LogModel::LOG_CHECKOUT, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
@@ -1443,7 +1390,8 @@ class BaseOrdiniController extends BaseController
 			$data['corrieri'] = $idCorriereDaCarrello ? $this->m("CorrieriModel")->whereId((int)$idCorriereDaCarrello)->send(false) : $this->m("CorrieriModel")->elencoCorrieri(true);
 		}
 		
-		$defaultValues = $_SESSION;
+// 		$defaultValues = $_SESSION;
+		$defaultValues = array();
 		
 		if ($this->islogged)
 		{
