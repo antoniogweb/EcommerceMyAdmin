@@ -65,7 +65,7 @@ if (v("codice_gtm_analytics"))
 				$temp["quantity"] = $tempAds["quantity"] = $ro["quantity"];
 				
 				if (!$ordineGTML["nome_promozione"])
-					$temp["price"] = $tempAds["price"] = $ro["prezzo_finale_ivato"];
+					$temp["price"] = $tempAds["price"] = v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"];
 				
 				$tempRigheGTM[] = $temp;
 				$tempRigheADS[] = $tempAds;
@@ -77,7 +77,7 @@ if (v("codice_gtm_analytics"))
 				"value"				=>	$ordineGTML["total"],
 				"currency"			=>	"EUR",
 				"tax"				=>	$ordineGTML["iva"],
-				"shipping"			=>	(string)($ordineGTML["spedizione_ivato"] + $ordineGTML["costo_pagamento_ivato"]),
+				"shipping"			=>	v("prezzi_ivati_in_carrello") ? (string)($ordineGTML["spedizione_ivato"] + $ordineGTML["costo_pagamento_ivato"]) : (string)($ordineGTML["spedizione"] + $ordineGTML["costo_pagamento"]),
 				"items"				=>	$tempRigheGTM,
 			);
 			
@@ -125,7 +125,7 @@ if (v("codice_gtm_analytics"))
 		
 		$items = array(
 			"currency"	=>	"EUR",
-			"value"		=>	number_format(getSubTotalN(true),2,".",""),
+			"value"		=>	number_format(getSubTotalN(v("prezzi_ivati_in_carrello")),2,".",""),
 			"items"		=>	array(),
 		);
 		
@@ -135,7 +135,7 @@ if (v("codice_gtm_analytics"))
 				"item_id"	=>	v("usa_sku_come_id_item") ? $p["cart"]["codice"] : $p["cart"]["id_page"],
 				"item_name"	=>	sanitizeJs(htmlentitydecode($p["cart"]["title"])),
 				"quantity"	=>	$p["cart"]["quantity"],
-				"price"		=>	v("prezzi_ivati_in_carrello") ? $p["cart"]["price_ivato"] : number_format($p["cart"]["price"] * (1 + ($p["cart"]["iva"] / 100)),2,".",""),
+				"price"		=>	v("prezzi_ivati_in_carrello") ? $p["cart"]["price_ivato"] : $p["cart"]["price"],
 			);
 		}
 		?>
