@@ -71,16 +71,7 @@ class PagescategoriesModel extends GenericModel {
 				$cModel = new CategoriesModel();
 				
 				//ottengo i genitori
-				$parents = $cModel->parents((int)$this->values["id_c"], false, true, null, "id_c,lft");
-				
-// 				print_r($parents);die();
-				
-				//tolgo il genitore root
-				array_shift($parents);
-				
-				//tolgo il genitore della sezione
-				if (count($parents) > 0)
-					array_shift($parents);
+				$parents = $cModel->parents((int)$this->values["id_c"], false, true, null, "id_c", 2);
 				
 				foreach ($parents as $p)
 				{

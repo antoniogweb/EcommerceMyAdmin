@@ -511,7 +511,7 @@ class HierarchicalModel extends GenericModel {
 	
 	//get the parents of a node
 	//$id: primary_key of the node
-	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null)
+	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null, $skip = 0)
 	{
 		$clean["id"] = (int)$id;
 		
@@ -560,6 +560,15 @@ class HierarchicalModel extends GenericModel {
 						"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
 						array(sanitizeDb($lingua))
 					))->send();
+				}
+			}
+			
+			if ($skip)
+			{
+				for ($i = 0; $i < $skip; $i++)
+				{
+					if (count($parents) > 0)
+						array_shift($parents);
 				}
 			}
 			
