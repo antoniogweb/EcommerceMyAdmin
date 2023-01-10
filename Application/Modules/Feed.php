@@ -119,7 +119,7 @@ class Feed
 		foreach ($res as $r)
 		{
 // 			PagesModel::$IdCombinazione = $r["combinazioni"]["id_c"];
-			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $this->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
+			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $comb->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
 			
 			$titoloCombinazione = VariabiliModel::combinazioniLinkVeri() ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
 			

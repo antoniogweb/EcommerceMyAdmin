@@ -92,7 +92,8 @@ class VariabiliModel extends GenericModel {
 		"mostra_descrizione_in_prodotti"=>	1,
 		"mostra_pulsanti_ordinamenti"	=>	0,
 		"favicon_url"				=>	"",
-		"cifre_decimali"			=>	2,
+		"cifre_decimali"			=>	2, // usate nel calcolo dei totali
+		"cifre_decimali_visualizzate"	=>	8, // usate nella visualizzazione delle cifre in admin e nell'import
 		"link_cms"					=>	"blog/main",
 		"attiva_ip_location"		=>	0,
 		"mostra_tipi_fasce"			=>	1,

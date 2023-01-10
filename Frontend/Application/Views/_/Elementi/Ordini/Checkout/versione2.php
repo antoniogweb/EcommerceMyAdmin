@@ -142,7 +142,7 @@
 									<?php } ?>
 								</div>
 								
-								<?php if (v("attiva_spedizione") && count($corrieri) <= 0) { ?>
+								<?php if (v("attiva_spedizione") && count($corrieri) <= 1) { ?>
 								<?php include(tpf("Ordini/checkout_corrieri.php"));?>
 								<?php } ?>
 								

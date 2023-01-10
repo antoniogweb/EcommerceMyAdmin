@@ -1474,10 +1474,10 @@ class GenericModel extends Model_Tree
 		if (!v("prezzi_ivati_in_prodotti"))
 		{
 			if (isset($this->values["price"]))
-				$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali"),".","");
+				$this->values["price"] = number_format(setPrice($this->values["price"]), v("cifre_decimali_visualizzate"),".","");
 			
 			if (isset($this->values["prezzo_promozione_ass"]))
-				$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass"]), v("cifre_decimali"),".","");
+				$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass"]), v("cifre_decimali_visualizzate"),".","");
 		}
 		
 	}

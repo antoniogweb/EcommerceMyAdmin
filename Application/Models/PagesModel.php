@@ -3232,7 +3232,7 @@ class PagesModel extends GenericModel {
 			if (!empty($images))
 				$snippetArray["image"] = $images;
 			
-			$snippetArray["description"] = sanitizeJs(strip_tags(htmlentitydecode($p["descrizione"])));
+			$snippetArray["description"] = sanitizeJs(F::alt($p["descrizione"]));
 			
 			if ($p["codice"])
 				$snippetArray["sku"] = $p["codice"];

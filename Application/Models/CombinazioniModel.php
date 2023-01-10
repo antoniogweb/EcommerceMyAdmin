@@ -787,7 +787,7 @@ class CombinazioniModel extends GenericModel {
 		
 		if (isset($prezzo))
 		{
-			$cifre = v("prezzi_ivati_in_prodotti") ? 2 : v("cifre_decimali");
+			$cifre = v("prezzi_ivati_in_prodotti") ? 2 : v("cifre_decimali_visualizzate");
 			
 			$prezzo = number_format($prezzo, $cifre, ",", "");
 			
