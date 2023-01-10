@@ -3179,92 +3179,57 @@ class PagesModel extends GenericModel {
 		$feedModel = new Feed(array());
 		$strutturaProdotti = $feedModel->strutturaFeedProdotti(null, (int)$id, PagesModel::$IdCombinazione);
 		
-		$pm = new PagesModel();
-		
-		$pm->clear()->addJoinTraduzionePagina()->where(array(
-			"pages.id_page"	=>	(int)$id,
-		));
-		
-		$pages = PagesModel::impostaDatiCombinazionePagine($pm->send());
-		
-		$i = new ImmaginiModel();
-		
 		$snippetArray = array();
 		
-		if (count($pages) > 0)
+		if (count($strutturaProdotti) > 0)
 		{
-			$p = $pages[0];
+			$p = $strutturaProdotti[0];
 			
-// 			PagesModel::$IdCombinazione = $pm->getIdCombinazioneCanonical($p["pages"]["id_page"]);
-			
-			$giacenza = self::disponibilita($p["pages"]["id_page"]);
+			$giacenza = $p["giacenza"];
 			$outOfStock = v("attiva_giacenza") ? "https://schema.org/OutOfStock" : "https://schema.org/InStock";
 			
-			$prezzoMinimo = $pm->prezzoMinimo($p["pages"]["id_page"]);
-			$c = new CartModel();
-			$prezzoMinimo = $c->calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, 1, true, true, PagesModel::$IdCombinazione);
-			
-			$prezzoMinimoIvato = calcolaPrezzoIvato($p["pages"]["id_page"],$prezzoMinimo);
+			$prezzoMinimoIvato = $p["prezzo_scontato"];
 			
 			$images = array();
 			
-			if ($p["pages"]["immagine"])
-				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$p["pages"]["immagine"];
+			if ($p["immagine_principale"])
+				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$p["immagine_principale"];
 			
-			$altreImmagini = ImmaginiModel::altreImmaginiPagina((int)$id);
+			$altreImmagini = $p["altre_immagini"];
 			
 			foreach ($altreImmagini as $imm)
 			{
 				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$imm["immagine"];
 			}
 			
-			if ($pm->inPromozione($p["pages"]["id_page"]))
-			{
-				$now = DateTime::createFromFormat('Y-m-d', $p["pages"]["al"]);
-			}
-			else
-			{
-				$now = new dateTime();
-				$now->modify("+10 days");
-			}
-			
 			$snippetArray = array(
 				"@context"	=>	"https://schema.org/",
 				"@type"		=>	"Product",
-				"name"		=>	sanitizeJs(F::meta(field($p, "title"))),
+				"name"		=>	sanitizeJs(F::meta($p["titolo"])),
 				"offers"	=>	array(
 					"@type"	=>	"Offer",
 					"price"	=>	number_format($prezzoMinimoIvato,2,".",""),
 					"priceCurrency"	=>	"EUR",
 					"availability"	=>	$giacenza > 0 ? "https://schema.org/InStock" : $outOfStock,
-					"url"	=>	Url::getRoot().$pm->getUrlAlias($p["pages"]["id_page"]),
-					"priceValidUntil"	=>	$now->format("Y-m-d"),
+					"url"	=>	$p["link"],
+					"priceValidUntil"	=>	$p["data_scadenza_promo"],
 				),
 			);
 			
 			if (!empty($images))
 				$snippetArray["image"] = $images;
 			
-			$snippetArray["description"] = sanitizeJs(strip_tags(htmlentitydecode(field($p, "description"))));
+			$snippetArray["description"] = sanitizeJs(strip_tags(htmlentitydecode($p["descrizione"])));
 			
-			if ($p["pages"]["codice"])
-				$snippetArray["sku"] = $p["pages"]["codice"];
+			if ($p["codice"])
+				$snippetArray["sku"] = $p["codice"];
 			
-			if (v("usa_marchi") && $p["pages"]["id_marchio"])
+			if (v("usa_marchi") && $p["marchio"])
 			{
-				$m = new MarchiModel();
-				
-				$marchio = $m->clear()->addJoinTraduzione()->where(array(
-					"id_marchio"	=>	(int)$p["pages"]["id_marchio"],
-				))->first();
-				
-				if (!empty($marchio))
-				{
-					$snippetArray["brand"] = array(
-						"@type"	=>	"Brand",
-						"name"	=>	 sanitizeJs(mfield($marchio, "titolo")),
-					);
-				}
+				$snippetArray["brand"] = array(
+					"@type"	=>	"Brand",
+					"name"	=>	 sanitizeJs($p["marchio"]),
+				);
 			}
 			else if (v("marchio_rich_snippet"))
 			{
@@ -3314,9 +3279,6 @@ class PagesModel extends GenericModel {
 				);
 			}
 		}
-		
-		print_r($strutturaProdotti);
-		print_r($snippetArray);
 		
 		return $snippetArray;
     }

@@ -174,9 +174,9 @@ class Feed
 			$strutturaFeed[] = array(
 				"id_page"	=>	$r["pages"]["id_page"],
 				"id_c"		=>	$idC,
-				"titolo"	=>	trim(F::alt(field($r, "title").$titoloCombinazione)),
+				"titolo"	=>	trim(field($r, "title").$titoloCombinazione),
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
-				"descrizione"	=>	trim(F::alt(field($r, "description"))),
+				"descrizione"	=>	trim(field($r, "description")),
 				"categoria"	=>	$structCategory,
 				"immagine_principale"	=>	$r["pages"]["immagine"],
 				"altre_immagini"	=>	ImmaginiModel::altreImmaginiPagina((int)$r["pages"]["id_page"], $idC),
