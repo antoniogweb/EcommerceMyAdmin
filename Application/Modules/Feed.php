@@ -117,14 +117,16 @@ class Feed
 			
 			$titoloCombinazione = VariabiliModel::combinazioniLinkVeri() ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
 			
-			$arrayIdCat = array_merge(array($r["pages"]["id_c"]), $pCats->clear()->select("pages_categories.id_c")->where(array(
-				"id_page"	=>	(int)$r["pages"]["id_page"],
-				"genitore"	=>	0,
-			))->inner(array("categoria"))->orderBy("categories.lft")->toList("pages_categories.id_c")->send());
+			$arrayIdCat = array($r["pages"]["id_c"]);
 			
-// 			print_r($arrayIdCat);
-			
-			$arrayIdCat = array_unique($arrayIdCat);
+// 			$arrayIdCat = array_merge(array($r["pages"]["id_c"]), $pCats->clear()->select("pages_categories.id_c")->where(array(
+// 				"id_page"	=>	(int)$r["pages"]["id_page"],
+// 				"genitore"	=>	0,
+// 			))->inner(array("categoria"))->orderBy("categories.lft")->toList("pages_categories.id_c")->send());
+// 			
+// // 			print_r($arrayIdCat);
+// 			
+// 			$arrayIdCat = array_unique($arrayIdCat);
 			
 			$structCategory = array();
 			
@@ -177,7 +179,7 @@ class Feed
 				"titolo"	=>	trim(field($r, "title").$titoloCombinazione),
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
 				"descrizione"	=>	trim(field($r, "description")),
-				"categoria"	=>	$structCategory,
+				"categorie"	=>	$structCategory,
 				"immagine_principale"	=>	$r["pages"]["immagine"],
 				"altre_immagini"	=>	ImmaginiModel::altreImmaginiPagina((int)$r["pages"]["id_page"], $idC),
 				"link"		=>	Url::getRoot().getUrlAlias((int)$r["pages"]["id_page"], $idC),

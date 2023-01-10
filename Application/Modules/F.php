@@ -134,6 +134,15 @@ class F
 		return $html;
 	}
 	
+	public static function xml($xml)
+	{
+		header ("Content-Type:text/xml");
+		echo '<?xml version="1.0"?>';
+		echo '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
+		echo $xml;
+		echo '</rss>';
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

@@ -26,7 +26,48 @@ class TrovaPrezzi extends Feed
 	{
 		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p);
 		
-		// da completare
-		print_r($strutturaFeedProdotti);
+		$xmlArray = array(
+			"Products"	=>	array(
+				"Offers"	=>	array(),
+			)
+		);
+		
+		$outOfStock = v("attiva_giacenza") ? "disponibile" : "disponibile";
+		
+		foreach ($strutturaFeedProdotti as $r)
+		{
+			$temp = array(
+				"Name"	=>	F::alt($r["titolo"]),
+				"Code"	=>	$r["codice"],
+				"Description"	=>	F::alt($r["descrizione"]),
+				"Categories"	=>	count($r["categorie"]) > 0 ? implode(",",$r["categorie"][0]) : "",
+				"Image"	=>	$r["immagine_principale"],
+				"Link"	=>	$r["link"],
+				"Price"	=>	$r["prezzo_scontato"],
+				"ShippingCost"	=>	$r["spese_spedizione"],
+				"Brand"	=>	$r["marchio"],
+				"Weight"	=>	$r["peso"],
+				"Disponibilita"	=>	$r["giacenza"] > 0 ? "disponibile" : $outOfStock,
+// 				"Stock"	=>	$r["spese_spedizione"],
+			);
+			
+			if ($r["prezzo_pieno"] != $r["prezzo_scontato"])
+				$temp["OriginalPrice"]	= $r["prezzo_pieno"];
+			
+			$indice = 2;
+			
+			foreach ($r["altre_immagini"] as $i)
+			{
+				$temp["Image".$indice] = $i["immagine"];
+				
+				$indice++;
+			}
+			
+			$xmlArray["Products"]["Offer"][] = $temp;
+		}
+		
+		$xml = aToX($xmlArray);
+		
+		F::xml($xml);
 	}
 }
