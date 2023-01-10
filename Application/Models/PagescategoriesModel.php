@@ -47,4 +47,58 @@ class PagescategoriesModel extends GenericModel {
     {
 		return CategoriesModel::g(false)->indent($record["categories"]["id_c"]);
     }
+    
+    public function categoriaPresente($idC, $idPage)
+    {
+		return $this->clear()->where(array(
+			"id_c"		=>	(int)$idC,
+			"id_page"	=>	(int)$idPage,
+		))->rowNumber();
+    }
+    
+    public function insert()
+    {
+		if ($this->categoriaPresente((int)$this->values["id_c"], (int)$this->values["id_page"]))
+		{
+			$this->notice = "<div class='alert alert-danger'>La categoria è già stata inserita</div>";
+			return false;
+		}
+		
+		if (parent::insert())
+		{
+			if (isset($this->values["id_c"]) && isset($this->values["id_page"]))
+			{
+				$cModel = new CategoriesModel();
+				
+				//ottengo i genitori
+				$parents = $cModel->parents((int)$this->values["id_c"], false, true, null, "id_c,lft");
+				
+// 				print_r($parents);die();
+				
+				//tolgo il genitore root
+				array_shift($parents);
+				
+				//tolgo il genitore della sezione
+				if (count($parents) > 0)
+					array_shift($parents);
+				
+				foreach ($parents as $p)
+				{
+					if (!$this->categoriaPresente((int)$p["categories"]["id_c"], (int)$this->values["id_page"]))
+					{
+						$this->sValues(array(
+							"id_c"		=>	(int)$p["categories"]["id_c"],
+							"id_page"	=>	(int)$this->values["id_page"]
+						));
+						
+						$this->pInsert();
+					}
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
+    }
 }

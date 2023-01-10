@@ -114,7 +114,10 @@ class BaseThumbController extends Controller {
 			if (strcmp($fileName,'') !== 0)
 			{
 				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.$folder,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
+				$res = $thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
+				
+				if ($res === false)
+					$this->responseCode(404);
 			}
 		}
 		else

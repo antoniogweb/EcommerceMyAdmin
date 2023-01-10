@@ -2028,13 +2028,13 @@ class PagesController extends BaseController {
 	
 	public function categorie($id = 0)
 	{
-		$this->orderBy = "categories.title";
+// 		$this->orderBy = $data["orderBy"] = "categories.lft";
 		
 		$this->_posizioni['categorie'] = 'class="active"';
 		
 // 		$this->ordinaAction = "ordinapersonalizzazioni";
 		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
+		$data["orderBy"] = $this->orderBy = "categories.lft";
 		
 		$this->shift(1);
 		
@@ -2063,7 +2063,7 @@ class PagesController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"categorie/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("categories.*,pages_categories.*")->inner(array("categoria"))->orderBy("categories.title")->where(array(
+		$this->m[$this->modelName]->select("categories.*,pages_categories.*")->inner(array("categoria"))->orderBy("categories.lft")->where(array(
 			"pages_categories.id_page"	=>	$clean['id'],
 		))->save();
 		
@@ -2073,7 +2073,7 @@ class PagesController extends BaseController {
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
-		$data["lista"] = CategorieModel::g(false)->buildSelect(null,false, "node.id_c not in (select id_c from pages_categories where id_page = ".(int)$clean['id'].") AND ");
+		$data["lista"] = CategorieModel::g(false)->buildSelect(null,false);
 		
 		$this->append($data);
 	}
