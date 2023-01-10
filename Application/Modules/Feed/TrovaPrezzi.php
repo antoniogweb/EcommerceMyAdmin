@@ -41,8 +41,8 @@ class TrovaPrezzi extends Feed
 				"Code"	=>	$r["codice"],
 				"Description"	=>	F::alt($r["descrizione"]),
 				"Categories"	=>	count($r["categorie"]) > 0 ? implode(",",$r["categorie"][0]) : "",
-				"Image"	=>	$r["immagine_principale"],
-				"Link"	=>	$r["link"],
+				"Image"	=>	Url::getFileRoot()."thumb/dettagliofeed/".$r["immagine_principale"],
+				"Link"	=>	$r["link"].$this->getQueryString(),
 				"Price"	=>	$r["prezzo_scontato"],
 				"ShippingCost"	=>	$r["spese_spedizione"],
 				"Brand"	=>	$r["marchio"],
@@ -54,11 +54,17 @@ class TrovaPrezzi extends Feed
 			if ($r["prezzo_pieno"] != $r["prezzo_scontato"])
 				$temp["OriginalPrice"]	= $r["prezzo_pieno"];
 			
+			if ($r["gtin"])
+				$temp["EanCode"] = F::alt($r["gtin"]);
+			
+			if ($r["mpn"])
+				$temp["PartNumber"] = F::alt($r["mpn"]);
+			
 			$indice = 2;
 			
 			foreach ($r["altre_immagini"] as $i)
 			{
-				$temp["Image".$indice] = $i["immagine"];
+				$temp["Image".$indice] = Url::getFileRoot()."thumb/dettagliofeed/".$i["immagine"];
 				
 				$indice++;
 			}

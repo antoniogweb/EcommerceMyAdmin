@@ -48,6 +48,11 @@ class Feed
 		return $this->params["attivo"];
 	}
 	
+	protected function getQueryString()
+	{
+		return htmlentitydecode($this->params["query_string"]);
+	}
+	
 	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0)
 	{
 		$c = new CategoriesModel();
@@ -175,7 +180,7 @@ class Feed
 			
 			$strutturaFeed[] = array(
 				"id_page"	=>	$r["pages"]["id_page"],
-				"id_c"		=>	$idC,
+				"id_comb"		=>	$idC,
 				"titolo"	=>	trim(field($r, "title").$titoloCombinazione),
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
 				"descrizione"	=>	trim(field($r, "description")),
@@ -191,6 +196,8 @@ class Feed
 				"marchio"	=>	$r["marchi"]["titolo"],
 				"peso"		=>	$r["pages"]["peso"],
 				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC),
+				"gtin"		=>	$r["pages"]["gtin"],
+				"mpn"		=>	$r["pages"]["mpn"],
 			);
 		}
 		

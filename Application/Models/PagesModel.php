@@ -45,6 +45,9 @@ class PagesModel extends GenericModel {
 	public $documentiModelAssociato = "DocumentiModel";
 	public $contattiModelAssociato = "ContattiModel";
 	
+	// Vengono usati per sincronizzare pagina e combinazione quando non ci sono varianti
+	public static $campiDaSincronizzareConCombinazione = array("price", "price_ivato", "codice", "gtin", "mpn", "peso", "giacenza");
+	
 	public static $controllaCombinazioniQuandoSalvi = true;
 	
 	public static $uploadFile = true;
@@ -622,7 +625,7 @@ class PagesModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Indicate no solo se né i codici gtin e mpn non esitono. Ex: prodotto artigianale, prodotto unico, etc.")." ".gtext("Altrimenti se i suddetti codici esistono ma non li conoscete, mettete comunque sì (e cercate tali codici).")." ".gtext("Se lasciato vuoto verrà usato il valore globale.")."</div>"
+						"<div class='form_notice'>".gtext("Indicate no solo se né i codici gtin e mpn non esitono. Ex: prodotto artigianale, prodotto unico, etc.")." ".gtext("Altrimenti se i suddetti codici esistono ma non li conoscete, mettete comunque sì (e cercate tali codici).")." ".gtext("Se lasciato vuoto verrà usato il valore globale.")." ".gtext("Se il campo GTIN viene riempito, nel feed questo valore verrà comunque impostato a 'yes' .")."</div>"
 					),
 				),
 				'margine'		=>	array(
@@ -1059,16 +1062,23 @@ class PagesModel extends GenericModel {
 				
 				$c->setValues(array(
 					"id_page"	=>	$id,
-					"price"		=>	$pagina["price"],
 					"price_scontato"=>	$pagina["price"],
-					"price_ivato"	=>	$pagina["price_ivato"],
 					"price_scontato_ivato"	=>	$pagina["price_ivato"],
-					"codice"	=>	$pagina["codice"],
-					"peso"		=>	$pagina["peso"],
-					"giacenza"	=>	$pagina["giacenza"],
+// 					"price"		=>	$pagina["price"],
+// 					"price_ivato"	=>	$pagina["price_ivato"],
+// 					"codice"	=>	$pagina["codice"],
+// 					"gtin"		=>	$pagina["gtin"],
+// 					"mpn"		=>	$pagina["mpn"],
+// 					"peso"		=>	$pagina["peso"],
+// 					"giacenza"	=>	$pagina["giacenza"],
 					"immagine"	=>	getFirstImage($id),
 					"canonical"	=>	1,
 				));
+				
+				foreach (self::$campiDaSincronizzareConCombinazione as $field)
+				{
+					$c->setValue($field, $pagina[$field]);
+				}
 				
 				if (empty($combinazione))
 				{
@@ -2864,16 +2874,19 @@ class PagesModel extends GenericModel {
 // 				"g:identifier_exists"	=>	v("identificatore_feed_default"),
 			);
 			
+			$temp["g:identifier_exists"] = $r["pages"]["identifier_exists"] ? $r["pages"]["identifier_exists"] : v("identificatore_feed_default");
+			
 			if (!isset($_GET["fbk"]))
 			{
 				if ($r["pages"]["gtin"])
+				{
 					$temp["g:gtin"] = htmlentitydecode($r["pages"]["gtin"]);
+					$temp["g:identifier_exists"] = "yes";
+				}
 				
 				if ($r["pages"]["mpn"])
 					$temp["g:mpn"] = htmlentitydecode($r["pages"]["mpn"]);
 			}
-			
-			$temp["g:identifier_exists"] = $r["pages"]["identifier_exists"] ? $r["pages"]["identifier_exists"] : v("identificatore_feed_default");
 			
 			if (isset($_GET["fbk"]) || v("no_tag_descrizione_feed"))
 				$temp["g:description"] = strip_tags(htmlentitydecode(field($r,"description")));
@@ -3920,6 +3933,8 @@ class PagesModel extends GenericModel {
 			{
 				$temp["pages"]["codice"] = $combinazione["codice"];
 				$temp["pages"]["peso"] = $combinazione["peso"];
+				$temp["pages"]["gtin"] = $combinazione["gtin"];
+				$temp["pages"]["mpn"] = $combinazione["mpn"];
 				
 				if (v("immagini_separate_per_variante"))
 				{

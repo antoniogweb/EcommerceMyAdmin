@@ -494,6 +494,11 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
+	public function dettagliofeed($fileName)
+	{
+		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
+	}
+	
 	public function team($fileName)
 	{
 		$params = array(

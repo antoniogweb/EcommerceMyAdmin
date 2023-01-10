@@ -205,12 +205,19 @@ class CombinazioniModel extends GenericModel {
 			$p = new PagesModel();
 			
 			$p->setValues(array(
-				"price"		=>	$record["price"],
-				"price_ivato"	=>	$record["price_ivato"],
-				"codice"	=>	$record["codice"],
-				"peso"		=>	$record["peso"],
-				"giacenza"	=>	$record["giacenza"],
+// 				"price"		=>	$record["price"],
+// 				"price_ivato"	=>	$record["price_ivato"],
+// 				"codice"	=>	$record["codice"],
+// 				"gtin"		=>	$record["gtin"],
+// 				"mpn"		=>	$record["mpn"],
+// 				"peso"		=>	$record["peso"],
+// 				"giacenza"	=>	$record["giacenza"],
 			));
+			
+			foreach (PagesModel::$campiDaSincronizzareConCombinazione as $field)
+			{
+				$p->setValue($field, $record[$field]);
+			}
 			
 			if (v("gestisci_sconti_combinazioni_separatamente"))
 			{
@@ -250,11 +257,17 @@ class CombinazioniModel extends GenericModel {
 	
 	public function aggiungiValoriACombinazione($temp, $dettagliPagina)
 	{
-		$temp["codice"] = $dettagliPagina["codice"];
-		$temp["price"] = $dettagliPagina["price"];
-		$temp["price_ivato"] = $dettagliPagina["price_ivato"];
-		$temp["peso"] = $dettagliPagina["peso"];
-		$temp["giacenza"] = $dettagliPagina["giacenza"];
+		foreach (PagesModel::$campiDaSincronizzareConCombinazione as $field)
+		{
+			$temp[$field] = $dettagliPagina[$field];
+		}
+		
+// 		$temp["codice"] = $dettagliPagina["codice"];
+// 		$temp["price"] = $dettagliPagina["price"];
+// 		$temp["price_ivato"] = $dettagliPagina["price_ivato"];
+// 		$temp["peso"] = $dettagliPagina["peso"];
+// 		$temp["giacenza"] = $dettagliPagina["giacenza"];
+		
 		$temp["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 		
 		$temp["price_scontato"] = PagesModel::getPrezzoScontato($dettagliPagina, $temp["price"]);
@@ -724,12 +737,25 @@ class CombinazioniModel extends GenericModel {
 			return "<i class='text text-danger fa fa-ban'></i>";
 	}
 	
+	public function codiceView($record)
+	{
+		return gtext("SKU").": <b>".$record["combinazioni"]["codice"]."</b><br />\n".gtext("GTIN").": ".$record["combinazioni"]["gtin"]."<br />\n".gtext("MPN").": ".$record["combinazioni"]["mpn"];
+	}
+	
 	public function codice($record)
 	{
 		if (!isset($_GET["esporta"]) && !self::isFromLista())
-			return "<input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:120px;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' />";
+		{
+			$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' /></div>";
+			
+			$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("GTIN").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='gtin' value='".$record["combinazioni"]["gtin"]."' /></div>";
+			
+			$html .= "<div style='min-width:180px;'><b style='width:36px;display:inline-block;'>".gtext("MPN").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='mpn' value='".$record["combinazioni"]["mpn"]."' /></div>";
+			
+			return $html;
+		}
 		else
-			return $record["combinazioni"]["codice"];
+			return $this->codiceView($record);
 	}
 	
 	public function prezzo($record, $fieldName = "price")

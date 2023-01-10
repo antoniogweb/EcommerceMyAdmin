@@ -426,6 +426,12 @@ $(document).ready(function(){
 			if ($(this).find("[name='acquistabile']").length > 0)
 				temp.acquistabile = $(this).find("[name='acquistabile']").is(":checked") ? 1 : 0;
 			
+			if ($(this).find("[name='gtin']").length > 0)
+				temp.gtin = $(this).find("[name='gtin']").val();
+			
+			if ($(this).find("[name='mpn']").length > 0)
+				temp.mpn = $(this).find("[name='mpn']").val();
+			
 			valori.push(temp);
 		});
 		

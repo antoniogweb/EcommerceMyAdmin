@@ -166,7 +166,7 @@ class CombinazioniController extends BaseController
 		$mainFields[] = "codice";
 		$mainFields[] = "prezzo";
 		
-		$mainHead .= ",Variante,Codice,$prezzoLabel";
+		$mainHead .= ",Variante,Codici,$prezzoLabel";
 		
 		if (v("gestisci_sconti_combinazioni_separatamente"))
 		{
@@ -470,6 +470,12 @@ class CombinazioniController extends BaseController
 			
 			if (isset($v["acquistabile"]))
 				$this->m[$this->modelName]->setValue("acquistabile", $v["acquistabile"]);
+			
+			if (isset($v["gtin"]))
+				$this->m[$this->modelName]->setValue("gtin", $v["gtin"]);
+			
+			if (isset($v["mpn"]))
+				$this->m[$this->modelName]->setValue("mpn", $v["mpn"]);
 			
 			if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"] && VariabiliModel::movimenta())
 				$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
