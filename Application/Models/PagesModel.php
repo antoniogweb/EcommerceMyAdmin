@@ -2330,8 +2330,11 @@ class PagesModel extends GenericModel {
 		return setPriceReverse($prezzoMinimo);
 	}
 	
-	public function prezzoMinimo($id_page, $forzaPrincipale = false)
+	public function prezzoMinimo($id_page, $forzaPrincipale = false, $id_c = 0)
 	{
+		if (!$id_c)
+			$id_c = self::$IdCombinazione;
+			
 		$clean['id_page'] = (int)$id_page;
 		
 		$c = new CombinazioniModel();
@@ -2345,9 +2348,9 @@ class PagesModel extends GenericModel {
 					"id_page"	=>	$clean['id_page'],
 				))->orderBy("canonical desc,id_order")->limit(1);
 				
-				if (self::$IdCombinazione)
+				if ($id_c)
 					$c->aWhere(array(
-						"id_c"	=>	(int)self::$IdCombinazione,
+						"id_c"	=>	(int)$id_c,
 					));
 				
 				$res = $c->send();
@@ -2362,9 +2365,9 @@ class PagesModel extends GenericModel {
 					"combinazioni.acquistabile"	=>	1,
 				));
 				
-				if (self::$IdCombinazione)
+				if ($id_c)
 					$c->aWhere(array(
-						"id_c"	=>	(int)self::$IdCombinazione,
+						"id_c"	=>	(int)$id_c,
 					));
 				
 				$res = $c->send();
@@ -2383,9 +2386,9 @@ class PagesModel extends GenericModel {
 					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
 				))->orderBy("combinazioni.canonical desc,combinazioni.id_order")->limit(1);
 				
-				if (self::$IdCombinazione)
+				if ($id_c)
 					$c->aWhere(array(
-						"id_c"	=>	(int)self::$IdCombinazione,
+						"id_c"	=>	(int)$id_c,
 					));
 				
 				$res = $c->send();
@@ -2403,9 +2406,9 @@ class PagesModel extends GenericModel {
 					"combinazioni_listini.nazione"	=>	sanitizeAll(User::$nazione),
 				));
 				
-				if (self::$IdCombinazione)
+				if ($id_c)
 					$c->aWhere(array(
-						"combinazioni.id_c"	=>	(int)self::$IdCombinazione,
+						"combinazioni.id_c"	=>	(int)$id_c,
 					));
 				
 				$res = $c->send();
@@ -2723,8 +2726,11 @@ class PagesModel extends GenericModel {
 		))->rowNumber();
 	}
 	
-	public static function disponibilita($idPage = 0)
+	public static function disponibilita($idPage = 0, $id_c = 0)
 	{
+		if (!$id_c)
+			$id_c = self::$IdCombinazione;
+		
 		$c = new CombinazioniModel();
 		
 		if (VariabiliModel::combinazioniLinkVeri())
@@ -2733,9 +2739,9 @@ class PagesModel extends GenericModel {
 				"id_page"	=>	(int)$idPage
 			))->orderBy("canonical desc,id_order")->limit(1);
 			
-			if (self::$IdCombinazione)
+			if ($id_c)
 				$c->aWhere(array(
-					"id_c"	=>	(int)self::$IdCombinazione,
+					"id_c"	=>	(int)$id_c,
 				));
 			
 			$res = $c->send();
@@ -3169,6 +3175,10 @@ class PagesModel extends GenericModel {
     
     public static function getRichSnippet($id)
     {
+		require_once(LIBRARY."/Application/Modules/Feed.php");
+		$feedModel = new Feed(array());
+		$strutturaProdotti = $feedModel->strutturaFeedProdotti(null, (int)$id, PagesModel::$IdCombinazione);
+		
 		$pm = new PagesModel();
 		
 		$pm->clear()->addJoinTraduzionePagina()->where(array(
@@ -3202,11 +3212,6 @@ class PagesModel extends GenericModel {
 				$images[] = Url::getFileRoot()."thumb/dettagliobig/".$p["pages"]["immagine"];
 			
 			$altreImmagini = ImmaginiModel::altreImmaginiPagina((int)$id);
-			
-// 			$altreImmagini = $i->clear()->where(array(
-// 				"id_page"	=>	(int)$id,
-// 				"id_c"		=>	0,
-// 			))->orderBy("id_order")->send(false);
 			
 			foreach ($altreImmagini as $imm)
 			{
@@ -3309,6 +3314,9 @@ class PagesModel extends GenericModel {
 				);
 			}
 		}
+		
+		print_r($strutturaProdotti);
+		print_r($snippetArray);
 		
 		return $snippetArray;
     }
@@ -3934,9 +3942,17 @@ class PagesModel extends GenericModel {
 		{
 			$temp = $p;
 			
-			$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$p["pages"]["id_page"]);
-			
-			$combinazione = $cModel->selectId((int)$idC);
+			if (isset($p["combinazioni"]))
+			{
+				$idC = (int)$p["combinazioni"]["id_c"];
+				$combinazione = $p["combinazioni"];
+			}
+			else
+			{
+				$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$p["pages"]["id_page"]);
+				
+				$combinazione = $cModel->selectId((int)$idC);
+			}
 			
 			if (!empty($combinazione))
 			{

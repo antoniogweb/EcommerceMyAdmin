@@ -79,7 +79,8 @@ class PagescategoriesModel extends GenericModel {
 					{
 						$this->sValues(array(
 							"id_c"		=>	(int)$p["categories"]["id_c"],
-							"id_page"	=>	(int)$this->values["id_page"]
+							"id_page"	=>	(int)$this->values["id_page"],
+							"genitore"	=>	1,
 						));
 						
 						$this->pInsert();

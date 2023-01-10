@@ -42,8 +42,20 @@ class BaseFeedController extends BaseController
 			
 			if ($isAttivo)
 			{
+				User::setUserCountryFromUrl();
+				
+				if (User::$nazione)
+				{
+					$_POST["nazione_spedizione"] = strtoupper(User::$nazione);
+					$_POST["tipo_cliente"] = "privato";
+				}
+				
+				IvaModel::getAliquotaEstera();
+				
 				FeedModel::getModulo($modulo)->feedProdotti();
 			}
 		}
+		else
+			$this->responseCode(403);
 	}
 }

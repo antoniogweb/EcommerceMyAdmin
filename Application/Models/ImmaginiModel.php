@@ -178,7 +178,7 @@ class ImmaginiModel extends GenericModel {
 		}
 	}
 	
-	public static function altreImmaginiPagina($idPage)
+	public static function altreImmaginiPagina($idPage, $idC = 0)
 	{
 		$pModel = new PagesModel();
 		$i = new ImmaginiModel();
@@ -190,7 +190,8 @@ class ImmaginiModel extends GenericModel {
 		
 		if (v("immagini_separate_per_variante"))
 		{
-			$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$idPage);
+			if (!$idC)
+				$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$idPage);
 			
 			$immaginiCombinazione = $i->aWhere(array(
 				"id_c"	=>	(int)$idC,

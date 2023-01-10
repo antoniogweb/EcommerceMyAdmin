@@ -27,6 +27,6 @@ class TrovaPrezzi extends Feed
 		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p);
 		
 		// da completare
-// 		print_r($strutturaFeedProdotti);
+		print_r($strutturaFeedProdotti);
 	}
 }

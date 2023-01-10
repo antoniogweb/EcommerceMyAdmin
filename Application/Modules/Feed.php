@@ -40,7 +40,7 @@ class Feed
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza';
+		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string';
 	}
 	
 	public function isAttivo()
@@ -48,10 +48,23 @@ class Feed
 		return $this->params["attivo"];
 	}
 	
-	protected function strutturaFeedProdotti($p = null)
+	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0)
 	{
 		$c = new CategoriesModel();
 		$comb = new CombinazioniModel();
+		$pCats = new PagescategoriesModel();
+		$cart = new CartModel();
+		$corr = new CorrieriModel();
+		$corrSpese = new CorrierispeseModel();
+		
+		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->on("corrieri.id_corriere = corrieri_spese.id_corriere")->orderBy("corrieri.id_order")->send(false);
+		
+		$idCorriere = 0;
+		
+		if (count($corrieri) > 0)
+			$idCorriere = $corrieri[0]["id_corriere"];
+		
+		$nazione = User::$nazione ? User::$nazione : v("nazione_default");
 		
 		if (!isset($p))
 		{
@@ -63,12 +76,17 @@ class Feed
 		
 		$children = $c->children($idShop, true);
 		
-		if (isset($_GET["id_page"]))
+		if ($idPage)
 			$p->aWhere(array(
-				"id_page"	=>	(int)$_GET["id_page"],
+				"id_page"	=>	(int)$idPage,
 			));
 		
-		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description";
+		if ($idC)
+			$p->aWhere(array(
+				"combinazioni.id_c"	=>	(int)$idC,
+			));
+		
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al";
 		
 		if (VariabiliModel::combinazioniLinkVeri())
 			$select .= ",combinazioni.*";
@@ -76,30 +94,101 @@ class Feed
 		$p->select($select)
 			->addWhereAttivo()
 			->addJoinTraduzionePagina()
+			->left(array("marchio"))
 			->addWhereCategoria((int)$idShop)
 			->orderBy("pages.title");
 		
-		if (VariabiliModel::combinazioniLinkVeri())
+		if (VariabiliModel::combinazioniLinkVeri() || $idC)
 			$p->inner(array("combinazioni"))->aWhere(array(
 				"combinazioni.acquistabile"	=>	1,
 			));
 		
 		$res = $p->send();
 		
-		if (!VariabiliModel::combinazioniLinkVeri())
-			$res = PagesModel::impostaDatiCombinazionePagine($res);
+// 		if (!VariabiliModel::combinazioniLinkVeri())
+		$res = PagesModel::impostaDatiCombinazionePagine($res);
 		
 		$strutturaFeed = array();
 		
 		foreach ($res as $r)
 		{
+// 			PagesModel::$IdCombinazione = $r["combinazioni"]["id_c"];
+			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $this->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
+			
 			$titoloCombinazione = VariabiliModel::combinazioniLinkVeri() ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
+			
+			$arrayIdCat = array_merge(array($r["pages"]["id_c"]), $pCats->clear()->select("pages_categories.id_c")->where(array(
+				"id_page"	=>	(int)$r["pages"]["id_page"],
+				"genitore"	=>	0,
+			))->inner(array("categoria"))->orderBy("categories.lft")->toList("pages_categories.id_c")->send());
+			
+// 			print_r($arrayIdCat);
+			
+			$arrayIdCat = array_unique($arrayIdCat);
+			
+			$structCategory = array();
+			
+			foreach ($arrayIdCat as $idCat)
+			{
+				$parents = $c->parents((int)$idCat, false, false, Params::$lang, "coalesce(contenuti_tradotti.title,categories.title) as titolo", 2);
+				$parents = $c->getList($parents, "aggregate.titolo");
+				
+				if (count($parents) > 0)
+					$structCategory[] = $parents;
+			}
+			
+			$prezzoMinimo = $p->prezzoMinimo($r["pages"]["id_page"], false, $idC);
+			$prezzoMinimoIvato = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoMinimo);
+			
+			$prezzoFinale = $cart->calcolaPrezzoFinale($r["pages"]["id_page"], $prezzoMinimo, 1, true, true, $idC);
+			$prezzoFinaleIvato = calcolaPrezzoIvato($r["pages"]["id_page"],$prezzoFinale);
+			
+			$inPromo = 0;
+			
+			if (number_format($prezzoMinimoIvato,2,".","") != number_format($prezzoFinaleIvato,2,".",""))
+				$inPromo = 1;
+			
+			if ($p->inPromozione($r["pages"]["id_page"]))
+				$now = DateTime::createFromFormat('Y-m-d', $r["pages"]["al"]);
+			else
+			{
+				$now = new dateTime();
+				$now->modify("+10 days");
+			}
+			
+			$ivaSpedizione = CartModel::getAliquotaIvaSpedizione();
+			
+			if ($r["pages"]["gift_card"])
+				$speseSpedizione = 0;
+			else
+			{
+				$subtotaleSpedizione = (!v("prezzi_ivati_in_carrello")) ? $prezzoFinale : $prezzoFinaleIvato;
+				
+				// Solo spedizioni gratuite e solo nazione default
+				if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+					$speseSpedizione = 0;
+				else
+					$speseSpedizione = $corrSpese->getPrezzo($idCorriere,$r["pages"]["peso"], $nazione);
+			}
 			
 			$strutturaFeed[] = array(
 				"id_page"	=>	$r["pages"]["id_page"],
+				"id_c"		=>	$idC,
 				"titolo"	=>	trim(F::alt(field($r, "title").$titoloCombinazione)),
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
 				"descrizione"	=>	trim(F::alt(field($r, "description"))),
+				"categoria"	=>	$structCategory,
+				"immagine_principale"	=>	$r["pages"]["immagine"],
+				"altre_immagini"	=>	ImmaginiModel::altreImmaginiPagina((int)$r["pages"]["id_page"], $idC),
+				"link"		=>	Url::getRoot().getUrlAlias((int)$r["pages"]["id_page"], $idC),
+				"prezzo_pieno"	=> number_format($prezzoMinimoIvato,2,".",""),
+				"in_promo"	=>	$inPromo,
+				"data_scadenza_promo"	=>	$now->format("Y-m-d"),
+				"prezzo_scontato"	=> number_format($prezzoFinaleIvato,2,".",""),
+				"spese_spedizione"	=>	number_format($speseSpedizione * (1 + ($ivaSpedizione / 100)),2,".",""),
+				"marchio"	=>	$r["marchi"]["titolo"],
+				"peso"		=>	$r["pages"]["peso"],
+				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC),
 			);
 		}
 		

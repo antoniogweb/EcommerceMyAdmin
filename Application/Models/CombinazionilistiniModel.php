@@ -101,15 +101,6 @@ class CombinazionilistiniModel extends GenericModel {
 		
 		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
 		
-// 		$campoPrice = "price";
-// 		$campoPriceScontato = "price_scontato";
-// 		
-// 		if (v("prezzi_ivati_in_prodotti"))
-// 		{
-// 			$campoPrice = "price_ivato";
-// 			$campoPriceScontato = "price_scontato_ivato";
-// 		}
-		
 		if (empty($listino))
 		{
 			$c = new CombinazioniModel();

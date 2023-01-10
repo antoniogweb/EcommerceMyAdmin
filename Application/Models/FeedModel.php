@@ -73,6 +73,13 @@ class FeedModel extends GenericModel {
 				'token_sicurezza'	=>	array(
 					"entryAttributes"	=>	$attributesVisibilita,
 				),
+				'query_string'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verrà aggiunta ad ogni link del feed (inserire anche il ? iniziale)")."</div>"
+					),
+				),
 			),
 		);
 	}

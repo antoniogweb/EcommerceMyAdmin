@@ -52,4 +52,16 @@ class User
 			}
 		}
 	}
+	
+	public static function setUserCountryFromUrl()
+	{
+		$paramsCountry = isset(Params::$country) ? strtoupper(Params::$country) : null;
+		
+		User::$nazione = null;
+		
+		if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
+			User::$nazione = sanitizeAll(strtoupper($_GET["listino"]));
+		else if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
+			User::$nazione = sanitizeAll($paramsCountry);
+	}
 }
