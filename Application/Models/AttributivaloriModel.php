@@ -31,6 +31,7 @@ class AttributivaloriModel extends GenericModel {
 	public static $uploadFile = true;
 	
 	public static $arrayIdTitolo = null;
+	public static $arrayIdTipologia = null;
 	
 	public function __construct() {
 		$this->_tables='attributi_valori';
@@ -234,15 +235,74 @@ class AttributivaloriModel extends GenericModel {
 		))->field("attributi.tipo");
 	}
 	
-	public static function getArrayIdTitolo($lingua = null)
+	public function getCombinazioneInQuery($idC)
 	{
-		if (isset(self::$arrayIdTitolo))
+		$c = new CombinazioniModel();
+		
+		$record = $c->clear()->where(array(
+			"id_c"	=>	(int)$idC,
+		))->record();
+		
+		if (empty($record))
+			$this->sWhere("1 != 1");
+		else
+		{
+			$arrayIdC = [];
+			
+			for ($i = 1; $i < 9; $i++)
+			{
+				if (isset($record["col_".$i]) && $record["col_".$i])
+					$arrayIdC[] = (int)$record["col_".$i];
+			}
+			
+			if (count($arrayIdC) > 0)
+				$this->aWhere(array(
+					"in"	=>	array(
+						"id_av"	=>	$arrayIdC,
+					),
+				));
+			else
+				$this->sWhere("1 != 1");
+		}
+		
+		return $this;
+	}
+	
+	public static function getArrayIdTitolo($lingua = null, $idC = 0)
+	{
+		if (!$idC && isset(self::$arrayIdTitolo))
 			return self::$arrayIdTitolo;
 		
 		$av = new AttributivaloriModel();
 		
-		self::$arrayIdTitolo = $av->clear()->addJoinTraduzione($lingua)->select("attributi_valori.id_av,coalesce(contenuti_tradotti.titolo,attributi_valori.titolo) as titolo")->toList("attributi_valori.id_av", "aggregate.titolo")->send();
+		$av->clear()->addJoinTraduzione($lingua)->select("attributi_valori.id_av,coalesce(contenuti_tradotti.titolo,attributi_valori.titolo) as titolo")->toList("attributi_valori.id_av", "aggregate.titolo");
+		
+		if ($idC)
+			$av->getCombinazioneInQuery($idC);
+		
+		self::$arrayIdTitolo =  $av->send();
 		
 		return self::$arrayIdTitolo;
+	}
+	
+	public static function getArrayIdTipologia($idC = 0)
+	{
+		if (!$idC && isset(self::$arrayIdTipologia))
+			return self::$arrayIdTipologia;
+		
+		$av = new AttributivaloriModel();
+		
+		$av->clear()->select("attributi.titolo,attributi_valori.titolo,tipologie_attributi.titolo")
+			->inner("attributi")->on("attributi_valori.id_a = attributi.id_a")
+			->inner("tipologie_attributi")->on("attributi.id_tipologia_attributo = tipologie_attributi.id_tipologia_attributo");
+		
+		if ($idC)
+			$av->getCombinazioneInQuery($idC);
+		
+		self::$arrayIdTipologia = $av->send();
+		
+// 		echo $av->getQuery();echo "\n";
+		
+		return self::$arrayIdTipologia;
 	}
 }

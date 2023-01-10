@@ -22,8 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class FeedModel extends GenericModel {
-	
+class FeedModel extends GenericModel
+{
 	public static $modulo = null;
 	
 	public function __construct() {

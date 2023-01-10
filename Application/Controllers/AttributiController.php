@@ -90,7 +90,7 @@ class AttributiController extends BaseController {
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo,nota_interna,tipo');
+		$this->m[$this->modelName]->setValuesFromPost('titolo,nota_interna,tipo,id_tipologia_attributo');
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);

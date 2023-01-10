@@ -360,6 +360,16 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_righe menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
+	"vedi_feed" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'target="_blank" role="button" class="btn btn-info"',
+		"class"	=>	"btn btn-default",
+		'title'	=>	"Vedi feed",
+		'text'	=>	"Vedi feed",
+		'url'	=>	'main',
+		"classIconBefore"	=>	'<i class="fa fa-eye"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";

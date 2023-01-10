@@ -1146,7 +1146,7 @@ class CombinazioniModel extends GenericModel {
 		if (empty($record))
 			return "";
 		
-		$titoli = AttributivaloriModel::getArrayIdTitolo($lingua);
+		$titoli = AttributivaloriModel::getArrayIdTitolo($lingua, $idC);
 		
 		$arrayTitoli = array();
 		

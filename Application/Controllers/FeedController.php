@@ -78,8 +78,17 @@ class FeedController extends BaseController
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
+		$this->menuLinks = "back,save,vedi_feed";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);
+	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		$record = $this->m[$this->modelName]->selectId((int)$id);
+		
+		$this->scaffold->mainMenu->links['vedi_feed']['absolute_url'] = Domain::$publicUrl."/it".F::getNazioneUrl(null)."/feed/prodotti/".strtolower($record["codice"])."/".$record["token_sicurezza"];
 	}
 }

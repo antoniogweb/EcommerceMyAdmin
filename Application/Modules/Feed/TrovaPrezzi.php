@@ -29,7 +29,7 @@ class TrovaPrezzi extends Feed
 		$xmlArray = array(
 			"Products"	=>	array(
 				"Offers"	=>	array(),
-			)
+			),
 		);
 		
 		$outOfStock = v("attiva_giacenza") ? "disponibile" : "disponibile";
@@ -69,11 +69,18 @@ class TrovaPrezzi extends Feed
 				$indice++;
 			}
 			
+			$temp = $this->elaboraNodiAttributi($temp, $r["attributi"]);
+			
 			$xmlArray["Products"]["Offer"][] = $temp;
 		}
 		
 		$xml = aToX($xmlArray);
 		
 		F::xml($xml);
+	}
+	
+	public function tagNameColore()
+	{
+		return "Colore";
 	}
 }

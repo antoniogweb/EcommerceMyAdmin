@@ -9,6 +9,8 @@
 						
 						<?php echo $form["tipo"];?>
 						
+						<?php echo $form["id_tipologia_attributo"];?>
+						
 						<?php if ($type === "update") { ?>
 						<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 						<?php } ?>

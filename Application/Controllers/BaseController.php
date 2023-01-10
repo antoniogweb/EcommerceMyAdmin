@@ -369,6 +369,8 @@ class BaseController extends Controller
 				$this->scaffold->mainMenu->links['torna_ordine']['title'] = "Torna alla pagina di dettaglio dell'ordine";
 			}
 			
+			$this->aggiungiUrlmenuScaffold($clean["id"]);
+			
 			if (isset($_GET["insert"]))
 			{
 				$this->scaffold->model->notice = "<div class='alert alert-success'>operazione eseguita!</div>\n";

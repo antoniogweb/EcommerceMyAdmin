@@ -61,6 +61,7 @@ class Feed
 		$cart = new CartModel();
 		$corr = new CorrieriModel();
 		$corrSpese = new CorrierispeseModel();
+		$avModel = new AttributivaloriModel();
 		
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->on("corrieri.id_corriere = corrieri_spese.id_corriere")->orderBy("corrieri.id_order")->send(false);
 		
@@ -178,7 +179,7 @@ class Feed
 					$speseSpedizione = $corrSpese->getPrezzo($idCorriere,$r["pages"]["peso"], $nazione);
 			}
 			
-			$strutturaFeed[] = array(
+			$temp = array(
 				"id_page"	=>	$r["pages"]["id_page"],
 				"id_comb"		=>	$idC,
 				"titolo"	=>	trim(field($r, "title").$titoloCombinazione),
@@ -199,8 +200,46 @@ class Feed
 				"gtin"		=>	$r["pages"]["gtin"],
 				"mpn"		=>	$r["pages"]["mpn"],
 			);
+			
+			if (VariabiliModel::combinazioniLinkVeri())
+			{
+				$attributi = $avModel->getArrayIdTipologia($idC);
+				
+				$attrStruct = [];
+				
+				foreach ($attributi as $attr)
+				{
+					$attrStruct[] = array(
+						"tipologia"	=>	$attr["tipologie_attributi"]["titolo"],
+						"titolo"	=>	$attr["attributi"]["titolo"],
+						"valore"	=>	$attr["attributi_valori"]["titolo"],
+					);
+				}
+				
+				$temp["attributi"] = $attrStruct;
+			}
+			
+			$strutturaFeed[] = $temp;
 		}
 		
 		return $strutturaFeed;
+	}
+	
+	protected function elaboraNodiAttributi($nodo, $attributi)
+	{
+		if (count($attributi) > 0)
+		{
+			foreach ($attributi as $a)
+			{
+				if (trim($a["tipologia"]) && method_exists($this, "tagName".ucfirst(strtolower(trim($a["tipologia"])))))
+				{
+					$xmlTabName = call_user_func(array($this, "tagName".ucfirst(strtolower(trim($a["tipologia"])))));
+					
+					$nodo[$xmlTabName] = $a["valore"];
+				}
+			}
+		}
+		
+		return $nodo;
 	}
 }

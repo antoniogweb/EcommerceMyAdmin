@@ -405,4 +405,9 @@ trait BaseCrudController
 	{
 		return isset($this->voceMenu) ? $this->voceMenu : $voce;
 	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		
+	}
 }
