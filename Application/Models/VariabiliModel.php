@@ -587,7 +587,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_opzioni"	=>	0, // attiva la sezione per la gestione delle opzioni
 		"codici_opzioni_gestibili"	=>	"STATI_ELEMENTI:stati elementi", // elenco dei codici opzioni gestibili da pannello (dividere con ;)
 		## FEED ##
-		"attiva_gestione_feed"	=>	0, // attiva la sezione per la gestione ei feed xml
+		"attiva_gestione_feed"	=>	0, // attiva la sezione per la gestione dei feed xml
+		## MOTORI DI RICERCA ##
+		"attiva_gestione_motori_ricerca"	=> 0, // attiva la sezione per la gestione dei motori di ricerca
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

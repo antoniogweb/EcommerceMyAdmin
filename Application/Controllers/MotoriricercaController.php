@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class FeedController extends BaseController
+class MotoriricercaController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
@@ -30,7 +30,7 @@ class FeedController extends BaseController
 	
 	public $sezionePannello = "utenti";
 	
-	public $tabella = "feed XML";
+	public $tabella = "motori di ricerca";
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
@@ -38,7 +38,7 @@ class FeedController extends BaseController
 		
 		$this->s["admin"]->check();
 		
-		if (!v("attiva_gestione_feed"))
+		if (!v("attiva_gestione_motori_ricerca"))
 			$this->responseCode(403);
 	}
 
@@ -54,7 +54,7 @@ class FeedController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->mainFields = array("edit","feed.codice","attivo");
+		$this->mainFields = array("edit","motori_ricerca.codice","attivo");
 		$this->mainHead = "Titolo,Codice,Attivo";
 		
 		$this->m[$this->modelName]->clear()->orderBy("titolo")->convert()->save();
@@ -72,23 +72,14 @@ class FeedController extends BaseController
 		if (empty($record))
 			$this->responseCode(403);
 		
-		$this->m[$this->modelName]->setTokenSicurezza($id);
-		
-		$fields = FeedModel::getModulo($record["codice"])->gCampiForm();
+		$fields = MotoriricercaModel::getModulo($record["codice"])->gCampiForm();
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$this->menuLinks = "back,save,vedi_feed";
+		$this->menuLinks = "back,save";
 		
 		parent::form($queryType, $id);
 		
 		$this->append($data);
-	}
-	
-	protected function aggiungiUrlmenuScaffold($id)
-	{
-		$record = $this->m[$this->modelName]->selectId((int)$id);
-		
-		$this->scaffold->mainMenu->links['vedi_feed']['absolute_url'] = Domain::$publicUrl."/it".F::getNazioneUrl(null)."/feed/prodotti/".strtolower($record["codice"])."/".$record["token_sicurezza"];
 	}
 }

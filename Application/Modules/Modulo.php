@@ -22,8 +22,27 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY."/Application/Modules/Modulo.php");
-require_once(LIBRARY."/Application/Modules/F.php");
-require_once(LIBRARY."/Application/Modules/Pdf.php");
-require_once(LIBRARY."/Application/Modules/App.php");
-App::$isFrontend = true;
+trait Modulo
+{
+	protected $params = array();
+	
+	public function __construct($record)
+	{
+		$this->params = $record;
+	}
+	
+	public function getParams()
+	{
+		return $this->params;
+	}
+	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string';
+	}
+	
+	public function isAttivo()
+	{
+		return $this->params["attivo"];
+	}
+}

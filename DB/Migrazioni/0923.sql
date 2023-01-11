@@ -1,0 +1,1 @@
+INSERT INTO `motori_ricerca` (`id_motore_ricerca`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `account_id`, `api_key`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'Algolia', '0', 'ALGOLIA', 'Algolia', '', '', '1');

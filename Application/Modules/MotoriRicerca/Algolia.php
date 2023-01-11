@@ -20,10 +20,21 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-if (!defined('EG')) die('Direct access not allowed!');
-
-require_once(LIBRARY."/Application/Modules/Modulo.php");
-require_once(LIBRARY."/Application/Modules/F.php");
-require_once(LIBRARY."/Application/Modules/Pdf.php");
-require_once(LIBRARY."/Application/Modules/App.php");
-App::$isFrontend = true;
+class Algolia extends MotoreRicerca
+{
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,account_id,api_key,api_key_public';
+	}
+	
+	public function editFormStruct($model, $record)
+	{
+		$model->formStruct["entries"]["api_key"] = array(
+			"labelString"	=>	"Admin API KEY",
+		);
+		
+		$model->formStruct["entries"]["api_key_public"] = array(
+			"labelString"	=>	"Search-Only API KEY",
+		);
+	}
+}

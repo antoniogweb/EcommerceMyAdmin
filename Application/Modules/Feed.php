@@ -24,29 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Feed
 {
+	use Modulo;
+	
 	protected $usato = false;
-	
-	protected $params = "";
-	
-	public function __construct($record)
-	{
-		$this->params = $record;
-	}
-	
-	public function getParams()
-	{
-		return $this->params;
-	}
-	
-	public function gCampiForm()
-	{
-		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string';
-	}
-	
-	public function isAttivo()
-	{
-		return $this->params["attivo"];
-	}
 	
 	protected function getQueryString()
 	{

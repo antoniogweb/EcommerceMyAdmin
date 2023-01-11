@@ -29,7 +29,9 @@ class ImportController extends BaseController {
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
+		$this->responseCode(403);
+		
 		ini_set("memory_limit","512M");
 		
 		$this->session('admin');

@@ -766,6 +766,9 @@ class Route
 		
 		'feed,main',
 		'feed,form',
+		
+		'motoriricerca,main',
+		'motoriricerca,form',
 	);
 	
 	//it can be 'yes' or 'no'

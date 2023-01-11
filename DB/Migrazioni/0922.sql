@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`id_controller`, `titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES (NULL, 'Gestione motori di ricerca', 'motoriricerca', '', '1', 'attiva_gestione_motori_ricerca=1', '87', '1', 'utenti', 'main');

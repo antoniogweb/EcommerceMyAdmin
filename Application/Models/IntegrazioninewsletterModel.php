@@ -22,9 +22,14 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class IntegrazioninewsletterModel extends GenericModel {
+class IntegrazioninewsletterModel extends GenericModel
+{
+	use DIModel;
 	
 	public static $modulo = null;
+	
+	public $cartellaModulo = "Newsletter";
+	public $classeModuloPadre = "Newsletter";
 	
 	public static $elencoSezioni = null;
 	
@@ -76,6 +81,11 @@ class IntegrazioninewsletterModel extends GenericModel {
 		);
 	}
 	
+	public function getNomeCampoClasse()
+	{
+		return "classe";
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		if (isset($this->values["attivo"]) && $this->values["attivo"])
@@ -84,48 +94,48 @@ class IntegrazioninewsletterModel extends GenericModel {
 		return parent::update($id, $where);
 	}
 	
-	public function attivo($record)
-	{
-		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
-	}
+// 	public function attivo($record)
+// 	{
+// 		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+// 	}
 	
-	public static function getModulo($codice = null)
-	{
-		$i = new IntegrazioninewsletterModel();
-		
-		if (!isset(self::$modulo))
-		{
-			if ($codice)
-				$attivo = $i->clear()->where(array(
-					"codice"	=>	sanitizeDb($codice),
-				))->record();
-			else
-				$attivo = $i->clear()->where(array(
-					"attivo"	=>	1,
-				))->record();
-			
-			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php"))
-			{
-				require_once(LIBRARY."/Application/Modules/Newsletter.php");
-				require_once(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php");
-				
-				$objectReflection = new ReflectionClass($attivo["classe"]);
-				$object = $objectReflection->newInstanceArgs(array($attivo));
-				
-				self::$modulo = $object;
-			}
-		}
-		
-		return $i;
-	}
+// 	public static function getModulo($codice = null)
+// 	{
+// 		$i = new IntegrazioninewsletterModel();
+// 		
+// 		if (!isset(self::$modulo))
+// 		{
+// 			if ($codice)
+// 				$attivo = $i->clear()->where(array(
+// 					"codice"	=>	sanitizeDb($codice),
+// 				))->record();
+// 			else
+// 				$attivo = $i->clear()->where(array(
+// 					"attivo"	=>	1,
+// 				))->record();
+// 			
+// 			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php"))
+// 			{
+// 				require_once(LIBRARY."/Application/Modules/Newsletter.php");
+// 				require_once(LIBRARY."/Application/Modules/Newsletter/".$attivo["classe"].".php");
+// 				
+// 				$objectReflection = new ReflectionClass($attivo["classe"]);
+// 				$object = $objectReflection->newInstanceArgs(array($attivo));
+// 				
+// 				self::$modulo = $object;
+// 			}
+// 		}
+// 		
+// 		return $i;
+// 	}
 	
-	public function __call($metodo, $argomenti)
-	{
-		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
-			return call_user_func_array(array(self::$modulo, $metodo), $argomenti);
-
-		return false;
-	}
+// 	public function __call($metodo, $argomenti)
+// 	{
+// 		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
+// 			return call_user_func_array(array(self::$modulo, $metodo), $argomenti);
+// 
+// 		return false;
+// 	}
 	
 	public static function integrazioneAttiva()
 	{

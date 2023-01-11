@@ -22,18 +22,18 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class FeedModel extends GenericModel
+class MotoriricercaModel extends GenericModel
 {
 	use DIModel;
 	
 	public static $modulo = null;
 	
-	public $cartellaModulo = "Feed";
-	public $classeModuloPadre = "Feed";
+	public $cartellaModulo = "MotoriRicerca";
+	public $classeModuloPadre = "MotoreRicerca";
 	
 	public function __construct() {
-		$this->_tables='feed';
-		$this->_idFields='id_feed';
+		$this->_tables='motori_ricerca';
+		$this->_idFields='id_motore_ricerca';
 		
 		$this->_idOrder = 'id_order';
 		
@@ -42,11 +42,6 @@ class FeedModel extends GenericModel
 	
 	public function setFormStruct($id = 0)
 	{
-		$attributesVisibilita = array(
-			"visible-f"	=>	"usa_token_sicurezza",
-			"visible-v"	=>	1,
-		);
-		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -56,29 +51,21 @@ class FeedModel extends GenericModel
 					"options"	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
-				),
-				'usa_token_sicurezza'	=>	array(
-					"type"	=>	"Select",
-					"labelString"	=>	"Accedi al feed solo se conosci il token di sicurezza?",
-					"options"	=>	self::$attivoSiNo,
-					"reverse"	=>	"yes",
-					"className"	=>	"form-control",
-					"entryAttributes"	=> self::$onChanggeCheckVisibilityAttributes,
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Permetti lo scarico del feed solo a chi posside il token di sicurezza")."</div>"
+						"<div class='form_notice'>".gtext("Attivando questo motore di ricerca verranno disattivati gli altri")."</div>"
 					),
 				),
-				'token_sicurezza'	=>	array(
-					"entryAttributes"	=>	$attributesVisibilita,
+				'api_key'		=>	array(
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
 				),
-				'query_string'	=>	array(
-					'wrap'		=>	array(
-						null,
-						null,
-						"<div class='form_notice'>".gtext("Verrà aggiunta ad ogni link del feed (inserire anche il ? iniziale)")."</div>"
-					),
+				'api_key_public'		=>	array(
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
 				),
 			),
 		);

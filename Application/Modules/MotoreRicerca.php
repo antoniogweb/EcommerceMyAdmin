@@ -22,8 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY."/Application/Modules/Modulo.php");
-require_once(LIBRARY."/Application/Modules/F.php");
-require_once(LIBRARY."/Application/Modules/Pdf.php");
-require_once(LIBRARY."/Application/Modules/App.php");
-App::$isFrontend = true;
+class MotoreRicerca
+{
+	use Modulo;
+}
