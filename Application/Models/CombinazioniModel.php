@@ -418,7 +418,7 @@ class CombinazioniModel extends GenericModel {
 		Params::$setValuesConditionsFromDbTableStruct = true;
 	}
 	
-	private function controlliDopoCreazioneCombinazione($idPage)
+	public function controlliDopoCreazioneCombinazione($idPage)
 	{
 		// Controllo che ci sia la combinazione base
 		$this->controllaCombinazioniPagina($idPage);
