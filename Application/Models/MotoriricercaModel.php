@@ -72,4 +72,12 @@ class MotoriricercaModel extends GenericModel
 		
 		$this->moduleFormStruct($id);
 	}
+	
+	public function update($id = null, $where = null)
+	{
+		if (isset($this->values["attivo"]) && $this->values["attivo"])
+			$this->db->query("update motori_ricerca set attivo = 0 where 1");
+		
+		return parent::update($id, $where);
+	}
 }

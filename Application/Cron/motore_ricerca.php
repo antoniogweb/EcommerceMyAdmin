@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
@@ -20,25 +21,27 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class Algolia extends MotoreRicerca
+define('APP_CONSOLE', true);
+
+$options = getopt(null, array(
+	"lingua::",
+	"operazione::"
+));
+
+$default = array(
+	"lingua"		=>	"it",
+	"operazione"	=>	"cerca",
+);
+
+$params = array_merge($default, $options);
+
+require_once(dirname(__FILE__) . "/../../index.php");
+
+Files_Log::$logFolder = LIBRARY."/Logs";
+$log = Files_Log::getInstance("motori_ricerca");
+
+if (MotoriricercaModel::getModulo()->isAttivo())
 {
-	public function gCampiForm()
-	{
-		return 'titolo,attivo,account_id,api_key,api_key_public';
-	}
-	
-	public function editFormStruct($model, $record)
-	{
-		$model->formStruct["entries"]["api_key"]["labelString"] = "Admin API KEY";
-		
-		$model->formStruct["entries"]["api_key_public"]["labelString"] = "Search-Only API KEY";
-	}
-	
-	public function isAttivo()
-	{
-		if (trim($this->params["account_id"]) && trim($this->params["api_key"]) && trim($this->params["api_key_public"]))
-			return true;
-		
-		return false;
-	}
+// 	echo "attivo";
 }
+
