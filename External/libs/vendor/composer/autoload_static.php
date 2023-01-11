@@ -12,6 +12,8 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '979dffec6fa5205cabd2c2cd1e9e6b3a' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/Http/Psr7/functions.php',
+        '6783aef8c489bbc166eee2536fe605d5' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/functions.php',
         'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
     );
 
@@ -27,6 +29,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
@@ -56,6 +59,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'A' => 
         array (
             'Amnuts\\' => 7,
+            'Algolia\\AlgoliaSearch\\' => 22,
         ),
     );
 
@@ -71,6 +75,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'SendinBlue\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/sendinblue/api-v3-sdk/lib',
+        ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -116,6 +124,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Amnuts\\' => 
         array (
             0 => __DIR__ . '/..' . '/amnuts/opcache-gui/src',
+        ),
+        'Algolia\\AlgoliaSearch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src',
         ),
     );
 
