@@ -181,12 +181,6 @@ class Algolia extends MotoreRicerca
 		
 // 		$value = preg_replace('/(\<a(.*?)href=\"(.*?)\"(.*?)\>)(.*?)(\<\/a\>)/s', '[a]${3}|${5}[/a]',$value);
 		
-// 		require_once ROOT.'/admin/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php';
-
-// 		$config = HTMLPurifier_Config::createDefault();
-// 		$config->set('HTML.Allowed', '');  // Allow Nothing
-// 		$purifier = new HTMLPurifier($config);
-// 		$value = $purifier->purify($value);
 		
 		$value = strip_tags($value);
 		
@@ -195,22 +189,10 @@ class Algolia extends MotoreRicerca
 	
 	public function vitalizeTesto($string)
 	{
-// 		if (file_exists(ROOT.'/admin/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php'))
-// 			require_once ROOT.'/admin/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php';
-// 		else
-// 			require_once ROOT.'/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php';
-// 		
-// 		$config = HTMLPurifier_Config::createDefault();
-// 		$config->set('HTML.Allowed', '');  // Allow Nothing
-// 		$purifier = new HTMLPurifier($config);
-// 		$string = $purifier->purify($string);
-		
 		$string = htmlentitydecode($string);
 		$string = strip_tags($string);
 		
-		
 // 		$string = preg_replace('/(\[p\])(.*?)(\[\/p\])/s', '<p>${2}</p>',$string);
-		
 // 		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<strong>${2}</strong>',$string);
 		
 		$string = preg_replace('/(\[em\])(.*?)(\[\/em\])/s', '<u>${2}</u>',$string);
@@ -218,13 +200,6 @@ class Algolia extends MotoreRicerca
 		$string = preg_replace('/(\[i\])(.*?)(\[\/i\])/s', '<i>${2}</i>',$string);
 		
 // 		$string = preg_replace('/(\[br\])/s', '<br />',$string);
-		
-// 		$string = preg_replace_callback('/(\[a\])(.*?)(\[\/a\])/s', 'linkTo',$string);
-		
-		
-		
-		
-	// 	$string = str_replace('&amp;', '&',$string);
 		
 		return $string;
 	}
