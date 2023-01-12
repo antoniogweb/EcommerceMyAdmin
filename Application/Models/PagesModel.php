@@ -3188,9 +3188,9 @@ class PagesModel extends GenericModel {
     
     public static function getRichSnippet($id)
     {
-		require_once(LIBRARY."/Application/Modules/Feed.php");
-		$feedModel = new Feed(array());
-		$strutturaProdotti = $feedModel->strutturaFeedProdotti(null, (int)$id, PagesModel::$IdCombinazione);
+// 		require_once(LIBRARY."/Application/Modules/Feed.php");
+// 		$feedModel = new Feed(array());
+		$strutturaProdotti = FeedModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, PagesModel::$IdCombinazione);
 		
 		$snippetArray = array();
 		

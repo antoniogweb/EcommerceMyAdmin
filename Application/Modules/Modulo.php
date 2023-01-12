@@ -26,7 +26,7 @@ trait Modulo
 {
 	protected $params = array();
 	
-	public function __construct($record)
+	public function __construct($record = array())
 	{
 		$this->params = $record;
 	}

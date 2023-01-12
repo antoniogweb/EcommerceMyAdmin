@@ -22,12 +22,21 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+require_once(LIBRARY."/Application/Modules/Feed.php");
+
 class MotoreRicerca
 {
 	use Modulo;
 	
-	public function getObjects($idPage = 0)
+	public function ottieniOggetti($idPage = 0)
 	{
+		$strutturaProdotti = FeedModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$idPage, 0, false);
 		
+		return $strutturaProdotti;
+	}
+	
+	protected function getNomeCampoId()
+	{
+		return "objectID";
 	}
 }

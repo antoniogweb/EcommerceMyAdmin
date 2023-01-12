@@ -70,10 +70,20 @@ trait DIModel
 		))->rowNumber();
 	}
 	
+	public static function getModuloPadre()
+	{
+		$className = get_called_class();
+		$c = new $className;
+		
+		require_once(LIBRARY."/Application/Modules/".$c->classeModuloPadre.".php");
+		
+		$objectReflection = new ReflectionClass($c->classeModuloPadre);
+		return $objectReflection->newInstanceArgs();
+	}
+	
 	public static function getModulo($codice = null)
 	{
 		$className = get_called_class();
-		
 		$c = new $className;
 		
 		if (!isset(self::$modulo))

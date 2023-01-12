@@ -52,4 +52,31 @@ class Algolia extends MotoreRicerca
 		
 		return $client;
 	}
+	
+	public function inviaProdotti($idPage = 0, $indice = "prodotti_it")
+	{
+		$oggetti = $this->ottieniOggetti($idPage);
+		
+		$nomeCampoId = $this->getNomeCampoId();
+		
+		$struct = array();
+		
+		foreach ($oggetti as $o)
+		{
+			$struct[] = array(
+				"titolo"		=>	htmlentitydecode($o["titolo"]),
+				"sottotitolo"	=>	htmlentitydecode($o["sottotitolo"]),
+				"descrizione"	=>	htmlentitydecode($o["descrizione"]),
+				"categorie"		=>	count($o["categorie"]) > 0 ? implode(",",$o["categorie"][0]) : "",
+				"marchio"		=>	$o["marchio"],
+				$nomeCampoId	=>	"'".$o["id_page"]."'",
+			);
+		}
+		
+		$client = $this->getClient();
+		
+		$index = $client->initIndex($indice);
+		
+		return $index->saveObjects($struct)->wait();
+	}
 }

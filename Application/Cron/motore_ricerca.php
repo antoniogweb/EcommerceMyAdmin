@@ -25,11 +25,13 @@ define('APP_CONSOLE', true);
 
 $options = getopt(null, array(
 	"lingua::",
+	"nazione"		=>	"it",
 	"operazione::"
 ));
 
 $default = array(
 	"lingua"		=>	"it",
+	"nazione"		=>	"it",
 	"operazione"	=>	"cerca",
 );
 
@@ -37,11 +39,22 @@ $params = array_merge($default, $options);
 
 require_once(dirname(__FILE__) . "/../../index.php");
 
+ImpostazioniModel::init();
+
 Files_Log::$logFolder = LIBRARY."/Logs";
 $log = Files_Log::getInstance("motori_ricerca");
 
 if (MotoriricercaModel::getModulo()->isAttivo())
 {
-// 	echo "attivo";
+	Params::$lang = $params["lingua"];
+	Params::$country = $params["nazione"];
+	
+// 	print_r($params);
+	if ($params["operazione"] == "invia_oggetti")
+	{
+		$res = MotoriricercaModel::getModulo()->inviaProdotti(0, "prodotti_".$params["lingua"]);
+		
+		var_dump($res);
+	}
 }
 

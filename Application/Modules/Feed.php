@@ -33,7 +33,7 @@ class Feed
 		return htmlentitydecode($this->params["query_string"]);
 	}
 	
-	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0)
+	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0, $combinazioniLinkVeri = null)
 	{
 		$c = new CategoriesModel();
 		$comb = new CombinazioniModel();
@@ -43,7 +43,8 @@ class Feed
 		$corrSpese = new CorrierispeseModel();
 		$avModel = new AttributivaloriModel();
 		
-		$usaLinkVeri = VariabiliModel::combinazioniLinkVeri();
+		if (!isset($combinazioniLinkVeri))
+			$combinazioniLinkVeri = VariabiliModel::combinazioniLinkVeri();
 		
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->on("corrieri.id_corriere = corrieri_spese.id_corriere")->orderBy("corrieri.id_order")->send(false);
 		
@@ -74,10 +75,16 @@ class Feed
 				"combinazioni.id_c"	=>	(int)$idC,
 			));
 		
-		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al";
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere";
 		
-		if ($usaLinkVeri)
+		if ($combinazioniLinkVeri || $idC)
+		{
 			$select .= ",combinazioni.*";
+			
+			$p->inner(array("combinazioni"))->aWhere(array(
+				"combinazioni.acquistabile"	=>	1,
+			));
+		}
 		
 		$p->select($select)
 			->addWhereAttivo()
@@ -85,11 +92,6 @@ class Feed
 			->left(array("marchio"))
 			->addWhereCategoria((int)$idShop)
 			->orderBy("pages.title");
-		
-		if ($usaLinkVeri || $idC)
-			$p->inner(array("combinazioni"))->aWhere(array(
-				"combinazioni.acquistabile"	=>	1,
-			));
 		
 		$res = $p->send();
 		
@@ -99,10 +101,9 @@ class Feed
 		
 		foreach ($res as $r)
 		{
-// 			PagesModel::$IdCombinazione = $r["combinazioni"]["id_c"];
 			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $p->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
 			
-			$titoloCombinazione = $usaLinkVeri ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
+			$titoloCombinazione = $combinazioniLinkVeri ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
 			
 			$arrayIdCat = array($r["pages"]["id_c"]);
 			
@@ -157,14 +158,21 @@ class Feed
 				if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
 					$speseSpedizione = 0;
 				else
+				{
+					if (v("scegli_il_corriere_dalla_categoria_dei_prodotti") && $r["categories"]["id_corriere"])
+						$idCorriere = $r["categories"]["id_corriere"];
+					
 					$speseSpedizione = $corrSpese->getPrezzo($idCorriere,$r["pages"]["peso"], $nazione);
+				}
 			}
 			
 			$temp = array(
 				"id_page"	=>	$r["pages"]["id_page"],
-				"id_comb"		=>	$idC,
+				"id_comb"	=>	$idC,
+				"id_c"		=>	$r["pages"]["id_c"],
 				"titolo"	=>	trim(field($r, "title").$titoloCombinazione),
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
+				"sottotitolo"	=>	trim(field($r, "sottotitolo")),
 				"descrizione"	=>	trim(field($r, "description")),
 				"categorie"	=>	$structCategory,
 				"immagine_principale"	=>	$r["pages"]["immagine"],
@@ -180,9 +188,10 @@ class Feed
 				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC),
 				"gtin"		=>	$r["pages"]["gtin"],
 				"mpn"		=>	$r["pages"]["mpn"],
+				"id_corriere"	=>	$r["categories"]["id_corriere"],
 			);
 			
-			if ($usaLinkVeri)
+			if ($combinazioniLinkVeri)
 			{
 				$attributi = $avModel->getArrayIdTipologia($idC);
 				
@@ -202,6 +211,8 @@ class Feed
 			
 			$strutturaFeed[] = $temp;
 		}
+		
+// 		print_r($strutturaFeed);die();
 		
 		return $strutturaFeed;
 	}
