@@ -90,7 +90,7 @@ trait DIModel
 		{
 			$nomeCampoClasse = $c->getNomeCampoClasse();
 			
-			if ($codice)
+			if (isset($codice))
 				$attivo = $c->clear()->where(array(
 					"codice"	=>	sanitizeDb($codice),
 				))->record();

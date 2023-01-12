@@ -22,29 +22,33 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BaseFeedController extends BaseController
+class BaseMotoriricercaController extends BaseController
 {
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 
-		if (!v("attiva_gestione_feed"))
+		if (!v("attiva_gestione_motori_ricerca"))
 			$this->responseCode(403);
 	}
 
-	public function prodotti($modulo = "", $token = "")
+	public function cerca($modulo = "")
 	{
 		$modulo = strtoupper((string)$modulo);
 		
-		if (trim($modulo) && FeedModel::g()->checkModulo($modulo, $token))
+		$search = $this->request->get("q","","none");
+		
+		if (trim((string)$search) && trim($modulo) && MotoriricercaModel::g()->checkModulo($modulo, ""))
 		{
-			if (FeedModel::getModulo($modulo)->isAttivo())
+			if (MotoriricercaModel::getModulo($modulo)->isAttivo())
 			{
 				User::setPostCountryFromUrl();
 				
-				IvaModel::getAliquotaEstera();
+				$jsonArray = MotoriricercaModel::getModulo($modulo)->cerca("prodotti_".Params::$lang, $search);
 				
-				FeedModel::getModulo($modulo)->feedProdotti();
+				header('Content-type: application/json; charset=utf-8');
+				
+				echo json_encode($jsonArray);
 			}
 			else
 				$this->responseCode(403);

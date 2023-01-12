@@ -80,4 +80,12 @@ class MotoriricercaModel extends GenericModel
 		
 		return parent::update($id, $where);
 	}
+	
+	public function checkModulo($codice, $token = "")
+	{
+		return $this->clear()->where(array(
+			"codice"	=>	sanitizeDb((string)$codice),
+			"attivo"	=>	1,
+		))->rowNumber();
+	}
 }

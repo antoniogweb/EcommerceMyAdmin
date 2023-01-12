@@ -64,4 +64,15 @@ class User
 		else if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
 			User::$nazione = sanitizeAll($paramsCountry);
 	}
+	
+	public static function setPostCountryFromUrl()
+	{
+		User::setUserCountryFromUrl();
+		
+		if (User::$nazione)
+		{
+			$_POST["nazione_spedizione"] = strtoupper(User::$nazione);
+			$_POST["tipo_cliente"] = "privato";
+		}
+	}
 }

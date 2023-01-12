@@ -22,34 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BaseFeedController extends BaseController
+require_once(LIBRARY."/Application/Controllers/Public/BaseMotoriricercaController.php");
+
+class MotoriricercaController extends BaseMotoriricercaController
 {
-	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
-	{
-		parent::__construct($model, $controller, $queryString, $application, $action);
-
-		if (!v("attiva_gestione_feed"))
-			$this->responseCode(403);
-	}
-
-	public function prodotti($modulo = "", $token = "")
-	{
-		$modulo = strtoupper((string)$modulo);
-		
-		if (trim($modulo) && FeedModel::g()->checkModulo($modulo, $token))
-		{
-			if (FeedModel::getModulo($modulo)->isAttivo())
-			{
-				User::setPostCountryFromUrl();
-				
-				IvaModel::getAliquotaEstera();
-				
-				FeedModel::getModulo($modulo)->feedProdotti();
-			}
-			else
-				$this->responseCode(403);
-		}
-		else
-			$this->responseCode(403);
-	}
+	
 }
