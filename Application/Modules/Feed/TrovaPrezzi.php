@@ -69,7 +69,8 @@ class TrovaPrezzi extends Feed
 				$indice++;
 			}
 			
-			$temp = $this->elaboraNodiAttributi($temp, $r["attributi"]);
+			if (isset($r["attributi"]))
+				$temp = $this->elaboraNodiAttributi($temp, $r["attributi"]);
 			
 			$xmlArray["Products"]["Offer"][] = $temp;
 		}

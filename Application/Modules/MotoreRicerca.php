@@ -25,4 +25,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 class MotoreRicerca
 {
 	use Modulo;
+	
+	public function getObjects($idPage = 0)
+	{
+		
+	}
 }

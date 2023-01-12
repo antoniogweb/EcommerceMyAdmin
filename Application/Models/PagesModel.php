@@ -3936,13 +3936,15 @@ class PagesModel extends GenericModel {
 				$temp["pages"]["gtin"] = $combinazione["gtin"];
 				$temp["pages"]["mpn"] = $combinazione["mpn"];
 				
-				if (v("immagini_separate_per_variante"))
-				{
-					$immaginiCombinazione = ImmaginiModel::immaginiCombinazione($idC);
+				$temp["pages"]["immagine"] = ProdottiModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
 				
-					if (count($immaginiCombinazione) > 0)
-						$temp["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
-				}
+// 				if (v("immagini_separate_per_variante"))
+// 				{
+// 					$immaginiCombinazione = ImmaginiModel::immaginiCombinazione($idC);
+// 				
+// 					if (count($immaginiCombinazione) > 0)
+// 						$temp["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
+// 				}
 			}
 			
 			$pagesFinale[] = $temp;

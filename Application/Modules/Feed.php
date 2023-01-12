@@ -43,6 +43,8 @@ class Feed
 		$corrSpese = new CorrierispeseModel();
 		$avModel = new AttributivaloriModel();
 		
+		$usaLinkVeri = VariabiliModel::combinazioniLinkVeri();
+		
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->on("corrieri.id_corriere = corrieri_spese.id_corriere")->orderBy("corrieri.id_order")->send(false);
 		
 		$idCorriere = 0;
@@ -74,7 +76,7 @@ class Feed
 		
 		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al";
 		
-		if (VariabiliModel::combinazioniLinkVeri())
+		if ($usaLinkVeri)
 			$select .= ",combinazioni.*";
 		
 		$p->select($select)
@@ -84,14 +86,13 @@ class Feed
 			->addWhereCategoria((int)$idShop)
 			->orderBy("pages.title");
 		
-		if (VariabiliModel::combinazioniLinkVeri() || $idC)
+		if ($usaLinkVeri || $idC)
 			$p->inner(array("combinazioni"))->aWhere(array(
 				"combinazioni.acquistabile"	=>	1,
 			));
 		
 		$res = $p->send();
 		
-// 		if (!VariabiliModel::combinazioniLinkVeri())
 		$res = PagesModel::impostaDatiCombinazionePagine($res);
 		
 		$strutturaFeed = array();
@@ -99,9 +100,9 @@ class Feed
 		foreach ($res as $r)
 		{
 // 			PagesModel::$IdCombinazione = $r["combinazioni"]["id_c"];
-			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $comb->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
+			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $p->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
 			
-			$titoloCombinazione = VariabiliModel::combinazioniLinkVeri() ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
+			$titoloCombinazione = $usaLinkVeri ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
 			
 			$arrayIdCat = array($r["pages"]["id_c"]);
 			
@@ -181,7 +182,7 @@ class Feed
 				"mpn"		=>	$r["pages"]["mpn"],
 			);
 			
-			if (VariabiliModel::combinazioniLinkVeri())
+			if ($usaLinkVeri)
 			{
 				$attributi = $avModel->getArrayIdTipologia($idC);
 				

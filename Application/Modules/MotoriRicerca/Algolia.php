@@ -20,6 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+use Algolia\AlgoliaSearch\SearchClient;
+
 class Algolia extends MotoreRicerca
 {
 	public function gCampiForm()
@@ -40,5 +42,14 @@ class Algolia extends MotoreRicerca
 			return true;
 		
 		return false;
+	}
+	
+	private function getClient()
+	{
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+		
+		$client = SearchClient::create($this->params["account_id"], $this->params["api_key"]);
+		
+		return $client;
 	}
 }
