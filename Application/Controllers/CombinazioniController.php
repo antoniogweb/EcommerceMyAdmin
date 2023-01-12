@@ -328,23 +328,24 @@ class CombinazioniController extends BaseController
 		
 		if ($this->viewArgs["cerca"] != "tutti")
 		{
-			$cercaArray = explode(" ",$this->viewArgs["cerca"]);
-			
-			$andArray = array();
-			
-			$iCerca = 4;
-			
-			foreach ($cercaArray as $cercaTermine)
-			{
-				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-					"pages.campo_cerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
-				);
-				
-				$iCerca++;
-			}
-			
-			if (count($andArray) > 0)
-				$this->m[$this->modelName]->aWhere($andArray);
+			$this->m[$this->modelName]->addWhereSearch($this->viewArgs["cerca"]);
+// 			$cercaArray = explode(" ",$this->viewArgs["cerca"]);
+// 			
+// 			$andArray = array();
+// 			
+// 			$iCerca = 4;
+// 			
+// 			foreach ($cercaArray as $cercaTermine)
+// 			{
+// 				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+// 					"pages.campo_cerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
+// 				);
+// 				
+// 				$iCerca++;
+// 			}
+// 			
+// 			if (count($andArray) > 0)
+// 				$this->m[$this->modelName]->aWhere($andArray);
 		}
 		
 		if ($this->viewArgs["id_lista_reg_filt"] != "tutti")

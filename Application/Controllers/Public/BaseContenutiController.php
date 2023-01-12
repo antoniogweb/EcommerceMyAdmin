@@ -814,14 +814,21 @@ class BaseContenutiController extends BaseController
 	
 	protected function getSearchWhere($argName = "s")
 	{
+		Cache_Db::$skipWritingCache = true;
+		
 		$orWhere = array(
 			"lk" => array('pages.codice' => $this->viewArgs[$argName]),
 		);
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
-			$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
+		{
+			$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName]);
+// 			$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
+		}
 		else
 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
+		
+// 		print_r($orWhere);die();
 		
 		return array(
 			" OR"	=>	$orWhere,

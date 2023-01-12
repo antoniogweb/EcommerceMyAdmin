@@ -95,6 +95,8 @@ class Algolia extends MotoreRicerca
 		
 		$index = $client->initIndex($indice);
 		
+		$search = trim($search);
+		
 		$res = $index->search($search);
 		
 // 		print_r($res);
@@ -115,24 +117,30 @@ class Algolia extends MotoreRicerca
 			{
 				foreach ($res["hits"] as $r)
 				{
+					$prendiCategoriaTitolo = false;
+					
 					$tempLabel = $tempValue = ""; // = array();
 					
 					foreach ($r["_highlightResult"] as $field => $results)
 					{
-						if (in_array($field, $elementiCiclo) && isset($results["matchLevel"]) && ($results["matchLevel"] == "full" || $results["matchLevel"] == "partial"))
+						if (in_array($field, $elementiCiclo) && isset($results["matchLevel"]) && (($results["matchLevel"] == "full" || $results["matchLevel"] == "partial") || $prendiCategoriaTitolo))
 						{
+							if ($field == "marchio" && trim(strtolower($search)) == trim(strtolower($r["marchio"])))
+// 							if ($field == "marchio" && isset($results["matchedWords"][0]) && trim($search) == trim($results["matchedWords"][0]))
+								$prendiCategoriaTitolo = true;
+							
 							$tempLabel .= " ".$results["value"];
 							$tempValue .= " ".$results["value"];
 						}
 					}
 					
-					$label = $this->sanitizeTesto($tempLabel);
+					$label = $this->vitalizeTesto($this->sanitizeTesto($tempLabel));
 					$value = sanitizeHtml(strtolower(strip_tags($tempValue)));
 					
 					if (!in_array($value, $arrayDiParoleInserite))
 					{
 						$searchStruct[] = array(
-							"label"		=>	$label,
+							"label"	=>	$label,
 							"value"	=>	$value,
 						);
 						
@@ -142,27 +150,31 @@ class Algolia extends MotoreRicerca
 			}
 		}
 		
+// 		print_r($searchStruct);
+		
 		$finalStruct = array();
 		
 		$searchClean = sanitizeHtml(strtolower(strip_tags($search)));
-		
+// 		echo $searchClean;
 		foreach ($searchStruct as $element)
 		{
-			if (strpos($element["value"], $searchClean) !== false)
+// 			if (strpos($element["value"], $searchClean) !== false)
 				$finalStruct[] = $element;
 		}
+		
+// 		print_r($finalStruct);die();
 		
 		return $finalStruct;
 	}
 	
 	public function sanitizeTesto($value)
 	{
-		$value = preg_replace('/(\<p\>)(.*?)(\<\/p\>)/s', '[p]${2}[/p]',$value);
-		$value = preg_replace('/(\<b\>)(.*?)(\<\/b\>)/s', '[b]${2}[/b]',$value);
-		$value = preg_replace('/(\<strong\>)(.*?)(\<\/strong\>)/s', '[b]${2}[/b]',$value);
-		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[i]${2}[/i]',$value);
-		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[i]${2}[/i]',$value);
-		$value = preg_replace('/(\<u\>)(.*?)(\<\/u\>)/s', '[i]${2}[/i]',$value);
+// 		$value = preg_replace('/(\<p\>)(.*?)(\<\/p\>)/s', '[p]${2}[/p]',$value);
+// 		$value = preg_replace('/(\<b\>)(.*?)(\<\/b\>)/s', '[b]${2}[/b]',$value);
+// 		$value = preg_replace('/(\<strong\>)(.*?)(\<\/strong\>)/s', '[b]${2}[/b]',$value);
+// 		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[i]${2}[/i]',$value);
+// 		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[i]${2}[/i]',$value);
+// 		$value = preg_replace('/(\<u\>)(.*?)(\<\/u\>)/s', '[i]${2}[/i]',$value);
 // 		$value = preg_replace('/\<br \/\>/s', '[br]',$value);
 		
 // 		$value = preg_replace('/(\<span style=\"text-decoration\: underline\;\"\>)(.*?)(\<\/span\>)/s', '[u]${2}[/u]',$value);
@@ -179,5 +191,41 @@ class Algolia extends MotoreRicerca
 		$value = strip_tags($value);
 		
 		return sanitizeAll($value);
+	}
+	
+	public function vitalizeTesto($string)
+	{
+// 		if (file_exists(ROOT.'/admin/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php'))
+// 			require_once ROOT.'/admin/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php';
+// 		else
+// 			require_once ROOT.'/External/htmlpurifier-4.7.0-standalone/HTMLPurifier.standalone.php';
+// 		
+// 		$config = HTMLPurifier_Config::createDefault();
+// 		$config->set('HTML.Allowed', '');  // Allow Nothing
+// 		$purifier = new HTMLPurifier($config);
+// 		$string = $purifier->purify($string);
+		
+		$string = htmlentitydecode($string);
+		$string = strip_tags($string);
+		
+		
+// 		$string = preg_replace('/(\[p\])(.*?)(\[\/p\])/s', '<p>${2}</p>',$string);
+		
+// 		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<strong>${2}</strong>',$string);
+		
+		$string = preg_replace('/(\[em\])(.*?)(\[\/em\])/s', '<u>${2}</u>',$string);
+		
+		$string = preg_replace('/(\[i\])(.*?)(\[\/i\])/s', '<i>${2}</i>',$string);
+		
+// 		$string = preg_replace('/(\[br\])/s', '<br />',$string);
+		
+// 		$string = preg_replace_callback('/(\[a\])(.*?)(\[\/a\])/s', 'linkTo',$string);
+		
+		
+		
+		
+	// 	$string = str_replace('&amp;', '&',$string);
+		
+		return $string;
 	}
 }

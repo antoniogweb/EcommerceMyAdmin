@@ -36,7 +36,7 @@ class BaseMotoriricercaController extends BaseController
 	{
 		$modulo = strtoupper((string)$modulo);
 		
-		$search = $this->request->get("q","","none");
+		$search = $this->request->get("term","","none");
 		
 		if (trim((string)$search) && trim($modulo) && MotoriricercaModel::g()->checkModulo($modulo, ""))
 		{

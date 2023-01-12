@@ -1706,4 +1706,34 @@ class GenericModel extends Model_Tree
 		
 		return $output;
 	}
+	
+	public function getWhereSearch($cerca)
+	{
+		$cercaArray = explode(" ",$cerca);
+		
+		$andArray = array();
+		
+		$iCerca = 8;
+		
+		foreach ($cercaArray as $cercaTermine)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"pages.campo_cerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
+	}
+	
+	public function addWhereSearch($cerca)
+	{
+		$andArray = $this->getWhereSearch($cerca);
+		
+		if (count($andArray) > 0)
+			$this->aWhere($andArray);
+		
+		return $this;
+	}
 }
