@@ -3936,7 +3936,8 @@ class PagesModel extends GenericModel {
 				$temp["pages"]["gtin"] = $combinazione["gtin"];
 				$temp["pages"]["mpn"] = $combinazione["mpn"];
 				
-				$temp["pages"]["immagine"] = ProdottiModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
+				if (VariabiliModel::combinazioniLinkVeri())
+					$temp["pages"]["immagine"] = PagesModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
 				
 // 				if (v("immagini_separate_per_variante"))
 // 				{
@@ -4058,5 +4059,33 @@ class PagesModel extends GenericModel {
 			))
 			->addWhereCategoria(CategoriesModel::$idShop)
 			->send(), v("numero_in_evidenza")));
+	}
+	
+	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)
+	{
+		$clean["id_page"] = (int)$idPage;
+		
+		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+		$elencoImmagini[] = "";
+		
+		$immagine = $elencoImmagini[0];
+		
+		if (v("immagine_in_varianti") && !v("immagini_separate_per_variante"))
+		{
+			if (!isset($immagineCombinazione))
+				$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
+			
+			if (isset($immagineCombinazione) && $immagineCombinazione && in_array($immagineCombinazione,$elencoImmagini))
+				$immagine = $immagineCombinazione;
+		}
+		else if (v("immagini_separate_per_variante"))
+		{
+			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
+			
+			if (count($immagini) > 0)
+				$immagine = $immagini[0]["immagine"];
+		}
+		
+		return $immagine;
 	}
 }
