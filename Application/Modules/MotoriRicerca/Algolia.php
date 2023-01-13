@@ -57,31 +57,78 @@ class Algolia extends MotoreRicerca
 	
 	public function inviaProdotti($idPage = 0, $indice = "prodotti_it")
 	{
+		$ultimiDatiInviati = $this->leggiDatiInviati();
+		
+// 		print_r($ultimiDatiInviati);
+		
 		$oggetti = $this->ottieniOggetti($idPage);
 		
 		$nomeCampoId = $this->getNomeCampoId();
 		
-		$struct = array();
+		$struct = $structInviati = $idsNuoviTotali = array();
 		
 		foreach ($oggetti as $o)
 		{
-			$catString = count($o["categorie"]) > 0 ? implode(" ",$o["categorie"][0]) : "";
+			$idPage = $o["id_page"];
 			
-			$struct[] = array(
-				"marchio"		=>	$o["marchio"],
-				"categorie"		=>	$catString,
-				"titolo"		=>	htmlentitydecode($o["titolo"]),
-				"marchio_categorie"		=>	$o["marchio"]." ".$catString,
-				"marchio_titolo"		=>	$o["marchio"]." ".htmlentitydecode($o["titolo"]),
-				$nomeCampoId	=>	"'".$o["id_page"]."'",
-			);
+			$idsNuoviTotali[] = $idPage;
+			
+			$catString = count($o["categorie"]) > 0 ? htmlentitydecode(implode(" ",$o["categorie"][0])) : "";
+			$marchio = htmlentitydecode($o["marchio"]);
+			$titolo = htmlentitydecode($o["titolo"]);
+			
+			$hash = md5($marchio.$catString.$titolo.$marchio." ".$catString.$marchio." ".$titolo);
+			
+			if (!isset($ultimiDatiInviati[$idPage]) || (string)$ultimiDatiInviati[$idPage] !== $hash)
+			{
+				$structInviati[$idPage] = $hash;
+				
+				$struct[] = array(
+					"marchio"		=>	$marchio,
+					"categorie"		=>	$catString,
+					"titolo"		=>	$titolo,
+					"marchio_categorie"		=>	$marchio." ".$catString,
+					"marchio_titolo"		=>	$marchio." ".$titolo,
+					$nomeCampoId	=>	$idPage,
+				);
+			}
+		}
+		
+		$daEliminare = array();
+		
+// 		echo "STRUCT ARRAY:\n";
+// 		print_r($idsNuoviTotali);
+		
+		foreach ($ultimiDatiInviati as $idP => $hash)
+		{
+			if (!in_array($idP,$idsNuoviTotali))
+				$daEliminare[] = $idP;
+		}
+		
+		foreach ($ultimiDatiInviati as $idP => $h)
+		{
+			if (!isset($structInviati[$idP]) && !in_array($idP,$daEliminare))
+				$structInviati[$idP] = $h;
 		}
 		
 		$client = $this->getClient("scrivi");
 		
 		$index = $client->initIndex($indice);
 		
-		return $index->saveObjects($struct)->wait();
+		$this->salvaDatiInviati($structInviati);
+		
+		$log = "DA ELIMINARE: ".count($daEliminare)."\n";
+		$log .= print_r($daEliminare, true);
+		$log .= "DA AGGIUNGERE / AGGIORNARE ".count($struct)."\n";
+		$log .= print_r($struct, true);
+		
+		if (count($daEliminare) > 0)
+			print_r($index->deleteObjects($daEliminare));
+		
+		if (count($struct) > 0)
+			print_r($index->saveObjects($struct)->wait());
+		
+		return $log;
 	}
 	
 	public function svuotaProdotti($indice = "prodotti_it")
@@ -90,7 +137,11 @@ class Algolia extends MotoreRicerca
 		
 		$index = $client->initIndex($indice);
 		
-		return $index->clearObjects();
+		$index->clearObjects();
+		
+		$this->salvaDatiInviati(array());
+		
+		return "";
 	}
 	
 	public function cerca($indice, $search)
@@ -181,18 +232,8 @@ class Algolia extends MotoreRicerca
 	
 	public function sanitizeTesto($value)
 	{
-// 		$value = preg_replace('/(\<p\>)(.*?)(\<\/p\>)/s', '[p]${2}[/p]',$value);
-// 		$value = preg_replace('/(\<b\>)(.*?)(\<\/b\>)/s', '[b]${2}[/b]',$value);
-// 		$value = preg_replace('/(\<strong\>)(.*?)(\<\/strong\>)/s', '[b]${2}[/b]',$value);
 		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[b]${2}[/b]',$value);
 		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[b]${2}[/b]',$value);
-// 		$value = preg_replace('/(\<u\>)(.*?)(\<\/u\>)/s', '[i]${2}[/i]',$value);
-// 		$value = preg_replace('/\<br \/\>/s', '[br]',$value);
-		
-// 		$value = preg_replace('/(\<span style=\"text-decoration\: underline\;\"\>)(.*?)(\<\/span\>)/s', '[u]${2}[/u]',$value);
-		
-// 		$value = preg_replace('/(\<a(.*?)href=\"(.*?)\"(.*?)\>)(.*?)(\<\/a\>)/s', '[a]${3}|${5}[/a]',$value);
-		
 		
 		$value = strip_tags($value);
 		
@@ -204,14 +245,7 @@ class Algolia extends MotoreRicerca
 		$string = htmlentitydecode($string);
 		$string = strip_tags($string);
 		
-// 		$string = preg_replace('/(\[p\])(.*?)(\[\/p\])/s', '<p>${2}</p>',$string);
 		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<b>${2}</b>',$string);
-		
-// 		$string = preg_replace('/(\[em\])(.*?)(\[\/em\])/s', '<u>${2}</u>',$string);
-		
-// 		$string = preg_replace('/(\[i\])(.*?)(\[\/i\])/s', '<i>${2}</i>',$string);
-		
-// 		$string = preg_replace('/(\[br\])/s', '<br />',$string);
 		
 		return $string;
 	}

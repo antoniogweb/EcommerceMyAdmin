@@ -26,9 +26,32 @@ trait Modulo
 {
 	protected $params = array();
 	
+	protected $cacheAbsolutePath = null;
+	protected $logsFolder = "Logs";
+	
 	public function __construct($record = array())
 	{
 		$this->params = $record;
+		
+		$this->cacheAbsolutePath = rtrim(str_replace("/admin","",LIBRARY),"/");
+		
+		if (!@is_dir($this->cacheAbsolutePath."/".$this->logsFolder))
+		{
+			createFolderFull($this->logsFolder, $this->cacheAbsolutePath);
+			@chmod($this->cacheAbsolutePath."/".$this->logsFolder, octdec('777'));
+		}
+		
+		$this->cacheAbsolutePath .= "/".$this->logsFolder;
+		
+		if (isset($this->params["codice"]) && trim($this->params["codice"]))
+		{
+			$moduleFullPath = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
+			
+			if (!@is_dir($moduleFullPath))
+			{
+				createFolderFull(trim($this->params["codice"]), $this->cacheAbsolutePath);
+			}
+		}
 	}
 	
 	public function getParams()

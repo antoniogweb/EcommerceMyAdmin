@@ -55,6 +55,6 @@ if (MotoriricercaModel::getModulo()->isAttivo())
 	else if ($params["operazione"] == "svuota_oggetti")
 		$res = MotoriricercaModel::getModulo()->svuotaProdotti("prodotti_".$params["lingua"]);
 		
-	var_dump($res);
+	print_r($res);
 }
 

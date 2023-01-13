@@ -39,4 +39,26 @@ class MotoreRicerca
 	{
 		return "objectID";
 	}
+	
+	protected function getLogPath()
+	{
+		return $this->cacheAbsolutePath."/".trim($this->params["codice"])."/motori_ricerca_".trim($this->params["codice"])."_last_sent.log";
+	}
+	
+	protected function leggiDatiInviati()
+	{
+		$path = $this->getLogPath();
+		
+		if (@is_file($path))
+			return unserialize(file_get_contents($path));
+		
+		return array();
+	}
+	
+	protected function salvaDatiInviati($data)
+	{
+		$path = $this->getLogPath();
+		
+		FilePutContentsAtomic($path, serialize($data));
+	}
 }
