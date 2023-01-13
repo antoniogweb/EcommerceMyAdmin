@@ -65,10 +65,14 @@ class Algolia extends MotoreRicerca
 		
 		foreach ($oggetti as $o)
 		{
+			$catString = count($o["categorie"]) > 0 ? implode(" ",$o["categorie"][0]) : "";
+			
 			$struct[] = array(
 				"marchio"		=>	$o["marchio"],
-				"categorie"		=>	count($o["categorie"]) > 0 ? implode(" ",$o["categorie"][0]) : "",
+				"categorie"		=>	$catString,
 				"titolo"		=>	htmlentitydecode($o["titolo"]),
+				"marchio_categorie"		=>	$o["marchio"]." ".$catString,
+				"marchio_titolo"		=>	$o["marchio"]." ".htmlentitydecode($o["titolo"]),
 				$nomeCampoId	=>	"'".$o["id_page"]."'",
 			);
 		}
@@ -104,9 +108,11 @@ class Algolia extends MotoreRicerca
 		$searchStruct = array();
 		
 		$arrayCicli = array(
-// 			array("marchio"),
-			array("marchio", "categorie"),
-			array("marchio", "titolo"),
+			array("marchio"),
+			array("categorie"),
+			array("titolo"),
+			array("marchio_categorie"),
+			array("marchio_titolo"),
 		);
 		
 		$arrayDiParoleInserite = array();
@@ -117,31 +123,37 @@ class Algolia extends MotoreRicerca
 			{
 				foreach ($res["hits"] as $r)
 				{
-					$prendiCategoriaTitolo = false;
+					$marchioTrovato = false;
+					$numeroMatch = 0;
+					$numeroParole = 0;
 					
-					$tempLabel = $tempValue = ""; // = array();
+					$tempLabel = $tempValue = "";
 					
 					foreach ($r["_highlightResult"] as $field => $results)
 					{
-						if (in_array($field, $elementiCiclo) && isset($results["matchLevel"]) && (($results["matchLevel"] == "full" || $results["matchLevel"] == "partial") || $prendiCategoriaTitolo))
+						if (in_array($field, $elementiCiclo) && isset($results["matchLevel"]) && ($results["matchLevel"] == "full" || $results["matchLevel"] == "partial"))
 						{
-							if ($field == "marchio" && trim(strtolower($search)) == trim(strtolower($r["marchio"])))
-// 							if ($field == "marchio" && isset($results["matchedWords"][0]) && trim($search) == trim($results["matchedWords"][0]))
-								$prendiCategoriaTitolo = true;
+							if (count($elementiCiclo) === 1)
+								$marchioTrovato = true;
+							
+							$numeroMatch++;
 							
 							$tempLabel .= " ".$results["value"];
 							$tempValue .= " ".$results["value"];
+							$numeroParole += (isset($results["matchedWords"]) && is_array($results["matchedWords"])) ? count($results["matchedWords"]) : 0;
+// 							echo "INSIDE - F:".$field." V:".$tempValue."\n";
 						}
 					}
 					
 					$label = $this->vitalizeTesto($this->sanitizeTesto($tempLabel));
 					$value = sanitizeHtml(strtolower(strip_tags($tempValue)));
 					
-					if (!in_array($value, $arrayDiParoleInserite))
+					if (trim($tempValue) && (int)$numeroMatch === (int)count($elementiCiclo) && !in_array($value, $arrayDiParoleInserite))
 					{
 						$searchStruct[] = array(
 							"label"	=>	$label,
 							"value"	=>	$value,
+							"numero_parole"	=>	$numeroParole,
 						);
 						
 						$arrayDiParoleInserite[] = $value;
@@ -154,11 +166,11 @@ class Algolia extends MotoreRicerca
 		
 		$finalStruct = array();
 		
-		$searchClean = sanitizeHtml(strtolower(strip_tags($search)));
-// 		echo $searchClean;
+		$searchArray = explode(" ", $search);
+		
 		foreach ($searchStruct as $element)
 		{
-// 			if (strpos($element["value"], $searchClean) !== false)
+			if ((int)count($searchArray) === (int)$element["numero_parole"])
 				$finalStruct[] = $element;
 		}
 		
@@ -172,8 +184,8 @@ class Algolia extends MotoreRicerca
 // 		$value = preg_replace('/(\<p\>)(.*?)(\<\/p\>)/s', '[p]${2}[/p]',$value);
 // 		$value = preg_replace('/(\<b\>)(.*?)(\<\/b\>)/s', '[b]${2}[/b]',$value);
 // 		$value = preg_replace('/(\<strong\>)(.*?)(\<\/strong\>)/s', '[b]${2}[/b]',$value);
-// 		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[i]${2}[/i]',$value);
-// 		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[i]${2}[/i]',$value);
+		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[b]${2}[/b]',$value);
+		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[b]${2}[/b]',$value);
 // 		$value = preg_replace('/(\<u\>)(.*?)(\<\/u\>)/s', '[i]${2}[/i]',$value);
 // 		$value = preg_replace('/\<br \/\>/s', '[br]',$value);
 		
@@ -193,11 +205,11 @@ class Algolia extends MotoreRicerca
 		$string = strip_tags($string);
 		
 // 		$string = preg_replace('/(\[p\])(.*?)(\[\/p\])/s', '<p>${2}</p>',$string);
-// 		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<strong>${2}</strong>',$string);
+		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<b>${2}</b>',$string);
 		
-		$string = preg_replace('/(\[em\])(.*?)(\[\/em\])/s', '<u>${2}</u>',$string);
+// 		$string = preg_replace('/(\[em\])(.*?)(\[\/em\])/s', '<u>${2}</u>',$string);
 		
-		$string = preg_replace('/(\[i\])(.*?)(\[\/i\])/s', '<i>${2}</i>',$string);
+// 		$string = preg_replace('/(\[i\])(.*?)(\[\/i\])/s', '<i>${2}</i>',$string);
 		
 // 		$string = preg_replace('/(\[br\])/s', '<br />',$string);
 		
