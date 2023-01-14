@@ -76,7 +76,21 @@ class Interno extends MotoreRicerca
 			foreach ($r as $campo => $valore)
 			{
 				$valore = $this->pulisciXss($valore);
-				$label = preg_replace("/($pattern)/i","<b>$0</b>",$valore, 6, $numero);
+				
+				$paroleTrovate = array();
+				
+				foreach ($searchArray as $sElement)
+				{
+					preg_match("/($sElement)/i",$valore, $matches);
+					
+					if (count($matches) > 0)
+						$paroleTrovate[] = $matches[1];
+				}
+				
+				$paroleTrovate = array_unique($paroleTrovate);
+				$numero = count($paroleTrovate);
+				
+				$label = preg_replace("/($pattern)/i","<b>$0</b>",$valore, 6);
 				
 // 				echo $label."<br />\n";
 // 				echo $numero."<br />\n";
