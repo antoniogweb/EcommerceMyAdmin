@@ -907,9 +907,11 @@ class PagesModel extends GenericModel {
 		$this->checkAliasAll($id);
 	}
 	
-	protected function setCampoCerca($id)
+	public function setCampoCerca($id)
 	{
-		if (!v("mostra_filtro_ricerca_libera_in_magazzino"))
+		$codiceMotoreRicerca = MotoriricercaModel::getCodiceAttivo();
+		
+		if (!v("mostra_filtro_ricerca_libera_in_magazzino") && $codiceMotoreRicerca != "INTERNO")
 			return;
 		
 		$record = $this->selectId((int)$id);
@@ -952,20 +954,15 @@ class PagesModel extends GenericModel {
 				"campo_cerca"	=>	implode(" ", $stringSearchArray),
 			));
 			
-			if ($this->pUpdate((int)$id) && MotoriricercaModel::getCodiceAttivo() == "INTERNO")
+			if ($this->pUpdate((int)$id) && $codiceMotoreRicerca == "INTERNO")
 			{
-				// riempio la tabella pages_ricerca
 				$categorie = implode(" ", $arrayCategorie);
 				
-				$valoriRicerca = array(
-					"marchio"	=>	$marchio,
-					"categorie"	=>	$categorie,
-					"titolo"	=>	$titolo,
-					"marchio_categorie"	=>	$marchio." ".$categorie,
-					"marchio_titolo"	=>	$marchio." ".$titolo,
-				);
+				// genero l'oggetto di ricerca per la tabella pages_ricerca
+				$oggettoRicerca = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $categorie, $titolo);
 				
-				PagesricercaModel::inserisci($id, $valoriRicerca);
+				// riempio la tabella pages_ricerca
+				PagesricercaModel::inserisci($id, $oggettoRicerca);
 			}
 		}
 	}

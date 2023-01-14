@@ -35,6 +35,42 @@ class Interno extends MotoreRicerca
 		return false;
 	}
 	
+	public function svuotaProdotti($indice = "prodotti_it")
+	{
+		$this->salvaDatiInviati(array());
+		
+		return "";
+	}
+	
+	public function inviaProdotti($idPage = 0, $indice = "prodotti_it")
+	{
+		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "none");
+		
+		if (count($struct) > 0)
+		{
+			$nomeCampoId = $this->getNomeCampoId();
+			
+			$p = new PagesModel();
+			
+			if (v("usa_transactions"))
+				$p->db->beginTransaction();
+			
+			foreach ($struct as $s)
+			{
+				if (isset($s[$nomeCampoId]))
+				{
+					echo $s[$nomeCampoId]."\n";
+					$p->setCampoCerca((int)$s[$nomeCampoId]);
+				}
+			}
+			
+			if (v("usa_transactions"))
+				$p->db->commit();
+		}
+		
+		return $log;
+	}
+	
 	public function cerca($indice, $search)
 	{
 		$search = trim($search);
@@ -49,8 +85,6 @@ class Interno extends MotoreRicerca
 		
 		$res = $this->ottieniOggetti(0, $p);
 		
-// 		print_r($res);die();
-		
 		$ids = [];
 		
 		foreach ($res as $r)
@@ -59,8 +93,6 @@ class Interno extends MotoreRicerca
 		}
 		
 		$oggettiRicerca = $pRicerca->getStructFromIdsOfPages($ids);
-		
-// 		print_r($oggettiRicerca);die();
 		
 		$risultatiRicerca = array(
 			"hits"	=>	array(),
@@ -106,8 +138,6 @@ class Interno extends MotoreRicerca
 			
 			$risultatiRicerca["hits"][] = $temp;
 		}
-		
-// 		print_r($risultatiRicerca);die();
 		
 		return $this->elaboraOutput($search, $risultatiRicerca);
 	}

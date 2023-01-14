@@ -1710,8 +1710,12 @@ class GenericModel extends Model_Tree
 	public function getWhereSearch($cerca)
 	{
 		$cercaArray = explode(" ",(string)trim($cerca));
-// 		echo $cerca;
-// 		print_r($cercaArray);
+		
+		if (count($cercaArray) > 50)
+			return array(
+				"pages.id_page"	=>	"-1",
+			);
+		
 		$andArray = array();
 		
 		$iCerca = 8;

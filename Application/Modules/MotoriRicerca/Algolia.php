@@ -57,70 +57,11 @@ class Algolia extends MotoreRicerca
 	
 	public function inviaProdotti($idPage = 0, $indice = "prodotti_it")
 	{
-		$ultimiDatiInviati = $this->leggiDatiInviati();
-		
-// 		print_r($ultimiDatiInviati);
-		
-		$oggetti = $this->ottieniOggetti($idPage);
-		
-		$nomeCampoId = $this->getNomeCampoId();
-		
-		$struct = $structInviati = $idsNuoviTotali = array();
-		
-		foreach ($oggetti as $o)
-		{
-			$idPage = $o["id_page"];
-			
-			$idsNuoviTotali[] = $idPage;
-			
-			$catString = count($o["categorie"]) > 0 ? $this->pulisciXss(implode(" ",$o["categorie"][0])) : "";
-			$marchio = $this->pulisciXss($o["marchio"]);
-			$titolo = $this->pulisciXss($o["titolo"]);
-			
-			$hash = md5($marchio.$catString.$titolo.$marchio." ".$catString.$marchio." ".$titolo);
-			
-			if (!isset($ultimiDatiInviati[$idPage]) || (string)$ultimiDatiInviati[$idPage] !== $hash)
-			{
-				$structInviati[$idPage] = $hash;
-				
-				$struct[] = array(
-					"marchio"		=>	$marchio,
-					"categorie"		=>	$catString,
-					"titolo"		=>	$titolo,
-					"marchio_categorie"		=>	$marchio." ".$catString,
-					"marchio_titolo"		=>	$marchio." ".$titolo,
-					$nomeCampoId	=>	$idPage,
-				);
-			}
-		}
-		
-		$daEliminare = array();
-		
-// 		echo "STRUCT ARRAY:\n";
-// 		print_r($idsNuoviTotali);
-		
-		foreach ($ultimiDatiInviati as $idP => $hash)
-		{
-			if (!in_array($idP,$idsNuoviTotali))
-				$daEliminare[] = $idP;
-		}
-		
-		foreach ($ultimiDatiInviati as $idP => $h)
-		{
-			if (!isset($structInviati[$idP]) && !in_array($idP,$daEliminare))
-				$structInviati[$idP] = $h;
-		}
-		
 		$client = $this->getClient("scrivi");
 		
 		$index = $client->initIndex($indice);
 		
-		$this->salvaDatiInviati($structInviati);
-		
-		$log = "DA ELIMINARE: ".count($daEliminare)."\n";
-		$log .= print_r($daEliminare, true);
-		$log .= "DA AGGIUNGERE / AGGIORNARE ".count($struct)."\n";
-		$log .= print_r($struct, true);
+		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "pulisciXss");
 		
 		if (count($daEliminare) > 0)
 			print_r($index->deleteObjects($daEliminare));

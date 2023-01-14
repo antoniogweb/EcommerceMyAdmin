@@ -39,6 +39,24 @@ class PagesricercaModel extends GenericModel {
         );
     }
     
+    // genera l'has dell'oggetto di ricerca
+    public static function generaHashOggettoRicerca($marchio, $categorie, $titolo)
+    {
+		return md5($marchio.$categorie.$titolo.$marchio." ".$categorie.$marchio." ".$titolo);
+    }
+    
+    // crea la struttura dell'oggetto di ricerca da salvare
+    public static function creaStrutturaOggettoRicerca($marchio, $categorie, $titolo)
+    {
+		return array(
+			"marchio"	=>	$marchio,
+			"categorie"	=>	$categorie,
+			"titolo"	=>	$titolo,
+			"marchio_categorie"	=>	$marchio." ".$categorie,
+			"marchio_titolo"	=>	$marchio." ".$titolo,
+		);
+    }
+    
     public static function inserisci($idPage, $values, $lingua = "it")
     {
 		$pRicercaModel = new PagesricercaModel();

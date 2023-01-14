@@ -139,6 +139,79 @@ class MotoreRicerca
 		return $finalStruct;
 	}
 	
+	protected function applicaCleanFunction($cleanFunction, $valore)
+	{
+		return call_user_func(array($this, $cleanFunction),$valore);
+	}
+	
+	protected function none($valore)
+	{
+		return $valore;
+	}
+	
+	protected function getOggettiDaInviareEdEliminare($idPage = 0, $cleanFunction = "none")
+	{
+		$ultimiDatiInviati = $this->leggiDatiInviati();
+		
+// 		print_r($ultimiDatiInviati);
+		
+		$oggetti = $this->ottieniOggetti($idPage);
+		
+		$nomeCampoId = $this->getNomeCampoId();
+		
+		$struct = $structInviati = $idsNuoviTotali = array();
+		
+		foreach ($oggetti as $o)
+		{
+			$idPage = $o["id_page"];
+			
+			$idsNuoviTotali[] = $idPage;
+			
+			$catString = count($o["categorie"]) > 0 ? $this->applicaCleanFunction($cleanFunction, implode(" ",$o["categorie"][0])) : "";
+			$marchio = $this->applicaCleanFunction($cleanFunction, $o["marchio"]);
+			$titolo = $this->applicaCleanFunction($cleanFunction, $o["titolo"]);
+			
+// 			$catString = count($o["categorie"]) > 0 ? $this->pulisciXss(implode(" ",$o["categorie"][0])) : "";
+// 			$marchio = $this->pulisciXss($o["marchio"]);
+// 			$titolo = $this->pulisciXss($o["titolo"]);
+			
+			$hash = PagesricercaModel::generaHashOggettoRicerca($marchio, $catString, $titolo);
+			
+			if (!isset($ultimiDatiInviati[$idPage]) || (string)$ultimiDatiInviati[$idPage] !== $hash)
+			{
+				$structInviati[$idPage] = $hash;
+				
+				$temp = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $catString, $titolo);
+				$temp[$nomeCampoId] = $idPage;
+				
+				$struct[] = $temp;
+			}
+		}
+		
+		$daEliminare = array();
+		
+		foreach ($ultimiDatiInviati as $idP => $hash)
+		{
+			if (!in_array($idP,$idsNuoviTotali))
+				$daEliminare[] = $idP;
+		}
+		
+		foreach ($ultimiDatiInviati as $idP => $h)
+		{
+			if (!isset($structInviati[$idP]) && !in_array($idP,$daEliminare))
+				$structInviati[$idP] = $h;
+		}
+		
+		$this->salvaDatiInviati($structInviati);
+		
+		$log = "DA ELIMINARE: ".count($daEliminare)."\n";
+		$log .= print_r($daEliminare, true);
+		$log .= "DA AGGIUNGERE / AGGIORNARE: ".count($struct)."\n";
+		$log .= print_r($struct, true);
+		
+		return array($struct, $daEliminare, $log);
+	}
+	
 	protected function sanitizeTesto($value)
 	{
 		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[b]${2}[/b]',$value);
