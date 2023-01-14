@@ -34,6 +34,9 @@ class BaseBaseController extends Controller
 	protected $fonteContatto = null;
 	protected $idRedirectContatti = null;
 	
+	protected $estratiDatiGenerali = true;
+	
+	public $langDb = null;
 	public $cleanAlias = null;
 	public $prodottiInEvidenza;
 	public $elencoCategorieFull;
@@ -257,7 +260,7 @@ class BaseBaseController extends Controller
 		
 		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m("CategoriesModel")->getShopCategoryId();
 		
-		if (!$cache->saved())
+		if (!$cache->saved() && $this->estratiDatiGenerali)
 			$this->estratiDatiGenerali($controller, $action);
 		
 		Lang::$current = Params::$lang;

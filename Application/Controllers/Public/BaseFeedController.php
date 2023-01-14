@@ -22,12 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BaseFeedController extends BaseController
+class BaseFeedController extends Controller
 {
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
+		if (empty(VariabiliModel::$valori))
+			VariabiliModel::ottieniVariabili();
+		
 		if (!v("attiva_gestione_feed"))
 			$this->responseCode(403);
 	}
