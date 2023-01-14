@@ -28,9 +28,9 @@ class MotoreRicerca
 {
 	use Modulo;
 	
-	public function ottieniOggetti($idPage = 0)
+	public function ottieniOggetti($idPage = 0, $model = null)
 	{
-		$strutturaProdotti = FeedModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$idPage, 0, false);
+		$strutturaProdotti = FeedModel::getModuloPadre()->strutturaFeedProdotti($model, (int)$idPage, 0, false);
 		
 		return $strutturaProdotti;
 	}
@@ -60,5 +60,104 @@ class MotoreRicerca
 		$path = $this->getLogPath();
 		
 		FilePutContentsAtomic($path, serialize($data));
+	}
+	
+	protected function elaboraOutput($search, $res)
+	{
+// 		print_r($res);
+		
+		$searchStruct = array();
+		
+		$arrayCicli = array(
+			array("marchio"),
+			array("categorie"),
+			array("titolo"),
+			array("marchio_categorie"),
+			array("marchio_titolo"),
+		);
+		
+		$arrayDiParoleInserite = array();
+		
+		if (isset($res["hits"]))
+		{
+			foreach ($arrayCicli as $elementiCiclo)
+			{
+				foreach ($res["hits"] as $r)
+				{
+					$marchioTrovato = false;
+					$numeroMatch = 0;
+					$numeroParole = 0;
+					
+					$tempLabel = $tempValue = "";
+					
+					foreach ($r["_highlightResult"] as $field => $results)
+					{
+						if (in_array($field, $elementiCiclo) && isset($results["matchLevel"]) && ($results["matchLevel"] == "full" || $results["matchLevel"] == "partial"))
+						{
+							if (count($elementiCiclo) === 1)
+								$marchioTrovato = true;
+							
+							$numeroMatch++;
+							
+							$tempLabel .= " ".$results["value"];
+							$tempValue .= " ".$results["value"];
+							$numeroParole += (isset($results["matchedWords"]) && is_array($results["matchedWords"])) ? count($results["matchedWords"]) : 0;
+// 							echo "INSIDE - F:".$field." V:".$tempValue."\n";
+						}
+					}
+					
+					$label = $this->vitalizeTesto($this->sanitizeTesto($tempLabel));
+					$value = sanitizeHtml(strtolower(strip_tags($tempValue)));
+					
+					if (trim($tempValue) && (int)$numeroMatch === (int)count($elementiCiclo) && !in_array($value, $arrayDiParoleInserite))
+					{
+						$searchStruct[] = array(
+							"label"	=>	$label,
+							"value"	=>	$value,
+							"numero_parole"	=>	$numeroParole,
+						);
+						
+						$arrayDiParoleInserite[] = $value;
+					}
+				}
+			}
+		}
+		
+// 		print_r($searchStruct);
+		
+		$finalStruct = array();
+		
+		$searchArray = explode(" ", $search);
+		
+		foreach ($searchStruct as $element)
+		{
+			if ((int)count($searchArray) === (int)$element["numero_parole"])
+				$finalStruct[] = $element;
+		}
+		
+// 		print_r($finalStruct);die();
+		
+		return $finalStruct;
+	}
+	
+	protected function sanitizeTesto($value)
+	{
+		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[b]${2}[/b]',$value);
+		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[b]${2}[/b]',$value);
+		$value = preg_replace('/(\<b\>)(.*?)(\<\/b\>)/s', '[b]${2}[/b]',$value);
+		
+		$value = strip_tags($value);
+		
+		return sanitizeAll($value);
+	}
+	
+	protected function vitalizeTesto($string)
+	{
+		$string = htmlentitydecode($string);
+		$string = strip_tags($string);
+		
+		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<b>${2}</b>',$string);
+		
+		return $string;
 	}
 }

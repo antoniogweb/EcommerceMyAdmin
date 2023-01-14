@@ -1,0 +1,1 @@
+INSERT INTO `motori_ricerca` (`id_motore_ricerca`, `titolo`, `attivo`, `codice`, `modulo`, `account_id`, `api_key`, `id_order`, `api_key_public`) VALUES (NULL, 'Motore Interno', '0', 'INTERNO', 'Interno', '', '', '2', '');

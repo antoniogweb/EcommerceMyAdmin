@@ -1,4 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php if (!isset($jsVariablesLoaded)) { ?>
 <script>
 	var baseUrl = "<?php echo $this->baseUrl;?>";
 	var baseUrlSrc = "<?php echo $this->baseUrlSrc;?>";
@@ -32,8 +33,10 @@
 	<?php if (v("attiva_liste_regalo")) { ?>
 	var stringa_testo_copiato_clipboard = "<?php echo gtext("Il link della lista è stato copiato negli appunti.");?>";
 	<?php } ?>
-	var attiva_icheck = <?php echo (!isset($skipIcheck)) ?  "true" : "false";  ?>
+	var attiva_icheck = <?php echo (!isset($skipIcheck)) ?  "true" : "false";  ?>;
+	var motore_ricerca = "<?php echo strtolower(MotoriricercaModel::getCodiceAttivo());?>";
 </script>
+<?php } ?>
 <?php if (!isset($skipJquery)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
 <?php } ?>

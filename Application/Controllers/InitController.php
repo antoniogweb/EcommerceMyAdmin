@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 trait InitController
 {
 	public static $traduzioni = array();
+	public $parentRootFolder;
 	
 	public function init()
 	{

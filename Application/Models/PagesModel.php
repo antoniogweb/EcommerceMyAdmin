@@ -202,6 +202,7 @@ class PagesModel extends GenericModel {
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_page', null, "CASCADE"),
 			'stats' => array("HAS_MANY", 'PagesstatsModel', 'id_page', null, "CASCADE"),
 			'redirect' => array("HAS_MANY", 'RedirectModel', 'id_page', null, "CASCADE"),
+			'ricerche' => array("HAS_MANY", 'PagesricercaModel', 'id_page', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
 		);
     }
@@ -923,26 +924,49 @@ class PagesModel extends GenericModel {
 			if (count($parents) > 0)
 				array_shift($parents);
 			
+			$titolo = htmlentitydecode($record["title"]);
+			
 			$stringSearchArray = array(
-				htmlentitydecode($record["title"])
+				$titolo
 			);
+			
+			$arrayCategorie = [];
 			
 			foreach ($parents as $p)
 			{
-				$stringSearchArray[] = htmlentitydecode($p["categories"]["title"]);
+				$categoria =  htmlentitydecode($p["categories"]["title"]);
+				$arrayCategorie[] = $categoria;
+				$stringSearchArray[] = $categoria;
 			}
+			
+			$marchio = "";
 			
 			if (isset($record["id_marchio"]) && $record["id_marchio"])
 			{
 				$m = new MarchiModel();
-				$stringSearchArray[] = htmlentitydecode($m->whereId($record["id_marchio"])->field("titolo"));
+				$marchio = htmlentitydecode($m->whereId($record["id_marchio"])->field("titolo"));
+				$stringSearchArray[] = $marchio;
 			}
 			
 			$this->sValues(array(
 				"campo_cerca"	=>	implode(" ", $stringSearchArray),
 			));
 			
-			$this->pUpdate((int)$id);
+			if ($this->pUpdate((int)$id) && MotoriricercaModel::getCodiceAttivo() == "INTERNO")
+			{
+				// riempio la tabella pages_ricerca
+				$categorie = implode(" ", $arrayCategorie);
+				
+				$valoriRicerca = array(
+					"marchio"	=>	$marchio,
+					"categorie"	=>	$categorie,
+					"titolo"	=>	$titolo,
+					"marchio_categorie"	=>	$marchio." ".$categorie,
+					"marchio_titolo"	=>	$marchio." ".$titolo,
+				);
+				
+				PagesricercaModel::inserisci($id, $valoriRicerca);
+			}
 		}
 	}
 	

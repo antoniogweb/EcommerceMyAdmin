@@ -38,7 +38,7 @@ class Algolia extends MotoreRicerca
 	
 	public function isAttivo()
 	{
-		if (trim($this->params["account_id"]) && trim($this->params["api_key"]) && trim($this->params["api_key_public"]))
+		if ($this->params["attivo"] && trim($this->params["account_id"]) && trim($this->params["api_key"]) && trim($this->params["api_key_public"]))
 			return true;
 		
 		return false;
@@ -154,99 +154,6 @@ class Algolia extends MotoreRicerca
 		
 		$res = $index->search($search);
 		
-// 		print_r($res);
-		
-		$searchStruct = array();
-		
-		$arrayCicli = array(
-			array("marchio"),
-			array("categorie"),
-			array("titolo"),
-			array("marchio_categorie"),
-			array("marchio_titolo"),
-		);
-		
-		$arrayDiParoleInserite = array();
-		
-		if (isset($res["hits"]))
-		{
-			foreach ($arrayCicli as $elementiCiclo)
-			{
-				foreach ($res["hits"] as $r)
-				{
-					$marchioTrovato = false;
-					$numeroMatch = 0;
-					$numeroParole = 0;
-					
-					$tempLabel = $tempValue = "";
-					
-					foreach ($r["_highlightResult"] as $field => $results)
-					{
-						if (in_array($field, $elementiCiclo) && isset($results["matchLevel"]) && ($results["matchLevel"] == "full" || $results["matchLevel"] == "partial"))
-						{
-							if (count($elementiCiclo) === 1)
-								$marchioTrovato = true;
-							
-							$numeroMatch++;
-							
-							$tempLabel .= " ".$results["value"];
-							$tempValue .= " ".$results["value"];
-							$numeroParole += (isset($results["matchedWords"]) && is_array($results["matchedWords"])) ? count($results["matchedWords"]) : 0;
-// 							echo "INSIDE - F:".$field." V:".$tempValue."\n";
-						}
-					}
-					
-					$label = $this->vitalizeTesto($this->sanitizeTesto($tempLabel));
-					$value = sanitizeHtml(strtolower(strip_tags($tempValue)));
-					
-					if (trim($tempValue) && (int)$numeroMatch === (int)count($elementiCiclo) && !in_array($value, $arrayDiParoleInserite))
-					{
-						$searchStruct[] = array(
-							"label"	=>	$label,
-							"value"	=>	$value,
-							"numero_parole"	=>	$numeroParole,
-						);
-						
-						$arrayDiParoleInserite[] = $value;
-					}
-				}
-			}
-		}
-		
-// 		print_r($searchStruct);
-		
-		$finalStruct = array();
-		
-		$searchArray = explode(" ", $search);
-		
-		foreach ($searchStruct as $element)
-		{
-			if ((int)count($searchArray) === (int)$element["numero_parole"])
-				$finalStruct[] = $element;
-		}
-		
-// 		print_r($finalStruct);die();
-		
-		return $finalStruct;
-	}
-	
-	public function sanitizeTesto($value)
-	{
-		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[b]${2}[/b]',$value);
-		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[b]${2}[/b]',$value);
-		
-		$value = strip_tags($value);
-		
-		return sanitizeAll($value);
-	}
-	
-	public function vitalizeTesto($string)
-	{
-		$string = htmlentitydecode($string);
-		$string = strip_tags($string);
-		
-		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<b>${2}</b>',$string);
-		
-		return $string;
+		return $this->elaboraOutput($search, $res);
 	}
 }

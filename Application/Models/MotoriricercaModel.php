@@ -88,4 +88,13 @@ class MotoriricercaModel extends GenericModel
 			"attivo"	=>	1,
 		))->rowNumber();
 	}
+	
+	public static function getCodiceAttivo()
+	{
+		$m = new MotoriricercaModel();
+		
+		return $m->clear()->where(array(
+			"attivo"	=>	1,
+		))->field("codice");
+	}
 }

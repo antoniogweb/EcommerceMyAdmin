@@ -75,7 +75,7 @@ class Feed
 				"combinazioni.id_c"	=>	(int)$idC,
 			));
 		
-		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere";
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio";
 		
 		if ($combinazioniLinkVeri || $idC)
 		{
@@ -170,10 +170,12 @@ class Feed
 				"id_page"	=>	$r["pages"]["id_page"],
 				"id_comb"	=>	$idC,
 				"id_c"		=>	$r["pages"]["id_c"],
+				"id_marchio"	=>	$r["pages"]["id_marchio"],
 				"titolo"	=>	trim(field($r, "title").$titoloCombinazione),
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
 				"sottotitolo"	=>	trim(field($r, "sottotitolo")),
 				"descrizione"	=>	trim(field($r, "description")),
+				"campo_cerca"	=>	$r["pages"]["campo_cerca"],
 				"categorie"	=>	$structCategory,
 				"immagine_principale"	=>	$r["pages"]["immagine"],
 				"altre_immagini"	=>	ImmaginiModel::altreImmaginiPagina((int)$r["pages"]["id_page"], $idC),
