@@ -33,7 +33,7 @@ trait Modulo
 	{
 		$this->params = $record;
 		
-		$this->cacheAbsolutePath = rtrim(str_replace("/admin","",LIBRARY),"/");
+		$this->cacheAbsolutePath = rtrim(LIBRARY,"/");
 		
 		if (!@is_dir($this->cacheAbsolutePath."/".$this->logsFolder))
 		{

@@ -64,8 +64,6 @@ class MotoreRicerca
 	
 	protected function elaboraOutput($search, $res)
 	{
-// 		print_r($res);
-		
 		$searchStruct = array();
 		
 		$arrayCicli = array(
@@ -122,8 +120,6 @@ class MotoreRicerca
 			}
 		}
 		
-// 		print_r($searchStruct);
-		
 		$finalStruct = array();
 		
 		$searchArray = explode(" ", $search);
@@ -133,8 +129,6 @@ class MotoreRicerca
 			if ((int)count($searchArray) === (int)$element["numero_parole"])
 				$finalStruct[] = $element;
 		}
-		
-// 		print_r($finalStruct);die();
 		
 		return $finalStruct;
 	}
@@ -152,8 +146,6 @@ class MotoreRicerca
 	protected function getOggettiDaInviareEdEliminare($idPage = 0, $cleanFunction = "none")
 	{
 		$ultimiDatiInviati = $this->leggiDatiInviati();
-		
-// 		print_r($ultimiDatiInviati);
 		
 		$oggetti = $this->ottieniOggetti($idPage);
 		
