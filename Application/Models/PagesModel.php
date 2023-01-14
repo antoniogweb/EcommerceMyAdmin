@@ -918,6 +918,10 @@ class PagesModel extends GenericModel {
 		
 		if (!empty($record))
 		{
+// 			Params::sLang("it");
+// 			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->ottieniOggetti((int)$id);
+// 			Params::rLang();
+			
 			$c = new CategoriesModel();
 			
 			$parents = $c->parents($record["id_c"], false, false, null, "title");
