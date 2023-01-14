@@ -49,6 +49,8 @@ class Interno extends MotoreRicerca
 		
 		$res = $this->ottieniOggetti(0, $p);
 		
+// 		print_r($res);die();
+		
 		$ids = [];
 		
 		foreach ($res as $r)
@@ -57,6 +59,8 @@ class Interno extends MotoreRicerca
 		}
 		
 		$oggettiRicerca = $pRicerca->getStructFromIdsOfPages($ids);
+		
+// 		print_r($oggettiRicerca);die();
 		
 		$risultatiRicerca = array(
 			"hits"	=>	array(),
@@ -71,6 +75,7 @@ class Interno extends MotoreRicerca
 			
 			foreach ($r as $campo => $valore)
 			{
+				$valore = $this->pulisciXss($valore);
 				$label = preg_replace("/($pattern)/i","<b>$0</b>",$valore, 6, $numero);
 				
 // 				echo $label."<br />\n";
@@ -87,7 +92,9 @@ class Interno extends MotoreRicerca
 			
 			$risultatiRicerca["hits"][] = $temp;
 		}
-
+		
+// 		print_r($risultatiRicerca);die();
+		
 		return $this->elaboraOutput($search, $risultatiRicerca);
 	}
 }

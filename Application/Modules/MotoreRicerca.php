@@ -102,12 +102,11 @@ class MotoreRicerca
 							$tempLabel .= " ".$results["value"];
 							$tempValue .= " ".$results["value"];
 							$numeroParole += (isset($results["matchedWords"]) && is_array($results["matchedWords"])) ? count($results["matchedWords"]) : 0;
-// 							echo "INSIDE - F:".$field." V:".$tempValue."\n";
 						}
 					}
 					
 					$label = $this->vitalizeTesto($this->sanitizeTesto($tempLabel));
-					$value = sanitizeHtml(strtolower(strip_tags($tempValue)));
+					$value = strtolower(strip_tags($tempValue));
 					
 					if (trim($tempValue) && (int)$numeroMatch === (int)count($elementiCiclo) && !in_array($value, $arrayDiParoleInserite))
 					{
@@ -148,16 +147,20 @@ class MotoreRicerca
 		
 		$value = strip_tags($value);
 		
-		return sanitizeAll($value);
+		return $value;
 	}
 	
 	protected function vitalizeTesto($string)
 	{
-		$string = htmlentitydecode($string);
 		$string = strip_tags($string);
 		
 		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<b>${2}</b>',$string);
 		
 		return $string;
+	}
+	
+	protected function pulisciXss($string)
+	{
+		return sanitizeHtmlLight(strip_tags(htmlentitydecode($string)));
 	}
 }

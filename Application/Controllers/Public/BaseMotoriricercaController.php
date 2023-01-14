@@ -48,6 +48,8 @@ class BaseMotoriricercaController extends BaseController
 				
 				$jsonArray = MotoriricercaModel::getModulo($modulo)->cerca("prodotti_".Params::$lang, $search);
 				
+// 				print_r($jsonArray);die();
+				
 				header('Content-type: application/json; charset=utf-8');
 				
 				echo json_encode($jsonArray);

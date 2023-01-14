@@ -73,9 +73,9 @@ class Algolia extends MotoreRicerca
 			
 			$idsNuoviTotali[] = $idPage;
 			
-			$catString = count($o["categorie"]) > 0 ? htmlentitydecode(implode(" ",$o["categorie"][0])) : "";
-			$marchio = htmlentitydecode($o["marchio"]);
-			$titolo = htmlentitydecode($o["titolo"]);
+			$catString = count($o["categorie"]) > 0 ? $this->pulisciXss(implode(" ",$o["categorie"][0])) : "";
+			$marchio = $this->pulisciXss($o["marchio"]);
+			$titolo = $this->pulisciXss($o["titolo"]);
 			
 			$hash = md5($marchio.$catString.$titolo.$marchio." ".$catString.$marchio." ".$titolo);
 			
