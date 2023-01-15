@@ -918,55 +918,36 @@ class PagesModel extends GenericModel {
 		
 		if (!empty($record))
 		{
-// 			Params::sLang("it");
-// 			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->ottieniOggetti((int)$id);
-// 			Params::rLang();
+			Params::sLang("it");
+			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->ottieniOggetti((int)$id);
+			Params::rLang();
 			
-			$c = new CategoriesModel();
-			
-			$parents = $c->parents($record["id_c"], false, false, null, "title");
-			array_shift($parents);
-			
-			if (count($parents) > 0)
-				array_shift($parents);
-			
-			$titolo = htmlentitydecode($record["title"]);
-			
-			$stringSearchArray = array(
-				$titolo
-			);
-			
-			$arrayCategorie = [];
-			
-			foreach ($parents as $p)
+			if (count($strutturaProdotti) > 0)
 			{
-				$categoria =  htmlentitydecode($p["categories"]["title"]);
-				$arrayCategorie[] = $categoria;
-				$stringSearchArray[] = $categoria;
-			}
-			
-			$marchio = "";
-			
-			if (isset($record["id_marchio"]) && $record["id_marchio"])
-			{
-				$m = new MarchiModel();
-				$marchio = htmlentitydecode($m->whereId($record["id_marchio"])->field("titolo"));
-				$stringSearchArray[] = $marchio;
-			}
-			
-			$this->sValues(array(
-				"campo_cerca"	=>	implode(" ", $stringSearchArray),
-			));
-			
-			if ($this->pUpdate((int)$id) && $codiceMotoreRicerca == "INTERNO")
-			{
-				$categorie = implode(" ", $arrayCategorie);
+				$o = $strutturaProdotti[0];
 				
-				// genero l'oggetto di ricerca per la tabella pages_ricerca
-				$oggettoRicerca = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $categorie, $titolo);
+				$categorie = count($o["categorie"]) > 0 ? htmlentitydecode(implode(" ",$o["categorie"][0])) : "";
+				$marchio = htmlentitydecode($o["marchio"]);
+				$titolo = htmlentitydecode($o["titolo"]);
 				
-				// riempio la tabella pages_ricerca
-				PagesricercaModel::inserisci($id, $oggettoRicerca);
+				$stringSearchArray = array(
+					$titolo,
+					$categorie,
+					$marchio
+				);
+				
+				$this->sValues(array(
+					"campo_cerca"	=>	implode(" ", $stringSearchArray),
+				));
+				
+				if ($this->pUpdate((int)$id) && $codiceMotoreRicerca == "INTERNO")
+				{
+					// genero l'oggetto di ricerca per la tabella pages_ricerca
+					$oggettoRicerca = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $categorie, $titolo);
+					
+					// riempio la tabella pages_ricerca
+					PagesricercaModel::inserisci($id, $oggettoRicerca);
+				}
 			}
 		}
 	}

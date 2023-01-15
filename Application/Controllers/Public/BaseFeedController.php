@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseFeedController extends Controller
 {
+	protected $estratiDatiGenerali = false;
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);

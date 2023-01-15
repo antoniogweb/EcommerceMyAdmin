@@ -165,10 +165,6 @@ class MotoreRicerca
 			$marchio = $this->applicaCleanFunction($cleanFunction, $o["marchio"]);
 			$titolo = $this->applicaCleanFunction($cleanFunction, $o["titolo"]);
 			
-// 			$catString = count($o["categorie"]) > 0 ? $this->pulisciXss(implode(" ",$o["categorie"][0])) : "";
-// 			$marchio = $this->pulisciXss($o["marchio"]);
-// 			$titolo = $this->pulisciXss($o["titolo"]);
-			
 			$hash = PagesricercaModel::generaHashOggettoRicerca($marchio, $catString, $titolo);
 			
 			if (!isset($ultimiDatiInviati[$idPage]) || (string)$ultimiDatiInviati[$idPage] !== $hash)
