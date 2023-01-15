@@ -42,6 +42,8 @@ class BaseMotoriricercaController extends BaseController
 		
 		if (trim((string)$search) && trim($modulo) && MotoriricercaModel::g()->checkModulo($modulo, ""))
 		{
+			IpcheckModel::check("CERCA $modulo");
+			
 			if (MotoriricercaModel::getModulo($modulo)->isAttivo())
 			{
 				User::setPostCountryFromUrl();
