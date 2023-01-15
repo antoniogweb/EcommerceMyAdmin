@@ -24,7 +24,7 @@ class Interno extends MotoreRicerca
 {
 	public function gCampiForm()
 	{
-		return 'titolo,attivo';
+		return 'titolo,attivo,tempo_cache,massimo_numero_di_ricerche_in_cache';
 	}
 	
 	public function isAttivo()
@@ -84,7 +84,7 @@ class Interno extends MotoreRicerca
 		
 		$pRicerca = new PagesricercaModel();
 		
-		$res = $this->ottieniOggetti(0, $p);
+		$res = $this->ottieniOggetti(0, $p, (int)$this->params["tempo_cache"]);
 		
 		$ids = [];
 		

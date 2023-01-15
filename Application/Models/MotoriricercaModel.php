@@ -67,6 +67,20 @@ class MotoriricercaModel extends GenericModel
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
+				'tempo_cache'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tempo di cache dell'output",
+					"options"	=>	OpzioniModel::codice("TEMPO_CACHE_FEED"),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'massimo_numero_di_ricerche_in_cache'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext('Il limite massimo di ricerche in cache viene considerato "nel tempo di cache", ad esempio 1 ora.')."<br />".gtext("Da proporzionare al tempo di cache.")."</div>"
+					),
+				),
 			),
 		);
 		

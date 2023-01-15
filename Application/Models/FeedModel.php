@@ -80,6 +80,13 @@ class FeedModel extends GenericModel
 						"<div class='form_notice'>".gtext("Verrà aggiunta ad ogni link del feed (inserire anche il ? iniziale)")."</div>"
 					),
 				),
+				'tempo_cache'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tempo di cache dell'output",
+					"options"	=>	OpzioniModel::codice("TEMPO_CACHE_FEED"),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 		);
 		

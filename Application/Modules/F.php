@@ -143,6 +143,19 @@ class F
 		echo '</rss>';
 	}
 	
+	// Delete ol files in the $path folder having pattern equal to $pattern older than $secs seconds
+	public static function deleteFilesOlderThanXSecs($path, $secs, $pattern = "/*", $globFlags = 0)
+	{
+		$now = time();
+		$files = glob($path . $pattern, $globFlags);
+		
+		foreach($files as $f)
+		{
+			if (is_file($f) && ($now - filemtime($f) > $secs))
+				unlink($f);
+		}
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

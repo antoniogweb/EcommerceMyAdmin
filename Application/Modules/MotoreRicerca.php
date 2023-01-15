@@ -30,9 +30,9 @@ class MotoreRicerca
 	
 	// ottieni tutti gli oggetti da inviare
 	// $model è un'istanza di PagesModel e può contenere una where clause
-	public function ottieniOggetti($idPage = 0, $model = null)
+	public function ottieniOggetti($idPage = 0, $model = null, $cacheTime = 0)
 	{
-		$strutturaProdotti = FeedModel::getModuloPadre()->strutturaFeedProdotti($model, (int)$idPage, 0, false);
+		$strutturaProdotti = $this->strutturaFeedProdotti($model, (int)$idPage, 0, false, $cacheTime);
 		
 		return $strutturaProdotti;
 	}

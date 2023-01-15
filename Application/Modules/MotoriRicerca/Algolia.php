@@ -26,7 +26,7 @@ class Algolia extends MotoreRicerca
 {
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,account_id,api_key,api_key_public';
+		return 'titolo,attivo,account_id,api_key,api_key_public,tempo_cache,massimo_numero_di_ricerche_in_cache';
 	}
 	
 	public function editFormStruct($model, $record)
@@ -87,6 +87,19 @@ class Algolia extends MotoreRicerca
 	
 	public function cerca($indice, $search)
 	{
+		$signature = "";
+		
+		// controllo che ci siano dati in cache
+		if ($this->params["tempo_cache"] > 0)
+		{
+			$signature = md5($indice.(string)$search);
+			
+			$cachedData = $this->getFromCache($signature);
+			
+			if ($cachedData !== false)
+				return $cachedData;
+		}
+		
 		$client = $this->getClient();
 		
 		$index = $client->initIndex($indice);
@@ -95,6 +108,12 @@ class Algolia extends MotoreRicerca
 		
 		$res = $index->search($search);
 		
-		return $this->elaboraOutput($search, $res);
+		$output = $this->elaboraOutput($search, $res);
+		
+		// Controllo e in caso salvo in cache
+		if ($this->params["tempo_cache"] > 0 && $signature)
+			$this->saveInCache($signature, $output);
+		
+		return $output;
 	}
 }
