@@ -106,12 +106,12 @@ trait Modulo
 	
 	protected function saveInCache($signature, $data)
 	{
-		$this->cleanCache();
-		
 		$cacheFolderPath = $this->getCacheFolderPath();
 		
 		if (@is_dir($cacheFolderPath))
 		{
+			$this->cleanCache();
+			
 			// controllo che non abbia superato il numero massimo di elementi in cache
 			if (isset($this->params["massimo_numero_di_ricerche_in_cache"]))
 			{
