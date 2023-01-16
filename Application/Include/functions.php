@@ -1381,16 +1381,17 @@ function nomeProvincia($codice)
 	return htmlentitydecode($p->where(array("codice_provincia"=>sanitizeDb($codice)))->field("provincia"));
 }
 
-function calcolaPrezzoFinale($idPage, $prezzoIntero, $checkPromo = true)
+function calcolaPrezzoFinale($idPage, $prezzoIntero, $checkPromo = true, $forzaNonIvato = false, $idC = 0)
 {
 	$p = new PagesModel();
 	
-	$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $p->getIdCombinazioneCanonical((int)$idPage);
+	if (!$idC)
+		$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $p->getIdCombinazioneCanonical((int)$idPage);
 	
 	$c = new CartModel();
 	$prezzoFinale = $c->calcolaPrezzoFinale($idPage, $prezzoIntero, 1, $checkPromo, true, $idC);
 	
-	if (ImpostazioniModel::$valori["esponi_prezzi_ivati"] == "Y")
+	if (ImpostazioniModel::$valori["esponi_prezzi_ivati"] == "Y" && !$forzaNonIvato)
 	{
 // 		$p = new PagesModel();
 		$iva = $p->getIva($idPage);

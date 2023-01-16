@@ -19,7 +19,7 @@ if (v("codice_gtm_analytics"))
 		gtag('event', 'view_item', {
 			"items": <?php echo F::jsonEncode($itemGtag);?>,
 			"currency": "EUR",
-			"value": <?php echo number_format(calcolaPrezzoFinale($idPaginaPerTracking, prezzoMinimo($idPaginaPerTracking)),2,".","");?>
+			"value": <?php echo number_format(calcolaPrezzoFinale($idPaginaPerTracking, prezzoMinimo($idPaginaPerTracking),true, !v("prezzi_ivati_in_carrello")),2,".","");?>
 		});
 	</script>
 	<?php } ?>
