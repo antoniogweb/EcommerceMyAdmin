@@ -583,13 +583,17 @@ class OrdiniModel extends FormModel {
 	{
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		
-		$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
+		$numero = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->rowNumber();
 		
-		if (count($res) > 0)
-		{
-			return true;
-		}
-		return false;
+		return ($numero > 0) ? true : false;
+		
+// 		$res = $this->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
+// 		
+// 		if (count($res) > 0)
+// 		{
+// 			return true;
+// 		}
+// 		return false;
 	}
 	
 	public function recordExists($id_o, $cart_uid)

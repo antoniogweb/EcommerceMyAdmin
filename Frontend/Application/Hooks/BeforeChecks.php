@@ -26,6 +26,22 @@ date_default_timezone_set('Europe/Rome');
 
 Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
 
+// $mysqli = Db_Mysqli::getInstance();
+$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
+
+// set logger if the log of the queries is enabled
+if (defined('LOG_QUERIES_ENABLED'))
+{
+	// set logger to development
+	$mysqli->setLogger(false);
+	
+	if (defined('LOG_QUERIES_THRESHOLD'))
+		Db_Log_Generic::$queryTimeThresholdToLogInSeconds = LOG_QUERIES_THRESHOLD;
+}
+
+if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
+	$mysqli->query("set session sql_mode=''");
+
 VariabiliModel::ottieniVariabili();
 
 if (VariabiliModel::valore("usa_transactions"))
@@ -80,11 +96,7 @@ Params::$exactUrlMatchRewrite = true;
 Params::$allowSessionIdFromGet = true;
 Params::$errorStringClassName = "uk-alert uk-alert-danger";
 
-// $mysqli = Db_Mysqli::getInstance();
-$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
 
-if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
-	$mysqli->query("set session sql_mode=''");
 
 Params::$language = "It";
 Params::$translatorFunction = "gtext";
