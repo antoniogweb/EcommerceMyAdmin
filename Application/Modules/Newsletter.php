@@ -24,8 +24,6 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Newsletter
 {
-// 	protected $params = "";
-	
 	public function gSecret1Label()
 	{
 		return "Secret 1";
