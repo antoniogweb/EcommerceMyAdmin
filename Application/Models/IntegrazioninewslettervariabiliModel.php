@@ -22,37 +22,23 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class Newsletter
-{
-// 	protected $params = "";
-	
-	public function gSecret1Label()
-	{
-		return "Secret 1";
+class IntegrazioninewslettervariabiliModel extends GenericModel {
+
+	public function __construct() {
+		$this->_tables='integrazioni_newsletter_variabili';
+		$this->_idFields='id_integrazione_newsletter_variabile';
+		
+		$this->_idOrder='id_order';
+		
+		parent::__construct();
 	}
 	
-	public function gSecret2Label()
+	public static function getCampi($codice)
 	{
-		return "Secret 2";
+		$inv = new IntegrazioninewslettervariabiliModel();
+		
+		return $inv->clear()->where(array(
+			"codice_integrazione_newsletter"	=>	sanitizeAll($codice),
+		))->orderBy("id_order")->toList("codice_campo", "nome_campo")->send();
 	}
-	
-// 	protected function mergeCampiAggiuntivi($valori, $strutturaFinale)
-// 	{
-// 		$campiAggiuntivi = IntegrazioninewslettervariabiliModel::getCampi($this->params["codice"]);
-// 		
-// 		print_r($valori);
-// 		print_r($strutturaFinale);
-// 		print_r($campiAggiuntivi);
-// 		
-// 		if (count($campiAggiuntivi) > 0)
-// 		{
-// 			foreach ($campiAggiuntivi as $codice => $campo)
-// 			{
-// 				if (isset($valori[$campo]))
-// 					$strutturaFinale[$codice] = $valori[$campo];
-// 			}
-// 		}
-// 		
-// 		return $strutturaFinale;
-// 	}
 }

@@ -586,6 +586,7 @@ class Route
 		
 		'integrazioninewsletter,main',
 		'integrazioninewsletter,form',
+		'integrazioninewsletter,campi',
 		
 		'sedi,main',
 		'sedi,form',

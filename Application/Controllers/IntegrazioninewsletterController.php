@@ -69,6 +69,8 @@ class IntegrazioninewsletterController extends BaseController
 		if ($queryType != "update")
 			die();
 		
+		$this->_posizioni['main'] = 'class="active"';
+		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
 		if (empty($record))
@@ -79,5 +81,42 @@ class IntegrazioninewsletterController extends BaseController
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function campi($id = 0)
+	{
+		$this->_posizioni['campi'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_integrazione_newsletter";
+		
+		$record = $this->m("IntegrazioninewsletterModel")->selectId((int)$id);
+		
+		if (empty($record))
+			$this->responseCode(404);
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->modelName = "IntegrazioninewslettervariabiliModel";
+		
+		$this->mainFields = array("integrazioni_newsletter_variabili.codice_campo","integrazioni_newsletter_variabili.nome_campo");
+		$this->mainHead = "Codice campo ".$record["titolo"].",Nome campo interno";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"campi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->orderBy("id_order")->where(array(
+			"codice_integrazione_newsletter_variabile"	=>	sanitizeAll($record["codice"]),
+		))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["IntegrazioninewsletterModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }
