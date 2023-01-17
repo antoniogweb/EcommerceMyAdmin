@@ -33,24 +33,4 @@ class Newsletter
 	{
 		return "Secret 2";
 	}
-	
-// 	protected function mergeCampiAggiuntivi($valori, $strutturaFinale)
-// 	{
-// 		$campiAggiuntivi = IntegrazioninewslettervariabiliModel::getCampi($this->params["codice"]);
-// 		
-// 		print_r($valori);
-// 		print_r($strutturaFinale);
-// 		print_r($campiAggiuntivi);
-// 		
-// 		if (count($campiAggiuntivi) > 0)
-// 		{
-// 			foreach ($campiAggiuntivi as $codice => $campo)
-// 			{
-// 				if (isset($valori[$campo]))
-// 					$strutturaFinale[$codice] = $valori[$campo];
-// 			}
-// 		}
-// 		
-// 		return $strutturaFinale;
-// 	}
 }

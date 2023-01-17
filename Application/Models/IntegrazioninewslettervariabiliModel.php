@@ -33,12 +33,41 @@ class IntegrazioninewslettervariabiliModel extends GenericModel {
 		parent::__construct();
 	}
 	
-	public static function getCampi($codice)
+	public static function getCampi($codice = null)
 	{
 		$inv = new IntegrazioninewslettervariabiliModel();
 		
-		return $inv->clear()->where(array(
-			"codice_integrazione_newsletter"	=>	sanitizeAll($codice),
-		))->orderBy("id_order")->toList("codice_campo", "nome_campo")->send();
+		$inv->clear()->orderBy("id_order");
+		
+		if ($codice)
+			$inv->where(array(
+				"codice_integrazione_newsletter"	=>	sanitizeAll($codice),
+			))->toList("codice_campo", "nome_campo");
+		else
+			$inv->toList("nome_campo", "nome_campo");
+		
+		return $inv->send();
+	}
+	
+	public static function mergeCampiAggiuntivi($strutturaFinale, $valori, $codice = null)
+	{
+		$campiAggiuntivi = IntegrazioninewslettervariabiliModel::getCampi($codice);
+		
+// 		print_r($valori);
+// 		print_r($strutturaFinale);
+// 		print_r($campiAggiuntivi);
+		
+		if (count($campiAggiuntivi) > 0)
+		{
+			foreach ($campiAggiuntivi as $codice => $campo)
+			{
+				if (isset($valori[$campo]))
+					$strutturaFinale[$codice] = $valori[$campo];
+			}
+		}
+		
+// 		print_r($strutturaFinale);
+		
+		return $strutturaFinale;
 	}
 }

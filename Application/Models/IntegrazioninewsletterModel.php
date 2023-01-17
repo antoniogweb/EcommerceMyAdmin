@@ -173,6 +173,8 @@ class IntegrazioninewsletterModel extends GenericModel
 				$valoriFinali["azienda"] = $valori["azienda"];
 		}
 		
+		$valoriFinali = IntegrazioninewslettervariabiliModel::mergeCampiAggiuntivi($valoriFinali, $valori);
+		
 		return $valoriFinali;
 	}
 	
