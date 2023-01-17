@@ -53,10 +53,6 @@ class IntegrazioninewslettervariabiliModel extends GenericModel {
 	{
 		$campiAggiuntivi = IntegrazioninewslettervariabiliModel::getCampi($codice);
 		
-// 		print_r($valori);
-// 		print_r($strutturaFinale);
-// 		print_r($campiAggiuntivi);
-		
 		if (count($campiAggiuntivi) > 0)
 		{
 			foreach ($campiAggiuntivi as $codice => $campo)
@@ -65,8 +61,6 @@ class IntegrazioninewslettervariabiliModel extends GenericModel {
 					$strutturaFinale[$codice] = $valori[$campo];
 			}
 		}
-		
-// 		print_r($strutturaFinale);
 		
 		return $strutturaFinale;
 	}

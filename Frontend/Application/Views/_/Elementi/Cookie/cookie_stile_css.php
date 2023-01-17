@@ -15,7 +15,7 @@ $(document).ready(function(){
 	
 });
 </script>
-<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/"?>cookies.js"></script>
+<script src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/Minified/"?>cookies.min.js"></script>
 
 <div class="box_esterno_cookies <?php echo v("classe_ext_cookies")?>" id="segnalazione_cookies_ext">
 	<div id="segnalazione_cookies">

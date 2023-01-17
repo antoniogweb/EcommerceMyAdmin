@@ -41,11 +41,11 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
 <?php } ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cms.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>functions.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cms.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>functions.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 
 <?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe)) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>listeregalo.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>listeregalo.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 	<?php if (!isset($skipJqueryUi)) { ?>
 		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/';?>jquery-ui.min.js"></script>
 		<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
@@ -55,7 +55,7 @@
 <?php } ?>
 
 <?php if (v("ecommerce_attivo")) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>cart.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cart.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 <?php } ?>
 
 <script defer src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
@@ -78,7 +78,7 @@
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/star-rating-svg-master/src/';?>jquery.star-rating-svg.js"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>rating.js?v=<?php echo rand(1,10000);?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>rating.min.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 
 <?php if (CaptchaModel::getModulo()->inPage() && CaptchaModel::getModulo()->pathJs()) { ?>
@@ -92,7 +92,7 @@
 	var noSelectedString = "<?php echo gtext("Si prega di selezionare alcune righe")?>";
 	var stringaConfermiEliminazione = "<?php echo gtext("Confermi l'eliminazione dell'elemento?")?>";
 </script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>crud.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>crud.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Public/Js/';?>crud.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 <?php } ?>
 

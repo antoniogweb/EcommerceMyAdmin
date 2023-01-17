@@ -144,3 +144,8 @@ Algolia PHP Client
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/algolia/algoliasearch-client-php
+
+Minify
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/matthiasmullie/minify

@@ -37,6 +37,8 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'M' => 
         array (
             'Mpdf\\' => 5,
+            'MatthiasMullie\\PathConverter\\' => 29,
+            'MatthiasMullie\\Minify\\' => 22,
         ),
         'H' => 
         array (
@@ -96,6 +98,14 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'MatthiasMullie\\PathConverter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
+        ),
+        'MatthiasMullie\\Minify\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
         ),
         'Http\\Message\\' => 
         array (

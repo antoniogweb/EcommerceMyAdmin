@@ -60,9 +60,6 @@ class Mailchimp extends Newsletter
 		
 		$dataMailChimp["mergeFields"] = IntegrazioninewslettervariabiliModel::mergeCampiAggiuntivi($dataMailChimp["mergeFields"], $valori, $this->params["codice"]);
 		
-// 		print_r($valori);
-// 		print_r($dataMailChimp["mergeFields"]);die();
-		
 		syncMailchimpKeys($dataMailChimp, $this->params["secret_1"], $this->params["codice_lista"]);
 	}
 	
