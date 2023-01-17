@@ -26,4 +26,5 @@ require_once(LIBRARY."/Application/Modules/Modulo.php");
 require_once(LIBRARY."/Application/Modules/F.php");
 require_once(LIBRARY."/Application/Modules/Pdf.php");
 require_once(LIBRARY."/Application/Modules/App.php");
+require_once(LIBRARY."/Application/Modules/Img.php");
 App::$isFrontend = true;

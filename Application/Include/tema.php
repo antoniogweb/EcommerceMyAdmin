@@ -239,12 +239,6 @@ class Tema
 	
 	public static function tpfc($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
 	{
-		if (isset(self::$staticCachable))
-			$cachable = self::$staticCachable;
-		
-		if (self::$noCacheForChildren)
-			self::$staticCachable = false;
-		
 		return Tema::tpf($filePath, $public, $cachable, $stringaCache, $cachedTemplateFile);
 	}
 	
@@ -287,5 +281,20 @@ class Tema
 	{
 		Tema::$noCacheForChildren = false;
 		Tema::$staticCachable = null;
+	}
+	
+	public static function getParamsPath()
+	{
+		$path = FRONT . "/Application/Layout/".v("theme_folder")."/layout.php";
+		
+		if (!file_exists($path))
+		{
+			$path = FRONT . "/Application/Views/".v("theme_folder")."/layout.php";
+			
+			if (!file_exists($path))
+				$path = LIBRARY . "/Frontend/Application/Views/_/layout.php";
+		}
+		
+		return $path;
 	}
 }

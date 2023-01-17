@@ -47,15 +47,17 @@ class BaseThumbController extends Controller {
 	
 	protected function caricaParametri($params)
 	{
-		$path = FRONT . "/Application/Layout/".v("theme_folder")."/layout.php";
+		$path = Tema::getParamsPath();
 		
-		if (!file_exists($path))
-		{
-			$path = FRONT . "/Application/Views/".v("theme_folder")."/layout.php";
-			
-			if (!file_exists($path))
-				$path = LIBRARY . "/Frontend/Application/Views/_/layout.php";
-		}
+// 		$path = FRONT . "/Application/Layout/".v("theme_folder")."/layout.php";
+// 		
+// 		if (!file_exists($path))
+// 		{
+// 			$path = FRONT . "/Application/Views/".v("theme_folder")."/layout.php";
+// 			
+// 			if (!file_exists($path))
+// 				$path = LIBRARY . "/Frontend/Application/Views/_/layout.php";
+// 		}
 		
 		if (file_exists($path))
 		{

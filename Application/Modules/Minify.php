@@ -87,8 +87,7 @@ class Minify
 						{
 							$path_parts = pathinfo($filePath);
 							
-							
-							echo $absolutePath."/$folder/".$path_parts["filename"].".min.".$path_parts["extension"]."\n";
+// 							echo $absolutePath."/$folder/".$path_parts["filename"].".min.".$path_parts["extension"]."\n";
 							
 							$minifier = new MatthiasMullie\Minify\JS($filePath);
 							$minifier->minify($absolutePath."/$folder/".$path_parts["filename"].".min.".$path_parts["extension"]);
