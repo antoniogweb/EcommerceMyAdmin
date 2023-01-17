@@ -110,7 +110,7 @@ class IntegrazioninewsletterController extends BaseController
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"campi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m($this->modelName)->orderBy("id_order")->where(array(
-			"codice_integrazione_newsletter_variabile"	=>	sanitizeAll($record["codice"]),
+			"codice_integrazione_newsletter"	=>	sanitizeAll($record["codice"]),
 		))->convert()->save();
 		
 		parent::main();
