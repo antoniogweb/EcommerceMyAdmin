@@ -453,7 +453,7 @@ class ContenutiModel extends GenericModel {
 		
 		if (!User::$adminLogged)
 			$this->aWhere(array(
-				"attivo"	=>	"Y",
+				"contenuti.attivo"	=>	"Y",
 			));
 		
 		if ($idPage)
