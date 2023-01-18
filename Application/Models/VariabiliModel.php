@@ -866,11 +866,15 @@ class VariabiliModel extends GenericModel {
 	
 	public static function ottieniVariabili()
 	{
+		Factory_Timer::getInstance()->startTime("VARIABILI","VARIABILI");
+		
 		$var = new VariabiliModel();
 		
 		$values = $var->clear()->toList("chiave", "valore")->send();
 		
 		self::$valori = $values;
+		
+		Factory_Timer::getInstance()->endTime("VARIABILI","VARIABILI");
 	}
 	
 	public static function verificaCondizioni($condizioni)
