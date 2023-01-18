@@ -770,6 +770,9 @@ class Route
 		
 		'motoriricerca,main',
 		'motoriricerca,form',
+		
+		'ipfilter,main',
+		'ipfilter,form',
 	);
 	
 	//it can be 'yes' or 'no'

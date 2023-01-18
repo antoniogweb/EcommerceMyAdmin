@@ -64,6 +64,20 @@ class IpcheckModel extends Model_Tree
 		if (v("attiva_check_ip") && ((App::$isFrontend && !User::$adminLogged) || !App::$isFrontend))
 		{
 			$ipcModel = new IpcheckModel();
+			$ipfModel = new IpfilterModel();
+			
+			$ip = getIp();
+			
+			// controlla se è whitelist
+			if ($ipfModel->check($ip, 1))
+				return;
+			
+			// controlla se è blacklist
+			if ($ipfModel->check($ip, 0))
+			{
+				header('HTTP/1.0 403 Not Found');
+				die();
+			}
 			
 			$ipcModel->db->beginTransaction();
 			
@@ -71,7 +85,7 @@ class IpcheckModel extends Model_Tree
 			
 			$ipcModel->sValues(array(
 				"time_creazione"	=>	time(),
-				"ip"				=>	getIp(),
+				"ip"				=>	$ip,
 				"chiave"			=>	$chiave,
 			));
 			

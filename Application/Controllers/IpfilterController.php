@@ -22,21 +22,21 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class SpedizionieriController extends BaseController {
+class IpfilterController extends BaseController {
 	
-	public $orderBy = "id_order";
-	
-	public $argKeys = array('titolo:sanitizeAll'=>'tutti');
+	public $argKeys = array();
 	
 	public $useEditor = true;
 	
 	public $sezionePannello = "utenti";
 	
+	public $tabella = "filtri IP";
+	
 	public function __construct($model, $controller, $queryString, $application, $action)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if (!v("attiva_gestione_spedizionieri"))
+		if (!v("attiva_check_ip"))
 			$this->responseCode(403);
 	}
 	
@@ -44,17 +44,19 @@ class SpedizionieriController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];spedizionieri.titolo;","attivoCrud");
-		$this->mainHead = "Titolo,Attivo";
+		$this->mainFields = array("ip_filter.ip", "modalitaCrud");
+		$this->mainHead = "Titolo,Modalità";
 		
-		$this->m[$this->modelName]->orderBy($this->orderBy)->convert()->save();
+		$this->m[$this->modelName]->orderBy("id_ip_filter desc")->convert()->save();
 		
 		parent::main();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,attivo';
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"ip");
+		
+		$fields = 'ip,whitelist';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
