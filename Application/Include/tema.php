@@ -242,8 +242,47 @@ class Tema
 		return Tema::tpf($filePath, $public, $cachable, $stringaCache, $cachedTemplateFile);
 	}
 	
+// 	public static function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
+// 	{
+// 		if (isset(Tema::$staticCachable))
+// 			$cachable = Tema::$staticCachable;
+// 		
+// 		if (Tema::$noCacheForChildren)
+// 			Tema::$staticCachable = true;
+// 		
+// 		$cache = Cache_Html::getInstance();
+// 	
+// 		$themeFolder = v("theme_folder");
+// 		
+// 		$subfolder = $themeFolder ? DS . $themeFolder : "";
+// 		
+// 		$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+// 		$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
+// 		
+// 		if (file_exists($subFolderFullPath))
+// 			return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
+// 		
+// 		if ($themeFolder)
+// 		{
+// 			$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+// 			$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
+// 			
+// 			if (file_exists($subFolderFullPathParentFrontend))
+// 				return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
+// 		}
+// 		
+// 		if ($public)
+// 			return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
+// 		else
+// 			return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
+// 	}
+	
 	public static function tpf($filePath = "", $public = false, $cachable = true, $stringaCache = "", $cachedTemplateFile = false)
 	{
+// 		$timer = Factory_Timer::getInstance();
+		
+// 		$timer->startTime("TPF","TPF");
+		
 		if (isset(Tema::$staticCachable))
 			$cachable = Tema::$staticCachable;
 		
@@ -259,22 +298,19 @@ class Tema
 		$subFolderFullPath = Domain::$parentRoot."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 		$subFolderFullPathPublic = Domain::$publicUrl."/Application/Views$subfolder"."/".ltrim($filePath,"/");
 		
+		$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
+		$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
+		
 		if (file_exists($subFolderFullPath))
-			return $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
+			$finalPath = $public ? $subFolderFullPathPublic : $cache->saveDynamic($subFolderFullPath, $cachable, $stringaCache, $cachedTemplateFile);
+		else if ($themeFolder && file_exists($subFolderFullPathParentFrontend))
+			$finalPath = $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
+		else 
+			$finalPath = $public ? Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/") : $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
 		
-		if ($themeFolder)
-		{
-			$subFolderFullPathParentFrontend = Domain::$parentRoot."/Application/Views/_/".ltrim($filePath,"/");
-			$subFolderFullPathParentFrontendPublic = Domain::$publicUrl."/Application/Views/_/".ltrim($filePath,"/");
-			
-			if (file_exists($subFolderFullPathParentFrontend))
-				return $public ? $subFolderFullPathParentFrontendPublic : $cache->saveDynamic($subFolderFullPathParentFrontend, $cachable, $stringaCache, $cachedTemplateFile);
-		}
+// 		$timer->endTime("TPF","TPF");
 		
-		if ($public)
-			return Domain::$publicUrl."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/");
-		else
-			return $cache->saveDynamic(Domain::$parentRoot."/admin/Frontend/Application/Views/_/".ltrim($filePath,"/"), $cachable, $stringaCache, $cachedTemplateFile);
+		return $finalPath;
 	}
 	
 	public static function resetStaticCachable()
