@@ -218,4 +218,144 @@ class TestiModel extends GenericModel {
 			"id_cont"	=>	(int)$idCont,
 		))->rowNumber();
 	}
+	
+	public function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $ritornaElemento = false)
+	{
+		$clean["chiave"] = sanitizeDb($matches[1]);
+		
+		$t = new TestiModel();
+		
+		if ($tipo == "TESTO" || $tipo == "LINK")
+			$lingua = sanitizeAll(getLinguaIso());
+		else
+			$lingua = LingueModel::getPrincipale();
+		
+		$testo = $t->clear()->where(array(
+			"chiave"=>$clean["chiave"],
+			"lingua"	=>	$lingua,
+		))->record();
+		
+	// 	echo $t->getQuery()."<br />";
+		
+		if (count($testo) > 0)
+		{
+			if ($ritornaElemento)
+				return $testo;
+			
+			$clean["id"] = (int)$testo["id_t"];
+			
+			$iconaEdit = User::$adminLogged ? "<span rel='".$clean["id"]."' title='modifica il testo' class='edit_blocco_testo' href='#'><i class='fa fa-pencil'></i></span>" : null;
+			
+			$tags = nullToBlank($tags);
+			
+			$t = strcmp($tags,"") !== 0 ? strip_tags(htmlentitydecode($testo["valore"]),$tags) : htmlentitydecode($testo["valore"]);
+			
+			$alt = $testo["alt"] ? 'alt="'.$testo["alt"].'"' : "";
+			
+			if ($testo["immagine"])
+				$t .= "<img src='".Domain::$publicUrl."/thumb/widget/".$testo["id_t"]."/".$testo["immagine"]."' $alt/>";
+			
+			$urlLink = $target = "";
+			
+			if ($testo["id_contenuto"] || $testo["id_categoria"] || $testo["link_id_documento"] || $testo["url_link"])
+			{
+				$target = "";
+				
+				if ($testo["target_link"] == "ESTERNO")
+					$target = "target='_blank'";
+				
+				if ($testo["id_contenuto"])
+					$urlLink = Url::getRoot().getUrlAlias($testo["id_contenuto"], sanitizeAll(getLinguaIso()));
+				else if ($testo["id_categoria"])
+					$urlLink = Url::getRoot().getCategoryUrlAlias($testo["id_categoria"], sanitizeAll(getLinguaIso()));
+				else if ($testo["link_id_documento"])
+					$urlLink = Url::getRoot().DocumentiModel::getUrlAlias($testo["link_id_documento"]);
+				else
+					$urlLink = $testo["url_link"];
+				
+				if ($testo["testo_link"])
+					$t = $testo["testo_link"];
+				
+	// 			$t .= "<a $target class='link_testi' href='".$urlLink."'>".$testo["testo_link"]."</a>";
+			}
+			
+			if ($urlLink)
+			{
+				$t = "<a $target class='link_testi' href='".$urlLink."'>".$t."</a>";
+			}
+			
+			if ($testo["tag_elemento"])
+				$t = "<".$testo["tag_elemento"]." ".htmlentitydecode($testo["attributi"]).">$t</".$testo["tag_elemento"].">";
+			
+			$path = tpf("Contenuti/Elementi/Widget/".strtolower($tipo).".php");
+			
+			if ($testo["template"])
+				$path = tpf("Contenuti/Elementi/Widget/".ucfirst(strtolower($tipo))."/".$testo["template"]);
+			
+			if (file_exists($path))
+			{
+				ob_start();
+				include $path;
+				if ($cleanFlush)
+					$t = ob_get_clean();
+				else
+					$t = ob_get_flush();
+			}
+			
+			if (User::$adminLogged && TestiModel::$mostraIconaEdit)
+			{
+				return "<".v("tag_blocco_testo")." class='blocco_testo'>".$t."$iconaEdit</".v("tag_blocco_testo").">";
+			}
+			else
+			{
+				return $t;
+			}
+		}
+		else
+		{
+			$testoPrincipale = $t->clear()->where(array(
+				"chiave"=>$clean["chiave"],
+				"lingua"	=>	LingueModel::getPrincipale(),
+			))->record();
+			
+			if (!empty($testoPrincipale))
+			{
+				$t->setValues($testoPrincipale, "sanitizeDb");
+				
+				unset($t->values["id_t"]);
+			}
+			else
+			{
+				if ($tipo == "IMMAGINE" && file_exists(LIBRARY."/Frontend/Public/Img/nofound.jpeg"))
+					$t->values = array(
+						"valore"	=>	sanitizeDb("<img width='200px' src='".Url::getFileRoot()."admin/Frontend/Public/Img/nofound.jpeg' />"),
+					);
+				else
+					$t->values = array(
+						"valore"	=>	$clean["chiave"],
+					);
+				
+				if (ContenutiModel::$idContenuto)
+					$t->values["id_cont"] = ContenutiModel::$idContenuto;
+			}
+			
+			$t->values["chiave"] = $clean["chiave"];
+			$t->values["lingua"] = sanitizeDb($lingua);
+			$t->values["tipo"] = sanitizeDb($tipo);
+			
+			if (isset($matches[2]) && $matches[2])
+				$t->values["attributi"] = sanitizeAll($matches[2]);
+			
+			if (isset($matches[3]) && $matches[3])
+				$t->values["tag_elemento"] = sanitizeAll($matches[3]);
+			
+			if ($t->insert())
+			{
+				unset(Cache_Db::$cachedTables[array_search("testi", Cache_Db::$cachedTables)]);
+				return getTesto($matches, $tags, $tipo, $cleanFlush);
+			}
+		}
+		
+		return "";
+	}
 }

@@ -226,6 +226,8 @@ class BaseBaseController extends Controller
 		{
 			$data["adminUser"] = User::$adminLogged = true;
 			$cache->loadHtml = false;
+			
+			Cache_Functions::getInstance()->setSaveToDisk(false);
 		}
 		
 		// Predisponi i filtri in coda nell'URL

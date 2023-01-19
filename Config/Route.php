@@ -764,6 +764,7 @@ class Route
 		
 		'cache,svuotacache',
 		'cache,svuotacacheimmagini',
+		'cache,svuotacachemetodi',
 		
 		'feed,main',
 		'feed,form',

@@ -36,7 +36,6 @@ if (defined('LOG_TIMES'))
 {
 	$timer = Factory_Timer::getInstance();
 	$timer->endTime("APP","APP");
-// 	$totals = Factory_Timer::getInstance()->getTotals();
-// 	echo "<pre>";print_r($totals); echo "</pre>";
 	Factory_Timer::getInstance()->writeLog();
 }
+

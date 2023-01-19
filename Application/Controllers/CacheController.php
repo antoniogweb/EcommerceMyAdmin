@@ -60,4 +60,24 @@ class CacheController extends BaseController
 				GenericModel::eliminaCartella($dir);
 		}
 	}
+	
+	public function svuotacachemetodi()
+	{
+		$this->clean();
+		
+		if (defined("CACHE_METHODS_TO_FILE"))
+		{
+			$dir = Domain::$parentRoot."/Logs";
+			
+			if (@is_dir($dir))
+			{
+				$tmpFolder = randomToken(20);
+				
+				if (@rename($dir."/CacheMethods", $dir."/$tmpFolder"))
+				{
+					GenericModel::eliminaCartella($dir."/$tmpFolder");
+				}
+			}
+		}
+	}
 }
