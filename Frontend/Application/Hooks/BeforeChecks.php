@@ -54,6 +54,9 @@ Users_CheckAdmin::$groupsModel = "ReggroupsModel";
 Users_CheckAdmin::$sessionsModel = "RegsessioniModel";
 Users_CheckAdmin::$accessesModel = "RegaccessiModel";
 
+// cache metodi
+Cache_Functions::getInstance(new Cache_Caller_Cache());
+
 Cache_Db::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti", "captcha");
 
 if (defined("CACHE_FOLDER"))

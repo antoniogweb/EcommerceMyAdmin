@@ -65,27 +65,33 @@ function getUrlAlias($id_page, $idC = 0)
 {
 	$clean["id_page"] = (int)$id_page;
 	
-	$p = new PagesModel();
+	return Cache_Functions::getInstance()->load(new PagesModel())->getUrlAlias($clean["id_page"], null, $idC);
 	
-	return $p->getUrlAlias($clean["id_page"], null, $idC);
+// 	$p = new PagesModel();
+// 	
+// 	return $p->getUrlAlias($clean["id_page"], null, $idC);
 }
 
 function getCategoryUrlAlias($id_c)
 {
 	$clean["id_c"] = (int)$id_c;
 	
-	$p = new CategoriesModel();
+	return Cache_Functions::getInstance()->load(new CategoriesModel())->getUrlAlias($clean["id_c"]);
 	
-	return $p->getUrlAlias($clean["id_c"]);
+// 	$p = new CategoriesModel();
+	
+// 	return $p->getUrlAlias($clean["id_c"]);
 }
 
 function getMarchioUrlAlias($id_c, $paginaDettaglioMarchio = false)
 {
 	$clean["id_c"] = (int)$id_c;
 	
-	$p = new MarchiModel();
+	return Cache_Functions::getInstance()->load(new MarchiModel())->getUrlAlias($clean["id_c"], $paginaDettaglioMarchio);
 	
-	return $p->getUrlAlias($clean["id_c"], $paginaDettaglioMarchio);
+// 	$p = new MarchiModel();
+// 	
+// 	return $p->getUrlAlias($clean["id_c"], $paginaDettaglioMarchio);
 }
 
 function getTitoloMarchio($idM)
@@ -578,9 +584,11 @@ function hasCombinations($id_page, $personalizzazioni = true)
 {
 	$clean['id_page'] = (int)$id_page;
 	
-	$p = new PagesModel();
+	return Cache_Functions::getInstance()->load(new PagesModel())->hasCombinations($clean['id_page'], $personalizzazioni);
+	
+// 	$p = new PagesModel();
 
-	return $p->hasCombinations($clean['id_page'], $personalizzazioni);
+// 	return $p->hasCombinations($clean['id_page'], $personalizzazioni);
 }
 
 class Domain
@@ -689,9 +697,11 @@ function isProdotto($id_page)
 {
 	$clean['id_page'] = (int)$id_page;
 	
-	$p = new PagesModel();
+	return Cache_Functions::getInstance()->load(new PagesModel())->isProdotto($clean['id_page']);
 	
-	return $p->isProdotto($clean['id_page']);
+// 	$p = new PagesModel();
+// 	
+// 	return $p->isProdotto($clean['id_page']);
 }
 
 function getField($en, $it)
