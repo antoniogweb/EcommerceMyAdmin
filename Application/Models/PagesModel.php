@@ -1633,9 +1633,14 @@ class PagesModel extends GenericModel {
 	}
 	
 	//get the parents
-	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = false, $fields = null)
+	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null)
 	{
 		$clean["id"] = (int)$id;
+		
+		$fieldsCategory = $fields;
+		
+		if (isset($fields) && is_array($fields))
+			list($fields, $fieldsCategory) = $fields;
 		
 		$this->clear()->where(array($this->_idFields=>$clean["id"]));
 		
@@ -1646,7 +1651,7 @@ class PagesModel extends GenericModel {
 		{
 			$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
 			
-			$this->addJoinTraduzione(null, "contenuti_tradotti", false)->select($f);
+			$this->addJoinTraduzione($lingua, "contenuti_tradotti", false)->select($f);
 		}
 		
 		$res = $this->send();
@@ -1656,7 +1661,7 @@ class PagesModel extends GenericModel {
 			$clean['id_c'] = $res[0][$this->_tables]["id_c"];
 			$c = new CategoriesModel();
 			
-			$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fields);
+			$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fieldsCategory);
 			
 			if ($onlyParents)
 			{
@@ -1715,7 +1720,10 @@ class PagesModel extends GenericModel {
 		
 		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
-			$parents = $this->parents($clean["id"], false, false, $lingua);
+			$parents = $this->parents($clean["id"], false, false, $lingua, array(
+				"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+				"contenuti_tradotti.alias,categories.alias"
+			));
 			
 			//remove the root node
 			array_shift($parents);

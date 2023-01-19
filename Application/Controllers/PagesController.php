@@ -643,8 +643,8 @@ class PagesController extends BaseController {
 	
 	public function form($queryType = 'insert',$id = 0)
 	{
-		if (v("attiva_cache_prodotti") && empty($_POST))
-			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
+// 		if (v("attiva_cache_prodotti") && empty($_POST))
+// 			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
 		$this->_posizioni['main'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
