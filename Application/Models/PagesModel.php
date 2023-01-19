@@ -2317,7 +2317,10 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id_page'] = (int)$id_page;
 		
-		$parents = $this->parents($clean['id_page'], false);
+		$parents = $this->parents($clean['id_page'], false, true, null, array(
+			"pages.id_c",
+			"categories.section"
+		));
 		
 		//elimino la categoria root
 		array_shift($parents);
