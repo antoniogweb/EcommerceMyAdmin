@@ -684,7 +684,7 @@ class BaseContenutiController extends BaseController
 		
 		$cache = Cache_Html::getInstance();
 		
-		if (!User::$adminLogged)
+		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl))
 			$cache->saveHtml = true;
 		
 		$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
