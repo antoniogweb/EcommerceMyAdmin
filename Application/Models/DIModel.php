@@ -126,6 +126,8 @@ trait DIModel
 		
 		$nomeCampoClasse = $c->getNomeCampoClasse();
 		
+		$returnArray = [];
+		
 		foreach ($attivi as $attivo)
 		{
 			if (file_exists(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php"))
@@ -137,9 +139,11 @@ trait DIModel
 				$object = $objectReflection->newInstanceArgs(array($attivo));
 				
 				if ($object && method_exists($object, $metodo) && $object->isAttivo())
-					call_user_func_array(array($object, $metodo), $argomenti);
+					$returnArray[] = call_user_func_array(array($object, $metodo), $argomenti);
 			}
 		}
+		
+		return $returnArray;
 	}
 	
 	public function __call($metodo, $argomenti)

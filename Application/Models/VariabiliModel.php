@@ -592,6 +592,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_motori_ricerca"	=> 0, // attiva la sezione per la gestione dei motori di ricerca
 		## PIXEL ##
 		"attiva_gestione_pixel"	=> 0, // attiva la sezione per la gestione dei pixel
+		## TRANSAZIONI ##
+		"codice_valuta"			=> 'EUR', // codice della valuta delle transazioni
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

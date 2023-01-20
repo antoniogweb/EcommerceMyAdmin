@@ -213,6 +213,15 @@ class Gestionale
 			
 			$righe = array_map('htmlentitydecodeDeep', $righe);
 			
+			$numeroProdotti = 0;
+			
+			foreach ($righe as $r)
+			{
+				$numeroProdotti += $r["quantity"];
+			}
+			
+			$ordine["numero_prodotti"] = $numeroProdotti;
+			
 			if ($ordine["spedizione"] > 0)
 			{
 				$righe[] = array(

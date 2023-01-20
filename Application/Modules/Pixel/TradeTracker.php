@@ -42,18 +42,40 @@ class TradeTracker extends Pixel
 		$model->formStruct["entries"]["key_2"]["labelString"] = "ID Prodotto";
 	}
 	
-	public function setPurchase($ordine, $info = array())
+	public function getPurchaseScript($idOrdine, $info = array(), $script = true)
 	{
-		$strutturaOrdine = $this->infoOrdine($ordine["id_o"]);
+		$strutturaOrdine = $this->infoOrdine((int)$idOrdine);
 		
 		$jsonArray = array(
 			"type"			=>	"sales",
 			"campaignID"	=>	$this->params["key_1"],
 			"productID"		=>	$this->params["key_2"],
-			"transactionID"	=>	$ordine["id_o"],
+			"transactionID"	=>	$strutturaOrdine["id_o"],
 			"transactionAmount"	=>	$strutturaOrdine["totale_prodotti_non_ivato"],
+			"quantity"		=>	$strutturaOrdine["numero_prodotti"],
+			"descrMerchant"	=>	"Ordine ".$strutturaOrdine["id_o"]." del ".date("d/m/Y", strtotime($strutturaOrdine["data_creazione"])),
+			"descrAffiliate"=>	OrdiniModel::getNominativo($strutturaOrdine),
+			"currency"		=>	v("codice_valuta"),
+			"trackingGroupID"	=>	"",
+			"vc"			=>	$strutturaOrdine["codice_promozione"],
 		);
 		
-// 		print_r($jsonArray);
+		ob_start();
+		if ($script)
+			include(tpf(ElementitemaModel::p("TRADETRACKER_PURCHASE","", array(
+				"titolo"	=>	"Codice JS per evento purchase di TradeTracker",
+				"percorso"	=>	"Elementi/Pixel/Purchase/TradeTracker",
+			))));
+		else
+			include(tpf(ElementitemaModel::p("TRADETRACKER_PURCHASE_NS","", array(
+				"titolo"	=>	"Codice noscript per evento purchase di TradeTracker",
+				"percorso"	=>	"Elementi/Pixel/Purchase/TradeTracker/NoScript",
+			))));
+		return ob_get_clean();
+	}
+	
+	public function getPurchaseNoScript($idOrdine, $info = array())
+	{
+		return $this->getPurchaseScript($idOrdine, $info, false);
 	}
 }
