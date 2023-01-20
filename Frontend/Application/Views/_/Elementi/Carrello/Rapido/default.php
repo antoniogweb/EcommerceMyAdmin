@@ -10,7 +10,9 @@
 	</header>
 	<div class="uk-card-body uk-overflow-auto">
 		<?php
-		$carrello = CartModel::g()->getProdotti();
+		if (!isset($carrello))
+			$carrello = CartModel::g()->getProdotti();
+		
 		if (count($carrello) > 0) { ?>
 		<ul class="uk-list uk-list-divider">
 			<?php foreach ($carrello as $p) { 
