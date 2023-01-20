@@ -64,7 +64,7 @@ class TradeTracker extends Pixel
 		if ($script)
 			include(tpf(ElementitemaModel::p("TRADETRACKER_PURCHASE","", array(
 				"titolo"	=>	"Codice JS per evento purchase di TradeTracker",
-				"percorso"	=>	"Elementi/Pixel/Purchase/TradeTracker",
+				"percorso"	=>	"Elementi/Pixel/Purchase/TradeTracker/Script",
 			))));
 		else
 			include(tpf(ElementitemaModel::p("TRADETRACKER_PURCHASE_NS","", array(
