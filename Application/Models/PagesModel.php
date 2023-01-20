@@ -2883,8 +2883,8 @@ class PagesModel extends GenericModel {
 				$prezzoFeed = $prezzoFinaleIvato;
 
 			$temp = array(
-				"g:id"	=>	v("usa_sku_come_id_item") ? $r["pages"]["codice"] : $r["pages"]["id_page"],
-				"g:title"	=>	htmlentitydecode(field($r,"title")),
+				"g:id"	=>	(v("usa_sku_come_id_item") && VariabiliModel::combinazioniLinkVeri()) ? $r["pages"]["codice"] : $r["pages"]["id_page"],
+				"g:title"	=>	ucfirst(strtolower(htmlentitydecode(field($r,"title")))),
 				"g:link"	=>	Url::getRoot().getUrlAlias($r["pages"]["id_page"]),
 				"g:price"	=>	number_format($prezzoFeed,2,".",""). " EUR",
 				"g:availability"	=>	$giacenza > 0 ? "in stock" : $outOfStock,
@@ -2906,9 +2906,9 @@ class PagesModel extends GenericModel {
 			}
 			
 			if (isset($_GET["fbk"]) || v("no_tag_descrizione_feed"))
-				$temp["g:description"] = strip_tags(htmlentitydecode(field($r,"description")));
+				$temp["g:description"] = strip_tags(htmlentitydecode(F::sanitizeXML(field($r,"description"))));
 			else
-				$temp["g:description"] = htmlspecialchars(htmlentitydecode(field($r,"description")), ENT_QUOTES, "UTF-8");
+				$temp["g:description"] = htmlspecialchars(htmlentitydecode(F::sanitizeXML(field($r,"description"))), ENT_QUOTES, "UTF-8");
 			
 			if (v("elimina_emoticons_da_feed"))
 			{
