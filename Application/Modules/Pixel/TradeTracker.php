@@ -63,7 +63,7 @@ class TradeTracker extends Pixel
 			"campaignID"	=>	$this->params["key_1"],
 			"productID"		=>	$this->params["key_2"],
 			"transactionID"	=>	$strutturaOrdine["id_o"],
-			"transactionAmount"	=>	$strutturaOrdine["totale_prodotti_non_ivato"],
+			"transactionAmount"	=>	number_format($strutturaOrdine["totale_prodotti_non_ivato"],2,".",""),
 			"quantity"		=>	$strutturaOrdine["numero_prodotti"],
 			"descrMerchant"	=>	"Ordine ".$strutturaOrdine["id_o"]." del ".date("d/m/Y", strtotime($strutturaOrdine["data_creazione"])),
 			"descrAffiliate"=>	OrdiniModel::getNominativo($strutturaOrdine),
