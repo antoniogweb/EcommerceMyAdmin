@@ -774,6 +774,9 @@ class Route
 		
 		'ipfilter,main',
 		'ipfilter,form',
+		
+		'pixel,main',
+		'pixel,form',
 	);
 	
 	//it can be 'yes' or 'no'

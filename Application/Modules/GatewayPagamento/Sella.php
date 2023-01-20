@@ -20,6 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+ini_set("display_errors","Off");
+
 class Sella
 {
 	private static $uicodes = array(

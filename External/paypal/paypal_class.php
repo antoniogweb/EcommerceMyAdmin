@@ -29,6 +29,7 @@ define('SSL_SAND_URL','https://www.sandbox.paypal.com/cgi-bin/webscr');
 
 class paypal_class {
 	
+	public $tax;
 	public $ipn_status;                // holds the last status
 	public $admin_mail; 				// receive the ipn status report pre transaction
 	public $paypal_mail;				// paypal account, if set, class need to verify receiver

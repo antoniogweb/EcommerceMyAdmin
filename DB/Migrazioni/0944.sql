@@ -1,0 +1,1 @@
+INSERT INTO `pixel` (`id_pixel`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `key_1`, `key_2`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'TradeTracker', '0', 'TRADETRACKER', 'TradeTracker', '', '', '1');
