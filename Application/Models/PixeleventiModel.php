@@ -22,37 +22,34 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class Pixel
+class PixeleventiModel extends GenericModel
 {
-	use Modulo;
-	
-	public static $eventoInviato = [];
-	
-	// restituisce l'output del metodo Geastionale::infoOrdine($idOrdine)
-	public function infoOrdine($idOrdine)
-	{
-		require_once(LIBRARY."/Application/Modules/Gestionale.php");
+	public function __construct() {
+		$this->_tables='pixel_eventi';
+		$this->_idFields='id_pixel_evento';
 		
-		$g = new Gestionale(array());
-		
-		return $g->infoOrdine($idOrdine);
+		parent::__construct();
 	}
 	
-	public function salvaEvento($evento, $idElemento, $tabellaElemento)
+	public function aggiungi($idPixel, $evento, $idElemento, $tabellaElemento)
 	{
-		return PixeleventiModel::g(false)->aggiungi($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento);
-	}
-	
-	public function getEvento($evento, $idElemento, $tabellaElemento)
-	{
-		return PixeleventiModel::g(false)->getEvento($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento);
-	}
-	
-	public function checkData($elemento)
-	{
-		if (strtotime($elemento["data_creazione"]) >= strtotime($this->params["data_creazione"]))
-			return true;
+		$this->sValues(array(
+			"id_pixel"		=>	(int)$idPixel,
+			"evento"		=>	$evento,
+			"tabella_elemento"	=>	$tabellaElemento,
+			"id_elemento"	=>	(int)$idElemento,
+		));
 		
-		return false;
+		return $this->insert();
+	}
+	
+	public function getEvento($idPixel, $evento, $idElemento, $tabellaElemento)
+	{
+		return $this->clear()->where(array(
+			"id_pixel"		=>	(int)$idPixel,
+			"evento"		=>	$evento,
+			"tabella_elemento"	=>	sanitizeAll($tabellaElemento),
+			"id_elemento"	=>	(int)$idElemento,
+		))->record();
 	}
 }
