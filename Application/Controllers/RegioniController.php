@@ -64,7 +64,7 @@ class RegioniController extends BaseController {
 				"checkbox_regioni_id_regione"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("regioni.id_regione not in (select id_regione from pages_regioni where id_regione is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+			$this->m[$this->modelName]->sWhere(array("regioni.id_regione not in (select id_regione from pages_regioni where id_regione is not null and id_page = ?)",array((int)$this->viewArgs["id_page"])));
 		}
 		
 		$this->m[$this->modelName]->save();

@@ -249,10 +249,10 @@ class OrdiniController extends BaseController {
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")
-			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= '".getIsoDate($this->viewArgs['dal'])."'");
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
 		
 		if ($this->viewArgs['al'] != "tutti")
-			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= '".getIsoDate($this->viewArgs['al'])."'");
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
 		
 		if (strcmp($this->viewArgs['lista_regalo'],'tutti') !== 0)
 			$this->m[$this->modelName]->inner(array("lista"))->where(array(

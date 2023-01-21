@@ -119,7 +119,7 @@ class CaratteristicheController extends BaseController {
 				"checkbox_caratteristiche_id_car"	=>	array("aggiungiacategoria","Aggiungi alla categoria"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("caratteristiche.filtro = 'Y' and caratteristiche.id_car not in (select id_car from categories_caratteristiche where id_car is not null and id_c = ".(int)$this->viewArgs["id_c"].")");
+			$this->m[$this->modelName]->sWhere(array("caratteristiche.filtro = 'Y' and caratteristiche.id_car not in (select id_car from categories_caratteristiche where id_car is not null and id_c = ?)",array((int)$this->viewArgs["id_c"])));
 		}
 		
 		$this->m[$this->modelName]->save();

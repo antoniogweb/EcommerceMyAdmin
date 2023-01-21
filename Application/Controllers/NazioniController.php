@@ -114,7 +114,7 @@ class NazioniController extends BaseController {
 				"checkbox_nazioni_id_nazione"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("nazioni.id_nazione not in (select id_nazione from pages_regioni where id_nazione is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+			$this->m[$this->modelName]->sWhere(array("nazioni.id_nazione not in (select id_nazione from pages_regioni where id_nazione is not null and id_page = ?)",array((int)$this->viewArgs["id_page"])));
 		}
 		
 		$this->getTabViewFields("main");
