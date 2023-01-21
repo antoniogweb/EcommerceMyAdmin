@@ -78,8 +78,6 @@ class TrovaPrezzi extends Feed
 		F::xml($xml, array(
 			"Products"	=>	null,
 		));
-		
-// 		F::xml($xml);
 	}
 	
 	public function tagNameColore()
