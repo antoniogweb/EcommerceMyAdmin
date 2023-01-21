@@ -2005,17 +2005,17 @@ function aToX($struct, $key = "", $cdata = true)
 				if (array_values($value) === $value)
 					$xml .= aToX($value, $kk, $cdata);
 				else
-					$xml .= "<$kk>".aToX($value, $kk, $cdata)."</$kk>"; 
+					$xml .= "<$kk>".aToX($value, $kk, $cdata)."</$kk>\n"; 
 			}
 			else
-				$xml .= "<$kk>".cXmlC($value, $cdata)."</$kk>";
+				$xml .= "\n\t<$kk>".cXmlC($value, $cdata)."</$kk>";
 		}
 		else
 		{
 			if (is_array($value))
-				$xml .= "<$key>".aToX($value, "", $cdata)."</$key>";
+				$xml .= "<$key>".aToX($value, "", $cdata)."</$key>\n";
 			else
-				$xml .= "<$key>".cXmlC($value, $cdata)."</$key>";
+				$xml .= "\n\t<$key>".cXmlC($value, $cdata)."</$key>";
 		}
 	}
 	

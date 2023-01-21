@@ -27,9 +27,7 @@ class TrovaPrezzi extends Feed
 		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, null, (int)$this->params["tempo_cache"]);
 		
 		$xmlArray = array(
-			"Products"	=>	array(
-				"Offers"	=>	array(),
-			),
+			"Offers"	=>	array(),
 		);
 		
 		$outOfStock = v("attiva_giacenza") ? "disponibile" : "disponibile";
@@ -72,12 +70,16 @@ class TrovaPrezzi extends Feed
 			if (isset($r["attributi"]))
 				$temp = $this->elaboraNodiAttributi($temp, $r["attributi"]);
 			
-			$xmlArray["Products"]["Offer"][] = $temp;
+			$xmlArray["Offer"][] = $temp;
 		}
 		
 		$xml = aToX($xmlArray);
 		
-		F::xml($xml);
+		F::xml($xml, array(
+			"Products"	=>	null,
+		));
+		
+// 		F::xml($xml);
 	}
 	
 	public function tagNameColore()

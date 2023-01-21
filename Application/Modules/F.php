@@ -134,13 +134,18 @@ class F
 		return $html;
 	}
 	
-	public static function xml($xml)
+	public static function xml($xml, $wrap = null)
 	{
+		if (!$wrap)
+			$wrap = array(
+				"rss"	=>	array(
+					"xmlns:g"	=>	"http://base.google.com/ns/1.0",
+					"version"	=>	"2.0",
+				)
+			);
 		header ("Content-Type:text/xml");
-		echo '<?xml version="1.0"?>';
-		echo '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
-		echo $xml;
-		echo '</rss>';
+		echo '<?xml version="1.0"?>'."\n";
+		echo wrap($xml, $wrap);
 	}
 	
 	// Delete ol files in the $path folder having pattern equal to $pattern older than $secs seconds

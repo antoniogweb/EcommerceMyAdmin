@@ -1720,10 +1720,16 @@ class PagesModel extends GenericModel {
 		
 		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
-			$parents = $this->parents($clean["id"], false, false, $lingua, array(
-				"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
-				"contenuti_tradotti.alias,categories.alias"
-			));
+			if ($lingua)
+				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+					"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+					"contenuti_tradotti.alias,categories.alias"
+				));
+			else
+				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+					"pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+					"categories.alias"
+				));
 			
 			//remove the root node
 			array_shift($parents);
