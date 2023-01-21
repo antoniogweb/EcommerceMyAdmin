@@ -408,28 +408,32 @@ class PagesController extends BaseController {
 			
 			$data["sId"] = !is_array($sId) ? $sId : 0;
 			
+			$bindedValuesIdC = array();
+			
 			if (strcmp($this->viewArgs['id_c'],'1') === 0 or (!is_array($sId) and strcmp($this->viewArgs['id_c'],$sId) === 0))
 			{
-				$sWhere = "id_c in (".implode(",",$children).")";
-// 				$where = array(
-// 					"in" => array('-id_c' => $children),
-// // 					'-id_c' =>	"in(".implode(',',$children).")",
-// 				);
+// 				$sWhere = "id_c in (".implode(",",$children).")";
+				$sWhere = "id_c in (".$this->scaffold->model->db->placeholdersFromArray($children).")";
+				$bindedValuesIdC = $children;
 			}
 			else
 			{
-				$sWhere = "id_c = ".(int)$this->viewArgs['id_c'];
+				$sWhere = "id_c = ?";
+				$bindedValuesIdC[] = (int)$this->viewArgs['id_c'];
 				
 				if (v("attiva_categorie_in_prodotto"))
-					$sWhere .= " OR pages.id_page in (select id_page from pages_categories where id_c = ".(int)$this->viewArgs['id_c'].")";
+				{
+					$sWhere .= " OR pages.id_page in (select id_page from pages_categories where id_c = ?)";
+					$bindedValuesIdC[] = (int)$this->viewArgs['id_c'];
+				}
 			}
 			
-			$this->scaffold->model->sWhere($sWhere);
+			$this->scaffold->model->sWhere(array($sWhere, $bindedValuesIdC));
 		}
 		
 		if ($this->viewArgs["id_pcorr"] != "tutti")
 		{
-			$this->scaffold->model->sWhere("pages.id_page not in (select id_corr from pages_pages where id_page = ".(int)$this->viewArgs["id_pcorr"].")");
+			$this->scaffold->model->sWhere(array("pages.id_page not in (select id_corr from pages_pages where id_page = ?)",array((int)$this->viewArgs["id_pcorr"])));
 			
 			$this->scaffold->itemList->setBulkActions(array(
 				"++checkbox_pages_id_page"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
@@ -2125,7 +2129,7 @@ class PagesController extends BaseController {
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
-		$data["lista"] = $this->m["PersonalizzazioniModel"]->clear()->sWhere("id_pers not in (select id_pers from pages_personalizzazioni where id_page = ".$clean['id'].")")->orderBy("titolo")->toList("id_pers","titolo")->send();
+		$data["lista"] = $this->m["PersonalizzazioniModel"]->clear()->sWhere(array("id_pers not in (select id_pers from pages_personalizzazioni where id_page = ?)",array($clean['id'])))->orderBy("titolo")->toList("id_pers","titolo")->send();
 		
 		$this->append($data);
 	}
@@ -2177,7 +2181,7 @@ class PagesController extends BaseController {
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
-		$data["lista"] = $this->m["TagModel"]->clear()->sWhere("id_tag not in (select id_tag from pages_tag where id_page = ".$clean['id'].")")->orderBy("titolo")->toList("id_tag","titolo")->send();
+		$data["lista"] = $this->m["TagModel"]->clear()->sWhere(array("id_tag not in (select id_tag from pages_tag where id_page = ?)",array($clean['id'])))->orderBy("titolo")->toList("id_tag","titolo")->send();
 		
 		$this->append($data);
 	}
