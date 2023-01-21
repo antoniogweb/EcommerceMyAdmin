@@ -125,6 +125,8 @@ class IpcheckModel extends Model_Tree
 			
 			if (!$okLimite)
 			{
+				$ipfModel->blocca($ip);
+				
 				header('HTTP/1.0 403 Not Found');
 				die();
 			}

@@ -377,14 +377,14 @@ class PagesController extends BaseController {
 			if ($this->viewArgs['lingua_page'] == "tutte")
 				$this->scaffold->model->sWhere("lingue_includi.id_page is null");
 			else
-				$this->scaffold->model->sWhere("lingue_includi.lingua = '".$this->viewArgs['lingua_page']."'");
+				$this->scaffold->model->sWhere(array("lingue_includi.lingua = ?",array($this->viewArgs['lingua_page'])));
 		}
 		
 		if (strcmp($this->viewArgs['lingua_page_escl'],'tutti') !== 0)
 		{
 			$this->scaffold->model->left("pages_lingue as lingue_escludi")->on("pages.id_page = lingue_escludi.id_page and lingue_escludi.includi = 0");
 			
-			$this->scaffold->model->sWhere("lingue_escludi.lingua = '".$this->viewArgs['lingua_page_escl']."'");
+			$this->scaffold->model->sWhere(array("lingue_escludi.lingua = ?",array($this->viewArgs['lingua_page_escl'])));
 		}
 		
 		if (strcmp($this->viewArgs['id_naz'],'tutti') !== 0 || strcmp($this->viewArgs['id_reg'],'tutti') !== 0)
@@ -2324,7 +2324,7 @@ class PagesController extends BaseController {
 		// Creo la cartella
 		GenericModel::creaCartellaImages($cartellaImmagini);
 		
-		$res = $this->m[$this->modelName]->query("select * from adminsessions where token = '".$clean['token']."';");
+		$res = $this->m[$this->modelName]->query(array("select * from adminsessions where token = ?;",array($clean['token'])));
 		
 		$result = "OK";
 		$immagine = $immagine_clean = "";
