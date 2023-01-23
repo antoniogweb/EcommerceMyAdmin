@@ -200,7 +200,7 @@ ImpostazioniModel::init();
 if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
-$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutOfFeed");
+$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutesOfFeed");
 
 foreach ($feedRoutes as $fr)
 {

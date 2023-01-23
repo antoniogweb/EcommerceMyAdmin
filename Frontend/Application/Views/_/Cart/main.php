@@ -46,7 +46,7 @@
 						</div>
 						<?php if ($p["cart"]["immagine"]) { ?>
 						<?php if (!$p["cart"]["id_p"]) { ?><a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><?php } ?>
-							<img src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
+							<img src="<?php echo $this->baseUrlSrc."/thumb/carrello/".$p["cart"]["immagine"];?>" />
 						<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
 						<?php } ?>
 					</div>

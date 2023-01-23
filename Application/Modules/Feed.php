@@ -56,7 +56,7 @@ class Feed
 		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed';
 	}
 	
-	public function getRoutOfFeed()
+	public function getRoutesOfFeed()
 	{
 		if (!$this->params["url_feed"])
 			return null;

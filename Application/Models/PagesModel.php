@@ -3756,7 +3756,7 @@ class PagesModel extends GenericModel {
 		{
 			$pr = new PagesregioniModel();
 			
-			$pr->query("delete from pages_regioni where id_page = ".(int)$id);
+			$pr->query(array("delete from pages_regioni where id_page = ?", array((int)$id)));
 			
 			$idNazione = 0;
 			
