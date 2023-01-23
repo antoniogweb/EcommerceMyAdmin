@@ -79,7 +79,7 @@ class TipidocumentoModel extends GenericModel
 		
 		$td = new TipidocumentoModel();
 		
-		return $td->clear()->select("id_tipo_doc")->sWhere('REPLACE(titolo, " ", "") = "'.$clean["titolo"].'"')->field("id_tipo_doc");
+		return $td->clear()->select("id_tipo_doc")->sWhere(array('REPLACE(titolo, " ", "") = ?',array($clean["titolo"])))->field("id_tipo_doc");
     }
     
     public function update($id = NULL, $whereClause = NULL)

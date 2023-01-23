@@ -1405,10 +1405,10 @@ class GenericModel extends Model_Tree
     public function setDalAlWhereClause($dal, $al, $field = "data_creazione")
     {
 		if ($dal != "tutti")
-			$this->sWhere("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') >= '".getIsoDate($dal)."'");
+			$this->sWhere(array("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') >= ?",array(getIsoDate($dal))));
 		
 		if ($al != "tutti")
-			$this->sWhere("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') <= '".getIsoDate($al)."'");
+			$this->sWhere(array("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') <= ?",array(getIsoDate($al))));
     }
     
     public function overrideFormStruct() {}

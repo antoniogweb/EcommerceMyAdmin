@@ -172,7 +172,7 @@ class OpzioniModel extends GenericModel {
 			{
 				$o = new OpzioniModel();
 				
-				$o->query("delete from opzioni where codice = '".self::CATEGORIE_GOOGLE."'");
+				$o->query(array("delete from opzioni where codice = ?",array(self::CATEGORIE_GOOGLE)));
 				
 				$o->db->beginTransaction();
 				
