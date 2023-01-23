@@ -48,7 +48,12 @@ class Img
 	private static function manage($attributes)
 	{
 		if (!isset($attributes["lazy"]) || !isset($attributes["action"]) || !$attributes["lazy"])
+		{
+			if (isset($attributes["src"]))
+				$attributes["src"] = Url::getFileRoot().$attributes["src"];
+			
 			return $attributes;
+		}
 		
 		if (self::$contatore < self::$soglia)
 		{
@@ -56,6 +61,9 @@ class Img
 			unset($attributes["action"]);
 			
 			self::$contatore++;
+			
+			if (isset($attributes["src"]))
+				$attributes["src"] = Url::getFileRoot().$attributes["src"];
 			
 			return $attributes;
 		}
