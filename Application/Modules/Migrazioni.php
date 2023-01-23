@@ -62,7 +62,7 @@ class Migrazioni
 		{
 			$numero = (int)$numero;
 			
-			if(((int)$numero > (int)$version) && file_exists($file))gi
+			if(((int)$numero > (int)$version) && file_exists($file))
 			{
 				$sql = file_get_contents($file);
 				
