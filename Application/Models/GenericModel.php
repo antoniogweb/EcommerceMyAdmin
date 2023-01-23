@@ -1324,17 +1324,24 @@ class GenericModel extends Model_Tree
 		
 		if (v("attiva_filtri_successivi"))
 		{
+			$binderdValues = array();
+			
 			if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]))
 			{
+				$ids = array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento]);
+				
 				if (count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
-					$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento])).")";
+				{
+					$whereIn = "pages.id_page in (".$this->placeholdersFromArray($ids).")";
+					$binderdValues = $ids;
+				}
 				else
 					$whereIn = "1 != 1";
 			}
 			else
 				$whereIn = "1 = 1";
 			
-			$this->sWhere($whereIn);
+			$this->sWhere(array($whereIn, $binderdValues));
 		}
 		
 		return $this;
