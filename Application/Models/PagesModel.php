@@ -3841,7 +3841,7 @@ class PagesModel extends GenericModel {
 				
 				foreach (PagesModel::$modelliDaDuplicare as $daDuplicare)
 				{
-					if ($daDuplicare != "PagesregioniModel" || $section != "sedi" || $section != "soci")
+					if ($daDuplicare != "PagesregioniModel" && $section != "sedi" && $section != "soci")
 					{
 						$modelDaDuplicare = new $daDuplicare();
 						$modelDaDuplicare->duplica($clean['id'], $lId);
