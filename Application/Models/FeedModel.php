@@ -87,6 +87,13 @@ class FeedModel extends GenericModel
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'url_feed'	=>	array(
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("URL personalizzato del feed. Se lasciato vuoto, solo l'URL automatico potrà essere utilizzato.")."</div>"
+					),
+				),
 			),
 		);
 		

@@ -200,6 +200,14 @@ ImpostazioniModel::init();
 if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
+$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutOfFeed");
+
+foreach ($feedRoutes as $fr)
+{
+	if (isset($fr) && is_array($fr))
+		Route::$map = $fr + Route::$map;
+}
+
 Domain::setPath();
 
 // User::$nazione = User::$nazioneNavigazione = "FR";

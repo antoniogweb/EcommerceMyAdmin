@@ -115,7 +115,7 @@ trait DIModel
 	}
 	
 	// Applica il metodo $metodo con argomenti $argomenti a tutti i moduli attivi
-	public static function applicaMetodoATuttiIModuli($metodo, $argomenti)
+	public static function applicaMetodoATuttiIModuli($metodo, $argomenti = array())
 	{
 		$className = get_called_class();
 		$c = new $className;
