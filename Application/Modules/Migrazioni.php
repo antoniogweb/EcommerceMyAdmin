@@ -71,7 +71,7 @@ class Migrazioni
 					if ($mysqli->query($sql))
 					{
 						fwrite($hand,date("Y-m-d H:i:s")." APPLICATA MIGRAZIONE ".$numero.".sql\n");
-						echo "APPLICATA MIGRAZIONE ".$numero.".sql<br />";
+						echo "APPLICATA MIGRAZIONE ".$numero.".sql<br />\n";
 					}
 					else
 					{
@@ -83,7 +83,7 @@ class Migrazioni
 							echo $errori;
 						
 						fwrite($hand,date("Y-m-d H:i:s")." ERRORE MIGRAZIONE ".$numero.".sql\n");
-						echo "ERRORE MIGRAZIONE ".$numero.".sql<br />";
+						echo "ERRORE MIGRAZIONE ".$numero.".sql<br />\n";
 					}
 				}
 				else
@@ -99,7 +99,7 @@ class Migrazioni
 			{
 				$mysqli->query("update variabili set valore = ".(int)$newVersion." where chiave='db_version';");
 				fwrite($hand,date("Y-m-d H:i:s")." DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql\n");
-				echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />";
+				echo "DATA BASE AGGIORNATO ALLA MIGRAZIONE ".$newVersion.".sql<br />\n";
 				VariabiliModel::$valori["db_version"] = (int)$newVersion;
 				
 				// Rigenero l'albero delle categorie
@@ -107,7 +107,7 @@ class Migrazioni
 				$cModel->callRebuildTree();
 			}
 			else
-				echo "<br />NUOVA VERSIONE: $newVersion";
+				echo "<br />NUOVA VERSIONE: $newVersion\n";
 			
 			$version = $newVersion;
 		}
