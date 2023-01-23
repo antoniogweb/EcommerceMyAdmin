@@ -106,6 +106,25 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									<td><?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?></td>
 								</tr>
 								<?php } ?>
+								<?php if (v("attiva_gestione_pixel")) {
+									$eventiPixel = PixeleventiModel::getStatusPixelEventoElemento("PURCHASE", $ordine["id_o"], "orders");
+									
+									if (count($eventiPixel) > 0)
+									{
+								?>
+									<tr>
+										<td><?php echo gtext("Pixel");?>:</td>
+										<td>
+											<?php foreach ($eventiPixel as $ev) { ?>
+												<b><?php echo $ev["pixel"]["titolo"];?></b>
+												<?php echo gtext("inviato in data/ora").": ".date("d-m-Y H:i", strtotime($ev["pixel_eventi"]["data_creazione"]));?> <i class="text text-success fa fa-thumbs-up"></i>
+												<a class="iframe" title="<?php echo gtext("Vedi codice script");?>" href="<?php echo $this->baseUrl."/ordini/vediscriptpixel/".$ev["pixel_eventi"]["id_pixel_evento"];?>&partial=Y&nobuttons=Y"><i class="fa fa-eye"></i></a>
+												<br />
+											<?php } ?>
+										</td>
+									</tr>
+									<?php } ?>
+								<?php } ?>
 							</table>
 						</div>
 						<div class="col-lg-6">

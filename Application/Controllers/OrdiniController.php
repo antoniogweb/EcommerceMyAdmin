@@ -547,6 +547,18 @@ class OrdiniController extends BaseController {
 		$this->load("vedi_response");
 	}
 	
+	public function vediscriptpixel($id_pixel_evento)
+	{
+		$this->model("PixeleventiModel");
+		
+		$data["record_evento"] = $this->m["PixeleventiModel"]->clear()->select("*")->inner(array("pixel"))->where(array(
+			"id_pixel_evento"	=>	(int)$id_pixel_evento,
+		))->first();
+		
+		$this->append($data);
+		$this->load("vedi_script_pixel");
+	}
+	
 	public function vedi($id_o)
 	{
 		@session_start();

@@ -38,9 +38,14 @@ class Pixel
 		return $g->infoOrdine($idOrdine);
 	}
 	
-	public function salvaEvento($evento, $idElemento, $tabellaElemento)
+	public function salvaEvento($evento, $idElemento, $tabellaElemento, $codiceEvento = "")
 	{
-		return PixeleventiModel::g(false)->aggiungi($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento);
+		return PixeleventiModel::g(false)->aggiungi($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento, $codiceEvento);
+	}
+	
+	public function aggiornaEvento($evento, $idElemento, $tabellaElemento, $values)
+	{
+		return PixeleventiModel::g(false)->aggiorna($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento, $values);
 	}
 	
 	public function getEvento($evento, $idElemento, $tabellaElemento)

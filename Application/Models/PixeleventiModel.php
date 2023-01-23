@@ -31,16 +31,35 @@ class PixeleventiModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public function aggiungi($idPixel, $evento, $idElemento, $tabellaElemento)
+	public function relations() {
+		return array(
+			'pixel' => array("BELONGS_TO", 'PixelModel', 'id_pixel',null,"CASCADE"),
+		);
+    }
+	
+	public function aggiungi($idPixel, $evento, $idElemento, $tabellaElemento, $codiceEvento = "")
 	{
 		$this->sValues(array(
 			"id_pixel"		=>	(int)$idPixel,
 			"evento"		=>	$evento,
 			"tabella_elemento"	=>	$tabellaElemento,
 			"id_elemento"	=>	(int)$idElemento,
+			"codice_evento"	=>	$codiceEvento,
 		));
 		
 		return $this->insert();
+	}
+	
+	public function aggiorna($idPixel, $evento, $idElemento, $tabellaElemento, $values)
+	{
+		$evento = $this->getEvento($idPixel, $evento, $idElemento, $tabellaElemento);
+		
+		if (!empty($evento) && is_array($values) && !empty($values))
+		{
+			 $this->sValues($values);
+			 
+			 $this->update($evento["id_pixel_evento"]);
+		}
 	}
 	
 	public function getEvento($idPixel, $evento, $idElemento, $tabellaElemento)
@@ -51,5 +70,17 @@ class PixeleventiModel extends GenericModel
 			"tabella_elemento"	=>	sanitizeAll($tabellaElemento),
 			"id_elemento"	=>	(int)$idElemento,
 		))->record();
+	}
+	
+	public static function getStatusPixelEventoElemento($evento, $idElemento, $tabellaElemento)
+	{
+		$pixModel = new PixelModel();
+		
+		return $pixModel->clear()->select("*")->inner(array("eventi"))->where(array(
+			"pixel_eventi.evento"			=>	$evento,
+			"pixel_eventi.tabella_elemento"	=>	sanitizeAll($tabellaElemento),
+			"pixel_eventi.id_elemento"		=>	(int)$idElemento,
+			"pixel.attivo"	=>	1,
+		))->orderBy("pixel.id_order")->send();
 	}
 }

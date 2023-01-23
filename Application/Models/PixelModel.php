@@ -40,6 +40,12 @@ class PixelModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'eventi' => array("HAS_MANY", 'PixeleventiModel', 'id_pixel', null, "CASCADE"),
+        );
+    }
+	
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array

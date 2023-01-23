@@ -89,6 +89,7 @@ class Route
 		'ordini,righe',
 		'ordini,setstato',
 		'ordini,vediresponse',
+		'ordini,vediscriptpixel',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',

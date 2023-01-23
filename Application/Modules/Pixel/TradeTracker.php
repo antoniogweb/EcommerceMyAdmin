@@ -75,21 +75,26 @@ class TradeTracker extends Pixel
 		ob_start();
 		
 		if ($script)
-		{
 			include(tpf(ElementitemaModel::p("TRADETRACKER_PURCHASE","", array(
 				"titolo"	=>	"Codice JS per evento purchase di TradeTracker",
 				"percorso"	=>	"Elementi/Pixel/Purchase/TradeTracker/Script",
 			))));
-			
-			$this->salvaEvento("PURCHASE", $idOrdine, "orders");
-		}
 		else if (!in_array($this->params["id_pixel"], self::$eventoInviato))
 			include(tpf(ElementitemaModel::p("TRADETRACKER_PURCHASE_NS","", array(
 				"titolo"	=>	"Codice noscript per evento purchase di TradeTracker",
 				"percorso"	=>	"Elementi/Pixel/Purchase/TradeTracker/NoScript",
 			))));
 		
-		return ob_get_clean();
+		$res = ob_get_clean();
+		
+		if ($script)
+			$this->salvaEvento("PURCHASE", $idOrdine, "orders", $res);
+		else if (!in_array($this->params["id_pixel"], self::$eventoInviato))
+			$this->aggiornaEvento("PURCHASE", $idOrdine, "orders", array(
+				"codice_evento_noscript"	=>	$res,
+			));
+		
+		return $res;
 	}
 	
 	public function getPurchaseNoScript($idOrdine, $info = array())
