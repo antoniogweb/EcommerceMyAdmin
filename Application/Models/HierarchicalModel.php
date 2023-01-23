@@ -555,7 +555,6 @@ class HierarchicalModel extends GenericModel {
 				{
 					$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
 					
-// 					$parents = $this->select($f)->left("contenuti_tradotti")->on("contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = '".sanitizeDb($lingua)."'")->send();
 					$parents = $this->select($f)->left("contenuti_tradotti")->on(array(
 						"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
 						array(sanitizeDb($lingua))

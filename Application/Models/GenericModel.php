@@ -695,7 +695,6 @@ class GenericModel extends Model_Tree
 		if ($frontend)
 		{
 			$ruoli = $r->clear()->select("*")
-// 				->left("contenuti_tradotti")->on("contenuti_tradotti.id_ruolo = ruoli.id_ruolo and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
 				->addJoinTraduzione(null, "contenuti_tradotti", false)
 				->orderBy("ruoli.titolo")
 				->send();
@@ -764,10 +763,6 @@ class GenericModel extends Model_Tree
 		$p = new PagesModel();
 		
 		return $p->buildAllPagesSelect();
-		
-// 		return array(0	=>	gtext("-- NON IMPOSTATO --")) + $p->clear()->inner("categories")->on("pages.id_c = categories.id_c")->orderBy("pages.title")->where(array(
-// 			"nin"	=>	array("categories.alias"	=>	array("slide")),
-// 		))->toList("pages.id_page","pages.title")->send();
 	}
 	
 	public function selectLingua($prefisso = "")
