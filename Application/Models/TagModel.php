@@ -140,7 +140,7 @@ class TagModel extends GenericModel {
 			
 			$res = parent::insert();
 			
-			if ($res && isset($_GET["id_page"]))
+			if ($res && isset($_GET["id_page"]) && is_numeric($_GET["id_page"]))
 			{
 				$this->aggiungiaprodotto($this->lId);
 			}

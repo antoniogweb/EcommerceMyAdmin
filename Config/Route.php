@@ -89,6 +89,7 @@ class Route
 		'ordini,righe',
 		'ordini,setstato',
 		'ordini,vediresponse',
+		'ordini,vediscriptpixel',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',
@@ -765,6 +766,7 @@ class Route
 		'cache,svuotacache',
 		'cache,svuotacacheimmagini',
 		'cache,svuotacachemetodi',
+		'cache,svuotacachetemplate',
 		
 		'feed,main',
 		'feed,form',
@@ -774,6 +776,9 @@ class Route
 		
 		'ipfilter,main',
 		'ipfilter,form',
+		
+		'pixel,main',
+		'pixel,form',
 	);
 	
 	//it can be 'yes' or 'no'

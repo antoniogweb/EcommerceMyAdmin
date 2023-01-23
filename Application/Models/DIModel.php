@@ -114,6 +114,38 @@ trait DIModel
 		return $c;
 	}
 	
+	// Applica il metodo $metodo con argomenti $argomenti a tutti i moduli attivi
+	public static function applicaMetodoATuttiIModuli($metodo, $argomenti = array())
+	{
+		$className = get_called_class();
+		$c = new $className;
+		
+		$attivi = $c->clear()->where(array(
+			"attivo"	=>	1,
+		))->send(false);
+		
+		$nomeCampoClasse = $c->getNomeCampoClasse();
+		
+		$returnArray = [];
+		
+		foreach ($attivi as $attivo)
+		{
+			if (file_exists(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php"))
+			{
+				require_once(LIBRARY."/Application/Modules/".$c->classeModuloPadre.".php");
+				require_once(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php");
+				
+				$objectReflection = new ReflectionClass($attivo[$nomeCampoClasse]);
+				$object = $objectReflection->newInstanceArgs(array($attivo));
+				
+				if ($object && method_exists($object, $metodo) && $object->isAttivo())
+					$returnArray[] = call_user_func_array(array($object, $metodo), $argomenti);
+			}
+		}
+		
+		return $returnArray;
+	}
+	
 	public function __call($metodo, $argomenti)
 	{
 		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))

@@ -53,6 +53,19 @@ class Feed
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache';
+		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed';
+	}
+	
+	public function getRoutesOfFeed()
+	{
+		if (!$this->params["url_feed"])
+			return null;
+		
+		$feedUrl = 'feed/prodotti/'.strtolower($this->params["codice"]).'/';
+		
+		if ($this->params["usa_token_sicurezza"])
+			$feedUrl .= $this->params["token_sicurezza"];
+		
+		return array($this->params["url_feed"] => $feedUrl);
 	}
 }

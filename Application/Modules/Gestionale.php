@@ -161,12 +161,13 @@ class Gestionale
 		return $arrayErrori;
 	}
 	
+	// restituisce un output pulito dell'ordine con la testata e le righe e i codici del gestionale già estratti
 	public function infoOrdine($id_o)
 	{
 		$oModel = new OrdiniModel();
 		$rModel = new RigheModel();
 		
-		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,versione_api_gestionale,errore_gestionale,fonte")->whereId((int)$id_o)->record();
+		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,versione_api_gestionale,errore_gestionale,fonte,euro_promozione")->whereId((int)$id_o)->record();
 		
 		if (!empty($ordine))
 		{
@@ -187,6 +188,13 @@ class Gestionale
 			$ordine["pagato_finale"] = OrdiniModel::isPagato((int)$id_o) ? 1 : 0;
 			$ordine["nominativo"] = OrdiniModel::getNominativo($ordine);
 			
+			$ordine["totale_prodotti_non_ivato"] = $ordine["total"] - $ordine["iva"] - $ordine["spedizione"] - $ordine["costo_pagamento"];
+			$ordine["totale_prodotti_ivato"] = $ordine["total"] - $ordine["spedizione_ivato"] - $ordine["costo_pagamento_ivato"];
+			
+			$idIva = $ordine["id_iva_estera"] ? $ordine["id_iva_estera"] : $ordine["id_iva"];
+			
+			$ordine["valore_iva"] = IvaModel::g(false)->getValore($idIva);
+			
 			$righe = $rModel->clear()->select("id_r,data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte")->where(array(
 				"id_o"	=>	(int)$id_o,
 			))->send(false);
@@ -205,6 +213,15 @@ class Gestionale
 			
 			$righe = array_map('htmlentitydecodeDeep', $righe);
 			
+			$numeroProdotti = 0;
+			
+			foreach ($righe as $r)
+			{
+				$numeroProdotti += $r["quantity"];
+			}
+			
+			$ordine["numero_prodotti"] = $numeroProdotti;
+			
 			if ($ordine["spedizione"] > 0)
 			{
 				$righe[] = array(
@@ -222,10 +239,10 @@ class Gestionale
 					"prezzo_finale"	=>	$ordine["spedizione"],
 					"prezzo_finale_ivato"	=>	$ordine["spedizione_ivato"],
 					"gift_card"	=>	0,
-					"id_iva"	=>	$ordine["id_iva"],
+					"id_iva"	=>	$idIva,
 					"iva"		=>	($ordine["spedizione_ivato"] - $ordine["spedizione"]),
 					"fonte"		=>	$ordine["tipo_ordine"],
-					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $ordine["id_iva"]),
+					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
 				);
 			}
 			
@@ -246,10 +263,36 @@ class Gestionale
 					"prezzo_finale"	=>	$ordine["costo_pagamento"],
 					"prezzo_finale_ivato"	=>	$ordine["costo_pagamento_ivato"],
 					"gift_card"	=>	0,
-					"id_iva"	=>	$ordine["id_iva"],
+					"id_iva"	=>	$idIva,
 					"iva"		=>	($ordine["costo_pagamento_ivato"] - $ordine["costo_pagamento"]),
 					"fonte"		=>	$ordine["tipo_ordine"],
-					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $ordine["id_iva"]),
+					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+				);
+			}
+			
+			if ($ordine["euro_promozione"] > 0)
+			{
+				$costoNonIvato = number_format($ordine["euro_promozione"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
+				
+				$righe[] = array(
+					"id_r"	=>	-1,
+					"titolo"	=>	gtext("Coupon"),
+					"attributi"	=>	"",
+					"codice"	=>	$ordine["codice_promozione"],
+					"immagine"	=>	"",
+					"peso"		=>	0,
+					"quantity"	=>	1,
+					"prezzo"	=>	$costoNonIvato,
+					"prezzo_ivato"	=>	$ordine["euro_promozione"],
+					"prezzo_intero"	=>	$costoNonIvato,
+					"prezzo_intero_ivato"	=>	$ordine["euro_promozione"],
+					"prezzo_finale"	=>	$costoNonIvato,
+					"prezzo_finale_ivato"	=>	$ordine["euro_promozione"],
+					"gift_card"	=>	0,
+					"id_iva"	=>	$idIva,
+					"iva"		=>	($ordine["euro_promozione"] - $costoNonIvato),
+					"fonte"		=>	$ordine["tipo_ordine"],
+					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
 				);
 			}
 			

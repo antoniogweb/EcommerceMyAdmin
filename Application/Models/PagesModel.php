@@ -1720,10 +1720,16 @@ class PagesModel extends GenericModel {
 		
 		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
-			$parents = $this->parents($clean["id"], false, false, $lingua, array(
-				"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
-				"contenuti_tradotti.alias,categories.alias"
-			));
+			if ($lingua)
+				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+					"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+					"contenuti_tradotti.alias,categories.alias"
+				));
+			else
+				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+					"pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+					"categories.alias"
+				));
 			
 			//remove the root node
 			array_shift($parents);
@@ -3750,7 +3756,7 @@ class PagesModel extends GenericModel {
 		{
 			$pr = new PagesregioniModel();
 			
-			$pr->query("delete from pages_regioni where id_page = ".(int)$id);
+			$pr->query(array("delete from pages_regioni where id_page = ?", array((int)$id)));
 			
 			$idNazione = 0;
 			
@@ -3835,7 +3841,7 @@ class PagesModel extends GenericModel {
 				
 				foreach (PagesModel::$modelliDaDuplicare as $daDuplicare)
 				{
-					if ($daDuplicare != "PagesregioniModel" || $section != "sedi" || $section != "soci")
+					if ($daDuplicare != "PagesregioniModel" && $section != "sedi" && $section != "soci")
 					{
 						$modelDaDuplicare = new $daDuplicare();
 						$modelDaDuplicare->duplica($clean['id'], $lId);

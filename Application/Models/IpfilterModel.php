@@ -74,4 +74,14 @@ class IpfilterModel extends GenericModel
 			"whitelist"	=>	(int)$whitelist,
 		))->rowNumber();
 	}
+	
+	public function blocca($ip, $minuti = 0)
+	{
+		$this->sValues(array(
+			"ip"	=>	sanitizeAll($ip),
+			"whitelist"	=>	0,
+		));
+		
+		$this->insert();
+	}
 }

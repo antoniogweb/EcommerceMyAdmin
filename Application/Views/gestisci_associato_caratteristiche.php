@@ -72,11 +72,11 @@
 		<?php echo Html_Form::select("id_car","",$listaCaratteristiche,"lista_caratt form_select form-control",null,"yes");?>
 		<div class="form-group">
 			<label class="sr-only" for="titolo">Aggiungi caratteristica</label>
-<!-- 			<?php echo Html_Form::input("titolo","","form-control","titolo",'placeholder="Aggiungi se non definita"');?> -->
+<!-- 			<?php /*echo Html_Form::input("titolo","","form-control","titolo",'placeholder="Aggiungi se non definita"');*/?> -->
 		</div>
 		<?php echo Html_Form::select("id_cv","",$listaCarattVal,"lista_caratt_valori form_select form-control",null,"yes");?>
 		<input class="hidden_caratt" type="hidden" name="id_car" value="" />
-		<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi">
-		
+		<button class="btn btn-primary make_spinner" name="insertAction" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Salva");?></button>
+		<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 	</form><br />
 <?php } ?>

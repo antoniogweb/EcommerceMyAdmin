@@ -249,10 +249,10 @@ class OrdiniController extends BaseController {
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")
-			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= '".getIsoDate($this->viewArgs['dal'])."'");
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
 		
 		if ($this->viewArgs['al'] != "tutti")
-			$this->m[$this->modelName]->sWhere("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= '".getIsoDate($this->viewArgs['al'])."'");
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
 		
 		if (strcmp($this->viewArgs['lista_regalo'],'tutti') !== 0)
 			$this->m[$this->modelName]->inner(array("lista"))->where(array(
@@ -545,6 +545,18 @@ class OrdiniController extends BaseController {
 		
 		$this->append($data);
 		$this->load("vedi_response");
+	}
+	
+	public function vediscriptpixel($id_pixel_evento)
+	{
+		$this->model("PixeleventiModel");
+		
+		$data["record_evento"] = $this->m["PixeleventiModel"]->clear()->select("*")->inner(array("pixel"))->where(array(
+			"id_pixel_evento"	=>	(int)$id_pixel_evento,
+		))->first();
+		
+		$this->append($data);
+		$this->load("vedi_script_pixel");
 	}
 	
 	public function vedi($id_o)

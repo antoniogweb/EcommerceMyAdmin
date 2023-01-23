@@ -695,7 +695,6 @@ class GenericModel extends Model_Tree
 		if ($frontend)
 		{
 			$ruoli = $r->clear()->select("*")
-// 				->left("contenuti_tradotti")->on("contenuti_tradotti.id_ruolo = ruoli.id_ruolo and contenuti_tradotti.lingua = '".sanitizeDb(Params::$lang)."'")
 				->addJoinTraduzione(null, "contenuti_tradotti", false)
 				->orderBy("ruoli.titolo")
 				->send();
@@ -764,10 +763,6 @@ class GenericModel extends Model_Tree
 		$p = new PagesModel();
 		
 		return $p->buildAllPagesSelect();
-		
-// 		return array(0	=>	gtext("-- NON IMPOSTATO --")) + $p->clear()->inner("categories")->on("pages.id_c = categories.id_c")->orderBy("pages.title")->where(array(
-// 			"nin"	=>	array("categories.alias"	=>	array("slide")),
-// 		))->toList("pages.id_page","pages.title")->send();
 	}
 	
 	public function selectLingua($prefisso = "")
@@ -1324,17 +1319,24 @@ class GenericModel extends Model_Tree
 		
 		if (v("attiva_filtri_successivi"))
 		{
+			$binderdValues = array();
+			
 			if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]))
 			{
+				$ids = array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento]);
+				
 				if (count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
-					$whereIn = "pages.id_page in (".implode(",",array_map("forceInt",CategoriesModel::$arrayIdsPagineFiltrate[$elemento])).")";
+				{
+					$whereIn = "pages.id_page in (".$this->placeholdersFromArray($ids).")";
+					$binderdValues = $ids;
+				}
 				else
 					$whereIn = "1 != 1";
 			}
 			else
 				$whereIn = "1 = 1";
 			
-			$this->sWhere($whereIn);
+			$this->sWhere(array($whereIn, $binderdValues));
 		}
 		
 		return $this;
@@ -1405,10 +1407,10 @@ class GenericModel extends Model_Tree
     public function setDalAlWhereClause($dal, $al, $field = "data_creazione")
     {
 		if ($dal != "tutti")
-			$this->sWhere("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') >= '".getIsoDate($dal)."'");
+			$this->sWhere(array("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') >= ?",array(getIsoDate($dal))));
 		
 		if ($al != "tutti")
-			$this->sWhere("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') <= '".getIsoDate($al)."'");
+			$this->sWhere(array("DATE_FORMAT(".$this->_tables.".$field, '%Y-%m-%d') <= ?",array(getIsoDate($al))));
     }
     
     public function overrideFormStruct() {}

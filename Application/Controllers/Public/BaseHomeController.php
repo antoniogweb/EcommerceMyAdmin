@@ -135,8 +135,8 @@ class BaseHomeController extends BaseController
 		$xml = aToX($xmlArray);
 		
 		header ("Content-Type:text/xml");
-		echo '<?xml version="1.0"?>';
-		echo '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
+		echo '<?xml version="1.0"?>'."\n";
+		echo '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">'."\n";
 		echo $xml;
 		echo '</rss>';
 	}

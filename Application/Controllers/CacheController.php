@@ -61,6 +61,26 @@ class CacheController extends BaseController
 		}
 	}
 	
+	public function svuotacachetemplate()
+	{
+		$this->clean();
+		
+		if (defined("SAVE_CACHE_HTML"))
+		{
+			$dir = Domain::$parentRoot."/Logs";
+			
+			if (@is_dir($dir))
+			{
+				$tmpFolder = randomToken(20);
+				
+				if (@rename($dir."/cachehtml", $dir."/$tmpFolder"))
+				{
+					GenericModel::eliminaCartella($dir."/$tmpFolder");
+				}
+			}
+		}
+	}
+	
 	public function svuotacachemetodi()
 	{
 		$this->clean();

@@ -125,9 +125,11 @@ class RegusersController extends BaseController {
 			$filtri[] = "token_eliminazione";
 			$filtri[] = array("deleted",null,array("tutti" => "Stato cliente", "no" => "Clienti in anagrafica", "yes" => "Clienti eliminati"));
 			
-			$this->addBulkActions = false;
-			
-			$this->colProperties = array(null);
+			if ($this->viewArgs["id_nazione"] == "tutti")
+			{
+				$this->addBulkActions = false;
+				$this->colProperties = array(null);
+			}
 		}
 		
 		$this->mainFields = $mainFields;
@@ -156,7 +158,7 @@ class RegusersController extends BaseController {
 				"checkbox_regusers_id_user"	=>	array("aggiungianazione","Aggiungi alla nazione"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("regusers.id_user not in (select id_user from regusers_nazioni where id_nazione = ".(int)$this->viewArgs["id_nazione"].")");
+			$this->m[$this->modelName]->sWhere(array("regusers.id_user not in (select id_user from regusers_nazioni where id_nazione = ?)",array((int)$this->viewArgs["id_nazione"])));
 		}
 		
 		if ($this->viewArgs["codice_app"] != "tutti")

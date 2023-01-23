@@ -1,0 +1,1 @@
+INSERT INTO `feed` (`id_feed`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `id_order`, `token_sicurezza`, `usa_token_sicurezza`, `query_string`, `tempo_cache`) VALUES (NULL, CURRENT_TIMESTAMP, 'Sitemap prodotti', '1', 'SITEMAPPRODOTTI', 'SitemapProdotti', '2', '', '1', '', '0');

@@ -76,7 +76,7 @@ class TagController extends BaseController
 				"checkbox_tag_id_tag"	=>	array("aggiungiaprodotto","Aggiungi alla pagina"),
 			);
 			
-			$this->m[$this->modelName]->sWhere("tag.id_tag not in (select id_tag from pages_tag where id_tag is not null and id_page = ".(int)$this->viewArgs["id_page"].")");
+			$this->m[$this->modelName]->sWhere(array("tag.id_tag not in (select id_tag from pages_tag where id_tag is not null and id_page = ?)",array((int)$this->viewArgs["id_page"])));
 		}
 		
 		$this->m[$this->modelName]->save();

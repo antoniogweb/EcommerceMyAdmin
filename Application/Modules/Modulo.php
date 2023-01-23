@@ -169,7 +169,7 @@ trait Modulo
 				"combinazioni.id_c"	=>	(int)$idC,
 			));
 		
-		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio";
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap";
 		
 		if ($combinazioniLinkVeri || $idC)
 		{
@@ -184,8 +184,11 @@ trait Modulo
 			->addWhereAttivo()
 			->addJoinTraduzionePagina()
 			->left(array("marchio"))
-			->addWhereCategoria((int)$idShop)
-			->orderBy("pages.title");
+			->addWhereCategoria((int)$idShop);
+// 			->orderBy("pages.title");
+		
+		if (!isset($p->orderBy))
+			$p->orderBy("pages.title");
 		
 		$signature = "";
 		
@@ -298,6 +301,8 @@ trait Modulo
 				"gtin"		=>	$r["pages"]["gtin"],
 				"mpn"		=>	$r["pages"]["mpn"],
 				"id_corriere"	=>	$r["categories"]["id_corriere"],
+				"ultima_modifica"	=>	$r["aggregate"]["ultima_modifica"],
+				"priorita_sitemap"	=>	$r["pages"]["priorita_sitemap"],
 			);
 			
 			if ($combinazioniLinkVeri)
