@@ -149,3 +149,8 @@ Minify
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/matthiasmullie/minify
+
+PHPUnit
+-------
+License:	BSD 3-Clause License
+link: 		https://github.com/sebastianbergmann/phpunit
