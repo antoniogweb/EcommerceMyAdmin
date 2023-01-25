@@ -95,7 +95,11 @@ class IntegrazioniloginController extends BaseController
 		
 		$this->clean();
 		
-		if (!trim($codice) || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva())
+		$record = $this->m[$this->modelName]->clear()->where(array(
+			"codice"	=>	$clean["codice"],
+		))->record();
+		
+		if (empty($record) || !trim($codice) || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva())
 			$this->responseCode(403);
 		
 		if( !session_id() )
@@ -129,5 +133,7 @@ class IntegrazioniloginController extends BaseController
 				));
 			}
 		}
+		
+		$this->redirect("integrazionilogin/form/update/".$record["id_integrazione_login"]);
 	}
 }
