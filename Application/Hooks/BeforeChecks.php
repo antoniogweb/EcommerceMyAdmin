@@ -380,16 +380,6 @@ Helper_Menu::$htmlLinks = array(
 		'url'	=>	'main',
 		"classIconBefore"	=>	'<i class="fa fa-eye"></i>',
 	),
-	"ottieni_access_token" => array(
-		"htmlBefore" => '',
-		"htmlAfter" => '',
-		"attributes" => 'target="_blank" role="button" class="btn btn-info"',
-		"class"	=>	"btn btn-default",
-		'title'	=>	"Ottieni access log",
-		'text'	=>	"Ottieni access log",
-		'url'	=>	'ottieniaccesstoken',
-		"classIconBefore"	=>	'<i class="fa fa-unlock"></i>',
-	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";

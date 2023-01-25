@@ -48,7 +48,7 @@ class FacebookLogin extends ExternalLogin
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,app_id,secret_key,app_version';
+		return 'titolo,attivo,app_id,secret_key,app_version,access_token';
 	}
 	
 	private function getClient()
@@ -82,6 +82,9 @@ class FacebookLogin extends ExternalLogin
 	{
 		if (isset($_SESSION["test_login_effettuato"]))
 			unset($_SESSION["test_login_effettuato"]);
+		
+		if (isset($_SESSION["access_token"]))
+			unset($_SESSION["access_token"]);
 	}
 	
 	public function getInfoOrGoToLogin($redirectQueryString = "", $redirectUrl = "")
@@ -144,7 +147,7 @@ class FacebookLogin extends ExternalLogin
 				);
 				$this->infoUtente["result"] = 1;
 				$this->infoUtente["utente_loggato"] = 1;
-				$this->infoUtente["access_token"] = $accessToken;
+				$this->infoUtente["access_token"] = (string)$accessToken;
 
 			} catch(Facebook\Exceptions\FacebookResponseException $e) {
 				

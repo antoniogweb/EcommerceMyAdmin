@@ -65,6 +65,14 @@ class IntegrazioniloginModel extends GenericModel {
 					'labelString'=>	'Testo introduttivo del pulsante',
 					'className'		=>	'text_input form-control editor_textarea',
 				),
+				'access_token'	=>	array(
+					'labelString'=>	'Access Token',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<a style='margin-left:30px;' href='".Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni access token")."</a>"
+					),
+				),
 			),
 		);
 	}

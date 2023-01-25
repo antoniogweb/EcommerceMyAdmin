@@ -84,7 +84,7 @@ class IntegrazioniloginController extends BaseController
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$this->menuLinks = "back,save,ottieni_access_token";
+		$this->menuLinks = "back,save";
 		
 		parent::form($queryType, $id);
 	}
@@ -116,16 +116,18 @@ class IntegrazioniloginController extends BaseController
 		}
 		else
 		{
-			echo "<pre>";
-			print_r($infoUtente);
-			echo "</pre>";
+			$accessToken = $infoUtente["access_token"];
+			
+			if ($accessToken)
+			{
+				$this->m[$this->modelName]->sValues(array(
+					"access_token"	=>	$accessToken,
+				));
+				
+				$this->m[$this->modelName]->update(null, array(
+					"codice"	=>	$clean["codice"],
+				));
+			}
 		}
-	}
-	
-	protected function aggiungiUrlmenuScaffold($id)
-	{
-		$record = $this->m[$this->modelName]->selectId((int)$id);
-		
-		$this->scaffold->mainMenu->links['ottieni_access_token']['absolute_url'] = Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"];
 	}
 }
