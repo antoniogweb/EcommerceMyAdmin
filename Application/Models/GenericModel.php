@@ -320,10 +320,18 @@ class GenericModel extends Model_Tree
 		
 		$clean["id"] = (int)$id;
 		
-		if (!$clean["id"])
-			$res = $this->query(array("select alias from ".$this->_tables." where alias = ?",array(sanitizeDb($this->values["alias"]))));
+		// Controllo che non sia una di quelle tabelle che può avere un duplicato. Ex: attributi_valori
+		$tabelleConAliasDuplicato = explode(",", v("tabelle_con_possibile_alias_duplicato"));
+		
+		if (!in_array($this->_tables, $tabelleConAliasDuplicato))
+		{
+			if (!$clean["id"])
+				$res = $this->query(array("select alias from ".$this->_tables." where alias = ?",array(sanitizeDb($this->values["alias"]))));
+			else
+				$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$this->_idFields."!=?",array(sanitizeDb($this->values["alias"]),$clean["id"])));
+		}
 		else
-			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$this->_idFields."!=?",array(sanitizeDb($this->values["alias"]),$clean["id"])));
+			$res = array();
 		
 		$this->addTokenAlias($res);
 		
@@ -344,10 +352,15 @@ class GenericModel extends Model_Tree
 		
 		$this->addTokenAlias($res);
 		
-		if (!isset($id) || $noTraduzione)
-			$res = $this->query(array("select alias from contenuti_tradotti where alias = ?",array(sanitizeDb($this->values["alias"]))));
+		if (!in_array($this->_tables, $tabelleConAliasDuplicato))
+		{
+			if (!isset($id) || $noTraduzione)
+				$res = $this->query(array("select alias from contenuti_tradotti where alias = ?",array(sanitizeDb($this->values["alias"]))));
+			else
+				$res = $this->query(array("select alias from contenuti_tradotti where alias = ? and ".$this->_idFields."!=?",array(sanitizeDb($this->values["alias"]),$clean["id"])));
+		}
 		else
-			$res = $this->query(array("select alias from contenuti_tradotti where alias = ? and ".$this->_idFields."!=?",array(sanitizeDb($this->values["alias"]),$clean["id"])));
+			$res = $this->query(array("select alias from contenuti_tradotti where alias = ? and sezione != ?",array(sanitizeDb($this->values["alias"]), sanitizeDb($this->_tables))));
 		
 		$this->addTokenAlias($res);
 	}

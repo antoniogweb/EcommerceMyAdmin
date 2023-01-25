@@ -66,7 +66,7 @@ class AttributiModel extends GenericModel {
 				'id_tipologia_attributo'		=>	array(
 					'type'		=>	'Select',
 					"labelString"	=>	"Quale significato ha l'attributo?",
-					'options'	=>	array("" => gtext("Seleziona")) + TipologieattributiModel::g()->orderBy("id_order")->toList("id_tipologia_attributo", "titolo")->send(),
+					'options'	=>	array(0 => gtext("Seleziona")) + TipologieattributiModel::g()->orderBy("id_order")->toList("id_tipologia_attributo", "titolo")->send(),
 					'reverse' => 'yes',
 				),
 			),

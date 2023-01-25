@@ -33,6 +33,20 @@ Users_CheckAdmin::$groupsModel = "GroupsModel";
 Users_CheckAdmin::$sessionsModel = "SessioniModel";
 Users_CheckAdmin::$accessesModel = "AccessiModel";
 
+$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
+
+// set logger if the log of the queries is enabled
+if (defined('LOG_QUERIES_ENABLED'))
+{
+	// set logger to development
+	$mysqli->setLogger(false);
+	
+	if (defined('LOG_QUERIES_THRESHOLD'))
+		Db_Log_Generic::$queryTimeThresholdToLogInSeconds = LOG_QUERIES_THRESHOLD;
+}
+
+$mysqli->query("set session sql_mode=''");
+
 Url::$routes = array(
 	"ordine"	=>	"ordini/vedi/%d",
 );
@@ -86,10 +100,6 @@ require(LIBRARY."/External/mobile_detect.php");
 
 $detect = new Mobile_Detect();
 User::$isMobile = $detect->isMobile();
-
-$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
-// $mysqli = Db_Mysqli::getInstance();
-$mysqli->query("set session sql_mode=''");
 
 Params::$language = "It";
 

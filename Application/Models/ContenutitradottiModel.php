@@ -118,6 +118,7 @@ class ContenutitradottiModel extends GenericModel
 			$idCar = isset($this->values["id_car"]) ? $this->values["id_car"] : 0;
 			$idCv = isset($this->values["id_cv"]) ? $this->values["id_cv"] : 0;
 			$idFascia = isset($this->values["id_fascia_prezzo"]) ? $this->values["id_fascia_prezzo"] : 0;
+			$idAv = isset($this->values["id_av"]) ? $this->values["id_av"] : 0;
 		}
 		else
 		{
@@ -128,6 +129,7 @@ class ContenutitradottiModel extends GenericModel
 			$idCar = $record["id_car"];
 			$idCv = $record["id_cv"];
 			$idFascia = $record["id_fascia_prezzo"];
+			$idAv = $record["id_av"];
 		}
 		
 		$bindedValues = array($this->values["alias"]);
@@ -174,15 +176,32 @@ class ContenutitradottiModel extends GenericModel
 			$whereClause = "id_fascia_prezzo != ?";
 			$tabella = "fasce_prezzo";
 		}
+		else if ($idAv)
+		{
+			$bindedValues[] = (int)$idAv;
+			$whereClause = "id_av != ?";
+			$tabella = "attributi_valori";
+		}
 		
 		$idBelow = $bindedValues[1];
 		
-		if (!isset($id))
-			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$whereClause,$bindedValues));
+		// Controllo che non sia una di quelle tabelle che può avere un duplicato. Ex: attributi_valori
+		$tabelleConAliasDuplicato = explode(",", v("tabelle_con_possibile_alias_duplicato"));
+		
+		if (!in_array($tabella, $tabelleConAliasDuplicato))
+		{
+			if (!isset($id))
+				$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$whereClause,$bindedValues));
+			else
+			{
+				$bindedValues[] = $clean["id"];
+				$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and $whereClause and ".$this->_idFields."!=?",$bindedValues));
+			}
+		}
 		else
 		{
-			$bindedValues[] = $clean["id"];
-			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and $whereClause and ".$this->_idFields."!=?",$bindedValues));
+			$bindedValues[] = $tabella;
+			$res = $this->query(array("select alias from ".$this->_tables." where alias = ? and ".$whereClause." and sezione != ?",$bindedValues));
 		}
 		
 		$this->addTokenAlias($res);
@@ -207,7 +226,7 @@ class ContenutitradottiModel extends GenericModel
 			}
 			
 			$sql = implode(" UNION ", $arrayUnion);
-// 			echo $sql;print_r($bindedValues);
+			
 			$res = $this->query(array($sql, $bindedValues));
 			
 			$this->addTokenAlias($res);
@@ -216,7 +235,7 @@ class ContenutitradottiModel extends GenericModel
 	
 	public function sAlias($record, $id = null)
 	{
-		if ($record["id_page"] || $record["id_c"] || $record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"] || $record["id_fascia_prezzo"])
+		if ($record["id_page"] || $record["id_c"] || $record["id_marchio"] || $record["id_tag"] || $record["id_car"] || $record["id_cv"] || $record["id_fascia_prezzo"] || $record["id_av"])
 			$this->alias($id);
 	}
 	

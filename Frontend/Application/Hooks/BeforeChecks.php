@@ -102,8 +102,6 @@ Params::$exactUrlMatchRewrite = true;
 Params::$allowSessionIdFromGet = true;
 Params::$errorStringClassName = "uk-alert uk-alert-danger";
 
-
-
 Params::$language = "It";
 Params::$translatorFunction = "gtext";
 
