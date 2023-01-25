@@ -713,6 +713,7 @@ class Route
 		
 		'integrazionilogin,main',
 		'integrazionilogin,form',
+		'integrazionilogin,ottieniaccesstoken',
 		
 		'listeregalotipi,main',
 		'listeregalotipi,form',

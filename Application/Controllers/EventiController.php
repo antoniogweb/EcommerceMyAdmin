@@ -51,5 +51,4 @@ class EventiController extends GenericsectionController {
 			"data_fine_evento"		=>	date("d-m-Y"),
 		);
 	}
-
 }

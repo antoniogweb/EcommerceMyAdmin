@@ -76,12 +76,54 @@ class IntegrazioniloginController extends BaseController
 		if (empty($record))
 			die();
 		
+		IntegrazioniloginModel::getApp($record["codice"])->resetSessionVariables();
+		
 		$fields = IntegrazioniloginModel::getApp($record["codice"])->gCampiForm();
 		
 		$fields .= ",colore_background_in_esadecimale,html_icona";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
+		$this->menuLinks = "back,save,ottieni_access_token";
+		
 		parent::form($queryType, $id);
+	}
+	
+	public function ottieniaccesstoken($codice = "")
+	{
+		$clean["codice"] = sanitizeAll($codice);
+		
+		$this->clean();
+		
+		if (!trim($codice) || !IntegrazioniloginModel::getApp($clean["codice"])->isAttiva())
+			$this->responseCode(403);
+		
+		if( !session_id() )
+			session_start();
+		
+		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin();
+		
+		$infoUtente = IntegrazioniloginModel::getApp($clean["codice"])->getInfoUtente();
+		
+		if (!$infoUtente["result"])
+		{
+			$this->redirect("regusers/login");
+		}
+		else if ($infoUtente["redirect"] && $infoUtente["login_redirect"])
+		{
+			header('Location: '.$infoUtente["login_redirect"]);
+			die();
+		}
+		else
+		{
+			print_r($infoUtente);
+		}
+	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		$record = $this->m[$this->modelName]->selectId((int)$id);
+		
+		$this->scaffold->mainMenu->links['ottieni_access_token']['absolute_url'] = Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"];
 	}
 }

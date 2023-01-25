@@ -78,6 +78,12 @@ class FacebookLogin extends ExternalLogin
 			unset($_SESSION["access_token"]);
 	}
 	
+	public function resetSessionVariables()
+	{
+		if (isset($_SESSION["test_login_effettuato"]))
+			unset($_SESSION["test_login_effettuato"]);
+	}
+	
 	public function getInfoOrGoToLogin($redirectQueryString = "")
 	{
 		if (isset($_GET["error"]) || isset($_GET["error_description"]) || isset($_GET["error_code"]))
@@ -138,6 +144,7 @@ class FacebookLogin extends ExternalLogin
 				);
 				$this->infoUtente["result"] = 1;
 				$this->infoUtente["utente_loggato"] = 1;
+				$this->infoUtente["access_token"] = $accessToken;
 
 			} catch(Facebook\Exceptions\FacebookResponseException $e) {
 				
