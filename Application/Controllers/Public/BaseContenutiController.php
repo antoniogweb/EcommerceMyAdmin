@@ -822,8 +822,10 @@ class BaseContenutiController extends BaseController
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 		{
-			$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName]);
-// 			$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
+			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
+				$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName]);
+			else
+				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
 		else
 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
