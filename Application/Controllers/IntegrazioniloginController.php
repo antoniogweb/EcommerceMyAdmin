@@ -116,7 +116,9 @@ class IntegrazioniloginController extends BaseController
 		}
 		else
 		{
+			echo "<pre>";
 			print_r($infoUtente);
+			echo "</pre>";
 		}
 	}
 	
