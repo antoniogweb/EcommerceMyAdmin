@@ -110,7 +110,7 @@ class FacebookLogin extends ExternalLogin
 			else
 			{
 				$accessToken = $this->helper->getAccessToken();
-				$_SESSION["access_token"] = $accessToken;
+// 				$_SESSION["access_token"] = $accessToken;
 			}
 		
 		} catch(Facebook\Exceptions\facebookResponseException $e) {
@@ -125,8 +125,29 @@ class FacebookLogin extends ExternalLogin
 
 		if (isset($accessToken)) {
 			
-			$this->client->setDefaultAccessToken((string)$accessToken);
+			if (isset($_SESSION["access_token"]))
+				$this->client->setDefaultAccessToken((string)$_SESSION["access_token"]);
+			else
+			{
+				// getting short-lived access token
 
+				$_SESSION['access_token'] = (string) $accessToken;
+
+				// OAuth 2.0 client handler
+
+				$oAuth2Client = $this->client->getOAuth2Client();
+
+				// Exchanges a short-lived access token for a long-lived one
+
+				$longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($_SESSION['access_token']);
+
+				$_SESSION['access_token'] = (string) $longLivedAccessToken;
+
+				// setting default access token to be used in script
+
+				$this->client->setDefaultAccessToken($_SESSION['access_token']);
+			}
+			
 			try {
 
 				$profile_request = $this->client->get('/me?fields=name,first_name,last_name,email');
