@@ -84,7 +84,7 @@ class FacebookLogin extends ExternalLogin
 			unset($_SESSION["test_login_effettuato"]);
 	}
 	
-	public function getInfoOrGoToLogin($redirectQueryString = "")
+	public function getInfoOrGoToLogin($redirectQueryString = "", $redirectUrl = "")
 	{
 		if (isset($_GET["error"]) || isset($_GET["error_description"]) || isset($_GET["error_code"]))
 		{
@@ -159,7 +159,10 @@ class FacebookLogin extends ExternalLogin
 		} else {
 			if (!isset($_SESSION["test_login_effettuato"]))
 			{
-				$loginUrl = $this->helper->getLoginUrl(Url::getRoot()."regusers/loginapp/".$this->params["codice"].$redirectQueryString, $permissions);
+				if (!$redirectUrl)
+					$redirectUrl = Url::getRoot()."regusers/loginapp/".$this->params["codice"].$redirectQueryString;
+				
+				$loginUrl = $this->helper->getLoginUrl($redirectUrl, $permissions);
 				$this->infoUtente["redirect"] = 1;
 				$this->infoUtente["login_redirect"] = $loginUrl;
 				$this->infoUtente["result"] = 1;

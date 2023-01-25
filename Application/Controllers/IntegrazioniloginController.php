@@ -101,7 +101,7 @@ class IntegrazioniloginController extends BaseController
 		if( !session_id() )
 			session_start();
 		
-		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin();
+		IntegrazioniloginModel::getApp($clean["codice"])->getInfoOrGoToLogin("", Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$clean["codice"]);
 		
 		$infoUtente = IntegrazioniloginModel::getApp($clean["codice"])->getInfoUtente();
 		
