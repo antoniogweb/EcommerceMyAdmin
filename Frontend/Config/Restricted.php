@@ -101,7 +101,10 @@ define("REG_COOKIE_PERMANENT", true);
 //registered cookie:
 //NB: REG_COOKIE_NAME must be different from ADMIN_COOKIE_NAME!!!
 define('REG_COOKIE_NAME','uidr');
-define('REG_SESSION_EXPIRE', '86400');
+
+if (!defined('REG_SESSION_EXPIRE'))
+	define('REG_SESSION_EXPIRE', '86400');
+
 define('REG_COOKIE_PATH', '/');
 define('REG_COOKIE_DOMAIN', '');
 define('REG_COOKIE_SECURE', false);
