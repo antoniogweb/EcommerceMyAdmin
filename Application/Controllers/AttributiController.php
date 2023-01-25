@@ -61,7 +61,10 @@ class AttributiController extends BaseController {
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
-					"lk" => array('titolo' => $this->viewArgs['titolo']),
+					"OR"	=>	array(
+						"lk" => array('titolo' => $this->viewArgs['titolo']),
+						" lk"	=>	array('nota_interna' => $this->viewArgs['titolo']),
+					)
 				))
 				->orderBy("id_order")->convert();
 		
