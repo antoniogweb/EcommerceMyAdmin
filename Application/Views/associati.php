@@ -36,6 +36,13 @@
 					<div class='recordsBox scroll-x'>
 						<?php echo $main;?>
 					</div>
+					
+					<!-- show the list of pages -->
+					<div class="btn-group pull-right">
+						<ul class="pagination no_vertical_margin">
+							<?php echo $pageList;?>
+						</ul>
+					</div>
                 </div>
 			</div>
 		</div>

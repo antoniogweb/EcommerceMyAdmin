@@ -28,6 +28,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class OrdiniModel extends FormModel {
 	
 	public $campoTimeEventoRemarketing = "time_pagamento";
+	public $baseUrl;
 	
 	public $campoTitolo = "id_o";
 	

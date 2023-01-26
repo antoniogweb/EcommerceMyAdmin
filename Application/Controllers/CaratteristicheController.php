@@ -188,7 +188,7 @@ class CaratteristicheController extends BaseController {
 		$this->mainFields = $mainFields;
 		$this->mainHead = implode(",", $mainHeadArray);
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"valori/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>500,'mainMenu'=>'back','mainAction'=>"valori/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("caratteristiche_valori.*")->orderBy("caratteristiche_valori.id_order")->where(array("id_car"=>$clean['id']))->save();
 		

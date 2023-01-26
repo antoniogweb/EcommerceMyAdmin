@@ -48,6 +48,8 @@ class PagesModel extends GenericModel {
 	// Vengono usati per sincronizzare pagina e combinazione quando non ci sono varianti
 	public static $campiDaSincronizzareConCombinazione = array("price", "price_ivato", "codice", "gtin", "mpn", "peso", "giacenza");
 	
+	public static $estraiCampoCercaQuandoSalvi = true;
+	
 	public static $controllaCombinazioniQuandoSalvi = true;
 	
 	public static $uploadFile = true;
@@ -909,6 +911,9 @@ class PagesModel extends GenericModel {
 	
 	public function setCampoCerca($id)
 	{
+		if (!self::$estraiCampoCercaQuandoSalvi)
+			return;
+		
 		$codiceMotoreRicerca = MotoriricercaModel::getCodiceAttivo();
 		
 		if (!v("mostra_filtro_ricerca_libera_in_magazzino") && $codiceMotoreRicerca != "INTERNO")
@@ -2615,7 +2620,7 @@ class PagesModel extends GenericModel {
 				->groupBy("combinazioni.$c,attributi_valori.id_av");
 			
 			if (!User::$adminLogged)
-				$this->aWhere(array(
+				$cm->aWhere(array(
 					"combinazioni.acquistabile"	=>	1,
 				));
 			

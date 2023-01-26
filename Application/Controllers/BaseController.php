@@ -66,6 +66,7 @@ class BaseController extends Controller
 		'skip:sanitizeAll' => "tutti",
 		'nofiltri:sanitizeAll' => "tutti",
 		'cl_on_sv:sanitizeAll' => "tutti",
+		'page_fgl:forceInt'=>1,
 	);
 	
 	public $modelAssociati = array(); // Da caricare
