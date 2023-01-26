@@ -220,6 +220,9 @@ class BaseBaseController extends Controller
 			
 			// Imposto lo stato loggato su Output
 			Output::setHeaderValue("Status","logged");
+			
+			if (Params::$allowSessionIdFromGet)
+				$this->s['registered']->setCookieFromGetToken();
 		}
 		
 		if ($this->s['admin']->status['status'] === 'logged')
