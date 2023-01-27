@@ -28,6 +28,8 @@ class CombinazioniModel extends GenericModel {
 	
 	public static $ricreaCombinazioneQuandoElimini = true;
 	
+	public static $permettiSempreEliminazione = false;
+	
 	public $cart_uid = null;
 	public $colonne = null;
 	public $valori = null;
@@ -559,7 +561,7 @@ class CombinazioniModel extends GenericModel {
 				$alias .= "-".$aliasAttributi;
 			
 			if (v("usa_codice_combinazione_in_url_prodotto") && $codice)
-				$alias .= "-".$codice;
+				$alias .= "-".strtolower($codice);
 		}
 		
 		return $alias;
@@ -1115,6 +1117,9 @@ class CombinazioniModel extends GenericModel {
 	
 	public function deletable($idC)
 	{
+		if (CombinazioniModel::$permettiSempreEliminazione)
+			return true;
+		
 		$res = $this->elementoNonUsato($idC);
 		
 		if (!$res)

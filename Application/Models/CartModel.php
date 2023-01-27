@@ -80,10 +80,8 @@ class CartModel extends GenericModel {
 			if (count($daEliminare) > 0)
 			{
 				$daEliminare = $this->getList($daEliminare, "cart.id_cart");
-// 				$daEliminareWhere = implode(",", $daEliminare);
 				
-				$this->db->query(array("delete from cart where id_cart in (".$this->placeholdersFromArray($daEliminare).")",$daEliminare));
-// 				$this->db->query("delete from cart where id_cart in ($daEliminareWhere)");
+				$this->query(array("delete from cart where id_cart in (".$this->placeholdersFromArray($daEliminare).")",$daEliminare));
 			}
 			
 			self::$checkCart = true;

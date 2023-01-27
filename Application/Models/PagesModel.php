@@ -1851,6 +1851,8 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id'] = $this->getPrincipale((int)$id);
 		
+		CombinazioniModel::$permettiSempreEliminazione = true;
+		
 		if ($this->checkOnDeleteIntegrity($clean['id'], $whereClause))
 		{
 			$record = $this->selectId($clean['id']);
@@ -4115,5 +4117,17 @@ class PagesModel extends GenericModel {
 		}
 		
 		return $immagine;
+	}
+	
+	public function codiceCanonical($idPage)
+	{
+		$c = new CombinazioniModel();
+		
+		$idC = $this->getIdCombinazioneCanonical($idPage);
+		
+		if ($idC)
+			return $c->clear()->whereId((int)$idC)->field("codice");
+		
+		return "";
 	}
 }
