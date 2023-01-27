@@ -12,5 +12,5 @@ git pull
 
 # lancio le migrazoni
 echo Aggiorno il database
-cd ../Application/Cron
+cd ../Application/Commands
 php migrazioni.php
