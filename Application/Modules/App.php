@@ -222,6 +222,16 @@ class App
 		F::settaCookiesGdpr($allCookies);
 	}
 	
+	public static function getCSFR($key)
+	{
+		if( !session_id() )
+			session_start();
+		
+		$_SESSION[$key] = randomToken(20);
+		
+		return $_SESSION[$key];
+	}
+	
 	public static function checkCSRF($key)
 	{
 		if( !session_id() )
