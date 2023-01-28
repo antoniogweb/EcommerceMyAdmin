@@ -909,14 +909,14 @@ class PagesModel extends GenericModel {
 		$this->checkAliasAll($id);
 	}
 	
-	public function setCampoCerca($id)
+	public function setCampoCerca($id, $idC = 0, $forza = false)
 	{
-		if (!self::$estraiCampoCercaQuandoSalvi)
+		if (!self::$estraiCampoCercaQuandoSalvi && !$forza)
 			return;
 		
 		$codiceMotoreRicerca = MotoriricercaModel::getCodiceAttivo();
 		
-		if (!v("mostra_filtro_ricerca_libera_in_magazzino") && $codiceMotoreRicerca != "INTERNO")
+		if (!v("mostra_filtro_ricerca_libera_in_magazzino") && $codiceMotoreRicerca != "INTERNO" && !$forza)
 			return;
 		
 		$record = $this->selectId((int)$id);
@@ -924,7 +924,8 @@ class PagesModel extends GenericModel {
 		if (!empty($record))
 		{
 			Params::sLang("it");
-			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->ottieniOggetti((int)$id);
+			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC);
+// 			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->ottieniOggetti((int)$id);
 			Params::rLang();
 			
 			if (count($strutturaProdotti) > 0)
@@ -1032,7 +1033,8 @@ class PagesModel extends GenericModel {
 					$this->controllaElementoInSitemap($clean["id"]);
 					
 					// Imposta il campo per la ricerca libera
-					$this->setCampoCerca($clean["id"]);
+					if ($this->values["id_c"])
+						$this->setCampoCerca($clean["id"], $this->values["id_c"]);
 				}
 			}
 		}
@@ -1328,7 +1330,8 @@ class PagesModel extends GenericModel {
 				$this->controllaElementoInSitemap($this->lId);
 				
 				// Imposta il campo per la ricerca libera
-				$this->setCampoCerca($this->lId);
+				if ($this->values["id_c"])
+					$this->setCampoCerca($this->lId, $this->values["id_c"]);
 			}
 		}
 		

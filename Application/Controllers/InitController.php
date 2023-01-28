@@ -26,6 +26,8 @@ trait InitController
 {
 	public static $traduzioni = array();
 	public $parentRootFolder;
+	public $elencoLingue = array();
+	public $parentRoot = null;
 	
 	public function init()
 	{

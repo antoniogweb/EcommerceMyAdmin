@@ -127,7 +127,7 @@ trait Modulo
 		}
 	}
 	
-	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0, $combinazioniLinkVeri = null, $cacheTime = 0)
+	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0, $combinazioniLinkVeri = null, $cacheTime = 0, $idShop = 0)
 	{
 		$c = new CategoriesModel();
 		$comb = new CombinazioniModel();
@@ -155,7 +155,8 @@ trait Modulo
 			$p->clear();
 		}
 		
-		$idShop = $c->getShopCategoryId();
+		if (!$idShop)
+			$idShop = $c->getShopCategoryId();
 		
 		$children = $c->children($idShop, true);
 		
