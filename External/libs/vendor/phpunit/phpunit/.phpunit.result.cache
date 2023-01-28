@@ -1,0 +1,1 @@
+{"version":1,"defects":{"PagesModelTest::testCanBeCreatedFromValidEmailAddress":3,"PagesModelTest::testCampoCerca":3},"times":{"PagesModelTest::testCanBeCreatedFromValidEmailAddress":0.001,"PagesModelTest::testCampoCerca":2.037}}
