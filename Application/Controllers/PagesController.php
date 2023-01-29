@@ -351,14 +351,19 @@ class PagesController extends BaseController {
 		
 		if (strcmp($this->viewArgs['title'],'tutti') !== 0)
 		{
-			$where = array(
-				"OR"	=> array(
-					"lk" => array('n!pages.title' => $this->viewArgs['title']),
-					" lk" => array('n!pages.codice' => $this->viewArgs['title']),
-					)
-			);
-
-			$this->scaffold->model->aWhere($where);
+			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
+				$this->scaffold->model->addWhereSearch($this->viewArgs["title"]);
+			else
+			{
+				$where = array(
+					"OR"	=> array(
+						"lk" => array('n!pages.title' => $this->viewArgs['title']),
+						" lk" => array('n!pages.codice' => $this->viewArgs['title']),
+						)
+				);
+				
+				$this->scaffold->model->aWhere($where);
+			}
 		}
 		
 		$data["sId"] = 0;

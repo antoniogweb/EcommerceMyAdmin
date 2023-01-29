@@ -1722,11 +1722,11 @@ class GenericModel extends Model_Tree
 		return $output;
 	}
 	
-	public function getWhereSearch($cerca)
+	public function getWhereSearch($cerca, $maxNumber = 50)
 	{
 		$cercaArray = explode(" ",(string)trim($cerca));
 		
-		if (count($cercaArray) > 50)
+		if (count($cercaArray) > $maxNumber)
 			return array(
 				"pages.id_page"	=>	"-1",
 			);
