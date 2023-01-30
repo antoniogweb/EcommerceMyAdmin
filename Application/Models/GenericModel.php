@@ -27,6 +27,7 @@ class GenericModel extends Model_Tree
 	use CommonModel;
 	
 	public static $generaMetaQuandoSalvi = true;
+	public static $traduzioniNonPrincipali = null;
 	
 	public static $recordTabella = null;
 	public static $apiMethod = "POST";
@@ -808,6 +809,16 @@ class GenericModel extends Model_Tree
 		$this->controllaLinguaGeneric($id, $this->_idFields, $this->_tables);
 	}
 	
+	public static function getTraduzioniNonPrincipali()
+	{
+		if (isset(self::$traduzioniNonPrincipali))
+			return self::$traduzioniNonPrincipali;
+		
+		self::$traduzioniNonPrincipali = LingueModel::getLingueNonPrincipali();
+		
+		return self::$traduzioniNonPrincipali;
+	}
+	
 	// Controllo che la lingua esista
 	public function controllaLinguaGeneric($id, $keyField = "id_page", $sezione = "")
 	{
@@ -817,7 +828,8 @@ class GenericModel extends Model_Tree
 		{
 			$ct = new ContenutitradottiModel();
 			
-			$traduzioni = LingueModel::getLingueNonPrincipali();
+// 			$traduzioni = LingueModel::getLingueNonPrincipali();
+			$traduzioni = self::getTraduzioniNonPrincipali();
 			
 			foreach ($traduzioni as $lingua)
 			{
