@@ -40,35 +40,35 @@ class ImportController extends BaseController {
 		$this->clean();
 	}
 	
-	public function prodotti($c = "")
-	{
-		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
-		{
-			Import::prodotti();
-		}
-	}
-	
-	public function news($c = "")
-	{
-		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
-		{
-			Import::news();
-		}
-	}
-	
-	public function utenti($c = "")
-	{
-		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
-		{
-			Import::utenti();
-		}
-	}
-	
-	public function contenuti($c = "")
-	{
-		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
-		{
-			Import::contenuti();
-		}
-	}
+// 	public function prodotti($c = "")
+// 	{
+// 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
+// 		{
+// 			Import::prodotti();
+// 		}
+// 	}
+// 	
+// 	public function news($c = "")
+// 	{
+// 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
+// 		{
+// 			Import::news();
+// 		}
+// 	}
+// 	
+// 	public function utenti($c = "")
+// 	{
+// 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
+// 		{
+// 			Import::utenti();
+// 		}
+// 	}
+// 	
+// 	public function contenuti($c = "")
+// 	{
+// 		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
+// 		{
+// 			Import::contenuti();
+// 		}
+// 	}
 }

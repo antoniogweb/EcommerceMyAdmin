@@ -817,7 +817,9 @@ class GenericModel extends Model_Tree
 		{
 			$ct = new ContenutitradottiModel();
 			
-			foreach (BaseController::$traduzioni as $lingua)
+			$traduzioni = LingueModel::getLingueNonPrincipali();
+			
+			foreach ($traduzioni as $lingua)
 			{
 				$traduzione = $ct->clear()->where(array(
 					"$keyField"	=>	(int)$id,
