@@ -10,7 +10,7 @@
 			<?php } ?>
 			<?php if ($p["cart"]["attributi"]) { echo "<br /><span class='uk-text-small'>".$p["cart"]["attributi"]."</span>"; } ?>
 			
-			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"] && !VariabiliModel::combinazioniLinkVeri()) { ?>
+			<?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"] && !VariabiliModel::combinazioniLinkVeri() && v("mostra_pulsante_modifica_se_ha_combinazioni")) { ?>
 			<div class="uk-margin">
 				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
 			</div>

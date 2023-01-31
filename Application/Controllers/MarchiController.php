@@ -47,8 +47,8 @@ class MarchiController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("marchi.titolo");
-		$this->mainHead = "Titolo";
+		$this->mainFields = array("marchi.titolo", "marchi.codice", "attivo");
+		$this->mainHead = "Titolo,Codice,Attivo";
 		
 		if (v("attiva_nazione_marchi"))
 		{
@@ -68,11 +68,15 @@ class MarchiController extends BaseController
 			$this->mainHead .= ",Nuovo";
 		}
 		
-		$this->filters = array("titolo");
+		$this->filters = array("titolo",array("attivo",null,array("tutti"	=>	"Attivo / Disattivo") + MarchiModel::$attivoSiNo));
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(
-					"lk" => array('titolo' => $this->viewArgs['titolo']),
+					"OR"	=>	array(
+						"lk" => array('titolo' => $this->viewArgs['titolo']),
+						" lk" => array('codice' => $this->viewArgs['titolo']),
+					),
+					"attivo"	=>	$this->viewArgs['attivo'],
 				))
 				->orderBy("id_order")->convert()->save();
 		
@@ -92,7 +96,7 @@ class MarchiController extends BaseController
 		
 		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
-		$campi = 'titolo,alias,descrizione,immagine,immagine_2x,sottotitolo';
+		$campi = 'titolo,alias,attivo,codice,descrizione,immagine,immagine_2x,sottotitolo';
 		
 		if (v("attiva_nazione_marchi"))
 		{

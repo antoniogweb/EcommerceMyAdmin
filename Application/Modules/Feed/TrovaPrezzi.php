@@ -37,7 +37,7 @@ class TrovaPrezzi extends Feed
 			$temp = array(
 				"Name"	=>	F::alt($r["titolo"]),
 				"Code"	=>	$r["codice"],
-				"Description"	=>	F::alt($r["descrizione"]),
+				"Description"	=>	F::sanitizeXML(F::alt($r["descrizione"])),
 				"Categories"	=>	count($r["categorie"]) > 0 ? implode(",",$r["categorie"][0]) : "",
 				"Image"	=>	Url::getFileRoot()."thumb/dettagliofeed/".$r["immagine_principale"],
 				"Link"	=>	$r["link"].$this->getQueryString(),
