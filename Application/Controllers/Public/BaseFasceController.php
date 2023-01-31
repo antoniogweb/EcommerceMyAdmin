@@ -247,7 +247,9 @@ trait BaseFasceController
 	
 	public function getFasciaMarchi()
 	{
-		$pages = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		$pages = $this->m("MarchiModel")->clear()->where(array(
+			"attivo"	=>	1,
+		))->addJoinTraduzione()->orderBy("marchi.id_order")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_marchi.php");
@@ -269,7 +271,9 @@ trait BaseFasceController
 	
 	public function getFasciaCaroselloMarchi()
 	{
-		$marchi = $elencoMarchiFull = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+		$marchi = $elencoMarchiFull = $this->m("MarchiModel")->clear()->where(array(
+			"attivo"	=>	1,
+		))->addJoinTraduzione()->orderBy("marchi.id_order")->send();
 		
 		ob_start();
 		include tpf("Fasce/fascia_carosello_marchi.php");
@@ -280,7 +284,9 @@ trait BaseFasceController
 	
 	public function getFasciaMarchiNuovi()
 	{
-		$pages = $elencoMarchiNuoviFull = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
+		$pages = $elencoMarchiNuoviFull = $this->m("MarchiModel")->clear()->where(array(
+			"attivo"	=>	1,
+		))->addJoinTraduzione()->where(array(
 			"nuovo"	=>	"Y",
 		))->orderBy("marchi.id_order")->send();
 		

@@ -22,8 +22,10 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class MarchiModel extends GenericModel {
-
+class MarchiModel extends GenericModel
+{
+	use CrudModel;
+	
 	public function __construct() {
 		$this->_tables='marchi';
 		$this->_idFields='id_marchio';
@@ -86,6 +88,7 @@ class MarchiModel extends GenericModel {
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
+				'attivo'	=>	self::$entryAttivo,
 				'alias'	=>	array(
 					'labelString'=>	'Alias per URL',
 					'wrap'		=>	array(

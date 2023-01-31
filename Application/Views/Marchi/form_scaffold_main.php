@@ -13,6 +13,14 @@ $().ready(function() {
 		<div class='col-md-8'>
 			<?php echo $form["titolo"];?>
 			<?php echo $form["alias"];?>
+			<div class='row'>
+				<div class='col-md-6'>
+					<?php echo $form["attivo"];?>
+				</div>
+				<div class='col-md-6'>
+					<?php echo $form["codice"];?>
+				</div>
+			</div>
 			<?php echo $form["sottotitolo"];?>
 			
 			<?php echo isset($form["nazione"]) ? $form["nazione"] : "";?>
