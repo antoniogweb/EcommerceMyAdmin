@@ -49,9 +49,10 @@ class CartController extends BaseController
 		$this->shift();
 		
 		$campoPrezzoSuffisso = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
+		$labelPrezzo = v("prezzi_ivati_in_carrello") ? "inclusa" : "esclusa";
 		
 		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "categories.title", "cart.quantity", "cart.prezzo_intero$campoPrezzoSuffisso", "cart.price$campoPrezzoSuffisso", "datiutente");
-		$this->mainHead = "Immagine,Data creazione,Prodotto,Categoria,Quantità,Prezzo intero IVA inclusa (€),Prezzo finale IVA inclusa (€),Email";
+		$this->mainHead = "Immagine,Data creazione,Prodotto,Categoria,Quantità,Prezzo intero IVA $labelPrezzo (€),Prezzo finale IVA $labelPrezzo (€),Email";
 		
 		$filtroTipo = array(
 			"tutti"		=>	"Tipo carrello",
