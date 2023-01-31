@@ -48,7 +48,9 @@ class CartController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "categories.title", "cart.quantity", "cart.prezzo_intero_ivato", "cart.price_ivato", "datiutente");
+		$campoPrezzoSuffisso = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
+		
+		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "categories.title", "cart.quantity", "cart.prezzo_intero$campoPrezzoSuffisso", "cart.price$campoPrezzoSuffisso", "datiutente");
 		$this->mainHead = "Immagine,Data creazione,Prodotto,Categoria,Quantità,Prezzo intero IVA inclusa (€),Prezzo finale IVA inclusa (€),Email";
 		
 		$filtroTipo = array(
