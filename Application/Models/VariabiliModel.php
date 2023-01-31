@@ -434,6 +434,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_promozione_assoluta_prodotto"	=>	0, // se impostato su 1, permette sconti assoluti al prodotto
 		## CARRELLO ##
 		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number
+		"mostra_pulsante_modifica_se_ha_combinazioni"	=>	1, // in carrello, permette di andare al prodotto con la combinazione già selezionata
 		## STRUTTURA URL E COMBINAZIONI ##
 		"estensione_url_categorie"	=>	".html", // cosa aggiungere come estensione nell'URL delle categorie
 		"aggiungi_marchio_in_url_prodotto"		=>	1, // se impostato a 1 il marchio apparirà nell'URL del prodotto
