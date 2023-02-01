@@ -54,6 +54,7 @@ class BaseBaseController extends Controller
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
 	
+	public $recordHomeMeta = array(); // it contains the meta of the home page and the general meta of the website (title, keywords, meta description)
 	public $defaultRegistrazione = array();
 	
 	public static $isPromo = false;
@@ -239,7 +240,6 @@ class BaseBaseController extends Controller
 		$this->model("CaratteristichevaloriModel");
 		
 		$data["isProdotto"] = false;
-		$data["title"] =  gtext(ImpostazioniModel::$valori["title_home_page"]);
 		
 		$this->initCookieEcommerce();
 		
@@ -458,8 +458,32 @@ class BaseBaseController extends Controller
 				"in_evidenza"	=>	"Y"
 			))->toList("iso_country_code")->send();
 		
+		$data["title"] =  gtext(ImpostazioniModel::$valori["title_home_page"]);
 		$data["meta_description"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
 		$data["keywords"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
+		
+		if (v("usa_meta_pagina_home"))
+		{
+			PagesModel::$homeIdPage = (int)$this->m("PagesModel")->clear()->where(array(
+				"tipo_pagina"	=>	"HOME",
+			))->field("id_page");
+			
+			if (PagesModel::$homeIdPage)
+			{
+				$recordHome = $this->recordHomeMeta = $this->m("PagesModel")->clear()->select("pages.meta_title,pages.meta_description,pages.keywords,contenuti_tradotti.meta_title,contenuti_tradotti.meta_description,contenuti_tradotti.keywords")->where(array(
+					"id_page"	=>	(int)PagesModel::$homeIdPage,
+				))->addJoinTraduzionePagina()->first();
+				
+				if (!empty($recordHome))
+				{
+					if (field($recordHome, "meta_description"))
+						$data["meta_description"] = F::meta(field($recordHome, "meta_description"));
+					
+					if (field($recordHome, "keywords"))
+						$data["keywords"] = F::meta(field($recordHome, "keywords"));
+				}
+			}
+		}
 		
 		$this->append($data);
 	}
