@@ -317,7 +317,10 @@ class PagesModel extends GenericModel {
 					'labelString'=>	'Categoria',
 					'options'	=>	$this->buildCategorySelect(),
 					'reverse' => 'yes',
-					
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'id_iva'		=>	array(
 					'type'		=>	'Select',
@@ -331,9 +334,17 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_marchio',
 					'labelString'=>	gtext('famiglia',false,"ucfirst"),
-					'options'	=>	$this->selectMarchi(),
+					'options'	=>	$this->selectMarchi(true, array(
+							"OR"	=>	array(
+								"id_marchio"	=>	(int)$this->clear()->whereId((int)$id)->field("id_marchio"),
+								"attivo"		=>	1,
+							),
+						)),
 					'reverse' => 'yes',
-					
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'price'		=>	array(
 					'labelString'=>	'Prezzo Iva esclusa (€)',
