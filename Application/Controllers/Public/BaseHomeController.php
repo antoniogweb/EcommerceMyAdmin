@@ -37,7 +37,10 @@ class BaseHomeController extends BaseController
 		}
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
-
+		
+		if (v("usa_meta_pagina_home") && !empty($this->recordHomeMeta) && field($this->recordHomeMeta, "meta_title"))
+			$data["title"] = Parametri::$nomeNegozio . ' - ' . F::meta(field($this->recordHomeMeta, "meta_title"));
+		
 		$this->append($data);
 	}
 

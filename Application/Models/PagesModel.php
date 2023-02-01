@@ -63,6 +63,7 @@ class PagesModel extends GenericModel {
 	public static $tipiPaginaId = array();
 	
 	public static $currentIdPage = null;
+	public static $homeIdPage = null;
 	public static $currentTipoPagina = "";
 	
 	public static $campiAggiuntivi = array();
@@ -1044,7 +1045,7 @@ class PagesModel extends GenericModel {
 					$this->controllaElementoInSitemap($clean["id"]);
 					
 					// Imposta il campo per la ricerca libera
-					if ($this->values["id_c"])
+					if (isset($this->values["id_c"]) && $this->values["id_c"])
 						$this->setCampoCerca($clean["id"], $this->values["id_c"]);
 				}
 			}
@@ -1341,7 +1342,7 @@ class PagesModel extends GenericModel {
 				$this->controllaElementoInSitemap($this->lId);
 				
 				// Imposta il campo per la ricerca libera
-				if ($this->values["id_c"])
+				if (isset($this->values["id_c"]) && $this->values["id_c"])
 					$this->setCampoCerca($this->lId, $this->values["id_c"]);
 			}
 		}
@@ -4101,6 +4102,7 @@ class PagesModel extends GenericModel {
 			->aWhere(array(
 				$campo	=>	"Y",
 			))
+			->addJoinTraduzionePagina()
 			->addWhereCategoria(CategoriesModel::$idShop)
 			->send(), v("numero_in_evidenza")));
 	}

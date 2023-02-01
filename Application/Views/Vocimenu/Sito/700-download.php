@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (v("attiva_standard_cms_menu") && v("download_attivi")) { ?>
-<li class="<?php echo tm($tm, "download");?> treeview">
+<li class="<?php echo tm($tm, array("download", "downloadcat"));?> treeview">
 	<a href="#">
 		<i class="fa fa-download"></i>
 		<span><?php echo gtext("Downloads");?></span>

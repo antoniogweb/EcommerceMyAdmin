@@ -181,7 +181,6 @@ class VariabiliModel extends GenericModel {
 		"curl_curlopt_interface"	=>	"",
 		"messenger_link"			=>	"",
 		"fascia_contenuto_class"	=>	"",
-		"usa_fasce_in_home"			=>	0,
 		"numero_news_in_evidenza"	=>	4,
 		"solo_utenti_privati"		=>	0,
 		"abilita_rich_snippet"		=>	1,
@@ -596,6 +595,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_pixel"	=> 0, // attiva la sezione per la gestione dei pixel
 		## TRANSAZIONI ##
 		"codice_valuta"			=> 'EUR', // codice della valuta delle transazioni
+		## HOME ##
+		"usa_fasce_in_home"			=>	0, // se attivare o meno la gestione delle fasce in home
+		"usa_meta_pagina_home"		=>	0, // se attivo, utilizza le keywords e la meta description dalla pagina indicata come home
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
