@@ -1016,9 +1016,9 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 	
 	$t = new TestiModel();
 	
-// 	if ($tipo == "TESTO" || $tipo == "LINK")
-// 		$lingua = sanitizeAll(getLinguaIso());
-// 	else
+	if ($tipo == "TESTO" || $tipo == "LINK")
+		$lingua = sanitizeAll(getLinguaIso());
+	else
 		$lingua = LingueModel::getPrincipale();
 	
 	$testo = $t->clear()->where(array(
