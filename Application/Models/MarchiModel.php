@@ -26,6 +26,8 @@ class MarchiModel extends GenericModel
 {
 	use CrudModel;
 	
+	public static $uploadFile = true;
+	
 	public function __construct() {
 		$this->_tables='marchi';
 		$this->_idFields='id_marchio';
@@ -131,7 +133,7 @@ class MarchiModel extends GenericModel
 	
     public function update($id = NULL, $whereClause = NULL)
 	{
-		if ($this->upload("update"))
+		if (!self::$uploadFile || $this->upload("update"))
 		{
 			$record = $this->selectId((int)$id);
 			
@@ -149,7 +151,7 @@ class MarchiModel extends GenericModel
 	
 	public function insert()
 	{
-		if ($this->upload("insert"))
+		if (!self::$uploadFile || $this->upload("insert"))
 		{
 			if (isset($this->values["alias"]))
 				$this->checkAliasAll(0);

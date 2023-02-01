@@ -1142,7 +1142,7 @@ class GenericModel extends Model_Tree
 		return $select;
 	}
 	
-	public function selectMarchi($empty = true)
+	public function selectMarchi($empty = true, $where = array())
 	{
 		$m = new MarchiModel();
 		
@@ -1150,7 +1150,7 @@ class GenericModel extends Model_Tree
 		
 		$select = $this->addNonImpostato($select, $empty);
 		
-		$select += $m->clear()->orderBy("titolo")->toList("id_marchio","titolo")->send();
+		$select += $m->clear()->select("concat(if(codice != '',concat(codice,' - '),''),titolo) as t,id_marchio")->where($where)->orderBy("titolo")->toList("id_marchio","aggregate.t")->send();
 		
 		return $select;
 	}

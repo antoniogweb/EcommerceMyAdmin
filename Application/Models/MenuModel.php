@@ -138,8 +138,12 @@ class MenuModel extends HierarchicalModel {
 					'labelString'=>	gtext("Marchio"),
 					'options'	=>	$this->selectMarchi(false),
 					'reverse' => 'yes',
-					'idName'	=>	'combobox',
+// 					'idName'	=>	'combobox',
 					'entryClass'  => 'form_input_text marchi_Select',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
 				'id_tag'		=>	array(
 					'type'		=>	'Select',
@@ -164,7 +168,7 @@ class MenuModel extends HierarchicalModel {
 		return parent::selectTag($empty);
 	}
 	
-	public function selectMarchi($empty = true)
+	public function selectMarchi($empty = true, $where = array())
 	{
 		if (!MarchiModel::numeroRecord())
 			$empty = true;
