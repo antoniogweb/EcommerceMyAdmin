@@ -108,6 +108,9 @@ class ImpostazioniModel extends GenericModel {
 				'mail_invio_conferma_pagamento'		=>	array(
 					'labelString'=>	"Mail a cui inviare l'avviso che l'ordine è stato pagato (paypal, carta di credito)",
 				),
+				'mail_registrazione_utenti'		=>	array(
+					'labelString'=>	"Mail a cui inviare l'avviso di nuovo cliente registrato",
+				),
 				'smtp_from'		=>	array(
 					'labelString'=>	'Campo DA (FROM) nelle mail di sistema',
 				),

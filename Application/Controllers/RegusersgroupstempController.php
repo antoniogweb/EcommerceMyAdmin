@@ -60,8 +60,8 @@ class RegusersgroupstempController extends BaseController
 		$this->bulkQueryActions = "approvagruppi,approvasoloaccountgruppi";
 		
 		$this->bulkActions = array(
-			"checkbox_regusers_groups_temp_id_ugt"	=>	array("approvagruppi","APPROVA"),
-			"+checkbox_regusers_groups_temp_id_ugt"	=>	array("approvasoloaccountgruppi","DISAPPROVA"),
+			"checkbox_regusers_groups_temp_id_ugt"	=>	array("approvagruppi","APPROVA TUTTO"),
+			"+checkbox_regusers_groups_temp_id_ugt"	=>	array("approvasoloaccountgruppi","APPROVA SOLO ACCOUNT"),
 		);
 		
 		$this->m[$this->modelName]->clear()->select("*")->inner(array("cliente"))->groupBy("regusers_groups_temp.id_user")->orderBy("regusers.id_user")->convert()->save();

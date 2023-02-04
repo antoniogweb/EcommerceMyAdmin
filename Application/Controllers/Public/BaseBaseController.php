@@ -765,8 +765,10 @@ class BaseBaseController extends Controller
 							include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
 							$output = ob_get_clean();
 							
+							$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
+							
 							$res = MailordiniModel::inviaMail(array(
-								"emails"	=>	array(Parametri::$mailInvioOrdine),
+								"emails"	=>	array($emailCMS),
 								"oggetto"	=>	"invio dati nuovo utente",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
