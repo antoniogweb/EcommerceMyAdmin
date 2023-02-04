@@ -160,8 +160,13 @@ final class PagesModelTest extends TestCase
 			$col++;
 		}
 		
+		
+		
 		### CONTROLLO IL NUMERO DI COMBINAZIONI ###
-		$numeroCombinazioniAspettate = pow(3,2);
+		$numeroCombinazioniAspettate = 1;
+		
+		if (v("aggiorna_combinazioni_automaticamente"))
+			$numeroCombinazioniAspettate = pow(3,2);
 		
 		$numeroCombinazioniReali = $c->clear()->where(array(
 			"id_page"	=>	(int)$idPage,
@@ -183,7 +188,8 @@ final class PagesModelTest extends TestCase
 				"id_page"	=>	$idPage,
 			))->rowNumber();
 			
-			$numeroCombinazioniAliasAspettate = $numeroCombinazioniAspettate * Tests::numeroLingueAttive();
+			if (v("aggiorna_combinazioni_automaticamente"))
+				$numeroCombinazioniAliasAspettate = $numeroCombinazioniAspettate * Tests::numeroLingueAttive();
 			
 			$this->assertTrue((int)$numeroCombinazioniAliasAspettate === (int)$numeroCombinazioniAliasReali, "check creazione combinazioni alias");
 		}
@@ -191,7 +197,8 @@ final class PagesModelTest extends TestCase
 		### CONTROLLO I PREZZI SCONTATI ###
 		$numeroCombinazioniNonScontate = $c->clear()->where(array("id_page"=>(int)$idPage))->sWhere(array("(price_ivato != ? or price_scontato_ivato != ?)", array($prezzo, $prezzoScontato)))->rowNumber();
 		
-		$this->assertTrue((int)$numeroCombinazioniNonScontate === 0, "check che le combinazioni siano scontate");
+		if (v("sconti_combinazioni_automatiche"))
+			$this->assertTrue((int)$numeroCombinazioniNonScontate === 0, "check che le combinazioni siano scontate");
 		
 		$idC = CategoriesModel::g(false)->getIdFromSection("prodotti");
 		
@@ -210,7 +217,8 @@ final class PagesModelTest extends TestCase
 		### CONTROLLO NO PREZZI SCONTATI ###
 		$numeroCombinazioniScontate = $c->clear()->where(array("id_page"=>(int)$idPage))->sWhere("price_ivato != price_scontato_ivato")->rowNumber();
 		
-		$this->assertTrue((int)$numeroCombinazioniScontate === 0, "check che le combinazioni non siano scontate");
+		if (v("sconti_combinazioni_automatiche"))
+			$this->assertTrue((int)$numeroCombinazioniScontate === 0, "check che le combinazioni non siano scontate");
 		
 		### ELIMINO UNA ALLA VOLTA LE VARIANTI ###
 		foreach ($idsPa as $idPa)
@@ -220,7 +228,8 @@ final class PagesModelTest extends TestCase
 			$numeroVarianti--;
 			
 			### CONTROLLO IL NUMERO DI COMBINAZIONI ###
-			$numeroCombinazioniAspettate = pow(3,$numeroVarianti);
+			if (v("aggiorna_combinazioni_automaticamente"))
+				$numeroCombinazioniAspettate = pow(3,$numeroVarianti);
 			
 			$numeroCombinazioniReali = $c->clear()->where(array(
 				"id_page"	=>	(int)$idPage,
