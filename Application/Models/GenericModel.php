@@ -1254,7 +1254,12 @@ class GenericModel extends Model_Tree
 	public function salvaMeta($metaModificato = 0, $campoDescrizione = "description")
 	{
 		if (self::$generaMetaQuandoSalvi && isset($this->values[$campoDescrizione]) && !$metaModificato)
+		{
 			$this->values["meta_description"] = sanitizeDb(strip_tags(br2space(htmlentitydecode($this->values[$campoDescrizione]))));
+			
+			if (v("numero_caratteri_meta_automatico") > 0)
+				$this->values["meta_description"] = tagliaStringa($this->values["meta_description"], v("numero_caratteri_meta_automatico"));
+		}
 	}
 	
 	public function addWhereAttivo()

@@ -55,7 +55,7 @@ class FattureInCloud extends Gestionale
 		return "";
 	}
 	
-	public function descAnnullaInvioAlGestionale($ordine, $testo = "Invia l'invio a")
+	public function descAnnullaInvioAlGestionale($ordine, $testo = "Elimina l'invio a")
 	{
 		if ($ordine["versione_api_gestionale"] != "v1")
 			return parent::descAnnullaInvioAlGestionale($ordine, $testo);

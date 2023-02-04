@@ -598,6 +598,8 @@ class VariabiliModel extends GenericModel {
 		## HOME ##
 		"usa_fasce_in_home"			=>	0, // se attivare o meno la gestione delle fasce in home
 		"usa_meta_pagina_home"		=>	0, // se attivo, utilizza le keywords e la meta description dalla pagina indicata come home
+		## SEO ##
+		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
