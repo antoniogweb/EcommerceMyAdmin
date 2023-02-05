@@ -736,15 +736,23 @@ class BaseContenutiController extends BaseController
 			
 			foreach ($arrayElementi as $elemento)
 			{
-				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
+				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento), false);
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m("PagesModel")->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
 			}
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array("prezzo"));
-				$data["prezzoMinimoElenco"] = (float)$this->m("PagesModel")->orderBy("combinazioni_minime.prezzo_minimo_ivato")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
-				$data["prezzoMassimoElenco"] = (float)$this->m("PagesModel")->orderBy("combinazioni_minime.prezzo_minimo_ivato desc")->limit(1)->field("combinazioni_minime.prezzo_minimo_ivato");
+				$data["prezzoMinimoElenco"] = (float)$this->m("PagesModel")
+					->select("combinazioni_minime.prezzo_minimo_ivato")
+					->orderBy("combinazioni_minime.prezzo_minimo_ivato")
+					->limit(1)
+					->field("combinazioni_minime.prezzo_minimo_ivato");
+				$data["prezzoMassimoElenco"] = (float)$this->m("PagesModel")
+					->select("combinazioni_minime.prezzo_minimo_ivato")
+					->orderBy("combinazioni_minime.prezzo_minimo_ivato desc")
+					->limit(1)
+					->field("combinazioni_minime.prezzo_minimo_ivato");
 			}
 		}
 		
@@ -837,16 +845,13 @@ class BaseContenutiController extends BaseController
 		);
 	}
 	
-	protected function queryElencoProdotti($id, $firstSection, $escludi = array())
+	protected function queryElencoProdotti($id, $firstSection, $escludi = array(), $attivaOrderBy = true)
 	{
 		$clean['id'] = (int)$id;
 		
 		$this->m("PagesModel")->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
 		
-		if (empty($escludi))
-			$this->addOrderByClause($firstSection);
-		else
-			$this->m("PagesModel")->orderBy = null;
+		$this->addOrderByClause($firstSection, null, $attivaOrderBy);
 		
 		if ($this->catSWhere)
 			$this->m("PagesModel")->sWhere($this->catSWhere);
@@ -1095,12 +1100,15 @@ class BaseContenutiController extends BaseController
 			$this->m("PagesModel")->aWhere($wherePromo);
 	}
 	
-	protected function addOrderByClause($firstSection, $urlOrdinamento = null)
+	protected function addOrderByClause($firstSection, $urlOrdinamento = null, $attivaOrderBy = true)
 	{
-		if ($firstSection == Parametri::$nomeSezioneProdotti)
-			$this->m("PagesModel")->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
-		else
-			$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection));
+		if ($attivaOrderBy)
+		{
+			if ($firstSection == Parametri::$nomeSezioneProdotti)
+				$this->m("PagesModel")->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
+			else
+				$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection));
+		}
 		
 		if (!$urlOrdinamento)
 			$data["url_ordinamento"] = $this->baseUrl."/".$this->getCurrentUrl(false, "categoria");
