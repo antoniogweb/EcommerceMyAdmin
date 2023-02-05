@@ -567,6 +567,7 @@ class VariabiliModel extends GenericModel {
 		## Categorie ##
 		"attiva_categorie_in_prodotto"	=>	0, // se impostato ad 1, attiva la scheda con le categorie secondarie nel prodotto
 		"mostra_categorie_figlie_in_griglia_prodotti"	=>	1, // se la navigazione è per sottoblocchi, quindi se una categoria ha delle sottocategorie, mostra le sottocategorie. L'alternativa è una griglia di prodotti esplosi
+		"aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"	=>	0, // se impostato su 1, quando viene aggiornato l'ordine, viene ricalcolata la colonna numero_acquisti_pagina per ogni pagina presente tra le righe dell'ordine
 		## PAGINAZIONE ##
 		"prodotti_per_pagina"		=>	999999, // FRONTEND
 		"news_per_pagina"			=>	16, // FRONTEND

@@ -935,8 +935,14 @@ class OrdiniModel extends FormModel {
 		$pages = $c->getRighePerOrdine();
 // 		$pages = $c->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 		
+		$idsPage = [];
+		
 		foreach ($pages as $p)
 		{
+			// Creo un array con tutti gli ID delle pagine nell'ordine
+			if (!in_array($p["cart"]["id_page"], $idsPage))
+				$idsPage[] = $p["cart"]["id_page"];
+			
 			$r->values = $p["cart"];
 			$r->values["id_o"] = $clean["id_o"];
 			
@@ -992,6 +998,16 @@ class OrdiniModel extends FormModel {
 					
 					$re->insert();
 				}
+			}
+		}
+		
+		if (v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
+		{
+			$pModel = new PagesModel();
+			
+			foreach ($idsPage as $idPage)
+			{
+				$pModel->aggiornaNumeroAcquisti($idPage);
 			}
 		}
 	}

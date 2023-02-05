@@ -4146,4 +4146,20 @@ class PagesModel extends GenericModel {
 		
 		return "";
 	}
+	
+	// aggiorna la colonna numero_acquisti_pagina della pagina
+	public function aggiornaNumeroAcquisti($idPage)
+	{
+		$rModel = new RigheModel();
+		
+		$quantita = $rModel->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->getSum("quantity");
+		
+		$this->sValues(array(
+			"numero_acquisti_pagina"	=>	$quantita,
+		));
+		
+		$this->pUpdate((int)$idPage);
+	}
 }

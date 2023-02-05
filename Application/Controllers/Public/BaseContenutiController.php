@@ -843,7 +843,10 @@ class BaseContenutiController extends BaseController
 		
 		$this->m("PagesModel")->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
 		
-		$this->addOrderByClause($firstSection);
+		if (empty($escludi))
+			$this->addOrderByClause($firstSection);
+		else
+			$this->m("PagesModel")->orderBy = null;
 		
 		if ($this->catSWhere)
 			$this->m("PagesModel")->sWhere($this->catSWhere);
@@ -1140,7 +1143,8 @@ class BaseContenutiController extends BaseController
 		
 		if ($firstSection == Parametri::$nomeSezioneProdotti && $this->viewArgs['o'] == "piuvenduto")
 		{
-			$this->m("PagesModel")->left("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
+			if (!v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
+				$this->m("PagesModel")->left("(select id_page,sum(quantity) as numero_acquisti from righe group by id_page) as righe_sum")->on("pages.id_page = righe_sum.id_page");
 		}
 		
 		$this->append($data);
@@ -1161,7 +1165,10 @@ class BaseContenutiController extends BaseController
 			case "decrescente":
 				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
 			case "piuvenduto":
-				return "numero_acquisti desc";
+				if (!v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
+					return "numero_acquisti desc";
+				else
+					return "pages.numero_acquisti_pagina desc";
 			default:
 				return "pages.id_order";
 		}

@@ -68,15 +68,17 @@ class CombinazioniController extends BaseController
 		$this->arrayAttributi = $this->m["PagesattributiModel"]->clear()->select("distinct pages_attributi.id_a, concat(attributi.titolo,' (', attributi.nota_interna,')') as t")->inner(array("attributo"))->toList("pages_attributi.id_a","aggregate.t");
 		
 		if (isset($_GET["id_page"]) && $_GET["id_page"] != "tutti")
+		{
 			$this->m["PagesattributiModel"]->where(array(
 				"id_page"	=>	(int)$_GET["id_page"],
 			))->orderBy("pages_attributi.id_order");
-		
-		$this->arrayAttributi = $this->m["PagesattributiModel"]->send();
-		
-		foreach ($this->arrayAttributi as $idA => $titoloA)
-		{
-			$this->argKeys["id_".$idA.":sanitizeAll"] = "tutti";
+			
+			$this->arrayAttributi = $this->m["PagesattributiModel"]->send();
+			
+			foreach ($this->arrayAttributi as $idA => $titoloA)
+			{
+				$this->argKeys["id_".$idA.":sanitizeAll"] = "tutti";
+			}
 		}
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -339,26 +341,29 @@ class CombinazioniController extends BaseController
 		
 		$indice = 0;
 		
-		foreach ($this->arrayAttributi as $idA => $titoloA)
+		if (isset($_GET["id_page"]) && $_GET["id_page"] != "tutti")
 		{
-			if ($this->viewArgs["id_".$idA] != "tutti")
+			foreach ($this->arrayAttributi as $idA => $titoloA)
 			{
-				$strOr = str_repeat(" ", $indice);
-				
-				$this->m[$this->modelName]->aWhere(array(
-					$strOr."OR"	=>	array(
-						"col_1"	=>	$this->viewArgs["id_".$idA],
-						"col_2"	=>	$this->viewArgs["id_".$idA],
-						"col_3"	=>	$this->viewArgs["id_".$idA],
-						"col_4"	=>	$this->viewArgs["id_".$idA],
-						"col_5"	=>	$this->viewArgs["id_".$idA],
-						"col_6"	=>	$this->viewArgs["id_".$idA],
-						"col_7"	=>	$this->viewArgs["id_".$idA],
-						"col_8"	=>	$this->viewArgs["id_".$idA],
-					),
-				));
-				
-				$indice++;
+				if ($this->viewArgs["id_".$idA] != "tutti")
+				{
+					$strOr = str_repeat(" ", $indice);
+					
+					$this->m[$this->modelName]->aWhere(array(
+						$strOr."OR"	=>	array(
+							"col_1"	=>	$this->viewArgs["id_".$idA],
+							"col_2"	=>	$this->viewArgs["id_".$idA],
+							"col_3"	=>	$this->viewArgs["id_".$idA],
+							"col_4"	=>	$this->viewArgs["id_".$idA],
+							"col_5"	=>	$this->viewArgs["id_".$idA],
+							"col_6"	=>	$this->viewArgs["id_".$idA],
+							"col_7"	=>	$this->viewArgs["id_".$idA],
+							"col_8"	=>	$this->viewArgs["id_".$idA],
+						),
+					));
+					
+					$indice++;
+				}
 			}
 		}
 		
