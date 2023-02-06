@@ -643,6 +643,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"nuovo"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 		"nazione_utente"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(

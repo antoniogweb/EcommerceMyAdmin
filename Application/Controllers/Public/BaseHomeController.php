@@ -80,6 +80,7 @@ class BaseHomeController extends BaseController
 			if ($clean["idPaginaHome"])
 			{
 				PagesModel::$currentIdPage = $clean['idPaginaHome'];
+// 				$data["fasce"] = Cache_Functions::getInstance()->load($this->m("ContenutiModel"))->elaboraContenuti($clean['idPaginaHome'], 0, $this);
 				$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti($clean['idPaginaHome'], 0, $this);
 			}
 		}

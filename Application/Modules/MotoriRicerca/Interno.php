@@ -80,7 +80,7 @@ class Interno extends MotoreRicerca
 		
 		$p = new PagesModel();
 		$p->addWhereSearch($search);
-		$p->limit(50);
+		$p->limit(20);
 		
 		$pRicerca = new PagesricercaModel();
 		

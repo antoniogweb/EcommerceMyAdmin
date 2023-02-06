@@ -781,12 +781,34 @@ class BaseContenutiController extends BaseController
 			$this->m('PagesModel')->limit = $this->h['Pages']->getLimit($page,$rowNumber,$this->elementsPerPage);
 			
 			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
+			
+			if (v("usa_sotto_query_in_elenco"))
+				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""));
+			
 			$data["pages"] = $this->m('PagesModel')->send();
 			
 			$data['pageList'] = $this->h['Pages']->render($page-5,11);
 		}
 		else
+		{
+			if (v("usa_sotto_query_in_elenco"))
+				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""));
+				
 			$data["pages"] = $this->m('PagesModel')->send();
+		}
+		
+		// Uso sottoquery
+		if (v("usa_sotto_query_in_elenco"))
+		{
+			$arrayFinale = [];
+			
+			foreach ($data["pages"] as $p)
+			{
+				$arrayFinale[] = PagesModel::getPageDetails($p["pages"]["id_page"]);
+			}
+			
+			$data["pages"] = $arrayFinale;
+		}
 		
 		if ($firstSection == "prodotti")
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
@@ -849,7 +871,7 @@ class BaseContenutiController extends BaseController
 	{
 		$clean['id'] = (int)$id;
 		
-		$this->m("PagesModel")->clear()->restore()->select("distinct pages.codice_alfa,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
+		$this->m("PagesModel")->clear()->restore()->select(PagesModel::getSelectDistinct()."pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
 		
 		$this->addOrderByClause($firstSection, null, $attivaOrderBy);
 		

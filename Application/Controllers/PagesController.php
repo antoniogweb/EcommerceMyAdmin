@@ -80,6 +80,7 @@ class PagesController extends BaseController {
 		'id_naz:sanitizeAll' => "tutti",
 		'id_reg:sanitizeAll' => "tutti",
 		'id_cmb:sanitizeAll'=>0,
+		'nuovo:sanitizeAll'=>'tutti',
 	);
 	
 	protected $_posizioni = array(

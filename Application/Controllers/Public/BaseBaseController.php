@@ -399,6 +399,8 @@ class BaseBaseController extends Controller
 		
 		$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree(CategoriesModel::$idShop,2);
 		
+// 		$data["alberoCategorieProdotti"] = Cache_Functions::getInstance()->load(new CategoriesModel())->recursiveTree(CategoriesModel::$idShop,2);
+		
 		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m('CategoriesModel')->clear()
@@ -639,7 +641,12 @@ class BaseBaseController extends Controller
 			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
 			
 // 			if (v("attiva_filtri_successivi"))
-				$data["elencoMarchiFullFiltri"] = $this->m("MarchiModel")->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->addWhereAttivo()->sWhereFiltriSuccessivi("[marchio]")->send();
+			$this->m("MarchiModel")->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->sWhereFiltriSuccessivi("[marchio]");
+			
+			if (!v("attiva_filtri_successivi"))
+				$this->m("MarchiModel")->addWhereAttivo();
+			
+			$data["elencoMarchiFullFiltri"] =  $this->m("MarchiModel")->send();
 		}
 		
 		if (!v("ecommerce_attivo"))

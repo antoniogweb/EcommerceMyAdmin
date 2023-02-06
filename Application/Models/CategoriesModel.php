@@ -757,7 +757,7 @@ class CategoriesModel extends HierarchicalModel {
 			);
 	}
 	
-	public static function gPage($id_c, $full = true, $traduzione = true)
+	public static function gPage($id_c, $full = true, $traduzione = true, $soloPagineAttive = true)
 	{
 		$p = new PagesModel();
 		
@@ -776,7 +776,8 @@ class CategoriesModel extends HierarchicalModel {
 		else
 			$p->aWhere(self::gCatWhere($id_c, $full));
 		
-		$p->addWhereAttivo();
+		if ($soloPagineAttive)
+			$p->addWhereAttivo();
 		
 		if ($traduzione)
 			$p->addJoinTraduzionePagina();
@@ -793,12 +794,24 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public function numeroProdottiFull($id_c, $filtriSuccessivi = false)
 	{
-		$cat = self::gPage($id_c, true, false);
+		$soloPagineAttive = $filtriSuccessivi ? false : true;
+		
+		$cat = self::gPage($id_c, true, false, $soloPagineAttive);
 		
 		if ($filtriSuccessivi)
 			$cat->sWhereFiltriSuccessivi("[categoria]");
 		
-		return $cat->rowNumber();
+// 		$res = $cat->rowNumber();
+// 		
+// 		return $res;
+		
+		
+		
+		$res = $cat->select("id_page")->send(false);
+		
+// 		echo $cat->getQuery();
+		
+		return count($res);
 	}
 	
 	public function numeroProdotti($id_c, $filtriSuccessivi = false)

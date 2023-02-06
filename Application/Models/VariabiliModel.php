@@ -609,6 +609,7 @@ class VariabiliModel extends GenericModel {
 		"carica_tutti_i_model"	=>	1, // carica subito tutti i model
 		"attiva_gruppi_admin"	=>	0, // if impostato a 1 permette di creare gruppi di utenti e di decidere l'accesso a determinati controller per ogni gruppo di utenti
 		"cartella_backend"		=>	"admin", // la cartella con il backoffice e i file del CMS
+		"usa_sotto_query_in_elenco"	=>	0, // se fare un'unica query in join o tante piccole sotto query per i prodotti nella griglia
 	);
 	
 	public static $daInizializzare = array(
