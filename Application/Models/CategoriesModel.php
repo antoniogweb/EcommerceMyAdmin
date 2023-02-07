@@ -805,7 +805,7 @@ class CategoriesModel extends HierarchicalModel {
 // 		
 // 		return $res;
 		
-		
+		$cat->orderBy = null;
 		
 		$res = $cat->select("id_page")->send(false);
 		
