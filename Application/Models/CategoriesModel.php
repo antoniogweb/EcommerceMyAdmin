@@ -1087,6 +1087,13 @@ class CategoriesModel extends HierarchicalModel {
 		return CategoriesModel::getUrlAliasTagMarchio(0, 0, self::$idShop, "", array(), array(), $filtriUrlAltriFiltri);
 	}
 	
+	public static function getUrlAliasInEvidenza()
+	{
+		$filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["stato-prodotto"], AltriFiltri::$aliasValoreTipoInEvidenza[0]);
+		
+		return CategoriesModel::getUrlAliasTagMarchio(0, 0, self::$idShop, "", array(), array(), $filtriUrlAltriFiltri);;
+	}
+	
 	public static function getIdCategoriaDaSezione($sezione)
 	{
 		if (!isset(self::$associazioneSezioneId))
