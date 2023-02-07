@@ -204,12 +204,14 @@ class GenericModel extends Model_Tree
 		
 		$arrayValori = array();
 		
+		$linguaPrincipale = LingueModel::getPrincipaleFrontend();
+		
 		foreach (self::$tabelleConAliasMap as $table => $params)
 		{
 			$campoChiave = $params["chiave"];
 			$campoTitolo = $params["campoTitolo"];
 			
-			if ($params["tradotta"])
+			if ($params["tradotta"] && Params::$lang != $linguaPrincipale)
 			{
 				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = ? where coalesce(contenuti_tradotti.alias,$table.alias) = ?";
 				
