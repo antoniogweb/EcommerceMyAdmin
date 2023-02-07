@@ -1,0 +1,1 @@
+INSERT INTO `lingue` (`id_lingua`, `data_creazione`, `codice`, `descrizione`, `id_order`, `principale`, `attiva`, `backend`, `codice_clean`) VALUES (NULL, '2022-03-03 17:48:16', 'cz', 'Czech', '11', '0', '0', '0', 'cz');
