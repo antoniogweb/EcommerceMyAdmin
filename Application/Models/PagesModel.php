@@ -4096,7 +4096,7 @@ class PagesModel extends GenericModel {
 			"in_promozione" => "Y",
 		);
 		
-		$prodottiInPromo = $p->clear()->addWhereAttivo()->addJoinTraduzionePagina(null, false)->limit(50)->orderBy("pages.al desc")->where($pWhere)->send();
+		$prodottiInPromo = $p->clear()->addWhereAttivo()->addJoinTraduzionePagina(null, false)->limit(50)->orderBy("pages.al desc")->aWhere($pWhere)->send();
 		
 		return PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
 	}
@@ -4169,12 +4169,19 @@ class PagesModel extends GenericModel {
 	{
 		$rModel = new RigheModel();
 		
-		$quantita = $rModel->clear()->where(array(
+		$res = $rModel->clear()->select("count(id_o) as numero")->where(array(
 			"id_page"	=>	(int)$idPage,
-		))->getSum("quantity");
+		))->groupBy("id_page")->send();
+		
+// 		echo $rModel->getQuery();die();
+		
+		$numero = 0;
+		
+		if (count($res) > 0)
+			$numero = $res[0]["aggregate"]["numero"];
 		
 		$this->sValues(array(
-			"numero_acquisti_pagina"	=>	$quantita,
+			"numero_acquisti_pagina"	=>	$numero,
 		));
 		
 		$this->pUpdate((int)$idPage);
