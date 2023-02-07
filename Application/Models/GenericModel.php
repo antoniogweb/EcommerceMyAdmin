@@ -28,6 +28,7 @@ class GenericModel extends Model_Tree
 	
 	public static $generaMetaQuandoSalvi = true;
 	public static $traduzioniNonPrincipali = null;
+	public static $nomiDaAlias = array();
 	
 	public static $recordTabella = null;
 	public static $apiMethod = "POST";
@@ -196,6 +197,9 @@ class GenericModel extends Model_Tree
 	
 	public static function getNomeDaAlias($alias)
 	{
+		if (isset(self::$nomiDaAlias[$alias]))
+			return self::$nomiDaAlias[$alias];
+		
 		$arrayUnion = array();
 		
 		$arrayValori = array();
@@ -234,19 +238,23 @@ class GenericModel extends Model_Tree
 		$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
 		$res = $mysqli->query($sql);
 		
+		$nomeDaAlias = null;
+		
 		if (count($res) > 0 && isset($res[0]["aggregate"]["titolo_filtro"]) && trim($res[0]["aggregate"]["titolo_filtro"]))
-			return $res[0]["aggregate"]["titolo_filtro"];
+			$nomeDaAlias = $res[0]["aggregate"]["titolo_filtro"];
 		
 		if ($alias == AltriFiltri::$aliasValoreTipoInEvidenza[0])
-			return AltriFiltri::$aliasValoreTipoInEvidenza[1];
+			$nomeDaAlias = AltriFiltri::$aliasValoreTipoInEvidenza[1];
 		
 		if ($alias == AltriFiltri::$aliasValoreTipoNuovo[0])
-			return AltriFiltri::$aliasValoreTipoNuovo[1];
+			$nomeDaAlias = AltriFiltri::$aliasValoreTipoNuovo[1];
 		
 		if ($alias == AltriFiltri::$aliasValoreTipoPromo[0])
-			return AltriFiltri::$aliasValoreTipoPromo[1];
+			$nomeDaAlias = AltriFiltri::$aliasValoreTipoPromo[1];
 		
-		return null;
+		self::$nomiDaAlias[$alias] = $nomeDaAlias;
+		
+		return $nomeDaAlias;
 	}
 	
 	public function bulkAction($bulk_list)
