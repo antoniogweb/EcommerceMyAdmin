@@ -1750,7 +1750,9 @@ function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false)
 {
 	$c = new CategoriesModel();
 	
-	$signature = isset(CategoriesModel::$arrayIdsPagineFiltrate["[categoria]"]) ? md5(implode(",",CategoriesModel::$arrayIdsPagineFiltrate["[categoria]"])) : "";
+// 	$signature = isset(CategoriesModel::$arrayIdsPagineFiltrate["[categoria]"]) ? md5(implode(",",CategoriesModel::$arrayIdsPagineFiltrate["[categoria]"])) : "";
+	
+	$signature = CategoriesModel::getSignatureSuccessivi("[categoria]");
 	
 	return Cache_Functions::getInstance()->load(new CategoriesModel())->numeroProdottiFull($id_c, $filtriSuccessivi, $signature);
 // 	return $c->numeroProdottiFull($id_c, $filtriSuccessivi);

@@ -4057,11 +4057,16 @@ class PagesModel extends GenericModel {
 		return $this;
 	}
 	
+	public function numeroStatoD($stato = "evidenza", $filtriSuccessivi = false)
+	{
+		return self::numeroStato($stato, $filtriSuccessivi);
+	}
+	
 	public static function numeroStato($stato = "evidenza", $filtriSuccessivi = false)
 	{
 		$p = new PagesModel();
 		
-		$p->clear()->addWhereAttivo()->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione("prodotti"));
+		$p->clear()->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione("prodotti"));
 		
 		if ($stato == "evidenza")
 			$p->addWhereEvidenza();
@@ -4072,6 +4077,8 @@ class PagesModel extends GenericModel {
 		
 		if ($filtriSuccessivi)
 			$p->sWhereFiltriSuccessivi("[$stato]");
+		else
+			$p->addWhereAttivo();
 		
 		return $p->rowNumber();
 	}

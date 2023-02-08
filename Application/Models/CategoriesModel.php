@@ -792,6 +792,11 @@ class CategoriesModel extends HierarchicalModel {
 		return $this;
 	}
 	
+	public static function getSignatureSuccessivi($filtroSuccessivo)
+	{
+		return $signature = isset(CategoriesModel::$arrayIdsPagineFiltrate[$filtroSuccessivo]) ? md5(implode(",",CategoriesModel::$arrayIdsPagineFiltrate[$filtroSuccessivo])) : "";
+	}
+	
 	public function numeroProdottiFull($id_c, $filtriSuccessivi = false)
 	{
 		$soloPagineAttive = $filtriSuccessivi ? false : true;
