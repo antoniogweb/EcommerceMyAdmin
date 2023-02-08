@@ -3146,11 +3146,20 @@ class PagesModel extends GenericModel {
 		
 		$idPages = forceIntDeep($idPages);
 		
-		return $p->clear()->addJoinTraduzionePagina($lingua)->where(array(
+		$p->clear()->addJoinTraduzionePagina($lingua)->where(array(
 			"in"	=>	array(
 				"id_page"	=>	$idPages,
 			),
 		))->orderBy("FIELD(pages.id_page, ".implode(',', $idPages).")")->send();
+		
+		if (VariabiliModel::combinazioniLinkVeri())
+		{
+			$p->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,combinazioni.codice,combinazioni.peso,combinazioni.gtin,combinazioni.mpn,combinazioni.id_c,immagini_combinazione.i_id_order");
+			$p->inner("combinazioni")->on("combinazioni.id_page = pages.id_page and combinazioni.canonical=1");
+			$p->left("(select min(id_order) as i_id_order,id_c from immagini group by id_c) as immagini_combinazione")->on("immagini_combinazione.id_c = combinazioni.id_c");
+		}
+		
+		return $p->send();
 	}
 	
 	public static function listaImmaginiPagina()
@@ -4009,7 +4018,20 @@ class PagesModel extends GenericModel {
 				$temp["pages"]["mpn"] = $combinazione["mpn"];
 				
 				if (VariabiliModel::combinazioniLinkVeri())
-					$temp["pages"]["immagine"] = PagesModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
+				{
+					if (isset($temp["immagini_combinazione"]["i_id_order"]))
+					{
+						$immagine = ImmaginiModel::g(false)->select("immagine")->where(array(
+							"id_order"	=>	(int)$temp["immagini_combinazione"]["i_id_order"],
+							"id_c"		=>	(int)$idC,
+						))->field("immagine");
+						
+						if ($immagine)
+							$temp["pages"]["immagine"] = $immagine;
+					}
+					else
+						$temp["pages"]["immagine"] = PagesModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
+				}
 				
 // 				if (v("immagini_separate_per_variante"))
 // 				{
