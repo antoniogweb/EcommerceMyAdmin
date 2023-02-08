@@ -6,17 +6,18 @@ if (isset($corr))
 	$p = $corr;
 }
 
-$idPr = getPrincipale(field($p, "id_page"));
+$idPr = !v("attiva_multi_categoria") ? $p["pages"]["id_page"] : getPrincipale(field($p, "id_page"));
 $hasCombinations = hasCombinations($idPr);
 $hasSoloCombinations = hasCombinations($idPr, false);
 $urlAlias = getUrlAlias($p["pages"]["id_page"]);
-$prezzoMinimo = prezzoMinimo($idPr);
+
+$prezzoMinimo = (isset($p["pages"]["price"]) && !User::$nazione) ? $p["pages"]["price"] : prezzoMinimo($idPr);
 $stringaDa = (!$hasSoloCombinations || VariabiliModel::combinazioniLinkVeri()) ? "" : gtext("da");
 $prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
 $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
-$isProdotto = isProdotto($idPr);
+$isProdotto = !v("attiva_multi_categoria") ? true : isProdotto($idPr);
 
 if (isset($corr))
 	PagesModel::restoreIdCombinazione();

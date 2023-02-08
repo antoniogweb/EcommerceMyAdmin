@@ -3154,7 +3154,7 @@ class PagesModel extends GenericModel {
 		
 		if (VariabiliModel::combinazioniLinkVeri())
 		{
-			$p->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,combinazioni.codice,combinazioni.peso,combinazioni.gtin,combinazioni.mpn,combinazioni.id_c,immagini_combinazione.i_id_order");
+			$p->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,combinazioni.codice,combinazioni.peso,combinazioni.gtin,combinazioni.mpn,combinazioni.id_c,combinazioni.price,immagini_combinazione.i_id_order");
 			$p->inner("combinazioni")->on("combinazioni.id_page = pages.id_page and combinazioni.canonical=1");
 			$p->left("(select min(id_order) as i_id_order,id_c from immagini group by id_c) as immagini_combinazione")->on("immagini_combinazione.id_c = combinazioni.id_c");
 		}
@@ -4019,18 +4019,14 @@ class PagesModel extends GenericModel {
 				
 				if (VariabiliModel::combinazioniLinkVeri())
 				{
-					if (isset($temp["immagini_combinazione"]["i_id_order"]))
-					{
-						$immagine = ImmaginiModel::g(false)->select("immagine")->where(array(
-							"id_order"	=>	(int)$temp["immagini_combinazione"]["i_id_order"],
-							"id_c"		=>	(int)$idC,
-						))->field("immagine");
-						
-						if ($immagine)
-							$temp["pages"]["immagine"] = $immagine;
-					}
-					else
-						$temp["pages"]["immagine"] = PagesModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
+					$immagine = ImmaginiModel::g(false)->select("immagine")->where(array(
+						"id_c"		=>	(int)$idC,
+					))->orderBy("id_order")->limit(1)->field("immagine");
+					
+					if ($immagine)
+						$temp["pages"]["immagine"] = $immagine;
+					
+// 					$temp["pages"]["immagine"] = PagesModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
 				}
 				
 // 				if (v("immagini_separate_per_variante"))
