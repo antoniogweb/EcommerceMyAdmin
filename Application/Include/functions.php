@@ -1750,7 +1750,10 @@ function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false)
 {
 	$c = new CategoriesModel();
 	
-	return $c->numeroProdottiFull($id_c, $filtriSuccessivi);
+	$signature = isset(CategoriesModel::$arrayIdsPagineFiltrate["[categoria]"]) ? md5(implode(",",CategoriesModel::$arrayIdsPagineFiltrate["[categoria]"])) : "";
+	
+	return Cache_Functions::getInstance()->load(new CategoriesModel())->numeroProdottiFull($id_c, $filtriSuccessivi, $signature);
+// 	return $c->numeroProdottiFull($id_c, $filtriSuccessivi);
 }
 
 function getShopCategoryId()
