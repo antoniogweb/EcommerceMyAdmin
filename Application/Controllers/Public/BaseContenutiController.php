@@ -738,7 +738,8 @@ class BaseContenutiController extends BaseController
 			foreach ($arrayElementi as $elemento)
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento), false);
-				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = $this->m("PagesModel")->select("distinct pages.codice_alfa,pages.id_page")->toList("pages.id_page")->send();
+				$ids = $this->m("PagesModel")->select("pages.id_page")->toList("pages.id_page")->send();
+				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = array_unique($ids);
 			}
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
@@ -1142,12 +1143,12 @@ class BaseContenutiController extends BaseController
 			{
 				if (User::$nazione)
 				{
-					$tabellaCombinazioni = "(select codice,peso,id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.canonical = 1) as combinazioni_minime";
 					
 					$bindedValues[] = sanitizeAll(User::$nazione);
 				}
 				else
-					$tabellaCombinazioni = "(select codice,peso,id_page,$campoPrezzoMinimo as prezzo_minimo,$campoPrezzoMinimoIvato as prezzo_minimo_ivato from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,$campoPrezzoMinimo as prezzo_minimo,$campoPrezzoMinimoIvato as prezzo_minimo_ivato from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
 			}
 			else
 			{

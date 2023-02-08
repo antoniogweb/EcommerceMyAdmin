@@ -1524,8 +1524,8 @@ class PagesModel extends GenericModel {
 				return array_keys($res);
 			}
 		}
-// 		else
-// 		{
+		else
+		{
 			$res = $this->clear()->select("pages.id_page")->where(array(
 				"alias"				=>	$clean['alias'],
 				"pages.temp"		=>	0,
@@ -1580,7 +1580,7 @@ class PagesModel extends GenericModel {
 					return $res;
 				}
 			}
-// 		}
+		}
 		
 		return array();
 	}
