@@ -509,20 +509,20 @@ class CombinazioniModel extends GenericModel {
 				
 				$aliasAttributi = (count($arrayAlias) > 0) ? implode("-", $arrayAlias) : "";
 				
-				$aliasPagina = $c["aliasp"];
-				
-				if ($codice != LingueModel::getPrincipaleFrontend() && $c["aliaspt"])
-					$aliasPagina = $c["aliaspt"];
+// 				$aliasPagina = $c["aliasp"];
+// 				
+// 				if ($codice != LingueModel::getPrincipaleFrontend() && $c["aliaspt"])
+// 					$aliasPagina = $c["aliaspt"];
 				
 				$ca->sValues(array(
 					"alias_attributi"	=>	$aliasAttributi,
 					"lingua"		=>	$codice,
 					"id_c"			=>	$c["id_c"],
 					"id_page"		=>	$c["id_page"],
-					"alias_pagina"	=>	$aliasPagina,
-					"alias_pagina_codice"	=>	$aliasPagina."-".$c["codice"],
-					"alias_pagina_attributo"=>	$aliasPagina."-".$aliasAttributi,
-					"alias_pagina_attributo_codice"=>	$aliasPagina."-".$aliasAttributi."-".$c["codice"],
+// 					"alias_pagina"	=>	$aliasPagina,
+// 					"alias_pagina_codice"	=>	$aliasPagina."-".$c["codice"],
+// 					"alias_pagina_attributo"=>	$aliasPagina."-".$aliasAttributi,
+// 					"alias_pagina_attributo_codice"=>	$aliasPagina."-".$aliasAttributi."-".$c["codice"],
 				), "sanitizeDb");
 				
 				$ca->insert();
