@@ -783,7 +783,7 @@ class BaseContenutiController extends BaseController
 			
 			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
 			
-			if (v("usa_sotto_query_in_elenco"))
+			if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
 				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
 			
 			$data["pages"] = $this->m('PagesModel')->send();
@@ -792,14 +792,14 @@ class BaseContenutiController extends BaseController
 		}
 		else
 		{
-			if (v("usa_sotto_query_in_elenco"))
+			if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
 				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
 				
 			$data["pages"] = $this->m('PagesModel')->send();
 		}
 		
 		// Uso sottoquery
-		if (v("usa_sotto_query_in_elenco"))
+		if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
 			$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
 		
 		if ($firstSection == "prodotti")
@@ -812,7 +812,8 @@ class BaseContenutiController extends BaseController
 // 		echo $this->m("PagesModel")->getQuery();
 		
 		// Estraggo le fasce
-		$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti(0, $clean['id'], $this);
+		if ($firstSection != "prodotti" || v("estrai_fasce_in_categoria_prodotti"))
+			$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti(0, $clean['id'], $this);
 		
 		// Estraggo le fasce di prezzo
 		if (v("mostra_fasce_prezzo"))

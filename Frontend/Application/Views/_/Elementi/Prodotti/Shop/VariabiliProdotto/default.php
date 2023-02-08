@@ -11,7 +11,7 @@ $hasCombinations = hasCombinations($idPr);
 $hasSoloCombinations = hasCombinations($idPr, false);
 $urlAlias = getUrlAlias($p["pages"]["id_page"]);
 
-$prezzoMinimo = (isset($p["pages"]["price"]) && !User::$nazione) ? $p["pages"]["price"] : prezzoMinimo($idPr);
+$prezzoMinimo = (isset($p["combinazioni"]["price"]) && !User::$nazione) ? $p["combinazioni"]["price"] : prezzoMinimo($idPr);
 $stringaDa = (!$hasSoloCombinations || VariabiliModel::combinazioniLinkVeri()) ? "" : gtext("da");
 $prezzoPienoIvato = calcolaPrezzoIvato($p["pages"]["id_page"], $prezzoMinimo);
 $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);

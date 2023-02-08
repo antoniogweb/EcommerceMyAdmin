@@ -21,7 +21,9 @@ if (v("codice_gtm_analytics"))
 		
 		foreach ($pages as $p)
 		{
-			$prezzoMinimo = prezzoMinimo($p["pages"]["id_page"]);
+// 			$prezzoMinimo = prezzoMinimo($p["pages"]["id_page"]);
+			$prezzoMinimo = (isset($p["combinazioni"]["price"]) && !User::$nazione) ? $p["combinazioni"]["price"] : prezzoMinimo($p["pages"]["id_page"]);
+			
 			$prezzoFinaleIvato = number_format(calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, true, !v("prezzi_ivati_in_carrello")),2,".","");
 			
 			$items["items"][] = array(

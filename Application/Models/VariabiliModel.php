@@ -602,6 +602,7 @@ class VariabiliModel extends GenericModel {
 		"numero_in_promo_home"		=>	20, // numero dei prodotti in promo nella home
 		## CATEGORIA ##
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
+		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
 		## BASE CONTROLLER ##
 		"estrai_elenco_marchi"		=>	1, // estrai i marchi
 		"estrai_elenco_categorie_prodotti_base_controller"	=>	1, // se deve estrarre sempre l'elenco delle categorie dal base controller
