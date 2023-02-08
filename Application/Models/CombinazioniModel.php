@@ -452,7 +452,7 @@ class CombinazioniModel extends GenericModel {
 		
 		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
-			$this->clear()->select("combinazioni.id_page,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
+			$this->clear()->select("pages.alias as aliasp,pagest.alias as aliaspt,combinazioni.id_page,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
 				->left("attributi_valori as a1")->on("a1.id_av = combinazioni.col_1")->left("contenuti_tradotti as at1")->on(array("at1.id_av = a1.id_av and at1.lingua = ?",array(sanitizeDb($codice))))
 				->left("attributi_valori as a2")->on("a2.id_av = combinazioni.col_2")->left("contenuti_tradotti as at2")->on(array("at2.id_av = a2.id_av and at2.lingua = ?",array(sanitizeDb($codice))))
 				->left("attributi_valori as a3")->on("a3.id_av = combinazioni.col_3")->left("contenuti_tradotti as at3")->on(array("at3.id_av = a3.id_av and at3.lingua = ?",array(sanitizeDb($codice))))
@@ -461,8 +461,8 @@ class CombinazioniModel extends GenericModel {
 				->left("attributi_valori as a6")->on("a6.id_av = combinazioni.col_6")->left("contenuti_tradotti as at6")->on(array("at6.id_av = a6.id_av and at6.lingua = ?",array(sanitizeDb($codice))))
 				->left("attributi_valori as a7")->on("a7.id_av = combinazioni.col_7")->left("contenuti_tradotti as at7")->on(array("at7.id_av = a7.id_av and at7.lingua = ?",array(sanitizeDb($codice))))
 				->left("attributi_valori as a8")->on("a8.id_av = combinazioni.col_8")->left("contenuti_tradotti as at8")->on(array("at8.id_av = a8.id_av and at8.lingua = ?",array(sanitizeDb($codice))))
-				->inner(array("pagina"));
-// 				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
+				->inner(array("pagina"))
+				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
 			
 			if ($idC)
 				$this->where(array(
@@ -509,11 +509,20 @@ class CombinazioniModel extends GenericModel {
 				
 				$aliasAttributi = (count($arrayAlias) > 0) ? implode("-", $arrayAlias) : "";
 				
+				$aliasPagina = $c["aliasp"];
+				
+				if ($codice != LingueModel::getPrincipaleFrontend() && $c["aliaspt"])
+					$aliasPagina = $c["aliaspt"];
+				
 				$ca->sValues(array(
 					"alias_attributi"	=>	$aliasAttributi,
 					"lingua"		=>	$codice,
 					"id_c"			=>	$c["id_c"],
 					"id_page"		=>	$c["id_page"],
+					"alias_pagina"	=>	$aliasPagina,
+					"alias_pagina_codice"	=>	$aliasPagina."-".$c["codice"],
+					"alias_pagina_attributo"=>	$aliasPagina."-".$aliasAttributi,
+					"alias_pagina_attributo_codice"=>	$aliasPagina."-".$aliasAttributi."-".$c["codice"],
 				), "sanitizeDb");
 				
 				$ca->insert();

@@ -21,7 +21,7 @@ $cmT = new CategoriesModel();
 	<tr>
 		<td><?php echo $trad["title"] ? $trad["title"] : $trad["titolo"]; ?></td>
 		<?php if (!isset($nascondiAlias)) { ?>
-		<td><?php echo $trad["alias"]; ?></td>
+		<td style="max-width:180px;"><div style="word-wrap:break-word;"><?php echo $trad["alias"]; ?></div></td>
 		<?php } ?>
 		<td><?php echo strtoupper($trad["lingua"]); ?></td>
 		<td><a class="iframe" title="<?php if ($trad["salvato"]) { ?>Modifica<?php } else { ?>Inserisci<?php } ?> traduzione" href="<?php echo $this->baseUrl."/contenutitradotti/form/update/".$trad["id_ct"]."?partial=Y&section=$section";?>">
