@@ -807,12 +807,82 @@ class CategoriesModel extends HierarchicalModel {
 		
 		$cat->orderBy = null;
 		
-		$res = $cat->select("id_page")->send(false);
+		$res = $cat->select("id_page")->toList("id_page")->send();
+		
+		$res = array_unique($res);
 		
 // 		echo $cat->getQuery();
 		
 		return count($res);
 	}
+	
+// 	public static function numeroProdottiDirettiFullList($idcS, $filtriSuccessivi = false)
+// 	{
+// 		$p = new PagesModel();
+// 		
+// // 		if (v("attiva_categorie_in_prodotto"))
+// // 		{
+// // 			$bindedValues = array_merge($idcS, $idcS);
+// // 			
+// // 			$p->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($idcS).") OR pages.id_page in (select id_page from pages_categories where pages_categories.id_c in(".$p->placeholdersFromArray($idcS).")))",$bindedValues));
+// // 		}
+// // 		else
+// 		$p->sWhere(array("pages.id_c in(".$p->placeholdersFromArray($idcS).")",$idcS));
+// 		
+// 		if ($filtriSuccessivi)
+// 			$p->sWhereFiltriSuccessivi("[categoria]");
+// 		else
+// 			$p->addWhereAttivo();
+// 		
+// 		$p->orderBy = null;
+// 		
+// 		$res = $p->select("pages.id_c,pages.id_page")->send();
+// 		
+// 		$struct = [];
+// 		
+// 		foreach ($res as $r)
+// 		{
+// 			if (isset($struct[$r["pages"]["id_c"]]))
+// 				$struct[$r["pages"]["id_c"]][] = $r["pages"]["id_page"];
+// 			else
+// 				$struct[$r["pages"]["id_c"]] = array($r["pages"]["id_page"]);
+// 		}
+// 		
+// 		$p = new PagescategoriesModel();
+// 		
+// 		$p->clear()->sWhere(array("pages_categories.id_c in(".$p->placeholdersFromArray($idcS).")",$idcS));
+// 		
+// 		if ($filtriSuccessivi)
+// 			$p->sWhereFiltriSuccessivi("[categoria]", "pages_categories");
+// 		else
+// 			$p->addWhereAttivo();
+// 		
+// 		$res = $p->select("pages_categories.id_c,pages_categories.id_page")->groupBy("pages_categories.id_page")->send();
+// // 		echo $p->getQuery();
+// 		foreach ($res as $r)
+// 		{
+// 			if (isset($struct[$r["pages_categories"]["id_c"]]))
+// 				$struct[$r["pages_categories"]["id_c"]][] = $r["pages_categories"]["id_page"];
+// 			else
+// 				$struct[$r["pages_categories"]["id_c"]] = array($r["pages_categories"]["id_page"]);
+// 		}
+// 		
+// 		$structFinale = [];
+// 		
+// 		foreach ($struct as $idC => $pages)
+// 		{
+// 			$pages = array_unique($pages);
+// 			$numero = count($pages);
+// 			
+// 			$structFinale[$idC] = $numero;
+// 		}
+// 		
+// // 		print_r($struct);
+// // 		die();
+// // 		echo $p->getQuery();
+// 		
+// 		return $structFinale;
+// 	}
 	
 	public function numeroProdotti($id_c, $filtriSuccessivi = false)
 	{

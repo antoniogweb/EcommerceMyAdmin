@@ -687,7 +687,8 @@ class BaseContenutiController extends BaseController
 		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl))
 			$cache->saveHtml = true;
 		
-		$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
+		if (v("estrai_categorie_figlie"))
+			$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
@@ -783,7 +784,7 @@ class BaseContenutiController extends BaseController
 			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
 			
 			if (v("usa_sotto_query_in_elenco"))
-				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""));
+				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
 			
 			$data["pages"] = $this->m('PagesModel')->send();
 			
@@ -792,23 +793,14 @@ class BaseContenutiController extends BaseController
 		else
 		{
 			if (v("usa_sotto_query_in_elenco"))
-				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""));
+				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
 				
 			$data["pages"] = $this->m('PagesModel')->send();
 		}
 		
 		// Uso sottoquery
 		if (v("usa_sotto_query_in_elenco"))
-		{
-			$arrayFinale = [];
-			
-			foreach ($data["pages"] as $p)
-			{
-				$arrayFinale[] = PagesModel::getPageDetails($p["pages"]["id_page"]);
-			}
-			
-			$data["pages"] = $arrayFinale;
-		}
+			$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
 		
 		if ($firstSection == "prodotti")
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
@@ -1196,7 +1188,7 @@ class BaseContenutiController extends BaseController
 				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
 			case "piuvenduto":
 				if (!v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
-					return "numero_acquisti desc";
+					return "pages.numero_acquisti desc";
 				else
 					return "pages.numero_acquisti_pagina desc";
 			default:

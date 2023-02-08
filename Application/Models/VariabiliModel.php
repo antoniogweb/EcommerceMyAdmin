@@ -599,6 +599,13 @@ class VariabiliModel extends GenericModel {
 		## HOME ##
 		"usa_fasce_in_home"			=>	0, // se attivare o meno la gestione delle fasce in home
 		"usa_meta_pagina_home"		=>	0, // se attivo, utilizza le keywords e la meta description dalla pagina indicata come home
+		"numero_in_promo_home"		=>	20, // numero dei prodotti in promo nella home
+		## CATEGORIA ##
+		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
+		## BASE CONTROLLER ##
+		"estrai_elenco_marchi"		=>	1, // estrai i marchi
+		"estrai_elenco_categorie_prodotti_base_controller"	=>	1, // se deve estrarre sempre l'elenco delle categorie dal base controller
+		"estrai_categorie_blog"		=>	1, // estrai le categorie del blog
 		## SEO ##
 		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
 		####

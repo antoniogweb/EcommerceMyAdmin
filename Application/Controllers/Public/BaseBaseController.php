@@ -392,16 +392,17 @@ class BaseBaseController extends Controller
 				))->orderBy("pages.id_order")->send();
 		}
 		
-		$data["categorieBlog"] = $this->m("CategoriesModel")->children(87, false, false);
+		if (v("estrai_categorie_blog"))
+			$data["categorieBlog"] = $this->m("CategoriesModel")->children(87, false, false);
 		
 		if (v("estrai_in_promozione_home"))
 			$data["inPromozione"] = $data["prodottiInPromozione"] = $this->prodottiInPromozione = PagesModel::getProdottiInPromo();
 		
-		$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree(CategoriesModel::$idShop,2);
-		
-// 		$data["alberoCategorieProdotti"] = Cache_Functions::getInstance()->load(new CategoriesModel())->recursiveTree(CategoriesModel::$idShop,2);
-		
-		$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
+		if (v("estrai_elenco_categorie_prodotti_base_controller"))
+		{
+			$data["alberoCategorieProdotti"] = $this->m("CategoriesModel")->recursiveTree(CategoriesModel::$idShop,2);
+			$data["alberoCategorieProdottiConShop"] = array($data["categoriaShop"]) + $data["alberoCategorieProdotti"];
+		}
 		
 		$data["elencoCategorieFull"] = $this->elencoCategorieFull = CategoriesModel::$elencoCategorieFull = $this->m('CategoriesModel')->clear()
 			->addJoinTraduzioneCategoria()
@@ -633,12 +634,15 @@ class BaseBaseController extends Controller
 		
 		if (v("usa_marchi"))
 		{
-			$data["elencoMarchi"] = $this->m("MarchiModel")->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
-			
-			$data["elencoMarchiFull"] = $this->elencoMarchiFull = $data["elencoMarchiFullFiltri"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
-			$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m("MarchiModel")->clear()->where(array(
-				"nuovo"	=>	"Y",
-			))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			if (v("estrai_elenco_marchi"))
+			{
+				$data["elencoMarchi"] = $this->m("MarchiModel")->clear()->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+				
+				$data["elencoMarchiFull"] = $this->elencoMarchiFull = $data["elencoMarchiFullFiltri"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+				$data["elencoMarchiNuoviFull"] = $this->elencoMarchiNuoviFull = $this->m("MarchiModel")->clear()->where(array(
+					"nuovo"	=>	"Y",
+				))->addJoinTraduzione()->orderBy("marchi.titolo")->send();
+			}
 			
 // 			if (v("attiva_filtri_successivi"))
 			$this->m("MarchiModel")->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->sWhereFiltriSuccessivi("[marchio]");

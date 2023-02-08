@@ -3140,6 +3140,19 @@ class PagesModel extends GenericModel {
 		))->first();
 	}
 	
+	public static function getPageDetailsList($idPages, $lingua = null)
+	{
+		$p = new PagesModel();
+		
+		$idPages = forceIntDeep($idPages);
+		
+		return $p->clear()->addJoinTraduzionePagina($lingua)->where(array(
+			"in"	=>	array(
+				"id_page"	=>	$idPages,
+			),
+		))->orderBy("FIELD(pages.id_page, ".implode(',', $idPages).")")->send();
+	}
+	
 	public static function listaImmaginiPagina()
 	{
 		if (isset(self::$arrayImmagini))
@@ -4082,7 +4095,7 @@ class PagesModel extends GenericModel {
 		return $p->elementoNonUsato($idPage);
 	}
 	
-	public static function getProdottiInPromo()
+	public static function getProdottiInPromo($numero = 0)
 	{
 		$p = new PagesModel();
 		
@@ -4096,9 +4109,12 @@ class PagesModel extends GenericModel {
 			"in_promozione" => "Y",
 		);
 		
-		$prodottiInPromo = $p->clear()->addWhereAttivo()->addJoinTraduzionePagina(null, false)->limit(50)->orderBy("pages.al desc")->aWhere($pWhere)->send();
+		if (!$numero)
+			$numero = v("numero_in_promo_home");
 		
-		return PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo));
+		$prodottiInPromo = $p->clear()->addWhereAttivo()->addJoinTraduzionePagina(null, false)->limit(50)->orderBy("pages.al")->aWhere($pWhere)->send();
+		
+		return PagesModel::impostaDatiCombinazionePagine(getRandom($prodottiInPromo, v("numero_in_promo_home")));
 	}
 	
 	public function getQueryClauseProdotti()
