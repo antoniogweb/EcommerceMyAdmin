@@ -268,6 +268,10 @@ class BaseBaseController extends Controller
 		if (!$cache->saved() && $this->estratiDatiGenerali)
 			$this->estratiDatiGenerali($controller, $action);
 		
+		// Modali
+		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
+			$data["modali_frontend"] = $this->m("PagesModel")->getModaliFrontend();
+		
 		Lang::$current = Params::$lang;
 		
 		$this->append($data);
@@ -306,30 +310,32 @@ class BaseBaseController extends Controller
 			))->send();
 		
 		// Modali
-		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
-		{
-			$data["modali_frontend"] = $this->m("PagesModel")->clear()->getQueryClauseProdotti()->where(array(
-				"categories.section"	=>	"modali",
-				"attivo"=>"Y",
-			))->orderBy("pages.id_order desc")->limit(1)->send();
-			
-			// Preparo i cookie
-			foreach ($data["modali_frontend"] as $mod)
-			{
-				$idModale = $mod["pages"]["id_page"];
-				
-				if ($mod["pages"]["giorni_durata_modale"] >= 0)
-				{
-					$tempoModale = 0;
-					
-					if ($mod["pages"]["giorni_durata_modale"] > 0)
-						$tempoModale = time() + $mod["pages"]["giorni_durata_modale"] * 3600 * 24;
-						
-					if (!isset($_COOKIE["modale_".$idModale]))
-						setcookie("modale_".$idModale,$idModale,$tempoModale,"/");
-				}
-			}
-		}
+// 		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
+// 		{
+// 			$data["modali_frontend"] = $this->m("PagesModel")->getModaliFrontend();
+// 			
+// // 			$data["modali_frontend"] = $this->m("PagesModel")->clear()->getQueryClauseProdotti()->where(array(
+// // 				"categories.section"	=>	"modali",
+// // 				"attivo"=>"Y",
+// // 			))->orderBy("pages.id_order desc")->limit(1)->send();
+// // 			
+// // 			// Preparo i cookie
+// // 			foreach ($data["modali_frontend"] as $mod)
+// // 			{
+// // 				$idModale = $mod["pages"]["id_page"];
+// // 				
+// // 				if ($mod["pages"]["giorni_durata_modale"] >= 0)
+// // 				{
+// // 					$tempoModale = 0;
+// // 					
+// // 					if ($mod["pages"]["giorni_durata_modale"] > 0)
+// // 						$tempoModale = time() + $mod["pages"]["giorni_durata_modale"] * 3600 * 24;
+// // 						
+// // 					if (!isset($_COOKIE["modale_".$idModale]))
+// // 						setcookie("modale_".$idModale,$idModale,$tempoModale,"/");
+// // 				}
+// // 			}
+// 		}
 		
 		$data["isHome"] = false;
 		$data['headerClass'] = "";

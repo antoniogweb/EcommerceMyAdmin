@@ -72,8 +72,8 @@
 
 <?php include(tpf("/Elementi/fbk.php"));?>
 
-<?php if ($this->controller == "home" && $this->action == "index" && isset($modali_frontend) && count($modali_frontend) > 0) { ?>
-<?php include(tpf("/Elementi/modali.php"));?>
+<?php if ($this->controller == "home" && $this->action == "index") { ?>
+<?php include(tpf("/Elementi/modali.php",false,false));?>
 <?php } ?>
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
