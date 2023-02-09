@@ -441,7 +441,7 @@ $(document).ready(function(){
 			url: baseUrl + "/combinazioni/salva",
 			cache:false,
 			async: true,
-			dataType: "html",
+			dataType: "json",
 			type: "POST",
 			data: {
 				valori: JSON.stringify(valori)
@@ -450,6 +450,17 @@ $(document).ready(function(){
 				
 				that.find("i").removeClass("fa-spin").removeClass("fa-spinner").addClass("fa-refresh");
 				
+				$(".class_combinazione").css("background-color", "#FFF").css("color", "#555");
+				
+				if (content.length > 0)
+				{
+					alert("ATTENZIONE: le righe evidenziate in rosso non sono state aggiornate perché i codici inseriti sono già stati usati da altri prodotti.");
+					
+					for (var i = 0; i < content.length; i++)
+					{
+						$(".class_combinazione_" + content[i]).css("background-color", "red").css("color", "#FFF");
+					}
+				}
 			}
 		});
 		

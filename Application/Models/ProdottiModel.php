@@ -78,14 +78,52 @@ class ProdottiModel extends PagesModel {
 // 		$this->_popupWhere[] = array();
 	}
 	
+	// Controlla che il codice non sia già stato usato
+	public function checkCodiceUnivoco($id = 0)
+	{
+		if (isset($this->values["codice"]) && $this->values["codice"] && v("controlla_che_il_codice_prodotti_sia_unico"))
+		{
+			$c = new CombinazioniModel();
+			
+			$c->clear()->where(array(
+				"codice"	=>	sanitizeDb($this->values["codice"]),
+			));
+			
+			if ($id)
+				$c->aWhere(array(
+					"ne"	=>	array(
+						"id_page"	=>	(int)$id,
+					),
+				));
+			
+			$numero = $c->rowNumber();
+			
+			if ($numero)
+			{
+				$this->result = false;
+				$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, il codice inserito è già usato da un altro prodotto")."</div><div style='display:none;' rel='hidden_alert_notice'>codice</div>";
+				
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	public function insert()
 	{
-		return parent::insert();
+		if ($this->checkCodiceUnivoco())
+			return parent::insert();
+		
+		return false;
 	}
 	
 	public function update($id = null, $where = null)
 	{
-		return parent::update($id, $where);
+		if ($this->checkCodiceUnivoco($id))
+			return parent::update($id, $where);
+		
+		return false;
 	}
 	
 	// restituisce true se la riga del carrello non è una gift card

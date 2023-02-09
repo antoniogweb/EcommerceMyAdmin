@@ -352,11 +352,14 @@ class PagesController extends BaseController {
 		
 		if (strcmp($this->viewArgs['title'],'tutti') !== 0)
 		{
+			$this->scaffold->model->inner(array("combinazioni"));
+			
 			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
 				$where = array(
 					"OR"	=>	array(
 						"lk" 	=>	array('n!pages.codice' => $this->viewArgs['title']),
 						"AND"	=>	$this->scaffold->model->getWhereSearch($this->viewArgs["title"]),
+						" lk"	=>	array("combinazioni.codice"	=>	$this->viewArgs["title"])
 					),
 				);
 			else
@@ -364,7 +367,8 @@ class PagesController extends BaseController {
 					"OR"	=> array(
 						"lk" => array('n!pages.title' => $this->viewArgs['title']),
 						" lk" => array('n!pages.codice' => $this->viewArgs['title']),
-						)
+						"  lk"	=>	array("combinazioni.codice"	=>	$this->viewArgs["title"])
+					),
 				);
 			
 			$this->scaffold->model->aWhere($where);

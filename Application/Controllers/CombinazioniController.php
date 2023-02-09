@@ -413,6 +413,8 @@ class CombinazioniController extends BaseController
 	
 	public function salva()
 	{
+		$arrayIdsErrore = [];
+		
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		CombinazioniModel::$aggiornaAliasAdInserimento = false;
 		
@@ -464,19 +466,26 @@ class CombinazioniController extends BaseController
 			if (isset($v["mpn"]))
 				$this->m[$this->modelName]->setValue("mpn", $v["mpn"]);
 			
-			if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"] && VariabiliModel::movimenta())
-				$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
-			
-			if ($v["id_cl"])
+			if (CombinazioniModel::checkCodiceUnivoco($v["codice"], $v["id_c"]))
 			{
-				$this->m["CombinazionilistiniModel"]->setValues(array(
-					$campoPrice	=>	$v["prezzo"],
-				));
+				if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"] && VariabiliModel::movimenta())
+					$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
 				
-				if (isset($v["price_scontato"]) && v("gestisci_sconti_combinazioni_separatamente"))
-					$this->m["CombinazionilistiniModel"]->setValue($campoPriceScontato, $v["price_scontato"]);
-				
-				$this->m["CombinazionilistiniModel"]->update($v["id_cl"]);
+				if ($v["id_cl"])
+				{
+					$this->m["CombinazionilistiniModel"]->setValues(array(
+						$campoPrice	=>	$v["prezzo"],
+					));
+					
+					if (isset($v["price_scontato"]) && v("gestisci_sconti_combinazioni_separatamente"))
+						$this->m["CombinazionilistiniModel"]->setValue($campoPriceScontato, $v["price_scontato"]);
+					
+					$this->m["CombinazionilistiniModel"]->update($v["id_cl"]);
+				}
+			}
+			else
+			{
+				$arrayIdsErrore[] = $v["id_c"];
 			}
 			
 			if (isset($v["id_page"]) && !in_array($v["id_page"],$arrayIdPage))
@@ -493,6 +502,8 @@ class CombinazioniController extends BaseController
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
+		
+		echo json_encode($arrayIdsErrore);
 	}
 	
 	public function rendicanonical($idC)

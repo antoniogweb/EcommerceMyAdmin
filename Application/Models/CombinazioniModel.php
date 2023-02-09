@@ -757,7 +757,7 @@ class CombinazioniModel extends GenericModel {
 	{
 		if (!isset($_GET["esporta"]) && !self::isFromLista())
 		{
-			$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='codice' value='".$record["combinazioni"]["codice"]."' /></div>";
+			$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control class_combinazione class_combinazione_".$record["combinazioni"]["id_c"]."' name='codice' value='".$record["combinazioni"]["codice"]."' /></div>";
 			
 			$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("GTIN").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='gtin' value='".$record["combinazioni"]["gtin"]."' /></div>";
 			
@@ -1171,5 +1171,27 @@ class CombinazioniModel extends GenericModel {
 		}
 		
 		return count($arrayTitoli) > 0 ? implode(" ", $arrayTitoli) : "";
+	}
+	
+	// controlla che il codice non sia già stato usato
+	public static function checkCodiceUnivoco($codice, $id)
+	{
+		if (!v("controlla_che_il_codice_prodotti_sia_unico"))
+			return true;
+		
+		$c = new CombinazioniModel();
+		
+		$c->clear()->where(array(
+			"codice"	=>	sanitizeAll($codice),
+		));
+		
+		if ($id)
+			$c->aWhere(array(
+				"ne"	=>	array(
+					"id_c"	=>	(int)$id,
+				),
+			));
+		
+		return !$c->rowNumber();
 	}
 }
