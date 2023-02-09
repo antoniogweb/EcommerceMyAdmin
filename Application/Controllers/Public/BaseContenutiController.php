@@ -799,6 +799,8 @@ class BaseContenutiController extends BaseController
 			$data["pages"] = $this->m('PagesModel')->send();
 		}
 		
+// 		echo $this->m("PagesModel")->getQuery();die();
+		
 		// Uso sottoquery
 		if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
 			$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
@@ -809,8 +811,6 @@ class BaseContenutiController extends BaseController
 		$this->pages = $data["pages"];
 		
 		PagesModel::setPagesStruct($data["pages"]);
-		
-// 		echo $this->m("PagesModel")->getQuery();
 		
 		// Estraggo le fasce
 		if ($firstSection != "prodotti" || v("estrai_fasce_in_categoria_prodotti"))
@@ -1190,7 +1190,7 @@ class BaseContenutiController extends BaseController
 				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
 			case "piuvenduto":
 				if (!v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
-					return "pages.numero_acquisti desc";
+					return "pages.numero_acquisti_pagina desc";
 				else
 					return "pages.numero_acquisti_pagina desc";
 			default:
