@@ -172,7 +172,7 @@ class FattureInCloud extends Gestionale
 				"product_id"=>"0",
 				"code"=>$riga["codice"],
 				"name"=>htmlentitydecode($riga["titolo"]),
-				"measure"=>"N",
+				"measure"=>"Pz",
 				"qty"=>$riga["quantity"],
 				"description"=>$riga["attributi"] ? strip_tags($riga["attributi"]) : "",
 				"category"=>"",
