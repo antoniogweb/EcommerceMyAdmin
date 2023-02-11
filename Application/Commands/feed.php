@@ -24,6 +24,7 @@
 ini_set("memory_limit","-1");
 
 define('APP_CONSOLE', true);
+define('EG','allowed');
 
 $options = getopt(null, array(
 	"modulo::",
@@ -39,13 +40,13 @@ $default = array(
 
 $params = array_merge($default, $options);
 
+include_once("../../config.php");
+define('DOMAIN_NAME',$website_domain_name);
+
 require_once(dirname(__FILE__) . "/../../index.php");
 
 ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
-
-Domain::$publicUrl = str_replace("/admin/","",Url::getFileRoot());
-Domain::$publicUrl .= "/".strtolower($params["lingua"]).Params::$languageCountrySeparator.strtolower($params["nazione"]);
 
 Params::$lang = $params["lingua"];
 Params::$country = $params["nazione"];

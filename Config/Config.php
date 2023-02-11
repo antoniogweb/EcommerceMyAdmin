@@ -37,7 +37,8 @@ define('DEFAULT_CONTROLLER','users');
 define('DEFAULT_ACTION','login');
 
 /*website parameters*/
-define('DOMAIN_NAME',$website_domain_name.'/admin');
+if (!defined('DOMAIN_NAME'))
+	define('DOMAIN_NAME',$website_domain_name.'/admin');
 
 /*type of database.*/
 //it can be: Mysql, Mysqli, PDOMysql, PDOMssql or None (first letter in uppercase)
