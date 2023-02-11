@@ -229,9 +229,22 @@
 								
 								<p>
 									<?php $linguaNazioneUrl = v("attiva_nazione_nell_url") ? "it_it" : "it"; ?>
-									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
 									
-									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?id_page=$id_page&".v("token_feed_google_facebook");?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
+									<?php
+									$linkFeedGoogle = Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?id_page=$id_page&".v("token_feed_google_facebook");
+									
+									if (FeedModel::getModulo("GOOGLEMERCHANT")->isAttivo())
+										$linkFeedGoogle = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("GOOGLEMERCHANT")->getFeedUrl()."&id_page=$id_page";
+									
+									$linkFeedFacebook = Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");
+									
+									if (FeedModel::getModulo("FACEBOOK", true)->isAttivo())
+										$linkFeedFacebook = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("FACEBOOK")->getFeedUrl()."&id_page=$id_page";
+									?>
+									
+									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo $linkFeedFacebook;?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
+									
+									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo $linkFeedGoogle;?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
 								</p>
 							</div>
 						</div>

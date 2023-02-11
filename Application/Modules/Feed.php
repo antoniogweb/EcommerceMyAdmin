@@ -61,15 +61,22 @@ class Feed
 		return 'titolo,attivo,link_a_combinazione,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed';
 	}
 	
+	public function getFeedUrl()
+	{
+		$feedUrl = 'feed/prodotti/'.strtolower($this->params["codice"]).'/';
+		
+		if ($this->params["usa_token_sicurezza"])
+			$feedUrl .= $this->params["token_sicurezza"];
+		
+		return $feedUrl;
+	}
+	
 	public function getRoutesOfFeed()
 	{
 		if (!$this->params["url_feed"])
 			return null;
 		
-		$feedUrl = 'feed/prodotti/'.strtolower($this->params["codice"]).'/';
-		
-		if ($this->params["usa_token_sicurezza"])
-			$feedUrl .= $this->params["token_sicurezza"];
+		$feedUrl = $this->getFeedUrl();
 		
 		return array($this->params["url_feed"] => $feedUrl);
 	}

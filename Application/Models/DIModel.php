@@ -81,12 +81,12 @@ trait DIModel
 		return $objectReflection->newInstanceArgs();
 	}
 	
-	public static function getModulo($codice = null)
+	public static function getModulo($codice = null, $forza = false)
 	{
 		$className = get_called_class();
 		$c = new $className;
 		
-		if (!isset(self::$modulo))
+		if (!isset(self::$modulo) || $forza)
 		{
 			$nomeCampoClasse = $c->getNomeCampoClasse();
 			
