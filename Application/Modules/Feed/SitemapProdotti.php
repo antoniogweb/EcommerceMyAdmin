@@ -32,7 +32,7 @@ class SitemapProdotti extends Feed
 		
 		$p->orderBy("priorita_sitemap desc");
 		
-		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, false, (int)$this->params["tempo_cache"]);
+		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, $this->linkAlleVarianti(), (int)$this->params["tempo_cache"]);
 		
 		$xmlArray = array(
 			"url"	=>	array(),

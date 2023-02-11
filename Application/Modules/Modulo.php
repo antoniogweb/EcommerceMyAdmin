@@ -170,7 +170,7 @@ trait Modulo
 				"combinazioni.id_c"	=>	(int)$idC,
 			));
 		
-		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap,pages.codice,pages.gtin,pages.mpn";
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.dal,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap,pages.codice,pages.gtin,pages.mpn,pages.identifier_exists";
 		
 		if ($combinazioniLinkVeri || $idC)
 		{
@@ -250,10 +250,13 @@ trait Modulo
 				$inPromo = 1;
 			
 			if ($p->inPromozione($r["pages"]["id_page"]))
+			{
+				$inizioPromo = DateTime::createFromFormat('Y-m-d', $r["pages"]["dal"]);
 				$now = DateTime::createFromFormat('Y-m-d', $r["pages"]["al"]);
+			}
 			else
 			{
-				$now = new dateTime();
+				$now = $inizioPromo = new dateTime();
 				$now->modify("+10 days");
 			}
 			
@@ -293,6 +296,7 @@ trait Modulo
 				"link"		=>	Url::getRoot().getUrlAlias((int)$r["pages"]["id_page"], $idC),
 				"prezzo_pieno"	=> number_format($prezzoMinimoIvato,2,".",""),
 				"in_promo"	=>	$inPromo,
+				"data_inizio_promo"		=>	$inizioPromo->format("Y-m-d"),
 				"data_scadenza_promo"	=>	$now->format("Y-m-d"),
 				"prezzo_scontato"	=> number_format($prezzoFinaleIvato,2,".",""),
 				"spese_spedizione"	=>	number_format($speseSpedizione * (1 + ($ivaSpedizione / 100)),2,".",""),
@@ -304,6 +308,7 @@ trait Modulo
 				"id_corriere"	=>	$r["categories"]["id_corriere"],
 				"ultima_modifica"	=>	$r["aggregate"]["ultima_modifica"],
 				"priorita_sitemap"	=>	$r["pages"]["priorita_sitemap"],
+				"identifier_exists"	=>	$r["pages"]["identifier_exists"],
 			);
 			
 			if ($combinazioniLinkVeri)

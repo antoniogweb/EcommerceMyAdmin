@@ -76,4 +76,6 @@ if (FeedModel::getModulo($modulo)->isAttivo())
 	
 	FeedModel::getModulo($modulo)->feedProdotti(null, $params["path"]);
 }
+else
+	echo "Il modulo ".(string)$params["modulo"]." non è attivo";
 

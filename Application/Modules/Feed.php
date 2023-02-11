@@ -51,9 +51,14 @@ class Feed
 		return $nodo;
 	}
 	
+	protected function linkAlleVarianti()
+	{
+		return VariabiliModel::combinazioniLinkVeri() ? (int)$this->params["link_a_combinazione"] : null;
+	}
+	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed';
+		return 'titolo,attivo,link_a_combinazione,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed';
 	}
 	
 	public function getRoutesOfFeed()

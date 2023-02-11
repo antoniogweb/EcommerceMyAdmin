@@ -75,7 +75,9 @@ class OpzioniModel extends GenericModel {
 	{
 		$elenco = explode(";", v("codici_opzioni_gestibili"));
 		
-		$arrayFinale = [];
+		$arrayFinale = array(
+			"CATEGORIE_GOOGLE"	=>	"Categorie Google",
+		);
 		
 		foreach ($elenco as $e)
 		{

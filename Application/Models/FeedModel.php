@@ -57,6 +57,18 @@ class FeedModel extends GenericModel
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'link_a_combinazione'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Elenca tutte le varianti",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se deve mostrare solo le pagine o anche tutte le varianti")."</div>"
+					),
+				),
 				'usa_token_sicurezza'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Accedi al feed solo se conosci il token di sicurezza?",

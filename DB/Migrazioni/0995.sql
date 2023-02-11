@@ -1,0 +1,1 @@
+INSERT INTO `feed` (`id_feed`, `titolo`, `attivo`, `codice`, `modulo`, `id_order`, `token_sicurezza`, `usa_token_sicurezza`, `query_string`, `tempo_cache`, `url_feed`, `link_a_combinazione`) VALUES (NULL, 'Feed Google Merchant', '1', 'GOOGLEMERCHANT', 'GoogleMerchant', '3', '', '1', '', '0', '', '0');

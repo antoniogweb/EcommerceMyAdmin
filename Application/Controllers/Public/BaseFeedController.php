@@ -49,7 +49,17 @@ class BaseFeedController extends Controller
 				
 				IvaModel::getAliquotaEstera();
 				
-				FeedModel::getModulo($modulo)->feedProdotti();
+				$p = null;
+				
+				if (isset($_GET["id_page"]))
+				{
+					$p = new PagesModel();
+					$p->clear()->aWhere(array(
+						"id_page"	=>	(int)$_GET["id_page"],
+					));
+				}
+				
+				FeedModel::getModulo($modulo)->feedProdotti($p);
 			}
 			else
 				$this->responseCode(403);

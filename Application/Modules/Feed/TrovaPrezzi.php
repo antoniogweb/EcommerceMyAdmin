@@ -24,7 +24,7 @@ class TrovaPrezzi extends Feed
 {
 	public function feedProdotti($p = null, $outputFile = null)
 	{
-		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, null, (int)$this->params["tempo_cache"]);
+		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, $this->linkAlleVarianti(), (int)$this->params["tempo_cache"]);
 		
 		$xmlArray = array(
 			"Offers"	=>	array(),
