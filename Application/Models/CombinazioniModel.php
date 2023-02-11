@@ -1060,6 +1060,7 @@ class CombinazioniModel extends GenericModel {
 					"titolo"	=>	$qty > 0 ? "SCARICO" : "CARICO",
 					"valore"	=>	(-1) * $qty,
 					"id_c"		=>	$combinazione["id_c"],
+					"id_page"	=>	$combinazione["id_page"],
 					"id_r"		=>	$idR,
 					"id_o"		=>	!empty($ordine) ? $ordine["orders"]["id_o"] : 0,
 					"stato_ordine"	=>	!empty($ordine) ? $ordine["orders"]["stato"] : "",
