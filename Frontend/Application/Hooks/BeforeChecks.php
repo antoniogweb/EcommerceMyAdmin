@@ -56,7 +56,7 @@ Users_CheckAdmin::$accessesModel = "RegaccessiModel";
 
 // cache metodi
 if (defined('CACHE_METHODS_TO_FILE'))
-	Cache_Functions::getInstance(new Cache_Caller_Cache(true));
+	Cache_Functions::getInstance(new Cache_Caller_Cache(true, VariabiliModel::valore("numero_massimo_file_cache_metodi")));
 
 Cache_Db::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti", "captcha");
 

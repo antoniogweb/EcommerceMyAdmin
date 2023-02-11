@@ -474,6 +474,8 @@ class VariabiliModel extends GenericModel {
 		"query_cache_minuti_tra_periodi"=>	5, // numero di minuti tra un periodo di cache e l'altro
 		## CACHE HTML ##
 		"numero_massimo_file_cache_html"	=>	10000, // numero massimo di file in cache
+		## CACHE METODI ##
+		"numero_massimo_file_cache_metodi"	=>	10000, // numero massimo di file in cache
 		## GIACENZA / MAGAZZINO ##
 		"attiva_giacenza"			=>	0,	// se considerare la giacenza per la messa nel carrello
 		"attiva_campo_giacenza"		=>	0,	// se permette comunque di gestire la giacenza (anche se attiva_giacenza = 0)
