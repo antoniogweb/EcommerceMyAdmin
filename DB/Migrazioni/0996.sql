@@ -1,0 +1,1 @@
+INSERT INTO `feed` (`id_feed`, `titolo`, `attivo`, `codice`, `modulo`, `id_order`, `token_sicurezza`, `usa_token_sicurezza`, `query_string`, `tempo_cache`, `url_feed`, `link_a_combinazione`) VALUES (NULL, 'Feed Facebook', '1', 'FACEBOOK', 'Facebook', '4', '', '1', '', '0', '', '0');
