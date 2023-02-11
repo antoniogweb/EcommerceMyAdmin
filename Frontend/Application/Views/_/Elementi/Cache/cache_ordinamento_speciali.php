@@ -11,5 +11,4 @@ foreach (CategoriesModel::$arrayIdsPagineFiltrate as $elemento => $arrayIdFiltra
 
 $stringaCache .= '$filtriUrlTuttiAltri = '.json_encode($filtriUrlTuttiAltri).';';
 $stringaCache .= '$filtriUrlLocTuttiAltri = '.json_encode($filtriUrlLocTuttiAltri).';';
-$stringaCache .= '$filtriUrlAltriFiltri = '.json_encode($filtriUrlAltriFiltri).';';
-?>
+// $stringaCache .= '$filtriUrlAltriFiltri = '.json_encode($filtriUrlAltriFiltri).';';
