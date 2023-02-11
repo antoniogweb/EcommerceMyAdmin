@@ -21,18 +21,20 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+ini_set("memory_limit","-1");
+
 define('APP_CONSOLE', true);
 
 $options = getopt(null, array(
+	"modulo::",
 	"lingua::",
 	"nazione::",
-	"operazione::",
+	"path::",
 ));
 
 $default = array(
 	"lingua"		=>	"it",
 	"nazione"		=>	"it",
-	"operazione"	=>	"cerca",
 );
 
 $params = array_merge($default, $options);
@@ -40,21 +42,37 @@ $params = array_merge($default, $options);
 require_once(dirname(__FILE__) . "/../../index.php");
 
 ImpostazioniModel::init();
+VariabiliModel::ottieniVariabili();
+
+Domain::$publicUrl = str_replace("/admin/","",Url::getFileRoot());
+Domain::$publicUrl .= "/".strtolower($params["lingua"]).Params::$languageCountrySeparator.strtolower($params["nazione"]);
+
+Params::$lang = $params["lingua"];
+Params::$country = $params["nazione"];
 
 Files_Log::$logFolder = LIBRARY."/Logs";
-$log = Files_Log::getInstance("motori_ricerca");
+$log = Files_Log::getInstance("creazione_feed");
 
-if (MotoriricercaModel::getModulo()->isAttivo())
+if (!isset($params["modulo"]))
 {
-	Params::$lang = $params["lingua"];
-	Params::$country = $params["nazione"];
+	echo "si prega di selezionare il modulo con l'istruzione --modulo=\"<modulo>\"";
+	die();
+}
+
+if (!isset($params["path"]))
+{
+	echo "si prega di selezionare il percorso del file dove salvare il feed con l'istruzione --path=\"<path>\"";
+	die();
+}
+
+$modulo = strtoupper((string)$params["modulo"]);
+
+if (FeedModel::getModulo($modulo)->isAttivo())
+{
+	User::setPostCountryFromUrl();
 	
-// 	print_r($params);
-	if ($params["operazione"] == "invia_oggetti")
-		$res = MotoriricercaModel::getModulo()->inviaProdotti(0, "prodotti_".$params["lingua"]);
-	else if ($params["operazione"] == "svuota_oggetti")
-		$res = MotoriricercaModel::getModulo()->svuotaProdotti("prodotti_".$params["lingua"]);
-		
-	print_r($res);
+	IvaModel::getAliquotaEstera();
+	
+	FeedModel::getModulo($modulo)->feedProdotti(null, $params["path"]);
 }
 

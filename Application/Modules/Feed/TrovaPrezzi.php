@@ -22,7 +22,7 @@
 
 class TrovaPrezzi extends Feed
 {
-	public function feedProdotti($p = null)
+	public function feedProdotti($p = null, $outputFile = null)
 	{
 		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, null, (int)$this->params["tempo_cache"]);
 		
@@ -77,7 +77,7 @@ class TrovaPrezzi extends Feed
 		
 		F::xml($xml, array(
 			"Products"	=>	null,
-		));
+		), $outputFile);
 	}
 	
 	public function tagNameColore()

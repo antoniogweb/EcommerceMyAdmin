@@ -134,7 +134,7 @@ class F
 		return $html;
 	}
 	
-	public static function xml($xml, $wrap = null)
+	public static function xml($xml, $wrap = null, $outputFile = null)
 	{
 		if (!$wrap)
 			$wrap = array(
@@ -143,9 +143,19 @@ class F
 					"version"	=>	"2.0",
 				)
 			);
-		header ("Content-Type:text/xml");
+		
+		ob_start();
 		echo '<?xml version="1.0"?>'."\n";
 		echo wrap($xml, $wrap);
+		$output = ob_get_clean();
+		
+		if (!isset($outputFile))
+		{
+			header ("Content-Type:text/xml");
+			echo $output;
+		}
+		else
+			FilePutContentsAtomic($outputFile, $output);
 	}
 	
 	// Delete ol files in the $path folder having pattern equal to $pattern older than $secs seconds

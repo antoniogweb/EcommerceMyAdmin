@@ -22,7 +22,7 @@
 
 class SitemapProdotti extends Feed
 {
-	public function feedProdotti($p = null)
+	public function feedProdotti($p = null, $outputFile = null)
 	{
 		if (!isset($p))
 		{
@@ -59,6 +59,6 @@ class SitemapProdotti extends Feed
 				"xmlns:xsi"	=>	"http://www.w3.org/2001/XMLSchema-instance",
 				"xsi:schemaLocation"	=>	"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd",
 			),
-		));
+		), $outputFile);
 	}
 }
