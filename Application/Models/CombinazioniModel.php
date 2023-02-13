@@ -32,8 +32,6 @@ class CombinazioniModel extends GenericModel {
 	
 	public static $permettiSempreEliminazione = false;
 	
-	public static $selectValoriColonne = null;
-	
 	public $cart_uid = null;
 	public $colonne = null;
 	public $valori = null;
@@ -157,12 +155,10 @@ class CombinazioniModel extends GenericModel {
 		{
 			$colonne[] = $colonna;
 			$valori[] = $attr->clear()->where(array("id_a"=>(int)$id_a))->orderBy("id_order")->toList("id_av")->send();
-			$valoriTitolo[] = $attr->clear()->select("id_av,titolo")->where(array("id_a"=>(int)$id_a))->orderBy("id_order")->toList("id_av","titolo")->send();
 		}
 		
 		$this->colonne = $colonne;
 		$this->valori = $valori;
-		self::$selectValoriColonne = $valoriTitolo;
 	}
 	
 	public function combinazionePrincipale($idPage)
@@ -457,45 +453,66 @@ class CombinazioniModel extends GenericModel {
 			
 			$combPrincipale = $this->combinazionePrincipale($clean["id_page"]);
 			
-// 			echo "<pre>";
-// 			print_r($val);
-// 			echo "</pre>";
-// 			die();
+			$this->del(null, array(
+				"id_page"	=>	$clean["id_page"]
+			));
 			
-// 			if (count($val) > 0)
-// 			{
-				$this->del(null, array(
-					"id_page"	=>	$clean["id_page"]
-				));
+			CombinazioniModel::$aggiornaAliasAdInserimento = false;
+			
+			foreach ($val as $v)
+			{
+				$this->values = array();
+				$this->values = $v;
+				$this->values["id_page"] = $dettagliPagina["id_page"];
 				
-				CombinazioniModel::$aggiornaAliasAdInserimento = false;
+// 				$this->delFields("id_c");
+				$this->delFields("id_order");
 				
-// 				print_r($val);
+				$this->sanitize();
 				
-				foreach ($val as $v)
-				{
-					$this->values = array();
-					$this->values = $v;
-					$this->values["id_page"] = $dettagliPagina["id_page"];
-					
-	// 				$this->delFields("id_c");
-					$this->delFields("id_order");
-					
-					$this->sanitize();
-					
-					$this->insert();
-// 					print_r($this->values);
-// 					echo $this->notice;
-				}
-// 			}
+				$this->insert();
+			}
 			
 			if (!empty($combPrincipale))
 				PagesModel::$IdCmb = $combPrincipale["id_c"];
 			
 			$this->controlliDopoCreazioneCombinazione($dettagliPagina["id_page"]);
+			
+			// Recupero le combinazioni da ordini, liste regalo o movimentazioni
+			$this->recuperaCombinazioni($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
+	}
+	
+	public function recuperaCombinazioni($idPage)
+	{
+		$cmModel = new CombinazionimovimentiModel();
+		
+		$sql = "select id_c from combinazioni_movimenti where id_page = ? UNION select id_c from righe where id_page = ? UNION select id_c from liste_regalo_pages where id_page = ?";
+		
+		$res = $this->query(array($sql, array((int)$idPage, (int)$idPage, (int)$idPage)));
+		
+		$idCS = $this->getList($res, "aggregate.id_c");
+		
+		$idCS = array_unique($idCS);
+		
+		foreach ($idCS as $idC)
+		{
+			$idC = (int)$idC;
+			
+			if (!$this->clear()->whereId($idC)->rowNumber())
+			{
+				$this->sValues(array(
+					"id_c"		=>	$idC,
+					"id_page"	=>	$idPage,
+					"canonical"	=>	0,
+					"acquistabile"	=>	0,
+				));
+				
+				$this->insert();
+			}
+		}
 	}
 	
 	public function controlliDopoCreazioneCombinazione($idPage)
@@ -1219,7 +1236,7 @@ class CombinazioniModel extends GenericModel {
 		
 		if ($idA)
 		{
-			$select = $av->selectPerFiltro($idA, "id_order");
+			$select = array("0"	=>	"--") + $av->selectPerFiltro($idA, "id_order");
 			return Html_Form::select("id_av",$idAv, $select, "valore_attributo_combinazione valore_attributo_combinazione_$idC form-control", null, "yes");
 		}
 	}

@@ -216,6 +216,12 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Aggiungi";
 		}
 		
+		if (v("attiva_liste_regalo"))
+		{
+			$this->mainFields[] = "linkListeRegaloCrud";
+			$this->mainHead .= ",Liste.";
+		}
+		
 		if (VariabiliModel::movimenta() && !partial() && v("mostra_link_storico_movimentazioni"))
 		{
 			$this->mainFields[] = "linkMovimentiCrud";
