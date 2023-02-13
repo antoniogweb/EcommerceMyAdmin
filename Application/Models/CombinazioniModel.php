@@ -26,6 +26,8 @@ class CombinazioniModel extends GenericModel {
 	
 	use CrudModel;
 	
+	private $arrayIdcRecuperati = array();
+	
 	public static $ricreaCombinazioneQuandoElimini = true;
 	
 	public static $permettiSempreEliminazione = false;
@@ -278,8 +280,6 @@ class CombinazioniModel extends GenericModel {
 		return $temp;
 	}
 	
-	private $arrayIdcRecuperati = array();
-	
 // 	private function aggiungiColonna($temp, $where, $id_page, $dettagliPagina)
 // 	{
 // 		$clean["id_page"] = (int)$id_page;
@@ -456,6 +456,7 @@ class CombinazioniModel extends GenericModel {
 // 			print_r($val);
 // 			echo "</pre>";
 // 			die();
+			
 // 			if (count($val) > 0)
 // 			{
 				$this->del(null, array(
