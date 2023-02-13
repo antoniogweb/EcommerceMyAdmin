@@ -82,6 +82,13 @@ trait CrudModel
 		))->rowNumber())
 			return false;
 		
+		$cmModel = new CombinazionimovimentiModel();
+		
+		if ($cmModel->clear()->where(array(
+			$this->_idFields	=>	(int)$idElemento,
+		))->rowNumber())
+			return false;
+		
 		return true;
 	}
 }

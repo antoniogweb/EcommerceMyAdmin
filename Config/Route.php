@@ -380,6 +380,7 @@ class Route
 		'combinazioni,form',
 		'combinazioni,salva',
 		'combinazioni,rendicanonical',
+		'combinazioni,modificaacquistabile',
 		
 		'combinazionimovimenti,main',
 		

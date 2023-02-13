@@ -466,7 +466,9 @@ class CombinazioniController extends BaseController
 			if (isset($v["mpn"]))
 				$this->m[$this->modelName]->setValue("mpn", $v["mpn"]);
 			
-			if (CombinazioniModel::checkCodiceUnivoco($v["codice"], $v["id_c"]))
+			$idPage = isset($record["id_page"]) ? $record["id_page"] : 0;
+			
+			if (CombinazioniModel::checkCodiceUnivoco($v["codice"], $idPage))
 			{
 				if ($this->m[$this->modelName]->update($v["id_c"]) && isset($v["giacenza"]) && (int)$record["giacenza"] !== (int)$v["giacenza"] && VariabiliModel::movimenta())
 					$this->m[$this->modelName]->movimenta($v["id_c"], ((int)$record["giacenza"] - (int)$v["giacenza"]), 0, 1);
@@ -509,5 +511,24 @@ class CombinazioniController extends BaseController
 	public function rendicanonical($idC)
 	{
 		$this->m[$this->modelName]->rendicanonical($idC);
+	}
+	
+	public function modificaacquistabile($idC, $valore = 1)
+	{
+		$clean["valore"] = (int)$valore;
+		
+		$combinazione =$this->m[$this->modelName]->selectId((int)$idC);
+		
+		if (empty($combinazione))
+			return;
+		
+		if ($clean["valore"] === 0 || $clean["valore"] === 1)
+		{
+			$this->m[$this->modelName]->sValues(array(
+				"acquistabile"	=>	$clean["valore"],
+			));
+			
+			$this->m[$this->modelName]->pUpdate((int)$idC);
+		}
 	}
 }

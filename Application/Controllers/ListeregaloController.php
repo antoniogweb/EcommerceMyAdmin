@@ -26,7 +26,12 @@ class ListeregaloController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'titolo:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+		'titolo:sanitizeAll'=>'tutti',
+		'id_c:sanitizeAll'=>'tutti',
+	);
 	
 	public $tabella = "liste regalo";
 	
@@ -50,8 +55,8 @@ class ListeregaloController extends BaseController
 		$this->shift();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("cliente", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "liste_regalo.data_scadenza", "liste_regalo.attivo");
-		$this->mainHead = "Cliente,Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Scadenza,Attivo";
+		$this->mainFields = array("cliente", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "cleanDateTime", "liste_regalo.data_scadenza", "liste_regalo.attivo");
+		$this->mainHead = "Cliente,Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Creazione,Scadenza,Attivo";
 		
 		$filtri = array("dal","al","titolo");
 		$this->filters = $filtri;
@@ -68,9 +73,16 @@ class ListeregaloController extends BaseController
 					)
 			))
 			->inner(array("tipo", "cliente"))
-			->orderBy("id_lista_regalo desc");
+			->orderBy("liste_regalo.id_lista_regalo desc");
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_scadenza");
+		
+		if ($this->viewArgs["id_c"] != "tutti")
+		{
+			$this->m[$this->modelName]->inner(array("regali"))->aWhere(array(
+				"liste_regalo_pages.id_c"	=>	(int)$this->viewArgs["id_c"],
+			))->groupBy("liste_regalo.id_lista_regalo");
+		}
 		
 		$this->m[$this->modelName]->convert()->save();
 		

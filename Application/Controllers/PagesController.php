@@ -1177,7 +1177,14 @@ class PagesController extends BaseController {
 		
 		$data['numeroAttributi'] = $this->scaffold->model->rowNumber();
 		
-		$resAttributi = $this->m['AttributiModel']->clear()->sWhere(array("id_a not in (select id_a from pages_attributi where id_page = ?)",array($clean['id'])))->orderBy("titolo")->send();
+		$this->m['AttributiModel']->clear()->sWhere(array("id_a not in (select id_a from pages_attributi where id_page = ?)",array($clean['id'])))->orderBy("titolo");
+		
+		if (v("mostra_solo_varianti_articolo"))
+			$this->m["AttributiModel"]->aWhere(array(
+				"id_page"	=>	$clean['id'],
+			));
+		
+		$resAttributi = $this->m['AttributiModel']->send();
 		
 		$data["listaAttributi"] = array();
 		
@@ -1245,6 +1252,22 @@ class PagesController extends BaseController {
 		}
 		
 		$this->h['List']->inverseColProperties = array(
+			array(
+				'class'	=>	'text-right',
+				'width'	=>	'70px',
+			),
+			array(
+				'class'	=>	'text-right',
+				'width'	=>	'70px',
+			),
+			array(
+				'class'	=>	'text-right',
+				'width'	=>	'70px',
+			),
+			array(
+				'class'	=>	'text-right',
+				'width'	=>	'70px',
+			),
 			array(
 				'class'	=>	'text-right',
 				'width'	=>	'70px',
@@ -1317,6 +1340,18 @@ class PagesController extends BaseController {
 		{
 			$this->h['List']->addItem("text",";ordini;");
 			$head .= ",N° Acq.";
+			
+			if (v("attiva_liste_regalo"))
+			{
+				$this->h['List']->addItem("text",";linkListeRegaloCrud;");
+				$head .= ",Liste";
+			}
+			
+			if (VariabiliModel::movimenta() && v("mostra_link_storico_movimentazioni"))
+			{
+				$this->h['List']->addItem("text",";linkMovimentiCrud;");
+				$head .= ",Mov.";
+			}
 		}
 		
 		$this->h['List']->setHead($head);

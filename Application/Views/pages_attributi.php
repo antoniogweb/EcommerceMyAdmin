@@ -77,7 +77,11 @@ $(document).ready(function(){
 			
 			<div class="box">
 				<div class="box-header with-border main">
-					<?php if (PagesModel::variantiModificabili((int)$id_page)) { ?>
+					<!-- show the table -->
+					
+					
+					
+					<?php if (true || PagesModel::variantiModificabili((int)$id_page)) { ?>
 						<a style="margin-bottom:10px;" class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti")?></a>
 						
 						<?php if (count($listaAttributi) > 0) { ?>
@@ -90,21 +94,22 @@ $(document).ready(function(){
 					<?php } else { ?>
 					<div class="callout callout-info"><i class="fa fa-exclamation-triangle"></i> <?php
 					$stringaLista = v("attiva_liste_regalo") ? "o è inserito in qualche lista regalo." : ".";
-					echo gtext("Non è possibile aggiungere o eliminare varianti a questo prodotto in quanto ha già ordini $stringaLista");?></div>
+					echo gtext("Non è possibile aggiungere o eliminare varianti a questo prodotto in quanto ha già ordini o movimentazioni $stringaLista");?></div>
 					<?php } ?>
 					
 					<div class="notice_box">
 						<?php echo $notice;?>
 					</div>
 					
-					<!-- show the table -->
+					<?php if ($numeroAttributi > 0) { ?>
 					<div style="margin-top:10px;" class='recordsBox help_elenco_varianti_associate'>
-						<?php if ($numeroAttributi > 0) { ?>
 						<?php echo $main;?>
-						<?php } else {  ?>
-						<span class="empty_list"><?php echo gtext("Non è stata associata alcuna variante");?></span>
-						<?php } ?>
 					</div>
+					<?php } else {  ?>
+					<div style="margin-top:10px;">
+						<span class="label label-info"><?php echo gtext("Non è stata associata alcuna variante");?></span>
+					</div>
+					<?php } ?>
 
 					<div id="refresh_link"></div>
 				</div>
@@ -116,7 +121,7 @@ $(document).ready(function(){
 						<?php echo $noticeComb;?>
 						<a style="margin-bottom:10px;" class="pull-right iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
 						
-						<?php if ($numeroCombinazioni > 1) { ?>
+						<?php if ($numeroAttributi > 0) { ?>
 						<a style="margin-bottom:10px;margin-right:10px;" class="pull-right link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
 						<?php } ?>
 						

@@ -278,6 +278,27 @@ class CombinazioniModel extends GenericModel {
 		return $temp;
 	}
 	
+	private $arrayIdcRecuperati = array();
+	
+// 	private function aggiungiColonna($temp, $where, $id_page, $dettagliPagina)
+// 	{
+// 		$clean["id_page"] = (int)$id_page;
+// 		
+// 		$t = $this->clear()->where($where)->send();
+// 		if (count($t) > 0)
+// 		{
+// 			if (!ImmaginiModel::g()->imageExists($t[0]["combinazioni"]["immagine"],$clean["id_page"]))
+// 				$t[0]["combinazioni"]["immagine"] = getFirstImage($dettagliPagina["id_page"]);
+// 			
+// 			return $t[0]["combinazioni"];
+// 		}
+// 		else
+// 		{
+// 			$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+// 			return $temp;
+// 		}
+// 	}
+	
 	private function aggiungiColonna($temp, $where, $id_page, $dettagliPagina)
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -288,17 +309,60 @@ class CombinazioniModel extends GenericModel {
 			if (!ImmaginiModel::g()->imageExists($t[0]["combinazioni"]["immagine"],$clean["id_page"]))
 				$t[0]["combinazioni"]["immagine"] = getFirstImage($dettagliPagina["id_page"]);
 			
+			$this->arrayIdcRecuperati[] = $t[0]["combinazioni"]["id_c"];
+			
 			return $t[0]["combinazioni"];
 		}
 		else
 		{
-			$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
-			return $temp;
+			if (count($where) > 1)
+			{
+				$whereVariantiPrec = $where;
+				array_pop($whereVariantiPrec);
+				
+				$t = $this->clear()->where($whereVariantiPrec)->send();
+				
+				if (count($t) > 0)
+				{
+					$tt = $t[0]["combinazioni"];
+					
+					foreach ($temp as $cField => $cValue)
+					{
+						$tt[$cField] = $cValue;
+					}
+					
+					if (in_array($t[0]["combinazioni"]["id_c"], $this->arrayIdcRecuperati))
+					{
+						unset($tt["giacenza"]);
+						unset($tt["canonical"]);
+// 						unset($tt["acquistabile"]);
+						unset($tt["id_c"]);
+					}
+					else
+					{
+						$this->arrayIdcRecuperati[] = $t[0]["combinazioni"]["id_c"];
+					}
+					
+					return $tt;
+				}
+				else
+				{
+					$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+					return $temp;
+				}
+			}
+			else
+			{
+				$temp = $this->aggiungiValoriACombinazione($temp, $dettagliPagina);
+				return $temp;
+			}
 		}
 	}
 	
 	public function creaCombinazioni($id_page)
 	{
+		$this->arrayIdcRecuperati = array();
+		
 		Params::$setValuesConditionsFromDbTableStruct = false;
 
 		$clean["id_page"] = (int)$id_page;
@@ -388,6 +452,10 @@ class CombinazioniModel extends GenericModel {
 			
 			$combPrincipale = $this->combinazionePrincipale($clean["id_page"]);
 			
+// 			echo "<pre>";
+// 			print_r($val);
+// 			echo "</pre>";
+// 			die();
 // 			if (count($val) > 0)
 // 			{
 				$this->del(null, array(
@@ -395,6 +463,8 @@ class CombinazioniModel extends GenericModel {
 				));
 				
 				CombinazioniModel::$aggiornaAliasAdInserimento = false;
+				
+// 				print_r($val);
 				
 				foreach ($val as $v)
 				{
@@ -408,6 +478,8 @@ class CombinazioniModel extends GenericModel {
 					$this->sanitize();
 					
 					$this->insert();
+// 					print_r($this->values);
+// 					echo $this->notice;
 				}
 // 			}
 			
@@ -740,14 +812,6 @@ class CombinazioniModel extends GenericModel {
 			return $record["combinazioni"]["acquistabile"];
 	}
 	
-	public function acquistabileCrudText($record)
-	{
-		if ($record["combinazioni"]["acquistabile"])
-			return "<i class='text text-success fa fa-check'></i>";
-		else
-			return "<i class='text text-danger fa fa-ban'></i>";
-	}
-	
 	public function codiceView($record)
 	{
 		return gtext("SKU").": <b>".$record["combinazioni"]["codice"]."</b><br />\n".gtext("GTIN").": ".$record["combinazioni"]["gtin"]."<br />\n".gtext("MPN").": ".$record["combinazioni"]["mpn"];
@@ -876,6 +940,14 @@ class CombinazioniModel extends GenericModel {
 		$html .= "<a class='iframe label label-primary' href='".Url::getRoot()."prodotti/immagini/".$record["combinazioni"]["id_page"]."?partial=Y&nobuttons=Y&id_cmb=".$record["combinazioni"]["id_c"]."'><small>".gtext("Gestisci")." <i class='fa fa-pencil'></i></small></a>"; 
 		
 		return $html;
+	}
+	
+	public function acquistabileCrudText($record)
+	{
+		if ($record["combinazioni"]["acquistabile"])
+			return "<a class='ajlink text text-success' title='".gtext("Rendi il prodotto NON acquistabile")."' href='".Url::getRoot()."combinazioni/modificaacquistabile/".$record["combinazioni"]["id_c"]."/0'><i class='fa fa-check'></i></a>";
+		else
+			return "<a class='ajlink text text-danger' title='".gtext("Rendi il prodotto acquistabile")."' href='".Url::getRoot()."combinazioni/modificaacquistabile/".$record["combinazioni"]["id_c"]."/1'><i class='fa fa-ban'></i></a>";
 	}
 	
 	public function canonical($record)
@@ -1125,6 +1197,32 @@ class CombinazioniModel extends GenericModel {
 		return "";
 	}
 	
+	public function linkListeRegaloCrud($record)
+	{
+		$idC = (int)$record[$this->_tables]["id_c"];
+		
+		$lrpModel = new ListeregalopagesModel();
+		
+		$res = $lrpModel->clear()->select("sum(liste_regalo_pages.quantity) as SOMMA")->where(array(
+			"id_c"	=>	$idC,
+// 			"ne" => array(
+// 				"orders.stato"	=>	"deleted"
+// 			),
+		))->send();
+		
+		$lrpModel = new ListeregalopagesModel();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)
+			return $res[0]["aggregate"]["SOMMA"]." <a title='Elenco liste dove è inserito il prodotto' class='iframe' href='".Url::getRoot()."listeregalo/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-gift'></i></a>";
+		
+// 		if ($lrpModel->clear()->where(array(
+// 			"id_c"	=>	(int)$record["combinazioni"]["id_c"],
+// 		))->rowNumber())
+// 			return "<a title='".gtext("Elenco liste regalo prodotto")."' class='iframe' href='".Url::getRoot()."listeregalo/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-gift'></i></a>";
+		
+		return "";
+	}
+	
 	public function deletable($idC)
 	{
 		if (CombinazioniModel::$permettiSempreEliminazione)
@@ -1189,7 +1287,7 @@ class CombinazioniModel extends GenericModel {
 		if ($id)
 			$c->aWhere(array(
 				"ne"	=>	array(
-					"id_c"	=>	(int)$id,
+					"id_page"	=>	(int)$id,
 				),
 			));
 		

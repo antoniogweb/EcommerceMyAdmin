@@ -80,6 +80,11 @@ class AttributiController extends BaseController {
 			);
 			
 			$this->m[$this->modelName]->sWhere(array("id_a not in (select id_a from pages_attributi where id_page = ?)",array((int)$this->viewArgs["id_page"])));
+			
+			if (v("mostra_solo_varianti_articolo"))
+				$this->m[$this->modelName]->aWhere(array(
+					"id_page"	=>	(int)$this->viewArgs["id_page"],
+				));
 		}
 		
 		$this->m[$this->modelName]->save();

@@ -92,10 +92,10 @@ class PagesattributiModel extends GenericModel {
 		$clean["id_page"] = (int)$this->values["id_page"];
 		$clean["id_a"] = (int)$this->values["id_a"];
 		
-		if (!PagesModel::variantiModificabili($clean['id_page']))
-			$this->notice = "<div class='alert'>".gtext("Non è possibile aggiungere una variante ad un prodotto che ha già ordini")."</div>";
-		else
-		{
+// 		if (!PagesModel::variantiModificabili($clean['id_page']))
+// 			$this->notice = "<div class='alert'>".gtext("Non è possibile aggiungere una variante ad un prodotto che ha già ordini")."</div>";
+// 		else
+// 		{
 			$res = $this->clear()->where(array("id_page"=>$clean["id_page"],"id_a"=>$clean["id_a"]))->send();
 			
 			//controllo che l'attributo non sia già stato associato
@@ -138,7 +138,7 @@ class PagesattributiModel extends GenericModel {
 					$this->notice = "<div class='alert'>Questo attributo non può essere associato perché non contiene alcun valore</div>";
 				}
 			}
-		}
+// 		}
 		
 		return false;
 	}
