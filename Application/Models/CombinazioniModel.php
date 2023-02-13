@@ -32,6 +32,8 @@ class CombinazioniModel extends GenericModel {
 	
 	public static $permettiSempreEliminazione = false;
 	
+	public static $selectValoriColonne = null;
+	
 	public $cart_uid = null;
 	public $colonne = null;
 	public $valori = null;
@@ -149,15 +151,18 @@ class CombinazioniModel extends GenericModel {
 			
 		$colonne = array();
 		$valori = array();
+		$valoriTitolo = array();
 		
 		foreach ($attrCol as $id_a => $colonna)
 		{
 			$colonne[] = $colonna;
 			$valori[] = $attr->clear()->where(array("id_a"=>(int)$id_a))->orderBy("id_order")->toList("id_av")->send();
+			$valoriTitolo[] = $attr->clear()->select("id_av,titolo")->where(array("id_a"=>(int)$id_a))->orderBy("id_order")->toList("id_av","titolo")->send();
 		}
 		
 		$this->colonne = $colonne;
 		$this->valori = $valori;
+		self::$selectValoriColonne = $valoriTitolo;
 	}
 	
 	public function combinazionePrincipale($idPage)
@@ -1186,6 +1191,79 @@ class CombinazioniModel extends GenericModel {
 		return "";
 	}
 	
+	public function idCombCrud($record)
+	{
+		$html = $record["combinazioni"]["id_c"];
+		
+		$html .= "<input type='hidden' name='id_c' value='".$record["combinazioni"]["id_c"]."' />";
+		
+		return $html;
+	}
+	
+	public function selectValoreAttributoCrud($idC, $col)
+	{
+		$record = $this->selectId((int)$idC);
+		
+		if (empty($record))
+			return "";
+		
+		$av = new AttributivaloriModel();
+		$pa = new PagesattributiModel();
+		
+		$idA = $pa->clear()->where(array(
+			"id_page"	=>	(int)$record["id_page"],
+			"colonna"	=>	sanitizeDb($col),
+		))->field("id_a");
+		
+		$idAv = $record[$col];
+		
+		if ($idA)
+		{
+			$select = $av->selectPerFiltro($idA, "id_order");
+			return Html_Form::select("id_av",$idAv, $select, "valore_attributo_combinazione valore_attributo_combinazione_$idC form-control", null, "yes");
+		}
+	}
+	
+	public function selectValoreAttributoCrudcol_1($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_1");
+	}
+	
+	public function selectValoreAttributoCrudcol_2($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_2");
+	}
+	
+	public function selectValoreAttributoCrudcol_3($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_3");
+	}
+	
+	public function selectValoreAttributoCrudcol_4($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_4");
+	}
+	
+	public function selectValoreAttributoCrudcol_5($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_5");
+	}
+	
+	public function selectValoreAttributoCrudcol_6($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_6");
+	}
+	
+	public function selectValoreAttributoCrudcol_7($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_7");
+	}
+	
+	public function selectValoreAttributoCrudcol_8($idC)
+	{
+		return $this->selectValoreAttributoCrud($idC, "col_8");
+	}
+	
 	public function linkMovimentiCrud($record)
 	{
 		$cmModel = new CombinazionimovimentiModel();
@@ -1206,20 +1284,12 @@ class CombinazioniModel extends GenericModel {
 		
 		$res = $lrpModel->clear()->select("sum(liste_regalo_pages.quantity) as SOMMA")->where(array(
 			"id_c"	=>	$idC,
-// 			"ne" => array(
-// 				"orders.stato"	=>	"deleted"
-// 			),
 		))->send();
 		
 		$lrpModel = new ListeregalopagesModel();
 		
 		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)
 			return $res[0]["aggregate"]["SOMMA"]." <a title='Elenco liste dove è inserito il prodotto' class='iframe' href='".Url::getRoot()."listeregalo/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-gift'></i></a>";
-		
-// 		if ($lrpModel->clear()->where(array(
-// 			"id_c"	=>	(int)$record["combinazioni"]["id_c"],
-// 		))->rowNumber())
-// 			return "<a title='".gtext("Elenco liste regalo prodotto")."' class='iframe' href='".Url::getRoot()."listeregalo/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-gift'></i></a>";
 		
 		return "";
 	}

@@ -1251,6 +1251,8 @@ class PagesController extends BaseController {
 			);
 		}
 		
+		$this->h['List']->addItem("text",";idCombCrud;");
+		
 		$this->h['List']->inverseColProperties = array(
 			array(
 				'class'	=>	'text-right',
@@ -1274,9 +1276,14 @@ class PagesController extends BaseController {
 			),
 		);
 		
+		$indiceCol = 0;
 		foreach ($this->m['CombinazioniModel']->colonne as $col)
 		{
-			$this->h['List']->addItem("text",";AttributivaloriModel.getName|combinazioni.$col;");
+			$metodoNomeAttributo = v("permetti_modifica_attributi_combinazioni") ? ";CombinazioniModel.selectValoreAttributoCrud$col|combinazioni.id_c;" : ";AttributivaloriModel.getName|combinazioni.$col;";
+			
+			$this->h['List']->addItem("text",$metodoNomeAttributo);
+			
+			$indiceCol++;
 		}
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;codiceView;</span>");
@@ -1297,11 +1304,11 @@ class PagesController extends BaseController {
 // 		$this->h['List']->addItem('delForm','pages/attributi/'.$clean['id'],';combinazioni.id_c;');
 		
 		if (v("immagine_in_varianti"))
-			$head = "Immagine";
+			$head = "Immagine,ID";
 		else if (v("immagini_separate_per_variante"))
-			$head = "Immagini";
+			$head = "Immagini,ID";
 		else
-			$head = "";
+			$head = "ID";
 		
 		foreach ($colonne as $col)
 		{

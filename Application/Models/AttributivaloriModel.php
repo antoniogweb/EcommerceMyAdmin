@@ -108,11 +108,11 @@ class AttributivaloriModel extends GenericModel {
 	}
 	
 	// Restituisce un array per la tendina del filtro
-	public function selectPerFiltro($idA)
+	public function selectPerFiltro($idA, $orderBy = "titolo")
 	{
 		return $this->clear()->where(array(
 			"id_a"	=>	(int)$idA,
-		))->orderBy("titolo")->toList("id_av","titolo")->send();
+		))->orderBy($orderBy)->toList("id_av","titolo")->send();
 	}
 	
 	//get the name of the attribute from the id

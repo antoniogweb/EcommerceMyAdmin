@@ -488,6 +488,7 @@ class VariabiliModel extends GenericModel {
 		"classe_variante_radio"		=>	"",
 		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE
 		"mostra_solo_varianti_articolo"	=>	0, // se impostato su 1, nella pagina del prodotto elenca solo le varianti del prodotto
+		"permetti_modifica_attributi_combinazioni"	=>	0, // se impostato su 1, permette di modificare il valore degli attributi per ogni combinazione
 		## GOOGLE ##
 		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
 		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads

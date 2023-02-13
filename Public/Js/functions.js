@@ -379,12 +379,74 @@ $(document).ready(function(){
 		
 	});
 	
-	
-	
 	$( ".data_field,.date_input" ).datepicker( {
 		dateFormat: dataFormat
 	} );
 	
+	$("body").on("change", ".valore_attributo_combinazione", function(e){
+		
+		$(".btn_modifica_attributi").css("display","inline-block");
+		
+	});
+	
+	$("body").on("click", ".btn_modifica_attributi", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-refresh").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$(".lista_combinazioni tr.listRow").each(function(){
+			
+			var id_c = $(this).find("[name='id_c']").val();
+			
+			var indice = 0;
+			
+			var temp = {
+				id_c : id_c,
+				valori: [],
+			};
+			
+			$(this).find(".valore_attributo_combinazione").each(function(){
+				
+				indice++;
+				
+				temp.valori.push($(this).val());
+			});
+			
+			valori.push(temp);
+		});
+		
+		$.ajaxQueue({
+			url: baseUrl + "/combinazioni/modificaattributicombinazioni",
+			cache:false,
+			async: true,
+			dataType: "json",
+			type: "POST",
+			data: {
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				
+				that.find("i").removeClass("fa-spin").removeClass("fa-spinner").addClass("fa-refresh");
+				
+				$(".valore_attributo_combinazione").css("background-color", "#FFF").css("color", "#555");
+				
+				if (content.length > 0)
+				{
+					alert("ATTENZIONE: le righe evidenziate in rosso non sono state aggiornate perché tali combinazioni sono già presenti.");
+					
+					for (var i = 0; i < content.length; i++)
+					{
+						$(".valore_attributo_combinazione_" + content[i]).css("background-color", "red").css("color", "#FFF");
+					}
+				}
+			}
+		});
+	});
 	
 	$("body").on("click", ".save_combinazioni", function(e){
 		

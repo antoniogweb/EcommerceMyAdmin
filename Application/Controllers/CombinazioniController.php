@@ -411,6 +411,68 @@ class CombinazioniController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
+	public function modificaattributicombinazioni()
+	{
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$valori = $this->request->post("valori","[]");
+		
+		$valori = json_decode($valori, true);
+		
+		$arrayMd5 = [];
+		$arrayIdsErrore = [];
+		
+		foreach ($valori as $v)
+		{
+			if (isset($v["id_c"]) && isset($v["valori"]) && is_array($v["valori"]))
+			{
+				$md5 = md5(implode("-",$v["valori"]));
+				
+				if (!in_array($md5, $arrayMd5))
+					$arrayMd5[] = $md5;
+				else
+					$arrayIdsErrore[] = $v["id_c"];
+			}
+		}
+		
+		if ((int)count($arrayIdsErrore) === 0)
+		{
+			foreach ($valori as $v)
+			{
+				if (isset($v["id_c"]) && isset($v["valori"]) && is_array($v["valori"]))
+				{
+					if (v("usa_transactions"))
+						$record = $this->m[$this->modelName]->whereId((int)$v["id_c"])->forUpdate()->record();
+					else
+						$record = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
+					
+					if (!empty($record))
+					{
+						$this->m[$this->modelName]->sValues(array());
+						
+						$col = 1;
+						foreach ($v["valori"] as $idAv)
+						{
+							$this->m[$this->modelName]->setValue("col_$col", $idAv);
+							
+							$col++;
+						}
+						
+						$this->m[$this->modelName]->pUpdate($record["id_c"]);
+					}
+				}
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+		
+		echo json_encode($arrayIdsErrore);
+	}
+	
 	public function salva()
 	{
 		$arrayIdsErrore = [];

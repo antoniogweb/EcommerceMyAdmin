@@ -77,10 +77,6 @@ $(document).ready(function(){
 			
 			<div class="box">
 				<div class="box-header with-border main">
-					<!-- show the table -->
-					
-					
-					
 					<?php if (true || PagesModel::variantiModificabili((int)$id_page)) { ?>
 						<a style="margin-bottom:10px;" class="iframe btn btn-success pull-right" href="<?php echo $this->baseUrl."/attributi/main";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci varianti")?></a>
 						
@@ -102,6 +98,7 @@ $(document).ready(function(){
 					</div>
 					
 					<?php if ($numeroAttributi > 0) { ?>
+					<!-- show the table -->
 					<div style="margin-top:10px;" class='recordsBox help_elenco_varianti_associate'>
 						<?php echo $main;?>
 					</div>
@@ -119,13 +116,18 @@ $(document).ready(function(){
 				<div class="box-header with-border main">
 					<div class="box_lista_combinazioni help_elenco_combinazioni">
 						<?php echo $noticeComb;?>
-						<a style="margin-bottom:10px;" class="pull-right iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> Gestisci combinazioni</a>
+						
+						<a style="margin-bottom:10px;" class="pull-right iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> <?php echo gtext("Gestisci combinazioni");?></a>
 						
 						<?php if ($numeroAttributi > 0) { ?>
-						<a style="margin-bottom:10px;margin-right:10px;" class="pull-right link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> Aggiorna combinazioni</a>
+						<a style="margin-bottom:10px;margin-right:10px;" class="pull-right link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> <?php echo gtext("Aggiorna combinazioni");?></a>
 						<?php } ?>
 						
-						<div id="form_opzioni"><small><b><?php echo gtext("Combinazioni di questo prodotto");?></b></small></div>
+						<a style="margin-bottom:10px;margin-right:10px;display:none;" class="pull-right btn btn-success btn_modifica_attributi help_salva_combinazioni" href="#"><i class="fa fa-save"></i> <?php echo gtext("Salva combinazioni");?></a>
+						
+						<div id="form_opzioni">
+							<b><?php echo gtext("Combinazioni di questo prodotto");?></b>
+						</div>
 						
 						<div class="lista_combinazioni">
 						<?php if ($numeroCombinazioni > 0) { ?>
