@@ -444,6 +444,8 @@ class CombinazioniController extends BaseController
 			}
 		}
 		
+		$arrayIdPage = array();
+		
 		if ((int)count($arrayIdsErrore) === 0)
 		{
 			foreach ($valori as $v)
@@ -468,6 +470,8 @@ class CombinazioniController extends BaseController
 						}
 						
 						$this->m[$this->modelName]->pUpdate($record["id_c"]);
+						
+						$arrayIdPage[] = (int)$record["id_page"];
 					}
 				}
 			}
@@ -475,6 +479,13 @@ class CombinazioniController extends BaseController
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
+		
+		// Genero gli alias di tutte le combinazioni coinvolte
+		// Aggiorno i prezzi delle combinazioni
+		foreach ($arrayIdPage as $idPage)
+		{
+			$this->m[$this->modelName]->aggiornaAlias((int)$idPage);
+		}
 		
 		echo json_encode($arrayIdsErrore);
 	}
