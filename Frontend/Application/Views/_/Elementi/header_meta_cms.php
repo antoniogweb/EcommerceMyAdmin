@@ -5,7 +5,7 @@
 
 <?php
 $stringaCache = 'PagesModel::$IdCombinazione = '.(int)PagesModel::$IdCombinazione.';';
-$stringaCache .= '$richSnippet = PagesModel::getRichSnippetPage('.(int)$idPaginaPerTracking.');';
+$stringaCache .= '$richSnippet = PagesModel::getRichSnippetPage('.(int)PagesModel::$currentIdPage.');';
 include(tpf("Elementi/header_rich_snippet.php", false, false, $stringaCache));?>
 
 <?php if (isset($tagCanonical)) { ?>
