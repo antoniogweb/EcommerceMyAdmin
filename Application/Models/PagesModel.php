@@ -4259,4 +4259,28 @@ class PagesModel extends GenericModel {
 		
 		return $modali_frontend;
 	}
+	
+	// Dati usati dal file di view header_tracking_data nel caso di cache HTML attiva
+	public static function getDataPerMeta($idPage, $idC = 0)
+	{
+		$p = new PagesModel();
+		
+		$p->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->addJoinTraduzione(null, "contenuti_tradotti", false)->inner(array("combinazioni"))->select("pages.title,contenuti_tradotti.title,combinazioni.codice,pages.codice,pages.id_page,pages.codice_js,combinazioni.price")->limit(1);
+		
+		if ($idC)
+			$p->aWhere(array(
+				"combinazioni.id_c"	=>	(int)$idC,
+			));
+		
+		$pages = $p->send();
+		
+		if (count($pages) > 0)
+		{
+			$pages[0]["pages"]["codice"] = $pages[0]["combinazioni"]["codice"];
+		}
+		
+		return $pages;
+	}
 }

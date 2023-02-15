@@ -2,9 +2,21 @@
 <!DOCTYPE html>
 <html lang="<?php echo Params::$lang;?>">
    <head>
-		<?php include(tpf("/Elementi/header_tracking_data.php"));?>
+		<?php
+		$idPaginaPerTracking = isset($isPage) ? (int)PagesModel::$currentIdPage : 0;
 		
-		<?php include(tpf("/Elementi/gtm.php"));?>
+		$stringaCacheMeta = '$idPaginaPerTracking = '.$idPaginaPerTracking.';';
+		$stringaCacheMeta .= 'PagesModel::$IdCombinazione = '.(isset($isPage) ? (int)PagesModel::$IdCombinazione : 0).';';
+		
+		if (isset($isPage))
+			$stringaCacheMeta .= '$isPage = true;';
+		
+		if (isset($pages))
+			$pagesMeta = $pages;
+		
+		include(tpf("/Elementi/header_tracking_data.php", false, false, $stringaCacheMeta));?>
+		
+		<?php include(tpf("/Elementi/gtm.php", false, false,));?>
 		
 		<?php include(tpf("/Elementi/pixel.php"));?>
 		
@@ -14,12 +26,12 @@
 		
 		<?php include(tpf("/Elementi/header_js.php"));?>
 		
-		<?php include(tpf("/Elementi/fbk.php"));?>
+		<?php include(tpf("/Elementi/fbk.php", false, false, $stringaCacheMeta));?>
    </head>
    <body>
 		<?php include(tpf("/Elementi/tendina_caricamento.php"));?>
 		
-		<?php include(tpf("/Elementi/gtm_no_script.php"));?>
+		<?php include(tpf("/Elementi/gtm_no_script.php", false, false));?>
 		
 		<?php include(tpf("/Elementi/pixel_no_script.php"));?>
 		

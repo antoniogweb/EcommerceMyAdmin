@@ -70,7 +70,7 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-nstslider-master/dist/';?>jquery.nstSlider.min.js"></script>
 <?php } ?>
 
-<?php include(tpf("/Elementi/fbk.php"));?>
+<?php include(tpf("/Elementi/fbk.php",false, false, $stringaCacheMeta));?>
 
 <?php if ($this->controller == "home" && $this->action == "index") { ?>
 <?php include(tpf("/Elementi/modali.php",false,false));?>
