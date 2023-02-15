@@ -661,7 +661,9 @@ class BaseBaseController extends Controller
 		
 		if (!v("ecommerce_attivo"))
 		{
-			$this->append($data);
+			if (isset($data))
+				$this->append($data);
+			
 			return;
 		}
 		
