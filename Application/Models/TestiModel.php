@@ -53,7 +53,7 @@ class TestiModel extends GenericModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif,svg',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
@@ -70,7 +70,7 @@ class TestiModel extends GenericModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
