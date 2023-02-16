@@ -22,25 +22,6 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class GalleryModel extends PagesModel {
+class GallerycatController extends CategoriesController {
 	
-	public $hModelName = "GallerycatModel";
-	
-	public function setFilters() {}
-	
-	public function insert()
-	{
-		if (!isset($this->values["alias"]) || !$this->values["alias"])
-			$this->values["alias"] = "";
-		
-		return parent::insert();
-	}
-	
-	public function update($id = null, $where = null)
-	{
-		if (!isset($this->values["alias"]) || !$this->values["alias"])
-			$this->values["alias"] = "";
-		
-		return parent::update($id, $where);
-	}
 }

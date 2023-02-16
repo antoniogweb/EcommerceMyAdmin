@@ -62,6 +62,15 @@
 							</div>
 						</div>
 						
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								Categoria
+							</div>
+							<div class="panel-body">
+								<?php echo $form["id_c"];?>
+							</div>
+						</div>
+						
 						<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 							<div class="panel panel-info">
 								<div class="panel-heading">

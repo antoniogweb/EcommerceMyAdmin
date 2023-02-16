@@ -57,8 +57,9 @@
 <?php if (v("ecommerce_attivo")) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cart.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 <?php } ?>
-
+<?php if (!isset($skipUikitIcons)) { ?>
 <script defer src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
+<?php } ?>
 <?php if (!isset($skipIcheck)) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <?php } ?>

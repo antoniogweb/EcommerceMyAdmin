@@ -42,6 +42,9 @@ class EventiController extends GenericsectionController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
+		$filtroCategoria = array("tutti" => EventicatModel::g(false)->getTitoloCategoriaPadreSezione()) + EventicatModel::g(false)->buildSelect(null,false);
+		$this->filters = array(null,null,'title',array("id_c",null,$filtroCategoria),null,null,array("attivo",null,SlideModel::$YN));
+		
 		$this->orderBy = "pages.data_inizio_evento desc, pages.ora_inizio_evento, pages.data_fine_evento desc, pages.ora_fine_evento";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Data inizio,Data fine,Pubblicato?';

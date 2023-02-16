@@ -386,6 +386,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_gallery"			=>	0, // Attiva la sezione gallery
 		"mostra_immagini_in_gallery"			=>	0, // Se attivare la scheda immagini nella gallery
 		"attiva_video_in_gallery"			=>	0, // Se attivare il campo video in gallery
+		"attiva_categoria_in_gallery"		=>	0, // Se attivare la categoria nella gallery
 		## MODULO CONTATTI ##
 // 		"redirect_pagina_dopo_invio_se_prodotto"	=>	0, // se attivo, l'utente viene reindirizzato alla pagina del prodotto dopo l'invio
 		"testo_errori_form"			=>	"Si prega di controllare i campi evidenziati", // testo quando ci sono errori nel form contatti

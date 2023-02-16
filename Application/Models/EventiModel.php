@@ -26,27 +26,7 @@ class EventiModel extends PagesModel {
 	
 	public $hModelName = "EventicatModel";
 	
-	public function setFilters()
-	{
-		$this->_popupItemNames = array(
-			'attivo'	=>	'attivo',
-			'id_c'	=>	'id_c',
-		);
-
-		$this->_popupLabels = array(
-			'attivo'	=>	'PUBBLICATO?',
-			'id_c'	=>	'CATEGORIA',
-			'in_evidenza'	=>	'IN EVIDENZA?',
-		);
-
-		$this->_popupFunctions = array(
-			'attivo'=>	'getYesNo',
-			'id_c'	=>	'getCatNameForFilters',
-		);
-		
-		if (isset($this->hModel->section))
-			$this->_popupWhere["id_c"] = $this->hModel->getChildrenFilterWhere();
-	}
+	public function setFilters() {}
 	
 	public static function estremiEvento($id)
 	{

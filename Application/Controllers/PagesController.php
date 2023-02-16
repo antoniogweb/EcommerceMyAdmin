@@ -352,7 +352,7 @@ class PagesController extends BaseController {
 		
 		if (strcmp($this->viewArgs['title'],'tutti') !== 0)
 		{
-			$this->scaffold->model->inner(array("combinazioni"));
+			$this->scaffold->model->left(array("combinazioni"));
 			
 			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
 				$where = array(
@@ -426,7 +426,7 @@ class PagesController extends BaseController {
 			if (strcmp($this->viewArgs['id_c'],'1') === 0 or (!is_array($sId) and strcmp($this->viewArgs['id_c'],$sId) === 0))
 			{
 // 				$sWhere = "id_c in (".implode(",",$children).")";
-				$sWhere = "id_c in (".$this->scaffold->model->db->placeholdersFromArray($children).")";
+				$sWhere = "id_c in (".$this->scaffold->model->placeholdersFromArray($children).")";
 				$bindedValuesIdC = $children;
 			}
 			else

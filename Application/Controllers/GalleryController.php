@@ -34,14 +34,18 @@ class GalleryController extends GenericsectionController {
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			'PagesModel.categoriesS|pages.id_page',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,description,immagine";
+		$filtroCategoria = array("tutti" => GallerycatModel::g(false)->getTitoloCategoriaPadreSezione()) + GallerycatModel::g(false)->buildSelect(null,false);
+		$this->filters = array(null,null,"title",array("id_c",null,$filtroCategoria),array("attivo",null,SlideModel::$YN));
+		
+		$this->queryFields = "title,attivo,description,immagine,id_c";
 		
 		if (v("attiva_video_in_gallery"))
 			$this->queryFields .= ",video";

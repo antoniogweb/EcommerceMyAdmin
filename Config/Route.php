@@ -491,6 +491,11 @@ class Route
 		'gallery,meta',
 		'gallery,immagini',
 		
+		'gallerycat,main',
+		'gallerycat,form',
+		'gallerycat,meta',
+		'gallerycat,ordina',
+		
 		'icone,main',
 		'icone,form',
 		'icone,move',
