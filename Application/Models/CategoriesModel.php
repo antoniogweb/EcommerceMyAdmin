@@ -103,7 +103,7 @@ class CategoriesModel extends HierarchicalModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
@@ -120,7 +120,7 @@ class CategoriesModel extends HierarchicalModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
@@ -137,7 +137,7 @@ class CategoriesModel extends HierarchicalModel {
 				"allowedExtensions"	=>	'png,jpg,jpeg,gif',
 				'allowedMimeTypes'	=>	'',
 				"createImage"	=>	false,
-				"maxFileSize"	=>	3000000,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
 // 				"clean_field"	=>	"clean_immagine",
 				"Content-Disposition"	=>	"inline",
 				"thumb"	=> array(
