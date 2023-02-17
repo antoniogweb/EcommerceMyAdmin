@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="<?php echo Params::$lang;?>" class="uk-height-1-1" uk-height-viewport>
    <head>
+		<?php include(tpf("/Elementi/header_css_admin.php"));?>
 		<?php include(tpf("/Elementi/header_css_cms.php"));?>
 		<style>
 			#right-col {
