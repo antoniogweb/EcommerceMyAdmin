@@ -4160,6 +4160,7 @@ class PagesModel extends GenericModel {
 			->aWhere(array(
 				$campo	=>	"Y",
 			))
+			->addWhereAttivo()
 			->addJoinTraduzionePagina()
 			->addWhereCategoria(CategoriesModel::$idShop)
 			->send(), v("numero_in_evidenza")));
