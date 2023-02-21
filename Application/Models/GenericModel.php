@@ -67,6 +67,7 @@ class GenericModel extends Model_Tree
 	public $usingApi = false;
 	public $campoTitolo = "titolo";
 	public $campoValore = "valore";
+	public $metodoPerTitolo = null;
 	
 	public $uploadFields = array();
 	public $lId = null;
@@ -1678,19 +1679,30 @@ class GenericModel extends Model_Tree
 		}
     }
     
-    public function selectUtenti($id = 0)
+    public function selectUtenti($id = 0, $soloClienteSelezionato = false)
     {
 		$ru = new RegusersModel();
 		
-		$res = $ru->clear()
+		$ru->clear()
 			->select("id_user,username,nome,cognome,ragione_sociale,tipo_cliente")
-			->where(array(
+			->orderBy("deleted,nome,cognome,ragione_sociale,email");
+		
+		if ($soloClienteSelezionato)
+			$ru->where(array(
+				"OR"	=>	array(
+					"id_user"		=>	(int)$id,
+					" id_user"	=>	isset($_POST["id_user"]) ? (int)$_POST["id_user"] : "-1",
+				),
+			));
+		else
+			$ru->where(array(
 				"OR"	=>	array(
 					"id_user"	=>	(int)$id,
 					"deleted"	=>	"no",
 				),
-			))
-			->orderBy("deleted,nome,cognome,ragione_sociale,email")->send(false);
+			));
+		
+		$res = $ru->send(false);
 		
 		$select = array();
 		

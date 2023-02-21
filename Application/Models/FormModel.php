@@ -37,7 +37,7 @@ class FormModel extends GenericModel {
 		
 		$arrayAnonimo = (v("permetti_acquisto_anonimo") || ($id && !$idUser)) ? array("0" => gtext("-- cliente ospite --")) : array();
 		
-		$opzioniIdUser = $arrayAnonimo + $this->selectUtenti($idUser);
+		$opzioniIdUser = $arrayAnonimo + $this->selectUtenti($idUser, v("utilizza_ricerca_ajax_su_select_2_clienti"));
 		
 		$opzioniIdSpedizione = array("0" => gtext("-- non specificato --")) + $this->getTendinaIndirizzi($idUser);
 		
@@ -208,7 +208,7 @@ class FormModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					'entryAttributes'	=>	array(
-						"select2"	=>	"",
+						"select2"	=>	VariabiliModel::getUrlAjaxClienti(),
 					),
 					'wrap'	=>	array(null,null,"$linkAggiungi<div>","</div>"),
 				),

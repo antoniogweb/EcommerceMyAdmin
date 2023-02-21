@@ -340,6 +340,7 @@ trait BaseCrudController
 				$tableName = $this->scaffold->model->table();
 				$campoTitolo = $this->scaffold->model->campoTitolo;
 				$campoValore = $this->scaffold->model->campoValore;
+				$metodoPerTitolo = $this->scaffold->model->metodoPerTitolo;
 				
 				if ($_GET["formato_json"] == "select2")
 				{
@@ -349,7 +350,12 @@ trait BaseCrudController
 					
 					foreach ($records as $r)
 					{
-						if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
+						if (isset($metodoPerTitolo) && isset($r[$tableName][$campoValore]))
+							$struct["results"][] = array(
+								"id"	=>	$r[$tableName][$campoValore],
+								"text"	=>	call_user_func(array($this->scaffold->model, $metodoPerTitolo), (int)$r[$tableName][$campoValore]),
+							);
+						else if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
 							$struct["results"][] = array(
 								"id"	=>	$r[$tableName][$campoValore],
 								"text"	=>	$r[$tableName][$campoTitolo],

@@ -28,6 +28,9 @@ class RegusersModel extends FormModel {
 	
 	public static $clienteImportato = false;
 	
+	public $campoValore = "id_user";
+	public $metodoPerTitolo = "titoloJson";
+	
 	public function __construct() {
 		$this->_tables='regusers';
 		$this->_idFields='id_user';
@@ -189,6 +192,18 @@ class RegusersModel extends FormModel {
 		return "- -";
 	}
 	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+			return self::getNominativo($record)." - ".$record["username"];
+		
+		return "";
+	}
+	
 	public function titolo($id)
 	{
 		$clean["id"] = (int)$id;
@@ -228,5 +243,4 @@ class RegusersModel extends FormModel {
     {
 		return $record["regusers"]["codice_app"];
     }
-	
 }

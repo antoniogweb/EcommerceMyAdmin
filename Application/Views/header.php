@@ -65,8 +65,8 @@
     
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/Bootstrap-3-Typeahead-master/bootstrap3-typeahead.min.js"></script>
     
-    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-4.0.13/dist/css/select2.min.css" rel="stylesheet">
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-4.0.13/dist/js/select2.min.js"></script>
+    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/css/select2.min.css" rel="stylesheet">
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/js/select2.min.js"></script>
     
     <?php if (defined("APPS")) {
 		foreach (APPS as $app)

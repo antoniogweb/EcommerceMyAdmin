@@ -421,6 +421,7 @@ class VariabiliModel extends GenericModel {
 		"sistema_maiuscole_clienti"	=>	0, // se impostato  a 1, Nome e Cognome verranno forzati con la prima lettera maiuscola mentre codice fiscale tutto in maiuscolo
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
 		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
+		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX
 		## PROMO ##
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
@@ -953,5 +954,10 @@ class VariabiliModel extends GenericModel {
 	public static function movimenta()
 	{
 		return v("scala_giacenza_ad_ordine") ? true : false;
+	}
+	
+	public static function getUrlAjaxClienti()
+	{
+		return v("utilizza_ricerca_ajax_su_select_2_clienti") ? "/regusers/main?esporta_json&formato_json=select2" : "";
 	}
 }

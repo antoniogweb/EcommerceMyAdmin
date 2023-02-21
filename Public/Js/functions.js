@@ -854,7 +854,7 @@ $(document).ready(function(){
 								results: data.results
 							};
 						},
-						delay: 1000
+						delay: 500
 					},
 					minimumInputLength: 2,
 					language: {

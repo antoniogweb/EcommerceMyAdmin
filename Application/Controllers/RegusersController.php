@@ -24,6 +24,13 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 Helper_List::$filtersFormLayout["filters"]["codice_fiscale"]["attributes"]["placeholder"] = "CF ..";
 
+Helper_List::$filtersFormLayout["filters"]["q"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca ..",
+	),
+);
+
 class RegusersController extends BaseController {
 
 // 	protected $_posizioni = array(
@@ -46,6 +53,7 @@ class RegusersController extends BaseController {
 		'codice_app:sanitizeAll'=>'tutti',
 		'deleted:sanitizeAll'=>'no',
 		'token_eliminazione:sanitizeAll'=>'tutti',
+		'q:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -90,7 +98,7 @@ class RegusersController extends BaseController {
 		$mainFields = array('[[ledit]];regusers.username;','nome','regusers.tipo_cliente','regusers.codice_fiscale','regusers.p_iva','getYesNoUtenti|regusers:has_confirmed');
 		$headLabels = 'Email,Nome/r.soc,Tipo cliente,C.F., P.IVA,Attivo?';
 		
-		$filtri = array('username','codice_fiscale','p_iva');
+		$filtri = array('q','username','codice_fiscale','p_iva');
 		
 		if (v("attiva_gruppi_utenti"))
 		{
@@ -147,6 +155,26 @@ class RegusersController extends BaseController {
 			'deleted'	=>	$this->viewArgs['deleted'],
 			'token_eliminazione'	=>	$this->viewArgs['token_eliminazione'],
 		))->convert();
+		
+		if ($this->viewArgs["q"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"OR"	=>	array(
+					"lk"	=>	array(
+						"nome"	=>	$this->viewArgs["q"],
+					),
+					" lk"	=>	array(
+						"cognome"	=>	$this->viewArgs["q"],
+					),
+					"  lk"	=>	array(
+						"username"	=>	$this->viewArgs["q"],
+					),
+					"   lk"	=>	array(
+						"ragione_sociale"	=>	$this->viewArgs["q"],
+					),
+				),
+			));
+		}
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
 		{

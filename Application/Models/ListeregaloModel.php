@@ -64,11 +64,11 @@ class ListeregaloModel extends GenericModel
 				'id_user'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Cliente",
-					"options"	=>	$this->selectUtenti($idUser),
+					"options"	=>	$this->selectUtenti($idUser, v("utilizza_ricerca_ajax_su_select_2_clienti")),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					'entryAttributes'	=>	array(
-						"select2"	=>	"",
+						"select2"	=>	VariabiliModel::getUrlAjaxClienti(),
 					),
 					'wrap'	=>	array(null,null,"$linkAggiungi<div>","</div>"),
 				),
