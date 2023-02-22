@@ -128,6 +128,8 @@ function encodeUrl($url)
 {
 // 	$url = utf8_decode(html_entity_decode($url,ENT_QUOTES,'UTF-8'));
 	
+	$char = v("carattere_divisione_parole_permalink");
+	
 	$url = html_entity_decode($url,ENT_QUOTES,'UTF-8');
 	$url = mb_convert_encoding($url, 'ISO-8859-1', 'UTF-8');
 	
@@ -136,7 +138,7 @@ function encodeUrl($url)
 	{
 		if (strcmp($url[$i],' ') === 0)
 		{
-			$temp .= '-';
+			$temp .= $char;
 		}
 		else
 		{
@@ -146,13 +148,13 @@ function encodeUrl($url)
 			}
 			else
 			{
-				$temp .= '-';
+				$temp .= $char;
 			}
 		}
 	}
 
-	$temp = str_replace("--","-",$temp);
-	$temp = str_replace("--","-",$temp);
+	$temp = str_replace($char.$char,$char,$temp);
+	$temp = str_replace($char.$char,$char,$temp);
 	
 	if (strcmp($temp,"") === 0)
 	{
