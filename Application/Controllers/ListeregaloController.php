@@ -194,6 +194,51 @@ class ListeregaloController extends BaseController
 		$this->append($data);
 	}
 	
+	public function righe($id = 0)
+	{
+		$this->_posizioni['righe'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_lista_regalo";
+		
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		$this->modelName = "RigheModel";
+		
+		$this->mainFields = array(
+			'thumbCrud',
+			"righe.title",
+			"variante",
+			"righe.quantity",
+			'OrdiniModel.getNome|orders.id_o',
+			'orders.email',
+			"smartDate|orders.data_creazione",
+			"statoordinelabel"
+		);
+		
+		$this->mainHead = "Immagine,Prodotto,Variante,Quantità,Cliente,Email,Data,Stato ordine";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->select("orders.*,righe.*")
+			->inner("orders")->on("orders.id_o = righe.id_o")
+			->orderBy("righe.data_creazione desc")->where(array("orders.id_lista_regalo"=>$clean['id']))->save();
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'100px',
+			),
+		);
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function inviti($id = 0)
 	{
 		$this->_posizioni['inviti'] = 'class="active"';

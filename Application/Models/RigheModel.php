@@ -215,4 +215,26 @@ class RigheModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function thumbCrud($record)
+	{
+		if ($record["righe"]["immagine"])
+			return '<img src="'.Url::getRoot()."thumb/immagineinlistaprodotti/0/".$record["righe"]["immagine"].'" />';
+		
+		return "";
+	}
+	
+	public function variante($record)
+	{
+		return $record["righe"]["attributi"];
+	}
+	
+	public function statoordinelabel($records)
+	{
+		return OrdiniModel::g()->statoordinelabel($records);
+// 		if (isset(OrdiniModel::$stati[$records["orders"]["stato"]]))
+// 			return "<span class='text-bold label label-".OrdiniModel::$labelStati[$records["orders"]["stato"]]."'>".OrdiniModel::$stati[$records["orders"]["stato"]]."<span>";
+// 		
+// 		return $records["orders"]["stato"];
+	}
 }
