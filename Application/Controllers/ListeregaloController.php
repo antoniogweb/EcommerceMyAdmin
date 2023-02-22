@@ -215,10 +215,11 @@ class ListeregaloController extends BaseController
 			'OrdiniModel.getNome|orders.id_o',
 			'orders.email',
 			"smartDate|orders.data_creazione",
-			"statoordinelabel"
+			"statoordinelabel",
+			"noteCrud",
 		);
 		
-		$this->mainHead = "Immagine,Prodotto,Variante,Quantità,Cliente,Email,Data,Stato ordine";
+		$this->mainHead = "Immagine,Prodotto,Variante,Quantità,Cliente,Email,Data,Stato ordine,Note";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		

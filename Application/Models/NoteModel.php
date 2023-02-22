@@ -26,6 +26,7 @@ class NoteModel extends GenericModel
 {
 	public static $elencoTabellePermesse = array(
 		"liste_regalo_pages",
+		"righe"
 	);
 	
 	public function __construct() {
