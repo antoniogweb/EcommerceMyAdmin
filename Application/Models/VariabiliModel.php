@@ -452,6 +452,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_di_selezionare_estensione_url_pagine"	=>	0, // se impostato a 1, permette la scelta tra l'estensione .html e /
 		"numero_massimo_varianti_per_prodotto"	=>	3, // numero massimo di varianti per prodotto
 		"tabelle_con_possibile_alias_duplicato"	=>	"", // comma separated list of tables that can have duplicate alias
+		"cerca_la_pagina_dal_codice"	=>	0, // se impostato su 1, il sistema non cerca l'ALIAS esatto ma cerca il codice nell'URL e cerca la pagina per il codice
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
