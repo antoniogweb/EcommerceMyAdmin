@@ -4,6 +4,9 @@ $nomePaginaPerTracking = "";
 $codicePerTracking = 0;
 $codiceConversioneGoogle = "";
 
+if (!isset($idPaginaPerTracking))
+	$idPaginaPerTracking = isset($isPage) ? (int)PagesModel::$currentIdPage : 0;
+
 if (isset($isPage)) {
 	if (!isset($pagesMeta))
 		$pagesMeta = PagesModel::getDataPerMeta($idPaginaPerTracking, PagesModel::$IdCombinazione);
