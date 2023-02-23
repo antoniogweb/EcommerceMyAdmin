@@ -97,13 +97,15 @@ class PromozioniController extends BaseController {
 		{
 			if ($this->viewArgs["fonte"] == "MANUALE")
 				$this->m[$this->modelName]->aWhere(array(
-					"id_r"	=>	0,
+// 					"id_r"	=>	0,
+					"fonte"	=>	"MANUALE",
 				));
 			else
 			{
 				$this->m[$this->modelName]->aWhere(array(
 					"ne"	=>	array(
-						"id_r"	=>	0,
+// 						"id_r"	=>	0,
+						"fonte"	=>	"MANUALE",
 					),
 				));
 				
