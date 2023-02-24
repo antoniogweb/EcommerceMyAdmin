@@ -4,43 +4,34 @@ if (v("codice_gtm_analytics"))
 {
 	if (isset($pages) && count($pages) > 0)
 	{
-		$items = array(
-			"items"	=>	array(),
-		);
+		$stringaCacheAnalytics = '';
 		
 		if (isset($tagCorrente) && $tagCorrente)
 		{
-			$items["item_list_id"] = "TAG_".$tagCorrente["tag"]["id_tag"];
-			$items["item_list_name"] = $tagCorrente["tag"]["titolo"];
+			$item_list_id = 'TAG_'.(int)$tagCorrente["tag"]["id_tag"];
+			$item_list_name = F::alt($tagCorrente["tag"]["titolo"]);
 		}
 		else if (isset($datiCategoria))
 		{
-			$items["item_list_id"] = "CAT_".$datiCategoria["categories"]["id_c"];
-			$items["item_list_name"] = $datiCategoria["categories"]["title"];
+			$item_list_id = 'CAT_'.(int)$datiCategoria["categories"]["id_c"];
+			$item_list_name = F::alt($datiCategoria["categories"]["title"]);
 		}
 		
-		foreach ($pages as $p)
+		if (isset($item_list_id) && isset($item_list_name))
 		{
-// 			$prezzoMinimo = prezzoMinimo($p["pages"]["id_page"]);
-			$prezzoMinimo = (isset($p["combinazioni"]["price"]) && !User::$nazione) ? $p["combinazioni"]["price"] : prezzoMinimo($p["pages"]["id_page"]);
-			
-			$prezzoFinaleIvato = number_format(calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, true, !v("prezzi_ivati_in_carrello")),2,".","");
-			
-			$items["items"][] = array(
-				"item_id"	=>	v("usa_sku_come_id_item") ? $p["pages"]["codice"] : $p["pages"]["id_page"],
-				"item_name"	=>	sanitizeJs(htmlentitydecode(field($p, "title"))),
-				"quantity"	=>	1,
-				"price"		=>	$prezzoFinaleIvato,
-			);
+			$stringaCacheAnalytics .= '$item_list_id = "'.$item_list_id.'";';
+			$stringaCacheAnalytics .= '$item_list_name = "'.$item_list_name.'";';
 		}
-		?>
-		<script>
-			gtag('event', 'view_item_list', <?php echo json_encode($items);?>);
-			
-			<?php if (v("debug_js")) { ?>
-			console.log(<?php echo json_encode($items);?>);
-			<?php } ?>
-		</script>
-		<?php
+		
+		$arrayIdsPages = [];
+		
+		foreach ($pages as $page)
+		{
+			$arrayIdsPages[] = (int)$page["pages"]["id_page"];
+		}
+		
+		$stringaCacheAnalytics .= '$arrayIdsPages = '.json_encode($arrayIdsPages).';';
+		
+		include(tpf("/Elementi/Analytics/Cache/analytics_impressioni_lista".v("versione_google_analytics").".php", false, false, $stringaCacheAnalytics));
 	}
 }
