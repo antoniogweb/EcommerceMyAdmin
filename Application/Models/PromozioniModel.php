@@ -418,7 +418,7 @@ class PromozioniModel extends GenericModel {
 		
 		$o = new OrdiniModel();
 		
-		$o->clear()->select("sum(euro_promozione) as SOMMA")->where(array("id_p"=>$clean['id_p']));
+		$o->clear()->select("sum(euro_promozione - sconto) as SOMMA")->where(array("id_p"=>$clean['id_p']));
 		
 		if ($ido)
 			$o->sWhere(array("id_o != ?",array((int)$ido)));
