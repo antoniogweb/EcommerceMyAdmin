@@ -553,12 +553,29 @@ class HierarchicalModel extends GenericModel {
 				}
 				else
 				{
-					$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
-					
-					$parents = $this->select($f)->left("contenuti_tradotti")->on(array(
-						"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
-						array(sanitizeDb($lingua))
-					))->send();
+					// Nel caso della lingua principale è più veloce
+// 					if ($lingua == LingueModel::getPrincipaleFrontend())
+// 					{
+						$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
+						
+						$parents = $this->select($f)->left("contenuti_tradotti")->on(array(
+							"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
+							array(sanitizeDb($lingua))
+						))->send();
+// 					}
+// 					else
+// 					{
+// 						$temp = $this->toList($this->_tables.".".$this->_idFields)->send();
+// 						
+// 						$parents = array();
+// 						
+// 						foreach ($temp as $idP)
+// 						{
+// 							$parents[] = $this->clear()->where(array(
+// 								"id_c"	=>	$idP,
+// 							))->first();
+// 						}
+// 					}
 				}
 			}
 			
