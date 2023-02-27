@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (v("attiva_standard_cms_menu")) { ?>
+<?php if (v("attiva_standard_cms_menu") && v("mostra_slide")) { ?>
 	<li class="<?php echo tm($tm, "slide");?> treeview help_slide">
 		<a href="#">
 			<i class="fa fa-picture-o"></i>
