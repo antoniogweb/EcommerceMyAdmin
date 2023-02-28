@@ -69,7 +69,7 @@
 							<?php } ?>
 						</div>
 						<div class="uk-text-small">
-							<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prezzo");?>:</span> <?php if (inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?> €
+							<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prezzo");?>:</span> <?php if ($prezzoPienoIvato != $prezzoFinaleIvato) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?> €
 						</div>
 						<div class="uk-text-small">
 							<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantita da acquistare");?>:</span>
