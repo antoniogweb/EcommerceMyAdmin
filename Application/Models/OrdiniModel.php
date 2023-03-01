@@ -383,7 +383,7 @@ class OrdiniModel extends FormModel {
 	
 	public function setPagato($id = 0)
 	{
-		if (isset($this->values["stato"]) && StatiordineModel::g(false)->pagato($this->values["stato"]))
+		if (!OrdiniModel::$ordineImportato && isset($this->values["stato"]) && StatiordineModel::g(false)->pagato($this->values["stato"]))
 		{
 			$record = $this->selectId((int)$id);
 			
@@ -433,13 +433,16 @@ class OrdiniModel extends FormModel {
 			$this->values["fonte"] = "ORDINE_NEGOZIO";
 		}
 		
-		$this->setAliquotaIva();
-		
-		$this->setProvince();
-		
-		$this->setPagato();
-		
-		$this->sistemaMaiuscole();
+		if (!OrdiniModel::$ordineImportato)
+		{
+			$this->setAliquotaIva();
+			
+			$this->setProvince();
+			
+			$this->setPagato();
+			
+			$this->sistemaMaiuscole();
+		}
 		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
 			return parent::insert();
@@ -479,14 +482,17 @@ class OrdiniModel extends FormModel {
 					self::$isDeletable = null;
 				}
 				
-				$this->triggersOrdine($id);
+				if (!OrdiniModel::$ordineImportato)
+				{
+					$this->triggersOrdine($id);
 				
-				// controlla se deve movimentare l'ordine
-				$this->checkMovimentazioni($clean["id"]);
+					// controlla se deve movimentare l'ordine
+					$this->checkMovimentazioni($clean["id"]);
 				
-				// Hook ad aggiornamento dell'ordine
-				if (v("hook_update_ordine"))
-					callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
+					// Hook ad aggiornamento dell'ordine
+					if (v("hook_update_ordine"))
+						callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
+				}
 				
 				return true;
 			}
@@ -540,10 +546,13 @@ class OrdiniModel extends FormModel {
 	
 	public function triggersOrdine($idO)
 	{
+		$ordine = $this->selectId((int)$idO);
+		
+		if ($ordine["importato"])
+			return;
+		
 		if (v("attiva_gift_card"))
 		{
-			$ordine = $this->selectId((int)$idO);
-			
 			if (!empty($ordine))
 			{
 				$rModel = new RigheModel();
@@ -1076,7 +1085,7 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($ordine))
 		{
-			if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO")
+			if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO")
 			{
 				$subtotaleRiga = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
 				

@@ -259,6 +259,22 @@ class FormModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'note'		=>	array(
+					'labelString'=>	'Note cliente',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Sono note inserite dal cliente o che il cliente può vedere nella pagina dell'ordine.")."</div>"
+					),
+				),
+				'note_interne'		=>	array(
+					'labelString'=>	'Note interne',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Sono note visibili solo dal backend (il cliente non le vedrà mai).")."</div>"
+					),
+				),
 			),
 		);
 
@@ -299,9 +315,13 @@ class FormModel extends GenericModel {
 			"gte"	=>	array(
 				"al"	=>	date("Y-m-d"),
 			),
-		))->send();
+		))->sWhere("numero_utilizzi > 0")->send();
 		
 		$selectTendina = array();
+		
+		$tabellaUtilizzoPromo = PromozioniModel::gTabellaPromoEuroUsati($id);
+		
+// 		print_r($tabellaUtilizzoPromo);die();
 		
 		foreach ($res as $r)
 		{
@@ -310,7 +330,10 @@ class FormModel extends GenericModel {
 			if ($r["promozioni"]["email"])
 				$valoreTendina .= " - ".$r["promozioni"]["email"];
 			
-			if ($r["promozioni"]["tipo_sconto"] == "ASSOLUTO" && PromozioniModel::gNumeroEuroRimasti($r["promozioni"]["id_p"], $id) <= 0)
+// 			if ($r["promozioni"]["tipo_sconto"] == "ASSOLUTO" && PromozioniModel::gNumeroEuroRimasti($r["promozioni"]["id_p"], $id) <= 0)
+// 				continue;
+			
+			if ($r["promozioni"]["tipo_sconto"] == "ASSOLUTO" && $r["promozioni"]["tipo_credito"] != "INFINITO" && isset($tabellaUtilizzoPromo[$r["promozioni"]["id_p"]]) && $tabellaUtilizzoPromo[$r["promozioni"]["id_p"]] >= $r["promozioni"]["sconto"])
 				continue;
 			
 			$selectTendina[$r["promozioni"]["id_p"]] = $valoreTendina;

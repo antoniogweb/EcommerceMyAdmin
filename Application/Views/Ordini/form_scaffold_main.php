@@ -163,6 +163,7 @@
 			<div class='row'>
 				<div class='col-md-12'>
 					<?php echo $form["note"];?>
+					<?php echo $form["note_interne"];?>
 				</div>
 			</div>
 		</div>

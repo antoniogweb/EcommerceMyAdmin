@@ -419,10 +419,17 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							</td>
 						</tr>
 						<?php } ?>
-						<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
+						<?php if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
 						<tr class="text text-warning">
 							<td></td>
-							<td colspan="2"><?php echo gtext("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?></b>. <?php echo gtext("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b></td>
+							<td colspan="2">
+								<?php if ($ordine["nome_promozione"]) { ?>
+								<?php echo gtext("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?></b>. <?php echo gtext("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b>
+								<?php } ?>
+								<?php if ($ordine["sconto"] > 0) { ?>
+								<?php echo gtext("Sconto");?>:
+								<?php } ?>
+							</td>
 							<td class="text-right"></td>
 							<td class="text-right"></td>
 							<td class="text-right">
@@ -537,8 +544,18 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Note");?></h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Note cliente");?></h4>
 							<?php echo nl2br($ordine["note"])?>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
+				<?php if ($ordine["note_interne"]) { ?>
+				<div class="col-lg-6">
+					<div class="box">
+						<div class="box-header with-border main">
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Note interne");?></h4>
+							<?php echo nl2br($ordine["note_interne"])?>
 						</div>
 					</div>
 				</div>

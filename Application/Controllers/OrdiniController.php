@@ -128,7 +128,7 @@ class OrdiniController extends BaseController {
 		
 		$this->mainFields = array(
 			'linkcrud',
-			'smartDate|orders.data_creazione',
+			'cleanDateTime',
 			'OrdiniModel.getNome|orders.id_o',
 			'orders.email',
 			'orders.tipo_cliente',
@@ -145,7 +145,7 @@ class OrdiniController extends BaseController {
 		
 		$this->mainButtons = $mainButtons;
 		
-		$this->mainHead = 'N°,Data,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Tot.';
+		$this->mainHead = 'N°,Data Ora,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Tot.';
 		
 		if (v("attiva_ip_location"))
 		{
@@ -197,7 +197,7 @@ class OrdiniController extends BaseController {
 		
 		$this->aggiungiintegrazioni();
 		
-		$this->m[$this->modelName]->clear()->orderBy("orders.id_o desc");
+		$this->m[$this->modelName]->clear()->orderBy("orders.data_creazione desc");
 		
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_ordine'],
@@ -392,7 +392,7 @@ class OrdiniController extends BaseController {
 		
 		$this->shift(2);
 		
-		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione,note,link_tracking';
+		$fields = 'tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,email,indirizzo_spedizione,cap_spedizione,provincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,stato,nazione,pec,codice_destinatario,pagamento,dprovincia,dprovincia_spedizione,note,note_interne,link_tracking';
 		
 		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
 			$fields .= ",destinatario_spedizione";

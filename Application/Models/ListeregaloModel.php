@@ -415,10 +415,10 @@ class ListeregaloModel extends GenericModel
 		
 		$res = $r->clear()->inner("orders")->on("orders.id_o = righe.id_o")->select("sum(righe.quantity) as SOMMA")->where(array(
 			"id_c"	=>	$idC,
-			"orders.id_lista_Regalo"	=>	$idLista,
-			"ne" => array(
-				"orders.stato"	=>	"deleted"
-			),
+			"orders.id_lista_regalo"	=>	$idLista,
+// 			"ne" => array(
+// 				"orders.stato"	=>	"deleted"
+// 			),
 		))->send();
 		
 		if (count($res) > 0 && $res[0]["aggregate"]["SOMMA"] > 0)

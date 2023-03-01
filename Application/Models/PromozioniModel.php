@@ -409,6 +409,22 @@ class PromozioniModel extends GenericModel {
 		return 0;
 	}
 	
+	public static function gTabellaPromoEuroUsati($ido = null)
+	{
+		$o = new OrdiniModel();
+		
+		$o->clear()->select("orders.id_p,sum(euro_promozione - sconto) as SOMMA")->where(array(
+			"ne"	=>	array(
+				"id_p"	=>	0,
+			),
+		));
+		
+		if ($ido)
+			$o->sWhere(array("id_o != ?",array((int)$ido)));
+		
+		return $o->groupBy("id_p")->toList("orders.id_p", "aggregate.SOMMA")->send();
+	}
+	
 	public static function gNumeroEuroUsati($id_p, $ido = null)
 	{
 		if (!isset($ido))
