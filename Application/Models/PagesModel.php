@@ -2695,6 +2695,33 @@ class PagesModel extends GenericModel {
 			->send();
 	}
 	
+	public function getCorrelati($id_page, $accessorio = 0)
+	{
+		$clean['id'] = (int)$id_page;
+		
+		$this->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
+			->addJoinTraduzionePagina()
+			->where(array(
+				"prodotti_correlati.id_page"=>	$clean['id'],
+				"attivo"	=>	"Y",
+				"prodotti_correlati.accessorio"=>	$accessorio,
+			))->orderBy("prodotti_correlati.id_order");
+		
+		$res = $this->send();
+		
+		if (!$accessorio && v("aggiuni_a_correlati_prodotti_stessa_categoria"))
+		{
+			$idC = $this->clear()->whereId($clean['id'])->field("id_c");
+			
+			if ($idC)
+				$resStessaCategoria = $this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->orderBy("numero_acquisti_pagina desc")->limit(v("numero_massimo_correlati_stessa_categoria"))->send();
+			
+			$res = array_merge($res, $resStessaCategoria);
+		}
+		
+		return $res;
+	}
+	
 	public function selectAttributi($id_page)
 	{
 		$clean['id'] = (int)$id_page;

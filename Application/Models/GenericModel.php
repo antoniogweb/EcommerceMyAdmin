@@ -26,6 +26,8 @@ class GenericModel extends Model_Tree
 {
 	use CommonModel;
 	
+	public static $elementoImportato = false;
+	
 	public static $generaMetaQuandoSalvi = true;
 	public static $traduzioniNonPrincipali = null;
 	public static $nomiDaAlias = array();
@@ -833,6 +835,10 @@ class GenericModel extends Model_Tree
 	// Controllo che la lingua esista
 	public function controllaLinguaGeneric($id, $keyField = "id_page", $sezione = "")
 	{
+		// Non generare la traduzione se è un elemento importato
+		if (self::$elementoImportato)
+			return;
+		
 		$record = $this->selectId((int)$id);
 		
 		if (!empty($record))
