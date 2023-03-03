@@ -264,8 +264,8 @@ class PromozioniModel extends GenericModel {
 			
 		$clean["codice"] = sanitizeAll($codice);
 		
-		if ($checkCart && CartModel::numeroGifCartInCarrello() > 0)
-			return false;
+// 		if ($checkCart && CartModel::numeroGifCartInCarrello() > 0)
+// 			return false;
 		
 		$res = $this->clear()->where(array("codice"=>$clean["codice"],"attivo"=>"Y"))->send();
 		
@@ -288,9 +288,13 @@ class PromozioniModel extends GenericModel {
 				if ($numeroUtilizzi > $numeroVolteUsata)
 				{
 					$numeroUtilizziPerEmail = (int)$res[0]["promozioni"]["numero_utilizzi_per_email"];
+					$emailInPromo = (string)$res[0]["promozioni"]["email"];
 					
 					// controllo il numero di utilizzi per singola email
 					if ($numeroUtilizziPerEmail > 0 && isset($_POST["email"]) && checkMail($_POST["email"]) && $numeroUtilizziPerEmail <= (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido, $_POST["email"]))
+						return false;
+					
+					if (isset($_POST["email"]) && checkMail($_POST["email"]) && $emailInPromo && checkMail($emailInPromo) && trim((string)$_POST["email"]) != trim($emailInPromo))
 						return false;
 					
 					// controllo il tipo cliente
