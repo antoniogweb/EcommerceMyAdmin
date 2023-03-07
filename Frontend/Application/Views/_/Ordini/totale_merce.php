@@ -2,25 +2,30 @@
 <?php foreach ($pages as $p) {
 	$prezzoUnitario = p($p["cart"],$p["cart"]["price"]);
 ?>
-<div class="uk-grid-column-small uk-child-width-1-3 uk-grid" uk-grid>
-	<div>
+<div class="uk-grid-column-small uk-grid" uk-grid>
+	<div class="uk-width-1-3">
 		<img src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
 	</div>
-	<div class="descrizione_prodotto_totali">
-		<strong><?php echo field($p, "title");?></strong>
-		<span class="uk-text-small">
-			<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
-			<?php if (v("mostra_codice_in_carrello") && $p["cart"]["codice"]) { ?>
-				<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
-			<?php } ?>
-			<br />
-			<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitario);?> €</span>
-			<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_intero"]))." €</del>"; } ?> &times; <?php echo $p["cart"]["quantity"];?>
-			<br />
-		</span>
-	</div>
-	<div class="uk-text-right">
-		<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €
+	<div class="uk-margin-remove-top uk-width-2-3">
+		<div class="uk-grid-column-small uk-grid" uk-grid>
+			<div class="uk-width-2-3 descrizione_prodotto_totali <?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
+				<strong><?php echo field($p, "title");?></strong>
+				<span class="uk-text-small">
+					<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
+					<?php if (v("mostra_codice_in_carrello") && $p["cart"]["codice"]) { ?>
+						<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
+					<?php } ?>
+					<br />
+					<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitario);?> €</span>
+					<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_intero"]))." €</del>"; } ?> &times; <?php echo $p["cart"]["quantity"];?>
+					<br />
+				</span>
+				<?php include(tpf("Cart/main_testo_disponibilita.php"));?>
+			</div>
+			<div class="uk-margin-remove-top uk-width-1-3 uk-text-right <?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
+				<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €
+			</div>
+		</div>
 	</div>
 </div>
 <?php include(tpf("Ordini/totale_elementi.php"));?>

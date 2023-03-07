@@ -1026,6 +1026,14 @@ function checkPlusMinus(obj, valore, tipo)
 		obj.addClass("uk-text-meta");
 }
 
+if (typeof afterChangeQty !== 'function')
+{
+	window.afterChangeQty = function(oldQty, newQty)
+	{
+		
+	}
+}
+
 $(document).ready(function(){
 	
 	$(".box_accessorio").each(function(){
@@ -1134,7 +1142,10 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+		if ($(this).parents(".box_quantity").find(".item_quantity").length > 0)
+			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+		else
+			var t_input = $(this).parents(".box_quantity").find("input[type=text]");
 		
 		var old_quantity = parseInt(t_input.val());
 		var new_quantity = old_quantity + 1;
@@ -1144,6 +1155,8 @@ $(document).ready(function(){
 			t_input.val(new_quantity);
 			checkPlusMinus($(this), (new_quantity + 1), "max");
 			checkPlusMinus($(this).next(), (new_quantity), "min");
+			
+			afterChangeQty(old_quantity, new_quantity);
 		}
 	});
 	
@@ -1151,7 +1164,10 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+		if ($(this).parents(".box_quantity").find(".item_quantity").length > 0)
+			var t_input = $(this).parents(".box_quantity").find(".item_quantity");
+		else
+			var t_input = $(this).parents(".box_quantity").find("input[type=text]");
 		
 		var t_current_quantity = parseInt(t_input.val());
 		
@@ -1160,7 +1176,16 @@ $(document).ready(function(){
 			t_input.val( t_current_quantity - 1) ;
 			checkPlusMinus($(this), (t_current_quantity-2), "min");
 			checkPlusMinus($(this).prev(), (t_current_quantity), "max");
+			
+			new_quantity = t_current_quantity - 1;
+			afterChangeQty(t_current_quantity, new_quantity);
 		}
+	});
+	
+	$( "body" ).on( "change", ".generic_item_mobile", function(e) {
+		
+		afterChangeQty(0, $(this).val());
+		
 	});
 	
 	$( "body" ).on( "change", ".cart_item_row_mobile", function(e) {

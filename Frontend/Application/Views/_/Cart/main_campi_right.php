@@ -15,13 +15,7 @@
 				<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
 			</div>
 		<?php } ?>
-		<?php if (VariabiliModel::mostraAvvisiGiacenzaCarrello()) { ?>
-			<?php if (CartModel::g(false)->checkQta($p["cart"]["id_c"], 0, true)) { ?>
-				<div class="uk-text-success"><?php echo gtext(v("testo_disponibilita_immediata"));?></div>
-			<?php } else { ?>
-				<div class="uk-text-secondary"><?php echo gtext(v("testo_disponibilita_non_immediata"));?></div>
-			<?php } ?>
-		<?php } ?>
+		<?php include(tpf("Cart/main_testo_disponibilita.php"));?>
 	</div>
 	<?php if (v("mostra_codice_in_carrello")) { ?>
 	<div class="<?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
