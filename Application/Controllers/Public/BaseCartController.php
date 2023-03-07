@@ -144,6 +144,8 @@ class BaseCartController extends BaseController
 			
 			if (!empty($principale))
 				$clean["id_c"] = (int)$principale["id_c"];
+			else if (v("permetti_acquisto_da_categoria_se_ha_una_combinazione"))
+				$clean["id_c"] = (int)PagesModel::g(false)->getIdCombinazioneCanonical($clean["id_page"]);
 		}
 		
 		$recordCart = array();

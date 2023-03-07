@@ -2314,6 +2314,31 @@ class PagesModel extends GenericModel {
 		return false;
 	}
 	
+	// numero di combinazioni acquistabili del prodotto
+	public function numeroCombinazioniAttive($id_page)
+	{
+		$clean['id_page'] = (int)$id_page;
+		
+		$c = new CombinazioniModel();
+		
+		return $c->clear()->where(array(
+			"id_page"		=>	$clean['id_page'],
+			"acquistabile"	=>	1
+		))->sWhere("(col_1 != 0 OR col_2 != 0 OR col_3 != 0 OR col_4 != 0 OR col_5 != 0 OR col_6 != 0 OR col_7 != 0 OR col_8 != 0)")->rowNumber();
+	}
+	
+	// numero di personalizzazioni del prodotto
+	public function numeroPersonalizzazioni($id_page)
+	{
+		$clean['id_page'] = (int)$id_page;
+		
+		$pp = new PagespersonalizzazioniModel();
+		
+		return $pp->clear()->where(array(
+			"id_page"	=>	$clean['id_page']
+		))->rowNumber();
+	}
+	
 	public function hasCombinations($id_page, $personalizzazioni = true)
 	{
 		$clean['id_page'] = (int)$id_page;
