@@ -490,6 +490,8 @@ class VariabiliModel extends GenericModel {
 		"mostra_link_storico_movimentazioni"	=>	0, // se impostato su 1, mostra il link per vedere lo storico delle movimentazioni
 		"mostra_filtri_varianti_in_magazzino"	=>	1, // mostra o nascondi i filtri delle varianti nel magazzino
 		"mostra_filtro_ricerca_libera_in_magazzino"	=>	0, // filtro ricerca libera
+		"testo_disponibilita_immediata"	=>	"", // se impostato, testo che appare nel carrello quando la disponibilità è immediata
+		"testo_disponibilita_non_immediata"	=>	"", // se impostato, testo che appare nel carrello quando la disponibilità non è immediata
 		## VARIANTI ##
 		"classe_variante_radio"		=>	"",
 		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE
@@ -570,6 +572,7 @@ class VariabiliModel extends GenericModel {
 		## CARRELLO ##
 		"cart_sticky_top_offeset"	=>	100, // offset dello sticky del cart in desktop
 		"recupera_dati_carrello_da_post"	=>	0, // se impostato a 1, salva i dati inviati in post nel carrello (solo se l'utente ha approvato la privacy)
+		"classe_css_dimensione_testo_colonne_carrello"	=>	"", // classe da applicare sulle colonne del carrello per la dimensione
 		## ORDINE ##
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
@@ -963,5 +966,10 @@ class VariabiliModel extends GenericModel {
 	public static function getUrlAjaxClienti()
 	{
 		return v("utilizza_ricerca_ajax_su_select_2_clienti") ? "/regusers/main?esporta_json&formato_json=select2" : "";
+	}
+	
+	public static function mostraAvvisiGiacenzaCarrello()
+	{
+		return (v("testo_disponibilita_immediata") && v("testo_disponibilita_non_immediata")) ? true : false;
 	}
 }

@@ -614,9 +614,9 @@ class CartModel extends GenericModel {
 		return true;
 	}
 	
-	public function checkQta($id_c = 0, $qtyDaAggiungere = 0)
+	public function checkQta($id_c = 0, $qtyDaAggiungere = 0, $forza = false)
 	{
-		if (!v("attiva_giacenza"))
+		if (!v("attiva_giacenza") && !$forza)
 			return true;
 		
 		$clean["id_c"] = (int)$id_c;

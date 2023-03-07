@@ -53,9 +53,6 @@
 			<div class="id_combinazione uk-hidden"><?php echo $p["liste_regalo_pages"]["id_c"];?></div>
 			<div class="lista-riga uk-grid-small uk-child-width-1-2 uk-child-width-1-5@m <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
 				<div class="uk-first-column">
-					<div class="uk-hidden@m uk-text-left">
-						<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
-					</div>
 					<?php if ($immagine) { ?>
 					<a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><img width="200px" src="<?php echo $this->baseUrl."/thumb/listaregalo/".$immagine;?>" /></a>
 					<?php } ?>
