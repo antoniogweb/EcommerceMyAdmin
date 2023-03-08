@@ -256,6 +256,9 @@ class BaseBaseController extends Controller
 		$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
 		$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();
 		
+		if (v("attiva_liste_regalo") && (int)$data["prodInCart"] === 0)
+			ListeregaloModel::unsetCookieIdLista();
+		
 		Domain::$name = $this->baseUrl;
 		
 		if (in_array($_SERVER['REQUEST_URI'],array("/home","/home/index","/home/index/")))

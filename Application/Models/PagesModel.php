@@ -1462,29 +1462,48 @@ class PagesModel extends GenericModel {
 		return self::$arrayIdCombinazioni[$idPage];
 	}
 	
+	private function idsDaCodice($codice)
+	{
+		$c = new CombinazioniModel();
+		
+		$c->clear()->select("pages.id_page,combinazioni.id_c")->inner(array("pagina"))->where(array(
+			"combinazioni.codice"	=>	sanitizeAll($codice),
+			"pages.temp"		=>	0,
+			"pages.cestino"		=>	0,
+		))->limit(1);
+		
+		if (!User::$adminLogged)
+			$c->aWhere(array(
+				"pages.attivo"=>"Y",
+				"combinazioni.acquistabile"	=>	1,
+			));
+		
+		return $c->toList("pages.id_page", "combinazioni.id_c")->send();
+	}
+	
 	// cerca la pagina usando il codice nell'HTML
 	private function cercaDaCodice($alias, $lingua = null)
 	{
-		if (preg_match('/^(.*?)\-([a-zA-Z0-9\_]{1,})$/',$alias, $matches))
+		$aliasArray = explode("-", $alias);
+		
+		if (count($aliasArray) > 0)
 		{
-			$codice = $matches[2];
+			$codice = $aliasArray[(count($aliasArray) - 1)];
 			
-			$c = new CombinazioniModel();
+			$idsArray = $this->idsDaCodice($codice);
 			
-			$c->clear()->select("pages.id_page,combinazioni.id_c")->inner(array("pagina"))->where(array(
-				"combinazioni.codice"	=>	sanitizeAll($codice),
-				"pages.temp"		=>	0,
-				"pages.cestino"		=>	0,
-			))->limit(1);
-			
-			if (!User::$adminLogged)
-				$c->aWhere(array(
-					"pages.attivo"=>"Y",
-					"combinazioni.acquistabile"	=>	1,
-				));
-			
-			return $c->toList("pages.id_page", "combinazioni.id_c")->send();
+			if (count($idsArray) > 0)
+				return $idsArray;
+			else if (count($aliasArray) > 1)
+			{
+				$codice = $aliasArray[count($aliasArray) - 2]."-".$aliasArray[count($aliasArray) - 1];
+				
+				return $this->idsDaCodice($codice);
+			}
 		}
+		
+// 		if (preg_match('/^(.*?)\-([a-zA-Z0-9\_]{1,})$/',$alias, $matches))
+// 			return $this->idsDaCodice($matches[2]);
 		
 		return array();
 	}
