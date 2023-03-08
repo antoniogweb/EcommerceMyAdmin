@@ -245,6 +245,9 @@ class BaseBaseController extends Controller
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
+		// Controlla quantità prodotti in base a lista (se hai prodotti in una lista regalo)
+		$this->m("CartModel")->controllaQuantitaProdottiListaInCarrello();
+		
 		$data["carrello"] = $this->m("CartModel")->getProdotti();
 		
 		// Recuperta dati da cliente loggato

@@ -347,6 +347,7 @@ class ListeregaloModel extends GenericModel
 			$time = time() + v("tempo_durata_cookie_id_lista");
 			
 			Cookie::set(v("nome_cookie_id_lista"), User::$idLista, $time, "/", true, 'Lax');
+			$_COOKIE[v("nome_cookie_id_lista")] = User::$idLista;
 		}
     }
     

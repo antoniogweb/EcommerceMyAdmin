@@ -782,6 +782,8 @@ class BaseOrdiniController extends BaseController
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
+		$this->m("CartModel")->salvaDisponibilitaCarrello();
+		
 		$data["pages"] = $this->m("CartModel")->getProdotti();
 		
 		$numeroProdottiInCarrello = $this->m("CartModel")->numberOfItems();

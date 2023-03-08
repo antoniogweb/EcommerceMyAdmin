@@ -498,8 +498,6 @@ class CartModel extends GenericModel {
 				else
 					$this->values["in_promozione"] = "N";
 				
-				$this->salvaDisponibilita($cart["id_c"], $qtaAggiunta);
-				
 				$this->sanitize();
 				
 				$this->update(null, array(
@@ -684,6 +682,66 @@ class CartModel extends GenericModel {
 		
 	}
 	
+	// aggiorna la disponibilità per tutte le righe del carrello
+	public function salvaDisponibilitaCarrello()
+	{
+		if (VariabiliModel::mostraAvvisiGiacenzaCarrello())
+		{
+			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+			
+			$cart = $this->getProdotti();
+			
+			if (v("usa_transactions"))
+				$this->db->beginTransaction();
+			
+			foreach ($cart as $c)
+			{
+				$this->salvaDisponibilita($c["cart"]["id_c"], 0);
+				
+				if (isset($this->values["disponibile"]))
+				{
+					$this->update(null, array(
+						"id_cart"	=>	(int)$c["cart"]["id_cart"],
+						"cart_uid"	=>	$clean["cart_uid"],
+					));
+				}
+			}
+			
+			if (v("usa_transactions"))
+				$this->db->commit();
+		}
+	}
+	
+	// Controllo che non mettano nel carrello più prodotti di quelli di mancano da regalare
+	public function controllaQuantitaProdottiListaInCarrello()
+	{
+		if (!v("carrello_monoprodotto") && v("attiva_liste_regalo"))
+		{
+			ListeregaloModel::getCookieIdLista();
+			
+			if (User::$idLista)
+			{
+				$cart = $this->getProdotti();
+				
+				$aggiornaElementi = false;
+				
+				foreach ($cart as $c)
+				{
+					$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare(User::$idLista, $c["cart"]["id_c"]);
+					
+					if ((int)$c["cart"]["quantity"] > $numeroRimastiDaRegalare)
+					{
+						$aggiornaElementi = true;
+						$this->set((int)$c["cart"]["id_cart"], $numeroRimastiDaRegalare);
+					}
+				}
+				
+				if ($aggiornaElementi)
+					$this->aggiornaElementi();
+			}
+		}
+	}
+	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $idRif = null)
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -770,8 +828,6 @@ class CartModel extends GenericModel {
 					$this->values["json_personalizzazioni"] = $pers->getStringa($jsonPers,"",true);
 				}
 				
-				$this->salvaDisponibilita($clean["id_c"], ($clean["quantity"] - (int)$res[0]["cart"]["quantity"]));
-				
 				$this->sanitize();
 				$this->update($res[0]["cart"]["id_cart"]);
 				
@@ -827,8 +883,6 @@ class CartModel extends GenericModel {
 				$this->values["cart_uid"] = $clean["cart_uid"];
 				$this->values["creation_time"] = $this->getCreationTime();
 				$this->values["gift_card"] = $rPage[0]["pages"]["gift_card"];
-				
-				$this->salvaDisponibilita($clean["id_c"], $clean["quantity"]);
 				
 				if (isset($idRif))
 				{
@@ -1105,9 +1159,11 @@ class CartModel extends GenericModel {
 	{
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		return $this->clear()->select("cart.*,pages.*,contenuti_tradotti.*")->inner("pages")->using("id_page")
+		$res = $this->clear()->select("cart.*,pages.*,contenuti_tradotti.*")->inner("pages")->using("id_page")
 			->addJoinTraduzione(null, "contenuti_tradotti", false, (new PagesModel()))
 			->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("cart.id_order ASC,id_cart ASC")->send();
+		
+		return $res;
 	}
 	
 	public function insert()
