@@ -498,6 +498,8 @@ class CartModel extends GenericModel {
 				else
 					$this->values["in_promozione"] = "N";
 				
+				$this->salvaDisponibilita($cart["id_c"], $qtaAggiunta);
+				
 				$this->sanitize();
 				
 				$this->update(null, array(
@@ -670,6 +672,18 @@ class CartModel extends GenericModel {
 		return 0;
 	}
 	
+	private function salvaDisponibilita($id_c, $qtyDaAggiungere)
+	{
+		if (VariabiliModel::mostraAvvisiGiacenzaCarrello())
+		{
+			if ($this->checkQta($id_c, $qtyDaAggiungere, true))
+				$this->values["disponibile"] = 1;
+			else
+				$this->values["disponibile"] = 0;
+		}
+		
+	}
+	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $idRif = null)
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -756,6 +770,8 @@ class CartModel extends GenericModel {
 					$this->values["json_personalizzazioni"] = $pers->getStringa($jsonPers,"",true);
 				}
 				
+				$this->salvaDisponibilita($clean["id_c"], ($clean["quantity"] - (int)$res[0]["cart"]["quantity"]));
+				
 				$this->sanitize();
 				$this->update($res[0]["cart"]["id_cart"]);
 				
@@ -812,8 +828,14 @@ class CartModel extends GenericModel {
 				$this->values["creation_time"] = $this->getCreationTime();
 				$this->values["gift_card"] = $rPage[0]["pages"]["gift_card"];
 				
+				$this->salvaDisponibilita($clean["id_c"], $clean["quantity"]);
+				
 				if (isset($idRif))
+				{
 					$this->values["id_rif"] = (int)$idRif;
+					
+					$this->values["disponibile"] = RigheModel::g()->whereId((int)$idRif)->field("disponibile");
+				}
 				
 				if ($p->inPromozioneTot($clean["id_page"]))
 				{

@@ -20,6 +20,7 @@
 			<?php } ?>
 			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
+			<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			
 			<?php include(tpf("Ordini/resoconto_prodotto_gift_card.php"));?>
 			

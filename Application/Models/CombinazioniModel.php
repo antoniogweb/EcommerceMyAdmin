@@ -1103,6 +1103,7 @@ class CombinazioniModel extends GenericModel {
 						"json_sconti"=>	"[]",
 // 						"fonte"		=>	"B",
 // 						"id_admin"	=>	User::$id,
+						"disponibile"	=>	($record["giacenza"] > 0) ? 1 : 0,
 					), "sanitizeDb");
 					
 					if ($r->insert())

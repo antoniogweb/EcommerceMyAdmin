@@ -42,6 +42,7 @@ foreach ($righeOrdine as $p) { ?>
 			<div class="uk-visible@s">
 				<?php echo $p["righe"]["title"];?>
 				<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<span class='uk-text-small'><br />".$p["righe"]["attributi"]."</span>"; } ?>
+				<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			</div>
 		</div>
 		

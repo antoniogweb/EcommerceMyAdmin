@@ -116,14 +116,23 @@ class RigheController extends BaseController
 		{
 			if ($v["quantity"] > 0)
 			{
-				$this->m[$this->modelName]->setValues(array(
-					"quantity"			=>	$v["quantity"],
-// 					"$campoPrice"		=>	$v["price"],
-// 					"$campoPriceIntero"	=>	$v["prezzo_intero"],
-// 					"in_promozione"	=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
-				));
+				$recordRiga = $this->m[$this->modelName]->selectId($v["id_riga"]);
 				
-				$this->m[$this->modelName]->update($v["id_riga"]);
+				if (!empty($recordRiga))
+				{
+					$giacenza = (int)$this->m("CombinazioniModel")->whereId((int)$recordRiga["id_c"])->field("giacenza");
+					
+					$this->m[$this->modelName]->setValues(array(
+						"quantity"			=>	$v["quantity"],
+						"disponibile"		=>	($giacenza >= ((int)$v["quantity"] - (int)$recordRiga["quantity"])) ? 1 : 0,
+	// 					"$campoPrice"		=>	$v["price"],
+	// 					"$campoPriceIntero"	=>	$v["prezzo_intero"],
+	// 					"in_promozione"	=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
+					));
+					
+					
+					$this->m[$this->modelName]->update($v["id_riga"]);
+				}
 			}
 			else
 				$this->m[$this->modelName]->del($v["id_riga"]);
