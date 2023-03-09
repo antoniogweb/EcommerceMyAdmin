@@ -1380,18 +1380,18 @@ class GenericModel extends Model_Tree
 // 					$tabella_filtri_successivi = "(select id_page from pages where id_page in (".$this->placeholdersFromArray($ids).")) as tabella_filtri_successivi";
 // 					$this->inner(array($tabella_filtri_successivi, $ids))->on("pages.id_page = tabella_filtri_successivi.id_page");
 					
-					if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento."[query]"]))
-					{
-						$query = CategoriesModel::$arrayIdsPagineFiltrate[$elemento."[query]"][0];
-						$dataB = CategoriesModel::$arrayIdsPagineFiltrate[$elemento."[query]"][1];
-// 						echo $query;die();
-						$this->inner(array("($query) as tabella_filtri_successivi", $dataB))->on("pages.id_page = tabella_filtri_successivi.id_page");
-					}
-					else
-					{
+// 					if (isset(CategoriesModel::$arrayIdsPagineFiltrate[$elemento."[query]"]))
+// 					{
+// 						$query = CategoriesModel::$arrayIdsPagineFiltrate[$elemento."[query]"][0];
+// 						$dataB = CategoriesModel::$arrayIdsPagineFiltrate[$elemento."[query]"][1];
+// // 						echo $query;die();
+// 						$this->inner(array("($query) as tabella_filtri_successivi", $dataB))->on("pages.id_page = tabella_filtri_successivi.id_page");
+// 					}
+// 					else
+// 					{
 						$whereIn = "pages.id_page in (".$this->placeholdersFromArray($ids).")";
 						$binderdValues = $ids;
-					}
+// 					}
 				}
 				else
 					$whereIn = "1 != 1";
