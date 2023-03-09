@@ -1377,11 +1377,11 @@ class GenericModel extends Model_Tree
 				if (count(CategoriesModel::$arrayIdsPagineFiltrate[$elemento]) > 0)
 				{
 // 					echo "(select id_page from pages where id_page in (".implode(",",$ids).")) as tabella_filtri_successivi";
-					$tabella_filtri_successivi = "(select id_page from pages where id_page in (".$this->placeholdersFromArray($ids).")) as tabella_filtri_successivi";
-					$this->inner(array($tabella_filtri_successivi, $ids))->on("pages.id_page = tabella_filtri_successivi.id_page");
+// 					$tabella_filtri_successivi = "(select id_page from pages where id_page in (".$this->placeholdersFromArray($ids).")) as tabella_filtri_successivi";
+// 					$this->inner(array($tabella_filtri_successivi, $ids))->on("pages.id_page = tabella_filtri_successivi.id_page");
 					
-// 					$whereIn = "pages.id_page in (".$this->placeholdersFromArray($ids).")";
-// 					$binderdValues = $ids;
+					$whereIn = "pages.id_page in (".$this->placeholdersFromArray($ids).")";
+					$binderdValues = $ids;
 				}
 				else
 					$whereIn = "1 != 1";
@@ -1389,10 +1389,10 @@ class GenericModel extends Model_Tree
 			else
 				$whereIn = "1 = 1";
 			
-// 			$this->sWhere(array($whereIn, $binderdValues));
+			$this->sWhere(array($whereIn, $binderdValues));
 			
-			if ($whereIn)
-				$this->sWhere($whereIn);
+// 			if ($whereIn)
+// 				$this->sWhere($whereIn);
 		}
 		
 		return $this;

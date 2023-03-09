@@ -129,8 +129,24 @@ class BaseCartController extends BaseController
 		$clean["json_pers"] = $this->request->post("json_pers","");
 		$clean["id_lista"] = $this->request->post("id_lista",0, "forceInt");
 		
-		if (v("attiva_liste_regalo") && $clean["id_lista"])
-			ListeregaloModel::setCookieIdLista($clean["id_lista"]);
+		$okProdotto = true;
+		
+		// Controlli lista nascita
+		if (v("attiva_liste_regalo"))
+		{
+			ListeregaloModel::getCookieIdLista();
+			
+			if (User::$idLista)
+			{
+				$idsProdottiLista = ListeregaloModel::g()->getProdottiIds(User::$idLista);
+				
+				if (!in_array($clean["id_page"], $idsProdottiLista))
+					$okProdotto = false;
+			}
+			
+			if (!User::$idLista && $clean["id_lista"])
+				ListeregaloModel::setCookieIdLista($clean["id_lista"]);
+		}
 		
 		$c = new CombinazioniModel();
 		
@@ -166,107 +182,114 @@ class BaseCartController extends BaseController
 		
 		$this->clean();
 		
-		if ($clean["quantity"] >= 0)
+		if ($okProdotto)
 		{
-			$giacenza = $c->qta($clean["id_c"]);
-			
-			// controllo se è gift cart
-			$isGiftCard = ProdottiModel::isGiftCart($clean["id_page"]);
-			$numeroInGiftCardCarrello = CartModel::numeroGifCartInCarrello();
-			
-			if (!$isGiftCard || (($numeroInGiftCardCarrello + $clean["quantity"]) <= v("numero_massimo_gift_card")))
+			if ($clean["quantity"] >= 0)
 			{
-				if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza || $isGiftCard)
+				$giacenza = $c->qta($clean["id_c"]);
+				
+				// controllo se è gift cart
+				$isGiftCard = ProdottiModel::isGiftCart($clean["id_page"]);
+				$numeroInGiftCardCarrello = CartModel::numeroGifCartInCarrello();
+				
+				if (!$isGiftCard || (($numeroInGiftCardCarrello + $clean["quantity"]) <= v("numero_massimo_gift_card")))
 				{
-					// OK giacenza
-					$idCart = $this->m("CartModel")->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
-					
-					if ($idCart)
+					if (!v("attiva_giacenza") || $clean["quantity"] <= $giacenza || $isGiftCard)
 					{
-						if ($idCart == -1)
+						// OK giacenza
+						$idCart = $this->m("CartModel")->add($clean["id_page"], $clean["quantity"], $clean["id_c"], $clean["id_p"], $arrayPers);
+						
+						if ($idCart)
 						{
-							$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+							if ($idCart == -1)
+							{
+								$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+							}
+							else
+							{
+								if (!empty($recordCart))
+								{
+									$this->m("CartModel")->setValues(array(
+										"id_order"	=>	$recordCart["id_order"],
+									));
+									
+	// 								$this->m("CartModel")->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
+									
+									$this->m("CartModel")->update(null, array(
+										"id_cart"	=>	(int)$idCart,
+										"cart_uid"	=>	$clean["cart_uid"],
+									));
+								}
+								
+								$result = "OK";
+								
+								$rcu = $this->m("CartModel")->getCart($idCart);
+								
+								if (!empty($rcu))
+								{
+									$contentsFbk = array(
+										"value"	=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
+										"currency"	=>	"EUR",
+										"content_type"	=>	"product",
+										"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
+										"contents"	=>	array(
+											array(
+												"id"		=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+												"quantity"	=>	$clean["quantity"],
+											)
+										),
+									);
+									
+									$campoId = v("versione_google_analytics") == 3 ? "id" : "item_id";
+									$campoName = v("versione_google_analytics") == 3 ? "name" : "item_name";
+									
+									$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"];
+									
+									$contentsGtm = array(array(
+										"$campoId"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+										"$campoName"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
+										"quantity"	=>	$clean["quantity"],
+										"price"		=>	$prezzoProdottoNelCarrello,
+									));
+									
+									$valueProdottoNelCarrello = number_format($prezzoProdottoNelCarrello * $clean["quantity"],2,".","");
+								}
+								
+								// Aggiorna gli elementi del carrello
+								$this->m("CartModel")->aggiornaElementi();
+							}
 						}
 						else
-						{
-							if (!empty($recordCart))
-							{
-								$this->m("CartModel")->setValues(array(
-									"id_order"	=>	$recordCart["id_order"],
-								));
-								
-// 								$this->m("CartModel")->update(null, "id_cart = " . (int)$idCart . " AND cart_uid = '" . $clean["cart_uid"] . "'");
-								
-								$this->m("CartModel")->update(null, array(
-									"id_cart"	=>	(int)$idCart,
-									"cart_uid"	=>	$clean["cart_uid"],
-								));
-							}
-							
-							$result = "OK";
-							
-							$rcu = $this->m("CartModel")->getCart($idCart);
-							
-							if (!empty($rcu))
-							{
-								$contentsFbk = array(
-									"value"	=>	v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"],
-									"currency"	=>	"EUR",
-									"content_type"	=>	"product",
-									"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
-									"contents"	=>	array(
-										array(
-											"id"		=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
-											"quantity"	=>	$clean["quantity"],
-										)
-									),
-								);
-								
-								$campoId = v("versione_google_analytics") == 3 ? "id" : "item_id";
-								$campoName = v("versione_google_analytics") == 3 ? "name" : "item_name";
-								
-								$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"];
-								
-								$contentsGtm = array(array(
-									"$campoId"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
-									"$campoName"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
-									"quantity"	=>	$clean["quantity"],
-									"price"		=>	$prezzoProdottoNelCarrello,
-								));
-								
-								$valueProdottoNelCarrello = number_format($prezzoProdottoNelCarrello * $clean["quantity"],2,".","");
-							}
-							
-							// Aggiorna gli elementi del carrello
-							$this->m("CartModel")->aggiornaElementi();
-						}
+							$errore = gtext("Si prega di selezionare la variante", false);
 					}
 					else
-						$errore = gtext("Si prega di selezionare la variante", false);
+					{
+						// KO giacenza
+						if ((int)$giacenza === 0)
+							$errore = gtext("Attenzione, prodotto esaurito", false);
+						else if ((int)$giacenza == 1)
+							$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
+						else if ((int)$giacenza > 1)
+						{
+							$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
+							$errore = str_replace("[N]", $giacenza, $errore);
+						}
+					}
 				}
 				else
 				{
-					// KO giacenza
-					if ((int)$giacenza === 0)
-						$errore = gtext("Attenzione, prodotto esaurito", false);
-					else if ((int)$giacenza == 1)
-						$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
-					else if ((int)$giacenza > 1)
-					{
-						$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
-						$errore = str_replace("[N]", $giacenza, $errore);
-					}
+					$errore = gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card", false);
+					$errore = str_replace("[N]", v("numero_massimo_gift_card"), $errore);
 				}
 			}
 			else
 			{
-				$errore = gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card", false);
-				$errore = str_replace("[N]", v("numero_massimo_gift_card"), $errore);
+				$errore = gtext("Si prega di indicare una quantità maggiore di zero", false);
 			}
 		}
 		else
 		{
-			$errore = gtext("Si prega di indicare una quantità maggiore di zero", false);
+			$errore = gtext("Hai nel carrello dei prodotti legati ad una lista nascita. Per poter inserire altri prodotti devi prima completare l'ordine della lista nascita oppure svuotare il carrello.", false);
 		}
 		
 		echo json_encode(array(

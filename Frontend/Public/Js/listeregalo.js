@@ -355,6 +355,17 @@ $(document).ready(function(){
 		
 	});
 	
+	
+	$( "body" ).on( "click", ".pulsante_disattiva_lista", function(e) {
+		
+		if (confirm("Confermi? La lista non sarà più visibile e nessuno potrà acquistare i prodotti che hai selezionato nella lista"))
+			return true;
+		else
+			return false;
+		
+	});
+	
+	
 	$( ".datepicker" ).datepicker({
 		dateFormat: "dd-mm-yy"
 	});

@@ -281,6 +281,13 @@ class ListeregaloModel extends GenericModel
 			->send();
     }
     
+    public function getProdottiIds($idLista)
+    {
+		$prodotti = $this->getProdotti($idLista);
+		
+		return $this->getList($prodotti, "pages.id_page");
+    }
+    
     public function getLink($idLista)
     {
 		$lrl = new ListeregalolinkModel();
