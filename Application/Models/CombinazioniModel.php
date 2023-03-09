@@ -659,7 +659,7 @@ class CombinazioniModel extends GenericModel {
 		if (count($res) > 0)
 		{
 			$aliasAttributi = $res[0]["combinazioni_alias"]["alias_attributi"];
-			$codice = $res[0]["combinazioni"]["codice"];
+			$codice = str_replace("/","",$res[0]["combinazioni"]["codice"]);
 			
 			if ($agiungiAlias && v("usa_alias_combinazione_in_url_prodotto") && $aliasAttributi)
 				$alias .= "-".$aliasAttributi;
