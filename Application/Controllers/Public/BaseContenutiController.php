@@ -740,6 +740,9 @@ class BaseContenutiController extends BaseController
 				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento), false);
 				$ids = $this->m("PagesModel")->select("pages.id_page")->toList("pages.id_page")->send();
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = array_unique($ids);
+				
+				if ($elemento == "[categoria]")
+					CategoriesModel::$arrayIdsPagineFiltrate["[categoria][query]"] = $this->m("PagesModel")->select("pages.id_page")->queryStruct();
 			}
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")

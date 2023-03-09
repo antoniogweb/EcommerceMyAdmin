@@ -812,12 +812,12 @@ class CategoriesModel extends HierarchicalModel {
 		
 		$cat->orderBy = null;
 		
-		$res = $cat->select("id_page")->toList("id_page")->send();
+		$res = $cat->select("pages.id_page")->toList("id_page")->send();
 		
 		$res = array_unique($res);
 		
 // 		echo $cat->getQuery();
-		
+// 		die();
 		return count($res);
 	}
 	
