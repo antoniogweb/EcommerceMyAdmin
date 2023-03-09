@@ -81,17 +81,47 @@ class StatielementiModel extends GenericModel
 		return false;
     }
     
+    public function statiElementiOptions($tabellaRif, $idRif)
+    {
+		$ultimaStato = $this->getUltimoUsato($tabellaRif, $idRif);
+		
+		$arrayOpzioni = null;
+		
+		if (!empty($ultimaStato))
+		{
+			$arrayOpzioni = array(
+				"titolo"	=>	$ultimaStato["opzioni"]["titolo"],
+				"colore"	=>	$ultimaStato["opzioni"]["valore"],
+			);
+		}
+		
+		return $arrayOpzioni;
+    }
+    
+    private function getUltimoUsato($tabellaRif, $idRif)
+    {
+		return $this->clear()->select("opzioni.*,stati_elementi.id_stato,stati_elementi.data_creazione,adminusers.username")
+			->inner(array("utente"))
+			->inner("opzioni")->on("opzioni.id_opzione = stati_elementi.id_stato")
+			->where(array(
+				"tabella_rif"	=>	sanitizeAll($tabellaRif),
+				"id_rif"		=>	(int)$idRif,
+			))->orderBy("id_stato_elemento desc")->limit(1)->first();
+    }
+    
     public function statiElementiCrudHtml($tabellaRif, $idRif)
     {
 		$html = "";
 		
-		$ultimaStato = $this->clear()->select("opzioni.*,stati_elementi.id_stato,stati_elementi.data_creazione,adminusers.username")
-		->inner(array("utente"))
-		->inner("opzioni")->on("opzioni.id_opzione = stati_elementi.id_stato")
-		->where(array(
-			"tabella_rif"	=>	sanitizeAll($tabellaRif),
-			"id_rif"		=>	(int)$idRif,
-		))->orderBy("id_stato_elemento desc")->limit(1)->first();
+// 		$ultimaStato = $this->clear()->select("opzioni.*,stati_elementi.id_stato,stati_elementi.data_creazione,adminusers.username")
+// 		->inner(array("utente"))
+// 		->inner("opzioni")->on("opzioni.id_opzione = stati_elementi.id_stato")
+// 		->where(array(
+// 			"tabella_rif"	=>	sanitizeAll($tabellaRif),
+// 			"id_rif"		=>	(int)$idRif,
+// 		))->orderBy("id_stato_elemento desc")->limit(1)->first();
+		
+		$ultimaStato = $this->getUltimoUsato($tabellaRif, $idRif);
 		
 		if (!empty($ultimaStato))
 			$html .= "<div><small>".gtext("Impostato da")." <b>".$ultimaStato["adminusers"]["username"]."</b> ".gtext("il")." <b>".date("d/m/y H:i",strtotime($ultimaStato["stati_elementi"]["data_creazione"]))."</b></small></div><span style='background-color:".$ultimaStato["opzioni"]["valore"]." !important;' class='label label-info'>".$ultimaStato["opzioni"]["titolo"]."</span>";

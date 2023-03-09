@@ -370,6 +370,14 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_righe menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
+	'vai_alla_lista'	=>	array(
+		'title'	=>	"Vai alla lista",
+		'text'	=>	"Vai alla lista",
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'target="_blank" role="button" class="btn btn-primary menu_btn"',
+		"classIconBefore"	=>	'<i class="fa fa-link"></i>',
+	),
 	"vedi_feed" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',

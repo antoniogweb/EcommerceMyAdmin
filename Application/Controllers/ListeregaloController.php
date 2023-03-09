@@ -134,6 +134,8 @@ class ListeregaloController extends BaseController
 		
 		$this->m['ListeregaloModel']->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
+		$this->menuLinks = "back,save,vai_alla_lista";
+		
 		parent::form($queryType, $id);
 	}
 	
@@ -388,5 +390,10 @@ class ListeregaloController extends BaseController
 		$data["record"] = $this->m["ListeregaloModel"]->selectId($clean['id']);
 		
 		$this->append($data);
+	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		$this->scaffold->mainMenu->links["vai_alla_lista"]["absolute_url"] = Domain::$publicUrl."/it_it/contenuti/listaregalo/?codice_lista=".$this->m[$this->modelName]->whereId((int)$id)->field("codice");
 	}
 }

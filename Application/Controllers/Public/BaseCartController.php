@@ -255,8 +255,29 @@ class BaseCartController extends BaseController
 									$valueProdottoNelCarrello = number_format($prezzoProdottoNelCarrello * $clean["quantity"],2,".","");
 								}
 								
+								$elementiPost = array();
+								
+								// Imposto in automatico la mail della lista nella gift card
+								if (v("attiva_liste_regalo") && $isGiftCard && User::$idLista)
+								{
+									$recordLista = ListeregaloModel::g()->whereId((int)User::$idLista)->record();
+									
+									if (!empty($recordLista))
+									{
+										$qtyInserita = $this->m("CartModel")->values["quantity"];
+										
+										$elementiRigaCarrello = CartelementiModel::getElementiCarrello((int)$idCart);
+										
+										for ($i = 0; $i < $qtyInserita; $i++)
+										{
+											$elementiPost["CART-".(int)$idCart][$i]["email"] = isset($elementiRigaCarrello[$i]["email"]) ? $elementiRigaCarrello[$i]["email"] : $recordLista["email"];
+											$elementiPost["CART-".(int)$idCart][$i]["testo"] = isset($elementiRigaCarrello[$i]["testo"]) ? $elementiRigaCarrello[$i]["testo"] : "";
+										}
+									}
+								}
+								
 								// Aggiorna gli elementi del carrello
-								$this->m("CartModel")->aggiornaElementi();
+								$this->m("CartModel")->aggiornaElementi($elementiPost);
 							}
 						}
 						else
