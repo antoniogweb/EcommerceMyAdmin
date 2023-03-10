@@ -26,6 +26,8 @@ class MarchiModel extends GenericModel
 {
 	use CrudModel;
 	
+	public static $strutturaMarchi = [];
+	
 	public static $uploadFile = true;
 	
 	public static $currentId = 0;
@@ -204,5 +206,23 @@ class MarchiModel extends GenericModel
 		}
 		
 		return "";
+	}
+	
+	public static function getDataMarchio($idMarchio)
+	{
+		if (isset(self::$strutturaMarchi[$idMarchio]))
+			return self::$strutturaMarchi[$idMarchio];
+		
+		$m = new MarchiModel();
+		
+		$res = $m->clear()->addJoinTraduzione()->send();
+		
+		foreach ($res as $marchio)
+		{
+			self::$strutturaMarchi[$marchio["marchi"]["id_marchio"]] = $marchio;
+		}
+		
+		if (isset(self::$strutturaMarchi[$idMarchio]))
+			return self::$strutturaMarchi[$idMarchio];
 	}
 }
