@@ -245,7 +245,7 @@ class BaseContenutiController extends BaseController
 			
 			if (count($this->pageArgs) > 0 && isset($elencoTagEncoded[$this->pageArgs[0]]))
 			{
-				$this->idTag = $elencoTagEncoded[$this->pageArgs[0]];
+				$this->idTag = TagModel::$currentId = $elencoTagEncoded[$this->pageArgs[0]];
 				$titleTag = $elencoTagTitle[$this->pageArgs[0]];
 				$this->aliasTag = $data["aliasTagCorrente"] = $this->pageArgs[0];
 				array_shift($this->pageArgs);
@@ -263,7 +263,7 @@ class BaseContenutiController extends BaseController
 			
 			if (count($this->pageArgs) > 0 && isset($elencoMarchiEncoded[$this->pageArgs[0]]))
 			{
-				$this->idMarchio = $elencoMarchiEncoded[$this->pageArgs[0]];
+				$this->idMarchio = MarchiModel::$currentId = $elencoMarchiEncoded[$this->pageArgs[0]];
 				$this->aliasMarchio = $data["aliasMarchioCorrente"] = $this->pageArgs[0];
 				
 				array_shift($this->pageArgs);

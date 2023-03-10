@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class TagModel extends GenericModel {
-
+	
+	public static $currentId = 0;
+	
 	public function __construct() {
 		$this->_tables='tag';
 		$this->_idFields='id_tag';

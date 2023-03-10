@@ -766,7 +766,7 @@ class CategoriesModel extends HierarchicalModel {
 			$c = new CategoriesModel();
 			
 			$children = $c->children((int)$id_c, true);
-			$catWhere = "in(".implode(",",$children).")";
+// 			$catWhere = "in(".implode(",",$children).")";
 			
 			$bindedValues = $children;
 			$bindedValues[] = (int)$id_c;
@@ -799,6 +799,9 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public function numeroProdottiFull($id_c, $filtriSuccessivi = false)
 	{
+		if (self::filtroSoloCategoria())
+			$filtriSuccessivi = false;
+		
 		$soloPagineAttive = $filtriSuccessivi ? false : true;
 		
 		$cat = self::gPage($id_c, true, false, $soloPagineAttive);

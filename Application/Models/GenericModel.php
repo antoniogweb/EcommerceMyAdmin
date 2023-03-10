@@ -1820,4 +1820,12 @@ class GenericModel extends Model_Tree
 		
 		return $this;
 	}
+	
+	public static function filtroSoloCategoria()
+	{
+		if (CategoriesModel::$currentIdCategory && !MarchiModel::$currentId && !TagModel::$currentId && count(RegioniModel::$filtriUrl) === 0 && count(CaratteristicheModel::$filtriUrl) === 0 && count(AltriFiltri::$filtriUrl) === 0)
+			return true;
+		
+		return false;
+	}
 }

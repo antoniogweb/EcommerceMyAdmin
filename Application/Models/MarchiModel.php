@@ -28,6 +28,8 @@ class MarchiModel extends GenericModel
 	
 	public static $uploadFile = true;
 	
+	public static $currentId = 0;
+	
 	public function __construct() {
 		$this->_tables='marchi';
 		$this->_idFields='id_marchio';
