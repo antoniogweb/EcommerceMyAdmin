@@ -1769,9 +1769,11 @@ function getShopCategoryId()
 
 function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true, $traduzione = true)
 {
-	$c = new CategoriesModel();
+// 	$c = new CategoriesModel();
 	
-	return $c->categorieFiglie($id_c, $select, $soloAttivi, $traduzione);
+	return Cache_Functions::getInstance()->load(new CategoriesModel())->categorieFiglie($id_c, $select, $soloAttivi, $traduzione);
+	
+// 	return $c->categorieFiglie($id_c, $select, $soloAttivi, $traduzione);
 }
 
 function isImmediateChild($idCat, $idParent)
