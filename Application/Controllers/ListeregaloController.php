@@ -74,6 +74,27 @@ class ListeregaloController extends BaseController
 			->inner(array("tipo", "cliente"))
 			->orderBy("liste_regalo.id_lista_regalo desc");
 		
+		if ($this->viewArgs["titolo"] != "tutti")
+		{
+			$tokens = explode(" ", $this->viewArgs['attivo']);
+			
+			$andArray = array();
+			$iCerca = 8;
+			
+			foreach ($tokens as $token)
+			{
+				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',regusers.nome,' ',regusers.username,' ',regusers.ragione_sociale,' ',coalesce(liste_regalo.titolo,''),' ',liste_regalo.codice,' ',coalesce(liste_regalo.nome_bambino,''),' ',coalesce(liste_regalo.genitore_1,''),' ',coalesce(liste_regalo.genitore_2,''),' ',coalesce(liste_regalo.email,''))"	=>	sanitizeAll(htmlentitydecode($token)),
+				);
+				
+				$iCerca++;
+			}
+			
+			$this->m[$this->modelName]->aWhere(array(
+				"AND"	=>	$andArray,
+			));
+		}
+		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_scadenza");
 		
 		if ($this->viewArgs["id_c"] != "tutti")
