@@ -82,6 +82,7 @@ class OrdiniController extends BaseController {
 		'gestionale:sanitizeAll'=>'tutti',
 		'prezzi:sanitizeAll'=>'I',
 		'id_page:sanitizeAll'=>'tutti',
+		'titolo:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -283,6 +284,28 @@ class OrdiniController extends BaseController {
 				$this->m[$this->modelName]->sWhere("orders.codice_gestionale = ''");
 		}
 		
+		if ($this->viewArgs["titolo"] != "tutti")
+		{
+			$tokens = explode(" ", $this->viewArgs['titolo']);
+			$andArray = array();
+			$iCerca = 8;
+			
+			foreach ($tokens as $token)
+			{
+				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+					"n!concat(orders.ragione_sociale,' ',orders.nome,' ',orders.cognome,' ',orders.email)"	=>	sanitizeAll(htmlentitydecode($token)),
+				);
+				
+				$iCerca++;
+			}
+			
+			$this->m[$this->modelName]->aWhere(array(
+				"      AND"	=>	$andArray,
+			));
+			
+// 			print_r($andArray);
+		}
+		
 		$this->m[$this->modelName]->save();
 		
 		$filtroTipo = array(
@@ -296,7 +319,7 @@ class OrdiniController extends BaseController {
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$this->filters = array("dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
+		$this->filters = array("titolo","dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));

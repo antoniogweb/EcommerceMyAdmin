@@ -163,15 +163,6 @@ class RegusersController extends BaseController {
 					"lk"	=>	array(
 						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale)"	=>	$this->viewArgs["q"],
 					),
-// 					" lk"	=>	array(
-// 						"cognome"	=>	$this->viewArgs["q"],
-// 					),
-// 					"  lk"	=>	array(
-// 						"username"	=>	$this->viewArgs["q"],
-// 					),
-// 					"   lk"	=>	array(
-// 						"ragione_sociale"	=>	$this->viewArgs["q"],
-// 					),
 				),
 			));
 		}
