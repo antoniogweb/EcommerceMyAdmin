@@ -67,7 +67,7 @@ class ListeregaloController extends BaseController
 			->select("*")
 			->where(array(
 				"lk"	=>	array(
-					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',regusers.nome,' ',regusers.username,' ',regusers.ragione_sociale,' ',liste_regalo.titolo,' ',liste_regalo.codice,' ',liste_regalo.nome_bambino,' ',liste_regalo.genitore_1,' ',liste_regalo.genitore_2,' ',liste_regalo.email)"	=>	$this->viewArgs["titolo"],
+					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',regusers.nome,' ',regusers.username,' ',regusers.ragione_sociale,' ',coalesce(liste_regalo.titolo,''),' ',liste_regalo.codice,' ',coalesce(liste_regalo.nome_bambino,''),' ',coalesce(liste_regalo.genitore_1,''),' ',coalesce(liste_regalo.genitore_2,''),' ',coalesce(liste_regalo.email,''))"	=>	$this->viewArgs["titolo"],
 				),
 				'liste_regalo.attivo'	=>	$this->viewArgs['attivo'],
 			))
