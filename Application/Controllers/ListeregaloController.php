@@ -66,9 +66,6 @@ class ListeregaloController extends BaseController
 		$this->m[$this->modelName]->clear()
 			->select("*")
 			->where(array(
-				"lk"	=>	array(
-					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',regusers.nome,' ',regusers.username,' ',regusers.ragione_sociale,' ',coalesce(liste_regalo.titolo,''),' ',liste_regalo.codice,' ',coalesce(liste_regalo.nome_bambino,''),' ',coalesce(liste_regalo.genitore_1,''),' ',coalesce(liste_regalo.genitore_2,''),' ',coalesce(liste_regalo.email,''))"	=>	$this->viewArgs["titolo"],
-				),
 				'liste_regalo.attivo'	=>	$this->viewArgs['attivo'],
 			))
 			->inner(array("tipo", "cliente"))
@@ -76,22 +73,21 @@ class ListeregaloController extends BaseController
 		
 		if ($this->viewArgs["titolo"] != "tutti")
 		{
-			$tokens = explode(" ", $this->viewArgs['attivo']);
-			
+			$tokens = explode(" ", $this->viewArgs['titolo']);
 			$andArray = array();
 			$iCerca = 8;
 			
 			foreach ($tokens as $token)
 			{
 				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',regusers.nome,' ',regusers.username,' ',regusers.ragione_sociale,' ',coalesce(liste_regalo.titolo,''),' ',liste_regalo.codice,' ',coalesce(liste_regalo.nome_bambino,''),' ',coalesce(liste_regalo.genitore_1,''),' ',coalesce(liste_regalo.genitore_2,''),' ',coalesce(liste_regalo.email,''))"	=>	sanitizeAll(htmlentitydecode($token)),
+					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',coalesce(liste_regalo.titolo,''),' ',liste_regalo.codice,' ',coalesce(liste_regalo.nome_bambino,''),' ',coalesce(liste_regalo.genitore_1,''),' ',coalesce(liste_regalo.genitore_2,''),' ',coalesce(liste_regalo.email,''))"	=>	sanitizeAll(htmlentitydecode($token)),
 				);
 				
 				$iCerca++;
 			}
 			
 			$this->m[$this->modelName]->aWhere(array(
-				"AND"	=>	$andArray,
+				"    AND"	=>	$andArray,
 			));
 		}
 		
