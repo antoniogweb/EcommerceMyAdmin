@@ -66,13 +66,9 @@ class ListeregaloController extends BaseController
 		$this->m[$this->modelName]->clear()
 			->select("*")
 			->where(array(
-				"OR"	=> array(
-					"lk" => array('liste_regalo.titolo' => $this->viewArgs['titolo']),
-					" lk" => array('liste_regalo.codice' => $this->viewArgs['titolo']),
-					"  lk" => array('liste_regalo.nome_bambino' => $this->viewArgs['titolo']),
-					"   lk" => array('liste_regalo.genitore_1' => $this->viewArgs['titolo']),
-					"    lk" => array('liste_regalo.genitore_2' => $this->viewArgs['titolo']),
-					),
+				"lk"	=>	array(
+					"n!concat(regusers.ragione_sociale,' ',regusers.username,' ',regusers.nome,' ',regusers.cognome,' ',regusers.nome,' ',regusers.username,' ',regusers.ragione_sociale,' ',liste_regalo.titolo,' ',liste_regalo.codice,' ',liste_regalo.nome_bambino,' ',liste_regalo.genitore_1,' ',liste_regalo.genitore_2,' ',liste_regalo.email)"	=>	$this->viewArgs["titolo"],
+				),
 				'liste_regalo.attivo'	=>	$this->viewArgs['attivo'],
 			))
 			->inner(array("tipo", "cliente"))
