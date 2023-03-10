@@ -1767,11 +1767,11 @@ function getShopCategoryId()
 	return $c->getShopCategoryId();
 }
 
-function categorieFiglie($id_c)
+function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true, $traduzione = true)
 {
 	$c = new CategoriesModel();
 	
-	return $c->categorieFiglie($id_c);
+	return $c->categorieFiglie($id_c, $select, $soloAttivi, $traduzione);
 }
 
 function isImmediateChild($idCat, $idParent)

@@ -49,6 +49,7 @@ class HierarchicalModel extends GenericModel {
 	public static $rebuildTreeOnUpdate = true;
 	
 	public static $currentRecord = null;
+	public static $strutturaCategorie = [];
 	
 	public function __construct() {
 		
@@ -890,6 +891,57 @@ class HierarchicalModel extends GenericModel {
 		return $right+1;   
 	}
 	
+	public static function getDataCategoria($idC)
+	{
+		if (isset(self::$strutturaCategorie[$idC]))
+			return self::$strutturaCategorie[$idC];
+		
+		$c = new CategoriesModel();
+		$tableName = $c->table();
+		$pkName = $c->getPrimaryKey();
+		
+		$res = $c->clear()->addJoinTraduzioneCategoria()->send();
+		
+		foreach ($res as $cat)
+		{
+			self::$strutturaCategorie[$cat[$tableName][$pkName]] = $cat;
+		}
+		
+		if (isset(self::$strutturaCategorie[$idC]))
+			return self::$strutturaCategorie[$idC];
+	}
+	
+	public function parentsForAlias($id, $lingua = null)
+	{
+		$clean["id"] = (int)$id;
+		
+		$res = self::getDataCategoria($clean["id"]);
+		
+		if (count($res) > 0)
+		{
+			$lft = $res[$this->_tables]["lft"];
+			$rgt = $res[$this->_tables]["rgt"];
+			
+			//select the parents and the element
+			$this->clear()->where(array(
+				"lte" => array("lft" => $lft),
+				"gte" => array("rgt" => $rgt),
+			))->orderBy("lft");
+			
+			if (!$lingua)
+				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias")->send();
+			else
+				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias,contenuti_tradotti.alias")->left("contenuti_tradotti")->on(array(
+					"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
+					array(sanitizeDb($lingua))
+				))->send();
+			
+			return $parents;
+		}
+		
+		return array();
+	}
+	
 	//get the URL of a node
 	public function getUrlAlias($id, $lingua = null)
 	{
@@ -897,7 +949,8 @@ class HierarchicalModel extends GenericModel {
 		
 		$clean["id"] = (int)$id;
 		
-		$parents = $this->parents($clean["id"], false, false, $lingua);
+// 		$parents = $this->parents($clean["id"], false, false, $lingua);
+		$parents = $this->parentsForAlias($clean["id"], $lingua);
 		
 		//remove the root node
 		array_shift($parents);

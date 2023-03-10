@@ -902,11 +902,13 @@ class CategoriesModel extends HierarchicalModel {
 		return $cat->rowNumber();
 	}
 	
-	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true)
+	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true, $traduzione = true)
 	{
 		$this->clear()->select($select)
-			->addJoinTraduzioneCategoria()
 			->where(array("id_p"=>(int)$id_c))->orderBy("categories.lft");
+		
+		if ($traduzione)
+			$this->addJoinTraduzioneCategoria();
 		
 		if ($soloAttivi)
 			$this->aWhere(array(
