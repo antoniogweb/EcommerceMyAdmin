@@ -266,13 +266,37 @@ class BaseContenutiController extends BaseController
 				$elencoMarchiTitle[mfield($marchio,"alias")] = mfield($marchio,"titolo");
 			}
 			
-			if (count($this->pageArgs) > 0 && isset($elencoMarchiEncoded[$this->pageArgs[0]]))
+			// Marchio prima della categoria
+			if (v("marchio_prima_della_categoria_in_url") && count($this->pageArgs) > 0 && isset($elencoMarchiEncoded[$this->pageArgs[0]]))
 			{
 				$this->idMarchio = MarchiModel::$currentId = $elencoMarchiEncoded[$this->pageArgs[0]];
 				$titleMarchio = $this->titleMarchio = $elencoMarchiTitle[$this->pageArgs[0]];
 				$this->aliasMarchio = $data["aliasMarchioCorrente"] = $this->pageArgs[0];
 				
 				array_shift($this->pageArgs);
+			}
+			
+			// Marchio dopo la categoria
+			if (!v("marchio_prima_della_categoria_in_url"))
+			{
+				$indiceMarchio = 0;
+				
+				foreach ($this->pageArgs as $pArg)
+				{
+					if (isset($elencoMarchiEncoded[$pArg]))
+					{
+						$this->idMarchio = MarchiModel::$currentId = $elencoMarchiEncoded[$pArg];
+						$titleMarchio = $this->titleMarchio = $elencoMarchiTitle[$pArg];
+						$this->aliasMarchio = $data["aliasMarchioCorrente"] = $pArg;
+						
+						break;
+					}
+					
+					$indiceMarchio++;
+				}
+				
+				if ($this->idMarchio)
+					array_splice($this->pageArgs, $indiceMarchio, 1);
 			}
 		}
 		
@@ -497,7 +521,8 @@ class BaseContenutiController extends BaseController
 		$ext = Parametri::$useHtmlExtension ? $estensioneTipo : null;
 		
 		$tempParents = $this->rParent;
-
+		$aliasMarchio = "";
+		
 		if ($this->idMarchio)
 		{
 			$t = new MarchiModel();
@@ -506,8 +531,12 @@ class BaseContenutiController extends BaseController
 			))->addJoinTraduzione()->first();
 			
 			if (!empty($tag))
-				array_unshift($tempParents, mfield($tag,"alias"));
+				$aliasMarchio = mfield($tag,"alias");
 		}
+		
+		// Marchio prima della categoria
+		if (v("marchio_prima_della_categoria_in_url") && $aliasMarchio)
+			array_unshift($tempParents, mfield($tag,"alias"));
 		
 		if ($this->idTag)
 		{
@@ -526,6 +555,10 @@ class BaseContenutiController extends BaseController
 		
 		if (!$this->idMarchio || (string)trim($this->cleanAlias,"/") !== (string)$aliasShop)
 			$arrayUrl = array($this->cleanAlias);
+		
+		// Marchio dopo la categoria
+		if (!v("marchio_prima_della_categoria_in_url") && $aliasMarchio)
+			$arrayUrl[] = $aliasMarchio;
 		
 		// Caratteristiche
 		if (!empty(CaratteristicheModel::$filtriUrl))
@@ -629,24 +662,17 @@ class BaseContenutiController extends BaseController
 				
 				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<span class='breadcrumb_last_text'>".$titolo."</span>".v("breadcrumb_element_close")."\n");
 				
-// 				if (v("link_marchio_in_breadcrumb") && isset($tempParents[count($tempParents)-1]["pages"]["id_marchio"]) && $tempParents[count($tempParents)-1]["pages"]["id_marchio"])
-// 				{
-// 					$marchio = MarchiModel::getDataMarchio($tempParents[count($tempParents)-1]["pages"]["id_marchio"]);
-// 					
-// 					if ($marchio)
-// 					{
-// // 						print_r($marchio);
-// 						
-// 						$alias = mfield($marchio,"alias");
-// 						
-// 						$marchioHrefArray = $hrefArray;
-// 						$marchioHrefArray[] = $alias;
-// 						
-// 						$refMarchio = implode("/",$marchioHrefArray).v("estensione_url_categorie");
-// 						
-// 						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/$refMarchio'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
-// 					}
-// 				}
+				// Aggiungo il marchio nella breadcrumb
+				if (v("link_marchio_in_breadcrumb") && isset($tempParents[count($tempParents)-1]["pages"]["id_marchio"]) && $tempParents[count($tempParents)-1]["pages"]["id_marchio"])
+				{
+					$marchio = MarchiModel::getDataMarchio($tempParents[count($tempParents)-1]["pages"]["id_marchio"]);
+					
+					if ($marchio)
+					{
+						$alias = mfield($marchio,"alias");
+						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio(0, $tempParents[count($tempParents)-1]["pages"]["id_marchio"], $tempParents[count($tempParents)-1]["pages"]["id_c"])."'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
+					}
+				}
 			}
 			else
 			{

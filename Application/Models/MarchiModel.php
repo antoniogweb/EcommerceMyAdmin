@@ -199,7 +199,15 @@ class MarchiModel extends GenericModel
 		
 				$idShop = $c->getShopCategoryId();
 				
-				return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
+				if (v("marchio_prima_della_categoria_in_url"))
+					return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
+				else
+				{
+					Parametri::$useHtmlExtension = false;
+					$aliasShop = $c->getUrlAlias($idShop);
+					Parametri::$useHtmlExtension = true;
+					return $aliasShop."/".mfield($marchio[0],"alias").v("estensione_url_categorie");
+				}
 			}
 			else
 				return mfield($marchio[0],"alias").v("estensione_url_categorie");

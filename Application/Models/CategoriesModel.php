@@ -954,6 +954,8 @@ class CategoriesModel extends HierarchicalModel {
 				$urlArray[] = self::$elencoTag[$id_tag];
 		}
 		
+		$aliasMarchio = "";
+		
 		if ($id_marchio)
 		{
 			if (!isset(self::$elencoMarchi))
@@ -969,8 +971,11 @@ class CategoriesModel extends HierarchicalModel {
 			}
 			
 			if (isset(self::$elencoMarchi[$id_marchio]))
-				$urlArray[] = self::$elencoMarchi[$id_marchio];
+				$aliasMarchio = self::$elencoMarchi[$id_marchio];
 		}
+		
+		if ($aliasMarchio && v("marchio_prima_della_categoria_in_url"))
+			$urlArray[] = self::$elencoMarchi[$id_marchio];
 		
 		if ($id_c && ($id_c != CategoriesModel::$idShop || v("shop_in_alias_tag") || v("shop_in_alias_marchio") || (!$id_tag && !$id_marchio)))
 		{
@@ -985,6 +990,9 @@ class CategoriesModel extends HierarchicalModel {
 			else
 				$urlArray[] = $id_c;
 		}
+		
+		if ($aliasMarchio && !v("marchio_prima_della_categoria_in_url"))
+			$urlArray[] = self::$elencoMarchi[$id_marchio];
 		
 		// Filtri URL caratteristiche
 		if (count($filtri) > 0)

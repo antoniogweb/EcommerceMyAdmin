@@ -454,6 +454,7 @@ class VariabiliModel extends GenericModel {
 		"cerca_la_pagina_dal_codice"	=>	0, // se impostato su 1, il sistema non cerca l'ALIAS esatto ma cerca il codice nell'URL e cerca la pagina per il codice
 		"carattere_divisione_parole_permalink"	=>	"-", // carattere usato per creare il permalink
 		"categoria_in_permalink_pagina"	=>	0, // se impostato ad 1, per le nuove pagine viene aggiunta la categoria nel permalink
+		"marchio_prima_della_categoria_in_url"	=>	1, // se importato ad 1 il marchio viene posizionato prima dell categoria in URL (altrimenti dopo)
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"aggiuni_a_correlati_prodotti_stessa_categoria"	=>	0, // se impostato su 1, aggiunge ai correlati manuali anche i prodotti della stessa categoria
