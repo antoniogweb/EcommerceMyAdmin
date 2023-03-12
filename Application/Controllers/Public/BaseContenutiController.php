@@ -54,6 +54,9 @@ class BaseContenutiController extends BaseController
 	public $section;
 	public $catSWhere = "";
 	
+	public $titleTag = "";
+	public $titleMarchio = "";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -246,7 +249,7 @@ class BaseContenutiController extends BaseController
 			if (count($this->pageArgs) > 0 && isset($elencoTagEncoded[$this->pageArgs[0]]))
 			{
 				$this->idTag = TagModel::$currentId = $elencoTagEncoded[$this->pageArgs[0]];
-				$titleTag = $elencoTagTitle[$this->pageArgs[0]];
+				$titleTag = $this->titleTag = $elencoTagTitle[$this->pageArgs[0]];
 				$this->aliasTag = $data["aliasTagCorrente"] = $this->pageArgs[0];
 				array_shift($this->pageArgs);
 			}
@@ -256,14 +259,17 @@ class BaseContenutiController extends BaseController
 		{
 			$elencoMarchi = $this->m("MarchiModel")->clear()->addJoinTraduzione()->send();
 			$elencoMarchiEncoded = array();
+			$elencoMarchiTitle = array();
 			foreach ($elencoMarchi as $marchio)
 			{
 				$elencoMarchiEncoded[mfield($marchio,"alias")] = $marchio["marchi"]["id_marchio"];
+				$elencoMarchiTitle[mfield($marchio,"alias")] = mfield($marchio,"titolo");
 			}
 			
 			if (count($this->pageArgs) > 0 && isset($elencoMarchiEncoded[$this->pageArgs[0]]))
 			{
 				$this->idMarchio = MarchiModel::$currentId = $elencoMarchiEncoded[$this->pageArgs[0]];
+				$titleMarchio = $this->titleMarchio = $elencoMarchiTitle[$this->pageArgs[0]];
 				$this->aliasMarchio = $data["aliasMarchioCorrente"] = $this->pageArgs[0];
 				
 				array_shift($this->pageArgs);
@@ -348,12 +354,7 @@ class BaseContenutiController extends BaseController
 						$this->fullParents = $parents[$id];
 						$clean["id"] = $id;
 						
-						$metaTitlePagina = field($parents[$id][count($parents[$id])-1], "meta_title");
-						$titoloPagina = field($parents[$id][count($parents[$id])-1], "title");
-						
-						$titleDaUsare = trim($metaTitlePagina) ? $metaTitlePagina : $titoloPagina;
-						
-						$data["title"] = Parametri::$nomeNegozio . " - ".F::meta($titleDaUsare);
+						$data["title"] = $this->getTitlePagina($parents[$id][count($parents[$id])-1]);
 					}
 				}
 
@@ -367,13 +368,23 @@ class BaseContenutiController extends BaseController
 				$parents = $this->m("CategoriesModel")->parents($clean['id'],false,false, Params::$lang);
 				array_shift($parents); //remove the root parent
 				
-				if (isset($parents[count($parents)-1]["contenuti_tradotti"]["title"]) && $parents[count($parents)-1]["contenuti_tradotti"]["title"])
-					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["contenuti_tradotti"]["title"]);
-				else
-					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["categories"]["title"]);
+// 				if (isset($parents[count($parents)-1]["contenuti_tradotti"]["title"]) && $parents[count($parents)-1]["contenuti_tradotti"]["title"])
+// 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["contenuti_tradotti"]["title"]);
+// 				else
+// 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["categories"]["title"]);
+// 				
+// 				if ($this->titleTag && (int)$clean['id'] === (int)$this->idShop)
+// 					$data["title"] = Parametri::$nomeNegozio . " - " .$this->titleTag;
+// 				
+// 				if ($this->titleMarchio)
+// 				{
+// 					if ((int)$clean['id'] === (int)$this->idShop)
+// 						$data["title"] = Parametri::$nomeNegozio . " - " .$this->titleMarchio;
+// 					else
+// 						$data["title"] .= " - " .$this->titleMarchio;
+// 				}
 				
-				if ($titleTag && (int)$clean['id'] === (int)$this->idShop)
-					$data["title"] = Parametri::$nomeNegozio . " - " .$titleTag;
+				$data["title"] = $this->getTitleCategoria($parents[count($parents)-1], $clean['id']);
 				
 				$this->fullParents = $parents;
 
@@ -411,7 +422,42 @@ class BaseContenutiController extends BaseController
 		
 		$this->append($data);
 	}
-
+	
+	// Restituisce il title html della pagina
+	// $page contiene anche la traduzione in contenuti_tradotti
+	protected function getTitlePagina($page)
+	{
+		$metaTitlePagina = field($page, "meta_title");
+		$titoloPagina = field($page, "title");
+		
+		$titleDaUsare = trim($metaTitlePagina) ? $metaTitlePagina : $titoloPagina;
+		
+		return Parametri::$nomeNegozio . " - ".F::meta($titleDaUsare);
+	}
+	
+	// Restituisce il title html della categoria
+	// $categoria contiene anche la traduzione in contenuti_tradotti
+	protected function getTitleCategoria($categoria, $idCat = 0)
+	{
+		if (isset($categoria["contenuti_tradotti"]["title"]) && $categoria["contenuti_tradotti"]["title"])
+			$title = Parametri::$nomeNegozio . " - " . strtolower($categoria["contenuti_tradotti"]["title"]);
+		else
+			$title = Parametri::$nomeNegozio . " - " . strtolower($categoria["categories"]["title"]);
+		
+		if ($this->titleTag && (int)$idCat === (int)$this->idShop)
+			$title = Parametri::$nomeNegozio . " - " .$this->titleTag;
+		
+		if ($this->titleMarchio)
+		{
+			if ((int)$idCat === (int)$this->idShop)
+				$title = Parametri::$nomeNegozio . " - " .$this->titleMarchio;
+			else
+				$title .= " - " .$this->titleMarchio;
+		}
+		
+		return $title;
+	}
+	
 	public function notfound()
 	{
 		$data["title"] = Parametri::$nomeNegozio . " - pagina non trovata";
