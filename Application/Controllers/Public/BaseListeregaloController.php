@@ -54,7 +54,7 @@ class BaseListeregaloController extends BaseController
 			$data["arrayLingue"][$l] = $l."/liste-regalo/";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '. gtext("Liste regalo");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Liste regalo"));
 		
 		$clean["id_lista"] = $this->request->get("id_lista",0,"forceInt");
 		$clean["valore"] = $this->request->get("valore","","sanitizeAll");
@@ -101,7 +101,7 @@ class BaseListeregaloController extends BaseController
 		
 		$this->checkLista($id);
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '. gtext("Gestisci la tua lista");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestisci la tua lista"));
 		
 		$data["lista"] = $lista = $this->m('ListeregaloModel')->selectId($clean["id"]);
 		
@@ -277,7 +277,7 @@ class BaseListeregaloController extends BaseController
 		$this->checkLista($id);
 		
 		$title = $id ? gtext("Modifica la tua lista") : gtext("Crea la tua lista");
-		$data['title'] = Parametri::$nomeNegozio . ' - '. $title;
+		$data['title'] = $this->aggiungiNomeNegozioATitle($title);
 		
 		$lista = $this->m('ListeregaloModel')->selectId($clean["id"]);
 		

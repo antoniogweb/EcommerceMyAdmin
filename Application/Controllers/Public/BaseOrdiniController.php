@@ -38,7 +38,7 @@ class BaseOrdiniController extends BaseController
 		$this->load('header');
 		$this->load('footer','last');
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - Gestione ordine';
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Gestione ordine'));
 
 		$this->append($data);
 	}
@@ -298,7 +298,7 @@ class BaseOrdiniController extends BaseController
 		
 		$data['notice'] = null;
 		
-		$data['title'] = Parametri::$nomeNegozio . " - Modifica resoconto ordine";
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica resoconto ordine"));
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		$clean["id_o"] = (int)$id_o;
@@ -347,7 +347,7 @@ class BaseOrdiniController extends BaseController
 	{
 		$data['notice'] = null;
 		$data["isAreaRiservata"] = true;
-		$data['title'] = Parametri::$nomeNegozio . " - Resoconto ordine";
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Resoconto ordine"));
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
@@ -619,7 +619,7 @@ class BaseOrdiniController extends BaseController
 		
 		VariabiliModel::noCookieAlert();
 		
-		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
 		
 		if (isset($_GET["item_number"]) || isset($_GET["tx"]))
 		{
@@ -688,7 +688,7 @@ class BaseOrdiniController extends BaseController
 		
 		VariabiliModel::noCookieAlert();
 		
-		$data['title'] = Parametri::$nomeNegozio . " - Grazie per l'acquisto";
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
 		
 		PagamentiModel::gateway()->validate(false);
 		
@@ -775,7 +775,7 @@ class BaseOrdiniController extends BaseController
 		if( !session_id() )
 			session_start();
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - Checkout';
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Checkout'));
 		
 		$data['customHeaderClass'] = "";
 // 		$data["inlineCssFile"] = "auros-css-inline-category.css";

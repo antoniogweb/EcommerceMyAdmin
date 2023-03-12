@@ -432,7 +432,7 @@ class BaseContenutiController extends BaseController
 		
 		$titleDaUsare = trim($metaTitlePagina) ? $metaTitlePagina : $titoloPagina;
 		
-		return Parametri::$nomeNegozio . " - ".F::meta($titleDaUsare);
+		return $this->aggiungiNomeNegozioATitle(F::meta($titleDaUsare));
 	}
 	
 	// Restituisce il title html della categoria
@@ -440,20 +440,22 @@ class BaseContenutiController extends BaseController
 	protected function getTitleCategoria($categoria, $idCat = 0)
 	{
 		if (isset($categoria["contenuti_tradotti"]["title"]) && $categoria["contenuti_tradotti"]["title"])
-			$title = Parametri::$nomeNegozio . " - " . strtolower($categoria["contenuti_tradotti"]["title"]);
+			$title = strtolower($categoria["contenuti_tradotti"]["title"]);
 		else
-			$title = Parametri::$nomeNegozio . " - " . strtolower($categoria["categories"]["title"]);
+			$title = strtolower($categoria["categories"]["title"]);
 		
 		if ($this->titleTag && (int)$idCat === (int)$this->idShop)
-			$title = Parametri::$nomeNegozio . " - " .$this->titleTag;
+			$title = $this->titleTag;
 		
 		if ($this->titleMarchio)
 		{
 			if ((int)$idCat === (int)$this->idShop)
-				$title = Parametri::$nomeNegozio . " - " .$this->titleMarchio;
+				$title = $this->titleMarchio;
 			else
 				$title .= " - " .$this->titleMarchio;
 		}
+		
+		$title = $this->aggiungiNomeNegozioATitle($title);
 		
 		return $title;
 	}

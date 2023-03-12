@@ -909,6 +909,8 @@ class HierarchicalModel extends GenericModel {
 		
 		if (isset(self::$strutturaCategorie[$idC]))
 			return self::$strutturaCategorie[$idC];
+		
+		return array();
 	}
 	
 	public function parentsForAlias($id, $lingua = null)

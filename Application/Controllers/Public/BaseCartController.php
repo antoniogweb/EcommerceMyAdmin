@@ -31,7 +31,7 @@ class BaseCartController extends BaseController
 		$this->load('header');
 		$this->load('footer','last');
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - Carrello';
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Carrello'));
 		
 		$data["arrayLingue"] = array();
 		

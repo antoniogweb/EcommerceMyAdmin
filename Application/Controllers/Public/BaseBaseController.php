@@ -1340,4 +1340,10 @@ class BaseBaseController extends Controller
 		if (($controller == "home" && ($action == "index" || $action == "xmlprodotti")) || ($controller == "contenuti" && $action == "index"))
 			Cache_Db::addTablesToCache(array("combinazioni","scaglioni"));
 	}
+	
+	// Aggiunge il nome del negozio davanti o in coda
+	protected function aggiungiNomeNegozioATitle($title)
+	{
+		return Parametri::$nomeNegozio . ' - '.$title;
+	}
 }

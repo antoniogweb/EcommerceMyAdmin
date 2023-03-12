@@ -224,5 +224,7 @@ class MarchiModel extends GenericModel
 		
 		if (isset(self::$strutturaMarchi[$idMarchio]))
 			return self::$strutturaMarchi[$idMarchio];
+		
+		return array();
 	}
 }

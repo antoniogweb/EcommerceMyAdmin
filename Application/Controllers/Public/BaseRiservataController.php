@@ -49,7 +49,7 @@ class BaseRiservataController extends BaseController
 			$data["arrayLingue"][$l] = $l."/area-riservata";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '. gtext("Area riservata");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Area riservata"));
 
 		$this->append($data);
 		
@@ -64,7 +64,7 @@ class BaseRiservataController extends BaseController
 			$data["arrayLingue"][$l] = $l."/ordini-effettuati";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '.gtext("Lista ordini effettuati");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista ordini effettuati"));
 
 		$data['ordini'] = $this->m("OrdiniModel")->clear()->where(array("id_user"=>$this->iduser))->orderBy("id_o desc")->send();
 		
@@ -80,7 +80,7 @@ class BaseRiservataController extends BaseController
 			$data["arrayLingue"][$l] = $l."/riservata/indirizzi";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '.gtext("Lista indirizzi di spedizione");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista indirizzi di spedizione"));
 		
 		$clean["id_spedizione"] = $this->request->get("del",0,"forceInt");
 		
@@ -109,7 +109,7 @@ class BaseRiservataController extends BaseController
 			$data["arrayLingue"][$l] = $l."/riservata/feedback";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '.gtext("Elenco feedback inseriti");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Elenco feedback inseriti"));
 		
 		$this->append($data);
 		
@@ -123,7 +123,7 @@ class BaseRiservataController extends BaseController
 			$data["arrayLingue"][$l] = $l."/riservata/privacy";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - '.gtext("Condizioni di privacy");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Condizioni di privacy"));
 		
 		$data["notice"] = $data["noticecookies"] = null;
 		

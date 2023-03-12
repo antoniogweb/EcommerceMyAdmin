@@ -51,7 +51,7 @@ class BaseRegusersController extends BaseController
 		
 // 		IpcheckModel::check($controller.$action);
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - Login';
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
 		
 		$data["arrayLingue"] = array();
 		
@@ -73,7 +73,7 @@ class BaseRegusersController extends BaseController
 	
 	public function login()
 	{
-		$data['title'] = Parametri::$nomeNegozio . ' - Login';
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
 		
 		$data['headerClass'] = "";
 		
@@ -428,7 +428,7 @@ class BaseRegusersController extends BaseController
 	
 	public function forgot()
 	{
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi una nuova password");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("richiedi una nuova password"));
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
@@ -678,7 +678,7 @@ class BaseRegusersController extends BaseController
 	
 	public function change($forgot_token = '')
 	{
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Imposta nuova password");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Imposta nuova password"));
 
 		$validToken = false;
 		
@@ -756,7 +756,7 @@ class BaseRegusersController extends BaseController
 	{
 		$this->s['registered']->check(null,0);
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica password");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica password"));
 		$data['notice'] = null;
 		$data["isAreaRiservata"] = true;
 		foreach (Params::$frontEndLanguages as $l)
@@ -837,7 +837,7 @@ class BaseRegusersController extends BaseController
 			$data["arrayLingue"][$l] = $l."/modifica-account";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Modifica account");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica account"));
 		$data['notice'] = null;
 		$data['action'] = "/modifica-account".RegusersModel::$redirectQueryString;
 		$data["isAreaRiservata"] = true;
@@ -951,7 +951,7 @@ class BaseRegusersController extends BaseController
 			$data["arrayLingue"][$l] = $l."/gestisci-spedizione/".$clean["id"];
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Gestisci spedizione", false);
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestisci spedizione", false));
 		$data['notice'] = null;
 		$data['action'] = "/gestisci-spedizione/".$clean["id"];
 		
@@ -1025,7 +1025,7 @@ class BaseRegusersController extends BaseController
 			$data["arrayLingue"][$l] = $l."/crea-account";
 		}
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("registrati");
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("registrati"));
 		
 		$redirect = RegusersModel::getRedirect();
 		
@@ -1051,7 +1051,7 @@ class BaseRegusersController extends BaseController
 	{
 		VariabiliModel::noCookieAlert();
 		
-		$data['title'] = Parametri::$nomeNegozio . ' - Avvisi';
+		$data['title'] = $this->aggiungiNomeNegozioATitle('Avvisi');
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
