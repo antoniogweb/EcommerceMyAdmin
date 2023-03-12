@@ -74,7 +74,6 @@ class VariabiliModel extends GenericModel {
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
 		"referenze_attive"			=>	1,
 		"blog_attivo"				=>	1,
-		"divisone_breadcrum"		=>	" » ",
 		"shop_in_alias_tag"			=>	0,
 		"menu_class_prefix"			=>	"",
 		"primo_attributo_selezionato"	=>	0,
@@ -454,6 +453,7 @@ class VariabiliModel extends GenericModel {
 		"tabelle_con_possibile_alias_duplicato"	=>	"", // comma separated list of tables that can have duplicate alias
 		"cerca_la_pagina_dal_codice"	=>	0, // se impostato su 1, il sistema non cerca l'ALIAS esatto ma cerca il codice nell'URL e cerca la pagina per il codice
 		"carattere_divisione_parole_permalink"	=>	"-", // carattere usato per creare il permalink
+		"categoria_in_permalink_pagina"	=>	0, // se impostato ad 1, per le nuove pagine viene aggiunta la categoria nel permalink
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"aggiuni_a_correlati_prodotti_stessa_categoria"	=>	0, // se impostato su 1, aggiunge ai correlati manuali anche i prodotti della stessa categoria
@@ -625,6 +625,10 @@ class VariabiliModel extends GenericModel {
 		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
 		## PRODOTTI ##
 		"controlla_che_il_codice_prodotti_sia_unico"	=>	0, // se impostato a 1, non permette da pannello admin di aggiungere un prodotto avente lo stesso codice di un altro prodotto
+		## BREADCRUMB ##
+		"divisone_breadcrum"		=>	" » ",
+		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto
+		"link_marchio_in_breadcrumb"	=>	0, // se impostato a 1, aggiunge il link al marchio nella breadcrumb
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

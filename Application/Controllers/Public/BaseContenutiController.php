@@ -577,6 +577,9 @@ class BaseContenutiController extends BaseController
 		else
 			$tempParents = $this->fullParents;
 		
+		if (v("togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio") && count($tempParents) > 0 && PagesModel::$currentIdPage && $this->firstSection == Parametri::$nomeSezioneProdotti)
+			array_shift($tempParents);
+		
 // 		print_r($tempParents);
 // 		die();
 		$breadcrumbArray = array();
@@ -625,6 +628,25 @@ class BaseContenutiController extends BaseController
 				$titolo = $this->titoloBreadcrumb($titolo, true);
 				
 				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<span class='breadcrumb_last_text'>".$titolo."</span>".v("breadcrumb_element_close")."\n");
+				
+// 				if (v("link_marchio_in_breadcrumb") && isset($tempParents[count($tempParents)-1]["pages"]["id_marchio"]) && $tempParents[count($tempParents)-1]["pages"]["id_marchio"])
+// 				{
+// 					$marchio = MarchiModel::getDataMarchio($tempParents[count($tempParents)-1]["pages"]["id_marchio"]);
+// 					
+// 					if ($marchio)
+// 					{
+// // 						print_r($marchio);
+// 						
+// 						$alias = mfield($marchio,"alias");
+// 						
+// 						$marchioHrefArray = $hrefArray;
+// 						$marchioHrefArray[] = $alias;
+// 						
+// 						$refMarchio = implode("/",$marchioHrefArray).v("estensione_url_categorie");
+// 						
+// 						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/$refMarchio'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
+// 					}
+// 				}
 			}
 			else
 			{

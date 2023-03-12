@@ -916,7 +916,31 @@ class PagesModel extends GenericModel {
 	public function setAlias($id)
 	{
 		if (isset($this->values[$this->aliaseFieldName]) && strcmp($this->values[$this->aliaseFieldName],"") === 0)
-			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
+		{
+			$alias = encodeUrl($this->values[$this->titleFieldName]);
+			
+			if (v("categoria_in_permalink_pagina") && isset($this->values["id_c"]))
+			{
+				$c = new CategoriesModel();
+				
+				$idCShop = $c->getShopCategoryId();
+				
+				if ((int)$idCShop !== (int)$this->values["id_c"])
+				{
+					$section = $c->section((int)$this->values["id_c"], true);
+					
+					if (strcmp($section,Parametri::$nomeSezioneProdotti) === 0)
+					{
+						$categoria = CategoriesModel::getDataCategoria((int)$this->values["id_c"]);
+						
+						if ($categoria)
+							$alias .= "-".encodeUrl($categoria["categories"]["alias"]);
+					}
+				}
+			}
+			
+			$this->values[$this->aliaseFieldName] = sanitizeDb($alias);
+		}
 		
 		$this->checkAliasAll($id);
 	}
