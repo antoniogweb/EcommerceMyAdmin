@@ -484,6 +484,14 @@ class BaseContenutiController extends BaseController
 		return $title;
 	}
 	
+	protected function getMetaDescriptionCategoria($categoria)
+	{
+		if (cfield($categoria, "meta_description"))
+			return F::meta(cfield($categoria, "meta_description"));
+		
+		return "";
+	}
+	
 	public function notfound()
 	{
 		$data["title"] = Parametri::$nomeNegozio . " - pagina non trovata";
@@ -508,10 +516,10 @@ class BaseContenutiController extends BaseController
 	{
 		if ($this->urlParent !== $this->rParent)
 		{
-			$estensioneTipo = ($tipo == "categoria") ? v("estensione_url_categorie") : ".html";
-			$ext = Parametri::$useHtmlExtension ? $estensioneTipo : null;
-			$rightUrl = ltrim(Url::createUrl(array_merge($this->rParent,array($this->cleanAlias)),null,true),"/");
-			$this->redirect($rightUrl.$ext);
+// 			$estensioneTipo = ($tipo == "categoria") ? v("estensione_url_categorie") : ".html";
+// 			$ext = Parametri::$useHtmlExtension ? $estensioneTipo : null;
+// 			$rightUrl = ltrim(Url::createUrl(array_merge($this->rParent,array($this->cleanAlias)),null,true),"/");
+// 			$this->redirect($rightUrl.$ext);
 		}
 	}
 	
@@ -788,8 +796,10 @@ class BaseContenutiController extends BaseController
 		
 		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
 		
-		if (cfield($r[0], "meta_description"))
-			$data["meta_description"] = F::meta(cfield($r[0], "meta_description"));
+		$metaDescriptionCategoria = $this->getMetaDescriptionCategoria($r[0]);
+		
+		if ($metaDescriptionCategoria)
+			$data["meta_description"] = $metaDescriptionCategoria;
 		
 		if (cfield($r[0], "keywords"))
 			$data["keywords"] = F::meta(cfield($r[0], "keywords"));
