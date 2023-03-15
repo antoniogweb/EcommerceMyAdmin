@@ -532,7 +532,10 @@ class CartModel extends GenericModel {
 		$sc = new ScaglioniModel();
 		$cl = new ClassiscontoModel();
 		
-		$page = $p->selectId($clean["id_page"]);
+		if (isset(PagesModel::$preloadedPages[$clean["id_page"]]))
+			$page = PagesModel::$preloadedPages[$clean["id_page"]]["pages"];
+		else
+			$page = $p->selectId($clean["id_page"]);
 		
 		$arraySconti = array();
 		$arrayScontiDescrizione = array();
