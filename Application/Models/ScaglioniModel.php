@@ -49,7 +49,7 @@ class ScaglioniModel extends GenericModel {
 	
 	public function getSconto($idPage, $qty)
 	{
-		$res = $this->clear()->where(array(
+		$res = $this->clear()->select("sconto")->where(array(
 			"id_page"	=>	(int)$idPage,
 			"lte"	=>	array("quantita" => (int)$qty)
 		))->orderBy("quantita desc")->limit(1)->toList("sconto")->send();

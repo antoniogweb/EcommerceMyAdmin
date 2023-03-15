@@ -1258,7 +1258,8 @@ class PagesModel extends GenericModel {
 		{
 			if (!User::$nazione || $forzaPrincipale)
 			{
-				$combinazione = CombinazioniModel::g()->selectId((int)$idC);
+// 				$combinazione = CombinazioniModel::g()->selectId((int)$idC);
+				$combinazione = CombinazioniModel::g()->clear()->select("price,price_scontato")->whereId((int)$idC)->record();
 				
 				if (!empty($combinazione) && $combinazione["price"] > 0)
 					return (($combinazione["price"] - $combinazione["price_scontato"]) / $combinazione["price"]) * 100;
@@ -1802,7 +1803,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	//get the parents
-	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null)
+	public function parents($id, $onlyIds = true, $onlyParents = true, $lingua = null, $fields = null, $forUrlAlias = false)
 	{
 		$clean["id"] = (int)$id;
 		
@@ -1811,26 +1812,41 @@ class PagesModel extends GenericModel {
 		if (isset($fields) && is_array($fields))
 			list($fields, $fieldsCategory) = $fields;
 		
-		$this->clear()->where(array($this->_idFields=>$clean["id"]));
+// 		print_r(self::$preloadedPages);
 		
-		if ($fields)
-			$this->select($fields);
-		
-		if ($lingua)
+		if (isset(self::$preloadedPages[$clean["id"]]))
 		{
-			$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
-			
-			$this->addJoinTraduzione($lingua, "contenuti_tradotti", false)->select($f);
+			$temp = self::$preloadedPages[$clean["id"]];
+			unset($temp["categories"]);
+			unset($temp["contenuti_tradotti_categoria"]);
+			$res = array($temp);
 		}
-		
-		$res = $this->send();
+		else
+		{
+			$this->clear()->where(array($this->_idFields=>$clean["id"]));
+			
+			if ($fields)
+				$this->select($fields);
+			
+			if ($lingua)
+			{
+				$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
+				
+				$this->addJoinTraduzione($lingua, "contenuti_tradotti", false)->select($f);
+			}
+			
+			$res = $this->send();
+		}
 		
 		if (count($res) > 0)
 		{
 			$clean['id_c'] = $res[0][$this->_tables]["id_c"];
 			$c = new CategoriesModel();
 			
-			$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fieldsCategory);
+			if ($forUrlAlias)
+				$parents = $c->parentsForAlias($clean['id_c'], $lingua);
+			else
+				$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fieldsCategory);
 			
 			if ($onlyParents)
 			{
@@ -1889,16 +1905,21 @@ class PagesModel extends GenericModel {
 		
 		if (v("mostra_categorie_in_url_prodotto") || !$isProdotto)
 		{
-			if ($lingua)
-				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+			$parents = $this->parents($clean["id"], false, false, $lingua, array(
 					"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
 					"contenuti_tradotti.alias,categories.alias"
-				));
-			else
-				$parents = $this->parents($clean["id"], false, false, $lingua, array(
-					"pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
-					"categories.alias"
-				));
+				), true);
+			
+// 			if ($lingua)
+// 				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+// 					"contenuti_tradotti.alias,pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+// 					"contenuti_tradotti.alias,categories.alias"
+// 				));
+// 			else
+// 				$parents = $this->parents($clean["id"], false, false, $lingua, array(
+// 					"pages.alias,pages.tipo_estensione_url,pages.id_page,pages.id_c",
+// 					"categories.alias"
+// 				));
 			
 			//remove the root node
 			array_shift($parents);
@@ -2203,7 +2224,10 @@ class PagesModel extends GenericModel {
 		}
 		else
 		{
-			$record = $this->selectId($id_page);
+			if (isset(self::$preloadedPages[$clean["id_page"]]))
+				$record = self::$preloadedPages[$clean["id_page"]]["pages"];
+			else
+				$record = $this->selectId($id_page);
 // 			$res = $this->clear()->select("dal,al,in_promozione")->where(array('id_page'=>$clean['id_page']))->send();
 		}
 		
@@ -4486,8 +4510,15 @@ class PagesModel extends GenericModel {
 		return $pages;
 	}
 	
-	public static function preloadPages($pages)
+	public static function preloadPages($pages = array(), $ids = array())
 	{
+		if (count($ids) > 0)
+		{
+			$res = PagesModel::getPageDetailsList($ids);
+			
+			$pages = array_merge($pages, $res);
+		}
+		
 		foreach ($pages as $page)
 		{
 			self::$preloadedPages[$page["pages"]["id_page"]] = $page;
