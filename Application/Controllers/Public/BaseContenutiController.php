@@ -908,6 +908,10 @@ class BaseContenutiController extends BaseController
 			$data["pages"] = $this->m('PagesModel')->send();
 		}
 		
+		// Imposto le pagine trovate
+		if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
+			PagesModel::$currentIdPages = $data["pages"];
+		
 // 		echo $this->m("PagesModel")->getQuery();die();
 		
 		// Uso sottoquery

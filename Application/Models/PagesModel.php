@@ -63,6 +63,7 @@ class PagesModel extends GenericModel {
 	public static $tipiPaginaId = array();
 	
 	public static $currentIdPage = null;
+	public static $currentIdPages = [];
 	public static $homeIdPage = null;
 	public static $currentTipoPagina = "";
 	
@@ -795,12 +796,28 @@ class PagesModel extends GenericModel {
 		return array(""=>"--") + self::$tipiPagina;
 	}
 	
+	public static $tabellaIva = null;
+	
 	public function getIva($idPage)
 	{
-		$iva = $this->clear()->select("iva.valore")->where(array("id_page"=>(int)$idPage))->inner("iva")->on("pages.id_iva = iva.id_iva")->send();
+		if (count(PagesModel::$currentIdPages) > 0 && !isset(self::$tabellaIva))
+		{
+			self::$tabellaIva = $this->clear()->select("pages.id_page,iva.valore")->where(array(
+				"in"	=>	array(
+					"id_page"	=>	forceIntDeep(PagesModel::$currentIdPages),
+				),
+			))->inner("iva")->on("pages.id_iva = iva.id_iva")->toList("pages.id_page", "iva.valore")->send();
+		}
 		
-		if (count($iva) > 0)
-			return $iva[0]["iva"]["valore"];
+		if (isset(self::$tabellaIva[$idPage]))
+			return self::$tabellaIva[$idPage];
+		else
+		{
+			$iva = $this->clear()->select("iva.valore")->where(array("id_page"=>(int)$idPage))->inner("iva")->on("pages.id_iva = iva.id_iva")->send();
+			
+			if (count($iva) > 0)
+				return $iva[0]["iva"]["valore"];
+		}
 		
 		return 0;
 	}

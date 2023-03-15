@@ -900,7 +900,7 @@ class HierarchicalModel extends GenericModel {
 		$tableName = $c->table();
 		$pkName = $c->getPrimaryKey();
 		
-		$res = $c->clear()->addJoinTraduzioneCategoria()->send();
+		$res = $c->clear()->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
 		
 		foreach ($res as $cat)
 		{
@@ -924,19 +924,29 @@ class HierarchicalModel extends GenericModel {
 			$lft = $res[$this->_tables]["lft"];
 			$rgt = $res[$this->_tables]["rgt"];
 			
-			//select the parents and the element
-			$this->clear()->where(array(
-				"lte" => array("lft" => $lft),
-				"gte" => array("rgt" => $rgt),
-			))->orderBy("lft");
+			$parents = [];
 			
-			if (!$lingua)
-				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias")->send();
-			else
-				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias,contenuti_tradotti.alias")->left("contenuti_tradotti")->on(array(
-					"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
-					array(sanitizeDb($lingua))
-				))->send();
+			foreach (self::$strutturaCategorie as $idC => $categoria)
+			{
+				if ($categoria["categories"]["lft"] <= $lft && $categoria["categories"]["rgt"] >= $rgt)
+				{
+					$parents[] = $categoria;
+				}
+			}
+			
+// 			//select the parents and the element
+// 			$this->clear()->where(array(
+// 				"lte" => array("lft" => $lft),
+// 				"gte" => array("rgt" => $rgt),
+// 			))->orderBy("lft");
+// 			
+// 			if (!$lingua)
+// 				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias")->send();
+// 			else
+// 				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias,contenuti_tradotti.alias")->left("contenuti_tradotti")->on(array(
+// 					"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
+// 					array(sanitizeDb($lingua))
+// 				))->send();
 			
 			return $parents;
 		}
