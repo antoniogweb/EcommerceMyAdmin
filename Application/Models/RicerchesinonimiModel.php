@@ -46,7 +46,7 @@ class RicerchesinonimiModel extends GenericModel
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Inserirli uno dopo l'altro divisi da una virgola.")."<br />".gtext("Mantenere la virgola finale")."</div>"
+						"<div class='form_notice'>".gtext("Inserirli uno dopo l'altro divisi da una virgola.")."</div>"
 					),
 				),
 			),
@@ -85,28 +85,12 @@ class RicerchesinonimiModel extends GenericModel
 			
 			$nuovoTermine = $this->clear()->where(array(
 				"lk"	=>	array(
-					"sinonimi"	=>	sanitizeAll($termine.","),
+					"n!concat(',',sinonimi,',')"	=>	sanitizeAll(",".$termine.","),
 				),
 			))->field("titolo");
 			
-// 			$nuovoTermine = "";
-// 			
-// 			foreach ($nuoviTermini as $riga)
-// 			{
-// // 				$nuovoTermine = $riga["titolo"];
-// // 				echo $termine."-".$riga["titolo"]."\n";
-// // 				echo levenshtein($termine, $riga["titolo"])."\n";
-// 				if (levenshtein($termine, $riga["titolo"]) <= 2)
-// 				{
-// 					$nuovoTermine = $riga["titolo"];
-// 					break;
-// 				}
-// 			}
-			
 			$arrayTermini[] = $nuovoTermine ? htmlentitydecode($nuovoTermine) : $termine;
 		}
-		
-// 		print_r();
 		
 		$arrayTermini = array_unique($arrayTermini);
 		

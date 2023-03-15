@@ -22,9 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class RicerchesinonimiController extends BaseController
+class RicercheController extends BaseController
 {
-	public $tabella = "sinonimi";
+	public $tabella = "ricerche";
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
@@ -46,26 +46,25 @@ class RicerchesinonimiController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("ricerche_sinonimi.titolo", "ricerche_sinonimi.sinonimi");
-		$this->mainHead = "Titolo,Sinonimi";
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array();
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'esporta');
+		
+		$this->mainFields = array("ricerche.termini", "aggregate.numero");
+		$this->mainHead = "Termine ricercato,Numero di volte";
 		$this->filters = array("titolo");
 		
 		$this->m[$this->modelName]->clear()
+				->select("count(ricerche.termini) as numero,ricerche.termini,ricerche.data_creazione")
 				->where(array(
-					"OR"	=>	array(
-						"lk" => array('titolo' => $this->viewArgs['titolo']),
-						" lk" => array('sinonimi' => $this->viewArgs['titolo']),
-					),
+					"lk" => array('termini' => $this->viewArgs['titolo']),
 				))
-				->orderBy("titolo")->convert()->save();
+				->orderBy("count(ricerche.termini) desc")->groupBy("termini")->convert()->save();
 		
 		parent::main();
-	}
-
-	public function form($queryType = 'insert', $id = 0)
-	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,sinonimi');
-		
-		parent::form($queryType, $id);
 	}
 }

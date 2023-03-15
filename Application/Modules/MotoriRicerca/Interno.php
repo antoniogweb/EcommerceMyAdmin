@@ -77,6 +77,8 @@ class Interno extends MotoreRicerca
 		
 		$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($search);
 		
+// 		echo $search;
+		
 		$searchArray = explode(" ", preg_quote($search));
 		$pattern = implode("|", $searchArray);
 		

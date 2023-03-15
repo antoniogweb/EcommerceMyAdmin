@@ -786,6 +786,8 @@ class Route
 		'ricerchesinonimi,main',
 		'ricerchesinonimi,form',
 		
+		'ricerche,main',
+		
 		'ipfilter,main',
 		'ipfilter,form',
 		

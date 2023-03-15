@@ -607,6 +607,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_feed"	=>	0, // attiva la sezione per la gestione dei feed xml
 		## MOTORI DI RICERCA ##
 		"attiva_gestione_motori_ricerca"	=> 0, // attiva la sezione per la gestione dei motori di ricerca
+		"salva_ricerche"		=>	1, // se impostato su 1, salva le ricerche fatte
 		## PIXEL ##
 		"attiva_gestione_pixel"	=> 0, // attiva la sezione per la gestione dei pixel
 		## TRANSAZIONI ##

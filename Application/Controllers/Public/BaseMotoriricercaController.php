@@ -50,6 +50,17 @@ class BaseMotoriricercaController extends BaseController
 				
 				$jsonArray = MotoriricercaModel::getModulo($modulo)->cerca("prodotti_".Params::$lang, $search);
 				
+				// Salva la ricerca
+				if (v("salva_ricerche"))
+				{
+					$this->m("RicercheModel")->sValues(array(
+						"termini"	=>	sanitizeAll((string)$search),
+						"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+					));
+					
+					$this->m("RicercheModel")->insert();
+				}
+				
 // 				print_r($jsonArray);die();
 				
 				header('Content-type: application/json; charset=utf-8');
