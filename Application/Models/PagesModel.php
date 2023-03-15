@@ -2974,11 +2974,21 @@ class PagesModel extends GenericModel {
 	
 	public function acquistabile($idPage)
 	{
-		return $this->clear()->where(array(
-			"id_page"		=>	(int)$idPage,
-			"acquistabile"	=>	"Y",
-			"acquisto_diretto"	=>	"Y",
-		))->rowNumber();
+		if (isset(self::$preloadedPages[(int)$idPage]))
+		{
+			$page = self::$preloadedPages[(int)$idPage]["pages"];
+			
+			if ($page["acquistabile"] == "Y" && $page["acquisto_diretto"] == "Y")
+				return true;
+			
+			return false;
+		}
+		else
+			return $this->clear()->where(array(
+				"id_page"		=>	(int)$idPage,
+				"acquistabile"	=>	"Y",
+				"acquisto_diretto"	=>	"Y",
+			))->rowNumber();
 	}
 	
 	public static function gTipoPagina($tipo)
