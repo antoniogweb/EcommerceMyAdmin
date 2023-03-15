@@ -106,6 +106,8 @@ class Algolia extends MotoreRicerca
 		
 		$search = trim($search);
 		
+		$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($search);
+		
 		$res = $index->search($search);
 		
 		$output = $this->elaboraOutput($search, $res);

@@ -783,6 +783,9 @@ class Route
 		'motoriricerca,main',
 		'motoriricerca,form',
 		
+		'ricerchesinonimi,main',
+		'ricerchesinonimi,form',
+		
 		'ipfilter,main',
 		'ipfilter,form',
 		
