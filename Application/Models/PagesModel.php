@@ -64,6 +64,8 @@ class PagesModel extends GenericModel {
 	
 	public static $currentIdPage = null;
 	public static $currentIdPages = [];
+	public static $preloadedPages = [];
+	
 	public static $homeIdPage = null;
 	public static $currentTipoPagina = "";
 	
@@ -1928,7 +1930,7 @@ class PagesModel extends GenericModel {
 		}
 		else
 		{
-			$page = self::getPageDetails($clean["id"], $lingua);
+			$page = isset(self::$preloadedPages[$clean["id"]]) ? self::$preloadedPages[$clean["id"]] : self::getPageDetails($clean["id"], $lingua);
 			
 			if (!empty($page))
 				$urlArray[] = field($page, "alias").$c->getAlias($clean["id"], $lingua, $idC);
@@ -3349,7 +3351,7 @@ class PagesModel extends GenericModel {
 			"in"	=>	array(
 				"id_page"	=>	$idPages,
 			),
-		))->orderBy("FIELD(pages.id_page, ".implode(',', $idPages).")")->send();
+		))->orderBy("FIELD(pages.id_page, ".implode(',', $idPages).")");
 		
 		if (VariabiliModel::combinazioniLinkVeri())
 		{
@@ -4482,5 +4484,13 @@ class PagesModel extends GenericModel {
 		}
 		
 		return $pages;
+	}
+	
+	public static function preloadPages($pages)
+	{
+		foreach ($pages as $page)
+		{
+			self::$preloadedPages[$page["pages"]["id_page"]] = $page;
+		}
 	}
 }

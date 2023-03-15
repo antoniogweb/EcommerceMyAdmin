@@ -923,6 +923,8 @@ class BaseContenutiController extends BaseController
 		
 		$this->pages = $data["pages"];
 		
+		PagesModel::preloadPages($data["pages"]);
+		
 		PagesModel::setPagesStruct($data["pages"]);
 		
 		// Estraggo le fasce
