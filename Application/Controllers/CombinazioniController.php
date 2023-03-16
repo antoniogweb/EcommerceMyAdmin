@@ -286,10 +286,10 @@ class CombinazioniController extends BaseController
 				"N"	=>	"Non attivo",
 			));
 		
-		if (v("attiva_liste_regalo") && $this->viewArgs['id_page'] == "tutti")
-			$this->filters[] = array("id_lista_reg_filt",null,array(
-				"tutti"		=>	"Lista regalo",
-			) + ListeregaloModel::g()->filtroListe());
+// 		if (v("attiva_liste_regalo") && $this->viewArgs['id_page'] == "tutti")
+// 			$this->filters[] = array("id_lista_reg_filt",null,array(
+// 				"tutti"		=>	"Lista regalo",
+// 			) + ListeregaloModel::g()->filtroListe());
 		
 		$menuButtons = 'save_combinazioni,esporta';
 		
