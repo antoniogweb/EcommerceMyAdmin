@@ -52,7 +52,7 @@ Params::$lang = $params["lingua"];
 Params::$country = $params["nazione"];
 
 Files_Log::$logFolder = LIBRARY."/Logs";
-$log = Files_Log::getInstance("creazione_feed");
+
 
 if (!isset($params["modulo"]))
 {
@@ -68,6 +68,9 @@ if (!isset($params["path"]))
 
 $modulo = strtoupper((string)$params["modulo"]);
 
+$log = Files_Log::getInstance("creazione_feed_".$modulo);
+$log->writeString("INIZIO CREAZIONE FEED");
+
 if (FeedModel::getModulo($modulo)->isAttivo())
 {
 	User::setPostCountryFromUrl();
@@ -79,3 +82,4 @@ if (FeedModel::getModulo($modulo)->isAttivo())
 else
 	echo "Il modulo ".(string)$params["modulo"]." non è attivo";
 
+$log->writeString("FINE CREAZIONE FEED");

@@ -67,11 +67,11 @@ class F
 		return json_encode($str, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 	}
 	
-	public static function alt($string)
+	public static function alt($string, $flags = ENT_QUOTES)
 	{
 		$string = strip_tags(htmlentitydecode($string));
 		
-		return htmlspecialchars($string, ENT_QUOTES, "UTF-8");
+		return htmlspecialchars($string, $flags, "UTF-8");
 	}
 	
 	public static function partial($char = "?")
