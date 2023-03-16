@@ -142,9 +142,9 @@ class GoogleMerchant extends Feed
 			
 			if (!$this->isFbk && v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
 			{
-				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
+// 				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				
-				$temp["g:shipping"]["g:country"] = $country;
+				$temp["g:shipping"]["g:country"] = $r["nazione"];
 				$temp["g:shipping"]["g:nome_corriere"] = F::alt($r["nome_corriere"], ENT_NOQUOTES);
 				$temp["g:shipping"]["g:price"] = $r["spese_spedizione"]." EUR";
 			}

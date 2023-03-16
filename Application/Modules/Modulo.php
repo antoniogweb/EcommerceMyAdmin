@@ -314,6 +314,7 @@ trait Modulo
 				"ultima_modifica"	=>	$r["aggregate"]["ultima_modifica"],
 				"priorita_sitemap"	=>	$r["pages"]["priorita_sitemap"],
 				"identifier_exists"	=>	$r["pages"]["identifier_exists"],
+				"nazione"		=>	$nazione,
 			);
 			
 			if ($combinazioniLinkVeri)
