@@ -267,7 +267,7 @@ class PagesModel extends GenericModel {
 			$strutturaCategorieGoogle = array(
 				'wrap'		=>	$this->getWrapCategorieGoogle(),
 			);
-			
+		
 		$wrapCombinazioni = array();
 		
 		$testoLasciareVuotoSeNonPresente = "Lasciare vuoto se non presente o non conosciuto";
@@ -532,7 +532,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_principale',
 					'labelString'=>	'Prodotto principale',
-					'options'	=>	$this->selectProdotti($id),
+					'options'	=>	v("mostra_tendina_prodotto_principale") ? $this->selectProdotti($id) : array(),
 					'reverse' => 'yes',
 					'wrap'		=>	array(
 						null,

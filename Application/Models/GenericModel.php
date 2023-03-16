@@ -999,7 +999,7 @@ class GenericModel extends Model_Tree
 	
 	public function buildAllPagesSelect()
 	{
-		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->addWhereAttivo()->orderBy("title")->toList("id_page","title")->send();
+		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->select("pages.id_page,pages.title")->addWhereAttivo()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
 	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true, $modelTabella = null)
