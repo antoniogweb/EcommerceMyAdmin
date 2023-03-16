@@ -142,6 +142,8 @@ trait Modulo
 		
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->on("corrieri.id_corriere = corrieri_spese.id_corriere")->orderBy("corrieri.id_order")->send(false);
 		
+		$tabellaIdCorriereNome = $corr->clear()->toList("id_corriere", "titolo")->send();
+		
 		$idCorriere = 0;
 		
 		if (count($corrieri) > 0)
@@ -280,6 +282,8 @@ trait Modulo
 				}
 			}
 			
+			$nomeCorriere = $tabellaIdCorriereNome[$idCorriere] ?? "";
+			
 			$temp = array(
 				"id_page"	=>	$r["pages"]["id_page"],
 				"id_comb"	=>	$idC,
@@ -300,6 +304,7 @@ trait Modulo
 				"data_scadenza_promo"	=>	$now->format("Y-m-d"),
 				"prezzo_scontato"	=> number_format($prezzoFinaleIvato,2,".",""),
 				"spese_spedizione"	=>	number_format($speseSpedizione * (1 + ($ivaSpedizione / 100)),2,".",""),
+				"nome_corriere"	=>	$nomeCorriere,
 				"marchio"	=>	$r["marchi"]["titolo"],
 				"peso"		=>	$r["pages"]["peso"],
 				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC),

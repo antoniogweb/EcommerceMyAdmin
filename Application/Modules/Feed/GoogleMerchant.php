@@ -125,7 +125,12 @@ class GoogleMerchant extends Feed
 				$temp["g:brand"] = htmlentitydecode($r["marchio"]);
 			
 			if ($this->isFbk)
+			{
 				$temp["condition"] = "new";
+				
+				if ($r["mpn"])
+					$temp["g:item_group_id"] = $r["mpn"];
+			}
 			
 			if ($r["in_promo"])
 			{
@@ -140,6 +145,7 @@ class GoogleMerchant extends Feed
 				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				
 				$temp["g:shipping"]["g:country"] = $country;
+				$temp["g:shipping"]["g:nome_corriere"] = F::alt($r["nome_corriere"], ENT_NOQUOTES);
 				$temp["g:shipping"]["g:price"] = $r["spese_spedizione"]." EUR";
 			}
 			

@@ -234,12 +234,12 @@
 									$linkFeedGoogle = Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?id_page=$id_page&".v("token_feed_google_facebook");
 									
 									if (FeedModel::getModulo("GOOGLEMERCHANT")->isAttivo())
-										$linkFeedGoogle = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("GOOGLEMERCHANT")->getFeedUrl()."&id_page=$id_page";
+										$linkFeedGoogle = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("GOOGLEMERCHANT")->getFeedUrl()."?id_page=$id_page";
 									
 									$linkFeedFacebook = Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");
 									
 									if (FeedModel::getModulo("FACEBOOK", true)->isAttivo())
-										$linkFeedFacebook = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("FACEBOOK")->getFeedUrl()."&id_page=$id_page";
+										$linkFeedFacebook = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("FACEBOOK")->getFeedUrl()."?id_page=$id_page";
 									?>
 									
 									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo $linkFeedFacebook;?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
