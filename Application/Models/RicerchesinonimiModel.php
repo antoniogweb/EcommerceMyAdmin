@@ -55,6 +55,32 @@ class RicerchesinonimiModel extends GenericModel
 		);
 	}
 	
+	private function sistemaSinonimi()
+	{
+		if (isset($this->values["sinonimi"]) && $this->values["sinonimi"])
+		{
+			$sinonimiArray = explode(",", $this->values["sinonimi"]);
+			
+			$sinonimiArray = array_map('trim', $sinonimiArray);
+			
+			$this->values["sinonimi"] = sanitizeAll(implode(",", $sinonimiArray));
+		}
+	}
+	
+	public function insert()
+	{
+		$this->sistemaSinonimi();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->sistemaSinonimi();
+		
+		return parent::update($id, $where);
+	}
+	
 	// La funzione elabora la stringa, cercando tra i sinonimi
 	public function estraiTerminiDaStringaDiRicerca($stringa)
 	{
