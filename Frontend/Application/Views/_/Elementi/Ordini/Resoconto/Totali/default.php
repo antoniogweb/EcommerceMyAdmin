@@ -44,7 +44,7 @@
 					<?php if ($ordine["nome_promozione"]) { ?>
 					<?php echo gtext("Sconto coupon", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):
 					<?php } ?>
-					<?php if ($ordine["sconto"]) { ?>
+					<?php if ($ordine["sconto"] > 0) { ?>
 					<?php echo gtext("Sconto", false); ?>:
 					<?php } ?>
 				</td>

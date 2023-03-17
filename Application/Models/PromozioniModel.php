@@ -138,7 +138,7 @@ class PromozioniModel extends GenericModel {
 	{
 		$promozione = $this->selectId((int)$idPromozione);
 		
-		if (!empty($promozione) && isset($promozione["email"]) && $promozione["email"] && checkMail($promozione["email"]) && $promozione["testo"] && $this->isActiveCoupon($promozione["codice"],null,false) && $promozione["tipo_sconto"] == "ASSOLUTO")
+		if (!empty($promozione) && isset($promozione["email"]) && $promozione["email"] && checkMail($promozione["email"]) && $promozione["testo"] && $promozione["attivo"] == "Y" && $promozione["tipo_sconto"] == "ASSOLUTO")
 			EventiretargetingModel::processaPromo($idPromozione);
 	}
     
@@ -587,7 +587,7 @@ class PromozioniModel extends GenericModel {
 					"al"	=>	$ora->format("d-m-Y"),
 					"sconto"	=>	$riga["prezzo_intero_ivato"],
 					"titolo"	=>	$riga["title"],
-					"codice"	=>	md5(randString(20).microtime().uniqid(mt_rand(),true)),
+					"codice"	=>	$this->getCodiceRandom("GIFT".generateString(10)), //md5(randString(20).microtime().uniqid(mt_rand(),true)),
 					"numero_utilizzi"	=>	9999,
 					"tipo_sconto"	=>	"ASSOLUTO",
 					"id_r"		=>	$idR,
@@ -603,6 +603,21 @@ class PromozioniModel extends GenericModel {
 				$this->insert();
 			}
 		}
+	}
+	
+	public function getCodiceRandom($codice)
+	{
+		$clean["codice"] = sanitizeAll($codice);
+		
+		$res = $this->clear()->select("codice")->where(array("codice"=>$clean["codice"]))->send();
+		
+		if (count($res) > 0)
+		{
+			$nCodice = "GIFT".generateString(10);
+			return $this->getCodiceRandom($nCodice);
+		}
+		
+		return $clean["codice"];
 	}
 	
 	public function ordine($record)
