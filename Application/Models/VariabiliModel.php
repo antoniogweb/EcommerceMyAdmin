@@ -625,6 +625,7 @@ class VariabiliModel extends GenericModel {
 		"estrai_categorie_blog"		=>	1, // estrai le categorie del blog
 		## SEO ##
 		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
+		"includi_dati_per_social_categoria"	=>	0, // includi i dati per facebook e twitter anche nelle pagine delle categorie
 		## PRODOTTI ##
 		"controlla_che_il_codice_prodotti_sia_unico"	=>	0, // se impostato a 1, non permette da pannello admin di aggiungere un prodotto avente lo stesso codice di un altro prodotto
 		## BREADCRUMB ##

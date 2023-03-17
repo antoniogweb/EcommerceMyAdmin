@@ -757,6 +757,7 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$data["idMarchio"] = $this->idMarchio;
+		$data["isCategory"] = true;
 		
 		$data["aliasMarchioCorrente"] = "";
 		
@@ -784,7 +785,7 @@ class BaseContenutiController extends BaseController
 		
 		//estrai i dati della categoria
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
-		$data["datiCategoria"] = $r[0];
+		$data["datiCategoria"] = CategoriesModel::$currentCategoryData = $r[0];
 		
 		$cache = Cache_Html::getInstance();
 		

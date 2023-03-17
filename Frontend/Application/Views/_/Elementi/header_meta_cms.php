@@ -12,3 +12,8 @@ include(tpf("Elementi/header_rich_snippet.php", false, false, $stringaCache));?>
 <?php } ?>
 
 <?php include(tpf("Elementi/header_meta_info_social.php")); ?>
+<?php
+if (v("includi_dati_per_social_categoria")) { 
+	include(tpf("Elementi/header_meta_info_social_categoria.php"));
+}
+?>

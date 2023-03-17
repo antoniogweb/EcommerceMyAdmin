@@ -35,6 +35,7 @@ class CategoriesModel extends HierarchicalModel {
 	public static $associazioneSezioneId = null;
 	
 	public static $currentIdCategory = null;
+	public static $currentCategoryData = null;
 	
 	public static $uploadFile = true;
 	
