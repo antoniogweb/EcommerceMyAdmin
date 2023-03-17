@@ -40,7 +40,7 @@ $default = array(
 
 $params = array_merge($default, $options);
 
-include_once("../../config.php");
+include_once(dirname(__FILE__)."/../../config.php");
 define('DOMAIN_NAME',$website_domain_name);
 
 require_once(dirname(__FILE__) . "/../../index.php");
