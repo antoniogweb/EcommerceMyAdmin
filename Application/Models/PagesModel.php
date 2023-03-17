@@ -802,11 +802,13 @@ class PagesModel extends GenericModel {
 	
 	public function getIva($idPage)
 	{
-		if (count(PagesModel::$currentIdPages) > 0 && !isset(self::$tabellaIva))
+		if (count(PagesModel::$preloadedPages) > 0 && !isset(self::$tabellaIva))
 		{
+			$currentIdPages = array_keys(PagesModel::$preloadedPages);
+			
 			self::$tabellaIva = $this->clear()->select("pages.id_page,iva.valore")->where(array(
 				"in"	=>	array(
-					"id_page"	=>	forceIntDeep(PagesModel::$currentIdPages),
+					"id_page"	=>	forceIntDeep($currentIdPages),
 				),
 			))->inner("iva")->on("pages.id_iva = iva.id_iva")->toList("pages.id_page", "iva.valore")->send();
 		}
@@ -2829,6 +2831,8 @@ class PagesModel extends GenericModel {
 			
 			$res = array_merge($res, $resStessaCategoria);
 		}
+		
+		PagesModel::preloadPages($res);
 		
 		return $res;
 	}
