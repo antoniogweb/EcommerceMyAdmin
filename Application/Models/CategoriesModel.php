@@ -905,18 +905,37 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true, $traduzione = true)
 	{
-		$this->clear()->select($select)
-			->where(array("id_p"=>(int)$id_c))->orderBy("categories.lft");
-		
-		if ($traduzione)
-			$this->addJoinTraduzioneCategoria();
-		
-		if ($soloAttivi)
-			$this->aWhere(array(
-				"attivo"=>"Y",
-			));
-		
-		return $this->send();
+		if (count(self::$strutturaCategorie) > 0)
+		{
+			$arrayCatFiglie = [];
+			
+			foreach (self::$strutturaCategorie as $idC => $categoria)
+			{
+				if ((int)$categoria["categories"]["id_p"] === (int)$id_c)
+				{
+					if ($categoria["categories"]["attivo"] == "Y" || !$soloAttivi)
+					{
+						$arrayCatFiglie[] = $categoria;
+					}
+				}
+			}
+			
+			return $arrayCatFiglie;
+		}
+		else
+		{
+			$this->clear()->select($select)->where(array("id_p"=>(int)$id_c))->orderBy("categories.lft");
+			
+			if ($traduzione)
+				$this->addJoinTraduzioneCategoria();
+			
+			if ($soloAttivi)
+				$this->aWhere(array(
+					"attivo"=>"Y",
+				));
+			
+			return $this->send();
+		}
 	}
 	
 	public function categorieFiglieSelect($id_c, $soloAttivi = true)

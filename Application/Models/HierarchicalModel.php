@@ -460,46 +460,6 @@ class HierarchicalModel extends GenericModel {
 		return $tree;
 	}
 	
-// 	//get the parents of a node
-// 	//$id: primary_key of the node
-// 	public function parents($id, $onlyIds = true, $onlyParents = true, $fields = null)
-// 	{
-// 		$clean["id"] = (int)$id;
-// 		
-// 		$res = $this->clear()->where(array($this->_idFields=>$clean["id"]))->send();
-// 		
-// 		if (count($res) > 0)
-// 		{
-// 			$lft = $res[0][$this->_tables]["lft"];
-// 			$rgt = $res[0][$this->_tables]["rgt"];
-// 			
-// 			if ($onlyParents)
-// 			{
-// 				//select only the parents
-// 				$this->clear()->where(array("lft"=>"<$lft","rgt"=>">$rgt"))->orderBy("lft");
-// 			}
-// 			else
-// 			{
-// 				//select the parents and the element
-// 				$this->clear()->where(array("lft"=>"<=$lft","rgt"=>">=$rgt"))->orderBy("lft");
-// 			}
-// 			
-// 			if ($onlyIds)
-// 			{
-// 				$parents = $this->toList($this->_tables.".".$this->_idFields)->send();
-// 			}
-// 			else
-// 			{
-// 				$fields = isset($fields) ? $fields : "*";
-// 				$parents = $this->select($fields)->send();
-// 			}
-// 			
-// 			return $parents;
-// 		}
-// 		
-// 		return array();
-// 	}
-	
 	public function getParentId($id)
 	{
 		$parents = $this->parents($id);
@@ -554,29 +514,12 @@ class HierarchicalModel extends GenericModel {
 				}
 				else
 				{
-					// Nel caso della lingua principale è più veloce
-// 					if ($lingua == LingueModel::getPrincipaleFrontend())
-// 					{
-						$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
-						
-						$parents = $this->select($f)->left("contenuti_tradotti")->on(array(
-							"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
-							array(sanitizeDb($lingua))
-						))->send();
-// 					}
-// 					else
-// 					{
-// 						$temp = $this->toList($this->_tables.".".$this->_idFields)->send();
-// 						
-// 						$parents = array();
-// 						
-// 						foreach ($temp as $idP)
-// 						{
-// 							$parents[] = $this->clear()->where(array(
-// 								"id_c"	=>	$idP,
-// 							))->first();
-// 						}
-// 					}
+					$f = $fields ? $fields : $this->_tables.".*,contenuti_tradotti.*";
+					
+					$parents = $this->select($f)->left("contenuti_tradotti")->on(array(
+						"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
+						array(sanitizeDb($lingua))
+					))->send();
 				}
 			}
 			
@@ -627,40 +570,53 @@ class HierarchicalModel extends GenericModel {
 	{
 		$clean["id"] = (int)$id;
 		
-		$res = $this->clear()->where(array($this->_idFields=>$clean["id"]))->send();
+		$res = self::getDataCategoria($clean["id"]);
+// 		$res = $this->clear()->where(array($this->_idFields=>$clean["id"]))->send();
 		
 		if (count($res) > 0)
 		{
-			$lft = $res[0][$this->_tables]["lft"];
-			$rgt = $res[0][$this->_tables]["rgt"];
+			$lft = $res[$this->_tables]["lft"];
+			$rgt = $res[$this->_tables]["rgt"];
 			
-			$this->clear()->orderBy("lft");
+			$children = [];
 			
-			if ($self)
+			foreach (self::$strutturaCategorie as $idC => $categoria)
 			{
-				$this->aWhere(array(
-					"gte" => array("lft" => $lft),
-					"lte" => array("-lft" => $rgt),
-// 					"lft"=>">=$lft","-lft"=>"<=$rgt"
-				));
+				if (($self && $categoria["categories"]["lft"] >= $lft && $categoria["categories"]["lft"] <= $rgt) || (!$self && $categoria["categories"]["lft"] > $lft && $categoria["categories"]["lft"] < $rgt))
+				{
+					$children[] = $onlyIds ? $idC : $categoria;
+				}
 			}
-			else
-			{
-				$this->aWhere(array(
-					"gt" => array("lft"=>$lft),
-					"lt" => array("-lft" => $rgt),
-// 					"lft"=>">$lft","-lft"=>"<$rgt"
-				));
-			}
-			
-			if ($onlyIds)
-			{
-				$this->toList($this->_tables.".".$this->_idFields);
-			}
-			
-			$children = $this->send();
 			
 			return $children;
+			
+// 			$this->clear()->orderBy("lft");
+// 			
+// 			if ($self)
+// 			{
+// 				$this->aWhere(array(
+// 					"gte" => array("lft" => $lft),
+// 					"lte" => array("-lft" => $rgt),
+// // 					"lft"=>">=$lft","-lft"=>"<=$rgt"
+// 				));
+// 			}
+// 			else
+// 			{
+// 				$this->aWhere(array(
+// 					"gt" => array("lft"=>$lft),
+// 					"lt" => array("-lft" => $rgt),
+// // 					"lft"=>">$lft","-lft"=>"<$rgt"
+// 				));
+// 			}
+// 			
+// 			if ($onlyIds)
+// 			{
+// 				$this->toList($this->_tables.".".$this->_idFields);
+// 			}
+// 			
+// 			$children = $this->send();
+// 			
+// 			return $children;
 		}
 		
 		return array();
@@ -933,20 +889,6 @@ class HierarchicalModel extends GenericModel {
 					$parents[] = $categoria;
 				}
 			}
-			
-// 			//select the parents and the element
-// 			$this->clear()->where(array(
-// 				"lte" => array("lft" => $lft),
-// 				"gte" => array("rgt" => $rgt),
-// 			))->orderBy("lft");
-// 			
-// 			if (!$lingua)
-// 				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias")->send();
-// 			else
-// 				$parents = $this->select($this->_tables.".section,".$this->_tables.".alias,contenuti_tradotti.alias")->left("contenuti_tradotti")->on(array(
-// 					"contenuti_tradotti.id_c = categories.id_c and contenuti_tradotti.lingua = ?",
-// 					array(sanitizeDb($lingua))
-// 				))->send();
 			
 			return $parents;
 		}
