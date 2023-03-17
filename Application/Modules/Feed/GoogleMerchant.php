@@ -128,7 +128,7 @@ class GoogleMerchant extends Feed
 			{
 				$temp["condition"] = "new";
 				
-				if ($r["mpn"])
+				if ($this->linkAlleVarianti() && $r["mpn"])
 					$temp["g:item_group_id"] = $r["mpn"];
 			}
 			
