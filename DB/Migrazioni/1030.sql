@@ -1,0 +1,1 @@
+INSERT INTO `feed` (`titolo`, `attivo`, `codice`, `modulo`, `id_order`, `token_sicurezza`, `usa_token_sicurezza`, `query_string`, `tempo_cache`, `url_feed`, `link_a_combinazione`) VALUES ('Sitemap pagine', '1', 'SITEMAPPAGINE', 'SitemapPagine', '5', '', '1', '', '0', 'sitemap_it.xml', '0');

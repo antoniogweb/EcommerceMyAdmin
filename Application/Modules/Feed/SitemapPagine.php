@@ -20,32 +20,32 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class SitemapProdotti extends Feed
+class SitemapPagine extends Feed
 {
 	public function feedProdotti($p = null, $outputFile = null)
 	{
-		if (!isset($p))
-		{
-			$p = new PagesModel();
-			$p->clear();
-		}
-		
-		$p->orderBy("priorita_sitemap desc");
-		
-		$strutturaFeedProdotti = $this->strutturaFeedProdotti($p, 0, 0, $this->linkAlleVarianti(), (int)$this->params["tempo_cache"]);
+		$nodi = SitemapModel::getNodiFrontend();
 		
 		$xmlArray = array(
 			"url"	=>	array(),
 		);
 		
-// 		print_r($strutturaFeedProdotti);die();
-		
-		foreach ($strutturaFeedProdotti as $r)
+		foreach ($nodi as $n)
 		{
+			if ($n["id_page"]) {
+				$url = Url::getRoot().getUrlAlias($n["id_page"]);
+			} else if ($n["id_c"]) {
+				$url = Url::getRoot().getCategoryUrlAlias($n["id_c"]);
+			} else if ($n["url"]) {
+				$url = $n["url"];
+			} else {
+				$url = Url::getRoot();
+			}
+			
 			$temp = array(
-				"loc"		=>	$r["link"],
-				"lastmod"	=>	date('c', strtotime($r["ultima_modifica"])),
-				"priority"	=>	number_format($r["priorita_sitemap"],2,".",""),
+				"loc"		=>	$url,
+				"lastmod"	=>	date('c', strtotime($n["ultima_modifica"])),
+				"priority"	=>	number_format($n["priorita"],2,".",""),
 			);
 			
 			$xmlArray["url"][] = $temp;
