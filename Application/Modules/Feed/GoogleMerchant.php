@@ -145,7 +145,7 @@ class GoogleMerchant extends Feed
 // 				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				
 				$temp["g:shipping"]["g:country"] = $r["nazione"];
-				$temp["g:shipping"]["g:nome_corriere"] = F::alt($r["nome_corriere"], ENT_NOQUOTES);
+				$temp["g:shipping"]["g:service"] = F::alt($r["nome_corriere"], ENT_NOQUOTES);
 				$temp["g:shipping"]["g:price"] = $r["spese_spedizione"]." EUR";
 			}
 			
