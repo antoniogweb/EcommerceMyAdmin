@@ -265,6 +265,8 @@ class App
 	{
 		$controllerPrincipali = ControllersModel::getControllerAbilitati(true);
 		
+		print_r($controllerPrincipali);
+		
 		$path = ROOT . "/Application/Views/Vocimenu/".ucfirst($pannello);
 		
 		$files = array_diff(scandir($path), array('.', '..'));

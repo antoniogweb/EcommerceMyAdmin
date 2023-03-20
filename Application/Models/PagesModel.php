@@ -1508,17 +1508,16 @@ class PagesModel extends GenericModel {
 		return self::$arrayIdCombinazioni[$idPage];
 	}
 	
-	private function idsDaCodice($codice)
+	private function idsDaCodice($codice, $forzaTutti = false)
 	{
 		$c = new CombinazioniModel();
 		
 		$c->clear()->select("pages.id_page,combinazioni.id_c")->inner(array("pagina"))->where(array(
-// 			"combinazioni.codice"	=>	sanitizeAll($codice),
 			"pages.temp"		=>	0,
 			"pages.cestino"		=>	0,
 		))->sWhere(array("replace(combinazioni.codice,'/','') = ?",array(sanitizeAll($codice))))->limit(1);
 		
-		if (!User::$adminLogged)
+		if (!User::$adminLogged && !$forzaTutti)
 			$c->aWhere(array(
 				"pages.attivo"=>"Y",
 				"combinazioni.acquistabile"	=>	1,
@@ -1528,7 +1527,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	// cerca la pagina usando il codice nell'HTML
-	private function cercaDaCodice($alias, $lingua = null)
+	public function cercaDaCodice($alias, $lingua = null, $forzaTutti = false)
 	{
 		$aliasArray = explode("-", $alias);
 		
@@ -1536,7 +1535,7 @@ class PagesModel extends GenericModel {
 		{
 			$codice = $aliasArray[(count($aliasArray) - 1)];
 			
-			$idsArray = $this->idsDaCodice($codice);
+			$idsArray = $this->idsDaCodice($codice, $forzaTutti);
 			
 			if (count($idsArray) > 0)
 				return $idsArray;
@@ -1544,7 +1543,7 @@ class PagesModel extends GenericModel {
 			{
 				$codice = $aliasArray[count($aliasArray) - 2]."-".$aliasArray[count($aliasArray) - 1];
 				
-				return $this->idsDaCodice($codice);
+				return $this->idsDaCodice($codice, $forzaTutti);
 			}
 		}
 		
@@ -1615,55 +1614,6 @@ class PagesModel extends GenericModel {
 		
 		if (VariabiliModel::combinazioniLinkVeri())
 		{
-// 			$res = $this->clear()->select("pages.id_page, combinazioni.id_c")->inner(array("combinazioni"))->where(array(
-// 				"pages.temp"		=>	0,
-// 				"pages.cestino"		=>	0,
-// 			))->limit(1);
-// 			
-// 			$tableAlias = "pages";
-// 			
-// 			if ($lingua && $lingua != LingueModel::getPrincipaleFrontend())
-// 			{
-// 				$this->inner("contenuti_tradotti")->on(array("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = ?",array(sanitizeDb($lingua))));
-// 				$tableAlias = "contenuti_tradotti";
-// 			}
-// 			
-// 			if (v("usa_alias_combinazione_in_url_prodotto") && $lingua)
-// 				$this->inner("combinazioni_alias")->on(array("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = ?",array(sanitizeDb($lingua))));
-// 			
-// 			if (!User::$adminLogged)
-// 				$this->aWhere(array(
-// 					"pages.attivo"=>"Y",
-// 					"combinazioni.acquistabile"	=>	1,
-// 				));
-// 			
-// 			$bindedValues = array();
-// 			
-// 			if (v("usa_alias_combinazione_in_url_prodotto"))
-// 			{
-// 				$sWhere = "(
-// 					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi,'-',combinazioni.codice) = ? OR 
-// 					concat($tableAlias.alias,'-',combinazioni_alias.alias_attributi) = ? OR 
-// 					concat($tableAlias.alias,'-',combinazioni.codice) = ? OR 
-// 					$tableAlias.alias = ?
-// 				)";
-// 				
-// 				$bindedValues = array($clean['alias'], $clean['alias'], $clean['alias'], $clean['alias']);
-// 			}
-// 			else
-// 			{
-// 				$sWhere = "(
-// 					concat($tableAlias.alias,'-',combinazioni.codice) = ? OR 
-// 					$tableAlias.alias = ?
-// 				)";
-// 				
-// 				$bindedValues = array($clean['alias'], $clean['alias']);
-// 			}
-// 			
-// 			$this->sWhere(array($sWhere, $bindedValues));
-// 			
-// 			$res = $this->toList("pages.id_page", "combinazioni.id_c")->send();
-			
 			if (v("cerca_la_pagina_dal_codice"))
 				$res = $this->cercaDaCodice($alias, $lingua);
 			else

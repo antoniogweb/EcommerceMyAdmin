@@ -32,6 +32,36 @@ class FeedbackController extends BaseController {
 		"voto"	=>	"sistemaVotoNumero",
 	);
 	
+	public $sezionePannello = "ecommerce";
+	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		if ($controller == "feedback")
+			$this->orderBy = "data_creazione desc";
+		
+		parent::__construct($model, $controller, $queryString, $application, $action);
+	}
+	
+	public function main()
+	{
+		$this->shift();
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array();
+		
+		$this->mainFields = array("feedback.data_feedback", "edit", "editutente", "punteggio", "prodottoCrud", "attivo", "daapprovare", "datagestione", "gestisci");
+		$this->mainHead = "Data feedback,Autore,Email,Punteggio,Prodotto,Pubblicato,Approvazione,Data approvazione/rifiuto,";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta');
+		
+		$this->m[$this->modelName]->gOrderBy()->select("feedback.*,regusers.username,pages.title,pages.id_page")->left(array("utente","pagina"))->orderBy("data_creazione desc")->convert()->save();
+		
+		parent::main();
+	}
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->shift(2);

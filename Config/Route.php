@@ -196,6 +196,8 @@ class Route
 		'traduzioni,carica',
 		
 		'scaglioni,form',
+		
+		'feedback,main',
 		'feedback,form',
 		'feedback,approvarifiuta',
 		

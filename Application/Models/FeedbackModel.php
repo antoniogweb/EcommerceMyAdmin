@@ -426,4 +426,13 @@ class FeedbackModel extends GenericModel {
 		return $f->send();
 	}
 	
+	public function prodottoCrud($record)
+	{
+		if ($record["pages"]["id_page"])
+			return "<a target='_blank' href='".Url::getRoot()."/prodotti/form/update/".$record["pages"]["id_page"]."'>".$record["pages"]["title"]."</a>";
+		else if (isset($record["feedback"]["titolo"]))
+			return "<i class='text text-danger fa fa-exclamation-circle'></i> ".$record["feedback"]["titolo"];
+		
+		return "";
+	}
 }
