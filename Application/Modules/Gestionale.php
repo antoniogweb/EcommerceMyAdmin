@@ -240,7 +240,7 @@ class Gestionale
 					"prezzo_finale_ivato"	=>	$ordine["spedizione_ivato"],
 					"gift_card"	=>	0,
 					"id_iva"	=>	$idIva,
-					"iva"		=>	($ordine["spedizione_ivato"] - $ordine["spedizione"]),
+					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
 				);
@@ -264,13 +264,13 @@ class Gestionale
 					"prezzo_finale_ivato"	=>	$ordine["costo_pagamento_ivato"],
 					"gift_card"	=>	0,
 					"id_iva"	=>	$idIva,
-					"iva"		=>	($ordine["costo_pagamento_ivato"] - $ordine["costo_pagamento"]),
+					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
 				);
 			}
 			
-			if ($ordine["euro_promozione"] > 0)
+			if ($ordine["euro_promozione"] > 0 && $ordine["tipo_promozione"] == "ASSOLUTO")
 			{
 				$costoNonIvato = number_format($ordine["euro_promozione"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
 				
@@ -282,15 +282,15 @@ class Gestionale
 					"immagine"	=>	"",
 					"peso"		=>	0,
 					"quantity"	=>	1,
-					"prezzo"	=>	$costoNonIvato,
-					"prezzo_ivato"	=>	$ordine["euro_promozione"],
-					"prezzo_intero"	=>	$costoNonIvato,
-					"prezzo_intero_ivato"	=>	$ordine["euro_promozione"],
-					"prezzo_finale"	=>	$costoNonIvato,
-					"prezzo_finale_ivato"	=>	$ordine["euro_promozione"],
+					"prezzo"	=>	(-1)*$costoNonIvato,
+					"prezzo_ivato"	=>	(-1)*$ordine["euro_promozione"],
+					"prezzo_intero"	=>	(-1)*$costoNonIvato,
+					"prezzo_intero_ivato"	=>	(-1)*$ordine["euro_promozione"],
+					"prezzo_finale"	=>	(-1)*$costoNonIvato,
+					"prezzo_finale_ivato"	=>	(-1)*$ordine["euro_promozione"],
 					"gift_card"	=>	0,
 					"id_iva"	=>	$idIva,
-					"iva"		=>	($ordine["euro_promozione"] - $costoNonIvato),
+					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
 				);
