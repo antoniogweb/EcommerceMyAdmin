@@ -752,11 +752,14 @@ class CombinazioniModel extends GenericModel {
 		if (VariabiliModel::combinazioniLinkVeri())
 		{
 			$combinazione = $this->clear()->select("combinazioni.id_c,combinazioni.canonical")->where(array(
-				"id_page"	=>	(int)$idPage,
+				"id_page"		=>	(int)$idPage,
+				"acquistabile"	=>	1,
 			))->orderBy("canonical desc,id_order")->limit(1)->send(false);
 			
 			if (count($combinazione) > 0 && !$combinazione[0]["canonical"])
 			{
+				$this->query(array("update combinazioni set canonical = 0 where id_page = ?",array((int)$idPage)));
+				
 				$this->sValues(array(
 					"canonical"	=>	1,
 				));

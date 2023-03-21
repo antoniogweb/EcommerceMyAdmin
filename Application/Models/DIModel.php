@@ -81,6 +81,24 @@ trait DIModel
 		return $objectReflection->newInstanceArgs();
 	}
 	
+	public static function findModulePath($folder, $className)
+	{
+		if (file_exists(LIBRARY."/Application/Modules/".$folder."/".$className.".php"))
+			return LIBRARY."/Application/Modules/".$folder."/".$className.".php";
+		else
+		{
+			foreach (APPS as $app)
+			{
+				$path = LIBRARY."/Application/Apps/".ucfirst($app)."/Modules/$folder/$className.php";
+				
+				if (file_exists($path))
+					return $path;
+			}
+		}
+		
+		return "";
+	}
+	
 	public static function getModulo($codice = null, $forza = false)
 	{
 		$className = get_called_class();
@@ -99,15 +117,20 @@ trait DIModel
 					"attivo"	=>	1,
 				))->record();
 			
-			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php"))
+			if (!empty($attivo))
 			{
-				require_once(LIBRARY."/Application/Modules/".$c->classeModuloPadre.".php");
-				require_once(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php");
+				$path = $c->findModulePath($c->cartellaModulo, $attivo[$nomeCampoClasse]);
 				
-				$objectReflection = new ReflectionClass($attivo[$nomeCampoClasse]);
-				$object = $objectReflection->newInstanceArgs(array($attivo));
-				
-				self::$modulo = $object;
+				if ($path != "" && file_exists($path))
+				{
+					require_once(LIBRARY."/Application/Modules/".$c->classeModuloPadre.".php");
+					require_once($path);
+					
+					$objectReflection = new ReflectionClass($attivo[$nomeCampoClasse]);
+					$object = $objectReflection->newInstanceArgs(array($attivo));
+					
+					self::$modulo = $object;
+				}
 			}
 		}
 		
