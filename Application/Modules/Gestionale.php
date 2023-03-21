@@ -195,7 +195,7 @@ class Gestionale
 			
 			$ordine["valore_iva"] = IvaModel::g(false)->getValore($idIva);
 			
-			$righe = $rModel->clear()->select("id_r,data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte")->where(array(
+			$righe = $rModel->clear()->select("id_r,data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page")->where(array(
 				"id_o"	=>	(int)$id_o,
 			))->send(false);
 			
