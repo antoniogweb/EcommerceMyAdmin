@@ -31,6 +31,7 @@ $options = getopt(null, array(
 	"lingua::",
 	"nazione::",
 	"path::",
+	"dominio::",
 ));
 
 $default = array(
@@ -41,6 +42,10 @@ $default = array(
 $params = array_merge($default, $options);
 
 include_once(dirname(__FILE__)."/../../config.php");
+
+if (isset($params["dominio"]))
+	$website_domain_name = $params["dominio"];
+
 define('DOMAIN_NAME',$website_domain_name);
 
 require_once(dirname(__FILE__) . "/../../index.php");
