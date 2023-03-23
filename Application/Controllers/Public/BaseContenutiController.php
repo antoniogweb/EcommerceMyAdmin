@@ -963,7 +963,11 @@ class BaseContenutiController extends BaseController
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 		{
 			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
-				$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName]);
+			{
+				$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($this->viewArgs[$argName]);
+				
+				$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($search);
+			}
 			else
 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
