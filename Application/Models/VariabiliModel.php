@@ -619,6 +619,7 @@ class VariabiliModel extends GenericModel {
 		## CATEGORIA ##
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
 		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
+		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo reidirect. La categoria sarà un link all'URL specificato nel campo redirect
 		## BASE CONTROLLER ##
 		"estrai_elenco_marchi"		=>	1, // estrai i marchi
 		"estrai_elenco_categorie_prodotti_base_controller"	=>	1, // se deve estrarre sempre l'elenco delle categorie dal base controller
