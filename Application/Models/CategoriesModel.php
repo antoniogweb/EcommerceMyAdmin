@@ -1247,4 +1247,16 @@ class CategoriesModel extends HierarchicalModel {
 		
 		return self::$aliasShop;
 	}
+	
+	public function checkAndInCaseRedirect($categoria)
+	{
+		if (v("attiva_campo_redirect"))
+		{
+			if ($categoria["categories"]["redirect"])
+			{
+				header("Location: ".$categoria["categories"]["redirect"]);
+				exit;
+			}
+		}
+	}
 }

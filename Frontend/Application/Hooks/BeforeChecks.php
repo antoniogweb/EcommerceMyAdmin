@@ -198,12 +198,15 @@ ImpostazioniModel::init();
 if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
-$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutesOfFeed");
-
-foreach ($feedRoutes as $fr)
+if (v("attiva_gestione_feed"))
 {
-	if (isset($fr) && is_array($fr))
-		Route::$map = $fr + Route::$map;
+	$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutesOfFeed");
+
+	foreach ($feedRoutes as $fr)
+	{
+		if (isset($fr) && is_array($fr))
+			Route::$map = $fr + Route::$map;
+	}
 }
 
 Domain::setPath();

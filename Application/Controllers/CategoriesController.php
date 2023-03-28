@@ -259,6 +259,9 @@ class CategoriesController extends BaseController {
 	{
 		$this->shift(1);
 		
+		if (v("attiva_campo_redirect"))
+			$this->metaQueryFields .= ",redirect";
+		
 		$this->_posizioni['meta'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
 

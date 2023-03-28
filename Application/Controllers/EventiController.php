@@ -30,7 +30,7 @@ class EventiController extends GenericsectionController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		$this->queryFields = "title,alias,attivo,description,immagine,id_c,sottotitolo,data_inizio_evento,data_fine_evento,ora_inizio_evento,ora_fine_evento,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,data_news";
+		$this->queryFields = "title,alias,attivo,description,immagine,id_c,sottotitolo,data_inizio_evento,data_fine_evento,ora_inizio_evento,ora_fine_evento,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,data_news,link_pagina_facebook,link_pagina_twitter,link_pagina_youtube,link_pagina_instagram,link_pagina_linkedin";
 		
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',

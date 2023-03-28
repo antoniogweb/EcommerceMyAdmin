@@ -787,6 +787,8 @@ class BaseContenutiController extends BaseController
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = CategoriesModel::$currentCategoryData = $r[0];
 		
+		$this->m('CategoriesModel')->checkAndInCaseRedirect($data["datiCategoria"]);
+		
 		$cache = Cache_Html::getInstance();
 		
 		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl))
