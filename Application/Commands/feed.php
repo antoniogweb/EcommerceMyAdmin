@@ -58,7 +58,6 @@ Params::$country = $params["nazione"];
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 
-
 if (!isset($params["modulo"]))
 {
 	echo "si prega di selezionare il modulo con l'istruzione --modulo=\"<modulo>\"";

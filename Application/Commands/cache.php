@@ -29,6 +29,7 @@ $options = getopt(null, array(
 	"lingua::",
 	"nazione::",
 	"url::",
+	"crea_elenco::",
 ));
 
 $default = array(
@@ -39,6 +40,7 @@ $default = array(
 $params = array_merge($default, $options);
 
 $creaCache = false;
+$creaFileCache = false;
 
 if (isset($params["url"]))
 {
@@ -48,10 +50,19 @@ if (isset($params["url"]))
 	$_SERVER['REQUEST_URI'] = "/".$params["url"];
 }
 
+if (isset($params["crea_elenco"]))
+	$creaFileCache = true;
+
+// define ("CACHE_FOLDER", "Logs/cache");
+// define ('CACHE_METHODS_TO_FILE',true);
+
 require_once(dirname(__FILE__) . "/../../../index.php");
 
 Params::$lang = $params["lingua"];
 Params::$country = $params["nazione"];
+
+Files_Log::$logFolder = LIBRARY."/Logs";
+$log = Files_Log::getInstance("cache_sito");
 
 if ($creaCache)
 {
@@ -59,8 +70,9 @@ if ($creaCache)
 	callHook();
 	$output = ob_get_clean();
 }
-else
+else if ($creaFileCache)
 {
+	$log->writeString("INIZIO CREAZIONE ELENCO PAGINE");
 // 	$c = new CategoriesModel();
 	$p = new PagesModel();
 	$combModel = new CombinazioniModel();
@@ -69,21 +81,17 @@ else
 		"combinazioni.acquistabile"	=>	1,
 	))->send();
 	
-	echo count($combinazioni);
+	$elencoUrl = "";
 	
 	foreach ($combinazioni as $c)
 	{
-// 		$p->
+		$url = $p->getUrlAlias($c["combinazioni"]["id_page"], $params["lingua"], $c["combinazioni"]["id_c"]);
+		$elencoUrl .= $url."\n";
+		
+		echo $url."\n";
 	}
 	
-// 	$children = $c->children($c->getShopCategoryId(), true);
+	FilePutContentsAtomic(LIBRARY."/Logs/elenco_url_da_salvare_in_cache.txt", $elencoUrl);
 	
-// 	print_r($children);
-	
-	
-// 	$pages = $p->clear()->addWhereAttivo()->aWhere(array(
-// 		"in" => array("-id_c" => $children),
-// 	))->send();
-// 	
-// 	echo count($pages);
+	$log->writeString("FINE CREAZIONE ELENCO PAGINE");
 }
