@@ -185,6 +185,8 @@ class Tema
 		{
 			$path = Domain::$parentRoot."/Application/Views/".v("theme_folder")."/$percorsoElemento";
 			
+			$filesModel = new Files_Upload($path);
+			
 			if (@is_dir($path))
 			{
 				$filesModel->setBase($path);
