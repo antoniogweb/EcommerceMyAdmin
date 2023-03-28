@@ -298,7 +298,6 @@ class VariabiliModel extends GenericModel {
 		"page_main_class"			=>	"top_page_main",
 		"attiva_azioni_ajax"		=>	0,
 		"attiva_link_documenti"		=>	0,
-		"permetti_gestione_sitemap"	=>	0,
 		"attiva_blocco_cookie_terzi"=>	0,
 		"stile_popup_cookie"		=>	"cookie_stile_css",
 		"stile_check_cookie"		=>	"accetta",
@@ -632,6 +631,9 @@ class VariabiliModel extends GenericModel {
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto
 		"link_marchio_in_breadcrumb"	=>	0, // se impostato a 1, aggiunge il link al marchio nella breadcrumb
+		## SITEMAP ##
+		"permetti_gestione_sitemap"	=>	0, // se impostato a 1, permette la gestione manuale della sitemap
+		"mostra_sitemap_in_file_robots"	=>	1, // se impostato ad 1, inserisci il link della sitemap nel file di robots
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

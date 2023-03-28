@@ -38,20 +38,52 @@ $default = array(
 
 $params = array_merge($default, $options);
 
-if (!isset($params["url"]))
-{
-	echo "si prega di selezionare l'url con l'istruzione --url=\"<url>\"";
-	die();
-}
+$creaCache = false;
 
-$_GET["url"] = $params["url"];
-$_SERVER['REQUEST_URI'] = "/".$params["url"];
+if (isset($params["url"]))
+{
+	$creaCache = true;
+	
+	$_GET["url"] = $params["url"];
+	$_SERVER['REQUEST_URI'] = "/".$params["url"];
+}
 
 require_once(dirname(__FILE__) . "/../../../index.php");
 
 Params::$lang = $params["lingua"];
 Params::$country = $params["nazione"];
 
-ob_start();
-callHook();
-$output = ob_get_clean();
+if ($creaCache)
+{
+	ob_start();
+	callHook();
+	$output = ob_get_clean();
+}
+else
+{
+// 	$c = new CategoriesModel();
+	$p = new PagesModel();
+	$combModel = new CombinazioniModel();
+	
+	$combinazioni = $combModel->clear()->select("combinazioni.*")->inner(array("pagina"))->addWhereAttivo()->aWhere(array(
+		"combinazioni.acquistabile"	=>	1,
+	))->send();
+	
+	echo count($combinazioni);
+	
+	foreach ($combinazioni as $c)
+	{
+// 		$p->
+	}
+	
+// 	$children = $c->children($c->getShopCategoryId(), true);
+	
+// 	print_r($children);
+	
+	
+// 	$pages = $p->clear()->addWhereAttivo()->aWhere(array(
+// 		"in" => array("-id_c" => $children),
+// 	))->send();
+// 	
+// 	echo count($pages);
+}
