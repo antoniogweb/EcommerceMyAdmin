@@ -296,6 +296,9 @@ class BaseRegusersController extends BaseController
 
 			switch($choice) {
 				case 'logged':
+					$this->redirect('area-riservata',0);
+					break;
+				case 'accepted':
 					ob_start();
 					include tpf("Elementi/Mail/mail_login_da_social.php");
 					$output = ob_get_clean();
@@ -308,10 +311,7 @@ class BaseRegusersController extends BaseController
 						"id_user"	=>	$idCliente,
 						"id_page"	=>	0,
 					));
-
-					$this->redirect('area-riservata',0);
-					break;
-				case 'accepted':
+					
 					$this->redirectUser();
 					break;
 				case 'login-error':
