@@ -69,6 +69,9 @@ if ($creaCache)
 	ob_start();
 	callHook();
 	$output = ob_get_clean();
+	
+	$cache = Cache_Html::getInstance();
+	echo md5($cache->cacheKey).".php";
 }
 else if ($creaFileCache)
 {
