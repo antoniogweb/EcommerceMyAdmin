@@ -42,6 +42,8 @@
 									
 									<?php echo $form["description"];?>
 									
+									<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
+									
 									<?php if ($type === "update") { ?>
 									<input class="varchar_input form-control" type="hidden" value="<?php echo $id_page;?>" name="id_page">
 									<?php } ?>
