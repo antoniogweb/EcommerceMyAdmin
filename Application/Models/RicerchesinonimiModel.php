@@ -89,6 +89,8 @@ class RicerchesinonimiModel extends GenericModel
 		if (!trim($stringa))
 			return $stringa;
 		
+		$stringa = trim($stringa);
+		
 		$stringaArray = explode(" ", $stringa);
 		
 		$arrayTermini = [];
