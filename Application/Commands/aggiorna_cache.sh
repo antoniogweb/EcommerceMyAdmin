@@ -12,6 +12,8 @@ php cache.php --crea_elenco="1"
 
 input="../../Logs/elenco_url_da_salvare_in_cache.txt"
 
+chmod -fR 777 ../../../Logs/CacheMethods
+
 # Ciclo la prima volta per settare i permessi alla cartella
 i=0
 while IFS= read -r line
@@ -21,7 +23,9 @@ do
 		chmod -fR 777 ../../../Logs/cachehtml
 		break
 	fi
-	php cache.php --url="it_it/$line"
+	
+	OUTPUT=$(php cache.php --url="it_it/$line")
+	
 	((i++))
 done < "$input"
 
@@ -31,9 +35,11 @@ do
 	OUTPUT=$(php cache.php --url="it_it/$line")
 # 	echo "../../../Logs/cachehtml/${OUTPUT}"
 	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
-	
+	chmod -fR 777 ../../../Logs/CacheMethods
 # 	php cache.php --url="it_it/$line"
 	echo "it_it/$line"
 done < "$input"
+
+chmod -fR 777 ../../../Logs/CacheMethods
 
 chmod -R 777 ../../../Logs/cachehtml

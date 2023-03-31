@@ -76,15 +76,27 @@ if ($creaCache)
 else if ($creaFileCache)
 {
 	$log->writeString("INIZIO CREAZIONE ELENCO PAGINE");
-// 	$c = new CategoriesModel();
+	$cModel = new CategoriesModel();
 	$p = new PagesModel();
 	$combModel = new CombinazioniModel();
+	
+	$idShop = $cModel->getShopCategoryId();
+	
+	$idsCat = $cModel->children($idShop, true, true);
+	
+	$elencoUrl = "";
+	
+	foreach ($idsCat as $idC)
+	{
+		$url = $cModel->getUrlAlias($idC, $params["lingua"]);
+		$elencoUrl .= $url."\n";
+		
+		echo $url."\n";
+	}
 	
 	$combinazioni = $combModel->clear()->select("combinazioni.*")->inner(array("pagina"))->addWhereAttivo()->aWhere(array(
 		"combinazioni.acquistabile"	=>	1,
 	))->send();
-	
-	$elencoUrl = "";
 	
 	foreach ($combinazioni as $c)
 	{
