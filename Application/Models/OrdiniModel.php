@@ -712,7 +712,7 @@ class OrdiniModel extends FormModel {
 				$oggetto = str_replace("[ID_ORDINE]",$clean["id_o"], $oggetto);
 				
 				// Segnaposti
-				$oggetto = SegnapostoModel::sostituisci($oggetto, $ordine, null);
+				$oggetto = htmlentitydecode(SegnapostoModel::sostituisci($oggetto, $ordine, null));
 				
 				$mail->Subject  = Parametri::$nomeNegozio." - $oggetto";
 				$mail->IsHTML(true);
