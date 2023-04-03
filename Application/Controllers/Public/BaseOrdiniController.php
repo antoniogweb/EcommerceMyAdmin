@@ -129,10 +129,13 @@ class BaseOrdiniController extends BaseController
 					$this->model("FattureModel");
 					
 					$ordine = $res[0]["orders"];
+					
+					$statoPagato = $this->getStatoOrdinePagato($ordine);
+					
 					$this->m("OrdiniModel")->values = array();
 					$this->m("OrdiniModel")->values["txn_id"] = $clean['codiceTransazione'];
 					if (strcmp($clean['payment_status'],"Completed") === 0)
-						$this->m("OrdiniModel")->values["stato"] = "completed";
+						$this->m("OrdiniModel")->values["stato"] = $statoPagato;
 					$this->m("OrdiniModel")->update((int)$res[0]["orders"]["id_o"]);
 					
 					if (strcmp($clean['payment_status'],"Completed") === 0)
@@ -169,7 +172,7 @@ class BaseOrdiniController extends BaseController
 							}
 							
 							if (v("manda_mail_avvenuto_pagamento_al_cliente"))
-								$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+								$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-$statoPagato", "P", $mandaFattura);
 							
 							$Subject  = v("oggetto_ordine_pagato");
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
@@ -222,6 +225,11 @@ class BaseOrdiniController extends BaseController
 		header("HTTP/1.1 200 OK");
 	}
 	
+	protected function getStatoOrdinePagato($ordine)
+	{
+		return "completed";
+	}
+	
 	//IPN carta
 	public function ipncarta()
 	{
@@ -251,8 +259,10 @@ class BaseOrdiniController extends BaseController
 					$this->m("OrdiniModel")->values = array();
 					$this->m("OrdiniModel")->values["data_pagamento"] = date("d-m-Y");
 					
+					$statoPagato = $this->getStatoOrdinePagato($ordine);
+					
 					if (PagamentiModel::gateway()->success())
-						$this->m("OrdiniModel")->values["stato"] = "completed";
+						$this->m("OrdiniModel")->values["stato"] = $statoPagato;
 					
 					$this->m("OrdiniModel")->update((int)$res[0]["orders"]["id_o"]);
 					
@@ -276,7 +286,7 @@ class BaseOrdiniController extends BaseController
 						}
 						
 						if (v("manda_mail_avvenuto_pagamento_al_cliente"))
-							$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+							$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-$statoPagato", "P", $mandaFattura);
 						
 						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 						
