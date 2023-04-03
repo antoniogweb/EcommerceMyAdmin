@@ -24,6 +24,7 @@
 ini_set("memory_limit","-1");
 
 define('APP_CONSOLE', true);
+define('SKIP_CACHE_METHODS_TO_FILE', true);
 
 $options = getopt(null, array(
 	"lingua::",
