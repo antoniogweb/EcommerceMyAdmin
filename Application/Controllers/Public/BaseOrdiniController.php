@@ -76,6 +76,15 @@ class BaseOrdiniController extends BaseController
 		*/
 // 	}
 	
+	protected function mandaMailDopoPagamento($ordine)
+	{
+		// Controlla e manda mail dopo pagamento
+		$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+		
+		// Controlla e manda mail dopo pagamento al negozio
+		$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+	}
+	
 	//ritorno da paypal
 	public function ipn()
 	{
@@ -139,11 +148,13 @@ class BaseOrdiniController extends BaseController
 					{
 						case "Completed":
 							
-							// Controlla e manda mail dopo pagamento
-							$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+							$this->mandaMailDopoPagamento($ordine);
 							
-							// Controlla e manda mail dopo pagamento al negozio
-							$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+// 							// Controlla e manda mail dopo pagamento
+// 							$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+// 							
+// 							// Controlla e manda mail dopo pagamento al negozio
+// 							$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 							
 							$mandaFattura = false;
 							
@@ -247,11 +258,13 @@ class BaseOrdiniController extends BaseController
 					
 					if (PagamentiModel::gateway()->success())
 					{
-						// Controlla e manda mail dopo pagamento al cliente
-						$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+						$this->mandaMailDopoPagamento($ordine);
 						
-						// Controlla e manda mail dopo pagamento al negozio
-						$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+// 						// Controlla e manda mail dopo pagamento al cliente
+// 						$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+// 						
+// 						// Controlla e manda mail dopo pagamento al negozio
+// 						$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 						
 						$mandaFattura = false;
 						
