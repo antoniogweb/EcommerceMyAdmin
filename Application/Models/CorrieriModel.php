@@ -53,8 +53,35 @@ class CorrieriModel extends GenericModel {
 					'options'	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 				),
+				'ritiro_in_sede'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, gli ordini con questo corriere verranno impostati come ordini senza spedizione")."</div>"
+					),
+				),
+				'stato_ordine'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	array("" => "-- non modificare lo stato dell'ordine --") + $this->statiOrdine(),
+					"reverse"	=>	"yes",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Selezionare lo stato a cui impostare l'ordine dopo il pagamento se viene selezionato questo corriere ")."</div>"
+					),
+				),
 			),
 		);
+	}
+	
+	public function statiOrdine()
+	{
+		OrdiniModel::setStatiOrdine();
+		
+		return OrdiniModel::$stati;
 	}
 	
     public function getIdsCorrieriNazione($nazione)

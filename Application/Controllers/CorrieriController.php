@@ -66,10 +66,13 @@ class CorrieriController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'titolo,attivo';
+		$fields = 'titolo,attivo,ritiro_in_sede';
 		
 		if (v("scegli_il_corriere_dalla_categoria_dei_prodotti"))
 			$fields .= ",visibile";
+		
+		if (v("lega_lo_stato_ordine_a_corriere"))
+			$fields .= ",stato_ordine";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

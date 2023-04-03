@@ -227,7 +227,19 @@ class BaseOrdiniController extends BaseController
 	
 	protected function getStatoOrdinePagato($ordine)
 	{
-		return "completed";
+		$stato = "completed";
+		
+		if (v("lega_lo_stato_ordine_a_corriere") && $ordine["id_spedizione"])
+		{
+			$cModel = new CorrieriModel();
+			
+			$statoCorriere = $cModel->clear()->whereId((int)$ordine["id_spedizione"])->field("stato_ordine");
+			
+			if ($statoCorriere)
+				$stato = $statoCorriere;
+		}
+		
+		return $stato;
 	}
 	
 	//IPN carta

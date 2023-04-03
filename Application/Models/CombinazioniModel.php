@@ -734,6 +734,7 @@ class CombinazioniModel extends GenericModel {
 			->aWhere(array(
 				"comb.C"	=>	0,
 			))
+			->addWhereAttivo()
 			->toList("pages.id_page")
 			->send();
 		

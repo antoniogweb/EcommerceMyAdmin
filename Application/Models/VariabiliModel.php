@@ -544,6 +544,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
 		## CORRIERI ##
 		"scegli_il_corriere_dalla_categoria_dei_prodotti"	=>	0, // se impostato ad 1, il corriere verrà scelto in funzione della categoria del prodotto (se viene trovata un'associazione)
+		"lega_lo_stato_ordine_a_corriere"	=>	0, // se impostato ad 1, sarà possibile impostare lo stato a cui impostare l'ordine dopo il pagamento per ogni corriere 
 		"attiva_gestione_spedizionieri"	=>	0, // se impostato ad 1, permette la gestione degli spedizionieri (GLS, BRT) e di poterlo selezionare nell'ordine
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
