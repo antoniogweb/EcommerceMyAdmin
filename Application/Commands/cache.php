@@ -30,11 +30,13 @@ $options = getopt(null, array(
 	"nazione::",
 	"url::",
 	"crea_elenco::",
+	"dispositivo::",
 ));
 
 $default = array(
 	"lingua"		=>	"it",
 	"nazione"		=>	"it",
+	"dispositivo"	=>	"_DESK",
 );
 
 $params = array_merge($default, $options);
@@ -46,15 +48,14 @@ if (isset($params["url"]))
 {
 	$creaCache = true;
 	
+	define ('PARTIAL_KEY',$params["dispositivo"]);
+	
 	$_GET["url"] = $params["url"];
 	$_SERVER['REQUEST_URI'] = "/".$params["url"];
 }
 
 if (isset($params["crea_elenco"]))
 	$creaFileCache = true;
-
-// define ("CACHE_FOLDER", "Logs/cache");
-// define ('CACHE_METHODS_TO_FILE',true);
 
 require_once(dirname(__FILE__) . "/../../../index.php");
 

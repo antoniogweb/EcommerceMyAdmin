@@ -21,6 +21,7 @@ do
 	if [[ "$i" == '1' ]]
 	then
 		chmod -fR 777 ../../../Logs/cachehtml
+		chmod -fR 777 ../../../Logs/CacheMethods
 		break
 	fi
 	
@@ -32,11 +33,16 @@ done < "$input"
 # Riparti con il ciclo
 while IFS= read -r line
 do
-	OUTPUT=$(php cache.php --url="it_it/$line")
-# 	echo "../../../Logs/cachehtml/${OUTPUT}"
+	# DESK
+	OUTPUT=$(php cache.php --url="it_it/$line" --dispositivo="_DESK")
 	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
+	
+	# PHONE
+	OUTPUT=$(php cache.php --url="it_it/$line" --dispositivo="_PHONE")
+	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
+	
 	chmod -fR 777 ../../../Logs/CacheMethods
-# 	php cache.php --url="it_it/$line"
+	
 	echo "it_it/$line"
 done < "$input"
 

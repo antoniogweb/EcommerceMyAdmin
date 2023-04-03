@@ -152,12 +152,17 @@ if (defined("SAVE_CACHE_HTML") && isset($_SERVER["REQUEST_URI"]))
 	
 	$partialKey = "";
 	
-	if (User::$isPhone)
-		$partialKey = "_PHONE";
-	else if (User::$isTablet)
-		$partialKey = "_TABLET";
+	if (defined("PARTIAL_KEY"))
+		$partialKey = PARTIAL_KEY;
 	else
-		$partialKey = "_DESK";
+	{
+		if (User::$isPhone)
+			$partialKey = "_PHONE";
+		else if (User::$isTablet)
+			$partialKey = "_TABLET";
+		else
+			$partialKey = "_DESK";
+	}
 	
 	if (empty($_POST))
 	{
