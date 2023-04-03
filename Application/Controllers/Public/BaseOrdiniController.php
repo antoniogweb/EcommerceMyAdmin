@@ -229,11 +229,11 @@ class BaseOrdiniController extends BaseController
 	{
 		$stato = "completed";
 		
-		if (v("lega_lo_stato_ordine_a_corriere") && $ordine["id_spedizione"])
+		if (v("lega_lo_stato_ordine_a_corriere") && $ordine["id_corriere"])
 		{
 			$cModel = new CorrieriModel();
 			
-			$statoCorriere = $cModel->clear()->whereId((int)$ordine["id_spedizione"])->field("stato_ordine");
+			$statoCorriere = $cModel->clear()->whereId((int)$ordine["id_corriere"])->field("stato_ordine");
 			
 			if ($statoCorriere)
 				$stato = $statoCorriere;
