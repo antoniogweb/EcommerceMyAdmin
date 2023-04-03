@@ -1761,6 +1761,16 @@ class OrdiniModel extends FormModel {
 		return $output;
 	}
 	
+	public function gLinkOrdine($lingua, $record)
+	{
+		if (!isset($record["id_o"]))
+			return "";
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		return Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$record["id_o"]."/".$record["cart_uid"];
+	}
+	
 	public static function analizzaErroriCheckout($strutturaErrori)
 	{
 		$mostraCampiFatturazione = $mostraCampiSpedizione = $mostraCampiIndirizzoFatturazione = false;

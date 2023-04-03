@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`id_segnaposto`, `titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES (NULL, 'Link all\'ordine in area riservata del cliente (variabile utilizzabile solo in caso di email su Ordine)', 'URL_ORDINE', 'gLinkOrdine', '', '1', '17', '', '1', '', '1');
