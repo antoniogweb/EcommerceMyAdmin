@@ -77,6 +77,24 @@ class CorrieriModel extends GenericModel {
 		);
 	}
 	
+	public static function corriereEsistente($idCorriere)
+	{
+		$cModel = new CorrieriModel();
+		
+		return (int)$cModel->clear()->whereId((int)$idCorriere)->rowNumber();
+	}
+	
+	// Restituisce 1 o 0 se il corriere è un ritiro in sede
+	public static function ritiroInSede($idCorriere)
+	{
+		if (!v("attiva_campo_ritiro_in_sede_su_corrieri"))
+			return false;
+		
+		$cModel = new CorrieriModel();
+		
+		return (int)$cModel->clear()->whereId((int)$idCorriere)->field("ritiro_in_sede");
+	}
+	
 	public function statiOrdine()
 	{
 		OrdiniModel::setStatiOrdine();
