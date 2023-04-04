@@ -1091,6 +1091,10 @@ class BaseOrdiniController extends BaseController
 						if (number_format(getTotalN(),2,".","") <= 0.00)
 							$statoOrdine = "completed";
 						
+						$statoOrdine = $this->getStatoOrdineFrontend($statoOrdine);
+						
+						$this->m('OrdiniModel')->values["stato"] = $statoOrdine;
+						
 						if (isset($_COOKIE["ok_cookie_terzi"]))
 							$this->m('OrdiniModel')->values["cookie_terzi"] = 1;
 						
@@ -1303,7 +1307,7 @@ class BaseOrdiniController extends BaseController
 								call_user_func(v("hook_ordine_confermato"), $clean['lastId']);
 							
 							// mail al cliente
-							if (!v("mail_ordine_dopo_pagamento") || !$utenteRegistrato || !OrdiniModel::conPagamentoOnline($ordine))
+							if (!v("mail_ordine_dopo_pagamento") || !$utenteRegistrato || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
 							{
 								ob_start();
 								$tipoOutput = "mail_al_cliente";
@@ -1328,10 +1332,12 @@ class BaseOrdiniController extends BaseController
 								$this->m('OrdiniModel')->settaMailDaInviare($clean['lastId']);
 							
 							// mail al negozio
-							if (!v("mail_ordine_dopo_pagamento_negozio") || !OrdiniModel::conPagamentoOnline($ordine))
+							if (!v("mail_ordine_dopo_pagamento_negozio") || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
 							{
 								ob_start();
 								$tipoOutput = "mail_al_negozio";
+								ElementitemaModel::getPercorsi();
+								ElementitemaModel::$percorsi["RESOCONTO_PRODOTTI"]["nome_file"] = "default";
 								include tpf("/Ordini/resoconto-acquisto.php");
 								$output = ob_get_clean();
 								
@@ -1549,5 +1555,10 @@ class BaseOrdiniController extends BaseController
 		$this->clean();
 		
 		echo hasActiveCoupon() ? "OK" : "KO";
+	}
+	
+	protected function getStatoOrdineFrontend($statoOrdine)
+	{
+		return $statoOrdine;
 	}
 }

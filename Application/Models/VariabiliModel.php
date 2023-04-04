@@ -539,6 +539,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_doppio_pulsante_acquista_mobile"	=>	1, // se mostrare il doppio pulsante di acquista in mobile
 		"pagina_di_autenticazione"	=>	0, // attiva la pagina di autenticazione
 		"mostra_modalita_spedizione_in_resoconto"	=>	1, // se mostrare la modalità di spedizione nel resoconto dell'ordine
+		"nascondi_ordini_pending_in_admin"	=>	0, // se impostato ad 1 gli ordini in stato pending saranno nascosti di default dalla lista degli ordini
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
