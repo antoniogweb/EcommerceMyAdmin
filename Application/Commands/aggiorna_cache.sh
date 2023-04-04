@@ -1,9 +1,10 @@
 #!/bin/bash
 # Elimino la cache HTML
+touch ../../../Logs/caching.log
 rm -fR ../../../Logs/cachehtml
 
 # Elimino la cache dei metodi
-# rm -fR ../../../Logs/CacheMethods
+rm -fR ../../../Logs/CacheMethods
 
 # Elimino l'elenco degli URL da salvare in cache
 rm -f ../../Logs/elenco_url_da_salvare_in_cache.txt
@@ -20,7 +21,7 @@ while IFS= read -r line
 do
 	if [[ "$i" == '1' ]]
 	then
-		chmod -fR 777 ../../../Logs/cachehtml
+# 		chmod -fR 777 ../../../Logs/cachehtml
 # 		chmod -fR 777 ../../../Logs/CacheMethods
 		break
 	fi
@@ -35,17 +36,18 @@ while IFS= read -r line
 do
 	# DESK
 	OUTPUT=$(php cache.php --url="it_it/$line" --dispositivo="_DESK")
-	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
+# 	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
 	
 	# PHONE
 	OUTPUT=$(php cache.php --url="it_it/$line" --dispositivo="_PHONE")
-	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
+# 	chmod -f 777 "../../../Logs/cachehtml/${OUTPUT}"
 	
 # 	chmod -fR 777 ../../../Logs/CacheMethods
 	
 	echo "it_it/$line"
 done < "$input"
 
-# chmod -fR 777 ../../../Logs/CacheMethods
-
+chmod -fR 777 ../../../Logs/CacheMethods
 chmod -R 777 ../../../Logs/cachehtml
+
+rm -f ../../../Logs/caching.log
