@@ -1,6 +1,7 @@
 #!/bin/bash
-# Elimino la cache HTML
 touch ../../../Logs/caching.log
+
+# Elimino la cache HTML
 rm -fR ../../../Logs/cachehtml
 
 # Elimino la cache dei metodi
