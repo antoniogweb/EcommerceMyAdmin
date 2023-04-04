@@ -17,22 +17,22 @@ input="../../Logs/elenco_url_da_salvare_in_cache.txt"
 # chmod -fR 777 ../../../Logs/CacheMethods
 
 # Ciclo la prima volta per settare i permessi alla cartella
-i=0
-while IFS= read -r line
-do
-	if [[ "$i" == '1' ]]
-	then
-# 		chmod -fR 777 ../../../Logs/cachehtml
-# 		chmod -fR 777 ../../../Logs/CacheMethods
-		break
-	fi
-	
-	OUTPUT=$(php cache.php --url="it_it/$line")
-	
-	((i++))
-done < "$input"
+# i=0
+# while IFS= read -r line
+# do
+# 	if [[ "$i" == '1' ]]
+# 	then
+# # 		chmod -fR 777 ../../../Logs/cachehtml
+# # 		chmod -fR 777 ../../../Logs/CacheMethods
+# 		break
+# 	fi
+# 	
+# 	OUTPUT=$(php cache.php --url="it_it/$line")
+# 	
+# 	((i++))
+# done < "$input"
 
-# Riparti con il ciclo
+# Parti con il ciclo
 while IFS= read -r line
 do
 	# DESK
