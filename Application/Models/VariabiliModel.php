@@ -573,6 +573,8 @@ class VariabiliModel extends GenericModel {
 		## CATEGORIE ##
 		"fasce_in_categorie"		=>	0, // mostra il tab per la gestione delle fasce in categorie
 		"attiva_mostra_in_menu"		=>	0, // se impostato a 1, permette di gestire il campo mostra_in_menu nelle categorie
+		## PAGINE ##
+		"attiva_campo_redirect_pagine"		=>	0, // se impostato ad 1, attiva un campo redirect per le pagine. La pagina sarà un link all'URL specificato nel campo redirect
 		## CARRELLO ##
 		"cart_sticky_top_offeset"	=>	100, // offset dello sticky del cart in desktop
 		"recupera_dati_carrello_da_post"	=>	0, // se impostato a 1, salva i dati inviati in post nel carrello (solo se l'utente ha approvato la privacy)
@@ -622,7 +624,7 @@ class VariabiliModel extends GenericModel {
 		## CATEGORIA ##
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
 		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
-		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo reidirect. La categoria sarà un link all'URL specificato nel campo redirect
+		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect
 		## BASE CONTROLLER ##
 		"estrai_elenco_marchi"		=>	1, // estrai i marchi
 		"estrai_elenco_categorie_prodotti_base_controller"	=>	1, // se deve estrarre sempre l'elenco delle categorie dal base controller

@@ -3330,6 +3330,13 @@ class PagesModel extends GenericModel {
 		))->first();
 	}
 	
+	public static function getPageDetailsPreloaded($idPage, $lingua = null)
+	{
+		$clean["id"] = (int)$idPage;
+		
+		return isset(self::$preloadedPages[$clean["id"]]) ? self::$preloadedPages[$clean["id"]] : self::getPageDetails($clean["id"], $lingua);
+	}
+	
 	public static function getPageDetailsList($idPages, $lingua = null)
 	{
 		$p = new PagesModel();
@@ -4487,6 +4494,18 @@ class PagesModel extends GenericModel {
 		foreach ($pages as $page)
 		{
 			self::$preloadedPages[$page["pages"]["id_page"]] = $page;
+		}
+	}
+	
+	public function checkAndInCaseRedirect($page)
+	{
+		if (v("attiva_campo_redirect_pagine"))
+		{
+			if ($page["pages"]["redirect"])
+			{
+				header("Location: ".$page["pages"]["redirect"]);
+				exit;
+			}
 		}
 	}
 }

@@ -1520,6 +1520,9 @@ class BaseContenutiController extends BaseController
 		
 		if (count($data["pages"]) > 0)
 		{
+			// Reditect
+			$this->m('PagesModel')->checkAndInCaseRedirect($data["pages"][0]);
+			
 			if ($data["pages"][0]["pages"]["tipo_pagina"] == "COOKIE")
 			{
 				VariabiliModel::noCookieAlert();

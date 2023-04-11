@@ -609,6 +609,9 @@ class PagesController extends BaseController {
 		
 		$this->shift(1);
 		
+		if (v("attiva_campo_redirect_pagine"))
+			$this->metaQueryFields .= ",redirect";
+		
 		$this->_posizioni['meta'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
 		
