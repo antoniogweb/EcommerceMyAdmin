@@ -607,6 +607,7 @@ class VariabiliModel extends GenericModel {
 		"codici_opzioni_gestibili"	=>	"STATI_ELEMENTI:stati elementi", // elenco dei codici opzioni gestibili da pannello (dividere con ;)
 		## FEED ##
 		"attiva_gestione_feed"	=>	0, // attiva la sezione per la gestione dei feed xml
+		"usa_codice_articolo_su_mpn_google_facebook"	=>	0, // se impostato ad 1, utilizza il codice articolo nel campo MPN del feed Google e Facebook
 		## MOTORI DI RICERCA ##
 		"attiva_gestione_motori_ricerca"	=> 0, // attiva la sezione per la gestione dei motori di ricerca
 		"salva_ricerche"		=>	1, // se impostato su 1, salva le ricerche fatte

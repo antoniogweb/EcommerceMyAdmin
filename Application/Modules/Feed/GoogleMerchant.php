@@ -71,6 +71,9 @@ class GoogleMerchant extends Feed
 				
 				if ($r["mpn"])
 					$temp["g:mpn"] = htmlentitydecode($r["mpn"]);
+				
+				if (v("usa_codice_articolo_su_mpn_google_facebook"))
+					$temp["g:mpn"] = htmlentitydecode($r["codice"]);
 			}
 			
 			if (!$this->isFbk || v("no_tag_descrizione_feed"))
