@@ -117,9 +117,9 @@ if (v("codice_gtm_analytics"))
 		<?php } ?>
 	<?php }
 	
-	if ($this->controller == "ordini" && $this->action == "index")
+	if (($this->controller == "ordini" || $this->controller == "cart") && $this->action == "index")
 	{
-		$gtmActionName = "begin_checkout";
+		$gtmActionName = ($this->controller == "ordini") ? "begin_checkout" : "view_cart";
 		
 		echo "\n";
 		
