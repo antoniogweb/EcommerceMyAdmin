@@ -1589,7 +1589,10 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$data["prodotti_correlati"] = $this->m('PagesModel')->getCorrelati($clean['id']);
-			
+		
+		if ($firstSection == "prodotti")
+			$data["prodotti_correlati"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_correlati"]);
+		
 // 		$data["prodotti_correlati"] = $this->m('PagesModel')->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 // 			->addJoinTraduzionePagina()
 // 			->where(array(
