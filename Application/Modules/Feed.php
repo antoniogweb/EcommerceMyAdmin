@@ -80,4 +80,19 @@ class Feed
 		
 		return array($this->params["url_feed"] => $feedUrl);
 	}
+	
+	public function editFormStruct($model, $record)
+	{
+		$model->formStruct["entries"]["frequenza_modifica"]["type"] = "Select";
+		$model->formStruct["entries"]["frequenza_modifica"]["options"] = array(
+			"always"	=>	"always",
+			"hourly"	=>	"hourly",
+			"daily"		=>	"daily",
+			"weekly"	=>	"weekly",
+			"monthly"	=>	"monthly",
+			"yearly"	=>	"yearly",
+			"never"		=>	"never",
+		);
+		$model->formStruct["entries"]["frequenza_modifica"]["reverse"] = "yes";
+	}
 }
