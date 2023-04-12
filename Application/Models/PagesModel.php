@@ -4424,6 +4424,8 @@ class PagesModel extends GenericModel {
 		));
 		
 		$this->pUpdate((int)$idPage);
+		
+		return $numero;
 	}
 	
 	public function getModaliFrontend()
