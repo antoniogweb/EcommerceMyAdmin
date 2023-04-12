@@ -1,4 +1,6 @@
 #!/bin/bash
+echo -e "[$(date '+%Y-%m-%g %X')]\tINIZIO CREAZIONE CACHE" >> ../../Logs/cache_sito.log
+
 touch ../../../Logs/caching.log
 
 # Elimino la cache HTML
@@ -52,3 +54,5 @@ chmod -fR 777 ../../../Logs/CacheMethods
 chmod -R 777 ../../../Logs/cachehtml
 
 rm -f ../../../Logs/caching.log
+
+echo -e "[$(date '+%Y-%m-%g %X')]\tFINE CREAZIONE CACHE" >> ../../Logs/cache_sito.log
