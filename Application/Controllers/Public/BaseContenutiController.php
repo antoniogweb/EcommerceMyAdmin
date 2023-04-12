@@ -922,7 +922,11 @@ class BaseContenutiController extends BaseController
 			$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
 		
 		if ($firstSection == "prodotti")
+		{
+			PagesModel::clearIdCombinazione();
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
+			PagesModel::restoreIdCombinazione();
+		}
 		
 		$this->pages = $data["pages"];
 		
