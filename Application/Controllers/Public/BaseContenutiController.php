@@ -922,11 +922,7 @@ class BaseContenutiController extends BaseController
 			$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
 		
 		if ($firstSection == "prodotti")
-		{
-			PagesModel::clearIdCombinazione();
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
-			PagesModel::restoreIdCombinazione();
-		}
 		
 		$this->pages = $data["pages"];
 		
@@ -1595,7 +1591,11 @@ class BaseContenutiController extends BaseController
 		$data["prodotti_correlati"] = $this->m('PagesModel')->getCorrelati($clean['id']);
 		
 		if ($firstSection == "prodotti")
+		{
+			PagesModel::clearIdCombinazione();
 			$data["prodotti_correlati"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_correlati"]);
+			PagesModel::restoreIdCombinazione();
+		}
 		
 // 		$data["prodotti_correlati"] = $this->m('PagesModel')->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 // 			->addJoinTraduzionePagina()
