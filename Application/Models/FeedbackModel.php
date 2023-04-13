@@ -90,8 +90,39 @@ class FeedbackModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Inserisci un commento al feedback. Apparirà sotto al feedback del cliente.")."</div>"
 					),
 				),
+				'id_page'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Prodotto',
+					'options'	=>	$this->selectProdotti($id),
+					'reverse' => 'yes',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'		=>	array(
+						null,
+						null,
+						$this->getTitoloFeedback($id)
+					),
+				),
 			),
 		);
+	}
+	
+	public function getTitoloFeedback($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($record["titolo"]))
+			return "<div class='form_notice'>".gtext("Prodotto").": ".$record["titolo"]."</div>";
+		
+		return "";
+	}
+	
+	public function selectProdotti($id)
+	{
+		$p = new PagesModel();
+		
+		return $p->selectProdotti($id);
 	}
 	
 	public static function gIdProdotto()
@@ -352,6 +383,14 @@ class FeedbackModel extends GenericModel {
 			return $record["feedback"]["autore"];
 		else
 			return "<a class='iframe action_iframe' href='".Url::getRoot()."feedback/form/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y'>".$record["feedback"]["autore"]."</a>";
+	}
+	
+	public function collega($record)
+	{
+		if (!$record["feedback"]["is_admin"])
+			return $record["feedback"]["autore"];
+		else
+			return "<a class='iframe action_iframe' href='".Url::getRoot()."feedback/form/update/".$record["feedback"]["id_feedback"]."?partial=Y&nobuttons=Y&collega=Y'>".$record["feedback"]["autore"]."</a>";
 	}
 	
 	public function editutente($record)

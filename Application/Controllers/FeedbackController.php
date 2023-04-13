@@ -26,7 +26,10 @@ class FeedbackController extends BaseController {
 	
 	public $orderBy = "id_order desc";
 	
-	public $argKeys = array('id_page:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_page:sanitizeAll'=>'tutti',
+		'collega:sanitizeAll'=>'tutti',
+	);
 	
 	public $functionsIfFromDb = array(
 		"voto"	=>	"sistemaVotoNumero",
@@ -52,7 +55,7 @@ class FeedbackController extends BaseController {
 		
 		$this->colProperties = array();
 		
-		$this->mainFields = array("feedback.data_feedback", "edit", "editutente", "punteggio", "prodottoCrud", "attivo", "daapprovare", "datagestione", "gestisci");
+		$this->mainFields = array("feedback.data_feedback", "collega", "editutente", "punteggio", "prodottoCrud", "attivo", "daapprovare", "datagestione", "gestisci");
 		$this->mainHead = "Data feedback,Autore,Email,Punteggio,Prodotto,Pubblicato,Approvazione,Data approvazione/rifiuto,";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta');
@@ -68,7 +71,12 @@ class FeedbackController extends BaseController {
 		
 		$this->m['FeedbackModel']->addStrongCondition("both",'checkNotEmpty',"autore,testo");
 		
-		$this->m[$this->modelName]->setValuesFromPost("autore,data_feedback,testo,attivo,voto");
+		$fields = "autore,data_feedback,testo,attivo,voto";
+		
+		if ($this->viewArgs["collega"] == "Y")
+			$fields .= ",id_page";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);

@@ -10,6 +10,8 @@ $().ready(function() {
 <form class="formClass form_class_contenuto" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>">
 	<div class='row'>
 		<div class='col-md-6'>
+			<?php echo $form["id_page"] ?? "";?>
+			
 			<?php echo $form["autore"];?>
 			
 			<?php echo $form["data_feedback"];?>
