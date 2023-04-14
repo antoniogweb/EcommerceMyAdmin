@@ -25,4 +25,9 @@ require_once(LIBRARY."/Application/Modules/Feed/GoogleMerchant.php");
 class Facebook extends GoogleMerchant
 {
 	public $isFbk = true;
+	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,link_a_combinazione,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed,default_gender,default_age_group';
+	}
 }

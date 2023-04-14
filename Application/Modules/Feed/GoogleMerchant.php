@@ -61,8 +61,8 @@ class GoogleMerchant extends Feed
 			
 			$temp["g:identifier_exists"] = $r["identifier_exists"] ? $r["identifier_exists"] : v("identificatore_feed_default");
 			
-			if (!$this->isFbk)
-			{
+// 			if (!$this->isFbk)
+// 			{
 				if ($r["gtin"])
 				{
 					$temp["g:gtin"] = htmlentitydecode($r["gtin"]);
@@ -74,7 +74,7 @@ class GoogleMerchant extends Feed
 				
 				if (v("usa_codice_articolo_su_mpn_google_facebook"))
 					$temp["g:mpn"] = htmlentitydecode($r["codice"]);
-			}
+// 			}
 			
 			if (!$this->isFbk || v("no_tag_descrizione_feed"))
 				$temp["g:description"] = strip_tags(htmlentitydecode(F::sanitizeXML($r["descrizione"])));
@@ -88,7 +88,12 @@ class GoogleMerchant extends Feed
 			}
 			
 			if (count($r["categorie"]) > 0)
-				$temp["g:product_type"] = implode(" &gt; ", $r["categorie"][0]);
+			{
+				if (!$this->isFbk)
+					$temp["g:product_type"] = implode(" &gt; ", htmlentitydecodeDeep($r["categorie"][0]));
+				else if ($r["categorie"][0] > 0)
+					$temp["g:product_type"] = htmlentitydecode($r["categorie"][0][0]);
+			}
 			
 			$parents = $p->parents((int)$r["id_page"], false, false, true);
 			
@@ -131,6 +136,12 @@ class GoogleMerchant extends Feed
 			{
 				$temp["condition"] = "new";
 				
+				if ($this->params["default_gender"])
+					$temp["gender"] = $this->params["default_gender"];
+				
+				if ($this->params["default_age_group"])
+					$temp["age_group"] = $this->params["default_age_group"];
+				
 				if ($this->linkAlleVarianti() && $r["mpn"])
 					$temp["g:item_group_id"] = $r["mpn"];
 			}
@@ -143,7 +154,7 @@ class GoogleMerchant extends Feed
 				$r["pages"]["in_promo_feed"] = true;
 			}
 			
-			if (!$this->isFbk && v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
+			if (v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
 			{
 // 				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				
