@@ -67,6 +67,16 @@ class F
 		return json_encode($str, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 	}
 	
+	public static function nlToSpace($string)
+	{
+		$string = preg_replace('/\<br(\s*)?\/?\>/i', " ", $string);
+		$string = str_replace("\n",' ',$string);
+		$string = str_replace("\r",' ',$string);
+		$string = str_replace("\r",' ',$string);
+		
+		return $string;
+	}
+	
 	public static function alt($string, $flags = ENT_QUOTES)
 	{
 		$string = strip_tags(htmlentitydecode($string));
@@ -145,7 +155,7 @@ class F
 			);
 		
 		ob_start();
-		echo '<?xml version="1.0"?>'."\n";
+		echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 		echo wrap($xml, $wrap);
 		$output = ob_get_clean();
 		
