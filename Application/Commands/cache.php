@@ -70,6 +70,8 @@ if ($creaCache)
 {
 	if ($params["dispositivo"] == "_PHONE")
 		User::$isPhone = User::$isMobile = true;
+	else
+		User::$isPhone = User::$isMobile = false;
 	
 	ob_start();
 	callHook();
