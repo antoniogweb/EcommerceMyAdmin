@@ -1766,15 +1766,15 @@ class PagesModel extends GenericModel {
 		
 // 		print_r(self::$preloadedPages);
 		
-		if (isset(self::$preloadedPages[$clean["id"]]))
-		{
-			$temp = self::$preloadedPages[$clean["id"]];
-			unset($temp["categories"]);
-			unset($temp["contenuti_tradotti_categoria"]);
-			$res = array($temp);
-		}
-		else
-		{
+// 		if (isset(self::$preloadedPages[$clean["id"]]))
+// 		{
+// 			$temp = self::$preloadedPages[$clean["id"]];
+// 			unset($temp["categories"]);
+// 			unset($temp["contenuti_tradotti_categoria"]);
+// 			$res = array($temp);
+// 		}
+// 		else
+// 		{
 			$this->clear()->where(array($this->_idFields=>$clean["id"]));
 			
 			if ($fields)
@@ -1788,16 +1788,16 @@ class PagesModel extends GenericModel {
 			}
 			
 			$res = $this->send();
-		}
+// 		}
 		
 		if (count($res) > 0)
 		{
 			$clean['id_c'] = $res[0][$this->_tables]["id_c"];
 			$c = new CategoriesModel();
 			
-			if ($forUrlAlias)
-				$parents = $c->parentsForAlias($clean['id_c'], $lingua);
-			else
+// 			if ($forUrlAlias)
+// 				$parents = $c->parentsForAlias($clean['id_c'], $lingua);
+// 			else
 				$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fieldsCategory);
 			
 			if ($onlyParents)
@@ -1883,18 +1883,14 @@ class PagesModel extends GenericModel {
 			{
 				if (isset($node["categories"][$this->aliaseFieldName]))
 				{
-					if (isset($node["contenuti_tradotti_categoria"][$this->aliaseFieldName]) && $node["contenuti_tradotti_categoria"][$this->aliaseFieldName])
-						$urlArray[] = $node["contenuti_tradotti_categoria"][$this->aliaseFieldName];
-					else if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
 						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
 					else
 						$urlArray[] = $node["categories"][$this->aliaseFieldName];
 				}
 				else
 				{
-					if (isset($node["contenuti_tradotti_categoria"][$this->aliaseFieldName]) && $node["contenuti_tradotti_categoria"][$this->aliaseFieldName])
-						$urlArray[] = $node["contenuti_tradotti_categoria"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
-					else if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
 						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
 					else
 						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
