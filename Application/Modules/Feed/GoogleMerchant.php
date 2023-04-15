@@ -142,8 +142,8 @@ class GoogleMerchant extends Feed
 				if ($this->params["default_age_group"])
 					$temp["age_group"] = $this->params["default_age_group"];
 				
-				if ($this->linkAlleVarianti() && $r["mpn"])
-					$temp["g:item_group_id"] = $r["mpn"];
+				if ($this->params["campo_per_item_group_id"] && isset($r[$this->params["campo_per_item_group_id"]]) && $r[$this->params["campo_per_item_group_id"]])
+					$temp["g:item_group_id"] = $r[$this->params["campo_per_item_group_id"]];
 			}
 			
 			if ($r["in_promo"])
@@ -184,23 +184,34 @@ class GoogleMerchant extends Feed
 		
 		$xmlArray = array();
 		
-		$xmlArray["channel"] = array(
-			"title"	=>	htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]),
-			"link"	=>	Url::getRoot(),
-			"description"	=>	htmlentitydecode(ImpostazioniModel::$valori["meta_description"]),
-			"item"	=>	$prodotti,
-		);
+		$wrap = array();
 		
-		if (v("elimina_emoticons_da_feed"))
+		if (file_exists(tpf("/Elementi/Feed/".$this->params["modulo"].".php")))
+			include(tpf("/Elementi/Feed/".$this->params["modulo"].".php"));
+		else
 		{
-			$xmlArray["channel"]["title"] = F::removeEmoji($xmlArray["channel"]["title"]);
-			$xmlArray["channel"]["description"] = F::removeEmoji($xmlArray["channel"]["description"]);
+			$itemTagName = $this->params["node_tag_name"];
+			
+			$xmlArray["channel"] = array(
+				"title"	=>	htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]),
+				"link"	=>	Url::getRoot(),
+				"description"	=>	htmlentitydecode(ImpostazioniModel::$valori["meta_description"]),
+				"$itemTagName"	=>	$prodotti,
+			);
+			
+			if (v("elimina_emoticons_da_feed"))
+			{
+				$xmlArray["channel"]["title"] = F::removeEmoji($xmlArray["channel"]["title"]);
+				$xmlArray["channel"]["description"] = F::removeEmoji($xmlArray["channel"]["description"]);
+			}
+			
+			
 		}
 		
 // 		print_r($xmlArray);
 		
 		$xml = aToX($xmlArray);
 		
-		F::xml($xml, array(), $outputFile);
+		F::xml($xml, $wrap, $outputFile);
 	}
 }

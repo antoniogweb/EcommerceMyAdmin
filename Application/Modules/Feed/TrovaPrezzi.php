@@ -44,7 +44,7 @@ class TrovaPrezzi extends Feed
 				"Price"	=>	$r["prezzo_scontato"],
 				"ShippingCost"	=>	$r["spese_spedizione"],
 				"Brand"	=>	$r["marchio"],
-				"Weight"	=>	$r["peso"],
+// 				"Weight"	=>	$r["peso"],
 				"Disponibilita"	=>	$r["giacenza"] > 0 ? "disponibile" : $outOfStock,
 // 				"Stock"	=>	$r["spese_spedizione"],
 			);
