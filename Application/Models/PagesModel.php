@@ -1766,15 +1766,15 @@ class PagesModel extends GenericModel {
 		
 // 		print_r(self::$preloadedPages);
 		
-// 		if (isset(self::$preloadedPages[$clean["id"]]))
-// 		{
-// 			$temp = self::$preloadedPages[$clean["id"]];
-// 			unset($temp["categories"]);
-// 			unset($temp["contenuti_tradotti_categoria"]);
-// 			$res = array($temp);
-// 		}
-// 		else
-// 		{
+		if (isset(self::$preloadedPages[$clean["id"]]))
+		{
+			$temp = self::$preloadedPages[$clean["id"]];
+			unset($temp["categories"]);
+			unset($temp["contenuti_tradotti_categoria"]);
+			$res = array($temp);
+		}
+		else
+		{
 			$this->clear()->where(array($this->_idFields=>$clean["id"]));
 			
 			if ($fields)
@@ -1788,7 +1788,7 @@ class PagesModel extends GenericModel {
 			}
 			
 			$res = $this->send();
-// 		}
+		}
 		
 		if (count($res) > 0)
 		{
