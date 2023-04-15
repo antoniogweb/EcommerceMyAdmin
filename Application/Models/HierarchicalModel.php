@@ -918,8 +918,10 @@ class HierarchicalModel extends GenericModel {
 		$urlArray = array();
 		foreach ($parents as $node)
 		{
-			if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
-				$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
+			if (isset($node["contenuti_tradotti_categoria"][$this->aliaseFieldName]) && $node["contenuti_tradotti_categoria"][$this->aliaseFieldName])
+				$urlArray[] = $node["contenuti_tradotti_categoria"][$this->aliaseFieldName];
+// 			else if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+// 				$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
 			else
 				$urlArray[] = $node[$this->_tables][$this->aliaseFieldName];
 		}
