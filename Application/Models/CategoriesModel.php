@@ -786,9 +786,9 @@ class CategoriesModel extends HierarchicalModel {
 		return $p;
 	}
 	
-	public function addJoinTraduzioneCategoria()
+	public function addJoinTraduzioneCategoria($fieldTrad = "contenuti_tradotti_categoria")
 	{
-		$this->addJoinTraduzione(null, "contenuti_tradotti_categoria");
+		$this->addJoinTraduzione(null, $fieldTrad);
 		
 		return $this;
 	}

@@ -52,6 +52,7 @@ class HierarchicalModel extends GenericModel {
 	
 	public static $currentRecord = null;
 	public static $strutturaCategorie = [];
+	public static $strutturaCategorieRid = [];
 	
 	public function __construct() {
 		
@@ -871,11 +872,33 @@ class HierarchicalModel extends GenericModel {
 		return array();
 	}
 	
+	public static function getDataCategoriaRid($idC)
+	{
+		if (isset(self::$strutturaCategorieRid[$idC]))
+			return self::$strutturaCategorieRid[$idC];
+		
+		$c = new CategoriesModel();
+		$tableName = $c->table();
+		$pkName = $c->getPrimaryKey();
+		
+		$res = $c->clear()->addJoinTraduzioneCategoria("contenuti_tradotti")->orderBy("categories.lft")->send();
+		
+		foreach ($res as $cat)
+		{
+			self::$strutturaCategorieRid[$cat[$tableName][$pkName]] = $cat;
+		}
+		
+		if (isset(self::$strutturaCategorieRid[$idC]))
+			return self::$strutturaCategorieRid[$idC];
+		
+		return array();
+	}
+	
 	public function parentsForAlias($id, $lingua = null)
 	{
 		$clean["id"] = (int)$id;
 		
-		$res = self::getDataCategoria($clean["id"]);
+		$res = self::getDataCategoriaRid($clean["id"]);
 		
 		if (count($res) > 0)
 		{
@@ -884,7 +907,7 @@ class HierarchicalModel extends GenericModel {
 			
 			$parents = [];
 			
-			foreach (self::$strutturaCategorie as $idC => $categoria)
+			foreach (self::$strutturaCategorieRid as $idC => $categoria)
 			{
 				if ($categoria["categories"]["lft"] <= $lft && $categoria["categories"]["rgt"] >= $rgt)
 				{
