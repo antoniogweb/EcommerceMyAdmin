@@ -872,24 +872,26 @@ class HierarchicalModel extends GenericModel {
 		return array();
 	}
 	
-	public static function getDataCategoriaRid($idC)
+	public static function getDataCategoriaRid($idC, $lingua = null)
 	{
-		if (isset(self::$strutturaCategorieRid[$idC]))
-			return self::$strutturaCategorieRid[$idC];
+		$lingua = isset($lingua) ? $lingua : Params::$lang;
+		
+		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
+			return self::$strutturaCategorieRid[$lingua][$idC];
 		
 		$c = new CategoriesModel();
 		$tableName = $c->table();
 		$pkName = $c->getPrimaryKey();
 		
-		$res = $c->clear()->addJoinTraduzioneCategoria("contenuti_tradotti")->orderBy("categories.lft")->send();
+		$res = $c->clear()->addJoinTraduzione($lingua,"contenuti_tradotti")->orderBy("categories.lft")->send();
 		
 		foreach ($res as $cat)
 		{
-			self::$strutturaCategorieRid[$cat[$tableName][$pkName]] = $cat;
+			self::$strutturaCategorieRid[$lingua][$cat[$tableName][$pkName]] = $cat;
 		}
 		
-		if (isset(self::$strutturaCategorieRid[$idC]))
-			return self::$strutturaCategorieRid[$idC];
+		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
+			return self::$strutturaCategorieRid[$lingua][$idC];
 		
 		return array();
 	}
@@ -898,7 +900,7 @@ class HierarchicalModel extends GenericModel {
 	{
 		$clean["id"] = (int)$id;
 		
-		$res = self::getDataCategoriaRid($clean["id"]);
+		$res = self::getDataCategoriaRid($clean["id"], $lingua);
 		
 		if (count($res) > 0)
 		{
@@ -907,7 +909,7 @@ class HierarchicalModel extends GenericModel {
 			
 			$parents = [];
 			
-			foreach (self::$strutturaCategorieRid as $idC => $categoria)
+			foreach (self::$strutturaCategorieRid[$lingua] as $idC => $categoria)
 			{
 				if ($categoria["categories"]["lft"] <= $lft && $categoria["categories"]["rgt"] >= $rgt)
 				{
@@ -928,8 +930,8 @@ class HierarchicalModel extends GenericModel {
 		
 		$clean["id"] = (int)$id;
 		
-		$parents = $this->parents($clean["id"], false, false, $lingua);
-// 		$parents = $this->parentsForAlias($clean["id"], $lingua);
+// 		$parents = $this->parents($clean["id"], false, false, $lingua);
+		$parents = $this->parentsForAlias($clean["id"], $lingua);
 		
 		//remove the root node
 		array_shift($parents);
@@ -941,8 +943,6 @@ class HierarchicalModel extends GenericModel {
 		$urlArray = array();
 		foreach ($parents as $node)
 		{
-// 			if (isset($node["contenuti_tradotti_categoria"][$this->aliaseFieldName]) && $node["contenuti_tradotti_categoria"][$this->aliaseFieldName])
-// 				$urlArray[] = $node["contenuti_tradotti_categoria"][$this->aliaseFieldName];
 			if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
 				$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
 			else
