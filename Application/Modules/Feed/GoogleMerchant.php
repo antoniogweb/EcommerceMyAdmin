@@ -53,7 +53,7 @@ class GoogleMerchant extends Feed
 			
 			$temp = array(
 				"g:id"	=>	(v("usa_sku_come_id_item") && VariabiliModel::combinazioniLinkVeri()) ? $r["codice"] : $idElemento,
-				"g:title"	=>	F::alt($r["titolo"]),
+				"g:title"	=>	F::alt($r["titolo"], ENT_COMPAT),
 				"g:link"	=>	$r["link"],
 				"g:price"	=>	number_format($r["prezzo_pieno"],2,".",""). " EUR",
 				"g:availability"	=>	$r["giacenza"] > 0 ? "in stock" : $outOfStock,

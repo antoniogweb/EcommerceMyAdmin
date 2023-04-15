@@ -52,6 +52,7 @@ require_once(dirname(__FILE__) . "/../../index.php");
 
 ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
+Domain::$parentRoot = ROOT."/..";
 
 Params::$lang = $params["lingua"];
 Params::$country = $params["nazione"];
