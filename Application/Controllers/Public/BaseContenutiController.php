@@ -1923,6 +1923,9 @@ class BaseContenutiController extends BaseController
 			}
 			
 			$data["pages"] = $this->m('PagesModel')->send();
+			
+			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
+				$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
 // 			echo $this->m('PagesModel')->getQuery();die();
 		}
 		
