@@ -1883,14 +1883,18 @@ class PagesModel extends GenericModel {
 			{
 				if (isset($node["categories"][$this->aliaseFieldName]))
 				{
-					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+					if (isset($node["contenuti_tradotti_categoria"][$this->aliaseFieldName]) && $node["contenuti_tradotti_categoria"][$this->aliaseFieldName])
+						$urlArray[] = $node["contenuti_tradotti_categoria"][$this->aliaseFieldName];
+					else if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
 						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName];
 					else
 						$urlArray[] = $node["categories"][$this->aliaseFieldName];
 				}
 				else
 				{
-					if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
+					if (isset($node["contenuti_tradotti_categoria"][$this->aliaseFieldName]) && $node["contenuti_tradotti_categoria"][$this->aliaseFieldName])
+						$urlArray[] = $node["contenuti_tradotti_categoria"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
+					else if (isset($node["contenuti_tradotti"][$this->aliaseFieldName]) && $node["contenuti_tradotti"][$this->aliaseFieldName])
 						$urlArray[] = $node["contenuti_tradotti"][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
 					else
 						$urlArray[] = $node[$this->_tables][$this->aliaseFieldName].$c->getAlias($clean["id"], $lingua, $idC);
