@@ -580,45 +580,45 @@ class HierarchicalModel extends GenericModel {
 			$lft = $res[$this->_tables]["lft"];
 			$rgt = $res[$this->_tables]["rgt"];
 			
-// 			$children = [];
-// 			
-// 			foreach (self::$strutturaCategorie as $idC => $categoria)
-// 			{
-// 				if (($self && $categoria["categories"]["lft"] >= $lft && $categoria["categories"]["lft"] <= $rgt) || (!$self && $categoria["categories"]["lft"] > $lft && $categoria["categories"]["lft"] < $rgt))
-// 				{
-// 					$children[] = $onlyIds ? $idC : $categoria;
-// 				}
-// 			}
-// 			
-// 			return $children;
+			$children = [];
 			
-			$this->clear()->orderBy("lft");
-			
-			if ($self)
+			foreach (self::$strutturaCategorie as $idC => $categoria)
 			{
-				$this->aWhere(array(
-					"gte" => array("lft" => $lft),
-					"lte" => array("-lft" => $rgt),
-// 					"lft"=>">=$lft","-lft"=>"<=$rgt"
-				));
+				if (($self && $categoria["categories"]["lft"] >= $lft && $categoria["categories"]["lft"] <= $rgt) || (!$self && $categoria["categories"]["lft"] > $lft && $categoria["categories"]["lft"] < $rgt))
+				{
+					$children[] = $onlyIds ? $idC : $categoria;
+				}
 			}
-			else
-			{
-				$this->aWhere(array(
-					"gt" => array("lft"=>$lft),
-					"lt" => array("-lft" => $rgt),
-// 					"lft"=>">$lft","-lft"=>"<$rgt"
-				));
-			}
-			
-			if ($onlyIds)
-			{
-				$this->select($this->_tables.".".$this->_idFields)->toList($this->_tables.".".$this->_idFields);
-			}
-			
-			$children = $this->send();
 			
 			return $children;
+			
+// 			$this->clear()->orderBy("lft");
+// 			
+// 			if ($self)
+// 			{
+// 				$this->aWhere(array(
+// 					"gte" => array("lft" => $lft),
+// 					"lte" => array("-lft" => $rgt),
+// // 					"lft"=>">=$lft","-lft"=>"<=$rgt"
+// 				));
+// 			}
+// 			else
+// 			{
+// 				$this->aWhere(array(
+// 					"gt" => array("lft"=>$lft),
+// 					"lt" => array("-lft" => $rgt),
+// // 					"lft"=>">$lft","-lft"=>"<$rgt"
+// 				));
+// 			}
+// 			
+// 			if ($onlyIds)
+// 			{
+// 				$this->select($this->_tables.".".$this->_idFields)->toList($this->_tables.".".$this->_idFields);
+// 			}
+// 			
+// 			$children = $this->send();
+// 			
+// 			return $children;
 		}
 		
 		return array();
