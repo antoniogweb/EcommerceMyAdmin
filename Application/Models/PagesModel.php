@@ -1795,9 +1795,9 @@ class PagesModel extends GenericModel {
 			$clean['id_c'] = $res[0][$this->_tables]["id_c"];
 			$c = new CategoriesModel();
 			
-// 			if ($forUrlAlias)
-// 				$parents = $c->parentsForAlias($clean['id_c'], $lingua);
-// 			else
+			if ($forUrlAlias)
+				$parents = $c->parentsForAlias($clean['id_c'], $lingua);
+			else
 				$parents = $c->parents($clean['id_c'],$onlyIds,false, $lingua, $fieldsCategory);
 			
 			if ($onlyParents)
