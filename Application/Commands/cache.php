@@ -101,17 +101,17 @@ else if ($creaFileCache)
 		echo $url."\n";
 	}
 	
-	$combinazioni = $combModel->clear()->select("combinazioni.*")->inner(array("pagina"))->addWhereAttivo()->aWhere(array(
-		"combinazioni.acquistabile"	=>	1,
-	))->send();
-	
-	foreach ($combinazioni as $c)
-	{
-		$url = $p->getUrlAlias($c["combinazioni"]["id_page"], $params["lingua"], $c["combinazioni"]["id_c"]);
-		$elencoUrl .= $url."\n";
-		
-		echo $url."\n";
-	}
+// 	$combinazioni = $combModel->clear()->select("combinazioni.*")->inner(array("pagina"))->addWhereAttivo()->aWhere(array(
+// 		"combinazioni.acquistabile"	=>	1,
+// 	))->send();
+// 	
+// 	foreach ($combinazioni as $c)
+// 	{
+// 		$url = $p->getUrlAlias($c["combinazioni"]["id_page"], $params["lingua"], $c["combinazioni"]["id_c"]);
+// 		$elencoUrl .= $url."\n";
+// 		
+// 		echo $url."\n";
+// 	}
 	
 	FilePutContentsAtomic(LIBRARY."/Logs/elenco_url_da_salvare_in_cache.txt", $elencoUrl);
 	
