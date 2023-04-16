@@ -111,7 +111,7 @@ class BaseOrdiniController extends BaseController
 			$p->paypal_mail = Parametri::$paypalSeller;
 		}
 		
-		$p->txn_id = $this->m("OrdiniModel")->clear()->toList("txn_id")->send();
+		$p->txn_id = $this->m("OrdiniModel")->clear()->select("txn_id")->toList("txn_id")->send();
 		
 		if ($p->validate_ipn())
 		{
