@@ -1412,6 +1412,10 @@ class BaseOrdiniController extends BaseController
 			}
 			else
 			{
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Sembra che ci sia un problema con la verifica dell'antispam.")."<br />".gtext("Assicurarsi di avere Javascript attivo nel browser.")."<br />".gtext("Provare inoltre a non utilizzare la compilazione automatica suggerita dal browser.")."<br />".gtext("Nel caso la problematica continuasse contattare il negozio al")." <b>".v("telefono_aziendale")."</b> ".gtext("o tramite l'indirizzo email")." <b>".v("email_aziendale")."</b></div>".$this->m('OrdiniModel')->notice;
+				$this->m('RegusersModel')->result = false;
+				$this->m('OrdiniModel')->result = false;
+				
 				$logSubmit->setSpam();
 			}
 		}
