@@ -50,6 +50,19 @@ class ProdottiModel extends PagesModel {
 		$this->formStruct["entries"]["tipo_sconto"] = array(
 			'entryClass'	=>	'class_promozione form_input_text',
 		);
+		
+		$this->formStruct["entries"]["stampa_gtin_nel_feed"] = array(
+			"type"	=>	"Select",
+			"options"	=>	self::$attivoSiNo,
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	'Permetti la stampa del codice GTIN nel feed',
+			'wrap'		=>	array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Se impostato su No il GTIN non verrà stampato nel feed Google o Facebook, anche se presente nel prodotto.")."</div>"
+			),
+		);
 	}
 	
 	public function setFilters()

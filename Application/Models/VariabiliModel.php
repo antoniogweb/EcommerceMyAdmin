@@ -505,6 +505,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
 		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
 		"versione_google_analytics"	=>	3, // versione di Google Analytics
+		"mostra_campo_stampa_gtin_in_prodotto"	=>	0, // se impostato ad 1, viene mostrata la tendina per forzare la disabilitazione del GTIN nel feed Google o Facebook
 		## ETICHETTE FEED GOOGLE ##
 		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
 		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo

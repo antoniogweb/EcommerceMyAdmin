@@ -187,6 +187,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_gift_card"))
 			$this->queryFields .= ",gift_card";
 		
+		if (v("mostra_campo_stampa_gtin_in_prodotto"))
+			$this->queryFields .= ",stampa_gtin_nel_feed";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);
