@@ -45,7 +45,7 @@ class GoogleMerchant extends Feed
 		
 		$prodotti = array();
 		
-		$outOfStock = v("attiva_giacenza") ? "disponibile" : "disponibile";
+		$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 		
 		foreach ($strutturaFeedProdotti as $r)
 		{
