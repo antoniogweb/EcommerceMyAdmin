@@ -95,7 +95,7 @@ class ListeregalopagesModel extends GenericModel
 		$res = $p->clear()->select("*")->inner(array("combinazioni"))->addJoinTraduzionePagina()->where(array(
 			"pages.id_page"		=>	$clean["id_page"],
 			"combinazioni.id_c"	=>	$clean["id_c"],
-		))->addWhereAttivo()->first();
+		))->addWhereAttivoPermettiTest()->first();
 		
 		if (count($res) > 0)
 		{
