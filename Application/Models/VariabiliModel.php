@@ -204,7 +204,6 @@ class VariabiliModel extends GenericModel {
 		"campo_form_newsletter_obbligatori"		=>	"",
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
-		"campo_captcha_form"		=>	"cognome",
 		"riconoscimento_tipo_documento_automatico"	=>	1,
 		"contenuti_in_eventi"		=>	1,
 		"permetti_upload_archivio"	=>	0,
@@ -642,6 +641,9 @@ class VariabiliModel extends GenericModel {
 		## SITEMAP ##
 		"permetti_gestione_sitemap"	=>	0, // se impostato a 1, permette la gestione manuale della sitemap
 		"mostra_sitemap_in_file_robots"	=>	1, // se impostato ad 1, inserisci il link della sitemap nel file di robots
+		## CAPTCHA ##
+		"campo_captcha_form"		=>	"cognome",
+		"disattiva_antispam_checkout"	=>	0, // se impostato su 1,non ci sarà l'antispam al checkout
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
