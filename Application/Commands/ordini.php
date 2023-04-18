@@ -98,6 +98,8 @@ if ($params["azione"] == "annulla-ordini")
 			));
 			
 			$o->update($ordine["id_o"]);
+			
+			$log->writeString("ANNULLATO ORDINE ".$ordine["id_o"]);
 		}
 	}
 	
