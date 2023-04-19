@@ -845,6 +845,8 @@ class PagesController extends BaseController {
 			}
 			else if (strcmp($queryType,"copia") === 0)
 			{
+				VariabiliModel::$valori["controlla_che_il_codice_prodotti_sia_unico"] = 0;
+				
 				$this->duplicaPagina($clean['id']);
 			}
 		}
