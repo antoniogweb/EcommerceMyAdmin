@@ -68,3 +68,28 @@ if ($params["azione"] == "allinea-numero-acquisti")
 	
 	$log->writeString("FINE ALLINEAMENTO NUMERO ACQUISTI");
 }
+
+if ($params["azione"] == "disattiva-prodotti-senza-combinazioni-acquistabili")
+{
+	$log->writeString("INIZIO CONTROLLO PRODOTTI SENZA COMBINAZIONI ACQUISTABILI");
+	
+	$p = new PagesModel();
+	
+	$res = $p->query('select pages.id_page,title from pages inner join (select id_page,max(acquistabile) as acq from combinazioni group by id_page) as accessoria on pages.id_page = accessoria.id_page where accessoria.acq = 0 and pages.attivo = "Y"');
+	
+	foreach ($res as $r)
+	{
+		$p->sValues(array(
+			"attivo"	=>	"N",
+		));
+		
+		$p->pUpdate($r["pages"]["id_page"]);
+		
+		$log->writeString("ID PAGE:".$r["pages"]["id_page"]." - ".$r["pages"]["title"]);
+		
+		echo "ID PAGE:".$r["pages"]["id_page"]." - ".$r["pages"]["title"]."\n";
+	}
+	
+	$log->writeString("FINE CONTROLLO PRODOTTI SENZA COMBINAZIONI ACQUISTABILI");
+}
+
