@@ -72,10 +72,8 @@ class GoogleMerchant extends Feed
 				// Controlla se deve stampare il GTIN
 				if (!$r["stampa_gtin_nel_feed"])
 				{
-					$temp["g:identifier_exists"] = "no";
-					
-					if (isset($temp["g:gtin"]))
-						unset($temp["g:gtin"]);
+					unset($temp["g:gtin"]);
+					unset($temp["g:identifier_exists"]);
 				}
 				
 				if ($r["mpn"])
