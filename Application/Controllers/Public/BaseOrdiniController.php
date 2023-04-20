@@ -415,10 +415,8 @@ class BaseOrdiniController extends BaseController
 		$data["ordine"] = $res[0]["orders"];
 		
 		// ID ordine per GTM e FBK
-		if (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"]))
-		{
+		if ($data["ordine"]["tipo_ordine"] == "W" && (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"])))
 			$data['idOrdineGtm'] = (int)$id_o;
-		}
 		
 		$data["tipoOutput"] = "web";
 		
