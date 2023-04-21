@@ -497,6 +497,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_solo_varianti_articolo"	=>	0, // se impostato su 1, nella pagina del prodotto elenca solo le varianti del prodotto
 		"permetti_modifica_attributi_combinazioni"	=>	0, // se impostato su 1, permette di modificare il valore degli attributi per ogni combinazione
 		"permetti_acquisto_da_categoria_se_ha_una_combinazione"	=>	0, // se impostato su 1, l'ecommerce permette di acquistare direttamente dalla categoria se il prodotto non ha personalizzazioni e ha solo 1 categoria attiva
+		"slega_varianti_quando_copi_prodotto"	=>	0, // se impostato su 1, alla copia del prodotto le varianti vengono copiate
 		## GOOGLE ##
 		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
 		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
