@@ -27,11 +27,11 @@ $attiva = "account";
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
-<div class="uk-text-center">
-	<?php echo $notice; ?>
-</div>
-
 <form class="form_registrazione" action="<?php echo $this->baseUrl.$action;?>#main" method="POST" autocomplete="new-password">
+	<div class="uk-text-center">
+		<?php echo $notice; ?>
+	</div>
+
 	<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 	
 	<?php if (strcmp($this->action,"add") === 0) { ?>
