@@ -3,7 +3,7 @@
 <div class="spedizione_box uk-width-1-1 uk-margin-bottom">
 	<div class="uk-flex uk-flex-top">
 		<div>
-			<?php echo Html_Form::checkbox("regalo_check",$values["regalo"],1,"","none");?>
+			<?php echo Html_Form::checkbox("regalo_check",$values["regalo"],1,"",null);?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
 			<?php echo gtext("Questo ordine è un REGALO - Selezione OBBLIGATORIA per LISTA NASCITA / REGALO");?>

@@ -800,10 +800,7 @@ class BaseBaseController extends Controller
 			else
 			{
 				ob_start();
-				include(tpf(ElementitemaModel::p("AVVISO_ERRORE_CAPTCHA","", array(
-					"titolo"	=>	"Messaggio di avviso quando l'utente non supera l'antispam",
-					"percorso"	=>	"Elementi/Generali/Captcha",
-				))));
+				include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
 				$data['notice'] = ob_get_clean();
 				$data['notice'] .= $this->m('RegusersModel')->notice;
 				$this->m('RegusersModel')->result = false;

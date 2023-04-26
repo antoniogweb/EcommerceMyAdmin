@@ -164,6 +164,7 @@ class Route
 		'listeregalo,invianuovamentelink',
 		'feed,prodotti',
 		'motoriricerca,cerca',
+		'captcha,index',
 		
 // 		'riservata,cancellaaccount',
 	);
@@ -311,6 +312,7 @@ class Route
 		'conferma-contatto/(.*)'	=>	'contenuti/confermacontatto/${1}',
 		'feed/prodotti/(.*)'		=>	'feed/prodotti/${1}',
 		'motoriricerca/cerca/(.*)'	=>	'motoriricerca/cerca/${1}',
+		'captcha/index'				=>	'captcha/index',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',

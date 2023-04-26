@@ -154,3 +154,8 @@ PHPUnit
 -------
 License:	BSD 3-Clause License
 link: 		https://github.com/sebastianbergmann/phpunit
+
+FreeFont (FreeMono.ttf)
+-------
+License:	GNU GPL version 3 or later
+link: 		https://www.gnu.org/software/freefont/

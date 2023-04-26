@@ -7,7 +7,7 @@
 		<div class=" uk-width-1-1 ">
 			<div class="uk-flex uk-flex-middle">
 				<div>
-					<?php echo Html_Form::checkbox("registrato_checkbox",$ospite,"Y","checkbox_registrato","none");?>
+					<?php echo Html_Form::checkbox("registrato_checkbox",$ospite,"Y","checkbox_registrato",null);?>
 				</div>
 				<div class="uk-margin-left uk-text-small uk-text-emphasis">
 					<?php echo gtext("Continua come ospite (non creare un account)");?>
