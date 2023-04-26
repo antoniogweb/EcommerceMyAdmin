@@ -277,12 +277,33 @@ class ContenutiModel extends GenericModel {
 				'descrizione'		=>	array(
 					'labelString'=>	(isset($contenuto["tipo"]) && $contenuto["tipo"] == "FASCIA") ? "HTML fascia" : "Descrizione",
 				),
+				'id_page'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Contenuto da linkare',
+					'options'	=>	$this->buildContentSelect(),
+					'reverse' => 'yes',
+					'entryClass'  => 'form_input_text cont_Select',
+					'entryAttributes'	=>	array(
+						"select2"	=>	"",
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
 		
 		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
+	}
+	
+	public function buildContentSelect()
+	{
+		$p = new PagesModel();
+		$c = new CategoriesModel();
+		
+		$idC = $c->getShopCategoryId();
+		
+		return $p->clear()->addWhereCategoria($c->getShopCategoryId())->addWhereAttivo()->sWhere("id_user = 0")->orderBy("pages.id_order")->toList("id_page","title")->send();
 	}
 	
 	public function selectTipo($tipo = null)
