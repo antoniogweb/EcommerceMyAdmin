@@ -667,6 +667,8 @@ class BaseBaseController extends Controller
 		if( !session_id() )
 			session_start();
 		
+		$logSubmit = new LogModel();
+		
 		// Setta password
 		$this->m("RegusersModel")->settaPassword();
 		
@@ -776,6 +778,8 @@ class BaseBaseController extends Controller
 						
 						F::checkPreparedStatement();
 						
+						$logSubmit->write(LogModel::LOG_REGISTRAZIONE, LogModel::REGISTRAZIONE_ESEGUITA);
+						
 						$urlRedirect = RegusersModel::getUrlRedirect();
 						
 						if ($urlRedirect && !v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
@@ -793,7 +797,20 @@ class BaseBaseController extends Controller
 					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
 				}
 			}
+			else
+			{
+				ob_start();
+				include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
+				$data['notice'] = ob_get_clean();
+				$data['notice'] .= $this->m('RegusersModel')->notice;
+				$this->m('RegusersModel')->result = false;
+				
+				$logSubmit->setSpam();
+			}
 		}
+		
+		$logSubmit->setErroriSubmit($data['notice']);
+		$logSubmit->write(LogModel::LOG_REGISTRAZIONE, $data['notice'] ? LogModel::ERRORI_VALIDAZIONE : "");
 		
 		$data['values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml',null,$this->defaultRegistrazione);
 		

@@ -20,34 +20,31 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once(LIBRARY."/Application/Modules/Captcha/Random.php");
-
-class ReCaptchaTre extends Captcha
-{	
+class Random extends Captcha
+{
 	public function check()
 	{
 		if (User::$logged)
 			return true;
 		
-		$random = new Random(array(
-			"campo_nascosto"	=>	"codice_random",
-		));
-		
-		if ($random->check())
-			return true;
-		
+		if( !session_id() )
+			session_start();
+			
 		$r = new Request();
 		$campoCaptcha = $r->post($this->params["campo_nascosto"],'');
 		
-		$secret   = $this->params["secret_server"];
-		$response = file_get_contents(
-			"https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $campoCaptcha,
-		);
+		if (isset($_SESSION["ok_captcha"]))
+			return true;
 		
-		$response = json_decode($response, true);
+		if (!isset($_SESSION["captchaString"]))
+			return false;
 		
-	// 	print_r($response);
-		return $response["success"] ? true : false;
+		$res = (string)$campoCaptcha === (string)$_SESSION["captchaString"] ? true : false;
+		
+		if ($res)
+			$_SESSION["ok_captcha"] = 1;
+		
+		return $res;
 	}
 	
 	public function checkRegistrazione()
@@ -57,21 +54,21 @@ class ReCaptchaTre extends Captcha
 	
 	public function getHiddenFieldIncludeFile()
 	{
-		return "/Elementi/Captcha/Html/recaptchatre.php";
+		return "/Elementi/Captcha/campo-codice-random.php";
 	}
 	
 	public function getHiddenFieldRegistrazioneIncludeFile()
 	{
-		return "/Elementi/Captcha/Html/recaptchatre.php";
+		return "/Elementi/Captcha/campo-codice-random.php";
 	}
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,secret_client,secret_server';
+		return 'titolo,attivo';
 	}
 	
 	public function getErrorIncludeFile()
 	{
-		return "/Elementi/Captcha/Errore/notice-recaptchatre.php";
+		return "/Elementi/Captcha/Errore/notice-random.php";
 	}
 }

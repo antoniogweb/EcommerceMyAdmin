@@ -515,7 +515,7 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
-	public function controlliDopoCreazioneCombinazione($idPage)
+	public function controlliDopoCreazioneCombinazione($idPage, $checkCanonicalExists = true)
 	{
 		// Controllo che ci sia la combinazione base
 		$this->controllaCombinazioniPagina($idPage);
@@ -524,7 +524,8 @@ class CombinazioniModel extends GenericModel {
 		$this->aggiornaAlias($idPage);
 		
 		// Controlla che esista la combinazione canonical
-		$this->checkCanonical($idPage);
+		if ($checkCanonicalExists)
+			$this->checkCanonical($idPage);
 		
 		$page = new PagesModel();
 		
@@ -1011,7 +1012,7 @@ class CombinazioniModel extends GenericModel {
 		
 		$i->pUpdate(null, "id_page = ".(int)$toId." and id_c = ".(int)$oldPk);
 		
-		$this->controlliDopoCreazioneCombinazione((int)$toId);
+		$this->controlliDopoCreazioneCombinazione((int)$toId, false);
 	}
 	
 	public function bulkaggiungialistaregalo($record)

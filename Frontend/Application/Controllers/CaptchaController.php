@@ -22,42 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class Captcha
+require_once(LIBRARY."/Application/Controllers/Public/BaseCaptchaController.php");
+
+class CaptchaController extends BaseCaptchaController
 {
-	protected $usato = false;
 	
-	protected $params = "";
-	
-	public function __construct($recordCaptcha)
-	{
-		$this->params = $recordCaptcha;
-	}
-	
-	public function getParams()
-	{
-		return $this->params;
-	}
-	
-	public function setUsato()
-	{
-		$this->usato = true;
-	}
-	
-	public function inPage()
-	{
-		return $this->usato;
-	}
-	
-	public function pathJs()
-	{
-		if (isset($this->params["modulo"]) && file_exists(tpf("/Elementi/Captcha/Js/".strtolower($this->params["modulo"]).".php")))
-			return tpf("/Elementi/Captcha/Js/".strtolower($this->params["modulo"]).".php");
-		
-		return "";
-	}
-	
-	public function getErrorIncludeFile()
-	{
-		return "/Elementi/Captcha/Errore/notice.php";
-	}
 }
