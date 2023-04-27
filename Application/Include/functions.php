@@ -463,8 +463,13 @@ function getSpedizioneN($pieno = null)
 	
 	$subtotale = number_format($subtotale, 2, ".", "");
 	
+	$nazione = User::getSpedizioneDefault();
+	
+	if (isset($_POST["nazione_spedizione"]))
+		$nazione = $_POST["nazione_spedizione"];
+	
 	// Se il totale è sopra la soglia delle spedizioni gratuite, le spese di spedizione sono 0
-	if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+	if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
 		return 0;
 	
 	// Prendo le spese dall'account
@@ -478,11 +483,6 @@ function getSpedizioneN($pieno = null)
 	$peso = $c->getPesoTotale();
 	
 	$corriere = array();
-	
-	$nazione = User::getSpedizioneDefault();
-	
-	if (isset($_POST["nazione_spedizione"]))
-		$nazione = $_POST["nazione_spedizione"];
 	
 	// cerca il corriere dal carrello
 	$idCorriereDaCarrello = $corr->getIdCorriereDaCarrello();

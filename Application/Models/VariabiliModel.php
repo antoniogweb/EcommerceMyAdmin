@@ -544,6 +544,7 @@ class VariabiliModel extends GenericModel {
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
+		"soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni"	=>	1, // se impostato ad 1, la soglia oltre alla quale la spedizione è gratuita vale in tutto il mondo, altrimenti vale solo nella nazione di default (variabile nazione_default)
 		## CORRIERI ##
 		"scegli_il_corriere_dalla_categoria_dei_prodotti"	=>	0, // se impostato ad 1, il corriere verrà scelto in funzione della categoria del prodotto (se viene trovata un'associazione)
 		"attiva_campo_ritiro_in_sede_su_corrieri"	=>	0, // se impostato ad 1, permette di selezionare se un corriere è un ritiro in sede

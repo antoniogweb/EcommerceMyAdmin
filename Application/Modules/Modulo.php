@@ -271,7 +271,7 @@ trait Modulo
 				$subtotaleSpedizione = (!v("prezzi_ivati_in_carrello")) ? $prezzoFinale : $prezzoFinaleIvato;
 				
 				// Solo spedizioni gratuite e solo nazione default
-				if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+				if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
 					$speseSpedizione = 0;
 				else
 				{
