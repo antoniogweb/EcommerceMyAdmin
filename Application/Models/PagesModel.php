@@ -44,6 +44,7 @@ class PagesModel extends GenericModel {
 	
 	public $documentiModelAssociato = "DocumentiModel";
 	public $contattiModelAssociato = "ContattiModel";
+	public $contenutiModelAssociato = "ContenutiModel";
 	
 	// Vengono usati per sincronizzare pagina e combinazione quando non ci sono varianti
 	public static $campiDaSincronizzareConCombinazione = array("price", "price_ivato", "codice", "gtin", "mpn", "peso", "giacenza");
