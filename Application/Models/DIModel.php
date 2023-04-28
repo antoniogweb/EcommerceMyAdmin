@@ -153,10 +153,12 @@ trait DIModel
 		
 		foreach ($attivi as $attivo)
 		{
-			if (file_exists(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php"))
+			$path = $c->findModulePath($c->cartellaModulo, $attivo[$nomeCampoClasse]);
+			
+			if (file_exists($path))
 			{
 				require_once(LIBRARY."/Application/Modules/".$c->classeModuloPadre.".php");
-				require_once(LIBRARY."/Application/Modules/".$c->cartellaModulo."/".$attivo[$nomeCampoClasse].".php");
+				require_once($path);
 				
 				$objectReflection = new ReflectionClass($attivo[$nomeCampoClasse]);
 				$object = $objectReflection->newInstanceArgs(array($attivo));

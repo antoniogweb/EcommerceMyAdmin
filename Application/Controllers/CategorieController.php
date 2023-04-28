@@ -53,7 +53,7 @@ class CategorieController extends CategoriesController {
 		
 		if (v("attiva_immagine_sfondo"))
 			$this->queryFields .= ",immagine_sfondo";
-			
+		
 		$data["sezionePannello"] = "ecommerce";
 		
 		$this->append($data);

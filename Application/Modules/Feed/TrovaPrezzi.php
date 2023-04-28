@@ -35,16 +35,16 @@ class TrovaPrezzi extends Feed
 		foreach ($strutturaFeedProdotti as $r)
 		{
 			$temp = array(
-				"Name"	=>	F::alt($r["titolo"]),
+				"Name"	=>	F::sanitizeXML(F::alt($r["titolo"])),
 				"Code"	=>	$r["codice"],
-				"Description"	=>	F::sanitizeXML(F::alt($r["descrizione"], ENT_NOQUOTES)),
-				"Categories"	=>	count($r["categorie"]) > 0 ? implode(",",$r["categorie"][0]) : "",
+				"Description"	=>	F::sanitizeXML(F::nlToSpace(F::alt($r["descrizione"], ENT_NOQUOTES))),
+				"Categories"	=>	count($r["categorie"]) > 0 ? implode(",",htmlentitydecodeDeep($r["categorie"][0])) : "",
 				"Image"	=>	Url::getFileRoot()."thumb/dettagliofeed/".$r["immagine_principale"],
 				"Link"	=>	$r["link"].$this->getQueryString(),
 				"Price"	=>	$r["prezzo_scontato"],
 				"ShippingCost"	=>	$r["spese_spedizione"],
 				"Brand"	=>	$r["marchio"],
-				"Weight"	=>	$r["peso"],
+// 				"Weight"	=>	$r["peso"],
 				"Disponibilita"	=>	$r["giacenza"] > 0 ? "disponibile" : $outOfStock,
 // 				"Stock"	=>	$r["spese_spedizione"],
 			);
@@ -60,12 +60,12 @@ class TrovaPrezzi extends Feed
 			
 			$indice = 2;
 			
-			foreach ($r["altre_immagini"] as $i)
-			{
-				$temp["Image".$indice] = Url::getFileRoot()."thumb/dettagliofeed/".$i["immagine"];
-				
-				$indice++;
-			}
+// 			foreach ($r["altre_immagini"] as $i)
+// 			{
+// 				$temp["Image".$indice] = Url::getFileRoot()."thumb/dettagliofeed/".$i["immagine"];
+// 				
+// 				$indice++;
+// 			}
 			
 			if (isset($r["attributi"]))
 				$temp = $this->elaboraNodiAttributi($temp, $r["attributi"]);

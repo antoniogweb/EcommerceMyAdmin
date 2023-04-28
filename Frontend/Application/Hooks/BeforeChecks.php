@@ -55,7 +55,7 @@ Users_CheckAdmin::$sessionsModel = "RegsessioniModel";
 Users_CheckAdmin::$accessesModel = "RegaccessiModel";
 
 // cache metodi
-if (defined('CACHE_METHODS_TO_FILE'))
+if (defined('CACHE_METHODS_TO_FILE') && (@!is_file(ROOT."/Logs/caching.log") || defined('CACHE_COMMAND')))
 	Cache_Functions::getInstance(new Cache_Caller_Cache(true, VariabiliModel::valore("numero_massimo_file_cache_metodi")));
 
 Cache_Db::$cachedTables = array("categories", "pages", "tag", "marchi", "testi", "lingue", "pages_personalizzazioni", "reggroups_categories", "contenuti", "prodotti_correlati", "traduzioni", "menu", "menu_sec", "nazioni", "ruoli", "pages_attributi", "personalizzazioni", "contenuti_tradotti", "tipi_clienti", "fasce_prezzo", "documenti", "immagini", "attributi_valori", "caratteristiche_valori", "pages_caratteristiche_valori", "pages_pages", "pagamenti", "captcha");
@@ -146,18 +146,23 @@ User::$isTablet = $detect->isTablet();
 User::$isPhone = ($detect->isMobile() && !$detect->isTablet());
 
 // Cache HTML
-if (defined("SAVE_CACHE_HTML") && isset($_SERVER["REQUEST_URI"]))
+if (defined("SAVE_CACHE_HTML") && isset($_SERVER["REQUEST_URI"]) && (@!is_file(ROOT."/Logs/caching.log") || defined('CACHE_COMMAND')))
 {
-	$cacheKey = $_SERVER["REQUEST_URI"];
+	$cacheKey = DOMAIN_NAME.$_SERVER["REQUEST_URI"];
 	
 	$partialKey = "";
 	
-	if (User::$isPhone)
-		$partialKey = "_PHONE";
-	else if (User::$isTablet)
-		$partialKey = "_TABLET";
+	if (defined("PARTIAL_KEY"))
+		$partialKey = PARTIAL_KEY;
 	else
-		$partialKey = "_DESK";
+	{
+		if (User::$isPhone)
+			$partialKey = "_PHONE";
+		else if (User::$isTablet)
+			$partialKey = "_TABLET";
+		else
+			$partialKey = "_DESK";
+	}
 	
 	if (empty($_POST))
 	{
@@ -198,12 +203,15 @@ ImpostazioniModel::init();
 if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
-$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutesOfFeed");
-
-foreach ($feedRoutes as $fr)
+if (v("attiva_gestione_feed"))
 {
-	if (isset($fr) && is_array($fr))
-		Route::$map = $fr + Route::$map;
+	$feedRoutes = FeedModel::applicaMetodoATuttiIModuli("getRoutesOfFeed");
+
+	foreach ($feedRoutes as $fr)
+	{
+		if (isset($fr) && is_array($fr))
+			Route::$map = $fr + Route::$map;
+	}
 }
 
 Domain::setPath();

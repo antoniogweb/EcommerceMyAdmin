@@ -55,4 +55,9 @@ class Captcha
 		
 		return "";
 	}
+	
+	public function getErrorIncludeFile()
+	{
+		return "/Elementi/Captcha/Errore/notice.php";
+	}
 }

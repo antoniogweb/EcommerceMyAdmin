@@ -89,6 +89,8 @@ class RicerchesinonimiModel extends GenericModel
 		if (!trim($stringa))
 			return $stringa;
 		
+		$stringa = trim($stringa);
+		
 		$stringaArray = explode(" ", $stringa);
 		
 		$arrayTermini = [];
@@ -96,6 +98,9 @@ class RicerchesinonimiModel extends GenericModel
 		
 		foreach ($stringaArray as $termine)
 		{
+			if (!$termine)
+				continue;
+			
 			if ((int)strlen($termine) === 1)
 			{
 				$arrayTerminiDaComporre[] = $termine;

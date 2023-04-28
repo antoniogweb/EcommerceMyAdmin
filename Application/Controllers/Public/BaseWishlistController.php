@@ -122,13 +122,17 @@ class BaseWishlistController extends BaseController
 		
 		$this->clean();
 		
-		$contentsFbk = "";
+		$contentsFbk = $contentsGtm = "";
+		$valueProdottoNelCarrello = 0;
 		
 		if ($this->m("WishlistModel")->add($clean["id_cart"]))
 		{
 			$result = "OK";
 			
 			$p = new PagesModel();
+			$cart = new CartModel();
+			$combModel = new CombinazioniModel();
+			
 			$page = $p->selectId($clean["id_cart"]);
 			
 			if (!empty($page))
@@ -144,6 +148,28 @@ class BaseWishlistController extends BaseController
 						)
 					),
 				);
+				
+				$idC = $p->getIdCombinazioneCanonical($clean["id_cart"]);
+				
+				$combinazione = $combModel->selectId((int)$idC);
+				
+				$campoId = v("versione_google_analytics") == 3 ? "id" : "item_id";
+				$campoName = v("versione_google_analytics") == 3 ? "name" : "item_name";
+				
+				$prezzoMinimo = $p->prezzoMinimo($clean["id_cart"], false, $idC);
+				$prezzoFinale = $cart->calcolaPrezzoFinale($clean["id_cart"], $prezzoMinimo, 1, true, true, $idC);
+				$prezzoFinaleIvato = calcolaPrezzoIvato($clean["id_cart"],$prezzoFinale);
+				
+				$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $prezzoFinaleIvato : $prezzoFinale;
+				
+				$contentsGtm = array(array(
+					"$campoId"	=>	v("usa_sku_come_id_item") ? $combinazione["codice"] : $combinazione["id_page"],
+					"$campoName"	=>	sanitizeJs(htmlentitydecode($page["title"])),
+					"quantity"	=>	1,
+					"price"		=>	number_format($prezzoProdottoNelCarrello,2,".",""),
+				));
+				
+				$valueProdottoNelCarrello = number_format($prezzoProdottoNelCarrello,2,".","");
 			}
 		}
 		else
@@ -162,6 +188,8 @@ class BaseWishlistController extends BaseController
 			echo json_encode(array(
 				"result"	=>	$result,
 				"contens_fbk"	=>	$contentsFbk,
+				"contens_gtm"	=>	$contentsGtm,
+				"value"		=>	$valueProdottoNelCarrello,
 			));
 	}
 	

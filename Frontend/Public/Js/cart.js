@@ -1259,6 +1259,19 @@ $(document).ready(function(){
 						}
 					}
 					
+					if (gtm_analytics && typeof content.contens_gtm != "undefined" && content.contens_gtm != "" && typeof content.value != "undefined" && content.value != "")
+					{
+						if (versione_google_analytics == 3)
+							var elementsAddToCart = {"items": content.contens_gtm};
+						else if (versione_google_analytics == 4)
+							var elementsAddToCart = {"currency" : "EUR", "value" : content.value, "items": content.contens_gtm};
+						
+						if (debug_js)
+							console.log(elementsAddToCart);
+						
+						gtag('event', 'add_to_wishlist', elementsAddToCart);
+					}
+					
 					if (that.parent().hasClass(classe_wish_presente))
 					{
 						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_presente).css("display","none");

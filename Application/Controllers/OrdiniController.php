@@ -213,6 +213,13 @@ class OrdiniController extends BaseController {
 		
 		$this->m[$this->modelName]->where($where);
 		
+		if (v("nascondi_ordini_pending_in_admin") && $this->viewArgs['stato'] == "tutti")
+			$this->m[$this->modelName]->aWhere(array(
+				"ne"	=>	array(
+					"stato"	=>	"pending",
+				),
+			));
+		
 		if (strcmp($this->viewArgs['email'],'tutti') !== 0)
 		{
 			$where = array(

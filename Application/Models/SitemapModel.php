@@ -206,7 +206,7 @@ class SitemapModel extends GenericModel {
 // 		if (!$recuperaBackup)
 			$p->aWhere(array(
 				"add_in_sitemap"	=>	"Y",
-// 				"categories.add_in_sitemap_children"	=>	"Y",
+				"categories.add_in_sitemap_children"	=>	"Y",
 			));
 		
 		$elements = $p->treeQueryElements("pages");

@@ -64,7 +64,7 @@ if (v("codice_gtm_analytics"))
 				$temp["category"] = $tempAds["category"] = sanitizeJs(htmlentitydecode($catGTM));
 				$temp["quantity"] = $tempAds["quantity"] = $ro["quantity"];
 				
-				if (!$ordineGTML["nome_promozione"])
+// 				if (!$ordineGTML["nome_promozione"])
 					$temp["price"] = $tempAds["price"] = v("prezzi_ivati_in_carrello") ? $ro["prezzo_finale_ivato"] : $ro["prezzo_finale"];
 				
 				$tempRigheGTM[] = $temp;
@@ -117,9 +117,9 @@ if (v("codice_gtm_analytics"))
 		<?php } ?>
 	<?php }
 	
-	if ($this->controller == "ordini" && $this->action == "index")
+	if (($this->controller == "ordini" || $this->controller == "cart") && $this->action == "index")
 	{
-		$gtmActionName = "begin_checkout";
+		$gtmActionName = ($this->controller == "ordini") ? "begin_checkout" : "view_cart";
 		
 		echo "\n";
 		

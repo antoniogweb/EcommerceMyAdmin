@@ -47,9 +47,13 @@
 					<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
 					
 					<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
-						<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
+						<?php 
+						$idPrivacy = PagineModel::gTipoPagina("PRIVACY");
+						$paginaPrivacy = PagineModel::getPageDetailsPreloaded($idPrivacy);
+						$urlPrivacy = $paginaPrivacy["pages"]["redirect"] ? $paginaPrivacy["pages"]["redirect"] : $this->baseUrl."/".getUrlAlias($idPrivacy);
+						?>
 						<label>
-							<?php echo Html_Form::checkbox('accetto',FeedbackModel::gValue("accetto"),'1','uk-checkbox');?> <span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></span></a>
+							<?php echo Html_Form::checkbox('accetto',FeedbackModel::gValue("accetto"),'1','uk-checkbox');?> <span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $urlPrivacy;?>"><?php echo gtext("privacy policy");?></span></a>
 						</label>
 					</div>
 					

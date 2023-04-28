@@ -25,4 +25,30 @@ require_once(LIBRARY."/Application/Modules/Feed/GoogleMerchant.php");
 class Facebook extends GoogleMerchant
 {
 	public $isFbk = true;
+	
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,link_a_combinazione,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed,default_gender,default_age_group,node_tag_name,campo_per_item_group_id';
+	}
+	
+	public function editFormStruct($model, $record)
+	{
+		$model->formStruct["entries"]["campo_per_item_group_id"]["type"] = "Select";
+		$model->formStruct["entries"]["campo_per_item_group_id"]["options"] = array(
+			""			=>	"Non usare item_group_id",
+			"codice"	=>	"Codice prodotto",
+			"mpn"		=>	"MPN / Codice costruttore",
+			"gtin"		=>	"GTIN / EAN",
+		);
+		$model->formStruct["entries"]["campo_per_item_group_id"]["reverse"] = "yes";
+		$model->formStruct["entries"]["campo_per_item_group_id"]["labelString"] = "Campo da usare per item_group_id";
+		
+		$model->formStruct["entries"]["node_tag_name"]["labelString"] = "Tag da usare per l'elemento del feed";
+		$model->formStruct["entries"]["node_tag_name"]["type"] = "Select";
+		$model->formStruct["entries"]["node_tag_name"]["options"] = array(
+			"item"		=>	"&lt;item&gt;",
+			"entry"		=>	"&lt;entry&gt;",
+		);
+		$model->formStruct["entries"]["node_tag_name"]["reverse"] = "yes";
+	}
 }

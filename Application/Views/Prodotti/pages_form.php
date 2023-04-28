@@ -221,6 +221,8 @@
 								
 								<?php echo $form["gtin"];?>
 								
+								<?php echo $form["stampa_gtin_nel_feed"] ?? "";?>
+								
 								<?php echo $form["mpn"];?>
 								
 								<?php echo $form["identifier_exists"];?>

@@ -45,7 +45,7 @@ class GoogleMerchant extends Feed
 		
 		$prodotti = array();
 		
-		$outOfStock = v("attiva_giacenza") ? "disponibile" : "disponibile";
+		$outOfStock = v("attiva_giacenza") ? "out of stock" : "in stock";
 		
 		foreach ($strutturaFeedProdotti as $r)
 		{
@@ -53,7 +53,7 @@ class GoogleMerchant extends Feed
 			
 			$temp = array(
 				"g:id"	=>	(v("usa_sku_come_id_item") && VariabiliModel::combinazioniLinkVeri()) ? $r["codice"] : $idElemento,
-				"g:title"	=>	F::alt($r["titolo"]),
+				"g:title"	=>	F::alt($r["titolo"], ENT_COMPAT),
 				"g:link"	=>	$r["link"],
 				"g:price"	=>	number_format($r["prezzo_pieno"],2,".",""). " EUR",
 				"g:availability"	=>	$r["giacenza"] > 0 ? "in stock" : $outOfStock,
@@ -61,17 +61,27 @@ class GoogleMerchant extends Feed
 			
 			$temp["g:identifier_exists"] = $r["identifier_exists"] ? $r["identifier_exists"] : v("identificatore_feed_default");
 			
-			if (!$this->isFbk)
-			{
+// 			if (!$this->isFbk)
+// 			{
 				if ($r["gtin"])
 				{
 					$temp["g:gtin"] = htmlentitydecode($r["gtin"]);
 					$temp["g:identifier_exists"] = "yes";
 				}
 				
+				// Controlla se deve stampare il GTIN
+				if (!$r["stampa_gtin_nel_feed"])
+				{
+					unset($temp["g:gtin"]);
+					unset($temp["g:identifier_exists"]);
+				}
+				
 				if ($r["mpn"])
 					$temp["g:mpn"] = htmlentitydecode($r["mpn"]);
-			}
+				
+				if (v("usa_codice_articolo_su_mpn_google_facebook"))
+					$temp["g:mpn"] = htmlentitydecode($r["codice"]);
+// 			}
 			
 			if (!$this->isFbk || v("no_tag_descrizione_feed"))
 				$temp["g:description"] = strip_tags(htmlentitydecode(F::sanitizeXML($r["descrizione"])));
@@ -85,7 +95,12 @@ class GoogleMerchant extends Feed
 			}
 			
 			if (count($r["categorie"]) > 0)
-				$temp["g:product_type"] = implode(" &gt; ", $r["categorie"][0]);
+			{
+				if (!$this->isFbk)
+					$temp["g:product_type"] = implode(" &gt; ", htmlentitydecodeDeep($r["categorie"][0]));
+				else if ($r["categorie"][0] > 0)
+					$temp["g:product_type"] = htmlentitydecode($r["categorie"][0][0]);
+			}
 			
 			$parents = $p->parents((int)$r["id_page"], false, false, true);
 			
@@ -128,8 +143,14 @@ class GoogleMerchant extends Feed
 			{
 				$temp["condition"] = "new";
 				
-				if ($this->linkAlleVarianti() && $r["mpn"])
-					$temp["g:item_group_id"] = $r["mpn"];
+				if ($this->params["default_gender"])
+					$temp["gender"] = $this->params["default_gender"];
+				
+				if ($this->params["default_age_group"])
+					$temp["age_group"] = $this->params["default_age_group"];
+				
+				if ($this->params["campo_per_item_group_id"] && isset($r[$this->params["campo_per_item_group_id"]]) && $r[$this->params["campo_per_item_group_id"]])
+					$temp["g:item_group_id"] = $r[$this->params["campo_per_item_group_id"]];
 			}
 			
 			if ($r["in_promo"])
@@ -140,7 +161,7 @@ class GoogleMerchant extends Feed
 				$r["pages"]["in_promo_feed"] = true;
 			}
 			
-			if (!$this->isFbk && v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
+			if (v("aggiungi_dettagli_spedizione_al_feed") && v("attiva_spedizione"))
 			{
 // 				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				
@@ -170,23 +191,34 @@ class GoogleMerchant extends Feed
 		
 		$xmlArray = array();
 		
-		$xmlArray["channel"] = array(
-			"title"	=>	htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]),
-			"link"	=>	Url::getRoot(),
-			"description"	=>	htmlentitydecode(ImpostazioniModel::$valori["meta_description"]),
-			"item"	=>	$prodotti,
-		);
+		$wrap = array();
 		
-		if (v("elimina_emoticons_da_feed"))
+		if (file_exists(tpf("/Elementi/Feed/".$this->params["modulo"].".php")))
+			include(tpf("/Elementi/Feed/".$this->params["modulo"].".php"));
+		else
 		{
-			$xmlArray["channel"]["title"] = F::removeEmoji($xmlArray["channel"]["title"]);
-			$xmlArray["channel"]["description"] = F::removeEmoji($xmlArray["channel"]["description"]);
+			$itemTagName = $this->params["node_tag_name"];
+			
+			$xmlArray["channel"] = array(
+				"title"	=>	htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]),
+				"link"	=>	Url::getRoot(),
+				"description"	=>	htmlentitydecode(ImpostazioniModel::$valori["meta_description"]),
+				"$itemTagName"	=>	$prodotti,
+			);
+			
+			if (v("elimina_emoticons_da_feed"))
+			{
+				$xmlArray["channel"]["title"] = F::removeEmoji($xmlArray["channel"]["title"]);
+				$xmlArray["channel"]["description"] = F::removeEmoji($xmlArray["channel"]["description"]);
+			}
+			
+			
 		}
 		
 // 		print_r($xmlArray);
 		
 		$xml = aToX($xmlArray);
 		
-		F::xml($xml, array(), $outputFile);
+		F::xml($xml, $wrap, $outputFile);
 	}
 }

@@ -1279,6 +1279,19 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
+	public function addWhereAttivoPermettiTest()
+	{
+		$this->aWhere(array(
+			"pages.attivo"	=>	"Y",
+			"pages.acquistabile"	=>	"Y",
+			"pages.bloccato"	=>	0,
+			"pages.temp"		=>	0,
+			"pages.cestino"		=>	0,
+		));
+		
+		return $this;
+	}
+	
 	public function addWhereAttivo()
 	{
 		$this->aWhere(array(

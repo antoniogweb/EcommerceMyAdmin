@@ -3,7 +3,7 @@
 <div class="spedizione_box uk-width-1-1 uk-margin-bottom">
 	<div class="uk-flex uk-flex-top">
 		<div>
-			<?php echo Html_Form::checkbox("con_note_check",$values["con_note"],1,"","none");?>
+			<?php echo Html_Form::checkbox("con_note_check",$values["con_note"],1,"",null);?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
 			<?php echo gtext("Aggiungi una nota all'ordine");?>

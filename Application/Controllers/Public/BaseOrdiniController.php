@@ -76,6 +76,15 @@ class BaseOrdiniController extends BaseController
 		*/
 // 	}
 	
+	protected function mandaMailDopoPagamento($ordine)
+	{
+		// Controlla e manda mail dopo pagamento
+		$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+		
+		// Controlla e manda mail dopo pagamento al negozio
+		$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+	}
+	
 	//ritorno da paypal
 	public function ipn()
 	{
@@ -102,7 +111,7 @@ class BaseOrdiniController extends BaseController
 			$p->paypal_mail = Parametri::$paypalSeller;
 		}
 		
-		$p->txn_id = $this->m("OrdiniModel")->clear()->toList("txn_id")->send();
+		$p->txn_id = $this->m("OrdiniModel")->clear()->select("txn_id")->toList("txn_id")->send();
 		
 		if ($p->validate_ipn())
 		{
@@ -120,10 +129,13 @@ class BaseOrdiniController extends BaseController
 					$this->model("FattureModel");
 					
 					$ordine = $res[0]["orders"];
+					
+					$statoPagato = $this->getStatoOrdinePagato($ordine);
+					
 					$this->m("OrdiniModel")->values = array();
 					$this->m("OrdiniModel")->values["txn_id"] = $clean['codiceTransazione'];
 					if (strcmp($clean['payment_status'],"Completed") === 0)
-						$this->m("OrdiniModel")->values["stato"] = "completed";
+						$this->m("OrdiniModel")->values["stato"] = $statoPagato;
 					$this->m("OrdiniModel")->update((int)$res[0]["orders"]["id_o"]);
 					
 					if (strcmp($clean['payment_status'],"Completed") === 0)
@@ -139,11 +151,13 @@ class BaseOrdiniController extends BaseController
 					{
 						case "Completed":
 							
-							// Controlla e manda mail dopo pagamento
-							$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+							$this->mandaMailDopoPagamento($ordine);
 							
-							// Controlla e manda mail dopo pagamento al negozio
-							$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+// 							// Controlla e manda mail dopo pagamento
+// 							$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+// 							
+// 							// Controlla e manda mail dopo pagamento al negozio
+// 							$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 							
 							$mandaFattura = false;
 							
@@ -158,7 +172,7 @@ class BaseOrdiniController extends BaseController
 							}
 							
 							if (v("manda_mail_avvenuto_pagamento_al_cliente"))
-								$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+								$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-$statoPagato", "P", $mandaFattura);
 							
 							$Subject  = v("oggetto_ordine_pagato");
 							$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
@@ -211,6 +225,23 @@ class BaseOrdiniController extends BaseController
 		header("HTTP/1.1 200 OK");
 	}
 	
+	protected function getStatoOrdinePagato($ordine)
+	{
+		$stato = "completed";
+		
+		if (v("lega_lo_stato_ordine_a_corriere") && $ordine["id_corriere"])
+		{
+			$cModel = new CorrieriModel();
+			
+			$statoCorriere = $cModel->clear()->whereId((int)$ordine["id_corriere"])->field("stato_ordine");
+			
+			if ($statoCorriere)
+				$stato = $statoCorriere;
+		}
+		
+		return $stato;
+	}
+	
 	//IPN carta
 	public function ipncarta()
 	{
@@ -240,18 +271,22 @@ class BaseOrdiniController extends BaseController
 					$this->m("OrdiniModel")->values = array();
 					$this->m("OrdiniModel")->values["data_pagamento"] = date("d-m-Y");
 					
+					$statoPagato = $this->getStatoOrdinePagato($ordine);
+					
 					if (PagamentiModel::gateway()->success())
-						$this->m("OrdiniModel")->values["stato"] = "completed";
+						$this->m("OrdiniModel")->values["stato"] = $statoPagato;
 					
 					$this->m("OrdiniModel")->update((int)$res[0]["orders"]["id_o"]);
 					
 					if (PagamentiModel::gateway()->success())
 					{
-						// Controlla e manda mail dopo pagamento al cliente
-						$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+						$this->mandaMailDopoPagamento($ordine);
 						
-						// Controlla e manda mail dopo pagamento al negozio
-						$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+// 						// Controlla e manda mail dopo pagamento al cliente
+// 						$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
+// 						
+// 						// Controlla e manda mail dopo pagamento al negozio
+// 						$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 						
 						$mandaFattura = false;
 						
@@ -263,7 +298,7 @@ class BaseOrdiniController extends BaseController
 						}
 						
 						if (v("manda_mail_avvenuto_pagamento_al_cliente"))
-							$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-completed", "P", $mandaFattura);
+							$this->m("OrdiniModel")->mandaMailGeneric($ordine["id_o"], v("oggetto_ordine_pagato"), "mail-$statoPagato", "P", $mandaFattura);
 						
 						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 						
@@ -380,10 +415,8 @@ class BaseOrdiniController extends BaseController
 		$data["ordine"] = $res[0]["orders"];
 		
 		// ID ordine per GTM e FBK
-		if (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"]))
-		{
+		if ($data["ordine"]["tipo_ordine"] == "W" && (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"])))
 			$data['idOrdineGtm'] = (int)$id_o;
-		}
 		
 		$data["tipoOutput"] = "web";
 		
@@ -1038,7 +1071,7 @@ class BaseOrdiniController extends BaseController
 		{
 			RegusersModel::checkEdEliminaAccount();
 			
-			if (CaptchaModel::getModulo()->checkRegistrazione())
+			if (v("disattiva_antispam_checkout") || CaptchaModel::getModulo()->checkRegistrazione())
 			{
 				if ($this->m('OrdiniModel')->checkConditions('insert'))
 				{
@@ -1055,6 +1088,10 @@ class BaseOrdiniController extends BaseController
 						
 						if (number_format(getTotalN(),2,".","") <= 0.00)
 							$statoOrdine = "completed";
+						
+						$statoOrdine = $this->getStatoOrdineFrontend($statoOrdine);
+						
+						$this->m('OrdiniModel')->values["stato"] = $statoOrdine;
 						
 						if (isset($_COOKIE["ok_cookie_terzi"]))
 							$this->m('OrdiniModel')->values["cookie_terzi"] = 1;
@@ -1268,7 +1305,7 @@ class BaseOrdiniController extends BaseController
 								call_user_func(v("hook_ordine_confermato"), $clean['lastId']);
 							
 							// mail al cliente
-							if (!v("mail_ordine_dopo_pagamento") || !$utenteRegistrato || !OrdiniModel::conPagamentoOnline($ordine))
+							if (!v("mail_ordine_dopo_pagamento") || !$utenteRegistrato || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
 							{
 								ob_start();
 								$tipoOutput = "mail_al_cliente";
@@ -1293,10 +1330,12 @@ class BaseOrdiniController extends BaseController
 								$this->m('OrdiniModel')->settaMailDaInviare($clean['lastId']);
 							
 							// mail al negozio
-							if (!v("mail_ordine_dopo_pagamento_negozio") || !OrdiniModel::conPagamentoOnline($ordine))
+							if (!v("mail_ordine_dopo_pagamento_negozio") || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
 							{
 								ob_start();
 								$tipoOutput = "mail_al_negozio";
+								ElementitemaModel::getPercorsi();
+								ElementitemaModel::$percorsi["RESOCONTO_PRODOTTI"]["nome_file"] = "default";
 								include tpf("/Ordini/resoconto-acquisto.php");
 								$output = ob_get_clean();
 								
@@ -1371,6 +1410,14 @@ class BaseOrdiniController extends BaseController
 			}
 			else
 			{
+				ob_start();
+				include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
+				$data['notice'] = ob_get_clean();
+				$data['notice'] .= $this->m('OrdiniModel')->notice;
+				
+				$this->m('RegusersModel')->result = false;
+				$this->m('OrdiniModel')->result = false;
+				
 				$logSubmit->setSpam();
 			}
 		}
@@ -1514,5 +1561,10 @@ class BaseOrdiniController extends BaseController
 		$this->clean();
 		
 		echo hasActiveCoupon() ? "OK" : "KO";
+	}
+	
+	protected function getStatoOrdineFrontend($statoOrdine)
+	{
+		return $statoOrdine;
 	}
 }

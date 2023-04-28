@@ -81,6 +81,7 @@ class PagesController extends BaseController {
 		'id_reg:sanitizeAll' => "tutti",
 		'id_cmb:sanitizeAll'=>0,
 		'nuovo:sanitizeAll'=>'tutti',
+		'id_import:sanitizeAll'=>0,
 	);
 	
 	protected $_posizioni = array(
@@ -609,6 +610,9 @@ class PagesController extends BaseController {
 		
 		$this->shift(1);
 		
+		if (v("attiva_campo_redirect_pagine"))
+			$this->metaQueryFields .= ",redirect";
+		
 		$this->_posizioni['meta'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
 		
@@ -842,6 +846,8 @@ class PagesController extends BaseController {
 			}
 			else if (strcmp($queryType,"copia") === 0)
 			{
+				VariabiliModel::$valori["controlla_che_il_codice_prodotti_sia_unico"] = 0;
+				
 				$this->duplicaPagina($clean['id']);
 			}
 		}
@@ -1467,7 +1473,10 @@ class PagesController extends BaseController {
 		
 		$this->mainButtons = "ldel";
 		
-		$this->modelName = "ContenutiModel";
+		$this->modelName = $this->m[$this->modelName]->contenutiModelAssociato; //ContenutiModel;
+		
+		if (!isset($this->m[$this->modelName]))
+			$this->model($this->modelName);
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
@@ -1511,14 +1520,27 @@ class PagesController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>"testi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
+		$this->getTabViewFields("testi");
+		
 		$this->m[$this->modelName]->select("contenuti.*,tipi_contenuto.*")->inner(array("tipo"))->orderBy("contenuti.id_order")->where(array(
-			"id_page"	=>	$clean['id'],
+// 			"id_page"	=>	$clean['id'],
 			"lingua"	=>	$this->viewArgs["lingua"],
 			"id_tipo"	=>	$this->viewArgs["tipocontenuto"],
 			"lk"		=>	array("contenuti.titolo" => $this->viewArgs["titolo_contenuto"]),
 			"lk"		=>	array("contenuti.immagine_1" => $this->viewArgs["imm_1"]),
 			"ne"		=>	array("tipo"	=>	"FASCIA"),
-		))->convert()->save();
+		))->convert();
+		
+		if ($this->viewArgs["id_import"] != 0)
+			$this->m[$this->modelName]->aWhere(array(
+				"id_import"	=>	$clean['id'],
+			));
+		else
+			$this->m[$this->modelName]->aWhere(array(
+				"id_page"	=>	$clean['id'],
+			));
+		
+		$this->m[$this->modelName]->save();
 		
 		$this->tabella = $this->getNomeMenu();
 		

@@ -44,6 +44,7 @@ class PagesModel extends GenericModel {
 	
 	public $documentiModelAssociato = "DocumentiModel";
 	public $contattiModelAssociato = "ContattiModel";
+	public $contenutiModelAssociato = "ContenutiModel";
 	
 	// Vengono usati per sincronizzare pagina e combinazione quando non ci sono varianti
 	public static $campiDaSincronizzareConCombinazione = array("price", "price_ivato", "codice", "gtin", "mpn", "peso", "giacenza");
@@ -3330,6 +3331,13 @@ class PagesModel extends GenericModel {
 		))->first();
 	}
 	
+	public static function getPageDetailsPreloaded($idPage, $lingua = null)
+	{
+		$clean["id"] = (int)$idPage;
+		
+		return isset(self::$preloadedPages[$clean["id"]]) ? self::$preloadedPages[$clean["id"]] : self::getPageDetails($clean["id"], $lingua);
+	}
+	
 	public static function getPageDetailsList($idPages, $lingua = null)
 	{
 		$p = new PagesModel();
@@ -4106,10 +4114,98 @@ class PagesModel extends GenericModel {
 					}
 				}
 				
+				if (v("slega_varianti_quando_copi_prodotto"))
+					$this->slegaAttributi($lId);
+				
 				return $lId;
 			}
 			
 			return 0;
+		}
+	}
+	
+	// Slego gli attributi nella pagina duplicata
+	public function slegaAttributi($idPage)
+	{
+		$pa = new PagesattributiModel();
+		$aModel = new AttributiModel();
+		$avModel = new AttributivaloriModel();
+		$cModel = new CombinazioniModel();
+		
+		// Cerco gli attributi
+		$attributi = $pa->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->orderBy("id_order")->send(false);
+		
+		// Cerco le combinazioni
+		$combinazioni = $cModel->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->send(false);
+		
+		foreach ($attributi as $a)
+		{
+			$attributo = $aModel->selectId((int)$a["id_a"]);
+			
+			if (!empty($attributo))
+			{
+				$aModel->sValues($attributo);
+				
+				$aModel->setValue("duplicato_da_id", $attributo["id_a"]);
+				$aModel->setValue("id_page", $idPage);
+				
+				unset($aModel->values["id_a"]);
+				unset($aModel->values["data_creazione"]);
+				unset($aModel->values["id_order"]);
+				
+				if ($aModel->insert())
+				{
+					$lId = $aModel->lId;
+					
+					// Aggiorno la tabella pages_attributi
+					$pa->sValues(array(
+						"id_a"	=>	$lId,
+					));
+					
+					$pa->pUpdate($a["id_pa"]);
+					
+					$valori = $avModel->clear()->where(array(
+						"id_a"	=>	(int)$attributo["id_a"],
+					))->orderBy("id_order")->send(false);
+					
+					foreach ($valori as $valore)
+					{
+						$avModel->sValues($valore);
+						
+						$avModel->setValue("duplicato_da_id", $valore["id_av"]);
+						$avModel->setValue("id_a", $lId);
+						
+						unset($avModel->values["id_av"]);
+						unset($avModel->values["data_creazione"]);
+						unset($avModel->values["id_order"]);
+						
+						if ($avModel->insert())
+						{
+							$lIdAv = $avModel->lId;
+							
+							// Aggiorno la tabella delle combinazioni
+							foreach ($combinazioni as $c)
+							{
+								for ($i = 1; $i < 9; $i++)
+								{
+									if ((int)$c["col_".$i] === (int)$valore["id_av"])
+									{
+										$cModel->sValues(array(
+											"col_".$i	=>	$lIdAv,
+										));
+										
+										$cModel->pUpdate($c["id_c"]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -4417,6 +4513,8 @@ class PagesModel extends GenericModel {
 		));
 		
 		$this->pUpdate((int)$idPage);
+		
+		return $numero;
 	}
 	
 	public function getModaliFrontend()
@@ -4487,6 +4585,18 @@ class PagesModel extends GenericModel {
 		foreach ($pages as $page)
 		{
 			self::$preloadedPages[$page["pages"]["id_page"]] = $page;
+		}
+	}
+	
+	public function checkAndInCaseRedirect($page)
+	{
+		if (v("attiva_campo_redirect_pagine"))
+		{
+			if ($page["pages"]["redirect"])
+			{
+				header("Location: ".$page["pages"]["redirect"]);
+				exit;
+			}
 		}
 	}
 }

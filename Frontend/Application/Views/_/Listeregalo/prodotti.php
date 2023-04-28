@@ -56,7 +56,7 @@
 				<div class="uk-first-column">
 					<?php if (!$regalati && $numeroRegalati <= 0) { ?>
 					<div class="uk-hidden@m uk-text-left">
-						<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
+						<a class="uk-text-danger remove lista_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#" uk-icon="icon: close"></a>
 					</div>
 					<?php } ?>
 					<?php if ($immagine) { ?>

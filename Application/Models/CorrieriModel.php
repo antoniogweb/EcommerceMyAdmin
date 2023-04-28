@@ -53,8 +53,53 @@ class CorrieriModel extends GenericModel {
 					'options'	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 				),
+				'ritiro_in_sede'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, gli ordini con questo corriere verranno impostati come ordini senza spedizione")."</div>"
+					),
+				),
+				'stato_ordine'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	array("" => "-- non modificare lo stato dell'ordine --") + $this->statiOrdine(),
+					"reverse"	=>	"yes",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Selezionare lo stato a cui impostare l'ordine dopo il pagamento se viene selezionato questo corriere ")."</div>"
+					),
+				),
 			),
 		);
+	}
+	
+	public static function corriereEsistente($idCorriere)
+	{
+		$cModel = new CorrieriModel();
+		
+		return (int)$cModel->clear()->whereId((int)$idCorriere)->rowNumber();
+	}
+	
+	// Restituisce 1 o 0 se il corriere è un ritiro in sede
+	public static function ritiroInSede($idCorriere)
+	{
+		if (!v("attiva_campo_ritiro_in_sede_su_corrieri"))
+			return false;
+		
+		$cModel = new CorrieriModel();
+		
+		return (int)$cModel->clear()->whereId((int)$idCorriere)->field("ritiro_in_sede");
+	}
+	
+	public function statiOrdine()
+	{
+		OrdiniModel::setStatiOrdine();
+		
+		return OrdiniModel::$stati;
 	}
 	
     public function getIdsCorrieriNazione($nazione)

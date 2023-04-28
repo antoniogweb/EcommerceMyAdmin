@@ -52,6 +52,7 @@ class HierarchicalModel extends GenericModel {
 	
 	public static $currentRecord = null;
 	public static $strutturaCategorie = [];
+	public static $strutturaCategorieRid = [];
 	
 	public function __construct() {
 		
@@ -580,45 +581,45 @@ class HierarchicalModel extends GenericModel {
 			$lft = $res[$this->_tables]["lft"];
 			$rgt = $res[$this->_tables]["rgt"];
 			
-// 			$children = [];
-// 			
-// 			foreach (self::$strutturaCategorie as $idC => $categoria)
-// 			{
-// 				if (($self && $categoria["categories"]["lft"] >= $lft && $categoria["categories"]["lft"] <= $rgt) || (!$self && $categoria["categories"]["lft"] > $lft && $categoria["categories"]["lft"] < $rgt))
-// 				{
-// 					$children[] = $onlyIds ? $idC : $categoria;
-// 				}
-// 			}
-// 			
-// 			return $children;
+			$children = [];
 			
-			$this->clear()->orderBy("lft");
-			
-			if ($self)
+			foreach (self::$strutturaCategorie as $idC => $categoria)
 			{
-				$this->aWhere(array(
-					"gte" => array("lft" => $lft),
-					"lte" => array("-lft" => $rgt),
-// 					"lft"=>">=$lft","-lft"=>"<=$rgt"
-				));
+				if (($self && $categoria["categories"]["lft"] >= $lft && $categoria["categories"]["lft"] <= $rgt) || (!$self && $categoria["categories"]["lft"] > $lft && $categoria["categories"]["lft"] < $rgt))
+				{
+					$children[] = $onlyIds ? $idC : $categoria;
+				}
 			}
-			else
-			{
-				$this->aWhere(array(
-					"gt" => array("lft"=>$lft),
-					"lt" => array("-lft" => $rgt),
-// 					"lft"=>">$lft","-lft"=>"<$rgt"
-				));
-			}
-			
-			if ($onlyIds)
-			{
-				$this->select($this->_tables.".".$this->_idFields)->toList($this->_tables.".".$this->_idFields);
-			}
-			
-			$children = $this->send();
 			
 			return $children;
+			
+// 			$this->clear()->orderBy("lft");
+// 			
+// 			if ($self)
+// 			{
+// 				$this->aWhere(array(
+// 					"gte" => array("lft" => $lft),
+// 					"lte" => array("-lft" => $rgt),
+// // 					"lft"=>">=$lft","-lft"=>"<=$rgt"
+// 				));
+// 			}
+// 			else
+// 			{
+// 				$this->aWhere(array(
+// 					"gt" => array("lft"=>$lft),
+// 					"lt" => array("-lft" => $rgt),
+// // 					"lft"=>">$lft","-lft"=>"<$rgt"
+// 				));
+// 			}
+// 			
+// 			if ($onlyIds)
+// 			{
+// 				$this->select($this->_tables.".".$this->_idFields)->toList($this->_tables.".".$this->_idFields);
+// 			}
+// 			
+// 			$children = $this->send();
+// 			
+// 			return $children;
 		}
 		
 		return array();
@@ -871,11 +872,35 @@ class HierarchicalModel extends GenericModel {
 		return array();
 	}
 	
+	public static function getDataCategoriaRid($idC, $lingua = null)
+	{
+		$lingua = isset($lingua) ? $lingua : Params::$lang;
+		
+		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
+			return self::$strutturaCategorieRid[$lingua][$idC];
+		
+		$c = new CategoriesModel();
+		$tableName = $c->table();
+		$pkName = $c->getPrimaryKey();
+		
+		$res = $c->clear()->addJoinTraduzione($lingua,"contenuti_tradotti")->orderBy("categories.lft")->send();
+		
+		foreach ($res as $cat)
+		{
+			self::$strutturaCategorieRid[$lingua][$cat[$tableName][$pkName]] = $cat;
+		}
+		
+		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
+			return self::$strutturaCategorieRid[$lingua][$idC];
+		
+		return array();
+	}
+	
 	public function parentsForAlias($id, $lingua = null)
 	{
 		$clean["id"] = (int)$id;
 		
-		$res = self::getDataCategoria($clean["id"]);
+		$res = self::getDataCategoriaRid($clean["id"], $lingua);
 		
 		if (count($res) > 0)
 		{
@@ -884,7 +909,7 @@ class HierarchicalModel extends GenericModel {
 			
 			$parents = [];
 			
-			foreach (self::$strutturaCategorie as $idC => $categoria)
+			foreach (self::$strutturaCategorieRid[$lingua] as $idC => $categoria)
 			{
 				if ($categoria["categories"]["lft"] <= $lft && $categoria["categories"]["rgt"] >= $rgt)
 				{

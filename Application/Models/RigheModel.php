@@ -137,6 +137,9 @@ class RigheModel extends GenericModel {
 	{
 		$r = RigheModel::g()->inner("orders")->on("orders.id_o = righe.id_o")->where(array(
 			"orders.id_lista_regalo"	=>	(int)$idLista,
+			"ne"	=>	array(
+				"orders.stato"	=>	"deleted",
+			),
 		));
 		
 		if ($idC)

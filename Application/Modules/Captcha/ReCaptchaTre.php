@@ -20,10 +20,22 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+require_once(LIBRARY."/Application/Modules/Captcha/Random.php");
+
 class ReCaptchaTre extends Captcha
 {	
 	public function check()
 	{
+		if (User::$logged)
+			return true;
+		
+		$random = new Random(array(
+			"campo_nascosto"	=>	"codice_random",
+		));
+		
+		if ($random->check())
+			return true;
+		
 		$r = new Request();
 		$campoCaptcha = $r->post($this->params["campo_nascosto"],'');
 		
@@ -56,5 +68,10 @@ class ReCaptchaTre extends Captcha
 	public function gCampiForm()
 	{
 		return 'titolo,attivo,secret_client,secret_server';
+	}
+	
+	public function getErrorIncludeFile()
+	{
+		return "/Elementi/Captcha/Errore/notice-recaptchatre.php";
 	}
 }

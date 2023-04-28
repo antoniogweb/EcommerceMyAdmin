@@ -172,7 +172,7 @@ trait Modulo
 				"combinazioni.id_c"	=>	(int)$idC,
 			));
 		
-		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.dal,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap,pages.codice,pages.gtin,pages.mpn,pages.identifier_exists";
+		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.dal,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap,pages.codice,pages.gtin,pages.mpn,pages.identifier_exists,pages.stampa_gtin_nel_feed";
 		
 		if ($combinazioniLinkVeri || $idC)
 		{
@@ -271,7 +271,7 @@ trait Modulo
 				$subtotaleSpedizione = (!v("prezzi_ivati_in_carrello")) ? $prezzoFinale : $prezzoFinaleIvato;
 				
 				// Solo spedizioni gratuite e solo nazione default
-				if (ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+				if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotaleSpedizione >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
 					$speseSpedizione = 0;
 				else
 				{
@@ -315,6 +315,7 @@ trait Modulo
 				"priorita_sitemap"	=>	$r["pages"]["priorita_sitemap"],
 				"identifier_exists"	=>	$r["pages"]["identifier_exists"],
 				"nazione"		=>	$nazione,
+				"stampa_gtin_nel_feed"	=>	$r["pages"]["stampa_gtin_nel_feed"],
 			);
 			
 			if ($combinazioniLinkVeri)

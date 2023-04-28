@@ -22,6 +22,11 @@
 
 class SitemapProdotti extends Feed
 {
+	public function gCampiForm()
+	{
+		return 'titolo,attivo,link_a_combinazione,usa_token_sicurezza,token_sicurezza,query_string,tempo_cache,url_feed,frequenza_modifica';
+	}
+	
 	public function feedProdotti($p = null, $outputFile = null)
 	{
 		if (!isset($p))
@@ -46,6 +51,7 @@ class SitemapProdotti extends Feed
 				"loc"		=>	$r["link"],
 				"lastmod"	=>	date('c', strtotime($r["ultima_modifica"])),
 				"priority"	=>	number_format($r["priorita_sitemap"],2,".",""),
+				"changefreq"=>	$this->params["frequenza_modifica"],
 			);
 			
 			$xmlArray["url"][] = $temp;

@@ -712,7 +712,7 @@ class OrdiniModel extends FormModel {
 				$oggetto = str_replace("[ID_ORDINE]",$clean["id_o"], $oggetto);
 				
 				// Segnaposti
-				$oggetto = SegnapostoModel::sostituisci($oggetto, $ordine, null);
+				$oggetto = htmlentitydecode(SegnapostoModel::sostituisci($oggetto, $ordine, null));
 				
 				$mail->Subject  = Parametri::$nomeNegozio." - $oggetto";
 				$mail->IsHTML(true);
@@ -1416,6 +1416,18 @@ class OrdiniModel extends FormModel {
 		}
 		
 		$this->values["da_spedire"] = v("attiva_spedizione");
+		
+		// Controllo se l'ordine è da spedire
+		if (v("attiva_campo_ritiro_in_sede_su_corrieri") && isset($_POST["id_corriere"]) && $_POST["id_corriere"] && CorrieriModel::corriereEsistente((int)$_POST["id_corriere"]) && CorrieriModel::ritiroInSede((int)$_POST["id_corriere"]))
+			$this->values["da_spedire"] = 0;
+		
+		if (App::$isFrontend)
+		{
+			$this->values["mostra_sempre_corriere"] = 0;
+			
+			if (!$this->values["da_spedire"] && !CartModel::soloProdottiSenzaSpedizione())
+				$this->values["mostra_sempre_corriere"] = 1;
+		}
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)
@@ -1759,6 +1771,16 @@ class OrdiniModel extends FormModel {
 		$output = ob_get_clean();
 		
 		return $output;
+	}
+	
+	public function gLinkOrdine($lingua, $record)
+	{
+		if (!isset($record["id_o"]))
+			return "";
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		return Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$record["id_o"]."/".$record["cart_uid"]."?n=y";
 	}
 	
 	public static function analizzaErroriCheckout($strutturaErrori)

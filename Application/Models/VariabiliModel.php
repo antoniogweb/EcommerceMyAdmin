@@ -204,7 +204,6 @@ class VariabiliModel extends GenericModel {
 		"campo_form_newsletter_obbligatori"		=>	"",
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
-		"campo_captcha_form"		=>	"cognome",
 		"riconoscimento_tipo_documento_automatico"	=>	1,
 		"contenuti_in_eventi"		=>	1,
 		"permetti_upload_archivio"	=>	0,
@@ -298,7 +297,6 @@ class VariabiliModel extends GenericModel {
 		"page_main_class"			=>	"top_page_main",
 		"attiva_azioni_ajax"		=>	0,
 		"attiva_link_documenti"		=>	0,
-		"permetti_gestione_sitemap"	=>	0,
 		"attiva_blocco_cookie_terzi"=>	0,
 		"stile_popup_cookie"		=>	"cookie_stile_css",
 		"stile_check_cookie"		=>	"accetta",
@@ -499,6 +497,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_solo_varianti_articolo"	=>	0, // se impostato su 1, nella pagina del prodotto elenca solo le varianti del prodotto
 		"permetti_modifica_attributi_combinazioni"	=>	0, // se impostato su 1, permette di modificare il valore degli attributi per ogni combinazione
 		"permetti_acquisto_da_categoria_se_ha_una_combinazione"	=>	0, // se impostato su 1, l'ecommerce permette di acquistare direttamente dalla categoria se il prodotto non ha personalizzazioni e ha solo 1 categoria attiva
+		"slega_varianti_quando_copi_prodotto"	=>	0, // se impostato su 1, alla copia del prodotto le varianti vengono copiate
 		## GOOGLE ##
 		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
 		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
@@ -506,6 +505,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_strumenti_merchant_google"	=>	0, // attiva campi per il feed google (e facebook)
 		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
 		"versione_google_analytics"	=>	3, // versione di Google Analytics
+		"mostra_campo_stampa_gtin_in_prodotto"	=>	0, // se impostato ad 1, viene mostrata la tendina per forzare la disabilitazione del GTIN nel feed Google o Facebook
 		## ETICHETTE FEED GOOGLE ##
 		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
 		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
@@ -540,11 +540,15 @@ class VariabiliModel extends GenericModel {
 		"mostra_doppio_pulsante_acquista_mobile"	=>	1, // se mostrare il doppio pulsante di acquista in mobile
 		"pagina_di_autenticazione"	=>	0, // attiva la pagina di autenticazione
 		"mostra_modalita_spedizione_in_resoconto"	=>	1, // se mostrare la modalità di spedizione nel resoconto dell'ordine
+		"nascondi_ordini_pending_in_admin"	=>	0, // se impostato ad 1 gli ordini in stato pending saranno nascosti di default dalla lista degli ordini
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
+		"soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni"	=>	1, // se impostato ad 1, la soglia oltre alla quale la spedizione è gratuita vale in tutto il mondo, altrimenti vale solo nella nazione di default (variabile nazione_default)
 		## CORRIERI ##
 		"scegli_il_corriere_dalla_categoria_dei_prodotti"	=>	0, // se impostato ad 1, il corriere verrà scelto in funzione della categoria del prodotto (se viene trovata un'associazione)
+		"attiva_campo_ritiro_in_sede_su_corrieri"	=>	0, // se impostato ad 1, permette di selezionare se un corriere è un ritiro in sede
+		"lega_lo_stato_ordine_a_corriere"	=>	0, // se impostato ad 1, sarà possibile impostare lo stato a cui impostare l'ordine dopo il pagamento per ogni corriere 
 		"attiva_gestione_spedizionieri"	=>	0, // se impostato ad 1, permette la gestione degli spedizionieri (GLS, BRT) e di poterlo selezionare nell'ordine
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
@@ -571,6 +575,8 @@ class VariabiliModel extends GenericModel {
 		## CATEGORIE ##
 		"fasce_in_categorie"		=>	0, // mostra il tab per la gestione delle fasce in categorie
 		"attiva_mostra_in_menu"		=>	0, // se impostato a 1, permette di gestire il campo mostra_in_menu nelle categorie
+		## PAGINE ##
+		"attiva_campo_redirect_pagine"		=>	0, // se impostato ad 1, attiva un campo redirect per le pagine. La pagina sarà un link all'URL specificato nel campo redirect
 		## CARRELLO ##
 		"cart_sticky_top_offeset"	=>	100, // offset dello sticky del cart in desktop
 		"recupera_dati_carrello_da_post"	=>	0, // se impostato a 1, salva i dati inviati in post nel carrello (solo se l'utente ha approvato la privacy)
@@ -605,6 +611,7 @@ class VariabiliModel extends GenericModel {
 		"codici_opzioni_gestibili"	=>	"STATI_ELEMENTI:stati elementi", // elenco dei codici opzioni gestibili da pannello (dividere con ;)
 		## FEED ##
 		"attiva_gestione_feed"	=>	0, // attiva la sezione per la gestione dei feed xml
+		"usa_codice_articolo_su_mpn_google_facebook"	=>	0, // se impostato ad 1, utilizza il codice articolo nel campo MPN del feed Google e Facebook
 		## MOTORI DI RICERCA ##
 		"attiva_gestione_motori_ricerca"	=> 0, // attiva la sezione per la gestione dei motori di ricerca
 		"salva_ricerche"		=>	1, // se impostato su 1, salva le ricerche fatte
@@ -619,6 +626,7 @@ class VariabiliModel extends GenericModel {
 		## CATEGORIA ##
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
 		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
+		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect
 		## BASE CONTROLLER ##
 		"estrai_elenco_marchi"		=>	1, // estrai i marchi
 		"estrai_elenco_categorie_prodotti_base_controller"	=>	1, // se deve estrarre sempre l'elenco delle categorie dal base controller
@@ -632,6 +640,12 @@ class VariabiliModel extends GenericModel {
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto
 		"link_marchio_in_breadcrumb"	=>	0, // se impostato a 1, aggiunge il link al marchio nella breadcrumb
+		## SITEMAP ##
+		"permetti_gestione_sitemap"	=>	0, // se impostato a 1, permette la gestione manuale della sitemap
+		"mostra_sitemap_in_file_robots"	=>	1, // se impostato ad 1, inserisci il link della sitemap nel file di robots
+		## CAPTCHA ##
+		"campo_captcha_form"		=>	"cognome",
+		"disattiva_antispam_checkout"	=>	0, // se impostato su 1,non ci sarà l'antispam al checkout
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

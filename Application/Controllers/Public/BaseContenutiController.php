@@ -787,6 +787,8 @@ class BaseContenutiController extends BaseController
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
 		$data["datiCategoria"] = CategoriesModel::$currentCategoryData = $r[0];
 		
+		$this->m('CategoriesModel')->checkAndInCaseRedirect($data["datiCategoria"]);
+		
 		$cache = Cache_Html::getInstance();
 		
 		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl))
@@ -963,7 +965,11 @@ class BaseContenutiController extends BaseController
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 		{
 			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
-				$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName]);
+			{
+				$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($this->viewArgs[$argName]);
+				
+				$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($search);
+			}
 			else
 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
@@ -1514,6 +1520,9 @@ class BaseContenutiController extends BaseController
 		
 		if (count($data["pages"]) > 0)
 		{
+			// Reditect
+			$this->m('PagesModel')->checkAndInCaseRedirect($data["pages"][0]);
+			
 			if ($data["pages"][0]["pages"]["tipo_pagina"] == "COOKIE")
 			{
 				VariabiliModel::noCookieAlert();
@@ -1580,7 +1589,14 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$data["prodotti_correlati"] = $this->m('PagesModel')->getCorrelati($clean['id']);
-			
+		
+		if ($firstSection == "prodotti")
+		{
+			PagesModel::clearIdCombinazione();
+			$data["prodotti_correlati"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_correlati"]);
+			PagesModel::restoreIdCombinazione();
+		}
+		
 // 		$data["prodotti_correlati"] = $this->m('PagesModel')->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 // 			->addJoinTraduzionePagina()
 // 			->where(array(
@@ -1907,6 +1923,9 @@ class BaseContenutiController extends BaseController
 			}
 			
 			$data["pages"] = $this->m('PagesModel')->send();
+			
+			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
+				$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
 // 			echo $this->m('PagesModel')->getQuery();die();
 		}
 		

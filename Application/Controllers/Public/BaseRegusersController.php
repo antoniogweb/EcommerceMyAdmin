@@ -299,6 +299,19 @@ class BaseRegusersController extends BaseController
 					$this->redirect('area-riservata',0);
 					break;
 				case 'accepted':
+					ob_start();
+					include tpf("Elementi/Mail/mail_login_da_social.php");
+					$output = ob_get_clean();
+					
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array($clean["username"]),
+						"oggetto"	=>	"Login al sito tramite ".$recordLoginApp["titolo"],
+						"testo"		=>	$output,
+						"tipologia"	=>	"LOGIN ".$recordLoginApp["codice"],
+						"id_user"	=>	$idCliente,
+						"id_page"	=>	0,
+					));
+					
 					$this->redirectUser();
 					break;
 				case 'login-error':

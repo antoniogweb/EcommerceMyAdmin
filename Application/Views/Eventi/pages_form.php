@@ -42,6 +42,8 @@
 									
 									<?php echo $form["description"];?>
 									
+									<?php include($this->viewPath("pages_campi_aggiuntivi"));?>
+									
 									<?php if ($type === "update") { ?>
 									<input class="varchar_input form-control" type="hidden" value="<?php echo $id_page;?>" name="id_page">
 									<?php } ?>
@@ -87,6 +89,29 @@
 									<div class='col-md-4'>
 										<?php echo $form["indirizzo_localita_evento"];?>
 									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<?php echo gtext("Social");?>
+							</div>
+							<div class="panel-body">
+								<div class='col-md-4'>
+									<?php echo $form["link_pagina_facebook"];?>
+								</div>
+								<div class='col-md-4'>
+									<?php echo $form["link_pagina_twitter"];?>
+								</div>
+								<div class='col-md-4'>
+									<?php echo $form["link_pagina_youtube"];?>
+								</div>
+								<div class='col-md-4'>
+									<?php echo $form["link_pagina_instagram"];?>
+								</div>
+								<div class='col-md-4'>
+									<?php echo $form["link_pagina_linkedin"];?>
 								</div>
 							</div>
 						</div>
