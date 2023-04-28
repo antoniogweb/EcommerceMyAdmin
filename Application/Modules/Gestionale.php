@@ -104,7 +104,7 @@ class Gestionale
 		if (OrdiniModel::statoGestionale($ordine) > 0)
 			$html .= $this->descOrdineInviato($ordine).$this->descAnnullaInvioAlGestionale($ordine);
 		else if (OrdiniModel::statoGestionale($ordine) < 0)
-			$html .= $this->descOrdineErrore($ordine).$this->descInviaAlGestionale($ordine);
+			$html .= $this->descOrdineErrore($ordine).$this->descInviaAlGestionale($ordine).$this->descAnnullaInvioAlGestionale($ordine);
 		else
 			$html .= $this->descInviaAlGestionale($ordine);
 		
