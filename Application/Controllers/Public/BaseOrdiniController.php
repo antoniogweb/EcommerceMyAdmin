@@ -120,7 +120,7 @@ class BaseOrdiniController extends BaseController
 			$clean['codiceTransazione'] = $this->request->post('txn_id','','sanitizeAll');
 			$clean['amount'] = $this->request->post('mc_gross','0','none');
 			
-			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid'],"stato"=>"pending"))->send();
 
 			if (count($res) > 0)
 			{
@@ -259,7 +259,7 @@ class BaseOrdiniController extends BaseController
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
 			
-			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid'],"stato"=>"pending"))->send();
 
 			if (count($res) > 0)
 			{
