@@ -81,6 +81,8 @@ class BaseOrdiniController extends BaseController
 		// Controlla e manda mail dopo pagamento
 		$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
 		
+		ElementitemaModel::getPercorsi();
+		ElementitemaModel::$percorsi["RESOCONTO_PRODOTTI"]["nome_file"] = "default";
 		// Controlla e manda mail dopo pagamento al negozio
 		$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 	}
