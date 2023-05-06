@@ -1168,7 +1168,7 @@ class BaseOrdiniController extends BaseController
 										$this->m('RegusersModel')->values[$cdc] = $this->m('OrdiniModel')->values[$cdc];
 									}
 									
-									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine))
+									if (v("mail_credenziali_dopo_pagamento") && OrdiniModel::conPagamentoOnline($ordine) && (number_format($ordine["total"],2,".","") > 0.00))
 										$this->m('RegusersModel')->values["credenziali_inviate"] = 0;
 									
 									if ($this->m('RegusersModel')->insert())
@@ -1208,7 +1208,7 @@ class BaseOrdiniController extends BaseController
 										$this->m('OrdiniModel')->update($clean['lastId']);
 										
 										// MAIL AL CLIENTE
-										if (!v("mail_credenziali_dopo_pagamento") || !OrdiniModel::conPagamentoOnline($ordine))
+										if (!v("mail_credenziali_dopo_pagamento") || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
 											$res = MailordiniModel::inviaCredenziali($clean['userId'], array(
 												"username"	=>	$clean["username"],
 												"password"	=>	$password,
