@@ -280,7 +280,7 @@ class DocumentiController extends BaseController
 		
 		$data['tabella'] = "documenti";
 		
-		$data["titoloRecord"] = $this->m["DocumentiModel"]->where(array("id_doc"=>$clean['id']))->field("titolo");
+		$data["titoloRecord"] = $this->m("DocumentiModel")->where(array("id_doc"=>$clean['id']))->field("titolo");
 		
 		$this->append($data);
 	}
