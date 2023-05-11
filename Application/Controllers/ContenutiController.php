@@ -153,7 +153,7 @@ class ContenutiController extends BaseController
 		
 		$data['tabella'] = "fascia";
 		
-		$data["titoloRecord"] = $this->m["ContenutiModel"]->where(array("id_cont"=>$clean['id']))->field("titolo");
+		$data["titoloRecord"] = $this->m("ContenutiModel")->where(array("id_cont"=>$clean['id']))->field("titolo");
 		
 		$this->append($data);
 	}
