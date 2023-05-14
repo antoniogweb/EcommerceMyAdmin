@@ -499,12 +499,17 @@ class PromozioniModel extends GenericModel {
 		foreach ($idCs as $idC)
 		{
 			$children = $c->children((int)$idC, true);
-
+			
+			$bindedValues = $children;
+			$bindedValues[] = (int)$idC;
+			
 			$pages = $p->clear()->select("id_page")->where(array(
 				"attivo" => "Y",
 				"principale"=>"Y",
-				"in" => array("-id_c" => $children),
-			))->toList("id_page")->send();
+// 				"in" => array("-id_c" => $children),
+			))
+			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
+			->toList("id_page")->send();
 			
 			$idPages = array_merge($idPages, $pages);
 		}
