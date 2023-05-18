@@ -1426,9 +1426,14 @@ class PagesModel extends GenericModel {
 				"priorita"	=>	$pagina["pages"]["priorita_sitemap"],
 			));
 			
+			$idSitemap = (int)$sm->clear()->where(array("id_page"=>(int)$pagina["pages"]["id_page"]))->field("id_sitemap");
+			
 			try
 			{
-				$sm->insert();
+				if ($idSitemap)
+					$sm->update($idSitemap);
+				else
+					$sm->insert();
 			}
 			catch (Exception $e)
 			{
