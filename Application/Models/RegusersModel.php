@@ -106,7 +106,12 @@ class RegusersModel extends FormModel {
 		
 		$this->sistemaMaiuscole();
 		
-		return parent::update($clean['id']);
+		$res = parent::update($clean['id']);
+		
+		if ($res && v("attiva_liste_regalo"))
+			ListeregaloModel::sincronizzaEmailConAccount($clean['id']);
+		
+		return $res;
 	}
 	
 	public function insert()

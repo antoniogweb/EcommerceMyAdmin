@@ -473,4 +473,24 @@ class ListeregaloModel extends GenericModel
 	{
 		return $record["codice"];
 	}
+	
+	public static function sincronizzaEmailConAccount($idUser)
+	{
+		$ru = new RegusersModel();
+		
+		$record = $ru->clear()->selectId((int)$idUser);
+		
+		if (!empty($record))
+		{
+			$lr = new ListeregaloModel();
+			
+			$lr->query(array(
+				"update liste_regalo set email = ? where id_user = ?",
+				array(
+					sanitizeAll($record["username"]),
+					(int)$idUser,
+				),
+			));
+		}
+	}
 }

@@ -122,7 +122,12 @@ class BaseRegusersModel extends Model_Tree
 		{
 			$this->setProvinciaFatturazione();
 			
-			return parent::update($clean["id"]);
+			$res = parent::update($clean["id"]);
+			
+			if ($res && v("attiva_liste_regalo"))
+				ListeregaloModel::sincronizzaEmailConAccount($clean["id"]);
+			
+			return $res;
 		}
 		
 		return false;
