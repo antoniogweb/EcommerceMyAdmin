@@ -1026,6 +1026,12 @@ class PagesController extends BaseController {
 		Params::$nullQueryValue = 'tutti';
 		
 		$this->m['CorrelatiModel']->setFields('id_corr','sanitizeAll');
+		
+		$numeroTipologie = $this->m('TipologiecorrelatiModel')->clear()->rowNumber();
+		
+		if ($numeroTipologie > 0 && !$accessori)
+			$this->m['CorrelatiModel']->setFields('id_corr,id_tipologia_correlato','sanitizeAll');
+		
 		$this->m['CorrelatiModel']->values['id_page'] = $clean['id'];
 		
 		$this->m['CorrelatiModel']->values['accessorio'] = (int)$accessori;
@@ -1040,13 +1046,31 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
 		
 		$this->scaffold->fields = "pages.*,prodotti_correlati.*";
-		$this->scaffold->loadMain('PagesModel.getThumb|pages.id_page,;pages.codice; - ;pages.title;,getYesNo|pages.attivo','prodotti_correlati:id_pc','moveup,movedown,ldel');
-		$this->scaffold->setHead('Thumb,Titolo prodotto,Pubblicato?');
+		
+		$mainFields = 'PagesModel.getThumb|pages.id_page,;pages.codice; - ;pages.title;,getYesNo|pages.attivo';
+		$mainHead = 'Thumb,Titolo prodotto,Pubblicato?';
 		
 		$this->scaffold->model->clear()->inner("pages")->on("prodotti_correlati.id_corr = pages.id_page")->orderBy("prodotti_correlati.id_order")->where(array(
 			"id_page"		=>	$clean['id'],
 			"accessorio"	=>	$accessori,
 		));
+		
+		$data["mostra_tendina_tipologia"] = false;
+		
+		if ($numeroTipologie > 0 && !$accessori)
+		{
+			$this->scaffold->model->left("tipologie_correlati")->on("tipologie_correlati.id_tipologia_correlato = prodotti_correlati.id_tipologia_correlato");
+			$this->scaffold->fields .= ",tipologie_correlati.*";
+			
+			$data["mostra_tendina_tipologia"] = true;
+			$data["listaTipologieCorrelati"] = $this->m('TipologiecorrelatiModel')->clear()->orderBy("id_order")->toList("id_tipologia_correlato", "titolo")->send();
+			
+			$mainFields .= ",tipologie_correlati.titolo";
+			$mainHead .= ",Tipologia";
+		}
+		
+		$this->scaffold->loadMain($mainFields,'prodotti_correlati.id_pc','moveup,movedown,ldel');
+		$this->scaffold->setHead($mainHead);
 		
 		$this->scaffold->update('moveup,movedown');
 		
