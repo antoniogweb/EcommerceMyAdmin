@@ -11,7 +11,7 @@
 		if ($r["id_r"] > 0)
 		{
 		?>
-			window._tpt.push({ event: "addItem", sku: '<?php echo $r["codice"];?>', product_name: '<?php echo strip_tags(htmlentitydecode($r["titolo"]));?>' });
+			window._tpt.push({ event: "addItem", sku: '<?php echo $r["codice"];?>', product_name: '<?php echo sanitizeJs(F::meta($r["titolo"]));?>' });
 		<?php
 		}
 	}
