@@ -102,6 +102,7 @@ class Route
 		'regusers,gruppi',
 		'regusers,spedizioni',
 		'regusers,ordini',
+		'regusers,promozioni',
 		
 		'reggroups,main',
 		'reggroups,form',

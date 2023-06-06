@@ -15,7 +15,7 @@
 		<li <?php echo $posizioni['invii'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/invii/$id".$this->viewStatus;?>"><?php echo gtext("Mail con dedica");?></a></li>
 		<?php } ?>
 	<?php } ?>
-	<li <?php echo $posizioni['ordini'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/ordini/$id".$this->viewStatus;?>"><?php echo gtext("Ordini legati alla promo");?></a></li>
+	<li <?php echo $posizioni['ordini'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/ordini/$id".$this->viewStatus;?>"><?php echo gtext("Ordini legati al coupon");?></a></li>
 </ul>
 
 <?php } else { ?>

@@ -11,6 +11,9 @@
 	<?php if (v("attiva_gruppi_utenti")) { ?>
 	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtext("Gruppi");?></a></li>
 	<?php } ?>
+	<?php if (v("attiva_agenti") && RegusersModel::g()->whereId((int)$id)->field("agente")) { ?>
+	<li <?php echo $posizioni['promozioni'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/promozioni/$id".$this->viewStatus;?>"><?php echo gtext("Coupon");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } else { ?>

@@ -275,6 +275,21 @@ class FormModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Sono note visibili solo dal backend (il cliente non le vedrà mai).")."</div>"
 					),
 				),
+				'agente'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Il cliente è un agente?',
+					'className'	=>	'for_print form-control',
+					'options'	=>	array(
+						"0"	=>	"No",
+						"1"	=>	"Sì",
+					),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, si attiverà una nuova scheda per la gestione dei codici coupon dell'agente.")."</div>"
+					),
+					'reverse'	=>	"yes",
+				),
 			),
 		);
 

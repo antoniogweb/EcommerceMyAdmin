@@ -248,4 +248,19 @@ class RegusersModel extends FormModel {
     {
 		return $record["regusers"]["codice_app"];
     }
+    
+    public function agenteCrud($record)
+    {
+		return $record["regusers"]["agente"] ? gtext("Sì") : gtext("No");
+    }
+    
+    public static function schermataAgenti()
+    {
+		$r = new Request();
+		
+		if (v("attiva_agenti") && (int)$r->get("agente",0) === 1 )
+			return true;
+		
+		return false;
+    }
 }

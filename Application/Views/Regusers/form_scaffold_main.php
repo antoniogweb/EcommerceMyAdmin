@@ -68,6 +68,7 @@
 					<?php echo $form["password"];?>
 					<?php echo $form["confirmation"];?>
 					<?php echo $form["lingua"];?>
+					<?php echo $form["agente"] ?? "";?>
 				</div>
 			</div>
 		</div>

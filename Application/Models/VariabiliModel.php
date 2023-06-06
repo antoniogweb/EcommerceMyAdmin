@@ -646,6 +646,8 @@ class VariabiliModel extends GenericModel {
 		## CAPTCHA ##
 		"campo_captcha_form"		=>	"cognome",
 		"disattiva_antispam_checkout"	=>	0, // se impostato su 1,non ci sarà l'antispam al checkout
+		## AGENTI ##
+		"attiva_agenti"	=>	0, // se impostato ad 1, attiva la gestione degli agenti
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

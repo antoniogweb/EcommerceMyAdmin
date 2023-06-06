@@ -31,6 +31,7 @@ class PromozioniController extends BaseController {
 		'tipo:sanitizeAll'=>'tutti',
 		'fonte:sanitizeAll'=>'MANUALE',
 		'codice:sanitizeAll'=>'tutti',
+		'id_user:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -48,6 +49,8 @@ class PromozioniController extends BaseController {
 		$this->model("PromozionipagineModel");
 		$this->model("PagesModel");
 		$this->model("PromozionitipiclientiModel");
+		
+		$this->tabella = "promozioni";
 	}
 	
 	public function main()
@@ -66,9 +69,10 @@ class PromozioniController extends BaseController {
 				"tutti"	=>	"Tipo sconto"
 			) + array("PERCENTUALE"=>"PERCENTUALE","ASSOLUTO"=>"ASSOLUTO"));
 			
-			$this->filters[] = array("fonte",null,array(
-				"tutti"	=>	"Fonte"
-			) + array("MANUALE"=>"Manuale","GIFT_CARD"=>"Gift Card"));
+			if (v("attiva_gift_card"))
+				$this->filters[] = array("fonte",null,array(
+					"tutti"	=>	"Fonte"
+				) + array("MANUALE"=>"Manuale","GIFT_CARD"=>"Gift Card"));
 		}
 		
 		$this->mainFields[] = "sconto";
@@ -121,6 +125,8 @@ class PromozioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->shift(2);
+		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
 		$this->_posizioni['main'] = 'class="active"';
@@ -140,6 +146,9 @@ class PromozioniController extends BaseController {
 			$this->disabledFields = $campiDisabilitati;
 			$this->m[$this->modelName]->delFields($campiDisabilitati);
 		}
+		
+		if ($queryType == "insert" && $this->viewArgs['id_user'] != "tutti")
+			$this->m[$this->modelName]->setValue("id_user", $this->viewArgs['id_user']);
 		
 		parent::form($queryType, $id);
 		
@@ -176,7 +185,7 @@ class PromozioniController extends BaseController {
 		
 		$this->m[$this->modelName]->select("promozioni_tipi_clienti.*,tipi_clienti.*")->inner(array("tipo_cliente"))->orderBy("tipi_clienti.titolo")->where(array("id_p"=>$clean['id']))->convert()->save();
 		
-		$this->tabella = "promozioni";
+// 		$this->tabella = "promozioni";
 		
 		parent::main();
 		
@@ -217,7 +226,7 @@ class PromozioniController extends BaseController {
 		
 		$this->m[$this->modelName]->select("promozioni_categorie.*")->inner(array("categoria"))->orderBy("categories.lft")->where(array("id_p"=>$clean['id']))->convert()->save();
 		
-		$this->tabella = "promozioni";
+// 		$this->tabella = "promozioni";
 		
 		parent::main();
 		
@@ -258,7 +267,7 @@ class PromozioniController extends BaseController {
 		
 		$this->m[$this->modelName]->select("pages.title,promozioni_pages.*")->inner(array("pagina"))->orderBy("pages.title")->where(array("id_p"=>$clean['id']))->convert()->save();
 		
-		$this->tabella = "promozioni";
+// 		$this->tabella = "promozioni";
 		
 		parent::main();
 		

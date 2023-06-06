@@ -670,4 +670,9 @@ class PromozioniModel extends GenericModel {
 		
 		return true;
 	}
+	
+	public function vedi($record)
+	{
+		return "<a title='".gtext("Dettaglio coupon")."' class='iframe action_iframe' href='".Url::getRoot()."promozioni/form/update/".$record["promozioni"]["id_p"]."?partial=Y&nobuttons=Y'>".$record["promozioni"]["id_p"]."</a>";
+	}
 }

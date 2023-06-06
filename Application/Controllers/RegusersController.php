@@ -31,6 +31,13 @@ Helper_List::$filtersFormLayout["filters"]["q"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["agente"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class RegusersController extends BaseController {
 
 // 	protected $_posizioni = array(
@@ -54,6 +61,7 @@ class RegusersController extends BaseController {
 		'deleted:sanitizeAll'=>'no',
 		'token_eliminazione:sanitizeAll'=>'tutti',
 		'q:sanitizeAll'=>'tutti',
+		'agente:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -76,6 +84,9 @@ class RegusersController extends BaseController {
 		$this->model("OrdiniModel");
 		$this->model("IntegrazioniloginModel");
 		
+		if (v("attiva_agenti"))
+			$this->model("PromozioniModel");
+		
 // 		$data["sezionePannello"] = "ecommerce";
 
 		$this->_topMenuClasses['clienti'] = array("active","in");
@@ -84,6 +95,9 @@ class RegusersController extends BaseController {
 		$this->append($data);
 		
 		$this->s['admin']->check();
+		
+		if (RegusersModel::schermataAgenti())
+			$this->tabella = "agenti";
 	}
 	
 	protected function pmain()
@@ -140,6 +154,13 @@ class RegusersController extends BaseController {
 			}
 		}
 		
+		if (v("attiva_agenti"))
+		{
+			$mainFields[] = 'agenteCrud';
+			$headLabels .= ',Agente?';
+// 			$filtri[] = array("agente",null,array("tutti" => "Tipo cliente", "0" => "Cliente normale", "1" => "Agente"));
+		}
+		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		
@@ -155,6 +176,11 @@ class RegusersController extends BaseController {
 			'deleted'	=>	$this->viewArgs['deleted'],
 			'token_eliminazione'	=>	$this->viewArgs['token_eliminazione'],
 		))->convert();
+		
+		if (v("attiva_agenti"))
+			$this->m[$this->modelName]->aWhere(array(
+				'agente'	=>	$this->viewArgs['agente'],
+			));
 		
 		if ($this->viewArgs["q"] != "tutti")
 		{
@@ -227,9 +253,21 @@ class RegusersController extends BaseController {
 			$formFields .= ",id_classe";
 		}
 		
+		if (v("attiva_agenti"))
+		{
+			$fields .= ",agente";
+			$formFields .= ",agente";
+		}
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->formFields = $formFields;
+		
+		$defaultAgente = (v("attiva_agenti") && (int)$this->viewArgs["agente"] === 1) ? 1 : 0;
+		
+		$this->formDefaultValues = array(
+			"agente"	=>	$defaultAgente,
+		);
 		
 		parent::form($queryType, $id);
 		
@@ -308,6 +346,49 @@ class RegusersController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function promozioni($id = 0)
+	{
+		if (!v("attiva_agenti"))
+			$this->responseCode(403);
+		
+		$this->_posizioni['promozioni'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_user";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "PromozioniModel";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->mainFields = array("vedi","promozioni.codice","promozioni.dal","promozioni.al");
+		$this->mainHead = "Titolo,Codice promozione,Dal,Al";
+		
+		if (v("attiva_promo_sconto_assoluto"))
+		{
+			$this->mainFields[] = "promozioni.tipo_sconto";
+			$this->mainHead .= ",Tipo sconto";
+		}
+		
+		$this->mainFields[] = "sconto";
+		$this->mainFields[] = "PromozioniModel.getNUsata|promozioni.id_p";
+		$this->mainFields[] = "getYesNo|promozioni.attivo";
+		$this->mainHead .= ",Valore sconto,N° usata,Attiva?";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"promozioni/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("promozioni.*")->orderBy($this->m("PromozioniModel")->orderBy)->where(array("id_user"=>$clean['id']))->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
 // 	public function ordina()
 // 	{
 // 		$this->modelName = "RegusersgroupsModel";
@@ -346,7 +427,7 @@ class RegusersController extends BaseController {
 		
 		$data["listaGruppi"] = $this->m[$this->modelName]->clear()->from("reggroups")->select("reggroups.name,reggroups.id_group")->orderBy("reggroups.name")->toList("reggroups.id_group","reggroups.name")->send();
 		
-		$data['tabella'] = "utente sito web";
+// 		$data['tabella'] = "utente sito web";
 		
 		$data["titoloRecord"] = $this->m["RegusersModel"]->where(array("id_user"=>$clean['id']))->field("username");
 		
