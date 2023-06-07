@@ -86,6 +86,12 @@ class PromozioniController extends BaseController {
 			$this->mainHead .= ",Ordine";
 		}
 		
+		if (v("attiva_agenti"))
+		{
+			$this->mainFields[] = "agenteCrud";
+			$this->mainHead .= ",Agente";
+		}
+		
 		$this->m[$this->modelName]->select("promozioni.*,orders.id_o")
 			->left(array("righe"))
 			->left("orders")->on("righe.id_o = orders.id_o")
@@ -148,7 +154,24 @@ class PromozioniController extends BaseController {
 		}
 		
 		if ($queryType == "insert" && $this->viewArgs['id_user'] != "tutti")
-			$this->m[$this->modelName]->setValue("id_user", $this->viewArgs['id_user']);
+		{
+			$utente = RegusersModel::g()->selectId((int)$this->viewArgs['id_user']);
+			
+			if (!empty($utente))
+			{
+				$this->formDefaultValues = array(
+					"titolo"	=>	"Codice agente ".RegusersModel::getNominativo($utente),
+					"codice"	=>	strtoupper(generateString(8)),
+					"numero_utilizzi"	=>	9999,
+					"al"		=>	date("d-m-Y", strtotime("+20 years")),
+				);
+				
+				$this->m[$this->modelName]->setValue("id_user", $this->viewArgs['id_user']);
+			}
+		}
+		
+		if ($queryType == "update")
+			$data["utente"] = RegusersModel::g()->selectId($this->m("PromozioniModel")->getIdUtente((int)$id));
 		
 		parent::form($queryType, $id);
 		

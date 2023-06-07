@@ -52,6 +52,13 @@ class PromozioniModel extends GenericModel {
 			$labelSconto .= ($tipo == "ASSOLUTO") ? " (in €)" : " (in %)";
 		}
 		
+		$opzioniTipoCredito = array('ESAURIMENTO'=>'AD ESAURIMENTO','INFINITO'=>'INFINITO');
+		
+		$record = $this->selectId((int)$id);
+		
+		if ((!empty($record) && $record["id_user"]) || isset($_GET["id_user"]))
+			$opzioniTipoCredito = array('ESAURIMENTO'=>'AD ESAURIMENTO');
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -59,7 +66,7 @@ class PromozioniModel extends GenericModel {
 					'labelString'=>	'Titolo',
 				),
 				'codice'		=>	array(
-					'labelString'=>	'Codice della promozione',
+					'labelString'=>	'Codice del coupon',
 				),
 				'dal'		=>	array(
 					'labelString'=>	'Attiva dal',
@@ -74,7 +81,7 @@ class PromozioniModel extends GenericModel {
 				),
 				'attivo'	=>	array(
 					'type'		=>	'Select',
-					'labelString'=>	'Promozione attiva?',
+					'labelString'=>	'Coupon attivo?',
 					'options'	=>	array('sì'=>'Y','no'=>'N'),
 				),
 				'numero_utilizzi'		=>	array(
@@ -103,7 +110,7 @@ class PromozioniModel extends GenericModel {
 				'tipo_credito'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Tipo di credito',
-					'options'	=>	array('ESAURIMENTO'=>'AD ESAURIMENTO','INFINITO'=>'INFINITO'),
+					'options'	=>	$opzioniTipoCredito,
 					'reverse'	=>	'yes',
 					'entryAttributes'	=>	array(
 						"visible-f"	=>	"tipo_sconto",
@@ -673,6 +680,26 @@ class PromozioniModel extends GenericModel {
 	
 	public function vedi($record)
 	{
-		return "<a title='".gtext("Dettaglio coupon")."' class='iframe action_iframe' href='".Url::getRoot()."promozioni/form/update/".$record["promozioni"]["id_p"]."?partial=Y&nobuttons=Y'>".$record["promozioni"]["id_p"]."</a>";
+		return "<a title='".gtext("Dettaglio coupon")."' class='iframe action_iframe' href='".Url::getRoot()."promozioni/form/update/".$record["promozioni"]["id_p"]."?partial=Y&nobuttons=Y'>".$record["promozioni"]["titolo"]."</a>";
 	}
+	
+	public function getIdUtente($idPromo)
+	{
+		return (int)$this->clear()->whereId((int)$idPromo)->field("id_user");
+	}
+	
+	public function agenteCrud($record)
+	{
+		if ($record["promozioni"]["id_user"])
+		{
+			$record = RegusersModel::g()->selectId((int)$record["promozioni"]["id_user"]);
+			
+			if (!empty($record))
+				return RegusersModel::getNominativo($record);
+		}
+		
+		return "";
+	}
+	
+	
 }
