@@ -166,6 +166,12 @@ class OrdiniController extends BaseController {
 			$this->mainHead .= ',Tipo';
 		}
 		
+		if (v("attiva_agenti"))
+		{
+			$this->mainFields[] = 'agenteCrud';
+			$this->mainHead .= ',Agente';
+		}
+		
 		$this->mainFields[] = 'infoGatewayCrud';
 		$this->mainHead .= ',';
 		

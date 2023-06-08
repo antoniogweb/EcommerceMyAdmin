@@ -39,6 +39,8 @@ class GenericModel extends Model_Tree
 		"on-c"	=>	"check-v"
 	);
 	
+	protected $nomeCampoIdUser = "id_user";
+	
 	public static $entryAttivo = array(
 		"type"	=>	"Select",
 		"labelString"	=>	"Attivo",
@@ -1840,5 +1842,25 @@ class GenericModel extends Model_Tree
 			return true;
 		
 		return false;
+	}
+	
+	public function agenteCrud($record)
+	{
+		if ($record[$this->_tables][$this->nomeCampoIdUser])
+		{
+			$utente = RegusersModel::g()->selectId((int)$record[$this->_tables][$this->nomeCampoIdUser]);
+			
+			if (!empty($utente))
+			{
+				$html = RegusersModel::getNominativo($utente);
+				
+				if (ControllersModel::checkAccessoAlController(array("regusers")))
+					$html .= " <a href='".Url::getRoot()."regusers/form/update/".(int)$record[$this->_tables][$this->nomeCampoIdUser]."?partial=Y&nobuttons=Y&agente=1' class='iframe label label-info text-bold'><i class='fa fa-user'></i></a>";
+				
+				return $html;
+			}
+		}
+		
+		return "";
 	}
 }

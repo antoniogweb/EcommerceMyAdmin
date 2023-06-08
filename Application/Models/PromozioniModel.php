@@ -687,19 +687,4 @@ class PromozioniModel extends GenericModel {
 	{
 		return (int)$this->clear()->whereId((int)$idPromo)->field("id_user");
 	}
-	
-	public function agenteCrud($record)
-	{
-		if ($record["promozioni"]["id_user"])
-		{
-			$record = RegusersModel::g()->selectId((int)$record["promozioni"]["id_user"]);
-			
-			if (!empty($record))
-				return RegusersModel::getNominativo($record);
-		}
-		
-		return "";
-	}
-	
-	
 }

@@ -100,10 +100,28 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									<td><b class="text text-primary"><?php echo gtext("Richiesta");?></b></td>
 								</tr>
 								<?php } ?>
+								<?php if ($ordine["codice_promozione"]) { ?>
+								<tr>
+									<td><?php echo gtext("Coupon");?>:</td>
+									<td>
+										<b><?php echo $ordine["codice_promozione"];?></b> (<i><?php echo $ordine["nome_promozione"];?></i>)
+									</td>
+								</tr>
+								<?php } ?>
+								<?php if (v("attiva_agenti") && $ordine["id_agente"]) { ?>
+								<tr>
+									<td><?php echo gtext("Agente");?>:</td>
+									<td>
+										<b class="text text-primary"><?php echo OrdiniModel::g()->agenteCrud(array("orders"=>$ordine));?></b>
+									</td>
+								</tr>
+								<?php } ?>
 								<?php if ($ordine["id_lista_regalo"]) { ?>
 								<tr>
 									<td><?php echo gtext("Lista regalo");?>:</td>
-									<td><?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?></td>
+									<td>
+										<?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?>
+									</td>
 								</tr>
 								<?php } ?>
 								<?php if (v("attiva_gestione_pixel")) {

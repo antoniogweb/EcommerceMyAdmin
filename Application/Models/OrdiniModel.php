@@ -206,6 +206,8 @@ class OrdiniModel extends FormModel {
 	public $cart_uid = null;
 	public $lId = null;
 	
+	protected $nomeCampoIdUser = "id_agente";
+	
 	public function __construct() {
 		$this->_tables='orders';
 		$this->_idFields='id_o';
@@ -1389,12 +1391,14 @@ class OrdiniModel extends FormModel {
 			$this->values["tipo_promozione"] = $coupon["tipo_sconto"];
 			$this->values["euro_promozione"] = $this->values["total_pieno"] - $this->values["total"];
 			$this->values["id_p"] = $coupon["id_p"];
+			$this->values["id_agente"] = $coupon["id_user"];
 		}
 		else
 		{
 			$this->values["tipo_promozione"] = "PERCENTUALE";
 			$this->values["euro_promozione"] = 0.00;
 			$this->values["id_p"] = 0;
+			$this->values["id_agente"] = 0;
 		}
 		
 		$this->values["id_iva"] = CartModel::getIdIvaSpedizione();
