@@ -1397,6 +1397,13 @@ class PagesModel extends GenericModel {
 		return $r;
 	}
 	
+	public function addWhereClauseCerca()
+	{
+		$this->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap();
+		
+		return $this;
+	}
+	
 	public function checkDataPerSitemap($id)
 	{
 		return $this->clear()->select("distinct pages.codice_alfa,pages.id_page,categories.id_c,pages.data_ultima_modifica,pages.priorita_sitemap")
@@ -1407,10 +1414,11 @@ class PagesModel extends GenericModel {
 				"categories.add_in_sitemap_children"	=>	"Y",
 // 				"categories.add_in_sitemap_children"	=>	"Y",
 			))
-			->addWhereAttivo()
-			->addWhereAttivoCategoria()
-			->addWhereCategoriaInstallata()
-			->addWhereOkSitemap()
+			->addWhereClauseCerca()
+// 			->addWhereAttivo()
+// 			->addWhereAttivoCategoria()
+// 			->addWhereCategoriaInstallata()
+// 			->addWhereOkSitemap()
 			->first();
 	}
 	

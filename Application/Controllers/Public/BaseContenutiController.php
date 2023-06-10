@@ -968,10 +968,11 @@ class BaseContenutiController extends BaseController
 			{
 				$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($this->viewArgs[$argName]);
 				
-				$orWhere[" AND"] = $this->m($this->modelName)->getWhereSearch($search);
+				$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($search);
 			}
 			else
-				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
+				$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName], 50, "title");
+// 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
 		else
 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
@@ -1908,7 +1909,10 @@ class BaseContenutiController extends BaseController
 			
 			$this->addOrderByClause($this->viewArgs["sec"], 'risultati-ricerca');
 			
-			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinTraduzionePagina()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->rowNumber();
+			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinTraduzionePagina()->aWhere(array(
+				"pages.add_in_sitemap"=>	"Y",
+				"categories.add_in_sitemap_children"	=>	"Y",
+			))->addWhereClauseCerca()->rowNumber();
 			
 			$this->setElementsPerPage($this->viewArgs["sec"]);
 			$data["elementsPerPage"] = $this->elementsPerPage;
