@@ -1911,7 +1911,7 @@ class BaseContenutiController extends BaseController
 			
 			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinTraduzionePagina()->aWhere(array(
 				"pages.add_in_sitemap"=>	"Y",
-				"categories.add_in_sitemap_children"	=>	"Y",
+// 				"categories.add_in_sitemap_children"	=>	"Y",
 			))->addWhereClauseCerca()->rowNumber();
 			
 			$this->setElementsPerPage($this->viewArgs["sec"]);
