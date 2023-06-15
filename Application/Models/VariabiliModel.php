@@ -491,6 +491,8 @@ class VariabiliModel extends GenericModel {
 		"mostra_filtro_ricerca_libera_in_magazzino"	=>	0, // filtro ricerca libera
 		"testo_disponibilita_immediata"	=>	"", // se impostato, testo che appare nel carrello quando la disponibilità è immediata
 		"testo_disponibilita_non_immediata"	=>	"", // se impostato, testo che appare nel carrello quando la disponibilità non è immediata
+		## RICERCA ##
+		"ricerca_termini_and_or"	=>	" AND", // se deve cercare i termini della frase di ricerca in AND o in OR
 		## VARIANTI ##
 		"classe_variante_radio"		=>	"",
 		"attiva_variante_colore"	=>	0, // se attiva oppure no la variante di tipo COLORE

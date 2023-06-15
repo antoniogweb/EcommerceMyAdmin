@@ -201,7 +201,8 @@ class SitemapModel extends GenericModel {
 		$sqlCategorie = "select id_c, 0 as id_page, priorita_sitemap as priorita,lft, coalesce(categories.data_ultima_modifica,categories.data_creazione) as ultima_modifica,0 as url,0 as home from categories where ".$elements["where"];
 		
 		// Where pagine
-		$p->clear()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap();
+// 		$p->clear()->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap();
+		$p->clear()->addWhereClauseCerca();
 		
 // 		if (!$recuperaBackup)
 			$p->aWhere(array(

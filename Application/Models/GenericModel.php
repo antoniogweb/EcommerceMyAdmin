@@ -1801,7 +1801,7 @@ class GenericModel extends Model_Tree
 		return $output;
 	}
 	
-	public function getWhereSearch($cerca, $maxNumber = 50)
+	public function getWhereSearch($cerca, $maxNumber = 50, $campoCerca = "campo_cerca")
 	{
 		$cercaArray = explode(" ",(string)trim($cerca));
 		
@@ -1817,7 +1817,7 @@ class GenericModel extends Model_Tree
 		foreach ($cercaArray as $cercaTermine)
 		{
 			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"pages.campo_cerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
+				"pages.$campoCerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
 			);
 			
 			$iCerca++;
