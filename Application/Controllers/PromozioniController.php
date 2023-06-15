@@ -395,4 +395,33 @@ class PromozioniController extends BaseController {
 		
 		$this->append($data);
 	}
+	
+	public function inviacoupon($idP)
+	{
+		$this->clean();
+		
+		$record = $this->m("PromozioniModel")->select("*")->inner("regusers")->on("regusers.id_user = promozioni.id_user")->where(array(
+			"promozioni.id_user"	=>	(int)$idP,
+			"regusers.".Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
+		))->first()
+		
+		if (!empty($record))
+		{
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($record["regusers"]["username"]),
+				"oggetto"	=>	"Invio codice coupon",
+				"tipologia"	=>	"LINK CODICE COUPON",
+				"tabella"	=>	"promozioni",
+				"id_elemento"	=>	(int)$idP,
+				"testo_path"	=>	"Elementi/Mail/mail_link_codice_coupon.php",
+				"array_variabili_tema"	=>	array(
+					"CODICE_COUPON"	=>	$record["promozioni"]["codice"],
+					"TITOLO_PROMO"	=>	$record["promozioni"]["titolo"],
+					"NOME_UTENTE"	=>	self::getNominativo($record["regusers"]),
+					"EMAIL_UTENTE"	=>	$record["regusers"]["username"],
+					"LINK_AREA_RISERVATA"	=>	Domain::$publicUrl."/".$record["regusers"]["lingua"].F::getNazioneUrl($record["regusers"]["nazione_navigazione"])."/area-riservata",
+				),
+			));
+		}
+	}
 }

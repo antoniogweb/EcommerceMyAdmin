@@ -45,6 +45,8 @@ class RegusersController extends BaseController {
 // 		"gruppi"	=>	null,
 // 	);
 	
+	protected $nomeCampoIdOrdini = "id_user";
+	
 	public $argKeys = array(
 		'page:forceInt'=>1,
 		'username:sanitizeAll'=>'tutti',
@@ -319,12 +321,12 @@ class RegusersController extends BaseController {
 	
 	public function ordini($id = 0)
 	{
-		$this->_posizioni['ordini'] = 'class="active"';
+		$this->_posizioni[$this->action] = 'class="active"';
 		
 		$this->shift(1);
 		
 		$clean['id'] = $this->id = (int)$id;
-		$this->id_name = "id_user";
+		$this->id_name = $this->nomeCampoIdOrdini;
 		
 		$this->mainButtons = "";
 		
@@ -335,15 +337,22 @@ class RegusersController extends BaseController {
 		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoordinelabel","totaleCrud");
 		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"ordini/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>$this->action."/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array("id_user"=>$clean['id']))->save();
+		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array($this->nomeCampoIdOrdini=>$clean['id']))->save();
 		
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
 		
 		$this->append($data);
+	}
+	
+	public function ordinicollegati($id = 0)
+	{
+		$this->nomeCampoIdOrdini = "id_agente";
+		
+		$this->ordini($id);
 	}
 	
 	public function promozioni($id = 0)

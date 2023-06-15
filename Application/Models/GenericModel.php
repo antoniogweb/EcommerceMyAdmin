@@ -1855,7 +1855,7 @@ class GenericModel extends Model_Tree
 				$html = RegusersModel::getNominativo($utente);
 				
 				if (ControllersModel::checkAccessoAlController(array("regusers")))
-					$html .= " <a href='".Url::getRoot()."regusers/form/update/".(int)$record[$this->_tables][$this->nomeCampoIdUser]."?partial=Y&nobuttons=Y&agente=1' class='iframe label label-info text-bold'><i class='fa fa-user'></i></a>";
+					$html .= " <a title='".gtext("Dettagli agente")."' href='".Url::getRoot()."regusers/form/update/".(int)$record[$this->_tables][$this->nomeCampoIdUser]."?partial=Y&nobuttons=Y&agente=1' class='iframe label label-info text-bold'><i class='fa fa-user'></i></a>";
 				
 				return $html;
 			}
