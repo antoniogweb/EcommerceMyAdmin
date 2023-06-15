@@ -688,22 +688,42 @@ class PromozioniModel extends GenericModel {
 		return (int)$this->clear()->whereId((int)$idPromo)->field("id_user");
 	}
 	
+	public function inviaCouponCrud($record)
+	{
+		$html = "";
+		
+		if ($record["promozioni"]["id_user"] && User::attivo($record["promozioni"]["id_user"]))
+		{
+			$utente = RegusersModel::g()->selectId((int)$record["promozioni"]["id_user"]);
+			
+			$html = "<a title='".gtext("Invia il codice coupon")."' class='ajlink' href='".Url::getRoot()."promozioni/inviacouponalcliente/".$record["promozioni"]["id_p"]."'><i class='fa fa-envelope'></i></a>";
+			
+			$numeroInviate = MailordiniModel::numeroInviate("promozioni", $record["promozioni"]["id_p"], $utente["username"]);
+			
+			$label = $numeroInviate ? "info" : "default";
+			
+			$html .= " <span title='".gtext("Numero di volte che il coupon è stato inviato")."' class='label label-$label'>$numeroInviate</span>";
+		}
+		
+		return $html;
+	}
+	
 	// Invia il codice del coupon via mail
-	public function inviaCodiceCoupon($idPromo)
+	public function inviaCodiceCouponAlCliente($idPromo)
 	{
 		$record = $this->select("*")->inner("regusers")->on("regusers.id_user = promozioni.id_user")->where(array(
-			"promozioni.id_user"	=>	(int)$idP,
+			"promozioni.id_p"	=>	(int)$idPromo,
 			"regusers.".Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
-		))->first()
+		))->first();
 		
 		if (!empty($record))
 		{
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($record["regusers"]["username"]),
-				"oggetto"	=>	"Invio codice coupon",
-				"tipologia"	=>	"LINK CODICE COUPON",
+				"oggetto"	=>	"Il tuo codice coupon ".$record["promozioni"]["codice"],
+				"tipologia"	=>	"CODICE COUPON AD AGENTE",
 				"tabella"	=>	"promozioni",
-				"id_elemento"	=>	(int)$idP,
+				"id_elemento"	=>	(int)$idPromo,
 				"testo_path"	=>	"Elementi/Mail/mail_link_codice_coupon.php",
 				"array_variabili_tema"	=>	array(
 					"CODICE_COUPON"	=>	$record["promozioni"]["codice"],

@@ -334,8 +334,10 @@ class RegusersController extends BaseController {
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("vedi","smartDate|orders.data_creazione","orders.nome_promozione","statoordinelabel","totaleCrud");
+		$this->mainFields = array("vedi","smartDate|orders.data_creazione",";orders.nome_promozione;<br /><b>;orders.codice_promozione;</b>","statoordinelabel","totaleCrud");
 		$this->mainHead = "Ordine,Data,Promoz.,Stato,Totale";
+		
+		$this->getTabViewFields("ordini");
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>$this->action."/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -351,6 +353,11 @@ class RegusersController extends BaseController {
 	public function ordinicollegati($id = 0)
 	{
 		$this->nomeCampoIdOrdini = "id_agente";
+		
+		$this->tabViewFields["ordini"] = array(
+			"mainFields"	=>	array("vedi","OrdiniModel.getNome|orders.id_o","orders.email","smartDate|orders.data_creazione",";orders.nome_promozione;<br /><b>;orders.codice_promozione;</b>","statoordinelabel","totaleCrud"),
+			"mainHead"		=>	"Ordine,Nome/Rag.Soc,Email,Data,Promoz.,Stato,Totale",
+		);
 		
 		$this->ordini($id);
 	}
@@ -370,8 +377,6 @@ class RegusersController extends BaseController {
 		$this->mainButtons = "ldel";
 		
 		$this->modelName = "PromozioniModel";
-		$this->addBulkActions = false;
-		$this->colProperties = array();
 		
 		$this->mainFields = array("vedi","promozioni.codice","promozioni.dal","promozioni.al");
 		$this->mainHead = "Titolo,Codice promozione,Dal,Al";
@@ -385,7 +390,8 @@ class RegusersController extends BaseController {
 		$this->mainFields[] = "sconto";
 		$this->mainFields[] = "PromozioniModel.getNUsata|promozioni.id_p";
 		$this->mainFields[] = "getYesNo|promozioni.attivo";
-		$this->mainHead .= ",Valore sconto,N° usata,Attiva?";
+		$this->mainFields[] = "inviaCouponCrud";
+		$this->mainHead .= ",Valore sconto,N° usata,Attiva?,Invia coupon";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"promozioni/".$clean['id'],'pageVariable'=>'page_fgl');
 		

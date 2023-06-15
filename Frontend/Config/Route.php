@@ -149,6 +149,8 @@ class Route
 		'regusers,richieditokenconferma',
 		'riservata,index',
 		'riservata,ordini',
+		'riservata,promozioni',
+		'riservata,dettagliopromozione',
 		'riservata,indirizzi',
 		'riservata,privacy',
 		'riservata,feedback',
@@ -178,6 +180,8 @@ class Route
 	public static $map = array(
 		'area-riservata'			=>	'riservata/index',
 		'ordini-effettuati'			=>	'riservata/ordini',
+		'riservata/dettaglio-promozione/([0-9]{1,9})'	=>	'riservata/dettagliopromozione/${1}',
+		'riservata/promozioni/?'		=>	'riservata/promozioni',
 		'riservata/indirizzi'		=>	'riservata/indirizzi',
 		'riservata/privacy'			=>	'riservata/privacy',
 		'riservata/feedback'		=>	'riservata/feedback',

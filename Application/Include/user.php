@@ -29,6 +29,7 @@ class User
 	public static $nazioneNavigazione = "";
 	
 	public static $ruid = null;
+	public static $isAgente = false;
 	
 	public static function getSpedizioneDefault()
 	{
@@ -74,5 +75,15 @@ class User
 			$_POST["nazione_spedizione"] = strtoupper(User::$nazione);
 			$_POST["tipo_cliente"] = "privato";
 		}
+	}
+	
+	public static function attivo($idUser)
+	{
+		$ru = new RegusersModel();
+		
+		return $ru->clear()->where(array(
+			"id_user"	=>	(int)$idUser,
+			Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
+		))->rowNumber();
 	}
 }

@@ -97,7 +97,7 @@ class Route
 		'promozioni,invii',
 		'promozioni,ordini',
 		'promozioni,tipi',
-		'promozioni,inviacoupon',
+		'promozioni,inviacouponalcliente',
 		'regusers,main',
 		'regusers,form',
 		'regusers,gruppi',

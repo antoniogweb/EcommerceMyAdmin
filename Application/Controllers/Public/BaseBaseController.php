@@ -219,6 +219,9 @@ class BaseBaseController extends Controller
 			
 			User::$ruid = $this->s['registered']->getUid();
 			
+			if (User::$dettagli["agente"])
+				User::$isAgente = true;
+			
 			// Imposto lo stato loggato su Output
 			Output::setHeaderValue("Status","logged");
 			

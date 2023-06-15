@@ -73,6 +73,50 @@ class BaseRiservataController extends BaseController
 		$this->load('lista_ordini');
 	}
 	
+	public function promozioni()
+	{
+		if (!v("attiva_agenti"))
+			$this->responseCode(403);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/i-miei-coupon";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista coupon"));
+
+		$data['promozioni'] = $this->m("PromozioniModel")->clear()->where(array("id_user"=>$this->iduser))->orderBy("promozioni.dal desc,promozioni.al desc,promozioni.id_p desc")->send();
+		
+		$this->append($data);
+		
+		$this->load('lista_promozioni');
+	}
+	
+	public function dettagliopromozione($id_p)
+	{
+		if (!v("attiva_agenti"))
+			$this->responseCode(403);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/dettaglio-promozione/".(int)$id_p;
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Dettaglio coupon"));
+
+		$data['promozione'] = $this->m("PromozioniModel")->clear()->where(array(
+			"id_user"	=>	(int)$this->iduser,
+			"id_p"		=>	(int)$id_p,
+		))->record();
+		
+		if (empty($data['promozione']))
+			$this->responseCode(403);
+		
+		$this->append($data);
+		
+		$this->load('dettaglio_promozione');
+	}
+	
 	public function indirizzi()
 	{
 		foreach (Params::$frontEndLanguages as $l)

@@ -17,6 +17,11 @@
 			<li class="<?php if ($attiva == "ordini") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 			</li>
+			<?php if (v("attiva_agenti") && User::$isAgente) { ?>
+			<li class="<?php if ($attiva == "promozioni") { ?>uk-active<?php } ?>">
+				<a href="<?php echo $this->baseUrl."/riservata/promozioni/";?>" title="<?php echo gtext("I miei coupon", false);?>"><?php echo gtext("I miei coupon");?></a>
+			</li>
+			<?php } ?>
 			<?php if (v("attiva_liste_regalo")) { ?>
 			<li class="<?php if ($attiva == "listeregalo") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/liste-regalo/";?>" title="<?php echo gtext("Liste nascita / regalo", false);?>"><?php echo gtext("Liste nascita / regalo");?></a>

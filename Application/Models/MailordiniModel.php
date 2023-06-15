@@ -385,4 +385,22 @@ class MailordiniModel extends GenericModel
 			return false;
 		}
 	}
+	
+	// Restituisce il numero di email inviate per quell'elemento ($tabella) e quel record ($idElemento)
+	public static function numeroInviate($tabella, $idElemento, $email = "")
+	{
+		$mo = new MailordiniModel();
+		
+		$mo->clear()->where(array(
+			"tabella"		=>	sanitizeAll($tabella),
+			"id_elemento"	=>	(int)$idElemento,
+		));
+		
+		if ($email)
+			$mo->aWhere(array(
+				"email"	=>	sanitizeAll($email),
+			));
+		
+		return $mo->rowNumber();
+	}
 }
