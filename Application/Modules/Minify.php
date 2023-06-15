@@ -40,6 +40,7 @@ class Minify
 						"functions.js",
 						"listeregalo.js",
 						"rating.js",
+						"promozioni.js",
 					),
 				),
 		),

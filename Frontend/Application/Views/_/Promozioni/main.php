@@ -63,7 +63,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Attivo");?>:</span> <?php if ($promozione["promozioni"]["attivo"] == "Y") { ?><span class="uk-icon uk-text uk-text-success"><?php include tpf("Elementi/Icone/Svg/check.svg");?></span><?php } else { ?><span class="uk-icon uk-text uk-text-danger"><?php include tpf("Elementi/Icone/Svg/ban.svg");?></span><?php } ?>
 			</div>
 			<div class="uk-first-column">
-				<a class="td_edit" title="<?php echo gtext("Dettagli coupon",false);?>" class="" href="<?php echo $this->baseUrl."/riservata/dettaglio-promozione/".$promozione["promozioni"]["id_p"];?>">
+				<a class="td_edit" title="<?php echo gtext("Dettagli coupon",false);?>" class="" href="<?php echo $this->baseUrl."/promozioni/gestisci/".$promozione["promozioni"]["id_p"];?>">
 					<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
 				</a>
 			</div>

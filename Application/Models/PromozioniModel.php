@@ -57,7 +57,7 @@ class PromozioniModel extends GenericModel {
 		$record = $this->selectId((int)$id);
 		
 		if ((!empty($record) && $record["id_user"]) || isset($_GET["id_user"]))
-			$opzioniTipoCredito = array('ESAURIMENTO'=>'AD ESAURIMENTO');
+			$opzioniTipoCredito = array('INFINITO'=>'INFINITO');
 		
 		$this->formStruct = array
 		(
@@ -707,6 +707,28 @@ class PromozioniModel extends GenericModel {
 		
 		return $html;
 	}
+	
+	public static function promoUtenteModel($idUser = 0, $idP = 0)
+    {
+		$model = self::g();
+		
+		if ($idUser)
+			$model->aWhere(array(
+				"id_user"	=>	(int)$idUser,
+			));
+		
+		if ($idP)
+			$model->aWhere(array(
+				"id_p"	=>	(int)$idP,
+			));
+		
+		return $model;
+    }
+    
+     public static function numeroPromoUtente($idUser = 0, $idP = 0)
+    {
+		return self::promoUtenteModel($idUser, $idP)->rowNumber();
+    }
 	
 	// Invia il codice del coupon via mail
 	public function inviaCodiceCouponAlCliente($idPromo)

@@ -19,7 +19,7 @@
 			</li>
 			<?php if (v("attiva_agenti") && User::$isAgente) { ?>
 			<li class="<?php if ($attiva == "promozioni") { ?>uk-active<?php } ?>">
-				<a href="<?php echo $this->baseUrl."/riservata/promozioni/";?>" title="<?php echo gtext("I miei coupon", false);?>"><?php echo gtext("I miei coupon");?></a>
+				<a href="<?php echo $this->baseUrl."/promozioni/elenco/";?>" title="<?php echo gtext("I miei coupon", false);?>"><?php echo gtext("I miei coupon");?></a>
 			</li>
 			<?php } ?>
 			<?php if (v("attiva_liste_regalo")) { ?>
