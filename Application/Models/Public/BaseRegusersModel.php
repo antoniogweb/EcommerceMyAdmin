@@ -104,6 +104,28 @@ class BaseRegusersModel extends Model_Tree
 				}
 			}
 			
+			// Aggiungo la notifica
+			if ($res && v("attiva_agenti") && isset($this->values["agente"]) && $this->values["agente"])
+			{
+				$agente = $this->selectId((int)$this->lId);
+				
+				if (!empty($agente))
+				{
+					$n = new NotificheModel();
+					
+					$n->sValues(array(
+						"titolo"	=>	"Iscrizione nuovo agente: <br /><b>".RegusersModel::getNominativo(htmlentitydecodeDeep($agente))."</b>",
+						"contesto"	=>	"AGENTE",
+						"url"		=>	"regusers/form/update/".(int)$this->lId."?agente=1",
+						"classe"	=>	"text-primary",
+						"icona"		=>	"fa-user",
+						"condizioni"=>	"attiva_agenti=1",
+					));
+					
+					$n->insert();
+				}
+			}
+			
 			return $res;
 		}
 		

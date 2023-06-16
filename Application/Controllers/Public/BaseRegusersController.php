@@ -27,6 +27,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseRegusersController extends BaseController
 {
+	private $permalinkPaginaRegistrazione = "crea-account";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -1035,14 +1037,14 @@ class BaseRegusersController extends BaseController
 	{
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/crea-account";
+			$data["arrayLingue"][$l] = $l."/".$this->permalinkPaginaRegistrazione;
 		}
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("registrati"));
 		
 		$redirect = RegusersModel::getRedirect();
 		
-		$data['action'] = "/crea-account".RegusersModel::$redirectQueryString;
+		$data['action'] = "/".$this->permalinkPaginaRegistrazione.RegusersModel::$redirectQueryString;
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
@@ -1058,6 +1060,17 @@ class BaseRegusersController extends BaseController
 		$data["tipoAzione"] = "insert";
 		
 		$this->append($data);
+	}
+	
+	public function addagente()
+	{
+		if (!v("attiva_agenti"))
+			$this->responseCode(403);
+		
+		$this->permalinkPaginaRegistrazione = "crea-account-agente";
+		$this->registrazioneAgente = true;
+		
+		$this->add();
 	}
 	
 	public function notice()

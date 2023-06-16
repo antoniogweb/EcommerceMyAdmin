@@ -36,6 +36,8 @@ class BaseBaseController extends Controller
 	
 	protected $estratiDatiGenerali = true;
 	
+	protected $registrazioneAgente = false;
+	
 	public $langDb = null;
 	public $cleanAlias = null;
 	public $prodottiInEvidenza;
@@ -727,6 +729,9 @@ class BaseBaseController extends Controller
 					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
 					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
 					
+					if ($this->registrazioneAgente)
+						$this->m('RegusersModel')->values['agente'] = 1;
+					
 					if ($this->m('RegusersModel')->insert())
 					{
 						$lId = $this->m('RegusersModel')->lastId();
@@ -750,6 +755,10 @@ class BaseBaseController extends Controller
 						}
 						
 						$_SESSION['result'] = 'utente_creato';
+						
+						if ($this->registrazioneAgente)
+							$_SESSION['result'] = 'agente_creato';
+						
 						$_SESSION['token_reinvio'] = $tokenReinvio;
 						
 						if (isset($_SESSION['conferma_utente']))
@@ -759,6 +768,7 @@ class BaseBaseController extends Controller
 							"username"	=>	$clean["username"],
 							"password"	=>	$password,
 							"tokenConferma"	=>	$tokenConferma,
+							"agente"	=>	$this->registrazioneAgente ? 1 : 0,
 						));
 						
 // 						if ($res)

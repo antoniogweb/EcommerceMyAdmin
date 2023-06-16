@@ -93,7 +93,7 @@ class PromozioniinviiModel extends GenericModel
 				"id_promozione_invio"	=>	(int)$id,
 			))->first();
 		
-		if (!empty($record) && $record["promozioni_invii"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_codice_coupon"))
+		if (!empty($record) && $record["promozioni_invii"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_codice_coupon") && PromozioniModel::g()->isActiveCoupon($record["promozioni"]["codice"],0,false))
 		{
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($record["promozioni_invii"]["email"]),
@@ -105,7 +105,8 @@ class PromozioniinviiModel extends GenericModel
 				"array_variabili_tema"	=>	array(
 					"CODICE_COUPON"	=>	$record["promozioni"]["codice"],
 					"TITOLO_PROMO"	=>	$record["promozioni"]["titolo"],
-					"NOME_UTENTE"	=>	self::getNominativo($record["regusers"]),
+					"NOME_UTENTE"	=>	$record["promozioni_invii"]["nome"]." ".$record["promozioni_invii"]["cognome"],
+					"NOME_AGENTE"	=>	self::getNominativo($record["regusers"]),
 					"EMAIL_UTENTE"	=>	$record["regusers"]["username"],
 					"LINK_AREA_RISERVATA"	=>	Domain::$publicUrl."/".$record["regusers"]["lingua"].F::getNazioneUrl($record["regusers"]["nazione_navigazione"])."/area-riservata",
 				),

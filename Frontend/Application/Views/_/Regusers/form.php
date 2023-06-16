@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
-if (strcmp($this->action,"add") === 0)
+if (strcmp($this->action,"modify") !== 0)
 {
 	$breadcrumb = array(
 		gtext("Home") 		=> $this->baseUrl,
@@ -34,7 +34,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 	<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 	
-	<?php if (strcmp($this->action,"add") === 0) { ?>
+	<?php if (strcmp($this->action,"modify") !== 0) { ?>
 	
 	<br />
 	<?php
@@ -59,7 +59,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	
 	<div class="uk-margin">
 		<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
-		<?php if (strcmp($this->action,"add") === 0) { ?>
+		<?php if (strcmp($this->action,"modify") !== 0) { ?>
 		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Completa registrazione", false);?>" />
 		<?php } else { ?>
 		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />

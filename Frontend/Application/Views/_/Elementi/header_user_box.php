@@ -14,7 +14,10 @@ if (!isset($ukdropdown))
 		</li>
 		<?php if (v("attiva_agenti") && User::$isAgente) { ?>
 		<li>
-			<a href="<?php echo $this->baseUrl."/promozioni/elenco/";?>" title="<?php echo gtext("I miei coupon", false);?>"><?php echo gtext("I miei coupon");?></a>
+			<a href="<?php echo $this->baseUrl."/promozioni/elenco/";?>" title="<?php echo gtext("Codici coupon", false);?>"><?php echo gtext("Codici coupon");?></a>
+		</li>
+		<li>
+			<a href="<?php echo $this->baseUrl."/ordini-collegati/";?>" title="<?php echo gtext("Ordini collegati", false);?>"><?php echo gtext("Ordini collegati");?></a>
 		</li>
 		<?php } ?>
 		<?php if (v("attiva_liste_regalo")) { ?>

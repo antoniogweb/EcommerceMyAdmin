@@ -12,6 +12,14 @@
 	<?php } ?>
 </p>
 
+<?php if ($variabili["agente"]) { ?>
+<p>
+<?php echo gtext("La sua richiesta di diventare un agente per il nostro ecommerce verrà valutata quanto prima.");?><br />
+<?php echo gtext("Le verrà data notifica via mail.");?><br />
+<?php echo gtext("Nel caso la sua richiesta venga approvata, le sarà assegnato uno o più codici coupon da usare nel nostro negozio e che potrà condividere con i suoi clienti.");?><br />
+</p>
+<?php } ?>
+
 <?php if (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
 	<p><b><?php echo gtext("Le ricordiamo che il suo account non è ancora attivo.");?></b></p>
 	

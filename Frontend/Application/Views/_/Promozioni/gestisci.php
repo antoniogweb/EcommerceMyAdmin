@@ -14,6 +14,8 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 $attiva = "promozioni";
 
 include(tpf("/Elementi/Pagine/riservata_top.php"));
+
+$promoAttiva = PromozioniModel::g()->isActiveCoupon($promozione["codice"],0,false);
 ?>
 <div style="display:none;" id="id_promo"><?php echo $promozione["id_p"];?></div>
 
@@ -22,7 +24,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
         <?php echo gtext("Codice coupon");?>: <span class="uk-label" style="text-transform:none !important;"><?php echo $promozione["codice"];?></span><br />
         <?php echo gtext("Descrizione coupon");?>: <b><?php echo $promozione["titolo"];?></b><br />
         <?php echo gtext("Sconto");?>: <b><?php echo setPriceReverse($promozione["sconto"]);?><?php if ($promozione["tipo_sconto"] == "ASSOLUTO") { ?>€<?php } else { ?>%<?php } ?></b> (<?php echo $promozione["tipo_sconto"];?>)<br />
-        <?php echo gtext("Il coupon è");?>: <b><?php echo PromozioniModel::g()->isActiveCoupon($promozione["codice"],0,false) ? "<span class='uk-text-success'>".gtext("Attivo")."</span>" : "<span class='uk-text-danger'>".gtext("Disattivo")."</span>";?></b><br />
+        <?php echo gtext("Il coupon è");?>: <b><?php echo $promoAttiva ? "<span class='uk-text-success'>".gtext("Attivo")."</span>" : "<span class='uk-text-danger'>".gtext("Disattivo")."</span>";?></b><br />
         <?php echo gtext("Data scadenza");?>: <b><?php echo smartDate($promozione["al"]);?></b>
     </div>
     <div class="uk-width-1-1 uk-width-1-3@m">
@@ -35,7 +37,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <div class="uk-margin-large-top">
 	<ul class="uk-subnav uk-subnav-pill tab_lista">
 		<li><a class="link_ordini" href="#ordini"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/tag.svg");?></span> <?php echo gtext("Ordini legati al coupon");?></a></li>
+		<?php if ($promoAttiva) { ?>
         <li><a class="link_invii" href="#invii-codice"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/mail.svg");?></span> <?php echo gtext("Invia codice");?></a></li>
+        <?php } ?>
 	</ul>
 	
 	<div class="tab_lista_box">

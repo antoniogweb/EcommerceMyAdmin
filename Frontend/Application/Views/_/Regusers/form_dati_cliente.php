@@ -140,7 +140,7 @@ else
 		</div>
 	</div>
 	
-	<?php if (strcmp($this->action,"add") === 0) { ?>
+	<?php if (strcmp($this->action,"modify") !== 0) { ?>
 	
 		<?php if (v("account_attiva_conferma_username")) { ?>
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">

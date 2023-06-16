@@ -4,7 +4,7 @@
 	<?php include(tpf("/Elementi/header_fascia_demo.php"));?>
 	<div class="">
 		<div class="uk-navbar-container tm-toolbar-container uk-navbar-transparent">
-			<div class="uk-container top_nav" uk-navbar>
+			<div class="uk-container top_nav uk-navbar" uk-navbar>
 				<div class="uk-navbar-left uk-visible@s">
 					<nav>
 						<ul class="uk-text-small uk-navbar-nav">
@@ -38,7 +38,7 @@
 		</div>
 	</div>
 	<div class=" uk-navbar-container es-navbar-container" uk-sticky="cls-active: tm-navbar-container-fixed">
-		<div class="uk-container" uk-navbar>
+		<div class="uk-container uk-navbar" uk-navbar>
 			<div class="uk-navbar-left">
 				<button class="uk-navbar-toggle uk-hidden@m" uk-toggle="target: #nav-offcanvas" uk-navbar-toggle-icon></button><a class="uk-navbar-item uk-logo" href="<?php echo $this->baseUrl;?>"><?php echo i("__LOGO__");?></a>
 			</div>

@@ -72,7 +72,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<hr>
 	<?php } ?>
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcun coupon assegnato a te");?></p>
+<p><?php echo gtext("Non hai alcun coupon assegnato a te.");?></p>
 <?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

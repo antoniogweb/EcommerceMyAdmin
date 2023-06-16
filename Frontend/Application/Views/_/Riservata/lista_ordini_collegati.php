@@ -46,7 +46,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</table>
 </div>
 <?php } else { ?>
-<p><?php echo gtext("Non hai effettuato alcun ordine");?></p>
+<p><?php echo gtext("Non hai alcun ordine collegato ai tuoi codici coupon.");?></p>
 <?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

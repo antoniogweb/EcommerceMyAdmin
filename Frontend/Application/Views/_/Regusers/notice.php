@@ -26,7 +26,7 @@ if (isset($_SESSION['result']))
 		
 		$titoloPagina = gtext("Password cambiata");
 	}
-	else if (strcmp($_SESSION['result'],'utente_creato') === 0)
+	else if (strcmp($_SESSION['result'],'utente_creato') === 0 || strcmp($_SESSION['result'],'agente_creato') === 0)
 	{
 		$titoloNotice = isset($_SESSION["conferma_utente"]) ? "Conferma account" : "Account creato";
 		
@@ -91,9 +91,13 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<?php include(tpf("/Elementi/Registrazione/Resoconto/password_cambiata.php")); ?>
 	<?php } else if (strcmp($_SESSION['result'],'account_confermato') === 0) { ?>
 		<?php include(tpf("/Elementi/Registrazione/Resoconto/account_confermato.php")); ?>
-	<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0) { ?>
+	<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0 || strcmp($_SESSION['result'],'agente_creato') === 0) { ?>
 		<?php if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
-			<?php include(tpf("/Elementi/Registrazione/Resoconto/account_creato.php")); ?>
+			<?php if ($_SESSION['result'] == "agente_creato") { ?>
+				<?php include(tpf("/Elementi/Registrazione/Resoconto/account_agente_creato.php")); ?>
+			<?php } else { ?>
+				<?php include(tpf("/Elementi/Registrazione/Resoconto/account_creato.php")); ?>
+			<?php } ?>
 		<?php } else { ?>
 			<?php if (v("conferma_registrazione")) { ?>
 				<?php include(tpf("/Elementi/Registrazione/Resoconto/account_creato_da_confermare.php")); ?>
