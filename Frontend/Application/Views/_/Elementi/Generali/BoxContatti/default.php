@@ -17,7 +17,7 @@
 	
 	<?php if (v("telefono_aziendale_2")) { ?>
 	<div class="uk-margin-bottom">
-		<a uk-link href="mailto:<?php echo v("telefono_aziendale_2");?>"><span class="uk-margin-small-right" uk-icon="icon: receiver"></span> <?php echo v("telefono_aziendale_2");?></a>
+		<a uk-link href="tel:<?php echo v("telefono_aziendale_2");?>"><span class="uk-margin-small-right" uk-icon="icon: receiver"></span> <?php echo v("telefono_aziendale_2");?></a>
 	</div>
 	<?php } ?>
 	
