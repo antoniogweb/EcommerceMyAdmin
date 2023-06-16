@@ -875,22 +875,20 @@ $(document).ready(function(){
 	$("body").on("click", ".btn_completa_acquisto", function(e){
 		
 		mostraSpinner($(this));
-// 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
-		if (gtm_analytics && typeof checkout_items !== "undefined")
-		{
-			if (debug_js)
-				console.log(checkout_items);
-			
-			gtag('event', 'checkout_progress', checkout_items);
-		}
+// 		if (gtm_analytics && typeof checkout_items !== "undefined")
+// 		{
+// 			if (debug_js)
+// 				console.log(checkout_items);
+// 			
+// 			gtag('event', 'checkout_progress', checkout_items);
+// 		}
 		
 	});
 	
 	$("body").on("click", ".btn_submit_form", function(e){
 		
 		mostraSpinner($(this));
-// 		$(this).addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
 		
 	});
 	

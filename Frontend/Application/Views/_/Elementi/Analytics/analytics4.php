@@ -140,8 +140,6 @@ if (v("codice_gtm_analytics"))
 		}
 		?>
 		<script>
-// 			var checkout_items = <?php echo json_encode($items);?>
-			
 			gtag('event', '<?php echo $gtmActionName;?>', <?php echo json_encode($items);?>);
 		</script>
 		<?php
