@@ -73,6 +73,22 @@ class BaseRiservataController extends BaseController
 		$this->load('lista_ordini');
 	}
 	
+	public function ordinicollegati()
+	{
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/ordini-collegati";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista ordini collegati ai miei codici coupon"));
+
+		$data['ordini'] = $this->m("OrdiniModel")->clear()->where(array("id_agente"=>$this->iduser))->orderBy("id_o desc")->send();
+		
+		$this->append($data);
+		
+		$this->load('lista_ordini_collegati');
+	}
+	
 	public function promozioni()
 	{
 		if (!v("attiva_agenti"))

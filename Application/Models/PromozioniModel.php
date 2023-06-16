@@ -190,10 +190,14 @@ class PromozioniModel extends GenericModel {
 	public function update($id = null, $where = null)
 	{
 		$clean["id"] = (int)$id;
-		$this->values["dal"] = reverseData($this->values["dal"]);
-		$this->values["al"] = reverseData($this->values["al"]);
 		
-		if (checkIsoDate($this->values["dal"]) and checkIsoDate($this->values["al"]))
+		if (isset($this->values["al"]))
+			$this->values["al"] = reverseData($this->values["al"]);
+		
+		if (isset($this->values["dal"]))
+			$this->values["dal"] = reverseData($this->values["dal"]);
+		
+		if ((!isset($this->values["dal"]) || checkIsoDate($this->values["dal"])) && (!isset($this->values["al"]) || checkIsoDate($this->values["al"])))
 		{
 			$numero = 0;
 			

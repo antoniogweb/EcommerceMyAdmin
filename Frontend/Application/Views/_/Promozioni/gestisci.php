@@ -21,6 +21,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
     <div class="uk-width-1-1 uk-width-2-3@m uk-text-small">
         <?php echo gtext("Codice coupon");?>: <span class="uk-label" style="text-transform:none !important;"><?php echo $promozione["codice"];?></span><br />
         <?php echo gtext("Descrizione coupon");?>: <b><?php echo $promozione["titolo"];?></b><br />
+        <?php echo gtext("Sconto");?>: <b><?php echo setPriceReverse($promozione["sconto"]);?><?php if ($promozione["tipo_sconto"] == "ASSOLUTO") { ?>€<?php } else { ?>%<?php } ?></b> (<?php echo $promozione["tipo_sconto"];?>)<br />
         <?php echo gtext("Il coupon è");?>: <b><?php echo PromozioniModel::g()->isActiveCoupon($promozione["codice"],0,false) ? "<span class='uk-text-success'>".gtext("Attivo")."</span>" : "<span class='uk-text-danger'>".gtext("Disattivo")."</span>";?></b><br />
         <?php echo gtext("Data scadenza");?>: <b><?php echo smartDate($promozione["al"]);?></b>
     </div>

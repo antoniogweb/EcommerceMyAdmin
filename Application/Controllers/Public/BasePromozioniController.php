@@ -79,6 +79,8 @@ class BasePromozioniController extends BaseController
 			if ($numero === 0)
 				$this->responseCode(403);
 		}
+		else
+			$this->responseCode(403);
 	}
 	
 	public function gestisci($id = 0)
@@ -181,6 +183,57 @@ class BasePromozioniController extends BaseController
 	
 	public function modifica($id = 0)
 	{
+		Params::$automaticConversionFromDbFormat = true;
+		Params::$automaticConversionToDbFormat = true;
+		Params::$setValuesConditionsFromDbTableStruct = true;
 		
+		$clean["id"] = $data["id"] = (int)$id;
+		
+		$this->checkPromo($id);
+		
+		$title = gtext("Modifica la descrizione");
+		$data['title'] = $this->aggiungiNomeNegozioATitle($title);
+		
+		$promo = $this->m('PromozioniModel')->selectId($clean["id"]);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/promozioni/modifica/".$clean["id"];
+		}
+		
+		$data['notice'] = null;
+		$data['action'] = "/promozioni/modifica/".$clean["id"];
+		
+		$campiObbligatori = $fields = "titolo";
+		
+		if (isset($_POST["titolo"]))
+			$_POST["titolo"] = strip_tags($_POST["titolo"]);
+		
+		$this->m('PromozioniModel')->setFields($fields,'sanitizeAll');
+		
+		$this->m('PromozioniModel')->clearConditions("strong");
+		$this->m('PromozioniModel')->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
+		
+		$this->m('PromozioniModel')->updateTable('update',$clean["id"]);
+		
+		if ($this->m('PromozioniModel')->queryResult)
+		{
+			if (!$clean["id"])
+				$clean["id"] = (int)$this->m('PromozioniModel')->lId;
+			
+			$this->redirect("promozioni/gestisci/".$clean["id"]);
+		}
+		else
+		{
+			if (!$this->m('PromozioniModel')->result)
+				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('PromozioniModel')->notice;
+		}
+		
+		$submitAction = "update";
+		
+		$data['values'] = $this->m('PromozioniModel')->getFormValues($submitAction,'sanitizeHtml',$clean["id"]);
+		
+		$this->append($data);
+		$this->load('modifica');
 	}
 }

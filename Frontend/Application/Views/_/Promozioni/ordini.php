@@ -9,7 +9,7 @@
 				<?php echo gtext("Data");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Nome/Rag.Soc");?>
+				<?php echo gtext("Cliente");?>
 			</div>
 			<div class="uk-first-column">
 				<?php echo gtext("Stato");?>
@@ -30,7 +30,7 @@
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data");?>:</span> <?php echo smartDate($ordine["data_creazione"]);?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Nome/Rag.Soc");?>:</span> <?php echo OrdiniModel::getNominativo($ordine);?><br /><?php echo $ordine["email"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Cliente");?>:</span> <?php echo OrdiniModel::getNominativo($ordine);?><br /><?php echo $ordine["email"];?>
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Stato");?>:</span> <?php echo statoOrdine($ordine["stato"]);?>

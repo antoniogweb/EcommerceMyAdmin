@@ -21,6 +21,9 @@
 			<li class="<?php if ($attiva == "promozioni") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/promozioni/elenco/";?>" title="<?php echo gtext("I miei coupon", false);?>"><?php echo gtext("I miei coupon");?></a>
 			</li>
+			<li class="<?php if ($attiva == "ordinicollegati") { ?>uk-active<?php } ?>">
+				<a href="<?php echo $this->baseUrl."/ordini-collegati/";?>" title="<?php echo gtext("Ordini collegati", false);?>"><?php echo gtext("Ordini collegati");?></a>
+			</li>
 			<?php } ?>
 			<?php if (v("attiva_liste_regalo")) { ?>
 			<li class="<?php if ($attiva == "listeregalo") { ?>uk-active<?php } ?>">
