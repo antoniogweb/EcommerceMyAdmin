@@ -1,6 +1,14 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<p>Un cliente si è registrato nel vostro sito web. Ecco i suoi dati:</p>
+<p>
+<?php if ($this->registrazioneAgente) { ?>
+Un agente si è registrato nel vostro sito web.<br />
+Potete assegnare all'agente dei <b>codici coupon</b> dal pannello admin.<br />
+Ecco i suoi dati:
+<?php } else { ?>
+Un cliente si è registrato nel vostro sito web. Ecco i suoi dati:
+<?php } ?>
+</p>
 
 <?php if (v("conferma_registrazione")) { ?>
 <p><?php echo gtext("Il cliente non ha ancora confermato l'account.", false);?></p>

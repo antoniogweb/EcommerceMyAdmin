@@ -781,7 +781,7 @@ class BaseBaseController extends Controller
 							
 							$res = MailordiniModel::inviaMail(array(
 								"emails"	=>	array($emailCMS),
-								"oggetto"	=>	"invio dati nuovo utente",
+								"oggetto"	=>	$this->registrazioneAgente ? "invio dati nuovo agente" : "invio dati nuovo utente",
 								"testo"		=>	$output,
 								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
 								"id_user"	=>	(int)$lId,

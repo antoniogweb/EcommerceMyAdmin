@@ -28,6 +28,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BaseRegusersController extends BaseController
 {
 	private $permalinkPaginaRegistrazione = "crea-account";
+	private $creaAccountViewFile = "form";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
@@ -1054,7 +1055,7 @@ class BaseRegusersController extends BaseController
 		{
 			$this->formRegistrazione();
 			
-			$this->load('form');
+			$this->load($this->creaAccountViewFile);
 		}
 		
 		$data["tipoAzione"] = "insert";
@@ -1069,6 +1070,7 @@ class BaseRegusersController extends BaseController
 		
 		$this->permalinkPaginaRegistrazione = "crea-account-agente";
 		$this->registrazioneAgente = true;
+		$this->creaAccountViewFile = "form_agente";
 		
 		$this->add();
 	}

@@ -155,12 +155,6 @@ class BaseOrdiniController extends BaseController
 							
 							$this->mandaMailDopoPagamento($ordine);
 							
-// 							// Controlla e manda mail dopo pagamento
-// 							$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
-// 							
-// 							// Controlla e manda mail dopo pagamento al negozio
-// 							$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
-							
 							$mandaFattura = false;
 							
 							if (ImpostazioniModel::$valori["manda_mail_fattura_in_automatico"] == "Y")
@@ -283,12 +277,6 @@ class BaseOrdiniController extends BaseController
 					if (PagamentiModel::gateway()->success())
 					{
 						$this->mandaMailDopoPagamento($ordine);
-						
-// 						// Controlla e manda mail dopo pagamento al cliente
-// 						$this->m("OrdiniModel")->mandaMailDopoPagamento($ordine["id_o"]);
-// 						
-// 						// Controlla e manda mail dopo pagamento al negozio
-// 						$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
 						
 						$mandaFattura = false;
 						
