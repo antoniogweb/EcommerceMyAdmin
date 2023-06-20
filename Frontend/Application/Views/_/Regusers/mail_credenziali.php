@@ -12,11 +12,11 @@
 	<?php } ?>
 </p>
 
-<?php if ($variabili["agente"]) { ?>
+<?php if (isset($variabili["agente"]) && $variabili["agente"]) { ?>
 <p>
 <?php echo gtext("La sua richiesta di diventare un agente per il nostro ecommerce verrà valutata quanto prima.");?><br />
 <?php echo gtext("Le verrà data notifica via mail.");?><br />
-<?php echo gtext("Nel caso la sua richiesta venga approvata, le sarà assegnato uno o più codici coupon da usare nel nostro negozio e che potrà condividere con i suoi clienti.");?><br />
+<?php echo gtext("Nel caso la sua richiesta venga approvata, le saranno assegnati uno o più codici coupon da usare nel nostro negozio e che potrà condividere con i suoi clienti.");?><br />
 </p>
 <?php } ?>
 
