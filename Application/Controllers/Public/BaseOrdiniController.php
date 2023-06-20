@@ -85,6 +85,9 @@ class BaseOrdiniController extends BaseController
 		ElementitemaModel::$percorsi["RESOCONTO_PRODOTTI"]["nome_file"] = "default";
 		// Controlla e manda mail dopo pagamento al negozio
 		$this->m("OrdiniModel")->mandaMailDopoPagamentoNegozio($ordine["id_o"]);
+		
+		// Mail ad agente
+		$this->m("OrdiniModel")->mandaMailAdAgente($ordine["id_o"]);
 	}
 	
 	//ritorno da paypal
@@ -1342,6 +1345,15 @@ class BaseOrdiniController extends BaseController
 							}
 							else
 								$this->m('OrdiniModel')->settaMailDaInviare($clean['lastId'], "mail_da_inviare_negozio");
+							
+							// mail ad agente
+							if (v("attiva_agenti") && $ordine["id_agente"] && v("manda_mail_ordine_ad_agenti"))
+							{
+								if (!v("mail_ordine_dopo_pagamento_agente") || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
+									$this->m('OrdiniModel')->mandaMailAdAgente($clean['lastId'], true);
+								else
+									$this->m('OrdiniModel')->settaMailDaInviare($clean['lastId'], "mail_da_inviare_agente");
+							}
 							
 							// Iscrizione alla newsletter
 							if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())

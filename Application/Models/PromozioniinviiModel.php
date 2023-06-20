@@ -93,7 +93,7 @@ class PromozioniinviiModel extends GenericModel
 				"id_promozione_invio"	=>	(int)$id,
 			))->first();
 		
-		if (!empty($record) && $record["promozioni_invii"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_codice_coupon") && PromozioniModel::g()->isActiveCoupon($record["promozioni"]["codice"],0,false))
+		if (!empty($record) && $record["promozioni_invii"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_codice_coupon") && PromozioniModel::g()->isActiveCoupon($record["promozioni"]["codice"],0,false) && checkMail($record["promozioni_invii"]["email"]))
 		{
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($record["promozioni_invii"]["email"]),

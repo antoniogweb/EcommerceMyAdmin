@@ -542,4 +542,13 @@ trait CommonModel {
 		if (isset($this->values["codice_fiscale"]))
 			$this->values["codice_fiscale"] = strtoupper($this->values["codice_fiscale"]);
 	}
+	
+	public function addWhereUtenteAttivo()
+	{
+		$this->aWhere(array(
+			"regusers.".Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
+		));
+		
+		return $this;
+	}
 }

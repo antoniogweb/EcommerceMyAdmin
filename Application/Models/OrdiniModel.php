@@ -1557,6 +1557,39 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
+	public function mandaMailAdAgente($idO, $forzaInvio = false)
+	{
+		$ordine = $this->selectId($idO);
+		
+		if (v("attiva_agenti") && v("manda_mail_ordine_ad_agenti") && !empty($ordine) && $ordine["id_agente"] && ($ordine["mail_da_inviare_agente"] || $forzaInvio))
+		{
+			$ru = new RegusersModel();
+			
+			$agente = $ru->whereId((int)$ordine["id_agente"])->addWhereUtenteAttivo()->record();
+			
+			if (!empty($agente) && checkMail($agente["username"]))
+			{
+				ob_start();
+				$tipoOutput = "mail_ad agente";
+				include tpf("/Elementi/Mail/mail_ordine_ricevuto_agente.php");
+				$output = ob_get_clean();
+				
+				$oggetto = str_replace("[CODICE_COUPON]", $ordine["codice_promozione"], v("oggetto_ordine_ricevuto_agente"));
+				
+				$res = MailordiniModel::inviaMail(array(
+					"emails"	=>	array($agente["username"]),
+					"oggetto"	=>	$oggetto,
+					"testo"		=>	$output,
+					"tipologia"	=>	"ORDINE AGENTE",
+					"id_user"	=>	(int)$ordine['id_user'],
+					"tipo"		=>	"R",
+					"id_o"		=>	(int)$idO,
+					"array_variabili"	=>	$ordine,
+				));
+			}
+		}
+	}
+	
 	// Manda le mail dopo il pagamento
 	public function mandaMailDopoPagamento($idO)
 	{

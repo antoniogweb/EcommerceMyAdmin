@@ -650,7 +650,10 @@ class VariabiliModel extends GenericModel {
 		"disattiva_antispam_checkout"	=>	0, // se impostato su 1,non ci sarà l'antispam al checkout
 		## AGENTI ##
 		"attiva_agenti"	=>	0, // se impostato ad 1, attiva la gestione degli agenti
+		"manda_mail_ordine_ad_agenti"	=>	1, // se impostato su 1, manda una mail di resoconto anche all'agente
+		"mail_ordine_dopo_pagamento_agente"	=>	0, // manda la mail dell'ordine all'agente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"numero_massimo_tentativi_invio_codice_coupon"	=>	3, // numero massimo di tentativi di invio del codice coupon ad un cliente
+		"oggetto_ordine_ricevuto_agente"	=>	"Ordine N° [ID_ORDINE] tramite il tuo codice coupon [CODICE_COUPON]", // oggetto della mail di ordine ricevuto all'agente
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

@@ -742,7 +742,7 @@ class PromozioniModel extends GenericModel {
 			"regusers.".Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
 		))->first();
 		
-		if (!empty($record))
+		if (!empty($record) && checkMail($record["regusers"]["username"]))
 		{
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($record["regusers"]["username"]),
