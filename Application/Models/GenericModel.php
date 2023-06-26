@@ -1816,11 +1816,14 @@ class GenericModel extends Model_Tree
 		
 		foreach ($cercaArray as $cercaTermine)
 		{
-			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"pages.$campoCerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
-			);
-			
-			$iCerca++;
+			if (strpos(v("ricerca_termini_and_or"), "OR") === false || strlen($cercaTermine) > 1)
+			{
+				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+					"pages.$campoCerca"	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
+				);
+				
+				$iCerca++;
+			}
 		}
 		
 		return $andArray;
