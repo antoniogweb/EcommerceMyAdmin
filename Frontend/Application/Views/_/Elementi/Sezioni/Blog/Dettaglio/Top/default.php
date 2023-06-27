@@ -7,7 +7,7 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 <section class="uk-section uk-article uk-text-left uk-padding-remove-top">
 	<div class="uk-container uk-container-small">
 		<h2 class="uk-text-bold uk-h1 uk-margin-remove-adjacent uk-margin-remove-top"><?php echo field($p, "title");?></h2>
-		<p class="uk-article-meta"><?php echo gtext("Scritto in data");?> <?php echo traduci(date("d M Y", strtotime($p["pages"]["data_news"])));?>. <?php echo gtext("Categoria");?> <a href="<?php echo $this->baseUrl."/$urlAliasCategoria";?>"><?php echo cfield($p, "title");?></a></p>
+		<p class="uk-article-meta"><?php echo gtext("Scritto in data");?> <?php echo traduci(date("d M Y", strtotime($p["pages"]["data_news"])), true);?>. <?php echo gtext("Categoria");?> <a href="<?php echo $this->baseUrl."/$urlAliasCategoria";?>"><?php echo cfield($p, "title");?></a></p>
 		
 		<p class="uk-text-lead"><?php echo htmlentitydecode(field($p, "sottotitolo"));?></p>
 	</div>
