@@ -2617,7 +2617,7 @@ class PagesModel extends GenericModel {
 				if (count($res) > 0 && isset($res[0]["combinazioni_listini"]["PREZZO_MINIMO"]) && $res[0]["combinazioni_listini"]["PREZZO_MINIMO"])
 					return $res[0]["combinazioni_listini"]["PREZZO_MINIMO"];
 				else
-					return $this->prezzoMinimo($clean['id_page'], true);
+					return $this->prezzoMinimo($clean['id_page'], true, $id_c);
 			}
 			else
 			{
@@ -2637,7 +2637,7 @@ class PagesModel extends GenericModel {
 				if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
 					return $res[0]["aggregate"]["PREZZO_MINIMO"];
 				else
-					return $this->prezzoMinimo($clean['id_page'], true);
+					return $this->prezzoMinimo($clean['id_page'], true, $id_c);
 			}
 		}
 		
