@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
-if (!isset($inPromozionee))
+if (!isset($inPromozione))
 	$inPromozione = PagesModel::getProdottiInPromo();
 
 if (count($inPromozione) > 0) { ?>
