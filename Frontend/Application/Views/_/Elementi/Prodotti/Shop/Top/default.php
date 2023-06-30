@@ -62,7 +62,7 @@ if (!isset($noFiltri))
 					</div>
 					<?php } ?>
 					<?php if (count($pages) > 0) { ?>
-						<div class="uk-card-small uk-grid-column uk-child-width-1-3@s uk-text-center uk-grid" uk-grid>
+						<div class="uk-card-small uk-grid-column uk-child-width-1-2 uk-child-width-1-3@s uk-text-center uk-grid" uk-grid>
 							<?php foreach ($pages as $p) {
 								include(tpf($itemFile));
 							} ?>
