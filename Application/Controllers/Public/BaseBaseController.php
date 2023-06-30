@@ -53,6 +53,7 @@ class BaseBaseController extends Controller
 	public $prodottiInPromozione = null;
 	public $sectionsId = array();
 	
+	public $slide;
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
 	
