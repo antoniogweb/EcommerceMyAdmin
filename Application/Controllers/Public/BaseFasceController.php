@@ -155,6 +155,26 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	public function getSlideInPagina()
+	{
+		$slide = array();
+		
+		if (PagesModel::$currentIdPage)
+			$slide = $this->m("PagesModel")->clear()->addJoinTraduzionePagina()
+			->inner("pages_pages")->on("pages.id_page = pages_pages.id_corr and pages_pages.section = 'slide'")
+			->where(array(
+				"categories.section"	=>	"slide",
+				"attivo"=>"Y",
+				"pages_pages.id_page"	=>	(int)PagesModel::$currentIdPage,
+			))->orderBy(v("main_slide_order"))->send();
+		
+		ob_start();
+		include tpf("Fasce/slide_principale.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
 	public function getCaroselloCategorie()
 	{
 		if (!isset($this->elencoCategorieFull))
