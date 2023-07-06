@@ -66,6 +66,16 @@ class CorrierispeseModel extends GenericModel {
 		return self::sGetPrezzo($idCorriere, $peso, $nazione);
 	}
 	
+	public static function togliIva($prezzoIvato)
+	{
+		if (v("scorpora_iva_prezzo_estero"))
+			$prezzoIvato = number_format(($prezzoIvato / (1 + (Parametri::$iva / 100))) * (1 + (CartModel::getAliquotaIvaSpedizione() / 100)), 2, ".", "");
+		
+		$prezzo = number_format($prezzoIvato / ( 1 + (CartModel::getAliquotaIvaSpedizione() / 100)), v("cifre_decimali"), ".", "");
+		
+		return $prezzo;
+	}
+	
 	public static function sGetPrezzo($idCorriere = null, $peso = null, $nazione = null)
 	{
 		$sp = new CorrierispeseModel();
@@ -80,41 +90,43 @@ class CorrierispeseModel extends GenericModel {
 				$idCorriere = $corrieri[0]["id_corriere"];
 		}
 		
+		$campoPrezzo = "prezzo_ivato";
+		
 		// Provo la nazione
 		$res = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	sanitizeAll($nazione),
 			"gte"	=>	array("peso" => (float)$peso)
-		))->orderBy("peso")->limit(1)->toList("prezzo")->send();
+		))->orderBy("peso")->limit(1)->toList($campoPrezzo)->send();
 		
 		if (count($res))
-			return (float)$res[0];
+			return self::togliIva((float)$res[0]);
 		
 		$prezzo = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	sanitizeAll($nazione),
-		))->getMax("prezzo");
+		))->getMax($campoPrezzo);
 		
 		if ($prezzo)
-			return $prezzo;
+			return self::togliIva($prezzo);
 		
 		// Ricado su MONDO
 		$res = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	"W",
 			"gte"	=>	array("peso" => (float)$peso)
-		))->orderBy("peso")->limit(1)->toList("prezzo")->send();
+		))->orderBy("peso")->limit(1)->toList($campoPrezzo)->send();
 		
 		if (count($res))
-			return (float)$res[0];
+			return self::togliIva((float)$res[0]);
 		
 		$prezzo = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
 			"nazione"		=>	"W",
-		))->getMax("prezzo");
+		))->getMax($campoPrezzo);
 		
 		if ($prezzo)
-			return $prezzo;
+			return self::togliIva($prezzo);
 		
 		return 0;
 	}

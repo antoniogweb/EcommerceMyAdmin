@@ -249,14 +249,23 @@ class PagamentiModel extends GenericModel {
 	
 	public static function getCostoCarrello()
 	{
+		$campoPrezzo = "prezzo_ivato";
+		
 		if (isset($_POST["pagamento"]))
-			return (float)PagamentiModel::g(false)->select("pagamenti.prezzo")->where(array(
+			$prezzoIvato = (float)PagamentiModel::g(false)->select("pagamenti.prezzo")->where(array(
 				"codice"	=>	sanitizeAll($_POST["pagamento"]),
-			))->field("prezzo");
+			))->field($campoPrezzo);
 		else
-			return (float)PagamentiModel::g(false)->where(array(
+			$prezzoIvato = (float)PagamentiModel::g(false)->where(array(
 				"attivo"	=>	1,
-			))->getMin("prezzo");
+			))->getMin($campoPrezzo);
+		
+		if (v("scorpora_iva_prezzo_estero"))
+			$prezzoIvato = number_format(($prezzoIvato / (1 + (Parametri::$iva / 100))) * (1 + (CartModel::getAliquotaIvaSpedizione() / 100)), 2, ".", "");
+			
+		$prezzo = number_format($prezzoIvato / ( 1 + (CartModel::getAliquotaIvaSpedizione() / 100)), v("cifre_decimali"), ".", "");
+		
+		return $prezzo;
 	}
 	
 	public static function getMaxPagamento()

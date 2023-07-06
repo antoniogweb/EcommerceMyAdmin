@@ -56,7 +56,7 @@ class PromozioniModel extends GenericModel {
 		
 		$record = $this->selectId((int)$id);
 		
-		if ((!empty($record) && $record["id_user"]) || isset($_GET["id_user"]))
+		if ((!empty($record) && $record["id_user"]) || (isset($_GET["id_user"]) && (int)$_GET["id_user"]))
 			$opzioniTipoCredito = array('INFINITO'=>'INFINITO');
 		
 		$this->formStruct = array
