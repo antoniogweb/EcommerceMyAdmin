@@ -680,6 +680,8 @@ class CartModel extends GenericModel {
 	{
 		if (VariabiliModel::mostraAvvisiGiacenzaCarrello())
 		{
+			$this->values = array();
+			
 			if ($this->checkQta($id_c, $qtyDaAggiungere, true))
 				$this->values["disponibile"] = 1;
 			else
