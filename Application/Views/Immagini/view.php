@@ -34,6 +34,9 @@
 			<div class="col-md-9">
 				<b><?php echo gtext("Nome file");?></b>: <?php echo $records[$i]['immagini']['immagine'] ? $records[$i]['immagini']['immagine'] : "--";?><br />
 				<b><?php echo gtext("Alt tag");?></b>: <?php echo $records[$i]['immagini']['alt_tag'] ? $records[$i]['immagini']['alt_tag'] : "--";?>
+				<?php if ($records[$i]['immagini']['id_immagine_tipologia']) { ?>
+				<br /><b><?php echo gtext("Tipologia");?></b>: <?php echo ImmaginitipologieModel::sTitolo($records[$i]['immagini']['id_immagine_tipologia']);?>
+				<?php } ?>
 			</div>
 		</div>
 	</div>
