@@ -77,6 +77,7 @@ class CaratteristicheModel extends GenericModel {
 					"type"	=>	"Select",
 					"options"	=>	array(
 						""			=>	"--",
+						"COLORE"	=>	"Colore",
 						"MATERIALE"	=>	"Materiale",
 					),
 					"reverse"	=>	"yes",
@@ -204,4 +205,13 @@ class CaratteristicheModel extends GenericModel {
 			}
 		}
     }
+    
+    public static function getTipo($idCar)
+	{
+		$c = new CaratteristicheModel();
+		
+		return $c->where(array(
+			"id_car"	=>	(int)$idCar,
+		))->field("tipo");
+	}
 }

@@ -100,6 +100,11 @@ class AttributivaloriModel extends GenericModel {
 				),
 				'colore'	=>	array(
 					"className"	=>	"form-control colorpicker-element",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Inserire il codice esadecimale del colore con il cancelletto davanti. Ex: #000000 per il colore nero")."</div>",
+					),
 				),
 			),
 			
