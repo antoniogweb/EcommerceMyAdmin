@@ -26,4 +26,5 @@ class IconeModel extends BasicsectionModel {
 	
 	public $hModelName = "IconecatModel";
 	
+	public function setFilters() {}
 }

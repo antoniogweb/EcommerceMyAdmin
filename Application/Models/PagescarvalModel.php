@@ -143,7 +143,8 @@ class PagescarvalModel extends GenericModel {
 		
 		if (CategoriesModel::$currentIdCategory)
 			$pcv->inner("categories")->on("categories.id_c = pages.id_c")->aWhere(array(
-				"categories.id_c"	=>	CategoriesModel::$currentIdCategory,
+				CategoriesModel::gCatWhere(CategoriesModel::$currentIdCategory, true, "categories.id_c")
+// 				"categories.id_c"	=>	CategoriesModel::$currentIdCategory,
 			));
 		
 		if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
