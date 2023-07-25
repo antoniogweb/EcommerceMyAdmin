@@ -50,6 +50,27 @@ class ImmaginiModel extends GenericModel {
 		);
     }
     
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'id_immagine_tipologia'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipologia",
+					"options"	=>	$this->selectTipologiaImmagine(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
+	public function selectTipologiaImmagine()
+	{
+		return array(0	=>	"--") + ImmaginitipologieModel::g(false)->orderBy("id_order")->toList("id_immagine_tipologia", "titolo")->send();
+	}
+	
 	public function getIdContenuto($id_immagine)
 	{
 		$clean['id_immagine'] = (int)$id_immagine;

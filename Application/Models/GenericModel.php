@@ -690,6 +690,11 @@ class GenericModel extends Model_Tree
 		return "";
 	}
 	
+	public static function sTitolo($id)
+	{
+		return self::g(false)->titolo($id);
+	}
+	
 	public function selectRegione()
 	{
 		$r = new RegioniModel();

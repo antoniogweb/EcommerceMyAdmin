@@ -117,6 +117,14 @@ class CaratteristichevaloriModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Quando si filtra nella sezione prodotti per tale caratteristica, nell'URL della pagina verrà usato l'alias indicato. Viene creato in automatico se lasciato vuoto.")."</div>",
 					),
 				),
+				'colore'	=>	array(
+					"className"	=>	"form-control colorpicker-element",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Inserire il codice esadecimale del colore con il cancelletto davanti. Ex: #000000 per il colore nero")."</div>",
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
@@ -348,5 +356,14 @@ class CaratteristichevaloriModel extends GenericModel {
 			$p->sWhereFiltriSuccessivi($aliasCar);
 		
 		return $p->rowNumber();
+	}
+	
+	public static function getTipo($idCV)
+	{
+		$cv = new CaratteristichevaloriModel();
+		
+		return $cv->select("caratteristiche.tipo")->inner(array("caratteristica"))->where(array(
+			"id_cv"	=>	(int)$idCV,
+		))->field("caratteristiche.tipo");
 	}
 }

@@ -73,7 +73,7 @@ class OpzioniModel extends GenericModel {
 	
 	public static function getElencoCodiciLabel()
 	{
-		$elenco = explode(";", v("codici_opzioni_gestibili"));
+		$elenco = v("codici_opzioni_gestibili") ? explode(";", v("codici_opzioni_gestibili")) : array();
 		
 		$arrayFinale = array(
 			"CATEGORIE_GOOGLE"	=>	"Categorie Google",

@@ -145,6 +145,14 @@ class CaratteristichevaloriController extends BaseController {
 		if ($this->viewArgs["id_page"] != "tutti")
 			$fields = "id_car,".$fields;
 		
+		if ($this->viewArgs["id_car"] != "tutti")
+			$tipo = CaratteristicheModel::getTipo($this->viewArgs["id_car"]);
+		else
+			$tipo = CaratteristichevaloriModel::getTipo($id);
+		
+		if ($tipo == "COLORE")
+			$fields .= ",colore";
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_car"] != "tutti")

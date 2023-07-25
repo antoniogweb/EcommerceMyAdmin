@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (defined("CACHE_FOLDER") || v("attiva_cache_immagini") || v("attiva_interfaccia_opcache")) { ?>
+<?php if (defined("CACHE_FOLDER") || defined("SAVE_CACHE_HTML") || v("attiva_cache_immagini") || defined("CACHE_METHODS_TO_FILE") || v("attiva_interfaccia_opcache")) { ?>
 <li class="treeview">
 	<a href="#">
 		<i class="fa fa-bar-chart"></i>

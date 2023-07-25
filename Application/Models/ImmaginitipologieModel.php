@@ -22,9 +22,21 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class IconeModel extends BasicsectionModel {
+class ImmaginitipologieModel extends GenericModel
+{
+	public function __construct() {
+		$this->_tables = 'immagini_tipologie';
+		$this->_idFields = 'id_immagine_tipologia';
+		
+		$this->_idOrder = 'id_order';
+		
+		$this->traduzione = true;
+		
+		parent::__construct();
+	}
 	
-	public $hModelName = "IconecatModel";
-	
-	public function setFilters() {}
+	public static function numero()
+	{
+		return self::g(false)->rowNumber();
+	}
 }

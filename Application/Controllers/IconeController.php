@@ -40,6 +40,7 @@ class IconeController extends GenericsectionController {
 		$this->orderBy = "pages.id_order";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
+		$this->filters = array(null,null,'title',array("attivo",null,SlideModel::$YN));
 		
 		$this->queryFields = "title,attivo,immagine";
 	}

@@ -4084,6 +4084,7 @@ class PagesModel extends GenericModel {
 			$this->values = $res[0]["pages"];
 			
 			$this->values["title"] = "(Copia di) " . $this->values["title"];
+			$this->values["numero_acquisti_pagina"] = 0;
 			
 			$this->checkDates();
 			
