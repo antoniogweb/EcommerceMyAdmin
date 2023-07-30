@@ -66,8 +66,10 @@ class CorrierispeseModel extends GenericModel {
 		return self::sGetPrezzo($idCorriere, $peso, $nazione);
 	}
 	
-	public static function togliIva($prezzoIvato)
+	public static function sistemaIva($prezzo)
 	{
+		$prezzoIvato = number_format($prezzo * (1 + (Parametri::$iva / 100)), v("cifre_decimali"), ".", "");
+		
 		if (v("scorpora_iva_prezzo_estero"))
 			$prezzoIvato = number_format(($prezzoIvato / (1 + (Parametri::$iva / 100))) * (1 + (CartModel::getAliquotaIvaSpedizione() / 100)), 2, ".", "");
 		
@@ -90,7 +92,7 @@ class CorrierispeseModel extends GenericModel {
 				$idCorriere = $corrieri[0]["id_corriere"];
 		}
 		
-		$campoPrezzo = "prezzo_ivato";
+		$campoPrezzo = "prezzo";
 		
 		// Provo la nazione
 		$res = $sp->clear()->where(array(
@@ -100,7 +102,7 @@ class CorrierispeseModel extends GenericModel {
 		))->orderBy("peso")->limit(1)->toList($campoPrezzo)->send();
 		
 		if (count($res))
-			return self::togliIva((float)$res[0]);
+			return self::sistemaIva((float)$res[0]);
 		
 		$prezzo = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
@@ -108,7 +110,7 @@ class CorrierispeseModel extends GenericModel {
 		))->getMax($campoPrezzo);
 		
 		if ($prezzo)
-			return self::togliIva($prezzo);
+			return self::sistemaIva($prezzo);
 		
 		// Ricado su MONDO
 		$res = $sp->clear()->where(array(
@@ -118,7 +120,7 @@ class CorrierispeseModel extends GenericModel {
 		))->orderBy("peso")->limit(1)->toList($campoPrezzo)->send();
 		
 		if (count($res))
-			return self::togliIva((float)$res[0]);
+			return self::sistemaIva((float)$res[0]);
 		
 		$prezzo = $sp->clear()->where(array(
 			"id_corriere"	=>	(int)$idCorriere,
@@ -126,7 +128,7 @@ class CorrierispeseModel extends GenericModel {
 		))->getMax($campoPrezzo);
 		
 		if ($prezzo)
-			return self::togliIva($prezzo);
+			return self::sistemaIva($prezzo);
 		
 		return 0;
 	}

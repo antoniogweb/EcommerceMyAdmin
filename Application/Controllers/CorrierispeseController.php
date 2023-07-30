@@ -48,18 +48,18 @@ class CorrierispeseController extends BaseController {
 		{
 			$fields = "peso";
 			
-// 			if (v("prezzi_ivati_in_prodotti") && ($this->viewArgs["nazione"] == "IT" || !v("scorpora_iva_prezzo_estero")))
-// 			{
+			if (v("prezzi_ivati_in_prodotti") && ($this->viewArgs["nazione"] == "IT" || !v("scorpora_iva_prezzo_estero")))
+			{
 				$fields .= ",prezzo_ivato";
 				
 				$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo_ivato");
-// 			}
-// 			else
-// 			{
-// 				$fields .= ",prezzo";
-// 				
-// 				$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo");
-// 			}
+			}
+			else
+			{
+				$fields .= ",prezzo";
+				
+				$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"prezzo");
+			}
 		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
