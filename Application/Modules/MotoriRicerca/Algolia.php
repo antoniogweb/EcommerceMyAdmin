@@ -85,7 +85,7 @@ class Algolia extends MotoreRicerca
 		return "";
 	}
 	
-	public function cerca($indice, $search)
+	public function cerca($indice, $search, $lingua = "it")
 	{
 		$signature = "";
 		

@@ -1834,9 +1834,9 @@ class GenericModel extends Model_Tree
 		return $andArray;
 	}
 	
-	public function addWhereSearch($cerca)
+	public function addWhereSearch($cerca, $maxNumber = 50, $campoCerca = "campo_cerca", $tabellaCerca = "pages")
 	{
-		$andArray = $this->getWhereSearch($cerca);
+		$andArray = $this->getWhereSearch($cerca, $maxNumber, $campoCerca, $tabellaCerca);
 		
 		if (count($andArray) > 0)
 			$this->aWhere($andArray);

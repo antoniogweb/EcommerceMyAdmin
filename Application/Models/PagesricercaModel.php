@@ -85,12 +85,13 @@ class PagesricercaModel extends GenericModel {
 			$pRicercaModel->db->commit();
     }
     
-    public function getStructFromIdsOfPages($ids)
+    public function getStructFromIdsOfPages($ids, $lingua = "it")
     {
 		$res = $this->clear()->where(array(
 			"in"	=>	array(
 				"id_page"	=>	forceIntDeep($ids),
 			),
+			"lingua"	=>	sanitizeAll($lingua),
 		))->orderBy("id_page,id_order")->send(false);
 		
 		$struttura = array();

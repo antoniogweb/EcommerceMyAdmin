@@ -48,7 +48,7 @@ class BaseMotoriricercaController extends BaseController
 			{
 				User::setPostCountryFromUrl();
 				
-				$jsonArray = MotoriricercaModel::getModulo($modulo)->cerca("prodotti_".Params::$lang, $search);
+				$jsonArray = MotoriricercaModel::getModulo($modulo)->cerca("prodotti_".Params::$lang, $search, Params::$lang);
 				
 				// Salva la ricerca
 				if (v("salva_ricerche"))

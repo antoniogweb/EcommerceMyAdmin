@@ -983,8 +983,6 @@ class BaseContenutiController extends BaseController
 // 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
 		}
 		
-// 		print_r($orWhere);die();
-		
 		return array(
 			" OR"	=>	$orWhere,
 		);
