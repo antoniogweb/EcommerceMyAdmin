@@ -51,7 +51,7 @@ if (MotoriricercaModel::getModulo()->isAttivo())
 	
 // 	print_r($params);
 	if ($params["operazione"] == "invia_oggetti")
-		$res = MotoriricercaModel::getModulo()->inviaProdotti(0, "prodotti_".$params["lingua"]);
+		$res = MotoriricercaModel::getModulo()->inviaProdotti(0, "prodotti_".$params["lingua"], $params["lingua"]);
 	else if ($params["operazione"] == "svuota_oggetti")
 		$res = MotoriricercaModel::getModulo()->svuotaProdotti("prodotti_".$params["lingua"]);
 		

@@ -44,7 +44,7 @@ class MotoreRicerca
 	
 	protected function getLogPath()
 	{
-		return $this->cacheAbsolutePath."/".trim($this->params["codice"])."/motori_ricerca_".trim($this->params["codice"])."_last_sent.log";
+		return $this->cacheAbsolutePath."/".trim($this->params["codice"])."/motori_ricerca_".trim($this->params["codice"])."_last_sent_".Params::$lang.".log";
 	}
 	
 	protected function leggiDatiInviati()

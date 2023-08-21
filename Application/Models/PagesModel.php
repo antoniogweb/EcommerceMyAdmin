@@ -967,7 +967,7 @@ class PagesModel extends GenericModel {
 		$this->checkAliasAll($id);
 	}
 	
-	public function setCampoCerca($id, $idC = 0, $forza = false)
+	public function setCampoCerca($id, $idC = 0, $forza = false, $lingua = null)
 	{
 		if (!self::$estraiCampoCercaQuandoSalvi && !$forza)
 			return;
@@ -991,6 +991,10 @@ class PagesModel extends GenericModel {
 			
 			foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 			{
+				// Se è impostata la lingua e non è la lingua corrente, continua
+				if ($lingua && $lingua != $codice)
+					continue;
+				
 				$codice = strtolower($codice);
 				Params::sLang($codice);
 				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC);

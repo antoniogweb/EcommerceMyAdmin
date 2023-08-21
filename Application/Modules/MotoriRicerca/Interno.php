@@ -42,7 +42,7 @@ class Interno extends MotoreRicerca
 		return "";
 	}
 	
-	public function inviaProdotti($idPage = 0, $indice = "prodotti_it")
+	public function inviaProdotti($idPage = 0, $indice = "prodotti_it", $lingua = "it")
 	{
 		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "none");
 		
@@ -60,7 +60,7 @@ class Interno extends MotoreRicerca
 				if (isset($s[$nomeCampoId]))
 				{
 					echo $s[$nomeCampoId]."\n";
-					$p->setCampoCerca((int)$s[$nomeCampoId]);
+					$p->setCampoCerca((int)$s[$nomeCampoId], 0, true, $lingua);
 				}
 			}
 			

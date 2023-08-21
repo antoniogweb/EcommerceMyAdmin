@@ -55,7 +55,7 @@ class Algolia extends MotoreRicerca
 		return $client;
 	}
 	
-	public function inviaProdotti($idPage = 0, $indice = "prodotti_it")
+	public function inviaProdotti($idPage = 0, $indice = "prodotti_it", $lingua = "it")
 	{
 		$client = $this->getClient("scrivi");
 		
