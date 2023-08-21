@@ -981,36 +981,69 @@ class PagesModel extends GenericModel {
 		
 		if (!empty($record))
 		{
-			Params::sLang("it");
-			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC);
-// 			$strutturaProdotti = MotoriricercaModel::getModuloPadre()->ottieniOggetti((int)$id);
-			Params::rLang();
+			// Estraggo le lingue attive
+			LingueModel::getValoriAttivi();
 			
-			if (count($strutturaProdotti) > 0)
+			// Estraggo la lingua pricipale del frontend
+			$codiceLinguaPrincipale = LingueModel::getPrincipaleFrontend();
+			
+			$ctModel = new ContenutitradottiModel();
+			
+			foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 			{
-				$o = $strutturaProdotti[0];
+				$codice = strtolower($codice);
+				Params::sLang($codice);
+				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC);
+				Params::rLang();
 				
-				$categorie = count($o["categorie"]) > 0 ? htmlentitydecode(implode(" ",$o["categorie"][0])) : "";
-				$marchio = htmlentitydecode($o["marchio"]);
-				$titolo = htmlentitydecode($o["titolo"]);
-				
-				$stringSearchArray = array(
-					$titolo,
-					$categorie,
-					$marchio
-				);
-				
-				$this->sValues(array(
-					"campo_cerca"	=>	implode(" ", $stringSearchArray),
-				));
-				
-				if ($this->pUpdate((int)$id) && $codiceMotoreRicerca == "INTERNO")
+				if (count($strutturaProdotti) > 0)
 				{
-					// genero l'oggetto di ricerca per la tabella pages_ricerca
-					$oggettoRicerca = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $categorie, $titolo);
+					$o = $strutturaProdotti[0];
 					
-					// riempio la tabella pages_ricerca
-					PagesricercaModel::inserisci($id, $oggettoRicerca);
+					$categorie = count($o["categorie"]) > 0 ? htmlentitydecode(implode(" ",$o["categorie"][0])) : "";
+					$marchio = htmlentitydecode($o["marchio"]);
+					$titolo = htmlentitydecode($o["titolo"]);
+					
+					$stringSearchArray = array(
+						$titolo,
+						$categorie,
+						$marchio
+					);
+					
+					if ($codice != $codiceLinguaPrincipale)
+					{
+						// Cerco l'ID della traduzione
+						$idCt = $ctModel->clear()->where(array(
+							"id_page"	=>	(int)$id,
+							"lingua"	=>	sanitizeAll($codice),
+						))->field("id_ct");
+						
+						if (!$idCt)
+							return;
+						
+						$ctModel->sValues(array(
+							"campo_cerca"	=>	implode(" ", $stringSearchArray),
+						));
+						
+						$res = $ctModel->pUpdate((int)$idCt);
+					}
+					else
+					{
+						$this->sValues(array(
+							"campo_cerca"	=>	implode(" ", $stringSearchArray),
+						));
+						
+						$res = $this->pUpdate((int)$id);
+					}
+					
+					if ($res && $codiceMotoreRicerca == "INTERNO")
+					{
+						// genero l'oggetto di ricerca per la tabella pages_ricerca
+						$oggettoRicerca = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $categorie, $titolo);
+						
+						// riempio la tabella pages_ricerca
+						PagesricercaModel::inserisci($id, $oggettoRicerca, $codice);
+					}
 				}
 			}
 		}

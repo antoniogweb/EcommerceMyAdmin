@@ -975,7 +975,13 @@ class BaseContenutiController extends BaseController
 // 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
 		else
-			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
+		{
+			$campoCerca = v("mostra_filtro_ricerca_libera_in_magazzino") ? "campo_cerca" : "title";
+			
+			$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName], 50, $campoCerca, "contenuti_tradotti");
+			
+// 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
+		}
 		
 // 		print_r($orWhere);die();
 		
@@ -1928,9 +1934,10 @@ class BaseContenutiController extends BaseController
 			
 			$data["pages"] = $this->m('PagesModel')->send();
 			
+// 			echo $this->m('PagesModel')->getQuery();die();
+			
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
-// 			echo $this->m('PagesModel')->getQuery();die();
 		}
 		
 		$this->append($data);

@@ -63,6 +63,7 @@ class PagesricercaModel extends GenericModel {
 		
 		$pRicercaModel->del(null, array(
 			"id_page"	=>	(int)$idPage,
+			"lingua"	=>	sanitizeAll($lingua),
 		));
 		
 		if (v("usa_transactions"))
