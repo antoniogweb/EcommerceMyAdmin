@@ -2,8 +2,8 @@
 <?php if (v("ecommerce_attivo") && v("attiva_spedizione")) { ?>
 <li class="<?php echo tm($tm, array("corrieri"));?> treeview">
 	<a href="#">
-		<i class="fa fa-truck"></i>
-		<span>Corrieri</span>
+		<i class="fa fa-calculator"></i>
+		<span><?php echo gtext("Corrieri");?></span>
 	</a>
 	<ul class="treeview-menu">
 		<li><a href="<?php echo $this->baseUrl."/corrieri/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>

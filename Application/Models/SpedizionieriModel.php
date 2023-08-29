@@ -72,7 +72,8 @@ class SpedizionieriModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_page', null, "RESTRICT", "L'elemento è collegato ad alcuni ordini e non può essere eliminato."),
+			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_spedizioniere', null, "RESTRICT", "L'elemento è collegato ad alcuni ordini e non può essere eliminato."),
+			'spedizioni' => array("HAS_MANY", 'SpedizioninegozioModel', 'id_spedizioniere', null, "RESTRICT", "L'elemento è collegato ad alcune spedizioni e non può essere eliminato."),
         );
     }
     

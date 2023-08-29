@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Spedizioni negozio', 'spedizioninegozio', '', '1', 'attiva_menu_ecommerce=1&ecommerce_attivo=1&attiva_gestione_spedizioni=1', '90', '1', 'ecommerce', 'main')

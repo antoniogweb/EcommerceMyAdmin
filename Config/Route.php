@@ -798,6 +798,9 @@ class Route
 		
 		'pixel,main',
 		'pixel,form',
+		
+		'spedizioninegozio,main',
+		'spedizioninegozio,form',
 	);
 	
 	//it can be 'yes' or 'no'
