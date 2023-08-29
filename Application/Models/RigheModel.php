@@ -240,4 +240,21 @@ class RigheModel extends GenericModel {
 // 		
 // 		return $records["orders"]["stato"];
 	}
+	
+	// Restituisce la quantità da spedire
+	public static function qtaDaSpedire($idR)
+	{
+		$rModel = new RigheModel();
+		$snrModel = new SpedizioninegoziorigheModel();
+		
+		$qtaOrdine = $rModel->clear()->whereId((int)$idR)->field("quantity");
+		$qtaSpedita = $snrModel->clear()->where(array(
+			"id_r"	=>	(int)$idR
+		))->getSum("quantity");
+		
+		if ($qtaOrdine > $qtaSpedita)
+			return ($qtaOrdine - $qtaSpedita);
+		
+		return 0;
+	}
 }

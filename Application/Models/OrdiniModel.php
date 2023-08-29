@@ -86,6 +86,18 @@ class OrdiniModel extends FormModel {
 		return false;
 	}
 	
+// 	public static function daSpedire($idO)
+// 	{
+// 		$o = new OrdiniModel();
+// 		
+// 		$record = $o->selectId((int)$idO);
+// 		
+// 		if (!$record["da_spedire"])
+// 			return false;
+// 		
+// 		return false;
+// 	}
+	
 	public static function setStatiOrdine()
 	{
 		if (self::$statiOrdineSettati)

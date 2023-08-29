@@ -58,7 +58,7 @@ class SpedizioninegozioController extends BaseController {
 				->where(array(
 					
 				))
-				->orderBy("data_spedizione desc")->convert()->save();
+				->orderBy("data_spedizione desc,id_spedizione_negozio desc")->convert()->save();
 		
 		parent::main();
 	}

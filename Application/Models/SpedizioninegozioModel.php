@@ -37,6 +37,7 @@ class SpedizioninegozioModel extends GenericModel {
 	
 	public function relations() {
 		return array(
+			'contenuti' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 		);
     }
@@ -114,6 +115,31 @@ class SpedizioninegozioModel extends GenericModel {
 		$this->setProvinciaFatturazione();
 		
 		$res = parent::insert();
+		
+		if ($res && isset($ordine))
+		{
+			$rModel = new RigheModel();
+			$snr = new SpedizioninegoziorigheModel();
+			
+			$righeOrdine = $rModel->clear()->where(array("id_o"=>(int)$ordine["id_o"]))->send(false);
+			
+			foreach ($righeOrdine as $r)
+			{
+				$qtaDaSpedire = RigheModel::qtaDaSpedire($r["id_r"]);
+				
+				if ($qtaDaSpedire > 0)
+				{
+					$snr->sValues(array(
+						"quantity"	=>	$qtaDaSpedire,
+						"peso"		=>	$r["peso"],
+						"id_r"		=>	(int)$r["id_r"],
+						"id_spedizione_negozio"	=>	$this->lId,
+					));
+					
+					$snr->insert();
+				}
+			}
+		}
 		
 		return $res;
 	}

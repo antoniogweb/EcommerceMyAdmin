@@ -143,6 +143,14 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									</tr>
 									<?php } ?>
 								<?php } ?>
+								<?php if (false && $ordine["da_spedire"] && v("attiva_gestione_spedizioni") && ControllersModel::checkAccessoAlController(array("spedizioninegozio"))) { ?>
+								<tr>
+									<td><?php echo gtext("Spedizione");?>:</td>
+									<td>
+										<a class="iframe" href="<?php echo $this->baseUrl."/spedizioninegozio/form/insert/0?id_o=".$ordine["id_o"];?>&partial=Y&nobuttons=Y"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Crea spedizione");?></a>
+									</td>
+								</tr>
+								<?php } ?>
 							</table>
 						</div>
 						<div class="col-lg-6">
