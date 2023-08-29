@@ -22,8 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class SpedizionieriModel extends GenericModel {
-
+class SpedizionieriModel extends GenericModel
+{
+	use DIModel;
+	
+	public static $modulo = null;
+	
+	public $cartellaModulo = "Spedizionieri";
+	public $classeModuloPadre = "Spedizioniere";
+	
 	public function __construct() {
 		$this->_tables='spedizionieri';
 		$this->_idFields='id_spedizioniere';
@@ -45,6 +52,15 @@ class SpedizionieriModel extends GenericModel {
 					'options'	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 				),
+				'modulo'	=>	array(
+					'type'		=>	'Select',
+					'labelString'	=>	'Tipologia',
+					'options'	=>	array(
+						"Gls"	=>	"GLS",
+						"Brt"	=>	"BRT",
+					),
+					"reverse"	=>	"yes",
+				),
 			),
 		);
 	}
@@ -63,5 +79,25 @@ class SpedizionieriModel extends GenericModel {
     public function selectTendina()
 	{
 		return array(0=>"Seleziona") + $this->orderBy("id_order")->toList("id_spedizioniere","titolo")->send();
+	}
+	
+	public function sistemaCodice()
+	{
+		if (isset($this->values["modulo"]) && $this->values["modulo"])
+			$this->values["codice"] = strtoupper(sanitizeAll($this->values["modulo"]));
+	}
+	
+	public function insert()
+	{
+		$this->sistemaCodice();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->sistemaCodice();
+		
+		return parent::update($id, $where);
 	}
 }

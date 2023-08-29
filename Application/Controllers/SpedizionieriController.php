@@ -36,7 +36,7 @@ class SpedizionieriController extends BaseController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if (!v("attiva_gestione_spedizionieri"))
+		if (!v("attiva_gestione_spedizionieri") && !v("attiva_gestione_spedizioni"))
 			$this->responseCode(403);
 	}
 	
@@ -44,8 +44,8 @@ class SpedizionieriController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];spedizionieri.titolo;","attivoCrud");
-		$this->mainHead = "Titolo,Attivo";
+		$this->mainFields = array("[[ledit]];spedizionieri.titolo;", ";spedizionieri.codice;", "attivoCrud");
+		$this->mainHead = "Titolo,Tipologia,Attivo";
 		
 		$this->m[$this->modelName]->orderBy($this->orderBy)->convert()->save();
 		
@@ -54,7 +54,10 @@ class SpedizionieriController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,attivo';
+		$fields = SpedizionieriModel::getModulo((int)$id)->gCampiForm();
+		
+		if (!$fields)
+			$fields = 'titolo,modulo,attivo';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

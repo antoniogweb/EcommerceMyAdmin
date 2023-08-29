@@ -109,9 +109,16 @@ trait DIModel
 			$nomeCampoClasse = $c->getNomeCampoClasse();
 			
 			if (isset($codice))
-				$attivo = $c->clear()->where(array(
-					"codice"	=>	sanitizeDb($codice),
-				))->record();
+			{
+				if (is_int($codice)) // Prendo la riga specifica se posso avere più righe con lo stesso codice (ex negli spedizionieri)
+					$attivo = $c->clear()->where(array(
+						$c->getPrimaryKey()	=>	(int)$codice,
+					))->record();
+				else // Prendo la riga avente quel codice
+					$attivo = $c->clear()->where(array(
+						"codice"	=>	sanitizeDb($codice),
+					))->record();
+			}
 			else
 				$attivo = $c->clear()->where(array(
 					"attivo"	=>	1,

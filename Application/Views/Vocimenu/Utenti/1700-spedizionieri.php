@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (v("attiva_gestione_spedizionieri")) { ?>
+<?php if (v("attiva_gestione_spedizionieri") || v("attiva_gestione_spedizioni")) { ?>
 <li class="<?php echo tm($tm, "spedizionieri");?> treeview">
 	<a href="#">
 		<i class="fa fa-truck"></i>
