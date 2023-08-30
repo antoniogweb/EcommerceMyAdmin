@@ -801,6 +801,7 @@ class Route
 		
 		'spedizioninegozio,main',
 		'spedizioninegozio,form',
+		'spedizioninegozio,righe',
 	);
 	
 	//it can be 'yes' or 'no'

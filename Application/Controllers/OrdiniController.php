@@ -160,6 +160,12 @@ class OrdiniController extends BaseController {
 			$this->mainHead .= ',Lista regalo';
 		}
 		
+		if (v("attiva_gestione_spedizioni"))
+		{
+			$this->mainFields[] = 'spedizioneCrud';
+			$this->mainHead .= ',Spedizione';
+		}
+		
 		if (v("permetti_ordini_offline"))
 		{
 			$this->mainFields[] = 'tipoOrdineCrud';

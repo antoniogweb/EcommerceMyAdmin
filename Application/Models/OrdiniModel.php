@@ -99,6 +99,14 @@ class OrdiniModel extends FormModel {
 		return true;
 	}
 	
+	// Mostra info della spedizione nell'elenco ordini
+	public function spedizioneCrud($record)
+	{
+		$sp = new SpedizioninegozioModel();
+		
+		return $sp->badgeSpedizione($record["orders"]["id_o"], 0, false);
+	}
+	
 	// Restituisce le righe ancora da spedire
 	public static function righeDaSpedire($idO)
 	{

@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class SpedizioninegozioModel extends GenericModel {
+class SpedizioninegozioModel extends FormModel {
 	
 	const TIPOLOGIA_PORTO_FRANCO = 'PORTO_FRANCO';
 	const TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO = 'PORTO_FRANCO_CONTRASSEGNO';
@@ -42,37 +42,37 @@ class SpedizioninegozioModel extends GenericModel {
 		);
     }
 	
-	public function setFormStruct($id = 0)
-	{
-		$this->formStruct = array
-		(
-			'entries' 	=> 	array(
-				'nazione_spedizione'	=>	array(
-					"type"	=>	"Select",
-					"options"	=>	$this->selectNazione(),
-					"reverse"	=>	"yes",
-					"className"	=>	"form-control",
-				),
-				'provincia_spedizione'	=>	array(
-					"type"	=>	"Select",
-					"options"	=>	$this->selectProvince(),
-					"reverse"	=>	"yes",
-					"className"	=>	"form-control",
-					'entryClass'	=>	'provincia_spedizione form_input_text',
-				),
-				'dprovincia_spedizione'	=>	array(
-					"labelString"	=>	"Provincia spedizione",
-					'entryClass'	=>	'dprovincia_spedizione form_input_text',
-				),
-				'id_spedizioniere'		=>	array(
-					'type'		=>	'Select',
-					'labelString'=>	'Spedizioniere (GLS / BRT / ...)',
-					'options'	=>	SpedizionieriModel::g(false)->selectTendina(),
-					'reverse' => 'yes',
-				),
-			),
-		);
-	}
+// 	public function setFormStruct($id = 0)
+// 	{
+// 		$this->formStruct = array
+// 		(
+// 			'entries' 	=> 	array(
+// 				'nazione_spedizione'	=>	array(
+// 					"type"	=>	"Select",
+// 					"options"	=>	$this->selectNazione(),
+// 					"reverse"	=>	"yes",
+// 					"className"	=>	"form-control",
+// 				),
+// 				'provincia_spedizione'	=>	array(
+// 					"type"	=>	"Select",
+// 					"options"	=>	$this->selectProvince(),
+// 					"reverse"	=>	"yes",
+// 					"className"	=>	"form-control",
+// 					'entryClass'	=>	'provincia_spedizione form_input_text',
+// 				),
+// 				'dprovincia_spedizione'	=>	array(
+// 					"labelString"	=>	"Provincia spedizione",
+// 					'entryClass'	=>	'dprovincia_spedizione form_input_text',
+// 				),
+// 				'id_spedizioniere'		=>	array(
+// 					'type'		=>	'Select',
+// 					'labelString'=>	'Spedizioniere (GLS / BRT / ...)',
+// 					'options'	=>	SpedizionieriModel::g(false)->selectTendina(),
+// 					'reverse' => 'yes',
+// 				),
+// 			),
+// 		);
+// 	}
 	
 	public function update($id = null, $where = null)
 	{
@@ -168,6 +168,42 @@ class SpedizioninegozioModel extends GenericModel {
 		return ($record["spedizioni"]["nazione_spedizione"] == "IT") ? $record["spedizioni"]["provincia_spedizione"] : $record["spedizioni"]["dprovincia_spedizione"];
 	}
 	
+	public function indirizzoCrud($record)
+	{
+		$record = $record["spedizioni_negozio"];
+		
+		return $record["indirizzo"]."<br />".$record["cap"]." ".$record["citta"]." (".$record["provincia"].") - ".nomeNazione($record["nazione"]);
+	}
+	
+	public function nazioneCrud($record)
+	{
+		$record = $record["spedizioni_negozio"];
+		
+		return nomeNazione($record["nazione"]);
+	}
+	
+	public function ordiniCrud($record)
+	{
+		$idsO = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"]);
+		
+		return implode("<br />", $idsO);
+	}
+	
+	// Restituisce gli ordini legati ad una spedizione
+	public function getOrdini($idS)
+	{
+		return $this->clear()
+			->select("righe.id_o")
+			->left(array("righe"))
+			->left("righe")->on("righe.id_r = spedizioni_negozio_righe.id_r")
+			->where(array(
+				"id_spedizione_negozio"	=>	(int)$idS,
+			))
+			->groupBy("righe.id_o")
+			->toList("righe.id_o")
+			->send();
+	}
+	
 	// Restituisci tutte le spedizioni dell'ordine
 	public function getSpedizioniOrdine($idO, $idR = 0)
 	{
@@ -210,5 +246,10 @@ class SpedizioninegozioModel extends GenericModel {
 		}
 		
 		return implode($divisorio, $arrayBadge);
+	}
+	
+	public function deletable($id)
+	{
+		return true;
 	}
 }

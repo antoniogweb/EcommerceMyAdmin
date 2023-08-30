@@ -38,6 +38,8 @@ class SpedizioninegozioController extends BaseController {
 			$this->responseCode(403);
 		
 		$this->tabella = gtext("spedizioni negozio",true);
+		
+		$this->model("SpedizioninegoziorigheModel");
 	}
 	
 	public function main()
@@ -49,8 +51,8 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"");
 		
-		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "cleanDateTime", "spedizionieri.titolo");
-		$this->mainHead = "ID,Data spedizione,Spedizioniere";
+		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "cleanDateTime", "spedizionieri.titolo", "indirizzoCrud", "nazioneCrud");
+		$this->mainHead = "ID,Ordine,Data spedizione,Spedizioniere,Indirizzo,Nazione";
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
@@ -67,7 +69,7 @@ class SpedizioninegozioController extends BaseController {
 	{
 		$this->shift(2);
 		
-// 		$this->m[$this->modelName]->addStrongCondition("both",'checkIsNotStrings|0',"id_spedizioniere|".gtext("Si prega di selezionare lo spedizioniere"));
+		$this->_posizioni['main'] = 'class="active"';
 		
 		if ($queryType == "insert")
 		{
@@ -77,10 +79,46 @@ class SpedizioninegozioController extends BaseController {
 			$fields = "data_spedizione,id_spedizioniere";
 		}
 		else
-			$fields = "data_spedizione,id_spedizioniere";
+			$fields = "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,note,note_interne,ragione_sociale,ragione_sociale_2";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function righe($id = 0)
+	{
+		$this->_posizioni['righe'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_spedizione_negozio";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "SpedizioninegoziorigheModel";
+		
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+// 		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud", ";righe.iva;%");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Quantità,Aliquota";
+		
+		$pulsantiMenu = "back";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->inner(array("riga"))->orderBy("id_spedizione_negozio_riga")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }
