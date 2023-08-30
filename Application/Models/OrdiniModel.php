@@ -86,17 +86,36 @@ class OrdiniModel extends FormModel {
 		return false;
 	}
 	
-// 	public static function daSpedire($idO)
-// 	{
-// 		$o = new OrdiniModel();
-// 		
-// 		$record = $o->selectId((int)$idO);
-// 		
-// 		if (!$record["da_spedire"])
-// 			return false;
-// 		
-// 		return false;
-// 	}
+	// Se l'ordine è da spedire. Controlla da_spedire e lo stato (da fare)
+	public static function daSpedire($idO)
+	{
+		$o = new OrdiniModel();
+		
+		$record = $o->selectId((int)$idO);
+		
+		if (!$record["da_spedire"])
+			return false;
+		
+		return true;
+	}
+	
+	// Restituisce le righe ancora da spedire
+	public static function righeDaSpedire($idO)
+	{
+		if (!self::daSpedire($idO))
+			return array();
+		
+		$rModel = new RigheModel();
+		
+		$res = $rModel->clear()->select("righe.*,sum(spedizioni_negozio_righe.quantity) as QTA_ORDINATA,spedizioni_negozio_righe.id_spedizione_negozio_riga")->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")->sWhere(array(
+			"righe.gift_card = 0 and righe.id_o = ?",
+			array((int)$idO)
+		))->groupBy("spedizioni_negozio_righe.id_r HAVING (righe.quantity > QTA_ORDINATA or spedizioni_negozio_righe.id_spedizione_negozio_riga IS NULL)")->send(false);
+		
+// 		echo $rModel->getQuery();
+		
+		return $res;
+	}
 	
 	public static function setStatiOrdine()
 	{

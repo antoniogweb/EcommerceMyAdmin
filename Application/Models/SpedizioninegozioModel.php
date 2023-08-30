@@ -37,7 +37,7 @@ class SpedizioninegozioModel extends GenericModel {
 	
 	public function relations() {
 		return array(
-			'contenuti' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'righe' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 		);
     }
@@ -166,5 +166,49 @@ class SpedizioninegozioModel extends GenericModel {
 	public function provincia($record)
 	{
 		return ($record["spedizioni"]["nazione_spedizione"] == "IT") ? $record["spedizioni"]["provincia_spedizione"] : $record["spedizioni"]["dprovincia_spedizione"];
+	}
+	
+	// Restituisci tutte le spedizioni dell'ordine
+	public function getSpedizioniOrdine($idO, $idR = 0)
+	{
+		$sWhereIdR = "";
+		$sWhereArray = array((int)$idO);
+		
+		if ($idR)
+		{
+			$sWhereIdR .= " and righe.id_r = ?";
+			$sWhereArray[] = (int)$idR;
+		}
+		
+		return $this->clear()->select("*")->inner(array("spedizioniere"))->sWhere(array("id_spedizione_negozio in (select id_spedizione_negozio from spedizioni_negozio_righe inner join righe on righe.id_r = spedizioni_negozio_righe.id_r where righe.id_o = ? $sWhereIdR)",$sWhereArray))->send();
+	}
+	
+	// Restituisce la label della spedizione con il link
+	public function badgeSpedizione($idO = 0, $idR = 0, $full = true, $divisorio = '<hr style="margin-bottom:10px !important; margin-top:10px !important; "/>')
+	{
+		$spedizioni = $this->getSpedizioniOrdine($idO, $idR);
+		
+		$arrayBadge = [];
+		
+		$checkAccesso = ControllersModel::checkAccessoAlController(array("spedizioninegozio"));
+		
+		foreach ($spedizioni as $sp)
+		{
+			$html = "<p>";
+			
+			if ($checkAccesso && $full)
+				$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank" class="pull-right label label-primary text-bold">'.gtext("dettagli").' <i class="fa fa-arrow-right"></i></a>';
+			
+			$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank"><b class="label label-default"><i class="fa fa-truck"></i> '.$sp["spedizioni_negozio"]["id_spedizione_negozio"].'</b></a> del <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
+			
+			if ($full)
+				$html .= '<br />'.gtext("Spedizioniere").': <b>'.$sp["spedizionieri"]["titolo"].'</b>';
+			
+			$html .= "</p>";
+			
+			$arrayBadge[] = $html;
+		}
+		
+		return implode($divisorio, $arrayBadge);
 	}
 }

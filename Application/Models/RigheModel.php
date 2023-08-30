@@ -39,6 +39,7 @@ class RigheModel extends GenericModel {
 	public function relations() {
         return array(
 			'elementi' => array("HAS_MANY", 'RigheelementiModel', 'id_r', null, "CASCADE"),
+// 			'spedizioni' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_r', null, "CASCADE"),
         );
     }
     
@@ -247,9 +248,15 @@ class RigheModel extends GenericModel {
 		$rModel = new RigheModel();
 		$snrModel = new SpedizioninegoziorigheModel();
 		
-		$qtaOrdine = $rModel->clear()->whereId((int)$idR)->field("quantity");
+		// Quantità nella riga
+		$qtaOrdine = $rModel->clear()->where(array(
+			"id_r"		=>	(int)$idR,
+			"gift_card"	=>	0,
+		))->field("quantity");
+		
+		// Quantità in spedizione o spedita
 		$qtaSpedita = $snrModel->clear()->where(array(
-			"id_r"	=>	(int)$idR
+			"id_r"	=>	(int)$idR,
 		))->getSum("quantity");
 		
 		if ($qtaOrdine > $qtaSpedita)

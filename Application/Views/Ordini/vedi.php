@@ -143,11 +143,20 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									</tr>
 									<?php } ?>
 								<?php } ?>
-								<?php if (false && $ordine["da_spedire"] && v("attiva_gestione_spedizioni") && ControllersModel::checkAccessoAlController(array("spedizioninegozio"))) { ?>
+								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni") && OrdiniModel::daSpedire($ordine["id_o"])) { ?>
 								<tr>
 									<td><?php echo gtext("Spedizione");?>:</td>
 									<td>
-										<a class="iframe" href="<?php echo $this->baseUrl."/spedizioninegozio/form/insert/0?id_o=".$ordine["id_o"];?>&partial=Y&nobuttons=Y"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Crea spedizione");?></a>
+										<?php
+										$righeDaSpedire = OrdiniModel::righeDaSpedire($ordine["id_o"]);
+										
+										echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"]);?>
+										
+										<?php if (count($righeDaSpedire) > 0 && ControllersModel::checkAccessoAlController(array("spedizioninegozio"))) { ?>
+										<div>
+											<a class="iframe badge" href="<?php echo $this->baseUrl."/spedizioninegozio/form/insert/0?id_o=".$ordine["id_o"];?>&partial=Y&nobuttons=Y"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Crea spedizione");?></a>
+										</div>
+										<?php } ?>
 									</td>
 								</tr>
 								<?php } ?>
@@ -364,6 +373,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								<?php } ?>
 							<?php } ?>
 							<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
+							<?php echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"], $p["righe"]["id_r"], false, "")?>
 							</td>
 							<td class="text-right"><?php echo $p["righe"]["codice"];?></td>
 							<td class="text-right"><?php echo setPriceReverse($p["righe"]["peso"]);?></td>
