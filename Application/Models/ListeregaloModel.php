@@ -148,9 +148,9 @@ class ListeregaloModel extends GenericModel
 		if (parent::insert())
 		{
 			if (isset($this->values["genitore_1"]) && $this->values["genitore_1"])
-				$codice = encodeUrl(str_replace(" ","",htmlentitydecode($this->values["genitore_1"]))).$this->lId;
+				$codice = encodeUrl(str_replace(" ","",$this->values["genitore_1"])).$this->lId;
 			else if (isset($this->values["titolo"]) && $this->values["titolo"])
-				$codice = encodeUrl(str_replace(" ","",htmlentitydecode($this->values["titolo"]))).$this->lId;
+				$codice = encodeUrl(str_replace(" ","",$this->values["titolo"])).$this->lId;
 			else
 				$codice = generateString(8).$this->lId;
 			
