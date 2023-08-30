@@ -42,38 +42,6 @@ class SpedizioninegozioModel extends FormModel {
 		);
     }
 	
-// 	public function setFormStruct($id = 0)
-// 	{
-// 		$this->formStruct = array
-// 		(
-// 			'entries' 	=> 	array(
-// 				'nazione_spedizione'	=>	array(
-// 					"type"	=>	"Select",
-// 					"options"	=>	$this->selectNazione(),
-// 					"reverse"	=>	"yes",
-// 					"className"	=>	"form-control",
-// 				),
-// 				'provincia_spedizione'	=>	array(
-// 					"type"	=>	"Select",
-// 					"options"	=>	$this->selectProvince(),
-// 					"reverse"	=>	"yes",
-// 					"className"	=>	"form-control",
-// 					'entryClass'	=>	'provincia_spedizione form_input_text',
-// 				),
-// 				'dprovincia_spedizione'	=>	array(
-// 					"labelString"	=>	"Provincia spedizione",
-// 					'entryClass'	=>	'dprovincia_spedizione form_input_text',
-// 				),
-// 				'id_spedizioniere'		=>	array(
-// 					'type'		=>	'Select',
-// 					'labelString'=>	'Spedizioniere (GLS / BRT / ...)',
-// 					'options'	=>	SpedizionieriModel::g(false)->selectTendina(),
-// 					'reverse' => 'yes',
-// 				),
-// 			),
-// 		);
-// 	}
-	
 	public function update($id = null, $where = null)
 	{
 		$this->setProvinciaFatturazione();
