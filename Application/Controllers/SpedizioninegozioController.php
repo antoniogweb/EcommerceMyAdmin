@@ -22,9 +22,22 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["id_spedizioniere"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class SpedizioninegozioController extends BaseController {
 	
-	public $argKeys = array('id_o:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_o:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+		'id_ordine:sanitizeAll'=>'tutti', // -> usato per il filtro
+		'id_spedizioniere:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -51,16 +64,37 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"");
 		
-		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "cleanDateTime", "spedizionieri.titolo", "indirizzoCrud", "nazioneCrud");
+		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "cleanDateTimeSpedizione", "spedizionieri.titolo", "indirizzoCrud", "nazioneCrud");
 		$this->mainHead = "ID,Ordine,Data spedizione,Spedizioniere,Indirizzo,Nazione";
+		
+		$filtroSpedizioniere = array(
+			"tutti"		=>	"Spedizioniere",
+		) + $this->m("SpedizionieriModel")->selectTendina(false);
+		
+		$this->filters = array("dal","al",'id_ordine',array("id_spedizioniere",null,$filtroSpedizioniere));
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
 				->left(array("spedizioniere"))
 				->where(array(
-					
+					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
 				))
-				->orderBy("data_spedizione desc,id_spedizione_negozio desc")->convert()->save();
+				->orderBy("spedizioni_negozio.data_spedizione desc,spedizioni_negozio.id_spedizione_negozio desc")->convert();
+		
+		if ($this->viewArgs['dal'] != "tutti")
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_spedizione, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
+		
+		if ($this->viewArgs['al'] != "tutti")
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_spedizione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
+		
+		if ($this->viewArgs['id_ordine'] != "tutti")
+		{
+			$this->m[$this->modelName]->inner(array("righe"))->inner("righe")->on("righe.id_r = spedizioni_negozio_righe.id_r")->aWhere(array(
+				"righe.id_o"	=>	(int)$this->viewArgs['id_ordine'],
+			))->groupBy("spedizioni_negozio.id_spedizione_negozio");
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}
@@ -88,6 +122,9 @@ class SpedizioninegozioController extends BaseController {
 	
 	public function righe($id = 0)
 	{
+		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
+			$this->responseCode(403);
+		
 		$this->_posizioni['righe'] = 'class="active"';
 		
 // 		$data["orderBy"] = $this->orderBy = "id_order";
@@ -106,8 +143,8 @@ class SpedizioninegozioController extends BaseController {
 		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud", ";righe.iva;%");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Quantità,Aliquota";
+		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Quantità";
 		
 		$pulsantiMenu = "back";
 		

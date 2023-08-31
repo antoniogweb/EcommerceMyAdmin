@@ -269,7 +269,7 @@ class BaseController extends Controller
 				$recordDaModificare = $this->m[$this->modelName]->selectId($clean["id"]);
 				
 				if (empty($recordDaModificare))
-					die("ELEMENTO NON ESISTENTE");
+					$this->responseCode(403);
 			}
 			
 			$table = $this->m[$this->modelName]->table();

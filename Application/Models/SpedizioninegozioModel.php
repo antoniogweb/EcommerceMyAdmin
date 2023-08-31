@@ -175,6 +175,9 @@ class SpedizioninegozioModel extends FormModel {
 		
 		foreach ($idOs as $idO)
 		{
+			if (!$idO)
+				continue;
+			
 			$righe = OrdiniModel::righeDaSpedire((int)$idO);
 			
 			foreach ($righe as $r)
@@ -234,4 +237,14 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		return true;
 	}
+	
+	public function cleanDateTimeSpedizione($record)
+    {
+		$formato = "d-m-Y";
+		
+		if (isset($record[$this->_tables]["data_spedizione"]) && $record[$this->_tables]["data_spedizione"])
+			return date($formato,strtotime($record[$this->_tables]["data_spedizione"]));
+		
+		return "";
+    }
 }

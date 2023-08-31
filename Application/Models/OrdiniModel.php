@@ -93,7 +93,7 @@ class OrdiniModel extends FormModel {
 		
 		$record = $o->selectId((int)$idO);
 		
-		if (!$record["da_spedire"])
+		if (!empty($record) && !$record["da_spedire"])
 			return false;
 		
 		return true;

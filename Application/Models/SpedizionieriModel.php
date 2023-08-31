@@ -77,9 +77,11 @@ class SpedizionieriModel extends GenericModel
         );
     }
     
-    public function selectTendina()
+    public function selectTendina($mostraOpzioneVuota = true)
 	{
-		return array(0=>"Seleziona") + $this->orderBy("id_order")->toList("id_spedizioniere","titolo")->send();
+		$opzioneVuota = $mostraOpzioneVuota ? array(0 => "Seleziona") : [];
+		
+		return $opzioneVuota + $this->orderBy("id_order")->toList("id_spedizioniere","titolo")->send();
 	}
 	
 	public function sistemaCodice()
