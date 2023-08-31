@@ -48,7 +48,7 @@ class CorrierispeseController extends BaseController {
 		{
 			$fields = "peso";
 			
-			if (v("prezzi_ivati_in_prodotti") && ($this->viewArgs["nazione"] == "IT" || !v("scorpora_iva_prezzo_estero")))
+			if (v("prezzi_ivati_in_prodotti") && ($this->viewArgs["nazione"] == "IT" || !v("scorpora_iva_prezzo_estero_spedizione_pagamenti")))
 			{
 				$fields .= ",prezzo_ivato";
 				

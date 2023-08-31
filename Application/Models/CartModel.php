@@ -356,13 +356,14 @@ class CartModel extends GenericModel {
 		return $idIvaSped;
 	}
 	
+	// Restituisce l'aliquota iva minima nel carrello
 	public static function getMaxIva($field = "iva")
 	{
 		$c = new CartModel();
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		$record = $c->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("iva desc")->limit(1)->record();
+		$record = $c->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("iva")->limit(1)->record();
 		
 		if (!empty($record))
 			return $record[$field];

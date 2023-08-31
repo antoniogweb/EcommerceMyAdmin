@@ -1064,7 +1064,7 @@ class OrdiniModel extends FormModel {
 	
 	public function totaleCrudPieno($record)
 	{
-		return number_format($record["orders"]["subtotal_ivato"] + $record["orders"]["spedizione_ivato"],2,",",".");
+		return number_format($record["orders"]["subtotal_ivato"] + $record["orders"]["spedizione_ivato"] + $record["orders"]["costo_pagamento_ivato"],2,",",".");
 	}
 	
 	public function totaleCrud($record)

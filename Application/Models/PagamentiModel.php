@@ -260,7 +260,7 @@ class PagamentiModel extends GenericModel {
 				"attivo"	=>	1,
 			))->getMin($campoPrezzo);
 		
-		if (v("scorpora_iva_prezzo_estero"))
+		if (v("scorpora_iva_prezzo_estero_spedizione_pagamenti"))
 			$prezzoIvato = number_format(($prezzoIvato / (1 + (Parametri::$iva / 100))) * (1 + (CartModel::getAliquotaIvaSpedizione() / 100)), 2, ".", "");
 			
 		$prezzo = number_format($prezzoIvato / ( 1 + (CartModel::getAliquotaIvaSpedizione() / 100)), v("cifre_decimali"), ".", "");
