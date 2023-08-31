@@ -142,10 +142,9 @@ class PagescarvalModel extends GenericModel {
 			->groupBy("caratteristiche_valori.id_cv");
 		
 		if (CategoriesModel::$currentIdCategory)
-			$pcv->inner("categories")->on("categories.id_c = pages.id_c")->aWhere(array(
+			$pcv->inner("categories")->on("categories.id_c = pages.id_c")->aWhere(
 				CategoriesModel::gCatWhere(CategoriesModel::$currentIdCategory, true, "categories.id_c")
-// 				"categories.id_c"	=>	CategoriesModel::$currentIdCategory,
-			));
+			);
 		
 		if (v("attiva_filtri_caratteristiche_separati_per_categoria") && CategoriesModel::$currentIdCategory)
 		{
