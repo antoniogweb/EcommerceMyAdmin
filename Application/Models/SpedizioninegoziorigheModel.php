@@ -41,7 +41,7 @@ class SpedizioninegoziorigheModel extends GenericModel {
     public function quantitaCrud($record)
 	{
 		if (SpedizioninegozioModel::g()->deletable($record["spedizioni_negozio_righe"]["id_spedizione_negozio"]))
-			return "<input id-riga='".$record["spedizioni_negozio_righe"]["id_spedizione_negozio"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["spedizioni_negozio_righe"]["quantity"]."' />";
+			return "<input id-riga='".$record["spedizioni_negozio_righe"]["id_spedizione_negozio_riga"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["spedizioni_negozio_righe"]["quantity"]."' />";
 		else
 			return $record["spedizioni_negozio_righe"]["quantity"];
 	}

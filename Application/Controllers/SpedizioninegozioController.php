@@ -111,6 +111,9 @@ class SpedizioninegozioController extends BaseController {
 		
 		$pulsantiMenu = "back";
 		
+		if (SpedizioninegozioModel::g()->deletable($id))
+			$pulsantiMenu .= ",save_righe_spedizione";
+		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("*")->inner(array("riga"))->orderBy("id_spedizione_negozio_riga")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
