@@ -93,19 +93,13 @@ class SpedizioninegozioModel extends FormModel {
 			
 			foreach ($righeOrdine as $r)
 			{
-				$qtaDaSpedire = RigheModel::qtaDaSpedire($r["id_r"]);
+				$snr->sValues(array(
+					"peso"		=>	$r["peso"],
+					"id_r"		=>	(int)$r["id_r"],
+					"id_spedizione_negozio"	=>	$this->lId,
+				));
 				
-				if ($qtaDaSpedire > 0)
-				{
-					$snr->sValues(array(
-						"quantity"	=>	$qtaDaSpedire,
-						"peso"		=>	$r["peso"],
-						"id_r"		=>	(int)$r["id_r"],
-						"id_spedizione_negozio"	=>	$this->lId,
-					));
-					
-					$snr->insert();
-				}
+				$snr->insert();
 			}
 		}
 		
@@ -170,6 +164,26 @@ class SpedizioninegozioModel extends FormModel {
 			->groupBy("righe.id_o")
 			->toList("righe.id_o")
 			->send();
+	}
+	
+	// Restituisce un array del tipo array("id_r" => "Titolo riga", ...) di tutte le righe ancora da spedire legate alla spedizione in questione
+	public function getSelectRigheDaSpedire($idS)
+	{
+		$idOs = $this->getOrdini((int)$idS);
+		
+		$arrayRighe = [];
+		
+		foreach ($idOs as $idO)
+		{
+			$righe = OrdiniModel::righeDaSpedire((int)$idO);
+			
+			foreach ($righe as $r)
+			{
+				$arrayRighe[$r["id_r"]] = gtext("Ordine")." #".(int)$idO." - ".$r["title"]." ".strip_tags($r["attributi"]);
+			}
+		}
+		
+		return $arrayRighe;
 	}
 	
 	// Restituisci tutte le spedizioni dell'ordine

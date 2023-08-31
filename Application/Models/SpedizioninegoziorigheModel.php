@@ -55,4 +55,35 @@ class SpedizioninegoziorigheModel extends GenericModel {
 		
 		return false;
 	}
+	
+	public function insert()
+	{
+		if (isset($this->values["id_r"]) && isset($this->values["id_spedizione_negozio"]))
+		{
+			$qtaDaSpedire = RigheModel::qtaDaSpedire((int)$this->values["id_r"]);
+			
+			if ($qtaDaSpedire > 0)
+			{
+				$record = $this->clear()->where(array(
+					"id_r"	=>	(int)$this->values["id_r"],
+					"id_spedizione_negozio"	=>	(int)$this->values["id_spedizione_negozio"],
+				))->send(false);
+				
+				if ((int)count($record) === 0)
+				{
+					$this->values["quantity"] = (int)$qtaDaSpedire;
+					
+					return parent::insert();
+				}
+				else
+				{
+					$this->values["quantity"] = (int)$record[0]["quantity"] + (int)$qtaDaSpedire;
+					
+					return parent::update((int)$record[0]["id_spedizione_negozio_riga"]);
+				}
+			}
+		}
+		
+		return false;
+	}
 }

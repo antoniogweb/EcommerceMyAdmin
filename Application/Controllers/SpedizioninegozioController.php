@@ -118,6 +118,14 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m[$this->modelName]->select("*")->inner(array("riga"))->orderBy("id_spedizione_negozio_riga")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
 		
+		$data["righeDaSpedireSelect"] = $this->m["SpedizioninegozioModel"]->getSelectRigheDaSpedire($id); 
+		
+		$this->m[$this->modelName]->setFields('id_r','sanitizeAll');
+		
+		$this->m[$this->modelName]->values['id_spedizione_negozio'] = $clean['id'];
+		
+		$this->m[$this->modelName]->updateTable('insert');
+		
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
