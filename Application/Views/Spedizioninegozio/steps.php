@@ -8,7 +8,7 @@
 <div class="info-box">
 	<span class="info-box-icon bg-default"><i class="fa fa-truck"></i></span>
 	<div class="info-box-content">
-<!-- 	<span class="info-box-text"><b><?php echo gtext("ID");?>:</b> <?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?> </span> -->
+	<span class="info-box-text"><b><?php echo gtext("ID");?>:</b> <?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?> </span>
 	<span class="info-box-text"><b><?php echo gtext("Ordine");?>:</b> <?php echo implode(",",$ordini);?> </span>
 <!-- 	<span class="info-box-number"><?php echo gtext("ID");?>: <?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></span> -->
 </div>
