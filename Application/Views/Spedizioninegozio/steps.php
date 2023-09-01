@@ -3,16 +3,21 @@
 <?php if ($type !== "insert") {
 	$spedizione = SpedizioninegozioModel::g()->left(array("spedizioniere"))->whereId((int)$id)->first();
 	$ordini = SpedizioninegozioModel::g()->getOrdini((int)$id);
+	$stile = SpedizioninegozioModel::g()->getStile($spedizione["spedizioni_negozio"]["stato"]);
+	$titoloStato = SpedizioninegozioModel::g()->getTitoloStato($spedizione["spedizioni_negozio"]["stato"]);
 ?>
 
 <div class="info-box">
-	<span class="info-box-icon bg-default"><i class="fa fa-truck"></i></span>
+	<span class="info-box-icon" style="<?php echo $stile;?>"><i class="fa fa-truck"></i></span>
 	<div class="info-box-content">
-	<span class="info-box-text"><b><?php echo gtext("ID");?>:</b> <?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?> </span>
-	<span class="info-box-text"><b><?php echo gtext("Ordine");?>:</b> <?php echo implode(",",$ordini);?> </span>
-<!-- 	<span class="info-box-number"><?php echo gtext("ID");?>: <?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></span> -->
-</div>
-
+		<span class="info-box-text">
+			<?php echo gtext("Stato");?>: <span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span>
+		</span>
+		<span class="info-box-text">
+			<?php echo gtext("ID Spedizione");?>: <b><?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></b>
+		</span>
+		<span class="info-box-text"><?php echo gtext("Ordine");?>: <b><?php echo implode(",",$ordini);?></b></span>
+	</div>
 </div>
 
 <ul class="nav_dettaglio nav nav-tabs">

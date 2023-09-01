@@ -1776,6 +1776,15 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
+	// Restituisce un campo di un record
+	public static function getCampo($codiceStato, $campo, $campoChiave = "codice")
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella($campoChiave);
+		
+		return isset(self::$recordTabella[$codiceStato][$campo]) ? self::$recordTabella[$codiceStato][$campo] : null;
+	}
+	
 	public function noteCrud($record)
 	{
 		$nModel = new NoteModel();

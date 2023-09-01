@@ -220,7 +220,7 @@ class SpedizioninegozioModel extends FormModel {
 			if ($checkAccesso && $full)
 				$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank" class="pull-right label label-primary text-bold">'.gtext("dettagli").' <i class="fa fa-arrow-right"></i></a>';
 			
-			$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank"><b class="label label-default"><i class="fa fa-truck"></i> '.$sp["spedizioni_negozio"]["id_spedizione_negozio"].'</b></a> del <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
+			$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank"><b style="'.$this->getStile($sp["spedizioni_negozio"]["stato"]).'" class="label label-default"><i class="fa fa-truck"></i> '.$sp["spedizioni_negozio"]["id_spedizione_negozio"].'</b></a> del <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
 			
 			if ($full)
 				$html .= '<br />'.gtext("Spedizioniere").': <b>'.$sp["spedizionieri"]["titolo"].'</b>';
@@ -246,5 +246,20 @@ class SpedizioninegozioModel extends FormModel {
 			return date($formato,strtotime($record[$this->_tables]["data_spedizione"]));
 		
 		return "";
+    }
+    
+    public function getStile($stato)
+    {
+		return SpedizioninegoziostatiModel::getCampo($stato, "style");
+    }
+    
+    public function getTitoloStato($stato)
+    {
+		return SpedizioninegoziostatiModel::getCampo($stato, "titolo");
+    }
+    
+    public function statoCrud($record)
+    {
+		return "<span style='".$this->getStile($record["spedizioni_negozio"]["stato"])."' class='label label-default'>".$this->getTitoloStato($record["spedizioni_negozio"]["stato"])."</span>";
     }
 }

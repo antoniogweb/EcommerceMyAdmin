@@ -2,7 +2,7 @@
 <?php if (v("ecommerce_attivo") && v("attiva_spedizione")) { ?>
 <li class="<?php echo tm($tm, array("corrieri"));?> treeview">
 	<a href="#">
-		<i class="fa fa-calculator"></i>
+		<i class="fa fa-rocket"></i>
 		<span><?php echo gtext("Corrieri");?></span>
 	</a>
 	<ul class="treeview-menu">
