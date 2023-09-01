@@ -33,6 +33,7 @@ class GenericModel extends Model_Tree
 	public static $nomiDaAlias = array();
 	
 	public static $recordTabella = null;
+	public static $recordTabellaG = [];
 	public static $apiMethod = "POST";
 	public static $uploadFileGeneric = true;
 	public static $onChanggeCheckVisibilityAttributes = array(
@@ -1776,13 +1777,29 @@ class GenericModel extends Model_Tree
 		}
 	}
 	
-	// Restituisce un campo di un record
-	public static function getCampo($codiceStato, $campo, $campoChiave = "codice")
+	public function setRecordTabellaG($key)
 	{
-		if (!isset(self::$recordTabella))
-			self::g(false)->setRecordTabella($campoChiave);
+		$classe = get_called_class();
 		
-		return isset(self::$recordTabella[$codiceStato][$campo]) ? self::$recordTabella[$codiceStato][$campo] : null;
+		$res = $this->clear()->send(false);
+		
+		self::$recordTabellaG[$classe] = array();
+		
+		foreach ($res as $r)
+		{
+			self::$recordTabellaG[$classe][$r[$key]] = $r;
+		}
+	}
+	
+	// Restituisce un campo di un record
+	public static function getCampoG($codiceStato, $campo, $campoChiave = "codice")
+	{
+		$classe = get_called_class();
+		
+		if (!isset(self::$recordTabellaG[$classe]))
+			self::g(false)->setRecordTabellaG($campoChiave);
+		
+		return isset(self::$recordTabellaG[$classe][$codiceStato][$campo]) ? self::$recordTabellaG[$classe][$codiceStato][$campo] : null;
 	}
 	
 	public function noteCrud($record)

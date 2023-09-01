@@ -250,12 +250,12 @@ class SpedizioninegozioModel extends FormModel {
     
     public function getStile($stato)
     {
-		return SpedizioninegoziostatiModel::getCampo($stato, "style");
+		return SpedizioninegoziostatiModel::getCampoG($stato, "style");
     }
     
     public function getTitoloStato($stato)
     {
-		return SpedizioninegoziostatiModel::getCampo($stato, "titolo");
+		return SpedizioninegoziostatiModel::getCampoG($stato, "titolo");
     }
     
     public function statoCrud($record)

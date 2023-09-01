@@ -187,4 +187,12 @@ class StatiordineModel extends GenericModel {
 		
 		return self::$recordTabella[$codiceStato]["pagato"] < 0 ? true : false;
 	}
+	
+	public static function getCampo($codiceStato, $campo)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("codice");
+		
+		return isset(self::$recordTabella[$codiceStato][$campo]) ? self::$recordTabella[$codiceStato][$campo] : null;
+	}
 }

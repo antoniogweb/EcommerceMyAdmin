@@ -15,7 +15,7 @@ $().ready(function() {
 			<?php echo $form["codice"];?>
 			<?php echo $form["classe"];?>
 			<?php echo $form["pagato"];?>
-			<?php echo $form["da_spedire"];?>
+			<?php echo $form["da_spedire"] ?? "";?>
 			<?php echo $form["manda_mail_al_cambio_stato"];?>
 			<?php echo $form["descrizione"];?>
 			

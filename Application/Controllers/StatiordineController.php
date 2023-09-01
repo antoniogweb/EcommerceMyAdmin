@@ -55,8 +55,14 @@ class StatiordineController extends BaseController
 		$mainMenu = "add";
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu);
 		
-		$this->mainFields = array("edit","stati_ordine.codice", "pagatoCrud", "daSpedireCrud");
-		$this->mainHead = "Titolo,Codice,Pagato,Da spedire";
+		$this->mainFields = array("edit","stati_ordine.codice", "pagatoCrud");
+		$this->mainHead = "Titolo,Codice,Pagato";
+		
+		if (v("attiva_gestione_spedizioni"))
+		{
+			$this->mainFields[] = 'daSpedireCrud';
+			$this->mainHead .= ',Da spedire';
+		}
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
@@ -65,7 +71,10 @@ class StatiordineController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,classe,codice,pagato,da_spedire,manda_mail_al_cambio_stato,descrizione';
+		$fields = 'titolo,classe,codice,pagato,manda_mail_al_cambio_stato,descrizione';
+		
+		if (v("attiva_gestione_spedizioni"))
+			$fields .= ",da_spedire";
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		
