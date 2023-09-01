@@ -143,8 +143,8 @@ class SpedizioninegozioController extends BaseController {
 		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Quantità";
+		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "#;righe.id_o;", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud");
+		$this->mainHead = "Immagine,Ordine,Articolo,Variante,Codice,Quantità";
 		
 		$pulsantiMenu = "back";
 		
@@ -153,7 +153,7 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("*")->inner(array("riga"))->orderBy("id_spedizione_negozio_riga")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->select("*")->inner(array("riga"))->orderBy("righe.id_o,id_spedizione_negozio_riga")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
 		
 		$data["righeDaSpedireSelect"] = $this->m["SpedizioninegozioModel"]->getSelectRigheDaSpedire($id); 
 		

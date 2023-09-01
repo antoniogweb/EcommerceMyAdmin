@@ -16,7 +16,7 @@
 		<span class="info-box-text">
 			<?php echo gtext("ID Spedizione");?>: <b><?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></b>
 		</span>
-		<span class="info-box-text"><?php echo gtext("Ordine");?>: <b><?php echo implode(",",$ordini);?></b></span>
+		<span class="info-box-text"><?php echo gtext("Ordine");?>: <b>#<?php echo implode(", #",$ordini);?></b></span>
 	</div>
 </div>
 

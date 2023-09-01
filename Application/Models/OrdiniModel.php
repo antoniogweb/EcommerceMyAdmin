@@ -93,8 +93,14 @@ class OrdiniModel extends FormModel {
 		
 		$record = $o->selectId((int)$idO);
 		
-		if (!empty($record) && !$record["da_spedire"])
-			return false;
+		if (!empty($record))
+		{
+			if (!$record["da_spedire"])
+				return false;
+			
+			if (!StatiordineModel::getCampo($record["stato"], "da_spedire"))
+				return false;
+		}
 		
 		return true;
 	}
@@ -115,14 +121,10 @@ class OrdiniModel extends FormModel {
 		
 		$rModel = new RigheModel();
 		
-		$res = $rModel->clear()->select("righe.*,sum(spedizioni_negozio_righe.quantity) as QTA_ORDINATA,spedizioni_negozio_righe.id_spedizione_negozio_riga")->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")->sWhere(array(
+		return $rModel->clear()->select("righe.*,sum(spedizioni_negozio_righe.quantity) as QTA_ORDINATA,spedizioni_negozio_righe.id_spedizione_negozio_riga")->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")->sWhere(array(
 			"righe.gift_card = 0 and righe.id_o = ?",
 			array((int)$idO)
 		))->groupBy("spedizioni_negozio_righe.id_r HAVING (righe.quantity > QTA_ORDINATA or spedizioni_negozio_righe.id_spedizione_negozio_riga IS NULL)")->send(false);
-		
-// 		echo $rModel->getQuery();
-		
-		return $res;
 	}
 	
 	public static function setStatiOrdine()

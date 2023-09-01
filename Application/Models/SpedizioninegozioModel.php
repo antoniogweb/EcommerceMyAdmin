@@ -148,7 +148,7 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		$idsO = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"]);
 		
-		return implode("<br />", $idsO);
+		return "#".implode(", #", $idsO);
 	}
 	
 	// Restituisce gli ordini legati ad una spedizione
@@ -166,6 +166,18 @@ class SpedizioninegozioModel extends FormModel {
 			->send();
 	}
 	
+	protected function getSelectFromIdO($arrayRighe, $idO)
+	{
+		$righe = OrdiniModel::righeDaSpedire((int)$idO);
+		
+		foreach ($righe as $r)
+		{
+			$arrayRighe[$r["id_r"]] = gtext("Ordine")." #".(int)$idO." - ".$r["title"]." ".strip_tags($r["attributi"]);
+		}
+		
+		return $arrayRighe;
+	}
+	
 	// Restituisce un array del tipo array("id_r" => "Titolo riga", ...) di tutte le righe ancora da spedire legate alla spedizione in questione
 	public function getSelectRigheDaSpedire($idS)
 	{
@@ -178,11 +190,24 @@ class SpedizioninegozioModel extends FormModel {
 			if (!$idO)
 				continue;
 			
-			$righe = OrdiniModel::righeDaSpedire((int)$idO);
+			$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
+		}
+		
+		// Cerco gli ordini con lo stesso id_spedizione
+		$idSpedizione = $this->clear()->whereId((int)$idS)->field("id_spedizione");
+		
+		if ($idSpedizione)
+		{
+			$idOsSped = OrdiniModel::g(false)->where(array(
+				"nin"	=>	array(
+					"id_o"	=>	forceIntDeep($idOs),
+				),
+				"id_spedizione"	=>	(int)$idSpedizione
+			))->toList("id_o")->send();
 			
-			foreach ($righe as $r)
+			foreach ($idOsSped as $idO)
 			{
-				$arrayRighe[$r["id_r"]] = gtext("Ordine")." #".(int)$idO." - ".$r["title"]." ".strip_tags($r["attributi"]);
+				$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
 			}
 		}
 		
