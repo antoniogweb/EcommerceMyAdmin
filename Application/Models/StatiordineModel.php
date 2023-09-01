@@ -83,6 +83,13 @@ class StatiordineModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'da_spedire'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine pronto per la spedizione?",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 				'classe'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Colore della label dello stato",
@@ -155,6 +162,14 @@ class StatiordineModel extends GenericModel {
 		$text = self::$attivoSiNo[$record["stati_ordine"]["pagato"]] ?? "Neutro";
 		
 		return "<span class='text-bold text text-$label'>".$text."</span>";
+	}
+	
+	public function daSpedireCrud($record)
+	{
+		if ($record["stati_ordine"]["da_spedire"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
 	}
 	
 	public function pagato($codiceStato)
