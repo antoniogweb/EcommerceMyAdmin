@@ -307,4 +307,16 @@ class SpedizioninegozioModel extends FormModel {
 			}
 		}
     }
+    
+    public static function getStato($idS)
+    {
+		return SpedizioninegozioModel::g(false)->whereId((int)$idS)->field("stato");
+    }
+    
+    public static function aperto($idS)
+	{
+		$stato = self::getStato($idS);
+		
+		return $stato == "A" ? true : false;
+	}
 }

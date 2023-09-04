@@ -189,6 +189,9 @@ class SpedizioninegozioController extends BaseController {
 		
 		if (!empty($record) && $record["id_spedizioniere"])
 		{
+			if (!SpedizioninegozioModel::aperto((int)$id))
+				$this->redirect("spedizioninegozio/form/update/".(int)$id);
+			
 			$this->m[$this->modelName]->setUpdateConditions((int)$id);
 			
 			$_POST["updateAction"] = 1;
