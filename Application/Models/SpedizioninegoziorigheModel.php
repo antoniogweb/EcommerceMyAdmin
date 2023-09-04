@@ -86,4 +86,14 @@ class SpedizioninegoziorigheModel extends GenericModel {
 		
 		return false;
 	}
+	
+	public function del($id = null, $where = null)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && parent::del($id, $where))
+			SpedizioninegozioModel::g()->ricalcolaContrassegno($record["id_spedizione_negozio"]);
+		
+		return true;
+	}
 }

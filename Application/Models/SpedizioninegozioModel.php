@@ -73,11 +73,14 @@ class SpedizioninegozioModel extends FormModel {
 				$this->setValue("telefono", $ordine["telefono"], "sanitizeDb");
 				$this->setValue("email", $ordine["email"], "sanitizeDb");
 				$this->setValue("note", $ordine["note"], "sanitizeDb");
-				$this->setValue("note_interne", $ordine["note_interne"], "sanitizeDb");
+				$this->setValue("note_interne", (string)$ordine["note_interne"], "sanitizeDb");
 				
 				$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
 				
 				$this->setValue("tipologia", $tipologia);
+				
+				if ($ordine["pagamento"] == "contrassegno")
+					$this->setValue("contrassegno", $ordine["total"]);
 			}
 		}
 		
@@ -103,6 +106,9 @@ class SpedizioninegozioModel extends FormModel {
 				$snr->insert();
 			}
 		}
+		
+		if ($res)
+			SpedizioninegozioeventiModel::g()->inserisci($this->lId, "A");
 		
 		return $res;
 	}
@@ -165,6 +171,28 @@ class SpedizioninegozioModel extends FormModel {
 			->groupBy("righe.id_o")
 			->toList("righe.id_o")
 			->send();
+	}
+	
+	// Ricalcola il totale del contrassegno per la spedizione
+	public function ricalcolaContrassegno($idS)
+	{
+		$oModel = new OrdiniModel();
+		
+		$idoS = $this->getOrdini($idS);
+		
+		$totaleContrassegno = (float)$oModel->clear()->where(array(
+			"in"	=>	array(
+				"id_o"	=>	forceIntDeep($idoS),
+			),
+			"pagamento"	=>	"contrassegno",
+		))->getSum("total");
+		
+		$this->sValues(array(
+			"contrassegno"	=>	$totaleContrassegno,
+			"tipologia"	=>	($totaleContrassegno > 0) ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO,
+		));
+		
+		$this->update((int)$idS);
 	}
 	
 	protected function getSelectFromIdO($arrayRighe, $idO)
@@ -295,7 +323,12 @@ class SpedizioninegozioModel extends FormModel {
     // Setta le condizioni totali sia per il salvataggio che per l'invio
     public function setUpdateConditions($idSpedizione = 0)
     {
-		$campiObbligatori = "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,ragione_sociale";
+		$campoObbligatorioProvincia = "dprovincia";
+		
+		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+			$campoObbligatorioProvincia = "provincia";
+		
+		$campiObbligatori = "data_spedizione,id_spedizioniere,nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
 		
 		$this->addStrongCondition("update",'checkNotEmpty',$campiObbligatori);
 		
@@ -310,6 +343,16 @@ class SpedizioninegozioModel extends FormModel {
 				SpedizionieriModel::getModulo((int)$record["id_spedizioniere"])->setConditions($this);
 			}
 		}
+    }
+    
+    public function getCampiFormUpdate($daDisabilitare = false)
+    {
+		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,note,ragione_sociale,ragione_sociale_2,tipologia,contrassegno";
+		
+		if (!$daDisabilitare)
+			$fields .= ",note_interne";
+		
+		return $fields;
     }
     
     public static function getStato($idS)

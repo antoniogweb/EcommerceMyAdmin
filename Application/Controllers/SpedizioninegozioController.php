@@ -53,6 +53,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->tabella = gtext("spedizioni negozio",true);
 		
 		$this->model("SpedizioninegoziorigheModel");
+		$this->model("SpedizioninegozioeventiModel");
 		
 		Params::$exitAtFirstFailedValidation = false;
 	}
@@ -113,16 +114,29 @@ class SpedizioninegozioController extends BaseController {
 				$this->responseCode(403);
 			
 			$fields = "data_spedizione,id_spedizioniere";
+			
+			$this->menuLinksInsert = "";
 		}
 		else
-			$fields = "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,note,note_interne,ragione_sociale,ragione_sociale_2";
+		{
+			$fields = $this->m[$this->modelName]->getCampiFormUpdate();
+			
+			if ($this->viewArgs["partial"] == "Y")
+				$this->menuLinks = "";
+		}
 		
-		$this->m[$this->modelName]->setUpdateConditions((int)$id);
+		if ($queryType == "update" && SpedizioninegozioModel::aperto((int)$id))
+			$this->m[$this->modelName]->setUpdateConditions((int)$id);
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$this->disabledFields = "note";
-		$this->m[$this->modelName]->delFields("note");
+		$campiDaDisabilitare = "note,contrassegno,tipologia";
+		
+		if ($queryType == "update" && !SpedizioninegozioModel::aperto((int)$id))
+			$campiDaDisabilitare = $this->m[$this->modelName]->getCampiFormUpdate(true);
+		
+		$this->disabledFields = $campiDaDisabilitare;
+		$this->m[$this->modelName]->delFields($campiDaDisabilitare);
 		
 		parent::form($queryType, $id);
 	}
@@ -170,6 +184,52 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('insert');
 		
+		if ($this->m[$this->modelName]->queryResult)
+		{
+			$this->m["SpedizioninegozioModel"]->ricalcolaContrassegno($clean['id']);
+		}
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function eventi($id = 0)
+	{
+		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
+			$this->responseCode(403);
+		
+		$this->_posizioni['eventi'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_spedizione_negozio";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "SpedizioninegozioeventiModel";
+		
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		$this->queryActions = "";
+		$this->bulkQueryActions = "";
+		
+// 		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("cleanDateTime", "spedizioni_negozio_eventi.titolo");
+		$this->mainHead = "Data / ora,Titolo";
+		
+		$pulsantiMenu = "back";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"eventi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
+		
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
@@ -180,6 +240,8 @@ class SpedizioninegozioController extends BaseController {
 	// Invia la spedizione al corriere
 	public function invia($id = 0)
 	{
+		$this->shift(1);
+		
 		$this->clean();
 		
 		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
@@ -191,10 +253,11 @@ class SpedizioninegozioController extends BaseController {
 		{
 			if (SpedizioninegozioModel::aperto((int)$id))
 			{
-				$this->m[$this->modelName]->setUpdateConditions((int)$id);
-				
 				$_POST["updateAction"] = 1;
 				Params::$arrayToValidate = htmlentitydecodeDeep($record);
+				$_POST["nazione"] = Params::$arrayToValidate["nazione"];
+				
+				$this->m[$this->modelName]->setUpdateConditions((int)$id);
 				
 				$stato = "I";
 				
@@ -213,6 +276,6 @@ class SpedizioninegozioController extends BaseController {
 			}
 		}
 		
-		$this->redirect("spedizioninegozio/form/update/".(int)$id);
+		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 }

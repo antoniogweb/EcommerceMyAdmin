@@ -802,6 +802,7 @@ class Route
 		'spedizioninegozio,main',
 		'spedizioninegozio,form',
 		'spedizioninegozio,righe',
+		'spedizioninegozio,eventi',
 		'spedizioninegozio,invia',
 		
 		'spedizioninegoziorighe,salvasped',

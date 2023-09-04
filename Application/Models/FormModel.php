@@ -299,6 +299,16 @@ class FormModel extends GenericModel {
 					),
 					'reverse'	=>	"yes",
 				),
+				'tipologia'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Tipologia spedizione',
+					'className'	=>	'for_print form-control',
+					'options'	=>	array(
+						SpedizioninegozioModel::TIPOLOGIA_PORTO_FRANCO	=>	"Tutto a carico del negozio",
+						SpedizioninegozioModel::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO	=>	"Spedizione in contrassegno",
+					),
+					'reverse'	=>	"yes",
+				),
 			),
 		);
 

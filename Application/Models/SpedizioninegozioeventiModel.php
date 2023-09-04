@@ -44,7 +44,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 			{
 				if ($this->clear()->where(array(
 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
-					"stato"	=>	"I",
+					"codice"	=>	"I",
 				))->rowNumber())
 					$stato = "II";
 			}

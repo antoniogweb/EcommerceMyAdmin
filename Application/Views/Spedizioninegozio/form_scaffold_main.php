@@ -14,6 +14,14 @@
 				<div class='col-md-3'>
 					<?php echo $form["id_spedizioniere"];?>
 				</div>
+				<?php if ($type === "update") { ?>
+				<div class='col-md-3'>
+					<?php echo $form["tipologia"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["contrassegno"];?>
+				</div>
+				<?php } ?>
 			</div>
 			
 			<?php if ($type === "update") { ?>
