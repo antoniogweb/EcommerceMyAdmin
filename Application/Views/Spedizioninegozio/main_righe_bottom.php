@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<?php if (count($righeDaSpedireSelect) > 0) { ?>
+<?php if (count($righeDaSpedireSelect) > 0 && SpedizioninegozioModel::getStato((int)$id) == "A") { ?>
 <br />
 <form select2="" class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id".$this->viewStatus;?>' method='POST'>
 

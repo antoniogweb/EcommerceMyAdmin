@@ -189,24 +189,30 @@ class SpedizioninegozioController extends BaseController {
 		
 		if (!empty($record) && $record["id_spedizioniere"])
 		{
-			if (!SpedizioninegozioModel::aperto((int)$id))
-				$this->redirect("spedizioninegozio/form/update/".(int)$id);
-			
-			$this->m[$this->modelName]->setUpdateConditions((int)$id);
-			
-			$_POST["updateAction"] = 1;
-			Params::$arrayToValidate = htmlentitydecodeDeep($record);
-			
-			if ($this->m($this->modelName)->checkConditions('update'))
+			if (SpedizioninegozioModel::aperto((int)$id))
 			{
+				$this->m[$this->modelName]->setUpdateConditions((int)$id);
 				
-			}
-			else
-			{
-				flash("notice",$this->m($this->modelName)->notice);
+				$_POST["updateAction"] = 1;
+				Params::$arrayToValidate = htmlentitydecodeDeep($record);
 				
-				$this->redirect("spedizioninegozio/form/update/".(int)$id);
+				$stato = "I";
+				
+				if ($this->m($this->modelName)->checkConditions('update'))
+				{
+					$this->m($this->modelName)->sValues(array(
+						"stato"			=>	$stato,
+						"data_invio"	=>	date("Y-m-d H:i:s"),
+					));
+					
+					if ($this->m($this->modelName)->update((int)$id))
+						$this->m("SpedizioninegozioeventiModel")->inserisci((int)$id, $stato);
+				}
+				else
+					flash("notice",$this->m($this->modelName)->notice);
 			}
 		}
+		
+		$this->redirect("spedizioninegozio/form/update/".(int)$id);
 	}
 }

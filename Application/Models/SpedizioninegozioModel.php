@@ -38,6 +38,7 @@ class SpedizioninegozioModel extends FormModel {
 	public function relations() {
 		return array(
 			'righe' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'eventi' => array("HAS_MANY", 'SpedizioninegozioeventiModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 		);
     }
@@ -260,6 +261,9 @@ class SpedizioninegozioModel extends FormModel {
 	
 	public function deletable($id)
 	{
+		if (self::getStato($id) != "A")
+			return false;
+		
 		return true;
 	}
 	
