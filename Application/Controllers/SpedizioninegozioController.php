@@ -53,6 +53,8 @@ class SpedizioninegozioController extends BaseController {
 		$this->tabella = gtext("spedizioni negozio",true);
 		
 		$this->model("SpedizioninegoziorigheModel");
+		
+		Params::$exitAtFirstFailedValidation = false;
 	}
 	
 	public function main()
@@ -115,7 +117,12 @@ class SpedizioninegozioController extends BaseController {
 		else
 			$fields = "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,note,note_interne,ragione_sociale,ragione_sociale_2";
 		
+		$this->m[$this->modelName]->setUpdateConditions((int)$id);
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		$this->disabledFields = "note";
+		$this->m[$this->modelName]->delFields("note");
 		
 		parent::form($queryType, $id);
 	}
@@ -168,5 +175,35 @@ class SpedizioninegozioController extends BaseController {
 		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
 		
 		$this->append($data);
+	}
+	
+	// Invia la spedizione al corriere
+	public function invia($id = 0)
+	{
+		$this->clean();
+		
+		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
+			$this->responseCode(403);
+		
+		$record = $this->m[$this->modelName]->clear()->selectId((int)$id);
+		
+		if (!empty($record) && $record["id_spedizioniere"])
+		{
+			$this->m[$this->modelName]->setUpdateConditions((int)$id);
+			
+			$_POST["updateAction"] = 1;
+			Params::$arrayToValidate = htmlentitydecodeDeep($record);
+			
+			if ($this->m($this->modelName)->checkConditions('update'))
+			{
+				
+			}
+			else
+			{
+				flash("notice",$this->m($this->modelName)->notice);
+				
+				$this->redirect("spedizioninegozio/form/update/".(int)$id);
+			}
+		}
 	}
 }

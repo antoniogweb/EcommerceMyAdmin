@@ -26,4 +26,9 @@ class Gls extends Spedizioniere
 	{
 		return 'titolo,modulo,attivo';
 	}
+	
+	public function setConditions(SpedizioninegozioModel $spedizione)
+	{
+// 		$spedizione->addStrongCondition("update",'checkNotEmpty',"ragione_sociale_2");
+	}
 }

@@ -287,4 +287,24 @@ class SpedizioninegozioModel extends FormModel {
     {
 		return "<span style='".$this->getStile($record["spedizioni_negozio"]["stato"])."' class='label label-default'>".$this->getTitoloStato($record["spedizioni_negozio"]["stato"])."</span>";
     }
+    
+    // Setta le condizioni totali sia per il salvataggio che per l'invio
+    public function setUpdateConditions($idSpedizione = 0)
+    {
+		$campiObbligatori = "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,ragione_sociale";
+		
+		$this->addStrongCondition("update",'checkNotEmpty',$campiObbligatori);
+		
+		$this->addSoftCondition("update",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>").'<div style="display:none;" rel="hidden_alert_notice">email</div>');
+		
+		if ($idSpedizione)
+		{
+			$record = $this->clear()->selectId((int)$idSpedizione);
+			
+			if (!empty($record) && $record["id_spedizioniere"])
+			{
+				SpedizionieriModel::getModulo((int)$record["id_spedizioniere"])->setConditions($this);
+			}
+		}
+    }
 }

@@ -26,4 +26,9 @@ class Brt extends Spedizioniere
 	{
 		return 'titolo,modulo,attivo';
 	}
+	
+	public function setConditions(SpedizioninegozioModel $spedizione)
+	{
+		
+	}
 }

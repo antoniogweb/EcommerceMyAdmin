@@ -5,7 +5,7 @@
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-12'>
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-truck"></i> <?php echo gtext("Caratteristiche spedizione");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-truck"></i> <?php echo gtext("Dati spedizione");?></h4>
 			
 			<div class='row'>
 				<div class='col-md-3'>
@@ -44,6 +44,20 @@
 				</div>
 				<div class='col-md-3'>
 					<?php echo $form["telefono"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["email"];?>
+				</div>
+			</div>
+			
+			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-sticky-note-o"></i> <?php echo gtext("Note");?></h4>
+			
+			<div class='row'>
+				<div class='col-md-6'>
+					<?php echo $form["note"];?>
+				</div>
+				<div class='col-md-6'>
+					<?php echo $form["note_interne"];?>
 				</div>
 			</div>
 			

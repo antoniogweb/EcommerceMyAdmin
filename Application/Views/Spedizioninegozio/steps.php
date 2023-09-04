@@ -10,6 +10,8 @@
 <div class="info-box">
 	<span class="info-box-icon" style="<?php echo $stile;?>"><i class="fa fa-truck"></i></span>
 	<div class="info-box-content">
+		<a href="<?php echo $this->baseUrl."/spedizioninegozio/invia/".(int)$id;?>" class="btn btn-warning pull-right make_spinner"><i class="fa fa-paper-plane-o"></i> <?php echo gtext("Invia a")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?></a>
+		
 		<span class="info-box-text">
 			<?php echo gtext("Stato");?>: <span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span>
 		</span>
