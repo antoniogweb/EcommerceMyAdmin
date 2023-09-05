@@ -67,8 +67,8 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"");
 		
-		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "indirizzoCrud", "nazioneCrud");
-		$this->mainHead = "ID,Ordine,Data spedizione,Stato,Spedizioniere,Indirizzo,Nazione";
+		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
+		$this->mainHead = "ID,Ordine,Data spedizione,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
 		
 		$filtroSpedizioniere = array(
 			"tutti"		=>	"Spedizioniere",

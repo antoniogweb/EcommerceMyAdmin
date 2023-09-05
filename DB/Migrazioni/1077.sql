@@ -1,0 +1,1 @@
+INSERT INTO `eventi_retargeting_gruppi` (`id_gruppo_retargeting`,`titolo`, `model`, `attivo`, `id_order`, `condizioni`, `clausola_where`, `blocca_reinvio_mail_stesso`) VALUES ('9', 'Manda email quando la spedizione è stata consegnata al cliente', 'SpedizioninegozioeventiModel', '1', '9', 'attiva_gestione_spedizioni=1', 'codice = \'C\'', 'EVENTO_ELEMENTO')

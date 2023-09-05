@@ -37,7 +37,9 @@ class SpedizioninegozioeventiModel extends GenericModel {
 	{
 		$titolo = SpedizioninegoziostatiModel::getCampoG($stato, "titolo");
 		
-		if (isset($titolo))
+		$spedizione = SpedizioninegozioModel::g()->selectId((int)$idSpedizione);
+		
+		if (isset($titolo) && !empty($spedizione))
 		{
 			// Verifico che non sia già stato inviato
 			if ($stato == "I")
@@ -53,13 +55,28 @@ class SpedizioninegozioeventiModel extends GenericModel {
 				"id_spedizione_negozio"	=>	(int)$idSpedizione,
 				"titolo"				=>	$titolo,
 				"codice"				=>	$stato,
+				"email"					=>	htmlentitydecode($spedizione["email"]),
+				"lingua"				=>	$spedizione["lingua"],
+				"nazione"				=>	$spedizione["nazione"],
+				"creation_time"			=>	time(),
 			));
 			
 			$res = $this->insert();
+			
+			if ($res)
+				$this->processaEventiSpedizione($this->lId);
 			
 			return $res;
 		}
 		
 		return false;
+	}
+	
+	public function processaEventiSpedizione($idSpedizioneEvento)
+	{
+		$record = $this->selectId((int)$idSpedizioneEvento);
+		
+		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["codice"] != "II" && $record["codice"] != "A")
+			EventiretargetingModel::processaSpedizione($idSpedizioneEvento);
 	}
 }

@@ -75,6 +75,9 @@ class SpedizioninegozioModel extends FormModel {
 				$this->setValue("note", $ordine["note"], "sanitizeDb");
 				$this->setValue("note_interne", (string)$ordine["note_interne"], "sanitizeDb");
 				
+				$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
+				$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
+				
 				$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
 				
 				$this->setValue("tipologia", $tipologia);
