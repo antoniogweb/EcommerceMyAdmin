@@ -19,8 +19,11 @@
 		</span>
 		<span class="info-box-text">
 			<?php echo gtext("ID Spedizione");?>: <b><?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></b>
-			-
-			<?php echo gtext("Ordine");?>: <b>#<?php echo implode(", #",$ordini);?></b>
+			<br />
+			<?php echo gtext("Ordine");?>: 
+			<?php foreach ($ordini as $idO) { ?>
+			<a class="label label-default" target="_blank" href="<?php echo $this->baseUrl."/ordini/vedi/".(int)$idO;?>">#<?php echo (int)$idO;?></a>
+			<?php } ?>
 		</span>
 		<span class="info-box-text"></span>
 	</div>
