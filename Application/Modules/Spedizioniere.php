@@ -32,6 +32,28 @@ class Spedizioniere
 		
 	}
 	
+	public function scriviLog($testo)
+	{
+		Files_Log::$logFolder = LIBRARY."/Logs";
+		
+		Files_Log::getInstance("log_spedizioni")->writeString($this->params["codice"]. " - $testo");
+	}
+	
+	public function scriviLogInfoTracking($idSpedizione)
+	{
+		$this->scriviLog("RICHIESTA INFO TRACKING SPEDIZIONE - ID:".(int)$idSpedizione);
+	}
+	
+	public function scriviLogConsegnata($idSpedizione)
+	{
+		$this->scriviLog("SPEDIZIONE CONSEGNATA - ID:".(int)$idSpedizione);
+	}
+	
+	public function scriviLogInErrore($idSpedizione)
+	{
+		$this->scriviLog("SPEDIZIONE IN ERRORE - ID:".(int)$idSpedizione);
+	}
+	
 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata consegnata
 	public function consegnata($idSpedizione)
 	{

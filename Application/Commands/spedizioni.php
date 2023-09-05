@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
@@ -20,38 +21,41 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class Gls extends Spedizioniere
-{ 
-	public function gCampiForm()
-	{
-		return 'titolo,modulo,attivo';
-	}
-	
-	public function setConditions(SpedizioninegozioModel $spedizione)
-	{
-// 		$spedizione->addStrongCondition("update",'checkNotEmpty',"ragione_sociale_2");
-	}
-	
-// 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
-// 	public function getInfo($idSpedizione)
-// 	{
-// 		$this->scriviLogInfoTracking((int)$idSpedizione);
-// 	}
-// 	
-// 	public function consegnata($idSpedizione)
-// 	{
-// 		if (true)
-// 			$this->scriviLogConsegnata((int)$idSpedizione);
-// 		
-// 		return true;
-// 	}
-// 	
-// 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
-// 	public function inErrore($idSpedizione)
-// 	{
-// 		if (true)
-// 			$this->scriviLogInErrore((int)$idSpedizione);
-// 		
-// 		return true;
-// 	}
+ini_set("memory_limit","-1");
+
+define('APP_CONSOLE', true);
+define('EG','allowed');
+
+$options = getopt(null, array(
+	"azione::",
+));
+
+$default = array(
+);
+
+$params = array_merge($default, $options);
+
+require_once(dirname(__FILE__) . "/../../index.php");
+
+ImpostazioniModel::init();
+VariabiliModel::ottieniVariabili();
+
+Files_Log::$logFolder = LIBRARY."/Logs";
+
+if (!isset($params["azione"]))
+{
+	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
+	die();
 }
+
+$log = Files_Log::getInstance("log_spedizioni");
+
+if ($params["azione"] == "get-info-tracking")
+{
+	$log->writeString("INIZIO RICHIESTA INFO TRACKING");
+	
+	SpedizioninegozioModel::g()->controllaStatoSpedizioniInviate(0, 20, 1);
+	
+	$log->writeString("FINE RICHIESTA INFO TRACKING");
+}
+

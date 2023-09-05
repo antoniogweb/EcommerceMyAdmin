@@ -35,17 +35,23 @@ class Brt extends Spedizioniere
 // 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 // 	public function getInfo($idSpedizione)
 // 	{
-// 		
+// 		$this->scriviLogInfoTracking((int)$idSpedizione);
 // 	}
 // 	
 // 	public function consegnata($idSpedizione)
 // 	{
+// 		if (true)
+// 			$this->scriviLogConsegnata((int)$idSpedizione);
+// 		
 // 		return true;
 // 	}
 // 	
 // 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
 // 	public function inErrore($idSpedizione)
 // 	{
+// 		if (true)
+// 			$this->scriviLogInErrore((int)$idSpedizione);
+// 		
 // 		return true;
 // 	}
 }
