@@ -366,4 +366,109 @@ class SpedizioninegozioModel extends FormModel {
 		
 		return $stato == "A" ? true : false;
 	}
+	
+	// Invia la spedizione $id al corriere
+	public function invia($id)
+	{
+		$record = $this->clear()->selectId((int)$id);
+		
+		if (!empty($record) && $record["id_spedizioniere"])
+		{
+			if (SpedizioninegozioModel::aperto((int)$id))
+			{
+				$_POST["updateAction"] = 1;
+				Params::$arrayToValidate = htmlentitydecodeDeep($record);
+				$_POST["nazione"] = Params::$arrayToValidate["nazione"];
+				
+				$this->setUpdateConditions((int)$id);
+				
+				$stato = "I";
+				
+				if ($this->checkConditions('update'))
+				{
+					$this->settaStato($id, $stato, "data_invio");
+					
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public function getSpedizioniInviate($idS = 0, $giorni = 20)
+	{
+		$ora = new DateTime();
+		$ora->modify("-$giorni days");
+		
+		$this->clear()->where(array(
+			"in"	=>	array(
+				"stato"	=>	array("I","II","E"),
+			),
+			"gte"	=>	array(
+				"data_invio"	=>	sanitizeAll($ora->format("Y-m-d H:i:s")),
+			),
+		));
+		
+		if ($idS)
+			$this->aWhere(array(
+				"id_spedizione_negozio"	=>	(int)$idS
+			));
+		
+		return $this->send(false);
+	}
+	
+	// Imposta lo stato della spedizione
+	public function settaStato($id, $stato, $campoData = "")
+	{
+		$this->sValues(array(
+			"stato"			=>	$stato,
+		));
+		
+		if ($campoData)
+			$this->setValue($campoData, date("Y-m-d H:i:s"));
+		
+		if ($this->update((int)$id))
+			SpedizioninegozioeventiModel::g()->inserisci((int)$id, $stato);
+	}
+	
+	// Imposta la spedizione come consegnata
+	public function settaConsegnata($id)
+	{
+		$this->settaStato($id, "C", "data_consegna");
+	}
+	
+	// Imposta la spedizione come in errore
+	public function settaInErrore($id)
+	{
+		$this->settaStato($id, "E");
+	}
+	
+	// Controlla le spedizioni incviate negli ultimi $giorni
+	// $idS indica una spedizione specifica da controllare
+	// $elaboraSpedizione = 0 -> controllo solo lo stao interrogando il corriere. $elaboraSpedizione = 1, imposta consegnata o in errore se il corriere dice che è stata, rispettivamente, consegnata o messa in errore
+	public function controllaStatoSpedizioniInviate($idS = 0, $giorni = 20, $elaboraSpedizione = 1)
+	{
+		$inviate = $this->getSpedizioniInviate($idS, $giorni);
+		
+		foreach ($inviate as $sp)
+		{
+			if ($sp["id_spedizioniere"])
+			{
+				// Modulo corriere
+				$modulo = SpedizionieriModel::getModulo((int)$sp["id_spedizioniere"], true);
+				
+				// Recupero le informazioni dal server del corriere
+				$modulo->getInfo($sp["id_spedizione_negozio"]);
+				
+				if ($elaboraSpedizione)
+				{
+					if ($modulo->consegnata($sp["id_spedizione_negozio"])) // Se consegnata
+						$this->settaConsegnata($sp["id_spedizione_negozio"]);
+					else if ($modulo->inErrore($sp["id_spedizione_negozio"])) // Se in errore
+						$this->settaInErrore($sp["id_spedizione_negozio"]);
+				}
+			}
+		}
+	}
 }

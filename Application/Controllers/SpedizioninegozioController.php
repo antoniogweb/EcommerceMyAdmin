@@ -244,38 +244,18 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->clean();
 		
-		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
-			$this->responseCode(403);
-		
-		$record = $this->m[$this->modelName]->clear()->selectId((int)$id);
-		
-		if (!empty($record) && $record["id_spedizioniere"])
-		{
-			if (SpedizioninegozioModel::aperto((int)$id))
-			{
-				$_POST["updateAction"] = 1;
-				Params::$arrayToValidate = htmlentitydecodeDeep($record);
-				$_POST["nazione"] = Params::$arrayToValidate["nazione"];
-				
-				$this->m[$this->modelName]->setUpdateConditions((int)$id);
-				
-				$stato = "I";
-				
-				if ($this->m($this->modelName)->checkConditions('update'))
-				{
-					$this->m($this->modelName)->sValues(array(
-						"stato"			=>	$stato,
-						"data_invio"	=>	date("Y-m-d H:i:s"),
-					));
-					
-					if ($this->m($this->modelName)->update((int)$id))
-						$this->m("SpedizioninegozioeventiModel")->inserisci((int)$id, $stato);
-				}
-				else
-					flash("notice",$this->m($this->modelName)->notice);
-			}
-		}
+		if (!$this->m($this->modelName)->invia($id))
+			flash("notice",$this->m($this->modelName)->notice);
 		
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	public function controllaspedizioni($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$this->m($this->modelName)->controllaStatoSpedizioniInviate((int)$id);
 	}
 }

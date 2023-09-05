@@ -804,6 +804,7 @@ class Route
 		'spedizioninegozio,righe',
 		'spedizioninegozio,eventi',
 		'spedizioninegozio,invia',
+		'spedizioninegozio,controllaspedizioni',
 		
 		'spedizioninegoziorighe,salvasped',
 	);

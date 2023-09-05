@@ -26,5 +26,21 @@ class Spedizioniere
 {
 	use Modulo;
 	
+	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
+	public function getInfo($idSpedizione)
+	{
+		
+	}
 	
+	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata consegnata
+	public function consegnata($idSpedizione)
+	{
+		return false;
+	}
+	
+	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
+	public function inErrore($idSpedizione)
+	{
+		return false;
+	}
 }
