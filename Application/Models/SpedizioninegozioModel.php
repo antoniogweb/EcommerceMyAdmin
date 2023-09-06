@@ -162,18 +162,22 @@ class SpedizioninegozioModel extends FormModel {
 	}
 	
 	// Restituisce gli ordini legati ad una spedizione
-	public function getOrdini($idS)
+	public function getOrdini($idS, $soloIds = true)
 	{
-		return $this->clear()
-			->select("righe.id_o")
+		$this->clear()
 			->left(array("righe"))
 			->left("righe")->on("righe.id_r = spedizioni_negozio_righe.id_r")
 			->where(array(
 				"id_spedizione_negozio"	=>	(int)$idS,
 			))
-			->groupBy("righe.id_o")
-			->toList("righe.id_o")
-			->send();
+			->groupBy("righe.id_o");
+		
+		if ($soloIds)
+			$this->select("righe.id_o")->toList("righe.id_o");
+		else
+			$this->left("orders")->on("orders.id_o = righe.id_o")->select("orders.*");
+		
+		return $this->send();
 	}
 	
 	// Ricalcola il totale del contrassegno per la spedizione

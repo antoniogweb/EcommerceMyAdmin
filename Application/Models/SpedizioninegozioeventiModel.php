@@ -79,4 +79,57 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["codice"] != "II" && $record["codice"] != "A")
 			EventiretargetingModel::processaSpedizione($idSpedizioneEvento);
 	}
+	
+	public function emailCrud($record)
+	{
+		if ($record["eventi_retargeting_elemento"]["email"])
+			return gtext("Inviata a")." <b>".$record["eventi_retargeting_elemento"]["email"]."</b> ".gtext("in data")." <b>".date("d-m-Y H:i", strtotime($record["eventi_retargeting_elemento"]["data_creazione"]))."</b>";
+		
+		return "";
+	}
+	
+	// Metodo per segnaposto
+	public function getNominativoInOrdineOCliente($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
+		
+		if (!empty($spedizione))
+			return $spedizione["ragione_sociale"]." ".$spedizione["ragione_sociale_2"];
+	}
+	
+	// Metodo per segnaposto
+	public function getRiferimentoOrdine($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$idsO = SpedizioninegozioModel::g()->getOrdini((int)$record["id_spedizione_negozio"]);
+		
+		return "#".implode(", #", $idsO);
+	}
+	
+	// Metodo per segnaposto
+	public function gLinkOrdine($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		$ordini = SpedizioninegozioModel::g()->getOrdini((int)$record["id_spedizione_negozio"], false);
+		
+		$htmlArray = [];
+		
+		foreach ($ordini as $ordine)
+		{
+			$ordine = $ordine["orders"];
+			
+			$htmlArray[] =	'<a href="'.Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."?n=y".'">#'.$ordine["id_o"].'</a>';
+		}
+		
+		return implode(", ", $htmlArray);
+	}
 }

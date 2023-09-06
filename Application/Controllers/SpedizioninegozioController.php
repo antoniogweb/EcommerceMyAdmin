@@ -221,14 +221,14 @@ class SpedizioninegozioController extends BaseController {
 		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("cleanDateTime", "spedizioni_negozio_eventi.titolo");
-		$this->mainHead = "Data / ora,Titolo";
+		$this->mainFields = array("cleanDateTime", "spedizioni_negozio_eventi.titolo", "emailCrud");
+		$this->mainHead = "Data / ora,Titolo,Notifica";
 		
 		$pulsantiMenu = "back";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"eventi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("*")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->select("*")->left("eventi_retargeting_elemento")->on("tabella_elemento = 'spedizioni_negozio_eventi' and eventi_retargeting_elemento.id_elemento = spedizioni_negozio_eventi.id_spedizione_negozio_evento")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
 		
 		parent::main();
 		
