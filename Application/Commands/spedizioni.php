@@ -39,6 +39,7 @@ require_once(dirname(__FILE__) . "/../../index.php");
 
 ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
+Domain::setPathFromAdmin();
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 

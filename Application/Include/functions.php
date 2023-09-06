@@ -634,6 +634,16 @@ class Domain
 		
 		self::$pathSettati = true;
 	}
+	
+	public static function setPathFromAdmin()
+	{
+		self::$name = self::$publicUrl = str_replace("/admin/","",Url::getFileRoot());
+		
+		self::$parentRoot = str_replace("/admin","",ROOT);
+		
+		self::$adminRoot = ROOT;
+		self::$adminName = rtrim(Url::getFileRoot(), "/");
+	}
 }
 
 function htmlentitydecode($value)

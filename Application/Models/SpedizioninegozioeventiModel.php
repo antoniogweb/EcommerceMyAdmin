@@ -80,10 +80,18 @@ class SpedizioninegozioeventiModel extends GenericModel {
 			EventiretargetingModel::processaSpedizione($idSpedizioneEvento);
 	}
 	
+	public function titoloCrud($record)
+	{
+		$stile = SpedizioninegozioModel::g()->getStile($record["spedizioni_negozio_eventi"]["codice"]);
+		$titoloStato = SpedizioninegozioModel::g()->getTitoloStato($record["spedizioni_negozio_eventi"]["codice"]);
+		
+		return '<span style="'.$stile.'" class="label label-default">'.$titoloStato.'</span>';
+	}
+	
 	public function emailCrud($record)
 	{
 		if ($record["eventi_retargeting_elemento"]["email"])
-			return gtext("Inviata a")." <b>".$record["eventi_retargeting_elemento"]["email"]."</b> ".gtext("in data")." <b>".date("d-m-Y H:i", strtotime($record["eventi_retargeting_elemento"]["data_creazione"]))."</b>";
+			return gtext("Notifica inviata all'indirizzo email")." <b>".$record["eventi_retargeting_elemento"]["email"]."</b> ".gtext("in data")." <b>".date("d-m-Y H:i", strtotime($record["eventi_retargeting_elemento"]["data_creazione"]))."</b>";
 		
 		return "";
 	}
@@ -131,5 +139,26 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		}
 		
 		return implode(", ", $htmlArray);
+	}
+	
+	public function gElencoProdottiPerFeedback($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$r = new RigheModel();
+		
+		$righeOrdine = $r->clear()->sWhere(array(
+			"id_r in (select id_r from spedizioni_negozio_righe where id_spedizione_negozio = ?)",
+			array((int)$record["id_spedizione_negozio"])
+		))->send();
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		ob_start();
+		include tpf("/Elementi/Placeholder/elenco_prodotti_per_feedback.php");
+		$output = ob_get_clean();
+		
+		return $output;
 	}
 }
