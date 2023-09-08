@@ -30,4 +30,11 @@ class SpedizioninegoziostatiModel extends GenericModel {
 		
 		parent::__construct();
 	}
+	
+	public function selectTendina($mostraOpzioneVuota = true)
+	{
+		$opzioneVuota = $mostraOpzioneVuota ? array(0 => "Seleziona") : [];
+		
+		return $opzioneVuota + $this->orderBy("id_order")->sWhere(array("codice != ?", array("II")))->toList("codice","titolo")->send();
+	}
 }

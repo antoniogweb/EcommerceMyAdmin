@@ -34,4 +34,16 @@
 		<td><b><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></b></td>
 	</tr>
 	<?php } ?>
+	<?php if (v("attiva_gestione_spedizioni")) {
+		$spModel = SpedizioninegozioModel::g();
+		$spedizioniOrdine = $spModel->getSpedizioniOrdine((int)$ordine["id_o"]);
+		
+		if (count($spedizioniOrdine) > 0) { 
+	?>
+		<tr>
+			<td class="first_column"><?php echo gtext("Stato spedizione", false); ?>:</td>
+			<td><b><?php echo $spModel->badgeSpedizione((int)$ordine["id_o"], 0, true, "<hr />", "uk-label");;?></b></td>
+		</tr>
+		<?php } ?>
+	<?php } ?>
 </table>

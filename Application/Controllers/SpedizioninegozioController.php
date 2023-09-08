@@ -37,6 +37,7 @@ class SpedizioninegozioController extends BaseController {
 		'al:sanitizeAll'=>'tutti',
 		'id_ordine:sanitizeAll'=>'tutti', // -> usato per il filtro
 		'id_spedizioniere:sanitizeAll'=>'tutti',
+		'stato:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "ecommerce";
@@ -74,13 +75,18 @@ class SpedizioninegozioController extends BaseController {
 			"tutti"		=>	"Spedizioniere",
 		) + $this->m("SpedizionieriModel")->selectTendina(false);
 		
-		$this->filters = array("dal","al",'id_ordine',array("id_spedizioniere",null,$filtroSpedizioniere));
+		$filtroStato = array(
+			"tutti"		=>	"Stato spedizione",
+		) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
+		
+		$this->filters = array("dal","al",'id_ordine',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
 				->left(array("spedizioniere"))
 				->where(array(
 					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
+					"spedizioni_negozio.stato"	=>	$this->viewArgs['stato'],
 				))
 				->orderBy("spedizioni_negozio.data_spedizione desc,spedizioni_negozio.id_spedizione_negozio desc")->convert();
 		

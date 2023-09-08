@@ -262,11 +262,17 @@ class SpedizioninegozioModel extends FormModel {
 			$sWhereArray[] = (int)$idR;
 		}
 		
+		if (App::$isFrontend)
+		{
+			$sWhereIdR .= " and spedizioni_negozio.stato != ?";
+			$sWhereArray[] = "A";
+		}
+		
 		return $this->clear()->select("*")->inner(array("spedizioniere"))->sWhere(array("id_spedizione_negozio in (select id_spedizione_negozio from spedizioni_negozio_righe inner join righe on righe.id_r = spedizioni_negozio_righe.id_r where righe.id_o = ? $sWhereIdR)",$sWhereArray))->send();
 	}
 	
 	// Restituisce la label della spedizione con il link
-	public function badgeSpedizione($idO = 0, $idR = 0, $full = true, $divisorio = '<hr style="margin-bottom:10px !important; margin-top:10px !important; "/>')
+	public function badgeSpedizione($idO = 0, $idR = 0, $full = true, $divisorio = '<hr style="margin-bottom:10px !important; margin-top:10px !important; "/>', $badgeClass = "label label-default")
 	{
 		$spedizioni = $this->getSpedizioniOrdine($idO, $idR);
 		
@@ -278,10 +284,22 @@ class SpedizioninegozioModel extends FormModel {
 		{
 			$html = "<p>";
 			
-			if ($checkAccesso && $full)
+			if ($checkAccesso && $full && !App::$isFrontend)
 				$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank" class="pull-right label label-primary text-bold">'.gtext("dettagli").' <i class="fa fa-arrow-right"></i></a>';
 			
-			$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank"><b style="'.$this->getStile($sp["spedizioni_negozio"]["stato"]).'" class="label label-default"><i class="fa fa-truck"></i> '.$sp["spedizioni_negozio"]["id_spedizione_negozio"].'</b></a> del <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
+			if (!App::$isFrontend)
+				$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank">';
+			
+			$idLabel = !App::$isFrontend ? $sp["spedizioni_negozio"]["id_spedizione_negozio"].' - ' : "";
+			$titoloStato = !App::$isFrontend ? $this->getTitoloStato($sp["spedizioni_negozio"]["stato"]) : $this->getTitoloStatoFrontend($sp["spedizioni_negozio"]["stato"]);
+			$labelData = !App::$isFrontend ? 'Data' : 'Data spedizione';
+			
+			$html .= '<b title="'.gtext("Spedizione allo stato: ".$titoloStato).'" style="'.$this->getStile($sp["spedizioni_negozio"]["stato"]).'" class="'.$badgeClass.'"><i class="fa fa-truck"></i> '.$idLabel.$titoloStato.'</b>';
+			
+			if (!App::$isFrontend)
+				$html .= '</a>';
+			
+			$html .= '<br />'.gtext($labelData).': <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
 			
 			if ($full)
 				$html .= '<br />'.gtext("Spedizioniere").': <b>'.$sp["spedizionieri"]["titolo"].'</b>';
@@ -320,6 +338,11 @@ class SpedizioninegozioModel extends FormModel {
     public function getTitoloStato($stato)
     {
 		return SpedizioninegoziostatiModel::getCampoG($stato, "titolo");
+    }
+    
+    public function getTitoloStatoFrontend($stato)
+    {
+		return SpedizioninegoziostatiModel::getCampoG($stato, "titolo_frontend");
     }
     
     public function statoCrud($record)
