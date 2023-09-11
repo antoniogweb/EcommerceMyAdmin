@@ -158,7 +158,7 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		$idsO = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"]);
 		
-		return "#".implode(", #", $idsO);
+		return "<b>#".implode(", #", $idsO)."</b>";
 	}
 	
 	// Restituisce gli ordini legati ad una spedizione
@@ -299,6 +299,9 @@ class SpedizioninegozioModel extends FormModel {
 			if (!App::$isFrontend)
 				$html .= '</a>';
 			
+			if (!App::$isFrontend && $sp["spedizioni_negozio"]["errore_invio"])
+				$html .= '<br /><span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> '.gtext("Errore invio").'</span>';
+			
 			$html .= '<br />'.gtext($labelData).': <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
 			
 			if ($full)
@@ -347,7 +350,12 @@ class SpedizioninegozioModel extends FormModel {
     
     public function statoCrud($record)
     {
-		return "<span style='".$this->getStile($record["spedizioni_negozio"]["stato"])."' class='label label-default'>".$this->getTitoloStato($record["spedizioni_negozio"]["stato"])."</span>";
+		$html = "<span style='".$this->getStile($record["spedizioni_negozio"]["stato"])."' class='label label-default'>".$this->getTitoloStato($record["spedizioni_negozio"]["stato"])."</span>";
+		
+		if ($record["spedizioni_negozio"]["errore_invio"])
+			$html .= '<br /><span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> '.gtext("Errore invio").'</span>';
+		
+		return $html;
     }
     
     // Setta le condizioni totali sia per il salvataggio che per l'invio
@@ -397,8 +405,25 @@ class SpedizioninegozioModel extends FormModel {
 		return $stato == "A" ? true : false;
 	}
 	
+	public static function pronta($idS)
+	{
+		$stato = self::getStato($idS);
+		
+		return $stato == "I" ? true : false;
+	}
+	
+	public function apri($id)
+	{
+		$record = $this->clear()->selectId((int)$id);
+		
+		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
+		{
+			$this->settaStato($id, "A");
+		}
+	}
+	
 	// Invia la spedizione $id al corriere
-	public function invia($id)
+	public function prontaDaInviare($id)
 	{
 		$record = $this->clear()->selectId((int)$id);
 		
@@ -416,7 +441,7 @@ class SpedizioninegozioModel extends FormModel {
 				
 				if ($this->checkConditions('update'))
 				{
-					$this->settaStato($id, $stato, "data_invio");
+					$this->settaStato($id, $stato, "data_pronta_invio");
 					
 					return true;
 				}
@@ -433,7 +458,7 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$this->clear()->where(array(
 			"in"	=>	array(
-				"stato"	=>	array("I","II","E"),
+				"stato"	=>	array("II","E"),
 			),
 			"gte"	=>	array(
 				"data_invio"	=>	sanitizeAll($ora->format("Y-m-d H:i:s")),
@@ -449,7 +474,8 @@ class SpedizioninegozioModel extends FormModel {
 	}
 	
 	// Imposta lo stato della spedizione
-	public function settaStato($id, $stato, $campoData = "")
+	// $values: valori da salvare
+	public function settaStato($id, $stato, $campoData = "", $values = array())
 	{
 		$this->sValues(array(
 			"stato"			=>	$stato,
@@ -457,6 +483,11 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if ($campoData)
 			$this->setValue($campoData, date("Y-m-d H:i:s"));
+		
+		foreach ($values as $k => $v)
+		{
+			$this->setValue($k, $v);
+		}
 		
 		if ($this->update((int)$id))
 			SpedizioninegozioeventiModel::g()->inserisci((int)$id, $stato);
@@ -474,6 +505,66 @@ class SpedizioninegozioModel extends FormModel {
 		$this->settaStato($id, "E");
 	}
 	
+	// Restituisce tutte le spedizioni da inviare, con data corrente o precedente
+	// se $idS != 0, restituisce solo la spedizione avente id = $idS
+	public function getSpedizioniDaInviare($idSpedizioniere, $idS = 0)
+	{
+		$this->clear()->where(array(
+			"in"	=>	array(
+				"stato"	=>	array("I"),
+			),
+			"lte"	=>	array(
+				"data_spedizione"	=>	date("Y-m-d"),
+			),
+			"id_spedizioniere"	=>	(int)$idSpedizioniere,
+		));
+		
+		if ($idS)
+			$this->aWhere(array(
+				"id_spedizione_negozio"	=>	(int)$idS
+			));
+		
+		return $this->send(false);
+	}
+	
+	// Invia le spedizioni al corriere
+	public function inviaAlCorriere($idS = 0)
+	{
+		$arrayIdSpedizionieri = SpedizionieriModel::g()->where(array(
+			"attivo"	=>	1,
+		))->toList("id_spedizioniere")->send();
+		
+		foreach ($arrayIdSpedizionieri as $idSpedizioniere)
+		{
+			// Modulo spedizioniere
+			$modulo = SpedizionieriModel::getModulo((int)$idSpedizioniere, true);
+			
+			if ($modulo->isAttivo())
+			{
+				$spedizioniDaInviare = $this->getSpedizioniDaInviare($idSpedizioniere, $idS);
+				
+				$risultati = $modulo->invia($spedizioniDaInviare);
+				
+				foreach ($risultati as $idSpedizione => $r)
+				{
+					if ($r["risultato"] == "OK")
+					{
+						$this->settaStato($idSpedizione, "II", "data_invio", array(
+							"numero_spedizione"	=>	$r["numero_spedizione"],
+							"errore_invio"		=>	"",
+						));
+					}
+					else
+					{
+						$this->settaStato($idSpedizione, "I", "data_pronta_invio", array(
+							"errore_invio"		=>	$r["errore_invio"]
+						));
+					}
+				}
+			}
+		}
+	}
+	
 	// Controlla le spedizioni incviate negli ultimi $giorni
 	// $idS indica una spedizione specifica da controllare
 	// $elaboraSpedizione = 0 -> controllo solo lo stao interrogando il corriere. $elaboraSpedizione = 1, imposta consegnata o in errore se il corriere dice che è stata, rispettivamente, consegnata o messa in errore
@@ -485,7 +576,7 @@ class SpedizioninegozioModel extends FormModel {
 		{
 			if ($sp["id_spedizioniere"])
 			{
-				// Modulo corriere
+				// Modulo spedizioniere
 				$modulo = SpedizionieriModel::getModulo((int)$sp["id_spedizioniere"], true);
 				
 				// Recupero le informazioni dal server del corriere

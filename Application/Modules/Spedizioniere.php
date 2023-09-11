@@ -26,6 +26,24 @@ class Spedizioniere
 {
 	use Modulo;
 	
+	public function invia($spedizioni)
+	{
+		$arrayResult = [];
+		
+		foreach ($spedizioni as $sp)
+		{
+			$this->scriviLog("INVIO SPEDIZIONE - ID:".(int)$sp["id_spedizione_negozio"]);
+			
+			$arrayResult[$sp["id_spedizione_negozio"]] = array(
+				"numero_spedizione"	=>	"55",
+				"risultato"			=>	"OK",
+				"errore_invio"		=>	"EFGH",
+			);
+		}
+		
+		return $arrayResult;
+	}
+	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 	public function getInfo($idSpedizione)
 	{

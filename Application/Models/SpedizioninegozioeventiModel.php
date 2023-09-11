@@ -31,6 +31,12 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'' => array("BELONGS_TO", 'SpedizioninegozioModel', 'id_spedizione_negozio',null,"CASCADE"),
+        );
+    }
+    
 	// Insertisci un nuovo evento con uno stato uguale a $stato
 	// Controlla che lo stato I non sia già presente nella spedizione avente ID = $idSpedizione
 	public function inserisci($idSpedizione, $stato = "I")
@@ -41,15 +47,15 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		
 		if (isset($titolo) && !empty($spedizione))
 		{
-			// Verifico che non sia già stato inviato
-			if ($stato == "I")
-			{
-				if ($this->clear()->where(array(
-					"id_spedizione_negozio"	=>	(int)$idSpedizione,
-					"codice"	=>	"I",
-				))->rowNumber())
-					$stato = "II";
-			}
+// 			// Verifico che non sia già stato inviato
+// 			if ($stato == "I")
+// 			{
+// 				if ($this->clear()->where(array(
+// 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
+// 					"codice"	=>	"I",
+// 				))->rowNumber())
+// 					$stato = "II";
+// 			}
 			
 			$this->sValues(array(
 				"id_spedizione_negozio"	=>	(int)$idSpedizione,
@@ -59,6 +65,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 				"lingua"				=>	$spedizione["lingua"],
 				"nazione"				=>	$spedizione["nazione"],
 				"creation_time"			=>	time(),
+				"errore_invio"			=>	htmlentitydecode($spedizione["errore_invio"]),
 			));
 			
 			$res = $this->insert();
@@ -76,7 +83,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 	{
 		$record = $this->selectId((int)$idSpedizioneEvento);
 		
-		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["codice"] != "II" && $record["codice"] != "A")
+		if (!empty($record) && isset($record["email"]) && $record["email"] && checkMail($record["email"]) && $record["codice"] != "I" && $record["codice"] != "A")
 			EventiretargetingModel::processaSpedizione($idSpedizioneEvento);
 	}
 	
@@ -85,7 +92,12 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		$stile = SpedizioninegozioModel::g()->getStile($record["spedizioni_negozio_eventi"]["codice"]);
 		$titoloStato = SpedizioninegozioModel::g()->getTitoloStato($record["spedizioni_negozio_eventi"]["codice"]);
 		
-		return '<span style="'.$stile.'" class="label label-default">'.$titoloStato.'</span>';
+		$html = '<span style="'.$stile.'" class="label label-default">'.$titoloStato.'</span>';
+		
+		if ($record["spedizioni_negozio_eventi"]["errore_invio"])
+			$html .= ' <span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> '.gtext("Errore invio").'</span>';
+		
+		return $html;
 	}
 	
 	public function emailCrud($record)

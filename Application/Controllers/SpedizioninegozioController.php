@@ -29,6 +29,13 @@ Helper_List::$filtersFormLayout["filters"]["id_spedizioniere"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["numero_spedizione"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Numero spedizione ..",
+	),
+);
+
 class SpedizioninegozioController extends BaseController {
 	
 	public $argKeys = array(
@@ -38,6 +45,7 @@ class SpedizioninegozioController extends BaseController {
 		'id_ordine:sanitizeAll'=>'tutti', // -> usato per il filtro
 		'id_spedizioniere:sanitizeAll'=>'tutti',
 		'stato:sanitizeAll'=>'tutti',
+		'numero_spedizione:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "ecommerce";
@@ -68,8 +76,8 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"");
 		
-		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
-		$this->mainHead = "ID,Ordine,Data spedizione,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
+		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
+		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
 		
 		$filtroSpedizioniere = array(
 			"tutti"		=>	"Spedizioniere",
@@ -79,7 +87,7 @@ class SpedizioninegozioController extends BaseController {
 			"tutti"		=>	"Stato spedizione",
 		) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
 		
-		$this->filters = array("dal","al",'id_ordine',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
+		$this->filters = array("dal","al",'id_ordine','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
@@ -87,6 +95,7 @@ class SpedizioninegozioController extends BaseController {
 				->where(array(
 					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
 					"spedizioni_negozio.stato"	=>	$this->viewArgs['stato'],
+					"spedizioni_negozio.numero_spedizione"	=>	$this->viewArgs['numero_spedizione'],
 				))
 				->orderBy("spedizioni_negozio.data_spedizione desc,spedizioni_negozio.id_spedizione_negozio desc")->convert();
 		
@@ -243,17 +252,39 @@ class SpedizioninegozioController extends BaseController {
 		$this->append($data);
 	}
 	
-	// Invia la spedizione al corriere
+	// Setta la spedizione come pronta da inviare (stato = I)
+	public function prontadainviare($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		if (!$this->m($this->modelName)->prontaDaInviare($id))
+			flash("notice",$this->m($this->modelName)->notice);
+		
+		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// Setta la spedizione come aperta (stato = A)
+	public function apri($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$this->m($this->modelName)->apri($id);
+		
+		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// Invia la spedizione al corriere (stato = II)
 	public function invia($id = 0)
 	{
 		$this->shift(1);
 		
 		$this->clean();
 		
-		if (!$this->m($this->modelName)->invia($id))
-			flash("notice",$this->m($this->modelName)->notice);
-		
-		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
+		$this->m($this->modelName)->inviaAlCorriere((int)$id);
 	}
 	
 	public function controllaspedizioni($id = 0)

@@ -1,0 +1,1 @@
+UPDATE `eventi_retargeting_gruppi` SET `clausola_where` = 'codice = \'II\'' WHERE `eventi_retargeting_gruppi`.`model` = 'SpedizioninegozioeventiModel' and eventi_retargeting_gruppi.clausola_where = 'codice = \'I\'';

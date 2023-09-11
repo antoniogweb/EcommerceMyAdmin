@@ -1,0 +1,1 @@
+UPDATE `spedizioni_negozio_stati` SET `titolo` = 'Pronta per l\'invio', `style` = 'color:#FFF;background:#00c0ef;', `titolo_frontend` = 'Merce pronta per l\'invio' WHERE `spedizioni_negozio_stati`.`codice` = 'I';
