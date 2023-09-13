@@ -34,6 +34,8 @@ class App
 	
 	public static $currentBreadcrumb = null;
 	
+	public static $vociMenuApp = [];
+	
 	public static function setPannelli()
 	{
 		self::$pannelli = array(
@@ -265,11 +267,37 @@ class App
 	{
 		$controllerPrincipali = ControllersModel::getControllerAbilitati(true);
 		
-		print_r($controllerPrincipali);
-		
 		$path = ROOT . "/Application/Views/Vocimenu/".ucfirst($pannello);
 		
 		$files = array_diff(scandir($path), array('.', '..'));
+		natsort($files);
+		
+		$arrayFilesConPath = [];
+		
+		// Aggiungo i file del CMS
+		foreach ($files as $file)
+		{
+			$arrayFilesConPath[$file] = $path."/".$file;
+		}
+		
+		// Carico i file di menù delle APP
+		self::caricaVociMenuApp();
+		
+		// Cerco if file del pannello dalle APP
+		$filesPannello = self::getVociMenuApp($pannello);
+		
+		// Aggiungo o sovrascrivo dai file delle APP
+		foreach ($filesPannello as $app => $filesApp)
+		{
+			$path = ROOT . "/Application/Apps/".ucfirst($app)."/Vocimenu/".ucfirst($pannello);
+			
+			foreach ($filesApp as $file)
+			{
+				$arrayFilesConPath[$file] = $path."/".$file;
+			}
+		}
+		
+		$files = array_keys($arrayFilesConPath);
 		natsort($files);
 		
 		$filesDaImportare = array();
@@ -279,10 +307,40 @@ class App
 			if (preg_match('/^[0-9]{1,}\-([a-zA-Z\_]{1,})\.(php)$/',$file, $matches))
 			{
 				if (ControllersModel::checkAccessoAlController(array($matches[1])))
-					$filesDaImportare[] = $path."/".$file;
+					$filesDaImportare[] = $arrayFilesConPath[$file];
 			}
 		}
 		
 		return $filesDaImportare;
+	}
+	
+	public static function getVociMenuApp($pannello)
+	{
+		if (isset(self::$vociMenuApp[$pannello]))
+			return self::$vociMenuApp[$pannello];
+		
+		return array();
+	}
+	
+	// Va a cercare le voci di menù dell'app e le carica in self::$vociMenuApp
+	public static function caricaVociMenuApp()
+	{
+		foreach (APPS as $app)
+		{
+			$pannelli = array_keys(self::$pannelli);
+			
+			foreach ($pannelli as $pannello)
+			{
+				$path = ROOT . "/Application/Apps/".ucfirst($app)."/Vocimenu/".ucfirst($pannello);
+				
+				if (@is_dir($path))
+				{
+					$files = array_diff(scandir($path), array('.', '..'));
+					natsort($files);
+					
+					self::$vociMenuApp[$pannello][$app] = $files;
+				}
+			}
+		}
 	}
 }
