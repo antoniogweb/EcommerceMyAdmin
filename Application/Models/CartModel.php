@@ -892,6 +892,7 @@ class CartModel extends GenericModel {
 				$this->values["cart_uid"] = $clean["cart_uid"];
 				$this->values["creation_time"] = $this->getCreationTime();
 				$this->values["gift_card"] = $rPage[0]["pages"]["gift_card"];
+				$this->values["prodotto_digitale"] = $rPage[0]["pages"]["prodotto_digitale"];
 				
 				if (isset($idRif))
 				{
@@ -1300,7 +1301,7 @@ class CartModel extends GenericModel {
 				return true;
 		}
 		
-		if (v("attiva_gift_card") && $checkGiftCard)
+		if ((v("attiva_gift_card") || v("attiva_prodotti_digitali")) && $checkGiftCard)
 		{
 			$c = new CartModel();
 			
@@ -1309,8 +1310,9 @@ class CartModel extends GenericModel {
 				$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 				
 				$numeroNoGiftCard = $c->clear()->where(array(
-					"cart_uid"	=>	$clean["cart_uid"],
-					"gift_card"	=>	0,
+					"cart_uid"			=>	$clean["cart_uid"],
+					"gift_card"			=>	0,
+					"prodotto_digitale"	=>	0
 				))->rowNumber();
 				
 				if ((int)$numeroNoGiftCard === 0)

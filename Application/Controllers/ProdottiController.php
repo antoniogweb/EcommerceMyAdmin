@@ -190,6 +190,9 @@ class ProdottiController extends PagesController {
 		if (v("mostra_campo_stampa_gtin_in_prodotto"))
 			$this->queryFields .= ",stampa_gtin_nel_feed";
 		
+		if (v("attiva_prodotti_digitali"))
+			$this->queryFields .= ",prodotto_digitale";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

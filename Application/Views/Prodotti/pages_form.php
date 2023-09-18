@@ -60,6 +60,8 @@
 									<?php echo $form["codice"];?>
 									<?php } ?>
 									
+									<?php echo $form["prodotto_digitale"] ?? "";?>
+									
 									<?php if (isset($form["price"]) || isset($form["price_ivato"])) { ?>
 									<div class='row'>
 										<div class='col-lg-4'>
@@ -142,7 +144,7 @@
 						<?php if ((isset($form["acquisto_diretto"]) || v("accessori_in_prodotti")) && v("ecommerce_attivo")) { ?>
 							<div class="panel panel-info help_accessori">
 								<div class="panel-heading">
-									Opzioni acquisto
+									<?php echo gtext("Opzioni acquisto");?>
 								</div>
 								<div class="panel-body">
 									<?php if (isset($form["acquistabile"])) { ?>

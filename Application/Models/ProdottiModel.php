@@ -63,6 +63,19 @@ class ProdottiModel extends PagesModel {
 				"<div class='form_notice'>".gtext("Se impostato su No il GTIN non verrà stampato nel feed Google o Facebook, anche se presente nel prodotto.")."</div>"
 			),
 		);
+		
+		$this->formStruct["entries"]["prodotto_digitale"] = array(
+			"type"	=>	"Select",
+			"options"	=>	self::$attivoSiNo,
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	'È un prodotto digitale?',
+			'wrap'		=>	array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Se impostato su Sì, non sarà prevista la spedizione per tale prodotto.")."</div>"
+			),
+		);
 	}
 	
 	public function setFilters()
