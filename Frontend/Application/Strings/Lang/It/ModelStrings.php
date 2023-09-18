@@ -30,7 +30,9 @@ class Lang_It_ModelStrings extends Lang_ResultStrings {
 		"associate" => "<div class='alert'>Problema di integrit&agrave referenziale: il record &egrave associato ad un record di una tabella figlia. Devi prima rompere l'associazione.</div>\n",
 		"no-id" => "<div class='alert'>Non &egrave definito alcun id della query</div>\n",
 		"not-linked" => "<div class='alert'>Il record non &egrave associato, non puoi dissociarlo</div>",
-		"linked" => "<div class='alert'>Il record &egrave gi&agrave associato, non puoi associarlo un'altra volta</div>"
+		"linked" => "<div class='alert'>Il record &egrave gi&agrave associato, non puoi associarlo un'altra volta</div>",
+		"not-existing-fields" => "<div class='alert'>Alcuni campi della tabella non sono esistenti</div>\n",
+		"no-fields" => "<div class='alert alert-danger'>Si prega di selezionare dei campi</div>\n",
 	);
 	
 }

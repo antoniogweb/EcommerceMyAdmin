@@ -382,138 +382,138 @@ class GenericModel extends Model_Tree
 		$this->addTokenAlias($res);
 	}
 	
-	public function upload($type = "update")
-	{
-		if (self::$uploadFileGeneric)
-		{
-			foreach ($this->uploadFields as $field => $params)
-			{
-				if (isset($this->values[$field]))
-				{
-					$this->delFields($field);
-					
-					if (isset($_FILES[$field]["name"]) and strcmp($_FILES[$field]["name"],'') !== 0)
-					{
-						$path = $params["path"];
-						
-						if (isset($params["allowedExtensions"]))
-						{
-							$this->files->setParam('allowedExtensions',$params["allowedExtensions"]);
-						}
-						
-						if (isset($params["allowedMimeTypes"]))
-						{
-							$this->files->setParam('allowedMimeTypes',$params["allowedMimeTypes"]);
-						}
-						
-						if (isset($params["maxFileSize"]))
-						{
-							$this->files->setParam('maxFileSize',$params["maxFileSize"]);
-						}
-						
-						if (isset($params["createImage"]) and $params["createImage"])
-						{
-							$this->files->setParam('createImage',true);
-						}
-						
-						if (strcmp($params["type"],"file") === 0)
-						{
-							$this->files->setParam('createImage',false);
-						}
-						
-						$this->files->setParam('fileUploadKey',$field);
-						$this->files->setBase(Domain::$parentRoot."/".$path);
-						
-						if (isset($params["clean_field"]))
-						{
-							$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
-						}
-						else
-						{
-							$fileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
-							$fileName = encodeUrl($fileName);
-							$fileName = $this->files->getUniqueName($fileName);
-						}
-						
-						$htaccess = (isset($params["disallow"]) && $params["disallow"]) ? true : false;
-						
-						self::creaCartellaImages($path, $htaccess);
-						
-						if ($this->files->uploadFile($fileName))
-						{
-							$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
-							$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
-							
-							if (strcmp($params["type"],"image") === 0 && !Files_Upload::isJpeg($ext) && v("converti_immagini_in_jpeg") && !isset($params["keepFormat"]))
-							{
-								$params = array(
-									'forceToFormat'	=>	'jpeg',
-								);
-								
-								$originalPath = rtrim($this->files->getBase());
-								
-								$newFileName = str_replace(".$ext", '.jpeg', $this->files->fileName);
-								$newFileName = $this->files->getUniqueName($newFileName);
-								$targetFile = $originalPath."/".$newFileName;
-								
-								$thumb = new Image_Gd_Thumbnail($originalPath, $params);
-								$thumb->render($this->files->fileName,$targetFile);
-								
-								$this->files->fileName = $newFileName;
-								$ext = 'jpeg';
-							}
-							
-							$this->values[$field] = sanitizeAll($this->files->fileName);
-							
-							if (isset($params["clean_field"]))
-							{
-// 								$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
-// 								$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
-								
-								$cleanFileName = (!isValidImgName($cleanFileName)) ? encodeUrl($cleanFileName) : $cleanFileName;
-								
-								$this->values[$params["clean_field"]] = sanitizeAll($cleanFileName.".".$ext);
-							}
-						}
-						else
-						{
-							$this->notice = $this->files->notice;
-							$this->result = false;
-							
-							return false;
-						}
-					}
-					else
-					{
-						if (isset($params["mandatory"]))
-						{
-							if (strcmp($type,"insert") === 0)
-							{
-								$vcs = new Lang_En_ValCondStrings();
-								
-								$this->notice = "<div class='alert'>Si prega di selezionare un file per il campo ".getFieldLabel($field)."</div>\n".$vcs->getHiddenAlertElement($field);
-								
-								$this->result = false;
-								
-								return false;
-							}
-						}
-						else if (isset($_POST[$field."--del--"]))
-						{
-							$this->values[$field] = "";
-							
-							if (isset($params["clean_field"]))
-							{
-								$this->values[$params["clean_field"]] = "";
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		return true;
-	}
+// 	public function upload($type = "update")
+// 	{
+// 		if (self::$uploadFileGeneric)
+// 		{
+// 			foreach ($this->uploadFields as $field => $params)
+// 			{
+// 				if (isset($this->values[$field]))
+// 				{
+// 					$this->delFields($field);
+// 					
+// 					if (isset($_FILES[$field]["name"]) and strcmp($_FILES[$field]["name"],'') !== 0)
+// 					{
+// 						$path = $params["path"];
+// 						
+// 						if (isset($params["allowedExtensions"]))
+// 						{
+// 							$this->files->setParam('allowedExtensions',$params["allowedExtensions"]);
+// 						}
+// 						
+// 						if (isset($params["allowedMimeTypes"]))
+// 						{
+// 							$this->files->setParam('allowedMimeTypes',$params["allowedMimeTypes"]);
+// 						}
+// 						
+// 						if (isset($params["maxFileSize"]))
+// 						{
+// 							$this->files->setParam('maxFileSize',$params["maxFileSize"]);
+// 						}
+// 						
+// 						if (isset($params["createImage"]) and $params["createImage"])
+// 						{
+// 							$this->files->setParam('createImage',true);
+// 						}
+// 						
+// 						if (strcmp($params["type"],"file") === 0)
+// 						{
+// 							$this->files->setParam('createImage',false);
+// 						}
+// 						
+// 						$this->files->setParam('fileUploadKey',$field);
+// 						$this->files->setBase(Domain::$parentRoot."/".$path);
+// 						
+// 						if (isset($params["clean_field"]))
+// 						{
+// 							$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+// 						}
+// 						else
+// 						{
+// 							$fileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+// 							$fileName = encodeUrl($fileName);
+// 							$fileName = $this->files->getUniqueName($fileName);
+// 						}
+// 						
+// 						$htaccess = (isset($params["disallow"]) && $params["disallow"]) ? true : false;
+// 						
+// 						self::creaCartellaImages($path, $htaccess);
+// 						
+// 						if ($this->files->uploadFile($fileName))
+// 						{
+// 							$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+// 							$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
+// 							
+// 							if (strcmp($params["type"],"image") === 0 && !Files_Upload::isJpeg($ext) && v("converti_immagini_in_jpeg") && !isset($params["keepFormat"]))
+// 							{
+// 								$params = array(
+// 									'forceToFormat'	=>	'jpeg',
+// 								);
+// 								
+// 								$originalPath = rtrim($this->files->getBase());
+// 								
+// 								$newFileName = str_replace(".$ext", '.jpeg', $this->files->fileName);
+// 								$newFileName = $this->files->getUniqueName($newFileName);
+// 								$targetFile = $originalPath."/".$newFileName;
+// 								
+// 								$thumb = new Image_Gd_Thumbnail($originalPath, $params);
+// 								$thumb->render($this->files->fileName,$targetFile);
+// 								
+// 								$this->files->fileName = $newFileName;
+// 								$ext = 'jpeg';
+// 							}
+// 							
+// 							$this->values[$field] = sanitizeAll($this->files->fileName);
+// 							
+// 							if (isset($params["clean_field"]))
+// 							{
+// // 								$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
+// // 								$ext = $this->files->getFileExtension($_FILES[$field]["name"]);
+// 								
+// 								$cleanFileName = (!isValidImgName($cleanFileName)) ? encodeUrl($cleanFileName) : $cleanFileName;
+// 								
+// 								$this->values[$params["clean_field"]] = sanitizeAll($cleanFileName.".".$ext);
+// 							}
+// 						}
+// 						else
+// 						{
+// 							$this->notice = $this->files->notice;
+// 							$this->result = false;
+// 							
+// 							return false;
+// 						}
+// 					}
+// 					else
+// 					{
+// 						if (isset($params["mandatory"]))
+// 						{
+// 							if (strcmp($type,"insert") === 0)
+// 							{
+// 								$vcs = new Lang_En_ValCondStrings();
+// 								
+// 								$this->notice = "<div class='alert'>Si prega di selezionare un file per il campo ".getFieldLabel($field)."</div>\n".$vcs->getHiddenAlertElement($field);
+// 								
+// 								$this->result = false;
+// 								
+// 								return false;
+// 							}
+// 						}
+// 						else if (isset($_POST[$field."--del--"]))
+// 						{
+// 							$this->values[$field] = "";
+// 							
+// 							if (isset($params["clean_field"]))
+// 							{
+// 								$this->values[$params["clean_field"]] = "";
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 		
+// 		return true;
+// 	}
 	
 	public function setUploadForms($id = 0)
 	{

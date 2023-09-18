@@ -1204,6 +1204,17 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, $params, "images/pagamenti");
 	}
 	
+	public function profilo($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	300,
+			'imgHeight'		=>	300,
+			'useCache'		=>	true,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/".v("nome_cartella_immagine_utente"));
+	}
+	
 	public function evento($fileName)
 	{
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);

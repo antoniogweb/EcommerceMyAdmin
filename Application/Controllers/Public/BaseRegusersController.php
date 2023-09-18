@@ -842,6 +842,60 @@ class BaseRegusersController extends BaseController
 		return;
 	}
 	
+	// permette di modificare l'immagine di profilo
+	public function immagine()
+	{
+		if (!v("attiva_gestione_immagine_utente"))
+			$this->responseCode(403);
+		
+		$this->s['registered']->check(null,0);
+		
+		$redirect = RegusersModel::getRedirect();
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/immagine-profilo";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica immagine profilo"));
+		$data['notice'] = null;
+		$data['action'] = "/modifica-account".RegusersModel::$redirectQueryString;
+		$data["isAreaRiservata"] = true;
+		
+		if (isset($_GET['deleteFoto']))
+		{
+			$this->m['RegusersModel']->values = array('immagine'=>'');
+			$this->m['RegusersModel']->pUpdate(User::$id);
+		}
+		
+		if (isset($_POST["updateAction"]))
+		{
+			$this->m["RegusersModel"]->addValuesCondition("both",'checkNotEmpty',"immagine");
+			
+			$this->m["RegusersModel"]->sValues(array(
+				"immagine"	=>	"",
+			));
+			
+			if ($this->m["RegusersModel"]->upload())
+			{
+				if (isset($this->m["RegusersModel"]->values["immagine"]))
+				{
+					if ($this->m["RegusersModel"]->pUpdate(User::$id))
+						$this->redirect("immagine-profilo");
+				}
+				else
+					$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di selezionare un file")."</div>".'<div class="evidenzia">class_immagine</div>';
+			}
+			else
+				$data['notice'] = $this->m('RegusersModel')->notice;
+		}
+		
+		$data["utenteProfilo"] = $this->m["RegusersModel"]->selectId(User::$id);
+		
+		$this->append($data);
+		$this->load('immagine_profilo');
+	}
+	
 	public function modify()
 	{
 		$this->s['registered']->check(null,0);

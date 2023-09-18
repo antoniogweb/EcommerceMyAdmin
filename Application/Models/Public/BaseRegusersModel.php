@@ -27,6 +27,8 @@ class BaseRegusersModel extends Model_Tree
 	use CommonModel;
 	
 	public $lId = null;
+	public $uploadFields = array();
+	public static $uploadFileGeneric = true;
 	
 	public function __construct()
 	{
@@ -34,6 +36,26 @@ class BaseRegusersModel extends Model_Tree
 		$this->_idFields='id_user';
 		
 // 		$this->orderBy = 'regusers.id_user desc';
+		
+		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/".v("nome_cartella_immagine_utente"),
+// 				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg',
+				'allowedMimeTypes'	=>	'image/jpeg,image/png',
+				"createImage"	=>	true,
+				"forza_randon_field_name"	=>	true,
+				"maxFileSize"	=>	3000000,
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	100,
+					'imgHeight'		=>	100,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'yes',
+				),
+			),
+		);
 		
 		parent::__construct();
 		

@@ -47,6 +47,11 @@
 				<a href="<?php echo $this->baseUrl."/riservata/indirizzi";?>" title="<?php echo gtext("Spedizione", false);?>"><?php echo gtext("Spedizione");?></a>
 			</li>
 			<?php } ?>
+			<?php if (v("attiva_gestione_immagine_utente")) { ?>
+			<li class="<?php if ($attiva == "immagine") { ?>uk-active<?php } ?>">
+				<a href="<?php echo $this->baseUrl."/immagine-profilo";?>" title="<?php echo gtext("Immagine profilo", false);?>"><?php echo gtext("Immagine profilo");?></a>
+			</li>
+			<?php } ?>
 			<li class="<?php if ($attiva == "password") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/modifica-password";?>" title="<?php echo gtext("Modifica password", false);?>"><?php echo gtext("Modifica password");?></a>
 			</li>
