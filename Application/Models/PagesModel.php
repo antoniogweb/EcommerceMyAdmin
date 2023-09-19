@@ -360,6 +360,11 @@ class PagesModel extends GenericModel {
 					'entryClass'	=>	'form_input_text help_prezzo',
 					'wrap' =>	$wrapCombinazioni,
 				),
+				'prezzo_fisso_ivato'	=>	array(
+					'labelString'=>	'Prezzo fisso Iva inclusa (€)',
+					'entryClass'	=>	'form_input_text',
+					'wrap' =>	$wrapCombinazioni,
+				),
 				'codice'		=>	array(
 					'labelString'=>	'Codice prodotto',
 					'entryClass'	=>	'form_input_text help_codice',
@@ -1361,7 +1366,7 @@ class PagesModel extends GenericModel {
 	
 	public function setPriceNonIvato()
 	{
-		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_promozione_ass_ivato"])) && isset($this->values["id_iva"]))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_promozione_ass_ivato"]) || isset($this->values["prezzo_fisso_ivato"])) && isset($this->values["id_iva"]))
 		{
 			$i = new IvaModel();
 			$aliquota = $i->selectId($this->values["id_iva"]);
@@ -1373,6 +1378,9 @@ class PagesModel extends GenericModel {
 				
 				if (isset($this->values["prezzo_promozione_ass_ivato"]))
 					$this->values["prezzo_promozione_ass"] = number_format(setPrice($this->values["prezzo_promozione_ass_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
+				
+				if (isset($this->values["prezzo_fisso_ivato"]))
+					$this->values["prezzo_fisso"] = number_format(setPrice($this->values["prezzo_fisso_ivato"]) / (1 + ($aliquota["valore"] / 100)), v("cifre_decimali"),".","");
 			}
 		}
 		else

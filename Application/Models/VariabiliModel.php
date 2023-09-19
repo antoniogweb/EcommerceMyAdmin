@@ -96,8 +96,6 @@ class VariabiliModel extends GenericModel {
 		"link_cms"					=>	"blog/main",
 		"attiva_ip_location"		=>	0,
 		"mostra_tipi_fasce"			=>	1,
-		"prezzi_ivati_in_carrello"	=>	0,
-		"prezzi_ivati_in_prodotti"	=>	0,
 		"attiva_tipi_azienda"		=>	0,
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
 		"controlla_p_iva"			=>	0,
@@ -661,6 +659,10 @@ class VariabiliModel extends GenericModel {
 		"mail_ordine_dopo_pagamento_agente"	=>	0, // manda la mail dell'ordine all'agente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"numero_massimo_tentativi_invio_codice_coupon"	=>	3, // numero massimo di tentativi di invio del codice coupon ad un cliente
 		"oggetto_ordine_ricevuto_agente"	=>	"Ordine N° [ID_ORDINE] tramite il tuo codice coupon [CODICE_COUPON]", // oggetto della mail di ordine ricevuto all'agente
+		## PREZZI ##
+		"prezzi_ivati_in_carrello"	=>	0,
+		"prezzi_ivati_in_prodotti"	=>	0,
+		"attiva_prezzo_fisso"		=>	0, // se impostato ad 1, utilizza anche il prezzo fisso
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

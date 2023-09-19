@@ -60,6 +60,7 @@
 									<?php echo $form["codice"];?>
 									<?php } ?>
 									
+									<?php echo $form[$campo_prezzo_fisso] ?? "";?>
 									<?php echo $form["prodotto_digitale"] ?? "";?>
 									
 									<?php if (isset($form["price"]) || isset($form["price_ivato"])) { ?>

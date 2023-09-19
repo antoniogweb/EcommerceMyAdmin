@@ -27,6 +27,7 @@ class ProdottiController extends PagesController {
 	public $voceMenu = "prodotti";
 	public $sezionePannello = "ecommerce";
 	public static $sCampoPrice = "price";
+	public static $sCampoPriceFisso = "prezzo_fisso";
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
@@ -35,8 +36,11 @@ class ProdottiController extends PagesController {
 		$campoPrice = self::$sCampoPrice;
 		
 		if (v("prezzi_ivati_in_prodotti"))
+		{
 			$campoPrice = self::$sCampoPrice = "price_ivato";
-			
+			self::$sCampoPriceFisso = "prezzo_fisso_ivato";
+		}
+		
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
 			'<a href="'.$this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
@@ -109,6 +113,8 @@ class ProdottiController extends PagesController {
 		
 		$data = array("avviso_combinazioni" => "");
 		
+		$data["campo_prezzo_fisso"] = self::$sCampoPriceFisso;
+		
 		$campoPriceSconto = $data["campoPriceSconto"] = v("prezzi_ivati_in_prodotti") ? "prezzo_promozione_ass_ivato" : "prezzo_promozione_ass";
 		
 		$haCombinazioni = $this->m[$this->modelName]->hasCombinations((int)$id, false);
@@ -130,16 +136,13 @@ class ProdottiController extends PagesController {
 				if (v("gestisci_sconti_combinazioni_separatamente"))
 					$this->queryFields .= ",id_iva,in_promozione,dal,al";
 				else
-				{
 					$this->queryFields .= ",$campiPromo";
-// 					if (v("permetti_promozione_assoluta_prodotto"))
-// 						$this->queryFields .= ",id_iva,in_promozione,tipo_sconto,prezzo_promozione,$campoPriceSconto,dal,al";
-// 					else
-// 						$this->queryFields .= ",id_iva,in_promozione,prezzo_promozione,dal,al";
-				}
 			}
 			else
 				$this->queryFields .= ",$campoPrice,giacenza,codice,peso,$campiPromo";
+				
+			if (v("attiva_prezzo_fisso"))
+				$this->queryFields .= ",".self::$sCampoPriceFisso;
 		}
 		
 		if (v("abilita_blocco_acquisto_diretto"))
