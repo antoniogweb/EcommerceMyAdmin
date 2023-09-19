@@ -219,4 +219,23 @@ class BaseRiservataController extends BaseController
 		$this->append($data);
 		$this->load('privacy');
 	}
+	
+	public function documenti()
+	{
+		if (!v("attiva_biblioteca_documenti"))
+			$this->responseCode(403);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/biblioteca-documenti";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Biblioteca documenti"));
+		
+		$data['documenti'] = $this->m("DocumentiModel")->getDocumentiUtente(User::$id);
+		
+		$this->append($data);
+		
+		$this->load('documenti');
+	}
 }

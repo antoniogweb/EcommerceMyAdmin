@@ -68,6 +68,11 @@ class OrdiniModel extends FormModel {
 	
 	public static $isDeletable = null;
 	
+	public static function getWhereClausePagato()
+	{
+		return "(orders.stato in (select codice from stati_ordine where stati_ordine.attivo = 1 AND stati_ordine.pagato = 1) OR (orders.pagato = 1 AND orders.stato in (select codice from stati_ordine where stati_ordine.attivo = 1 AND stati_ordine.pagato = -1)))";
+	}
+	
 	public static function isPagato($idO)
 	{
 		$o = new OrdiniModel();

@@ -9,6 +9,11 @@ if (!isset($ukdropdown))
 		<li>
 			<a href="<?php echo $this->baseUrl."/area-riservata";?>" title="<?php echo gtext("Area riservata", false);?>"><?php echo gtext("Area riservata");?></a>
 		</li>
+		<?php if (v("attiva_biblioteca_documenti")) { ?>
+		<li>
+			<a href="<?php echo $this->baseUrl."/biblioteca-documenti/";?>" title="<?php echo gtext("Biblioteca documenti", false);?>"><?php echo gtext("Biblioteca documenti");?></a>
+		</li>
+		<?php } ?>
 		<li>
 			<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 		</li>

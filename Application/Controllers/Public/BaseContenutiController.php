@@ -2044,25 +2044,30 @@ class BaseContenutiController extends BaseController
 		
 		if (!empty($documento))
 		{
-			$path = ROOT."/images/documenti/".$documento['filename'];
-				
-			if (file_exists($path))
+			if ($this->m("DocumentiModel")->checkAccessoUtente($documento["id_doc"]))
 			{
-				$extArray = explode('.', $documento['filename']);
-				$ext = strtolower(end($extArray));
-			
-				$contentDisposition = ($ext == "pdf" || $ext == "png" || $ext == "jpg" || $ext == "jpeg") ? "inline" : "attachment";
+				$path = ROOT."/images/documenti/".$documento['filename'];
 				
-				//get the MIME type of the file
-				$finfo = finfo_open(FILEINFO_MIME_TYPE);
-				$MIMEtype = finfo_file($finfo, $path);
-				$contentType = $MIMEtype;
-				finfo_close($finfo);
+				if (file_exists($path))
+				{
+					$extArray = explode('.', $documento['filename']);
+					$ext = strtolower(end($extArray));
 				
-				header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
-				header('Content-Type: '.$contentType);
-				readfile($path);
+					$contentDisposition = ($ext == "pdf" || $ext == "png" || $ext == "jpg" || $ext == "jpeg") ? "inline" : "attachment";
+					
+					//get the MIME type of the file
+					$finfo = finfo_open(FILEINFO_MIME_TYPE);
+					$MIMEtype = finfo_file($finfo, $path);
+					$contentType = $MIMEtype;
+					finfo_close($finfo);
+					
+					header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
+					header('Content-Type: '.$contentType);
+					readfile($path);
+				}
 			}
+			else
+				$this->redirect("");	
 		}
 		else
 			$this->redirect("");

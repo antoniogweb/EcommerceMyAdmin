@@ -475,4 +475,49 @@ class DocumentiModel extends GenericModel {
 		
 		return $this;
 	}
+	
+	// Restituisce tutti i documenti acquistati da un utente
+	public function getDocumentiUtente($idUser, $soloAttivi = true, $idDoc = 0, $ritornaNumero = false)
+	{
+		if (!$idUser)
+			$idUser = -1;
+		
+		$this->clear()->select("documenti.*,pages.*,orders.*")
+			->inner(array("page"))
+			->inner("righe")->on("righe.id_page = pages.id_page")
+			->inner("orders")->on("orders.id_o = righe.id_o")
+			->addJoinTraduzione()
+			->addJoinTraduzione(null, "contenuti_tradotti_pagina", true, new PagesModel())
+			->where(array(
+				"orders.id_user"	=>	(int)$idUser,
+			))
+			->orderBy("orders.id_o desc,righe.id_r desc");
+		
+		if ($soloAttivi)
+			$this->sWhere(OrdiniModel::getWhereClausePagato());
+		
+		if ($idDoc)
+			$this->aWhere(array(
+				"id_doc"	=>	(int)$idDoc,
+			));
+		
+		return $ritornaNumero ? $this->rowNumber() : $this->send();
+	}
+	
+	// Controlla che il documento $idDoc sia in qualche modo collegato all'utente $idUser, probabilmente con un ordine confermato
+	public function checkAccessoUtente($idDoc, $idUser = 0)
+	{
+		if (!$idUser)
+			$idUser = User::$id;
+		
+		$documento = $this->clear()->inner(array("page"))->where(array(
+			"id_doc"					=>	(int)$idDoc,
+			"pages.prodotto_digitale"	=>	1,
+		))->first();
+		
+		if (!empty($documento))
+			return $this->getDocumentiUtente($idUser, true, $documento["documenti"]["id_doc"], true);
+		
+		return true;
+	}
 }
