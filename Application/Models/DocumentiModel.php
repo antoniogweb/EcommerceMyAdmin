@@ -491,6 +491,7 @@ class DocumentiModel extends GenericModel {
 			->where(array(
 				"orders.id_user"	=>	(int)$idUser,
 			))
+			->addWhereAttivoPermettiTest()
 			->orderBy("orders.id_o desc,righe.id_r desc");
 		
 		if ($soloAttivi)
