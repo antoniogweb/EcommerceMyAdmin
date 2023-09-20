@@ -143,7 +143,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									</tr>
 									<?php } ?>
 								<?php } ?>
-								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni") && OrdiniModel::daSpedire($ordine["id_o"])) { ?>
+								<?php if (v("attiva_gestione_spedizioni") && OrdiniModel::daSpedire($ordine["id_o"])) { ?>
 								<tr>
 									<td><?php echo gtext("Spedizione");?>:</td>
 									<td>

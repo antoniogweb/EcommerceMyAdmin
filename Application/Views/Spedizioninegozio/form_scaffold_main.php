@@ -60,14 +60,18 @@
 			
 			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-sticky-note-o"></i> <?php echo gtext("Note");?></h4>
 			
+			<?php if (SpedizioninegozioModel::legataAdOrdineOLista((int)$id)) { ?>
 			<div class='row'>
 				<div class='col-md-6'>
-					<?php echo $form["note"];?>
+					<?php echo $form["note"] ?? "";?>
 				</div>
 				<div class='col-md-6'>
 					<?php echo $form["note_interne"];?>
 				</div>
 			</div>
+			<?php } else { ?>
+				<?php echo $form["note_interne"];?>
+			<?php } ?>
 			
 			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
 			<?php } ?>

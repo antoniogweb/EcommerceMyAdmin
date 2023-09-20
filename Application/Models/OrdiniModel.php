@@ -100,7 +100,7 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($record))
 		{
-			if (!$record["da_spedire"])
+			if (!$record["da_spedire"] && !$record["id_lista_regalo"])
 				return false;
 			
 			if (!StatiordineModel::getCampo($record["stato"], "da_spedire"))

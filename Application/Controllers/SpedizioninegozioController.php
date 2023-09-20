@@ -74,7 +74,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"");
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"add");
 		
 		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
 		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
@@ -125,16 +125,13 @@ class SpedizioninegozioController extends BaseController {
 		
 		if ($queryType == "insert")
 		{
-			if ($this->viewArgs["id_o"] == "tutti" || !OrdiniModel::g(false)->whereId((int)$this->viewArgs["id_o"])->rowNumber())
-				$this->responseCode(403);
-			
 			$fields = "data_spedizione,id_spedizioniere";
 			
 			$this->menuLinksInsert = "";
 		}
 		else
 		{
-			$fields = $this->m[$this->modelName]->getCampiFormUpdate();
+			$fields = $this->m[$this->modelName]->getCampiFormUpdate(false, (int)$id);
 			
 			if ($this->viewArgs["partial"] == "Y")
 				$this->menuLinks = "";
@@ -145,10 +142,10 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$campiDaDisabilitare = "note,contrassegno,tipologia";
+		$campiDaDisabilitare = "note";
 		
 		if ($queryType == "update" && !SpedizioninegozioModel::aperto((int)$id))
-			$campiDaDisabilitare = $this->m[$this->modelName]->getCampiFormUpdate(true);
+			$campiDaDisabilitare = $this->m[$this->modelName]->getCampiFormUpdate(true, (int)$id);
 		
 		$this->disabledFields = $campiDaDisabilitare;
 		$this->m[$this->modelName]->delFields($campiDaDisabilitare);

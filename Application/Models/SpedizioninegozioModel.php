@@ -43,6 +43,14 @@ class SpedizioninegozioModel extends FormModel {
 		);
     }
 	
+	public function setFormStruct($id = 0)
+	{
+		parent::setFormStruct($id);
+		
+		$this->formStruct["entries"]["note_interne"]["labelString"] = "Note";
+		$this->formStruct["entries"]["note_interne"]["wrap"] = array();
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$this->setProvinciaFatturazione();
@@ -54,13 +62,14 @@ class SpedizioninegozioModel extends FormModel {
 	
 	public function insert()
 	{
-		if (isset($_GET["id_o"]))
+		if (isset($_GET["id_o"]) && is_numeric($_GET["id_o"]))
 		{
 			$ordine = OrdiniModel::g(false)->whereId((int)$_GET["id_o"])->record();
 			
 			if (!empty($ordine))
 			{
 				$this->setValue("id_user", $ordine["id_user"]);
+				$this->setValue("id_ordine_di_partenza", $ordine["id_o"]);
 				$this->setValue("id_spedizione", $ordine["id_spedizione"]);
 				$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
 				$this->setValue("ragione_sociale_2", $ordine["destinatario_spedizione"], "sanitizeDb");
@@ -73,7 +82,6 @@ class SpedizioninegozioModel extends FormModel {
 				$this->setValue("telefono", $ordine["telefono"], "sanitizeDb");
 				$this->setValue("email", $ordine["email"], "sanitizeDb");
 				$this->setValue("note", $ordine["note"], "sanitizeDb");
-				$this->setValue("note_interne", (string)$ordine["note_interne"], "sanitizeDb");
 				
 				$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
 				$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
@@ -91,7 +99,7 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$res = parent::insert();
 		
-		if ($res && isset($ordine))
+		if ($res && isset($ordine) && !empty($ordine))
 		{
 			$rModel = new RigheModel();
 			$snr = new SpedizioninegoziorigheModel();
@@ -383,9 +391,12 @@ class SpedizioninegozioModel extends FormModel {
 		}
     }
     
-    public function getCampiFormUpdate($daDisabilitare = false)
+    public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
-		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,note,ragione_sociale,ragione_sociale_2,tipologia,contrassegno";
+		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,ragione_sociale_2,tipologia,contrassegno";
+		
+		if (self::legataAdOrdineOLista($idSpedizione))
+			$fields .= ",note";
 		
 		if (!$daDisabilitare)
 			$fields .= ",note_interne";
@@ -591,5 +602,15 @@ class SpedizioninegozioModel extends FormModel {
 				}
 			}
 		}
+	}
+	
+	public static function legataAdOrdineOLista($idSpedizione)
+	{
+		$record = self::g(false)->selectId((int)$idSpedizione);
+		
+		if (!empty($record) && $record["id_ordine_di_partenza"])
+			return true;
+		
+		return false;
 	}
 }

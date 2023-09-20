@@ -75,8 +75,6 @@ class SpedizioninegoziorigheController extends BaseController {
 				
 				if (!empty($recordRiga))
 				{
-					$giacenza = (int)$this->m("CombinazioniModel")->whereId((int)$recordRiga["id_c"])->field("giacenza");
-					
 					$this->m[$this->modelName]->setValues(array(
 						"quantity"			=>	$v["quantity"],
 					));

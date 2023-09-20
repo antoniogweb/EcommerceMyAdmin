@@ -808,7 +808,7 @@ class Route
 		'spedizioninegozio,apri',
 		'spedizioninegozio,controllaspedizioni',
 		
-		'spedizioninegoziorighe,salvasped',
+		'spedizioninegoziorighe,salva',
 	);
 	
 	//it can be 'yes' or 'no'
