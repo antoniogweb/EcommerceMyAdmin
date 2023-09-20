@@ -60,40 +60,97 @@ class SpedizioninegozioModel extends FormModel {
 		return $res;
 	}
 	
+	private function recuperaAnagraficaDaStruttura($struttura, $suffisso = "")
+	{
+		$this->setValue("indirizzo", $struttura["indirizzo$suffisso"], "sanitizeDb");
+		$this->setValue("cap", $struttura["cap$suffisso"], "sanitizeDb");
+		$this->setValue("citta", $struttura["citta$suffisso"], "sanitizeDb");
+		$this->setValue("provincia", $struttura["provincia$suffisso"], "sanitizeDb");
+		$this->setValue("dprovincia", $struttura["dprovincia$suffisso"], "sanitizeDb");
+		$this->setValue("nazione", $struttura["nazione$suffisso"], "sanitizeDb");
+		$this->setValue("telefono", $struttura["telefono$suffisso"], "sanitizeDb");
+	}
+	
+	public function recuperaDatiDaOrdine($idO)
+	{
+		$ordine = OrdiniModel::g(false)->whereId((int)$idO)->record();
+		
+		if (!empty($ordine))
+		{
+			$this->setValue("id_user", $ordine["id_user"]);
+			$this->setValue("id_spedizione", $ordine["id_spedizione"]);
+			
+			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($struttura), "sanitizeDb");
+			$this->setValue("ragione_sociale_2", $ordine["destinatario_spedizione"], "sanitizeDb");
+			
+			$this->recuperaAnagraficaDaStruttura($ordine);
+			
+			$this->setValue("email", $ordine["email"], "sanitizeDb");
+			$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
+			$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
+			$this->setValue("note", $ordine["note"], "sanitizeDb");
+			
+			$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
+			
+			$this->setValue("tipologia", $tipologia);
+			
+			if ($ordine["pagamento"] == "contrassegno")
+				$this->setValue("contrassegno", $ordine["total"]);
+		}
+	}
+	
+	public function recuperaDatiDaListaRegalo($idLista)
+	{
+		$lista = ListeregaloModel::g(false)->select("*")
+			->inner(array("cliente"))
+			->whereId((int)$idLista)
+			->first();
+		
+		if (!empty($lista))
+		{
+			$cliente = $lista["regusers"];
+			
+			$spedizione = RegusersModel::g(false)->getSpedizionePrincipale($cliente["id_user"]);
+			
+			$struttura = !empty($spedizione) ? $spedizione : $cliente;
+			
+			$this->setValue("id_user", $cliente["id_user"]);
+			
+			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($cliente), "sanitizeDb");
+			
+			$suffisso = "";
+			
+			if (!empty($spedizione))
+			{
+				$this->setValue("id_spedizione", $spedizione["id_spedizione"]);
+				$this->setValue("ragione_sociale_2", $spedizione["destinatario_spedizione"], "sanitizeDb");
+				$suffisso = "_spedizione";
+			}
+			
+			$this->recuperaAnagraficaDaStruttura($struttura, $suffisso);
+			
+			$this->setValue("tipologia", self::TIPOLOGIA_PORTO_FRANCO);
+			$this->setValue("id_lista_regalo", (int)$idLista);
+			
+			$this->setValue("email", $cliente["username"], "sanitizeDb");
+			$this->setValue("lingua", (string)$lista["liste_regalo"]["lingua"], "sanitizeDb");
+			$this->setValue("nazione", (string)$lista["liste_regalo"]["nazione"], "sanitizeDb");
+		}
+	}
+	
 	public function insert()
 	{
+		if (isset($_GET["id_lista_regalo"]) && is_numeric($_GET["id_lista_regalo"]))
+			$this->recuperaDatiDaListaRegalo((int)$_GET["id_lista_regalo"]);
+		else if (isset($_GET["id_o"]) && is_numeric($_GET["id_o"]))
+			$this->recuperaDatiDaOrdine((int)$_GET["id_o"]);
+		
+		// Recupero comunque i dati dell'ordine se presente nell'URL
 		if (isset($_GET["id_o"]) && is_numeric($_GET["id_o"]))
-		{
 			$ordine = OrdiniModel::g(false)->whereId((int)$_GET["id_o"])->record();
-			
-			if (!empty($ordine))
-			{
-				$this->setValue("id_user", $ordine["id_user"]);
-				$this->setValue("id_ordine_di_partenza", $ordine["id_o"]);
-				$this->setValue("id_spedizione", $ordine["id_spedizione"]);
-				$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
-				$this->setValue("ragione_sociale_2", $ordine["destinatario_spedizione"], "sanitizeDb");
-				$this->setValue("indirizzo", $ordine["indirizzo"], "sanitizeDb");
-				$this->setValue("cap", $ordine["cap"], "sanitizeDb");
-				$this->setValue("citta", $ordine["citta"], "sanitizeDb");
-				$this->setValue("provincia", $ordine["provincia"], "sanitizeDb");
-				$this->setValue("dprovincia", $ordine["dprovincia"], "sanitizeDb");
-				$this->setValue("nazione", $ordine["nazione"], "sanitizeDb");
-				$this->setValue("telefono", $ordine["telefono"], "sanitizeDb");
-				$this->setValue("email", $ordine["email"], "sanitizeDb");
-				$this->setValue("note", $ordine["note"], "sanitizeDb");
-				
-				$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
-				$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
-				
-				$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
-				
-				$this->setValue("tipologia", $tipologia);
-				
-				if ($ordine["pagamento"] == "contrassegno")
-					$this->setValue("contrassegno", $ordine["total"]);
-			}
-		}
+		
+		if (isset($ordine) && !empty($ordine))
+			$this->setValue("id_ordine_di_partenza", $ordine["id_o"]);
 		
 		$this->setProvinciaFatturazione();
 		

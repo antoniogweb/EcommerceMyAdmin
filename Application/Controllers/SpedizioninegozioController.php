@@ -40,6 +40,7 @@ class SpedizioninegozioController extends BaseController {
 	
 	public $argKeys = array(
 		'id_o:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
+		'id_lista_regalo:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
 		'id_ordine:sanitizeAll'=>'tutti', // -> usato per il filtro
