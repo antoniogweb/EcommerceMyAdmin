@@ -90,6 +90,9 @@
 		<td align="left" style="width:15%">Codice</td>
 		<td align="left" style="width:40%">Descrizione</td>
 		<td align="left" style="width:15%">Quantità</td>
+		<?php if (v("attiva_prezzo_fisso")) { ?>
+		<td align="left" style="width:15%">Prezzo fisso</td>
+		<?php } ?>
 		<td align="left" style="width:15%">Prezzo</td>
 		<td align="left" style="width:15%">Totale</td>
 	</tr>
@@ -99,6 +102,9 @@
 		<td style="width:15%"><?php echo $p["righe"]["codice"];?></td>
 		<td style="width:40%"><?php echo htmlentitydecode($p["righe"]["title"]);?><?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?></td>
 		<td style="width:15%"><?php echo $p["righe"]["quantity"];?></td>
+		<?php if (v("attiva_prezzo_fisso")) { ?>
+		<td style="width:15%"> <?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0 && $p["righe"]["prezzo_fisso"] > 0){ echo "<del>€ ".setPriceReverse($p["righe"]["prezzo_fisso_intero"])."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["prezzo_fisso"]);?></span></td>
+		<?php } ?>
 		<td style="width:15%"> <?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse($p["righe"]["prezzo_intero"])."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price"]);?></span></td>
 		<td style="width:15%">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["price"]);?></span></td>
 	</tr>
