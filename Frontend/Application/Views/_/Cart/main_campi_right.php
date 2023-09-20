@@ -24,6 +24,15 @@
 		<?php } ?>
 	</div>
 	<?php } ?>
+	<?php if (v("attiva_prezzo_fisso")) { ?>
+	<div class="uk-visible@m <?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
+		<?php echo setPriceReverse($prezzoUnitarioFisso);?> €
+		<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0 && $p["cart"]["prezzo_fisso_intero"] > 0){ echo "<del class='uk-text-small uk-text-muted'>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_fisso_intero"]))." €</del>"; } ?>
+		<?php if (!v("prezzi_ivati_in_carrello")) { ?>
+		<div class="uk-text-meta"><?php echo gtext("Iva")?>: <?php echo setPriceReverse($p["cart"]["iva"]);?>%</div>
+		<?php } ?>
+	</div>
+	<?php } ?>
 	<div class="uk-visible@m <?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
 		<?php echo setPriceReverse($prezzoUnitario);?> €
 		<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del class='uk-text-small uk-text-muted'>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_intero"]))." €</del>"; } ?>
@@ -46,7 +55,7 @@
 		<?php } ?>
 	</div>
 	<div class="<?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
-		<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €
+		<?php echo setPriceReverse(($p["cart"]["quantity"] * $prezzoUnitario) + $prezzoUnitarioFisso);?> €
 	</div>
 	<div class="uk-visible@m">
 		<a class="uk-text-danger remove cart_item_delete_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/close.svg");?></span></a>

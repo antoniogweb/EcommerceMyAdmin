@@ -990,7 +990,6 @@ class OrdiniModel extends FormModel {
 		}
 		
 		$pages = $c->getRighePerOrdine();
-// 		$pages = $c->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 		
 		$idsPage = [];
 		
@@ -1012,13 +1011,38 @@ class OrdiniModel extends FormModel {
 			$r->values["price_ivato"] = number_format($r->values["price"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			$r->values["prezzo_intero_ivato"] = number_format($r->values["prezzo_intero"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
-			if (PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
+			if (v("attiva_prezzo_fisso"))
 			{
-				$r->values["prezzo_finale"] = number_format($r->values["price"] - ($r->values["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
-				$r->values["percentuale_promozione"] = $sconto;
+				$prezzo = number_format($r->values["price"],v("cifre_decimali"),".","");
+				$prezzoFisso = number_format($r->values["prezzo_fisso"],v("cifre_decimali"),".","");
+				
+				$subtotaleRiga = number_format($prezzoFisso + ($prezzo * $r->values["quantity"]),v("cifre_decimali"),".","");
+				
+				$inPromoRiga = PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]);
+				
+				if ($inPromoRiga)
+				{
+					$prezzo = number_format($prezzo - $prezzo * ($sconto/100),v("cifre_decimali"),".","");
+					$prezzoFisso = number_format($prezzoFisso - $prezzoFisso * ($sconto/100),v("cifre_decimali"),".","");
+				}
+				
+				$subtotaleRigaScontato = number_format($prezzoFisso + ($prezzo * $r->values["quantity"]),v("cifre_decimali"),".","");
+				
+				$r->values["prezzo_finale"] = $r->values["quantity"] > 0 ? number_format($subtotaleRigaScontato / $r->values["quantity"],v("cifre_decimali"),".","") : 0;
+				
+				if ($inPromoRiga && $subtotaleRiga > 0)
+					$r->values["percentuale_promozione"] = number_format(($subtotaleRiga - $subtotaleRigaScontato) / $subtotaleRiga,2,".","");
 			}
 			else
-				$r->values["prezzo_finale"] = number_format($r->values["price"],v("cifre_decimali"),".","");
+			{
+				if (PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
+				{
+					$r->values["prezzo_finale"] = number_format($r->values["price"] - ($r->values["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
+					$r->values["percentuale_promozione"] = $sconto;
+				}
+				else
+					$r->values["prezzo_finale"] = number_format($r->values["price"],v("cifre_decimali"),".","");
+			}
 			
 			$r->values["prezzo_finale_ivato"] = number_format($r->values["prezzo_finale"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			

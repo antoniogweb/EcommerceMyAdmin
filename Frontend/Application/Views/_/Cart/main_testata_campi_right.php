@@ -8,6 +8,11 @@
 		<?php echo gtext("Codice");?>
 	</div>
 	<?php } ?>
+	<?php if (v("attiva_prezzo_fisso")) { ?>
+	<div>
+		<?php echo gtext("Prezzo fisso");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("(Iva esclusa)");?><?php } ?>
+	</div>
+	<?php } ?>
 	<div>
 		<?php echo gtext("Prezzo");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("(Iva esclusa)");?><?php } ?>
 	</div>

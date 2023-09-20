@@ -35,6 +35,7 @@
 			<hr>
 			<?php foreach ($pages as $p) {
 				$prezzoUnitario = p($p["cart"],$p["cart"]["price"]);
+				$prezzoUnitarioFisso = p($p["cart"],$p["cart"]["prezzo_fisso"]);
 				$backColor = checkGiacenza($p["cart"]["id_cart"], $p["cart"]["quantity"]) ? v("input_ok_back_color") : "red";
 				$urlAliasProdotto = getUrlAlias($p["cart"]["id_page"], $p["cart"]["id_c"]);
 			?>

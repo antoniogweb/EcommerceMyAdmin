@@ -14,6 +14,11 @@
 					<?php echo gtext("Codice");?>
 				</div>
 				<?php } ?>
+				<?php if (v("attiva_prezzo_fisso")) { ?>
+				<div>
+					<?php echo gtext("Prezzo fisso");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("IVA esclusa")?><?php } ?>
+				</div>
+				<?php } ?>
 				<div>
 					<?php echo gtext("Prezzo");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("IVA esclusa")?><?php } ?>
 				</div>
@@ -58,6 +63,15 @@ foreach ($righeOrdine as $p) { ?>
 			<?php if (v("mostra_codice_in_carrello")) { ?>
 			<div class="uk-text-small">
 				<span class="uk-hidden@s uk-text-bold"><?php echo gtext("Codice");?>:</span> <?php echo $p["righe"]["codice"];?>
+			</div>
+			<?php } ?>
+			<?php if (v("attiva_prezzo_fisso")) { ?>
+			<div class="uk-text-small uk-margin-remove-top">
+				<span class="uk-hidden@s uk-text-bold"><?php echo gtext("Prezzo fisso");?>:</span>
+				<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0 && $p["righe"]["prezzo_fisso_intero"] > 0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_fisso_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["prezzo_fisso"]));?></span>
+				<?php if (!v("prezzi_ivati_in_carrello")) { ?>
+				<div class="scritta_iva_carrello"><?php echo gtext("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
+				<?php } ?>
 			</div>
 			<?php } ?>
 			<div class="uk-text-small uk-margin-remove-top">

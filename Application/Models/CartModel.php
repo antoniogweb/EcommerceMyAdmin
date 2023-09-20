@@ -113,16 +113,20 @@ class CartModel extends GenericModel {
 				foreach ($res as $r)
 				{
 					$prezzo = number_format($r["cart"]["price"],$cifre,".","");
+					$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 					
 // 					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
 					if ($coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+					{
 						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
+						$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($coupon["sconto"]/100),$cifre,".","");
+					}
 					
-					$total = $total + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
+					$total = $total + $prezzoFisso + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 					
 					$ivaRiga = $this->gIvaRiga($r);
 					
-					$totaleIvato = $totaleIvato + number_format($prezzo * $r["cart"]["quantity"] * (1 + ($ivaRiga / 100)),$cifre,".","");
+					$totaleIvato = $totaleIvato + number_format($prezzoFisso * (1 + ($ivaRiga / 100)),$cifre,".","") + number_format($prezzo * $r["cart"]["quantity"] * (1 + ($ivaRiga / 100)),$cifre,".","");
 				}
 			}
 			
@@ -181,9 +185,9 @@ class CartModel extends GenericModel {
 			foreach ($res2 as $r)
 			{
 				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
+				$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 				
-				$total = $total + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
-// 				$total = $total + number_format($r["aggregate"]["SOMMA"],2,".","");
+				$total = $total + $prezzoFisso + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 			}
 		}
 		
@@ -260,23 +264,18 @@ class CartModel extends GenericModel {
 			foreach ($res as $r)
 			{
 				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
+				$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 				
 // 				if ($tipoSconto == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
 				if ($tipoSconto == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 				{
 					$prezzo = number_format($prezzo - $prezzo*($sconto/100),$cifre,".","");
+					$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($sconto/100),$cifre,".","");
 				}
 				
-				$subtotale = number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
+				$subtotale = $prezzoFisso + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
 				
 				$ivaRiga = $this->gIvaRiga($r);
-// 				$ivaRiga = $r["cart"]["iva"];
-// 				
-// 				// Controllo l'aliquota estera
-// 				if (isset(IvaModel::$aliquotaEstera))
-// 					$ivaRiga = IvaModel::$aliquotaEstera;
-// 				
-// 				$ivaRiga = number_format($ivaRiga,2,".","");
 				
 				if (isset($arraySubtotale[$ivaRiga]))
 					$arraySubtotale[$ivaRiga] += $subtotale;
@@ -284,7 +283,7 @@ class CartModel extends GenericModel {
 					$arraySubtotale[$ivaRiga] = $subtotale;
 				
 				$iva = $subtotale*($ivaRiga/100);
-				$total += number_format($iva,$cifre,".","");
+// 				$total += number_format($iva,$cifre,".","");
 				
 				$totaleIvato += $subtotale * (1 + ($ivaRiga / 100));
 			}

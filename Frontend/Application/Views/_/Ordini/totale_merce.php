@@ -1,6 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php foreach ($pages as $p) {
 	$prezzoUnitario = p($p["cart"],$p["cart"]["price"]);
+	$prezzoUnitarioFisso = p($p["cart"],$p["cart"]["prezzo_fisso"]);
 ?>
 <div class="uk-grid-column-small uk-grid" uk-grid>
 	<div class="uk-width-1-3">
@@ -16,6 +17,11 @@
 						<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
 					<?php } ?>
 					<br />
+					<?php if (v("attiva_prezzo_fisso") && $prezzoUnitarioFisso > 0) { ?>
+					<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitarioFisso);?> €</span>
+					<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_fisso_intero"]))." €</del>"; } ?>
+					<br />
+					<?php } ?>
 					<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitario);?> €</span>
 					<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_intero"]))." €</del>"; } ?> &times; <?php echo $p["cart"]["quantity"];?>
 					<br />
@@ -23,7 +29,7 @@
 				<?php include(tpf("Cart/main_testo_disponibilita.php"));?>
 			</div>
 			<div class="uk-margin-remove-top uk-width-1-3 uk-text-right <?php echo v("classe_css_dimensione_testo_colonne_carrello");?>">
-				<?php echo setPriceReverse($p["cart"]["quantity"] * $prezzoUnitario);?> €
+				<?php echo setPriceReverse(($p["cart"]["quantity"] * $prezzoUnitario) + $prezzoUnitarioFisso);?> €
 			</div>
 		</div>
 	</div>
