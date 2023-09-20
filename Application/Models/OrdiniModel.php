@@ -1031,7 +1031,7 @@ class OrdiniModel extends FormModel {
 				$r->values["prezzo_finale"] = $r->values["quantity"] > 0 ? number_format($subtotaleRigaScontato / $r->values["quantity"],v("cifre_decimali"),".","") : 0;
 				
 				if ($inPromoRiga && $subtotaleRiga > 0)
-					$r->values["percentuale_promozione"] = number_format(($subtotaleRiga - $subtotaleRigaScontato) / $subtotaleRiga,2,".","");
+					$r->values["percentuale_promozione"] = number_format((($subtotaleRiga - $subtotaleRigaScontato) / $subtotaleRiga) * 100,2,".","");
 			}
 			else
 			{

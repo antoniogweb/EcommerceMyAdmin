@@ -385,7 +385,15 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								<td class="text-right"><?php echo setPriceReverse($p["righe"]["peso"]);?></td>
 								<td class="text-right"><?php echo $p["righe"]["quantity"];?></td>
 								<td class="text-right colonne_non_ivate">
-									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".($mostraIvato ? setPriceReverse($p["righe"]["prezzo_intero_ivato"]) : setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali")))." €</del>"; } ?> <span class="item_price_single"><?php echo $mostraIvato ? setPriceReverse($p["righe"]["price_ivato"]) : setPriceReverse($p["righe"]["price"], v("cifre_decimali"));?></span> €
+									<?php
+									$campoIvato = $mostraIvato ? "_ivato" : "";
+									$prezzoFisso = $p["righe"]["prezzo_fisso_intero$campoIvato"];
+									$prezzoFissoFinale = $p["righe"]["prezzo_fisso$campoIvato"];
+									
+									$strPrezzoFisso = ($prezzoFisso > 0) ? setPriceReverse($prezzoFisso)." + " : "";
+									$strPrezzoFissoFinale = ($prezzoFissoFinale > 0) ? setPriceReverse($prezzoFissoFinale)." + " : "";
+									?>
+									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".$strPrezzoFisso.($mostraIvato ? setPriceReverse($p["righe"]["prezzo_intero_ivato"]) : setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali")))." €</del>"; } ?> <span class="item_price_single"><?php echo $strPrezzoFissoFinale.($mostraIvato ? setPriceReverse($p["righe"]["price_ivato"]) : setPriceReverse($p["righe"]["price"], v("cifre_decimali")));?></span> €
 									
 									<?php $jsonSconti = json_decode($p["righe"]["json_sconti"],true);?>
 									
