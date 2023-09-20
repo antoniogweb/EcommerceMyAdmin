@@ -20,6 +20,7 @@
 					<?php if (v("attiva_prezzo_fisso") && $prezzoUnitarioFisso > 0) { ?>
 					<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitarioFisso);?> €</span>
 					<?php if (strcmp($p["cart"]["in_promozione"],"Y")===0){ echo "<del>".setPriceReverse(p($p["cart"],$p["cart"]["prezzo_fisso_intero"]))." €</del>"; } ?>
+					+ 
 					<br />
 					<?php } ?>
 					<span class="uk-text-bold"><?php echo setPriceReverse($prezzoUnitario);?> €</span>

@@ -35,5 +35,11 @@ $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 $percSconto = getPercScontoF($prezzoPienoIvato, $prezzoFinaleIvato);
 $isProdotto = !v("attiva_multi_categoria") ? true : isProdotto($idPr);
 
+if (v("attiva_prezzo_fisso"))
+{
+	$prezzoFissoIvato = calcolaPrezzoIvato($p["pages"]["id_page"],$p["pages"]["prezzo_fisso"]);
+	$prezzoFissoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $p["pages"]["prezzo_fisso"]);
+}
+
 if (isset($corr))
 	PagesModel::restoreIdCombinazione();

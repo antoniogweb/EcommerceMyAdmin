@@ -38,9 +38,13 @@
 							<br />
 							<?php echo $p["cart"]["attributi"];?>
 							<?php } ?>
-							
-							<div class="uk-grid uk-margin-xsmall uk-grid-small uk-flex-middle" uk-grid>
-								<div class="uk-text-bolder uk-text-small"><?php echo setPriceReverse($p["cart"]["quantity"] * p($p["cart"],$p["cart"]["price"]));?> €</div>
+							<div class="uk-grid uk-margin-xsmall uk-grid-small uk-flex-<?php echo v("attiva_prezzo_fisso") ? "bottom" : "middle";?>" uk-grid>
+								<div class="uk-text-bolder uk-text-small">
+									<?php if (v("attiva_prezzo_fisso") && $p["cart"]["prezzo_fisso"] > 0) { ?>
+									<?php echo setPriceReverse(p($p["cart"],$p["cart"]["prezzo_fisso"]));?> € + <br />
+									<?php } ?>
+									<?php echo setPriceReverse($p["cart"]["quantity"] * p($p["cart"],$p["cart"]["price"]));?> €
+								</div>
 								<div class="uk-margin-remove-top uk-text-meta uk-text-xsmall"><?php echo $p["cart"]["quantity"];?> × <?php echo setPriceReverse(p($p["cart"],$p["cart"]["price"]));?> €</div>
 							</div>
 						</div>

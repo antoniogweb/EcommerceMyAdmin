@@ -43,7 +43,11 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 		<?php if ($isProdotto) { ?>
 		<span class="price">
 			<span class="uk-text-small">
-				<?php if ($percentualeSconto > 0 && inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".setPriceReverse($prezzoPienoIvato)."</del> € ".setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".setPriceReverse($prezzoFinaleIvato);}?>
+				<?php
+				$strPrezzoFissoIvato = (isset($prezzoFissoIvato) && $prezzoFissoIvato > 0) ? setPriceReverse($prezzoFissoIvato)." + " : "";
+				$strPrezzoFissoFinaleIvato = (isset($prezzoFissoFinaleIvato) && $prezzoFissoFinaleIvato > 0) ? setPriceReverse($prezzoFissoFinaleIvato)." + " : "";
+				?>
+				<?php if ($percentualeSconto > 0 && inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".$strPrezzoFissoIvato.setPriceReverse($prezzoPienoIvato)."</del> € ".$strPrezzoFissoFinaleIvato.setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".$strPrezzoFissoFinaleIvato.setPriceReverse($prezzoFinaleIvato);}?>
 				
 				<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
 				<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>
