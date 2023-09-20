@@ -44,8 +44,8 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 		<span class="price">
 			<span class="uk-text-small">
 				<?php
-				$strPrezzoFissoIvato = (isset($prezzoFissoIvato) && $prezzoFissoIvato > 0) ? setPriceReverse($prezzoFissoIvato)." + " : "";
-				$strPrezzoFissoFinaleIvato = (isset($prezzoFissoFinaleIvato) && $prezzoFissoFinaleIvato > 0) ? setPriceReverse($prezzoFissoFinaleIvato)." + " : "";
+				$strPrezzoFissoIvato = (v("attiva_prezzo_fisso") && isset($prezzoFissoIvato) && $prezzoFissoIvato > 0) ? setPriceReverse($prezzoFissoIvato)." + " : "";
+				$strPrezzoFissoFinaleIvato = (v("attiva_prezzo_fisso") && isset($prezzoFissoFinaleIvato) && $prezzoFissoFinaleIvato > 0) ? setPriceReverse($prezzoFissoFinaleIvato)." + " : "";
 				?>
 				<?php if ($percentualeSconto > 0 && inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".$strPrezzoFissoIvato.setPriceReverse($prezzoPienoIvato)."</del> € ".$strPrezzoFissoFinaleIvato.setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".$strPrezzoFissoFinaleIvato.setPriceReverse($prezzoFinaleIvato);}?>
 				

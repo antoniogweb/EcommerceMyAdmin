@@ -6,14 +6,16 @@ $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 $inPromozioneTot = inPromozioneTot($p["pages"]["id_page"]);
 
+$strPrezzoFissoIvato = $strPrezzoFissoFinaleIvato = 0;
+
 if (v("attiva_prezzo_fisso"))
 {
 	$prezzoFissoIvato = calcolaPrezzoIvato($p["pages"]["id_page"],$p["pages"]["prezzo_fisso"]);
 	$prezzoFissoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $p["pages"]["prezzo_fisso"]);
+	
+	$strPrezzoFissoIvato = ($prezzoFissoIvato > 0) ? setPriceReverse($prezzoFissoIvato)." + " : "";
+	$strPrezzoFissoFinaleIvato = ($prezzoFissoFinaleIvato > 0) ? setPriceReverse($prezzoFissoFinaleIvato)." + " : "";
 }
-
-$strPrezzoFissoIvato = (isset($prezzoFissoIvato) && $prezzoFissoIvato > 0) ? setPriceReverse($prezzoFissoIvato)." + " : "";
-$strPrezzoFissoFinaleIvato = (isset($prezzoFissoFinaleIvato) && $prezzoFissoFinaleIvato > 0) ? setPriceReverse($prezzoFissoFinaleIvato)." + " : "";
 ?>
 <div class="">
 	<?php if ($haVarianti) { ?><div class="blocco-prezzo"><?php } ?>
