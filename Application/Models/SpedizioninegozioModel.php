@@ -80,7 +80,7 @@ class SpedizioninegozioModel extends FormModel {
 			$this->setValue("id_user", $ordine["id_user"]);
 			$this->setValue("id_spedizione", $ordine["id_spedizione"]);
 			
-			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($struttura), "sanitizeDb");
+			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
 			$this->setValue("ragione_sociale_2", $ordine["destinatario_spedizione"], "sanitizeDb");
 			
 			$this->recuperaAnagraficaDaStruttura($ordine);
@@ -176,7 +176,19 @@ class SpedizioninegozioModel extends FormModel {
 		}
 		
 		if ($res)
+		{
+			// Aggiungo un collo
+			$sncModel = new SpedizioninegoziocolliModel();
+			
+			$sncModel->setValues(array(
+				"id_spedizione_negozio"	=>	(int)$this->lId,
+				"peso"					=>	number_format($this->peso(array((int)$this->lId)),2,".",""),
+			));
+			
+			$sncModel->insert();
+			
 			SpedizioninegozioeventiModel::g()->inserisci($this->lId, "A");
+		}
 		
 		return $res;
 	}
@@ -711,7 +723,7 @@ class SpedizioninegozioModel extends FormModel {
 			),
 		))->send();
 		
-		if (count($res) > 0)
+		if (count($res) > 0 && $res[0]["aggregate"]["PESO_TOTALE"])
 			return $res[0]["aggregate"]["PESO_TOTALE"];
 		
 		return 0;

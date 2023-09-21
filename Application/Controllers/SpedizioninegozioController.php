@@ -142,7 +142,7 @@ class SpedizioninegozioController extends BaseController {
 			$fields = $this->m[$this->modelName]->getCampiFormUpdate(false, (int)$id);
 			
 			if ($this->viewArgs["partial"] == "Y")
-				$this->menuLinks = "";
+				$this->menuLinks = "save";
 		}
 		
 		if ($queryType == "update" && SpedizioninegozioModel::aperto((int)$id))
@@ -187,7 +187,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "#;righe.id_o;", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud");
 		$this->mainHead = "Immagine,Ordine,Articolo,Variante,Codice,Quantità";
 		
-		$pulsantiMenu = "back";
+		$pulsantiMenu = partial() ? "" : "back";
 		
 		if (SpedizioninegozioModel::g()->deletable($id))
 			$pulsantiMenu .= ",save_righe_spedizione";
@@ -242,7 +242,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->mainFields = array("pesoCrud");
 		$this->mainHead = "Peso (kg)";
 		
-		$pulsantiMenu = "back";
+		$pulsantiMenu = partial() ? "" : "back";
 		
 		if (SpedizioninegozioModel::g()->deletable($id))
 			$pulsantiMenu .= ",save_colli_spedizione";
@@ -292,7 +292,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->mainFields = array("cleanDateTime", "titoloCrud", "emailCrud");
 		$this->mainHead = "Data / ora,Titolo,Notifica";
 		
-		$pulsantiMenu = "back";
+		$pulsantiMenu = partial() ? "" : "back";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"eventi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
