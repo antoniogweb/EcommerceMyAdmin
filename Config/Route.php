@@ -803,12 +803,14 @@ class Route
 		'spedizioninegozio,form',
 		'spedizioninegozio,righe',
 		'spedizioninegozio,eventi',
+		'spedizioninegozio,apri',
 		'spedizioninegozio,prontadainviare',
 		'spedizioninegozio,invia',
-		'spedizioninegozio,apri',
 		'spedizioninegozio,controllaspedizioni',
+		'spedizioninegozio,colli',
 		
 		'spedizioninegoziorighe,salva',
+		'spedizioninegoziocolli,salva',
 	);
 	
 	//it can be 'yes' or 'no'

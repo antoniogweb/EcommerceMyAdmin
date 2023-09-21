@@ -246,6 +246,7 @@ class SpedizioninegozioModel extends FormModel {
 	}
 	
 	// Ricalcola il totale del contrassegno per la spedizione
+	// array idS
 	public function ricalcolaContrassegno($idS)
 	{
 		$oModel = new OrdiniModel();
@@ -696,5 +697,37 @@ class SpedizioninegozioModel extends FormModel {
 	public function listaregalo($record)
 	{
 		return OrdiniModel::g(false)->listaregalo($record, "spedizioni_negozio");
+	}
+	
+	// Restituisce il peso totale della spedizione
+	// array $idS
+	public function peso($idS)
+	{
+		$sncModel = new SpedizioninegoziocolliModel();
+		
+		$res = $sncModel->clear()->select("sum(peso) as PESO_TOTALE")->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		))->send();
+		
+		if (count($res) > 0)
+			return $res[0]["aggregate"]["PESO_TOTALE"];
+		
+		return 0;
+	}
+	
+	// Restituisce i colli legati alla spedizione
+	public function getColli($idS, $soloNumero = false)
+	{
+		$sncModel = new SpedizioninegoziocolliModel();
+		
+		$sncModel->clear()->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		));
+		
+		return $soloNumero ? $sncModel->rowNumber() : $sncModel->send(false);
 	}
 }

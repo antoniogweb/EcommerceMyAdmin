@@ -600,7 +600,10 @@ $(document).ready(function(){
 		
 // 		console.log(valori);
 		
-		var controller = that.hasClass("save_righe_spedizione") ? "spedizioninegoziorighe" : "righe";
+		if (that[0].hasAttribute('controller'))
+			var controller = that.attr("controller");
+		else		
+			var controller = that.hasClass("save_righe_spedizione") ? "spedizioninegoziorighe" : "righe";
 		
 		$.ajaxQueue({
 			url: baseUrl + "/" + controller + "/salva",

@@ -5,7 +5,8 @@
 	$ordini = SpedizioninegozioModel::g()->getOrdini((int)$id);
 	$stile = SpedizioninegozioModel::g()->getStile($spedizione["spedizioni_negozio"]["stato"]);
 	$titoloStato = SpedizioninegozioModel::g()->getTitoloStato($spedizione["spedizioni_negozio"]["stato"]);
-// 	$listaRegalo = ListeregaloModel::g()->whereId((int)$spedizione["spedizioni_negozio"]["id_lista_regalo"])->record();
+	$pesoTotale = SpedizioninegozioModel::g()->peso(array((int)$id));
+	$numeroColli = SpedizioninegozioModel::g()->getColli(array((int)$id), true);
 ?>
 
 <div class="box box-widget">
@@ -45,6 +46,18 @@
 						</td>
 					</tr>
 					<?php } ?>
+					<tr>
+						<td><?php echo gtext("Colli");?>:</td>
+						<td>
+							<?php echo gtext("Peso totale");?>: <b><?php echo setPriceReverse($pesoTotale);?> kg</b><br />
+							<?php echo gtext("Numero colli");?>: <b><?php echo $numeroColli;?></b><br />
+							<?php if ($numeroColli <= 0 || $pesoTotale <= 0) { ?>
+								<div class="text text-danger text-bold">
+									<i class="fa fa-exclamation-triangle"></i> <?php echo gtext("Attenzione, inserire almeno un collo di peso maggiore di 0 kg")?>
+								</div>
+							<?php } ?>
+						</td>
+					</tr>
 				</table>
 			</div>
 			<div class="col-lg-6">
@@ -66,6 +79,7 @@
 
 <ul class="nav_dettaglio nav nav-tabs">
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
+	<li <?php echo $posizioni['colli'];?>><a <?php if ($numeroColli <= 0 || $pesoTotale <= 0) { ?>style="background-color:red !important;color:#FFF !important;"<?php } ?>href="<?php echo $this->baseUrl."/".$this->controller."/colli/$id".$this->viewStatus;?>"><?php echo gtext("Colli");?></a></li>
 	<?php if (SpedizioninegozioModel::legataAdOrdineOLista((int)$id)) { ?>
 	<li <?php echo $posizioni['righe'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/righe/$id".$this->viewStatus;?>"><?php echo gtext("Righe ordine");?></a></li>
 	<?php } ?>
