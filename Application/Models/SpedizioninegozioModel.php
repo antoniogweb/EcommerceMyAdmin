@@ -481,6 +481,29 @@ class SpedizioninegozioModel extends FormModel {
 		}
     }
     
+    // Restituisce il modulo spedizioniere
+    public static function getModulo($idSpedizione)
+    {
+		$record = self::g(false)->clear()->select("id_spedizioniere")->whereId((int)$idSpedizione)->record("");
+		
+		// Aggiungo i campi dello spedizioniere
+		if (!empty($record) && $record["id_spedizioniere"])
+			return SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+		
+		return null;
+    }
+    
+    // Restituisce i campi del form legati al modulo
+    public static function getCampiModulo($idSpedizione)
+    {
+		$modulo = self::getModulo($idSpedizione);
+		
+		if ($modulo && $modulo->isAttivo())
+			return $modulo->gCampiSpedizione();
+		
+		return [];
+    }
+    
     public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
 		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,ragione_sociale_2,tipologia,contrassegno";
@@ -490,6 +513,11 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!$daDisabilitare)
 			$fields .= ",note_interne";
+		
+		$campiSpedizione = self::getCampiModulo($idSpedizione);
+		
+		if ($campiSpedizione)
+			$fields .= ",".implode(",",$campiSpedizione);
 		
 		return $fields;
     }
@@ -730,6 +758,7 @@ class SpedizioninegozioModel extends FormModel {
 	}
 	
 	// Restituisce i colli legati alla spedizione
+	// array $idS
 	public function getColli($idS, $soloNumero = false)
 	{
 		$sncModel = new SpedizioninegoziocolliModel();

@@ -32,6 +32,11 @@ class Brt extends Spedizioniere
 		
 	}
 	
+	public function gCampiSpedizione()
+	{
+		return array('importo_assicurazione');
+	}
+	
 // 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 // 	public function getInfo($idSpedizione)
 // 	{

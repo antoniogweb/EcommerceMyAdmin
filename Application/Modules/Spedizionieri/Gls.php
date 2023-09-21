@@ -27,6 +27,11 @@ class Gls extends Spedizioniere
 		return 'titolo,modulo,attivo';
 	}
 	
+	public function gCampiSpedizione()
+	{
+		return array('codice_bda','importo_assicurazione');
+	}
+	
 	public function setConditions(SpedizioninegozioModel $spedizione)
 	{
 // 		$spedizione->addStrongCondition("update",'checkNotEmpty',"ragione_sociale_2");

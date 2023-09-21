@@ -1,6 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<?php include(ROOT."/Application/Views/anagrafiche_js.php")?>
+<?php
+include(ROOT."/Application/Views/anagrafiche_js.php");
+$campiSpedizione = SpedizioninegozioModel::getCampiModulo((int)$id);
+?>
 
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
@@ -21,6 +24,13 @@
 				<div class='col-md-3'>
 					<?php echo $form["contrassegno"];?>
 				</div>
+					<?php foreach ($campiSpedizione as $campo) { ?>
+						<?php if (isset($form[$campo])) { ?>
+						<div class='col-md-3'>
+							<?php echo $form[$campo];?>
+						</div>
+						<?php } ?>
+					<?php } ?>
 				<?php } ?>
 			</div>
 			
