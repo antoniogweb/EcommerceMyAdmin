@@ -1727,11 +1727,11 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
-	public function listaregalo($record)
+	public function listaregalo($record, $table = "orders")
 	{
-		if ($record["orders"]["id_lista_regalo"])
+		if ($record[$table]["id_lista_regalo"])
 		{
-			$lista = ListeregaloModel::g()->selectId((int)$record["orders"]["id_lista_regalo"]);
+			$lista = ListeregaloModel::g()->selectId((int)$record[$table]["id_lista_regalo"]);
 			
 			if (!empty($lista))
 			{

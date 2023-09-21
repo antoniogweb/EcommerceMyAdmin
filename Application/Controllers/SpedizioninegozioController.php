@@ -80,6 +80,12 @@ class SpedizioninegozioController extends BaseController {
 		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
 		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
 		
+		if (v("attiva_liste_regalo"))
+		{
+			$this->mainFields[] = 'listaregalo';
+			$this->mainHead .= ',Lista regalo';
+		}
+		
 		$filtroSpedizioniere = array(
 			"tutti"		=>	"Spedizioniere",
 		) + $this->m("SpedizionieriModel")->selectTendina(false);

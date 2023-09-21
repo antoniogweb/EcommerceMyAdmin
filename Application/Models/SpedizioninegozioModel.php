@@ -267,6 +267,7 @@ class SpedizioninegozioModel extends FormModel {
 		$this->update((int)$idS);
 	}
 	
+	// Restituisce un array per la select delle righe da spedire dell'ordine
 	protected function getSelectFromIdO($arrayRighe, $idO)
 	{
 		$righe = OrdiniModel::righeDaSpedire((int)$idO);
@@ -286,6 +287,11 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$arrayRighe = [];
 		
+		$spedizioneNegozio = $this->selectId((int)$idS);
+		
+		if (empty($spedizioneNegozio))
+			return $arrayRighe;
+		
 		foreach ($idOs as $idO)
 		{
 			if (!$idO)
@@ -294,22 +300,36 @@ class SpedizioninegozioModel extends FormModel {
 			$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
 		}
 		
-		// Cerco gli ordini con lo stesso id_spedizione
-		$idSpedizione = $this->clear()->whereId((int)$idS)->field("id_spedizione");
+		$ninArray = array(
+			"id_o"	=>	forceIntDeep($idOs),
+		);
 		
-		if ($idSpedizione)
+		$idOsAltri = [];
+		
+		if ($spedizioneNegozio["id_lista_regalo"])
 		{
-			$idOsSped = OrdiniModel::g(false)->where(array(
-				"nin"	=>	array(
-					"id_o"	=>	forceIntDeep($idOs),
-				),
-				"id_spedizione"	=>	(int)$idSpedizione
+			$idOsAltri = OrdiniModel::g(false)->where(array(
+				"nin"	=>	$ninArray,
+				"id_lista_regalo"	=>	(int)$spedizioneNegozio["id_lista_regalo"]
 			))->toList("id_o")->send();
+		}
+		else
+		{
+			// Cerco gli ordini con lo stesso id_spedizione
+			$idSpedizione = $this->clear()->whereId((int)$idS)->field("id_spedizione");
 			
-			foreach ($idOsSped as $idO)
+			if ($idSpedizione)
 			{
-				$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
+				$idOsAltri = OrdiniModel::g(false)->where(array(
+					"nin"	=>	$ninArray,
+					"id_spedizione"	=>	(int)$idSpedizione
+				))->toList("id_o")->send();
 			}
+		}
+		
+		foreach ($idOsAltri as $idO)
+		{
+			$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
 		}
 		
 		return $arrayRighe;
@@ -661,13 +681,20 @@ class SpedizioninegozioModel extends FormModel {
 		}
 	}
 	
+	// Se la spedizione è legata ad un ordine o ad una lista
 	public static function legataAdOrdineOLista($idSpedizione)
 	{
 		$record = self::g(false)->selectId((int)$idSpedizione);
 		
-		if (!empty($record) && $record["id_ordine_di_partenza"])
+		if (!empty($record) && ($record["id_ordine_di_partenza"] || $record["id_lista_regalo"]))
 			return true;
 		
 		return false;
+	}
+	
+	// Usata in main, stessa usata dell'ordine
+	public function listaregalo($record)
+	{
+		return OrdiniModel::g(false)->listaregalo($record, "spedizioni_negozio");
 	}
 }
