@@ -27,6 +27,9 @@ class SpedizioninegozioModel extends FormModel {
 	const TIPOLOGIA_PORTO_FRANCO = 'PORTO_FRANCO';
 	const TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO = 'PORTO_FRANCO_CONTRASSEGNO';
 	
+	public $applySoftConditionsOnPost = true;
+	public $applySoftConditionsOnValues = false;
+	
 	public function __construct() {
 		$this->_tables='spedizioni_negozio';
 		$this->_idFields='id_spedizione_negozio';
@@ -57,7 +60,7 @@ class SpedizioninegozioModel extends FormModel {
 			"options"	=>	$modulo ? $modulo->gCodiciPagamentoContrassegno() : [],
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
-			'labelString'=>	'Tipo di pagamento accettato (solo per contrassegno)',
+			'labelString'=>	'Pagamento accettato (solo per contrassegno)',
 		);
 		
 		$this->formStruct["entries"]["formato_etichetta_pdf"] = array(
@@ -66,6 +69,14 @@ class SpedizioninegozioModel extends FormModel {
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 			'labelString'=>	"Formato dell'etichetta in PDF",
+		);
+		
+		$this->formStruct["entries"]["tipo_servizio"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gTipoServizio() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Tipo servizio",
 		);
 	}
 	
@@ -108,8 +119,9 @@ class SpedizioninegozioModel extends FormModel {
 			$this->setValue("id_user", $ordine["id_user"]);
 			$this->setValue("id_spedizione", $ordine["id_spedizione"]);
 			
-			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
-			$this->setValue("ragione_sociale_2", $ordine["destinatario_spedizione"], "sanitizeDb");
+			$ragSoc = $ordine["destinatario_spedizione"] ? $ordine["destinatario_spedizione"] : OrdiniModel::getNominativo($ordine);
+			
+			$this->setValue("ragione_sociale", $ragSoc, "sanitizeDb");
 			
 			$this->recuperaAnagraficaDaStruttura($ordine);
 			
@@ -151,7 +163,10 @@ class SpedizioninegozioModel extends FormModel {
 			if (!empty($spedizione))
 			{
 				$this->setValue("id_spedizione", $spedizione["id_spedizione"]);
-				$this->setValue("ragione_sociale_2", $spedizione["destinatario_spedizione"], "sanitizeDb");
+				
+				if ($spedizione["destinatario_spedizione"])
+					$this->setValue("ragione_sociale", $spedizione["destinatario_spedizione"], "sanitizeDb");
+				
 				$suffisso = "_spedizione";
 			}
 			
@@ -180,6 +195,7 @@ class SpedizioninegozioModel extends FormModel {
 		if (isset($ordine) && !empty($ordine))
 		{
 			$this->setValue("id_ordine_di_partenza", $ordine["id_o"]);
+			$this->setValue("codice_bda", $ordine["id_o"]);
 			$this->setValue("riferimento_mittente_numerico", $ordine["id_o"]);
 			$this->setValue("riferimento_mittente_alfa", $ordine["cognome"], "sanitizeDb");
 		}
@@ -539,12 +555,12 @@ class SpedizioninegozioModel extends FormModel {
     
     public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
-		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,ragione_sociale_2,contrassegno";
+		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
 		
 		if (self::legataAdOrdineOLista($idSpedizione))
 			$fields .= ",note";
 		
-		if (!$daDisabilitare)
+// 		if (!$daDisabilitare)
 			$fields .= ",note_interne";
 		
 		$campiSpedizione = self::getCampiModulo($idSpedizione);
@@ -603,9 +619,20 @@ class SpedizioninegozioModel extends FormModel {
 				
 				if ($this->checkConditions('update'))
 				{
-					$this->settaStato($id, $stato, "data_pronta_invio");
-					
-					return true;
+					if ($this->checkColli([$id]))
+					{
+						// Modulo spedizioniere
+						$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+						
+						if ($modulo->prenotaSpedizione($id, $this))
+						{
+							$this->settaStato($id, $stato, "data_pronta_invio");
+							
+							return true;
+						}
+					}
+					else
+						$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, inserire almeno un collo di peso maggiore di 0 kg. Controllare inoltre che nessun collo abbia peso 0kg")."</div>";
 				}
 			}
 		}
@@ -803,5 +830,22 @@ class SpedizioninegozioModel extends FormModel {
 		));
 		
 		return $soloNumero ? $sncModel->rowNumber() : $sncModel->send(false);
+	}
+	
+	// Controlla che ci sia almeno un collo e che ogni collo abbia peso maggiore di zero
+	public function checkColli($idS)
+	{
+		$colli = $this->getColli($idS);
+		
+		if (count($colli) <= 0)
+			return false;
+		
+		foreach ($colli as $collo)
+		{
+			if ($collo["peso"] <= 0)
+				return false;
+		}
+		
+		return true;
 	}
 }

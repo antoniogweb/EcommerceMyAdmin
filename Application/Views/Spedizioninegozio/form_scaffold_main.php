@@ -39,9 +39,6 @@ $campiSpedizione = SpedizioninegozioModel::getCampiModulo((int)$id);
 					<?php echo $form["ragione_sociale"];?>
 				</div>
 				<div class='col-md-3'>
-					<?php echo $form["ragione_sociale_2"];?>
-				</div>
-				<div class='col-md-3'>
 					<?php echo $form["indirizzo"];?>
 				</div>
 				<div class='col-md-3'>

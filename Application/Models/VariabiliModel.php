@@ -557,6 +557,7 @@ class VariabiliModel extends GenericModel {
 		"lega_lo_stato_ordine_a_corriere"	=>	0, // se impostato ad 1, sarà possibile impostare lo stato a cui impostare l'ordine dopo il pagamento per ogni corriere 
 		"attiva_gestione_spedizionieri"	=>	0, // se impostato ad 1, permette la gestione degli spedizionieri (GLS, BRT) e di poterli selezionare nell'ordine
 		"attiva_gestione_spedizioni"	=>	0, // se impostato ad 1, permette la gestione delle spedizioni e degli spedizionieri dal backend
+		"url_webservice_gls"			=>	"https://labelservice.gls-italy.com/ilswebservice.asmx",
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento

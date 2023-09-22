@@ -26,6 +26,10 @@ class Spedizioniere
 {
 	use Modulo;
 	
+	protected $condizioniCampi = array(
+		"lunghezzaMax"	=>	array(),
+	);
+	
 	public function invia($spedizioni)
 	{
 		$arrayResult = [];
@@ -42,6 +46,28 @@ class Spedizioniere
 		}
 		
 		return $arrayResult;
+	}
+	
+	protected function checklunghezzaMax(SpedizioninegozioModel $spedizione, $campi)
+	{
+		foreach ($campi as $campo => $length)
+		{
+			$spedizione->addSoftCondition("update",'checkLength|'.$length,$campo);
+		}
+	}
+	
+	// Setta le condizioni aggiuntive del corriere
+	public function setConditions(SpedizioninegozioModel $spedizione)
+	{
+		foreach ($this->condizioniCampi as $tipo => $campi)
+		{
+			$metodo = "check".strtolower($tipo);
+			
+			if (method_exists($this, $metodo))
+			{
+				call_user_func_array(array($this, $metodo), array($spedizione, $campi));
+			}
+		}
 	}
 	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
@@ -92,5 +118,32 @@ class Spedizioniere
 	public function gFormatiEtichetta()
 	{
 		return [];
+	}
+	
+	public function gTipoServizio()
+	{
+		return [];
+	}
+	
+	public function gPasswordLabel()
+	{
+		return "Password";
+	}
+	
+	public function settaNoticeModel(SpedizioninegozioModel $spedizione = null, $notice)
+	{
+		if ($spedizione)
+			$spedizione->notice = "<div class='alert alert-danger'>".gtext($notice)."</div>";
+	}
+	
+	protected function getLogPath($idSpedizione)
+	{
+		$moduleFullPath = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
+		
+		// Controllo e in caso creo la cartella della spedizione
+		if (!@is_dir($moduleFullPath."/".(int)$idSpedizione))
+			createFolderFull((int)$idSpedizione, $moduleFullPath);
+		
+		return $moduleFullPath."/".(int)$idSpedizione;
 	}
 }

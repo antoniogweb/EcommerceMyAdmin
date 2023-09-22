@@ -61,6 +61,12 @@ class SpedizionieriModel extends GenericModel
 					),
 					"reverse"	=>	"yes",
 				),
+				'password_cliente'		=>	array(
+					'labelString'	=>	self::getModulo((int)$id)->gPasswordLabel(),
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
 			),
 		);
 	}

@@ -21,20 +21,32 @@
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
 class Brt extends Spedizioniere
-{ 
+{
+	protected $condizioniCampi = array(
+		"lunghezzaMax"	=>	array(
+			"ragione_sociale"	=>	70,
+			"indirizzo"			=>	35,
+			"citta"				=>	35,
+			"cap"				=>	9,
+			"provincia"			=>	2,
+			"contrassegno"		=>	10,
+			"importo_assicurazione"	=>	10,
+			"nazione"			=>	2,
+			"riferimento_mittente_numerico"	=>	15,
+			"riferimento_mittente_alfa"		=>	15,
+			"codice_pagamento_contrassegno"	=>	2,
+			"codice_tariffa"	=>	3,
+		),
+	);
+	
 	public function gCampiForm()
 	{
-		return 'titolo,modulo,attivo';
-	}
-	
-	public function setConditions(SpedizioninegozioModel $spedizione)
-	{
-		
+		return 'titolo,modulo,attivo,codice_cliente,password_cliente,codice_sede';
 	}
 	
 	public function gCampiSpedizione()
 	{
-		return array('codice_pagamento_contrassegno', 'riferimento_mittente_numerico', 'riferimento_mittente_alfa', 'importo_assicurazione');
+		return array('tipo_servizio', 'codice_tariffa', 'codice_pagamento_contrassegno', 'riferimento_mittente_numerico', 'riferimento_mittente_alfa', 'importo_assicurazione');
 	}
 	
 // 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
@@ -63,5 +75,10 @@ class Brt extends Spedizioniere
 	public function gCodiciPagamentoContrassegno()
 	{
 		return OpzioniModel::codice("BRT_CODICE_PAGAMENTO");
+	}
+	
+	public function gTipoServizio()
+	{
+		return OpzioniModel::codice("BRT_TIPO_SERVIZIO");
 	}
 }
