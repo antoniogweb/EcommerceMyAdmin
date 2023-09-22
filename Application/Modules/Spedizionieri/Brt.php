@@ -34,7 +34,7 @@ class Brt extends Spedizioniere
 	
 	public function gCampiSpedizione()
 	{
-		return array('importo_assicurazione');
+		return array('codice_pagamento_contrassegno', 'riferimento_mittente_numerico', 'riferimento_mittente_alfa', 'importo_assicurazione');
 	}
 	
 // 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
@@ -59,4 +59,9 @@ class Brt extends Spedizioniere
 // 		
 // 		return true;
 // 	}
+
+	public function gCodiciPagamentoContrassegno()
+	{
+		return OpzioniModel::codice("BRT_CODICE_PAGAMENTO");
+	}
 }

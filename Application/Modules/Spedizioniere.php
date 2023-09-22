@@ -83,4 +83,14 @@ class Spedizioniere
 	{
 		return false;
 	}
+	
+	public function gCodiciPagamentoContrassegno()
+	{
+		return [];
+	}
+	
+	public function gFormatiEtichetta()
+	{
+		return [];
+	}
 }

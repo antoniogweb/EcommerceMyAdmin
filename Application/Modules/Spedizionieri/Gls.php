@@ -29,7 +29,7 @@ class Gls extends Spedizioniere
 	
 	public function gCampiSpedizione()
 	{
-		return array('codice_bda','importo_assicurazione');
+		return array('codice_pagamento_contrassegno', 'codice_bda', 'importo_assicurazione', 'formato_etichetta_pdf');
 	}
 	
 	public function setConditions(SpedizioninegozioModel $spedizione)
@@ -58,5 +58,15 @@ class Gls extends Spedizioniere
 			$this->scriviLogInErrore((int)$idSpedizione);
 		
 		return true;
+	}
+	
+	public function gCodiciPagamentoContrassegno()
+	{
+		return OpzioniModel::codice("GLS_CODICE_PAGAMENTO");
+	}
+	
+	public function gFormatiEtichetta()
+	{
+		return ['A6', 'A5'];
 	}
 }

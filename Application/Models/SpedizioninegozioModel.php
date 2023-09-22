@@ -47,17 +47,45 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		parent::setFormStruct($id);
 		
+		$modulo = self::getModulo((int)$id);
+		
 		$this->formStruct["entries"]["note_interne"]["labelString"] = "Note";
 		$this->formStruct["entries"]["note_interne"]["wrap"] = array();
+		
+		$this->formStruct["entries"]["codice_pagamento_contrassegno"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gCodiciPagamentoContrassegno() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	'Tipo di pagamento accettato (solo per contrassegno)',
+		);
+		
+		$this->formStruct["entries"]["formato_etichetta_pdf"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gFormatiEtichetta() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Formato dell'etichetta in PDF",
+		);
 	}
 	
 	public function update($id = null, $where = null)
 	{
 		$this->setProvinciaFatturazione();
+		$this->setTipologia(); // porto franco o porto franco con contrassegno
 		
 		$res = parent::update($id, $where);
 		
 		return $res;
+	}
+	
+	// Salva nella spedizione se porto franco o porto assegnato
+	public function setTipologia()
+	{
+		$this->values["tipologia"] = self::TIPOLOGIA_PORTO_FRANCO;
+		
+		if (isset($this->values["contrassegno"]) && setPrice($this->values["contrassegno"]) > 0)
+			$this->values["tipologia"] = self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO;
 	}
 	
 	private function recuperaAnagraficaDaStruttura($struttura, $suffisso = "")
@@ -150,9 +178,14 @@ class SpedizioninegozioModel extends FormModel {
 			$ordine = OrdiniModel::g(false)->whereId((int)$_GET["id_o"])->record();
 		
 		if (isset($ordine) && !empty($ordine))
+		{
 			$this->setValue("id_ordine_di_partenza", $ordine["id_o"]);
+			$this->setValue("riferimento_mittente_numerico", $ordine["id_o"]);
+			$this->setValue("riferimento_mittente_alfa", $ordine["cognome"], "sanitizeDb");
+		}
 		
 		$this->setProvinciaFatturazione();
+		$this->setTipologia(); // porto franco o porto franco con contrassegno
 		
 		$res = parent::insert();
 		
@@ -484,7 +517,7 @@ class SpedizioninegozioModel extends FormModel {
     // Restituisce il modulo spedizioniere
     public static function getModulo($idSpedizione)
     {
-		$record = self::g(false)->clear()->select("id_spedizioniere")->whereId((int)$idSpedizione)->record("");
+		$record = self::g(false)->clear()->select("id_spedizioniere")->whereId((int)$idSpedizione)->record();
 		
 		// Aggiungo i campi dello spedizioniere
 		if (!empty($record) && $record["id_spedizioniere"])
@@ -506,7 +539,7 @@ class SpedizioninegozioModel extends FormModel {
     
     public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
-		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,ragione_sociale_2,tipologia,contrassegno";
+		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,ragione_sociale_2,contrassegno";
 		
 		if (self::legataAdOrdineOLista($idSpedizione))
 			$fields .= ",note";
@@ -516,7 +549,7 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$campiSpedizione = self::getCampiModulo($idSpedizione);
 		
-		if ($campiSpedizione)
+		if (!empty($campiSpedizione))
 			$fields .= ",".implode(",",$campiSpedizione);
 		
 		return $fields;

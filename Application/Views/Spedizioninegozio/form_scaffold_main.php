@@ -8,7 +8,7 @@ $campiSpedizione = SpedizioninegozioModel::getCampiModulo((int)$id);
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-12'>
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-truck"></i> <?php echo gtext("Dati spedizione");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-cog"></i> <?php echo gtext("Opzioni di spedizione");?></h4>
 			
 			<div class='row'>
 				<div class='col-md-3'>
@@ -18,9 +18,6 @@ $campiSpedizione = SpedizioninegozioModel::getCampiModulo((int)$id);
 					<?php echo $form["id_spedizioniere"];?>
 				</div>
 				<?php if ($type === "update") { ?>
-				<div class='col-md-3'>
-					<?php echo $form["tipologia"];?>
-				</div>
 				<div class='col-md-3'>
 					<?php echo $form["contrassegno"];?>
 				</div>
