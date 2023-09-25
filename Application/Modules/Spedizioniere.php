@@ -39,9 +39,9 @@ class Spedizioniere
 			$this->scriviLog("INVIO SPEDIZIONE - ID:".(int)$sp["id_spedizione_negozio"]);
 			
 			$arrayResult[$sp["id_spedizione_negozio"]] = array(
-				"numero_spedizione"	=>	"55",
-				"risultato"			=>	"OK",
-				"errore_invio"		=>	"EFGH",
+				"numero_spedizione"	=>	"",
+				"risultato"			=>	"",
+				"errore_invio"		=>	"",
 			);
 		}
 		
@@ -146,7 +146,7 @@ class Spedizioniere
 			$spedizione->notice = "<div class='alert alert-danger'>".gtext($notice)."</div>";
 	}
 	
-	protected function getLogPath($idSpedizione)
+	public function getLogPath($idSpedizione)
 	{
 		$moduleFullPath = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
 		

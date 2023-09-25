@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+require_once(LIBRARY . "/Application/Modules/Data/Spedizioni/Result.php");
+
 class SpedizioninegozioModel extends FormModel {
 	
 	const TIPOLOGIA_PORTO_FRANCO = 'PORTO_FRANCO';
@@ -43,6 +45,7 @@ class SpedizioninegozioModel extends FormModel {
 			'righe' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'eventi' => array("HAS_MANY", 'SpedizioninegozioeventiModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'colli' => array("HAS_MANY", 'SpedizioninegoziocolliModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'info' => array("HAS_MANY", 'SpedizioninegozioinfoModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 		);
     }
@@ -629,7 +632,9 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
 		{
-			$this->settaStato($id, "A");
+			$data = new Data_Spedizioni_Result();
+			
+			$this->settaStato($id, "A", "", $data->toArray());
 		}
 	}
 	
@@ -655,11 +660,11 @@ class SpedizioninegozioModel extends FormModel {
 					if ($this->checkColli([$id]))
 					{
 						// Modulo spedizioniere
-						$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+						$output = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->prenotaSpedizione($id, $this);
 						
-						if ($modulo->prenotaSpedizione($id, $this))
+						if ($output !== false)
 						{
-							$this->settaStato($id, $stato, "data_pronta_invio");
+							$this->settaStato($id, $stato, "data_pronta_invio", $output->toArray());
 							
 							return true;
 						}

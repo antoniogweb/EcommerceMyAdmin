@@ -47,16 +47,6 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		
 		if (isset($titolo) && !empty($spedizione))
 		{
-// 			// Verifico che non sia già stato inviato
-// 			if ($stato == "I")
-// 			{
-// 				if ($this->clear()->where(array(
-// 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
-// 					"codice"	=>	"I",
-// 				))->rowNumber())
-// 					$stato = "II";
-// 			}
-			
 			$this->sValues(array(
 				"id_spedizione_negozio"	=>	(int)$idSpedizione,
 				"titolo"				=>	$titolo,

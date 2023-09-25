@@ -63,9 +63,9 @@
 			</div>
 			<div class="col-lg-6">
 				<?php if (SpedizioninegozioModel::aperto($id)) { ?>
-				<a href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="btn btn-xs btn-info make_spinner"><i class="fa fa-lock"></i> <?php echo gtext("Imposta la spedizione come pronta per l'invio a")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?></a>
+				<a href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-lock"></i> <?php echo gtext("Prenota la spedizione con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?></a>
 				<?php } else if (SpedizioninegozioModel::pronta($id)) {?>
-				<a href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="btn btn-xs btn-default make_spinner"><i class="fa fa-unlock"></i> <?php echo gtext("Imposta allo stato aperto")?></a>
+				<a href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("Imposta allo stato aperto")?></a>
 				<?php } ?>
 			</div>
 		</div>

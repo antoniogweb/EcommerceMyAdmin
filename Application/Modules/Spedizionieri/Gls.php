@@ -20,6 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+if (!defined('EG')) die('Direct access not allowed!');
+
 class Gls extends Spedizioniere
 {
 	protected $condizioniCampi = array(
@@ -186,17 +188,20 @@ class Gls extends Spedizioniere
 	{
 		if ($this->isAttivo())
 		{
-// 			$xmlArray = $this->getStrutturaSpedizione($idS);
-// 			
-// 			$xml = aToX($xmlArray, "", true, true);
-// 			
-// 			$infoLabel = $this->AddParcel($xml);
-// 			
-// 			$path = $this->getLogPath($idS);
-// 			
-// 			FilePutContentsAtomic($path."/InfoLabel.XML", $infoLabel);
+			$xmlArray = $this->getStrutturaSpedizione($idS);
 			
-			return true;
+			$xml = aToX($xmlArray, "", true, true);
+			
+			$infoLabel = $this->AddParcel($xml);
+			
+			$xmlObj = simplexml_load_string($infoLabel);
+			
+			// Salvo il log dell'invio e dell'output
+			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "XMLInfoParcel", $xml, "XML");
+			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InfoLabel", $infoLabel, "XML");
+			
+			if (isset($xmlObj->Parcel))
+				return new Data_Spedizioni_Result($xmlObj->Parcel[0]->NumeroSpedizione, "");
 		}
 		else
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
