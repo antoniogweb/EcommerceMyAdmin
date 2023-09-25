@@ -42,6 +42,7 @@ class SpedizioninegozioModel extends FormModel {
 		return array(
 			'righe' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'eventi' => array("HAS_MANY", 'SpedizioninegozioeventiModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'colli' => array("HAS_MANY", 'SpedizioninegoziocolliModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 		);
     }
@@ -77,6 +78,21 @@ class SpedizioninegozioModel extends FormModel {
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 			'labelString'=>	"Tipo servizio",
+		);
+		
+		$this->formStruct["entries"]["codice_tariffa"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gCodiceTariffa() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Codice tariffa",
+		);
+		
+		$this->formStruct["entries"]["assicurazione_integrativa"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gAssicurazioneIntegrativa() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
 		);
 	}
 	
@@ -236,10 +252,27 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$sncModel->insert();
 			
+			// Aggiungo l'evento di apertura spedizione
 			SpedizioninegozioeventiModel::g()->inserisci($this->lId, "A");
+			
+			// Aggiungo i valori di default del corriere
+			$this->inserisciValoriDefaultCorriere($this->lId);
 		}
 		
 		return $res;
+	}
+	
+	// Inserisci i valori di default del corriere
+	public function inserisciValoriDefaultCorriere($idS)
+	{
+		$modulo = self::getModulo($idS);
+		
+		if ($modulo->metodo("inserisciValoriDefaultCorriere"))
+		{
+			$modulo->inserisciValoriDefaultCorriere($this);
+			
+			$this->pUpdate((int)$idS);
+		}
 	}
 	
 	public function titolo($id)

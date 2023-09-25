@@ -186,6 +186,15 @@ trait DIModel
 		return false;
 	}
 	
+	// Controlla se il modulo ha il metodo $metodo e restituisce true o false
+	public function metodo($metodo)
+	{
+		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
+			return true;
+
+		return false;
+	}
+	
 	public function moduleFormStruct($id)
 	{
 		$record = $this->selectId((int)$id);

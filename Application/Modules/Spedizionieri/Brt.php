@@ -81,4 +81,20 @@ class Brt extends Spedizioniere
 	{
 		return OpzioniModel::codice("BRT_TIPO_SERVIZIO");
 	}
+	
+	public function gCodiceTariffa()
+	{
+		return OpzioniModel::codice("BRT_CODICE_TARIFFA");
+	}
+	
+	// Inserisci i valori di default del corriere
+	public function inserisciValoriDefaultCorriere(SpedizioninegozioModel $spedizione)
+	{
+		$campiSpedizione = $this->gCampiSpedizione();
+		
+		$spedizione->values = array();
+		$spedizione->values["tipo_servizio"] = OpzioniModel::primoCodice("BRT_TIPO_SERVIZIO");
+		$spedizione->values["codice_tariffa"] = OpzioniModel::primoCodice("BRT_CODICE_TARIFFA");
+		$spedizione->values["codice_pagamento_contrassegno"] = OpzioniModel::primoCodice("BRT_CODICE_PAGAMENTO");
+	}
 }

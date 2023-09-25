@@ -130,6 +130,16 @@ class Spedizioniere
 		return "Password";
 	}
 	
+	public function gCodiceTariffa()
+	{
+		return [];
+	}
+	
+	public function gAssicurazioneIntegrativa()
+	{
+		return [];
+	}
+	
 	public function settaNoticeModel(SpedizioninegozioModel $spedizione = null, $notice)
 	{
 		if ($spedizione)

@@ -33,6 +33,7 @@ class Gls extends Spedizioniere
 			"contrassegno"		=>	10,
 			"importo_assicurazione"	=>	11,
 			"note_interne"		=>	70,
+			"assicurazione_integrativa"	=>	1,
 		),
 	);
 	
@@ -51,7 +52,7 @@ class Gls extends Spedizioniere
 	
 	public function gCampiSpedizione()
 	{
-		return array('codice_pagamento_contrassegno', 'codice_bda', 'importo_assicurazione', 'formato_etichetta_pdf');
+		return array('codice_pagamento_contrassegno', 'codice_bda', 'assicurazione_integrativa', 'importo_assicurazione', 'formato_etichetta_pdf');
 	}
 	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
@@ -85,6 +86,22 @@ class Gls extends Spedizioniere
 	public function gFormatiEtichetta()
 	{
 		return ['A6', 'A5'];
+	}
+	
+	public function gAssicurazioneIntegrativa()
+	{
+		return OpzioniModel::codice("GLS_ASSICURAZIONE_INTEGRATIVA");
+	}
+	
+	// Inserisci i valori di default del corriere
+	public function inserisciValoriDefaultCorriere(SpedizioninegozioModel $spedizione)
+	{
+		$campiSpedizione = $this->gCampiSpedizione();
+		
+		$spedizione->values = array();
+		$spedizione->values["codice_pagamento_contrassegno"] = OpzioniModel::primoCodice("GLS_CODICE_PAGAMENTO");
+		$spedizione->values["assicurazione_integrativa"] = OpzioniModel::primoCodice("GLS_ASSICURAZIONE_INTEGRATIVA");
+		$spedizione->values["formato_etichetta_pdf"] = $this->gFormatiEtichetta()[0];
 	}
 	
 	// Restituisce la spedizione pronta per essere inviata al corriere come array associativo
@@ -140,6 +157,9 @@ class Gls extends Spedizioniere
 					$valore = $record["importo_assicurazione"] / count($colli);
 					$temp["Assicurazione"] = number_format($valore,2,",","");
 				}
+				
+				if ($record["assicurazione_integrativa"])
+					$temp["AssicurazioneIntegrativa"] = $record["assicurazione_integrativa"];
 				
 				$parcelArray[] = $temp;
 				

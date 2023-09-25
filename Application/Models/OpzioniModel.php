@@ -107,6 +107,14 @@ class OpzioniModel extends GenericModel {
 		))->toList($field, "titolo")->findAll();
 	}
 	
+	// Restituisci il primo codice
+	public static function primoCodice($codice)
+	{
+		$valori = self::arrayValori($codice);
+		
+		return (count($valori) > 0) ? $valori[0] : "";
+	}
+	
 	public static function label($codice, $valore)
 	{
 		$op = new OpzioniModel();
