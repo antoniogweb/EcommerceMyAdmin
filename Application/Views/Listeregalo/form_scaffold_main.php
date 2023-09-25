@@ -9,6 +9,12 @@ $(document).ready(function(){
 });
 </script>
 
+<?php if ($id) { ?>
+<div class="well">
+	<?php echo ListeregaloModel::specchietto($id, "<br />", false);?>
+</div>
+<?php } ?>
+
 <?php echo $main;?>
 
 

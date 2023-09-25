@@ -391,7 +391,7 @@ class ListeregaloModel extends GenericModel
 		return "<b>".self::getNominativo($record["regusers"])."</b><br />".$record["regusers"]["username"];;
 	}
 	
-	public static function specchietto($idLista, $tag = "<br />")
+	public static function specchietto($idLista, $tag = "<br />", $valiAllaLista = true)
 	{
 		$res = self::listeUtenteModel(0, (int)$idLista)->select("*")->inner(array("cliente", "tipo"))->first();
 		
@@ -401,7 +401,7 @@ class ListeregaloModel extends GenericModel
 		{
 			$html .= "<b>".gtext("Titolo").":</b> ".$res["liste_regalo"]["titolo"];
 			
-			if (ControllersModel::checkAccessoAlController(array("listeregalo")))
+			if ($valiAllaLista && ControllersModel::checkAccessoAlController(array("listeregalo")))
 				$html .= " <a target='_blank' href='".Url::getRoot()."listeregalo/form/update/".(int)$idLista."' class='label label-primary text-bold'>".gtext("vai alla lista")." <i class='fa fa-arrow-right'></i></a>";
 			
 			$html .= "$tag<b>".gtext("Tipo").":</b> ".$res["liste_regalo_tipi"]["titolo"];
