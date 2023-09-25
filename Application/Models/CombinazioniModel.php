@@ -787,6 +787,14 @@ class CombinazioniModel extends GenericModel {
 		return $record["pages"]["title"];
 	}
 	
+	public function marchioCrud($record)
+	{
+		$marchio = MarchiModel::getDataMarchio($record["pages"]["id_marchio"]);
+		
+		if (!empty($marchio))
+			return mfield($marchio, "titolo");
+	}
+	
 	public function immagine($record)
 	{
 		$strutturaImmagini = PagesModel::listaImmaginiPagina();

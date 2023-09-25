@@ -408,6 +408,10 @@ class PromozioniModel extends GenericModel {
 			
 			$o->clear()->select("orders.id_o")->where(array("codice_promozione"=>$clean['coupon']));
 			
+			// Escluso gli annullati dal conteggio
+			if (v("non_conteggiare_ordini_annullati"))
+				$o->whereClauseEscludiAnnullati();
+			
 			if ($ido)
 				$o->sWhere(array("id_o != ?",array((int)$ido)));
 			
@@ -450,6 +454,10 @@ class PromozioniModel extends GenericModel {
 		$o = new OrdiniModel();
 		
 		$o->clear()->select("sum(euro_promozione - sconto) as SOMMA")->where(array("id_p"=>$clean['id_p']));
+		
+		// Escluso gli annullati dal conteggio
+		if (v("non_conteggiare_ordini_annullati"))
+			$o->whereClauseEscludiAnnullati();
 		
 		if ($ido)
 			$o->sWhere(array("id_o != ?",array((int)$ido)));

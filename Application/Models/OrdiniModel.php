@@ -1924,4 +1924,15 @@ class OrdiniModel extends FormModel {
 		
 		return array($mostraCampiFatturazione, $mostraCampiSpedizione, $mostraCampiIndirizzoFatturazione);
 	}
+	
+	public function whereClauseEscludiAnnullati()
+	{
+		$this->aWhere(array(
+			"ne"	=>	array(
+				"stato"	=>	"deleted",
+			),
+		));
+		
+		return $this;
+	}
 }

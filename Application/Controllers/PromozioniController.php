@@ -29,7 +29,7 @@ class PromozioniController extends BaseController {
 	public $argKeys = array(
 		'attivo:sanitizeAll'=>'tutti',
 		'tipo:sanitizeAll'=>'tutti',
-		'fonte:sanitizeAll'=>'MANUALE',
+		'fonte:sanitizeAll'=>'tutti',
 		'codice:sanitizeAll'=>'tutti',
 		'id_user:sanitizeAll'=>'tutti',
 	);
