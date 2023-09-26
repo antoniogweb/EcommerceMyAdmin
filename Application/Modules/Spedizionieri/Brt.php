@@ -128,25 +128,9 @@ class Brt extends Spedizioniere
 			$colli = $spModel->getColli([(int)$idS]);
 			$peso = $spModel->peso([(int)$idS]);
 			
-			$parcelArray = [];
-			
 			$params = htmlentitydecodeDeep($this->params);
 			
-			$contatore = 1;
-			
-// 			foreach ($colli as $collo)
-// 			{
-// 				$temp = array(
-// 					
-// 				);
-// 				
-// 				
-// 				$parcelArray[] = $temp;
-// 				
-// 				$contatore++;
-// 			}
-			
-			$xmlArray = array(
+			$jsonArray = array(
 				"account"	=>	array(
 					"userID"	=>	$params["codice_cliente"],
 					"password"	=>	$params["password_cliente"],
@@ -188,13 +172,13 @@ class Brt extends Spedizioniere
 			
 // 			if ($record["contrassegno"] > 0)
 // 			{
-				$xmlArray["createData"]["cashOnDelivery"] = number_format($record["contrassegno"],2,".","");
-				$xmlArray["createData"]["isCODMandatory"] = $record["contrassegno"] > 0 ? 1 : 0;
-				$xmlArray["createData"]["codPaymentType"] = $record["contrassegno"] > 0 ? $record["codice_pagamento_contrassegno"] : "";
+				$jsonArray["createData"]["cashOnDelivery"] = number_format($record["contrassegno"],2,".","");
+				$jsonArray["createData"]["isCODMandatory"] = $record["contrassegno"] > 0 ? 1 : 0;
+				$jsonArray["createData"]["codPaymentType"] = $record["contrassegno"] > 0 ? $record["codice_pagamento_contrassegno"] : "";
 // 			}
 			
 			
-			return $xmlArray;
+			return $jsonArray;
 		}
 		
 		return [];
