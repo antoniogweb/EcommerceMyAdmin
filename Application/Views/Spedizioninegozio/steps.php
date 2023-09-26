@@ -1,13 +1,14 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($type !== "insert") {
-	$spedizione = SpedizioninegozioModel::g()->left(array("spedizioniere"))->whereId((int)$id)->first();
+	$spedizione = SpedizioninegozioModel::g()->select("*")->left(array("spedizioniere"))->whereId((int)$id)->first();
 	$ordini = SpedizioninegozioModel::g()->getOrdini((int)$id);
 	$stile = SpedizioninegozioModel::g()->getStile($spedizione["spedizioni_negozio"]["stato"]);
 	$titoloStato = SpedizioninegozioModel::g()->getTitoloStato($spedizione["spedizioni_negozio"]["stato"]);
 	$pesoTotale = SpedizioninegozioModel::g()->peso(array((int)$id));
 	$numeroColli = SpedizioninegozioModel::g()->getColli(array((int)$id), true);
 	$checkColli = SpedizioninegozioModel::g()->checkColli([(int)$id]);
+	$modulo = SpedizioninegozioModel::getModulo((int)$id);
 ?>
 
 <div class="box box-widget">
@@ -18,6 +19,10 @@
 					<tr>
 						<td><?php echo gtext("Stato");?>:</td>
 						<td><span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span></td>
+					</tr>
+					<tr>
+						<td><?php echo gtext("Spedizioniere");?>:</td>
+						<td><b><?php echo $spedizione["spedizionieri"]["titolo"];?></b></td>
 					</tr>
 					<tr>
 						<td><?php echo gtext("ID Spedizione");?>:</td>
@@ -63,11 +68,17 @@
 			</div>
 			<div class="col-lg-6">
 				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
-				<?php if ($statoSpedizione == "A") { ?>
-				<a href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-lock"></i> <?php echo gtext("Setta la spedizione a PRONTA PER L'INVIO con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?></a>
-				<?php } else if ($statoSpedizione == "I") {?>
-				<a href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("Imposta allo stato aperto")?></a>
+				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo")) { ?>
+				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("PDF");?></a>
 				<?php } ?>
+				
+				<?php if ($statoSpedizione == "A" && $modulo->metodo("prenotaSpedizione")) { ?>
+				<a title="<?php echo gtext("Setta la spedizione a PRONTA PER L'INVIO con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?>" href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-paper-plane"></i> <?php echo gtext("PRENOTA");?></a>
+				<?php } else if ($statoSpedizione == "I") {?>
+				<a title="<?php echo gtext("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("APRI");?></a>
+				<?php } ?>
+				
+				
 			</div>
 		</div>
 	</div>

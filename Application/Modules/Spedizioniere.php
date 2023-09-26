@@ -146,13 +146,21 @@ class Spedizioniere
 			$spedizione->notice = "<div class='alert alert-danger'>".gtext($notice)."</div>";
 	}
 	
-	public function getLogPath($idSpedizione)
+	public function getLogPath($idSpedizione, $currentDateTime = null)
 	{
 		$moduleFullPath = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
 		
 		// Controllo e in caso creo la cartella della spedizione
 		if (!@is_dir($moduleFullPath."/".(int)$idSpedizione))
 			createFolderFull((int)$idSpedizione, $moduleFullPath);
+		
+		// Cartella con dati di invio corrente
+		if ($currentDateTime)
+			createFolderFull($currentDateTime, $moduleFullPath."/".(int)$idSpedizione);
+		
+		// Controllo e in caso creo la cartella con i PDF della spedizione
+		if (!@is_dir($moduleFullPath."/".(int)$idSpedizione."/Pdf"))
+			createFolderFull("Pdf", $moduleFullPath."/".(int)$idSpedizione);
 		
 		return $moduleFullPath."/".(int)$idSpedizione;
 	}

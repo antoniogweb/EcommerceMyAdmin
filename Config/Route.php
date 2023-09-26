@@ -808,6 +808,7 @@ class Route
 		'spedizioninegozio,invia',
 		'spedizioninegozio,controllaspedizioni',
 		'spedizioninegozio,colli',
+		'spedizioninegozio,segnacollo',
 		
 		'spedizioninegoziorighe,salva',
 		'spedizioninegoziocolli,salva',

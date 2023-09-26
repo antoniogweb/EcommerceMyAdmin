@@ -159,3 +159,8 @@ FreeFont (FreeMono.ttf)
 -------
 License:	GNU GPL version 3 or later
 link: 		https://www.gnu.org/software/freefont/
+
+Pdf Merge Solution for PHP
+-------
+License:	Apache License 2.0
+link: 		https://github.com/karriereat/pdf-merge

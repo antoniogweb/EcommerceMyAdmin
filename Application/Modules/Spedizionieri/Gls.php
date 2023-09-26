@@ -236,4 +236,39 @@ class Gls extends Spedizioniere
 		
 		return $infoLabel->AddParcelResult->any;
 	}
+	
+	// Stampa o genera il segnacollo della spedizione
+	// $returnPath se impostato su 1 restituisce il PDF del path del PDF
+	public function segnacollo($idSpedizione, $returnPath = false)
+	{
+		$infoLabel = SpedizioninegozioinfoModel::g(false)->getCodice($idSpedizione, "InfoLabel");
+		
+		if ($infoLabel)
+		{
+			$xmlObj = simplexml_load_string($infoLabel);
+			
+			$pathSpedizione = $this->getLogPath((int)$idSpedizione)."/Pdf";
+			
+			if (!file_exists($pathSpedizione))
+				return;
+			
+			$pdfFilesToMerge = [];
+
+			foreach ($xmlObj->Parcel as $p)
+			{
+				$pathPdf = $pathSpedizione."/".$p->ContatoreProgressivo.".pdf";
+				
+				$pdfDaMergiare[] = $pathPdf;
+				
+				FilePutContentsAtomic($pathPdf, base64_decode($p->PdfLabel));
+			}
+			
+			$tipoOutput = $returnPath ? "F" : "I";
+			
+			if (Pdf::merge($pdfDaMergiare, "$pathSpedizione/Etichetta.pdf", $tipoOutput))
+				return "$pathSpedizione/Etichetta.pdf";
+		}
+		
+		return "";
+	}
 }

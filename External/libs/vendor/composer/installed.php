@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '0a12373bb6d0b5a4e8e61b3456f3875ca08a11cf',
+        'reference' => '467c047bef1899a0a70979d8e3674af5f29bd02c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '0a12373bb6d0b5a4e8e61b3456f3875ca08a11cf',
+            'reference' => '467c047bef1899a0a70979d8e3674af5f29bd02c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -97,6 +97,15 @@
             'reference' => '5494e028b01f405d3efc70aa422c648e3466fb13',
             'type' => 'library',
             'install_path' => __DIR__ . '/../joelbutcher/facebook-graph-sdk',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'karriere/pdf-merge' => array(
+            'pretty_version' => 'v3.0.0',
+            'version' => '3.0.0.0',
+            'reference' => '5742169a0cb1dfdaabe105f1482b4a7008a47859',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../karriere/pdf-merge',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -321,8 +330,8 @@
         'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-factory' => array(
@@ -337,8 +346,8 @@
         'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-message' => array(
@@ -353,8 +362,8 @@
         'psr/http-message-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/log' => array(
@@ -561,6 +570,15 @@
             'reference' => '7c3aff79d10325257a001fcf92d991f24fc967cf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.6.5',
+            'version' => '6.6.5.0',
+            'reference' => '5fce932fcee4371865314ab7f6c0d85423c5c7ce',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

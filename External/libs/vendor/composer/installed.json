@@ -765,6 +765,65 @@
                         "install-path": "../joelbutcher/facebook-graph-sdk"
                 },
                 {
+                        "name": "karriere/pdf-merge",
+                        "version": "v3.0.0",
+                        "version_normalized": "3.0.0.0",
+                        "source": {
+                                "type": "git",
+                                "url": "https://github.com/karriereat/pdf-merge.git",
+                                "reference": "5742169a0cb1dfdaabe105f1482b4a7008a47859"
+                        },
+                        "dist": {
+                                "type": "zip",
+                                "url": "https://api.github.com/repos/karriereat/pdf-merge/zipball/5742169a0cb1dfdaabe105f1482b4a7008a47859",
+                                "reference": "5742169a0cb1dfdaabe105f1482b4a7008a47859",
+                                "shasum": ""
+                        },
+                        "require": {
+                                "php": "8.0.* | 8.1.* | 8.2.*",
+                                "tecnickcom/tcpdf": "^6.3"
+                        },
+                        "require-dev": {
+                                "laravel/pint": "^1.5 | ^1.6",
+                                "pestphp/pest": "^1.22",
+                                "phpstan/phpstan": "^1.10"
+                        },
+                        "time": "2023-03-01T09:44:09+00:00",
+                        "type": "library",
+                        "installation-source": "dist",
+                        "autoload": {
+                                "psr-4": {
+                                        "Karriere\\PdfMerge\\": "src/"
+                                },
+                                "classmap": [
+                                        "tcpi/fpdf_tpl.php",
+                                        "tcpi/tcpdi.php",
+                                        "tcpi/tcpdi_parser.php"
+                                ]
+                        },
+                        "notification-url": "https://packagist.org/downloads/",
+                        "license": [
+                                "Apache-2.0"
+                        ],
+                        "authors": [
+                                {
+                                        "name": "Alexander Lentner",
+                                        "email": "alexander.lentner@karriere.at",
+                                        "role": "Maintainer"
+                                }
+                        ],
+                        "description": "A wrapper for the TCPDF class that provides an elegant API for merging PDFs",
+                        "keywords": [
+                                "merge",
+                                "pdf"
+                        ],
+                        "support": {
+                                "issues": "https://github.com/karriereat/pdf-merge/issues",
+                                "source": "https://github.com/karriereat/pdf-merge/tree/v3.0.0"
+                        },
+                        "install-path": "../karriere/pdf-merge"
+                },
+                {
                         "name": "matthiasmullie/minify",
                         "version": "1.3.71",
                         "version_normalized": "1.3.71.0",
@@ -3572,6 +3631,81 @@
                                 }
                         ],
                         "install-path": "../symfony/deprecation-contracts"
+                },
+                {
+                        "name": "tecnickcom/tcpdf",
+                        "version": "6.6.5",
+                        "version_normalized": "6.6.5.0",
+                        "source": {
+                                "type": "git",
+                                "url": "https://github.com/tecnickcom/TCPDF.git",
+                                "reference": "5fce932fcee4371865314ab7f6c0d85423c5c7ce"
+                        },
+                        "dist": {
+                                "type": "zip",
+                                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/5fce932fcee4371865314ab7f6c0d85423c5c7ce",
+                                "reference": "5fce932fcee4371865314ab7f6c0d85423c5c7ce",
+                                "shasum": ""
+                        },
+                        "require": {
+                                "php": ">=5.3.0"
+                        },
+                        "time": "2023-09-06T15:09:26+00:00",
+                        "type": "library",
+                        "installation-source": "dist",
+                        "autoload": {
+                                "classmap": [
+                                        "config",
+                                        "include",
+                                        "tcpdf.php",
+                                        "tcpdf_parser.php",
+                                        "tcpdf_import.php",
+                                        "tcpdf_barcodes_1d.php",
+                                        "tcpdf_barcodes_2d.php",
+                                        "include/tcpdf_colors.php",
+                                        "include/tcpdf_filters.php",
+                                        "include/tcpdf_font_data.php",
+                                        "include/tcpdf_fonts.php",
+                                        "include/tcpdf_images.php",
+                                        "include/tcpdf_static.php",
+                                        "include/barcodes/datamatrix.php",
+                                        "include/barcodes/pdf417.php",
+                                        "include/barcodes/qrcode.php"
+                                ]
+                        },
+                        "notification-url": "https://packagist.org/downloads/",
+                        "license": [
+                                "LGPL-3.0-or-later"
+                        ],
+                        "authors": [
+                                {
+                                        "name": "Nicola Asuni",
+                                        "email": "info@tecnick.com",
+                                        "role": "lead"
+                                }
+                        ],
+                        "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
+                        "homepage": "http://www.tcpdf.org/",
+                        "keywords": [
+                                "PDFD32000-2008",
+                                "TCPDF",
+                                "barcodes",
+                                "datamatrix",
+                                "pdf",
+                                "pdf417",
+                                "qrcode"
+                        ],
+                        "support": {
+                                "issues": "https://github.com/tecnickcom/TCPDF/issues",
+                                "source": "https://github.com/tecnickcom/TCPDF/tree/6.6.5"
+                        },
+                        "funding": [
+                                {
+                                        "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tcpdf%20project",
+                                        "type": "custom"
+                                }
+                        ],
+                        "install-path": "../tecnickcom/tcpdf"
                 },
                 {
                         "name": "theseer/tokenizer",

@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class SpedizioninegozioinfoModel extends GenericModel {
 	
+	public static $dateTime = null;
+	
 	public function __construct() {
 		$this->_tables='spedizioni_negozio_info';
 		$this->_idFields='id_spedizione_negozio_info';
@@ -37,7 +39,7 @@ class SpedizioninegozioinfoModel extends GenericModel {
         );
     }
     
-    // Salva il log dell'invio
+    // Salva il log dell'invio nel DB e nel FS
     public function inserisci($idSpedizione, $codice, $descrizione, $estensione = "XML")
     {
 		$spModel = new SpedizioninegozioModel();
@@ -52,7 +54,10 @@ class SpedizioninegozioinfoModel extends GenericModel {
 			
 			if ($modulo && $modulo->isAttivo())
 			{
-				$path = $modulo->getLogPath((int)$idSpedizione);
+				if (!isset(self::$dateTime))
+					self::$dateTime = date("Y-m-d H:i:s");
+				
+				$path = $modulo->getLogPath((int)$idSpedizione, self::$dateTime);
 				
 				$this->sValues(array(
 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
@@ -62,8 +67,22 @@ class SpedizioninegozioinfoModel extends GenericModel {
 				), "sanitizeDb");
 				
 				if ($this->insert())
-					FilePutContentsAtomic($path."/$codice.$estensione", $descrizione);
+					FilePutContentsAtomic($path."/".self::$dateTime."/$codice.$estensione", $descrizione);
 			}
 		}
+	}
+	
+	// Recupera l'ultimo log relativo ad un certo invio
+	public function getCodice($idSpedizione, $codice)
+	{
+		$res = $this->clear()->select("descrizione")->where(array(
+			"id_spedizione_negozio"	=>	(int)$idSpedizione,
+			"codice_info"			=>	sanitizeAll($codice),
+		))->orderBy("id_spedizione_negozio_info desc")->limit(1)->send(false);
+		
+		if (count($res) > 0)
+			return $res[0]["descrizione"];
+		
+		return "";
 	}
 }

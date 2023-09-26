@@ -69,7 +69,7 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$this->formStruct["entries"]["formato_etichetta_pdf"] = array(
 			"type"	=>	"Select",
-			"options"	=>	$modulo ? $modulo->gFormatiEtichetta() : [],
+			"options"	=>	$modulo ? implode(",",$modulo->gFormatiEtichetta()) : [],
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 			'labelString'=>	"Formato dell'etichetta in PDF",
@@ -549,7 +549,7 @@ class SpedizioninegozioModel extends FormModel {
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			$campoObbligatorioProvincia = "provincia";
 		
-		$campiObbligatori = "data_spedizione,id_spedizioniere,nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
+		$campiObbligatori = "data_spedizione,nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
 		
 		$this->addStrongCondition("update",'checkNotEmpty',$campiObbligatori);
 		
@@ -887,8 +887,15 @@ class SpedizioninegozioModel extends FormModel {
 		return true;
 	}
 	
-	public function segnacollo($idS)
+	// Stampa o genera il segnacollo della spedizione
+	// $returnPath se impostato su 1 restituisce il PDF del path del PDF
+	public function segnacollo($idS, $returnPath = false)
 	{
-// 		SpedizionieriModel::getModulo((int)$record["id_spedizioniere"])->setConditions($this);
+		$record = $this->clear()->selectId((int)$idS);
+		
+		if (!empty($record) && SpedizioninegozioModel::pronta((int)$idS))
+			return SpedizioninegozioModel::getModulo($idS)->segnacollo($idS, $returnPath);
+		
+		return "";
 	}
 }
