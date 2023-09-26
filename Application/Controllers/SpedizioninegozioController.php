@@ -348,4 +348,13 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m($this->modelName)->controllaStatoSpedizioniInviate((int)$id);
 	}
+	
+	public function segnacollo($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$this->m($this->modelName)->segnacollo((int)$id);
+	}
 }

@@ -113,7 +113,7 @@ class FacebookLogin extends ExternalLogin
 // 				$_SESSION["access_token"] = $accessToken;
 			}
 		
-		} catch(Facebook\Exceptions\facebookResponseException $e) {
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
 			
 			$this->setErrore("GRAPH", $e->getMessage());
 			

@@ -886,4 +886,9 @@ class SpedizioninegozioModel extends FormModel {
 		
 		return true;
 	}
+	
+	public function segnacollo($idS)
+	{
+// 		SpedizionieriModel::getModulo((int)$record["id_spedizioniere"])->setConditions($this);
+	}
 }
