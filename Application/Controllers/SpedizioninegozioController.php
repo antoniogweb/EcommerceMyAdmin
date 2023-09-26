@@ -150,7 +150,7 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
-		$campiDaDisabilitare = $queryType == "update" ? "id_spedizioniere" : "note";
+		$campiDaDisabilitare = $queryType == "update" ? "id_spedizioniere,note" : "note";
 		
 		if ($queryType == "update" && !SpedizioninegozioModel::aperto((int)$id))
 			$campiDaDisabilitare = $this->m[$this->modelName]->getCampiFormUpdate(true, (int)$id);

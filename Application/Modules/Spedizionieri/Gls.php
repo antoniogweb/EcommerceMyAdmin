@@ -57,6 +57,8 @@ class Gls extends Spedizioniere
 		return array('codice_pagamento_contrassegno', 'codice_bda', 'assicurazione_integrativa', 'importo_assicurazione', 'formato_etichetta_pdf');
 	}
 	
+	
+	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 	public function getInfo($idSpedizione)
 	{

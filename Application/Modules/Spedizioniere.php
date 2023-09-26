@@ -140,6 +140,11 @@ class Spedizioniere
 		return [];
 	}
 	
+	public function gCampiIndirizzo()
+	{
+		return array();
+	}
+	
 	public function settaNoticeModel(SpedizioninegozioModel $spedizione = null, $notice)
 	{
 		if ($spedizione)

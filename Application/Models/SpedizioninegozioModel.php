@@ -56,6 +56,8 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$modulo = self::getModulo((int)$id);
 		
+		$this->formStruct["entries"]["ragione_sociale_2"]["labelString"] = "Destinatario spedizione";
+		
 		$this->formStruct["entries"]["note_interne"]["labelString"] = "Note";
 		$this->formStruct["entries"]["note_interne"]["wrap"] = array();
 		
@@ -140,7 +142,8 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$ragSoc = $ordine["destinatario_spedizione"] ? $ordine["destinatario_spedizione"] : OrdiniModel::getNominativo($ordine);
 			
-			$this->setValue("ragione_sociale", $ragSoc, "sanitizeDb");
+			$this->setValue("ragione_sociale_2", $ragSoc, "sanitizeDb");
+			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
 			
 			$this->recuperaAnagraficaDaStruttura($ordine);
 			
@@ -175,6 +178,9 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$this->setValue("id_user", $cliente["id_user"]);
 			
+			$ragSoc = (!empty($spedizione) && $spedizione["destinatario_spedizione"]) ? $spedizione["destinatario_spedizione"] : OrdiniModel::getNominativo($cliente);
+			
+			$this->setValue("ragione_sociale_2", $ragSoc, "sanitizeDb");
 			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($cliente), "sanitizeDb");
 			
 			$suffisso = "";
@@ -182,9 +188,6 @@ class SpedizioninegozioModel extends FormModel {
 			if (!empty($spedizione))
 			{
 				$this->setValue("id_spedizione", $spedizione["id_spedizione"]);
-				
-				if ($spedizione["destinatario_spedizione"])
-					$this->setValue("ragione_sociale", $spedizione["destinatario_spedizione"], "sanitizeDb");
 				
 				$suffisso = "_spedizione";
 			}
@@ -589,6 +592,17 @@ class SpedizioninegozioModel extends FormModel {
 		return [];
     }
     
+     // Restituisce i campi indirizzo del form legati al modulo
+    public static function getCampiIndirizzoModulo($idSpedizione)
+    {
+		$modulo = self::getModulo($idSpedizione);
+		
+		if ($modulo && $modulo->isAttivo())
+			return $modulo->gCampiIndirizzo();
+		
+		return [];
+    }
+    
     public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
 		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
@@ -603,6 +617,11 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!empty($campiSpedizione))
 			$fields .= ",".implode(",",$campiSpedizione);
+		
+		$campiIndirizzoSpedizione = self::getCampiIndirizzoModulo($idSpedizione);
+		
+		if (!empty($campiIndirizzoSpedizione))
+			$fields .= ",".implode(",",$campiIndirizzoSpedizione);
 		
 		return $fields;
     }

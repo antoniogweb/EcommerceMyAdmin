@@ -3,6 +3,7 @@
 <?php
 include(ROOT."/Application/Views/anagrafiche_js.php");
 $campiSpedizione = SpedizioninegozioModel::getCampiModulo((int)$id);
+$campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int)$id);
 ?>
 
 <div class='row'>
@@ -60,6 +61,13 @@ $campiSpedizione = SpedizioninegozioModel::getCampiModulo((int)$id);
 				<div class='col-md-3'>
 					<?php echo $form["email"];?>
 				</div>
+				<?php foreach ($campiIndirizzoSpedizione as $campo) { ?>
+					<?php if (isset($form[$campo])) { ?>
+					<div class='col-md-3'>
+						<?php echo $form[$campo];?>
+					</div>
+					<?php } ?>
+				<?php } ?>
 			</div>
 			
 			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-sticky-note-o"></i> <?php echo gtext("Note");?></h4>
