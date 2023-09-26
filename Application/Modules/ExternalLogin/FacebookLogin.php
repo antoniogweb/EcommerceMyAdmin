@@ -154,11 +154,13 @@ class FacebookLogin extends ExternalLogin
 
 				$profile = $profile_request->getGraphUser();
 
-				$fbid = $profile->getProperty('id');           // To Get Facebook ID
-
-				$fbfullname = $profile->getProperty('name');   // To Get Facebook full name
-
-				$fbemail = $profile->getProperty('email');    //  To Get Facebook email
+// 				$fbid = $profile->getProperty('id');           // To Get Facebook ID
+// 				$fbfullname = $profile->getProperty('name');   // To Get Facebook full name
+// 				$fbemail = $profile->getProperty('email');    //  To Get Facebook email
+				
+				$fbid = $profile->getId();
+				$fbfullname = $profile->getName();
+				$fbemail = $profile->getEmail();
 				
 				$this->infoUtente["redirect"] = true;
 				$this->infoUtente["dati_utente"] = array(
