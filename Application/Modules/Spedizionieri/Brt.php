@@ -115,7 +115,7 @@ class Brt extends Spedizioniere
 	}
 	
 	// Restituisce la spedizione pronta per essere inviata al corriere come array associativo
-	public function getStrutturaSpedizione($idS)
+	public function getStrutturaSpedizione($idS, $tipo = "create")
 	{
 		$spModel = new SpedizioninegozioModel();
 			
@@ -130,53 +130,68 @@ class Brt extends Spedizioniere
 			
 			$params = htmlentitydecodeDeep($this->params);
 			
-			$jsonArray = array(
-				"account"	=>	array(
-					"userID"	=>	$params["codice_cliente"],
-					"password"	=>	$params["password_cliente"],
-				),
-				"createData"	=>	array(
-					"network"			=>	" ",
-					"departureDepot"	=>	$params["codice_sede"],
-					"senderCustomerCode"=>	$params["codice_cliente"],
-					"deliveryFreightTypeCode"	=>	"DAP",
-					"serviceType"			=>	$record["tipo_servizio"],
-					"consigneeCompanyName"	=>	$record["ragione_sociale"],
-					"consigneeAddress"		=>	$record["indirizzo"],
-					"consigneeZIPCode"		=>	$record["cap"],
-					"consigneeCountryAbbreviationISOAlpha2"	=>	$record["nazione"],
-					"consigneeCity"			=>	$record["citta"],
-					"consigneeProvinceAbbreviation"	=>	$record["provincia"],
-					"consigneeContactName"	=>	$record["ragione_sociale_2"],
-					"consigneeTelephone"	=>	$record["telefono"],
-					"consigneeEMail"		=>	$record["email"],
-					"pricingConditionCode"	=>	$record["codice_tariffa"],
-					"insuranceAmount"		=>	number_format($record["importo_assicurazione"],2,".",""),
-					"insuranceAmountCurrency"	=>	"EUR",
-					"notes"					=>	$record["note_interne"],
-					"numericSenderReference"=>	$record["riferimento_mittente_numerico"],
-					"alphanumericSenderReference"=>	$record["riferimento_mittente_alfa"],
-					"numberOfParcels"		=>	count($colli),
-					"weightKG"				=>	number_format($peso,1,".",""),
-				),
-				"isLabelRequired"		=>	"1",
-				"labelParameters"		=>	array(
-					"outputType"		=>	'PDF',
-					"offsetX"			=>	"0",
-					"offsetY"			=>	"0",
-					"isBorderRequired"	=>	"0",
-					"isLogoRequired"	=>	"0",
-					"isBarcodeControlRowRequired"	=>	"0",
-				),
+			$account = array(
+				"userID"	=>	$params["codice_cliente"],
+				"password"	=>	$params["password_cliente"],
 			);
 			
-// 			if ($record["contrassegno"] > 0)
-// 			{
-				$jsonArray["createData"]["cashOnDelivery"] = number_format($record["contrassegno"],2,".","");
-				$jsonArray["createData"]["isCODMandatory"] = $record["contrassegno"] > 0 ? 1 : 0;
-				$jsonArray["createData"]["codPaymentType"] = $record["contrassegno"] > 0 ? $record["codice_pagamento_contrassegno"] : "";
-// 			}
-			
+			if ($tipo == "create")
+			{
+				$jsonArray = array(
+					"account"	=>	$account,
+					"createData"	=>	array(
+						"network"			=>	" ",
+						"departureDepot"	=>	$params["codice_sede"],
+						"senderCustomerCode"=>	$params["codice_cliente"],
+						"deliveryFreightTypeCode"	=>	"DAP",
+						"serviceType"			=>	$record["tipo_servizio"],
+						"consigneeCompanyName"	=>	$record["ragione_sociale"],
+						"consigneeAddress"		=>	$record["indirizzo"],
+						"consigneeZIPCode"		=>	$record["cap"],
+						"consigneeCountryAbbreviationISOAlpha2"	=>	$record["nazione"],
+						"consigneeCity"			=>	$record["citta"],
+						"consigneeProvinceAbbreviation"	=>	$record["provincia"],
+						"consigneeContactName"	=>	$record["ragione_sociale_2"],
+						"consigneeTelephone"	=>	$record["telefono"],
+						"consigneeEMail"		=>	$record["email"],
+						"pricingConditionCode"	=>	$record["codice_tariffa"],
+						"insuranceAmount"		=>	number_format($record["importo_assicurazione"],2,".",""),
+						"insuranceAmountCurrency"	=>	"EUR",
+						"notes"					=>	$record["note_interne"],
+						"numericSenderReference"=>	$record["riferimento_mittente_numerico"],
+						"alphanumericSenderReference"=>	$record["riferimento_mittente_alfa"],
+						"numberOfParcels"		=>	count($colli),
+						"weightKG"				=>	number_format($peso,1,".",""),
+					),
+					"isLabelRequired"		=>	"1",
+					"labelParameters"		=>	array(
+						"outputType"		=>	'PDF',
+						"offsetX"			=>	"0",
+						"offsetY"			=>	"0",
+						"isBorderRequired"	=>	"0",
+						"isLogoRequired"	=>	"0",
+						"isBarcodeControlRowRequired"	=>	"0",
+					),
+				);
+				
+	// 			if ($record["contrassegno"] > 0)
+	// 			{
+					$jsonArray["createData"]["cashOnDelivery"] = number_format($record["contrassegno"],2,".","");
+					$jsonArray["createData"]["isCODMandatory"] = $record["contrassegno"] > 0 ? 1 : 0;
+					$jsonArray["createData"]["codPaymentType"] = $record["contrassegno"] > 0 ? $record["codice_pagamento_contrassegno"] : "";
+	// 			}
+			}
+			else if ($tipo == "delete")
+			{
+				$jsonArray = array(
+					"account"	=>	$account,
+					"deleteData"	=>	array(
+						"senderCustomerCode"=>	$params["codice_cliente"],
+						"numericSenderReference"=>	$record["riferimento_mittente_numerico"],
+						"alphanumericSenderReference"=>	$record["riferimento_mittente_alfa"],
+					),
+				);
+			}
 			
 			return $jsonArray;
 		}
@@ -184,32 +199,61 @@ class Brt extends Spedizioniere
 		return [];
 	}
 	
+	public function eliminaSpedizione($idS, SpedizioninegozioModel $spedizione = null)
+	{
+		if ($this->isAttivo())
+		{
+			$jsonArray = $this->getStrutturaSpedizione($idS, "delete");
+			
+			$result = true;
+			
+			if (SpedizioninegozioinfoModel::g(false)->getCodice($idS, "createResponse") != "")
+				$result = $this->send("/shipments/delete", "PUT", $jsonArray);
+			
+			if (
+				$result === true
+				||
+				(
+					isset($result["deleteResponse"]["executionMessage"]["code"]) &&
+					(
+						$result["deleteResponse"]["executionMessage"]["code"] >= 0 || 
+						$result["deleteResponse"]["executionMessage"]["code"] == -151 ||
+						strpos($result["deleteResponse"]["executionMessage"]["message"], "not found") !== false
+					)
+				)
+			)
+				return true;
+			else
+			{
+				$this->settaNoticeModel($spedizione, isset($result["deleteResponse"]) ? $result["deleteResponse"]["executionMessage"]["message"] : "Errore, API non funzionante");
+				return false;
+			}
+		}
+	}
+	
 	// Pronoto la spedizione al corriere per avere il numero di spedizione e l'etichetta
 	public function prenotaSpedizione($idS, SpedizioninegozioModel $spedizione = null)
 	{
 		if ($this->isAttivo())
 		{
-			$jsonArray = $this->getStrutturaSpedizione($idS);
-			
-			$result = $this->send("/shipments/shipment", "POST", $jsonArray);
-			
-			print_r($result);
-			
-// 			var_dump($result);
-			die();
-// 			
-// 			$xml = aToX($xmlArray, "", true, true);
-// 			
-// 			$infoLabel = $this->AddParcel($xml);
-// 			
-// 			$xmlObj = simplexml_load_string($infoLabel);
-// 			
-// 			// Salvo il log dell'invio e dell'output
-// 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "XMLInfoParcel", $xml, "XML");
-// 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InfoLabel", $infoLabel, "XML");
-// 			
-// 			if (isset($xmlObj->Parcel))
-// 				return new Data_Spedizioni_Result($xmlObj->Parcel[0]->NumeroSpedizione, "");
+			if ($this->eliminaSpedizione($idS, $spedizione))
+			{
+				$jsonArray = $this->getStrutturaSpedizione($idS);
+				
+				$result = $this->send("/shipments/shipment", "POST", $jsonArray);
+				
+				if (isset($result["createResponse"]) && $result["createResponse"]["executionMessage"]["code"] >= 0)
+				{
+					// Salvo il log dell'invio e dell'output
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", json_encode($jsonArray), "JSON");
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createResponse", json_encode($result), "JSON");
+					
+					if (isset($result["createResponse"]["labels"]["label"][0]))
+						return new Data_Spedizioni_Result($result["createResponse"]["labels"]["label"][0]["trackingByParcelID"], "");
+				}
+				else
+					$this->settaNoticeModel($spedizione, isset($result["createResponse"]) ? $result["createResponse"]["executionMessage"]["message"] : "Errore, API non funzionante");
+			}
 		}
 		else
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
@@ -239,5 +283,45 @@ class Brt extends Spedizioniere
 		curl_close($ch);
 		
 		return json_decode($result, true);
+	}
+	
+	public function getLabelNumeroSpedizione()
+	{
+		return gtext("ID collo BRT");
+	}
+	
+	// Stampa o genera il segnacollo della spedizione
+	// $returnPath se impostato su 1 restituisce il PDF del path del PDF
+	public function segnacollo($idSpedizione, $returnPath = false)
+	{
+		$createResponse = SpedizioninegozioinfoModel::g(false)->getCodice($idSpedizione, "createResponse");
+		
+		if ($createResponse)
+		{
+			$createResponse = json_decode($createResponse, true);
+			
+			$pathSpedizione = $this->getLogPath((int)$idSpedizione)."/Pdf";
+			
+			if (!file_exists($pathSpedizione))
+				return;
+			
+			$pdfFilesToMerge = [];
+
+			foreach ($createResponse["createResponse"]["labels"]["label"] as $label)
+			{
+				$pathPdf = $pathSpedizione."/".$label["parcelID"].".pdf";
+				
+				$pdfDaMergiare[] = $pathPdf;
+				
+				FilePutContentsAtomic($pathPdf, base64_decode($label["stream"]));
+			}
+			
+			$tipoOutput = $returnPath ? "F" : "I";
+			
+			if (Pdf::merge($pdfDaMergiare, "$pathSpedizione/Etichetta.pdf", $tipoOutput))
+				return "$pathSpedizione/Etichetta.pdf";
+		}
+		
+		return "";
 	}
 }

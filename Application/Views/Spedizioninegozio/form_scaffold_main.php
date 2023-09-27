@@ -13,9 +13,6 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 			
 			<div class='row'>
 				<div class='col-md-3'>
-					<?php echo $form["data_spedizione"];?>
-				</div>
-				<div class='col-md-3'>
 					<?php echo $form["id_spedizioniere"];?>
 				</div>
 				<?php if ($type === "update") { ?>

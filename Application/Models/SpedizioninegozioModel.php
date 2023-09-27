@@ -222,6 +222,8 @@ class SpedizioninegozioModel extends FormModel {
 			$this->setValue("riferimento_mittente_alfa", $ordine["cognome"], "sanitizeDb");
 		}
 		
+		$this->setValue("data_spedizione", date("Y-m-d"));
+		
 		$this->setProvinciaFatturazione();
 		$this->setTipologia(); // porto franco o porto franco con contrassegno
 		
@@ -552,7 +554,7 @@ class SpedizioninegozioModel extends FormModel {
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			$campoObbligatorioProvincia = "provincia";
 		
-		$campiObbligatori = "data_spedizione,nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
+		$campiObbligatori = "nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
 		
 		$this->addStrongCondition("update",'checkNotEmpty',$campiObbligatori);
 		
@@ -605,7 +607,7 @@ class SpedizioninegozioModel extends FormModel {
     
     public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
-		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
+		$fields =  "id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
 		
 		if (self::legataAdOrdineOLista($idSpedizione))
 			$fields .= ",note";
@@ -730,6 +732,9 @@ class SpedizioninegozioModel extends FormModel {
 		if ($campoData)
 			$this->setValue($campoData, date("Y-m-d H:i:s"));
 		
+		if ($stato == "I")
+			$this->setValue("data_spedizione", date("Y-m-d"));
+		
 		foreach ($values as $k => $v)
 		{
 			$this->setValue($k, $v);
@@ -759,9 +764,9 @@ class SpedizioninegozioModel extends FormModel {
 			"in"	=>	array(
 				"stato"	=>	array("I"),
 			),
-			"lte"	=>	array(
-				"data_spedizione"	=>	date("Y-m-d"),
-			),
+// 			"lte"	=>	array(
+// 				"data_spedizione"	=>	date("Y-m-d"),
+// 			),
 			"id_spedizioniere"	=>	(int)$idSpedizioniere,
 		));
 		
@@ -916,5 +921,10 @@ class SpedizioninegozioModel extends FormModel {
 			return SpedizioninegozioModel::getModulo($idS)->segnacollo($idS, $returnPath);
 		
 		return "";
+	}
+	
+	public static function haNumeroSpedizione($idS)
+	{
+		return SpedizioninegozioModel::g(false)->whereId((int)$idS)->field("numero_spedizione");
 	}
 }

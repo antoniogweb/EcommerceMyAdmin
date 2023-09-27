@@ -133,7 +133,7 @@ class SpedizioninegozioController extends BaseController {
 		
 		if ($queryType == "insert")
 		{
-			$fields = "data_spedizione,id_spedizioniere";
+			$fields = "id_spedizioniere";
 			
 			$this->menuLinksInsert = "";
 		}
@@ -143,6 +143,9 @@ class SpedizioninegozioController extends BaseController {
 			
 			if ($this->viewArgs["partial"] == "Y")
 				$this->menuLinks = "save";
+			
+			if (!SpedizioninegozioModel::aperto((int)$id))
+				$this->menuLinks = partial() ? "" : "back";
 		}
 		
 		if ($queryType == "update" && SpedizioninegozioModel::aperto((int)$id))

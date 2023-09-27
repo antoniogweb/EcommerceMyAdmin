@@ -169,4 +169,9 @@ class Spedizioniere
 		
 		return $moduleFullPath."/".(int)$idSpedizione;
 	}
+	
+	public function getLabelNumeroSpedizione()
+	{
+		return gtext("Numero spedizione corriere");
+	}
 }
