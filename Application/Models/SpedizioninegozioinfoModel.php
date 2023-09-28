@@ -39,7 +39,7 @@ class SpedizioninegozioinfoModel extends GenericModel {
         );
     }
     
-    // Salva il log dell'invio nel DB e nel FS
+    // Salva il log della prenotazione nel DB e nel FS della singola spedizione
     public function inserisci($idSpedizione, $codice, $descrizione, $estensione = "XML")
     {
 		$spModel = new SpedizioninegozioModel();
@@ -63,6 +63,39 @@ class SpedizioninegozioinfoModel extends GenericModel {
 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
 					"codice_info"			=>	$codice,
 					"codice_corriere"		=>	$spedizione["spedizionieri"]["codice"],
+					"descrizione"			=>	$descrizione,
+				), "sanitizeDb");
+				
+				if ($this->insert())
+					FilePutContentsAtomic($path."/".self::$dateTime."/$codice.$estensione", $descrizione);
+			}
+		}
+	}
+	
+	// Salva il log della prenotazione nel DB e nel FS dell'invio $idInvio
+    public function inserisciinvio($idInvio, $codice, $descrizione, $estensione = "XML")
+    {
+		$spiModel = new SpedizioninegozioinviiModel();
+		
+		$record = $spiModel->clear()->select("*")->inner(array("spedizioniere"))->where(array(
+			"id_spedizione_negozio_invio"	=>	(int)$idInvio,
+		))->first();
+		
+		if (!empty($record))
+		{
+			$modulo = SpedizionieriModel::getModulo((int)$record["spedizioni_negozio_invii"]["id_spedizioniere"], true);
+			
+			if ($modulo && $modulo->isAttivo())
+			{
+				if (!isset(self::$dateTime))
+					self::$dateTime = date("Y-m-d H:i:s");
+				
+				$path = $modulo->getLogPath((int)$idInvio, self::$dateTime, true);
+				
+				$this->sValues(array(
+					"id_spedizione_negozio_invio"	=>	(int)$idInvio,
+					"codice_info"			=>	$codice,
+					"codice_corriere"		=>	$record["spedizionieri"]["codice"],
 					"descrizione"			=>	$descrizione,
 				), "sanitizeDb");
 				

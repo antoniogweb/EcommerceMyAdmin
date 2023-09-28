@@ -26,11 +26,18 @@ class Data_Spedizioni_Result
 {
 	private $numeroSpedizione = "";
 	private $erroreSpedizione = "";
+	private $warningSpedizione = "";
 	
-	public function __construct($numeroSpedizione = "", $erroreSpedizione = "")
+	public function __construct($numeroSpedizione = "", $erroreSpedizione = "", $warningSpedizione = "")
 	{
 		$this->numeroSpedizione = $numeroSpedizione;
 		$this->erroreSpedizione = $erroreSpedizione;
+		$this->warningSpedizione = $warningSpedizione;
+	}
+	
+	public function instradato()
+	{
+		return $this->numeroSpedizione ? true : false;
 	}
 	
 	public function toArray()
@@ -38,6 +45,7 @@ class Data_Spedizioni_Result
 		return array(
 			"numero_spedizione"	=>	$this->numeroSpedizione,
 			"errore_invio"		=>	$this->erroreSpedizione,
+			"warning_invio"		=>	$this->warningSpedizione,
 		);
 	}
 }

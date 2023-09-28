@@ -805,7 +805,6 @@ class Route
 		'spedizioninegozio,eventi',
 		'spedizioninegozio,apri',
 		'spedizioninegozio,prontadainviare',
-		'spedizioninegozio,invia',
 		'spedizioninegozio,controllaspedizioni',
 		'spedizioninegozio,colli',
 		'spedizioninegozio,segnacollo',
@@ -815,6 +814,7 @@ class Route
 		
 		'spedizioninegozioinvii,main',
 		'spedizioninegozioinvii,prenota',
+		'spedizioninegozioinvii,confermaspedizioni',
 	);
 	
 	//it can be 'yes' or 'no'

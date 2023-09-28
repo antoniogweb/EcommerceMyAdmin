@@ -44,16 +44,12 @@ class SpedizioninegozioinviiModel extends GenericModel {
     // $dataInvio, la data con la quale cercarlo o crearlo, se vuota usa la data corrente 
     public function getIdUltimoInvioSpedizioniere($idSpedizioniere, $crea = false, $dataInvio = null)
     {
-		$modulo = SpedizionieriModel::getModulo((int)$idSpedizioniere, true);
-		
-		if (!$modulo->isAttivo())
-			return 0;
-		
 		if (!isset($dataInvio))
 			$dataInvio = date("Y-m-d");
 		
 		$idInvio = $this->clear()->select("id_spedizione_negozio_invio")->where(array(
 			"data_spedizione"	=>	sanitizeAll($dataInvio),
+			"stato"				=>	"A",
 			"id_spedizioniere"	=>	(int)$idSpedizioniere,
 		))->field("id_spedizione_negozio_invio");
 		
@@ -71,22 +67,32 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		return (int)$idInvio;
     }
 	
-	// collega le spedizioni [array di int] $idS ad (int) $idInvio
-	public function collegaSpedizioni($idInvio, $idS)
+	// collega le spedizioni all'invio $idInvio
+	// restituisce un array con gli ID delle spedizioni da inviare
+	public function collegaSpedizioni($idInvio)
 	{
-		if (!$idInvio)
-			return;
+		$record = $this->selectId((int)$idInvio);
 		
-		$spnModel = new SpedizioninegozioModel();
+		if (empty($record))
+			return array();
 		
-		foreach ($idS as $id)
+		$spedizioniDaInviare = SpedizioninegozioModel::g(false)->getSpedizioniDaInviare($record["id_spedizioniere"], true);
+		
+		if (count($spedizioniDaInviare) > 0)
 		{
-			$spnModel->sValues(array(
-				"id_spedizione_negozio_invio"	=>	(int)$idInvio
-			));
+			$spnModel = new SpedizioninegozioModel();
 			
-			$spnModel->pUpdate((int)$id);
+			foreach ($spedizioniDaInviare as $id)
+			{
+				$spnModel->sValues(array(
+					"id_spedizione_negozio_invio"	=>	(int)$idInvio
+				));
+				
+				$spnModel->pUpdate((int)$id);
+			}
 		}
+		
+		return $spedizioniDaInviare;
 	}
 	
 	// Prenota l'invio e collega tutte le spedizioni pronte
@@ -96,17 +102,16 @@ class SpedizioninegozioinviiModel extends GenericModel {
 			"attivo"	=>	1,
 		))->toList("id_spedizioniere")->send();
 		
-		$spnModel = new SpedizioninegozioModel();
-		
 		foreach ($arrayIdSpedizionieri as $idSpedizioniere)
 		{
-			$spedizioniDaInviare = $spnModel->getSpedizioniDaInviare($idSpedizioniere, true);
+			$spedizioniDaInviare = SpedizioninegozioModel::g(false)->getSpedizioniDaInviare($idSpedizioniere, true);
 			
 			if (count($spedizioniDaInviare) > 0)
 			{
 				$idInvio = $this->getIdUltimoInvioSpedizioniere($idSpedizioniere, true);
 				
-				$this->collegaSpedizioni($idInvio, $spedizioniDaInviare);
+				if ($idInvio)
+					$this->collegaSpedizioni($idInvio);
 			}
 		}
     }
@@ -141,5 +146,56 @@ class SpedizioninegozioinviiModel extends GenericModel {
 			));
 		
 		return parent::del($id, $where);
-    }
+	}
+	
+	// Restituisce un array con tutti gli ID degli invii in coda
+	// Se $id != 0, cerca quell'invio specifico
+	public function getInviiInCoda($id = 0)
+	{
+		$this->clear()->where(array(
+			"data_spedizione"	=>	date("Y-m-d"),
+			"stato"				=>	"A",
+		));
+		
+		if ($id)
+			$this->aWhere(array(
+				"id_spedizione_negozio_invio"	=>	(int)$id,
+			));
+		
+		return $this->send(false);
+	}
+	
+	// Invia al corriere
+	public function inviaAlCorriere($idInvio = 0)
+	{
+		$invii = $this->getInviiInCoda($idInvio);
+		
+		foreach ($invii as $invio)
+		{
+			$idInvio = (int)$invio["id_spedizione_negozio_invio"];
+			$idSpedizioniere = (int)$invio["id_spedizioniere"];
+			
+			$idsSpedizioniDaConfermare = $this->collegaSpedizioni($idInvio);
+			
+			$modulo = SpedizionieriModel::getModulo((int)$idSpedizioniere, true);
+			
+			if ($modulo && $modulo->isAttivo() && $modulo->metodo("confermaSpedizioni") && count($idsSpedizioniDaConfermare) > 0)
+			{
+				$errori = $modulo->confermaSpedizioni($idsSpedizioniDaConfermare, $idInvio);
+				
+				foreach ($idsSpedizioniDaConfermare as $idSpedizione)
+				{
+					if (!isset($errori[$idSpedizione]))
+						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "II", "data_invio");
+				}
+				
+				$this->sValues(array(
+					"stato"	=>	"C",
+					"data_elaborazione"	=>	date("Y-m-d H:i:s"),
+				));
+				
+				$this->update((int)$idInvio);
+			}
+		}
+	}
 }

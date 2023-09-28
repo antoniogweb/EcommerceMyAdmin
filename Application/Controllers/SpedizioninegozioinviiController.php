@@ -52,7 +52,7 @@ class SpedizioninegozioinviiController extends BaseController {
 		if (!v("attiva_gestione_spedizioni"))
 			$this->responseCode(403);
 		
-		$this->tabella = gtext("spedizioni negozio - invii",true);
+		$this->tabella = gtext("borderò spedizioni",true);
 	}
 	
 	public function main()
@@ -71,7 +71,7 @@ class SpedizioninegozioinviiController extends BaseController {
 		$this->mainFields = array("spedizioni_negozio_invii.id_spedizione_negozio_invio", "smartDate|spedizioni_negozio_invii.data_spedizione", "spedizionieri.titolo", "statoCrud");
 		$this->mainHead = "ID,Data invio,Spedizioniere,Stato";
 		
-		$this->m[$this->modelName]->select("*")->inner(array("spedizioniere"))->orderBy("spedizioni_negozio_invii.data_spedizione desc,spedizioni_negozio_invii.id_spedizioniere")->convert()->save();
+		$this->m[$this->modelName]->select("*")->inner(array("spedizioniere"))->orderBy("spedizioni_negozio_invii.data_spedizione desc,spedizioni_negozio_invii.id_spedizione_negozio_invio desc")->convert()->save();
 		
 		parent::main();
 	}
@@ -86,5 +86,16 @@ class SpedizioninegozioinviiController extends BaseController {
 		$this->m[$this->modelName]->prenota();
 		
 		$this->redirect("spedizioninegozioinvii/main".$this->viewStatus);
+	}
+	
+	// Conferma le spedizioni prenotate
+	// $id dell'invio (borderò)
+	public function confermaspedizioni($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$this->m("SpedizioninegozioinviiModel")->inviaAlCorriere((int)$id);
 	}
 }

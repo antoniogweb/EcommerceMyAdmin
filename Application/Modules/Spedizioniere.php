@@ -30,24 +30,6 @@ class Spedizioniere
 		"lunghezzaMax"	=>	array(),
 	);
 	
-	public function invia($spedizioni)
-	{
-		$arrayResult = [];
-		
-		foreach ($spedizioni as $sp)
-		{
-			$this->scriviLog("INVIO SPEDIZIONE - ID:".(int)$sp["id_spedizione_negozio"]);
-			
-			$arrayResult[$sp["id_spedizione_negozio"]] = array(
-				"numero_spedizione"	=>	"",
-				"risultato"			=>	"",
-				"errore_invio"		=>	"",
-			);
-		}
-		
-		return $arrayResult;
-	}
-	
 	protected function checklunghezzaMax(SpedizioninegozioModel $spedizione, $campi)
 	{
 		foreach ($campi as $campo => $length)
@@ -151,23 +133,29 @@ class Spedizioniere
 			$spedizione->notice = "<div class='alert alert-danger'>".gtext($notice)."</div>";
 	}
 	
-	public function getLogPath($idSpedizione, $currentDateTime = null)
+	public function getLogPath($idElemento = 0, $currentDateTime = null, $isInvio = false)
 	{
 		$moduleFullPath = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
 		
-		// Controllo e in caso creo la cartella della spedizione
-		if (!@is_dir($moduleFullPath."/".(int)$idSpedizione))
-			createFolderFull((int)$idSpedizione, $moduleFullPath);
+		$folder = $isInvio ? "Invii" : "Spedizioni";
+		
+		// Controllo e in caso creo la cartella della spedizione o invio
+		if (!@is_dir($moduleFullPath."/$folder"))
+			createFolderFull($folder, $moduleFullPath);
+		
+		// Controllo e in caso creo la cartella della spedizione o invio specifico
+		if (!@is_dir($moduleFullPath."/$folder/".(int)$idElemento))
+			createFolderFull((int)$idElemento, $moduleFullPath."/$folder");
 		
 		// Cartella con dati di invio corrente
 		if ($currentDateTime)
-			createFolderFull($currentDateTime, $moduleFullPath."/".(int)$idSpedizione);
+			createFolderFull($currentDateTime, $moduleFullPath."/$folder/".(int)$idElemento);
 		
 		// Controllo e in caso creo la cartella con i PDF della spedizione
-		if (!@is_dir($moduleFullPath."/".(int)$idSpedizione."/Pdf"))
-			createFolderFull("Pdf", $moduleFullPath."/".(int)$idSpedizione);
+		if (!$isInvio && !@is_dir($moduleFullPath."/$folder/".(int)$idElemento."/Pdf"))
+			createFolderFull("Pdf", $moduleFullPath."/$folder/".(int)$idElemento);
 		
-		return $moduleFullPath."/".(int)$idSpedizione;
+		return $moduleFullPath."/$folder/".(int)$idElemento;
 	}
 	
 	public function getLabelNumeroSpedizione()

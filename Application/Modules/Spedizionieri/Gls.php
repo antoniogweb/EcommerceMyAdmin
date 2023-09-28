@@ -57,8 +57,6 @@ class Gls extends Spedizioniere
 		return array('codice_pagamento_contrassegno', 'codice_bda', 'assicurazione_integrativa', 'importo_assicurazione', 'formato_etichetta_pdf');
 	}
 	
-	
-	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 	public function getInfo($idSpedizione)
 	{
@@ -109,74 +107,84 @@ class Gls extends Spedizioniere
 	}
 	
 	// Restituisce la spedizione pronta per essere inviata al corriere come array associativo
-	public function getStrutturaSpedizione($idS)
+	public function getStrutturaSpedizione(array $idSpedizioni, $closeWorkDate = false)
 	{
 		$spModel = new SpedizioninegozioModel();
-			
-		$record = $spModel->selectId($idS);
 		
-		if (!empty($record))
+		$params = htmlentitydecodeDeep($this->params);
+		
+		$spedizioni = $spModel->clear()->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idSpedizioni),
+			),
+		))->send(false);
+		
+		if (count($spedizioni) > 0)
 		{
-			$record = htmlentitydecodeDeep($record);
-			
-			$colli = $spModel->getColli([(int)$idS]);
-			
 			$parcelArray = [];
 			
-			$params = htmlentitydecodeDeep($this->params);
-			
-			$contatore = 1;
-			
-			foreach ($colli as $collo)
+			foreach ($spedizioni as $record)
 			{
-				$temp = array(
-					"CodiceContrattoGls"	=>	$params["codice_contratto"],
-					"RagioneSociale"		=>	$record["ragione_sociale"],
-					"Indirizzo"				=>	$record["indirizzo"],
-					"Localita"				=>	$record["citta"],
-					"Zipcode"				=>	$record["cap"],
-					"Provincia"				=>	$record["provincia"],
-					"PesoReale"				=>	number_format($collo["peso"],1,",",""),
-					"TipoPorto"				=>	"f",
-					"FormatoPdf"			=>	$record["formato_etichetta_pdf"],
-					"GeneraPdf"				=>	4,
-					"ContatoreProgressivo"	=>	$contatore,
-				);
+				$record = htmlentitydecodeDeep($record);
 				
-				if ($record["codice_bda"])
-					$temp["Bda"] = $record["codice_bda"];
+				$colli = $spModel->getColli([(int)$record["id_spedizione_negozio"]]);
 				
-				if ($record["contrassegno"] > 0)
+				foreach ($colli as $collo)
 				{
-					$valore = $record["contrassegno"] / count($colli);
-					$temp["ImportoContrassegno"] = number_format($valore,2,",","");
-					$temp["ModalitaIncasso"] = $record["codice_pagamento_contrassegno"];
+					$temp = array(
+						"CodiceContrattoGls"	=>	$params["codice_contratto"],
+						"RagioneSociale"		=>	$record["ragione_sociale"],
+						"Indirizzo"				=>	$record["indirizzo"],
+						"Localita"				=>	$record["citta"],
+						"Zipcode"				=>	$record["cap"],
+						"Provincia"				=>	$record["provincia"],
+						"PesoReale"				=>	number_format($collo["peso"],1,",",""),
+						"TipoPorto"				=>	"f",
+						"FormatoPdf"			=>	$record["formato_etichetta_pdf"],
+						"GeneraPdf"				=>	4,
+						"ContatoreProgressivo"	=>	$collo["id_spedizione_negozio_collo"],
+						"Colli"					=>	1,
+					);
+					
+					if ($record["codice_bda"])
+						$temp["Bda"] = $record["codice_bda"];
+					
+					if ($record["contrassegno"] > 0)
+					{
+						$valore = $record["contrassegno"] / count($colli);
+						$temp["ImportoContrassegno"] = number_format($valore,2,",","");
+						$temp["ModalitaIncasso"] = $record["codice_pagamento_contrassegno"];
+					}
+					
+					if ($record["note_interne"])
+						$temp["NoteSpedizione"] = $record["note_interne"];
+					
+					if ($record["importo_assicurazione"] > 0)
+					{
+						$valore = $record["importo_assicurazione"] / count($colli);
+						$temp["Assicurazione"] = number_format($valore,2,",","");
+					}
+					
+					if ($record["assicurazione_integrativa"])
+						$temp["AssicurazioneIntegrativa"] = $record["assicurazione_integrativa"];
+					
+					$parcelArray[] = $temp;
 				}
-				
-				if ($record["note_interne"])
-					$temp["NoteSpedizione"] = $record["note_interne"];
-				
-				if ($record["importo_assicurazione"] > 0)
-				{
-					$valore = $record["importo_assicurazione"] / count($colli);
-					$temp["Assicurazione"] = number_format($valore,2,",","");
-				}
-				
-				if ($record["assicurazione_integrativa"])
-					$temp["AssicurazioneIntegrativa"] = $record["assicurazione_integrativa"];
-				
-				$parcelArray[] = $temp;
-				
-				$contatore++;
 			}
 			
+			$info = array(
+				"SedeGls"				=>	$params["codice_sede"],
+				"CodiceClienteGls"		=>	$params["codice_cliente"],
+				"PasswordClienteGls"	=>	$params["password_cliente"],
+			);
+			
+			if ($closeWorkDate)
+				$info["CloseWorkDayResult"] = "S";
+			
+			$info["Parcel"] = $parcelArray;
+			
 			$xmlArray = array(
-				"Info"	=>	array(
-					"SedeGls"				=>	$params["codice_sede"],
-					"CodiceClienteGls"		=>	$params["codice_cliente"],
-					"PasswordClienteGls"	=>	$params["password_cliente"],
-					"Parcel"	=>	$parcelArray,
-				),
+				"Info"	=>	$info,
 			);
 			
 			return $xmlArray;
@@ -190,11 +198,13 @@ class Gls extends Spedizioniere
 	{
 		if ($this->isAttivo())
 		{
-			$xmlArray = $this->getStrutturaSpedizione($idS);
+			$xmlArray = $this->getStrutturaSpedizione([$idS]);
 			
 			$xml = aToX($xmlArray, "", true, true);
 			
 			$infoLabel = $this->AddParcel($xml);
+			
+// 			echo $infoLabel;die();
 			
 			$xmlObj = simplexml_load_string($infoLabel);
 			
@@ -203,12 +213,47 @@ class Gls extends Spedizioniere
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InfoLabel", $infoLabel, "XML");
 			
 			if (isset($xmlObj->Parcel))
-				return new Data_Spedizioni_Result($xmlObj->Parcel[0]->NumeroSpedizione, "");
+			{
+				$warning = (string)$xmlObj->Parcel[0]->DescrizioneSedeDestino == "GLS Check" ? $xmlObj->Parcel[0]->NoteSpedizione : "";
+				
+				$errore = (!isset($xmlObj->Parcel[0]->NumeroSpedizione)) ? $xmlObj->Parcel[0]->NoteSpedizione : "";
+				
+				$numeroSpedizione = isset($xmlObj->Parcel[0]->NumeroSpedizione) ? $xmlObj->Parcel[0]->NumeroSpedizione : "";
+				
+				return new Data_Spedizioni_Result($numeroSpedizione, $errore, $warning);
+			}
 		}
 		else
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
 		
 		return false;
+	}
+	
+	// $idS array con gli ID delle spedizione da confermare
+	// $idInvio id dell'invio
+	public function confermaSpedizioni(array $idS, $idInvio)
+	{
+		$xmlArray = $this->getStrutturaSpedizione($idS, true);
+		
+// 			$xmlArray["Info"]["CloseWorkDayResult"] = "S";
+		
+		$xml = aToX($xmlArray, "", true, true);
+		
+// 			echo $xml;die();
+		
+		$listParcel = $this->CloseWorkDay($xml);
+		
+// 			echo $listParcel;die();
+		
+		$xmlObj = simplexml_load_string($listParcel);
+		
+		// Salvo il log dell'invio e dell'output
+		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "XMLCloseInfoParcel", $xml, "XML");
+		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "ListParcel", $listParcel, "XML");
+		
+		$arrayErrori = array();
+		
+		return $arrayErrori;
 	}
 	
 	// Restituisce il client SOAP
@@ -230,13 +275,26 @@ class Gls extends Spedizioniere
 	{
 		$client = $this->getClient();
 		
-		$var = array(
+		$variabile = array(
 			"XMLInfoParcel"	=>	trim($XMLInfoParcel),
 		);
 		
-		$infoLabel = $client->AddParcel($var);
+		$infoLabel = $client->AddParcel($variabile);
 		
 		return $infoLabel->AddParcelResult->any;
+	}
+	
+	public function CloseWorkDay($XMLInfoParcel)
+	{
+		$client = $this->getClient();
+		
+		$variabile = array(
+			"XMLCloseInfoParcel"	=>	trim($XMLInfoParcel),
+		);
+		
+		$result = $client->CloseWorkDay($variabile);
+		
+		return $result->CloseWorkDayResult->any;
 	}
 	
 	// Stampa o genera il segnacollo della spedizione

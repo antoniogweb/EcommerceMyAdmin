@@ -51,11 +51,11 @@ if (!isset($params["azione"]))
 
 $log = Files_Log::getInstance("log_spedizioni");
 
-if ($params["azione"] == "invia-spedizioni")
+if ($params["azione"] == "conferma-spedizioni-prenotate")
 {
 	$log->writeString("INIZIO INVIO SPEDIZIONI");
 	
-	SpedizioninegozioModel::g()->inviaAlCorriere();
+	SpedizioninegozioinviiModel::g()->inviaAlCorriere();
 	
 	$log->writeString("FINE INVIO SPEDIZIONI");
 }
@@ -68,4 +68,3 @@ if ($params["azione"] == "get-info-tracking")
 	
 	$log->writeString("FINE RICHIESTA INFO TRACKING");
 }
-

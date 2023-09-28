@@ -333,16 +333,6 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
-	// Invia la spedizione al corriere (stato = II)
-	public function invia($id = 0)
-	{
-		$this->shift(1);
-		
-		$this->clean();
-		
-		$this->m($this->modelName)->inviaAlCorriere((int)$id);
-	}
-	
 	public function controllaspedizioni($id = 0)
 	{
 		$this->shift(1);
@@ -352,6 +342,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->m($this->modelName)->controllaStatoSpedizioniInviate((int)$id);
 	}
 	
+	// Stampa il segnacollo della spedizione avente ID = $id
 	public function segnacollo($id = 0)
 	{
 		$this->shift(1);

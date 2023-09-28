@@ -81,8 +81,6 @@
 				<?php } else if ($statoSpedizione == "I") {?>
 				<a title="<?php echo gtext("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("APRI");?></a>
 				<?php } ?>
-				
-				
 			</div>
 		</div>
 	</div>
@@ -91,6 +89,12 @@
 <?php if ($spedizione["spedizioni_negozio"]["errore_invio"]) { ?>
 <div class="alert alert-danger">
 	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtext("Errori invio");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["errore_invio"]);?></i>
+</div>
+<?php } ?>
+
+<?php if ($spedizione["spedizioni_negozio"]["warning_invio"]) { ?>
+<div class="alert alert-warning">
+	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtext("Alert corriere");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["warning_invio"]);?></i>
 </div>
 <?php } ?>
 
