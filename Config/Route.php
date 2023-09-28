@@ -812,6 +812,9 @@ class Route
 		
 		'spedizioninegoziorighe,salva',
 		'spedizioninegoziocolli,salva',
+		
+		'spedizioninegozioinvii,main',
+		'spedizioninegozioinvii,prenota',
 	);
 	
 	//it can be 'yes' or 'no'

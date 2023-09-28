@@ -47,6 +47,7 @@ class SpedizioninegozioModel extends FormModel {
 			'colli' => array("HAS_MANY", 'SpedizioninegoziocolliModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'info' => array("HAS_MANY", 'SpedizioninegozioinfoModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
+			'invio' => array("BELONGS_TO", 'SpedizioninegozioinviiModel', 'id_spedizione_negozio_invio',null,"CASCADE"),
 		);
     }
 	
@@ -326,6 +327,14 @@ class SpedizioninegozioModel extends FormModel {
 		$idsO = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"]);
 		
 		return "<b>#".implode(", #", $idsO)."</b>";
+	}
+	
+	public function brderoCrud($record)
+	{
+		if ($record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"])
+			return "<b>".$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."</b> ".gtext("del")." ".smartDate($record["spedizioni_negozio_invii"]["data_spedizione"]);
+		
+		return "";
 	}
 	
 	// Restituisce gli ordini legati ad una spedizione
@@ -757,16 +766,14 @@ class SpedizioninegozioModel extends FormModel {
 	}
 	
 	// Restituisce tutte le spedizioni da inviare, con data corrente o precedente
+	// se $soloIds == true restituisce solo gli ID delle spedizioni
 	// se $idS != 0, restituisce solo la spedizione avente id = $idS
-	public function getSpedizioniDaInviare($idSpedizioniere, $idS = 0)
+	public function getSpedizioniDaInviare($idSpedizioniere, $soloIds = false, $idS = 0)
 	{
 		$this->clear()->where(array(
 			"in"	=>	array(
 				"stato"	=>	array("I"),
 			),
-// 			"lte"	=>	array(
-// 				"data_spedizione"	=>	date("Y-m-d"),
-// 			),
 			"id_spedizioniere"	=>	(int)$idSpedizioniere,
 		));
 		
@@ -775,7 +782,16 @@ class SpedizioninegozioModel extends FormModel {
 				"id_spedizione_negozio"	=>	(int)$idS
 			));
 		
-		return $this->send(false);
+		$conTabella = false;
+		
+		if ($soloIds)
+		{
+			$this->select($this->_idFields)->toList($this->_idFields);
+			
+			$conTabella = true;
+		}
+		
+		return $this->send($conTabella);
 	}
 	
 	// Invia le spedizioni al corriere
@@ -792,7 +808,7 @@ class SpedizioninegozioModel extends FormModel {
 			
 			if ($modulo->isAttivo())
 			{
-				$spedizioniDaInviare = $this->getSpedizioniDaInviare($idSpedizioniere, $idS);
+				$spedizioniDaInviare = $this->getSpedizioniDaInviare($idSpedizioniere, false, $idS);
 				
 				$risultati = $modulo->invia($spedizioniDaInviare);
 				

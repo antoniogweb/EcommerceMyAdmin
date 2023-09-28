@@ -78,8 +78,8 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"add");
 		
-		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
-		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
+		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "brderoCrud", "statoCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
+		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Borderò,Stato,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
 		
 		if (v("attiva_liste_regalo"))
 		{
@@ -99,7 +99,7 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
-				->left(array("spedizioniere"))
+				->left(array("spedizioniere","invio"))
 				->where(array(
 					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
 					"spedizioni_negozio.stato"	=>	$this->viewArgs['stato'],
