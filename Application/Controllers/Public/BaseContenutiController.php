@@ -958,9 +958,26 @@ class BaseContenutiController extends BaseController
 	{
 		Cache_Db::$skipWritingCache = true;
 		
-		$orWhere = array(
-			"lk" => array('pages.codice' => $this->viewArgs[$argName]),
-		);
+		$orWhere = array();
+		
+		$idPages = $this->m("CombinazioniModel")->clear()->select("combinazioni.id_page")
+			->inner(array("pagina"))
+			->where(array(
+				"combinazioni.codice"		=>	$this->viewArgs[$argName],
+				"combinazioni.acquistabile"	=>	1,
+			))
+			->addWhereAttivo()
+			->toList("combinazioni.id_page")
+			->send();
+		
+		$idPages = array_unique($idPages);
+		
+		if (count($idPages))
+			$orWhere = array(
+				"  in"	=>	array(
+					"pages.id_page"	=>	forceIntDeep($idPages),
+				),
+			);
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 		{
