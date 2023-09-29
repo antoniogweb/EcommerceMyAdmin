@@ -47,6 +47,7 @@ class SpedizioninegozioController extends BaseController {
 		'id_spedizioniere:sanitizeAll'=>'tutti',
 		'stato:sanitizeAll'=>'tutti',
 		'numero_spedizione:sanitizeAll'=>'tutti',
+		'id_spedizione_negozio_invio:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "ecommerce";
@@ -104,6 +105,7 @@ class SpedizioninegozioController extends BaseController {
 					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
 					"spedizioni_negozio.stato"	=>	$this->viewArgs['stato'],
 					"spedizioni_negozio.numero_spedizione"	=>	$this->viewArgs['numero_spedizione'],
+					"spedizioni_negozio.id_spedizione_negozio_invio"	=>	$this->viewArgs['id_spedizione_negozio_invio'],
 				))
 				->orderBy("spedizioni_negozio.data_spedizione desc,spedizioni_negozio.id_spedizione_negozio desc")->convert();
 		

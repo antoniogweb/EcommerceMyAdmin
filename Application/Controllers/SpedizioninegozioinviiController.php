@@ -68,8 +68,8 @@ class SpedizioninegozioinviiController extends BaseController {
 		
 		$this->shift();
 		
-		$this->mainFields = array("spedizioni_negozio_invii.id_spedizione_negozio_invio", "smartDate|spedizioni_negozio_invii.data_spedizione", "spedizionieri.titolo", "statoCrud");
-		$this->mainHead = "ID,Data invio,Spedizioniere,Stato";
+		$this->mainFields = array("spedizioni_negozio_invii.id_spedizione_negozio_invio", "smartDate|spedizioni_negozio_invii.data_spedizione", "spedizionieri.titolo", "statoCrud", "spedizioniCrud");
+		$this->mainHead = "ID,Data invio,Spedizioniere,Stato,Spedizioni collegate";
 		
 		$this->m[$this->modelName]->select("*")->inner(array("spedizioniere"))->orderBy("spedizioni_negozio_invii.data_spedizione desc,spedizioni_negozio_invii.id_spedizione_negozio_invio desc")->convert()->save();
 		

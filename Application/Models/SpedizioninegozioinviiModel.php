@@ -39,6 +39,11 @@ class SpedizioninegozioinviiModel extends GenericModel {
         );
     }
     
+    public function spedizioniCrud($record)
+    {
+		return "<a class='iframe' href='".Url::getRoot()."spedizioninegozio/main?id_spedizione_negozio_invio=".(int)$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."&partial=Y&nobuttons=Y'><i class='fa fa-list'></i></a>";
+    }
+    
     // Restituisce l'ID dell'ultimo invio dello spedizioniere
     // se non lo trova lo crea se $crea == true altrimenti restituisce 0
     // $dataInvio, la data con la quale cercarlo o crearlo, se vuota usa la data corrente 
