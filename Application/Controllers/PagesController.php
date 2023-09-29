@@ -44,6 +44,7 @@ class PagesController extends BaseController {
 	public $orderBy = "pages.id_order";
 	
 	public $formFields = null;
+	public $mainActionFields = "distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo";
 	
 	public $tabContenuti = array();
 	public $tabCaratteristiche = array();
@@ -335,7 +336,7 @@ class PagesController extends BaseController {
 		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
 		$this->scaffold->mainMenu->links['add']['title'] = 'inserisci un nuovo prodotto';
 		
-		$this->scaffold->fields = "distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo";
+		$this->scaffold->fields = $this->mainActionFields; //"distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo";
 		$this->scaffold->model->clear()->restore(true)->inner("categories")->using("id_c")->left(array("marchio"))->orderBy($this->orderBy);
 		
 		$where = array(
