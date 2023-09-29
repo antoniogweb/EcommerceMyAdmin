@@ -560,6 +560,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_spedizioni"	=>	0, // se impostato ad 1, permette la gestione delle spedizioni e degli spedizionieri dal backend
 		"url_webservice_gls"			=>	"https://labelservice.gls-italy.com/ilswebservice.asmx",
 		"url_rest_api_brt"				=>	"https://api.brt.it/rest/v1",
+		"minuti_attesa_bordero_brt"		=>	5,
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento

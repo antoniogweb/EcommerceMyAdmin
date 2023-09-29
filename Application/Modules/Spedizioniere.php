@@ -162,4 +162,10 @@ class Spedizioniere
 	{
 		return gtext("Numero spedizione corriere");
 	}
+	
+	// Verifica se le spedizioni di ID $ids sono confermabili
+	public function spedizioniConfermabili(array $ids)
+	{
+		return true;
+	}
 }

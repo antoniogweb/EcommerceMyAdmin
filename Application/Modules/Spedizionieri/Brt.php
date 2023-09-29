@@ -370,4 +370,28 @@ class Brt extends Spedizioniere
 		
 		return "";
 	}
+	
+	// Verifica se le spedizioni di ID $ids sono confermabili
+	public function spedizioniConfermabili(array $ids)
+	{
+		$date = new DateTime();
+		
+		$date->modify("-".v("minuti_attesa_bordero_brt")." minutes");
+		
+		$spnModel = new SpedizioninegozioModel();
+		
+		$spedizioniNonPronte = $spnModel->clear()->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($ids),
+			),
+		))->sWhere(array(
+			"data_pronta_invio > ?",
+			array($date->format("Y-m-d H:i:s"))
+		))->rowNumber();
+		
+		if ($spedizioniNonPronte > 0)
+			return false;
+		
+		return true;
+	}
 }

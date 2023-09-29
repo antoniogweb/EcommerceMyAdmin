@@ -106,7 +106,7 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		{
 			$spedizioniDaInviare = SpedizioninegozioModel::g(false)->getSpedizioniDaInviare($idSpedizioniere, true);
 			
-			if (count($spedizioniDaInviare) > 0)
+			if (count($spedizioniDaInviare) > 0 && SpedizionieriModel::getModulo((int)$idSpedizioniere, true)->spedizioniConfermabili($spedizioniDaInviare))
 			{
 				$idInvio = $this->getIdUltimoInvioSpedizioniere($idSpedizioniere, true);
 				
@@ -190,8 +190,6 @@ class SpedizioninegozioinviiModel extends GenericModel {
 					else
 						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "I", "data_pronta_invio", $risultati[$idSpedizione]->toArray(false));
 				}
-				
-				print_r($risultati);
 				
 				$this->sValues(array(
 					"stato"	=>	"C",
