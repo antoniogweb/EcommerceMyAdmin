@@ -40,12 +40,21 @@ class Data_Spedizioni_Result
 		return $this->numeroSpedizione ? true : false;
 	}
 	
-	public function toArray()
+	public function toArray($numeroSpedizione = true)
 	{
-		return array(
-			"numero_spedizione"	=>	$this->numeroSpedizione,
+		$res = array(
 			"errore_invio"		=>	$this->erroreSpedizione,
 			"warning_invio"		=>	$this->warningSpedizione,
 		);
+		
+		if ($numeroSpedizione)
+			$res["numero_spedizione"] = $this->numeroSpedizione;
+		
+		return $res;
+	}
+	
+	public function getErrore()
+	{
+		return $this->erroreSpedizione;
 	}
 }

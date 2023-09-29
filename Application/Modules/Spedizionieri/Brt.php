@@ -186,9 +186,20 @@ class Brt extends Spedizioniere
 				$jsonArray = array(
 					"account"	=>	$account,
 					"deleteData"	=>	array(
-						"senderCustomerCode"=>	$params["codice_cliente"],
-						"numericSenderReference"=>	$record["riferimento_mittente_numerico"],
-						"alphanumericSenderReference"=>	$record["riferimento_mittente_alfa"],
+						"senderCustomerCode"			=>	$params["codice_cliente"],
+						"numericSenderReference"		=>	$record["riferimento_mittente_numerico"],
+						"alphanumericSenderReference"	=>	$record["riferimento_mittente_alfa"],
+					),
+				);
+			}
+			else if ($tipo == "confirm")
+			{
+				$jsonArray = array(
+					"account"	=>	$account,
+					"confirmData"	=>	array(
+						"senderCustomerCode"			=>	$params["codice_cliente"],
+						"numericSenderReference"		=>	$record["riferimento_mittente_numerico"],
+						"alphanumericSenderReference"	=>	$record["riferimento_mittente_alfa"],
 					),
 				);
 			}
@@ -259,6 +270,41 @@ class Brt extends Spedizioniere
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
 		
 		return false;
+	}
+	
+	// $idS array con gli ID delle spedizione da confermare
+	// $idInvio id dell'invio
+	public function confermaSpedizioni(array $idS, $idInvio)
+	{
+		$risultati = array();
+		
+		foreach ($idS as $id)
+		{
+			$jsonArray = $this->getStrutturaSpedizione($id, "confirm");
+			
+			$result = $this->send("/shipments/shipment", "PUT", $jsonArray);
+			
+			$errore = "";
+			
+			if (
+				isset($result["confirmResponse"]) && 
+				(
+					$result["confirmResponse"]["executionMessage"]["code"] >= 0 ||
+					strpos($result["confirmResponse"]["executionMessage"]["message"], "already been confirmed") !== false
+				)
+			)
+			{
+				// Salvo il log dell'invio e dell'output
+				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmRequest", json_encode($jsonArray), "JSON");
+				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmResponse", json_encode($result), "JSON");
+			}
+			else
+				$errore = isset($result["confirmResponse"]["executionMessage"]["message"]) ? $result["confirmResponse"]["executionMessage"]["message"] : "Errore, API non funzionante";
+			
+			$risultati[$id] = new Data_Spedizioni_Result("",$errore);
+		}
+		
+		return $risultati;
 	}
 	
 	public function send($url, $method = "POST", $valori = array())

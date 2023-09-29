@@ -165,7 +165,7 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		return $this->send(false);
 	}
 	
-	// Invia al corriere
+	// Conferma con il corriere le spedizioni legate ad un invio
 	public function inviaAlCorriere($idInvio = 0)
 	{
 		$invii = $this->getInviiInCoda($idInvio);
@@ -181,13 +181,17 @@ class SpedizioninegozioinviiModel extends GenericModel {
 			
 			if ($modulo && $modulo->isAttivo() && $modulo->metodo("confermaSpedizioni") && count($idsSpedizioniDaConfermare) > 0)
 			{
-				$errori = $modulo->confermaSpedizioni($idsSpedizioniDaConfermare, $idInvio);
+				$risultati = $modulo->confermaSpedizioni($idsSpedizioniDaConfermare, $idInvio);
 				
 				foreach ($idsSpedizioniDaConfermare as $idSpedizione)
 				{
-					if (!isset($errori[$idSpedizione]))
-						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "II", "data_invio");
+					if (!$risultati[$idSpedizione]->getErrore())
+						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "II", "data_invio", $risultati[$idSpedizione]->toArray(false));
+					else
+						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "I", "data_pronta_invio", $risultati[$idSpedizione]->toArray(false));
 				}
+				
+				print_r($risultati);
 				
 				$this->sValues(array(
 					"stato"	=>	"C",

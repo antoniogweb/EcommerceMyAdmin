@@ -663,8 +663,10 @@ class SpedizioninegozioModel extends FormModel {
 		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
 		{
 			$data = new Data_Spedizioni_Result();
+			$values = $data->toArray();
+			$values["id_spedizione_negozio_invio"] = 0;
 			
-			$this->settaStato($id, "A", "", $data->toArray());
+			$this->settaStato($id, "A", "", $values);
 		}
 	}
 	

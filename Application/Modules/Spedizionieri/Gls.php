@@ -235,15 +235,9 @@ class Gls extends Spedizioniere
 	{
 		$xmlArray = $this->getStrutturaSpedizione($idS, true);
 		
-// 			$xmlArray["Info"]["CloseWorkDayResult"] = "S";
-		
 		$xml = aToX($xmlArray, "", true, true);
 		
-// 			echo $xml;die();
-		
 		$listParcel = $this->CloseWorkDay($xml);
-		
-// 			echo $listParcel;die();
 		
 		$xmlObj = simplexml_load_string($listParcel);
 		
@@ -251,9 +245,15 @@ class Gls extends Spedizioniere
 		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "XMLCloseInfoParcel", $xml, "XML");
 		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "ListParcel", $listParcel, "XML");
 		
-		$arrayErrori = array();
+		// Andare ad esaminare l'XML di output di GLS?
+		$risultati = array();
 		
-		return $arrayErrori;
+		foreach ($idS as $id)
+		{
+			$risultati[$id] = new Data_Spedizioni_Result("","");
+		}
+		
+		return $risultati;
 	}
 	
 	// Restituisce il client SOAP
