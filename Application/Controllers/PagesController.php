@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["comb_acq"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class PagesController extends BaseController {
 
 	public $voceMenu = "prodotti";
@@ -83,6 +90,7 @@ class PagesController extends BaseController {
 		'id_cmb:sanitizeAll'=>0,
 		'nuovo:sanitizeAll'=>'tutti',
 		'id_import:sanitizeAll'=>0,
+		'comb_acq:sanitizeAll'=>'1',
 	);
 	
 	protected $_posizioni = array(
@@ -1247,7 +1255,10 @@ class PagesController extends BaseController {
 		}
 		$this->m['CombinazioniModel']->creaColonne($clean['id']);
 		
-		$result = $this->m['CombinazioniModel']->clear()->where(array('id_page'=>$clean['id']))->orderBy("id_order")->send();
+		$result = $this->m['CombinazioniModel']->clear()->where(array(
+			'id_page'	=>	$clean['id'],
+			"acquistabile"	=>	$this->viewArgs['comb_acq'],
+		))->orderBy("id_order")->send();
 		$data['numeroCombinazioni'] = count($result);
 		
 		if (isset($_GET["refresh"]))
@@ -1255,10 +1266,12 @@ class PagesController extends BaseController {
 			$data['noticeComb'] = "<div class='alert alert-success'>operazione eseguita!</div>\n";
 		}
 		
-		$this->helper('List','id_c');
+		$this->helper('List','id_c','prodotti/attributi/'.$clean['id']);
 		$this->h['List']->submitImageType = 'yes';
 		$this->h['List']->position = array(1,1);
 		$this->h['List']->model = $this->m['CombinazioniModel'];
+		
+		$filtriArray = [];
 		
 		if (v("immagine_in_varianti"))
 		{
@@ -1270,6 +1283,8 @@ class PagesController extends BaseController {
 			);
 			
 			$this->h['List']->addItem("text","<img class='immagine_variante' src='".$this->baseUrl."/thumb/immagineinlistaprodotti/0/;combinazioni.immagine;' /><img id=';combinazioni.id_c;' title='modifica immagine' class='img_attributo_aggiorna immagine_event' src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/edit.png'/><img class='attributo_loading align_middle' src='".$this->baseUrl."/Public/Img/Icons/loading4.gif' />");
+			
+			$filtriArray[] = null;
 		}
 		else if (v("immagini_separate_per_variante"))
 		{
@@ -1280,9 +1295,12 @@ class PagesController extends BaseController {
 					'style'	=>	'max-width:300px;',
 				),
 			);
+			
+			$filtriArray[] = null;
 		}
 		
 		$this->h['List']->addItem("text",";idCombCrud;");
+		$filtriArray[] = null;
 		
 		$this->h['List']->inverseColProperties = array(
 			array(
@@ -1314,20 +1332,27 @@ class PagesController extends BaseController {
 			
 			$this->h['List']->addItem("text",$metodoNomeAttributo);
 			
+			$filtriArray[] = null;
+			
 			$indiceCol++;
 		}
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;codiceView;</span>");
+		$filtriArray[] = null;
 		
 		list($campoPrice, $campoPriceScontato) = CombinazioniModel::campiPrezzo();
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.$campoPrice;</span>");
+		$filtriArray[] = null;
 		
 		if (v("sconti_combinazioni_automatiche"))
+		{
 			$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.$campoPriceScontato;</span>");
+			$filtriArray[] = null;
+		}
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.peso;</span>");
-		
+		$filtriArray[] = null;
 // 		$this->h['List']->addItem("text","<a class='del_row' href='".$this->baseUrl."/".$this->controller."/attributi/".$clean['id'].$this->viewStatus."&action=del_comb&id=;combinazioni.id_c;#refresh_link'><img src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/delete.png' /></a>");
 		
 		$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean["id"]);
@@ -1363,9 +1388,16 @@ class PagesController extends BaseController {
 		{
 			$this->h['List']->addItem("text",";combinazioni.giacenza;");
 			$head .= ",Giacenza";
+			$filtriArray[] = null;
 		}
 		
 		$this->h['List']->addItem("text",";acquistabileCrudText;");
+		$filtriArray[] = array("comb_acq",null,array(
+			"tutti"		=>	"tutti",
+			"1"	=>	"Acquistabile",
+			"0"	=>	"Non acquistabile",
+		));
+		
 		$head .= ",Acquist.?";
 		
 		if (v("aggiorna_pagina_al_cambio_combinazione_in_prodotto"))
@@ -1393,6 +1425,8 @@ class PagesController extends BaseController {
 		}
 		
 		$this->h['List']->setHead($head);
+		
+		$this->h['List']->setFilters($filtriArray);
 		
 		$data['listaCombinazioni'] = $this->h['List']->render($result);
 		

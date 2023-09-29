@@ -791,7 +791,7 @@ class BaseContenutiController extends BaseController
 		
 		$cache = Cache_Html::getInstance();
 		
-		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl))
+		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl) && !isset($_GET["search"]))
 			$cache->saveHtml = true;
 		
 		if (v("estrai_categorie_figlie"))
@@ -972,15 +972,12 @@ class BaseContenutiController extends BaseController
 			}
 			else
 				$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName], 50, "title");
-// 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
 		else
 		{
 			$campoCerca = v("mostra_filtro_ricerca_libera_in_magazzino") ? "campo_cerca" : "title";
 			
 			$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName], 50, $campoCerca, "contenuti_tradotti");
-			
-// 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
 		}
 		
 		return array(
