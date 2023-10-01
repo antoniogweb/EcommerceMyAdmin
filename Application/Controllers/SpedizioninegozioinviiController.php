@@ -68,8 +68,8 @@ class SpedizioninegozioinviiController extends BaseController {
 		
 		$this->shift();
 		
-		$this->mainFields = array("spedizioni_negozio_invii.id_spedizione_negozio_invio", "smartDate|spedizioni_negozio_invii.data_spedizione", "spedizionieri.titolo", "statoCrud", "spedizioniCrud");
-		$this->mainHead = "ID,Data invio,Spedizioniere,Stato,Spedizioni collegate";
+		$this->mainFields = array("spedizioni_negozio_invii.id_spedizione_negozio_invio", "smartDate|spedizioni_negozio_invii.data_spedizione", "spedizionieri.titolo", "statoCrud", "spedizioniCrud","reportCrud");
+		$this->mainHead = "ID,Data invio,Spedizioniere,Stato,Spedizioni collegate,Borderò";
 		
 		$this->m[$this->modelName]->select("*")->inner(array("spedizioniere"))->orderBy("spedizioni_negozio_invii.data_spedizione desc,spedizioni_negozio_invii.id_spedizione_negozio_invio desc")->convert()->save();
 		
@@ -97,5 +97,13 @@ class SpedizioninegozioinviiController extends BaseController {
 		$this->clean();
 		
 		$this->m("SpedizioninegozioinviiModel")->inviaAlCorriere((int)$id);
+	}
+	
+	// Stampa il pdf del borderò dell'invio $id
+	public function reportpdf($id = 0)
+	{
+		$this->clean();
+		
+		$this->m("SpedizioninegozioinviiModel")->reportPdf((int)$id);
 	}
 }

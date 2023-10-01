@@ -168,4 +168,9 @@ class Spedizioniere
 	{
 		return true;
 	}
+	
+	protected function getPathTemplateBordero()
+	{
+		return LIBRARY . "/Application/Views/Spedizionieri/Bordero/" . $this->params["modulo"].".php";
+	}
 }

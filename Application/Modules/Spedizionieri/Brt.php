@@ -394,4 +394,10 @@ class Brt extends Spedizioniere
 		
 		return true;
 	}
+	
+	// Stampa il pdf del borderò dell'invio $id
+	public function reportPdf($idInvio = 0)
+	{
+		Pdf::output($this->getPathTemplateBordero(), "bordero.pdf");
+	}
 }

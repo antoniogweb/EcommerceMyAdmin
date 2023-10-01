@@ -799,44 +799,6 @@ class SpedizioninegozioModel extends FormModel {
 		return $this->send($conTabella);
 	}
 	
-	// Invia le spedizioni al corriere
-// 	public function inviaAlCorriere($idS = 0)
-// 	{
-// 		$arrayIdSpedizionieri = SpedizionieriModel::g()->where(array(
-// 			"attivo"	=>	1,
-// 		))->toList("id_spedizioniere")->send();
-// 		
-// 		foreach ($arrayIdSpedizionieri as $idSpedizioniere)
-// 		{
-// 			// Modulo spedizioniere
-// 			$modulo = SpedizionieriModel::getModulo((int)$idSpedizioniere, true);
-// 			
-// 			if ($modulo->isAttivo())
-// 			{
-// 				$spedizioniDaInviare = $this->getSpedizioniDaInviare($idSpedizioniere, false, $idS);
-// 				
-// 				$risultati = $modulo->invia($spedizioniDaInviare);
-// 				
-// 				foreach ($risultati as $idSpedizione => $r)
-// 				{
-// 					if ($r["risultato"] == "OK")
-// 					{
-// 						$this->settaStato($idSpedizione, "II", "data_invio", array(
-// 							"numero_spedizione"	=>	$r["numero_spedizione"],
-// 							"errore_invio"		=>	"",
-// 						));
-// 					}
-// 					else
-// 					{
-// 						$this->settaStato($idSpedizione, "I", "data_pronta_invio", array(
-// 							"errore_invio"		=>	$r["errore_invio"]
-// 						));
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
-	
 	// Controlla le spedizioni incviate negli ultimi $giorni
 	// $idS indica una spedizione specifica da controllare
 	// $elaboraSpedizione = 0 -> controllo solo lo stao interrogando il corriere. $elaboraSpedizione = 1, imposta consegnata o in errore se il corriere dice che è stata, rispettivamente, consegnata o messa in errore

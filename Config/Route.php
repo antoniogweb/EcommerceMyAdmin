@@ -815,6 +815,7 @@ class Route
 		'spedizioninegozioinvii,main',
 		'spedizioninegozioinvii,prenota',
 		'spedizioninegozioinvii,confermaspedizioni',
+		'spedizioninegozioinvii,reportpdf',
 	);
 	
 	//it can be 'yes' or 'no'

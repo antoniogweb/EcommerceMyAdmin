@@ -44,6 +44,11 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		return "<a class='iframe' href='".Url::getRoot()."spedizioninegozio/main?id_spedizione_negozio_invio=".(int)$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."&partial=Y&nobuttons=Y'><i class='fa fa-list'></i></a>";
     }
     
+    public function reportCrud($record)
+    {
+		return "<a target='_blank' href='".Url::getRoot()."spedizioninegozioinvii/reportpdf/".(int)$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."'><i class='fa fa-download'></i></a>";
+    }
+    
     // Restituisce l'ID dell'ultimo invio dello spedizioniere
     // se non lo trova lo crea se $crea == true altrimenti restituisce 0
     // $dataInvio, la data con la quale cercarlo o crearlo, se vuota usa la data corrente 
@@ -204,5 +209,16 @@ class SpedizioninegozioinviiModel extends GenericModel {
 				$this->update((int)$idInvio);
 			}
 		}
+	}
+	
+	// Stampa il pdf del borderò dell'invio $id
+	public function reportPdf($id = 0)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+			SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->reportPdf((int)$id);
+		
+		return;
 	}
 }
