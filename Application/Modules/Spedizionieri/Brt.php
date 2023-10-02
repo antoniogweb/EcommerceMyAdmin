@@ -52,7 +52,7 @@ class Brt extends Spedizioniere
 	
 	public function gCampiForm()
 	{
-		return 'titolo,modulo,attivo,codice_cliente,password_cliente,codice_sede';
+		return 'titolo,ragione_sociale_cliente,modulo,attivo,codice_cliente,password_cliente,codice_sede';
 	}
 	
 	public function gCampiSpedizione()
@@ -418,5 +418,20 @@ class Brt extends Spedizioniere
 			
 			Pdf::output("", $nomeFilePdf, $spedizioni, "I", $content);
 		}
+	}
+	
+	public function getCodiciFromToSegnacolli($idSpedizione)
+	{
+		$createResponse = SpedizioninegozioinfoModel::g(false)->getCodice($idSpedizione, "createResponse");
+		
+		if ($createResponse)
+		{
+			$createResponse = json_decode($createResponse, true);
+			
+			if (isset($createResponse["createResponse"]["parcelNumberFrom"]) && isset($createResponse["createResponse"]["parcelNumberTo"]))
+				return array((int)$createResponse["createResponse"]["parcelNumberFrom"], (int)$createResponse["createResponse"]["parcelNumberTo"]);
+		}
+		
+		return array("", "");
 	}
 }
