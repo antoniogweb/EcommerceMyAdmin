@@ -45,8 +45,11 @@ class SpedizioninegozioinviiModel extends GenericModel {
     }
     
     public function reportCrud($record)
-    {
-		return "<a target='_blank' href='".Url::getRoot()."spedizioninegozioinvii/reportpdf/".(int)$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."'><i class='fa fa-download'></i></a>";
+    {	
+		if ($record["spedizioni_negozio_invii"]["stato"] == "C" && SpedizionieriModel::getModulo((int)$record["spedizioni_negozio_invii"]["id_spedizioniere"], true)->metodo("reportPdf"))
+			return "<a target='_blank' href='".Url::getRoot()."spedizioninegozioinvii/reportpdf/".(int)$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."'><i class='fa fa-download'></i></a>";
+		
+		return "";
     }
     
     // Restituisce l'ID dell'ultimo invio dello spedizioniere

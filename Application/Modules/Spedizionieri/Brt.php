@@ -398,6 +398,25 @@ class Brt extends Spedizioniere
 	// Stampa il pdf del borderò dell'invio $id
 	public function reportPdf($idInvio = 0)
 	{
-		Pdf::output($this->getPathTemplateBordero(), "bordero.pdf");
+		$record = SpedizioninegozioinviiModel::g(false)->selectId((int)$idInvio);
+		
+		if (!empty($record))
+		{
+			$spedizioni = SpedizioninegozioModel::g(false)->where(array(
+				"id_spedizione_negozio_invio"	=>	(int)$idInvio,
+			))->orderBy("id_spedizione_negozio desc")->send();
+			
+			$templatePath = $this->getPathTemplateBordero();
+			$nomeFilePdf = $this->getTitoloPdf($record);
+			
+			ob_start();
+			include($templatePath);
+			$content = ob_get_clean();
+// 			echo $content;die();
+
+			Pdf::$params["format"] = "A4-L";
+			
+			Pdf::output("", $nomeFilePdf, $spedizioni, "I", $content);
+		}
 	}
 }

@@ -173,4 +173,9 @@ class Spedizioniere
 	{
 		return LIBRARY . "/Application/Views/Spedizionieri/Bordero/" . $this->params["modulo"].".php";
 	}
+	
+	protected function getTitoloPdf($record)
+	{
+		return "bordero_".strtoupper($this->params["modulo"])."_invio_del_".date("Y_m_d", strtotime($record["data_elaborazione"])).".pdf";
+	}
 }
