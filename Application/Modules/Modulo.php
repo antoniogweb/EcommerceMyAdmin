@@ -67,6 +67,11 @@ trait Modulo
 		return $this->params;
 	}
 	
+	public function getParam($name)
+	{
+		return $this->params[$name];
+	}
+	
 	public function gCampiForm()
 	{
 		return 'titolo,attivo,usa_token_sicurezza,token_sicurezza,query_string';
