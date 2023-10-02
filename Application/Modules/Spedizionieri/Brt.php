@@ -434,4 +434,25 @@ class Brt extends Spedizioniere
 		
 		return array("", "");
 	}
+	
+	public function getUrlTracking($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$spedizione = $spnModel->selectId((int)$idSpedizione);
+		
+		$urlTracking = "";
+		
+		$params = htmlentitydecodeDeep($this->params);
+		
+		if (!empty($spedizione))
+		{
+			if ($spedizione["numero_spedizione"])
+				return "https://vas.brt.it/vas/sped_det_show.hsm?ChiSono=".$spedizione["numero_spedizione"];
+			else if ($spedizione["codice_bda"])
+				return "https://vas.brt.it/vas/sped_RicDocMit_load.hsm?docmit=".$spedizione["riferimento_mittente_numerico"]."&rma=".$spedizione["riferimento_mittente_alfa"]."&ksu=".$params["codice_cliente"];
+		}
+		
+		return $urlTracking;
+	}
 }

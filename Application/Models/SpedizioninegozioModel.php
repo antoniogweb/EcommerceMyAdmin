@@ -900,13 +900,13 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		$record = $this->clear()->selectId((int)$idS);
 		
-		if (!empty($record) && SpedizioninegozioModel::pronta((int)$idS))
+		if (!empty($record) && !SpedizioninegozioModel::aperta((int)$idS))
 			return SpedizioninegozioModel::getModulo($idS)->segnacollo($idS, $returnPath);
 		
 		return "";
 	}
 	
-	public static function haNumeroSpedizione($idS)
+	public static function getNumeroSpedizione($idS)
 	{
 		return SpedizioninegozioModel::g(false)->whereId((int)$idS)->field("numero_spedizione");
 	}

@@ -331,4 +331,25 @@ class Gls extends Spedizioniere
 		
 		return "";
 	}
+	
+	public function getUrlTracking($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$spedizione = $spnModel->selectId((int)$idSpedizione);
+		
+		$urlTracking = "";
+		
+		$params = htmlentitydecodeDeep($this->params);
+		
+		if (!empty($spedizione))
+		{
+			if ($spedizione["numero_spedizione"])
+				return $urlTracking = "https://www.gls-italy.com/index.php?option=com_gls&view=track_e_trace&mode=search&diretto=yes&locpartenza=".$params["codice_sede"]."&numsped=".$spedizione["numero_spedizione"];
+			else if ($spedizione["codice_bda"])
+				return $urlTracking = "https://www.gls-italy.com/index.php?option=com_gls&view=track_e_trace&mode=search&diretto=yes&locpartenza=".$params["codice_sede"]."&numbda=".$spedizione["codice_bda"]."&tiporicerca=numbda&codice=".$params["codice_contratto"]."&cl=1";
+		}
+		
+		return $urlTracking;
+	}
 }

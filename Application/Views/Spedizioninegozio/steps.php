@@ -32,10 +32,31 @@
 						<td><?php echo gtext("ID Spedizione");?>:</td>
 						<td><b><?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></b></td>
 					</tr>
+				</table>
+				
+				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
+				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo")) { ?>
+				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("PDF");?></a>
+				<?php } ?>
+				
+				<?php if ($statoSpedizione == "A" && $modulo->metodo("prenotaSpedizione")) { ?>
+				<a title="<?php echo gtext("Setta la spedizione a PRONTA PER L'INVIO con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?>" href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-paper-plane"></i> <?php echo gtext("PRENOTA");?></a>
+				<?php } else if ($statoSpedizione == "I") {?>
+				<a title="<?php echo gtext("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("APRI");?></a>
+				<?php } ?>
+			</div>
+			<div class="col-lg-6">
+				<table class="table table-striped">
 					<?php if ($spedizione["spedizioni_negozio"]["numero_spedizione"]) { ?>
 					<tr>
 						<td><?php echo $modulo->getLabelNumeroSpedizione();?>:</td>
 						<td><b class="label label-success"><?php echo $spedizione["spedizioni_negozio"]["numero_spedizione"];?></b></td>
+					</tr>
+					<?php } ?>
+					<?php if (!SpedizioninegozioModel::aperto((int)$id) && $modulo->metodo("getUrlTracking")) { ?>
+					<tr>
+						<td><?php echo gtext("URL tracking");?>:</td>
+						<td><a target="_blank" href="<?php echo $modulo->getUrlTracking((int)$id);?>"><?php echo gtext("Pagina del tracking")?> <i class="fa fa-arrow-right"></i></a></td>
 					</tr>
 					<?php } ?>
 					<?php if (count($ordini) > 0) { ?>
@@ -69,18 +90,6 @@
 						</td>
 					</tr>
 				</table>
-			</div>
-			<div class="col-lg-6">
-				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
-				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo")) { ?>
-				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("PDF");?></a>
-				<?php } ?>
-				
-				<?php if ($statoSpedizione == "A" && $modulo->metodo("prenotaSpedizione")) { ?>
-				<a title="<?php echo gtext("Setta la spedizione a PRONTA PER L'INVIO con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?>" href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-paper-plane"></i> <?php echo gtext("PRENOTA");?></a>
-				<?php } else if ($statoSpedizione == "I") {?>
-				<a title="<?php echo gtext("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("APRI");?></a>
-				<?php } ?>
 			</div>
 		</div>
 	</div>
