@@ -130,7 +130,7 @@ $(document).ready(function(){
 						</div>
 						
 						<div class="lista_combinazioni">
-						<?php if ($numeroCombinazioni > 0) { ?>
+						<?php if (true || $numeroCombinazioni > 0) { ?>
 						<?php echo $listaCombinazioni;?>
 						<?php } else {  ?>
 						<span class="empty_list">Non c'è alcuna combinazione</span>
