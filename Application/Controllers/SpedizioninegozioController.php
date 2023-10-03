@@ -110,10 +110,10 @@ class SpedizioninegozioController extends BaseController {
 				->orderBy("spedizioni_negozio.data_spedizione desc,spedizioni_negozio.id_spedizione_negozio desc")->convert();
 		
 		if ($this->viewArgs['dal'] != "tutti")
-			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_spedizione, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(spedizioni_negozio.data_spedizione, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
 		
 		if ($this->viewArgs['al'] != "tutti")
-			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_spedizione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
+			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(spedizioni_negozio.data_spedizione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
 		
 		if ($this->viewArgs['id_ordine'] != "tutti")
 		{

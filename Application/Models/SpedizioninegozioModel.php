@@ -152,6 +152,7 @@ class SpedizioninegozioModel extends FormModel {
 			$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
 			$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
 			$this->setValue("note", $ordine["note"], "sanitizeDb");
+			$this->setValue("note_interne", $ordine["telefono_spedizione"], "sanitizeDb");
 			
 			$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
 			
@@ -183,6 +184,10 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$this->setValue("ragione_sociale_2", $ragSoc, "sanitizeDb");
 			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($cliente), "sanitizeDb");
+			
+			$telefono = !empty($spedizione) ? $spedizione["telefono_spedizione"] : $cliente["telefono"];
+			
+			$this->setValue("note_interne", $telefono, "sanitizeDb");
 			
 			$suffisso = "";
 			
@@ -256,7 +261,7 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$sncModel->setValues(array(
 				"id_spedizione_negozio"	=>	(int)$this->lId,
-				"peso"					=>	number_format($this->peso(array((int)$this->lId)),2,".",""),
+				"peso"					=>	number_format($this->pesoRighe(array((int)$this->lId)),2,".",""),
 			));
 			
 			$sncModel->insert();
@@ -842,6 +847,24 @@ class SpedizioninegozioModel extends FormModel {
 	public function listaregalo($record)
 	{
 		return OrdiniModel::g(false)->listaregalo($record, "spedizioni_negozio");
+	}
+	
+	// Restituisce il peso totale della spedizione guardando le righe inserite
+	// array $idS
+	public function pesoRighe($idS)
+	{
+		$snrModel = new SpedizioninegoziorigheModel();
+		
+		$res = $snrModel->clear()->select("sum(peso * quantity) as PESO_TOTALE")->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["PESO_TOTALE"])
+			return $res[0]["aggregate"]["PESO_TOTALE"];
+		
+		return 0;
 	}
 	
 	// Restituisce il peso totale della spedizione
