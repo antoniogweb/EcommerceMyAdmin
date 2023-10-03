@@ -95,6 +95,18 @@ class Gls extends Spedizioniere
 		return OpzioniModel::codice("GLS_ASSICURAZIONE_INTEGRATIVA");
 	}
 	
+	public function gSelectServizi()
+	{
+		$op = new OpzioniModel();
+		
+		return $op->clear()->select("valore,concat(valore,' - ',titolo) as label")->where(array(
+			"codice"	=>	"GLS_SERVIZI_AGGIUNTIVI",
+			"attivo"	=>	1,
+		))->toList("valore", "aggregate.label")->findAll();
+		
+// 		return OpzioniModel::codice("GLS_SERVIZI_AGGIUNTIVI");
+	}
+	
 	// Inserisci i valori di default del corriere
 	public function inserisciValoriDefaultCorriere(SpedizioninegozioModel $spedizione)
 	{

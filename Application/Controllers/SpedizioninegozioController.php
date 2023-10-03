@@ -66,6 +66,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->model("SpedizioninegoziorigheModel");
 		$this->model("SpedizioninegozioeventiModel");
 		$this->model("SpedizioninegoziocolliModel");
+		$this->model("SpedizioninegozioserviziModel");
 		
 		Params::$exitAtFirstFailedValidation = false;
 	}
@@ -242,8 +243,6 @@ class SpedizioninegozioController extends BaseController {
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-// 		$this->m[$this->modelName]->updateTable('del');
-		
 		$this->mainFields = array("pesoCrud");
 		$this->mainHead = "Peso (kg)";
 		
@@ -263,6 +262,48 @@ class SpedizioninegozioController extends BaseController {
 		$this->m[$this->modelName]->updateTable('insert');
 		
 		parent::main();
+		
+		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function servizi($id = 0)
+	{
+		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
+			$this->responseCode(403);
+		
+		$this->_posizioni['servizi'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_spedizione_negozio";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "SpedizioninegozioserviziModel";
+		
+		$this->mainFields = array("spedizioni_negozio_servizi.codice", "spedizioni_negozio_servizi.titolo");
+		$this->mainHead = "Codice,Titolo";
+		
+		$pulsantiMenu = partial() ? "" : "back";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"servizi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->orderBy("id_order")->where(array("id_spedizione_negozio"=>$clean['id']))->convert()->save();
+		
+		$this->m[$this->modelName]->setFields('codice','sanitizeAll');
+		
+		$this->m[$this->modelName]->values['id_spedizione_negozio'] = $clean['id'];
+		
+		$this->m[$this->modelName]->updateTable('insert');
+		
+		parent::main();
+		
+		$data["selectServizi"] = SpedizioninegozioModel::getElencoServizi($clean['id']);
 		
 		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
 		

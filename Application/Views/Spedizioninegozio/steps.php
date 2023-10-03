@@ -110,6 +110,9 @@
 <ul class="nav_dettaglio nav nav-tabs">
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
 	<li <?php echo $posizioni['colli'];?>><a <?php if (!$checkColli) { ?>style="background-color:red !important;color:#FFF !important;"<?php } ?>href="<?php echo $this->baseUrl."/".$this->controller."/colli/$id".$this->viewStatus;?>"><?php echo gtext("Colli");?></a></li>
+	<?php if (count(SpedizioninegozioModel::getElencoServizi((int)$id)) > 0) { ?>
+	<li <?php echo $posizioni['servizi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/servizi/$id".$this->viewStatus;?>"><?php echo gtext("Servizi aggiuntivi");?></a></li>
+	<?php } ?>
 	<?php if (SpedizioninegozioModel::legataAdOrdineOLista((int)$id)) { ?>
 	<li <?php echo $posizioni['righe'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/righe/$id".$this->viewStatus;?>"><?php echo gtext("Righe ordine");?></a></li>
 	<?php } ?>

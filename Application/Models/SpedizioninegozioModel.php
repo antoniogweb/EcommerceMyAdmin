@@ -46,6 +46,7 @@ class SpedizioninegozioModel extends FormModel {
 			'eventi' => array("HAS_MANY", 'SpedizioninegozioeventiModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'colli' => array("HAS_MANY", 'SpedizioninegoziocolliModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'info' => array("HAS_MANY", 'SpedizioninegozioinfoModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'servizi' => array("HAS_MANY", 'SpedizioninegozioserviziModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 			'invio' => array("BELONGS_TO", 'SpedizioninegozioinviiModel', 'id_spedizione_negozio_invio',null,"CASCADE"),
 		);
@@ -932,5 +933,15 @@ class SpedizioninegozioModel extends FormModel {
 	public static function getNumeroSpedizione($idS)
 	{
 		return SpedizioninegozioModel::g(false)->whereId((int)$idS)->field("numero_spedizione");
+	}
+	
+	public static function getElencoServizi($id)
+	{
+		$modulo = self::getModulo((int)$id);
+		
+		if ($modulo)
+			return $modulo->gSelectServizi();
+		
+		return array();
 	}
 }

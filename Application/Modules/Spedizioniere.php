@@ -127,6 +127,11 @@ class Spedizioniere
 		return array();
 	}
 	
+	public function gSelectServizi()
+	{
+		return array();
+	}
+	
 	public function settaNoticeModel(SpedizioninegozioModel $spedizione = null, $notice)
 	{
 		if ($spedizione)
