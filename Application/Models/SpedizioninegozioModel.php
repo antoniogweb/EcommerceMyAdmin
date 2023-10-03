@@ -146,7 +146,7 @@ class SpedizioninegozioModel extends FormModel {
 			$this->setValue("ragione_sociale_2", $ragSoc, "sanitizeDb");
 			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
 			
-			$this->recuperaAnagraficaDaStruttura($ordine);
+			$this->recuperaAnagraficaDaStruttura($ordine, "_spedizione");
 			
 			$this->setValue("email", $ordine["email"], "sanitizeDb");
 			$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
