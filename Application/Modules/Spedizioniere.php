@@ -178,4 +178,29 @@ class Spedizioniere
 	{
 		return "bordero_".strtoupper($this->params["modulo"])."_invio_del_".date("Y_m_d", strtotime($record["data_elaborazione"])).".pdf";
 	}
+	
+	// Stampa il pdf del borderò dell'invio $id
+	protected function genericReportPdf($idInvio = 0)
+	{
+		$spniModel = new SpedizioninegozioinviiModel();
+		
+		$record = SpedizioninegozioinviiModel::g(false)->selectId((int)$idInvio);
+		
+		if (!empty($record))
+		{
+			$spedizioni = $spniModel->getSpedizioniInvio((int)$idInvio);
+			
+			$templatePath = $this->getPathTemplateBordero();
+			$nomeFilePdf = $this->getTitoloPdf($record);
+			
+			ob_start();
+			include($templatePath);
+			$content = ob_get_clean();
+// 			echo $content;die();
+
+			Pdf::$params["format"] = "A4-L";
+			
+			Pdf::output("", $nomeFilePdf, $spedizioni, "I", $content);
+		}
+	}
 }

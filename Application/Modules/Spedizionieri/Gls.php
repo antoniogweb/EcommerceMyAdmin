@@ -49,7 +49,7 @@ class Gls extends Spedizioniere
 	
 	public function gCampiForm()
 	{
-		return 'titolo,modulo,attivo,codice_cliente,password_cliente,codice_sede,codice_contratto';
+		return 'titolo,ragione_sociale_cliente,modulo,attivo,codice_cliente,password_cliente,codice_sede,codice_contratto';
 	}
 	
 	public function gCampiSpedizione()
@@ -330,6 +330,12 @@ class Gls extends Spedizioniere
 		}
 		
 		return "";
+	}
+	
+	// Stampa il pdf del borderò dell'invio $id
+	public function reportPdf($idInvio = 0)
+	{
+		$this->genericReportPdf($idInvio);
 	}
 	
 	public function getUrlTracking($idSpedizione)

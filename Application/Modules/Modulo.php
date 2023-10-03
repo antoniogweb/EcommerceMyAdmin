@@ -69,7 +69,7 @@ trait Modulo
 	
 	public function getParam($name)
 	{
-		return $this->params[$name];
+		return htmlentitydecode($this->params[$name]);
 	}
 	
 	public function gCampiForm()

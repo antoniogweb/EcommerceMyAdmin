@@ -1,16 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
-
 $codiceCliente = $this->params["codice_cliente"];
 $codiceBolla = 1;
-$data = $record["data_spedizione"];
+$data = $record["data_elaborazione"];
 ?>
 <html>
 <head>
 <style>
-/*body {
-    font-family: Arial, sans-serif;
-
-}*/
 table thead th {
     text-align: left;
 }
@@ -65,7 +60,7 @@ table.corpo td table td
 	<table style="width:297mm;font-size:16px;">
 		<tr>
 			<td style="width:99mm;"><b><?php echo gtext("Mittente");?> <?php echo $codiceCliente;?> <?php echo $this->params["ragione_sociale_cliente"];?></b></td>
-			<td style="width:99mm;text-align:center;"><b><?php echo gtext("Borderò BRT");?></b> <b><?php echo gtext("del");?></b> <?php echo date("d/m/Y",strtotime($data));?> </td>
+			<td style="width:99mm;text-align:center;"><b><?php echo gtext("Borderò BRT");?></b> <b><?php echo gtext("del");?></b> <?php echo date("d/m/Y H:i",strtotime($data));?> </td>
 			<td style="width:99mm;text-align:right;"><b><?php echo gtext("Data stampa");?></b>&nbsp;&nbsp;&nbsp;<?php echo date("d/m/Y H:i");?></td>
 		</tr>
 	</table>

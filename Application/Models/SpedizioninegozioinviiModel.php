@@ -224,4 +224,13 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		
 		return;
 	}
+	
+	public function getSpedizioniInvio($id = 0)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		return $spnModel->where(array(
+			"id_spedizione_negozio_invio"	=>	(int)$id,
+		))->orderBy("id_spedizione_negozio desc")->send();
+	}
 }
