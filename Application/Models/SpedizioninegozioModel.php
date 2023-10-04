@@ -103,6 +103,29 @@ class SpedizioninegozioModel extends FormModel {
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 		);
+		
+		$this->formStruct["entries"]["id_spedizioniere_lettera_vettura"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$this->gSelectTemplate((int)$id),
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Template lettera di vettura (per dropshipping)",
+		);
+	}
+	
+	public function gSelectTemplate($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			return array(0 => "--") + SpedizionieriletterevetturaModel::g()->clear()->select("id_spedizioniere_lettera_vettura,titolo")->where(array(
+				"id_spedizioniere"	=>	(int)$record["id_spedizioniere"],
+				"attivo"			=>	1,
+			))->toList("id_spedizioniere_lettera_vettura","titolo")->send();
+		}
+		
+		return array();
 	}
 	
 	public static function statiSpedizioniInviate()
@@ -641,7 +664,7 @@ class SpedizioninegozioModel extends FormModel {
     
     public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
     {
-		$fields =  "id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
+		$fields =  "id_spedizioniere,id_spedizioniere_lettera_vettura,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
 		
 		if (self::legataAdOrdineOLista($idSpedizione))
 			$fields .= ",note";
@@ -716,17 +739,24 @@ class SpedizioninegozioModel extends FormModel {
 				{
 					if ($this->checkColli([$id]))
 					{
-						// Modulo spedizioniere
-						$output = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->prenotaSpedizione($id, $this);
-						
-						if ($output !== false)
+						if ($record["id_spedizioniere_lettera_vettura"])
 						{
-							if ($output->instradato())
-								$this->settaStato($id, "I", "data_pronta_invio", $output->toArray());
-							else
-								$this->settaStato($id, "A", "", $output->toArray());
+							$this->settaStato($id, "I", "data_pronta_invio");
+						}
+						else
+						{
+							// Modulo spedizioniere
+							$output = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->prenotaSpedizione($id, $this);
 							
-							return true;
+							if ($output !== false)
+							{
+								if ($output->instradato())
+									$this->settaStato($id, "I", "data_pronta_invio", $output->toArray());
+								else
+									$this->settaStato($id, "A", "", $output->toArray());
+								
+								return true;
+							}
 						}
 					}
 					else
@@ -805,6 +835,7 @@ class SpedizioninegozioModel extends FormModel {
 				"stato"	=>	array("I"),
 			),
 			"id_spedizioniere"	=>	(int)$idSpedizioniere,
+			"id_spedizioniere_lettera_vettura"	=>	0,
 		));
 		
 		if ($idS)

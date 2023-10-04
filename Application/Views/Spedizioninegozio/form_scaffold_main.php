@@ -17,6 +17,9 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 				</div>
 				<?php if ($type === "update") { ?>
 				<div class='col-md-3'>
+					<?php echo $form["id_spedizioniere_lettera_vettura"];?>
+				</div>
+				<div class='col-md-3'>
 					<?php echo $form["contrassegno"];?>
 				</div>
 					<?php foreach ($campiSpedizione as $campo) { ?>

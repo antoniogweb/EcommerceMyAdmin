@@ -45,7 +45,7 @@ class SpedizionieriletterevetturaModel extends GenericModel
 				"clean_field"	=>	"clean_filename",
 				"Content-Disposition"	=>	"inline",
 				"disallow"		=>	true,
-				"allowedMimeTypes"	=>	"application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+// 				"allowedMimeTypes"	=>	"application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 			),
 		);
 		
