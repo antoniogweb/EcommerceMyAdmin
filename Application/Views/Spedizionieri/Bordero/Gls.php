@@ -76,6 +76,7 @@ table.corpo td table td
 		</tr>
 		<?php
 		$spnModel = new SpedizioninegozioModel();
+		$spnsModel = new SpedizioninegozioserviziModel();
 		
 		$numeroSpedizioni = 0;
 		$numeroColliTotali = 0;
@@ -92,9 +93,7 @@ table.corpo td table td
 			$spedizione = htmlentitydecodeDeep($riga["spedizioni_negozio"]);
 			$titoloProvincia = ProvinceModel::g(false)->findTitoloDaCodice($spedizione["provincia"]);
 			
-// 			if (trim($model->NazioneDestinatarioGls) && $nazione)
-// 				$provincia = $nazione->Codice;
-			
+			$serviziAccessori = $spnsModel->gServiziSpedizione((int)$spedizione["id_spedizione_negozio"]);
 			
 			$peso = $spnModel->peso([(int)$spedizione["id_spedizione_negozio"]]);
 			$pesoTotale += $peso;
@@ -122,8 +121,8 @@ table.corpo td table td
 				$totaleAssicurazione1010 += $spedizione["importo_assicurazione"];
 			}
 			
-// 			if ($model->Express12Gls || trim($model->NumeroTelefonataPreventivaGls))
-// 				$presentiAccessori = true
+			if (count($serviziAccessori) > 0)
+				$presentiAccessori = true;
 			?>
 			<tr class="riga_tabella">
 				<td><?php echo date("Y/m/d", strtotime($spedizione["data_spedizione"]));?></td>

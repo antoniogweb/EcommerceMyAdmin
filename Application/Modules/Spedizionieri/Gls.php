@@ -122,6 +122,7 @@ class Gls extends Spedizioniere
 	public function getStrutturaSpedizione(array $idSpedizioni, $closeWorkDate = false)
 	{
 		$spModel = new SpedizioninegozioModel();
+		$spnsModel = new SpedizioninegozioserviziModel();
 		
 		$params = htmlentitydecodeDeep($this->params);
 		
@@ -141,6 +142,8 @@ class Gls extends Spedizioniere
 				
 				$colli = $spModel->getColli([(int)$record["id_spedizione_negozio"]]);
 				
+				$serviziAccessori = $spnsModel->gServiziSpedizione((int)$record["id_spedizione_negozio"]);
+				
 				$contrassegnoIndicato = $importoAssicurazioneIndicato = false;
 				
 				foreach ($colli as $collo)
@@ -158,6 +161,7 @@ class Gls extends Spedizioniere
 						"GeneraPdf"				=>	4,
 						"ContatoreProgressivo"	=>	$collo["id_spedizione_negozio_collo"],
 						"Colli"					=>	1,
+						"TelefonoDestinatario"	=>	$record["telefono"],
 					);
 					
 					if ($record["codice_bda"])
@@ -185,6 +189,9 @@ class Gls extends Spedizioniere
 					
 					if ($record["assicurazione_integrativa"])
 						$temp["AssicurazioneIntegrativa"] = $record["assicurazione_integrativa"];
+					
+					if (count($serviziAccessori) > 0)
+						$temp["ServiziAccessori"] = implode(",", $serviziAccessori);
 					
 					$parcelArray[] = $temp;
 				}
@@ -253,8 +260,6 @@ class Gls extends Spedizioniere
 			$xml = aToX($xmlArray, "", true, true);
 			
 			$infoLabel = $this->AddParcel($xml);
-			
-// 			echo $infoLabel;die();
 			
 			$xmlObj = simplexml_load_string($infoLabel);
 			

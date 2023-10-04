@@ -66,4 +66,11 @@ class SpedizioninegozioserviziModel extends GenericModel
 		
 		return false;
 	}
+	
+	public function gServiziSpedizione($idSpedizione)
+	{
+		return $this->clear()->where(array(
+			"id_spedizione_negozio"	=>	(int)$idSpedizione,
+		))->toList("codice")->orderBy("id_order")->send();
+	}
 }
