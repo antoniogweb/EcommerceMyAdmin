@@ -142,14 +142,14 @@ table.corpo td table td
 				<?php echo $spedizione["riferimento_mittente_numerico"];?>
 			</td>
 			<td align="center"><?php echo $codiceBolla;?></td>
-			<td><?php echo $spedizione["importo_assicurazione"] > 0 ? number_format($record["importo_assicurazione"],2,",","") : "";?></td>
+			<td><?php echo $spedizione["importo_assicurazione"] > 0 ? number_format($spedizione["importo_assicurazione"],2,",","") : "";?></td>
 			<td></td>
-			<td><?php echo $spedizione["contrassegno"] > 0 ? number_format($record["contrassegno"],2,",","") : "";?></td>
+			<td><?php echo $spedizione["contrassegno"] > 0 ? number_format($spedizione["contrassegno"],2,",","") : "";?></td>
 			<td align="center"><?php echo $colli;?></td>
 			<td align="center"><?php echo number_format($peso,1,",",".");?></td>
 			<td></td>
 			<td>
-				<?php echo $fromSegnacolli;?>
+				<?php echo $fromSegnacolli;?>&nbsp;
 				<?php echo $toSegnacolli;?>
 			</td>
 		</tr>
