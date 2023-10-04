@@ -202,4 +202,10 @@ trait DIModel
 		if (!empty($record) && $record["codice"])
 			self::getModulo($record["codice"])->editFormStruct($this, $record);
 	}
+	
+	public function sistemaCodice()
+	{
+		if (isset($this->values["modulo"]) && $this->values["modulo"])
+			$this->values["codice"] = strtoupper(sanitizeAll($this->values["modulo"]));
+	}
 }

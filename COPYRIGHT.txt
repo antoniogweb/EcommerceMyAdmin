@@ -164,3 +164,8 @@ Pdf Merge Solution for PHP
 -------
 License:	Apache License 2.0
 link: 		https://github.com/karriereat/pdf-merge
+
+PHPOffice/PHPWord
+-------
+License:	GNU Lesser General Public License version 3
+link: 		https://github.com/PHPOffice/PHPWord

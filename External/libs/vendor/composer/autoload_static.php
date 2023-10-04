@@ -36,6 +36,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'PhpParser\\' => 10,
+            'PhpOffice\\PhpWord\\' => 18,
         ),
         'M' => 
         array (
@@ -44,6 +45,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Mpdf\\' => 5,
             'MatthiasMullie\\PathConverter\\' => 29,
             'MatthiasMullie\\Minify\\' => 22,
+        ),
+        'L' => 
+        array (
+            'Laminas\\Escaper\\' => 16,
         ),
         'K' => 
         array (
@@ -117,6 +122,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'PhpOffice\\PhpWord\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
+        ),
         'Mpdf\\PsrLogAwareTrait\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/psr-log-aware-trait/src',
@@ -136,6 +145,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'MatthiasMullie\\Minify\\' => 
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
+        ),
+        'Laminas\\Escaper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-escaper/src',
         ),
         'Karriere\\PdfMerge\\' => 
         array (

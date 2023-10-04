@@ -770,6 +770,12 @@ class Route
 		'spedizionieri,main',
 		'spedizionieri,ordina',
 		'spedizionieri,form',
+		'spedizionieri,lettere',
+		
+		'spedizionieri,form',
+		
+		'spedizionieriletterevettura,form',
+		'spedizionieriletterevettura,documento',
 		
 		'controllers,main',
 		

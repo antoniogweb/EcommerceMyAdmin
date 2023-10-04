@@ -174,8 +174,6 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->_posizioni['righe'] = 'class="active"';
 		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
-		
 		$this->shift(1);
 		
 		$clean['id'] = $this->id = (int)$id;
@@ -187,8 +185,6 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->addBulkActions = false;
 		$this->colProperties = array();
-		
-// 		$this->m[$this->modelName]->updateTable('del');
 		
 		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "#;righe.id_o;", "righe.title", "righe.attributi", "righe.codice", "quantitaCrud");
 		$this->mainHead = "Immagine,Ordine,Articolo,Variante,Codice,Quantità";
@@ -228,8 +224,6 @@ class SpedizioninegozioController extends BaseController {
 			$this->responseCode(403);
 		
 		$this->_posizioni['colli'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
 		
 		$this->shift(1);
 		
@@ -274,8 +268,6 @@ class SpedizioninegozioController extends BaseController {
 			$this->responseCode(403);
 		
 		$this->_posizioni['servizi'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
 		
 		$this->shift(1);
 		
