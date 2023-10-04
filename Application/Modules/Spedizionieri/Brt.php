@@ -65,11 +65,93 @@ class Brt extends Spedizioniere
 		return array('ragione_sociale_2');
 	}
 	
-// 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
-// 	public function getInfo($idSpedizione)
-// 	{
-// 		$this->scriviLogInfoTracking((int)$idSpedizione);
-// 	}
+	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
+	public function getInfo($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$spedizione = $spnModel->selectId((int)$idSpedizione);
+		
+		if (!$this->checkTimeInfo($spedizione))
+			return;
+		
+		$params = htmlentitydecodeDeep($this->params);
+		
+		if (!empty($spedizione))
+		{
+			if ($spedizione["numero_spedizione"])
+			{
+				$urlTracking = rtrim(v("url_tracking_brt"),"/")."/".$spedizione["numero_spedizione"];
+				
+				// Create a stream
+				$opts = [
+					"http" => [
+						"method" => "GET",
+						"header" => "Accept-language: en\r\n" .
+							"userID: ".$this->getParam("codice_cliente")."\r\n" . 
+							"password: ".$this->getParam("password_cliente")."\r\n"
+					]
+				];
+
+				// DOCS: https://www.php.net/manual/en/function.stream-context-create.php
+				$context = stream_context_create($opts);
+
+				// Open the file using the HTTP headers set above
+				// DOCS: https://www.php.net/manual/en/function.file-get-contents.php
+				$response = file_get_contents($urlTracking, false, $context);
+				
+				$response = json_decode($response, true);
+				
+				$trackingInfo = $labelSpedizioniere = $labelSpedizioniereFrontend = "";
+				
+				if (isset($response["ttParcelIdResponse"]["executionMessage"]["code"]) && $response["ttParcelIdResponse"]["executionMessage"]["code"] >= 0)
+				{
+					
+				}
+				
+// 				isset($response["deleteResponse"]["executionMessage"]["code"])
+				
+	// 			echo $urlTracking."<br />";
+	// 			echo $response."<br />";
+				
+	// 			
+			}
+			else
+			{
+				$headers = array(
+					'trace' =>true,
+					'connection_timeout' => 500000,
+					'cache_wsdl' => WSDL_CACHE_BOTH,
+					'keep_alive' => false
+				);
+				
+				$soap_url = 'http://wsr.brt.it:10041/web/GetIdSpedizioneByRMAService/GetIdSpedizioneByRMA?wsdl';
+				$client = new SoapClient($soap_url, $headers);
+				
+				$var = array(
+					"arg0"	=>	array(
+						"CLIENTE_ID"	=>	$this->getParam("codice_cliente"),
+						"RIFERIMENTO_MITTENTE_ALFABETICO"	=>	htmlentitydecode($spedizione["riferimento_mittente_alfa"]),
+					)
+				);
+				
+				$res = $client->GetIdSpedizioneByRMA($var);
+				
+				
+			}
+			
+			$spnModel->sValues(array(
+				"struttura_info_tracking"			=>	$trackingInfo,
+				"time_ultima_richiesta_tracking"	=>	time(),
+				"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
+				"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
+			), "sanitizeDb");
+			
+			$spnModel->pUpdate((int)$idSpedizione);
+			
+			$this->scriviLogInfoTracking((int)$idSpedizione);
+		}
+	}
 // 	
 // 	public function consegnata($idSpedizione)
 // 	{

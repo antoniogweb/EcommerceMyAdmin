@@ -423,28 +423,31 @@ class Gls extends Spedizioniere
 		if (!empty($spedizione))
 		{
 			if ($spedizione["numero_spedizione"])
-				$urlTracking = "https://infoweb.gls-italy.com/XML/get_xml_track.php?locpartenza=".$params["codice_sede"]."&NumSped=".$spedizione["numero_spedizione"]."&CodCli=".$params["codice_contratto"];
+				$urlTracking = rtrim(v("url_tracking_gls"),"/")."/XML/get_xml_track.php?locpartenza=".$params["codice_sede"]."&NumSped=".$spedizione["numero_spedizione"]."&CodCli=".$params["codice_contratto"];
 			else if ($spedizione["codice_bda"])
-				$urlTracking = "https://infoweb.gls-italy.com/XML/get_xml_track.php?locpartenza=".$params["codice_sede"]."&bda=".$spedizione["codice_bda"]."&CodCli=".$params["codice_contratto"];
+				$urlTracking = rtrim(v("url_tracking_gls"),"/")."/XML/get_xml_track.php?locpartenza=".$params["codice_sede"]."&bda=".$spedizione["codice_bda"]."&CodCli=".$params["codice_contratto"];
 		}
 		
-		$trackingInfo = file_get_contents($urlTracking);
-		
-		$labelSpedizioniere = $this->getLabelSpedizioniere($trackingInfo);
-		$codiceSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "Codice");
-		
-		$labelSpedizioniereFrontend = (string)$codiceSpedizioniere === (string)909 ? "" : $labelSpedizioniere;
-		
-		$spnModel->sValues(array(
-			"struttura_info_tracking"			=>	$trackingInfo,
-			"time_ultima_richiesta_tracking"	=>	time(),
-			"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
-			"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
-		), "sanitizeDb");
-		
-		$spnModel->pUpdate((int)$idSpedizione);
-		
-		$this->scriviLogInfoTracking((int)$idSpedizione);
+		if (isset($urlTracking))
+		{
+			$trackingInfo = file_get_contents($urlTracking);
+			
+			$labelSpedizioniere = $this->getLabelSpedizioniere($trackingInfo);
+			$codiceSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "Codice");
+			
+			$labelSpedizioniereFrontend = (string)$codiceSpedizioniere === (string)909 ? "" : $labelSpedizioniere;
+			
+			$spnModel->sValues(array(
+				"struttura_info_tracking"			=>	$trackingInfo,
+				"time_ultima_richiesta_tracking"	=>	time(),
+				"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
+				"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
+			), "sanitizeDb");
+			
+			$spnModel->pUpdate((int)$idSpedizione);
+			
+			$this->scriviLogInfoTracking((int)$idSpedizione);
+		}
 	}
 	
 	public function getLabelSpedizioniere($trackingInfo, $campo = "Stato")

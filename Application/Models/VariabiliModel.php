@@ -558,8 +558,10 @@ class VariabiliModel extends GenericModel {
 		"lega_lo_stato_ordine_a_corriere"	=>	0, // se impostato ad 1, sarà possibile impostare lo stato a cui impostare l'ordine dopo il pagamento per ogni corriere 
 		"attiva_gestione_spedizionieri"	=>	0, // se impostato ad 1, permette la gestione degli spedizionieri (GLS, BRT) e di poterli selezionare nell'ordine
 		"attiva_gestione_spedizioni"	=>	0, // se impostato ad 1, permette la gestione delle spedizioni e degli spedizionieri dal backend
-		"url_webservice_gls"			=>	"https://labelservice.gls-italy.com/ilswebservice.asmx",
-		"url_rest_api_brt"				=>	"https://api.brt.it/rest/v1",
+		"url_webservice_gls"			=>	"https://labelservice.gls-italy.com/ilswebservice.asmx", // usato per inviare la spedizione GLS server to server (SOAP)
+		"url_tracking_gls"				=>	"https://infoweb.gls-italy.com", // usato per richiedere lo stato della spedizione GLS server to server (REST)
+		"url_rest_api_brt"				=>	"https://api.brt.it/rest/v1", // usato per inviare la spedizione BRT server to server (REST)
+		"url_tracking_brt"				=>	"https://api.brt.it/rest/v1/tracking/parcelID", // usato per richiedere lo stato della spedizione BRT server to server (REST)
 		"minuti_attesa_bordero_brt"		=>	5,
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
