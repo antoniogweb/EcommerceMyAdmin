@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Spedizioniere
 {
+	const TIME_CHECK_TRACKING = 3600;
+	
 	use Modulo;
 	
 	protected $condizioniCampi = array(
@@ -207,5 +209,18 @@ class Spedizioniere
 			
 			Pdf::output("", $nomeFilePdf, $spedizioni, "I", $content);
 		}
+	}
+	
+	protected function checkTimeInfo(array $spedizione)
+	{
+		if (!empty($spedizione))
+		{
+			$time = time() - self::TIME_CHECK_TRACKING;
+			
+			if ((int)$spedizione["time_ultima_richiesta_tracking"] < $time)
+				return true;
+		}
+		
+		return false;
 	}
 }

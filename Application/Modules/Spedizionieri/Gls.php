@@ -57,19 +57,13 @@ class Gls extends Spedizioniere
 		return array('codice_pagamento_contrassegno', 'codice_bda', 'importo_assicurazione', 'assicurazione_integrativa', 'formato_etichetta_pdf');
 	}
 	
-	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
-	public function getInfo($idSpedizione)
-	{
-		$this->scriviLogInfoTracking((int)$idSpedizione);
-	}
-	
-	public function consegnata($idSpedizione)
-	{
-		if (true)
-			$this->scriviLogConsegnata((int)$idSpedizione);
-		
-		return true;
-	}
+// 	public function consegnata($idSpedizione)
+// 	{
+// 		if (true)
+// 			$this->scriviLogConsegnata((int)$idSpedizione);
+// 		
+// 		return true;
+// 	}
 	
 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
 	public function inErrore($idSpedizione)
@@ -406,11 +400,71 @@ class Gls extends Spedizioniere
 		if (!empty($spedizione))
 		{
 			if ($spedizione["numero_spedizione"])
-				return $urlTracking = "https://www.gls-italy.com/index.php?option=com_gls&view=track_e_trace&mode=search&diretto=yes&locpartenza=".$params["codice_sede"]."&numsped=".$spedizione["numero_spedizione"];
+				$urlTracking = "https://www.gls-italy.com/index.php?option=com_gls&view=track_e_trace&mode=search&diretto=yes&locpartenza=".$params["codice_sede"]."&numsped=".$spedizione["numero_spedizione"];
 			else if ($spedizione["codice_bda"])
-				return $urlTracking = "https://www.gls-italy.com/index.php?option=com_gls&view=track_e_trace&mode=search&diretto=yes&locpartenza=".$params["codice_sede"]."&numbda=".$spedizione["codice_bda"]."&tiporicerca=numbda&codice=".$params["codice_contratto"]."&cl=1";
+				$urlTracking = "https://www.gls-italy.com/index.php?option=com_gls&view=track_e_trace&mode=search&diretto=yes&locpartenza=".$params["codice_sede"]."&numbda=".$spedizione["codice_bda"]."&tiporicerca=numbda&codice=".$params["codice_contratto"]."&cl=1";
 		}
 		
 		return $urlTracking;
+	}
+	
+	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
+	public function getInfo($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$spedizione = $spnModel->selectId((int)$idSpedizione);
+		
+		if (!$this->checkTimeInfo($spedizione))
+			return;
+		
+		$params = htmlentitydecodeDeep($this->params);
+		
+		if (!empty($spedizione))
+		{
+			if ($spedizione["numero_spedizione"])
+				$urlTracking = "https://infoweb.gls-italy.com/XML/get_xml_track.php?locpartenza=".$params["codice_sede"]."&NumSped=".$spedizione["numero_spedizione"]."&CodCli=".$params["codice_contratto"];
+			else if ($spedizione["codice_bda"])
+				$urlTracking = "https://infoweb.gls-italy.com/XML/get_xml_track.php?locpartenza=".$params["codice_sede"]."&bda=".$spedizione["codice_bda"]."&CodCli=".$params["codice_contratto"];
+		}
+		
+		$trackingInfo = file_get_contents($urlTracking);
+		
+		$labelSpedizioniere = $this->getLabelSpedizioniere($trackingInfo);
+		$codiceSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "Codice");
+		
+		$labelSpedizioniereFrontend = (string)$codiceSpedizioniere === (string)909 ? "" : $labelSpedizioniere;
+		
+		$spnModel->sValues(array(
+			"struttura_info_tracking"			=>	$trackingInfo,
+			"time_ultima_richiesta_tracking"	=>	time(),
+			"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
+			"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
+		), "sanitizeDb");
+		
+		$spnModel->pUpdate((int)$idSpedizione);
+		
+		$this->scriviLogInfoTracking((int)$idSpedizione);
+	}
+	
+	public function getLabelSpedizioniere($trackingInfo, $campo = "Stato")
+	{
+		if ($trackingInfo)
+		{
+			$xmlObj = simplexml_load_string($trackingInfo);
+			
+			if (isset($xmlObj->SPEDIZIONE) && isset($xmlObj->SPEDIZIONE->TRACKING))
+			{
+				foreach ($xmlObj->SPEDIZIONE->TRACKING as $tr)
+				{
+					foreach ($tr->{$campo} as $stato)
+					{
+						return (string)$stato;
+					}
+				}
+			}
+		}
+		
+		return "";
 	}
 }

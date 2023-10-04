@@ -29,6 +29,8 @@ class SpedizioninegozioModel extends FormModel {
 	const TIPOLOGIA_PORTO_FRANCO = 'PORTO_FRANCO';
 	const TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO = 'PORTO_FRANCO_CONTRASSEGNO';
 	
+	const LABEL_CONSEGNATA = "CONSEGNATA";
+	
 	public $applySoftConditionsOnPost = true;
 	public $applySoftConditionsOnValues = false;
 	
@@ -101,6 +103,11 @@ class SpedizioninegozioModel extends FormModel {
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 		);
+	}
+	
+	public static function statiSpedizioniInviate()
+	{
+		return array("II","E");
 	}
 	
 	public function update($id = null, $where = null)
@@ -343,6 +350,14 @@ class SpedizioninegozioModel extends FormModel {
 		return "";
 	}
 	
+	public function trackingCrud($record)
+	{
+		if ($record["spedizioni_negozio"]["stato"] == "C")
+			return gtext(self::LABEL_CONSEGNATA);
+		
+		return "<i>".$record["spedizioni_negozio"]["label_spedizioniere"]."</i>";
+	}
+	
 	// Restituisce gli ordini legati ad una spedizione
 	public function getOrdini($idS, $soloIds = true)
 	{
@@ -509,6 +524,10 @@ class SpedizioninegozioModel extends FormModel {
 			
 			if ($full)
 				$html .= '<br />'.gtext("Spedizioniere").': <b>'.$sp["spedizionieri"]["titolo"].'</b>';
+			
+			$labelSpedizioniere = App::$isFrontend ? $sp["spedizioni_negozio"]["label_spedizioniere_frontend"] : $sp["spedizioni_negozio"]["label_spedizioniere"];
+			
+			$html .= '<br /><i style="font-size:13px;">'.$labelSpedizioniere.'</i>';
 			
 			$html .= "</p>";
 			
@@ -726,7 +745,7 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$this->clear()->where(array(
 			"in"	=>	array(
-				"stato"	=>	array("II","E"),
+				"stato"	=>	self::statiSpedizioniInviate()
 			),
 			"gte"	=>	array(
 				"data_invio"	=>	sanitizeAll($ora->format("Y-m-d H:i:s")),
@@ -822,13 +841,13 @@ class SpedizioninegozioModel extends FormModel {
 				// Recupero le informazioni dal server del corriere
 				$modulo->getInfo($sp["id_spedizione_negozio"]);
 				
-				if ($elaboraSpedizione)
-				{
-					if ($modulo->consegnata($sp["id_spedizione_negozio"])) // Se consegnata
-						$this->settaConsegnata($sp["id_spedizione_negozio"]);
-					else if ($modulo->inErrore($sp["id_spedizione_negozio"])) // Se in errore
-						$this->settaInErrore($sp["id_spedizione_negozio"]);
-				}
+// 				if ($elaboraSpedizione)
+// 				{
+// 					if ($modulo->consegnata($sp["id_spedizione_negozio"])) // Se consegnata
+// 						$this->settaConsegnata($sp["id_spedizione_negozio"]);
+// 					else if ($modulo->inErrore($sp["id_spedizione_negozio"])) // Se in errore
+// 						$this->settaInErrore($sp["id_spedizione_negozio"]);
+// 				}
 			}
 		}
 	}
