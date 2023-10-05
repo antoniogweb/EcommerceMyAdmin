@@ -56,6 +56,7 @@ class SpedizionieriletterevetturaModel extends GenericModel
 	
 	public function relations() {
 		return array(
+			'spedizioni' => array("HAS_MANY", 'SpedizioninegozioModel', 'id_spedizioniere_lettera_vettura', null, "RESTRICT", "L'elemento ha delle spedizioni collegate e non può essere eliminato"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"CASCADE"),
 		);
 	}

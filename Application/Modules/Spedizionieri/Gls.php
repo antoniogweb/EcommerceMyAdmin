@@ -79,6 +79,11 @@ class Gls extends Spedizioniere
 		return OpzioniModel::codice("GLS_CODICE_PAGAMENTO");
 	}
 	
+	public function gLabelCodicePagamento($valore)
+	{
+		return OpzioniModel::label("GLS_CODICE_PAGAMENTO", $valore);
+	}
+	
 	public function gFormatiEtichetta()
 	{
 		return ['A6', 'A5'];

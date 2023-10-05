@@ -99,6 +99,11 @@ class Spedizioniere
 		return [];
 	}
 	
+	public function gLabelCodicePagamento($valore)
+	{
+		return $valore;
+	}
+	
 	public function gFormatiEtichetta()
 	{
 		return [];

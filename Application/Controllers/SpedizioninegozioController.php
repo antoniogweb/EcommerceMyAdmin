@@ -386,4 +386,17 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->m($this->modelName)->segnacollo((int)$id);
 	}
+	
+	// Stampa il segnacollo della spedizione avente ID = $id
+	public function letteradivettura($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$path = $this->m($this->modelName)->letteradivettura((int)$id);
+		
+		if (is_array($path))
+			parent::scaricaFile($path[0], $path[1]);
+	}
 }

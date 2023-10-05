@@ -51,6 +51,7 @@ class SpedizioninegozioModel extends FormModel {
 			'servizi' => array("HAS_MANY", 'SpedizioninegozioserviziModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
 			'invio' => array("BELONGS_TO", 'SpedizioninegozioinviiModel', 'id_spedizione_negozio_invio',null,"CASCADE"),
+			'lettera' => array("BELONGS_TO", 'SpedizionieriletterevetturaModel', 'id_spedizioniere_lettera_vettura',null,"CASCADE"),
 		);
     }
 	
@@ -978,6 +979,59 @@ class SpedizioninegozioModel extends FormModel {
 			return SpedizioninegozioModel::getModulo($idS)->segnacollo($idS, $returnPath);
 		
 		return "";
+	}
+	
+	// Stampa la lettera di vettura
+	public function letteradivettura($idS)
+	{
+		$res = $this->clear()->select("*")->inner(array("lettera", "spedizioniere"))->whereId((int)$idS)->first();
+		
+		if (!empty($res) && !SpedizioninegozioModel::aperta((int)$idS) && $res["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"])
+		{
+			$spedizione = htmlentitydecodeDeep($res["spedizioni_negozio"]);
+			$lettera = $res["spedizionieri_lettere_vettura"];
+			$spedizioniere = htmlentitydecodeDeep($res["spedizionieri"]);
+			
+			$pathLettera = Domain::$parentRoot . "/images/letterevettura/" . $lettera["filename"];
+			
+			if (file_exists($pathLettera))
+			{
+				$estensione = Files_Upload::sFileExtension($lettera["filename"]);
+				
+				createFolderFull("Logs/tmp",LIBRARY);
+				
+				$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+				
+				if (!@is_dir(LIBRARY."/Logs/tmp/"))
+					return;
+				
+				$outputFile = LIBRARY."/Logs/tmp/$fileName.$estensione";
+				
+				$placeholders = array(
+					"ragione_sociale"	=>	$spedizione["ragione_sociale"],
+					"ragione_sociale_2"	=>	$spedizione["ragione_sociale_2"],
+					"indirizzo"			=>	$spedizione["indirizzo"],
+					"cap"			=>	$spedizione["cap"],
+					"citta"			=>	$spedizione["citta"],
+					"provincia"			=>	$spedizione["provincia"],
+					"telefono"			=>	$spedizione["telefono"],
+					"peso"			=>	number_format($this->peso([(int)$idS]),1,",",""),
+					"colli"			=>	(string)$this->getColli([(int)$idS], true),
+					"natura_merce"	=>	$spedizione["riferimento_mittente_numerico"],
+					"contrassegno"	=>	$spedizione["contrassegno"] > 0 ? number_format($spedizione["contrassegno"],2,",","") : "",
+					"modalita_incasso"	=>	$spedizione["contrassegno"] > 0 ? SpedizionieriModel::getModulo((int)$spedizione["id_spedizioniere"], true)->gLabelCodicePagamento($spedizione["codice_pagamento_contrassegno"]) : "",
+					"importo_assicurazione"	=>	$spedizione["importo_assicurazione"] > 0 ? number_format($spedizione["importo_assicurazione"],2,",","") : "",
+					"note"			=>	$spedizione["note_interne"],
+				);
+				
+// 				print_r($placeholders);die();
+				
+				if (SpedizionieriletterevetturaModel::getModulo((int)$spedizione["id_spedizioniere_lettera_vettura"])->salva($pathLettera, $outputFile, $placeholders))
+					return array($outputFile, "lettera_di_vettura_".$spedizioniere["titolo"]."_spedizione_".(int)$idS."_del_".date("d_m_Y",strtotime($spedizione["data_spedizione"])).".$estensione");
+			}
+		}
+		
+		return null;
 	}
 	
 	public static function getNumeroSpedizione($idS)

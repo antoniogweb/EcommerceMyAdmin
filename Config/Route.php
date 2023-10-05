@@ -815,6 +815,7 @@ class Route
 		'spedizioninegozio,colli',
 		'spedizioninegozio,servizi',
 		'spedizioninegozio,segnacollo',
+		'spedizioninegozio,letteradivettura',
 		
 		'spedizioninegoziorighe,salva',
 		'spedizioninegoziocolli,salva',

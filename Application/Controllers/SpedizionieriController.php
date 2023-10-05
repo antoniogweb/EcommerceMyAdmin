@@ -73,6 +73,8 @@ class SpedizionieriController extends BaseController {
 		if (!v("attiva_gestione_spedizioni"))
 			$this->responseCode(403);
 		
+		$this->tabella = "spedizionieri";
+		
 		$this->_posizioni['lettere'] = 'class="active"';
 		
 		$this->shift(1);

@@ -90,7 +90,10 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 			
 			<?php
 			if ($type === "update")
-				include($this->viewPath("form_submit_button"));
+			{
+				if (SpedizioninegozioModel::aperto((int)$id))
+					include($this->viewPath("form_submit_button"));
+			}
 			else
 				include($this->viewPath("form_submit_button_continua"));
 			?>

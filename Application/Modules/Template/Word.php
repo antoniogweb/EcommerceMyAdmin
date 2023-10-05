@@ -24,5 +24,24 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Word extends Template
 {
-	
+	public function salva($fileInput, $fileOutput, $placeholders = array())
+	{
+		if (file_exists($fileInput))
+		{
+			require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+			
+			$templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor($fileInput);
+			
+			foreach ($placeholders as $name => $value)
+			{
+				$templateProcessor->setValue($name, $value);
+			}
+			
+			$templateProcessor->saveAs($fileOutput);
+			
+			return true;
+		}
+		
+		return false;
+	}
 }

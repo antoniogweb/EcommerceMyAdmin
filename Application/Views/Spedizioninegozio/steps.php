@@ -35,7 +35,7 @@
 				</table>
 				
 				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
-				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo")) { ?>
+				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
 				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("PDF");?></a>
 				<?php } ?>
 				
@@ -51,6 +51,12 @@
 					<tr>
 						<td><?php echo $modulo->getLabelNumeroSpedizione();?>:</td>
 						<td><b class="label label-success"><?php echo $spedizione["spedizioni_negozio"]["numero_spedizione"];?></b></td>
+					</tr>
+					<?php } ?>
+					<?php if ($spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
+					<tr>
+						<td><?php echo gtext("Lettera di vettura");?>:</td>
+						<td><a target="_blank" class="badge bg-purple" href="<?php echo $this->baseUrl."/spedizioninegozio/letteradivettura/".(int)$id;?>"><?php echo gtext("Scarica");?> <i class="fa fa-download"></i></a></td>
 					</tr>
 					<?php } ?>
 					<?php if (!SpedizioninegozioModel::aperto((int)$id) && $modulo->metodo("getUrlTracking")) { ?>

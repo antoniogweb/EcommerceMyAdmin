@@ -136,8 +136,6 @@ class Brt extends Spedizioniere
 				);
 				
 				$res = $client->GetIdSpedizioneByRMA($var);
-				
-				
 			}
 			
 			$spnModel->sValues(array(
@@ -173,6 +171,11 @@ class Brt extends Spedizioniere
 	public function gCodiciPagamentoContrassegno()
 	{
 		return OpzioniModel::codice("BRT_CODICE_PAGAMENTO");
+	}
+	
+	public function gLabelCodicePagamento($valore)
+	{
+		return OpzioniModel::label("BRT_CODICE_PAGAMENTO", $valore);
 	}
 	
 	public function gTipoServizio()
