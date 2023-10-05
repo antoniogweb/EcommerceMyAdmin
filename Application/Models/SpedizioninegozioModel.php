@@ -996,6 +996,8 @@ class SpedizioninegozioModel extends FormModel {
 			
 			if (file_exists($pathLettera))
 			{
+				$spnrModel = new SpedizioninegoziorigheModel();
+				
 				$estensione = Files_Upload::sFileExtension($lettera["filename"]);
 				
 				createFolderFull("Logs/tmp",LIBRARY);
@@ -1007,21 +1009,26 @@ class SpedizioninegozioModel extends FormModel {
 				
 				$outputFile = LIBRARY."/Logs/tmp/$fileName.$estensione";
 				
+				$codici = $spnrModel->getCodiciProdottiSpedizione([(int)$idS]);
+				
 				$placeholders = array(
 					"ragione_sociale"	=>	$spedizione["ragione_sociale"],
 					"ragione_sociale_2"	=>	$spedizione["ragione_sociale_2"],
 					"indirizzo"			=>	$spedizione["indirizzo"],
-					"cap"			=>	$spedizione["cap"],
+					"cap"			=>	$spedizione["cap"]."     ",
 					"citta"			=>	$spedizione["citta"],
 					"provincia"			=>	$spedizione["provincia"],
 					"telefono"			=>	$spedizione["telefono"],
 					"peso"			=>	number_format($this->peso([(int)$idS]),1,",",""),
 					"colli"			=>	(string)$this->getColli([(int)$idS], true),
-					"natura_merce"	=>	$spedizione["riferimento_mittente_numerico"],
+					"natura_merce"	=>	count($codici) > 0 ? $codici[0] : "",
 					"contrassegno"	=>	$spedizione["contrassegno"] > 0 ? number_format($spedizione["contrassegno"],2,",","") : "",
 					"modalita_incasso"	=>	$spedizione["contrassegno"] > 0 ? SpedizionieriModel::getModulo((int)$spedizione["id_spedizioniere"], true)->gLabelCodicePagamento($spedizione["codice_pagamento_contrassegno"]) : "",
 					"importo_assicurazione"	=>	$spedizione["importo_assicurazione"] > 0 ? number_format($spedizione["importo_assicurazione"],2,",","") : "",
 					"note"			=>	$spedizione["note_interne"],
+					"data"			=>	date("d/m/Y", strtotime($spedizione["data_spedizione"])),
+					"p"				=>	$spedizione["tipo_servizio"] == "E" ? "1" : "",
+					"s"				=>	$spedizione["tipo_servizio"] == "H" ? "1" : "",
 				);
 				
 // 				print_r($placeholders);die();
