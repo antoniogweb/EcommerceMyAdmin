@@ -65,6 +65,38 @@ class Brt extends Spedizioniere
 		return array('ragione_sociale_2');
 	}
 	
+	public function getLabelSpedizioniere($response, $campo = "descrizione")
+	{
+		if (isset($response["ttParcelIdResponse"]["lista_eventi"]))
+		{
+			foreach ($response["ttParcelIdResponse"]["lista_eventi"] as $evento)
+			{
+				if (isset($evento["evento"][$campo]))
+					return $evento["evento"][$campo];
+			}
+		}
+		else if (isset($response["return"]["LISTA_EVENTI"]))
+		{
+			if (isset($response["return"]["LISTA_EVENTI"]["EVENTO"]))
+			{
+				$evento = $response["return"]["LISTA_EVENTI"]["EVENTO"];
+				
+				if (isset($evento["EVENTO"][$campo]))
+					return $evento["EVENTO"][$campo];
+			}
+			else
+			{
+				foreach ($response["return"]["LISTA_EVENTI"] as $evento)
+				{
+					if (isset($evento["EVENTO"][$campo]))
+						return $evento["EVENTO"][$campo];
+				}
+			}
+		}
+		
+		return "";
+	}
+	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 	public function getInfo($idSpedizione)
 	{
@@ -76,6 +108,8 @@ class Brt extends Spedizioniere
 			return;
 		
 		$params = htmlentitydecodeDeep($this->params);
+		
+		$trackingInfo = $labelSpedizioniere = $labelSpedizioniereFrontend = "";
 		
 		if (!empty($spedizione))
 		{
@@ -98,23 +132,17 @@ class Brt extends Spedizioniere
 
 				// Open the file using the HTTP headers set above
 				// DOCS: https://www.php.net/manual/en/function.file-get-contents.php
-				$response = file_get_contents($urlTracking, false, $context);
+				$trackingInfo = file_get_contents($urlTracking, false, $context);
 				
-				$response = json_decode($response, true);
-				
-				$trackingInfo = $labelSpedizioniere = $labelSpedizioniereFrontend = "";
+				$response = json_decode($trackingInfo, true);
 				
 				if (isset($response["ttParcelIdResponse"]["executionMessage"]["code"]) && $response["ttParcelIdResponse"]["executionMessage"]["code"] >= 0)
 				{
+					$labelSpedizioniere = $this->getLabelSpedizioniere($response);
 					
+					if ($labelSpedizioniere != "DATI SPEDIZ. TRASMESSI A BRT")
+						$labelSpedizioniereFrontend = $labelSpedizioniere;
 				}
-				
-// 				isset($response["deleteResponse"]["executionMessage"]["code"])
-				
-	// 			echo $urlTracking."<br />";
-	// 			echo $response."<br />";
-				
-	// 			
 			}
 			else
 			{
@@ -136,6 +164,33 @@ class Brt extends Spedizioniere
 				);
 				
 				$res = $client->GetIdSpedizioneByRMA($var);
+				
+				if (isset($res->return->SPEDIZIONE_ID) && $res->return->SPEDIZIONE_ID != 0)
+				{
+					$soap_url2 = 'http://wsr.brt.it:10041/web/BRT_TrackingByBRTshipmentIDService/BRT_TrackingByBRTshipmentID?wsdl';
+					$client2 = new SoapClient($soap_url2, $headers);
+					
+					$var = array(
+						"arg0"	=>	array(
+							"SPEDIZIONE_BRT_ID"	=>	(string)$res->return->SPEDIZIONE_ID,
+							"LINGUA_ISO639_ALPHA2"	=>	"",
+							"SPEDIZIONE_ANNO"	=>	date("Y", strtotime($spedizione["data_spedizione"])),
+						)
+					);
+					
+					$res = $client2->brt_trackingbybrtshipmentid($var);
+					
+					if (isset($res->return))
+					{
+						$res = json_decode(json_encode($res), true);
+						$trackingInfo = json_encode($res);
+						
+						$labelSpedizioniere = $this->getLabelSpedizioniere($res, "DESCRIZIONE");
+						
+						if ($labelSpedizioniere != "DATI SPEDIZ. TRASMESSI A BRT")
+							$labelSpedizioniereFrontend = $labelSpedizioniere;
+					}
+				}
 			}
 			
 			$spnModel->sValues(array(

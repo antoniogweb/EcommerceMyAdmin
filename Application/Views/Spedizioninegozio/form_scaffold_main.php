@@ -19,6 +19,11 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 				<div class='col-md-3'>
 					<?php echo $form["id_spedizioniere_lettera_vettura"];?>
 				</div>
+				<?php if (isset($form["numero_spedizione"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["numero_spedizione"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["contrassegno"];?>
 				</div>
@@ -91,7 +96,7 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 			<?php
 			if ($type === "update")
 			{
-				if (SpedizioninegozioModel::aperto((int)$id))
+				if (SpedizioninegozioModel::aperto((int)$id) || SpedizioninegozioModel::g(false)->idLetteraDiVettura((int)$id))
 					include($this->viewPath("form_submit_button"));
 			}
 			else

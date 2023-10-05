@@ -148,7 +148,12 @@ class SpedizioninegozioController extends BaseController {
 				$this->menuLinks = "save";
 			
 			if (!SpedizioninegozioModel::aperto((int)$id))
+			{
 				$this->menuLinks = partial() ? "" : "back";
+				
+				if ($this->m[$this->modelName]->idLetteraDiVettura((int)$id))
+					$fields .= ",numero_spedizione";
+			}
 		}
 		
 		if ($queryType == "update" && SpedizioninegozioModel::aperto((int)$id))
@@ -356,7 +361,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
-	// Setta la spedizione come aperta (stato = A)
+	// Setta la spedizione come aperta (stato = A) la spedizione $id
 	public function apri($id = 0)
 	{
 		$this->shift(1);
@@ -364,6 +369,21 @@ class SpedizioninegozioController extends BaseController {
 		$this->clean();
 		
 		$this->m($this->modelName)->apri($id);
+		
+		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// Imposta allo stato II la spedizione $id
+	public function conferma($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$spedizione = $this->m($this->modelName)->selectId((int)$id);
+		
+		if (!empty($spedizione) && SpedizioninegozioModel::pronta((int)$id) && $this->m($this->modelName)->idLetteraDiVettura((int)$id))
+			SpedizioninegozioModel::g(false)->settaStato((int)$id, "II", "data_invio");
 		
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}

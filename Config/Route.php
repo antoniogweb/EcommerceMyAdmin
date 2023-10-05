@@ -811,6 +811,7 @@ class Route
 		'spedizioninegozio,eventi',
 		'spedizioninegozio,apri',
 		'spedizioninegozio,prontadainviare',
+		'spedizioninegozio,conferma',
 		'spedizioninegozio,controllaspedizioni',
 		'spedizioninegozio,colli',
 		'spedizioninegozio,servizi',

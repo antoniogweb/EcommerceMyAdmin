@@ -66,6 +66,9 @@ class SpedizioninegozioModel extends FormModel {
 		$this->formStruct["entries"]["note_interne"]["labelString"] = "Note";
 		$this->formStruct["entries"]["note_interne"]["wrap"] = array();
 		
+		if ($modulo)
+			$this->formStruct["entries"]["numero_spedizione"]["labelString"] = $modulo->getLabelNumeroSpedizione();
+		
 		$this->formStruct["entries"]["codice_pagamento_contrassegno"] = array(
 			"type"	=>	"Select",
 			"options"	=>	$modulo ? $modulo->gCodiciPagamentoContrassegno() : [],
@@ -975,7 +978,7 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		$record = $this->clear()->selectId((int)$idS);
 		
-		if (!empty($record) && !SpedizioninegozioModel::aperta((int)$idS))
+		if (!empty($record) && !SpedizioninegozioModel::aperto((int)$idS))
 			return SpedizioninegozioModel::getModulo($idS)->segnacollo($idS, $returnPath);
 		
 		return "";
@@ -986,7 +989,7 @@ class SpedizioninegozioModel extends FormModel {
 	{
 		$res = $this->clear()->select("*")->inner(array("lettera", "spedizioniere"))->whereId((int)$idS)->first();
 		
-		if (!empty($res) && !SpedizioninegozioModel::aperta((int)$idS) && $res["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"])
+		if (!empty($res) && !SpedizioninegozioModel::aperto((int)$idS) && $res["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"])
 		{
 			$spedizione = htmlentitydecodeDeep($res["spedizioni_negozio"]);
 			$lettera = $res["spedizionieri_lettere_vettura"];
@@ -1011,6 +1014,13 @@ class SpedizioninegozioModel extends FormModel {
 				
 				$codici = $spnrModel->getCodiciProdottiSpedizione([(int)$idS]);
 				
+				$naturaArray = [];
+				
+				foreach ($codici as $codice => $qta)
+				{
+					$naturaArray[] =  $codice."x".$qta;
+				}
+				
 				$placeholders = array(
 					"ragione_sociale"	=>	$spedizione["ragione_sociale"],
 					"ragione_sociale_2"	=>	$spedizione["ragione_sociale_2"],
@@ -1021,7 +1031,7 @@ class SpedizioninegozioModel extends FormModel {
 					"telefono"			=>	$spedizione["telefono"],
 					"peso"			=>	number_format($this->peso([(int)$idS]),1,",",""),
 					"colli"			=>	(string)$this->getColli([(int)$idS], true),
-					"natura_merce"	=>	count($codici) > 0 ? $codici[0] : "",
+					"natura_merce"	=>	count($naturaArray) > 0 ? implode(" + ", $naturaArray) : "",
 					"contrassegno"	=>	$spedizione["contrassegno"] > 0 ? number_format($spedizione["contrassegno"],2,",","") : "",
 					"modalita_incasso"	=>	$spedizione["contrassegno"] > 0 ? SpedizionieriModel::getModulo((int)$spedizione["id_spedizioniere"], true)->gLabelCodicePagamento($spedizione["codice_pagamento_contrassegno"]) : "",
 					"importo_assicurazione"	=>	$spedizione["importo_assicurazione"] > 0 ? number_format($spedizione["importo_assicurazione"],2,",","") : "",
@@ -1054,5 +1064,10 @@ class SpedizioninegozioModel extends FormModel {
 			return $modulo->gSelectServizi();
 		
 		return array();
+	}
+	
+	public function idLetteraDiVettura($id)
+	{
+		return (int)$this->clear()->inner(array("lettera"))->whereId((int)$id)->field("spedizioni_negozio.id_spedizioniere_lettera_vettura");
 	}
 }
