@@ -28,6 +28,12 @@
 						<td><?php echo gtext("Data spedizione");?>:</td>
 						<td><b><?php echo smartDate($spedizione["spedizioni_negozio"]["data_spedizione"],"d/m/Y");?></b></td>
 					</tr>
+					<?php if ($spedizione["spedizioni_negozio"]["data_consegna"]) { ?>
+					<tr>
+						<td><?php echo gtext("Data consegna");?>:</td>
+						<td><b><?php echo smartDate($spedizione["spedizioni_negozio"]["data_consegna"],"d/m/Y H:i");?></b></td>
+					</tr>
+					<?php } ?>
 					<tr>
 						<td><?php echo gtext("ID Spedizione");?>:</td>
 						<td><b><?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></b></td>

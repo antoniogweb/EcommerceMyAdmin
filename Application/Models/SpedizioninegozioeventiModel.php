@@ -107,7 +107,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
 		
 		if (!empty($spedizione))
-			return $spedizione["ragione_sociale"]." ".$spedizione["ragione_sociale_2"];
+			return $spedizione["ragione_sociale"];
 	}
 	
 	// Metodo per segnaposto
@@ -155,10 +155,13 @@ class SpedizioninegozioeventiModel extends GenericModel {
 			array((int)$record["id_spedizione_negozio"])
 		))->send();
 		
+		if ((int)count($righeOrdine) === 0)
+			return " ";
+		
 		$linguaUrl = $lingua ? "/$lingua/" : "/";
 		
 		ob_start();
-		include tpf("/Elementi/Placeholder/elenco_prodotti_per_feedback.php");
+		include tpf("/Elementi/Placeholder/elenco_prodotti_per_feedback_spedizione.php");
 		$output = ob_get_clean();
 		
 		return $output;
@@ -189,6 +192,20 @@ class SpedizioninegozioeventiModel extends GenericModel {
 				return $output;
 			}
 		}
+		
+		return "";
+	}
+	
+	// Restituisce il numero di spedizione
+	public function gNumeroSpedizione($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
+		
+		if (!empty($spedizione) && !SpedizioninegozioModel::aperto((int)$record["id_spedizione_negozio"]))
+			return $spedizione["numero_spedizione"];
 		
 		return "";
 	}
