@@ -63,6 +63,7 @@ class SpedizioninegozioinfoModel extends GenericModel {
 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
 					"codice_info"			=>	$codice,
 					"codice_corriere"		=>	$spedizione["spedizionieri"]["codice"],
+					"id_spedizioniere"		=>	$spedizione["spedizionieri"]["id_spedizioniere"],
 					"descrizione"			=>	$descrizione,
 				), "sanitizeDb");
 				
@@ -96,6 +97,7 @@ class SpedizioninegozioinfoModel extends GenericModel {
 					"id_spedizione_negozio_invio"	=>	(int)$idInvio,
 					"codice_info"			=>	$codice,
 					"codice_corriere"		=>	$record["spedizionieri"]["codice"],
+					"id_spedizioniere"		=>	$spedizione["spedizionieri"]["id_spedizioniere"],
 					"descrizione"			=>	$descrizione,
 				), "sanitizeDb");
 				
@@ -117,5 +119,10 @@ class SpedizioninegozioinfoModel extends GenericModel {
 			return $res[0]["descrizione"];
 		
 		return "";
+	}
+	
+	public function vediCrud($record)
+	{
+		return "<a class='iframe' href='".Url::getRoot()."spedizioninegozio/vediinfo/".$record["spedizioni_negozio_info"]["id_spedizione_negozio_info"]."?partial=Y&nobuttons=Y'><i class='fa fa-eye'></i></a>";
 	}
 }

@@ -620,4 +620,9 @@ class Brt extends Spedizioniere
 		
 		return $urlTracking;
 	}
+	
+	public function decodeOutput($output)
+	{
+		return json_encode(json_decode($output, true),JSON_PRETTY_PRINT);
+	}
 }

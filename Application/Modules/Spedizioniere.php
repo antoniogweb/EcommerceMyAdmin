@@ -238,4 +238,9 @@ class Spedizioniere
 		
 		return false;
 	}
+	
+	public function decodeOutput($output)
+	{
+		return $output;
+	}
 }

@@ -75,6 +75,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->model("SpedizioninegozioeventiModel");
 		$this->model("SpedizioninegoziocolliModel");
 		$this->model("SpedizioninegozioserviziModel");
+		$this->model("SpedizioninegozioinfoModel");
 		
 		Params::$exitAtFirstFailedValidation = false;
 	}
@@ -357,6 +358,47 @@ class SpedizioninegozioController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function info($id = 0)
+	{
+		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
+			$this->responseCode(403);
+		
+		$this->_posizioni['info'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_spedizione_negozio";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "SpedizioninegozioinfoModel";
+		
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		$this->queryActions = "";
+		$this->bulkQueryActions = "";
+		
+// 		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("cleanDateTime", "spedizioni_negozio_info.codice_info", "vediCrud");
+		$this->mainHead = "Data / ora,Tipologia,Vedi";
+		
+		$pulsantiMenu = partial() ? "" : "back";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"info/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->where(array("id_spedizione_negozio"=>$clean['id']))->orderBy("spedizioni_negozio_info.data_creazione desc")->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["SpedizioninegozioModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	// Setta la spedizione come pronta da inviare (stato = I)
 	public function prontadainviare($id = 0)
 	{
@@ -427,5 +469,19 @@ class SpedizioninegozioController extends BaseController {
 		
 		if (is_array($path))
 			parent::scaricaFile($path[0], $path[1]);
+	}
+	
+	public function vediinfo($idInfo)
+	{
+		$this->model("SpedizioninegozioinfoModel");
+		
+		$data["record_evento"] = $this->m("SpedizioninegozioinfoModel")->clear()->select("*")->whereId((int)$idInfo)->first();
+		
+		$modulo = SpedizionieriModel::getModulo((int)$data["record_evento"]["spedizioni_negozio_info"]["id_spedizioniere"], true);
+		
+		$data["output"] = $modulo ? $modulo->decodeOutput($data["record_evento"]["spedizioni_negozio_info"]["descrizione"]) : $data["record_evento"]["spedizioni_negozio_info"]["descrizione"];
+		
+		$this->append($data);
+		$this->load("vedi_info");
 	}
 }

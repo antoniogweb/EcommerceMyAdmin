@@ -479,4 +479,16 @@ class Gls extends Spedizioniere
 		
 		return "";
 	}
+	
+	public function decodeOutput($output)
+	{
+		$xmlObj = simplexml_load_string($output);
+		
+		$domXml = new DOMDocument('1.0');
+		$domXml->preserveWhiteSpace = false;
+		$domXml->formatOutput = true;
+		$domXml->loadXML($xmlObj->asXML());
+		$xmlString = $domXml->saveXML();
+		return nl2br(str_replace(' ', '&nbsp;', htmlspecialchars($xmlString)));
+	}
 }
