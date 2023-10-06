@@ -57,23 +57,6 @@ class Gls extends Spedizioniere
 		return array('codice_pagamento_contrassegno', 'codice_bda', 'importo_assicurazione', 'assicurazione_integrativa', 'formato_etichetta_pdf');
 	}
 	
-// 	public function consegnata($idSpedizione)
-// 	{
-// 		if (true)
-// 			$this->scriviLogConsegnata((int)$idSpedizione);
-// 		
-// 		return true;
-// 	}
-	
-// 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
-// 	public function inErrore($idSpedizione)
-// 	{
-// 		if (true)
-// 			$this->scriviLogInErrore((int)$idSpedizione);
-// 		
-// 		return true;
-// 	}
-	
 	public function gCodiciPagamentoContrassegno()
 	{
 		return OpzioniModel::codice("GLS_CODICE_PAGAMENTO");
@@ -465,6 +448,50 @@ class Gls extends Spedizioniere
 			
 			$this->scriviLogInfoTracking((int)$idSpedizione);
 		}
+	}
+	
+	public function consegnata($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$trackingInfo = $spnModel->getInfoTracking((int)$idSpedizione);
+		
+		if ($trackingInfo)
+		{
+			$labelSpedizioniere = $this->getLabelSpedizioniere($trackingInfo);
+			$codiceSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "Codice");
+			
+			if ($labelSpedizioniere == "CONSEGNATA" || (int)$codiceSpedizioniere === 906)
+			{
+				$this->scriviLogConsegnata((int)$idSpedizione);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public function getDataConsegna($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$trackingInfo = $spnModel->getInfoTracking((int)$idSpedizione);
+		
+		if ($trackingInfo)
+		{
+			$dataConsegna = $this->getLabelSpedizioniere($trackingInfo, "Data");
+			$oraConsegna = $this->getLabelSpedizioniere($trackingInfo, "Ora");
+			
+			if (preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{2,4}$/',(string)$dataConsegna) && preg_match('/^[0-9]{1,2}\:[0-9]{1,2}$/',(string)$oraConsegna))
+			{
+				$dateTime = DateTime::createFromFormat("d/m/y H:i", $dataConsegna." ".$oraConsegna);
+			
+				return $dateTime->format("Y-m-d H:i:s");
+			}
+		}
+		
+		return parent::getDataConsegna($idSpedizione);
 	}
 	
 	public function getLabelSpedizioniere($trackingInfo, $campo = "Stato")

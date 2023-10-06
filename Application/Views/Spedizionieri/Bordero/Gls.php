@@ -148,8 +148,8 @@ table.corpo td table td
 	<?php echo gtext("Totale spedizioni in contrassegno");?>: <?php echo $numeroContrassegno;?> <?php echo gtext("con valore complessivo di");?> <?php echo number_format($totaleContrassegno,2,",",".");?> <?php echo gtext("Euro");?>.<br />
 	<?php echo gtext("Totale spedizioni in Porto Franco");?>: <?php echo $numeroSpedizioni;?><br />
 	<?php echo gtext("Totale spedizioni in Porto Assegnato");?>: 0<br />
-	<?php echo gtext("Totale spedizioni con assicurazione integrativa 10/10");?>: <?php echo $numeroAssicurazione1010;?> <?php echo gtext("con valore complessivo di");?> <?php echo number_format($totaleAssicurazione1010,2,",","");?> <?php echo gtext("Euro");?><br />
-	<?php echo gtext("Totale spedizioni con assicurazione integrativa ALL-IN");?>: <?php echo $numeroAssicurazioneALLIN;?> <?php echo gtext("con valore complessivo di");?> <?php echo number_format($totaleAssicurazioneALLIN,2,",","");?> <?php echo gtext("Euro");?><br />
+	<?php echo gtext("Totale spedizioni con assicurazione integrativa 10/10");?>: <?php echo $numeroAssicurazione1010;?><br />
+	<?php echo gtext("Totale spedizioni con assicurazione integrativa ALL-IN");?>: <?php echo $numeroAssicurazioneALLIN;?><br />
 	<br />
 	<?php if ($presentiAccessori) { ?>
 	<?php echo gtext("Sono presenti spedizioni con servizi Sprinter che prevedono un costo aggiuntivo.");?>

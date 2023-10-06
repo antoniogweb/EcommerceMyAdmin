@@ -75,6 +75,12 @@
 						<td><a target="_blank" href="<?php echo $modulo->getUrlTracking((int)$id);?>"><?php echo gtext("Pagina del tracking")?> <i class="fa fa-arrow-right"></i></a></td>
 					</tr>
 					<?php } ?>
+					<?php if (!SpedizioninegozioModel::aperto((int)$id) && $spedizione["spedizioni_negozio"]["label_spedizioniere"]) { ?>
+					<tr>
+						<td><?php echo gtext("Label spedizioniere");?>:</td>
+						<td><i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i></td>
+					</tr>
+					<?php } ?>
 					<?php if (count($ordini) > 0) { ?>
 					<tr>
 						<td><?php echo gtext("Ordini");?>:</td>
