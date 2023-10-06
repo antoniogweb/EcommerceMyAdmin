@@ -29,7 +29,7 @@ Helper_List::$filtersFormLayout["filters"]["id_spedizioniere"] = array(
 	),
 );
 
-Helper_List::$filtersFormLayout["filters"]["id_spedizione_negozio"] = array(
+Helper_List::$filtersFormLayout["filters"]["id_sped"] = array(
 	"attributes"	=>	array(
 		"class"	=>	"form-control",
 		"placeholder"	=>	"ID spedizione ..",
@@ -55,7 +55,7 @@ class SpedizioninegozioController extends BaseController {
 		'stato:sanitizeAll'=>'tutti',
 		'numero_spedizione:sanitizeAll'=>'tutti',
 		'id_spedizione_negozio_invio:sanitizeAll'=>'tutti',
-		'id_spedizione_negozio:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
+		'id_sped:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
 	);
 	
 	public $sezionePannello = "ecommerce";
@@ -106,13 +106,13 @@ class SpedizioninegozioController extends BaseController {
 			"tutti"		=>	"Stato spedizione",
 		) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
 		
-		$this->filters = array("dal","al",'id_ordine','id_spedizione_negozio','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
+		$this->filters = array("dal","al",'id_ordine','id_sped','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
 				->left(array("spedizioniere","invio"))
 				->where(array(
-					"spedizioni_negozio.id_spedizione_negozio"	=>	$this->viewArgs['id_spedizione_negozio'],
+					"spedizioni_negozio.id_spedizione_negozio"	=>	$this->viewArgs['id_sped'],
 					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
 					"spedizioni_negozio.stato"	=>	$this->viewArgs['stato'],
 					"spedizioni_negozio.numero_spedizione"	=>	$this->viewArgs['numero_spedizione'],
@@ -363,6 +363,8 @@ class SpedizioninegozioController extends BaseController {
 		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
 			$this->responseCode(403);
 		
+		$idSpedizioneInvio = (int)$this->m["SpedizioninegozioModel"]->whereId((int)$id)->field("id_spedizione_negozio_invio");
+		
 		$this->_posizioni['info'] = 'class="active"';
 		
 // 		$data["orderBy"] = $this->orderBy = "id_order";
@@ -390,7 +392,17 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"info/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("*")->where(array("id_spedizione_negozio"=>$clean['id']))->orderBy("spedizioni_negozio_info.data_creazione desc")->convert()->save();
+		$this->m[$this->modelName]->select("*")->where(array(
+			"OR"	=>	array(
+				"id_spedizione_negozio"			=>	$clean['id'],
+				"AND"	=>	array(
+					"id_spedizione_negozio_invio"	=>	(int)$idSpedizioneInvio,
+					"ne"	=>	array(
+						"id_spedizione_negozio_invio"	=>	0,
+					),
+				),
+			),
+		))->orderBy("spedizioni_negozio_info.id_spedizione_negozio_info desc")->convert()->save();
 		
 		parent::main();
 		
@@ -419,7 +431,8 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->clean();
 		
-		$this->m($this->modelName)->apri($id);
+		if (!$this->m($this->modelName)->apri($id))
+			flash("notice",$this->m($this->modelName)->notice);
 		
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}

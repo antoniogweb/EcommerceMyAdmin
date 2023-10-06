@@ -714,12 +714,19 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
 		{
-			$data = new Data_Spedizioni_Result();
-			$values = $data->toArray();
-			$values["id_spedizione_negozio_invio"] = 0;
-			
-			$this->settaStato($id, "A", "", $values);
+			if (SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->eliminaSpedizione((int)$id, $this))
+			{
+				$data = new Data_Spedizioni_Result();
+				$values = $data->toArray();
+				$values["id_spedizione_negozio_invio"] = 0;
+				
+				$this->settaStato($id, "A", "", $values);
+				
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
 	// Invia la spedizione $id al corriere

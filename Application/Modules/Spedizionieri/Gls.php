@@ -245,7 +245,15 @@ class Gls extends Spedizioniere
 			$client = $this->getClient();
 			
 			$res = $client->DeleteSped($info);
+			
+			$xml = aToX(array("InputDelete"=>$info), "", true, true);
+			
+			// Salvo il log dell'input e dell'output
+			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InputDelete", $xml, "XML");
+			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "OutputDelete", $res->DeleteSpedResult->any, "XML");
 		}
+		
+		return true;
 	}
 	
 	// Pronota la spedizione al corriere per avere il numero di spedizione e l'etichetta

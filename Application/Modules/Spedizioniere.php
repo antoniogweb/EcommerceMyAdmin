@@ -37,11 +37,19 @@ class Spedizioniere
 		"lunghezzaMax"	=>	array(),
 	);
 	
-	protected function checklunghezzaMax(SpedizioninegozioModel $spedizione, $campi)
+	protected function checklunghezzamax(SpedizioninegozioModel $spedizione, $campi)
 	{
 		foreach ($campi as $campo => $length)
 		{
 			$spedizione->addSoftCondition("update",'checkLength|'.$length,$campo);
+		}
+	}
+	
+	protected function checknotempty(SpedizioninegozioModel $spedizione, $campi)
+	{
+		foreach ($campi as $campo)
+		{
+			$spedizione->addStrongCondition("update",'checkNotEmpty|',$campo);
 		}
 	}
 	

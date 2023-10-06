@@ -40,6 +40,9 @@ class Brt extends Spedizioniere
 			"codice_pagamento_contrassegno"	=>	2,
 			"codice_tariffa"	=>	3,
 		),
+		"notEmpty"	=>	array(
+			"riferimento_mittente_numerico"
+		),
 	);
 	
 	public function isAttivo()
@@ -401,24 +404,36 @@ class Brt extends Spedizioniere
 			$result = true;
 			
 			if (SpedizioninegozioinfoModel::g(false)->getCodice($idS, "createResponse") != "")
-				$result = $this->send("/shipments/delete", "PUT", $jsonArray);
+			{
+				$result = false;
+				$response = $this->send("/shipments/delete", "PUT", $jsonArray);
+			}
 			
 			if (
 				$result === true
 				||
 				(
-					isset($result["deleteResponse"]["executionMessage"]["code"]) &&
+					isset($response["deleteResponse"]["executionMessage"]["code"]) &&
 					(
-						$result["deleteResponse"]["executionMessage"]["code"] >= 0 || 
-						$result["deleteResponse"]["executionMessage"]["code"] == -151 ||
-						strpos($result["deleteResponse"]["executionMessage"]["message"], "not found") !== false
+						$response["deleteResponse"]["executionMessage"]["code"] >= 0 || 
+						$response["deleteResponse"]["executionMessage"]["code"] == -151 ||
+						strpos($response["deleteResponse"]["executionMessage"]["message"], "not found") !== false
 					)
 				)
 			)
+			{
+				if (isset($response))
+				{
+					// Salvo il log dell'input e dell'output
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", json_encode($jsonArray), "JSON");
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteResponse", json_encode($response), "JSON");
+				}
+				
 				return true;
+			}
 			else
 			{
-				$this->settaNoticeModel($spedizione, isset($result["deleteResponse"]) ? $result["deleteResponse"]["executionMessage"]["message"] : "Errore, API non funzionante");
+				$this->settaNoticeModel($spedizione, isset($response["deleteResponse"]) ? $response["deleteResponse"]["executionMessage"]["message"] : "Errore, API non funzionante");
 				return false;
 			}
 		}

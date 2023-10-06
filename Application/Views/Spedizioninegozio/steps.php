@@ -133,7 +133,7 @@
 	<li <?php echo $posizioni['righe'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/righe/$id".$this->viewStatus;?>"><?php echo gtext("Righe ordine");?></a></li>
 	<?php } ?>
 	<li <?php echo $posizioni['eventi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/eventi/$id".$this->viewStatus;?>"><?php echo gtext("Cronologia eventi");?></a></li>
-	<li <?php echo $posizioni['info'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/info/$id".$this->viewStatus;?>"><?php echo gtext("Cronologia API");?></a></li>
+	<li <?php echo $posizioni['info'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/info/$id".$this->viewStatus;?>"><?php echo gtext("Cronologia chiamate API");?></a></li>
 </ul>
 
 <div style="clear:left;"></div>
