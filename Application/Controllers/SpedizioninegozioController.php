@@ -29,6 +29,13 @@ Helper_List::$filtersFormLayout["filters"]["id_spedizioniere"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["id_spedizione_negozio"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"ID spedizione ..",
+	),
+);
+
 Helper_List::$filtersFormLayout["filters"]["numero_spedizione"] = array(
 	"attributes"	=>	array(
 		"class"	=>	"form-control",
@@ -48,6 +55,7 @@ class SpedizioninegozioController extends BaseController {
 		'stato:sanitizeAll'=>'tutti',
 		'numero_spedizione:sanitizeAll'=>'tutti',
 		'id_spedizione_negozio_invio:sanitizeAll'=>'tutti',
+		'id_spedizione_negozio:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
 	);
 	
 	public $sezionePannello = "ecommerce";
@@ -97,12 +105,13 @@ class SpedizioninegozioController extends BaseController {
 			"tutti"		=>	"Stato spedizione",
 		) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
 		
-		$this->filters = array("dal","al",'id_ordine','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
+		$this->filters = array("dal","al",'id_ordine','id_spedizione_negozio','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
 				->left(array("spedizioniere","invio"))
 				->where(array(
+					"spedizioni_negozio.id_spedizione_negozio"	=>	$this->viewArgs['id_spedizione_negozio'],
 					"spedizioni_negozio.id_spedizioniere"	=>	$this->viewArgs['id_spedizioniere'],
 					"spedizioni_negozio.stato"	=>	$this->viewArgs['stato'],
 					"spedizioni_negozio.numero_spedizione"	=>	$this->viewArgs['numero_spedizione'],

@@ -77,6 +77,8 @@ class Brt extends Spedizioniere
 		}
 		else if (isset($response["return"]["LISTA_EVENTI"]))
 		{
+			$campo = strtoupper($campo);
+			
 			if (isset($response["return"]["LISTA_EVENTI"]["EVENTO"]))
 			{
 				$evento = $response["return"]["LISTA_EVENTI"]["EVENTO"];
@@ -205,14 +207,54 @@ class Brt extends Spedizioniere
 			$this->scriviLogInfoTracking((int)$idSpedizione);
 		}
 	}
-// 	
-// 	public function consegnata($idSpedizione)
-// 	{
-// 		if (true)
-// 			$this->scriviLogConsegnata((int)$idSpedizione);
-// 		
-// 		return true;
-// 	}
+	
+	public function consegnata($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$trackingInfo = $spnModel->getInfoTracking((int)$idSpedizione);
+		
+		if ($trackingInfo)
+		{
+			$trackingInfo = json_decode($trackingInfo, true);
+			
+			$labelSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "descrizione");
+			
+			if ($labelSpedizioniere == "CONSEGNATA")
+			{
+				$this->scriviLogConsegnata((int)$idSpedizione);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public function getDataConsegna($idSpedizione)
+	{
+		$spnModel = new SpedizioninegozioModel();
+		
+		$trackingInfo = $spnModel->getInfoTracking((int)$idSpedizione);
+		
+		if ($trackingInfo)
+		{
+			$trackingInfo = json_decode($trackingInfo, true);
+			
+			$dataConsegna = $this->getLabelSpedizioniere($trackingInfo, "data");
+			$oraConsegna = $this->getLabelSpedizioniere($trackingInfo, "ora");
+			
+			if (preg_match('/^[0-9]{2}\.[0-9]{2}\.[0-9]{4}$/',(string)$dataConsegna) && preg_match('/^[0-9]{1,2}\.[0-9]{1,2}$/',(string)$oraConsegna))
+			{
+				$dateTime = DateTime::createFromFormat("d.m.Y H.i", $dataConsegna." ".$oraConsegna);
+			
+				return $dateTime->format("Y-m-d H:i:s");
+			}
+		}
+		
+		return parent::getDataConsegna($idSpedizione);
+	}
+	
 // 	
 // 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
 // 	public function inErrore($idSpedizione)
@@ -437,6 +479,8 @@ class Brt extends Spedizioniere
 				// Salvo il log dell'invio e dell'output
 				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmRequest", json_encode($jsonArray), "JSON");
 				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmResponse", json_encode($result), "JSON");
+				
+				$this->scriviLogConfermata((int)$id);
 			}
 			else
 				$errore = isset($result["confirmResponse"]["executionMessage"]["message"]) ? $result["confirmResponse"]["executionMessage"]["message"] : "Errore, API non funzionante";

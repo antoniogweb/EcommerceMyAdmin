@@ -28,6 +28,11 @@ class Spedizioniere
 	
 	use Modulo;
 	
+	public function getDataConsegna($idSpedizione)
+	{
+		return null;
+	}
+	
 	protected $condizioniCampi = array(
 		"lunghezzaMax"	=>	array(),
 	);
@@ -70,6 +75,11 @@ class Spedizioniere
 	public function scriviLogInfoTracking($idSpedizione)
 	{
 		$this->scriviLog("RICHIESTA INFO TRACKING SPEDIZIONE - ID:".(int)$idSpedizione);
+	}
+	
+	public function scriviLogConfermata($idSpedizione)
+	{
+		$this->scriviLog("SPEDIZIONE CONFERMATA - ID:".(int)$idSpedizione);
 	}
 	
 	public function scriviLogConsegnata($idSpedizione)

@@ -65,14 +65,14 @@ class Gls extends Spedizioniere
 // 		return true;
 // 	}
 	
-	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
-	public function inErrore($idSpedizione)
-	{
-		if (true)
-			$this->scriviLogInErrore((int)$idSpedizione);
-		
-		return true;
-	}
+// 	// Recupera le ultime informazioni del tracking salvate e verifica se la spedizione è stata impostata in errore
+// 	public function inErrore($idSpedizione)
+// 	{
+// 		if (true)
+// 			$this->scriviLogInErrore((int)$idSpedizione);
+// 		
+// 		return true;
+// 	}
 	
 	public function gCodiciPagamentoContrassegno()
 	{
@@ -234,14 +234,16 @@ class Gls extends Spedizioniere
 		$spedizione = $spModel->selectId((int)$idS);
 		
 		$infoLabel = SpedizioninegozioinfoModel::g(false)->getCodice($idS, "InfoLabel");
-		$xmlObj = simplexml_load_string($infoLabel);
 		
-		if ($infoLabel != "" && !empty($spedizione) && isset($xmlObj->Parcel[0]->NumeroSpedizione))
+		if ($infoLabel != "")
+			$xmlObj = simplexml_load_string($infoLabel);
+		
+		if ($infoLabel != "" && !empty($spedizione) && isset($xmlObj) && isset($xmlObj->Parcel[0]->NumeroSpedizione))
 		{
 			$info["NumSpedizione"] = (string)$xmlObj->Parcel[0]->NumeroSpedizione;
 			
 			$client = $this->getClient();
-				
+			
 			$res = $client->DeleteSped($info);
 		}
 	}
@@ -305,6 +307,8 @@ class Gls extends Spedizioniere
 		foreach ($idS as $id)
 		{
 			$risultati[$id] = new Data_Spedizioni_Result("","");
+			
+			$this->scriviLogConfermata((int)$id);
 		}
 		
 		return $risultati;

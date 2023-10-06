@@ -820,13 +820,27 @@ class SpedizioninegozioModel extends FormModel {
 	// Imposta la spedizione come consegnata
 	public function settaConsegnata($id)
 	{
-		$this->settaStato($id, "C", "data_consegna");
+		$modulo = self::getModulo((int)$id);
+		
+		$dataConsegna = "";
+		
+		if (isset($modulo))
+			$dataConsegna = $modulo->getDataConsegna($id);
+		
+		$values = array();
+		
+		if ($dataConsegna)
+			$values = array(
+				"data_consegna"	=>	$dataConsegna,
+			);
+		
+		$this->settaStato($id, "C", "", $values);
 	}
 	
 	// Imposta la spedizione come in errore
 	public function settaInErrore($id)
 	{
-		$this->settaStato($id, "E");
+// 		$this->settaStato($id, "E");
 	}
 	
 	// Restituisce tutte le spedizioni da inviare, con data corrente o precedente
@@ -876,13 +890,13 @@ class SpedizioninegozioModel extends FormModel {
 				// Recupero le informazioni dal server del corriere
 				$modulo->getInfo($sp["id_spedizione_negozio"]);
 				
-// 				if ($elaboraSpedizione)
-// 				{
-// 					if ($modulo->consegnata($sp["id_spedizione_negozio"])) // Se consegnata
-// 						$this->settaConsegnata($sp["id_spedizione_negozio"]);
-// 					else if ($modulo->inErrore($sp["id_spedizione_negozio"])) // Se in errore
-// 						$this->settaInErrore($sp["id_spedizione_negozio"]);
-// 				}
+				if ($elaboraSpedizione)
+				{
+					if ($modulo->consegnata($sp["id_spedizione_negozio"])) // Se consegnata
+						$this->settaConsegnata($sp["id_spedizione_negozio"]);
+					else if ($modulo->inErrore($sp["id_spedizione_negozio"])) // Se in errore
+						$this->settaInErrore($sp["id_spedizione_negozio"]);
+				}
 			}
 		}
 	}
@@ -1069,5 +1083,16 @@ class SpedizioninegozioModel extends FormModel {
 	public function idLetteraDiVettura($id)
 	{
 		return (int)$this->clear()->inner(array("lettera"))->whereId((int)$id)->field("spedizioni_negozio.id_spedizioniere_lettera_vettura");
+	}
+	
+	// Restituisxce il campo struttura_info_tracking della spedizione $idSpedizione
+	public function getInfoTracking($idSpedizione)
+	{
+		$spedizione = $this->selectId((int)$idSpedizione);
+		
+		if (!empty($spedizione) && $spedizione["struttura_info_tracking"])
+			return $spedizione["struttura_info_tracking"];
+		
+		return "";
 	}
 }
