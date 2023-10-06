@@ -16,6 +16,8 @@ $().ready(function() {
 			<?php echo $form["classe"];?>
 			<?php echo $form["pagato"];?>
 			<?php echo $form["da_spedire"] ?? "";?>
+			<?php echo $form["in_spedizione"] ?? "";?>
+			<?php echo $form["spedito"] ?? "";?>
 			<?php echo $form["manda_mail_al_cambio_stato"];?>
 			<?php echo $form["descrizione"];?>
 			

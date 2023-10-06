@@ -78,17 +78,46 @@ class StatiordineModel extends GenericModel {
 				),
 				'pagato'	=>	array(
 					"type"	=>	"Select",
-					"labelString"	=>	"Stato corrispondente ad un ordine pagato?",
+					"labelString"	=>	"Stato corrispondente ad un ordine pagato",
 					"options"	=>	self::$attivoSiNo + array("-1"=>gtext("Neutro")),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
 				'da_spedire'	=>	array(
 					"type"	=>	"Select",
-					"labelString"	=>	"Stato corrispondente ad un ordine pronto per la spedizione?",
+					"labelString"	=>	"Stato corrispondente ad un ordine pronto per la spedizione",
 					"options"	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, gli ordini che avranno questo stato potranno essere spediti.")."</div>"
+					),
+				),
+				'in_spedizione'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine in spedizione",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, alla prenotazione di una spedizone, gli ordini collegati verranno impostati a questo stato. Può esserci un solo stato ordine con il campo In spedizione impostato su sì.")."</div>"
+					),
+				),
+				'spedito'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine spedito",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, alla conferma di una spedizone, gli ordini collegati verranno impostati a questo stato. Può esserci un solo stato ordine con il campo Spedito impostato su sì.")."</div>"
+					),
 				),
 				'classe'	=>	array(
 					"type"	=>	"Select",
@@ -122,7 +151,25 @@ class StatiordineModel extends GenericModel {
 	{
 		$this->values["tipo"] == "U";
 		
+		$this->impostaStatiSpedizione();
+		
 		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->impostaStatiSpedizione();
+		
+		return parent::update($id, $where);
+	}
+	
+	public function impostaStatiSpedizione()
+	{
+		if (isset($this->values["in_spedizione"]) && $this->values["in_spedizione"])
+			$this->db->query("update stati_ordine set in_spedizione = 0 where 1");
+		
+		if (isset($this->values["spedito"]) && $this->values["spedito"])
+			$this->db->query("update stati_ordine set spedito = 0 where 1");
 	}
 	
 	public function deletable($id)
@@ -167,6 +214,22 @@ class StatiordineModel extends GenericModel {
 	public function daSpedireCrud($record)
 	{
 		if ($record["stati_ordine"]["da_spedire"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
+	}
+	
+	public function inSpedizioneCrud($record)
+	{
+		if ($record["stati_ordine"]["in_spedizione"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
+	}
+	
+	public function speditoCrud($record)
+	{
+		if ($record["stati_ordine"]["spedito"])
 			return "<i class='fa fa-check text text-success'></i>";
 		else
 			return "";

@@ -554,7 +554,7 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$labelSpedizioniere = App::$isFrontend ? $sp["spedizioni_negozio"]["label_spedizioniere_frontend"] : $sp["spedizioni_negozio"]["label_spedizioniere"];
 			
-			$html .= '<br /><i style="font-size:13px;">'.$labelSpedizioniere.'</i>';
+			$html .= '<br /><i style="font-size:12px;">'.$labelSpedizioniere.'</i>';
 			
 			$html .= "</p>";
 			
