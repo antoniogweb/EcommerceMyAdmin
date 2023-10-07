@@ -131,7 +131,7 @@ Helper_Menu::$htmlLinks = array(
 	"back" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-default"',
+		"attributes" => 'role="button" class="btn btn-default make_spinner"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Torna",
 		"classIconBefore"	=>	'<i class="fa fa-arrow-circle-left"></i>',
@@ -253,7 +253,7 @@ Helper_Menu::$htmlLinks = array(
 	"torna_ordine" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-primary"',
+		"attributes" => 'role="button" class="btn btn-primary make_spinner"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Torna all' ordine",
 		"classIconBefore"	=>	'<i class="fa fa-arrow-circle-left"></i>',
