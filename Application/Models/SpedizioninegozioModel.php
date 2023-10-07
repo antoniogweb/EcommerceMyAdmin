@@ -39,6 +39,8 @@ class SpedizioninegozioModel extends FormModel {
 		$this->_idFields='id_spedizione_negozio';
 		$this->_idOrder = 'id_order';
 		
+		OrdiniModel::setStatiOrdine();
+		
 		parent::__construct();
 	}
 	
@@ -369,9 +371,16 @@ class SpedizioninegozioModel extends FormModel {
 	
 	public function ordiniCrud($record)
 	{
-		$idsO = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"]);
+		$ordini = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"], false);
 		
-		return "<b>#".implode(", #", $idsO)."</b>";
+		$html = "";
+		
+		foreach ($ordini as $ordine)
+		{
+			$html .= "<span style='margin-right:2px;' class='label label-".OrdiniModel::getLabelStato($ordine["orders"]["stato"])."'>#".$ordine["orders"]["id_o"]."</span>";
+		}
+		
+		return $html;
 	}
 	
 	public function brderoCrud($record)

@@ -2,7 +2,7 @@
 
 <?php if ($type !== "insert") {
 	$spedizione = SpedizioninegozioModel::g()->select("*")->left(array("spedizioniere"))->whereId((int)$id)->first();
-	$ordini = SpedizioninegozioModel::g()->getOrdini((int)$id);
+	$ordini = SpedizioninegozioModel::g()->getOrdini((int)$id, false);
 	$stile = SpedizioninegozioModel::g()->getStile($spedizione["spedizioni_negozio"]["stato"]);
 	$titoloStato = SpedizioninegozioModel::g()->getTitoloStato($spedizione["spedizioni_negozio"]["stato"]);
 	$pesoTotale = SpedizioninegozioModel::g()->peso(array((int)$id));
@@ -85,8 +85,8 @@
 					<tr>
 						<td><?php echo gtext("Ordini");?>:</td>
 						<td>
-							<?php foreach ($ordini as $idO) { ?>
-							<a class="label label-default" target="_blank" href="<?php echo $this->baseUrl."/ordini/vedi/".(int)$idO;?>">#<?php echo (int)$idO;?></a>
+							<?php foreach ($ordini as $ordine) { ?>
+							<a class="label label-<?php echo OrdiniModel::getLabelStato($ordine["orders"]["stato"]);?>" target="_blank" href="<?php echo $this->baseUrl."/ordini/vedi/".(int)$ordine["orders"]["id_o"];?>">#<?php echo (int)$ordine["orders"]["id_o"];?></a>
 							<?php } ?>
 						</td>
 					</tr>

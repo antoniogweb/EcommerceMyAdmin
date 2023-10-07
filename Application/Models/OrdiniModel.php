@@ -140,7 +140,7 @@ class OrdiniModel extends FormModel {
 		
 		$rModel = new RigheModel();
 		
-		return $rModel->clear()
+		return $rModel->clear()->select("righe.id_r")
 			->inner("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")
 			->inner("spedizioni_negozio")->on("spedizioni_negozio.id_spedizione_negozio = spedizioni_negozio_righe.id_spedizione_negozio")
 			->where(array(
@@ -175,6 +175,15 @@ class OrdiniModel extends FormModel {
 		}
 		
 		self::$statiOrdineSettati = true;
+	}
+	
+	// Restituisci la classe/label dello stato
+	public static function getLabelStato($stato)
+	{
+		if (isset(self::$labelStati[$stato]))
+			return self::$labelStati[$stato];
+		
+		return "";
 	}
 	
 	public static function setPagamenti()
