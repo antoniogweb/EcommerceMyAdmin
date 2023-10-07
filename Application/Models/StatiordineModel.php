@@ -258,4 +258,12 @@ class StatiordineModel extends GenericModel {
 		
 		return isset(self::$recordTabella[$codiceStato][$campo]) ? self::$recordTabella[$codiceStato][$campo] : null;
 	}
+	
+	// Restituisce un array con tutti i codici degli stati da spedire
+	public static function getStatiDaSpedire()
+	{
+		return self::g(false)->clear()->select("codice")->where(array(
+			"da_spedire"	=>	1,
+		))->toList("codice")->send();
+	}
 }

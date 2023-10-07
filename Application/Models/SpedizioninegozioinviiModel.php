@@ -98,7 +98,8 @@ class SpedizioninegozioinviiModel extends GenericModel {
 			foreach ($spedizioniDaInviare as $id)
 			{
 				$spnModel->sValues(array(
-					"id_spedizione_negozio_invio"	=>	(int)$idInvio
+					"id_spedizione_negozio_invio"	=>	(int)$idInvio,
+					"data_spedizione"				=>	$record["data_spedizione"],
 				));
 				
 				$spnModel->pUpdate((int)$id);

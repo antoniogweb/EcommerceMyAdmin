@@ -132,6 +132,11 @@ class SpedizioninegozioModel extends FormModel {
 		return array();
 	}
 	
+	public static function statiSpedizioniNonInviate()
+	{
+		return array("A","I");
+	}
+	
 	public static function statiSpedizioniInviate()
 	{
 		return array("II","E");
@@ -821,7 +826,78 @@ class SpedizioninegozioModel extends FormModel {
 		}
 		
 		if ($this->update((int)$id))
+		{
 			SpedizioninegozioeventiModel::g()->inserisci((int)$id, $stato);
+			
+			// Setta lo stato dell'ordine
+			$this->settaStatoOrdini($id, $stato);
+		}
+	}
+	
+	// Setta lo stato degli ordini legati alla spedizione
+	public function settaStatoOrdini($idSpedizione, $statoSpedizione = "I")
+	{
+		if (!in_array($statoSpedizione, array("I","II")))
+			return;
+		
+		$idsOrdini = $this->getOrdini($idSpedizione, true);
+		
+		$condizione = ($statoSpedizione == "I") ? "in_spedizione" : "spedito";
+		
+		$statoOrdine = $this->getStatoInSpedizione($condizione);
+		
+		if (!$statoOrdine)
+			return;
+		
+		$oModel = new OrdiniModel();
+		
+		foreach ($idsOrdini as $idOrdine)
+		{
+			$ordine = $oModel->selectId((int)$idOrdine);
+			
+			if (empty($ordine))
+				continue;
+			
+			$procedi = true;
+			
+			if ($statoSpedizione == "I")
+			{
+				$statiDaSpedire = StatiordineModel::getStatiDaSpedire();
+				
+				if (!in_array($ordine["stato"], $statiDaSpedire))
+					$procedi = false;
+			}
+			else if ($statoSpedizione == "II")
+			{
+				$statoOrdineInSpedizione = $this->getStatoInSpedizione("in_spedizione");
+				
+				if (
+					!$statoOrdineInSpedizione || 
+					$ordine["stato"] != $statoOrdineInSpedizione || 
+					count(OrdiniModel::righeDaSpedire((int)$idOrdine)) > 0 || 
+					count(OrdiniModel::righeInSpedizione((int)$idOrdine)) > 0
+				)
+					$procedi = false;
+			}
+			
+			if ($procedi && $ordine["stato"] != $statoOrdine)
+			{
+				$oModel->sValues(array(
+					"stato"	=>	$statoOrdine,
+				));
+				
+				$oModel->update((int)$idOrdine);
+			}
+		}
+	}
+	
+	public function getStatoInSpedizione($condizione = "in_spedizione")
+	{
+		$soModel = new StatiordineModel();
+		
+		return $soModel->clear()->where(array(
+			"$condizione"	=>	1,
+		))->field("codice");
 	}
 	
 	// Imposta la spedizione come consegnata

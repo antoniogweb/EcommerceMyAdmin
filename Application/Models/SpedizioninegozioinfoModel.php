@@ -97,7 +97,7 @@ class SpedizioninegozioinfoModel extends GenericModel {
 					"id_spedizione_negozio_invio"	=>	(int)$idInvio,
 					"codice_info"			=>	$codice,
 					"codice_corriere"		=>	$record["spedizionieri"]["codice"],
-					"id_spedizioniere"		=>	$spedizione["spedizionieri"]["id_spedizioniere"],
+					"id_spedizioniere"		=>	$record["spedizionieri"]["id_spedizioniere"],
 					"descrizione"			=>	$descrizione,
 				), "sanitizeDb");
 				
