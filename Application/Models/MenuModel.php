@@ -244,7 +244,7 @@ class MenuModel extends HierarchicalModel {
 			
 			$indice = 0;
 			
-			$hasChildClass = "";
+			$hasChildClass = $hasChildLinkClass = $hasChildLinkAttributes = "";
 			
 			$submenu_wrap_open = v("submenu_wrap_open");
 			$submenu_wrap_close = v("submenu_wrap_close");
@@ -290,11 +290,15 @@ class MenuModel extends HierarchicalModel {
 				{
 					$hasChildClass = v("has_child_class");
 					$inLinkHtmlAfter = v("in_link_html_after");
+					$hasChildLinkClass = v("has_child_link_class");
+					$hasChildLinkAttributes = v("has_child_link_attributes");
 				}
 				else
 				{
 					$hasChildClass = "";
 					$inLinkHtmlAfter = "";
+					$hasChildLinkClass = "";
+					$hasChildLinkAttributes = "";
 				}
 				
 				$subMenuItemClass = $subMenuLinkClass = "";
