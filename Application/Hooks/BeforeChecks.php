@@ -131,7 +131,7 @@ Helper_Menu::$htmlLinks = array(
 	"back" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-default"',
+		"attributes" => 'role="button" class="btn btn-default make_spinner"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Torna",
 		"classIconBefore"	=>	'<i class="fa fa-arrow-circle-left"></i>',
@@ -253,7 +253,7 @@ Helper_Menu::$htmlLinks = array(
 	"torna_ordine" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-primary"',
+		"attributes" => 'role="button" class="btn btn-primary make_spinner"',
 		"class"	=>	"btn btn-default",
 		'text'	=>	"Torna all' ordine",
 		"classIconBefore"	=>	'<i class="fa fa-arrow-circle-left"></i>',
@@ -395,6 +395,15 @@ Helper_Menu::$htmlLinks = array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
 		"attributes" => 'role="button" class="btn btn-success save_righe save_righe_spedizione menu_btn"',
+		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
+	),
+	'save_colli_spedizione'	=>	array(
+		'title'	=>	"Salva",
+		'text'	=>	"Salva",
+		'url'	=>	'main',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" controller="spedizioninegoziocolli" class="btn btn-success save_righe menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
 );
@@ -733,6 +742,12 @@ Helper_List::$filtersFormLayout = array(
 			),
 		),
 		"-id_marchio"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"id_marchio"		=>	array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
 				"class"	=>	"form-control",

@@ -2032,7 +2032,7 @@ function singPlu($numero, $sing, $plu)
 		return $plu;
 }
 
-function aToX($struct, $key = "", $cdata = true)
+function aToX($struct, $key = "", $cdata = true, $caratteri = false)
 {
 	$xml = "";
 	
@@ -2043,31 +2043,36 @@ function aToX($struct, $key = "", $cdata = true)
 			if (is_array($value))
 			{
 				if (array_values($value) === $value)
-					$xml .= aToX($value, $kk, $cdata);
+					$xml .= aToX($value, $kk, $cdata, $caratteri);
 				else
-					$xml .= "<$kk>".aToX($value, $kk, $cdata)."</$kk>\n"; 
+					$xml .= "<$kk>".aToX($value, $kk, $cdata, $caratteri)."</$kk>\n"; 
 			}
 			else
-				$xml .= "\n\t<$kk>".cXmlC($value, $cdata)."</$kk>";
+				$xml .= "\n\t<$kk>".cXmlC($value, $cdata, $caratteri)."</$kk>";
 		}
 		else
 		{
 			if (is_array($value))
-				$xml .= "<$key>".aToX($value, "", $cdata)."</$key>\n";
+				$xml .= "<$key>".aToX($value, "", $cdata, $caratteri)."</$key>\n";
 			else
-				$xml .= "\n\t<$key>".cXmlC($value, $cdata)."</$key>";
+				$xml .= "\n\t<$key>".cXmlC($value, $cdata, $caratteri)."</$key>";
 		}
 	}
 	
 	return $xml;
 }
 
-function cXmlC($t, $cdata = false)
+function cXmlC($t, $cdata = false, $caratteri = false)
 {
-// 	$t = str_replace(">","&gt;",$t);
-// 	$t = str_replace("°","",$t);
-// 	$t = str_replace("&","&amp;",$t);
-// 	$t = str_replace("<","&lt;",$t);
+	if ($caratteri)
+	{
+		$t = str_replace(">","&gt;",$t);
+		$t = str_replace("°","",$t);
+		$t = str_replace("&","&amp;",$t);
+		$t = str_replace("<","&lt;",$t);
+		$t = str_replace("'","&#39;",$t);
+		$t = str_replace('"',"&quot;",$t);
+	}
 	
 	if ($cdata)
 		$t = "<![CDATA[".$t."]]>";

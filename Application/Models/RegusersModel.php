@@ -263,4 +263,15 @@ class RegusersModel extends FormModel {
 		
 		return false;
     }
+    
+    // Restituisce la spedizione principale del cliente
+    // Se trova ultimo_usato = Y usa quello
+    public function getSpedizionePrincipale($idUser)
+    {
+		$spModel = new SpedizioniModel();
+		
+		return $spModel->clear()->where(array(
+			"id_user"	=>	(int)$idUser,
+		))->orderBy("ultimo_usato,id_spedizione desc")->limit(1)->record();
+    }
 }

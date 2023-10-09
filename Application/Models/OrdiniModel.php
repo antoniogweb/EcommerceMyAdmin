@@ -100,7 +100,7 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($record))
 		{
-			if (!$record["da_spedire"])
+			if (!$record["da_spedire"] && !$record["id_lista_regalo"])
 				return false;
 			
 			if (!StatiordineModel::getCampo($record["stato"], "da_spedire"))
@@ -127,9 +127,28 @@ class OrdiniModel extends FormModel {
 		$rModel = new RigheModel();
 		
 		return $rModel->clear()->select("righe.*,sum(spedizioni_negozio_righe.quantity) as QTA_ORDINATA,spedizioni_negozio_righe.id_spedizione_negozio_riga")->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")->sWhere(array(
-			"righe.gift_card = 0 and righe.id_o = ?",
+			"righe.gift_card = 0 and righe.prodotto_digitale = 0 and righe.id_o = ?",
 			array((int)$idO)
 		))->groupBy("spedizioni_negozio_righe.id_r HAVING (righe.quantity > QTA_ORDINATA or spedizioni_negozio_righe.id_spedizione_negozio_riga IS NULL)")->send(false);
+	}
+	
+	// Restituisce tutte le righe dell'ordine che sono in spedizioni non ancora confermate
+	public static function righeInSpedizione($idO)
+	{
+		if (!self::daSpedire($idO))
+			return array();
+		
+		$rModel = new RigheModel();
+		
+		return $rModel->clear()->select("righe.id_r")
+			->inner("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")
+			->inner("spedizioni_negozio")->on("spedizioni_negozio.id_spedizione_negozio = spedizioni_negozio_righe.id_spedizione_negozio")
+			->where(array(
+				"righe.id_o"	=>	(int)$idO,
+				"in"	=>	array(
+					"spedizioni_negozio.stato"	=>	SpedizioninegozioModel::statiSpedizioniNonInviate(),
+				),
+			))->toList("righe.id_r")->send();
 	}
 	
 	public static function setStatiOrdine()
@@ -156,6 +175,15 @@ class OrdiniModel extends FormModel {
 		}
 		
 		self::$statiOrdineSettati = true;
+	}
+	
+	// Restituisci la classe/label dello stato
+	public static function getLabelStato($stato)
+	{
+		if (isset(self::$labelStati[$stato]))
+			return self::$labelStati[$stato];
+		
+		return "";
 	}
 	
 	public static function setPagamenti()
@@ -1727,11 +1755,11 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
-	public function listaregalo($record)
+	public function listaregalo($record, $table = "orders")
 	{
-		if ($record["orders"]["id_lista_regalo"])
+		if ($record[$table]["id_lista_regalo"])
 		{
-			$lista = ListeregaloModel::g()->selectId((int)$record["orders"]["id_lista_regalo"]);
+			$lista = ListeregaloModel::g()->selectId((int)$record[$table]["id_lista_regalo"]);
 			
 			if (!empty($lista))
 			{
@@ -1923,5 +1951,16 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return array($mostraCampiFatturazione, $mostraCampiSpedizione, $mostraCampiIndirizzoFatturazione);
+	}
+	
+	public function whereClauseEscludiAnnullati()
+	{
+		$this->aWhere(array(
+			"ne"	=>	array(
+				"stato"	=>	"deleted",
+			),
+		));
+		
+		return $this;
 	}
 }

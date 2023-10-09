@@ -167,11 +167,17 @@ class ListeregalopagesModel extends GenericModel
 	public function prezzo($record)
 	{
 		if (v("prezzi_ivati_in_prodotti"))
+		{
 			$prezzo = $record["combinazioni"]["price_ivato"];
+			$prezzoScontato = $record["combinazioni"]["price_scontato_ivato"];
+		}
 		else
+		{
 			$prezzo = $record["combinazioni"]["price"];
+			$prezzoScontato = $record["combinazioni"]["price_scontato"];
+		}
 		
-		return setPriceReverse($prezzo);
+		return ($prezzo > $prezzoScontato) ? "<del>".setPriceReverse($prezzo)."</del> ".setPriceReverse($prezzoScontato) : setPriceReverse($prezzoScontato);
 	}
 	
 	public function quantita($record)

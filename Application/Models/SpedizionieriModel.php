@@ -61,6 +61,12 @@ class SpedizionieriModel extends GenericModel
 					),
 					"reverse"	=>	"yes",
 				),
+				'password_cliente'		=>	array(
+					'labelString'	=>	self::getModulo((int)$id)->gPasswordLabel(),
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
 			),
 		);
 	}
@@ -71,7 +77,7 @@ class SpedizionieriModel extends GenericModel
 	}
 	
 	public function relations() {
-        return array(
+		return array(
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_spedizioniere', null, "RESTRICT", "L'elemento è collegato ad alcuni ordini e non può essere eliminato."),
 			'spedizioni' => array("HAS_MANY", 'SpedizioninegozioModel', 'id_spedizioniere', null, "RESTRICT", "L'elemento è collegato ad alcune spedizioni e non può essere eliminato."),
         );
@@ -82,12 +88,6 @@ class SpedizionieriModel extends GenericModel
 		$opzioneVuota = $mostraOpzioneVuota ? array(0 => "Seleziona") : [];
 		
 		return $opzioneVuota + $this->orderBy("id_order")->toList("id_spedizioniere","titolo")->send();
-	}
-	
-	public function sistemaCodice()
-	{
-		if (isset($this->values["modulo"]) && $this->values["modulo"])
-			$this->values["codice"] = strtoupper(sanitizeAll($this->values["modulo"]));
 	}
 	
 	public function insert()

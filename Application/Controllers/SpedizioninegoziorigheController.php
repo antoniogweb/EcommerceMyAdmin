@@ -26,6 +26,8 @@ class SpedizioninegoziorigheController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
+	protected $campoDaModificare = "quantity";
+	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -56,7 +58,7 @@ class SpedizioninegoziorigheController extends BaseController {
 		
 		if (count($valori) > 0 && isset($valori[0]["id_riga"]))
 		{
-			$idSpedizione = SpedizioninegoziorigheModel::g()->whereId((int)$valori[0]["id_riga"])->field("id_spedizione_negozio");
+			$idSpedizione = $this->m[$this->modelName]->whereId((int)$valori[0]["id_riga"])->field("id_spedizione_negozio");
 			
 			if (!SpedizioninegozioModel::g()->deletable($idSpedizione))
 			{
@@ -75,10 +77,8 @@ class SpedizioninegoziorigheController extends BaseController {
 				
 				if (!empty($recordRiga))
 				{
-					$giacenza = (int)$this->m("CombinazioniModel")->whereId((int)$recordRiga["id_c"])->field("giacenza");
-					
 					$this->m[$this->modelName]->setValues(array(
-						"quantity"			=>	$v["quantity"],
+						"".$this->campoDaModificare.""			=>	$v["quantity"],
 					));
 					
 					

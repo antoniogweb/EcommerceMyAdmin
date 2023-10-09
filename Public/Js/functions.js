@@ -182,33 +182,13 @@ function sistemaTendinaProvinciaSpedizione(val)
 	}
 }
 
-$(document).ready(function(){
+function makeSpinner(obj)
+{
+	if (obj.find("i").length > 0)
+		obj.find("i").attr("class","fa fa-spinner fa-spin");
+}
 
-// 	$(".thumb").each(function(){
-// 		
-// 		var thumb = $(this).text();
-// 		var path = 	$(this).attr("data-field-path");
-// 		var field = $(this).attr("data-field");
-// 
-// 		if (thumb != "" && path != undefined)
-// 		{
-// 			$(this).addClass("box_immagine_upload").html("<img src='"+parentBaseUrl + "/" + path + "/" + thumb + "'>").append("<a class='elimina_allegato' data-field='"+field+"' title='cancella immagine' href=''><img src='"+baseUrl+"/Public/Img/Icons/elementary_2_5/delete.png' /></a>");
-// 		}
-// 		
-// 	});
-// 	
-// 	$(".file").each(function(){
-// 		
-// 		var file = $(this).text();
-// 		var path = 	$(this).attr("data-field-path");
-// 		var field = $(this).attr("data-field");
-// 
-// 		if (file != "" && path != undefined)
-// 		{
-// 			$(this).addClass("box_immagine_upload").html("<span class='file_container'><a target='_blank' href='"+parentBaseUrl+"/"+path+"/"+file+"'>"+file+"</a></span>").append("<a class='elimina_allegato' data-field='"+field+"' title='cancella file' href=''><img src='"+baseUrl+"/Public/Img/Icons/elementary_2_5/delete.png' /></a>");
-// 		}
-// 		
-// 	});
+$(document).ready(function(){
 	
 	if ($("[name='nazione_spedizione']").length > 0)
 		sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
@@ -600,7 +580,10 @@ $(document).ready(function(){
 		
 // 		console.log(valori);
 		
-		var controller = that.hasClass("save_righe_spedizione") ? "spedizioninegoziorighe" : "righe";
+		if (that[0].hasAttribute('controller'))
+			var controller = that.attr("controller");
+		else		
+			var controller = that.hasClass("save_righe_spedizione") ? "spedizioninegoziorighe" : "righe";
 		
 		$.ajaxQueue({
 			url: baseUrl + "/" + controller + "/salva",
@@ -786,8 +769,20 @@ $(document).ready(function(){
 	});
 	
 	$( "body" ).on( "click", ".make_spinner", function(e){
-		if ($(this).find("i").length > 0)
-			$(this).find("i").attr("class","fa fa-spinner fa-spin");
+		makeSpinner($(this));
+	});
+	
+	$( "body" ).on( "click", ".confirm", function(e){
+		
+		if (confirm($(this).attr("confirm-message")))
+		{
+			if ($(this).hasClass("make_spinner_confirm"))
+				makeSpinner($(this));
+			
+			return true;
+		}
+		
+		return false;
 	});
 	
 	$( "body" ).on( "click", ".ajlink", function(e){

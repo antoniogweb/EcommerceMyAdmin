@@ -770,6 +770,12 @@ class Route
 		'spedizionieri,main',
 		'spedizionieri,ordina',
 		'spedizionieri,form',
+		'spedizionieri,lettere',
+		
+		'spedizionieri,form',
+		
+		'spedizionieriletterevettura,form',
+		'spedizionieriletterevettura,documento',
 		
 		'controllers,main',
 		
@@ -803,12 +809,24 @@ class Route
 		'spedizioninegozio,form',
 		'spedizioninegozio,righe',
 		'spedizioninegozio,eventi',
-		'spedizioninegozio,prontadainviare',
-		'spedizioninegozio,invia',
+		'spedizioninegozio,info',
 		'spedizioninegozio,apri',
+		'spedizioninegozio,prontadainviare',
+		'spedizioninegozio,conferma',
 		'spedizioninegozio,controllaspedizioni',
+		'spedizioninegozio,colli',
+		'spedizioninegozio,servizi',
+		'spedizioninegozio,segnacollo',
+		'spedizioninegozio,letteradivettura',
+		'spedizioninegozio,vediinfo',
 		
-		'spedizioninegoziorighe,salvasped',
+		'spedizioninegoziorighe,salva',
+		'spedizioninegoziocolli,salva',
+		
+		'spedizioninegozioinvii,main',
+		'spedizioninegozioinvii,prenota',
+		'spedizioninegozioinvii,confermaspedizioni',
+		'spedizioninegozioinvii,reportpdf',
 	);
 	
 	//it can be 'yes' or 'no'

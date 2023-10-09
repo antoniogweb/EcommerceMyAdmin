@@ -67,4 +67,46 @@ class Pdf
 			$html2pdf->Output($title,$output);
 		}
 	}
+	
+	// Merge dei pdf
+	// $pdfFilesToMerge: array contenente i path assoluti dei PDF da mergiare
+	// $outputFilePath contiene il percorso assoluto del file dove viene salvato il merge
+	// $tipoOutput è il tipo di output di TCPDF: 
+	/*
+	I : send the file inline to the browser (default). The plug-in is used if available. The name given by name is used when one selects the "Save as" option on the link generating the PDF.
+	D : send to the browser and force a file download with the name given by name.
+	F : save to a local server file with the name given by name.
+	S : return the document as a string (name is ignored).
+	FI : equivalent to F + I option
+	FD : equivalent to F + D option
+	E : return the document as base64 mime multi-part email attachment (RFC 2045)
+	*/
+	public static function merge($pdfFilesToMerge, $outputFilePath, $tipoOutput = "I")
+	{
+		if (class_exists("\Karriere\PdfMerge\PdfMerge"))
+		{
+			$pdfMerge = new \Karriere\PdfMerge\PdfMerge();
+			
+			$conteggio = 0;
+			
+			foreach ($pdfFilesToMerge as $path)
+			{
+				if (file_exists($path))
+				{
+					$pdfMerge->add($path);
+					
+					$conteggio++;
+				}
+			}
+			
+			if ($conteggio)
+			{
+				$pdfMerge->merge($outputFilePath, $tipoOutput);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

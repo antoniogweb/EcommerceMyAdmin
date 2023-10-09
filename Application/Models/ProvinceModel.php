@@ -36,6 +36,13 @@ class ProvinceModel extends GenericModel
 		return array(""=>"Seleziona") + $this->orderBy("provincia")->toList("codice_provincia","provincia")->send();
 	}
 	
+	public function findTitoloDaCodice($codice)
+	{
+		return $this->clear()->select("codice_provincia")->where(array(
+			"codice_provincia"	=>	sanitizeAll($codice),
+		))->field("provincia");
+	}
+	
 	public function findDaCodice($codice)
 	{
 		$record = $this->clear()->where(array(

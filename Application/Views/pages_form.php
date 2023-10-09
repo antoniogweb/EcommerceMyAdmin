@@ -12,7 +12,7 @@
 			<div class='mainMenu'>
 				<?php echo $menu;?>
 			</div>
-
+			
 			<?php include($this->viewPath("steps"));?>
 			
 			<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id_page".$this->viewStatus;?>">

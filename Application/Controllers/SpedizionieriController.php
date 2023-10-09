@@ -38,6 +38,8 @@ class SpedizionieriController extends BaseController {
 		
 		if (!v("attiva_gestione_spedizionieri") && !v("attiva_gestione_spedizioni"))
 			$this->responseCode(403);
+		
+		$this->model("SpedizionieriletterevetturaModel");
 	}
 	
 	public function main()
@@ -54,6 +56,8 @@ class SpedizionieriController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->_posizioni['main'] = 'class="active"';
+		
 		$fields = SpedizionieriModel::getModulo((int)$id)->gCampiForm();
 		
 		if (!$fields)
@@ -62,5 +66,37 @@ class SpedizionieriController extends BaseController {
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function lettere($id = 0)
+	{
+		if (!v("attiva_gestione_spedizioni"))
+			$this->responseCode(403);
+		
+		$this->tabella = "spedizionieri";
+		
+		$this->_posizioni['lettere'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_spedizioniere";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "SpedizionieriletterevetturaModel";
+		
+		$this->mainFields = array("titoloCrud", "filename", "attivoCrud");
+		$this->mainHead = "Titolo,File,Attivo";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"lettere/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("*")->orderBy("id_order")->where(array("id_spedizioniere"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["SpedizionieriModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 }

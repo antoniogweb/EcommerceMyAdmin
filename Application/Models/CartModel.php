@@ -677,7 +677,7 @@ class CartModel extends GenericModel {
 		
 		if (count($res) > 0)
 		{
-			return $res[0]["aggregate"]["SOMMA"];
+			return (int)$res[0]["aggregate"]["SOMMA"];
 		}
 		
 		return 0;

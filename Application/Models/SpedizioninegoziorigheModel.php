@@ -96,4 +96,13 @@ class SpedizioninegoziorigheModel extends GenericModel {
 		
 		return true;
 	}
+	
+	public function getCodiciProdottiSpedizione(array $idS)
+	{
+		return $this->clear()->select("righe.codice,sum(spedizioni_negozio_righe.quantity) as qta")->inner(array("riga"))->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		))->groupBy("righe.codice")->orderBy("id_spedizione_negozio_riga")->toList("righe.codice", "aggregate.qta")->send();
+	}
 }

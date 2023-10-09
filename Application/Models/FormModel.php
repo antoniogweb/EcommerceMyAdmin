@@ -337,6 +337,9 @@ class FormModel extends GenericModel {
 	
 	public function selectCouponUsabile($id = 0)
 	{
+		if ($this->_tables != "orders")
+			return [];
+		
 		$p = new PromozioniModel();
 		
 		$res = $p->clear()->where(array(

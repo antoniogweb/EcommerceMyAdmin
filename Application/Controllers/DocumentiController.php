@@ -36,7 +36,7 @@ class DocumentiController extends BaseController
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
 		$this->model("ReggroupsdocumentiModel");
 		$this->model("DocumentilingueModel");
 		
@@ -50,8 +50,6 @@ class DocumentiController extends BaseController
 		$this->menuLinks = $this->menuLinksInsert = "save";
 		
 		$this->shift(2);
-		
-// 		$this->m[$this->modelName]->setValuesFromPost("titolo,id_tipo,lingua,immagine_1,immagine_2,descrizione,link_contenuto,link_libero,target");
 		
 		$fields = "titolo,id_tipo_doc,filename,data_documento,lingua";
 		

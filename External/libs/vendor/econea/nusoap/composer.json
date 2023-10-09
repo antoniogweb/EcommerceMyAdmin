@@ -3,7 +3,7 @@
   "type": "library",
   "description": "Fixed NuSOAP for PHP 5.4 - 8.2",
   "keywords": ["soap","nusoap","php","http","xml","transport","client"],
-  "license": "LGPL-2.0-only",
+  "license": "LGPL-2.1-or-later",
   "homepage": "https://github.com/pwnlabs/nusoap",
   "authors": [
     {
@@ -12,7 +12,11 @@
     }
   ],
   "require": {
-    "php": ">=5.4"
+    "php": ">=5.4",
+    "ext-xml": "*",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-zlib": "*"
   },
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "~1.2.0"
@@ -20,15 +24,9 @@
   "autoload": {
     "classmap": ["src/"]
   },
-  "scripts": {
-    "linter": [
-      "parallel-lint src"
-    ]
-  },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.10.x-dev",
-      "dev-develop": "1.0.x-dev"
+      "dev-master": "0.10.x-dev"
     }
   }
 }

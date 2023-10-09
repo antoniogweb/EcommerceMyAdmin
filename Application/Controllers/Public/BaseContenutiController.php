@@ -791,7 +791,7 @@ class BaseContenutiController extends BaseController
 		
 		$cache = Cache_Html::getInstance();
 		
-		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl))
+		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl) && !isset($_GET["search"]))
 			$cache->saveHtml = true;
 		
 		if (v("estrai_categorie_figlie"))
@@ -958,9 +958,26 @@ class BaseContenutiController extends BaseController
 	{
 		Cache_Db::$skipWritingCache = true;
 		
-		$orWhere = array(
-			"lk" => array('pages.codice' => $this->viewArgs[$argName]),
-		);
+		$orWhere = array();
+		
+		$idPages = $this->m("CombinazioniModel")->clear()->select("combinazioni.id_page")
+			->inner(array("pagina"))
+			->where(array(
+				"combinazioni.codice"		=>	$this->viewArgs[$argName],
+				"combinazioni.acquistabile"	=>	1,
+			))
+			->addWhereAttivo()
+			->toList("combinazioni.id_page")
+			->send();
+		
+		$idPages = array_unique($idPages);
+		
+		if (count($idPages))
+			$orWhere = array(
+				"  in"	=>	array(
+					"pages.id_page"	=>	forceIntDeep($idPages),
+				),
+			);
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 		{
@@ -972,15 +989,12 @@ class BaseContenutiController extends BaseController
 			}
 			else
 				$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName], 50, "title");
-// 				$orWhere[" lk"] =  array('pages.title' => $this->viewArgs[$argName]);
 		}
 		else
 		{
 			$campoCerca = v("mostra_filtro_ricerca_libera_in_magazzino") ? "campo_cerca" : "title";
 			
 			$orWhere[v("ricerca_termini_and_or")] = $this->m($this->modelName)->getWhereSearch($this->viewArgs[$argName], 50, $campoCerca, "contenuti_tradotti");
-			
-// 			$orWhere[" lk"] =  array('contenuti_tradotti.title' => $this->viewArgs[$argName]);
 		}
 		
 		return array(

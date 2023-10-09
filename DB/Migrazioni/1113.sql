@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`id_controller`, `titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES (NULL, 'Spedizioni negozio - gestione colli', 'spedizioninegoziocolli', 'spedizioninegozio', '1', '', '92', '1', 'ecommerce', 'main')

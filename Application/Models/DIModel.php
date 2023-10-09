@@ -186,11 +186,26 @@ trait DIModel
 		return false;
 	}
 	
+	// Controlla se il modulo ha il metodo $metodo e restituisce true o false
+	public function metodo($metodo)
+	{
+		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
+			return true;
+
+		return false;
+	}
+	
 	public function moduleFormStruct($id)
 	{
 		$record = $this->selectId((int)$id);
 		
 		if (!empty($record) && $record["codice"])
 			self::getModulo($record["codice"])->editFormStruct($this, $record);
+	}
+	
+	public function sistemaCodice()
+	{
+		if (isset($this->values["modulo"]) && $this->values["modulo"])
+			$this->values["codice"] = strtoupper(sanitizeAll($this->values["modulo"]));
 	}
 }

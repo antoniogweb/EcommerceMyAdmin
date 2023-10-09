@@ -36,6 +36,13 @@ Helper_List::$filtersFormLayout["filters"]["cerca"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["acquistabile"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -61,6 +68,8 @@ class CombinazioniController extends BaseController
 			'id_lista_reg_filt:sanitizeAll'=>'tutti',
 			'cerca:sanitizeAll'=>'tutti',
 			'attivo:sanitizeAll'=>'tutti',
+			'id_marchio:sanitizeAll'=>'tutti',
+			'acquistabile:sanitizeAll'=>'1',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -151,6 +160,12 @@ class CombinazioniController extends BaseController
 		{
 			$mainFields[] = "prodotto";
 			$mainHeadArray[] = "Prodotto";
+		}
+		
+		if (!partial() && v("usa_marchi"))
+		{
+			$mainFields[] = "marchioCrud";
+			$mainHeadArray[] = "Marchio";
 		}
 		
 		$mainHeadArray[] = "Prodotto attivo";
@@ -273,6 +288,15 @@ class CombinazioniController extends BaseController
 			}
 		}
 		
+		if (v("usa_marchi"))
+		{
+			$filtroMarchiSelect = $this->m("MarchiModel")->select("id_marchio,titolo")->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+			
+			$this->filters[] = array("id_marchio",null,array(
+				"tutti"		=>	"Marchio",
+			) + $filtroMarchiSelect);
+		}
+		
 		$this->filters[] = array("st_giac",null,array(
 			"tutti"		=>	"Stato giacenza",
 			"0"	=>	"Esaurito",
@@ -285,6 +309,13 @@ class CombinazioniController extends BaseController
 				"Y"	=>	"Attivo",
 				"N"	=>	"Non attivo",
 			));
+		
+		$this->filters[] = array("acquistabile",null,array(
+			"tutti"		=>	"Acquistabile / Non acquistabile",
+			"1"	=>	"Acquistabile",
+			"0"	=>	"Non acquistabile",
+		));
+		
 		
 // 		if (v("attiva_liste_regalo") && $this->viewArgs['id_page'] == "tutti")
 // 			$this->filters[] = array("id_lista_reg_filt",null,array(
@@ -316,6 +347,8 @@ class CombinazioniController extends BaseController
 					"  lk" => array('combinazioni.codice' => $this->viewArgs['codice']),
 					"id_page"	=>	$this->viewArgs['id_page'],
 					"pages.attivo"	=>	$this->viewArgs['attivo'],
+					"pages.id_marchio"	=>	$this->viewArgs['id_marchio'],
+					"acquistabile"	=>	$this->viewArgs['acquistabile'],
 				))
 				->addWhereCategoria(CategoriesModel::getIdCategoriaDaSezione("prodotti"), true, "pages.id_c")
 				->orderBy("c1.title,pages.title,combinazioni.id_order");

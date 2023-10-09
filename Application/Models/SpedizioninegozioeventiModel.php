@@ -47,16 +47,6 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		
 		if (isset($titolo) && !empty($spedizione))
 		{
-// 			// Verifico che non sia già stato inviato
-// 			if ($stato == "I")
-// 			{
-// 				if ($this->clear()->where(array(
-// 					"id_spedizione_negozio"	=>	(int)$idSpedizione,
-// 					"codice"	=>	"I",
-// 				))->rowNumber())
-// 					$stato = "II";
-// 			}
-			
 			$this->sValues(array(
 				"id_spedizione_negozio"	=>	(int)$idSpedizione,
 				"titolo"				=>	$titolo,
@@ -117,7 +107,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
 		
 		if (!empty($spedizione))
-			return $spedizione["ragione_sociale"]." ".$spedizione["ragione_sociale_2"];
+			return $spedizione["ragione_sociale"];
 	}
 	
 	// Metodo per segnaposto
@@ -165,12 +155,58 @@ class SpedizioninegozioeventiModel extends GenericModel {
 			array((int)$record["id_spedizione_negozio"])
 		))->send();
 		
+		if ((int)count($righeOrdine) === 0)
+			return " ";
+		
 		$linguaUrl = $lingua ? "/$lingua/" : "/";
 		
 		ob_start();
-		include tpf("/Elementi/Placeholder/elenco_prodotti_per_feedback.php");
+		include tpf("/Elementi/Placeholder/elenco_prodotti_per_feedback_spedizione.php");
 		$output = ob_get_clean();
 		
 		return $output;
+	}
+	
+	// Restituisce il link del tracking della spedizione
+	public function getLinkTrackingOrdine($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
+		
+		if (!empty($spedizione) && !SpedizioninegozioModel::aperto((int)$record["id_spedizione_negozio"]))
+		{
+			$modulo = SpedizionieriModel::getModulo((int)$spedizione["id_spedizioniere"], true);
+			
+			if ($modulo && $modulo->isAttivo() && $modulo->metodo("getUrlTracking"))
+			{
+				$idSpedizione = (int)$record["id_spedizione_negozio"];
+				
+				ob_start();
+				include tpf("/Elementi/Placeholder/Spedizionieri/".$modulo->getParam("modulo")."/link_tracking.php");
+				$output = ob_get_clean();
+				
+				return $output;
+			}
+		}
+		
+		return "";
+	}
+	
+	// Restituisce il numero di spedizione
+	public function gNumeroSpedizione($lingua, $record)
+	{
+		if (!isset($record["id_spedizione_negozio"]))
+			return "";
+		
+		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
+		
+		if (!empty($spedizione) && !SpedizioninegozioModel::aperto((int)$record["id_spedizione_negozio"]))
+			return $spedizione["numero_spedizione"];
+		
+		return "";
 	}
 }

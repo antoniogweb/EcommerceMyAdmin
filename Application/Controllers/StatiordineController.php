@@ -61,7 +61,12 @@ class StatiordineController extends BaseController
 		if (v("attiva_gestione_spedizioni"))
 		{
 			$this->mainFields[] = 'daSpedireCrud';
+			$this->mainFields[] = 'inSpedizioneCrud';
+			$this->mainFields[] = 'speditoCrud';
+			
 			$this->mainHead .= ',Da spedire';
+			$this->mainHead .= ',In spedizione';
+			$this->mainHead .= ',Spedito';
 		}
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
@@ -74,7 +79,7 @@ class StatiordineController extends BaseController
 		$fields = 'titolo,classe,codice,pagato,manda_mail_al_cambio_stato,descrizione';
 		
 		if (v("attiva_gestione_spedizioni"))
-			$fields .= ",da_spedire";
+			$fields .= ",da_spedire,in_spedizione,spedito";
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		

@@ -22,15 +22,24 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+require_once(LIBRARY . "/Application/Modules/Data/Spedizioni/Result.php");
+
 class SpedizioninegozioModel extends FormModel {
 	
 	const TIPOLOGIA_PORTO_FRANCO = 'PORTO_FRANCO';
 	const TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO = 'PORTO_FRANCO_CONTRASSEGNO';
 	
+	const LABEL_CONSEGNATA = "CONSEGNATA";
+	
+	public $applySoftConditionsOnPost = true;
+	public $applySoftConditionsOnValues = false;
+	
 	public function __construct() {
 		$this->_tables='spedizioni_negozio';
 		$this->_idFields='id_spedizione_negozio';
 		$this->_idOrder = 'id_order';
+		
+		OrdiniModel::setStatiOrdine();
 		
 		parent::__construct();
 	}
@@ -39,59 +48,236 @@ class SpedizioninegozioModel extends FormModel {
 		return array(
 			'righe' => array("HAS_MANY", 'SpedizioninegoziorigheModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'eventi' => array("HAS_MANY", 'SpedizioninegozioeventiModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'colli' => array("HAS_MANY", 'SpedizioninegoziocolliModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'info' => array("HAS_MANY", 'SpedizioninegozioinfoModel', 'id_spedizione_negozio', null, "CASCADE"),
+			'servizi' => array("HAS_MANY", 'SpedizioninegozioserviziModel', 'id_spedizione_negozio', null, "CASCADE"),
 			'spedizioniere' => array("BELONGS_TO", 'SpedizionieriModel', 'id_spedizioniere',null,"RESTRICT","Si prega di selezionare lo spedizioniere".'<div style="display:none;" rel="hidden_alert_notice">id_spedizioniere</div>'),
+			'invio' => array("BELONGS_TO", 'SpedizioninegozioinviiModel', 'id_spedizione_negozio_invio',null,"CASCADE"),
+			'lettera' => array("BELONGS_TO", 'SpedizionieriletterevetturaModel', 'id_spedizioniere_lettera_vettura',null,"CASCADE"),
 		);
     }
+	
+	public function setFormStruct($id = 0)
+	{
+		parent::setFormStruct($id);
+		
+		$modulo = self::getModulo((int)$id);
+		
+		$this->formStruct["entries"]["ragione_sociale_2"]["labelString"] = "Destinatario spedizione";
+		
+		$this->formStruct["entries"]["note_interne"]["labelString"] = "Note";
+		$this->formStruct["entries"]["note_interne"]["wrap"] = array();
+		
+		if ($modulo)
+			$this->formStruct["entries"]["numero_spedizione"]["labelString"] = $modulo->getLabelNumeroSpedizione();
+		
+		$this->formStruct["entries"]["codice_pagamento_contrassegno"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gCodiciPagamentoContrassegno() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	'Pagamento accettato (solo per contrassegno)',
+		);
+		
+		$this->formStruct["entries"]["formato_etichetta_pdf"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? implode(",",$modulo->gFormatiEtichetta()) : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Formato dell'etichetta in PDF",
+		);
+		
+		$this->formStruct["entries"]["tipo_servizio"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gTipoServizio() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Tipo servizio",
+		);
+		
+		$this->formStruct["entries"]["codice_tariffa"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gCodiceTariffa() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Codice tariffa",
+		);
+		
+		$this->formStruct["entries"]["assicurazione_integrativa"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gAssicurazioneIntegrativa() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+		);
+		
+		$this->formStruct["entries"]["id_spedizioniere_lettera_vettura"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$this->gSelectTemplate((int)$id),
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Template lettera di vettura (per dropshipping)",
+		);
+	}
+	
+	public function gSelectTemplate($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			return array(0 => "--") + SpedizionieriletterevetturaModel::g()->clear()->select("id_spedizioniere_lettera_vettura,titolo")->where(array(
+				"id_spedizioniere"	=>	(int)$record["id_spedizioniere"],
+				"attivo"			=>	1,
+			))->toList("id_spedizioniere_lettera_vettura","titolo")->send();
+		}
+		
+		return array();
+	}
+	
+	public static function statiSpedizioniNonInviate()
+	{
+		return array("A","I");
+	}
+	
+	public static function statiSpedizioniInviate()
+	{
+		return array("II","E");
+	}
 	
 	public function update($id = null, $where = null)
 	{
 		$this->setProvinciaFatturazione();
+		$this->setTipologia(); // porto franco o porto franco con contrassegno
 		
 		$res = parent::update($id, $where);
 		
 		return $res;
 	}
 	
+	// Salva nella spedizione se porto franco o porto assegnato
+	public function setTipologia()
+	{
+		$this->values["tipologia"] = self::TIPOLOGIA_PORTO_FRANCO;
+		
+		if (isset($this->values["contrassegno"]) && setPrice($this->values["contrassegno"]) > 0)
+			$this->values["tipologia"] = self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO;
+	}
+	
+	private function recuperaAnagraficaDaStruttura($struttura, $suffisso = "")
+	{
+		$this->setValue("indirizzo", $struttura["indirizzo$suffisso"], "sanitizeDb");
+		$this->setValue("cap", $struttura["cap$suffisso"], "sanitizeDb");
+		$this->setValue("citta", $struttura["citta$suffisso"], "sanitizeDb");
+		$this->setValue("provincia", $struttura["provincia$suffisso"], "sanitizeDb");
+		$this->setValue("dprovincia", $struttura["dprovincia$suffisso"], "sanitizeDb");
+		$this->setValue("nazione", $struttura["nazione$suffisso"], "sanitizeDb");
+		$this->setValue("telefono", $struttura["telefono$suffisso"], "sanitizeDb");
+	}
+	
+	public function recuperaDatiDaOrdine($idO)
+	{
+		$ordine = OrdiniModel::g(false)->whereId((int)$idO)->record();
+		
+		if (!empty($ordine))
+		{
+			$this->setValue("id_user", $ordine["id_user"]);
+			$this->setValue("id_spedizione", $ordine["id_spedizione"]);
+			
+			$ragSoc = $ordine["destinatario_spedizione"] ? $ordine["destinatario_spedizione"] : OrdiniModel::getNominativo($ordine);
+			
+			$this->setValue("ragione_sociale_2", $ragSoc, "sanitizeDb");
+			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
+			
+			$this->recuperaAnagraficaDaStruttura($ordine, "_spedizione");
+			
+			$this->setValue("email", $ordine["email"], "sanitizeDb");
+			$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
+			$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
+			$this->setValue("note", $ordine["note"], "sanitizeDb");
+			$this->setValue("note_interne", $ordine["telefono_spedizione"], "sanitizeDb");
+			
+			$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
+			
+			$this->setValue("tipologia", $tipologia);
+			
+			if ($ordine["pagamento"] == "contrassegno")
+				$this->setValue("contrassegno", $ordine["total"]);
+		}
+	}
+	
+	public function recuperaDatiDaListaRegalo($idLista)
+	{
+		$lista = ListeregaloModel::g(false)->select("*")
+			->inner(array("cliente"))
+			->whereId((int)$idLista)
+			->first();
+		
+		if (!empty($lista))
+		{
+			$cliente = $lista["regusers"];
+			
+			$spedizione = RegusersModel::g(false)->getSpedizionePrincipale($cliente["id_user"]);
+			
+			$struttura = !empty($spedizione) ? $spedizione : $cliente;
+			
+			$this->setValue("id_user", $cliente["id_user"]);
+			
+			$ragSoc = (!empty($spedizione) && $spedizione["destinatario_spedizione"]) ? $spedizione["destinatario_spedizione"] : OrdiniModel::getNominativo($cliente);
+			
+			$this->setValue("ragione_sociale_2", $ragSoc, "sanitizeDb");
+			$this->setValue("ragione_sociale", OrdiniModel::getNominativo($cliente), "sanitizeDb");
+			
+			$telefono = !empty($spedizione) ? $spedizione["telefono_spedizione"] : $cliente["telefono"];
+			
+			$this->setValue("note_interne", $telefono, "sanitizeDb");
+			
+			$suffisso = "";
+			
+			if (!empty($spedizione))
+			{
+				$this->setValue("id_spedizione", $spedizione["id_spedizione"]);
+				
+				$suffisso = "_spedizione";
+			}
+			
+			$this->recuperaAnagraficaDaStruttura($struttura, $suffisso);
+			
+			$this->setValue("tipologia", self::TIPOLOGIA_PORTO_FRANCO);
+			$this->setValue("id_lista_regalo", (int)$idLista);
+			
+			$this->setValue("email", $cliente["username"], "sanitizeDb");
+			$this->setValue("lingua", (string)$lista["liste_regalo"]["lingua"], "sanitizeDb");
+			$this->setValue("nazione", (string)$lista["liste_regalo"]["nazione"], "sanitizeDb");
+		}
+	}
+	
 	public function insert()
 	{
-		if (isset($_GET["id_o"]))
-		{
+		if (isset($_GET["id_lista_regalo"]) && is_numeric($_GET["id_lista_regalo"]))
+			$this->recuperaDatiDaListaRegalo((int)$_GET["id_lista_regalo"]);
+		else if (isset($_GET["id_o"]) && is_numeric($_GET["id_o"]))
+			$this->recuperaDatiDaOrdine((int)$_GET["id_o"]);
+		
+		// Recupero comunque i dati dell'ordine se presente nell'URL
+		if (isset($_GET["id_o"]) && is_numeric($_GET["id_o"]))
 			$ordine = OrdiniModel::g(false)->whereId((int)$_GET["id_o"])->record();
-			
-			if (!empty($ordine))
-			{
-				$this->setValue("id_user", $ordine["id_user"]);
-				$this->setValue("id_spedizione", $ordine["id_spedizione"]);
-				$this->setValue("ragione_sociale", OrdiniModel::getNominativo($ordine), "sanitizeDb");
-				$this->setValue("ragione_sociale_2", $ordine["destinatario_spedizione"], "sanitizeDb");
-				$this->setValue("indirizzo", $ordine["indirizzo"], "sanitizeDb");
-				$this->setValue("cap", $ordine["cap"], "sanitizeDb");
-				$this->setValue("citta", $ordine["citta"], "sanitizeDb");
-				$this->setValue("provincia", $ordine["provincia"], "sanitizeDb");
-				$this->setValue("dprovincia", $ordine["dprovincia"], "sanitizeDb");
-				$this->setValue("nazione", $ordine["nazione"], "sanitizeDb");
-				$this->setValue("telefono", $ordine["telefono"], "sanitizeDb");
-				$this->setValue("email", $ordine["email"], "sanitizeDb");
-				$this->setValue("note", $ordine["note"], "sanitizeDb");
-				$this->setValue("note_interne", (string)$ordine["note_interne"], "sanitizeDb");
-				
-				$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
-				$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
-				
-				$tipologia = ($ordine["pagamento"] == "contrassegno") ? self::TIPOLOGIA_PORTO_FRANCO_CONTRASSEGNO : self::TIPOLOGIA_PORTO_FRANCO;
-				
-				$this->setValue("tipologia", $tipologia);
-				
-				if ($ordine["pagamento"] == "contrassegno")
-					$this->setValue("contrassegno", $ordine["total"]);
-			}
+		
+		if (isset($ordine) && !empty($ordine))
+		{
+			$this->setValue("id_ordine_di_partenza", $ordine["id_o"]);
+			$this->setValue("codice_bda", $ordine["id_o"]);
+			$this->setValue("riferimento_mittente_numerico", $ordine["id_o"]);
+			$this->setValue("riferimento_mittente_alfa", $ordine["cognome"], "sanitizeDb");
 		}
 		
+		$this->setValue("data_spedizione", date("Y-m-d"));
+		
 		$this->setProvinciaFatturazione();
+		$this->setTipologia(); // porto franco o porto franco con contrassegno
 		
 		$res = parent::insert();
 		
-		if ($res && isset($ordine))
+		if ($res && isset($ordine) && !empty($ordine))
 		{
 			$rModel = new RigheModel();
 			$snr = new SpedizioninegoziorigheModel();
@@ -111,9 +297,38 @@ class SpedizioninegozioModel extends FormModel {
 		}
 		
 		if ($res)
+		{
+			// Aggiungo un collo
+			$sncModel = new SpedizioninegoziocolliModel();
+			
+			$sncModel->setValues(array(
+				"id_spedizione_negozio"	=>	(int)$this->lId,
+				"peso"					=>	number_format($this->pesoRighe(array((int)$this->lId)),2,".",""),
+			));
+			
+			$sncModel->insert();
+			
+			// Aggiungo l'evento di apertura spedizione
 			SpedizioninegozioeventiModel::g()->inserisci($this->lId, "A");
+			
+			// Aggiungo i valori di default del corriere
+			$this->inserisciValoriDefaultCorriere($this->lId);
+		}
 		
 		return $res;
+	}
+	
+	// Inserisci i valori di default del corriere
+	public function inserisciValoriDefaultCorriere($idS)
+	{
+		$modulo = self::getModulo($idS);
+		
+		if ($modulo->metodo("inserisciValoriDefaultCorriere"))
+		{
+			$modulo->inserisciValoriDefaultCorriere($this);
+			
+			$this->pUpdate((int)$idS);
+		}
 	}
 	
 	public function titolo($id)
@@ -156,9 +371,32 @@ class SpedizioninegozioModel extends FormModel {
 	
 	public function ordiniCrud($record)
 	{
-		$idsO = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"]);
+		$ordini = $this->getOrdini($record["spedizioni_negozio"]["id_spedizione_negozio"], false);
 		
-		return "<b>#".implode(", #", $idsO)."</b>";
+		$html = "";
+		
+		foreach ($ordini as $ordine)
+		{
+			$html .= "<span style='margin-right:2px;' class='label label-".OrdiniModel::getLabelStato($ordine["orders"]["stato"])."'>#".$ordine["orders"]["id_o"]."</span>";
+		}
+		
+		return $html;
+	}
+	
+	public function brderoCrud($record)
+	{
+		if ($record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"])
+			return "<b>".$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."</b> ".gtext("del")." ".smartDate($record["spedizioni_negozio_invii"]["data_spedizione"]);
+		
+		return "";
+	}
+	
+	public function trackingCrud($record)
+	{
+		if ($record["spedizioni_negozio"]["stato"] == "C")
+			return gtext(self::LABEL_CONSEGNATA);
+		
+		return "<i>".$record["spedizioni_negozio"]["label_spedizioniere"]."</i>";
 	}
 	
 	// Restituisce gli ordini legati ad una spedizione
@@ -181,6 +419,7 @@ class SpedizioninegozioModel extends FormModel {
 	}
 	
 	// Ricalcola il totale del contrassegno per la spedizione
+	// array idS
 	public function ricalcolaContrassegno($idS)
 	{
 		$oModel = new OrdiniModel();
@@ -202,6 +441,7 @@ class SpedizioninegozioModel extends FormModel {
 		$this->update((int)$idS);
 	}
 	
+	// Restituisce un array per la select delle righe da spedire dell'ordine
 	protected function getSelectFromIdO($arrayRighe, $idO)
 	{
 		$righe = OrdiniModel::righeDaSpedire((int)$idO);
@@ -221,6 +461,11 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$arrayRighe = [];
 		
+		$spedizioneNegozio = $this->selectId((int)$idS);
+		
+		if (empty($spedizioneNegozio))
+			return $arrayRighe;
+		
 		foreach ($idOs as $idO)
 		{
 			if (!$idO)
@@ -229,22 +474,36 @@ class SpedizioninegozioModel extends FormModel {
 			$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
 		}
 		
-		// Cerco gli ordini con lo stesso id_spedizione
-		$idSpedizione = $this->clear()->whereId((int)$idS)->field("id_spedizione");
+		$ninArray = array(
+			"id_o"	=>	forceIntDeep($idOs),
+		);
 		
-		if ($idSpedizione)
+		$idOsAltri = [];
+		
+		if ($spedizioneNegozio["id_lista_regalo"])
 		{
-			$idOsSped = OrdiniModel::g(false)->where(array(
-				"nin"	=>	array(
-					"id_o"	=>	forceIntDeep($idOs),
-				),
-				"id_spedizione"	=>	(int)$idSpedizione
+			$idOsAltri = OrdiniModel::g(false)->where(array(
+				"nin"	=>	$ninArray,
+				"id_lista_regalo"	=>	(int)$spedizioneNegozio["id_lista_regalo"]
 			))->toList("id_o")->send();
+		}
+		else
+		{
+			// Cerco gli ordini con lo stesso id_spedizione
+			$idSpedizione = $this->clear()->whereId((int)$idS)->field("id_spedizione");
 			
-			foreach ($idOsSped as $idO)
+			if ($idSpedizione)
 			{
-				$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
+				$idOsAltri = OrdiniModel::g(false)->where(array(
+					"nin"	=>	$ninArray,
+					"id_spedizione"	=>	(int)$idSpedizione
+				))->toList("id_o")->send();
 			}
+		}
+		
+		foreach ($idOsAltri as $idO)
+		{
+			$arrayRighe = $this->getSelectFromIdO($arrayRighe, (int)$idO);
 		}
 		
 		return $arrayRighe;
@@ -307,6 +566,10 @@ class SpedizioninegozioModel extends FormModel {
 			if ($full)
 				$html .= '<br />'.gtext("Spedizioniere").': <b>'.$sp["spedizionieri"]["titolo"].'</b>';
 			
+			$labelSpedizioniere = App::$isFrontend ? $sp["spedizioni_negozio"]["label_spedizioniere_frontend"] : $sp["spedizioni_negozio"]["label_spedizioniere"];
+			
+			$html .= '<br /><i style="font-size:12px;">'.$labelSpedizioniere.'</i>';
+			
 			$html .= "</p>";
 			
 			$arrayBadge[] = $html;
@@ -366,7 +629,7 @@ class SpedizioninegozioModel extends FormModel {
 		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			$campoObbligatorioProvincia = "provincia";
 		
-		$campiObbligatori = "data_spedizione,id_spedizioniere,nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
+		$campiObbligatori = "nazione,$campoObbligatorioProvincia,indirizzo,cap,citta,ragione_sociale";
 		
 		$this->addStrongCondition("update",'checkNotEmpty',$campiObbligatori);
 		
@@ -383,12 +646,59 @@ class SpedizioninegozioModel extends FormModel {
 		}
     }
     
-    public function getCampiFormUpdate($daDisabilitare = false)
+    // Restituisce il modulo spedizioniere
+    public static function getModulo($idSpedizione)
     {
-		$fields =  "data_spedizione,id_spedizioniere,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,note,ragione_sociale,ragione_sociale_2,tipologia,contrassegno";
+		$record = self::g(false)->clear()->select("id_spedizioniere")->whereId((int)$idSpedizione)->record();
 		
-		if (!$daDisabilitare)
+		// Aggiungo i campi dello spedizioniere
+		if (!empty($record) && $record["id_spedizioniere"])
+			return SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+		
+		return null;
+    }
+    
+    // Restituisce i campi del form legati al modulo
+    public static function getCampiModulo($idSpedizione)
+    {
+		$modulo = self::getModulo($idSpedizione);
+		
+		if ($modulo && $modulo->isAttivo())
+			return $modulo->gCampiSpedizione();
+		
+		return [];
+    }
+    
+     // Restituisce i campi indirizzo del form legati al modulo
+    public static function getCampiIndirizzoModulo($idSpedizione)
+    {
+		$modulo = self::getModulo($idSpedizione);
+		
+		if ($modulo && $modulo->isAttivo())
+			return $modulo->gCampiIndirizzo();
+		
+		return [];
+    }
+    
+    public function getCampiFormUpdate($daDisabilitare = false, $idSpedizione = 0)
+    {
+		$fields =  "id_spedizioniere,id_spedizioniere_lettera_vettura,nazione,provincia,dprovincia,indirizzo,cap,citta,telefono,email,ragione_sociale,contrassegno";
+		
+		if (self::legataAdOrdineOLista($idSpedizione))
+			$fields .= ",note";
+		
+// 		if (!$daDisabilitare)
 			$fields .= ",note_interne";
+		
+		$campiSpedizione = self::getCampiModulo($idSpedizione);
+		
+		if (!empty($campiSpedizione))
+			$fields .= ",".implode(",",$campiSpedizione);
+		
+		$campiIndirizzoSpedizione = self::getCampiIndirizzoModulo($idSpedizione);
+		
+		if (!empty($campiIndirizzoSpedizione))
+			$fields .= ",".implode(",",$campiIndirizzoSpedizione);
 		
 		return $fields;
     }
@@ -418,8 +728,19 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
 		{
-			$this->settaStato($id, "A");
+			if (SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->eliminaSpedizione((int)$id, $this))
+			{
+				$data = new Data_Spedizioni_Result();
+				$values = $data->toArray();
+				$values["id_spedizione_negozio_invio"] = 0;
+				
+				$this->settaStato($id, "A", "", $values);
+				
+				return true;
+			}
 		}
+		
+		return false;
 	}
 	
 	// Invia la spedizione $id al corriere
@@ -441,9 +762,30 @@ class SpedizioninegozioModel extends FormModel {
 				
 				if ($this->checkConditions('update'))
 				{
-					$this->settaStato($id, $stato, "data_pronta_invio");
-					
-					return true;
+					if ($this->checkColli([$id]))
+					{
+						if ($record["id_spedizioniere_lettera_vettura"])
+						{
+							$this->settaStato($id, "I", "data_pronta_invio");
+						}
+						else
+						{
+							// Modulo spedizioniere
+							$output = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->prenotaSpedizione($id, $this);
+							
+							if ($output !== false)
+							{
+								if ($output->instradato())
+									$this->settaStato($id, "I", "data_pronta_invio", $output->toArray());
+								else
+									$this->settaStato($id, "A", "", $output->toArray());
+								
+								return true;
+							}
+						}
+					}
+					else
+						$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, inserire almeno un collo di peso maggiore di 0 kg. Controllare inoltre che nessun collo abbia peso 0kg")."</div>";
 				}
 			}
 		}
@@ -458,7 +800,7 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$this->clear()->where(array(
 			"in"	=>	array(
-				"stato"	=>	array("II","E"),
+				"stato"	=>	self::statiSpedizioniInviate()
 			),
 			"gte"	=>	array(
 				"data_invio"	=>	sanitizeAll($ora->format("Y-m-d H:i:s")),
@@ -484,39 +826,126 @@ class SpedizioninegozioModel extends FormModel {
 		if ($campoData)
 			$this->setValue($campoData, date("Y-m-d H:i:s"));
 		
+		if ($stato == "I")
+			$this->setValue("data_spedizione", date("Y-m-d"));
+		
 		foreach ($values as $k => $v)
 		{
 			$this->setValue($k, $v);
 		}
 		
 		if ($this->update((int)$id))
+		{
 			SpedizioninegozioeventiModel::g()->inserisci((int)$id, $stato);
+			
+			// Setta lo stato dell'ordine
+			$this->settaStatoOrdini($id, $stato);
+		}
+	}
+	
+	// Setta lo stato degli ordini legati alla spedizione
+	public function settaStatoOrdini($idSpedizione, $statoSpedizione = "I")
+	{
+		if (!in_array($statoSpedizione, array("I","II")))
+			return;
+		
+		$idsOrdini = $this->getOrdini($idSpedizione, true);
+		
+		$condizione = ($statoSpedizione == "I") ? "in_spedizione" : "spedito";
+		
+		$statoOrdine = $this->getStatoInSpedizione($condizione);
+		
+		if (!$statoOrdine)
+			return;
+		
+		$oModel = new OrdiniModel();
+		
+		foreach ($idsOrdini as $idOrdine)
+		{
+			$ordine = $oModel->selectId((int)$idOrdine);
+			
+			if (empty($ordine))
+				continue;
+			
+			$procedi = true;
+			
+			if ($statoSpedizione == "I")
+			{
+				$statiDaSpedire = StatiordineModel::getStatiDaSpedire();
+				
+				if (!in_array($ordine["stato"], $statiDaSpedire))
+					$procedi = false;
+			}
+			else if ($statoSpedizione == "II")
+			{
+				$statoOrdineInSpedizione = $this->getStatoInSpedizione("in_spedizione");
+				
+				if (
+					!$statoOrdineInSpedizione || 
+					$ordine["stato"] != $statoOrdineInSpedizione || 
+					count(OrdiniModel::righeDaSpedire((int)$idOrdine)) > 0 || 
+					count(OrdiniModel::righeInSpedizione((int)$idOrdine)) > 0
+				)
+					$procedi = false;
+			}
+			
+			if ($procedi && $ordine["stato"] != $statoOrdine)
+			{
+				$oModel->sValues(array(
+					"stato"	=>	$statoOrdine,
+				));
+				
+				$oModel->update((int)$idOrdine);
+			}
+		}
+	}
+	
+	public function getStatoInSpedizione($condizione = "in_spedizione")
+	{
+		$soModel = new StatiordineModel();
+		
+		return $soModel->clear()->where(array(
+			"$condizione"	=>	1,
+		))->field("codice");
 	}
 	
 	// Imposta la spedizione come consegnata
 	public function settaConsegnata($id)
 	{
-		$this->settaStato($id, "C", "data_consegna");
+		$modulo = self::getModulo((int)$id);
+		
+		$dataConsegna = "";
+		
+		if (isset($modulo))
+			$dataConsegna = $modulo->getDataConsegna($id);
+		
+		$values = array();
+		
+		if ($dataConsegna)
+			$values = array(
+				"data_consegna"	=>	$dataConsegna,
+			);
+		
+		$this->settaStato($id, "C", "", $values);
 	}
 	
 	// Imposta la spedizione come in errore
 	public function settaInErrore($id)
 	{
-		$this->settaStato($id, "E");
+// 		$this->settaStato($id, "E");
 	}
 	
 	// Restituisce tutte le spedizioni da inviare, con data corrente o precedente
+	// se $soloIds == true restituisce solo gli ID delle spedizioni
 	// se $idS != 0, restituisce solo la spedizione avente id = $idS
-	public function getSpedizioniDaInviare($idSpedizioniere, $idS = 0)
+	public function getSpedizioniDaInviare($idSpedizioniere, $soloIds = false, $idS = 0)
 	{
 		$this->clear()->where(array(
 			"in"	=>	array(
 				"stato"	=>	array("I"),
 			),
-			"lte"	=>	array(
-				"data_spedizione"	=>	date("Y-m-d"),
-			),
 			"id_spedizioniere"	=>	(int)$idSpedizioniere,
+			"id_spedizioniere_lettera_vettura"	=>	0,
 		));
 		
 		if ($idS)
@@ -524,45 +953,16 @@ class SpedizioninegozioModel extends FormModel {
 				"id_spedizione_negozio"	=>	(int)$idS
 			));
 		
-		return $this->send(false);
-	}
-	
-	// Invia le spedizioni al corriere
-	public function inviaAlCorriere($idS = 0)
-	{
-		$arrayIdSpedizionieri = SpedizionieriModel::g()->where(array(
-			"attivo"	=>	1,
-		))->toList("id_spedizioniere")->send();
+		$conTabella = false;
 		
-		foreach ($arrayIdSpedizionieri as $idSpedizioniere)
+		if ($soloIds)
 		{
-			// Modulo spedizioniere
-			$modulo = SpedizionieriModel::getModulo((int)$idSpedizioniere, true);
+			$this->select($this->_idFields)->toList($this->_idFields);
 			
-			if ($modulo->isAttivo())
-			{
-				$spedizioniDaInviare = $this->getSpedizioniDaInviare($idSpedizioniere, $idS);
-				
-				$risultati = $modulo->invia($spedizioniDaInviare);
-				
-				foreach ($risultati as $idSpedizione => $r)
-				{
-					if ($r["risultato"] == "OK")
-					{
-						$this->settaStato($idSpedizione, "II", "data_invio", array(
-							"numero_spedizione"	=>	$r["numero_spedizione"],
-							"errore_invio"		=>	"",
-						));
-					}
-					else
-					{
-						$this->settaStato($idSpedizione, "I", "data_pronta_invio", array(
-							"errore_invio"		=>	$r["errore_invio"]
-						));
-					}
-				}
-			}
+			$conTabella = true;
 		}
+		
+		return $this->send($conTabella);
 	}
 	
 	// Controlla le spedizioni incviate negli ultimi $giorni
@@ -591,5 +991,200 @@ class SpedizioninegozioModel extends FormModel {
 				}
 			}
 		}
+	}
+	
+	// Se la spedizione è legata ad un ordine o ad una lista
+	public static function legataAdOrdineOLista($idSpedizione)
+	{
+		$record = self::g(false)->selectId((int)$idSpedizione);
+		
+		if (!empty($record) && ($record["id_ordine_di_partenza"] || $record["id_lista_regalo"]))
+			return true;
+		
+		return false;
+	}
+	
+	// Usata in main, stessa usata dell'ordine
+	public function listaregalo($record)
+	{
+		return OrdiniModel::g(false)->listaregalo($record, "spedizioni_negozio");
+	}
+	
+	// Restituisce il peso totale della spedizione guardando le righe inserite
+	// array $idS
+	public function pesoRighe($idS)
+	{
+		$snrModel = new SpedizioninegoziorigheModel();
+		
+		$res = $snrModel->clear()->select("sum(peso * quantity) as PESO_TOTALE")->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["PESO_TOTALE"])
+			return $res[0]["aggregate"]["PESO_TOTALE"];
+		
+		return 0;
+	}
+	
+	// Restituisce il peso totale della spedizione
+	// array $idS
+	public function peso($idS)
+	{
+		$sncModel = new SpedizioninegoziocolliModel();
+		
+		$res = $sncModel->clear()->select("sum(peso) as PESO_TOTALE")->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["PESO_TOTALE"])
+			return $res[0]["aggregate"]["PESO_TOTALE"];
+		
+		return 0;
+	}
+	
+	// Restituisce i colli legati alla spedizione
+	// array $idS
+	public function getColli($idS, $soloNumero = false)
+	{
+		$sncModel = new SpedizioninegoziocolliModel();
+		
+		$sncModel->clear()->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		));
+		
+		return $soloNumero ? $sncModel->rowNumber() : $sncModel->send(false);
+	}
+	
+	// Controlla che ci sia almeno un collo e che ogni collo abbia peso maggiore di zero
+	public function checkColli($idS)
+	{
+		$colli = $this->getColli($idS);
+		
+		if (count($colli) <= 0)
+			return false;
+		
+		foreach ($colli as $collo)
+		{
+			if ($collo["peso"] <= 0)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	// Stampa o genera il segnacollo della spedizione
+	// $returnPath se impostato su 1 restituisce il PDF del path del PDF
+	public function segnacollo($idS, $returnPath = false)
+	{
+		$record = $this->clear()->selectId((int)$idS);
+		
+		if (!empty($record) && !SpedizioninegozioModel::aperto((int)$idS))
+			return SpedizioninegozioModel::getModulo($idS)->segnacollo($idS, $returnPath);
+		
+		return "";
+	}
+	
+	// Stampa la lettera di vettura
+	public function letteradivettura($idS)
+	{
+		$res = $this->clear()->select("*")->inner(array("lettera", "spedizioniere"))->whereId((int)$idS)->first();
+		
+		if (!empty($res) && !SpedizioninegozioModel::aperto((int)$idS) && $res["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"])
+		{
+			$spedizione = htmlentitydecodeDeep($res["spedizioni_negozio"]);
+			$lettera = $res["spedizionieri_lettere_vettura"];
+			$spedizioniere = htmlentitydecodeDeep($res["spedizionieri"]);
+			
+			$pathLettera = Domain::$parentRoot . "/images/letterevettura/" . $lettera["filename"];
+			
+			if (file_exists($pathLettera))
+			{
+				$spnrModel = new SpedizioninegoziorigheModel();
+				
+				$estensione = Files_Upload::sFileExtension($lettera["filename"]);
+				
+				createFolderFull("Logs/tmp",LIBRARY);
+				
+				$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+				
+				if (!@is_dir(LIBRARY."/Logs/tmp/"))
+					return;
+				
+				$outputFile = LIBRARY."/Logs/tmp/$fileName.$estensione";
+				
+				$codici = $spnrModel->getCodiciProdottiSpedizione([(int)$idS]);
+				
+				$naturaArray = [];
+				
+				foreach ($codici as $codice => $qta)
+				{
+					$naturaArray[] =  $codice."x".$qta;
+				}
+				
+				$placeholders = array(
+					"ragione_sociale"	=>	$spedizione["ragione_sociale"],
+					"ragione_sociale_2"	=>	$spedizione["ragione_sociale_2"],
+					"indirizzo"			=>	$spedizione["indirizzo"],
+					"cap"			=>	$spedizione["cap"]."     ",
+					"citta"			=>	$spedizione["citta"],
+					"provincia"			=>	$spedizione["provincia"],
+					"telefono"			=>	$spedizione["telefono"],
+					"peso"			=>	number_format($this->peso([(int)$idS]),1,",",""),
+					"colli"			=>	(string)$this->getColli([(int)$idS], true),
+					"natura_merce"	=>	count($naturaArray) > 0 ? implode(" + ", $naturaArray) : "",
+					"contrassegno"	=>	$spedizione["contrassegno"] > 0 ? number_format($spedizione["contrassegno"],2,",","") : "",
+					"modalita_incasso"	=>	$spedizione["contrassegno"] > 0 ? SpedizionieriModel::getModulo((int)$spedizione["id_spedizioniere"], true)->gLabelCodicePagamento($spedizione["codice_pagamento_contrassegno"]) : "",
+					"importo_assicurazione"	=>	$spedizione["importo_assicurazione"] > 0 ? number_format($spedizione["importo_assicurazione"],2,",","") : "",
+					"note"			=>	$spedizione["note_interne"],
+					"data"			=>	date("d/m/Y", strtotime($spedizione["data_spedizione"])),
+					"p"				=>	$spedizione["tipo_servizio"] == "E" ? "1" : "",
+					"s"				=>	$spedizione["tipo_servizio"] == "H" ? "1" : "",
+				);
+				
+// 				print_r($placeholders);die();
+				
+				if (SpedizionieriletterevetturaModel::getModulo((int)$spedizione["id_spedizioniere_lettera_vettura"])->salva($pathLettera, $outputFile, $placeholders))
+					return array($outputFile, "lettera_di_vettura_".$spedizioniere["titolo"]."_spedizione_".(int)$idS."_del_".date("d_m_Y",strtotime($spedizione["data_spedizione"])).".$estensione");
+			}
+		}
+		
+		return null;
+	}
+	
+	public static function getNumeroSpedizione($idS)
+	{
+		return SpedizioninegozioModel::g(false)->whereId((int)$idS)->field("numero_spedizione");
+	}
+	
+	public static function getElencoServizi($id)
+	{
+		$modulo = self::getModulo((int)$id);
+		
+		if ($modulo)
+			return $modulo->gSelectServizi();
+		
+		return array();
+	}
+	
+	public function idLetteraDiVettura($id)
+	{
+		return (int)$this->clear()->inner(array("lettera"))->whereId((int)$id)->field("spedizioni_negozio.id_spedizioniere_lettera_vettura");
+	}
+	
+	// Restituisxce il campo struttura_info_tracking della spedizione $idSpedizione
+	public function getInfoTracking($idSpedizione)
+	{
+		$spedizione = $this->selectId((int)$idSpedizione);
+		
+		if (!empty($spedizione) && $spedizione["struttura_info_tracking"])
+			return $spedizione["struttura_info_tracking"];
+		
+		return "";
 	}
 }

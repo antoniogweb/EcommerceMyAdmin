@@ -31,5 +31,5 @@ require_once(LIBRARY."/Application/Controllers/Public/BaseBaseController.php");
 class BaseController extends BaseBaseController
 {
 	use FasceController;
-// 	use CrudController; // copy the file to your frontend controller directory and remove the comment of this line if want CRUD capabilities in frontend 
+// 	use CrudController; // copy the file to your frontend controller directory and remove the comment of this line if you want CRUD capabilities in frontend 
 }

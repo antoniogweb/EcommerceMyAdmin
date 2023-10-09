@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES ('Numero della spedizione (solo per mail legate alle spedizioni)', 'NUMERO_SPEDIZIONE', 'gNumeroSpedizione', '', '1', '18', '', '1', '', '0')

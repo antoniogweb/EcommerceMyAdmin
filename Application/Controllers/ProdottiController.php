@@ -26,6 +26,8 @@ class ProdottiController extends PagesController {
 
 	public $voceMenu = "prodotti";
 	public $sezionePannello = "ecommerce";
+// 	public $mainActionFields = "distinct pages.codice_alfa,pages.id_order,pages.title,pages.alias,pages.id_page,marchi.titolo";
+	
 	public static $sCampoPrice = "price";
 	public static $sCampoPriceFisso = "prezzo_fisso";
 	
@@ -74,11 +76,7 @@ class ProdottiController extends PagesController {
 		}
 		
 // 		$this->filters[] = $fTag;
-		$this->filters[] = array("in_promozione",null,SlideModel::$YN);
-		$this->filters[] = array("attivo",null,SlideModel::$YN);
-		$this->filters[] = array("in_evidenza",null,SlideModel::$YN);
-		
-		$fNaz = $fReg = null;
+// 		$fNaz = $fReg = null;
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
@@ -89,10 +87,14 @@ class ProdottiController extends PagesController {
 			$this->tableFields[] = 'regioneCrud';
 			$this->head .= ',Regione';
 			$fReg = array("id_reg",null,array("tutti" => "Tutti") + $this->m["RegioniModel"]->filtro());
+			
+			$this->filters[] = $fNaz;
+			$this->filters[] = $fReg;
 		}
 		
-		$this->filters[] = $fNaz;
-		$this->filters[] = $fReg;
+		$this->filters[] = array("in_promozione",null,SlideModel::$YN);
+		$this->filters[] = array("attivo",null,SlideModel::$YN);
+		$this->filters[] = array("in_evidenza",null,SlideModel::$YN);
 		
 		$this->tableFields[] = 'PagesModel.inPromozioneText|pages.id_page';
 		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';

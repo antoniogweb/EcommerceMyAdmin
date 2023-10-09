@@ -35,6 +35,6 @@ class SpedizioninegoziostatiModel extends GenericModel {
 	{
 		$opzioneVuota = $mostraOpzioneVuota ? array(0 => "Seleziona") : [];
 		
-		return $opzioneVuota + $this->orderBy("id_order")->sWhere(array("codice != ?", array("II")))->toList("codice","titolo")->send();
+		return $opzioneVuota + $this->orderBy("id_order")->toList("codice","titolo")->send();
 	}
 }

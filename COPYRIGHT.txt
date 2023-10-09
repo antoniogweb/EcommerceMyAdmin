@@ -120,10 +120,10 @@ jquery-nstslider
 License:	The MIT License (MIT)
 link: 		https://github.com/lokku/jquery-nstslider
 
-Facebook SDK for PHP (v5)
+Facebook SDK for PHP
 -------
-License:	https://developers.facebook.com/docs/php/gettingstarted
-link: 		https://github.com/facebookarchive/php-graph-sdk
+License:	The MIT License (MIT)
+link: 		https://github.com/joelbutcher/facebook-php-graph-sdk
 
 Sendiblue SDK for PHP (v3)
 -------
@@ -159,3 +159,13 @@ FreeFont (FreeMono.ttf)
 -------
 License:	GNU GPL version 3 or later
 link: 		https://www.gnu.org/software/freefont/
+
+Pdf Merge Solution for PHP
+-------
+License:	Apache License 2.0
+link: 		https://github.com/karriereat/pdf-merge
+
+PHPOffice/PHPWord
+-------
+License:	GNU Lesser General Public License version 3
+link: 		https://github.com/PHPOffice/PHPWord

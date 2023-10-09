@@ -391,7 +391,7 @@ class ListeregaloModel extends GenericModel
 		return "<b>".self::getNominativo($record["regusers"])."</b><br />".$record["regusers"]["username"];;
 	}
 	
-	public static function specchietto($idLista)
+	public static function specchietto($idLista, $tag = "<br />", $valiAllaLista = true)
 	{
 		$res = self::listeUtenteModel(0, (int)$idLista)->select("*")->inner(array("cliente", "tipo"))->first();
 		
@@ -401,11 +401,11 @@ class ListeregaloModel extends GenericModel
 		{
 			$html .= "<b>".gtext("Titolo").":</b> ".$res["liste_regalo"]["titolo"];
 			
-			if (ControllersModel::checkAccessoAlController(array("listeregalo")))
+			if ($valiAllaLista && ControllersModel::checkAccessoAlController(array("listeregalo")))
 				$html .= " <a target='_blank' href='".Url::getRoot()."listeregalo/form/update/".(int)$idLista."' class='label label-primary text-bold'>".gtext("vai alla lista")." <i class='fa fa-arrow-right'></i></a>";
 			
-			$html .= "<br /><b>".gtext("Tipo").":</b> ".$res["liste_regalo_tipi"]["titolo"];
-			$html .= "<br /><b>".gtext("Creatore lista").":</b> ".self::getNominativo($res["regusers"])." (".$res["liste_regalo"]["email"].") ";
+			$html .= "$tag<b>".gtext("Tipo").":</b> ".$res["liste_regalo_tipi"]["titolo"];
+			$html .= "$tag<b>".gtext("Creatore lista").":</b> ".self::getNominativo($res["regusers"])." (".$res["liste_regalo"]["email"].") ";
 			
 			if (ControllersModel::checkAccessoAlController(array("regusers")))
 				$html .= "<a href='".Url::getRoot()."regusers/form/update/".(int)$res["regusers"]["id_user"]."?partial=Y&nobuttons=Y' class='iframe label label-info text-bold'><i class='fa fa-user'></i> ".gtext("dettagli utente")."</a>";
