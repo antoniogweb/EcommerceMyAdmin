@@ -31,9 +31,11 @@ if (!isset($classBadgeCheckout))
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/location.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Spedizione");?></span>
 				</div>
 				<?php } ?>
+				<?php if (count(OrdiniModel::$pagamenti) > 1) { ?>
 				<div pos="pagamento">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/credit-card.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Pagamento");?></span>
 				</div>
+				<?php } ?>
 				<?php if (count($corrieri) > 1 && v("attiva_spedizione")) { ?>
 				<div pos="consegna">
 					<span class="checkout-step uk-border-circle uk_badge_meta"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/clock.svg");?></span></span><br /><span class="uk-hidden nome_step uk-text-small uk-text-secondary"><?php echo gtext("Consegna");?></span>
