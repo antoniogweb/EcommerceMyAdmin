@@ -580,7 +580,8 @@ class VariabiliModel extends GenericModel {
 		"max_numero_email_ora"		=>	0, // massimo numero di email inviabili ogni ora (0 = no limiti)
 		"max_numero_email_giorno"	=>	0, // massimo numero di email inviabili ogni giorno (0 = no limiti)
 		## PULSANTI ##
-		"classe_pulsanti_submit"	=>	"uk-button uk-button-secondary", // classe de ipulsanti submit
+		"classe_pulsanti_submit"	=>	"uk-button uk-button-secondary", // classe dei pulsanti submit
+		"classe_pulsanti_carrello"	=>	"uk-button uk-button-default", // classe dei pulsanti carrello (compreso aggiorna carrello)
 		## SLIDE ##
 		"attiva_tipo_slide"			=>	0, // attiva la tendina "tipo slide"
 		"immagine_2_in_slide"		=>	0, // mostra la seconda immagine nella slide

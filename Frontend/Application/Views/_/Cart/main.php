@@ -21,7 +21,7 @@
 			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, controllare i campi evidenziati relativi alle Gift Card.");?></div>
 			<?php } ?>
 			<?php if (!User::$isMobile) { ?>
-			<div class="uk-visible@m">
+			<div class="uk-visible@m cart_head_row">
 				<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
 					<div class="uk-first-column">
 						
@@ -86,8 +86,8 @@
 				<div class="uk-visible@m">
 					<?php if (!v("carrello_monoprodotto")) { ?>
 						<div>
-							<div class="uk-align-right uk-button uk-button-default spinner uk-hidden" uk-spinner="ratio: .70"></div>
-							<a type="submit" class="btn_submit_form uk-align-right uk-button uk-button-default cart_button_aggiorna_carrello" name="update_cart" value="<?php echo gtext("Aggiorna carrello");?>"><?php echo gtext("Aggiorna carrello");?></a>
+							<div class="uk-align-right <?php echo v("classe_pulsanti_carrello");?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
+							<a type="submit" class="btn_submit_form uk-align-right <?php echo v("classe_pulsanti_carrello");?> cart_button_aggiorna_carrello" name="update_cart" value="<?php echo gtext("Aggiorna carrello");?>"><?php echo gtext("Aggiorna carrello");?></a>
 						</div>
 					<?php } ?>
 				</div>
