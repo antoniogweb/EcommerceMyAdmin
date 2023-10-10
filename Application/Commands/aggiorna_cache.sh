@@ -9,7 +9,7 @@ path="$( dirname -- "$0"; )/../../../"
 #    esac
 # done
 
-echo -e "[$(date '+%Y-%m-%g %X')]\tINIZIO CREAZIONE CACHE" >> "$path/admin/Logs/cache_sito.log"
+echo -e "[$(date '+%Y-%m-%d %X')]\tINIZIO CREAZIONE CACHE" >> "$path/admin/Logs/cache_sito.log"
 
 touch "$path/Logs/caching.log"
 
@@ -43,4 +43,4 @@ chmod -R 777 "$path/Logs/cachehtml"
 
 rm -f "$path/Logs/caching.log"
 
-echo -e "[$(date '+%Y-%m-%g %X')]\tFINE CREAZIONE CACHE" >> "$path/admin/Logs/cache_sito.log"
+echo -e "[$(date '+%Y-%m-%d %X')]\tFINE CREAZIONE CACHE" >> "$path/admin/Logs/cache_sito.log"
