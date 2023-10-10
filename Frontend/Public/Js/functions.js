@@ -1126,10 +1126,13 @@ $(document).ready(function(){
 				}
 			}
 			
-			if(y > (offset3.top - 200)) {
-				mostraPosizioneStepCheckout("pagamento")
-			} else {
-				nascondiPosizioneStepCheckout("pagamento");
+			if ($("#fragment-checkout-pagamento").length > 0)
+			{
+				if(y > (offset3.top - 200)) {
+					mostraPosizioneStepCheckout("pagamento")
+				} else {
+					nascondiPosizioneStepCheckout("pagamento");
+				}
 			}
 			
 			if ($("#fragment-checkout-consegna").length > 0)

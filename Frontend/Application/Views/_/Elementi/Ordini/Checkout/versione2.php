@@ -115,6 +115,7 @@
 					</div>
 					<?php } ?>
 					
+					<?php if (count(OrdiniModel::$pagamenti) > 1 || (v("attiva_spedizione") && count($corrieri) > 1)) { ?>
 					<div class="uk-container uk-margin-medium-bottom">
 						<div class="uk-flex uk-flex-top">
 							<div class="uk-margin-right uk-visible@m">
@@ -150,6 +151,14 @@
 							</div>
 						</div>
 					</div>
+					<?php } else {
+						include(tpf(ElementitemaModel::p("CHECKOUT_PAGAMENTI","", array(
+							"titolo"	=>	"Scelta del metodo di pagamento",
+							"percorso"	=>	"Elementi/Ordini/Pagamenti",
+						))));
+						
+						include(tpf("Ordini/checkout_corrieri.php"));
+					} ?>
 					
 					<?php if (!User::$isMobile) { ?>
 					<div class="uk-container uk-margin-large-bottom">
