@@ -1568,25 +1568,28 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
-			"OR"	=>	array(
-				"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
-				"AND"	=>	array(
-					"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
-					"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+		if ($firstSection != "prodotti")
+		{
+			$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
+				"OR"	=>	array(
+					"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
+					"AND"	=>	array(
+						"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
+						"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+					),
 				),
-			),
-		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
-		
-		$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
-			"OR"	=>	array(
-				"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
-				"AND"	=>	array(
-					"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
-					"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+			))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
+			
+			$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
+				"OR"	=>	array(
+					"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
+					"AND"	=>	array(
+						"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
+						"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+					),
 				),
-			),
-		))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
+			))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
+		}
 		
 		if (field($data['pages'][0], "meta_description"))
 			$data["meta_description"] = F::meta(field($data['pages'][0], "meta_description"));
