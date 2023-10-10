@@ -1,6 +1,6 @@
 #!/bin/bash
 
-path="$( dirname -- "$0"; )/../../../"
+path="$( dirname -- "$0"; )/../../.."
 
 # while getopts "p:" opt
 # do
