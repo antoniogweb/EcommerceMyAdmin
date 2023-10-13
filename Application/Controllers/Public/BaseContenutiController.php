@@ -494,13 +494,21 @@ class BaseContenutiController extends BaseController
 	
 	public function notfound()
 	{
+		if (v("attiva_formn_contatti"))
+			$this->inviaMailFormContatti(0);
+		
 		$data["title"] = Parametri::$nomeNegozio . " - pagina non trovata";
 		
-		header('HTTP/1.0 404 Not Found');
-		
-		$this->append($data);
-		
-		$this->load("404");
+		if (Output::$html)
+		{
+			header('HTTP/1.0 404 Not Found');
+			
+			$this->append($data);
+			
+			$this->load("404");
+		}
+		else
+			$this->load("api_output");
 	}
 	
 	public function nonpermesso()
@@ -1435,6 +1443,9 @@ class BaseContenutiController extends BaseController
 	
 	protected function marchio($id)
 	{
+		if (v("attiva_formn_contatti"))
+			$this->inviaMailFormContatti(0);
+		
 		$linguaPrincipale = LingueModel::getPrincipale();
 		
 		$marchiAlias = $this->m("MarchiModel")->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->left("contenuti_tradotti")->on("contenuti_tradotti.id_marchio = marchi.id_marchio")->where(array(
@@ -1463,7 +1474,10 @@ class BaseContenutiController extends BaseController
 			
 			$this->append($data);
 			
-			$this->load("marchio");
+			if (Output::$html)
+				$this->load("marchio");
+			else
+				$this->load("api_output");
 		}
 		else
 			$this->redirect("contenuti/notfound");

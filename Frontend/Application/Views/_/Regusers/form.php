@@ -27,7 +27,7 @@ $attiva = "account";
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
-<form class="form_registrazione" action="<?php echo $this->baseUrl.$action;?>#main" method="POST" autocomplete="new-password">
+<form class="form_registrazione box_form_evidenzia" action="<?php echo $this->baseUrl.$action;?>#main" method="POST" autocomplete="new-password">
 	<div class="uk-text-center">
 		<?php echo $notice; ?>
 	</div>

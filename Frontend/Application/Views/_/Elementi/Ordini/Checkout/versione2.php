@@ -11,7 +11,7 @@
 		?>
 		<?php ?>
 		<?php } ?>
-		<form name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
+		<form class="box_form_evidenzia" name="checkout" method="post" action="<?php echo $this->baseUrl."/checkout";?>#content" autocomplete="new-password">
 			<div class="uk-grid-medium uk-grid main_cart uk-text-left" uk-grid>
 				<div class="uk-width-1-1 uk-width-expand@m uk-first-column uk-text-small">
 					<?php

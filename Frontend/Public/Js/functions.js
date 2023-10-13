@@ -468,7 +468,7 @@ if (typeof evidenziaErrore !== 'function')
 	{
 		var nomeCampo = selettore.substring(7);
 		
-		if ($(".box_form_evidenzia").length > 0)
+		if ($(".evidenzia").closest(".box_form_evidenzia").length > 0)
 		{
 // 			$(selettore).closest(".box_form_evidenzia").remove();
 			
