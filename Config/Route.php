@@ -93,6 +93,7 @@ class Route
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',
+		'promozioni,marchi',
 		'promozioni,pagine',
 		'promozioni,invii',
 		'promozioni,ordini',

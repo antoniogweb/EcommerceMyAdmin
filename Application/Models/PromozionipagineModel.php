@@ -57,7 +57,7 @@ class PromozionipagineModel extends GenericModel {
 			
 			if (count($res3) > 0)
 			{
-				$this->notice = "<div class='alert'>Questo elemento è già stato associato</div>";
+				$this->notice = "<div class='alert alert-danger'>Questo elemento è già stato associato</div>";
 			}
 			else
 			{
@@ -66,7 +66,7 @@ class PromozionipagineModel extends GenericModel {
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+			$this->notice = "<div class='alert alert-danger'>Questo elemento non esiste</div>";
 		}
 	}
 	

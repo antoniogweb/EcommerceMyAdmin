@@ -262,6 +262,47 @@ class PromozioniController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function marchi($id = 0)
+	{
+		$this->_posizioni['marchi'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_p";
+		
+		$this->m('PromozionimarchiModel')->setFields('id_marchio,includi','sanitizeAll');
+		$this->m('PromozionimarchiModel')->values['id_p'] = $clean['id'];
+		$this->m('PromozionimarchiModel')->updateTable('insert,del');
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "PromozionimarchiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("marchi.titolo", "inclusoCrud");
+		$this->mainHead = "Marchio,Incluso / Escluso";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"marchi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("promozioni_marchi.*,marchi.titolo")->inner(array("marchio"))->orderBy("marchi.titolo")->where(array("id_p"=>$clean['id']))->convert()->save();
+		
+// 		$this->tabella = "promozioni";
+		
+		parent::main();
+		
+		$data["listaMarchi"] = $this->m("MarchiModel")->selectMarchi(false);
+		
+		$data["titoloRecord"] = $this->m["PromozioniModel"]->titolo($clean['id']);
+		
+		$data["record"] = $this->m["PromozioniModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function pagine($id = 0)
 	{
 		$this->_posizioni['pagine'] = 'class="active"';

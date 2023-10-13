@@ -506,6 +506,36 @@ class PromozioniModel extends GenericModel {
 		$pp = new PromozionipagineModel();
 		$p = new PagesModel();
 		$c = new CategoriesModel();
+		$pm = new PromozionimarchiModel();
+		
+		$idMarchisInclusi = $idMarchisEsclusi = array();
+		
+		if (v("usa_marchi"))
+		{
+			$idMarchisInclusi = $pm->clear()->select("promozioni_marchi.id_marchio")->inner(array("marchio"))->where(array(
+				"id_p"		=>	(int)$promozione["id_p"],
+				"includi"	=>	1,
+			))->toList("id_marchio")->send();
+			
+			$idMarchisEsclusi = $pm->aWhere(array(
+				"includi"	=>	0,
+			))->toList("id_marchio")->send();
+		}
+		
+		$whereMarchi = array();
+		
+		if (count($idMarchisInclusi) > 0)
+			$whereMarchi = array(
+				" in "	=>	array(
+					"pages.id_marchio"	=>	forceIntDeep($idMarchisInclusi),
+				)
+			);
+		else if (count($idMarchisEsclusi) > 0)
+			$whereMarchi = array(
+				" nin "	=>	array(
+					"pages.id_marchio"	=>	forceIntDeep($idMarchisEsclusi),
+				)
+			);
 		
 		$idCs = $pc->clear()->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
@@ -513,7 +543,7 @@ class PromozioniModel extends GenericModel {
 		
 		$idPages = $pp->clear()->select("promozioni_pages.id_page")->inner(array("pagina"))->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
-		))->toList("id_page")->send();
+		))->aWhere($whereMarchi)->toList("id_page")->send();
 		
 		foreach ($idCs as $idC)
 		{
@@ -528,6 +558,7 @@ class PromozioniModel extends GenericModel {
 // 				"in" => array("-id_c" => $children),
 			))
 			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
+			->aWhere($whereMarchi)
 			->toList("id_page")->send();
 			
 			$idPages = array_merge($idPages, $pages);
@@ -545,7 +576,7 @@ class PromozioniModel extends GenericModel {
 				"attivo" => "Y",
 				"principale"=>"Y",
 				"in" => array("-id_c" => $children),
-			))->toList("id_page")->send();
+			))->aWhere($whereMarchi)->toList("id_page")->send();
 		}
 		
 		return $idPages;

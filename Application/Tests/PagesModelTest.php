@@ -160,8 +160,6 @@ final class PagesModelTest extends TestCase
 			$col++;
 		}
 		
-		
-		
 		### CONTROLLO IL NUMERO DI COMBINAZIONI ###
 		$numeroCombinazioniAspettate = 1;
 		

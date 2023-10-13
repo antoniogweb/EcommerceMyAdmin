@@ -29,7 +29,7 @@ class Gls extends Spedizioniere
 			"ragione_sociale"	=>	35,
 			"indirizzo"			=>	35,
 			"citta"				=>	30,
-			"cap"				=>	5,
+			"cap"				=>	7,
 			"provincia"			=>	2,
 			"codice_bda"		=>	11,
 			"contrassegno"		=>	10,

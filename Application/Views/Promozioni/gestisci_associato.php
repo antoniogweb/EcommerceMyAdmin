@@ -16,6 +16,26 @@
 <br />
 <?php } ?>
 
+<?php if ($this->action == "marchi") { ?>
+
+<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcun marchio la promo sarà utilizzabile sui prodotti di tutti i marchi.");?></div>
+
+<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/marchi/$id".$this->viewStatus;?>' method='POST'>
+
+	<span select2>
+		<?php echo Html_Form::select("id_marchio","",$listaMarchi,null,null,"yes","style='min-width:200px'");?>
+	</span>
+	
+	<span select2>
+		<?php echo Html_Form::select("includi","",MarchiModel::$attivoSiNo,null,null,"yes","style='min-width:200px'");?>
+	</span>
+	
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	
+</form>
+<br />
+<?php } ?>
+
 <?php if ($this->action == "pagine") { ?>
 
 <div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuna prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
