@@ -169,3 +169,8 @@ PHPOffice/PHPWord
 -------
 License:	GNU Lesser General Public License version 3
 link: 		https://github.com/PHPOffice/PHPWord
+
+PHPOffice/PhpSpreadsheet
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/PHPOffice/PhpSpreadsheet
