@@ -65,6 +65,14 @@ class Spedizioniere
 				call_user_func_array(array($this, $metodo), array($spedizione, $campi));
 			}
 		}
+		
+		$this->condizioniSpecificheCorriere($spedizione);
+	}
+	
+	
+	protected function condizioniSpecificheCorriere(SpedizioninegozioModel $spedizione)
+	{
+		
 	}
 	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione

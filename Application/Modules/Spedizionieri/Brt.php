@@ -31,7 +31,7 @@ class Brt extends Spedizioniere
 			"indirizzo"			=>	35,
 			"citta"				=>	35,
 			"cap"				=>	9,
-			"provincia"			=>	2,
+// 			"provincia"			=>	2,
 			"contrassegno"		=>	10,
 			"importo_assicurazione"	=>	10,
 			"nazione"			=>	2,
@@ -44,6 +44,18 @@ class Brt extends Spedizioniere
 			"riferimento_mittente_numerico"
 		),
 	);
+	
+	protected function condizioniSpecificheCorriere(SpedizioninegozioModel $spedizione)
+	{
+		$nazione = Params::$arrayToValidate["nazione"] ?? $_POST["nazione"] ?? "IT";
+		
+		if ($nazione == "IT")
+			$spedizione->addSoftCondition("update",'checkLength|2',"provincia");
+		else
+		{
+			$spedizione->addStrongCondition("update",'checkNotEmpty|',"telefono");
+		}
+	}
 	
 	public function isAttivo()
 	{
@@ -315,7 +327,7 @@ class Brt extends Spedizioniere
 				$jsonArray = array(
 					"account"	=>	$account,
 					"createData"	=>	array(
-						"network"			=>	" ",
+						"network"			=>	$record["nazione"] == "IT" ? " " : "dpd",
 						"departureDepot"	=>	$params["codice_sede"],
 						"senderCustomerCode"=>	$params["codice_cliente"],
 						"deliveryFreightTypeCode"	=>	"DAP",

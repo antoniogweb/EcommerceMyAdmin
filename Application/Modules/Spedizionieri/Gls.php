@@ -30,7 +30,7 @@ class Gls extends Spedizioniere
 			"indirizzo"			=>	35,
 			"citta"				=>	30,
 			"cap"				=>	7,
-			"provincia"			=>	2,
+// 			"provincia"			=>	2,
 			"codice_bda"		=>	11,
 			"contrassegno"		=>	10,
 			"importo_assicurazione"	=>	11,
@@ -38,6 +38,19 @@ class Gls extends Spedizioniere
 			"assicurazione_integrativa"	=>	1,
 		),
 	);
+	
+	protected function condizioniSpecificheCorriere(SpedizioninegozioModel $spedizione)
+	{
+		$nazione = Params::$arrayToValidate["nazione"] ?? $_POST["nazione"] ?? "IT";
+		
+		if ($nazione == "IT")
+			$spedizione->addSoftCondition("update",'checkLength|2',"provincia");
+		else
+		{
+			$spedizione->addSoftCondition("update",'checkLength|50',"ragione_sociale_2");
+			$spedizione->addStrongCondition("update",'checkNotEmpty|',"telefono");
+		}
+	}
 	
 	public function isAttivo()
 	{
@@ -55,6 +68,11 @@ class Gls extends Spedizioniere
 	public function gCampiSpedizione()
 	{
 		return array('codice_pagamento_contrassegno', 'codice_bda', 'importo_assicurazione', 'assicurazione_integrativa', 'formato_etichetta_pdf');
+	}
+	
+	public function gCampiIndirizzo()
+	{
+		return array('ragione_sociale_2');
 	}
 	
 	public function gCodiciPagamentoContrassegno()
@@ -175,6 +193,14 @@ class Gls extends Spedizioniere
 					if (count($serviziAccessori) > 0)
 						$temp["ServiziAccessori"] = implode(",", $serviziAccessori);
 					
+					if ($record["nazione"] != "IT")
+					{
+						$temp["Provincia"] = $record["nazione"];
+						$temp["TipoSpedizione"] = "P";
+						$temp["PersonaRiferimento"] = $record["ragione_sociale_2"];
+						$temp["TelefonoDestinatario"] = $record["telefono"];
+					}
+					
 					$parcelArray[] = $temp;
 				}
 			}
@@ -189,6 +215,8 @@ class Gls extends Spedizioniere
 			$xmlArray = array(
 				"Info"	=>	$info,
 			);
+			
+// 			print_r($xmlArray);die();
 			
 			return $xmlArray;
 		}
