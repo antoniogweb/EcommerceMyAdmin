@@ -12,6 +12,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         '979dffec6fa5205cabd2c2cd1e9e6b3a' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/Http/Psr7/functions.php',
         '6783aef8c489bbc166eee2536fe605d5' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/functions.php',
@@ -23,6 +24,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         's' => 
         array (
             'setasign\\Fpdi\\' => 14,
+        ),
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
         ),
         'S' => 
         array (
@@ -37,6 +42,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Psr\\Http\\Client\\' => 16,
             'PhpParser\\' => 10,
             'PhpOffice\\PhpWord\\' => 18,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'M' => 
         array (
@@ -45,6 +51,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Mpdf\\' => 5,
             'MatthiasMullie\\PathConverter\\' => 29,
             'MatthiasMullie\\Minify\\' => 22,
+            'Matrix\\' => 7,
         ),
         'L' => 
         array (
@@ -79,6 +86,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         ),
         'C' => 
         array (
+            'Complex\\' => 8,
             'Clue\\StreamFilter\\' => 18,
         ),
         'A' => 
@@ -92,6 +100,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'setasign\\Fpdi\\' => 
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
         'Sendpulse\\RestApi\\' => 
         array (
@@ -126,6 +138,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
         ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
         'Mpdf\\PsrLogAwareTrait\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/psr-log-aware-trait/src',
@@ -145,6 +161,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'MatthiasMullie\\Minify\\' => 
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
+        ),
+        'Matrix\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
         'Laminas\\Escaper\\' => 
         array (
@@ -198,6 +218,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
+        'Complex\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
         'Clue\\StreamFilter\\' => 
         array (
             0 => __DIR__ . '/..' . '/clue/stream-filter/src',
@@ -209,6 +233,16 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Algolia\\AlgoliaSearch\\' => 
         array (
             0 => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
         ),
     );
 
@@ -887,6 +921,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$classMap;
 
         }, null, ClassLoader::class);

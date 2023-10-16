@@ -63,7 +63,7 @@
 						<td><b class="label label-success"><?php echo $spedizione["spedizioni_negozio"]["numero_spedizione"];?></b></td>
 					</tr>
 					<?php } ?>
-					<?php if ($spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
+					<?php if ($statoSpedizione != "A" && $spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
 					<tr>
 						<td><?php echo gtext("Lettera di vettura");?>:</td>
 						<td><a target="_blank" class="badge bg-purple" href="<?php echo $this->baseUrl."/spedizioninegozio/letteradivettura/".(int)$id;?>"><?php echo gtext("Scarica");?> <i class="fa fa-download"></i></a></td>

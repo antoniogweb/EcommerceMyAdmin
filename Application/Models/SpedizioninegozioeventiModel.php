@@ -204,7 +204,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		
 		$spedizione = SpedizioninegozioModel::g()->selectId((int)$record["id_spedizione_negozio"]);
 		
-		if (!empty($spedizione) && !SpedizioninegozioModel::aperto((int)$record["id_spedizione_negozio"]))
+		if (!empty($spedizione) && $spedizione["numero_spedizione"] && !SpedizioninegozioModel::aperto((int)$record["id_spedizione_negozio"]))
 			return $spedizione["numero_spedizione"];
 		
 		return "";
