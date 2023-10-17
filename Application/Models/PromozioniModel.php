@@ -510,7 +510,7 @@ class PromozioniModel extends GenericModel {
 		
 		$idMarchisInclusi = $idMarchisEsclusi = array();
 		
-		if (v("usa_marchi"))
+		if (v("usa_marchi") && v("attiva_filtro_marchi_su_promo"))
 		{
 			$idMarchisInclusi = $pm->clear()->select("promozioni_marchi.id_marchio")->inner(array("marchio"))->where(array(
 				"id_p"		=>	(int)$promozione["id_p"],

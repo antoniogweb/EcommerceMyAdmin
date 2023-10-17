@@ -618,7 +618,7 @@ class BaseOrdiniController extends BaseController
 				"codice_transazione"	=>	$codiceTransazione,
 			));
 			
-			$this->m("OrdiniModel")->pUpdate($data["ordine"]["id_o"]);
+// 			$this->m("OrdiniModel")->pUpdate($data["ordine"]["id_o"]);
 			
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array(Parametri::$mailInvioOrdine),
