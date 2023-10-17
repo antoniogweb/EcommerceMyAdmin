@@ -27,7 +27,10 @@
 	</span>
 	
 	<span select2>
-		<?php echo Html_Form::select("includi","",MarchiModel::$attivoSiNo,null,null,"yes","style='min-width:200px'");?>
+		<?php echo Html_Form::select("includi","",array(
+			"1"	=>	gtext("Includi"),
+			"0"	=>	gtext("Escludi"),
+		),null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
 	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
