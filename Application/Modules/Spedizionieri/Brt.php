@@ -327,7 +327,7 @@ class Brt extends Spedizioniere
 				$jsonArray = array(
 					"account"	=>	$account,
 					"createData"	=>	array(
-						"network"			=>	$record["nazione"] == "IT" ? " " : "dpd",
+						"network"			=>	$record["nazione"] == "IT" ? " " : "D",
 						"departureDepot"	=>	$params["codice_sede"],
 						"senderCustomerCode"=>	$params["codice_cliente"],
 						"deliveryFreightTypeCode"	=>	"DAP",
@@ -337,7 +337,7 @@ class Brt extends Spedizioniere
 						"consigneeZIPCode"		=>	$record["cap"],
 						"consigneeCountryAbbreviationISOAlpha2"	=>	$record["nazione"],
 						"consigneeCity"			=>	$record["citta"],
-						"consigneeProvinceAbbreviation"	=>	$record["provincia"],
+						"consigneeProvinceAbbreviation"	=>	$record["nazione"] == "IT" ? $record["provincia"] : "",
 						"consigneeContactName"	=>	$record["ragione_sociale_2"],
 						"consigneeTelephone"	=>	$record["telefono"],
 						"consigneeEMail"		=>	$record["email"],
