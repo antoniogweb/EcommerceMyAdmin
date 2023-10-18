@@ -371,6 +371,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_alimenti"	=>	0, // se mostrare la sezione "alimenti"
 		"mostra_ricette"	=>	0, // se mostrare la sezione "ricette"
 		"mostra_storia"	=>	0, // se mostrare la sezione "storia"
+		"mostra_approfondimenti"	=>	0, // se mostrare la sezione "approfondimenti"
 		## immagini ##
 		"rielabora_width"	=>	3000, // larghezza massima entro cui viene rielaborata l'immagine dopo l'upload
 		"rielabora_height"	=>	3000, // altezza massima entro cui viene rielaborata l'immagine dopo l'upload
