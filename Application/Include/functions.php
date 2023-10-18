@@ -967,6 +967,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[progetti\]/', array($obj,'getFasciaProgetti') ,$string);
 		$string = preg_replace_callback('/\[liste-regalo\]/', array($obj,'getFasciaListeRegalo') ,$string);
 		$string = preg_replace_callback('/\[gift-card\]/', array($obj,'getFasciaGiftCard') ,$string);
+		$string = preg_replace_callback('/\[prodotti_in_pagina\]/', array($obj,'getProdottiInPagina') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{

@@ -434,4 +434,14 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getProdottiInPagina()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_PRODOTTI_IN_PAGINA","", array(
+			"titolo"	=>	"Fascia con carosello prodotti collegati",
+			"percorso"	=>	"Elementi/Fasce/ProdottiInPagina",
+		))));
+		return ob_get_clean();
+	}
 }
