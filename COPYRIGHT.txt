@@ -179,3 +179,8 @@ PHPOffice/PhpSpreadsheet
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/PHPOffice/PhpSpreadsheet
+
+Mobile-Detect
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/serbanghita/Mobile-Detect
