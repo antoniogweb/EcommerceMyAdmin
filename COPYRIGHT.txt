@@ -29,6 +29,11 @@ License:	The MIT License (MIT)
 Copyright (c) 2014-2021 ColorlibHQ
 link: 		https://github.com/ColorlibHQ/AdminLTE
 
+PHPMailer
+-------
+License:	LGPL-2.1 license
+link: 		https://github.com/PHPMailer/PHPMailer
+
 Uikit
 -------
 License:	The MIT License (MIT)
