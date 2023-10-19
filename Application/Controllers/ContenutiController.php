@@ -155,6 +155,11 @@ class ContenutiController extends BaseController
 		
 		$data["titoloRecord"] = $this->m("ContenutiModel")->where(array("id_cont"=>$clean['id']))->field("titolo");
 		
+		$record = $this->m("ContenutiModel")->selectId((int)$id);
+		
+		if (!empty($record))
+			$data["recordTipo"] = $this->m("TipicontenutoModel")->selectId($record["id_tipo"]);
+		
 		$this->append($data);
 	}
 }
