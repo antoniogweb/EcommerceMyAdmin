@@ -4107,7 +4107,7 @@ class PagesModel extends GenericModel {
 	
 	public function setAliasAndCategory()
 	{
-		if (!isset($this->values["alias"]) || !$this->values["alias"])
+		if (isset($this->values["title"]) && (!isset($this->values["alias"]) || !$this->values["alias"]))
 			$this->values["alias"] = "";
 		
 		$c = new CategoriesModel();

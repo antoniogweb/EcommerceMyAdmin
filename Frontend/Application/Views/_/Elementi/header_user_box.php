@@ -2,8 +2,11 @@
 <?php
 if (!isset($ukdropdown))
 	$ukdropdown = "pos: bottom-right; offset: -10; delay-hide: 200;";
+
+if (!isset($divStyle))
+	$divStyle = "min-width: 250px;";
 ?>
-<div class="uk-padding-small uk-margin-remove uk-dropdown" uk-dropdown="<?php echo $ukdropdown;?>" style="min-width: 250px;">
+<div class="uk-padding-small uk-margin-remove uk-dropdown" uk-dropdown="<?php echo $ukdropdown;?>" style="<?php echo $divStyle;?>">
 	<?php if ($islogged) { ?>
 	<?php
 	include(tpf(ElementitemaModel::p("HEADER_USER_BOX_LOGGED","", array(
