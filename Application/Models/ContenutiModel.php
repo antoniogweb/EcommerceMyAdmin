@@ -461,7 +461,7 @@ class ContenutiModel extends GenericModel {
 // // 		print_r($this->db->queries);
 // 	}
 	
-	public function elaboraContenuti($idPage, $idC = 0, $obj = null)
+	public function elaboraContenuti($idPage, $idC = 0, $obj = null, $idTipo = 0, $return = false)
 	{
 		// Estraggo le fasce
 		$this->clear()->select("*")->inner(array("tipo"))->where(array(
@@ -491,6 +491,11 @@ class ContenutiModel extends GenericModel {
 				"contenuti.tema"	=>	sanitizeDb(v("theme_folder")),
 			));
 		
+		if ($idTipo)
+			$this->aWhere(array(
+				"contenuti.id_tipo"	=>	(int)$idTipo,
+			));
+		
 		$idElemento = $idPage ? $idPage : $idC;
 		$controller = $idPage ? "pagine" : "categories";
 		
@@ -498,6 +503,9 @@ class ContenutiModel extends GenericModel {
 		self::$tipoElementoCorrente = $controller;
 		
 		$fasce = $this->send();
+		
+		if ($return)
+			return $fasce;
 		
 		$htmlFinale = "";
 		
@@ -602,5 +610,13 @@ class ContenutiModel extends GenericModel {
 			$c->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
 		
 		return $c->save()->orderBy("contenuti.id_order")->send();
+	}
+	
+	// Restituisce il numero di fasce di quella pagina e di quel tipo
+	public static function numeroFasce($idPage, $idTipo = 0)
+	{
+		$cModel = new ContenutiModel();
+		
+		return count($cModel->elaboraContenuti($idPage,0, null, $idTipo, true));
 	}
 }
