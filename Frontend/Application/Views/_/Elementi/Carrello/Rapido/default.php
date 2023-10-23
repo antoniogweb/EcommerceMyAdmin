@@ -2,7 +2,7 @@
 <div class="card-cart-ajax uk-card uk-card-default uk-card-small uk-flex uk-flex-column" style="min-height:100%;">
 	<header class="uk-card-header">
 		<div class="uk-grid-small uk-flex-1" uk-grid>
-			<div class="uk-width-expand">
+			<div class="uk-width-expand ajax-cart-title">
 				<?php echo gtext("Carrello");?>
 			</div>
 			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" uk-close></button>

@@ -46,6 +46,8 @@
 									
 									<?php echo $form["indirizzo_localita_evento"];?>
 									
+									<?php echo $form["url"];?>
+									
 									<?php echo $form["link_pagina_facebook"];?>
 									
 									<?php echo $form["link_pagina_twitter"];?>

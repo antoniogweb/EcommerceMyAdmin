@@ -44,4 +44,11 @@ class TeamModel extends BasicsectionModel {
 	
 	public function setFilters() {}
 	
+	public function overrideFormStruct()
+	{
+		$this->formStruct["entries"]["url"] = array(
+			'labelString'	=>	'URL sito web',
+		);
+	}
+	
 }
