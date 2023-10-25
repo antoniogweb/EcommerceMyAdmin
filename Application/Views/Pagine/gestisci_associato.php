@@ -2,7 +2,7 @@
 
 <?php if ($this->action === "contenuti") { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>">Aggiungi fascia</a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><?php echo gtext("Aggiungi fascia");?></a></p>
 
 <?php } ?>
 

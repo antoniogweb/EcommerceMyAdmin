@@ -531,10 +531,10 @@ class ContenutiModel extends GenericModel {
 				if ($f["contenuti"]["immagine_2"])
 					$html = preg_replace('/\[srcImmagine2\]/', Url::getFileRoot()."images/contenuti/".$f["contenuti"]["immagine_2"] ,$html);
 				
-				if ($f["contenuti"]["margine_superiore"])
+				if (isset($f["contenuti"]["margine_superiore"]))
 					$html = preg_replace('/\[margineSuperiore\:(.*?)\]/', $f["contenuti"]["margine_superiore"] ,$html);
 				
-				if ($f["contenuti"]["margine_inferiore"])
+				if (isset($f["contenuti"]["margine_inferiore"]))
 					$html = preg_replace('/\[margineInferiore\:(.*?)\]/', $f["contenuti"]["margine_inferiore"] ,$html);
 				
 				$immagineDispositivo = (!User::$isPhone) ? $f["contenuti"]["immagine_1"] : $f["contenuti"]["immagine_2"];
