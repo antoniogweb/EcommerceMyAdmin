@@ -6,7 +6,11 @@
 
 <?php } ?>
 
+<?php if ($this->action === "testi") { ?>
+
 <?php include(ROOT."/Application/Views/gestisci_associato_contenuti.php");?>
+
+<?php } ?>
 
 <?php include($this->viewPath("gestisci_associato_pagine_correlate"));?>
 
