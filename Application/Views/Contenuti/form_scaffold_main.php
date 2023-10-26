@@ -77,6 +77,10 @@ $().ready(function() {
 			
 			<?php echo $form["attivo"];?>
 			
+			<?php if (isset($form["link_libero"])) { ?>
+			<?php echo $form["link_libero"];?>
+			<?php } ?>
+			
 			<?php if (isset($form["link_id_page"]) || isset($form["link_id_c"]) || isset($form["link_id_marchio"]) || isset($form["link_id_tag"])) { ?>
 			<div class="well">
 				<h3>Link a contenuto</h3>

@@ -444,4 +444,14 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getFasciaPartner()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_PARTNER","", array(
+			"titolo"	=>	"Fascia elenco partner",
+			"percorso"	=>	"Elementi/Fasce/Partner",
+		))));
+		return ob_get_clean();
+	}
 }
