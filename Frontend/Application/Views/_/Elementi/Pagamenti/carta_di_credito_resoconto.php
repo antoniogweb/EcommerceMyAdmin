@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (strcmp($tipoOutput,"web") === 0) { ?>
-	<?php if(!isset($actionFromAdmin)) { ?>
+	<?php if(!isset($actionFromAdmin) && isset($pulsantePaga)) { ?>
 		<div class="uk-margin">
 			<?php echo $pulsantePaga;?>
 		</div>

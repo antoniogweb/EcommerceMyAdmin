@@ -568,7 +568,22 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$labelSpedizioniere = App::$isFrontend ? $sp["spedizioni_negozio"]["label_spedizioniere_frontend"] : $sp["spedizioni_negozio"]["label_spedizioniere"];
 			
-			$html .= '<br /><i style="font-size:12px;">'.$labelSpedizioniere.'</i>';
+			if ($labelSpedizioniere)
+				$html .= '<br /><i style="font-size:12px;">'.$labelSpedizioniere.'</i>';
+			
+			if (App::$isFrontend && !in_array($sp["spedizioni_negozio"]["stato"], self::statiSpedizioniNonInviate()))
+			{
+				$modulo = SpedizioninegozioModel::getModulo((int)$sp["spedizioni_negozio"]["id_spedizione_negozio"]);
+				
+				if ($modulo)
+				{
+					$html .= '<br /><a target="_blank" href="'.$modulo->getUrlTracking((int)$sp["spedizioni_negozio"]["id_spedizione_negozio"]).'">'.gtext("Vai al tracking").'</a>';
+					
+					if (date("Y-m-d", strtotime($sp["spedizioni_negozio"]["data_invio"])) == date("Y-m-d"))
+						$html .= '<br />(<i style="font-size:12px;">'.gtext("Il tracking della spedizione potrebbe essere disponibile da domani")."</i>)";
+				}
+			}
+				
 			
 			$html .= "</p>";
 			
