@@ -46,7 +46,7 @@ class SpedizioninegozioinviiModel extends GenericModel {
     
     public function reportCrud($record)
     {	
-		if ($record["spedizioni_negozio_invii"]["stato"] == "C" && SpedizionieriModel::getModulo((int)$record["spedizioni_negozio_invii"]["id_spedizioniere"], true)->metodo("reportPdf"))
+		if (SpedizionieriModel::getModulo((int)$record["spedizioni_negozio_invii"]["id_spedizioniere"], true)->metodo("reportPdf"))
 			return "<a target='_blank' href='".Url::getRoot()."spedizioninegozioinvii/reportpdf/".(int)$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."'><i class='fa fa-download'></i></a>";
 		
 		return "";
@@ -221,7 +221,11 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		$record = $this->selectId((int)$id);
 		
 		if (!empty($record))
+		{
+			$this->collegaSpedizioni($id);
+			
 			SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->reportPdf((int)$id);
+		}
 		
 		return;
 	}

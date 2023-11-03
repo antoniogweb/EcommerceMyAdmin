@@ -81,7 +81,7 @@
 						<td><i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i></td>
 					</tr>
 					<?php } ?>
-					<?php if (count($ordini) > 0) { ?>
+					<?php if (count($ordini) > 0 && $ordini[0]["orders"]["id_o"]) { ?>
 					<tr>
 						<td><?php echo gtext("Ordini");?>:</td>
 						<td>

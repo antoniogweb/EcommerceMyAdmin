@@ -214,7 +214,10 @@ class Spedizioniere
 	
 	protected function getTitoloPdf($record)
 	{
-		return "bordero_".strtoupper($this->params["modulo"])."_invio_del_".date("Y_m_d", strtotime($record["data_elaborazione"])).".pdf";
+		if ($record["data_elaborazione"])
+			return "bordero_".strtoupper($this->params["modulo"])."_invio_del_".date("Y_m_d", strtotime($record["data_elaborazione"])).".pdf";
+		else
+			return "bordero_".strtoupper($this->params["modulo"])."_invio_del_".date("Y_m_d").".pdf";
 	}
 	
 	// Stampa il pdf del borderò dell'invio $id

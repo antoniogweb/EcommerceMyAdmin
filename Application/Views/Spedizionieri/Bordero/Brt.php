@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
 $codiceCliente = $this->params["codice_cliente"];
 $codiceBolla = 1;
-$data = $record["data_elaborazione"];
+$data = $record["data_elaborazione"] ?? date("Y-m-d H:i:s");
 ?>
 <html>
 <head>

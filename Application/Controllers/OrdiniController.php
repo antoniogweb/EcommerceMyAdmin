@@ -50,6 +50,13 @@ Helper_List::$filtersFormLayout["filters"]["gestionale"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["stato_sped"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -83,6 +90,7 @@ class OrdiniController extends BaseController {
 		'prezzi:sanitizeAll'=>'I',
 		'id_page:sanitizeAll'=>'tutti',
 		'titolo:sanitizeAll'=>'tutti',
+		'stato_sped:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -253,7 +261,7 @@ class OrdiniController extends BaseController {
 			$this->m[$this->modelName]->aWhere($where);
 		}
 		
-		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti")
+		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti" || $this->viewArgs["stato_sped"] != "tutti")
 		{
 			$this->m[$this->modelName]->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o");
 			
@@ -266,6 +274,16 @@ class OrdiniController extends BaseController {
 				$this->m[$this->modelName]->aWhere(array(
 					"righe.id_page"	=>	$this->viewArgs['id_page'],
 				));
+			
+			if ($this->viewArgs['stato_sped'] != "tutti")
+			{
+				$this->m[$this->modelName]
+					->inner("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")
+					->inner("spedizioni_negozio")->on("spedizioni_negozio_righe.id_spedizione_negozio = spedizioni_negozio.id_spedizione_negozio")
+					->aWhere(array(
+						"spedizioni_negozio.stato"	=>	$this->viewArgs['stato_sped'],
+					));
+			}
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")
@@ -367,6 +385,15 @@ class OrdiniController extends BaseController {
 				"I"		=>	gtext("Inviato"),
 				"N"		=>	gtext("NON inviato"),
 			));
+		
+		if (v("attiva_gestione_spedizioni"))
+		{
+			$filtroStato = array(
+				"tutti"		=>	"Stato spedizione",
+			) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
+			
+			$this->filters[] = array("stato_sped",null,$filtroStato);
+		}
 		
 		parent::main();
 	}

@@ -375,9 +375,12 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$html = "";
 		
-		foreach ($ordini as $ordine)
+		if (count($ordini) > 0 && $ordini[0]["orders"]["id_o"])
 		{
-			$html .= "<span style='margin-right:2px;' class='label label-".OrdiniModel::getLabelStato($ordine["orders"]["stato"])."'>#".$ordine["orders"]["id_o"]."</span>";
+			foreach ($ordini as $ordine)
+			{
+				$html .= "<span style='margin-right:2px;' class='label label-".OrdiniModel::getLabelStato($ordine["orders"]["stato"])."'>#".$ordine["orders"]["id_o"]."</span>";
+			}
 		}
 		
 		return $html;

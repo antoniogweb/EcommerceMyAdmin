@@ -87,7 +87,7 @@ class Gls extends Spedizioniere
 	
 	public function gFormatiEtichetta()
 	{
-		return ['A6', 'A5'];
+		return ['A5', 'A6'];
 	}
 	
 	public function gAssicurazioneIntegrativa()

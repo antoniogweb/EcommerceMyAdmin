@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
 $nomeCliente = $this->getParam("ragione_sociale_cliente");
 $codiceContratto = $this->getParam("codice_contratto");
-$data = $record["data_elaborazione"];
+$data = $record["data_elaborazione"] ?? date("Y-m-d H:i:s");
 ?>
 <html>
 <head>
