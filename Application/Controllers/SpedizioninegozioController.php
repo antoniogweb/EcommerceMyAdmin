@@ -425,13 +425,13 @@ class SpedizioninegozioController extends BaseController {
 	}
 	
 	// Setta la spedizione come aperta (stato = A) la spedizione $id
-	public function apri($id = 0)
+	public function apri($id = 0, $forza = 0)
 	{
 		$this->shift(1);
 		
 		$this->clean();
 		
-		if (!$this->m($this->modelName)->apri($id))
+		if (!$this->m($this->modelName)->apri($id, $forza))
 			flash("notice",$this->m($this->modelName)->notice);
 		
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);

@@ -427,7 +427,7 @@ class Brt extends Spedizioniere
 				if (isset($response))
 				{
 					// Salvo il log dell'input e dell'output
-					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", json_encode($jsonArray), "JSON");
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteResponse", json_encode($response), "JSON");
 				}
 				
@@ -455,7 +455,7 @@ class Brt extends Spedizioniere
 				if (isset($result["createResponse"]) && $result["createResponse"]["executionMessage"]["code"] >= 0)
 				{
 					// Salvo il log dell'invio e dell'output
-					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", json_encode($jsonArray), "JSON");
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createResponse", json_encode($result), "JSON");
 					
 					if (isset($result["createResponse"]["labels"]["label"][0]))
@@ -494,7 +494,7 @@ class Brt extends Spedizioniere
 			)
 			{
 				// Salvo il log dell'invio e dell'output
-				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmRequest", json_encode($jsonArray), "JSON");
+				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmResponse", json_encode($result), "JSON");
 				
 				$this->scriviLogConfermata((int)$id);

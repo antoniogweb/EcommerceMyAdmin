@@ -259,6 +259,8 @@ class Gls extends Spedizioniere
 			
 			$xml = aToX(array("InputDelete"=>$info), "", true, true);
 			
+			$xml = $this->oscuraPassword($xml);
+			
 			// Salvo il log dell'input e dell'output
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InputDelete", $xml, "XML");
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "OutputDelete", $res->DeleteSpedResult->any, "XML");
@@ -284,6 +286,8 @@ class Gls extends Spedizioniere
 			$xmlObj = simplexml_load_string($infoLabel);
 			
 			// Salvo il log dell'invio e dell'output
+			$xml = $this->oscuraPassword($xml);
+			
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "XMLInfoParcel", $xml, "XML");
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InfoLabel", $infoLabel, "XML");
 			
@@ -316,6 +320,7 @@ class Gls extends Spedizioniere
 		
 		$xmlObj = simplexml_load_string($listParcel);
 		
+		$xml = $this->oscuraPassword($xml);
 		// Salvo il log dell'invio e dell'output
 		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "XMLCloseInfoParcel", $xml, "XML");
 		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "ListParcel", $listParcel, "XML");

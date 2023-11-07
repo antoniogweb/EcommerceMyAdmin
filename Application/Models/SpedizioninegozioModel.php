@@ -144,6 +144,11 @@ class SpedizioninegozioModel extends FormModel {
 		return array("II","E");
 	}
 	
+	public static function statiSpedizioniApribili()
+	{
+		return array("I","II","E");
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$this->setProvinciaFatturazione();
@@ -740,13 +745,13 @@ class SpedizioninegozioModel extends FormModel {
 		return $stato == "I" ? true : false;
 	}
 	
-	public function apri($id)
+	public function apri($id, $forza = false)
 	{
 		$record = $this->clear()->selectId((int)$id);
 		
-		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
+		if (!empty($record) && (SpedizioninegozioModel::pronta((int)$id) || $forza))
 		{
-			if (SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->eliminaSpedizione((int)$id, $this))
+			if (SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->eliminaSpedizione((int)$id, $this) || $forza)
 			{
 				$data = new Data_Spedizioni_Result();
 				$values = $data->toArray();

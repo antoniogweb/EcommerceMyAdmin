@@ -262,4 +262,9 @@ class Spedizioniere
 	{
 		return $output;
 	}
+	
+	public function oscuraPassword($input)
+	{
+		return str_replace($this->getParam("password_cliente"),"XXXX", $input);
+	}
 }
