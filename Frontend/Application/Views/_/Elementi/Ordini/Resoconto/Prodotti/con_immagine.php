@@ -23,7 +23,7 @@
 					<?php echo gtext("Prezzo");?> <?php if (!v("prezzi_ivati_in_carrello")) { ?><?php echo gtext("IVA esclusa")?><?php } ?>
 				</div>
 				<div>
-					<?php echo gtext("Quantita");?>
+					<?php echo gtext("Quantità");?>
 				</div>
 				<div class="uk-text-right">
 					<?php echo gtext("Totale");?>
