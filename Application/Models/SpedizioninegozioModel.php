@@ -119,6 +119,19 @@ class SpedizioninegozioModel extends FormModel {
 		);
 	}
 	
+	public function selectNazione($empty = false)
+	{
+		$n = new NazioniModel();
+		
+		if (!isset(NazioniModel::$elenco))
+		{
+			$default = $empty ? array("W"	=>	"Tutte le nazioni") : array(""	=>	"Seleziona");
+			NazioniModel::$elenco = $default + $n->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+		}
+		
+		return NazioniModel::$elenco;
+	}
+	
 	public function gSelectTemplate($id)
 	{
 		$record = $this->selectId((int)$id);
