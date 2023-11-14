@@ -611,7 +611,7 @@ class Brt extends Spedizioniere
 			$createResponse = json_decode($createResponse, true);
 			
 			if (isset($createResponse["createResponse"]["parcelNumberFrom"]) && isset($createResponse["createResponse"]["parcelNumberTo"]))
-				return array((int)$createResponse["createResponse"]["parcelNumberFrom"], (int)$createResponse["createResponse"]["parcelNumberTo"]);
+				return array($createResponse["createResponse"]["parcelNumberFrom"], $createResponse["createResponse"]["parcelNumberTo"]);
 		}
 		
 		return array("", "");
