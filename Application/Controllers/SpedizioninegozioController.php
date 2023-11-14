@@ -452,11 +452,14 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
-	public function controllaspedizioni($id = 0)
+	public function controllaspedizioni($id = 0, $forza = 0)
 	{
 		$this->shift(1);
 		
 		$this->clean();
+		
+		if ($forza)
+			Spedizioniere::$forzaRichiestaInfo = true;
 		
 		$this->m($this->modelName)->controllaStatoSpedizioniInviate((int)$id);
 	}

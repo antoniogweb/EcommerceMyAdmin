@@ -28,6 +28,8 @@ class Spedizioniere
 	
 	use Modulo;
 	
+	public static $forzaRichiestaInfo = false;
+	
 	public function getDataConsegna($idSpedizione)
 	{
 		return null;
@@ -249,6 +251,9 @@ class Spedizioniere
 	{
 		if (!empty($spedizione))
 		{
+			if (self::$forzaRichiestaInfo)
+				return true;
+			
 			$time = time() - self::TIME_CHECK_TRACKING;
 			
 			if ((int)$spedizione["time_ultima_richiesta_tracking"] < $time)

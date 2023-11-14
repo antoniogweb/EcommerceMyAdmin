@@ -80,10 +80,13 @@
 						<td><a target="_blank" href="<?php echo $modulo->getUrlTracking((int)$id);?>"><?php echo gtext("Pagina del tracking")?> <i class="fa fa-arrow-right"></i></a></td>
 					</tr>
 					<?php } ?>
-					<?php if (!SpedizioninegozioModel::aperto((int)$id) && $spedizione["spedizioni_negozio"]["label_spedizioniere"]) { ?>
+					<?php if (in_array($statoSpedizione, SpedizioninegozioModel::statiSpedizioniInviate())) { ?>
 					<tr>
 						<td><?php echo gtext("Label spedizioniere");?>:</td>
-						<td><i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i></td>
+						<td>
+							<a href="<?php echo $this->baseUrl."/spedizioninegozio/controllaspedizioni/".(int)$id."/1";?>" class="ajlink pull-right btn btn-info btn-xs"><i class="fa fa-refresh"></i> <?php echo gtext("Aggiorna");?></a>
+							<i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i>
+						</td>
 					</tr>
 					<?php } ?>
 					<?php if (count($ordini) > 0 && $ordini[0]["orders"]["id_o"]) { ?>
