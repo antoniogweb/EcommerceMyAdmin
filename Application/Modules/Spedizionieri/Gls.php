@@ -470,16 +470,19 @@ class Gls extends Spedizioniere
 			
 			$labelSpedizioniereFrontend = (string)$codiceSpedizioniere === (string)909 ? "" : $labelSpedizioniere;
 			
-			$spnModel->sValues(array(
-				"struttura_info_tracking"			=>	$trackingInfo,
-				"time_ultima_richiesta_tracking"	=>	time(),
-				"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
-				"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
-			), "sanitizeDb");
-			
-			$spnModel->pUpdate((int)$idSpedizione);
-			
-			$this->scriviLogInfoTracking((int)$idSpedizione);
+			if ($labelSpedizioniere)
+			{
+				$spnModel->sValues(array(
+					"struttura_info_tracking"			=>	$trackingInfo,
+					"time_ultima_richiesta_tracking"	=>	time(),
+					"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
+					"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
+				), "sanitizeDb");
+				
+				$spnModel->pUpdate((int)$idSpedizione);
+				
+				$this->scriviLogInfoTracking((int)$idSpedizione);
+			}
 		}
 	}
 	
