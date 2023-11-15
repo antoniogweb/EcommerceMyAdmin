@@ -64,7 +64,7 @@ class SpedizioninegozioinviiController extends BaseController {
 		
 		$this->colProperties = array();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'prenotabordero');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'');
 		
 		$this->shift();
 		
@@ -74,16 +74,22 @@ class SpedizioninegozioinviiController extends BaseController {
 		$this->m[$this->modelName]->select("*")->inner(array("spedizioniere"))->orderBy("spedizioni_negozio_invii.data_spedizione desc,spedizioni_negozio_invii.id_spedizione_negozio_invio desc")->convert()->save();
 		
 		parent::main();
+		
+		$data["spedizionieri_attivi"] = SpedizionieriModel::g()->where(array(
+			"attivo"	=>	1,
+		))->send(false);
+		
+		$this->append($data);
 	}
 	
 	// Prenota il borderò
-	public function prenota()
+	public function prenota($idspedizioniere = 0)
 	{
 		$this->shift();
 		
 		$this->clean();
 		
-		$this->m[$this->modelName]->prenota();
+		$this->m[$this->modelName]->prenota($idspedizioniere);
 		
 		$this->redirect("spedizioninegozioinvii/main".$this->viewStatus);
 	}

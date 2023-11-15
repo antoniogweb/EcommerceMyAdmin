@@ -150,7 +150,7 @@ class Gls extends Spedizioniere
 				{
 					$temp = array(
 						"CodiceContrattoGls"	=>	$params["codice_contratto"],
-						"RagioneSociale"		=>	$record["ragione_sociale"],
+						"RagioneSociale"		=>	$record["ragione_sociale_2"],
 						"Indirizzo"				=>	$record["indirizzo"],
 						"Localita"				=>	$record["citta"],
 						"Zipcode"				=>	$record["cap"],

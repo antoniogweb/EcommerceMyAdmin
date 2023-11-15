@@ -332,7 +332,7 @@ class Brt extends Spedizioniere
 						"senderCustomerCode"=>	$params["codice_cliente"],
 						"deliveryFreightTypeCode"	=>	"DAP",
 						"serviceType"			=>	$record["tipo_servizio"],
-						"consigneeCompanyName"	=>	$record["ragione_sociale"],
+						"consigneeCompanyName"	=>	$record["ragione_sociale_2"],
 						"consigneeAddress"		=>	$record["indirizzo"],
 						"consigneeZIPCode"		=>	$record["cap"],
 						"consigneeCountryAbbreviationISOAlpha2"	=>	$record["nazione"],
