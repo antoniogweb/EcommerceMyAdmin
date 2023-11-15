@@ -127,7 +127,7 @@ class ApplicazioniModel extends GenericModel {
 				{
 					$sql = file_get_contents($file);
 					
-					if ($mysqli->query($sql))
+					if ($mysqli->query($sql) !== false)
 					{
 						fwrite($hand,date("Y-m-d H:i:s")." APPLICATA MIGRAZIONE ".$numero.".sql\n");
 						echo "APPLICATA MIGRAZIONE ".$numero.".sql<br />";
