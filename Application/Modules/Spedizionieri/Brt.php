@@ -534,7 +534,7 @@ class Brt extends Spedizioniere
 	
 	public function getLabelNumeroSpedizione()
 	{
-		return gtext("ID collo BRT");
+		return gtext("ID collo cliente");
 	}
 	
 	// Stampa o genera il segnacollo della spedizione
