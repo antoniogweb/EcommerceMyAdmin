@@ -1018,6 +1018,9 @@ class SpedizioninegozioModel extends FormModel {
 				// Recupero le informazioni dal server del corriere
 				$modulo->getInfo($sp["id_spedizione_negozio"]);
 				
+				// Attendi 200 milli secondi
+				usleep(200000);
+				
 				if ($elaboraSpedizione)
 				{
 					if ($modulo->consegnata($sp["id_spedizione_negozio"])) // Se consegnata
