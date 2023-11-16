@@ -642,6 +642,9 @@ class CategoriesModel extends HierarchicalModel {
 	//controlla l'accesso alla categoria e restituisce vero o falso
 	public function check($id_c)
 	{
+		if (!v("attiva_accessibilita_categorie"))
+			return true;
+		
 		$clean['id_c'] = (int)$id_c;
 		
 		$parents = $this->parents($clean['id_c'], true, false);
