@@ -18,7 +18,12 @@
 				<table style="margin-bottom:5px !important;" class="table table-striped">
 					<tr>
 						<td><?php echo gtext("Stato");?>:</td>
-						<td><span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span></td>
+						<td>
+							<?php if (in_array($spedizione["spedizioni_negozio"]["stato"], SpedizioninegozioModel::statiSpedizioniApribili())) { ?>
+							<a href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."/1".$this->viewStatus;?>" confirm-message="<?php echo gtext("Attenzione, la spedizione non verrà cancellata nei server del corriere. Se possibile, procedere aprendo la spedizione normalmente.")?>" class="pull-right text text-danger confirm make_spinner_confirm" title="<?php echo gtext("Forza allo stato aperto");?>"><i class="fa fa-unlock"></i></a>
+							<?php } ?>
+							<span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span>
+						</td>
 					</tr>
 					<tr>
 						<td><?php echo gtext("Spedizioniere");?>:</td>
@@ -75,10 +80,13 @@
 						<td><a target="_blank" href="<?php echo $modulo->getUrlTracking((int)$id);?>"><?php echo gtext("Pagina del tracking")?> <i class="fa fa-arrow-right"></i></a></td>
 					</tr>
 					<?php } ?>
-					<?php if (!SpedizioninegozioModel::aperto((int)$id) && $spedizione["spedizioni_negozio"]["label_spedizioniere"]) { ?>
+					<?php if (in_array($statoSpedizione, SpedizioninegozioModel::statiSpedizioniInviate())) { ?>
 					<tr>
 						<td><?php echo gtext("Label spedizioniere");?>:</td>
-						<td><i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i></td>
+						<td>
+							<a href="<?php echo $this->baseUrl."/spedizioninegozio/controllaspedizioni/".(int)$id."/1";?>" class="ajlink pull-right btn btn-info btn-xs"><i class="fa fa-refresh"></i> <?php echo gtext("Aggiorna");?></a>
+							<i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i>
+						</td>
 					</tr>
 					<?php } ?>
 					<?php if (count($ordini) > 0 && $ordini[0]["orders"]["id_o"]) { ?>

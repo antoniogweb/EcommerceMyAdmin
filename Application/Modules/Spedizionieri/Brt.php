@@ -332,7 +332,7 @@ class Brt extends Spedizioniere
 						"senderCustomerCode"=>	$params["codice_cliente"],
 						"deliveryFreightTypeCode"	=>	"DAP",
 						"serviceType"			=>	$record["tipo_servizio"],
-						"consigneeCompanyName"	=>	$record["ragione_sociale"],
+						"consigneeCompanyName"	=>	$record["ragione_sociale_2"],
 						"consigneeAddress"		=>	$record["indirizzo"],
 						"consigneeZIPCode"		=>	$record["cap"],
 						"consigneeCountryAbbreviationISOAlpha2"	=>	$record["nazione"],
@@ -427,7 +427,7 @@ class Brt extends Spedizioniere
 				if (isset($response))
 				{
 					// Salvo il log dell'input e dell'output
-					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", json_encode($jsonArray), "JSON");
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteResponse", json_encode($response), "JSON");
 				}
 				
@@ -455,7 +455,7 @@ class Brt extends Spedizioniere
 				if (isset($result["createResponse"]) && $result["createResponse"]["executionMessage"]["code"] >= 0)
 				{
 					// Salvo il log dell'invio e dell'output
-					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", json_encode($jsonArray), "JSON");
+					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createResponse", json_encode($result), "JSON");
 					
 					if (isset($result["createResponse"]["labels"]["label"][0]))
@@ -494,7 +494,7 @@ class Brt extends Spedizioniere
 			)
 			{
 				// Salvo il log dell'invio e dell'output
-				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmRequest", json_encode($jsonArray), "JSON");
+				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 				SpedizioninegozioinfoModel::g(false)->inserisci($id, "confirmResponse", json_encode($result), "JSON");
 				
 				$this->scriviLogConfermata((int)$id);
@@ -534,7 +534,7 @@ class Brt extends Spedizioniere
 	
 	public function getLabelNumeroSpedizione()
 	{
-		return gtext("ID collo BRT");
+		return gtext("ID collo cliente");
 	}
 	
 	// Stampa o genera il segnacollo della spedizione
@@ -611,7 +611,7 @@ class Brt extends Spedizioniere
 			$createResponse = json_decode($createResponse, true);
 			
 			if (isset($createResponse["createResponse"]["parcelNumberFrom"]) && isset($createResponse["createResponse"]["parcelNumberTo"]))
-				return array((int)$createResponse["createResponse"]["parcelNumberFrom"], (int)$createResponse["createResponse"]["parcelNumberTo"]);
+				return array($createResponse["createResponse"]["parcelNumberFrom"], $createResponse["createResponse"]["parcelNumberTo"]);
 		}
 		
 		return array("", "");
@@ -631,7 +631,7 @@ class Brt extends Spedizioniere
 		{
 			if ($spedizione["numero_spedizione"])
 				return "https://vas.brt.it/vas/sped_det_show.hsm?ChiSono=".$spedizione["numero_spedizione"];
-			else if ($spedizione["codice_bda"])
+			else
 				return "https://vas.brt.it/vas/sped_RicDocMit_load.hsm?docmit=".$spedizione["riferimento_mittente_numerico"]."&rma=".$spedizione["riferimento_mittente_alfa"]."&ksu=".$params["codice_cliente"];
 		}
 		

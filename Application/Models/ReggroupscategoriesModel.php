@@ -51,7 +51,7 @@ class ReggroupscategoriesModel extends GenericModel {
 			
 			if (count($res3) > 0)
 			{
-				$this->notice = "<div class='alert'>Questo gruppo è già stato associato a questa categoria</div>";
+				$this->notice = "<div class='alert alert-danger'>Questo gruppo è già stato associato a questa categoria</div>";
 			}
 			else
 			{
@@ -72,13 +72,13 @@ class ReggroupscategoriesModel extends GenericModel {
 				}
 				else
 				{
-					$this->notice = "<div class='alert'>Non puoi associare questo gruppo</div>";
+					$this->notice = "<div class='alert alert-danger'>Non puoi associare questo gruppo</div>";
 				}
 			}
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+			$this->notice = "<div class='alert alert-danger'>Questo elemento non esiste</div>";
 		}
 	}
 	

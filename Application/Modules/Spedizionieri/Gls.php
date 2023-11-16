@@ -150,7 +150,7 @@ class Gls extends Spedizioniere
 				{
 					$temp = array(
 						"CodiceContrattoGls"	=>	$params["codice_contratto"],
-						"RagioneSociale"		=>	$record["ragione_sociale"],
+						"RagioneSociale"		=>	$record["ragione_sociale_2"],
 						"Indirizzo"				=>	$record["indirizzo"],
 						"Localita"				=>	$record["citta"],
 						"Zipcode"				=>	$record["cap"],
@@ -259,6 +259,8 @@ class Gls extends Spedizioniere
 			
 			$xml = aToX(array("InputDelete"=>$info), "", true, true);
 			
+			$xml = $this->oscuraPassword($xml);
+			
 			// Salvo il log dell'input e dell'output
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InputDelete", $xml, "XML");
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "OutputDelete", $res->DeleteSpedResult->any, "XML");
@@ -284,6 +286,8 @@ class Gls extends Spedizioniere
 			$xmlObj = simplexml_load_string($infoLabel);
 			
 			// Salvo il log dell'invio e dell'output
+			$xml = $this->oscuraPassword($xml);
+			
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "XMLInfoParcel", $xml, "XML");
 			SpedizioninegozioinfoModel::g(false)->inserisci($idS, "InfoLabel", $infoLabel, "XML");
 			
@@ -316,6 +320,7 @@ class Gls extends Spedizioniere
 		
 		$xmlObj = simplexml_load_string($listParcel);
 		
+		$xml = $this->oscuraPassword($xml);
 		// Salvo il log dell'invio e dell'output
 		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "XMLCloseInfoParcel", $xml, "XML");
 		SpedizioninegozioinfoModel::g(false)->inserisciinvio($idInvio, "ListParcel", $listParcel, "XML");
@@ -465,16 +470,19 @@ class Gls extends Spedizioniere
 			
 			$labelSpedizioniereFrontend = (string)$codiceSpedizioniere === (string)909 ? "" : $labelSpedizioniere;
 			
-			$spnModel->sValues(array(
-				"struttura_info_tracking"			=>	$trackingInfo,
-				"time_ultima_richiesta_tracking"	=>	time(),
-				"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
-				"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
-			), "sanitizeDb");
-			
-			$spnModel->pUpdate((int)$idSpedizione);
-			
-			$this->scriviLogInfoTracking((int)$idSpedizione);
+			if ($labelSpedizioniere)
+			{
+				$spnModel->sValues(array(
+					"struttura_info_tracking"			=>	$trackingInfo,
+					"time_ultima_richiesta_tracking"	=>	time(),
+					"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
+					"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
+				), "sanitizeDb");
+				
+				$spnModel->pUpdate((int)$idSpedizione);
+				
+				$this->scriviLogInfoTracking((int)$idSpedizione);
+			}
 		}
 	}
 	

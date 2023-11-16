@@ -740,6 +740,9 @@ class BaseContenutiController extends BaseController
 			'search:sanitizeAll'	=>	"",
 		);
 		
+		if (v("attiva_ricerca_documento"))
+			$argKeys["searchdoc:sanitizeAll"] = "";
+		
 		$this->setArgKeys($argKeys);
 		$this->shift(count($this->originalPageArgs));
 		
@@ -962,6 +965,17 @@ class BaseContenutiController extends BaseController
 			$this->load("api_output");
 	}
 	
+	// Aggiungo la parte di JOIN con documenti e il cerca per titolo documento
+	protected function getSearchWhereDoc()
+	{
+		$this->m("PagesModel")->inner(array("documenti"))->addJoinTraduzione(null, "contenuti_tradotti_documenti", false, new DocumentiModel());
+		
+		if (Params::$lang == Params::$defaultFrontEndLanguage)
+			$this->m("PagesModel")->sWhere(array("documenti.titolo like ?", array("%".$this->viewArgs["searchdoc"]."%")));
+		else
+			$this->m("PagesModel")->sWhere(array("contenuti_tradotti_documenti.titolo like ?", array("%".$this->viewArgs["searchdoc"]."%")));
+	}
+	
 	protected function getSearchWhere($argName = "s")
 	{
 		Cache_Db::$skipWritingCache = true;
@@ -1033,6 +1047,9 @@ class BaseContenutiController extends BaseController
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
 			$this->m("PagesModel")->aWhere($this->getSearchWhere("search"));
+		
+		if (v("attiva_ricerca_documento") && strcmp($this->viewArgs["searchdoc"],"") !== 0)
+			$this->getSearchWhereDoc();
 		
 		// Where figli
 		if (in_array("[categoria]",$escludi))

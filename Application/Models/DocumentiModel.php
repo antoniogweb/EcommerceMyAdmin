@@ -416,14 +416,12 @@ class DocumentiModel extends GenericModel {
 	//duplica gli elementi della pagina
 	public function duplica($from_id, $to_id, $field = "id_page")
 	{
+		self::$uploadFile = false;
+		
 		$dl = new DocumentilingueModel();
 		
 		$clean["from_id"] = (int)$from_id;
 		$clean["to_id"] = (int)$to_id;
-		
-		// Elimino la combinazione creata in automatico
-		if ($this->_tables == 'combinazioni')
-			$this->pDel(null, "id_page = ".$clean["to_id"]);
 		
 		$res = $this->clear()->where(array("id_page"=>$clean["from_id"]))->orderBy($this->_idFields)->send(false);
 		
@@ -511,6 +509,18 @@ class DocumentiModel extends GenericModel {
 		if (!$idUser)
 			$idUser = User::$id;
 		
+		// Controllo l'accesso alla categoria di appartenenza della pagina del documento
+		if (v("attiva_accessibilita_categorie"))
+		{
+			$record = $this->selectId((int)$idDoc);
+			
+			$pModel = new PagesModel();
+			
+			if (!empty($record) && !$pModel->check($record["id_page"]))
+				return false;
+		}
+		
+		// Controllo l'accesso ai documenti digitali
 		$documento = $this->clear()->inner(array("page"))->where(array(
 			"id_doc"					=>	(int)$idDoc,
 			"pages.prodotto_digitale"	=>	1,

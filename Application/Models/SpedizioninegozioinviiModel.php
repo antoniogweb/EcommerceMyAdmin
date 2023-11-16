@@ -110,11 +110,20 @@ class SpedizioninegozioinviiModel extends GenericModel {
 	}
 	
 	// Prenota l'invio e collega tutte le spedizioni pronte
-    public function prenota()
+    public function prenota($idspedizioniere = 0)
     {
-		$arrayIdSpedizionieri = SpedizionieriModel::g()->where(array(
+		$spedizModel = new SpedizionieriModel();
+		
+		$spedizModel->where(array(
 			"attivo"	=>	1,
-		))->toList("id_spedizioniere")->send();
+		))->toList("id_spedizioniere");
+		
+		if ($idspedizioniere)
+			$spedizModel->aWhere(array(
+				"id_spedizioniere"	=>	(int)$idspedizioniere,
+			));
+		
+		$arrayIdSpedizionieri = $spedizModel->send();
 		
 		foreach ($arrayIdSpedizionieri as $idSpedizioniere)
 		{
@@ -222,7 +231,7 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		
 		if (!empty($record))
 		{
-			$this->collegaSpedizioni($id);
+// 			$this->collegaSpedizioni($id);
 			
 			SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->reportPdf((int)$id);
 		}

@@ -119,6 +119,19 @@ class SpedizioninegozioModel extends FormModel {
 		);
 	}
 	
+	public function selectNazione($empty = false)
+	{
+		$n = new NazioniModel();
+		
+		if (!isset(NazioniModel::$elenco))
+		{
+			$default = $empty ? array("W"	=>	"Tutte le nazioni") : array(""	=>	"Seleziona");
+			NazioniModel::$elenco = $default + $n->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+		}
+		
+		return NazioniModel::$elenco;
+	}
+	
 	public function gSelectTemplate($id)
 	{
 		$record = $this->selectId((int)$id);
@@ -142,6 +155,11 @@ class SpedizioninegozioModel extends FormModel {
 	public static function statiSpedizioniInviate()
 	{
 		return array("II","E");
+	}
+	
+	public static function statiSpedizioniApribili()
+	{
+		return array("I","II","E");
 	}
 	
 	public function update($id = null, $where = null)
@@ -740,13 +758,13 @@ class SpedizioninegozioModel extends FormModel {
 		return $stato == "I" ? true : false;
 	}
 	
-	public function apri($id)
+	public function apri($id, $forza = false)
 	{
 		$record = $this->clear()->selectId((int)$id);
 		
-		if (!empty($record) && SpedizioninegozioModel::pronta((int)$id))
+		if (!empty($record) && (SpedizioninegozioModel::pronta((int)$id) || $forza))
 		{
-			if (SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->eliminaSpedizione((int)$id, $this))
+			if (SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->eliminaSpedizione((int)$id, $this) || $forza)
 			{
 				$data = new Data_Spedizioni_Result();
 				$values = $data->toArray();
@@ -999,6 +1017,9 @@ class SpedizioninegozioModel extends FormModel {
 				
 				// Recupero le informazioni dal server del corriere
 				$modulo->getInfo($sp["id_spedizione_negozio"]);
+				
+				// Attendi 200 millisecondi
+				usleep(200000);
 				
 				if ($elaboraSpedizione)
 				{

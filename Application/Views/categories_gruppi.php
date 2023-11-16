@@ -23,32 +23,29 @@
 			
 			<div class="box">
 				<div class="box-header with-border main">
+					<?php if ($numeroGruppi > 0) { ?>
+					<div class="callout callout-warning"><?php echo gtext("La categoria è accessibile solo agli utenti che appartengono ad uno dei seguenti gruppi.");?></div>
+					
+					<?php } else {  ?>
+					<div class="callout callout-info"><?php echo gtext("La categoria è accessibile a tutti.");?></div>
+					<?php } ?>
+							
 					<?php echo $notice;?>
 
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							Aggiungi un gruppo
-						</div>
-						<div class="panel-body">
-							<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
-							
-								<?php echo Html_Form::select("id_group","",$listaGruppi,null,"combobox","yes");?>
-								
-								<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
-								
-							</form>
-						</div>
-					</div>
+					<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/gruppi/$id".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 					
+						<span select2="">
+							<?php echo Html_Form::select("id_group","",$listaGruppi,null,null,"yes");?>
+						</span>
+						
+						<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+						<input type="hidden" name="insertAction" value="Aggiungi" />
+					</form>
+					<br />
 					<div class="scaffold_form">
 						<!-- show the table -->
 						<div class='recordsBox'>
-							<?php if ($numeroGruppi > 0) { ?>
-							<p><span class="empty_list">La categoria è accessibile solo agli utenti che appartengono ad uno dei seguenti gruppi</span></p>
 							<?php echo $main;?>
-							<?php } else {  ?>
-							<span class="empty_list">La categoria è accessibile a tutti</span>
-							<?php } ?>
 						</div>
 					</div>
                 </div>

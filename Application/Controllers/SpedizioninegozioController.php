@@ -89,8 +89,8 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>"add");
 		
-		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "brderoCrud", "statoCrud", "trackingCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
-		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Borderò,Stato,Tracking,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
+		$this->mainFields = array("spedizioni_negozio.id_spedizione_negozio", "ordiniCrud", "spedizioni_negozio.numero_spedizione", "cleanDateTimeSpedizione", "spedizioni_negozio.contrassegno" , "brderoCrud", "statoCrud", "trackingCrud", "spedizionieri.titolo", "spedizioni_negozio.ragione_sociale", "spedizioni_negozio.email", "indirizzoCrud", "nazioneCrud");
+		$this->mainHead = "ID,Ordine,Numero Spedizione,Data spedizione,Contrassegno,Borderò,Stato,Tracking,Spedizioniere,Ragione sociale,Email,Indirizzo,Nazione";
 		
 		if (v("attiva_liste_regalo"))
 		{
@@ -425,13 +425,13 @@ class SpedizioninegozioController extends BaseController {
 	}
 	
 	// Setta la spedizione come aperta (stato = A) la spedizione $id
-	public function apri($id = 0)
+	public function apri($id = 0, $forza = 0)
 	{
 		$this->shift(1);
 		
 		$this->clean();
 		
-		if (!$this->m($this->modelName)->apri($id))
+		if (!$this->m($this->modelName)->apri($id, $forza))
 			flash("notice",$this->m($this->modelName)->notice);
 		
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
@@ -452,11 +452,14 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
-	public function controllaspedizioni($id = 0)
+	public function controllaspedizioni($id = 0, $forza = 0)
 	{
 		$this->shift(1);
 		
 		$this->clean();
+		
+		if ($forza)
+			Spedizioniere::$forzaRichiestaInfo = true;
 		
 		$this->m($this->modelName)->controllaStatoSpedizioniInviate((int)$id);
 	}

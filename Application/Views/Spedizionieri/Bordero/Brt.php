@@ -69,7 +69,7 @@ table.corpo td table td
 	<table class="corpo" style="width:297mm;">
 		<tr class="header_tabella">
 			<th style="width:65mm;"><?php echo gtext("Destinatario");?></th>
-			<th></th>
+			<th style="width:23mm;"></th>
 			<th style="width:65mm;">
 				<?php echo gtext("Indirizzo");?>
 			</th>

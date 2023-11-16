@@ -28,6 +28,8 @@ class DocumentiController extends BaseController
 	
 	public $tabella = "documenti";
 	
+	public $campiBaseFormDocumenti = "titolo,id_tipo_doc,filename,data_documento,lingua";
+	
 	public $argKeys = array(
 		'id_page:sanitizeAll'	=>	'tutti',
 		'compresso:forceInt'	=>	0,
@@ -51,7 +53,7 @@ class DocumentiController extends BaseController
 		
 		$this->shift(2);
 		
-		$fields = "titolo,id_tipo_doc,filename,data_documento,lingua";
+		$fields = $this->campiBaseFormDocumenti;
 		
 		if (v("attiva_immagine_in_documenti"))
 			$fields .= ",immagine";
@@ -116,7 +118,7 @@ class DocumentiController extends BaseController
 		
 		$data["listaLingue"] = DocumentilingueModel::lingueCheMancano($clean['id']);
 		
-		$data["titoloRecord"] = $this->m["DocumentiModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("DocumentiModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}

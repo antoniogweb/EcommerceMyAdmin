@@ -2514,7 +2514,7 @@ class PagesModel extends GenericModel {
 		
 		$temp = array();
 			
-		$count = 1;
+		$count = 15;
 		$temp["gruppi"] = "--free--";
 		
 		foreach (User::$groups as $gr)

@@ -24,9 +24,11 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Spedizioniere
 {
-	const TIME_CHECK_TRACKING = 3600;
+	const TIME_CHECK_TRACKING = 1800;
 	
 	use Modulo;
+	
+	public static $forzaRichiestaInfo = false;
 	
 	public function getDataConsegna($idSpedizione)
 	{
@@ -249,6 +251,9 @@ class Spedizioniere
 	{
 		if (!empty($spedizione))
 		{
+			if (self::$forzaRichiestaInfo)
+				return true;
+			
 			$time = time() - self::TIME_CHECK_TRACKING;
 			
 			if ((int)$spedizione["time_ultima_richiesta_tracking"] < $time)
@@ -261,5 +266,10 @@ class Spedizioniere
 	public function decodeOutput($output)
 	{
 		return $output;
+	}
+	
+	public function oscuraPassword($input)
+	{
+		return str_replace($this->getParam("password_cliente"),"XXXX", $input);
 	}
 }

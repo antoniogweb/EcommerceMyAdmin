@@ -129,7 +129,7 @@ class OrdiniModel extends FormModel {
 		return $rModel->clear()->select("righe.*,sum(spedizioni_negozio_righe.quantity) as QTA_ORDINATA,spedizioni_negozio_righe.id_spedizione_negozio_riga")->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")->sWhere(array(
 			"righe.gift_card = 0 and righe.prodotto_digitale = 0 and righe.id_o = ?",
 			array((int)$idO)
-		))->groupBy("spedizioni_negozio_righe.id_r HAVING (righe.quantity > QTA_ORDINATA or spedizioni_negozio_righe.id_spedizione_negozio_riga IS NULL)")->send(false);
+		))->groupBy("righe.id_r HAVING (righe.quantity > QTA_ORDINATA or spedizioni_negozio_righe.id_spedizione_negozio_riga IS NULL)")->send(false);
 	}
 	
 	// Restituisce tutte le righe dell'ordine che sono in spedizioni non ancora confermate

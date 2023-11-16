@@ -33,7 +33,7 @@
 				<?php } ?>
 				
 				<br />
-				<b><?php echo gtext("Quantita");?>:</b> <?php echo $p["righe"]["quantity"];?>
+				<b><?php echo gtext("Quantità");?>:</b> <?php echo $p["righe"]["quantity"];?>
 				<b><br /><?php echo gtext("Totale");?>:</b> &euro; <span class="item_price_subtotal"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["quantity"] * $p["righe"]["price"]));?></span>
 			<?php } ?>
 			
