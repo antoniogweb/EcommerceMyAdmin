@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Spedizioniere
 {
-	const TIME_CHECK_TRACKING = 3600;
+	const TIME_CHECK_TRACKING = 1800;
 	
 	use Modulo;
 	

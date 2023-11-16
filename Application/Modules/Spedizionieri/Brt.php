@@ -534,7 +534,7 @@ class Brt extends Spedizioniere
 	
 	public function getLabelNumeroSpedizione()
 	{
-		return gtext("ID collo BRT");
+		return gtext("ID collo cliente");
 	}
 	
 	// Stampa o genera il segnacollo della spedizione
@@ -631,7 +631,7 @@ class Brt extends Spedizioniere
 		{
 			if ($spedizione["numero_spedizione"])
 				return "https://vas.brt.it/vas/sped_det_show.hsm?ChiSono=".$spedizione["numero_spedizione"];
-			else if ($spedizione["codice_bda"])
+			else
 				return "https://vas.brt.it/vas/sped_RicDocMit_load.hsm?docmit=".$spedizione["riferimento_mittente_numerico"]."&rma=".$spedizione["riferimento_mittente_alfa"]."&ksu=".$params["codice_cliente"];
 		}
 		
