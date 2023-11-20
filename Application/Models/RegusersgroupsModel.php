@@ -51,7 +51,7 @@ class RegusersgroupsModel extends GenericModel {
 			
 			if (count($res3) > 0)
 			{
-				$this->notice = "<div class='alert'>Questo utente è già stato associato a questo gruppo</div>";
+				$this->notice = "<div class='alert alert-danger'>Questo utente è già stato associato a questo gruppo</div>";
 			}
 			else
 			{
@@ -60,7 +60,7 @@ class RegusersgroupsModel extends GenericModel {
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+			$this->notice = "<div class='alert alert-danger'>Questo elemento non esiste</div>";
 		}
 	}
 	
