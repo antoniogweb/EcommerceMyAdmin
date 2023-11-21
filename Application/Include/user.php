@@ -51,6 +51,21 @@ class User
 	public static $ruid = null;
 	public static $isAgente = false;
 	
+	public static function has($permessi)
+	{
+		$gruppi = explode(",",$permessi);
+	
+		foreach ($gruppi as $gruppo)
+		{
+			if (in_array($gruppo, User::$groups))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public static function getSpedizioneDefault()
 	{
 		return v("nazione_default");

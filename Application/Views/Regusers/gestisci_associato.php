@@ -3,9 +3,13 @@
 <?php if ($this->action == "gruppi") { ?>
 	<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/regusers/gruppi/$id".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 	
-		<?php echo Html_Form::select("id_group","",$listaGruppi,null,"combobox","yes");?>
+		<div select2="" style="display:inline-block;">
+			<?php echo Html_Form::select("id_group","",$listaGruppi,null,null,"yes","style='width:200px;'");?>
+		</div>
+<!-- 		<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi"> -->
 		
-		<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
+		<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+		<input type="hidden" name="insertAction" value="Aggiungi" />
 		
 	</form>
 <?php } ?>
