@@ -1897,4 +1897,11 @@ class GenericModel extends Model_Tree
 		
 		return "";
 	}
+	
+	public function regioneCrud($record)
+	{
+		$r = new RegioniModel();
+		
+		return $r->titolo($record[$this->_tables]["id_regione"]);
+	}
 }
