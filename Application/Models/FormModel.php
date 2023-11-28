@@ -309,9 +309,17 @@ class FormModel extends GenericModel {
 					),
 					'reverse'	=>	"yes",
 				),
+				'id_regione'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Regione',
+					'options'	=>	$this->selectRegione(),
+					'reverse' => 'yes',
+				),
 			),
 		);
-
+		
+		// Override la struttura del form
+		$this->overrideFormStruct();
 	}
 	
 	public function selectRuoli($frontend = false)

@@ -25,14 +25,11 @@
 			<?php echo $form["indirizzo"];?>
 			<?php echo $form["cap"];?>
 			<?php echo $form["provincia"];?>
+			<?php echo isset($form["id_regione"]) ? $form["id_regione"] : "";?>
 			<?php echo $form["dprovincia"];?>
 			<?php echo $form["citta"];?>
 			<?php echo $form["telefono"];?>
 			<?php echo $form["telefono_2"];?>
-			
-			<?php if ($type === "update") { ?>
-			<input class="varchar_input form-control" type="hidden" value="<?php echo $id;?>" name="id_n">
-			<?php } ?>
 			
 			<?php include($this->viewPath("form_submit_button"));?>
 		</div>

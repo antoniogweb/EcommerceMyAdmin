@@ -64,6 +64,7 @@ class RegusersController extends BaseController {
 		'token_eliminazione:sanitizeAll'=>'tutti',
 		'q:sanitizeAll'=>'tutti',
 		'agente:sanitizeAll'=>'tutti',
+		'gruppo:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -220,6 +221,13 @@ class RegusersController extends BaseController {
 			));
 		}
 		
+		if ($this->viewArgs["gruppo"] != "tutti")
+		{
+			$this->m[$this->modelName]->inner(array("groups"))->aWhere(array(
+				"reggroups.name"	=>	$this->viewArgs["gruppo"],
+			));
+		}
+		
 		$this->getTabViewFields("main");
 		
 		$this->m[$this->modelName]->save();
@@ -259,6 +267,12 @@ class RegusersController extends BaseController {
 		{
 			$fields .= ",agente";
 			$formFields .= ",agente";
+		}
+		
+		if (v("attiva_regione_su_cliente"))
+		{
+			$fields .= ",id_regione";
+			$formFields .= ",id_regione";
 		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
