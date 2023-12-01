@@ -971,9 +971,9 @@ class BaseContenutiController extends BaseController
 		$this->m("PagesModel")->inner(array("documenti"))->addJoinTraduzione(null, "contenuti_tradotti_documenti", false, new DocumentiModel());
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
-			$this->m("PagesModel")->sWhere(array("documenti.titolo like ?", array("%".$this->viewArgs["searchdoc"]."%")));
+			$this->m("PagesModel")->sWhere(array("(documenti.titolo like ? or documenti.clean_filename like ?)", array("%".$this->viewArgs["searchdoc"]."%", "%".$this->viewArgs["searchdoc"]."%")));
 		else
-			$this->m("PagesModel")->sWhere(array("contenuti_tradotti_documenti.titolo like ?", array("%".$this->viewArgs["searchdoc"]."%")));
+			$this->m("PagesModel")->sWhere(array("(contenuti_tradotti_documenti.titolo like ? or documenti.clean_filename like ?)", array("%".$this->viewArgs["searchdoc"]."%", "%".$this->viewArgs["searchdoc"]."%")));
 	}
 	
 	protected function getSearchWhere($argName = "s")
