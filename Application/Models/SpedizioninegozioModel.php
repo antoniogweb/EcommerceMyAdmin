@@ -1007,7 +1007,7 @@ class SpedizioninegozioModel extends FormModel {
 			),
 			"id_spedizioniere"	=>	(int)$idSpedizioniere,
 			"id_spedizioniere_lettera_vettura"	=>	0,
-		));
+		))->sWhere("(id_spedizione_negozio_invio = 0 OR id_spedizione_negozio_invio in (select id_spedizione_negozio_invio from spedizioni_negozio_invii where spedizioni_negozio_invii.stato = 'A'))");
 		
 		if ($idS)
 			$this->aWhere(array(
