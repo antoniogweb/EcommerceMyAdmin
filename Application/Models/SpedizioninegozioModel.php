@@ -829,6 +829,31 @@ class SpedizioninegozioModel extends FormModel {
 		return false;
 	}
 	
+	// Invia al corriere la singola spedizione
+	public function inviaAlCorriere($id, $idInvio)
+	{
+		$record = $this->clear()->selectId((int)$id);
+		
+		if (!empty($record) && $record["id_spedizioniere"])
+		{
+			if (SpedizioninegozioModel::pronta((int)$id))
+			{
+				$idsSpedizioniDaConfermare = array($id);
+				
+				// Modulo spedizioniere
+				$risultati =  SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->confermaSpedizioni($idsSpedizioniDaConfermare, $idInvio);
+				
+				foreach ($idsSpedizioniDaConfermare as $idSpedizione)
+				{
+					if (!$risultati[$idSpedizione]->getErrore())
+						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "II", "data_invio", $risultati[$idSpedizione]->toArray(false));
+					else
+						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "I", "data_pronta_invio", $risultati[$idSpedizione]->toArray(false));
+				}
+			}
+		}
+	}
+	
 	public function getSpedizioniInviate($idS = 0, $giorni = 20)
 	{
 		$ora = new DateTime();

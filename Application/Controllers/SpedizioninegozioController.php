@@ -452,6 +452,17 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
+	// Conferma le spedizioni prenotate
+	// $id dell'invio (borderò)
+	public function confermaspedizioni($id = 0, $idInvio = 0)
+	{
+		$this->shift(2);
+		
+		$this->clean();
+		
+		$this->m("SpedizioninegozioModel")->inviaAlCorriere((int)$id, (int)$idInvio);
+	}
+	
 	public function controllaspedizioni($id = 0, $forza = 0)
 	{
 		$this->shift(1);
