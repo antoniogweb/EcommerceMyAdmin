@@ -231,8 +231,6 @@ class SpedizioninegozioinviiModel extends GenericModel {
 		
 		if (!empty($record))
 		{
-// 			$this->collegaSpedizioni($id);
-			
 			SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->reportPdf((int)$id);
 		}
 		

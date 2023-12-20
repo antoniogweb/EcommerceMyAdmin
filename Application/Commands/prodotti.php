@@ -93,3 +93,37 @@ if ($params["azione"] == "disattiva-prodotti-senza-combinazioni-acquistabili")
 	$log->writeString("FINE CONTROLLO PRODOTTI SENZA COMBINAZIONI ACQUISTABILI");
 }
 
+if ($params["azione"] == "imposta-canonical-se-mancante")
+{
+	$log->writeString("INIZIO CONTROLLO PRODOTTI SENZA COMBINAZIONE CANONICAL ACQUISTABILE");
+	
+	$combModel = new CombinazioniModel();
+	
+	$idPages = $combModel->clear()->select("pages.id_page")->inner(array("pagina"))->where(array(
+		"pages.attivo"	=>	"Y",
+		"acquistabile"	=>	0,
+		"canonical"		=>	1,
+	))->toList("pages.id_page")->send();
+	
+	foreach ($idPages as $idPage)
+	{
+		$idCs = $combModel->clear()->where(array(
+			"id_page"		=>	(int)$idPage,
+			"acquistabile"	=>	1,
+		))->toList("id_c")->limit(1)->send();
+		
+		if (count($idCs) > 0)
+		{
+// 			$combModel->rendicanonical($idCs[0]);
+			
+			$logText = "ID PAGE:".$idPage." - ID COMBINAZIONE ".$idCs[0]." RESA CANONICA";
+			
+			$log->writeString($logText);
+			
+			echo $logText."\n";
+		}
+	}
+	
+	$log->writeString("FINE CONTROLLO PRODOTTI SENZA COMBINAZIONE CANONICAL ACQUISTABILE");
+}
+
