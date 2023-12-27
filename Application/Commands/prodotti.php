@@ -107,10 +107,10 @@ if ($params["azione"] == "imposta-canonical-se-mancante")
 	
 	foreach ($idPages as $idPage)
 	{
-		$idCs = $combModel->clear()->where(array(
+		$idCs = $combModel->clear()->select("combinazioni.id_c")->left("righe")->on("righe.id_c = combinazioni.id_c")->where(array(
 			"id_page"		=>	(int)$idPage,
 			"acquistabile"	=>	1,
-		))->toList("id_c")->limit(1)->send();
+		))->groupBy("combinazioni.id_c")->orderBy("count(combinazioni.id_c) desc")->toList("id_c")->limit(1)->send();
 		
 		if (count($idCs) > 0)
 		{
