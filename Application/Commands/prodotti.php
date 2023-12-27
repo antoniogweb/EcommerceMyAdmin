@@ -114,7 +114,7 @@ if ($params["azione"] == "imposta-canonical-se-mancante")
 		
 		if (count($idCs) > 0)
 		{
-// 			$combModel->rendicanonical($idCs[0]);
+			$combModel->rendicanonical($idCs[0]);
 			
 			$logText = "ID PAGE:".$idPage." - ID COMBINAZIONE ".$idCs[0]." RESA CANONICA";
 			
