@@ -56,7 +56,7 @@ class RicercheController extends BaseController
 			$date = new DateTime();
 			$date->modify("-3 month");
 			
-			$_GET['dal'] = $date->format("Y-m-d");
+			$_GET['dal'] = $date->format("d-m-Y");
 			$this->shift();
 		}
 		
