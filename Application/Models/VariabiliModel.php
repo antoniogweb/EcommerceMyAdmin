@@ -39,6 +39,7 @@ class VariabiliModel extends GenericModel {
 		"codice_fbk",
 		"codice_fbk_noscript",
 		"codice_js_ok_cookie",
+		"salva_satistiche_visualizzazione_pagina_su_file",
 	);
 	
 	public static $variabili = array(
@@ -348,6 +349,7 @@ class VariabiliModel extends GenericModel {
 		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
+		"salva_satistiche_visualizzazione_pagina_su_file"	=>	0, // salva le statistiche di visualizzazione della singola pagina o della categoria su FILE
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
 		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale

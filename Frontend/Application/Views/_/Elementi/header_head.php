@@ -13,6 +13,8 @@ if (isset($pages))
 
 include(tpf("/Elementi/header_tracking_data.php", false, false, $stringaCacheMeta));?>
 
+<?php include(tpf("/Elementi/track.php", false, false));?>
+
 <?php include(tpf("/Elementi/gtm.php", false, false,));?>
 
 <?php include(tpf("/Elementi/pixel.php"));?>

@@ -28,7 +28,12 @@ class RicercheController extends BaseController
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('titolo:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'titolo:sanitizeAll'=>'tutti',
+		'tipo:sanitizeAll'=>'R',
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "utenti";
 	
@@ -46,6 +51,15 @@ class RicercheController extends BaseController
 	{
 		$this->shift();
 		
+		if ($this->viewArgs['dal'] == "tutti")
+		{
+			$date = new DateTime();
+			$date->modify("-3 month");
+			
+			$_GET['dal'] = $date->format("Y-m-d");
+			$this->shift();
+		}
+		
 		$this->queryActions = $this->bulkQueryActions = "";
 		$this->mainButtons = "";
 		$this->addBulkActions = false;
@@ -54,16 +68,38 @@ class RicercheController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'esporta');
 		
-		$this->mainFields = array("ricerche.termini", "aggregate.numero");
-		$this->mainHead = "Termine ricercato,Numero di volte";
-		$this->filters = array("titolo");
+		if ($this->viewArgs['tipo'] == "T")
+		{
+			$this->mainFields = array("ricerche.termini", "aggregate.numero");
+			$this->mainHead = "Termine ricercato,Numero di volte";
+			$groupBy = "termini";
+			$orderBy = "(count(ricerche.termini) * ricerche.numero)";
+		}
+		else
+		{
+			$this->mainFields = array("ricerche.ricerca", "aggregate.numero");
+			$this->mainHead = "Ricerca effettuata,Numero di volte";
+			$groupBy = "ricerca";
+			$orderBy = "(count(ricerche.ricerca) * ricerche.numero)";
+		}
+		
+		$this->filters = array(array("tipo",null,array("T"=>"Termini","R"=>"Ricerche complete")),"titolo","dal","al");
 		
 		$this->m[$this->modelName]->clear()
-				->select("count(ricerche.termini) as numero,ricerche.termini,ricerche.data_creazione")
+				->select("$orderBy as numero,ricerche.termini,ricerche.ricerca,ricerche.data_creazione")
 				->where(array(
 					"lk" => array('termini' => $this->viewArgs['titolo']),
 				))
-				->orderBy("count(ricerche.termini) desc")->groupBy("termini")->convert()->save();
+				->orderBy($orderBy." DESC")->groupBy($groupBy)->convert();
+		
+		if ($this->viewArgs['tipo'] == "T")
+			$this->m[$this->modelName]->sWhere("ricerca = ''");
+		else
+			$this->m[$this->modelName]->sWhere("termini = ''");
+		
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}

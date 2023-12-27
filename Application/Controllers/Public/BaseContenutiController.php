@@ -1046,7 +1046,15 @@ class BaseContenutiController extends BaseController
 			$this->m("PagesModel")->addWhereLingua();
 		
 		if (strcmp($this->viewArgs["search"],"") !== 0)
+		{
+			if (empty($escludi))
+			{
+				// Salvo la ricerca
+				$this->m("RicercheModel")->aggiungiRicerca($this->viewArgs["search"]);
+			}
+			
 			$this->m("PagesModel")->aWhere($this->getSearchWhere("search"));
+		}
 		
 		if (v("attiva_ricerca_documento") && strcmp($this->viewArgs["searchdoc"],"") !== 0)
 			$this->getSearchWhereDoc();
@@ -1934,6 +1942,9 @@ class BaseContenutiController extends BaseController
 		
 		if (strcmp($this->viewArgs["s"],"") !== 0 && ($this->viewArgs["sec"] == "tutti" || CategoriesModel::checkSection($this->viewArgs["sec"])))
 		{
+			// Salvo la ricerca
+			$this->m("RicercheModel")->aggiungiRicerca($this->viewArgs["s"]);
+			
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$clean["idSection"] = $this->m("CategoriesModel")->getShopCategoryId();
 			else if ($this->viewArgs["sec"] != "tutti")

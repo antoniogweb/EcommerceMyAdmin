@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
@@ -20,26 +21,41 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-if (!defined('EG')) die('Direct access not allowed!');
+ini_set("memory_limit","-1");
 
-class RicercheModel extends GenericModel
+define('APP_CONSOLE', true);
+define('EG','allowed');
+
+$options = getopt(null, array(
+	"azione::",
+));
+
+$default = array(
+);
+
+$params = array_merge($default, $options);
+
+require_once(dirname(__FILE__) . "/../../index.php");
+
+ImpostazioniModel::init();
+VariabiliModel::ottieniVariabili();
+
+Files_Log::$logFolder = LIBRARY."/Logs";
+
+if (!isset($params["azione"]))
 {
-	public function __construct() {
-		$this->_tables = 'ricerche';
-		$this->_idFields = 'id_ricerca';
-		
-		parent::__construct();
-	}
-	
-	public function aggiungiRicerca($ricerca)
-	{
-		$ricerca = htmlentitydecode($ricerca);
-		
-		$this->sValues(array(
-			"ricerca"	=>	(string)$ricerca,
-			"cart_uid"	=>	User::$cart_uid,
-		));
-		
-		$this->insert();
-	}
+	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
+	die();
 }
+
+$log = Files_Log::getInstance("log_comandi_statistiche");
+
+if ($params["azione"] == "importa-da-file")
+{
+	$log->writeString("INIZIO IMPORTAZIONE STATISTICHE DA FILE");
+	
+	PagesstatsModel::importaDaFile($log);
+	
+	$log->writeString("FINE IMPORTAZIONE STATISTICHE DA FILE");
+}
+

@@ -23,7 +23,9 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 class PagesstatsModel extends GenericModel {
-
+	
+	public static $folder = "Statistiche";
+	
 	public $parentRootFolder;
 	
 	public function __construct() {
@@ -66,6 +68,9 @@ class PagesstatsModel extends GenericModel {
 		$this->values["data_stat"] = date("Y-m-d");
 		$this->values["uid_stats"] = sanitizeAll($this->getStatsUid());
 		
+		if (v("ecommerce_attivo") && isset(User::$cart_uid) && User::$cart_uid)
+			$this->values["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
 		$this->insert();
     }
     
@@ -105,6 +110,76 @@ class PagesstatsModel extends GenericModel {
 		}
 		
 		return "--";
+	}
+	
+	public static function salvaSuFile($idPage = 0, $idC = 0, $idM = 0)
+	{
+		createFolderFull("Logs/".self::$folder);
+		
+		$token = randomToken();
+		
+		$fullPath = ROOT."/Logs/".self::$folder."/".$token.".log";
+		
+		$json = json_encode(array(
+			"cart_uid"	=>	User::$cart_uid,
+			"id_page"	=>	$idPage,
+			"id_c"		=>	$idC,
+			"idM"		=>	$idM,
+			"lingua"	=>	Params::$lang,
+			"data_creazione"	=>	date("Y-m-d H:i:s"),
+		));
+		
+		FilePutContentsAtomic($fullPath, $json);
+	}
+	
+	public static function importaDaFile($log = null)
+	{
+		$fullPath = ROOT."/../Logs/".self::$folder;
+		
+		if (@is_dir($fullPath))
+		{
+			$psModel = new PagesstatsModel();
+			
+			$filesModel = new Files_Upload($fullPath);
+			
+			$filesModel->listFiles();
+			
+			$files = $filesModel->getFiles();
+			
+			if (v("usa_transactions"))
+				$psModel->db->beginTransaction();
+			
+			foreach ($files as $file)
+			{
+				$ext = $filesModel->getFileExtension($file);
+				
+				if ($ext == "log")
+				{
+					$json = file_get_contents($fullPath."/".$file);
+					
+					$jsonArray = json_decode($json, true);
+					
+					$psModel->sValues(array(
+						"id_page"	=>	$jsonArray["id_page"] ?? 0,
+						"cart_uid"	=>	$jsonArray["cart_uid"] ?? "",
+						"uid_stats"	=>	$jsonArray["cart_uid"] ?? "",
+						"data_creazione"	=>	$jsonArray["data_creazione"] ?? date("Y-m-d H:i:s"),
+						"data_stat"	=>	isset($jsonArray["data_creazione"]) ? date("Y-m-d", strtotime($jsonArray["data_creazione"])) : date("Y-m-d"),
+					));
+					
+					if ($psModel->insert())
+					{
+						if ($log)
+							$log->writeString("IMPORTATE STATISTICHE: ".$json);
+						
+						@unlink($fullPath."/".$file);
+					}
+				}
+			}
+			
+			if (v("usa_transactions"))
+				$psModel->db->commit();
+		}
 	}
 	
 }

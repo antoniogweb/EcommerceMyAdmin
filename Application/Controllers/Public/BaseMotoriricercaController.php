@@ -54,8 +54,8 @@ class BaseMotoriricercaController extends BaseController
 				if (v("salva_ricerche"))
 				{
 					$this->m("RicercheModel")->sValues(array(
-						"termini"	=>	sanitizeAll((string)$search),
-						"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+						"termini"	=>	(string)$search,
+						"cart_uid"	=>	User::$cart_uid,
 					));
 					
 					$this->m("RicercheModel")->insert();
