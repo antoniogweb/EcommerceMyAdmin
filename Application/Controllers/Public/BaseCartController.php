@@ -277,7 +277,7 @@ class BaseCartController extends BaseController
 								}
 								
 								// Aggiorna gli elementi del carrello
-								$this->m("CartModel")->aggiornaElementi($elementiPost);
+								$this->m("CartModel")->aggiornaElementi($elementiPost, true);
 							}
 						}
 						else

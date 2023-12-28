@@ -1011,7 +1011,7 @@ class CartModel extends GenericModel {
 		return $c->send(false);
 	}
 	
-	public function aggiornaElementi($elementiPost = array())
+	public function aggiornaElementi($elementiPost = array(), $checkElementiPost = false)
 	{
 		if (!v("attiva_gift_card"))
 			return;
@@ -1047,6 +1047,15 @@ class CartModel extends GenericModel {
 						{
 							$email = isset($elementiPost["CART-".$riga["id_cart"]][$i]["email"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["email"] : "";
 							$testo = isset($elementiPost["CART-".$riga["id_cart"]][$i]["testo"]) ? $elementiPost["CART-".$riga["id_cart"]][$i]["testo"] : "";
+							
+							if ($checkElementiPost)
+							{
+								if (!$email && isset($elementiRigaCarrello[$i]))
+									$email = htmlentitydecode($elementiRigaCarrello[$i]["email"]);
+								
+								if (!$testo && isset($elementiRigaCarrello[$i]))
+									$testo = htmlentitydecode($elementiRigaCarrello[$i]["testo"]);
+							}
 						}
 						else if (isset($elementiRigaCarrello[$i]))
 						{
