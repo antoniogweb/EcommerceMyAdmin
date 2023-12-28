@@ -843,9 +843,11 @@ class SpedizioninegozioModel extends FormModel {
 				// Modulo spedizioniere
 				$risultati =  SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true)->confermaSpedizioni($idsSpedizioniDaConfermare, $idInvio);
 				
+				$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+				
 				foreach ($idsSpedizioniDaConfermare as $idSpedizione)
 				{
-					if (!$risultati[$idSpedizione]->getErrore())
+					if (!$risultati[$idSpedizione]->getErrore() || $modulo->impostaConfermatoAncheSeErrore())
 						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "II", "data_invio", $risultati[$idSpedizione]->toArray(false));
 					else
 						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "I", "data_pronta_invio", $risultati[$idSpedizione]->toArray(false));

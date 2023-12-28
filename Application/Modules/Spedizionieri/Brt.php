@@ -519,6 +519,12 @@ class Brt extends Spedizioniere
 		return $risultati;
 	}
 	
+	// Imposta la spedizione come confermata anche se la conferma è andata in errore
+	public function impostaConfermatoAncheSeErrore()
+	{
+		return false;
+	}
+	
 	public function send($url, $method = "POST", $valori = array())
 	{
 		$url = v("url_rest_api_brt")."/".ltrim($url,"/");

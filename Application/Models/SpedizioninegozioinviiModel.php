@@ -208,7 +208,7 @@ class SpedizioninegozioinviiModel extends GenericModel {
 				
 				foreach ($idsSpedizioniDaConfermare as $idSpedizione)
 				{
-					if (!$risultati[$idSpedizione]->getErrore())
+					if (!$risultati[$idSpedizione]->getErrore() || $modulo->impostaConfermatoAncheSeErrore())
 						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "II", "data_invio", $risultati[$idSpedizione]->toArray(false));
 					else
 						SpedizioninegozioModel::g(false)->settaStato($idSpedizione, "I", "data_pronta_invio", $risultati[$idSpedizione]->toArray(false));

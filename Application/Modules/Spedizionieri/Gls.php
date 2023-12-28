@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Gls extends Spedizioniere
 {
+	protected static $labelConfermataConSuccesso = "Stato chiuso";
+	
 	protected $condizioniCampi = array(
 		"lunghezzaMax"	=>	array(
 			"ragione_sociale"	=>	35,
@@ -330,12 +332,75 @@ class Gls extends Spedizioniere
 		
 		foreach ($idS as $id)
 		{
-			$risultati[$id] = new Data_Spedizioni_Result("","");
+			$errore = $this->getErroreConferma(0, $id, $listParcel);
+			
+			$risultati[$id] = new Data_Spedizioni_Result("",$errore);
 			
 			$this->scriviLogConfermata((int)$id);
 		}
 		
 		return $risultati;
+	}
+	
+	public function getErroreConferma($idInvio = 0, $idSpedizione = 0, $listParcel = null)
+	{
+		$spModel = new SpedizioninegozioModel();
+		
+		$spedizione = $spModel->selectId((int)$idSpedizione);
+		
+		if (empty($spedizione))
+			return "";
+		
+		if (!$listParcel && $idInvio)
+		{
+			$info = SpedizioninegozioinfoModel::g()->where(array(
+				"id_spedizione_negozio_invio"	=>	(int)$idInvio,
+				"codice_info"	=>	"ListParcel",
+			))->orderBy("id_spedizione_negozio_info desc")->limit(1)->first();
+			
+			if (!empty($info))
+				$listParcel = $info["spedizioni_negozio_info"]["descrizione"];
+		}
+		
+		if ($listParcel)
+		{
+			$xmlObj = simplexml_load_string($listParcel);
+			
+// 			print_r($xmlObj);
+			
+			$arrayParcelErrore = array();
+			
+			if (isset($xmlObj->Parcel))
+			{
+				foreach ($xmlObj->Parcel as $parcel)
+				{
+					$parcel = (array)$parcel;
+					
+					if (isset($parcel["InfoErrore"]) && strpos($parcel["InfoErrore"], self::$labelConfermataConSuccesso) === false)
+						$arrayParcelErrore[] = htmlentitydecodeDeep($parcel);
+				}
+			}
+			else
+				return "Attenzione, API non funzionante";
+			
+			foreach ($arrayParcelErrore as $pErrore)
+			{
+				if (($pErrore["Bda"] && $spedizione["codice_bda"] == $pErrore["Bda"]) || htmlentitydecode($spedizione["indirizzo"]) == $pErrore["Indirizzo"] || htmlentitydecode($spedizione["ragione_sociale_2"]) == $pErrore["RagioneSociale"])
+					return $pErrore["InfoErrore"];
+			}
+			
+// 			print_r($arrayParcelErrore);
+		}
+		else
+			return "Attenzione, API non funzionante";
+		
+		return "";
+	}
+	
+	// Imposta la spedizione come confermata anche se la conferma è andata in errore
+	public function impostaConfermatoAncheSeErrore()
+	{
+		return true;
 	}
 	
 	// Restituisce il client SOAP
