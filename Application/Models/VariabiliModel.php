@@ -61,7 +61,6 @@ class VariabiliModel extends GenericModel {
 		"team_attivo"				=>	1,
 		"immagini_in_referenze"		=>	0,
 		"nome_cognome_anche_azienda"=>	0,
-		"attiva_gruppi_utenti"		=>	1,
 		"accessori_in_prodotti"		=>	1,
 		"contenuti_in_pagine"		=>	1, // se sono visibili oppure no i contenuti nelle pagine
 		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
@@ -86,9 +85,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_seconda_immagine_categoria_prodotti"	=>	0,
 		"mostra_seconda_immagine_tag"	=>	0,
 		"mostra_colore_testo"		=>	0,
-		"attiva_gruppi"				=>	0,
-		"attiva_gruppi_contenuti"	=>	0,
-		"attiva_gruppi_documenti"	=>	0,
 		"mostra_descrizione_in_prodotti"=>	1,
 		"mostra_pulsanti_ordinamenti"	=>	0,
 		"favicon_url"				=>	"",
@@ -199,8 +195,6 @@ class VariabiliModel extends GenericModel {
 		"linkTextWrapTag"			=>	"",
 		"linkTextWrapClass"			=>	"",
 		"mostra_autore_in_blog"		=>	0,
-		"campo_form_newsletter"		=>	"email,accetto",
-		"campo_form_newsletter_obbligatori"		=>	"",
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
 		"riconoscimento_tipo_documento_automatico"	=>	1,
@@ -679,6 +673,15 @@ class VariabiliModel extends GenericModel {
 		"prezzi_ivati_in_carrello"	=>	0,
 		"prezzi_ivati_in_prodotti"	=>	0,
 		"attiva_prezzo_fisso"		=>	0, // se impostato ad 1, utilizza anche il prezzo fisso
+		### GRUPPI UTENTI ##
+		"attiva_gruppi_utenti"		=>	1, // se impostato a 1, mostra i gruppi nell'elenco dei clienti
+		"attiva_gruppi"				=>	0, // se impostato ad 1, permette di gestire i gruppi dei clienti
+		"attiva_gruppi_contenuti"	=>	0, // se impostato a 1, permette di impostare i gruppi nei contenuti e nelle fasce
+		"attiva_gruppi_documenti"	=>	0, // se impostato a 1, permette di impostare i gruppi nei documenti
+		### NEWSLETTER ##
+		"campo_form_newsletter"		=>	"email,accetto", // campi del form newsletter
+		"campo_form_newsletter_obbligatori"		=>	"", // campi obbligatori del form newsletter
+		"permetti_di_collegare_gruppi_utenti_a_newsletter"	=>	0, // Se impostato ad 1, permette la gestione del campo "Sincronizza con la newsletter" nella gestione dei gruppi clienti
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

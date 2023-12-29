@@ -34,6 +34,11 @@ class Mailchimp extends Newsletter
 		return $this->params;
 	}
 	
+	public function setParam($nome, $valore)
+	{
+		$this->params[$nome] = $valore;
+	}
+	
 	public function iscrivi($valori)
 	{
 		$dataMailChimp = array(

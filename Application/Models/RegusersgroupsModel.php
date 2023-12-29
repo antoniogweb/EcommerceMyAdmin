@@ -43,9 +43,9 @@ class RegusersgroupsModel extends GenericModel {
 		
 		$u = new ReggroupsModel();
 		
-		$ng = $u->where(array("id_group"=>$clean["id_group"]))->rowNumber();
+		$ng = $u->selectId($clean["id_group"]);
 		
-		if ($ng > 0)
+		if (!empty($ng))
 		{
 			$res3 = $this->clear()->where(array("id_group"=>$clean["id_group"],"id_user"=>$clean["id_user"]))->send();
 			
@@ -55,7 +55,22 @@ class RegusersgroupsModel extends GenericModel {
 			}
 			else
 			{
-				return parent::insert();
+				$res = parent::insert();
+				
+				if ($res && v("permetti_di_collegare_gruppi_utenti_a_newsletter") && IntegrazioninewsletterModel::integrazioneAttiva() && $ng["sincronizza_newsletter"])
+				{
+					$regModel = new RegusersModel();
+					
+					$cliente = $regModel->selectId($clean["id_user"]);
+					
+					$cliente["email"] = $cliente["username"];
+					
+					IntegrazioninewsletterModel::getModulo()->setParam("codice_fonte", $ng["name"]);
+					
+					IntegrazioninewsletterModel::getModulo()->iscrivi(IntegrazioninewsletterModel::elaboraDati(htmlentitydecodeDeep($cliente)));
+				}
+				
+				return $res;
 			}
 		}
 		else

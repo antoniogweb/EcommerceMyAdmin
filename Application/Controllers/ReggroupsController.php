@@ -70,7 +70,12 @@ class ReggroupsController extends BaseController
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->m[$this->modelName]->setValuesFromPost('name');
+		$fields = "name";
+		
+		if (v("permetti_di_collegare_gruppi_utenti_a_newsletter"))
+			$fields .= ",sincronizza_newsletter";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}

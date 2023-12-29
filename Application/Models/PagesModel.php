@@ -304,7 +304,7 @@ class PagesModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Llatitudine e longitudine divise da virgola.")."</div>"
+						"<div class='form_notice'>".gtext("Latitudine e longitudine divise da virgola.")."</div>"
 					),
 				),
 				'alias'		=>	array(

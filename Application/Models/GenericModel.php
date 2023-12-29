@@ -58,6 +58,11 @@ class GenericModel extends Model_Tree
 		"0"	=>	"No",
 	);
 	
+	public static $attivoNoSi = array(
+		"0"	=>	"No",
+		"1"	=>	"Sì",
+	);
+	
 	public static $yesNo = array(
 		"yes"	=>	"Sì",
 		"no"	=>	"No",

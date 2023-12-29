@@ -44,5 +44,29 @@ class ReggroupsModel extends GenericModel {
 			'tipi' => array("HAS_MANY", 'ReggroupstipiModel', 'id_group', null, "CASCADE"),
         );
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'sincronizza_newsletter'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Sincronizza con la newsletter?",
+					"options"	=>	self::$attivoNoSi,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'entryClass'  => 'form_input_text',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, ogni volta che il cliente verrà aggiunto o rimosso dal gruppo, verrà contemporaneamente iscritto o disiscritto dalla newsletter.")."<br />".gtext("Importante: solo se il collegamento con la newsletter lo permette.")."</div>"
+					),
+				),
+			),
+		);
+		
+// 		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
+	}
 	
 }
