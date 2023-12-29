@@ -727,7 +727,7 @@ class VariabiliModel extends GenericModel {
 	{
 		foreach (self::$variabiliCodiciCookieTerzi as $var)
 		{
-			if (trim(VariabiliModel::$valori[$var]))
+			if (isset(VariabiliModel::$valori[$var]) && trim(VariabiliModel::$valori[$var]))
 				self::$usatiCookieTerzi = true;
 		}
 		
