@@ -79,4 +79,33 @@ class RegusersgroupsModel extends GenericModel {
 		}
 	}
 	
+	public function disiscrivi($idGruppo, $idUser)
+	{
+		if (v("permetti_di_collegare_gruppi_utenti_a_newsletter") && IntegrazioninewsletterModel::integrazioneAttiva())
+		{
+			$gruppo = ReggroupsModel::g()->selectId($idGruppo);
+			
+			if (!empty($gruppo) && $gruppo["sincronizza_newsletter"])
+			{
+				$regModel = new RegusersModel();
+				
+				$cliente = htmlentitydecodeDeep($regModel->selectId((int)$idUser));
+				
+				IntegrazioninewsletterModel::getModulo()->disiscrivi($cliente["username"]);
+			}
+		}
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		$record = $this->selectId((int)$id);
+		
+		$res = parent::del($id, $where);
+		
+		if ($res && !empty($record))
+			$this->disiscrivi($record["id_group"], $record["id_user"]);
+		
+		return $res;
+	}
+	
 }

@@ -52,13 +52,13 @@ class Sendpulse extends Newsletter
 		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 		
 		// API credentials from https://login.sendpulse.com/settings/#api
-		define('API_USER_ID', $this->params["secret_1"]);
-		define('API_SECRET', $this->params["secret_2"]);
-		define('PATH_TO_ATTACH_FILE', Files_Log::$logFolder);
+// 		define('API_USER_ID', $this->params["secret_1"]);
+// 		define('API_SECRET', $this->params["secret_2"]);
+// 		define('PATH_TO_ATTACH_FILE', Files_Log::$logFolder);
 		
 		if (class_exists("Sendpulse\RestApi\ApiClient"))
 		{
-			$SPApiClient = new ApiClient(API_USER_ID, API_SECRET, new FileStorage(Files_Log::$logFolder));
+			$SPApiClient = new ApiClient($this->params["secret_1"], $this->params["secret_2"], new FileStorage(Files_Log::$logFolder));
 			
 			$variables = array(
 				'name' => $valori["nome"]." ".$valori["cognome"],
@@ -77,6 +77,22 @@ class Sendpulse extends Newsletter
 			);
 			
 			return $SPApiClient->addEmails($bookID, $emails);
+		}
+		
+		return null;
+	}
+	
+	public function disiscrivi($email)
+	{
+		Files_Log::getInstance("sendpulse");
+		
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+		
+		if (class_exists("Sendpulse\RestApi\ApiClient"))
+		{
+			$SPApiClient = new ApiClient($this->params["secret_1"], $this->params["secret_2"], new FileStorage(Files_Log::$logFolder));
+			
+			return $SPApiClient->removeEmailFromAllBooks($email);
 		}
 		
 		return null;
