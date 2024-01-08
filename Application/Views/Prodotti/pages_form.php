@@ -61,7 +61,6 @@
 									<?php } ?>
 									
 									<?php echo $form[$campo_prezzo_fisso] ?? "";?>
-									<?php echo $form["prodotto_digitale"] ?? "";?>
 									
 									<?php if (isset($form["price"]) || isset($form["price_ivato"])) { ?>
 									<div class='row'>
@@ -166,7 +165,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Visibilità
+								<?php echo gtext("Visibilità");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
@@ -192,7 +191,7 @@
 					
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Traduzioni
+								<?php echo gtext("Traduzioni");?>
 							</div>
 							<div class="panel-body">
 								<?php include($this->viewPath("pages_traduzioni"));?>
@@ -200,7 +199,23 @@
 						</div>
 					
 						<?php } ?>
-					
+						
+						<?php if (v("attiva_prodotti_digitali") || v("attiva_crediti")) { ?>
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<?php echo gtext("Prodotti digitali");?>
+							</div>
+							<div class="panel-body">
+								<?php echo $form["prodotto_digitale"] ?? "";?>
+								
+								<?php if (v("attiva_crediti")) { ?>
+								<?php echo $form["prodotto_crediti"];?>
+								<?php echo $form["numero_crediti"];?>
+								<?php } ?>
+							</div>
+						</div>
+						<?php } ?>
+						
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								Categoria<?php if (v("usa_marchi")) { ?> / <?php echo gtext("famiglie",true,"ucfirst");?><?php } ?>

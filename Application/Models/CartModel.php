@@ -644,6 +644,24 @@ class CartModel extends GenericModel {
 				return true;
 		}
 		
+		if (v("attiva_prodotti_digitali"))
+		{
+			if (!isset($combinazione))
+				$combinazione = $c->selectId($clean["id_c"]);
+			
+			if (!empty($combinazione) && ProdottiModel::isProdottoDigitale($combinazione["id_page"]))
+				return true;
+		}
+		
+		if (v("attiva_crediti"))
+		{
+			if (!isset($combinazione))
+				$combinazione = $c->selectId($clean["id_c"]);
+			
+			if (!empty($combinazione) && ProdottiModel::isProdottoCrediti($combinazione["id_page"]))
+				return true;
+		}
+		
 		$giacenza = $c->qta($clean["id_c"]);
 		
 		$qtaCarrello = $this->qta($clean["id_c"]);
@@ -906,6 +924,8 @@ class CartModel extends GenericModel {
 				$this->values["creation_time"] = $this->getCreationTime();
 				$this->values["gift_card"] = $rPage[0]["pages"]["gift_card"];
 				$this->values["prodotto_digitale"] = $rPage[0]["pages"]["prodotto_digitale"];
+				$this->values["prodotto_crediti"] = $rPage[0]["pages"]["prodotto_crediti"];
+				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
 				
 				if (isset($idRif))
 				{
@@ -1332,7 +1352,7 @@ class CartModel extends GenericModel {
 				return true;
 		}
 		
-		if ((v("attiva_gift_card") || v("attiva_prodotti_digitali")) && $checkGiftCard)
+		if ((v("attiva_gift_card") || v("attiva_prodotti_digitali") || v("attiva_crediti")) && $checkGiftCard)
 		{
 			$c = new CartModel();
 			
@@ -1343,7 +1363,8 @@ class CartModel extends GenericModel {
 				$numeroNoGiftCard = $c->clear()->where(array(
 					"cart_uid"			=>	$clean["cart_uid"],
 					"gift_card"			=>	0,
-					"prodotto_digitale"	=>	0
+					"prodotto_digitale"	=>	0,
+					"prodotto_crediti"	=>	0,
 				))->rowNumber();
 				
 				if ((int)$numeroNoGiftCard === 0)

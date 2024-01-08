@@ -76,6 +76,28 @@ class ProdottiModel extends PagesModel {
 				"<div class='form_notice'>".gtext("Se impostato su Sì, non sarà prevista la spedizione per tale prodotto.")."</div>"
 			),
 		);
+		
+		$this->formStruct["entries"]["prodotto_crediti"] = array(
+			"type"	=>	"Select",
+			"options"	=>	self::$attivoSiNo,
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	'È un prodotto per acquistare CREDITI?',
+			'wrap'		=>	array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Se impostato su Sì, alla conclusione dell'ordine verro assegnati al clienti tanti CREDITI quanti indicati nel campo inferiore Numero Crediti.")."</div>"
+			),
+		);
+		
+		$this->formStruct["entries"]["numero_crediti"] = array(
+			'labelString'	=>	'Numero Crediti',
+			'wrap'		=>	array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Il numero di crediti che verranno assegnati al cliente dopo aver concluso l'ordine.")."</div>"
+			),
+		);
 	}
 	
 	public function setFilters()
@@ -152,17 +174,48 @@ class ProdottiModel extends PagesModel {
 		return false;
 	}
 	
-	// restituisce true se la riga del carrello non è una gift card
+	// restituisce true se la riga del carrello è una gift card
 	public static function isGiftCart($idPage)
 	{
 		if (!v("attiva_gift_card"))
 			return false;
 		
+		return self::isTipo($idPage, "gift_card");
+		
+// 		$p = new ProdottiModel();
+// 		
+// 		return $p->clear()->where(array(
+// 			"id_page"	=>	(int)$idPage,
+// 			"gift_card"	=>	1,
+// 		))->rowNumber();
+	}
+	
+	// restituisce true se la riga del carrello è un prodotto digitale
+	public static function isProdottoDigitale($idPage)
+	{
+		if (!v("attiva_prodotti_digitali"))
+			return false;
+		
+		return self::isTipo($idPage, "prodotto_digitale");
+	}
+	
+	// restituisce true se la riga del carrello è un prodotto CREDITI
+	public static function isProdottoCrediti($idPage)
+	{
+		if (!v("attiva_crediti"))
+			return false;
+		
+		return self::isTipo($idPage, "prodotto_crediti");
+	}
+	
+	
+	public static function isTipo($idPage, $tipo)
+	{
 		$p = new ProdottiModel();
 		
 		return $p->clear()->where(array(
 			"id_page"	=>	(int)$idPage,
-			"gift_card"	=>	1,
+			"$tipo"	=>	1,
 		))->rowNumber();
 	}
 	
