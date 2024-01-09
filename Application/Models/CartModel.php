@@ -89,13 +89,13 @@ class CartModel extends GenericModel {
 	}
 	
 	// Totale scontato
-	public function totaleScontato($conSpedizione = false, $pieno = false)
+	public function totaleScontato($conSpedizione = false, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
 // 		IvaModel::getAliquotaEstera();
 		
 		$cifre = v("cifre_decimali");
 		
-		if (!$pieno && hasActiveCoupon())
+		if (!$pieno && (hasActiveCoupon() || (v("attiva_crediti") && CreditiModel::gNumeroEuroRimasti(User::$id) > 0)))
 		{
 			$p = new PromozioniModel();
 			
@@ -116,7 +116,7 @@ class CartModel extends GenericModel {
 					$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 					
 // 					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
-					if ($coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+					if (!empty($coupon) && $coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 					{
 						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
 						$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($coupon["sconto"]/100),$cifre,".","");
@@ -142,8 +142,25 @@ class CartModel extends GenericModel {
 				$totaleIvato = $totaleIvato + number_format(($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100)),$cifre,".","");
 			}
 			
+			// CREDITI
+			if ($conCrediti && v("attiva_crediti") && User::$id)
+			{
+				$numeroEuroRimasti = CreditiModel::gNumeroEuroRimasti(User::$id);
+				
+				if ($numeroEuroRimasti > 0)
+				{
+					$valoreSconto = ($numeroEuroRimasti >= $totaleIvato) ? $totaleIvato : $numeroEuroRimasti;
+					
+					$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+					
+					$total = $total - number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
+					
+					$totaleIvato = $totaleIvato - number_format($valoreSconto,$cifre,".","");
+				}
+			}
+			
 			// Coupon assoluto
-			if ($coupon["tipo_sconto"] == "ASSOLUTO")
+			if ($conCouponAssoluto && !empty($coupon) && $coupon["tipo_sconto"] == "ASSOLUTO")
 			{
 				$numeroEuroRimasti = PromozioniModel::gNumeroEuroRimasti($coupon["id_p"]);
 				
@@ -228,7 +245,7 @@ class CartModel extends GenericModel {
 	}
 	
 	// Totale iva dal carrello
-	public function iva($conSpedizione = true, $pieno = false)
+	public function iva($conSpedizione = true, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
 		$cifre = v("cifre_decimali");
 		
@@ -289,6 +306,7 @@ class CartModel extends GenericModel {
 			}
 		}
 		
+		// SPEDIZIONE
 		if ($conSpedizione)
 		{
 			$ivaSped = self::getAliquotaIvaSpedizione();
@@ -308,8 +326,28 @@ class CartModel extends GenericModel {
 			$totaleIvato += ($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100));
 		}
 		
-		// Sconto assoluto
-		if ($sconto > 0 && $tipoSconto == "ASSOLUTO")
+		// CREDITI
+		if (v("attiva_crediti") && !$pieno && $conCrediti && User::$id)
+		{
+			$numeroEuroRimasti = CreditiModel::gNumeroEuroRimasti(User::$id);
+			
+			if ($numeroEuroRimasti > 0)
+			{
+				$valoreSconto = ($numeroEuroRimasti >= $totaleIvato) ? $totaleIvato : $numeroEuroRimasti;
+				
+				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+				
+				if (isset($arraySubtotale[$ivaSped]))
+					$arraySubtotale[$ivaSped] -= number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
+				else
+					$arraySubtotale[$ivaSped] = (-1)*number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
+					
+				$totaleIvato -= $valoreSconto;
+			}
+		}
+		
+		// COUPON ASSOLUTO
+		if ($sconto > 0 && $tipoSconto == "ASSOLUTO" && $conCouponAssoluto)
 		{
 			$numeroEuroRimasti = PromozioniModel::gNumeroEuroRimasti($idPromo);
 			
@@ -575,10 +613,6 @@ class CartModel extends GenericModel {
 			if ($checkPromo && $p->inPromozione($clean["id_page"]))
 			{
 				$scontoPromo = PagesModel::getPercSconto($page, $idC);
-// 				if ($page["tipo_sconto"] == "PERCENTUALE")
-// 					$arraySconti[] = $page["prezzo_promozione"];
-// 				else if ($page["price"] > 0)
-// 					$arraySconti[] = (($page["price"] - $page["prezzo_promozione_ass"]) / $page["price"]) * 100;
 				
 				$arraySconti[] = $scontoPromo;
 				

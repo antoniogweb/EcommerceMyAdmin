@@ -31,15 +31,34 @@ class CreditiModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public static function gNumeroCreditiRimasti($id_user, $ido = null)
+	public static function gNumeroEuroRimasti($id_user)
 	{
-		if (!isset($ido))
-			$ido = self::$staticIdO;
+		if (!$id_user)
+			return 0;
 		
-		// da sviluppare
+		$c = new CreditiModel();
+		
+		$res = $c->clear()->where(array(
+			"id_user"	=>	$id_user,
+			"attivo"	=>	1,
+			"gte"		=>	array(
+				"data_scadenza"	=>	date("Y-m-d")
+			)
+		))->getSum("numero_crediti");
+		
+		if ($res !== false)
+			return number_format((int)$res * (float)v("moltiplicatore_credito"),2,".","");
 		
 		return 0;
 	}
+	
+// 	public static function getSconto($id_user)
+// 	{
+// 		$euroCrediti = self::gNumeroEuroRimasti($id_user);
+// 		$totaleProdottiSpedizionePagamento = 
+// 		
+// 		if ($euroCrediti >)
+// 	}
 	
 	// Crea la promo dalla riga ordine
 	public function aggiungiDaRigaOrdine($idR)
@@ -102,10 +121,7 @@ class CreditiModel extends GenericModel
 				), "sanitizeDb");
 				
 				if ($this->insert())
-				{
 					$this->sincronizzaDateScadenza($this->lId);
-					// Togliere in_scadenza dove id_user = $ordine["id_user"] e id_crediti != $this->lId
-				}
 			}
 		}
 	}

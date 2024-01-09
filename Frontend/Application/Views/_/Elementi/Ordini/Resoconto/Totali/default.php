@@ -33,12 +33,26 @@
 				<td class="first_column"><?php echo gtext("Iva", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></td>
 			</tr>
 			<?php } ?>
-			<?php if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO") {
+			<?php if (((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO") || $ordine["euro_crediti"] > 0) {
 				$scrittaFinaleTotale = "Totale da pagare";
 			?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total_pieno"]);?></strong></td>
 			</tr>
+			<?php } ?>
+			<?php if ($ordine["euro_crediti"] > 0) { ?>
+			<tr>
+				<td class="first_column">
+					<?php echo gtext("Sconto crediti", false); ?>
+				</td>
+				<td class="uk-text-right">
+					<strong>&euro; - <?php echo setPriceReverse($ordine["euro_crediti"]);?></strong>
+				</td>
+			</tr>
+			<?php } ?>
+			<?php if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO") {
+				$scrittaFinaleTotale = "Totale da pagare";
+			?>
 			<tr>
 				<td class="first_column">
 					<?php if ($ordine["nome_promozione"]) { ?>
@@ -49,7 +63,7 @@
 					<?php } ?>
 				</td>
 				<td class="uk-text-right">
-					<strong>&euro; <?php echo setPriceReverse($ordine["total"] - $ordine["total_pieno"]);?></strong>
+					<strong>&euro; - <?php echo setPriceReverse($ordine["euro_promozione"]);?></strong>
 				</td>
 			</tr>
 			<?php } ?>

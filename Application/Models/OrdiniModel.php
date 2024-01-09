@@ -1496,19 +1496,28 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["stato"] = $statoOrdine;
 		
-		$this->values["prezzo_scontato"] = getPrezzoScontatoN();
-		$this->values["prezzo_scontato_ivato"] = setPrice(getPrezzoScontato(1));
+		$this->values["prezzo_scontato"] = getPrezzoScontatoN(false, 0, false, false);
+		$this->values["prezzo_scontato_ivato"] = getPrezzoScontatoN(false, 1, false, false);
 		
 		$this->values["codice_promozione"] = User::$coupon;
 		$this->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
 		$this->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
+		
+		// CREDITI
+		$this->values["euro_crediti"] = 0;
+		
+		if (v("attiva_crediti"))
+		{
+			$this->values["euro_crediti"] = number_format(getPrezzoScontatoN(true,1,false,false,false) - getPrezzoScontatoN(true,1,false,true,false),2,".","");
+			$this->values["moltiplicatore_credito"] = v("moltiplicatore_credito");
+		}
 		
 		$coupon = PromozioniModel::getCouponAttivo();
 		
 		if (!empty($coupon))
 		{
 			$this->values["tipo_promozione"] = $coupon["tipo_sconto"];
-			$this->values["euro_promozione"] = $this->values["total_pieno"] - $this->values["total"];
+			$this->values["euro_promozione"] = $this->values["total_pieno"] - $this->values["total"] - $this->values["euro_crediti"];
 			$this->values["id_p"] = $coupon["id_p"];
 			$this->values["id_agente"] = $coupon["id_user"];
 		}

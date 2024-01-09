@@ -433,10 +433,10 @@ function getSubTotal($ivato = 0)
 	return setPriceReverse(getSubTotalN($ivato));
 }
 
-function getPrezzoScontatoN($conSpedizione = false, $ivato = 0, $pieno = false)
+function getPrezzoScontatoN($conSpedizione = false, $ivato = 0, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 {
 	$c = new CartModel();
-	$totale = $c->totaleScontato($conSpedizione, $pieno);
+	$totale = $c->totaleScontato($conSpedizione, $pieno, $conCrediti, $conCouponAssoluto);
 	
 // 	IvaModel::getAliquotaEstera();
 // 	
@@ -444,7 +444,7 @@ function getPrezzoScontatoN($conSpedizione = false, $ivato = 0, $pieno = false)
 // 		$ivato = 0;
 	
 	if ($ivato)
-		$totale += $c->iva(false, $pieno);
+		$totale += $c->iva($conSpedizione, $pieno, $conCrediti, $conCouponAssoluto);
 	
 	return $totale;
 }
@@ -477,9 +477,9 @@ function getSpedizioneN($pieno = null)
 		$pieno = PromozioniModel::hasCouponAssoluto() ? true : false;
 	
 	if (!v("prezzi_ivati_in_carrello"))
-		$subtotale = getPrezzoScontatoN(false, false, $pieno);
+		$subtotale = getPrezzoScontatoN(false, false, $pieno, false);
 	else
-		$subtotale = getPrezzoScontatoN(false, true, $pieno);
+		$subtotale = getPrezzoScontatoN(false, true, $pieno, false);
 	
 	$subtotale = number_format($subtotale, 2, ".", "");
 	
