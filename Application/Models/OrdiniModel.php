@@ -663,6 +663,27 @@ class OrdiniModel extends FormModel {
 				}
 			}
 		}
+		
+		if (v("attiva_crediti"))
+		{
+			$ordine = !isset($ordine) ? $this->selectId((int)$idO) : $ordine;
+			
+			if (!empty($ordine) && $ordine["id_user"])
+			{
+				$rModel = new RigheModel();
+				$cModel = new CreditiModel();
+				
+				$righe = $rModel->clear()->where(array(
+					"id_o"		=>	(int)$idO,
+					"prodotto_crediti"	=>	1,
+				))->send(false);
+				
+				foreach ($righe as $r)
+				{
+					$cModel->aggiungiDaRigaOrdine($r["id_r"]);
+				}
+			}
+		}
 	}
 	
 	public function cartUidAlreadyPresent($cart_uid)
