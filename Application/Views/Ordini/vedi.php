@@ -429,7 +429,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 								<td class="text-right colonne_non_ivate">
-									0%
+									0,00%
 								</td>
 								<td class="text-right colonne_non_ivate">
 									<?php echo $mostraIvato ? setPriceReverse($ordine["costo_pagamento_ivato"]) : setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
@@ -458,7 +458,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 								<td class="text-right colonne_non_ivate">
-									0%
+									0,00%
 								</td>
 								<td class="text-right colonne_non_ivate">
 									<?php echo $mostraIvato ? setPriceReverse($ordine["spedizione_ivato"]) : setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
@@ -475,7 +475,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							<?php if ($ordine["euro_crediti"] > 0) { ?>
 							<tr>
 								<td></td>
-								<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
+								<td colspan="2"><?php echo gtext("Sconto crediti");?></td>
 								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?><td class="text-left"></td><?php } ?>
 								<td class="text-right"></td>
 								<td class="text-right"></td>
@@ -487,7 +487,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 								<td class="text-right colonne_non_ivate">
-									0%
+									0,00%
 								</td>
 								<td class="text-right colonne_non_ivate">
 									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_crediti"]) : setPriceReverse($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €

@@ -167,7 +167,7 @@ class Gestionale
 		$oModel = new OrdiniModel();
 		$rModel = new RigheModel();
 		
-		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,versione_api_gestionale,errore_gestionale,fonte,euro_promozione,tipo_promozione")->whereId((int)$id_o)->record();
+		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,versione_api_gestionale,errore_gestionale,fonte,euro_promozione,tipo_promozione,euro_crediti")->whereId((int)$id_o)->record();
 		
 		if (!empty($ordine))
 		{
@@ -270,6 +270,32 @@ class Gestionale
 				);
 			}
 			
+			if ($ordine["euro_crediti"] > 0)
+			{
+				$costoNonIvato = number_format($ordine["euro_crediti"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
+				
+				$righe[] = array(
+					"id_r"	=>	-1,
+					"titolo"	=>	gtext("Sconto crediti"),
+					"attributi"	=>	"",
+					"codice"	=>	$ordine["codice_promozione"],
+					"immagine"	=>	"",
+					"peso"		=>	0,
+					"quantity"	=>	1,
+					"prezzo"	=>	(-1)*$costoNonIvato,
+					"prezzo_ivato"	=>	(-1)*$ordine["euro_crediti"],
+					"prezzo_intero"	=>	(-1)*$costoNonIvato,
+					"prezzo_intero_ivato"	=>	(-1)*$ordine["euro_crediti"],
+					"prezzo_finale"	=>	(-1)*$costoNonIvato,
+					"prezzo_finale_ivato"	=>	(-1)*$ordine["euro_crediti"],
+					"gift_card"	=>	0,
+					"id_iva"	=>	$idIva,
+					"iva"		=>	$ordine["valore_iva"],
+					"fonte"		=>	$ordine["tipo_ordine"],
+					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+				);
+			}
+			
 			if ($ordine["euro_promozione"] > 0 && $ordine["tipo_promozione"] == "ASSOLUTO")
 			{
 				$costoNonIvato = number_format($ordine["euro_promozione"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
@@ -303,7 +329,7 @@ class Gestionale
 				"importo"	=>	$ordine["total"],
 			));
 			
-// 			print_r($ordine);
+// 			print_r($ordine);die();
 			
 			return $ordine;
 		}
