@@ -1144,7 +1144,7 @@ class OrdiniModel extends FormModel {
 	
 	public function totaleCrudPieno($record)
 	{
-		return number_format($record["orders"]["subtotal_ivato"] + $record["orders"]["spedizione_ivato"] + $record["orders"]["costo_pagamento_ivato"],2,",",".");
+		return number_format($record["orders"]["subtotal_ivato"] + $record["orders"]["spedizione_ivato"] + $record["orders"]["costo_pagamento_ivato"] - $record["orders"]["euro_crediti"],2,",",".");
 	}
 	
 	public function totaleCrud($record)
@@ -1206,6 +1206,17 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($ordine))
 		{
+			// CREDITI
+			if ($ordine["euro_crediti"] > 0)
+			{
+				$subtotaleRiga = number_format($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+				
+				if (isset($arrayTotali[$ordine["id_iva"]]))
+					$arrayTotali[$ordine["id_iva"]] -= $subtotaleRiga;
+				else
+					$arrayTotali[$ordine["id_iva"]] = (-1)*$subtotaleRiga;
+			}
+			
 			if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO")
 			{
 				$subtotaleRiga = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
@@ -1496,8 +1507,8 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["stato"] = $statoOrdine;
 		
-		$this->values["prezzo_scontato"] = getPrezzoScontatoN(false, 0, false, false);
-		$this->values["prezzo_scontato_ivato"] = getPrezzoScontatoN(false, 1, false, false);
+		$this->values["prezzo_scontato"] = getPrezzoScontatoN(false, 0);
+		$this->values["prezzo_scontato_ivato"] = getPrezzoScontatoN(false, 1);
 		
 		$this->values["codice_promozione"] = User::$coupon;
 		$this->values["nome_promozione"] = htmlentitydecode(getNomePromozione());

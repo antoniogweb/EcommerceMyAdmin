@@ -472,6 +472,35 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 							</tr>
 							<?php } ?>
+							<?php if ($ordine["euro_crediti"] > 0) { ?>
+							<tr>
+								<td></td>
+								<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
+								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?><td class="text-left"></td><?php } ?>
+								<td class="text-right"></td>
+								<td class="text-right"></td>
+								<td class="text-right">
+									1
+								</td>
+								<td class="text-right colonne_non_ivate">
+									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_crediti"]) : setPriceReverse($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
+								</td>
+								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
+								<td class="text-right colonne_non_ivate">
+									0%
+								</td>
+								<td class="text-right colonne_non_ivate">
+									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_crediti"]) : setPriceReverse($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
+								</td>
+								<?php } ?>
+								<td class="text-right colonne_non_ivate">
+									<?php echo setPriceReverse($ordine["iva_spedizione"], 2);?> %
+								</td>
+								<td class="text-right">
+									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_crediti"]) : setPriceReverse($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
+								</td>
+							</tr>
+							<?php } ?>
 							<?php if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO") { ?>
 							<tr class="text text-warning">
 								<td></td>

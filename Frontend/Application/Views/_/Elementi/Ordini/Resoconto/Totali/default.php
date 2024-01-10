@@ -7,13 +7,16 @@
 			<?php
 			$scrittaFinaleTotale = "Totale ordine";
 			$strIvato = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
+			$euroPromoPercentuale = 0;
 			?>
 			<?php if ($ordine["da_spedire"] || $ordine["usata_promozione"] == "Y") { ?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Totale merce", false); ?>:</td> <td class="uk-text-right"><strong>&euro; <?php echo setPriceReverse($ordine["subtotal".$strIvato]);?></strong></td>
 			</tr>
 			<?php } ?>
-			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
+			<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") {
+				$euroPromoPercentuale = $ordine["euro_promozione"];
+			?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong></td>
 			</tr>
@@ -37,7 +40,7 @@
 				$scrittaFinaleTotale = "Totale da pagare";
 			?>
 			<tr>
-				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total_pieno"]);?></strong></td>
+				<td class="first_column"><?php echo gtext("Totale ordine", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total_pieno"] - $euroPromoPercentuale);?></strong></td>
 			</tr>
 			<?php } ?>
 			<?php if ($ordine["euro_crediti"] > 0) { ?>
