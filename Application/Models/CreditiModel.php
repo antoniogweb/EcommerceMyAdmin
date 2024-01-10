@@ -38,31 +38,96 @@ class CreditiModel extends GenericModel
 		
 		$c = new CreditiModel();
 		
-		$res = $c->clear()->where(array(
-			"id_user"	=>	$id_user,
+		$res = $c->clear()->select("SUM(numero_crediti * moltiplicatore_credito) as CREDITI")->where(array(
+			"id_user"	=>	(int)$id_user,
 			"attivo"	=>	1,
 			"gte"		=>	array(
 				"data_scadenza"	=>	date("Y-m-d")
 			)
-		))->getSum("numero_crediti");
+		))->send();
 		
-		if ($res !== false)
-			return number_format((int)$res * (float)v("moltiplicatore_credito"),2,".","");
+		if (isset($res[0]["aggregate"]["CREDITI"]) && $res[0]["aggregate"]["CREDITI"] && $res[0]["aggregate"]["CREDITI"] > 0)
+			return $res[0]["aggregate"]["CREDITI"];
 		
 		return 0;
 	}
 	
-// 	public static function getSconto($id_user)
-// 	{
-// 		$euroCrediti = self::gNumeroEuroRimasti($id_user);
-// 		$totaleProdottiSpedizionePagamento = 
-// 		
-// 		if ($euroCrediti >)
-// 	}
+	// Restituisce l'ultimo pacchetto attivo di crediti
+	public function ultimoPacchettoAttivoCrediti($idUser)
+	{
+		return $this->clear()->where(array(
+			"id_user"	=>	(int)$idUser,
+			"attivo"	=>	1,
+			"azione"	=>	"C",
+		))->orderBy("data_scadenza desc")->limit(1)->record();
+	}
 	
-	// Crea la promo dalla riga ordine
+	// Aggiungi scarico crediti da ordine
+	public function aggiungiScaricoDaOrdine($idO)
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		$oModel = new OrdiniModel();
+		
+		$ordine = $oModel->selectId((int)$idO);
+		
+		if (empty($ordine))
+			return;
+		
+		$crediti = $this->clear()->where(array(
+			"id_o"		=>	(int)$idO,
+			"azione"	=>	"S",
+		))->send(false);
+		
+		if (count($crediti) > 0)
+		{
+			$attivo = ($ordine["stato"] != "deleted") ? 1 : 0;
+			
+			foreach ($crediti as $c)
+			{
+				if ((int)$c["attivo"] !== (int)$attivo)
+				{
+					$this->sValues(array(
+						"attivo"	=>	$attivo,
+					));
+					
+					$this->update((int)$c["id_crediti"]);
+				}
+			}
+		}
+		else
+		{
+			$recordAttivo = $this->ultimoPacchettoAttivoCrediti($ordine["id_user"]);
+			
+			$moltiplicatore = $ordine["moltiplicatore_credito"] > 0 ? $ordine["moltiplicatore_credito"] : 1;
+			
+			$this->sValues(array(
+				"id_user"				=>	$ordine["id_user"],
+				"attivo"				=>	1,
+				"azione"				=>	"S", // Carica
+				"numero_crediti"		=>	number_format($ordine["euro_crediti"] / $moltiplicatore, 2, ".", ""),
+				"moltiplicatore_credito"=>	(-1) * $moltiplicatore,
+				"data_scadenza"			=>	!empty($recordAttivo) ? $recordAttivo["data_scadenza"] : date("Y-m-d"),
+				"in_scadenza"			=>	0,
+				"data_invio_avviso"		=>	!empty($recordAttivo) ? $recordAttivo["data_invio_avviso"] : date("Y-m-d"),
+				"time_invio_avviso"		=>	!empty($recordAttivo) ? $recordAttivo["time_invio_avviso"] : strtotime(date("Y-m-d")),
+				"email"					=>	$ordine["email"],
+				"lingua"				=>	$ordine["lingua"],
+				"nazione"				=>	$ordine["nazione_navigazione"],
+				"id_r"					=>	0,
+				"id_o"					=>	$ordine["id_o"],
+				"fonte"					=>	"ACQUISTO",
+			), "sanitizeDb");
+			
+			$this->insert();
+		}
+	}
+	
+	// Aggiungi i crediti da riga ordine
 	public function aggiungiDaRigaOrdine($idR)
 	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
 		$rModel = new RigheModel();
 		
 		$riga = $rModel->selectId((int)$idR);
@@ -74,7 +139,8 @@ class CreditiModel extends GenericModel
 		$attivo = OrdiniModel::isPagato($riga["id_o"]) ? 1 : 0;
 		
 		$crediti = $this->clear()->where(array(
-			"id_r"	=>	(int)$idR,
+			"id_r"		=>	(int)$idR,
+			"azione"	=>	"C",
 		))->send(false);
 		
 		if (count($crediti) > 0)
@@ -108,6 +174,7 @@ class CreditiModel extends GenericModel
 					"attivo"				=>	$attivo,
 					"azione"				=>	"C", // Carica
 					"numero_crediti"		=>	($riga["numero_crediti"] * $riga["quantity"]),
+					"moltiplicatore_credito"=>	v("moltiplicatore_credito"),
 					"data_scadenza"			=>	$data_scadenza,
 					"in_scadenza"			=>	1,
 					"data_invio_avviso"		=>	$data_invio_avviso,
