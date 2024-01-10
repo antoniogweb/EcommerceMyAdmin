@@ -18,7 +18,7 @@
 				$euroPromoPercentuale = $ordine["euro_promozione"];
 			?>
 			<tr>
-				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato".$strIvato]);?></strong></td>
+				<td class="first_column"><?php echo gtext("Prezzo scontato", false); ?> (<i><?php echo $ordine["nome_promozione"];?></i>):</td> <td class="uk-text-right"> <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato_prodotti".$strIvato]);?></strong></td>
 			</tr>
 			<?php } ?>
 			<?php if ($ordine["costo_pagamento"] > 0) { ?>

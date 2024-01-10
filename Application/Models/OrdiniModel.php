@@ -1510,6 +1510,9 @@ class OrdiniModel extends FormModel {
 		$this->values["prezzo_scontato"] = getPrezzoScontatoN(false, 0);
 		$this->values["prezzo_scontato_ivato"] = getPrezzoScontatoN(false, 1);
 		
+		$this->values["prezzo_scontato_prodotti"] = getPrezzoScontatoN(false, 0, false, false, false);
+		$this->values["prezzo_scontato_prodotti_ivato"] = getPrezzoScontatoN(false, 1, false, false, false);
+		
 		$this->values["codice_promozione"] = User::$coupon;
 		$this->values["nome_promozione"] = htmlentitydecode(getNomePromozione());
 		$this->values["usata_promozione"] = hasActiveCoupon() ? "Y" : "N";
