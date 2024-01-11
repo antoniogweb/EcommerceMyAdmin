@@ -47,9 +47,12 @@ class CreditiModel extends GenericModel
 		))->limit(1)->field("id_c");
     }
     
-	public static function gNumeroEuroRimasti($id_user)
+	public static function gNumeroEuroRimasti($id_user, $forza = false)
 	{
 		if (!$id_user)
+			return 0;
+		
+		if (CartModel::numeroProdottiCreditiInCarrello() > 0 && !$forza)
 			return 0;
 		
 		$c = new CreditiModel();
@@ -73,7 +76,7 @@ class CreditiModel extends GenericModel
 		if (!$idUser)
 			return 0;
 		
-		return $this->clear()->select("crediti.*,orders.id_o,orders.cart_uid")->left(array("ordine"))->where(array(
+		return $this->clear()->select("crediti.*,orders.id_o,orders.cart_uid,orders.stato")->left(array("ordine"))->where(array(
 			"id_user"	=>	(int)$idUser,
 		))->orderBy("data_creazione desc")->send();
 	}
