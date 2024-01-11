@@ -13,22 +13,25 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 $attiva = "crediti";
 
 include(tpf("/Elementi/Pagine/riservata_top.php"));
+$numeroCreditiAttivi = CreditiModel::gNumeroEuroRimasti(User::$id, true);
+$idCatCrediti = CreditiModel::gIdCategory();
 ?>
-<?php if (count($storico) > 0) {
-	$numeroCreditiAttivi = CreditiModel::gNumeroEuroRimasti(User::$id, true);
-?>
-	<div class="uk-width-1-1 uk-flex uk-flex-top uk-grid uk-margin-medium-bottom" uk-grid>
-		<div class="uk-width-1-1 uk-width-1-3@m uk-text-small">
-			<?php echo gtext("Crediti attivi");?>: <span class="uk-label uk-label-success uk-text-lowercase"><?php echo number_format(CreditiModel::gNumeroEuroRimasti(User::$id, true),2,",",".");?></span><br />
-			<?php if ($numeroCreditiAttivi > 0) { ?>
-			<?php echo gtext("Data scadenza");?>: <b><?php echo date("d-m-Y",strtotime(CreditiModel::dataScadenzaCrediti(User::$id)));?></b>
-			<?php } ?>
-		</div>
-		<div class="uk-width-1-1 uk-width-2-3@m">
-			
-		</div>
+<div class="uk-width-1-1 uk-flex uk-flex-top uk-grid uk-margin-medium-bottom" uk-grid>
+	<div class="uk-width-1-1 uk-width-1-2@m uk-text-small">
+		<b><?php echo gtext("Crediti attivi");?>:</b> <span class="uk-label uk-label-success uk-text-bold" style="vertical-align:top;"><?php echo number_format(CreditiModel::gNumeroEuroRimasti(User::$id, true),2,",",".");?></span><br /><br />
+		<?php if ($numeroCreditiAttivi > 0) { ?>
+		<?php echo gtext("Data scadenza");?>: <b><?php echo date("d-m-Y",strtotime(CreditiModel::dataScadenzaCrediti(User::$id)));?></b>
+		<div class="uk-small uk-text-italic uk-meta"><?php echo gtext(sprintf("Se acquisti nuovi crediti, la data di scadenza verrà posticipata di %s mesi.",v("mesi_durata_crediti")));?></div>
+		<?php } ?>
 	</div>
+	<div class="uk-width-1-1 uk-width-1-2@m uk-text-right">
+		<?php if ($idCatCrediti) { ?>
+		<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idCatCrediti);?>"><span uk-icon="icon: plus"></span> <?php echo gtext("Acquista crediti");?></a>
+		<?php } ?>
+	</div>
+</div>
 
+<?php if (count($storico) > 0) { ?>
 	<div class="uk-visible@m">
 		<div class="uk-text-small uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
@@ -60,6 +63,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Scadenza");?>:</span> <span class="uk-text-italic"><?php echo $credito["crediti"]["moltiplicatore_credito"] > 0 ? date("d-m-Y", strtotime($credito["crediti"]["data_scadenza"])) : "";?></span>
+				<?php if (strtotime($credito["crediti"]["data_scadenza"]) < strtotime(date("Y-m-d"))) { ?>
+				<br /><span class="uk-label uk-label-danger"><?php echo gtext("scaduti");?></span>
+				<?php } ?>
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <span><a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$credito["orders"]["id_o"]."/".$credito["orders"]["cart_uid"]."?n=y";?>"><?php echo "#".$credito["orders"]["id_o"];?></a></span>

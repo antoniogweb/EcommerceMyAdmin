@@ -37,6 +37,16 @@ class CreditiModel extends GenericModel
         );
     }
     
+    // Restituisce la categoria di un prodotto crediti
+    public static function gIdCategory()
+    {
+		$p = new PagesModel();
+		
+		return (int)$p->clear()->addWhereAttivo()->aWhere(array(
+			"prodotto_crediti"	=>	1
+		))->limit(1)->field("id_c");
+    }
+    
 	public static function gNumeroEuroRimasti($id_user)
 	{
 		if (!$id_user)
@@ -192,7 +202,7 @@ class CreditiModel extends GenericModel
 			if (!empty($ordine))
 			{
 				$ora = new DateTime();
-				$ora->modify("+12 months");
+				$ora->modify("+".v("mesi_durata_crediti")." months");
 				$data_scadenza = $ora->format("Y-m-d");
 				$ora->modify("-30 days");
 				$data_invio_avviso = $ora->format("Y-m-d");
