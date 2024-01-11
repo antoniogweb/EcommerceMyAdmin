@@ -251,6 +251,8 @@ class BaseRiservataController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione crediti"));
 		
+		$data["storico"] = $this->m("CreditiModel")->getStoricoCrediti(User::$id);
+		
 		$this->append($data);
 		
 		$this->load('crediti');

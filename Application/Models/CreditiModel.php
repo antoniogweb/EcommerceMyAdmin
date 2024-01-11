@@ -31,6 +31,12 @@ class CreditiModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public function relations() {
+        return array(
+			'ordine' => array("BELONGS_TO", 'OrdiniModel', 'id_o',null,"CASCADE"),
+        );
+    }
+    
 	public static function gNumeroEuroRimasti($id_user)
 	{
 		if (!$id_user)
@@ -52,6 +58,16 @@ class CreditiModel extends GenericModel
 		return 0;
 	}
 	
+	public function getStoricoCrediti($idUser)
+	{
+		if (!$idUser)
+			return 0;
+		
+		return $this->clear()->select("crediti.*,orders.id_o,orders.cart_uid")->left(array("ordine"))->where(array(
+			"id_user"	=>	(int)$idUser,
+		))->orderBy("data_creazione desc")->send();
+	}
+	
 	// Restituisce l'ultimo pacchetto attivo di crediti
 	public function ultimoPacchettoAttivoCrediti($idUser)
 	{
@@ -60,6 +76,18 @@ class CreditiModel extends GenericModel
 			"attivo"	=>	1,
 			"azione"	=>	"C",
 		))->orderBy("data_scadenza desc")->limit(1)->record();
+	}
+	
+	public static function dataScadenzaCrediti($idUser)
+	{
+		$c = new CreditiModel();
+		
+		$record = $c->ultimoPacchettoAttivoCrediti($idUser);
+		
+		if (!empty($record))
+			return $record["data_scadenza"];
+		
+		return date("Y-m-d");
 	}
 	
 	// Aggiungi scarico crediti da ordine
