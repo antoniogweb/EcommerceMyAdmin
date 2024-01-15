@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CreditiModel extends GenericModel
 {
+	public $campoTimeEventoRemarketing = "time_invio_avviso";
+	
 	public function __construct() {
 		$this->_tables = 'crediti';
 		$this->_idFields = 'id_crediti';
@@ -35,6 +37,13 @@ class CreditiModel extends GenericModel
         return array(
 			'ordine' => array("BELONGS_TO", 'OrdiniModel', 'id_o',null,"CASCADE"),
         );
+    }
+    
+    public function insert()
+    {
+		$this->setValue("creation_time", time());
+		
+		return parent::insert();
     }
     
     // Restituisce la categoria di un prodotto crediti
@@ -84,6 +93,9 @@ class CreditiModel extends GenericModel
 	// Restituisce l'ultimo pacchetto attivo di crediti
 	public function ultimoPacchettoAttivoCrediti($idUser)
 	{
+		if (!$idUser)
+			return 0;
+		
 		return $this->clear()->where(array(
 			"id_user"	=>	(int)$idUser,
 			"attivo"	=>	1,
@@ -256,5 +268,47 @@ class CreditiModel extends GenericModel
 				)
 			));
 		}
+	}
+	
+	// Controlla se devo eliminare la riga con "in_scadenza = 1" per il cliente dell'ordine
+	public function controllaInScadenza($idUser)
+	{
+		if (!$idUser)
+			return 0;
+		
+		$numeroCrediti = self::gNumeroEuroRimasti($idUser, true);
+		
+		if ($numeroCrediti <= 0)
+			$this->query(array(
+				"update crediti set in_scadenza = 0 where id_user = ?",
+				array(
+					(int)$idUser
+				)
+			));
+	}
+	
+	// Metodo per segnaposto
+	public function gDataScadenza($lingua, $record)
+	{
+		if (!isset($record["data_scadenza"]))
+			return "";
+		
+		return date("d-m-Y", strtotime($record["data_scadenza"]));
+	}
+	
+	// Metodo per segnaposto
+	public function getNominativoInOrdineOCliente($lingua, $record)
+	{
+		if (!isset($record["id_user"]))
+			return "";
+		
+		$rModel = new RegusersModel();
+		
+		$user = $rModel->selectId((int)$record["id_user"]);
+		
+		if (!empty($user))
+			return self::getNominativo($user);
+		
+		return "";
 	}
 }

@@ -14,7 +14,14 @@ $attiva = "crediti";
 
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 $numeroCreditiAttivi = CreditiModel::gNumeroEuroRimasti(User::$id, true);
-$idCatCrediti = CreditiModel::gIdCategory();
+$idPagina = PagesModel::gTipoPagina("CREDITI");
+$idCatCrediti = 0;
+
+if (!$idPagina)
+	$idCatCrediti = CreditiModel::gIdCategory();
+
+$urlAliasCrediti = $idPagina ? getUrlAlias($idPagina) : getCategoryUrlAlias($idCatCrediti);
+
 $labelNumeroCrediti = $numeroCreditiAttivi > 0 ? "success" : "danger";
 ?>
 <div class="uk-width-1-1 uk-flex uk-flex-top uk-grid uk-margin-medium-bottom" uk-grid>
@@ -26,8 +33,8 @@ $labelNumeroCrediti = $numeroCreditiAttivi > 0 ? "success" : "danger";
 		<?php } ?>
 	</div>
 	<div class="uk-width-1-1 uk-width-1-2@m uk-text-right">
-		<?php if ($idCatCrediti) { ?>
-		<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idCatCrediti);?>"><span uk-icon="icon: plus"></span> <?php echo gtext("Acquista crediti");?></a>
+		<?php if ($idPagina || $idCatCrediti) { ?>
+		<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/".$urlAliasCrediti;?>"><span uk-icon="icon: plus"></span> <?php echo gtext("Acquista crediti");?></a>
 		<?php } ?>
 	</div>
 </div>
