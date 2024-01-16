@@ -655,6 +655,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_prodotti_digitali"	=>	0, // se impostato ad 1 attiva il campo prodotto_digitale nelle pagine
 		"attiva_crediti"			=>	0, // se impostato ad 1 attiva i campi prodotto_crediti e numero_crediti nelle pagine
 		"moltiplicatore_credito"	=>	1, // il numero di EURO di 1 CREDITO
+		"mesi_durata_crediti"		=>	12, // numero di mesi prima della scadenza dei crediti
 		## BREADCRUMB ##
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto

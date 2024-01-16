@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CreditiModel extends GenericModel
 {
+	public $campoTimeEventoRemarketing = "time_invio_avviso";
+	
 	public function __construct() {
 		$this->_tables = 'crediti';
 		$this->_idFields = 'id_crediti';
@@ -31,38 +33,154 @@ class CreditiModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public static function gNumeroEuroRimasti($id_user)
+	public function relations() {
+        return array(
+			'ordine' => array("BELONGS_TO", 'OrdiniModel', 'id_o',null,"CASCADE"),
+        );
+    }
+    
+    public function insert()
+    {
+		$this->setValue("creation_time", time());
+		
+		return parent::insert();
+    }
+    
+    // Restituisce la categoria di un prodotto crediti
+    public static function gIdCategory()
+    {
+		$p = new PagesModel();
+		
+		return (int)$p->clear()->addWhereAttivo()->aWhere(array(
+			"prodotto_crediti"	=>	1
+		))->limit(1)->field("id_c");
+    }
+    
+	public static function gNumeroEuroRimasti($id_user, $forza = false)
 	{
 		if (!$id_user)
 			return 0;
 		
+		if (CartModel::numeroProdottiCreditiInCarrello() > 0 && !$forza)
+			return 0;
+		
 		$c = new CreditiModel();
 		
-		$res = $c->clear()->where(array(
-			"id_user"	=>	$id_user,
+		$res = $c->clear()->select("SUM(numero_crediti * moltiplicatore_credito) as CREDITI")->where(array(
+			"id_user"	=>	(int)$id_user,
 			"attivo"	=>	1,
 			"gte"		=>	array(
 				"data_scadenza"	=>	date("Y-m-d")
 			)
-		))->getSum("numero_crediti");
+		))->send();
 		
-		if ($res !== false)
-			return number_format((int)$res * (float)v("moltiplicatore_credito"),2,".","");
+		if (isset($res[0]["aggregate"]["CREDITI"]) && $res[0]["aggregate"]["CREDITI"] && $res[0]["aggregate"]["CREDITI"] > 0)
+			return $res[0]["aggregate"]["CREDITI"];
 		
 		return 0;
 	}
 	
-// 	public static function getSconto($id_user)
-// 	{
-// 		$euroCrediti = self::gNumeroEuroRimasti($id_user);
-// 		$totaleProdottiSpedizionePagamento = 
-// 		
-// 		if ($euroCrediti >)
-// 	}
+	public function getStoricoCrediti($idUser)
+	{
+		if (!$idUser)
+			return 0;
+		
+		return $this->clear()->select("crediti.*,orders.id_o,orders.cart_uid,orders.stato")->left(array("ordine"))->where(array(
+			"id_user"	=>	(int)$idUser,
+		))->orderBy("data_creazione desc")->send();
+	}
 	
-	// Crea la promo dalla riga ordine
+	// Restituisce l'ultimo pacchetto attivo di crediti
+	public function ultimoPacchettoAttivoCrediti($idUser)
+	{
+		if (!$idUser)
+			return 0;
+		
+		return $this->clear()->where(array(
+			"id_user"	=>	(int)$idUser,
+			"attivo"	=>	1,
+			"azione"	=>	"C",
+		))->orderBy("data_scadenza desc")->limit(1)->record();
+	}
+	
+	public static function dataScadenzaCrediti($idUser)
+	{
+		$c = new CreditiModel();
+		
+		$record = $c->ultimoPacchettoAttivoCrediti($idUser);
+		
+		if (!empty($record))
+			return $record["data_scadenza"];
+		
+		return date("Y-m-d");
+	}
+	
+	// Aggiungi scarico crediti da ordine
+	public function aggiungiScaricoDaOrdine($idO)
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		$oModel = new OrdiniModel();
+		
+		$ordine = $oModel->selectId((int)$idO);
+		
+		if (empty($ordine))
+			return;
+		
+		$crediti = $this->clear()->where(array(
+			"id_o"		=>	(int)$idO,
+			"azione"	=>	"S",
+		))->send(false);
+		
+		if (count($crediti) > 0)
+		{
+			$attivo = ($ordine["stato"] != "deleted") ? 1 : 0;
+			
+			foreach ($crediti as $c)
+			{
+				if ((int)$c["attivo"] !== (int)$attivo)
+				{
+					$this->sValues(array(
+						"attivo"	=>	$attivo,
+					));
+					
+					$this->update((int)$c["id_crediti"]);
+				}
+			}
+		}
+		else
+		{
+			$recordAttivo = $this->ultimoPacchettoAttivoCrediti($ordine["id_user"]);
+			
+			$moltiplicatore = $ordine["moltiplicatore_credito"] > 0 ? $ordine["moltiplicatore_credito"] : 1;
+			
+			$this->sValues(array(
+				"id_user"				=>	$ordine["id_user"],
+				"attivo"				=>	1,
+				"azione"				=>	"S", // Carica
+				"numero_crediti"		=>	number_format($ordine["euro_crediti"] / $moltiplicatore, 2, ".", ""),
+				"moltiplicatore_credito"=>	(-1) * $moltiplicatore,
+				"data_scadenza"			=>	!empty($recordAttivo) ? $recordAttivo["data_scadenza"] : date("Y-m-d"),
+				"in_scadenza"			=>	0,
+				"data_invio_avviso"		=>	!empty($recordAttivo) ? $recordAttivo["data_invio_avviso"] : date("Y-m-d"),
+				"time_invio_avviso"		=>	!empty($recordAttivo) ? $recordAttivo["time_invio_avviso"] : strtotime(date("Y-m-d")),
+				"email"					=>	$ordine["email"],
+				"lingua"				=>	$ordine["lingua"],
+				"nazione"				=>	$ordine["nazione_navigazione"],
+				"id_r"					=>	0,
+				"id_o"					=>	$ordine["id_o"],
+				"fonte"					=>	"ACQUISTO",
+			), "sanitizeDb");
+			
+			$this->insert();
+		}
+	}
+	
+	// Aggiungi i crediti da riga ordine
 	public function aggiungiDaRigaOrdine($idR)
 	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
 		$rModel = new RigheModel();
 		
 		$riga = $rModel->selectId((int)$idR);
@@ -74,7 +192,8 @@ class CreditiModel extends GenericModel
 		$attivo = OrdiniModel::isPagato($riga["id_o"]) ? 1 : 0;
 		
 		$crediti = $this->clear()->where(array(
-			"id_r"	=>	(int)$idR,
+			"id_r"		=>	(int)$idR,
+			"azione"	=>	"C",
 		))->send(false);
 		
 		if (count($crediti) > 0)
@@ -98,7 +217,7 @@ class CreditiModel extends GenericModel
 			if (!empty($ordine))
 			{
 				$ora = new DateTime();
-				$ora->modify("+12 months");
+				$ora->modify("+".v("mesi_durata_crediti")." months");
 				$data_scadenza = $ora->format("Y-m-d");
 				$ora->modify("-30 days");
 				$data_invio_avviso = $ora->format("Y-m-d");
@@ -108,6 +227,7 @@ class CreditiModel extends GenericModel
 					"attivo"				=>	$attivo,
 					"azione"				=>	"C", // Carica
 					"numero_crediti"		=>	($riga["numero_crediti"] * $riga["quantity"]),
+					"moltiplicatore_credito"=>	v("moltiplicatore_credito"),
 					"data_scadenza"			=>	$data_scadenza,
 					"in_scadenza"			=>	1,
 					"data_invio_avviso"		=>	$data_invio_avviso,
@@ -148,5 +268,47 @@ class CreditiModel extends GenericModel
 				)
 			));
 		}
+	}
+	
+	// Controlla se devo eliminare la riga con "in_scadenza = 1" per il cliente dell'ordine
+	public function controllaInScadenza($idUser)
+	{
+		if (!$idUser)
+			return 0;
+		
+		$numeroCrediti = self::gNumeroEuroRimasti($idUser, true);
+		
+		if ($numeroCrediti <= 0)
+			$this->query(array(
+				"update crediti set in_scadenza = 0 where id_user = ?",
+				array(
+					(int)$idUser
+				)
+			));
+	}
+	
+	// Metodo per segnaposto
+	public function gDataScadenza($lingua, $record)
+	{
+		if (!isset($record["data_scadenza"]))
+			return "";
+		
+		return date("d-m-Y", strtotime($record["data_scadenza"]));
+	}
+	
+	// Metodo per segnaposto
+	public function getNominativoInOrdineOCliente($lingua, $record)
+	{
+		if (!isset($record["id_user"]))
+			return "";
+		
+		$rModel = new RegusersModel();
+		
+		$user = $rModel->selectId((int)$record["id_user"]);
+		
+		if (!empty($user))
+			return self::getNominativo($user);
+		
+		return "";
 	}
 }

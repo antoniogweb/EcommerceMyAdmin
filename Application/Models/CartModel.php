@@ -1409,6 +1409,26 @@ class CartModel extends GenericModel {
 		return false;
 	}
 	
+	public static function numeroProdottiCreditiInCarrello()
+	{
+		if (!v("attiva_crediti"))
+			return 0;
+		
+		$c = new CartModel();
+		
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$res = $c->clear()->select("sum(quantity) as SOMMA")->where(array(
+			"cart_uid"			=>	$clean["cart_uid"],
+			"prodotto_crediti"	=>	1,
+		))->send();
+		
+		if (isset($res[0]["aggregate"]["SOMMA"]) && $res[0]["aggregate"]["SOMMA"])
+			return $res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+	
 	public static function numeroGifCartInCarrello($idCart = 0)
 	{
 		if (!v("attiva_gift_card"))

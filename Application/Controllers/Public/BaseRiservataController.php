@@ -238,4 +238,23 @@ class BaseRiservataController extends BaseController
 		
 		$this->load('documenti');
 	}
+	
+	public function crediti()
+	{
+		if (!v("attiva_crediti"))
+			$this->responseCode(403);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/gestione-crediti/";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione crediti"));
+		
+		$data["storico"] = $this->m("CreditiModel")->getStoricoCrediti(User::$id);
+		
+		$this->append($data);
+		
+		$this->load('crediti');
+	}
 }

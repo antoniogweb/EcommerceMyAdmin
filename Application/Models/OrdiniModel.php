@@ -678,10 +678,20 @@ class OrdiniModel extends FormModel {
 					"prodotto_crediti"	=>	1,
 				))->send(false);
 				
+				// Carica crediti
 				foreach ($righe as $r)
 				{
 					$cModel->aggiungiDaRigaOrdine($r["id_r"]);
 				}
+				
+				// Scarica crediti
+				if ($ordine["euro_crediti"] > 0)
+				{
+					$cModel->aggiungiScaricoDaOrdine((int)$idO);
+				}
+				
+				// Controlla se devo eliminare la riga con "in_scadenza = 1" per il cliente dell'ordine
+				$cModel->controllaInScadenza($ordine["id_user"]);
 			}
 		}
 	}

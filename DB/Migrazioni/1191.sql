@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES ('Data scadenza dei crediti (solo per mail legate ai CREDITI)', 'DATA_SCADENZA', 'gDataScadenza', '', '1', '19', '', '1', '', '0');
