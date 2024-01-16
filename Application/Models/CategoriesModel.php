@@ -525,13 +525,13 @@ class CategoriesModel extends HierarchicalModel {
 		
 		if (trim($record["section"]))
 		{
-			$this->notice = "<div class='alert'>".gtext("Non è possibile eliminare questa categoria")."</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Non è possibile eliminare questa categoria")."</div>";
 			return false;
 		}
 		
 		if ($res > 0)
 		{
-			$this->notice = "<div class='alert'>Non è possibile eliminare questa categoria perché ci sono dei contenuti associati ad essa. Si prega di eliminare prima quei contenuti</div>";
+			$this->notice = "<div class='alert alert-danger'>Non è possibile eliminare questa categoria perché ci sono dei contenuti associati ad essa. Si prega di eliminare prima quei contenuti</div>";
 			return false;
 		}
 		else
