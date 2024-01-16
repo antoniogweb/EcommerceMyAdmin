@@ -57,7 +57,9 @@ final class PagesModelTest extends TestCase
 					"id_page"	=>	(int)$lId,
 				))->rowNumber();
 				
-				$this->assertTrue((int)$numeroRicerche === 5, "check inserimento righe di tabella pages_ricerca");
+				$lingue = PagesModel::getTraduzioniNonPrincipali();
+				
+				$this->assertTrue((int)$numeroRicerche === (5 * (count($lingue) + 1)), "check inserimento righe di tabella pages_ricerca");
 			}
 		}
 		
