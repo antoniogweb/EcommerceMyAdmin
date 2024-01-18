@@ -537,6 +537,7 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_ordini"			=>	"ordini/main", // controller/action della sezione ordini
 		"permetti_modifica_cliente_in_ordine"	=>	0, // se impostato ad 1, permette di modificare il cliente nell'ordine
 		"attiva_gestione_stati_ordine"	=>	0, // se impostato a 1 si attiva la possibilità di gestire gli stati dell'ordine
+		"salva_ip"					=>	0, // se impostato su 1, salva l'IP dell'utente
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

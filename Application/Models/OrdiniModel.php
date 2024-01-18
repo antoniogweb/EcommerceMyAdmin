@@ -1584,6 +1584,9 @@ class OrdiniModel extends FormModel {
 			if (!$this->values["da_spedire"] && !CartModel::soloProdottiSenzaSpedizione())
 				$this->values["mostra_sempre_corriere"] = 1;
 		}
+		
+		if (v("salva_ip"))
+			$this->values["ip"] = getIp();
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)
