@@ -2020,4 +2020,34 @@ class OrdiniModel extends FormModel {
 		
 		return $this;
 	}
+	
+	// Controlla che non abbia fatto più di tot ordini nello stesso giorno
+	public function checkNumeroOrdini()
+	{
+		if (v("salva_ip") && (int)v("numero_massimo_ordini_giornalieri_stesso_ip") > 0)
+		{
+			$numeroMassimo = (int)v("numero_massimo_ordini_giornalieri_stesso_ip");
+			$ip = getIp();
+			
+			$ipfModel = new IpfilterModel();
+			
+			if (!$ipfModel->check($ip, 1))
+			{
+				$numero = $this->clear()->where(array(
+					"ip"	=>	sanitizeAll($ip),
+				))->sWhere(array(
+					"date_format(data_creazione,'%Y-%m-%d') = ?",
+					array(
+						date("Y-m-d"),
+					)
+				))->rowNumber();
+				
+				if ($numero >= $numeroMassimo)
+				{
+					header('HTTP/1.0 403 Not Found');
+					die();
+				}
+			}
+		}
+	}
 }

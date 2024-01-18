@@ -796,6 +796,8 @@ class BaseOrdiniController extends BaseController
 		if (v("checkout_solo_loggato") && !User::$logged)
 			$this->redirect("regusers/login?redirect=/checkout");
 		
+		$this->m('OrdiniModel')->checkNumeroOrdini();
+		
 		$logSubmit = new LogModel();
 		
 		if( !session_id() )
