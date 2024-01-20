@@ -305,7 +305,7 @@ class PromozioniModel extends GenericModel {
 					if ($numeroUtilizziPerEmail > 0 && isset($_POST["email"]) && checkMail($_POST["email"]) && $numeroUtilizziPerEmail <= (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido, $_POST["email"]))
 						return false;
 					
-					if (isset($_POST["email"]) && checkMail($_POST["email"]) && $emailInPromo && checkMail($emailInPromo) && trim((string)$_POST["email"]) != trim($emailInPromo))
+					if (isset($_POST["email"]) && checkMail($_POST["email"]) && $emailInPromo && checkMail($emailInPromo) && trim(strtolower((string)$_POST["email"])) != trim(strtolower($emailInPromo)))
 						return false;
 					
 					// controllo il tipo cliente
