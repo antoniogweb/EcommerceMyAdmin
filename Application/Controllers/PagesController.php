@@ -640,6 +640,9 @@ class PagesController extends BaseController {
 		if (v("attiva_codice_js_pagina"))
 			$this->metaQueryFields .= ",codice_js";
 		
+		if (v("attiva_campo_css"))
+			$this->metaQueryFields .= ",css";
+		
 		$this->m[$this->modelName]->setFields($this->metaQueryFields,'sanitizeAll');
 		$this->m[$this->modelName]->setValue("meta_modificato", 1);
 		

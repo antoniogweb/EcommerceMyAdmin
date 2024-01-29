@@ -597,6 +597,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_ricerca_documento"	=>	0, // se impostato su 1 permette di cercare anche i documenti all'interno di una categoria
 		## PAGINE ##
 		"attiva_campo_redirect_pagine"		=>	0, // se impostato ad 1, attiva un campo redirect per le pagine. La pagina sarà un link all'URL specificato nel campo redirect
+		"attiva_campo_css"			=>	0, // se impostato ad 1 e se previsto dal tema, permette di integrare un CSS personalizzato per ogni pagina
 		## CARRELLO ##
 		"cart_sticky_top_offeset"	=>	100, // offset dello sticky del cart in desktop
 		"recupera_dati_carrello_da_post"	=>	0, // se impostato a 1, salva i dati inviati in post nel carrello (solo se l'utente ha approvato la privacy)

@@ -428,16 +428,18 @@ class BaseBaseController extends Controller
 		
 		$data["arrayLingueCompleto"] = LingueModel::getValoriAttivi();
 		
-		$res = $resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_desktop"), null, Params::$lang);
-		$data["menu"] = $this->m("MenuModel")->getMenu($res,false, Params::$lang);
+		$this->generaMenu();
 		
-		if (v("profondita_menu_mobile") != v("profondita_menu_desktop"))
-			$resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_mobile"), null, Params::$lang);
-		
-		if (v("abilita_menu_semplice"))
-			$data["menuSemplice"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, true);
-		
-		$data["menuMobile"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, false, true);
+// 		$res = $resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_desktop"), null, Params::$lang);
+// 		$data["menu"] = $this->m("MenuModel")->getMenu($res,false, Params::$lang);
+// 		
+// 		if (v("profondita_menu_mobile") != v("profondita_menu_desktop"))
+// 			$resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_mobile"), null, Params::$lang);
+// 		
+// 		if (v("abilita_menu_semplice"))
+// 			$data["menuSemplice"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, true);
+// 		
+// 		$data["menuMobile"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, false, true);
 		
 		$data["langDb"] = $this->langDb = Lang::$langDb = null;
 		
@@ -477,6 +479,22 @@ class BaseBaseController extends Controller
 				}
 			}
 		}
+		
+		$this->append($data);
+	}
+	
+	protected function generaMenu()
+	{
+		$res = $resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_desktop"), null, Params::$lang);
+		$data["menu"] = $this->m("MenuModel")->getMenu($res,false, Params::$lang);
+		
+		if (v("profondita_menu_mobile") != v("profondita_menu_desktop"))
+			$resMobile = $this->m("MenuModel")->getTreeWithDepth(v("profondita_menu_mobile"), null, Params::$lang);
+		
+		if (v("abilita_menu_semplice"))
+			$data["menuSemplice"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, true);
+		
+		$data["menuMobile"] = $this->m("MenuModel")->getMenu($resMobile,false, Params::$lang, false, true);
 		
 		$this->append($data);
 	}
