@@ -293,6 +293,9 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->modelName = "SpedizioninegozioserviziModel";
 		
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
 		$this->mainFields = array("spedizioni_negozio_servizi.codice", "spedizioni_negozio_servizi.titolo");
 		$this->mainHead = "Codice,Titolo";
 		
