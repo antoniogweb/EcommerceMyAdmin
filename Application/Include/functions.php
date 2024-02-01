@@ -2068,9 +2068,9 @@ function cXmlC($t, $cdata = false, $caratteri = false)
 {
 	if ($caratteri)
 	{
+		$t = str_replace("&","&amp;",$t);
 		$t = str_replace(">","&gt;",$t);
 		$t = str_replace("°","",$t);
-		$t = str_replace("&","&amp;",$t);
 		$t = str_replace("<","&lt;",$t);
 		$t = str_replace("'","&#39;",$t);
 		$t = str_replace('"',"&quot;",$t);
