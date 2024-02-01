@@ -178,6 +178,8 @@ class Route
 		'promozioni,inviacodice',
 		'promozioni,invianuovamentecodice',
 		'promozioni,elencoinvii',
+		'paypal,createorder',
+		'paypal,captureorder',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -338,6 +340,8 @@ class Route
 		'feed/prodotti/(.*)'		=>	'feed/prodotti/${1}',
 		'motoriricerca/cerca/(.*)'	=>	'motoriricerca/cerca/${1}',
 		'captcha/index'				=>	'captcha/index',
+		'paypal/createorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/createorder/${1}/${2}',
+		'paypal/captureorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/captureorder/${1}/${2}',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',

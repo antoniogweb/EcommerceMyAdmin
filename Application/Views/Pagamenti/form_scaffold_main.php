@@ -56,7 +56,7 @@ $().ready(function() {
 			</div>
 			<?php } ?>
 			
-			<?php if (isset($record["codice"]) && $record["codice"] == "carta_di_credito") { ?>
+			<?php if (isset($record["codice"]) && ($record["codice"] == "carta_di_credito" || $record["codice"] == "paypal")) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					<?php echo gtext("Parametri carta");?>

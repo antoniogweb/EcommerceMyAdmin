@@ -343,4 +343,21 @@ class App
 			}
 		}
 	}
+	
+	// Crea la cartella Logs se non è presente
+	public static function createLogFolder()
+	{
+		if(!is_dir(ROOT.'/Logs'))
+		{
+			if (@mkdir(ROOT.'/Logs'))
+			{
+				$fp = fopen(ROOT.'/Logs/index.html', 'w');
+				fclose($fp);
+				
+				$fp = fopen(ROOT.'/Logs/.htaccess', 'w');
+				fwrite($fp, 'deny from all');
+				fclose($fp);
+			}
+		}
+	}
 }

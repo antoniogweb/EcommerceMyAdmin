@@ -36,6 +36,11 @@ class PagamentiModel extends GenericModel {
 		"Sella"	=>	"Circuito Banca Sella",
 	);
 	
+	public static $elencoGatewayPaypal = array(
+		""					=>	"PayPal Standard",
+		"PaypalCheckout"	=>	"PayPal Checkout",
+	);
+	
 	public function __construct() {
 		$this->_tables='pagamenti';
 		$this->_idFields='id_pagamento';
@@ -94,13 +99,7 @@ class PagamentiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
-				'gateway_pagamento'	=>	array(
-					"type"	=>	"Select",
-					"labelString"	=>	"Gateway di pagamento",
-					"options"	=>	self::$elencoGateway,
-					"reverse"	=>	"yes",
-					"className"	=>	"form-control",
-				),
+				'gateway_pagamento'	=>	$this->campoGatewayPagamento($record),
 				'utilizzo'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Utilizzo",
@@ -138,10 +137,10 @@ class PagamentiModel extends GenericModel {
 					),
 				),
 				'alias_account'		=>	array(
-					'labelString'=>	'Alias Account / Shop ID',
+					'labelString'=>	$this->aliasAccountLabel($record),
 				),
 				'chiave_segreta'		=>	array(
-					'labelString'=>	'Chiave segreta / API KEY',
+					'labelString'=>	$this->chiaveSegretaLabel($record),
 				),
 				'codice_pagamento_pa'	=>	array(
 					"type"	=>	"Select",
@@ -154,6 +153,50 @@ class PagamentiModel extends GenericModel {
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+	}
+	
+	protected function campoGatewayPagamento($record)
+	{
+		$res = array(
+			"type"	=>	"Select",
+			"labelString"	=>	"Gateway di pagamento",
+			"options"	=>	$this->elencoGateway($record["codice"]),
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+		);
+		
+		if ($record["codice"] == "paypal")
+			$res["wrap"] = array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Nel caso si scelga PayPal Standard, i campi Pagamento di test, CLIENT ID e SECRET non avranno effetto, la configurazione del pagamento andrà fatta sotto Preferenze > Impostazioni > Account Business Paypal.")."</div>"
+			);
+				
+		return $res;
+	}
+	
+	protected function aliasAccountLabel($record)
+	{
+		if ($record["codice"] == "carta_di_credito")
+			return 'Alias Account / Shop ID';
+		else
+			return 'PAYPAL CLIENT ID';
+	}
+	
+	protected function chiaveSegretaLabel($record)
+	{
+		if ($record["codice"] == "carta_di_credito")
+			return 'Chiave segreta / API KEY';
+		else
+			return 'PAYPAL SECRET';
+	}
+	
+	public function elencoGateway($codicePagamento)
+	{
+		if ($codicePagamento == "carta_di_credito")
+			return self::$elencoGateway;
+		else if ($codicePagamento == "paypal")
+			return self::$elencoGatewayPaypal;
 	}
 	
 	public function opzioniPagamentiPa()

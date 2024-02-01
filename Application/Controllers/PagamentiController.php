@@ -81,7 +81,7 @@ class PagamentiController extends BaseController
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if (isset($record["codice"]) && $record["codice"] == "carta_di_credito")
+		if (isset($record["codice"]) && ($record["codice"] == "carta_di_credito" || $record["codice"] == "paypal"))
 			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
 		
 		if (isset($record["codice"]) && $record["codice"] != "carta_di_credito" && $record["codice"] != "paypal")

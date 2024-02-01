@@ -415,55 +415,65 @@ class BaseOrdiniController extends BaseController
 		
 		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
-			if (isset($_GET["to_paypal"]))
+			if (PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
 			{
-				$this->clean();
-			}
-			
-			require (LIBRARY.'/External/paypal/paypal_class.php');
-			
-			if (Parametri::$useSandbox)
-			{
-				$p = new paypal_class(true); //usa sandbox
-				$p->paypal_mail = Parametri::$paypalSandBoxSeller;
+				if (isset($_GET["to_paypal"]))
+					unset($_GET["to_paypal"]);
+					
+				$data["pulsantePaypal"] = PagamentiModel::gateway($data["ordine"], false, "paypal")->getPulsantePaga();
 			}
 			else
 			{
-				$p = new paypal_class(); //usa il vero paypal
-				$p->paypal_mail = Parametri::$paypalSeller;
-			}
-			
-			$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
-			$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
-			$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
-			$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
-			$p->add_field('item_number', $data["ordine"]["cart_uid"]);
-			$p->add_field('amount', $data["ordine"]["total"]);
-			$p->add_field('currency_code', 'EUR');
-			$p->add_field('lc', 'IT');
-			
-			$p->add_field('email', $data["ordine"]["email"]);
+				if (isset($_GET["to_paypal"]))
+				{
+					$this->clean();
+				}
+				
+				require (LIBRARY.'/External/paypal/paypal_class.php');
+				
+				if (Parametri::$useSandbox)
+				{
+					$p = new paypal_class(true); //usa sandbox
+					$p->paypal_mail = Parametri::$paypalSandBoxSeller;
+				}
+				else
+				{
+					$p = new paypal_class(); //usa il vero paypal
+					$p->paypal_mail = Parametri::$paypalSeller;
+				}
+				
+				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
+				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
+				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
+				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
+				$p->add_field('item_number', $data["ordine"]["cart_uid"]);
+				$p->add_field('amount', $data["ordine"]["total"]);
+				$p->add_field('currency_code', 'EUR');
+				$p->add_field('lc', 'IT');
+				
+				$p->add_field('email', $data["ordine"]["email"]);
 
-			if (strcmp($data["ordine"]["tipo_cliente"], "privato") === 0) {
-				$p->add_field('first_name', $data["ordine"]["nome"]);
-				$p->add_field('last_name', $data["ordine"]["cognome"]);
+				if (strcmp($data["ordine"]["tipo_cliente"], "privato") === 0) {
+					$p->add_field('first_name', $data["ordine"]["nome"]);
+					$p->add_field('last_name', $data["ordine"]["cognome"]);
+				}
+				
+				$p->add_field('address1', $data["ordine"]["indirizzo"]);
+				$p->add_field('city', $data["ordine"]["citta"]);
+				$p->add_field('zip', $data["ordine"]["cap"]);
+				$p->add_field('country', $data["ordine"]["nazione"]);
+				$p->add_field('night_phone_b', $data["ordine"]["telefono"]);
+				
+				if ($data["ordine"]["nazione"] == "IT")
+					$p->add_field('state', $data["ordine"]["provincia"]);
+				else
+					$p->add_field('state', $data["ordine"]["dprovincia"]);
+				
+				$p->add_field('cmd', '_xclick');
+				$p->add_field('rm', '2');   // Return method = POST
+				
+				$data["pulsantePaypal"] = $p->paypal_button();
 			}
-			
-			$p->add_field('address1', $data["ordine"]["indirizzo"]);
-			$p->add_field('city', $data["ordine"]["citta"]);
-			$p->add_field('zip', $data["ordine"]["cap"]);
-			$p->add_field('country', $data["ordine"]["nazione"]);
-			$p->add_field('night_phone_b', $data["ordine"]["telefono"]);
-			
-			if ($data["ordine"]["nazione"] == "IT")
-				$p->add_field('state', $data["ordine"]["provincia"]);
-			else
-				$p->add_field('state', $data["ordine"]["dprovincia"]);
-			
-			$p->add_field('cmd', '_xclick');
-			$p->add_field('rm', '2');   // Return method = POST
-			
-			$data["pulsantePaypal"] = $p->paypal_button();
 		}
 		else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
@@ -577,18 +587,20 @@ class BaseOrdiniController extends BaseController
 	
 	private function createLogFolder()
 	{
-		if(!is_dir(ROOT.'/Logs'))
-		{
-			if (@mkdir(ROOT.'/Logs'))
-			{
-				$fp = fopen(ROOT.'/Logs/index.html', 'w');
-				fclose($fp);
-				
-				$fp = fopen(ROOT.'/Logs/.htaccess', 'w');
-				fwrite($fp, 'deny from all');
-				fclose($fp);
-			}
-		}
+		App::createLogFolder();
+		
+// 		if(!is_dir(ROOT.'/Logs'))
+// 		{
+// 			if (@mkdir(ROOT.'/Logs'))
+// 			{
+// 				$fp = fopen(ROOT.'/Logs/index.html', 'w');
+// 				fclose($fp);
+// 				
+// 				$fp = fopen(ROOT.'/Logs/.htaccess', 'w');
+// 				fwrite($fp, 'deny from all');
+// 				fclose($fp);
+// 			}
+// 		}
 	}
 	
 	public function annullapagamento($tipo = "", $cartuUid = "")
@@ -598,11 +610,15 @@ class BaseOrdiniController extends BaseController
 		$this->createLogFolder();
 		
 		$fp = fopen(ROOT.'/Logs/error_pagamento.txt', 'a+');
-		fwrite($fp, date("Y-m-d H:i:s"));
-		fwrite($fp, "\nTIPO:".sanitizeHtml($tipo)."\n");
-		fwrite($fp, print_r($_GET,true));
-		fwrite($fp, print_r($_POST,true));
-		fclose($fp);
+		
+		if ($fp)
+		{
+			fwrite($fp, date("Y-m-d H:i:s"));
+			fwrite($fp, "\nTIPO:".sanitizeHtml($tipo)."\n");
+			fwrite($fp, print_r($_GET,true));
+			fwrite($fp, print_r($_POST,true));
+			fclose($fp);
+		}
 		
 		$clean['cart_uid'] = sanitizeAll($cartuUid);
 		
