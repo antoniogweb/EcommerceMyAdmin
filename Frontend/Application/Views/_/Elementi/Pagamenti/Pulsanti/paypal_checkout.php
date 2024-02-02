@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div id="result-message"></div>
 <div id="paypal-button-container"></div>
-<script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypalClientId;?>&currency=EUR&disable-funding=credit,card,mybank"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypalClientId;?>&currency=EUR&disable-funding=credit,mybank"></script>
 
 <script>
 window.paypal

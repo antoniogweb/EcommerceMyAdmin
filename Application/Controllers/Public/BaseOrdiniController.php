@@ -413,13 +413,13 @@ class BaseOrdiniController extends BaseController
 		
 		$data["tipoOutput"] = "web";
 		
+		if (isset($_GET["to_paypal"]) && PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
+			unset($_GET["to_paypal"]);
+		
 		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
 			if (PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
 			{
-				if (isset($_GET["to_paypal"]))
-					unset($_GET["to_paypal"]);
-					
 				$data["pulsantePaypal"] = PagamentiModel::gateway($data["ordine"], false, "paypal")->getPulsantePaga();
 			}
 			else

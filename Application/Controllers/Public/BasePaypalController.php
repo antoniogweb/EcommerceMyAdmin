@@ -28,8 +28,8 @@ class BasePaypalController extends OrdiniController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-// 		if (!PagamentiModel::gateway(array(), true, "paypal")->isPaypalCheckout() || !App::checkCSRF("paypal_csrf"))
-// 			$this->responseCode(403);
+		if (!PagamentiModel::gateway(array(), true, "paypal")->isPaypalCheckout() || !App::checkCSRF("paypal_csrf"))
+			$this->responseCode(403);
 		
 		$this->clean();
 		
@@ -56,11 +56,11 @@ class BasePaypalController extends OrdiniController
 		
 		if (!empty($ordine))
 		{
-			if ($ordine["gateway_order_id"])
-				echo json_encode(array(
-					"id"	=>	$ordine["gateway_order_id"],
-				));
-			else
+// 			if ($ordine["gateway_order_id"])
+// 				echo json_encode(array(
+// 					"id"	=>	$ordine["gateway_order_id"],
+// 				));
+// 			else
 				echo json_encode(PagamentiModel::gateway($ordine, true, "paypal")->createOrder());
 		}
 		else

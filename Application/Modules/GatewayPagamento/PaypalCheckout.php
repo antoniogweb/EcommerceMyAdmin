@@ -142,12 +142,17 @@ class PaypalCheckout
 					if ($tuttoPagato && number_format($totale,2,".","") == number_format($this->ordine["total"],2,".",""))
 						$ris = true;
 					else
-						$messaggio = gtext(vsprintf("Attenzione, discrepanza nel dovuto dell'ordine %s, si prega di controllare i log",$this->ordine["id_o"]));
+						$messaggio = gtext(vsprintf("Attenzione, discrepanza nel dovuto dell'ordine %s, si prega di controllare i log",array($this->ordine["id_o"])));
 				}
 				else
-					$messaggio = gtext(vsprintf("Attenzione, il pagamento dell'ordine %s non è andato a buon fine, si prega di controllare i log",$this->ordine["id_o"]));
+					$messaggio = gtext(vsprintf("Attenzione, il pagamento dell'ordine %s non è andato a buon fine, si prega di controllare i log",array($this->ordine["id_o"])));
 				
 				OrdiniresponseModel::aggiungi($this->ordine["cart_uid"], json_encode($result, JSON_PRETTY_PRINT), $ris);
+				
+				$logSubmit = new LogModel();
+				$logSubmit->setFullLog($output);
+				$logSubmit->setCartUid($this->ordine["cart_uid"]);
+				$logSubmit->write("PAYPAL_CAPTURE_ORDER", $ris ? "OK" : "KO", true);
 			}
 		}
 		
@@ -223,10 +228,14 @@ class PaypalCheckout
 			
 			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($valori));                                                                                                                 
 			
-			$result = curl_exec($ch);
+			$result = $fullLog = curl_exec($ch);
 			curl_close($ch);
 			
 			$result = json_decode($result, true); 
+			
+			$logSubmit = new LogModel();
+			$logSubmit->setFullLog($fullLog);
+			$logSubmit->setCartUid($this->ordine["cart_uid"]);
 			
 			if (isset($result["id"]))
 			{
@@ -238,15 +247,19 @@ class PaypalCheckout
 				
 				$oModel->pUpdate((int)$this->ordine["id_o"]);
 				
+				$logSubmit->write("PAYPAL_CREATE_ORDER", "OK", true);
+				
 				return array(
 					"id"	=>	sanitizeAll($result["id"]),
 				);
 			}
 		}
 		
+		$logSubmit->write("PAYPAL_CREATE_ORDER", "KO", true);
+		
 		return array(
 			"id"			=>	0,
-			"description"	=>	gtext("Non è possibile iniziare il pagamento PayPal. Si prega di contattare il negozio."),
+			"description"	=>	gtext("Non è possibile iniziare il pagamento tramite PayPal. Si prega di contattare il negozio."),
 		);
 	}
 	

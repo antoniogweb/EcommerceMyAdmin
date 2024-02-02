@@ -31,6 +31,7 @@ class LogModel extends GenericModel
 	private $erroriSubmit = "";
 	private $spam = false;
 	private $userAgent = false;
+	private $fullLog = "";
 	
 	private static $deletedExpired = false;
 	
@@ -83,9 +84,19 @@ class LogModel extends GenericModel
 		$this->spam = true;
 	}
 	
-	public function write($tipo, $risultato)
+	public function setFullLog($fullLog)
 	{
-		if (v("abilita_log_piattaforma"))
+		$this->fullLog = $fullLog;
+	}
+	
+	public function setCartUid($cartUid)
+	{
+		$this->cartUid = $cartUid;
+	}
+	
+	public function write($tipo, $risultato, $forza = false)
+	{
+		if (v("abilita_log_piattaforma") || $forza)
 		{
 			if (v("usa_transactions"))
 				$this->db->beginTransaction();
@@ -101,6 +112,7 @@ class LogModel extends GenericModel
 				"risultato"	=>	$this->spam ? self::SPAM : $risultato,
 				"time_inserimento"	=>	time(),
 				"user_agent"	=>	$this->userAgent,
+				"full_log"	=>	$this->fullLog,
 			), "sanitizeDb");
 			
 			$res = $this->insert();
