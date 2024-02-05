@@ -210,7 +210,7 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$this->setValue("email", $ordine["email"], "sanitizeDb");
 			$this->setValue("lingua", (string)$ordine["lingua"], "sanitizeDb");
-			$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
+// 			$this->setValue("nazione", (string)$ordine["nazione"], "sanitizeDb");
 			$this->setValue("note", $ordine["note"], "sanitizeDb");
 			$this->setValue("note_interne", $ordine["telefono_spedizione"], "sanitizeDb");
 			
@@ -265,7 +265,7 @@ class SpedizioninegozioModel extends FormModel {
 			
 			$this->setValue("email", $cliente["username"], "sanitizeDb");
 			$this->setValue("lingua", (string)$lista["liste_regalo"]["lingua"], "sanitizeDb");
-			$this->setValue("nazione", (string)$lista["liste_regalo"]["nazione"], "sanitizeDb");
+// 			$this->setValue("nazione", (string)$lista["liste_regalo"]["nazione"], "sanitizeDb");
 		}
 	}
 	
