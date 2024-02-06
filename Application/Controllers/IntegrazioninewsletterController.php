@@ -41,7 +41,7 @@ class IntegrazioninewsletterController extends BaseController
 		$this->s["admin"]->check();
 		
 		if (!v("mostra_gestione_newsletter"))
-			die();
+			$this->responseCode(403);
 	}
 
 	public function main()
@@ -59,7 +59,9 @@ class IntegrazioninewsletterController extends BaseController
 		$this->mainFields = array("edit","attivo");
 		$this->mainHead = "Titolo,Attivo";
 		
-		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
+		$this->m[$this->modelName]->clear()->where(array(
+			"visibile"	=>	1,
+		))->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}

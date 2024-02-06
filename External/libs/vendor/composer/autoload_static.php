@@ -9,8 +9,8 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '9c67151ae59aff4788964ce8eb2a0f43' => __DIR__ . '/..' . '/clue/stream-filter/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
@@ -63,6 +63,9 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         ),
         'H' => 
         array (
+            'Hubspot\\Tests\\' => 14,
+            'HubSpot\\Client\\' => 15,
+            'HubSpot\\' => 8,
             'Http\\Promise\\' => 13,
             'Http\\Message\\' => 13,
             'Http\\Discovery\\' => 15,
@@ -173,6 +176,18 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Karriere\\PdfMerge\\' => 
         array (
             0 => __DIR__ . '/..' . '/karriere/pdf-merge/src',
+        ),
+        'Hubspot\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hubspot/api-client/tests',
+        ),
+        'HubSpot\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hubspot/api-client/codegen',
+        ),
+        'HubSpot\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hubspot/api-client/lib',
         ),
         'Http\\Promise\\' => 
         array (
