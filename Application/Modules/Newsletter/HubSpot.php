@@ -45,7 +45,7 @@ class HubSpot extends Newsletter
 	{
 		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 		
-		$hubspot = \HubSpot\Factory::createWithAccessToken($swegonAccessToken);
+		$hubspot = \HubSpot\Factory::createWithAccessToken(htmlentitydecode($this->params["secret_1"]));
 
 		$email = $valori["email"];
 		// 
