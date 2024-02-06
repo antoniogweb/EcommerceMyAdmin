@@ -45,6 +45,63 @@ class HubSpot extends Newsletter
 	{
 		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 		
+		$hubspot = \HubSpot\Factory::createWithAccessToken($swegonAccessToken);
+
+		$email = $valori["email"];
+		// 
+		$filter = new \HubSpot\Client\Crm\Contacts\Model\Filter();
+		$filter
+			->setOperator('EQ')
+			->setPropertyName('email')
+			->setValue($email);
+
+		$filterGroup = new \HubSpot\Client\Crm\Contacts\Model\FilterGroup();
+		$filterGroup->setFilters([$filter]);
+
+		$searchRequest = new \HubSpot\Client\Crm\Contacts\Model\PublicObjectSearchRequest();
+		$searchRequest->setFilterGroups([$filterGroup]);
+
+		// Get specific properties
+		$searchRequest->setProperties(['firstname', 'lastname']);
+
+		// @var CollectionResponseWithTotalSimplePublicObject $contactsPage
+		$contactsPage = $hubspot->crm()->contacts()->searchApi()->doSearch($searchRequest);
+
+		$results = $contactsPage->getResults();
+
+		$idContattoHubSpot = 0;
+		
+		if (!empty($results))
+			$idContattoHubSpot = $results[0]->getId();
+		
+		$contactInput = new \HubSpot\Client\Crm\Contacts\Model\SimplePublicObjectInput();
+		
+		if (isset($valori["nome"]))
+		{
+			$valoriFinali = array(
+				'email' 	=>	$email,
+				'firstname'	=>	$valori["nome"] ?? '',
+				'lastname'	=>	$valori["cognome"] ?? '',
+			);
+		}
+		else
+			$valoriFinali = $valori;
+		
+		$contactInput->setProperties($valoriFinali);
+		
+		try
+		{
+			if ($idContattoHubSpot)
+				$contact = $hubspot->crm()->contacts()->basicApi()->update($idContattoHubSpot, $contactInput);
+			else
+				$contact = $hubspot->crm()->contacts()->basicApi()->create($contactInput);
+			
+			return true;
+		} catch (Exception $e) {
+			return false;
+// 			print_r($e->getResponseObject()->getMessage());
+		}
+
 		return null;
 	}
 	
