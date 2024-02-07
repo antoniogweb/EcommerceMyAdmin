@@ -89,20 +89,20 @@ class HubSpot extends Newsletter
 		
 		$contactInput->setProperties($valoriFinali);
 		
+		$res = true;
+		
 		try
 		{
 			if ($idContattoHubSpot)
 				$contact = $hubspot->crm()->contacts()->basicApi()->update($idContattoHubSpot, $contactInput);
 			else
 				$contact = $hubspot->crm()->contacts()->basicApi()->create($contactInput);
-			
-			return true;
 		} catch (Exception $e) {
-			return false;
+			$res = false;
 // 			print_r($e->getResponseObject()->getMessage());
 		}
 
-		return null;
+		return $res;
 	}
 	
 	public function gCampiForm()
