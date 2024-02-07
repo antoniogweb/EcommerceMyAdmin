@@ -96,7 +96,7 @@ $labelNumeroCrediti = $numeroCreditiAttivi > 0 ? "success" : "danger";
 	<hr>
 	<?php } ?>
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcun documento nella tua biblioteca");?></p>
+<p><?php echo gtext("Non hai acquistato alcun credito fino ad oggi. Acquista crediti con il pulsante in alto.");?></p>
 <?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
