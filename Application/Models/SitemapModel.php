@@ -172,7 +172,10 @@ class SitemapModel extends GenericModel {
 				$dataModificaHome = strtotime($n["ultima_modifica"]);
 		}
 		
-		return $dataModificaHome;
+		if ($dataModificaHome <= 0)
+			return time();
+		else
+			return $dataModificaHome;
     }
     
     public static function getNodi($recuperaBackup = 0)
