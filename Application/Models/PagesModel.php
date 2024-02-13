@@ -2167,14 +2167,14 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id_page'] = (int)$id_page;
 
-		if (isset(self::$currentRecord))
-		{
-			$res = self::$currentRecord;
-		}
-		else
-		{
+// 		if (isset(self::$currentRecord))
+// 		{
+// 			$res = self::$currentRecord;
+// 		}
+// 		else
+// 		{
 			$res = $this->clear()->select()->where(array('id_page'=>$clean['id_page']))->send();
-		}
+// 		}
 
 		if (count($res) > 0)
 		{
