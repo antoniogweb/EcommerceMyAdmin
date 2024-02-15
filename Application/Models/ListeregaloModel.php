@@ -516,4 +516,16 @@ class ListeregaloModel extends GenericModel
 			));
 		}
 	}
+	
+	public static function getStatiLista($idLista)
+	{
+		$se = new StatielementiModel();
+		
+		return $se->clear()->where(array(
+			"tabella_rif"	=>	"liste_regalo_pages",
+		))->sWhere(array(
+			"id_rif in (select id_lista_regalo_page from liste_regalo_pages where id_lista_regalo = ?)",
+			array((int)$idLista)
+		))->send(false);
+	}
 }
