@@ -289,19 +289,17 @@ class ListeregaloModel extends GenericModel
 		
 		$res = $lrp->clear()->select("*")
 			->inner(array("pagina"))
-			->left("righe")->on("righe.id_c = liste_regalo_pages.id_c")
-			->left("orders")->on("orders.id_o = righe.id_o and orders.stato != 'deleted'")
-			->left("liste_regalo")->on("orders.id_lista_regalo = liste_regalo.id_lista_regalo")
+			->left("(select id_c,orders.id_lista_regalo as id_lista from righe inner join orders on righe.id_o = orders.id_o where orders.stato != 'deleted') as r")->on("r.id_c = liste_regalo_pages.id_c and r.id_lista = liste_regalo_pages.id_lista_regalo")
 			->addJoinTraduzione(null, "contenuti_tradotti", false, (new PagesModel()))
 			->inner("categories")->on("categories.id_c = pages.id_c")
 			->aWhere(array(
 				"liste_regalo_pages.id_lista_regalo"	=>	(int)$idLista,
 			))
 			->groupBy("liste_regalo_pages.id_lista_regalo_page")
-			->orderBy("if((liste_regalo_pages.quantity-count(righe.id_c)) > 0,0,1),liste_regalo_pages.id_lista_regalo_page")
+			->orderBy("if((liste_regalo_pages.quantity-count(r.id_c)) > 0,0,1),liste_regalo_pages.id_lista_regalo_page")
 			->send();
 		
-// 		echo $lrp->getQuery();
+// 		echo $lrp->getQuery();die();
 		
 		return $res;
     }
