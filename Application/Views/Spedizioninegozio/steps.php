@@ -128,6 +128,9 @@
 <?php if ($spedizione["spedizioni_negozio"]["errore_invio"]) { ?>
 <div class="alert alert-danger">
 	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtext("Errori invio");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["errore_invio"]);?></i>
+	<?php if ($spedizione["spedizioni_negozio"]["stato"] == "I" && $spedizione["spedizioni_negozio"]["id_spedizione_negozio_invio"]) { ?>
+	<a style="margin:10px;display:inline-block;" class="alert alert-warning make_spinner" href="<?php echo $this->baseUrl."/spedizioninegozio/confermaspedizioni/".$spedizione["spedizioni_negozio"]["id_spedizione_negozio"]."/".$spedizione["spedizioni_negozio"]["id_spedizione_negozio_invio"];?>"><i class="fa fa-check"></i> <?php echo gtext("Riprova invio manualmente")?></a>
+	<?php } ?>
 </div>
 <?php } ?>
 

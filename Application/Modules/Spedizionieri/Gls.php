@@ -400,7 +400,7 @@ class Gls extends Spedizioniere
 	// Imposta la spedizione come confermata anche se la conferma è andata in errore
 	public function impostaConfermatoAncheSeErrore()
 	{
-		return true;
+		return false;
 	}
 	
 	// Restituisce il client SOAP

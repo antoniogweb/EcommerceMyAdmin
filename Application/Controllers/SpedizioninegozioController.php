@@ -56,6 +56,7 @@ class SpedizioninegozioController extends BaseController {
 		'numero_spedizione:sanitizeAll'=>'tutti',
 		'id_spedizione_negozio_invio:sanitizeAll'=>'tutti',
 		'id_sped:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
+		'titolo:sanitizeAll'=>'tutti', // -> ricerca libera
 	);
 	
 	public $sezionePannello = "ecommerce";
@@ -106,7 +107,7 @@ class SpedizioninegozioController extends BaseController {
 			"tutti"		=>	"Stato spedizione",
 		) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
 		
-		$this->filters = array("dal","al",'id_ordine','id_sped','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
+		$this->filters = array("titolo","dal","al",'id_ordine','id_sped','numero_spedizione',array("stato",null,$filtroStato),array("id_spedizioniere",null,$filtroSpedizioniere));
 		
 		$this->m[$this->modelName]->clear()
 				->select("*")
@@ -131,6 +132,28 @@ class SpedizioninegozioController extends BaseController {
 			$this->m[$this->modelName]->inner(array("righe"))->inner("righe")->on("righe.id_r = spedizioni_negozio_righe.id_r")->aWhere(array(
 				"righe.id_o"	=>	(int)$this->viewArgs['id_ordine'],
 			))->groupBy("spedizioni_negozio.id_spedizione_negozio");
+		}
+		
+		if ($this->viewArgs["titolo"] != "tutti")
+		{
+			$tokens = explode(" ", $this->viewArgs['titolo']);
+			$andArray = array();
+			$iCerca = 8;
+			
+			foreach ($tokens as $token)
+			{
+				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+					"n!concat(spedizioni_negozio.ragione_sociale,' ',spedizioni_negozio.indirizzo,' ',spedizioni_negozio.email)"	=>	sanitizeAll(htmlentitydecode($token)),
+				);
+				
+				$iCerca++;
+			}
+			
+			$this->m[$this->modelName]->aWhere(array(
+				"      AND"	=>	$andArray,
+			));
+			
+// 			print_r($andArray);
 		}
 		
 		$this->m[$this->modelName]->save();
@@ -464,6 +487,8 @@ class SpedizioninegozioController extends BaseController {
 		$this->clean();
 		
 		$this->m("SpedizioninegozioModel")->inviaAlCorriere((int)$id, (int)$idInvio);
+		
+		$this->redirect("/spedizioninegozio/form/update/".(int)$id);
 	}
 	
 	public function controllaspedizioni($id = 0, $forza = 0)

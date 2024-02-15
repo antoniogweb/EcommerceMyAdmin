@@ -511,7 +511,7 @@ class Brt extends Spedizioniere
 				$this->scriviLogConfermata((int)$id);
 			}
 			else
-				$errore = isset($result["confirmResponse"]["executionMessage"]["message"]) ? $result["confirmResponse"]["executionMessage"]["message"] : "Errore, API non funzionante";
+				$errore = isset($result["confirmResponse"]["executionMessage"]["codeDesc"]) ? $result["confirmResponse"]["executionMessage"]["codeDesc"]." ".$result["confirmResponse"]["executionMessage"]["message"] : "Errore, API non funzionante";
 			
 			$risultati[$id] = new Data_Spedizioni_Result("",$errore);
 		}
