@@ -281,6 +281,31 @@ class ListeregaloModel extends GenericModel
 			->send();
     }
     
+    public function getProdottiOrdinatiPerFrontend($idLista)
+    {
+		$lrp = new ListeregalopagesModel();
+		
+// 		select("if((liste_regalo_pages.quantity-count(righe.id_c)) > 0,0,1) as nn,liste_regalo_pages.*,pages.*,contenuti_tradotti.*,categories.*")
+		
+		$res = $lrp->clear()->select("*")
+			->inner(array("pagina"))
+			->left("righe")->on("righe.id_c = liste_regalo_pages.id_c")
+			->left("orders")->on("orders.id_o = righe.id_o and orders.stato != 'deleted'")
+			->left("liste_regalo")->on("orders.id_lista_regalo = liste_regalo.id_lista_regalo")
+			->addJoinTraduzione(null, "contenuti_tradotti", false, (new PagesModel()))
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->aWhere(array(
+				"liste_regalo_pages.id_lista_regalo"	=>	(int)$idLista,
+			))
+			->groupBy("liste_regalo_pages.id_lista_regalo_page")
+			->orderBy("if((liste_regalo_pages.quantity-count(righe.id_c)) > 0,0,1),liste_regalo_pages.id_lista_regalo_page")
+			->send();
+		
+// 		echo $lrp->getQuery();
+		
+		return $res;
+    }
+    
     public function getProdottiIds($idLista)
     {
 		$prodotti = $this->getProdotti($idLista);

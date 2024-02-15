@@ -2272,7 +2272,7 @@ class BaseContenutiController extends BaseController
 			
 			$data["meta_description"] = $lista["liste_regalo"]["titolo"];
 			
-			$data["prodotti_lista"] = $this->m("ListeregaloModel")->getProdotti($lista["liste_regalo"]["id_lista_regalo"]);
+			$data["prodotti_lista"] = $this->m("ListeregaloModel")->getProdottiOrdinatiPerFrontend($lista["liste_regalo"]["id_lista_regalo"]);
 			
 			if (!empty($lista["liste_regalo"]) && in_array($lista["liste_regalo"]["id_lista_tipo"], ListeregalotipiModel::campoPresenteInTipi("sesso","")))
 				$data["sessoLista"] = $lista["liste_regalo"]["sesso"];
