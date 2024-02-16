@@ -437,7 +437,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->append($data);
 	}
 	
-	// Setta la spedizione come pronta da inviare (stato = I)
+	// Setta la spedizione $id come pronta da inviare (stato = I)
 	public function prontadainviare($id = 0)
 	{
 		$this->shift(1);
@@ -450,7 +450,7 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
-	// Setta la spedizione come aperta (stato = A) la spedizione $id
+	// Setta la spedizione $id come aperta (stato = A)
 	public function apri($id = 0, $forza = 0)
 	{
 		$this->shift(1);
@@ -458,6 +458,19 @@ class SpedizioninegozioController extends BaseController {
 		$this->clean();
 		
 		if (!$this->m($this->modelName)->apri($id, $forza))
+			flash("notice",$this->m($this->modelName)->notice);
+		
+		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// Setta la spedizione $id come annullata (stato = E)
+	public function annulla($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		if (!$this->m($this->modelName)->annulla($id))
 			flash("notice",$this->m($this->modelName)->notice);
 		
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);

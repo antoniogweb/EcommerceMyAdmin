@@ -844,6 +844,7 @@ class Route
 		'spedizioninegozio,eventi',
 		'spedizioninegozio,info',
 		'spedizioninegozio,apri',
+		'spedizioninegozio,annulla',
 		'spedizioninegozio,prontadainviare',
 		'spedizioninegozio,conferma',
 		'spedizioninegozio,confermaspedizioni',

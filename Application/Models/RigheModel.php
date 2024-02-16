@@ -252,11 +252,16 @@ class RigheModel extends GenericModel {
 		$qtaOrdine = $rModel->clear()->where(array(
 			"id_r"		=>	(int)$idR,
 			"gift_card"	=>	0,
+			"prodotto_digitale"	=>	0,
+			"prodotto_crediti"	=>	0,
 		))->field("quantity");
 		
 		// Quantità in spedizione o spedita
-		$qtaSpedita = $snrModel->clear()->where(array(
+		$qtaSpedita = $snrModel->clear()->inner(array("spedizione"))->where(array(
 			"id_r"	=>	(int)$idR,
+			"ne"	=>	array(
+				"spedizioni_negozio.stato"	=>	"E",
+			),
 		))->getSum("quantity");
 		
 		if ($qtaOrdine > $qtaSpedita)

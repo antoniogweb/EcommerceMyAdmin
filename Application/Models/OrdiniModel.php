@@ -126,10 +126,16 @@ class OrdiniModel extends FormModel {
 		
 		$rModel = new RigheModel();
 		
-		return $rModel->clear()->select("righe.*,sum(spedizioni_negozio_righe.quantity) as QTA_ORDINATA,spedizioni_negozio_righe.id_spedizione_negozio_riga")->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")->sWhere(array(
-			"righe.gift_card = 0 and righe.prodotto_digitale = 0 and righe.id_o = ?",
-			array((int)$idO)
-		))->groupBy("righe.id_r HAVING (righe.quantity > QTA_ORDINATA or spedizioni_negozio_righe.id_spedizione_negozio_riga IS NULL)")->send(false);
+		$res =  $rModel->clear()->select("righe.*,sum(rr.quantity) as QTA_ORDINATA,rr.id_spedizione_negozio_riga")
+			->left("(select id_spedizione_negozio_riga,id_r,quantity from spedizioni_negozio_righe inner join spedizioni_negozio on spedizioni_negozio.id_spedizione_negozio = spedizioni_negozio_righe.id_spedizione_negozio where spedizioni_negozio.stato != 'E') as rr")->on("rr.id_r = righe.id_r")
+			->sWhere(array(
+				"righe.gift_card = 0 and righe.prodotto_digitale = 0 and righe.prodotto_crediti = 0 and righe.id_o = ?",
+				array((int)$idO)
+			))->groupBy("righe.id_r HAVING (righe.quantity > QTA_ORDINATA or rr.id_spedizione_negozio_riga IS NULL)")->send(false);
+		
+// 		echo $rModel->getQuery();
+		
+		return $res;
 	}
 	
 	// Restituisce tutte le righe dell'ordine che sono in spedizioni non ancora confermate

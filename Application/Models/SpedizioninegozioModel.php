@@ -154,12 +154,17 @@ class SpedizioninegozioModel extends FormModel {
 	
 	public static function statiSpedizioniInviate()
 	{
-		return array("II","E");
+		return array("II");
 	}
 	
 	public static function statiSpedizioniApribili()
 	{
-		return array("I","II","E");
+		return array("I","II");
+	}
+	
+	public static function statiSpedizioniAnnullabili()
+	{
+		return array("II","C");
 	}
 	
 	public function update($id = null, $where = null)
@@ -774,6 +779,21 @@ class SpedizioninegozioModel extends FormModel {
 				
 				return true;
 			}
+		}
+		
+		return false;
+	}
+	
+	// Annulla la spedizione (stato = E)
+	public function annulla($id)
+	{
+		$record = $this->clear()->selectId((int)$id);
+		
+		if (!empty($record) && in_array($record["stato"], self::statiSpedizioniAnnullabili()))
+		{
+			$this->settaStato($id, "E");
+			
+			return true;
 		}
 		
 		return false;
