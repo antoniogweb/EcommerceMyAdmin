@@ -1364,9 +1364,9 @@ class BaseContenutiController extends BaseController
 				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
 			case "piuvenduto":
 				if (!v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
-					return "pages.numero_acquisti_pagina desc";
+					return "pages.numero_acquisti_pagina desc,pages.id_order";
 				else
-					return "pages.numero_acquisti_pagina desc";
+					return "pages.numero_acquisti_pagina desc,pages.id_order";
 			default:
 				return "pages.id_order";
 		}
