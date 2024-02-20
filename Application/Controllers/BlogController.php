@@ -54,14 +54,15 @@ class BlogController extends GenericsectionController {
 			$this->filters[] = array("id_tag",null,$filtroTag);
 		}
 		
-		$this->filters[] = array("attivo",null,SlideModel::$YN);
-		
 		if (v("in_evidenza_blog"))
 		{
 			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
 			$this->queryFields .= ",in_evidenza";
 			$this->head .= ",In evidenza";
+			$this->filters[] = array("in_evidenza",null,SlideModel::$YN);
 		}
+		
+		$this->filters[] = array("attivo",null,SlideModel::$YN);
 		
 		if (v("mostra_autore_in_blog"))
 		{
