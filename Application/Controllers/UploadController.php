@@ -32,6 +32,8 @@ class UploadController extends BaseController {
 		$this->clean();
 		$this->load('header_upload');
 		$this->load('footer_upload');
+		
+		VariabiliModel::$valori["carattere_divisione_parole_permalink"] = "_";
 	}
 
 	public function thumb($fileName = "", $id = "")
@@ -86,7 +88,7 @@ class UploadController extends BaseController {
 			'maxFileSize'		=>	v("dimensioni_upload_file_generici"),
 			'fileUploadKey'		=>	'userfile',
 			'fileUploadBehaviour'	=>	'add_token', //can be none or add_token
-			'functionUponFileNane' => 'sanitizeFileName',
+			'functionUponFileNane' => 'sanitizeFileNameUploadGenerico',
 		);
 		
 		$clean['dir'] = $this->request->get("directory",null,"sanitizeAll");

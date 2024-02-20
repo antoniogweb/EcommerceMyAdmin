@@ -70,36 +70,6 @@
 
 </script>
 
-<?php if ($this->viewArgs['use_flash']) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/jquery.uploadify.js"></script>
-
-<script type="text/javascript">
-	
-	var allowed = [ "jpg","jpeg","png","gif","bmp","pdf","doc","txt","docx" ];
-	
-	$(function() {
-        $('#userfile').uploadify({
-			'fileSizeLimit' : '60MB',
-			'buttonText' : 'CARICA FILE',
-			'formData'      : {'directory' : '<?php echo $base;?>','token':'<?php echo $token;?>'},
-            'swf'      : '<?php echo $this->baseUrlSrc."/Public/Js/uploadify_3_2_1/";?>uploadify.swf',
-            'uploader' : '<?php echo $this->baseUrl."/upload/move";?>',
-			'onUploadStart' : function(file) {
-				if (jQuery.inArray(file.name.split('.').pop().toLowerCase(), allowed) == -1)
-				{
-					alert("il file " + file.name + " non sarà caricato perché la sua estensione non è ammessa");
-					$('#userfile').uploadify("cancel",file.id);
-				}
-			},
-            'onQueueComplete' : function(queueData) {
-				window.location = "<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&uploadResult=success";?>"
-			} 
-        });
-    });
-    
-</script>
-<?php } ?>
-
 <?php if ($this->viewArgs['mostra_upload']) { ?>
 <div class='EGuploadFileBox'>
 	<?php if (!$this->viewArgs['use_flash']) { ?>

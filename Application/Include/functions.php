@@ -211,6 +211,20 @@ function sanitizeFileName($imageName)
 	}
 }
 
+function sanitizeFileNameUploadGenerico($imageName)
+{
+	$imageName = str_replace(' ','_',$imageName);
+
+	if (preg_match('/^[a-zA-Z0-9_\@\-]+$/',$imageName) and strcmp(trim($imageName),'') !== 0)
+	{
+		return $imageName;
+	}
+	else
+	{
+		return encodeUrl($imageName);
+	}
+}
+
 function getYesNoUtenti($input)
 {
 	switch($input)
