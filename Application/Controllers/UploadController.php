@@ -83,7 +83,7 @@ class UploadController extends BaseController {
 			'filesPermission'	=>	0777,
 			'language'			=>	'It',
 			'allowedExtensions'	=>	'png,jpg,jpeg,txt,odt,doc,pdf,zip,gif,bmp,svg',
-			'maxFileSize'		=>	10000000,
+			'maxFileSize'		=>	v("dimensioni_upload_file_generici"),
 			'fileUploadKey'		=>	'userfile',
 			'fileUploadBehaviour'	=>	'add_token', //can be none or add_token
 			'functionUponFileNane' => 'sanitizeFileName',

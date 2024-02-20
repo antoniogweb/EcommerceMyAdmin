@@ -279,6 +279,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_gestione_antispam"	=>	0,
 		"dimensioni_upload_documenti"	=>	3000000, // dimensione massima degli upload nei documenti
 		"dimensioni_upload_contenuti"	=>	6000000, // dimensione massima degli upload nei contenuti
+		"dimensioni_upload_file_generici"	=>	10000000, // dimensione massima degli upload nei file generici (nell'area di testo)
 		"estensioni_upload_file_contenuti"	=>	"pdf", // estensioni ammesse nell'upload dei file dei contenuti
 		"attiva_accessibilita_categorie"	=>	0,
 		"attiva_multi_categoria"	=>	0,
