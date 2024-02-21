@@ -127,3 +127,14 @@ if ($params["azione"] == "imposta-canonical-se-mancante")
 	$log->writeString("FINE CONTROLLO PRODOTTI SENZA COMBINAZIONE CANONICAL ACQUISTABILE");
 }
 
+if ($params["azione"] == "crea-associazioni-acquisti")
+{
+	$log->writeString("INIZIO CREAZIONE ASSOCIAZIONE ACQUISTI");
+	
+	$pa = new PagesassociateModel();
+	
+	$pa->riempi();
+	
+	$log->writeString("FINE CREAZIONE ASSOCIAZIONE ACQUISTI");
+}
+
