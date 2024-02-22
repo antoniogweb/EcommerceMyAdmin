@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (count($prodotti_correlati) > 0) { ?>
+<?php if (isset($prodotti_comprati_assieme) && count($prodotti_comprati_assieme) > 0) { ?>
 <div class="uk-section">
 	<div class="uk-container">
 		<div class="uk-text-uppercase uk-text-small"><?php echo gtext("Guarda anche"); ?></div>
@@ -10,7 +10,7 @@
 			<div class="uk-position-relative uk-visible-toggle uk-slider-container" tabindex="-1">
 
 				<ul class="uk-slider-items uk-child-width-1-4@s uk-grid">
-					<?php foreach ($prodotti_correlati as $corr) { ?>
+					<?php foreach ($prodotti_comprati_assieme as $corr) { ?>
 					<li>
 						<?php include(tpf("/Elementi/Categorie/prodotto.php")); ?>
 					</li>

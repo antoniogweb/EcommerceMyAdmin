@@ -513,15 +513,15 @@ class BaseOrdiniController extends BaseController
 		{
 			$temp = $ordine;
 			
-			unset($temp["descrizione_acquisto"]);
+// 			unset($temp["descrizione_acquisto"]);
 			unset($temp["creation_time"]);
 			unset($temp["id_order"]);
 			unset($temp["admin_token"]);
 			unset($temp["txn_id"]);
 			unset($temp["registrato"]);
 			unset($temp["banca_token"]);
-			unset($temp["descrizione_acquisto"]);
-			unset($temp["descrizione_acquisto"]);
+// 			unset($temp["descrizione_acquisto"]);
+// 			unset($temp["descrizione_acquisto"]);
 			
 			$temp = htmlentitydecodeDeep($temp);
 			
@@ -1111,7 +1111,7 @@ class BaseOrdiniController extends BaseController
 							$this->m('OrdiniModel')->values["id_lista_regalo"] = (int)User::$idLista;
 						
 						$this->m('OrdiniModel')->sanitize("sanitizeHtml");
-						$this->m('OrdiniModel')->values["descrizione_acquisto"] = $descrizioneAcquisto;
+// 						$this->m('OrdiniModel')->values["descrizione_acquisto"] = $descrizioneAcquisto;
 						$this->m('OrdiniModel')->sanitize();
 						
 						if ($this->m('OrdiniModel')->insert())
