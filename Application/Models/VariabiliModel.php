@@ -458,9 +458,10 @@ class VariabiliModel extends GenericModel {
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"aggiuni_a_correlati_prodotti_stessa_categoria"	=>	0, // se impostato su 1, aggiunge ai correlati manuali anche i prodotti della stessa categoria
-		"numero_massimo_correlati_stessa_categoria"	=>	10, // se maggiore di 0, indica il numero di massimo di correlati ad un prodotto della stessa categoria
+		"numero_massimo_correlati_stessa_categoria"	=>	10, // se maggiore di 0, indica il numero massimo di correlati ad un prodotto della stessa categoria
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
+		"numero_massimo_comprati_assieme"	=>	0, // se maggiore di 0, indica il numero massimo di spesso comprati assieme. Se il tema lo predispone verranno mostrati nel dettaglio del prodotto
 		## GOOGLE E FACEBOOK ##
 		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
 		## NAZIONI ##

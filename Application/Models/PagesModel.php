@@ -4376,17 +4376,7 @@ class PagesModel extends GenericModel {
 					
 					if ($immagine)
 						$temp["pages"]["immagine"] = $immagine;
-					
-// 					$temp["pages"]["immagine"] = PagesModel::immagineCarrello((int)$p["pages"]["id_page"], (int)$idC);
 				}
-				
-// 				if (v("immagini_separate_per_variante"))
-// 				{
-// 					$immaginiCombinazione = ImmaginiModel::immaginiCombinazione($idC);
-// 				
-// 					if (count($immaginiCombinazione) > 0)
-// 						$temp["pages"]["immagine"] = $immaginiCombinazione[0]["immagine"];
-// 				}
 			}
 			
 			$pagesFinale[] = $temp;

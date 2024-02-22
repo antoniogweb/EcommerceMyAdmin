@@ -1651,28 +1651,21 @@ class BaseContenutiController extends BaseController
 		
 		$data["prodotti_correlati"] = $this->m('PagesModel')->getCorrelati($clean['id']);
 		
+		if ((int)v("numero_massimo_comprati_assieme") > 0)
+			$data["prodotti_comprati_assieme"] = $this->m('PagesassociateModel')->getCompratiAssieme($clean['id']);
+		
 		if ($firstSection == "prodotti")
 		{
 			PagesModel::clearIdCombinazione();
 			$data["prodotti_correlati"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_correlati"]);
+			
+			if ((int)v("numero_massimo_comprati_assieme") > 0)
+				$data["prodotti_comprati_assieme"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_comprati_assieme"]);
 			PagesModel::restoreIdCombinazione();
 		}
 		
-// 		$data["prodotti_correlati"] = $this->m('PagesModel')->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
-// 			->addJoinTraduzionePagina()
-// 			->where(array(
-// 				"prodotti_correlati.id_page"=>	$clean['id'],
-// 				"attivo"	=>	"Y",
-// 				"prodotti_correlati.accessorio"=>	0,
-// 			))->orderBy("prodotti_correlati.id_order")->send();
-		
 		if (v("accessori_in_prodotti"))
-		{
-// 			$this->m('PagesModel')->where["prodotti_correlati.accessorio"] = 1;
-// 			$data["accessori"] = $this->m('PagesModel')->send();
 			$data["accessori"] = $this->m('PagesModel')->getCorrelati($clean['id'], 1);
-// 			echo $this->m('PagesModel')->getQuery();die();
-		}
 		
 		// Pagine correlate
 		if (v("estrai_sempre_correlati") || $firstSection == "prodotti")

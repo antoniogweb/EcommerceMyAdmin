@@ -69,4 +69,27 @@ class PagesassociateModel extends GenericModel {
 		
 		$this->db->commit();
     }
+    
+    // Restituisce i prodotti spesso comprati assieme
+	public function getCompratiAssieme($id_page)
+	{
+		$clean['id'] = (int)$id_page;
+		
+		$pModel = new PagesModel();
+		
+		$res = $pModel->clear()
+			->addJoinTraduzionePagina()
+			->addWhereAttivo()
+			->aWhere(array(
+				"gift_card"	=>	0,
+			))
+			->sWhere(array("pages.id_page in (select id_associata from pages_associate where id_page = ?)", array($clean['id'])))
+			->orderBy("numero_acquisti_pagina desc,pages.id_order")
+			->limit(v("numero_massimo_comprati_assieme"))
+			->send();
+		
+		PagesModel::preloadPages($res);
+		
+		return $res;
+	}
 }
