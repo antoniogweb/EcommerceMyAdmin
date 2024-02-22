@@ -48,6 +48,7 @@
 			$numeroDesiderati = ListeregaloModel::numeroProdotti($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 			$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 			$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
+			$acquistabile = acquistabile($p["liste_regalo_pages"]["id_page"]);
 		?>
 		<div class="accessorio_principale">
 			<div class="id_combinazione uk-hidden"><?php echo $p["liste_regalo_pages"]["id_c"];?></div>
@@ -93,12 +94,14 @@
 						</div>
 						<div>
 							<?php if ($numeroRimastiDaRegalare > 0) { ?>
-								<?php if (CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"])) { ?>
+								<?php if (CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"]) && $acquistabile) { ?>
 								<div class="uk-button uk-button-primary uk-button-small spinner uk-hidden" uk-spinner="ratio: .70"></div>
 								<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
 								<?php } else { ?>
-									<?php echo gtext("Il prodotto non è più acquistabile");?>
+									<span class="uk-text-secondary uk-text-small uk-text-bold"><?php echo gtext("Il prodotto non è più acquistabile");?></span>
 								<?php } ?>
+							<?php } else { ?>
+								<span class="uk-text-secondary uk-text-small uk-text-bold"><?php echo gtext("Già regalato");?></span>
 							<?php } ?>
 						</div>
 					</div>
