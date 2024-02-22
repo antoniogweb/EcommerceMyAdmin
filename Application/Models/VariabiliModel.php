@@ -462,6 +462,8 @@ class VariabiliModel extends GenericModel {
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
 		"numero_massimo_comprati_assieme"	=>	0, // se maggiore di 0, indica il numero massimo di spesso comprati assieme. Se il tema lo predispone verranno mostrati nel dettaglio del prodotto
+		"estrai_le_caratteristiche"	=>	1, // se impostato su 1, estrae le caratteristiche nella pagina del prodotto
+		"estrai_i_documenti"		=>	1, // se impostato su 1, estrai i documenti nella pagina del prodotto
 		## GOOGLE E FACEBOOK ##
 		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
 		## NAZIONI ##

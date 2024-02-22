@@ -1686,18 +1686,21 @@ class BaseContenutiController extends BaseController
 		$orderByCaratteristiche = v("caratteristiche_in_tab_separate") ? "tipologie_caratteristiche.id_order, pages_caratteristiche_valori.id_order" : "pages_caratteristiche_valori.id_order" ;
 		
 		// CARATTERISTICHE
-		$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m("PagesModel")->selectCaratteristiche($clean['id']);
-		
-		$data["lista_caratteristiche_tipologie"] = array();
-		
-		if (v("caratteristiche_in_tab_separate"))
+		if (v("estrai_le_caratteristiche"))
 		{
-			foreach ($data["caratteristiche"] as $car)
+			$data["caratteristiche"] = $data["lista_caratteristiche"] = $this->m("PagesModel")->selectCaratteristiche($clean['id']);
+			
+			$data["lista_caratteristiche_tipologie"] = array();
+			
+			if (v("caratteristiche_in_tab_separate"))
 			{
-				if (isset($data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]]))
-					$data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]][] = $car;
-				else
-					$data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]] = array($car);
+				foreach ($data["caratteristiche"] as $car)
+				{
+					if (isset($data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]]))
+						$data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]][] = $car;
+					else
+						$data["lista_caratteristiche_tipologie"][$car["tipologie_caratteristiche"]["id_tipologia_caratteristica"]] = array($car);
+				}
 			}
 		}
 		
@@ -1712,7 +1715,8 @@ class BaseContenutiController extends BaseController
 				$data["haPersonalizzazioni"] = true;
 		}
 		
-		$data["documenti"] = $this->documentiPagina = $this->m("PagesModel")->getDocumenti($clean['id']);
+		if (v("estrai_i_documenti"))
+			$data["documenti"] = $this->documentiPagina = $this->m("PagesModel")->getDocumenti($clean['id']);
 		
 		if (v("mostra_link_in_blog"))
 		{
