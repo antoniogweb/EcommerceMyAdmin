@@ -607,7 +607,17 @@ class ContenutiModel extends GenericModel {
 		));
 		
 		if (v("attiva_gruppi_contenuti"))
-			$c->left(array("gruppi"))->sWhere("(reggroups.name is null OR reggroups.name in ('".implode("','", User::$groups)."'))");
+		{
+			$c->left(array("gruppi"));
+			
+			if (count(User::$groups) > 0)
+				$c->sWhere(array(
+					"(reggroups.name is null OR reggroups.name in (".$c->placeholdersFromArray(User::$groups)."))",
+					User::$groups
+				));
+			else
+				$c->sWhere("(reggroups.name is null)");
+		}
 		
 		return $c->save()->orderBy("contenuti.id_order")->send();
 	}
