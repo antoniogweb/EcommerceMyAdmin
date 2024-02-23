@@ -6,7 +6,7 @@ $prezzoFinaleIvato = calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo);
 $percentualeSconto = getPercSconto($prezzoPienoIvato, $prezzoFinaleIvato);
 $inPromozioneTot = inPromozioneTot($p["pages"]["id_page"]);
 
-$strPrezzoFissoIvato = $strPrezzoFissoFinaleIvato = 0;
+$strPrezzoFissoIvato = $strPrezzoFissoFinaleIvato = "";
 
 if (v("attiva_prezzo_fisso"))
 {
