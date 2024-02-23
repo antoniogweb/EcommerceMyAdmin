@@ -72,7 +72,7 @@ class PagesassociateModel extends GenericModel {
     
     // Restituisce i prodotti spesso comprati assieme
     // $correlati: array con i prodotti correlati, se si vuole escludere i correlati dai prodotti spesso comprati assieme
-	public function getCompratiAssieme($id_page)
+	public function getCompratiAssieme($id_page, $correlati)
 	{
 		$clean['id'] = (int)$id_page;
 		
