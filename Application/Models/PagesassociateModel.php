@@ -78,10 +78,10 @@ class PagesassociateModel extends GenericModel {
 		
 		$idsCorrelati = [];
 		
-// 		foreach ($correlati as $c)
-// 		{
-// 			$idsCorrelati[] = $c["pages"]["id_page"];
-// 		}
+		foreach ($correlati as $c)
+		{
+			$idsCorrelati[] = $c["pages"]["id_page"];
+		}
 		
 		$this->clear()
 			->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")

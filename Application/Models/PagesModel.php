@@ -2843,7 +2843,21 @@ class PagesModel extends GenericModel {
 			$idC = $this->clear()->whereId($clean['id'])->field("id_c");
 			
 			if ($idC)
-				$resStessaCategoria = $this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc")->limit(v("numero_massimo_correlati_stessa_categoria"))->send();
+			{
+				$idsCorrelati = [];
+		
+				foreach ($res as $c)
+				{
+					$idsCorrelati[] = $c["pages"]["id_page"];
+				}
+
+				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc")->limit(v("numero_massimo_correlati_stessa_categoria"));
+				
+				if (count($idsCorrelati) > 0)
+					$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
+				
+				$resStessaCategoria = $this->send();
+			}
 			
 			$res = array_merge($res, $resStessaCategoria);
 		}
