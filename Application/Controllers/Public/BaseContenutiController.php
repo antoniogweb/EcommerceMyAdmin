@@ -1651,15 +1651,15 @@ class BaseContenutiController extends BaseController
 		
 		$data["prodotti_correlati"] = $this->m('PagesModel')->getCorrelati($clean['id']);
 		
-		if ((int)v("numero_massimo_comprati_assieme") > 0)
-			$data["prodotti_comprati_assieme"] = $this->m('PagesassociateModel')->getCompratiAssieme($clean['id']);
+		if ((int)v("numero_massimo_comprati_assieme") > 0 && !$data['pages'][0]["pages"]["gift_card"])
+			$data["prodotti_comprati_assieme"] = $this->m('PagesassociateModel')->getCompratiAssieme($clean['id'], $data["prodotti_correlati"]);
 		
 		if ($firstSection == "prodotti")
 		{
 			PagesModel::clearIdCombinazione();
 			$data["prodotti_correlati"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_correlati"]);
 			
-			if ((int)v("numero_massimo_comprati_assieme") > 0)
+			if ((int)v("numero_massimo_comprati_assieme") > 0 && !$data['pages'][0]["pages"]["gift_card"])
 				$data["prodotti_comprati_assieme"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_comprati_assieme"]);
 			PagesModel::restoreIdCombinazione();
 		}

@@ -71,22 +71,38 @@ class PagesassociateModel extends GenericModel {
     }
     
     // Restituisce i prodotti spesso comprati assieme
+    // $correlati: array con i prodotti correlati, se si vuole escludere i correlati dai prodotti spesso comprati assieme
 	public function getCompratiAssieme($id_page)
 	{
 		$clean['id'] = (int)$id_page;
 		
-		$pModel = new PagesModel();
+		$idsCorrelati = [];
 		
-		$res = $pModel->clear()
-			->addJoinTraduzionePagina()
+// 		foreach ($correlati as $c)
+// 		{
+// 			$idsCorrelati[] = $c["pages"]["id_page"];
+// 		}
+		
+		$this->clear()
+			->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")
+			->inner("pages")->on("pages_associate.id_associata = pages.id_page")
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->addJoinTraduzione(null, "contenuti_tradotti", false, new PagesModel())
+			->addJoinTraduzione(null, "contenuti_tradotti_categoria", false, new CategoriesModel())
 			->addWhereAttivo()
 			->aWhere(array(
-				"gift_card"	=>	0,
+				"pages.gift_card"	=>	0,
+				"id_page"	=>	$clean['id'],
 			))
-			->sWhere(array("pages.id_page in (select id_associata from pages_associate where id_page = ?)", array($clean['id'])))
-			->orderBy("numero_acquisti_pagina desc,pages.id_order")
-			->limit(v("numero_massimo_comprati_assieme"))
-			->send();
+			->orderBy("pages_associate.numero_acquisti desc,pages.id_order")
+			->limit(v("numero_massimo_comprati_assieme"));
+		
+		if (count($idsCorrelati) > 0)
+			$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
+		
+		$res = $this->send();
+		
+// 		echo $this->getQuery();die();
 		
 		PagesModel::preloadPages($res);
 		
