@@ -15,7 +15,7 @@ include(tpf("/Elementi/header_tracking_data.php", false, false, $stringaCacheMet
 
 <?php include(tpf("/Elementi/track.php", false, false));?>
 
-<?php include(tpf("/Elementi/gtm.php", false, false,));?>
+<?php include(tpf("/Elementi/gtm.php", false, false));?>
 
 <?php include(tpf("/Elementi/pixel.php"));?>
 
