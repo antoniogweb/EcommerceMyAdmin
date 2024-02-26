@@ -862,6 +862,10 @@ class Route
 		'spedizioninegozioinvii,prenota',
 		'spedizioninegozioinvii,confermaspedizioni',
 		'spedizioninegozioinvii,reportpdf',
+		
+		'tickettipologie,main',
+		'tickettipologie,form',
+		'tickettipologie,ordina',
 	);
 	
 	//it can be 'yes' or 'no'

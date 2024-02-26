@@ -63,6 +63,11 @@
 			<li class=" <?php if ($attiva == "privacy") { ?>uk-active<?php } ?>">
 				<a href="<?php echo $this->baseUrl."/riservata/privacy";?>" title="<?php echo gtext("Gestione della privacy", false);?>"><?php echo gtext("Gestione della privacy");?></a>
 			</li>
+			<?php if (v("attiva_gestiobe_ticket")) { ?>
+			<li class=" <?php if ($attiva == "ticket") { ?>uk-active<?php } ?>">
+				<a href="<?php echo $this->baseUrl."/ticket/";?>" title="<?php echo gtext("Assistenza", false);?>"><?php echo gtext("Assistenza");?></a>
+			</li>
+			<?php } ?>
 			<li class="">
 				<a href="<?php echo $this->baseUrl."/esci";?>" title="<?php echo gtext("Esci", false);?>"><?php echo gtext("Esci");?></a>
 			</li>

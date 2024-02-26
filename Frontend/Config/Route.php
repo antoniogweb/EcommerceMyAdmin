@@ -180,6 +180,7 @@ class Route
 		'promozioni,elencoinvii',
 		'paypal,createorder',
 		'paypal,captureorder',
+		'ticket,index',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -215,6 +216,7 @@ class Route
 		'listeregalo/invialink/(.*)'=>	'listeregalo/invialink/${1}',
 		'listeregalo/elencolink/(.*)'=>	'listeregalo/elencolink/${1}',
 		'listeregalo/invianuovamentelink/(.*)'=>	'listeregalo/invianuovamentelink/${1}',
+		'ticket/?'			=>	'ticket/index',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

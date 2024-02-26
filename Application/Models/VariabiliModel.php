@@ -692,6 +692,8 @@ class VariabiliModel extends GenericModel {
 		"campo_form_newsletter"		=>	"email,accetto", // campi del form newsletter
 		"campo_form_newsletter_obbligatori"		=>	"", // campi obbligatori del form newsletter
 		"permetti_di_collegare_gruppi_utenti_a_newsletter"	=>	0, // Se impostato ad 1, permette la gestione del campo "Sincronizza con la newsletter" nella gestione dei gruppi clienti
+		### TICKET ##
+		"attiva_gestiobe_ticket"	=>	0, // se impostato a 1, attiva la gestione dei ticket di aassistenza
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
