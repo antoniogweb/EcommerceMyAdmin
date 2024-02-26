@@ -52,6 +52,11 @@
 	<li>
 		<a href="<?php echo $this->baseUrl."/riservata/privacy";?>" title="<?php echo gtext("Gestione della privacy", false);?>"><?php echo gtext("Gestione della privacy");?></a>
 	</li>
+	<?php if (v("attiva_gestiobe_ticket")) { ?>
+	<li>
+		<a href="<?php echo $this->baseUrl."/ticket/";?>" title="<?php echo gtext("Assistenza", false);?>"><?php echo gtext("Assistenza");?></a>
+	</li>
+	<?php } ?>
 	<li class="uk-nav-divider"></li>
 	<li>
 		<a href="<?php echo $this->baseUrl."/esci";?>" title="<?php echo gtext("Esci", false);?>"><?php echo gtext("Esci");?></a>

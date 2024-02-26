@@ -17,7 +17,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php if (count($ticket) > 0) { ?>
 
 <?php } else { ?>
-<p><?php echo gtext("Non hai creato alcun ticket.");?></p>
+<p><?php echo gtext("Non hai creato alcuna richiesta di assistenza.");?></p>
 <?php } ?>
 
 <div class="uk-margin">
