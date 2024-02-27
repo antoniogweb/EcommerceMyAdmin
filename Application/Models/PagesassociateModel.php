@@ -97,8 +97,8 @@ class PagesassociateModel extends GenericModel {
 			->orderBy("pages_associate.numero_acquisti desc,pages.id_order")
 			->limit(v("numero_massimo_comprati_assieme"));
 		
-		if (count($idsCorrelati) > 0)
-			$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
+// 		if (count($idsCorrelati) > 0)
+// 			$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
 		
 		$res = $this->send();
 		
