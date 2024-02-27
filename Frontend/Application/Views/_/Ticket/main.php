@@ -21,7 +21,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } ?>
 
 <div class="uk-margin">
-	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/form/insert/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea un ticket di assistenza");?></a>
+	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/add/";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea un ticket di assistenza");?></a>
 </div>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

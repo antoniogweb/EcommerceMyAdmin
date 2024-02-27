@@ -36,15 +36,26 @@ class BaseTicketController extends BaseController
 		
 		$data["arrayLingue"] = array();
 		
-		$this->s['registered']->check(null,0);
-		
 		$data["isAreaRiservata"] = true;
 		
 		$this->append($data);
 	}
-
+	
+	// Controlla ticket
+	protected function check($idTicket, $ticketUid)
+	{
+		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
+		{
+			$this->redirect("");
+			die();
+		}
+	}
+	
+	// Elenco ticket
 	public function index()
 	{
+		$this->s['registered']->check(null,0);
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/ticket/";
@@ -57,5 +68,63 @@ class BaseTicketController extends BaseController
 		$this->load('main');
 	}
 	
+	// Crea ticket
+	public function add()
+	{
+		$this->clean();
+		
+		$this->s['registered']->check(null,0);
+		
+		$tiket = $this->m("TicketModel")->add();
+		
+		if (!empty($tiket))
+			$this->redirect("ticket/view/".$tiket["id_ticket"]."/".$tiket["ticket_uid"]);
+		
+		die();
+	}
 	
+	// Dettaglio ticket
+	public function view($idTicket = 0, $ticketUid = "")
+	{
+		$clean["idTicket"] = (int)$idTicket;
+		$clean["ticketUid"] = sanitizeAll($ticketUid);
+		
+		$this->check($idTicket, $ticketUid);
+		
+		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId($clean["idTicket"]);
+		
+		$data["arrayLingue"] = $this->creaArrayLingueNazioni("/ticket/view/".(int)$idTicket."/".$clean["ticketUid"]);
+		
+		$fields = "id_ticket_tipologia,oggetto,descrizione,accetto";
+		
+		$this->m('TicketModel')->setFields($fields,'sanitizeAll');
+		
+		if (isset($_POST["gAction"]))
+			$this->m('TicketModel')->result = false;
+		
+		if (isset($_POST['updateAction']))
+		{
+			if (CaptchaModel::getModulo()->check())
+			{
+				$this->m('TicketModel')->updateTable('update',$clean["idTicket"]);
+			}
+			else
+			{
+				$this->m('TicketModel')->notice = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del ticket, per favore riprova più tardi")."</div>";
+				$this->m('TicketModel')->result = false;
+			}
+		}
+		
+		$data['notice'] = $this->m('TicketModel')->notice;
+		
+		$data['values'] = $this->m('TicketModel')->getFormValues('update','sanitizeHtml',$clean["idTicket"]);
+		
+		$data['tipologie'] = $this->m('TickettipologieModel')->selectTipologie($clean["idTicket"]);
+		
+// 		print_r($data['tipologie']);
+		
+		$this->append($data);
+		
+		$this->load('form');
+	}
 }

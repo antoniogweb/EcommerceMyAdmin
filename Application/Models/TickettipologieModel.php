@@ -80,4 +80,14 @@ class TickettipologieModel extends GenericModel
 		
 		return $tipi;
 	}
+	
+	public function selectTipologie($id = 0)
+	{
+		return $this->clear()->select("id_ticket_tipologia,titolo")->where(array(
+			"OR"	=>	array(
+				"id_ticket_tipologia"	=>	(int)$id,
+				"attivo"				=>	1,
+			),
+		))->toList("id_ticket_tipologia", "titolo")->send();;
+	}
 }

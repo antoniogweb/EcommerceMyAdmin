@@ -1395,4 +1395,16 @@ class BaseBaseController extends Controller
 	{
 		return Parametri::$nomeNegozio . ' - '.$title;
 	}
+	
+	protected function creaArrayLingueNazioni($url)
+	{
+		$arrayLingue = [];
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$arrayLingue[$l] = $l.$url;
+		}
+		
+		return $arrayLingue;
+	}
 }

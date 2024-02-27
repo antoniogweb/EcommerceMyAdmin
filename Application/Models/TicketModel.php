@@ -37,7 +37,52 @@ class TicketModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'tipologia' => array("BELONGS_TO", 'TickettipologieModel', 'id_ticket_tipologia',null,"CASCADE"),
+			'tipologia' => array("BELONGS_TO", 'TickettipologieModel', 'id_ticket_tipologia',null,"RESTRICT","Si prega di selezionare una tipologia del ticket di assistenza"),
         );
+    }
+    
+    protected function whereUser()
+    {
+		if (App::$isFrontend)
+			return array(
+				"id_user"	=>	User::$id,
+			);
+		else
+			return array(
+				"id_admin"	=>	User::$id,
+			);
+    }
+    
+    public function check($idTicket, $ticketUid)
+    {
+		return $this->clear()->where(array(
+			"id_ticket"		=>	(int)$idTicket,
+			"ticket_uid"	=>	sanitizeAll($ticketUid)
+		))->rowNumber();
+    }
+    
+    public function add()
+    {
+		$this->clear()->where(array(
+			"stato"	=>	"B"
+		));
+		
+		$this->aWhere($this->whereUser());
+		
+		$ticket = $this->record();
+		
+		if (empty($ticket))
+		{
+			$values = $this->whereUser();
+			
+			$values["ticket_uid"] = randomToken();
+			
+			$this->sValues($values);
+			
+			if ($this->insert())
+				$ticket = $this->selectId($this->lId);
+		}
+		
+		return $ticket;
     }
 }

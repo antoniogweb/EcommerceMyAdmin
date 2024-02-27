@@ -181,6 +181,8 @@ class Route
 		'paypal,createorder',
 		'paypal,captureorder',
 		'ticket,index',
+		'ticket,add',
+		'ticket,view',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -216,7 +218,9 @@ class Route
 		'listeregalo/invialink/(.*)'=>	'listeregalo/invialink/${1}',
 		'listeregalo/elencolink/(.*)'=>	'listeregalo/elencolink/${1}',
 		'listeregalo/invianuovamentelink/(.*)'=>	'listeregalo/invianuovamentelink/${1}',
-		'ticket/?'			=>	'ticket/index',
+		'ticket/?'					=>	'ticket/index',
+		'ticket/add/?'				=>	'ticket/add',
+		'ticket/view/([0-9]{1,9})/([0-9A-Za-z]{32})?'	=>	'ticket/view/${1}/${2}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

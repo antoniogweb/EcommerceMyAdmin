@@ -43,7 +43,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		"percorso"	=>	"Elementi/Ordini/IscrizioneNewsletter",
 	))));
 	?>
-			
+	
 	<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small">
 		<?php echo gtext("Ho letto e accettato le");?>
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
