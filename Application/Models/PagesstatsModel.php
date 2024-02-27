@@ -127,6 +127,7 @@ class PagesstatsModel extends GenericModel {
 			"idM"		=>	$idM,
 			"lingua"	=>	Params::$lang,
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
+			"ip"		=>	getIp(),
 		));
 		
 		FilePutContentsAtomic($fullPath, $json);
@@ -165,6 +166,7 @@ class PagesstatsModel extends GenericModel {
 						"uid_stats"	=>	$jsonArray["cart_uid"] ?? "",
 						"data_creazione"	=>	$jsonArray["data_creazione"] ?? date("Y-m-d H:i:s"),
 						"data_stat"	=>	isset($jsonArray["data_creazione"]) ? date("Y-m-d", strtotime($jsonArray["data_creazione"])) : date("Y-m-d"),
+						"ip"		=>	(isset($jsonArray["ip"]) && v("salva_ip_visualizzazione")) ? $jsonArray["ip"] : "",
 					));
 					
 					if ($psModel->insert())

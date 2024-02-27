@@ -345,6 +345,7 @@ class VariabiliModel extends GenericModel {
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
 		"salva_satistiche_visualizzazione_pagina_su_file"	=>	0, // salva le statistiche di visualizzazione della singola pagina o della categoria su FILE
+		"salva_ip_visualizzazione"	=>	0, // se impostato su 1, salva anche l'IP dell'utente che sta guardando la pagina
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
 		"classe_ext_cookies"		=>	"segnalazione_cookies_ext", // classe box esterno cookie principale
