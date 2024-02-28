@@ -88,6 +88,13 @@ class TickettipologieModel extends GenericModel
 				"id_ticket_tipologia"	=>	(int)$id,
 				"attivo"				=>	1,
 			),
-		))->toList("id_ticket_tipologia", "titolo")->send();;
+		))->toList("id_ticket_tipologia", "titolo")->orderBy("id_order")->send();;
+	}
+	
+	public function getFirstIdTipologiaAttiva()
+	{
+		return $this->clear()->select("id_ticket_tipologia")->where(array(
+			"attivo"	=>	1,
+		))->orderBy("id_order")->limit(1)->field("id_ticket_tipologia");
 	}
 }

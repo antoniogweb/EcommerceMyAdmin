@@ -93,10 +93,25 @@ class BaseTicketController extends BaseController
 		
 		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId($clean["idTicket"]);
 		
+		$idTipologia = isset($_POST["id_ticket_tipologia"]) ? (int)$_POST["id_ticket_tipologia"] : $ticket["id_ticket_tipologia"];
+		
+		$tipologia = $data["tipologia"] = $this->m('TickettipologieModel')->selectId((int)$idTipologia);
+		
+		if (empty($tipologia))
+		{
+			$this->redirect("");
+			die();
+		}
+		
 		$data["arrayLingue"] = $this->creaArrayLingueNazioni("/ticket/view/".(int)$idTicket."/".$clean["ticketUid"]);
 		
 		$fields = "id_ticket_tipologia,oggetto,descrizione,accetto";
 		
+		if ($tipologia["tipo"] == "ORDINE")
+			$fields .= ",id_o";
+		else if ($tipologia["tipo"] == "LISTA REGALO")
+			$fields .= ",id_lista_regalo";
+			
 		$this->m('TicketModel')->setFields($fields,'sanitizeAll');
 		
 		if (isset($_POST["gAction"]))
@@ -104,15 +119,7 @@ class BaseTicketController extends BaseController
 		
 		if (isset($_POST['updateAction']))
 		{
-			if (CaptchaModel::getModulo()->check())
-			{
-				$this->m('TicketModel')->updateTable('update',$clean["idTicket"]);
-			}
-			else
-			{
-				$this->m('TicketModel')->notice = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del ticket, per favore riprova più tardi")."</div>";
-				$this->m('TicketModel')->result = false;
-			}
+			$this->m('TicketModel')->updateTable('update',$clean["idTicket"]);
 		}
 		
 		$data['notice'] = $this->m('TicketModel')->notice;
@@ -120,6 +127,9 @@ class BaseTicketController extends BaseController
 		$data['values'] = $this->m('TicketModel')->getFormValues('update','sanitizeHtml',$clean["idTicket"]);
 		
 		$data['tipologie'] = $this->m('TickettipologieModel')->selectTipologie($clean["idTicket"]);
+		
+		$data['ordini'] = $this->m('TicketModel')->getTendinaOrdini($ticket["id_user"]);
+		$data['listeRegalo'] = $this->m('TicketModel')->getTendinaListe($ticket["id_user"]);
 		
 // 		print_r($data['tipologie']);
 		

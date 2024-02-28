@@ -37,6 +37,20 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<?php echo Html_Form::select("id_ticket_tipologia",$values['id_ticket_tipologia'],$tipologie,"uk-select class_id_ticket_tipologia",null,"yes");?>
 			</div>
 			
+			<?php if ($tipologia["tipo"] == "ORDINE") { ?>
+			<label class="uk-form-label"><?php echo gtext("Seleziona l'ordine per cui chiedi assistenza");?> *</label>
+			<div class="uk-form-controls uk-margin-bottom">
+				<?php echo Html_Form::select("id_o",$values['id_o'],$ordini,"uk-select class_id_o",null,"yes");?>
+			</div>
+			<?php } ?>
+			
+			<?php if ($tipologia["tipo"] == "LISTA REGALO") { ?>
+			<label class="uk-form-label"><?php echo gtext("Seleziona la lista regalo per cui chiedi assistenza");?> *</label>
+			<div class="uk-form-controls uk-margin-bottom">
+				<?php echo Html_Form::select("id_lista_regalo",$values['id_lista_regalo'],$listeRegalo,"uk-select class_id_lista_regalo",null,"yes");?>
+			</div>
+			<?php } ?>
+			
 			<label class="uk-form-label"><?php echo gtext("Oggetto della richiesta");?> *</label>
 			<div class="uk-form-controls uk-margin-bottom">
 				<?php echo Html_Form::input("oggetto",$values['oggetto'],"uk-input class_oggetto",null,"placeholder='".gtext("Oggetto della richiesta", false)."'");?>
@@ -47,7 +61,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"placeholder='".gtext("Descrizione", false)."'");?>
 			</div>
 			
-			<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
+			<?php /*include (tpf("Elementi/Pagine/campo-captcha.php"));*/?>
 			
 			<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 				<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>

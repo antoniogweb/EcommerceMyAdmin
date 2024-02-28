@@ -73,9 +73,12 @@ class TicketModel extends GenericModel
 		
 		if (empty($ticket))
 		{
+			$ttModel = new TickettipologieModel();
+			
 			$values = $this->whereUser();
 			
 			$values["ticket_uid"] = randomToken();
+			$values["id_ticket_tipologia"] = $ttModel->getFirstIdTipologiaAttiva();
 			
 			$this->sValues($values);
 			
@@ -84,5 +87,37 @@ class TicketModel extends GenericModel
 		}
 		
 		return $ticket;
+    }
+    
+    public function getTendinaOrdini($idUser)
+    {
+		$oModel = new OrdiniModel();
+		
+		$res = $oModel->clear()->select("id_o,data_creazione")->where(array(
+			"id_user"	=>	(int)$idUser,
+		))->orderBy("data_creazione desc")->send(false);
+		
+		$select = [];
+		
+		foreach ($res as $r)
+		{
+			$select[$r["id_o"]] = gtext("Ordine")." #".$r["id_o"]." ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+		}
+		
+		return $select;
+    }
+    
+    public function getTendinaListe($idUser)
+    {
+		$res = ListeregaloModel::listeUtenteAttiveModel((int)$idUser)->send(false);
+		
+		$select = [];
+		
+		foreach ($res as $r)
+		{
+			$select[$r["id_lista_regalo"]] = gtext("Lista")." ".$r["titolo"]." (".gtext("codice")." ".$r["codice"].") ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+		}
+		
+		return $select;
     }
 }
