@@ -19,10 +19,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } else { ?>
 <p><?php echo gtext("Non hai creato alcuna richiesta di assistenza.");?></p>
 <?php } ?>
-
+<?php if (count($tipologie) > 0) { ?>
 <div class="uk-margin">
 	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/add/";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea un ticket di assistenza");?></a>
 </div>
+<?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 

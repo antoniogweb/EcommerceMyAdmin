@@ -37,6 +37,7 @@ class TicketModel extends GenericModel
 	
 	public function relations() {
         return array(
+			'pagine' => array("HAS_MANY", 'TicketpagesModel', 'id_ticket', null, "CASCADE"),
 			'tipologia' => array("BELONGS_TO", 'TickettipologieModel', 'id_ticket_tipologia',null,"RESTRICT","Si prega di selezionare una tipologia del ticket di assistenza"),
         );
     }
@@ -59,6 +60,17 @@ class TicketModel extends GenericModel
 			"id_ticket"		=>	(int)$idTicket,
 			"ticket_uid"	=>	sanitizeAll($ticketUid)
 		))->rowNumber();
+    }
+    
+    public function update($id = null, $where = null)
+    {
+		if (isset($this->values["id_o"]) && $this->values["id_o"])
+			$this->values["id_lista_regalo"] = 0;
+		
+		if (isset($this->values["id_lista_regalo"]) && $this->values["id_lista_regalo"])
+			$this->values["id_o"] = 0;
+		
+		return parent::update($id, $where);
     }
     
     public function add()
@@ -116,6 +128,41 @@ class TicketModel extends GenericModel
 		foreach ($res as $r)
 		{
 			$select[$r["id_lista_regalo"]] = gtext("Lista")." ".$r["titolo"]." (".gtext("codice")." ".$r["codice"].") ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+		}
+		
+		return $select;
+    }
+    
+    public function getTendinaProdotti($idUser, $idO = 0, $idLista = 0, $lingua = null)
+    {
+		$pModel = new PagesModel();
+		
+		$pModel->clear()->addJoinTraduzionePagina($lingua)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione("prodotti"))->orderBy("coalesce(contenuti_tradotti.title,pages.title)");
+		
+		if ($idO)
+		{
+			$pModel->inner("righe")->on("righe.id_page = pages.id_page")->inner("orders")->on("orders.id_o = righe.id_o")->where(array(
+					"orders.id_o"		=>	(int)$idO,
+					"orders.id_user"	=>	$idUser,
+				));
+		}
+		else if ($idLista)
+		{
+			$pModel->inner("liste_regalo_pages")->on("liste_regalo_pages.id_page = pages.id_page")->inner("liste_regalo")->on("liste_regalo.id_lista_regalo = liste_regalo_pages.id_lista_regalo")->where(array(
+					"liste_regalo.id_lista_regalo"	=>	(int)$idLista,
+					"liste_regalo.id_user"			=>	$idUser,
+				));
+		}
+		else
+			$pModel->select("pages.id_page,pages.title,contenuti_tradotti.title")->addWhereAttivo();
+		
+		$res = $pModel->send();
+		
+		$select = [];
+		
+		foreach ($res as $p)
+		{
+			$select[$p["pages"]["id_page"]] = field($p, "title");
 		}
 		
 		return $select;

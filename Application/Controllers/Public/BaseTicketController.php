@@ -63,6 +63,8 @@ class BaseTicketController extends BaseController
 		
 		$data["ticket"] = array();
 		
+		$data['tipologie'] = $this->m('TickettipologieModel')->selectTipologie();
+		
 		$this->append($data);
 		
 		$this->load('main');
@@ -83,17 +85,47 @@ class BaseTicketController extends BaseController
 		die();
 	}
 	
+	// Aggiungi un prodotto al ticket
+	public function aggiungiprodotto($idTicket = 0, $ticketUid = "")
+	{
+		$this->clean();
+		
+		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
+			$this->responseCode(403);
+		
+		$clean["id_page"] = $this->request->post("id_page",0,"forceInt");
+		
+		$numero = $this->m('TicketpagesModel')->numeroProdotti((int)$idTicket);
+		
+		if ($numero < v("numero_massimo_prodotti_ticket"))
+			$this->m('TicketpagesModel')->aggiungiProdotto($clean["id_page"], $idTicket, $ticketUid);
+	}
+	
+	// Aggiungi un prodotto al ticket
+	public function rimuoviprodotto($idTicket = 0, $ticketUid = "")
+	{
+		$this->clean();
+		
+		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
+			$this->responseCode(403);
+		
+		$clean["id_page"] = $this->request->post("id_page",0,"forceInt");
+		
+		$this->m('TicketpagesModel')->rimuoviProdotto($clean["id_page"], $idTicket, $ticketUid);
+	}
+	
 	// Dettaglio ticket
 	public function view($idTicket = 0, $ticketUid = "")
 	{
-		$clean["idTicket"] = (int)$idTicket;
-		$clean["ticketUid"] = sanitizeAll($ticketUid);
+		$clean["idTicket"] = $data["idTicket"] = (int)$idTicket;
+		$clean["ticketUid"] = $data["ticketUid"] = sanitizeAll($ticketUid);
 		
 		$this->check($idTicket, $ticketUid);
 		
 		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId($clean["idTicket"]);
 		
-		$idTipologia = isset($_POST["id_ticket_tipologia"]) ? (int)$_POST["id_ticket_tipologia"] : $ticket["id_ticket_tipologia"];
+		$idTipologia = isset($_POST["id_ticket_tipologia"]) ? (int)$_POST["id_ticket_tipologia"] : (int)$ticket["id_ticket_tipologia"];
+		$idO = $idLista = 0;
 		
 		$tipologia = $data["tipologia"] = $this->m('TickettipologieModel')->selectId((int)$idTipologia);
 		
@@ -108,10 +140,20 @@ class BaseTicketController extends BaseController
 		$fields = "id_ticket_tipologia,oggetto,descrizione,accetto";
 		
 		if ($tipologia["tipo"] == "ORDINE")
+		{
 			$fields .= ",id_o";
+			
+			$idO = isset($_POST["id_o"]) ? (int)$_POST["id_o"] : (int)$ticket["id_o"];
+			$idLista = 0;
+		}
 		else if ($tipologia["tipo"] == "LISTA REGALO")
+		{
 			$fields .= ",id_lista_regalo";
 			
+			$idLista = isset($_POST["id_lista_regalo"]) ? (int)$_POST["id_lista_regalo"] : (int)$ticket["id_lista_regalo"];
+			$idO = 0;
+		}
+		
 		$this->m('TicketModel')->setFields($fields,'sanitizeAll');
 		
 		if (isset($_POST["gAction"]))
@@ -128,10 +170,28 @@ class BaseTicketController extends BaseController
 		
 		$data['tipologie'] = $this->m('TickettipologieModel')->selectTipologie($clean["idTicket"]);
 		
-		$data['ordini'] = $this->m('TicketModel')->getTendinaOrdini($ticket["id_user"]);
-		$data['listeRegalo'] = $this->m('TicketModel')->getTendinaListe($ticket["id_user"]);
+		$data['ordini'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaOrdini($ticket["id_user"]);
+		$data['listeRegalo'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaListe($ticket["id_user"]);
 		
-// 		print_r($data['tipologie']);
+		$data['mostra_tendina_prodotti'] = false;
+		
+		if (
+			($tipologia["tipo"] == "ORDINE" && $idO) || 
+			($tipologia["tipo"] == "LISTA REGALO" && $idLista) || 
+			($tipologia["tipo"] == "PRODOTTO")
+		)
+		{
+			$data['mostra_tendina_prodotti'] = true;
+			$data['prodotti'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaProdotti($ticket["id_user"], $idO, $idLista);
+		}
+		else
+			$data['prodotti'] = array(0 => gtext("Seleziona"));
+		
+		$data["prodottiInseriti"] = $this->m('TicketpagesModel')->getProdottiInseriti($clean["idTicket"]);
+		
+		$data['numeroProdotti'] = $this->m('TicketpagesModel')->numeroProdotti($clean["idTicket"]);
+		
+// 		print_r($data['prodottiInseriti']);
 		
 		$this->append($data);
 		
