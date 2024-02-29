@@ -56,12 +56,19 @@ class BaseTicketController extends BaseController
 	{
 		$this->s['registered']->check(null,0);
 		
-		foreach (Params::$frontEndLanguages as $l)
-		{
-			$data["arrayLingue"][$l] = $l."/ticket/";
-		}
+		$data["arrayLingue"] = $this->creaArrayLingueNazioni("/ticket");
 		
-		$data["ticket"] = array();
+		$clean["id_ticket"] = $this->request->get("del",0,"forceInt");
+		
+		if ($clean["id_ticket"] > 0)
+			$this->m("TicketModel")->del(null, array("id_ticket = ? AND id_user = ? AND stato = 'B'",array($clean["id_ticket"], User::$id)));
+		
+		$data["ticket"] = $this->m('TicketModel')->clear()
+			->select("*")
+			->inner(array("tipologia"))
+			->where(array(
+				"id_user"	=>	(int)User::$id,
+			))->orderBy("ticket.data_creazione desc")->send();
 		
 		$data['tipologie'] = $this->m('TickettipologieModel')->selectTipologie();
 		
@@ -94,11 +101,12 @@ class BaseTicketController extends BaseController
 			$this->responseCode(403);
 		
 		$clean["id_page"] = $this->request->post("id_page",0,"forceInt");
+		$numero_seriale = $this->request->post("numero_seriale","","none");
 		
 		$numero = $this->m('TicketpagesModel')->numeroProdotti((int)$idTicket);
 		
-		if ($numero < v("numero_massimo_prodotti_ticket"))
-			$this->m('TicketpagesModel')->aggiungiProdotto($clean["id_page"], $idTicket, $ticketUid);
+		if ($numero < v("numero_massimo_prodotti_ticket") && $this->m("TicketModel")->isBozza((int)$idTicket))
+			$this->m('TicketpagesModel')->aggiungiProdotto($clean["id_page"], $idTicket, $ticketUid, $numero_seriale);
 	}
 	
 	// Aggiungi un prodotto al ticket
@@ -111,17 +119,14 @@ class BaseTicketController extends BaseController
 		
 		$clean["id_page"] = $this->request->post("id_page",0,"forceInt");
 		
-		$this->m('TicketpagesModel')->rimuoviProdotto($clean["id_page"], $idTicket, $ticketUid);
+		if ($this->m("TicketModel")->isBozza((int)$idTicket))
+			$this->m('TicketpagesModel')->rimuoviProdotto($clean["id_page"], $idTicket, $ticketUid);
 	}
 	
-	// Dettaglio ticket
-	public function view($idTicket = 0, $ticketUid = "")
+	
+	protected function gestisciBozza($idTicket)
 	{
 		$clean["idTicket"] = $data["idTicket"] = (int)$idTicket;
-		$clean["ticketUid"] = $data["ticketUid"] = sanitizeAll($ticketUid);
-		
-		$this->check($idTicket, $ticketUid);
-		
 		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId($clean["idTicket"]);
 		
 		$idTipologia = isset($_POST["id_ticket_tipologia"]) ? (int)$_POST["id_ticket_tipologia"] : (int)$ticket["id_ticket_tipologia"];
@@ -135,7 +140,7 @@ class BaseTicketController extends BaseController
 			die();
 		}
 		
-		$data["arrayLingue"] = $this->creaArrayLingueNazioni("/ticket/view/".(int)$idTicket."/".$clean["ticketUid"]);
+		$data["arrayLingue"] = $this->creaArrayLingueNazioni("/ticket/view/".(int)$idTicket."/".$ticket["ticket_uid"]);
 		
 		$fields = "id_ticket_tipologia,oggetto,descrizione,accetto";
 		
@@ -161,7 +166,21 @@ class BaseTicketController extends BaseController
 		
 		if (isset($_POST['updateAction']))
 		{
-			$this->m('TicketModel')->updateTable('update',$clean["idTicket"]);
+			$this->m('TicketModel')->setConditions((int)$ticket["id_o"]);
+			
+			if ($this->m('TicketModel')->checkConditions('update', $clean["idTicket"]))
+			{
+				$this->m('TicketModel')->updateTable('update',$clean["idTicket"]);
+				
+				if ($this->m('TicketModel')->queryResult)
+				{
+					$this->redirect("ticket/view/".$clean["idTicket"]."/".$ticket["ticket_uid"]);
+				}
+			}
+			else
+			{
+				$this->m('TicketModel')->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('TicketModel')->notice;
+			}
 		}
 		
 		$data['notice'] = $this->m('TicketModel')->notice;
@@ -187,6 +206,27 @@ class BaseTicketController extends BaseController
 		else
 			$data['prodotti'] = array(0 => gtext("Seleziona"));
 		
+		$this->append($data);
+	}
+	
+	// Dettaglio ticket
+	public function view($idTicket = 0, $ticketUid = "")
+	{
+		$clean["idTicket"] = $data["idTicket"] = (int)$idTicket;
+		$clean["ticketUid"] = $data["ticketUid"] = sanitizeAll($ticketUid);
+		
+		$this->check($idTicket, $ticketUid);
+		
+		$ticket = $this->m('TicketModel')->select("*")->inner(array("tipologia"))->where(array(
+			"id_ticket"	=>	$clean["idTicket"]
+		))->first();
+		
+		$data["ticket"] = $ticket["ticket"];
+		$data["tipologia"] = $ticket["ticket_tipologie"];
+		
+		if ($ticket["ticket"]["stato"] == "B")
+			$this->gestisciBozza($idTicket);
+		
 		$data["prodottiInseriti"] = $this->m('TicketpagesModel')->getProdottiInseriti($clean["idTicket"]);
 		
 		$data['numeroProdotti'] = $this->m('TicketpagesModel')->numeroProdotti($clean["idTicket"]);
@@ -195,6 +235,14 @@ class BaseTicketController extends BaseController
 		
 		$this->append($data);
 		
-		$this->load('form');
+		if (isset($_GET["partial_prodotti"]))
+		{
+			$this->clean();
+			$this->load('prodotti');
+		}
+		else
+		{
+			$this->load('view');
+		}
 	}
 }

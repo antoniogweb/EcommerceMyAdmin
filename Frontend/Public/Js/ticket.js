@@ -10,6 +10,41 @@ function reloadTicket()
 	$(".form_ticket").submit();
 }
 
+function reloadProdotti()
+{
+	if ($("#tendina_caricamento").length > 0)
+		$("#tendina_caricamento").removeClass("uk-hidden");
+	
+	var idTicket = $(".form_ticket").attr("id-ticket");
+	var ticketUid = $(".form_ticket").attr("ticket-uid");
+	
+	var url = baseUrl + "/ticket/view/" + idTicket + "/" + ticketUid + "?partial_prodotti"
+	
+	var id_o = $("[name='id_o']").length > 0 ? $("[name='id_o']").val() : 0;
+	var id_lista_regalo = $("[name='id_lista_regalo']").length > 0 ? $("[name='id_lista_regalo']").val() : 0;
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		type: "POST",
+		data: {
+			id_o: id_o,
+			id_lista_regalo: id_lista_regalo
+		},
+		success: function(content){
+			
+			$(".box_prodotti").html(content);
+			
+			if ($("#tendina_caricamento").length > 0)
+				$("#tendina_caricamento").addClass("uk-hidden");
+			
+			$(".uk-alert-danger").remove();
+		}
+	});
+}
+
 $(document).ready(function(){
 	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo']", function(e) {
 		
@@ -22,6 +57,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		
 		var id_page = $("[name='id_page']").val();
+		var numero_seriale = $("[name='numero_seriale']").val();
 		
 		var url = $(this).attr("href");
 		
@@ -36,11 +72,12 @@ $(document).ready(function(){
 				dataType: "html",
 				type: "POST",
 				data: {
-					id_page: id_page
+					id_page: id_page,
+					numero_seriale: numero_seriale
 				},
 				success: function(content){
 					
-					reloadTicket();
+					reloadProdotti();
 					
 				}
 			});
@@ -69,7 +106,7 @@ $(document).ready(function(){
 			},
 			success: function(content){
 				
-				reloadTicket();
+				reloadProdotti();
 				
 			}
 		});

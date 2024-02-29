@@ -42,7 +42,7 @@ class TicketpagesModel extends GenericModel
         );
     }
     
-    public function aggiungiProdotto($idPage, $idTicket, $ticketUid)
+    public function aggiungiProdotto($idPage, $idTicket, $ticketUid, $numero_seriale = "")
     {
 		$tModel = new TicketModel();
 		
@@ -53,6 +53,7 @@ class TicketpagesModel extends GenericModel
 				$this->sValues(array(
 					"id_ticket"	=>	(int)$idTicket,
 					"id_page"	=>	(int)$idPage,
+					"numero_seriale"	=>	$numero_seriale,
 				));
 				
 				$this->insert();
@@ -91,7 +92,7 @@ class TicketpagesModel extends GenericModel
 		$pModel = new PagesModel();
 		
 		return $pModel->clear()
-			->select("pages.id_page,pages.title,contenuti_tradotti.title,pages.immagine")
+			->select("pages.id_page,pages.title,contenuti_tradotti.title,pages.immagine,ticket_pages.numero_seriale")
 			->addJoinTraduzionePagina()
 			->inner("ticket_pages")->on("pages.id_page = ticket_pages.id_page")
 			->where(array(

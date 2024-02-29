@@ -42,6 +42,17 @@ class TicketModel extends GenericModel
         );
     }
     
+    public function setConditions($idTicket = 0)
+	{
+		$this->addStrongCondition("update",'checkNotEmpty',"oggetto,descrizione,accetto");
+		
+		if (isset($_POST["id_o"]))
+			$this->addStrongCondition("update",'checkIsNotStrings|0',"id_o|".gtext("Si prega di selezionare un ordine").'<div class="evidenzia">class_id_o</div>');
+		
+		if (isset($_POST["id_lista_regalo"]))
+			$this->addStrongCondition("update",'checkIsNotStrings|0',"id_lista_regalo|".gtext("Si prega di selezionare una lista regalo").'<div class="evidenzia">class_id_lista_regalo</div>');
+	}
+    
     protected function whereUser()
     {
 		if (App::$isFrontend)
@@ -62,6 +73,43 @@ class TicketModel extends GenericModel
 		))->rowNumber();
     }
     
+    public function stato($idTicket)
+    {
+		return $this->clear()->whereId((int)$idTicket)->field("stato");
+    }
+    
+    public function isBozza($idTicket)
+    {
+		$stato = $this->stato($idTicket);
+		
+		return ($stato == "B") ? true : false;
+    }
+    
+    public function checkNumeroProdotti($id)
+    {
+		if (!App::$isFrontend)
+			return true;
+		
+		if (isset($_POST["id_ticket_tipologia"]))
+		{
+			$idTipologia = (int)$_POST["id_ticket_tipologia"];
+			$tt = new TickettipologieModel();
+			$tp = new TicketpagesModel();
+			
+			$tipologia = $tt->selectId($idTipologia);
+			
+			if (!empty($tipologia) && $tipologia["tipo"] != "GENERICO" && !$tp->numeroProdotti((int)$id))
+			{
+				$this->result = false;
+				$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di indicare per quale prodotto si sta chiedendo assistenza.")."</div>".'<div class="evidenzia">box_prodotti_inner</div>';
+				
+				return false;
+			}
+		}
+		
+		return true;
+    }
+    
     public function update($id = null, $where = null)
     {
 		if (isset($this->values["id_o"]) && $this->values["id_o"])
@@ -70,7 +118,28 @@ class TicketModel extends GenericModel
 		if (isset($this->values["id_lista_regalo"]) && $this->values["id_lista_regalo"])
 			$this->values["id_o"] = 0;
 		
-		return parent::update($id, $where);
+		$record = $this->selectId((int)$id);
+		$inBozza = false;
+		
+		if ($record["stato"] == "B")
+		{
+			$inBozza = true;
+			$this->values["stato"] = "A";
+		}
+		
+		if ($this->checkNumeroProdotti($id))
+		{
+			$res = parent::update($id, $where);
+			
+			if ($res && $inBozza)
+			{
+				
+			}
+			
+			return $res;
+		}
+		
+		return false;
     }
     
     public function add()
@@ -166,5 +235,27 @@ class TicketModel extends GenericModel
 		}
 		
 		return $select;
+    }
+    
+    public static function getStile($stato)
+    {
+		return TicketstatiModel::getCampoG($stato, "stile");
+    }
+    
+    public static function getTitoloStato($stato)
+    {
+		return TicketstatiModel::getCampoG($stato, "titolo");
+    }
+    
+    public static function getLabelLista($idListaRegalo)
+    {
+		$lr = new ListeregaloModel();
+		
+		$r = $lr->clear()->whereId((int)$idListaRegalo)->record();
+		
+		if (!empty($r))
+			return gtext("Lista")." ".$r["titolo"]." (".gtext("codice")." ".$r["codice"].") ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+		
+		return "";
     }
 }
