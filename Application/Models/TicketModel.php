@@ -39,6 +39,7 @@ class TicketModel extends GenericModel
         return array(
 			'pagine' => array("HAS_MANY", 'TicketpagesModel', 'id_ticket', null, "CASCADE"),
 			'tipologia' => array("BELONGS_TO", 'TickettipologieModel', 'id_ticket_tipologia',null,"RESTRICT","Si prega di selezionare una tipologia del ticket di assistenza"),
+			'cliente' => array("BELONGS_TO", 'RegusersModel', 'id_user' ,null, "CASCADE"),
         );
     }
     
@@ -125,6 +126,7 @@ class TicketModel extends GenericModel
 		{
 			$inBozza = true;
 			$this->values["stato"] = "A";
+			$this->values["data_invio"] = date("Y-m-d H:i:s");
 		}
 		
 		if ($this->checkNumeroProdotti($id))

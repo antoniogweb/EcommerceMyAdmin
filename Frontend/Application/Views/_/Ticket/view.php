@@ -25,23 +25,14 @@ $attiva = "ticket";
 
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
-<div class="uk-width-1-1 uk-flex uk-flex-top uk-grid uk-margin-medium-bottom" uk-grid>
-    <div class="uk-width-1-1 uk-width-1-3@m uk-text-small">
-        <?php echo gtext("ID Ticket");?>: <span class="uk-text-bold uk-text-primary"><?php echo $idTicket;?></span><br />
-        <?php echo gtext("Stato del Ticket");?>: <span class="uk-label" style="<?php echo TicketModel::getStile($ticket["stato"]);?>"><?php echo TicketModel::getTitoloStato($ticket["stato"]);?></span><br />
-        <?php echo gtext("Data creazione");?>: <b class="uk-text-primary"><?php echo smartDate($ticket["data_creazione"]);?></b>
-    </div>
-    <div class="uk-width-1-1 uk-width-2-3@m">
-		
-    </div>
-</div>
+<script>
+	var idTicket = <?php echo $idTicket;?>;
+	var ticketUid = "<?php echo $ticket["ticket_uid"];?>";
+</script>
 
-<?php
-if ($ticket["stato"] == "B")
-	include(tpf("Ticket/form.php"));
-else
-	include(tpf("Ticket/dettaglio.php"));
-?>
+<div class="view_partial">
+	<?php include(tpf("Ticket/view_partial.php")); ?>
+</div>
 
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

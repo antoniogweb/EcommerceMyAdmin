@@ -185,6 +185,7 @@ class Route
 		'ticket,view',
 		'ticket,aggiungiprodotto',
 		'ticket,rimuoviprodotto',
+		'ticket,aggiungimessaggio',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -225,6 +226,7 @@ class Route
 		'ticket/view/([0-9]{1,9})/([0-9A-Za-z]{32})?'	=>	'ticket/view/${1}/${2}',
 		'ticket/aggiungiprodotto/([0-9]{1,9})/([0-9A-Za-z]{32})?'	=>	'ticket/aggiungiprodotto/${1}/${2}',
 		'ticket/rimuoviprodotto/([0-9]{1,9})/([0-9A-Za-z]{32})?'	=>	'ticket/rimuoviprodotto/${1}/${2}',
+		'ticket/aggiungimessaggio/([0-9]{1,9})/([0-9A-Za-z]{32})?'	=>	'ticket/aggiungimessaggio/${1}/${2}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

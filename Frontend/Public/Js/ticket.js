@@ -1,7 +1,7 @@
 if (typeof stringa_errore_prodotto_non_selezionata == "undefined")
 	var stringa_errore_prodotto_non_selezionata = "Si prega di selezionare un prodotto";
 
-function reloadTicket()
+function reloadFormTicket()
 {
 	if ($("#tendina_caricamento").length > 0)
 		$("#tendina_caricamento").removeClass("uk-hidden");
@@ -18,7 +18,7 @@ function reloadProdotti()
 	var idTicket = $(".form_ticket").attr("id-ticket");
 	var ticketUid = $(".form_ticket").attr("ticket-uid");
 	
-	var url = baseUrl + "/ticket/view/" + idTicket + "/" + ticketUid + "?partial_prodotti"
+	var url = baseUrl + "/ticket/view/" + idTicket + "/" + ticketUid + "?partial_prodotti";
 	
 	var id_o = $("[name='id_o']").length > 0 ? $("[name='id_o']").val() : 0;
 	var id_lista_regalo = $("[name='id_lista_regalo']").length > 0 ? $("[name='id_lista_regalo']").val() : 0;
@@ -45,11 +45,31 @@ function reloadProdotti()
 	});
 }
 
+function reloadTicket()
+{
+	if ($("#tendina_caricamento").length > 0)
+		$("#tendina_caricamento").removeClass("uk-hidden");
+	
+	var url = baseUrl + "/ticket/view/" + idTicket + "/" + ticketUid + "?partial_view";
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		success: function(content){
+			
+			$(".view_partial").html(content);
+			
+			if ($("#tendina_caricamento").length > 0)
+				$("#tendina_caricamento").addClass("uk-hidden");
+		}
+	});
+}
+
 $(document).ready(function(){
 	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo']", function(e) {
-		
-		reloadTicket();
-		
+		reloadFormTicket();
 	});
 	
 	$( "body" ).on( "click", ".aggiungi_al_ticket", function(e) {
@@ -111,5 +131,37 @@ $(document).ready(function(){
 			}
 		});
 		
+	});
+	
+	$( "body" ).on( "click", ".aggiungi_messaggio_al_ticket", function(e) {
+		
+		e.preventDefault();
+		
+		var url = $(".form_messaggio_ticket").attr("action");
+		
+		var that = $(this);
+		
+		$.ajaxQueue({
+			url: url,
+			async: true,
+			cache:false,
+			dataType: "html",
+			type: "POST",
+			data:  $(".form_messaggio_ticket").serialize(),
+			success: function(content){
+				
+// 				console.log(content);
+				
+				if (content != "OK")
+				{
+					$(".notice_messaggio").html(content);
+					evidenziaErrori(true, $(".form_messaggio_ticket"));
+					
+					that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+				}
+				else
+					reloadTicket();
+			}
+		});
 	});
 });

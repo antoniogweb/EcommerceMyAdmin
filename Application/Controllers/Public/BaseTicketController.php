@@ -123,6 +123,40 @@ class BaseTicketController extends BaseController
 			$this->m('TicketpagesModel')->rimuoviProdotto($clean["id_page"], $idTicket, $ticketUid);
 	}
 	
+	// Aggiungi un prodotto al ticket
+	public function aggiungimessaggio($idTicket = 0, $ticketUid = "")
+	{
+		$this->clean();
+		
+		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
+			$this->responseCode(403);
+		
+		$fields = "descrizione,accetto";
+		$this->m('TicketmessaggiModel')->setFields($fields,'sanitizeAll');
+		$this->m('TicketmessaggiModel')->setvalue("id_ticket", $idTicket);
+		
+		$this->m('TicketmessaggiModel')->setConditions();
+		
+		$this->m('TicketmessaggiModel')->updateTable('insert', 0);
+		
+		if ($this->m('TicketmessaggiModel')->queryResult)
+			echo "OK";
+		else
+			echo "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('TicketmessaggiModel')->notice;
+		
+// 		print_r($this->m('TicketmessaggiModel')->errors);
+	}
+	
+	protected function gestisciDettaglio($idTicket)
+	{
+		$clean["idTicket"] = (int)$idTicket;
+		
+		$data["messaggi"] = $this->m('TicketmessaggiModel')->clear()->where(array(
+			"id_ticket"	=>	(int)$idTicket,
+		))->orderBy("id_ticket_messaggio")->send();
+		
+		$this->append($data);
+	}
 	
 	protected function gestisciBozza($idTicket)
 	{
@@ -217,15 +251,24 @@ class BaseTicketController extends BaseController
 		
 		$this->check($idTicket, $ticketUid);
 		
-		$ticket = $this->m('TicketModel')->select("*")->inner(array("tipologia"))->where(array(
-			"id_ticket"	=>	$clean["idTicket"]
-		))->first();
+		$ticket = $this->m('TicketModel')
+			->select("*")
+			->inner(array("tipologia"))
+			->left(array("cliente"))
+			->where(array(
+				"id_ticket"	=>	$clean["idTicket"]
+			))->first();
 		
 		$data["ticket"] = $ticket["ticket"];
 		$data["tipologia"] = $ticket["ticket_tipologie"];
+		$data["cliente"] = $ticket["regusers"];
+		
+// 		print_r($ticket);
 		
 		if ($ticket["ticket"]["stato"] == "B")
 			$this->gestisciBozza($idTicket);
+		else
+			$this->gestisciDettaglio($idTicket);
 		
 		$data["prodottiInseriti"] = $this->m('TicketpagesModel')->getProdottiInseriti($clean["idTicket"]);
 		
@@ -239,6 +282,11 @@ class BaseTicketController extends BaseController
 		{
 			$this->clean();
 			$this->load('prodotti');
+		}
+		else if (isset($_GET["partial_view"]))
+		{
+			$this->clean();
+			$this->load('view_partial');
 		}
 		else
 		{
