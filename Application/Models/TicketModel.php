@@ -364,4 +364,23 @@ class TicketModel extends GenericModel
 		
 		return false;
     }
+    
+    public function campanellaCrud($record)
+    {
+		$htmlCampanella = "<i title='".gtext("Da gestire")."' class='fa fa-bell text text-warning'></i>";
+		
+		if ($record["ticket"]["stato"] == "A")
+			return $htmlCampanella;
+		
+		$tmModel = new TicketmessaggiModel();
+		
+		$ultimoMessaggio = $tmModel->clear()->where(array(
+			"id_ticket"	=>	(int)$record["ticket"]["id_ticket"],
+		))->orderBy("id_ticket_messaggio desc")->limit(1)->record();
+		
+		if (!empty($ultimoMessaggio) && $ultimoMessaggio["id_user"])
+			return $htmlCampanella;
+		
+		return "";
+    }
 }

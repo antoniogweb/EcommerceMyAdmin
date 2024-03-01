@@ -77,7 +77,7 @@
 				</div>
 			<?php } ?>
 			<hr />
-			<a href="<?php echo $this->baseUrl."/ticketmessaggi/form/insert?partial=Y&nobuttons=Y&id_ticket=".(int)$id;?>" class="iframe btn btn-primary"><i class="fa fa-plus"></i> <?php echo gtext("Scrivi messaggio");?></a>
+			<a href="<?php echo $this->baseUrl."/ticketmessaggi/form/insert?partial=Y&nobuttons=Y&id_ticket=".(int)$id;?>" class="iframe btn btn-primary pull-right"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi messaggio");?></a>
 		</div>
 	</form>
 </div>

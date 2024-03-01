@@ -62,8 +62,8 @@ class TicketController extends BaseController
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("cleanDateTime", "ticket.oggetto", "nome", "regusers.username", "ticket_tipologie.titolo", "statoCrud");
-		$this->mainHead = "Data ora,Oggetto,Cliente,Email,Tipologia,Stato";
+		$this->mainFields = array("cleanDateTime", "ticket.oggetto", "nome", "regusers.username", "ticket_tipologie.titolo", "statoCrud", "campanellaCrud");
+		$this->mainHead = "Data ora,Oggetto,Cliente,Email,Tipologia,Stato,";
 		
 		$filtroStato = array(
 			"tutti"		=>	"Stato",
@@ -75,9 +75,17 @@ class TicketController extends BaseController
 		
 		$this->filters = array("titolo","dal","al",array("id_ticket_tipologia",null,$filtroTipologia),array("stato",null,$filtroStato));
 		
+		$this->inverseColProperties = array(
+			null,null,
+			array(
+				"width"	=>	"1%",
+			),
+		);
+		
 		$this->m[$this->modelName]->clear()
 			->select("*")
 			->inner(array("tipologia", "cliente"))
+// 			->left("(select max(id_ticket_messaggio) as id_messaggio from ticket_messaggi group by id_ticket)")
 			->where(array(
 				"ne"	=>	array(
 					"stato"	=>	"B",
