@@ -260,17 +260,18 @@ class BaseTicketController extends BaseController
 				"id_ticket"	=>	$clean["idTicket"]
 			))->first();
 		
-		$data["ticket"] = $ticket["ticket"];
-		$data["tipologia"] = $ticket["ticket_tipologie"];
-		$data["cliente"] = $ticket["regusers"];
-		
 // 		print_r($ticket);
 		
 		if ($ticket["ticket"]["stato"] == "B")
 			$this->gestisciBozza($idTicket);
 		else
-			$this->gestisciDettaglio($idTicket);
+		{
+			$data["ticket"] = $ticket["ticket"];
+			$data["tipologia"] = $ticket["ticket_tipologie"];
+			$data["cliente"] = $ticket["regusers"];
 		
+			$this->gestisciDettaglio($idTicket);
+		}
 		$data["prodottiInseriti"] = $this->m('TicketpagesModel')->getProdottiInseriti($clean["idTicket"]);
 		
 		$data['numeroProdotti'] = $this->m('TicketpagesModel')->numeroProdotti($clean["idTicket"]);

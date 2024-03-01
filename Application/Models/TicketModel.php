@@ -190,7 +190,7 @@ class TicketModel extends GenericModel
 			
 			if ($res && $inBozza)
 			{
-				
+				$this->aggiungiNotifica($id);
 			}
 			
 			return $res;
@@ -198,6 +198,30 @@ class TicketModel extends GenericModel
 		
 		return false;
     }
+    
+    public function aggiungiNotifica($idTicket)
+	{
+		if (App::$isFrontend)
+		{
+			$record = $this->selectId((int)$idTicket);
+			
+			if (!empty($record) && $record["id_user"])
+			{
+				$n = new NotificheModel();
+				
+				$n->setValues(array(
+					"titolo"	=>	"Nuovo ticket<br /><b>".$record["oggetto"]."</b>",
+					"contesto"	=>	"TICKET",
+					"url"		=>	"ticket/form/update/".(int)$idTicket,
+					"classe"	=>	"text-yellow",
+					"icona"		=>	"fa-ticket",
+					"condizioni"=>	"attiva_gestiobe_ticket=1",
+				));
+				
+				$n->insert();
+			}
+		}
+	}
     
     public function add()
     {

@@ -67,6 +67,28 @@ class TicketmessaggiModel extends GenericModel
 		else
 			$this->values["id_admin"] = (int)User::$id;
 		
-		return parent::insert();
+		$res = parent::insert();
+		
+		if ($res && !App::$isFrontend && isset($this->values["id_admin"]) && $this->values["id_admin"])
+		{
+			$idTicketMessaggio = $this->lId;
+			
+			$ticket = $this->clear()->select("ticket.stato,ticket.id_ticket")->inner(array("ticket"))->where(array(
+				"id_ticket_messaggio"	=>	(int)$idTicketMessaggio,
+			))->first();
+			
+			if (!empty($ticket) && $ticket["ticket"]["stato"] == "A")
+			{
+				$tModel = new TicketModel();
+				
+				$tModel->sValues(array(
+					"stato"	=>	"L",
+				));
+				
+				$tModel->pUpdate($ticket["ticket"]["id_ticket"]);
+			}
+		}
+		
+		return $res;
 	}
 }
