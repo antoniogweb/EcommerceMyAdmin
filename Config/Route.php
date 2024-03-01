@@ -871,6 +871,8 @@ class Route
 		'ticket,form',
 		'ticket,aggiungiprodotto',
 		'ticket,rimuoviprodotto',
+		
+		'ticketmessaggi,form',
 	);
 	
 	//it can be 'yes' or 'no'

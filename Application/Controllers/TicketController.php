@@ -198,7 +198,7 @@ class TicketController extends BaseController
 		
 		$data["prodottiInseriti"] = $this->m('TicketpagesModel')->getProdottiInseriti((int)$id);
 		
-		$data["messaggi"] = $this->m('TicketmessaggiModel')->clear()->where(array(
+		$data["messaggi"] = $this->m('TicketmessaggiModel')->clear()->select("*")->left(array("admin"))->where(array(
 			"id_ticket"	=>	(int)$id,
 		))->orderBy("id_ticket_messaggio")->send();
 		

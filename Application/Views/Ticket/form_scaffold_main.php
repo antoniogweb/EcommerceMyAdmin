@@ -55,20 +55,29 @@
 		<div class='col-md-8'>
 			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtext("Messaggi");?></h4>
 			
-			<?php foreach ($messaggi as $m) { ?>
-			<div class="post">
+			<?php foreach ($messaggi as $m) {
+				$scrittoDa = $m["ticket_messaggi"]["id_user"] ? $nominativoCliente : $m["adminusers"]["username"];
+			?>
+			<div class="post <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>text-right"<?php } ?>">
 				<div class="user-block">
 					<span class="username" style="margin-left:0px !important;">
-						<a href="#"><?php echo $nominativoCliente;?></a>
+						<b style="color:#3c8dbc;"><?php echo $scrittoDa;?></b>
 					</span>
 					<span class="description" style="margin-left:0px !important;"><?php echo gtext("Scritto in data");?> <?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span>
 					</div>
 
-					<p>
+					<p style="width:50%;" <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>class="well pull-right"<?php } ?>>
+						<?php if (!$m["ticket_messaggi"]["id_user"]) { ?>
+						<?php echo htmlentitydecode($m["ticket_messaggi"]["descrizione"]);?>
+						<?php } else { ?>
 						<?php echo $m["ticket_messaggi"]["descrizione"];?>
+						<?php } ?>
 					</p>
+					<div style="clear:both;"></div>
 				</div>
 			<?php } ?>
+			<hr />
+			<a href="<?php echo $this->baseUrl."/ticketmessaggi/form/insert?partial=Y&nobuttons=Y&id_ticket=".(int)$id;?>" class="iframe btn btn-primary"><i class="fa fa-plus"></i> <?php echo gtext("Scrivi messaggio");?></a>
 		</div>
 	</form>
 </div>

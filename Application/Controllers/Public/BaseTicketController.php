@@ -132,8 +132,9 @@ class BaseTicketController extends BaseController
 			$this->responseCode(403);
 		
 		$fields = "descrizione,accetto";
-		$this->m('TicketmessaggiModel')->setFields($fields,'sanitizeAll');
-		$this->m('TicketmessaggiModel')->setvalue("id_ticket", $idTicket);
+		$this->m('TicketmessaggiModel')->setFields($fields,'strip_tags');
+		$this->m('TicketmessaggiModel')->sanitize("sanitizeAll");
+		$this->m('TicketmessaggiModel')->setvalue("id_ticket", (int)$idTicket);
 		
 		$this->m('TicketmessaggiModel')->setConditions();
 		
@@ -151,7 +152,7 @@ class BaseTicketController extends BaseController
 	{
 		$clean["idTicket"] = (int)$idTicket;
 		
-		$data["messaggi"] = $this->m('TicketmessaggiModel')->clear()->where(array(
+		$data["messaggi"] = $this->m('TicketmessaggiModel')->clear()->select("*")->left(array("admin"))->where(array(
 			"id_ticket"	=>	(int)$idTicket,
 		))->orderBy("id_ticket_messaggio")->send();
 		

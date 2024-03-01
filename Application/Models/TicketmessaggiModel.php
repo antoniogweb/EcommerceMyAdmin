@@ -38,8 +38,22 @@ class TicketmessaggiModel extends GenericModel
 	public function relations() {
         return array(
 			'ticket' => array("BELONGS_TO", 'TicketModel', 'id_ticket',null,"RESTRICT","Si prega di selezionare un ticket di assistenza"),
+			'admin' => array("BELONGS_TO", 'UsersModel', 'id_admin',null,"CASCADE"),
         );
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'descrizione'	=>	array(
+					'type'		=>	'Textarea',
+					'className'		=>	'form-control testo_feedback',
+				),
+			),
+		);
+	}
     
     public function setConditions()
 	{
