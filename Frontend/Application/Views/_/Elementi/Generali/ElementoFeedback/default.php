@@ -13,7 +13,7 @@
 
 	</div>
 
-	<?php echo htmlentitydecode($pf["feedback"]["testo"]);?>
+	<?php echo $pf["feedback"]["testo"];?>
 	
 	<div class="uk-text-muted uk-text-small uk-margin"><?php echo $pf["feedback"]["autore"];?></div>
 	

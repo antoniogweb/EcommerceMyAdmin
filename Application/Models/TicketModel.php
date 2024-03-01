@@ -26,6 +26,8 @@ class TicketModel extends GenericModel
 {
 	use CrudModel;
 	
+	public $campoTitolo = "oggetto";
+	
 	public function __construct() {
 		$this->_tables = 'ticket';
 		$this->_idFields = 'id_ticket';
@@ -43,6 +45,59 @@ class TicketModel extends GenericModel
         );
     }
     
+    public function setFormStruct($id = 0)
+	{
+		$record = $this->selectId((int)$id);
+		
+		$idUser = (!empty($record)) ? $record["id_user"] : 0;
+		$idTipologia = (!empty($record)) ? $record["id_ticket_tipologia"] : 0;
+		
+		if (isset($_POST["id_user"]))
+			$idUser = (int)$_POST["id_user"];
+		
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'id_user'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Cliente",
+					"options"	=>	$this->selectUtenti($idUser, v("utilizza_ricerca_ajax_su_select_2_clienti")),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'entryAttributes'	=>	array(
+						"select2"	=>	VariabiliModel::getUrlAjaxClienti(),
+					),
+					'wrap'	=>	array(null,null,"<div>","</div>"),
+				),
+				'id_ticket_tipologia'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Tipologia",
+					"options"	=>	TickettipologieModel::g()->selectTipologie($idTipologia),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'id_o'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Ordine",
+					"options"	=>	array(0	=>	gtext("Seleziona")) + $this->getTendinaOrdini($idUser),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'id_lista_regalo'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Lista regalo",
+					"options"	=>	array(0	=>	gtext("Seleziona")) + $this->getTendinaListe($idUser),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'descrizione'	=>	array(
+					'type'		=>	'Textarea',
+					'className'		=>	'form-control testo_feedback',
+				),
+			),
+		);
+	}
+	
     public function setConditions($idTicket = 0)
 	{
 		$this->addStrongCondition("update",'checkNotEmpty',"oggetto,descrizione,accetto");
@@ -259,5 +314,30 @@ class TicketModel extends GenericModel
 			return gtext("Lista")." ".$r["titolo"]." (".gtext("codice")." ".$r["codice"].") ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
 		
 		return "";
+    }
+    
+    public function cleanDateTime($record)
+    {
+		$formato = "d-m-Y H:i";
+		
+		if (isset($record[$this->_tables]["data_invio"]) && $record[$this->_tables]["data_invio"])
+			return date($formato,strtotime($record[$this->_tables]["data_invio"]));
+		
+		return "";
+    }
+    
+    public function statoCrud($record)
+    {
+		return "<span class='label' style='".self::getStile($record["ticket"]["stato"])."'>".self::getTitoloStato($record["ticket"]["stato"])."</span>";
+    }
+    
+    public function deletable($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $record["stato"] == "B")
+			return true;
+		
+		return false;
     }
 }

@@ -37,7 +37,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div>
 		<div class="uk-text-small uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data crezione");?>:</span> <?php echo date("d-m-Y H:i", strtotime($t["ticket"]["data_creazione"]));?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data crezione");?>:</span> <?php echo date("d-m-Y H:i", $t["ticket"]["stato"] == "B" ? strtotime($t["ticket"]["data_creazione"]) : strtotime($t["ticket"]["data_invio"]));?>
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Oggetto");?>:</span> <?php echo $t["ticket"]["oggetto"];?>

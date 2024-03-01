@@ -866,6 +866,11 @@ class Route
 		'tickettipologie,main',
 		'tickettipologie,form',
 		'tickettipologie,ordina',
+		
+		'ticket,main',
+		'ticket,form',
+		'ticket,aggiungiprodotto',
+		'ticket,rimuoviprodotto',
 	);
 	
 	//it can be 'yes' or 'no'

@@ -32,4 +32,15 @@ class TicketstatiModel extends GenericModel
 		
 		parent::__construct();
 	}
+	
+	public function selectTendina($mostraOpzioneVuota = true)
+	{
+		$opzioneVuota = $mostraOpzioneVuota ? array(0 => "Seleziona") : [];
+		
+		return $opzioneVuota + $this->orderBy("id_order")->where(array(
+			"ne"	=>	array(
+				"codice"	=>	"B",
+			),
+		))->toList("codice","titolo")->send();
+	}
 }

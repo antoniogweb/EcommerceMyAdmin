@@ -28,7 +28,7 @@
 			<hr class="uk-divider-small">
 			<div id="messaggi_<?php echo $m["ticket_messaggi"]["id_ticket_messaggio"];?>">
 				<div class="uk-text-italic">
-					<?php echo htmlentitydecode($m["ticket_messaggi"]["descrizione"]);?>
+					<?php echo $m["ticket_messaggi"]["descrizione"];?>
 				</div>
 				
 				<div class="uk-text-muted uk-text-small uk-margin"><?php echo gtext("Scritto da") . " <span class='uk-text-secondary'>". TicketModel::getNominativo($cliente);?></span> <?php echo gtext("in data")?> <span class='uk-text-secondary'><?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span></div>
