@@ -204,4 +204,28 @@ class TicketController extends BaseController
 		
 		$this->append($data);
 	}
+	
+	public function setstato($id_ticket, $stato)
+	{
+		$this->shift(2);
+		
+		$this->clean();
+		
+		$res = $this->m["TicketModel"]->clear()->whereId((int)$id_ticket)->send();
+		$statiTicket = $this->m("TicketstatiModel")->selectTendina(false);
+		
+		if (isset($statiTicket[$stato]) && count($res) > 0)
+		{
+			$this->m["TicketModel"]->sValues(array(
+				"stato"	=>	$stato,
+			));
+			
+			if ($this->m["TicketModel"]->update((int)$id_ticket) && !isset($_GET["no_mail_stato"]))
+			{
+				
+			}
+		}
+		
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id_ticket.$this->viewStatus);
+	}
 }

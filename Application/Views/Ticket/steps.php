@@ -69,6 +69,10 @@
 							</tr>
 							<tbody class="no-border collapse" id="collapseStati">
 							<?php foreach ($stati as $codiceStato => $titoloStato) {
+								
+								if ($codiceStato == $recordTicket["ticket"]["stato"])
+									continue;
+								
 								$stile = TicketModel::g()->getStile($codiceStato);
 								$titoloStato = TicketModel::g()->getTitoloStato($codiceStato);
 							?>

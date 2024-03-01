@@ -871,6 +871,7 @@ class Route
 		'ticket,form',
 		'ticket,aggiungiprodotto',
 		'ticket,rimuoviprodotto',
+		'ticket,setstato',
 		
 		'ticketmessaggi,form',
 	);
