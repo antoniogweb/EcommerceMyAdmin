@@ -6,6 +6,10 @@
 <div class="callout callout-info"><?php echo gtext("Questo cliente si è registrato tramite");?> <b><?php echo $appLogin["titolo"];?></b>.</div>
 <?php } ?>
 
+<?php if ($queryType == "insert" && (int)$this->viewArgs["ticket"] === 1) { ?>
+<div class="callout callout-info"><?php echo gtext("Dopo che avrai concluso la creazione del nuovo cliente, verrai reindirizzato al nuovo ticket legato a tale cliente.");?></div>
+<?php } ?>
+
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data" autocomplete="new-password">
 		<div class='col-md-8'>

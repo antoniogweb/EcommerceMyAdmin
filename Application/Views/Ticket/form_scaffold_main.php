@@ -53,6 +53,7 @@
 			</div>
 		</div>
 		<div class='col-md-8'>
+			<?php if ($recordTicket["ticket"]["stato"] != "B") { ?>
 			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtext("Messaggi");?></h4>
 			
 			<?php foreach ($messaggi as $m) {
@@ -78,6 +79,7 @@
 			<?php } ?>
 			<hr />
 			<a href="<?php echo $this->baseUrl."/ticketmessaggi/form/insert?partial=Y&nobuttons=Y&id_ticket=".(int)$id;?>" class="iframe btn btn-primary pull-right"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi messaggio");?></a>
+			<?php } ?>
 		</div>
 	</form>
 </div>

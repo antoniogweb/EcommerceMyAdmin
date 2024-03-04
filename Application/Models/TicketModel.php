@@ -42,6 +42,7 @@ class TicketModel extends GenericModel
 			'pagine' => array("HAS_MANY", 'TicketpagesModel', 'id_ticket', null, "CASCADE"),
 			'tipologia' => array("BELONGS_TO", 'TickettipologieModel', 'id_ticket_tipologia',null,"RESTRICT","Si prega di selezionare una tipologia del ticket di assistenza"),
 			'cliente' => array("BELONGS_TO", 'RegusersModel', 'id_user' ,null, "CASCADE"),
+			'admin' => array("BELONGS_TO", 'UsersModel', 'id_admin' ,null, "CASCADE"),
         );
     }
     
@@ -223,13 +224,16 @@ class TicketModel extends GenericModel
 		}
 	}
     
-    public function add()
+    public function add($whereUser = null)
     {
 		$this->clear()->where(array(
 			"stato"	=>	"B"
 		));
 		
-		$this->aWhere($this->whereUser());
+		if (!isset($whereUser))
+			$whereUser = $this->whereUser();
+		
+		$this->aWhere($whereUser);
 		
 		$ticket = $this->record();
 		
@@ -237,7 +241,7 @@ class TicketModel extends GenericModel
 		{
 			$ttModel = new TickettipologieModel();
 			
-			$values = $this->whereUser();
+			$values = $whereUser;
 			
 			$values["ticket_uid"] = randomToken();
 			$values["id_ticket_tipologia"] = $ttModel->getFirstIdTipologiaAttiva();
@@ -382,5 +386,23 @@ class TicketModel extends GenericModel
 			return $htmlCampanella;
 		
 		return "";
+    }
+    
+    public function creatoDaCrud($record)
+    {
+		if ($record["ticket"]["id_admin"])
+			return $record["adminusers"]["username"];
+		
+		return "";
+    }
+    
+    public function fonteCrud($record)
+    {
+		$label = "Web";
+		
+		if ($record["ticket"]["id_admin"])
+			$label = "Backend";
+		
+		return $label;
     }
 }

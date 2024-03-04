@@ -62,8 +62,8 @@ class TicketController extends BaseController
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("cleanDateTime", "ticket.oggetto", "nome", "regusers.username", "ticket_tipologie.titolo", "statoCrud", "campanellaCrud");
-		$this->mainHead = "Data ora,Oggetto,Cliente,Email,Tipologia,Stato,";
+		$this->mainFields = array("cleanDateTime", "ticket.oggetto", "nome", "regusers.username", "ticket_tipologie.titolo", "creatoDaCrud", "fonteCrud", "statoCrud", "campanellaCrud");
+		$this->mainHead = "Data ora,Oggetto,Cliente,Email,Tipologia,Creato da,Fonte,Stato,";
 		
 		$filtroStato = array(
 			"tutti"		=>	"Stato",
@@ -83,16 +83,21 @@ class TicketController extends BaseController
 		);
 		
 		$this->m[$this->modelName]->clear()
-			->select("*")
+			->select("ticket.*,regusers.*,ticket_tipologie.*,ticket_messaggi.id_admin,adminusers.username")
 			->inner(array("tipologia", "cliente"))
-// 			->left("(select max(id_ticket_messaggio) as id_messaggio from ticket_messaggi group by id_ticket)")
+			->left(array("admin"))
+			->left("(select max(id_ticket_messaggio) as id_messaggio,id_ticket from ticket_messaggi group by id_ticket) as messaggi")->on("messaggi.id_ticket = ticket.id_ticket")
+			->left("ticket_messaggi")->on("ticket_messaggi.id_ticket_messaggio = messaggi.id_messaggio")
 			->where(array(
-				"ne"	=>	array(
-					"stato"	=>	"B",
+				"OR"	=>	array(
+					"ne"	=>	array(
+						"stato"	=>	"B",
+					),
+					"id_admin"	=>	(int)User::$id,
 				),
 				"stato"	=>	$this->viewArgs["stato"],
 				"id_ticket_tipologia"	=>	$this->viewArgs["id_ticket_tipologia"],
-			))->orderBy("id_ticket desc");
+			))->orderBy("ticket_messaggi.id_admin,ticket.id_ticket desc");
 		
 		if ($this->viewArgs['dal'] != "tutti")
 			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(ticket.data_invio, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
@@ -120,7 +125,7 @@ class TicketController extends BaseController
 			));
 		}
 		
-		$this->m[$this->modelName]->convert()->save();
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 	}
@@ -152,11 +157,46 @@ class TicketController extends BaseController
 		$this->m('TicketpagesModel')->rimuoviProdotto($clean["id_page"], $idTicket, $ticketUid);
 	}
 	
+	public function nuovo()
+	{
+		if (isset($_GET["nuovoAction"]) && isset($_GET["id_user"]))
+		{
+			$cliente = $this->m("RegusersModel")->selectId((int)$_GET["id_user"]);
+			
+			if (!empty($cliente))
+			{
+				$tiket = $this->m("TicketModel")->add(array(
+					"id_admin"	=>	User::$id,
+					"id_user"	=>	$cliente["id_user"]
+				));
+				
+				if (!empty($tiket))
+					$this->redirect("ticket/form/update/".$tiket["id_ticket"]);
+			}
+			else
+				$this->redirect("regusers/form/insert/0?ticket=1");
+		}
+		
+		$data["clienti"] = array(0	=>	gtext("Nuovo cliente")) + $this->m("TicketModel")->selectUtenti(0, v("utilizza_ricerca_ajax_su_select_2_clienti"));
+		
+		$this->append($data);
+		
+		$this->load("nuovo");
+	}
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
+		if (!$id || $queryType == "insert")
+		{
+			$this->redirect("ticket/nuovo");
+		}
+		
 		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId((int)$id);
+		
+		if (empty($ticket))
+			$this->responseCode(403);
 		
 		$idTipologia = isset($_POST["id_ticket_tipologia"]) ? (int)$_POST["id_ticket_tipologia"] : (int)$ticket["id_ticket_tipologia"];
 		$idO = $idLista = 0;
@@ -164,10 +204,7 @@ class TicketController extends BaseController
 		$tipologia = $data["tipologia"] = $this->m('TickettipologieModel')->selectId((int)$idTipologia);
 		
 		if (empty($tipologia))
-		{
-			$this->redirect("");
-			die();
-		}
+			$this->responseCode(403);
 		
 		$fields = "id_user,id_ticket_tipologia,oggetto,descrizione";
 		

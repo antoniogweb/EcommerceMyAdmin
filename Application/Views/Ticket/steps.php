@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($type !== "insert") {
-	$recordTicket = TicketModel::g()->select("*")->inner(array("tipologia","cliente"))->whereId((int)$id)->first();
+	$recordTicket = TicketModel::g()->select("*")->inner(array("tipologia","cliente","admin"))->whereId((int)$id)->first();
 	$stile = TicketModel::g()->getStile($recordTicket["ticket"]["stato"]);
 	$titoloStato = TicketModel::g()->getTitoloStato($recordTicket["ticket"]["stato"]);
 	$nominativoCliente = TicketModel::getNominativo($recordTicket["regusers"]);
@@ -21,7 +21,17 @@
 					<tr>
 						<td><?php echo gtext("Data invio");?>:</td>
 						<td>
-							<b><?php echo date("d-m-Y H:I",strtotime($recordTicket["ticket"]["data_invio"]));?></b>
+							<b><?php echo date("d-m-Y H:i",$recordTicket["ticket"]["stato"] == "B" ? strtotime($recordTicket["ticket"]["data_creazione"]) : strtotime($recordTicket["ticket"]["data_invio"]));?></b>
+						</td>
+					</tr>
+					<tr>
+						<td><?php echo gtext("Fonte ticket");?>:</td>
+						<td>
+							<b><?php echo $recordTicket["ticket"]["id_admin"] ? gtext("Backend") : "Web";?></b>
+							
+							<?php if ($recordTicket["ticket"]["id_admin"]) { ?>
+							(<?php echo gtext("creato da");?>: <?php echo $recordTicket["adminusers"]["username"];?>)
+							<?php } ?>
 						</td>
 					</tr>
 					<tr>

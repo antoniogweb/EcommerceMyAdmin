@@ -65,6 +65,7 @@ class RegusersController extends BaseController {
 		'q:sanitizeAll'=>'tutti',
 		'agente:sanitizeAll'=>'tutti',
 		'gruppo:sanitizeAll'=>'tutti',
+		'ticket:forceInt'=>0,
 	);
 	
 	public $tabella = "clienti";
@@ -285,7 +286,17 @@ class RegusersController extends BaseController {
 			"agente"	=>	$defaultAgente,
 		);
 		
+		if ((int)$this->viewArgs["ticket"] === 1)
+			$this->insertRedirect = false;
+		
 		parent::form($queryType, $id);
+		
+		if ((int)$this->viewArgs["ticket"] === 1)
+		{
+			$this->insertRedirect = true;
+			$this->insertRedirectUrl = "ticket/nuovo?nuovoAction=Y&id_user=".$this->m[$this->modelName]->lId;
+			$this->redirectAfterInsertUpdate($queryType, (int)$id, false, "");
+		}
 		
 		if (strcmp($queryType,'update') === 0)
 		{
