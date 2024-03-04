@@ -29,6 +29,14 @@ Helper_List::$filtersFormLayout["filters"]["id_ticket_tipologia"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["id_t"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"ID ticket ..",
+	),
+);
+
+
 class TicketController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -39,6 +47,7 @@ class TicketController extends BaseController
 		'id_ticket_tipologia:sanitizeAll'	=>	'tutti',
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
+		'id_t:sanitizeAll'=>'tutti',
 	);
 	
 	public $orderBy = "id_order";
@@ -62,8 +71,8 @@ class TicketController extends BaseController
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("cleanDateTime", "ticket.oggetto", "nome", "regusers.username", "ticket_tipologie.titolo", "creatoDaCrud", "fonteCrud", "statoCrud", "campanellaCrud");
-		$this->mainHead = "Data ora,Oggetto,Cliente,Email,Tipologia,Creato da,Fonte,Stato,";
+		$this->mainFields = array("ticket.id_ticket", "cleanDateTime", "ticket.oggetto", "nome", "regusers.username", "ticket_tipologie.titolo", "creatoDaCrud", "fonteCrud", "statoCrud", "campanellaCrud");
+		$this->mainHead = "ID,Data ora,Oggetto,Cliente,Email,Tipologia,Creato da,Fonte,Stato,";
 		
 		$filtroStato = array(
 			"tutti"		=>	"Stato",
@@ -73,7 +82,7 @@ class TicketController extends BaseController
 			"tutti"		=>	"Tipologia",
 		) + $this->m("TickettipologieModel")->selectTipologie();
 		
-		$this->filters = array("titolo","dal","al",array("id_ticket_tipologia",null,$filtroTipologia),array("stato",null,$filtroStato));
+		$this->filters = array("titolo","id_t","dal","al",array("id_ticket_tipologia",null,$filtroTipologia),array("stato",null,$filtroStato));
 		
 		$this->inverseColProperties = array(
 			null,null,
@@ -95,7 +104,8 @@ class TicketController extends BaseController
 					),
 					"id_admin"	=>	(int)User::$id,
 				),
-				"stato"	=>	$this->viewArgs["stato"],
+				"id_ticket"	=>	$this->viewArgs["id_t"],
+				"stato"		=>	$this->viewArgs["stato"],
 				"id_ticket_tipologia"	=>	$this->viewArgs["id_ticket_tipologia"],
 			))->orderBy("ticket_messaggi.id_admin,ticket.id_ticket desc");
 		

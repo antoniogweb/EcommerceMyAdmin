@@ -194,7 +194,8 @@ class BaseTicketController extends BaseController
 			$idO = 0;
 		}
 		
-		$this->m('TicketModel')->setFields($fields,'sanitizeAll');
+		$this->m('TicketModel')->setFields($fields,'strip_tags');
+		$this->m('TicketModel')->sanitize("sanitizeAll");
 		
 		if (isset($_POST["gAction"]))
 			$this->m('TicketModel')->result = false;

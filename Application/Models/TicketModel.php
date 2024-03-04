@@ -191,7 +191,9 @@ class TicketModel extends GenericModel
 			
 			if ($res && $inBozza)
 			{
-				$this->aggiungiNotifica($id);
+				$this->mandaMail($id); // Invia la mail al cliente e al negozio
+				
+				$this->aggiungiNotifica($id); // Aggiungi la notifica nel pannello admin
 			}
 			
 			return $res;
@@ -211,7 +213,7 @@ class TicketModel extends GenericModel
 				$n = new NotificheModel();
 				
 				$n->setValues(array(
-					"titolo"	=>	"Nuovo ticket<br /><b>".$record["oggetto"]."</b>",
+					"titolo"	=>	"Nuovo ticket, ID: ".(int)$idTicket,
 					"contesto"	=>	"TICKET",
 					"url"		=>	"ticket/form/update/".(int)$idTicket,
 					"classe"	=>	"text-yellow",
@@ -404,5 +406,47 @@ class TicketModel extends GenericModel
 			$label = "Backend";
 		
 		return $label;
+    }
+    
+    public function mandaMail($idTicket)
+    {
+		$ticket = $this->clear()->select("*")->inner(array("cliente"))->whereId((int)$idTicket)->first();
+		
+		if (!empty($ticket))
+		{
+			$lingua = $ticket["regusers"]["lingua"] ? $ticket["regusers"]["lingua"] : v("lingua_default_frontend");
+			
+			$oggetto = "Nuovo ticket ID ".(int)$idTicket;
+			
+			if (checkMail($ticket["regusers"]["username"]))
+			{
+				$valoriMail = array(
+					"emails"	=>	array($ticket["regusers"]["username"]),
+					"oggetto"	=>	$oggetto,
+					"tipologia"	=>	"NUOVO_TICKET",
+					"lingua"	=>	$lingua,
+					"testo_path"=>	"Elementi/Mail/Ticket/mail_nuovo_ticket_cliente.php",
+					"tabella"	=>	"ticket",
+					"id_elemento"	=>	(int)$idTicket,
+					"array_variabili_tema"	=>	array(
+						"ID_TICKET"			=>	$ticket["ticket"]["id_ticket"],
+						"EMAIL_CLIENTE"		=>	$ticket["regusers"]["username"],
+						"OGGETTO_TICKET"	=>	$ticket["ticket"]["oggetto"],
+						"TESTO_TICKET"		=>	$ticket["ticket"]["descrizione"],
+						"NOMINATIVO_CLIENTE"=>	self::getNominativo($ticket["regusers"]),
+					),
+				);
+				
+				MailordiniModel::inviaMail($valoriMail);
+			}
+			
+			$emailNegozio = (v("email_ticket_negozio") && checkMail(v("email_ticket_negozio"))) ? v("email_ticket_negozio") : Parametri::$mailInvioOrdine;
+			
+			$valoriMail["email"] = array($emailNegozio);
+			$valoriMail["tipologia"] = "NUOVO_TICKET_NEGOZIO";
+			$valoriMail["testo_path"] = "Elementi/Mail/Ticket/mail_nuovo_ticket_negozio.php";
+			
+			MailordiniModel::inviaMail($valoriMail);
+		}
     }
 }

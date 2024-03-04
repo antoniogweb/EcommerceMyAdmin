@@ -89,6 +89,65 @@ class TicketmessaggiModel extends GenericModel
 			}
 		}
 		
+		if ($res)
+			$this->mandaMail($this->lId);
+		
 		return $res;
 	}
+	
+	public function mandaMail($idMessaggio)
+    {
+		$ticket = $this->clear()->select("*")
+			->inner(array("ticket"))->whereId((int)$idMessaggio)
+			->inner("regusers")->on("regusers.id_user = ticket.id_user")
+			->first();
+		
+		if (!empty($ticket))
+		{
+			$idTicket = (int)$ticket["ticket"]["id_ticket"];
+			
+			$lingua = $ticket["regusers"]["lingua"] ? $ticket["regusers"]["lingua"] : v("lingua_default_frontend");
+			
+			$oggetto = "Nuovo messaggio al ticket ID ".(int)$idTicket;
+			
+			if ($ticket["ticket_messaggi"]["id_admin"])
+			{
+				$email = $ticket["regusers"]["username"];
+				$template = "Elementi/Mail/Ticket/mail_nuovo_messaggio_cliente.php";
+				$messaggioTicket = htmlentitydecode($ticket["ticket_messaggi"]["descrizione"]);
+			}
+			else
+			{
+				$email = (v("email_ticket_negozio") && checkMail(v("email_ticket_negozio"))) ? v("email_ticket_negozio") : Parametri::$mailInvioOrdine;
+				$template = "Elementi/Mail/Ticket/mail_nuovo_messaggio_negozio.php";
+				$messaggioTicket = $ticket["ticket_messaggi"]["descrizione"];
+			}
+			
+			if (checkMail($email))
+			{
+				$nazione = $ticket["regusers"]["nazione_navigazione"] ? strtolower($ticket["regusers"]["nazione_navigazione"]) : strtolower(v("nazione_default"));
+				$linguaUrl = v("attiva_nazione_nell_url") ? $lingua."_".$nazione : $lingua;
+				
+				$valoriMail = array(
+					"emails"	=>	array($email),
+					"oggetto"	=>	$oggetto,
+					"tipologia"	=>	"NUOVO_MESSAGGIO_TICKET",
+					"lingua"	=>	$lingua,
+					"testo_path"=>	$template,
+					"tabella"	=>	"ticket",
+					"id_elemento"	=>	(int)$idTicket,
+					"array_variabili_tema"	=>	array(
+						"ID_TICKET"			=>	$ticket["ticket"]["id_ticket"],
+						"EMAIL_CLIENTE"		=>	$ticket["regusers"]["username"],
+						"OGGETTO_TICKET"	=>	$ticket["ticket"]["oggetto"],
+						"MESSAGGIO_TICKET"	=>	$messaggioTicket,
+						"URL_TICKET"		=>	Domain::$publicUrl."/".$linguaUrl."/ticket/view/$idTicket/".$ticket["ticket"]["ticket_uid"],
+						"NOMINATIVO_CLIENTE"=>	self::getNominativo($ticket["regusers"]),
+					),
+				);
+				
+				MailordiniModel::inviaMail($valoriMail);
+			}
+		}
+    }
 }
