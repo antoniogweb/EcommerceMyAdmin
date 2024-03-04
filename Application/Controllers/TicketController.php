@@ -189,9 +189,7 @@ class TicketController extends BaseController
 		$this->_posizioni['main'] = 'class="active"';
 		
 		if (!$id || $queryType == "insert")
-		{
 			$this->redirect("ticket/nuovo");
-		}
 		
 		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId((int)$id);
 		

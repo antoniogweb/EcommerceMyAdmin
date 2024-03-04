@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($type !== "insert") {
-	$recordTicket = TicketModel::g()->select("*")->inner(array("tipologia","cliente","admin"))->whereId((int)$id)->first();
+	$recordTicket = TicketModel::g()->select("*")->inner(array("tipologia","cliente"))->left(array("admin"))->whereId((int)$id)->first();
 	$stile = TicketModel::g()->getStile($recordTicket["ticket"]["stato"]);
 	$titoloStato = TicketModel::g()->getTitoloStato($recordTicket["ticket"]["stato"]);
 	$nominativoCliente = TicketModel::getNominativo($recordTicket["regusers"]);
@@ -30,7 +30,9 @@
 							<b><?php echo $recordTicket["ticket"]["id_admin"] ? gtext("Backend") : "Web";?></b>
 							
 							<?php if ($recordTicket["ticket"]["id_admin"]) { ?>
-							(<?php echo gtext("creato da");?>: <?php echo $recordTicket["adminusers"]["username"];?>)
+							(<?php echo gtext("creato da");?>: <i><?php echo $recordTicket["adminusers"]["username"];?></i>)
+							<?php } else { ?>
+							(<?php echo gtext("creato in autonomia dal cliente");?>)
 							<?php } ?>
 						</td>
 					</tr>
