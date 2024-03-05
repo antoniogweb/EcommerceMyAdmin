@@ -697,6 +697,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestiobe_ticket"	=>	0, // se impostato a 1, attiva la gestione dei ticket di aassistenza
 		"numero_massimo_prodotti_ticket"	=>	2, // numero massimo di prodotti nel ticket
 		"email_ticket_negozio"		=>	"", // la mail a cui viene inviata la notifica di nuovo ticket
+		"numero_massimo_ticket_aperti"	=>	2, // numero massimo di ticket allo stato diverso da chiuso
+		"numero_massimo_messaggi_consecutivi_per_ticket"	=>	2, // numero massimo di messaggi che un cliente può inviare prima di ricevere risposta dal negozio
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

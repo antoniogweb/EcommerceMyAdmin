@@ -64,9 +64,13 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <p><?php echo gtext("Non hai creato alcuna richiesta di assistenza.");?></p>
 <?php } ?>
 <?php if (count($tipologie) > 0) { ?>
-<div class="uk-margin">
-	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/add/";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea un ticket di assistenza");?></a>
-</div>
+	<?php if ($numeroAperti < v("numero_massimo_ticket_aperti")) { ?>
+	<div class="uk-margin">
+		<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/add/";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea un ticket di assistenza");?></a>
+	</div>
+	<?php } else { ?>
+	<div class="uk-alert uk-alert-primary"><?php echo gtext("Hai raggiunto il numero massimo di ticket aperti, per poter creare un nuovo ticket devi attendere che qualcuno dei tuoi ticket venga chiuso dal negozio.")?></div>
+	<?php } ?>
 <?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

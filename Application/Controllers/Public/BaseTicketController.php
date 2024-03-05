@@ -72,6 +72,8 @@ class BaseTicketController extends BaseController
 		
 		$data['tipologie'] = $this->m('TickettipologieModel')->selectTipologie();
 		
+		$data['numeroAperti'] = $this->m("TicketModel")->numeroAperti();
+		
 		$this->append($data);
 		
 		$this->load('main');
@@ -83,6 +85,11 @@ class BaseTicketController extends BaseController
 		$this->clean();
 		
 		$this->s['registered']->check(null,0);
+		
+		$numeroAperti = $this->m("TicketModel")->numeroAperti();
+		
+		if ($numeroAperti >= v("numero_massimo_ticket_aperti"))
+			$this->redirect("ticket/");
 		
 		$tiket = $this->m("TicketModel")->add();
 		
@@ -130,6 +137,9 @@ class BaseTicketController extends BaseController
 		
 		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
 			$this->responseCode(403);
+		
+		if (!$this->m('TicketmessaggiModel')->okInvioNuovoMessaggio((int)$idTicket))
+			die();
 		
 		$fields = "descrizione,accetto";
 		$this->m('TicketmessaggiModel')->setFields($fields,'strip_tags');
@@ -278,6 +288,8 @@ class BaseTicketController extends BaseController
 		$data['numeroProdotti'] = $this->m('TicketpagesModel')->numeroProdotti($clean["idTicket"]);
 		
 // 		print_r($data['prodottiInseriti']);
+		
+		$data['okInvioNuovoMessaggio'] = $this->m('TicketmessaggiModel')->okInvioNuovoMessaggio((int)$idTicket);
 		
 		$this->append($data);
 		

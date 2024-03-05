@@ -90,9 +90,41 @@ class TicketmessaggiModel extends GenericModel
 		}
 		
 		if ($res)
+		{
 			$this->mandaMail($this->lId);
+			
+			$this->aggiungiNotifica($this->lId); // Aggiungi la notifica nel pannello admin
+		}
 		
 		return $res;
+	}
+	
+	public function aggiungiNotifica($idMessaggio)
+	{
+		if (App::$isFrontend)
+		{
+			$record = $this->clear()->select("*")
+				->inner(array("ticket"))->whereId((int)$idMessaggio)
+				->first();
+			
+			if (!empty($record) && $record["ticket"]["id_user"])
+			{
+				$idTicket = (int)$record["ticket"]["id_ticket"];
+				
+				$n = new NotificheModel();
+				
+				$n->setValues(array(
+					"titolo"	=>	"Nuovo messaggio nel ticket ID ".(int)$idTicket,
+					"contesto"	=>	"TICKET",
+					"url"		=>	"ticket/form/update/".(int)$idTicket,
+					"classe"	=>	"text-yellow",
+					"icona"		=>	"fa-ticket",
+					"condizioni"=>	"attiva_gestiobe_ticket=1",
+				));
+				
+				$n->insert();
+			}
+		}
 	}
 	
 	public function mandaMail($idMessaggio)
@@ -149,5 +181,21 @@ class TicketmessaggiModel extends GenericModel
 				MailordiniModel::inviaMail($valoriMail);
 			}
 		}
+    }
+    
+    // Controlla se ha superato il numero di messaggi consecutivi prima che risponda il negozio
+    public function okInvioNuovoMessaggio($idTicket)
+    {
+		$res = $this->clear()->select("id_admin")->where(array(
+			"id_ticket"	=>	(int)$idTicket,
+		))->orderBy("id_ticket_messaggio desc")->limit(v("numero_massimo_messaggi_consecutivi_per_ticket"))->toList("id_admin")->send();
+		
+		foreach ($res as $r)
+		{
+			if ((int)$r)
+				return true;
+		}
+		
+		return false;
     }
 }

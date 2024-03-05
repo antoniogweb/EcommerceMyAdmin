@@ -142,6 +142,16 @@ class TicketModel extends GenericModel
 		return ($stato == "B") ? true : false;
     }
     
+    public function numeroAperti()
+    {
+		return $this->clear()->where(array(
+			"id_user"	=>	(int)User::$id,
+			"ne"	=>	array(
+				"stato"	=>	"C",
+			),
+		))->rowNumber();
+    }
+    
     public function checkNumeroProdotti($id)
     {
 		if (!App::$isFrontend)

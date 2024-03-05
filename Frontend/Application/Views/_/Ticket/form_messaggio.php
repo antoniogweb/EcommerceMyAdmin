@@ -1,4 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php if ($okInvioNuovoMessaggio) { ?>
 <form class="form_registrazione box_form_evidenzia form_messaggio_ticket" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/aggiungimessaggio/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>" method="POST" autocomplete="new-password">
 	<div class="uk-text-center notice_messaggio">
 		
@@ -21,3 +22,6 @@
 	
 	<?php echo Html_Form::hidden("insertAction","insertAction","hidden_ticket_submit_action");?>
 </form>
+<?php } else { ?>
+<div class="uk-alert uk-alert-primary"><?php echo gtext("Hai raggiunto il numero massimo di messaggi consecutivi inviabili, per poter inviare un nuovo messaggio devi aspettare che il negozio aggiunga una risposta al ticket.")?></div>
+<?php } ?>
