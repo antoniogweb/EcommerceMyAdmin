@@ -190,6 +190,9 @@ class TicketmessaggiModel extends GenericModel
 			"id_ticket"	=>	(int)$idTicket,
 		))->orderBy("id_ticket_messaggio desc")->limit(v("numero_massimo_messaggi_consecutivi_per_ticket"))->toList("id_admin")->send();
 		
+		if (count($res) === 0)
+			return true;
+		
 		foreach ($res as $r)
 		{
 			if ((int)$r)

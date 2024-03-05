@@ -49,7 +49,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Stato");?>:</span> <span class="uk-label" style="<?php echo TicketModel::getStile($t["ticket"]["stato"]);?>"><?php echo TicketModel::getTitoloStato($t["ticket"]["stato"]);?></span>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
-				<a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/ticket/view/".$t["ticket"]["id_ticket"]."/".$t["ticket"]["ticket_uid"];?>">
+				<a class="td_edit" title="<?php echo gtext("Vai al dettaglio",false);?>" class="" href="<?php echo $this->baseUrl."/ticket/view/".$t["ticket"]["id_ticket"]."/".$t["ticket"]["ticket_uid"];?>">
 					<span class="uk-icon uk-text-secondary"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
 				</a>
 				<?php if ($t["ticket"]["stato"] == "B") { ?>

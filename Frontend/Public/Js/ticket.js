@@ -1,6 +1,9 @@
 if (typeof stringa_errore_prodotto_non_selezionata == "undefined")
 	var stringa_errore_prodotto_non_selezionata = "Si prega di selezionare un prodotto";
 
+if (typeof stringa_errore_file_non_selezionata == "undefined")
+	var stringa_errore_file_non_selezionata = "Si prega di selezionare un file";
+
 function reloadFormTicket()
 {
 	if ($("#tendina_caricamento").length > 0)
@@ -163,5 +166,47 @@ $(document).ready(function(){
 					reloadTicket();
 			}
 		});
+	});
+	
+	$( "body" ).on( "click", ".upload_immagine_ticket", function(e) {
+		
+		e.preventDefault();
+		
+		var box = $(this).closest(".upload_ticket_box");
+		var fileObj = box.find("[type='file']");
+		
+		var tipo = fileObj.attr("name");
+		var fileName = fileObj[0].files[0]; 
+		
+		if (typeof fileName != 'undefined')
+		{
+			var url = baseUrl + "/ticket/upload/" + idTicket + "/" + ticketUid + "/" + tipo;
+			
+			var fd = new FormData(); 
+			fd.append("filename", fileName); 
+			
+			$.ajaxQueue({
+				url: url,
+				async: true,
+				cache:false,
+				dataType: "html",
+				type: "POST",
+				data: fd, 
+				contentType: false, 
+				processData: false,
+				beforeSend: function() {
+					box.find(".upload_ticket_alert").html("");
+				},
+				success: function(content){
+					
+					if (content != "OK")
+						box.find(".upload_ticket_alert").html(content);
+					console.log(content);
+
+				}
+			});
+		}
+		else
+			alert(stringa_errore_file_non_selezionata);
 	});
 });

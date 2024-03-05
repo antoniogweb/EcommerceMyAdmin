@@ -699,6 +699,11 @@ class VariabiliModel extends GenericModel {
 		"email_ticket_negozio"		=>	"", // la mail a cui viene inviata la notifica di nuovo ticket
 		"numero_massimo_ticket_aperti"	=>	2, // numero massimo di ticket allo stato diverso da chiuso
 		"numero_massimo_messaggi_consecutivi_per_ticket"	=>	2, // numero massimo di messaggi che un cliente può inviare prima di ricevere risposta dal negozio
+		"dimensioni_upload_immagine_ticket"	=>	5000000, // dimensione massima degli upload nei documenti
+		"dimensioni_upload_video_ticket"	=>	10000000, // dimensione massima degli upload nei documenti
+		"permetti_il_caricamento_di_video_nei_ticket"	=>	1, // 1: permetti, 0: non permettere
+		"ticket_video_extensions"	=>	"mp4",
+		"ticket_video_mime_types"	=>	"video/mp4",
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

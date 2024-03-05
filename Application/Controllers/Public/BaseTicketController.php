@@ -104,6 +104,8 @@ class BaseTicketController extends BaseController
 	{
 		$this->clean();
 		
+		$this->s['registered']->check(null,0);
+		
 		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
 			$this->responseCode(403);
 		
@@ -120,6 +122,8 @@ class BaseTicketController extends BaseController
 	public function rimuoviprodotto($idTicket = 0, $ticketUid = "")
 	{
 		$this->clean();
+		
+		$this->s['registered']->check(null,0);
 		
 		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
 			$this->responseCode(403);
@@ -312,5 +316,48 @@ class BaseTicketController extends BaseController
 		{
 			$this->load('view');
 		}
+	}
+	
+	// Esegui l'upload del file
+	public function upload($idTicket = 0, $ticketUid = "", $tipo = "immagine")
+	{
+		$tipo = (string)sanitizeAll(strtolower($tipo));
+		
+		$this->clean();
+		
+		$this->check($idTicket, $ticketUid);
+		
+		// Controllo che sia un ticket in BOZZA
+		if (!$this->m("TicketModel")->isBozza((int)$idTicket))
+			$this->responseCode(403);
+		
+		Files_Log::$logFolder = ROOT."/Logs";
+		$log = Files_Log::getInstance("log_upload_ticket");
+		
+		if (!in_array($tipo, TicketfileModel::$tipi))
+			$this->responseCode(403);
+		
+		$this->m('TicketfileModel')->setUploadFields();
+		
+		$this->m('TicketfileModel')->setFields("filename",'sanitizeAll');
+		
+		$result = "OK";
+		
+		if ($this->m("TicketfileModel")->upload("insert"))
+		{
+			$filePath = $this->m("TicketfileModel")->files->getBase()."/".$this->m("TicketfileModel")->files->fileName;
+			
+			$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
+			$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
+			$this->m("TicketfileModel")->setValue("estensione", $this->m("TicketfileModel")->files->ext);
+			$this->m("TicketfileModel")->setValue("mime_type", $this->m("TicketfileModel")->files->getContentType($filePath));
+			
+			if (!$this->m("TicketfileModel")->insert())
+				$result = $this->m("TicketfileModel")->notice;
+		}
+		else
+			$result = $this->m("TicketfileModel")->notice;
+		
+		echo $result;
 	}
 }

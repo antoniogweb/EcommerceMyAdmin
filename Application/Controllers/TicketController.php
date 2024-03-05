@@ -92,7 +92,7 @@ class TicketController extends BaseController
 		);
 		
 		$this->m[$this->modelName]->clear()
-			->select("ticket.*,regusers.*,ticket_tipologie.*,ticket_messaggi.id_admin,adminusers.username")
+			->select("ticket.*,regusers.*,ticket_tipologie.*,ticket_messaggi.id_admin,if (ticket_messaggi.id_admin IS NULL,0,1) as CON_MESSAGGI,adminusers.username")
 			->inner(array("tipologia", "cliente"))
 			->left(array("admin"))
 			->left("(select max(id_ticket_messaggio) as id_messaggio,id_ticket from ticket_messaggi group by id_ticket) as messaggi")->on("messaggi.id_ticket = ticket.id_ticket")
@@ -107,7 +107,7 @@ class TicketController extends BaseController
 				"id_ticket"	=>	$this->viewArgs["id_t"],
 				"stato"		=>	$this->viewArgs["stato"],
 				"id_ticket_tipologia"	=>	$this->viewArgs["id_ticket_tipologia"],
-			))->orderBy("ticket_messaggi.id_admin,ticket.id_ticket desc");
+			))->orderBy("CON_MESSAGGI DESC,ticket_messaggi.id_admin,ticket.id_ticket desc");
 		
 		if ($this->viewArgs['dal'] != "tutti")
 			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(ticket.data_invio, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));
