@@ -66,6 +66,8 @@ class TicketfileModel extends GenericModel
 	{
 		$this->setTipo();
 		
+		$this->setEstensioneEMimeType();
+		
 		return parent::insert();
 	}
 	

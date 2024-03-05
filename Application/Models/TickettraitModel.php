@@ -40,6 +40,14 @@ trait TickettraitModel
 		}
 	}
 	
+	public function setEstensioneEMimeType()
+	{
+		$filePath = $this->files->getBase()."/".$this->files->fileName;
+		
+		$this->setValue("estensione", $this->files->ext);
+		$this->setValue("mime_type", $this->files->getContentType($filePath));
+	}
+	
 	public function setUploadFields()
 	{
 		if (isset($_FILES["filename"]["name"]) and strcmp($_FILES["filename"]["name"],'') !== 0)

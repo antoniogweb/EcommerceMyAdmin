@@ -345,12 +345,8 @@ class BaseTicketController extends BaseController
 		
 		if ($this->m("TicketfileModel")->upload("insert"))
 		{
-			$filePath = $this->m("TicketfileModel")->files->getBase()."/".$this->m("TicketfileModel")->files->fileName;
-			
 			$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
 			$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
-			$this->m("TicketfileModel")->setValue("estensione", $this->m("TicketfileModel")->files->ext);
-			$this->m("TicketfileModel")->setValue("mime_type", $this->m("TicketfileModel")->files->getContentType($filePath));
 			
 			if (!$this->m("TicketfileModel")->insert())
 				$result = $this->m("TicketfileModel")->notice;
