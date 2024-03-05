@@ -142,6 +142,13 @@ class TicketModel extends GenericModel
 		return ($stato == "B") ? true : false;
     }
     
+    public function isChiuso($idTicket)
+    {
+		$stato = $this->stato($idTicket);
+		
+		return ($stato == "C") ? true : false;
+    }
+    
     public function numeroAperti()
     {
 		return $this->clear()->where(array(

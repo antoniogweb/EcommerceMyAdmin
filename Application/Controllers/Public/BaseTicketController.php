@@ -141,6 +141,9 @@ class BaseTicketController extends BaseController
 		if (!$this->m('TicketmessaggiModel')->okInvioNuovoMessaggio((int)$idTicket))
 			die();
 		
+		if ($this->m("TicketModel")->isChiuso((int)$idTicket))
+			die();
+		
 		$fields = "descrizione,accetto";
 		$this->m('TicketmessaggiModel')->setFields($fields,'strip_tags');
 		$this->m('TicketmessaggiModel')->sanitize("sanitizeAll");
@@ -290,6 +293,8 @@ class BaseTicketController extends BaseController
 // 		print_r($data['prodottiInseriti']);
 		
 		$data['okInvioNuovoMessaggio'] = $this->m('TicketmessaggiModel')->okInvioNuovoMessaggio((int)$idTicket);
+		
+		$data['isChiuso'] = $this->m("TicketModel")->isChiuso((int)$idTicket);
 		
 		$this->append($data);
 		

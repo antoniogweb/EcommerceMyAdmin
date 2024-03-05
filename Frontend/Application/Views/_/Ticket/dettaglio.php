@@ -45,7 +45,10 @@
 			<?php } ?>
 			
 			<hr />
-			<?php include(tpf("Ticket/form_messaggio.php"));?>
+			<?php
+			if (!$isChiuso)
+				include(tpf("Ticket/form_messaggio.php"));
+			?>
 		</div>
 		
 	</div>
