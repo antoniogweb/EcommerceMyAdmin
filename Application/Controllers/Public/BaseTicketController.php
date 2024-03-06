@@ -29,7 +29,10 @@ class BaseTicketController extends BaseController
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if (!v("attiva_gestiobe_ticket"))
+		{
 			$this->redirect("");
+			die();
+		}
 		
 		$this->load('header');
 		$this->load('footer','last');
