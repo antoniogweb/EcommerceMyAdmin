@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait TickettraitModel
 {
+	public static $allowedImgExtensions = "png,jpg,jpeg";
+	public static $allowedImgMimeTypes = "image/jpeg,image/png";
+	
 	public static $tipi = array(
 		"immagine",
 		"scontrino",
@@ -48,7 +51,7 @@ trait TickettraitModel
 		$this->setValue("mime_type", $this->files->getContentType($filePath));
 	}
 	
-	public function setUploadFields()
+	public function setUploadFields($tipo = null)
 	{
 		if (isset($_FILES["filename"]["name"]) and strcmp($_FILES["filename"]["name"],'') !== 0)
 		{
@@ -59,6 +62,53 @@ trait TickettraitModel
 				$this->uploadFields["filename"]["createImage"] = true;
 				$this->uploadFields["filename"]["maxFileSize"] = v("dimensioni_upload_immagine_ticket");
 			}
+			
+			if (isset($tipo) && $tipo == "VIDEO")
+			{
+				$this->uploadFields["filename"]["allowedExtensions"] = v("ticket_video_extensions");
+				$this->uploadFields["filename"]["allowedMimeTypes"] = v("ticket_video_mime_types");
+			}
+			else
+			{
+				$this->uploadFields["filename"]["allowedExtensions"] = self::$allowedImgExtensions;
+				$this->uploadFields["filename"]["allowedMimeTypes"] = self::$allowedImgMimeTypes;
+			}
 		}
+	}
+	
+	public function upload($type = "update")
+	{
+		$res = parent::upload($type);
+		
+		if ($res && App::$isFrontend)
+		{
+			self::creaCartellaImages("images/ticket_video", true);
+			
+			$filePath = $this->files->getBase()."/".$this->files->fileName;
+			$mimeType = $this->files->getContentType($filePath);
+			
+			$estensioniVideo = explode(",", v("ticket_video_mime_types"));
+			
+			if (in_array($mimeType,$estensioniVideo))
+			{
+				$fileNameTxt = $this->files->getNameWithoutFileExtension($this->files->fileName).".txt";
+				
+				file_put_contents(Domain::$parentRoot."/images/ticket_video/".$fileNameTxt, "");
+			}
+		}
+		
+		return $res;
+	}
+	
+	public static function daElaborare($file)
+	{
+		$fileUpload = new Files_Upload(Domain::$parentRoot."/images/ticket_video");
+		
+		$fileNameTxt = $fileUpload->getNameWithoutFileExtension($file).".txt";
+		
+		if (file_exists(Domain::$parentRoot."/images/ticket_video/$fileNameTxt"))
+			return true;
+		
+		return false;
 	}
 }

@@ -59,5 +59,24 @@
 			$eliminaButton = false;
 			include (tpf("Ticket/prodotti.php"));?>
 		</div>
+		
+		<?php
+		$immagini = array_merge($immagini, $scontrini);
+		if (count($immagini) > 0) { ?>
+		<div class="uk-margin-top uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Immagini");?></div>
+			<?php
+			$files = $immagini;
+			$tipo = "IMMAGINE";
+			include (tpf("Ticket/immagini.php"));?>
+		<?php } ?>
+		
+		<?php
+		if (count($video) > 0) { ?>
+		<div class="uk-margin-top uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Video");?></div>
+			<?php
+			$files = $video;
+			$tipo = "VIDEO";
+			include (tpf("Ticket/immagini.php"));?>
+		<?php } ?>
 	</div>
 </div>

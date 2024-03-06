@@ -70,6 +70,28 @@ function reloadTicket()
 	});
 }
 
+function reloadImmagini(tipo)
+{
+	if ($("#tendina_caricamento").length > 0)
+		$("#tendina_caricamento").removeClass("uk-hidden");
+	
+	var url = baseUrl + "/ticket/immagini/" + idTicket +  "/" + ticketUid + "/" + tipo;
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		success: function(content){
+			
+			$(".box_immagini_" + tipo).html(content);
+			
+			if ($("#tendina_caricamento").length > 0)
+				$("#tendina_caricamento").addClass("uk-hidden");
+		}
+	});
+}
+
 $(document).ready(function(){
 	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo']", function(e) {
 		reloadFormTicket();
@@ -172,6 +194,9 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
+		var that = $(this);
+		that.addClass("uk-hidden").parent().find(".spinner").removeClass("uk-hidden");
+		
 		var box = $(this).closest(".upload_ticket_box");
 		var fileObj = box.find("[type='file']");
 		
@@ -200,13 +225,39 @@ $(document).ready(function(){
 				success: function(content){
 					
 					if (content != "OK")
+					{
 						box.find(".upload_ticket_alert").html(content);
-					console.log(content);
-
+						
+						that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+					}
+					else
+						reloadImmagini(tipo);
 				}
 			});
 		}
 		else
+		{
 			alert(stringa_errore_file_non_selezionata);
+			
+			that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+		}
+	});
+	
+	$( "body" ).on( "click", ".elimina_immagine_ticket", function(e) {
+		
+		e.preventDefault();
+		
+		var url = $(this).attr("href");
+		var tipo = $(this).attr("tipo");
+		
+		$.ajaxQueue({
+			url: url,
+			async: true,
+			cache:false,
+			dataType: "html",
+			success: function(content){
+				reloadImmagini(tipo);
+			}
+		});
 	});
 });

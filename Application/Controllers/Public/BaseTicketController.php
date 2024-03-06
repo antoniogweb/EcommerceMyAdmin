@@ -178,6 +178,8 @@ class BaseTicketController extends BaseController
 	
 	protected function gestisciBozza($idTicket)
 	{
+		$this->s['registered']->check(null,0);
+		
 		$clean["idTicket"] = $data["idTicket"] = (int)$idTicket;
 		$ticket = $data["ticket"] = $this->m('TicketModel')->selectId($clean["idTicket"]);
 		
@@ -299,6 +301,13 @@ class BaseTicketController extends BaseController
 		$data['okInvioNuovoMessaggio'] = $this->m('TicketmessaggiModel')->okInvioNuovoMessaggio((int)$idTicket);
 		
 		$data['isChiuso'] = $this->m("TicketModel")->isChiuso((int)$idTicket);
+		$data['isBozza'] = $this->m("TicketModel")->isBozza((int)$idTicket);
+		
+		$data['immagini'] = $this->m('TicketfileModel')->getFiles((int)$idTicket, array("IMMAGINE"));
+		$data['scontrini'] = $this->m('TicketfileModel')->getFiles((int)$idTicket, array("SCONTRINO"));
+		$data['video'] = $this->m('TicketfileModel')->getFiles((int)$idTicket, array("VIDEO"));
+		
+// 		print_r($data['scontrini']);
 		
 		$this->append($data);
 		
@@ -316,6 +325,42 @@ class BaseTicketController extends BaseController
 		{
 			$this->load('view');
 		}
+	}
+	
+	// Aggiungi un prodotto al ticket
+	public function eliminafile($idFile = 0, $idTicket = 0, $ticketUid = "")
+	{
+		$this->clean();
+		
+		$this->s['registered']->check(null,0);
+		
+		if (!$this->m("TicketModel")->check($idTicket, $ticketUid) || !$this->m('TicketfileModel')->checkId($idFile, $idTicket))
+			$this->responseCode(403);
+		
+		if ($this->m("TicketModel")->isBozza((int)$idTicket))
+			$this->m('TicketfileModel')->del((int)$idFile);
+	}
+	
+	public function immagini($idTicket = 0, $ticketUid = "", $tipo = "immagine")
+	{
+		$this->clean();
+		
+		$tipo = (string)sanitizeAll(strtolower($tipo));
+		
+		if (!in_array($tipo, TicketfileModel::$tipi))
+			$this->responseCode(403);
+		
+		$data['files'] = $this->m('TicketfileModel')->getFiles((int)$idTicket, array(strtoupper($tipo)));
+		$data['tipo'] = strtoupper($tipo);
+		
+		$data['isBozza'] = $this->m("TicketModel")->isBozza((int)$idTicket);
+		
+// 		$data["numeroMax"] = TicketfileModel::$maxNumero[$tipo];
+// 		print_r($data['files']);
+		
+		$this->append($data);
+		
+		$this->load('immagini');
 	}
 	
 	// Esegui l'upload del file
@@ -337,22 +382,29 @@ class BaseTicketController extends BaseController
 		if (!in_array($tipo, TicketfileModel::$tipi))
 			$this->responseCode(403);
 		
-		$this->m('TicketfileModel')->setUploadFields();
+		$this->m('TicketfileModel')->setUploadFields(strtoupper($tipo));
 		
 		$this->m('TicketfileModel')->setFields("filename",'sanitizeAll');
 		
 		$result = "OK";
 		
-		if ($this->m("TicketfileModel")->upload("insert"))
+		$numero = count($this->m('TicketfileModel')->getFiles((int)$idTicket, array(strtoupper($tipo))));
+		
+		if ($numero < TicketfileModel::$maxNumero[$tipo])
 		{
-			$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
-			$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
-			
-			if (!$this->m("TicketfileModel")->insert())
+			if ($this->m("TicketfileModel")->upload("insert"))
+			{
+				$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
+				$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
+				
+				if (!$this->m("TicketfileModel")->insert())
+					$result = $this->m("TicketfileModel")->notice;
+			}
+			else
 				$result = $this->m("TicketfileModel")->notice;
 		}
 		else
-			$result = $this->m("TicketfileModel")->notice;
+			$result = "<div class='".v("alert_error_class")."'>".gtext("Hai superato il numero massimo di file di questo tipo")."</div>";
 		
 		echo $result;
 	}

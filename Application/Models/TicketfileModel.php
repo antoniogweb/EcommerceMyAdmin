@@ -32,14 +32,20 @@ class TicketfileModel extends GenericModel
 		"video",
 	);
 	
+	public static $maxNumero = array(
+		"immagine"	=>	5,
+		"scontrino"	=>	1,
+		"video"		=>	1,
+	);
+	
 	public function __construct() {
 		$this->_tables = 'ticket_file';
 		$this->_idFields = 'id_ticket_file';
 		
 		$this->_idOrder = 'id_order';
 		
-		$allowedExtensions = 'png,jpg,jpeg';
-		$allowedMimeTypes = 'image/jpeg,image/png';
+		$allowedExtensions = self::$allowedImgExtensions;
+		$allowedMimeTypes = self::$allowedImgMimeTypes;
 		
 		if (v("permetti_il_caricamento_di_video_nei_ticket"))
 		{
@@ -59,16 +65,10 @@ class TicketfileModel extends GenericModel
 			),
 		);
 		
+		self::$maxNumero["immagine"] = v("ticket_max_immagini");
+		self::$maxNumero["video"] = v("ticket_max_video");
+		
 		parent::__construct();
-	}
-	
-	public function insert()
-	{
-		$this->setTipo();
-		
-		$this->setEstensioneEMimeType();
-		
-		return parent::insert();
 	}
 	
 	public function relations() {
@@ -76,4 +76,56 @@ class TicketfileModel extends GenericModel
 			'ticket' => array("BELONGS_TO", 'TicketModel', 'id_ticket',null,"RESTRICT","Si prega di selezionare un ticket di assistenza"),
         );
     }
+	
+	public function insert()
+	{
+		$this->setEstensioneEMimeType();
+		
+		$this->setTipo();
+		
+		return parent::insert();
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		$record = $this->selectId((int)$id);
+		
+		$res = parent::del($id, $where);
+		
+		if ($res && !empty($record))
+		{
+			@unlink(Domain::$parentRoot."/images/ticket_immagini/".$record["filename"]);
+			
+			$fileNameTxt = $this->files->getNameWithoutFileExtension($record["filename"]).".txt";
+			
+// 			if (file_exists(Domain::$parentRoot."/images/ticket_video/$fileNameTxt"))
+// 				@unlink(Domain::$parentRoot."/images/ticket_video/$fileNameTxt");
+		}
+		
+		return $res;
+	}
+	
+	public function checkId($idFile, $idTicket)
+	{
+		return $this->clear()->where(array(
+			"id_ticket"			=>	(int)$idTicket,
+			"id_ticket_file"	=>	(int)$idFile,
+		))->rowNumber();
+	}
+	
+	public function getFiles($idTicket, $tipi = array())
+	{
+		$this->clear()->select("*")->inner(array("ticket"))->where(array(
+			"id_ticket"	=>	(int)$idTicket,
+		));
+		
+		if (!empty($tipi))
+			$this->aWhere(array(
+				"IN"	=>	array(
+					"tipo"	=>	sanitizeAllDeep($tipi),
+				),
+			));
+		
+		return $this->orderBy("ticket_file.id_order")->send();
+	}
 }

@@ -48,40 +48,35 @@
 	</div>
 	
 	<hr />
-	<div class="uk-grid-column-large uk-child-width-1-2@s uk-grid" uk-grid>
+	<div class="uk-grid-column-large uk-child-width-1-2@s uk-grid uk-margin-bottom-remove" uk-grid>
 		<div>
 			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un'immagine (opzionale)");?></div>
-			<div class="uk-margin upload_ticket_box" uk-margin>
-				<div class="upload_ticket_alert"></div>
-				<div uk-form-custom="target: true">
-					<input type="file" aria-label="Custom controls" name="immagine">
-					<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
-				</div>
-				<a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtext("Carica");?></a>
+			<div class="box_immagini box_immagini_immagine">
+				<?php
+				$files = $immagini;
+				$tipo = "IMMAGINE";
+				include (tpf("Ticket/immagini.php"));?>
 			</div>
+			
 		</div>
 		<div>
-			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un video (opzionale)");?></div>
-			<div class="uk-margin upload_ticket_box" uk-margin>
-				<div class="upload_ticket_alert"></div>
-				<div uk-form-custom="target: true">
-					<input type="file" aria-label="Custom controls" name="video">
-					<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
-				</div>
-				<a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtext("Carica");?></a>
+			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica la foto dello scontrino (opzionale)");?></div>
+			<div class="box_immagini box_immagini_scontrino">
+				<?php
+				$files = $scontrini;
+				$tipo = "SCONTRINO";
+				include (tpf("Ticket/immagini.php"));?>
 			</div>
 		</div>
 	</div>
     <hr />
-    <div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica la foto dello scontrino (opzionale)");?></div>
-	<div class="uk-margin upload_ticket_box" uk-margin>
-		<div class="upload_ticket_alert"></div>
-        <div uk-form-custom="target: true">
-            <input type="file" aria-label="Custom controls" name="scontrino">
-            <input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
-        </div>
-        <a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtext("Carica");?></a>
-    </div>
+    <div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un video (opzionale)");?></div>
+    <div class="box_immagini box_immagini_video">
+		<?php
+		$files = $video;
+		$tipo = "VIDEO";
+		include (tpf("Ticket/immagini.php"));?>
+	</div>
 	<hr />
 	<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>

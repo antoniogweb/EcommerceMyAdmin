@@ -1220,6 +1220,30 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
+	public function immagineticket($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	300,
+			'imgHeight'		=>	300,
+			'backgroundColor' => "#FFF",
+			'cropImage'		=>	'yes',
+			'horizAlign'	=>	'center',
+			'vertAlign'		=>	'center',
+		);
+		
+		$this->genericthumb($fileName, $params, "images/ticket_immagini");
+	}
+	
+	public function immagineticketfull($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	600,
+			'imgHeight'		=>	600,
+		);
+		
+		$this->genericthumb($fileName, $params, "images/ticket_immagini");
+	}
+	
 	public function colore($colore = null)
 	{
 		if( !preg_match('/^#[a-f0-9]{6}$/i', "#".$colore) )

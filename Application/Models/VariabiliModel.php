@@ -704,6 +704,8 @@ class VariabiliModel extends GenericModel {
 		"permetti_il_caricamento_di_video_nei_ticket"	=>	1, // 1: permetti, 0: non permettere
 		"ticket_video_extensions"	=>	"mp4",
 		"ticket_video_mime_types"	=>	"video/mp4",
+		"ticket_max_immagini"		=>	5, // numero massimo di immagini in un ticket
+		"ticket_max_video"			=>	1, // numero massimo di video in un ticket
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
