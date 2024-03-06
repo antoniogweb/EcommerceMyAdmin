@@ -50,8 +50,6 @@ class TicketController extends BaseController
 		'id_t:sanitizeAll'=>'tutti',
 	);
 	
-	public $orderBy = "id_order";
-	
 	public $tabella = "ticket";
 	
 	public $sezionePannello = "ecommerce";
@@ -138,6 +136,44 @@ class TicketController extends BaseController
 		$this->m[$this->modelName]->save();
 		
 		parent::main();
+	}
+	
+	public function immagini($id = 0)
+	{
+		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
+			$this->responseCode(403);
+		
+		$this->_posizioni['immagini'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_ticket";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "TicketfileModel";
+		
+		$this->colProperties = array(
+			array(
+				"width"	=>	"100px"
+			)
+		);
+		
+		$this->addBulkActions = false;
+		
+		$this->mainFields = array("thumbCrud", "filenameCrud");
+		$this->mainHead = "Thumb,Nome file";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>"back",'mainAction'=>"immagini/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->select("*")->orderBy("ticket_file.id_order")->where(array("id_ticket"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["TicketModel"]->titolo($clean['id']);
+		
+		$this->append($data);
 	}
 	
 	// Aggiungi un prodotto al ticket

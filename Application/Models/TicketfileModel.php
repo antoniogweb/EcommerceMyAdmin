@@ -77,13 +77,30 @@ class TicketfileModel extends GenericModel
         );
     }
 	
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+			),
+			
+			'enctype'	=>	'multipart/form-data',
+		);
+	}
+	
 	public function insert()
 	{
-		$this->setEstensioneEMimeType();
+		if ($this->upload("insert"))
+		{
+			$this->setEstensioneEMimeType();
+			
+			$this->setTipo();
+			
+			if (parent::insert())
+				return true;
+		}
 		
-		$this->setTipo();
-		
-		return parent::insert();
+		return false;
 	}
 	
 	public function del($id = null, $where = null)
@@ -127,5 +144,30 @@ class TicketfileModel extends GenericModel
 			));
 		
 		return $this->orderBy("ticket_file.id_order")->send();
+	}
+	
+	public function thumbCrud($record)
+	{
+		if ($record["ticket_file"]["tipo"] != "VIDEO")
+		{
+			return "<a target='_blank' href='".Url::getFileRoot()."thumb/immagineticket/".$record["ticket_file"]["filename"]."'><img src='".Url::getFileRoot()."thumb/immagineticket/".$record["ticket_file"]["filename"]."' /></a>";
+		}
+		
+		return "";
+	}
+	
+	public function filenameCrud($record)
+	{
+		if ($record["ticket_file"]["tipo"] != "VIDEO")
+		{
+			return "<a target='_blank' href='".Url::getFileRoot()."thumb/immagineticket/".$record["ticket_file"]["filename"]."'>".$record["ticket_file"]["clean_filename"]."</a>";
+		}
+		else
+		{
+			if (self::daElaborare($record["ticket_file"]["filename"]))
+				return $record["ticket_file"]["clean_filename"]." (<i>".gtext("in elaborazione")."</i>)";
+			else
+				return "<a target='_blank' href='".Domain::$publicUrl."/images/ticket_immagini/".$record["ticket_file"]["filename"]."'>".$record["ticket_file"]["clean_filename"]."</a>";
+		}
 	}
 }

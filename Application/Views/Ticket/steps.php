@@ -113,6 +113,7 @@
 
 <ul class="nav_dettaglio nav nav-tabs">
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
+	<li <?php echo $posizioni['immagini'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/immagini/$id".$this->viewStatus;?>"><?php echo gtext("Immagini e video");?></a></li>
 </ul>
 
 <div style="clear:left;"></div>

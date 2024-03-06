@@ -388,22 +388,17 @@ class BaseTicketController extends BaseController
 		$this->m('TicketfileModel')->setUploadFields(strtoupper($tipo));
 		
 		$this->m('TicketfileModel')->setFields("filename",'sanitizeAll');
-		
+		$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
+		$this->m("TicketfileModel")->setValue("id_user", (int)User::$id);
+		$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
+				
 		$result = "OK";
 		
 		$numero = count($this->m('TicketfileModel')->getFiles((int)$idTicket, array(strtoupper($tipo))));
 		
 		if ($numero < TicketfileModel::$maxNumero[$tipo])
 		{
-			if ($this->m("TicketfileModel")->upload("insert"))
-			{
-				$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
-				$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
-				
-				if (!$this->m("TicketfileModel")->insert())
-					$result = $this->m("TicketfileModel")->notice;
-			}
-			else
+			if (!$this->m("TicketfileModel")->insert())
 				$result = $this->m("TicketfileModel")->notice;
 		}
 		else

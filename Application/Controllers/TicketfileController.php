@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TicketmessaggiController extends BaseController
+class TicketfileController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
@@ -32,7 +32,7 @@ class TicketmessaggiController extends BaseController
 	
 	public $orderBy = "id_order";
 	
-	public $tabella = "messaggi ticket";
+	public $tabella = "immagini ticket";
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -48,14 +48,20 @@ class TicketmessaggiController extends BaseController
 	{
 		$this->shift(2);
 		
+		$this->menuLinksInsert = "";
+		
 		if ((int)$this->viewArgs["id_ticket"] === 0 && !$this->m("TicketModel")->clear()->whereId($this->viewArgs["id_ticket"])->rowNumber())
 			$this->responseCode(403);
 		
-		$this->m[$this->modelName]->addStrongCondition("insert",'checkNotEmpty',"descrizione");
-		$this->m[$this->modelName]->setValuesFromPost('descrizione');
+		$this->m[$this->modelName]->setValuesFromPost('filename');
 		$this->m[$this->modelName]->setValue("id_admin", User::$id);
 		$this->m[$this->modelName]->setValue("id_ticket", $this->viewArgs["id_ticket"]);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function thumb($field = "", $id = 0)
+	{
+		return parent::thumb($field, $id);
 	}
 }

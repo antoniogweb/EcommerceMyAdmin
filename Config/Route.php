@@ -869,12 +869,17 @@ class Route
 		
 		'ticket,main',
 		'ticket,form',
+		'ticket,immagini',
 		'ticket,aggiungiprodotto',
 		'ticket,rimuoviprodotto',
 		'ticket,setstato',
 		'ticket,nuovo',
+		'thumb,immagineticket',
 		
 		'ticketmessaggi,form',
+		
+		'ticketfile,form',
+		'ticketfile,thumb',
 	);
 	
 	//it can be 'yes' or 'no'

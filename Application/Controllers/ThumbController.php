@@ -134,4 +134,23 @@ class ThumbController extends BaseThumbController {
 			$thumb->render('nofound.jpeg');
 		}
 	}
+	
+	public function immagineticket($image)
+	{
+		$this->clean();
+		
+		if (accepted($image))
+		{
+			$image = sanitizeAll($image);
+			$params = array(
+				'imgWidth'		=>	800,
+				'imgHeight'		=>	800,
+				'defaultImage'	=>  null,
+				'cropImage'		=>	'no',
+			);
+
+			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/images/ticket_immagini',$params);
+			$thumb->render($image);
+		}
+	}
 }

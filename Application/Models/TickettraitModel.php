@@ -80,7 +80,7 @@ trait TickettraitModel
 	{
 		$res = parent::upload($type);
 		
-		if ($res && App::$isFrontend)
+		if ($res)
 		{
 			self::creaCartellaImages("images/ticket_video", true);
 			

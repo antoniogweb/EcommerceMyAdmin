@@ -21,6 +21,8 @@
 					<span class="uk-text-small"><?php echo $file["clean_filename"];?></span>
 				<?php if (!$daElaborare) { ?>
 				</a>
+				<?php } else { ?>
+				<span class="uk-text-italic uk-text-small">(<?php echo gtext("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
 				<?php } ?>
 			</div>
 			<?php } ?>
