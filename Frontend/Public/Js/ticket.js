@@ -172,10 +172,11 @@ $(document).ready(function(){
 			cache:false,
 			dataType: "html",
 			type: "POST",
-			data:  $(".form_messaggio_ticket").serialize(),
+			data:  new FormData($(".form_messaggio_ticket")[0]),
+			processData:false,
+			contentType: false, 
+// 			data:  $(".form_messaggio_ticket").serialize(),
 			success: function(content){
-				
-// 				console.log(content);
 				
 				if (content != "OK")
 				{

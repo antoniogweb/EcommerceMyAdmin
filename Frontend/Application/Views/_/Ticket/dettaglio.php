@@ -36,21 +36,42 @@
 					<?php if (!$m["ticket_messaggi"]["id_user"]) { ?>
 					<?php echo htmlentitydecode($m["ticket_messaggi"]["descrizione"]);?>
 					<?php } else { ?>
-					<?php echo $m["ticket_messaggi"]["descrizione"];?>
+					<?php echo nl2br($m["ticket_messaggi"]["descrizione"]);?>
 					<?php } ?>
 				</div>
+				
+				<?php if ($m["ticket_messaggi"]["filename"]) { ?>
+				<div class="uk-margin">
+					<?php if ($m["ticket_messaggi"]["tipo"] == "IMMAGINE") { ?>
+					<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$m["ticket_messaggi"]["filename"];?>"><img style="max-width:100px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$m["ticket_messaggi"]["filename"];?>" /></a>
+					<?php } else {
+						$daElaborare = TicketfileModel::daElaborare($m["ticket_messaggi"]["filename"]);
+					?>
+						<?php if (!$daElaborare) { ?>
+						<a target="_blank" href="<?php echo $this->baseUrlSrc."/images/ticket_immagini/".$m["ticket_messaggi"]["filename"];?>">
+						<?php } ?>
+							<?php echo gtext("file allegato");?>: <span class="uk-text-small"><?php echo $m["ticket_messaggi"]["clean_filename"];?></span>
+						<?php if (!$daElaborare) { ?>
+						</a>
+						<?php } else { ?>
+						<span class="uk-text-italic uk-text-small">(<?php echo gtext("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
+						<?php } ?>
+					<?php } ?>
+				</div>
+				<?php } ?>
 				
 				<div class="uk-text-muted uk-text-small uk-margin"><?php echo gtext("Scritto da") . " <span class='uk-text-secondary'>". $scrittoDa;?></span> <?php echo gtext("in data")?> <span class='uk-text-secondary'><?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span></div>
 			</div>
 			<?php } ?>
 			
-			<hr />
-			<?php
-			if (!$isChiuso)
-				include(tpf("Ticket/form_messaggio.php"));
-			?>
+			<?php if (!User::$isMobile) { ?>
+				<hr />
+				<?php
+				if (!$isChiuso)
+					include(tpf("Ticket/form_messaggio.php"));
+				?>
+			<?php } ?>
 		</div>
-		
 	</div>
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<div class="box_prodotti">
@@ -80,3 +101,13 @@
 		<?php } ?>
 	</div>
 </div>
+
+<?php if (User::$isMobile) { ?>
+<div class="uk-width-1-1 uk-width-1-2@l">
+	<hr />
+	<?php
+	if (!$isChiuso)
+		include(tpf("Ticket/form_messaggio.php"));
+	?>
+</div>
+<?php } ?>

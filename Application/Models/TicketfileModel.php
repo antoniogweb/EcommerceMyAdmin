@@ -44,14 +44,16 @@ class TicketfileModel extends GenericModel
 		
 		$this->_idOrder = 'id_order';
 		
-		$allowedExtensions = self::$allowedImgExtensions;
-		$allowedMimeTypes = self::$allowedImgMimeTypes;
+// 		$allowedExtensions = self::$allowedImgExtensions;
+// 		$allowedMimeTypes = self::$allowedImgMimeTypes;
+// 		
+// 		if (v("permetti_il_caricamento_di_video_nei_ticket"))
+// 		{
+// 			$allowedExtensions .= ",".v("ticket_video_extensions");
+// 			$allowedMimeTypes .= ",".v("ticket_video_mime_types");
+// 		}
 		
-		if (v("permetti_il_caricamento_di_video_nei_ticket"))
-		{
-			$allowedExtensions .= ",".v("ticket_video_extensions");
-			$allowedMimeTypes .= ",".v("ticket_video_mime_types");
-		}
+		list($allowedExtensions, $allowedMimeTypes) = $this->getAllowedExtensionMimeTypes();
 		
 		$this->uploadFields = array(
 			"filename"	=>	array(
@@ -81,8 +83,7 @@ class TicketfileModel extends GenericModel
 	{
 		$this->formStruct = array
 		(
-			'entries' 	=> 	array(
-			),
+			'entries' 	=> 	array(),
 			
 			'enctype'	=>	'multipart/form-data',
 		);

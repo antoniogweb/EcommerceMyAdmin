@@ -67,13 +67,36 @@
 					<span class="description" style="margin-left:0px !important;"><?php echo gtext("Scritto in data");?> <?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span>
 					</div>
 
-					<p style="width:50%;" <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>class="well pull-right"<?php } ?>>
+					<div style="width:50%;" <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>class="well pull-right"<?php } ?>>
 						<?php if (!$m["ticket_messaggi"]["id_user"]) { ?>
 						<?php echo htmlentitydecode($m["ticket_messaggi"]["descrizione"]);?>
 						<?php } else { ?>
 						<?php echo $m["ticket_messaggi"]["descrizione"];?>
 						<?php } ?>
-					</p>
+					</div>
+					
+					<?php if ($m["ticket_messaggi"]["filename"]) { ?>
+					<div style="clear:both;"></div>
+					<?php if ($m["ticket_messaggi"]["id_user"]) { ?><br /><?php } ?>
+					<div <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>class="pull-right"<?php } ?>>
+						<?php if ($m["ticket_messaggi"]["tipo"] == "IMMAGINE") { ?>
+						<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$m["ticket_messaggi"]["filename"];?>"><img style="max-width:100px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$m["ticket_messaggi"]["filename"];?>" /></a>
+						<?php } else {
+							$daElaborare = TicketfileModel::daElaborare($m["ticket_messaggi"]["filename"]);
+						?>
+							<?php if (!$daElaborare) { ?>
+							<a target="_blank" href="<?php echo $this->baseUrlSrc."/images/ticket_immagini/".$m["ticket_messaggi"]["filename"];?>">
+							<?php } ?>
+								<?php echo gtext("file allegato");?>: <span class="uk-text-small"><?php echo $m["ticket_messaggi"]["clean_filename"];?></span>
+							<?php if (!$daElaborare) { ?>
+							</a>
+							<?php } else { ?>
+							<span class="uk-text-italic uk-text-small">(<?php echo gtext("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
+							<?php } ?>
+						<?php } ?>
+					</div>
+					<?php } ?>
+					
 					<div style="clear:both;"></div>
 				</div>
 			<?php } ?>

@@ -24,13 +24,27 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class TicketmessaggiModel extends GenericModel
 {
-	use CrudModel;
+	use TickettraitModel;
 	
 	public function __construct() {
 		$this->_tables = 'ticket_messaggi';
 		$this->_idFields = 'id_ticket_messaggio';
 		
 		$this->_idOrder = 'id_order';
+		
+		list($allowedExtensions, $allowedMimeTypes) = $this->getAllowedExtensionMimeTypes();
+		
+		$this->uploadFields = array(
+			"filename"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/ticket_immagini",
+				"allowedExtensions"	=>	$allowedExtensions,
+				'allowedMimeTypes'	=>	$allowedMimeTypes,
+				"createImage"	=>	false,
+				"maxFileSize"	=>	v("dimensioni_upload_video_ticket"),
+				"clean_field"	=>	"clean_filename",
+			),
+		);
 		
 		parent::__construct();
 	}
@@ -52,6 +66,8 @@ class TicketmessaggiModel extends GenericModel
 					'className'		=>	'form-control testo_feedback',
 				),
 			),
+			
+			'enctype'	=>	'multipart/form-data',
 		);
 	}
     
@@ -67,36 +83,45 @@ class TicketmessaggiModel extends GenericModel
 		else
 			$this->values["id_admin"] = (int)User::$id;
 		
-		$res = parent::insert();
-		
-		if ($res && !App::$isFrontend && isset($this->values["id_admin"]) && $this->values["id_admin"])
+		if ($this->upload("insert"))
 		{
-			$idTicketMessaggio = $this->lId;
+			$this->setEstensioneEMimeType();
 			
-			$ticket = $this->clear()->select("ticket.stato,ticket.id_ticket")->inner(array("ticket"))->where(array(
-				"id_ticket_messaggio"	=>	(int)$idTicketMessaggio,
-			))->first();
+			$this->setTipo();
 			
-			if (!empty($ticket) && $ticket["ticket"]["stato"] == "A")
+			$res = parent::insert();
+			
+			if ($res && !App::$isFrontend && isset($this->values["id_admin"]) && $this->values["id_admin"])
 			{
-				$tModel = new TicketModel();
+				$idTicketMessaggio = $this->lId;
 				
-				$tModel->sValues(array(
-					"stato"	=>	"L",
-				));
+				$ticket = $this->clear()->select("ticket.stato,ticket.id_ticket")->inner(array("ticket"))->where(array(
+					"id_ticket_messaggio"	=>	(int)$idTicketMessaggio,
+				))->first();
 				
-				$tModel->pUpdate($ticket["ticket"]["id_ticket"]);
+				if (!empty($ticket) && $ticket["ticket"]["stato"] == "A")
+				{
+					$tModel = new TicketModel();
+					
+					$tModel->sValues(array(
+						"stato"	=>	"L",
+					));
+					
+					$tModel->pUpdate($ticket["ticket"]["id_ticket"]);
+				}
 			}
-		}
-		
-		if ($res)
-		{
-			$this->mandaMail($this->lId);
 			
-			$this->aggiungiNotifica($this->lId); // Aggiungi la notifica nel pannello admin
+			if ($res)
+			{
+				$this->mandaMail($this->lId);
+				
+				$this->aggiungiNotifica($this->lId); // Aggiungi la notifica nel pannello admin
+			}
+			
+			return $res;
 		}
 		
-		return $res;
+		return false;
 	}
 	
 	public function aggiungiNotifica($idMessaggio)
@@ -190,7 +215,7 @@ class TicketmessaggiModel extends GenericModel
 			"id_ticket"	=>	(int)$idTicket,
 		))->orderBy("id_ticket_messaggio desc")->limit(v("numero_massimo_messaggi_consecutivi_per_ticket"))->toList("id_admin")->send();
 		
-		if (count($res) === 0)
+		if (count($res) <  (int)v("numero_massimo_messaggi_consecutivi_per_ticket"))
 			return true;
 		
 		foreach ($res as $r)

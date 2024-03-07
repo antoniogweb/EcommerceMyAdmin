@@ -33,7 +33,7 @@
 			
 			<label class="uk-form-label"><?php echo gtext("Descrizione");?> *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"placeholder='".gtext("Descrizione", false)."'");?>
+				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"rows='4' placeholder='".gtext("Descrizione", false)."'");?>
 			</div>
 			
 			<?php /*include (tpf("Elementi/Pagine/campo-captcha.php"));*/?>

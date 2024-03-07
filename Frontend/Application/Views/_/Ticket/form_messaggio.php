@@ -1,13 +1,22 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if ($okInvioNuovoMessaggio) { ?>
-<form class="form_registrazione box_form_evidenzia form_messaggio_ticket" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/aggiungimessaggio/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>" method="POST" autocomplete="new-password">
+<div class="uk-text-small uk-text-primary uk-text-bold uk-margin"><?php echo gtext("Aggiungi un messaggio");?></div>
+<form class="form_registrazione box_form_evidenzia form_messaggio_ticket" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/aggiungimessaggio/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>" method="POST" autocomplete="new-password" enctype="multipart/form-data">
 	<div class="uk-text-center notice_messaggio">
 		
 	</div>
 	
 <!-- 	<label class="uk-form-label"><?php echo gtext("Descrizione");?> *</label> -->
 	<div class="uk-form-controls">
-		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"placeholder='".gtext("Descrizione", false)."'");?>
+		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"rows='4' placeholder='".gtext("Descrizione", false)."'");?>
+	</div>
+	
+	<div class="uk-margin-top uk-text-italic uk-text-meta"><?php echo gtext("Carica un'immagine (opzionale)")?></div>
+	<div class="" uk-margin>
+		<div uk-form-custom="target: true" class="uk-margin-remove">
+			<input type="file" aria-label="Custom controls" name="filename">
+			<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
+		</div>
 	</div>
 	
 	<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">

@@ -52,7 +52,7 @@ class TicketmessaggiController extends BaseController
 			$this->responseCode(403);
 		
 		$this->m[$this->modelName]->addStrongCondition("insert",'checkNotEmpty',"descrizione");
-		$this->m[$this->modelName]->setValuesFromPost('descrizione');
+		$this->m[$this->modelName]->setValuesFromPost('descrizione,filename');
 		$this->m[$this->modelName]->setValue("id_admin", User::$id);
 		$this->m[$this->modelName]->setValue("id_ticket", $this->viewArgs["id_ticket"]);
 		

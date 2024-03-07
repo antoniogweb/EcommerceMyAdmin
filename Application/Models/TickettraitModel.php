@@ -33,6 +33,20 @@ trait TickettraitModel
 		"video",
 	);
 	
+	public function getAllowedExtensionMimeTypes()
+	{
+		$allowedExtensions = self::$allowedImgExtensions;
+		$allowedMimeTypes = self::$allowedImgMimeTypes;
+		
+		if (v("permetti_il_caricamento_di_video_nei_ticket"))
+		{
+			$allowedExtensions .= ",".v("ticket_video_extensions");
+			$allowedMimeTypes .= ",".v("ticket_video_mime_types");
+		}
+		
+		return array($allowedExtensions, $allowedMimeTypes);
+	}
+	
 	public function setTipo()
 	{
 		$estensioniVideo = explode(",", v("ticket_video_mime_types"));
@@ -51,7 +65,7 @@ trait TickettraitModel
 		$this->setValue("mime_type", $this->files->getContentType($filePath));
 	}
 	
-	public function setUploadFields($tipo = null)
+	public function setUploadFields($tipo = null, $forzaEstensioneEMimeType = true)
 	{
 		if (isset($_FILES["filename"]["name"]) and strcmp($_FILES["filename"]["name"],'') !== 0)
 		{
@@ -62,6 +76,9 @@ trait TickettraitModel
 				$this->uploadFields["filename"]["createImage"] = true;
 				$this->uploadFields["filename"]["maxFileSize"] = v("dimensioni_upload_immagine_ticket");
 			}
+			
+			if (!$forzaEstensioneEMimeType)
+				return;
 			
 			if (isset($tipo) && $tipo == "VIDEO")
 			{

@@ -151,7 +151,9 @@ class BaseTicketController extends BaseController
 		if ($this->m("TicketModel")->isChiuso((int)$idTicket))
 			die();
 		
-		$fields = "descrizione,accetto";
+		$this->m('TicketmessaggiModel')->setUploadFields(null, false);
+		
+		$fields = "descrizione,filename,accetto";
 		$this->m('TicketmessaggiModel')->setFields($fields,'strip_tags');
 		$this->m('TicketmessaggiModel')->sanitize("sanitizeAll");
 		$this->m('TicketmessaggiModel')->setvalue("id_ticket", (int)$idTicket);
@@ -391,7 +393,7 @@ class BaseTicketController extends BaseController
 		$this->m("TicketfileModel")->setValue("id_ticket", (int)$idTicket);
 		$this->m("TicketfileModel")->setValue("id_user", (int)User::$id);
 		$this->m("TicketfileModel")->setValue("tipo", strtoupper($tipo));
-				
+		
 		$result = "OK";
 		
 		$numero = count($this->m('TicketfileModel')->getFiles((int)$idTicket, array(strtoupper($tipo))));
