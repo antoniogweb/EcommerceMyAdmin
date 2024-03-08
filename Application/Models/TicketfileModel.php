@@ -60,6 +60,7 @@ class TicketfileModel extends GenericModel
 				),
 				"maxFileSize"	=>	v("dimensioni_upload_video_ticket"),
 				"clean_field"	=>	"clean_filename",
+				"disallow"		=>	true,
 			),
 		);
 		
@@ -145,6 +146,9 @@ class TicketfileModel extends GenericModel
 	
 	public function thumbCrud($record)
 	{
+		if (!TicketfileModel::fileEsistente($record["ticket_file"]["filename"]))
+			return gtext("File eliminato");
+		
 		if ($record["ticket_file"]["tipo"] != "VIDEO")
 		{
 			return "<a target='_blank' href='".Url::getFileRoot()."thumb/immagineticket/".$record["ticket_file"]["filename"]."'><img src='".Url::getFileRoot()."thumb/immagineticket/".$record["ticket_file"]["filename"]."' /></a>";
@@ -155,6 +159,9 @@ class TicketfileModel extends GenericModel
 	
 	public function filenameCrud($record)
 	{
+		if (!TicketfileModel::fileEsistente($record["ticket_file"]["filename"]))
+			return gtext("File eliminato");
+		
 		if ($record["ticket_file"]["tipo"] != "VIDEO")
 		{
 			return "<a target='_blank' href='".Url::getFileRoot()."thumb/immagineticket/".$record["ticket_file"]["filename"]."'>".$record["ticket_file"]["clean_filename"]."</a>";
@@ -164,7 +171,7 @@ class TicketfileModel extends GenericModel
 			if (self::daElaborare($record["ticket_file"]["filename"]))
 				return $record["ticket_file"]["clean_filename"]." (<i>".gtext("in elaborazione")."</i>)";
 			else
-				return "<a target='_blank' href='".Domain::$publicUrl."/images/ticket_immagini/".$record["ticket_file"]["filename"]."'>".$record["ticket_file"]["clean_filename"]."</a>";
+				return "<a target='_blank' href='".Domain::$publicUrl."/ticket/scarica/".$record["ticket_file"]["filename"]."'>".$record["ticket_file"]["clean_filename"]."</a>";
 		}
 	}
 }

@@ -7,6 +7,9 @@
 		$idFile = (int)$file["id_ticket_file"];
 		$idTicket = (int)$ticket["id_ticket"];
 		$ticketUid = $ticket["ticket_uid"];
+		
+		if (!TicketfileModel::fileEsistente($file["filename"]))
+			continue;
 	?>
 	<div class="uk-margin-small-top uk-position-relative">
 		<div class="uk-inline <?php if ($file["tipo"] == "VIDEO") { ?>uk-background-muted"<?php } ?>">
@@ -16,7 +19,7 @@
 			<div style="padding:5px;"><span uk-icon="icon: play; ratio: 1.5"></span>
 				<?php $daElaborare = TicketfileModel::daElaborare($file["filename"]);?>
 				<?php if (!$daElaborare) { ?>
-				<a target="_blank" href="<?php echo $this->baseUrlSrc."/images/ticket_immagini/".$file["filename"];?>">
+				<a target="_blank" href="<?php echo $this->baseUrl."/ticket/scarica/".$file["filename"];?>">
 				<?php } ?>
 					<span class="uk-text-small"><?php echo $file["clean_filename"];?></span>
 				<?php if (!$daElaborare) { ?>

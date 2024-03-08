@@ -191,6 +191,7 @@ class Route
 		'ticket,eliminafile',
 		'ticket,immagini',
 		'ticket,upload',
+		'ticket,scarica',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -235,6 +236,7 @@ class Route
 		'ticket/eliminafile/([0-9]{1,10})/([0-9]{1,10})/([0-9A-Za-z]{32})'	=>	'ticket/eliminafile/${1}/${2}/${3}',
 		'ticket/upload/([0-9]{1,9})/([0-9A-Za-z]{32})/([0-9A-Za-z]{1,})'	=>	'ticket/upload/${1}/${2}/${3}',
 		'ticket/immagini/([0-9]{1,9})/([0-9A-Za-z]{32})/([0-9A-Za-z]{1,})'	=>	'ticket/immagini/${1}/${2}/${3}',
+		'ticket/scarica/([0-9A-Za-z\.]{36,38})'	=>	'ticket/scarica/${1}',
 		'regusers/login'			=>	'regusers/login',
 		'regusers/loginapp/(.*)'	=>	'regusers/loginapp/${1}',
 		'regusers/deleteaccountdaapp/(.*)'	=>	'regusers/deleteaccountdaapp/${1}',

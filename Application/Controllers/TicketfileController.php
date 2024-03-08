@@ -53,6 +53,8 @@ class TicketfileController extends BaseController
 		if ((int)$this->viewArgs["id_ticket"] === 0 && !$this->m("TicketModel")->clear()->whereId($this->viewArgs["id_ticket"])->rowNumber())
 			$this->responseCode(403);
 		
+		$this->m[$this->modelName]->setUploadFields(null, false);
+		
 		$this->m[$this->modelName]->setValuesFromPost('filename');
 		$this->m[$this->modelName]->setValue("id_admin", User::$id);
 		$this->m[$this->modelName]->setValue("id_ticket", $this->viewArgs["id_ticket"]);

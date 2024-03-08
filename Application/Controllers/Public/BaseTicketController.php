@@ -408,4 +408,29 @@ class BaseTicketController extends BaseController
 		
 		echo $result;
 	}
+	
+	public function scarica($file = "")
+	{
+		$this->clean();
+		
+		$file = basename((string)$file);
+		
+		if (!preg_match('/^[0-9a-z]{32}\.[a-z0-9]{3,6}$/',$file))
+			$this->responseCode(403);
+		
+		$path = Domain::$parentRoot . "/images/ticket_immagini/" . $file;
+		
+		if (file_exists($path))
+		{
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			$MIMEtype = finfo_file($finfo, $path);
+			finfo_close($finfo);
+			
+			$cd = "attachment";
+			
+			header('Content-type: '.$MIMEtype);
+			header('Content-Disposition: '.$cd.'; filename='.$file);
+			readfile($path);
+		}
+	}
 }

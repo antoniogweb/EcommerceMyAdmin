@@ -41,8 +41,14 @@ class TicketmessaggiModel extends GenericModel
 				"allowedExtensions"	=>	$allowedExtensions,
 				'allowedMimeTypes'	=>	$allowedMimeTypes,
 				"createImage"	=>	false,
+				"createImageParams"	=>	array(
+					"imgWidth"	=>	800,
+					"imgHeight"	=>	800,
+					"jpegImgQuality"	=>	60,
+				),
 				"maxFileSize"	=>	v("dimensioni_upload_video_ticket"),
 				"clean_field"	=>	"clean_filename",
+				"disallow"		=>	true,
 			),
 		);
 		

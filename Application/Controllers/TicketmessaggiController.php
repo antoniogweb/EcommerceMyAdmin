@@ -51,6 +51,8 @@ class TicketmessaggiController extends BaseController
 		if ((int)$this->viewArgs["id_ticket"] === 0 && !$this->m("TicketModel")->clear()->whereId($this->viewArgs["id_ticket"])->rowNumber())
 			$this->responseCode(403);
 		
+		$this->m[$this->modelName]->setUploadFields(null, false);
+		
 		$this->m[$this->modelName]->addStrongCondition("insert",'checkNotEmpty',"descrizione");
 		$this->m[$this->modelName]->setValuesFromPost('descrizione,filename');
 		$this->m[$this->modelName]->setValue("id_admin", User::$id);

@@ -108,7 +108,7 @@ trait TickettraitModel
 			
 			if (in_array($mimeType,$estensioniVideo))
 			{
-				$fileNameTxt = $this->files->getNameWithoutFileExtension($this->files->fileName).".txt";
+				$fileNameTxt = $this->files->fileName.".txt";
 				
 				file_put_contents(Domain::$parentRoot."/images/ticket_video/".$fileNameTxt, "");
 			}
@@ -121,9 +121,17 @@ trait TickettraitModel
 	{
 		$fileUpload = new Files_Upload(Domain::$parentRoot."/images/ticket_video");
 		
-		$fileNameTxt = $fileUpload->getNameWithoutFileExtension($file).".txt";
+		$fileNameTxt = (string)sanitizeHtml($file).".txt";
 		
 		if (file_exists(Domain::$parentRoot."/images/ticket_video/$fileNameTxt"))
+			return true;
+		
+		return false;
+	}
+	
+	public static function fileEsistente($fileName)
+	{
+		if (file_exists(Domain::$parentRoot."/images/ticket_immagini/$fileName"))
 			return true;
 		
 		return false;

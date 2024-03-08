@@ -40,17 +40,18 @@
 					<?php } ?>
 				</div>
 				
-				<?php if ($m["ticket_messaggi"]["filename"]) { ?>
+				<?php if ($m["ticket_messaggi"]["filename"] && TicketfileModel::fileEsistente($m["ticket_messaggi"]["filename"])) { ?>
 				<div class="uk-margin">
 					<?php if ($m["ticket_messaggi"]["tipo"] == "IMMAGINE") { ?>
 					<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$m["ticket_messaggi"]["filename"];?>"><img style="max-width:100px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$m["ticket_messaggi"]["filename"];?>" /></a>
 					<?php } else {
 						$daElaborare = TicketfileModel::daElaborare($m["ticket_messaggi"]["filename"]);
 					?>
+						<?php echo gtext("file allegato");?>:
 						<?php if (!$daElaborare) { ?>
-						<a target="_blank" href="<?php echo $this->baseUrlSrc."/images/ticket_immagini/".$m["ticket_messaggi"]["filename"];?>">
+						<a target="_blank" href="<?php echo $this->baseUrlSrc."/ticket/scarica/".$m["ticket_messaggi"]["filename"];?>">
 						<?php } ?>
-							<?php echo gtext("file allegato");?>: <span class="uk-text-small"><?php echo $m["ticket_messaggi"]["clean_filename"];?></span>
+							<span class="uk-text-small"><?php echo $m["ticket_messaggi"]["clean_filename"];?></span>
 						<?php if (!$daElaborare) { ?>
 						</a>
 						<?php } else { ?>
