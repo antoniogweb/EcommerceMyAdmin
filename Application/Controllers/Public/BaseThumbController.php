@@ -1237,8 +1237,8 @@ class BaseThumbController extends Controller {
 	public function immagineticketfull($fileName)
 	{
 		$params = array(
-			'imgWidth'		=>	600,
-			'imgHeight'		=>	600,
+			'imgWidth'		=>	800,
+			'imgHeight'		=>	800,
 		);
 		
 		$this->genericthumb($fileName, $params, "images/ticket_immagini");

@@ -591,6 +591,11 @@ trait CommonModel {
 							$this->files->setParam('createImage',false);
 						}
 						
+						if (isset($params["createImageParams"]))
+						{
+							$this->files->setParam('createImageParams',$params["createImageParams"]);
+						}
+						
 						$this->files->setParam('fileUploadKey',$field);
 						$this->files->setBase(Domain::$parentRoot."/".$path);
 						
