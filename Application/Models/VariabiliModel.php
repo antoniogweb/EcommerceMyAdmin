@@ -459,6 +459,7 @@ class VariabiliModel extends GenericModel {
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"aggiuni_a_correlati_prodotti_stessa_categoria"	=>	0, // se impostato su 1, aggiunge ai correlati manuali anche i prodotti della stessa categoria
+		"numero_massimo_prodotti_correlati_visti_da_altri_visitatori"	=>	0, // se maggiore di 0, aggiunge ai correlati manuali anche i prodotti visti da altri visitatori
 		"numero_massimo_correlati_stessa_categoria"	=>	10, // se maggiore di 0, indica il numero massimo di correlati ad un prodotto della stessa categoria
 		"fragmento_dettaglio_prodotto"		=>	"prodotto_container", // l'ID del div che contiene il dettaglio del prodotto
 		"attiva_tendina_caricamento"		=>	0, // Se mostrare la tendina di caricamento
@@ -715,6 +716,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_gruppi_admin"	=>	0, // if impostato a 1 permette di creare gruppi di utenti e di decidere l'accesso a determinati controller per ogni gruppo di utenti
 		"cartella_backend"		=>	"admin", // la cartella con il backoffice e i file del CMS
 		"usa_sotto_query_in_elenco"	=>	0, // se fare un'unica query in join o tante piccole sotto query per i prodotti nella griglia
+		"ip_sito"				=>	'', // se impostato, l'IP delr server del sito
 	);
 	
 	public static $daInizializzare = array(

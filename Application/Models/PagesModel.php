@@ -2844,12 +2844,14 @@ class PagesModel extends GenericModel {
 			
 			if ($idC)
 			{
-				$idsCorrelati = [];
-		
-				foreach ($res as $c)
-				{
-					$idsCorrelati[] = $c["pages"]["id_page"];
-				}
+				$idsCorrelati = $this->getList($res, "pages.id_page");
+				
+// 				$idsCorrelati = [];
+// 		
+// 				foreach ($res as $c)
+// 				{
+// 					$idsCorrelati[] = $c["pages"]["id_page"];
+// 				}
 
 				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc")->limit(v("numero_massimo_correlati_stessa_categoria"));
 				
@@ -2857,9 +2859,49 @@ class PagesModel extends GenericModel {
 					$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
 				
 				$resStessaCategoria = $this->send();
+				
+				$res = array_merge($res, $resStessaCategoria);
 			}
+		}
+		
+		// Aggiungi i prodotti visti dagli altri utenti
+		if (!$accessorio && v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori"))
+		{
+			$ps = new PagesstatsModel();
 			
-			$res = array_merge($res, $resStessaCategoria);
+			$resAltriUtenti = $ps->vistiDaAltriUtenti($id_page, 2);
+			
+			if (count($resAltriUtenti) > 0)
+			{
+				if (!isset($idC))
+					$idC = $this->clear()->whereId($clean['id'])->field("id_c");
+				
+				if ($idC)
+				{
+					$idsCorrelati = $ps->getList($res, "pages.id_page");
+					$idsAltriUtenti = $ps->getList($resAltriUtenti, "p2.id_page");
+					
+					$this->clear()->addJoinTraduzionePagina()
+						->addWhereAttivo()
+						->addWhereCategoria($idC)
+						->sWhere(array("pages.id_page != ?", array($clean['id'])))
+						->aWhere(array(
+							"   in"	=>	array(
+								"pages.id_page"	=>	forceIntDeep($idsAltriUtenti),
+							),
+							"pages.gift_card"	=>	0,
+						))
+						->orderBy("numero_acquisti_pagina desc")
+						->limit(v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori"));
+					
+					if (count($idsCorrelati) > 0)
+						$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
+					
+					$resAltriClienti = $this->send();
+					
+					$res = array_merge($res, $resAltriClienti);
+				}
+			}
 		}
 		
 		PagesModel::preloadPages($res);

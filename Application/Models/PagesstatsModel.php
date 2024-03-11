@@ -112,6 +112,53 @@ class PagesstatsModel extends GenericModel {
 		return "--";
 	}
 	
+	public function getIdsPagineViste($idPage = 0)
+	{
+		if( !session_id() )
+			session_start();
+		
+		$idPages = $this->clear()->select("distinct id_page")->where(array(
+			"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+		))->orderBy("id_page_stat desc")->limit(5)->toList("id_page")->send();
+		
+		$idPages[] = (int)$idPage;
+		
+		$idPages = array_unique($idPages);
+		
+		return forceIntDeep($idPages);
+	}
+	
+	// Mostra i prodotti visti da altri clienti che hanno visto il prodotto attuale
+	public function vistiDaAltriUtenti($idPage, $soglia = 3)
+	{
+		$idPages = $this->getIdsPagineViste($idPage);
+		
+		$params = $idPages;
+		
+		$queryIp = "";
+		
+		if (v("salva_ip_visualizzazione"))
+		{
+			$queryIp .= " AND pages_stats.ip != '' ";
+			
+			if (v("ip_sito"))
+			{
+				$queryIp .= " AND pages_stats.ip != ? ";
+				
+				$params[] = sanitizeAll(v("ip_sito"));
+			}
+		}
+		
+		$params = array_merge($params, $params);
+		
+		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc;";
+		
+		return $this->clear()->query(array(
+			$sql,
+			$params
+		));
+	}
+	
 	public static function salvaSuFile($idPage = 0, $idC = 0, $idM = 0)
 	{
 		createFolderFull("Logs/".self::$folder);
