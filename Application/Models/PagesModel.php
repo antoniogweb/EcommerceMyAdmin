@@ -46,6 +46,8 @@ class PagesModel extends GenericModel {
 	public $contattiModelAssociato = "ContattiModel";
 	public $contenutiModelAssociato = "ContenutiModel";
 	
+	public $numeroCorrelatiManualiPagina = 0; // contiene il numero di correlati inseriti manualmente nella pagina
+	
 	// Vengono usati per sincronizzare pagina e combinazione quando non ci sono varianti
 	public static $campiDaSincronizzareConCombinazione = array("price", "price_ivato", "codice", "gtin", "mpn", "peso", "giacenza");
 	
@@ -2824,7 +2826,7 @@ class PagesModel extends GenericModel {
 			->send();
 	}
 	
-	public function getCorrelati($id_page, $accessorio = 0)
+	public function getCorrelati($id_page, $accessorio = 0, $forzaStessaCategoria = 0, $forzaVistiAltriClienti = 0)
 	{
 		$clean['id'] = (int)$id_page;
 		
@@ -2838,7 +2840,10 @@ class PagesModel extends GenericModel {
 		
 		$res = $this->send();
 		
-		if (!$accessorio && v("aggiuni_a_correlati_prodotti_stessa_categoria"))
+		// Salvo il numero di correlati manuali trovati per la pagina
+		$this->numeroCorrelatiManualiPagina = count($res);
+		
+		if (!$accessorio && (v("aggiuni_a_correlati_prodotti_stessa_categoria") || $forzaStessaCategoria))
 		{
 			$idC = $this->clear()->whereId($clean['id'])->field("id_c");
 			
@@ -2852,8 +2857,10 @@ class PagesModel extends GenericModel {
 // 				{
 // 					$idsCorrelati[] = $c["pages"]["id_page"];
 // 				}
-
-				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc")->limit(v("numero_massimo_correlati_stessa_categoria"));
+				
+				$numero = $forzaStessaCategoria ? (int)$forzaStessaCategoria : v("numero_massimo_correlati_stessa_categoria");
+				
+				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc")->limit($numero);
 				
 				if (count($idsCorrelati) > 0)
 					$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
@@ -2865,7 +2872,7 @@ class PagesModel extends GenericModel {
 		}
 		
 		// Aggiungi i prodotti visti dagli altri utenti
-		if (!$accessorio && v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori"))
+		if (!$accessorio && (v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori") || $forzaVistiAltriClienti))
 		{
 			$ps = new PagesstatsModel();
 			
@@ -2878,6 +2885,8 @@ class PagesModel extends GenericModel {
 				
 				if ($idC)
 				{
+					$numero = $forzaVistiAltriClienti ? (int)$forzaVistiAltriClienti : v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori");
+					
 					$idsCorrelati = $ps->getList($res, "pages.id_page");
 					$idsAltriUtenti = $ps->getList($resAltriUtenti, "p2.id_page");
 					
@@ -2892,7 +2901,7 @@ class PagesModel extends GenericModel {
 							"pages.gift_card"	=>	0,
 						))
 						->orderBy("numero_acquisti_pagina desc")
-						->limit(v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori"));
+						->limit($numero);
 					
 					if (count($idsCorrelati) > 0)
 						$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));

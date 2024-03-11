@@ -1515,6 +1515,53 @@ class BaseContenutiController extends BaseController
 		$this->m("PagesstatsModel")->aggiungi($id);
 	}
 	
+	// Restituisce i correlati di una pagina tramite una chiamata AJAX
+	// $altreCategorie: quanti estrarne dalla stessa categoria
+	// $altrivisitatori: quanti estrarne tra quelli visti da altri visitatori
+	// numero di prodotti da saltare (già nella pagina al primo caricamento)
+	public function correlatiajax($id, $altreCategorie = 0, $altrivisitatori = 0, $salta = 0)
+	{
+		if (!User::$adminLogged)
+		{
+			$cache = Cache_Html::getInstance();
+			$cache->saveHtml = true;
+		}
+		
+		$clean['id'] = (int)$id;
+		$clean['altreCategorie'] = (int)$altreCategorie;
+		$clean['altrivisitatori'] = (int)$altrivisitatori;
+		
+		$this->clean();
+		
+		if ($clean['altreCategorie'] > 30)
+			$clean['altreCategorie'] = 0;
+		
+		if ($clean['altrivisitatori'] > 30)
+			$clean['altrivisitatori'] = 0;
+		
+		$prodotti_correlati = $this->m('PagesModel')->getCorrelati($clean['id'], 0, $clean['altreCategorie'], $clean['altrivisitatori']);
+		
+		$data["prodotti_correlati"] = array();
+		
+		$indice = 0;
+		
+		foreach ($prodotti_correlati as $p)
+		{
+			if ($indice >= (int)$salta)
+				$data["prodotti_correlati"][] = $p;
+			
+			$indice ++;
+		}
+		
+		PagesModel::clearIdCombinazione();
+		$data["prodotti_correlati"] = PagesModel::impostaDatiCombinazionePagine($data["prodotti_correlati"]);
+		PagesModel::restoreIdCombinazione();
+		
+		$this->append($data);
+		
+		$this->load("prodotti-details-correlati");
+	}
+	
 	protected function page($id)
 	{
 		$this->m("PagesModel")->checkBloccato($id, "page");
