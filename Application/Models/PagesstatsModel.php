@@ -117,10 +117,11 @@ class PagesstatsModel extends GenericModel {
 		if( !session_id() )
 			session_start();
 		
-		$idPages = $this->clear()->select("distinct id_page")->where(array(
-			"cart_uid"	=>	sanitizeAll(User::$cart_uid),
-		))->orderBy("id_page_stat desc")->limit(5)->toList("id_page")->send();
+// 		$idPages = $this->clear()->select("distinct id_page")->where(array(
+// 			"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+// 		))->orderBy("id_page_stat desc")->limit(5)->toList("id_page")->send();
 		
+		$idPages = array();
 		$idPages[] = (int)$idPage;
 		
 		$idPages = array_unique($idPages);
