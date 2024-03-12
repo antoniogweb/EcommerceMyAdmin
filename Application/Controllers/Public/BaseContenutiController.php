@@ -1521,11 +1521,11 @@ class BaseContenutiController extends BaseController
 	// numero di prodotti da saltare (già nella pagina al primo caricamento)
 	public function correlatiajax($id, $altreCategorie = 0, $altrivisitatori = 0, $salta = 0)
 	{
-		if (!User::$adminLogged)
-		{
-			$cache = Cache_Html::getInstance();
-			$cache->saveHtml = true;
-		}
+// 		if (!User::$adminLogged)
+// 		{
+// 			$cache = Cache_Html::getInstance();
+// 			$cache->saveHtml = true;
+// 		}
 		
 		$clean['id'] = (int)$id;
 		$clean['altreCategorie'] = (int)$altreCategorie;

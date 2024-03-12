@@ -117,22 +117,38 @@ class PagesstatsModel extends GenericModel {
 		if( !session_id() )
 			session_start();
 		
-// 		$idPages = $this->clear()->select("distinct id_page")->where(array(
-// 			"cart_uid"	=>	sanitizeAll(User::$cart_uid),
-// 		))->orderBy("id_page_stat desc")->limit(5)->toList("id_page")->send();
+		$idPages = $this->clear()->select("distinct id_page")->where(array(
+			"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+		))->orderBy("id_page_stat desc")->limit(5)->toList("id_page")->send();
 		
-		$idPages = array();
-		$idPages[] = (int)$idPage;
+		if (isset($_SESSION["idPages"]) && is_array($_SESSION["idPages"]))
+		{
+			$sIdPages = forceIntDeep($_SESSION["idPages"]);
+			
+			array_unshift($_SESSION["idPages"], (int)$idPage);
+// 			$_SESSION["idPages"][] = (int)$idPage;
+		}
+		else
+			$_SESSION["idPages"] = array((int)$idPage);
+		
+		$idPages = array_merge($_SESSION["idPages"], $idPages);
 		
 		$idPages = array_unique($idPages);
+		
+		$idPages = array_slice($idPages, 0, 3);
+		
+// 		$idPages = array();
+// 		$idPages[] = (int)$idPage;
 		
 		return forceIntDeep($idPages);
 	}
 	
 	// Mostra i prodotti visti da altri clienti che hanno visto il prodotto attuale
-	public function vistiDaAltriUtenti($idPage, $soglia = 3)
+	public function vistiDaAltriUtenti($idPages, $soglia = 3)
 	{
-		$idPages = $this->getIdsPagineViste($idPage);
+// 		$idPages = $this->getIdsPagineViste($idPage);
+		
+// 		print_r($idPages);
 		
 		$params = $idPages;
 		
@@ -152,7 +168,7 @@ class PagesstatsModel extends GenericModel {
 		
 		$params = array_merge($params, $params);
 		
-		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc;";
+		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc,p2.id_page desc;";
 		
 		return $this->clear()->query(array(
 			$sql,

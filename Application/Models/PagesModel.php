@@ -2851,16 +2851,9 @@ class PagesModel extends GenericModel {
 			{
 				$idsCorrelati = $this->getList($res, "pages.id_page");
 				
-// 				$idsCorrelati = [];
-// 		
-// 				foreach ($res as $c)
-// 				{
-// 					$idsCorrelati[] = $c["pages"]["id_page"];
-// 				}
-				
 				$numero = $forzaStessaCategoria ? (int)$forzaStessaCategoria : v("numero_massimo_correlati_stessa_categoria");
 				
-				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc")->limit($numero);
+				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc,pages.id_page desc")->limit($numero);
 				
 				if (count($idsCorrelati) > 0)
 					$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
@@ -2874,41 +2867,49 @@ class PagesModel extends GenericModel {
 		// Aggiungi i prodotti visti dagli altri utenti
 		if (!$accessorio && (v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori") || $forzaVistiAltriClienti))
 		{
-			$ps = new PagesstatsModel();
+			$idC = (int)CategoriesModel::getIdCategoriaDaSezione("prodotti");
 			
-			$resAltriUtenti = $ps->vistiDaAltriUtenti($id_page, 2);
-			
-			if (count($resAltriUtenti) > 0)
+			if ($idC)
 			{
-				if (!isset($idC))
-					$idC = $this->clear()->whereId($clean['id'])->field("id_c");
+				$ps = new PagesstatsModel();
 				
-				if ($idC)
+				$idPages = $ps->getIdsPagineViste($id_page);
+				
+				$numero = $forzaVistiAltriClienti ? (int)$forzaVistiAltriClienti : v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori");
+				
+				if (count($idPages) > 0)
+					$numero = number_format($numero / count($idPages), 0);
+				
+				foreach ($idPages as $idPage)
 				{
-					$numero = $forzaVistiAltriClienti ? (int)$forzaVistiAltriClienti : v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori");
+					$resAltriUtenti = $ps->vistiDaAltriUtenti(array($idPage), 3);
 					
-					$idsCorrelati = $ps->getList($res, "pages.id_page");
-					$idsAltriUtenti = $ps->getList($resAltriUtenti, "p2.id_page");
-					
-					$this->clear()->addJoinTraduzionePagina()
-						->addWhereAttivo()
-						->addWhereCategoria($idC)
-						->sWhere(array("pages.id_page != ?", array($clean['id'])))
-						->aWhere(array(
-							"   in"	=>	array(
-								"pages.id_page"	=>	forceIntDeep($idsAltriUtenti),
-							),
-							"pages.gift_card"	=>	0,
-						))
-						->orderBy("numero_acquisti_pagina desc")
-						->limit($numero);
-					
-					if (count($idsCorrelati) > 0)
-						$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
-					
-					$resAltriClienti = $this->send();
-					
-					$res = array_merge($res, $resAltriClienti);
+					if (count($resAltriUtenti) > 0)
+					{
+						$idsCorrelati = $ps->getList($res, "pages.id_page");
+						$idsAltriUtenti = $ps->getList($resAltriUtenti, "p2.id_page");
+						
+						$this->clear()->addJoinTraduzionePagina()
+							->addWhereAttivo()
+							->addWhereCategoria($idC)
+							->sWhere(array("pages.id_page != ?", array($clean['id'])))
+							->aWhere(array(
+								"   in"	=>	array(
+									"pages.id_page"	=>	forceIntDeep($idsAltriUtenti),
+								),
+								"pages.gift_card"	=>	0,
+							))
+							->orderBy("FIELD(pages.id_page,".implode(",", forceIntDeep($idsAltriUtenti))."),numero_acquisti_pagina desc")
+	// 						->orderBy("numero_acquisti_pagina desc,pages.id_page desc")
+							->limit($numero);
+						
+						if (count($idsCorrelati) > 0)
+							$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
+						
+						$resAltriClienti = $this->send();
+						
+						$res = array_merge($res, $resAltriClienti);
+					}
 				}
 			}
 		}
