@@ -2884,10 +2884,12 @@ class PagesModel extends GenericModel {
 				{
 					$resAltriUtenti = $ps->vistiDaAltriUtenti(array($idPage), 3);
 					
-					if (count($resAltriUtenti) > 0)
-					{
+// 					if (count($resAltriUtenti) > 0)
+// 					{
 						$idsCorrelati = $ps->getList($res, "pages.id_page");
 						$idsAltriUtenti = $ps->getList($resAltriUtenti, "p2.id_page");
+						
+						array_unshift($idsAltriUtenti, (int)$idPage);
 						
 						$this->clear()->addJoinTraduzionePagina()
 							->addWhereAttivo()
@@ -2909,7 +2911,7 @@ class PagesModel extends GenericModel {
 						$resAltriClienti = $this->send();
 						
 						$res = array_merge($res, $resAltriClienti);
-					}
+// 					}
 				}
 			}
 		}
