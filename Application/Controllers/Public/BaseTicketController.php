@@ -418,6 +418,9 @@ class BaseTicketController extends BaseController
 		if (!preg_match('/^[0-9a-z]{32}\.[a-z0-9]{3,6}$/',$file))
 			$this->responseCode(403);
 		
+		if (!$this->m("TicketfileModel")->fileEsistenteInDb($file) && !$this->m("TicketmessaggiModel")->fileEsistenteInDb($file))
+			$this->responseCode(403);
+		
 		$path = Domain::$parentRoot . "/images/ticket_immagini/" . $file;
 		
 		if (file_exists($path))

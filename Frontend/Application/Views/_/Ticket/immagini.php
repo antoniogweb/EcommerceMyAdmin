@@ -45,7 +45,7 @@
 	<div class="upload_ticket_alert"></div>
 	<div uk-form-custom="target: true" class="uk-margin-remove">
 		<input type="file" aria-label="Custom controls" name="<?php echo strtolower($tipo);?>">
-		<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
+		<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
 	</div>
 	<span>
 		<span class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></span>

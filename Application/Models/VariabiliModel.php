@@ -703,8 +703,8 @@ class VariabiliModel extends GenericModel {
 		"dimensioni_upload_immagine_ticket"	=>	5000000, // dimensione massima degli upload nei documenti
 		"dimensioni_upload_video_ticket"	=>	10000000, // dimensione massima degli upload nei documenti
 		"permetti_il_caricamento_di_video_nei_ticket"	=>	1, // 1: permetti, 0: non permettere
-		"ticket_video_extensions"	=>	"mp4",
-		"ticket_video_mime_types"	=>	"video/mp4",
+		"ticket_video_extensions"	=>	"mp4,mov",
+		"ticket_video_mime_types"	=>	"video/mp4,video/quicktime",
 		"ticket_max_immagini"		=>	5, // numero massimo di immagini in un ticket
 		"ticket_max_video"			=>	1, // numero massimo di video in un ticket
 		####

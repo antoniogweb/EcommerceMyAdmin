@@ -136,4 +136,11 @@ trait TickettraitModel
 		
 		return false;
 	}
+	
+	public function fileEsistenteInDb($file)
+	{
+		return $this->clear()->where(array(
+			"filename"	=>	sanitizeAll($file),
+		))->rowNumber();
+	}
 }
