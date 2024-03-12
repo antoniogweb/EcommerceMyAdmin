@@ -14,6 +14,8 @@
     </div>
 </div>
 
+<?php echo flash("notice");?>
+
 <?php
 if ($ticket["stato"] == "B")
 	include(tpf("Ticket/form.php"));

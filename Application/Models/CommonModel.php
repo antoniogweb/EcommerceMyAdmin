@@ -181,6 +181,9 @@ trait CommonModel {
 		//valori permessi per il redirect
 		$allowedRedirect = explode(",",v("redirect_permessi"));
 		
+		if (v("attiva_gestiobe_ticket"))
+			$allowedRedirect[] = "ticket";
+		
 		if (is_numeric($redirect) && !$soloRedirectPermessi)
 		{
 			if (PagesModel::isAttivaTrue((int)$redirect))

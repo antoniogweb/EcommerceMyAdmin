@@ -57,6 +57,8 @@ class BaseTicketController extends BaseController
 	// Elenco ticket
 	public function index()
 	{
+		$this->checkRedirectLogin();
+		
 		$this->s['registered']->check(null,0);
 		
 		$data["arrayLingue"] = $this->creaArrayLingueNazioni("/ticket");
@@ -82,10 +84,21 @@ class BaseTicketController extends BaseController
 		$this->load('main');
 	}
 	
+	protected function checkRedirectLogin()
+	{
+		if ($this->s['registered']->status['status'] !== 'logged')
+			$this->redirect("regusers/login?redirect=ticket");
+		
+		if (!$this->m('RegusersModel')->haTelefono((int)User::$id))
+			$this->redirect("modifica-account?redirect=ticket");
+	}
+	
 	// Crea ticket
 	public function add()
 	{
 		$this->clean();
+		
+		$this->checkRedirectLogin();
 		
 		$this->s['registered']->check(null,0);
 		
@@ -234,6 +247,8 @@ class BaseTicketController extends BaseController
 				
 				if ($this->m('TicketModel')->queryResult)
 				{
+					flash("notice", "<div class='".v("alert_success_class")."'>".gtext("Il ticket è stato creato con successo!")."</div>");
+					
 					$this->redirect("ticket/view/".$clean["idTicket"]."/".$ticket["ticket_uid"]);
 				}
 			}

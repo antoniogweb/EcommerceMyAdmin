@@ -564,4 +564,14 @@ class BaseRegusersModel extends Model_Tree
 			$this->pUpdate($idCliente);
 		}
     }
+    
+    public function haTelefono($idCliente)
+    {
+		$record = $this->clear()->selectId((int)$idCliente);
+		
+		if (!empty($record) && $record["telefono"])
+			return true;
+		
+		return false;
+    }
 }
