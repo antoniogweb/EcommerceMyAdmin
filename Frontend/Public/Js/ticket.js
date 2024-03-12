@@ -206,6 +206,8 @@ $(document).ready(function(){
 		var tipo = fileObj.attr("name");
 		var fileName = fileObj[0].files[0]; 
 		
+		var progressBar = box.find(".js-progressbar")
+		
 		if (typeof fileName != 'undefined')
 		{
 			var url = baseUrl + "/ticket/upload/" + idTicket + "/" + ticketUid + "/" + tipo;
@@ -224,6 +226,20 @@ $(document).ready(function(){
 				processData: false,
 				beforeSend: function() {
 					box.find(".upload_ticket_alert").html("");
+					
+					progressBar.removeClass("uk-hidden");
+					progressBar.attr("value", 0);
+				},
+				xhr: function() {
+					var xhr = new window.XMLHttpRequest();
+					xhr.upload.addEventListener("progress", function(evt) {
+						if (evt.lengthComputable) {
+							var percentComplete = ((evt.loaded / evt.total) * 100);
+							
+							progressBar.attr("value", percentComplete);
+						}
+					}, false);
+					return xhr;
 				},
 				success: function(content){
 					

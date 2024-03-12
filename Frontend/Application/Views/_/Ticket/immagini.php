@@ -51,5 +51,6 @@
 		<span class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></span>
 		<a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtext("Carica");?></a>
 	</span>
+	<progress class="uk-progress uk-hidden js-progressbar" value="50" max="100"></progress>
 </div>
 <?php } ?>
