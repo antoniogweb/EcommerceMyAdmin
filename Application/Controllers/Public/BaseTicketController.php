@@ -120,6 +120,8 @@ class BaseTicketController extends BaseController
 	{
 		$this->clean();
 		
+		$this->checkRedirectLogin();
+		
 		$this->s['registered']->check(null,0);
 		
 		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
@@ -138,6 +140,8 @@ class BaseTicketController extends BaseController
 	public function rimuoviprodotto($idTicket = 0, $ticketUid = "")
 	{
 		$this->clean();
+		
+		$this->checkRedirectLogin();
 		
 		$this->s['registered']->check(null,0);
 		
@@ -196,6 +200,8 @@ class BaseTicketController extends BaseController
 	
 	protected function gestisciBozza($idTicket)
 	{
+		$this->checkRedirectLogin();
+		
 		$this->s['registered']->check(null,0);
 		
 		$clean["idTicket"] = $data["idTicket"] = (int)$idTicket;
@@ -268,6 +274,8 @@ class BaseTicketController extends BaseController
 		$data['listeRegalo'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaListe($ticket["id_user"]);
 		
 		$data['mostra_tendina_prodotti'] = false;
+		
+// 		echo $tipologia["tipo"];
 		
 		if (
 			($tipologia["tipo"] == "ORDINE" && $idO) || 
@@ -347,10 +355,12 @@ class BaseTicketController extends BaseController
 		}
 	}
 	
-	// Aggiungi un prodotto al ticket
+	// Elimina un file dal ticket
 	public function eliminafile($idFile = 0, $idTicket = 0, $ticketUid = "")
 	{
 		$this->clean();
+		
+		$this->checkRedirectLogin();
 		
 		$this->s['registered']->check(null,0);
 		

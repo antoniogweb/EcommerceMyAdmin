@@ -311,7 +311,7 @@ class TicketController extends BaseController
 			
 			if ($this->m["TicketModel"]->update((int)$id_ticket) && !isset($_GET["no_mail_stato"]))
 			{
-				
+				$this->m("TicketstatiModel")->mandaMail($id_ticket, $stato);
 			}
 		}
 		

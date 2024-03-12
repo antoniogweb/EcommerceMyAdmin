@@ -1,5 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<form class="form_registrazione box_form_evidenzia form_ticket" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>" method="POST" autocomplete="new-password">
+<form class="form_registrazione box_form_evidenzia form_ticket uk-position-relative" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/".$this->action."/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>#ancora_form_ticket" method="POST" autocomplete="new-password">
+	<div id="ancora_form_ticket" class="uk-position-absolute" style="margin-top:-100px;"></div>
 	<div class="uk-text-center">
 		<?php echo $notice; ?>
 	</div>

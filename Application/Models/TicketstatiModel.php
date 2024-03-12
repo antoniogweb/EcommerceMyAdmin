@@ -43,4 +43,45 @@ class TicketstatiModel extends GenericModel
 			),
 		))->toList("codice","titolo")->send();
 	}
+	
+	public function mandaMail($idTicket)
+    {
+		$tModel = new TicketModel();
+		
+		$ticket = $tModel->clear()->select("*")->inner(array("cliente"))->whereId((int)$idTicket)->first();
+		
+		if (!empty($ticket))
+		{
+			$lingua = $ticket["regusers"]["lingua"] ? $ticket["regusers"]["lingua"] : v("lingua_default_frontend");
+			
+			$email = $ticket["regusers"]["username"];
+			
+			$stato = TicketModel::getTitoloStato($ticket["ticket"]["stato"]);
+			
+			$oggetto = "Ticket ID ".(int)$idTicket." impostato allo stato ".$stato;
+			
+			if (checkMail($email))
+			{
+				$nazione = $ticket["regusers"]["nazione_navigazione"] ? strtolower($ticket["regusers"]["nazione_navigazione"]) : strtolower(v("nazione_default"));
+				$linguaUrl = v("attiva_nazione_nell_url") ? $lingua."_".$nazione : $lingua;
+				
+				$valoriMail = array(
+					"emails"	=>	array($email),
+					"oggetto"	=>	$oggetto,
+					"tipologia"	=>	"NUOVO_STATOO_TICKET",
+					"lingua"	=>	$lingua,
+					"testo_path"=>	"Elementi/Mail/Ticket/mail_cambio_stato_cliente.php",
+					"tabella"	=>	"ticket",
+					"id_elemento"	=>	(int)$idTicket,
+					"array_variabili_tema"	=>	array(
+						"OGGETTO_TICKET"	=>	$ticket["ticket"]["oggetto"],
+						"URL_TICKET"		=>	Domain::$publicUrl."/".$linguaUrl."/ticket/view/$idTicket/".$ticket["ticket"]["ticket_uid"],
+						"STATO_TICKET"		=>	$stato,
+					),
+				);
+				
+				MailordiniModel::inviaMail($valoriMail);
+			}
+		}
+    }
 }

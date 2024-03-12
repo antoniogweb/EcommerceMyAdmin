@@ -25,6 +25,7 @@ function reloadProdotti()
 	
 	var id_o = $("[name='id_o']").length > 0 ? $("[name='id_o']").val() : 0;
 	var id_lista_regalo = $("[name='id_lista_regalo']").length > 0 ? $("[name='id_lista_regalo']").val() : 0;
+	var id_ticket_tipologia = $("[name='id_ticket_tipologia']").val();
 	
 	$.ajaxQueue({
 		url: url,
@@ -33,6 +34,7 @@ function reloadProdotti()
 		dataType: "html",
 		type: "POST",
 		data: {
+			id_ticket_tipologia: id_ticket_tipologia,
 			id_o: id_o,
 			id_lista_regalo: id_lista_regalo
 		},
