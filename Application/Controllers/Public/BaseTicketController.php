@@ -157,6 +157,8 @@ class BaseTicketController extends BaseController
 	// Aggiungi un prodotto al ticket
 	public function aggiungimessaggio($idTicket = 0, $ticketUid = "")
 	{
+		ini_set('memory_limit',v("ticket_upload_memory_limit"));
+		
 		$this->clean();
 		
 		if (!$this->m("TicketModel")->check($idTicket, $ticketUid))
@@ -396,6 +398,8 @@ class BaseTicketController extends BaseController
 	// Esegui l'upload del file
 	public function upload($idTicket = 0, $ticketUid = "", $tipo = "immagine")
 	{
+		ini_set('memory_limit',v("ticket_upload_memory_limit"));
+		
 		$tipo = (string)sanitizeAll(strtolower($tipo));
 		
 		$this->clean();

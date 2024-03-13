@@ -707,6 +707,7 @@ class VariabiliModel extends GenericModel {
 		"ticket_video_mime_types"	=>	"video/mp4,video/quicktime",
 		"ticket_max_immagini"		=>	5, // numero massimo di immagini in un ticket
 		"ticket_max_video"			=>	1, // numero massimo di video in un ticket
+		"ticket_upload_memory_limit"=>	'512M', // memory limit of the upload action
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
