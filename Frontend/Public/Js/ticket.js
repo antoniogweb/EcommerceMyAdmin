@@ -189,6 +189,12 @@ $(document).ready(function(){
 				}
 				else
 					reloadTicket();
+			},
+			error: function(){
+				$(".notice_messaggio").html("Errore, si prega di riprovare");
+				evidenziaErrori(true, $(".form_messaggio_ticket"));
+				
+				that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
 			}
 		});
 	});
@@ -251,6 +257,11 @@ $(document).ready(function(){
 					}
 					else
 						reloadImmagini(tipo);
+				},
+				error: function(){
+					box.find(".upload_ticket_alert").html("Errore, si prega di riprovare");
+						
+					that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
 				}
 			});
 		}

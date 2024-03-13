@@ -46,8 +46,6 @@ class PagesModel extends GenericModel {
 	public $contattiModelAssociato = "ContattiModel";
 	public $contenutiModelAssociato = "ContenutiModel";
 	
-	public $numeroCorrelatiManualiPagina = 0; // contiene il numero di correlati inseriti manualmente nella pagina
-	
 	// Vengono usati per sincronizzare pagina e combinazione quando non ci sono varianti
 	public static $campiDaSincronizzareConCombinazione = array("price", "price_ivato", "codice", "gtin", "mpn", "peso", "giacenza");
 	
@@ -2839,9 +2837,6 @@ class PagesModel extends GenericModel {
 			))->orderBy("prodotti_correlati.id_order");
 		
 		$res = $this->send();
-		
-		// Salvo il numero di correlati manuali trovati per la pagina
-		$this->numeroCorrelatiManualiPagina = count($res);
 		
 		if (!$accessorio && (v("aggiuni_a_correlati_prodotti_stessa_categoria") || $forzaStessaCategoria))
 		{

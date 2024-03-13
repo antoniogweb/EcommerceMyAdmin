@@ -146,10 +146,6 @@ class PagesstatsModel extends GenericModel {
 	// Mostra i prodotti visti da altri clienti che hanno visto il prodotto attuale
 	public function vistiDaAltriUtenti($idPages, $soglia = 3)
 	{
-// 		$idPages = $this->getIdsPagineViste($idPage);
-		
-// 		print_r($idPages);
-		
 		$params = $idPages;
 		
 		$queryIp = "";
@@ -168,7 +164,12 @@ class PagesstatsModel extends GenericModel {
 		
 		$params = array_merge($params, $params);
 		
-		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc,p2.id_page desc;";
+		$now = new DateTime();
+		$now->modify("-30 days");
+		
+		$params[] = $now->format("Y-m-d");
+		
+		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid,pages_stats.data_stat from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid where p2.data_stat >= ? group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc,p2.id_page desc;";
 		
 		return $this->clear()->query(array(
 			$sql,
