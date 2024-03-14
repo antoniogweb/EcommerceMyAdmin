@@ -19,7 +19,7 @@ $(document).ready(function(){
 
 <div id="modale_cookie" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-		<button class="uk-modal-close-default" type="button" uk-close></button>
+		<?php include(tpf("Elementi/Cookie/chiudi_banner.php"));?>
 		<?php include(tpf("Elementi/Cookie/testo_popup_cookies.php"));?>
 		
 		<div class="accetta_approfondisci">
