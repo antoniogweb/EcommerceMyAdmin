@@ -15,7 +15,7 @@
 			
 			<?php include($this->viewPath("steps"));?>
 			
-			<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id_page".$this->viewStatus;?>">
+			<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id_page".$this->viewStatus;?>" <?php echo $enctype ?? "";?>>
 				<div class='row'>
 					<div class='col-md-8'>
 						<div class="box">
