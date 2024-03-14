@@ -1,0 +1,2 @@
+<?php if (!defined('EG')) die('Direct access not allowed!'); ?>
+<?php if (VariabiliModel::$usatiCookieTerzi && v("attiva_x_chiudi_banner_cookie")) { ?><div class="uk-position-top-right uk-padding-small"><a title="<?php echo gtext("Chiudendo il banner non attiverai i cookie di profilazione. I cookie tecnici resteranno attivi.");?>" class="ok_cookie" href="<?php echo $this->baseUrl."/accept-cookies?".v("var_query_string_no_cookie")."=Y";?>" uk-icon="icon: close"></a></div>aa<?php } ?>
