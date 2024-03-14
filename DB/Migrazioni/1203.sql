@@ -8,9 +8,9 @@ create table ticket (
 	ticket_uid char(32) not null default '',
 	
 	stato char(255) not null default 'B',
-	data_invio timestamp default CURRENT_TIMESTAMP,
-	data_preso_in_carico timestamp default CURRENT_TIMESTAMP,
-	data_chiusura timestamp default CURRENT_TIMESTAMP,
+	data_invio timestamp null,
+	data_preso_in_carico timestamp null,
+	data_chiusura timestamp null,
 	
 	oggetto varchar(255) not null default '',
 	descrizione text not null,
