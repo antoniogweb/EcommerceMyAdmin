@@ -291,10 +291,6 @@ class VariabiliModel extends GenericModel {
 		"page_main_class"			=>	"top_page_main",
 		"attiva_azioni_ajax"		=>	0,
 		"attiva_link_documenti"		=>	0,
-		"attiva_blocco_cookie_terzi"=>	0,
-		"stile_popup_cookie"		=>	"cookie_stile_css",
-		"stile_check_cookie"		=>	"accetta",
-		"var_query_string_no_cookie"		=>	"", // se messo nell'URL, non fa apparire il popup dei cookies, neanche se mai approvati
 		"checkout_solo_loggato"		=>	0, // costringe ad eseguire il login per poter andare al checkout
 		"stile_form_login"			=>	"stile_1_pp_base",
 		"email_debug_retargeting"	=>	"",
@@ -344,7 +340,7 @@ class VariabiliModel extends GenericModel {
 		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
 		"salva_satistiche_visualizzazione_pagina"	=>	0, // salva le statistiche di visualizzazione della singola pagina
-		"salva_satistiche_visualizzazione_pagina_su_file"	=>	0, // salva le statistiche di visualizzazione della singola pagina o della categoria su FILE
+		"salva_satistiche_visualizzazione_pagina_su_file"	=>	"", // salva le statistiche di visualizzazione della singola pagina o della categoria su FILE
 		"salva_ip_visualizzazione"	=>	0, // se impostato su 1, salva anche l'IP dell'utente che sta guardando la pagina
 		"pannello_statistiche_attivo"	=>	0, // mostra sezione statistiche
 		"mostra_gestione_newsletter"	=>	1, // attiva la sezione gestione newsletter in admin
@@ -708,6 +704,12 @@ class VariabiliModel extends GenericModel {
 		"ticket_max_immagini"		=>	5, // numero massimo di immagini in un ticket
 		"ticket_max_video"			=>	1, // numero massimo di video in un ticket
 		"ticket_upload_memory_limit"=>	'512M', // memory limit of the upload action
+		### COOKIE ##
+		"stile_popup_cookie"		=>	"cookie_stile_css",
+		"stile_check_cookie"		=>	"accetta",
+		"attiva_blocco_cookie_terzi"=>	0,
+		"attiva_x_chiudi_banner_cookie"=>	1, // se impostato su 1, mostra la X per chiudere il banner dei cookie (attiverà solo i cookie terzi)
+		"var_query_string_no_cookie"		=>	"", // se messo nell'URL, non fa apparire il popup dei cookies, neanche se mai approvati
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
