@@ -309,6 +309,9 @@ class TicketController extends BaseController
 				"stato"	=>	$stato,
 			));
 			
+			if ($stato == "C")
+				$this->m["TicketModel"]->setValue("data_chiusura", date("Y-m-d H:i:s"));
+			
 			if ($this->m["TicketModel"]->update((int)$id_ticket) && !isset($_GET["no_mail_stato"]))
 			{
 				$this->m("TicketstatiModel")->mandaMail($id_ticket, $stato);
