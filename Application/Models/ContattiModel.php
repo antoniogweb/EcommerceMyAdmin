@@ -181,12 +181,35 @@ class ContattiModel extends GenericModel {
 		$this->pUpdate(null, "uid_contatto = '".$clean["cookieUid"]."'");
 	}
 	
-	private function setContactUid()
+	private function setContactUid($id = 0)
 	{
-		self::$uidc = md5(randString(9).microtime().uniqid(mt_rand(),true));
+		$aggiornaUid = true;
 		
-		$this->values["time_conferma"] = time();
-		$this->values["uid_contatto"] = sanitizeDb(self::$uidc);
+		// Controllo se il token è scaduto
+		if ($id)
+		{
+			$contatto = $this->selectId((int)$id);
+			
+			if (!empty($contatto))
+			{
+				$limit = time() - (int)v("tempo_conferma_uid_contatto");
+				
+				if ($contatto["time_conferma"] > $limit)
+				{
+					$aggiornaUid = false;
+					
+					self::$uidc = sanitizeDb($contatto["uid_contatto"]);
+				}
+			}
+		}
+		
+		if ($aggiornaUid)
+		{
+			self::$uidc = md5(randString(9).microtime().uniqid(mt_rand(),true));
+			
+			$this->values["time_conferma"] = time();
+			$this->values["uid_contatto"] = sanitizeDb(self::$uidc);
+		}
 	}
 	
 	// Sincronizza i contatti con la stessa fonte iniziale
@@ -270,7 +293,7 @@ class ContattiModel extends GenericModel {
 			$this->unsetDescrizione();
 			
 			// Imposta l'uid del contatto
-			$this->setContactUid();
+			$this->setContactUid($id);
 			
 			$res = parent::update($id, $where);
 			
