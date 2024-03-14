@@ -373,6 +373,7 @@ class Route
 // 		'(.*)/(.*)/(.*)/(.*)' 		=>	'contenuti/index/${1}/${2}/${3}/${4}',
 // 		'(.*)/(.*)/(.*)' 			=>	'contenuti/index/${1}/${2}/${3}',
 // 		'(.*)/(.*)' 				=>	'contenuti/index/${1}/${2}',
+		'(.*)\.html'				=>	'contenuti/index/${1}',
 		'([^.]*)'.ESTENSIONI_URL	=>	'contenuti/index/${1}',
 		'(.*)'						=>	'contenuti/notfound/${1}',
 	);
