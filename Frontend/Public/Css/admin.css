@@ -1,7 +1,7 @@
 .blocco_traduzione, .blocco_testo
 {
-	display:inline;
-/* 	position:relative; */
+	display:inline-block;
+	position:relative;
 }
 
 .blocco_traduzione img
@@ -54,8 +54,9 @@
 
 .fascia_contenuto:hover
 {
-		background-color:#EFEFEF;
-/* 	border:2px solid #333; */
+/* 		background-color:#EFEFEF; */
+	border-top:1px solid #333;
+	border-bottom:1px solid #333;
 }
 
 .fascia_contenuto:hover .titolo_fascia
@@ -66,19 +67,25 @@
 .edit_traduzione, .edit_blocco_testo
 {
 	cursor:pointer;
-/*	position:absolute;
+	position:absolute;
 	left:0px;
-	top:0px;*/
+/* 	margin-left:50%; */
+	top:-30px;
 	z-index:999;
+	
+/* 	padding: 5px; */
+	display:inline-block;
 }
 .edit_blocco_testo i.fa
 {
 	display:none !important;
-	padding:3px;
-	background-color:red;
+	border: 1px solid #000;
+	border-radius:3px;
+	padding:5px;
+	background-color:#333;
 /* 		border:1px solid #CCC; */
 	color:#FFF;
-	font-size:20px !important;
+	font-size:16px !important;
 }
 .blocco_testo:hover .edit_blocco_testo i.fa, .fascia_contenuto:hover .edit_blocco_testo i.fa
 {

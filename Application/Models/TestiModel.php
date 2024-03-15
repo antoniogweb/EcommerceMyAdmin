@@ -173,7 +173,25 @@ class TestiModel extends GenericModel {
 			if (!empty($record) && $record["tipo"] != "TESTO")
 				$this->values["valore"] = "";
 			
-			return parent::update($id, $whereClause);
+			$res = parent::update($id, $whereClause);
+			
+			if ($res)
+			{
+				$record = $this->selectId((int)$id);
+				
+				if ($record["tipo"] == "IMMAGINE" && v("attiva_cache_immagini"))
+				{
+					$folderThumbPath = Domain::$parentRoot."/thumb/widget/".(int)$id;
+					
+					if (file_exists($folderThumbPath."/".$record["immagine"]))
+						@unlink($folderThumbPath."/".$record["immagine"]);
+					
+					if (file_exists($folderThumbPath."/".$record["immagine_2x"]))
+						@unlink($folderThumbPath."/".$record["immagine_2x"]);
+				}
+			}
+			
+			return $res;
 		}
 	}
 	
