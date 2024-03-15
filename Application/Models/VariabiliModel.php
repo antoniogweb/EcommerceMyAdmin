@@ -477,7 +477,7 @@ class VariabiliModel extends GenericModel {
 		## CACHE DB ##
 		"numero_massimo_file_cache"	=>	50000, // numero massimo di file in cache
 		"attiva_cache_prodotti"		=>	1, // cache dei prodotti in admin
-		"attiva_cache_immagini"		=>	0, // cache della immagini
+		"attiva_cache_immagini"		=>	0, // cache delle immagini
 		"permessi_cartella_cache_immagini"	=>	777, // permessi della cartella di cache delle immagini
 		"query_cache_durata_massima"	=>	60, // tempo di durata massima della cache
 		"query_cache_pulisci_ogni_x_minuti"	=>	70, // minuti dopo i quali pulisce la cache
