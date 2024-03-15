@@ -704,6 +704,7 @@ class VariabiliModel extends GenericModel {
 		"ticket_max_immagini"		=>	5, // numero massimo di immagini in un ticket
 		"ticket_max_video"			=>	1, // numero massimo di video in un ticket
 		"ticket_upload_memory_limit"=>	'512M', // memory limit of the upload action
+		"numero_massimo_caratteri_ticket"	=>	300, // numero massimo di caratteri nel ticket lato utente (anche nei messaggi)
 		### COOKIE ##
 		"stile_popup_cookie"		=>	"cookie_stile_css",
 		"stile_check_cookie"		=>	"accetta",

@@ -8,6 +8,9 @@
         <?php } else { ?>
         <?php echo gtext("Data invio");?>: <b class="uk-text-primary"><?php echo smartDate($ticket["data_invio"]);?></b>
         <?php } ?>
+        <?php if ($ticket["stato"] == "C") { ?>
+        <br /><?php echo gtext("Data chiusura");?>: <b class="uk-text-primary"><?php echo smartDate($ticket["data_chiusura"]);?></b>
+        <?php } ?>
     </div>
     <div class="uk-width-1-1 uk-width-2-3@m">
 		

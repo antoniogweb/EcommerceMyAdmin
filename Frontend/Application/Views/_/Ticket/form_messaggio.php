@@ -6,9 +6,8 @@
 		
 	</div>
 	
-<!-- 	<label class="uk-form-label"><?php echo gtext("Descrizione");?> *</label> -->
 	<div class="uk-form-controls">
-		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"rows='4' placeholder='".gtext("Descrizione", false)."'");?>
+		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtext("Messaggio", false)." (".gtext("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtext("caratteri").")"."'");?>
 	</div>
 	
 	<div class="uk-margin-top uk-text-italic uk-text-meta"><?php echo gtext("Carica un'immagine (opzionale)")?></div>
