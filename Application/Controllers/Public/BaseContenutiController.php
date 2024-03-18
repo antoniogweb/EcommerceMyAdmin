@@ -1521,12 +1521,6 @@ class BaseContenutiController extends BaseController
 	// numero di prodotti da saltare (già nella pagina al primo caricamento)
 	public function correlatiajax($id, $altreCategorie = 0, $altrivisitatori = 0, $salta = 0)
 	{
-// 		if (!User::$adminLogged)
-// 		{
-// 			$cache = Cache_Html::getInstance();
-// 			$cache->saveHtml = true;
-// 		}
-		
 		$clean['id'] = (int)$id;
 		$clean['altreCategorie'] = (int)$altreCategorie;
 		$clean['altrivisitatori'] = (int)$altrivisitatori;
@@ -1560,6 +1554,24 @@ class BaseContenutiController extends BaseController
 		$this->append($data);
 		
 		$this->load("prodotti-details-correlati");
+	}
+	
+	public function fascia($idPage = 0, $idFascia = 0)
+	{
+		$clean['idPage'] = (int)$idPage;
+		$clean['idFascia'] = (int)$idFascia;
+		
+		$this->clean();
+		
+		if ($idPage === 0)
+			$clean["idPaginaHome"] = (int)$this->m("PagesModel")->clear()->where(array(
+				"tipo_pagina"	=>	"HOME",
+			))->field("id_page");
+			
+		$data["fasce"] = $this->m("ContenutiModel")->elaboraContenuti($clean['idPage'], 0, $this, 0, false, $clean['idFascia']);
+		
+		$this->append($data);
+		$this->load("page-fascia");
 	}
 	
 	protected function page($id)

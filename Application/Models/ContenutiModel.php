@@ -461,7 +461,7 @@ class ContenutiModel extends GenericModel {
 // // 		print_r($this->db->queries);
 // 	}
 	
-	public function elaboraContenuti($idPage, $idC = 0, $obj = null, $idTipo = 0, $return = false)
+	public function elaboraContenuti($idPage, $idC = 0, $obj = null, $idTipo = 0, $return = false, $idCont = 0)
 	{
 		// Estraggo le fasce
 		$this->clear()->select("*")->inner(array("tipo"))->where(array(
@@ -494,6 +494,11 @@ class ContenutiModel extends GenericModel {
 		if ($idTipo)
 			$this->aWhere(array(
 				"contenuti.id_tipo"	=>	(int)$idTipo,
+			));
+		
+		if ($idCont)
+			$this->aWhere(array(
+				"contenuti.id_cont"	=>	(int)$idCont,
 			));
 		
 		$idElemento = $idPage ? $idPage : $idC;
@@ -561,7 +566,7 @@ class ContenutiModel extends GenericModel {
 				
 				if (User::$adminLogged)
 				{
-					$htmlFinale .= "<div id='".$idCont."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
+					$htmlFinale .= "<div id-pagina='".(int)$idPage."' id='".$idCont."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
 					
 					$htmlFinale .= "<div class='titolo_fascia'>Fascia: <b>".$f["contenuti"]["titolo"]."</b> - Tipo: <b>".$f["tipi_contenuto"]["titolo"]."</b>";
 					

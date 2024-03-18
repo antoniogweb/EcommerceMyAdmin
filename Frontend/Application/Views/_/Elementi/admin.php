@@ -49,32 +49,18 @@
 	var child;
 	var timer;
 	
-// 	function aggiornaOrdinamento()
-// 	{
-// 		var id_cont = "";
-// 		var order = "";
-// 		
-// 		$(".fascia_contenuto").each(function(){
-// 		
-// 			var id_cont = $(this).attr("id");
-// 		
-// 			order += id_cont + ",";
-// 		
-// 		});
-// 		
-// 		var post_data = "order="+order+"&ordinaPagine=Y";
-// 		
-// 		$.ajax({
-// 			type: "POST",
-// 			data: post_data,
-// 			url: "<?php echo $this->baseUrlSrc.'/admin/pages/ordinacontenuti';?>",
-// 			async: false,
-// 			cache:false,
-// 			success: function(html){
-// 				
-// 			}
-// 		});
-// 	}
+	function aggiornaFascia(idPagina, idFascia)
+	{
+		$.ajaxQueue({
+			url: baseUrl + "/contenuti/fascia/" + idPagina + "/" + idFascia,
+			async: true,
+			cache:false,
+			dataType: "html",
+			success: function(content){
+				$(".fascia_contenuto[id="+idFascia+"]").empty().append(content);
+			}
+		});
+	}
 
 	function checkChild() {
 		if (child.closed) {
@@ -92,11 +78,16 @@
 		$('#sideslider').sideSlider();
 		<?php } ?>
 		
-		$(".edit_blocco_testo").click(function(e){
-			
+		$("body").on("click",".edit_blocco_testo", function(e){
+		
 			e.preventDefault();
 			
 			var id_t = $(this).attr("rel");
+			
+			var fasciaObj = $(this).closest(".fascia_contenuto");
+			
+			var idPagina = fasciaObj.attr("id-pagina");
+			var idFascia = fasciaObj.attr("id");
 			
 			$.colorbox({
 				iframe:true,
@@ -104,7 +95,8 @@
 				height:"95%",
 				href:"<?php echo $this->baseUrlSrc;?>/admin/testi/form/update/" + id_t + "?part=Y&nobuttons=Y",
 				onClosed: function(){
-					location.reload();
+// 					location.reload();
+					aggiornaFascia(idPagina, idFascia);
 				}
 			});
 			
