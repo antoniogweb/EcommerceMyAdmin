@@ -461,7 +461,7 @@ class ContenutiModel extends GenericModel {
 // // 		print_r($this->db->queries);
 // 	}
 	
-	public function elaboraContenuti($idPage, $idC = 0, $obj = null, $idTipo = 0, $return = false, $idCont = 0)
+	public function elaboraContenuti($idPage, $idC = 0, $obj = null, $idTipo = 0, $return = false, $idContenuto = 0)
 	{
 		// Estraggo le fasce
 		$this->clear()->select("*")->inner(array("tipo"))->where(array(
@@ -496,9 +496,9 @@ class ContenutiModel extends GenericModel {
 				"contenuti.id_tipo"	=>	(int)$idTipo,
 			));
 		
-		if ($idCont)
+		if ($idContenuto)
 			$this->aWhere(array(
-				"contenuti.id_cont"	=>	(int)$idCont,
+				"contenuti.id_cont"	=>	(int)$idContenuto,
 			));
 		
 		$idElemento = $idPage ? $idPage : $idC;
@@ -514,7 +514,7 @@ class ContenutiModel extends GenericModel {
 		
 		$htmlFinale = "";
 		
-		$htmlFinale = User::$adminLogged ? "<div class='blocco_fasce_contenuto'>" : "";
+		$htmlFinale = (User::$adminLogged && !$idContenuto) ? "<div class='blocco_fasce_contenuto'>" : "";
 		
 		if (count($fasce) > 0)
 		{
@@ -566,7 +566,8 @@ class ContenutiModel extends GenericModel {
 				
 				if (User::$adminLogged)
 				{
-					$htmlFinale .= "<div id-pagina='".(int)$idPage."' id='".$idCont."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
+					if (!$idContenuto)
+						$htmlFinale .= "<div id-pagina='".(int)$idPage."' id='".$idCont."' class='fascia_contenuto ".v("fascia_contenuto_class")."'>";
 					
 					$htmlFinale .= "<div class='titolo_fascia'>Fascia: <b>".$f["contenuti"]["titolo"]."</b> - Tipo: <b>".$f["tipi_contenuto"]["titolo"]."</b>";
 					
@@ -584,12 +585,12 @@ class ContenutiModel extends GenericModel {
 				
 				$htmlFinale .= attivaModuli($html, $obj);
 				
-				if (User::$adminLogged)
+				if (User::$adminLogged && !$idContenuto)
 					$htmlFinale .= "</div>";
 			}
 		}
 		
-		$htmlFinale .= User::$adminLogged ? "</div>" : "";
+		$htmlFinale .= (User::$adminLogged && !$idContenuto) ? "</div>" : "";
 		
 		self::$idContenuto = 0;
 		

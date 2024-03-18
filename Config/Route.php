@@ -376,6 +376,8 @@ class Route
 		'contenuti,thumb',
 		'contenuti,gruppi',
 		'contenuti,traduzione',
+		'contenuti,aggiungitesto',
+		'contenuti,eliminatesto',
 		
 		'marchi,main',
 		'marchi,form',

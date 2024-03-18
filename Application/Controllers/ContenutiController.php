@@ -162,4 +162,66 @@ class ContenutiController extends BaseController
 		
 		$this->append($data);
 	}
+	
+	public function aggiungitesto($idContenuto = 0, $tipo = "TESTO", $posizione = "DOPO")
+	{
+		$this->clean();
+		
+		$contenuto = $this->m[$this->modelName]->selectId((int)$idContenuto);
+		
+		$clean["tag"] = $this->request->post("tag","","sanitizeAll");
+		$clean["tipo"] = sanitizeAll($tipo);
+		
+		if (!empty($contenuto) && in_array($clean["tipo"], array("TESTO", "IMMAGINE", "LINK")))
+		{
+			$contenuto = htmlentitydecodeDeep($contenuto);
+			
+			$nuovoTesto = "[".strtolower($clean["tipo"])." testo_".generateString(8)."]";
+			
+			$testo = $contenuto["descrizione"];
+			
+			$testo = str_replace($clean["tag"], $clean["tag"]."\n<br />\n".$nuovoTesto, $testo);
+
+			
+			$this->m[$this->modelName]->sValues(array(
+				"descrizione"	=>	$testo
+			));
+			
+			$this->m[$this->modelName]->pUpdate((int)$idContenuto);
+		}
+	}
+	
+	public function eliminatesto($idContenuto = 0, $idTesto = 0)
+	{
+		$this->clean();
+		
+		$contenuto = $this->m[$this->modelName]->selectId((int)$idContenuto);
+		
+		$clean["tag"] = $this->request->post("tag","","sanitizeAll");
+		
+		if (!empty($contenuto))
+		{
+			$contenuto = htmlentitydecodeDeep($contenuto);
+			
+			$testo = $contenuto["descrizione"];
+			
+			$testo = str_replace($clean["tag"], "", $testo);
+			
+			$this->m[$this->modelName]->sValues(array(
+				"descrizione"	=>	$testo
+			));
+			
+			if ($this->m[$this->modelName]->pUpdate((int)$idContenuto))
+			{
+				$testoRecord = $this->m("TestiModel")->selectId((int)$idTesto);
+				
+				if (!empty($testoRecord))
+				{
+					$this->m("TestiModel")->del(null, array(
+						"chiave"	=>	sanitizeAll($testoRecord["chiave"]),
+					));
+				}
+			}
+		}
+	}
 }

@@ -57,7 +57,7 @@
 			cache:false,
 			dataType: "html",
 			success: function(content){
-				$(".fascia_contenuto[id="+idFascia+"]").empty().append(content);
+				$(".fascia_contenuto[id="+idFascia+"]").html(content);
 			}
 		});
 	}
@@ -77,6 +77,62 @@
 		<?php if (v("configurazione_frontend_attiva")) { ?>
 		$('#sideslider').sideSlider();
 		<?php } ?>
+		
+		$("body").on("click",".aggiungi_blocco_testo_context_element", function(e){
+			
+			var url = $(this).attr("url");
+			var tag = $(this).attr("testo-tag");
+			
+			var fasciaObj = $(this).closest(".fascia_contenuto");
+			
+			var idPagina = fasciaObj.attr("id-pagina");
+			var idFascia = fasciaObj.attr("id");
+			
+// 			alert(idPagina);
+			
+			$.ajaxQueue({
+				url: "<?php echo $this->baseUrlSrc;?>/admin" + url,
+				cache:false,
+				async: true,
+				dataType: "html",
+				method: "POST",
+				data: {
+					tag: tag
+				},
+				success: function(content){
+					aggiornaFascia(idPagina, idFascia);
+				}
+			});
+		
+		});
+		
+		$("body").on("click",".elimina_blocco_testo", function(e){
+			
+			var url = $(this).attr("url");
+			var tag = $(this).attr("testo-tag");
+			
+			var fasciaObj = $(this).closest(".fascia_contenuto");
+			
+			var idPagina = fasciaObj.attr("id-pagina");
+			var idFascia = fasciaObj.attr("id");
+			
+			console.log("<?php echo $this->baseUrlSrc;?>/admin" + url);
+			
+			$.ajaxQueue({
+				url: "<?php echo $this->baseUrlSrc;?>/admin" + url,
+				cache:false,
+				async: true,
+				dataType: "html",
+				method: "POST",
+				data: {
+					tag: tag
+				},
+				success: function(content){
+					aggiornaFascia(idPagina, idFascia);
+				}
+			});
+		
+		});
 		
 		$("body").on("click",".edit_blocco_testo", function(e){
 		
@@ -102,7 +158,7 @@
 			
 		});
 		
-		$(".iframe").click(function(e){
+		$("body").on("click",".iframe", function(e){
 			
 			e.preventDefault();
 			

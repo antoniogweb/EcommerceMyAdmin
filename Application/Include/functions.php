@@ -1144,7 +1144,19 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 		
 		if (User::$adminLogged && TestiModel::$mostraIconaEdit)
 		{
-			return "<".v("tag_blocco_testo")." class='blocco_testo'>".$t."$iconaEdit</".v("tag_blocco_testo").">";
+			$iconaEditTag = "";
+			
+			// Edit tag da frontend
+			if (v("permetti_di_aggiungere_blocchi_da_frontend") && isset($matches[0]) && $matches[0] && ContenutiModel::$idContenuto)
+			{
+				$pathContext = tpf("Elementi/Admin/context_edit.php");
+				ob_start();
+				include $pathContext;
+				$output = ob_get_clean();
+				$iconaEditTag .= $output;
+			}
+			
+			return "<".v("tag_blocco_testo")." class='blocco_testo'>".$t.$iconaEdit.$iconaEditTag."</".v("tag_blocco_testo").">";
 		}
 		else
 		{
