@@ -165,6 +165,24 @@ class Tema
 		}
 	}
 	
+	public static function getFilesInPath($path, $fileCartella = array())
+	{
+		$filesModel = new Files_Upload($path);
+		
+		if (@is_dir($path))
+		{
+			$filesModel->setBase($path);
+			
+			$filesModel->listFiles();
+		
+			$fileCartellaTema = $filesModel->getFiles();
+			
+			$fileCartella = array_merge($fileCartella, $fileCartellaTema);
+		}
+		
+		return $fileCartella;
+	}
+	
 	public static function getSelectElementi($percorsoElemento, $mantieniEstensionePhp = true)
 	{
 		// Cerco i temi del tema di default
@@ -172,6 +190,7 @@ class Tema
 		
 		if (@is_dir($path))
 		{
+			
 			$filesModel = new Files_Upload($path);
 			
 			$filesModel->listFiles();
@@ -185,31 +204,41 @@ class Tema
 		{
 			$path = Domain::$parentRoot."/Application/Views/".v("theme_folder")."/$percorsoElemento";
 			
-			$filesModel = new Files_Upload($path);
+			$fileCartella = self::getFilesInPath($path, $fileCartella);
 			
-			if (@is_dir($path))
-			{
-				$filesModel->setBase($path);
-				
-				$filesModel->listFiles();
-			
-				$fileCartellaTema = $filesModel->getFiles();
-				
-				$fileCartella = array_merge($fileCartella, $fileCartellaTema);
-			}
+// 			$filesModel = new Files_Upload($path);
+// 			
+// 			if (@is_dir($path))
+// 			{
+// 				$filesModel->setBase($path);
+// 				
+// 				$filesModel->listFiles();
+// 			
+// 				$fileCartellaTema = $filesModel->getFiles();
+// 				
+// 				$fileCartella = array_merge($fileCartella, $fileCartellaTema);
+// 			}
 			
 			$path = Domain::$parentRoot."/Application/Views/_/$percorsoElemento";
 			
-			if (@is_dir($path))
-			{
-				$filesModel->setBase($path);
-				
-				$filesModel->listFiles();
+			$fileCartella = self::getFilesInPath($path, $fileCartella);
 			
-				$fileCartellaTema = $filesModel->getFiles();
-				
-				$fileCartella = array_merge($fileCartella, $fileCartellaTema);
-			}
+// 			if (@is_dir($path))
+// 			{
+// 				$filesModel->setBase($path);
+// 				
+// 				$filesModel->listFiles();
+// 			
+// 				$fileCartellaTema = $filesModel->getFiles();
+// 				
+// 				$fileCartella = array_merge($fileCartella, $fileCartellaTema);
+// 			}
+		}
+		else
+		{
+			$path = Domain::$parentRoot."/Application/Views/$percorsoElemento";
+			
+			$fileCartella = self::getFilesInPath($path, $fileCartella);
 		}
 		
 		$fileCartella = array_unique($fileCartella);
