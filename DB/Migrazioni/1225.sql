@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Ticket', 'tickettipologie', 'ticket', '1', '', '96', '1', 'ecommerce', 'main');

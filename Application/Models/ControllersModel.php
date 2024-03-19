@@ -186,7 +186,7 @@ class ControllersModel extends GenericModel
 		{
 			$arrayBool[] = in_array($c, $controllersFinali) ? true : false;
 		}
-
+		
 		$arrayBool = array_unique($arrayBool);
 		
 		$res = ((int)count($arrayBool) === 1 && $arrayBool[0]) ? true : false;

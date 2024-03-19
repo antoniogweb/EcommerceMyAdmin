@@ -72,6 +72,17 @@ class NotificheModel extends GenericModel {
 			"risolta"	=>	0,
 		))->orderBy("id_order desc")->send(false);
 		
+		$contesti = $n->clear()->select("distinct contesto")->where(array(
+			"risolta"	=>	0,
+		))->orderBy("id_order desc")->toList("contesto")->send();
+		
+		$arrayAccesso = array();
+		
+		foreach ($contesti as $contesto)
+		{
+			$arrayAccesso[$contesto] = ControllersModel::checkAccessoAlController(array(strtolower($contesto)));
+		}
+		
 		foreach ($res as $r)
 		{
 			$queryStringChar = strstr($r["url"], '?') ? "&" : "?";
@@ -79,7 +90,9 @@ class NotificheModel extends GenericModel {
 			
 			parse_str($r["condizioni"], $condizioni);
 			
-			if (VariabiliModel::verificaCondizioni($condizioni))
+			$contesto = $r["contesto"];
+			
+			if (VariabiliModel::verificaCondizioni($condizioni) && (!isset($arrayAccesso[$contesto]) || $arrayAccesso[$contesto]))
 				$notifiche[] = array(
 					"testo"	=>	gtext(htmlentitydecode($r["titolo"])),
 					"link"	=>	Url::getRoot().$r["url"].$queryString,
