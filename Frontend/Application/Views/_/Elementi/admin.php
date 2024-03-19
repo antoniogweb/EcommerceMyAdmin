@@ -166,13 +166,19 @@
 			
 			var url = $(this).attr("href");
 			
+			var fasciaObj = $(this).closest(".fascia_contenuto");
+			
+			var idPagina = fasciaObj.attr("id-pagina");
+			var idFascia = fasciaObj.attr("id");
+			
 			$.colorbox({
 				iframe:true,
 				width:"95%",
 				height:"95%",
 				href:url,
 				onClosed: function(){
-					location.reload();
+// 					location.reload();
+					aggiornaFascia(idPagina, idFascia);
 				}
 			});
 			

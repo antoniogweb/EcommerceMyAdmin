@@ -670,6 +670,6 @@ class ContenutiModel extends GenericModel {
 	{
 		list($open, $close) = explode("|", v("wrap_tag_in_editor_visuale"));
 		
-		return "\n".$open."[".strtolower($tipo)." testo_".generateString(8)."]".$close."\n";
+		return "\n".$open."[".strtolower($tipo)." testo_".generateString(8)."]".$close;
 	}
 }
