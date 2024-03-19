@@ -804,6 +804,12 @@ class BaseOrdiniController extends BaseController
 		}
 	}
 	
+	protected function elaboraCampiPost()
+	{
+		if (isset($_POST["email"]) && is_string($_POST["email"]))
+			$_POST["email"] = trim($_POST["email"]);
+	}
+	
 	public function index()
 	{
 		if (!v("ecommerce_online"))
@@ -843,6 +849,9 @@ class BaseOrdiniController extends BaseController
 		$this->checkCheckout();
 		
 		$this->getAppLogin();
+		
+		// Controllo spazi nella mail e altro
+		$this->elaboraCampiPost();
 		
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
