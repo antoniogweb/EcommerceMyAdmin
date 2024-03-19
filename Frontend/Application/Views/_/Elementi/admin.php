@@ -52,17 +52,20 @@
 	function aggiornaFascia(idPagina, idFascia)
 	{
 		<?php if (v("permetti_di_aggiungere_blocchi_da_frontend")) { ?>
-		$.ajaxQueue({
-			url: baseUrl + "/contenuti/fascia/" + idPagina + "/" + idFascia,
-			async: true,
-			cache:false,
-			dataType: "html",
-			success: function(content){
-				$(".fascia_contenuto[id="+idFascia+"]").html(content);
-			}
-		});
+			if (idFascia != undefined)
+				$.ajaxQueue({
+					url: baseUrl + "/contenuti/fascia/" + idPagina + "/" + idFascia,
+					async: true,
+					cache:false,
+					dataType: "html",
+					success: function(content){
+						$(".fascia_contenuto[id="+idFascia+"]").html(content);
+					}
+				});
+			else
+				location.reload();
 		<?php } else { ?>
-		location.reload();
+			location.reload();
 		<?php } ?>
 	}
 
@@ -201,16 +204,9 @@
 			{
 				$(this).css("overflow", "visible");
 				var height = $(this).find(".titolo_fascia").outerHeight();
-// 				console.log(height);
 				$(this).find(".titolo_fascia").css("top","-" + height + "px");
 			}
 		});
-		
-// 		$( ".blocco_fasce_contenuto" ).sortable({
-// 			stop: function( event, ui ) {
-// 				aggiornaOrdinamento();
-// 			}
-// 		});
 	});
 </script>
 <?php } ?>
