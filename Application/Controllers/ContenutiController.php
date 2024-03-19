@@ -169,19 +169,22 @@ class ContenutiController extends BaseController
 		
 		$contenuto = $this->m[$this->modelName]->selectId((int)$idContenuto);
 		
-		$clean["tag"] = $this->request->post("tag","","sanitizeAll");
+		$clean["tag"] = $this->request->post("tag","","none");
 		$clean["tipo"] = sanitizeAll($tipo);
 		
 		if (!empty($contenuto) && in_array($clean["tipo"], array("TESTO", "IMMAGINE", "LINK")))
 		{
 			$contenuto = htmlentitydecodeDeep($contenuto);
 			
-			$nuovoTesto = "[".strtolower($clean["tipo"])." testo_".generateString(8)."]";
+			$nuovoTesto = ContenutiModel::nuovoPlaceholder($clean["tipo"]); //"[".strtolower($clean["tipo"])." testo_".generateString(8)."]";
+			
+// 			echo $nuovoTesto;
 			
 			$testo = $contenuto["descrizione"];
 			
-			$testo = str_replace($clean["tag"], $clean["tag"]."\n<br />\n".$nuovoTesto, $testo);
-
+			$clean["tag"] = ContenutiModel::cercaPlaceholder($testo, $clean["tag"]);
+			
+			$testo = str_replace($clean["tag"], $clean["tag"].$nuovoTesto, $testo);
 			
 			$this->m[$this->modelName]->sValues(array(
 				"descrizione"	=>	$testo
@@ -197,13 +200,15 @@ class ContenutiController extends BaseController
 		
 		$contenuto = $this->m[$this->modelName]->selectId((int)$idContenuto);
 		
-		$clean["tag"] = $this->request->post("tag","","sanitizeAll");
+		$clean["tag"] = $this->request->post("tag","","none");
 		
 		if (!empty($contenuto))
 		{
 			$contenuto = htmlentitydecodeDeep($contenuto);
 			
 			$testo = $contenuto["descrizione"];
+			
+			$clean["tag"] = ContenutiModel::cercaPlaceholder($testo, $clean["tag"]);
 			
 			$testo = str_replace($clean["tag"], "", $testo);
 			

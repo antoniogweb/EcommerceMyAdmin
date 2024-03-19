@@ -51,6 +51,7 @@
 	
 	function aggiornaFascia(idPagina, idFascia)
 	{
+		<?php if (v("permetti_di_aggiungere_blocchi_da_frontend")) { ?>
 		$.ajaxQueue({
 			url: baseUrl + "/contenuti/fascia/" + idPagina + "/" + idFascia,
 			async: true,
@@ -60,6 +61,9 @@
 				$(".fascia_contenuto[id="+idFascia+"]").html(content);
 			}
 		});
+		<?php } else { ?>
+		location.reload();
+		<?php } ?>
 	}
 
 	function checkChild() {
@@ -81,14 +85,12 @@
 		$("body").on("click",".aggiungi_blocco_testo_context_element", function(e){
 			
 			var url = $(this).attr("url");
-			var tag = $(this).attr("testo-tag");
+			var tag = "["+$(this).closest(".blocco_testo").find(".testo-tag").text()+"]";
 			
 			var fasciaObj = $(this).closest(".fascia_contenuto");
 			
 			var idPagina = fasciaObj.attr("id-pagina");
 			var idFascia = fasciaObj.attr("id");
-			
-// 			alert(idPagina);
 			
 			$.ajaxQueue({
 				url: "<?php echo $this->baseUrlSrc;?>/admin" + url,
@@ -109,7 +111,7 @@
 		$("body").on("click",".elimina_blocco_testo", function(e){
 			
 			var url = $(this).attr("url");
-			var tag = $(this).attr("testo-tag");
+			var tag = "["+$(this).closest(".blocco_testo").find(".testo-tag").text()+"]";
 			
 			var fasciaObj = $(this).closest(".fascia_contenuto");
 			

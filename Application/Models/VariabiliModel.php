@@ -713,6 +713,7 @@ class VariabiliModel extends GenericModel {
 		"var_query_string_no_cookie"		=>	"", // se messo nell'URL, non fa apparire il popup dei cookies, neanche se mai approvati
 		### EDITOR VISUALE ##
 		"permetti_di_aggiungere_blocchi_da_frontend"	=>	0, // se impostato ad 1, permette di aggiungere nuovi tag dal frontend
+		"wrap_tag_in_editor_visuale"	=>	'<div>|</div>', // tag di apertura e chiusura quando aggiungo o tolto un elemento in modalità visuale
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

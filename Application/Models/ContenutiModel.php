@@ -635,4 +635,41 @@ class ContenutiModel extends GenericModel {
 		
 		return count($cModel->elaboraContenuti($idPage,0, null, $idTipo, true));
 	}
+	
+	public static function togliParentesiQuadre($text)
+	{
+		$text = str_replace("[", "", $text);
+		$text = str_replace("]", "", $text);
+		
+		return $text;
+	}
+	
+	// Cerca il placeholder ([testo testo ...]) assieme al suo contenitore
+	public static function cercaPlaceholder($testo, $tag)
+	{
+		list($open, $close) = explode("|", v("wrap_tag_in_editor_visuale"));
+		
+		$wrapTag = $open.$tag.$close;
+		
+		$pos = strpos($testo, $wrapTag);
+		
+		if ($pos === false)
+		{
+			$pos = strpos($testo, $tag);
+			
+			if ($pos === false)
+				return "";
+			else
+				return $tag;
+		}
+		else
+			return $wrapTag;
+	}
+	
+	public static function nuovoPlaceholder($tipo)
+	{
+		list($open, $close) = explode("|", v("wrap_tag_in_editor_visuale"));
+		
+		return "\n".$open."[".strtolower($tipo)." testo_".generateString(8)."]".$close."\n";
+	}
 }
