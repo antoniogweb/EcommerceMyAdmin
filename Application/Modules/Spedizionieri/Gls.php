@@ -601,7 +601,20 @@ class Gls extends Spedizioniere
 		{
 			$xmlObj = simplexml_load_string($trackingInfo);
 			
-			if (isset($xmlObj->SPEDIZIONE) && isset($xmlObj->SPEDIZIONE->TRACKING))
+			if (isset($xmlObj->SPEDIZIONE) && isset($xmlObj->SPEDIZIONE->ColloInternazionale->TRACKINGINT))
+			{
+				if ($campo == "Codice")
+					return "";
+				
+				foreach ($xmlObj->SPEDIZIONE->ColloInternazionale->TRACKINGINT as $tr)
+				{
+					foreach ($tr->{$campo} as $stato)
+					{
+						return (string)$stato;
+					}
+				}
+			}
+			else if (isset($xmlObj->SPEDIZIONE) && isset($xmlObj->SPEDIZIONE->TRACKING))
 			{
 				foreach ($xmlObj->SPEDIZIONE->TRACKING as $tr)
 				{
