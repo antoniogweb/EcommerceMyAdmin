@@ -213,6 +213,7 @@ $(document).ready(function(){
 		var fileName = fileObj[0].files[0]; 
 		
 		var progressBar = box.find(".js-progressbar")
+		var boxLabelElaborazione = box.find(".box-label-elaborazione")
 		
 		if (typeof fileName != 'undefined')
 		{
@@ -235,6 +236,8 @@ $(document).ready(function(){
 					
 					progressBar.removeClass("uk-hidden");
 					progressBar.attr("value", 0);
+					
+					boxLabelElaborazione.addClass("uk-hidden");
 				},
 				xhr: function() {
 					var xhr = new window.XMLHttpRequest();
@@ -243,6 +246,9 @@ $(document).ready(function(){
 							var percentComplete = ((evt.loaded / evt.total) * 100);
 							
 							progressBar.attr("value", percentComplete);
+							
+							if (percentComplete >= 100)
+								boxLabelElaborazione.removeClass("uk-hidden");
 						}
 					}, false);
 					return xhr;
@@ -257,11 +263,15 @@ $(document).ready(function(){
 					}
 					else
 						reloadImmagini(tipo);
+					
+					boxLabelElaborazione.addClass("uk-hidden");
 				},
 				error: function(){
 					box.find(".upload_ticket_alert").html("Errore, si prega di riprovare");
 						
 					that.removeClass("uk-hidden").parent().find(".spinner").addClass("uk-hidden");
+					
+					boxLabelElaborazione.addClass("uk-hidden");
 				}
 			});
 		}
