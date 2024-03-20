@@ -16,7 +16,7 @@
 		<li class="<?php echo tm($tm, "elementitema");?>"><a href="<?php echo $this->baseUrl."/elementitema/main/1";?>"><i class="fa fa-map"></i> <span><?php echo gtext("Layout blocchi tema");?></span></a></li>
 		<?php } ?>
 		
-		<?php if (count(Tema::getElencoTemi()) > 1 && v("permetti_cambio_tema")) { ?>
+		<?php if (count(Tema::getElencoTemi()) > 1 && v("permetti_cambio_tema") && ControllersModel::checkAccessoAlController(array("impostazioni"))) { ?>
 		<li class="dropdown-header"><?php echo gtext("Stile");?></li>
 		<li class="<?php echo tm($tm, "temi");?>"><a href="<?php echo $this->baseUrl."/impostazioni/tema/1";?>"><i class="fa fa-eye"></i> <span><?php echo gtext("Cambia stile");?></span></a></li>
 		<?php } ?>
