@@ -47,6 +47,7 @@ class BaseController extends Controller
 	public $orderBy = "";
 	public $sezionePannello = "sito";
 	public $useEditor = false;
+	public $useEditorVisuale = true;
 	public $argKeys = null;
 	public $formValuesToDb = null;
 	public $filtroAttivo = array("tutti"=>"Attivi / NON Attivi","Y"=>"Attivi","N"=>"NON Attivi");
@@ -258,6 +259,7 @@ class BaseController extends Controller
 		$qAllowed = BaseController::$azioniPermesse;
 		
 		$data["useEditor"] = $this->useEditor;
+		$data["useEditorVisuale"] = $this->useEditorVisuale;
 		
 		if (in_array($queryType,$qAllowed))
 		{
