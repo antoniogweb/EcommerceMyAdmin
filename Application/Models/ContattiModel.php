@@ -171,7 +171,7 @@ class ContattiModel extends GenericModel {
 		
 		$time = time() + v("tempo_durata_uid_contatto");
 		self::$uidc = $clean["cookieUid"];
-		Cookie::set("uid_contatto", $clean["cookieUid"], $time, "/", true, 'Strict');
+		Cookie::set("uid_contatto", $clean["cookieUid"], $time, "/", true, 'Lax');
 		
 		$this->setValues(array(
 			"time_conferma"	=>	0,
