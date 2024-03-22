@@ -27,7 +27,7 @@
 			</div>
 			<?php if (!User::$isMobile) { ?>
 				<?php include(tpf("Ticket/messaggi.php")); ?>
-				<hr />
+				<hr class="uk-divider-icon">
 				<?php
 				if (!$isChiuso)
 					include(tpf("Ticket/form_messaggio.php"));
@@ -67,7 +67,7 @@
 <?php if (User::$isMobile) { ?>
 <div class="uk-width-1-1 uk-width-1-2@l">
 	<?php include(tpf("Ticket/messaggi.php")); ?>
-	<hr />
+	<hr class="uk-divider-icon">
 	<?php
 	if (!$isChiuso)
 		include(tpf("Ticket/form_messaggio.php"));
