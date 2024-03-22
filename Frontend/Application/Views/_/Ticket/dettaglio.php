@@ -14,7 +14,7 @@
 				<?php } ?>
 				<br />
 				<span class="uk-text-bold"><?php echo gtext("Oggetto della richiesta");?>:</span><br />
-				<div class="uk-text-italic uk-text-secondary">
+				<div class="uk-text-italic uk-text-secondary uk-margin-small-bottom">
 					<?php echo $ticket["oggetto"];?>
 				</div>
 				<span class="uk-text-bold"><?php echo gtext("Descrizione");?>:</span>
