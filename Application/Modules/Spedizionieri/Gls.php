@@ -584,9 +584,15 @@ class Gls extends Spedizioniere
 			$dataConsegna = $this->getLabelSpedizioniere($trackingInfo, "Data");
 			$oraConsegna = $this->getLabelSpedizioniere($trackingInfo, "Ora");
 			
-			if (preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{2,4}$/',(string)$dataConsegna) && preg_match('/^[0-9]{1,2}\:[0-9]{1,2}$/',(string)$oraConsegna))
+			if (preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{2}$/',(string)$dataConsegna) && preg_match('/^[0-9]{1,2}\:[0-9]{1,2}$/',(string)$oraConsegna))
 			{
 				$dateTime = DateTime::createFromFormat("d/m/y H:i", $dataConsegna." ".$oraConsegna);
+			
+				return $dateTime->format("Y-m-d H:i:s");
+			}
+			else if (preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/',(string)$dataConsegna) && preg_match('/^[0-9]{1,2}\:[0-9]{1,2}$/',(string)$oraConsegna))
+			{
+				$dateTime = DateTime::createFromFormat("d/m/Y H:i", $dataConsegna." ".$oraConsegna);
 			
 				return $dateTime->format("Y-m-d H:i:s");
 			}
