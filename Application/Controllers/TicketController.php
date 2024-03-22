@@ -291,6 +291,8 @@ class TicketController extends BaseController
 			"id_ticket"	=>	(int)$id,
 		))->orderBy("id_ticket_messaggio")->send();
 		
+		$data["isBozza"] = $this->m("TicketModel")->isBozza((int)$id);
+		
 		$this->append($data);
 	}
 	

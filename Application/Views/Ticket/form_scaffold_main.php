@@ -44,7 +44,7 @@
 			
 			<div class="submit_entry">
 				<span class="submit_entry_Salva pull-right">
-					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva e invia il ticket");?></button>
+					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo $isBozza ? gtext("Salva e invia il ticket") : gtext("Salva il ticket");?></button>
 					<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 				</span>
 				<?php if ($mostra_tendina_prodotti) { ?>
