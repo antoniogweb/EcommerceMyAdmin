@@ -52,6 +52,6 @@
 		<a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtext("Carica");?></a>
 	</span>
 	<progress class="uk-progress uk-hidden js-progressbar" value="50" max="100"></progress>
-	<div style="text-transform:lowercase;" class="box-label-elaborazione uk-text-primary uk-text-italic uk-text-small uk-hidden" value="50" max="100"><?php echo gtext(".. attendere, file in elaborazione ..");?></div>
+	<div style="text-transform:lowercase;" class="box-label-elaborazione uk-text-meta uk-text-italic uk-text-small uk-hidden" value="50" max="100"><span class="spinner" uk-spinner="ratio: .60"></span> <?php echo gtext("attendere, file in elaborazione..");?></div>
 </div>
 <?php } ?>
