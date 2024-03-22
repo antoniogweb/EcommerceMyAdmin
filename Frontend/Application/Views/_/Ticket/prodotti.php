@@ -5,7 +5,7 @@ if (!isset($eliminaButton))
 ?>
 <div class="box_prodotti_inner">
 	<?php if ($mostra_tendina_prodotti && $numeroProdotti < v("numero_massimo_prodotti_ticket")) { ?>
-	<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Seleziona e aggiugni un prodotto per cui chiedi assistenza");?></div>
+	<div class="uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Seleziona e aggiugni un prodotto per cui chiedi assistenza");?></div>
 	<div class="uk-form-controls">
 		<div class="uk-grid-collapse uk-grid uk-flex uk-flex-bottom" uk-grid>
 			<div class="uk-width-3-4">
@@ -25,7 +25,7 @@ if (!isset($eliminaButton))
 	<?php } ?>
 
 	<?php if (count($prodottiInseriti) > 0) { ?>
-	<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Prodotti aggiunti al ticket");?></div>
+	<div class=" uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Prodotti aggiunti al ticket");?></div>
 	<div class="uk-overflow-auto">
 		<table class="uk-table uk-table-divider uk-table-hover uk-table-small" cellspacing="0">
 			<?php foreach ($prodottiInseriti as $p) { ?>
