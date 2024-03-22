@@ -5,7 +5,7 @@
 <?php foreach ($messaggi as $m) {
 	$scrittoDa = $m["ticket_messaggi"]["id_user"] ? $nominativoCliente : $m["adminusers"]["username"];
 ?>
-<hr class="uk-divider-small">
+<hr class="uk-divider-icon">
 <div id="messaggi_<?php echo $m["ticket_messaggi"]["id_ticket_messaggio"];?>">
 
 	<?php if (!$m["ticket_messaggi"]["id_user"]) { ?><div class="uk-text-emphasis uk-text-small uk-margin-bottom"><span uk-icon="comments"></span> <?php echo gtext("Risposta del negozio:");?></div><?php } ?>
