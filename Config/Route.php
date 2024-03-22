@@ -877,6 +877,7 @@ class Route
 		'ticket,setstato',
 		'ticket,nuovo',
 		'thumb,immagineticket',
+		'ticket,salvabozza',
 		
 		'ticketmessaggi,form',
 		

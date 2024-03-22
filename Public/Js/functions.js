@@ -321,7 +321,7 @@ $(document).ready(function(){
 		
 	});
 	
-	if ($(".formClass").length > 0)
+	if ($(".formClass:not(.no-check-modifiche)").length > 0)
 	{
 		$("body").on("change", ".formClass input, .formClass select, .formClass textarea", function(e){
 // 		$(".formClass input, .formClass select, .formClass textarea").change(function(){

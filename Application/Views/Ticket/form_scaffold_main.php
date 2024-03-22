@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <div class='row'>
-	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
+	<form id-ticket="<?php echo $id;?>" id="ancora_form" class="formClass no-check-modifiche" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>#ancora_form" enctype="multipart/form-data">
 		<div class='col-md-4'>
 			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtext("Dati generali ticket");?></h4>
 			
@@ -43,13 +43,14 @@
 			<?php } ?>
 			
 			<div class="submit_entry">
+				<span class="submit_entry_Salva pull-right">
+					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva e invia il ticket");?></button>
+					<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
+				</span>
 				<?php if ($mostra_tendina_prodotti) { ?>
 				<a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$id/".$ticket["ticket_uid"];?>" title="<?php echo gtext("Aggiungi il prodotto al ticket")?>" class="btn btn-primary aggiungi_al_ticket"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi prodotto al ticket");?></a>
 				<?php } ?>
-				<span class="submit_entry_Salva">
-					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva ticket");?></button>
-					<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
-				</span>
+				
 			</div>
 		</div>
 		<div class='col-md-8'>
@@ -113,6 +114,26 @@
 </div>
 
 <script type="text/javascript">
+
+function salvaBozza()
+{
+	var idTicket = $(".formClass").attr("id-ticket");
+	
+	var url = baseUrl + "/ticket/salvabozza/" + idTicket;
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		type: "POST",
+		data: $('.formClass').serialize(),
+		success: function(content){
+
+		}
+	});
+}
+
 $(document).ready(function(){
 	
 	$('[name="id_user"]').on('select2:select', function (e) {
@@ -121,6 +142,10 @@ $(document).ready(function(){
 		
 	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo']", function(e) {
 		reloadPage();
+	});
+	
+	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo'],[name='oggetto'],[name='descrizione']", function(e) {
+		salvaBozza();
 	});
 	
 	$( "body" ).on( "click", ".aggiungi_al_ticket", function(e) {

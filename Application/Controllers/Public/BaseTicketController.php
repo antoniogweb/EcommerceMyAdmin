@@ -294,6 +294,37 @@ class BaseTicketController extends BaseController
 		$this->append($data);
 	}
 	
+	public function salvabozza($idTicket = 0, $ticketUid = "")
+	{
+		$this->clean();
+		
+		if (!isset($_POST))
+			$this->redirect("");
+		
+		$this->checkRedirectLogin();
+		
+		$this->s['registered']->check(null,0);
+		
+		$this->check($idTicket, $ticketUid);
+		
+		if (!$this->m("TicketModel")->isBozza((int)$idTicket))
+			$this->responseCode(403);
+		
+		$ttModel = new TickettipologieModel();
+		$idTipologiaDefault = $ttModel->getFirstIdTipologiaAttiva();
+		
+		$values = array();
+		$values["id_ticket_tipologia"] = $this->request->post("id_ticket_tipologia", $idTipologiaDefault, "forceInt");
+		$values["oggetto"] = $this->request->post("oggetto", "");
+		$values["descrizione"] = $this->request->post("descrizione", "");
+		$values["id_o"] = $this->request->post("id_o", 0, "forceInt");
+		$values["id_lista_regalo"] = $this->request->post("id_lista_regalo", 0, "forceInt");
+		
+		$this->m("TicketModel")->sValues($values);
+		
+		$this->m("TicketModel")->pUpdate((int)$idTicket);
+	}
+	
 	// Dettaglio ticket
 	public function view($idTicket = 0, $ticketUid = "")
 	{
@@ -322,6 +353,7 @@ class BaseTicketController extends BaseController
 		
 			$this->gestisciDettaglio($idTicket);
 		}
+		
 		$data["prodottiInseriti"] = $this->m('TicketpagesModel')->getProdottiInseriti($clean["idTicket"]);
 		
 		$data['numeroProdotti'] = $this->m('TicketpagesModel')->numeroProdotti($clean["idTicket"]);

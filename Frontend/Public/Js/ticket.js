@@ -13,6 +13,26 @@ function reloadFormTicket()
 	$(".form_ticket").submit();
 }
 
+function salvaBozza()
+{
+	var idTicket = $(".form_ticket").attr("id-ticket");
+	var ticketUid = $(".form_ticket").attr("ticket-uid");
+	
+	var url = baseUrl + "/ticket/salvabozza/" + idTicket + "/" + ticketUid;
+	
+	$.ajaxQueue({
+		url: url,
+		async: true,
+		cache:false,
+		dataType: "html",
+		type: "POST",
+		data: $('.form_ticket').serialize(),
+		success: function(content){
+
+		}
+	});
+}
+
 function reloadProdotti()
 {
 	if ($("#tendina_caricamento").length > 0)
@@ -97,6 +117,10 @@ function reloadImmagini(tipo)
 $(document).ready(function(){
 	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo']", function(e) {
 		reloadFormTicket();
+	});
+	
+	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo'],[name='oggetto'],[name='descrizione']", function(e) {
+		salvaBozza();
 	});
 	
 	$( "body" ).on( "click", ".aggiungi_al_ticket", function(e) {
