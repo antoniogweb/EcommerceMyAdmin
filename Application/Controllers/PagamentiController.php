@@ -65,7 +65,9 @@ class PagamentiController extends BaseController
 		
 		$this->aggiungiCodiceGestionale();
 		
-		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
+		$this->m[$this->modelName]->clear()->where(array(
+			"visibile"	=>	1,
+		))->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}
@@ -83,8 +85,10 @@ class PagamentiController extends BaseController
 		
 		if (isset($record["codice"]) && ($record["codice"] == "carta_di_credito" || $record["codice"] == "paypal"))
 			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
+		else if (isset($record["codice"]) && $record["codice"] == "klarna")
+			$fields .= ",test,alias_account,chiave_segreta";
 		
-		if (isset($record["codice"]) && $record["codice"] != "carta_di_credito" && $record["codice"] != "paypal")
+		if (!OrdiniModel::conPagamentoOnline(array("pagamento"=>$record["codice"])))
 			$fields .= ",istruzioni_pagamento";
 		
 		if (v("permetti_ordini_offline"))
@@ -92,6 +96,8 @@ class PagamentiController extends BaseController
 		
 		if (v("attiva_collegamento_gestionali"))
 			$fields .= ",codice_gestionale,codice_pagamento_pa";
+// 		echo $aa;
+// 		echo $fields;die();
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

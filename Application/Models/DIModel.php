@@ -29,6 +29,11 @@ trait DIModel
 		return "modulo";
 	}
 	
+	public function decode()
+	{
+		return false;
+	}
+	
 	public function setTokenSicurezza($id)
 	{
 		$record = $this->selectId((int)$id);
@@ -81,7 +86,7 @@ trait DIModel
 		return $objectReflection->newInstanceArgs();
 	}
 	
-	public static function findModulePath($folder, $className)
+	public function findModulePath($folder, $className)
 	{
 		if (file_exists(LIBRARY."/Application/Modules/".$folder."/".$className.".php"))
 			return LIBRARY."/Application/Modules/".$folder."/".$className.".php";
@@ -126,6 +131,9 @@ trait DIModel
 			
 			if (!empty($attivo))
 			{
+				if ($c->decode())
+					$attivo = htmlentitydecodeDeep($attivo);
+				
 				$path = $c->findModulePath($c->cartellaModulo, $attivo[$nomeCampoClasse]);
 				
 				if ($path != "" && file_exists($path))
@@ -160,6 +168,9 @@ trait DIModel
 		
 		foreach ($attivi as $attivo)
 		{
+			if ($c->decode())
+				$attivo = htmlentitydecodeDeep($attivo);
+			
 			$path = $c->findModulePath($c->cartellaModulo, $attivo[$nomeCampoClasse]);
 			
 			if (file_exists($path))

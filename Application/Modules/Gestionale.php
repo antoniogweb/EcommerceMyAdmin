@@ -24,7 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Gestionale
 {
-	protected $params = "";
+	use Modulo;
+	
+// 	protected $params = "";
 	
 	public static $variabili = null;
 	
@@ -37,15 +39,15 @@ class Gestionale
 		),
 	);
 	
-	public function __construct($record)
-	{
-		$this->params = htmlentitydecodeDeep($record);
-	}
-	
-	public function getParams()
-	{
-		return $this->params;
-	}
+// 	public function __construct($record)
+// 	{
+// 		$this->params = htmlentitydecodeDeep($record);
+// 	}
+// 	
+// 	public function getParams()
+// 	{
+// 		return $this->params;
+// 	}
 	
 	public function gParam1Label()
 	{

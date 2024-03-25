@@ -24,11 +24,24 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class GestionaliModel extends GenericModel {
 	
-	use CrudModel;
+	use DIModel;
 	
 	public static $modulo = null;
 	
 	public static $elencoSezioni = null;
+	
+	public $cartellaModulo = "Gestionali";
+	public $classeModuloPadre = "Gestionale";
+	
+	public function getNomeCampoClasse()
+	{
+		return "classe";
+	}
+	
+	public function decode()
+	{
+		return true;
+	}
 	
 	public function __construct() {
 		$this->_tables='gestionali';
@@ -71,56 +84,56 @@ class GestionaliModel extends GenericModel {
 		return parent::update($id, $where);
 	}
 	
-	public static function getModulo($codice = null)
-	{
-		$i = new GestionaliModel();
-		
-		if (!isset(self::$modulo))
-		{
-			if ($codice)
-				$attivo = $i->clear()->where(array(
-					"codice"	=>	sanitizeDb($codice),
-				))->record();
-			else
-				$attivo = $i->clear()->where(array(
-					"attivo"	=>	1,
-				))->record();
-			
-			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Gestionali/".$attivo["classe"].".php"))
-			{
-				require_once(LIBRARY."/Application/Modules/Gestionale.php");
-				require_once(LIBRARY."/Application/Modules/Gestionali/".$attivo["classe"].".php");
-				
-				$objectReflection = new ReflectionClass($attivo["classe"]);
-				$object = $objectReflection->newInstanceArgs(array($attivo));
-				
-				self::$modulo = $object;
-			}
-		}
-		
-		return $i;
-	}
-	
-	public function __call($metodo, $argomenti)
-	{
-		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
-			return call_user_func_array(array(self::$modulo, $metodo), $argomenti);
-
-		return false;
-	}
+// 	public static function getModulo($codice = null)
+// 	{
+// 		$i = new GestionaliModel();
+// 		
+// 		if (!isset(self::$modulo))
+// 		{
+// 			if ($codice)
+// 				$attivo = $i->clear()->where(array(
+// 					"codice"	=>	sanitizeDb($codice),
+// 				))->record();
+// 			else
+// 				$attivo = $i->clear()->where(array(
+// 					"attivo"	=>	1,
+// 				))->record();
+// 			
+// 			if (!empty($attivo) && file_exists(LIBRARY."/Application/Modules/Gestionali/".$attivo["classe"].".php"))
+// 			{
+// 				require_once(LIBRARY."/Application/Modules/Gestionale.php");
+// 				require_once(LIBRARY."/Application/Modules/Gestionali/".$attivo["classe"].".php");
+// 				
+// 				$objectReflection = new ReflectionClass($attivo["classe"]);
+// 				$object = $objectReflection->newInstanceArgs(array($attivo));
+// 				
+// 				self::$modulo = $object;
+// 			}
+// 		}
+// 		
+// 		return $i;
+// 	}
+// 	
+// 	public function __call($metodo, $argomenti)
+// 	{
+// 		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
+// 			return call_user_func_array(array(self::$modulo, $metodo), $argomenti);
+// 
+// 		return false;
+// 	}
 	
 	public static function integrazioneAttiva()
 	{
 		return self::getModulo()->isAttiva();
 	}
 	
-	public function metodo($metodo)
-	{
-		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
-			return true;
-
-		return false;
-	}
+// 	public function metodo($metodo)
+// 	{
+// 		if (isset(self::$modulo) && method_exists(self::$modulo, $metodo))
+// 			return true;
+// 
+// 		return false;
+// 	}
 	
 	public static function invia($elemento, $id_elemento, $azione = "metodo")
 	{

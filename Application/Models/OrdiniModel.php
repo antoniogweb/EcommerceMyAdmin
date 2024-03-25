@@ -1687,7 +1687,7 @@ class OrdiniModel extends FormModel {
 	
 	public static function conPagamentoOnline($ordine)
 	{
-		if ($ordine["pagamento"] == "paypal" || $ordine["pagamento"] == "carta_di_credito")
+		if ($ordine["pagamento"] == "paypal" || $ordine["pagamento"] == "carta_di_credito" || $ordine["pagamento"] == "klarna")
 			return true;
 		
 		return false;

@@ -56,13 +56,13 @@ $().ready(function() {
 			</div>
 			<?php } ?>
 			
-			<?php if (isset($record["codice"]) && ($record["codice"] == "carta_di_credito" || $record["codice"] == "paypal")) { ?>
+			<?php if (isset($record["codice"]) && OrdiniModel::conPagamentoOnline(array("pagamento"=>$record["codice"]))) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					<?php echo gtext("Parametri carta");?>
 				</div>
 				<div class="panel-body">
-					<?php echo $form["gateway_pagamento"];?>
+					<?php echo $form["gateway_pagamento"] ?? "";?>
 					
 					<?php echo $form["test"];?>
 					

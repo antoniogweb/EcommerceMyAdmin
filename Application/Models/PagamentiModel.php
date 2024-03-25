@@ -179,6 +179,8 @@ class PagamentiModel extends GenericModel {
 	{
 		if ($record["codice"] == "carta_di_credito")
 			return 'Alias Account / Shop ID';
+		else if ($record["codice"] == "klarna")
+			return 'Nome utente API';
 		else
 			return 'PAYPAL CLIENT ID';
 	}
@@ -187,6 +189,8 @@ class PagamentiModel extends GenericModel {
 	{
 		if ($record["codice"] == "carta_di_credito")
 			return 'Chiave segreta / API KEY';
+		else if ($record["codice"] == "klarna")
+			return 'Password API';
 		else
 			return 'PAYPAL SECRET';
 	}

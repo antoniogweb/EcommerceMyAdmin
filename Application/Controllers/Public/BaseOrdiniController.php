@@ -371,6 +371,34 @@ class BaseOrdiniController extends BaseController
 		$this->load("modifica_ordine");
 	}
 	
+	public function topagamento($id_o = 0, $cart_uid = 0)
+	{
+		$this->clean();
+		
+		$clean["cart_uid"] = sanitizeAll($cart_uid);
+		$clean["id_o"] = (int)$id_o;
+		
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
+			$this->redirect("");
+		
+		$ordine = $this->m("OrdiniModel")->clear()
+							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
+							->record();
+		
+		$urlSummary = "resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."?n=y";
+		
+		if (empty($ordine) || $ordine["stato"] != "pending")
+			$this->redirect($urlSummary);
+		
+		$gateway = PagamentiModel::gateway($ordine, true, $ordine["pagamento"]);
+		
+		if (!$gateway->redirect())
+			$this->redirect($urlSummary);
+		
+		
+		$gateway->getUrlPagamento();
+	}
+	
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$data['notice'] = null;
@@ -490,6 +518,11 @@ class BaseOrdiniController extends BaseController
 					die();
 				}
 			}
+		}
+		else if (strcmp($data["ordine"]["pagamento"],"klarna") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
+		{
+			if (isset($_GET["to_paypal"]))
+				$this->redirect("redirect-to-gateway/".$clean["id_o"]."/".$clean["cart_uid"]);
 		}
 
 		$this->append($data);
