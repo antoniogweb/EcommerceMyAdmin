@@ -107,7 +107,7 @@ class TicketController extends BaseController
 				"id_ticket"	=>	$this->viewArgs["id_t"],
 				"stato"		=>	$this->viewArgs["stato"],
 				"id_ticket_tipologia"	=>	$this->viewArgs["id_ticket_tipologia"],
-			))->orderBy("FIELD(stato, 'B', 'L', 'C'),CON_MESSAGGI DESC,ticket_messaggi.id_admin,ticket.id_ticket desc");
+			))->orderBy("FIELD(stato, 'B', 'A', 'L', 'C'),CON_MESSAGGI DESC,ticket_messaggi.id_admin,ticket.id_ticket desc");
 		
 		if ($this->viewArgs['dal'] != "tutti")
 			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(ticket.data_invio, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dal']))));

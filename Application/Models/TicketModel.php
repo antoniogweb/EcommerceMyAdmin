@@ -403,6 +403,9 @@ class TicketModel extends GenericModel
     
     public function campanellaCrud($record)
     {
+		if ($record["ticket"]["stato"] == "C")
+			return "";
+		
 		$htmlCampanella = "<i title='".gtext("Da gestire")."' class='fa fa-bell text text-warning'></i>";
 		
 		if ($record["ticket"]["stato"] == "A")
@@ -450,12 +453,17 @@ class TicketModel extends GenericModel
 			
 			if (checkMail($ticket["regusers"]["username"]))
 			{
+				$nazione = $ticket["regusers"]["nazione_navigazione"] ? strtolower($ticket["regusers"]["nazione_navigazione"]) : strtolower(v("nazione_default"));
+				$linguaUrl = v("attiva_nazione_nell_url") ? $lingua."_".$nazione : $lingua;
+				
+				$templateClienti = (!$ticket["ticket"]["id_admin"]) ? "mail_nuovo_ticket_cliente" : "mail_nuovo_ticket_cliente_da_admin";
+				
 				$valoriMail = array(
 					"emails"	=>	array($ticket["regusers"]["username"]),
 					"oggetto"	=>	$oggetto,
 					"tipologia"	=>	"NUOVO_TICKET",
 					"lingua"	=>	$lingua,
-					"testo_path"=>	"Elementi/Mail/Ticket/mail_nuovo_ticket_cliente.php",
+					"testo_path"=>	"Elementi/Mail/Ticket/$templateClienti.php",
 					"tabella"	=>	"ticket",
 					"id_elemento"	=>	(int)$idTicket,
 					"array_variabili_tema"	=>	array(
@@ -464,6 +472,8 @@ class TicketModel extends GenericModel
 						"OGGETTO_TICKET"	=>	$ticket["ticket"]["oggetto"],
 						"TESTO_TICKET"		=>	$ticket["ticket"]["descrizione"],
 						"NOMINATIVO_CLIENTE"=>	self::getNominativo($ticket["regusers"]),
+						"URL_TICKET"		=>	Domain::$publicUrl."/".$linguaUrl."/ticket/view/$idTicket/".$ticket["ticket"]["ticket_uid"],
+						"LINK_SITO"			=>	Domain::$publicUrl,
 					),
 				);
 				

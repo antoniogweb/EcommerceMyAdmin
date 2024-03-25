@@ -6,6 +6,6 @@
 <div style="padding:10px;background-color:#EEE;">[MESSAGGIO_TICKET]</div>
 
 <br />
-<p><?php echo gtext("Per rispondere al ticket, segua", false);?> <a href="[URL_TICKET]"><?php echo gtext("questo link");?></a>
+<p><?php echo gtext("Per rispondere al ticket, segua", false);?> <a href="[URL_TICKET]"><?php echo gtext("questo link");?></a></p>
 
 <p><?php echo gtext("Cordiali saluti", false);?>.</p> 
