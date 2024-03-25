@@ -66,7 +66,7 @@ class BaseTicketController extends BaseController
 		$clean["id_ticket"] = $this->request->get("del",0,"forceInt");
 		
 		if ($clean["id_ticket"] > 0)
-			$this->m("TicketModel")->del(null, array("id_ticket = ? AND id_user = ? AND stato = 'B'",array($clean["id_ticket"], User::$id)));
+			$this->m("TicketModel")->del(null, array("id_ticket = ? AND id_user = ? AND id_admin = 0 AND stato = 'B'",array($clean["id_ticket"], User::$id)));
 		
 		$data["ticket"] = $this->m('TicketModel')->clear()
 			->select("*")

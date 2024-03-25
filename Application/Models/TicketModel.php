@@ -26,6 +26,8 @@ class TicketModel extends GenericModel
 {
 	use CrudModel;
 	
+	public static $userId = 0;
+	
 	public $campoTitolo = "oggetto";
 	
 	public function __construct() {
@@ -122,12 +124,18 @@ class TicketModel extends GenericModel
 			);
     }
     
+    // Controlla che il ticket esista
     public function check($idTicket, $ticketUid)
     {
-		return $this->clear()->where(array(
+		$ticket = $this->clear()->select("id_user")->where(array(
 			"id_ticket"		=>	(int)$idTicket,
 			"ticket_uid"	=>	sanitizeAll($ticketUid)
-		))->rowNumber();
+		))->record();
+		
+		if (!empty($ticket))
+			self::$userId = (int)$ticket["id_user"];
+		
+		return !empty($ticket) ? true : false;
     }
     
     public function stato($idTicket)
@@ -246,8 +254,13 @@ class TicketModel extends GenericModel
     public function add($whereUser = null)
     {
 		$this->clear()->where(array(
-			"stato"	=>	"B"
+			"stato"	=>	"B",
 		));
+		
+		if (App::$isFrontend)
+			$this->aWhere(array(
+				"id_admin"	=>	0,
+			));
 		
 		if (!isset($whereUser))
 			$whereUser = $this->whereUser();

@@ -51,17 +51,16 @@
 	<hr />
 	<div class="uk-grid-column-large uk-child-width-1-2@s uk-grid uk-margin-bottom-remove" uk-grid>
 		<div>
-			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un'immagine (opzionale)");?></div>
+			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un'immagine (opzionale) - massimo")." ".(v("dimensioni_upload_immagine_ticket")/1000000)." MB";?></div>
 			<div class="box_immagini box_immagini_immagine">
 				<?php
 				$files = $immagini;
 				$tipo = "IMMAGINE";
 				include (tpf("Ticket/immagini.php"));?>
 			</div>
-			
 		</div>
 		<div>
-			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica la foto dello scontrino (opzionale)");?></div>
+			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica la foto dello scontrino (opzionale) - massimo")." ".(v("dimensioni_upload_immagine_ticket")/1000000)." MB";?></div>
 			<div class="box_immagini box_immagini_scontrino">
 				<?php
 				$files = $scontrini;
@@ -71,7 +70,7 @@
 		</div>
 	</div>
     <hr />
-    <div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un video (opzionale)");?></div>
+    <div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un video (opzionale) - massimo")." ".(v("dimensioni_upload_video_ticket")/1000000)." MB";?></div>
     <div class="box_immagini box_immagini_video">
 		<?php
 		$files = $video;

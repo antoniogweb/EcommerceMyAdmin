@@ -100,7 +100,9 @@ class TicketController extends BaseController
 					"ne"	=>	array(
 						"stato"	=>	"B",
 					),
-					"id_admin"	=>	(int)User::$id,
+					" ne"	=>	array(
+						"id_admin"	=>	"0",
+					),
 				),
 				"id_ticket"	=>	$this->viewArgs["id_t"],
 				"stato"		=>	$this->viewArgs["stato"],

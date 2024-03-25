@@ -146,4 +146,9 @@ class UsersModel extends GenericModel {
 		
 		return "- -";
 	}
+	
+	public static function getUsername($id)
+	{
+		return self::g()->whereId((int)$id)->field("username");
+	}
 }

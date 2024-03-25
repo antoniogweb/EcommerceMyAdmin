@@ -110,11 +110,18 @@ class NotificheModel extends GenericModel {
 		{
 			$n = new NotificheModel();
 			
-			$n->setValues(array(
-				"risolta"	=>	1,
-			));
+			$notifica = $n->selectId((int)$_GET["id_notifica"]);
 			
-			$n->update((int)$_GET["id_notifica"]);
+			if (!empty($notifica))
+			{
+				$n->setValues(array(
+					"risolta"	=>	1,
+				));
+				
+				$n->update(null, array(
+					"url"	=>	sanitizeAll($notifica["url"]),
+				));
+			}
 		}
 	}
 }

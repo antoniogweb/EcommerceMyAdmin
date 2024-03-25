@@ -52,7 +52,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<a class="td_edit" title="<?php echo gtext("Vai al dettaglio",false);?>" class="" href="<?php echo $this->baseUrl."/ticket/view/".$t["ticket"]["id_ticket"]."/".$t["ticket"]["ticket_uid"];?>">
 					<span class="uk-icon uk-text-secondary"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
 				</a>
-				<?php if ($t["ticket"]["stato"] == "B") { ?>
+				<?php if ($t["ticket"]["stato"] == "B" && !$t["ticket"]["id_admin"]) { ?>
 				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger del_ticket" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/ticket/?del=".$t["ticket"]["id_ticket"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
 				<?php } ?>
 			</div>

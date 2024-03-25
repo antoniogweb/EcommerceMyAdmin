@@ -85,7 +85,7 @@ class TicketmessaggiModel extends GenericModel
 	public function insert()
 	{
 		if (App::$isFrontend)
-			$this->values["id_user"] = (int)User::$id;
+			$this->values["id_user"] = User::$id ? (int)User::$id : (int)TicketModel::$userId;
 		else
 			$this->values["id_admin"] = (int)User::$id;
 		
