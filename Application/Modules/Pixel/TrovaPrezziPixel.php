@@ -91,6 +91,9 @@ class TrovaPrezziPixel extends Pixel
 				"codice_evento_noscript"	=>	$res,
 			));
 		
+		if (!isset($res))
+			$res = "";
+		
 		return $res;
 	}
 	
