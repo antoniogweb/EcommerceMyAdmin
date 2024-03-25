@@ -336,6 +336,7 @@ class TicketController extends BaseController
 		$idTipologiaDefault = $ttModel->getFirstIdTipologiaAttiva();
 		
 		$values = array();
+		$values["id_user"] = $this->request->post("id_user", 0, "forceInt");
 		$values["id_ticket_tipologia"] = $this->request->post("id_ticket_tipologia", $idTipologiaDefault, "forceInt");
 		$values["oggetto"] = $this->request->post("oggetto", "");
 		$values["descrizione"] = $this->request->post("descrizione", "");

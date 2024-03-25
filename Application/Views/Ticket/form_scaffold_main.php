@@ -8,48 +8,55 @@
 			<?php if (isset($form["id_user"])) { ?>
 				<?php echo $form["id_user"];?>
 			<?php } ?>
+			
+			<div class="well">
+				<?php echo $form["id_ticket_tipologia"];?>
+				<?php echo $form["id_o"] ?? "";?>
+				<?php echo $form["id_lista_regalo"] ?? "";?>
+				
+				<?php if ($mostra_tendina_prodotti) { ?>
+				<label class="uk-form-label"><?php echo gtext("Seleziona il prodotto");?> *</label>
+				<div class="uk-form-controls"><?php echo Html_Form::select("id_page",0,$prodotti,"form-control class_id_page",null,"yes");?></div>
+				<br />
+				<label class="uk-form-label"><?php echo gtext("Scrivi il numero seriale del prodotto");?></label>
+				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","form-control class_numero_seriale",null,"placeholder='".gtext("Numero seriale", false)."'");?></div>
+				
+	<!-- 			<br /> -->
+				
+<!-- 				<hr /> -->
+				<?php } ?>
+				
+				<?php if (count($prodottiInseriti) > 0) { ?>
+				<div class="uk-overflow-auto">
+					<br />
+					<table class="table table-striped" cellspacing="0">
+						<?php foreach ($prodottiInseriti as $p) { ?>
+						<tr class="ordini_table_row uk-text-small">
+							<td><img style="max-width:60px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineinlistaprodotti/".$p["pages"]["id_page"]."/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>"></td>
+							<td><?php echo field($p, "title");?><br /><?php echo gtext("N.Seriale");?>: <b><?php echo $p["ticket_pages"]["numero_seriale"] ? $p["ticket_pages"]["numero_seriale"] : "--" ;?></b></td>
+							<td class="text-right">
+								<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="text_16 elimina_dal_tiket make_spinner text text-danger" title="<?php echo gtext("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$id/".$ticket["ticket_uid"];?>"><i class="fa fa-trash"></i></a>
+							</td>
+						</tr>
+						<?php } ?>
+					</table>
+				</div>
+				<?php } ?>
+				
+				<?php if ($mostra_tendina_prodotti) { ?>
+				<br /><a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$id/".$ticket["ticket_uid"];?>" title="<?php echo gtext("Aggiungi il prodotto al ticket")?>" class="btn btn-primary aggiungi_al_ticket"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi prodotto al ticket");?></a>
+				<?php } ?>
+			</div>
+			
 			<?php echo $form["oggetto"];?>
 			<?php echo $form["descrizione"];?>
-			<?php echo $form["id_ticket_tipologia"];?>
-			<?php echo $form["id_o"] ?? "";?>
-			<?php echo $form["id_lista_regalo"] ?? "";?>
-			
-			<?php if ($mostra_tendina_prodotti) { ?>
-			<label class="uk-form-label"><?php echo gtext("Seleziona il prodotto");?> *</label>
-			<div class="uk-form-controls"><?php echo Html_Form::select("id_page",0,$prodotti,"form-control class_id_page",null,"yes");?></div>
-			<br />
-			<label class="uk-form-label"><?php echo gtext("Scrivi il numero seriale del prodotto");?></label>
-			<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","form-control class_numero_seriale",null,"placeholder='".gtext("Numero seriale", false)."'");?></div>
-			
-<!-- 			<br /> -->
-			
-			<hr />
-			<?php } ?>
-			
-			<?php if (count($prodottiInseriti) > 0) { ?>
-			<div class="uk-overflow-auto">
-				<table class="table table-striped" cellspacing="0">
-					<?php foreach ($prodottiInseriti as $p) { ?>
-					<tr class="ordini_table_row uk-text-small">
-						<td><img style="max-width:60px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineinlistaprodotti/".$p["pages"]["id_page"]."/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>"></td>
-						<td><?php echo field($p, "title");?><br /><?php echo gtext("N.Seriale");?>: <b><?php echo $p["ticket_pages"]["numero_seriale"] ? $p["ticket_pages"]["numero_seriale"] : "--" ;?></b></td>
-						<td class="text-right">
-							<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="text_16 elimina_dal_tiket make_spinner text text-danger" title="<?php echo gtext("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$id/".$ticket["ticket_uid"];?>"><i class="fa fa-trash"></i></a>
-						</td>
-					</tr>
-					<?php } ?>
-				</table>
-			</div>
-			<?php } ?>
 			
 			<div class="submit_entry">
 				<span class="submit_entry_Salva pull-right">
 					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo $isBozza ? gtext("Salva e invia il ticket") : gtext("Salva il ticket");?></button>
 					<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 				</span>
-				<?php if ($mostra_tendina_prodotti) { ?>
-				<a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$id/".$ticket["ticket_uid"];?>" title="<?php echo gtext("Aggiungi il prodotto al ticket")?>" class="btn btn-primary aggiungi_al_ticket"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi prodotto al ticket");?></a>
-				<?php } ?>
+				
 				
 			</div>
 		</div>
@@ -144,7 +151,7 @@ $(document).ready(function(){
 		reloadPage();
 	});
 	
-	$( "body" ).on( "change", "[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo'],[name='oggetto'],[name='descrizione']", function(e) {
+	$( "body" ).on( "change", "[name='id_user'],[name='id_ticket_tipologia'],[name='id_o'],[name='id_lista_regalo'],[name='oggetto'],[name='descrizione']", function(e) {
 		salvaBozza();
 	});
 	
@@ -159,6 +166,8 @@ $(document).ready(function(){
 		
 		if (id_page != 0)
 		{
+			makeSpinner($(this));
+			
 			$.ajaxQueue({
 				url: url,
 				async: true,
