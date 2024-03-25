@@ -96,8 +96,6 @@ class PagamentiController extends BaseController
 		
 		if (v("attiva_collegamento_gestionali"))
 			$fields .= ",codice_gestionale,codice_pagamento_pa";
-// 		echo $aa;
-// 		echo $fields;die();
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
