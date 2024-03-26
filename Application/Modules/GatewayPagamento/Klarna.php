@@ -64,9 +64,9 @@ class Klarna
 		return str_replace(".","",$importo);
 	}
 	
-	protected function callUrl($url, $data, $tipo)
+	protected function callUrl($url, $data, $tipo, $metodo = "POST")
 	{
-		$klarnaUrl = $this->requestUrl."/".ltrim($url,"/"); //"https://api.playground.klarna.com/payments/v1/sessions";
+		$klarnaUrl = $this->requestUrl."/".ltrim($url,"/");
 		
 		$ch = curl_init($klarnaUrl);
 		
@@ -77,10 +77,13 @@ class Klarna
 		
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));                                                                                                                 
+		if ($metodo == "POST")
+		{
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));                                                                                                                 
+		}
 		
 		$result = curl_exec($ch);
 		curl_close($ch);
@@ -189,54 +192,6 @@ class Klarna
 	public function getUrlPagamento()
 	{
 		return $this->creaSessione();
-		
-// 		$notifyUrl = $this->notifyUrl;
-// 		$importo = str_replace(".","",$this->ordine["total"]);
-// 		
-// 		// Parametri facoltativi
-// 		$facoltativi = array(
-// 			'mail' => $this->ordine["email"],
-// 			'languageId' => "ITA",
-// 			'descrizione' => "Ordine ".$this->ordine["id_o"],
-// 			"nome"	=>	$this->ordine["nome"],
-// 			"cognome"	=>	$this->ordine["cognome"],
-// 			'OPTION_CF' => $this->ordine["codice_fiscale"],
-// 			'urlpost' => $notifyUrl,
-// 		);
-// 		
-// 		$this->urlPagamento = $this->creaUrlPagamento($this->ordine["codice_transazione"], $importo, "EUR", $facoltativi);
-// 		
-// 		return $this->urlPagamento;
-	}
-	
-	public function creaUrlPagamento($codiceTransazione, $importo, $divisa = "EUR", $facoltativi = array())
-	{
-// 		$codTrans = $codiceTransazione;
-// 
-// 		// Calcolo MAC
-// 		$mac = sha1('codTrans=' . $codTrans . 'divisa=' . $divisa . 'importo=' . $importo . $this->CHIAVESEGRETA);
-// 
-// 		// Parametri obbligatori
-// 		$obbligatori = array(
-// 			'alias' => $this->ALIAS,
-// 			'importo' => $importo,
-// 			'divisa' => $divisa,
-// 			'codTrans' => $codTrans,
-// 			'url' => $this->merchantServerUrl . "/" . $this->okUrl,
-// 			'url_back' => $this->merchantServerUrl . "/" . $this->errorUrl,
-// 			'mac' => $mac,   
-// 		);
-// 
-// 		$requestParams = array_merge($obbligatori, $facoltativi);
-// 
-// 		$aRequestParams = array();
-// 		foreach ($requestParams as $param => $value) {
-// 			$aRequestParams[] = $param . "=" . $value;
-// 		}
-// 
-// 		$stringRequestParams = implode("&", $aRequestParams);
-// 
-// 		return $this->requestUrl . "?" . $stringRequestParams;
 	}
 	
 	public function scriviLog($success, $scriviSuFileLog = true)
@@ -300,9 +255,7 @@ class Klarna
 	
 	public function checkOrdine()
 	{
-		
-		
-		return false;
+		return true;
 	}
 	
 	public function amountPagato()
