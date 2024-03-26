@@ -22,19 +22,19 @@
 
 class Klarna
 {
-	public $username = "";
-	public $password = "";
+	private $token = "";
+	
 	public $requestUrl = "";
 	public $merchantServerUrl = "";
-// 	public $okUrl = "";
-// 	public $errorUrl = "";
-// 	public $notifyUrl = "";
+
 // 	public $statoNotifica = "";
 // 	public $statoCheckOrdine = "";
 	
 	private $urlPagamento = null;
-// 	private $logFile = "";
+	
 	private $ordine = null;
+	private $clientToken = "";
+	private $sessionId = "";
 	
 	public function __construct($ordine = array())
 	{
@@ -44,8 +44,7 @@ class Klarna
 		
 		$pagamento = htmlentitydecodeDeep($pagamento);
 		
-		$this->username = $pagamento["chiave_segreta"];
-		$this->password = $pagamento["alias_account"];
+		$this->token = base64_encode($pagamento["alias_account"].":".$pagamento["chiave_segreta"]);
 		
 		if ((int)$pagamento["test"])
 			$this->requestUrl = "https://api.playground.klarna.com";
@@ -55,91 +54,144 @@ class Klarna
 		$this->merchantServerUrl = Domain::$name;
 		
 		if (!empty($ordine) && isset($ordine["cart_uid"]))
-		{
-// 			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
-// 			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
-// 			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["cart_uid"];
 			$this->ordine = htmlentitydecodeDeep($ordine);
-		}
-		
-// 		$this->logFile = ROOT."/Logs/.ipnklarna_results.log";
 	}
 	
+	protected function setImporto($importo)
+	{
+		$importo = number_format($importo,2,".","");
+		
+		return str_replace(".","",$importo);
+	}
+	
+	protected function callUrl($url, $data, $tipo, $metodo = "POST")
+	{
+		$klarnaUrl = $this->requestUrl."/".ltrim($url,"/");
+		
+		$ch = curl_init($klarnaUrl);
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			"Content-Type: application/json",
+			"Authorization: Basic ".$this->token
+		));
+		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		
+		if ($metodo == "POST")
+		{
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));                                                                                                                 
+		}
+		
+		$result = curl_exec($ch);
+		curl_close($ch);
+		
+		$array = json_decode($result, true); 
+		
+		$risultato = isset($array["session_id"]) ? "OK" : "KO";
+		
+		$logSubmit = new LogModel();
+		$logSubmit->setFullLog($result);
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->ordine["cart_uid"]);
+		$logSubmit->write($tipo, $risultato, true);
+		
+		return $array;
+	}
+	
+	// Crea una sessione Klarna
 	protected function creaSessione()
 	{
 		$strutturaOrdine = GestionaliModel::getModuloPadre()->infoOrdine((int)$this->ordine["id_o"]);
+		
+		$orderLines = array();
+		
+		foreach ($strutturaOrdine["righe"] as $riga)
+		{
+			$orderLines[] = array(
+				"reference"	=>	$riga["codice"],
+				"name"		=>	$riga["titolo"],
+				"quantity"	=>	$riga["quantity"],
+				"unit_price"=>	$this->setImporto($riga["prezzo_finale_ivato"]),
+				"total_amount"	=>	$this->setImporto($riga["quantity"] * $riga["prezzo_finale_ivato"]),
+			);
+		}
+		
+		$valori = array(
+			"purchase_country"	=>	$strutturaOrdine["nazione"],
+			"purchase_currency"	=>	"EUR",
+			"locale"			=>	$this->ordine["lingua"]."-".$this->ordine["nazione_navigazione"],
+			"order_amount"		=>	$this->setImporto($strutturaOrdine["total"]),
+			"order_tax_amount"	=>	0,
+			"order_lines"		=>	$orderLines,
+			"billing_address"	=>	array(
+				"given_name"	=>	$strutturaOrdine["ragione_sociale"] ? $strutturaOrdine["ragione_sociale"] : $strutturaOrdine["nome"],
+				"email"			=>	$strutturaOrdine["email"],
+				"street_address"=>	$strutturaOrdine["indirizzo"],
+				"street_address2"	=>	"",
+				"postal_code"	=>	$strutturaOrdine["cap"],
+				"phone"			=>	$strutturaOrdine["telefono"],
+				"country"		=>	$strutturaOrdine["nazione"],
+				"city"			=>	$strutturaOrdine["citta"],
+// 				"region"		=>	$strutturaOrdine["provincia"],
+			),
+		);
+		
+		if ($strutturaOrdine["cognome"])
+			$valori["billing_address"]["family_name"] = $strutturaOrdine["cognome"];
+		
+		$result = $this->callUrl("payments/v1/sessions", $valori, "SESSIONE_KP");
+		
+		if (isset($result["client_token"]) && isset($result["session_id"]))
+		{
+			$this->clientToken = $result["client_token"];
+			$this->sessionId = $result["session_id"];
+			
+			$valori = array(
+				"payment_session_url"	=>	$this->requestUrl."/payments/v1/sessions/".$this->sessionId,
+				"merchant_urls"			=>	array(
+					"success"	=>	Url::getRoot()."grazie-per-l-acquisto-klarna?cart_uid=".$this->ordine["cart_uid"],
+					"cancel"	=>	Url::getRoot()."ordini/annullapagamento/klarna/".$this->ordine["cart_uid"],
+					"back"		=>	Url::getRoot()."resoconto-acquisto/".$this->ordine["id_o"]."/".$this->ordine["cart_uid"]."?n=y",
+					"failure"	=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
+					"error"		=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
+				),
+				"options"	=>	array(
+					"page_title"		=>	gtext("Completa il tuo acquisto"),
+					"place_order_mode"	=>	"CAPTURE_ORDER",
+					"purchase_type"		=>	"BUY",
+					"show_subtotal_detail"	=>	"HIDE",
+				),
+			);
+			
+			$result = $this->callUrl("hpp/v1/sessions", $valori, "SESSIONE_HPP");
+			
+			if (isset($result["redirect_url"]))
+				return $result["redirect_url"];
+		}
+		
+		return false;
 	}
 	
 	public function getPulsantePaga()
 	{
-// 		if (!$this->urlPagamento)
-// 			$this->getUrlPagamento();
-// 		
-// 		$urlPagamento = $this->urlPagamento;
-// 		
-// 		$path = tpf("/Elementi/Pagamenti/Pulsanti/nexi.php");
-// 		
-// 		if (file_exists($path))
-// 		{
-// 			ob_start();
-// 			include $path;
-// 			$pulsante = ob_get_clean();
-// 		}
-// 		
-// 		return $pulsante;
+		$path = tpf("/Elementi/Pagamenti/Pulsanti/klarna.php");
+		
+		if (file_exists($path))
+		{
+			ob_start();
+			include $path;
+			$pulsante = ob_get_clean();
+		}
+		
+		return $pulsante;
 	}
 	
 	public function getUrlPagamento()
 	{
-		$this->creaSessione();
-		
-// 		$notifyUrl = $this->notifyUrl;
-// 		$importo = str_replace(".","",$this->ordine["total"]);
-// 		
-// 		// Parametri facoltativi
-// 		$facoltativi = array(
-// 			'mail' => $this->ordine["email"],
-// 			'languageId' => "ITA",
-// 			'descrizione' => "Ordine ".$this->ordine["id_o"],
-// 			"nome"	=>	$this->ordine["nome"],
-// 			"cognome"	=>	$this->ordine["cognome"],
-// 			'OPTION_CF' => $this->ordine["codice_fiscale"],
-// 			'urlpost' => $notifyUrl,
-// 		);
-// 		
-// 		$this->urlPagamento = $this->creaUrlPagamento($this->ordine["codice_transazione"], $importo, "EUR", $facoltativi);
-// 		
-// 		return $this->urlPagamento;
-	}
-	
-	public function creaUrlPagamento($codiceTransazione, $importo, $divisa = "EUR", $facoltativi = array())
-	{
-// 		$codTrans = $codiceTransazione;
-// 
-// 		// Calcolo MAC
-// 		$mac = sha1('codTrans=' . $codTrans . 'divisa=' . $divisa . 'importo=' . $importo . $this->CHIAVESEGRETA);
-// 
-// 		// Parametri obbligatori
-// 		$obbligatori = array(
-// 			'alias' => $this->ALIAS,
-// 			'importo' => $importo,
-// 			'divisa' => $divisa,
-// 			'codTrans' => $codTrans,
-// 			'url' => $this->merchantServerUrl . "/" . $this->okUrl,
-// 			'url_back' => $this->merchantServerUrl . "/" . $this->errorUrl,
-// 			'mac' => $mac,   
-// 		);
-// 
-// 		$requestParams = array_merge($obbligatori, $facoltativi);
-// 
-// 		$aRequestParams = array();
-// 		foreach ($requestParams as $param => $value) {
-// 			$aRequestParams[] = $param . "=" . $value;
-// 		}
-// 
-// 		$stringRequestParams = implode("&", $aRequestParams);
-// 
-// 		return $this->requestUrl . "?" . $stringRequestParams;
+		return $this->creaSessione();
 	}
 	
 	public function scriviLog($success, $scriviSuFileLog = true)
@@ -181,9 +233,13 @@ class Klarna
 		
 	}
 	
+	public function validateRitorno()
+	{
+		return true;
+	}
+	
 	public function validate($scriviSuFileLog = true)
 	{
-		
 		return false;
 	}
 	
@@ -199,9 +255,7 @@ class Klarna
 	
 	public function checkOrdine()
 	{
-		
-		
-		return false;
+		return true;
 	}
 	
 	public function amountPagato()

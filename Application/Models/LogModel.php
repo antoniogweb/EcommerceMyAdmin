@@ -32,6 +32,7 @@ class LogModel extends GenericModel
 	private $spam = false;
 	private $userAgent = false;
 	private $fullLog = "";
+	private $svuota = 1;
 	
 	private static $deletedExpired = false;
 	
@@ -64,7 +65,7 @@ class LogModel extends GenericModel
 		if (!self::$deletedExpired)
 		{
 			$limit = time() - (v("tempo_log_ore") * 3600); 
-			$this->db->del($this->_tables,'time_inserimento < '.(int)$limit);
+			$this->db->del($this->_tables,'svuota = 1 AND time_inserimento < '.(int)$limit);
 			self::$deletedExpired = true;
 		}
 	}
@@ -87,6 +88,11 @@ class LogModel extends GenericModel
 	public function setFullLog($fullLog)
 	{
 		$this->fullLog = $fullLog;
+	}
+	
+	public function setSvuota($svuota)
+	{
+		$this->svuota = $svuota;
 	}
 	
 	public function setCartUid($cartUid)
@@ -113,6 +119,7 @@ class LogModel extends GenericModel
 				"time_inserimento"	=>	time(),
 				"user_agent"	=>	$this->userAgent,
 				"full_log"	=>	$this->fullLog,
+				"svuota"	=>	$this->svuota,
 			), "sanitizeDb");
 			
 			$res = $this->insert();
