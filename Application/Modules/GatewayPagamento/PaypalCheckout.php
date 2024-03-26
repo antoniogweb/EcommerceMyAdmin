@@ -151,6 +151,7 @@ class PaypalCheckout
 				
 				$logSubmit = new LogModel();
 				$logSubmit->setFullLog($output);
+				$logSubmit->setSvuota(0);
 				$logSubmit->setCartUid($this->ordine["cart_uid"]);
 				$logSubmit->write("PAYPAL_CAPTURE_ORDER", $ris ? "OK" : "KO", true);
 			}
@@ -235,6 +236,7 @@ class PaypalCheckout
 			
 			$logSubmit = new LogModel();
 			$logSubmit->setFullLog($fullLog);
+			$logSubmit->setSvuota(0);
 			$logSubmit->setCartUid($this->ordine["cart_uid"]);
 			
 			if (isset($result["id"]))

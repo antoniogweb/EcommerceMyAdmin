@@ -22,8 +22,8 @@
 
 class Klarna
 {
-	public $username = "";
-	public $password = "";
+	private $token = "";
+	
 	public $requestUrl = "";
 	public $merchantServerUrl = "";
 // 	public $okUrl = "";
@@ -33,8 +33,10 @@ class Klarna
 // 	public $statoCheckOrdine = "";
 	
 	private $urlPagamento = null;
-// 	private $logFile = "";
+	
 	private $ordine = null;
+	private $clientToken = "";
+	private $sessionId = "";
 	
 	public function __construct($ordine = array())
 	{
@@ -44,8 +46,9 @@ class Klarna
 		
 		$pagamento = htmlentitydecodeDeep($pagamento);
 		
-		$this->username = $pagamento["chiave_segreta"];
-		$this->password = $pagamento["alias_account"];
+// 		print_r($pagamento);die();
+		
+		$this->token = base64_encode($pagamento["alias_account"].":".$pagamento["chiave_segreta"]);
 		
 		if ((int)$pagamento["test"])
 			$this->requestUrl = "https://api.playground.klarna.com";
@@ -65,9 +68,123 @@ class Klarna
 // 		$this->logFile = ROOT."/Logs/.ipnklarna_results.log";
 	}
 	
+	protected function setImporto($importo)
+	{
+		$importo = number_format($importo,2,".","");
+		
+		return str_replace(".","",$importo);
+	}
+	
+	protected function callUrl($url, $data, $tipo)
+	{
+		$klarnaUrl = $this->requestUrl."/".ltrim($url,"/"); //"https://api.playground.klarna.com/payments/v1/sessions";
+		
+		$ch = curl_init($klarnaUrl);
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			"Content-Type: application/json",
+			"Authorization: Basic ".$this->token
+		));
+		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));                                                                                                                 
+		
+		$result = curl_exec($ch);
+		curl_close($ch);
+		
+		$array = json_decode($result, true); 
+		
+		$risultato = isset($array["session_id"]) ? "OK" : "KO";
+		
+		$logSubmit = new LogModel();
+		$logSubmit->setFullLog($result);
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->ordine["cart_uid"]);
+		$logSubmit->write($tipo, $risultato, true);
+		
+		return $array;
+	}
+	
+	// Crea una sessione Klarna
 	protected function creaSessione()
 	{
 		$strutturaOrdine = GestionaliModel::getModuloPadre()->infoOrdine((int)$this->ordine["id_o"]);
+		
+		$orderLines = array();
+		
+		foreach ($strutturaOrdine["righe"] as $riga)
+		{
+			$orderLines[] = array(
+				"reference"	=>	$riga["codice"],
+				"name"		=>	$riga["titolo"],
+				"quantity"	=>	$riga["quantity"],
+				"unit_price"=>	$this->setImporto($riga["prezzo_finale_ivato"]),
+				"total_amount"	=>	$this->setImporto($riga["quantity"] * $riga["prezzo_finale_ivato"]),
+			);
+		}
+		
+		$valori = array(
+			"purchase_country"	=>	$strutturaOrdine["nazione"],
+			"purchase_currency"	=>	"EUR",
+			"locale"			=>	$this->ordine["lingua"]."-".$this->ordine["nazione_navigazione"],
+			"order_amount"		=>	$this->setImporto($strutturaOrdine["total"]),
+			"order_tax_amount"	=>	0,
+			"order_lines"		=>	$orderLines,
+			"billing_address"	=>	array(
+				"given_name"	=>	$strutturaOrdine["ragione_sociale"] ? $strutturaOrdine["ragione_sociale"] : $strutturaOrdine["nome"],
+				"email"			=>	$strutturaOrdine["email"],
+				"street_address"=>	$strutturaOrdine["indirizzo"],
+				"postal_code"	=>	$strutturaOrdine["cap"],
+				"phone"			=>	$strutturaOrdine["telefono"],
+				"country"		=>	$strutturaOrdine["nazione"],
+			),
+		);
+		
+		if ($strutturaOrdine["cognome"])
+			$valori["billing_address"]["family_name"] = $strutturaOrdine["cognome"];
+		
+// 		print_r($valori);die();
+		
+		$result = $this->callUrl("payments/v1/sessions", $valori, "SESSIONE_KP");
+		
+// 		$result = array(
+// 			"client_token"	=>	"eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyMzA1ZWJjLWI4MTEtMzYzNy1hYTRjLTY2ZWNhMTg3NGYzZCJ9.eyJzZXNzaW9uX2lkIjoiYzViNDNhZDMtYzgwZS01OGRlLTg2MTgtYjI4ZWRhOWUwNGM3IiwiYmFzZV91cmwiOiJodHRwczovL2pzLnBsYXlncm91bmQua2xhcm5hLmNvbS9ldS9rcCIsImRlc2lnbiI6ImtsYXJuYSIsImxhbmd1YWdlIjoiaXQiLCJwdXJjaGFzZV9jb3VudHJ5IjoiSVQiLCJlbnZpcm9ubWVudCI6InBsYXlncm91bmQiLCJtZXJjaGFudF9uYW1lIjoiWW91ciBidXNpbmVzcyBuYW1lIiwic2Vzc2lvbl90eXBlIjoiUEFZTUVOVFMiLCJjbGllbnRfZXZlbnRfYmFzZV91cmwiOiJodHRwczovL2V1LnBsYXlncm91bmQua2xhcm5hZXZ0LmNvbSIsInNjaGVtZSI6dHJ1ZSwiZXhwZXJpbWVudHMiOlt7Im5hbWUiOiJrcC1jbGllbnQtb25lLXB1cmNoYXNlLWZsb3ciLCJ2YXJpYXRlIjoidmFyaWF0ZS0xIn0seyJuYW1lIjoia3BjLTFrLXNlcnZpY2UiLCJ2YXJpYXRlIjoidmFyaWF0ZS0xIn0seyJuYW1lIjoia3AtY2xpZW50LXV0b3BpYS1zdGF0aWMtd2lkZ2V0IiwidmFyaWF0ZSI6ImluZGV4IiwicGFyYW1ldGVycyI6eyJkeW5hbWljIjoidHJ1ZSJ9fSx7Im5hbWUiOiJrcC1jbGllbnQtdXRvcGlhLWZsb3ciLCJ2YXJpYXRlIjoidmFyaWF0ZS0xIn0seyJuYW1lIjoiaW4tYXBwLXNkay1uZXctaW50ZXJuYWwtYnJvd3NlciIsInBhcmFtZXRlcnMiOnsidmFyaWF0ZV9pZCI6Im5ldy1pbnRlcm5hbC1icm93c2VyLWVuYWJsZSJ9fSx7Im5hbWUiOiJrcC1jbGllbnQtdXRvcGlhLXNkay1mbG93IiwidmFyaWF0ZSI6InZhcmlhdGUtMSJ9LHsibmFtZSI6ImtwLWNsaWVudC11dG9waWEtd2Vidmlldy1mbG93IiwidmFyaWF0ZSI6InZhcmlhdGUtMSJ9LHsibmFtZSI6ImluLWFwcC1zZGstY2FyZC1zY2FubmluZyIsInBhcmFtZXRlcnMiOnsidmFyaWF0ZV9pZCI6ImNhcmQtc2Nhbm5pbmctZW5hYmxlIn19XSwicmVnaW9uIjoiZXUiLCJvcmRlcl9hbW91bnQiOjEwNTUwLCJvZmZlcmluZ19vcHRzIjowLCJvbyI6Ijg4IiwidmVyc2lvbiI6InYxLjEwLjAtMTU5MC1nM2ViYzM5MDciLCJhIjowfQ.Osi2cOqwv9ofi648D-K5HrQxT6T40ROnr7hQnqpNBvuIkgGq23kvMMjsevaq9IofdrVnmMh8k87F7aaVKmALfqr9yYJ6HQPvkYxotrl3FD2nutBbfcRZEflCErirIfK2eMxABdJEaU68ADcWD1BKxgNxPnpQSoh1O4aMimRQhcMFdQRlBTm9bz5jgYGoWUEOpHssaVuqsEi6SxnZyx9dQarnCo0YQ46joYuGquVFWPcQ-uv9lVMjk7Tm2E99n2r5L8lmlGser0vk2CkLfb7vTKHuj5jVmIczjw7uszeZFFiY8M8EH1CmvyzCDN2f8Xwxl_yPSAwFzGzTmVMGZnvjhw",
+// 			"session_id"	=>	"c5b43ad3-c80e-58de-8618-b28eda9e04c7",
+// 		);
+		
+		if (isset($result["client_token"]) && isset($result["session_id"]))
+		{
+			$this->clientToken = $result["client_token"];
+			$this->sessionId = $result["session_id"];
+			
+			$valori = array(
+				"payment_session_url"	=>	$this->requestUrl."/payments/v1/sessions/".$this->sessionId,
+				"merchant_urls"			=>	array(
+					"success"	=>	Url::getRoot()."grazie-per-l-acquisto-klarna?cart_uid=".$this->ordine["cart_uid"],
+					"cancel"	=>	Url::getRoot()."ordini/annullapagamento/klarna/".$this->ordine["cart_uid"],
+					"back"		=>	Url::getRoot()."resoconto-acquisto/".$this->ordine["id_o"]."/".$this->ordine["cart_uid"]."?n=y",
+					"failure"	=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
+					"error"		=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
+				),
+				"options"	=>	array(
+					"page_title"		=>	gtext("Completa il tuo acquisto"),
+					"place_order_mode"	=>	"CAPTURE_ORDER",
+					"purchase_type"		=>	"BUY",
+					"show_subtotal_detail"	=>	"HIDE",
+				),
+			);
+			
+			$result = $this->callUrl("hpp/v1/sessions", $valori, "SESSIONE_HPP");
+			
+			if (isset($result["redirect_url"]))
+				return $result["redirect_url"];
+		}
+		
+		return false;
 	}
 	
 	public function getPulsantePaga()
@@ -91,7 +208,7 @@ class Klarna
 	
 	public function getUrlPagamento()
 	{
-		$this->creaSessione();
+		return $this->creaSessione();
 		
 // 		$notifyUrl = $this->notifyUrl;
 // 		$importo = str_replace(".","",$this->ordine["total"]);

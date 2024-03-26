@@ -395,8 +395,17 @@ class BaseOrdiniController extends BaseController
 		if (!$gateway->redirect())
 			$this->redirect($urlSummary);
 		
+		$urlPagamento = $gateway->getUrlPagamento();
 		
-		$gateway->getUrlPagamento();
+// 		var_dump($urlPagamento);die();
+		
+		if ($urlPagamento != false)
+		{
+			header('Location: '.$urlPagamento);
+			die();
+		}
+		else
+			$this->redirect($urlSummary);
 	}
 	
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
@@ -682,6 +691,37 @@ class BaseOrdiniController extends BaseController
 		$this->redirect("");
 	}
 	
+	public function errorepagamento($bancaToken = "")
+	{
+		$clean['banca_token'] = sanitizeAll($bancaToken);
+		
+		$res = $this->m("OrdiniModel")->clear()->where(array("banca_token" => $clean['banca_token']))->send();
+		
+		if (count($res) > 0 && $res[0]["orders"]["stato"] == "pending")
+		{
+			$data["ordine"] = $res[0]["orders"];
+			
+			$logSubmit = new LogModel();
+			$logSubmit->setSvuota(0);
+			$logSubmit->setCartUid($data["ordine"]['cart_uid']);
+			$logSubmit->write("ERRORE_PAGAMENTO", "KO", true);
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array(Parametri::$mailInvioOrdine),
+				"oggetto"	=>	"Errore nel pagamento dell'ordine ".$data["ordine"]["id_o"],
+				"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è andato in errore",
+				"tipologia"	=>	"ERRORE PAGAMENTO",
+				"id_user"	=>	(int)$data["ordine"]['id_user'],
+				"id_o"		=>	$data["ordine"]["id_o"],
+			));
+			
+			$this->append($data);
+			$this->load("errore-pagamento");
+		}
+		else
+			$this->redirect("");
+	}
+	
 	public function ritornodapaypal()
 	{
 		$this->createLogFolder();
@@ -781,6 +821,60 @@ class BaseOrdiniController extends BaseController
 					$this->redirect("");
 				
 				if (PagamentiModel::gateway($res[0]["orders"], true)->validate(false))
+					$data["conclusa"] = true;
+				
+				$data["ordine"] = $res[0]["orders"];
+				
+				if ($data["ordine"]["cookie_terzi"])
+				{
+					F::settaCookiesGdpr(true);
+					VariabiliModel::ottieniVariabili();
+				}
+				
+				$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
+			}
+			else
+				$this->redirect("");
+		}
+		
+		$this->append($data);
+		$this->load("ritorno-da-paypal");
+	}
+	
+	public function ritornodaklarna()
+	{
+		$this->ritornoda("klarna");
+	}
+	
+	protected function ritornoda($tipo)
+	{
+		$this->createLogFolder();
+		
+		$logSubmit = new LogModel();
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
+		$logSubmit->write("RITORNO_DA_".strtoupper($tipo), "OK",true);
+		
+		VariabiliModel::noCookieAlert();
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
+		
+		PagamentiModel::gateway()->validate(false);
+		
+		if (isset($_GET["cart_uid"]))
+		{
+			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
+			
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			
+			$data["conclusa"] = false;
+		
+			if (count($res) > 0)
+			{
+				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
+					$this->redirect("");
+				
+				if (PagamentiModel::gateway($res[0]["orders"], true, $tipo)->validate(false))
 					$data["conclusa"] = true;
 				
 				$data["ordine"] = $res[0]["orders"];
