@@ -26,9 +26,7 @@ class Klarna
 	
 	public $requestUrl = "";
 	public $merchantServerUrl = "";
-// 	public $okUrl = "";
-// 	public $errorUrl = "";
-// 	public $notifyUrl = "";
+
 // 	public $statoNotifica = "";
 // 	public $statoCheckOrdine = "";
 	
@@ -58,14 +56,7 @@ class Klarna
 		$this->merchantServerUrl = Domain::$name;
 		
 		if (!empty($ordine) && isset($ordine["cart_uid"]))
-		{
-// 			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
-// 			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
-// 			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["cart_uid"];
 			$this->ordine = htmlentitydecodeDeep($ordine);
-		}
-		
-// 		$this->logFile = ROOT."/Logs/.ipnklarna_results.log";
 	}
 	
 	protected function setImporto($importo)
@@ -138,16 +129,17 @@ class Klarna
 				"given_name"	=>	$strutturaOrdine["ragione_sociale"] ? $strutturaOrdine["ragione_sociale"] : $strutturaOrdine["nome"],
 				"email"			=>	$strutturaOrdine["email"],
 				"street_address"=>	$strutturaOrdine["indirizzo"],
+				"street_address2"	=>	"",
 				"postal_code"	=>	$strutturaOrdine["cap"],
 				"phone"			=>	$strutturaOrdine["telefono"],
 				"country"		=>	$strutturaOrdine["nazione"],
+				"city"			=>	$strutturaOrdine["citta"],
+// 				"region"		=>	$strutturaOrdine["provincia"],
 			),
 		);
 		
 		if ($strutturaOrdine["cognome"])
 			$valori["billing_address"]["family_name"] = $strutturaOrdine["cognome"];
-		
-// 		print_r($valori);die();
 		
 		$result = $this->callUrl("payments/v1/sessions", $valori, "SESSIONE_KP");
 		

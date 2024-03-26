@@ -630,19 +630,6 @@ class BaseOrdiniController extends BaseController
 	private function createLogFolder()
 	{
 		App::createLogFolder();
-		
-// 		if(!is_dir(ROOT.'/Logs'))
-// 		{
-// 			if (@mkdir(ROOT.'/Logs'))
-// 			{
-// 				$fp = fopen(ROOT.'/Logs/index.html', 'w');
-// 				fclose($fp);
-// 				
-// 				$fp = fopen(ROOT.'/Logs/.htaccess', 'w');
-// 				fwrite($fp, 'deny from all');
-// 				fclose($fp);
-// 			}
-// 		}
 	}
 	
 	public function annullapagamento($tipo = "", $cartuUid = "")
@@ -651,16 +638,16 @@ class BaseOrdiniController extends BaseController
 		
 		$this->createLogFolder();
 		
-		$fp = fopen(ROOT.'/Logs/error_pagamento.txt', 'a+');
-		
-		if ($fp)
-		{
-			fwrite($fp, date("Y-m-d H:i:s"));
-			fwrite($fp, "\nTIPO:".sanitizeHtml($tipo)."\n");
-			fwrite($fp, print_r($_GET,true));
-			fwrite($fp, print_r($_POST,true));
-			fclose($fp);
-		}
+// 		$fp = fopen(ROOT.'/Logs/error_pagamento.txt', 'a+');
+// 		
+// 		if ($fp)
+// 		{
+// 			fwrite($fp, date("Y-m-d H:i:s"));
+// 			fwrite($fp, "\nTIPO:".sanitizeHtml($tipo)."\n");
+// 			fwrite($fp, print_r($_GET,true));
+// 			fwrite($fp, print_r($_POST,true));
+// 			fclose($fp);
+// 		}
 		
 		$clean['cart_uid'] = sanitizeAll($cartuUid);
 		
@@ -670,22 +657,24 @@ class BaseOrdiniController extends BaseController
 		{
 			$data["ordine"] = $res[0]["orders"];
 			
-			$codiceTransazione = $this->m("OrdiniModel")->getUniqueCodTrans(generateString(30));
-			
-			$this->m("OrdiniModel")->setValues(array(
-				"codice_transazione"	=>	$codiceTransazione,
-			));
-			
-// 			$this->m("OrdiniModel")->pUpdate($data["ordine"]["id_o"]);
-			
-			$res = MailordiniModel::inviaMail(array(
-				"emails"	=>	array(Parametri::$mailInvioOrdine),
-				"oggetto"	=>	"Pagamento ordine ".$data["ordine"]["id_o"]." annullato",
-				"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è stato annullato",
-				"tipologia"	=>	"PAGAMENTO ANNULLATO",
-				"id_user"	=>	(int)$data["ordine"]['id_user'],
-				"id_o"		=>	$data["ordine"]["id_o"],
-			));
+			if (MailordiniModel::numeroInviate("orders_ANNULLA", (int)$data["ordine"]["id_o"]) < 3)
+			{
+				$logSubmit = new LogModel();
+				$logSubmit->setSvuota(0);
+				$logSubmit->setCartUid($data["ordine"]['cart_uid']);
+				$logSubmit->write("ANNULLA_PAGAMENTO", "KO", true);
+				
+				$res = MailordiniModel::inviaMail(array(
+					"emails"	=>	array(Parametri::$mailInvioOrdine),
+					"oggetto"	=>	"Pagamento ordine ".$data["ordine"]["id_o"]." annullato",
+					"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è stato annullato",
+					"tipologia"	=>	"PAGAMENTO ANNULLATO",
+					"id_user"	=>	(int)$data["ordine"]['id_user'],
+					"id_o"		=>	$data["ordine"]["id_o"],
+					"tabella"	=>	"orders_ANNULLA",
+					"id_elemento"	=>	(int)$data["ordine"]["id_o"],
+				));
+			}
 		}
 		
 		$this->redirect("");
