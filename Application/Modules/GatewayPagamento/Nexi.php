@@ -44,7 +44,7 @@ class Nexi
 		
 		$this->CHIAVESEGRETA = $pagamento["chiave_segreta"];
 		$this->ALIAS = $pagamento["alias_account"];
-// 		echo $this->CHIAVESEGRETA;
+		
 		if ((int)$pagamento["test"])
 			$this->requestUrl = "https://int-ecommerce.nexi.it/ecomm/ecomm/DispatcherServlet";
 		else

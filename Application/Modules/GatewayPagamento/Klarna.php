@@ -44,8 +44,6 @@ class Klarna
 		
 		$pagamento = htmlentitydecodeDeep($pagamento);
 		
-// 		print_r($pagamento);die();
-		
 		$this->token = base64_encode($pagamento["alias_account"].":".$pagamento["chiave_segreta"]);
 		
 		if ((int)$pagamento["test"])
@@ -176,21 +174,16 @@ class Klarna
 	
 	public function getPulsantePaga()
 	{
-// 		if (!$this->urlPagamento)
-// 			$this->getUrlPagamento();
-// 		
-// 		$urlPagamento = $this->urlPagamento;
-// 		
-// 		$path = tpf("/Elementi/Pagamenti/Pulsanti/nexi.php");
-// 		
-// 		if (file_exists($path))
-// 		{
-// 			ob_start();
-// 			include $path;
-// 			$pulsante = ob_get_clean();
-// 		}
-// 		
-// 		return $pulsante;
+		$path = tpf("/Elementi/Pagamenti/Pulsanti/klarna.php");
+		
+		if (file_exists($path))
+		{
+			ob_start();
+			include $path;
+			$pulsante = ob_get_clean();
+		}
+		
+		return $pulsante;
 	}
 	
 	public function getUrlPagamento()
@@ -285,9 +278,13 @@ class Klarna
 		
 	}
 	
+	public function validateRitorno()
+	{
+		return true;
+	}
+	
 	public function validate($scriviSuFileLog = true)
 	{
-		
 		return false;
 	}
 	

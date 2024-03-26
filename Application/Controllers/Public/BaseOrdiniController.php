@@ -397,8 +397,6 @@ class BaseOrdiniController extends BaseController
 		
 		$urlPagamento = $gateway->getUrlPagamento();
 		
-// 		var_dump($urlPagamento);die();
-		
 		if ($urlPagamento != false)
 		{
 			header('Location: '.$urlPagamento);
@@ -450,13 +448,13 @@ class BaseOrdiniController extends BaseController
 		
 		$data["tipoOutput"] = "web";
 		
-		if (isset($_GET["to_paypal"]) && PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
-			unset($_GET["to_paypal"]);
-		
 		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
 			if (PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
 			{
+				if (isset($_GET["to_paypal"]))
+					unset($_GET["to_paypal"]);
+				
 				$data["pulsantePaypal"] = PagamentiModel::gateway($data["ordine"], false, "paypal")->getPulsantePaga();
 			}
 			else
@@ -514,7 +512,7 @@ class BaseOrdiniController extends BaseController
 		}
 		else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
-			$urlPagamento = PagamentiModel::gateway($data["ordine"])->getUrlPagamento();
+			$urlPagamento = PagamentiModel::gateway($data["ordine"], true)->getUrlPagamento();
 			
 			if (isset($urlPagamento))
 			{
@@ -532,6 +530,8 @@ class BaseOrdiniController extends BaseController
 		{
 			if (isset($_GET["to_paypal"]))
 				$this->redirect("redirect-to-gateway/".$clean["id_o"]."/".$clean["cart_uid"]);
+			
+			$data["pulsantePaga"] = PagamentiModel::gateway($data["ordine"], true, $data["ordine"]["pagamento"])->getPulsantePaga();
 		}
 
 		$this->append($data);
@@ -863,7 +863,7 @@ class BaseOrdiniController extends BaseController
 				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
 					$this->redirect("");
 				
-				if (PagamentiModel::gateway($res[0]["orders"], true, $tipo)->validate(false))
+				if (PagamentiModel::gateway($res[0]["orders"], true, $tipo)->validateRitorno())
 					$data["conclusa"] = true;
 				
 				$data["ordine"] = $res[0]["orders"];
