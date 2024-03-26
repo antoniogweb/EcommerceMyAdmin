@@ -291,8 +291,18 @@ class TicketModel extends GenericModel
     {
 		$oModel = new OrdiniModel();
 		
+		$reModel = new RegusersModel();
+		
+		$recordUser = $reModel->selectId((int)$idUser);
+		
+		if (empty($recordUser))
+			return array();
+		
 		$res = $oModel->clear()->select("id_o,data_creazione")->where(array(
-			"id_user"	=>	(int)$idUser,
+			"OR"	=>	array(
+				"id_user"	=>	(int)$idUser,
+				"email"		=>	sanitizeDb($recordUser["username"]),
+			),
 		))->orderBy("data_creazione desc")->send(false);
 		
 		$select = [];
@@ -322,14 +332,23 @@ class TicketModel extends GenericModel
     public function getTendinaProdotti($idUser, $idO = 0, $idLista = 0, $lingua = null)
     {
 		$pModel = new PagesModel();
+		$reModel = new RegusersModel();
 		
 		$pModel->clear()->addJoinTraduzionePagina($lingua)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione("prodotti"))->orderBy("coalesce(contenuti_tradotti.title,pages.title)");
+		
+		$recordUser = $reModel->selectId((int)$idUser);
+		
+		if (empty($recordUser))
+			return array();
 		
 		if ($idO)
 		{
 			$pModel->inner("righe")->on("righe.id_page = pages.id_page")->inner("orders")->on("orders.id_o = righe.id_o")->where(array(
 					"orders.id_o"		=>	(int)$idO,
-					"orders.id_user"	=>	$idUser,
+					"OR"	=>	array(
+						"orders.id_user"	=>	(int)$idUser,
+						"orders.email"		=>	sanitizeDb($recordUser["username"]),
+					),
 				));
 		}
 		else if ($idLista)
