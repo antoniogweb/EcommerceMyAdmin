@@ -13,7 +13,7 @@
 <br />
 <p><?php echo gtext("Le verrà notificato via mail quando un amministratore del negozio risponderà al suo ticket.", false);?></p>
 
-<p><?php echo gtext("Può vedere l'avanzamento del suo ticket di assistenza in ogni momento tramite il seguente", false);?> <a href="[URL_TICKET]"><?php echo gtext("indirizzo web");?></a></p>
+<p><?php echo gtext("Può vedere l'avanzamento del suo ticket di assistenza in ogni momento tramite il seguente", false);?> <a href="[URL_TICKET]"><?php echo gtext("indirizzo web");?></a>.</p>
 
 <p><?php echo gtext("Potrà inoltre accedere al dettaglio del suo ticket di assistenza dall'area riservata del nostro sito web.", false);?></p>
 

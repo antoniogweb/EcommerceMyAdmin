@@ -329,7 +329,7 @@ class TicketController extends BaseController
 	{
 		$this->clean();
 		
-		if (!$this->m[$this->modelName]->whereId((int)$idTicket)->rowNumber() || !$this->m("TicketModel")->isBozza((int)$idTicket))
+		if (!$this->m[$this->modelName]->whereId((int)$idTicket)->rowNumber())
 			$this->responseCode(403);
 		
 		$ttModel = new TickettipologieModel();
