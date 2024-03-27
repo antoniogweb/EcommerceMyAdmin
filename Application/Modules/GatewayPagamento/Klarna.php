@@ -26,15 +26,20 @@ class Klarna
 	
 	public $requestUrl = "";
 	public $merchantServerUrl = "";
-
-// 	public $statoNotifica = "";
-// 	public $statoCheckOrdine = "";
+	public $statoSessione = "";
+	public $statoNotifica = "";
+	public $statoCheckOrdine = "";
 	
 	private $urlPagamento = null;
 	
 	private $ordine = null;
 	private $clientToken = "";
 	private $sessionId = "";
+	
+	private $hppSessionId = "";
+	
+	private static $hppOrderId = "";
+	private static $amountPagato = 0;
 	
 	public function __construct($ordine = array())
 	{
@@ -152,11 +157,12 @@ class Klarna
 			$valori = array(
 				"payment_session_url"	=>	$this->requestUrl."/payments/v1/sessions/".$this->sessionId,
 				"merchant_urls"			=>	array(
-					"success"	=>	Url::getRoot()."grazie-per-l-acquisto-klarna?cart_uid=".$this->ordine["cart_uid"],
+					"success"	=>	Url::getRoot()."grazie-per-l-acquisto-klarna?cart_uid=".$this->ordine["cart_uid"]."&banca_token=".$this->ordine["banca_token"],
 					"cancel"	=>	Url::getRoot()."ordini/annullapagamento/klarna/".$this->ordine["cart_uid"],
 					"back"		=>	Url::getRoot()."resoconto-acquisto/".$this->ordine["id_o"]."/".$this->ordine["cart_uid"]."?n=y",
 					"failure"	=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
 					"error"		=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
+					"status_update"	=>	Url::getRoot()."notifica-pagamento-klarna?cart_uid=".$this->ordine["cart_uid"]."&banca_token=".$this->ordine["banca_token"],
 				),
 				"options"	=>	array(
 					"page_title"		=>	gtext("Completa il tuo acquisto"),
@@ -194,42 +200,66 @@ class Klarna
 		return $this->creaSessione();
 	}
 	
+	public function leggiSessione()
+	{
+		$log = new LogModel();
+		
+		$ultimoLog = $log->getLog("SESSIONE_HPP", $this->ordine["cart_uid"]);
+		
+		if (!empty($ultimoLog))
+		{
+			$sessionArray = json_decode($ultimoLog["log_piattaforma"]["full_log"], true);
+			
+			if (isset($sessionArray["session_id"]))
+			{
+				$hppSessionId = $this->hppSessionId = $sessionArray["session_id"];
+				
+				$result = $this->callUrl("hpp/v1/sessions/$hppSessionId", array(), "LEGGI_SESSIONE", "GET");
+				
+				if (isset($result["order_id"]))
+					self::$hppOrderId = $result["order_id"];
+				
+				$this->statoSessione = json_encode($result, JSON_PRETTY_PRINT);
+				
+				return $result;
+			}
+		}
+		
+		return false;
+	}
+	
 	public function scriviLog($success, $scriviSuFileLog = true)
 	{
-// 		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
-// 		
-// 		$text = '[' . date ( 'm/d/Y g:i A' ) . '] - ';
-// 		// Success or failure being logged?
-// 		if ($success)
-// 			$this->statoNotifica = $text . 'SUCCESS:' . $this->statoNotifica . "!\n";
-// 		else
-// 			$this->statoNotifica = $text . 'FAIL: ' . $this->statoNotifica . "!\n";
-// 		
-// 		$this->statoNotifica .= "[From:" . $hostname . "|" . $_SERVER ['REMOTE_ADDR'] . "]REQUEST Vars Received:\n";
-// 		
-// 		foreach ( $_REQUEST as $key => $value ) {
-// 			$this->statoNotifica .= "REQUEST:$key=$value \n";
-// 		}
-// 		
-// 		if ($this->statoCheckOrdine)
-// 			$this->statoNotifica .= "CHECK ORDINE:".$this->statoCheckOrdine."\n";
-// 		
-// 		if ($scriviSuFileLog)
-// 		{
-// 			// Write to log
-// 			$fp = fopen ( $this->logFile , 'a+' );
-// 			fwrite ( $fp, $this->statoNotifica . "\n\n" );
-// 			fclose ( $fp ); // close file
-// 			chmod ( $this->logFile , 0600 );
-// 			
-// 			// Salvo il response del gateway
-// 			$cartUid = isset($_GET["cart_uid"]) ? (string)$_GET["cart_uid"] : "";
-// 			OrdiniresponseModel::aggiungi($cartUid, $this->statoNotifica, $success);
-// 			
-// 			$this->statoNotifica = "";
-// 		}
-// 		else
-// 			return $this->statoNotifica;
+		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
+		
+		$text = '[' . date ( 'm/d/Y g:i A' ) . '] - ';
+		// Success or failure being logged?
+		if ($success)
+			$this->statoNotifica = $text . 'SUCCESS:' . $this->statoNotifica."!\n";
+		else
+			$this->statoNotifica = $text . 'FAIL:' . $this->statoNotifica."!\n";
+		
+		$this->statoNotifica .= "[From:" . $hostname . "|" . $_SERVER ['REMOTE_ADDR'] . "]REQUEST Vars Received:\n";
+		
+		foreach ( $_REQUEST as $key => $value ) {
+			$this->statoNotifica .= "REQUEST:$key=$value \n";
+		}
+		
+		$this->statoNotifica .= "SESSIONE:\n".$this->statoSessione."\n";
+		
+		if ($this->statoCheckOrdine)
+			$this->statoNotifica .= "CHECK ORDINE:".$this->statoCheckOrdine."\n";
+		
+		if ($scriviSuFileLog)
+		{
+			// Salvo il response del gateway
+			$cartUid = isset($_GET["cart_uid"]) ? (string)$_GET["cart_uid"] : "";
+			OrdiniresponseModel::aggiungi($cartUid, $this->statoNotifica, $success);
+			
+			$this->statoNotifica = "";
+		}
+		else
+			return $this->statoNotifica;
 		
 	}
 	
@@ -240,7 +270,43 @@ class Klarna
 	
 	public function validate($scriviSuFileLog = true)
 	{
-		return false;
+		$clean['banca_token'] = isset($_GET["banca_token"]) ? sanitizeAll($_GET["banca_token"]) : "";
+		$clean['cart_uid'] = isset($_GET["cart_uid"]) ? sanitizeAll($_GET["cart_uid"]) : "";
+		
+		$result = false;
+		
+		if ($clean['banca_token'] && $clean['cart_uid'])
+		{
+			$oModel = new OrdiniModel();
+			
+			$ordine = $oModel->clear()->where(array(
+				"cart_uid"		=>	$clean['cart_uid'],
+				"banca_token" 	=>	$clean['banca_token'],
+			))->record();
+			
+			if (!empty($ordine))
+			{
+				$this->ordine = $ordine;
+				
+				$sessione = $this->leggiSessione();
+				
+				if ($sessione !== false && isset($sessione["status"]) && $sessione["status"] == "COMPLETED")
+					$result = true;
+			}
+		}
+		
+		if ($result)
+		{
+			$this->statoNotifica = 'OK, pagamento avvenuto, preso riscontro';
+			$this->scriviLog(true, $scriviSuFileLog);
+		}
+		else
+		{
+			$this->statoNotifica = 'KO, pagamento non avvenuto, preso riscontro';
+			$this->scriviLog(false, $scriviSuFileLog);
+		}
+		
+		return $result;
 	}
 	
 	public function redirect()
@@ -250,17 +316,36 @@ class Klarna
 	
 	public function success()
 	{
-		return false;
+		return true;
 	}
 	
 	public function checkOrdine()
 	{
-		return true;
+		$importo = str_replace(".","",$this->ordine["total"]);
+		
+		if (self::$hppOrderId)
+		{
+			$result = $this->callUrl("ordermanagement/v1/orders/".self::$hppOrderId, array(), "LEGGI_ORDINE", "GET");
+			
+			if (isset($result["captured_amount"]))
+				self::$amountPagato = $result["captured_amount"];
+		}
+		
+		if (strcmp(self::$amountPagato,$importo) === 0)
+			return true;
+		
+		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
+		$this->statoCheckOrdine .= "DOVUTO: $importo - CAPTURED: ".self::$amountPagato." \n";
+		
+		$this->statoNotifica = 'OK, pagamento non corretto';
+		$this->scriviLog(false, true);
+		
+		return false;
 	}
 	
 	public function amountPagato()
 	{
-		
+		return self::$amountPagato / 100;
 	}
 	
 }

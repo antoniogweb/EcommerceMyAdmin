@@ -241,6 +241,16 @@ class BaseOrdiniController extends BaseController
 		return $stato;
 	}
 	
+	public function ipnklarna()
+	{
+		if (OrdiniModel::ordineNonEsistenteONonPending())
+			$this->responseCode(403);
+		
+		PagamentiModel::$sCodice = "klarna";
+		
+		$this->ipncarta();
+	}
+	
 	//IPN carta
 	public function ipncarta()
 	{
@@ -259,7 +269,7 @@ class BaseOrdiniController extends BaseController
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
 			
 			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid'],"stato"=>"pending"))->send();
-
+			
 			if (count($res) > 0)
 			{
 				if (PagamentiModel::gateway($res[0]["orders"], true)->checkOrdine())
@@ -850,11 +860,11 @@ class BaseOrdiniController extends BaseController
 		
 		PagamentiModel::gateway()->validate(false);
 		
-		if (isset($_GET["cart_uid"]))
+		if (isset($_GET["banca_token"]))
 		{
-			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
+			$clean['banca_token'] = $this->request->get('banca_token','','sanitizeAll');
 			
-			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("banca_token" => $clean['banca_token']))->send();
 			
 			$data["conclusa"] = false;
 		

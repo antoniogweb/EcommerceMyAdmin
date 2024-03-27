@@ -2056,4 +2056,33 @@ class OrdiniModel extends FormModel {
 			}
 		}
 	}
+	
+	public static function ordineNonEsistenteONonPending()
+	{
+		$clean['banca_token'] = isset($_GET["banca_token"]) ? sanitizeAll($_GET["banca_token"]) : "";
+		$clean['cart_uid'] = isset($_GET["cart_uid"]) ? sanitizeAll($_GET["cart_uid"]) : "";
+		
+		$oModel = new OrdiniModel();
+		
+		$oModel->clear()->where(array(
+			"cart_uid"	=>	sanitizeAll($clean['cart_uid']),
+		));
+		
+		if ($clean['banca_token'])
+			$oModel->aWhere(array(
+				"banca_token"	=>	$clean['banca_token'],
+			));
+		
+		$ordineEsistente = $oModel->rowNumber();
+		
+// 		var_dump($ordineEsistente);
+		
+		$ordinePending =  $oModel->aWhere(array(
+			"stato"	=>	"pending",
+		))->rowNumber();
+		
+// 		var_dump($ordinePending);
+		
+		return (!$ordineEsistente || !$ordinePending);
+	}
 }

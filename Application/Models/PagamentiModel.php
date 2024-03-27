@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class PagamentiModel extends GenericModel {
 	
 	public static $gateway = null;
+	public static $sCodice = null;
 	
 	public static $attivoSiNoGateway = array(
 		"1"	=>	"Sì, usa i pagamenti finti (solo per sviluppo)",
@@ -235,6 +236,9 @@ class PagamentiModel extends GenericModel {
 	public static function gateway($ordine = array(), $force = false, $codice = "carta_di_credito")
 	{
 		$p = new PagamentiModel();
+		
+		if (isset(self::$sCodice))
+			$codice = self::$sCodice;
 		
 		if (!isset(self::$gateway) || $force)
 		{
