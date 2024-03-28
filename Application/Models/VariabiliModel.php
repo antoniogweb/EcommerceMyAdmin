@@ -163,7 +163,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_tipo_caratteristica"=>	0,
 		"immagine_in_caratteristiche"	=>	0,
 		"caratteristiche_in_tab_separate"	=>	0,
-		"mostra_faq"				=>	0,
 		"mostra_tendina_prodotto_principale"	=>	0,
 		"usa_transactions"			=>	1,
 		"lingue_abilitate_frontend"	=>	"it",
@@ -714,6 +713,9 @@ class VariabiliModel extends GenericModel {
 		### EDITOR VISUALE ##
 		"permetti_di_aggiungere_blocchi_da_frontend"	=>	0, // se impostato ad 1, permette di aggiungere nuovi tag dal frontend
 		"wrap_tag_in_editor_visuale"	=>	'<div>|</div>', // tag di apertura e chiusura quando aggiungo o tolto un elemento in modalità visuale
+		### FAQ ##
+		"mostra_faq"				=>	0, // se attivare o meno la sezione mostra_faq
+		"attiva_gestione_faq_in_evidenza"	=>	1, // se attivato, permette di gestire le FAQ in evidenza
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

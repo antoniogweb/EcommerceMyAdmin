@@ -39,15 +39,22 @@ class FaqController extends PagesController {
 			'[[checkbox]];pages.id_page;',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
-			'PagesModel.getInEvidenzaCheckbox|pages.id_page',
 		);
 		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva,In evidenza';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva';
 		$this->filters = array(null,'title',array("attivo",null,SlideModel::$YN));
 		
-		$this->queryFields = "title,attivo,description,in_evidenza";
+		$this->queryFields = "title,attivo,description";
+		
+		if (v("attiva_gestione_faq_in_evidenza"))
+		{
+			$this->queryFields .= ",in_evidenza";
+			
+			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
+			$this->head .= ",In evidenza";
+		}
 		
 		$this->clean();
 		
