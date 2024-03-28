@@ -381,29 +381,32 @@ class BaseOrdiniController extends BaseController
 		$this->load("modifica_ordine");
 	}
 	
-	public function topagamento($id_o = 0, $cart_uid = 0)
+	public function topagamento($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$this->clean();
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
+		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
 		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
 			$this->redirect("");
 		
-		$ordine = $this->m("OrdiniModel")->clear()
-							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
-							->record();
+		$ordine = $this->m("OrdiniModel")->clear()->where(array(
+			"id_o" 			=> $clean["id_o"],
+			"cart_uid" 		=> $clean["cart_uid"],
+			"admin_token"	=>	$clean["admin_token"],
+		))->record();
 		
 		$urlSummary = "resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."?n=y";
 		
 		if (empty($ordine) || $ordine["stato"] != "pending")
-			$this->redirect($urlSummary);
+			$this->redirect("");
 		
 		$gateway = PagamentiModel::gateway($ordine, true, $ordine["pagamento"]);
 		
 		if (!$gateway->redirect())
-			$this->redirect($urlSummary);
+			$this->redirect("");
 		
 		$urlPagamento = $gateway->getUrlPagamento();
 		
@@ -539,7 +542,7 @@ class BaseOrdiniController extends BaseController
 		else if (strcmp($data["ordine"]["pagamento"],"klarna") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
 			if (isset($_GET["to_paypal"]))
-				$this->redirect("redirect-to-gateway/".$clean["id_o"]."/".$clean["cart_uid"]);
+				$this->redirect("redirect-to-gateway/".$clean["id_o"]."/".$clean["cart_uid"]."/".$data["ordine"]["admin_token"]);
 			
 			$data["pulsantePaga"] = PagamentiModel::gateway($data["ordine"], true, $data["ordine"]["pagamento"])->getPulsantePaga();
 		}
@@ -1528,7 +1531,7 @@ class BaseOrdiniController extends BaseController
 							F::checkPreparedStatement();
 							
 							if (Output::$html)
-								$this->redirect("resoconto-acquisto/".$clean['lastId']."/".$clean["cart_uid"]."/token".$toPaypal);
+								$this->redirect("resoconto-acquisto/".$clean['lastId']."/".$clean["cart_uid"]."/".$ordine["admin_token"].$toPaypal);
 						}
 						else
 						{

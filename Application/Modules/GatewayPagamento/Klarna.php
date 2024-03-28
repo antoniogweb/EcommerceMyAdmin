@@ -159,7 +159,7 @@ class Klarna
 				"merchant_urls"			=>	array(
 					"success"	=>	Url::getRoot()."grazie-per-l-acquisto-klarna?cart_uid=".$this->ordine["cart_uid"]."&banca_token=".$this->ordine["banca_token"],
 					"cancel"	=>	Url::getRoot()."ordini/annullapagamento/klarna/".$this->ordine["cart_uid"],
-					"back"		=>	Url::getRoot()."resoconto-acquisto/".$this->ordine["id_o"]."/".$this->ordine["cart_uid"]."?n=y",
+					"back"		=>	Url::getRoot()."resoconto-acquisto/".$this->ordine["id_o"]."/".$this->ordine["cart_uid"]."/".$this->ordine["admin_token"]."?n=y",
 					"failure"	=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
 					"error"		=>	Url::getRoot()."ordini/errorepagamento/".$this->ordine["banca_token"],
 					"status_update"	=>	Url::getRoot()."notifica-pagamento-klarna?cart_uid=".$this->ordine["cart_uid"]."&banca_token=".$this->ordine["banca_token"],

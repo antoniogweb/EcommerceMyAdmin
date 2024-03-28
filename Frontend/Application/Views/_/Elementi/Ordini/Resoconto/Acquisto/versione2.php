@@ -16,25 +16,6 @@ if (!isset($baseUrl))
 
 <?php include(tpf("Elementi/Ordini/resoconto_top.php"));?>
 
-<?php if (strcmp($tipoOutput,"web") === 0 and strcmp($ordine["admin_token"],$admin_token) === 0) { ?>
-<!--<div id="admin_tools">
-	<p>Modifica lo stato dell'ordine:</p>
-	<?php echo $notice;?>
-	
-	<?php if(isset($actionFromAdmin)) { ?>
-	<form action="<?php echo $actionFromAdmin;?>" method="POST">
-	<?php } else { ?>
-	<form action="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y" method="POST">
-	<?php } ?>
-		<?php 
-		$statiOrdine = OrdiniModel::$stati;
-		echo Html_Form::select("stato",$ordine["stato"],$statiOrdine,null,null,"yes");?>
-		<input type="submit" name="modifica_stato_ordine" value="Invia" />
-		
-	</form>
-</div>-->
-<?php } ?>
-
 <?php
 $idListaRegalo = $ordine["id_lista_regalo"];
 include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
@@ -100,7 +81,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
 ?>
 <br /><br />
 <?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
-<p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/token";?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
+<p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
 <?php } ?>
 
 <?php
