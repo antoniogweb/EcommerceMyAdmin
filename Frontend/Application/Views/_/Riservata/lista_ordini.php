@@ -30,7 +30,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		</thead>
 		<?php foreach ($ordini as $ordine) { ?>
 		<tr class="ordini_table_row uk-text-small">
-			<td><a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$ordine["orders"]["id_o"]."/".$ordine["orders"]["cart_uid"];?>?n=y">#<?php echo $ordine["orders"]["id_o"];?></a></td>
+			<td><a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$ordine["orders"]["id_o"]."/".$ordine["orders"]["cart_uid"]."/".$ordine["orders"]["admin_token"];?>?n=y">#<?php echo $ordine["orders"]["id_o"];?></a></td>
 			<td><?php echo smartDate($ordine["orders"]["data_creazione"]);?></td>
 			<td><?php echo statoOrdine($ordine["orders"]["stato"]);?></td>
 			<td><?php echo setPriceReverse($ordine["orders"]["total"]);?></td>

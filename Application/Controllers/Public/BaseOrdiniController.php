@@ -244,7 +244,7 @@ class BaseOrdiniController extends BaseController
 	public function ipnklarna()
 	{
 		if (OrdiniModel::ordineNonEsistenteONonPending())
-			$this->responseCode(403);
+			die("");
 		
 		PagamentiModel::$sCodice = "klarna";
 		

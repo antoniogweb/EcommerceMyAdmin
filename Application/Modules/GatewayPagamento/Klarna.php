@@ -275,6 +275,8 @@ class Klarna
 		
 		$result = false;
 		
+		$inProgress = false;
+		
 		if ($clean['banca_token'] && $clean['cart_uid'])
 		{
 			$oModel = new OrdiniModel();
@@ -290,8 +292,13 @@ class Klarna
 				
 				$sessione = $this->leggiSessione();
 				
-				if ($sessione !== false && isset($sessione["status"]) && $sessione["status"] == "COMPLETED")
-					$result = true;
+				if ($sessione !== false && isset($sessione["status"]))
+				{
+					if ($sessione["status"] == "COMPLETED")
+						$result = true;
+					else if ($sessione["status"] == "IN_PROGRESS")
+						$inProgress = true;
+				}
 			}
 		}
 		
@@ -305,6 +312,9 @@ class Klarna
 			$this->statoNotifica = 'KO, pagamento non avvenuto, preso riscontro';
 			$this->scriviLog(false, $scriviSuFileLog);
 		}
+		
+		if ($inProgress)
+			die("");
 		
 		return $result;
 	}
