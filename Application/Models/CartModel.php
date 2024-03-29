@@ -1462,4 +1462,44 @@ class CartModel extends GenericModel {
 		
 		return  $this->clear()->select("cart.*,pages.id_page")->inner("pages")->using("id_page")->where(array("cart_uid"=>$clean["cart_uid"]))->orderBy("id_cart ASC")->send();
 	}
+	
+	// Metodo usato per il remarketing, per mostrare l'elenco dei prodotti
+	public function gElencoProdotti($lingua, $record)
+	{
+		if (!isset($record["cart_uid"]))
+			return "";
+		
+		$prodottiCarrello = $this->clear()->where(array(
+			"cart_uid"	=>	sanitizeAll($record["cart_uid"]),
+		))->send(false);
+		
+		$righeOrdine = array();
+		
+		foreach ($prodottiCarrello as $p)
+		{
+			$righeOrdine[] = array(
+				"righe"	=>	$p,
+			);
+		}
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		ob_start();
+		include tpf("/Elementi/Placeholder/elenco_prodotti.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
+	
+	// Metodo usato per il remarketing, per mostrare il pulsante che manda al checkout
+	public function gPulsanteConcludiOrdine($lingua, $record)
+	{
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		ob_start();
+		include tpf("/Elementi/Placeholder/Carrello/concludi_ordine.php");
+		$output = ob_get_clean();
+		
+		return $output;
+	}
 }

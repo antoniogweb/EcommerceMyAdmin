@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES ('Pulsante Concludi Ordine per andare direttamente al checkout (solo per mail legate ai carrelli abbandonati)', 'CONCLUDI_ORDINE', 'gPulsanteConcludiOrdine', '', '1', '20', '', '1', '', '0');

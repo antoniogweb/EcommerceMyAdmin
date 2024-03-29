@@ -22,16 +22,38 @@
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
 define('APP_CONSOLE', true);
+define('EG','allowed');
 
-$options = getopt(null, array("prod::"));
+$options = getopt(null, array(
+	"prod::",
+	"lingua::",
+	"nazione::"
+));
 
 $default = array(
-	"prod"	=>	0,
+	"prod"		=>	0,
+	"lingua"	=>	"it",
+	"nazione"	=>	"it",
 );
 
 $params = array_merge($default, $options);
 
-require_once(dirname(__FILE__) . "/../../../index.php");
+include_once(dirname(__FILE__)."/../../config.php");
+
+if (isset($params["dominio"]))
+	$website_domain_name = $params["dominio"];
+
+define('DOMAIN_NAME',$website_domain_name);
+
+require_once(dirname(__FILE__) . "/../../index.php");
+
+ImpostazioniModel::init();
+VariabiliModel::ottieniVariabili();
+Domain::$parentRoot = ROOT."/..";
+Domain::$publicUrl = rtrim(Url::getFileRoot(), "/");
+
+Params::$lang = $params["lingua"];
+Params::$country = $params["nazione"];
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 
