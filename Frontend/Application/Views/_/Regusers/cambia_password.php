@@ -41,7 +41,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		</div>
 	</div>
 	
-	<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
+	<?php /*include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));*/?>
 	
 	<input class="uk-button uk-button-secondary" type="submit" name="updateAction" value="<?php echo gtext("Modifica password", false);?>" title="<?php echo gtext("Modifica password", false);?>" />
 </form>
