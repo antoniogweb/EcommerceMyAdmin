@@ -273,10 +273,19 @@
 						<div class="panel panel-info">
 							<?php include($this->viewPath("pages_form_immagine"));?>
 						</div>
+						
+						<?php if (v("immagine_2_in_prodotto")) { ?>
+						<div class="panel panel-info">
+							<?php
+							$labelBlocco = gtext("Immagine 2");
+							$numeroImmagine = "2";
+							include($this->viewPath("pages_form_immagine"));?>
+						</div>
+						<?php } ?>
 					</div>
 					<?php include($this->viewPath("pages_form_app_box"));?>
 					
-					<?php if ($type === "update") { ?>
+					<?php if (false && $type === "update") { ?>
 					<!--<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">

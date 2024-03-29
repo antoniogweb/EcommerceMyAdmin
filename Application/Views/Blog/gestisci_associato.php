@@ -16,3 +16,7 @@
 
 <?php include($this->viewPath("gestisci_associato_tag"));?>
 
+<?php if ($this->action === "correlati" || $this->action === "accessori") {
+	include($this->viewPath("gestisci_correlati"));
+} ?>
+

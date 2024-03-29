@@ -201,6 +201,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_crediti"))
 			$this->queryFields .= ",prodotto_crediti,numero_crediti";
 		
+		if (v("immagine_2_in_prodotto"))
+			$this->queryFields .= ",immagine_2";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

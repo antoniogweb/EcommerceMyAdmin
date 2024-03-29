@@ -50,6 +50,10 @@
 
 <?php } ?>
 
+<?php if ($this->action === "correlati" || $this->action === "accessori") {
+	include($this->viewPath("gestisci_correlati"));
+} ?>
+
 <?php include($this->viewPath("gestisci_associato_tag"));?>
 
 <?php if ($this->action === "caratteristiche" && v("caratteristiche_in_prodotti")) { ?>

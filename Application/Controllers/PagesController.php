@@ -558,6 +558,15 @@ class PagesController extends BaseController {
 		$this->load("pages_aggiungi_categoria");
 	}
 	
+	public function ordinacorrelati()
+	{
+		$this->orderBy = "prodotti_correlati.id_order";
+		
+		$this->modelName = "CorrelatiModel";
+		
+		parent::ordina();
+	}
+	
 	public function ordinacontenuti()
 	{
 		$this->modelName = "ContenutiModel";
@@ -993,6 +1002,102 @@ class PagesController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function caratteristiche($id = 0)
+	{
+		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$data["ordinaAction"] = "ordinacaratteristiche";
+		
+		$this->_posizioni['caratteristiche'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "caratteristiche";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->m[$this->modelName]->checkPrincipale($clean['id']);
+		
+		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
+			die("non permesso");
+		
+		$this->modelName = "PagescarvalModel";
+		$this->mainButtons = 'ldel';
+		
+		if (!v("nuova_modalita_caratteristiche"))
+		{
+			$this->m['PagescarvalModel']->setFields('id_cv,titolo,id_car','sanitizeAll');
+			$this->m['PagescarvalModel']->values['id_page'] = $clean['id'];
+			$this->m['PagescarvalModel']->updateTable('insert,del');
+			
+			if ($this->m['PagescarvalModel']->queryResult)
+				$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".$clean['id'].$this->viewStatus);
+		}
+		
+		$data["aggiuntaLibera"] = false;
+		
+		if (!v("immagine_in_caratteristiche") && (!v("attiva_tipologie_caratteristiche") || v("caratteristiche_in_tab_separate")))
+			$data["aggiuntaLibera"] = true;
+		
+		$mainAction = "caratteristiche/".$clean['id'];
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("titoloCrud", "edit");
+		$this->mainHead = "Caratteristica,Valore";
+		
+		if (!v("caratteristiche_in_tab_separate") && v("attiva_tipologie_caratteristiche"))
+		{
+			array_unshift($this->mainFields, "titoloCrud");
+			$this->mainHead = "Tipologia,".$this->mainHead;
+		}
+		
+		if (v("immagine_in_caratteristiche"))
+		{
+			$this->mainFields[] = "thumb";
+			$this->mainHead .= ",Immagine";
+		}
+		
+		$this->m[$this->modelName]->clear()->select("tipologie_caratteristiche.*,pages_caratteristiche_valori.*,caratteristiche_valori.*,caratteristiche.*")
+			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
+			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
+			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
+			->where(array(
+				"pages_caratteristiche_valori.id_page"	=>	$clean['id'],
+				"tipologie_caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs["id_tipo_car"],
+			))
+			->orderBy("pages_caratteristiche_valori.id_order")->save();
+		
+		$this->tabella = $this->getNomeMenu();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		if (!v("nuova_modalita_caratteristiche"))
+		{
+// 			$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
+			
+			$data["listaCaratteristiche"] = $this->m['CaratteristichevaloriModel']->selectCaratteristica(true, "caratteristiche.titolo");
+			
+			$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
+			
+			$data["listaCarattVal"] = array("0"	=>	"-- seleziona --");
+		}
+		
+		$this->append($data);
+	}
+	
 	public function accessori($id = 0)
 	{
 		$this->correlatigeneric($id, 1);
@@ -1008,6 +1113,10 @@ class PagesController extends BaseController {
 		if (v("attiva_cache_prodotti") && empty($_POST))
 			Cache_Db::$cachedTables = array("pages", "categories", "contenuti_tradotti", "fatture");
 		
+		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$data["ordinaAction"] = "ordinacorrelati";
+		
 		$posizione = $accessori ? "accessori" : "prod_corr";
 		$action = $accessori ? "accessori" : "correlati";
 		
@@ -1019,19 +1128,23 @@ class PagesController extends BaseController {
 		$this->shift(1);
 		
 		$this->s['admin']->check();
-// 		if (!$this->s['admin']->checkCsrf($this->viewArgs['token'])) $this->redirect('panel/main',2,'wrong token');
 		
-		$clean['id'] = (int)$id;
-		$data['id_page'] = $clean['id'];
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
 		
 		$this->m[$this->modelName]->checkPrincipale($clean['id']);
 		
 		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
-		{
 			die("non permesso");
-		}
 		
-		$data["titoloPagina"] = $this->m[$this->modelName]->getSimpleTitle($clean['id']);
+		$data["titoloRecord"] = $this->m[$this->modelName]->getSimpleTitle($clean['id']);
+		
+		$this->modelName = "PagescarvalModel";
+		$this->mainButtons = 'ldel';
+		
+		$mainAction = "$action/".$clean['id'];
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_corr');
 		
 		$this->modelName = "CorrelatiModel";
 		
@@ -1040,6 +1153,9 @@ class PagesController extends BaseController {
 		$this->m['CorrelatiModel']->setFields('id_corr','sanitizeAll');
 		
 		$numeroTipologie = $this->m('TipologiecorrelatiModel')->clear()->rowNumber();
+		
+		if ($this->controller != "prodotti")
+			$numeroTipologie = 0;
 		
 		if ($numeroTipologie > 0 && !$accessori)
 			$this->m['CorrelatiModel']->setFields('id_corr,id_tipologia_correlato','sanitizeAll');
@@ -1050,19 +1166,19 @@ class PagesController extends BaseController {
 		
 		$this->m['CorrelatiModel']->updateTable('insert,del');
 		
-		$mainAction = "$action/".$clean['id'];
+// 		$mainAction = "$action/".$clean['id'];
+// 		
+// 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_corr'));
+// 
+// 		$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
+// 		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
+// 		
+// 		$this->m[$this->modelName]->fields = "pages.*,prodotti_correlati.*";
 		
-		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_corr'));
-
-		$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
-		$this->scaffold->mainMenu->links['elimina']['attributes'] = 'role="button" class="btn btn-danger elimina_button menu_btn" rel="id_page" id="'.$clean['id'].'"';
-		
-		$this->scaffold->fields = "pages.*,prodotti_correlati.*";
-		
-		$mainFields = 'PagesModel.getThumb|pages.id_page,;pages.codice; - ;pages.title;,getYesNo|pages.attivo';
+		$mainFields = array('PagesModel.getThumb|pages.id_page',";pages.codice; - ;pages.title;","getYesNo|pages.attivo");
 		$mainHead = 'Thumb,Titolo prodotto,Pubblicato?';
 		
-		$this->scaffold->model->clear()->inner("pages")->on("prodotti_correlati.id_corr = pages.id_page")->orderBy("prodotti_correlati.id_order")->where(array(
+		$this->m[$this->modelName]->clear()->select("*")->inner("pages")->on("prodotti_correlati.id_corr = pages.id_page")->orderBy("prodotti_correlati.id_order")->where(array(
 			"id_page"		=>	$clean['id'],
 			"accessorio"	=>	$accessori,
 		));
@@ -1071,29 +1187,34 @@ class PagesController extends BaseController {
 		
 		if ($numeroTipologie > 0 && !$accessori)
 		{
-			$this->scaffold->model->left("tipologie_correlati")->on("tipologie_correlati.id_tipologia_correlato = prodotti_correlati.id_tipologia_correlato");
-			$this->scaffold->fields .= ",tipologie_correlati.*";
+			$this->m[$this->modelName]->left("tipologie_correlati")->on("tipologie_correlati.id_tipologia_correlato = prodotti_correlati.id_tipologia_correlato");
+// 			$this->m[$this->modelName]->fields .= ",tipologie_correlati.*";
 			
 			$data["mostra_tendina_tipologia"] = true;
 			$data["listaTipologieCorrelati"] = $this->m('TipologiecorrelatiModel')->clear()->orderBy("id_order")->toList("id_tipologia_correlato", "titolo")->send();
 			
-			$mainFields .= ",tipologie_correlati.titolo";
+			$mainFields[] = "tipologie_correlati.titolo";
 			$mainHead .= ",Tipologia";
 		}
 		
-		$this->scaffold->loadMain($mainFields,'prodotti_correlati.id_pc','moveup,movedown,ldel');
-		$this->scaffold->setHead($mainHead);
+		$this->mainFields = $mainFields;
+		$this->mainHead = $mainHead;
 		
-		$this->scaffold->update('moveup,movedown');
+		$this->m[$this->modelName]->save();
 		
-		$this->scaffold->itemList->colProperties = array(
-			array(
-				'width'	=>	'60px',
-			),
-		);
+// 		$this->scaffold->loadMain($mainFields,'prodotti_correlati.id_pc','moveup,movedown,ldel');
+// 		$this->scaffold->setHead($mainHead);
+// 		
+// 		$this->scaffold->update('moveup,movedown');
+// 		
+// 		$this->scaffold->itemList->colProperties = array(
+// 			array(
+// 				'width'	=>	'60px',
+// 			),
+// 		);
 		
-		$data['scaffold'] = $this->scaffold->render();
-		$data['numeroCorrelati'] = $this->scaffold->model->rowNumber();
+// 		$data['scaffold'] = $this->scaffold->render();
+// 		$data['numeroCorrelati'] = $this->scaffold->model->rowNumber();
 		
 		$data["listaProdotti"] = array();
 		
@@ -1126,16 +1247,22 @@ class PagesController extends BaseController {
 			$data["listaProdotti"][$r["pages"]["id_page"]] = $titoloTendina;
 		}
 		
-// 		echo $this->scaffold->model->getQuery();
+		$this->tabella = $this->getNomeMenu();
 		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		$data['notice'] = $this->scaffold->model->notice;
+		parent::main();
 		
 		$this->append($data);
-		$this->load('pages_correlati');
+		
+// 		echo $this->scaffold->model->getQuery();
+		
+// 		$data['menu'] = $this->scaffold->html['menu'];
+// 		$data['popup'] = $this->scaffold->html['popup'];
+// 		$data['main'] = $this->scaffold->html['main'];
+// 		$data['pageList'] = $this->scaffold->html['pageList'];
+// 		$data['notice'] = $this->scaffold->model->notice;
+// 		
+// 		$this->append($data);
+// 		$this->load('pages_correlati');
 	}
 	
 	public function attributi($id = 0)
@@ -2017,102 +2144,6 @@ class PagesController extends BaseController {
 		}
 		
 		$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".(int)$id.$this->viewStatus);
-	}
-	
-	public function caratteristiche($id = 0)
-	{
-		$data["orderBy"] = $this->orderBy = "id_order";
-		
-		$data["ordinaAction"] = "ordinacaratteristiche";
-		
-		$this->_posizioni['caratteristiche'] = 'class="active"';
-		$data['posizioni'] = $this->_posizioni;
-		
-		$data['type'] = "caratteristiche";
-		
-		$this->shift(1);
-		
-		$this->s['admin']->check();
-		
-		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
-		$this->id_name = "id_page";
-		
-		$this->m[$this->modelName]->checkPrincipale($clean['id']);
-		
-		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
-			die("non permesso");
-		
-		$this->modelName = "PagescarvalModel";
-		$this->mainButtons = 'ldel';
-		
-		if (!v("nuova_modalita_caratteristiche"))
-		{
-			$this->m['PagescarvalModel']->setFields('id_cv,titolo,id_car','sanitizeAll');
-			$this->m['PagescarvalModel']->values['id_page'] = $clean['id'];
-			$this->m['PagescarvalModel']->updateTable('insert,del');
-			
-			if ($this->m['PagescarvalModel']->queryResult)
-				$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".$clean['id'].$this->viewStatus);
-		}
-		
-		$data["aggiuntaLibera"] = false;
-		
-		if (!v("immagine_in_caratteristiche") && (!v("attiva_tipologie_caratteristiche") || v("caratteristiche_in_tab_separate")))
-			$data["aggiuntaLibera"] = true;
-		
-		$mainAction = "caratteristiche/".$clean['id'];
-		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
-		
-		$this->colProperties = array(
-			array(
-				'width'	=>	'60px',
-			),
-		);
-		
-		$this->mainFields = array("titoloCrud", "edit");
-		$this->mainHead = "Caratteristica,Valore";
-		
-		if (!v("caratteristiche_in_tab_separate") && v("attiva_tipologie_caratteristiche"))
-		{
-			array_unshift($this->mainFields, "titoloCrud");
-			$this->mainHead = "Tipologia,".$this->mainHead;
-		}
-		
-		if (v("immagine_in_caratteristiche"))
-		{
-			$this->mainFields[] = "thumb";
-			$this->mainHead .= ",Immagine";
-		}
-		
-		$this->m[$this->modelName]->clear()->select("tipologie_caratteristiche.*,pages_caratteristiche_valori.*,caratteristiche_valori.*,caratteristiche.*")
-			->inner("caratteristiche_valori")->on("caratteristiche_valori.id_cv = pages_caratteristiche_valori.id_cv")
-			->inner("caratteristiche")->on("caratteristiche.id_car = caratteristiche_valori.id_car")
-			->left("tipologie_caratteristiche")->on("tipologie_caratteristiche.id_tipologia_caratteristica = caratteristiche.id_tipologia_caratteristica")
-			->where(array(
-				"pages_caratteristiche_valori.id_page"	=>	$clean['id'],
-				"tipologie_caratteristiche.id_tipologia_caratteristica"	=>	$this->viewArgs["id_tipo_car"],
-			))
-			->orderBy("pages_caratteristiche_valori.id_order")->save();
-		
-		$this->tabella = $this->getNomeMenu();
-		
-		parent::main();
-		
-		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
-		
-		if (!v("nuova_modalita_caratteristiche"))
-		{
-// 			$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
-			
-			$data["listaCaratteristiche"] = $this->m['CaratteristichevaloriModel']->selectCaratteristica(true, "caratteristiche.titolo");
-			
-			$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
-			
-			$data["listaCarattVal"] = array("0"	=>	"-- seleziona --");
-		}
-		
-		$this->append($data);
 	}
 	
 	public function regioni($id = 0)
