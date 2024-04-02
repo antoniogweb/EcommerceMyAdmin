@@ -365,11 +365,20 @@ class MenuModel extends HierarchicalModel {
 						$pattern = str_replace(".html","",str_replace(DS, '\\'.DS, $linkAlias));
 						$pattern = rtrim($pattern,"\/")."\/";
 						
-						$domain = isset($lingua) ? str_replace("/".$lingua,"",Domain::$name) : Domain::$name;
+						if (isset($lingua))
+						{
+							if (Params::$country)
+								$domain = isset($lingua) ? str_replace("/".$lingua.Params::$languageCountrySeparator.Params::$country,"",Domain::$name) : Domain::$name;
+							else
+								$domain = isset($lingua) ? str_replace("/".$lingua,"",Domain::$name) : Domain::$name;
+						}
 						
 						$subject = str_replace(".html","",$domain.$requestUri);;
 						$subject = rtrim($subject,"/")."/";
 
+						if (v("attiva_nazione_nell_url"))
+							$pattern = str_replace("[COUNTRY]", Params::$country, $pattern);
+						
 						if (preg_match("/(".$pattern.")/",$subject))
 						{
 							$currClass = v("current_menu_item")." current_page_item current_item";
