@@ -764,7 +764,8 @@ class BaseContenutiController extends BaseController
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/".$this->m("CategoriesModel")->getUrlAlias($clean['id'], $l);
+// 			$data["arrayLingue"][$l] = $l."/".$this->m("CategoriesModel")->getUrlAlias($clean['id'], $l);
+			$data["arrayLingue"][$l] = $l."/".CategoriesModel::getUrlAliasTagMarchio($this->idTag, $this->idMarchio, $clean['id'],"", array(), array(), array(), $l);
 		}
 		
 		$data["idMarchio"] = $this->idMarchio;

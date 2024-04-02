@@ -956,7 +956,7 @@ class CategoriesModel extends HierarchicalModel {
 		return $arrayFigli;
 	}
 	
-	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "", $filtri = array(), $filtriLoc = array(), $filtriAltri = array())
+	public static function getUrlAliasTagMarchio($id_tag = 0, $id_marchio = 0, $id_c = 0, $viewStatus = "", $filtri = array(), $filtriLoc = array(), $filtriAltri = array(), $lingua = null)
 	{
 		$urlArray = array();
 		
@@ -1008,7 +1008,7 @@ class CategoriesModel extends HierarchicalModel {
 				$c = new CategoriesModel();
 				
 				Parametri::$useHtmlExtension = false;
-				$urlArray[] = $c->getUrlAlias($id_c);
+				$urlArray[] = $c->getUrlAlias($id_c, $lingua);
 				Parametri::$useHtmlExtension = true;
 			}
 			else
