@@ -22,7 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TagModel extends GenericModel {
+class TagModel extends GenericModel
+{
+	private static $prodottiTag = [];
 	
 	public static $currentId = 0;
 	
@@ -200,6 +202,26 @@ class TagModel extends GenericModel {
 			
 			$pt->pInsert();
 		}
+    }
+    
+    // Restituisce i prodotti di quel tag
+    public static function getProdottiTag($idTag)
+    {
+		if (!isset(self::$prodottiTag[(int)$idTag]))
+		{
+			$p = new PagesModel();
+			
+			self::$prodottiTag[(int)$idTag] = $p->clear()
+				->addJoinTraduzionePagina()
+				->addWhereAttivo()
+				->inner(array("tag"))->aWhere(array(
+					"pages_tag.id_tag"	=>	(int)$idTag,
+				))
+				->orderBy("pages.id_order")
+				->send();
+		}
+		
+		return self::$prodottiTag[(int)$idTag];
     }
 	
 // 	public function filtro()
