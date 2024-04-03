@@ -366,4 +366,15 @@ class CaratteristichevaloriModel extends GenericModel {
 			"id_cv"	=>	(int)$idCV,
 		))->field("caratteristiche.tipo");
 	}
+	
+	// Restituisce il record dall'alias
+	public static function getRecordDaAlias($alias)
+	{
+		$cv = new CaratteristichevaloriModel();
+		
+		return $cv->addJoinTraduzione()->sWhere(array(
+			"coalesce(contenuti_tradotti.alias,caratteristiche_valori.alias) = ?",
+			array(sanitizeAll($alias))
+		))->orderBy(null)->first();
+	}
 }

@@ -96,12 +96,22 @@ trait Filtri
 	}
 	
 	// Restituisce un array per URL con filtri togliendo la caratteristica $aliasCar impostata a $aliasCarVal
-	public static function getUrlCaratteristicheTutti($aliasCar = null)
+	public static function getUrlCaratteristicheTutti($aliasCar = null, $aliasCarV = null)
 	{
 		$temp = self::$filtriUrl;
 		
 		if ($aliasCar && isset($temp[$aliasCar]))
-			unset($temp[$aliasCar]);
+		{
+			if (isset($aliasCarV) && count($temp[$aliasCar]) > 1)
+			{
+				$key = array_search($aliasCarV, $temp[$aliasCar]);
+				
+				if ($key !== false)
+					unset($temp[$aliasCar][$key]);
+			}
+			else
+				unset($temp[$aliasCar]);
+		}
 		
 		return self::getArrayFiltri($temp);
 	}

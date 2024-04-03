@@ -893,7 +893,7 @@ $(document).ready(function(){
 	});
 	
 	if (attiva_icheck)
-		$('input').iCheck(icheckOptions);
+		$('input:not(.no_icheck_input)').iCheck(icheckOptions);
 	
 	mostraLabelColore();
 	

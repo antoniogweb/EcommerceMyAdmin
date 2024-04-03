@@ -323,7 +323,7 @@ $(document).ready(function(){
 	
 	if ($(".formClass:not(.no-check-modifiche)").length > 0)
 	{
-		$("body").on("change", ".formClass input, .formClass select, .formClass textarea", function(e){
+		$("body").on("change", ".formClass input:not(.no-check-modifiche), .formClass select, .formClass textarea", function(e){
 // 		$(".formClass input, .formClass select, .formClass textarea").change(function(){
 			
 			form_modificato = true;
