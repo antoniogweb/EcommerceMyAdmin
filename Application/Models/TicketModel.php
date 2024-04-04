@@ -200,6 +200,12 @@ class TicketModel extends GenericModel
 		if (isset($this->values["id_lista_regalo"]) && $this->values["id_lista_regalo"])
 			$this->values["id_o"] = 0;
 		
+		if (isset($this->values["oggetto"]) && !isset($this->values["id_lista_regalo"]) && !isset($this->values["id_o"]))
+		{
+			$this->values["id_lista_regalo"] = 0;
+			$this->values["id_o"] = 0;
+		}
+		
 		$record = $this->selectId((int)$id);
 		$inBozza = false;
 		
