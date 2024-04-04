@@ -768,6 +768,15 @@ $(document).ready(function(){
 		aggAlteIfr();
 	});
 	
+	$('iframe').on("load", function () {
+		
+		setTimeout(function(){
+		
+			aggAlteIfr();
+			
+		}, 1000);
+	});
+	
 	$( "body" ).on( "click", ".make_spinner", function(e){
 		makeSpinner($(this));
 	});

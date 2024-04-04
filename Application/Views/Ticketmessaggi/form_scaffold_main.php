@@ -10,4 +10,4 @@ $().ready(function() {
 
 <?php echo $main;?>
 
-<br /><br /><br />
+<!-- <br /><br /><br /> -->

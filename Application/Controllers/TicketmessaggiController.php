@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-send'></i> Invia nuovo messaggio";
+
 class TicketmessaggiController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
