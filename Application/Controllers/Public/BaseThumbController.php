@@ -331,8 +331,6 @@ class BaseThumbController extends Controller {
 	
 	public function dettaglio($fileName)
 	{
-		$this->clean();
-		
 		$params = array(
 			'imgWidth'		=>	500,
 			'imgHeight'		=>	500,
@@ -344,23 +342,41 @@ class BaseThumbController extends Controller {
 			'backgroundColor' => "#FFF",
 		);
 		
-		$params = $this->caricaParametri($params);
-		
-		if (accepted($fileName))
-		{
-			if (strcmp($fileName,'') !== 0)
-			{
-				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
-				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
-// 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
-			}
-		}
-		else
-		{
-			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
-			$thumb->render('nofound.jpeg');
-		}
+		$this->genericthumb($fileName, $params, "images/contents");
 	}
+	
+// 	public function dettaglio($fileName)
+// 	{
+// 		$this->clean();
+// 		
+// 		$params = array(
+// 			'imgWidth'		=>	500,
+// 			'imgHeight'		=>	500,
+// 			'defaultImage'	=>  null,
+// // 			'useCache'		=>	true,
+// // 			'cropImage'		=>	'yes',
+// 			'horizAlign'	=>	'center',
+// 			'vertAlign'		=>	'center',
+// 			'backgroundColor' => "#FFF",
+// 		);
+// 		
+// 		$params = $this->caricaParametri($params);
+// 		
+// 		if (accepted($fileName))
+// 		{
+// 			if (strcmp($fileName,'') !== 0)
+// 			{
+// 				$thumb = new Image_Gd_Thumbnail(FRONT.'/'.Parametri::$cartellaImmaginiContenuti,$params);
+// 				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica());
+// // 				call_user_func_array(array($thumb, "render"),$this->parametriRender($fileName));
+// 			}
+// 		}
+// 		else
+// 		{
+// 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
+// 			$thumb->render('nofound.jpeg');
+// 		}
+// 	}
 	
 	public function socidetail($fileName)
 	{
