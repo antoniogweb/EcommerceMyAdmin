@@ -9,5 +9,3 @@ $().ready(function() {
 </script>
 
 <?php echo $main;?>
-
-<!-- <br /><br /><br /> -->

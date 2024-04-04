@@ -24,7 +24,8 @@ var tiny_editor_config = {
 	theme_advanced_statusbar_location : "bottom",
 	theme_advanced_resizing : true,
 	accessibility_warnings : false,
-	accessibility_focus : false
+	accessibility_focus : false,
+	oninit : aggAlteIfr
 };
 
 var form_modificato = false;
@@ -766,15 +767,6 @@ $(document).ready(function(){
 	
 	$(document).ajaxSuccess(function() {
 		aggAlteIfr();
-	});
-	
-	$('iframe').on("load", function () {
-		
-		setTimeout(function(){
-		
-			aggAlteIfr();
-			
-		}, 1000);
 	});
 	
 	$( "body" ).on( "click", ".make_spinner", function(e){
