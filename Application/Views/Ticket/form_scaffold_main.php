@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <div class='row'>
-	<form id-ticket="<?php echo $id;?>" id="ancora_form" class="formClass no-check-modifiche" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>#ancora_form" enctype="multipart/form-data">
+	<form id-ticket="<?php echo $id;?>" id="ancora_form" class="formClass no-check-modifiche" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?><?php if ($isBozza) { ?>#ancora_form<?php } ?>" enctype="multipart/form-data">
 		<div class='col-md-4'>
 			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtext("Dati generali ticket");?></h4>
 			

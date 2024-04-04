@@ -9,7 +9,7 @@
 	[TESTO_TICKET]
 </div>
 
-<br /><p><?php echo gtext("Per vedere i dettagli del ticket ed eventualmente aggiungere un messaggio, segua", false);?> <a href="[URL_TICKET]"><?php echo gtext("questo link");?></a></p>
+<br /><p><?php echo gtext("Per vedere i dettagli del ticket ed eventualmente aggiungere un messaggio, segua", false);?> <a href="[URL_TICKET]"><?php echo gtext("questo link");?></a>.</p>
 
 <p><?php echo gtext("Potrà avere accesso a tutti i suoi ticket dalla sua area riservata visitando il seguente",false);?> <a href="[LINK_SITO]/area-riservata"><?php echo gtext("indirizzo web",false);?></a>, <?php echo gtext("all'interno della sezione")?> <b><?php echo gtext("assistenza")?></b>.
 </p>

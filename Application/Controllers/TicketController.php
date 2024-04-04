@@ -269,6 +269,7 @@ class TicketController extends BaseController
 			$idO = 0;
 		}
 		
+		$this->m[$this->modelName]->addStrongCondition("update",'checkNotEmpty',"oggetto,descrizione");
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
