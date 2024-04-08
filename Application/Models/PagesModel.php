@@ -2828,7 +2828,7 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id'] = (int)$id_page;
 		
-		$this->clear()->select("pages.*,prodotti_correlati.id_corr,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
+		$this->clear()->select("pages.*,prodotti_correlati.id_corr,prodotti_correlati.id_tipologia_correlato,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"prodotti_correlati.id_page"=>	$clean['id'],
@@ -2934,7 +2934,12 @@ class PagesModel extends GenericModel {
 		{
 			$temp = array();
 			
-			$cm->clear()->select("combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo")
+			$campi = "combinazioni.$c,attributi_valori.titolo,attributi_valori.immagine,attributi_valori.colore,contenuti_tradotti.titolo,attributi.tipo";
+			
+			if (v("mostra_prezzo_su_tendina_combinazione"))
+				$campi .= ",combinazioni.price_scontato_ivato";
+			
+			$cm->clear()->select($campi)
 				->inner("attributi_valori")->on("attributi_valori.id_av = combinazioni.$c")
 				->inner("attributi")->on("attributi.id_a = attributi_valori.id_a")
 				->addJoinTraduzione(null, "contenuti_tradotti", false, (new AttributivaloriModel()))
@@ -2968,6 +2973,11 @@ class PagesModel extends GenericModel {
 				}
 			}
 			
+			$nomeSuTendina = "";
+			
+			if (v("mostra_nome_variante_in_tendina"))
+				$nomeSuTendina = $name.": ";
+			
 			foreach ($resValoriAttributi as $rva)
 			{
 				if ($tipo == "RADIO")
@@ -2977,7 +2987,14 @@ class PagesModel extends GenericModel {
 				else if ($tipo == "COLORE")
 					$arrayCombValori[$rva["combinazioni"][$c]] = $rva["attributi_valori"]["colore"];
 				else
-					$arrayCombValori[$rva["combinazioni"][$c]] = $name.": ".avfield($rva, "titolo");
+				{
+					$prezzoSuTendina = "";
+					
+					if (v("mostra_prezzo_su_tendina_combinazione"))
+						$prezzoSuTendina = " € ".$rva["combinazioni"]["price_scontato_ivato"];
+					
+					$arrayCombValori[$rva["combinazioni"][$c]] = $nomeSuTendina.avfield($rva, "titolo").$prezzoSuTendina;
+				}
 			}
 			
 			$lista_valori_attributi[$c] = $temp + $arrayCombValori;

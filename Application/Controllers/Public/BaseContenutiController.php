@@ -503,6 +503,8 @@ class BaseContenutiController extends BaseController
 		{
 			header('HTTP/1.0 404 Not Found');
 			
+			$this->estraiDatiFiltri();
+			
 			$this->append($data);
 			
 			$this->load("404");

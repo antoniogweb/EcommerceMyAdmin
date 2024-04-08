@@ -76,7 +76,6 @@ class VariabiliModel extends GenericModel {
 		"blog_attivo"				=>	1,
 		"shop_in_alias_tag"			=>	0,
 		"menu_class_prefix"			=>	"",
-		"primo_attributo_selezionato"	=>	0,
 		"template_attributo"		=>	"",
 		"template_personalizzazione"=>	"",
 		"usa_https"					=>	0,
@@ -505,6 +504,9 @@ class VariabiliModel extends GenericModel {
 		"permetti_modifica_attributi_combinazioni"	=>	0, // se impostato su 1, permette di modificare il valore degli attributi per ogni combinazione
 		"permetti_acquisto_da_categoria_se_ha_una_combinazione"	=>	0, // se impostato su 1, l'ecommerce permette di acquistare direttamente dalla categoria se il prodotto non ha personalizzazioni e ha solo 1 categoria attiva
 		"slega_varianti_quando_copi_prodotto"	=>	0, // se impostato su 1, alla copia del prodotto le varianti vengono copiate
+		"primo_attributo_selezionato"	=>	0, // se deve impostare di default il primo attributo
+		"mostra_nome_variante_in_tendina"	=>	1, // se impostato su 1, mostra il nome della variante nella tendina di selezione della variante
+		"mostra_prezzo_su_tendina_combinazione"	=>	0, // se impostato su 1, mostra il prezzo nella tendina di selezione della variante
 		## GOOGLE ##
 		"campo_send_to_google_ads"	=>	"", // è il campo send_to del codice di conversione Google Ads
 		"codice_account_merchant"	=>	"", // è il codice dell'account Merchant collegato a Google Ads
