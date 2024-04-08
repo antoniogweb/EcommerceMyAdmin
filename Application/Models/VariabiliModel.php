@@ -665,6 +665,7 @@ class VariabiliModel extends GenericModel {
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto
 		"link_marchio_in_breadcrumb"	=>	0, // se impostato a 1, aggiunge il link al marchio nella breadcrumb
+		"classe_link_breadcrumb"	=>	"breadcrumb_item", // classe dei vari link nel breadcrumb
 		## SITEMAP ##
 		"permetti_gestione_sitemap"	=>	0, // se impostato a 1, permette la gestione manuale della sitemap
 		"mostra_sitemap_in_file_robots"	=>	1, // se impostato ad 1, inserisci il link della sitemap nel file di robots

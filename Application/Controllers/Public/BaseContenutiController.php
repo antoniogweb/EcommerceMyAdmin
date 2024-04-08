@@ -670,6 +670,8 @@ class BaseContenutiController extends BaseController
 			
 			$ref = implode("/",$hrefArray).$ext;
 			
+			$breadcrumbLinkClass = v("classe_link_breadcrumb");
+			
 			if ($i === 0 and !$linkInLast)
 			{
 				$titolo = (isset($tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) && $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
@@ -686,7 +688,7 @@ class BaseContenutiController extends BaseController
 					if ($marchio)
 					{
 						$alias = mfield($marchio,"alias");
-						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio(0, $tempParents[count($tempParents)-1]["pages"]["id_marchio"], $tempParents[count($tempParents)-1]["pages"]["id_c"])."'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
+						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass $breadcrumbLinkClass ".$alias."' href='".$this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio(0, $tempParents[count($tempParents)-1]["pages"]["id_marchio"], $tempParents[count($tempParents)-1]["pages"]["id_c"])."'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
 					}
 				}
 			}
@@ -698,7 +700,7 @@ class BaseContenutiController extends BaseController
 				
 				$titolo = $this->titoloBreadcrumb($titolo, false);
 				
-				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass breadcrumb_item ".$alias."' href='".$this->baseUrl."/$ref'>".$titolo."</a>".v("breadcrumb_element_close")."\n");
+				array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass $breadcrumbLinkClass ".$alias."' href='".$this->baseUrl."/$ref'>".$titolo."</a>".v("breadcrumb_element_close")."\n");
 			}
 			
 			array_pop($tempParents);
