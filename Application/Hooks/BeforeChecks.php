@@ -851,3 +851,9 @@ if (defined("APPS")) {
 			include($path);
 	}
 }
+
+// funzione custom dell'admin
+if (function_exists("admin_custom_function"))
+{
+	call_user_func("admin_custom_function");
+}
