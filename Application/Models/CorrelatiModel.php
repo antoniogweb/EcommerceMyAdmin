@@ -80,4 +80,20 @@ class CorrelatiModel extends GenericModel {
 		
 		return false;
 	}
+	
+	// Restituisce gli ID delle pagine di cui il prodotto $idPage è correlato
+	// $idTipologia: solo quelli che sono correlati di questa tipologia
+	public function pagineDiCuiECorrelato($idPage, $idTipologia = 0)
+	{
+		$this->clear()->where(array(
+			"id_corr"	=>	(int)$idPage,
+		))->toList("id_page");
+		
+		if ($idTipologia)
+			$this->aWhere(array(
+				"id_tipologia_correlato"	=>	(int)$idTipologia,
+			));
+		
+		return $this->send();
+	}
 }
