@@ -2193,6 +2193,31 @@ class BaseContenutiController extends BaseController
 			$this->redirect("");
 	}
 	
+	public function recuperacarrello($c = "")
+	{
+		$this->clean();
+		
+		if (is_string($c) && trim(v("token_recupera_carrello")) && (string)$c === (string)v("token_recupera_carrello"))
+		{
+			$clean["cart_uid"] = $this->request->get("cart_uid","","sanitizeAll");
+			
+			if (trim($clean["cart_uid"]))
+			{
+				if ($this->m("CartModel")->clear()->where(array(
+					"cart_uid"	=>	$clean["cart_uid"],
+				))->rowNumber())
+				{
+					$time = time() + v("durata_carrello_wishlist_coupon");
+					setcookie("cart_uid",$clean["cart_uid"],$time,"/");
+				
+					$this->redirect("checkout");
+				}
+			}
+		}
+		
+		$this->redirect("");
+	}
+	
 	public function processaschedulazione($c = "")
 	{
 		$this->clean();

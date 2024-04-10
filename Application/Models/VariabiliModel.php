@@ -284,6 +284,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_template_email"		=>	0,
 		"attiva_eventi_retargeting"	=>	0,
 		"token_schedulazione"		=>	"",
+		"token_recupera_carrello"	=>	"", // token per accedere alla pagina di recupero del carrello
 		"attiva_note_acquisto_in_ordini"	=>	1,
 		"genera_e_invia_password"	=>	0,
 		"page_main_class"			=>	"top_page_main",
@@ -742,6 +743,7 @@ class VariabiliModel extends GenericModel {
 		"token_feed_google_facebook",
 		"token_aggiorna_alias_combinazioni",
 		"token_eliminazione_account_da_app",
+		"token_recupera_carrello",
 	);
 	
 	public static function inizializza($variabili = array())
