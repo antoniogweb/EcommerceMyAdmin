@@ -1,25 +1,10 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (strcmp($pageView,"partial") !== 0) { ?><div id="main" class="cart_container"><?php } ?>
-<?php if (count($pages) > 0) {
-	$numeroGiftCardInCarrello = CartModel::numeroGifCartInCarrello();
-?>
+<?php if (count($pages) > 0) { ?>
 	<div class="uk-grid-medium uk-grid main_cart" uk-grid="">
 		<div class="uk-width-1-1 uk-width-expand@m uk-first-column">
-			<?php
-			include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
-				"titolo"	=>	"Avviso quando hai una lista selezionata",
-				"percorso"	=>	"Elementi/ListaRegalo/AvvisoCarrelloCheckout",
-			))));
-			?>
-			<?php if (!checkQtaCartFull()) { ?>
-			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, alcune righe nel tuo carrello hanno una quantità maggiore di quella presente a magazzino.")?></div>
-			<?php } ?>
-			<?php if ($numeroGiftCardInCarrello > v("numero_massimo_gift_card")) { ?>
-			<div class="<?php echo v("alert_error_class");?>"><?php echo str_replace("[N]",v("numero_massimo_gift_card"),gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card"));?></div>
-			<?php } ?>
-			<?php if (isset($_GET["evidenzia"]) && CartelementiModel::haErrori()) { ?>
-			<div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, controllare i campi evidenziati relativi alle Gift Card.");?></div>
-			<?php } ?>
+			<?php include(tpf("Cart/main_avvisi_superiori.php"));?>
+			
 			<?php if (!User::$isMobile) { ?>
 			<div class="uk-visible@m cart_head_row">
 				<div class="uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
@@ -42,14 +27,7 @@
 			<div>
 				<div class="cart_item_row uk-grid-small uk-child-width-1-1@m uk-child-width-1-2 uk-child-width-1-5@m uk-child-width-2-4 <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" rel="<?php echo $p["cart"]["id_cart"];?>">
 					<div class="uk-first-column">
-						<div class="uk-hidden@m uk-text-left">
-							<a class="uk-icon-button uk-text-danger remove cart_item_delete_link cart_item_delete_mobile_link" title="<?php echo gtext("elimina il prodotto dal carrello", false);?>" href="#"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/close.svg");?></span></a>
-						</div>
-						<?php if ($p["cart"]["immagine"]) { ?>
-						<?php if (!$p["cart"]["id_p"]) { ?><a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><?php } ?>
-							<img src="<?php echo $this->baseUrlSrc."/thumb/carrello/".$p["cart"]["immagine"];?>" />
-						<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
-						<?php } ?>
+						<?php include(tpf("Cart/main_campi_left.php"));?>
 					</div>
 					<div class="uk-width-expand">
 						<?php include(tpf("Cart/main_campi_right.php"));?>
