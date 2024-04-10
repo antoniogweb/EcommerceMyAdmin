@@ -507,7 +507,7 @@ class TicketModel extends GenericModel
 			
 			$emailNegozio = (v("email_ticket_negozio") && checkMail(v("email_ticket_negozio"))) ? v("email_ticket_negozio") : Parametri::$mailInvioOrdine;
 			
-			$valoriMail["email"] = array($emailNegozio);
+			$valoriMail["emails"] = array($emailNegozio);
 			$valoriMail["tipologia"] = "NUOVO_TICKET_NEGOZIO";
 			$valoriMail["testo_path"] = "Elementi/Mail/Ticket/mail_nuovo_ticket_negozio.php";
 			

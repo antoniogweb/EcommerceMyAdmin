@@ -13,5 +13,5 @@
 </div>
 <br />
 <p>
-<?php echo gtext("Tutte le informazioni sono presenti all'interno della pagina di dettaglio del ticket, nella sezione E-commerce > Assistenza del pannello admin dell'ecommerce.",false);?>
+<?php echo gtext("Tutte le informazioni sono presenti all'interno della pagina di dettaglio del ticket, nella sezione");?> <b><?php echo gtext("E-commerce");?></b> > <b><?php echo gtext("Assistenza");?></b> <?php echo gtext("del pannello admin dell'ecommerce.",false);?>
 </p>
