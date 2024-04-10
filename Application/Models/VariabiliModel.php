@@ -503,6 +503,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_solo_varianti_articolo"	=>	0, // se impostato su 1, nella pagina del prodotto elenca solo le varianti del prodotto
 		"permetti_modifica_attributi_combinazioni"	=>	0, // se impostato su 1, permette di modificare il valore degli attributi per ogni combinazione
 		"permetti_acquisto_da_categoria_se_ha_una_combinazione"	=>	0, // se impostato su 1, l'ecommerce permette di acquistare direttamente dalla categoria se il prodotto non ha personalizzazioni e ha solo 1 categoria attiva
+		"campo_attributi_di_default"	=>	"", // viene usato come testo del campo attributi della tabella cart se il prodotto non ha attributi
 		"slega_varianti_quando_copi_prodotto"	=>	0, // se impostato su 1, alla copia del prodotto le varianti vengono copiate
 		"primo_attributo_selezionato"	=>	0, // se deve impostare di default il primo attributo
 		"mostra_nome_variante_in_tendina"	=>	1, // se impostato su 1, mostra il nome della variante nella tendina di selezione della variante

@@ -102,6 +102,9 @@ class CombinazioniModel extends GenericModel {
 				$string .= $testoAttributo;
 			}
 			
+			if (v("campo_attributi_di_default") && count($stringArray) === 0)
+				$stringArray[] = v("campo_attributi_di_default");
+			
 // 			return $string;
 			if ($json)
 				return json_encode($jsonArray);
