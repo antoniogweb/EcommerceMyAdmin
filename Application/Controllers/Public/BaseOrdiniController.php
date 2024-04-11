@@ -1693,7 +1693,7 @@ class BaseOrdiniController extends BaseController
 		$data["pages"] = $this->m("CartModel")->getProdotti();
 		$this->append($data);
 		
-		$this->load("totale_merce");
+		$this->load("totale_merce_ajax");
 	}
 	
 	public function corrieri($nazione = 0)

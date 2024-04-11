@@ -1151,7 +1151,6 @@ $(document).ready(function(){
 			}
 			
 			if(y > (offset5.top - 200)) {
-				console.log("aaa");
 				mostraPosizioneStepCheckout("conferma")
 			} else {
 				nascondiPosizioneStepCheckout("conferma");

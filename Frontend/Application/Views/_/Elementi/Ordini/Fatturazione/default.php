@@ -2,6 +2,9 @@
 <?php if ($islogged && !$mostraCampiFatturazione) {
 	if (!empty($erroriInvioOrdine))
 		User::$dettagli = array_merge(User::$dettagli, $values);
+	
+	if (!isset($classePulsanteModificaDati))
+		$classePulsanteModificaDati = "uk-button uk-button-primary uk-button-small";
 ?>
 <div class="uk-margin uk-width-1-1">
 	<div class="uk-grid uk-grid-collapse" uk-grid>
@@ -38,7 +41,7 @@
 			<?php echo User::$dettagli["fattura"] ? gtext("Voglio ricevere la fattura") : gtext("Voglio ricevere lo scontrino fiscale");?>
 			<?php } ?>
 			<?php if (User::$dettagli["completo"]) { ?>
-			<div class="uk-margin-small-top"><a href="<?php echo $this->baseUrl."/modifica-account?redirect=checkout"?>" class="uk-button uk-button-primary uk-button-small"><span class="uk-margin-small-right" uk-icon="icon: pencil"></span><?php echo gtext("Modifica dati")?></a></div>
+			<div class="uk-margin-small-top"><a href="<?php echo $this->baseUrl."/modifica-account?redirect=checkout"?>" class="<?php echo $classePulsanteModificaDati;?>"><span class="uk-margin-small-right" uk-icon="icon: pencil"></span><?php echo gtext("Modifica dati")?></a></div>
 			<?php } ?>
 		</div>
 	</div>

@@ -11,9 +11,18 @@ if (!isset($classBadgeAutenticazione))
 
 if (!isset($classBadgeCheckout))
 	$classBadgeCheckout = "";
+
+if (!isset($classCircle))
+	$classCircle = "uk-light uk-background-secondary";
+
+if (!isset($classBoxSteps))
+	$classBoxSteps = "uk-margin-medium-bottom";
+
+if (!isset($stickyAttributes))
+	$stickyAttributes = 'uk-sticky="offset: 0;bottom: true;animation: uk-animation-slide-top;"';
 ?>
 <?php if (!User::$logged || User::$isMobile) { ?>
-<div class="checkout-steps uk-margin-medium-bottom <?php echo User::$isMobile ? "checkout-steps-mobile" : "";?>" <?php if ($this->action == "index" && User::$isMobile) { ?>uk-sticky="offset: 0;bottom: true;animation: uk-animation-slide-top;"<?php } ?>>
+<div class="checkout-steps <?php echo $classBoxSteps;?> <?php echo User::$isMobile ? "checkout-steps-mobile" : "";?>" <?php if ($this->action == "index" && User::$isMobile) { echo $stickyAttributes; } ?>>
 		<div class="uk-child-width-1-2@m uk-text-center uk-flex uk-flex-center">
 		<div>
 			<progress id="js-progressbar" class="uk_progress uk-progress uk-margin-remove" value="0" max="100"></progress>
@@ -49,7 +58,7 @@ if (!isset($classBadgeCheckout))
 				</div>
 				<?php } else { ?>
 				<div class="step_active">
-					<a href="<?php echo $this->baseUrl."/autenticazione";?>"><span class="uk-light uk-background-secondary uk-border-circle checkout-step <?php echo $classBadgeAutenticazione;?>">1</span><br /><span class="uk-visibile@m nome_step uk-text-meta <?php echo $textClassAutenticazione;?>"><?php echo gtext("Autenticazione");?></span></a>
+					<a href="<?php echo $this->baseUrl."/autenticazione";?>"><span class="<?php echo $classCircle;?> uk-border-circle checkout-step <?php echo $classBadgeAutenticazione;?>">1</span><br /><span class="uk-visibile@m nome_step uk-text-meta <?php echo $textClassAutenticazione;?>"><?php echo gtext("Autenticazione");?></span></a>
 				</div>
 				<div>
 					<span class="checkout-step uk-border-circle <?php echo $classBadgeCheckout;?>">2</span><br /><span class="uk-visibile@m nome_step uk-text-meta <?php echo $textClassCheckout;?>"><?php echo gtext("Checkout");?></span>

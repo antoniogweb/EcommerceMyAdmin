@@ -24,6 +24,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 
 $attiva = "account";
 
+if (!isset($classeBoxPulsanteRegistrazione))
+	$classeBoxPulsanteRegistrazione = "uk-margin";
+
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
@@ -59,7 +62,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</div>
 	<?php } ?>
 	
-	<div class="uk-margin">
+	<div class="<?php echo $classeBoxPulsanteRegistrazione;?>">
 		<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
 		<?php if (strcmp($this->action,"modify") !== 0 || (v("attiva_gestiobe_ticket") && RegusersModel::getRedirect() == "ticket")) { ?>
 			<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Completa registrazione", false);?>" />

@@ -37,7 +37,7 @@
 </div>
 <?php include(tpf("Ordini/totale_elementi.php"));?>
 <?php } ?>
-<hr />
+<?php include(tpf("Ordini/totale_merce_divisorio.php"));?>
 <?php include(tpf("/Ordini/totali.php"));?>
 
 <?php if (v("prezzi_ivati_in_carrello") && isset(IvaModel::$titoloAliquotaEstera) && !IvaModel::$nascondiAliquotaEstera && v("scorpora_iva_prezzo_estero")) { ?>
