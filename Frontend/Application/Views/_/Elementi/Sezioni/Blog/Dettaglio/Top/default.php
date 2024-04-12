@@ -17,7 +17,7 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 			<ul class="uk-slideshow-items" style="min-height: 520px">
 				<?php foreach ($altreImmagini as $imm) { ?>
 				<li>
-					<img data-src="<?php echo $this->baseUrlSrc."/thumb/blogdetail/".$imm["immagine"];?>" alt="<?php echo urlencode(field($p, "title"));?>" src="<?php echo $this->baseUrlSrc."/thumb/blogdetail/".$imm["immagine"];?>" alt="<?php echo urlencode(field($p, "title"));?>" data-uk-img="target: !.uk-slideshow-items" data-uk-cover></a>
+					<img data-src="<?php echo $this->baseUrlSrc."/thumb/blogdetail/".$imm["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>" src="<?php echo $this->baseUrlSrc."/thumb/blogdetail/".$imm["immagine"];?>" data-uk-img="target: !.uk-slideshow-items" data-uk-cover></a>
 				</li>
 				<?php } ?>
 			</ul>
