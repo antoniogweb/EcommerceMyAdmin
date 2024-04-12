@@ -1,7 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-
-<div class="uk-card-small uk-grid-column uk-child-width-1-4@s uk-text-center" uk-grid>
-	<?php foreach ($pages as $p) {
-		include(tpf("Elementi/Categorie/tag.php"));
-	} ?>
-</div>
+<?php include(tpf(ElementitemaModel::p("FASCIA_ELENCO_MARCHI","", array(
+	"titolo"	=>	"Fascia elenco tag",
+	"percorso"	=>	"Elementi/Fasce/ElencoTag",
+)))); ?>

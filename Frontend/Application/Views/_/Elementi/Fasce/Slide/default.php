@@ -9,7 +9,7 @@
 		?>
         <li id="<?php echo $p["pages"]["id_page"];?>">
 			<div class="uk-section uk-padding-small uk-height-1-1">
-				<img src="<?php echo $this->baseUrlSrc."/thumb/slide/".$p["pages"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>" uk-cover>
+				<img src="<?php echo $this->baseUrlSrc."/thumb/slide/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>" uk-cover>
 				<div class="uk-container uk-position-relative uk-height-1-1 uk-padding-remove">
 					<?php foreach ($layers as $layer) {?>
 					<?php include(tpf("/Elementi/Slide/layer.php"));?>

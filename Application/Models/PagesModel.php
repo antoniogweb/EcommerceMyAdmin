@@ -126,6 +126,7 @@ class PagesModel extends GenericModel {
 		"B2B"			=>	"Pagina info B2B",
 		"HOME"			=>	"Home page",
 		"MARCHI"		=>	"Pagina elenco marchi",
+		"TAG"			=>	"Pagina elenco tag",
 		"PACCO_REGALO"	=>	"Pagina descrizione pacchi regalo",
 		"PAGAMENTI"		=>	"Pagina informazioni pagamenti",
 		"GARANZIA"		=>	"Pagina informazioni garanzia",
@@ -4577,14 +4578,23 @@ class PagesModel extends GenericModel {
 	{
 		$p = new PagesModel();
 		
-		return PagesModel::impostaDatiCombinazionePagine(getRandom($p->clear()
+		$prodotti = $p->clear()
 			->aWhere(array(
 				$campo	=>	"Y",
 			))
 			->addWhereAttivo()
 			->addJoinTraduzionePagina()
-			->addWhereCategoria(CategoriesModel::$idShop)
-			->send(), v("numero_in_evidenza")));
+			->addWhereCategoria(CategoriesModel::$idShop);
+		
+		if (!v("random_in_evidenza"))
+			$p->orderBy("pages.id_order");
+		
+		$prodotti = $p->send();
+		
+		if (v("random_in_evidenza"))
+			$prodotti = getRandom($prodotti, v("numero_in_evidenza"));
+		
+		return PagesModel::impostaDatiCombinazionePagine($prodotti);
 	}
 	
 	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)

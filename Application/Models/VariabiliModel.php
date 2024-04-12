@@ -124,7 +124,6 @@ class VariabiliModel extends GenericModel {
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
 		"telefono_aziendale_2"		=>	"",
-		"numero_in_evidenza"		=>	4,
 		"pagamenti_permessi"		=>	"bonifico,paypal",
 		"email_aziendale"			=>	"",
 		"piattaforma_in_sviluppo"	=>	1,
@@ -647,6 +646,8 @@ class VariabiliModel extends GenericModel {
 		"usa_fasce_in_home"			=>	0, // se attivare o meno la gestione delle fasce in home
 		"usa_meta_pagina_home"		=>	0, // se attivo, utilizza le keywords e la meta description dalla pagina indicata come home
 		"numero_in_promo_home"		=>	20, // numero dei prodotti in promo nella home
+		"numero_in_evidenza"		=>	4, // numero di elementi nella fascia " prodotti in evidenza"
+		"random_in_evidenza"		=>	1, // se impostato su 1, i prodotti in evidenza saranno mostrati in modo randomico
 		## CATEGORIA ##
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
 		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
