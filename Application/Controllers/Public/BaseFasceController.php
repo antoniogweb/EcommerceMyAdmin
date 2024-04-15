@@ -454,4 +454,14 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getFasciaAgenti()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_AGENTI","", array(
+			"titolo"	=>	"Fascia spiegazione e login agenti",
+			"percorso"	=>	"Elementi/Fasce/Agenti",
+		))));
+		return ob_get_clean();
+	}
 }

@@ -983,6 +983,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[gift-card\]/', array($obj,'getFasciaGiftCard') ,$string);
 		$string = preg_replace_callback('/\[prodotti_in_pagina\]/', array($obj,'getProdottiInPagina') ,$string);
 		$string = preg_replace_callback('/\[partner\]/', array($obj,'getFasciaPartner') ,$string);
+		$string = preg_replace_callback('/\[agenti\]/', array($obj,'getFasciaAgenti') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
