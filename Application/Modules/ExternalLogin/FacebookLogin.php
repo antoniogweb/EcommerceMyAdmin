@@ -48,7 +48,7 @@ class FacebookLogin extends ExternalLogin
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,app_id,secret_key,app_version,access_token';
+		return 'titolo,attivo,app_id,secret_key,app_version,access_token,instagram_app_id,instagram_secret_key,instagram_access_token,instagram_user_id';
 	}
 	
 	private function getClient()
@@ -66,6 +66,40 @@ class FacebookLogin extends ExternalLogin
 		]);
 		
 		$this->helper = $this->client->getRedirectLoginHelper();
+	}
+	
+	public function getInstagramAutorizeUrl($redirectUri)
+	{
+		return 'https://api.instagram.com/oauth/authorize?client_id='.$this->params["instagram_app_id"].'&redirect_uri='.$redirectUri.'&scope=user_profile,user_media&response_type=code';
+	}
+	
+	public function ottieniInstagramAccessToken($code, $redirectUri)
+	{
+		$pars=array(
+			'client_id' => $this->params["instagram_app_id"],
+			'client_secret' => $this->params["instagram_secret_key"],
+			'grant_type' => 'authorization_code',
+			'redirect_uri' => $redirectUri,
+			'code' => $code,
+		);
+
+		//step1
+		$curlSES=curl_init(); 
+		//step2
+		curl_setopt($curlSES,CURLOPT_URL,"https://api.instagram.com/oauth/access_token");
+		curl_setopt($curlSES,CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($curlSES,CURLOPT_HEADER, false); 
+		curl_setopt($curlSES, CURLOPT_POST, true);
+		curl_setopt($curlSES, CURLOPT_POSTFIELDS,http_build_query($pars));
+		curl_setopt($curlSES, CURLOPT_CONNECTTIMEOUT,10);
+		curl_setopt($curlSES, CURLOPT_TIMEOUT,30);
+		//step3
+		$result=curl_exec($curlSES);
+		//step4
+		curl_close($curlSES);
+		//step5
+		
+		return json_decode($result, true);
 	}
 	
 	private function setErrore($codice, $messaggio)
