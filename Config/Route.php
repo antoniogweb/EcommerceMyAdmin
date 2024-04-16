@@ -856,6 +856,7 @@ class Route
 		'spedizioninegozio,colli',
 		'spedizioninegozio,servizi',
 		'spedizioninegozio,segnacollo',
+		'spedizioninegozio,zpl',
 		'spedizioninegozio,letteradivettura',
 		'spedizioninegozio,vediinfo',
 		

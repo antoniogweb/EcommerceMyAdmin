@@ -1176,6 +1176,17 @@ class SpedizioninegozioModel extends FormModel {
 		return "";
 	}
 	
+	// Stampa il segnacollo in formato Zpl della spedizione
+	public function zpl($idS)
+	{
+		$record = $this->clear()->selectId((int)$idS);
+		
+		if (!empty($record) && !SpedizioninegozioModel::aperto((int)$idS))
+			return SpedizioninegozioModel::getModulo($idS)->zpl($idS);
+		
+		return "";
+	}
+	
 	// Stampa la lettera di vettura
 	public function letteradivettura($idS)
 	{

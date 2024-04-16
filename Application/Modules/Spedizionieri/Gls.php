@@ -237,6 +237,54 @@ class Gls extends Spedizioniere
 		);
 	}
 	
+	// Scarica e genera file TXT dei codici ZPL delle etichette
+	public function zpl($idS)
+	{
+		$spModel = new SpedizioninegozioModel();
+		
+		$spedizione = $spModel->selectId((int)$idS);
+		
+		$infoLabel = SpedizioninegozioinfoModel::g(false)->getCodice($idS, "InfoLabel");
+		
+		if ($infoLabel != "")
+			$xmlObj = simplexml_load_string($infoLabel);
+		
+		if ($infoLabel != "" && !empty($spedizione) && isset($xmlObj))
+		{
+			$client = $this->getClient();
+			$params = htmlentitydecodeDeep($this->params);
+			
+			$info = $this->getStrutturaDatiContratto();
+			$info = array(
+				"SedeGls"				=>	$params["codice_sede"],
+				"CodiceCliente"			=>	$params["codice_cliente"],
+				"Password"				=>	$params["password_cliente"],
+				"CodiceContratto"		=>	$params["codice_contratto"],
+			);
+			
+			$pathSpedizione = $this->getLogPath((int)$idS)."/Zpl";
+			
+			if (!file_exists($pathSpedizione))
+				return;
+			
+			foreach ($xmlObj->Parcel as $p)
+			{
+				$info["ContatoreProgressivo"] = (string)$p->ContatoreProgressivo;
+				
+				$zplResult = $client->GetZpl($info);
+				
+				if (isset($zplResult->GetZplResult->any))
+				{
+					$codiceZpl = strip_tags($zplResult->GetZplResult->any);
+					
+					$pathZpl = $pathSpedizione."/".$p->ContatoreProgressivo.".txt";
+					
+					FilePutContentsAtomic($pathZpl, $codiceZpl);
+				}
+			}
+		}
+	}
+	
 	// Elimina la spedizione $idS
 	public function eliminaSpedizione($idS)
 	{

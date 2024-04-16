@@ -195,6 +195,10 @@ class Spedizioniere
 		if (!$isInvio && !@is_dir($moduleFullPath."/$folder/".(int)$idElemento."/Pdf"))
 			createFolderFull("Pdf", $moduleFullPath."/$folder/".(int)$idElemento);
 		
+		// Controllo e in caso creo la cartella con i PDF della spedizione
+		if (!$isInvio && !@is_dir($moduleFullPath."/$folder/".(int)$idElemento."/Zpl"))
+			createFolderFull("Zpl", $moduleFullPath."/$folder/".(int)$idElemento);
+		
 		return $moduleFullPath."/$folder/".(int)$idElemento;
 	}
 	

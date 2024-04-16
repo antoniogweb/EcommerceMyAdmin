@@ -526,6 +526,16 @@ class SpedizioninegozioController extends BaseController {
 		$this->m($this->modelName)->segnacollo((int)$id);
 	}
 	
+	// Stampa il codice ZPL della spedizione avente ID = $id
+	public function zpl($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$this->m($this->modelName)->zpl((int)$id);
+	}
+	
 	// Stampa il segnacollo della spedizione avente ID = $id
 	public function letteradivettura($id = 0)
 	{
