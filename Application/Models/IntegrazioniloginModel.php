@@ -66,7 +66,7 @@ class IntegrazioniloginModel extends GenericModel {
 					'className'		=>	'text_input form-control editor_textarea',
 				),
 				'access_token'	=>	array(
-					'labelString'=>	'Access Token',
+					'labelString'=>	'Facebook Login Access Token',
 					'wrap'		=>	array(
 						null,
 						null,
@@ -74,7 +74,7 @@ class IntegrazioniloginModel extends GenericModel {
 					),
 				),
 				'instagram_access_token'	=>	array(
-					'labelString'=>	'Access Instagram Token',
+					'labelString'=>	'Instagram Access Token',
 					'wrap'		=>	array(
 						null,
 						null,
