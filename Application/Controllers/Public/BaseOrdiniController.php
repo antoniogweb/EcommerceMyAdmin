@@ -833,6 +833,13 @@ class BaseOrdiniController extends BaseController
 					VariabiliModel::ottieniVariabili();
 				}
 				
+				if (v("check_ipn_al_ritorno_carta") && $res[0]["orders"]["stato"] == "pending")
+				{
+					$this->ipncarta();
+					$this->load('header');
+					$this->load('footer','last');
+				}
+				
 				$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];
 			}
 			else

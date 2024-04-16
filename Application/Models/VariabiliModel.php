@@ -610,6 +610,8 @@ class VariabiliModel extends GenericModel {
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
+		## PAGAMENTI ##
+		"check_ipn_al_ritorno_carta"	=>	0, // se impostata su 1, fa il check ipn al ritorno sul sito (controlla che non sia già stato fatto). Solo per pagamento con carta di credito
 		## PAGINAZIONE ##
 		"prodotti_per_pagina"		=>	999999, // FRONTEND
 		"news_per_pagina"			=>	16, // FRONTEND
