@@ -70,7 +70,7 @@ class IntegrazioniloginModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni access token")."</a>"
+						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni Facebook Login Access Token")."</a>"
 					),
 				),
 				'instagram_access_token'	=>	array(
@@ -78,7 +78,7 @@ class IntegrazioniloginModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniinstagramaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni access token")."</a>"
+						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniinstagramaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni Instagram Access Token")."</a>"
 					),
 				),
 			),
