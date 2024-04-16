@@ -162,8 +162,8 @@ class IntegrazioniloginController extends BaseController
 			if (isset($accessToken["access_token"]))
 			{
 				$this->m[$this->modelName]->sValues(array(
-					"access_token"		=>	$accessToken["access_token"],
-					"instagram_user_id"	=>	$accessToken["user_id"],
+					"instagram_access_token"	=>	$accessToken["access_token"],
+					"instagram_user_id"			=>	$accessToken["user_id"],
 				));
 				
 				$this->m[$this->modelName]->update(null, array(
@@ -178,5 +178,7 @@ class IntegrazioniloginController extends BaseController
 			header('Location: '.$goTo);
 			die();
 		}
+		
+		$this->redirect("integrazionilogin/form/update/".$record["id_integrazione_login"]);
 	}
 }
