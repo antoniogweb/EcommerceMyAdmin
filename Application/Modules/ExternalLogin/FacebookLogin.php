@@ -99,7 +99,18 @@ class FacebookLogin extends ExternalLogin
 		curl_close($curlSES);
 		//step5
 		
-		return json_decode($result, true);
+		$resultArray = json_decode($result, true);
+		
+		if (isset($resultArray["access_token"]))
+		{
+			$urlExchange = "https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=".$this->params["instagram_secret_key"]."&access_token=".$resultArray["access_token"];
+			
+			$resultExchange = file_get_contents($urlExchange);
+			
+			return json_decode($resultExchange, true);
+		}
+		
+		return array();
 	}
 	
 	private function setErrore($codice, $messaggio)

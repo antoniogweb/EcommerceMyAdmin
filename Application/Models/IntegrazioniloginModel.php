@@ -49,6 +49,12 @@ class IntegrazioniloginModel extends GenericModel {
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
+				'instagram_secret_key'		=>	array(
+					'labelString'	=>	"Instagram secret key",
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
 				'colore_background_in_esadecimale'	=>	array(
 					'labelString'=>	'Colore del pulsante',
 					'wrap'		=>	array(
