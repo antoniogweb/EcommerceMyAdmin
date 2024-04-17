@@ -115,6 +115,7 @@ class PagesModel extends GenericModel {
 		"COOKIE"		=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
+		"APPROVAZ_ELIMINATA"	=>	"Approvazione APP eliminata",
 		"PRIVACY"		=>	"Pagina privacy",
 		"AZIENDA"		=>	"Pagina azienda",
 		"CONTATTI"		=>	"Pagina contatti",

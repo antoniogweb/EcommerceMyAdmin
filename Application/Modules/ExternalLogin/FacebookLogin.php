@@ -284,6 +284,45 @@ class FacebookLogin extends ExternalLogin
 		}
 	}
 	
+	// Elimina Instagram Access Token, User id e il file JSON con i media dell'account Instagram
+	public function eliminaApprovazione($appModel, $urlOutput)
+	{
+		header('Content-Type: application/json');
+		
+		$data = array(
+			'url' => Url::getRoot(),
+			'confirmation_code' => "APP NOT FOUND",
+		);
+		
+		if ($this->params["instagram_access_token"] || $this->params["instagram_user_id"])
+		{
+			$confirmationCode = randomToken();
+			
+			$appModel->sValues(array(
+				"instagram_access_token"	=>	"",
+				"instagram_user_id"			=>	"",
+				"confirmation_code"			=>	$confirmationCode,
+			));
+			
+			$res = $appModel->update(null, array(
+				"codice"	=>	sanitizeAll($this->params["codice"]),
+			));
+			
+			if ($res)
+			{
+				if (v("path_instagram_media_json_file") && file_exists(v("path_instagram_media_json_file")))
+					unlink(v("path_instagram_media_json_file"));
+				
+				$data = array(
+					'url' => Url::getRoot().$urlOutput.$confirmationCode,
+					'confirmation_code' => $confirmationCode,
+				);
+			}
+		}
+		
+		echo json_encode($data);
+	}
+	
 	public function deleteAccountCallback($userModel, $urlOutput)
 	{
 		header('Content-Type: application/json');

@@ -935,6 +935,7 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[scelta-cookie\]/', array("PagesModel", "loadTemplateSceltaCookie"), $string);
 	
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
+	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE_APPROVAZIONE\]/', 'getInfoEliminazioneApprovazione' ,$string);
 	
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
@@ -996,6 +997,27 @@ function attivaModuli($string, $obj = null)
 	}
 	
 	return $string;
+}
+
+function getInfoEliminazioneApprovazione($matches)
+{
+	if (isset($_GET[v("variabile_token_eliminazione")]) && trim($_GET[v("variabile_token_eliminazione")]))
+	{
+		$iModel = new IntegrazioniloginModel();
+		
+		$app = $iModel->clear()->where(array(
+			"confirmation_code"	=>	sanitizeAll($_GET[v("variabile_token_eliminazione")]),
+		))->sWhere("confirmation_code != ''")->record();
+		
+		if (!empty($app))
+		{
+			ob_start();
+			include tpf("Elementi/Utenti/info_eliminazione_approvazione_app.php");
+			$output = ob_get_clean();
+			
+			return $output;
+		}
+	}
 }
 
 function getInfoEliminazione($matches)
