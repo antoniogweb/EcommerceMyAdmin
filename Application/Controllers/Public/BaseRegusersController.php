@@ -179,19 +179,6 @@ class BaseRegusersController extends BaseController
 		IntegrazioniloginModel::getApp($clean["codice"])->deleteAccountCallback($this->m('RegusersModel'), RegusersModel::getUrlAccountEliminato());
 	}
 	
-	// Mostra informazioni sull'eliminazione della'pprovazione
-	public function infoeliminazione($codice)
-	{
-		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
-		
-		$data["app_eliminata"] = $this->m("IntegrazioniloginModel")->clear()->where(array(
-			"confirmation_code"	=>	sanitizeAll($codice),
-		))->sWhere("confirmation_code != ''")->record();
-		
-		$this->append($data);
-		$this->load('info_eliminazione_approvazione_app');
-	}
-	
 	// Elimina l'approvazione della APP (access token, eventuali file, etc)
 	public function eliminaapprovazione($codice = "")
 	{
