@@ -122,7 +122,7 @@ class FacebookLogin extends ExternalLogin
 		return array();
 	}
 	
-	// Rinnova l'access token
+	// Rinnova l'access token di Instagram
 	public function refreshInstagramAccessToken()
 	{
 		if ($this->params["instagram_access_token"])
@@ -133,6 +133,21 @@ class FacebookLogin extends ExternalLogin
 			
 			return json_decode($resultRenew, true);
 		}
+		
+		return array();
+	}
+	
+	// Recupera i file multimediali da Instagram
+	public function recuperaInstagramMedia()
+	{
+		if ($this->params["instagram_access_token"])
+		{
+			$urlMedia = $this->instagramGraphUrl."/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=".$this->params["instagram_access_token"];
+			
+			return file_get_contents($urlMedia);
+		}
+		
+		return "";
 	}
 	
 	private function setErrore($codice, $messaggio)

@@ -133,4 +133,29 @@ class IntegrazioniloginModel extends GenericModel {
 	{
 		return self::getModulo()->isAttiva();
 	}
+	
+	// Rinnova l'access token di Instagram
+	public function rinnovaInstagramAccessToken()
+	{
+		$result = IntegrazioniloginModel::getApp("FACEBOOK_LOGIN")->refreshInstagramAccessToken();
+		
+		if (isset($result["access_token"]))
+		{
+			$this->sValues(array(
+				"instagram_access_token"	=>	$result["access_token"],
+			));
+			
+			$this->update(null, array(
+				"codice"	=>	"FACEBOOK_LOGIN",
+			));
+		}
+	}
+	
+	// Recupera i file multimediali da Instagram
+	public function getInstagramMedia($path)
+	{
+		$json = IntegrazioniloginModel::getApp("FACEBOOK_LOGIN")->recuperaInstagramMedia();
+		
+		FilePutContentsAtomic($path, $json);
+	}
 }

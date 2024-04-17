@@ -34,8 +34,6 @@ class IntegrazioniloginController extends BaseController
 	
 	public $tabella = "login tramite APP";
 	
-// 	public $useEditor = true;
-	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
