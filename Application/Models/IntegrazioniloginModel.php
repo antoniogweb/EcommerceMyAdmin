@@ -152,10 +152,14 @@ class IntegrazioniloginModel extends GenericModel {
 	}
 	
 	// Recupera i file multimediali da Instagram
-	public function getInstagramMedia($path)
+	public function getInstagramMedia()
 	{
-		$json = IntegrazioniloginModel::getApp("FACEBOOK_LOGIN")->recuperaInstagramMedia();
-		
-		FilePutContentsAtomic($path, $json);
+		if (v("path_instagram_media_json_file"))
+		{
+			$json = IntegrazioniloginModel::getApp("FACEBOOK_LOGIN")->recuperaInstagramMedia();
+			
+			if ($json)
+				FilePutContentsAtomic(v("path_instagram_media_json_file"), $json);
+		}
 	}
 }

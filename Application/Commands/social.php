@@ -30,7 +30,6 @@ define('EG','allowed');
 
 $options = getopt(null, array(
 	"azione::",
-	"path::",
 ));
 
 $default = array(
@@ -66,7 +65,7 @@ if ($params["azione"] == "instagram-get-media")
 {
 	$log->writeString("INIZIO GET MEDIA");
 	
-	IntegrazioniloginModel::g()->getInstagramMedia($params["path"]);
+	IntegrazioniloginModel::g()->getInstagramMedia();
 	
 	$log->writeString("FINE GET MEDIA");
 }
