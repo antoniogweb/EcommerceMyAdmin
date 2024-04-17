@@ -27,6 +27,8 @@ class FacebookLogin extends ExternalLogin
 	private $params = "";
 	private $client;
 	private $helper;
+	private $instagramApiUrl = "https://api.instagram.com";
+	private $instagramGraphUrl = "https://graph.instagram.com";
 	
 	public function __construct($record)
 	{
@@ -70,7 +72,7 @@ class FacebookLogin extends ExternalLogin
 	
 	public function getInstagramAutorizeUrl($redirectUri)
 	{
-		return 'https://api.instagram.com/oauth/authorize?client_id='.$this->params["instagram_app_id"].'&redirect_uri='.$redirectUri.'&scope=user_profile,user_media&response_type=code';
+		return $this->instagramApiUrl.'/oauth/authorize?client_id='.$this->params["instagram_app_id"].'&redirect_uri='.$redirectUri.'&scope=user_profile,user_media&response_type=code';
 	}
 	
 	public function ottieniInstagramAccessToken($code, $redirectUri)
@@ -86,7 +88,7 @@ class FacebookLogin extends ExternalLogin
 		//step1
 		$curlSES=curl_init(); 
 		//step2
-		curl_setopt($curlSES,CURLOPT_URL,"https://api.instagram.com/oauth/access_token");
+		curl_setopt($curlSES,CURLOPT_URL,$this->instagramApiUrl."/oauth/access_token");
 		curl_setopt($curlSES,CURLOPT_RETURNTRANSFER,true);
 		curl_setopt($curlSES,CURLOPT_HEADER, false); 
 		curl_setopt($curlSES, CURLOPT_POST, true);
@@ -107,10 +109,30 @@ class FacebookLogin extends ExternalLogin
 			
 			$resultExchange = file_get_contents($urlExchange);
 			
-			return json_decode($resultExchange, true);
+			$resultExchangeArray = json_decode($resultExchange, true);
+			
+			if (isset($resultExchangeArray["access_token"]))
+			{
+				$resultArray["access_token"] = $resultExchangeArray["access_token"];
+				
+				return $resultArray;
+			}
 		}
 		
 		return array();
+	}
+	
+	// Rinnova l'access token
+	public function refreshInstagramAccessToken()
+	{
+		if ($this->params["instagram_access_token"])
+		{
+			$urlRenew = $this->instagramGraphUrl."/refresh_access_token?grant_type=ig_refresh_token&access_token=".$this->params["instagram_access_token"];
+			
+			$resultRenew = file_get_contents($urlRenew);
+			
+			return json_decode($resultRenew, true);
+		}
 	}
 	
 	private function setErrore($codice, $messaggio)
