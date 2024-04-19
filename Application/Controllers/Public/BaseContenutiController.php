@@ -53,6 +53,7 @@ class BaseContenutiController extends BaseController
 	public $firstSection;
 	public $section;
 	public $catSWhere = "";
+	public $catSWhereCerca = "";
 	
 	public $titleTag = "";
 	public $titleMarchio = "";
@@ -2032,6 +2033,9 @@ class BaseContenutiController extends BaseController
 			}
 			
 			$this->addOrderByClause($this->viewArgs["sec"], 'risultati-ricerca');
+			
+			if ($this->catSWhereCerca)
+				$this->m("PagesModel")->sWhere($this->catSWhereCerca);
 			
 			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinTraduzionePagina()->aWhere(array(
 				"pages.add_in_sitemap"=>	"Y",
