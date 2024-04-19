@@ -768,9 +768,9 @@ class BaseOrdiniController extends BaseController
 		else
 			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
-		$data["conclusa"] = false;
+// 		$data["conclusa"] = false;
 		
-		if (strcmp($clean['st'],"Completed") === 0)
+// 		if (strcmp($clean['st'],"Completed") === 0)
 			$data["conclusa"] = true;
 		
 		if (count($res) > 0)
