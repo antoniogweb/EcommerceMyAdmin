@@ -763,6 +763,7 @@ class Route
 		'integrazionilogin,main',
 		'integrazionilogin,form',
 		'integrazionilogin,ottieniaccesstoken',
+		'integrazionilogin,ottieniinstagramaccesstoken',
 		
 		'listeregalotipi,main',
 		'listeregalotipi,form',

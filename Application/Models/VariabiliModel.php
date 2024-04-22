@@ -525,6 +525,7 @@ class VariabiliModel extends GenericModel {
 		## LOGIN ESTERNI ##
 		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
 		"token_eliminazione_account_da_app"	=>	"", // verrà utilizzato come accesso per l'eliminazione dell'utente da app esterna (Facebook, ...)
+		"path_instagram_media_json_file"	=>	"", // path assoluto dove salvare il file json con i media scaricati da instagram
 		## UTENTI ##
 		"elimina_account_ad_ordine_se_parcheggiato"	=>	0, // se impostato ad 1, all'ordine il sistema controlla che non sia un account bloccante e in caso lo cancella
 		"permetti_sempre_eliminazione_account_backend"=>	0, // se impostato a 1, utilizza deleteAccount se non può eliminare il cliente
@@ -610,6 +611,8 @@ class VariabiliModel extends GenericModel {
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
+		## PAGAMENTI ##
+		"check_ipn_al_ritorno_carta"	=>	0, // se impostata su 1, fa il check ipn al ritorno sul sito (controlla che non sia già stato fatto). Solo per pagamento con carta di credito
 		## PAGINAZIONE ##
 		"prodotti_per_pagina"		=>	999999, // FRONTEND
 		"news_per_pagina"			=>	16, // FRONTEND
@@ -659,6 +662,7 @@ class VariabiliModel extends GenericModel {
 		## SEO ##
 		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
 		"includi_dati_per_social_categoria"	=>	0, // includi i dati per facebook e twitter anche nelle pagine delle categorie
+		"attiva_tag_hreflang"		=>	0, // se aggiungere alla pagina i tag hreflang
 		## PRODOTTI ##
 		"controlla_che_il_codice_prodotti_sia_unico"	=>	0, // se impostato a 1, non permette da pannello admin di aggiungere un prodotto avente lo stesso codice di un altro prodotto
 		"attiva_prodotti_digitali"	=>	0, // se impostato ad 1 attiva il campo prodotto_digitale nelle pagine

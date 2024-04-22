@@ -2011,6 +2011,8 @@ class PagesController extends BaseController {
 			"pages_lingue.id_page"	=>	$clean['id'],
 		))->orderBy("lingue.descrizione")->convert()->save();
 		
+		$this->tabella = $this->getNomeMenu();
+		
 		parent::main();
 		
 		$data["listaLingue"] = PageslingueModel::lingueCheMancano($clean['id']);

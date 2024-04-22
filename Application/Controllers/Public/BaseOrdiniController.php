@@ -768,9 +768,9 @@ class BaseOrdiniController extends BaseController
 		else
 			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
-		$data["conclusa"] = false;
+// 		$data["conclusa"] = false;
 		
-		if (strcmp($clean['st'],"Completed") === 0)
+// 		if (strcmp($clean['st'],"Completed") === 0)
 			$data["conclusa"] = true;
 		
 		if (count($res) > 0)
@@ -831,6 +831,13 @@ class BaseOrdiniController extends BaseController
 				{
 					F::settaCookiesGdpr(true);
 					VariabiliModel::ottieniVariabili();
+				}
+				
+				if (v("check_ipn_al_ritorno_carta") && $res[0]["orders"]["stato"] == "pending")
+				{
+					$this->ipncarta();
+					$this->load('header');
+					$this->load('footer','last');
 				}
 				
 				$data['idOrdineGtm'] = (int)$data["ordine"]["id_o"];

@@ -487,6 +487,18 @@ class BaseRegusersModel extends Model_Tree
 			return 'account-cancellato.html'.$queryStringEliminazione;
 	}
 	
+	public static function getUrlApprovazioneEliminata($tokenEliminazione = "")
+	{
+		$idRedirect = PagineModel::gTipoPagina("APPROVAZ_ELIMINATA");
+		
+		$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
+		
+		if ($idRedirect)
+			return getUrlAlias($idRedirect).$queryStringEliminazione;
+		else
+			return ''.$queryStringEliminazione;
+	}
+	
 	public function getIdUtenteDaIdApp($codiceApp, $idApp)
     {
 		return RegusersintegrazioniloginModel::g()->getIdUtenteDaIdApp($codiceApp, $idApp);
