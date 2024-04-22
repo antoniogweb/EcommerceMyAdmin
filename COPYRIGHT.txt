@@ -135,6 +135,11 @@ Sendiblue SDK for PHP (v3)
 License:	The MIT License (MIT)
 link: 		https://github.com/sendinblue/APIv3-php-library
 
+Brevo's API v3 Php Library
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/getbrevo/brevo-php
+
 opcache-gui
 -------
 License:	The MIT License (MIT)

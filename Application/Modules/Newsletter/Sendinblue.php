@@ -45,20 +45,20 @@ class Sendinblue extends Newsletter
 	{
 		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 		
-		if (class_exists("SendinBlue\Client\Configuration"))
+		if (class_exists("Brevo\Client\Configuration"))
 		{
-			$config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->params["secret_1"]);
+			$config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->params["secret_1"]);
 			
 			// Uncomment below line to configure authorization using: partner-key
-			// $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('partner-key', 'YOUR_API_KEY');
+			// $config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('partner-key', 'YOUR_API_KEY');
 
-			$apiInstance = new SendinBlue\Client\Api\ContactsApi(
+			$apiInstance = new Brevo\Client\Api\ContactsApi(
 				// If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
 				// This is optional, `GuzzleHttp\Client` will be used as default.
 				new GuzzleHttp\Client(),
 				$config
 			);
-			$createContact = new \SendinBlue\Client\Model\CreateContact(); // \SendinBlue\Client\Model\CreateContact | Values to create a contact
+			$createContact = new \Brevo\Client\Model\CreateContact(); // \Brevo\Client\Model\CreateContact | Values to create a contact
 
 			$createContact['email'] = $valori["email"];
 			$createContact['listIds'] = array((int)$this->params["codice_lista"]);
