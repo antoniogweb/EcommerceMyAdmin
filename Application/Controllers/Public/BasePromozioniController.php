@@ -51,11 +51,6 @@ class BasePromozioniController extends BaseController
 	{
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/liste-regalo/";
-		}
-		
-		foreach (Params::$frontEndLanguages as $l)
-		{
 			$data["arrayLingue"][$l] = $l."/i-miei-coupon";
 		}
 		
