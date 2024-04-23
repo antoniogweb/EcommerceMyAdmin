@@ -97,7 +97,8 @@ class PromozioniinviiModel extends GenericModel
 		{
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($record["promozioni_invii"]["email"]),
-				"oggetto"	=>	"Il tuo codice coupon ".$record["promozioni"]["codice"],
+				"oggetto"	=>	"Il tuo codice coupon [OGGETTO_PLACEHOLDER]",
+				"oggetto_placeholder"	=>	$record["promozioni"]["codice"]
 				"tipologia"	=>	"CODICE COUPON A CLIENTE",
 				"tabella"	=>	"promozioni_invii",
 				"id_elemento"	=>	(int)$id,

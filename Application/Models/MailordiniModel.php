@@ -197,6 +197,7 @@ class MailordiniModel extends GenericModel
 		$country = isset($params["country"]) ? $params["country"] : Params::$country;
 		$emails = $params["emails"];
 		$oggetto = $params["oggetto"];
+		$oggettoPlaceholder = isset($params["oggetto_placeholder"]) ? $params["oggetto_placeholder"] : "";
 		$idO = isset($params["id_o"]) ? $params["id_o"] : 0;
 		$idUser = isset($params["id_user"]) ? $params["id_user"] : 0;
 		$testo = isset($params["testo"]) ? $params["testo"] : "";
@@ -267,6 +268,7 @@ class MailordiniModel extends GenericModel
 			
 			$oggetto = gtext($oggetto, false);
 			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
+			$oggetto = str_replace("[OGGETTO_PLACEHOLDER]",$oggettoPlaceholder, $oggetto);
 			
 			// Segnaposti
 			if (isset($arrayVariabili))
