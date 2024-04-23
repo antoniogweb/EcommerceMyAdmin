@@ -1735,11 +1735,12 @@ class OrdiniModel extends FormModel {
 				include tpf("/Elementi/Mail/mail_ordine_ricevuto_agente.php");
 				$output = ob_get_clean();
 				
-				$oggetto = str_replace("[CODICE_COUPON]", $ordine["codice_promozione"], v("oggetto_ordine_ricevuto_agente"));
+				$oggetto = str_replace("[CODICE_COUPON]", "[OGGETTO_PLACEHOLDER]", v("oggetto_ordine_ricevuto_agente"));
 				
 				$res = MailordiniModel::inviaMail(array(
 					"emails"	=>	array($agente["username"]),
 					"oggetto"	=>	$oggetto,
+					"oggetto_placeholder"	=>	$ordine["codice_promozione"],
 					"testo"		=>	$output,
 					"tipologia"	=>	"ORDINE AGENTE",
 					"id_user"	=>	(int)$ordine['id_user'],
