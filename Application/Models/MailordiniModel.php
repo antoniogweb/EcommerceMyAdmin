@@ -214,6 +214,7 @@ class MailordiniModel extends GenericModel
 		$allegati = (isset($params["allegati"]) && is_array($params["allegati"])) ? $params["allegati"] : array();
 		$tabella = isset($params["tabella"]) ? $params["tabella"] : "";
 		$idElemento = isset($params["id_elemento"]) ? $params["id_elemento"] : 0;
+		$traduciOggetto = isset($params["traduci_oggetto"]) ? $params["traduci_oggetto"] : true;
 		
 		self::$variabiliTema = $arrayVariabiliTema;
 		
@@ -266,7 +267,9 @@ class MailordiniModel extends GenericModel
 			$tradModel = new TraduzioniModel();
 			$tradModel->ottieniTraduzioni();
 			
-			$oggetto = gtext($oggetto, false);
+			if ($traduciOggetto)
+				$oggetto = gtext($oggetto, false);
+			
 			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
 			$oggetto = str_replace("[OGGETTO_PLACEHOLDER]",$oggettoPlaceholder, $oggetto);
 			
