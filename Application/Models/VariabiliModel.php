@@ -460,6 +460,7 @@ class VariabiliModel extends GenericModel {
 		"numero_massimo_comprati_assieme"	=>	0, // se maggiore di 0, indica il numero massimo di spesso comprati assieme. Se il tema lo predispone verranno mostrati nel dettaglio del prodotto
 		"estrai_le_caratteristiche"	=>	1, // se impostato su 1, estrae le caratteristiche nella pagina del prodotto
 		"estrai_i_documenti"		=>	1, // se impostato su 1, estrai i documenti nella pagina del prodotto
+		"estrai_filtri_su_dettaglio_pagina"	=>	1, // se impostato su 1, ricalcola i filtri che servono l'archivio anche sul settaglio prodotto
 		## GOOGLE E FACEBOOK ##
 		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
 		## NAZIONI ##

@@ -706,7 +706,7 @@ class CategoriesModel extends HierarchicalModel {
 	{
 		$c = new CategorieModel();
 		
-		return (int)$c->clear()->where(array(
+		return (int)$c->clear()->select("id_c")->where(array(
 			"section"	=>	sanitizeDb($section),
 		))->field("id_c");
 	}
