@@ -108,6 +108,14 @@ class FeedbackModel extends GenericModel {
 		);
 	}
 	
+	public static function getCurrUrlIdRif($char = "?")
+	{
+		if (FeedbackModel::$idProdotto)
+			return $char.v("var_query_string_id_rif")."=".(int)FeedbackModel::$idProdotto;
+		
+		return "";
+	}
+	
 	public function getTitoloFeedback($id)
 	{
 		$record = $this->selectId((int)$id);
