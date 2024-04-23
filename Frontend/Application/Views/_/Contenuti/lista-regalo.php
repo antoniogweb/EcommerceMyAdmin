@@ -17,7 +17,7 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 		<dl/>
 		
 		<div class="uk-grid uk-grid-small uk-child-width-1-2" uk-grid>
-			<div class="uk-text-small"><?php echo gtext("Nome");?></div> <div class="uk-margin-remove-top uk-text-small uk-text-emphasis"><?php echo gtext($lista["liste_regalo"]["titolo"]);?></div>
+			<div class="uk-text-small"><?php echo gtext("Nome");?></div> <div class="uk-margin-remove-top uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo"]["titolo"];?></div>
 		</div>
 		<div class="uk-grid uk-margin-remove-top uk-grid-small uk-child-width-1-2" uk-grid>
 			<div class="uk-text-small"><?php echo gtext("Tipo");?></div> <div class="uk-margin-remove-top uk-text-small uk-text-emphasis"><?php echo $lista["liste_regalo_tipi"]["titolo"];?></div>
