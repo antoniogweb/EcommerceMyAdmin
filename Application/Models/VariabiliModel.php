@@ -438,7 +438,7 @@ class VariabiliModel extends GenericModel {
 		"usa_codice_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il codice della combinazione nell'URL del prodotto
 		"usa_alias_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il l'alias della combinazione nell'URL del prodotto
 		"token_aggiorna_alias_combinazioni"		=>	"", // token per andare a rigenerare tutti gli alias delle combinazioni
-		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella
+		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quando nel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nell'URL della nuova variante
 		"immagine_in_varianti"		=>	0, // se settato a 1, mostra la colonna immagini nell'elenco delle combinazionipagina della nuova combinazione
 		"immagini_separate_per_variante"		=>	0, // se settato a 1, possibilità di caricare più immagini per ogni variante
 		"combinazioni_in_prodotti"	=>	1, // attiva le varianti
@@ -460,6 +460,7 @@ class VariabiliModel extends GenericModel {
 		"numero_massimo_comprati_assieme"	=>	0, // se maggiore di 0, indica il numero massimo di spesso comprati assieme. Se il tema lo predispone verranno mostrati nel dettaglio del prodotto
 		"estrai_le_caratteristiche"	=>	1, // se impostato su 1, estrae le caratteristiche nella pagina del prodotto
 		"estrai_i_documenti"		=>	1, // se impostato su 1, estrai i documenti nella pagina del prodotto
+		"estrai_filtri_su_dettaglio_pagina"	=>	1, // se impostato su 1, ricalcola i filtri che servono l'archivio anche sul settaglio prodotto
 		## GOOGLE E FACEBOOK ##
 		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
 		## NAZIONI ##

@@ -23,7 +23,9 @@ if (v("attiva_tag_hreflang") && count($arrayLingue) > 0)
 			}
 		}
 		?>
+		<?php if ($default || $this->controller == "home") { ?>
 		<link rel="alternate" href="<?php echo Domain::$publicUrl;?>/<?php echo Params::$defaultFrontEndLanguage;?>_<?php echo Params::$defaultFrontEndCountry;?>/<?php echo $default;?>" hreflang="x-default" />
+		<?php } ?>
 	<?php
 	}
 	else
@@ -42,7 +44,9 @@ if (v("attiva_tag_hreflang") && count($arrayLingue) > 0)
 			}
 		}
 		?>
+		<?php if ($default || $this->controller == "home") { ?>
 		<link rel="alternate" href="<?php echo Domain::$publicUrl;?>/<?php echo Params::$defaultFrontEndLanguage;?>/<?php echo $default;?>" hreflang="x-default" />
+		<?php } ?>
 	<?php
 	}
 	?>

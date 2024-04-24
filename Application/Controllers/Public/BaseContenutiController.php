@@ -1636,7 +1636,8 @@ class BaseContenutiController extends BaseController
 		
 		$data["pages"] = $this->pages = $this->m('PagesModel')->send();
 		
-		$this->estraiDatiFiltri();
+		if (V("estrai_filtri_su_dettaglio_pagina"))
+			$this->estraiDatiFiltri();
 		
 		if ($firstSection == "prodotti")
 			$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
