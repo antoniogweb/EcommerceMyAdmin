@@ -282,6 +282,15 @@
 							include($this->viewPath("pages_form_immagine"));?>
 						</div>
 						<?php } ?>
+						
+						<?php if (v("immagine_3_in_prodotto")) { ?>
+						<div class="panel panel-info">
+							<?php
+							$labelBlocco = gtext("Immagine 3");
+							$numeroImmagine = "3";
+							include($this->viewPath("pages_form_immagine"));?>
+						</div>
+						<?php } ?>
 					</div>
 					<?php include($this->viewPath("pages_form_app_box"));?>
 					

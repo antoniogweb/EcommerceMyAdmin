@@ -670,6 +670,7 @@ class VariabiliModel extends GenericModel {
 		"moltiplicatore_credito"	=>	1, // il numero di EURO di 1 CREDITO
 		"mesi_durata_crediti"		=>	12, // numero di mesi prima della scadenza dei crediti
 		"immagine_2_in_prodotto"	=>	0, // se impostata su 1, attiva la seconda immagine nel prodotto
+		"immagine_3_in_prodotto"	=>	0, // se impostata su 1, attiva la terza immagine nel prodotto
 		## BREADCRUMB ##
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto

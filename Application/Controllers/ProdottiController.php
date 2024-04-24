@@ -204,6 +204,9 @@ class ProdottiController extends PagesController {
 		if (v("immagine_2_in_prodotto"))
 			$this->queryFields .= ",immagine_2";
 		
+		if (v("immagine_3_in_prodotto"))
+			$this->queryFields .= ",immagine_3";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);
