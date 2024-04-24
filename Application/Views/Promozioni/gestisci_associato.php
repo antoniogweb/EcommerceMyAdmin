@@ -41,7 +41,7 @@
 
 <?php if ($this->action == "pagine") { ?>
 
-<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuna prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
+<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcun prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/pagine/$id".$this->viewStatus;?>' method='POST'>
 	
