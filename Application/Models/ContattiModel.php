@@ -180,7 +180,10 @@ class ContattiModel extends GenericModel {
 			"verificato"	=>	1,
 		));
 		
-		$this->pUpdate(null, "uid_contatto = '".$clean["cookieUid"]."'");
+// 		$this->pUpdate(null, "uid_contatto = '".$clean["cookieUid"]."'");
+		$this->pUpdate(null, array(
+			"uid_contatto"	=>	$clean["cookieUid"],
+		));
 	}
 	
 	private function setContactUid($id = 0)
