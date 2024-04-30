@@ -172,14 +172,18 @@ class ContattiModel extends GenericModel {
 		$time = time() + v("tempo_durata_uid_contatto");
 		self::$uidc = $clean["cookieUid"];
 // 		Cookie::set("uid_contatto", $clean["cookieUid"], $time, "/", true, 'Lax');
-		setcookie("uid_contatto",$clean["cookieUid"],$time,"/");
+// 		setcookie("uid_contatto",$clean["cookieUid"],$time,"/");
+		Cookie::set("uid_contatto", $clean["cookieUid"], $time, "/");
 		
 		$this->setValues(array(
 			"time_conferma"	=>	0,
 			"verificato"	=>	1,
 		));
 		
-		$this->pUpdate(null, "uid_contatto = '".$clean["cookieUid"]."'");
+// 		$this->pUpdate(null, "uid_contatto = '".$clean["cookieUid"]."'");
+		$this->pUpdate(null, array(
+			"uid_contatto"	=>	$clean["cookieUid"],
+		));
 	}
 	
 	private function setContactUid($id = 0)
