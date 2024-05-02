@@ -176,7 +176,7 @@ class ContattiModel extends GenericModel {
 		Cookie::set("uid_contatto", $clean["cookieUid"], $time, "/");
 		
 		$this->setValues(array(
-			"time_conferma"	=>	0,
+// 			"time_conferma"	=>	0,
 			"verificato"	=>	1,
 		));
 		
