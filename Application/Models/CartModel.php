@@ -75,7 +75,10 @@ class CartModel extends GenericModel {
 	{
 		if (!self::$checkCart)
 		{
-			$daEliminare = $this->query(array("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null and cart.cart_uid = ?", array(sanitizeAll(User::$cart_uid))));
+			if (isset(User::$cart_uid))
+				$daEliminare = $this->query(array("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null and cart.cart_uid = ?", array(sanitizeAll(User::$cart_uid))));
+			else
+				$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null");
 			
 			if (count($daEliminare) > 0)
 			{
