@@ -253,12 +253,12 @@
 									<?php
 									$linkFeedGoogle = Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?id_page=$id_page&".v("token_feed_google_facebook");
 									
-									if (FeedModel::getModulo("GOOGLEMERCHANT")->isAttivo())
+									if (v("attiva_gestione_feed") && FeedModel::getModulo("GOOGLEMERCHANT")->isAttivo())
 										$linkFeedGoogle = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("GOOGLEMERCHANT")->getFeedUrl()."?id_page=$id_page";
 									
 									$linkFeedFacebook = Domain::$name."/$linguaNazioneUrl/home/xmlprodotti?fbk&id_page=$id_page&".v("token_feed_google_facebook");
 									
-									if (FeedModel::getModulo("FACEBOOK", true)->isAttivo())
+									if (v("attiva_gestione_feed") && FeedModel::getModulo("FACEBOOK", true)->isAttivo())
 										$linkFeedFacebook = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("FACEBOOK")->getFeedUrl()."?id_page=$id_page";
 									?>
 									
