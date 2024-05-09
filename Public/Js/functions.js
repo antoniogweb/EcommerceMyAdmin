@@ -927,6 +927,66 @@ $(document).ready(function(){
 		});
 	}
 	
+	$( "body" ).on( "change", ".select_articolo_ordine", function(e){
+		
+		var idPage = $(this).val();
+		
+		$.ajaxQueue({
+			url: baseUrl + "/combinazioni/main/1?esporta_json&formato_json=select2&id_page="+idPage,
+			cache:false,
+			async: true,
+			dataType: "json",
+			success: function(content){
+				
+				$(".select_combinazione_ordine").find('option').remove();
+				
+				var res = content.results;
+				
+				for (var i =0; i < res.length; i++)
+				{
+					$(".select_combinazione_ordine").append("<option value='" + res[i].id + "'>" + res[i].text + "</option>");
+				}
+				
+				$(".select_combinazione_ordine").select2("destroy");
+				$(".select_combinazione_ordine").select2();
+			}
+		});
+		
+	});
+	
+	$( "body" ).on( "click", ".aggiungi_articolo_a_ordine", function(e){
+		
+		e.preventDefault();
+		
+		var id_c = $(".select_combinazione_ordine").val();
+		
+		if (id_c != 0 && id_c != "")
+		{
+			makeSpinner($(this));
+			
+			var idOrdine = $(".form_inserisci_articolo").attr("id-ordine"); 
+			
+			$.ajaxQueue({
+				url: baseUrl + "/combinazioni/main?id_ordine=" + idOrdine,
+				cache:false,
+				async: true,
+				dataType: "html",
+				type: "POST",
+				data: {
+					bulkActionValues: id_c,
+					bulkAction: "aggiungiaordine"
+				},
+				success: function(content){
+					
+					reloadPage();
+					
+				}
+			});
+		}
+		else
+			alert("Attenzione, si prega di selezionare un prodotto");
+	});
+	
 	// this is the id of the form
 	$("form.ajax_submit").submit(function(e) {
 
@@ -944,8 +1004,6 @@ $(document).ready(function(){
 				location.reload();
 			}
 		});
-
-		
 	});
 	
 	$( "body" ).on( "click", ".sidebar-toggle", function(e){

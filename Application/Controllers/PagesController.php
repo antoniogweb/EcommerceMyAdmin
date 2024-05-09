@@ -91,6 +91,7 @@ class PagesController extends BaseController {
 		'nuovo:sanitizeAll'=>'tutti',
 		'id_import:sanitizeAll'=>0,
 		'comb_acq:sanitizeAll'=>'1',
+		'q:sanitizeAll'=>'tutti',
 	);
 	
 	protected $_posizioni = array(
@@ -269,6 +270,9 @@ class PagesController extends BaseController {
 			$this->m[$this->modelName]->db->beginTransaction();
 		
 		$this->shift();
+		
+		if ($this->viewArgs["q"] != "tutti")
+			$this->viewArgs["title"] = $this->viewArgs["q"];
 		
 		if (!partial())
 		{
@@ -473,21 +477,31 @@ class PagesController extends BaseController {
 		
 		$this->scaffold->itemList->setFilters($this->filters);
 		
-		$data['scaffold'] = $this->scaffold->render();
-// 		print_r ($this->scaffold->model->db->queries);
-		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();
 		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		
-		$data['notice'] = $this->scaffold->model->notice;
+		if (isset($_GET["esporta_json"]))
+		{
+			$this->scaffold->model->select("distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo");
+			
+			$this->esportaJson();
+		}
+		else
+		{
+			$data['scaffold'] = $this->scaffold->render();
+	// 		print_r ($this->scaffold->model->db->queries);
+			
+			$data['menu'] = $this->scaffold->html['menu'];
+			$data['popup'] = $this->scaffold->html['popup'];
+			$data['main'] = $this->scaffold->html['main'];
+			$data['pageList'] = $this->scaffold->html['pageList'];
+			
+			$data['notice'] = $this->scaffold->model->notice;
+			
+			$this->load('pages_main');
+		}
 		
 		$this->append($data);
-		$this->load('pages_main');
 	}
 
 	public function eliminacategoria($id = 0)

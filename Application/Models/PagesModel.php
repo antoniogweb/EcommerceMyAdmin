@@ -30,6 +30,8 @@ class PagesModel extends GenericModel {
 	public $titleFieldName = "title";
 	public $aliaseFieldName = "alias";
 	public $campoTitolo = "title";
+	public $campoValore = "id_page";
+	public $metodoPerTitolo = "titoloJson";
 	
 	public $hModelName = "CategoriesModel";
 	public $hModel = null; //hierarchical model
@@ -4747,5 +4749,17 @@ class PagesModel extends GenericModel {
 				exit;
 			}
 		}
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+			return htmlentitydecode($record["title"]);
+		
+		return "";
 	}
 }

@@ -39,6 +39,9 @@ class CombinazioniModel extends GenericModel {
 	
 	public static $aggiornaAliasAdInserimento = true;
 	
+	public $campoValore = "id_c";
+	public $metodoPerTitolo = "titoloJson";
+	
 	public function __construct() {
 		$this->_tables='combinazioni';
 		$this->_idFields='id_c';
@@ -1075,7 +1078,6 @@ class CombinazioniModel extends GenericModel {
 		
 		if (!empty($record) && self::isFromLista() && isset($_GET["id_ordine"]))
 		{
-// 			die();
 			$ordine = OrdiniModel::g()->selectId((int)$_GET["id_ordine"]);
 			
 			if (!empty($ordine))
@@ -1397,5 +1399,26 @@ class CombinazioniModel extends GenericModel {
 			));
 		
 		return !$c->rowNumber();
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+		{
+			$stringa = strip_tags($this->getStringa($clean["id"], ","));
+			$stringa = $stringa ? $stringa : gtext("Variante: --");
+			$stringa .= " - ".htmlentitydecode($record["codice"]);
+			
+			if (!$record["acquistabile"])
+				$stringa .= "(NON ACQUISTABILE)";
+				
+			return $stringa;
+		}
+		
+		return "";
 	}
 }

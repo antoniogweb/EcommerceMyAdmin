@@ -231,8 +231,8 @@ class ProdottiModel extends PagesModel {
 		
 		foreach ($res as $id_c => $acquistabile)
 		{
-			$stringa = $c->getStringa($id_c, ",");
-			$stringa = $stringa ? $stringa : "--";
+			$stringa = strip_tags($c->getStringa($id_c, ","));
+			$stringa = $stringa ? $stringa : gtext("Variante: --");
 			
 			if (!$acquistabile)
 				$stringa .= "(NON ACQUISTABILE)";
