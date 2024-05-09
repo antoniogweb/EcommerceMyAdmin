@@ -543,13 +543,13 @@ class OrdiniController extends BaseController {
 		
 // 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
+		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "titoloCrud", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Quantità,Aliquota";
 		
 		$pulsantiMenu = "torna_ordine";
 		
 		if (OrdiniModel::g()->isDeletable($id))
-			$pulsantiMenu .= ",save_righe";
+			$pulsantiMenu .= ",save_righe_ordini";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		

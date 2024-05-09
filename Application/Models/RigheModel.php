@@ -156,13 +156,21 @@ class RigheModel extends GenericModel {
 		return v("prezzi_ivati_in_prodotti") ? setPriceReverse(setPrice($record["righe"][$field."_ivato"])) : number_format(setPrice($record["righe"][$field]),v("cifre_decimali"),".","");
 	}
 	
+	public function titoloCrud($record)
+	{
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:400px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
+		else
+			return $record["righe"]["title"];
+	}
+	
 	public function prezzoInteroCrud($record)
 	{
 		$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 		
-// 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-// 			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
-// 		else
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
+		else
 			return $prezzo;
 	}
 	
@@ -170,8 +178,10 @@ class RigheModel extends GenericModel {
 	{
 		$prezzo = $this->getPrezzoCampo($record, "price");
 		
-		return $prezzo;
-// 		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
+		else
+			return $prezzo;
 	}
 	
 	public function prezzoFinaleCrud($record)
@@ -194,7 +204,9 @@ class RigheModel extends GenericModel {
 	
 	public function attributiCrud($record)
 	{
-		if ($record["righe"]["attributi"])
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "form-control", null, "yes");
+		else if ($record["righe"]["attributi"])
 			return $record["righe"]["attributi"];
 		
 		return "--";

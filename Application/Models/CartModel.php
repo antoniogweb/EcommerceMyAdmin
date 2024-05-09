@@ -812,7 +812,7 @@ class CartModel extends GenericModel {
 		}
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $idRif = null)
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null)
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -1013,13 +1013,25 @@ class CartModel extends GenericModel {
 						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = $rPage[0]["pages"]["price_ivato"];
 				}
 				
-				// prezzo scontato
-				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true, $idCombinazione);
+				// Prezzo scontato
+				if (isset($prScontato))
+				{
+					$this->values["price"] = number_format($prScontato,v("cifre_decimali"),".","");
+					
+					if (isset($prScontatoIvato))
+						$this->values["price_ivato"] = number_format($prScontatoIvato,2,".","");
+					else
+						$this->values["price_ivato"] = number_format($this->values["price"] * (1 + ($this->values["iva"] / 100)),2,".","");
+				}
+				else
+				{
+					$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true, $idCombinazione);
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true, $idCombinazione);
+				}
 				
-				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true, $idCombinazione);
-				
-				// prezzo fisso
+				// Prezzo fisso
 				$this->values["prezzo_fisso_intero"] = $rPage[0]["pages"]["prezzo_fisso"];
 				
 				$this->values["prezzo_fisso"] = $this->calcolaPrezzoFinale($clean["id_page"], $rPage[0]["pages"]["prezzo_fisso"], 1, true, true, $idCombinazione);

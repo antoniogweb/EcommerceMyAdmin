@@ -1114,8 +1114,10 @@ class OrdiniModel extends FormModel {
 			$r->values["fonte"] = App::$isFrontend ? "W" : "B";
 			$r->values["id_admin"] = App::$isFrontend ? 0 : User::$id;
 			
+			$idRiff = 0;
+			
 			if (!App::$isFrontend && $r->values["id_rif"])
-				$r->values["id_r"] = (int)$r->values["id_rif"];
+				$idRiff = (int)$r->values["id_rif"];
 			
 			$r->values["movimentato"] = (int)$movimentato;
 			
@@ -1126,10 +1128,22 @@ class OrdiniModel extends FormModel {
 			$r->delFields("id_order");
 			$r->delFields("id_rif");
 			
+			if ($idRiff)
+				$r->delFields("title");
+			
 			$r->sanitize();
 			
-			if ($r->insert())
+			if ($idRiff)
+				$result = $r->pUpdate((int)$idRiff);
+			else
+				$result = $r->insert();
+			
+			if ($result)
 			{
+				// Elimino le righe di elementi collegati alla riga d'ordine
+				if ($idRiff)
+					$re->mDel(array("id_r = ?",array((int)$idRiff)));
+				
 				// Salvo gli elementi del carrello
 				$elementiCarrello = CartelementiModel::getElementiCarrello($p["cart"]["id_cart"]);
 				
@@ -1140,7 +1154,11 @@ class OrdiniModel extends FormModel {
 					unset($elCart["id_cart"]);
 					
 					$re->sValues($elCart, "sanitizeDb");
-					$re->setValue("id_r", $r->lId);
+					
+					if ($idRiff)
+						$re->setValue("id_r", $idRiff);
+					else
+						$re->setValue("id_r", $r->lId);
 					
 					$re->insert();
 				}
@@ -1345,9 +1363,11 @@ class OrdiniModel extends FormModel {
 			
 			$bckAttivaGiacenza = v("attiva_giacenza");
 			$bckAttivaMovimentazioniGiacenza = v("scala_giacenza_ad_ordine");
+			$bckScorporaIvaPrezzoEstero = v("scorpora_iva_prezzo_estero");
 			
 			VariabiliModel::$valori["attiva_giacenza"] = 0;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = 0;
+			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
 			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
@@ -1377,7 +1397,7 @@ class OrdiniModel extends FormModel {
 			
 			foreach ($righe as $r)
 			{
-				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), null, null, null, $r["id_r"]);
+				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], $r["prezzo_intero_ivato"], $r["price"], $r["price_ivato"], $r["id_r"]);
 				
 				$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
 				
@@ -1428,9 +1448,15 @@ class OrdiniModel extends FormModel {
 			
 			$this->pUpdate($idOrdine);
 			
-			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
+// 			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
 			
+			if (v("usa_transactions"))
+				$this->db->beginTransaction();
+				
 			$this->riempiRighe($ordine["id_o"], $movimentato);
+			
+			if (v("usa_transactions"))
+				$this->db->commit();
 			
 			$c->del(null, array(
 				"cart_uid"	=>	User::$cart_uid,
@@ -1438,6 +1464,7 @@ class OrdiniModel extends FormModel {
 			
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = $bckAttivaMovimentazioniGiacenza;
+			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = $bckScorporaIvaPrezzoEstero;
 			
 			User::$id = $bckUserId;
 			PromozioniModel::$staticIdO = null;

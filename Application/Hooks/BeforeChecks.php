@@ -361,13 +361,13 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_regali menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
-	'save_righe'	=>	array(
+	'save_righe_ordini'	=>	array(
 		'title'	=>	"Salva",
 		'text'	=>	"Salva",
 		'url'	=>	'main',
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-success save_righe menu_btn"',
+		"attributes" => 'role="button" class="btn btn-success save_righe_ordini menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
 	'vai_alla_lista'	=>	array(

@@ -125,11 +125,12 @@ class RigheController extends BaseController
 					$this->m[$this->modelName]->setValues(array(
 						"quantity"			=>	$v["quantity"],
 						"disponibile"		=>	($giacenza >= ((int)$v["quantity"] - (int)$recordRiga["quantity"])) ? 1 : 0,
-	// 					"$campoPrice"		=>	$v["price"],
-	// 					"$campoPriceIntero"	=>	$v["prezzo_intero"],
-	// 					"in_promozione"	=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
+						"$campoPrice"		=>	$v["price"],
+						"$campoPriceIntero"	=>	$v["prezzo_intero"],
+						"in_promozione"		=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
+						"title"				=>	$v["title"],
+						"id_c"				=>	$v["id_c"],
 					));
-					
 					
 					$this->m[$this->modelName]->update($v["id_riga"]);
 				}

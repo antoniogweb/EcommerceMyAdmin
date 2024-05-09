@@ -219,6 +219,30 @@ class ProdottiModel extends PagesModel {
 		))->rowNumber();
 	}
 	
+	public static function selectCombinazioni($idPage)
+	{
+		$c = new CombinazioniModel();
+		
+		$res = $c->clear()->select("id_c,acquistabile")->where(array(
+			'id_page'	=>	(int)$idPage,
+		))->orderBy("id_order")->toList("id_c", "acquistabile")->send();
+		
+		$resultArray = [];
+		
+		foreach ($res as $id_c => $acquistabile)
+		{
+			$stringa = $c->getStringa($id_c, ",");
+			$stringa = $stringa ? $stringa : "--";
+			
+			if (!$acquistabile)
+				$stringa .= "(NON ACQUISTABILE)";
+			
+			$resultArray[$id_c] = $stringa;
+		}
+		
+		return $resultArray;
+	}
+	
 // 	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)
 // 	{
 // 		$clean["id_page"] = (int)$idPage;
