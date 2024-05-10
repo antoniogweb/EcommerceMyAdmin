@@ -77,7 +77,7 @@ class RigheController extends BaseController
 	public function salva()
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
-		Params::$automaticConversionToDbFormat = false;
+// 		Params::$automaticConversionToDbFormat = false;
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();

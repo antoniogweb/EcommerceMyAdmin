@@ -159,7 +159,7 @@ class RigheModel extends GenericModel {
 	public function titoloCrud($record)
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:400px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
 		else
 			return $record["righe"]["title"];
 	}
@@ -169,9 +169,28 @@ class RigheModel extends GenericModel {
 		$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 		
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo_intero' value='".$prezzo."' />";
 		else
 			return $prezzo;
+	}
+	
+	public function scontoCrud($record)
+	{
+		$sconto = CombinazioniModel::calcolaSconto(setPrice($record["righe"]["prezzo_intero"]), setPrice($record["righe"]["price"]));
+		$sconto = number_format($sconto,2,",","");
+		
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+		{
+			$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
+			$disabled = "";
+			
+			if (setPrice($prezzo) <= 0)
+				$disabled = "disabled";
+			
+			return "<input id-riga='".$record["righe"]["percentuale_promozione"]."' style='max-width:90px;' class='form-control sconto_riga_ordine' name='' value='".$sconto."' $disabled/>";
+		}
+		else
+			return $sconto;
 	}
 	
 	public function prezzoScontatoCrud($record)

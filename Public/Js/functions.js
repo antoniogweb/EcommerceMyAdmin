@@ -189,6 +189,21 @@ function makeSpinner(obj)
 		obj.find("i").attr("class","fa fa-spinner fa-spin");
 }
 
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
 $(document).ready(function(){
 	
 	if ($("[name='nazione_spedizione']").length > 0)
@@ -927,6 +942,7 @@ $(document).ready(function(){
 		});
 	}
 	
+	/* --- GESTIONE ORDINI OFFLINE --- */
 	$( "body" ).on( "change", ".select_articolo_ordine", function(e){
 		
 		var idPage = $(this).val();
@@ -986,6 +1002,49 @@ $(document).ready(function(){
 		else
 			alert("Attenzione, si prega di selezionare un prodotto");
 	});
+	
+	$("body").on("keyup", ".prezzo_pieno_riga_ordine", debounce(function(e){
+		
+		var prezzoPieno = parseFloat($(this).val().toString().replace(",", "."));
+		
+		var trObj = $(this).closest("tr");
+		
+		if (!isNaN(prezzoPieno))
+		{
+			var campoSconto = trObj.find(".sconto_riga_ordine");
+			
+			if (prezzoPieno <= 0)
+			{
+				campoSconto.val("0,00");
+				campoSconto.trigger("keyup");
+				campoSconto.attr("disabled", "disabled");
+			}
+			else
+			{
+				campoSconto.trigger("keyup");
+				campoSconto.removeAttr("disabled");
+			}
+		}
+	},500));
+	
+	$("body").on("keyup", ".sconto_riga_ordine", debounce(function(e){
+		
+		var sconto = parseFloat($(this).val().toString().replace(",", "."));
+		var trObj = $(this).closest("tr");
+		
+		var priceObj = trObj.find("[name='price']");
+		
+		var prezzoIntero = parseFloat(trObj.find("[name='prezzo_intero']").val().toString().replace(",", "."));
+		
+		if (!isNaN(sconto))
+		{
+			var prezzoScontato = (prezzoIntero - (prezzoIntero * sconto/100)).toFixed(2);
+			
+			priceObj.val(prezzoScontato.toString().replace(".", ","));
+		}
+		
+	},500));
+	/* --- GESTIONE ORDINI OFFLINE --- */
 	
 	// this is the id of the form
 	$("form.ajax_submit").submit(function(e) {
