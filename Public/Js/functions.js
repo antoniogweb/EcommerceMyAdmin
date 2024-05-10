@@ -567,57 +567,6 @@ $(document).ready(function(){
 		
 	});
 	
-	$("body").on("click", ".save_righe_ordini", function(e){
-		
-		e.preventDefault();
-		
-		var that = $(this);
-		
-		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
-		
-		var valori = [];
-		
-		$("table tr.listRow").each(function(){
-			
-			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
-			var quantity = $(this).find("[name='quantity']").val();
-			var prezzo_intero = $(this).find("[name='prezzo_intero']").val();
-			var price = $(this).find("[name='price']").val();
-			var title = $(this).find("[name='title']").val();
-			var id_c = $(this).find("[name='id_c']").val();
-			
-			var temp = {
-				id_riga: id_riga,
-				quantity: quantity,
-				prezzo_intero: prezzo_intero,
-				price: price,
-				title: title,
-				id_c: id_c
-			};
-			
-			valori.push(temp);
-		});
-		
-// 		console.log(valori);
-		
-		$.ajaxQueue({
-			url: baseUrl + "/righe/salva",
-			cache:false,
-			async: true,
-			dataType: "html",
-			type: "POST",
-			data: {
-				valori: JSON.stringify(valori)
-			},
-			success: function(content){
-				
-				reloadPage();
-				
-			}
-		});
-		
-	});
-	
 	$("body").on("click", ".save_righe", function(e){
 		
 		e.preventDefault();
@@ -943,6 +892,59 @@ $(document).ready(function(){
 	}
 	
 	/* --- GESTIONE ORDINI OFFLINE --- */
+	$("body").on("click", ".save_righe_ordini", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function(){
+			
+			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
+			var quantity = $(this).find("[name='quantity']").val();
+			var prezzo_intero = $(this).find("[name='prezzo_intero']").val();
+			var price = $(this).find("[name='price']").val();
+			var title = $(this).find("[name='title']").val();
+			var id_c = $(this).find("[name='id_c']").val();
+			var codice = $(this).find("[name='codice']").val();
+			
+			var temp = {
+				id_riga: id_riga,
+				quantity: quantity,
+				prezzo_intero: prezzo_intero,
+				price: price,
+				title: title,
+				id_c: id_c,
+				codice: codice
+			};
+			
+			valori.push(temp);
+		});
+		
+// 		console.log(valori);
+		
+		$.ajaxQueue({
+			url: baseUrl + "/righe/salva",
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				
+				reloadPage();
+				
+			}
+		});
+		
+	});
+	
 	$( "body" ).on( "change", ".select_articolo_ordine", function(e){
 		
 		var idPage = $(this).val();
@@ -953,7 +955,6 @@ $(document).ready(function(){
 			async: true,
 			dataType: "json",
 			success: function(content){
-				
 				$(".select_combinazione_ordine").find('option').remove();
 				
 				var res = content.results;
@@ -968,6 +969,32 @@ $(document).ready(function(){
 			}
 		});
 		
+	});
+	
+	$( "body" ).on( "click", ".aggiunti_riga_tipologia", function(e){
+		
+		e.preventDefault();
+		
+		var idOrdine = $(this).attr("id-ordine"); 
+		var idRigaTipologia = $(this).attr("id-riga-tipologia"); 
+		var idC = $(this).attr("id-c"); 
+		
+		$.ajaxQueue({
+			url: baseUrl + "/combinazioni/main?id_ordine=" + idOrdine + "&id_riga_tipologia=" + idRigaTipologia,
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				bulkActionValues: idC,
+				bulkAction: "aggiungiaordine"
+			},
+			success: function(content){
+				
+				reloadPage();
+				
+			}
+		});
 	});
 	
 	$( "body" ).on( "click", ".aggiungi_articolo_a_ordine", function(e){

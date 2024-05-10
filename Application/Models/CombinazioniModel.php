@@ -1088,6 +1088,23 @@ class CombinazioniModel extends GenericModel {
 					"id_page"	=>	(int)$record["id_page"],
 				))->first();
 				
+				if (isset($_GET["id_riga_tipologia"]))
+				{
+					$rt = new RighetipologieModel();
+					
+					$rigaTipologia = $rt->clear()->selectId((int)$_GET["id_riga_tipologia"]);
+					
+					if (!empty($rigaTipologia))
+					{
+						$record["title"] = strtoupper($rigaTipologia["titolo"]);
+						$record["codice"] = $rigaTipologia["titolo_breve"];
+						$record["peso"] = 0;
+						
+						if (!RighetipologieModel::checkInserimentoTipologiaInOrdine((int)$_GET["id_ordine"], (int)$_GET["id_riga_tipologia"]))
+							return;
+					}
+				}
+				
 				if (!empty($pagina))
 				{
 					$r = new RigheModel();
@@ -1098,7 +1115,7 @@ class CombinazioniModel extends GenericModel {
 						"creation_time"	=>	time(),
 						"id_page"	=>	$pagina["pages"]["id_page"],
 						"id_c"		=>	(int)$id,
-						"title"		=>	field($pagina, "title"),
+						"title"		=>	isset($rigaTipologia["titolo"]) ? strtoupper($rigaTipologia["titolo"]) : field($pagina, "title"),
 						"immagine"	=>	ProdottiModel::immagineCarrello($pagina["pages"]["id_page"], (int)$id),
 						"quantity"	=>	1,
 						"codice"	=>	$record["codice"],
@@ -1122,6 +1139,8 @@ class CombinazioniModel extends GenericModel {
 						"fonte"		=>	"B",
 						"id_admin"	=>	User::$id,
 						"disponibile"	=>	($record["giacenza"] > 0) ? 1 : 0,
+						"id_riga_tipologia"	=>	$rigaTipologia["id_riga_tipologia"] ?? 0,
+						"prodotto_generico"	=>	$pagina["pages"]["prodotto_generico"],
 					), "sanitizeDb");
 					
 					if ($r->insert())

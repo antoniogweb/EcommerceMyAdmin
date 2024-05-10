@@ -812,7 +812,7 @@ class CartModel extends GenericModel {
 		}
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null)
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false)
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -831,7 +831,10 @@ class CartModel extends GenericModel {
 			return false;
 		}
 		
-		$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
+		if (isset($idRif))
+			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"]))->send();
+		else
+			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
 		
 		if (count($rPage) > 0)
 		{
@@ -868,7 +871,7 @@ class CartModel extends GenericModel {
 			if (!$this->checkQta($clean["id_c"], $clean["quantity"]))
 				return -1;
 			
-			if (count($res) > 0)
+			if (count($res) > 0 && !$forzaRigheSeparate)
 			{
 				$this->values["quantity"] = (int)$res[0]["cart"]["quantity"] + $clean["quantity"];
 				
@@ -963,6 +966,7 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_digitale"] = $rPage[0]["pages"]["prodotto_digitale"];
 				$this->values["prodotto_crediti"] = $rPage[0]["pages"]["prodotto_crediti"];
 				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
+				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
 				
 				if (isset($idRif))
 				{

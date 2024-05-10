@@ -156,12 +156,46 @@ class RigheModel extends GenericModel {
 		return v("prezzi_ivati_in_prodotti") ? setPriceReverse(setPrice($record["righe"][$field."_ivato"])) : number_format(setPrice($record["righe"][$field]),v("cifre_decimali"),".","");
 	}
 	
+	public static function prodottoCustom($record)
+	{
+		return $record["righe"]["prodotto_generico"] ? true : false;
+	}
+	
 	public function titoloCrud($record)
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
+		{
+			if (self::prodottoCustom($record))
+				return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
+			else
+				return $record["righe"]["title"]."<input type='hidden' id-riga='".$record["righe"]["id_r"]."' name='title' value='".$record["righe"]["title"]."' />";
+		}
 		else
 			return $record["righe"]["title"];
+	}
+	
+	public function acquistabileCrud($record)
+	{
+		if ($record["righe"]["prodotto_generico"])
+			return "";
+		
+		$cModel = new CombinazioniModel();
+		
+		if (!$cModel->clear()->whereId((int)$record["righe"]["id_c"])->field("acquistabile"))
+			return "<i class='text-danger fa fa-ban'></i>";
+	}
+	
+	public function codiceCrud($record)
+	{
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+		{
+			if (self::prodottoCustom($record))
+				return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:100px;' class='form-control' name='codice' value='".$record["righe"]["codice"]."' />";
+			else
+				return $record["righe"]["codice"]."<input type='hidden' id-riga='".$record["righe"]["id_r"]."' name='codice' value='".$record["righe"]["codice"]."' />";
+		}
+		else
+			return $record["righe"]["codice"];
 	}
 	
 	public function prezzoInteroCrud($record)
@@ -224,7 +258,14 @@ class RigheModel extends GenericModel {
 	public function attributiCrud($record)
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "form-control", null, "yes");
+		{
+			$selectVarianti = ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]);
+			
+			if (count($selectVarianti) === 1 && !reset($selectVarianti))
+				return Html_Form::hidden("id_c", array_key_first($selectVarianti));
+			else
+				return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "form-control", null, "yes");
+		}
 		else if ($record["righe"]["attributi"])
 			return $record["righe"]["attributi"];
 		

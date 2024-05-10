@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (VariabiliModel::mostraAvvisiGiacenzaCarrello()) { ?>
+<?php if (VariabiliModel::mostraAvvisiGiacenzaCarrello() && !$p["righe"]["prodotto_generico"]) { ?>
 	<?php if ($p["righe"]["disponibile"]) { ?>
 		<div class="uk-text-success uk-text-small"><?php echo gtext(v("testo_disponibilita_immediata"));?></div>
 	<?php } else { ?>

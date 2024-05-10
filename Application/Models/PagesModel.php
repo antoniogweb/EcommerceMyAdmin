@@ -4758,7 +4758,14 @@ class PagesModel extends GenericModel {
 		$record = $this->selectId($clean["id"]);
 		
 		if (!empty($record))
-			return htmlentitydecode($record["title"]);
+		{
+			$stringa = htmlentitydecode($record["title"]);
+			
+			if ($record["attivo"] == "N")
+				$stringa .= " (NON PUBBLICATO)";
+			
+			return $stringa;
+		}
 		
 		return "";
 	}

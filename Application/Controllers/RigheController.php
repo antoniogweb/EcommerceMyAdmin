@@ -130,6 +130,7 @@ class RigheController extends BaseController
 						"in_promozione"		=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
 						"title"				=>	$v["title"],
 						"id_c"				=>	$v["id_c"],
+						"codice"			=>	$v["codice"],
 					));
 					
 					$this->m[$this->modelName]->update($v["id_riga"]);

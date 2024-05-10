@@ -541,8 +541,8 @@ class OrdiniController extends BaseController {
 			$this->colProperties = array();
 		}
 		
-		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "titoloCrud", "attributiCrud", "righe.codice", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota";
+		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "acquistabileCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Acq.";
 		
 		$pulsantiMenu = "torna_ordine";
 		
@@ -551,13 +551,14 @@ class OrdiniController extends BaseController {
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->orderBy("id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
 		
 		parent::main();
 		
 		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
 		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
+		$data["tipologie"] = $this->m("RighetipologieModel")->clear()->orderBy("id_order desc")->send(false);
 		
 		$this->append($data);
 	}
@@ -659,7 +660,7 @@ class OrdiniController extends BaseController {
 							->where(array("id_o" => $clean["id_o"]))
 							->send();
 		
-		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->orderBy("id_order")->send();
+		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->send();
 		
 		$this->helper("Menu",$this->applicationUrl.$this->controller,"panel");
 		

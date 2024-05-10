@@ -272,7 +272,11 @@ class PagesController extends BaseController {
 		$this->shift();
 		
 		if ($this->viewArgs["q"] != "tutti")
+		{
 			$this->viewArgs["title"] = $this->viewArgs["q"];
+			
+			$this->orderBy = "prodotto_generico, pages.title";
+		}
 		
 		if (!partial())
 		{
@@ -385,6 +389,9 @@ class PagesController extends BaseController {
 					),
 				);
 			
+			if ($this->viewArgs["q"] != "tutti" && strlen($this->viewArgs["q"]) >= 10)
+				$where["OR"]["pages.prodotto_generico"] = 1;
+			
 			$this->scaffold->model->aWhere($where);
 		}
 		
@@ -477,19 +484,22 @@ class PagesController extends BaseController {
 		
 		$this->scaffold->itemList->setFilters($this->filters);
 		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->commit();
-		
 		if (isset($_GET["esporta_json"]))
 		{
 			$this->scaffold->model->select("distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo");
 			
 			$this->esportaJson();
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
 		}
 		else
 		{
 			$data['scaffold'] = $this->scaffold->render();
 	// 		print_r ($this->scaffold->model->db->queries);
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
 			
 			$data['menu'] = $this->scaffold->html['menu'];
 			$data['popup'] = $this->scaffold->html['popup'];

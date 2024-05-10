@@ -1129,7 +1129,12 @@ class OrdiniModel extends FormModel {
 			$r->delFields("id_rif");
 			
 			if ($idRiff)
+			{
 				$r->delFields("title");
+				
+				if ($r->values["prodotto_generico"])
+					$r->delFields("codice");
+			}
 			
 			$r->sanitize();
 			
@@ -1397,7 +1402,7 @@ class OrdiniModel extends FormModel {
 			
 			foreach ($righe as $r)
 			{
-				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], $r["prezzo_intero_ivato"], $r["price"], $r["price_ivato"], $r["id_r"]);
+				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], $r["prezzo_intero_ivato"], $r["price"], $r["price_ivato"], $r["id_r"], true);
 				
 				$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
 				
@@ -1458,9 +1463,9 @@ class OrdiniModel extends FormModel {
 			if (v("usa_transactions"))
 				$this->db->commit();
 			
-			$c->del(null, array(
-				"cart_uid"	=>	User::$cart_uid,
-			));
+// 			$c->del(null, array(
+// 				"cart_uid"	=>	User::$cart_uid,
+// 			));
 			
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = $bckAttivaMovimentazioniGiacenza;

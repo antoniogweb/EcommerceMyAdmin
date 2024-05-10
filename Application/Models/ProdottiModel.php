@@ -232,10 +232,10 @@ class ProdottiModel extends PagesModel {
 		foreach ($res as $id_c => $acquistabile)
 		{
 			$stringa = strip_tags($c->getStringa($id_c, ","));
-			$stringa = $stringa ? $stringa : gtext("Variante: --");
-			
-			if (!$acquistabile)
-				$stringa .= "(NON ACQUISTABILE)";
+// 			$stringa = $stringa ? $stringa : "--";
+// 			
+// 			if (!$acquistabile)
+// 				$stringa .= "(NON ACQUISTABILE)";
 			
 			$resultArray[$id_c] = $stringa;
 		}
@@ -243,31 +243,18 @@ class ProdottiModel extends PagesModel {
 		return $resultArray;
 	}
 	
-// 	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)
-// 	{
-// 		$clean["id_page"] = (int)$idPage;
-// 		
-// 		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-// 		$elencoImmagini[] = "";
-// 		
-// 		$immagine = $elencoImmagini[0];
-// 		
-// 		if (v("immagine_in_varianti") && !v("immagini_separate_per_variante"))
-// 		{
-// 			if (!isset($immagineCombinazione))
-// 				$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
-// 			
-// 			if (isset($immagineCombinazione) && $immagineCombinazione && in_array($immagineCombinazione,$elencoImmagini))
-// 				$immagine = $immagineCombinazione;
-// 		}
-// 		else if (v("immagini_separate_per_variante"))
-// 		{
-// 			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
-// 			
-// 			if (count($immagini) > 0)
-// 				$immagine = $immagini[0]["immagine"];
-// 		}
-// 		
-// 		return $immagine;
-// 	}
+	// Restituisce l'ID della combinazione del primo prodotto generico trovato
+	public static function getIdProdottoGenerico()
+	{
+		$c = new CombinazioniModel();
+		
+		$record = $c->clear()->select("combinazioni.id_c")->inner(array("pagina"))->where(array(
+			"pages.prodotto_generico"	=>	1,
+		))->first();
+		
+		if (!empty($record))
+			return $record["combinazioni"]["id_c"];
+		
+		return 0;
+	}
 }
