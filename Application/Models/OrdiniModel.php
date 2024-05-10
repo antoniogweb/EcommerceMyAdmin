@@ -1463,9 +1463,9 @@ class OrdiniModel extends FormModel {
 			if (v("usa_transactions"))
 				$this->db->commit();
 			
-// 			$c->del(null, array(
-// 				"cart_uid"	=>	User::$cart_uid,
-// 			));
+			$c->del(null, array(
+				"cart_uid"	=>	User::$cart_uid,
+			));
 			
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = $bckAttivaMovimentazioniGiacenza;

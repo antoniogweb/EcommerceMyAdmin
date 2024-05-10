@@ -1096,7 +1096,6 @@ class CombinazioniModel extends GenericModel {
 					
 					if (!empty($rigaTipologia))
 					{
-						$record["title"] = strtoupper($rigaTipologia["titolo"]);
 						$record["codice"] = $rigaTipologia["titolo_breve"];
 						$record["peso"] = 0;
 						
