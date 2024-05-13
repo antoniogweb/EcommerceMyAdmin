@@ -6,15 +6,17 @@
 	<?php if (ControllersModel::checkAccessoAlController(array("combinazioni"))) { ?>
 		<?php if (OrdiniModel::g()->isDeletable($id)) { ?>
 			<div>
-				<?php 
-				$idProdottoGenerico = ProdottiModel::getIdProdottoGenerico();
-				
-				if ($idProdottoGenerico) { 
-					foreach ($tipologie as $t) {
-						if (!RighetipologieModel::checkInserimentoTipologiaInOrdine($id, $t["id_riga_tipologia"]))
-							continue;
-					?>
-					<a style="margin-left:5px;" id-c="<?php echo $idProdottoGenerico;?>" id-ordine="<?php echo $id;?>" id-riga-tipologia="<?php echo (int)$t["id_riga_tipologia"];?>" class="aggiunti_riga_tipologia make_spinner pull-right <?php echo $t["classe"];?>" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?>"><i class="fa fa-plus"></i> <?php echo $t["titolo_breve"];?></a>
+				<?php
+				if (v("attiva_righe_generiche_in_ordine_offline")) { 
+					$idProdottoGenerico = ProdottiModel::getIdProdottoGenerico();
+					
+					if ($idProdottoGenerico) {
+						foreach ($tipologie as $t) {
+							if (!RighetipologieModel::checkInserimentoTipologiaInOrdine($id, $t["id_riga_tipologia"]))
+								continue;
+						?>
+						<a style="margin-left:5px;" id-c="<?php echo $idProdottoGenerico;?>" id-ordine="<?php echo $id;?>" id-riga-tipologia="<?php echo (int)$t["id_riga_tipologia"];?>" class="aggiunti_riga_tipologia make_spinner pull-right <?php echo $t["classe"];?>" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?>"><i class="fa fa-plus"></i> <?php echo $t["titolo_breve"];?></a>
+						<?php } ?>
 					<?php } ?>
 				<?php } ?>
 				

@@ -9,7 +9,23 @@
 <div style="clear:left;"></div>
 <?php } ?>
 
-<?php if ($tipoSteps == "modifica" && $id) { ?>
+<?php if ($tipoSteps == "modifica" && $id) {
+	$nascondiStatoPagamento = $nascondiMetodoDiPagamento = $nascondiTipoOrdine = $nascondiVediLatoCliente = $nascondiCreaSpedizione = true;
+?>
+
+<div class="box">
+	<div class="box-header with-border main help_resoconto">
+		<div class="row">
+			<div class="col-lg-6">
+				<?php include($this->viewPath("vedi_top_left"));?>
+			</div>
+			<div class="col-lg-6">
+				<?php include($this->viewPath("vedi_top_right"));?>
+			</div>
+		</div>
+	</div>
+</div>
+
 <ul class="nav_dettaglio nav nav-tabs">
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
 	<?php if (v("permetti_ordini_offline") && OrdiniModel::tipoOrdine((int)$id) != "W") { ?>

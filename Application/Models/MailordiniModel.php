@@ -408,4 +408,13 @@ class MailordiniModel extends GenericModel
 		
 		return $mo->rowNumber();
 	}
+	
+	// Estrae tutte le mail dell'ordine
+	public function estraiMailOrdine($idOrdine, $tipologia)
+	{
+		return $this->clear()->where(array(
+			"id_o"	=>	(int)$idOrdine,
+			"tipologia"	=>	sanitizeAll($tipologia),
+		))->orderBy("data_creazione desc")->send(false);
+	}
 }

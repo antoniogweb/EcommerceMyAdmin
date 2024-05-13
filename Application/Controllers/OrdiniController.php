@@ -496,6 +496,9 @@ class OrdiniController extends BaseController {
 		parent::form($queryType, $id);
 		
 		$data["tipoSteps"] = "modifica";
+		$data["ordine"] = $this->m["OrdiniModel"]->selectId((int)$id);
+		$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine((int)$id, "ORDINE");
+		
 		$this->append($data);
 	}
 	
@@ -559,6 +562,10 @@ class OrdiniController extends BaseController {
 		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
 		$data["tipologie"] = $this->m("RighetipologieModel")->clear()->orderBy("id_order desc")->send(false);
+		
+		$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine($clean["id"], "ORDINE");
+		
+		$data["ordine"] = $this->m["OrdiniModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}
@@ -705,16 +712,16 @@ class OrdiniController extends BaseController {
 				"tipo"=>	"F",
 			))->orderBy("data_creazione desc")->send(false);
 			
-			$data["mail_altre"] =  $this->m["MailordiniModel"]->clear()->where(array(
-				"id_o"	=>	$clean["id_o"],
-// 				"ne"	=>	array("tipo"=>	"F"),
-				"tipologia"	=>	"ORDINE",
-			))->orderBy("data_creazione desc")->send(false);
+			$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine($clean["id_o"], "ORDINE");
+			
+// 			$data["mail_altre"] = $this->m["MailordiniModel"]->clear()->where(array(
+// 				"id_o"	=>	$clean["id_o"],
+// 				"tipologia"	=>	"ORDINE",
+// 			))->orderBy("data_creazione desc")->send(false);
 			
 			$data["tipoSteps"] = "vedi";
 			$this->append($data);
 			
-			$this->append($data);
 			$this->load('vedi');
 		}
 	}
