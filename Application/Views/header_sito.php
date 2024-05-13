@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
-include(ROOT."/Application/Views/header.php");
+include($this->viewPath("header"));
 ?>
 
 	<?php if (!partial()) { ?>

@@ -96,7 +96,6 @@ class VariabiliModel extends GenericModel {
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
 		"controlla_p_iva"			=>	0,
 		"ecommerce_online"			=>	1,
-		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
 		"lista_variabili_funzionamento_ecommerce"	=>	"ecommerce_online,piattaforma_in_sviluppo,traduzione_frontend,giacenza_massima_mostrata",
@@ -732,6 +731,8 @@ class VariabiliModel extends GenericModel {
 		### FAQ ##
 		"mostra_faq"				=>	0, // se attivare o meno la sezione mostra_faq
 		"attiva_gestione_faq_in_evidenza"	=>	1, // se attivato, permette di gestire le FAQ in evidenza
+		### TEMA ##
+		"theme_folder"				=>	"", // tema frontend
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
