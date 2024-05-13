@@ -12,7 +12,7 @@
 				<?php if ($tipoOrdine == "W") { ?>
 				<?php echo gtext("I totali non verranno modificati al salvataggio in quanto è un ordine di tipo");?> <b><?php echo OrdiniModel::getLabelTipoOrdine($tipoOrdine);?></b></div>
 				<?php } else { ?>
-				<?php echo gtext("I totali non verranno più modificati al salvataggio in quanto l'ordine non è più allo stato");?> <b><?php echo OrdiniModel::$stati["pending"];?></b></div>
+				<?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
 				<?php } ?>
 			<?php } ?>
 			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-user"></i> <?php echo gtext("Fatturazione");?></h4>

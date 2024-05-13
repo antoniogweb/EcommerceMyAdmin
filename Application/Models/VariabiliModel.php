@@ -557,6 +557,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_modalita_spedizione_in_resoconto"	=>	1, // se mostrare la modalità di spedizione nel resoconto dell'ordine
 		"nascondi_ordini_pending_in_admin"	=>	0, // se impostato ad 1 gli ordini in stato pending saranno nascosti di default dalla lista degli ordini
 		"stati_ordine_da_nascondere_in_admin"	=>	"pending", // stati ordine da nascondere dei default in admin (solo se nascondi_ordini_pending_in_admin = 1)
+		"stati_ordine_editabile_ed_eliminabile"	=>	"pending", // stati nei quali le righe dell'ordine sono editabili e l'ordine può essere eliminato
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello

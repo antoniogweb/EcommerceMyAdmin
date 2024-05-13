@@ -556,7 +556,11 @@ class OrdiniModel extends FormModel {
 				{
 					$newRecord = $this->selectId($clean["id"]);
 					
-					if (!empty($oldRecord) && !empty($newRecord) && ($oldRecord["stato"] == "pending" || $newRecord["stato"] == "pending"))
+// 					if (!empty($oldRecord) && !empty($newRecord) && ($oldRecord["stato"] == "pending" || $newRecord["stato"] == "pending"))
+					if (!empty($oldRecord) && !empty($newRecord) && (
+						StatiordineModel::statoEditabileEdEliminabile($oldRecord["stato"]) || 
+						StatiordineModel::statoEditabileEdEliminabile($newRecord["stato"])
+					))
 						self::$isDeletable = true;
 					
 					$this->aggiornaTotali($id);
@@ -1875,7 +1879,7 @@ class OrdiniModel extends FormModel {
 			if ($record["tipo_ordine"] == "W")
 				return false;
 			
-			if ($record["stato"] != "pending")
+			if (!StatiordineModel::statoEditabileEdEliminabile($record["stato"]))
 				return false;
 			
 			$fModel = new FattureModel();

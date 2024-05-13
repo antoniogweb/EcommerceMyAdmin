@@ -40,7 +40,7 @@
 			</div>
 			<br />
 		<?php } else { ?>
-		<div class="callout callout-info"><?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più allo stato");?> <b><?php echo OrdiniModel::$stati["pending"];?></b></div>
+		<div class="callout callout-info"><?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
 		<?php } ?>
 	<?php } ?>
 <?php } ?>
