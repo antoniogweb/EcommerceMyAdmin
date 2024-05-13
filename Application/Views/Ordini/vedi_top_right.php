@@ -31,7 +31,10 @@
 
 <div class="panel panel-default no-margin">
 	<div class="panel-body no-padding">
-		<?php $statiSuccessivi = OrdiniModel::statiSuccessivi($ordine["stato"]);?>
+		<?php 
+		if (!isset($statiSuccessivi))
+			$statiSuccessivi = OrdiniModel::statiSuccessivi($ordine["stato"]);
+		?>
 		<?php if (count($statiSuccessivi) > 0) { ?>
 		<table class="table no-margin">
 			<tr>
@@ -47,12 +50,12 @@
 				<tr>
 					<td><span class="label label-<?php echo labelStatoOrdine($statoSucc["codice"]);?>"><?php echo statoOrdine($statoSucc["codice"]);?></span></td>
 					<td class="text-right">
-						<a title="<?php echo gtext("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus."&no_mail_stato";?>">
+						<a title="<?php echo gtext("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus."&no_mail_stato";?>">
 							<i class="fa fa-thumbs-up"></i>
 						</a>
 						
 						<?php if ($statoSucc["manda_mail_al_cambio_stato"] && ($statoSucc["codice"] == "pending" || !F::blank($statoSucc["descrizione"]) || file_exists(tpf("/Ordini/mail-".$statoSucc["codice"].".php")))) { ?>
-						<a style="margin-left:5px;" title="<?php echo gtext("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus;?>">
+						<a style="margin-left:5px;" title="<?php echo gtext("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus;?>">
 							<i class="fa fa-envelope-o"></i>
 						</a>
 						<?php } ?>

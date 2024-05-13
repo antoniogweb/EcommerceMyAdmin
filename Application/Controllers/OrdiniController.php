@@ -65,6 +65,15 @@ class OrdiniController extends BaseController {
 	
 	public $tabella = "ordini";
 	
+	public $defaultAction = "vedi";
+	
+	public static $selectFiltroTipo = array(
+		"tutti"		=>	"Tipo cliente",
+		"privato"	=>	"Privato",
+		"libero_professionista"	=>	"Professionista",
+		"azienda"	=>	"Azienda",
+	);
+	
 	public $argKeys = array(
 		'page:forceInt'=>1,
 		'id_ordine:sanitizeAll'=>'tutti',
@@ -218,7 +227,7 @@ class OrdiniController extends BaseController {
 		
 		$this->aggiungiintegrazioni();
 		
-		$this->m[$this->modelName]->clear()->orderBy("orders.data_creazione desc");
+		$this->m[$this->modelName]->clear()->restore(true)->orderBy("orders.data_creazione desc");
 		
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_ordine'],
@@ -231,14 +240,18 @@ class OrdiniController extends BaseController {
 			'tipo_ordine'	=>	$this->viewArgs['tipo_ordine'],
 		);
 		
-		$this->m[$this->modelName]->where($where);
+		$this->m[$this->modelName]->aWhere($where);
 		
 		if (v("nascondi_ordini_pending_in_admin") && $this->viewArgs['stato'] == "tutti")
+		{
+			$ordiniDaNascondereDiDefault = explode(",", v("stati_ordine_da_nascondere_in_admin"));
+			
 			$this->m[$this->modelName]->aWhere(array(
-				"ne"	=>	array(
-					"stato"	=>	"pending",
+				"nin"	=>	array(
+					"stato"	=>	sanitizeAllDeep($ordiniDaNascondereDiDefault),
 				),
 			));
+		}
 		
 		if (strcmp($this->viewArgs['email'],'tutti') !== 0)
 		{
@@ -345,18 +358,11 @@ class OrdiniController extends BaseController {
 		
 		$this->m[$this->modelName]->save();
 		
-		$filtroTipo = array(
-			"tutti"		=>	"Tipo cliente",
-			"privato"	=>	"Privato",
-			"libero_professionista"	=>	"Professionista",
-			"azienda"	=>	"Azienda",
-		);
-		
 		$filtroStato = array(
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$this->filters = array("titolo","dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
+		$this->filters = array("titolo","dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,self::$selectFiltroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
@@ -394,6 +400,8 @@ class OrdiniController extends BaseController {
 			
 			$this->filters[] = array("stato_sped",null,$filtroStato);
 		}
+		
+		$this->getTabViewFields("main");
 		
 		parent::main();
 	}
@@ -493,6 +501,8 @@ class OrdiniController extends BaseController {
 		if ($this->disabledFields)
 			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
+		$this->getTabViewFields("form");
+		
 		parent::form($queryType, $id);
 		
 		$data["tipoSteps"] = "modifica";
@@ -556,6 +566,8 @@ class OrdiniController extends BaseController {
 		
 		$this->m[$this->modelName]->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
 		
+		$this->getTabViewFields("righe");
+		
 		parent::main();
 		
 		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
@@ -607,7 +619,7 @@ class OrdiniController extends BaseController {
 			}
 		}
 		
-		$this->redirect($this->applicationUrl.$this->controller."/vedi/".(int)$id_o.$this->viewStatus);
+		$this->redirect($this->applicationUrl.$this->controller."/".$this->defaultAction."/".(int)$id_o.$this->viewStatus);
 	}
 	
 	public function vediresponse($cart_uid)
