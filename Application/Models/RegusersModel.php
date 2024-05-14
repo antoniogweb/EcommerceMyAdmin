@@ -204,7 +204,7 @@ class RegusersModel extends FormModel {
 		$record = $this->selectId($clean["id"]);
 		
 		if (!empty($record))
-			return self::getNominativo($record)." - ".$record["username"];
+			return self::getNominativo($record)." - ".$record["username"]." - ".$record["telefono"];
 		
 		return "";
 	}

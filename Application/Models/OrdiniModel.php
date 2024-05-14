@@ -527,9 +527,58 @@ class OrdiniModel extends FormModel {
 		}
 		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
-			return parent::insert();
+		{
+			$res = parent::insert();
+			
+			if (!App::$isFrontend && v("crea_sincronizza_cliente_in_ordini_offline") && $res)
+				$this->creaSincronizzaClienteSeAssente($this->lId);
+			
+			return $res;
+		}
 		
 		return false;
+	}
+	
+	// Crea e sincronizza il cliente se assente, partendo dalla email dell'ordine
+	public function creaSincronizzaClienteSeAssente($idOrdine)
+	{
+		$ordine = $this->selectId((int)$idOrdine);
+		
+		if (!empty($ordine) && !$ordine["id_user"] && $ordine["email"] && checkMail($ordine["email"]))
+		{
+			$ruModel = new RegusersModel();
+			
+			$cliente = $ruModel->clear()->where(array(
+				"username"	=>	sanitizeAll($ordine["email"]),
+			))->record();
+			
+			$idCliente = 0;
+			
+			if (empty($cliente))
+			{
+				$ruModel->sValues(array(
+					"username"	=>	$ordine["email"],
+					"password"	=>	self::generaPassword(),
+					"has_confirmed"	=>	0
+				));
+				
+				if ($ruModel->insert())
+					$idCliente = $ruModel->lId;
+			}
+			else
+				$idCliente = $cliente["id_user"];
+			
+			if ($idCliente)
+			{
+				$this->sValues(array(
+					"id_user"		=>	(int)$idCliente,
+					"registrato"	=>	"Y",
+				));
+				
+				if ($this->pUpdate((int)$idOrdine))
+					$ruModel->sincronizzaDaOrdine($idCliente, $idOrdine);
+			}
+		}
 	}
 	
 	public function update($id = null, $where = null)
@@ -571,10 +620,13 @@ class OrdiniModel extends FormModel {
 				if (!OrdiniModel::$ordineImportato)
 				{
 					$this->triggersOrdine($id);
-				
+					
 					// controlla se deve movimentare l'ordine
 					$this->checkMovimentazioni($clean["id"]);
-				
+					
+					if (!App::$isFrontend && v("crea_sincronizza_cliente_in_ordini_offline"))
+						$this->creaSincronizzaClienteSeAssente($id);
+					
 					// Hook ad aggiornamento dell'ordine
 					if (v("hook_update_ordine"))
 						callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));

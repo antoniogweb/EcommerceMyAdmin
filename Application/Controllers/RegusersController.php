@@ -191,7 +191,7 @@ class RegusersController extends BaseController {
 			$this->m[$this->modelName]->aWhere(array(
 				"OR"	=>	array(
 					"lk"	=>	array(
-						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale)"	=>	$this->viewArgs["q"],
+						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale,' ',telefono)"	=>	$this->viewArgs["q"],
 					),
 				),
 			));

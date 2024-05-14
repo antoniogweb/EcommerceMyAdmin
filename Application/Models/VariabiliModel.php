@@ -545,6 +545,7 @@ class VariabiliModel extends GenericModel {
 		"salva_ip"					=>	0, // se impostato su 1, salva l'IP dell'utente
 		"numero_massimo_ordini_giornalieri_stesso_ip"		=>	0, // se impostato su 0, non esiste limite
 		"attiva_righe_generiche_in_ordine_offline"	=>	0, // se impostato ad 1 permette di aggiungere le righe generiche prese dalla tabella righe_tipologie (deve essere anche impostato un prodotto genrico)
+		"crea_sincronizza_cliente_in_ordini_offline"	=>	0, // se impostato su 1, alla creazione di un ordine offline il cliente viene creato in automatico se non è stato selezioanto
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

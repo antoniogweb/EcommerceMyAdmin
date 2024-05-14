@@ -78,6 +78,20 @@ $linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolo
 		</td>
 	</tr>
 	<?php } ?>
+	<?php if (isset($mostraClienteInSpecchietto)) {
+		if (!isset($cliente))
+			$cliente = RegusersModel::g()->selectId((int)$ordine["id_user"]);
+	?>
+		<?php if ($cliente && $cliente["deleted"] == "no" && ControllersModel::checkAccessoAlController(array("regusers"))) { ?>
+		<tr>
+			<td><?php echo gtext("Cliente");?>:</td>
+			<td>
+				<a title="<?php echo gtext("Apri il dettaglio del cliente dell'ordine");?>" class="pull-right iframe label label-success" href="<?php echo $this->baseUrl."/regusers/form/update/".$cliente["id_user"]?>?partial=Y"><i class="fa fa-user"></i> <?php echo gtext("dettagli");?></a>
+				<b><?php echo OrdiniModel::getNominativo($cliente);?></b> (<?php echo $cliente["username"];?>)
+			</td>
+		</tr>
+		<?php } ?>
+	<?php } ?>
 	<?php if (v("attiva_agenti") && $ordine["id_agente"]) { ?>
 	<tr>
 		<td><?php echo gtext("Agente");?>:</td>

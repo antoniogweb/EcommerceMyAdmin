@@ -12,66 +12,114 @@
 
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data" autocomplete="new-password">
-		<div class='col-md-8'>
-			<?php echo $form["tipo_cliente"];?>
-			<?php if (isset($form["id_ruolo"])) { ?>
-			<?php echo $form["id_ruolo"];?>
-			<?php } ?>
-			<?php if (isset($form["id_tipo_azienda"])) { ?>
-			<?php echo $form["id_tipo_azienda"];?>
-			<?php } ?>
-			<?php echo $form["ragione_sociale"];?>
-			<?php echo $form["nome"];?>
-			<?php echo $form["cognome"];?>
-			<?php echo $form["p_iva"];?>
-			<?php echo $form["codice_fiscale"];?>
-			<?php echo $form["nazione"];?>
-			<?php echo $form["indirizzo"];?>
-			<?php echo $form["cap"];?>
-			<?php echo $form["provincia"];?>
-			<?php echo isset($form["id_regione"]) ? $form["id_regione"] : "";?>
-			<?php echo $form["dprovincia"];?>
-			<?php echo $form["citta"];?>
-			<?php echo $form["telefono"];?>
-			<?php echo $form["telefono_2"];?>
-			
-			<?php include($this->viewPath("form_submit_button"));?>
+		<div class='col-md-12'>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-user"></i> <?php echo gtext("Fatturazione");?></h4>
 		</div>
-		<div class='col-md-4'>
-			<?php if (v("attiva_classi_sconto")) { ?>
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					Scontistica
+		<div class='col-md-12'>
+			<div class='row'>
+				<div class='col-md-3'>
+					<?php echo $form["tipo_cliente"];?>
 				</div>
-				<div class="panel-body">
-					<?php echo $form["id_classe"];?>
+				<?php if (isset($form["id_ruolo"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["id_ruolo"];?>
 				</div>
-			</div>
-			<?php } ?>
-			
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					Fattura elettronica
+				<?php } ?>
+				<?php if (isset($form["id_tipo_azienda"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["id_tipo_azienda"];?>
 				</div>
-				<div class="panel-body">
+				<?php } ?>
+				<div class='col-md-3 ragione_sociale'>
+					<?php echo $form["ragione_sociale"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["nome"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["cognome"];?>
+				</div>
+				<div class='col-md-3 p_iva'>
+					<?php echo $form["p_iva"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["codice_fiscale"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["nazione"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["indirizzo"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["cap"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["provincia"];?>
+					<?php echo $form["dprovincia"];?>
+				</div>
+				<?php if (isset($form["id_regione"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["id_regione"];?>
+				</div>
+				<?php } ?>
+				<div class='col-md-3'>
+					<?php echo $form["citta"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["username"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["telefono"];?>
+				</div>
+				<div class='col-md-3'>
+					<?php echo $form["telefono_2"];?>
+				</div>
+				<div class='col-md-3'>
 					<?php echo $form["pec"];?>
+				</div>
+				<div class='col-md-3'>
 					<?php echo $form["codice_destinatario"];?>
 				</div>
 			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Account
-				</div>
-				<div class="panel-body">
-					<?php echo $form["username"];?>
+			<?php include($this->viewPath("form_submit_button"));?><br />
+		</div>
+		<div class='col-md-12'>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-lock"></i> <?php echo gtext("Gestione account");?></h4>
+		</div>
+		<div class='col-md-12'>
+			<div class='row'>
+				<div class='col-md-3'>
 					<?php echo $form["has_confirmed"];?>
+				</div>
+				<div class='col-md-3'>
 					<?php echo $form["password"];?>
+				</div>
+				<div class='col-md-3'>
 					<?php echo $form["confirmation"];?>
+				</div>
+				<div class='col-md-3'>
 					<?php echo $form["lingua"];?>
-					<?php echo $form["agente"] ?? "";?>
+				</div>
+				<?php if (isset($form["agente"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["agente"];?>
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+		<?php if (v("attiva_classi_sconto")) { ?>
+		<div class='col-md-12'>
+			<br /><h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-money"></i> <?php echo gtext("Scontistica");?></h4>
+		</div>
+		<div class='col-md-12'>
+			<div class='row'>
+				<div class='col-md-3'>
+					<?php echo $form["id_classe"];?>
 				</div>
 			</div>
 		</div>
+		<?php } ?>
 	</form>
 </div>
