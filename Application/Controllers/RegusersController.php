@@ -339,7 +339,7 @@ class RegusersController extends BaseController {
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
@@ -370,7 +370,7 @@ class RegusersController extends BaseController {
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
@@ -424,7 +424,7 @@ class RegusersController extends BaseController {
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
@@ -469,7 +469,7 @@ class RegusersController extends BaseController {
 		
 // 		$data['tabella'] = "utente sito web";
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->where(array("id_user"=>$clean['id']))->field("username");
+		$data["titoloRecord"] = $this->m("RegusersModel")->where(array("id_user"=>$clean['id']))->field("username");
 		
 		$this->append($data);
 	}

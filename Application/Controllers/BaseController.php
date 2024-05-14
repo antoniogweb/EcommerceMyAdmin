@@ -57,6 +57,7 @@ class BaseController extends Controller
 	public $addTraduzioniInMain = true;
 	public $tabViewFields = array();
 	public $campiVariabiliDaModificare = "";
+	public $loginController = "users";
 	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
@@ -96,7 +97,7 @@ class BaseController extends Controller
 			$data['token'] = $token;
 		}
 		
-		if (strcmp($controller,"users") !== 0)
+		if (strcmp($controller, $this->loginController) !== 0)
 		{
 			$this->s['admin']->check();
 			

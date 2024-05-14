@@ -42,6 +42,12 @@ class UsersController extends BaseController {
 	
 	public $argKeys = array('page:forceInt'=>1,'username:sanitizeAll'=>'tutti','has_confirmed:sanitizeAll'=>'tutti','token:sanitizeAll'=>'token','page_fgl:forceInt'=>1);
 	
+	public $loginFormAction = "users/login";
+	
+	public $redirectUrlDopoLogin = "panel/main";
+	
+	public $redirectUrlDopoLogout = "";
+	
 	function __construct($model, $controller, $queryString, $application, $action)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -71,7 +77,7 @@ class UsersController extends BaseController {
 		if (!empty($_POST))
 			IpcheckModel::check("POST_ADMIN");
 		
-		$data['action'] = $this->baseUrl."/users/login";
+		$data['action'] = $this->baseUrl."/".$this->loginFormAction;
 		$data['notice'] = null;
 		
 		$this->s['admin']->checkStatus();
@@ -84,10 +90,10 @@ class UsersController extends BaseController {
 
 			switch($choice) {
 				case 'logged':
-					$this->redirect('panel/main',3,'Sei già loggato...');
+					$this->redirect($this->redirectUrlDopoLogin,3,'Sei già loggato...');
 					break;
 				case 'accepted':
-					$this->redirect('panel/main',0);
+					$this->redirect($this->redirectUrlDopoLogin,0);
 					break;
 				case 'login-error':
 					$data['notice'] = '<div class="alert">Username o password sbagliati</div>';
@@ -101,19 +107,19 @@ class UsersController extends BaseController {
 		$this->load('login');
 	}
 	
-	public function logout() {
+	public function logout()
+	{
 		$this->clean();
+		
 		$res = $this->s['admin']->logout();
+		
 		if ($res == 'not-logged') {
-			header('Refresh: 0;url='.$this->baseUrl);
-
+			$this->redirect($this->redirectUrlDopoLogout,0);
 		} else if ($res == 'was-logged') {
-			header('Refresh: 0;url='.$this->baseUrl);
-
+			$this->redirect($this->redirectUrlDopoLogout,0);
 		} else if ($res == 'error') {
 
 		}
-
 	}
 	
 	public function main()
