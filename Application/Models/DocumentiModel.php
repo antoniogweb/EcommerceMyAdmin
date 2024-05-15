@@ -490,7 +490,7 @@ class DocumentiModel extends GenericModel {
 				"orders.id_user"	=>	(int)$idUser,
 			))
 			->addWhereAttivoPermettiTest()
-			->orderBy("orders.id_o desc,righe.id_r desc");
+			->orderBy("orders.id_o desc,righe.id_r desc,documenti.id_order");
 		
 		if ($soloAttivi)
 			$this->sWhere(OrdiniModel::getWhereClausePagato());
