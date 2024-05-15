@@ -100,6 +100,7 @@ class OrdiniController extends BaseController {
 		'id_page:sanitizeAll'=>'tutti',
 		'titolo:sanitizeAll'=>'tutti',
 		'stato_sped:sanitizeAll'=>'tutti',
+		'titolo_riga:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -274,7 +275,7 @@ class OrdiniController extends BaseController {
 			$this->m[$this->modelName]->aWhere($where);
 		}
 		
-		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti" || $this->viewArgs["stato_sped"] != "tutti")
+		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti" || $this->viewArgs["stato_sped"] != "tutti" || $this->viewArgs["titolo_riga"] != "tutti")
 		{
 			$this->m[$this->modelName]->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o");
 			
@@ -297,6 +298,11 @@ class OrdiniController extends BaseController {
 						"spedizioni_negozio.stato"	=>	$this->viewArgs['stato_sped'],
 					));
 			}
+			
+			if ($this->viewArgs['titolo_riga'] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"    AND"	=>	RigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
+				));
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")
@@ -336,24 +342,9 @@ class OrdiniController extends BaseController {
 		
 		if ($this->viewArgs["titolo"] != "tutti")
 		{
-			$tokens = explode(" ", $this->viewArgs['titolo']);
-			$andArray = array();
-			$iCerca = 8;
-			
-			foreach ($tokens as $token)
-			{
-				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-					"n!concat(orders.ragione_sociale,' ',orders.nome,' ',orders.cognome,' ',orders.email)"	=>	sanitizeAll(htmlentitydecode($token)),
-				);
-				
-				$iCerca++;
-			}
-			
 			$this->m[$this->modelName]->aWhere(array(
-				"      AND"	=>	$andArray,
+				"      AND"	=>	OrdiniModel::getWhereClauseRicercaLibera($this->viewArgs['titolo']),
 			));
-			
-// 			print_r($andArray);
 		}
 		
 		$this->m[$this->modelName]->save();
@@ -362,7 +353,7 @@ class OrdiniController extends BaseController {
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$this->filters = array("titolo","dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,self::$selectFiltroTipo),array("stato",null,$filtroStato));
+		$this->filters = array("titolo","dal","al",'id_ordine','titolo_riga','email','codice_fiscale',array("tipo_cliente",null,self::$selectFiltroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));

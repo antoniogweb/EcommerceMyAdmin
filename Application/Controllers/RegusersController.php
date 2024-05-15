@@ -189,12 +189,15 @@ class RegusersController extends BaseController {
 		if ($this->viewArgs["q"] != "tutti")
 		{
 			$this->m[$this->modelName]->aWhere(array(
-				"OR"	=>	array(
-					"lk"	=>	array(
-						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale,' ',telefono)"	=>	$this->viewArgs["q"],
-					),
-				),
+				"    AND"	=>	RegusersModel::getWhereClauseRicercaLibera($this->viewArgs['q']),
 			));
+// 			$this->m[$this->modelName]->aWhere(array(
+// 				"OR"	=>	array(
+// 					"lk"	=>	array(
+// 						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale,' ',telefono)"	=>	$this->viewArgs["q"],
+// 					),
+// 				),
+// 			));
 		}
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")

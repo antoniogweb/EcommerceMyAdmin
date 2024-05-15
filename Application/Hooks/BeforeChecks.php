@@ -476,9 +476,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control help_cerca",
 				"placeholder"	=>	"Cerca ..",
 			),
-// 			"wrap"	=>	array(
-// 				"<div class='col-md-2'>","</div>"
-// 			)
+		),
+		"titolo_riga"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control help_cerca",
+				"placeholder"	=>	"Cerca prodotto ..",
+			),
 		),
 		"attivo"	=>	array(
 			"type"	=>	"select",

@@ -2208,4 +2208,22 @@ class OrdiniModel extends FormModel {
 		
 		return (!$ordineEsistente || !$ordinePending);
 	}
+	
+	public static function getWhereClauseRicercaLibera($search)
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 8;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"n!concat(orders.ragione_sociale,' ',orders.nome,' ',orders.cognome,' ',orders.email)"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
+	}
 }

@@ -26,7 +26,12 @@ class RigheController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+		'titolo:sanitizeAll'=>'tutti',
+		'titolo_riga:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "marketing";
 	
