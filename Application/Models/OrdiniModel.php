@@ -559,7 +559,8 @@ class OrdiniModel extends FormModel {
 				$ruModel->sValues(array(
 					"username"	=>	$ordine["email"],
 					"password"	=>	self::generaPassword(),
-					"has_confirmed"	=>	0
+					"has_confirmed"	=>	0,
+					"nazione_navigazione"	=>	$ordine["nazione"] ? $ordine["nazione"] : v("nazione_default"),
 				));
 				
 				if ($ruModel->insert())
@@ -577,6 +578,39 @@ class OrdiniModel extends FormModel {
 				
 				if ($this->pUpdate((int)$idOrdine))
 					$ruModel->sincronizzaDaOrdine($idCliente, $idOrdine);
+				
+				$ordine["id_user"] = (int)$idCliente;
+			}
+		}
+		
+		// Sincronizzazione spedizione
+		if (!empty($ordine) && $ordine["id_user"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"] || $ordine["cap_spedizione"] || $ordine["telefono_spedizione"]))
+		{
+			$spModel = new SpedizioniModel();
+			
+			$spModel->sValues(array(
+				"id_user"	=>	$ordine["id_user"],
+			));
+			
+			$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+			
+			foreach ($campiSpedizione as $cs)
+			{
+				$spModel->setValue($cs, $ordine[$cs], "sanitizeDb");
+			}
+			
+			if ($ordine["id_spedizione"])
+				$spModel->update($ordine["id_spedizione"]);
+			else
+			{
+				if ($spModel->insert())
+				{
+					$this->sValues(array(
+						"id_spedizione"		=>	$spModel->lId,
+					));
+					
+					$this->pUpdate((int)$idOrdine);
+				}
 			}
 		}
 	}

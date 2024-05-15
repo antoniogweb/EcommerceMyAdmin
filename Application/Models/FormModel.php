@@ -39,7 +39,7 @@ class FormModel extends GenericModel {
 		
 		$opzioniIdUser = $arrayAnonimo + $this->selectUtenti($idUser, v("utilizza_ricerca_ajax_su_select_2_clienti"));
 		
-		$opzioniIdSpedizione = array("0" => gtext("-- non specificato --")) + $this->getTendinaIndirizzi($idUser);
+		$opzioniIdSpedizione = array("0" => gtext("-- nessun indirizzo selezionato --")) + $this->getTendinaIndirizzi($idUser);
 		
 		$this->formStruct = array
 		(

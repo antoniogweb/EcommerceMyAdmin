@@ -955,17 +955,20 @@ $(document).ready(function(){
 			async: true,
 			dataType: "json",
 			success: function(content){
-				$(".select_combinazione_ordine").find('option').remove();
+				
+				var selectCombinazione = $(".select_combinazione_ordine");
+				
+				selectCombinazione.find('option').remove();
 				
 				var res = content.results;
 				
 				for (var i =0; i < res.length; i++)
 				{
-					$(".select_combinazione_ordine").append("<option value='" + res[i].id + "'>" + res[i].text + "</option>");
+					selectCombinazione.append("<option value='" + res[i].id + "'>" + res[i].text + "</option>");
 				}
 				
-				$(".select_combinazione_ordine").select2("destroy");
-				$(".select_combinazione_ordine").select2();
+				selectCombinazione.select2("destroy");
+				selectCombinazione.select2();
 			}
 		});
 		

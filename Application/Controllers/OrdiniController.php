@@ -413,52 +413,54 @@ class OrdiniController extends BaseController {
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if (!isset($_POST["id_user"]))
-			$_SESSION["id_user"] = !empty($record) ? (int)$record["id_user"] : 0;
+// 		if (!isset($_POST["id_user"]))
+// 			$_SESSION["id_user"] = !empty($record) ? (int)$record["id_user"] : 0;
+// 		
+// 		if (!isset($_POST["id_spedizione"]))
+// 			$_SESSION["id_spedizione"] = !empty($record) ? (int)$record["id_spedizione"] : 0;
+// 		
+// 		if (isset($_POST["id_user"]))
+// 		{
+// 			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
+// 			
+// 			if (!empty($cliente))
+// 			{
+// 				if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
+// 				{
+// 					$_SESSION["id_user"] = (int)$_POST["id_user"];
+// 					
+// 					$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+// 					
+// 					foreach ($campiDaCopiare as $cdc)
+// 					{
+// 						if (isset($cliente[$cdc]))
+// 							$_POST[$cdc] = $cliente[$cdc];
+// 					}
+// 					
+// 					$_POST["email"] = $cliente["username"];
+// 				}
+// 				
+// 				if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$_SESSION["id_spedizione"])
+// 				{
+// 					$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
+// 					
+// 					if (!empty($spedizione))
+// 					{
+// 						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+// 						
+// 						foreach ($campiDaCopiare as $cdc)
+// 						{
+// 							if (isset($spedizione[$cdc]))
+// 								$_POST[$cdc] = $spedizione[$cdc];
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 		
+// 		$idUser = isset($_POST["id_user"]) ? $_POST["id_user"] : $_SESSION["id_user"];
 		
-		if (!isset($_POST["id_spedizione"]))
-			$_SESSION["id_spedizione"] = !empty($record) ? (int)$record["id_spedizione"] : 0;
-		
-		if (isset($_POST["id_user"]))
-		{
-			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
-			
-			if (!empty($cliente))
-			{
-				if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
-				{
-					$_SESSION["id_user"] = (int)$_POST["id_user"];
-					
-					$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
-					
-					foreach ($campiDaCopiare as $cdc)
-					{
-						if (isset($cliente[$cdc]))
-							$_POST[$cdc] = $cliente[$cdc];
-					}
-					
-					$_POST["email"] = $cliente["username"];
-				}
-				
-				if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$_SESSION["id_spedizione"])
-				{
-					$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
-					
-					if (!empty($spedizione))
-					{
-						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
-						
-						foreach ($campiDaCopiare as $cdc)
-						{
-							if (isset($spedizione[$cdc]))
-								$_POST[$cdc] = $spedizione[$cdc];
-						}
-					}
-				}
-			}
-		}
-		
-		$idUser = isset($_POST["id_user"]) ? $_POST["id_user"] : $_SESSION["id_user"];
+		$idUser = !empty($record) ? (int)$record["id_user"] : 0;
 		
 		$lingua = $this->m["RegusersModel"]->getLingua((int)$idUser);
 		

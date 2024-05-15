@@ -477,18 +477,34 @@ class BaseController extends Controller
 			$stringaTitolo = (!showreport()) ? "Gestione" : "Visualizzazione";
 			$data["title"] = $stringaTitolo . " " . $data["tabella"] . ": " . $data["titoloRecord"];
 			
-			if (!isset($_GET["pdf"]) || !v("permetti_generazione_pdf_pagine_backend"))
-			{
-				$this->append($data);
-				$this->load($this->formView);
-			}
-			else
+			if (isset($_GET["pdf"]) && v("permetti_generazione_pdf_pagine_backend"))
 			{
 				$this->clean();
 				
 				Pdf::output(LIBRARY."/Application/Views/pdf.php", date("d-m-Y")."_".encodeUrl($data["title"]).".pdf", array(
 					"mainContent"	=>	$mainContent,
 				));
+			}
+			else if (isset($_GET["esporta_json"]) && v("permetti_generazione_json_pagine_backend"))
+			{
+				header('Content-type: application/json; charset=utf-8');
+				
+				$this->clean();
+				
+				$jsonArray = $this->scaffold->values;
+				
+				if (isset($jsonArray["username"]))
+					$jsonArray["email"] = $jsonArray["username"];
+				
+				if (isset($jsonArray["password"]))
+					unset($jsonArray["password"]);
+				
+				echo json_encode($jsonArray);
+			}
+			else
+			{
+				$this->append($data);
+				$this->load($this->formView);
 			}
 		}
 	}

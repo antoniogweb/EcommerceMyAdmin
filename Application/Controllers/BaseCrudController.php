@@ -330,47 +330,6 @@ trait BaseCrudController
 		else if (isset($_GET["esporta_json"]))
 		{
 			$this->esportaJson();
-			
-// 			header('Content-type: application/json; charset=utf-8');
-// 			
-// 			$this->clean();
-// 			
-// 			$records = $this->scaffold->model->send();
-// 			
-// 			if (isset($_GET["formato_json"]))
-// 			{
-// 				$tableName = $this->scaffold->model->table();
-// 				$campoTitolo = $this->scaffold->model->campoTitolo;
-// 				$campoValore = $this->scaffold->model->campoValore;
-// 				$metodoPerTitolo = $this->scaffold->model->metodoPerTitolo;
-// 				
-// 				if ($_GET["formato_json"] == "select2")
-// 				{
-// 					$struct = array(
-// 						"results"	=>	array(),
-// 					);
-// 					
-// 					foreach ($records as $r)
-// 					{
-// 						if (isset($metodoPerTitolo) && isset($r[$tableName][$campoValore]))
-// 							$struct["results"][] = array(
-// 								"id"	=>	$r[$tableName][$campoValore],
-// 								"text"	=>	call_user_func(array($this->scaffold->model, $metodoPerTitolo), (int)$r[$tableName][$campoValore]),
-// 							);
-// 						else if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
-// 							$struct["results"][] = array(
-// 								"id"	=>	$r[$tableName][$campoValore],
-// 								"text"	=>	$r[$tableName][$campoTitolo],
-// 							);
-// 					}
-// 					
-// 					$records = $struct;
-// 				}
-// 			}
-// 			
-// // 			print_r($records);
-// 			
-// 			echo json_encode($records);
 		}
 		else
 		{
@@ -400,10 +359,10 @@ trait BaseCrudController
 		$this->clean();
 		
 		$records = $this->scaffold->model->send();
+		$tableName = $this->scaffold->model->table();
 		
 		if (isset($_GET["formato_json"]))
 		{
-			$tableName = $this->scaffold->model->table();
 			$campoTitolo = $this->scaffold->model->campoTitolo;
 			$campoValore = $this->scaffold->model->campoValore;
 			$metodoPerTitolo = $this->scaffold->model->metodoPerTitolo;
@@ -431,8 +390,20 @@ trait BaseCrudController
 				$records = $struct;
 			}
 		}
-		
-// 			print_r($records);
+		else
+		{
+			$struct = array();
+			
+			foreach ($records as $r)
+			{
+				if (isset($r[$tableName]["password"]))
+					unset($r[$tableName]["password"]);
+				
+				$struct[] = $r;
+			}
+			
+			$records = $struct;
+		}
 		
 		echo json_encode($records);
 	}
