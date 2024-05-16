@@ -36,3 +36,10 @@ if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
 }
 
 F::checkPreparedStatement();
+
+if (defined('LOG_TIMES'))
+{
+	$timer = Factory_Timer::getInstance();
+	$timer->endTime("APP","APP");
+	Factory_Timer::getInstance()->writeLog();
+}

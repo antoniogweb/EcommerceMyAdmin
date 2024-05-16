@@ -950,7 +950,7 @@ $(document).ready(function(){
 		var idPage = $(this).val();
 		
 		$.ajaxQueue({
-			url: baseUrl + "/combinazioni/main/1?esporta_json&formato_json=select2&id_page="+idPage,
+			url: baseUrl + "/combinazioni/main/1?esporta_json&formato_json=select2&acquistabile=tutti&id_page="+idPage,
 			cache:false,
 			async: true,
 			dataType: "json",
@@ -990,7 +990,8 @@ $(document).ready(function(){
 			type: "POST",
 			data: {
 				bulkActionValues: idC,
-				bulkAction: "aggiungiaordine"
+				bulkAction: "aggiungiaordine",
+				ajax_no_return_html: "Y"
 			},
 			success: function(content){
 				
@@ -1020,7 +1021,8 @@ $(document).ready(function(){
 				type: "POST",
 				data: {
 					bulkActionValues: id_c,
-					bulkAction: "aggiungiaordine"
+					bulkAction: "aggiungiaordine",
+					ajax_no_return_html: "Y"
 				},
 				success: function(content){
 					

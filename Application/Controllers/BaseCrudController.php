@@ -186,6 +186,15 @@ trait BaseCrudController
 		
 		$this->m[$this->modelName]->bulkAction($this->bulkQueryActions);
 		
+		// Chiudo anticipatamente se è una richiesta AJAX che non richiede output
+		if (isset($_POST["ajax_no_return_html"]))
+		{
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
+			
+			return;
+		}
+		
 		$this->m[$this->modelName]->setFilters();
 		$this->loadScaffold('main',$this->scaffoldParams);
 		
