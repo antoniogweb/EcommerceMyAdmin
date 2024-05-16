@@ -1030,7 +1030,7 @@ $(document).ready(function(){
 			});
 		}
 		else
-			alert("Attenzione, si prega di selezionare un prodotto");
+			alert("Attenzione, si prega di selezionare un articolo");
 	});
 	
 	$("body").on("keyup", ".prezzo_pieno_riga_ordine", debounce(function(e){

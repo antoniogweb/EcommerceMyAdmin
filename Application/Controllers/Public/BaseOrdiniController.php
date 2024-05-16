@@ -451,7 +451,17 @@ class BaseOrdiniController extends BaseController
 							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
 							->send();
 		
-		$data["righeOrdine"] = $this->m("RigheModel")->clear()->where(array("id_o"=>$clean["id_o"],"cart_uid" => $clean["cart_uid"]))->send();
+		$data["righeOrdine"] = $this->m("RigheModel")->clear()
+			->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")
+			->where(array(
+				"id_o"		=>	$clean["id_o"],
+				"cart_uid"	=>	$clean["cart_uid"],
+				"ne"		=>	array(
+					"righe.acconto"	=>	1,
+				),
+			))
+			->orderBy("righe_tipologie.id_order,righe.id_order")
+			->send();
 		
 		$data["ordine"] = $res[0]["orders"];
 		

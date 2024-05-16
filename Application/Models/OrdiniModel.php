@@ -1173,7 +1173,7 @@ class OrdiniModel extends FormModel {
 				
 				$subtotaleRiga = number_format($prezzoFisso + ($prezzo * $r->values["quantity"]),v("cifre_decimali"),".","");
 				
-				$inPromoRiga = PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]);
+				$inPromoRiga = (!$r->values["id_riga_tipologia"] && PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]));
 				
 				if ($inPromoRiga)
 				{
@@ -1190,7 +1190,7 @@ class OrdiniModel extends FormModel {
 			}
 			else
 			{
-				if (PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
+				if (!$r->values["id_riga_tipologia"] && PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
 				{
 					$r->values["prezzo_finale"] = number_format($r->values["price"] - ($r->values["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
 					$r->values["percentuale_promozione"] = $sconto;
@@ -1492,21 +1492,24 @@ class OrdiniModel extends FormModel {
 			
 			foreach ($righe as $r)
 			{
-				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], $r["prezzo_intero_ivato"], $r["price"], $r["price_ivato"], $r["id_r"], true);
-				
-				$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
-				
-				foreach ($elementiRiga as $elRiga)
+				if (!$r["acconto"])
 				{
-					$elRiga = htmlentitydecodeDeep($elRiga);
+					$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], $r["prezzo_intero_ivato"], $r["price"], $r["price_ivato"], $r["id_r"], true);
 					
-					$elementiPuliti["CART-".(int)$idCart][] = array(
-						"email"	=>	(string)$elRiga["email"],
-						"testo"	=>	(string)$elRiga["testo"],
-					);
+					$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
+					
+					foreach ($elementiRiga as $elRiga)
+					{
+						$elRiga = htmlentitydecodeDeep($elRiga);
+						
+						$elementiPuliti["CART-".(int)$idCart][] = array(
+							"email"	=>	(string)$elRiga["email"],
+							"testo"	=>	(string)$elRiga["testo"],
+						);
+					}
+					
+					$movimentato = $r["movimentato"];
 				}
-				
-				$movimentato = $r["movimentato"];
 			}
 			
 			$c->correggiPrezzi();
@@ -1539,6 +1542,8 @@ class OrdiniModel extends FormModel {
 // 			$this->ricalcolaPrezziRighe((int)$ordine["id_o"], $sconto);
 			
 			$this->values = array();
+			$this->values["acconto"] = $this->getTotaleAcconto($ordine["id_o"]);
+			
 			$this->aggiungiTotali($ordine["stato"]);
 			
 			$this->pUpdate($idOrdine);
@@ -1613,6 +1618,22 @@ class OrdiniModel extends FormModel {
 // 			$this->db->commit();
 // 	}
 	
+	// Calcola il totale dell'acconto nell'ordine
+	public function getTotaleAcconto($idOrdine)
+	{
+		$rModel = new RigheModel();
+		
+		$res = $rModel->clear()->select("sum(quantity * prezzo_finale_ivato) as SOMMA")->where(array(
+			"id_o"		=>	(int)$idOrdine,
+			"acconto"	=>	1,
+		))->send();
+		
+		if (isset($res[0]["aggregate"]["SOMMA"]) && $res[0]["aggregate"]["SOMMA"])
+			return number_format($res[0]["aggregate"]["SOMMA"],2,".","");
+		
+		return 0;
+	}
+	
 	public function aggiungiTotali($forzaAlloStato = null)
 	{
 		$this->values["subtotal"] = getSubTotalN();
@@ -1625,6 +1646,12 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["iva"] = setPrice(getIva());
 		$this->values["total"] = setPrice(getTotal());
+		
+		if (App::$isFrontend)
+			$this->values["saldo"] = $this->values["total"];
+		else
+			$this->values["saldo"] = isset($this->values["acconto"]) ? ($this->values["total"] - $this->values["acconto"]) : $this->values["total"];
+		
 		$this->values["cart_uid"] = User::$cart_uid;
 		$this->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 		$this->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));

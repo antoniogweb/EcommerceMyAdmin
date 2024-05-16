@@ -101,6 +101,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							$pesoTotale = 0;
 							foreach ($righeOrdine as $p) {
 								$pesoTotale += $p["righe"]["peso"] * $p["righe"]["quantity"];
+								$segnoPrezzo = $p["righe"]["acconto"] ? "- " : "";
 							?>
 							<tr class="">
 								<td>
@@ -164,7 +165,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								<td class="text-left"><?php echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"], $p["righe"]["id_r"], false, "")?></td>
 								<?php } ?>
 								<td class="text-right"><?php echo $p["righe"]["codice"];?></td>
-								<td class="text-right"><?php echo setPriceReverse($p["righe"]["peso"]);?></td>
+								<td class="text-right"><?php echo $p["righe"]["id_riga_tipologia"] ? "" : setPriceReverse($p["righe"]["peso"]);?></td>
 								<td class="text-right"><?php echo $p["righe"]["quantity"];?></td>
 								<td class="text-right colonne_non_ivate">
 									<?php
@@ -175,7 +176,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									$strPrezzoFisso = ($prezzoFisso > 0) ? setPriceReverse($prezzoFisso)." + " : "";
 									$strPrezzoFissoFinale = ($prezzoFissoFinale > 0) ? setPriceReverse($prezzoFissoFinale)." + " : "";
 									?>
-									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".$strPrezzoFisso.($mostraIvato ? setPriceReverse($p["righe"]["prezzo_intero_ivato"]) : setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali")))." €</del>"; } ?> <span class="item_price_single"><?php echo $strPrezzoFissoFinale.($mostraIvato ? setPriceReverse($p["righe"]["price_ivato"]) : setPriceReverse($p["righe"]["price"], v("cifre_decimali")));?></span> €
+									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".$strPrezzoFisso.($mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_intero_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali")))." €</del>"; } ?> <span class="item_price_single"><?php echo $strPrezzoFissoFinale.($mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["price_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["price"], v("cifre_decimali")));?></span> €
 									
 									<?php $jsonSconti = json_decode($p["righe"]["json_sconti"],true);?>
 									
@@ -186,12 +187,12 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									<?php } ?>
 								</td>
 								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
-								<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
-								<td class="text-right colonne_non_ivate"><?php echo $mostraIvato ? setPriceReverse($p["righe"]["prezzo_finale_ivato"]) : setPriceReverse($p["righe"]["prezzo_finale"], v("cifre_decimali"));?></td>
+								<td class="text-right colonne_non_ivate"><?php echo $p["righe"]["id_riga_tipologia"] ? "0,00%" : setPriceReverse($p["righe"]["percentuale_promozione"])."%";?> </td>
+								<td class="text-right colonne_non_ivate"><?php echo $mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_finale_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_finale"], v("cifre_decimali"));?></td>
 								<?php } ?>
 								<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["iva"]);?> %</td>
 								<td class="text-right">
-									<span class="item_price_subtotal"><?php echo $mostraIvato ? setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale_ivato"]) : setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale"],v("cifre_decimali"));?></span> €
+									<span class="item_price_subtotal"><?php echo $mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale"],v("cifre_decimali"));?></span> €
 								</td>
 							</tr>
 							<?php } ?>

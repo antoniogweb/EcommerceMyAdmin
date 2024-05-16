@@ -119,7 +119,7 @@ class CartModel extends GenericModel {
 					$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 					
 // 					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
-					if (!empty($coupon) && $coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+					if (!$r["cart"]["id_riga_tipologia"] && !empty($coupon) && $coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 					{
 						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
 						$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($coupon["sconto"]/100),$cifre,".","");
@@ -287,7 +287,7 @@ class CartModel extends GenericModel {
 				$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 				
 // 				if ($tipoSconto == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
-				if ($tipoSconto == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+				if (!$r["cart"]["id_riga_tipologia"] && $tipoSconto == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 				{
 					$prezzo = number_format($prezzo - $prezzo*($sconto/100),$cifre,".","");
 					$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($sconto/100),$cifre,".","");
@@ -972,7 +972,15 @@ class CartModel extends GenericModel {
 				{
 					$this->values["id_rif"] = (int)$idRif;
 					
-					$this->values["disponibile"] = RigheModel::g()->whereId((int)$idRif)->field("disponibile");
+					$rModel = new RigheModel();
+					
+					$rigaOrdine = $rModel->selectId((int)$idRif);
+					
+					if (!empty($rigaOrdine))
+					{
+						$this->values["disponibile"] = $rigaOrdine["disponibile"]; //RigheModel::g()->whereId((int)$idRif)->field("disponibile");
+						$this->values["id_riga_tipologia"] = $rigaOrdine["id_riga_tipologia"];
+					}
 				}
 				
 				if ($p->inPromozioneTot($clean["id_page"]))
