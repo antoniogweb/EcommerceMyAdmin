@@ -95,11 +95,13 @@ class RigheController extends BaseController
 		
 		$campoPrice = "price";
 		$campoPriceIntero = "prezzo_intero";
+		$campoPriceFinale = "prezzo_finale";
 		
 		if (v("prezzi_ivati_in_prodotti"))
 		{
 			$campoPrice = "price_ivato";
 			$campoPriceIntero = "prezzo_intero_ivato";
+			$campoPriceFinale = "prezzo_finale_ivato";
 		}
 		
 		$arrayIdPage = array();
@@ -132,6 +134,7 @@ class RigheController extends BaseController
 						"disponibile"		=>	($giacenza >= ((int)$v["quantity"] - (int)$recordRiga["quantity"])) ? 1 : 0,
 						"$campoPrice"		=>	$v["price"],
 						"$campoPriceIntero"	=>	$v["prezzo_intero"],
+						"$campoPriceFinale"	=>	$v["price"],
 						"in_promozione"		=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
 						"title"				=>	$v["title"],
 						"id_c"				=>	$v["id_c"],

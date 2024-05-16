@@ -196,7 +196,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 							</tr>
 							<?php } ?>
-							<?php if ($ordine["costo_pagamento"]) { ?>
+							<?php if ($ordine["costo_pagamento"] && $ordine["mostra_spese_pagamento_ordine_frontend"]) { ?>
 							<tr>
 								<td></td>
 								<td colspan="2"><?php echo gtext("Spese pagamento");?> (<?php echo str_replace("_"," ",$ordine["pagamento"]);?>)</td>
@@ -225,7 +225,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 							</tr>
 							<?php } ?>
-							<?php if ($ordine["da_spedire"]) { ?>
+							<?php if ($ordine["da_spedire"] && $ordine["mostra_spese_spedizione_ordine_frontend"]) { ?>
 							<tr>
 								<td></td>
 								<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>

@@ -65,7 +65,7 @@ class RigheModel extends GenericModel {
 	
 	public function setPriceNonIvato($id = 0)
 	{
-		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_intero_ivato"])))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_intero_ivato"]) || isset($this->values["prezzo_finale_ivato"])))
 		{
 			$valore = (float)RigheModel::g()->whereId((int)$id)->field("iva");
 			
@@ -74,6 +74,9 @@ class RigheModel extends GenericModel {
 			
 			if (isset($this->values["prezzo_intero_ivato"]))
 				$this->values["prezzo_intero"] = number_format(setPrice($this->values["prezzo_intero_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["prezzo_finale_ivato"]))
+				$this->values["prezzo_finale"] = number_format(setPrice($this->values["prezzo_finale_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
 		}
 	}
 	

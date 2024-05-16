@@ -4,7 +4,7 @@
 
 <div class='row' style="position:relative;">
 	<div id="fragment_form" style="position:absolute;top:-120px;"></div>
-	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>#fragment_form" enctype="multipart/form-data">
+	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-12'>
 			<?php if (v("permetti_ordini_offline") && $id && !OrdiniModel::g()->isDeletable($id)) {
 				$tipoOrdine = OrdiniModel::tipoOrdine((int)$id);

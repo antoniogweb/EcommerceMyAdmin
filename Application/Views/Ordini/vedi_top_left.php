@@ -19,6 +19,16 @@ $linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolo
 		<td><?php echo gtext("Totale");?>:</td>
 		<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
 	</tr>
+	<?php if ($ordine["acconto"] > 0) { ?>
+	<tr>
+		<td><?php echo gtext("Acconto");?>:</td>
+		<td><b>&euro; <?php echo setPriceReverse($ordine["acconto"]);?></b></td>
+	</tr>
+	<tr>
+		<td><?php echo gtext("Saldo");?>:</td>
+		<td><b>&euro; <?php echo setPriceReverse($ordine["saldo"]);?></b></td>
+	</tr>
+	<?php } ?>
 	<?php if (true or strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
 	<tr>
 		<td><?php echo gtext("Stato ordine");?>:</td>

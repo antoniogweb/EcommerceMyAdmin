@@ -1650,7 +1650,17 @@ class OrdiniModel extends FormModel {
 		if (App::$isFrontend)
 			$this->values["saldo"] = $this->values["total"];
 		else
-			$this->values["saldo"] = isset($this->values["acconto"]) ? ($this->values["total"] - $this->values["acconto"]) : $this->values["total"];
+		{
+			if (isset($this->values["acconto"]))
+			{
+				if ($this->values["total"] > $this->values["acconto"])
+					$this->values["saldo"] = $this->values["total"] - $this->values["acconto"];
+				else
+					$this->values["saldo"] = 0;
+			}
+			else
+				$this->values["saldo"] = $this->values["total"];
+		}
 		
 		$this->values["cart_uid"] = User::$cart_uid;
 		$this->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
@@ -1743,6 +1753,9 @@ class OrdiniModel extends FormModel {
 		if (!App::$isFrontend && v("disattiva_costo_spedizione_ordini_offline"))
 			$this->values["mostra_spese_spedizione_ordine_frontend"] = 0;
 		
+		if (!App::$isFrontend && v("disattiva_costo_pagamento_ordini_offline"))
+			$this->values["mostra_spese_pagamento_ordine_frontend"] = 0;
+			
 		if (v("salva_ip"))
 			$this->values["ip"] = getIp();
 	}

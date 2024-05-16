@@ -12,6 +12,16 @@
 		<td class="first_column"><?php echo gtext("Totale", false); ?>:</td>
 		<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
 	</tr>
+	<?php if ($ordine["acconto"] > 0) { ?>
+	<tr>
+		<td class="first_column"><?php echo gtext("Acconto", false); ?>:</td>
+		<td><b>&euro; <?php echo setPriceReverse($ordine["acconto"]);?></b></td>
+	</tr>
+	<tr>
+		<td class="first_column"><?php echo gtext("Saldo", false); ?>:</td>
+		<td><b>&euro; <?php echo setPriceReverse($ordine["saldo"]);?></b></td>
+	</tr>
+	<?php } ?>
 	<?php if (strcmp($tipoOutput,"web") === 0 || !OrdiniModel::conPagamentoOnline($ordine)) { ?>
 	<tr>
 		<td class="first_column"><?php echo gtext("Stato ordine", false); ?>:</td>
