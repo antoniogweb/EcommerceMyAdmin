@@ -470,6 +470,10 @@ function getPrezzoScontato($ivato = 0)
 
 function getPagamentoN()
 {
+	// Controllo se disattivare il costo del pagamento per ordini OFFLINE
+	if (!App::$isFrontend && v("disattiva_costo_pagamento_ordini_offline"))
+		return 0;
+	
 	return PagamentiModel::getCostoCarrello();
 }
 
@@ -485,6 +489,10 @@ function getSpedizioneN($pieno = null)
 {
 	// Controllo che sia attiva la spedizione
 	if (!v("attiva_spedizione"))
+		return 0;
+	
+	// Controllo se disattivare il costo della spedizione per ordini OFFLINE
+	if (!App::$isFrontend && v("disattiva_costo_spedizione_ordini_offline"))
 		return 0;
 	
 	if (!isset($pieno))

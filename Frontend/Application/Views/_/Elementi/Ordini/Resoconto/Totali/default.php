@@ -9,7 +9,7 @@
 			$strIvato = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
 			$euroPromoPercentuale = 0;
 			?>
-			<?php if ($ordine["da_spedire"] || $ordine["usata_promozione"] == "Y") { ?>
+			<?php if (($ordine["da_spedire"] && $ordine["mostra_spese_spedizione_ordine_frontend"]) || $ordine["costo_pagamento"] > 0 || $ordine["usata_promozione"] == "Y") { ?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Totale merce", false); ?>:</td> <td class="uk-text-right"><strong>&euro; <?php echo setPriceReverse($ordine["subtotal".$strIvato]);?></strong></td>
 			</tr>
@@ -26,7 +26,7 @@
 				<td class="first_column"><?php echo gtext("Spese pagamento", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["costo_pagamento".$strIvato]);?></strong></td>
 			</tr>
 			<?php } ?>
-			<?php if ($ordine["da_spedire"]) { ?>
+			<?php if ($ordine["da_spedire"] && $ordine["mostra_spese_spedizione_ordine_frontend"]) { ?>
 			<tr>
 				<td class="first_column"><?php echo gtext("Spese spedizione", false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["spedizione".$strIvato]);?></strong></td>
 			</tr>

@@ -1713,6 +1713,9 @@ class OrdiniModel extends FormModel {
 				$this->values["mostra_sempre_corriere"] = 1;
 		}
 		
+		if (!App::$isFrontend && v("disattiva_costo_spedizione_ordini_offline"))
+			$this->values["mostra_spese_spedizione_ordine_frontend"] = 0;
+		
 		if (v("salva_ip"))
 			$this->values["ip"] = getIp();
 	}
