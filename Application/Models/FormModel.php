@@ -101,6 +101,13 @@ class FormModel extends GenericModel {
 					'entryClass'	=>	'cognome form_input_text',
 					'className'	=>	'for_print form-control',
 				),
+				'fattura'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Desidera la fattura',
+					'className'	=>	'for_print form-control',
+					'options'	=>	self::$attivoNoSi,
+					'reverse'	=>	'yes',
+				),
 				'ragione_sociale'		=>	array(
 					'labelString'=>	'Ragione sociale',
 					'entryClass'	=>	'ragione_sociale form_input_text',

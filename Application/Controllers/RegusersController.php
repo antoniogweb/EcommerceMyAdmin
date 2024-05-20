@@ -279,6 +279,12 @@ class RegusersController extends BaseController {
 			$formFields .= ",id_regione";
 		}
 		
+		if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura"))
+		{
+			$fields .= ",fattura";
+			$formFields .= ",fattura";
+		}
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->formFields = $formFields;

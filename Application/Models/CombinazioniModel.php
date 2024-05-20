@@ -1152,6 +1152,7 @@ class CombinazioniModel extends GenericModel {
 						"id_riga_tipologia"	=>	$rigaTipologia["id_riga_tipologia"] ?? 0,
 						"prodotto_generico"	=>	$pagina["pages"]["prodotto_generico"],
 						"acconto"	=>	$rigaTipologia["acconto"] ?? 0,
+						"evasa"		=>	(isset($rigaTipologia["id_riga_tipologia"]) && $rigaTipologia["id_riga_tipologia"]) ? 1 : 0,
 					), "sanitizeDb");
 					
 					if ($r->insert())

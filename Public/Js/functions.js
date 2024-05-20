@@ -969,7 +969,7 @@ $(document).ready(function(){
 		
 		var valori = [];
 		
-		$("table tr.listRow").each(function(){
+		$("table tr.listRow").each(function() {
 			
 			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
 			var quantity = $(this).find("[name='quantity']").val();
@@ -986,8 +986,12 @@ $(document).ready(function(){
 				price: price,
 				title: title,
 				id_c: id_c,
-				codice: codice
+				codice: codice,
+				evasa: 0
 			};
+			
+			if ($(this).find("[name='evasa']").length)
+				temp['evasa'] = $(this).find("[name='evasa']").prop('checked') ? 1 : 0;
 			
 			valori.push(temp);
 		});
@@ -1005,7 +1009,7 @@ $(document).ready(function(){
 			},
 			success: function(content){
 				
-				aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
+				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
 				
 			}
 		});

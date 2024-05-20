@@ -69,6 +69,8 @@ class OrdiniController extends BaseController {
 	
 	public $campiForm = "";
 	
+	public $campiAggiuntiviOrdine = array();
+	
 	public static $selectFiltroTipo = array(
 		"tutti"		=>	"Tipo cliente",
 		"privato"	=>	"Privato",
@@ -422,6 +424,9 @@ class OrdiniController extends BaseController {
 		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
 			$fields .= ",destinatario_spedizione";
 		
+		if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura"))
+			$fields .= ",fattura";
+		
 		if (v("permetti_modifica_cliente_in_ordine"))
 			$fields .= ",id_user,id_spedizione";
 		
@@ -452,6 +457,11 @@ class OrdiniController extends BaseController {
 		if ($this->disabledFields)
 			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
+		foreach ($this->campiAggiuntiviOrdine as $k => $v)
+		{
+			$this->m[$this->modelName]->setValue($k, $v);
+		}
+		
 		$this->getTabViewFields("form");
 		
 		parent::form($queryType, $id);
@@ -479,6 +489,8 @@ class OrdiniController extends BaseController {
 	
 	public function righe($id = 0)
 	{
+		$this->mainShift = 1;
+		
 		if (!v("permetti_ordini_offline") || OrdiniModel::tipoOrdine((int)$id) == "W")
 			$this->redirect("ordini/vedi/".(int)$id);
 		
@@ -505,8 +517,8 @@ class OrdiniController extends BaseController {
 			$this->colProperties = array();
 		}
 		
-		$this->mainFields = array("immagineCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "acquistabileCrud");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Acq.";
+		$this->mainFields = array("immagineCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "evasaCrud", "acquistabileCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Evasa,Acq.";
 		
 		$pulsantiMenu = "torna_ordine";
 		

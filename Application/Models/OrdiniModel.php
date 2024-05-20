@@ -1284,6 +1284,39 @@ class OrdiniModel extends FormModel {
 		return number_format($record["orders"]["total"],2,",",".");
 	}
 	
+	public function accontoCrud($record)
+	{
+		return number_format($record["orders"]["acconto"],2,",",".");
+	}
+	
+	public function saldoCrud($record)
+	{
+		return "<b>".number_format($record["orders"]["saldo"],2,",",".")."</b>";
+	}
+	
+	public function fatturaCrud($record)
+	{
+		if ($record["orders"]["fattura"] || $record["orders"]["tipo_cliente"] != "privato")
+			return "<span class='text-primary'><b>".gtext("Richiesta")."</b></span>";
+		
+		return "";
+	}
+	
+	public function righeEvaseCrud($record)
+	{
+		$numeroTotale = $this->righeDaEvadereTotali((int)$record["orders"]["id_o"]);
+		
+		if ($numeroTotale > 0)
+		{
+			$numeroDaEvadere = $this->righeAncoraDaEvadere((int)$record["orders"]["id_o"]);
+			
+			if ($numeroDaEvadere <= 0)
+				return "<i title='".gtext("Tutte le righe sono state evase")."' class='fa fa-thumbs-up text-success'></i>";
+		}
+		
+		return "";
+	}
+	
 	public function vedi($record, $queryString = "?partial=Y&nobuttons=Y")
 	{
 		return "<a title='".gtext("Dettaglio ordine")."' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."$queryString'>".$record["orders"]["id_o"]."</a>";
@@ -1549,6 +1582,14 @@ class OrdiniModel extends FormModel {
 			
 			$this->aggiungiTotali($ordine["stato"]);
 			
+			if (v("imposta_allo_stato_se_tutte_righe_sono_evase"))
+			{
+				$statoEvaso = $this->statoSeTutteLeRigheSonoEvase($ordine["id_o"]);
+				
+				if ($statoEvaso)
+					$this->values["stato"] = sanitizeAll($statoEvaso);
+			}
+			
 			$this->pUpdate($idOrdine);
 			
 // 			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
@@ -1578,6 +1619,66 @@ class OrdiniModel extends FormModel {
 			
 			unset($_SESSION["aggiorna_totali_ordine"]);
 		}
+	}
+	
+	public function impostaAlloStatoSeTutteLeRigheSonoEvase($idOrdine)
+	{
+		$statoEvaso = $this->statoSeTutteLeRigheSonoEvase((int)$idOrdine);
+		
+		if ($statoEvaso)
+		{
+			$this->sValues(array(
+				"stato"	=>	$statoEvaso,
+			));
+			
+			$this->pUpdate((int)$idOrdine);
+		}
+	}
+	
+	public function righeAncoraDaEvadere($idOrdine, $numero = true)
+	{
+		$r = new RigheModel();
+		
+		$r->clear()->where(array(
+			"id_o"				=>	(int)$idOrdine,
+			"id_riga_tipologia"	=>	0,
+			"evasa"				=>	0,
+		));
+		
+		return ($numero ? $r->rowNumber() : $r->send(false));
+	}
+	
+	public function righeDaEvadereTotali($idOrdine, $numero = true)
+	{
+		$r = new RigheModel();
+		
+		$r->clear()->where(array(
+			"id_o"				=>	(int)$idOrdine,
+			"id_riga_tipologia"	=>	0,
+		));
+		
+		return ($numero ? $r->rowNumber() : $r->send(false));
+	}
+	
+	public function statoSeTutteLeRigheSonoEvase($idOrdine)
+	{
+		$ordine = $this->selectId((int)$idOrdine);
+		
+		if (!empty($ordine) && $ordine["evaso_non_evaso"])
+		{
+			$r = new RigheModel();
+			
+			$numeroDaEvadere = $this->righeAncoraDaEvadere((int)$idOrdine);
+			
+			$numeroTotale = $this->righeDaEvadereTotali((int)$idOrdine);
+			
+			if ($numeroTotale > 0 && $numeroDaEvadere <= 0 && v("imposta_allo_stato_se_tutte_righe_sono_evase") && $ordine["stato"] != v("imposta_allo_stato_se_tutte_righe_sono_evase"))
+				return v("imposta_allo_stato_se_tutte_righe_sono_evase");
+			else if (v("imposta_allo_stato_se_non_tutte_righe_sono_evase") && $numeroDaEvadere > 0 && $ordine["stato"] != v("imposta_allo_stato_se_non_tutte_righe_sono_evase"))
+				return v("imposta_allo_stato_se_non_tutte_righe_sono_evase");
+		}
+		
+		return "";
 	}
 	
 // 	public function ricalcolaPrezziRighe($idOrdine, $sconto)

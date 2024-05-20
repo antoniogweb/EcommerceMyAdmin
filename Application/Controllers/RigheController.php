@@ -139,6 +139,7 @@ class RigheController extends BaseController
 						"title"				=>	$v["title"],
 						"id_c"				=>	$v["id_c"],
 						"codice"			=>	$v["codice"],
+						"evasa"				=>	$v["evasa"],
 					));
 					
 					$this->m[$this->modelName]->update($v["id_riga"]);
@@ -152,6 +153,31 @@ class RigheController extends BaseController
 			$this->m[$this->modelName]->db->commit();
 		
 		if (isset($idOrdine))
+		{
 			OrdiniModel::g()->aggiornaTotali((int)$idOrdine);
+		}
+	}
+	
+	public function modificaevaso($idR, $valore = 1)
+	{
+		$this->clean();
+		
+		$clean["valore"] = (int)$valore;
+		
+		$riga = $this->m($this->modelName)->selectId((int)$idR);
+		
+		if (empty($riga))
+			return;
+		
+		if ($clean["valore"] === 0 || $clean["valore"] === 1)
+		{
+			$this->m($this->modelName)->sValues(array(
+				"evasa"	=>	$clean["valore"],
+			));
+			
+			$this->m[$this->modelName]->pUpdate((int)$idR);
+			
+			OrdiniModel::g()->impostaAlloStatoSeTutteLeRigheSonoEvase((int)$riga["id_o"]);
+		}
 	}
 }

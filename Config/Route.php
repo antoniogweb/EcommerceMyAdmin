@@ -537,6 +537,7 @@ class Route
 		'contatti,main',
 		'righe,main',
 		'righe,salva',
+		'righe,modificaevaso',
 		
 		'modali,main',
 		'modali,form',

@@ -627,9 +627,11 @@ class CombinazioniController extends BaseController
 	
 	public function modificaacquistabile($idC, $valore = 1)
 	{
+		$this->clean();
+		
 		$clean["valore"] = (int)$valore;
 		
-		$combinazione =$this->m[$this->modelName]->selectId((int)$idC);
+		$combinazione = $this->m[$this->modelName]->selectId((int)$idC);
 		
 		if (empty($combinazione))
 			return;

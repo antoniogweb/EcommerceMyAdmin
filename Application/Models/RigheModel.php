@@ -266,6 +266,24 @@ class RigheModel extends GenericModel {
 			return $record["righe"]["quantity"];
 	}
 	
+	public function evasaCrud($record)
+	{
+		$checked = $record["righe"]["evasa"] ? "checked" : "";
+		
+		if ($record["righe"]["id_riga_tipologia"])
+			return "";
+		
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input $checked type='checkbox' id-riga='".$record["righe"]["id_r"]."' id-c='".$record["righe"]["id_c"]."' style='max-width:120px;' name='evasa' value='".$record["righe"]["evasa"]."' />";
+		else
+		{
+			if ($record["righe"]["evasa"])
+				return "<a class='ajlink' href='".Url::getRoot()."righe/modificaevaso/".$record["righe"]["id_r"]."/0'><i class='fa fa-check text-success'></i></a>";
+			else
+				return "<a class='ajlink' href='".Url::getRoot()."righe/modificaevaso/".$record["righe"]["id_r"]."/1'><i class='fa fa-ban text-danger'></i></a>";
+		}
+	}
+	
 	public function attributiCrud($record)
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))

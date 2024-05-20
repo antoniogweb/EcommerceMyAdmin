@@ -12,7 +12,7 @@ $linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolo
 		</td>
 	</tr>
 	<tr>
-		<td><?php echo gtext("Data");?>:</td>
+		<td><?php echo gtext("Data creazione");?>:</td>
 		<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
 	</tr>
 	<tr>

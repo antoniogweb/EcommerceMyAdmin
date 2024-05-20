@@ -34,6 +34,11 @@
 				<div class='col-md-3'>
 					<?php echo $form["cognome"];?>
 				</div>
+				<?php if (isset($form["fattura"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["fattura"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3 ragione_sociale'>
 					<?php echo $form["ragione_sociale"];?>
 				</div>

@@ -549,6 +549,8 @@ class VariabiliModel extends GenericModel {
 		"crea_sincronizza_cliente_in_ordini_offline"	=>	1, // se impostato su 1, alla creazione di un ordine offline il cliente viene creato in automatico se non è stato selezionato
 		"disattiva_costo_spedizione_ordini_offline"	=>	0, // se impostato a 1, il costo della spedizione viene sempre messo a 0 euro per ordini OFFLINE
 		"disattiva_costo_pagamento_ordini_offline"	=>	0, // se impostato a 1, il costo del pagamento viene sempre messo a 0 euro per ordini OFFLINE
+		"imposta_allo_stato_se_tutte_righe_sono_evase"	=> "", // se impostato al codice di uno stato (ex completed), imposta a quello stato se tutte le righe sono state segnate come evase
+		"imposta_allo_stato_se_non_tutte_righe_sono_evase"	=>	"", // se impostato al codice di uno stato (ex pending), imposta a quello stato se non tutte le righe sono state segnate come evase
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

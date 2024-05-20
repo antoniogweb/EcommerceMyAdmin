@@ -64,6 +64,7 @@ trait BaseCrudController
 	public $aggregateFilters = true;
 	public $showFilters = false;
 	public $menuVariable = "menu";
+	public $mainShift = 0;
 	
 	protected function getStringaErroreValidazione()
 	{
@@ -159,7 +160,7 @@ trait BaseCrudController
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
 		
-		$this->shift();
+		$this->shift($this->mainShift);
 		
 		if ($this->id !== 0)
 		{
