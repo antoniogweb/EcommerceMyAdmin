@@ -152,8 +152,11 @@ class BaseController extends Controller
 		
 		$this->append($data);
 		
-		$this->load('header_'.$this->sezionePannello);
-		$this->load('footer','last');
+		if (!isset($_GET["ajax_partial_load"]))
+		{
+			$this->load('header_'.$this->sezionePannello);
+			$this->load('footer','last');
+		}
 		
 		$this->generaPosizioni();
 		

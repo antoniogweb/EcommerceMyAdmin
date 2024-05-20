@@ -1080,6 +1080,8 @@ class CombinazioniModel extends GenericModel {
 		{
 			$ordine = OrdiniModel::g()->selectId((int)$_GET["id_ordine"]);
 			
+			$prezzoIvato = $prezzoNonIvato = null;
+			
 			if (!empty($ordine))
 			{
 				$lingua = $ordine["lingua"] ? $ordine["lingua"] : LingueModel::getPrincipaleFrontend();
@@ -1088,24 +1090,33 @@ class CombinazioniModel extends GenericModel {
 					"id_page"	=>	(int)$record["id_page"],
 				))->first();
 				
-				if (isset($_GET["id_riga_tipologia"]))
-				{
-					$rt = new RighetipologieModel();
-					
-					$rigaTipologia = $rt->clear()->selectId((int)$_GET["id_riga_tipologia"]);
-					
-					if (!empty($rigaTipologia))
-					{
-						$record["codice"] = $rigaTipologia["titolo_breve"];
-						$record["peso"] = 0;
-						
-						if (!RighetipologieModel::checkInserimentoTipologiaInOrdine((int)$_GET["id_ordine"], (int)$_GET["id_riga_tipologia"]))
-							return;
-					}
-				}
-				
 				if (!empty($pagina))
 				{
+					$iva = IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]);
+					
+					if (isset($_GET["id_riga_tipologia"]))
+					{
+						$rt = new RighetipologieModel();
+						
+						$rigaTipologia = $rt->clear()->selectId((int)$_GET["id_riga_tipologia"]);
+						
+						if (!empty($rigaTipologia))
+						{
+							$record["codice"] = $rigaTipologia["titolo_breve"];
+							$record["peso"] = 0;
+							
+							if ($rigaTipologia["prezzo"] > 0)
+							{
+								$prezzoIvato = $rigaTipologia["prezzo"];
+								
+								$prezzoNonIvato = $prezzoIvato / (1 + ($iva / 100));
+							}
+							
+							if (!RighetipologieModel::checkInserimentoTipologiaInOrdine((int)$_GET["id_ordine"], (int)$_GET["id_riga_tipologia"]))
+								return;
+						}
+					}
+					
 					$r = new RigheModel();
 					
 					$r->sValues(array(
@@ -1121,14 +1132,14 @@ class CombinazioniModel extends GenericModel {
 						"peso"		=>	$record["peso"],
 						"attributi"	=>	$this->getStringa((int)$id),
 						"id_iva"	=>	$pagina["pages"]["id_iva"],
-						"iva"		=>	IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]),
+						"iva"		=>	$iva,
 						"gift_card"	=>	$pagina["pages"]["gift_card"],
-						"prezzo_intero"	=>	$record["price"],
-						"prezzo_intero_ivato"	=> $record["price_ivato"],
-						"price"		=>	$record["price_scontato"],
-						"price_ivato"	=>	$record["price_scontato_ivato"],
-						"prezzo_finale"		=>	$record["price_scontato"],
-						"prezzo_finale_ivato"	=>	$record["price_scontato_ivato"],
+						"prezzo_intero"	=>	$prezzoNonIvato ?? $record["price"],
+						"prezzo_intero_ivato"	=> $prezzoIvato ?? $record["price_ivato"],
+						"price"		=>	$prezzoNonIvato ?? $record["price_scontato"],
+						"price_ivato"	=>	$prezzoIvato ?? $record["price_scontato_ivato"],
+						"prezzo_finale"		=>	$prezzoNonIvato ?? $record["price_scontato"],
+						"prezzo_finale_ivato"	=>	$prezzoIvato ?? $record["price_scontato_ivato"],
 						"in_promozione"	=>	number_format($record["price_scontato"],2,".","") != number_format($record["price"],2,".","") ? "Y" : "N",
 						"percentuale_promozione"	=>	self::calcolaSconto($record["price"], $record["price_scontato"]),
 						"lingua"	=>	$lingua,

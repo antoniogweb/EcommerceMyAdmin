@@ -1214,7 +1214,10 @@ class OrdiniModel extends FormModel {
 			$r->delFields("data_creazione");
 			$r->delFields("id_user");
 			$r->delFields("email");
-			$r->delFields("id_cart");
+			
+			if (!$idRiff)
+				$r->delFields("id_cart");
+			
 			$r->delFields("id_order");
 			$r->delFields("id_rif");
 			

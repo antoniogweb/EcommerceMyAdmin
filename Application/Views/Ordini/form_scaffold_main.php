@@ -129,9 +129,11 @@
 					<?php echo $form["id_spedizioniere"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["link_tracking"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["link_tracking"];?>
 				</div>
+				<?php } ?>
 			</div>
 		</div>
 		<div class='col-md-12'>
@@ -168,14 +170,14 @@
 				</div>
 			</div>
 		</div>
-		<?php if (v("attiva_liste_regalo")) { ?>
+		<?php if (v("attiva_liste_regalo") && (isset($form["dedica"]) || isset($form["firma"]))) { ?>
 		<div class='col-md-6'>
 			<br />
 			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-gift"></i> <?php echo gtext("Dedica e firma");?></h4>
 			<div class='row'>
 				<div class='col-md-12'>
-					<?php echo $form["dedica"];?>
-					<?php echo $form["firma"];?>
+					<?php echo $form["dedica"] ?? "";?>
+					<?php echo $form["firma"] ?? "";?>
 				</div>
 			</div>
 		</div>

@@ -127,6 +127,14 @@ class RigheModel extends GenericModel {
 		}
 	}
 	
+	public function immagineCrud($record)
+	{
+		if (!$record["righe"]["prodotto_generico"])
+			return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$record["righe"]["id_page"]."/".$record["righe"]["immagine"]."' />";
+		
+		return "";
+	}
+	
 	public function titolocompleto($record)
 	{
 		$titolo = $record["pages"]["title"] ? $record["pages"]["title"] : $record[$this->_tables]["title"];
@@ -235,7 +243,7 @@ class RigheModel extends GenericModel {
 		$prezzo = $this->getPrezzoCampo($record, "price");
 		
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
+			return '<div style="position:relative;">'."<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='prezzo_scontato_riga_ordine form-control' name='price' value='".$prezzo."' /><i style='display:none;position:absolute;top:10px;left:5px;' class='text-primary fa fa-spinner fa-spin'></i></div>";
 		else
 			return $prezzo;
 	}
@@ -253,7 +261,7 @@ class RigheModel extends GenericModel {
 	public function quantitaCrud($record)
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["righe"]["quantity"]."' />";
+			return '<div style="position:relative;">'."<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='quantita_riga_ordine form-control' name='quantity' value='".$record["righe"]["quantity"]."' /><i style='display:none;position:absolute;top:10px;left:5px;' class='text-primary fa fa-spinner fa-spin'></i></div>";
 		else
 			return $record["righe"]["quantity"];
 	}
@@ -267,7 +275,7 @@ class RigheModel extends GenericModel {
 			if (count($selectVarianti) === 1 && !reset($selectVarianti))
 				return Html_Form::hidden("id_c", array_key_first($selectVarianti));
 			else
-				return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "form-control", null, "yes");
+				return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "select_attributo_ordine_offline form-control", null, "yes");
 		}
 		else if ($record["righe"]["attributi"])
 			return $record["righe"]["attributi"];

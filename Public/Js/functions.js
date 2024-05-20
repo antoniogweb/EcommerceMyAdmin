@@ -51,6 +51,70 @@ if (typeof(ajaxfilemanager) !== typeof(Function))
 	}
 }
 
+var applicationControllerAction = applicationName + controllerName + "/" + actionName;
+
+function applicaSelect2()
+{
+	if ($("[select2]").length > 0)
+	{
+		$("[select2]").each(function(){
+			
+			var url = $(this).attr("select2");
+			
+			if ($(this).find("select").hasClass("select2-hidden-accessible"))
+				$(this).find("select").select2('destroy'); 
+			
+			if (url != "")
+			{
+				$(this).find("select").select2({
+					ajax: {
+						url: baseUrl + url,
+						processResults: function (data) {
+							// Transforms the top-level key of the response object from 'items' to 'results'
+							return {
+								results: data.results
+							};
+						},
+						delay: 500
+					},
+					minimumInputLength: 2,
+					language: {
+						inputTooShort: function(args) {
+							return "Digitare 2 o più caratteri";
+						},
+						searching: function() {
+							return "In attesa..";
+						},
+						noResults: function() {
+							return "Non ci sono risultati";
+						},
+						errorLoading: function() {
+							return "In attesa..";
+						}
+					}
+				});
+			}
+			else
+				$(this).find("select").select2();
+		});
+	}
+}
+
+function aggiornaParziale(url)
+{
+	$.ajaxQueue({
+		url: baseUrl + "/" + url,
+		cache:false,
+		async: true,
+		dataType: "html",
+		success: function(content){
+			
+			$(".contenitore_generale").html(content);
+			applicaSelect2();
+		}
+	});
+}
+
 var inputFieldErrorBorderStyle = "2px solid red";
 var dataFormat = "dd-mm-yy";
 
@@ -653,7 +717,7 @@ $(document).ready(function(){
 		var id_t = $(this).attr("id-t");
 		var valore = $(this).val();
 		
-		that.parent().find("i.fa-refresh").css("display", "block");
+		that.parent().find("i.fa-spinner").css("display", "block");
 		
 		$.ajaxQueue({
 			url: baseUrl + "/traduzioni/aggiorna/",
@@ -671,7 +735,7 @@ $(document).ready(function(){
 				
 				setTimeout(function(){
 					
-					that.parent().find("i.fa-refresh").css("display", "none");
+					that.parent().find("i.fa-spinner").css("display", "none");
 					
 					that.parent().find("i.fa-check").css("display", "block");
 					
@@ -850,52 +914,55 @@ $(document).ready(function(){
 		controllaVisibilita();
 	});
 	
-	if ($("[select2]").length > 0)
-	{
-		$("[select2]").each(function(){
-			
-			var url = $(this).attr("select2");
-			
-			if (url != "")
-			{
-				$(this).find("select").select2({
-					ajax: {
-						url: baseUrl + url,
-						processResults: function (data) {
-							// Transforms the top-level key of the response object from 'items' to 'results'
-							return {
-								results: data.results
-							};
-						},
-						delay: 500
-					},
-					minimumInputLength: 2,
-					language: {
-						inputTooShort: function(args) {
-							return "Digitare 2 o più caratteri";
-						},
-						searching: function() {
-							return "In attesa..";
-						},
-						noResults: function() {
-							return "Non ci sono risultati";
-						},
-						errorLoading: function() {
-							return "In attesa..";
-						}
-					}
-				});
-			}
-			else
-				$(this).find("select").select2();
-		});
-	}
+	applicaSelect2();
+	
+// 	if ($("[select2]").length > 0)
+// 	{
+// 		$("[select2]").each(function(){
+// 			
+// 			var url = $(this).attr("select2");
+// 			
+// 			if (url != "")
+// 			{
+// 				$(this).find("select").select2({
+// 					ajax: {
+// 						url: baseUrl + url,
+// 						processResults: function (data) {
+// 							// Transforms the top-level key of the response object from 'items' to 'results'
+// 							return {
+// 								results: data.results
+// 							};
+// 						},
+// 						delay: 500
+// 					},
+// 					minimumInputLength: 2,
+// 					language: {
+// 						inputTooShort: function(args) {
+// 							return "Digitare 2 o più caratteri";
+// 						},
+// 						searching: function() {
+// 							return "In attesa..";
+// 						},
+// 						noResults: function() {
+// 							return "Non ci sono risultati";
+// 						},
+// 						errorLoading: function() {
+// 							return "In attesa..";
+// 						}
+// 					}
+// 				});
+// 			}
+// 			else
+// 				$(this).find("select").select2();
+// 		});
+// 	}
 	
 	/* --- GESTIONE ORDINI OFFLINE --- */
 	$("body").on("click", ".save_righe_ordini", function(e){
 		
 		e.preventDefault();
 		
+		var idOrdine = $(this).attr("id-ordine"); 
 		var that = $(this);
 		
 		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
@@ -938,10 +1005,16 @@ $(document).ready(function(){
 			},
 			success: function(content){
 				
-				reloadPage();
+				aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
 				
 			}
 		});
+		
+	});
+	
+	$( "body" ).on( "change", ".select_attributo_ordine_offline", function(e){
+		
+		$(".save_righe_ordini").trigger("click");
 		
 	});
 	
@@ -995,7 +1068,9 @@ $(document).ready(function(){
 			},
 			success: function(content){
 				
-				reloadPage();
+				$(".save_righe_ordini").trigger("click");
+// 				aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
+// 				reloadPage();
 				
 			}
 		});
@@ -1026,7 +1101,9 @@ $(document).ready(function(){
 				},
 				success: function(content){
 					
-					reloadPage();
+					$(".save_righe_ordini").trigger("click");
+// 					aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
+// 					reloadPage();
 					
 				}
 			});
@@ -1073,9 +1150,30 @@ $(document).ready(function(){
 			var prezzoScontato = (prezzoIntero - (prezzoIntero * sconto/100)).toFixed(2);
 			
 			priceObj.val(prezzoScontato.toString().replace(".", ","));
+			
+// 			priceObj.parent().find("i.fa-spinner").css("display", "block");
+			
+// 			$(".save_righe_ordini").trigger("click");
 		}
 		
 	},500));
+	
+// 	$("body").on("keyup", ".prezzo_scontato_riga_ordine", debounce(function(e){
+// 		
+// 		$(this).parent().find("i.fa-spinner").css("display", "block");
+// 		
+// 		$(".save_righe_ordini").trigger("click");
+// 		
+// 	},500));
+// 	
+// 	$("body").on("keyup", ".quantita_riga_ordine", debounce(function(e){
+// 		
+// 		$(this).parent().find("i.fa-spinner").css("display", "block");
+// 		
+// 		$(".save_righe_ordini").trigger("click");
+// 		
+// 	},500));
+	
 	/* --- GESTIONE ORDINI OFFLINE --- */
 	
 	// this is the id of the form

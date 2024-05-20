@@ -2532,7 +2532,6 @@ class PagesModel extends GenericModel {
 		foreach (User::$groups as $gr)
 		{
 			$sign = str_repeat(" ",$count);
-// 			$temp[$sign."gruppi"] = "like '%($gr)%'";
 			$temp[$sign."lk"] = array(
 				"gruppi"	=>	sanitizeAll($gr),
 			);

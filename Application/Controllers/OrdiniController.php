@@ -67,6 +67,8 @@ class OrdiniController extends BaseController {
 	
 	public $defaultAction = "vedi";
 	
+	public $campiForm = "";
+	
 	public static $selectFiltroTipo = array(
 		"tutti"		=>	"Tipo cliente",
 		"privato"	=>	"Privato",
@@ -404,53 +406,6 @@ class OrdiniController extends BaseController {
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
-// 		if (!isset($_POST["id_user"]))
-// 			$_SESSION["id_user"] = !empty($record) ? (int)$record["id_user"] : 0;
-// 		
-// 		if (!isset($_POST["id_spedizione"]))
-// 			$_SESSION["id_spedizione"] = !empty($record) ? (int)$record["id_spedizione"] : 0;
-// 		
-// 		if (isset($_POST["id_user"]))
-// 		{
-// 			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
-// 			
-// 			if (!empty($cliente))
-// 			{
-// 				if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
-// 				{
-// 					$_SESSION["id_user"] = (int)$_POST["id_user"];
-// 					
-// 					$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
-// 					
-// 					foreach ($campiDaCopiare as $cdc)
-// 					{
-// 						if (isset($cliente[$cdc]))
-// 							$_POST[$cdc] = $cliente[$cdc];
-// 					}
-// 					
-// 					$_POST["email"] = $cliente["username"];
-// 				}
-// 				
-// 				if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$_SESSION["id_spedizione"])
-// 				{
-// 					$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
-// 					
-// 					if (!empty($spedizione))
-// 					{
-// 						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
-// 						
-// 						foreach ($campiDaCopiare as $cdc)
-// 						{
-// 							if (isset($spedizione[$cdc]))
-// 								$_POST[$cdc] = $spedizione[$cdc];
-// 						}
-// 					}
-// 				}
-// 			}
-// 		}
-// 		
-// 		$idUser = isset($_POST["id_user"]) ? $_POST["id_user"] : $_SESSION["id_user"];
-		
 		$idUser = !empty($record) ? (int)$record["id_user"] : 0;
 		
 		$lingua = $this->m["RegusersModel"]->getLingua((int)$idUser);
@@ -483,6 +438,9 @@ class OrdiniController extends BaseController {
 		
 		if (v("attiva_gestione_spedizionieri"))
 			$fields .= ",id_spedizioniere";
+		
+		if ($this->campiForm)
+			$fields = $this->campiForm;
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
@@ -541,18 +499,18 @@ class OrdiniController extends BaseController {
 		
 		$this->modelName = "RigheModel";
 		
-		if (!OrdiniModel::g()->isDeletable($id))
+		if (!OrdiniModel::g()->isDeletable((int)$id))
 		{
 			$this->addBulkActions = false;
 			$this->colProperties = array();
 		}
 		
-		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "acquistabileCrud");
+		$this->mainFields = array("immagineCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "acquistabileCrud");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Acq.";
 		
 		$pulsantiMenu = "torna_ordine";
 		
-		if (OrdiniModel::g()->isDeletable($id))
+		if (OrdiniModel::g()->isDeletable((int)$id))
 			$pulsantiMenu .= ",save_righe_ordini";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
@@ -560,6 +518,8 @@ class OrdiniController extends BaseController {
 		$this->m[$this->modelName]->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
 		
 		$this->getTabViewFields("righe");
+		
+		Helper_Menu::$htmlLinks["save_righe_ordini"]["attributes"] .= " id-ordine='".(int)$id."'";
 		
 		parent::main();
 		
