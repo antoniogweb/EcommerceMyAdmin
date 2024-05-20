@@ -1582,7 +1582,7 @@ class OrdiniModel extends FormModel {
 			
 			$this->aggiungiTotali($ordine["stato"]);
 			
-			if (v("imposta_allo_stato_se_tutte_righe_sono_evase"))
+			if ($ordine["evaso_non_evaso"] && (v("imposta_allo_stato_se_tutte_righe_sono_evase") || v("imposta_allo_stato_se_non_tutte_righe_sono_evase")))
 			{
 				$statoEvaso = $this->statoSeTutteLeRigheSonoEvase($ordine["id_o"]);
 				
