@@ -24,8 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class PasswordController extends BaseController {
 
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->helper('Menu','users','panel');
 		$this->helper('Array');
@@ -76,7 +77,7 @@ class PasswordController extends BaseController {
 		$values['confirmation'] = '';
 		
 		$action = array('updateAction'=>'save');
-		$form = new Form_Form('password/form/'.$this->viewArgs['token'],$action);
+		$form = new Form_Form($this->applicationUrl.$this->controller."/".$this->action."/".$this->viewArgs['token'],$action);
 		$form->setEntry('old','Password');
 		$form->entry['old']->labelString = 'Vecchia password:';
 		$form->setEntry('password','Password');
