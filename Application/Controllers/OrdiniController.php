@@ -737,4 +737,53 @@ class OrdiniController extends BaseController {
 			$this->load('vedi');
 		}
 	}
+	
+	public function stampapdf($id = 0, $filename = "")
+	{
+		if (!v("permetti_ordini_offline"))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		$clean["filename"] = sanitizeAll((string)basename($filename));
+		
+		createFolderFull("media/Pdf", LIBRARY);
+		
+		if ((string)$filename)
+		{
+			$values = $this->m("OrdinipdfModel")->clear()->where(array(
+				"filename"	=>	$clean["filename"],
+			))->record();
+		}
+		else
+			$values = $this->m("OrdinipdfModel")->generaPdf((int)$id);
+		
+		$folder = LIBRARY . "/media/Pdf";
+		
+		if (is_array($values) && !empty($values) && file_exists($folder."/".$values["filename"]))
+		{
+			header('Content-type: application/pdf');
+			header('Content-Disposition: inline; filename='.$values["titolo"]);
+			readfile($folder."/".$values["filename"]);
+		}
+		else
+			$this->responseCode(403);
+	}
+	
+	public function inviapdf($id)
+	{
+		$oModel = new OrdiniModel();
+		
+		$ordine = $oModel->selectId((int)$id);
+		
+		if (empty($ordine))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		if ($ordine["email"] && checkMail(htmlentitydecode($ordine["email"])))
+		{
+			
+		}
+	}
 }

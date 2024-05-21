@@ -90,6 +90,8 @@ class Route
 		'ordini,setstato',
 		'ordini,vediresponse',
 		'ordini,vediscriptpixel',
+		'ordini,stampapdf',
+		'ordini,inviapdf',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',
