@@ -297,25 +297,25 @@ class OrdiniModel extends FormModel {
 		$this->orderBy = 'orders.id_order';
 		$this->_lang = 'It';
 		
-		$this->_popupItemNames = array(
-			'tipo_cliente'	=>	'tipo_cliente',
-			'stato'	=>	'stato',
-			'pagamento'	=>	'pagamento',
-			'registrato'	=> 'registrato',
-		);
-
-		$this->_popupLabels = array(
-			'stato'	=>	'STATO ORDINE',
-			'tipo_cliente'	=>	'TIPO CLIENTE',
-			'pagamento'	=>	'PAGAMENTO',
-			'registrato'	=> 'UTENTE REGISTRATO',
-		);
-
-		$this->_popupFunctions = array(
-			'stato'	=>	'statoOrdine',
-			'pagamento'	=>	'metodoPagamento',
-			'registrato'	=> 'getYesNo',
-		);
+// 		$this->_popupItemNames = array(
+// 			'tipo_cliente'	=>	'tipo_cliente',
+// 			'stato'	=>	'stato',
+// 			'pagamento'	=>	'pagamento',
+// 			'registrato'	=> 'registrato',
+// 		);
+// 
+// 		$this->_popupLabels = array(
+// 			'stato'	=>	'STATO ORDINE',
+// 			'tipo_cliente'	=>	'TIPO CLIENTE',
+// 			'pagamento'	=>	'PAGAMENTO',
+// 			'registrato'	=> 'UTENTE REGISTRATO',
+// 		);
+// 
+// 		$this->_popupFunctions = array(
+// 			'stato'	=>	'statoOrdine',
+// 			'pagamento'	=>	'metodoPagamento',
+// 			'registrato'	=> 'getYesNo',
+// 		);
 		
 		parent::__construct();
 		
@@ -1631,7 +1631,9 @@ class OrdiniModel extends FormModel {
 				"stato"	=>	$statoEvaso,
 			));
 			
-			$this->pUpdate((int)$idOrdine);
+			OrdiniModel::$ordineImportato = true;
+			
+			$this->update((int)$idOrdine);
 		}
 	}
 	
@@ -2373,4 +2375,14 @@ class OrdiniModel extends FormModel {
 		
 		return $andArray;
 	}
+	
+	public function cleanDateTimeConsegna($record)
+    {
+		$formato = "d-m-Y";
+		
+		if (isset($record[$this->_tables]["data_consegna"]) && $record[$this->_tables]["data_consegna"])
+			return date($formato,strtotime($record[$this->_tables]["data_consegna"]));
+		
+		return "";
+    }
 }

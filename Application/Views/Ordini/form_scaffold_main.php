@@ -147,6 +147,11 @@
 		</div>
 		<div class='col-md-12'>
 			<div class='row'>
+				<?php if (isset($form["data_consegna"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["data_consegna"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["stato"];?>
 				</div>

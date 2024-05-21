@@ -1905,4 +1905,13 @@ class GenericModel extends Model_Tree
 		
 		return "";
 	}
+	
+	// se la data non è una vera data, restituisce BLANK
+	public function fakeDataToBlank($data)
+	{
+		if (!checkIsoDate(getIsoDate(nullToBlank($data))))
+			return "";
+		
+		return $data;
+	}
 }

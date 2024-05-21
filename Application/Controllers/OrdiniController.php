@@ -57,6 +57,26 @@ Helper_List::$filtersFormLayout["filters"]["stato_sped"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["dalc"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control data_field",
+		"placeholder"	=>	"Dal (consegna) ..",
+	),
+	"wrap"	=>	array(
+		'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+	),
+);
+
+Helper_List::$filtersFormLayout["filters"]["alc"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control data_field",
+		"placeholder"	=>	"Al (consegna) ..",
+	),
+	"wrap"	=>	array(
+		'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -105,6 +125,8 @@ class OrdiniController extends BaseController {
 		'titolo:sanitizeAll'=>'tutti',
 		'stato_sped:sanitizeAll'=>'tutti',
 		'titolo_riga:sanitizeAll'=>'tutti',
+		'dalc:sanitizeAll'=>'tutti',
+		'alc:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -315,6 +337,8 @@ class OrdiniController extends BaseController {
 		if ($this->viewArgs['al'] != "tutti")
 			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
 		
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dalc'], $this->viewArgs['alc'], 'data_consegna');
+		
 		if (strcmp($this->viewArgs['lista_regalo'],'tutti') !== 0)
 			$this->m[$this->modelName]->inner(array("lista"))->where(array(
 				" OR"	=>	array(
@@ -444,8 +468,19 @@ class OrdiniController extends BaseController {
 		if (v("attiva_gestione_spedizionieri"))
 			$fields .= ",id_spedizioniere";
 		
+		if (v("attiva_da_consegna_in_ordine") && ($queryType == "insert" || (isset($record["tipo_ordine"]) && $record["tipo_ordine"] != "W")))
+			$fields .= ",data_consegna";
+		
 		if ($this->campiForm)
 			$fields = $this->campiForm;
+		
+		$this->functionsIfFromDb = array(
+			"data_consegna"	=>	"fakeDataToBlank",
+		);
+		
+		$this->formDefaultValues = array(
+			"data_consegna"	=>	"",
+		);
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
