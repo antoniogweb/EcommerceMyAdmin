@@ -85,7 +85,7 @@ class BasePaypalController extends OrdiniController
 				$this->model("FattureModel");
 				
 				$this->m("OrdiniModel")->values = array();
-				$this->m("OrdiniModel")->values["data_pagamento"] = date("d-m-Y");
+				$this->m("OrdiniModel")->values["data_pagamento"] = date("Y-m-d H:i");
 				
 				$statoPagato = $this->getStatoOrdinePagato($ordine);
 				$this->m("OrdiniModel")->values["stato"] = $statoPagato;
