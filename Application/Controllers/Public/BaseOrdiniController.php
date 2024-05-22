@@ -845,6 +845,8 @@ class BaseOrdiniController extends BaseController
 				
 				if (v("check_ipn_al_ritorno_carta") && $res[0]["orders"]["stato"] == "pending")
 				{
+					sleep(3);
+					
 					$this->ipncarta();
 					$this->load('header');
 					$this->load('footer','last');
