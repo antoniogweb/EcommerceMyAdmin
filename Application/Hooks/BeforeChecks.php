@@ -406,6 +406,22 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" controller="spedizioninegoziocolli" class="btn btn-success save_righe menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
+	"stampa_pdf_ordine" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'target="_blank" role="button" class="pull-right btn btn-info help_stampa_pdf"',
+		"class"	=>	"btn btn-default",
+		'text'	=>	"Stampa PDF",
+		"classIconBefore"	=>	'<i class="fa fa-file-pdf-o"></i>',
+	),
+	"invia_pdf_ordine" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'style="margin-left:5px;" role="button" class="pull-right btn btn-warning help_invia_pdf make_spinner"',
+		"class"	=>	"btn btn-default",
+		'text'	=>	"Invia PDF",
+		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";

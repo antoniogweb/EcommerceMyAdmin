@@ -41,6 +41,8 @@ class OrdinipdfModel extends GenericModel
     
     public function generaPdf($id)
     {
+		createFolderFull("media/Pdf", LIBRARY);
+		
 		$oModel = new OrdiniModel();
 		
 		$ordine = $oModel->selectId((int)$id);
@@ -78,8 +80,73 @@ class OrdinipdfModel extends GenericModel
 		$this->sValues($values);
 		
 		if ($this->insert())
+		{
+			$values["id_o_pdf"] = $this->lId;
+			
 			return $values;
+		}
 		
 		return [];
+    }
+    
+    // Crea e restituisce i valori della riga della tabella orders_pdf relativa al file PDF dell'ordine
+    // $filename: se presente, cerca quel file senza crearlo
+    public function generaORestituisciPdfOrdine($id = 0, $filename = "")
+    {
+		$clean["filename"] = sanitizeAll((string)basename($filename));
+		
+		if ((string)$filename)
+		{
+			return $this->clear()->where(array(
+				"filename"	=>	$clean["filename"],
+			))->record();
+		}
+		else
+			return $this->generaPdf((int)$id);
+    }
+    
+    public function inviaPdf($id)
+    {
+		$oModel = new OrdiniModel();
+		$oPdfModel = new OrdinipdfModel();
+		
+		$ordine = $oModel->selectId((int)$id);
+		
+		if (empty($ordine))
+			$this->responseCode(403);
+		
+		if ($ordine["email"] && checkMail(htmlentitydecode($ordine["email"])))
+		{
+			$values = $oPdfModel->generaPdf($ordine["id_o"]);
+			
+			$folder = LIBRARY . "/media/Pdf";
+			
+			if (is_array($values) && !empty($values) && isset($values["id_o_pdf"]) && $values["id_o_pdf"] && file_exists($folder."/".$values["filename"]))
+			{
+				$email = htmlentitydecode($ordine["email"]);
+				
+				$nomeFile = "Ordine_".$ordine["id_o"];
+				
+				return MailordiniModel::inviaMail(array(
+					"emails"	=>	array($email),
+					"oggetto"	=>	"Ordine ".$ordine["id_o"]. " - stampa PDF",
+					"id_o"		=>	(int)$ordine["id_o"],
+					"tipologia"	=>	"ORDINE",
+					"tipo"		=>	"G",
+					"lingua"	=>	$ordine["lingua"],
+					"testo_path"	=>	"Elementi/Mail/OrdiniOffline/mail_pdf_ordine.php",
+					"tabella"	=>	"orders_pdf",
+					"id_elemento"	=>	(int)$values["id_o_pdf"],
+					"array_variabili_tema"	=>	array(
+						
+					),
+					"allegati"	=>	array(
+						$nomeFile.".pdf" => $folder."/".$values["filename"],
+					),
+				));
+			}
+		}
+		
+		return false;
     }
 }

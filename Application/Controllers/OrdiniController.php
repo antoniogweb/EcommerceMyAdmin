@@ -508,6 +508,12 @@ class OrdiniController extends BaseController {
 		$this->append($data);
 	}
 	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		$this->scaffold->mainMenu->links['stampa_pdf_ordine']['url'] = 'stampapdf/'.(int)$id;
+		$this->scaffold->mainMenu->links['invia_pdf_ordine']['url'] = 'inviapdf/'.(int)$id;
+	}
+	
 	public function integrazioni($id = 0)
 	{
 		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
@@ -745,18 +751,7 @@ class OrdiniController extends BaseController {
 		
 		$this->clean();
 		
-		$clean["filename"] = sanitizeAll((string)basename($filename));
-		
-		createFolderFull("media/Pdf", LIBRARY);
-		
-		if ((string)$filename)
-		{
-			$values = $this->m("OrdinipdfModel")->clear()->where(array(
-				"filename"	=>	$clean["filename"],
-			))->record();
-		}
-		else
-			$values = $this->m("OrdinipdfModel")->generaPdf((int)$id);
+		$values = $this->m("OrdinipdfModel")->generaORestituisciPdfOrdine($id, $filename);
 		
 		$folder = LIBRARY . "/media/Pdf";
 		
@@ -772,18 +767,16 @@ class OrdiniController extends BaseController {
 	
 	public function inviapdf($id)
 	{
-		$oModel = new OrdiniModel();
-		
-		$ordine = $oModel->selectId((int)$id);
-		
-		if (empty($ordine))
+		if (!v("permetti_ordini_offline"))
 			$this->responseCode(403);
+		
+		$this->shift(1);
 		
 		$this->clean();
 		
-		if ($ordine["email"] && checkMail(htmlentitydecode($ordine["email"])))
-		{
-			
-		}
+		if ($this->m("OrdinipdfModel")->inviaPdf($id))
+			flash("notice", "<div class='alert alert-success'>".gtext("Email inviata correttamente")."</div>");
+		
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
 	}
 }

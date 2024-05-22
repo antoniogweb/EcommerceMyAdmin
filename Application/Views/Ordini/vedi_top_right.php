@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (v("fatture_attive") && $fattureOk) { ?>
+<?php if (v("fatture_attive") && isset($fatture) && $fattureOk) { ?>
 	<div style="margin-bottom:10px;" class="panel panel-default">
 		<div class="panel-heading">
 			<?php if (count($fatture) > 0) { ?>

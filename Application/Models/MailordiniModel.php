@@ -312,10 +312,15 @@ class MailordiniModel extends GenericModel
 				$testo = MailordiniModel::loadTemplate($oggetto, $testo);
 			
 			// Carico gli allegati
-			foreach ($allegati as $allegato)
+			foreach ($allegati as $nomeAllegato => $allegato)
 			{
 				if (file_exists($allegato))
-					$mail->AddAttachment($allegato);
+				{
+					if (is_numeric($nomeAllegato))
+						$mail->AddAttachment($allegato);
+					else
+						$mail->AddAttachment($allegato, $nomeAllegato);
+				}
 			}
 			
 // 			echo $testo;die();
