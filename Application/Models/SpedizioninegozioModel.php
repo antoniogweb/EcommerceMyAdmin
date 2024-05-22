@@ -816,8 +816,12 @@ class SpedizioninegozioModel extends FormModel {
 				
 				$stato = "I";
 				
-				if ($this->checkConditions('update'))
+				$this->setValues(htmlentitydecodeDeep($record));
+				
+				if ($this->checkConditions('update', (int)$id))
 				{
+					$this->setValues(array());
+					
 					if ($this->checkColli([$id]))
 					{
 						if ($record["id_spedizioniere_lettera_vettura"])

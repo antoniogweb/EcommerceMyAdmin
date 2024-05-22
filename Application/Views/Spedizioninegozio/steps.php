@@ -19,7 +19,7 @@
 					<tr>
 						<td><?php echo gtext("Stato");?>:</td>
 						<td>
-							<?php if (in_array($spedizione["spedizioni_negozio"]["stato"], SpedizioninegozioModel::statiSpedizioniApribili())) { ?>
+							<?php if ($spedizione["spedizioni_negozio"]["data_spedizione"] != date("Y-m-d") && in_array($spedizione["spedizioni_negozio"]["stato"], SpedizioninegozioModel::statiSpedizioniApribili())) { ?>
 							<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."/1".$this->viewStatus;?>" confirm-message="<?php echo gtext("Attenzione, la spedizione non verrà cancellata nei server del corriere. Se possibile, procedere aprendo la spedizione normalmente.")?>" class="pull-right text text-danger confirm make_spinner_confirm" title="<?php echo gtext("Forza allo stato aperto");?>"><i class="fa fa-unlock"></i></a>
 							<?php } ?>
 							
