@@ -37,229 +37,10 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 				<div class="box-header with-border main help_resoconto">
 					<div class="row">
 						<div class="col-lg-6">
-							<?php
-							$linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolower($ordine["nazione"]) : $ordine["lingua"];
-							?>
-							<table class="table table-striped">
-								<tr>
-									<td><?php echo gtext("N° Ordine");?>:</td>
-									<td><b>#<?php echo $ordine["id_o"];?></b> <a <?php if (partial()) { ?>target="_blank"<?php } ?> class="<?php if (!partial()) { ?>iframe<?php } ?> pull-right help_ordine_lato_cliente" href="<?php echo Domain::$name."/".$linguaNazioneUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y";?>"><i class="fa fa-eye"></i> <?php echo gtext("Vedi ordine lato cliente");?></a></td>
-								</tr>
-								<tr>
-									<td><?php echo gtext("Data");?>:</td>
-									<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
-								</tr>
-								<tr>
-									<td><?php echo gtext("Totale");?>:</td>
-									<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
-								</tr>
-								<?php if (strcmp($tipoOutput,"web") === 0 or strcmp($ordine["pagamento"],"bonifico") === 0 or strcmp($ordine["pagamento"],"contrassegno") === 0) { ?>
-								<tr>
-									<td><?php echo gtext("Stato ordine");?>:</td>
-									<td><b><span class="label label-<?php echo labelStatoOrdine($ordine["stato"]);?>"><?php echo statoOrdine($ordine["stato"]);?></span></b></td>
-								</tr>
-								<?php } ?>
-								<tr>
-									<td><?php echo gtext("Stato pagamento");?>:</td>
-									<td>
-										<?php if ($ordine["pagato"] || StatiordineModel::g(false)->pagato($ordine["stato"])) { ?>
-										<span class="label label-success"><?php echo gtext("Ordine pagato");?></span>
-											<?php if ($ordine["data_pagamento"]) { ?>
-											<?php echo gtext("in data");?> <b><?php echo date("d-m-Y H:i", strtotime($ordine["data_pagamento"]));?></b>
-											<?php } ?>
-										<?php } else { ?>
-										<span class="label label-warning"><?php echo gtext("Ordine NON pagato");?></span>
-										<?php } ?>
-									</td>
-								</tr>
-								<tr>
-									<td><?php echo gtext("Metodo di pagamento");?>:</td>
-									<td><b><?php echo metodoPagamento($ordine["pagamento"]);?></b></td>
-								</tr>
-								<?php if (v("permetti_ordini_offline")) { ?>
-								<tr>
-									<td><?php echo gtext("Tipo ordine");?>:</td>
-									<td><b><?php echo OrdiniModel::getLabelTipoOrdine($ordine["tipo_ordine"]);?></b></td>
-								</tr>
-								<?php } ?>
-								<?php if (!$ordine["da_spedire"] && !empty($corriere)) { ?>
-								<tr>
-									<td><?php echo gtext("Tipo di consegna");?>:</td>
-									<td><b><?php echo $corriere["titolo"];?></b></td>
-								</tr>
-								<?php } ?>
-								<?php if (v("attiva_ip_location")) { ?>
-								<tr>
-									<td><?php echo gtext("Nazione navigazione");?>:</td>
-									<td><b><?php echo findTitoloDaCodice($ordine["nazione_navigazione"]);?></b></td>
-								</tr>
-								<?php } ?>
-								<?php if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura") && $ordine["tipo_cliente"] == "privato" && $ordine["fattura"]) { ?>
-								<tr>
-									<td><?php echo gtext("Fattura");?>:</td>
-									<td><b class="text text-primary"><?php echo gtext("Richiesta");?></b></td>
-								</tr>
-								<?php } ?>
-								<?php if ($ordine["codice_promozione"]) { ?>
-								<tr>
-									<td><?php echo gtext("Coupon");?>:</td>
-									<td>
-										<b><?php echo $ordine["codice_promozione"];?></b> (<i><?php echo $ordine["nome_promozione"];?></i>)
-									</td>
-								</tr>
-								<?php } ?>
-								<?php if (v("attiva_agenti") && $ordine["id_agente"]) { ?>
-								<tr>
-									<td><?php echo gtext("Agente");?>:</td>
-									<td>
-										<b class="text text-primary"><?php echo OrdiniModel::g()->agenteCrud(array("orders"=>$ordine));?></b>
-									</td>
-								</tr>
-								<?php } ?>
-								<?php if ($ordine["id_lista_regalo"]) { ?>
-								<tr>
-									<td><?php echo gtext("Lista regalo");?>:</td>
-									<td>
-										<?php echo ListeregaloModel::specchietto($ordine["id_lista_regalo"]);?>
-									</td>
-								</tr>
-								<?php } ?>
-								<?php if (v("attiva_gestione_pixel")) {
-									$eventiPixel = PixeleventiModel::getStatusPixelEventoElemento("PURCHASE", $ordine["id_o"], "orders");
-									
-									if (count($eventiPixel) > 0)
-									{
-								?>
-									<tr>
-										<td><?php echo gtext("Pixel");?>:</td>
-										<td>
-											<?php foreach ($eventiPixel as $ev) { ?>
-												<b><?php echo $ev["pixel"]["titolo"];?></b>
-												<?php echo gtext("inviato in data/ora").": ".date("d-m-Y H:i", strtotime($ev["pixel_eventi"]["data_creazione"]));?> <i class="text text-success fa fa-thumbs-up"></i>
-												<a class="iframe" title="<?php echo gtext("Vedi codice script");?>" href="<?php echo $this->baseUrl."/ordini/vediscriptpixel/".$ev["pixel_eventi"]["id_pixel_evento"];?>?partial=Y&nobuttons=Y"><i class="fa fa-eye"></i></a>
-												<br />
-											<?php } ?>
-										</td>
-									</tr>
-									<?php } ?>
-								<?php } ?>
-								<?php if (v("attiva_gestione_spedizioni") && OrdiniModel::daSpedire($ordine["id_o"])) { ?>
-								<tr>
-									<td><?php echo gtext("Spedizione");?>:</td>
-									<td>
-										<?php
-										$righeDaSpedire = OrdiniModel::righeDaSpedire($ordine["id_o"]);
-										
-										echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"]);?>
-										
-										<?php if (count($righeDaSpedire) > 0 && ControllersModel::checkAccessoAlController(array("spedizioninegozio"))) { ?>
-										<div>
-											<?php $queryStringCreaSpedizioneLista = $ordine["id_lista_regalo"] ? "&id_lista_regalo=".(int)$ordine["id_lista_regalo"] : "";?>
-											<a class="iframe badge" href="<?php echo $this->baseUrl."/spedizioninegozio/form/insert/0?id_o=".$ordine["id_o"].$queryStringCreaSpedizioneLista;?>&partial=Y"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Crea spedizione");?></a>
-										</div>
-										<?php } ?>
-									</td>
-								</tr>
-								<?php } ?>
-							</table>
+							<?php include($this->viewPath("vedi_top_left"));?>
 						</div>
 						<div class="col-lg-6">
-							<?php if (v("fatture_attive") && $fattureOk) { ?>
-								<div style="margin-bottom:10px;" class="panel panel-default">
-									<div class="panel-heading">
-										<?php if (count($fatture) > 0) { ?>
-										<a style="margin-left:10px;" title="Invia mail con fattura in allegato" class="btn btn-primary btn-xs pull-right make_spinner" href="<?php echo $this->baseUrl."/ordini/vedi/" . $ordine["id_o"].$this->viewStatus."&invia_fattura=Y";?>"><i class="fa fa-envelope"></i> Invia</a>
-										
-										<a style="margin-left:10px;" class="btn btn-success btn-xs pull-right" href="<?php echo $this->baseUrl."/fatture/vedi/" . $ordine["id_o"];?>"><i class="fa fa-download"></i> Scarica</a>
-										<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Rigenera</a>
-										
-										<?php } else { ?>
-										<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera</a>
-										<?php } ?>
-										
-										<b><?php echo gtext("Gestione fattura");?></b>
-									</div>
-									<?php if (count($fatture) > 0) {
-										$fattura = $fatture[0]["fatture"];
-									?>
-									<div class="panel-body">
-										<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <?php if (FattureModel::g()->manageable($fattura["id_f"])) { ?><a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a><?php } ?>
-										<?php if (GestionaliModel::getModulo()->integrazioneAttiva()) { ?>
-										<div>
-											<?php echo GestionaliModel::getModulo()->specchiettoOrdine($ordine);?>
-										</div>
-										<?php } ?>
-									</div>
-									<?php } ?>
-								</div>
-							<?php } ?>
-							
-							<div class="panel panel-default no-margin">
-								<div class="panel-body no-padding">
-									<?php $statiSuccessivi = OrdiniModel::statiSuccessivi($ordine["stato"]);?>
-									<?php if (count($statiSuccessivi) > 0) { ?>
-									<table class="table no-margin">
-										<tr>
-											<th><?php echo gtext("Modifica lo stato dell'ordine")?></th>
-											<th>
-												<a class="pull-right" data-toggle="collapse" href="#collapseStati" role="button" aria-expanded="false" aria-controls="collapseStati">
-													<?php echo gtext("Mostra stati");?>
-												</a>
-											</th>
-										</tr>
-										<tbody class="no-border collapse" id="collapseStati">
-										<?php foreach ($statiSuccessivi as $statoSucc) { ?>
-											<tr>
-												<td><span class="label label-<?php echo labelStatoOrdine($statoSucc["codice"]);?>"><?php echo statoOrdine($statoSucc["codice"]);?></span></td>
-												<td class="text-right">
-													<a title="<?php echo gtext("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus."&no_mail_stato";?>">
-														<i class="fa fa-thumbs-up"></i>
-													</a>
-													
-													<?php if ($statoSucc["manda_mail_al_cambio_stato"] && ($statoSucc["codice"] == "pending" || !F::blank($statoSucc["descrizione"]) || file_exists(tpf("/Ordini/mail-".$statoSucc["codice"].".php")))) { ?>
-													<a style="margin-left:5px;" title="<?php echo gtext("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/ordini/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus;?>">
-														<i class="fa fa-envelope-o"></i>
-													</a>
-													<?php } ?>
-												</td>
-											</tr>
-										<?php } ?>
-										</tbody>
-									</table>
-									<?php } ?>
-								</div>
-							</div>
-							
-							<?php if (count($mail_altre) > 0) { ?>
-							<div style="margin-top:10px;margin-bottom:0px;" class="panel panel-default">
-								<div class="panel-body no-padding">
-									<table class="table">
-										<tr>
-											<th colspan="3">
-												<a class="pull-right" data-toggle="collapse" href="#collapseMail" role="button" aria-expanded="false" aria-controls="collapseMail">
-													<?php echo gtext("Mostra e-mail");?>
-												</a>
-												<?php echo gtext("Storico invii mail al cliente");?>
-											</th>
-										</tr>
-										<tbody class="collapse" id="collapseMail">
-											<tr>
-												<th><?php echo gtext("Data invio");?></th>
-												<th><?php echo gtext("Tipo / Oggetto mail");?></th>
-												<th style="width:1%;"></th>
-											</tr>
-											<?php foreach ($mail_altre as $mailFatt) { ?>
-											<tr>
-												<td><?php echo date("d-m-Y H:i", strtotime($mailFatt["data_creazione"]));?></td>
-												<td><?php echo OrdiniModel::getTipoMail($mailFatt["tipo"]);?><br /><i><b><?php echo $mailFatt["oggetto"];?></b></i></td>
-												<td><i style="font-size:18px;" class="text text-<?php if ($mailFatt["inviata"]) { ?>success<?php } else { ?>danger<?php } ?> fa <?php if ($mailFatt["inviata"]) { ?>fa-check-circle<?php } else { ?>fa-ban<?php } ?>"></i></td>
-											</tr>
-											<?php } ?>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<?php } ?>
+							<?php include($this->viewPath("vedi_top_right"));?>
 						</div>
 					</div>
 				</div>
@@ -320,6 +101,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							$pesoTotale = 0;
 							foreach ($righeOrdine as $p) {
 								$pesoTotale += $p["righe"]["peso"] * $p["righe"]["quantity"];
+								$segnoPrezzo = $p["righe"]["acconto"] ? "- " : "";
 							?>
 							<tr class="">
 								<td>
@@ -383,7 +165,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								<td class="text-left"><?php echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"], $p["righe"]["id_r"], false, "")?></td>
 								<?php } ?>
 								<td class="text-right"><?php echo $p["righe"]["codice"];?></td>
-								<td class="text-right"><?php echo setPriceReverse($p["righe"]["peso"]);?></td>
+								<td class="text-right"><?php echo $p["righe"]["id_riga_tipologia"] ? "" : setPriceReverse($p["righe"]["peso"]);?></td>
 								<td class="text-right"><?php echo $p["righe"]["quantity"];?></td>
 								<td class="text-right colonne_non_ivate">
 									<?php
@@ -394,7 +176,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									$strPrezzoFisso = ($prezzoFisso > 0) ? setPriceReverse($prezzoFisso)." + " : "";
 									$strPrezzoFissoFinale = ($prezzoFissoFinale > 0) ? setPriceReverse($prezzoFissoFinale)." + " : "";
 									?>
-									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".$strPrezzoFisso.($mostraIvato ? setPriceReverse($p["righe"]["prezzo_intero_ivato"]) : setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali")))." €</del>"; } ?> <span class="item_price_single"><?php echo $strPrezzoFissoFinale.($mostraIvato ? setPriceReverse($p["righe"]["price_ivato"]) : setPriceReverse($p["righe"]["price"], v("cifre_decimali")));?></span> €
+									<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>".$strPrezzoFisso.($mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_intero_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_intero"], v("cifre_decimali")))." €</del>"; } ?> <span class="item_price_single"><?php echo $strPrezzoFissoFinale.($mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["price_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["price"], v("cifre_decimali")));?></span> €
 									
 									<?php $jsonSconti = json_decode($p["righe"]["json_sconti"],true);?>
 									
@@ -405,16 +187,16 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									<?php } ?>
 								</td>
 								<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
-								<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["percentuale_promozione"]);?> %</td>
-								<td class="text-right colonne_non_ivate"><?php echo $mostraIvato ? setPriceReverse($p["righe"]["prezzo_finale_ivato"]) : setPriceReverse($p["righe"]["prezzo_finale"], v("cifre_decimali"));?></td>
+								<td class="text-right colonne_non_ivate"><?php echo $p["righe"]["id_riga_tipologia"] ? "0,00%" : setPriceReverse($p["righe"]["percentuale_promozione"])."%";?> </td>
+								<td class="text-right colonne_non_ivate"><?php echo $mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_finale_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["prezzo_finale"], v("cifre_decimali"));?></td>
 								<?php } ?>
 								<td class="text-right colonne_non_ivate"><?php echo setPriceReverse($p["righe"]["iva"]);?> %</td>
 								<td class="text-right">
-									<span class="item_price_subtotal"><?php echo $mostraIvato ? setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale_ivato"]) : setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale"],v("cifre_decimali"));?></span> €
+									<span class="item_price_subtotal"><?php echo $mostraIvato ? $segnoPrezzo.setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale_ivato"]) : $segnoPrezzo.setPriceReverse($p["righe"]["quantity"] * $p["righe"]["prezzo_finale"],v("cifre_decimali"));?></span> €
 								</td>
 							</tr>
 							<?php } ?>
-							<?php if ($ordine["costo_pagamento"]) { ?>
+							<?php if ($ordine["costo_pagamento"] && $ordine["mostra_spese_pagamento_ordine_frontend"]) { ?>
 							<tr>
 								<td></td>
 								<td colspan="2"><?php echo gtext("Spese pagamento");?> (<?php echo str_replace("_"," ",$ordine["pagamento"]);?>)</td>
@@ -443,7 +225,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 							</tr>
 							<?php } ?>
-							<?php if ($ordine["da_spedire"]) { ?>
+							<?php if ($ordine["da_spedire"] && $ordine["mostra_spese_spedizione_ordine_frontend"]) { ?>
 							<tr>
 								<td></td>
 								<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>

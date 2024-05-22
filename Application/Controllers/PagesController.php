@@ -91,6 +91,7 @@ class PagesController extends BaseController {
 		'nuovo:sanitizeAll'=>'tutti',
 		'id_import:sanitizeAll'=>0,
 		'comb_acq:sanitizeAll'=>'1',
+		'q:sanitizeAll'=>'tutti',
 	);
 	
 	protected $_posizioni = array(
@@ -270,6 +271,13 @@ class PagesController extends BaseController {
 		
 		$this->shift();
 		
+		if ($this->viewArgs["q"] != "tutti")
+		{
+			$this->viewArgs["title"] = $this->viewArgs["q"];
+			
+			$this->orderBy = "prodotto_generico, pages.title";
+		}
+		
 		if (!partial())
 		{
 			$this->viewArgs["tipocontenuto"] = "tutti";
@@ -381,6 +389,9 @@ class PagesController extends BaseController {
 					),
 				);
 			
+			if ($this->viewArgs["q"] != "tutti" && strlen($this->viewArgs["q"]) >= 10)
+				$where["OR"]["pages.prodotto_generico"] = 1;
+			
 			$this->scaffold->model->aWhere($where);
 		}
 		
@@ -473,21 +484,34 @@ class PagesController extends BaseController {
 		
 		$this->scaffold->itemList->setFilters($this->filters);
 		
-		$data['scaffold'] = $this->scaffold->render();
-// 		print_r ($this->scaffold->model->db->queries);
-		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->commit();
-		
-		$data['menu'] = $this->scaffold->html['menu'];
-		$data['popup'] = $this->scaffold->html['popup'];
-		$data['main'] = $this->scaffold->html['main'];
-		$data['pageList'] = $this->scaffold->html['pageList'];
-		
-		$data['notice'] = $this->scaffold->model->notice;
+		if (isset($_GET["esporta_json"]))
+		{
+			$this->scaffold->model->select("distinct pages.codice_alfa,categories.*,pages.*,marchi.titolo");
+			
+			$this->esportaJson();
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
+		}
+		else
+		{
+			$data['scaffold'] = $this->scaffold->render();
+	// 		print_r ($this->scaffold->model->db->queries);
+			
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
+			
+			$data['menu'] = $this->scaffold->html['menu'];
+			$data['popup'] = $this->scaffold->html['popup'];
+			$data['main'] = $this->scaffold->html['main'];
+			$data['pageList'] = $this->scaffold->html['pageList'];
+			
+			$data['notice'] = $this->scaffold->model->notice;
+			
+			$this->load('pages_main');
+		}
 		
 		$this->append($data);
-		$this->load('pages_main');
 	}
 
 	public function eliminacategoria($id = 0)
@@ -2010,6 +2034,8 @@ class PagesController extends BaseController {
 		$this->m[$this->modelName]->select("*")->inner(array("lingua"))->where(array(
 			"pages_lingue.id_page"	=>	$clean['id'],
 		))->orderBy("lingue.descrizione")->convert()->save();
+		
+		$this->tabella = $this->getNomeMenu();
 		
 		parent::main();
 		

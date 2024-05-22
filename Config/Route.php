@@ -90,6 +90,8 @@ class Route
 		'ordini,setstato',
 		'ordini,vediresponse',
 		'ordini,vediscriptpixel',
+		'ordini,stampapdf',
+		'ordini,inviapdf',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',
@@ -537,6 +539,7 @@ class Route
 		'contatti,main',
 		'righe,main',
 		'righe,salva',
+		'righe,modificaevaso',
 		
 		'modali,main',
 		'modali,form',
@@ -763,6 +766,7 @@ class Route
 		'integrazionilogin,main',
 		'integrazionilogin,form',
 		'integrazionilogin,ottieniaccesstoken',
+		'integrazionilogin,ottieniinstagramaccesstoken',
 		
 		'listeregalotipi,main',
 		'listeregalotipi,form',

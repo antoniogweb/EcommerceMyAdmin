@@ -266,4 +266,29 @@ class StatiordineModel extends GenericModel {
 			"da_spedire"	=>	1,
 		))->toList("codice")->send();
 	}
+	
+	// Controlla se lo stato dell'ordine è editabile ed eliminabile
+	public static function statoEditabileEdEliminabile($stato)
+	{
+		$statiArray = explode(",", v("stati_ordine_editabile_ed_eliminabile"));
+		
+		if (in_array($stato, $statiArray))
+			return true;
+		
+		return false;
+	}
+	
+	public static function getTitoliStati($stati, $char = ", ")
+	{
+		$titoliArray = [];
+		
+		$statiArray = explode(",", v("stati_ordine_editabile_ed_eliminabile"));
+		
+		foreach ($statiArray as $stato)
+		{
+			$titoliArray[] = self::getCampo($stato, "titolo");
+		}
+		
+		return implode($char, $titoliArray);
+	}
 }

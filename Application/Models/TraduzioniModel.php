@@ -152,7 +152,7 @@ class TraduzioniModel extends GenericModel {
 			if (isset($_GET["esporta"]) && $_GET["esporta"] == "Y")
 				$valore = htmlentitydecode($valore);
 			
-			return "<div style='position:relative;'><textarea style='min-width:300px;' id-t='".$traduzione["id_t"]."' class='form-control edit-traduzione' name='en' >".$valore."</textarea><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-refresh fa-spin'></i><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-check verde'></i></div>";
+			return "<div style='position:relative;'><textarea style='min-width:300px;' id-t='".$traduzione["id_t"]."' class='form-control edit-traduzione' name='en' >".$valore."</textarea>".F::getRefreshIconOnInput()."</div>";
 		}
 		
 		return "";

@@ -20,16 +20,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrlSrc.'/Theme/Css/style.css?v='.rand(1,100000);?>">
 	<?php } ?>
 	
-	<script>
-		var baseUrl = "<?php echo $this->baseUrl;?>";
-		var baseUrlSrc = "<?php echo $this->baseUrlSrc;?>";
-		var parentBaseUrl = "<?php echo $parentRoot;?>";
-		var applicationName = "<?php echo $this->applicationUrl;?>";
-		var controllerName = "<?php echo $this->controller;?>";
-		var actionName = "<?php echo $this->action;?>";
-		var viewStatus = "<?php echo $this->viewStatus;?>";
-		var partial = <?php echo partial() ? "true" : "false";?>;
-	</script>
+	<?php include($this->viewPath("header_variabili_js"));?>
 
 	<!--jquery-->
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-3.6.0.min.js"></script>

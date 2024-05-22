@@ -55,6 +55,8 @@ class Brt extends Spedizioniere
 		{
 			$spedizione->addStrongCondition("update",'checkNotEmpty|',"telefono");
 		}
+		
+		$spedizione->addDatabaseCondition("update", "checkUniqueCompl", "riferimento_mittente_numerico");
 	}
 	
 	public function isAttivo()

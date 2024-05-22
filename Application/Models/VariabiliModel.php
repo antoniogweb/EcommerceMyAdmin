@@ -96,7 +96,6 @@ class VariabiliModel extends GenericModel {
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
 		"controlla_p_iva"			=>	0,
 		"ecommerce_online"			=>	1,
-		"theme_folder"				=>	"",
 		"traduzione_frontend"		=>	0,
 		"lista_variabili_gestibili"	=>	"ecommerce_online,traduzione_frontend",
 		"lista_variabili_funzionamento_ecommerce"	=>	"ecommerce_online,piattaforma_in_sviluppo,traduzione_frontend,giacenza_massima_mostrata",
@@ -353,6 +352,7 @@ class VariabiliModel extends GenericModel {
 		"durata_statistiche_cookie"	=>	31536000, // durata dei cookie usati per le statistiche di visualizzazione delle pagine
 		"permetti_generazione_pdf_pagine_frontend"	=>	1, // permetti la generazione PDF delle pagine nel frontend
 		"permetti_generazione_pdf_pagine_backend"	=>	1, // permetti la generazione PDF delle pagine nel backend
+		"permetti_generazione_json_pagine_backend"	=>	1, // permetti la generazione JSON delle pagine nel backend
 		"var_query_string_id_rif"	=>	"id_rif", // id a cui si riferisce la pagina in questione (ex id prodotto per i feedback)
 		"var_query_string_id_comb"	=>	"id_comb", // id a cui si riferisce la combinazione in questione (ex id combinazione per i feedback)
 		"attiva_prodotti_piu_venduti"	=>	1, // se mostrare o no la sezione dei prodotti più venduti
@@ -438,7 +438,7 @@ class VariabiliModel extends GenericModel {
 		"usa_codice_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il codice della combinazione nell'URL del prodotto
 		"usa_alias_combinazione_in_url_prodotto"	=>	0, // se impostato a 1 aggiunge il l'alias della combinazione nell'URL del prodotto
 		"token_aggiorna_alias_combinazioni"		=>	"", // token per andare a rigenerare tutti gli alias delle combinazioni
-		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quand onel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nella
+		"aggiorna_pagina_al_cambio_combinazione_in_prodotto"	=>	0, // se impostato su 1, quando nel dettaglio prodotto si cambia la combinazione, l'utente viene rediretto nell'URL della nuova variante
 		"immagine_in_varianti"		=>	0, // se settato a 1, mostra la colonna immagini nell'elenco delle combinazionipagina della nuova combinazione
 		"immagini_separate_per_variante"		=>	0, // se settato a 1, possibilità di caricare più immagini per ogni variante
 		"combinazioni_in_prodotti"	=>	1, // attiva le varianti
@@ -460,6 +460,7 @@ class VariabiliModel extends GenericModel {
 		"numero_massimo_comprati_assieme"	=>	0, // se maggiore di 0, indica il numero massimo di spesso comprati assieme. Se il tema lo predispone verranno mostrati nel dettaglio del prodotto
 		"estrai_le_caratteristiche"	=>	1, // se impostato su 1, estrae le caratteristiche nella pagina del prodotto
 		"estrai_i_documenti"		=>	1, // se impostato su 1, estrai i documenti nella pagina del prodotto
+		"estrai_filtri_su_dettaglio_pagina"	=>	1, // se impostato su 1, ricalcola i filtri che servono l'archivio anche sul settaglio prodotto
 		## GOOGLE E FACEBOOK ##
 		"usa_sku_come_id_item"	=>	0, // se impostato a 1, utilizza il codice, altrimenti utilizza l'ID
 		## NAZIONI ##
@@ -525,6 +526,7 @@ class VariabiliModel extends GenericModel {
 		## LOGIN ESTERNI ##
 		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
 		"token_eliminazione_account_da_app"	=>	"", // verrà utilizzato come accesso per l'eliminazione dell'utente da app esterna (Facebook, ...)
+		"path_instagram_media_json_file"	=>	"", // path assoluto dove salvare il file json con i media scaricati da instagram
 		## UTENTI ##
 		"elimina_account_ad_ordine_se_parcheggiato"	=>	0, // se impostato ad 1, all'ordine il sistema controlla che non sia un account bloccante e in caso lo cancella
 		"permetti_sempre_eliminazione_account_backend"=>	0, // se impostato a 1, utilizza deleteAccount se non può eliminare il cliente
@@ -543,6 +545,13 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_stati_ordine"	=>	0, // se impostato a 1 si attiva la possibilità di gestire gli stati dell'ordine
 		"salva_ip"					=>	0, // se impostato su 1, salva l'IP dell'utente
 		"numero_massimo_ordini_giornalieri_stesso_ip"		=>	0, // se impostato su 0, non esiste limite
+		"attiva_righe_generiche_in_ordine_offline"	=>	0, // se impostato ad 1 permette di aggiungere le righe generiche prese dalla tabella righe_tipologie (deve essere anche impostato un prodotto genrico)
+		"crea_sincronizza_cliente_in_ordini_offline"	=>	1, // se impostato su 1, alla creazione di un ordine offline il cliente viene creato in automatico se non è stato selezionato
+		"disattiva_costo_spedizione_ordini_offline"	=>	0, // se impostato a 1, il costo della spedizione viene sempre messo a 0 euro per ordini OFFLINE
+		"disattiva_costo_pagamento_ordini_offline"	=>	0, // se impostato a 1, il costo del pagamento viene sempre messo a 0 euro per ordini OFFLINE
+		"imposta_allo_stato_se_tutte_righe_sono_evase"	=> "", // se impostato al codice di uno stato (ex completed), imposta a quello stato se tutte le righe sono state segnate come evase
+		"imposta_allo_stato_se_non_tutte_righe_sono_evase"	=>	"", // se impostato al codice di uno stato (ex pending), imposta a quello stato se non tutte le righe sono state segnate come evase
+		"attiva_da_consegna_in_ordine"	=>	0, // se impostato su 1, solo in admin attiva il campo data_consegna e il rispettivo filtro
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout
@@ -553,6 +562,8 @@ class VariabiliModel extends GenericModel {
 		"pagina_di_autenticazione"	=>	0, // attiva la pagina di autenticazione
 		"mostra_modalita_spedizione_in_resoconto"	=>	1, // se mostrare la modalità di spedizione nel resoconto dell'ordine
 		"nascondi_ordini_pending_in_admin"	=>	0, // se impostato ad 1 gli ordini in stato pending saranno nascosti di default dalla lista degli ordini
+		"stati_ordine_da_nascondere_in_admin"	=>	"pending", // stati ordine da nascondere dei default in admin (solo se nascondi_ordini_pending_in_admin = 1)
+		"stati_ordine_editabile_ed_eliminabile"	=>	"pending", // stati nei quali le righe dell'ordine sono editabili e l'ordine può essere eliminato
 		## SPEDIZIONE ##
 		"attiva_spedizione_area_riservata"	=>	1, // se mostrare o nascondere i link della spedizione in area riservata
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
@@ -661,6 +672,7 @@ class VariabiliModel extends GenericModel {
 		## SEO ##
 		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
 		"includi_dati_per_social_categoria"	=>	0, // includi i dati per facebook e twitter anche nelle pagine delle categorie
+		"attiva_tag_hreflang"		=>	0, // se aggiungere alla pagina i tag hreflang
 		## PRODOTTI ##
 		"controlla_che_il_codice_prodotti_sia_unico"	=>	0, // se impostato a 1, non permette da pannello admin di aggiungere un prodotto avente lo stesso codice di un altro prodotto
 		"attiva_prodotti_digitali"	=>	0, // se impostato ad 1 attiva il campo prodotto_digitale nelle pagine
@@ -668,6 +680,7 @@ class VariabiliModel extends GenericModel {
 		"moltiplicatore_credito"	=>	1, // il numero di EURO di 1 CREDITO
 		"mesi_durata_crediti"		=>	12, // numero di mesi prima della scadenza dei crediti
 		"immagine_2_in_prodotto"	=>	0, // se impostata su 1, attiva la seconda immagine nel prodotto
+		"immagine_3_in_prodotto"	=>	0, // se impostata su 1, attiva la terza immagine nel prodotto
 		## BREADCRUMB ##
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto
@@ -725,6 +738,8 @@ class VariabiliModel extends GenericModel {
 		### FAQ ##
 		"mostra_faq"				=>	0, // se attivare o meno la sezione mostra_faq
 		"attiva_gestione_faq_in_evidenza"	=>	1, // se attivato, permette di gestire le FAQ in evidenza
+		### TEMA ##
+		"theme_folder"				=>	"", // tema frontend
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

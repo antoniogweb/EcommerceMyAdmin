@@ -26,6 +26,9 @@ class SpedizioniModel extends GenericModel {
 	
 	public static $spedizioneImportata = false;
 	
+	public $campoValore = "id_spedizione";
+	public $metodoPerTitolo = "titoloJson";
+	
 	public function __construct() {
 		$this->_tables='spedizioni';
 		$this->_idFields='id_spedizione';
@@ -123,5 +126,17 @@ class SpedizioniModel extends GenericModel {
 	public function indirizzo_spedizione($record)
 	{
 		return "<a class='iframe action_iframe' href='".Url::getRoot()."/spedizioni/form/update/".$record["spedizioni"]["id_spedizione"]."?partial=Y&nobuttons=Y'>".$record["spedizioni"]["indirizzo_spedizione"]."</a>";
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+			return $record["indirizzo_spedizione"]." ".$record["cap_spedizione"]." ".$record["citta_spedizione"];;
+		
+		return "";
 	}
 }

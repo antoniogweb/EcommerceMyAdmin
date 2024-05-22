@@ -39,6 +39,9 @@ class CombinazioniModel extends GenericModel {
 	
 	public static $aggiornaAliasAdInserimento = true;
 	
+	public $campoValore = "id_c";
+	public $metodoPerTitolo = "titoloJson";
+	
 	public function __construct() {
 		$this->_tables='combinazioni';
 		$this->_idFields='id_c';
@@ -1075,8 +1078,9 @@ class CombinazioniModel extends GenericModel {
 		
 		if (!empty($record) && self::isFromLista() && isset($_GET["id_ordine"]))
 		{
-// 			die();
 			$ordine = OrdiniModel::g()->selectId((int)$_GET["id_ordine"]);
+			
+			$prezzoIvato = $prezzoNonIvato = null;
 			
 			if (!empty($ordine))
 			{
@@ -1088,6 +1092,31 @@ class CombinazioniModel extends GenericModel {
 				
 				if (!empty($pagina))
 				{
+					$iva = IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]);
+					
+					if (isset($_GET["id_riga_tipologia"]))
+					{
+						$rt = new RighetipologieModel();
+						
+						$rigaTipologia = $rt->clear()->selectId((int)$_GET["id_riga_tipologia"]);
+						
+						if (!empty($rigaTipologia))
+						{
+							$record["codice"] = $rigaTipologia["titolo_breve"];
+							$record["peso"] = 0;
+							
+							if ($rigaTipologia["prezzo"] > 0)
+							{
+								$prezzoIvato = $rigaTipologia["prezzo"];
+								
+								$prezzoNonIvato = $prezzoIvato / (1 + ($iva / 100));
+							}
+							
+							if (!RighetipologieModel::checkInserimentoTipologiaInOrdine((int)$_GET["id_ordine"], (int)$_GET["id_riga_tipologia"]))
+								return;
+						}
+					}
+					
 					$r = new RigheModel();
 					
 					$r->sValues(array(
@@ -1096,30 +1125,34 @@ class CombinazioniModel extends GenericModel {
 						"creation_time"	=>	time(),
 						"id_page"	=>	$pagina["pages"]["id_page"],
 						"id_c"		=>	(int)$id,
-						"title"		=>	field($pagina, "title"),
+						"title"		=>	isset($rigaTipologia["titolo"]) ? strtoupper($rigaTipologia["titolo"]) : field($pagina, "title"),
 						"immagine"	=>	ProdottiModel::immagineCarrello($pagina["pages"]["id_page"], (int)$id),
 						"quantity"	=>	1,
 						"codice"	=>	$record["codice"],
-// 						"peso"		=>	$record["peso"],
+						"peso"		=>	$record["peso"],
 						"attributi"	=>	$this->getStringa((int)$id),
-// 						"id_iva"	=>	$pagina["pages"]["id_iva"],
-// 						"iva"		=>	IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]),
-// 						"gift_card"	=>	$pagina["pages"]["gift_card"],
-						"prezzo_intero"	=>	$record["price"],
-						"prezzo_intero_ivato"	=> $record["price_ivato"],
-						"price"		=>	$record["price_scontato"],
-						"price_ivato"	=>	$record["price_scontato_ivato"],
-// 						"prezzo_finale"		=>	$record["price_scontato"],
-// 						"prezzo_finale_ivato"	=>	$record["price_scontato_ivato"],
-// 						"in_promozione"	=>	number_format($record["price_scontato"],2,".","") != number_format($record["price"],2,".","") ? "Y" : "N",
-// 						"percentuale_promozione"	=>	self::calcolaSconto($record["price"], $record["price_scontato"]),
-// 						"lingua"	=>	$lingua,
-// 						"json_personalizzazioni"=>	"[]",
-// 						"json_attributi"=>	$this->getStringa((int)$id,"",true),
+						"id_iva"	=>	$pagina["pages"]["id_iva"],
+						"iva"		=>	$iva,
+						"gift_card"	=>	$pagina["pages"]["gift_card"],
+						"prezzo_intero"	=>	$prezzoNonIvato ?? $record["price"],
+						"prezzo_intero_ivato"	=> $prezzoIvato ?? $record["price_ivato"],
+						"price"		=>	$prezzoNonIvato ?? $record["price_scontato"],
+						"price_ivato"	=>	$prezzoIvato ?? $record["price_scontato_ivato"],
+						"prezzo_finale"		=>	$prezzoNonIvato ?? $record["price_scontato"],
+						"prezzo_finale_ivato"	=>	$prezzoIvato ?? $record["price_scontato_ivato"],
+						"in_promozione"	=>	number_format($record["price_scontato"],2,".","") != number_format($record["price"],2,".","") ? "Y" : "N",
+						"percentuale_promozione"	=>	self::calcolaSconto($record["price"], $record["price_scontato"]),
+						"lingua"	=>	$lingua,
+						"json_personalizzazioni"=>	"[]",
+						"json_attributi"=>	$this->getStringa((int)$id,"",true),
 						"json_sconti"=>	"[]",
-// 						"fonte"		=>	"B",
-// 						"id_admin"	=>	User::$id,
+						"fonte"		=>	"B",
+						"id_admin"	=>	User::$id,
 						"disponibile"	=>	($record["giacenza"] > 0) ? 1 : 0,
+						"id_riga_tipologia"	=>	$rigaTipologia["id_riga_tipologia"] ?? 0,
+						"prodotto_generico"	=>	$pagina["pages"]["prodotto_generico"],
+						"acconto"	=>	$rigaTipologia["acconto"] ?? 0,
+						"evasa"		=>	(isset($rigaTipologia["id_riga_tipologia"]) && $rigaTipologia["id_riga_tipologia"]) ? 1 : 0,
 					), "sanitizeDb");
 					
 					if ($r->insert())
@@ -1397,5 +1430,26 @@ class CombinazioniModel extends GenericModel {
 			));
 		
 		return !$c->rowNumber();
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+		{
+			$stringa = strip_tags($this->getStringa($clean["id"], ","));
+			$stringa = $stringa ? $stringa : gtext("Variante: --");
+			$stringa .= " - ".htmlentitydecode($record["codice"]);
+			
+			if (!$record["acquistabile"])
+				$stringa .= "(NON ACQUISTABILE)";
+				
+			return $stringa;
+		}
+		
+		return "";
 	}
 }

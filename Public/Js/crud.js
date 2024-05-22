@@ -10,7 +10,8 @@ if (typeof stringaConfermiEliminazione == "undefined")
 $(document).ready(function(){
 
 	//events binded to the select of bulk actions
-	$(".bulk_actions_select").change(function() {
+// 	$(".bulk_actions_select").change(function() {
+	$("body").on("change", ".bulk_actions_select", function(){
 		
 		var that = $(this);
 		
@@ -106,7 +107,8 @@ $(document).ready(function(){
 		
 	});
 	
-	$("td.delForm form,.del_row, td.ldel a").click(function () {
+	$("body").on("click", "td.delForm form,.del_row, td.ldel a", function() {
+// 	$("td.delForm form,.del_row, td.ldel a").click(function () {
 		var that = $(this);
 		
 		if (window.confirm(stringaConfermiEliminazione)) {

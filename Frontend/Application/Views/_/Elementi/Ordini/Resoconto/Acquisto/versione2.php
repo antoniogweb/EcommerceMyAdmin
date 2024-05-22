@@ -61,7 +61,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_TOTALI","", array(
 </div>
 <?php } ?>
 
-<?php if ($ordine["da_spedire"]) { ?>
+<?php if ($ordine["da_spedire"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"])) { ?>
 <h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di spedizione", false); ?></h2>
 
 <?php

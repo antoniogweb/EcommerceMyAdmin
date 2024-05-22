@@ -470,6 +470,10 @@ function getPrezzoScontato($ivato = 0)
 
 function getPagamentoN()
 {
+	// Controllo se disattivare il costo del pagamento per ordini OFFLINE
+	if (!App::$isFrontend && v("disattiva_costo_pagamento_ordini_offline"))
+		return 0;
+	
 	return PagamentiModel::getCostoCarrello();
 }
 
@@ -485,6 +489,10 @@ function getSpedizioneN($pieno = null)
 {
 	// Controllo che sia attiva la spedizione
 	if (!v("attiva_spedizione"))
+		return 0;
+	
+	// Controllo se disattivare il costo della spedizione per ordini OFFLINE
+	if (!App::$isFrontend && v("disattiva_costo_spedizione_ordini_offline"))
 		return 0;
 	
 	if (!isset($pieno))
@@ -935,6 +943,7 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[scelta-cookie\]/', array("PagesModel", "loadTemplateSceltaCookie"), $string);
 	
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
+	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE_APPROVAZIONE\]/', 'getInfoEliminazioneApprovazione' ,$string);
 	
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
@@ -996,6 +1005,27 @@ function attivaModuli($string, $obj = null)
 	}
 	
 	return $string;
+}
+
+function getInfoEliminazioneApprovazione($matches)
+{
+	if (isset($_GET[v("variabile_token_eliminazione")]) && trim($_GET[v("variabile_token_eliminazione")]))
+	{
+		$iModel = new IntegrazioniloginModel();
+		
+		$app = $iModel->clear()->where(array(
+			"confirmation_code"	=>	sanitizeAll($_GET[v("variabile_token_eliminazione")]),
+		))->sWhere("confirmation_code != ''")->record();
+		
+		if (!empty($app))
+		{
+			ob_start();
+			include tpf("Elementi/Utenti/info_eliminazione_approvazione_app.php");
+			$output = ob_get_clean();
+			
+			return $output;
+		}
+	}
 }
 
 function getInfoEliminazione($matches)

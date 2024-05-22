@@ -314,6 +314,7 @@ class EventiretargetingModel extends GenericModel {
 							$valoriMail = array(
 								"emails"	=>	array($emailElemento),
 								"oggetto"	=>	$oggetto,
+								"traduci_oggetto"	=>	false,
 								"testo"		=>	$testo,
 								"tipologia"	=>	"RETARGETING",
 								"id_evento"	=>	$idEvento,

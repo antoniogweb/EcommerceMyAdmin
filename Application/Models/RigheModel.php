@@ -65,7 +65,7 @@ class RigheModel extends GenericModel {
 	
 	public function setPriceNonIvato($id = 0)
 	{
-		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_intero_ivato"])))
+		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["prezzo_intero_ivato"]) || isset($this->values["prezzo_finale_ivato"])))
 		{
 			$valore = (float)RigheModel::g()->whereId((int)$id)->field("iva");
 			
@@ -74,6 +74,9 @@ class RigheModel extends GenericModel {
 			
 			if (isset($this->values["prezzo_intero_ivato"]))
 				$this->values["prezzo_intero"] = number_format(setPrice($this->values["prezzo_intero_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+			
+			if (isset($this->values["prezzo_finale_ivato"]))
+				$this->values["prezzo_finale"] = number_format(setPrice($this->values["prezzo_finale_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
 		}
 	}
 	
@@ -124,6 +127,14 @@ class RigheModel extends GenericModel {
 		}
 	}
 	
+	public function immagineCrud($record)
+	{
+		if (!$record["righe"]["prodotto_generico"])
+			return "<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/".$record["righe"]["id_page"]."/".$record["righe"]["immagine"]."' />";
+		
+		return "";
+	}
+	
 	public function titolocompleto($record)
 	{
 		$titolo = $record["pages"]["title"] ? $record["pages"]["title"] : $record[$this->_tables]["title"];
@@ -156,22 +167,85 @@ class RigheModel extends GenericModel {
 		return v("prezzi_ivati_in_prodotti") ? setPriceReverse(setPrice($record["righe"][$field."_ivato"])) : number_format(setPrice($record["righe"][$field]),v("cifre_decimali"),".","");
 	}
 	
+	public static function prodottoCustom($record)
+	{
+		return $record["righe"]["prodotto_generico"] ? true : false;
+	}
+	
+	public function titoloCrud($record)
+	{
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+		{
+			if (self::prodottoCustom($record))
+				return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
+			else
+				return $record["righe"]["title"]."<input type='hidden' id-riga='".$record["righe"]["id_r"]."' name='title' value='".$record["righe"]["title"]."' />";
+		}
+		else
+			return $record["righe"]["title"];
+	}
+	
+	public function acquistabileCrud($record)
+	{
+		if ($record["righe"]["prodotto_generico"])
+			return "";
+		
+		$cModel = new CombinazioniModel();
+		
+		if (!$cModel->clear()->whereId((int)$record["righe"]["id_c"])->field("acquistabile"))
+			return "<i class='text-danger fa fa-ban'></i>";
+	}
+	
+	public function codiceCrud($record)
+	{
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+		{
+			if (self::prodottoCustom($record))
+				return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:100px;' class='form-control' name='codice' value='".$record["righe"]["codice"]."' />";
+			else
+				return $record["righe"]["codice"]."<input type='hidden' id-riga='".$record["righe"]["id_r"]."' name='codice' value='".$record["righe"]["codice"]."' />";
+		}
+		else
+			return $record["righe"]["codice"];
+	}
+	
 	public function prezzoInteroCrud($record)
 	{
 		$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 		
-// 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-// 			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='prezzo_intero' value='".$prezzo."' />";
-// 		else
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo_intero' value='".$prezzo."' />";
+		else
 			return $prezzo;
+	}
+	
+	public function scontoCrud($record)
+	{
+		$sconto = CombinazioniModel::calcolaSconto(setPrice($record["righe"]["prezzo_intero"]), setPrice($record["righe"]["price"]));
+		$sconto = number_format($sconto,2,",","");
+		
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+		{
+			$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
+			$disabled = "";
+			
+			if (setPrice($prezzo) <= 0)
+				$disabled = "disabled";
+			
+			return "<input id-riga='".$record["righe"]["percentuale_promozione"]."' style='max-width:90px;' class='form-control sconto_riga_ordine' name='' value='".$sconto."' $disabled/>";
+		}
+		else
+			return $sconto;
 	}
 	
 	public function prezzoScontatoCrud($record)
 	{
 		$prezzo = $this->getPrezzoCampo($record, "price");
 		
-		return $prezzo;
-// 		return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='form-control' name='price' value='".$prezzo."' />";
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return '<div style="position:relative;">'."<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='prezzo_scontato_riga_ordine form-control' name='price' value='".$prezzo."' /><i style='display:none;position:absolute;top:10px;left:5px;' class='text-primary fa fa-spinner fa-spin'></i></div>";
+		else
+			return $prezzo;
 	}
 	
 	public function prezzoFinaleCrud($record)
@@ -187,14 +261,41 @@ class RigheModel extends GenericModel {
 	public function quantitaCrud($record)
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return "<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='form-control' name='quantity' value='".$record["righe"]["quantity"]."' />";
+			return '<div style="position:relative;">'."<input id-riga='".$record["righe"]["id_r"]."' style='max-width:60px;' class='quantita_riga_ordine form-control' name='quantity' value='".$record["righe"]["quantity"]."' /><i style='display:none;position:absolute;top:10px;left:5px;' class='text-primary fa fa-spinner fa-spin'></i></div>";
 		else
 			return $record["righe"]["quantity"];
 	}
 	
+	public function evasaCrud($record)
+	{
+		$checked = $record["righe"]["evasa"] ? "checked" : "";
+		
+		if ($record["righe"]["id_riga_tipologia"])
+			return "";
+		
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+			return "<input $checked type='checkbox' id-riga='".$record["righe"]["id_r"]."' id-c='".$record["righe"]["id_c"]."' style='max-width:120px;' name='evasa' value='".$record["righe"]["evasa"]."' />";
+		else
+		{
+			if ($record["righe"]["evasa"])
+				return "<a class='ajlink' href='".Url::getRoot()."righe/modificaevaso/".$record["righe"]["id_r"]."/0'><i class='fa fa-check text-success'></i></a>";
+			else
+				return "<a class='ajlink' href='".Url::getRoot()."righe/modificaevaso/".$record["righe"]["id_r"]."/1'><i class='fa fa-ban text-danger'></i></a>";
+		}
+	}
+	
 	public function attributiCrud($record)
 	{
-		if ($record["righe"]["attributi"])
+		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
+		{
+			$selectVarianti = ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]);
+			
+			if (count($selectVarianti) === 1 && !reset($selectVarianti))
+				return Html_Form::hidden("id_c", array_key_first($selectVarianti));
+			else
+				return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "select_attributo_ordine_offline form-control", null, "yes");
+		}
+		else if ($record["righe"]["attributi"])
 			return $record["righe"]["attributi"];
 		
 		return "--";
@@ -268,5 +369,23 @@ class RigheModel extends GenericModel {
 			return ($qtaOrdine - $qtaSpedita);
 		
 		return 0;
+	}
+	
+	public static function getWhereClauseRicercaLibera($search)
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 10;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"righe.title"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
 	}
 }

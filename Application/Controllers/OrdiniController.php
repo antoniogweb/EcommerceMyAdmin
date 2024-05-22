@@ -57,6 +57,26 @@ Helper_List::$filtersFormLayout["filters"]["stato_sped"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["dalc"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control data_field",
+		"placeholder"	=>	"Dal (consegna) ..",
+	),
+	"wrap"	=>	array(
+		'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+	),
+);
+
+Helper_List::$filtersFormLayout["filters"]["alc"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control data_field",
+		"placeholder"	=>	"Al (consegna) ..",
+	),
+	"wrap"	=>	array(
+		'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -64,6 +84,19 @@ class OrdiniController extends BaseController {
 	public $addIntegrazioniInMain = false;
 	
 	public $tabella = "ordini";
+	
+	public $defaultAction = "vedi";
+	
+	public $campiForm = "";
+	
+	public $campiAggiuntiviOrdine = array();
+	
+	public static $selectFiltroTipo = array(
+		"tutti"		=>	"Tipo cliente",
+		"privato"	=>	"Privato",
+		"libero_professionista"	=>	"Professionista",
+		"azienda"	=>	"Azienda",
+	);
 	
 	public $argKeys = array(
 		'page:forceInt'=>1,
@@ -91,6 +124,9 @@ class OrdiniController extends BaseController {
 		'id_page:sanitizeAll'=>'tutti',
 		'titolo:sanitizeAll'=>'tutti',
 		'stato_sped:sanitizeAll'=>'tutti',
+		'titolo_riga:sanitizeAll'=>'tutti',
+		'dalc:sanitizeAll'=>'tutti',
+		'alc:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -218,7 +254,7 @@ class OrdiniController extends BaseController {
 		
 		$this->aggiungiintegrazioni();
 		
-		$this->m[$this->modelName]->clear()->orderBy("orders.data_creazione desc");
+		$this->m[$this->modelName]->clear()->restore(true)->orderBy("orders.data_creazione desc");
 		
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_ordine'],
@@ -231,14 +267,18 @@ class OrdiniController extends BaseController {
 			'tipo_ordine'	=>	$this->viewArgs['tipo_ordine'],
 		);
 		
-		$this->m[$this->modelName]->where($where);
+		$this->m[$this->modelName]->aWhere($where);
 		
 		if (v("nascondi_ordini_pending_in_admin") && $this->viewArgs['stato'] == "tutti")
+		{
+			$ordiniDaNascondereDiDefault = explode(",", v("stati_ordine_da_nascondere_in_admin"));
+			
 			$this->m[$this->modelName]->aWhere(array(
-				"ne"	=>	array(
-					"stato"	=>	"pending",
+				"nin"	=>	array(
+					"stato"	=>	sanitizeAllDeep($ordiniDaNascondereDiDefault),
 				),
 			));
+		}
 		
 		if (strcmp($this->viewArgs['email'],'tutti') !== 0)
 		{
@@ -261,7 +301,7 @@ class OrdiniController extends BaseController {
 			$this->m[$this->modelName]->aWhere($where);
 		}
 		
-		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti" || $this->viewArgs["stato_sped"] != "tutti")
+		if ($this->viewArgs['id_comb'] != "tutti" || $this->viewArgs['id_page'] != "tutti" || $this->viewArgs["stato_sped"] != "tutti" || $this->viewArgs["titolo_riga"] != "tutti")
 		{
 			$this->m[$this->modelName]->groupBy("orders.id_o")->inner("righe")->on("righe.id_o = orders.id_o");
 			
@@ -284,6 +324,11 @@ class OrdiniController extends BaseController {
 						"spedizioni_negozio.stato"	=>	$this->viewArgs['stato_sped'],
 					));
 			}
+			
+			if ($this->viewArgs['titolo_riga'] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"    AND"	=>	RigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
+				));
 		}
 		
 		if ($this->viewArgs['dal'] != "tutti")
@@ -291,6 +336,8 @@ class OrdiniController extends BaseController {
 		
 		if ($this->viewArgs['al'] != "tutti")
 			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
+		
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dalc'], $this->viewArgs['alc'], 'data_consegna');
 		
 		if (strcmp($this->viewArgs['lista_regalo'],'tutti') !== 0)
 			$this->m[$this->modelName]->inner(array("lista"))->where(array(
@@ -323,40 +370,18 @@ class OrdiniController extends BaseController {
 		
 		if ($this->viewArgs["titolo"] != "tutti")
 		{
-			$tokens = explode(" ", $this->viewArgs['titolo']);
-			$andArray = array();
-			$iCerca = 8;
-			
-			foreach ($tokens as $token)
-			{
-				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-					"n!concat(orders.ragione_sociale,' ',orders.nome,' ',orders.cognome,' ',orders.email)"	=>	sanitizeAll(htmlentitydecode($token)),
-				);
-				
-				$iCerca++;
-			}
-			
 			$this->m[$this->modelName]->aWhere(array(
-				"      AND"	=>	$andArray,
+				"      AND"	=>	OrdiniModel::getWhereClauseRicercaLibera($this->viewArgs['titolo']),
 			));
-			
-// 			print_r($andArray);
 		}
 		
 		$this->m[$this->modelName]->save();
-		
-		$filtroTipo = array(
-			"tutti"		=>	"Tipo cliente",
-			"privato"	=>	"Privato",
-			"libero_professionista"	=>	"Professionista",
-			"azienda"	=>	"Azienda",
-		);
 		
 		$filtroStato = array(
 			"tutti"		=>	"Stato ordine",
 		) + OrdiniModel::$stati;
 		
-		$this->filters = array("titolo","dal","al",'id_ordine','email','codice_fiscale',array("tipo_cliente",null,$filtroTipo),array("stato",null,$filtroStato));
+		$this->filters = array("titolo","dal","al",'id_ordine','titolo_riga','email','codice_fiscale',array("tipo_cliente",null,self::$selectFiltroTipo),array("stato",null,$filtroStato));
 		
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
@@ -395,6 +420,8 @@ class OrdiniController extends BaseController {
 			$this->filters[] = array("stato_sped",null,$filtroStato);
 		}
 		
+		$this->getTabViewFields("main");
+		
 		parent::main();
 	}
 
@@ -405,52 +432,7 @@ class OrdiniController extends BaseController {
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
-		if (!isset($_POST["id_user"]))
-			$_SESSION["id_user"] = !empty($record) ? (int)$record["id_user"] : 0;
-		
-		if (!isset($_POST["id_spedizione"]))
-			$_SESSION["id_spedizione"] = !empty($record) ? (int)$record["id_spedizione"] : 0;
-		
-		if (isset($_POST["id_user"]))
-		{
-			$cliente = $this->m["RegusersModel"]->selectId((int)$_POST["id_user"]);
-			
-			if (!empty($cliente))
-			{
-				if ((int)$_POST["id_user"] && (int)$_POST["id_user"] !== (int)$_SESSION["id_user"])
-				{
-					$_SESSION["id_user"] = (int)$_POST["id_user"];
-					
-					$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
-					
-					foreach ($campiDaCopiare as $cdc)
-					{
-						if (isset($cliente[$cdc]))
-							$_POST[$cdc] = $cliente[$cdc];
-					}
-					
-					$_POST["email"] = $cliente["username"];
-				}
-				
-				if ((int)$_POST["id_spedizione"] && (int)$_POST["id_spedizione"] !== (int)$_SESSION["id_spedizione"])
-				{
-					$spedizione = $this->m["SpedizioniModel"]->selectId((int)$_POST["id_spedizione"]);
-					
-					if (!empty($spedizione))
-					{
-						$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
-						
-						foreach ($campiDaCopiare as $cdc)
-						{
-							if (isset($spedizione[$cdc]))
-								$_POST[$cdc] = $spedizione[$cdc];
-						}
-					}
-				}
-			}
-		}
-		
-		$idUser = isset($_POST["id_user"]) ? $_POST["id_user"] : $_SESSION["id_user"];
+		$idUser = !empty($record) ? (int)$record["id_user"] : 0;
 		
 		$lingua = $this->m["RegusersModel"]->getLingua((int)$idUser);
 		
@@ -465,6 +447,9 @@ class OrdiniController extends BaseController {
 		
 		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
 			$fields .= ",destinatario_spedizione";
+		
+		if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura"))
+			$fields .= ",fattura";
 		
 		if (v("permetti_modifica_cliente_in_ordine"))
 			$fields .= ",id_user,id_spedizione";
@@ -483,6 +468,20 @@ class OrdiniController extends BaseController {
 		if (v("attiva_gestione_spedizionieri"))
 			$fields .= ",id_spedizioniere";
 		
+		if (v("attiva_da_consegna_in_ordine") && ($queryType == "insert" || (isset($record["tipo_ordine"]) && $record["tipo_ordine"] != "W")))
+			$fields .= ",data_consegna";
+		
+		if ($this->campiForm)
+			$fields = $this->campiForm;
+		
+		$this->functionsIfFromDb = array(
+			"data_consegna"	=>	"fakeDataToBlank",
+		);
+		
+		$this->formDefaultValues = array(
+			"data_consegna"	=>	"",
+		);
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->m[$this->modelName]->setValue("lingua", $lingua);
@@ -493,10 +492,26 @@ class OrdiniController extends BaseController {
 		if ($this->disabledFields)
 			$this->m[$this->modelName]->delFields($this->disabledFields);
 		
+		foreach ($this->campiAggiuntiviOrdine as $k => $v)
+		{
+			$this->m[$this->modelName]->setValue($k, $v);
+		}
+		
+		$this->getTabViewFields("form");
+		
 		parent::form($queryType, $id);
 		
 		$data["tipoSteps"] = "modifica";
+		$data["ordine"] = $this->m["OrdiniModel"]->selectId((int)$id);
+		$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine((int)$id, "ORDINE");
+		
 		$this->append($data);
+	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		$this->scaffold->mainMenu->links['stampa_pdf_ordine']['url'] = 'stampapdf/'.(int)$id;
+		$this->scaffold->mainMenu->links['invia_pdf_ordine']['url'] = 'inviapdf/'.(int)$id;
 	}
 	
 	public function integrazioni($id = 0)
@@ -515,6 +530,8 @@ class OrdiniController extends BaseController {
 	
 	public function righe($id = 0)
 	{
+		$this->mainShift = 1;
+		
 		if (!v("permetti_ordini_offline") || OrdiniModel::tipoOrdine((int)$id) == "W")
 			$this->redirect("ordini/vedi/".(int)$id);
 		
@@ -535,31 +552,38 @@ class OrdiniController extends BaseController {
 		
 		$this->modelName = "RigheModel";
 		
-		if (!OrdiniModel::g()->isDeletable($id))
+		if (!OrdiniModel::g()->isDeletable((int)$id))
 		{
 			$this->addBulkActions = false;
 			$this->colProperties = array();
 		}
 		
-// 		$this->m[$this->modelName]->updateTable('del');
-		
-		$this->mainFields = array("<img src='".Url::getFileRoot()."thumb/immagineinlistaprodotti/;righe.id_page;/;righe.immagine;' />", "righe.title", "attributiCrud", "righe.codice", "prezzoInteroCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Prezzo scontato,Quantità,Aliquota";
+		$this->mainFields = array("immagineCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "evasaCrud", "acquistabileCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Evasa,Acq.";
 		
 		$pulsantiMenu = "torna_ordine";
 		
-		if (OrdiniModel::g()->isDeletable($id))
-			$pulsantiMenu .= ",save_righe";
+		if (OrdiniModel::g()->isDeletable((int)$id))
+			$pulsantiMenu .= ",save_righe_ordini";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->orderBy("id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->where(array("id_o"=>$clean['id']))->convert()->save();
+		
+		$this->getTabViewFields("righe");
+		
+		Helper_Menu::$htmlLinks["save_righe_ordini"]["attributes"] .= " id-ordine='".(int)$id."'";
 		
 		parent::main();
 		
 		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
 		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
+		$data["tipologie"] = $this->m("RighetipologieModel")->clear()->orderBy("id_order desc")->send(false);
+		
+		$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine($clean["id"], "ORDINE");
+		
+		$data["ordine"] = $this->m["OrdiniModel"]->selectId($clean['id']);
 		
 		$this->append($data);
 	}
@@ -601,7 +625,7 @@ class OrdiniController extends BaseController {
 			}
 		}
 		
-		$this->redirect($this->applicationUrl.$this->controller."/vedi/".(int)$id_o.$this->viewStatus);
+		$this->redirect($this->applicationUrl.$this->controller."/".$this->defaultAction."/".(int)$id_o.$this->viewStatus);
 	}
 	
 	public function vediresponse($cart_uid)
@@ -661,7 +685,7 @@ class OrdiniController extends BaseController {
 							->where(array("id_o" => $clean["id_o"]))
 							->send();
 		
-		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->orderBy("id_order")->send();
+		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->send();
 		
 		$this->helper("Menu",$this->applicationUrl.$this->controller,"panel");
 		
@@ -706,17 +730,53 @@ class OrdiniController extends BaseController {
 				"tipo"=>	"F",
 			))->orderBy("data_creazione desc")->send(false);
 			
-			$data["mail_altre"] =  $this->m["MailordiniModel"]->clear()->where(array(
-				"id_o"	=>	$clean["id_o"],
-// 				"ne"	=>	array("tipo"=>	"F"),
-				"tipologia"	=>	"ORDINE",
-			))->orderBy("data_creazione desc")->send(false);
+			$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine($clean["id_o"], "ORDINE");
+			
+// 			$data["mail_altre"] = $this->m["MailordiniModel"]->clear()->where(array(
+// 				"id_o"	=>	$clean["id_o"],
+// 				"tipologia"	=>	"ORDINE",
+// 			))->orderBy("data_creazione desc")->send(false);
 			
 			$data["tipoSteps"] = "vedi";
 			$this->append($data);
 			
-			$this->append($data);
 			$this->load('vedi');
 		}
+	}
+	
+	public function stampapdf($id = 0, $filename = "")
+	{
+		if (!v("permetti_ordini_offline"))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		$values = $this->m("OrdinipdfModel")->generaORestituisciPdfOrdine($id, $filename);
+		
+		$folder = LIBRARY . "/media/Pdf";
+		
+		if (is_array($values) && !empty($values) && file_exists($folder."/".$values["filename"]))
+		{
+			header('Content-type: application/pdf');
+			header('Content-Disposition: inline; filename='.$values["titolo"]);
+			readfile($folder."/".$values["filename"]);
+		}
+		else
+			$this->responseCode(403);
+	}
+	
+	public function inviapdf($id)
+	{
+		if (!v("permetti_ordini_offline"))
+			$this->responseCode(403);
+		
+		$this->shift(1);
+		
+		$this->clean();
+		
+		if ($this->m("OrdinipdfModel")->inviaPdf($id))
+			flash("notice", "<div class='alert alert-success'>".gtext("Email inviata correttamente")."</div>");
+		
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
 	}
 }

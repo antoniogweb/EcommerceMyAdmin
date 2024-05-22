@@ -31,7 +31,8 @@ define('PWD', $db_pwd);
 define('HOST', $db_host);
 
 /*default controller name*/
-define('DEFAULT_CONTROLLER','users');
+if (!defined('DEFAULT_CONTROLLER'))
+	define('DEFAULT_CONTROLLER','users');
 
 /*default action*/
 define('DEFAULT_ACTION','login');

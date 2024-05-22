@@ -49,6 +49,12 @@ class IntegrazioniloginModel extends GenericModel {
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
+				'instagram_secret_key'		=>	array(
+					'labelString'	=>	"Instagram secret key",
+					'type'	=>	"Password",
+					'fill'	=>	true,
+					'attributes'	=>	'autocomplete="new-password"',
+				),
 				'colore_background_in_esadecimale'	=>	array(
 					'labelString'=>	'Colore del pulsante',
 					'wrap'		=>	array(
@@ -66,11 +72,19 @@ class IntegrazioniloginModel extends GenericModel {
 					'className'		=>	'text_input form-control editor_textarea',
 				),
 				'access_token'	=>	array(
-					'labelString'=>	'Access Token',
+					'labelString'=>	'Facebook Login Access Token',
 					'wrap'		=>	array(
 						null,
 						null,
-						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni access token")."</a>"
+						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni Facebook Login Access Token")."</a>"
+					),
+				),
+				'instagram_access_token'	=>	array(
+					'labelString'=>	'Instagram Access Token',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniinstagramaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni Instagram Access Token")."</a>"
 					),
 				),
 			),
@@ -118,5 +132,34 @@ class IntegrazioniloginModel extends GenericModel {
 	public static function integrazioneAttiva()
 	{
 		return self::getModulo()->isAttiva();
+	}
+	
+	// Rinnova l'access token di Instagram
+	public function rinnovaInstagramAccessToken()
+	{
+		$result = IntegrazioniloginModel::getApp("FACEBOOK_LOGIN")->refreshInstagramAccessToken();
+		
+		if (isset($result["access_token"]))
+		{
+			$this->sValues(array(
+				"instagram_access_token"	=>	$result["access_token"],
+			));
+			
+			$this->update(null, array(
+				"codice"	=>	"FACEBOOK_LOGIN",
+			));
+		}
+	}
+	
+	// Recupera i file multimediali da Instagram
+	public function getInstagramMedia()
+	{
+		if (v("path_instagram_media_json_file"))
+		{
+			$json = IntegrazioniloginModel::getApp("FACEBOOK_LOGIN")->recuperaInstagramMedia();
+			
+			if ($json)
+				FilePutContentsAtomic(v("path_instagram_media_json_file"), $json);
+		}
 	}
 }

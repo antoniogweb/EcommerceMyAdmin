@@ -487,6 +487,18 @@ class BaseRegusersModel extends Model_Tree
 			return 'account-cancellato.html'.$queryStringEliminazione;
 	}
 	
+	public static function getUrlApprovazioneEliminata($tokenEliminazione = "")
+	{
+		$idRedirect = PagineModel::gTipoPagina("APPROVAZ_ELIMINATA");
+		
+		$queryStringEliminazione = "?".v("variabile_token_eliminazione")."=".(string)$tokenEliminazione;
+		
+		if ($idRedirect)
+			return getUrlAlias($idRedirect).$queryStringEliminazione;
+		else
+			return ''.$queryStringEliminazione;
+	}
+	
 	public function getIdUtenteDaIdApp($codiceApp, $idApp)
     {
 		return RegusersintegrazioniloginModel::g()->getIdUtenteDaIdApp($codiceApp, $idApp);
@@ -544,26 +556,26 @@ class BaseRegusersModel extends Model_Tree
 		))->field("completo");
     }
     
-    public function sincronizzaDaOrdine($idCliente, $idOrdine)
-    {
-		$ordine = OrdiniModel::g()->selectId($idOrdine);
-		
-		if (!empty($ordine))
-		{
-			$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
-			
-			$this->sValues(array(
-				"completo"	=>	1,
-			));
-			
-			foreach ($campiDaCopiare as $cdc)
-			{
-				$this->setValue($cdc, $ordine[$cdc], "sanitizeDb");
-			}
-			
-			$this->pUpdate($idCliente);
-		}
-    }
+//     public function sincronizzaDaOrdine($idCliente, $idOrdine)
+//     {
+// 		$ordine = OrdiniModel::g()->selectId($idOrdine);
+// 		
+// 		if (!empty($ordine))
+// 		{
+// 			$campiDaCopiare = OpzioniModel::arrayValori("CAMPI_DA_COPIARE_DA_ORDINE_A_CLIENTE");
+// 			
+// 			$this->sValues(array(
+// 				"completo"	=>	1,
+// 			));
+// 			
+// 			foreach ($campiDaCopiare as $cdc)
+// 			{
+// 				$this->setValue($cdc, $ordine[$cdc], "sanitizeDb");
+// 			}
+// 			
+// 			$this->pUpdate($idCliente);
+// 		}
+//     }
     
     public function haTelefono($idCliente)
     {

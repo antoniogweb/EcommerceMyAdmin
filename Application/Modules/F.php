@@ -181,6 +181,11 @@ class F
 		}
 	}
 	
+	public static function getRefreshIconOnInput()
+	{
+		return "<i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-spinner fa-spin'></i><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-check verde'></i>";
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

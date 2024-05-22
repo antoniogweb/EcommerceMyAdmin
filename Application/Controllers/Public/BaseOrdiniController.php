@@ -451,7 +451,17 @@ class BaseOrdiniController extends BaseController
 							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
 							->send();
 		
-		$data["righeOrdine"] = $this->m("RigheModel")->clear()->where(array("id_o"=>$clean["id_o"],"cart_uid" => $clean["cart_uid"]))->send();
+		$data["righeOrdine"] = $this->m("RigheModel")->clear()
+			->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")
+			->where(array(
+				"id_o"		=>	$clean["id_o"],
+				"cart_uid"	=>	$clean["cart_uid"],
+				"ne"		=>	array(
+					"righe.acconto"	=>	1,
+				),
+			))
+			->orderBy("righe_tipologie.id_order,righe.id_order")
+			->send();
 		
 		$data["ordine"] = $res[0]["orders"];
 		
@@ -679,7 +689,7 @@ class BaseOrdiniController extends BaseController
 				
 				$res = MailordiniModel::inviaMail(array(
 					"emails"	=>	array(Parametri::$mailInvioOrdine),
-					"oggetto"	=>	"Pagamento ordine ".$data["ordine"]["id_o"]." annullato",
+					"oggetto"	=>	"Pagamento ordine [ID_ORDINE] annullato",
 					"testo"		=>	"Il pagamento dell'ordine ".$data["ordine"]["id_o"]." è stato annullato",
 					"tipologia"	=>	"PAGAMENTO ANNULLATO",
 					"id_user"	=>	(int)$data["ordine"]['id_user'],
@@ -768,9 +778,9 @@ class BaseOrdiniController extends BaseController
 		else
 			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
-		$data["conclusa"] = false;
+// 		$data["conclusa"] = false;
 		
-		if (strcmp($clean['st'],"Completed") === 0)
+// 		if (strcmp($clean['st'],"Completed") === 0)
 			$data["conclusa"] = true;
 		
 		if (count($res) > 0)

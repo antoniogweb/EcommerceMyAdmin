@@ -64,6 +64,7 @@ trait BaseCrudController
 	public $aggregateFilters = true;
 	public $showFilters = false;
 	public $menuVariable = "menu";
+	public $mainShift = 0;
 	
 	protected function getStringaErroreValidazione()
 	{
@@ -159,7 +160,7 @@ trait BaseCrudController
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
 		
-		$this->shift();
+		$this->shift($this->mainShift);
 		
 		if ($this->id !== 0)
 		{
@@ -185,6 +186,15 @@ trait BaseCrudController
 		$this->m[$this->modelName]->updateTable($this->queryActions);
 		
 		$this->m[$this->modelName]->bulkAction($this->bulkQueryActions);
+		
+		// Chiudo anticipatamente se è una richiesta AJAX che non richiede output
+		if (isset($_POST["ajax_no_return_html"]))
+		{
+			if (v("usa_transactions"))
+				$this->m[$this->modelName]->db->commit();
+			
+			return;
+		}
 		
 		$this->m[$this->modelName]->setFilters();
 		$this->loadScaffold('main',$this->scaffoldParams);
@@ -329,46 +339,7 @@ trait BaseCrudController
 		}
 		else if (isset($_GET["esporta_json"]))
 		{
-			header('Content-type: application/json; charset=utf-8');
-			
-			$this->clean();
-			
-			$records = $this->scaffold->model->send();
-			
-			if (isset($_GET["formato_json"]))
-			{
-				$tableName = $this->scaffold->model->table();
-				$campoTitolo = $this->scaffold->model->campoTitolo;
-				$campoValore = $this->scaffold->model->campoValore;
-				$metodoPerTitolo = $this->scaffold->model->metodoPerTitolo;
-				
-				if ($_GET["formato_json"] == "select2")
-				{
-					$struct = array(
-						"results"	=>	array(),
-					);
-					
-					foreach ($records as $r)
-					{
-						if (isset($metodoPerTitolo) && isset($r[$tableName][$campoValore]))
-							$struct["results"][] = array(
-								"id"	=>	$r[$tableName][$campoValore],
-								"text"	=>	call_user_func(array($this->scaffold->model, $metodoPerTitolo), (int)$r[$tableName][$campoValore]),
-							);
-						else if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
-							$struct["results"][] = array(
-								"id"	=>	$r[$tableName][$campoValore],
-								"text"	=>	$r[$tableName][$campoTitolo],
-							);
-					}
-					
-					$records = $struct;
-				}
-			}
-			
-// 			print_r($records);
-			
-			echo json_encode($records);
+			$this->esportaJson();
 		}
 		else
 		{
@@ -389,6 +360,62 @@ trait BaseCrudController
 		}
 		
 		$this->append($data);
+	}
+	
+	protected function esportaJson()
+	{
+		header('Content-type: application/json; charset=utf-8');
+		
+		$this->clean();
+		
+		$records = $this->scaffold->model->send();
+		$tableName = $this->scaffold->model->table();
+		
+		if (isset($_GET["formato_json"]))
+		{
+			$campoTitolo = $this->scaffold->model->campoTitolo;
+			$campoValore = $this->scaffold->model->campoValore;
+			$metodoPerTitolo = $this->scaffold->model->metodoPerTitolo;
+			
+			if ($_GET["formato_json"] == "select2")
+			{
+				$struct = array(
+					"results"	=>	array(),
+				);
+				
+				foreach ($records as $r)
+				{
+					if (isset($metodoPerTitolo) && isset($r[$tableName][$campoValore]))
+						$struct["results"][] = array(
+							"id"	=>	$r[$tableName][$campoValore],
+							"text"	=>	call_user_func(array($this->scaffold->model, $metodoPerTitolo), (int)$r[$tableName][$campoValore]),
+						);
+					else if (isset($r[$tableName][$campoValore]) && isset($r[$tableName][$campoTitolo]))
+						$struct["results"][] = array(
+							"id"	=>	$r[$tableName][$campoValore],
+							"text"	=>	$r[$tableName][$campoTitolo],
+						);
+				}
+				
+				$records = $struct;
+			}
+		}
+		else
+		{
+			$struct = array();
+			
+			foreach ($records as $r)
+			{
+				if (isset($r[$tableName]["password"]))
+					unset($r[$tableName]["password"]);
+				
+				$struct[] = $r;
+			}
+			
+			$records = $struct;
+		}
+		
+		echo json_encode($records);
 	}
 	
 	protected function aggiungiintegrazioni()

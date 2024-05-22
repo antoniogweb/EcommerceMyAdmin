@@ -7,7 +7,7 @@
 	$temp["tipocontenuto"] = "tutti";
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id_page".$viewStatusTutti;?>"><?php echo gtext("Dettagli");?></a></li>
 	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
 		$temp = $this->viewArgs;
 		$temp["tipocontenuto"] = (int)$idTipoCont;

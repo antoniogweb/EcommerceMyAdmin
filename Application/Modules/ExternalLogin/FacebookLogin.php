@@ -27,6 +27,8 @@ class FacebookLogin extends ExternalLogin
 	private $params = "";
 	private $client;
 	private $helper;
+	private $instagramApiUrl = "https://api.instagram.com";
+	private $instagramGraphUrl = "https://graph.instagram.com";
 	
 	public function __construct($record)
 	{
@@ -48,7 +50,7 @@ class FacebookLogin extends ExternalLogin
 	
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,app_id,secret_key,app_version,access_token';
+		return 'titolo,attivo,app_id,secret_key,app_version,access_token,instagram_app_id,instagram_secret_key,instagram_access_token,instagram_user_id';
 	}
 	
 	private function getClient()
@@ -66,6 +68,86 @@ class FacebookLogin extends ExternalLogin
 		]);
 		
 		$this->helper = $this->client->getRedirectLoginHelper();
+	}
+	
+	public function getInstagramAutorizeUrl($redirectUri)
+	{
+		return $this->instagramApiUrl.'/oauth/authorize?client_id='.$this->params["instagram_app_id"].'&redirect_uri='.$redirectUri.'&scope=user_profile,user_media&response_type=code';
+	}
+	
+	public function ottieniInstagramAccessToken($code, $redirectUri)
+	{
+		$pars=array(
+			'client_id' => $this->params["instagram_app_id"],
+			'client_secret' => $this->params["instagram_secret_key"],
+			'grant_type' => 'authorization_code',
+			'redirect_uri' => $redirectUri,
+			'code' => $code,
+		);
+
+		//step1
+		$curlSES=curl_init(); 
+		//step2
+		curl_setopt($curlSES,CURLOPT_URL,$this->instagramApiUrl."/oauth/access_token");
+		curl_setopt($curlSES,CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($curlSES,CURLOPT_HEADER, false); 
+		curl_setopt($curlSES, CURLOPT_POST, true);
+		curl_setopt($curlSES, CURLOPT_POSTFIELDS,http_build_query($pars));
+		curl_setopt($curlSES, CURLOPT_CONNECTTIMEOUT,10);
+		curl_setopt($curlSES, CURLOPT_TIMEOUT,30);
+		//step3
+		$result=curl_exec($curlSES);
+		//step4
+		curl_close($curlSES);
+		//step5
+		
+		$resultArray = json_decode($result, true);
+		
+		if (isset($resultArray["access_token"]))
+		{
+			$urlExchange = "https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=".$this->params["instagram_secret_key"]."&access_token=".$resultArray["access_token"];
+			
+			$resultExchange = file_get_contents($urlExchange);
+			
+			$resultExchangeArray = json_decode($resultExchange, true);
+			
+			if (isset($resultExchangeArray["access_token"]))
+			{
+				$resultArray["access_token"] = $resultExchangeArray["access_token"];
+				
+				return $resultArray;
+			}
+		}
+		
+		return array();
+	}
+	
+	// Rinnova l'access token di Instagram
+	public function refreshInstagramAccessToken()
+	{
+		if ($this->params["instagram_access_token"])
+		{
+			$urlRenew = $this->instagramGraphUrl."/refresh_access_token?grant_type=ig_refresh_token&access_token=".$this->params["instagram_access_token"];
+			
+			$resultRenew = file_get_contents($urlRenew);
+			
+			return json_decode($resultRenew, true);
+		}
+		
+		return array();
+	}
+	
+	// Recupera i file multimediali da Instagram
+	public function recuperaInstagramMedia()
+	{
+		if ($this->params["instagram_access_token"])
+		{
+			$urlMedia = $this->instagramGraphUrl."/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=".$this->params["instagram_access_token"];
+			
+			return file_get_contents($urlMedia);
+		}
+		
+		return "";
 	}
 	
 	private function setErrore($codice, $messaggio)
@@ -200,6 +282,45 @@ class FacebookLogin extends ExternalLogin
 				$this->setErrore("TEST_LOGIN_EFFETTUATO", "test login effettuato");
 			}
 		}
+	}
+	
+	// Elimina Instagram Access Token, User id e il file JSON con i media dell'account Instagram
+	public function eliminaApprovazione($appModel, $urlOutput)
+	{
+		header('Content-Type: application/json');
+		
+		$data = array(
+			'url' => Url::getRoot(),
+			'confirmation_code' => "APP NOT FOUND",
+		);
+		
+		if ($this->params["instagram_access_token"] || $this->params["instagram_user_id"])
+		{
+			$confirmationCode = randomToken();
+			
+			$appModel->sValues(array(
+				"instagram_access_token"	=>	"",
+				"instagram_user_id"			=>	"",
+				"confirmation_code"			=>	$confirmationCode,
+			));
+			
+			$res = $appModel->update(null, array(
+				"codice"	=>	sanitizeAll($this->params["codice"]),
+			));
+			
+			if ($res)
+			{
+				if (v("path_instagram_media_json_file") && file_exists(v("path_instagram_media_json_file")))
+					unlink(v("path_instagram_media_json_file"));
+				
+				$data = array(
+					'url' => Url::getRoot().$urlOutput.$confirmationCode,
+					'confirmation_code' => $confirmationCode,
+				);
+			}
+		}
+		
+		echo json_encode($data);
 	}
 	
 	public function deleteAccountCallback($userModel, $urlOutput)

@@ -57,6 +57,7 @@ class BaseController extends Controller
 	public $addTraduzioniInMain = true;
 	public $tabViewFields = array();
 	public $campiVariabiliDaModificare = "";
+	public $loginController = "users";
 	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
@@ -96,7 +97,7 @@ class BaseController extends Controller
 			$data['token'] = $token;
 		}
 		
-		if (strcmp($controller,"users") !== 0)
+		if (strcmp($controller, $this->loginController) !== 0)
 		{
 			$this->s['admin']->check();
 			
@@ -151,8 +152,11 @@ class BaseController extends Controller
 		
 		$this->append($data);
 		
-		$this->load('header_'.$this->sezionePannello);
-		$this->load('footer','last');
+		if (!isset($_GET["ajax_partial_load"]))
+		{
+			$this->load('header_'.$this->sezionePannello);
+			$this->load('footer','last');
+		}
 		
 		$this->generaPosizioni();
 		
@@ -476,18 +480,34 @@ class BaseController extends Controller
 			$stringaTitolo = (!showreport()) ? "Gestione" : "Visualizzazione";
 			$data["title"] = $stringaTitolo . " " . $data["tabella"] . ": " . $data["titoloRecord"];
 			
-			if (!isset($_GET["pdf"]) || !v("permetti_generazione_pdf_pagine_backend"))
-			{
-				$this->append($data);
-				$this->load($this->formView);
-			}
-			else
+			if (isset($_GET["pdf"]) && v("permetti_generazione_pdf_pagine_backend"))
 			{
 				$this->clean();
 				
 				Pdf::output(LIBRARY."/Application/Views/pdf.php", date("d-m-Y")."_".encodeUrl($data["title"]).".pdf", array(
 					"mainContent"	=>	$mainContent,
 				));
+			}
+			else if (isset($_GET["esporta_json"]) && v("permetti_generazione_json_pagine_backend"))
+			{
+				header('Content-type: application/json; charset=utf-8');
+				
+				$this->clean();
+				
+				$jsonArray = $this->scaffold->values;
+				
+				if (isset($jsonArray["username"]))
+					$jsonArray["email"] = $jsonArray["username"];
+				
+				if (isset($jsonArray["password"]))
+					unset($jsonArray["password"]);
+				
+				echo json_encode($jsonArray);
+			}
+			else
+			{
+				$this->append($data);
+				$this->load($this->formView);
 			}
 		}
 	}

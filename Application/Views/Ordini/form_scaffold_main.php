@@ -2,8 +2,9 @@
 
 <?php include(ROOT."/Application/Views/anagrafiche_js.php")?>
 
-<div class='row'>
-	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
+<div class='row' style="position:relative;">
+	<div id="fragment_form" style="position:absolute;top:-120px;"></div>
+	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-12'>
 			<?php if (v("permetti_ordini_offline") && $id && !OrdiniModel::g()->isDeletable($id)) {
 				$tipoOrdine = OrdiniModel::tipoOrdine((int)$id);
@@ -12,7 +13,7 @@
 				<?php if ($tipoOrdine == "W") { ?>
 				<?php echo gtext("I totali non verranno modificati al salvataggio in quanto è un ordine di tipo");?> <b><?php echo OrdiniModel::getLabelTipoOrdine($tipoOrdine);?></b></div>
 				<?php } else { ?>
-				<?php echo gtext("I totali non verranno più modificati al salvataggio in quanto l'ordine non è più allo stato");?> <b><?php echo OrdiniModel::$stati["pending"];?></b></div>
+				<?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
 				<?php } ?>
 			<?php } ?>
 			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-user"></i> <?php echo gtext("Fatturazione");?></h4>
@@ -33,6 +34,11 @@
 				<div class='col-md-3'>
 					<?php echo $form["cognome"];?>
 				</div>
+				<?php if (isset($form["fattura"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["fattura"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3 ragione_sociale'>
 					<?php echo $form["ragione_sociale"];?>
 				</div>
@@ -128,9 +134,11 @@
 					<?php echo $form["id_spedizioniere"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["link_tracking"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["link_tracking"];?>
 				</div>
+				<?php } ?>
 			</div>
 		</div>
 		<div class='col-md-12'>
@@ -139,6 +147,11 @@
 		</div>
 		<div class='col-md-12'>
 			<div class='row'>
+				<?php if (isset($form["data_consegna"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["data_consegna"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["stato"];?>
 				</div>
@@ -167,14 +180,14 @@
 				</div>
 			</div>
 		</div>
-		<?php if (v("attiva_liste_regalo")) { ?>
+		<?php if (v("attiva_liste_regalo") && (isset($form["dedica"]) || isset($form["firma"]))) { ?>
 		<div class='col-md-6'>
 			<br />
 			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-gift"></i> <?php echo gtext("Dedica e firma");?></h4>
 			<div class='row'>
 				<div class='col-md-12'>
-					<?php echo $form["dedica"];?>
-					<?php echo $form["firma"];?>
+					<?php echo $form["dedica"] ?? "";?>
+					<?php echo $form["firma"] ?? "";?>
 				</div>
 			</div>
 		</div>

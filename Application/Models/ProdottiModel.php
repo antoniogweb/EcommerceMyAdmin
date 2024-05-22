@@ -219,31 +219,42 @@ class ProdottiModel extends PagesModel {
 		))->rowNumber();
 	}
 	
-// 	public static function immagineCarrello($idPage, $idC, $immagineCombinazione = null)
-// 	{
-// 		$clean["id_page"] = (int)$idPage;
-// 		
-// 		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-// 		$elencoImmagini[] = "";
-// 		
-// 		$immagine = $elencoImmagini[0];
-// 		
-// 		if (v("immagine_in_varianti") && !v("immagini_separate_per_variante"))
-// 		{
-// 			if (!isset($immagineCombinazione))
-// 				$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
+	public static function selectCombinazioni($idPage)
+	{
+		$c = new CombinazioniModel();
+		
+		$res = $c->clear()->select("id_c,acquistabile")->where(array(
+			'id_page'	=>	(int)$idPage,
+		))->orderBy("id_order")->toList("id_c", "acquistabile")->send();
+		
+		$resultArray = [];
+		
+		foreach ($res as $id_c => $acquistabile)
+		{
+			$stringa = strip_tags($c->getStringa($id_c, ","));
+// 			$stringa = $stringa ? $stringa : "--";
 // 			
-// 			if (isset($immagineCombinazione) && $immagineCombinazione && in_array($immagineCombinazione,$elencoImmagini))
-// 				$immagine = $immagineCombinazione;
-// 		}
-// 		else if (v("immagini_separate_per_variante"))
-// 		{
-// 			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
-// 			
-// 			if (count($immagini) > 0)
-// 				$immagine = $immagini[0]["immagine"];
-// 		}
-// 		
-// 		return $immagine;
-// 	}
+// 			if (!$acquistabile)
+// 				$stringa .= "(NON ACQUISTABILE)";
+			
+			$resultArray[$id_c] = $stringa;
+		}
+		
+		return $resultArray;
+	}
+	
+	// Restituisce l'ID della combinazione del primo prodotto generico trovato
+	public static function getIdProdottoGenerico()
+	{
+		$c = new CombinazioniModel();
+		
+		$record = $c->clear()->select("combinazioni.id_c")->inner(array("pagina"))->where(array(
+			"pages.prodotto_generico"	=>	1,
+		))->first();
+		
+		if (!empty($record))
+			return $record["combinazioni"]["id_c"];
+		
+		return 0;
+	}
 }

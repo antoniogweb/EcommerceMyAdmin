@@ -51,6 +51,70 @@ if (typeof(ajaxfilemanager) !== typeof(Function))
 	}
 }
 
+var applicationControllerAction = applicationName + controllerName + "/" + actionName;
+
+function applicaSelect2()
+{
+	if ($("[select2]").length > 0)
+	{
+		$("[select2]").each(function(){
+			
+			var url = $(this).attr("select2");
+			
+			if ($(this).find("select").hasClass("select2-hidden-accessible"))
+				$(this).find("select").select2('destroy'); 
+			
+			if (url != "")
+			{
+				$(this).find("select").select2({
+					ajax: {
+						url: baseUrl + url,
+						processResults: function (data) {
+							// Transforms the top-level key of the response object from 'items' to 'results'
+							return {
+								results: data.results
+							};
+						},
+						delay: 500
+					},
+					minimumInputLength: 2,
+					language: {
+						inputTooShort: function(args) {
+							return "Digitare 2 o più caratteri";
+						},
+						searching: function() {
+							return "In attesa..";
+						},
+						noResults: function() {
+							return "Non ci sono risultati";
+						},
+						errorLoading: function() {
+							return "In attesa..";
+						}
+					}
+				});
+			}
+			else
+				$(this).find("select").select2();
+		});
+	}
+}
+
+function aggiornaParziale(url)
+{
+	$.ajaxQueue({
+		url: baseUrl + "/" + url,
+		cache:false,
+		async: true,
+		dataType: "html",
+		success: function(content){
+			
+			$(".contenitore_generale").html(content);
+			applicaSelect2();
+		}
+	});
+}
+
 var inputFieldErrorBorderStyle = "2px solid red";
 var dataFormat = "dd-mm-yy";
 
@@ -188,6 +252,21 @@ function makeSpinner(obj)
 	if (obj.find("i").length > 0)
 		obj.find("i").attr("class","fa fa-spinner fa-spin");
 }
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
 
 $(document).ready(function(){
 	
@@ -638,7 +717,7 @@ $(document).ready(function(){
 		var id_t = $(this).attr("id-t");
 		var valore = $(this).val();
 		
-		that.parent().find("i.fa-refresh").css("display", "block");
+		that.parent().find("i.fa-spinner").css("display", "block");
 		
 		$.ajaxQueue({
 			url: baseUrl + "/traduzioni/aggiorna/",
@@ -656,7 +735,7 @@ $(document).ready(function(){
 				
 				setTimeout(function(){
 					
-					that.parent().find("i.fa-refresh").css("display", "none");
+					that.parent().find("i.fa-spinner").css("display", "none");
 					
 					that.parent().find("i.fa-check").css("display", "block");
 					
@@ -835,46 +914,271 @@ $(document).ready(function(){
 		controllaVisibilita();
 	});
 	
-	if ($("[select2]").length > 0)
-	{
-		$("[select2]").each(function(){
+	applicaSelect2();
+	
+// 	if ($("[select2]").length > 0)
+// 	{
+// 		$("[select2]").each(function(){
+// 			
+// 			var url = $(this).attr("select2");
+// 			
+// 			if (url != "")
+// 			{
+// 				$(this).find("select").select2({
+// 					ajax: {
+// 						url: baseUrl + url,
+// 						processResults: function (data) {
+// 							// Transforms the top-level key of the response object from 'items' to 'results'
+// 							return {
+// 								results: data.results
+// 							};
+// 						},
+// 						delay: 500
+// 					},
+// 					minimumInputLength: 2,
+// 					language: {
+// 						inputTooShort: function(args) {
+// 							return "Digitare 2 o più caratteri";
+// 						},
+// 						searching: function() {
+// 							return "In attesa..";
+// 						},
+// 						noResults: function() {
+// 							return "Non ci sono risultati";
+// 						},
+// 						errorLoading: function() {
+// 							return "In attesa..";
+// 						}
+// 					}
+// 				});
+// 			}
+// 			else
+// 				$(this).find("select").select2();
+// 		});
+// 	}
+	
+	/* --- GESTIONE ORDINI OFFLINE --- */
+	$("body").on("click", ".save_righe_ordini", function(e){
+		
+		e.preventDefault();
+		
+		var idOrdine = $(this).attr("id-ordine"); 
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function() {
 			
-			var url = $(this).attr("select2");
+			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
+			var quantity = $(this).find("[name='quantity']").val();
+			var prezzo_intero = $(this).find("[name='prezzo_intero']").val();
+			var price = $(this).find("[name='price']").val();
+			var title = $(this).find("[name='title']").val();
+			var id_c = $(this).find("[name='id_c']").val();
+			var codice = $(this).find("[name='codice']").val();
 			
-			if (url != "")
+			var temp = {
+				id_riga: id_riga,
+				quantity: quantity,
+				prezzo_intero: prezzo_intero,
+				price: price,
+				title: title,
+				id_c: id_c,
+				codice: codice,
+				evasa: 0
+			};
+			
+			if ($(this).find("[name='evasa']").length)
+				temp['evasa'] = $(this).find("[name='evasa']").prop('checked') ? 1 : 0;
+			
+			valori.push(temp);
+		});
+		
+// 		console.log(valori);
+		
+		$.ajaxQueue({
+			url: baseUrl + "/righe/salva",
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				
+				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
+				
+			}
+		});
+		
+	});
+	
+	$( "body" ).on( "change", ".select_attributo_ordine_offline", function(e){
+		
+		$(".save_righe_ordini").trigger("click");
+		
+	});
+	
+	$( "body" ).on( "change", ".select_articolo_ordine", function(e){
+		
+		var idPage = $(this).val();
+		
+		$.ajaxQueue({
+			url: baseUrl + "/combinazioni/main/1?esporta_json&formato_json=select2&acquistabile=tutti&id_page="+idPage,
+			cache:false,
+			async: true,
+			dataType: "json",
+			success: function(content){
+				
+				var selectCombinazione = $(".select_combinazione_ordine");
+				
+				selectCombinazione.find('option').remove();
+				
+				var res = content.results;
+				
+				for (var i =0; i < res.length; i++)
+				{
+					selectCombinazione.append("<option value='" + res[i].id + "'>" + res[i].text + "</option>");
+				}
+				
+				selectCombinazione.select2("destroy");
+				selectCombinazione.select2();
+			}
+		});
+		
+	});
+	
+	$( "body" ).on( "click", ".aggiunti_riga_tipologia", function(e){
+		
+		e.preventDefault();
+		
+		var idOrdine = $(this).attr("id-ordine"); 
+		var idRigaTipologia = $(this).attr("id-riga-tipologia"); 
+		var idC = $(this).attr("id-c"); 
+		
+		$.ajaxQueue({
+			url: baseUrl + "/combinazioni/main?id_ordine=" + idOrdine + "&id_riga_tipologia=" + idRigaTipologia,
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				bulkActionValues: idC,
+				bulkAction: "aggiungiaordine",
+				ajax_no_return_html: "Y"
+			},
+			success: function(content){
+				
+				$(".save_righe_ordini").trigger("click");
+// 				aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
+// 				reloadPage();
+				
+			}
+		});
+	});
+	
+	$( "body" ).on( "click", ".aggiungi_articolo_a_ordine", function(e){
+		
+		e.preventDefault();
+		
+		var id_c = $(".select_combinazione_ordine").val();
+		
+		if (id_c != 0 && id_c != "")
+		{
+			makeSpinner($(this));
+			
+			var idOrdine = $(".form_inserisci_articolo").attr("id-ordine"); 
+			
+			$.ajaxQueue({
+				url: baseUrl + "/combinazioni/main?id_ordine=" + idOrdine,
+				cache:false,
+				async: true,
+				dataType: "html",
+				type: "POST",
+				data: {
+					bulkActionValues: id_c,
+					bulkAction: "aggiungiaordine",
+					ajax_no_return_html: "Y"
+				},
+				success: function(content){
+					
+					$(".save_righe_ordini").trigger("click");
+// 					aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
+// 					reloadPage();
+					
+				}
+			});
+		}
+		else
+			alert("Attenzione, si prega di selezionare un articolo");
+	});
+	
+	$("body").on("keyup", ".prezzo_pieno_riga_ordine", debounce(function(e){
+		
+		var prezzoPieno = parseFloat($(this).val().toString().replace(",", "."));
+		
+		var trObj = $(this).closest("tr");
+		
+		if (!isNaN(prezzoPieno))
+		{
+			var campoSconto = trObj.find(".sconto_riga_ordine");
+			
+			if (prezzoPieno <= 0)
 			{
-				$(this).find("select").select2({
-					ajax: {
-						url: baseUrl + url,
-						processResults: function (data) {
-							// Transforms the top-level key of the response object from 'items' to 'results'
-							return {
-								results: data.results
-							};
-						},
-						delay: 500
-					},
-					minimumInputLength: 2,
-					language: {
-						inputTooShort: function(args) {
-							return "Digitare 2 o più caratteri";
-						},
-						searching: function() {
-							return "In attesa..";
-						},
-						noResults: function() {
-							return "Non ci sono risultati";
-						},
-						errorLoading: function() {
-							return "In attesa..";
-						}
-					}
-				});
+				campoSconto.val("0,00");
+				campoSconto.trigger("keyup");
+				campoSconto.attr("disabled", "disabled");
 			}
 			else
-				$(this).find("select").select2();
-		});
-	}
+			{
+				campoSconto.trigger("keyup");
+				campoSconto.removeAttr("disabled");
+			}
+		}
+	},500));
+	
+	$("body").on("keyup", ".sconto_riga_ordine", debounce(function(e){
+		
+		var sconto = parseFloat($(this).val().toString().replace(",", "."));
+		var trObj = $(this).closest("tr");
+		
+		var priceObj = trObj.find("[name='price']");
+		
+		var prezzoIntero = parseFloat(trObj.find("[name='prezzo_intero']").val().toString().replace(",", "."));
+		
+		if (!isNaN(sconto))
+		{
+			var prezzoScontato = (prezzoIntero - (prezzoIntero * sconto/100)).toFixed(2);
+			
+			priceObj.val(prezzoScontato.toString().replace(".", ","));
+			
+// 			priceObj.parent().find("i.fa-spinner").css("display", "block");
+			
+// 			$(".save_righe_ordini").trigger("click");
+		}
+		
+	},500));
+	
+// 	$("body").on("keyup", ".prezzo_scontato_riga_ordine", debounce(function(e){
+// 		
+// 		$(this).parent().find("i.fa-spinner").css("display", "block");
+// 		
+// 		$(".save_righe_ordini").trigger("click");
+// 		
+// 	},500));
+// 	
+// 	$("body").on("keyup", ".quantita_riga_ordine", debounce(function(e){
+// 		
+// 		$(this).parent().find("i.fa-spinner").css("display", "block");
+// 		
+// 		$(".save_righe_ordini").trigger("click");
+// 		
+// 	},500));
+	
+	/* --- GESTIONE ORDINI OFFLINE --- */
 	
 	// this is the id of the form
 	$("form.ajax_submit").submit(function(e) {
@@ -893,8 +1197,6 @@ $(document).ready(function(){
 				location.reload();
 			}
 		});
-
-		
 	});
 	
 	$( "body" ).on( "click", ".sidebar-toggle", function(e){

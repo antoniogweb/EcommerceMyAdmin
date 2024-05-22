@@ -34,8 +34,6 @@ class IntegrazioniloginController extends BaseController
 	
 	public $tabella = "login tramite APP";
 	
-// 	public $useEditor = true;
-	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -132,6 +130,51 @@ class IntegrazioniloginController extends BaseController
 					"codice"	=>	$clean["codice"],
 				));
 			}
+		}
+		
+		$this->redirect("integrazionilogin/form/update/".$record["id_integrazione_login"]);
+	}
+	
+	public function ottieniinstagramaccesstoken($codice = "")
+	{
+		$clean["codice"] = sanitizeAll($codice);
+		
+		$this->clean();
+		
+		$record = $this->m[$this->modelName]->clear()->where(array(
+			"codice"	=>	$clean["codice"],
+		))->record();
+		
+		if (empty($record) || !trim($codice))
+			$this->responseCode(403);
+		
+		if( !session_id() )
+			session_start();
+		
+		$redirectUri = Url::getRoot()."integrazionilogin/ottieniinstagramaccesstoken/".$clean["codice"];
+		
+		if (isset($_GET["code"]))
+		{
+			$accessToken = IntegrazioniloginModel::getApp($clean["codice"])->ottieniInstagramAccessToken((string)$_GET["code"], $redirectUri);
+			
+			if (isset($accessToken["access_token"]))
+			{
+				$this->m[$this->modelName]->sValues(array(
+					"instagram_access_token"	=>	$accessToken["access_token"],
+					"instagram_user_id"			=>	$accessToken["user_id"],
+				));
+				
+				$this->m[$this->modelName]->update(null, array(
+					"codice"	=>	$clean["codice"],
+				));
+			}
+		}
+		else
+		{
+			$goTo = IntegrazioniloginModel::getApp($clean["codice"])->getInstagramAutorizeUrl($redirectUri);
+			
+			header('Location: '.$goTo);
+			die();
 		}
 		
 		$this->redirect("integrazionilogin/form/update/".$record["id_integrazione_login"]);

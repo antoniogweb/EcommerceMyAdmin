@@ -873,7 +873,7 @@ class BaseBaseController extends Controller
 			
 			$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb("page", true, "&raquo;", $par).v("divisone_breadcrum").$this->breadcrumb("page");
 			
-			Domain::$currentUrl =  $this->getCurrentUrl();
+			Domain::$currentUrl =  $this->getCurrentUrl().FeedbackModel::getCurrUrlIdRif();
 			
 			if (User::$id)
 			{

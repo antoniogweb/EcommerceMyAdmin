@@ -189,12 +189,15 @@ class RegusersController extends BaseController {
 		if ($this->viewArgs["q"] != "tutti")
 		{
 			$this->m[$this->modelName]->aWhere(array(
-				"OR"	=>	array(
-					"lk"	=>	array(
-						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale)"	=>	$this->viewArgs["q"],
-					),
-				),
+				"    AND"	=>	RegusersModel::getWhereClauseRicercaLibera($this->viewArgs['q']),
 			));
+// 			$this->m[$this->modelName]->aWhere(array(
+// 				"OR"	=>	array(
+// 					"lk"	=>	array(
+// 						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale,' ',telefono)"	=>	$this->viewArgs["q"],
+// 					),
+// 				),
+// 			));
 		}
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
@@ -276,6 +279,12 @@ class RegusersController extends BaseController {
 			$formFields .= ",id_regione";
 		}
 		
+		if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "fattura"))
+		{
+			$fields .= ",fattura";
+			$formFields .= ",fattura";
+		}
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		$this->formFields = $formFields;
@@ -339,7 +348,7 @@ class RegusersController extends BaseController {
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
@@ -370,7 +379,7 @@ class RegusersController extends BaseController {
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
@@ -424,7 +433,7 @@ class RegusersController extends BaseController {
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
@@ -469,7 +478,7 @@ class RegusersController extends BaseController {
 		
 // 		$data['tabella'] = "utente sito web";
 		
-		$data["titoloRecord"] = $this->m["RegusersModel"]->where(array("id_user"=>$clean['id']))->field("username");
+		$data["titoloRecord"] = $this->m("RegusersModel")->where(array("id_user"=>$clean['id']))->field("username");
 		
 		$this->append($data);
 	}

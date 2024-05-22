@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
-include(ROOT."/Application/Views/header.php");
+include($this->viewPath("header"));
 ?>
 	
 	<?php if (!partial()) { ?>
@@ -35,7 +35,7 @@ include(ROOT."/Application/Views/header.php");
 	<?php } ?>
       
       <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper <?php if (showreport()) { ?>content-wrapper-report <?php } ?><?php if (partial()) { ?> content_basso <?php } ?>" >
+        <div class="contenitore_generale content-wrapper <?php if (showreport()) { ?>content-wrapper-report <?php } ?><?php if (partial()) { ?> content_basso <?php } ?>" >
       
 		<?php echo $alertFatture;?>
 

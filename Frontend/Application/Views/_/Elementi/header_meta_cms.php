@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-
+<?php include(tpf("Elementi/hreflang.php")); ?>
 <?php include(tpf("Elementi/header_title_description_keywords.php")); ?>
 
 <?php

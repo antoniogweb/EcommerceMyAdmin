@@ -75,7 +75,10 @@ class CartModel extends GenericModel {
 	{
 		if (!self::$checkCart)
 		{
-			$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null");
+			if (isset(User::$cart_uid))
+				$daEliminare = $this->query(array("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null and cart.cart_uid = ?", array(sanitizeAll(User::$cart_uid))));
+			else
+				$daEliminare = $this->db->query("SELECT id_cart,combinazioni.id_c FROM `cart` left join combinazioni on cart.id_c = combinazioni.id_c and combinazioni.acquistabile = 1 where combinazioni.id_c is null");
 			
 			if (count($daEliminare) > 0)
 			{
@@ -116,7 +119,7 @@ class CartModel extends GenericModel {
 					$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 					
 // 					if ($coupon["tipo_sconto"] == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
-					if (!empty($coupon) && $coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+					if (!$r["cart"]["id_riga_tipologia"] && !empty($coupon) && $coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 					{
 						$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
 						$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($coupon["sconto"]/100),$cifre,".","");
@@ -284,7 +287,7 @@ class CartModel extends GenericModel {
 				$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 				
 // 				if ($tipoSconto == "PERCENTUALE" && in_array($r["cart"]["id_page"], User::$prodottiInCoupon))
-				if ($tipoSconto == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+				if (!$r["cart"]["id_riga_tipologia"] && $tipoSconto == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
 				{
 					$prezzo = number_format($prezzo - $prezzo*($sconto/100),$cifre,".","");
 					$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($sconto/100),$cifre,".","");
@@ -809,7 +812,7 @@ class CartModel extends GenericModel {
 		}
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $idRif = null)
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false)
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -828,7 +831,10 @@ class CartModel extends GenericModel {
 			return false;
 		}
 		
-		$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
+		if (isset($idRif))
+			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"]))->send();
+		else
+			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
 		
 		if (count($rPage) > 0)
 		{
@@ -865,7 +871,7 @@ class CartModel extends GenericModel {
 			if (!$this->checkQta($clean["id_c"], $clean["quantity"]))
 				return -1;
 			
-			if (count($res) > 0)
+			if (count($res) > 0 && !$forzaRigheSeparate)
 			{
 				$this->values["quantity"] = (int)$res[0]["cart"]["quantity"] + $clean["quantity"];
 				
@@ -960,12 +966,26 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_digitale"] = $rPage[0]["pages"]["prodotto_digitale"];
 				$this->values["prodotto_crediti"] = $rPage[0]["pages"]["prodotto_crediti"];
 				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
+				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
 				
 				if (isset($idRif))
 				{
 					$this->values["id_rif"] = (int)$idRif;
 					
-					$this->values["disponibile"] = RigheModel::g()->whereId((int)$idRif)->field("disponibile");
+					$rModel = new RigheModel();
+					
+					$rigaOrdine = $rModel->selectId((int)$idRif);
+					
+					if (!empty($rigaOrdine))
+					{
+						$this->values["disponibile"] = $rigaOrdine["disponibile"]; //RigheModel::g()->whereId((int)$idRif)->field("disponibile");
+						$this->values["id_riga_tipologia"] = $rigaOrdine["id_riga_tipologia"];
+						
+						if ($rigaOrdine["id_cart"])
+							$this->values["id_cart"] = (int)$rigaOrdine["id_cart"];
+						else if (isset($this->values["id_cart"]))
+							unset($this->values["id_cart"]);
+					}
 				}
 				
 				if ($p->inPromozioneTot($clean["id_page"]))
@@ -1010,13 +1030,25 @@ class CartModel extends GenericModel {
 						$prezzoInteroIvato = $this->values["prezzo_intero_ivato"] = $rPage[0]["pages"]["price_ivato"];
 				}
 				
-				// prezzo scontato
-				$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true, $idCombinazione);
+				// Prezzo scontato
+				if (isset($prScontato))
+				{
+					$this->values["price"] = number_format($prScontato,v("cifre_decimali"),".","");
+					
+					if (isset($prScontatoIvato))
+						$this->values["price_ivato"] = number_format($prScontatoIvato,2,".","");
+					else
+						$this->values["price_ivato"] = number_format($this->values["price"] * (1 + ($this->values["iva"] / 100)),2,".","");
+				}
+				else
+				{
+					$this->values["price"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoIntero, $this->values["quantity"], true, true, $idCombinazione);
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true, $idCombinazione);
+				}
 				
-				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($clean["id_page"], $prezzoInteroIvato, $this->values["quantity"], true, true, $idCombinazione);
-				
-				// prezzo fisso
+				// Prezzo fisso
 				$this->values["prezzo_fisso_intero"] = $rPage[0]["pages"]["prezzo_fisso"];
 				
 				$this->values["prezzo_fisso"] = $this->calcolaPrezzoFinale($clean["id_page"], $rPage[0]["pages"]["prezzo_fisso"], 1, true, true, $idCombinazione);
@@ -1038,9 +1070,14 @@ class CartModel extends GenericModel {
 // 				echo $this->values["in_promozione"];
 // 				die();
 				
+// 				print_r($this->values);
+				
 				$this->sanitize();
 				$this->insert();
 				
+// 				echo $this->notice;
+// 				echo $this->getQuery();
+// 				echo $this->getError();
 				return $this->lastId();
 			}
 		}

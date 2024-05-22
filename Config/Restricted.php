@@ -49,7 +49,9 @@ define("ADMIN_MAX_CLIENT_SESSIONS", 2);
 define('ADMIN_TIME_AFTER_FAILURE','5');
 
 //redirect to panel when successfully logged in:
-define('ADMIN_PANEL_CONTROLLER', 'panel');
+if (!defined('ADMIN_PANEL_CONTROLLER'))
+	define('ADMIN_PANEL_CONTROLLER', 'panel');
+
 define('ADMIN_PANEL_MAIN_ACTION', 'main');
 
 //redirect to login form if access not allowed:

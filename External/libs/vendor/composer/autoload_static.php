@@ -92,6 +92,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Complex\\' => 8,
             'Clue\\StreamFilter\\' => 18,
         ),
+        'B' => 
+        array (
+            'Brevo\\Client\\' => 13,
+        ),
         'A' => 
         array (
             'Amnuts\\' => 7,
@@ -240,6 +244,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Clue\\StreamFilter\\' => 
         array (
             0 => __DIR__ . '/..' . '/clue/stream-filter/src',
+        ),
+        'Brevo\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/getbrevo/brevo-php/lib',
         ),
         'Amnuts\\' => 
         array (

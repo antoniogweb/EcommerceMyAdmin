@@ -297,25 +297,25 @@ class OrdiniModel extends FormModel {
 		$this->orderBy = 'orders.id_order';
 		$this->_lang = 'It';
 		
-		$this->_popupItemNames = array(
-			'tipo_cliente'	=>	'tipo_cliente',
-			'stato'	=>	'stato',
-			'pagamento'	=>	'pagamento',
-			'registrato'	=> 'registrato',
-		);
-
-		$this->_popupLabels = array(
-			'stato'	=>	'STATO ORDINE',
-			'tipo_cliente'	=>	'TIPO CLIENTE',
-			'pagamento'	=>	'PAGAMENTO',
-			'registrato'	=> 'UTENTE REGISTRATO',
-		);
-
-		$this->_popupFunctions = array(
-			'stato'	=>	'statoOrdine',
-			'pagamento'	=>	'metodoPagamento',
-			'registrato'	=> 'getYesNo',
-		);
+// 		$this->_popupItemNames = array(
+// 			'tipo_cliente'	=>	'tipo_cliente',
+// 			'stato'	=>	'stato',
+// 			'pagamento'	=>	'pagamento',
+// 			'registrato'	=> 'registrato',
+// 		);
+// 
+// 		$this->_popupLabels = array(
+// 			'stato'	=>	'STATO ORDINE',
+// 			'tipo_cliente'	=>	'TIPO CLIENTE',
+// 			'pagamento'	=>	'PAGAMENTO',
+// 			'registrato'	=> 'UTENTE REGISTRATO',
+// 		);
+// 
+// 		$this->_popupFunctions = array(
+// 			'stato'	=>	'statoOrdine',
+// 			'pagamento'	=>	'metodoPagamento',
+// 			'registrato'	=> 'getYesNo',
+// 		);
 		
 		parent::__construct();
 		
@@ -527,9 +527,92 @@ class OrdiniModel extends FormModel {
 		}
 		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
-			return parent::insert();
+		{
+			$res = parent::insert();
+			
+			if (!App::$isFrontend && v("crea_sincronizza_cliente_in_ordini_offline") && $res)
+				$this->creaSincronizzaClienteSeAssente($this->lId);
+			
+			return $res;
+		}
 		
 		return false;
+	}
+	
+	// Crea e sincronizza il cliente se assente, partendo dalla email dell'ordine
+	public function creaSincronizzaClienteSeAssente($idOrdine)
+	{
+		$ordine = $this->selectId((int)$idOrdine);
+		
+		if (!empty($ordine) && !$ordine["id_user"] && $ordine["email"] && checkMail($ordine["email"]))
+		{
+			$ruModel = new RegusersModel();
+			
+			$cliente = $ruModel->clear()->where(array(
+				"username"	=>	sanitizeAll($ordine["email"]),
+			))->record();
+			
+			$idCliente = 0;
+			
+			if (empty($cliente))
+			{
+				$ruModel->sValues(array(
+					"username"	=>	$ordine["email"],
+					"password"	=>	self::generaPassword(),
+					"has_confirmed"	=>	0,
+					"nazione_navigazione"	=>	$ordine["nazione"] ? $ordine["nazione"] : v("nazione_default"),
+				));
+				
+				if ($ruModel->insert())
+					$idCliente = $ruModel->lId;
+			}
+			else
+				$idCliente = $cliente["id_user"];
+			
+			if ($idCliente)
+			{
+				$this->sValues(array(
+					"id_user"		=>	(int)$idCliente,
+					"registrato"	=>	"Y",
+				));
+				
+				if ($this->pUpdate((int)$idOrdine))
+					$ruModel->sincronizzaDaOrdine($idCliente, $idOrdine);
+				
+				$ordine["id_user"] = (int)$idCliente;
+			}
+		}
+		
+		// Sincronizzazione spedizione
+		if (!empty($ordine) && $ordine["id_user"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"] || $ordine["cap_spedizione"] || $ordine["telefono_spedizione"]))
+		{
+			$spModel = new SpedizioniModel();
+			
+			$spModel->sValues(array(
+				"id_user"	=>	$ordine["id_user"],
+			));
+			
+			$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+			
+			foreach ($campiSpedizione as $cs)
+			{
+				$spModel->setValue($cs, $ordine[$cs], "sanitizeDb");
+			}
+			
+			if ($ordine["id_spedizione"])
+				$spModel->update($ordine["id_spedizione"]);
+			else
+			{
+				if ($spModel->insert())
+				{
+					$this->sValues(array(
+						"id_spedizione"		=>	$spModel->lId,
+					));
+					
+					$this->pUpdate((int)$idOrdine);
+				}
+			}
+		}
 	}
 	
 	public function update($id = null, $where = null)
@@ -556,7 +639,11 @@ class OrdiniModel extends FormModel {
 				{
 					$newRecord = $this->selectId($clean["id"]);
 					
-					if (!empty($oldRecord) && !empty($newRecord) && ($oldRecord["stato"] == "pending" || $newRecord["stato"] == "pending"))
+// 					if (!empty($oldRecord) && !empty($newRecord) && ($oldRecord["stato"] == "pending" || $newRecord["stato"] == "pending"))
+					if (!empty($oldRecord) && !empty($newRecord) && (
+						StatiordineModel::statoEditabileEdEliminabile($oldRecord["stato"]) || 
+						StatiordineModel::statoEditabileEdEliminabile($newRecord["stato"])
+					))
 						self::$isDeletable = true;
 					
 					$this->aggiornaTotali($id);
@@ -567,10 +654,13 @@ class OrdiniModel extends FormModel {
 				if (!OrdiniModel::$ordineImportato)
 				{
 					$this->triggersOrdine($id);
-				
+					
 					// controlla se deve movimentare l'ordine
 					$this->checkMovimentazioni($clean["id"]);
-				
+					
+					if (!App::$isFrontend && v("crea_sincronizza_cliente_in_ordini_offline"))
+						$this->creaSincronizzaClienteSeAssente($id);
+					
 					// Hook ad aggiornamento dell'ordine
 					if (v("hook_update_ordine"))
 						callFunction(v("hook_update_ordine"), $clean["id"], v("hook_update_ordine"));
@@ -1083,7 +1173,7 @@ class OrdiniModel extends FormModel {
 				
 				$subtotaleRiga = number_format($prezzoFisso + ($prezzo * $r->values["quantity"]),v("cifre_decimali"),".","");
 				
-				$inPromoRiga = PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]);
+				$inPromoRiga = (!$r->values["id_riga_tipologia"] && PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]));
 				
 				if ($inPromoRiga)
 				{
@@ -1100,7 +1190,7 @@ class OrdiniModel extends FormModel {
 			}
 			else
 			{
-				if (PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
+				if (!$r->values["id_riga_tipologia"] && PromozioniModel::checkProdottoInPromo($p["cart"]["id_page"]))
 				{
 					$r->values["prezzo_finale"] = number_format($r->values["price"] - ($r->values["price"] * ($sconto / 100)),v("cifre_decimali"),".","");
 					$r->values["percentuale_promozione"] = $sconto;
@@ -1114,22 +1204,44 @@ class OrdiniModel extends FormModel {
 			$r->values["fonte"] = App::$isFrontend ? "W" : "B";
 			$r->values["id_admin"] = App::$isFrontend ? 0 : User::$id;
 			
+			$idRiff = 0;
+			
 			if (!App::$isFrontend && $r->values["id_rif"])
-				$r->values["id_r"] = (int)$r->values["id_rif"];
+				$idRiff = (int)$r->values["id_rif"];
 			
 			$r->values["movimentato"] = (int)$movimentato;
 			
 			$r->delFields("data_creazione");
 			$r->delFields("id_user");
 			$r->delFields("email");
-			$r->delFields("id_cart");
+			
+			if (!$idRiff)
+				$r->delFields("id_cart");
+			
 			$r->delFields("id_order");
 			$r->delFields("id_rif");
 			
+			if ($idRiff)
+			{
+				$r->delFields("title");
+				
+				if ($r->values["prodotto_generico"])
+					$r->delFields("codice");
+			}
+			
 			$r->sanitize();
 			
-			if ($r->insert())
+			if ($idRiff)
+				$result = $r->pUpdate((int)$idRiff);
+			else
+				$result = $r->insert();
+			
+			if ($result)
 			{
+				// Elimino le righe di elementi collegati alla riga d'ordine
+				if ($idRiff)
+					$re->mDel(array("id_r = ?",array((int)$idRiff)));
+				
 				// Salvo gli elementi del carrello
 				$elementiCarrello = CartelementiModel::getElementiCarrello($p["cart"]["id_cart"]);
 				
@@ -1140,7 +1252,11 @@ class OrdiniModel extends FormModel {
 					unset($elCart["id_cart"]);
 					
 					$re->sValues($elCart, "sanitizeDb");
-					$re->setValue("id_r", $r->lId);
+					
+					if ($idRiff)
+						$re->setValue("id_r", $idRiff);
+					else
+						$re->setValue("id_r", $r->lId);
 					
 					$re->insert();
 				}
@@ -1166,6 +1282,39 @@ class OrdiniModel extends FormModel {
 	public function totaleCrud($record)
 	{
 		return number_format($record["orders"]["total"],2,",",".");
+	}
+	
+	public function accontoCrud($record)
+	{
+		return number_format($record["orders"]["acconto"],2,",",".");
+	}
+	
+	public function saldoCrud($record)
+	{
+		return "<b>".number_format($record["orders"]["saldo"],2,",",".")."</b>";
+	}
+	
+	public function fatturaCrud($record)
+	{
+		if ($record["orders"]["fattura"] || $record["orders"]["tipo_cliente"] != "privato")
+			return "<span class='text-primary'><b>".gtext("Richiesta")."</b></span>";
+		
+		return "";
+	}
+	
+	public function righeEvaseCrud($record)
+	{
+		$numeroTotale = $this->righeDaEvadereTotali((int)$record["orders"]["id_o"]);
+		
+		if ($numeroTotale > 0)
+		{
+			$numeroDaEvadere = $this->righeAncoraDaEvadere((int)$record["orders"]["id_o"]);
+			
+			if ($numeroDaEvadere <= 0)
+				return "<i title='".gtext("Tutte le righe sono state evase")."' class='fa fa-thumbs-up text-success'></i>";
+		}
+		
+		return "";
 	}
 	
 	public function vedi($record, $queryString = "?partial=Y&nobuttons=Y")
@@ -1345,9 +1494,11 @@ class OrdiniModel extends FormModel {
 			
 			$bckAttivaGiacenza = v("attiva_giacenza");
 			$bckAttivaMovimentazioniGiacenza = v("scala_giacenza_ad_ordine");
+			$bckScorporaIvaPrezzoEstero = v("scorpora_iva_prezzo_estero");
 			
 			VariabiliModel::$valori["attiva_giacenza"] = 0;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = 0;
+			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
 			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
@@ -1377,21 +1528,24 @@ class OrdiniModel extends FormModel {
 			
 			foreach ($righe as $r)
 			{
-				$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), null, null, null, $r["id_r"]);
-				
-				$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
-				
-				foreach ($elementiRiga as $elRiga)
+				if (!$r["acconto"])
 				{
-					$elRiga = htmlentitydecodeDeep($elRiga);
+					$idCart = $c->add($r["id_page"], $r["quantity"], $r["id_c"], 0, array(), $r["prezzo_intero"], $r["prezzo_intero_ivato"], $r["price"], $r["price_ivato"], $r["id_r"], true);
 					
-					$elementiPuliti["CART-".(int)$idCart][] = array(
-						"email"	=>	(string)$elRiga["email"],
-						"testo"	=>	(string)$elRiga["testo"],
-					);
+					$elementiRiga = RigheelementiModel::getElementiRiga($r["id_r"]);
+					
+					foreach ($elementiRiga as $elRiga)
+					{
+						$elRiga = htmlentitydecodeDeep($elRiga);
+						
+						$elementiPuliti["CART-".(int)$idCart][] = array(
+							"email"	=>	(string)$elRiga["email"],
+							"testo"	=>	(string)$elRiga["testo"],
+						);
+					}
+					
+					$movimentato = $r["movimentato"];
 				}
-				
-				$movimentato = $r["movimentato"];
 			}
 			
 			$c->correggiPrezzi();
@@ -1424,13 +1578,29 @@ class OrdiniModel extends FormModel {
 // 			$this->ricalcolaPrezziRighe((int)$ordine["id_o"], $sconto);
 			
 			$this->values = array();
+			$this->values["acconto"] = $this->getTotaleAcconto($ordine["id_o"]);
+			
 			$this->aggiungiTotali($ordine["stato"]);
+			
+			if ($ordine["evaso_non_evaso"] && (v("imposta_allo_stato_se_tutte_righe_sono_evase") || v("imposta_allo_stato_se_non_tutte_righe_sono_evase")))
+			{
+				$statoEvaso = $this->statoSeTutteLeRigheSonoEvase($ordine["id_o"]);
+				
+				if ($statoEvaso)
+					$this->values["stato"] = sanitizeAll($statoEvaso);
+			}
 			
 			$this->pUpdate($idOrdine);
 			
-			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
+// 			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
 			
+			if (v("usa_transactions"))
+				$this->db->beginTransaction();
+				
 			$this->riempiRighe($ordine["id_o"], $movimentato);
+			
+			if (v("usa_transactions"))
+				$this->db->commit();
 			
 			$c->del(null, array(
 				"cart_uid"	=>	User::$cart_uid,
@@ -1438,6 +1608,7 @@ class OrdiniModel extends FormModel {
 			
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = $bckAttivaMovimentazioniGiacenza;
+			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = $bckScorporaIvaPrezzoEstero;
 			
 			User::$id = $bckUserId;
 			PromozioniModel::$staticIdO = null;
@@ -1448,6 +1619,68 @@ class OrdiniModel extends FormModel {
 			
 			unset($_SESSION["aggiorna_totali_ordine"]);
 		}
+	}
+	
+	public function impostaAlloStatoSeTutteLeRigheSonoEvase($idOrdine)
+	{
+		$statoEvaso = $this->statoSeTutteLeRigheSonoEvase((int)$idOrdine);
+		
+		if ($statoEvaso)
+		{
+			$this->sValues(array(
+				"stato"	=>	$statoEvaso,
+			));
+			
+			OrdiniModel::$ordineImportato = true;
+			
+			$this->update((int)$idOrdine);
+		}
+	}
+	
+	public function righeAncoraDaEvadere($idOrdine, $numero = true)
+	{
+		$r = new RigheModel();
+		
+		$r->clear()->where(array(
+			"id_o"				=>	(int)$idOrdine,
+			"id_riga_tipologia"	=>	0,
+			"evasa"				=>	0,
+		));
+		
+		return ($numero ? $r->rowNumber() : $r->send(false));
+	}
+	
+	public function righeDaEvadereTotali($idOrdine, $numero = true)
+	{
+		$r = new RigheModel();
+		
+		$r->clear()->where(array(
+			"id_o"				=>	(int)$idOrdine,
+			"id_riga_tipologia"	=>	0,
+		));
+		
+		return ($numero ? $r->rowNumber() : $r->send(false));
+	}
+	
+	public function statoSeTutteLeRigheSonoEvase($idOrdine)
+	{
+		$ordine = $this->selectId((int)$idOrdine);
+		
+		if (!empty($ordine) && $ordine["evaso_non_evaso"])
+		{
+			$r = new RigheModel();
+			
+			$numeroDaEvadere = $this->righeAncoraDaEvadere((int)$idOrdine);
+			
+			$numeroTotale = $this->righeDaEvadereTotali((int)$idOrdine);
+			
+			if ($numeroTotale > 0 && $numeroDaEvadere <= 0 && v("imposta_allo_stato_se_tutte_righe_sono_evase") && $ordine["stato"] != v("imposta_allo_stato_se_tutte_righe_sono_evase"))
+				return v("imposta_allo_stato_se_tutte_righe_sono_evase");
+			else if (v("imposta_allo_stato_se_non_tutte_righe_sono_evase") && $numeroDaEvadere > 0 && $ordine["stato"] != v("imposta_allo_stato_se_non_tutte_righe_sono_evase"))
+				return v("imposta_allo_stato_se_non_tutte_righe_sono_evase");
+		}
+		
+		return "";
 	}
 	
 // 	public function ricalcolaPrezziRighe($idOrdine, $sconto)
@@ -1491,6 +1724,22 @@ class OrdiniModel extends FormModel {
 // 			$this->db->commit();
 // 	}
 	
+	// Calcola il totale dell'acconto nell'ordine
+	public function getTotaleAcconto($idOrdine)
+	{
+		$rModel = new RigheModel();
+		
+		$res = $rModel->clear()->select("sum(quantity * prezzo_finale_ivato) as SOMMA")->where(array(
+			"id_o"		=>	(int)$idOrdine,
+			"acconto"	=>	1,
+		))->send();
+		
+		if (isset($res[0]["aggregate"]["SOMMA"]) && $res[0]["aggregate"]["SOMMA"])
+			return number_format($res[0]["aggregate"]["SOMMA"],2,".","");
+		
+		return 0;
+	}
+	
 	public function aggiungiTotali($forzaAlloStato = null)
 	{
 		$this->values["subtotal"] = getSubTotalN();
@@ -1503,6 +1752,22 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["iva"] = setPrice(getIva());
 		$this->values["total"] = setPrice(getTotal());
+		
+		if (App::$isFrontend)
+			$this->values["saldo"] = $this->values["total"];
+		else
+		{
+			if (isset($this->values["acconto"]))
+			{
+				if ($this->values["total"] > $this->values["acconto"])
+					$this->values["saldo"] = $this->values["total"] - $this->values["acconto"];
+				else
+					$this->values["saldo"] = 0;
+			}
+			else
+				$this->values["saldo"] = $this->values["total"];
+		}
+		
 		$this->values["cart_uid"] = User::$cart_uid;
 		$this->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
 		$this->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
@@ -1591,6 +1856,12 @@ class OrdiniModel extends FormModel {
 				$this->values["mostra_sempre_corriere"] = 1;
 		}
 		
+		if (!App::$isFrontend && v("disattiva_costo_spedizione_ordini_offline"))
+			$this->values["mostra_spese_spedizione_ordine_frontend"] = 0;
+		
+		if (!App::$isFrontend && v("disattiva_costo_pagamento_ordini_offline"))
+			$this->values["mostra_spese_pagamento_ordine_frontend"] = 0;
+			
 		if (v("salva_ip"))
 			$this->values["ip"] = getIp();
 	}
@@ -1735,11 +2006,12 @@ class OrdiniModel extends FormModel {
 				include tpf("/Elementi/Mail/mail_ordine_ricevuto_agente.php");
 				$output = ob_get_clean();
 				
-				$oggetto = str_replace("[CODICE_COUPON]", $ordine["codice_promozione"], v("oggetto_ordine_ricevuto_agente"));
+				$oggetto = str_replace("[CODICE_COUPON]", "[OGGETTO_PLACEHOLDER]", v("oggetto_ordine_ricevuto_agente"));
 				
 				$res = MailordiniModel::inviaMail(array(
 					"emails"	=>	array($agente["username"]),
 					"oggetto"	=>	$oggetto,
+					"oggetto_placeholder"	=>	$ordine["codice_promozione"],
 					"testo"		=>	$output,
 					"tipologia"	=>	"ORDINE AGENTE",
 					"id_user"	=>	(int)$ordine['id_user'],
@@ -1842,7 +2114,7 @@ class OrdiniModel extends FormModel {
 			if ($record["tipo_ordine"] == "W")
 				return false;
 			
-			if ($record["stato"] != "pending")
+			if (!StatiordineModel::statoEditabileEdEliminabile($record["stato"]))
 				return false;
 			
 			$fModel = new FattureModel();
@@ -2085,4 +2357,32 @@ class OrdiniModel extends FormModel {
 		
 		return (!$ordineEsistente || !$ordinePending);
 	}
+	
+	public static function getWhereClauseRicercaLibera($search)
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 8;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"n!concat(orders.ragione_sociale,' ',orders.nome,' ',orders.cognome,' ',orders.email)"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
+	}
+	
+	public function cleanDateTimeConsegna($record)
+    {
+		$formato = "d-m-Y";
+		
+		if (isset($record[$this->_tables]["data_consegna"]) && $record[$this->_tables]["data_consegna"])
+			return date($formato,strtotime($record[$this->_tables]["data_consegna"]));
+		
+		return "";
+    }
 }

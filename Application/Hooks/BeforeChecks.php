@@ -361,13 +361,13 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_regali menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
-	'save_righe'	=>	array(
+	'save_righe_ordini'	=>	array(
 		'title'	=>	"Salva",
 		'text'	=>	"Salva",
 		'url'	=>	'main',
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-success save_righe menu_btn"',
+		"attributes" => 'role="button" class="btn btn-success save_righe_ordini menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
 	'vai_alla_lista'	=>	array(
@@ -405,6 +405,22 @@ Helper_Menu::$htmlLinks = array(
 		"htmlAfter" => '',
 		"attributes" => 'role="button" controller="spedizioninegoziocolli" class="btn btn-success save_righe menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
+	),
+	"stampa_pdf_ordine" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'target="_blank" role="button" class="pull-right btn btn-info help_stampa_pdf"',
+		"class"	=>	"btn btn-default",
+		'text'	=>	"Stampa PDF",
+		"classIconBefore"	=>	'<i class="fa fa-file-pdf-o"></i>',
+	),
+	"invia_pdf_ordine" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'style="margin-left:5px;" role="button" class="pull-right btn btn-warning help_invia_pdf make_spinner"',
+		"class"	=>	"btn btn-default",
+		'text'	=>	"Invia PDF",
+		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
 	),
 );
 
@@ -476,9 +492,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control help_cerca",
 				"placeholder"	=>	"Cerca ..",
 			),
-// 			"wrap"	=>	array(
-// 				"<div class='col-md-2'>","</div>"
-// 			)
+		),
+		"titolo_riga"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control help_cerca",
+				"placeholder"	=>	"Cerca prodotto ..",
+			),
 		),
 		"attivo"	=>	array(
 			"type"	=>	"select",

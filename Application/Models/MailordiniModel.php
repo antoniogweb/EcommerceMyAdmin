@@ -197,6 +197,7 @@ class MailordiniModel extends GenericModel
 		$country = isset($params["country"]) ? $params["country"] : Params::$country;
 		$emails = $params["emails"];
 		$oggetto = $params["oggetto"];
+		$oggettoPlaceholder = isset($params["oggetto_placeholder"]) ? $params["oggetto_placeholder"] : "";
 		$idO = isset($params["id_o"]) ? $params["id_o"] : 0;
 		$idUser = isset($params["id_user"]) ? $params["id_user"] : 0;
 		$testo = isset($params["testo"]) ? $params["testo"] : "";
@@ -213,6 +214,7 @@ class MailordiniModel extends GenericModel
 		$allegati = (isset($params["allegati"]) && is_array($params["allegati"])) ? $params["allegati"] : array();
 		$tabella = isset($params["tabella"]) ? $params["tabella"] : "";
 		$idElemento = isset($params["id_elemento"]) ? $params["id_elemento"] : 0;
+		$traduciOggetto = isset($params["traduci_oggetto"]) ? $params["traduci_oggetto"] : true;
 		
 		self::$variabiliTema = $arrayVariabiliTema;
 		
@@ -265,8 +267,11 @@ class MailordiniModel extends GenericModel
 			$tradModel = new TraduzioniModel();
 			$tradModel->ottieniTraduzioni();
 			
-			$oggetto = gtext($oggetto, false);
+			if ($traduciOggetto)
+				$oggetto = gtext($oggetto, false);
+			
 			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
+			$oggetto = str_replace("[OGGETTO_PLACEHOLDER]",$oggettoPlaceholder, $oggetto);
 			
 			// Segnaposti
 			if (isset($arrayVariabili))
@@ -307,10 +312,15 @@ class MailordiniModel extends GenericModel
 				$testo = MailordiniModel::loadTemplate($oggetto, $testo);
 			
 			// Carico gli allegati
-			foreach ($allegati as $allegato)
+			foreach ($allegati as $nomeAllegato => $allegato)
 			{
 				if (file_exists($allegato))
-					$mail->AddAttachment($allegato);
+				{
+					if (is_numeric($nomeAllegato))
+						$mail->AddAttachment($allegato);
+					else
+						$mail->AddAttachment($allegato, $nomeAllegato);
+				}
 			}
 			
 // 			echo $testo;die();
@@ -402,5 +412,14 @@ class MailordiniModel extends GenericModel
 			));
 		
 		return $mo->rowNumber();
+	}
+	
+	// Estrae tutte le mail dell'ordine
+	public function estraiMailOrdine($idOrdine, $tipologia)
+	{
+		return $this->clear()->where(array(
+			"id_o"	=>	(int)$idOrdine,
+			"tipologia"	=>	sanitizeAll($tipologia),
+		))->orderBy("data_creazione desc")->send(false);
 	}
 }

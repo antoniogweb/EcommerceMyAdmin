@@ -41,6 +41,7 @@ return array(
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
     'Clue\\StreamFilter\\' => array($vendorDir . '/clue/stream-filter/src'),
+    'Brevo\\Client\\' => array($vendorDir . '/getbrevo/brevo-php/lib'),
     'Amnuts\\' => array($vendorDir . '/amnuts/opcache-gui/src'),
     'Algolia\\AlgoliaSearch\\' => array($vendorDir . '/algolia/algoliasearch-client-php/src'),
 );

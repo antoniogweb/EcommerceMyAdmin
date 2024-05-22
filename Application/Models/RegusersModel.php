@@ -204,7 +204,7 @@ class RegusersModel extends FormModel {
 		$record = $this->selectId($clean["id"]);
 		
 		if (!empty($record))
-			return self::getNominativo($record)." - ".$record["username"];
+			return self::getNominativo($record)." - ".$record["username"]." - ".$record["telefono"];
 		
 		return "";
 	}
@@ -274,4 +274,22 @@ class RegusersModel extends FormModel {
 			"id_user"	=>	(int)$idUser,
 		))->orderBy("ultimo_usato,id_spedizione desc")->limit(1)->record();
     }
+    
+    public static function getWhereClauseRicercaLibera($search)
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 8;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',telefono)"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
+	}
 }

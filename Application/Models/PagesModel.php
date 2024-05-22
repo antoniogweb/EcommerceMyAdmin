@@ -30,6 +30,8 @@ class PagesModel extends GenericModel {
 	public $titleFieldName = "title";
 	public $aliaseFieldName = "alias";
 	public $campoTitolo = "title";
+	public $campoValore = "id_page";
+	public $metodoPerTitolo = "titoloJson";
 	
 	public $hModelName = "CategoriesModel";
 	public $hModel = null; //hierarchical model
@@ -115,6 +117,7 @@ class PagesModel extends GenericModel {
 		"COOKIE"		=>	"Pagina cookie",
 		"CONDIZIONI"	=>	"Condizioni Generali Di Vendita",
 		"ACCOUNT_ELIMINATO"	=>	"Account eliminato",
+		"APPROVAZ_ELIMINATA"	=>	"Approvazione APP eliminata",
 		"PRIVACY"		=>	"Pagina privacy",
 		"AZIENDA"		=>	"Pagina azienda",
 		"CONTATTI"		=>	"Pagina contatti",
@@ -2529,7 +2532,6 @@ class PagesModel extends GenericModel {
 		foreach (User::$groups as $gr)
 		{
 			$sign = str_repeat(" ",$count);
-// 			$temp[$sign."gruppi"] = "like '%($gr)%'";
 			$temp[$sign."lk"] = array(
 				"gruppi"	=>	sanitizeAll($gr),
 			);
@@ -4746,5 +4748,24 @@ class PagesModel extends GenericModel {
 				exit;
 			}
 		}
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+		{
+			$stringa = htmlentitydecode($record["title"]);
+			
+			if ($record["attivo"] == "N")
+				$stringa .= " (NON PUBBLICATO)";
+			
+			return $stringa;
+		}
+		
+		return "";
 	}
 }
