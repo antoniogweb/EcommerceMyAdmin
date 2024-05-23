@@ -252,6 +252,9 @@ class CategoriesModel extends HierarchicalModel {
 			'enctype'	=>	'multipart/form-data',
 		);
 		
+		if ($this->formStructAggiuntivoEntries)
+			$this->formStruct["entries"] = $this->formStruct["entries"] + $this->formStructAggiuntivoEntries;
+		
 		// Override la struttura del form
 		$this->overrideFormStruct();
 	}

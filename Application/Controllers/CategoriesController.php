@@ -510,6 +510,20 @@ class CategoriesController extends BaseController {
 				if (v("attiva_immagine_sfondo"))
 					$this->queryFields .= ",immagine_sfondo";
 			}
+			else
+			{
+				// Campi aggiuntivi dalle APP
+				if (isset(PagesModel::$campiAggiuntivi[$this->m[$this->modelName]->section]))
+				{
+					foreach (PagesModel::$campiAggiuntivi[$this->m[$this->modelName]->section] as $campo => $form)
+					{
+						$this->queryFields .= ",$campo";
+						
+						if (!empty($form))
+							$this->m[$this->modelName]->formStructAggiuntivoEntries[$campo] = $form;
+					}
+				}
+			}
 			
 			$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 			

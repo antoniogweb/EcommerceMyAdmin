@@ -777,10 +777,10 @@ function field($p, $field)
 	return "";
 }
 
-function cfield($p, $field)
+function cfield($p, $field, $tableTradotta = "contenuti_tradotti_categoria")
 {
-	if (isset($p["contenuti_tradotti_categoria"][$field]) and strcmp($p["contenuti_tradotti_categoria"][$field],"") !== 0)
-		return $p["contenuti_tradotti_categoria"][$field];
+	if (isset($p[$tableTradotta][$field]) and strcmp($p[$tableTradotta][$field],"") !== 0)
+		return $p[$tableTradotta][$field];
 	else
 	{
 		if (isset($p["categories"][$field]))
