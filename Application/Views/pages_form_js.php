@@ -137,31 +137,60 @@ $(document).ready(function() {
 	
 });
 
-function show_preview_generica(numero_slide)
+if (typeof show_preview_generica !== 'function')
 {
-	var immagine = $("input[name='immagine"+numero_slide+"']").val();
-	
-	if (immagine != "")
+	window.show_preview_generica = function(numero_slide)
 	{
-		var ext = immagine.split('.').pop();
-		ext = ext.toLowerCase();
+		var immagine = $("input[name='immagine"+numero_slide+"']").val();
 		
-		if (ext == "png" || ext == "jpg" || ext == "jpeg")
-			$(".preview_image"+numero_slide).html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
+		if (immagine != "")
+		{
+			var ext = immagine.split('.').pop();
+			ext = ext.toLowerCase();
+			
+			if (ext == "png" || ext == "jpg" || ext == "jpeg")
+				$(".preview_image"+numero_slide).html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
+			else
+				$(".preview_image"+numero_slide).html("<img src='<?php echo Domain::$publicUrl.'/images/contents/';?>" + immagine + "' />");
+			
+			$(".cancella_immagine_box"+numero_slide).css("display", "block");
+			$(".scarica_immagine_box"+numero_slide).css("display", "block");
+			$(".scarica_immagine"+numero_slide).attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
+		}
 		else
-			$(".preview_image"+numero_slide).html("<img src='<?php echo Domain::$publicUrl.'/images/contents/';?>" + immagine + "' />");
-		
-		$(".cancella_immagine_box"+numero_slide).css("display", "block");
-		$(".scarica_immagine_box"+numero_slide).css("display", "block");
-		$(".scarica_immagine"+numero_slide).attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
-	}
-	else
-	{
-		$(".preview_image"+numero_slide).html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
-		$(".cancella_immagine_box"+numero_slide).css("display", "none");
-		$(".scarica_immagine_box"+numero_slide).css("display", "none");
+		{
+			$(".preview_image"+numero_slide).html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
+			$(".cancella_immagine_box"+numero_slide).css("display", "none");
+			$(".scarica_immagine_box"+numero_slide).css("display", "none");
+		}
 	}
 }
+
+// function show_preview_generica(numero_slide)
+// {
+// 	var immagine = $("input[name='immagine"+numero_slide+"']").val();
+// 	
+// 	if (immagine != "")
+// 	{
+// 		var ext = immagine.split('.').pop();
+// 		ext = ext.toLowerCase();
+// 		
+// 		if (ext == "png" || ext == "jpg" || ext == "jpeg")
+// 			$(".preview_image"+numero_slide).html("<img src='<?php echo $this->baseUrl.'/thumb/mainimage/';?>" + immagine + "' />");
+// 		else
+// 			$(".preview_image"+numero_slide).html("<img src='<?php echo Domain::$publicUrl.'/images/contents/';?>" + immagine + "' />");
+// 		
+// 		$(".cancella_immagine_box"+numero_slide).css("display", "block");
+// 		$(".scarica_immagine_box"+numero_slide).css("display", "block");
+// 		$(".scarica_immagine"+numero_slide).attr("href","<?php echo Domain::$name."/images/contents/";?>"+immagine);
+// 	}
+// 	else
+// 	{
+// 		$(".preview_image"+numero_slide).html("<p><?php echo sanitizeJs(gtext("Non è stata caricata alcuna immagine"));?></p>");
+// 		$(".cancella_immagine_box"+numero_slide).css("display", "none");
+// 		$(".scarica_immagine_box"+numero_slide).css("display", "none");
+// 	}
+// }
 
 //funzione per importare le immagini dei lavori
 function show_preview()
@@ -182,7 +211,8 @@ function show_preview3()
 
 var allowed = [ "jpg","jpeg","png","gif" ];
 
-var url = '<?php echo $this->baseUrl."/pages/move";?>';
+if (typeof url == "undefined")
+	var url = '<?php echo $this->baseUrl."/pages/move";?>';
 
 $(function () {
     'use strict';

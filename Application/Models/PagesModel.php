@@ -3814,6 +3814,22 @@ class PagesModel extends GenericModel {
 		return "";
 	}
 	
+	public function linguaIncludiEscludi($record)
+	{
+		$html = "";
+		
+		$html .= $this->lingua($record);
+		
+		$html2 = $this->escludilingua($record);
+		
+		if ($html && $html2)
+			$html .= " - ";
+		
+		$html .= $html2;
+		
+		return $html;
+	}
+	
 	public function getLocalizzazione($idPage)
     {
 		$pr = new PagesregioniModel();
