@@ -330,7 +330,7 @@ class BaseOrdiniController extends BaseController
 		}
 	}
 	
-	public function modifica($id_o = 0, $cart_uid = 0)
+	public function modifica($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$this->s['registered']->check(null,0);
 		
@@ -339,10 +339,18 @@ class BaseOrdiniController extends BaseController
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica resoconto ordine"));
 		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
+		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
 		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
-			$this->redirect("carrello");
+			$this->redirect("");
+		
+		$res = $this->m("OrdiniModel")->clear()
+							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
+							->send();
+		
+		if ($res[0]["orders"]["stato"] != "pending")
+			$this->redirect("");
 		
 		$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
 		
@@ -362,7 +370,7 @@ class BaseOrdiniController extends BaseController
 				$result = $this->m('OrdiniModel')->importaSpedizione($clean["id_o"], $_POST["id_spedizione"]);
 			
 			if ($result)
-				$this->redirect("resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."?n=y");
+				$this->redirect("resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."/".$clean["admin_token"]."?n=y");
 			else
 				$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile cambiare i dati di spedizione. Contattare il negozio")."</div>";
 		}
@@ -372,9 +380,6 @@ class BaseOrdiniController extends BaseController
 							->send();
 		
 		$data["ordine"] = $res[0]["orders"];
-		
-		if ($data["ordine"]["stato"] != "pending")
-			$this->redirect("");
 		
 		$this->append($data);
 		
@@ -398,7 +403,7 @@ class BaseOrdiniController extends BaseController
 			"admin_token"	=>	$clean["admin_token"],
 		))->record();
 		
-		$urlSummary = "resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."?n=y";
+		$urlSummary = "resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."/".$clean["admin_token"]."?n=y";
 		
 		if (empty($ordine) || $ordine["stato"] != "pending")
 			$this->redirect("");

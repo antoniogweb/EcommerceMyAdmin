@@ -605,7 +605,7 @@ class SpedizioninegozioModel extends FormModel {
 				{
 					$html .= '<br /><a target="_blank" href="'.$modulo->getUrlTracking((int)$sp["spedizioni_negozio"]["id_spedizione_negozio"]).'">'.gtext("Vai al tracking").'</a>';
 					
-					if (date("Y-m-d", strtotime($sp["spedizioni_negozio"]["data_invio"])) == date("Y-m-d"))
+					if (isset($sp["spedizioni_negozio"]["data_invio"]) && date("Y-m-d", strtotime($sp["spedizioni_negozio"]["data_invio"])) == date("Y-m-d"))
 						$html .= '<br />(<i style="font-size:12px;">'.gtext("Il tracking della spedizione potrebbe essere disponibile da domani")."</i>)";
 				}
 			}

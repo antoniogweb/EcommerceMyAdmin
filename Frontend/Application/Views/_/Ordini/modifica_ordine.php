@@ -6,7 +6,7 @@ if ($islogged)
 		gtext("Home") 		=> $this->baseUrl,
 		gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
 		gtext("Ordini effettuati")	=>	$this->baseUrl."/ordini-effettuati",
-		gtext("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."?n=y",
+		gtext("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y",
 		gtext("Modifica ordine")." ".$ordine["id_o"] => "",
 	);
 }
@@ -14,7 +14,7 @@ else
 {
 	$breadcrumb = array(
 		gtext("Home") 		=> $this->baseUrl,
-		gtext("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."?n=y",
+		gtext("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y",
 		gtext("Modifica ordine")." ".$ordine["id_o"] => "",
 	);
 }
@@ -53,7 +53,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <?php echo $notice; ?>
 
-<form class="" action="<?php echo $this->baseUrl."/ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"];?>#form_main" method="POST">
+<form class="" action="<?php echo $this->baseUrl."/ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>#form_main" method="POST">
 	
 	<div class="uk-margin">
 		<label class="uk-form-label"><?php echo gtext("Metodo di pagamento");?> *</label>
@@ -71,7 +71,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	
 	<input class="uk-button uk-button-primary" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />
 	
-	<a class="uk-button uk-button-default" href="<?php echo $this->baseUrl."/gestisci-spedizione/0?cart_uid=".$ordine["cart_uid"];?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi un nuovo indirizzo");?></a>
+	<a class="uk-button uk-button-default" href="<?php echo $this->baseUrl."/gestisci-spedizione/0?cart_uid=".$ordine["cart_uid"]."&admin_token=".$ordine["admin_token"];?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi un nuovo indirizzo");?></a>
 </form>
 
 <?php
