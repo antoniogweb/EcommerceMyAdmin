@@ -46,7 +46,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipo");?>:</span> <?php echo dfield($documento, "estensione");?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$documento["orders"]["id_o"]."/".$documento["orders"]["cart_uid"];?>?n=y">#<?php echo $documento["orders"]["id_o"];?> <?php echo gtext("del");?> <?php echo date("d/m/Y H:i", strtotime($documento["orders"]["data_creazione"]))?></a>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$documento["orders"]["id_o"]."/".$documento["orders"]["cart_uid"]."/".$documento["orders"]["admin_token"];?>?n=y">#<?php echo $documento["orders"]["id_o"];?> <?php echo gtext("del");?> <?php echo date("d/m/Y H:i", strtotime($documento["orders"]["data_creazione"]))?></a>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
 				<a target="_blank" class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/contenuti/documento/".$documento["documenti"]["id_doc"];?>">

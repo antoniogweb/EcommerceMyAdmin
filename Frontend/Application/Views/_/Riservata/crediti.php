@@ -86,7 +86,7 @@ $labelNumeroCrediti = $numeroCreditiAttivi > 0 ? "success" : "danger";
 				<?php } ?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <span><a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$credito["orders"]["id_o"]."/".$credito["orders"]["cart_uid"]."?n=y";?>"><?php echo "#".$credito["orders"]["id_o"];?></a></span>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <span><a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$credito["orders"]["id_o"]."/".$credito["orders"]["cart_uid"]."/".$credito["orders"]["admin_token"]."?n=y";?>"><?php echo "#".$credito["orders"]["id_o"];?></a></span>
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Stato ordine");?>:</span> <span class="uk-text-italic"><?php echo statoOrdine($credito["orders"]["stato"]);?></span>

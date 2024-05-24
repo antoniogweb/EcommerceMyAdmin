@@ -85,7 +85,7 @@ class CreditiModel extends GenericModel
 		if (!$idUser)
 			return 0;
 		
-		return $this->clear()->select("crediti.*,orders.id_o,orders.cart_uid,orders.stato")->left(array("ordine"))->where(array(
+		return $this->clear()->select("crediti.*,orders.id_o,orders.cart_uid,orders.stato,orders.admin_token")->left(array("ordine"))->where(array(
 			"id_user"	=>	(int)$idUser,
 		))->orderBy("data_creazione desc")->send();
 	}
