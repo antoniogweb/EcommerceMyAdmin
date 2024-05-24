@@ -618,6 +618,7 @@ class VariabiliModel extends GenericModel {
 		"cart_sticky_top_offeset"	=>	100, // offset dello sticky del cart in desktop
 		"recupera_dati_carrello_da_post"	=>	0, // se impostato a 1, salva i dati inviati in post nel carrello (solo se l'utente ha approvato la privacy)
 		"classe_css_dimensione_testo_colonne_carrello"	=>	"", // classe da applicare sulle colonne del carrello per la dimensione
+		"svuota_file_cookie_carrello_dopo_x_minuti"	=>	0, // se maggiore di 0 (in minuti) salva i file dei cookie in una cartella ed eliminali dopo i minuti impostati
 		## ORDINE ##
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_anche_per_utente_ospite"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito) anche nel caso di utente ospite (mail_ordine_dopo_pagamento deve essere impostato a 1 o non ha alcun effetto)

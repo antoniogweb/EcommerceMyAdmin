@@ -28,6 +28,7 @@ class CartModel extends GenericModel {
 	public static $deletedExpired = false;
 	public static $checkCart = false;
 	public static $cartRows = null;
+	public static $cartellaCartUid = "CartUids"; // Cartella dove vengono salvati i file dei cart_uid
 	
 	public function __construct() {
 		$this->_tables='cart';
@@ -69,6 +70,11 @@ class CartModel extends GenericModel {
 			
 			self::$deletedExpired = true;
 		}
+	}
+	
+	public static function skipCheckCart()
+	{
+		self::$checkCart = true;
 	}
 	
 	public function checkCart()
@@ -1538,5 +1544,107 @@ class CartModel extends GenericModel {
 		$output = ob_get_clean();
 		
 		return $output;
+	}
+	
+	public function checkCartUidCookie($cartUid)
+	{
+		if (!v("svuota_file_cookie_carrello_dopo_x_minuti"))
+			return true;
+		
+		self::deleteExpiredCartUidFiles();
+		
+		$clean["cart_uid"] = sanitizeAll($cartUid);
+		
+		$numeroInCarrello = $this->clear()->where(array(
+			"cart_uid"	=>	$clean["cart_uid"],
+		))->rowNumber();
+		
+		if ($numeroInCarrello > 0)
+			return true;
+		else
+		{
+			if (file_exists(ROOT."/Logs/".self::$cartellaCartUid."/".$clean["cart_uid"].".txt"))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public static function deleteExpiredCartUidFiles()
+	{
+		$folder = ROOT."/Logs/".self::$cartellaCartUid;
+		
+		$path = $folder."/last_clean.txt";
+		
+		if (@is_dir($folder))
+		{
+			if (file_exists($path))
+			{
+				$time = (int)file_get_contents($path);
+				
+				if ((time() - $time) >= 60 * v("svuota_file_cookie_carrello_dopo_x_minuti"))
+				{
+					unlink($path);
+					
+					foreach (new DirectoryIterator($folder) as $fileInfo)
+					{
+						if ($fileInfo->isDot())
+							continue;
+						
+						if ($fileInfo->getFilename() == "index.html" || $fileInfo->getFilename() == ".htaccess")
+							continue;
+						
+						unlink($fileInfo->getRealPath());
+					}
+					
+					FilePutContentsAtomic($path, time());
+				}
+			}
+			else
+				FilePutContentsAtomic($path, time());
+		}
+	}
+	
+	public function setCartUidCookie()
+	{
+		User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+		$time = time() + v("durata_carrello_wishlist_coupon");
+		setcookie("cart_uid",User::$cart_uid,$time,"/");
+		
+		if (v("svuota_file_cookie_carrello_dopo_x_minuti"))
+		{
+			createFolderFull("Logs/".self::$cartellaCartUid, ROOT);
+			FilePutContentsAtomic(ROOT."/Logs/".self::$cartellaCartUid."/".User::$cart_uid.".txt", User::$cart_uid);
+		}
+	}
+	
+	public function setCartUid()
+	{
+		//set the cookie for the cart
+		if (isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"] && (int)strlen($_COOKIE["cart_uid"]) === 32 && ctype_alnum((string)$_COOKIE["cart_uid"]) && $this->checkCartUidCookie($_COOKIE["cart_uid"]))
+		{
+			User::$cart_uid = sanitizeAll((string)$_COOKIE["cart_uid"]);
+			
+			$oModel = new OrdiniModel();
+			
+			if ($oModel->cartUidAlreadyPresent(User::$cart_uid))
+			{
+				$this->setCartUidCookie();
+				
+// 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+// 				$time = time() + v("durata_carrello_wishlist_coupon");
+// 				setcookie("cart_uid",User::$cart_uid,$time,"/");
+			}
+		}
+		else
+		{
+			$this->setCartUidCookie();
+			
+// 			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+// 			$time = time() + v("durata_carrello_wishlist_coupon");
+// 			setcookie("cart_uid",User::$cart_uid,$time,"/");
+		}
+		
+		self::$checkCart = false;
 	}
 }

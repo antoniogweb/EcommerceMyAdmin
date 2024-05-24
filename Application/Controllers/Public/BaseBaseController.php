@@ -497,27 +497,26 @@ class BaseBaseController extends Controller
 			return;
 		
 		//set the cookie for the cart
-// 		if ((isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"]) || (isset($_GET["cart_uid"]) && $_GET["cart_uid"] && (int)strlen($_GET["cart_uid"]) === 32))
-		if (isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"] && (int)strlen($_COOKIE["cart_uid"]) === 32 && ctype_alnum((string)$_COOKIE["cart_uid"]))
-		{
-// 			if (isset($_GET["cart_uid"]))
-// 				User::$cart_uid = sanitizeAll($_GET["cart_uid"]);
-// 			else
-				User::$cart_uid = sanitizeAll((string)$_COOKIE["cart_uid"]);
-			
-			if ($this->m('OrdiniModel')->cartUidAlreadyPresent(User::$cart_uid))
-			{
-				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-				$time = time() + v("durata_carrello_wishlist_coupon");
-				setcookie("cart_uid",User::$cart_uid,$time,"/");
-			}
-		}
-		else
-		{
-			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-			$time = time() + v("durata_carrello_wishlist_coupon");
-			setcookie("cart_uid",User::$cart_uid,$time,"/");
-		}
+		CartModel::skipCheckCart();
+		$this->m("CartModel")->setCartUid();
+		
+// 		if (isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"] && (int)strlen($_COOKIE["cart_uid"]) === 32 && ctype_alnum((string)$_COOKIE["cart_uid"]))
+// 		{
+// 			User::$cart_uid = sanitizeAll((string)$_COOKIE["cart_uid"]);
+// 			
+// 			if ($this->m('OrdiniModel')->cartUidAlreadyPresent(User::$cart_uid))
+// 			{
+// 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+// 				$time = time() + v("durata_carrello_wishlist_coupon");
+// 				setcookie("cart_uid",User::$cart_uid,$time,"/");
+// 			}
+// 		}
+// 		else
+// 		{
+// 			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+// 			$time = time() + v("durata_carrello_wishlist_coupon");
+// 			setcookie("cart_uid",User::$cart_uid,$time,"/");
+// 		}
 		
 		OrdiniModel::setStatiOrdine();
 		OrdiniModel::setPagamenti();
