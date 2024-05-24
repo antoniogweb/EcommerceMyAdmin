@@ -619,6 +619,7 @@ class VariabiliModel extends GenericModel {
 		"classe_css_dimensione_testo_colonne_carrello"	=>	"", // classe da applicare sulle colonne del carrello per la dimensione
 		## ORDINE ##
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
+		"mail_ordine_dopo_pagamento_anche_per_utente_ospite"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito) anche nel caso di utente ospite (mail_ordine_dopo_pagamento deve essere impostato a 1 o non ha alcun effetto)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
 		## PAGAMENTI ##

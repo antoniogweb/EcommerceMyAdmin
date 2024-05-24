@@ -137,7 +137,7 @@ class SpedizioninegozioeventiModel extends GenericModel {
 		{
 			$ordine = $ordine["orders"];
 			
-			$htmlArray[] =	'<a href="'.Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."?n=y".'">#'.$ordine["id_o"].'</a>';
+			$htmlArray[] =	'<a href="'.Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y".'">#'.$ordine["id_o"].'</a>';
 		}
 		
 		return implode(", ", $htmlArray);

@@ -434,19 +434,6 @@ class BaseOrdiniController extends BaseController
 		
 		$rightAdminToken = $this->m("OrdiniModel")->getAdminToken($clean["id_o"], $clean["cart_uid"]);
 		
-		if (isset($_POST["modifica_stato_ordine"]) and strcmp($clean["admin_token"],$rightAdminToken) === 0)
-		{
-			$clean['stato'] = $this->request->post("stato","pending","sanitizeAll");
-			$statiPermessi = array("pending","deleted","completed");
-			
-			if (in_array($clean['stato'],$statiPermessi))
-			{
-				$this->m("OrdiniModel")->values = array("stato" => $clean['stato']);
-				$this->m("OrdiniModel")->update(null, "id_o=".$clean["id_o"]." and cart_uid='".$clean["cart_uid"]."'");
-				$data['notice'] = $this->m("OrdiniModel")->notice;
-			}
-		}
-		
 		$res = $this->m("OrdiniModel")->clear()
 							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
 							->send();
@@ -738,11 +725,16 @@ class BaseOrdiniController extends BaseController
 	{
 		$this->createLogFolder();
 		
-		$fp = fopen(ROOT.'/Logs/back_paypal.txt', 'a+');
-		fwrite($fp, date("Y-m-d H:i:s"));
-		fwrite($fp, print_r($_GET,true));
-		fwrite($fp, print_r($_POST,true));
-		fclose($fp);
+// 		$fp = fopen(ROOT.'/Logs/back_paypal.txt', 'a+');
+// 		fwrite($fp, date("Y-m-d H:i:s"));
+// 		fwrite($fp, print_r($_GET,true));
+// 		fwrite($fp, print_r($_POST,true));
+// 		fclose($fp);
+		
+		$logSubmit = new LogModel();
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
+		$logSubmit->write("RITORNO_DA_PAYPAL", "OK",true);
 		
 		VariabiliModel::noCookieAlert();
 		
@@ -1473,7 +1465,7 @@ class BaseOrdiniController extends BaseController
 								call_user_func(v("hook_ordine_confermato"), $clean['lastId']);
 							
 							// mail al cliente
-							if (!v("mail_ordine_dopo_pagamento") || !$utenteRegistrato || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
+							if (!v("mail_ordine_dopo_pagamento") || (!$utenteRegistrato && !v("mail_ordine_dopo_pagamento_anche_per_utente_ospite")) || !OrdiniModel::conPagamentoOnline($ordine) || (number_format($ordine["total"],2,".","") <= 0.00))
 							{
 								ob_start();
 								$tipoOutput = "mail_al_cliente";

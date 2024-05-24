@@ -164,6 +164,10 @@ class PaypalCheckout
 	{
 		$accessToken = $this->getAccessToken();
 		
+		$logSubmit = new LogModel();
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->ordine["cart_uid"]);
+		
 		if ($accessToken !== null)
 		{
 			$valori = array(
@@ -234,10 +238,7 @@ class PaypalCheckout
 			
 			$result = json_decode($result, true); 
 			
-			$logSubmit = new LogModel();
 			$logSubmit->setFullLog($fullLog);
-			$logSubmit->setSvuota(0);
-			$logSubmit->setCartUid($this->ordine["cart_uid"]);
 			
 			if (isset($result["id"]))
 			{

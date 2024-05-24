@@ -2250,7 +2250,7 @@ class OrdiniModel extends FormModel {
 		
 		$linguaUrl = $lingua ? "/$lingua/" : "/";
 		
-		return Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$record["id_o"]."/".$record["cart_uid"]."?n=y";
+		return Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$record["id_o"]."/".$record["cart_uid"]."/".$record["admin_token"]."?n=y";
 	}
 	
 	public static function analizzaErroriCheckout($strutturaErrori)
