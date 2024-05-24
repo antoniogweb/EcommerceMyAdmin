@@ -342,14 +342,18 @@ class BaseOrdiniController extends BaseController
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
-		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"], $clean["admin_token"], v("check_accesso_admin_token_ordine_frontend_da")))
 			$this->redirect("");
 		
 		$res = $this->m("OrdiniModel")->clear()
-							->where(array("id_o" => $clean["id_o"], "cart_uid" => $clean["cart_uid"] ))
+							->where(array(
+								"id_o"		=>	$clean["id_o"],
+								"cart_uid"	=>	$clean["cart_uid"],
+								"id_user"	=>	(int)User::$id,
+							))
 							->send();
 		
-		if ($res[0]["orders"]["stato"] != "pending")
+		if ((int)count($res) === 0 || $res[0]["orders"]["stato"] != "pending")
 			$this->redirect("");
 		
 		$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
@@ -381,6 +385,9 @@ class BaseOrdiniController extends BaseController
 		
 		$data["ordine"] = $res[0]["orders"];
 		
+		if ($res[0]["orders"]["stato"] != "pending")
+			$this->redirect("");
+		
 		$this->append($data);
 		
 		$this->load("modifica_ordine");
@@ -394,7 +401,7 @@ class BaseOrdiniController extends BaseController
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
-		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"], $clean["admin_token"], v("check_accesso_admin_token_ordine_frontend_da")))
 			$this->redirect("");
 		
 		$ordine = $this->m("OrdiniModel")->clear()->where(array(
@@ -434,7 +441,7 @@ class BaseOrdiniController extends BaseController
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
 		
-		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"]))
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"], $clean["admin_token"], v("check_accesso_admin_token_ordine_frontend_da")))
 			$this->redirect("");
 		
 		$rightAdminToken = $this->m("OrdiniModel")->getAdminToken($clean["id_o"], $clean["cart_uid"]);

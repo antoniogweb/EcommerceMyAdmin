@@ -542,74 +542,77 @@ class OrdiniModel extends FormModel {
 	// Crea e sincronizza il cliente se assente, partendo dalla email dell'ordine
 	public function creaSincronizzaClienteSeAssente($idOrdine)
 	{
-		$ordine = $this->selectId((int)$idOrdine);
-		
-		if (!empty($ordine) && !$ordine["id_user"] && $ordine["email"] && checkMail($ordine["email"]))
+		if (!App::$isFrontend && OrdiniModel::tipoOrdine($idOrdine) != "W" && OrdiniModel::isDeletable($idOrdine) && !OrdiniModel::$ordineImportato)
 		{
-			$ruModel = new RegusersModel();
+			$ordine = $this->selectId((int)$idOrdine);
 			
-			$cliente = $ruModel->clear()->where(array(
-				"username"	=>	sanitizeAll($ordine["email"]),
-			))->record();
-			
-			$idCliente = 0;
-			
-			if (empty($cliente))
+			if (!empty($ordine) && !$ordine["id_user"] && $ordine["email"] && checkMail($ordine["email"]))
 			{
-				$ruModel->sValues(array(
-					"username"	=>	$ordine["email"],
-					"password"	=>	self::generaPassword(),
-					"has_confirmed"	=>	0,
-					"nazione_navigazione"	=>	$ordine["nazione"] ? $ordine["nazione"] : v("nazione_default"),
-				));
+				$ruModel = new RegusersModel();
 				
-				if ($ruModel->insert())
-					$idCliente = $ruModel->lId;
-			}
-			else
-				$idCliente = $cliente["id_user"];
-			
-			if ($idCliente)
-			{
-				$this->sValues(array(
-					"id_user"		=>	(int)$idCliente,
-					"registrato"	=>	"Y",
-				));
+				$cliente = $ruModel->clear()->where(array(
+					"username"	=>	sanitizeAll($ordine["email"]),
+				))->record();
 				
-				if ($this->pUpdate((int)$idOrdine))
-					$ruModel->sincronizzaDaOrdine($idCliente, $idOrdine);
+				$idCliente = 0;
 				
-				$ordine["id_user"] = (int)$idCliente;
-			}
-		}
-		
-		// Sincronizzazione spedizione
-		if (!empty($ordine) && $ordine["id_user"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"] || $ordine["cap_spedizione"] || $ordine["telefono_spedizione"]))
-		{
-			$spModel = new SpedizioniModel();
-			
-			$spModel->sValues(array(
-				"id_user"	=>	$ordine["id_user"],
-			));
-			
-			$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
-			
-			foreach ($campiSpedizione as $cs)
-			{
-				$spModel->setValue($cs, $ordine[$cs], "sanitizeDb");
-			}
-			
-			if ($ordine["id_spedizione"])
-				$spModel->update($ordine["id_spedizione"]);
-			else
-			{
-				if ($spModel->insert())
+				if (empty($cliente))
 				{
-					$this->sValues(array(
-						"id_spedizione"		=>	$spModel->lId,
+					$ruModel->sValues(array(
+						"username"	=>	$ordine["email"],
+						"password"	=>	self::generaPassword(),
+						"has_confirmed"	=>	0,
+						"nazione_navigazione"	=>	$ordine["nazione"] ? $ordine["nazione"] : v("nazione_default"),
 					));
 					
-					$this->pUpdate((int)$idOrdine);
+					if ($ruModel->insert())
+						$idCliente = $ruModel->lId;
+				}
+				else
+					$idCliente = $cliente["id_user"];
+				
+				if ($idCliente)
+				{
+					$this->sValues(array(
+						"id_user"		=>	(int)$idCliente,
+						"registrato"	=>	"Y",
+					));
+					
+					if ($this->pUpdate((int)$idOrdine))
+						$ruModel->sincronizzaDaOrdine($idCliente, $idOrdine);
+					
+					$ordine["id_user"] = (int)$idCliente;
+				}
+			}
+			
+			// Sincronizzazione spedizione
+			if (!empty($ordine) && $ordine["id_user"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"] || $ordine["cap_spedizione"] || $ordine["telefono_spedizione"]))
+			{
+				$spModel = new SpedizioniModel();
+				
+				$spModel->sValues(array(
+					"id_user"	=>	$ordine["id_user"],
+				));
+				
+				$campiSpedizione = OpzioniModel::arrayValori("CAMPI_SALVATAGGIO_SPEDIZIONE");
+				
+				foreach ($campiSpedizione as $cs)
+				{
+					$spModel->setValue($cs, $ordine[$cs], "sanitizeDb");
+				}
+				
+				if ($ordine["id_spedizione"])
+					$spModel->update($ordine["id_spedizione"]);
+				else
+				{
+					if ($spModel->insert())
+					{
+						$this->sValues(array(
+							"id_spedizione"		=>	$spModel->lId,
+						));
+						
+						$this->pUpdate((int)$idOrdine);
+					}
 				}
 			}
 		}
@@ -809,17 +812,26 @@ class OrdiniModel extends FormModel {
 // 		return false;
 	}
 	
-	public function recordExists($id_o, $cart_uid)
+	public function recordExists($id_o, $cart_uid, $admin_token = null, $checkAdminDa = 0)
 	{
 		$clean["id_o"] = (int)$id_o;
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		
-		$res = $this->clear()->where(array("id_o"=>$clean["id_o"],"cart_uid"=>$clean["cart_uid"]))->send();
+		$res = $this->clear()->where(array(
+			"id_o"		=>	$clean["id_o"],
+			"cart_uid"	=>	$clean["cart_uid"],
+		))->send();
 		
 		if (count($res) > 0)
 		{
+			if (
+					$checkAdminDa && ((int)$res[0]["orders"]["id_o"] >= (int)$checkAdminDa) && (!isset($admin_token) || !$admin_token || (string)$res[0]["orders"]["admin_token"] !== (string)$admin_token)
+				)
+				return false;
+			
 			return true;
 		}
+		
 		return false;
 	}
 	

@@ -552,6 +552,7 @@ class VariabiliModel extends GenericModel {
 		"imposta_allo_stato_se_tutte_righe_sono_evase"	=> "", // se impostato al codice di uno stato (ex completed), imposta a quello stato se tutte le righe sono state segnate come evase
 		"imposta_allo_stato_se_non_tutte_righe_sono_evase"	=>	"", // se impostato al codice di uno stato (ex pending), imposta a quello stato se non tutte le righe sono state segnate come evase
 		"attiva_da_consegna_in_ordine"	=>	0, // se impostato su 1, solo in admin attiva il campo data_consegna e il rispettivo filtro
+		"check_accesso_admin_token_ordine_frontend_da"	=>	0, // per tutti gli ordini maggiorni di check_accesso_admin_token_ordine_frontend_da, controlla anche admin_token
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

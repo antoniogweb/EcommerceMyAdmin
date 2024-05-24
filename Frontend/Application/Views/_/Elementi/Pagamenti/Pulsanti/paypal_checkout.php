@@ -62,7 +62,7 @@ window.paypal
           throw new Error("<?php echo gtext("Errore nel pagamento, si prega di contattare il negozio.");?>");
         } else {
 			resultMessage("<?php echo gtext("Transazione avvenuta con successo");?>", true);
-			location.href = "<?php echo Url::getRoot()."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"];?>?n=Y&echo_result";
+			location.href = "<?php echo Url::getRoot()."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=Y&echo_result";
         }
       } catch (error) {
 //         console.error(error);

@@ -1047,7 +1047,12 @@ class BaseRegusersController extends BaseController
 			$ordine = OrdiniModel::getByCartUid($_GET["cart_uid"]);
 		
 		if (!empty($ordine))
+		{
+			if ((int)$ordine["id_user"] !== (int)User::$id)
+				$this->redirect("");
+			
 			$data['action'] .= "?cart_uid=".sanitizeHtml($_GET["cart_uid"]);
+		}
 		
 		$campoObbligatoriProvincia = "dprovincia_spedizione";
 		
@@ -1084,7 +1089,7 @@ class BaseRegusersController extends BaseController
 		if ($this->m('SpedizioniModel')->queryResult)
 		{
 			if (!empty($ordine))
-				$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]);
+				$this->redirect("ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]);
 			else
 				$this->redirect("riservata/indirizzi");
 		}
