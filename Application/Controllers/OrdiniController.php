@@ -744,14 +744,14 @@ class OrdiniController extends BaseController {
 		}
 	}
 	
-	public function stampapdf($id = 0, $filename = "")
+	public function stampapdf($id = 0, $idPdf = 0)
 	{
 		if (!v("permetti_ordini_offline"))
 			$this->responseCode(403);
 		
 		$this->clean();
 		
-		$values = $this->m("OrdinipdfModel")->generaORestituisciPdfOrdine($id, $filename);
+		$values = $this->m("OrdinipdfModel")->generaORestituisciPdfOrdine($id, $idPdf);
 		
 		$folder = LIBRARY . "/media/Pdf";
 		
@@ -760,6 +760,8 @@ class OrdiniController extends BaseController {
 			header('Content-type: application/pdf');
 			header('Content-Disposition: inline; filename='.$values["titolo"]);
 			readfile($folder."/".$values["filename"]);
+			
+			$this->m("OrdinipdfModel")->eliminaPdfNonInviati();
 		}
 		else
 			$this->responseCode(403);

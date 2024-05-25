@@ -85,11 +85,17 @@
 					<th><?php echo gtext("Data invio");?></th>
 					<th><?php echo gtext("Tipo / Oggetto mail");?></th>
 					<th style="width:1%;"></th>
+					<th style="width:1%;"></th>
 				</tr>
 				<?php foreach ($mail_altre as $mailFatt) { ?>
 				<tr>
 					<td><?php echo date("d-m-Y H:i", strtotime($mailFatt["data_creazione"]));?></td>
 					<td><?php echo OrdiniModel::getTipoMail($mailFatt["tipo"]);?><br /><i><b><?php echo $mailFatt["oggetto"];?></b></i></td>
+					<td>
+						<?php if ($mailFatt["tabella"] == "orders_pdf" && $mailFatt["id_elemento"]) { ?>
+						<a target="_blank" title="<?php echo gtext("Vedi PDF");?>" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/stampapdf/0/".$mailFatt["id_elemento"];?>"><i class="fa fa-file-pdf-o"></i></a>
+						<?php } ?>
+					</td>
 					<td><i style="font-size:18px;" class="text text-<?php if ($mailFatt["inviata"]) { ?>success<?php } else { ?>danger<?php } ?> fa <?php if ($mailFatt["inviata"]) { ?>fa-check-circle<?php } else { ?>fa-ban<?php } ?>"></i></td>
 				</tr>
 				<?php } ?>

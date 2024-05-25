@@ -39,7 +39,7 @@ class OrdinipdfModel extends GenericModel
         );
     }
     
-    public function generaPdf($id)
+    public function generaPdf($id, $invia = false)
     {
 		createFolderFull("media/Pdf", LIBRARY);
 		
@@ -79,26 +79,26 @@ class OrdinipdfModel extends GenericModel
 		
 		$this->sValues($values);
 		
-		if ($this->insert())
+		if ($invia && $this->insert())
 		{
 			$values["id_o_pdf"] = $this->lId;
 			
 			return $values;
 		}
 		
-		return [];
+		return $values;
     }
     
     // Crea e restituisce i valori della riga della tabella orders_pdf relativa al file PDF dell'ordine
-    // $filename: se presente, cerca quel file senza crearlo
-    public function generaORestituisciPdfOrdine($id = 0, $filename = "")
+    // $idPdf: se presente, cerca quel file senza crearlo
+    public function generaORestituisciPdfOrdine($id = 0, $idPdf = 0)
     {
-		$clean["filename"] = sanitizeAll((string)basename($filename));
+		$clean["idPdf"] = sanitizeAll((int)$idPdf);
 		
-		if ((string)$filename)
+		if ($clean["idPdf"])
 		{
 			return $this->clear()->where(array(
-				"filename"	=>	$clean["filename"],
+				"id_o_pdf"	=>	$clean["idPdf"],
 			))->record();
 		}
 		else
@@ -117,7 +117,7 @@ class OrdinipdfModel extends GenericModel
 		
 		if ($ordine["email"] && checkMail(htmlentitydecode($ordine["email"])))
 		{
-			$values = $oPdfModel->generaPdf($ordine["id_o"]);
+			$values = $oPdfModel->generaPdf($ordine["id_o"], true);
 			
 			$folder = LIBRARY . "/media/Pdf";
 			
@@ -136,7 +136,7 @@ class OrdinipdfModel extends GenericModel
 					"lingua"	=>	$ordine["lingua"],
 					"testo_path"	=>	"Elementi/Mail/OrdiniOffline/mail_pdf_ordine.php",
 					"tabella"	=>	"orders_pdf",
-					"id_elemento"	=>	(int)$values["id_o_pdf"],
+					"id_elemento"	=>	isset($values["id_o_pdf"]) ? (int)$values["id_o_pdf"] : 0,
 					"array_variabili_tema"	=>	array(
 						
 					),
@@ -148,5 +148,16 @@ class OrdinipdfModel extends GenericModel
 		}
 		
 		return false;
+    }
+    
+    // Elimina tutti i file fisici dei PDF che non sono presenti nella tabella orders_pdf
+    public function eliminaPdfNonInviati()
+    {
+		$this->files->setBase(LIBRARY."/media/Pdf");
+		$list = $this->clear()->select("filename")->toList("filename")->send();
+		$list[] = "index.html";
+		$list[] = ".htaccess";
+		
+		$this->files->removeFilesNotInTheList($list);
     }
 }
