@@ -890,6 +890,9 @@ class Route
 		
 		'ticketfile,form',
 		'ticketfile,thumb',
+		
+		'commessi,main',
+		'commessi,form',
 	);
 	
 	//it can be 'yes' or 'no'

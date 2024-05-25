@@ -28,7 +28,7 @@ class OrdinipdfModel extends GenericModel
 		$this->_tables='orders_pdf';
 		$this->_idFields='id_o_pdf';
 		
-		$this->orderBy = 'orders.id_order';
+		$this->_idOrder = 'id_order';
 		
 		parent::__construct();
 	}
@@ -63,12 +63,13 @@ class OrdinipdfModel extends GenericModel
 		
 		Pdf::output("", LIBRARY . "/media/Pdf/" . $fileName, array(), "F", $content);
 		
-		$this->query(array(
-			"update orders_pdf set corrente = 0 where id_o = ?",
-			array(
-				(int)$ordine["id_o"]
-			)
-		));
+		if ($invia)
+			$this->query(array(
+				"update orders_pdf set corrente = 0 where id_o = ?",
+				array(
+					(int)$ordine["id_o"]
+				)
+			));
 		
 		$values = array(
 			"id_o"			=>	(int)$ordine["id_o"],

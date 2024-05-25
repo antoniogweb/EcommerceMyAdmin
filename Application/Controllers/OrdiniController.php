@@ -468,8 +468,14 @@ class OrdiniController extends BaseController {
 		if (v("attiva_gestione_spedizionieri"))
 			$fields .= ",id_spedizioniere";
 		
-		if (v("attiva_da_consegna_in_ordine") && ($queryType == "insert" || (isset($record["tipo_ordine"]) && $record["tipo_ordine"] != "W")))
-			$fields .= ",data_consegna";
+		if ($queryType == "insert" || (isset($record["tipo_ordine"]) && $record["tipo_ordine"] != "W"))
+		{
+			if (v("attiva_da_consegna_in_ordine"))
+				$fields .= ",data_consegna";
+			
+			if (v("attiva_gestione_commessi"))
+				$fields .= ",id_commesso";
+		}
 		
 		if ($this->campiForm)
 			$fields = $this->campiForm;

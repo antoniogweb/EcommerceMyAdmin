@@ -152,6 +152,11 @@
 					<?php echo $form["data_consegna"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["id_commesso"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["id_commesso"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["stato"];?>
 				</div>

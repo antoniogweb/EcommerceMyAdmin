@@ -57,7 +57,7 @@ class FormModel extends GenericModel {
 				),
 				'stato'		=>	array(
 					'type'		=>	'Select',
-					'labelString'=>	'Stato',
+					'labelString'=>	'Stato ordine',
 					'className'	=>	'for_print form-control',
 					'options'	=>	OrdiniModel::$stati,
 // 					'options'	=>	array('pending'=>'In lavorazione','completed'=>'Completo','deleted'=>'Eliminato'),
@@ -322,11 +322,31 @@ class FormModel extends GenericModel {
 					'options'	=>	$this->selectRegione(),
 					'reverse' => 'yes',
 				),
+				'id_commesso'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Commesso',
+					'options'	=>	$this->selectCommesso($id),
+					'reverse' => 'yes',
+				),
 			),
 		);
 		
 		// Override la struttura del form
 		$this->overrideFormStruct();
+	}
+	
+	public function selectCommesso($id)
+	{
+		$cModel = new CommessiModel();
+		
+		$idCommesso = $this->clear()->select("id_commesso")->whereId((int)$id)->field("id_commesso");
+		
+		return array("0" => gtext("-- seleziona --")) + $cModel->clear()->where(array(
+			"OR"	=>	array(
+				"id_commesso"	=>	(int)$idCommesso,
+				"attivo"		=>	1,
+			),
+		))->toList("id_commesso", "titolo")->orderBy("titolo")->send();
 	}
 	
 	public function selectRuoli($frontend = false)

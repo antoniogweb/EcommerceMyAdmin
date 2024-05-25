@@ -513,6 +513,7 @@ class OrdiniModel extends FormModel {
 		{
 			$this->values["tipo_ordine"] = "B";
 			$this->values["fonte"] = "ORDINE_NEGOZIO";
+			$this->values["id_admin"] = (int)User::$id;
 		}
 		
 		if (!OrdiniModel::$ordineImportato)
@@ -2394,6 +2395,14 @@ class OrdiniModel extends FormModel {
 		
 		if (isset($record[$this->_tables]["data_consegna"]) && $record[$this->_tables]["data_consegna"])
 			return date($formato,strtotime($record[$this->_tables]["data_consegna"]));
+		
+		return "";
+    }
+    
+    public function commessoCrud($record)
+    {
+		if ($record["orders"]["id_commesso"])
+			return CommessiModel::getTitolo((int)$record["orders"]["id_commesso"]);
 		
 		return "";
     }
