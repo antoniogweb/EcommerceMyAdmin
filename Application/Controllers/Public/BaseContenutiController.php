@@ -1070,6 +1070,7 @@ class BaseContenutiController extends BaseController
 			$clean['id'] = (int)CategoriesModel::getIdCategoriaDaSezione($firstSection);
 		
 		$children = $this->m("CategoriesModel")->children($clean['id'], true);
+		$children = forceIntDeep($children);
 		
 		if (!in_array("[categoria]",$escludi) && v("attiva_categorie_in_prodotto"))
 		{
