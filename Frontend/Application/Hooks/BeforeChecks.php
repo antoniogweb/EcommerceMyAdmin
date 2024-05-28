@@ -99,7 +99,7 @@ if (defined("APPS"))
 
 Params::$exactUrlMatchRewrite = true;
 
-Params::$allowSessionIdFromGet = true;
+Params::$allowSessionIdFromGet = false;
 Params::$errorStringClassName = "uk-alert uk-alert-danger";
 
 Params::$language = "It";
