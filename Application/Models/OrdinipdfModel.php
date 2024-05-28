@@ -50,18 +50,21 @@ class OrdinipdfModel extends GenericModel
 		if (empty($ordine))
 			return [];
 		
-		ob_start();
-		if (file_exists(Domain::$adminRoot."/Application/Views/Ordinipdf/layout_pdf.php"))
-			include(Domain::$adminRoot."/Application/Views/Ordinipdf/layout_pdf.php");
-		else
-			include(Domain::$adminRoot."/Application/Views/Ordinipdf/layout_pdf.sample.php");
-		$content = ob_get_clean();
-		
 		$fileName = md5(randString(30).uniqid(mt_rand(),true)).".pdf";
 		
-		Pdf::$params["margin_top"] = "40";
+		$titolo = "Ordine_".(int)$ordine["id_o"]."_".date("d_m_Y",strtotime($ordine["data_creazione"])).".pdf";
 		
-		Pdf::output("", LIBRARY . "/media/Pdf/" . $fileName, array(), "F", $content);
+		if (function_exists(v("function_pdf_ordine")))
+			$titolo = call_user_func_array(v("function_pdf_ordine"), array($id, $fileName));
+		else
+		{
+			ob_start();
+			include(Domain::$adminRoot."/Application/Views/Ordinipdf/layout_pdf.sample.php");
+			$content = ob_get_clean();
+			
+// 			Pdf::$params["margin_top"] = "40";
+			Pdf::output("", LIBRARY . "/media/Pdf/" . $fileName, array(), "F", $content);
+		}
 		
 		if ($invia)
 			$this->query(array(
@@ -74,7 +77,7 @@ class OrdinipdfModel extends GenericModel
 		$values = array(
 			"id_o"			=>	(int)$ordine["id_o"],
 			"filename"	=>	$fileName,
-			"titolo"	=>	"Ordine_".(int)$ordine["id_o"]."_".date("d_m_Y",strtotime($ordine["data_creazione"])).".pdf",
+			"titolo"	=>	$titolo,
 			"corrente"	=>	1,
 		);
 		
@@ -139,7 +142,7 @@ class OrdinipdfModel extends GenericModel
 					"tabella"	=>	"orders_pdf",
 					"id_elemento"	=>	isset($values["id_o_pdf"]) ? (int)$values["id_o_pdf"] : 0,
 					"array_variabili_tema"	=>	array(
-						
+						"NOME_CLIENTE"	=>	self::getNominativo($ordine),
 					),
 					"allegati"	=>	array(
 						$nomeFile.".pdf" => $folder."/".$values["filename"],

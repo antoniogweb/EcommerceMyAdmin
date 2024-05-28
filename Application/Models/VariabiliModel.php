@@ -554,6 +554,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_da_consegna_in_ordine"	=>	0, // se impostato su 1, solo in admin attiva il campo data_consegna e il rispettivo filtro
 		"check_accesso_admin_token_ordine_frontend_da"	=>	0, // per tutti gli ordini maggiorni di check_accesso_admin_token_ordine_frontend_da, controlla anche admin_token
 		"attiva_gestione_commessi"		=>	0, // se impostato su 1, attiva la gestione dei commessi nell'ordine
+		"function_pdf_ordine"			=>	"", // funzione per generare il PDF dell'ordine. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout
