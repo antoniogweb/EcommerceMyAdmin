@@ -36,6 +36,8 @@ class App
 	
 	public static $vociMenuApp = [];
 	
+	public static $operazioneSchedulata = false;
+	
 	public static function setPannelli()
 	{
 		self::$pannelli = array(

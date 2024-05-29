@@ -1548,7 +1548,7 @@ class CartModel extends GenericModel {
 	
 	public function checkCartUidCookie($cartUid)
 	{
-		if (!v("svuota_file_cookie_carrello_dopo_x_minuti"))
+		if (!v("svuota_file_cookie_carrello_dopo_x_minuti") || App::$operazioneSchedulata)
 			return true;
 		
 		self::deleteExpiredCartUidFiles();
@@ -1611,7 +1611,7 @@ class CartModel extends GenericModel {
 		$time = time() + v("durata_carrello_wishlist_coupon");
 		setcookie("cart_uid",User::$cart_uid,$time,"/");
 		
-		if (v("svuota_file_cookie_carrello_dopo_x_minuti"))
+		if (v("svuota_file_cookie_carrello_dopo_x_minuti") && !App::$operazioneSchedulata)
 		{
 			createFolderFull("Logs/".self::$cartellaCartUid, ROOT);
 			FilePutContentsAtomic(ROOT."/Logs/".self::$cartellaCartUid."/".User::$cart_uid.".txt", User::$cart_uid);

@@ -73,6 +73,9 @@ if ($creaCache)
 	else
 		User::$isPhone = User::$isMobile = false;
 	
+	// Imposta operazione schedulata: non salvare i file del carrello e quelli delle statistiche
+	App::$operazioneSchedulata = true;
+	
 	ob_start();
 	callHook();
 	$output = ob_get_clean();

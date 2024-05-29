@@ -179,6 +179,9 @@ class PagesstatsModel extends GenericModel {
 	
 	public static function salvaSuFile($idPage = 0, $idC = 0, $idM = 0)
 	{
+		if (App::$operazioneSchedulata)
+			return;
+		
 		createFolderFull("Logs/".self::$folder);
 		
 		$token = randomToken();
