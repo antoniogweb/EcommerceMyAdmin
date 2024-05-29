@@ -55,7 +55,9 @@ if (!defined('ADMIN_PANEL_CONTROLLER'))
 define('ADMIN_PANEL_MAIN_ACTION', 'main');
 
 //redirect to login form if access not allowed:
-define('ADMIN_USERS_CONTROLLER', 'users');
+if (!defined('ADMIN_USERS_CONTROLLER'))
+	define('ADMIN_USERS_CONTROLLER', 'users');
+
 define('ADMIN_USERS_LOGIN_ACTION', 'login');
 
 //admin cookie:
