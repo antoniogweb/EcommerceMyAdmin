@@ -622,6 +622,7 @@ class VariabiliModel extends GenericModel {
 		"classe_css_dimensione_testo_colonne_carrello"	=>	"", // classe da applicare sulle colonne del carrello per la dimensione
 		"svuota_file_cookie_carrello_dopo_x_minuti"	=>	0, // se maggiore di 0 (in minuti) salva i file dei cookie in una cartella ed eliminali dopo i minuti impostati
 		## ORDINE ##
+		"svuota_file_cookie_carrello_in_automatico"	=>	1, // se impostato su 1 (e svuota_file_cookie_carrello_dopo_x_minuti > 0), controlla se eliminare i file dei cookie del carrello in automatico ad ogni refresh (consigliato lasciare 1 per siti con poche visite). Se impostato su 0 bisognerà attivare il comando per eliminare i file in modo schedulato (php carrello.php --azione="elimna-vecchi-file-cookie-carrello")
 		"mail_ordine_dopo_pagamento"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_ordine_dopo_pagamento_anche_per_utente_ospite"	=>	0, // manda la mail dell'ordine al cliente solo dopo che è avventuo il pagamento (solo paypal e carta di credito) anche nel caso di utente ospite (mail_ordine_dopo_pagamento deve essere impostato a 1 o non ha alcun effetto)
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)

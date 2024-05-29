@@ -1572,7 +1572,10 @@ class CartModel extends GenericModel {
 	
 	public static function deleteExpiredCartUidFiles()
 	{
-		$folder = ROOT."/Logs/".self::$cartellaCartUid;
+		if (!v("svuota_file_cookie_carrello_in_automatico"))
+			return;
+		
+		$folder = Domain::$parentRoot."/Logs/".self::$cartellaCartUid;
 		
 		$path = $folder."/last_clean.txt";
 		
