@@ -29,6 +29,7 @@
 	</div>
 <?php } ?>
 
+<?php if (!isset($nascondiStatiSuccessivi)) { ?>
 <div class="panel panel-default no-margin">
 	<div class="panel-body no-padding">
 		<?php 
@@ -67,9 +68,10 @@
 		<?php } ?>
 	</div>
 </div>
+<?php } ?>
 
 <?php if (count($mail_altre) > 0) { ?>
-<div style="margin-top:10px;margin-bottom:0px;" class="panel panel-default">
+<div style="<?php if (!isset($nascondiStatiSuccessivi)) { ?>margin-top:10px;<?php } ?>margin-bottom:0px;" class="panel panel-default">
 	<div class="panel-body no-padding">
 		<table class="table">
 			<tr>
