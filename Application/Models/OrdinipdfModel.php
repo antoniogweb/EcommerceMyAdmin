@@ -58,6 +58,8 @@ class OrdinipdfModel extends GenericModel
 			$titolo = call_user_func_array(v("function_pdf_ordine"), array($id, $fileName));
 		else
 		{
+			$strutturaProdotti = GestionaliModel::getModuloPadre()->infoOrdine((int)$id);
+			
 			ob_start();
 			include(Domain::$adminRoot."/Application/Views/Ordinipdf/layout_pdf.sample.php");
 			$content = ob_get_clean();
@@ -112,7 +114,6 @@ class OrdinipdfModel extends GenericModel
     public function inviaPdf($id)
     {
 		$oModel = new OrdiniModel();
-		$oPdfModel = new OrdinipdfModel();
 		
 		$ordine = $oModel->selectId((int)$id);
 		
@@ -121,7 +122,7 @@ class OrdinipdfModel extends GenericModel
 		
 		if ($ordine["email"] && checkMail(htmlentitydecode($ordine["email"])))
 		{
-			$values = $oPdfModel->generaPdf($ordine["id_o"], true);
+			$values = $this->generaPdf($ordine["id_o"], true);
 			
 			$folder = LIBRARY . "/media/Pdf";
 			

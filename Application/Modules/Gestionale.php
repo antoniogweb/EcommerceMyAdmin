@@ -164,7 +164,8 @@ class Gestionale
 	}
 	
 	// restituisce un output pulito dell'ordine con la testata e le righe e i codici del gestionale già estratti
-	public function infoOrdine($id_o)
+	// $estraiAcconto, se true mostra anche le righe con acconto
+	public function infoOrdine($id_o, $estraiAcconto = false)
 	{
 		$oModel = new OrdiniModel();
 		$rModel = new RigheModel();
@@ -197,9 +198,20 @@ class Gestionale
 			
 			$ordine["valore_iva"] = IvaModel::g(false)->getValore($idIva);
 			
-			$righe = $rModel->clear()->select("id_r,data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page")->where(array(
-				"id_o"	=>	(int)$id_o,
-			))->send(false);
+			$rModel->clear()->select("id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico")
+				->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")
+				->where(array(
+					"id_o"	=>	(int)$id_o,
+				));
+			
+			if (!$estraiAcconto)
+				$rModel->aWhere(array(
+					"ne"		=>	array(
+						"righe.acconto"	=>	1,
+					),
+				));
+			
+			$righe = $rModel->orderBy("righe_tipologie.id_order,righe.id_order")->send(false);
 			
 			$arrayRighe = [];
 			
@@ -245,6 +257,9 @@ class Gestionale
 					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+					"acconto"	=>	0,
+					"id_riga_tipologia"	=>	0,
+					"prodotto_generico"	=>	0,
 				);
 			}
 			
@@ -269,6 +284,9 @@ class Gestionale
 					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+					"acconto"	=>	0,
+					"id_riga_tipologia"	=>	0,
+					"prodotto_generico"	=>	0,
 				);
 			}
 			
@@ -295,6 +313,9 @@ class Gestionale
 					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+					"acconto"	=>	0,
+					"id_riga_tipologia"	=>	0,
+					"prodotto_generico"	=>	0,
 				);
 			}
 			
@@ -321,6 +342,9 @@ class Gestionale
 					"iva"		=>	$ordine["valore_iva"],
 					"fonte"		=>	$ordine["tipo_ordine"],
 					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+					"acconto"	=>	0,
+					"id_riga_tipologia"	=>	0,
+					"prodotto_generico"	=>	0,
 				);
 			}
 			

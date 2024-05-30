@@ -84,6 +84,14 @@ class F
 		return htmlspecialchars($string, $flags, "UTF-8");
 	}
 	
+	public static function toUTF8($string)
+	{
+		if (mb_detect_encoding($string, "ISO-8859-1"))
+			return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
+		
+		return $string;
+	}
+	
 	public static function partial($char = "?")
 	{
 		return partial() ? $char."partial=Y" : "";
@@ -282,7 +290,7 @@ class F
 		{
 			// remove EOT+NOREP+EOX|EOT+<char> sequence (FatturaPA)
 			$string = preg_replace('/(\x{0004}(?:\x{201A}|\x{FFFD})(?:\x{0003}|\x{0004}).)/u', '', $string);
-
+			
 			$regex = '/(
 				[\xC0-\xC1] # Invalid UTF-8 Bytes
 				| [\xF5-\xFF] # Invalid UTF-8 Bytes

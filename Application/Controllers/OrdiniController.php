@@ -691,7 +691,12 @@ class OrdiniController extends BaseController {
 							->where(array("id_o" => $clean["id_o"]))
 							->send();
 		
-		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array("id_o"=>$clean["id_o"]))->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->send();
+		$data["righeOrdine"] = $this->m["RigheModel"]->clear()->where(array(
+			"id_o"=>$clean["id_o"],
+			"ne"		=>	array(
+				"righe.acconto"	=>	1,
+			),
+		))->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")->orderBy("righe_tipologie.id_order,righe.id_order")->send();
 		
 		$this->helper("Menu",$this->applicationUrl.$this->controller,"panel");
 		
