@@ -24,7 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class TraduzioniModel extends GenericModel {
 	
-	public static $contestoStatic = "front";
+	public static $contestoStatic = "front"; // usato quando leggo la lingua
+	public static $contestoStaticEdit = "front"; // usato in edit lingua
 	
 	public static $edit = false;
 	
@@ -126,7 +127,7 @@ class TraduzioniModel extends GenericModel {
 		$traduzione =  $this->clear()->where(array(
 			"lingua"	=>	$lingua,
 			"chiave"	=>	sanitizeDb($record["traduzioni"]["chiave"]),
-			"contesto"	=>	"front",
+			"contesto"	=>	self::$contestoStaticEdit,
 		))->record();
 		
 		if (empty($traduzione))
@@ -137,7 +138,7 @@ class TraduzioniModel extends GenericModel {
 				"chiave"	=>	sanitizeDb($string),
 				"valore"	=>	sanitizeDb($string),
 				"lingua"	=>	$lingua,
-				"contesto"	=>	"front",
+				"contesto"	=>	self::$contestoStaticEdit,
 				"applicativo"	=>	$record["traduzioni"]["applicativo"],
 			);
 			

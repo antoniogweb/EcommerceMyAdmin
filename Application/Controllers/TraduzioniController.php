@@ -32,7 +32,9 @@ class TraduzioniController extends BaseController {
 	
 	public $sezionePannello = "utenti";
 	
-	function __construct($model, $controller, $queryString) {
+	public $mainMenuMain = 'esporta,importa';
+	
+	function __construct($model, $controller, $queryString, $application, $action) {
 		
 		$this->argKeys = array(
 			'valore:sanitizeAll'=>'tutti',
@@ -41,7 +43,7 @@ class TraduzioniController extends BaseController {
 			'tradotta:sanitizeAll'=>'tutti',
 		);
 		
-		parent::__construct($model, $controller, $queryString);
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->helper('Menu','users','panel/main');
 		$this->helper('Array');
@@ -81,7 +83,7 @@ class TraduzioniController extends BaseController {
 		
 		$this->filters = array("valore");
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>300, 'mainMenu'=>'esporta,importa');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>300, 'mainMenu'=>$this->mainMenuMain);
 		
 		foreach ($this->elencoLingue as $codiceLingua => $descLingua)
 		{
@@ -106,7 +108,7 @@ class TraduzioniController extends BaseController {
 					"lingua"	=>	LingueModel::getPrincipaleFrontend(),
 					"tradotta"	=>	$this->viewArgs['tradotta'],
 					"lk" => array('valore' => $this->viewArgs['valore']),
-					"contesto"	=>	"front",
+					"contesto"	=>	TraduzioniModel::$contestoStaticEdit,
 					"gestibile"	=>	1,
 				))->orderBy("id_t");
 		
