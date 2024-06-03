@@ -31,8 +31,7 @@
 						<?php echo Html_Form::select("id_c","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine","","yes", "style='min-width:200px;'");?>
 					</span>
 					
-					<button class="submit_file btn btn-success btn-sm aggiungi_articolo_a_ordine" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi articolo")?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articolo");?></button>
-					<input type="hidden" name="insertAction" value="Aggiungi" />
+					<?php include($this->viewPath("gestisci_associato_pulsante_righe"));?>
 				</form>
 				<?php } else { ?>
 				<p><a class="<?php if (!partial()) { ?>iframe<?php } ?> btn btn-success" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?><?php echo $queryListaRegalo;?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articoli")?></a></p>

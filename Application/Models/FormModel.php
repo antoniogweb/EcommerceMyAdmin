@@ -112,19 +112,19 @@ class FormModel extends GenericModel {
 					'labelString'=>	'Ragione sociale',
 					'entryClass'	=>	'ragione_sociale form_input_text',
 					'className'	=>	'for_print form-control',
-					'wrap'		=>	array(
-						null,null,null,null,
-						"<span class='for_screen'>;;value;;</span>"
-					),
+// 					'wrap'		=>	array(
+// 						null,null,null,null,
+// 						"<span class='for_screen'>;;value;;</span>"
+// 					),
 				),
 				'ragione_sociale_2'		=>	array(
 					'labelString'=>	'Estensione Ragione sociale',
 					'entryClass'	=>	'ragione_sociale_2 form_input_text',
 					'className'	=>	'for_print form-control',
-					'wrap'		=>	array(
-						null,null,null,null,
-						"<span class='for_screen'>;;value;;</span>"
-					),
+// 					'wrap'		=>	array(
+// 						null,null,null,null,
+// 						"<span class='for_screen'>;;value;;</span>"
+// 					),
 				),
 				'p_iva'		=>	array(
 					'labelString'=>	'Partiva iva',
