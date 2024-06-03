@@ -212,7 +212,7 @@ class CategoriesModel extends HierarchicalModel {
 				'id_p'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Genitore',
-					'options'	=>	$this->buildSelect(),
+					'options'	=>	$this->buildSelect(null, true, null, array(), false),
 					'reverse' => 'yes',
 					'entryClass'	=>	'form_input_text help_padre',
 				),

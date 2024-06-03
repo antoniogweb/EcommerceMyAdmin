@@ -567,7 +567,7 @@ class CategoriesController extends BaseController {
 			$this->scaffold->loadForm($queryType,$this->applicationUrl.$this->controller."/form/$queryType/".$clean['id']);
 			
 			if ($queryType === "update")
-				$this->m[$this->modelName]->form->entry["id_p"]->options = $this->m[$this->modelName]->buildSelect($clean['id']);
+				$this->m[$this->modelName]->form->entry["id_p"]->options = $this->m[$this->modelName]->buildSelect($clean['id'], true, null, array(), false);
 			
 			if (isset($this->formFields))
 				$this->scaffold->model->fields = $this->formFields;

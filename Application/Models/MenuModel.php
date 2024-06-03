@@ -442,9 +442,9 @@ class MenuModel extends HierarchicalModel {
 		return $str." ".$titolo;
 	}
 	
-	public function buildSelect($id = null, $showRoot = true, $where = null, $bindValues = array())
+	public function buildSelect($id = null, $showRoot = true, $where = null, $bindValues = array(), $nascondiNonAttivi = true)
 	{
-		return parent::buildSelect($id, true, " (node.lingua= ? OR node.lingua='') and ", array(sanitizeAll(self::$lingua)));
+		return parent::buildSelect($id, true, " (node.lingua= ? OR node.lingua='') and ", array(sanitizeAll(self::$lingua)), $nascondiNonAttivi);
 	}
 	
 	public function buildCategorySelect()
