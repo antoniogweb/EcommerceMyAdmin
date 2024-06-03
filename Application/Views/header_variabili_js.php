@@ -8,4 +8,5 @@
 	var actionName = "<?php echo $this->action;?>";
 	var viewStatus = "<?php echo $this->viewStatus;?>";
 	var partial = <?php echo partial() ? "true" : "false";?>;
+	var altezza_aggiuntiva_ricalcola_altezza_dialog = 0;
 </script>

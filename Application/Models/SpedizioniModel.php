@@ -125,7 +125,7 @@ class SpedizioniModel extends GenericModel {
 	
 	public function indirizzo_spedizione($record)
 	{
-		return "<a class='iframe action_iframe' href='".Url::getRoot()."/spedizioni/form/update/".$record["spedizioni"]["id_spedizione"]."?partial=Y&nobuttons=Y'>".$record["spedizioni"]["indirizzo_spedizione"]."</a>";
+		return "<a class='iframe action_iframe' href='".Url::getRoot()."spedizioni/form/update/".$record["spedizioni"]["id_spedizione"]."?partial=Y&nobuttons=Y'>".$record["spedizioni"]["indirizzo_spedizione"]."</a>";
 	}
 	
 	public function titoloJson($id)
