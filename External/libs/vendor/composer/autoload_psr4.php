@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Sendpulse\\RestApi\\' => array($vendorDir . '/sendpulse/rest-api/src'),
     'SendinBlue\\Client\\' => array($vendorDir . '/sendinblue/api-v3-sdk/lib'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
@@ -25,6 +26,7 @@ return array(
     'Matrix\\' => array($vendorDir . '/markbaker/matrix/classes/src'),
     'Laminas\\Escaper\\' => array($vendorDir . '/laminas/laminas-escaper/src'),
     'Karriere\\PdfMerge\\' => array($vendorDir . '/karriere/pdf-merge/src'),
+    'JmesPath\\' => array($vendorDir . '/mtdowling/jmespath.php/src'),
     'Hubspot\\Tests\\' => array($vendorDir . '/hubspot/api-client/tests'),
     'HubSpot\\Client\\' => array($vendorDir . '/hubspot/api-client/codegen'),
     'HubSpot\\' => array($vendorDir . '/hubspot/api-client/lib'),
@@ -42,6 +44,7 @@ return array(
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
     'Clue\\StreamFilter\\' => array($vendorDir . '/clue/stream-filter/src'),
     'Brevo\\Client\\' => array($vendorDir . '/getbrevo/brevo-php/lib'),
+    'Aws\\' => array($vendorDir . '/aws/aws-sdk-php/src'),
     'Amnuts\\' => array($vendorDir . '/amnuts/opcache-gui/src'),
     'Algolia\\AlgoliaSearch\\' => array($vendorDir . '/algolia/algoliasearch-client-php/src'),
 );

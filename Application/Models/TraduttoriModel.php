@@ -78,4 +78,83 @@ class TraduttoriModel extends GenericModel
 		
 		return parent::update($id, $where);
 	}
+	
+	public static function traduciTabellaTraduzioni($lingua, $idRecord = 0, $limit = 10, $log = null)
+	{
+		if (LingueModel::checkLinguaAttiva($lingua))
+		{
+			$tModel = new TraduzioniModel();
+			
+			$contesto = array("front");
+			
+			if (LingueModel::permettiCambioLinguaBackend())
+				$contesto[] = "back";
+			
+			// Estraggo gli elementi da tradurre
+			$elementiDaTradurre = $tModel->clear()
+				->select("*")
+				->inner("traduzioni as principale")
+				->on(array(
+					"traduzioni.chiave = principale.chiave and traduzioni.contesto = principale.contesto and principale.lingua = ?",
+					array(sanitizeAll(v("lingua_default_frontend")))
+				))
+				->where(array(
+					"lingua"	=>	sanitizeAll($lingua),
+					"in"		=>	array(
+						"contesto"	=>	sanitizeAllDeep($contesto),
+					),
+					"tradotta"	=>	0,
+				));
+			
+			if ($idRecord)
+				$tModel->aWhere(array(
+					"principale.id_t"	=>	(int)$idRecord,
+				));
+			
+			if ($limit)
+				$tModel->limit($limit);
+			
+			$elementiDaTradurre = $tModel->send();
+			
+			if (count($elementiDaTradurre) > 0)
+			{
+				foreach ($elementiDaTradurre as $riga)
+				{
+					if (!trim($riga["principale"]["valore"]))
+						continue;
+					
+					$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], v("lingua_default_frontend"), $lingua);
+					
+					if ($traduzione !== false)
+					{
+						$traduzione = trim($traduzione);
+						
+						$tModel->sValues(array(
+							"valore"	=>	$traduzione,
+						));
+						
+						$tModel->update((int)$riga["traduzioni"]["id_t"]);
+						
+						$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".v("lingua_default_frontend").":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
+						
+						if ($log)
+							$log->writeString($testoLog);
+						
+						echo $testoLog."\n";
+					}
+				}
+				// Estraggo le righe da tradurre
+// 				$testiDaTradurre = $tModel->clear()->where(array(
+// 					"lingua"	=>	sanitizeAll(v("lingua_default_frontend")),
+// 					"in"		=>	array(
+// 						"contesto"	=>	sanitizeAllDeep($contesto),
+// 					),
+// 				));
+// 				
+// 				$testiDaTradurre = $tModel->send();
+				
+// 				print_r($elementiDaTradurre);
+			}
+		}
+	}
 }

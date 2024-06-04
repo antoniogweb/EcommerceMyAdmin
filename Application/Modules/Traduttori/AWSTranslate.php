@@ -24,12 +24,12 @@ class AWSTranslate extends Traduttore
 {
 	public function gCampiForm()
 	{
-		return 'titolo,attivo,key_1,key_2';
+		return 'titolo,attivo,regione,key_1,key_2';
 	}
 	
 	public function isAttivo()
 	{
-		if ($this->params["attivo"] && trim($this->params["key_1"]))
+		if ($this->params["attivo"] && trim($this->params["key_1"]) && trim($this->params["key_2"]) && trim($this->params["regione"]))
 			return true;
 		
 		return false;
@@ -41,5 +41,37 @@ class AWSTranslate extends Traduttore
 		$model->formStruct["entries"]["key_2"]["labelString"] = "Secret AWS";
 		$model->formStruct["entries"]["key_2"]["type"] = "Password";
 		$model->formStruct["entries"]["key_2"]["fill"] = true;
+	}
+	
+	public function traduci($textToTranslate, $currentLanguage, $targetLanguage)
+	{
+		if (!$this->isAttivo())
+			return false;
+		
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+		
+		$client = new Aws\Translate\TranslateClient([
+			'region' => $this->getParam("regione"),
+			'version' => 'latest',
+			'credentials' => [
+				'key'    => $this->getParam("key_1"),
+				'secret' => $this->getParam("key_2"),
+			],
+		]);
+		
+		try {
+			$result = $client->translateText([
+				'SourceLanguageCode' => $currentLanguage,
+				'TargetLanguageCode' => $targetLanguage,
+				'Text' => $textToTranslate,
+			]);
+			
+			return $result['TranslatedText']."\n";
+		} catch(Aws\Exception\AwsException $e) {
+			
+			return false;
+			// output error message if fails
+// 			echo "Failed: ".$e->getMessage()."\n";
+		}
 	}
 }

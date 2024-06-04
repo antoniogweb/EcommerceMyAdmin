@@ -57,6 +57,17 @@ class LingueModel extends GenericModel
 		return self::$valoriAttivi;
 	}
 	
+	// Controlla che la lingua esista e sia attiva
+	public static function checkLinguaAttiva($lingua)
+	{
+		$lingue = self::getValoriAttivi();
+		
+		if (isset($lingue[$lingua]))
+			return true;
+		
+		return false;
+	}
+	
 	public static function getPrincipaleFrontend()
 	{
 		$l = new LingueModel();

@@ -57,26 +57,7 @@ class TraduzioniModel extends GenericModel {
 	
 	public static function checkTraduzioneAttiva()
 	{
-// 		if (isset($_GET["traduzioni1234"]) and strcmp($_GET["traduzioni1234"],"Y") === 0)
-// 		{
-// 			setcookie("traduzioni", "Y", time() + 2592000, '/');
-// 			
-// 			$_COOKIE["traduzioni"] = "Y";
-// 			
-// 			self::$edit = true;
-// 		}
-// 		else if (isset($_GET["traduzioni1234"]) and strcmp($_GET["traduzioni1234"],"N") === 0)
-// 		{
-// 			setcookie("traduzioni", "Y", time() - 3600, '/');
-// 			
-// 			if (isset($_COOKIE["traduzioni"]))
-// 				unset($_COOKIE["traduzioni"]);
-// 			
-// 			self::$edit = false;
-// 		}
-// 		
-// 		if (isset($_COOKIE["traduzioni"]))
-// 			self::$edit = true;
+		
 	}
 	
 	public function ottieniTraduzioni($contesto = null)
