@@ -76,7 +76,7 @@ class PagesstatsModel extends GenericModel {
     
     private function getStatsUid()
 	{
-		if (isset($_COOKIE["uid_stats"]))
+		if (isset($_COOKIE["uid_stats"]) && $_COOKIE["uid_stats"] && (int)strlen($_COOKIE["uid_stats"]) === 32 && ctype_alnum((string)$_COOKIE["uid_stats"]))
 			return $_COOKIE["uid_stats"];
 		else
 		{
