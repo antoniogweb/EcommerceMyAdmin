@@ -22,29 +22,23 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class PixelModel extends GenericModel
+class TraduttoriModel extends GenericModel
 {
 	use DIModel;
 	
 	public static $modulo = null;
 	
-	public $cartellaModulo = "Pixel";
-	public $classeModuloPadre = "Pixel";
+	public $cartellaModulo = "Traduttori";
+	public $classeModuloPadre = "Traduttore";
 	
 	public function __construct() {
-		$this->_tables='pixel';
-		$this->_idFields='id_pixel';
+		$this->_tables='traduttori';
+		$this->_idFields='id_traduttore';
 		
 		$this->_idOrder = 'id_order';
 		
 		parent::__construct();
 	}
-	
-	public function relations() {
-        return array(
-			'eventi' => array("HAS_MANY", 'PixeleventiModel', 'id_pixel', null, "CASCADE"),
-        );
-    }
 	
 	public function setFormStruct($id = 0)
 	{
@@ -57,6 +51,11 @@ class PixelModel extends GenericModel
 					"options"	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Attivando questo traduttore verranno disattivati gli altri")."</div>"
+					),
 				),
 			),
 		);
@@ -70,5 +69,13 @@ class PixelModel extends GenericModel
 			"codice"	=>	sanitizeDb((string)$codice),
 			"attivo"	=>	1,
 		))->rowNumber();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		if (isset($this->values["attivo"]) && $this->values["attivo"])
+			$this->db->query("update traduttori set attivo = 0 where 1");
+		
+		return parent::update($id, $where);
 	}
 }

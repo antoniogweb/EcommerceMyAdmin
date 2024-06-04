@@ -1,0 +1,1 @@
+INSERT INTO `traduttori` (`id_traduttore`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `key_1`, `key_2`, `id_order`) VALUES (NULL, CURRENT_TIMESTAMP, 'AWS Translate', '0', 'AWSTRANSLATE', 'AWSTranslate', '', '', '1')

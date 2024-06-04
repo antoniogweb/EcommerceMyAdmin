@@ -894,6 +894,9 @@ class Route
 		
 		'commessi,main',
 		'commessi,form',
+		
+		'traduttori,main',
+		'traduttori,form',
 	);
 	
 	//it can be 'yes' or 'no'
@@ -903,5 +906,4 @@ class Route
 	//define the urls of your website
 	//you have to set $rewrite to 'yes'
 	public static $map = array();
-
 }
