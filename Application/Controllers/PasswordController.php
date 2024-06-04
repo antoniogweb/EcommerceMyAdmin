@@ -67,7 +67,7 @@ class PasswordController extends BaseController {
 			}
 			else
 			{
-				$data['notice'] = "<div class='alert'>Vecchia password sbagliata</div>\n";
+				$data['notice'] = "<div class='alert alert-danger'>Vecchia password sbagliata</div>\n";
 			}
 		}
 		$data['menù'] = $this->h['Menu']->render('panel');

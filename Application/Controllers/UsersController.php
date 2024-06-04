@@ -96,10 +96,10 @@ class UsersController extends BaseController {
 					$this->redirect($this->redirectUrlDopoLogin,0);
 					break;
 				case 'login-error':
-					$data['notice'] = '<div class="alert">Username o password sbagliati</div>';
+					$data['notice'] = '<div class="alert alert-danger">Username o password sbagliati</div>';
 					break;
 				case 'wait':
-					$data['notice'] = '<div class="alert">Devi aspettare 5 secondi prima di poter eseguire nuovamente il login</div>';
+					$data['notice'] = '<div class="alert alert-danger">Devi aspettare 5 secondi prima di poter eseguire nuovamente il login</div>';
 					break;
 			}
 		}
