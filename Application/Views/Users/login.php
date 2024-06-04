@@ -3,8 +3,9 @@
 
 <div id="ext_login">
 
-	<?php echo $notice; ?>
+	
 	<form action = '<?php echo $action;?>' method = 'POST' class="form-signin" role="form">
+		<?php echo $notice; ?>
 		<h3 class="form-signin-heading">Esegui il login</h3>
 		<input class="form-control" name='username' type="text" autofocus="" placeholder="Username">
 		<input class="form-control" name='password' type="password" placeholder="Password">

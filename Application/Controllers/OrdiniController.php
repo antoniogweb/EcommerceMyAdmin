@@ -534,6 +534,51 @@ class OrdiniController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function inviipdf($id)
+	{
+		$this->mainShift = 1;
+		
+		if (!v("permetti_ordini_offline") || OrdiniModel::tipoOrdine((int)$id) == "W")
+			$this->redirect("ordini/vedi/".(int)$id);
+		
+		$this->m["OrdiniModel"]->checkAggiorna((int)$id);
+		
+		Helper_Menu::$htmlLinks["torna_ordine"]["url"] = 'vedi/'.(int)$id;
+		
+		$this->_posizioni['inviipdf'] = 'class="active"';
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_o";
+		
+		$this->modelName = "OrdinipdfModel";
+		
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->mainFields = array("cleanDateTime", "linkPdfCrud");
+		$this->mainHead = "Data invio,File PDF";
+		
+		$pulsantiMenu = "torna_ordine";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"inviipdf/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->where(array("id_o"=>$clean['id']))->orderBy("data_creazione desc")->convert()->save();
+		
+		$this->getTabViewFields("inviipdf");
+		
+		$this->mainButtons = "";
+		
+		parent::main();
+		
+		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
+		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
+		$data["tipoSteps"] = "modifica";
+		$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine($clean["id"], "ORDINE");
+		$data["ordine"] = $this->m["OrdiniModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function righe($id = 0)
 	{
 		$this->mainShift = 1;

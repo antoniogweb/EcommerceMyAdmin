@@ -31,6 +31,9 @@ class RegusersModel extends FormModel {
 	public $campoValore = "id_user";
 	public $metodoPerTitolo = "titoloJson";
 	
+	public $spedizioniModelAssociato = "SpedizioniModel";
+	public $ordiniModelAssociato = "OrdiniModel";
+	
 	public function __construct() {
 		$this->_tables='regusers';
 		$this->_idFields='id_user';

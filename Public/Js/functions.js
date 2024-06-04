@@ -205,7 +205,7 @@ function aggAlteIfr()
 	if (partial && window.frameElement && window.parent.$(".admin_panel").length > 0)
 	{
 		setTimeout(function(){
-			var altezza = $(".wrapper").height();
+			var altezza = $(".wrapper").height() + altezza_aggiuntiva_ricalcola_altezza_dialog;
 			window.parent.$("iframe.iframe_dialog").attr("height",altezza + "px");
 			window.parent.$('#my_modal').modal({refresh:true});
 		}, 100);

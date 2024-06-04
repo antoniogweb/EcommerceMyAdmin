@@ -298,6 +298,8 @@ class RegusersController extends BaseController {
 		if ((int)$this->viewArgs["ticket"] === 1)
 			$this->insertRedirect = false;
 		
+		$this->getTabViewFields("form");
+		
 		parent::form($queryType, $id);
 		
 		if ((int)$this->viewArgs["ticket"] === 1)
@@ -335,7 +337,7 @@ class RegusersController extends BaseController {
 		
 		$this->mainButtons = "ldel";
 		
-		$this->modelName = "SpedizioniModel";
+		$this->modelName = $this->m($this->modelName)->spedizioniModelAssociato;
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
@@ -364,7 +366,8 @@ class RegusersController extends BaseController {
 		
 		$this->mainButtons = "";
 		
-		$this->modelName = "OrdiniModel";
+		$this->modelName = $this->m($this->modelName)->ordiniModelAssociato;
+		
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		

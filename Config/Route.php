@@ -92,6 +92,7 @@ class Route
 		'ordini,vediscriptpixel',
 		'ordini,stampapdf',
 		'ordini,inviapdf',
+		'ordini,inviipdf',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',
