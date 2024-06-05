@@ -254,13 +254,10 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_prodotti"		=>	"prodotti",
 		"url_elenco_clienti"		=>	"regusers",
 		"permetti_acquisto_anonimo"	=>	1,
-		"hook_ordine_confermato"	=>	"",
 		"attiva_campo_classe_personalizzata_menu"	=>	0,
 		"attiva_gestione_pagamenti"	=>	0,
-		"hook_update_ordine"		=>	"",
 		"codice_fiscale_aziendale"	=>	"",
 		"partita_iva_aziendale"		=>	"",
-		"hook_set_placeholder"		=>	"",
 		"placeholder_prodotti_o_servizi"	=>	"",
 		"responsabile_trattamento_dati"	=>	"",
 		"email_responsabile_trattamento_dati"	=>	"",
@@ -748,6 +745,11 @@ class VariabiliModel extends GenericModel {
 		"theme_folder"				=>	"", // tema frontend
 		### TRADUZIONI ##
 		"attiva_gestione_traduttori"	=>	0, // se impostato a 1, permette di configurare i traduttori e attiva la possibiulità di usare le traduzioni automatiche
+		### HOOK ##
+		"hook_ordine_confermato"	=>	"", // se diversa da blank, funzione che viene chiamata dopo la conferma dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
+		"hook_update_ordine"		=>	"", // se diversa da blank, funzione che viene chiamata dopo la modifica dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
+		"hook_set_placeholder"		=>	"", // se diversa da blank, funzione che viene chiamata sui placeholder. Come unico argomento gli viene passato l'array di tutti i placeholder (VariabiliModel::$placeholders)
+		"hook_after_login_admin"	=>	"", // se diversa da blank, funzione che viene chiamata dopo il login in admin. Gli viene passato un riferimento al controller come unico parametro
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

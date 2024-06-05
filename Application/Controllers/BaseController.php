@@ -103,6 +103,10 @@ class BaseController extends Controller
 			
 			if (!ControllersModel::checkAccessoAlController(array($controller)))
 				$this->responseCode(403);
+			
+			// Hook ad aggiornamento dell'ordine
+			if (v("hook_after_login_admin"))
+				callFunction(v("hook_after_login_admin"), $this, v("hook_after_login_admin"));
 		}
 		
 		$this->init();
