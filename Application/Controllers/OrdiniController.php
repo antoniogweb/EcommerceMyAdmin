@@ -609,6 +609,10 @@ class OrdiniController extends BaseController {
 			$this->colProperties = array();
 		}
 		
+		$this->rowAttributes = array(
+			"class"	=>	"listRow id_tipo_riga_;righe.id_riga_tipologia;",
+		);
+		
 		$this->mainFields = array("immagineCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "evasaCrud", "acquistabileCrud");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Evasa,Acq.";
 		

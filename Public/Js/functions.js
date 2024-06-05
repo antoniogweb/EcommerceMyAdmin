@@ -720,7 +720,7 @@ $(document).ready(function(){
 		that.parent().find("i.fa-spinner").css("display", "block");
 		
 		$.ajaxQueue({
-			url: baseUrl + "/traduzioni/aggiorna/",
+			url: baseUrl + "/" + applicationName + controllerName + "/aggiorna/",
 			cache:false,
 			async: true,
 			dataType: "html",

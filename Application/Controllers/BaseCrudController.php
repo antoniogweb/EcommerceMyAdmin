@@ -59,6 +59,7 @@ trait BaseCrudController
 				'width'	=>	'60px',
 			),
 		);
+	public $rowAttributes = array();
 	public $inverseColProperties = array();
 	public $filters = array();
 	public $aggregateFilters = true;
@@ -287,6 +288,7 @@ trait BaseCrudController
 		
 		$this->scaffold->itemList->colProperties = $this->colProperties;
 		$this->scaffold->itemList->inverseColProperties = $this->inverseColProperties;
+		$this->scaffold->itemList->rowAttributes = $this->rowAttributes;
 		
 		$this->scaffold->itemList->setFilters($this->filters);
 		
