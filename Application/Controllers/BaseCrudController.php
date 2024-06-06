@@ -194,6 +194,7 @@ trait BaseCrudController
 			if (v("usa_transactions"))
 				$this->m[$this->modelName]->db->commit();
 			
+			$this->clean();
 			return;
 		}
 		
