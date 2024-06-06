@@ -27,12 +27,14 @@ $options = getopt(null, array(
 	"lingua::",
 	"nazione::",
 	"operazione::",
+	"solo_attivi::",
 ));
 
 $default = array(
 	"lingua"		=>	"it",
 	"nazione"		=>	"it",
 	"operazione"	=>	"cerca",
+	"solo_attivi"	=>	1,
 );
 
 $params = array_merge($default, $options);
@@ -51,7 +53,7 @@ if (MotoriricercaModel::getModulo()->isAttivo())
 	
 // 	print_r($params);
 	if ($params["operazione"] == "invia_oggetti")
-		$res = MotoriricercaModel::getModulo()->inviaProdotti(0, "prodotti_".$params["lingua"], $params["lingua"]);
+		$res = MotoriricercaModel::getModulo()->inviaProdotti(0, "prodotti_".$params["lingua"], $params["lingua"], $params["solo_attivi"]);
 	else if ($params["operazione"] == "svuota_oggetti")
 		$res = MotoriricercaModel::getModulo()->svuotaProdotti("prodotti_".$params["lingua"]);
 		

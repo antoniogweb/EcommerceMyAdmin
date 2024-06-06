@@ -55,13 +55,13 @@ class Algolia extends MotoreRicerca
 		return $client;
 	}
 	
-	public function inviaProdotti($idPage = 0, $indice = "prodotti_it", $lingua = "it")
+	public function inviaProdotti($idPage = 0, $indice = "prodotti_it", $lingua = "it", $soloAttivi = 1)
 	{
 		$client = $this->getClient("scrivi");
 		
 		$index = $client->initIndex($indice);
 		
-		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "pulisciXss");
+		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "pulisciXss", $soloAttivi);
 		
 		if (count($daEliminare) > 0)
 			print_r($index->deleteObjects($daEliminare));

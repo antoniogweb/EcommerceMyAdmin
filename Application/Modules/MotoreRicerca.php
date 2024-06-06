@@ -30,9 +30,9 @@ class MotoreRicerca
 	
 	// ottieni tutti gli oggetti da inviare
 	// $model è un'istanza di PagesModel e può contenere una where clause
-	public function ottieniOggetti($idPage = 0, $model = null, $cacheTime = 0)
+	public function ottieniOggetti($idPage = 0, $model = null, $cacheTime = 0, $soloAttivi = 1)
 	{
-		$strutturaProdotti = $this->strutturaFeedProdotti($model, (int)$idPage, 0, false, $cacheTime);
+		$strutturaProdotti = $this->strutturaFeedProdotti($model, (int)$idPage, 0, false, $cacheTime, 0, $soloAttivi);
 		
 		return $strutturaProdotti;
 	}
@@ -145,11 +145,11 @@ class MotoreRicerca
 		return $valore;
 	}
 	
-	protected function getOggettiDaInviareEdEliminare($idPage = 0, $cleanFunction = "none")
+	protected function getOggettiDaInviareEdEliminare($idPage = 0, $cleanFunction = "none", $soloAttivi = 1)
 	{
 		$ultimiDatiInviati = $this->leggiDatiInviati();
 		
-		$oggetti = $this->ottieniOggetti($idPage);
+		$oggetti = $this->ottieniOggetti($idPage, null, 0, $soloAttivi);
 		
 		$nomeCampoId = $this->getNomeCampoId();
 		

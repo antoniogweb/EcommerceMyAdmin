@@ -984,7 +984,7 @@ class PagesModel extends GenericModel {
 		$this->checkAliasAll($id);
 	}
 	
-	public function setCampoCerca($id, $idC = 0, $forza = false, $lingua = null)
+	public function setCampoCerca($id, $idC = 0, $forza = false, $lingua = null, $soloAttivi = 1)
 	{
 		if (!self::$estraiCampoCercaQuandoSalvi && !$forza)
 			return;
@@ -1014,7 +1014,7 @@ class PagesModel extends GenericModel {
 				
 				$codice = strtolower($codice);
 				Params::sLang($codice);
-				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC);
+				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC, $soloAttivi);
 				Params::rLang();
 				
 				if (count($strutturaProdotti) > 0)

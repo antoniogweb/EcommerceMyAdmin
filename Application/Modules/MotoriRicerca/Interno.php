@@ -42,9 +42,9 @@ class Interno extends MotoreRicerca
 		return "";
 	}
 	
-	public function inviaProdotti($idPage = 0, $indice = "prodotti_it", $lingua = "it")
+	public function inviaProdotti($idPage = 0, $indice = "prodotti_it", $lingua = "it", $soloAttivi = 1)
 	{
-		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "none");
+		list($struct, $daEliminare, $log) = $this->getOggettiDaInviareEdEliminare((int)$idPage, "none", $soloAttivi);
 		
 		if (count($struct) > 0)
 		{
@@ -60,7 +60,7 @@ class Interno extends MotoreRicerca
 				if (isset($s[$nomeCampoId]))
 				{
 					echo $s[$nomeCampoId]."\n";
-					$p->setCampoCerca((int)$s[$nomeCampoId], 0, true, $lingua);
+					$p->setCampoCerca((int)$s[$nomeCampoId], 0, true, $lingua, $soloAttivi);
 				}
 			}
 			

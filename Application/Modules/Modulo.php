@@ -132,7 +132,7 @@ trait Modulo
 		}
 	}
 	
-	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0, $combinazioniLinkVeri = null, $cacheTime = 0, $idShop = 0)
+	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0, $combinazioniLinkVeri = null, $cacheTime = 0, $idShop = 0, $soloAttivi = 1)
 	{
 		$c = new CategoriesModel();
 		$comb = new CombinazioniModel();
@@ -189,11 +189,14 @@ trait Modulo
 		}
 		
 		$p->select($select)
-			->addWhereAttivo()
+// 			->addWhereAttivo()
 			->addJoinTraduzionePagina()
 			->left(array("marchio"))
 			->addWhereCategoria((int)$idShop);
 // 			->orderBy("pages.title");
+		
+		if ($soloAttivi)
+			$p->addWhereAttivo();
 		
 		if (!isset($p->orderBy))
 			$p->orderBy("pages.title");
