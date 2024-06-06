@@ -192,7 +192,7 @@ class RigheModel extends GenericModel {
 		
 		$cModel = new CombinazioniModel();
 		
-		if (!$cModel->clear()->whereId((int)$record["righe"]["id_c"])->field("acquistabile"))
+		if ($record["pages"]["attivo"] == "N" || !$cModel->clear()->whereId((int)$record["righe"]["id_c"])->field("acquistabile"))
 			return "<i class='text-danger fa fa-ban'></i>";
 	}
 	

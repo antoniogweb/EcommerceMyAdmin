@@ -483,18 +483,27 @@ class CartModel extends GenericModel {
 			$aliquota = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : $r["iva"];
 			
 			if (v("scorpora_iva_prezzo_estero"))
+			{
 				$nuovoPrezzoUnitarioIvato = number_format(($r["price_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");
+				$nuovoPrezzoUnitarioInteroIvato = number_format(($r["prezzo_intero_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");
+			}
 			else
+			{
 				$nuovoPrezzoUnitarioIvato = $r["price_ivato"];
+				$nuovoPrezzoUnitarioInteroIvato = $r["prezzo_intero_ivato"];
+			}
 			
 			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
+			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitarioInteroIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
 			
-			if ($r["prezzo_intero_ivato"] > 0)
-				$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
-			else
-				$rapporto = 1;
+// 			if ($r["prezzo_intero_ivato"] > 0)
+// 				$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
+// 			else
+// 				$rapporto = 1;
+// 			
+// 			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitario / $rapporto, v("cifre_decimali"), ".", "");
 			
-			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitario / $rapporto, v("cifre_decimali"), ".", "");
+// 			echo $nuovoPrezzoUnitarioIntero."-".$r["prezzo_intero"]."<br />";
 			
 			if ($nuovoPrezzoUnitario != $r["price"] || $nuovoPrezzoUnitarioIntero != $r["prezzo_intero"])
 			{

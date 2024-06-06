@@ -4637,7 +4637,12 @@ class PagesModel extends GenericModel {
 		}
 		else if (v("immagini_separate_per_variante"))
 		{
-			$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
+			if (App::$isFrontend)
+				$immagini = ImmaginiModel::immaginiCombinazione((int)$idC);
+			else
+				$immagini = ImmaginiModel::g()->where(array(
+					"id_c"	=>	(int)$idC
+				))->orderBy("immagini.id_order")->send(false);
 			
 			if (count($immagini) > 0)
 				$immagine = $immagini[0]["immagine"];
