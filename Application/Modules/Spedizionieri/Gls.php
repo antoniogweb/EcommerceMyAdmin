@@ -152,10 +152,10 @@ class Gls extends Spedizioniere
 				{
 					$temp = array(
 						"CodiceContrattoGls"	=>	$params["codice_contratto"],
-						"RagioneSociale"		=>	F::toUTF8(F::sanitizeXML($record["ragione_sociale_2"])),
-						"Indirizzo"				=>	F::toUTF8(F::sanitizeXML($record["indirizzo"])),
-						"Localita"				=>	F::toUTF8(F::sanitizeXML($record["citta"])),
-						"Zipcode"				=>	F::toUTF8(F::sanitizeXML($record["cap"])),
+						"RagioneSociale"		=>	F::sanitizeXML($record["ragione_sociale_2"]),
+						"Indirizzo"				=>	F::sanitizeXML($record["indirizzo"]),
+						"Localita"				=>	F::sanitizeXML($record["citta"]),
+						"Zipcode"				=>	F::sanitizeXML($record["cap"]),
 						"Provincia"				=>	$record["provincia"],
 						"PesoReale"				=>	number_format($collo["peso"],1,",",""),
 						"TipoPorto"				=>	"f",
@@ -163,7 +163,7 @@ class Gls extends Spedizioniere
 						"GeneraPdf"				=>	4,
 						"ContatoreProgressivo"	=>	$collo["id_spedizione_negozio_collo"],
 						"Colli"					=>	1,
-						"TelefonoDestinatario"	=>	F::toUTF8(F::sanitizeXML($record["telefono"])),
+						"TelefonoDestinatario"	=>	F::sanitizeXML($record["telefono"]),
 					);
 					
 					if ($record["codice_bda"])
@@ -179,7 +179,7 @@ class Gls extends Spedizioniere
 					}
 					
 					if ($record["note_interne"])
-						$temp["NoteSpedizione"] = F::toUTF8(F::sanitizeXML($record["note_interne"]));
+						$temp["NoteSpedizione"] = F::sanitizeXML($record["note_interne"]);
 					
 					if ($record["importo_assicurazione"] > 0 && !$importoAssicurazioneIndicato)
 					{
@@ -199,8 +199,8 @@ class Gls extends Spedizioniere
 					{
 						$temp["Provincia"] = $record["nazione"];
 						$temp["TipoSpedizione"] = "P";
-						$temp["PersonaRiferimento"] = F::toUTF8(F::sanitizeXML($record["ragione_sociale_2"]));
-						$temp["TelefonoDestinatario"] = F::toUTF8(F::sanitizeXML($record["telefono"]));
+						$temp["PersonaRiferimento"] = F::sanitizeXML($record["ragione_sociale_2"]);
+						$temp["TelefonoDestinatario"] = F::sanitizeXML($record["telefono"]);
 					}
 					
 					$parcelArray[] = $temp;

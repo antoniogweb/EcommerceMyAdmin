@@ -288,6 +288,8 @@ class F
 	{
 		if (!empty($string)) 
 		{
+			$string = str_replace("‬","", $string);
+			
 			// remove EOT+NOREP+EOX|EOT+<char> sequence (FatturaPA)
 			$string = preg_replace('/(\x{0004}(?:\x{201A}|\x{FFFD})(?:\x{0003}|\x{0004}).)/u', '', $string);
 			
