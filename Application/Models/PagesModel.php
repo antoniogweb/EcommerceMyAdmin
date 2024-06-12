@@ -917,7 +917,7 @@ class PagesModel extends GenericModel {
 	
 	public function buildCategorySelect()
 	{
-		return $this->hModel->buildSelect();
+		return $this->hModel->buildSelect(null, true, null, array(), false);
 	}
 	
 	public function aggiornaStatoProdottiInPromozione()
