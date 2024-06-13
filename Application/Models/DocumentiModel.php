@@ -201,6 +201,14 @@ class DocumentiModel extends GenericModel {
 	{
 		if (!self::$uploadFile || $this->upload("insert"))
 		{
+			if (self::$uploadFile && !isset($this->values["estensione"]))
+			{
+				$ext = $this->files->ext;
+				
+				if (isset($ext) && $ext)
+					$this->setValue("estensione", $ext);
+			}
+			
 			$res = parent::insert();
 			
 			if ($res && v("attiva_reggroups_tipi"))
