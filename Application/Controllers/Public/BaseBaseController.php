@@ -524,7 +524,7 @@ class BaseBaseController extends Controller
 		//set the cookie for the wishlist
 		if (isset($_COOKIE["wishlist_uid"]) && $_COOKIE["wishlist_uid"] && (int)strlen($_COOKIE["wishlist_uid"]) === 32 && ctype_alnum((string)$_COOKIE["wishlist_uid"]))
 		{
-			User::$wishlist_uid = sanitizeAll($_COOKIE["wishlist_uid"]);
+			User::$wishlist_uid = sanitizeAll((string)$_COOKIE["wishlist_uid"]);
 		}
 		else
 		{
