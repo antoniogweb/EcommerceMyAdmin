@@ -4608,7 +4608,7 @@ class PagesModel extends GenericModel {
 			->addWhereCategoria(CategoriesModel::$idShop);
 		
 		if (!v("random_in_evidenza"))
-			$p->orderBy("pages.id_order");
+			$p->orderBy("pages.id_order")->limit(v("numero_in_evidenza"));
 		
 		$prodotti = $p->send();
 		
