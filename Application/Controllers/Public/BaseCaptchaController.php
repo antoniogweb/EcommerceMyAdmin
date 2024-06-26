@@ -24,14 +24,22 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseCaptchaController extends BaseController
 {
-	public function index()
+	public function index($idCaptcha = 1)
 	{
 		if( !session_id() )
 			session_start();
 		
+		$sessionKey = 'captchaString';
+		
+		if ((int)$idCaptcha === 1 || (int)$idCaptcha === 2)
+			$sessionKey .= "_".$idCaptcha;
+		
 		$captcha = new Image_Gd_Captcha(array(
 			"boxWidth"	=>	200,
 			"fontPath"	=>	LIBRARY."/External/Fonts/FreeFont/FreeMono.ttf",
+			"sessionKey"=>	$sessionKey,
+			"boxHeight"	=>	60,
+			"charHeight"=>	22,
 		));
 		
 		$captcha->render();

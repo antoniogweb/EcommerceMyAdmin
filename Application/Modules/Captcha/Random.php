@@ -36,10 +36,13 @@ class Random extends Captcha
 		if (isset($_SESSION["ok_captcha"]))
 			return true;
 		
-		if (!isset($_SESSION["captchaString"]))
+		if (!isset($_SESSION["captchaString_1"]) && !isset($_SESSION["captchaString_2"]))
 			return false;
 		
-		$res = (string)$campoCaptcha === (string)$_SESSION["captchaString"] ? true : false;
+		$sessionString1 = isset($_SESSION["captchaString_1"]) ? $_SESSION["captchaString_1"] : randomToken();
+		$sessionString2 = isset($_SESSION["captchaString_2"]) ? $_SESSION["captchaString_2"] : randomToken();
+		
+		$res = ((string)$campoCaptcha === (string)$sessionString1 || (string)$campoCaptcha === (string)$sessionString2) ? true : false;
 		
 		if ($res)
 			$_SESSION["ok_captcha"] = 1;

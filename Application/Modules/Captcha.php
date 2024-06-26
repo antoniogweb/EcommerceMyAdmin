@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Captcha
 {
+	protected $IDCaptcha = 1;
+	
 	protected $usato = false;
 	
 	protected $params = "";
@@ -62,5 +64,15 @@ class Captcha
 	public function getErrorIncludeFile()
 	{
 		return "/Elementi/Captcha/Errore/notice.php";
+	}
+	
+	public function getIDCaptcha()
+	{
+		return $this->IDCaptcha;
+	}
+	
+	public function incrementaIDCaptcha()
+	{
+		return $this->IDCaptcha++;
 	}
 }
