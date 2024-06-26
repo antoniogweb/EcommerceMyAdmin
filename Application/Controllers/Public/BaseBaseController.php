@@ -1017,7 +1017,11 @@ class BaseBaseController extends Controller
 				}
 				else
 				{
-					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+					ob_start();
+					include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
+					$erroreInvio = ob_get_clean();
+				
+// 					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
 					
 					FeedbackModel::$sNotice = $erroreInvio;
 					Output::setBodyValue("Notice", $erroreInvio);
@@ -1281,7 +1285,11 @@ class BaseBaseController extends Controller
 			}
 			else
 			{
-				$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+				ob_start();
+				include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
+				$erroreInvio = ob_get_clean();
+				
+// 				$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
 				
 				Form::sNotice($tipo, $erroreInvio);
 				Output::setBodyValue("Notice", $erroreInvio);

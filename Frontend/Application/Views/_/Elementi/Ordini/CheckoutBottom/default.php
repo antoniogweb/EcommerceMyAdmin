@@ -15,6 +15,12 @@ include(tpf(ElementitemaModel::p("CHECKOUT_NEWSLETTER","", array(
 ))));
 ?>
 
+<?php
+if (!v("disattiva_antispam_checkout")) { 
+	include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));
+}
+?>
+
 <div class="uk-margin">
 	<?php $idCondizioni = PagineModel::gTipoPagina("CONDIZIONI"); ?>
 	<?php if ($idCondizioni) { ?>

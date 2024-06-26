@@ -1009,7 +1009,15 @@ $(document).ready(function(){
 							}, 500);
 						}
 						
-						boxEvidenzia.find(".box_notice").html(content.Body.Notice);
+						if (content.Body.Esito == "OK")
+							boxEvidenzia.find(".box_notice").html(content.Body.Notice);
+						else
+						{
+							if (boxEvidenzia.find(".errori_compilazione_form").length > 0)
+								boxEvidenzia.find(".errori_compilazione_form").remove();
+							
+							boxEvidenzia.find("form").prepend("<div class='errori_compilazione_form'>" + content.Body.Notice + "</div>");
+						}
 						
 						if (content.Body.Esito == "OK")
 						{

@@ -94,9 +94,9 @@
 	<?php } ?>
 	
 	<?php
-	if (strcmp($this->controller,"regusers") === 0 || !v("disattiva_antispam_checkout")) { 
-		include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));
-	}
+// 	if (strcmp($this->controller,"regusers") === 0 || !v("disattiva_antispam_checkout")) { 
+// 		include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));
+// 	}
 	?>
 	
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">

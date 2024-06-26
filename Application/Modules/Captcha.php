@@ -30,6 +30,9 @@ class Captcha
 	
 	public function __construct($recordCaptcha)
 	{
+		if( !session_id() )
+			session_start();
+		
 		$this->params = $recordCaptcha;
 	}
 	

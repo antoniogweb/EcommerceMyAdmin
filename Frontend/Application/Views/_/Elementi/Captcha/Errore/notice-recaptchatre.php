@@ -8,7 +8,7 @@
 				<img src="<?php echo $this->baseUrlSrc."/captcha/index"?>" />
 			</div>
 			<div class="uk-margin-top uk-width-1-2@m">
-				<?php echo Html_Form::input("codice_random","","uk-input "."codice_random",null,"placeholder='".gtext("Inserisci il codice antispam (CAPTCHA) "."*")."'");?>
+				<?php echo Html_Form::input("codice_random","","uk-input codice_random codice_random_secondo_livello",null,"placeholder='".gtext("Inserisci il codice antispam (CAPTCHA) "."*")."'");?>
 			</div>
 		</div>
 	</div>
