@@ -31,3 +31,21 @@ $(document).ready(function(){
 		}
 	});
 });
+
+$( "body" ).on( "click", ".ajlink", function(e){
+	e.preventDefault();  //prevent form from submitting
+	
+	var url = $(this).attr("href");
+	
+	$.ajaxQueue({
+		url: url,
+		cache:false,
+		async: true,
+		dataType: "html",
+		success: function(content){
+			
+			location.reload();
+			
+		}
+	});
+});

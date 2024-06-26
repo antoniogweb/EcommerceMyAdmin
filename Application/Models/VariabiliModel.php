@@ -750,6 +750,8 @@ class VariabiliModel extends GenericModel {
 		"hook_update_ordine"		=>	"", // se diversa da blank, funzione che viene chiamata dopo la modifica dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
 		"hook_set_placeholder"		=>	"", // se diversa da blank, funzione che viene chiamata sui placeholder. Come unico argomento gli viene passato l'array di tutti i placeholder (VariabiliModel::$placeholders)
 		"hook_after_login_admin"	=>	"", // se diversa da blank, funzione che viene chiamata dopo il login in admin. Gli viene passato un riferimento al controller come unico parametro
+		### GDPR ##
+		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
@@ -759,7 +761,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_gruppi_admin"	=>	0, // if impostato a 1 permette di creare gruppi di utenti e di decidere l'accesso a determinati controller per ogni gruppo di utenti
 		"cartella_backend"		=>	"admin", // la cartella con il backoffice e i file del CMS
 		"usa_sotto_query_in_elenco"	=>	0, // se fare un'unica query in join o tante piccole sotto query per i prodotti nella griglia
-		"ip_sito"				=>	'', // se impostato, l'IP delr server del sito
+		"ip_sito"				=>	'', // se impostato, l'IP del server del sito
 	);
 	
 	public static $daInizializzare = array(

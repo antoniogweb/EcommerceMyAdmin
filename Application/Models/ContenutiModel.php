@@ -583,7 +583,7 @@ class ContenutiModel extends GenericModel {
 					$htmlFinale .= "</div>";
 				}
 				
-				$htmlFinale .= attivaModuli($html, $obj);
+				$htmlFinale .= GDPR::filtra(attivaModuli($html, $obj));
 				
 				if (User::$adminLogged && !$idContenuto)
 					$htmlFinale .= "</div>";

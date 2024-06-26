@@ -28,4 +28,5 @@ require_once(LIBRARY."/Application/Modules/Pdf.php");
 require_once(LIBRARY."/Application/Modules/App.php");
 require_once(LIBRARY."/Application/Modules/Img.php");
 require_once(LIBRARY."/Application/Modules/Device.php");
+require_once(LIBRARY."/Application/Modules/GDPR.php");
 App::$isFrontend = true;
