@@ -51,6 +51,8 @@ class GDPR
 			$html = preg_replace_callback('/\<script(.*?)(googleapis)(.*?)<\/script\>/', array('GDPR', 'gmaps') ,$html);
 			
 			$html = preg_replace_callback('/\<iframe(.*?)(youtube.com|youtube-nocookie.com)(.*?)<\/iframe\>/', array('GDPR', 'youtube') ,$html);
+			
+			$html = preg_replace_callback('/\<iframe(.*?)(maps\.google\.com)(.*?)<\/iframe\>/', array('GDPR', 'gmapsEmbed') ,$html);
 		}
 		
 		return $html;
@@ -71,7 +73,7 @@ class GDPR
 		
 		if (isset($match[1]))
 		{
-			$youtubeUrl = $match[1];
+			$urlServizio = $match[1];
 			
 			ob_start();
 			include tpf("Elementi/GDPR/Video/youtube.php");
@@ -81,5 +83,34 @@ class GDPR
 		}
 		
 		return "";
+	}
+	
+	public static function gmapsEmbed($matches)
+	{
+		preg_match('/src="([^"]+)"/', $matches[0], $match);
+		
+		if (isset($match[1]))
+		{
+			$urlServizio = "";
+			
+			$urlArray = parse_url($match[1]);
+			
+			if (isset($urlArray["query"]))
+			{
+				parse_str($urlArray["query"], $output);
+				
+				$q = $output["q"] ?? "";
+				$z = $output["z"] ?? "";
+				
+				if ($q)
+					$urlServizio = "https://www.google.com/maps?q=$q&z=$z";
+			}
+			
+			ob_start();
+			include tpf("Elementi/GDPR/Maps/google_embed.php");
+			$output = ob_get_clean();
+			
+			return $output;
+		}
 	}
 }
