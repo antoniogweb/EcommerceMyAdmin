@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (v("usa_tag")) { ?>
+<?php if (v("usa_tag") && v("tag_in_prodotti")) { ?>
 <li class="<?php echo tm($tm, array("tag"));?> treeview help_tag">
 	<a href="#">
 		<i class="fa fa-tags"></i>
