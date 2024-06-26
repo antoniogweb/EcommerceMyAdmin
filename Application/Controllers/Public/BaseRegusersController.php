@@ -550,6 +550,17 @@ class BaseRegusersController extends BaseController
 						}
 					}
 				}
+				else
+				{
+					ob_start();
+					include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
+					$erroreInvio = ob_get_clean();
+				
+// 					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+					
+					$data['notice'] = $erroreInvio;
+					$res = $this->m("RegusersModel")->addError("username", $error);
+				}
 			}
 			
 			$this->append($data);
