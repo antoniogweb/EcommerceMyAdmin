@@ -32,6 +32,9 @@ class hCaptcha extends Captcha
 		if( !session_id() )
 			session_start();
 		
+		if (isset($_SESSION["ok_captcha"]))
+			return true;
+		
 		$random = new Random(array(
 			"campo_nascosto"	=>	"codice_random",
 		));
