@@ -24,16 +24,40 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class GDPR
 {
+	public static $campiDaFiltrare = array(
+		"pages"	=>	array(
+			"description",
+			"video",
+		),
+		"contenuti_tradotti"	=>	array(
+			"description"
+		),
+	);
+	
 // 	public static $cookies = array(
 // 		"ok_gmaps"	=>	false,
 // 	);
 	
-	public static function checkCookie()
+	public static function checkCookie($tipo = "")
 	{
 		if (isset($_COOKIE["ok_cookie_terzi"]))
 			return true;
 		
 		return false;
+	}
+	
+	public static function filtraData($data)
+	{
+		foreach (self::$campiDaFiltrare as $table => $fields)
+		{
+			foreach ($fields as $field)
+			{
+				if (isset($data[$table][$field]))
+					$data[$table][$field] = self::filtraDecodeEncode($data[$table][$field]);
+			}
+		}
+		
+		return $data;
 	}
 	
 // 	public static function sCookie($cookie)
@@ -43,6 +67,15 @@ class GDPR
 // 		
 // 		self::$cookies[$cookie] = true;
 // 	}
+	
+	public static function filtraDecodeEncode($html)
+	{
+		$html = htmlentitydecode($html);
+		
+		$html = GDPR::filtra($html);
+		
+		return sanitizeHtml($html);
+	}
 	
 	public static function filtra($html)
 	{

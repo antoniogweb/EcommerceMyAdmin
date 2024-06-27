@@ -1657,6 +1657,11 @@ class BaseContenutiController extends BaseController
 					$data["pages"][0]["contenuti_tradotti"]["description"] .= "[scelta-cookie]";
 			}
 			
+			// GDPR
+			$data["pages"][0] = GDPR::filtraData($data["pages"][0]);
+			$data["pages"][0]["pages"]["description"] = GDPR::filtraDecodeEncode($data["pages"][0]["pages"]["description"]);
+			$data["pages"][0]["pages"]["video"] = GDPR::filtraDecodeEncode($data["pages"][0]["pages"]["video"]);
+			
 			$this->p = $data["pages"][0];
 			
 			$data["tipoPagina"] = PagesModel::$currentTipoPagina = $data["pages"][0]["pages"]["tipo_pagina"];
