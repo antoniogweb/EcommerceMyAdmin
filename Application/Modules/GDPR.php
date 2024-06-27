@@ -85,7 +85,7 @@ class GDPR
 			
 			$html = preg_replace_callback('/\<iframe(.*?)(youtube.com|youtube-nocookie.com)(.*?)<\/iframe\>/', array('GDPR', 'youtube') ,$html);
 			
-			$html = preg_replace_callback('/\<iframe(.*?)(maps\.google\.com)(.*?)<\/iframe\>/', array('GDPR', 'gmapsEmbed') ,$html);
+			$html = preg_replace_callback('/\<iframe(.*?)(maps\.google\.com|google\.com\/maps\/embed)(.*?)<\/iframe\>/', array('GDPR', 'gmapsEmbed') ,$html);
 		}
 		
 		return $html;
