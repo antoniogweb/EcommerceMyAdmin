@@ -35,79 +35,79 @@ class Lang_It_ValCondStrings extends Lang_En_ValCondStrings {
 	//if the element is not defined
 	public function getNotDefinedResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Si prega di riempire il campo ". getFieldLabel($element) ."</i></div>".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Si prega di riempire il campo")." ". gtext(getFieldLabel($element)) ."</i></div>".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the elements are not equal
 	public function getNotEqualResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'>Sia prega di controllare che i campi <i>".getFieldLabel($element)."</i> abbiamo lo stesso valore</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'>".gtext("Sia prega di controllare che i campi")." <i>".gtext(getFieldLabel($element))."</i> abbiamo lo stesso valore</div>\n".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the element is not alphabetic
 	public function getNotAlphabeticResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia una stringa di soli caratteri alfabetici</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una stringa di soli caratteri alfabetici</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element is not alphanumeric
 	public function getNotAlphanumericResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia una stringa di soli caratteri alfanumerici</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una stringa di soli caratteri alfanumerici</div>\n".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the element is not a decimal digit
 	public function getNotDecimalDigitResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia una stringa di soli numeri decimali</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una stringa di soli numeri decimali</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element hasn't the mail format
 	public function getNotMailFormatResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia un indirizzo e-mail</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un indirizzo e-mail</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element is not numeric
 	public function getNotNumericResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia un numero</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un numero</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element is not an integer
 	public function getNotIntegerFormatResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia un numero intero</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un numero intero</div>\n".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the element is not a real date
 	public function getNotDateResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia una data</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una data</div>\n".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the element (string) length exceeds the value of characters (defined by $maxLength)
 	public function getLengthExceedsResultString($element,$maxLength)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> non sia composto da più di $maxLength caratteri</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> non sia composto da più di $maxLength caratteri</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element is one of the strings indicated by $stringList (a comma-separated list of strings)
 	public function getIsForbiddenStringResultString($element,$stringList)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> non sia uguale ad uno dei seguenti valori: $stringList</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> non sia uguale ad uno dei seguenti valori: $stringList</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element is not one of the strings indicated by $stringList (a comma-separated list of strings)
 	public function getIsNotStringResultString($element,$stringList)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia uguale ad uno dei seguenti valori: $stringList</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia uguale ad uno dei seguenti valori: $stringList</div>\n".$this->getHiddenAlertElement($element);
 	}
 
 	//if the element does not match the reg expr indicated by $regExp
 	public function getDoesntMatchResultString($element,$regExp)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> soddisfi la seguente espressione regolare: $regExp</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> soddisfi la seguente espressione regolare: $regExp</div>\n".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the element is not decimal
@@ -117,6 +117,6 @@ class Lang_It_ValCondStrings extends Lang_En_ValCondStrings {
 		$M = (int)$t[0];
 		$D = (int)$t[1];
 		$I = $M - $D;
-		return "<div class='".Params::$errorStringClassName."'><i>Sia prega di controllare che il campo ".getFieldLabel($element)."</i> sia un numero decimale (numero massimo di cifre intere:$I, numero massimo di cifre decimali:$D)</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un numero decimale (numero massimo di cifre intere:$I, numero massimo di cifre decimali:$D)</div>\n".$this->getHiddenAlertElement($element);
 	}
 }
