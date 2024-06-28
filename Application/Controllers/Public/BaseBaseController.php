@@ -897,6 +897,8 @@ class BaseBaseController extends Controller
 			
 			if (isset($_POST['inviaFeedback']) && (!v("feedback_solo_se_loggato") || User::$logged))
 			{
+				IpcheckModel::check("POST_FEEDBACK");
+				
 				// Imposto l'output in JSON
 				if (isset($_POST['ajaxsubmit']))
 				{
@@ -1184,6 +1186,8 @@ class BaseBaseController extends Controller
 		
 		if (isset($_POST['invia']))
 		{
+			IpcheckModel::check("POST_CONTATTO");
+			
 			// Imposto l'output in JSON
 			if (isset($_POST['ajaxsubmit']))
 			{
