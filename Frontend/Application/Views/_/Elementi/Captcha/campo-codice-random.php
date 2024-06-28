@@ -5,7 +5,7 @@ $params = $captchaModule->getParams();
 ?>
 <?php if (!User::$logged && !isset($_SESSION["ok_captcha"])) { ?>
 <div class="box_entry_dati uk-margin uk-margin-remove-bottom">
-	<label class="uk-form-label"><?php echo gtext("Inserisci il codice antispam mostrrato nell'immagine");?> *</label>
+	<label class="uk-form-label"><?php echo gtext("Inserisci il codice antispam mostrato nell'immagine");?> *</label>
 	<div class="uk-form-controls">
 		<div class="uk-margin-bottom">
 			<img src="<?php echo $this->baseUrlSrc."/captcha/index/".$captchaModule->getIDCaptcha();?>" />
