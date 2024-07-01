@@ -40,7 +40,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 	
 	<?php if (strcmp($this->action,"modify") !== 0) { ?>
-		<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
+		
 		<br />
 		<?php
 		include(tpf(ElementitemaModel::p("CHECKOUT_NEWSLETTER","", array(
@@ -48,7 +48,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			"percorso"	=>	"Elementi/Ordini/IscrizioneNewsletter",
 		))));
 		?>
-		
+		<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 		<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small">
 			<?php echo gtext("Ho letto e accettato le");?>
 			<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
