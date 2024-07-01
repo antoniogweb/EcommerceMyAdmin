@@ -26,6 +26,8 @@ class UsersModel extends GenericModel {
 	
 	public $applySoftConditionsOnPost = true;
 	
+	public static $evidenziaPassword = '<div style="display:none;" rel="hidden_alert_notice">password</div><div style="display:none;" rel="hidden_alert_notice">confirmation</div>';
+	
 	public function __construct() {
 	
 		$this->campoTitolo = "username";
@@ -50,9 +52,9 @@ class UsersModel extends GenericModel {
 		
 		parent::__construct();
 
-		$this->addStrongCondition("both",'checkAlphaNum',"username|L'username deve essere una stringa alfanumerica");
+		$this->addStrongCondition("both",'checkAlphaNum',"username|".gtext("L'username deve essere una stringa alfanumerica").'<div style="display:none;" rel="hidden_alert_notice">username</div>');
 		$this->addStrongCondition("insert",'checkNotEmpty',"password,confirmation");
-		$this->addSoftCondition("both",'checkEqual',"password,confirmation|Le due password non coincidono");
+		$this->addSoftCondition("both",'checkEqual',"password,confirmation|".gtext("Le due password non coincidono").self::$evidenziaPassword);
 	}
 	
 	public function relations() {
@@ -150,5 +152,19 @@ class UsersModel extends GenericModel {
 	public static function getUsername($id)
 	{
 		return self::g()->whereId((int)$id)->field("username");
+	}
+	
+	public function setPasswordCondition($type = "soft")
+	{
+		ob_start();
+		include(tpf("Elementi/Notice/check_password.php"));
+		$erroreValidazionePassword = ob_get_clean();
+		
+		$stringaErrore = "password|".$erroreValidazionePassword.self::$evidenziaPassword;
+		
+		if ($type == "soft")
+			$this->addSoftCondition("both",'checkMatch|'.v("password_regular_expression"),$stringaErrore);
+		else
+			$this->addStrongCondition("both",'checkMatch|'.v("password_regular_expression"),$stringaErrore);
 	}
 }

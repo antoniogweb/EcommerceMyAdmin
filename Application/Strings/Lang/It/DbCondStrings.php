@@ -28,7 +28,7 @@ class Lang_It_DbCondStrings extends Lang_En_DbCondStrings {
 	//get the error string in the case that the value of the field $field is already present in the table $table
 	public function getNotUniqueString($field)
 	{
-		return "<div class='alert'>Il valore del campo <i>". getFieldLabel($field) ."</i> &egrave gi&agrave presente. Per favore scegline un altro.</div>\n".$this->getHiddenAlertElement($field);
+		return "<div class='alert alert-danger'>".gtext("Il valore del campo")." <i>". getFieldLabel($field) ."</i> ".gtext("è già presente. Per favore scegline un altro.")."</div>\n".$this->getHiddenAlertElement($field);
 	}
 
 }

@@ -693,8 +693,6 @@ class BaseRegusersController extends BaseController
 						
 						$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
 						
-						$this->m('RegusersModel')->setPasswordCondition();
-					
 						$this->m('RegusersModel')->setValues(array(
 							"has_confirmed"	=>	0,
 							"ha_confermato"	=>	1,
@@ -1000,17 +998,19 @@ class BaseRegusersController extends BaseController
 	
 	public function impostaspedizioneperapp($id = 0)
 	{
-		$this->s['registered']->check(null,0);
+		return;
 		
-		$clean["id"] = (int)$id;
-		
-		if ($clean["id"] > 0)
-		{
-			$this->m('SpedizioniModel')->setDaUsarePerApp($clean["id"]);
-		}
-		
-		if (Output::$json)
-			$this->load("api_output");
+// 		$this->s['registered']->check(null,0);
+// 		
+// 		$clean["id"] = (int)$id;
+// 		
+// 		if ($clean["id"] > 0)
+// 		{
+// 			$this->m('SpedizioniModel')->setDaUsarePerApp($clean["id"]);
+// 		}
+// 		
+// 		if (Output::$json)
+// 			$this->load("api_output");
 	}
 	
 	public function spedizione($id = 0)

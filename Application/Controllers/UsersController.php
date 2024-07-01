@@ -148,6 +148,8 @@ class UsersController extends BaseController {
 		
 		$this->formFields = 'username,has_confirmed,password,confirmation';
 		
+		$this->m[$this->modelName]->setPasswordCondition();
+		
 		parent::form($queryType, $id);
 	}
 	

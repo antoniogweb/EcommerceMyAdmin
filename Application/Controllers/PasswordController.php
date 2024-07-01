@@ -36,7 +36,7 @@ class PasswordController extends BaseController {
 
 		$this->m['UsersModel']->setFields('password','none');
 
-		$this->m['UsersModel']->strongConditions['update'] = array('checkEqual'=>'password,confirmation');
+		$this->m['UsersModel']->strongConditions['update'] = array('checkEqual'=>"password,confirmation|".gtext("Le due password non coincidono").UsersModel::$evidenziaPassword);
 
 		$this->m['UsersModel']->identifierName = 'id_user';
 		
@@ -52,6 +52,8 @@ class PasswordController extends BaseController {
 		
 		$data['notice'] = null;
 		
+		$this->m['UsersModel']->setPasswordCondition("strong");
+		
 		$id = (int)$this->s['admin']->status['id_user'];
 		if (isset($_POST['updateAction'])) {
 			$pass = $this->s['admin']->getPassword();
@@ -59,6 +61,7 @@ class PasswordController extends BaseController {
 			{
 				$this->m['UsersModel']->updateTable('update',$id);
 				$data['notice'] = $this->m['UsersModel']->notice;
+				
 				if ($this->m['UsersModel']->queryResult)
 				{
 // 					$this->s['admin']->logout();
@@ -67,7 +70,7 @@ class PasswordController extends BaseController {
 			}
 			else
 			{
-				$data['notice'] = "<div class='alert alert-danger'>Vecchia password sbagliata</div>\n";
+				$data['notice'] = "<div class='alert alert-danger'>".gtext("Vecchia password sbagliata")."</div>\n";
 			}
 		}
 		$data['menù'] = $this->h['Menu']->render('panel');

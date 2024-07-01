@@ -752,6 +752,8 @@ class VariabiliModel extends GenericModel {
 		"hook_after_login_admin"	=>	"", // se diversa da blank, funzione che viene chiamata dopo il login in admin. Gli viene passato un riferimento al controller come unico parametro
 		### GDPR ##
 		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
+		### PASSWORD ##
+		"password_regular_expression"	=>	"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^*-]).{8,}$/", // Espressione regolare per validare la password sia per utenti frontend che utenti admin
 		####
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
