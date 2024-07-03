@@ -6,17 +6,17 @@
 	</a>
 	<ul class="treeview-menu">
 		<li class="dropdown-header"><?php echo gtext("Prodotti");?></li>
-		<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_prodotti")."/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi prodotto</a></li>
-		<li class="icon_list <?php if ($this->controller === "prodotti") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/".v("url_elenco_prodotti")."/main/1";?>"><i class="fa fa-list"></i> Lista prodotti</a></li>
+		<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_prodotti")."/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi prodotto");?></a></li>
+		<li class="icon_list <?php if ($this->controller === "prodotti") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/".v("url_elenco_prodotti")."/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista prodotti");?></a></li>
 		
 		<?php if (v("combinazioni_in_prodotti")) { ?>
-		<li class="dropdown-header">Varianti prodotto</li>
-		<li class="<?php echo tm($tm, array("attributi"));?>"><a href="<?php echo $this->baseUrl."/attributi/main/1";?>"><i class="fa fa-cogs"></i> Lista varianti</a></li>
+		<li class="dropdown-header"><?php echo gtext("Varianti prodotto");?></li>
+		<li class="<?php echo tm($tm, array("attributi"));?>"><a href="<?php echo $this->baseUrl."/attributi/main/1";?>"><i class="fa fa-cogs"></i> <?php echo gtext("Lista varianti");?></a></li>
 		<?php } ?>
 		
 		<?php if (v("attiva_personalizzazioni")) { ?>
-		<li class="dropdown-header">Personalizzazioni</li>
-		<li class="<?php echo tm($tm, array("personalizzazioni"));?>"><a href="<?php echo $this->baseUrl."/personalizzazioni/main/1";?>"><i class="fa fa-cogs"></i> Lista personalizzazioni</a></li>
+		<li class="dropdown-header"><?php echo gtext("Personalizzazioni");?></li>
+		<li class="<?php echo tm($tm, array("personalizzazioni"));?>"><a href="<?php echo $this->baseUrl."/personalizzazioni/main/1";?>"><i class="fa fa-cogs"></i> <?php echo gtext("Lista personalizzazioni<");?>/a></li>
 		<?php } ?>
 	</ul>
 </li>
@@ -24,7 +24,7 @@
 <li class="<?php echo tm($tm, array("caratteristiche","tipologiecaratteristiche"));?> treeview">
 	<a href="#">
 		<i class="fa fa-filter"></i>
-		<span>Caratteristiche</span>
+		<span><?php echo gtext("Caratteristiche");?></span>
 	</a>
 	<ul class="treeview-menu">
 		<li><a href="<?php echo $this->baseUrl."/caratteristiche/form/insert/0";?>"><i class="fa fa-plus-circle"></i> Aggiungi caratteristica</a></li>

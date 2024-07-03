@@ -189,3 +189,8 @@ Mobile-Detect
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/serbanghita/Mobile-Detect
+
+AWS SDK PHP (aws-sdk-php)
+-------
+License:	Apache-2.0 license
+link: 		https://github.com/aws/aws-sdk-php
