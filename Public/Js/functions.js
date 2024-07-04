@@ -1178,7 +1178,7 @@ $(document).ready(function(){
 				var sconto = ((prezzoIntero - prezzoScontato) / prezzoIntero) * 100;
 			else
 				var sconto = 0;
-// 			trObj.find(".sconto_riga_ordine").removeAttr("disabled");
+			
 			trObj.find(".sconto_riga_ordine").val(sconto.toFixed(2).toString().replace(".", ","));
 		}
 		
