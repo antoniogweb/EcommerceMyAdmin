@@ -129,17 +129,28 @@ class RigheController extends BaseController
 				{
 					$giacenza = (int)$this->m("CombinazioniModel")->whereId((int)$recordRiga["id_c"])->field("giacenza");
 					
+					$rigaTipologia = $this->m("RighetipologieModel")->clear()->selectId((int)$recordRiga["id_riga_tipologia"]);
+					
+					$moltiplicatore = 1;
+					
+					if (!empty($rigaTipologia))
+						$moltiplicatore = $rigaTipologia["moltiplicatore"];
+					
+					$price = abs((float)setPrice($v["price"])) * $moltiplicatore;
+					$prezzo_intero = abs((float)setPrice($v["prezzo_intero"])) * $moltiplicatore;
+					
 					$this->m[$this->modelName]->setValues(array(
 						"quantity"			=>	$v["quantity"],
 						"disponibile"		=>	($giacenza >= ((int)$v["quantity"] - (int)$recordRiga["quantity"])) ? 1 : 0,
-						"$campoPrice"		=>	$v["price"],
-						"$campoPriceIntero"	=>	$v["prezzo_intero"],
-						"$campoPriceFinale"	=>	$v["price"],
+						"$campoPrice"		=>	$price,
+						"$campoPriceIntero"	=>	$prezzo_intero,
+						"$campoPriceFinale"	=>	$price,
 						"in_promozione"		=>	number_format(setPrice($v["price"]),2,".","") != number_format(setPrice($v["prezzo_intero"]),2,".","") ? "Y" : "N",
 						"title"				=>	$v["title"],
 						"id_c"				=>	$v["id_c"],
 						"codice"			=>	$v["codice"],
 						"evasa"				=>	$v["evasa"],
+						"sconto"			=>	$v["sconto"] ?? 0,
 					));
 					
 					$this->m[$this->modelName]->update($v["id_riga"]);

@@ -198,7 +198,7 @@ class Gestionale
 			
 			$ordine["valore_iva"] = IvaModel::g(false)->getValore($idIva);
 			
-			$rModel->clear()->select("id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico")
+			$rModel->clear()->select("id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico,sconto")
 				->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")
 				->where(array(
 					"id_o"	=>	(int)$id_o,
@@ -260,6 +260,7 @@ class Gestionale
 					"acconto"	=>	0,
 					"id_riga_tipologia"	=>	0,
 					"prodotto_generico"	=>	0,
+					"sconto"	=>	0,
 				);
 			}
 			
@@ -287,6 +288,7 @@ class Gestionale
 					"acconto"	=>	0,
 					"id_riga_tipologia"	=>	0,
 					"prodotto_generico"	=>	0,
+					"sconto"	=>	0,
 				);
 			}
 			
@@ -316,6 +318,7 @@ class Gestionale
 					"acconto"	=>	0,
 					"id_riga_tipologia"	=>	0,
 					"prodotto_generico"	=>	0,
+					"sconto"	=>	0,
 				);
 			}
 			
@@ -345,6 +348,7 @@ class Gestionale
 					"acconto"	=>	0,
 					"id_riga_tipologia"	=>	0,
 					"prodotto_generico"	=>	0,
+					"sconto"	=>	0,
 				);
 			}
 			

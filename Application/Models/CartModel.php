@@ -996,10 +996,10 @@ class CartModel extends GenericModel {
 						$this->values["disponibile"] = $rigaOrdine["disponibile"]; //RigheModel::g()->whereId((int)$idRif)->field("disponibile");
 						$this->values["id_riga_tipologia"] = $rigaOrdine["id_riga_tipologia"];
 						
-						if ($rigaOrdine["id_cart"])
-							$this->values["id_cart"] = (int)$rigaOrdine["id_cart"];
-						else if (isset($this->values["id_cart"]))
-							unset($this->values["id_cart"]);
+// 						if ($rigaOrdine["id_cart"])
+// 							$this->values["id_cart"] = (int)$rigaOrdine["id_cart"];
+// 						else if (isset($this->values["id_cart"]))
+// 							unset($this->values["id_cart"]);
 					}
 				}
 				

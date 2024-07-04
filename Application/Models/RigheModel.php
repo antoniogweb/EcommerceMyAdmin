@@ -221,8 +221,13 @@ class RigheModel extends GenericModel {
 	
 	public function scontoCrud($record)
 	{
-		$sconto = CombinazioniModel::calcolaSconto(setPrice($record["righe"]["prezzo_intero"]), setPrice($record["righe"]["price"]));
-		$sconto = number_format($sconto,2,",","");
+		if (setPrice($record["righe"]["sconto"]) > 0)
+			$sconto = number_format(setPrice($record["righe"]["sconto"]),2,",","");
+		else
+		{
+			$sconto = CombinazioniModel::calcolaSconto(setPrice($record["righe"]["prezzo_intero"]), setPrice($record["righe"]["price"]));
+			$sconto = number_format($sconto,2,",","");
+		}
 		
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
 		{

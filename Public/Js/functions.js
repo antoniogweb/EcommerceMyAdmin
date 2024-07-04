@@ -978,12 +978,14 @@ $(document).ready(function(){
 			var title = $(this).find("[name='title']").val();
 			var id_c = $(this).find("[name='id_c']").val();
 			var codice = $(this).find("[name='codice']").val();
+			var sconto = $(this).find(".sconto_riga_ordine").val();
 			
 			var temp = {
 				id_riga: id_riga,
 				quantity: quantity,
 				prezzo_intero: prezzo_intero,
 				price: price,
+				sconto: sconto,
 				title: title,
 				id_c: id_c,
 				codice: codice,
@@ -1162,13 +1164,25 @@ $(document).ready(function(){
 		
 	},500));
 	
-// 	$("body").on("keyup", ".prezzo_scontato_riga_ordine", debounce(function(e){
-// 		
-// 		$(this).parent().find("i.fa-spinner").css("display", "block");
-// 		
-// 		$(".save_righe_ordini").trigger("click");
-// 		
-// 	},500));
+	$("body").on("keyup", ".prezzo_scontato_riga_ordine", debounce(function(e){
+		
+		var trObj = $(this).closest("tr");
+		
+		var prezzoScontato = parseFloat($(this).val().toString().replace(",", "."));
+		
+		var prezzoIntero = parseFloat(trObj.find("[name='prezzo_intero']").val().toString().replace(",", "."));
+		
+		if (!isNaN(prezzoScontato) && !isNaN(prezzoIntero))
+		{
+			if (prezzoIntero > 0)
+				var sconto = ((prezzoIntero - prezzoScontato) / prezzoIntero) * 100;
+			else
+				var sconto = 0;
+			
+			trObj.find(".sconto_riga_ordine").val(sconto.toFixed(2).toString().replace(".", ","));
+		}
+		
+	},500));
 // 	
 // 	$("body").on("keyup", ".quantita_riga_ordine", debounce(function(e){
 // 		
