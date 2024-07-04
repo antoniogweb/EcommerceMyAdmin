@@ -134,7 +134,7 @@ class RigheController extends BaseController
 					$moltiplicatore = 1;
 					
 					if (!empty($rigaTipologia))
-						$moltiplicatore = $rigaTipologia["moltiplicatore"];
+						$moltiplicatore = (int)$rigaTipologia["moltiplicatore"];
 					
 					$price = abs((float)setPrice($v["price"])) * $moltiplicatore;
 					$prezzo_intero = abs((float)setPrice($v["prezzo_intero"])) * $moltiplicatore;

@@ -1107,7 +1107,7 @@ class CombinazioniModel extends GenericModel {
 							
 							if ($rigaTipologia["prezzo"] > 0)
 							{
-								$prezzoIvato = $rigaTipologia["prezzo"] * $rigaTipologia["moltiplicatore"];
+								$prezzoIvato = $rigaTipologia["prezzo"] * (int)$rigaTipologia["moltiplicatore"];
 								
 								$prezzoNonIvato = $prezzoIvato / (1 + ($iva / 100));
 							}
