@@ -1324,23 +1324,23 @@ class BaseContenutiController extends BaseController
 			{
 				if (User::$nazione)
 				{
-					$tabellaCombinazioni = "(select id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo) as prezzo_minimo,coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.canonical = 1 and combinazioni.acquistabile = 1) as combinazioni_minime";
 					
 					$bindedValues[] = sanitizeAll(User::$nazione);
 				}
 				else
-					$tabellaCombinazioni = "(select id_page,$campoPrezzoMinimo as prezzo_minimo,$campoPrezzoMinimoIvato as prezzo_minimo_ivato from combinazioni where combinazioni.canonical = 1) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,$campoPrezzoMinimo as prezzo_minimo,$campoPrezzoMinimoIvato as prezzo_minimo_ivato from combinazioni where combinazioni.canonical = 1 and combinazioni.acquistabile = 1) as combinazioni_minime";
 			}
 			else
 			{
 				if (User::$nazione)
 				{
-					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? group by combinazioni.id_page) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,min(coalesce(combinazioni_listini.$campoPrezzoMinimo,combinazioni.$campoPrezzoMinimo)) as prezzo_minimo,min(coalesce(combinazioni_listini.$campoPrezzoMinimoIvato,combinazioni.$campoPrezzoMinimoIvato)) as prezzo_minimo_ivato from combinazioni left join combinazioni_listini on combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ? where combinazioni.acquistabile = 1 group by combinazioni.id_page) as combinazioni_minime";
 					
 					$bindedValues[] = sanitizeAll(User::$nazione);
 				}
 				else
-					$tabellaCombinazioni = "(select id_page,min($campoPrezzoMinimo) as prezzo_minimo,min($campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni group by combinazioni.id_page) as combinazioni_minime";
+					$tabellaCombinazioni = "(select id_page,min($campoPrezzoMinimo) as prezzo_minimo,min($campoPrezzoMinimoIvato) as prezzo_minimo_ivato from combinazioni where combinazioni.acquistabile = 1 group by combinazioni.id_page) as combinazioni_minime";
 			}
 			
 			$this->m("PagesModel")->inner(array($tabellaCombinazioni,$bindedValues))->on("pages.id_page = combinazioni_minime.id_page");
