@@ -1066,7 +1066,9 @@ class CombinazioniModel extends GenericModel {
 		}
     }
     
-    public function aggiungiaordine($id)
+    // $idOrdine: ID dell'ordine a cui attaccare la riga
+    // $values: se non vuoto, prende i valori da quell'array
+    public function aggiungiaordine($id, $idOrdine = 0, $values = array())
     {
 		if( !session_id() )
 			session_start();
@@ -1075,6 +1077,9 @@ class CombinazioniModel extends GenericModel {
 		Params::$automaticConversionToDbFormat = false;
 		
 		$record = $this->selectId((int)$id);
+		
+		if ($idOrdine)
+			$_GET["id_ordine"] = (int)$idOrdine;
 		
 		if (!empty($record) && self::isFromLista() && isset($_GET["id_ordine"]))
 		{
@@ -1117,6 +1122,17 @@ class CombinazioniModel extends GenericModel {
 						}
 					}
 					
+					$title = isset($rigaTipologia["titolo"]) ? strtoupper($rigaTipologia["titolo"]) : field($pagina, "title");
+					
+					if (isset($values["titolo"]))
+						$title = $values["titolo"];
+					
+					if (isset($values["prezzo"]))
+					{
+						$prezzoIvato = $values["prezzo"];
+						$prezzoNonIvato = $prezzoIvato / (1 + ($iva / 100));
+					}
+					
 					$r = new RigheModel();
 					
 					$r->sValues(array(
@@ -1125,7 +1141,7 @@ class CombinazioniModel extends GenericModel {
 						"creation_time"	=>	time(),
 						"id_page"	=>	$pagina["pages"]["id_page"],
 						"id_c"		=>	(int)$id,
-						"title"		=>	isset($rigaTipologia["titolo"]) ? strtoupper($rigaTipologia["titolo"]) : field($pagina, "title"),
+						"title"		=>	$title,
 						"immagine"	=>	ProdottiModel::immagineCarrello($pagina["pages"]["id_page"], (int)$id),
 						"quantity"	=>	1,
 						"codice"	=>	$record["codice"],
