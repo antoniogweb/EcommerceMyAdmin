@@ -254,7 +254,7 @@ class OrdiniController extends BaseController {
 		
 		$this->aggiungiintegrazioni();
 		
-		$this->m[$this->modelName]->clear()->restore(true)->orderBy("orders.data_creazione desc");
+		$this->m[$this->modelName]->clear()->restore(true)->orderBy("orders.data_creazione desc,orders.id_o desc");
 		
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_ordine'],

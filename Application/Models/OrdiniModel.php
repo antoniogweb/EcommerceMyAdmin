@@ -478,6 +478,12 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
+	public function setBackend()
+	{
+		$this->values["tipo_ordine"] = "B";
+		$this->values["fonte"] = "ORDINE_NEGOZIO";
+	}
+	
 	public function insert()
 	{
 		if (!self::$ordineImportato)
@@ -511,8 +517,8 @@ class OrdiniModel extends FormModel {
 		
 		if (!App::$isFrontend && !self::$ordineImportato)
 		{
-			$this->values["tipo_ordine"] = "B";
-			$this->values["fonte"] = "ORDINE_NEGOZIO";
+			$this->setBackend();
+			
 			$this->values["id_admin"] = (int)User::$id;
 		}
 		
@@ -2406,4 +2412,16 @@ class OrdiniModel extends FormModel {
 		
 		return "";
     }
+	
+	// Importa i valori della testata dall' array $valori
+	public function importaDatiDaArray($valori)
+	{
+		$fields = OpzioniModel::codice("CAMPI_SALVATAGGIO_ORDINE");
+		
+		foreach ($fields as $k => $v)
+		{
+			if (isset($valori[$k]))
+				$this->setValue($k, $valori[$k]);
+		}
+	}
 }
