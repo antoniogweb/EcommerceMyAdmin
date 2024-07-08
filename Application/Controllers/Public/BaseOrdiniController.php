@@ -558,6 +558,13 @@ class BaseOrdiniController extends BaseController
 
 		$this->append($data);
 		
+		if (strcmp($data["ordine"]["stato"],"pending") !== 0 && isset($_GET["to_paypal"]))
+		{
+			unset($_GET["to_paypal"]);
+			
+			$_GET["n"] = "Y";
+		}
+		
 		if (!isset($_GET["to_paypal"]))
 		{
 			$this->load("top_resoconto");
