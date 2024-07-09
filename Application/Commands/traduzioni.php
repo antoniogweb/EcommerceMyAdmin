@@ -51,7 +51,9 @@ if (!isset($params["azione"]))
 {
 	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
 	echo "azioni permesse:\n";
-	echo "traduci-tabella-traduzioni -> traduce la tabella traduzioni\n";
+	echo "traduci-tabella-traduzioni -> traduce la tabella traduzioni (testi generici)\n";
+	echo "traduci-categorie -> traduce la tabella categories (CATEGORIE)\n";
+	echo "traduci-pagine -> traduce la tabella pages (PAGINE e PRODOTTI)\n";
 	die();
 }
 
@@ -81,3 +83,20 @@ if ($params["azione"] == "traduci-tabella-traduzioni")
 	$log->writeString("FINE TRADUZIONE TABELLA TRADUZIONI");
 }
 
+if ($params["azione"] == "traduci-categorie")
+{
+	$log->writeString("INIZIO TRADUZIONE TABELLA CATEGORIES");
+	
+	TraduttoriModel::traduciTabellaContenuti("id_c", $params["lingua"], $params["id_record"], $params["limit"], $log);
+	
+	$log->writeString("INIZIO TRADUZIONE TABELLA CATEGORIES");
+}
+
+if ($params["azione"] == "traduci-pagine")
+{
+	$log->writeString("INIZIO TRADUZIONE TABELLA PAGES");
+	
+	TraduttoriModel::traduciTabellaContenuti("id_page", $params["lingua"], $params["id_record"], $params["limit"], $log);
+	
+	$log->writeString("FINE TRADUZIONE TABELLA PAGES");
+}

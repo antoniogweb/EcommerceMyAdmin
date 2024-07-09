@@ -277,4 +277,13 @@ class ContenutitradottiModel extends GenericModel
 		
 		return $ct->send(false);
 	}
+	
+	public function setSalvatoEDataTraduzione()
+	{
+		// Lo imposto come salvato manualmente
+		$this->setValue("salvato",1);
+		
+		// Salvo la data della traduzione
+		$this->setValue("data_traduzione",date("Y-m-d H:i:s"));
+	}
 }

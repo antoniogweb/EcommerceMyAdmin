@@ -96,7 +96,11 @@ trait TraitController
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		// Lo imposto come salvato manualmente
-		$this->m[$this->modelName]->setValue("salvato",1);
+		// Salvo la data della traduzione
+		$this->m[$this->modelName]->setSalvatoEDataTraduzione();
+		
+// 		$this->m[$this->modelName]->setValue("salvato",1);
+// 		$this->m[$this->modelName]->setValue("data_traduzione",date("Y-m-d H:i:s"));
 		
 		if ($section != "tutti")
 			$this->m[$this->modelName]->setValue("sezione",$section);

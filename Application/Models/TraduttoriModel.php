@@ -28,6 +28,31 @@ class TraduttoriModel extends GenericModel
 	
 	public static $modulo = null;
 	
+	public static $campoTabella = array(
+		"id_page"		=>	"pages",
+// 		"id_c"			=>	"categories",
+// 		"id_marchio"	=>	"marchi",
+// 		"id_tag"		=>	"tag",
+// 		"id_car"		=>	"caratteristiche",
+// 		"id_cv"			=>	"caratteristiche_valori",
+// 		"id_fascia_prezzo"	=>	"fasce_prezzo",
+// 		"id_av"			=>	"attributi_valori",
+	);
+	
+	public static $campiDaTradurreContenuti = array(
+		"title",
+		"description",
+		"keywords",
+		"meta_description",
+		"sottotitolo",
+		"titolo",
+		"descrizione",
+		"testo_link",
+		"descrizione_2",
+		"descrizione_3",
+		"descrizione_4",
+	);
+	
 	public $cartellaModulo = "Traduttori";
 	public $classeModuloPadre = "Traduttore";
 	
@@ -77,6 +102,93 @@ class TraduttoriModel extends GenericModel
 			$this->db->query("update traduttori set attivo = 0 where 1");
 		
 		return parent::update($id, $where);
+	}
+	
+	public static function traduciTabellaContenuti($campo, $lingua, $idRecord, $limit = 10, $log = null)
+	{
+		if (LingueModel::checkLinguaAttiva($lingua))
+		{
+			$ctModel = new ContenutitradottiModel();
+			
+			$ctModel->clear()->select("*")->where(array(
+				"ne"	=>	array(
+					$campo	=>	0,
+				),
+			));
+			
+			if ($campo == "id_page")
+				$ctModel->inner(array("page"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica))");
+			if ($campo == "id_c")
+				$ctModel->inner(array("category"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND categories.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < categories.data_ultima_modifica))");
+			else
+				$ctModel->sWhere("contenuti_tradotti.salvato = 0");
+			
+			if ($idRecord)
+				$ctModel->aWhere(array(
+					"contenuti_tradotti.$campo"	=>	(int)$idRecord,
+				));
+			
+			if ($limit)
+				$ctModel->limit($limit);
+			
+			$elementiDaTradurre = $ctModel->send();
+			
+// 			print_r($elementiDaTradurre);die();
+			
+			if (count($elementiDaTradurre) > 0)
+			{
+				foreach ($elementiDaTradurre as $riga)
+				{
+					$traduzioni = array();
+					
+					foreach (self::$campiDaTradurreContenuti as $campoDaTradurre)
+					{
+						// Cerco il testo da tradurre
+						if (isset(self::$campoTabella[$campo]))
+							$testoDaTradurre = isset($riga[self::$campoTabella[$campo]][$campoDaTradurre]) ? htmlentitydecode($riga[self::$campoTabella[$campo]][$campoDaTradurre]) : "";
+						else
+							$testoDaTradurre = htmlentitydecode($riga["contenuti_tradotti"][$campoDaTradurre]);
+						
+						// Traduco
+						if (!trim($testoDaTradurre))
+							$traduzioni[$campoDaTradurre] = "";
+						else
+						{
+							$traduzioni[$campoDaTradurre] = TraduttoriModel::getModulo()->traduci($testoDaTradurre, v("lingua_default_frontend"), $lingua);
+							
+							if ($traduzioni[$campoDaTradurre] !== false)
+								$traduzioni[$campoDaTradurre] = trim($traduzioni[$campoDaTradurre]);
+							else
+								$traduzioni[$campoDaTradurre] = "";
+						}
+					}
+					
+					$ctModel->sValues($traduzioni);
+					
+					if (!$riga["contenuti_tradotti"]["salvato"])
+						$ctModel->setValue("alias", "");
+					else
+						$ctModel->setValue("alias", $riga["contenuti_tradotti"]["alias"], "sanitizeDb");
+					
+					$ctModel->setSalvatoEDataTraduzione();
+					
+					$ctModel->update($riga["contenuti_tradotti"]["id_ct"]);
+					
+					$testoLog = "TRADOTTO RECORD ".$riga["contenuti_tradotti"]["id_ct"].":\n";
+					
+					foreach ($traduzioni as $campo => $traduzione)
+					{
+						if (trim($traduzione))
+							$testoLog .= "$campo: $traduzione\n";
+					}
+					
+					if ($log)
+						$log->writeString($testoLog);
+					
+					echo $testoLog."\n";
+				}
+			}
+		}
 	}
 	
 	public static function traduciTabellaTraduzioni($lingua, $idRecord = 0, $limit = 10, $log = null)
@@ -143,17 +255,6 @@ class TraduttoriModel extends GenericModel
 						echo $testoLog."\n";
 					}
 				}
-				// Estraggo le righe da tradurre
-// 				$testiDaTradurre = $tModel->clear()->where(array(
-// 					"lingua"	=>	sanitizeAll(v("lingua_default_frontend")),
-// 					"in"		=>	array(
-// 						"contesto"	=>	sanitizeAllDeep($contesto),
-// 					),
-// 				));
-// 				
-// 				$testiDaTradurre = $tModel->send();
-				
-// 				print_r($elementiDaTradurre);
 			}
 		}
 	}
