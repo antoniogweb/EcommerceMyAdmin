@@ -1132,15 +1132,15 @@ $(document).ready(function(){
 			{
 				campoSconto.val("0,00");
 				campoSconto.trigger("keyup");
-				campoSconto.attr("disabled", "disabled");
+// 				campoSconto.attr("disabled", "disabled");
 			}
 			else
 			{
 				campoSconto.trigger("keyup");
-				campoSconto.removeAttr("disabled");
+// 				campoSconto.removeAttr("disabled");
 			}
 		}
-	},500));
+	},100));
 	
 	$("body").on("keyup", ".sconto_riga_ordine", debounce(function(e){
 		
@@ -1162,7 +1162,7 @@ $(document).ready(function(){
 // 			$(".save_righe_ordini").trigger("click");
 		}
 		
-	},500));
+	},100));
 	
 	$("body").on("keyup", ".prezzo_scontato_riga_ordine", debounce(function(e){
 		
@@ -1182,7 +1182,7 @@ $(document).ready(function(){
 			trObj.find(".sconto_riga_ordine").val(sconto.toFixed(2).toString().replace(".", ","));
 		}
 		
-	},500));
+	},100));
 // 	
 // 	$("body").on("keyup", ".quantita_riga_ordine", debounce(function(e){
 // 		

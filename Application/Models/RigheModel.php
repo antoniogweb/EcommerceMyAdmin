@@ -164,7 +164,7 @@ class RigheModel extends GenericModel {
 	
 	private function getPrezzoCampo($record, $field)
 	{
-		return v("prezzi_ivati_in_prodotti") ? setPriceReverse(setPrice($record["righe"][$field."_ivato"])) : number_format(setPrice($record["righe"][$field]),v("cifre_decimali"),".","");
+		return v("prezzi_ivati_in_prodotti") ? setPriceReverse(abs((float)setPrice($record["righe"][$field."_ivato"]))) : number_format(abs((float)setPrice($record["righe"][$field])),v("cifre_decimali"),",","");
 	}
 	
 	public static function prodottoCustom($record)
@@ -234,7 +234,7 @@ class RigheModel extends GenericModel {
 			$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 			$disabled = "";
 			
-			if (setPrice($prezzo) <= 0)
+			if (setPrice($prezzo) <= 0 || $record["righe"]["id_riga_tipologia"])
 				$disabled = "disabled";
 			
 			return "<input id-riga='".$record["righe"]["percentuale_promozione"]."' style='max-width:90px;' class='form-control sconto_riga_ordine' name='' value='".$sconto."' $disabled/>";
@@ -248,7 +248,11 @@ class RigheModel extends GenericModel {
 		$prezzo = $this->getPrezzoCampo($record, "price");
 		
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
-			return '<div style="position:relative;">'."<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='prezzo_scontato_riga_ordine form-control' name='price' value='".$prezzo."' /><i style='display:none;position:absolute;top:10px;left:5px;' class='text-primary fa fa-spinner fa-spin'></i></div>";
+		{
+			$disabled = $record["righe"]["id_riga_tipologia"] ? "disabled" : "";
+			
+			return '<div style="position:relative;">'."<input id-riga='".$record["righe"]["id_r"]."' style='max-width:90px;' class='prezzo_scontato_riga_ordine form-control' name='price' value='".$prezzo."' $disabled/><i style='display:none;position:absolute;top:10px;left:5px;' class='text-primary fa fa-spinner fa-spin'></i></div>";
+		}
 		else
 			return $prezzo;
 	}
