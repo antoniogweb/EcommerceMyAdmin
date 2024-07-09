@@ -75,7 +75,7 @@ function applicaSelect2()
 								results: data.results
 							};
 						},
-						delay: 500
+						delay: 200
 					},
 					minimumInputLength: 2,
 					language: {
