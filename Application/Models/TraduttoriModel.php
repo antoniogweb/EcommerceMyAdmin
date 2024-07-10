@@ -53,6 +53,11 @@ class TraduttoriModel extends GenericModel
 		"descrizione_4",
 	);
 	
+	public static $campiDaTradurreTesti = array(
+		"valore",
+		"testo_link",
+	);
+	
 	public $cartellaModulo = "Traduttori";
 	public $classeModuloPadre = "Traduttore";
 	
@@ -135,58 +140,127 @@ class TraduttoriModel extends GenericModel
 			
 // 			print_r($elementiDaTradurre);die();
 			
-			if (count($elementiDaTradurre) > 0)
+			foreach ($elementiDaTradurre as $riga)
 			{
-				foreach ($elementiDaTradurre as $riga)
+				$traduzioni = array();
+				
+				foreach (self::$campiDaTradurreContenuti as $campoDaTradurre)
 				{
-					$traduzioni = array();
-					
-					foreach (self::$campiDaTradurreContenuti as $campoDaTradurre)
-					{
-						// Cerco il testo da tradurre
-						if (isset(self::$campoTabella[$campo]))
-							$testoDaTradurre = isset($riga[self::$campoTabella[$campo]][$campoDaTradurre]) ? htmlentitydecode($riga[self::$campoTabella[$campo]][$campoDaTradurre]) : "";
-						else
-							$testoDaTradurre = htmlentitydecode($riga["contenuti_tradotti"][$campoDaTradurre]);
-						
-						// Traduco
-						if (!trim($testoDaTradurre))
-							$traduzioni[$campoDaTradurre] = "";
-						else
-						{
-							$traduzioni[$campoDaTradurre] = TraduttoriModel::getModulo()->traduci($testoDaTradurre, v("lingua_default_frontend"), $lingua);
-							
-							if ($traduzioni[$campoDaTradurre] !== false)
-								$traduzioni[$campoDaTradurre] = trim($traduzioni[$campoDaTradurre]);
-							else
-								$traduzioni[$campoDaTradurre] = "";
-						}
-					}
-					
-					$ctModel->sValues($traduzioni);
-					
-					if (!$riga["contenuti_tradotti"]["salvato"])
-						$ctModel->setValue("alias", "");
+					// Cerco il testo da tradurre
+					if (isset(self::$campoTabella[$campo]))
+						$testoDaTradurre = isset($riga[self::$campoTabella[$campo]][$campoDaTradurre]) ? htmlentitydecode($riga[self::$campoTabella[$campo]][$campoDaTradurre]) : "";
 					else
-						$ctModel->setValue("alias", $riga["contenuti_tradotti"]["alias"], "sanitizeDb");
+						$testoDaTradurre = htmlentitydecode($riga["contenuti_tradotti"][$campoDaTradurre]);
 					
-					$ctModel->setSalvatoEDataTraduzione();
-					
-					$ctModel->update($riga["contenuti_tradotti"]["id_ct"]);
-					
-					$testoLog = "TRADOTTO RECORD ".$riga["contenuti_tradotti"]["id_ct"].":\n";
-					
-					foreach ($traduzioni as $campo => $traduzione)
+					// Traduco
+					if (!trim($testoDaTradurre))
+						$traduzioni[$campoDaTradurre] = "";
+					else
 					{
-						if (trim($traduzione))
-							$testoLog .= "$campo: $traduzione\n";
+						$traduzioni[$campoDaTradurre] = TraduttoriModel::getModulo()->traduci($testoDaTradurre, v("lingua_default_frontend"), $lingua);
+						
+						if ($traduzioni[$campoDaTradurre] !== false)
+							$traduzioni[$campoDaTradurre] = trim($traduzioni[$campoDaTradurre]);
+						else
+							$traduzioni[$campoDaTradurre] = "";
 					}
-					
-					if ($log)
-						$log->writeString($testoLog);
-					
-					echo $testoLog."\n";
 				}
+				
+				$ctModel->sValues($traduzioni);
+				
+				if (!$riga["contenuti_tradotti"]["salvato"])
+					$ctModel->setValue("alias", "");
+				else
+					$ctModel->setValue("alias", $riga["contenuti_tradotti"]["alias"], "sanitizeDb");
+				
+				$ctModel->setSalvatoEDataTraduzione();
+				
+				$ctModel->update($riga["contenuti_tradotti"]["id_ct"]);
+				
+				$testoLog = "TRADOTTO RECORD ".$riga["contenuti_tradotti"]["id_ct"].":\n";
+				
+				foreach ($traduzioni as $campo => $traduzione)
+				{
+					if (trim($traduzione))
+						$testoLog .= "$campo: $traduzione\n";
+				}
+				
+				if ($log)
+					$log->writeString($testoLog);
+				
+				echo $testoLog."\n";
+			}
+		}
+	}
+	
+	public static function traduciTabellaTesti($lingua, $idRecord = 0, $limit = 10, $log = null)
+	{
+		if (LingueModel::checkLinguaAttiva($lingua))
+		{
+			$tModel = new TestiModel();
+			
+			// Estraggo gli elementi da tradurre
+			$elementiDaTradurre = $tModel->clear()
+				->select("*")
+				->inner("testi as principale")
+				->on(array(
+					"testi.chiave = principale.chiave and principale.lingua = ?",
+					array(sanitizeAll(v("lingua_default_frontend")))
+				))
+				->where(array(
+					"lingua"	=>	sanitizeAll($lingua),
+				))
+				->sWhere("(testi.data_ultima_modifica IS NULL OR (principale.data_ultima_modifica IS NOT NULL AND testi.data_ultima_modifica < principale.data_ultima_modifica))");
+			
+			if ($idRecord)
+				$tModel->aWhere(array(
+					"principale.id_t"	=>	(int)$idRecord,
+				));
+			
+			if ($limit)
+				$tModel->limit($limit);
+			
+			$elementiDaTradurre = $tModel->send();
+			
+// 			echo $tModel->getQuery();
+			
+			foreach ($elementiDaTradurre as $riga)
+			{
+				$traduzioni = array();
+				
+				foreach (self::$campiDaTradurreTesti as $campoDaTradurre)
+				{
+					$testoDaTradurre = htmlentitydecode($riga["principale"][$campoDaTradurre]);
+					
+					if (!trim($testoDaTradurre))
+						$traduzioni[$campoDaTradurre] = "";
+					else
+					{
+						$traduzioni[$campoDaTradurre] = TraduttoriModel::getModulo()->traduci($testoDaTradurre, v("lingua_default_frontend"), $lingua);
+						
+						if ($traduzioni[$campoDaTradurre] !== false)
+							$traduzioni[$campoDaTradurre] = trim($traduzioni[$campoDaTradurre]);
+						else
+							$traduzioni[$campoDaTradurre] = "";
+					}
+				}
+				
+				$tModel->sValues($traduzioni);
+				
+				$tModel->update((int)$riga["testi"]["id_t"]);
+				
+				$testoLog = "TRADOTTO RECORD ".$riga["testi"]["id_t"].":\n";
+				
+				foreach ($traduzioni as $campo => $traduzione)
+				{
+					if (trim($traduzione))
+						$testoLog .= "$campo: $traduzione\n";
+				}
+				
+				if ($log)
+					$log->writeString($testoLog);
+				
+				echo $testoLog."\n";
 			}
 		}
 	}
@@ -228,32 +302,29 @@ class TraduttoriModel extends GenericModel
 			
 			$elementiDaTradurre = $tModel->send();
 			
-			if (count($elementiDaTradurre) > 0)
+			foreach ($elementiDaTradurre as $riga)
 			{
-				foreach ($elementiDaTradurre as $riga)
+				if (!trim($riga["principale"]["valore"]))
+					continue;
+				
+				$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], v("lingua_default_frontend"), $lingua);
+				
+				if ($traduzione !== false)
 				{
-					if (!trim($riga["principale"]["valore"]))
-						continue;
+					$traduzione = trim($traduzione);
 					
-					$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], v("lingua_default_frontend"), $lingua);
+					$tModel->sValues(array(
+						"valore"	=>	$traduzione,
+					));
 					
-					if ($traduzione !== false)
-					{
-						$traduzione = trim($traduzione);
-						
-						$tModel->sValues(array(
-							"valore"	=>	$traduzione,
-						));
-						
-						$tModel->update((int)$riga["traduzioni"]["id_t"]);
-						
-						$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".v("lingua_default_frontend").":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
-						
-						if ($log)
-							$log->writeString($testoLog);
-						
-						echo $testoLog."\n";
-					}
+					$tModel->update((int)$riga["traduzioni"]["id_t"]);
+					
+					$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".v("lingua_default_frontend").":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
+					
+					if ($log)
+						$log->writeString($testoLog);
+					
+					echo $testoLog."\n";
 				}
 			}
 		}

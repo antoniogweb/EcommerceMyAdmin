@@ -54,6 +54,7 @@ if (!isset($params["azione"]))
 	echo "traduci-tabella-traduzioni -> traduce la tabella traduzioni (testi generici)\n";
 	echo "traduci-categorie -> traduce la tabella categories (CATEGORIE)\n";
 	echo "traduci-pagine -> traduce la tabella pages (PAGINE e PRODOTTI)\n";
+	echo "traduci-testi -> traduce la tabella testi (TESTI EDITABILI DA FRONTEND)\n";
 	die();
 }
 
@@ -99,4 +100,13 @@ if ($params["azione"] == "traduci-pagine")
 	TraduttoriModel::traduciTabellaContenuti("id_page", $params["lingua"], $params["id_record"], $params["limit"], $log);
 	
 	$log->writeString("FINE TRADUZIONE TABELLA PAGES");
+}
+
+if ($params["azione"] == "traduci-testi")
+{
+	$log->writeString("INIZIO TRADUZIONE TABELLA TESTI");
+	
+	TraduttoriModel::traduciTabellaTesti($params["lingua"], $params["id_record"], $params["limit"], $log);
+	
+	$log->writeString("FINE TRADUZIONE TABELLA TESTI");
 }

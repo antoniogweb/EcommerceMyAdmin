@@ -146,6 +146,10 @@ class TestiController extends BaseController {
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
+		// Lo imposto come salvato manualmente
+		// Salvo la data della traduzione
+		$this->m[$this->modelName]->setSalvatoEDataTraduzione();
+		
 		parent::form($queryType, $id);
 		
 		$data["editor_visuale"] = $this->getUsaEditorVisuale($queryType, $id);
