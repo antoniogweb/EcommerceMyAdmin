@@ -3594,7 +3594,9 @@ class PagesModel extends GenericModel {
 		{
 			$f = new FeedbackModel();
 			
-			self::$pagineConFeedback = $f->clear()->select("distinct id_page")->toList("id_page")->send();
+			self::$pagineConFeedback = $f->clear()->select("distinct id_page")->where(array(
+				"attivo"	=>	1,
+			))->toList("id_page")->send();
 		}
 		
 		if (in_array($id, self::$pagineConFeedback))
