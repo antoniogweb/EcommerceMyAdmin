@@ -139,6 +139,14 @@ class RigheController extends BaseController
 					$price = abs((float)setPrice($v["price"])) * $moltiplicatore;
 					$prezzo_intero = abs((float)setPrice($v["prezzo_intero"])) * $moltiplicatore;
 					
+					$sconto = $v["sconto"] ?? 0;
+					
+					if (!empty($rigaTipologia))
+					{
+						$price = $prezzo_intero;
+						$sconto = 0;
+					}
+					
 					$this->m[$this->modelName]->setValues(array(
 						"quantity"			=>	$v["quantity"],
 						"disponibile"		=>	($giacenza >= ((int)$v["quantity"] - (int)$recordRiga["quantity"])) ? 1 : 0,
@@ -150,7 +158,7 @@ class RigheController extends BaseController
 						"id_c"				=>	$v["id_c"],
 						"codice"			=>	$v["codice"],
 						"evasa"				=>	$v["evasa"],
-						"sconto"			=>	$v["sconto"] ?? 0,
+						"sconto"			=>	$sconto,
 					));
 					
 					$this->m[$this->modelName]->update($v["id_riga"]);
