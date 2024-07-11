@@ -3,7 +3,7 @@
 <li class="<?php echo tm($tm, array("ordini", "fatture"));?> treeview">
 	<a href="#">
 		<i class="fa fa-book"></i>
-		<span>Ordini</span>
+		<span><?php echo gtext("Ordini");?></span>
 	</a>
 	<ul class="treeview-menu">
 		<li class="<?php echo tm($tm, array("ordini"));?>"><a href="<?php echo $this->baseUrl."/".v("url_elenco_ordini")."/1";?>"><i class="fa fa-list"></i> Lista ordini</a></li>
