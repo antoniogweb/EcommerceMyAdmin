@@ -328,6 +328,10 @@ class FormModel extends GenericModel {
 					'options'	=>	$this->selectCommesso($id),
 					'reverse' => 'yes',
 				),
+				'data_consegna'		=>	array(
+					'className'	=>	'date_input form-control',
+					'attributes'=>	'autocomplete="new-password"',
+				),
 			),
 		);
 		
