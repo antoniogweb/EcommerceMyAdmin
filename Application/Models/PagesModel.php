@@ -4777,7 +4777,7 @@ class PagesModel extends GenericModel {
 	{
 		$clean["id"] = (int)$id;
 		
-		$record = $this->selectId($clean["id"]);
+		$record = $this->clear()->select("title,attivo")->whereId($clean["id"])->record();
 		
 		if (!empty($record))
 		{
