@@ -239,8 +239,8 @@ class PagesstatsModel extends GenericModel {
 					
 					if ($psModel->insert())
 					{
-						if ($log)
-							$log->writeString("IMPORTATE STATISTICHE: ".$json);
+// 						if ($log)
+// 							$log->writeString("IMPORTATE STATISTICHE: ".$json);
 						
 						@unlink($fullPath."/".$file);
 					}
