@@ -295,4 +295,31 @@ class RegusersModel extends FormModel {
 		
 		return $andArray;
 	}
+	
+	public function inviaMailRecuperoPassword($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			$linguaUrl = v("attiva_nazione_nell_url") ? $record["lingua"]."_".strtolower($record["nazione"]) : $record["lingua"];
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($record["username"]),
+				"oggetto"	=>	"Recupero password",
+				"tipologia"	=>	"RECUPERO_PASSWORD",
+				"id_user"	=>	(int)$id,
+				"lingua"	=>	$record["lingua"],
+				"testo_path"	=>	"Elementi/Mail/Clienti/recupero_password.php",
+				"array_variabili_tema"	=>	array(
+					"LINK_RECUPERO"	=>	Domain::$publicUrl."/".$linguaUrl."/password-dimenticata",
+					"NOME_CLIENTER"	=>	RegusersModel::getNominativo($record),
+				),
+			));
+			
+			return $res;
+		}
+		
+		return false;
+	}
 }

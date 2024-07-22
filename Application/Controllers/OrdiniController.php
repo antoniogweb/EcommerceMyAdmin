@@ -447,7 +447,7 @@ class OrdiniController extends BaseController {
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->menuLinksInsert = partial() ? "save" : "back,save";
+		$this->menuLinksInsert = partial() ? "save" : $this->menuLinksInsert;
 		$this->menuLinks = "torna_ordine,save";
 		
 		$this->shift(2);

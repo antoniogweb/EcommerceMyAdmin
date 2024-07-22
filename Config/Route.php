@@ -109,6 +109,8 @@ class Route
 		'regusers,ordini',
 		'regusers,promozioni',
 		'regusers,ordinicollegati',
+		'regusers,inviamailrecuperopassword',
+		'regusers,emailesistente',
 		
 		'reggroups,main',
 		'reggroups,form',
