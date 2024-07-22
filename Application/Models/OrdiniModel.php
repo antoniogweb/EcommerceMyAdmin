@@ -531,6 +531,8 @@ class OrdiniModel extends FormModel {
 			$this->setPagato();
 			
 			$this->sistemaMaiuscole();
+			
+			$this->setNumeroDocumento();
 		}
 		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
@@ -2423,5 +2425,24 @@ class OrdiniModel extends FormModel {
 			if (isset($valori[$k]))
 				$this->setValue($k, $valori[$k]);
 		}
+	}
+	
+	public function setNumeroDocumento()
+	{
+		$sezionale = isset($this->values["sezionale"]) ? $this->values["sezionale"] : "";
+		
+		$documento = $this->clear()->select("max(numero_documento) as numero")->where(array(
+			"sezionale"	=>	sanitizeDb($sezionale),
+		))->sWhere(array(
+			"DATE_FORMAT(data_creazione, '%Y') = ?",
+			array(date("Y"))
+		))->send();
+		
+// 		echo  $this->getQuery();
+		
+		if (empty($documento))
+			$this->values["numero_documento"] = 1;
+		else
+			$this->values["numero_documento"] = ((int)$documento[0]["aggregate"]["numero"] + 1);
 	}
 }

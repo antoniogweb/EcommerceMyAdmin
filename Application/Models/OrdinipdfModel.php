@@ -24,11 +24,15 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdinipdfModel extends GenericModel
 {
+	public static $dataCreazione = null;
+	
 	public function __construct() {
 		$this->_tables='orders_pdf';
 		$this->_idFields='id_o_pdf';
 		
 		$this->_idOrder = 'id_order';
+		
+		self::$dataCreazione = date("Y-m-d H:i:s");
 		
 		parent::__construct();
 	}
@@ -39,7 +43,7 @@ class OrdinipdfModel extends GenericModel
         );
     }
     
-    public function generaPdf($id, $invia = false)
+    public function generaPdf($id, $salva = true, $invia = false)
     {
 		createFolderFull("media/Pdf", LIBRARY);
 		
@@ -68,7 +72,7 @@ class OrdinipdfModel extends GenericModel
 			Pdf::output("", LIBRARY . "/media/Pdf/" . $fileName, array(), "F", $content);
 		}
 		
-		if ($invia)
+		if ($salva)
 			$this->query(array(
 				"update orders_pdf set corrente = 0 where id_o = ?",
 				array(
@@ -81,11 +85,13 @@ class OrdinipdfModel extends GenericModel
 			"filename"	=>	$fileName,
 			"titolo"	=>	$titolo,
 			"corrente"	=>	1,
+			"inviato"	=>	$invia ? 1 : 0,
+			"data_creazione"	=>	self::$dataCreazione,
 		);
 		
 		$this->sValues($values);
 		
-		if ($invia && $this->insert())
+		if ($salva && $this->insert())
 		{
 			$values["id_o_pdf"] = $this->lId;
 			
@@ -122,7 +128,7 @@ class OrdinipdfModel extends GenericModel
 		
 		if ($ordine["email"] && checkMail(htmlentitydecode($ordine["email"])))
 		{
-			$values = $this->generaPdf($ordine["id_o"], true);
+			$values = $this->generaPdf($ordine["id_o"], true, true);
 			
 			$folder = LIBRARY . "/media/Pdf";
 			
@@ -158,12 +164,12 @@ class OrdinipdfModel extends GenericModel
     // Elimina tutti i file fisici dei PDF che non sono presenti nella tabella orders_pdf
     public function eliminaPdfNonInviati()
     {
-		$this->files->setBase(LIBRARY."/media/Pdf");
-		$list = $this->clear()->select("filename")->toList("filename")->send();
-		$list[] = "index.html";
-		$list[] = ".htaccess";
-		
-		$this->files->removeFilesNotInTheList($list);
+// 		$this->files->setBase(LIBRARY."/media/Pdf");
+// 		$list = $this->clear()->select("filename")->toList("filename")->send();
+// 		$list[] = "index.html";
+// 		$list[] = ".htaccess";
+// 		
+// 		$this->files->removeFilesNotInTheList($list);
     }
     
     public function linkPdfCrud($record)
@@ -174,5 +180,13 @@ class OrdinipdfModel extends GenericModel
     public function deletable($id)
 	{
 		return false;
+	}
+	
+	public function inviatoCrud($record)
+	{
+		if ($record["orders_pdf"]["inviato"])
+			return "<i class='verde fa fa-check'></i>";
+		
+		return "";
 	}
 }

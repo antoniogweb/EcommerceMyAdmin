@@ -389,7 +389,7 @@ class PagesController extends BaseController {
 					),
 				);
 			
-			if ($this->viewArgs["q"] != "tutti" && strlen($this->viewArgs["q"]) >= 10)
+			if ($this->viewArgs["q"] != "tutti" && strlen($this->viewArgs["q"]) >= 30)
 				$where["OR"]["pages.prodotto_generico"] = 1;
 			
 			$this->scaffold->model->aWhere($where);

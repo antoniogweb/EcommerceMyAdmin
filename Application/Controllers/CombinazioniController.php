@@ -351,7 +351,7 @@ class CombinazioniController extends BaseController
 					"acquistabile"	=>	$this->viewArgs['acquistabile'],
 				))
 				->addWhereCategoria(CategoriesModel::getIdCategoriaDaSezione("prodotti"), true, "pages.id_c")
-				->orderBy("c1.title,pages.title,combinazioni.id_order");
+				->orderBy("c1.title,pages.title,combinazioni.acquistabile desc,combinazioni.id_order");
 		
 		if ($this->viewArgs["st_giac"] != "tutti")
 		{
