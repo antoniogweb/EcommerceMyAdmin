@@ -552,11 +552,11 @@ class BaseRegusersController extends BaseController
 				}
 				else
 				{
-// 					ob_start();
-// 					include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
-// 					$erroreInvio = ob_get_clean();
+					ob_start();
+					include(tpf(CaptchaModel::getModulo()->getErrorIncludeFile()));
+					$erroreInvio = ob_get_clean();
 				
-					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Errore nel tentativo di recupero della password, per favore riprova più tardi")."</div>";
+// 					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Errore nel tentativo di recupero della password, per favore riprova più tardi")."</div>";
 					
 					$data['notice'] = $erroreInvio;
 					$res = $this->m("RegusersModel")->addError("username", $erroreInvio);
