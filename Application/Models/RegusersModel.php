@@ -313,7 +313,7 @@ class RegusersModel extends FormModel {
 				"testo_path"	=>	"Elementi/Mail/Clienti/recupero_password.php",
 				"array_variabili_tema"	=>	array(
 					"LINK_RECUPERO"	=>	Domain::$publicUrl."/".$linguaUrl."/password-dimenticata",
-					"NOME_CLIENTER"	=>	RegusersModel::getNominativo($record),
+					"NOME_CLIENTE"	=>	RegusersModel::getNominativo($record),
 				),
 			));
 			
