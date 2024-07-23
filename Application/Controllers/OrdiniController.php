@@ -495,6 +495,7 @@ class OrdiniController extends BaseController {
 		
 		$this->formDefaultValues = array(
 			"data_consegna"	=>	"",
+			"nazione"		=>	v("nazione_default"),
 		);
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);

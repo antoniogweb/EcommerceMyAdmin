@@ -539,8 +539,13 @@ class OrdiniModel extends FormModel {
 		{
 			$res = parent::insert();
 			
-			if (!App::$isFrontend && v("crea_sincronizza_cliente_in_ordini_offline") && $res)
-				$this->creaSincronizzaClienteSeAssente($this->lId);
+			if (!App::$isFrontend && $res)
+			{
+				$this->aggiornaTotali($this->lId);
+				
+				if (v("crea_sincronizza_cliente_in_ordini_offline"))
+					$this->creaSincronizzaClienteSeAssente($this->lId);
+			}
 			
 			return $res;
 		}
@@ -1522,7 +1527,7 @@ class OrdiniModel extends FormModel {
 			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
-			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
+			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"] ? $ordine["nazione_spedizione"] : $ordine["nazione"];
 			$_POST["tipo_cliente"] = $ordine["tipo_cliente"];
 			$_POST["pagamento"] = $ordine["pagamento"];
 			$_POST["email"] = $ordine["email"];

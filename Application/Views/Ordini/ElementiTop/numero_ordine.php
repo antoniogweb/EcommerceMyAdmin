@@ -1,6 +1,8 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
-$linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolower($ordine["nazione"]) : $ordine["lingua"];
+$nazioniFrontend = NazioniModel::g(false)->selectCodiciAttivi();
+$nazioneUrlVediOrdine = in_array($ordine["nazione"], $nazioniFrontend) ? $ordine["nazione"] : v("nazione_default");
+$linguaNazioneUrl = v("attiva_nazione_nell_url") ? $ordine["lingua"]."_".strtolower($nazioneUrlVediOrdine) : $ordine["lingua"];
 ?>
 <tr>
 	<td><?php echo gtext("N° Ordine");?>:</td>

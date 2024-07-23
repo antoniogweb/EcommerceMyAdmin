@@ -1099,6 +1099,11 @@ class CombinazioniModel extends GenericModel {
 				{
 					$iva = IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]);
 					
+					// Ricalcolo i prezzi
+					if (!$pagina["pages"]["prodotto_generico"] && $ordine["id_iva_estera"])
+						$record = ProdottiModel::ricalcolaPrezziSuNuovaIva($record, $iva, $ordine["aliquota_iva_estera"]);
+					
+					// Righe accessorie
 					if (isset($_GET["id_riga_tipologia"]))
 					{
 						$rt = new RighetipologieModel();

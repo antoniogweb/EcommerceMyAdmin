@@ -708,14 +708,21 @@ class GenericModel extends Model_Tree
 		return array("0" => "Seleziona") + $r->clear()->orderBy("titolo")->toList("id_regione", "titolo")->send();
 	}
 	
-	public function selectNazione($empty = false)
+	public function selectNazioneNoDefault()
 	{
 		$n = new NazioniModel();
+		
+		return $n->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
+	public function selectNazione($empty = false)
+	{
+// 		$n = new NazioniModel();
 		
 		if (!isset(NazioniModel::$elenco))
 		{
 			$default = $empty ? array("W"	=>	"Tutte le nazioni") : array("0"	=>	"Seleziona");
-			NazioniModel::$elenco = $default + $n->select("iso_country_code,titolo")->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+			NazioniModel::$elenco = $default + $this->selectNazioneNoDefault();
 		}
 		
 		return NazioniModel::$elenco;

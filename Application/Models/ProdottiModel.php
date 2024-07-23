@@ -257,4 +257,19 @@ class ProdottiModel extends PagesModel {
 		
 		return 0;
 	}
+	
+	public static function ricalcolaPrezziSuNuovaIva($record, $vecchiaIva, $nuovaIva)
+	{
+		list ($nuvoPrezzoIvato, $nuvoPrezzoNonIvato) = IvaModel::ricalcolaPrezzo($record["price_ivato"], $record["price"], $vecchiaIva, $nuovaIva);
+		
+		$record["price_ivato"] = $nuvoPrezzoIvato;
+		$record["price"] = $nuvoPrezzoNonIvato;
+		
+		list ($nuvoPrezzoIvato, $nuvoPrezzoNonIvato) = IvaModel::ricalcolaPrezzo($record["price_scontato_ivato"], $record["price_scontato"], $vecchiaIva, $nuovaIva);
+		
+		$record["price_scontato_ivato"] = $nuvoPrezzoIvato;
+		$record["price_scontato"] = $nuvoPrezzoNonIvato;
+		
+		return $record;
+	}
 }
