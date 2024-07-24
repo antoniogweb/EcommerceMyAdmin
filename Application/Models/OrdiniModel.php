@@ -522,6 +522,9 @@ class OrdiniModel extends FormModel {
 			$this->values["id_admin"] = (int)User::$id;
 		}
 		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
 		if (!OrdiniModel::$ordineImportato)
 		{
 			$this->setAliquotaIva();
@@ -547,8 +550,14 @@ class OrdiniModel extends FormModel {
 					$this->creaSincronizzaClienteSeAssente($this->lId);
 			}
 			
+			if (v("usa_transactions"))
+				$this->db->commit();
+			
 			return $res;
 		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 		
 		return false;
 	}
@@ -2436,12 +2445,19 @@ class OrdiniModel extends FormModel {
 	{
 		$sezionale = isset($this->values["sezionale"]) ? $this->values["sezionale"] : "";
 		
-		$documento = $this->clear()->select("max(numero_documento) as numero")->where(array(
+		$this->clear()->select("max(numero_documento) as numero")->where(array(
 			"sezionale"	=>	sanitizeDb($sezionale),
 		))->sWhere(array(
 			"DATE_FORMAT(data_creazione, '%Y') = ?",
 			array(date("Y"))
-		))->send();
+		));
+		
+		if (v("usa_transactions"))
+			$this->forUpdate();
+		
+		$documento = $this->send();
+		
+// 		sleep(30);
 		
 // 		echo  $this->getQuery();
 		
