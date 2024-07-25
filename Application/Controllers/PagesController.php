@@ -275,7 +275,7 @@ class PagesController extends BaseController {
 		{
 			$this->viewArgs["title"] = $this->viewArgs["q"];
 			
-			$this->orderBy = "prodotto_generico, pages.title";
+			$this->orderBy = "prodotto_generico, pages.attivo desc, pages.title";
 		}
 		
 		if (!partial())
