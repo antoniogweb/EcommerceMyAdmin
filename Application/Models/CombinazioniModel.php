@@ -1457,16 +1457,16 @@ class CombinazioniModel extends GenericModel {
 	{
 		$clean["id"] = (int)$id;
 		
-		$record = $this->selectId($clean["id"]);
+		$record = $this->clear()->select("pages.attivo,combinazioni.*")->inner(array("pagina"))->whereId($clean["id"])->first();
 		
 		if (!empty($record))
 		{
 			$stringa = strip_tags($this->getStringa($clean["id"], ","));
 			$stringa = $stringa ? $stringa : gtext("Variante: --");
-			$stringa .= " - ".htmlentitydecode($record["codice"]);
+			$stringa .= " - ".htmlentitydecode($record["combinazioni"]["codice"]);
 			
-			if (!$record["acquistabile"])
-				$stringa .= "(NON ACQUISTABILE)";
+			if ($record["pages"]["attivo"] == "N" || !$record["combinazioni"]["acquistabile"])
+				$stringa .= " (NON ACQUISTABILE)";
 				
 			return $stringa;
 		}
