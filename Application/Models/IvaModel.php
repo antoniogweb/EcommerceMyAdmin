@@ -320,4 +320,13 @@ class IvaModel extends GenericModel
 		else
 			return null;
 	}
+	
+	public static function ricalcolaPrezzo($prezzoIvato, $prezzoNonIvato, $ivaCorrente, $nuovaIva)
+	{
+		$nuvoPrezzoIvato = number_format(($prezzoIvato / (1 + ($ivaCorrente / 100))) * (1 + ($nuovaIva / 100)), 2, ".", "");
+		
+		$nuvoPrezzoNonIvato = number_format($nuvoPrezzoIvato / (1 + ($nuovaIva / 100)), v("cifre_decimali"), ".", "");
+		
+		return array($nuvoPrezzoIvato, $nuvoPrezzoNonIvato);
+	}
 }

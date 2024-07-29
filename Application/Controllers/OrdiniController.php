@@ -77,6 +77,13 @@ Helper_List::$filtersFormLayout["filters"]["alc"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["numero_documento"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Numero doc..",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -127,6 +134,7 @@ class OrdiniController extends BaseController {
 		'titolo_riga:sanitizeAll'=>'tutti',
 		'dalc:sanitizeAll'=>'tutti',
 		'alc:sanitizeAll'=>'tutti',
+		'numero_documento:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -265,6 +273,7 @@ class OrdiniController extends BaseController {
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 			'id_lista_regalo'	=>	$this->viewArgs['id_lista_regalo'],
 			'tipo_ordine'	=>	$this->viewArgs['tipo_ordine'],
+			'numero_documento'	=>	$this->viewArgs['numero_documento'],
 		);
 		
 		$this->m[$this->modelName]->aWhere($where);
@@ -438,7 +447,7 @@ class OrdiniController extends BaseController {
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->menuLinksInsert = partial() ? "save" : "back,save";
+		$this->menuLinksInsert = partial() ? "save" : $this->menuLinksInsert;
 		$this->menuLinks = "torna_ordine,save";
 		
 		$this->shift(2);
@@ -486,6 +495,7 @@ class OrdiniController extends BaseController {
 		
 		$this->formDefaultValues = array(
 			"data_consegna"	=>	"",
+			"nazione"		=>	v("nazione_default"),
 		);
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
@@ -550,13 +560,15 @@ class OrdiniController extends BaseController {
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_o";
 		
+		$mainModelName = $this->modelName;
+		
 		$this->modelName = "OrdinipdfModel";
 		
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
-		$this->mainFields = array("cleanDateTime", "linkPdfCrud");
-		$this->mainHead = "Data invio,File PDF";
+		$this->mainFields = array("cleanDateTime", "linkPdfCrud", "inviatoCrud");
+		$this->mainHead = "Data PDF,File PDF,Inviato";
 		
 		$pulsantiMenu = "torna_ordine";
 		
@@ -571,7 +583,7 @@ class OrdiniController extends BaseController {
 		parent::main();
 		
 		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
-		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m[$mainModelName]->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
 		$data["mail_altre"] = $this->m["MailordiniModel"]->estraiMailOrdine($clean["id"], "ORDINE");
 		$data["ordine"] = $this->m["OrdiniModel"]->selectId($clean['id']);
@@ -600,6 +612,8 @@ class OrdiniController extends BaseController {
 		$this->id_name = "id_o";
 		
 		$this->mainButtons = "ldel";
+		
+		$mainModelName = $this->modelName;
 		
 		$this->modelName = "RigheModel";
 		
@@ -632,7 +646,7 @@ class OrdiniController extends BaseController {
 		parent::main();
 		
 		$data["id_lista_regalo"] = $this->m["OrdiniModel"]->whereId($clean['id'])->field("id_lista_regalo");
-		$data["titoloRecord"] = $this->m["OrdiniModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m[$mainModelName]->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
 		$data["tipologie"] = $this->m("RighetipologieModel")->clear()->orderBy("id_order desc")->send(false);
 		

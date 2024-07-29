@@ -38,12 +38,9 @@ Helper_List::$filtersFormLayout["filters"]["agente"] = array(
 	),
 );
 
-class RegusersController extends BaseController {
-
-// 	protected $_posizioni = array(
-// 		"main"		=>	null,
-// 		"gruppi"	=>	null,
-// 	);
+class RegusersController extends BaseController
+{
+	public $menuLinks = "back,save,invia_link_recupero_password";
 	
 	protected $nomeCampoIdOrdini = "id_user";
 	
@@ -479,11 +476,56 @@ class RegusersController extends BaseController {
 		
 		$data["listaGruppi"] = $this->m[$this->modelName]->clear()->from("reggroups")->select("reggroups.name,reggroups.id_group")->orderBy("reggroups.name")->toList("reggroups.id_group","reggroups.name")->send();
 		
-// 		$data['tabella'] = "utente sito web";
-		
 		$data["titoloRecord"] = $this->m("RegusersModel")->where(array("id_user"=>$clean['id']))->field("username");
 		
 		$this->append($data);
 	}
-
+	
+	// Manda al cliente la mail per il recupero della password
+	public function inviamailrecuperopassword($id = 0)
+	{
+		$this->clean();
+		
+		$this->shift(1);
+		
+		$res = $this->m("RegusersModel")->inviaMailRecuperoPassword((int)$id);
+		
+		if ($res)
+			flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per il recupero della password è stata inviata correttamente.")."</div>");
+		else
+			flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+		
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// restituisce id e mail del cliente cercato tramite email, se esistente
+	public function emailesistente()
+	{
+		header('Content-type: application/json; charset=utf-8');
+		
+		$this->clean();
+		
+		$email = trim($this->request->get("email",""));
+		
+		$id = 0;
+		$emailCliente = "";
+		
+		if ($email && checkMail($email))
+		{
+			$record = $this->m("RegusersModel")->clear()->where(array(
+				"username"	=>	sanitizeDb($email),
+			))->send();
+			
+			if (count($record) === 1)
+			{
+				$id = $record[0]["regusers"]["id_user"];
+				$emailCliente = $record[0]["regusers"]["username"];
+			}
+		}
+		
+		echo json_encode(array(
+			"id"	=>	$id,
+			"email"	=>	$emailCliente,
+		));
+	}
 }

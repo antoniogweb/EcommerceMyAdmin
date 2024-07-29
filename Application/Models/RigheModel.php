@@ -234,7 +234,7 @@ class RigheModel extends GenericModel {
 			$prezzo = $this->getPrezzoCampo($record, "prezzo_intero");
 			$disabled = "";
 			
-			if (setPrice($prezzo) <= 0 || $record["righe"]["id_riga_tipologia"])
+			if ($record["righe"]["id_riga_tipologia"])
 				$disabled = "disabled";
 			
 			return "<input id-riga='".$record["righe"]["percentuale_promozione"]."' style='max-width:90px;' class='form-control sconto_riga_ordine' name='' value='".$sconto."' $disabled/>";

@@ -380,6 +380,9 @@ class BaseController extends Controller
 				$this->scaffold->mainMenu->links['torna_ordine']['title'] = "Torna alla pagina di dettaglio dell'ordine";
 			}
 			
+			if (isset($this->scaffold->mainMenu->links['invia_link_recupero_password']))
+				$this->scaffold->mainMenu->links['invia_link_recupero_password']['url'] = 'inviamailrecuperopassword/'.$clean["id"];
+			
 			$this->aggiungiUrlmenuScaffold($clean["id"]);
 			
 			if (isset($_GET["insert"]))

@@ -522,6 +522,9 @@ class OrdiniModel extends FormModel {
 			$this->values["id_admin"] = (int)User::$id;
 		}
 		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
 		if (!OrdiniModel::$ordineImportato)
 		{
 			$this->setAliquotaIva();
@@ -531,17 +534,30 @@ class OrdiniModel extends FormModel {
 			$this->setPagato();
 			
 			$this->sistemaMaiuscole();
+			
+			$this->setNumeroDocumento();
 		}
 		
 		if (!App::$isFrontend || ($this->controllaCF($checkFiscale) && $this->controllaPIva()) || self::$ordineImportato)
 		{
 			$res = parent::insert();
 			
-			if (!App::$isFrontend && v("crea_sincronizza_cliente_in_ordini_offline") && $res)
-				$this->creaSincronizzaClienteSeAssente($this->lId);
+			if (!App::$isFrontend && $res)
+			{
+				$this->aggiornaTotali($this->lId);
+				
+				if (v("crea_sincronizza_cliente_in_ordini_offline"))
+					$this->creaSincronizzaClienteSeAssente($this->lId);
+			}
+			
+			if (v("usa_transactions"))
+				$this->db->commit();
 			
 			return $res;
 		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 		
 		return false;
 	}
@@ -1520,7 +1536,7 @@ class OrdiniModel extends FormModel {
 			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
-			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"];
+			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"] ? $ordine["nazione_spedizione"] : $ordine["nazione"];
 			$_POST["tipo_cliente"] = $ordine["tipo_cliente"];
 			$_POST["pagamento"] = $ordine["pagamento"];
 			$_POST["email"] = $ordine["email"];
@@ -2423,5 +2439,31 @@ class OrdiniModel extends FormModel {
 			if (isset($valori[$k]))
 				$this->setValue($k, $valori[$k]);
 		}
+	}
+	
+	public function setNumeroDocumento()
+	{
+		$sezionale = isset($this->values["sezionale"]) ? $this->values["sezionale"] : "";
+		
+		$this->clear()->select("max(numero_documento) as numero")->where(array(
+			"sezionale"	=>	sanitizeDb($sezionale),
+		))->sWhere(array(
+			"DATE_FORMAT(data_creazione, '%Y') = ?",
+			array(date("Y"))
+		));
+		
+		if (v("usa_transactions"))
+			$this->forUpdate();
+		
+		$documento = $this->send();
+		
+// 		sleep(30);
+		
+// 		echo  $this->getQuery();
+		
+		if (empty($documento))
+			$this->values["numero_documento"] = 1;
+		else
+			$this->values["numero_documento"] = ((int)$documento[0]["aggregate"]["numero"] + 1);
 	}
 }

@@ -275,7 +275,7 @@ class PagesController extends BaseController {
 		{
 			$this->viewArgs["title"] = $this->viewArgs["q"];
 			
-			$this->orderBy = "prodotto_generico, pages.title";
+			$this->orderBy = "prodotto_generico, pages.attivo desc, pages.title";
 		}
 		
 		if (!partial())
@@ -389,7 +389,7 @@ class PagesController extends BaseController {
 					),
 				);
 			
-			if ($this->viewArgs["q"] != "tutti" && strlen($this->viewArgs["q"]) >= 10)
+			if ($this->viewArgs["q"] != "tutti" && strlen($this->viewArgs["q"]) >= 30)
 				$where["OR"]["pages.prodotto_generico"] = 1;
 			
 			$this->scaffold->model->aWhere($where);

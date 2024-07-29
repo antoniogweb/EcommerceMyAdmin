@@ -477,8 +477,8 @@ class CartModel extends GenericModel {
 		
 		foreach ($righe as $r)
 		{
-			if ($r["price_ivato"] <= 0)
-				continue;
+// 			if ($r["price_ivato"] <= 0)
+// 				continue;
 			
 			$aliquota = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : $r["iva"];
 			

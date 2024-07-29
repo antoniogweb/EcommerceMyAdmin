@@ -180,7 +180,7 @@ class FormModel extends GenericModel {
 				),
 				'nazione_spedizione'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	$this->selectNazione(),
+					"options"	=>	array("" => "Seleziona") + $this->selectNazioneNoDefault(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -199,7 +199,7 @@ class FormModel extends GenericModel {
 				),
 				'nazione'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	$this->selectNazione(),
+					"options"	=>	array("" => "Seleziona") + $this->selectNazioneNoDefault(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -327,6 +327,10 @@ class FormModel extends GenericModel {
 					'labelString'=>	'Commesso',
 					'options'	=>	$this->selectCommesso($id),
 					'reverse' => 'yes',
+				),
+				'data_consegna'		=>	array(
+					'className'	=>	'date_input form-control',
+					'attributes'=>	'autocomplete="new-password"',
 				),
 			),
 		);

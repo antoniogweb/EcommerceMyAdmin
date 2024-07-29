@@ -1099,6 +1099,11 @@ class CombinazioniModel extends GenericModel {
 				{
 					$iva = IvaModel::g()->getValore((int)$pagina["pages"]["id_iva"]);
 					
+					// Ricalcolo i prezzi
+					if (!$pagina["pages"]["prodotto_generico"] && $ordine["id_iva_estera"] && !isset($_GET["id_riga_tipologia"]))
+						$record = ProdottiModel::ricalcolaPrezziSuNuovaIva($record, $iva, $ordine["aliquota_iva_estera"]);
+					
+					// Righe accessorie
 					if (isset($_GET["id_riga_tipologia"]))
 					{
 						$rt = new RighetipologieModel();
@@ -1452,16 +1457,16 @@ class CombinazioniModel extends GenericModel {
 	{
 		$clean["id"] = (int)$id;
 		
-		$record = $this->selectId($clean["id"]);
+		$record = $this->clear()->select("pages.attivo,combinazioni.*")->inner(array("pagina"))->whereId($clean["id"])->first();
 		
 		if (!empty($record))
 		{
 			$stringa = strip_tags($this->getStringa($clean["id"], ","));
 			$stringa = $stringa ? $stringa : gtext("Variante: --");
-			$stringa .= " - ".htmlentitydecode($record["codice"]);
+			$stringa .= " - ".htmlentitydecode($record["combinazioni"]["codice"]);
 			
-			if (!$record["acquistabile"])
-				$stringa .= "(NON ACQUISTABILE)";
+			if ($record["pages"]["attivo"] == "N" || !$record["combinazioni"]["acquistabile"])
+				$stringa .= " (NON ACQUISTABILE)";
 				
 			return $stringa;
 		}

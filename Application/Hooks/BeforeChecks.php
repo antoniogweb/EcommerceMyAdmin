@@ -422,6 +422,14 @@ Helper_Menu::$htmlLinks = array(
 		'text'	=>	"Invia PDF",
 		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
 	),
+	"invia_link_recupero_password" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'style="margin-left:5px;" role="button" class="btn btn-info make_spinner"',
+		"class"	=>	"btn btn-info",
+		'text'	=>	"Invia mail recupero password",
+		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";

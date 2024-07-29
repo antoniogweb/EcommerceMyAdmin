@@ -22,8 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class TestiModel extends GenericModel {
-	
+class TestiModel extends GenericModel
+{
 	public static $mostraIconaEdit = true;
 	
 	public static $uploadFile = true;
@@ -87,7 +87,6 @@ class TestiModel extends GenericModel {
 	
 	public function setFormStruct($id = 0)
 	{
-
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -172,6 +171,8 @@ class TestiModel extends GenericModel {
 			
 			if (!empty($record) && $record["tipo"] != "TESTO")
 				$this->values["valore"] = "";
+			
+			$this->setValue("data_ultima_modifica", date("Y-m-d H:i:s"));
 			
 			$res = parent::update($id, $whereClause);
 			
