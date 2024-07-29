@@ -1070,6 +1070,8 @@ class SpedizioninegozioModel extends FormModel {
 				$modulo->getInfo($sp["id_spedizione_negozio"]);
 				
 				// Attendi 200 millisecondi
+				if( session_id() )
+					session_write_close();
 				usleep(200000);
 				
 				if ($elaboraSpedizione)
