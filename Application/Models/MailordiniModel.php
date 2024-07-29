@@ -215,6 +215,7 @@ class MailordiniModel extends GenericModel
 		$tabella = isset($params["tabella"]) ? $params["tabella"] : "";
 		$idElemento = isset($params["id_elemento"]) ? $params["id_elemento"] : 0;
 		$traduciOggetto = isset($params["traduci_oggetto"]) ? $params["traduci_oggetto"] : true;
+		$numeroDocumento = isset($params["numero_documento"]) ? $params["numero_documento"] : 0;
 		
 		self::$variabiliTema = $arrayVariabiliTema;
 		
@@ -271,6 +272,7 @@ class MailordiniModel extends GenericModel
 				$oggetto = gtext($oggetto, false);
 			
 			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
+			$oggetto = str_replace("[NUMERO_DOCUMENTO]",$numeroDocumento, $oggetto);
 			$oggetto = str_replace("[OGGETTO_PLACEHOLDER]",$oggettoPlaceholder, $oggetto);
 			
 			// Segnaposti

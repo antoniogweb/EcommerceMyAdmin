@@ -291,10 +291,6 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_test_in_pagine"	=>	0, // permette di avere dei prodotti di test non elencati (neanche nella sitemap)
 		"attiva_menu_db"			=>	0, // menù in admin da db
 		"url_redirect_dopo_login"	=>	"area-riservata", // url di redirect dopo il login nel frontend
-		"oggetto_ordine_ricevuto"	=>	"Ordine N° [ID_ORDINE]",
-		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
-		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
-		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
 		"mostra_impostazioni_smtp"	=>	1, // Se mostra o nasconde le impostazioni della posta in impostazioni, in admin
 		"attiva_titolo_2_valori_caratteristiche"	=>	0, // descrizione aggiuntiva caratteristica
 		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1, // se mandare la mail di avvenuto pagamento al cliente, dopo l'ordine
@@ -552,6 +548,12 @@ class VariabiliModel extends GenericModel {
 		"check_accesso_admin_token_ordine_frontend_da"	=>	0, // per tutti gli ordini maggiorni di check_accesso_admin_token_ordine_frontend_da, controlla anche admin_token
 		"attiva_gestione_commessi"		=>	0, // se impostato su 1, attiva la gestione dei commessi nell'ordine
 		"function_pdf_ordine"			=>	"", // funzione per generare il PDF dell'ordine. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
+		"oggetto_ordine_ricevuto"	=>	"Ordine N° [ID_ORDINE]",
+		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
+		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
+		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
+		"oggetto_pdf_ordine"		=>	"Ordine [ID_ORDINE] - stampa PDF", // Oggetto mail del PDF ordine offline
+		"filename_pdf_ordine"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine allegato alla mail
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

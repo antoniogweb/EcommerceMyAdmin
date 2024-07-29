@@ -136,12 +136,16 @@ class OrdinipdfModel extends GenericModel
 			{
 				$email = htmlentitydecode($ordine["email"]);
 				
-				$nomeFile = "Ordine_".$ordine["id_o"];
+				$nomeFile = v("filename_pdf_ordine");
+				
+				$nomeFile = str_replace("[ID_ORDINE]",$ordine["id_o"], $nomeFile);
+				$nomeFile = str_replace("[NUMERO_DOCUMENTO]",$ordine["numero_documento"], $nomeFile);
 				
 				return MailordiniModel::inviaMail(array(
 					"emails"	=>	array($email),
-					"oggetto"	=>	"Ordine ".$ordine["id_o"]. " - stampa PDF",
+					"oggetto"	=>	v("oggetto_pdf_ordine"),
 					"id_o"		=>	(int)$ordine["id_o"],
+					"numero_documento"		=>	(int)$ordine["numero_documento"],
 					"tipologia"	=>	"ORDINE",
 					"tipo"		=>	"G",
 					"lingua"	=>	$ordine["lingua"],
