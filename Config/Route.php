@@ -798,6 +798,7 @@ class Route
 		'gestionali,invia',
 		'gestionali,annullainvio',
 		'gestionali,infoaccount',
+		'gestionali,infocontidisaldo',
 		'gestionali,variabili',
 		'gestionali,opzioni',
 		
