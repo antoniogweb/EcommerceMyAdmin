@@ -2457,10 +2457,6 @@ class OrdiniModel extends FormModel {
 		
 		$documento = $this->send();
 		
-// 		sleep(30);
-		
-// 		echo  $this->getQuery();
-		
 		if (empty($documento))
 			$this->values["numero_documento"] = 1;
 		else
