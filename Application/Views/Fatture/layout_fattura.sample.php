@@ -134,7 +134,7 @@
 		Totale IVA: <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong>
 	</div>
 	<div style="padding-top:15px" class="riga_informazioni">
-		<strong>Totale: &euro; <?php echo setPriceReverse($ordine["total"]);?></strong>
+		Totale: <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong>
 	</div>
 </div>
 
