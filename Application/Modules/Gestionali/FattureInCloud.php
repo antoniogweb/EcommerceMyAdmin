@@ -248,7 +248,7 @@ class FattureInCloud extends Gestionale
 				"exchange_rate"	=>	"1.00000",
 				"symbol"	=>	"€",
 			),
-			"use_gross_prices"=>false,
+			"use_gross_prices"=> v("prezzi_ivati_in_carrello") ? true : false,
 			"rivalsa"=>0,
 			"cassa"=>0,
 			"show_payments"=>false,
