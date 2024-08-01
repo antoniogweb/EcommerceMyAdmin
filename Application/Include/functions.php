@@ -593,7 +593,9 @@ function getIva()
 
 function getTotalN($pieno = false)
 {
-	$cifre = v("cifre_decimali");
+// 	$cifre = v("cifre_decimali");
+	$cifre = CartModel::getCifreCalcolo();
+	
 	$totalConSpedizione = getPrezzoScontatoN(true, 0, $pieno);
 	$iva = getIvaN($pieno);
 	

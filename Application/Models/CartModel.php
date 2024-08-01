@@ -30,6 +30,8 @@ class CartModel extends GenericModel {
 	public static $cartRows = null;
 	public static $cartellaCartUid = "CartUids"; // Cartella dove vengono salvati i file dei cart_uid
 	
+	public static $cifreCalcolo = 16;
+	
 	public function __construct() {
 		$this->_tables='cart';
 		$this->_idFields='id_cart';
@@ -97,12 +99,18 @@ class CartModel extends GenericModel {
 		}
 	}
 	
+	public static function getCifreCalcolo()
+	{
+		return v("prezzi_ivati_in_carrello") ? self::$cifreCalcolo : v("cifre_decimali");;
+	}
+	
 	// Totale scontato
 	public function totaleScontato($conSpedizione = false, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
 // 		IvaModel::getAliquotaEstera();
 		
-		$cifre = v("cifre_decimali");
+// 		$cifre = v("cifre_decimali");
+		$cifre = self::getCifreCalcolo();
 		
 		if (!$pieno && (hasActiveCoupon() || (v("attiva_crediti") && CreditiModel::gNumeroEuroRimasti(User::$id) > 0)))
 		{
@@ -194,7 +202,8 @@ class CartModel extends GenericModel {
 	{
 // 		IvaModel::getAliquotaEstera();
 		
-		$cifre = v("cifre_decimali");
+// 		$cifre = v("cifre_decimali");
+		$cifre = self::getCifreCalcolo();
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
@@ -256,7 +265,8 @@ class CartModel extends GenericModel {
 	// Totale iva dal carrello
 	public function iva($conSpedizione = true, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
-		$cifre = v("cifre_decimali");
+// 		$cifre = v("cifre_decimali");
+		$cifre = self::getCifreCalcolo();
 		
 // 		IvaModel::getAliquotaEstera();
 		
