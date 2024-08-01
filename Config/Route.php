@@ -376,6 +376,7 @@ class Route
 		'iva,main',
 		'iva,form',
 		'iva,ordina',
+		'iva,infogestionale',
 		
 		'contenutitradotti,form',
 		

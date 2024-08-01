@@ -57,4 +57,16 @@ class IvaController extends BaseController
 		
 		parent::form($queryType, $id);
 	}
+	
+	public function infogestionale()
+	{
+		$this->clean();
+		
+		if (GestionaliModel::getModulo()->isAttiva())
+		{
+			$json = GestionaliModel::getModulo()->infoAliquoteIva();
+			
+			echo $json;
+		}
+	}
 }

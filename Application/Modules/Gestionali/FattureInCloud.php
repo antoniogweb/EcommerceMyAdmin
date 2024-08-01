@@ -142,6 +142,14 @@ class FattureInCloud extends Gestionale
 		return json_encode($result);
 	}
 	
+	public function infoAliquoteIva()
+	{
+		$this->setUrl("/c/".$this->params["param_1"]."/info/vat_types");
+		$result = $this->send("GET");
+		
+		return json_encode($result);
+	}
+	
 	public function inviaOrdine($idO)
 	{
 		$ordine = $this->infoOrdine((int)$idO);
