@@ -32,9 +32,9 @@ class Nexi
 	public $statoNotifica = "";
 	public $statoCheckOrdine = "";
 	
-	private $urlPagamento = null;
-	private $logFile = "";
-	private $ordine = null;
+	protected $urlPagamento = null;
+	protected $logFile = "";
+	protected $ordine = null;
 	
 	public function __construct($ordine = array())
 	{
