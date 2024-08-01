@@ -451,6 +451,20 @@ class OrdiniModel extends FormModel {
 		return $clean["uid"];
 	}
 	
+	public function resettaCodiceTransazione($idOrdine)
+	{
+		$ordine = $this->selectId((int)$idOrdine);
+		
+		if (!empty($ordine))
+		{
+			$this->sValues(array(
+				"codice_transazione"	=>	$this->getUniqueCodTrans(generateString(30)),
+			));
+			
+			$this->pUpdate((int)$idOrdine);
+		}
+	}
+	
 	public function setAliquotaIva($idOrdine = 0)
 	{
 // 		if (!App::$isFrontend)

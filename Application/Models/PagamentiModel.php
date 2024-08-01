@@ -33,8 +33,9 @@ class PagamentiModel extends GenericModel {
 	);
 	
 	public static $elencoGateway = array(
-		"Nexi"	=>	"Circuito Nexi",
-		"Sella"	=>	"Circuito Banca Sella",
+		"Nexi"		=>	"Circuito Nexi (XPay Easy / XPay Pro)",
+		"NexiLink"	=>	"Circuito Nexi (XPay Link)",
+		"Sella"		=>	"Circuito Banca Sella",
 	);
 	
 	public static $elencoGatewayPaypal = array(
