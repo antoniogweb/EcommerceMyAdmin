@@ -1582,6 +1582,9 @@ class PagesModel extends GenericModel {
 	
 	private function idsDaCodice($codice, $forzaTutti = false)
 	{
+		if ((string)trim($codice) === "")
+			$codice = "########";
+		
 		$c = new CombinazioniModel();
 		
 		$c->clear()->select("pages.id_page,combinazioni.id_c")->inner(array("pagina"))->where(array(
