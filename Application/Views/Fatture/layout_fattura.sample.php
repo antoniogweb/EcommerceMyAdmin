@@ -74,7 +74,7 @@
 <!--informazioni ordine-->
 <div style="margin-top:10mm;">
 	<div class="riga_informazioni">
-		Fattura n° <b><?php echo $numeroFattura;?>/web</b> del <b><?php echo $dataFattura;?></b>
+		Fattura n° <b><?php echo $numeroFattura;?></b> del <b><?php echo $dataFattura;?></b>
 	</div>
 	<div class="riga_informazioni">
 		- Rif Ordine n° <b><?php echo $ordine["id_o"];?></b> del <b><?php echo smartDate($ordine["data_creazione"]);?></b>
