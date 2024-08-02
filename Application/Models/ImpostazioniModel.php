@@ -266,4 +266,9 @@ class ImpostazioniModel extends GenericModel {
 		
 		self::$parametriImpostati = true;
 	}
+	
+	public static function getEmailAvvisoPagamentoOrdine()
+	{
+		return Parametri::$mailInvioConfermaPagamento ? Parametri::$mailInvioConfermaPagamento : Parametri::$mailInvioOrdine;
+	}
 }

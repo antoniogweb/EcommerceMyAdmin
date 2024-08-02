@@ -202,7 +202,7 @@ class BaseOrdiniController extends BaseController
 					}
 					
 					$res = MailordiniModel::inviaMail(array(
-						"emails"	=>	array(Parametri::$mailInvioOrdine),
+						"emails"	=>	array(ImpostazioniModel::getEmailAvvisoPagamentoOrdine()),
 						"oggetto"	=>	$Subject,
 						"testo"		=>	$output,
 						"tipologia"	=>	"ORDINE NEGOZIO",
@@ -306,7 +306,7 @@ class BaseOrdiniController extends BaseController
 						$output = "Il pagamento dell'ordine #".$ordine["id_o"]." è andato a buon fine. <br />";
 						
 						$res = MailordiniModel::inviaMail(array(
-							"emails"	=>	array(Parametri::$mailInvioOrdine),
+							"emails"	=>	array(ImpostazioniModel::getEmailAvvisoPagamentoOrdine()),
 							"oggetto"	=>	v("oggetto_ordine_pagato"),
 							"testo"		=>	$output,
 							"tipologia"	=>	"ORDINE NEGOZIO",

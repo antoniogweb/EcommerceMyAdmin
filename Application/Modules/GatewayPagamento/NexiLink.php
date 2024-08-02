@@ -24,20 +24,6 @@ require_once(LIBRARY."/Application/Modules/GatewayPagamento/Nexi.php");
 
 class NexiLink extends Nexi
 {
-	public $ALIAS = "";
-	public $CHIAVESEGRETA = "";
-	public $requestUrl = "";
-	public $merchantServerUrl = "";
-	public $okUrl = "";
-	public $errorUrl = "";
-	public $notifyUrl = "";
-	public $statoNotifica = "";
-	public $statoCheckOrdine = "";
-	
-	private $urlPagamento = null;
-	private $logFile = "";
-	private $ordine = null;
-	
 	public function __construct($ordine = array())
 	{
 		$pagamento = PagamentiModel::g(false)->where(array(
@@ -59,13 +45,6 @@ class NexiLink extends Nexi
 			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
 			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
 			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["cart_uid"];
-			
-			if (isset($ordine["id_o"]))
-			{
-				OrdiniModel::g()->resettaCodiceTransazione($ordine["id_o"]);
-				$ordine = OrdiniModel::g()->selectId((int)$ordine["id_o"]);
-			}
-			
 			$this->ordine = $ordine;
 		}
 		
@@ -96,6 +75,12 @@ class NexiLink extends Nexi
 	
 	public function getUrlPagamento()
 	{
+		if (isset($this->ordine["id_o"]))
+		{
+			OrdiniModel::g()->resettaCodiceTransazione($this->ordine["id_o"]);
+			$this->ordine = OrdiniModel::g()->selectId((int)$this->ordine["id_o"]);
+		}
+		
 		$notifyUrl = $this->notifyUrl;
 		$importo = str_replace(".","",$this->ordine["total"]);
 		
