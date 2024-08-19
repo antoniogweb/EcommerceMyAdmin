@@ -270,7 +270,7 @@
 			</div>
 		</div>
 		<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["fascia-prezzo"], gtext("da")."-[DA]-".gtext("a")."-[A]");?>
-		<div class="uk-hidden url_slider_prezzo"><?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?></div>
+		<div rel="noindex,nofollow" class="uk-hidden url_slider_prezzo"><?php echo $this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio($idTag, $idMarchio, $id_categoria, "", $filtriUrlTuttiAltri, $filtriUrlLocTuttiAltri, $filtriUrlAltriFiltri);?></div>
 	</section>
 	<?php } ?>
 	
