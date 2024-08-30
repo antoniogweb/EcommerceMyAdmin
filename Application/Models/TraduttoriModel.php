@@ -123,7 +123,7 @@ class TraduttoriModel extends GenericModel
 			
 			if ($campo == "id_page")
 				$ctModel->inner(array("page"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica))");
-			if ($campo == "id_c")
+			else if ($campo == "id_c")
 				$ctModel->inner(array("category"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND categories.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < categories.data_ultima_modifica))");
 			else
 				$ctModel->sWhere("contenuti_tradotti.salvato = 0");
@@ -137,13 +137,15 @@ class TraduttoriModel extends GenericModel
 				$ctModel->limit($limit);
 			
 			$elementiDaTradurre = $ctModel->send();
-			
-// 			print_r($elementiDaTradurre);die();
+
+			// echo $ctModel->getQuery();
+			// print_r($elementiDaTradurre);die();
 			
 			foreach ($elementiDaTradurre as $riga)
 			{
 				$traduzioni = array();
-				
+				$traduzioniLog = array();
+
 				foreach (self::$campiDaTradurreContenuti as $campoDaTradurre)
 				{
 					// Cerco il testo da tradurre
@@ -151,21 +153,28 @@ class TraduttoriModel extends GenericModel
 						$testoDaTradurre = isset($riga[self::$campoTabella[$campo]][$campoDaTradurre]) ? htmlentitydecode($riga[self::$campoTabella[$campo]][$campoDaTradurre]) : "";
 					else
 						$testoDaTradurre = htmlentitydecode($riga["contenuti_tradotti"][$campoDaTradurre]);
-					
+
 					// Traduco
-					if (!trim($testoDaTradurre))
-						$traduzioni[$campoDaTradurre] = "";
-					else
+					// if (!trim($testoDaTradurre))
+					// 	$traduzioni[$campoDaTradurre] = "";
+					if (trim($testoDaTradurre))
 					{
 						$traduzioni[$campoDaTradurre] = TraduttoriModel::getModulo()->traduci($testoDaTradurre, v("lingua_default_frontend"), $lingua);
-						
+
 						if ($traduzioni[$campoDaTradurre] !== false)
 							$traduzioni[$campoDaTradurre] = trim($traduzioni[$campoDaTradurre]);
 						else
 							$traduzioni[$campoDaTradurre] = "";
+
+						// Salvo un array con i valori da tradurre e tradotti (per il LOG successivo)
+						$traduzioniLog[$campoDaTradurre] = array(
+							"daTradurre"	=>	$testoDaTradurre,
+							"tradotto"		=>	$traduzioni[$campoDaTradurre],
+						);
 					}
 				}
-				
+
+				// print_r($traduzioni);die();
 				$ctModel->sValues($traduzioni);
 				
 				if (!$riga["contenuti_tradotti"]["salvato"])
@@ -179,15 +188,18 @@ class TraduttoriModel extends GenericModel
 				
 				$testoLog = "TRADOTTO RECORD ".$riga["contenuti_tradotti"]["id_ct"].":\n";
 				
-				foreach ($traduzioni as $campo => $traduzione)
+				// CREO LOG
+				foreach ($traduzioniLog as $campo => $struct)
 				{
-					if (trim($traduzione))
-						$testoLog .= "$campo: $traduzione\n";
+					if (trim($struct["tradotto"]))
+						$testoLog .= "$campo: ".$struct["daTradurre"]." -> ".$struct["tradotto"]."\n";
 				}
 				
+				// SCRIVO LOG
 				if ($log)
 					$log->writeString($testoLog);
 				
+				// STAMPO LOG A VIDEO
 				echo $testoLog."\n";
 			}
 		}

@@ -106,7 +106,7 @@ class ContenutitradottiModel extends GenericModel
 			else if (isset($this->values["titolo"]))
 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["titolo"]));
 		}
-		
+
 		$record = $this->selectId($clean["id"]);
 		
 		if (!isset($id))
@@ -246,7 +246,7 @@ class ContenutitradottiModel extends GenericModel
 		$this->sAlias($record, $id);
 		
 		$res = parent::update($id, $whereClause);
-		
+
 		if ($res && $record["id_av"])
 		{
 			$c = new CombinazioniModel();

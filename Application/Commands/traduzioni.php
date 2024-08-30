@@ -54,6 +54,8 @@ if (!isset($params["azione"]))
 	echo "traduci-tabella-traduzioni -> traduce la tabella traduzioni (testi generici)\n";
 	echo "traduci-categorie -> traduce la tabella categories (CATEGORIE)\n";
 	echo "traduci-pagine -> traduce la tabella pages (PAGINE e PRODOTTI)\n";
+	echo "traduci-attributi -> traduce la tabella attributi\n";
+	echo "traduci-attributi-valori -> traduce la tabella attributi_valori\n";
 	echo "traduci-testi -> traduce la tabella testi (TESTI EDITABILI DA FRONTEND)\n";
 	die();
 }
@@ -100,6 +102,24 @@ if ($params["azione"] == "traduci-pagine")
 	TraduttoriModel::traduciTabellaContenuti("id_page", $params["lingua"], $params["id_record"], $params["limit"], $log);
 	
 	$log->writeString("FINE TRADUZIONE TABELLA PAGES");
+}
+
+if ($params["azione"] == "traduci-attributi")
+{
+	$log->writeString("INIZIO TRADUZIONE TABELLA ATRIBUTI");
+
+	TraduttoriModel::traduciTabellaContenuti("id_a", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+	$log->writeString("FINE TRADUZIONE TABELLA ATRIBUTI");
+}
+
+if ($params["azione"] == "traduci-attributi-valori")
+{
+	$log->writeString("INIZIO TRADUZIONE TABELLA ATRIBUTI VALORI");
+
+	TraduttoriModel::traduciTabellaContenuti("id_av", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+	$log->writeString("FINE TRADUZIONE TABELLA ATRIBUTI VALORI");
 }
 
 if ($params["azione"] == "traduci-testi")
