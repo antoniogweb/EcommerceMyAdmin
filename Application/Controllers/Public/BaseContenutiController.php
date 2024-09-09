@@ -444,7 +444,7 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$data["currUrl"] = $this->getCurrentUrl(true, $tipoContenuto);
-		
+
 		$this->append($data);
 	}
 	

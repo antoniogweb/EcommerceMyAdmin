@@ -39,17 +39,30 @@ class SediController extends GenericsectionController {
 			"regioneCrud",
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
+
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Email,Telefono,Indirizzo,Regione,Pubblicato?';
+
+		$this->filters = array(null,'title');
+
+		if (v("attiva_categorie_sedi"))
+		{
+			$this->tableFields[] = 'PagesModel.categoriesS|pages.id_page';
+			$this->head .= ',Categoria';
+			$filtroCategoria = array("tutti" => SedicatModel::g(false)->getTitoloCategoriaPadreSezione()) + SedicatModel::g(false)->buildSelect(null,false);
+
+			$this->filters = array(null,'title',null,null,null,null,null,array("id_c",null,$filtroCategoria));
+		}
 		
 		$this->colProperties = array(
 			array(
 				'width'	=>	'60px',
 			),
 		);
-		
+
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Email,Telefono,Indirizzo,Regione,Pubblicato?';
-		
+
+
 		$this->queryFields = "title,attivo,email_contatto_evento,telefono_contatto_evento,indirizzo_localita_evento,description,localita_evento,id_regione,coordinate,link_pagina_facebook,link_pagina_twitter,link_pagina_youtube,link_pagina_instagram,link_pagina_linkedin";
 		
 		if (v("attiva_categorie_sedi"))
