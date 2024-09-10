@@ -2425,13 +2425,23 @@ class OrdiniModel extends FormModel {
 		return $andArray;
 	}
 	
+	public function cleanDataPagamento($record)
+	{
+		$formato = "d-m-Y H:i:s";
+
+		if (isset($record[$this->_tables]["data_pagamento"]) && $record[$this->_tables]["data_pagamento"])
+			return date($formato,strtotime($record[$this->_tables]["data_pagamento"]));
+
+		return "";
+	}
+
 	public function cleanDateTimeConsegna($record)
     {
 		$formato = "d-m-Y";
 		
 		if (isset($record[$this->_tables]["data_consegna"]) && $record[$this->_tables]["data_consegna"])
 			return date($formato,strtotime($record[$this->_tables]["data_consegna"]));
-		
+
 		return "";
     }
     
