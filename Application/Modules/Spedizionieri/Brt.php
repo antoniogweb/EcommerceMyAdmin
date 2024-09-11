@@ -172,7 +172,7 @@ class Brt extends Spedizioniere
 					'keep_alive' => false
 				);
 				
-				$soap_url = 'http://wsr.brt.it:10041/web/GetIdSpedizioneByRMAService/GetIdSpedizioneByRMA?wsdl';
+				$soap_url = 'https://wsr.brt.it:10052/web/GetIdSpedizioneByRMAService/GetIdSpedizioneByRMA?wsdl';
 				$client = new SoapClient($soap_url, $headers);
 				
 				$var = array(
@@ -186,7 +186,7 @@ class Brt extends Spedizioniere
 				
 				if (isset($res->return->SPEDIZIONE_ID) && $res->return->SPEDIZIONE_ID != 0)
 				{
-					$soap_url2 = 'http://wsr.brt.it:10041/web/BRT_TrackingByBRTshipmentIDService/BRT_TrackingByBRTshipmentID?wsdl';
+					$soap_url2 = 'https://wsr.brt.it:10052/web/BRT_TrackingByBRTshipmentIDService/BRT_TrackingByBRTshipmentID?wsdl';
 					$client2 = new SoapClient($soap_url2, $headers);
 					
 					$var = array(
