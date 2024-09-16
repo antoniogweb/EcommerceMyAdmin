@@ -204,7 +204,11 @@ class TraduttoriModel extends GenericModel
 				
 				$ctModel->setSalvatoEDataTraduzione();
 				
-				$ctModel->update($riga["contenuti_tradotti"]["id_ct"]);
+				if ($ctModel->update($riga["contenuti_tradotti"]["id_ct"]) && $campo == "id_page")
+				{
+					$p = new PagesModel();
+					$p->setCampoCerca((int)$riga["contenuti_tradotti"]["id_page"], 0, true, $lingua, 0);
+				}
 				
 				$testoLog = "TRADOTTO RECORD ".$riga["contenuti_tradotti"]["id_ct"].":\n";
 				

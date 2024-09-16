@@ -74,7 +74,7 @@ class Interno extends MotoreRicerca
 	public function cerca($indice, $search, $lingua = "it")
 	{
 		$search = trim($search);
-		
+
 		$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($search);
 		
 // 		echo $search;
@@ -83,7 +83,7 @@ class Interno extends MotoreRicerca
 		$pattern = implode("|", $searchArray);
 		
 		$tabellaCerca = ($lingua == LingueModel::getPrincipaleFrontend()) ? "pages" : "contenuti_tradotti";
-		
+
 		$p = new PagesModel();
 		$p->addWhereSearch($search, 50, "campo_cerca", $tabellaCerca);
 		$p->limit(20);
@@ -91,20 +91,20 @@ class Interno extends MotoreRicerca
 		$pRicerca = new PagesricercaModel();
 		
 		$res = $this->ottieniOggetti(0, $p, (int)$this->params["tempo_cache"]);
-		
+
 		$ids = [];
 		
 		foreach ($res as $r)
 		{
 			$ids[] = $r["id_page"];
 		}
-		
+
 		$oggettiRicerca = $pRicerca->getStructFromIdsOfPages($ids, $lingua);
-		
+
 		$risultatiRicerca = array(
 			"hits"	=>	array(),
 		);
-		
+
 		foreach ($oggettiRicerca as $id_page => $r)
 		{
 			$temp = array(
@@ -145,7 +145,7 @@ class Interno extends MotoreRicerca
 			
 			$risultatiRicerca["hits"][] = $temp;
 		}
-		
+
 		return $this->elaboraOutput($search, $risultatiRicerca);
 	}
 }

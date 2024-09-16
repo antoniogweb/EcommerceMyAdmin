@@ -39,7 +39,7 @@ class BaseMotoriricercaController extends BaseController
 		$modulo = strtoupper((string)$modulo);
 		
 		$search = $this->request->get("term","","strip_tags");
-		
+
 		if (trim((string)$search) && trim($modulo) && MotoriricercaModel::g()->checkModulo($modulo, ""))
 		{
 			IpcheckModel::check("CERCA $modulo");
@@ -47,7 +47,7 @@ class BaseMotoriricercaController extends BaseController
 			if (MotoriricercaModel::getModulo($modulo)->isAttivo())
 			{
 				User::setPostCountryFromUrl();
-				
+
 				$jsonArray = MotoriricercaModel::getModulo($modulo)->cerca("prodotti_".Params::$lang, $search, Params::$lang);
 				
 				// Salva la ricerca
