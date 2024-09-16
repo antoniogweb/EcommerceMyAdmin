@@ -109,8 +109,28 @@ class TraduttoriModel extends GenericModel
 		return parent::update($id, $where);
 	}
 	
-	public static function traduciTabellaContenuti($campo, $lingua, $idRecord, $limit = 10, $log = null)
+	// Traduce tutti i testi del sito
+	public static function traduciTutto($lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
+		// Tabella traduzioni
+		self::traduciTabellaTraduzioni($lingua, $idRecord, $limit, $log);
+		// Tabella testi
+		self::traduciTabellaTesti($lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: categorie
+		self::traduciTabellaContenuti("id_c", $lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: pagine
+		self::traduciTabellaContenuti("id_page", $lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: attributi
+		self::traduciTabellaContenuti("id_a", $lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: attributi valori
+		self::traduciTabellaContenuti("id_av", $lingua, $idRecord, $limit, $log);
+	}
+
+	public static function traduciTabellaContenuti($campo, $lingua, $idRecord = 0, $limit = 10, $log = null)
+	{
+		if ($log)
+			$log->writeString("INIZIO TRADUZIONE CAMPO RIFERIMENTO: $campo");
+
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
 			$ctModel = new ContenutitradottiModel();
@@ -189,10 +209,10 @@ class TraduttoriModel extends GenericModel
 				$testoLog = "TRADOTTO RECORD ".$riga["contenuti_tradotti"]["id_ct"].":\n";
 				
 				// CREO LOG
-				foreach ($traduzioniLog as $campo => $struct)
+				foreach ($traduzioniLog as $cc => $struct)
 				{
 					if (trim($struct["tradotto"]))
-						$testoLog .= "$campo: ".$struct["daTradurre"]." -> ".$struct["tradotto"]."\n";
+						$testoLog .= "$cc: ".$struct["daTradurre"]." -> ".$struct["tradotto"]."\n";
 				}
 				
 				// SCRIVO LOG
@@ -203,10 +223,16 @@ class TraduttoriModel extends GenericModel
 				echo $testoLog."\n";
 			}
 		}
+
+		if ($log)
+			$log->writeString("FINE TRADUZIONE CAMPO RIFERIMENTO: $campo");
 	}
 	
 	public static function traduciTabellaTesti($lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
+		if ($log)
+			$log->writeString("INIZIO TRADUZIONE TABELLA TESTI");
+
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
 			$tModel = new TestiModel();
@@ -275,10 +301,16 @@ class TraduttoriModel extends GenericModel
 				echo $testoLog."\n";
 			}
 		}
+
+		if ($log)
+			$log->writeString("FINE TRADUZIONE TABELLA TESTI");
 	}
 	
 	public static function traduciTabellaTraduzioni($lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
+		if ($log)
+			$log->writeString("INIZIO TRADUZIONE TABELLA TRADUZIONI");
+
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
 			$tModel = new TraduzioniModel();
@@ -340,5 +372,8 @@ class TraduttoriModel extends GenericModel
 				}
 			}
 		}
+
+		if ($log)
+			$log->writeString("FINE TRADUZIONE TABELLA TRADUZIONI");
 	}
 }

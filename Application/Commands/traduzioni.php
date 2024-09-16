@@ -57,6 +57,7 @@ if (!isset($params["azione"]))
 	echo "traduci-attributi -> traduce la tabella attributi\n";
 	echo "traduci-attributi-valori -> traduce la tabella attributi_valori\n";
 	echo "traduci-testi -> traduce la tabella testi (TESTI EDITABILI DA FRONTEND)\n";
+	echo "traduci -> traduce tutti i testi del sito\n";
 	die();
 }
 
@@ -78,55 +79,22 @@ if (!isset($params["lingua"]))
 $log = Files_Log::getInstance("log_traduzioni");
 
 if ($params["azione"] == "traduci-tabella-traduzioni")
-{
-	$log->writeString("INIZIO TRADUZIONE TABELLA TRADUZIONI");
-	
 	TraduttoriModel::traduciTabellaTraduzioni($params["lingua"], $params["id_record"], $params["limit"], $log);
-	
-	$log->writeString("FINE TRADUZIONE TABELLA TRADUZIONI");
-}
 
 if ($params["azione"] == "traduci-categorie")
-{
-	$log->writeString("INIZIO TRADUZIONE TABELLA CATEGORIES");
-	
 	TraduttoriModel::traduciTabellaContenuti("id_c", $params["lingua"], $params["id_record"], $params["limit"], $log);
-	
-	$log->writeString("INIZIO TRADUZIONE TABELLA CATEGORIES");
-}
 
 if ($params["azione"] == "traduci-pagine")
-{
-	$log->writeString("INIZIO TRADUZIONE TABELLA PAGES");
-	
 	TraduttoriModel::traduciTabellaContenuti("id_page", $params["lingua"], $params["id_record"], $params["limit"], $log);
-	
-	$log->writeString("FINE TRADUZIONE TABELLA PAGES");
-}
 
 if ($params["azione"] == "traduci-attributi")
-{
-	$log->writeString("INIZIO TRADUZIONE TABELLA ATRIBUTI");
-
 	TraduttoriModel::traduciTabellaContenuti("id_a", $params["lingua"], $params["id_record"], $params["limit"], $log);
 
-	$log->writeString("FINE TRADUZIONE TABELLA ATRIBUTI");
-}
-
 if ($params["azione"] == "traduci-attributi-valori")
-{
-	$log->writeString("INIZIO TRADUZIONE TABELLA ATRIBUTI VALORI");
-
 	TraduttoriModel::traduciTabellaContenuti("id_av", $params["lingua"], $params["id_record"], $params["limit"], $log);
 
-	$log->writeString("FINE TRADUZIONE TABELLA ATRIBUTI VALORI");
-}
-
 if ($params["azione"] == "traduci-testi")
-{
-	$log->writeString("INIZIO TRADUZIONE TABELLA TESTI");
-	
 	TraduttoriModel::traduciTabellaTesti($params["lingua"], $params["id_record"], $params["limit"], $log);
-	
-	$log->writeString("FINE TRADUZIONE TABELLA TESTI");
-}
+
+if ($params["azione"] == "traduci")
+	TraduttoriModel::traduciTutto($params["lingua"], $params["id_record"], $params["limit"], $log);
