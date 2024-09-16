@@ -336,7 +336,7 @@ class ContenutitradottiModel extends GenericModel
 		$this->setValue("data_traduzione",date("Y-m-d H:i:s"));
 	}
 
-	// crea i record delle traduzioni
+	// rigenera/crea i record delle traduzioni
 	public static function rigeneraTraduzioni($modelDaTradurre = null)
 	{
 		foreach (self::$modelConTraduzione as $model)
