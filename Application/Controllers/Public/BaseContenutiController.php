@@ -465,10 +465,13 @@ class BaseContenutiController extends BaseController
 	protected function getTitleCategoria($categoria, $idCat = 0)
 	{
 		if (isset($categoria["contenuti_tradotti"]["title"]) && $categoria["contenuti_tradotti"]["title"])
-			$title = strtolower($categoria["contenuti_tradotti"]["title"]);
+			$title = $categoria["contenuti_tradotti"]["title"];
 		else
-			$title = strtolower($categoria["categories"]["title"]);
+			$title = $categoria["categories"]["title"];
 		
+		if (v("funzione_su_title_categoria"))
+			$title = call_user_func(v("funzione_su_title_categoria"),$title);
+
 		if ($this->titleTag && (int)$idCat === (int)$this->idShop)
 			$title = $this->titleTag;
 		

@@ -612,6 +612,9 @@ class VariabiliModel extends GenericModel {
 		"mostra_categorie_figlie_in_griglia_prodotti"	=>	1, // se la navigazione è per sottoblocchi, quindi se una categoria ha delle sottocategorie, mostra le sottocategorie. L'alternativa è una griglia di prodotti esplosi
 		"aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"	=>	0, // se impostato su 1, quando viene aggiornato l'ordine, viene ricalcolata la colonna numero_acquisti_pagina per ogni pagina presente tra le righe dell'ordine
 		"attiva_ricerca_documento"	=>	0, // se impostato su 1 permette di cercare anche i documenti all'interno di una categoria
+		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
+		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
+		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect
 		## PAGINE ##
 		"attiva_campo_redirect_pagine"		=>	0, // se impostato ad 1, attiva un campo redirect per le pagine. La pagina sarà un link all'URL specificato nel campo redirect
 		"attiva_campo_css"			=>	0, // se impostato ad 1 e se previsto dal tema, permette di integrare un CSS personalizzato per ogni pagina
@@ -666,10 +669,6 @@ class VariabiliModel extends GenericModel {
 		"numero_in_promo_home"		=>	20, // numero dei prodotti in promo nella home
 		"numero_in_evidenza"		=>	4, // numero di elementi nella fascia " prodotti in evidenza"
 		"random_in_evidenza"		=>	1, // se impostato su 1, i prodotti in evidenza saranno mostrati in modo randomico
-		## CATEGORIA ##
-		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
-		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
-		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect
 		## BASE CONTROLLER ##
 		"estrai_elenco_marchi"		=>	1, // estrai i marchi
 		"estrai_elenco_categorie_prodotti_base_controller"	=>	1, // se deve estrarre sempre l'elenco delle categorie dal base controller
@@ -678,6 +677,7 @@ class VariabiliModel extends GenericModel {
 		"numero_caratteri_meta_automatico"	=>	0, // se maggiore di zero, quando inserisce la descrizione della pagina nel campo meta_description, taglia oltre quel numero di caratteri
 		"includi_dati_per_social_categoria"	=>	0, // includi i dati per facebook e twitter anche nelle pagine delle categorie
 		"attiva_tag_hreflang"		=>	0, // se aggiungere alla pagina i tag hreflang
+		"funzione_su_title_categoria"	=>	"strtolower",
 		## PRODOTTI ##
 		"controlla_che_il_codice_prodotti_sia_unico"	=>	0, // se impostato a 1, non permette da pannello admin di aggiungere un prodotto avente lo stesso codice di un altro prodotto
 		"attiva_prodotti_digitali"	=>	0, // se impostato ad 1 attiva il campo prodotto_digitale nelle pagine
