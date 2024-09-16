@@ -132,6 +132,35 @@ class ContenutitradottiModel extends GenericModel
 			$idAv = $record["id_av"];
 		}
 		
+		// Se è l'ALIAS di una pagina e se devo aggiungere anche l'ALIAS della categoria
+		if ($idPage && v("categoria_in_permalink_pagina"))
+		{
+			$cModel = new CategoriesModel();
+			$pModel = new PagesModel();
+
+			if (!CategoriesModel::$idShop)
+				CategoriesModel::$idShop = $cModel->getShopCategoryId();
+
+			$idCatPagina = (int)$pModel->clear()->select("id_c")->whereId((int)$idPage)->field("id_c");
+
+			// Verifico che non sia la categoria SHOP/PRODOTTI
+			if ((int)CategoriesModel::$idShop !== (int)$idCatPagina)
+			{
+				$section = $cModel->section((int)$idCatPagina, true);
+
+				// VERIFICO CHE SIA COMUNQUE UNA CATEGORIA FIGLIA DI SHOP/PRODOTTI
+				if (strcmp($section,Parametri::$nomeSezioneProdotti) === 0)
+				{
+					$aliasCat = $this->clear()->select("alias")->where(array(
+						"id_c"	=>	(int)$idCatPagina
+					))->field("alias");
+
+					if (trim($aliasCat))
+						$this->values["alias"] .= "-".$aliasCat;
+				}
+			}
+		}
+
 		$bindedValues = array($this->values["alias"]);
 		
 		if ($idPage)

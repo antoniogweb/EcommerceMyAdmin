@@ -15,13 +15,13 @@
 					<?php echo $menu;?>
 				</div>
 			<?php } ?>
-			
+
 			<?php if (isset($stepsAssociato)) { ?>
 			<?php include($this->viewPath($stepsAssociato));?>
 			<?php } else { ?>
 			<?php include($this->viewPath("steps"));?>
 			<?php } ?>
-			
+
 			<div class="box">
 				<div class="box-header with-border main">
 					<div class="notice_box">
@@ -36,14 +36,14 @@
 					<div class='recordsBox scroll-x'>
 						<?php echo $main;?>
 					</div>
-					
+
 					<?php
 					$path = ROOT."/Application/Views/".ucfirst($this->controller)."/main_".$this->action."_bottom.php";
-					
+
 					if (file_exists($path))
 						include($path);
 					?>
-					
+
 					<!-- show the list of pages -->
 					<div class="btn-group pull-right">
 						<ul class="pagination no_vertical_margin">
