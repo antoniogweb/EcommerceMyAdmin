@@ -901,6 +901,9 @@ class Route
 		
 		'traduttori,main',
 		'traduttori,form',
+
+		'lingue,main',
+		'lingue,attivalingua',
 	);
 	
 	//it can be 'yes' or 'no'

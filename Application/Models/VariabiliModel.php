@@ -162,7 +162,6 @@ class VariabiliModel extends GenericModel {
 		"caratteristiche_in_tab_separate"	=>	0,
 		"mostra_tendina_prodotto_principale"	=>	0,
 		"usa_transactions"			=>	1,
-		"lingue_abilitate_frontend"	=>	"it",
 		"abilita_menu_semplice"		=>	0,
 		"current_menu_item_link"	=>	"",
 		"mostra_testimonial"		=>	0,
@@ -756,7 +755,10 @@ class VariabiliModel extends GenericModel {
 		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
 		### PASSWORD ##
 		"password_regular_expression"	=>	"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^*-]).{8,}$/", // Espressione regolare per validare la password sia per utenti frontend che utenti admin
-		####
+		### LINGUE ##
+		"lingue_abilitate_frontend"	=>	"it",
+		"token_gestisci_lingue_da_admin"	=>	"", // token per poter gestire le lingue da admin (oltre a dover essere loggati)
+		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
 		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto)
@@ -778,6 +780,7 @@ class VariabiliModel extends GenericModel {
 		"token_aggiorna_alias_combinazioni",
 		"token_eliminazione_account_da_app",
 		"token_recupera_carrello",
+		"token_gestisci_lingue_da_admin",
 	);
 	
 	public static function inizializza($variabili = array())

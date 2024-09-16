@@ -24,6 +24,26 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ContenutitradottiModel extends GenericModel
 {
+	public static $modelConTraduzione = array(
+		"CategoriesModel",
+		"PagesModel",
+		"MarchiModel",
+		"TagModel",
+		"AttributiModel",
+		"AttributivaloriModel",
+		"CaratteristicheModel",
+		"CaratteristichevaloriModel",
+		"FasceprezzoModel",
+		"DocumentiModel",
+		"TipologiecaratteristicheModel",
+		"StatiordineModel",
+		"PagamentiModel",
+		"ContenutiModel",
+		"PersonalizzazioniModel",
+		"RuoliModel",
+		"TipiaziendaModel",
+	);
+
 	public function __construct() {
 		$this->_tables = 'contenuti_tradotti';
 		$this->_idFields = 'id_ct';
@@ -314,5 +334,26 @@ class ContenutitradottiModel extends GenericModel
 		
 		// Salvo la data della traduzione
 		$this->setValue("data_traduzione",date("Y-m-d H:i:s"));
+	}
+
+	// crea i record delle traduzioni
+	public static function rigeneraTraduzioni($modelDaTradurre = null)
+	{
+		foreach (self::$modelConTraduzione as $model)
+		{
+			if ($modelDaTradurre && $modelDaTradurre != $model)
+				continue;
+
+			$objectReflection = new ReflectionClass($model);
+			$object = $objectReflection->newInstanceArgs(array());
+
+			if (v("usa_transactions"))
+				$object->db->beginTransaction();
+
+			$object->controllaLinguaAll();
+
+			if (v("usa_transactions"))
+				$object->db->commit();
+		}
 	}
 }

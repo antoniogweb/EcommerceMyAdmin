@@ -842,6 +842,17 @@ class GenericModel extends Model_Tree
 		$this->controllaLinguaGeneric($id, $this->_idFields, $this->_tables);
 	}
 	
+	// Controllo che la lingua esista per tutti i record
+	public function controllaLinguaAll()
+	{
+		$ids = $this->clear()->select($this->_idFields)->toList($this->_idFields)->send();
+
+		foreach ($ids as $id)
+		{
+			$this->controllaLingua($id);
+		}
+	}
+
 	public static function getTraduzioniNonPrincipali()
 	{
 		if (isset(self::$traduzioniNonPrincipali))

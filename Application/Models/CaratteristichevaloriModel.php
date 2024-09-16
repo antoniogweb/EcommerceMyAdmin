@@ -243,7 +243,7 @@ class CaratteristichevaloriModel extends GenericModel {
 			
 			if ($res)
 			{
-				$this->controllaLingua($this->lId);
+				// $this->controllaLingua($this->lId);
 				
 				// Aggiungo direttamente dal prodotto
 				if (isset($_GET["id_page"]) && $_GET["id_page"] && is_numeric($_GET["id_page"]) && isset($this->values["id_car"]))
@@ -267,7 +267,7 @@ class CaratteristichevaloriModel extends GenericModel {
 			
 			if ($res)
 			{
-				$this->controllalingua($id, "id_cv");
+				// $this->controllalingua($id, "id_cv");
 				
 				// Aggiungo direttamente dal prodotto
 				if (isset($_GET["id_page_update"]) && $_GET["id_page_update"] && is_numeric($_GET["id_page_update"]) && isset($this->values["id_car"]))

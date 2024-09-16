@@ -29,7 +29,8 @@ class LingueModel extends GenericModel
 	public static $codici = null;
 	public static $lingueBackend = array();
 	public static $principaleFrontend = null;
-	
+	public $campoTitolo = "descrizione";
+
 	public function __construct() {
 		$this->_tables = 'lingue';
 		$this->_idFields = 'id_lingua';
@@ -187,5 +188,40 @@ class LingueModel extends GenericModel
 			"principale"	=>	0,
 			"attiva"		=>	1,
 		))->orderBy("id_order")->toList("codice")->send();
+	}
+
+	// Attiva la lingua e genera tutte le traduzioni
+	public function attivaLingua($lingua)
+	{
+		$record = $this->clear()->where(array(
+			"codice"	=>	sanitizeAll($lingua),
+			"attiva"	=>	0
+		))->record();
+
+		if (!empty($record))
+		{
+			$this->sValues(array(
+				"attiva"	=>	1,
+			));
+
+			if ($this->update($record["id_lingua"]))
+				ContenutitradottiModel::rigeneraTraduzioni();
+		}
+	}
+
+	public function principaleCrud($record)
+	{
+		if ($record["lingue"]["principale"])
+			return "<i class='fa fa-check text-success'></i>";
+
+		return "";
+	}
+
+	public function attivaCrud($record)
+	{
+		if ($record["lingue"]["attiva"])
+			return "<i class='fa fa-check text-success'></i>";
+
+		return "";
 	}
 }
