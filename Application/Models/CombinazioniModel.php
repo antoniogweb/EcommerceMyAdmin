@@ -564,7 +564,7 @@ class CombinazioniModel extends GenericModel {
 				->left("attributi_valori as a7")->on("a7.id_av = combinazioni.col_7")->left("contenuti_tradotti as at7")->on(array("at7.id_av = a7.id_av and at7.lingua = ?",array(sanitizeDb($codice))))
 				->left("attributi_valori as a8")->on("a8.id_av = combinazioni.col_8")->left("contenuti_tradotti as at8")->on(array("at8.id_av = a8.id_av and at8.lingua = ?",array(sanitizeDb($codice))))
 				->inner(array("pagina"))
-				->left("contenuti_tradotti as pagest")->on("pagest.id_page = pages.id_page and pagest.lingua = '".sanitizeDb($codice)."'");
+				->left("contenuti_tradotti as pagest")->on(array("pagest.id_page = pages.id_page and pagest.lingua = ?", array(sanitizeDb($codice))));
 			
 			if ($idC)
 				$this->where(array(
