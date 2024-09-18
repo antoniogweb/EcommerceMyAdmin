@@ -296,7 +296,7 @@ class TraduttoriModel extends GenericModel
 				foreach ($traduzioni as $campo => $traduzione)
 				{
 					if (trim($traduzione))
-						$testoLog .= "$campo: $traduzione\n";
+						$testoLog .= $riga["principale"][$campo]." -> $traduzione\n";
 				}
 				
 				if ($log)
