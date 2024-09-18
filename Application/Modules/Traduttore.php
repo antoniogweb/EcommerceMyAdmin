@@ -43,13 +43,13 @@ class Traduttore
 			$testo = str_replace("[$token]", "[$placeholder]", $testo);
 		}
 
-		$this->placeholders = [];
-
 		return $testo;
 	}
 
 	public function elaboraTesto($testo)
 	{
+		$this->placeholders = [];
+
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
 
 		return $testo;
