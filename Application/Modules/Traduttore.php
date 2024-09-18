@@ -25,4 +25,33 @@ if (!defined('EG')) die('Direct access not allowed!');
 class Traduttore
 {
 	use Modulo;
+
+	public function estraiPlaceholder($matches)
+	{
+		$numero = count($this->placeholders) + 1;
+		$token = "ABCDABCD".$numero;
+
+		$this->placeholders[$token] = $matches[1];
+
+		return "[$token]";
+	}
+
+	public function ripristinaPlaceholder($testo)
+	{
+		foreach ($this->placeholders as $token => $placeholder)
+		{
+			$testo = str_replace("[$token]", "[$placeholder]", $testo);
+		}
+
+		$this->placeholders = [];
+
+		return $testo;
+	}
+
+	public function elaboraTesto($testo)
+	{
+		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
+
+		return $testo;
+	}
 }

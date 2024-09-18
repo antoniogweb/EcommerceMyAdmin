@@ -22,6 +22,8 @@
 
 class AWSTranslate extends Traduttore
 {
+	public $placeholders = array();
+
 	public function gCampiForm()
 	{
 		return 'titolo,attivo,regione,key_1,key_2';
@@ -60,13 +62,16 @@ class AWSTranslate extends Traduttore
 		]);
 		
 		try {
+			// Elaboro il testo per gestire i placeholder
+			$textToTranslate = $this->elaboraTesto($textToTranslate);
+
 			$result = $client->translateText([
 				'SourceLanguageCode' => $currentLanguage,
 				'TargetLanguageCode' => $targetLanguage,
 				'Text' => $textToTranslate,
 			]);
 			
-			return $result['TranslatedText']."\n";
+			return $this->ripristinaPlaceholder($result['TranslatedText'])."\n";
 		} catch(Aws\Exception\AwsException $e) {
 			
 			return false;

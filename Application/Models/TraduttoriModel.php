@@ -349,31 +349,35 @@ class TraduttoriModel extends GenericModel
 				$tModel->limit($limit);
 			
 			$elementiDaTradurre = $tModel->send();
-			
+
+			// echo $tModel->getQuery();
+
 			foreach ($elementiDaTradurre as $riga)
 			{
-				if (!trim($riga["principale"]["valore"]))
-					continue;
-				
-				$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], v("lingua_default_frontend"), $lingua);
-				
-				if ($traduzione !== false)
+				$tModel->sValues(array());
+
+				if (trim($riga["principale"]["valore"]))
 				{
-					$traduzione = trim($traduzione);
-					
-					$tModel->sValues(array(
-						"valore"	=>	$traduzione,
-					));
-					
-					$tModel->update((int)$riga["traduzioni"]["id_t"]);
-					
-					$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".v("lingua_default_frontend").":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
-					
-					if ($log)
-						$log->writeString($testoLog);
-					
-					echo $testoLog."\n";
+					$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], v("lingua_default_frontend"), $lingua);
+
+					if ($traduzione !== false)
+					{
+						$traduzione = trim($traduzione);
+
+						$tModel->sValues(array(
+							"valore"	=>	$traduzione,
+						));
+
+						$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".v("lingua_default_frontend").":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
+
+						if ($log)
+							$log->writeString($testoLog);
+
+						echo $testoLog."\n";
+					}
 				}
+
+				$tModel->update((int)$riga["traduzioni"]["id_t"]);
 			}
 		}
 
