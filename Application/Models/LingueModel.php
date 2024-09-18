@@ -205,7 +205,13 @@ class LingueModel extends GenericModel
 			));
 
 			if ($this->update($record["id_lingua"]))
+			{
+				// Genero tutte le traduzioni
 				ContenutitradottiModel::rigeneraTraduzioni();
+
+				// Rigenero tutti gli alias
+				CombinazioniModel::g()->aggiornaAlias();
+			}
 		}
 	}
 
