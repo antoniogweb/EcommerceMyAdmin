@@ -49,15 +49,16 @@ class LogModel extends GenericModel
 		
 		parent::__construct();
 		
+		// if (v("abilita_log_piattaforma"))
+		// {
+		$this->get = $_GET;
+		$this->post = $_POST;
+		$this->cartUid = (string)User::$cart_uid;
+		$this->userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
+
 		if (v("abilita_log_piattaforma"))
-		{
-			$this->get = $_GET;
-			$this->post = $_POST;
-			$this->cartUid = (string)User::$cart_uid;
-			$this->userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
-			
 			$this->eliminaScaduti();
-		}
+		// }
 	}
 	
 	public function eliminaScaduti()
