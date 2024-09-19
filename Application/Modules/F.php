@@ -24,6 +24,28 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class F
 {
+	public static $tabellaConversioneCaratteri = array(
+		"à"	=>	"a",
+		"é"	=>	"e",
+		"è"	=>	"e",
+		"ì"	=>	"i",
+		"ò"	=>	"o",
+		"ù"	=>	"u",
+		"À"	=>	"a",
+		"É"	=>	"e",
+		"È"	=>	"e",
+		"Ì"	=>	"i",
+		"Ò"	=>	"o",
+		"Ù"	=>	"u",
+		"ä"	=>	"ae",
+		"ö"	=>	"oe",
+		"ü"	=>	"ue",
+		"Ä"	=>	"ae",
+		"Ö"	=>	"oe",
+		"Ü"	=>	"ue",
+		"ß"	=>	"ss",
+	);
+
 	public static function mediana($arr) {
 		sort($arr);
 		$count = count($arr);
@@ -77,6 +99,17 @@ class F
 		return $string;
 	}
 	
+	// à -> a, é -> e, è -> e ...
+	public static function convertiLettereAccentate($string)
+	{
+		foreach (self::$tabellaConversioneCaratteri as $k => $v)
+		{
+			$string = str_replace($k, $v, $string);
+		}
+
+		return $string;
+	}
+
 	public static function alt($string, $flags = ENT_QUOTES)
 	{
 		$string = strip_tags(htmlentitydecode($string));

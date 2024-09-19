@@ -151,6 +151,7 @@ function encodeUrl($url)
 	$char = v("carattere_divisione_parole_permalink");
 	
 	$url = html_entity_decode($url,ENT_QUOTES,'UTF-8');
+	$url = F::convertiLettereAccentate($url);
 	$url = mb_convert_encoding($url, 'ISO-8859-1', 'UTF-8');
 	
 	$temp = "";
