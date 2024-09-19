@@ -159,7 +159,7 @@ class Nexi
 			$fp = fopen ( $this->logFile , 'a+' );
 			fwrite ( $fp, $this->statoNotifica . "\n\n" );
 			fclose ( $fp ); // close file
-			chmod ( $this->logFile , 0600 );
+			@chmod ( $this->logFile , 0600 );
 			
 			// Salvo il response del gateway
 			$cartUid = isset($_GET["cart_uid"]) ? (string)$_GET["cart_uid"] : "";

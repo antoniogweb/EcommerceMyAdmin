@@ -95,12 +95,17 @@ class BaseOrdiniController extends BaseController
 	{
 		$this->createLogFolder();
 		
-		$fp = fopen(ROOT.'/Logs/ipn.txt', 'a+');
-		fwrite($fp, date("Y-m-d H:i:s"));
-		fwrite($fp, print_r($_GET,true));
-		fwrite($fp, print_r($_POST,true));
-		fclose($fp);
+		// $fp = fopen(ROOT.'/Logs/ipn.txt', 'a+');
+		// fwrite($fp, date("Y-m-d H:i:s"));
+		// fwrite($fp, print_r($_GET,true));
+		// fwrite($fp, print_r($_POST,true));
+		// fclose($fp);
 		
+		$logSubmit = new LogModel();
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->request->post('item_number','','sanitizeAll'));
+		$logSubmit->write("LOG_IPN_PAYPAL", "OK",true);
+
 		$this->clean();
 		
 		require (LIBRARY.'/External/paypal/paypal_class.php');
@@ -256,14 +261,17 @@ class BaseOrdiniController extends BaseController
 	{
 		$this->createLogFolder();
 		
-		$fp = fopen(ROOT.'/Logs/.ipncarta.txt', 'a+');
-		fwrite($fp, date("Y-m-d H:i:s"));
-		fwrite($fp, print_r($_GET,true));
-		fwrite($fp, print_r($_POST,true));
-		fclose($fp);
+		// $fp = fopen(ROOT.'/Logs/.ipncarta.txt', 'a+');
+		// fwrite($fp, date("Y-m-d H:i:s"));
+		// fwrite($fp, print_r($_GET,true));
+		// fwrite($fp, print_r($_POST,true));
+		// fclose($fp);
 		
 		$this->clean();
 		
+		$logSubmit = new LogModel();
+		$logSubmit->setSvuota(0);
+
 		if (PagamentiModel::gateway()->validate())
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
@@ -328,6 +336,9 @@ class BaseOrdiniController extends BaseController
 		{
 			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".PagamentiModel::gateway()->scriviLog(false, false)."</pre>", "IPN CARTA");
 		}
+
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
+		$logSubmit->write("LOG_IPN_CARTA", "OK",true);
 	}
 	
 	public function modifica($id_o = 0, $cart_uid = 0, $admin_token = "token")
@@ -818,11 +829,11 @@ class BaseOrdiniController extends BaseController
 	{
 		$this->createLogFolder();
 		
-		$fp = fopen(ROOT.'/Logs/back_carta.txt', 'a+');
-		fwrite($fp, date("Y-m-d H:i:s"));
-		fwrite($fp, print_r($_GET,true));
-		fwrite($fp, print_r($_POST,true));
-		fclose($fp);
+		// $fp = fopen(ROOT.'/Logs/back_carta.txt', 'a+');
+		// fwrite($fp, date("Y-m-d H:i:s"));
+		// fwrite($fp, print_r($_GET,true));
+		// fwrite($fp, print_r($_POST,true));
+		// fclose($fp);
 		
 		VariabiliModel::noCookieAlert();
 		
@@ -830,6 +841,11 @@ class BaseOrdiniController extends BaseController
 		
 		PagamentiModel::gateway()->validate(false);
 		
+		$logSubmit = new LogModel();
+		$logSubmit->setSvuota(0);
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
+		$logSubmit->write("RITORNO_DA_CARTA", "OK",true);
+
 		if (isset($_GET["cart_uid"]))
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
