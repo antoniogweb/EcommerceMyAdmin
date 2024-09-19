@@ -2453,7 +2453,7 @@ class OrdiniModel extends FormModel {
 		return "";
     }
 	
-	// Importa i valori della testata dall' array $valori
+	// Importa i valori della testata dall'array $valori
 	public function importaDatiDaArray($valori)
 	{
 		$fields = OpzioniModel::codice("CAMPI_SALVATAGGIO_ORDINE");

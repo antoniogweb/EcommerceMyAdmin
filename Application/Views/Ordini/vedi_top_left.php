@@ -39,7 +39,7 @@
 	<?php } ?>
 	<?php if (v("attiva_gestione_pixel")) {
 		$eventiPixel = PixeleventiModel::getStatusPixelEventoElemento("PURCHASE", $ordine["id_o"], "orders");
-		
+
 		if (count($eventiPixel) > 0)
 		{
 	?>
@@ -62,9 +62,9 @@
 		<td>
 			<?php
 			$righeDaSpedire = OrdiniModel::righeDaSpedire($ordine["id_o"]);
-			
+
 			echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"]);?>
-			
+
 			<?php if (count($righeDaSpedire) > 0 && ControllersModel::checkAccessoAlController(array("spedizioninegozio"))) { ?>
 			<div>
 				<?php $queryStringCreaSpedizioneLista = $ordine["id_lista_regalo"] ? "&id_lista_regalo=".(int)$ordine["id_lista_regalo"] : "";?>

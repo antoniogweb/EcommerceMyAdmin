@@ -20,7 +20,7 @@
 					<?php } ?>
 				<?php } ?>
 				
-				<?php if (!partial()) { ?>
+				<?php if (true) { ?>
 				<form class="form-inline form_inserisci_articolo" id-ordine="<?php echo $id;?>" role="form" action='#' method='POST' enctype="multipart/form-data">
 
 					<span select2="/prodotti/main/1?esporta_json&formato_json=select2">
@@ -34,7 +34,7 @@
 					<?php include($this->viewPath("gestisci_associato_pulsante_righe"));?>
 				</form>
 				<?php } else { ?>
-				<p><a class="<?php if (!partial()) { ?>iframe<?php } ?> btn btn-success" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?><?php echo $queryListaRegalo;?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articoli")?></a></p>
+<!-- 				<p><a class="<?php if (!partial()) { ?>iframe<?php } ?> btn btn-success" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?><?php echo $queryListaRegalo;?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articoli")?></a></p> -->
 				<?php } ?>
 			</div>
 			<br />
