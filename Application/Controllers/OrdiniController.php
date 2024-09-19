@@ -441,6 +441,8 @@ class OrdiniController extends BaseController {
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
 		
+		$this->m[$this->modelName]->addSoftCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>").'<div rel="hidden_alert_notice" style="display:none;">email</div>');
+
 		$idUser = !empty($record) ? (int)$record["id_user"] : 0;
 		
 		$lingua = $this->m["RegusersModel"]->getLingua((int)$idUser);

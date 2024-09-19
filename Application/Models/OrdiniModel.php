@@ -583,14 +583,14 @@ class OrdiniModel extends FormModel {
 		{
 			$ordine = $this->selectId((int)$idOrdine);
 			
-			if (!empty($ordine) && !$ordine["id_user"] && $ordine["email"] && checkMail($ordine["email"]))
+			if (!empty($ordine) && !$ordine["id_user"] && $ordine["email"] && checkMail(trim($ordine["email"])))
 			{
 				$ruModel = new RegusersModel();
 				
 				$cliente = $ruModel->clear()->where(array(
 					"username"	=>	sanitizeAll($ordine["email"]),
 				))->record();
-				
+
 				$idCliente = 0;
 				
 				if (empty($cliente))
@@ -623,7 +623,7 @@ class OrdiniModel extends FormModel {
 			}
 			
 			// Sincronizzazione spedizione
-			if (!empty($ordine) && $ordine["id_user"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"] || $ordine["cap_spedizione"] || $ordine["telefono_spedizione"]))
+			if (!empty($ordine) && $ordine["id_user"] && $ordine["indirizzo_spedizione"] && ($ordine["citta_spedizione"] || $ordine["cap_spedizione"] || $ordine["telefono_spedizione"]))
 			{
 				$spModel = new SpedizioniModel();
 				
