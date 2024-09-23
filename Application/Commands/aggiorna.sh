@@ -10,7 +10,7 @@ echo 2 - Aggiorno la libreria
 cd Library
 git pull
 
-# Faccio il dump del DB
+# faccio il dump del DB
 echo 3 - Faccio il dump del DB
 mkdir -p ../Logs/Dumps
 nome_file=`date +%Y-%m-%d_%H:%M:%S_dump.sql`
@@ -31,10 +31,14 @@ while read line; do
 done < ../config.php
 
 mysqldump -u $db_user -p$db_pwd -h $db_host --no-tablespaces $db_name  > "../Logs/Dumps/$nome_file"
-tar -zcvf "../Logs/Dumps/$nome_file.tar.gz" "../Logs/Dumps/$nome_file" 
-rm "../Logs/Dumps/$nome_file"
 
 # lancio le migrazoni
 echo 4 - Aggiorno il database
 cd ../Application/Commands
 php migrazioni.php
+
+# comprimo il dump del db
+echo 5 - Comprimo il database
+cd ../..
+tar -zcvf "./Logs/Dumps/$nome_file.tar.gz" "./Logs/Dumps/$nome_file"
+rm "./Logs/Dumps/$nome_file"
