@@ -29,6 +29,7 @@ var tiny_editor_config = {
 };
 
 var form_modificato = false;
+var riga_modificata = false;
 
 if (typeof(ajaxfilemanager) !== typeof(Function))
 {
@@ -110,6 +111,10 @@ function aggiornaParziale(url)
 		success: function(content){
 			
 			$(".contenitore_generale").html(content);
+
+			// tolgo l'allert sulla modifica della riga
+			riga_modificata = false;
+
 			applicaSelect2();
 		}
 	});
@@ -250,7 +255,11 @@ function sistemaTendinaProvinciaSpedizione(val)
 function makeSpinner(obj)
 {
 	if (obj.find("i").length > 0)
+	{
+		obj.find("i").attr("bck-class", obj.find("i").attr("class"));
+
 		obj.find("i").attr("class","fa fa-spinner fa-spin");
+	}
 }
 
 function debounce(func, wait, immediate) {
@@ -958,6 +967,29 @@ $(document).ready(function(){
 // 	}
 	
 	/* --- GESTIONE ORDINI OFFLINE --- */
+	$("body").on("change", ".gestione_righe_ordine input:not(.checkbox_righe_id_r,.bulk_select_checkbox)", function(e){
+		riga_modificata = true;
+	});
+
+	$("body").on("click", ".nav_dettaglio a, .mainMenu a:not(.save_righe_ordini), .sidebar a, .pulsanti_genera_invia_pdf a", function(e){
+		if (riga_modificata)
+		{
+			if (window.confirm("Se non salvi perderai le modifiche effettuate. Procedi comunque?")) {}
+			else
+			{
+				e.preventDefault();
+
+				$("[bck-class]").each(function() {
+
+					var bckClass = $(this).attr("bck-class");
+
+					$(this).attr("class", bckClass)
+
+				});
+			}
+		}
+	});
+
 	$("body").on("click", ".save_righe_ordini", function(e){
 		
 		e.preventDefault();

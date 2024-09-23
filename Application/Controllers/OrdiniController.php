@@ -595,6 +595,8 @@ class OrdiniController extends BaseController {
 	
 	public function righe($id = 0)
 	{
+		Helper_List::$tableAttributes["class"] .= " gestione_righe_ordine";
+
 		$this->mainShift = 1;
 		
 		if (!v("permetti_ordini_offline") || OrdiniModel::tipoOrdine((int)$id) == "W")
