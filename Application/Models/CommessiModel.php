@@ -35,7 +35,7 @@ class CommessiModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'ordini' => array("HAS_MANY", 'OrdersModel', 'id_o', null, "RESTRICT", "L'elemento ha degli ordini associati e non può essere eliminato."),
+			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_commesso', null, "RESTRICT", "L'elemento ha degli ordini associati e non può essere eliminato."),
         );
     }
     
