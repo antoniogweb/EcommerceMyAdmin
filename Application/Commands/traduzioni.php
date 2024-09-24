@@ -57,6 +57,7 @@ if (!isset($params["azione"]))
 	echo "traduci-attributi -> traduce la tabella attributi\n";
 	echo "traduci-attributi-valori -> traduce la tabella attributi_valori\n";
 	echo "traduci-testi -> traduce la tabella testi (TESTI EDITABILI DA FRONTEND)\n";
+	echo "traduci-pagamenti -> traduce la tabella pagamenti (PAGAMENTI AL CHECKOUT)\n";
 	echo "traduci -> traduce tutti i testi del sito\n";
 	die();
 }
@@ -92,6 +93,9 @@ if ($params["azione"] == "traduci-attributi")
 
 if ($params["azione"] == "traduci-attributi-valori")
 	TraduttoriModel::traduciTabellaContenuti("id_av", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+if ($params["azione"] == "traduci-pagamenti")
+	TraduttoriModel::traduciTabellaContenuti("id_pagamento", $params["lingua"], $params["id_record"], $params["limit"], $log);
 
 if ($params["azione"] == "traduci-testi")
 	TraduttoriModel::traduciTabellaTesti($params["lingua"], $params["id_record"], $params["limit"], $log);
