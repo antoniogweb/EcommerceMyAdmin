@@ -47,12 +47,13 @@ if (!isset($params["azione"]))
 	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
 	echo "azioni permesse:\n";
 	echo "attiva-lingua -> attiva la lingua specificata nel parametro <lingua>\n";
+	echo "rigenera-traduzioni-lingua -> rigenera le traduzioni per tutte le lingue\n";
 	die();
 }
 
 $linguePermesse = LingueModel::getValori();
 
-if (!isset($params["lingua"]))
+if (!isset($params["lingua"]) && (!isset($params["azione"]) || $params["azione"] != "rigenera-traduzioni-lingua"))
 {
 	echo "si prega di selezionare il codice ISO della lingua nella quale tradurre (en, fr, de, ...) con l'istruzione --lingua=\"<lingua>\" \n";
 	echo "lingue permesse:\n";
@@ -74,4 +75,13 @@ if ($params["azione"] == "attiva-lingua")
 	LingueModel::g()->attivaLingua($params["lingua"]);
 
 	$log->writeString("FINE ATTIVAZIONE LINGUA ".$params["lingua"]);
+}
+
+if ($params["azione"] == "rigenera-traduzioni-lingua")
+{
+	$log->writeString("INIZIO RIGENERAZIONE TRADUZIONI LINGUA");
+
+	ContenutitradottiModel::rigeneraTraduzioni();
+
+	$log->writeString("FINE RIGENERAZIONE TRADUZIONI LINGUA");
 }
