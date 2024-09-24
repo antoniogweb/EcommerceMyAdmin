@@ -46,6 +46,8 @@ class Traduttore
 			"Latte"		=>	"Milk",
 			"Acqua"		=>	"Water",
 			"aqua"		=>	"water",
+			"Fiori"		=>	"Flowers",
+			"Dimensione"=>	"Size",
 		),
 	);
 
