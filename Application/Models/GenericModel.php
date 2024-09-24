@@ -329,7 +329,7 @@ class GenericModel extends Model_Tree
 	protected function addTokenAlias($res)
 	{
 		if (count($res) > 0)
-			$this->values["alias"] = $this->values["alias"] . "-" . generateString(4,"123456789abcdefghilmnopqrstuvz");
+			$this->values["alias"] = $this->values["alias"] . v("carattere_divisione_parole_permalink") . generateString(4,"123456789abcdefghilmnopqrstuvz");
 	}
 	
 	public function checkAliasAll($id, $noTraduzione = false, $checkUnico = true)

@@ -149,7 +149,7 @@ User::$isPhone = ($detect->isMobile() && !$detect->isTablet());
 if (defined("SAVE_CACHE_HTML") && isset($_SERVER["REQUEST_URI"]) && (@!is_file(ROOT."/Logs/caching.log") || defined('CACHE_COMMAND')))
 {
 	$cacheKey = DOMAIN_NAME.$_SERVER["REQUEST_URI"];
-	
+
 	$partialKey = "";
 	
 	if (defined("PARTIAL_KEY"))

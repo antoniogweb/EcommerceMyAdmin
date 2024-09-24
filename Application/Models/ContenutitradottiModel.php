@@ -254,13 +254,16 @@ class ContenutitradottiModel extends GenericModel
 		}
 		
 		$this->addTokenAlias($res);
-		
+
 		if (isset($id))
 		{
 			$arrayUnion = $bindedValues = array();
 			
 			foreach (GenericModel::$tabelleConAlias as $table)
 			{
+				if (in_array($table, $tabelleConAliasDuplicato))
+					continue;
+
 				if ($table == $tabella)
 				{
 					$bindedValues[] = $idBelow;
