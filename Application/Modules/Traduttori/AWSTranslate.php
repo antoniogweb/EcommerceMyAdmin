@@ -62,6 +62,9 @@ class AWSTranslate extends Traduttore
 		]);
 		
 		try {
+			if (isset(self::$tabellaCorrezioni[$targetLanguage][$textToTranslate]))
+				return self::$tabellaCorrezioni[$targetLanguage][$textToTranslate];
+
 			// Elaboro il testo per gestire i placeholder
 			$textToTranslate = $this->elaboraTesto($textToTranslate);
 

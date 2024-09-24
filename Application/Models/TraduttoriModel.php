@@ -139,6 +139,7 @@ class TraduttoriModel extends GenericModel
 				"ne"	=>	array(
 					$campo	=>	0,
 				),
+				"lingua"	=>	sanitizeAll($lingua),
 			));
 			
 			if ($campo == "id_page")

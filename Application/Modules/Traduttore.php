@@ -26,6 +26,29 @@ class Traduttore
 {
 	use Modulo;
 
+	public static $tabellaCorrezioni = array(
+		"en"	=>	array(
+			"Taglia"	=>	"Size",
+			"colore"	=>	"color",
+			"Color"		=>	"Color",
+			"Bianco"	=>	"White",
+			"Panna"		=>	"Cream",
+			"Perla"		=>	"Pearl",
+			"Verde"		=>	"Green",
+			"Sabbia"	=>	"Sand",
+			"terracotta"	=>	"fired clay",
+			"Terracotta"	=>	"Fired clay",
+			"Rosso"		=>	"Red",
+			"Giallo"	=>	"Yellow",
+			"Cielo"		=>	"Sky",
+			"Lama"		=>	"Llama",
+			"Terrazzo Crema"	=>	"Cream Terrace",
+			"Latte"		=>	"Milk",
+			"Acqua"		=>	"Water",
+			"aqua"		=>	"water",
+		),
+	);
+
 	public function estraiPlaceholder($matches)
 	{
 		$numero = count($this->placeholders) + 1;
