@@ -21,7 +21,7 @@
 			<?php if ($p["righe"]["id_p"]) { ?>
 			<td width="4%" style="vertical-align:top;">-</td>
 			<?php } ?>
-			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo $p["righe"]["title"];?>
+			<td colspan="<?php if (!$p["righe"]["id_p"]) { ?>2<?php } else { ?>1<?php } ?>" class="cart_item_product row_left"><?php echo PagesModel::getPageLocalizedTitle($p["righe"]["id_page"], $p["righe"]["title"]);?>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 			<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			

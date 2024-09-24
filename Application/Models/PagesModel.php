@@ -3475,6 +3475,17 @@ class PagesModel extends GenericModel {
 		return !empty($record) ? true : false;
 	}
 	
+	// Restituisce il titolo della pagina nella lingua di visualizzazione
+	public static function getPageLocalizedTitle($idPage, $default = "", $lingua = null)
+	{
+		$page = self::getPageDetails($idPage, $lingua);
+
+		if (!empty($page))
+			return field($page, "title");
+
+		return $default;
+	}
+
 	public static function getPageDetails($idPage, $lingua = null)
 	{
 		$p = new PagesModel();
