@@ -26,6 +26,8 @@ class Traduttore
 {
 	use Modulo;
 
+	public static $marchi = null;
+
 	public static $tabellaCorrezioni = array(
 		"en"	=>	array(
 			"Taglia"	=>	"Size",
@@ -61,11 +63,49 @@ class Traduttore
 		return "[$token]";
 	}
 
+	public function ripristinaMarchio($matches)
+	{
+		self::getMarchi();
+
+		if (isset(self::$marchi[$matches[1]]))
+			return self::$marchi[$matches[1]];
+		// $testo = str_ireplace($marchio, "[MMM_".$id."]", $testo);
+	}
+
 	public function ripristinaPlaceholder($testo)
 	{
 		foreach ($this->placeholders as $token => $placeholder)
 		{
 			$testo = str_replace("[$token]", "[$placeholder]", $testo);
+		}
+
+		$testo = preg_replace_callback('/\[MMM\_([0-9]{1,})\]/', array($this, "ripristinaMarchio") ,$testo);
+
+		return $testo;
+	}
+
+	public static function getMarchi()
+	{
+		if (!isset(self::$marchi))
+		{
+			$marchi = MarchiModel::g()->clear()->select("id_marchio,titolo")->send(false);
+
+			foreach ($marchi as $marchio)
+			{
+				self::$marchi[$marchio["id_marchio"]] = htmlentitydecode($marchio["titolo"]);
+			}
+		}
+
+		return self::$marchi;
+	}
+
+	public static function estraiMarchi($testo)
+	{
+		self::getMarchi();
+
+		foreach (self::$marchi as $id => $marchio)
+		{
+			$testo = str_ireplace($marchio, "[MMM_".$id."]", $testo);
 		}
 
 		return $testo;
@@ -76,6 +116,8 @@ class Traduttore
 		$this->placeholders = [];
 
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
+
+		$testo = self::estraiMarchi($testo);
 
 		return $testo;
 	}
