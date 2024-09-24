@@ -10,7 +10,7 @@
 				
 				<?php foreach ($corrieri as $corriere) { ?>
 				<div class="uk-padding-small <?php if ($values["id_corriere"] == $corriere["id_corriere"]) { ?>spedizione_selezionata<?php } ?> radio_corriere_select radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">
-					<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?><span class="uk-margin-left"><?php echo $corriere["titolo"];?></span>
+					<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?><span class="uk-margin-left"><?php echo gtext($corriere["titolo"]);?></span>
 				</div>
 				<?php } ?>
 			</div>

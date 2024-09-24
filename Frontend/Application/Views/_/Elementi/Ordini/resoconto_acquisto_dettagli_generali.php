@@ -41,7 +41,7 @@
 	<?php if ($ordine["id_corriere"] && v("mostra_modalita_spedizione_in_resoconto") && ($ordine["da_spedire"] || $ordine["mostra_sempre_corriere"])) { ?>
 	<tr>
 		<td><?php echo gtext("Modalità di spedizione", false); ?>:</td>
-		<td><b><?php echo CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?></b></td>
+		<td><b><?php echo gtext(CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo"));?></b></td>
 	</tr>
 	<?php } ?>
 	<?php if (v("attiva_gestione_spedizioni")) {
