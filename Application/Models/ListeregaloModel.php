@@ -140,6 +140,9 @@ class ListeregaloModel extends GenericModel
 			
 			if (!empty($recordUser))
 			{
+				if (isset($recordUser["lingua"]) && $recordUser["lingua"])
+					$this->setValue("lingua", $recordUser["lingua"]);
+
 				$this->setValue("email", $recordUser["username"]);
 				$this->values["nazione"] = $recordUser["nazione"] ? $recordUser["nazione"] : v("nazione_default");
 			}
