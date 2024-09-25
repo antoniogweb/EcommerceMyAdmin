@@ -59,6 +59,9 @@ if (!isset($params["azione"]))
 	echo "traduci-testi -> traduce la tabella testi (TESTI EDITABILI DA FRONTEND)\n";
 	echo "traduci-pagamenti -> traduce la tabella pagamenti (PAGAMENTI AL CHECKOUT)\n";
 	echo "traduci-stati-ordine -> traduce la tabella stati_ordine (STATI DEGLI ORDINI)\n";
+	echo "traduci-caratteristiche -> traduce la tabella caratteristiche (CARATTERISTICHE PRODOTTI)\n";
+	echo "traduci-caratteristiche-valori -> traduce la tabella caratteristiche_valori (VALORI DELLE CARATTERISTICHE PRODOTTI)\n";
+	echo "traduci-marchi -> traduce la tabella marchi (MARCHI PRODOTTI)\n";
 	echo "traduci -> traduce tutti i testi del sito\n";
 	die();
 }
@@ -100,6 +103,15 @@ if ($params["azione"] == "traduci-pagamenti")
 
 if ($params["azione"] == "traduci-stati-ordine")
 	TraduttoriModel::traduciTabellaContenuti("id_stato_ordine", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+if ($params["azione"] == "traduci-caratteristiche")
+	TraduttoriModel::traduciTabellaContenuti("id_car", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+if ($params["azione"] == "traduci-caratteristiche-valori")
+	TraduttoriModel::traduciTabellaContenuti("id_cv", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+if ($params["azione"] == "traduci-marchi")
+	TraduttoriModel::traduciTabellaContenuti("id_marchio", $params["lingua"], $params["id_record"], $params["limit"], $log);
 
 if ($params["azione"] == "traduci-testi")
 	TraduttoriModel::traduciTabellaTesti($params["lingua"], $params["id_record"], $params["limit"], $log);

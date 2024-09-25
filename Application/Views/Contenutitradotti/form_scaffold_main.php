@@ -76,6 +76,10 @@ $().ready(function() {
 			
 			<?php echo (v("attiva_descrizione_4_in_prodotti") && isset($form["descrizione_4"])) ? $form["descrizione_4"] : ""; ?>
 			
+			<?php if (isset($form["istruzioni_pagamento"])) { ?>
+			<?php echo $form["istruzioni_pagamento"];?>
+			<?php } ?>
+
 			<?php if (isset($form["url"])) { ?>
 			<?php echo $form["url"];?>
 			<?php } ?>

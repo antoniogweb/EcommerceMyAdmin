@@ -84,6 +84,10 @@ class ContenutitradottiModel extends GenericModel
 					'type'		 =>	'Textarea',
 					'className'		=>	'text_input form-control dettagli',
 				),
+				'istruzioni_pagamento'		=>	array(
+					'type'		 =>	'Textarea',
+					'className'		=>	'text_input form-control dettagli',
+				),
 				'testo_link'	=>	array(
 					'labelString'	=>	'Testo pulsante',
 				),

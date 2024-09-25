@@ -51,6 +51,7 @@ class TraduttoriModel extends GenericModel
 		"descrizione_2",
 		"descrizione_3",
 		"descrizione_4",
+		"istruzioni_pagamento",
 	);
 	
 	public static $campiDaTradurreTesti = array(
@@ -126,6 +127,12 @@ class TraduttoriModel extends GenericModel
 		self::traduciTabellaContenuti("id_av", $lingua, $idRecord, $limit, $log);
 		// Tabella contenuti: pagamenti
 		self::traduciTabellaContenuti("id_pagamento", $lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: caratteristiche
+		self::traduciTabellaContenuti("id_car", $lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: caratteristiche valori
+		self::traduciTabellaContenuti("id_cv", $lingua, $idRecord, $limit, $log);
+		// Tabella contenuti: marchi
+		self::traduciTabellaContenuti("id_marchio", $lingua, $idRecord, $limit, $log);
 		// Tabella contenuti: stati ordine
 		self::traduciTabellaContenuti("id_stato_ordine", $lingua, $idRecord, $limit, $log);
 	}
@@ -173,6 +180,10 @@ class TraduttoriModel extends GenericModel
 
 				foreach (self::$campiDaTradurreContenuti as $campoDaTradurre)
 				{
+					// Non tradurre il titolo del marchio
+					if ($campo == "id_marchio" && $campoDaTradurre == "titolo")
+						continue;
+
 					// Cerco il testo da tradurre
 					if (isset(self::$campoTabella[$campo]))
 						$testoDaTradurre = isset($riga[self::$campoTabella[$campo]][$campoDaTradurre]) ? htmlentitydecode($riga[self::$campoTabella[$campo]][$campoDaTradurre]) : "";
@@ -202,7 +213,7 @@ class TraduttoriModel extends GenericModel
 				// print_r($traduzioni);die();
 				$ctModel->sValues($traduzioni);
 				
-				if (!$riga["contenuti_tradotti"]["salvato"])
+				if (!$riga["contenuti_tradotti"]["salvato"] && $campo != "id_marchio")
 					$ctModel->setValue("alias", "");
 				else
 					$ctModel->setValue("alias", $riga["contenuti_tradotti"]["alias"], "sanitizeDb");

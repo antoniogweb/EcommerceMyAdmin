@@ -106,12 +106,14 @@
 			<!-- Logo -->
 			<?php $urlLogo = (User::$logged and strcmp($this->action,'logout') !== 0) ? $this->baseUrlSrc."/panel/main" : $this->baseUrlSrc; ?>
 			
+			<?php $nomeNegozioDashboard = v("nome_negozio_dashboard") ? v("nome_negozio_dashboard") : Parametri::$nomeNegozio; ?>
+
 			<a class="logo" href="<?php echo $urlLogo;?>">
 				<span class="logo-mini">
-					<?php echo substr(Parametri::$nomeNegozio,0,1);?>
+					<?php echo substr($nomeNegozioDashboard,0,1);?>
 				</span>
 				<span class="logo-lg">
-					<?php echo Parametri::$nomeNegozio;?>
+					<?php echo $nomeNegozioDashboard;?>
 				</span>
 			</a>
 

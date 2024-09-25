@@ -50,7 +50,7 @@ trait TraitController
 		
 		if (v("attiva_descrizione_4_in_prodotti") && $section == "prodotti_detail")
 			$fields .= ",descrizione_4";
-		
+
 		if ($section == "slide_detail" || $section == "modali_detail")
 			$fields = 'title,sottotitolo,url,testo_link,description';
 		else if ($section == "blog_detail")
@@ -63,10 +63,12 @@ trait TraitController
 			$fields = 'titolo,sottotitolo,alias,descrizione,meta_title,keywords,meta_description';
 		else if ($section == "tag" || $section == "-marchio-")
 			$fields = 'titolo,alias,description,meta_title,keywords,meta_description';
-		else if ($section == "documenti" || $section == "contenuti" || $section == "pagamenti" || $section == "sedi_detail" || $section == "stati_ordine")
+		else if ($section == "documenti" || $section == "contenuti" || $section == "sedi_detail" || $section == "stati_ordine")
 			$fields = 'titolo,descrizione';
 		else if ($section == "email_detail")
 			$fields = 'title,editor_visuale,description';
+		else if ($section == "pagamenti")
+			$fields = 'titolo,descrizione,istruzioni_pagamento';
 		
 		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
 		{

@@ -50,6 +50,7 @@ class Traduttore
 			"aqua"		=>	"water",
 			"Fiori"		=>	"Flowers",
 			"Dimensione"=>	"Size",
+			"Potenza"	=>	"Power",
 		),
 	);
 

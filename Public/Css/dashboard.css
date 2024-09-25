@@ -275,6 +275,11 @@ body {
 	color: #000 !important
 }
 
+.main-header .logo
+{
+	font-size: 16px;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {
