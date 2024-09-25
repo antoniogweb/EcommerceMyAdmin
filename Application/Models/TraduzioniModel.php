@@ -174,9 +174,15 @@ class TraduzioniModel extends GenericModel {
 	
 	public static function rLingua()
 	{
-		Params::$lang = self::$bckLingua;
-		self::$contestoStatic = self::$bckContesto;
-		$tradModel = new TraduzioniModel();
-		$tradModel->ottieniTraduzioni();
+		if (isset(self::$bckLingua) || isset(self::$bckContesto))
+		{
+			Params::$lang = self::$bckLingua;
+			self::$contestoStatic = self::$bckContesto;
+			$tradModel = new TraduzioniModel();
+			$tradModel->ottieniTraduzioni();
+
+			self::$bckLingua = null;
+			self::$bckContesto = null;
+		}
 	}
 }
