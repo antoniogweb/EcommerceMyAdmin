@@ -38,7 +38,7 @@ cd ../Application/Commands
 php migrazioni.php
 
 # comprimo il dump del db
-echo 5 - Comprimo il dump creato ed elimino la versione con compressa
+echo 5 - Comprimo il dump creato ed elimino la versione non compressa
 cd ../..
 tar -zcvf "./Logs/Dumps/$nome_file.tar.gz" "./Logs/Dumps/$nome_file"
 rm "./Logs/Dumps/$nome_file"
