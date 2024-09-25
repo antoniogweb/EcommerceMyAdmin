@@ -56,7 +56,7 @@ class Traduttore
 	public function estraiPlaceholder($matches)
 	{
 		$numero = count($this->placeholders) + 1;
-		$token = "ABCDABCD".$numero;
+		$token = "ABCD".$numero;
 
 		$this->placeholders[$token] = $matches[1];
 
@@ -79,7 +79,7 @@ class Traduttore
 			$testo = str_replace("[$token]", "[$placeholder]", $testo);
 		}
 
-		$testo = preg_replace_callback('/\[MMM\_([0-9]{1,})\]/', array($this, "ripristinaMarchio") ,$testo);
+		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchio") ,$testo);
 
 		return $testo;
 	}
@@ -105,7 +105,7 @@ class Traduttore
 
 		foreach (self::$marchi as $id => $marchio)
 		{
-			$testo = str_ireplace($marchio, "[MMM_".$id."]", $testo);
+			$testo = str_ireplace($marchio, "[EFGH_".$id."]", $testo);
 		}
 
 		return $testo;

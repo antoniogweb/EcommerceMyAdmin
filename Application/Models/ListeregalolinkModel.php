@@ -102,6 +102,7 @@ class ListeregalolinkModel extends GenericModel
 				"tabella"	=>	"liste_regalo_link",
 				"id_elemento"	=>	(int)$id,
 				"testo_path"	=>	"Elementi/Mail/mail_link_lista_regalo.php",
+				"lingua"	=>	$record["liste_regalo"]["lingua"],
 				"array_variabili_tema"	=>	array(
 					"NOME_CREATORE_LISTA"	=>	self::getNominativo($record["regusers"]),
 					"TITOLO_LISTA"	=>	$record["liste_regalo"]["titolo"],

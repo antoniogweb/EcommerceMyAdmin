@@ -230,4 +230,11 @@ class LingueModel extends GenericModel
 
 		return "";
 	}
+
+	public static function getTitoloDaCodice($lingua)
+	{
+		return LingueModel::g()->clear()->select("titolo")->where(array(
+			"codice"	=>	sanitizeAll($lingua),
+		))->field("descrizione");
+	}
 }

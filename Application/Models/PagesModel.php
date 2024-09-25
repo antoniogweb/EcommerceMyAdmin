@@ -4699,6 +4699,7 @@ class PagesModel extends GenericModel {
 			"numero_acquisti_pagina"	=>	$numero,
 		));
 		
+		$this->salvaDataModifica = false;
 		$this->pUpdate((int)$idPage);
 		
 		return $numero;

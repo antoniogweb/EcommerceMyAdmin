@@ -64,6 +64,7 @@ class ListeregaloemailModel extends GenericModel
 					"nome"	=>	OrdiniModel::getNominativo($ordine),
 					"id_o"	=>	$ordine["id_o"],
 					"creation_time"	=>	time(),
+					"lingua"	=>	$listaRegalo["lingua"],
 				), "sanitizeDb");
 				
 				if (!App::$isFrontend)

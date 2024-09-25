@@ -86,7 +86,7 @@ class BaseRegusersModel extends Model_Tree
 		$this->values["time_token_reinvio"] = time();
 		
 		if (!User::$nazioneNavigazione)
-			User::$nazioneNavigazione = v("nazione_default");
+			User::$nazioneNavigazione = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 		
 		$this->values["nazione_navigazione"] = User::$nazioneNavigazione;
 		
