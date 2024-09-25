@@ -517,7 +517,9 @@ class BaseOrdiniController extends BaseController
 				$p->add_field('item_number', $data["ordine"]["cart_uid"]);
 				$p->add_field('amount', $data["ordine"]["total"]);
 				$p->add_field('currency_code', 'EUR');
-				$p->add_field('lc', 'IT');
+
+				$p->add_field('lc', $data["ordine"]["lingua"]."_".$data["ordine"]["nazione_navigazione"]);
+				// $p->add_field('lc', 'IT');
 				
 				$p->add_field('email', $data["ordine"]["email"]);
 
