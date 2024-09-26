@@ -29,7 +29,8 @@ class NazioniModel extends GenericModel
 	public static $elencoNazioni = null;
 	public static $elencoNazioniInEvidenza = array();
 	public static $elencoCoordinateNazioni = null;
-	
+	public static $elencoSogliePerSpedizione = null;
+
 	public static $selectTipi = array(
 		"UE"	=>	"UE",
 		"EX"	=>	"EXTRA UE",
@@ -366,17 +367,37 @@ class NazioniModel extends GenericModel
 		))->toList("regusers.username")->send();
     }
 
+	public static function getSogliaSpedizioneGratuita($nazione)
+	{
+		if (!isset(self::$elencoSogliePerSpedizione))
+		{
+			$nModel = new NazioniModel();
+
+			self::$elencoSogliePerSpedizione = $nModel->select("iso_country_code,soglia_spedizioni_gratuite")->toList("iso_country_code", "soglia_spedizioni_gratuite")->send();
+		}
+
+		if (isset(self::$elencoSogliePerSpedizione[$nazione]))
+			return self::$elencoSogliePerSpedizione[$nazione];
+
+		return 0;
+	}
+
     // Verifica se la spedizione è gratuita per quella nazione
     public static function spedizioneGratuita($nazione, $subtotale)
 	{
 		if (v("soglia_spedizioni_gratuite_diversa_per_ogni_nazione"))
 		{
-			return false;
+			$soglia = self::getSogliaSpedizioneGratuita($nazione);
+
+			if ($soglia > 0 && $subtotale >= $soglia)
+				return true;
 		}
 		else
 		{
 			if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
 				return true;
 		}
+
+		return false;
 	}
 }
