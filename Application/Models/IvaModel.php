@@ -175,14 +175,15 @@ class IvaModel extends GenericModel
 					if ($nazione["tipo"] == "UE")
 					{
 						$totaleFuroiItalia = OrdiniModel::totaleFuoriItaliaEu();
+						$totaleFuroiItaliaAnnoPrecedente = OrdiniModel::totaleFuoriItaliaEu(date("Y",strtotime("-1 year")));
 	// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
 						$recordIva = $im->selectId((int)$nazione["id_iva"]);
 						
 						if (!empty($recordIva))
 						{
-							$totaleFuroiItalia += getPrezzoScontatoN();
-							
-							if (($totaleFuroiItalia > v("euro_iva_italiana_vendite_ue")) && $nazione["id_iva"])
+							// $totaleFuroiItalia += getPrezzoScontatoN();
+
+							if (($totaleFuroiItalia > v("euro_iva_italiana_vendite_ue") || $totaleFuroiItaliaAnnoPrecedente > v("euro_iva_italiana_vendite_ue")) && $nazione["id_iva"])
 							{
 								self::setIvaEstera($recordIva);
 								
@@ -191,6 +192,8 @@ class IvaModel extends GenericModel
 							}
 						}
 						
+						// echo "A: ".$totaleFuroiItalia."<br />B: ".$totaleFuroiItaliaAnnoPrecedente;
+
 // 						$totaleNazione = OrdiniModel::totaleNazione($nazione["iso_country_code"]);
 // 	// 					$totaleNazioneAnnoPrecedente = OrdiniModel::totaleNazione($nazione["iso_country_code"], true);
 // 						$recordIva = $im->selectId((int)$nazione["id_iva"]);
