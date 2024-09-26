@@ -110,8 +110,26 @@ class User
 			$_POST["nazione_spedizione"] = strtoupper(User::$nazione);
 			$_POST["tipo_cliente"] = "privato";
 		}
+		else if (isset(Params::$country))
+		{
+			$_POST["nazione_spedizione"] = strtoupper(Params::$country);
+			$_POST["tipo_cliente"] = "privato";
+		}
 	}
 	
+	// Restituisce la nazione dell'utente, dà sempre la priorità al listino e in seguito alla nazione nell'URL
+	public static function getNazioneUtente()
+	{
+		$nazione = v("nazione_default");
+
+		if (User::$nazione)
+			$nazione = User::$nazione;
+		else if (isset(Params::$country))
+			$nazione = strtoupper(Params::$country);
+
+		return $nazione;
+	}
+
 	public static function attivo($idUser)
 	{
 		$ru = new RegusersModel();

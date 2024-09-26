@@ -128,7 +128,7 @@ class NazioniController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$campi = 'titolo,iso_country_code,tipo,attiva,attiva_spedizione,campo_p_iva,id_iva';
+		$campi = 'titolo,iso_country_code,tipo,attiva,attiva_spedizione,campo_p_iva,id_iva,soglia_spedizioni_gratuite';
 		
 		if (v("attiva_in_evidenza_nazioni"))
 			$campi .= ",in_evidenza";

@@ -148,14 +148,26 @@ trait Modulo
 		$corrieri = $corr->clear()->select("distinct corrieri.id_corriere,corrieri.*")->inner("corrieri_spese")->on("corrieri.id_corriere = corrieri_spese.id_corriere")->orderBy("corrieri.id_order")->send(false);
 		
 		$tabellaIdCorriereNome = $corr->clear()->toList("id_corriere", "titolo")->send();
-		
+
 		$idCorriere = 0;
 		
 		if (count($corrieri) > 0)
 			$idCorriere = $corrieri[0]["id_corriere"];
 		
-		$nazione = User::$nazione ? User::$nazione : v("nazione_default");
-		
+		$nazione = User::getNazioneUtente();
+
+		$idsCorrieri = $corr->getIdsCorrieriNazione($nazione);
+
+		if (count($idsCorrieri) > 0)
+			$idCorriere = $idsCorrieri[0];
+
+// 		$nazione = v("nazione_default");
+//
+// 		if (User::$nazione)
+// 			$nazione = User::$nazione;
+// 		else if (isset(Params::$country))
+// 			$nazione = strtoupper(Params::$country);
+
 		if (!isset($p))
 		{
 			$p = new PagesModel();
@@ -312,7 +324,7 @@ trait Modulo
 				"data_scadenza_promo"	=>	$now->format("Y-m-d"),
 				"prezzo_scontato"	=> number_format($prezzoFinaleIvato,2,".",""),
 				"spese_spedizione"	=>	number_format($speseSpedizione * (1 + ($ivaSpedizione / 100)),2,".",""),
-				"nome_corriere"	=>	$nomeCorriere,
+				"nome_corriere"	=>	gtext($nomeCorriere),
 				"marchio"	=>	$r["marchi"]["titolo"],
 				"peso"		=>	$r["pages"]["peso"],
 				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC),

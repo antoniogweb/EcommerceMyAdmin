@@ -512,7 +512,8 @@ function getSpedizioneN($pieno = null)
 		$nazione = $_POST["nazione_spedizione"];
 	
 	// Se il totale è sopra la soglia delle spedizioni gratuite, le spese di spedizione sono 0
-	if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+	// if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+	if (NazioniModel::spedizioneGratuita($nazione, $subtotale))
 		return 0;
 	
 	// Prendo le spese dall'account

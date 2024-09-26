@@ -95,7 +95,7 @@ class NazioniModel extends GenericModel
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Usata nel caso venga superata la soglia annuale indicata sotto</div>"
+						"<div class='form_notice'>Usata nel caso venga superata la soglia annuale di vendite in Unione Europea</div>"
 					),
 				),
 				'soglia_iva_italiana'	=>	array(
@@ -104,6 +104,14 @@ class NazioniModel extends GenericModel
 						null,
 						null,
 						"<div class='form_notice'>Soglia sotto alla quale si può applicare l'IVA italiana anche per vendite all'estero</div>"
+					),
+				),
+				'soglia_spedizioni_gratuite'	=>	array(
+					'labelString'=>	'Soglia di spesa sopra la quale la spedizione è gratuita per questa nazione',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Una soglia a 0,00 significa che la spedizione non è mai gratuita per questa nazione</div>"
 					),
 				),
 				'in_evidenza'	=>	array(
@@ -357,4 +365,18 @@ class NazioniModel extends GenericModel
 			"nazioni.iso_country_code"	=>	sanitizeAll($codiceNazione),
 		))->toList("regusers.username")->send();
     }
+
+    // Verifica se la spedizione è gratuita per quella nazione
+    public static function spedizioneGratuita($nazione, $subtotale)
+	{
+		if (v("soglia_spedizioni_gratuite_diversa_per_ogni_nazione"))
+		{
+			return false;
+		}
+		else
+		{
+			if ((v("soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni") || $nazione == v("nazione_default")) && ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"] > 0 && $subtotale >= ImpostazioniModel::$valori["spedizioni_gratuite_sopra_euro"])
+				return true;
+		}
+	}
 }
