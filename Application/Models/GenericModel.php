@@ -217,33 +217,58 @@ class GenericModel extends Model_Tree
 		
 		$linguaPrincipale = LingueModel::getPrincipaleFrontend();
 		
-		foreach (self::$tabelleConAliasMap as $table => $params)
+		// Versione estera
+		if (v("considera_traduzione_sempre_esistente") && Params::$lang != $linguaPrincipale)
 		{
-			$campoChiave = $params["chiave"];
-			$campoTitolo = $params["campoTitolo"];
-			
-			if ($params["tradotta"] && Params::$lang != $linguaPrincipale)
-			{
-				$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = ? where coalesce(contenuti_tradotti.alias,$table.alias) = ?";
-				
-				$arrayValori[] = sanitizeDb(Params::$lang);
-				$arrayValori[] = sanitizeAll($alias);
-			}
-			else
-			{
-				$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = ?";
-				
-				$arrayValori[] = sanitizeAll($alias);
-			}
-			
+			$sql = "select if(title != '',title,titolo) as titolo_filtro from contenuti_tradotti where contenuti_tradotti.lingua = ? and contenuti_tradotti.alias = ?";
+
+			$arrayValori[] = sanitizeDb(Params::$lang);
+			$arrayValori[] = sanitizeAll($alias);
+
 			$arrayUnion[] = $sql;
+
+			foreach (self::$tabelleConAliasMap as $table => $params)
+			{
+				if (!$params["tradotta"])
+				{
+					$campoTitolo = $params["campoTitolo"];
+
+					$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = ?";
+
+					$arrayValori[] = sanitizeAll($alias);
+				}
+			}
 		}
-		
+		else
+		{
+			foreach (self::$tabelleConAliasMap as $table => $params)
+			{
+				$campoChiave = $params["chiave"];
+				$campoTitolo = $params["campoTitolo"];
+
+				if ($params["tradotta"] && Params::$lang != $linguaPrincipale)
+				{
+					$sql = "select coalesce(contenuti_tradotti.$campoTitolo, $table.$campoTitolo) COLLATE utf8mb4_general_ci as titolo_filtro from $table left join contenuti_tradotti on contenuti_tradotti.$campoChiave =  $table.$campoChiave and contenuti_tradotti.lingua = ? where coalesce(contenuti_tradotti.alias,$table.alias) = ?";
+
+					$arrayValori[] = sanitizeDb(Params::$lang);
+					$arrayValori[] = sanitizeAll($alias);
+				}
+				else
+				{
+					$sql = "select $table.$campoTitolo as titolo_filtro from $table where $table.alias = ?";
+
+					$arrayValori[] = sanitizeAll($alias);
+				}
+
+				$arrayUnion[] = $sql;
+			}
+		}
+
 		$arrayUnion[] = "select titolo from nazioni where iso_country_code = ?";
 		$arrayValori[] = sanitizeAll($alias);
 		
 		$sql = implode(" UNION ", $arrayUnion);
-		
+
 		$queryArray = array($sql, $arrayValori);
 		$sql = self::g()->arrayToWhereClause($queryArray);
 		
@@ -252,7 +277,7 @@ class GenericModel extends Model_Tree
 		$res = $mysqli->query($sql);
 		
 		$nomeDaAlias = null;
-		
+
 		if (count($res) > 0 && isset($res[0]["aggregate"]["titolo_filtro"]) && trim($res[0]["aggregate"]["titolo_filtro"]))
 			$nomeDaAlias = $res[0]["aggregate"]["titolo_filtro"];
 		

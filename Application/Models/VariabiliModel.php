@@ -746,6 +746,7 @@ class VariabiliModel extends GenericModel {
 		"theme_folder"				=>	"", // tema frontend
 		### TRADUZIONI ##
 		"attiva_gestione_traduttori"	=>	0, // se impostato a 1, permette di configurare i traduttori e attiva la possibiulità di usare le traduzioni automatiche
+		"considera_traduzione_sempre_esistente"	=>	0, // se impostato a 1, il sistema considera la traduzione di un elemento in contenuti_tradotti sempre esistente e non passa per la tabella originale o usa inner join anziché left join (è più veloce)
 		### HOOK ##
 		"hook_ordine_confermato"	=>	"", // se diversa da blank, funzione che viene chiamata dopo la conferma dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
 		"hook_update_ordine"		=>	"", // se diversa da blank, funzione che viene chiamata dopo la modifica dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
