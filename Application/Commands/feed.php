@@ -56,6 +56,9 @@ Domain::$parentRoot = ROOT."/..";
 
 Params::$lang = $params["lingua"];
 Params::$country = $params["nazione"];
+TraduzioniModel::$contestoStatic = "front";
+
+TraduzioniModel::getInstance()->ottieniTraduzioni();
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 
