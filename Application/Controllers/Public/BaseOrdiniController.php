@@ -861,6 +861,9 @@ class BaseOrdiniController extends BaseController
 				if (strcmp($res[0]["orders"]["stato"],"deleted") === 0)
 					$this->redirect("");
 				
+				if (v("setta_lingua_e_nazione__da_ordine_in_pagina_ringraziamento"))
+					$this->settaLinguaENazione($res[0]["orders"]["lingua"], $res[0]["orders"]["nazione_navigazione"]);
+
 				if (PagamentiModel::gateway($res[0]["orders"], true)->validate(false))
 					$data["conclusa"] = true;
 				

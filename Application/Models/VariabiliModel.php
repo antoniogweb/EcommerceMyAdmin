@@ -631,6 +631,7 @@ class VariabiliModel extends GenericModel {
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
 		## PAGAMENTI ##
 		"check_ipn_al_ritorno_carta"	=>	0, // se impostata su 1, fa il check ipn al ritorno sul sito (controlla che non sia già stato fatto). Solo per pagamento con carta di credito
+		"setta_lingua_e_nazione__da_ordine_in_pagina_ringraziamento"	=>	0, // se impostato su 1, la pagina di atterraggio dell'ordine verranno settati la lingua e la nazione dell'ordine (sovrascrivendo lingua e nazione dell'URL)
 		## PAGINAZIONE ##
 		"prodotti_per_pagina"		=>	999999, // FRONTEND
 		"news_per_pagina"			=>	16, // FRONTEND

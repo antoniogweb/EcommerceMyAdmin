@@ -310,6 +310,28 @@ class BaseBaseController extends Controller
 		}
 	}
 	
+	// Setta la lingua e la nazione e ricarica le traduzioni
+	protected function settaLinguaENazione($lingua, $nazione = null)
+	{
+		if (count(Params::$frontEndLanguages) > 0 && in_array($lingua,Params::$frontEndLanguages))
+		{
+			Params::$lang = sanitizeAll($lingua);
+
+			if ($nazione && count(Params::$frontEndCountries) > 0 && in_array(strtolower($nazione),Params::$frontEndCountries))
+				Params::$country = sanitizeAll(strtolower($nazione));
+
+			$this->baseUrl = rtrim(Url::getRoot(),"/");
+			$this->theme->baseUrl = $this->baseUrl;
+
+			TraduzioniModel::getInstance()->ottieniTraduzioni();
+
+			CategoriesModel::$strutturaCategorie = [];
+			CategoriesModel::$strutturaCategorieRid = [];
+
+			$this->estratiDatiGenerali($this->controller, $this->action);
+		}
+	}
+
 	protected function estratiDatiGenerali($controller, $action)
 	{
 		if (v("estrai_in_evidenza_home"))
