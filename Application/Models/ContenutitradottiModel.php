@@ -123,8 +123,12 @@ class ContenutitradottiModel extends GenericModel
 	{
 		$clean["id"] = (int)$id;
 		
+		$aliasNonEsistente = false;
+
 		if (!isset($this->values["alias"]) || !trim($this->values["alias"]))
 		{
+			$aliasNonEsistente = true;
+
 			if (isset($this->values["title"]))
 				$this->values["alias"] = sanitizeDb(encodeUrl($this->values["title"]));
 			else if (isset($this->values["titolo"]))
@@ -157,7 +161,7 @@ class ContenutitradottiModel extends GenericModel
 		}
 		
 		// Se è l'ALIAS di una pagina e se devo aggiungere anche l'ALIAS della categoria
-		if ($idPage && v("categoria_in_permalink_pagina"))
+		if ($idPage && v("categoria_in_permalink_pagina") && $aliasNonEsistente)
 		{
 			$cModel = new CategoriesModel();
 			$pModel = new PagesModel();
