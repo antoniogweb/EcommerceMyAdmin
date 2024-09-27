@@ -1054,19 +1054,9 @@ class GenericModel extends Model_Tree
 		return array("0"=>gtext("-- NON IMPOSTATO --")) + $c->buildSelect(null, false);
 	}
 	
-	public function buildAllPagesSelectNoImpostato($sWhere = null)
-	{
-		$this->clear()->select("pages.id_page,pages.title")->addWhereAttivo()->orderBy("title")->toList("id_page","title");
-
-		if ($sWhere)
-			$this->sWhere($sWhere);
-
-		return $this->send();
-	}
-
 	public function buildAllPagesSelect()
 	{
-		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->buildAllPagesSelectNoImpostato();
+		return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->select("pages.id_page,pages.title")->addWhereAttivo()->orderBy("title")->toList("id_page","title")->send();
 	}
 	
 	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true, $modelTabella = null)

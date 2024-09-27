@@ -101,10 +101,7 @@ class AirichiesteController extends BaseController
 
 		// $this->tabella = "corrieri";
 
-		$data["elencoPagine"] = PagesModel::g(false)->buildAllPagesSelectNoImpostato(array(
-			"id_page not in (select id_page from ai_richieste_contesti where id_ai_richiesta = ?)",
-			array($clean['id']),
-		));
+		$data["elencoPagine"] = PagesModel::g(false)->selectLinkContenuto();
 
 		parent::main();
 
