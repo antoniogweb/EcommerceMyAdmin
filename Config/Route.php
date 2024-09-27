@@ -904,6 +904,10 @@ class Route
 
 		'lingue,main',
 		'lingue,attivalingua',
+
+		'airichieste,main',
+		'airichieste,form',
+		'airichieste,contesti',
 	);
 	
 	//it can be 'yes' or 'no'

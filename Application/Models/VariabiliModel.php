@@ -763,6 +763,9 @@ class VariabiliModel extends GenericModel {
 		"token_gestisci_lingue_da_admin"	=>	"", // token per poter gestire le lingue da admin (oltre a dover essere loggati)
 		### DASHBOARD ##
 		"nome_negozio_dashboard"	=>	"", // nome del negozio in alto a sinistra nella dashboard. Se lasciato vuoto prende il nome usato per il tag <title> del sito
+		### AI ##
+		"attiva_richieste_ai"		=>	0, // se impostato su 1, attiva l'integrazione con l'AI generativa
+		"limite_contesti_per_richiesta"	=>	15, // numero massimo di articoli usabili come contesto
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
