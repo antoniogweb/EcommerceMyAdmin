@@ -272,4 +272,26 @@ class ProdottiModel extends PagesModel {
 		
 		return $record;
 	}
+
+	// Restituisce i prodotti più venduti, di una certa categoria e/o di un certo marchio
+	public static function prodottiPiuVenduti($id_c = 0, $id_marchio = 0)
+	{
+		$p = new PagesModel;
+
+		$p->clear()->addWhereAttivo()->select("pages.id_page")->limit(v("limite_contesti_per_richiesta"))
+			->left(array("righe"))
+			->groupBy("pages.id_page")
+			->orderBy("sum(righe.quantity) desc")
+			->toList("pages.id_page");
+
+		if ($id_c)
+			$p->addWhereCategoria((int)$id_c);
+
+		if ($id_marchio)
+			$p->aWhere(array(
+				"id_marchio"	=>	(int)$id_marchio,
+			));
+
+		return $p->send();
+	}
 }

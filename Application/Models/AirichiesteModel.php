@@ -80,4 +80,53 @@ class AirichiesteModel extends GenericModel
 			),
 		);
 	}
+
+	public function estraiContesti($id)
+	{
+		$record = $this->selectId((int)$id);
+
+		$arrayIds = [];
+
+		if (!empty($record))
+		{
+			$idC = isset($this->values["id_c"]) ? (int)$this->values["id_c"] : 0;
+			$idMarchio = isset($this->values["id_marchio"]) ? (int)$this->values["id_marchio"] : 0;
+			$idPage = isset($this->values["id_page"]) ? (int)$this->values["id_page"] : 0;
+
+			if ($idPage)
+				$arrayIds[] = $idPage;
+
+			$idS = ProdottiModel::prodottiPiuVenduti($idC, $idMarchio);
+
+			$arrayIds = array_merge($arrayIds, $idS);
+
+			$arrayIds = array_unique($arrayIds);
+		}
+
+		return $arrayIds;
+	}
+
+	public function update($id = null, $where = null)
+	{
+		$res = parent::update($id, $where);
+
+		if ($res)
+		{
+			$idS = $this->estraiContesti($id);
+
+			$aircModel = new AirichiestecontestiModel();
+
+			foreach ($idS as $idPage)
+			{
+				$aircModel->sValues(array(
+					"id_ai_richiesta"	=>	(int)$id,
+					"id_page"			=>	(int)$idPage,
+				));
+
+				$aircModel->insert();
+			}
+		}
+
+		return $res;
+	}
 }
