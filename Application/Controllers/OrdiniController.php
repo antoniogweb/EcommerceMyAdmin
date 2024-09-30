@@ -826,7 +826,7 @@ class OrdiniController extends BaseController {
 	{
 		if (!v("permetti_ordini_offline"))
 			$this->responseCode(403);
-		
+
 		$this->clean();
 		
 		$values = $this->m("OrdinipdfModel")->generaORestituisciPdfOrdine($id, $idPdf);

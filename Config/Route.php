@@ -908,6 +908,7 @@ class Route
 		'airichieste,main',
 		'airichieste,form',
 		'airichieste,contesti',
+		'airichieste,ordinacontesti',
 	);
 	
 	//it can be 'yes' or 'no'

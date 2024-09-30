@@ -58,7 +58,8 @@ class BaseController extends Controller
 	public $tabViewFields = array();
 	public $campiVariabiliDaModificare = "";
 	public $loginController = "users";
-	
+	public $formQueryActions = "insert,update";
+
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
 		'attivo:sanitizeAll'=>'tutti',
@@ -288,7 +289,7 @@ class BaseController extends Controller
 		
 			$data["queryType"] = $data["type"] = $queryType;
 			
-			$this->m[$this->modelName]->updateTable('insert,update',$clean["id"]);
+			$this->m[$this->modelName]->updateTable($this->formQueryActions,$clean["id"]);
 			
 			$data["queryResult"] = $this->m[$this->modelName]->queryResult;
 			

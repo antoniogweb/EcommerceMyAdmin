@@ -57,7 +57,7 @@ class OrdinipdfModel extends GenericModel
 		$fileName = md5(randString(30).uniqid(mt_rand(),true)).".pdf";
 		
 		$titolo = "Ordine_".(int)$ordine["id_o"]."_".date("d_m_Y",strtotime($ordine["data_creazione"])).".pdf";
-		
+
 		if (function_exists(v("function_pdf_ordine")))
 			$titolo = call_user_func_array(v("function_pdf_ordine"), array($id, $fileName));
 		else
@@ -71,7 +71,7 @@ class OrdinipdfModel extends GenericModel
 // 			Pdf::$params["margin_top"] = "40";
 			Pdf::output("", LIBRARY . "/media/Pdf/" . $fileName, array(), "F", $content);
 		}
-		
+
 		if ($salva)
 			$this->query(array(
 				"update orders_pdf set corrente = 0 where id_o = ?",

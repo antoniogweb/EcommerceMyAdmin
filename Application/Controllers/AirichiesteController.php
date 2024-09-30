@@ -44,7 +44,7 @@ class AirichiesteController extends BaseController
 	{
 		$this->shift();
 
-		$this->mainFields = array("ai_richieste.titolo");
+		$this->mainFields = array("titoloCrud");
 		$this->mainHead = "Titolo";
 		
 		$this->m[$this->modelName]->clear()->where(array(
@@ -58,10 +58,17 @@ class AirichiesteController extends BaseController
 	{
 		$this->_posizioni['main'] = 'class="active"';
 
-		$fields = 'titolo,id_c,id_marchio,id_page';
+		$fields = 'id_c,id_marchio,id_page';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
+		if ($queryType == "update")
+		{
+			$this->formQueryActions = "insert";
+			$this->disabledFields = $fields;
+			$this->menuLinks = "back";
+		}
+
 		parent::form($queryType, $id);
 	}
 
@@ -106,10 +113,22 @@ class AirichiesteController extends BaseController
 			array($clean['id'])
 		))->toList("id_page", "title")->send();
 
+		$data["ordinaAction"] = "ordinacontesti";
+		$data["orderBy"] = "ai_richieste_contesti.id_order";
+
 		parent::main();
 
 		$data["titoloRecord"] = $this->m["AirichiesteModel"]->titolo($clean['id']);
 
 		$this->append($data);
+	}
+
+	public function ordinacontesti()
+	{
+		$this->orderBy = "ai_richieste_contesti.id_order";
+
+		$this->modelName = "AirichiestecontestiModel";
+
+		parent::ordina();
 	}
 }

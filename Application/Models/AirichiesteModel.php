@@ -30,10 +30,14 @@ class AirichiesteModel extends GenericModel
 		
 		$this->_idOrder = 'id_order';
 		
-		$this->addValuesCondition("both",'checkNotEmpty',"titolo");
-
 		parent::__construct();
 	}
+
+	public function relations() {
+		return array(
+			'contesti' => array("HAS_MANY", 'AirichiestecontestiModel', 'id_ai_richiesta', null, "CASCADE"),
+		);
+    }
 
 	public function setFormStruct($id = 0)
 	{
@@ -79,10 +83,40 @@ class AirichiesteModel extends GenericModel
 				),
 			),
 		);
+
+		if ($id)
+			$this->formStruct["submit"] = [];
+	}
+
+	public function titolo($id)
+	{
+		$clean["id"] = (int)$id;
+
+		$record = $this->selectId($clean["id"]);
+
+		$titolo = [];
+
+		if ($record["id_c"])
+			$titolo[] = CategoriesModel::g(false)->clear()->whereId((int)$record["id_c"])->field("title");
+
+		if ($record["id_marchio"])
+			$titolo[] = MarchiModel::g(false)->clear()->whereId((int)$record["id_marchio"])->field("titolo");
+
+		if ($record["id_page"])
+			$titolo[] = PagesModel::g(false)->clear()->whereId((int)$record["id_page"])->field("title");
+
+		return implode(" - ", $titolo);
+	}
+
+	public function titoloCrud($record)
+	{
+		return $this->titolo($record["ai_richieste"]["id_ai_richiesta"]);
 	}
 
 	public function estraiContesti($id)
 	{
+		VariabiliModel::$valori["limite_contesti_per_richiesta"] += 1;
+
 		$record = $this->selectId((int)$id);
 
 		$arrayIds = [];
@@ -106,26 +140,29 @@ class AirichiesteModel extends GenericModel
 		return $arrayIds;
 	}
 
-	public function update($id = null, $where = null)
+	public function inserisciContesti($id)
 	{
-		$res = parent::update($id, $where);
+		$idS = $this->estraiContesti($id);
+
+		$aircModel = new AirichiestecontestiModel();
+
+		foreach ($idS as $idPage)
+		{
+			$aircModel->sValues(array(
+				"id_ai_richiesta"	=>	(int)$id,
+				"id_page"			=>	(int)$idPage,
+			));
+
+			$aircModel->insert();
+		}
+	}
+
+	public function insert()
+	{
+		$res = parent::insert();
 
 		if ($res)
-		{
-			$idS = $this->estraiContesti($id);
-
-			$aircModel = new AirichiestecontestiModel();
-
-			foreach ($idS as $idPage)
-			{
-				$aircModel->sValues(array(
-					"id_ai_richiesta"	=>	(int)$id,
-					"id_page"			=>	(int)$idPage,
-				));
-
-				$aircModel->insert();
-			}
-		}
+			$this->inserisciContesti($this->lId);
 
 		return $res;
 	}
