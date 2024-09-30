@@ -909,6 +909,9 @@ class Route
 		'airichieste,form',
 		'airichieste,contesti',
 		'airichieste,ordinacontesti',
+
+		'aimodelli,main',
+		'aimodelli,form',
 	);
 	
 	//it can be 'yes' or 'no'

@@ -274,15 +274,19 @@ class ProdottiModel extends PagesModel {
 	}
 
 	// Restituisce i prodotti più venduti, di una certa categoria e/o di un certo marchio
-	public static function prodottiPiuVenduti($id_c = 0, $id_marchio = 0)
+	public static function prodottiPiuVenduti($id_c = 0, $id_marchio = 0, $limit = 0)
 	{
 		$p = new PagesModel;
 
-		$p->clear()->addWhereAttivo()->select("pages.id_page")->limit(v("limite_contesti_per_richiesta"))
+		$p->clear()->select("pages.id_page")
 			->left(array("righe"))
+			->addWhereAttivo()
 			->groupBy("pages.id_page")
 			->orderBy("sum(righe.quantity) desc")
 			->toList("pages.id_page");
+
+		if ($limit)
+			$p->limit($limit);
 
 		if ($id_c)
 			$p->addWhereCategoria((int)$id_c);

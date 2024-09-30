@@ -91,7 +91,10 @@ class Interface extends React.Component {
                         txt={this.txt}
                     />
                 </header>
-                <Footer version={this.props.opstate.version.gui} />
+                <Footer
+                    version={this.props.opstate.version.gui}
+                    txt={this.txt}
+                />
             </>
         );
     }
@@ -114,6 +117,7 @@ function MainNavigation(props) {
                             start={props.opstate.overview && props.opstate.overview.readable.start_time || null}
                             reset={props.opstate.overview && props.opstate.overview.readable.last_restart_time || null}
                             version={props.opstate.version}
+                            jit={props.opstate.jitState}
                             txt={props.txt}
                         />
                         <Directives
@@ -347,6 +351,13 @@ function GeneralInfo(props) {
                 <tr><td>{props.txt('Server Software')}</td><td>{props.version.server}</td></tr>
                 { props.start ? <tr><td>{props.txt('Start time')}</td><td>{props.start}</td></tr> : null }
                 { props.reset ? <tr><td>{props.txt('Last reset')}</td><td>{props.reset}</td></tr> : null }
+                <tr>
+                    <td>{props.txt('JIT enabled')}</td>
+                    <td>
+                        {props.txt(props.jit.enabled ? "Yes" : "No")}
+                        {props.jit.reason && (<span dangerouslySetInnerHTML={{__html: ` (${props.jit.reason})` }} />)}
+                    </td>
+                </tr>
             </tbody>
         </table>
     );
@@ -383,10 +394,25 @@ function Directives(props) {
                 vShow = directive.v;
             }
         }
+        let directiveLink = (name) => {
+            if (name === 'opcache.jit_max_recursive_returns') {
+                return 'opcache.jit-max-recursive-return';
+            }
+            return (
+                [
+                    'opcache.file_update_protection',
+                    'opcache.huge_code_pages',
+                    'opcache.lockfile_path',
+                    'opcache.opt_debug_level',
+                ].includes(name)
+                ? name
+                : name.replace(/_/g,'-')
+            );
+        }
         return (
             <tr key={directive.k}>
                 <td title={props.txt('View {0} manual entry', directive.k)}><a href={'https://php.net/manual/en/opcache.configuration.php#ini.'
-                + (directive.k).replace(/_/g,'-')} target="_blank">{dShow}</a></td>
+                + directiveLink(directive.k)} target="_blank">{dShow}</a></td>
                 <td>{vShow}</td>
             </tr>
         );
@@ -1164,13 +1190,13 @@ function Footer(props) {
         <footer className="main-footer">
             <a className="github-link" href="https://github.com/amnuts/opcache-gui"
                target="_blank"
-               title="opcache-gui (currently version {props.version}) on GitHub"
-            >https://github.com/amnuts/opcache-gui - version {props.version}</a>
+               title={props.txt("opcache-gui (currently version {0}) on GitHub", props.version)}
+            >https://github.com/amnuts/opcache-gui - {props.txt("version {0}", props.version)}</a>
 
             <a className="sponsor-link" href="https://github.com/sponsors/amnuts"
                target="_blank"
-               title="Sponsor this project and author on GitHub"
-            >Sponsor this project</a>
+               title={props.txt("Sponsor this project and author on GitHub")}
+            >{props.txt("Sponsor this project")}</a>
         </footer>
     );
 }

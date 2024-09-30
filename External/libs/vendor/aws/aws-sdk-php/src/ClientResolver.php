@@ -4,6 +4,9 @@ namespace Aws;
 use Aws\Api\ApiProvider;
 use Aws\Api\Service;
 use Aws\Api\Validator;
+use Aws\Auth\AuthResolver;
+use Aws\Auth\AuthSchemeResolver;
+use Aws\Auth\AuthSchemeResolverInterface;
 use Aws\ClientSideMonitoring\ApiCallAttemptMonitoringMiddleware;
 use Aws\ClientSideMonitoring\ApiCallMonitoringMiddleware;
 use Aws\ClientSideMonitoring\Configuration;
@@ -196,6 +199,12 @@ class ClientResolver
             'fn'      => [__CLASS__, '_apply_token'],
             'default' => [__CLASS__, '_default_token_provider'],
         ],
+        'auth_scheme_resolver' => [
+            'type'    => 'value',
+            'valid'   => [AuthSchemeResolverInterface::class],
+            'doc'     => 'An instance of Aws\Auth\AuthSchemeResolverInterface which selects a modeled auth scheme and returns a signature version',
+            'default' => [__CLASS__, '_default_auth_scheme_resolver'],
+        ],
         'endpoint_discovery' => [
             'type'     => 'value',
             'valid'    => [ConfigurationInterface::class, CacheInterface::class, 'array', 'callable'],
@@ -299,6 +308,27 @@ class ClientResolver
             'doc'       => 'Set to false to disable checking for shared aws config files usually located in \'~/.aws/config\' and \'~/.aws/credentials\'.  This will be ignored if you set the \'profile\' setting.',
             'default'   => true,
         ],
+        'suppress_php_deprecation_warning' => [
+            'type'      => 'value',
+            'valid'     => ['bool'],
+            'doc' => 'Set to true to suppress PHP runtime deprecation warnings. The current deprecation campaign is PHP versions 8.0.x and below, taking effect on 1/13/2025.',
+            'default' => false,
+            'fn' => [__CLASS__, '_apply_suppress_php_deprecation_warning']
+        ],
+        'account_id_endpoint_mode' => [
+            'type'      => 'value',
+            'valid'     => ['string'],
+            'doc'       => 'Decides whether account_id must a be a required resolved credentials property. If this configuration is set to disabled, then account_id is not required. If set to preferred a warning will be logged when account_id is not resolved, and when set to required an exception will be thrown if account_id is not resolved.',
+            'default'  => [__CLASS__, '_default_account_id_endpoint_mode'],
+            'fn'       => [__CLASS__, '_apply_account_id_endpoint_mode']
+        ],
+        'sigv4a_signing_region_set' => [
+            'type' => 'value',
+            'valid' => ['array', 'string'],
+            'doc' => 'A comma-delimited list of supported regions sent in sigv4a requests.',
+            'fn' => [__CLASS__, '_apply_sigv4a_signing_region_set'],
+            'default' => [__CLASS__, '_default_sigv4a_signing_region_set']
+        ]
     ];
 
     /**
@@ -608,8 +638,9 @@ class ClientResolver
                 new Credentials(
                     $value['key'],
                     $value['secret'],
-                    isset($value['token']) ? $value['token'] : null,
-                    isset($value['expires']) ? $value['expires'] : null
+                    $value['token'] ?? null,
+                    $value['expires'] ?? null,
+                    $value['accountId'] ?? null
                 )
             );
         } elseif ($value === false) {
@@ -647,7 +678,7 @@ class ClientResolver
             $args['token'] = TokenProvider::fromToken(
                 new Token(
                     $value['token'],
-                    isset($value['expires']) ? $value['expires'] : null
+                    $value['expires'] ?? null
                 )
             );
         } elseif ($value instanceof CacheInterface) {
@@ -731,9 +762,7 @@ class ClientResolver
                     ->getPartition($args['region'], $args['service']);
             }
 
-            $endpointPrefix = isset($args['api']['metadata']['endpointPrefix'])
-                ? $args['api']['metadata']['endpointPrefix']
-                : $args['service'];
+            $endpointPrefix = $args['api']['metadata']['endpointPrefix'] ?? $args['service'];
 
             // Check region is a valid host label when it is being used to
             // generate an endpoint
@@ -1081,9 +1110,32 @@ class ClientResolver
         }
     }
 
+    public static function _default_account_id_endpoint_mode($args)
+    {
+        return ConfigurationResolver::resolve(
+            'account_id_endpoint_mode',
+            'preferred',
+            'string',
+            $args
+        );
+    }
+
+    public static function _apply_account_id_endpoint_mode($value, array &$args)
+    {
+        static $accountIdEndpointModes = ['disabled', 'required', 'preferred'];
+        if (!in_array($value, $accountIdEndpointModes)) {
+            throw new IAE(
+                "The value provided for the config account_id_endpoint_mode is invalid."
+                ."Valid values are: " . implode(", ", $accountIdEndpointModes)
+            );
+        }
+
+        $args['account_id_endpoint_mode'] = $value;
+    }
+
     public static function _default_endpoint_provider(array $args)
     {
-        $service =  isset($args['api']) ? $args['api'] : null;
+        $service = $args['api'] ?? null;
         $serviceName = isset($service) ? $service->getServiceName() : null;
         $apiVersion = isset($service) ? $service->getApiVersion() : null;
 
@@ -1115,6 +1167,11 @@ class ClientResolver
     public static function _default_signature_provider()
     {
         return SignatureProvider::defaultProvider();
+    }
+
+    public static function _default_auth_scheme_resolver(array $args)
+    {
+        return new AuthSchemeResolver($args['credentials'], $args['token']);
     }
 
     public static function _default_signature_version(array &$args)
@@ -1172,14 +1229,34 @@ class ClientResolver
                 'region' => $args['region'],
             ]);
 
-        return isset($args['__partition_result']['signingRegion'])
-            ? $args['__partition_result']['signingRegion']
-            : $args['region'];
+        return $args['__partition_result']['signingRegion'] ?? $args['region'];
     }
 
     public static function _apply_ignore_configured_endpoint_urls($value, array &$args)
     {
         $args['config']['ignore_configured_endpoint_urls'] = $value;
+    }
+
+    public static function _apply_suppress_php_deprecation_warning($value, &$args)
+    {
+        if ($value)  {
+            $args['suppress_php_deprecation_warning'] = true;
+        } elseif (!empty(getenv("AWS_SUPPRESS_PHP_DEPRECATION_WARNING"))) {
+            $args['suppress_php_deprecation_warning']
+                = \Aws\boolean_value(getenv("AWS_SUPPRESS_PHP_DEPRECATION_WARNING"));
+        } elseif (!empty($_SERVER["AWS_SUPPRESS_PHP_DEPRECATION_WARNING"])) {
+            $args['suppress_php_deprecation_warning'] =
+                \Aws\boolean_value($_SERVER["AWS_SUPPRESS_PHP_DEPRECATION_WARNING"]);
+        } elseif (!empty($_ENV["AWS_SUPPRESS_PHP_DEPRECATION_WARNING"])) {
+            $args['suppress_php_deprecation_warning'] =
+                \Aws\boolean_value($_ENV["AWS_SUPPRESS_PHP_DEPRECATION_WARNING"]);
+        }
+
+        if ($args['suppress_php_deprecation_warning'] === false
+            && PHP_VERSION_ID < 80100
+        ) {
+            self::emitDeprecationWarning();
+        }
     }
 
     public static function _default_ignore_configured_endpoint_urls(array &$args)
@@ -1230,6 +1307,26 @@ class ClientResolver
         return $value;
     }
 
+    public static function _apply_sigv4a_signing_region_set($value, array &$args)
+    {
+        if (empty($value)) {
+            $args['sigv4a_signing_region_set'] = null;
+        } elseif (is_array($value)) {
+            $args['sigv4a_signing_region_set'] = implode(', ', $value);
+        } else {
+            $args['sigv4a_signing_region_set'] = $value;
+        }
+    }
+
+    public static function _default_sigv4a_signing_region_set(array &$args)
+    {
+        return ConfigurationResolver::resolve(
+            'sigv4a_signing_region_set',
+            '',
+            'string'
+        );
+    }
+
     public static function _apply_region($value, array &$args)
     {
         if (empty($value)) {
@@ -1245,7 +1342,7 @@ class ClientResolver
 
     public static function _missing_region(array $args)
     {
-        $service = isset($args['service']) ? $args['service'] : '';
+        $service = $args['service'] ?? '';
 
         $msg = <<<EOT
 Missing required client configuration options:
@@ -1310,8 +1407,7 @@ EOT;
                 $definition = [
                     'type' => 'value',
                     'valid' => [$paramDefinition['type']],
-                    'doc' => isset($paramDefinition['documentation']) ?
-                        $paramDefinition['documentation'] : null
+                    'doc' => $paramDefinition['documentation'] ?? null
                 ];
                 $this->argDefinitions[$paramName] = $definition;
 
@@ -1325,7 +1421,8 @@ EOT;
         }
     }
 
-    private static function isValidService($service) {
+    private static function isValidService($service)
+    {
         if (is_null($service)) {
             return false;
         }
@@ -1333,12 +1430,30 @@ EOT;
         return isset($services[$service]);
     }
 
-    private static function isValidApiVersion($service, $apiVersion) {
+    private static function isValidApiVersion($service, $apiVersion)
+    {
         if (is_null($apiVersion)) {
             return false;
         }
         return is_dir(
             __DIR__ . "/data/{$service}/$apiVersion"
+        );
+    }
+
+    private static function emitDeprecationWarning()
+    {
+        $phpVersionString = phpversion();
+        trigger_error(
+            "This installation of the SDK is using PHP version"
+            .  " {$phpVersionString}, which will be deprecated on January"
+            .  " 13th, 2025.\nPlease upgrade your PHP version to a minimum of"
+            .  " 8.1.x to continue receiving updates for the AWS"
+            .  " SDK for PHP.\nTo disable this warning, set"
+            .  " suppress_php_deprecation_warning to true on the client constructor"
+            .  " or set the environment variable AWS_SUPPRESS_PHP_DEPRECATION_WARNING"
+            .  " to true.\nMore information can be found at: "
+            .   "https://aws.amazon.com/blogs/developer/announcing-the-end-of-support-for-php-runtimes-8-0-x-and-below-in-the-aws-sdk-for-php/\n",
+            E_USER_DEPRECATED
         );
     }
 }

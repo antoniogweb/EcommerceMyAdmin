@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class AirichiestecontestiModel extends GenericModel
 {
+	public static $controllaNumeroPagineContesto = true;
+
 	public function __construct() {
 		$this->_tables = 'ai_richieste_contesti';
 		$this->_idFields = 'id_ai_richiesta_contesto';
@@ -47,18 +49,48 @@ class AirichiestecontestiModel extends GenericModel
 		if (!$idRichiesta)
 			return false;
 
+		$numeroMassimoContesti = AirichiesteModel::g(false)->numeroMassimoPagineContesto($idRichiesta);
+
+		if (!self::$controllaNumeroPagineContesto)
+			$numeroMassimoContesti = 99999999;
+
 		$numeroContestiDellaRichiesta = $this->clear()->where(array(
 			"id_ai_richiesta"	=>	(int)$idRichiesta,
 		))->rowNumber();
 
-		if ($numeroContestiDellaRichiesta < v("limite_contesti_per_richiesta"))
+		if ($numeroContestiDellaRichiesta < $numeroMassimoContesti)
 			return parent::insert();
 		else
 		{
 			$this->result = false;
-			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, il numero massimo delle pagina che si possono usare come contesto è")." ".v("limite_contesti_per_richiesta")."</a>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, il numero massimo di pagina che si possono usare come contesto è")." ".$numeroMassimoContesti."</a>";
 			return false;
 		}
+	}
 
+	public function bulksegnaimportante($record)
+    {
+		if ($record["ai_richieste_contesti"]["importante"])
+			return "<i data-azione='settanonimportante' title='".gtext("Segna come NON importante")."' class='bulk_trigger help_trigger_rendi_non_importante fa fa-check text text-success'></i>";
+		else
+			return "<i data-azione='settaimportante' title='".gtext("Segna come importante")."' class='bulk_trigger help_trigger_rendi_importante fa fa-ban text'></i>";
+    }
+
+    public function settanonimportante($id)
+	{
+		$this->setValues(array(
+			"importante"	=>	0
+		));
+
+		$this->update((int)$id);
+	}
+
+	public function settaimportante($id)
+	{
+		$this->setValues(array(
+			"importante"	=>	1
+		));
+
+		$this->update((int)$id);
 	}
 }

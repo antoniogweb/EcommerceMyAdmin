@@ -7,6 +7,7 @@ use Aws\Auth\Exception\UnresolvedAuthSchemeException;
 use Aws\CommandInterface;
 use Closure;
 use GuzzleHttp\Promise\Promise;
+use function JmesPath\search;
 
 /**
  * Handles endpoint rule evaluation and endpoint resolution.
@@ -18,6 +19,8 @@ use GuzzleHttp\Promise\Promise;
  */
 class EndpointV2Middleware
 {
+    const ACCOUNT_ID_PARAM = 'AccountId';
+    const ACCOUNT_ID_ENDPOINT_MODE_PARAM = 'AccountIdEndpointMode';
     private static $validAuthSchemes = [
         'sigv4' => 'v4',
         'sigv4a' => 'v4a',
@@ -38,23 +41,28 @@ class EndpointV2Middleware
     /** @var array */
     private $clientArgs;
 
+    /** @var Closure */
+    private $credentialProvider;
+
     /**
      * Create a middleware wrapper function
      *
      * @param EndpointProviderV2 $endpointProvider
      * @param Service $api
      * @param array $args
+     * @param callable $credentialProvider
      *
      * @return Closure
      */
     public static function wrap(
         EndpointProviderV2 $endpointProvider,
         Service $api,
-        array $args
+        array $args,
+        callable $credentialProvider
     ) : Closure
     {
-        return function (callable $handler) use ($endpointProvider, $api, $args) {
-            return new self($handler, $endpointProvider, $api, $args);
+        return function (callable $handler) use ($endpointProvider, $api, $args, $credentialProvider) {
+            return new self($handler, $endpointProvider, $api, $args, $credentialProvider);
         };
     }
 
@@ -68,13 +76,15 @@ class EndpointV2Middleware
         callable $nextHandler,
         EndpointProviderV2 $endpointProvider,
         Service $api,
-        array $args
+        array $args,
+        callable $credentialProvider = null
     )
     {
         $this->nextHandler = $nextHandler;
         $this->endpointProvider = $endpointProvider;
         $this->api = $api;
         $this->clientArgs = $args;
+        $this->credentialProvider = $credentialProvider;
     }
 
     /**
@@ -87,7 +97,6 @@ class EndpointV2Middleware
         $nextHandler = $this->nextHandler;
         $operation = $this->api->getOperation($command->getName());
         $commandArgs = $command->toArray();
-
         $providerArgs = $this->resolveArgs($commandArgs, $operation);
         $endpoint = $this->endpointProvider->resolveEndpoint($providerArgs);
 
@@ -110,9 +119,15 @@ class EndpointV2Middleware
      *
      * @return array
      */
-    private function resolveArgs(array $commandArgs, Operation $operation) : array
+    private function resolveArgs(array $commandArgs, Operation $operation): array
     {
         $rulesetParams = $this->endpointProvider->getRuleset()->getParameters();
+
+        if (isset($rulesetParams[self::ACCOUNT_ID_PARAM])
+            && isset($rulesetParams[self::ACCOUNT_ID_ENDPOINT_MODE_PARAM])) {
+            $this->clientArgs[self::ACCOUNT_ID_PARAM] = $this->resolveAccountId();
+        }
+
         $endpointCommandArgs = $this->filterEndpointCommandArgs(
             $rulesetParams,
             $commandArgs
@@ -123,9 +138,14 @@ class EndpointV2Middleware
         $contextParams = $this->bindContextParams(
             $commandArgs, $operation->getContextParams()
         );
+        $operationContextParams = $this->bindOperationContextParams(
+            $commandArgs,
+            $operation->getOperationContextParams()
+        );
 
         return array_merge(
             $this->clientArgs,
+            $operationContextParams,
             $contextParams,
             $staticContextParams,
             $endpointCommandArgs
@@ -144,7 +164,7 @@ class EndpointV2Middleware
     private function filterEndpointCommandArgs(
         array $rulesetParams,
         array $commandArgs
-    ) : array
+    ): array
     {
         $endpointMiddlewareOpts = [
             '@use_dual_stack_endpoint' => 'UseDualStack',
@@ -181,7 +201,7 @@ class EndpointV2Middleware
      *
      * @return array
      */
-    private function bindStaticContextParams($staticContextParams) : array
+    private function bindStaticContextParams($staticContextParams): array
     {
         $scopedParams = [];
 
@@ -204,13 +224,40 @@ class EndpointV2Middleware
     private function bindContextParams(
         array $commandArgs,
         array $contextParams
-    ) : array
+    ): array
     {
         $scopedParams = [];
 
         foreach($contextParams as $name => $spec) {
             if (isset($commandArgs[$spec['shape']])) {
                 $scopedParams[$name] = $commandArgs[$spec['shape']];
+            }
+        }
+
+        return $scopedParams;
+    }
+
+    /**
+     * Binds context params to their corresponding values found in
+     * command arguments.
+     *
+     * @param array $commandArgs
+     * @param array $contextParams
+     *
+     * @return array
+     */
+    private function bindOperationContextParams(
+        array $commandArgs,
+        array $operationContextParams
+    ): array
+    {
+        $scopedParams = [];
+
+        foreach($operationContextParams as $name => $spec) {
+            $scopedValue = search($spec['path'], $commandArgs);
+
+            if ($scopedValue) {
+                $scopedParams[$name] = $scopedValue;
             }
         }
 
@@ -228,10 +275,21 @@ class EndpointV2Middleware
     private function applyAuthScheme(
         array $authSchemes,
         CommandInterface $command
-    ) : void
+    ): void
     {
         $authScheme = $this->resolveAuthScheme($authSchemes);
-        $command->setAuthSchemes($authScheme);
+
+        $command['@context']['signature_version'] = $authScheme['version'];
+
+        if (isset($authScheme['name'])) {
+            $command['@context']['signing_service'] = $authScheme['name'];
+        }
+
+        if (isset($authScheme['region'])) {
+            $command['@context']['signing_region'] = $authScheme['region'];
+        } elseif (isset($authScheme['signingRegionSet'])) {
+            $command['@context']['signing_region_set'] = $authScheme['signingRegionSet'];
+        }
     }
 
     /**
@@ -242,7 +300,7 @@ class EndpointV2Middleware
      *
      * @return array
      */
-    private function resolveAuthScheme(array $authSchemes) : array
+    private function resolveAuthScheme(array $authSchemes): array
     {
         $invalidAuthSchemes = [];
 
@@ -275,7 +333,7 @@ class EndpointV2Middleware
      * @param array $authScheme
      * @return array
      */
-    private function normalizeAuthScheme(array $authScheme) : array
+    private function normalizeAuthScheme(array $authScheme): array
     {
         /*
             sigv4a will contain a regionSet property. which is guaranteed to be `*`
@@ -294,12 +352,9 @@ class EndpointV2Middleware
             $normalizedAuthScheme['version'] = self::$validAuthSchemes[$authScheme['name']];
         }
 
-        $normalizedAuthScheme['name'] = isset($authScheme['signingName']) ?
-            $authScheme['signingName'] : null;
-        $normalizedAuthScheme['region'] = isset($authScheme['signingRegion']) ?
-            $authScheme['signingRegion'] : null;
-        $normalizedAuthScheme['signingRegionSet'] = isset($authScheme['signingRegionSet']) ?
-            $authScheme['signingRegionSet'] : null;
+        $normalizedAuthScheme['name'] = $authScheme['signingName'] ?? null;
+        $normalizedAuthScheme['region'] = $authScheme['signingRegion'] ?? null;
+        $normalizedAuthScheme['signingRegionSet'] = $authScheme['signingRegionSet'] ?? null;
 
         return $normalizedAuthScheme;
     }
@@ -312,6 +367,31 @@ class EndpointV2Middleware
               }
               return true;
         }
+
         return false;
+    }
+
+    /**
+     * This method tries to resolve an `AccountId` parameter from a resolved identity.
+     * We will just perform this operation if the parameter `AccountId` is part of the ruleset parameters and
+     * `AccountIdEndpointMode` is not disabled, otherwise, we will ignore it.
+     *
+     * @return null|string
+     */
+    private function resolveAccountId(): ?string
+    {
+        if (isset($this->clientArgs[self::ACCOUNT_ID_ENDPOINT_MODE_PARAM])
+            && $this->clientArgs[self::ACCOUNT_ID_ENDPOINT_MODE_PARAM] === 'disabled') {
+            return null;
+        }
+
+        if (is_null($this->credentialProvider)) {
+            return null;
+        }
+
+        $identityProviderFn = $this->credentialProvider;
+        $identity = $identityProviderFn()->wait();
+
+        return $identity->getAccountId();
     }
 }

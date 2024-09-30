@@ -36,6 +36,7 @@ class AirichiesteModel extends GenericModel
 	public function relations() {
 		return array(
 			'contesti' => array("HAS_MANY", 'AirichiestecontestiModel', 'id_ai_richiesta', null, "CASCADE"),
+			'modello' => array("BELONGS_TO", 'AimodelliModel', 'id_ai_modello',null,"RESTRICT","Si prega di selezionare il modello".'<div style="display:none;" rel="hidden_alert_notice">id_ai_modello</div>'),
 		);
     }
 
@@ -47,6 +48,13 @@ class AirichiesteModel extends GenericModel
 				'titolo'		=>	array(
 					'labelString'=>	'Richiesta',
 					'type'		 =>	'Textarea',
+				),
+				'id_ai_modello'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	gtext('Modello di AI'),
+					'options'	=>	$this->selectModelli($id),
+					'reverse' => 'yes',
+					'entryClass'  => 'form_input_text',
 				),
 				'id_c'		=>	array(
 					'type'		=>	'Select',
@@ -88,6 +96,34 @@ class AirichiesteModel extends GenericModel
 			$this->formStruct["submit"] = [];
 	}
 
+	public function selectModelli($id)
+	{
+		$idModello = (int)$this->clear()->whereId((int)$id)->field("id_ai_modello");
+
+		$aimModel = new AimodelliModel();
+
+		$modelli = $aimModel->clear()->where(array(
+			"OR"	=>	array(
+				"id_ai_modello"	=>	(int)$idModello,
+				"AND"	=>	array(
+					"attivo"	=>	1,
+				   "ne"	=>	array(
+						"key_1"	=>	"",
+					),
+				),
+			),
+		))->send(false);
+
+		$selectModelli = [];
+
+		foreach ($modelli as $m)
+		{
+			$selectModelli[$m["id_ai_modello"]] = $m["titolo"] . " - contesto di max " . $m["numero_pagine"] . " pagine";
+		}
+
+		return $selectModelli;
+	}
+
 	public function titolo($id)
 	{
 		$clean["id"] = (int)$id;
@@ -115,8 +151,6 @@ class AirichiesteModel extends GenericModel
 
 	public function estraiContesti($id)
 	{
-		VariabiliModel::$valori["limite_contesti_per_richiesta"] += 1;
-
 		$record = $this->selectId((int)$id);
 
 		$arrayIds = [];
@@ -130,7 +164,9 @@ class AirichiesteModel extends GenericModel
 			if ($idPage)
 				$arrayIds[] = $idPage;
 
-			$idS = ProdottiModel::prodottiPiuVenduti($idC, $idMarchio);
+			$numeroMassimoContesti = AirichiesteModel::g(false)->numeroMassimoPagineContesto($id);
+
+			$idS = ProdottiModel::prodottiPiuVenduti($idC, $idMarchio, $numeroMassimoContesti);
 
 			$arrayIds = array_merge($arrayIds, $idS);
 
@@ -145,6 +181,9 @@ class AirichiesteModel extends GenericModel
 		$idS = $this->estraiContesti($id);
 
 		$aircModel = new AirichiestecontestiModel();
+
+		// Inserisci tutti i contesti trovati senza verificare il numero
+		AirichiestecontestiModel::$controllaNumeroPagineContesto = false;
 
 		foreach ($idS as $idPage)
 		{
@@ -165,5 +204,12 @@ class AirichiesteModel extends GenericModel
 			$this->inserisciContesti($this->lId);
 
 		return $res;
+	}
+
+	public function numeroMassimoPagineContesto($idRichiesta)
+	{
+		$idModello = $this->clear()->select("id_ai_modello")->whereId((int)$idRichiesta)->field("id_ai_modello");
+
+		return (int)AimodelliModel::getModulo((int)$idModello)->getParam("numero_pagine");
 	}
 }

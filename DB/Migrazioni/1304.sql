@@ -1,0 +1,1 @@
+INSERT INTO `ai_modelli` (`id_ai_modello`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`) VALUES (NULL, CURRENT_TIMESTAMP, 'GPT-3.5 Turbo', '1', 'ChatGPT35Turbo', 'ChatGPT35Turbo', '', 'NLP', '1', '1', 'gpt-3.5-turbo', '20');

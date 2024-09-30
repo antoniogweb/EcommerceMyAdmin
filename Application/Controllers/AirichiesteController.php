@@ -44,12 +44,10 @@ class AirichiesteController extends BaseController
 	{
 		$this->shift();
 
-		$this->mainFields = array("titoloCrud");
-		$this->mainHead = "Titolo";
+		$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo");
+		$this->mainHead = "Data ora,Titolo,Modello";
 		
-		$this->m[$this->modelName]->clear()->where(array(
-
-		))->orderBy("data_creazione")->save();
+		$this->m[$this->modelName]->clear()->select("*")->inner(array("modello"))->orderBy("ai_richieste.data_creazione desc")->save();
 		
 		parent::main();
 	}
@@ -58,7 +56,7 @@ class AirichiesteController extends BaseController
 	{
 		$this->_posizioni['main'] = 'class="active"';
 
-		$fields = 'id_c,id_marchio,id_page';
+		$fields = 'id_ai_modello,id_c,id_marchio,id_page';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
@@ -91,8 +89,8 @@ class AirichiesteController extends BaseController
 		$this->m[$this->modelName]->values['id_ai_richiesta'] = $clean['id'];
 		$this->m[$this->modelName]->updateTable('insert,del');
 
-		$this->mainFields = array("pages.title", "categories.title", "marchi.titolo");
-		$this->mainHead = "Pagina,Categoria,Marchio";
+		$this->mainFields = array("pages.title", "categories.title", "marchi.titolo", "bulksegnaimportante");
+		$this->mainHead = "Pagina,Categoria,Marchio,Importante";
 
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"contesti/".$clean['id'],'pageVariable'=>'page_fgl');
 
@@ -115,6 +113,14 @@ class AirichiesteController extends BaseController
 
 		$data["ordinaAction"] = "ordinacontesti";
 		$data["orderBy"] = "ai_richieste_contesti.id_order";
+
+		$this->bulkQueryActions = "del,settaimportante,settanonimportante";
+
+		$this->bulkActions = array(
+			"checkbox_ai_richieste_contesti_id_ai_richiesta_contesto"	=>	array("del",gtext("Elimina selezionati"),"confirm"),
+			" checkbox_ai_richieste_contesti_id_ai_richiesta_contesto"	=>	array("settaimportante","Segna importante"),
+			"  checkbox_ai_richieste_contesti_id_ai_richiesta_contesto"	=>	array("settanonimportante","Segna NON importante"),
+		);
 
 		parent::main();
 
