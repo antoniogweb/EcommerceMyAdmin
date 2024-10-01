@@ -125,6 +125,17 @@ class NazioniModel extends GenericModel
 						"<div class='form_notice'>".gtext("Verrà evidenziata nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
 					),
 				),
+				'lingua'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Lingua di default impostata per questa nazione',
+					'options'	=>	LingueModel::getValoriAttivi(),
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>Al cambio nazione nel tema (se impostato), il link verso questa nazione avrà questa lingua</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',

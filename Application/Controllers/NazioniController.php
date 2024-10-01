@@ -128,11 +128,14 @@ class NazioniController extends BaseController {
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$campi = 'titolo,iso_country_code,tipo,attiva,attiva_spedizione,campo_p_iva,id_iva,soglia_spedizioni_gratuite';
+		$campi = 'titolo,iso_country_code,tipo,attiva,attiva_spedizione,campo_p_iva,id_iva,lingua';
 		
 		if (v("attiva_in_evidenza_nazioni"))
 			$campi .= ",in_evidenza";
 		
+		if (v("soglia_spedizioni_gratuite_diversa_per_ogni_nazione"))
+			$campi .= ",soglia_spedizioni_gratuite";
+
 		$this->m[$this->modelName]->setValuesFromPost($campi);
 		
 		parent::form($queryType, $id);
