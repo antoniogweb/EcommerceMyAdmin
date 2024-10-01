@@ -268,16 +268,16 @@ class SitemapModel extends GenericModel {
 		if ($idPage)
 		{
 			if (!isset(self::$pagine))
-				self::$pagine = PagesModel::g(false)->toList("id_page", "title")->send();
-			
+				self::$pagine = PagesModel::g(false)->select("id_page,title")->toList("id_page", "title")->send();
+
 			if (isset(self::$pagine[$idPage]))
 				return self::$pagine[$idPage];
 		}
 		else if ($idC)
 		{
 			if (!isset(self::$categorie))
-				self::$categorie = CategoriesModel::g(false)->toList("id_c", "title")->send();
-			
+				self::$categorie = CategoriesModel::g(false)->select("id_c,title")->toList("id_c", "title")->send();
+
 			if (isset(self::$categorie[$idC]))
 				return self::$categorie[$idC];
 		}
@@ -286,7 +286,7 @@ class SitemapModel extends GenericModel {
 		else if ($record["sitemap"]["url"])
 			return $record["sitemap"]["titolo"] ? $record["sitemap"]["titolo"] : "Custom";
 		
-		return "";
+		return "1";
     }
     
     public function tipo($record)

@@ -61,7 +61,7 @@ class SitemapController extends BaseController
 	{
 		if (!v("permetti_gestione_sitemap"))
 			die();
-		
+
 		$recuperaBackup = 0;
 		
 		if (isset($_GET["rigenera_sitemap"]))
@@ -81,7 +81,7 @@ class SitemapController extends BaseController
 			
 // 			$this->redirect("sitemap/main");
 		}
-		
+
 		$this->shift();
 		
 		$this->mainFields = array("titolocrud", "sitemap.priorita", "tipo", "url");
@@ -93,7 +93,7 @@ class SitemapController extends BaseController
 				->orderBy("sitemap.id_order")->convert()->save();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>1000, 'mainMenu'=>'rigenera,add,vedi');
-		
+
 		parent::main();
 	}
 	

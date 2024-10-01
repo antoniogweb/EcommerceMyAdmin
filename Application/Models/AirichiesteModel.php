@@ -141,7 +141,7 @@ class AirichiesteModel extends GenericModel
 		if ($record["id_page"])
 			$titolo[] = PagesModel::g(false)->clear()->whereId((int)$record["id_page"])->field("title");
 
-		return implode(" - ", $titolo);
+		return gtext("Parla di").": <i>".implode("</i> - <i>", $titolo)."</i>";
 	}
 
 	public function titoloCrud($record)
