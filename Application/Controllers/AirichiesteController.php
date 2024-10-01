@@ -91,6 +91,8 @@ class AirichiesteController extends BaseController
 
 		parent::main();
 
+		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi($clean['id']);
+
 		$data["titoloRecord"] = $this->m["AirichiesteModel"]->titolo($clean['id']);
 
 		$this->append($data);
@@ -166,24 +168,17 @@ class AirichiesteController extends BaseController
 	{
 		$this->clean();
 
-		$record = $this->m["AirichiesteModel"]->selectId((int)$id);
+		$this->m[$this->modelName]->messaggio((int)$id);
+	}
 
-		if (!empty($record))
-		{
-			$messaggio = $this->request->post("messaggio", "");
+	public function listamessaggi($id)
+	{
+		$this->clean();
 
-			if (trim($messaggio))
-			{
-				$messaggi = $this->m("AirichiestemessaggiModel")->clear()->select("messaggio")->where(array(
-					"id_ai_richiesta"	=>	(int)$id,
-				))->orderBy("data_creazione")->toList("messaggio")->send();
+		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi((int)$id);
 
-				$messaggi = htmlentitydecodeDeep($messaggi);
+		$this->append($data);
 
-				$messaggi[] = $messaggio;
-
-				// print_r($messaggi);
-			}
-		}
+		$this->load("chat");
 	}
 }

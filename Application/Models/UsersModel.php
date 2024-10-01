@@ -167,4 +167,9 @@ class UsersModel extends GenericModel {
 		else
 			$this->addStrongCondition("both",'checkMatch|'.v("password_regular_expression"),$stringaErrore);
 	}
+
+	public static function getName($id)
+	{
+		return UsersModel::g(false)->clear()->select("username")->whereId((int)$id)->field("username");
+	}
 }

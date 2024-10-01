@@ -25,4 +25,17 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ModelloAI
 {
 	use Modulo;
+
+	protected function creaStreamContesto($contesto = "")
+	{
+		if ($contesto)
+		{
+			return array(
+				['role' => 'system', 'content' => v("istruzioni_ruolo_system_richieste_ai")],
+				['role' => 'system', 'content' => '"""'.$contesto.'"""'],
+			);
+		}
+
+		return array();
+	}
 }

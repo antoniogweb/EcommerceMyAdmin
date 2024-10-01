@@ -215,4 +215,61 @@ class AirichiesteModel extends GenericModel
 
 		return (int)AimodelliModel::getModulo((int)$idModello)->getParam("numero_pagine");
 	}
+
+	public function messaggio($id)
+	{
+		$record = $this->selectId((int)$id);
+
+		if (!empty($record))
+		{
+			$messaggio = $_POST["messaggio"] ?? "";
+
+			if (trim($messaggio))
+			{
+				$airmModel = new AirichiestemessaggiModel();
+
+				$contesto = AirichiestecontestiModel::g(false)->getContesto((int)$id);
+
+				$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
+					"id_ai_richiesta"	=>	(int)$id,
+				))->orderBy("data_creazione")->process()->send(false);
+
+				$messaggi = array();
+
+				foreach ($res as $r)
+				{
+					$messaggi[] = array(
+						"role"		=>	$r["ruolo"],
+						"content"	=>	htmlentitydecode($r["messaggio"]),
+					);
+				}
+
+				$messaggi[] = array(
+					"role"		=>	"user",
+					"content"	=>	$messaggio,
+				);
+
+				$airmModel->sValues(array(
+					"messaggio"			=>	$messaggio,
+					"id_ai_richiesta"	=>	(int)$id,
+					"id_admin"			=>	User::$id,
+					"ruolo"				=>	"user",
+				));
+
+				if ($airmModel->insert())
+				{
+					list($ris, $messaggio) = AimodelliModel::getModulo((int)$record["id_ai_modello"])->chat($messaggi, $contesto);
+
+					$airmModel->sValues(array(
+						"messaggio"			=>	F::sanitizeTesto($messaggio),
+						"id_ai_richiesta"	=>	(int)$id,
+						"id_admin"			=>	User::$id,
+						"ruolo"				=>	"assistant",
+					));
+
+					$airmModel->insert();
+				}
+			}
+		}
+	}
 }

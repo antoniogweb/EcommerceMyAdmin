@@ -38,4 +38,11 @@ class AirichiestemessaggiModel extends GenericModel
 			'richiesta' => array("BELONGS_TO", 'AirichiesteModel', 'id_ai_richiesta',null,"CASCADE"),
 		);
     }
+
+    public function getMessaggi($idRichiesta)
+	{
+		return $this->clear()->where(array(
+			"id_ai_richiesta"	=>	(int)$idRichiesta,
+		))->orderBy("id_order")->send(false);
+	}
 }

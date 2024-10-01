@@ -22,6 +22,8 @@
 
 class ChatGPT35Turbo extends ModelloAI
 {
+	private $client = null;
+
 	public function gCampiForm()
 	{
 		return 'titolo,attivo,predefinito,key_1';
@@ -40,5 +42,53 @@ class ChatGPT35Turbo extends ModelloAI
 		$model->formStruct["entries"]["key_1"]["labelString"] = "Chiave segreta";
 		$model->formStruct["entries"]["key_1"]["type"] = "Password";
 		$model->formStruct["entries"]["key_1"]["fill"] = true;
+	}
+
+	protected function getClient()
+	{
+		if (!isset($this->client))
+		{
+			require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+
+			if (class_exists("OpenAI"))
+				$this->client = OpenAI::client($this->getParam("key_1"));
+		}
+
+		return $this->client;
+	}
+
+	protected function elaboraMessaggi($messaggi, $contesto = "")
+	{
+		$messaggiChat = $this->creaStreamContesto($contesto);
+
+		foreach ($messaggi as $m)
+		{
+			$messaggiChat[] = $m;
+		}
+
+		return $messaggiChat;
+	}
+
+	public function chat($messaggi, $contesto = "")
+	{
+		$client = $this->getClient();
+
+		if (isset($client))
+		{
+			$messaggi = $this->elaboraMessaggi($messaggi, $contesto);
+
+			// print_r($messaggi);die();
+			$response = $client->chat()->create([
+				'model' => $this->getParam("nome_modello"),
+				'messages' => $messaggi,
+			]);
+
+			$responseArray = $response->toArray();
+
+			if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
+				return array("OK", $responseArray["choices"][0]["message"]["content"]);
+
+			return array("","");
+		}
 	}
 }

@@ -226,7 +226,41 @@ class F
 	{
 		return "<i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-spinner fa-spin'></i><i style='display:none;position:absolute;top:5px;right:5px;' class='fa fa-check verde'></i>";
 	}
+
+	public static function sanitizeTesto($value)
+	{
+		$value = preg_replace('/(\<p\>)(.*?)(\<\/p\>)/s', '[p]${2}[/p]',$value);
+		$value = preg_replace('/(\<b\>)(.*?)(\<\/b\>)/s', '[b]${2}[/b]',$value);
+		$value = preg_replace('/(\<strong\>)(.*?)(\<\/strong\>)/s', '[b]${2}[/b]',$value);
+		$value = preg_replace('/(\<i\>)(.*?)(\<\/i\>)/s', '[i]${2}[/i]',$value);
+		$value = preg_replace('/(\<em\>)(.*?)(\<\/em\>)/s', '[i]${2}[/i]',$value);
+		$value = preg_replace('/(\<u\>)(.*?)(\<\/u\>)/s', '[i]${2}[/i]',$value);
+		$value = preg_replace('/\<br \/\>/s', '[br]',$value);
+
+		// $value = preg_replace('/(\<a(.*?)href=\"(.*?)\"(.*?)\>)(.*?)(\<\/a\>)/s', '[a]${3}|${5}[/a]',$value);
+
+		$value = strip_tags($value);
+
+		return F::vitalizeTesto($value);
+	}
 	
+	public static function vitalizeTesto($string)
+	{
+		$string = strip_tags($string);
+
+		$string = preg_replace('/(\[p\])(.*?)(\[\/p\])/s', '<p>${2}</p>',$string);
+
+		$string = preg_replace('/(\[b\])(.*?)(\[\/b\])/s', '<strong>${2}</strong>',$string);
+
+		$string = preg_replace('/(\[u\])(.*?)(\[\/u\])/s', '<u>${2}</u>',$string);
+
+		$string = preg_replace('/(\[i\])(.*?)(\[\/i\])/s', '<i>${2}</i>',$string);
+
+		$string = preg_replace('/(\[br\])/s', '<br />',$string);
+
+		return $string;
+	}
+
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

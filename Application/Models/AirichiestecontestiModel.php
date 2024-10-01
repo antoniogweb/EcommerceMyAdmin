@@ -97,4 +97,26 @@ class AirichiestecontestiModel extends GenericModel
 
 		$this->update((int)$id);
 	}
+
+	public function getContesto($idRichiesta)
+	{
+		$pagine = $this->clear()->select("ai_richieste_contesti.importante,pages.title,pages.description")->inner(array("pagina"))->where(array(
+			"id_ai_richiesta"	=>	(int)$idRichiesta,
+		))->orderBy("ai_richieste_contesti.id_order")->send();
+
+		$contesto = "";
+
+		$indice = 1;
+
+		foreach ($pagine as $p)
+		{
+			$importante = $p["ai_richieste_contesti"]["importante"] ? "\nPRODOTTO IMPORTANTE" : "";
+
+			$contesto .= "PRODOTTO $indice:\nTITOLO PRODOTTO $indice: ".htmlentitydecode($p["pages"]["title"]).$importante."\nCONTENUTO PRODOTTO $indice: ".strip_tags(htmlentitydecode($p["pages"]["description"]))."\n\n";
+
+			$indice++;
+		}
+
+		return $contesto;
+	}
 }

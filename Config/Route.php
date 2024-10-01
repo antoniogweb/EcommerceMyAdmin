@@ -911,6 +911,7 @@ class Route
 		'airichieste,contesti',
 		'airichieste,ordinacontesti',
 		'airichieste,messaggio',
+		'airichieste,listamessaggi',
 
 		'aimodelli,main',
 		'aimodelli,form',
