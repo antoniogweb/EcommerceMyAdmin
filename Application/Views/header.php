@@ -32,6 +32,10 @@
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/crud.js?v=<?php echo rand(1,100000);?>"></script>
 	
+	<?php if ($this->controller == "airichieste") { ?>
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/airichieste.js?v=<?php echo rand(1,100000);?>"></script>
+	<?php } ?>
+
 	<!-- 	CSS tema -->
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc?>/Public/Js/AdminLTE-2.3.0/dist/css/AdminLTE.min.css">

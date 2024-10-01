@@ -262,6 +262,18 @@ function makeSpinner(obj)
 	}
 }
 
+function removeSpinner(obj)
+{
+	var bckClass = obj.find("i").attr('bck-class');
+
+	if (obj.find("i").length > 0 && typeof bckClass !== 'undefined' && bckClass !== false)
+	{
+		obj.find("i").attr("class",bckClass);
+
+		obj.find("i").removeAttr("bck-class");
+	}
+}
+
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {

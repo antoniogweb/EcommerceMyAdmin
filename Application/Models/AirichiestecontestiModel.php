@@ -59,7 +59,11 @@ class AirichiestecontestiModel extends GenericModel
 		))->rowNumber();
 
 		if ($numeroContestiDellaRichiesta < $numeroMassimoContesti)
+		{
+			$this->values["id_admin"] = User::$id;
+
 			return parent::insert();
+		}
 		else
 		{
 			$this->result = false;

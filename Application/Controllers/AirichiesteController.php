@@ -70,11 +70,35 @@ class AirichiesteController extends BaseController
 		parent::form($queryType, $id);
 	}
 
+	public function messaggi($id)
+	{
+		$this->_posizioni['messaggi'] = 'class="active"';
+
+		$this->shift(1);
+
+		$this->mainViewAssociati = "messaggi";
+
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_ai_richiesta";
+
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"messaggi/".$clean['id'],'pageVariable'=>'page_fgl');
+
+		$this->m[$this->modelName]->clear()
+			->where(array(
+				"id_ai_richiesta"	=>	$clean['id'],
+			))
+			->save();
+
+		parent::main();
+
+		$data["titoloRecord"] = $this->m["AirichiesteModel"]->titolo($clean['id']);
+
+		$this->append($data);
+	}
+
 	public function contesti($id = 0)
 	{
 		$this->_posizioni['contesti'] = 'class="active"';
-
-// 		$data["orderBy"] = $this->orderBy = "id_order";
 
 		$this->shift(1);
 
@@ -136,5 +160,30 @@ class AirichiesteController extends BaseController
 		$this->modelName = "AirichiestecontestiModel";
 
 		parent::ordina();
+	}
+
+	public function messaggio($id)
+	{
+		$this->clean();
+
+		$record = $this->m["AirichiesteModel"]->selectId((int)$id);
+
+		if (!empty($record))
+		{
+			$messaggio = $this->request->post("messaggio", "");
+
+			if (trim($messaggio))
+			{
+				$messaggi = $this->m("AirichiestemessaggiModel")->clear()->select("messaggio")->where(array(
+					"id_ai_richiesta"	=>	(int)$id,
+				))->orderBy("data_creazione")->toList("messaggio")->send();
+
+				$messaggi = htmlentitydecodeDeep($messaggi);
+
+				$messaggi[] = $messaggio;
+
+				// print_r($messaggi);
+			}
+		}
 	}
 }

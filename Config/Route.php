@@ -907,8 +907,10 @@ class Route
 
 		'airichieste,main',
 		'airichieste,form',
+		'airichieste,messaggi',
 		'airichieste,contesti',
 		'airichieste,ordinacontesti',
+		'airichieste,messaggio',
 
 		'aimodelli,main',
 		'aimodelli,form',

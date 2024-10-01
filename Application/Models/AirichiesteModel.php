@@ -35,6 +35,7 @@ class AirichiesteModel extends GenericModel
 
 	public function relations() {
 		return array(
+			'messaggi' => array("HAS_MANY", 'AirichiestemessaggiModel', 'id_ai_richiesta', null, "RESTRICT", "L'elemento non è eliminabile perché ha dei messaggi collegati"),
 			'contesti' => array("HAS_MANY", 'AirichiestecontestiModel', 'id_ai_richiesta', null, "CASCADE"),
 			'modello' => array("BELONGS_TO", 'AimodelliModel', 'id_ai_modello',null,"RESTRICT","Si prega di selezionare il modello".'<div style="display:none;" rel="hidden_alert_notice">id_ai_modello</div>'),
 		);
@@ -198,6 +199,8 @@ class AirichiesteModel extends GenericModel
 
 	public function insert()
 	{
+		$this->values["id_admin"] = User::$id;
+
 		$res = parent::insert();
 
 		if ($res)

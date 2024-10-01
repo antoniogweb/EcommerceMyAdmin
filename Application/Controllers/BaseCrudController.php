@@ -40,6 +40,7 @@ trait BaseCrudController
 	public $functionsIfFromDb = array();
 	public $formView = "form";
 	public $mainView = "main";
+	public $mainViewAssociati = "associati";
 	public $insertRedirect = true;
 	public $updateRedirect = false;
 	public $updateRedirectUrl = null;
@@ -166,7 +167,7 @@ trait BaseCrudController
 		if ($this->id !== 0)
 		{
 			$clean['id'] = $data['id'] = (int)$this->id;
-			$this->mainView = "associati";
+			$this->mainView = $this->mainViewAssociati;
 		}
 		
 		$data['posizioni'] = $this->_posizioni;
