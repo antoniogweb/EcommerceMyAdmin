@@ -36,6 +36,7 @@ $(document).ready(function(){
 			success: function(content){
 
 				aggiornaChat(id);
+
 			}
 		});
 
