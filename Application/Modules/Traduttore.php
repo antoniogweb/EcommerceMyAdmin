@@ -165,6 +165,9 @@ class Traduttore
 		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
 		$testo = preg_replace_callback('/\[(.*?)?EFGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchioBefore") ,$testo);
 
+		$testo = preg_replace_callback('/\[EGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
+		$testo = preg_replace_callback('/\[(.*?)?EGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchioBefore") ,$testo);
+
 		$testo = str_replace("<br /> <br /> <br /> <br />", "<br />", $testo);
 		$testo = str_replace("<br /> <br /> <br />", "<br />", $testo);
 		$testo = str_replace("<br /> <br />", "<br />", $testo);
