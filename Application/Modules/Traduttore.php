@@ -74,6 +74,9 @@ class Traduttore
 			"Potenza"	=>	"Pouvoir",
 			"camerette"	=>	"chambres d'enfants",
 			"Camerette"	=>	"Chambres d'enfants",
+			"Lettini"	=>	"Chambres d'enfants",
+			"Lettini da viaggio"	=>	"Lits de voyage",
+			"Alzasedia"	=>	"Lève-siège",
 		),
 		"es"	=>	array(
 			"Taglia"	=>	"Cortar",
