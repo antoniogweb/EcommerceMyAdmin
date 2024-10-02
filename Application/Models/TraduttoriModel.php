@@ -154,7 +154,7 @@ class TraduttoriModel extends GenericModel
 			));
 			
 			if ($campo == "id_page")
-				$ctModel->inner(array("page"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica))");
+				$ctModel->inner(array("page"))->sWhere("pages.attivo = 'Y' AND (contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica))");
 			else if ($campo == "id_c")
 				$ctModel->inner(array("category"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND categories.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < categories.data_ultima_modifica))");
 			else
