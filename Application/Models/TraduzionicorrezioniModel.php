@@ -41,18 +41,18 @@ class TraduzionicorrezioniModel extends GenericModel
 
 			foreach ($correzioni as $c)
 			{
-				self::$correzioni[$c["lingua"]][$c["parola_tradotta_da_correggere"]] = $c["parola_tradotta_corretta"];
+				self::$correzioni[$c["successivo"]][$c["lingua"]][$c["parola_tradotta_da_correggere"]] = $c["parola_tradotta_corretta"];
 			}
 		}
 	}
 
-	public static function correggi($lingua, $testo)
+	public static function correggi($lingua, $testo, $successivo = 1)
 	{
 		self::getCorrezioni();
 
-		if (isset(self::$correzioni[$lingua]))
+		if (isset(self::$correzioni[$successivo][$lingua]))
 		{
-			foreach (self::$correzioni[$lingua] as $daCorreggere => $corretta)
+			foreach (self::$correzioni[$successivo][$lingua] as $daCorreggere => $corretta)
 			{
 				$testo = str_replace($daCorreggere, $corretta, $testo);
 			}
