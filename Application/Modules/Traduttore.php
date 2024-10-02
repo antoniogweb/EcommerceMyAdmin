@@ -129,11 +129,30 @@ class Traduttore
 			return self::$marchi[$matches[1]];
 	}
 
+	public function ripristinaPlaceholderAfter($matches)
+	{
+		if (isset($matches[2]))
+			return "[".$this->placeholders[$matches[1]]."]".$matches[2];
+		else
+			return "[".$this->placeholders[$matches[1]]."]";
+	}
+
+	public function ripristinaPlaceholderBefore($matches)
+	{
+		if (isset($matches[2]) && isset($this->placeholders[$matches[2]]))
+			return $matches[2]."[".$this->placeholders[$matches[2]]."]";
+		else if (isset($matches[1]) && isset($this->placeholders[$matches[1]]))
+			return "[".$this->placeholders[$matches[1]]."]";
+	}
+
 	public function ripristinaPlaceholder($testo)
 	{
 		foreach ($this->placeholders as $token => $placeholder)
 		{
-			$testo = str_replace("[$token]", "[$placeholder]", $testo);
+			$testo = preg_replace_callback('/\[('.$token.')(.*?)?\]/', array($this, "ripristinaPlaceholderAfter") ,$testo);
+			$testo = preg_replace_callback('/\[(.*?)?('.$token.')\]/', array($this, "ripristinaPlaceholderBefore") ,$testo);
+
+			// $testo = str_replace("[$token]", "[$placeholder]", $testo);
 		}
 
 		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
