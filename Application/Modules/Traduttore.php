@@ -77,6 +77,8 @@ class Traduttore
 			"Lettini"	=>	"Chambres d'enfants",
 			"Lettini da viaggio"	=>	"Lits de voyage",
 			"Alzasedia"	=>	"Lève-siège",
+			"Comò"		=>	"Buffet",
+			"Passeggio"	=>	"Marche",
 		),
 		"es"	=>	array(
 			"Taglia"	=>	"Cortar",
@@ -163,6 +165,10 @@ class Traduttore
 		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
 		$testo = preg_replace_callback('/\[(.*?)?EFGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchioBefore") ,$testo);
 
+		$testo = str_replace("<br /> <br /> <br /> <br />", "<br />", $testo);
+		$testo = str_replace("<br /> <br /> <br />", "<br />", $testo);
+		$testo = str_replace("<br /> <br />", "<br />", $testo);
+
 		return $testo;
 	}
 
@@ -197,6 +203,8 @@ class Traduttore
 	public function elaboraTesto($testo)
 	{
 		$this->placeholders = [];
+
+		// $testo = str_replace("<br />", "[ILMN]", $testo);
 
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
 
