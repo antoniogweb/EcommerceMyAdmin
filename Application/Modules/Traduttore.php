@@ -72,6 +72,8 @@ class Traduttore
 			"Fiori"		=>	"Fleurs",
 			"Dimensione"=>	"Taille",
 			"Potenza"	=>	"Pouvoir",
+			"camerette"	=>	"chambres d'enfants",
+			"Camerette"	=>	"Chambres d'enfants",
 		),
 		"es"	=>	array(
 			"Taglia"	=>	"Cortar",

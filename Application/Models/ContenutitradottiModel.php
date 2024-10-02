@@ -180,7 +180,8 @@ class ContenutitradottiModel extends GenericModel
 				if (strcmp($section,Parametri::$nomeSezioneProdotti) === 0)
 				{
 					$aliasCat = $this->clear()->select("alias")->where(array(
-						"id_c"	=>	(int)$idCatPagina
+						"id_c"		=>	(int)$idCatPagina,
+						"lingua"	=>	sanitizeAll($record["lingua"]),
 					))->field("alias");
 
 					if (trim($aliasCat))
