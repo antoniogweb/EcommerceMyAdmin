@@ -139,4 +139,23 @@ class User
 			Users_CheckAdmin::$statusFieldName	=>	Users_CheckAdmin::$statusFieldActiveValue,
 		))->rowNumber();
 	}
+
+	// Imposta nazione_spedizione e id_corriere sulla base della nazione nell'URL
+	public static function impostaNazioneSpedizioneECorriereDaUrl()
+	{
+		if (v("imposta_la_nazione_di_default_a_quella_nell_url") && Params::$country)
+		{
+			$nazione = strtoupper(Params::$country);
+
+			$corr = new CorrieriModel();
+
+			$idsCorrieri = $corr->getIdsCorrieriNazione($nazione);
+
+			if (count($idsCorrieri) > 0)
+			{
+				$_POST["nazione_spedizione"] = $nazione;
+				$_POST["id_corriere"] = $idsCorrieri[0];
+			}
+		}
+	}
 }

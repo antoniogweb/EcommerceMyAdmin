@@ -532,15 +532,15 @@ class CombinazioniModel extends GenericModel {
 		// Controlla che esista la combinazione canonical
 		if ($checkCanonicalExists)
 			$this->checkCanonical($idPage);
-		
+
 		$page = new PagesModel();
-		
+
 		// Imposto i prezzi scontati
 		$page->aggiornaPrezziCombinazioni($idPage);
 	}
 	
 	// Genera gli alias per tutte le righe di combinazione
-	public function aggiornaAlias($idPage = 0, $idC = 0, $idAV = 0)
+	public function aggiornaAlias($idPage = 0, $idC = 0, $idAV = 0, $lingua = null)
 	{
 		if (!VariabiliModel::combinazioniLinkVeri())
 			return "";
@@ -554,6 +554,9 @@ class CombinazioniModel extends GenericModel {
 		
 		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
+			if (isset($lingua) && $lingua != $codice)
+				continue;
+
 			$this->clear()->select("pages.alias as aliasp,pagest.alias as aliaspt,combinazioni.id_page,combinazioni.id_c,combinazioni.codice,a1.alias as alias_1,a2.alias as alias_2,a3.alias as alias_3,a4.alias as alias_4,a5.alias as alias_5,a6.alias as alias_6,a7.alias as alias_7,a8.alias as alias_8,at1.alias as alias_t1,at2.alias as alias_t2,at3.alias as alias_t3,at4.alias as alias_t4,at5.alias as alias_t5,at6.alias as alias_t6,at7.alias as alias_t7,at8.alias as alias_t8")
 				->left("attributi_valori as a1")->on("a1.id_av = combinazioni.col_1")->left("contenuti_tradotti as at1")->on(array("at1.id_av = a1.id_av and at1.lingua = ?",array(sanitizeDb($codice))))
 				->left("attributi_valori as a2")->on("a2.id_av = combinazioni.col_2")->left("contenuti_tradotti as at2")->on(array("at2.id_av = a2.id_av and at2.lingua = ?",array(sanitizeDb($codice))))

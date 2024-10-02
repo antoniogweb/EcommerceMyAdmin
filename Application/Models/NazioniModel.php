@@ -329,6 +329,15 @@ class NazioniModel extends GenericModel
 		return array_keys($this->selectNazioniAttiveSpedizione());
 	}
 	
+	public static function gElencoNazioniAttiveAll()
+	{
+		$n = new NazioniModel();
+
+		return $n->clear()->where(array(
+			"attiva"	=>	"1",
+		))->orderBy("titolo")->send(false);
+	}
+
 	public static function gElencoNazioni()
 	{
 		$n = new NazioniModel();

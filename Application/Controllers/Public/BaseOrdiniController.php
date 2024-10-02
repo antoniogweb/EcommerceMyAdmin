@@ -1680,7 +1680,9 @@ class BaseOrdiniController extends BaseController
 			
 			if (v("attiva_ip_location"))
 				$nazioneDefault = User::$nazioneNavigazione;
-			
+			else if (v("imposta_la_nazione_di_default_a_quella_nell_url") && Params::$country)
+				$nazioneDefault = strtoupper(Params::$country);
+
 			if (!isset($defaultValues["nazione"]))
 				$defaultValues["nazione"] = $nazioneDefault;
 			

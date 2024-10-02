@@ -210,7 +210,7 @@ class LingueModel extends GenericModel
 				ContenutitradottiModel::rigeneraTraduzioni();
 
 				// Rigenero tutti gli alias
-				CombinazioniModel::g()->aggiornaAlias();
+				CombinazioniModel::g()->aggiornaAlias(0, 0, 0, $lingua);
 			}
 		}
 	}

@@ -45,6 +45,8 @@ class BaseCartController extends BaseController
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		
+		User::impostaNazioneSpedizioneECorriereDaUrl();
+
 		$this->m("CartModel")->salvaDisponibilitaCarrello();
 		
 		$data["pageView"] = sanitizeAll($pageView);

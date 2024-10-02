@@ -165,51 +165,51 @@ class Brt extends Spedizioniere
 			}
 			else
 			{
-				$headers = array(
-					'trace' =>true,
-					'connection_timeout' => 500000,
-					'cache_wsdl' => WSDL_CACHE_BOTH,
-					'keep_alive' => false
-				);
-				
-				$soap_url = 'https://wsr.brt.it:10052/web/GetIdSpedizioneByRMAService/GetIdSpedizioneByRMA?wsdl';
-				$client = new SoapClient($soap_url, $headers);
-				
-				$var = array(
-					"arg0"	=>	array(
-						"CLIENTE_ID"	=>	$this->getParam("codice_cliente"),
-						"RIFERIMENTO_MITTENTE_ALFABETICO"	=>	htmlentitydecode($spedizione["riferimento_mittente_alfa"]),
-					)
-				);
-				
-				$res = $client->GetIdSpedizioneByRMA($var);
-				
-				if (isset($res->return->SPEDIZIONE_ID) && $res->return->SPEDIZIONE_ID != 0)
-				{
-					$soap_url2 = 'https://wsr.brt.it:10052/web/BRT_TrackingByBRTshipmentIDService/BRT_TrackingByBRTshipmentID?wsdl';
-					$client2 = new SoapClient($soap_url2, $headers);
-					
-					$var = array(
-						"arg0"	=>	array(
-							"SPEDIZIONE_BRT_ID"	=>	(string)$res->return->SPEDIZIONE_ID,
-							"LINGUA_ISO639_ALPHA2"	=>	"",
-							"SPEDIZIONE_ANNO"	=>	date("Y", strtotime($spedizione["data_spedizione"])),
-						)
-					);
-					
-					$res = $client2->brt_trackingbybrtshipmentid($var);
-					
-					if (isset($res->return))
-					{
-						$res = json_decode(json_encode($res), true);
-						$trackingInfo = json_encode($res);
-						
-						$labelSpedizioniere = $this->getLabelSpedizioniere($res, "DESCRIZIONE");
-						
-						if ($labelSpedizioniere != "DATI SPEDIZ. TRASMESSI A BRT")
-							$labelSpedizioniereFrontend = $labelSpedizioniere;
-					}
-				}
+// 				$headers = array(
+// 					'trace' =>true,
+// 					'connection_timeout' => 500000,
+// 					'cache_wsdl' => WSDL_CACHE_BOTH,
+// 					'keep_alive' => false
+// 				);
+//
+// 				$soap_url = 'https://wsr.brt.it:10052/web/GetIdSpedizioneByRMAService/GetIdSpedizioneByRMA?wsdl';
+// 				$client = new SoapClient($soap_url, $headers);
+//
+// 				$var = array(
+// 					"arg0"	=>	array(
+// 						"CLIENTE_ID"	=>	$this->getParam("codice_cliente"),
+// 						"RIFERIMENTO_MITTENTE_ALFABETICO"	=>	htmlentitydecode($spedizione["riferimento_mittente_alfa"]),
+// 					)
+// 				);
+//
+// 				$res = $client->GetIdSpedizioneByRMA($var);
+//
+// 				if (isset($res->return->SPEDIZIONE_ID) && $res->return->SPEDIZIONE_ID != 0)
+// 				{
+// 					$soap_url2 = 'https://wsr.brt.it:10052/web/BRT_TrackingByBRTshipmentIDService/BRT_TrackingByBRTshipmentID?wsdl';
+// 					$client2 = new SoapClient($soap_url2, $headers);
+//
+// 					$var = array(
+// 						"arg0"	=>	array(
+// 							"SPEDIZIONE_BRT_ID"	=>	(string)$res->return->SPEDIZIONE_ID,
+// 							"LINGUA_ISO639_ALPHA2"	=>	"",
+// 							"SPEDIZIONE_ANNO"	=>	date("Y", strtotime($spedizione["data_spedizione"])),
+// 						)
+// 					);
+//
+// 					$res = $client2->brt_trackingbybrtshipmentid($var);
+//
+// 					if (isset($res->return))
+// 					{
+// 						$res = json_decode(json_encode($res), true);
+// 						$trackingInfo = json_encode($res);
+//
+// 						$labelSpedizioniere = $this->getLabelSpedizioniere($res, "DESCRIZIONE");
+//
+// 						if ($labelSpedizioniere != "DATI SPEDIZ. TRASMESSI A BRT")
+// 							$labelSpedizioniereFrontend = $labelSpedizioniere;
+// 					}
+// 				}
 			}
 			
 			$spnModel->sValues(array(

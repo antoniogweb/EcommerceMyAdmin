@@ -459,6 +459,7 @@ class VariabiliModel extends GenericModel {
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"abilita_solo_nazione_navigazione"	=>	1, // permetti al checkout o come nazioni permesse, solo la nazione di navigazione o quella di default
 		"attiva_nazione_nell_url"	=>	0, // se impostato a 1 nell'URL verrà aggiunto il codice della nazione
+		"imposta_la_nazione_di_default_a_quella_nell_url"	=>	0, // se impostayto a 1, al checkout e al carrello imposta come nazione di default quella indicata nell'URL
 		## VENDITE ESTERO ##
 		"scorpora_iva_prezzo_estero"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti)
 		"scorpora_iva_prezzo_estero_spedizione_pagamenti"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default o per IVA diversa da default anche per spedizioni e pagamenti
