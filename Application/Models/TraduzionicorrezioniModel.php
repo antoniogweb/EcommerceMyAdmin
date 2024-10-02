@@ -50,9 +50,12 @@ class TraduzionicorrezioniModel extends GenericModel
 	{
 		self::getCorrezioni();
 
-		foreach (self::$correzioni[$lingua] as $daCorreggere => $corretta)
+		if (isset(self::$correzioni[$lingua]))
 		{
-			$testo = str_replace($daCorreggere, $corretta, $testo);
+			foreach (self::$correzioni[$lingua] as $daCorreggere => $corretta)
+			{
+				$testo = str_replace($daCorreggere, $corretta, $testo);
+			}
 		}
 
 		return $testo;

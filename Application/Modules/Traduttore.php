@@ -111,8 +111,22 @@ class Traduttore
 		self::getMarchi();
 
 		if (isset(self::$marchi[$matches[1]]))
+		{
+			if (isset($matches[2]))
+				return self::$marchi[$matches[1]].$matches[2];
+			else
+				return self::$marchi[$matches[1]];
+		}
+	}
+
+	public function ripristinaMarchioBefore($matches)
+	{
+		self::getMarchi();
+
+		if (isset($matches[2]) && isset(self::$marchi[$matches[2]]))
+			return $matches[1].self::$marchi[$matches[2]];
+		else if (isset($matches[1]) && isset(self::$marchi[$matches[1]]))
 			return self::$marchi[$matches[1]];
-		// $testo = str_ireplace($marchio, "[MMM_".$id."]", $testo);
 	}
 
 	public function ripristinaPlaceholder($testo)
@@ -122,7 +136,8 @@ class Traduttore
 			$testo = str_replace("[$token]", "[$placeholder]", $testo);
 		}
 
-		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchio") ,$testo);
+		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
+		$testo = preg_replace_callback('/\[(.*?)?EFGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchioBefore") ,$testo);
 
 		return $testo;
 	}
@@ -148,7 +163,8 @@ class Traduttore
 
 		foreach (self::$marchi as $id => $marchio)
 		{
-			$testo = str_ireplace($marchio, "[EFGH_".$id."]", $testo);
+			$testo = str_ireplace(" ".$marchio, "[EFGH_".$id."]", $testo);
+			$testo = str_ireplace($marchio." ", "[EFGH_".$id."]", $testo);
 		}
 
 		return $testo;
