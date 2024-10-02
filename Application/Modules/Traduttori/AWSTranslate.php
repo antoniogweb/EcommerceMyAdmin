@@ -74,7 +74,11 @@ class AWSTranslate extends Traduttore
 				'Text' => $textToTranslate,
 			]);
 			
-			return $this->ripristinaPlaceholder($result['TranslatedText'])."\n";
+			$testo = $this->ripristinaPlaceholder($result['TranslatedText'])."\n";
+
+			$testo = TraduzionicorrezioniModel::correggi($targetLanguage, $testo);
+
+			return $testo;
 		} catch(Aws\Exception\AwsException $e) {
 			
 			return false;
