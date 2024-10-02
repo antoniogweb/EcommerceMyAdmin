@@ -175,6 +175,7 @@ class AirichiesteController extends BaseController
 	{
 		$this->clean();
 
+		$data["id"] = (int)$id;
 		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi((int)$id);
 
 		$this->append($data);

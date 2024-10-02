@@ -100,7 +100,7 @@ class AirichiestecontestiModel extends GenericModel
 
 	public function getContesto($idRichiesta)
 	{
-		$pagine = $this->clear()->select("ai_richieste_contesti.importante,pages.title,pages.description")->inner(array("pagina"))->where(array(
+		$pagine = $this->clear()->select("ai_richieste_contesti.importante,pages.title,pages.description,pages.id_page,pages.id_c,pages.id_marchio")->inner(array("pagina"))->where(array(
 			"id_ai_richiesta"	=>	(int)$idRichiesta,
 		))->orderBy("ai_richieste_contesti.id_order")->send();
 
@@ -111,8 +111,11 @@ class AirichiestecontestiModel extends GenericModel
 		foreach ($pagine as $p)
 		{
 			$importante = $p["ai_richieste_contesti"]["importante"] ? "\nPRODOTTO IMPORTANTE" : "";
+			$stringaId = "\nID PRODOTTO: ".$p["pages"]["id_page"];
+			$stringaId .= "\nID MARCHIO: ".$p["pages"]["id_marchio"];
+			$stringaId .= "\nID CATEGORIA: ".$p["pages"]["id_c"];
 
-			$contesto .= "PRODOTTO $indice:\nTITOLO PRODOTTO $indice: ".htmlentitydecode($p["pages"]["title"]).$importante."\nCONTENUTO PRODOTTO $indice: ".strip_tags(htmlentitydecode($p["pages"]["description"]))."\n\n";
+			$contesto .= "PRODOTTO $indice:\nTITOLO PRODOTTO $indice: ".htmlentitydecode($p["pages"]["title"]).$importante.$stringaId."\nCONTENUTO PRODOTTO $indice: ".strip_tags(htmlentitydecode($p["pages"]["description"]))."\n\n";
 
 			$indice++;
 		}

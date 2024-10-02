@@ -53,6 +53,9 @@ class Traduttore
 			"Potenza"	=>	"Power",
 		),
 		"fr"	=>	array(
+			"Taglia"	=>	"Couper",
+			"colore"	=>	"couleur",
+			"Color"		=>	"Couleur",
 			"Carrello"	=>	"Panier",
 			"Bianco"	=>	"Blanc",
 			"Panna"		=>	"Crème",
@@ -71,6 +74,9 @@ class Traduttore
 			"Potenza"	=>	"Pouvoir",
 		),
 		"es"	=>	array(
+			"Taglia"	=>	"Cortar",
+			"colore"	=>	"color",
+			"Color"		=>	"Color",
 			"Carrello"	=>	"Carro",
 			"Bianco"	=>	"Blanco",
 			"Panna"		=>	"Crema",
