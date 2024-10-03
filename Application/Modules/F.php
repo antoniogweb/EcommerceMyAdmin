@@ -26,6 +26,7 @@ class F
 {
 	public static $tabellaConversioneCaratteri = array(
 		"à"	=>	"a",
+		"á"	=>	"a",
 		"é"	=>	"e",
 		"è"	=>	"e",
 		"ê"	=>	"e",
@@ -36,6 +37,7 @@ class F
 		"ó"	=>	"o",
 		"ù"	=>	"u",
 		"À"	=>	"a",
+		"Á"	=>	"a",
 		"É"	=>	"e",
 		"È"	=>	"e",
 		"Ì"	=>	"i",
