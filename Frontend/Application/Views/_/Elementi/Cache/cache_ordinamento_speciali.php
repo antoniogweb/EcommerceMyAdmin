@@ -6,7 +6,7 @@ $stringaCache .= '$id_categoria = '.(int)$id_categoria.';';
 
 foreach (CategoriesModel::$arrayIdsPagineFiltrate as $elemento => $arrayIdFiltrati)
 {
-	$stringaCache .= 'CategoriesModel::$arrayIdsPagineFiltrate["'.$elemento.'"] = '.json_encode($arrayIdFiltrati).';';
+	$stringaCache .= 'CategoriesModel::$arrayIdsPagineFiltrate["'.$elemento.'"] = '.json_encode(array_values($arrayIdFiltrati)).';';
 }
 
 $stringaCache .= '$filtriUrlTuttiAltri = '.json_encode($filtriUrlTuttiAltri).';';
