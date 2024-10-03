@@ -43,4 +43,13 @@ class OrdiniresponseModel extends GenericModel
 		
 		$or->insert();
 	}
+
+	public static function responsoPresente($cartUid)
+	{
+		$or = new OrdiniresponseModel();
+
+		return $or->clear()->where(array(
+			"cart_uid"	=>	sanitizeAll($cartUid),
+		))->rowNumber();
+	}
 }
