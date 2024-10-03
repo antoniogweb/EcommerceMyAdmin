@@ -79,7 +79,7 @@ class Interno extends MotoreRicerca
 		
 // 		echo $search;
 		
-		$searchArray = explode(" ", preg_quote($search));
+		$searchArray = explode(" ", preg_quote($search, "/"));
 		$pattern = implode("|", $searchArray);
 		
 		$tabellaCerca = ($lingua == LingueModel::getPrincipaleFrontend()) ? "pages" : "contenuti_tradotti";
