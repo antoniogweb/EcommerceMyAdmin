@@ -68,7 +68,7 @@ class AWSTranslate extends Traduttore
 				return TraduzionicorrezioniModel::$correzioni[0][$targetLanguage][$textToTranslate];
 
 			// Elaboro il testo per gestire i placeholder
-			$textToTranslate = $this->elaboraTesto($textToTranslate);
+			$textToTranslate = $this->elaboraTesto($textToTranslate, $currentLanguage);
 
 			$result = $client->translateText([
 				'SourceLanguageCode' => $currentLanguage,

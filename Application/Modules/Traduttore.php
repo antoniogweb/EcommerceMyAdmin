@@ -83,8 +83,6 @@ class Traduttore
 		{
 			$testo = preg_replace_callback('/\[('.$token.')(.*?)?\]/', array($this, "ripristinaPlaceholderAfter") ,$testo);
 			$testo = preg_replace_callback('/\[(.*?)?('.$token.')\]/', array($this, "ripristinaPlaceholderBefore") ,$testo);
-
-			// $testo = str_replace("[$token]", "[$placeholder]", $testo);
 		}
 
 		$testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
@@ -128,15 +126,51 @@ class Traduttore
 		return $testo;
 	}
 
-	public function elaboraTesto($testo)
+	public function elaboraLink($testo, $linguaCorrente)
+	{
+		$dom = new DomDocument();
+		$dom->loadHTML($testo);
+
+		$cModel = new CategoriesModel();
+
+		foreach ($dom->getElementsByTagName('a') as $item) {
+			$href = $item->getAttribute('href');
+			$link = $item->c14n();
+
+			if (strpos($href, ".html") !== false)
+			{
+
+			}
+			else
+			{
+				$href = rtrim($href, "/");
+
+				$aliasArray = explode("/", $href);
+
+				if (count($aliasArray) > 0)
+				{
+					$alias = $aliasArray[count($aliasArray) - 1];
+
+					$idC = (int)$cModel->getIdFromAlias($alias, $linguaCorrente);
+
+					if ($idC)
+						$testo = str_replace($link, "[LCAT_$idC]", $testo);
+				}
+			}
+		}
+
+		return $testo;
+	}
+
+	public function elaboraTesto($testo, $linguaCorrente)
 	{
 		$this->placeholders = [];
-
-		// $testo = str_replace("<br />", "[ILMN]", $testo);
 
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
 
 		$testo = self::estraiMarchi($testo);
+
+		$testo = $this->elaboraLink($testo, $linguaCorrente);
 
 		return $testo;
 	}

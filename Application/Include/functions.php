@@ -949,6 +949,8 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE_APPROVAZIONE\]/', 'getInfoEliminazioneApprovazione' ,$string);
 	
+	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})\]/', 'getLinkCategoria' ,$string);
+
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
 	if (!isset(VariabiliModel::$placeholders))
@@ -1087,6 +1089,29 @@ function getVariabile($matches)
 	
 	if (in_array($chiave, explode(",",v("variabili_gestibili_da_fasce"))))
 		return v($chiave);
+}
+
+function getLinkCategoria($matches)
+{
+	$idC = (int)$matches[1];
+
+	$cModel = new CategoriesModel();
+
+	$record = $cModel->clear()
+		->addJoinTraduzione(null, "contenuti_tradotti_categoria", false)
+		->select("categories.title, contenuti_tradotti_categoria.title")
+		->where(array(
+			"categories.id_c"	=>	(int)$idC,
+		))->first();
+
+	if (!empty($record))
+	{
+		$urlAlias = getCategoryUrlAlias($idC);
+
+		return "<a href='".Url::getRoot().$urlAlias."'>".cfield($record, "title")."</a>";
+	}
+
+	return "";
 }
 
 function getVideo($matches, $tags = null, $tipo = "TESTO")
