@@ -517,8 +517,8 @@ class BaseBaseController extends Controller
 
 		if (!v("ecommerce_attivo"))
 			return;
-		
-		if (v("traccia_sorgente_utente") && App::cookieTerziApprovati())
+
+		if (v("traccia_sorgente_utente"))
 			User::getSorgente();
 
 		//set the cookie for the cart
