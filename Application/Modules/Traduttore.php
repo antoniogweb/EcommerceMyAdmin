@@ -129,32 +129,86 @@ class Traduttore
 	public function elaboraLink($testo, $linguaCorrente)
 	{
 		$dom = new DomDocument();
-		$dom->loadHTML($testo);
+		$dom->loadHTML('<meta charset="UTF-8">'.$testo);
 
 		$cModel = new CategoriesModel();
+		$pModel = new PagesModel();
+		$mModel = new MarchiModel();
+
+		User::$adminLogged = true;
 
 		foreach ($dom->getElementsByTagName('a') as $item) {
 			$href = $item->getAttribute('href');
 			$link = $item->c14n();
+			$titolo = $item->nodeValue;
 
-			if (strpos($href, ".html") !== false)
+			$urlArray = parse_url($href);
+
+			if (isset($urlArray["path"]))
 			{
-
-			}
-			else
-			{
-				$href = rtrim($href, "/");
-
-				$aliasArray = explode("/", $href);
-
-				if (count($aliasArray) > 0)
+				if (strpos($urlArray["path"], ".html") !== false)
 				{
-					$alias = $aliasArray[count($aliasArray) - 1];
+					$aliasArray = explode("/", rtrim($urlArray["path"], "/"));
 
-					$idC = (int)$cModel->getIdFromAlias($alias, $linguaCorrente);
+					if (count($aliasArray) > 0)
+					{
+						$aliasArray = explode(".", $aliasArray[count($aliasArray) - 1]);
 
-					if ($idC)
-						$testo = str_replace($link, "[LCAT_$idC]", $testo);
+						if (count($aliasArray) > 0)
+						{
+							$alias = $aliasArray[0];
+
+							if (trim($alias))
+							{
+								$idPages = $pModel->getIdFromAlias(trim($alias), $linguaCorrente);
+
+								if (count($idPages) > 0)
+									$testo = str_replace($link, "[LPAG_".(int)$idPages[0]."]", $testo);
+							}
+						}
+					}
+				}
+				else
+				{
+					$urlArray["path"] = rtrim($urlArray["path"], "/");
+
+					$aliasArray = explode("/", $urlArray["path"]);
+
+					if (count($aliasArray) > 0)
+					{
+						$idMarchio = 0;
+
+						if (v("usa_marchi"))
+						{
+							$aliasMarchi = MarchiModel::getElencoAliasId();
+
+							$aliasArrayFinale = array();
+
+							foreach ($aliasArray as $aliasE)
+							{
+								if (isset($aliasMarchi[$aliasE]))
+									$idMarchio = $aliasMarchi[$aliasE];
+								else
+									$aliasArrayFinale[] = $aliasE;
+							}
+						}
+
+						if (count($aliasArrayFinale) > 0)
+							$alias = $aliasArrayFinale[count($aliasArrayFinale) - 1];
+
+						if (trim($alias))
+						{
+							$idC = (int)$cModel->getIdFromAlias(trim($alias), $linguaCorrente);
+
+							if ($idC)
+								$testo = str_replace($link, "[LCAT_".$idC."_".$idMarchio."_$titolo]", $testo);
+							else if ($idMarchio)
+							{
+								$idShop = (int)$cModel->getShopCategoryId();
+								$testo = str_replace($link, "[LCAT_".$idShop."_".$idMarchio."_$titolo]", $testo);
+							}
+						}
+					}
 				}
 			}
 		}

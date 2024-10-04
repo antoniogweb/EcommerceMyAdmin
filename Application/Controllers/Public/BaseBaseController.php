@@ -525,24 +525,6 @@ class BaseBaseController extends Controller
 		CartModel::skipCheckCart();
 		$this->m("CartModel")->setCartUid();
 		
-// 		if (isset($_COOKIE["cart_uid"]) && $_COOKIE["cart_uid"] && (int)strlen($_COOKIE["cart_uid"]) === 32 && ctype_alnum((string)$_COOKIE["cart_uid"]))
-// 		{
-// 			User::$cart_uid = sanitizeAll((string)$_COOKIE["cart_uid"]);
-// 			
-// 			if ($this->m('OrdiniModel')->cartUidAlreadyPresent(User::$cart_uid))
-// 			{
-// 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-// 				$time = time() + v("durata_carrello_wishlist_coupon");
-// 				setcookie("cart_uid",User::$cart_uid,$time,"/");
-// 			}
-// 		}
-// 		else
-// 		{
-// 			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-// 			$time = time() + v("durata_carrello_wishlist_coupon");
-// 			setcookie("cart_uid",User::$cart_uid,$time,"/");
-// 		}
-		
 		OrdiniModel::setStatiOrdine();
 		OrdiniModel::setPagamenti();
 		

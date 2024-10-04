@@ -32,6 +32,8 @@ class MarchiModel extends GenericModel
 	
 	public static $currentId = 0;
 	
+	public static $elencoAliasId = null;
+
 	public function __construct() {
 		$this->_tables='marchi';
 		$this->_idFields='id_marchio';
@@ -234,5 +236,17 @@ class MarchiModel extends GenericModel
 			return self::$strutturaMarchi[$idMarchio];
 		
 		return array();
+	}
+
+	public static function getElencoAliasId()
+	{
+		if (!isset(self::$elencoAliasId))
+		{
+			$mModel = new MarchiModel();
+
+			self::$elencoAliasId = $mModel->clear()->select("id_marchio,alias")->toList("alias", "id_marchio")->send();
+		}
+
+		return self::$elencoAliasId;
 	}
 }

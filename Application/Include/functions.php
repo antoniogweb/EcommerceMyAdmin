@@ -949,7 +949,8 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE_APPROVAZIONE\]/', 'getInfoEliminazioneApprovazione' ,$string);
 	
-	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})\]/', 'getLinkCategoria' ,$string);
+	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})_([0-9]{1,})_(.*?)\]/', 'getLinkCategoria' ,$string);
+	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})\]/', 'getLinkPagina' ,$string);
 
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
@@ -1091,25 +1092,38 @@ function getVariabile($matches)
 		return v($chiave);
 }
 
-function getLinkCategoria($matches)
+function getLinkPagina($matches)
 {
-	$idC = (int)$matches[1];
+	$idP = (int)$matches[1];
 
-	$cModel = new CategoriesModel();
+	$pModel = new PagesModel();
 
-	$record = $cModel->clear()
-		->addJoinTraduzione(null, "contenuti_tradotti_categoria", false)
-		->select("categories.title, contenuti_tradotti_categoria.title")
+	$record = $pModel->clear()
+		->addJoinTraduzione(null, "contenuti_tradotti", false)
+		->select("pages.title, contenuti_tradotti.title")
 		->where(array(
-			"categories.id_c"	=>	(int)$idC,
+			"pages.id_page"	=>	(int)$idP,
 		))->first();
 
 	if (!empty($record))
 	{
-		$urlAlias = getCategoryUrlAlias($idC);
+		$urlAlias = getUrlAlias((int)$idP);
 
-		return "<a href='".Url::getRoot().$urlAlias."'>".cfield($record, "title")."</a>";
+		return "<a href='".Url::getRoot().$urlAlias."'>".field($record, "title")."</a>";
 	}
+
+	return "";
+}
+
+function getLinkCategoria($matches)
+{
+	$idC = (int)$matches[1];
+	$idMarchio = (int)$matches[2];
+
+	$urlAlias = CategoriesModel::getUrlAliasTagMarchio(0, $idMarchio, $idC);
+
+	if ($urlAlias)
+		return "<a href='".Url::getRoot().$urlAlias."'>".sanitizeAll($matches[3])."</a>";
 
 	return "";
 }
