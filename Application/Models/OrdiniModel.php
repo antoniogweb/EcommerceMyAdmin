@@ -1913,6 +1913,9 @@ class OrdiniModel extends FormModel {
 			
 		if (v("salva_ip"))
 			$this->values["ip"] = getIp();
+
+		if (v("traccia_sorgente_utente") && User::$sorgente)
+			$this->values["sorgente"] = sanitizeAll(User::$sorgente);
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)

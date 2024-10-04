@@ -514,10 +514,13 @@ class BaseBaseController extends Controller
 	{
 		// Recupero il cookie di contatto
 		$this->m("ContattiModel")->getCookie();
-		
+
 		if (!v("ecommerce_attivo"))
 			return;
 		
+		if (v("traccia_sorgente_utente") && App::cookieTerziApprovati())
+			User::getSorgente();
+
 		//set the cookie for the cart
 		CartModel::skipCheckCart();
 		$this->m("CartModel")->setCartUid();

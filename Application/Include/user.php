@@ -41,7 +41,8 @@ class User
 	public static $isPhone = false;
 	public static $nomeCliente = '';
 	public static $idLista = 0;
-	
+	public static $sorgente = "";
+
 	public static $adminLogged = false;
 	public static $asJson = false;
 	
@@ -157,5 +158,30 @@ class User
 				$_POST["id_corriere"] = $idsCorrieri[0];
 			}
 		}
+	}
+
+	public static function getSorgente()
+	{
+		if (function_exists("getSorgenteUtente") && function_exists("getListaSorgentiPermesse"))
+		{
+			$sorgente = getSorgenteUtente();
+
+			if (isset($sorgente) && trim($sorgente))
+			{
+				User::$sorgente = $sorgente;
+				$time = time() + v("traccia_sorgente_utente");
+				setcookie("utm_source",User::$sorgente,$time,"/");
+				$_COOKIE["utm_source"] = $sorgente;
+			}
+
+			if (isset($_COOKIE["utm_source"]) && trim($_COOKIE["utm_source"]) && in_array($_COOKIE["utm_source"], getListaSorgentiPermesse()))
+				User::$sorgente = sanitizeAll($_COOKIE["utm_source"]);
+		}
+	}
+
+	public static function azzeraSorgente()
+	{
+		if (isset($_COOKIE["utm_source"]))
+			setcookie("utm_source", "", time()-3600,"/");
 	}
 }

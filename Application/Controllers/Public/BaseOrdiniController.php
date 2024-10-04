@@ -1331,6 +1331,10 @@ class BaseOrdiniController extends BaseController
 								setcookie("coupon", "", time()-3600,"/");
 							}
 							
+							// Azzera la sorgente dell'utente
+							if (v("traccia_sorgente_utente"))
+								User::azzeraSorgente();
+
 							// elimina il cookie con l'ID della lista regalo
 							ListeregaloModel::unsetCookieIdLista();
 							

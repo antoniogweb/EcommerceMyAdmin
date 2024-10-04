@@ -216,6 +216,14 @@ class App
 		return self::$elencoCookieTecnici;
 	}
 	
+	public static function cookieTerziApprovati()
+	{
+		if (isset($_COOKIE["ok_cookie_terzi"]))
+			return true;
+
+		return false;
+	}
+
 	public static function cancellaCookiesGdpr()
 	{
 		F::cancellaCookiesGdpr();
