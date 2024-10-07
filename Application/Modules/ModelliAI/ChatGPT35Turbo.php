@@ -85,6 +85,8 @@ class ChatGPT35Turbo extends ModelloAI
 
 			$responseArray = $response->toArray();
 
+			print_r($responseArray);
+
 			if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
 				return array("OK", $responseArray["choices"][0]["message"]["content"]);
 

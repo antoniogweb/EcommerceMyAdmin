@@ -167,6 +167,14 @@ class F
 		return createFolderFull($relativePath, $basePath);
 	}
 	
+	public static function getUrlPubblico()
+	{
+		if (App::$isFrontend)
+			return Url::getRoot();
+		else
+			return Domain::$publicUrl."/".v("lingua_default_frontend").F::getNazioneUrl("")."/";
+	}
+
 	public static function getNazioneUrl($nazione)
 	{
 		if (!$nazione)

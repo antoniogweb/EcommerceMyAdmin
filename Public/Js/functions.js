@@ -289,6 +289,14 @@ function debounce(func, wait, immediate) {
     };
 };
 
+function copyToClipboard(testo) {
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val(testo).select();
+	document.execCommand("copy");
+	$temp.remove();
+}
+
 $(document).ready(function(){
 	
 	if ($("[name='nazione_spedizione']").length > 0)
@@ -1308,7 +1316,6 @@ $(document).ready(function(){
 		}
 		
 	});
-	
 });
 
  (function( $ ) {

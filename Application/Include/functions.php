@@ -949,8 +949,8 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE\]/', 'getInfoEliminazione' ,$string);
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE_APPROVAZIONE\]/', 'getInfoEliminazioneApprovazione' ,$string);
 	
-	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})_([0-9]{1,})_(.*?)\]/', 'getLinkCategoria' ,$string);
-	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})\]/', 'getLinkPagina' ,$string);
+	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})_([0-9]{1,})(_(.*?))?\]/', 'getLinkCategoria' ,$string);
+	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})(_(.*?))?\]/', 'getLinkPagina' ,$string);
 
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
@@ -1109,7 +1109,7 @@ function getLinkPagina($matches)
 	{
 		$urlAlias = getUrlAlias((int)$idP);
 
-		return "<a href='".Url::getRoot().$urlAlias."'>".field($record, "title")."</a>";
+		return "<a href='".F::getUrlPubblico().$urlAlias."'>".field($record, "title")."</a>";
 	}
 
 	return "";
@@ -1123,7 +1123,21 @@ function getLinkCategoria($matches)
 	$urlAlias = CategoriesModel::getUrlAliasTagMarchio(0, $idMarchio, $idC);
 
 	if ($urlAlias)
-		return "<a href='".Url::getRoot().$urlAlias."'>".sanitizeAll($matches[3])."</a>";
+	{
+		if (isset($matches[4]))
+			return "<a href='".F::getUrlPubblico().$urlAlias."'>".sanitizeAll($matches[4])."</a>";
+		else if ($idMarchio)
+		{
+			$marchio = MarchiModel::getDataMarchio($idMarchio);
+
+			if (!empty($marchio))
+				return "<a href='".F::getUrlPubblico().$urlAlias."'>".$marchio["marchi"]["titolo"]."</a>";
+		}
+		else if ($idC)
+		{
+
+		}
+	}
 
 	return "";
 }

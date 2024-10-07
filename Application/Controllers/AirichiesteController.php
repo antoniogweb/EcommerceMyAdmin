@@ -44,11 +44,13 @@ class AirichiesteController extends BaseController
 	{
 		$this->shift();
 
-		$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo");
-		$this->mainHead = "Data ora,Titolo,Modello";
+		$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo", "numeroMessaggiCrud");
+		$this->mainHead = "Data ora,Titolo,Modello,N° messaggi";
 		
 		$this->m[$this->modelName]->clear()->select("*")->inner(array("modello"))->orderBy("ai_richieste.data_creazione desc")->save();
 		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add', 'modifyAction'=>'messaggi');
+
 		parent::main();
 	}
 
@@ -67,7 +69,11 @@ class AirichiesteController extends BaseController
 			$this->menuLinks = "back";
 		}
 
+		$this->insertRedirect = false;
 		parent::form($queryType, $id);
+
+		if ($this->m[$this->modelName]->queryResult)
+			$this->redirect("airichieste/messaggi/".$this->m[$this->modelName]->lId.$this->viewStatus);
 	}
 
 	public function messaggi($id)
@@ -115,12 +121,12 @@ class AirichiesteController extends BaseController
 		$this->m[$this->modelName]->values['id_ai_richiesta'] = $clean['id'];
 		$this->m[$this->modelName]->updateTable('insert,del');
 
-		$this->mainFields = array("pages.title", "categories.title", "marchi.titolo", "bulksegnaimportante");
-		$this->mainHead = "Pagina,Categoria,Marchio,Importante";
+		$this->mainFields = array(";pages.id_page; ;pages.id_c; ;pages.id_marchio;", "pages.title", "categories.title", "marchi.titolo", "bulksegnaimportante");
+		$this->mainHead = "ID,Pagina,Categoria,Marchio,Importante";
 
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"contesti/".$clean['id'],'pageVariable'=>'page_fgl');
 
-		$this->m[$this->modelName]->clear()->select("pages.title,marchi.titolo,categories.title,ai_richieste_contesti.*")
+		$this->m[$this->modelName]->clear()->select("pages.id_page,pages.id_c,pages.id_marchio,pages.title,marchi.titolo,categories.title,ai_richieste_contesti.*")
 			->inner(array("pagina"))
 			->inner("categories")->on("pages.id_c = categories.id_c")
 			->left("marchi")->on("pages.id_marchio = marchi.id_marchio")

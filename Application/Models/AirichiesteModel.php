@@ -272,4 +272,21 @@ class AirichiesteModel extends GenericModel
 			}
 		}
 	}
+
+	public function deletable($id)
+	{
+		$airmModel = new AirichiestemessaggiModel();
+
+		if ($airmModel->getMessaggi($id, true))
+			return false;
+
+		return true;
+	}
+
+	public function numeroMessaggiCrud($record)
+	{
+		$airmModel = new AirichiestemessaggiModel();
+
+		return $airmModel->getMessaggi($record["ai_richieste"]["id_ai_richiesta"], true);
+	}
 }

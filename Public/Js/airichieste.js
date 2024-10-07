@@ -22,24 +22,36 @@ $(document).ready(function(){
 		var messaggio = $(".testo_nuovo_messaggio_ai").val();
 		var id = $(this).attr("id-richiesta");
 
-		makeSpinner(that);
+		if ($.trim(messaggio) != "")
+		{
+			makeSpinner(that);
 
-		$.ajaxQueue({
-			url: baseUrl + "/airichieste/messaggio/" + id,
-			cache:false,
-			async: true,
-			dataType: "html",
-			type: "POST",
-			data: {
-				messaggio: messaggio
-			},
-			success: function(content){
+			$.ajaxQueue({
+				url: baseUrl + "/airichieste/messaggio/" + id,
+				cache:false,
+				async: true,
+				dataType: "html",
+				type: "POST",
+				data: {
+					messaggio: messaggio
+				},
+				success: function(content){
 
-				aggiornaChat(id);
+					aggiornaChat(id);
 
-			}
-		});
+				}
+			});
+		}
+		else
+			alert("Si prega di scrivere un messaggio");
+	});
 
+	//events binded to the checkbox for bulk selection
+	$("body").on("click", ".copia_testo_chat", function(e){
+
+		copyToClipboard($(this).closest(".timeline-item").find(".risposta_assistente").html());
+
+		alert("Testo copiato negli appunti");
 	});
 
 });

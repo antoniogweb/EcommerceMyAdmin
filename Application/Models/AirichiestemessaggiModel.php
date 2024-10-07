@@ -39,10 +39,49 @@ class AirichiestemessaggiModel extends GenericModel
 		);
     }
 
-    public function getMessaggi($idRichiesta)
+    public function getMessaggi($idRichiesta, $numero = false)
 	{
-		return $this->clear()->where(array(
+		$this->clear()->where(array(
 			"id_ai_richiesta"	=>	(int)$idRichiesta,
-		))->orderBy("id_order")->send(false);
+		));
+
+		return $numero ? $this->rowNumber() : $this->orderBy("id_order")->send(false);
+	}
+
+	public function getMessaggioDefault($idRichiesta)
+	{
+		$testoDefault = "";
+
+		$airModel = new AirichiesteModel();
+
+		$richiesta = $airModel->selectId((int)$idRichiesta);
+
+		$numero = $this->getMessaggi($idRichiesta, true);
+
+		if (!empty($richiesta) && $numero <= 0 && v("default_primo_messaggio_ai"))
+		{
+			$testoDefault = v("default_primo_messaggio_ai");
+
+			$testoDefault = str_replace("[INDIRIZZO SITO WEB]", str_replace("/admin","",DOMAIN_NAME), $testoDefault);
+
+			$nomeCategoria = CategoriesModel::g(false)->select("title")->whereId((int)$richiesta["id_c"])->field("title");
+			$nomeMarchio = MarchiModel::g(false)->select("titolo")->whereId((int)$richiesta["id_marchio"])->field("titolo");
+			$nomePagina =PagesModel::g(false)->select("title")->whereId((int)$richiesta["id_page"])->field("title");
+
+			$contesto = "su ...";
+
+			if ($nomeCategoria && $nomeMarchio)
+				$contesto = 'sulla categoria "'.$nomeCategoria.'" del marchio "'.$nomeMarchio.'"';
+			else if ($nomeCategoria)
+				$contesto = 'sulla categoria "'.$nomeCategoria.'"';
+			else if ($nomeMarchio)
+				$contesto = 'sul marchio "'.$nomeMarchio.'"';
+			else if ($nomePagina)
+				$contesto = 'sul prodotto "'.$contesto.'"';
+
+			$testoDefault = str_replace("[CONTESTO]", $contesto, $testoDefault);
+		}
+
+		return $testoDefault;
 	}
 }
