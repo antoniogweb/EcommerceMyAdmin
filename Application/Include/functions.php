@@ -950,7 +950,7 @@ function attivaModuli($string, $obj = null)
 	$string = preg_replace_callback('/\[INFO_ELIMINAZIONE_APPROVAZIONE\]/', 'getInfoEliminazioneApprovazione' ,$string);
 	
 	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})_([0-9]{1,})(_(.*?))?\]/', 'getLinkCategoria' ,$string);
-	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})(_(.*?))?\]/', 'getLinkPagina' ,$string);
+	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})?\]/', 'getLinkPagina' ,$string);
 
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
@@ -1135,7 +1135,10 @@ function getLinkCategoria($matches)
 		}
 		else if ($idC)
 		{
+			$categoria = CategoriesModel::getDataCategoria($idC);
 
+			if (!empty($categoria))
+				return "<a href='".F::getUrlPubblico().$urlAlias."'>".cfield($categoria, "title")."</a>";
 		}
 	}
 
