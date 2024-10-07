@@ -1107,9 +1107,11 @@ function getLinkPagina($matches)
 
 	if (!empty($record))
 	{
+		$target = App::$isFrontend ? "" : "target='_blank'";
+
 		$urlAlias = getUrlAlias((int)$idP);
 
-		return "<a href='".F::getUrlPubblico().$urlAlias."'>".field($record, "title")."</a>";
+		return "<a $target href='".F::getUrlPubblico().$urlAlias."'>".field($record, "title")."</a>";
 	}
 
 	return "";
@@ -1124,21 +1126,23 @@ function getLinkCategoria($matches)
 
 	if ($urlAlias)
 	{
+		$target = App::$isFrontend ? "" : "target='_blank'";
+
 		if (isset($matches[4]))
-			return "<a href='".F::getUrlPubblico().$urlAlias."'>".sanitizeAll($matches[4])."</a>";
+			return "<a $target href='".F::getUrlPubblico().$urlAlias."'>".sanitizeAll($matches[4])."</a>";
 		else if ($idMarchio)
 		{
 			$marchio = MarchiModel::getDataMarchio($idMarchio);
 
 			if (!empty($marchio))
-				return "<a href='".F::getUrlPubblico().$urlAlias."'>".$marchio["marchi"]["titolo"]."</a>";
+				return "<a $target href='".F::getUrlPubblico().$urlAlias."'>".$marchio["marchi"]["titolo"]."</a>";
 		}
 		else if ($idC)
 		{
 			$categoria = CategoriesModel::getDataCategoria($idC);
 
 			if (!empty($categoria))
-				return "<a href='".F::getUrlPubblico().$urlAlias."'>".cfield($categoria, "title")."</a>";
+				return "<a $target href='".F::getUrlPubblico().$urlAlias."'>".cfield($categoria, "title")."</a>";
 		}
 	}
 

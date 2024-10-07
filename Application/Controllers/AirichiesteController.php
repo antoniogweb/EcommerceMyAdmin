@@ -56,6 +56,22 @@ class AirichiesteController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		if ($queryType == "insert" && (isset($_GET["id_c"]) || isset($_GET["id_marchio"]) || isset($_GET["id_page"])))
+		{
+			$idC = $this->request->get("id_c", 0, "forceInt");
+			$idMarchio = $this->request->get("id_marchio", 0, "forceInt");
+			$idPage = $this->request->get("id_page", 0, "forceInt");
+
+			$idRichiesta = $this->m[$this->modelName]->cercaOCrea($idC, $idMarchio, $idPage);
+
+			if ($idRichiesta)
+			{
+				$this->shift(2);
+
+				$this->redirect("airichieste/messaggi/$idRichiesta".$this->viewStatus);
+			}
+		}
+
 		$this->_posizioni['main'] = 'class="active"';
 
 		$fields = 'id_ai_modello,id_c,id_marchio,id_page';

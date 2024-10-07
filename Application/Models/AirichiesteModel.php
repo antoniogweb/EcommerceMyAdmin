@@ -289,4 +289,41 @@ class AirichiesteModel extends GenericModel
 
 		return $airmModel->getMessaggi($record["ai_richieste"]["id_ai_richiesta"], true);
 	}
+
+	public function cercaOCrea($idC, $idMarchio, $idPage)
+	{
+		$where = array(
+			"id_c"			=>	(int)$idC,
+			"id_marchio"	=>	(int)$idMarchio,
+			"id_page"		=>	(int)$idPage,
+		);
+
+		// $richiesta = $this->clear()->select("ai_richieste.id_ai_richiesta")->where($where)->left("ai_richieste_messaggi")->on("ai_richieste_messaggi.id_ai_richiesta = ai_richieste.id_ai_richiesta")->sWhere("ai_richieste_messaggi.id_ai_richiesta_messaggio IS NULL")->send();
+
+		$richiesta = $this->clear()->select("ai_richieste.id_ai_richiesta")->where($where)->orderBy("id_ai_richiesta desc")->send();
+
+		$idRichiesta = 0;
+
+		if (!empty($richiesta))
+			$idRichiesta = (int)$richiesta[0]["ai_richieste"]["id_ai_richiesta"];
+		else
+		{
+			$this->sValues($where);
+
+			$modelli = $this->selectModelli(0);
+
+			if (count($modelli) > 0)
+			{
+				reset($modelli);
+				$idModello = key($modelli);
+
+				$this->setValue("id_ai_modello", $idModello, "forceInt");
+
+				if ($this->insert())
+					$idRichiesta = $this->lId;
+			}
+		}
+
+		return $idRichiesta;
+	}
 }

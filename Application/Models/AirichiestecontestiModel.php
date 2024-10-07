@@ -110,7 +110,7 @@ class AirichiestecontestiModel extends GenericModel
 
 		foreach ($pagine as $p)
 		{
-			$importante = $p["ai_richieste_contesti"]["importante"] ? "\nPRODOTTO IMPORTANTE" : "";
+			$importante = $p["ai_richieste_contesti"]["importante"] ? "\nesempio di prodotto" : "";
 			$stringaId = "\nID PRODOTTO: ".$p["pages"]["id_page"];
 			$stringaId .= "\nID MARCHIO: ".$p["pages"]["id_marchio"];
 			$stringaId .= "\nID CATEGORIA: ".$p["pages"]["id_c"];
