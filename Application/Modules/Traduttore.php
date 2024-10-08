@@ -245,7 +245,7 @@ class Traduttore
 
 		$testo = $this->estraiMarchi($testo);
 
-		echo $testo."\n\n\n\n";
+		// echo $testo."\n\n\n\n";
 
 		$testo = $this->elaboraLink($testo, $linguaCorrente);
 
