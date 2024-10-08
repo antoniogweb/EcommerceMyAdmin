@@ -2,8 +2,8 @@
 <?php if (v("attiva_richieste_ai")) { ?>
 <li class="<?php echo tm($tm, array("airichieste","aimodelli"));?> treeview">
 	<a href="#">
-		<i class="fa fa-plug"></i>
-		<span><?php echo gtext("Intelligenza artificiale")?></span>
+		<i class="fa  fa-commenting-o"></i>
+		<span><?php echo gtext("Assistente virtuale IA")?></span>
 	</a>
 	<ul class="treeview-menu">
 		<li class="dropdown-header"><?php echo gtext("Richieste");?></li>
