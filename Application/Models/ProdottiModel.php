@@ -282,7 +282,7 @@ class ProdottiModel extends PagesModel {
 			->left(array("righe"))
 			->addWhereAttivo()
 			->groupBy("pages.id_page")
-			->orderBy("sum(righe.quantity) desc")
+			->orderBy("sum(righe.quantity) desc,pages.id_page desc")
 			->toList("pages.id_page");
 
 		if ($limit)

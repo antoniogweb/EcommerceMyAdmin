@@ -56,7 +56,7 @@ class AirichiesteController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		if ($queryType == "insert" && (isset($_GET["id_c"]) || isset($_GET["id_marchio"]) || isset($_GET["id_page"])))
+		if ($queryType == "insert" && (isset($_GET["id_c"]) || isset($_GET["id_marchio"])))
 		{
 			$idC = $this->request->get("id_c", 0, "forceInt");
 			$idMarchio = $this->request->get("id_marchio", 0, "forceInt");

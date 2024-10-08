@@ -141,6 +141,12 @@
 							</div>
 						</div>
 						
+						<?php if (v("attiva_richieste_ai")) { ?>
+						<?php
+						$labelIdEl = "id_page";
+						include($this->viewPath("box_assistente_ai"));?>
+						<?php } ?>
+
 						<?php if ((isset($form["acquisto_diretto"]) || v("accessori_in_prodotti")) && v("ecommerce_attivo")) { ?>
 							<div class="panel panel-info help_accessori">
 								<div class="panel-heading">

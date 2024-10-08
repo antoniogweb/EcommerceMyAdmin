@@ -167,9 +167,15 @@ class AirichiesteModel extends GenericModel
 
 			$numeroMassimoContesti = AirichiesteModel::g(false)->numeroMassimoPagineContesto($id);
 
-			$idS = ProdottiModel::prodottiPiuVenduti($idC, $idMarchio, $numeroMassimoContesti);
+			if ($numeroMassimoContesti >= 50)
+				$numeroMassimoContesti = 50;
 
-			$arrayIds = array_merge($arrayIds, $idS);
+			if ($idC || $idMarchio)
+			{
+				$idS = ProdottiModel::prodottiPiuVenduti($idC, $idMarchio, $numeroMassimoContesti);
+
+				$arrayIds = array_merge($arrayIds, $idS);
+			}
 
 			$arrayIds = array_unique($arrayIds);
 		}
@@ -298,8 +304,6 @@ class AirichiesteModel extends GenericModel
 			"id_marchio"	=>	(int)$idMarchio,
 			"id_page"		=>	(int)$idPage,
 		);
-
-		// $richiesta = $this->clear()->select("ai_richieste.id_ai_richiesta")->where($where)->left("ai_richieste_messaggi")->on("ai_richieste_messaggi.id_ai_richiesta = ai_richieste.id_ai_richiesta")->sWhere("ai_richieste_messaggi.id_ai_richiesta_messaggio IS NULL")->send();
 
 		$richiesta = $this->clear()->select("ai_richieste.id_ai_richiesta")->where($where)->orderBy("id_ai_richiesta desc")->send();
 

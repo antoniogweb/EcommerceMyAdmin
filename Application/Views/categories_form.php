@@ -59,14 +59,7 @@
 
 		<?php if (v("attiva_richieste_ai")) { ?>
 		<div class='col-md-4'>
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<?php echo gtext("Assistente testi IA");?>
-				</div>
-				<div class="panel-body">
-					<a href="<?php echo $this->baseUrl."/airichieste/form/insert/0?id_c=$id&partial=Y";?>" class="btn btn-info iframe"><?php echo gtext("Apri l'assistente")?></a>
-				</div>
-			</div>
+			<?php include($this->viewPath("box_assistente_ai"));?>
 		</div>
 		<?php } ?>
 	</div>
