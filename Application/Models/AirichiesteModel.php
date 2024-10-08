@@ -113,7 +113,7 @@ class AirichiesteModel extends GenericModel
 					),
 				),
 			),
-		))->send(false);
+		))->orderBy("predefinito desc")->send(false);
 
 		$selectModelli = [];
 
@@ -265,6 +265,7 @@ class AirichiesteModel extends GenericModel
 						"id_ai_richiesta"	=>	(int)$id,
 						"id_admin"			=>	User::$id,
 						"ruolo"				=>	"assistant",
+						"risultato_richiesta"	=>	(int)$ris,
 					));
 
 					$airmModel->insert();

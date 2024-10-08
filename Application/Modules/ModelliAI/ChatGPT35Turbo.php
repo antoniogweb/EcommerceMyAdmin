@@ -77,18 +77,23 @@ class ChatGPT35Turbo extends ModelloAI
 		{
 			$messaggi = $this->elaboraMessaggi($messaggi, $contesto);
 
-			// print_r($messaggi);die();
-			$response = $client->chat()->create([
-				'model' => $this->getParam("nome_modello"),
-				'messages' => $messaggi,
-			]);
+			try
+			{
+				// print_r($messaggi);die();
+				$response = $client->chat()->create([
+					'model' => $this->getParam("nome_modello"),
+					'messages' => $messaggi,
+				]);
 
-			$responseArray = $response->toArray();
+				$responseArray = $response->toArray();
 
-			// print_r($responseArray);
+				var_dump($responseArray);
 
-			if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
-				return array("OK", $responseArray["choices"][0]["message"]["content"]);
+				if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
+					return array(1, $responseArray["choices"][0]["message"]["content"]);
+			} catch (Exception $e) {
+					return array(0, $e->getMessage());
+			}
 
 			return array("","");
 		}

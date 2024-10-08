@@ -1,0 +1,1 @@
+INSERT INTO `ai_modelli` (`id_ai_modello`, `data_creazione`, `titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`) VALUES (NULL, CURRENT_TIMESTAMP, 'GPT-4 Omni', '1', 'ChatGPT4Omni', 'ChatGPT4Omni', '', 'NLP', '0', '1', 'gpt-4o', '100');
