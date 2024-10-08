@@ -58,9 +58,9 @@ $().ready(function() {
 			<?php } ?>
 
 			<?php if (v("attiva_richieste_ai")) { ?>
-			<?php
-			$labelIdEl = "id_marchio";
-			include($this->viewPath("box_assistente_ai"));?>
+				<?php
+				$labelIdEl = "id_marchio";
+				include($this->viewPath("box_assistente_ai"));?>
 			<?php } ?>
 		</div>
 	</form>

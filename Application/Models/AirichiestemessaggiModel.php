@@ -60,6 +60,11 @@ class AirichiestemessaggiModel extends GenericModel
 
 		if (!empty($richiesta) && $numero <= 0 && v("default_primo_messaggio_ai"))
 		{
+			$numeroContesti = $airModel->numeroContesti($idRichiesta);
+
+			if ($numeroContesti <= 1)
+				return "";
+
 			$testoDefault = v("default_primo_messaggio_ai");
 
 			$testoDefault = str_replace("[INDIRIZZO SITO WEB]", str_replace("/admin","",DOMAIN_NAME), $testoDefault);

@@ -52,6 +52,12 @@
 							</div>
 						</div>
 						
+						<?php if (v("attiva_richieste_ai")) { ?>
+							<?php
+							$labelIdEl = "id_page";
+							include($this->viewPath("box_assistente_ai"));?>
+						<?php } ?>
+
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								<?php echo gtext("Video");?>

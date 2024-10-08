@@ -183,6 +183,13 @@ class AirichiesteModel extends GenericModel
 		return $arrayIds;
 	}
 
+	public function numeroContesti($id)
+	{
+		return AirichiestecontestiModel::g()->where(array(
+			"id_ai_richiesta"	=>	(int)$id,
+		))->rowNumber();
+	}
+
 	public function inserisciContesti($id)
 	{
 		$idS = $this->estraiContesti($id);
