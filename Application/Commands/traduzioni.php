@@ -34,6 +34,7 @@ $options = getopt(null, array(
 ));
 
 $default = array(
+	"lingua"	=>	"",
 	"id_record"	=>	0,
 	"limit"		=>	10,
 );
@@ -66,7 +67,7 @@ if (!isset($params["azione"]))
 	die();
 }
 
-if (!isset($params["lingua"]))
+if (!$params["lingua"] && ($params["azione"] != "traduci"))
 {
 	echo "si prega di selezionare il codice ISO della lingua nella quale tradurre (en, fr, de, ...) con l'istruzione --lingua=\"<lingua>\" \n";
 	echo "lingue permesse:\n";

@@ -111,36 +111,44 @@ class TraduttoriModel extends GenericModel
 	}
 	
 	// Traduce tutti i testi del sito
-	public static function traduciTutto($lingua, $idRecord = 0, $limit = 10, $log = null)
+	public static function traduciTutto($l = "", $idRecord = 0, $limit = 10, $log = null)
 	{
-		// Tabella traduzioni
-		self::traduciTabellaTraduzioni($lingua, $idRecord, $limit, $log);
-		// Tabella testi
-		self::traduciTabellaTesti($lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: categorie
-		self::traduciTabellaContenuti("id_c", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: pagine
-		self::traduciTabellaContenuti("id_page", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: attributi
-		self::traduciTabellaContenuti("id_a", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: attributi valori
-		self::traduciTabellaContenuti("id_av", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: pagamenti
-		self::traduciTabellaContenuti("id_pagamento", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: caratteristiche
-		self::traduciTabellaContenuti("id_car", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: caratteristiche valori
-		self::traduciTabellaContenuti("id_cv", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: marchi
-		self::traduciTabellaContenuti("id_marchio", $lingua, $idRecord, $limit, $log);
-		// Tabella contenuti: stati ordine
-		self::traduciTabellaContenuti("id_stato_ordine", $lingua, $idRecord, $limit, $log);
+		$lingue = LingueModel::getLingueNonPrincipali();
+
+		foreach ($lingue as $lingua)
+		{
+			if ($l && $l != $lingua)
+				continue;
+
+			// Tabella traduzioni
+			self::traduciTabellaTraduzioni($lingua, $idRecord, $limit, $log);
+			// Tabella testi
+			self::traduciTabellaTesti($lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: categorie
+			self::traduciTabellaContenuti("id_c", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: pagine
+			self::traduciTabellaContenuti("id_page", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: attributi
+			self::traduciTabellaContenuti("id_a", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: attributi valori
+			self::traduciTabellaContenuti("id_av", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: pagamenti
+			self::traduciTabellaContenuti("id_pagamento", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: caratteristiche
+			self::traduciTabellaContenuti("id_car", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: caratteristiche valori
+			self::traduciTabellaContenuti("id_cv", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: marchi
+			self::traduciTabellaContenuti("id_marchio", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: stati ordine
+			self::traduciTabellaContenuti("id_stato_ordine", $lingua, $idRecord, $limit, $log);
+		}
 	}
 
 	public static function traduciTabellaContenuti($campo, $lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
 		if ($log)
-			$log->writeString("INIZIO TRADUZIONE CAMPO RIFERIMENTO: $campo");
+			$log->writeString("INIZIO TRADUZIONE $lingua CAMPO RIFERIMENTO: $campo");
 
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
@@ -245,13 +253,13 @@ class TraduttoriModel extends GenericModel
 		}
 
 		if ($log)
-			$log->writeString("FINE TRADUZIONE CAMPO RIFERIMENTO: $campo");
+			$log->writeString("FINE TRADUZIONE $lingua CAMPO RIFERIMENTO: $campo");
 	}
 	
 	public static function traduciTabellaTesti($lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
 		if ($log)
-			$log->writeString("INIZIO TRADUZIONE TABELLA TESTI");
+			$log->writeString("INIZIO TRADUZIONE $lingua TABELLA TESTI");
 
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
@@ -323,13 +331,13 @@ class TraduttoriModel extends GenericModel
 		}
 
 		if ($log)
-			$log->writeString("FINE TRADUZIONE TABELLA TESTI");
+			$log->writeString("FINE TRADUZIONE $lingua TABELLA TESTI");
 	}
 	
 	public static function traduciTabellaTraduzioni($lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
 		if ($log)
-			$log->writeString("INIZIO TRADUZIONE TABELLA TRADUZIONI");
+			$log->writeString("INIZIO TRADUZIONE $lingua TABELLA TRADUZIONI");
 
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
@@ -398,6 +406,6 @@ class TraduttoriModel extends GenericModel
 		}
 
 		if ($log)
-			$log->writeString("FINE TRADUZIONE TABELLA TRADUZIONI");
+			$log->writeString("FINE TRADUZIONE $lingua TABELLA TRADUZIONI");
 	}
 }
