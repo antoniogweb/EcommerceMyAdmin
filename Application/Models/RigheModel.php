@@ -176,10 +176,10 @@ class RigheModel extends GenericModel {
 	{
 		if (OrdiniModel::g()->isDeletable($record["righe"]["id_o"]))
 		{
-			if (self::prodottoCustom($record))
+			// if (self::prodottoCustom($record))
 				return "<input id-riga='".$record["righe"]["id_r"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["righe"]["title"]."' />";
-			else
-				return $record["righe"]["title"]."<input type='hidden' id-riga='".$record["righe"]["id_r"]."' name='title' value='".$record["righe"]["title"]."' />";
+			// else
+				// return $record["righe"]["title"]."<input type='hidden' id-riga='".$record["righe"]["id_r"]."' name='title' value='".$record["righe"]["title"]."' />";
 		}
 		else
 			return $record["righe"]["title"];
