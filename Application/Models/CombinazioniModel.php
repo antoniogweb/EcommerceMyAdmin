@@ -240,6 +240,7 @@ class CombinazioniModel extends GenericModel {
 					$p->setValue("in_promozione", "N");
 			}
 			
+			$p->salvaDataModifica = false;
 			$p->pUpdate($record["id_page"]);
 		}
 	}
