@@ -7,7 +7,7 @@
 	</a>
 	<ul class="treeview-menu">
 		<li class="dropdown-header"><?php echo gtext("Richieste");?></li>
-		<li class="<?php echo tm($tm, "airichieste");?>"><a href="<?php echo $this->baseUrl."/airichieste/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Richieste AI")?></a></li>
+		<li class="<?php echo tm($tm, "airichieste");?>"><a href="<?php echo $this->baseUrl."/airichieste/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Richieste IA")?></a></li>
 		<li class="dropdown-header"><?php echo gtext("Modelli");?></li>
 		<li class="<?php echo tm($tm, "aimodelli");?>"><a href="<?php echo $this->baseUrl."/aimodelli/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Configurazione modelli")?></a></li>
 	</ul>

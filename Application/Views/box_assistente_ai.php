@@ -10,6 +10,6 @@ if (!isset($labelIdEl))
 		<?php echo gtext("Assistente testi IA");?>
 	</div>
 	<div class="panel-body">
-		<a href="<?php echo $this->baseUrl."/airichieste/form/insert/0?$labelIdEl=$idAiRichiesta&partial=Y";?>" class="btn btn-info iframe"><?php echo gtext("Apri l'assistente")?></a>
+		<a href="<?php echo $this->baseUrl."/airichieste/form/insert/0?$labelIdEl=$idAiRichiesta&partial=Y";?>" class="btn btn-info iframe"><i class="fa  fa-commenting-o"></i> <?php echo gtext("Apri l'assistente IA")?></a>
 	</div>
 </div>
