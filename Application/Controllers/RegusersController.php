@@ -242,7 +242,7 @@ class RegusersController extends BaseController
 		
 		$this->shift(2);
 		
-		$fields = 'username,has_confirmed,password,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
+		$fields = 'username,has_confirmed,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
 		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
@@ -282,7 +282,11 @@ class RegusersController extends BaseController
 			$formFields .= ",fattura";
 		}
 		
-		$this->m[$this->modelName]->setValuesFromPost($fields);
+		$fields = F::addSanitizeFunction($fields);
+
+		$fields .= ",password";
+
+		$this->m[$this->modelName]->setValuesFromPost($fields, "none");
 		
 		$this->formFields = $formFields;
 		
@@ -297,6 +301,8 @@ class RegusersController extends BaseController
 		
 		$this->getTabViewFields("form");
 		
+		$this->m['RegusersModel']->setPasswordStrengthCondition();
+
 		parent::form($queryType, $id);
 		
 		if ((int)$this->viewArgs["ticket"] === 1)

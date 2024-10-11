@@ -279,6 +279,22 @@ class F
 		return $string;
 	}
 
+	// Aggiunge :sanitizeAll
+	public static function addSanitizeFunction($fields)
+	{
+		$fieldsArray = explode(",", $fields);
+
+		$fieldsArray = array_map(function($value){
+
+			$value .= ":sanitizeAll";
+
+			return $value;
+
+		}, $fieldsArray);
+
+		return implode(",", $fieldsArray);
+	}
+
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

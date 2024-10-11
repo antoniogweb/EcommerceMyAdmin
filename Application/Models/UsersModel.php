@@ -26,8 +26,6 @@ class UsersModel extends GenericModel {
 	
 	public $applySoftConditionsOnPost = true;
 	
-	public static $evidenziaPassword = '<div style="display:none;" rel="hidden_alert_notice">password</div><div style="display:none;" rel="hidden_alert_notice">confirmation</div>';
-	
 	public function __construct() {
 	
 		$this->campoTitolo = "username";
@@ -54,7 +52,7 @@ class UsersModel extends GenericModel {
 
 		$this->addStrongCondition("both",'checkAlphaNum',"username|".gtext("L'username deve essere una stringa alfanumerica").'<div style="display:none;" rel="hidden_alert_notice">username</div>');
 		$this->addStrongCondition("insert",'checkNotEmpty',"password,confirmation");
-		$this->addSoftCondition("both",'checkEqual',"password,confirmation|".gtext("Le due password non coincidono").self::$evidenziaPassword);
+		$this->addSoftCondition("both",'checkEqual',"password,confirmation|".gtext("Le due password non coincidono").self::evidenziaPassword());
 	}
 	
 	public function relations() {
@@ -154,21 +152,21 @@ class UsersModel extends GenericModel {
 		return self::g()->whereId((int)$id)->field("username");
 	}
 	
-	public function setPasswordCondition($type = "soft")
-	{
-		ob_start();
-		include(tpf("Elementi/Notice/check_password.php"));
-		$erroreValidazionePassword = ob_get_clean();
-		
-		$stringaErrore = "password|".$erroreValidazionePassword.self::$evidenziaPassword;
-		
-		$espressioneRegolarePassword = VariabiliModel::setPasswordRegularExpression();
-
-		if ($type == "soft")
-			$this->addSoftCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
-		else
-			$this->addStrongCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
-	}
+// 	public function setPasswordCondition($type = "soft")
+// 	{
+// 		ob_start();
+// 		include(tpf("Elementi/Notice/check_password.php"));
+// 		$erroreValidazionePassword = ob_get_clean();
+//
+// 		$stringaErrore = "password|".$erroreValidazionePassword.self::$evidenziaPassword;
+//
+// 		$espressioneRegolarePassword = VariabiliModel::setPasswordRegularExpression();
+//
+// 		if ($type == "soft")
+// 			$this->addSoftCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
+// 		else
+// 			$this->addStrongCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
+// 	}
 
 	public static function getName($id)
 	{

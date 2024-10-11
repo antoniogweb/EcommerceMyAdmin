@@ -713,4 +713,25 @@ trait CommonModel {
 			$this->pUpdate($idCliente);
 		}
     }
+
+    public static function evidenziaPassword()
+	{
+		return '<div style="display:none;" rel="hidden_alert_notice">password</div><div style="display:none;" rel="hidden_alert_notice">confirmation</div>';
+	}
+
+    public function setPasswordStrengthCondition($type = "soft")
+	{
+		ob_start();
+		include(tpf("Elementi/Notice/check_password.php"));
+		$erroreValidazionePassword = ob_get_clean();
+
+		$stringaErrore = "password|".$erroreValidazionePassword.self::evidenziaPassword();
+
+		$espressioneRegolarePassword = VariabiliModel::setPasswordRegularExpression();
+
+		if ($type == "soft")
+			$this->addSoftCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
+		else
+			$this->addStrongCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
+	}
 }

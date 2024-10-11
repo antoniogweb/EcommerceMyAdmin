@@ -36,7 +36,7 @@ class PasswordController extends BaseController {
 
 		$this->m['UsersModel']->setFields('password','none');
 
-		$this->m['UsersModel']->strongConditions['update'] = array('checkEqual'=>"password,confirmation|".gtext("Le due password non coincidono").UsersModel::$evidenziaPassword);
+		$this->m['UsersModel']->strongConditions['update'] = array('checkEqual'=>"password,confirmation|".gtext("Le due password non coincidono").UsersModel::evidenziaPassword());
 
 		$this->m['UsersModel']->identifierName = 'id_user';
 		
@@ -52,7 +52,7 @@ class PasswordController extends BaseController {
 		
 		$data['notice'] = null;
 		
-		$this->m['UsersModel']->setPasswordCondition("strong");
+		$this->m['UsersModel']->setPasswordStrengthCondition("strong");
 		
 		$id = (int)$this->s['admin']->status['id_user'];
 		if (isset($_POST['updateAction'])) {
