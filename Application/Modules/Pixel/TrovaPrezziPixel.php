@@ -40,6 +40,19 @@ class TrovaPrezziPixel extends Pixel
 		$model->formStruct["entries"]["key_1"]["labelString"] = "Chiave Merchant";
 	}
 	
+	// Restituisce il codice JS da mettere nel tag head
+	public function getHeadScript()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("TROVAPREZZI_HEAD","", array(
+			"titolo"	=>	"Codice JS di TrovaPrezzi da inserire in head",
+			"percorso"	=>	"Elementi/Pixel/Head/TrovaPrezzi/Script",
+		))));
+		$res = ob_get_clean();
+
+		return $res;
+	}
+
 	public function getPurchaseScript($idOrdine, $info = array(), $script = true)
 	{
 		$evento = $this->getEvento("PURCHASE", $idOrdine, "orders");
