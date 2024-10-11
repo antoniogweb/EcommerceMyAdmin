@@ -723,7 +723,7 @@ class BaseRegusersController extends BaseController
 
 		$validToken = false;
 		
-		$urlAdd = isset($_GET["eFromApp"]) ? "?eFromApp&ecommerce" : "";
+		$urlAdd = "";
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{

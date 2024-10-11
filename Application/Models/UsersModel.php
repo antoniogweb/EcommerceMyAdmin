@@ -162,10 +162,12 @@ class UsersModel extends GenericModel {
 		
 		$stringaErrore = "password|".$erroreValidazionePassword.self::$evidenziaPassword;
 		
+		$espressioneRegolarePassword = VariabiliModel::setPasswordRegularExpression();
+
 		if ($type == "soft")
-			$this->addSoftCondition("both",'checkMatch|'.v("password_regular_expression"),$stringaErrore);
+			$this->addSoftCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
 		else
-			$this->addStrongCondition("both",'checkMatch|'.v("password_regular_expression"),$stringaErrore);
+			$this->addStrongCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
 	}
 
 	public static function getName($id)

@@ -760,7 +760,12 @@ class VariabiliModel extends GenericModel {
 		### GDPR ##
 		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
 		### PASSWORD ##
-		"password_regular_expression"	=>	"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^*-]).{8,}$/", // Espressione regolare per validare la password sia per utenti frontend che utenti admin
+		// "password_regular_expression"	=>	"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^*-]).{8,}$/", // Espressione regolare per validare la password sia per utenti frontend che utenti admin
+		"password_regular_expression_caratteri_maiuscoli"	=>	"(?=.*?[A-Z])", // Espressione regolare per i caratteri maiuscoli
+		"password_regular_expression_caratteri_minuscoli"	=>	"(?=.*?[a-z])", // Espressione regolare per i caratteri minuscoli
+		"password_regular_expression_caratteri_numerici"	=>	"(?=.*?[0-9])", // Espressione regolare per i caratteri numerici
+		"password_regular_expression_caratteri_speciali"	=>	"#?!@$%^*-", // Elenco di caratteri speciali nella password (deve essere presente almeno uno di tali caratteri)
+		"password_regular_expression_numero_caratteri"		=>	8, // Numero minimo di caratteri nella password
 		### LINGUE ##
 		"lingue_abilitate_frontend"	=>	"it",
 		"token_gestisci_lingue_da_admin"	=>	"", // token per poter gestire le lingue da admin (oltre a dover essere loggati)
@@ -1120,5 +1125,10 @@ class VariabiliModel extends GenericModel {
 	public static function mostraAvvisiGiacenzaCarrello()
 	{
 		return (v("testo_disponibilita_immediata") && v("testo_disponibilita_non_immediata")) ? true : false;
+	}
+
+	public static function setPasswordRegularExpression()
+	{
+		return "/^".v("password_regular_expression_caratteri_maiuscoli").v("password_regular_expression_caratteri_minuscoli").v("password_regular_expression_caratteri_numerici")."(?=.*?[".v("password_regular_expression_caratteri_speciali")."]).{".v("password_regular_expression_numero_caratteri").",}$/";
 	}
 }
