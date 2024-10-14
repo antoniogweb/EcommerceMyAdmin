@@ -62,14 +62,16 @@ class PixeleventiModel extends GenericModel
 		}
 	}
 	
-	public function getEvento($idPixel, $evento, $idElemento, $tabellaElemento)
+	public function getEvento($idPixel, $evento, $idElemento, $tabellaElemento, $tutti = false)
 	{
-		return $this->clear()->where(array(
+		$this->clear()->where(array(
 			"id_pixel"		=>	(int)$idPixel,
 			"evento"		=>	$evento,
 			"tabella_elemento"	=>	sanitizeAll($tabellaElemento),
 			"id_elemento"	=>	(int)$idElemento,
-		))->record();
+		));
+
+		return $tutti ? $this->send(false) : $this->record();
 	}
 	
 	public static function getStatusPixelEventoElemento($evento, $idElemento, $tabellaElemento)

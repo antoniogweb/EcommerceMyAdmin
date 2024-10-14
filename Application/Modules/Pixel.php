@@ -48,9 +48,9 @@ class Pixel
 		return PixeleventiModel::g(false)->aggiorna($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento, $values);
 	}
 	
-	public function getEvento($evento, $idElemento, $tabellaElemento)
+	public function getEvento($evento, $idElemento, $tabellaElemento, $tutti = false)
 	{
-		return PixeleventiModel::g(false)->getEvento($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento);
+		return PixeleventiModel::g(false)->getEvento($this->params["id_pixel"], $evento, $idElemento, $tabellaElemento, $tutti);
 	}
 	
 	public function checkData($elemento)

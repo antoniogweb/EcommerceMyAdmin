@@ -55,14 +55,17 @@ class TrovaPrezziPixel extends Pixel
 
 	public function getPurchaseScript($idOrdine, $info = array(), $script = true)
 	{
-		$evento = $this->getEvento("PURCHASE", $idOrdine, "orders");
+		$evento = $this->getEvento("PURCHASE", $idOrdine, "orders", true);
 		
-		if ($script && !empty($evento))
-		{
-			self::$eventoInviato[] = $this->params["id_pixel"];
-			
-			return "";
-		}
+		if (count($evento) >= 2)
+			return;
+
+// 		if ($script && !empty($evento))
+// 		{
+// 			self::$eventoInviato[] = $this->params["id_pixel"];
+//
+// 			return "";
+// 		}
 		
 		$strutturaOrdine = $this->infoOrdine((int)$idOrdine);
 		
@@ -85,6 +88,8 @@ class TrovaPrezziPixel extends Pixel
 			"vc"			=>	$strutturaOrdine["codice_promozione"],
 		);
 		
+		$res = "";
+
 		if ($script)
 		{
 			ob_start();
@@ -93,19 +98,22 @@ class TrovaPrezziPixel extends Pixel
 				"percorso"	=>	"Elementi/Pixel/Purchase/TrovaPrezzi/Script",
 			))));
 			$res = ob_get_clean();
-		}
-		else if (!in_array($this->params["id_pixel"], self::$eventoInviato))
-			$res = "";
-		
-		if ($script)
+
 			$this->salvaEvento("PURCHASE", $idOrdine, "orders", $res);
-		else if (!in_array($this->params["id_pixel"], self::$eventoInviato))
-			$this->aggiornaEvento("PURCHASE", $idOrdine, "orders", array(
-				"codice_evento_noscript"	=>	$res,
-			));
+		}
+
+		// else if (!in_array($this->params["id_pixel"], self::$eventoInviato))
+		// 	$res = "";
 		
-		if (!isset($res))
-			$res = "";
+		// if ($script)
+
+		// else if (!in_array($this->params["id_pixel"], self::$eventoInviato))
+		// 	$this->aggiornaEvento("PURCHASE", $idOrdine, "orders", array(
+		// 		"codice_evento_noscript"	=>	$res,
+		// 	));
+		
+		// if (!isset($res))
+		// 	$res = "";
 		
 		return $res;
 	}

@@ -182,7 +182,7 @@ trait BaseCrudController
 		$data["ordinaAction"] = $this->ordinaAction;
 		
 		$data['type'] = $data['queryType'] = "main";
-		
+
 		$data["title"] = "Gestione " . $data["tabella"];
 		
 		$this->m[$this->modelName]->updateTable($this->queryActions);
@@ -201,7 +201,7 @@ trait BaseCrudController
 		
 		$this->m[$this->modelName]->setFilters();
 		$this->loadScaffold('main',$this->scaffoldParams);
-		
+
 		if ($this->addBulkActions)
 		{
 			$this->mainFields = array_merge(array("[[checkbox]];$table.$primaryKey;"),$this->mainFields);
@@ -232,7 +232,7 @@ trait BaseCrudController
 		$this->scaffold->loadMain($this->mainFields,$table.'.'.$primaryKey,$this->mainButtons);
 		
 		$this->scaffold->setHead($this->mainHead);
-		
+
 		if ($this->addBulkActions)
 		{
 			if (!isset($this->bulkActions) or !is_array($this->bulkActions))
@@ -287,7 +287,7 @@ trait BaseCrudController
 		}
 		
 		$this->scaffold->fields = $this->scaffold->model->select;
-		
+
 		$this->scaffold->itemList->colProperties = $this->colProperties;
 		$this->scaffold->itemList->inverseColProperties = $this->inverseColProperties;
 		$this->scaffold->itemList->rowAttributes = $this->rowAttributes;
@@ -303,7 +303,7 @@ trait BaseCrudController
 		{
 			$this->scaffold->itemList->showFilters = false;
 		}
-		
+
 		if (isset($_GET["esporta"]))
 		{
 			$this->scaffold->itemList->renderToCsv = true;
@@ -348,7 +348,7 @@ trait BaseCrudController
 		else
 		{
 			$data['scaffold'] = $this->scaffold->render();
-			
+
 			$data['numeroElementi'] = $this->scaffold->model->rowNumber();
 			
 			$data[$this->menuVariable] = $this->scaffold->html['menu'];

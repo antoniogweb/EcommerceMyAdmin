@@ -205,25 +205,25 @@ class OrdiniController extends BaseController {
 			$this->mainFields[] = 'nazionenavigazione';
 			$this->mainHead .= ',Nazione';
 		}
-		
+
 		if (v("attiva_liste_regalo"))
 		{
 			$this->mainFields[] = 'listaregalo';
 			$this->mainHead .= ',Lista regalo';
 		}
-		
+
 		if (v("attiva_gestione_spedizioni"))
 		{
 			$this->mainFields[] = 'spedizioneCrud';
 			$this->mainHead .= ',Spedizione';
 		}
-		
+
 		if (v("permetti_ordini_offline"))
 		{
 			$this->mainFields[] = 'tipoOrdineCrud';
 			$this->mainHead .= ',Tipo';
 		}
-		
+
 		if (v("attiva_agenti"))
 		{
 			$this->mainFields[] = 'agenteCrud';
@@ -263,7 +263,7 @@ class OrdiniController extends BaseController {
 		$this->aggiungiintegrazioni();
 		
 		$this->m[$this->modelName]->clear()->restore(true)->orderBy("orders.data_creazione desc,orders.id_o desc");
-		
+
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_ordine'],
 			'stato'	=>	$this->viewArgs['stato'],
@@ -297,7 +297,7 @@ class OrdiniController extends BaseController {
 
 			$this->m[$this->modelName]->aWhere($where);
 		}
-		
+
 		if (strcmp($this->viewArgs['codice_fiscale'],'tutti') !== 0)
 		{
 			$where = array(
@@ -391,27 +391,27 @@ class OrdiniController extends BaseController {
 		) + OrdiniModel::$stati;
 		
 		$this->filters = array("titolo","dal","al",'id_ordine','titolo_riga','email','codice_fiscale',array("tipo_cliente",null,self::$selectFiltroTipo),array("stato",null,$filtroStato));
-		
+
 		if (v("attiva_ip_location"))
 			$this->filters[] = array("nazione_utente",null,$this->m[$this->modelName]->filtroNazioneNavigazione(new OrdiniModel()));
-		
+
 		if (v("attiva_liste_regalo"))
 			$this->filters[] = "lista_regalo";
-		
+
 		if (v("permetti_ordini_offline"))
 			$this->filters[] = array("tipo_ordine",null,array(
 				"tutti"	=>	gtext("Tipo ordine"),
 				"W"		=>	gtext("Ordini WEB"),
 				"B"		=>	gtext("Ordini Backend"),
 			));
-		
+
 		if (v("fatture_attive"))
 			$this->filters[] = array("fattura",null,array(
 				"tutti"	=>	gtext("Fatturazione"),
 				"F"		=>	gtext("Fatturati"),
 				"N"		=>	gtext("NON fatturato"),
 			));
-		
+
 		// Colonna del gestionale
 		if (GestionaliModel::getModulo()->integrazioneAttiva())
 			$this->filters[] = array("gestionale",null,array(
@@ -430,7 +430,7 @@ class OrdiniController extends BaseController {
 		}
 		
 		$this->getTabViewFields("main");
-		
+
 		parent::main();
 	}
 
