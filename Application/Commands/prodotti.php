@@ -83,6 +83,7 @@ if ($params["azione"] == "disattiva-prodotti-senza-combinazioni-acquistabili")
 			"attivo"	=>	"N",
 		));
 		
+		$p->salvaDataModifica = false;
 		$p->pUpdate($r["pages"]["id_page"]);
 		
 		$log->writeString("ID PAGE:".$r["pages"]["id_page"]." - ".$r["pages"]["title"]);
