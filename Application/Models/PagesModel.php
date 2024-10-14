@@ -939,9 +939,9 @@ class PagesModel extends GenericModel {
 				);
 				
 				$this->sanitize();
+				$this->salvaDataModifica = false;
 				$this->pUpdate($r["pages"]["id_page"]);
 
-				$this->salvaDataModifica = false;
 				$this->aggiornaPrezziCombinazioni($r["pages"]["id_page"]);
 			}
 		}
