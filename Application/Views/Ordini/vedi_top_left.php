@@ -40,13 +40,20 @@
 	<?php if (v("attiva_gestione_pixel")) {
 		$eventiPixel = PixeleventiModel::getStatusPixelEventoElemento("PURCHASE", $ordine["id_o"], "orders");
 
+		$idPEventi = array();
+
 		if (count($eventiPixel) > 0)
 		{
 	?>
 		<tr>
 			<td><?php echo gtext("Pixel");?>:</td>
 			<td>
-				<?php foreach ($eventiPixel as $ev) { ?>
+				<?php foreach ($eventiPixel as $ev) {
+					if (in_array($ev["pixel"]["id_pixel"], $idPEventi))
+						continue;
+					else
+						$idPEventi[] = $ev["pixel"]["id_pixel"];
+				?>
 					<b><?php echo $ev["pixel"]["titolo"];?></b>
 					<?php echo gtext("inviato in data/ora").": ".date("d-m-Y H:i", strtotime($ev["pixel_eventi"]["data_creazione"]));?> <i class="text text-success fa fa-thumbs-up"></i>
 					<a class="iframe" title="<?php echo gtext("Vedi codice script");?>" href="<?php echo $this->baseUrl."/ordini/vediscriptpixel/".$ev["pixel_eventi"]["id_pixel_evento"];?>?partial=Y&nobuttons=Y"><i class="fa fa-eye"></i></a>

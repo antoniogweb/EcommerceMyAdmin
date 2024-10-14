@@ -83,6 +83,6 @@ class PixeleventiModel extends GenericModel
 			"pixel_eventi.tabella_elemento"	=>	sanitizeAll($tabellaElemento),
 			"pixel_eventi.id_elemento"		=>	(int)$idElemento,
 			"pixel.attivo"	=>	1,
-		))->orderBy("pixel.id_order")->send();
+		))->orderBy("pixel_eventi.data_creazione desc")->send();
 	}
 }
