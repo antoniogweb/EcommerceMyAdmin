@@ -34,6 +34,8 @@ class BaseRegusersController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		VariabiliModel::$valori["usa_versione_random"] = 1;
+
 		if (!empty($_POST))
 			IpcheckModel::check("POST");
 		

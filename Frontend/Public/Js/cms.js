@@ -30,22 +30,22 @@ $(document).ready(function(){
 			alert(stringa_testo_copiato_clipboard);
 		}
 	});
-});
 
-$( "body" ).on( "click", ".ajlink", function(e){
-	e.preventDefault();  //prevent form from submitting
-	
-	var url = $(this).attr("href");
-	
-	$.ajaxQueue({
-		url: url,
-		cache:false,
-		async: true,
-		dataType: "html",
-		success: function(content){
-			
-			location.reload();
-			
-		}
+	$( "body" ).on( "click", ".ajlink", function(e){
+		e.preventDefault();  //prevent form from submitting
+
+		var url = $(this).attr("href");
+
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+
+				location.reload();
+
+			}
+		});
 	});
 });

@@ -35,6 +35,8 @@ class BaseOrdiniController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		VariabiliModel::$valori["usa_versione_random"] = 1;
+
 		$this->load('header');
 		$this->load('footer','last');
 		

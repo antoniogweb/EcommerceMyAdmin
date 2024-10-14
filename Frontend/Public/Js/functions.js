@@ -1165,4 +1165,23 @@ $(document).ready(function(){
 			}
 		});
 	}
+
+	$( "body" ).on( "click", ".mostra_nascondi_password", function(e){
+		e.preventDefault();  //prevent form from submitting
+
+		var box = $(this).parent();
+
+		if ($(this).hasClass("mostra_password"))
+		{
+			box.find("input[type='password']").attr("type", "text");
+			box.find(".mostra_password").addClass("uk-hidden");
+			box.find(".nascondi_password").removeClass("uk-hidden");
+		}
+		else
+		{
+			box.find("input[type='text']").attr("type", "password");
+			box.find(".mostra_password").removeClass("uk-hidden");
+			box.find(".nascondi_password").addClass("uk-hidden");
+		}
+	});
 });
