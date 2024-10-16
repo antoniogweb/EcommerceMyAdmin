@@ -51,8 +51,17 @@ class CartController extends BaseController
 		$campoPrezzoSuffisso = v("prezzi_ivati_in_carrello") ? "_ivato" : "";
 		$labelPrezzo = v("prezzi_ivati_in_carrello") ? "inclusa" : "esclusa";
 		
-		$this->mainFields = array("thumb", "cleanDateTime", "titolocompleto", "categories.title", "cart.quantity", "cart.prezzo_intero$campoPrezzoSuffisso", "cart.price$campoPrezzoSuffisso", "datiutente");
-		$this->mainHead = "Immagine,Data creazione,Prodotto,Categoria,Quantità,Prezzo intero IVA $labelPrezzo (€),Prezzo finale IVA $labelPrezzo (€),Email";
+		$mainFiels = array("thumb", "cleanDateTime", "titolocompleto", "categories.title", "cart.quantity", "cart.prezzo_intero$campoPrezzoSuffisso", "cart.price$campoPrezzoSuffisso", "datiutente");
+		$mainHead = "Immagine,Data creazione,Prodotto,Categoria,Quantità,Prezzo intero IVA $labelPrezzo (€),Prezzo finale IVA $labelPrezzo (€),Email";
+		
+		if (v("traccia_sorgente_utente"))
+		{
+			$mainFiels[] = "cart.sorgente";
+			$mainHead .= ",Sorgente";
+		}
+		
+		$this->mainFields = $mainFiels;
+		$this->mainHead = $mainHead;
 		
 		$filtroTipo = array(
 			"tutti"		=>	"Tipo carrello",
