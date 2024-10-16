@@ -1,0 +1,1 @@
+alter table cart add sorgente varchar(50) not null default '';

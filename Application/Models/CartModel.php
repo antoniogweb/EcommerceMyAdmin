@@ -993,6 +993,10 @@ class CartModel extends GenericModel {
 				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
 				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
 				
+				// Traccio la sorgente
+				// if (v("traccia_sorgente_utente") && User::$sorgente && App::$isFrontend)
+				// 	$this->values["sorgente"] = sanitizeAll(User::$sorgente);
+				
 				if (isset($idRif))
 				{
 					$this->values["id_rif"] = (int)$idRif;

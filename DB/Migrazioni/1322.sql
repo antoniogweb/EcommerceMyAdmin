@@ -1,0 +1,1 @@
+alter table righe add sorgente varchar(50) not null default '';
