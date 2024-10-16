@@ -994,8 +994,8 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
 				
 				// Traccio la sorgente
-				// if (v("traccia_sorgente_utente") && User::$sorgente && App::$isFrontend)
-				// 	$this->values["sorgente"] = sanitizeAll(User::$sorgente);
+				if (v("traccia_sorgente_utente") && User::$sorgente && App::$isFrontend)
+					$this->values["sorgente"] = sanitizeAll(User::$sorgente);
 				
 				if (isset($idRif))
 				{
