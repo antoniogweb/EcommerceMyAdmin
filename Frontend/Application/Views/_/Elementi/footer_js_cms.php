@@ -43,6 +43,9 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cms.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>functions.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<?php if (v("attiva_controllo_robustezza_password")) { ?>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>password.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<?php } ?>
 
 <?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe)) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>listeregalo.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>

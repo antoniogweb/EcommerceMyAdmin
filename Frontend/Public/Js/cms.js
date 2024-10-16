@@ -2,11 +2,11 @@ if (typeof stringa_testo_copiato_clipboard == "undefined")
 	var stringa_testo_copiato_clipboard = "Il link della lista è stato copiato negli appunti.";
 
 function copyToClipboard(testo) {
-  var $temp = $("<input>");
-  $("body").append($temp);
-  $temp.val(testo).select();
-  document.execCommand("copy");
-  $temp.remove();
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val(testo).select();
+	document.execCommand("copy");
+	$temp.remove();
 }
 
 $(document).ready(function(){

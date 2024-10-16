@@ -42,6 +42,7 @@ class Minify
 						"rating.js",
 						"promozioni.js",
 						"ticket.js",
+						"password.js",
 					),
 				),
 		),
