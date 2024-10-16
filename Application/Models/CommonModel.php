@@ -716,7 +716,10 @@ trait CommonModel {
 
     public static function evidenziaPassword()
 	{
-		return '<div style="display:none;" rel="hidden_alert_notice">password</div><div style="display:none;" rel="hidden_alert_notice">confirmation</div>';
+		if (App::$isFrontend)
+			return '<div class="evidenzia">class_password</div><div class="evidenzia">class_confirmation</div>';
+		else
+			return '<div style="display:none;" rel="hidden_alert_notice">password</div><div style="display:none;" rel="hidden_alert_notice">confirmation</div>';
 	}
 
     public function setPasswordStrengthCondition($type = "soft")

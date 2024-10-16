@@ -761,6 +761,7 @@ class VariabiliModel extends GenericModel {
 		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
 		### PASSWORD ##
 		// "password_regular_expression"	=>	"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^*-]).{8,}$/", // Espressione regolare per validare la password sia per utenti frontend che utenti admin
+		"attiva_controllo_robustezza_password"				=>	0, // se impostato ad 1, attiva che la password asoddisfi certi criteri
 		"password_regular_expression_caratteri_maiuscoli"	=>	"(?=.*?[A-Z])", // Espressione regolare per i caratteri maiuscoli
 		"password_regular_expression_caratteri_minuscoli"	=>	"(?=.*?[a-z])", // Espressione regolare per i caratteri minuscoli
 		"password_regular_expression_caratteri_numerici"	=>	"(?=.*?[0-9])", // Espressione regolare per i caratteri numerici
@@ -1130,5 +1131,11 @@ class VariabiliModel extends GenericModel {
 	public static function setPasswordRegularExpression()
 	{
 		return "/^".v("password_regular_expression_caratteri_maiuscoli").v("password_regular_expression_caratteri_minuscoli").v("password_regular_expression_caratteri_numerici")."(?=.*?[".v("password_regular_expression_caratteri_speciali")."]).{".v("password_regular_expression_numero_caratteri").",}$/";
+	}
+	
+	public static function classeHelpWizardPassword()
+	{
+		return v("attiva_controllo_robustezza_password") ? "help_wizard_password" : "";
+		
 	}
 }

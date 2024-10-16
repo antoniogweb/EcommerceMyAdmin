@@ -210,7 +210,7 @@ class BaseRegusersModel extends Model_Tree
 		$this->addStrongCondition("both",'checkMatch|/^[a-zA-Z0-9\_'.v("password_regular_expression_caratteri_speciali").']+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>".gtext("Tutte le lettere, maiuscole o minuscole")." (a, A, b, B, ...)</li><li>".gtext("Tutti i numeri")." (0,1,2,...)</li><li>".gtext("I seguenti caratteri").": <b>_".v("password_regular_expression_caratteri_speciali")."</b></li></ul>$evidenzia");
 	}
 
-	public function setPasswordCondition($strength = false)
+	public function setPasswordCondition()
 	{
 		$evidenzia = Output::$html ? "<span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>" : "";
 		
@@ -221,7 +221,7 @@ class BaseRegusersModel extends Model_Tree
 		$this->setAllowedPasswordCharacters($evidenzia);
 		// $this->addStrongCondition("both",'checkMatch|/^[a-zA-Z0-9\_'.v("password_regular_expression_caratteri_speciali").']+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>".gtext("Tutte le lettere, maiuscole o minuscole")." (a, A, b, B, ...)</li><li>".gtext("Tutti i numeri")." (0,1,2,...)</li><li>".gtext("I seguenti caratteri").": <b>_".v("password_regular_expression_caratteri_speciali")."</b></li></ul>$evidenzia");
 
-		if ($strength)
+		if (v("attiva_controllo_robustezza_password"))
 			$this->setPasswordStrengthCondition("strong");
 	}
 	
@@ -424,6 +424,9 @@ class BaseRegusersModel extends Model_Tree
 			
 			$this->setAllowedPasswordCharacters($evidenziaPC);
 
+			if (v("attiva_controllo_robustezza_password"))
+				$this->setPasswordStrengthCondition("strong");
+			
 			// $this->addStrongCondition("both",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>".gtext("Tutte le lettere, maiuscole o minuscole")." (a, A, b, B, ...)</li><li>".gtext("Tutti i numeri")." (0,1,2,...)</li><li>".gtext("I seguenti caratteri").": <b>_ - ! , .</b></li></ul>$evidenziaPC");
 		}
 		

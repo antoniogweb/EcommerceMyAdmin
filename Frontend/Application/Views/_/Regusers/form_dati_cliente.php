@@ -131,8 +131,8 @@
 			<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 				<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 				<div class="uk-form-controls uk-position-relative">
+					<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password'  placeholder='".gtext("Password", false)."'");?>
 					<?php include tpf("Elementi/mostra_nascondi_password.php");?>
-					<?php echo Html_Form::password("password",$values['password'],"uk-input class_password",null,"autocomplete='new-password'  placeholder='".gtext("Password", false)."'");?>
 				</div>
 			</div>
 
@@ -140,8 +140,8 @@
 			<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 				<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
 				<div class="uk-form-controls uk-position-relative">
+					<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password'  placeholder='".gtext("Conferma password", false)."'");?>
 					<?php include tpf("Elementi/mostra_nascondi_password.php");?>
-					<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation",null,"autocomplete='new-password'  placeholder='".gtext("Conferma password", false)."'");?>
 				</div>
 			</div>
 			<?php } ?>
@@ -171,8 +171,8 @@
 	<div class="box_entry_dati first_of_grid uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 		<div class="uk-form-controls uk-position-relative">
+			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtext("Password", false)."'");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php");?>
-			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password",null,"autocomplete='new-password' placeholder='".gtext("Password", false)."'");?>
 		</div>
 	</div>
 	<?php } ?>

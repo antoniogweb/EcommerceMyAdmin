@@ -34,5 +34,10 @@
 	<?php } ?>
 	var attiva_icheck = <?php echo (!isset($skipIcheck)) ?  "true" : "false";  ?>;
 	var motore_ricerca = "<?php echo strtolower(MotoriricercaModel::getCodiceAttivo());?>";
+	var password_regular_expression_caratteri_maiuscoli = "<?php echo v("password_regular_expression_caratteri_maiuscoli");?>";
+	var password_regular_expression_caratteri_minuscoli = "<?php echo v("password_regular_expression_caratteri_minuscoli");?>";
+	var password_regular_expression_caratteri_numerici = "<?php echo v("password_regular_expression_caratteri_numerici");?>";
+	var password_regular_expression_caratteri_speciali = "<?php echo v("password_regular_expression_caratteri_speciali");?>";
+	var password_regular_expression_numero_caratteri = <?php echo v("password_regular_expression_numero_caratteri");?>;
 </script>
 <?php $jsVariablesLoaded = true;?>

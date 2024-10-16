@@ -1253,7 +1253,10 @@ class BaseOrdiniController extends BaseController
 					$this->m('RegusersModel')->addStrongCondition("insert",'checkNotEmpty',"password");
 				
 				$this->m('RegusersModel')->setAllowedPasswordCharacters("<span class='evidenzia'>class_password</span>");
-
+				
+				if (v("attiva_controllo_robustezza_password"))
+					$this->m('RegusersModel')->setPasswordStrengthCondition("strong");
+				
 				// $this->m('RegusersModel')->addStrongCondition("insert",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>Tutte le lettere, maiuscole o minuscole (a, A, b, B, ...)</li><li>Tutti i numeri (0,1,2,...)</li><li>I seguenti caratteri: <b>_ - ! , .</b></li></ul><span class='evidenzia'>class_password</span>");
 			}
 		}

@@ -151,22 +151,6 @@ class UsersModel extends GenericModel {
 	{
 		return self::g()->whereId((int)$id)->field("username");
 	}
-	
-// 	public function setPasswordCondition($type = "soft")
-// 	{
-// 		ob_start();
-// 		include(tpf("Elementi/Notice/check_password.php"));
-// 		$erroreValidazionePassword = ob_get_clean();
-//
-// 		$stringaErrore = "password|".$erroreValidazionePassword.self::$evidenziaPassword;
-//
-// 		$espressioneRegolarePassword = VariabiliModel::setPasswordRegularExpression();
-//
-// 		if ($type == "soft")
-// 			$this->addSoftCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
-// 		else
-// 			$this->addStrongCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
-// 	}
 
 	public static function getName($id)
 	{
