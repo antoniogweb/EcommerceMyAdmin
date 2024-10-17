@@ -22,7 +22,7 @@
 			<?php echo gtext("almeno un numero,");?>
 		</span>
 		<span class="avviso_caratteri_speciali uk-text-danger">
-			<?php echo gtext("almeno un carattere speciale");?> (<?php echo v("password_regular_expression_caratteri_speciali");?>)
+			<?php echo gtext("almeno un carattere speciale tra");?> <?php echo v("password_regular_expression_caratteri_speciali");?>
 		</span>
 	</div>
 </div>
