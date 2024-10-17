@@ -19,7 +19,7 @@
 			<?php echo gtext("maiuscole,");?>
 		</span>
 		<span class="avviso_caratteri_numerici uk-text-danger">
-			<?php echo gtext("numeri,");?>
+			<?php echo gtext("almeno un numero,");?>
 		</span>
 		<span class="avviso_caratteri_speciali uk-text-danger">
 			<?php echo gtext("almeno un carattere speciale");?> (<?php echo v("password_regular_expression_caratteri_speciali");?>)
