@@ -4,7 +4,7 @@
 
 <?php if (v("attiva_controllo_robustezza_password")) { ?>
 <div class="box_avvisi_password uk-hidden uk-position-absolute uk-position-bottom-out uk-background-muted uk-width-1-1" style="z-index:3;">
-	<div class="uk-padding-small uk-text-small">
+	<div class="uk-padding-small uk-text-small" style="padding-right:30px !important;">
 		<div class="uk-position-top-right uk-padding-small">
 			<a title="<?php echo gtext("Chiudi avviso");?>" rel="nofollow" class="chiudi_wizard_password" href="#" uk-icon="icon: close"></a>
 		</div>
