@@ -751,6 +751,7 @@ class VariabiliModel extends GenericModel {
 		### TRADUZIONI ##
 		"attiva_gestione_traduttori"	=>	0, // se impostato a 1, permette di configurare i traduttori e attiva la possibiulità di usare le traduzioni automatiche
 		"considera_traduzione_sempre_esistente"	=>	0, // se impostato a 1, il sistema considera la traduzione di un elemento in contenuti_tradotti sempre esistente e non passa per la tabella originale o usa inner join anziché left join (è più veloce)
+		"traduci_ultime_x_pagine_se_modificate"	=>	0, // se maggiore di 0, indica il numero delle ultime pagine che devono essere tradotte se modificate. Se lasciato a zero, le pagine sono tradotte solo se non sono mai state tradotte. 
 		"traduci_sempre_le_pagine_di_queste_categorie"	=>	"127", // traduci le pagine in queste categorie anche se non sono attive (lista di ID di categorie divise da ,)
 		### HOOK ##
 		"hook_ordine_confermato"	=>	"", // se diversa da blank, funzione che viene chiamata dopo la conferma dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro

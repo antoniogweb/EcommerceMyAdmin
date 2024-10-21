@@ -163,9 +163,17 @@ class TraduttoriModel extends GenericModel
 			
 			if ($campo == "id_page")
 			{
-				$ctModel->inner(array("page"))->sWhere("(pages.attivo = 'Y' OR pages.id_c in (".v("traduci_sempre_le_pagine_di_queste_categorie").")) AND contenuti_tradotti.salvato = 0");
-				
-				// $ctModel->inner(array("page"))->sWhere("(pages.attivo = 'Y' OR pages.id_c in (".v("traduci_sempre_le_pagine_di_queste_categorie").")) AND (contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica))");
+				if (v("traduci_ultime_x_pagine_se_modificate") > 0)
+				{
+					$pModel = new PagesModel();
+					
+					$idPages = $pModel->clear()->select("id_page")->addWhereAttivoPermettiTest()->orderBy("id_page desc")->limit(10)->toList("id_page")->send();
+					$idPages = forceIntDeep($idPages);
+					
+					$ctModel->inner(array("page"))->sWhere(array("(pages.attivo = 'Y' OR pages.id_c in (".v("traduci_sempre_le_pagine_di_queste_categorie").")) AND (contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica AND pages.id_page in (".$pModel->placeholdersFromArray($idPages).")))",$idPages));
+				}
+				else
+					$ctModel->inner(array("page"))->sWhere("(pages.attivo = 'Y' OR pages.id_c in (".v("traduci_sempre_le_pagine_di_queste_categorie").")) AND contenuti_tradotti.salvato = 0");
 			}
 			else if ($campo == "id_c")
 				$ctModel->inner(array("category"))->sWhere("(contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND categories.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < categories.data_ultima_modifica))");
@@ -183,7 +191,8 @@ class TraduttoriModel extends GenericModel
 			$elementiDaTradurre = $ctModel->send();
 
 			// echo $ctModel->getQuery();
-			// print_r($elementiDaTradurre);die();
+			// print_r($elementiDaTradurre);
+			// die();
 			
 			foreach ($elementiDaTradurre as $riga)
 			{

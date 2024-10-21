@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-// function inspirated to reply found here: https://stackoverflow.com/questions/34231938/detect-bot-using-php
+// function inspirated by reply found here: https://stackoverflow.com/questions/34231938/detect-bot-using-php
 class Device
 {
 	public static function isBot()
