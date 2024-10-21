@@ -942,7 +942,8 @@ class OrdiniModel extends FormModel {
 					$sendTo = $ordine["email"];
 				
 				$mail->AddAddress($sendTo);
-				$mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+				// $mail->AddReplyTo(Parametri::$mailReplyTo, Parametri::$mailFromName);
+				$mail->AddReplyTo(ImpostazioniModel::getReplyToMailOrdini(), Parametri::$mailFromName);
 				
 				// Imposto le traduzioni del front
 				TraduzioniModel::$contestoStatic = "front";

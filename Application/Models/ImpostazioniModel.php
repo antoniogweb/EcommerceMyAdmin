@@ -136,6 +136,9 @@ class ImpostazioniModel extends GenericModel {
 				'reply_to_mail'		=>	array(
 					'labelString'=>	'Reply To nelle mail di sistema',
 				),
+				'reply_to_mail_ordini'		=>	array(
+					'labelString'=>	'Reply To nelle mail di sistema LEGATE AGLI ORDINI',
+				),
 				'bcc'		=>	array(
 					'labelString'=>	gtext("Campo copia nascosta"),
 					'wrap'		=>	array(
@@ -270,5 +273,10 @@ class ImpostazioniModel extends GenericModel {
 	public static function getEmailAvvisoPagamentoOrdine()
 	{
 		return Parametri::$mailInvioConfermaPagamento ? Parametri::$mailInvioConfermaPagamento : Parametri::$mailInvioOrdine;
+	}
+	
+	public static function getReplyToMailOrdini()
+	{
+		return (isset(self::$valori["reply_to_mail_ordini"]) && self::$valori["reply_to_mail_ordini"]) ? self::$valori["reply_to_mail_ordini"] : Parametri::$mailReplyTo;
 	}
 }
