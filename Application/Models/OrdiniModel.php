@@ -2494,4 +2494,70 @@ class OrdiniModel extends FormModel {
 		else
 			$this->values["numero_documento"] = ((int)$documento[0]["aggregate"]["numero"] + 1);
 	}
+	
+	// Recupera la sorgente negli ordini degli ultimi $ultimiXGiorni giorni, cercando ordini con la stessa mail fatti nelle $cercaIntervalloXOre precedenti
+	public function recuperaSorgente($ultimiXGiorni = 3, $cercaIntervalloXOre = 24)
+	{
+		$tempo = time() - ($ultimiXGiorni * 24 * 3600);
+		
+		$ordiniSenzaSorgente = $this->clear()->select("id_o,email,creation_time")->where(array(
+			"sorgente"			=>	"",
+			"tipo_ordine"		=>	"W",
+			"fonte"				=>	"ORDINE_WEB",
+			"id_lista_regalo"	=>	0,
+		))->sWhere(array(
+			"creation_time > ?", array($tempo)
+		))->orderBy("id_o desc")->send(false);
+		
+		// print_r($ordiniSenzaSorgente);
+		
+		foreach ($ordiniSenzaSorgente as $o)
+		{
+			$sorgente = "";
+			
+			$tempo = (int)$o["creation_time"] - ($cercaIntervalloXOre * 3600);
+			
+			$ordiniConSorgenteStessoCliente = $this->clear()->select("id_o,email,sorgente")->where(array(
+				"ne"	=>	array(
+					"sorgente"	=>	""
+				),
+				"tipo_ordine"		=>	"W",
+				"fonte"				=>	"ORDINE_WEB",
+				"id_lista_regalo"	=>	0,
+				"email"				=>	sanitizeAll($o["email"]),
+			))->sWhere(array(
+				"creation_time > ? and creation_time < ? and id_o != ?", array($tempo, (int)$o["creation_time"], (int)$o["id_o"])
+			))->orderBy("id_o desc")->limit(1)->send(false);
+			
+			// echo $this->getQuery()."\n\n";
+			
+			if (count($ordiniConSorgenteStessoCliente) > 0)
+				$sorgente = $ordiniConSorgenteStessoCliente[0]["sorgente"];
+			
+			if (!$sorgente)
+			{
+				$tempoRicorrente = (int)$o["creation_time"] - (10 * 24 * 3600); // più vecchi di 10 giorni
+				
+				$numeroOrdiniPrecedentiStessoCliente = $this->clear()->select("id_o,email")->where(array(
+					"email"				=>	sanitizeAll($o["email"]),
+				))->sWhere(array(
+					"creation_time < ? and id_o != ?", array($tempoRicorrente, (int)$o["id_o"])
+				))->orderBy("id_o desc")->limit(1)->rowNumber();
+				
+				if ($numeroOrdiniPrecedentiStessoCliente > 0)
+					$sorgente = "Ricorrente";
+			}
+			
+			if ($sorgente)
+			{
+				// echo $o["id_o"]."-".$sorgente."\n";
+				
+				$this->sValues(array(
+					"sorgente"	=>	$sorgente,
+				));
+				
+				$this->pUpdate((int)$o["id_o"]);
+			}
+		}
+	}
 }

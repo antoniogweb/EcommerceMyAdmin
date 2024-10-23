@@ -52,13 +52,13 @@ if (!isset($params["azione"]))
 	die();
 }
 
-if (!isset($params["stati"]))
+if ($params["azione"] == "annulla-ordini" && !isset($params["stati"]))
 {
 	echo "si prega di indicare l'elenco dei codici degli stati divisi da una virgola con l'istruzione --stati=\"<stati>\" \n";
 	die();
 }
 
-if (!isset($params["numero_minuti"]) || !is_numeric($params["numero_minuti"]) && (int)$params["numero_minuti"] > 0)
+if ($params["azione"] == "annulla-ordini" && (!isset($params["numero_minuti"]) || !is_numeric($params["numero_minuti"]) || $params["numero_minuti"] <= 0))
 {
 	echo "si prega di indicare un numero di minuti maggiore di 0 con l'istruzione --numero_minuti=\"<numero_minuti>\" \n";
 	die();
@@ -104,4 +104,15 @@ if ($params["azione"] == "annulla-ordini")
 	}
 	
 	$log->writeString("FINE ANNULLAMENTO ORDINI");
+}
+
+if ($params["azione"] == "recupera-sorgente-ordini")
+{
+	$log->writeString("INIZIO RECUPERO SORGENTE ORDINI");
+	
+	$o = new OrdiniModel();
+	
+	$o->recuperaSorgente();
+	
+	$log->writeString("FINE RECUPERO SORGENTE ORDINI");
 }
