@@ -955,7 +955,10 @@ class PagesModel extends GenericModel {
 	// Imposta l'alias della pagina controllando che non ci sia un duplicato
 	public function setAlias($id)
 	{
-		if (isset($this->values[$this->aliaseFieldName]) && strcmp($this->values[$this->aliaseFieldName],"") === 0)
+		if (isset($this->values[$this->aliaseFieldName]) && (
+				strcmp($this->values[$this->aliaseFieldName],"") === 0 || 
+				($id && strpos($this->values[$this->aliaseFieldName], v("alias_pagina_duplicata")) !== false) 
+			))
 		{
 			$alias = encodeUrl($this->values[$this->titleFieldName]);
 			
@@ -4253,6 +4256,7 @@ class PagesModel extends GenericModel {
 			$this->values = $res[0]["pages"];
 			
 			$this->values["title"] = "(Copia di) " . $this->values["title"];
+			$this->values[$this->aliaseFieldName] = v("alias_pagina_duplicata");
 			$this->values["numero_acquisti_pagina"] = 0;
 			
 			$this->checkDates();

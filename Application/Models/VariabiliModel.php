@@ -442,6 +442,7 @@ class VariabiliModel extends GenericModel {
 		"carattere_divisione_parole_permalink"	=>	"-", // carattere usato per creare il permalink
 		"categoria_in_permalink_pagina"	=>	0, // se impostato ad 1, per le nuove pagine viene aggiunta la categoria nel permalink
 		"marchio_prima_della_categoria_in_url"	=>	1, // se importato ad 1 il marchio viene posizionato prima dell categoria in URL (altrimenti dopo)
+		"alias_pagina_duplicata"		=>	"questa-pagina-e-duplicata", // alias impostato nelle pagine duplicate. Se viene trovata questo testo all'update della pagina, l'ALIAS viene ricreato
 		## PAGINA DETTAGLIO PRODOTTO ##
 		"estrai_sempre_correlati"	=>	1, // se impostato ad 1, estrae sempre i correlati, anche se non è la pagina di un prodotto
 		"aggiuni_a_correlati_prodotti_stessa_categoria"	=>	0, // se impostato su 1, aggiunge ai correlati manuali anche i prodotti della stessa categoria
