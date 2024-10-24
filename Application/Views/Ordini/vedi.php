@@ -160,7 +160,6 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									<?php } ?>
 								<?php } ?>
 								<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { 
-									
 									$attributiRiga = $p["righe"]["attributi_backend"] ? $p["righe"]["attributi_backend"] : $p["righe"]["attributi"];
 									echo "<br />".$attributiRiga; 
 								} ?>

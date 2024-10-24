@@ -8,7 +8,7 @@
 	<div class="box_entry_dati first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Ragione sociale");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("ragione_sociale",$values['ragione_sociale'],"uk-input class_ragione_sociale",null,"placeholder='".gtext("Ragione sociale", false)."'");?>
+			<?php echo Html_Form::input("ragione_sociale",$values['ragione_sociale'],"uk-input class_ragione_sociale",null,'placeholder="'.gtext("Ragione sociale", false).'"');?>
 		</div>
 	</div>
 	<div class="box_entry_dati tr_nome uk-margin uk-margin-remove-bottom">
