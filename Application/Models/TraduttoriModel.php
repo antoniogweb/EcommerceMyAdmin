@@ -167,7 +167,7 @@ class TraduttoriModel extends GenericModel
 				{
 					$pModel = new PagesModel();
 					
-					$idPages = $pModel->clear()->select("id_page")->addWhereAttivoPermettiTest()->orderBy("id_page desc")->limit(10)->toList("id_page")->send();
+					$idPages = $pModel->clear()->select("id_page")->addWhereAttivoPermettiTest()->orderBy("id_page desc")->limit(v("traduci_ultime_x_pagine_se_modificate"))->toList("id_page")->send();
 					$idPages = forceIntDeep($idPages);
 					
 					$ctModel->inner(array("page"))->sWhere(array("(pages.attivo = 'Y' OR pages.id_c in (".v("traduci_sempre_le_pagine_di_queste_categorie").")) AND (contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica AND pages.id_page in (".$pModel->placeholdersFromArray($idPages).")))",$idPages));
