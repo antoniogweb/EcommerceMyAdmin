@@ -62,7 +62,7 @@ class PagesattributiModel extends GenericModel {
 		return 0;
 	}
 	
-	public function getNomiColonne($id_page, $lingua = null)
+	public function getNomiColonne($id_page, $lingua = null, $backend = false)
 	{
 		$clean["id_page"] = (int)$id_page;
 		
@@ -81,7 +81,7 @@ class PagesattributiModel extends GenericModel {
 		
 		foreach ($res as $r)
 		{
-			$arrayColonne[$r["pages_attributi"]["colonna"]] = afield($r, "titolo");
+			$arrayColonne[$r["pages_attributi"]["colonna"]] = $backend ? $r["attributi"]["titolo"] : afield($r, "titolo");
 		}
 		
 		return $arrayColonne;

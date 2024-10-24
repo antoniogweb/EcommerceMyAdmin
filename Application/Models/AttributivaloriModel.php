@@ -120,6 +120,11 @@ class AttributivaloriModel extends GenericModel {
 		))->orderBy($orderBy)->toList("id_av","titolo")->send();
 	}
 	
+	public function getNameBackend($id_av)
+	{
+		return $this->clear()->select("titolo")->whereId((int)$id_av)->field("titolo");
+	}
+	
 	//get the name of the attribute from the id
 	public function getName($id_av)
 	{

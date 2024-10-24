@@ -837,6 +837,25 @@ class CartModel extends GenericModel {
 		}
 	}
 	
+	protected function aggiungiCampoAttributiBackend($id_c, $jsonPers)
+	{
+		$comb = new CombinazioniModel();
+		$pers = new PersonalizzazioniModel();
+		
+		// Attributi in lingua backend (lingua default)
+		$attributiBackendArray = array();
+		
+		$combAttrBackend = $comb->getStringa($id_c, "<br />", false, true);
+		if ($combAttrBackend)
+			$attributiBackendArray[] = $combAttrBackend;
+		
+		$persAttrBackend = $pers->getStringa($jsonPers, "<br />", false, true);
+		if ($persAttrBackend)
+			$attributiBackendArray[] = $persAttrBackend;
+		
+		$this->values["attributi_backend"] = implode("<br />",$attributiBackendArray);
+	}
+	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false)
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -931,6 +950,8 @@ class CartModel extends GenericModel {
 					$this->values["attributi"] = implode("<br />",$attributiArray);
 					$this->values["json_attributi"] = $comb->getStringa($clean["id_c"],"",true);
 					$this->values["json_personalizzazioni"] = $pers->getStringa($jsonPers,"",true);
+					
+					$this->aggiungiCampoAttributiBackend($clean["id_c"], $jsonPers);
 				}
 				
 				$this->sanitize();
@@ -968,6 +989,7 @@ class CartModel extends GenericModel {
 				
 				$this->values["title"] = $rPage[0]["pages"]["title"];
 				
+				// Attributi in lingua navigazione corrente
 				$attributiArray = array();
 				
 				$combAttr = $comb->getStringa($clean["id_c"]);
@@ -992,6 +1014,8 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_crediti"] = $rPage[0]["pages"]["prodotto_crediti"];
 				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
 				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
+				
+				$this->aggiungiCampoAttributiBackend($clean["id_c"], $jsonPers);
 				
 				// Traccio la sorgente
 				if (v("traccia_sorgente_utente") && User::$sorgente && App::$isFrontend)

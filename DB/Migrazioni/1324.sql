@@ -1,0 +1,1 @@
+alter table cart add attributi_backend text not null after attributi;

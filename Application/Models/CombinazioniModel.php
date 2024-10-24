@@ -63,7 +63,7 @@ class CombinazioniModel extends GenericModel {
         );
     }
     
-	public function getStringa($id_c, $char = "<br />", $json = false)
+	public function getStringa($id_c, $char = "<br />", $json = false, $backend = false)
 	{
 		$clean["id_c"] = (int)$id_c;
 		
@@ -76,14 +76,17 @@ class CombinazioniModel extends GenericModel {
 			$pa = new PagesattributiModel();
 			$attr = new AttributivaloriModel();
 			
-			$colonne = $pa->getNomiColonne($clean["id_page"]);
+			$colonne = $pa->getNomiColonne($clean["id_page"], null, $backend);
 			
 			$string = "";
 			$stringArray = array();
 			$jsonArray = array();
 			foreach ($colonne as $col => $name)
 			{
-				$valoreAttributo = $attr->getName($res[0]["combinazioni"][$col]);
+				if ($backend)
+					$valoreAttributo = $attr->getNameBackend($res[0]["combinazioni"][$col]);
+				else
+					$valoreAttributo = $attr->getName($res[0]["combinazioni"][$col]);
 				
 				$template = v("template_attributo");
 				

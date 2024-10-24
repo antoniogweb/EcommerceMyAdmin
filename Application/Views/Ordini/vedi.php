@@ -159,7 +159,11 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 										<?php } ?>
 									<?php } ?>
 								<?php } ?>
-								<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
+								<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { 
+									
+									$attributiRiga = $p["righe"]["attributi_backend"] ? $p["righe"]["attributi_backend"] : $p["righe"]["attributi"];
+									echo "<br />".$attributiRiga; 
+								} ?>
 								</td>
 								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?>
 								<td class="text-left"><?php echo SpedizioninegozioModel::g(false)->badgeSpedizione($ordine["id_o"], $p["righe"]["id_r"], false, "")?></td>

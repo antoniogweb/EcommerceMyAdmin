@@ -40,7 +40,7 @@ class PersonalizzazioniModel extends GenericModel
         );
     }
     
-    public function getStringa($struct, $char = "<br />", $json = false)
+    public function getStringa($struct, $char = "<br />", $json = false, $backend = false)
 	{
 		if (is_array($struct))
 		{
