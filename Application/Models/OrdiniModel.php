@@ -2496,7 +2496,7 @@ class OrdiniModel extends FormModel {
 	}
 	
 	// Recupera la sorgente negli ordini degli ultimi $ultimiXGiorni giorni, cercando ordini con la stessa mail fatti nelle $cercaIntervalloXOre precedenti
-	public function recuperaSorgente($ultimiXGiorni = 3, $cercaIntervalloXOre = 24)
+	public function recuperaSorgente($ultimiXGiorni = 3, $cercaIntervalloXOre = 24, $log = null)
 	{
 		$tempo = time() - ($ultimiXGiorni * 24 * 3600);
 		
@@ -2557,6 +2557,9 @@ class OrdiniModel extends FormModel {
 				));
 				
 				$this->pUpdate((int)$o["id_o"]);
+				
+				if ($log)
+					$log->writeString("SALVATA SORGENTE $sorgente NELL'ORDINE ".(int)$o["id_o"]);
 			}
 		}
 	}

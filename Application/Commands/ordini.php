@@ -112,7 +112,7 @@ if ($params["azione"] == "recupera-sorgente-ordini")
 	
 	$o = new OrdiniModel();
 	
-	$o->recuperaSorgente();
+	$o->recuperaSorgente(3, 24, $log);
 	
 	$log->writeString("FINE RECUPERO SORGENTE ORDINI");
 }
