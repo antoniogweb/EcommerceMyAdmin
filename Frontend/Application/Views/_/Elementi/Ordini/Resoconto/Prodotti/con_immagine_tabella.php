@@ -9,7 +9,7 @@
 			<?php } ?>
 		</div>
 		<div class="due_colonne_col" style="text-align:left">
-			<b><?php echo $ordine["tipo_ordine"] != "W" ? $p["righe"]["title"] : PagesModel::getPageLocalizedTitle($p["righe"]["id_page"], $p["righe"]["title"]);?></b>
+			<b><?php echo OrdiniModel::tipoOrdine($p["righe"]["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($p["righe"]) : PagesModel::getTitleRigaFrontend($p["righe"]);?></b>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 			<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			

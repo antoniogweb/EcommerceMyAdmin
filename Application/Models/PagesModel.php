@@ -3479,7 +3479,7 @@ class PagesModel extends GenericModel {
 		return !empty($record) ? true : false;
 	}
 	
-	// Restituisce il titolo della pagina nella lingua di visualizzazione
+	// Restituisce il titolo della pagina nella lingua di visualizzazione (solo nel caso di ordini frontend)
 	public static function getPageLocalizedTitle($idPage, $default = "", $lingua = null)
 	{
 		$page = self::getPageDetails($idPage, $lingua);
@@ -3490,6 +3490,21 @@ class PagesModel extends GenericModel {
 		return $default;
 	}
 
+	// Restituisce il titolo della pagina nella lingua di visualizzazione
+	public static function getTitleRigaBackend($riga = array())
+	{
+		if ($riga["id_riga_tipologia"])
+			return RighetipologieModel::g()->select("titolo")->whereId((int)$riga["id_riga_tipologia"])->field("titolo");
+		
+		return $riga["title"];
+	}
+	
+	// Restituisce il titolo della pagina nella lingua di visualizzazione
+	public static function getTitleRigaFrontend($riga = array())
+	{
+		return $riga["title_lingua"] ? $riga["title_lingua"] : $riga["title"];
+	}
+	
 	public static function getPageDetails($idPage, $lingua = null)
 	{
 		$p = new PagesModel();

@@ -988,6 +988,7 @@ class CartModel extends GenericModel {
 				$this->values["iva"] = $iva->getValore($rPage[0]["pages"]["id_iva"]);
 				
 				$this->values["title"] = $rPage[0]["pages"]["title"];
+				$this->values["title_lingua"] = PagesModel::getPageLocalizedTitle($clean["id_page"], $rPage[0]["pages"]["title"]);
 				
 				// Attributi in lingua navigazione corrente
 				$attributiArray = array();
