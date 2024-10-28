@@ -45,7 +45,7 @@ foreach ($righeOrdine as $p) { ?>
 				<?php } ?>
 			</div>
 			<div class="uk-visible@s">
-				<?php echo PagesModel::getPageLocalizedTitle($p["righe"]["id_page"], $p["righe"]["title"]);?>
+				<?php echo $ordine["tipo_ordine"] != "W" ? $p["righe"]["title"] : PagesModel::getPageLocalizedTitle($p["righe"]["id_page"], $p["righe"]["title"]);?>
 				<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<span class='uk-text-small'><br />".$p["righe"]["attributi"]."</span>"; } ?>
 				<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			</div>
@@ -56,7 +56,7 @@ foreach ($righeOrdine as $p) { ?>
 	<div class="uk-width-expand">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@s uk-text-left uk-grid" uk-grid="">
 			<div class="uk-hidden@s">
-				<b><?php echo PagesModel::getPageLocalizedTitle($p["righe"]["id_page"], $p["righe"]["title"]);?></b>
+				<b><?php echo $ordine["tipo_ordine"] != "W" ? $p["righe"]["title"] : PagesModel::getPageLocalizedTitle($p["righe"]["id_page"], $p["righe"]["title"]);?></b>
 				<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<span class='uk-text-small'><br />".$p["righe"]["attributi"]."</span>"; } ?>
 				<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			</div>
