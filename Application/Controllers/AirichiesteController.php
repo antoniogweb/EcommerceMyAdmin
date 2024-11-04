@@ -26,7 +26,7 @@ class AirichiesteController extends BaseController
 {
 	public $sezionePannello = "utenti";
 	
-	public $tabella = "richieste AI";
+	public $tabella = "richieste IA";
 
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
