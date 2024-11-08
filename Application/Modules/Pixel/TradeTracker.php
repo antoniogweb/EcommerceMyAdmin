@@ -58,6 +58,9 @@ class TradeTracker extends Pixel
 		if (!$this->checkData($strutturaOrdine))
 			return "";
 		
+		if ($strutturaOrdine["id_lista_regalo"] || $strutturaOrdine["sorgente"] != "Tradetracker")
+			return "";
+		
 		$jsonArray = array(
 			"type"			=>	"sales",
 			"campaignID"	=>	$this->params["key_1"],
