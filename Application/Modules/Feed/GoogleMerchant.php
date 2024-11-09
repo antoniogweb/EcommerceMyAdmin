@@ -111,8 +111,10 @@ class GoogleMerchant extends Feed
 			else
 				$temp["g:google_product_category"] = htmlentitydecode(cfield($r,"title"));
 			
+			$urlImmagine = (Params::$lang == v("lingua_default_frontend")) ? Url::getRoot() : Url::getFileRoot();
+			
 			if ($r["immagine_principale"])
-				$temp["g:image_link"] = Url::getRoot()."thumb/dettagliobig/".$r["immagine_principale"];
+				$temp["g:image_link"] = $urlImmagine."thumb/dettagliobig/".$r["immagine_principale"];
 			
 			if (count($r["altre_immagini"]) > 0)
 			{
@@ -127,7 +129,7 @@ class GoogleMerchant extends Feed
 					if ($count >= $numeroLimite)
 						break;
 					
-					$temp["g:additional_image_link"][] = Url::getRoot()."thumb/dettagliobig/".$img["immagine"];
+					$temp["g:additional_image_link"][] = $urlImmagine."thumb/dettagliobig/".$img["immagine"];
 					
 					$count++;
 				}
