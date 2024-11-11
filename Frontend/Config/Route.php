@@ -201,6 +201,7 @@ class Route
 		'ticket,immagini',
 		'ticket,upload',
 		'ticket,scarica',
+		'cron,traduci',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -380,6 +381,7 @@ class Route
 		'lista-regalo/(.*)\/(.*)\.html'=>	'contenuti/listaregalo/${1}/${2}',
 		'conferma-contatto/(.*)'	=>	'contenuti/confermacontatto/${1}',
 		'feed/prodotti/(.*)'		=>	'feed/prodotti/${1}',
+		'cron/traduci'				=>	'cron/traduci',
 		'motoriricerca/cerca/(.*)'	=>	'motoriricerca/cerca/${1}',
 		'captcha/index/([1-2]{1})'	=>	'captcha/index/${1}',
 		'paypal/createorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/createorder/${1}/${2}',

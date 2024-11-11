@@ -38,45 +38,6 @@ class Traduttore
 		return "#$token";
 	}
 
-	// public function ripristinaMarchio($matches)
-	// {
-	// 	self::getMarchi();
- //
-	// 	if (isset(self::$marchi[$matches[1]]))
-	// 	{
-	// 		if (isset($matches[2]))
-	// 			return self::$marchi[$matches[1]].$matches[2];
-	// 		else
-	// 			return self::$marchi[$matches[1]];
-	// 	}
-	// }
-
-	// public function ripristinaMarchioBefore($matches)
-	// {
-	// 	self::getMarchi();
- //
-	// 	if (isset($matches[2]) && isset(self::$marchi[$matches[2]]))
-	// 		return $matches[1].self::$marchi[$matches[2]];
-	// 	else if (isset($matches[1]) && isset(self::$marchi[$matches[1]]))
-	// 		return self::$marchi[$matches[1]];
-	// }
-
-	// public function ripristinaPlaceholderAfter($matches)
-	// {
-	// 	if (isset($matches[2]))
-	// 		return "[".$this->placeholders[$matches[1]]."]".$matches[2];
-	// 	else
-	// 		return "[".$this->placeholders[$matches[1]]."]";
-	// }
- //
-	// public function ripristinaPlaceholderBefore($matches)
-	// {
-	// 	if (isset($matches[2]) && isset($this->placeholders[$matches[2]]))
-	// 		return $matches[2]."[".$this->placeholders[$matches[2]]."]";
-	// 	else if (isset($matches[1]) && isset($this->placeholders[$matches[1]]))
-	// 		return "[".$this->placeholders[$matches[1]]."]";
-	// }
-
 	public function ripristinaPlaceholder($testo)
 	{
 		foreach ($this->placeholders as $token => $placeholder)
@@ -109,6 +70,8 @@ class Traduttore
 		{
 			$marchi = MarchiModel::g()->clear()->select("id_marchio,titolo")->send(false);
 
+			self::$marchi = [];
+			
 			foreach ($marchi as $marchio)
 			{
 				self::$marchi[$marchio["id_marchio"]] = htmlentitydecode($marchio["titolo"]);
