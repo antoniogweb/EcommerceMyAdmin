@@ -24,6 +24,29 @@ class GoogleMerchant extends Feed
 {
 	public $isFbk = false;
 	
+	protected function titoloFeed($r)
+	{
+		$titolo = F::alt($r["titolo"], ENT_COMPAT);
+		
+		if (v("elimina_emoticons_da_feed"))
+			$titolo = F::removeEmoji($titolo);
+		
+		return $titolo;
+	}
+	
+	protected function descrizioneFeed($r)
+	{
+		if (!$this->isFbk || v("no_tag_descrizione_feed"))
+			$descrizione = strip_tags(htmlentitydecode(F::sanitizeXML($r["descrizione"])));
+		else
+			$descrizione = htmlspecialchars(htmlentitydecode(F::sanitizeXML($r["descrizione"])), ENT_QUOTES, "UTF-8");
+		
+		if (v("elimina_emoticons_da_feed"))
+			$descrizione = F::removeEmoji($descrizione);
+		
+		return $descrizione;
+	}
+	
 	public function feedProdotti($p = null, $outputFile = null)
 	{
 		$linkAlleVarianti = $this->linkAlleVarianti();
@@ -53,7 +76,7 @@ class GoogleMerchant extends Feed
 			
 			$temp = array(
 				"g:id"	=>	(v("usa_sku_come_id_item") && VariabiliModel::combinazioniLinkVeri()) ? $r["codice"] : $idElemento,
-				"g:title"	=>	F::alt($r["titolo"], ENT_COMPAT),
+				"g:title"	=>	$this->titoloFeed($r), //F::alt($r["titolo"], ENT_COMPAT),
 				"g:link"	=>	$r["link"],
 				"g:price"	=>	number_format($r["prezzo_pieno"],2,".",""). " EUR",
 				"g:availability"	=>	$r["giacenza"] > 0 ? "in stock" : $outOfStock,
@@ -83,16 +106,18 @@ class GoogleMerchant extends Feed
 					$temp["g:mpn"] = htmlentitydecode($r["codice"]);
 // 			}
 			
-			if (!$this->isFbk || v("no_tag_descrizione_feed"))
-				$temp["g:description"] = strip_tags(htmlentitydecode(F::sanitizeXML($r["descrizione"])));
-			else
-				$temp["g:description"] = htmlspecialchars(htmlentitydecode(F::sanitizeXML($r["descrizione"])), ENT_QUOTES, "UTF-8");
+			// if (!$this->isFbk || v("no_tag_descrizione_feed"))
+			// 	$temp["g:description"] = strip_tags(htmlentitydecode(F::sanitizeXML($r["descrizione"])));
+			// else
+			// 	$temp["g:description"] = htmlspecialchars(htmlentitydecode(F::sanitizeXML($r["descrizione"])), ENT_QUOTES, "UTF-8");
 			
-			if (v("elimina_emoticons_da_feed"))
-			{
-				$temp["g:title"] = F::removeEmoji($temp["g:title"]);
-				$temp["g:description"] = F::removeEmoji($temp["g:description"]);
-			}
+			$temp["g:description"] = $this->descrizioneFeed($r);
+			
+			// if (v("elimina_emoticons_da_feed"))
+			// {
+			// 	// $temp["g:title"] = F::removeEmoji($temp["g:title"]);
+			// 	// $temp["g:description"] = F::removeEmoji($temp["g:description"]);
+			// }
 			
 			if (count($r["categorie"]) > 0)
 			{
