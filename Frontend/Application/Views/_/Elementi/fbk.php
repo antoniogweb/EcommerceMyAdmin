@@ -27,7 +27,7 @@ else if (!v("pixel_nel_footer") && isset($cicloPrimo))
 				
 				$ordineGTML = $o->selectId((int)$idOrdineGtm);
 				
-				if (!empty($ordineGTML) && !$ordineGTML["inviato_fbk"] && $ordineGTML["stato"] != "deleted")
+				if (!empty($ordineGTML) && (!$ordineGTML["inviato_fbk"] || $ordineGTML["pagamento"] == "paypal") && $ordineGTML["stato"] != "deleted")
 				{
 					$rOrdine = $r->clear()->where(array("id_o"=>(int)$idOrdineGtm))->send(false);
 					

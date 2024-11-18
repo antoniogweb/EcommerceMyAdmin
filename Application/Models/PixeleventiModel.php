@@ -69,7 +69,7 @@ class PixeleventiModel extends GenericModel
 			"evento"		=>	$evento,
 			"tabella_elemento"	=>	sanitizeAll($tabellaElemento),
 			"id_elemento"	=>	(int)$idElemento,
-		));
+		))->orderBy("id_pixel_evento desc");
 
 		return $tutti ? $this->send(false) : $this->record();
 	}

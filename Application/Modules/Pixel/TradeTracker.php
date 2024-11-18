@@ -44,14 +44,18 @@ class TradeTracker extends Pixel
 	
 	public function getPurchaseScript($idOrdine, $info = array(), $script = true)
 	{
-		$evento = $this->getEvento("PURCHASE", $idOrdine, "orders");
+		$evento = $this->getEvento("PURCHASE", $idOrdine, "orders", true);
+		$eventoDettaglio = $this->getEvento("PURCHASE", $idOrdine, "orders");
 		
+		if (count($evento) >= 2 && ($script || (!empty($eventoDettaglio) && $eventoDettaglio["codice_evento_noscript"])))
+			return;
+/*
 		if ($script && !empty($evento))
 		{
 			self::$eventoInviato[] = $this->params["id_pixel"];
 			
 			return "";
-		}
+		}*/
 		
 		$strutturaOrdine = $this->infoOrdine((int)$idOrdine);
 		

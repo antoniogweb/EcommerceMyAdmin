@@ -47,7 +47,7 @@ if (v("codice_gtm_analytics"))
 		
 		$ordineGTML = $o->selectId((int)$idOrdineGtm);
 		
-		if (!empty($ordineGTML) && !$ordineGTML["inviato_gtm"] && $ordineGTML["stato"] != "deleted")
+		if (!empty($ordineGTML) && (!$ordineGTML["inviato_gtm"] || $ordineGTML["pagamento"] == "paypal") && $ordineGTML["stato"] != "deleted")
 		{
 			$rOrdine = $r->clear()->where(array("id_o"=>(int)$idOrdineGtm))->send(false);
 			
