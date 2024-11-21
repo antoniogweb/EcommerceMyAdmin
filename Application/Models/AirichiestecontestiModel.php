@@ -100,7 +100,7 @@ class AirichiestecontestiModel extends GenericModel
 
 	public function getContesto($idRichiesta)
 	{
-		$pagine = $this->clear()->select("ai_richieste_contesti.importante,pages.title,pages.description,pages.id_page,pages.id_c,pages.id_marchio")->inner(array("pagina"))->where(array(
+		$pagine = $this->clear()->select("ai_richieste_contesti.importante,pages.title,pages.description,descrizione_2,descrizione_3,descrizione_4,pages.id_page,pages.id_c,pages.id_marchio")->inner(array("pagina"))->where(array(
 			"id_ai_richiesta"	=>	(int)$idRichiesta,
 		))->orderBy("ai_richieste_contesti.id_order")->send();
 
@@ -115,11 +115,21 @@ class AirichiestecontestiModel extends GenericModel
 			$stringaId .= "\nID MARCHIO: ".$p["pages"]["id_marchio"];
 			$stringaId .= "\nID CATEGORIA: ".$p["pages"]["id_c"];
 
-			$contesto .= "PRODOTTO $indice:\nTITOLO PRODOTTO $indice: ".htmlentitydecode($p["pages"]["title"]).$importante.$stringaId."\nCONTENUTO PRODOTTO $indice: ".strip_tags(htmlentitydecode($p["pages"]["description"]))."\n\n";
+			$contesto .= "PRODOTTO $indice:\nTITOLO PRODOTTO $indice: ".htmlentitydecode($p["pages"]["title"]).$importante.$stringaId."\nCONTENUTO PRODOTTO $indice: ".strip_tags(htmlentitydecode($p["pages"]["description"]));
 
+			if ($p["pages"]["descrizione_2"])
+				$contesto .= "\n".strip_tags(htmlentitydecode($p["pages"]["descrizione_2"]));
+			
+			if ($p["pages"]["descrizione_3"])
+				$contesto .= "\n".strip_tags(htmlentitydecode($p["pages"]["descrizione_3"]));
+			
+			if ($p["pages"]["descrizione_4"])
+				$contesto .= "\n".strip_tags(htmlentitydecode($p["pages"]["descrizione_4"]));
+			
+			$contesto .= "\n\n";
 			$indice++;
 		}
-
+		
 		return $contesto;
 	}
 }
