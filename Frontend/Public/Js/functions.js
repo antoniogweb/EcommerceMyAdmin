@@ -408,17 +408,15 @@ function impostaCorrieriESpeseSpedizione(ricarica_pagamenti)
 			dataType: "json",
 			success: function(content){
 				
-				if (!isInArray(pagamento, content))
-					pagamento = content[0];
+				// if (!isInArray(pagamento, content))
+				// 	pagamento = content[0];
+				
+				$(".radio_pagamento").each(function(){
+					$(this).find("input").iCheck('uncheck');
+				});
 				
 				if (content.length == 0)
-				{
-					$(".radio_pagamento").each(function(){
-						$(this).find("input").iCheck('uncheck');
-					});
-					
 					$(".bx_pagamenti").css("display","none");
-				}
 				else
 					$(".bx_pagamenti").css("display","block");
 				
