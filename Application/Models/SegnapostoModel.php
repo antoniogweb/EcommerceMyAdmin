@@ -81,7 +81,11 @@ class SegnapostoModel extends GenericModel {
 			$lingua = (isset($record["lingua"]) && $record["lingua"]) ? $record["lingua"] : "it";
 			
 			if (v("attiva_nazione_nell_url"))
-				$lingua .= Params::$languageCountrySeparator.strtolower(v("nazione_default"));
+			{
+				$nazione = (isset($record["nazione_navigazione"]) && $record["nazione_navigazione"] && $record["nazione_navigazione"] != "W") ? $record["nazione_navigazione"] : v("nazione_default");
+				
+				$lingua .= Params::$languageCountrySeparator.strtolower($nazione);
+			}
 			
 			if ($metodo)
 			{
