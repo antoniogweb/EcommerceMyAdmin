@@ -320,19 +320,8 @@ function getNazione()
 
 var cercaSpeseSpedizione = true;
 
-function impostaCorrieriESpeseSpedizione()
+function impostaCorriereESpese(nazione)
 {
-// 	if (!attiva_spedizione)
-// 		return;
-	
-	if (!cercaSpeseSpedizione)
-		return;
-	
-	var nazione = getNazione();
-	
-	if (nazione == "" || nazione == undefined)
-		return;
-	
 	if (attiva_spedizione)
 	{
 		if ($(".box_corrieri").length > 0)
@@ -393,6 +382,130 @@ function impostaCorrieriESpeseSpedizione()
 		var nazione = getNazione();
 		impostaSpeseSpedizione(0, nazione);
 	}
+}
+
+function impostaCorrieriESpeseSpedizione(ricarica_pagamenti)
+{
+// 	if (!attiva_spedizione)
+// 		return;
+	
+	if (!cercaSpeseSpedizione)
+		return;
+	
+	var nazione = getNazione();
+	
+	if (nazione == "" || nazione == undefined)
+		return;
+	
+	if (ricarica_pagamenti === undefined && $(".bx_pagamenti").length > 0)
+	{
+		var pagamento = $("[name='pagamento']:checked").val();
+		
+		$.ajaxQueue({
+			url: baseUrl + "/ordini/pagamenti/" + nazione,
+			cache:false,
+			async: true,
+			dataType: "json",
+			success: function(content){
+				
+				if (!isInArray(pagamento, content))
+					pagamento = content[0];
+				
+				if (content.length == 0)
+				{
+					$(".radio_pagamento").each(function(){
+						$(this).find("input").iCheck('uncheck');
+					});
+					
+					$(".bx_pagamenti").css("display","none");
+				}
+				else
+					$(".bx_pagamenti").css("display","block");
+				
+				$(".radio_pagamento").css("display","none");
+				
+				for (var i=0;i<content.length;i++)
+				{
+					$(".radio_pagamento.radio_pagamento_"+content[i]).css("display","block");
+					
+					if (pagamento == content[i])
+					{
+						cercaSpeseSpedizione = false;
+						$(".radio_pagamento.radio_pagamento_"+content[i]).find("input").iCheck('check');
+						cercaSpeseSpedizione = true;
+					}
+				}
+// 				
+// 				if (id_corriere == "" || id_corriere == undefined)
+// 					id_corriere = 0;
+				
+				impostaCorriereESpese(nazione);
+			}
+		});
+	}
+	else
+		impostaCorriereESpese(nazione);
+	
+// 	if (attiva_spedizione)
+// 	{
+// 		if ($(".box_corrieri").length > 0)
+// 		{
+// 			var id_corriere = $("[name='id_corriere']:checked").val();
+// 			
+// 			$.ajaxQueue({
+// 				url: baseUrl + "/ordini/corrieri/" + nazione,
+// 				cache:false,
+// 				async: true,
+// 				dataType: "json",
+// 				success: function(content){
+// 					if (!isInArray(id_corriere, content))
+// 						id_corriere = content[0];
+// 					
+// 					if (content.length == 0)
+// 					{
+// 						$(".radio_corriere").each(function(){
+// 							$(this).find("input").iCheck('uncheck');
+// 						});
+// 						
+// 						$(".box_corrieri").css("display","none");
+// 					}
+// 					else
+// 						$(".box_corrieri").css("display","block");
+// 					
+// 					$(".radio_corriere").css("display","none");
+// 					
+// 					for (var i=0;i<content.length;i++)
+// 					{
+// 						$(".radio_corriere.corriere_"+content[i]).css("display","block");
+// 						
+// 						if (id_corriere == content[i])
+// 						{
+// 							cercaSpeseSpedizione = false;
+// 							$(".radio_corriere.corriere_"+content[i]).find("input").iCheck('check');
+// 							cercaSpeseSpedizione = true;
+// 						}
+// 					}
+// 					
+// 					if (id_corriere == "" || id_corriere == undefined)
+// 						id_corriere = 0;
+// 					
+// 					impostaSpeseSpedizione(id_corriere, nazione);
+// 				}
+// 			});
+// 		}
+// 		else
+// 		{
+// 			var nazione = getNazione();
+// 			var id_corriere = $("[name='id_corriere']").val();
+// 			
+// 			impostaSpeseSpedizione(id_corriere, nazione);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		var nazione = getNazione();
+// 		impostaSpeseSpedizione(0, nazione);
+// 	}
 }
 
 function impostaLabelPagamento(obj)
@@ -836,7 +949,7 @@ $(document).ready(function(){
 	$("body").on("ifChanged", "[name='pagamento']", function(e){
 		
 		if (spesa_pagamento_possibile && $(this).is(":checked"))
-			impostaCorrieriESpeseSpedizione();
+			impostaCorrieriESpeseSpedizione(false);
 		
 	});
 	

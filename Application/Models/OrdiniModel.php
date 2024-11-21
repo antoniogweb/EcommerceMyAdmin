@@ -192,21 +192,20 @@ class OrdiniModel extends FormModel {
 		return "";
 	}
 	
-	public static function setPagamenti()
+	public static function getPagamentiPermessi($nazione)
 	{
-		if (self::$pagamentiSettati)
-			return;
-		
-		if (empty(VariabiliModel::$valori))
-			VariabiliModel::ottieniVariabili();
-		
+		return implode(",", self::getPagamentiRes($nazione, true));
+	}
+	
+	public static function getPagamentiRes($nazione = "IT", $soloCodice = false)
+	{
 		$p = new PagamentiModel();
 		
 		$p->clear()->where(array(
 			"attivo"	=>	1
 		))->orderBy("id_order")->addJoinTraduzione();
 		
-		if (App::$isFrontend && CartModel::soloProdottiSenzaSpedizione())
+		if (App::$isFrontend && (CartModel::soloProdottiSenzaSpedizione() || (!v("permetti_pagamento_contrassegno_fuori_nazione_default") && strtoupper($nazione) != v("nazione_default"))))
 			$p->aWhere(array(
 				"ne"	=>	array(
 					"pagamenti.codice"	=>	"contrassegno",
@@ -220,7 +219,21 @@ class OrdiniModel extends FormModel {
 				),
 			));
 		
-		$res = $p->send();
+		if ($soloCodice)
+			$p->toList("codice");
+		
+		return $p->send();
+	}
+	
+	public static function setPagamenti($nazione = "IT")
+	{
+		if (self::$pagamentiSettati)
+			return;
+		
+		if (empty(VariabiliModel::$valori))
+			VariabiliModel::ottieniVariabili();
+		
+		$res = self::getPagamentiRes($nazione);
 		
 		self::$elencoPagamenti = array();
 		

@@ -371,7 +371,7 @@ class BaseOrdiniController extends BaseController
 		
 		$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
 		
-		$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.v("pagamenti_permessi"),"pagamento|".gtext("<b>Si prega di selezionare il pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+		$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($res[0]["orders"]["nazione_spedizione"]),"pagamento|".gtext("<b>Si prega di selezionare il pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
 		
 		$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.implode(",",array_keys($data["tendinaIndirizzi"])),"id_spedizione|".gtext("<b>Si prega di selezionare l'indirizzo</b>")."<div class='evidenzia'>class_id_spedizione</div>");
 		
@@ -1163,7 +1163,8 @@ class BaseOrdiniController extends BaseController
 		
 		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
 		
-		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.Parametri::$metodiPagamento,"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"])
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($_POST["nazione_spedizione"]),"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
 		
 // 		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|privato,azienda,libero_professionista',"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
 		
@@ -1758,6 +1759,16 @@ class BaseOrdiniController extends BaseController
 		$this->append($data);
 		
 		$this->load("totale_merce_ajax");
+	}
+	
+	public function pagamenti($nazione = "IT")
+	{
+		$this->clean();
+		
+		if (!$nazione)
+			$nazione = v("nazione_default");
+		
+		echo json_encode(OrdiniModel::getPagamentiRes($nazione, true));
 	}
 	
 	public function corrieri($nazione = 0)
