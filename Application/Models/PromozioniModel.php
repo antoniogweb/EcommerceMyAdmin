@@ -292,6 +292,10 @@ class PromozioniModel extends GenericModel {
 				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"], $ido) <= 0)
 					return false;
 				
+				// Controllo che non compri uma gift card con un'altra gift card
+				if ($checkCart && $res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && $res[0]["promozioni"]["fonte"] == "GIFT_CARD" && CartModel::numeroGifCartInCarrello() > 0)
+					return false;
+				
 				$numeroUtilizzi = (int)$res[0]["promozioni"]["numero_utilizzi"];
 				
 				$numeroVolteUsata = (int)$this->getNUsata($res[0]["promozioni"]["id_p"], $ido);
