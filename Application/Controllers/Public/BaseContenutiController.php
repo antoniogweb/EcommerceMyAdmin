@@ -575,7 +575,7 @@ class BaseContenutiController extends BaseController
 		
 		$arrayUrl = array();
 		
-		if (!$this->idMarchio || (string)trim($this->cleanAlias,"/") !== (string)$aliasShop)
+		if (!$this->idMarchio || (string)trim(nullToBlank($this->cleanAlias),"/") !== (string)$aliasShop || v("attiva_pagina_produttore"))
 			$arrayUrl = array($this->cleanAlias);
 		
 		// Marchio dopo la categoria
