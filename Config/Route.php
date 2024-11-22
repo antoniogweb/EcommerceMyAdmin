@@ -915,6 +915,8 @@ class Route
 
 		'aimodelli,main',
 		'aimodelli,form',
+		
+		'cookiearchivio,main',
 	);
 	
 	//it can be 'yes' or 'no'
