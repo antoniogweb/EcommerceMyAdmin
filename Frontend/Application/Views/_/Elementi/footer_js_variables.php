@@ -41,5 +41,6 @@
 	var password_regular_expression_caratteri_speciali = "<?php echo v("password_regular_expression_caratteri_speciali");?>";
 	var password_regular_expression_numero_caratteri = <?php echo v("password_regular_expression_numero_caratteri");?>;
 	<?php } ?>
+	var ricarica_pagamenti_quando_cambi_nazione = <?php echo (isset(OrdiniModel::$pagamenti["contrassegno"]) && !v("permetti_pagamento_contrassegno_fuori_nazione_default")) ? "true" : "false";?>;
 </script>
 <?php $jsVariablesLoaded = true;?>

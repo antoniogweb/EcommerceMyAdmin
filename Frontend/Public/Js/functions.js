@@ -32,6 +32,10 @@ if (typeof spesa_pagamento_possibile == "undefined")
 if (typeof attiva_icheck == "undefined")
 	var attiva_icheck = true;
 
+if (typeof ricarica_pagamenti_quando_cambi_nazione == "undefined")
+	var ricarica_pagamenti_quando_cambi_nazione = false;
+
+
 $ = jQuery;
 
 function isInArray(elemento,haystack)
@@ -397,7 +401,7 @@ function impostaCorrieriESpeseSpedizione(ricarica_pagamenti)
 	if (nazione == "" || nazione == undefined)
 		return;
 	
-	if (ricarica_pagamenti === undefined && $(".bx_pagamenti").length > 0)
+	if (ricarica_pagamenti_quando_cambi_nazione && ricarica_pagamenti === undefined && $(".bx_pagamenti").length > 0)
 	{
 		var pagamento = $("[name='pagamento']:checked").val();
 		
