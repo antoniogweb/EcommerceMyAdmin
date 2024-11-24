@@ -131,13 +131,13 @@ class App
 					gtext("Necessario")	=>	gtext("Sì"),
 					gtext("Descrizione")=>	gtext("Utilizzato per mantenere la sessioni dei contatti verificati"),
 					gtext("Durata")		=>	v("tempo_durata_uid_contatto"),
-					"usato"				=>	v("ecommerce_attivo"),
+					"usato"				=>	v("attiva_verifica_contatti"),
 				),
 				"coupon"	=>	array(
 					gtext("Fornitore")	=>	Parametri::$nomeNegozio,
 					gtext("Tipologia")	=>	gtext("Tecnici"),
 					gtext("Necessario")	=>	gtext("Sì"),
-					gtext("Descrizione")=>	gtext("Utilizzato per le promozioni"),
+					gtext("Descrizione")=>	gtext("Utilizzato per permettere al cliente di usare all'acquisto il codice coupon"),
 					gtext("Durata")		=>	v("durata_carrello_wishlist_coupon"),
 					"usato"				=>	v("ecommerce_attivo"),
 				),
@@ -206,8 +206,8 @@ class App
 						gtext("Fornitore")	=>	Parametri::$nomeNegozio,
 						gtext("Tipologia")		=>	gtext("Tecnici"),
 						gtext("Necessario")	=>	gtext("Sì"),
-						gtext("Descrizione")	=>	gtext("Utilizzato per le preferenze nella visualizzazione dei popup"),
-						gtext("Durata")		=>	$modale["giorni_durata_modale"] * 3600 * 24,
+						gtext("Descrizione")	=>	gtext("Utilizzato per il funzionamento dei popup informativi in home page"),
+						gtext("Durata")		=>	$modale["giorni_durata_modale"] * 3600 * 24
 					);
 				}
 			}
