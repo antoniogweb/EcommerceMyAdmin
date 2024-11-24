@@ -46,8 +46,8 @@ class CookiearchivioController extends BaseController
 		$mainMenu = "";
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>200, 'mainMenu'=>$mainMenu);
 		
-		$this->mainFields = array("cookie_archivio.titolo", "cookie_archivio.dominio", "cookie_archivio.path", "cookie_archivio.durata", "cookie_archivio.servizio", "cookie_archivio.secure", "cookie_archivio.same_site", "cookie_archivio.cross_site");
-		$this->mainHead = "Titolo,Dominio,Path,Durata,Servizio,Secure,SameSite,CrossSite";
+		$this->mainFields = array("cookie_archivio.titolo", "cookie_archivio.dominio", "cookie_archivio.path", "cookie_archivio.durata", "cookie_archivio.servizio", "cookie_archivio.secure", "cookie_archivio.same_site", "cookie_archivio.cross_site", "cookie_archivio.note");
+		$this->mainHead = "Titolo,Dominio,Path,Durata,Servizio,Secure,SameSite,CrossSite,Note";
 		
 		$this->m[$this->modelName]->clear()->where(array(
 			"OR"	=>	array(

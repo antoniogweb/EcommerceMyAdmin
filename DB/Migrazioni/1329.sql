@@ -1,0 +1,1 @@
+alter table cookie_archivio add note text not null;
