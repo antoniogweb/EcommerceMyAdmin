@@ -951,7 +951,9 @@ function attivaModuli($string, $obj = null)
 	
 	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})_([0-9]{1,})(_(.*?))?\]/', 'getLinkCategoria' ,$string);
 	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})?\]/', 'getLinkPagina' ,$string);
-
+	
+	$string = preg_replace_callback('/\[ELENCO_COOKIE\]/', array("CookiearchivioModel", "elencoCookie") ,$string);
+	
 	$string = preg_replace('/\[anno-corrente\]/', date("Y") ,$string);
 	
 	if (!isset(VariabiliModel::$placeholders))

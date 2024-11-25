@@ -30,4 +30,76 @@ class CookiearchivioModel extends GenericModel {
 		
 		parent::__construct();
 	}
+	
+	public function attiva($id)
+	{
+		$this->setValues(array(
+			"attivo"	=>	1
+		));
+		
+		$this->update((int)$id);
+	}
+	
+	public function disattiva($id)
+	{
+		$this->setValues(array(
+			"attivo"	=>	0
+		));
+		
+		$this->update((int)$id);
+	}
+	
+	public function attivoCrud($record)
+	{
+		if ($record["cookie_archivio"]["attivo"])
+			return "<i class='fa fa-check text-success'></i>";
+		
+		return "<i class='fa fa-ban'></i>";
+	}
+	
+	public static function elencoCookie()
+	{
+		$cookies = self::g()->clear()->where(array(
+			"attivo"	=>	1,
+		))->orderBy("titolo")->send(false);
+		
+		if (count($cookies) > 0)
+		{
+			ob_start();
+			include tpf("Elementi/Cookie/elenco_cookie.php");
+			return ob_get_clean();
+		}
+		
+		return "";
+	}
+	
+	public static function getProprietario($text)
+	{
+		return strpos($text, "oogle") !== false ? "Google" : $text;
+	}
+	
+	public static function durata($time)
+	{
+// 		$dt = new DateTime();
+// 		$dt->setTimestamp($time+10);
+// 
+// 		$datetime1 = new DateTime();
+// 
+// 		$difference = $datetime1->diff($dt);
+// 		
+// 		$durata = "";
+// 		
+// 		if ($difference->y > 0)
+// 			$durata .= $difference->y." ".singPlu($difference->y, "anno", "anni") . " ";
+// 		
+// 		if ($difference->m > 0)
+// 			$durata .= $difference->m." ".singPlu($difference->m, "mese", "mesi") . " ";
+// 		
+// 		if ($difference->d > 0)
+// 			$durata .= $difference->d." ".singPlu($difference->d, "giorno", "giorni") . " ";
+		
+		$giorni = number_format(($time + 3600 - time()) / (3600 * 24),0);
+		
+		return $giorni ? $giorni . " " . singPlu($giorni, "giorno", "giorni") : "Viene eliminato alla chiusura del browser";
+	}
 }

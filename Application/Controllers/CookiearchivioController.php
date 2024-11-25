@@ -27,27 +27,43 @@ class CookiearchivioController extends BaseController
 	public $setAttivaDisattivaBulkActions = true;
 	
 	public $argKeys = array(
-		'titolo:sanitizeAll'=>'tutti'
+		'titolo:sanitizeAll'=>'tutti',
+		'attivo:sanitizeAll'=>'tutti'
 	);
 	
 	public $sezionePannello = "utenti";
 
 	public function main()
 	{
+		Helper_Menu::$htmlLinks["carica"] = array(
+			"htmlBefore" => '',
+			"htmlAfter" => '',
+			"attributes" => 'role="button" class="btn btn-primary"',
+			"class"	=>	"",
+			'text'	=>	"Carica cookie",
+			"classIconBefore"	=>	'<i class="fa fa-upload"></i>',
+			'url'	=>	'carica',
+		);
+		
 		$this->shift();
+
+		$this->mainButtons = "ldel,ledit";
 		
-		$this->queryActions = $this->bulkQueryActions = "";
-		$this->mainButtons = "";
-		// $this->addBulkActions = false;
+		$attivaDisattiva = array(
+			"tutti"	=>	"Usato / Non usato",
+			"1"		=>	"Usato",
+			"0"		=>	"Non usato",
+		);
 		
-		// $this->colProperties = array();
-		$this->filters = array("titolo");
+		$this->filters = array("titolo", array(
+			"attivo",null,$attivaDisattiva
+		));
 		
-		$mainMenu = "";
+		$mainMenu = "add,carica";
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>200, 'mainMenu'=>$mainMenu);
 		
-		$this->mainFields = array("cookie_archivio.titolo", "cookie_archivio.dominio", "cookie_archivio.path", "cookie_archivio.durata", "cookie_archivio.servizio", "cookie_archivio.secure", "cookie_archivio.same_site", "cookie_archivio.cross_site", "cookie_archivio.note");
-		$this->mainHead = "Titolo,Dominio,Path,Durata,Servizio,Secure,SameSite,CrossSite,Note";
+		$this->mainFields = array("cookie_archivio.titolo", "cookie_archivio.dominio", "cookie_archivio.path", "cookie_archivio.durata", "cookie_archivio.servizio", "cookie_archivio.secure", "cookie_archivio.same_site", "cookie_archivio.cross_site", "cookie_archivio.note", "attivoCrud");
+		$this->mainHead = "Titolo,Dominio,Path,Durata,Servizio,Secure,SameSite,CrossSite,Note,Usato";
 		
 		$this->m[$this->modelName]->clear()->where(array(
 			"OR"	=>	array(
@@ -55,10 +71,88 @@ class CookiearchivioController extends BaseController
 				" lk"	=>	array("dominio"	=>	$this->viewArgs["titolo"]),
 				"  lk"	=>	array("servizio"	=>	$this->viewArgs["titolo"]),
 			),
+			"attivo"	=>	$this->viewArgs["attivo"],
 		))->orderBy("titolo")->convert()->save();
 		
-		$this->tabella = "archivio cookie";
+		$this->tabella = "archivio cookie terzi";
+		
+		$this->bulkQueryActions = "attiva,disattiva";
+		
+		$this->bulkActions = array(
+			"checkbox_cookie_archivio_id_cookie_archivio"	=>	array("attiva","ATTIVA"),
+			" checkbox_cookie_archivio_id_cookie_archivio"	=>	array("disattiva","DISATTIVA"),
+		);
 		
 		parent::main();
+	}
+	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$this->_posizioni['main'] = 'class="active"';
+		
+		$campi = 'titolo,dominio,path,durata,servizio,secure,same_site,cross_site,note';
+		
+		$this->m[$this->modelName]->setValuesFromPost($campi);
+		
+		parent::form($queryType, $id);
+	}
+	
+	public function carica()
+	{
+		$this->shift();
+		
+		if (isset($_POST["cookie"]))
+		{
+			// echo "<pre>";
+			$lines = explode("\n", $_POST["cookie"]);
+			
+			foreach ($lines as $l)
+			{
+				$riga = explode("\t", $l);
+				
+				$durata = "";
+				
+				if (isset($riga[4]))
+				{
+					$tt = explode(".", $riga[4]);
+					
+					if (count($tt) > 0)
+					{
+						$timestamp = strtotime($tt[0]);
+						$durata = CookiearchivioModel::durata($timestamp);
+					}
+				}
+				
+				$rigaValues = array(
+					"titolo"	=>	$riga[0] ?? "",
+					"dominio"	=>	$riga[2] ?? "",
+					"path"		=>	$riga[3] ?? "",
+					"durata"	=>	$durata,
+					"servizio"	=>	$riga[2] ?? "",
+					"secure"	=>	$riga[7] ?? "",
+					"same_site"	=>	$riga[8] ?? "",
+					"cross_site"=>	$riga[10] ?? "",
+					"attivo"	=>	1,
+				);
+				
+				if ($rigaValues["titolo"])
+				{
+					$idCookie = (int)$this->m[$this->modelName]->clear()->where(array(
+						"titolo"	=>	sanitizeAll($rigaValues["titolo"])
+					))->field("id_cookie_archivio");
+					
+					$this->m[$this->modelName]->sValues($rigaValues);
+					
+					if (!$idCookie)
+						$this->m[$this->modelName]->insert();
+					else
+						$this->m[$this->modelName]->update($idCookie);
+				}
+			}
+			
+			$this->redirect("cookiearchivio/main");
+		}
+		
+		$this->load("carica");
 	}
 }

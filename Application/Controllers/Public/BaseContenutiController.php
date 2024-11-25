@@ -1654,10 +1654,10 @@ class BaseContenutiController extends BaseController
 			if ($data["pages"][0]["pages"]["tipo_pagina"] == "COOKIE")
 			{
 				VariabiliModel::noCookieAlert();
-				$data["pages"][0]["pages"]["description"] .= "[scelta-cookie]";
+				$data["pages"][0]["pages"]["description"] .= "[ELENCO_COOKIE][scelta-cookie]";
 				
 				if (isset($data["pages"][0]["contenuti_tradotti"]["description"]))
-					$data["pages"][0]["contenuti_tradotti"]["description"] .= "[scelta-cookie]";
+					$data["pages"][0]["contenuti_tradotti"]["description"] .= "[ELENCO_COOKIE][scelta-cookie]";
 			}
 			
 			// GDPR
