@@ -19,7 +19,7 @@
 			<?php if (v("mostra_modalita_spedizione_in_resoconto")) { ?>
 				<?php $modalitaSpedizione = CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?>
 				<?php if ($modalitaSpedizione) { ?>
-				<span class="uk-text-emphasis"><?php echo gtext("Modalità di spedizione", false); ?>: </span> <?php echo $modalitaSpedizione;?>
+				<span class="uk-text-emphasis"><?php echo gtext("Modalità di spedizione", false); ?>: </span> <?php echo gtext($modalitaSpedizione);?>
 				<?php } ?>
 			<?php } ?>
 		</div>
