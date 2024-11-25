@@ -518,12 +518,12 @@ class BaseBaseController extends Controller
 		if (!v("ecommerce_attivo"))
 			return;
 
-		if (v("traccia_sorgente_utente"))
-			User::getSorgente();
-
 		//set the cookie for the cart
 		CartModel::skipCheckCart();
 		$this->m("CartModel")->setCartUid();
+		
+		if (v("traccia_sorgente_utente"))
+			User::getSorgente();
 		
 		OrdiniModel::setStatiOrdine();
 		OrdiniModel::setPagamenti();

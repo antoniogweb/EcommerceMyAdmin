@@ -1,0 +1,1 @@
+ALTER TABLE `sorgenti` ADD INDEX `sorgenti_cart_uid_sorgente` (`cart_uid`, `sorgente`);

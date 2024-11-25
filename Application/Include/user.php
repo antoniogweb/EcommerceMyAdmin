@@ -166,23 +166,48 @@ class User
 		{
 			$sorgente = getSorgenteUtente();
 
+			$sModel = new SorgentiModel();
+			
 			if (isset($sorgente) && trim($sorgente))
 			{
 				User::$sorgente = $sorgente;
-				$time = time() + v("traccia_sorgente_utente");
-				setcookie("utm_source",User::$sorgente,$time,"/");
-				$_COOKIE["utm_source"] = $sorgente;
+				
+				$sModel->sValues(array(
+					"cart_uid"	=>	User::$cart_uid,
+					"sorgente"	=>	$sorgente,
+					"time_creazione"	=>	time(),
+				));
+				
+				$sModel->del(null, array(
+					"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+					"sorgente"	=>	sanitizeAll($sorgente),
+				));
+				
+				$sModel->insert();
+				
+				$timeEliminazione = time() - (int)v("traccia_sorgente_utente");
+				
+				$sModel->query(array(
+					"delete from sorgenti where time_creazione < ?",
+					array($timeEliminazione),
+				));
 			}
-
-			if (isset($_COOKIE["utm_source"]) && trim($_COOKIE["utm_source"]) && in_array($_COOKIE["utm_source"], getListaSorgentiPermesse()))
-				User::$sorgente = sanitizeAll($_COOKIE["utm_source"]);
+			else 
+			{
+				$sorgente = $sModel->where(array(
+					"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+				))->orderBy("id_sorgente desc")->limit(1)->field("sorgente");
+				
+				if ($sorgente && in_array($sorgente, getListaSorgentiPermesse()))
+					User::$sorgente = sanitizeAll($sorgente);
+			}
 		}
 	}
 
 	public static function azzeraSorgente()
 	{
-		if (isset($_COOKIE["utm_source"]))
-			setcookie("utm_source", "", time()-3600,"/");
+		// if (isset($_COOKIE["utm_source"]))
+		// 	setcookie("utm_source", "", time()-3600,"/");
 	}
 	
 	public static function getNazioneNavigazione()
