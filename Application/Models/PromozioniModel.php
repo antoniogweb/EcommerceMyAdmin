@@ -657,6 +657,7 @@ class PromozioniModel extends GenericModel {
 					"nome"		=>	$oModel->getNome($riga["id_o"]),
 					"creation_time"	=>	time(),
 					"lingua"	=>	$riga["lingua"],
+					"nazione_navigazione"	=>	$riga["nazione_navigazione"],
 				), "sanitizeDb");
 				
 				$this->insert();

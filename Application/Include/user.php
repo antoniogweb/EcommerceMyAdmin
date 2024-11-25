@@ -184,4 +184,12 @@ class User
 		if (isset($_COOKIE["utm_source"]))
 			setcookie("utm_source", "", time()-3600,"/");
 	}
+	
+	public static function getNazioneNavigazione()
+	{
+		if (User::$nazioneNavigazione)
+			return User::$nazioneNavigazione;
+		else
+			return isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
+	}
 }

@@ -1016,6 +1016,8 @@ class CartModel extends GenericModel {
 				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
 				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
 				
+				$this->values["nazione_navigazione"] = sanitizeHtml(User::getNazioneNavigazione());
+				
 				$this->aggiungiCampoAttributiBackend($clean["id_c"], $jsonPers);
 				
 				// Traccio la sorgente

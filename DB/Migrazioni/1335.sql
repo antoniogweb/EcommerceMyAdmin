@@ -1,0 +1,1 @@
+alter table feedback add nazione_navigazione char(2) not null default 'IT';
