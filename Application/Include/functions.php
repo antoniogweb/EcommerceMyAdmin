@@ -1563,7 +1563,11 @@ function calcolaPrezzoFinale($idPage, $prezzoIntero, $checkPromo = true, $forzaN
 	{
 // 		$p = new PagesModel();
 		$iva = $p->getIva($idPage);
+		$prezzoFinaleNonIvato = $prezzoFinale;
 		$prezzoFinale = $prezzoFinale + ($prezzoFinale * (float)$iva / 100);
+		
+		if (isset(IvaModel::$aliquotaEstera) && v("scorpora_iva_prezzo_estero") && v("mostra_prezzi_con_aliquota_estera"))
+			list($prezzoFinale, $prezzoFinaleNonIvato) = IvaModel::ricalcolaPrezzo($prezzoFinale, $prezzoFinaleNonIvato, $iva, IvaModel::$aliquotaEstera);
 	}
 	
 	return $prezzoFinale;
@@ -1597,7 +1601,11 @@ function calcolaPrezzoIvato($idPage, $prezzoIntero, $iva = null)
 			$iva = $p->getIva($idPage);
 		}
 		
+		$prezzoInteroNonIvato = $prezzoIntero;
 		$prezzoIntero = $prezzoIntero + ($prezzoIntero * (float)$iva / 100);
+		
+		if (isset(IvaModel::$aliquotaEstera) && v("scorpora_iva_prezzo_estero") && v("mostra_prezzi_con_aliquota_estera"))
+			list($prezzoIntero, $prezzoInteroNonIvato) = IvaModel::ricalcolaPrezzo($prezzoIntero, $prezzoInteroNonIvato, $iva, IvaModel::$aliquotaEstera);
 	}
 	
 	return $prezzoIntero;

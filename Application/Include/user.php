@@ -148,15 +148,24 @@ class User
 		{
 			$nazione = strtoupper(Params::$country);
 
-			$corr = new CorrieriModel();
-
-			$idsCorrieri = $corr->getIdsCorrieriNazione($nazione);
-
-			if (count($idsCorrieri) > 0)
-			{
+			if (!isset($_POST["nazione_spedizione"]))
 				$_POST["nazione_spedizione"] = $nazione;
-				$_POST["id_corriere"] = $idsCorrieri[0];
+			
+			if (!isset($_POST["tipo_cliente"]))
+				$_POST["tipo_cliente"] = "privato";
+			
+			if (!isset($_POST["id_corriere"]))
+			{
+				$corr = new CorrieriModel();
+
+				$idsCorrieri = $corr->getIdsCorrieriNazione($nazione);
+
+				if (count($idsCorrieri) > 0)
+					$_POST["id_corriere"] = $idsCorrieri[0];
 			}
+			
+			if (v("mostra_prezzi_con_aliquota_estera"))
+				IvaModel::getAliquotaEstera();
 		}
 	}
 

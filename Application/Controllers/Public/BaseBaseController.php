@@ -307,6 +307,9 @@ class BaseBaseController extends Controller
 				VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
 				VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
 			}
+			
+			if ($controller != "ordini" || $action != "summary")
+				User::impostaNazioneSpedizioneECorriereDaUrl();
 		}
 	}
 	

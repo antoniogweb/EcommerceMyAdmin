@@ -36,16 +36,12 @@ class BaseCartController extends BaseController
 		$data["arrayLingue"] = array();
 		
 		$this->append($data);
-		
-		IvaModel::getAliquotaEstera();
 	}
 
 	public function index($pageView = "full")
 	{
 		if (!v("ecommerce_online"))
 			$this->redirect("");
-		
-		User::impostaNazioneSpedizioneECorriereDaUrl();
 
 		$this->m("CartModel")->salvaDisponibilitaCarrello();
 		
@@ -95,6 +91,8 @@ class BaseCartController extends BaseController
 	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $id_cart = 0)
 	{
+		IvaModel::getAliquotaEstera();
+		
 		$result = "KO";
 		$idCart = 0;
 		$errore = "";
@@ -354,6 +352,8 @@ class BaseCartController extends BaseController
 	{
 		if (!v("ecommerce_online"))
 			$this->redirect("");
+		
+		IvaModel::getAliquotaEstera();
 		
 		$numeroGiftCard = 0;
 		
