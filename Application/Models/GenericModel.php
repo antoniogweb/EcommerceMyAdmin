@@ -1958,4 +1958,12 @@ class GenericModel extends Model_Tree
 		
 		return $data;
 	}
+	
+	public function codiceGestionaleCrud($record)
+	{
+		if (isset($record[$this->_tables]["codice_gestionale"]))
+			return $record[$this->_tables]["codice_gestionale"];
+		
+		return "";
+	}
 }

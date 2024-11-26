@@ -322,4 +322,114 @@ class RegusersModel extends FormModel {
 		
 		return false;
 	}
+	
+	// importa i clienti partendo dai dati forniti dal gestionale attivo
+	public static function importaDaDatiGestionale($dati, $log = null)
+	{
+		$ru = new RegusersModel();
+		$sp = new SpedizioniModel();
+		
+		$ru->usingApi = true;
+		
+		self::$clienteImportato = true;
+		
+		foreach ($dati as $codice => $struttura)
+		{
+			if (!$struttura["fatturazione"]["username"])
+			{
+				if ($log)
+					$log->writeString("ERRORE IMPOPRTAZIONE CLIENTE: email mancante - CODICE GESTIONALE ".$codice);
+				
+				continue;
+			}
+			
+			$idCliente = 0;
+			
+			$cliente = $ru->clear()->where(array(
+				"codice_gestionale"	=>	sanitizeAll($codice),
+			))->record();
+			
+			$ru->sValues($struttura["fatturazione"]);
+			
+			if (empty($cliente))
+			{
+				$password = generateString(2, v("password_regular_expression_caratteri_speciali")).generateString(6).generateString(3, "ABCDEFGHIJKLMNOPQRSTUVWXYZ").generateString(2, v("password_regular_expression_caratteri_speciali"));
+				
+				$password = call_user_func(PASSWORD_HASH,$password);
+				
+				$ru->setValue("password", $password, "sanitizeDb");
+				$ru->setValue("codice_gestionale", $codice);
+				
+				if (!$ru->insert())
+				{
+					if ($log)
+					{
+						$log->writeString("-------------");
+						$log->writeString("ERRORE IMPOPRTAZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice);
+						$log->writeString(strip_tags($ru->notice));
+						$log->writeString(is_array($ru->getError()) ? print_r($ru->getError(), true) : $ru->getError());
+					}
+				}
+				else
+					$idCliente = $ru->lId;
+			}
+			else
+			{
+				if (!$ru->update((int)$cliente["id_user"]))
+				{
+					if ($log)
+					{
+						$log->writeString("-------------");
+						$log->writeString("ERRORE AGGIORNAMENTO CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice);
+						$log->writeString(strip_tags($ru->notice));
+						$log->writeString(is_array($ru->getError()) ? print_r($ru->getError(), true) : $ru->getError());
+					}
+				}
+				else
+					$idCliente = (int)$cliente["id_user"];
+			}
+			
+			if ($idCliente)
+			{
+				foreach ($struttura["spedizioni"] as $spedizione)
+				{
+					$record = $sp->clear()->where(array(
+						"id_user"			=>	(int)$idCliente,
+						"codice_gestionale"	=>	$spedizione["codice_gestionale"]
+					))->record();
+					
+					$sp->sValues($spedizione);
+					
+					if (empty($record))
+					{
+						$sp->setValue("id_user", (int)$idCliente);
+						
+						if (!$sp->insert())
+						{
+							if ($log)
+							{
+								$log->writeString("-------------");
+								$log->writeString("ERRORE IMPOPRTAZIONE SPEDIZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice."-".$spedizione["codice_gestionale"]);
+								$log->writeString(strip_tags($sp->notice));
+								$log->writeString(is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError());
+							}
+						}
+					}
+					else
+					{
+						if (!$sp->update((int)$record["id_user"]))
+						{
+							if ($log)
+							{
+								$log->writeString("-------------");
+								$log->writeString("ERRORE IMPOPRTAZIONE SPEDIZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice."-".$spedizione["codice_gestionale"]);
+								$log->writeString(strip_tags($sp->notice));
+								$log->writeString(is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

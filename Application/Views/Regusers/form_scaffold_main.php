@@ -86,6 +86,11 @@
 				<div class='col-md-3'>
 					<?php echo $form["codice_destinatario"];?>
 				</div>
+				<?php if (isset($form["codice_gestionale"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["codice_gestionale"];?>
+				</div>
+				<?php } ?>
 			</div>
 			
 			<?php include($this->viewPath("form_submit_button"));?><br />
