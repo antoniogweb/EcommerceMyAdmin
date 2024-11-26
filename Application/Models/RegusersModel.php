@@ -395,7 +395,7 @@ class RegusersModel extends FormModel {
 				{
 					$record = $sp->clear()->where(array(
 						"id_user"			=>	(int)$idCliente,
-						"codice_gestionale"	=>	$spedizione["codice_gestionale"]
+						"codice_gestionale"	=>	$spedizione["codice_gestionale"],
 					))->record();
 					
 					$sp->sValues($spedizione);
@@ -417,7 +417,7 @@ class RegusersModel extends FormModel {
 					}
 					else
 					{
-						if (!$sp->update((int)$record["id_user"]))
+						if (!$sp->update((int)$record["id_spedizione"]))
 						{
 							if ($log)
 							{
