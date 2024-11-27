@@ -153,7 +153,7 @@ class Traduttore
 									$idCat = (int)$cModel->getIdFromAlias(trim($alias), $linguaCorrente);
 									
 									if ($idCat)
-										$testo = str_replace($link, "[LCAT_".(int)$idCat."_0_$titolo]", $testo);
+										$testo = str_replace($link, "[LCAT_".(int)$idCat."_0]", $testo);
 								}
 							}
 						}
