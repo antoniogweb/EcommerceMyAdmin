@@ -836,6 +836,12 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Codice eliminazione",
 			),
 		),
+		"codice_gestionale"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Codice gestionale",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

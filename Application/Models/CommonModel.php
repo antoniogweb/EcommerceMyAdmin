@@ -434,6 +434,7 @@ trait CommonModel {
 						"codice_app_eliminazione"	=>	$codiceApp,
 						"time_eliminazione"	=>	time(),
 						"token_eliminazione"=>	$tokeEliminazione,
+						"codice_gestionale"	=>	"",
 					));
 					
 					$this->setValue("password", randomToken(), PASSWORD_HASH);
@@ -449,6 +450,8 @@ trait CommonModel {
 							if ($cs != "nazione_spedizione")
 								$sp->setValue($cs, "");
 						}
+						
+						$sp->setValue("codice_gestionale", "");
 						
 // 						$sp->sValues(array(
 // 							"indirizzo_spedizione"	=>	"--",

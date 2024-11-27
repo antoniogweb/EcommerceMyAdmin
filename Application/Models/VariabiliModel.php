@@ -647,6 +647,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_interfaccia_opcache"	=>	0, // se attivare o meno l'interfaccia opcache
 		## GESTIONALI ##
 		"attiva_collegamento_gestionali"	=>	0, // se attivare o meno l'interfaccia di gestione e il collegamento con i gestionali
+		"mostra_codice_gestionale"	=>	0, // se impostato a 1 e se attiva_collegamento_gestionali = 1, mostra e permette di modificare il codice gestionale per le anagrafiche direttamente nell'admin dell'ecommerce
 		## FATTURE ##
 		"fatture_attive"			=>	1, // attiva la sezione per la generazione della fattura
 		"check_fatture"				=>	0, // fai i controlli sulle fatture

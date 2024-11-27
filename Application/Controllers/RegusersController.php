@@ -63,6 +63,7 @@ class RegusersController extends BaseController
 		'agente:sanitizeAll'=>'tutti',
 		'gruppo:sanitizeAll'=>'tutti',
 		'ticket:forceInt'=>0,
+		'codice_gestionale:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "clienti";
@@ -162,6 +163,13 @@ class RegusersController extends BaseController
 // 			$filtri[] = array("agente",null,array("tutti" => "Tipo cliente", "0" => "Cliente normale", "1" => "Agente"));
 		}
 		
+		if (v("attiva_collegamento_gestionali") && v("mostra_codice_gestionale"))
+		{
+			$mainFields[] = 'codiceGestionaleCrud';
+			$headLabels .= ',Codice gestionale';
+			$filtri[] = "codice_gestionale";
+		}
+		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		
@@ -173,6 +181,7 @@ class RegusersController extends BaseController
 			"lk" => array('n!regusers.codice_fiscale' => $this->viewArgs['codice_fiscale']),
 			" lk" => array('n!regusers.p_iva' => $this->viewArgs['p_iva']),
 			"  lk" => array('n!regusers.username' => $this->viewArgs['username']),
+			"  	lk" => array('codice_gestionale'	=>	$this->viewArgs['codice_gestionale']),
 			'nazione_navigazione'	=>	$this->viewArgs['nazione_utente'],
 			'deleted'	=>	$this->viewArgs['deleted'],
 			'token_eliminazione'	=>	$this->viewArgs['token_eliminazione'],
@@ -280,6 +289,12 @@ class RegusersController extends BaseController
 		{
 			$fields .= ",fattura";
 			$formFields .= ",fattura";
+		}
+		
+		if (v("attiva_collegamento_gestionali") && v("mostra_codice_gestionale"))
+		{
+			$fields .= ",codice_gestionale";
+			$formFields .= ",codice_gestionale";
 		}
 		
 		$fields = F::addSanitizeFunction($fields);
