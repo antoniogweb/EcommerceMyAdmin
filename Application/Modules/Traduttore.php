@@ -148,6 +148,13 @@ class Traduttore
 
 								if (count($idPages) > 0)
 									$testo = str_replace($link, "[LPAG_".(int)$idPages[0]."]", $testo);
+								else
+								{
+									$idCat = (int)$cModel->getIdFromAlias(trim($alias), $linguaCorrente);
+									
+									if ($idCat)
+										$testo = str_replace($link, "[LCAT_".(int)$idCat."_0_$titolo]", $testo);
+								}
 							}
 						}
 					}

@@ -2656,7 +2656,7 @@ class PagesModel extends GenericModel {
 				
 				$res = $c->send();
 				
-				if (count($res) > 0)
+				if (count($res) > 0 && isset($res[0]["aggregate"]["PREZZO_MINIMO"]) && $res[0]["aggregate"]["PREZZO_MINIMO"])
 					return $res[0]["aggregate"]["PREZZO_MINIMO"];
 			}
 		}
