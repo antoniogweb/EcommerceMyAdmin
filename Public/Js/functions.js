@@ -1316,6 +1316,30 @@ $(document).ready(function(){
 		}
 		
 	});
+	
+// 	$("body").on("change", ".salva_colonna", function(e){
+// 		
+// 		var campo = $(this).attr("name");
+// 		var valore = $(this).val();
+// 		var trObj = $(this).closest("tr");
+// 		
+// 		var idRecord = trObj.find('input[type="checkbox"][data-primary-key]').attr("data-primary-key");
+// 		
+// 		var url = baseUrl + "/" + applicationName + controllerName + "/salvacampo/" + idRecord + "/" + campo;
+// 		
+// 		$.ajaxQueue({
+// 			type: "POST",
+// 			url: url,
+// 			data: {
+// 				updateAction: "salva",
+// 				[campo]: valore
+// 			},
+// 			success: function(data)
+// 			{
+// 				
+// 			}
+// 		});
+// 	});
 });
 
  (function( $ ) {

@@ -247,6 +247,17 @@ class BaseController extends Controller
 		$this->baseForm($queryType, $id);
 	}
 	
+// 	protected function salvacampo($id = 0, $campo = "")
+// 	{
+// 		if (in_array($campo, $this->m[$this->modelName]->campiEditabiliDaMain))
+// 		{
+// 			$this->m[$this->modelName]->setValuesFromPost($campo);
+// 			$this->formQueryActions = "update";
+// 			
+// 			$this->baseForm("update", (int)$id);
+// 		}
+// 	}
+	
 	protected function baseForm($queryType = 'insert', $id = 0)
 	{
 		if (isset($this->formValuesToDb))

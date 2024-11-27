@@ -139,6 +139,8 @@ class GenericModel extends Model_Tree
 	
 	public static $tabelleConAlias = array();
 	
+	// public $campiEditabiliDaMain = array();
+	
 	public function __construct() {
 		
 		self::$tabelleConAlias = array_keys(self::$tabelleConAliasMap);
