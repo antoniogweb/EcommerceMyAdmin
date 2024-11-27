@@ -36,6 +36,14 @@ class Nexi
 	protected $logFile = "";
 	protected $ordine = null;
 	
+	private static $languages = array(
+		"it"	=>	"ITA",
+		"en"	=>	"ENG",
+		"es"	=>	"SPA",
+		"fr"	=>	"FRA",
+		"de"	=>	"GER",
+	);
+	
 	public function __construct($ordine = array())
 	{
 		$pagamento = PagamentiModel::g(false)->where(array(
@@ -63,6 +71,14 @@ class Nexi
 		$this->logFile = ROOT."/Logs/.ipncarta_results.log";
 	}
 	
+	private static function getLanguageCode($lingua)
+	{
+		if (isset(self::$languages[$lingua]))
+			return self::$languages[$lingua];
+		
+		return "ITA";
+	}
+
 	public function getPulsantePaga()
 	{
 		if (!$this->urlPagamento)
@@ -96,6 +112,7 @@ class Nexi
 			"cognome"	=>	$this->ordine["cognome"],
 			'OPTION_CF' => $this->ordine["codice_fiscale"],
 			'urlpost' => $notifyUrl,
+			'languageId' =>	self::getLanguageCode($this->ordine["lingua"]),
 		);
 		
 		$this->urlPagamento = $this->creaUrlPagamento($this->ordine["codice_transazione"], $importo, "EUR", $facoltativi);
