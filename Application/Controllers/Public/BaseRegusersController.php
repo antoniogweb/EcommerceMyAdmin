@@ -855,6 +855,9 @@ class BaseRegusersController extends BaseController
 				"id_user"	=>	User::$id,
 			))->record();
 			
+			$spedizione = htmlentitydecodeDeep($spedizione);
+			$spedizione = array_map('sanitizeHtmlLight', $spedizione);
+			
 			if (!empty($spedizione))
 			{
 				echo json_encode($spedizione);
