@@ -14,6 +14,9 @@ include(tpf(ElementitemaModel::p("LOGIN_TOP","", array(
 	"percorso"	=>	"Elementi/Generali/LoginTop",
 ))));
 
+if (!v("permetti_registrazione"))
+	$noLoginRegistrati = true;
+
 include(tpf("/Regusers/login_form.php"));
 
 include(tpf("/Elementi/Pagine/page_bottom.php"));

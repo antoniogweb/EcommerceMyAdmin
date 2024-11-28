@@ -199,6 +199,9 @@ class BaseRegusersController extends BaseController
 	
 	public function loginapp($codice = "")
 	{
+		if (!v("permetti_registrazione"))
+			$this->redirect("");
+		
 		$this->clean();
 		
 		if (!isset($_SESSION["ok_csrf"]))
@@ -962,7 +965,11 @@ class BaseRegusersController extends BaseController
 		
 // 		$this->m('RegusersModel')->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
 		
-		$this->m('RegusersModel')->updateTable('update',$this->iduser);
+		if (v("permetti_modifica_account"))
+			$this->m('RegusersModel')->updateTable('update',$this->iduser);
+		else
+			Html_Form::$forceStaticAttribute = "disabled";
+		
 		if ($this->m('RegusersModel')->queryResult)
 		{
 			if (Output::$html)
@@ -1100,7 +1107,10 @@ class BaseRegusersController extends BaseController
 		
 		$this->m('SpedizioniModel')->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
 		
-		$this->m('SpedizioniModel')->updateTable('insert,update',$clean["id"]);
+		if (v("permetti_modifica_account"))
+			$this->m('SpedizioniModel')->updateTable('insert,update',$clean["id"]);
+		else
+			Html_Form::$forceStaticAttribute = "disabled";
 		
 		if ($this->m('SpedizioniModel')->queryResult)
 		{
@@ -1127,6 +1137,9 @@ class BaseRegusersController extends BaseController
 	
 	public function add()
 	{
+		if (!v("permetti_registrazione"))
+			$this->redirect("");
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/".$this->permalinkPaginaRegistrazione;

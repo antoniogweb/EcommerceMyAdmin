@@ -162,7 +162,7 @@ class App
 					gtext("Tipologia")	=>	gtext("Tecnici"),
 					gtext("Necessario")	=>	gtext("Sì"),
 					"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione"),
-					"Durata"		=>	0,
+					"Durata"		=>	-1000000,
 					"usato"				=>	1,
 				),
 				"uidr"	=>	array(
@@ -173,14 +173,14 @@ class App
 					"Durata"		=>	REG_SESSION_EXPIRE,
 					"usato"				=>	1,
 				),
-				"uid"	=>	array(
-					"Fornitore"	=>	Parametri::$nomeNegozio,
-					gtext("Tipologia")	=>	gtext("Tecnici"),
-					gtext("Necessario")	=>	gtext("Sì"),
-					"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
-					"Durata"		=>	ADMIN_SESSION_EXPIRE,
-					"usato"				=>	1,
-				),
+				// "uid"	=>	array(
+				// 	"Fornitore"	=>	Parametri::$nomeNegozio,
+				// 	gtext("Tipologia")	=>	gtext("Tecnici"),
+				// 	gtext("Necessario")	=>	gtext("Sì"),
+				// 	"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
+				// 	"Durata"		=>	ADMIN_SESSION_EXPIRE,
+				// 	"usato"				=>	1,
+				// ),
 				"uid_stats"	=>	array(
 					"Fornitore"	=>	Parametri::$nomeNegozio,
 					gtext("Tipologia")	=>	gtext("Tecnici"),

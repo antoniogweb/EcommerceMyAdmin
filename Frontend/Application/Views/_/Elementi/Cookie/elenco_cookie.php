@@ -5,7 +5,7 @@
 <h3><?php echo gtext("Elenco dei cookie tecnici (necessari)");?></h3>
 
 <div class="uk-overflow-auto">
-	<table class="uk-table uk-table-striped">
+	<table class="uk-table uk-table-striped uk-margin-bottom">
 		<thead>
 			<tr>
 				<td><?php echo gtext("Nome");?></td>
@@ -33,7 +33,7 @@
 <h3><?php echo gtext("Elenco dei cookie di profilazione a fini statistici e di marketing");?></h3>
 
 <div class="uk-overflow-auto">
-	<table class="uk-table uk-table-striped">
+	<table class="uk-table uk-table-striped uk-margin-bottom">
 		<thead>
 			<tr>
 				<td><?php echo gtext("Nome");?></td>

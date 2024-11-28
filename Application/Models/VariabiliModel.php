@@ -394,6 +394,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_area_riservata"	=>	1, // se impostato a 1, gli utenti potranno creare un account, eseguire il login, modificare i propri dati
 		"attiva_gestione_immagine_utente"	=>	0, // se impostato ad 1, permette la modifica dell'immagine dell'utente in autonomia (dall'area riservata)
 		"nome_cartella_immagine_utente"	=>	"utenti", // nome della cartella dove salvare le immagini di profilo degli utenti
+		"permetti_registrazione"	=>	1, // se impostato su 0, non permette la registrazione
+		"permetti_modifica_account"	=>	1, // se impostato su 0, l'utente non registrato non può modificare i dati dell'account (si usa quando esiste un gestionale collegato e i dato vengono importati dal gestionale)
 		## CONTATTI ##
 		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_conferma_uid_contatto"	=>	86400, // tempo in secondi per confermare il contatto
