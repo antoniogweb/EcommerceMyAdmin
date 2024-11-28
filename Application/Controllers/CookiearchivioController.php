@@ -100,15 +100,24 @@ class CookiearchivioController extends BaseController
 	public function carica()
 	{
 		$this->shift();
+		$domain = str_replace("/admin","",DOMAIN_NAME);
 		
 		if (isset($_POST["cookie"]))
 		{
+			$cookieTecnici = App::getCookieTecnici();
+			
 			// echo "<pre>";
 			$lines = explode("\n", $_POST["cookie"]);
 			
 			foreach ($lines as $l)
 			{
 				$riga = explode("\t", $l);
+				
+				foreach ($cookieTecnici as $cookie => $struct)
+				{
+					if ($cookie == $riga[0] && $riga[2] == $domain)
+						continue 2;
+				}
 				
 				$durata = "";
 				

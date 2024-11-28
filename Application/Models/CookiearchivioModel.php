@@ -80,26 +80,16 @@ class CookiearchivioModel extends GenericModel {
 	
 	public static function durata($time)
 	{
-// 		$dt = new DateTime();
-// 		$dt->setTimestamp($time+10);
-// 
-// 		$datetime1 = new DateTime();
-// 
-// 		$difference = $datetime1->diff($dt);
-// 		
-// 		$durata = "";
-// 		
-// 		if ($difference->y > 0)
-// 			$durata .= $difference->y." ".singPlu($difference->y, "anno", "anni") . " ";
-// 		
-// 		if ($difference->m > 0)
-// 			$durata .= $difference->m." ".singPlu($difference->m, "mese", "mesi") . " ";
-// 		
-// 		if ($difference->d > 0)
-// 			$durata .= $difference->d." ".singPlu($difference->d, "giorno", "giorni") . " ";
+		$ore = 0;
+		$giorni = ($time + 60 - time()) / (3600 * 24);
+		$giorniEsatti = number_format($giorni, 0);
 		
-		$giorni = number_format(($time + 3600 - time()) / (3600 * 24),0);
+		if ($giorni > 0 && $giorni < 1)
+			$ore = ceil(($time + 60 - time()) / 3600);
 		
-		return $giorni ? $giorni . " " . singPlu($giorni, "giorno", "giorni") : "Viene eliminato alla chiusura del browser";
+		if ($ore)
+			return "< $ore ".singPlu($ore, "ora", "ore");
+		else
+			return $giorni > 0 ? $giorniEsatti . " " . singPlu($giorniEsatti, "giorno", "giorni") : "Viene eliminato alla chiusura del browser";
 	}
 }
