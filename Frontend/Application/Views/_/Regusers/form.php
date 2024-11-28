@@ -67,7 +67,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		<?php if (strcmp($this->action,"modify") !== 0 || (v("attiva_gestiobe_ticket") && RegusersModel::getRedirect() == "ticket")) { ?>
 			<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Completa registrazione", false);?>" />
 		<?php } else { ?>
-			<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />
+			<?php if (v("permetti_modifica_account")) { ?>
+				<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />
+			<?php } ?>
 		<?php } ?>
 	</div>
 </form>

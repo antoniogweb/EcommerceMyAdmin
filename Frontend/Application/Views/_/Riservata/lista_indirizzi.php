@@ -65,7 +65,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 					<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
 				</a>
 				
+				<?php if (v("permetti_modifica_account")) { ?>
 				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
+				<?php } ?>
 			</div>
 		</div>
 	</div>
@@ -75,9 +77,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <p><?php echo gtext("Non hai alcun indirizzo configurato");?></p>
 <?php } ?>
 
+<?php if (v("permetti_modifica_account")) { ?>
 <div class="uk-margin">
 	<a class="<?php echo v("classe_pulsanti_submit");?>" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span> <?php echo gtext("Aggiungi indirizzo");?></a>
 </div>
+<?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 
