@@ -42,8 +42,6 @@ class BaseRiservataController extends BaseController
 
 	public function index()
 	{
-// 		var_dump($this->m("RegusersModel")->accountEliminabileANuovoOrdine(User::$id));
-		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/area-riservata";
