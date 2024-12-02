@@ -466,6 +466,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_prezzi_con_aliquota_estera"	=>	0, // mostra i prezzi con l'IVA derlla nazione che si sta visualizzando
 		## VENDITE ESTERO ##
 		"scorpora_iva_prezzo_estero"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti)
+		"scorpora_iva_prezzo_estero_azienda"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti) per le aziende anche se scorpora_iva_prezzo_estero = 0
 		"scorpora_iva_prezzo_estero_spedizione_pagamenti"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default o per IVA diversa da default anche per spedizioni e pagamenti
 		"permetti_pagamento_contrassegno_fuori_nazione_default"	=>	0, // se impostato su 1, permette il pagamento con contrassegno fuori dalla nazione di default
 		## FASCE PREZZO ##

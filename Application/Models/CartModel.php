@@ -468,6 +468,17 @@ class CartModel extends GenericModel {
 		));
 	}
 	
+	public static function scorporaIvaPrezzoEstero($ordine = null)
+	{
+		if (!isset($ordine))
+			$ordine = $_POST;
+		
+		if (v("scorpora_iva_prezzo_estero") || (v("scorpora_iva_prezzo_estero_azienda") && isset($ordine["tipo_cliente"]) && $ordine["tipo_cliente"] != "privato"))
+			return true;
+		
+		return false;
+	}
+	
 	public function correggiPrezzi()
 	{
 		if (!v("prezzi_ivati_in_carrello"))
@@ -492,7 +503,8 @@ class CartModel extends GenericModel {
 			
 			$aliquota = isset(IvaModel::$aliquotaEstera) ? IvaModel::$aliquotaEstera : $r["iva"];
 			
-			if (v("scorpora_iva_prezzo_estero"))
+			// if (v("scorpora_iva_prezzo_estero"))
+			if (self::scorporaIvaPrezzoEstero())
 			{
 				$nuovoPrezzoUnitarioIvato = number_format(($r["price_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");
 				$nuovoPrezzoUnitarioInteroIvato = number_format(($r["prezzo_intero_ivato"] / (1 + ($r["iva"] / 100))) * (1 + ($aliquota / 100)), 2, ".", "");

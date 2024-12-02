@@ -1558,10 +1558,12 @@ class OrdiniModel extends FormModel {
 			$bckAttivaGiacenza = v("attiva_giacenza");
 			$bckAttivaMovimentazioniGiacenza = v("scala_giacenza_ad_ordine");
 			$bckScorporaIvaPrezzoEstero = v("scorpora_iva_prezzo_estero");
+			$bckScorporaIvaPrezzoEsteroAzienda = v("scorpora_iva_prezzo_estero_azienda");
 			
 			VariabiliModel::$valori["attiva_giacenza"] = 0;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = 0;
 			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = 0;
+			VariabiliModel::$valori["scorpora_iva_prezzo_estero_azienda"] = 0;
 			
 			$_POST["nazione"] = $ordine["nazione"];
 			$_POST["nazione_spedizione"] = $ordine["nazione_spedizione"] ? $ordine["nazione_spedizione"] : $ordine["nazione"];
@@ -1672,6 +1674,7 @@ class OrdiniModel extends FormModel {
 			VariabiliModel::$valori["attiva_giacenza"] = $bckAttivaGiacenza;
 			VariabiliModel::$valori["scala_giacenza_ad_ordine"] = $bckAttivaMovimentazioniGiacenza;
 			VariabiliModel::$valori["scorpora_iva_prezzo_estero"] = $bckScorporaIvaPrezzoEstero;
+			VariabiliModel::$valori["scorpora_iva_prezzo_estero_azienda"] = $bckScorporaIvaPrezzoEsteroAzienda;
 			
 			User::$id = $bckUserId;
 			PromozioniModel::$staticIdO = null;
