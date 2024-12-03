@@ -101,7 +101,7 @@ class CartModel extends GenericModel {
 	
 	public static function getCifreCalcolo()
 	{
-		return v("prezzi_ivati_in_carrello") ? self::$cifreCalcolo : v("cifre_decimali");;
+		return v("prezzi_ivati_in_carrello") ? self::$cifreCalcolo : v("cifre_decimali");
 	}
 	
 	// Totale scontato
