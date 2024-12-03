@@ -316,7 +316,7 @@ class RegusersController extends BaseController
 		
 		$this->getTabViewFields("form");
 		
-		$this->m['RegusersModel']->setPasswordStrengthCondition();
+		$this->m[$this->modelName]->setPasswordStrengthCondition();
 
 		parent::form($queryType, $id);
 		
