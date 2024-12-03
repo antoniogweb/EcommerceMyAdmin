@@ -207,7 +207,7 @@ class App
 						gtext("Tipologia")		=>	gtext("Tecnici"),
 						gtext("Necessario")	=>	gtext("Sì"),
 						"Descrizione"	=>	gtext("Utilizzato per il funzionamento dei popup informativi in home page"),
-						"Durata"		=>	$modale["giorni_durata_modale"] * 3600 * 24,
+						"Durata"		=>	$modale["giorni_durata_modale"] > 0 ? $modale["giorni_durata_modale"] * 3600 * 24 : -1000000,
 						"usato"			=>	1,
 					);
 				}
