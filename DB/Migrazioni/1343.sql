@@ -1,0 +1,1 @@
+alter table righe add um char(5) not null default '';

@@ -1,0 +1,1 @@
+alter table righe add note varchar(100) not null default '';

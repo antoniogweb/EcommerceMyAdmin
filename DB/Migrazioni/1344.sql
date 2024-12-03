@@ -1,0 +1,1 @@
+alter table cart add note varchar(100) not null default '';

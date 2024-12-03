@@ -1,0 +1,1 @@
+alter table cart add um char(5) not null default '';
