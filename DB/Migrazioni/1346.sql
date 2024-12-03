@@ -1,0 +1,1 @@
+ALTER TABLE `spedizioni_negozio_info` ADD INDEX `spedizioni_negozio_info_id_spedizione_negozio_invio` (`id_spedizione_negozio_invio`);
