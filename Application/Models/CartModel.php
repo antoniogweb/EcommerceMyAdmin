@@ -868,7 +868,7 @@ class CartModel extends GenericModel {
 		$this->values["attributi_backend"] = implode("<br />",$attributiBackendArray);
 	}
 	
-	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false)
+	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false, $idIva = null, $forzaValori = array())
 	{
 		$clean["id_page"] = (int)$id_page;
 		$clean["quantity"] = abs((int)$quantity);
@@ -887,7 +887,7 @@ class CartModel extends GenericModel {
 			return false;
 		}
 		
-		if (isset($idRif))
+		if (isset($idRif) || isset($idIva))
 			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"]))->send();
 		else
 			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
@@ -996,11 +996,28 @@ class CartModel extends GenericModel {
 					$this->values["peso"] = $rPage[0]["pages"]["peso"];
 				}
 				
-				$this->values["id_iva"] = $rPage[0]["pages"]["id_iva"];
-				$this->values["iva"] = $iva->getValore($rPage[0]["pages"]["id_iva"]);
+				if (isset($idIva))
+					$this->values["id_iva"] = (int)$idIva;
+				else
+					$this->values["id_iva"] = $rPage[0]["pages"]["id_iva"];
+				
+				$this->values["iva"] = $iva->getValore((int)$this->values["id_iva"]);
 				
 				$this->values["title"] = $rPage[0]["pages"]["title"];
 				$this->values["title_lingua"] = PagesModel::getPageLocalizedTitle($clean["id_page"], $rPage[0]["pages"]["title"]);
+				
+				// forza valori
+				if (isset($forzaValori["codice"]))
+					$this->values["codice"] = sanitizeHtml($forzaValori["codice"]);
+				
+				if (isset($forzaValori["titolo"]))
+					$this->values["title"] = $this->values["title_lingua"] = sanitizeHtml($forzaValori["titolo"]);
+				
+				if (isset($forzaValori["um"]))
+					$this->values["um"] = sanitizeHtml($forzaValori["um"]);
+				
+				if (isset($forzaValori["note"]))
+					$this->values["note"] = sanitizeHtml($forzaValori["note"]);
 				
 				// Attributi in lingua navigazione corrente
 				$attributiArray = array();

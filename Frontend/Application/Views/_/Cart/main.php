@@ -31,7 +31,6 @@
 		</div>
 		<div class="uk-width-1-1 tm-aside-column uk-width-1-4@m uk-text-left">
 			<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: <?php echo v("cart_sticky_top_offeset");?>;bottom: true;"<?php } ?>>
-<!-- 			<div> -->
 				<h3><?php echo gtext("Totali carrello");?></h3>
 				
 				<?php include(tpf("/Ordini/totali.php"));?>
