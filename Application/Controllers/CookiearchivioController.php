@@ -146,16 +146,22 @@ class CookiearchivioController extends BaseController
 				
 				if ($rigaValues["titolo"])
 				{
-					$idCookie = (int)$this->m[$this->modelName]->clear()->where(array(
-						"titolo"	=>	sanitizeAll($rigaValues["titolo"])
-					))->field("id_cookie_archivio");
+					$recordCookie = $this->m[$this->modelName]->clear()->where(array(
+						"titolo"	=>	sanitizeAll($rigaValues["titolo"]),
+						"dominio"	=>	sanitizeAll($rigaValues["dominio"]),
+					))->record();
 					
 					$this->m[$this->modelName]->sValues($rigaValues);
 					
-					if (!$idCookie)
+					if (empty($recordCookie))
 						$this->m[$this->modelName]->insert();
 					else
-						$this->m[$this->modelName]->update($idCookie);
+					{
+						if ($recordCookie["durata"])
+							$this->m[$this->modelName]->delFields("durata");
+						
+						$this->m[$this->modelName]->update($recordCookie["id_cookie_archivio"]);
+					}
 				}
 			}
 			

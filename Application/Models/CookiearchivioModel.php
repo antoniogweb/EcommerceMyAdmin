@@ -43,7 +43,8 @@ class CookiearchivioModel extends GenericModel {
 	public function disattiva($id)
 	{
 		$this->setValues(array(
-			"attivo"	=>	0
+			"attivo"	=>	0,
+			"durata"	=>	"",
 		));
 		
 		$this->update((int)$id);
@@ -75,7 +76,8 @@ class CookiearchivioModel extends GenericModel {
 	
 	public static function getProprietario($text)
 	{
-		return strpos($text, "oogle") !== false ? "Google" : $text;
+		return $text;
+		// return strpos($text, "oogle") !== false ? "Google" : $text;
 	}
 	
 	public static function durata($time)
