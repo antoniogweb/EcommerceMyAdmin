@@ -481,6 +481,9 @@ class BaseOrdiniController extends BaseController
 		if (!User::$adminLogged && $data["ordine"]["tipo_ordine"] == "W" && (!OrdiniModel::conPagamentoOnline($data["ordine"]) || OrdiniModel::isPagato($clean["id_o"])))
 			$data['idOrdineGtm'] = (int)$id_o;
 		
+		if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+			VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)$data["ordine"]["prezzi_ivati_in_carrello"];
+		
 		$data["tipoOutput"] = "web";
 		
 		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)

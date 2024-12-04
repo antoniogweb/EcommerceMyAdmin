@@ -923,6 +923,10 @@ class OrdiniModel extends FormModel {
 			$bckLang = Params::$lang;
 			$bckCountry = Params::$country;
 			$bckContesto = TraduzioniModel::$contestoStatic;
+			$bckPrezziIvatiInCarrello = v("prezzi_ivati_in_carrello");
+			
+			if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+				VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)$ordine["prezzi_ivati_in_carrello"];
 			
 			try
 			{
@@ -1037,6 +1041,10 @@ class OrdiniModel extends FormModel {
 				Params::$lang = $bckLang;
 				Params::$country = $bckCountry;
 				TraduzioniModel::$contestoStatic = $bckContesto;
+				
+				if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+					VariabiliModel::$valori["prezzi_ivati_in_carrello"] = $bckPrezziIvatiInCarrello;
+				
 				$tradModel = new TraduzioniModel();
 				$tradModel->ottieniTraduzioni();
 				
@@ -1088,6 +1096,9 @@ class OrdiniModel extends FormModel {
 				Params::$lang = $bckLang;
 				Params::$country = $bckCountry;
 				TraduzioniModel::$contestoStatic = $bckContesto;
+				
+				if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+					VariabiliModel::$valori["prezzi_ivati_in_carrello"] = $bckPrezziIvatiInCarrello;
 			}
 		}
 	}
