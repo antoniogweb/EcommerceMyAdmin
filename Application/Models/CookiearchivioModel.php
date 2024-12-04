@@ -62,7 +62,7 @@ class CookiearchivioModel extends GenericModel {
 	{
 		$cookies = self::g()->clear()->where(array(
 			"attivo"	=>	1,
-		))->orderBy("titolo")->send(false);
+		))->orderBy("dominio,titolo")->send(false);
 		
 		if (count($cookies) > 0)
 		{
