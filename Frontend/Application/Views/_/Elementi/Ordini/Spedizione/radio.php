@@ -32,6 +32,7 @@
 					</div>
 					<?php } ?>
 				</div>
+				<?php if (v("permetti_modifica_account")) { ?>
 				<div class="spedizione_box">
 					<div class="uk-width-1-1 uk-width-1-2@m <?php if ($values["id_spedizione"] == 0) { ?>spedizione_selezionata<?php } ?> uk-padding-small uk-flex uk-flex-middle spedizione_box_select">
 						<div>
@@ -45,6 +46,11 @@
 						<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
 					</div>
 				</div>
+				<?php } else { ?>
+					<div class="campi_nuovo_indirizzo <?php if ($mostraCampiSpedizione) { ?>errori_campo_indirizzo<?php } ?>">
+						<?php include(tpf("Regusers/form_dati_spedizione.php"));?>
+					</div>
+				<?php } ?>
 				<?php echo Html_Form::hidden("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"]);?> 
 				<?php echo Html_Form::hidden("id_spedizione",$values["id_spedizione"]);?> 
 				

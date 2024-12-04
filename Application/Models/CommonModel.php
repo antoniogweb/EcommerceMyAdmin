@@ -29,7 +29,7 @@ trait CommonModel {
 	
 	public function controllaCF($controlla = 1)
 	{
-		if ($controlla)
+		if (v("controlla_codice_fiscale") && $controlla)
 		{
 			if (isset($this->values["codice_fiscale"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
 			{
@@ -39,6 +39,9 @@ trait CommonModel {
 					{
 						$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
 						$this->result = false;
+						
+						$this->errors["Fields"]["codice_fiscale"][] = "class_codice_fiscale";
+						
 						return false;
 					}
 				}
@@ -68,6 +71,9 @@ trait CommonModel {
 					{
 						$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."</div><span class='evidenzia'>class_p_iva</span>".$this->notice;
 						$this->result = false;
+						
+						$this->errors["Fields"]["p_iva"][] = "class_p_iva";
+						
 						return false;
 					}
 				}

@@ -1933,6 +1933,9 @@ class OrdiniModel extends FormModel {
 
 		if (v("traccia_sorgente_utente") && User::$sorgente)
 			$this->values["sorgente"] = sanitizeAll(User::$sorgente);
+		
+		if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+			$this->values["prezzi_ivati_in_carrello"] = v("prezzi_ivati_in_carrello");
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)

@@ -992,6 +992,17 @@ class BaseOrdiniController extends BaseController
 			$_POST["email"] = trim($_POST["email"]);
 	}
 	
+	protected function checkIndirizziSpedizione()
+	{
+		if (!v("permetti_modifica_account") && User::$id)
+		{
+			$numeroIndirizzi = SpedizioniModel::numeroIndirizziDiSpedizioneUtente(User::$id);
+			
+			if (!$numeroIndirizzi)
+				$this->redirect("carrello/vedi");
+		}
+	}
+	
 	public function index()
 	{
 		if (!v("ecommerce_online"))
@@ -999,6 +1010,9 @@ class BaseOrdiniController extends BaseController
 		
 		if (v("checkout_solo_loggato") && !User::$logged)
 			$this->redirect("regusers/login?redirect=/checkout");
+		
+		// Controllo che abbia delle spedizioni se non può crearle in fase di checkout
+		$this->checkIndirizziSpedizione();
 		
 		$this->m('OrdiniModel')->checkNumeroOrdini();
 		
@@ -1440,7 +1454,7 @@ class BaseOrdiniController extends BaseController
 								{
 									$idSpedizione = $this->request->post("id_spedizione","0","forceInt");
 									
-									if (strcmp($nuovoIndirizzo,"Y") === 0)
+									if (strcmp($nuovoIndirizzo,"Y") === 0 && v("permetti_modifica_account"))
 									{
 										$this->m("SpedizioniModel")->query(array("update spedizioni set ultimo_usato = 'N' where id_user = ?",array((int)User::$id)));
 										
@@ -1674,12 +1688,12 @@ class BaseOrdiniController extends BaseController
 			$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
 			$data["elencoIndirizzi"] = $this->m("RegusersModel")->getIndirizziSpedizione(User::$id);
 			
-			$defaultValues["aggiungi_nuovo_indirizzo"] = "Y";
+			$defaultValues["aggiungi_nuovo_indirizzo"] = v("permetti_modifica_account") ? "Y" : "N";
 			
 			if (count($data["tendinaIndirizzi"]) > 0)
 			{
 				$defaultValues["aggiungi_nuovo_indirizzo"] = "N";
-				$defaultValues["id_spedizione"] = $this->m("RegusersModel")->getIdSpedizioneUsatoNellUltimoOrdine(User::$id);
+				$defaultValues["id_spedizione"] = $this->m("RegusersModel")->getIndirizzoSpedizionePerAdd(User::$id);
 			}
 			else
 				$defaultValues["spedisci_dati_fatturazione"] = "Y";

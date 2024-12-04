@@ -1,0 +1,1 @@
+alter table orders add prezzi_ivati_in_carrello tinyint not null default 1;

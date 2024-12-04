@@ -174,6 +174,7 @@ class VariabiliModel extends GenericModel {
 		"solo_utenti_privati"		=>	0,
 		"abilita_rich_snippet"		=>	1,
 		"abilita_codice_fiscale"	=>	1,
+		"controlla_codice_fiscale"	=>	1, // se impostare il check sul codice fiscale al checkout
 		"mostra_eventi"				=>	0,
 		"mostra_servizi"			=>	0, // Attiva la sezione servizi
 		"attiva_immagine_sfondo"	=>	0,
@@ -716,6 +717,7 @@ class VariabiliModel extends GenericModel {
 		"prezzi_ivati_in_carrello"	=>	0,
 		"prezzi_ivati_in_prodotti"	=>	0,
 		"attiva_prezzo_fisso"		=>	0, // se impostato ad 1, utilizza anche il prezzo fisso
+		"attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"	=>	0, // se impostato su 1, la variabile prezzi_ivati_in_carrello può essere sovrascritta per ogni utente loggato o ordine eseguito dall'utente
 		### GRUPPI UTENTI ##
 		"attiva_gruppi_utenti"		=>	1, // se impostato a 1, mostra i gruppi nell'elenco dei clienti
 		"attiva_gruppi"				=>	0, // se impostato ad 1, permette di gestire i gruppi dei clienti

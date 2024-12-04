@@ -139,4 +139,13 @@ class SpedizioniModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public static function numeroIndirizziDiSpedizioneUtente($idUser)
+	{
+		$spModel = new SpedizioniModel();
+		
+		return $spModel->clear()->where(array(
+			"id_user"	=>	(int)$idUser,
+		))->rowNumber();
+	}
 }

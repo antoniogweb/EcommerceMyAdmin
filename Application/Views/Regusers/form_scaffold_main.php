@@ -117,6 +117,11 @@
 					<?php echo $form["agente"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["prezzi_ivati_in_carrello"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["prezzi_ivati_in_carrello"];?>
+				</div>
+				<?php } ?>
 			</div>
 		</div>
 		<?php if (v("attiva_classi_sconto")) { ?>

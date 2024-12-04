@@ -297,6 +297,12 @@ class RegusersController extends BaseController
 			$formFields .= ",codice_gestionale";
 		}
 		
+		if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+		{
+			$fields .= ",prezzi_ivati_in_carrello";
+			$formFields .= ",prezzi_ivati_in_carrello";
+		}
+		
 		$fields = F::addSanitizeFunction($fields);
 
 		$fields .= ",password";

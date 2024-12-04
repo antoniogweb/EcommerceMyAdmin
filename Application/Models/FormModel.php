@@ -332,6 +332,21 @@ class FormModel extends GenericModel {
 					'className'	=>	'date_input form-control',
 					'attributes'=>	'autocomplete="new-password"',
 				),
+				'prezzi_ivati_in_carrello'		=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Mostra i prezzi ivati nel carrello?',
+					'className'	=>	'for_print form-control',
+					'options'	=>	array(
+						"0"	=>	"No",
+						"1"	=>	"Sì",
+					),
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, i prezzi saranno IVA inclusa.")."</div>"
+					),
+					'reverse'	=>	"yes",
+				),
 			),
 		);
 		

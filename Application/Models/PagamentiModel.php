@@ -162,12 +162,12 @@ class PagamentiModel extends GenericModel {
 		$res = array(
 			"type"	=>	"Select",
 			"labelString"	=>	"Gateway di pagamento",
-			"options"	=>	$this->elencoGateway($record["codice"]),
+			"options"	=>	isset($record["codice"]) ? $this->elencoGateway($record["codice"]) : array(),
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 		);
 		
-		if ($record["codice"] == "paypal")
+		if (isset($record["codice"]) && $record["codice"] == "paypal")
 			$res["wrap"] = array(
 				null,
 				null,
@@ -179,6 +179,9 @@ class PagamentiModel extends GenericModel {
 	
 	protected function aliasAccountLabel($record)
 	{
+		if (!isset($record["codice"]))
+			return "";
+		
 		if ($record["codice"] == "carta_di_credito")
 			return 'Alias Account / Shop ID';
 		else if ($record["codice"] == "klarna")
@@ -189,6 +192,9 @@ class PagamentiModel extends GenericModel {
 	
 	protected function chiaveSegretaLabel($record)
 	{
+		if (!isset($record["codice"]))
+			return "";
+		
 		if ($record["codice"] == "carta_di_credito")
 			return 'Chiave segreta / API KEY';
 		else if ($record["codice"] == "klarna")

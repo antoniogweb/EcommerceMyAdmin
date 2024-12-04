@@ -88,7 +88,7 @@ class PagamentiController extends BaseController
 		else if (isset($record["codice"]) && $record["codice"] == "klarna")
 			$fields .= ",test,alias_account,chiave_segreta";
 		
-		if (!OrdiniModel::conPagamentoOnline(array("pagamento"=>$record["codice"])))
+		if (isset($record["codice"]) && !OrdiniModel::conPagamentoOnline(array("pagamento"=>$record["codice"])))
 			$fields .= ",istruzioni_pagamento";
 		
 		if (v("permetti_ordini_offline"))

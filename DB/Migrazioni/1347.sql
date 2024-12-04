@@ -1,0 +1,1 @@
+alter table regusers add prezzi_ivati_in_carrello tinyint not null default 1;
