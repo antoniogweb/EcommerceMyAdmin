@@ -13,10 +13,11 @@
 		<h2 class="uk-margin-bottom uk-text-emphasis uk-text-large"><?php echo gtext("Indirizzo di spedizione");?></h2>
 		
 		<div class="blocco_checkout">
+			<?php if (v("permetti_modifica_account")) { ?>
 			<div class="blocco_scelta_indirizzo">
 				<?php echo Html_Form::radio("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"],"Y","imposta_aggiungi","none");?> <?php echo gtext("Aggiungi un nuovo indirizzo di spedizione");?>
 			</div>
-			
+			<?php } ?>
 			<div class="blocco_scelta_indirizzo">
 				<?php echo Html_Form::radio("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"],"N","imposta_seleziona","none");?> <?php echo gtext("Seleziona un indirizzo di spedizione esistente");?>
 			</div>
