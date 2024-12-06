@@ -542,7 +542,7 @@ class CartModel extends GenericModel {
 			$this->db->commit();
 	}
 	
-	public function set($id_cart, $quantity)
+	public function set($id_cart, $quantity, $forzaValori = array())
 	{
 		$clean["id_cart"] = (int)$id_cart;
 		$clean["quantity"] = abs((int)$quantity);
@@ -550,7 +550,8 @@ class CartModel extends GenericModel {
 		
 		if ($clean["quantity"] === 0)
 		{
-			$this->delete($clean["id_cart"]);
+			
+			return $this->delete($clean["id_cart"]);
 		}
 		else
 		{
@@ -586,9 +587,11 @@ class CartModel extends GenericModel {
 				else
 					$this->values["in_promozione"] = "N";
 				
+				$this->setForzaValori($forzaValori);
+				
 				$this->sanitize();
 				
-				$this->update(null, array(
+				return $this->update(null, array(
 					"id_cart"	=>	$clean["id_cart"],
 					"cart_uid"	=>	$clean["cart_uid"],
 				));
@@ -596,6 +599,8 @@ class CartModel extends GenericModel {
 // 				$this->update(null, "id_cart = " . $clean["id_cart"] . " AND cart_uid = '" . $clean["cart_uid"] . "'");
 			}
 		}
+		
+		return false;
 	}
 	
 	public function delete($id_cart)
@@ -868,6 +873,21 @@ class CartModel extends GenericModel {
 		$this->values["attributi_backend"] = implode("<br />",$attributiBackendArray);
 	}
 	
+	private function setForzaValori($forzaValori = array())
+	{
+		if (isset($forzaValori["codice"]))
+			$this->values["codice"] = sanitizeHtml($forzaValori["codice"]);
+		
+		if (isset($forzaValori["titolo"]))
+			$this->values["title"] = $this->values["title_lingua"] = sanitizeHtml($forzaValori["titolo"]);
+		
+		if (isset($forzaValori["um"]))
+			$this->values["um"] = sanitizeHtml($forzaValori["um"]);
+		
+		if (isset($forzaValori["note"]))
+			$this->values["note"] = sanitizeHtml($forzaValori["note"]);
+	}
+	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false, $idIva = null, $forzaValori = array())
 	{
 		$clean["id_page"] = (int)$id_page;
@@ -1007,17 +1027,7 @@ class CartModel extends GenericModel {
 				$this->values["title_lingua"] = PagesModel::getPageLocalizedTitle($clean["id_page"], $rPage[0]["pages"]["title"]);
 				
 				// forza valori
-				if (isset($forzaValori["codice"]))
-					$this->values["codice"] = sanitizeHtml($forzaValori["codice"]);
-				
-				if (isset($forzaValori["titolo"]))
-					$this->values["title"] = $this->values["title_lingua"] = sanitizeHtml($forzaValori["titolo"]);
-				
-				if (isset($forzaValori["um"]))
-					$this->values["um"] = sanitizeHtml($forzaValori["um"]);
-				
-				if (isset($forzaValori["note"]))
-					$this->values["note"] = sanitizeHtml($forzaValori["note"]);
+				$this->setForzaValori($forzaValori);
 				
 				// Attributi in lingua navigazione corrente
 				$attributiArray = array();
@@ -1168,6 +1178,14 @@ class CartModel extends GenericModel {
 		}
 		
 		return 0;
+	}
+	
+	public static function operazioneCarrelloOk($res)
+	{
+		if ($res && $res !== "-1")
+			return true;
+		
+		return false;
 	}
 	
 	// Restituisce le righe del proprio carrello
