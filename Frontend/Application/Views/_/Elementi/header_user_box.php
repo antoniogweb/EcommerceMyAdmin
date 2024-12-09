@@ -6,7 +6,7 @@ if (!isset($ukdropdown))
 if (!isset($divStyle))
 	$divStyle = "min-width: 250px;";
 ?>
-<div class="uk-padding-small uk-margin-remove uk-dropdown" uk-dropdown="<?php echo $ukdropdown;?>" style="<?php echo $divStyle;?>">
+<div class="form_login_dropdown uk-padding-small uk-margin-remove uk-dropdown" uk-dropdown="<?php echo $ukdropdown;?>" style="<?php echo $divStyle;?>">
 	<?php if ($islogged) { ?>
 	<?php
 	include(tpf(ElementitemaModel::p("HEADER_USER_BOX_LOGGED","", array(
@@ -16,8 +16,12 @@ if (!isset($divStyle))
 	?>
 	<?php } else { ?>
 	<div class="uk-dropdown-nav">
-		<div class="uk-text-small uk-text-right">
-			<a class="uk-text-secondary uk-text-bold" href="<?php echo $this->baseUrl."/crea-account";?>"><?php echo gtext("Crea un account")?></a>
+		<div class="uk-text-small uk-text-right header_login_popup">
+			<?php if (v("permetti_registrazione")) { ?>
+				<a class="uk-text-secondary uk-text-bold" href="<?php echo $this->baseUrl."/crea-account";?>"><?php echo gtext("Crea un account")?></a>
+			<?php } else { ?>
+				<span class="uk-text-secondary uk-text-bold"><?php echo gtext("Esegui il login")?></span>
+			<?php } ?>
 			<hr />
 		</div>
 		<form autocomplete="new-password" action="<?php echo $this->baseUrl."/regusers/login";?>" data-toggle="validator" method="POST">
