@@ -62,7 +62,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_TOTALI","", array(
 <?php } ?>
 
 <?php if ($ordine["da_spedire"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"])) { ?>
-<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Indirizzo di consegna", false); ?></h2>
+<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di spedizione", false); ?></h2>
 
 <?php
 include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
