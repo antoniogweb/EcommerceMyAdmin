@@ -875,17 +875,10 @@ class CartModel extends GenericModel {
 	
 	private function setForzaValori($forzaValori = array())
 	{
-		if (isset($forzaValori["codice"]))
-			$this->values["codice"] = sanitizeHtml($forzaValori["codice"]);
-		
-		if (isset($forzaValori["titolo"]))
-			$this->values["title"] = $this->values["title_lingua"] = sanitizeHtml($forzaValori["titolo"]);
-		
-		if (isset($forzaValori["um"]))
-			$this->values["um"] = sanitizeHtml($forzaValori["um"]);
-		
-		if (isset($forzaValori["note"]))
-			$this->values["note"] = sanitizeHtml($forzaValori["note"]);
+		foreach ($forzaValori as $k => $v)
+		{
+			$this->values[$k] = sanitizeHtml($v);
+		}
 	}
 	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false, $idIva = null, $forzaValori = array())

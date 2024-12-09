@@ -37,6 +37,9 @@ class SpedizioniController extends BaseController {
 		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione"))
 			$fields .= ",destinatario_spedizione";
 		
+		if (VariabiliModel::attivaCodiceGestionale())
+			$fields .= ',codice_gestionale';
+		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_user"] != "tutti")

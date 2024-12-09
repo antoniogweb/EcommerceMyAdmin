@@ -234,7 +234,7 @@ class BaseBaseController extends Controller
 			if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
 				VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)User::$dettagli["prezzi_ivati_in_carrello"];
 			
-			// Controlli sull'utente loggato
+			// Imposta le preferenze sulla base dell'utente loggato
 			$this->settaPreferenzeUtenteLoggato();
 		}
 		
@@ -319,7 +319,7 @@ class BaseBaseController extends Controller
 		}
 	}
 	
-	// Imposta le preferenze dell'utente loggato
+	// Imposta le preferenze sulla base dell'utente loggato
 	protected function settaPreferenzeUtenteLoggato()
 	{
 		

@@ -148,4 +148,9 @@ class SpedizioniModel extends GenericModel {
 			"id_user"	=>	(int)$idUser,
 		))->rowNumber();
 	}
+	
+	public static function getCodiceGestionale($idSpedizione)
+	{
+		return self::g()->clear()->select("codice_gestionale")->whereId((int)$idSpedizione)->field("codice_gestionale");
+	}
 }

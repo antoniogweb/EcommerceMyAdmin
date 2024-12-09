@@ -163,7 +163,7 @@ class RegusersController extends BaseController
 // 			$filtri[] = array("agente",null,array("tutti" => "Tipo cliente", "0" => "Cliente normale", "1" => "Agente"));
 		}
 		
-		if (v("attiva_collegamento_gestionali") && v("mostra_codice_gestionale"))
+		if (VariabiliModel::attivaCodiceGestionale())
 		{
 			$mainFields[] = 'codiceGestionaleCrud';
 			$headLabels .= ',Codice gestionale';
@@ -291,7 +291,7 @@ class RegusersController extends BaseController
 			$formFields .= ",fattura";
 		}
 		
-		if (v("attiva_collegamento_gestionali") && v("mostra_codice_gestionale"))
+		if (VariabiliModel::attivaCodiceGestionale())
 		{
 			$fields .= ",codice_gestionale";
 			$formFields .= ",codice_gestionale";
@@ -367,6 +367,12 @@ class RegusersController extends BaseController
 		
 		$this->mainFields = array("indirizzo_spedizione","spedizioni.cap_spedizione","spedizioni.citta_spedizione","nazione", "provincia","spedizioni.ultimo_usato");
 		$this->mainHead = "Indirizzo,Cap,Città,Nazione,Provincia,Ultimo usato";
+		
+		if (VariabiliModel::attivaCodiceGestionale())
+		{
+			$this->mainFields[] = "codiceGestionaleCrud";
+			$this->mainHead .= ",Codice gestionale";
+		}
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"spedizioni/".$clean['id'],'pageVariable'=>'page_fgl');
 		

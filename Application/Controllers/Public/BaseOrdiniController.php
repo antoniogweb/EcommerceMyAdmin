@@ -444,6 +444,12 @@ class BaseOrdiniController extends BaseController
 			$this->redirect($urlSummary);
 	}
 	
+	// Imposta le preferenze sulla base dell'ordine
+	protected function settaPreferenzeOrdine($ordine)
+	{
+		
+	}
+	
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$data['notice'] = null;
@@ -483,6 +489,9 @@ class BaseOrdiniController extends BaseController
 		
 		if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
 			VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)$data["ordine"]["prezzi_ivati_in_carrello"];
+		
+		// Imposta le preferenze sulla base dell'ordine
+		$this->settaPreferenzeOrdine($data["ordine"]);
 		
 		$data["tipoOutput"] = "web";
 		
@@ -995,9 +1004,17 @@ class BaseOrdiniController extends BaseController
 			$_POST["email"] = trim($_POST["email"]);
 	}
 	
-	protected function checkIndirizziSpedizione()
+	protected function nonPermettereModificaAccountELoggato()
 	{
 		if (!v("permetti_modifica_account") && User::$id)
+			return true;
+		
+		return false;
+	}
+	
+	protected function checkIndirizziSpedizione()
+	{
+		if ($this->nonPermettereModificaAccountELoggato())
 		{
 			$numeroIndirizzi = SpedizioniModel::numeroIndirizziDiSpedizioneUtente(User::$id);
 			
@@ -1152,75 +1169,78 @@ class BaseOrdiniController extends BaseController
 		if (isset($_POST["nazione"]) && in_array($_POST["nazione"], NazioniModel::elencoNazioniConVat()))
 			$campoPIva = "p_iva,";
 		
-		if (strcmp($tipo_cliente,"privato") === 0)
+		if (!$this->nonPermettereModificaAccountELoggato())
 		{
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,".$campiObbligatoriComuni);
-		}
-		else if (strcmp($tipo_cliente,"libero_professionista") === 0)
-		{
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,$campoPIva".$campiObbligatoriComuni);
-		}
-		else
-		{
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"ragione_sociale,$campoPIva".$campiObbligatoriComuni);
-		}
-		
-		$this->m('OrdiniModel')->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>")."<div class='evidenzia'>class_pec</div>");
-		
-		$this->m('OrdiniModel')->addSoftCondition("both",'checkLength|7',"codice_destinatario|".gtext("Si prega di ricontrollare <b>il Codice Destinatario</b>")."<div class='evidenzia'>class_codice_destinatario</div>");
-		
-		$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>")."<div class='evidenzia'>class_email</div>");
-		
-		if (v("account_attiva_conferma_username"))
-		{
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
+			if (strcmp($tipo_cliente,"privato") === 0)
+			{
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,".$campiObbligatoriComuni);
+			}
+			else if (strcmp($tipo_cliente,"libero_professionista") === 0)
+			{
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"nome,cognome,$campoPIva".$campiObbligatoriComuni);
+			}
+			else
+			{
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkNotEmpty',"ragione_sociale,$campoPIva".$campiObbligatoriComuni);
+			}
 			
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
-		}
-		
-		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
-		
-		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"])
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($_POST["nazione_spedizione"]),"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
-		
-// 		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|privato,azienda,libero_professionista',"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
-		
-		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
-		
-		$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"note|<b>".gtext("Le note non possono superare i 255 caratteri")."</b><div class='evidenzia'>class_note</div>");
-		
-		$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
-		
-		$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
-		
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
-		{
-// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
+			$this->m('OrdiniModel')->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>")."<div class='evidenzia'>class_pec</div>");
 			
-			if (v("abilita_codice_fiscale"))
-				$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
+			$this->m('OrdiniModel')->addSoftCondition("both",'checkLength|7',"codice_destinatario|".gtext("Si prega di ricontrollare <b>il Codice Destinatario</b>")."<div class='evidenzia'>class_codice_destinatario</div>");
 			
-			$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
-		}
-		
-		if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
-		{
-// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
-		}
-		
-		$codiciNazioniAttive = implode(",",$this->m("NazioniModel")->selectCodiciAttivi());
-		
-		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
-		
-		$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
-		
-		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
-		
-		if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && count($elencoCorrieri) > 0)
-		{
-			$listaCorrieriNazione = implode(",",$this->m("CorrieriModel")->getIdsCorrieriNazione($_POST["nazione_spedizione"]));
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>")."<div class='evidenzia'>class_email</div>");
 			
-			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
+			if (v("account_attiva_conferma_username"))
+			{
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
+				
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
+			}
+			
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
+			
+			if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"])
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($_POST["nazione_spedizione"]),"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+			
+	// 		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|privato,azienda,libero_professionista',"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+			
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+			
+			$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"note|<b>".gtext("Le note non possono superare i 255 caratteri")."</b><div class='evidenzia'>class_note</div>");
+			
+			$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
+			
+			$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
+			
+			if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+			{
+	// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
+				
+				if (v("abilita_codice_fiscale"))
+					$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
+				
+				$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
+			}
+			
+			if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] == "IT")
+			{
+	// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
+			}
+			
+			$codiciNazioniAttive = implode(",",$this->m("NazioniModel")->selectCodiciAttivi());
+			
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+			
+			$codiciNazioniAttiveSpedizione = implode(",",$codiciSpedizioneAttivi);
+			
+			$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+			
+			if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && count($elencoCorrieri) > 0)
+			{
+				$listaCorrieriNazione = implode(",",$this->m("CorrieriModel")->getIdsCorrieriNazione($_POST["nazione_spedizione"]));
+				
+				$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
+			}
 		}
 		
 		$fields = OpzioniModel::stringaValori("CAMPI_SALVATAGGIO_ORDINE");
@@ -1491,6 +1511,15 @@ class BaseOrdiniController extends BaseController
 									"registrato" => "Y",
 									"id_spedizione" => $idSpedizione,
 								);
+								
+								if (VariabiliModel::attivaCodiceGestionale())
+								{
+									$this->m('OrdiniModel')->setValue("codice_gestionale", User::$dettagli["codice_gestionale"]);
+									
+									if ($idSpedizione)
+										$this->m('OrdiniModel')->setValue("codice_gestionale_spedizione", SpedizioniModel::getCodiceGestionale((int)$idSpedizione));
+								}
+								
 								$this->m('OrdiniModel')->update($clean['lastId']);
 								
 								if (v("aggiorna_sempre_i_dati_del_cliente_al_checkout") || !$this->m('RegusersModel')->isCompleto(User::$id))

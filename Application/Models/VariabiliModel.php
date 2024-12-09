@@ -651,7 +651,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_interfaccia_opcache"	=>	0, // se attivare o meno l'interfaccia opcache
 		## GESTIONALI ##
 		"attiva_collegamento_gestionali"	=>	0, // se attivare o meno l'interfaccia di gestione e il collegamento con i gestionali
-		"mostra_codice_gestionale"	=>	0, // se impostato a 1 e se attiva_collegamento_gestionali = 1, mostra e permette di modificare il codice gestionale per le anagrafiche direttamente nell'admin dell'ecommerce
+		"mostra_codice_gestionale"	=>	0, // se impostato a 1 e se attiva_collegamento_gestionali = 1, mostra e permette di modificare il codice gestionale per le anagrafiche direttamente nell'admin dell'ecommerce (anche per la spedizione). Inoltre salva il codice del gestionale anche nell'ordine (sia per la fatturazione che per la spedizione)
 		## FATTURE ##
 		"fatture_attive"			=>	1, // attiva la sezione per la generazione della fattura
 		"check_fatture"				=>	0, // fai i controlli sulle fatture
@@ -1151,5 +1151,13 @@ class VariabiliModel extends GenericModel {
 	{
 		return v("attiva_controllo_robustezza_password") ? "help_wizard_password" : "";
 		
+	}
+	
+	public static function attivaCodiceGestionale()
+	{
+		if (v("attiva_collegamento_gestionali") && v("mostra_codice_gestionale"))
+			return true;
+		
+		return false;
 	}
 }
