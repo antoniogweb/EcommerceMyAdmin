@@ -40,8 +40,6 @@ ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
 Domain::$parentRoot = str_replace("/admin", "", LIBRARY);
 
-VariabiliModel::$valori["svuota_file_cookie_carrello_in_automatico"] = 1;
-
 Files_Log::$logFolder = LIBRARY."/Logs";
 
 if (!isset($params["azione"]))
