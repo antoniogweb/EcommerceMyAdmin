@@ -518,15 +518,6 @@ class CartModel extends GenericModel {
 			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
 			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitarioInteroIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
 			
-// 			if ($r["prezzo_intero_ivato"] > 0)
-// 				$rapporto = $r["price_ivato"] / $r["prezzo_intero_ivato"];
-// 			else
-// 				$rapporto = 1;
-// 			
-// 			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitario / $rapporto, v("cifre_decimali"), ".", "");
-			
-// 			echo $nuovoPrezzoUnitarioIntero."-".$r["prezzo_intero"]."<br />";
-			
 			if ($nuovoPrezzoUnitario != $r["price"] || $nuovoPrezzoUnitarioIntero != $r["prezzo_intero"])
 			{
 				$this->setValues(array(
@@ -542,7 +533,7 @@ class CartModel extends GenericModel {
 			$this->db->commit();
 	}
 	
-	public function set($id_cart, $quantity, $forzaValori = array())
+	public function set($id_cart, $quantity, $forzaValori = array(), $ricalcolaPrezzi = true)
 	{
 		$clean["id_cart"] = (int)$id_cart;
 		$clean["quantity"] = abs((int)$quantity);
@@ -550,7 +541,6 @@ class CartModel extends GenericModel {
 		
 		if ($clean["quantity"] === 0)
 		{
-			
 			return $this->delete($clean["id_cart"]);
 		}
 		else
@@ -570,22 +560,25 @@ class CartModel extends GenericModel {
 					"quantity" => $clean["quantity"],
 				);
 				
-				// prezzo
-				$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true, $cart["id_c"]);
-				
-				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true, $cart["id_c"]);
-				
-				// prezzo fisso
-				$this->values["prezzo_fisso"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_fisso_intero"], 1, true, true, $cart["id_c"]);
-				
-				if (v("prezzi_ivati_in_prodotti"))
-					$this->values["prezzo_fisso_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_fisso_intero_ivato"], 1, true, true, $cart["id_c"]);
-				
-				if (number_format($this->values["price"],2,".","") != number_format($cart["prezzo_intero"],2,".",""))
-					$this->values["in_promozione"] = "Y";
-				else
-					$this->values["in_promozione"] = "N";
+				if ($ricalcolaPrezzi)
+				{
+					// prezzo
+					$this->values["price"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero"], $clean["quantity"], true, true, $cart["id_c"]);
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$this->values["price_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_intero_ivato"], $clean["quantity"], true, true, $cart["id_c"]);
+					
+					// prezzo fisso
+					$this->values["prezzo_fisso"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_fisso_intero"], 1, true, true, $cart["id_c"]);
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$this->values["prezzo_fisso_ivato"] = $this->calcolaPrezzoFinale($cart["id_page"], $cart["prezzo_fisso_intero_ivato"], 1, true, true, $cart["id_c"]);
+					
+					if (number_format($this->values["price"],2,".","") != number_format($cart["prezzo_intero"],2,".",""))
+						$this->values["in_promozione"] = "Y";
+					else
+						$this->values["in_promozione"] = "N";
+				}
 				
 				$this->setForzaValori($forzaValori);
 				
