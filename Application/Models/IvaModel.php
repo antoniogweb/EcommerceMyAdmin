@@ -181,7 +181,7 @@ class IvaModel extends GenericModel
 						
 						if (!empty($recordIva))
 						{
-							// $totaleFuroiItalia += getPrezzoScontatoN();
+							$totaleFuroiItalia += getPrezzoScontatoN() + getSpedizioneN() + getPagamentoN();
 
 							if (($totaleFuroiItalia > v("euro_iva_italiana_vendite_ue") || $totaleFuroiItaliaAnnoPrecedente > v("euro_iva_italiana_vendite_ue")) && $nazione["id_iva"])
 							{
