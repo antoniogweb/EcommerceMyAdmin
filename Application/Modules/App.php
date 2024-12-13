@@ -38,6 +38,8 @@ class App
 	
 	public static $operazioneSchedulata = false;
 	
+	public static $fileNeutri = array("index.html", ".htaccess");
+	
 	public static function setPannelli()
 	{
 		self::$pannelli = array(

@@ -547,4 +547,57 @@ class DocumentiModel extends GenericModel {
 		
 		return true;
 	}
+	
+	// Sposto in una cartella old tutti i file da eliminare
+	public function spostaDocumentiNonUtilizzati($cartella = "documenti", $log = null)
+	{
+		createFolderFull("images/documenti/trash", Domain::$parentRoot);
+		
+		$this->files->setBase(Domain::$parentRoot.'/images/'.$cartella);
+		$this->files->listFiles();
+		
+		$files = $this->files->getFiles();
+		
+		$elencoDocumentiDb = $this->clear()->select("filename")->toList("filename")->send();
+		
+		$elencoDocumentiDb = array_unique($elencoDocumentiDb);
+		// print_r($elencoDocumentiDb);
+		
+		$indiceSpostati = $indicePresenti = $indiceFileNeutri = 0;
+		
+		foreach ($files as $file)
+		{
+			if (!in_array($file, App::$fileNeutri))
+			{
+				if (!in_array($file, $elencoDocumentiDb))
+				{
+					$indiceSpostati++;
+					
+					if ($log)
+						$log->writeString("spostato documento $file");
+				}
+				else
+					$indicePresenti++;
+			}
+			else
+				$indiceFileNeutri++;
+		}
+		
+		$filePresenti = 0;
+		
+		foreach ($elencoDocumentiDb as $file)
+		{
+			if (trim($file) && @is_file(Domain::$parentRoot.'/images/'.$cartella."/$file"))
+				$filePresenti++;
+		}
+		
+		if ($log)
+		{
+			$log->writeString("NUMERO DOCUMENTI IN DB:".count($elencoDocumentiDb));
+			$log->writeString("NUMERO FILE IN CARTELLA:".(count($files) - $indiceFileNeutri));
+			$log->writeString("NUMERO DOCUMENTI IN DB CON FILE PRESENTE:".$filePresenti);
+			$log->writeString("NUMERO FILE SPOSTATI:".$indiceSpostati);
+			$log->writeString("NUMERO FILE NON SPOSTATI:".$indicePresenti);
+		}
+	}
 }
