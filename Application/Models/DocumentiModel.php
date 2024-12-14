@@ -551,9 +551,12 @@ class DocumentiModel extends GenericModel {
 	// Sposto in una cartella old tutti i file da eliminare
 	public function spostaDocumentiNonUtilizzati($cartella = "documenti", $log = null)
 	{
-		createFolderFull("images/documenti/trash", Domain::$parentRoot);
+		$cartellaDocumenti = "images/$cartella";
+		$cartellaTrash = "$cartellaDocumenti/trash";
 		
-		$this->files->setBase(Domain::$parentRoot.'/images/'.$cartella);
+		createFolderFull($cartellaTrash, Domain::$parentRoot);
+		
+		$this->files->setBase(Domain::$parentRoot.'/'.$cartellaDocumenti);
 		$this->files->listFiles();
 		
 		$files = $this->files->getFiles();
@@ -572,6 +575,8 @@ class DocumentiModel extends GenericModel {
 				if (!in_array($file, $elencoDocumentiDb))
 				{
 					$indiceSpostati++;
+					
+					rename(Domain::$parentRoot.'/'.$cartellaDocumenti."/$file", Domain::$parentRoot.'/'.$cartellaTrash."/$file");
 					
 					if ($log)
 						$log->writeString("spostato documento $file");
