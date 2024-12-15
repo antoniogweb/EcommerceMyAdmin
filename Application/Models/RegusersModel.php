@@ -324,7 +324,7 @@ class RegusersModel extends FormModel {
 	}
 	
 	// importa i clienti partendo dai dati forniti dal gestionale attivo
-	public static function importaDaDatiGestionale($dati, $log = null)
+	public static function importaDaDatiGestionale($dati)
 	{
 		$ru = new RegusersModel();
 		$sp = new SpedizioniModel();
@@ -333,12 +333,14 @@ class RegusersModel extends FormModel {
 		
 		self::$clienteImportato = true;
 		
+		$arrayErrori = array();
+		
 		foreach ($dati as $codice => $struttura)
 		{
 			if (!$struttura["fatturazione"]["username"])
 			{
-				if ($log)
-					$log->writeString("ERRORE IMPOPRTAZIONE CLIENTE: email mancante - CODICE GESTIONALE ".$codice);
+				$arrayErrori[] = "-------------";
+				$arrayErrori[] = "ERRORE IMPOPRTAZIONE CLIENTE: email mancante - CODICE GESTIONALE ".$codice;
 				
 				continue;
 			}
@@ -362,13 +364,10 @@ class RegusersModel extends FormModel {
 				
 				if (!$ru->insert())
 				{
-					if ($log)
-					{
-						$log->writeString("-------------");
-						$log->writeString("ERRORE IMPOPRTAZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice);
-						$log->writeString(strip_tags($ru->notice));
-						$log->writeString(is_array($ru->getError()) ? print_r($ru->getError(), true) : $ru->getError());
-					}
+					$arrayErrori[] = "-------------";
+					$arrayErrori[] = "ERRORE IMPOPRTAZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice;
+					$arrayErrori[] = strip_tags($ru->notice);
+					$arrayErrori[] = is_array($ru->getError()) ? print_r($ru->getError(), true) : $ru->getError();
 				}
 				else
 					$idCliente = $ru->lId;
@@ -377,13 +376,10 @@ class RegusersModel extends FormModel {
 			{
 				if (!$ru->update((int)$cliente["id_user"]))
 				{
-					if ($log)
-					{
-						$log->writeString("-------------");
-						$log->writeString("ERRORE AGGIORNAMENTO CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice);
-						$log->writeString(strip_tags($ru->notice));
-						$log->writeString(is_array($ru->getError()) ? print_r($ru->getError(), true) : $ru->getError());
-					}
+					$arrayErrori[] = "-------------";
+					$arrayErrori[] = "ERRORE AGGIORNAMENTO CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice;
+					$arrayErrori[] = strip_tags($ru->notice);
+					$arrayErrori[] = is_array($ru->getError()) ? print_r($ru->getError(), true) : $ru->getError();
 				}
 				else
 					$idCliente = (int)$cliente["id_user"];
@@ -406,30 +402,26 @@ class RegusersModel extends FormModel {
 						
 						if (!$sp->insert())
 						{
-							if ($log)
-							{
-								$log->writeString("-------------");
-								$log->writeString("ERRORE IMPOPRTAZIONE SPEDIZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice."-".$spedizione["codice_gestionale"]);
-								$log->writeString(strip_tags($sp->notice));
-								$log->writeString(is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError());
-							}
+							$arrayErrori[] = "-------------";
+							$arrayErrori[] = "ERRORE IMPOPRTAZIONE SPEDIZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice."-".$spedizione["codice_gestionale"];
+							$arrayErrori[] = strip_tags($sp->notice);
+							$arrayErrori[] = is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError();
 						}
 					}
 					else
 					{
 						if (!$sp->update((int)$record["id_spedizione"]))
 						{
-							if ($log)
-							{
-								$log->writeString("-------------");
-								$log->writeString("ERRORE IMPOPRTAZIONE SPEDIZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice."-".$spedizione["codice_gestionale"]);
-								$log->writeString(strip_tags($sp->notice));
-								$log->writeString(is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError());
-							}
+							$arrayErrori[] = "-------------";
+							$arrayErrori[] = "ERRORE AGGIORNAMENTO SPEDIZIONE CLIENTE ".$struttura["fatturazione"]["username"]." - CODICE CLIENTE ".$codice."-".$spedizione["codice_gestionale"];
+							$arrayErrori[] = strip_tags($sp->notice);
+							$arrayErrori[] = is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError();
 						}
 					}
 				}
 			}
 		}
+		
+		return $arrayErrori;
 	}
 }
