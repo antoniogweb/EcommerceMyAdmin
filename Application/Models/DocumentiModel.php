@@ -554,7 +554,10 @@ class DocumentiModel extends GenericModel {
 		$cartellaDocumenti = "images/$cartella";
 		$cartellaTrash = "$cartellaDocumenti/trash";
 		
-		createFolderFull($cartellaTrash, Domain::$parentRoot);
+		if (@!is_dir(Domain::$parentRoot.'/'.$cartellaDocumenti))
+			return;
+		
+		createFolderFull("trash", Domain::$parentRoot.'/'.$cartellaDocumenti);
 		
 		$this->files->setBase(Domain::$parentRoot.'/'.$cartellaDocumenti);
 		$this->files->listFiles();
