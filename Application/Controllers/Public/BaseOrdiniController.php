@@ -1320,7 +1320,7 @@ class BaseOrdiniController extends BaseController
 		{
 			RegusersModel::checkEdEliminaAccount();
 			
-			if (v("disattiva_antispam_checkout") || CaptchaModel::getModulo()->checkRegistrazione())
+			if ((v("disattiva_antispam_checkout") || CaptchaModel::getModulo()->checkRegistrazione()) && !App::isSpam())
 			{
 				if ($this->m('OrdiniModel')->checkConditions('insert'))
 				{

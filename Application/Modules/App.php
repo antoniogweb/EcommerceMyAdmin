@@ -106,6 +106,14 @@ class App
 		});
 	}
 	
+	public static function isSpam()
+	{
+		if (function_exists("isSpam"))
+			return isSpam();
+		
+		return false;
+	}
+	
 	public static function getCookieTecnici()
 	{
 		if (empty(self::$elencoCookieTecnici))
