@@ -51,11 +51,8 @@ if (!isset($params["azione"]))
 $log = Files_Log::getInstance("log_comandi_documenti");
 
 if ($params["azione"] == "sposta-documenti-non-utilizzati")
-{
-	$log->writeString("INIZIO SPOSTAMENTO DOCUMENTI");
-	
-	DocumentiModel::g()->spostaDocumentiNonUtilizzati("documenti",$log);
-	
-	$log->writeString("FINE SPOSTAMENTO DOCUMENTI");
-}
+	DocumentiModel::g()->spostaDocumentiNonUtilizzati("documenti", false, $log);
+
+if ($params["azione"] == "elimina-documenti-non-utilizzati")
+	DocumentiModel::g()->spostaDocumentiNonUtilizzati("documenti", true, $log);
 

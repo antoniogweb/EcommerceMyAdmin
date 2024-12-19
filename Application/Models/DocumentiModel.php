@@ -549,8 +549,21 @@ class DocumentiModel extends GenericModel {
 	}
 	
 	// Sposto in una cartella old tutti i file da eliminare
-	public function spostaDocumentiNonUtilizzati($cartella = "documenti", $log = null)
+	// $delete: bool true|false -> true: elimina, false: sposta nella cartella trash
+	public function spostaDocumentiNonUtilizzati($cartella = "documenti", $delete = false, $log = null)
 	{
+		$labelLog = "SPOSTATI";
+		$labelLogAzione = "SPOSTAMENTO";
+		
+		if ($delete)
+		{
+			$labelLog = "ELIMINATI";
+			$labelLogAzione = "ELIMINAZIONE";
+		}
+		
+		if ($log)
+			$log->writeString("INIZIO $labelLogAzione DOCUMENTI");
+		
 		$cartellaDocumenti = "images/$cartella";
 		$cartellaTrash = "$cartellaDocumenti/trash";
 		
@@ -579,7 +592,10 @@ class DocumentiModel extends GenericModel {
 				{
 					$indiceSpostati++;
 					
-					rename(Domain::$parentRoot.'/'.$cartellaDocumenti."/$file", Domain::$parentRoot.'/'.$cartellaTrash."/$file");
+					if ($delete)
+						@unlink(Domain::$parentRoot.'/'.$cartellaDocumenti."/$file");
+					else
+						rename(Domain::$parentRoot.'/'.$cartellaDocumenti."/$file", Domain::$parentRoot.'/'.$cartellaTrash."/$file");
 					
 					if ($log)
 						$log->writeString("spostato documento $file");
@@ -604,8 +620,9 @@ class DocumentiModel extends GenericModel {
 			$log->writeString("NUMERO DOCUMENTI IN DB:".count($elencoDocumentiDb));
 			$log->writeString("NUMERO FILE IN CARTELLA:".(count($files) - $indiceFileNeutri));
 			$log->writeString("NUMERO DOCUMENTI IN DB CON FILE PRESENTE:".$filePresenti);
-			$log->writeString("NUMERO FILE SPOSTATI:".$indiceSpostati);
-			$log->writeString("NUMERO FILE NON SPOSTATI:".$indicePresenti);
+			$log->writeString("NUMERO FILE $labelLog:".$indiceSpostati);
+			$log->writeString("NUMERO FILE NON $labelLog:".$indicePresenti);
+			$log->writeString("FINE $labelLogAzione DOCUMENTI");
 		}
 	}
 }
