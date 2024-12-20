@@ -1670,7 +1670,8 @@ class CartModel extends GenericModel {
 				
 				if ((time() - $time) >= 60 * v("svuota_file_cookie_carrello_dopo_x_minuti"))
 				{
-					unlink($path);
+					if (@is_file($path))
+						unlink($path);
 					
 					foreach (new DirectoryIterator($folder) as $fileInfo)
 					{
@@ -1680,7 +1681,10 @@ class CartModel extends GenericModel {
 						if ($fileInfo->getFilename() == "index.html" || $fileInfo->getFilename() == ".htaccess")
 							continue;
 						
-						unlink($fileInfo->getRealPath());
+						$realPath = $fileInfo->getRealPath();
+						
+						if (@is_file($realPath))
+							unlink($realPath);
 					}
 					
 					FilePutContentsAtomic($path, time());
