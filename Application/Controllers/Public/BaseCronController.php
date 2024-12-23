@@ -56,7 +56,7 @@ class BaseCronController extends Controller
 		$this->clean();
 		
 		$options = array(
-			"azione" => $_GET["azione"] ?? "",
+			"azione" => isset($_GET["azione"]) ? (string)$_GET["azione"] : "",
 		);
 		
 		$options = $this->getOpzioni($options, array("lingua", "id_record", "limit"));
