@@ -281,6 +281,10 @@ class BaseRegusersController extends BaseController
 				$this->m('RegusersModel')->setValue("password", randomToken(), PASSWORD_HASH);
 				$this->m('RegusersModel')->setValue("completo", 0);
 				
+				// Prendi la nazione dall'URL o imposta quella di default
+				$nazione = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
+				$this->m('RegusersModel')->setValue("nazione", $nazione);
+				
 				if ($this->m('RegusersModel')->insert())
 				{
 					$idCliente = (int)$this->m('RegusersModel')->lId;
