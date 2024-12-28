@@ -289,7 +289,7 @@ class TraduttoriModel extends GenericModel
 				->where(array(
 					"lingua"	=>	sanitizeAll($lingua),
 				))
-				->sWhere("(testi.data_ultima_modifica IS NULL OR (principale.data_ultima_modifica IS NOT NULL AND testi.data_ultima_modifica < principale.data_ultima_modifica))");
+				->sWhere("(testi.data_ultima_modifica IS NULL OR (principale.data_ultima_modifica IS NOT NULL AND testi.data_ultima_modifica <= principale.data_ultima_modifica))");
 			
 			if ($idRecord)
 				$tModel->aWhere(array(
