@@ -140,10 +140,10 @@ class IvaModel extends GenericModel
 		
 		if (ListeregaloModel::hasIdLista())
 		{
-			$nazioneUtenteLista = ListeregaloModel::nazioneListaRegalo(0, User::$idLista);
+			$nazioneLista = ListeregaloModel::nazioneListaRegalo(0, User::$idLista);
 			
-			if ($nazioneUtenteLista)
-				$nazioneSpedizione = $nazioneUtenteLista;
+			if ($nazioneLista)
+				$nazioneSpedizione = $nazioneLista;
 		}
 		
 		if (isset($nazioneSpedizione) && isset($_POST["tipo_cliente"]) && $nazioneSpedizione != v("nazione_default"))
