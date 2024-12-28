@@ -122,13 +122,13 @@ class ListeregaloController extends BaseController
 		
 		if (!empty($tipoLista))
 		{
-			$fields = 'id_lista_tipo,id_user,titolo,codice,data_scadenza,attivo';
+			$fields = 'id_lista_tipo,id_user,titolo,codice,data_scadenza,attivo,nazione';
 			
 			if ($tipoLista["campi"])
 				$fields .= ','.$tipoLista["campi"];
 		}
 		else
-			$fields = 'id_lista_tipo,id_user,titolo,codice,data_scadenza,attivo,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
+			$fields = 'id_lista_tipo,id_user,titolo,codice,data_scadenza,attivo,nazione,nome_bambino,genitore_1,genitore_2,sesso,data_nascita,data_battesimo';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

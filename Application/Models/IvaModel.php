@@ -132,11 +132,21 @@ class IvaModel extends GenericModel
 		
 		$prezziCorretti = false;
 		
-		$commercio = v("attiva_spedizione") ? 'COMMERCIO INDIRETTO' : 'COMMERCIO DIRETTO';
+		$commercio = (v("attiva_spedizione") || v("forza_commercio_indiretto")) ? 'COMMERCIO INDIRETTO' : 'COMMERCIO DIRETTO';
 		
 		$c = new CartModel();
 		
-		if (isset($_POST["nazione_spedizione"]) && isset($_POST["tipo_cliente"]) && $_POST["nazione_spedizione"] != v("nazione_default"))
+		$nazioneSpedizione = isset($_POST["nazione_spedizione"]) ? $_POST["nazione_spedizione"] : null;
+		
+		if (ListeregaloModel::hasIdLista())
+		{
+			$nazioneUtenteLista = ListeregaloModel::nazioneListaRegalo(0, User::$idLista);
+			
+			if ($nazioneUtenteLista)
+				$nazioneSpedizione = $nazioneUtenteLista;
+		}
+		
+		if (isset($nazioneSpedizione) && isset($_POST["tipo_cliente"]) && $nazioneSpedizione != v("nazione_default"))
 		{
 			$tipo = "B2B";
 			
@@ -146,7 +156,7 @@ class IvaModel extends GenericModel
 			$n = new NazioniModel();
 			
 			$nazione = $n->clear()->where(array(
-				"iso_country_code"	=>	sanitizeAll($_POST["nazione_spedizione"]),
+				"iso_country_code"	=>	sanitizeAll($nazioneSpedizione),
 			))->record();
 			
 			if (!empty($nazione))

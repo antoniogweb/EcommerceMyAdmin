@@ -82,6 +82,18 @@ class ListeregaloModel extends GenericModel
 						"<div class='form_notice'>".gtext("Verrà creato in automatico")."</div>"
 					),
 				),
+				'nazione'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Nazione di spedizione dei prodotti della lista",
+					"options"	=>	array("" => "Seleziona") + $this->selectNazioneNoDefault(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Serve per il calcolo dell'IVA sugli ordini legati a questa lista")."</div>"
+					),
+				),
 			),
 		);
 	}
@@ -203,6 +215,20 @@ class ListeregaloModel extends GenericModel
 		return $model;
     }
     
+    // Restituisce la nazione della lista o blank
+    public static function nazioneListaRegalo($idUser = 0, $idLista = 0)
+    {
+		if (!$idLista)
+			return "";
+		
+		$res = self::listeUtenteModel($idUser, $idLista)->select("liste_regalo.nazione")->first();
+		
+		if (!empty($res))
+			return $res["liste_regalo"]["nazione"];
+		
+		return "";
+	}
+	
     public static function numeroListeUtente($idUser = 0, $idLista = 0)
     {
 		return self::listeUtenteModel($idUser, $idLista)->rowNumber();
