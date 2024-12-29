@@ -1,0 +1,1 @@
+ALTER TABLE `promozioni` ADD nazione_validita char(2) not null default "";

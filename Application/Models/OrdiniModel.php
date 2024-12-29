@@ -1562,6 +1562,9 @@ class OrdiniModel extends FormModel {
 				User::setClasseSconto();
 			}
 			
+			if ($ordine["id_lista_regalo"])
+				User::$idLista = (int)$ordine["id_lista_regalo"];
+			
 			$bckLang = Params::$lang;
 			$lingua = $ordine["lingua"] ? $ordine["lingua"] : LingueModel::getPrincipaleFrontend();
 			Params::$lang = $lingua;
@@ -1947,6 +1950,10 @@ class OrdiniModel extends FormModel {
 		
 		if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
 			$this->values["prezzi_ivati_in_carrello"] = v("prezzi_ivati_in_carrello");
+		
+		// Salvo la nazione della lista regalo
+		if (ListeregaloModel::hasIdLista())
+			$this->values["nazione_lista_regalo"] = ListeregaloModel::nazioneListaRegalo(0, User::$idLista);
 	}
 	
 	public static function totaleNazione($nazione, $annoPrecedente = false)

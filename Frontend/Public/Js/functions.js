@@ -166,7 +166,11 @@ if (typeof svuotaCampiSpedizione !== 'function')
 		$("[name='provincia_spedizione']").val("");
 		$("[name='dprovincia_spedizione']").val("");
 		$("[name='telefono_spedizione']").val("");
-		$("[name='nazione_spedizione']").val("IT");
+		
+		if ($("[name='nazione']").length > 0)
+			$("[name='nazione_spedizione']").val($("[name='nazione']").val());
+		else
+			$("[name='nazione_spedizione']").val("IT");
 		
 		if ($("[name='destinatario_spedizione']").length > 0)
 			$("[name='destinatario_spedizione']").val("");

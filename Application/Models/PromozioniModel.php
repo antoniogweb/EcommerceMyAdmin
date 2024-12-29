@@ -128,6 +128,18 @@ class PromozioniModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Verrà applicato solo se il totale del carrello sarà maggiore o uguale alla cifra indicata (spese di spedizione escluse).")."</div>"
 					),
 				),
+				'nazione_validita'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Nazione in cui vale il buono",
+					"options"	=>	array("" => "Seleziona") + $this->selectNazioneNoDefault(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se la nazione viene lasciata vuota, tale coupon ha validità in TUTTE LE NAZIONI")."</div>"
+					),
+				),
 			),
 		);
 	}
@@ -290,6 +302,10 @@ class PromozioniModel extends GenericModel {
 			if ($now >= $dal and $now <= $al)
 			{
 				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"], $ido) <= 0)
+					return false;
+				
+				// controllo che la GIFT CARD sia usata nella nazione di validità
+				if ($checkCart && isset($_POST["nazione_spedizione"]) && trim($_POST["nazione_spedizione"]) && trim($res[0]["promozioni"]["nazione_validita"]) && trim($_POST["nazione_spedizione"]) != trim($res[0]["promozioni"]["nazione_validita"]))
 					return false;
 				
 				// Controllo che non compri uma gift card con un'altra gift card
@@ -637,6 +653,12 @@ class PromozioniModel extends GenericModel {
 		}
 		else if ($attivo == "Y")
 		{
+			$recordOrdine = $oModel->selectId((int)$riga["id_o"]);
+			$nazioneValidita = "IT";
+			
+			if (!empty($recordOrdine))
+				$nazioneValidita = $recordOrdine["nazione_lista_regalo"] ? strtoupper($recordOrdine["nazione_lista_regalo"]) : strtoupper($recordOrdine["nazione_spedizione"]);
+				
 			$elementiRiga = RigheelementiModel::getElementiRiga($idR);
 			
 			for ($i = 0; $i < $riga["quantity"]; $i++)
@@ -658,6 +680,7 @@ class PromozioniModel extends GenericModel {
 					"creation_time"	=>	time(),
 					"lingua"	=>	$riga["lingua"],
 					"nazione_navigazione"	=>	$riga["nazione_navigazione"],
+					"nazione_validita"	=>	$nazioneValidita,
 				), "sanitizeDb");
 				
 				$this->insert();
@@ -808,5 +831,10 @@ class PromozioniModel extends GenericModel {
 		}
 		
 		return false;
+	}
+	
+	public function nazioneValiditaCrud($record)
+	{
+		return NazioniModel::g()->getNome($record["promozioni"]["nazione_validita"]);
 	}
 }

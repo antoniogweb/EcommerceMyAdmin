@@ -1,0 +1,1 @@
+update `promozioni` set nazione_validita = "IT" where fonte = "GIFT_CARD";

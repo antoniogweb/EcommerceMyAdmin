@@ -1720,6 +1720,7 @@ class BaseOrdiniController extends BaseController
 			$defaultValues = htmlentitydecodeDeep($this->dettagliUtente);
 			$defaultValues["email"] = $defaultValues["username"];
 			$defaultValues["conferma_email"] = $defaultValues["username"];
+			$defaultValues["nazione_spedizione"] = $defaultValues["nazione"] ?? v("nazione_default");
 			
 			$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
 			$data["elencoIndirizzi"] = $this->m("RegusersModel")->getIndirizziSpedizione(User::$id);

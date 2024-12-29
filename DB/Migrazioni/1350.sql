@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD nazione_lista_regalo char(2) not null default "" after id_lista_regalo;
