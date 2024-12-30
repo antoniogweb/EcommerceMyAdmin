@@ -84,6 +84,13 @@ Helper_List::$filtersFormLayout["filters"]["numero_documento"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["nazione_spedizione"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -135,6 +142,7 @@ class OrdiniController extends BaseController {
 		'dalc:sanitizeAll'=>'tutti',
 		'alc:sanitizeAll'=>'tutti',
 		'numero_documento:sanitizeAll'=>'tutti',
+		'nazione_spedizione:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -217,7 +225,15 @@ class OrdiniController extends BaseController {
 			$this->mainFields[] = 'spedizioneCrud';
 			$this->mainHead .= ',Spedizione';
 		}
-
+		
+		$nazioniDiSpedizioneInOrdini = NazioniModel::getNazioniSpedizioneOrdini();
+		
+		if (count($nazioniDiSpedizioneInOrdini) > 1)
+		{
+			$this->mainFields[] = 'nazioneSpedizioneCrud';
+			$this->mainHead .= ',Nazione';
+		}
+		
 		if (v("permetti_ordini_offline"))
 		{
 			$this->mainFields[] = 'tipoOrdineCrud';
@@ -274,6 +290,7 @@ class OrdiniController extends BaseController {
 			'id_lista_regalo'	=>	$this->viewArgs['id_lista_regalo'],
 			'tipo_ordine'	=>	$this->viewArgs['tipo_ordine'],
 			'numero_documento'	=>	$this->viewArgs['numero_documento'],
+			'nazione_spedizione'	=>	$this->viewArgs['nazione_spedizione'],
 		);
 		
 		$this->m[$this->modelName]->aWhere($where);
@@ -427,6 +444,11 @@ class OrdiniController extends BaseController {
 			) + $this->m("SpedizioninegoziostatiModel")->selectTendina(false);
 			
 			$this->filters[] = array("stato_sped",null,$filtroStato);
+		}
+		
+		if (count($nazioniDiSpedizioneInOrdini) > 1)
+		{
+			$this->filters[] = array("nazione_spedizione",null,array("tutti" => "Nazione spedizione") + $nazioniDiSpedizioneInOrdini);
 		}
 		
 		$this->getTabViewFields("main");

@@ -2602,4 +2602,9 @@ class OrdiniModel extends FormModel {
 			}
 		}
 	}
+	
+	public function nazioneSpedizioneCrud($record)
+	{
+		return NazioniModel::g()->findTitoloDaCodice($record["orders"]["nazione_spedizione"]);
+	}
 }
