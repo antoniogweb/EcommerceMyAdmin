@@ -422,6 +422,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_promozione_assoluta_prodotto"	=>	0, // se impostato su 1, permette sconti assoluti al prodotto
 		"non_conteggiare_ordini_annullati"	=>	0, // se impostato a 1, non conteggiare gli ordini annullati per il conteggio delle promo, sia come numero che come totale spedo (pert le assolute)
 		"attiva_filtro_marchi_su_promo"	=>	0, // se impostato su 1, attiva il filtro marchi nelle promo in percentuale
+		"gift_card_validita_nazionale"	=>	0, // se impostato su 1, le GIFT CARD avranno validità solo nella nazione di acquisto o della lista associata
 		## CARRELLO ##
 		"mostra_piu_meno_modifica_quantita"	=>	1, // se mostra icone + o - o se input libero di tipo number
 		"mostra_pulsante_modifica_se_ha_combinazioni"	=>	1, // in carrello, permette di andare al prodotto con la combinazione già selezionata

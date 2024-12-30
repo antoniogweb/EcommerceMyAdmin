@@ -64,8 +64,14 @@ class PromozioniController extends BaseController {
 		if (v("attiva_promo_sconto_assoluto"))
 		{
 			$this->mainFields[] = "promozioni.tipo_sconto";
-			$this->mainFields[] = "nazioneValiditaCrud";
-			$this->mainHead .= ",Tipo sconto,Nazione validità";
+			$this->mainHead .= ",Tipo sconto";
+			
+			if (v("gift_card_validita_nazionale"))
+			{
+				$this->mainFields[] = "nazioneValiditaCrud";
+				$this->mainHead .= ",Nazione validità";
+			}
+			
 			$this->filters[] = array("tipo",null,array(
 				"tutti"	=>	"Tipo sconto"
 			) + array("PERCENTUALE"=>"PERCENTUALE","ASSOLUTO"=>"ASSOLUTO"));
@@ -145,7 +151,7 @@ class PromozioniController extends BaseController {
 		
 		$campi .= ',sconto,sconto_valido_sopra_euro,numero_utilizzi,numero_utilizzi_per_email';
 		
-		if (v("attiva_promo_sconto_assoluto"))
+		if (v("attiva_promo_sconto_assoluto") && v("gift_card_validita_nazionale"))
 			$campi .= ',nazione_validita';
 		
 		$this->m[$this->modelName]->setValuesFromPost($campi);

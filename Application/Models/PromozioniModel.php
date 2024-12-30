@@ -305,8 +305,17 @@ class PromozioniModel extends GenericModel {
 					return false;
 				
 				// controllo che la GIFT CARD sia usata nella nazione di validità
-				if ($checkCart && isset($_POST["nazione_spedizione"]) && trim($_POST["nazione_spedizione"]) && trim($res[0]["promozioni"]["nazione_validita"]) && trim($_POST["nazione_spedizione"]) != trim($res[0]["promozioni"]["nazione_validita"]))
-					return false;
+				if (v("gift_card_validita_nazionale") && $checkCart && isset($_POST["nazione_spedizione"]) && trim($_POST["nazione_spedizione"]) && trim($res[0]["promozioni"]["nazione_validita"]))
+				{
+					if (
+						isset($_POST["nazione"]) && 
+						((isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0) || !v("attiva_spedizione"))
+					)
+						$_POST["nazione_spedizione"] = $_POST["nazione"];
+					
+					if (trim($_POST["nazione_spedizione"]) != trim($res[0]["promozioni"]["nazione_validita"]))
+						return false;
+				}
 				
 				// Controllo che non compri uma gift card con un'altra gift card
 				if ($checkCart && $res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && $res[0]["promozioni"]["fonte"] == "GIFT_CARD" && CartModel::numeroGifCartInCarrello() > 0)
