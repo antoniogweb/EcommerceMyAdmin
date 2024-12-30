@@ -239,17 +239,20 @@ function impostaSpedizioneNonLoggato(obj)
 
 function checkCouponAttivo()
 {
-	$.ajaxQueue({
-		url: baseUrl + "/ordini/couponattivo",
-		cache:false,
-		async: true,
-		dataType: "html",
-		success: function(content){
-			
-			if ($.trim(content) == "OK")
-				$(".box_coupon").remove();
-		}
-	});
+	if ($("#ha-coupon-attivo").length > 0 && $("[name='il_coupon']").length > 0)
+		$(".box_coupon").html("");
+	else if ($("#ha-coupon-attivo").length <= 0 && $("[name='il_coupon']").length <= 0)
+	{
+		$.ajaxQueue({
+			url: baseUrl + "/ordini/couponattivo",
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				$(".box_coupon").html(content);
+			}
+		});
+	}
 }
 
 function impostaSpeseSpedizione(id_corriere, nazione)
@@ -293,6 +296,8 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 					$(".prezzo_bottom").text($(".totale_ordine").text());
 				}
 			}
+			
+			checkCouponAttivo();
 		}
 	});
 }
@@ -1107,7 +1112,7 @@ $(document).ready(function(){
 					}, 500);
 					
 					impostaCorrieriESpeseSpedizione();
-					checkCouponAttivo();
+					// checkCouponAttivo();
 					
 				}
 			});

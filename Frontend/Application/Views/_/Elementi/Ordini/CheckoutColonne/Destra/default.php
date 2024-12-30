@@ -2,14 +2,16 @@
 <div <?php if (!User::$isMobile) { ?>uk-sticky="offset: 10;bottom: true;"<?php } ?> id="fragment-checkout-carrello">
 	<?php include(tpf("/Ordini/checkout_totali.php")); ?>
 	
-	<?php if (v("attiva_coupon_checkout") && !hasActiveCoupon()) { ?>
+	<?php if (v("attiva_coupon_checkout")) { ?>
 	<div class="box_coupon uk-margin-medium-top">
+		<?php if (!hasActiveCoupon()) { ?>
 		<?php
 		include(tpf(ElementitemaModel::p("CHECKOUT_COUPON","", array(
 			"titolo"	=>	"Form coupon al checkout",
 			"percorso"	=>	"Elementi/Ordini/Coupon",
 		))));
 		?>
+		<?php } ?>
 	</div>
 	<?php } ?>
 </div>

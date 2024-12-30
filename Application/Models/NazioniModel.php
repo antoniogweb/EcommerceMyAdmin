@@ -171,7 +171,10 @@ class NazioniModel extends GenericModel
 	public function findTitoloDaCodice($codice, $default = null)
 	{
 		if (!self::$elencoNazioni)
+		{
+			Cache_Db::removeTablesFromCache(array("nazioni"));
 			self::$elencoNazioni = $this->clear()->toList("iso_country_code", "titolo")->send();
+		}
 		
 		if (isset(self::$elencoNazioni[$codice]))
 			return self::$elencoNazioni[$codice];

@@ -1844,7 +1844,17 @@ class BaseOrdiniController extends BaseController
 	{
 		$this->clean();
 		
-		echo hasActiveCoupon() ? "OK" : "KO";
+		// if (hasActiveCoupon())
+		// 	echo "OK";
+		// else
+		// {
+			ob_start();
+			include(tpf(ElementitemaModel::p("CHECKOUT_COUPON","", array(
+				"titolo"	=>	"Form coupon al checkout",
+				"percorso"	=>	"Elementi/Ordini/Coupon",
+			))));
+			echo ob_get_clean();
+		// }
 	}
 	
 	protected function getStatoOrdineFrontend($statoOrdine)

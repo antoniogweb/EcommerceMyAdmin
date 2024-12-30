@@ -29,6 +29,8 @@ class PromozioniModel extends GenericModel {
 	public static $staticIdO = null;
 	public static $tipiClientiPromo = array();
 	
+	public static $erroreCouponUtente = "";
+	
 	public function __construct() {
 		$this->_tables='promozioni';
 		$this->_idFields='id_p';
@@ -304,17 +306,31 @@ class PromozioniModel extends GenericModel {
 				if ($res[0]["promozioni"]["tipo_sconto"] == "ASSOLUTO" && self::gNumeroEuroRimasti($res[0]["promozioni"]["id_p"], $ido) <= 0)
 					return false;
 				
-				// controllo che la GIFT CARD sia usata nella nazione di validità
+				// controllo che il coupon sia usato nella nazione di validità
 				if (v("gift_card_validita_nazionale") && $checkCart && isset($_POST["nazione_spedizione"]) && trim($_POST["nazione_spedizione"]) && trim($res[0]["promozioni"]["nazione_validita"]))
 				{
+					$nazioneSpedizione = $_POST["nazione_spedizione"];
+					
 					if (
 						isset($_POST["nazione"]) && 
 						((isset($_POST["spedisci_dati_fatturazione"]) && strcmp($_POST["spedisci_dati_fatturazione"],"Y") === 0) || !v("attiva_spedizione"))
 					)
-						$_POST["nazione_spedizione"] = $_POST["nazione"];
+						$nazioneSpedizione = $_POST["nazione"];
 					
-					if (trim($_POST["nazione_spedizione"]) != trim($res[0]["promozioni"]["nazione_validita"]))
+					if (ListeregaloModel::hasIdLista())
+					{
+						$nazioneLista = ListeregaloModel::nazioneListaRegalo(0, User::$idLista);
+						
+						if ($nazioneLista)
+							$nazioneSpedizione = $nazioneLista;
+					}
+						
+					if (trim($nazioneSpedizione) != trim($res[0]["promozioni"]["nazione_validita"]))
+					{
+						self::$erroreCouponUtente = "Il codice coupon inserito è valido solo per la nazione ".NazioniModel::g()->findTitoloDaCodice($res[0]["promozioni"]["nazione_validita"]);
+						
 						return false;
+					}
 				}
 				
 				// Controllo che non compri uma gift card con un'altra gift card

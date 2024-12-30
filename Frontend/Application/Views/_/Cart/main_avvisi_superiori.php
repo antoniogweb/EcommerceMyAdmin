@@ -15,3 +15,6 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 <?php if (isset($_GET["evidenzia"]) && CartelementiModel::haErrori()) { ?>
 <div class="<?php echo v("alert_error_class");?>"><?php echo gtext("Attenzione, controllare i campi evidenziati relativi alle Gift Card.");?></div>
 <?php } ?>
+<?php if (!hasActiveCoupon() && PromozioniModel::$erroreCouponUtente) { ?>
+<div class="<?php echo v("alert_error_class");?>"><?php echo gtext(PromozioniModel::$erroreCouponUtente);?></div>
+<?php } ?>

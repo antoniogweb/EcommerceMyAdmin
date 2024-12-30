@@ -105,3 +105,5 @@ if (!isset($classeLabelTotaleOrdine))
 	<div class="uk-width-expand <?php echo $classeLabelTotaleOrdine;?> uk-first-column"><?php echo gtext($scrittaFinaleTotale);?></div>
 	<div class="uk-text-lead uk-text-bolder"><span class="totale_ordine"><?php echo getTotal();?></span> €</div>
 </div>
+
+<?php if ($haCouponAttivo) { ?><span id="ha-coupon-attivo"></span><?php } ?>
