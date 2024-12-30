@@ -342,7 +342,7 @@ class NazioniModel extends GenericModel
 	{
 		$n = new NazioniModel();
 		
-		return $n->clear()->select("iso_country_code,titolo")->sWhere("iso_country_code in (select distinct nazione_spedizione from orders)")->toList("iso_country_code", "titolo")->send();
+		return $n->clear()->select("iso_country_code,titolo")->sWhere("iso_country_code in (select distinct nazione_spedizione from orders)")->orderBy("titolo")->toList("iso_country_code", "titolo")->send();
 	}
 	
 	public static function gElencoNazioni()
