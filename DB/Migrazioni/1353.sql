@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD iva_per_versamenti decimal(10,2) not null default 0.00 after iva;
