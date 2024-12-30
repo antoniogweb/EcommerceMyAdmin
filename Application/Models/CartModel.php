@@ -263,7 +263,7 @@ class CartModel extends GenericModel {
 	}
 	
 	// Totale iva dal carrello
-	public function iva($conSpedizione = true, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
+	public function iva($conSpedizione = true, $pieno = false, $conCrediti = true, $conCouponAssoluto = true, $ivaPerVersamento = false)
 	{
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
@@ -273,6 +273,8 @@ class CartModel extends GenericModel {
 		$sconto = 0;
 		$tipoSconto = "PERCENTUALE";
 		$idPromo = 0;
+		$isGift = false;
+		
 		if (!$pieno && hasActiveCoupon())
 		{
 			$p = new PromozioniModel();
@@ -281,7 +283,12 @@ class CartModel extends GenericModel {
 			$tipoSconto = $coupon["tipo_sconto"];
 			$sconto = $coupon["sconto"];
 			$idPromo = $coupon["id_p"];
+			
+			$isGift = ($coupon["fonte"] == "GIFT_CARD") ? true : false;
 		}
+		
+		// Sottrai l'IVA della GIFT per calcolare l'iva per i versamenti
+		$sottraiIvaGiftCard = (!$ivaPerVersamento || !$isGift) ? true : false;
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
@@ -299,6 +306,9 @@ class CartModel extends GenericModel {
 		{
 			foreach ($res as $r)
 			{
+				if ($ivaPerVersamento && ($r["cart"]["gift_card"] || $r["cart"]["prodotto_crediti"]))
+					continue;
+				
 				$prezzo = number_format($r["cart"]["price"],$cifre,".","");
 				$prezzoFisso = number_format($r["cart"]["prezzo_fisso"],$cifre,".","");
 				
@@ -366,7 +376,7 @@ class CartModel extends GenericModel {
 		}
 		
 		// COUPON ASSOLUTO
-		if ($sconto > 0 && $tipoSconto == "ASSOLUTO" && $conCouponAssoluto)
+		if ($sconto > 0 && $tipoSconto == "ASSOLUTO" && $conCouponAssoluto && $sottraiIvaGiftCard)
 		{
 			$numeroEuroRimasti = PromozioniModel::gNumeroEuroRimasti($idPromo);
 			

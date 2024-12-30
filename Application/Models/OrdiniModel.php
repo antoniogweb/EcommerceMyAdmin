@@ -1833,6 +1833,8 @@ class OrdiniModel extends FormModel {
 		$this->values["iva"] = setPrice(getIva());
 		$this->values["total"] = setPrice(getTotal());
 		
+		$this->values["iva_per_versamenti"] = setPrice(setPriceReverse(CartModel::g()->iva(true, false, true, true, true)));
+		
 		if (App::$isFrontend)
 			$this->values["saldo"] = $this->values["total"];
 		else
