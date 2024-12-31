@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD codice_gestionale_cliente varchar(20) not null default "" after codice_gestionale;

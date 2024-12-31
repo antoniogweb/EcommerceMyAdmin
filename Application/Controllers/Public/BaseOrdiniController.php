@@ -1518,7 +1518,7 @@ class BaseOrdiniController extends BaseController
 								
 								if (VariabiliModel::attivaCodiceGestionale())
 								{
-									$this->m('OrdiniModel')->setValue("codice_gestionale", User::$dettagli["codice_gestionale"]);
+									$this->m('OrdiniModel')->setValue("codice_gestionale_cliente", User::$dettagli["codice_gestionale"]);
 									
 									if ($idSpedizione)
 										$this->m('OrdiniModel')->setValue("codice_gestionale_spedizione", SpedizioniModel::getCodiceGestionale((int)$idSpedizione));

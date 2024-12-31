@@ -440,64 +440,70 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							<table class="table table-striped">
 								<?php if ($cliente && $cliente["deleted"] == "no" && ControllersModel::checkAccessoAlController(array("regusers"))) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("ACCOUNT CLIENTE");?></td>
+									<td class="first_column"><?php echo gtext("Account cliente");?></td>
 									<td><a class="iframe label label-success" href="<?php echo $this->baseUrl."/regusers/form/update/".$cliente["id_user"]?>?partial=Y"><?php echo $cliente["username"];?></a></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"privato") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("NOME");?></td>
+									<td class="first_column"><?php echo gtext("Nome");?></td>
 									<td><?php echo $ordine["nome"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("COGNOME");?></td>
+									<td class="first_column"><?php echo gtext("Cognome");?></td>
 									<td><?php echo $ordine["cognome"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("RAGIONE SOCIALE");?></td>
+									<td class="first_column"><?php echo gtext("Ragione sociale");?></td>
 									<td><?php echo $ordine["ragione_sociale"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("PARTITA IVA");?></td>
+									<td class="first_column"><?php echo gtext("Partita IVA");?></td>
 									<td><?php echo $ordine["p_iva"];?></td>
 								</tr>
 								<?php } ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("CODICE FISCALE");?></td>
+									<td class="first_column"><?php echo gtext("Codice fiscale");?></td>
 									<td><?php echo $ordine["codice_fiscale"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("INDIRIZZO");?></td>
+									<td class="first_column"><?php echo gtext("Indirizzo");?></td>
 									<td><?php echo $ordine["indirizzo"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("CAP");?></td>
+									<td class="first_column"><?php echo gtext("Cap");?></td>
 									<td><?php echo $ordine["cap"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("NAZIONE");?></td>
+									<td class="first_column"><?php echo gtext("Nazione");?></td>
 									<td><?php echo nomeNazione($ordine["nazione"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("PROVINCIA");?></td>
+									<td class="first_column"><?php echo gtext("Provincia");?></td>
 									<td><?php echo $ordine["provincia"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("CITTÀ");?></td>
+									<td class="first_column"><?php echo gtext("Città");?></td>
 									<td><?php echo $ordine["citta"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("TELEFONO");?></td>
+									<td class="first_column"><?php echo gtext("Telefono");?></td>
 									<td><?php echo $ordine["telefono"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("EMAIL");?></td>
+									<td class="first_column"><?php echo gtext("Email");?></td>
 									<td><?php echo $ordine["email"];?></td>
 								</tr>
+								<?php if (VariabiliModel::attivaCodiceGestionale()) { ?>
+								<tr>
+									<td class="first_column"><?php echo gtext("Codice gestionale");?></td>
+									<td><?php echo $ordine["codice_gestionale_cliente"];?></td>
+								</tr>
+								<?php } ?>
 								<?php if (strcmp($tipoOutput,"web") !== 0 and $sendPassword ) { ?>
 								<tr>
 									<td class="first_column"><?php echo gtext("PASSWORD");?></td>
@@ -513,33 +519,39 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 							
 							<table class="table table-striped">
 								<tr>
-									<td class="first_column"><?php echo gtext("INDIRIZZO");?></td>
+									<td class="first_column"><?php echo gtext("Indirizzo");?></td>
 									<td><?php echo $ordine["indirizzo_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("CAP");?></td>
+									<td class="first_column"><?php echo gtext("Cap");?></td>
 									<td><?php echo $ordine["cap_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("NAZIONE");?></td>
+									<td class="first_column"><?php echo gtext("Nazione");?></td>
 									<td><?php echo nomeNazione($ordine["nazione_spedizione"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("PROVINCIA");?></td>
+									<td class="first_column"><?php echo gtext("Provincia");?></td>
 									<td><?php echo $ordine["provincia_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("CITTÀ");?></td>
+									<td class="first_column"><?php echo gtext("Città");?></td>
 									<td><?php echo $ordine["citta_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("TELEFONO");?></td>
+									<td class="first_column"><?php echo gtext("Telefono");?></td>
 									<td><?php echo $ordine["telefono_spedizione"];?></td>
 								</tr>
 								<?php if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione")) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("DESTINATARIO");?></td>
+									<td class="first_column"><?php echo gtext("Destinatario");?></td>
 									<td><?php echo $ordine["destinatario_spedizione"];?></td>
+								</tr>
+								<?php } ?>
+								<?php if (VariabiliModel::attivaCodiceGestionale()) { ?>
+								<tr>
+									<td class="first_column"><?php echo gtext("Codice gestionale indirizzo");?></td>
+									<td><?php echo $ordine["codice_gestionale_spedizione"];?></td>
 								</tr>
 								<?php } ?>
 							</table>
