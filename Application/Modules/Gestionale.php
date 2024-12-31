@@ -69,6 +69,11 @@ class Gestionale
 		return $this->params["titolo"];
 	}
 	
+	public function titoloGestionale()
+	{
+		return $this->params["titolo"];
+	}
+	
 	public function descOrdineInviato($ordine)
 	{
 		return "<span class='text text-success text-bold'>".sprintf(gtext("Ordine %s inviato a"), $ordine["id_o"])." ".$this->titolo()."</span>";
@@ -370,8 +375,9 @@ class Gestionale
 		$oModel = new OrdiniModel();
 		
 		$oModel->sValues(array(
-			"codice_gestionale"	=>	"",
-			"errore_gestionale"	=>	"",
+			"codice_gestionale"		=>	"",
+			"errore_gestionale"		=>	"",
+			"inviato_al_gestionale"	=>	0,
 		));
 		
 		$oModel->pUpdate((int)$idO);

@@ -1,29 +1,33 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (v("fatture_attive") && isset($fatture) && $fattureOk) { ?>
+<?php if (GestionaliModel::getModulo()->integrazioneAttiva()) { ?>
 	<div style="margin-bottom:10px;" class="panel panel-default">
 		<div class="panel-heading">
-			<?php if (count($fatture) > 0) { ?>
-			<a style="margin-left:10px;" title="Invia mail con fattura in allegato" class="btn btn-primary btn-xs pull-right make_spinner" href="<?php echo $this->baseUrl."/ordini/vedi/" . $ordine["id_o"].$this->viewStatus."&invia_fattura=Y";?>"><i class="fa fa-envelope"></i> Invia</a>
-			
-			<a style="margin-left:10px;" class="btn btn-success btn-xs pull-right" href="<?php echo $this->baseUrl."/fatture/vedi/" . $ordine["id_o"];?>"><i class="fa fa-download"></i> Scarica</a>
-			<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Rigenera</a>
-			
+			<?php if (v("fatture_attive") && isset($fatture) && $fattureOk) { ?>
+				<?php if (count($fatture) > 0) { ?>
+				<a style="margin-left:10px;" title="Invia mail con fattura in allegato" class="btn btn-primary btn-xs pull-right make_spinner" href="<?php echo $this->baseUrl."/ordini/vedi/" . $ordine["id_o"].$this->viewStatus."&invia_fattura=Y";?>"><i class="fa fa-envelope"></i> Invia</a>
+				
+				<a style="margin-left:10px;" class="btn btn-success btn-xs pull-right" href="<?php echo $this->baseUrl."/fatture/vedi/" . $ordine["id_o"];?>"><i class="fa fa-download"></i> Scarica</a>
+				<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Rigenera</a>
+				
+				<?php } else { ?>
+				<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera</a>
+				<?php } ?>
+				
+				<b><?php echo gtext("Gestione fattura");?></b>
 			<?php } else { ?>
-			<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera</a>
+				<b><?php echo gtext("Integrazione con");?> <?php echo GestionaliModel::getModulo()->titoloGestionale();?></b>
 			<?php } ?>
-			
-			<b><?php echo gtext("Gestione fattura");?></b>
 		</div>
-		<?php if (count($fatture) > 0) {
-			$fattura = $fatture[0]["fatture"];
-		?>
+		<?php if (count($fatture) > 0 || GestionaliModel::getModulo()->permettiInvioDirettoOrdine()) { ?>
 		<div class="panel-body">
+			<?php if (count($fatture) > 0) {
+				$fattura = $fatture[0]["fatture"];
+			?>
 			<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <?php if (FattureModel::g()->manageable($fattura["id_f"])) { ?><a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a><?php } ?>
-			<?php if (GestionaliModel::getModulo()->integrazioneAttiva()) { ?>
+			<?php } ?>
 			<div>
 				<?php echo GestionaliModel::getModulo()->specchiettoOrdine($ordine);?>
 			</div>
-			<?php } ?>
 		</div>
 		<?php } ?>
 	</div>

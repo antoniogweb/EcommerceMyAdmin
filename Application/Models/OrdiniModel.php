@@ -2305,7 +2305,7 @@ class OrdiniModel extends FormModel {
 	
 	public static function statoGestionale($ordine)
 	{
-		if (trim($ordine["codice_gestionale"]) && !trim($ordine["errore_gestionale"]))
+		if ((trim($ordine["codice_gestionale"]) || $ordine["inviato_al_gestionale"]) && !trim($ordine["errore_gestionale"]))
 			return 1;
 		else if (trim($ordine["errore_gestionale"]))
 			return -1;

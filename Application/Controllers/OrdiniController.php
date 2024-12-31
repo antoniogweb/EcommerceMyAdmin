@@ -389,9 +389,9 @@ class OrdiniController extends BaseController {
 		if ($this->viewArgs['gestionale'] != "tutti")
 		{
 			if ($this->viewArgs['gestionale'] == "I")
-				$this->m[$this->modelName]->sWhere("orders.codice_gestionale != '' and orders.errore_gestionale = ''");
+				$this->m[$this->modelName]->sWhere("(orders.codice_gestionale != '' or orders.inviato_al_gestionale = 1) and orders.errore_gestionale = ''");
 			else if ($this->viewArgs['gestionale'] == "N")
-				$this->m[$this->modelName]->sWhere("orders.codice_gestionale = ''");
+				$this->m[$this->modelName]->sWhere("(orders.codice_gestionale = '' && orders.inviato_al_gestionale = 0)");
 		}
 		
 		if ($this->viewArgs["titolo"] != "tutti")
