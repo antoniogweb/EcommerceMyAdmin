@@ -76,6 +76,11 @@
 				<div class='col-md-3'>
 					<?php echo $form["codice_destinatario"];?>
 				</div>
+				<?php if (isset($form["codice_gestionale_cliente"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["codice_gestionale_cliente"];?>
+				</div>
+				<?php } ?>
 			</div>
 			
 			<?php if ($type === "update") { ?>
@@ -132,6 +137,11 @@
 				<?php if (isset($form["link_tracking"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["link_tracking"];?>
+				</div>
+				<?php } ?>
+				<?php if (isset($form["codice_gestionale_spedizione"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["codice_gestionale_spedizione"];?>
 				</div>
 				<?php } ?>
 			</div>

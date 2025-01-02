@@ -170,12 +170,12 @@ class Gestionale
 	
 	// restituisce un output pulito dell'ordine con la testata e le righe e i codici del gestionale già estratti
 	// $estraiAcconto, se true mostra anche le righe con acconto
-	public function infoOrdine($id_o, $estraiAcconto = false)
+	public function infoOrdine($id_o, $estraiAcconto = false, $campiAggiuntiviRighe = "")
 	{
 		$oModel = new OrdiniModel();
 		$rModel = new RigheModel();
 		
-		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,versione_api_gestionale,errore_gestionale,fonte,euro_promozione,tipo_promozione,euro_crediti,sorgente,id_lista_regalo")->whereId((int)$id_o)->record();
+		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,inviato_al_gestionale,codice_gestionale_cliente,codice_gestionale_spedizione,versione_api_gestionale,errore_gestionale,fonte,euro_promozione,tipo_promozione,euro_crediti,sorgente,id_lista_regalo")->whereId((int)$id_o)->record();
 		
 		if (!empty($ordine))
 		{
@@ -203,7 +203,12 @@ class Gestionale
 			
 			$ordine["valore_iva"] = IvaModel::g(false)->getValore($idIva);
 			
-			$rModel->clear()->select("id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico,sconto")
+			$campiRighe = "id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico,sconto";
+			
+			if ($campiAggiuntiviRighe)
+				$campiRighe .= ",$campiAggiuntiviRighe";
+			
+			$rModel->clear()->select($campiRighe)
 				->left("righe_tipologie")->on("righe_tipologie.id_riga_tipologia = righe.id_riga_tipologia")
 				->where(array(
 					"id_o"	=>	(int)$id_o,

@@ -18,9 +18,9 @@
 				<b><?php echo gtext("Integrazione con");?> <?php echo GestionaliModel::getModulo()->titoloGestionale();?></b>
 			<?php } ?>
 		</div>
-		<?php if (count($fatture) > 0 || GestionaliModel::getModulo()->permettiInvioDirettoOrdine()) { ?>
+		<?php if ((v("fatture_attive") && isset($fatture) && count($fatture) > 0) || GestionaliModel::getModulo()->permettiInvioDirettoOrdine()) { ?>
 		<div class="panel-body">
-			<?php if (count($fatture) > 0) {
+			<?php if (v("fatture_attive") && isset($fatture) && count($fatture) > 0) {
 				$fattura = $fatture[0]["fatture"];
 			?>
 			<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <?php if (FattureModel::g()->manageable($fattura["id_f"])) { ?><a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a><?php } ?>

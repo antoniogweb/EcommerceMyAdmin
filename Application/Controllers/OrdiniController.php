@@ -510,6 +510,9 @@ class OrdiniController extends BaseController {
 				$fields .= ",id_commesso";
 		}
 		
+		if (VariabiliModel::attivaCodiceGestionale())
+			$fields .= ",codice_gestionale_cliente,codice_gestionale_spedizione";
+		
 		if ($this->campiForm)
 			$fields = $this->campiForm;
 		
