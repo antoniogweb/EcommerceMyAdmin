@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (GestionaliModel::getModulo()->integrazioneAttiva()) { ?>
+<?php if (GestionaliModel::getModulo()->integrazioneAttiva() && $this->action == "vedi") { ?>
 	<div style="margin-bottom:10px;" class="panel panel-default">
 		<div class="panel-heading">
 			<?php if (v("fatture_attive") && isset($fatture) && $fattureOk) { ?>
