@@ -32,6 +32,7 @@ $options = getopt(null, array(
 	"nazione::",
 	"path::",
 	"dominio::",
+	"queryString::",
 ));
 
 $default = array(
@@ -73,6 +74,9 @@ if (!isset($params["path"]))
 	echo "si prega di selezionare il percorso del file dove salvare il feed con l'istruzione --path=\"<path>\"";
 	die();
 }
+
+if (isset($params["queryString"]))
+	VariabiliModel::impostaVariabiliDaQueryString($params["queryString"]);
 
 $modulo = strtoupper((string)$params["modulo"]);
 

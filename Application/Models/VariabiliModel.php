@@ -32,6 +32,11 @@ class VariabiliModel extends GenericModel {
 	
 	public static $strutturaFormCampiAggiuntivi = array();
 	
+	public static $variabiliGestibiliTramiteQueryString = array(
+		"attiva_giacenza",
+		"forza_giacenza_massima_in_feed",
+	);
+	
 	public static $variabiliCodiciCookieTerzi = array(
 		"codice_gtm" => "",
 		"codice_gtm_analytics" => "",
@@ -519,12 +524,13 @@ class VariabiliModel extends GenericModel {
 		"url_codici_categorie_google"	=>	"https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt", // url codici categorie google (per importazione)
 		"versione_google_analytics"	=>	3, // versione di Google Analytics
 		"mostra_campo_stampa_gtin_in_prodotto"	=>	0, // se impostato ad 1, viene mostrata la tendina per forzare la disabilitazione del GTIN nel feed Google o Facebook
-		## ETICHETTE FEED GOOGLE ##
+		## ETICHETTE FEED ##
 		"identificatore_feed_default"	=>	"no", // per il feed di google (gtin, mpm)
 		"categorie_google_tendina"	=>	1, // se le categorie di google mostrarle come tendina o come campo di testo
 		"aggiungi_dettagli_prodotto_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le caratteristiche del prodotto al feed
 		"aggiungi_dettagli_spedizione_al_feed"=>	0, // solo per il feed Google, se attivo aggiunge le spese di spedizione al feed
 		"numero_parole_feed_iniziali_prodotto"	=>	2, // quante parole usare nell'etichetta personalizzate delle iniziali prodotto
+		"forza_giacenza_massima_in_feed"	=>	0, // se impostato su 1, imposta la disponibilità al valore massimo tra le varianti, se il feed non è diviso per varianti (quindi se ha un prodotto canonical di riferimento che rappresenta tutte le varianti nel feed)
 		## LOGIN ESTERNI ##
 		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
 		"token_eliminazione_account_da_app"	=>	"", // verrà utilizzato come accesso per l'eliminazione dell'utente da app esterna (Facebook, ...)
@@ -1107,6 +1113,18 @@ class VariabiliModel extends GenericModel {
 		$chiave = $matches[1];
 		
 		return v($chiave);
+	}
+	
+	// $queryString: query string di variabili: ex var1=1&var=3&...
+	public static function impostaVariabiliDaQueryString($queryString)
+	{
+		parse_str($queryString, $variabili);
+		
+		foreach ($variabili as $k => $v)
+		{
+			if (is_string($k) && in_array($k, self::$variabiliGestibiliTramiteQueryString))
+				self::$valori[$k] = $v;
+		}
 	}
 	
 	public static function combinazioniLinkVeri()
