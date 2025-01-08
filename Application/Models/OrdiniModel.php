@@ -2069,13 +2069,37 @@ class OrdiniModel extends FormModel {
 		$this->update((int)$idO);
 	}
 	
+	// Restituisce un array con tutti gli indirizzi email a cui mandare la mail dell'ordine (lato negozio)
+	public function getIndirizziEmailInvioOrdineAlNegozio()
+	{
+		$emails = array(Parametri::$mailInvioOrdine);
+		
+		if (v("mail_aggiuntive_invio_ordine_negozio"))
+		{
+			$emailAggiuntive = explode(",", v("mail_aggiuntive_invio_ordine_negozio"));
+			
+			foreach ($emailAggiuntive as $email)
+			{
+				if (trim($email))
+					$emails[] = $email;
+			}
+		}
+		
+		return $emails;
+	}
+	
 	public function mandaMailDopoPagamentoNegozio($idO)
 	{
 		$ordine = $this->selectId($idO);
 		
 		if (!empty($ordine) && $ordine["mail_da_inviare_negozio"])
 		{
-			$this->mandaMailGeneric((int)$idO, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, Parametri::$mailInvioOrdine, "ORDINE NEGOZIO");
+			$emails = $this->getIndirizziEmailInvioOrdineAlNegozio();
+			
+			foreach ($emails as $email)
+			{
+				$this->mandaMailGeneric((int)$idO, v("oggetto_ordine_ricevuto"), "resoconto-acquisto", "R", false, true, $email, "ORDINE NEGOZIO");
+			}
 			
 			$this->setValues(array(
 				"mail_da_inviare_negozio"	=>	0,

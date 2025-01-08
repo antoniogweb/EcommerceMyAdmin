@@ -1602,7 +1602,7 @@ class BaseOrdiniController extends BaseController
 								$output = ob_get_clean();
 								
 								$res = MailordiniModel::inviaMail(array(
-									"emails"	=>	array(Parametri::$mailInvioOrdine),
+									"emails"	=>	$this->m('OrdiniModel')->getIndirizziEmailInvioOrdineAlNegozio(),
 									"oggetto"	=>	v("oggetto_ordine_ricevuto"),
 									"testo"		=>	$output,
 									"tipologia"	=>	"ORDINE NEGOZIO",
