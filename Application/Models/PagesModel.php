@@ -3129,14 +3129,14 @@ class PagesModel extends GenericModel {
 		))->rowNumber();
 	}
 	
-	public static function disponibilita($idPage = 0, $id_c = 0)
+	public static function disponibilita($idPage = 0, $id_c = 0, $forzaValoreMassimo = false)
 	{
 		if (!$id_c)
 			$id_c = self::$IdCombinazione;
 		
 		$c = new CombinazioniModel();
 		
-		if (VariabiliModel::combinazioniLinkVeri())
+		if (VariabiliModel::combinazioniLinkVeri() && !$forzaValoreMassimo)
 		{
 			$c->clear()->select("giacenza as GIACENZA")->where(array(
 				"id_page"	=>	(int)$idPage

@@ -305,6 +305,8 @@ trait Modulo
 			
 			$nomeCorriere = $tabellaIdCorriereNome[$idCorriere] ?? "";
 			
+			$forzaValoreMassimoInFeed = (!$combinazioniLinkVeri && v("forza_giacenza_massima_in_feed")) ? true : false;
+			
 			$temp = array(
 				"id_page"	=>	$r["pages"]["id_page"],
 				"id_comb"	=>	$idC,
@@ -328,7 +330,7 @@ trait Modulo
 				"nome_corriere"	=>	gtext($nomeCorriere),
 				"marchio"	=>	$r["marchi"]["titolo"],
 				"peso"		=>	$r["pages"]["peso"],
-				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC),
+				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC,$forzaValoreMassimoInFeed),
 				"gtin"		=>	$r["pages"]["gtin"],
 				"mpn"		=>	$r["pages"]["mpn"],
 				"id_corriere"	=>	$r["categories"]["id_corriere"],
