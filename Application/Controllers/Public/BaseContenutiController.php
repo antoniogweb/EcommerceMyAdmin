@@ -469,6 +469,11 @@ class BaseContenutiController extends BaseController
 		else
 			$title = $categoria["categories"]["title"];
 		
+		$metaTitleCategoria = cfield($categoria, "meta_title", "contenuti_tradotti");
+		
+		if (trim($metaTitleCategoria))
+			$title = $metaTitleCategoria;
+		
 		if (v("funzione_su_title_categoria"))
 			$title = call_user_func(v("funzione_su_title_categoria"),$title);
 

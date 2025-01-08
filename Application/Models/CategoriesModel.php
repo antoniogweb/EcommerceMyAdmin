@@ -247,6 +247,14 @@ class CategoriesModel extends HierarchicalModel {
 					'options'	=>	CorrieriModel::g()->selectTendina(),
 					'reverse' => 'yes',
 				),
+				'meta_title'		=>	array(
+					'labelString'=>	'Meta title della categoria',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se lasciato vuoto userà il titolo della categoria")."</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
