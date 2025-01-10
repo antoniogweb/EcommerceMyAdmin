@@ -107,7 +107,7 @@ class Nexi
 		$facoltativi = array(
 			'mail' => $this->ordine["email"],
 			'languageId' => "ITA",
-			'descrizione' => "Ordine ".$this->ordine["id_o"],
+			'descrizione' => gtext("Ordine")." ".$this->ordine["id_o"],
 			"nome"	=>	$this->ordine["nome"],
 			"cognome"	=>	$this->ordine["cognome"],
 			'OPTION_CF' => $this->ordine["codice_fiscale"],
