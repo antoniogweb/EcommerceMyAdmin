@@ -331,7 +331,7 @@ class Klarna
 	
 	public function checkOrdine()
 	{
-		$importo = number_format($this->ordine["total"] * 100,0);
+		$importo = number_format($this->ordine["total"] * 100,0,".","");
 		
 		if (self::$hppOrderId)
 		{
