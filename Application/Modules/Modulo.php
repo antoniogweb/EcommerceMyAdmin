@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait Modulo
 {
+	protected $logObject = null;
+	
 	protected $params = array();
 	
 	protected $cacheAbsolutePath = null;
@@ -130,6 +132,11 @@ trait Modulo
 			FilePutContentsAtomic($cacheFolderPath."/".$signature.".log", serialize($data));
 // 			FilePutContentsAtomic($cacheFolderPath."/".$signature.".php", "<?php\nreturn ".var_export($data, true).';');
 		}
+	}
+	
+	public function setLogObject($log)
+	{
+		$this->logObject = $log;
 	}
 	
 	public function strutturaFeedProdotti($p = null, $idPage = 0, $idC = 0, $combinazioniLinkVeri = null, $cacheTime = 0, $idShop = 0, $soloAttivi = 1)

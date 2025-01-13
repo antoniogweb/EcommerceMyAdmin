@@ -32,6 +32,8 @@ class CartModel extends GenericModel {
 	
 	public static $cifreCalcolo = 16;
 	
+	public static $permettiCorrezionePrezzi = true; // se impostato a false, correggiPrezzi non gira mai, in nessuna situazione
+	
 	public function __construct() {
 		$this->_tables='cart';
 		$this->_idFields='id_cart';
@@ -491,6 +493,9 @@ class CartModel extends GenericModel {
 	
 	public function correggiPrezzi()
 	{
+		if (!self::$permettiCorrezionePrezzi)
+			return;
+		
 		if (!v("prezzi_ivati_in_carrello"))
 			return;
 		
