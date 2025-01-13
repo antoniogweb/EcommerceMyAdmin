@@ -337,8 +337,8 @@ class Klarna
 		{
 			$result = $this->callUrl("ordermanagement/v1/orders/".self::$hppOrderId, array(), "LEGGI_ORDINE", "GET");
 			
-			if (isset($result["captured_amount"]))
-				self::$amountPagato = $result["captured_amount"];
+			if (isset($result["original_order_amount"]))
+				self::$amountPagato = $result["original_order_amount"];
 		}
 		
 		if (strcmp(self::$amountPagato,$importo) === 0)
