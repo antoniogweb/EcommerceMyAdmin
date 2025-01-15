@@ -2340,7 +2340,11 @@ class OrdiniModel extends FormModel {
 	public function inviatoGestionaleCrud($record)
 	{
 		if (self::statoGestionale($record["orders"]) > 0)
-			return "<i style='font-size:16px;' class='fa fa-check text text-success'></i>";
+		{
+			$label = trim($record["orders"]["codice_gestionale"]) ? "success" : "info";
+			
+			return "<i style='font-size:16px;' class='fa fa-check text text-$label'></i>";
+		}
 		else if (self::statoGestionale($record["orders"]) < 0)
 			return "<i style='font-size:16px;' class='fa fa-ban text text-danger'></i>";
 	}

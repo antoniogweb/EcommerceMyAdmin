@@ -331,14 +331,14 @@ class Klarna
 	
 	public function checkOrdine()
 	{
-		$importo = number_format($this->ordine["total"] * 100,0);
+		$importo = number_format($this->ordine["total"] * 100,0,".","");
 		
 		if (self::$hppOrderId)
 		{
 			$result = $this->callUrl("ordermanagement/v1/orders/".self::$hppOrderId, array(), "LEGGI_ORDINE", "GET");
 			
-			if (isset($result["captured_amount"]))
-				self::$amountPagato = $result["captured_amount"];
+			if (isset($result["original_order_amount"]))
+				self::$amountPagato = $result["original_order_amount"];
 		}
 		
 		if (strcmp(self::$amountPagato,$importo) === 0)

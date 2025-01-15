@@ -123,12 +123,17 @@ class CookiearchivioController extends BaseController
 				
 				if (isset($riga[4]))
 				{
-					$tt = explode(".", $riga[4]);
-					
-					if (count($tt) > 0)
+					if (strtolower($riga[4]) == "sessione")
+						$durata = CookiearchivioModel::$testoCookieSessione;
+					else
 					{
-						$timestamp = strtotime($tt[0]);
-						$durata = CookiearchivioModel::durata($timestamp);
+						$tt = explode(".", $riga[4]);
+						
+						if (count($tt) > 0)
+						{
+							$timestamp = strtotime($tt[0]);
+							$durata = CookiearchivioModel::durata($timestamp);
+						}
 					}
 				}
 				
