@@ -22,7 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CookiearchivioModel extends GenericModel {
+class CookiearchivioModel extends GenericModel
+{
+	public static $testoCookieSessione = "Viene eliminato alla chiusura del browser";
 	
 	public function __construct() {
 		$this->_tables='cookie_archivio';
@@ -92,6 +94,6 @@ class CookiearchivioModel extends GenericModel {
 		if ($ore)
 			return "< $ore ".singPlu($ore, "ora", "ore");
 		else
-			return $giorni > 0 ? $giorniEsatti . " " . singPlu($giorniEsatti, "giorno", "giorni") : "Viene eliminato alla chiusura del browser";
+			return $giorni > 0 ? $giorniEsatti . " " . singPlu($giorniEsatti, "giorno", "giorni") : self::$testoCookieSessione;
 	}
 }
