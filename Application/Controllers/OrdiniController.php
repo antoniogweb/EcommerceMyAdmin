@@ -290,7 +290,6 @@ class OrdiniController extends BaseController {
 			'id_lista_regalo'	=>	$this->viewArgs['id_lista_regalo'],
 			'tipo_ordine'	=>	$this->viewArgs['tipo_ordine'],
 			'numero_documento'	=>	$this->viewArgs['numero_documento'],
-			'nazione_spedizione'	=>	$this->viewArgs['nazione_spedizione'],
 		);
 		
 		$this->m[$this->modelName]->aWhere($where);
@@ -398,6 +397,24 @@ class OrdiniController extends BaseController {
 		{
 			$this->m[$this->modelName]->aWhere(array(
 				"      AND"	=>	OrdiniModel::getWhereClauseRicercaLibera($this->viewArgs['titolo']),
+			));
+		}
+		
+		if ($this->viewArgs["nazione_spedizione"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"   OR"	=>	array(
+					"AND"	=>	array(
+						"nazione_spedizione"	=>	$this->viewArgs["nazione_spedizione"],
+						"id_lista_regalo"		=>	0,
+					),
+					" AND"	=>	array(
+						"nazione_lista_regalo"	=>	$this->viewArgs["nazione_spedizione"],
+						"ne"	=>	array(
+							"id_lista_regalo"		=>	0,
+						),
+					),
+				),
 			));
 		}
 		

@@ -2627,8 +2627,18 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
+	public static function getNazioneRilevanteIvaOrdine($record)
+	{
+		if ($record["nazione_lista_regalo"] && $record["id_lista_regalo"])
+			return $record["nazione_lista_regalo"];
+		
+		return $record["nazione_spedizione"];
+	}
+	
 	public function nazioneSpedizioneCrud($record)
 	{
-		return NazioniModel::g()->findTitoloDaCodice($record["orders"]["nazione_spedizione"]);
+		$nazione = self::getNazioneRilevanteIvaOrdine($record["orders"]);
+		
+		return NazioniModel::g()->findTitoloDaCodice($nazione);
 	}
 }
