@@ -55,3 +55,4 @@
 	</table>
 </div>
 
+<?php include(tpf("Elementi/Cookie/gestione_cookie.php"));?>
