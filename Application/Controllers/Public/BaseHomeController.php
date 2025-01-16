@@ -53,7 +53,7 @@ class BaseHomeController extends BaseController
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
 		
-		if (!User::$adminLogged)
+		if (!User::$adminLogged && $this->checkCacheHtmlAttiva())
 		{
 			$cache = Cache_Html::getInstance();
 			$cache->saveHtml = true;

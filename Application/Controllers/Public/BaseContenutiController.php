@@ -816,7 +816,7 @@ class BaseContenutiController extends BaseController
 		
 		$cache = Cache_Html::getInstance();
 		
-		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl) && !isset($_GET["search"]))
+		if (!User::$adminLogged && empty(AltriFiltri::$filtriUrl) && !isset($_GET["search"]) && $this->checkCacheHtmlAttiva())
 			$cache->saveHtml = true;
 		
 		if (v("estrai_categorie_figlie"))
@@ -1680,7 +1680,7 @@ class BaseContenutiController extends BaseController
 			if (!$data["pages"][0]["pages"]["carica_header_footer"])
 				$this->clean();
 			
-			if (!User::$adminLogged && $data["pages"][0]["pages"]["crea_cache"])
+			if (!User::$adminLogged && $data["pages"][0]["pages"]["crea_cache"] && $this->checkCacheHtmlAttiva())
 			{
 				$cache = Cache_Html::getInstance();
 				$cache->saveHtml = true;

@@ -325,6 +325,11 @@ class BaseBaseController extends Controller
 		
 	}
 	
+	protected function checkCacheHtmlAttiva()
+	{
+		return true;
+	}
+	
 	// Setta la lingua e la nazione e ricarica le traduzioni
 	protected function settaLinguaENazione($lingua, $nazione = null)
 	{
