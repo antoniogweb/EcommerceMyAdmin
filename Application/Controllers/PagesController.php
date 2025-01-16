@@ -462,7 +462,7 @@ class PagesController extends BaseController {
 				}
 			}
 			
-			$this->scaffold->model->sWhere(array($sWhere, $bindedValuesIdC));
+			$this->scaffold->model->sWhere(array("(".$sWhere.")", $bindedValuesIdC));
 		}
 		
 		if ($this->viewArgs["id_pcorr"] != "tutti")
