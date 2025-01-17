@@ -135,6 +135,27 @@ class UsersController extends BaseController {
 		if ($this->s['admin']->status['status'] != 'two-factor') { //check if already logged
 			$this->redirect($this->redirectUrlDopoLogin,0);
 		}
+		
+		$uidt = $this->s['admin']->getTwoFactorUidt();
+		
+		$uModel = new UsersModel();
+		
+		$user = $uModel->selectId((int)$this->s['admin']->status["id_user"]);
+		
+		if (empty($user) || !$uidt)
+			$this->redirect($this->redirectUrlDopoLogin,0);
+		
+		$data['action'] = $this->baseUrl."/".$this->controller."/".$this->action;
+		$data['notice'] = null;
+		
+		$data["user"] = $user;
+		
+		// print_r($user);
+		
+		// print_r($this->s['admin']->status);
+		
+		$this->append($data);
+		$this->load('two_factor');
 	}
 	
 	public function main()
@@ -159,9 +180,18 @@ class UsersController extends BaseController {
 		
 		$clean['id'] = (int)$id;
 		
-		$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,password','none');
-		
-		$this->formFields = 'username,has_confirmed,password,confirmation';
+		if (v("attiva_autenticazione_due_fattori_admin"))
+		{
+			$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,email:sanitizeAll,password','none');
+			$this->formFields = 'username,has_confirmed,email,password,confirmation';
+			
+			$this->m[$this->modelName]->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo E-mail</b>").'<div style="display:none;" rel="hidden_alert_notice">email</div>');
+		}
+		else
+		{
+			$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,password','none');
+			$this->formFields = 'username,has_confirmed,password,confirmation';
+		}
 		
 		$this->m[$this->modelName]->setPasswordStrengthCondition();
 		

@@ -41,7 +41,7 @@ class SessionitwoModel extends GenericModel
 		parent::__construct();
 	}
 	
-	protected function getUidt()
+	public function getUidt()
 	{
 		$this->uidt = isset($_COOKIE[$this->cookieName]) ? sanitizeAlnum($_COOKIE[$this->cookieName]) : null;
 		
@@ -57,7 +57,7 @@ class SessionitwoModel extends GenericModel
 			"uid_two"	=>	sanitizeAlnum($this->uidt),
 			"user_agent_md5"	=>	getUserAgent(),
 			"user_agent"	=>	$_SERVER['HTTP_USER_AGENT'] ?? "",
-			"codice_verifica"	=>	generateString(6, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+			"codice_verifica"	=>	generateString(v("autenticazione_due_fattori_numero_cifre_admin"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
 			"uid"		=>	$uid,
 			"ip"		=>	getIp(),
 		));

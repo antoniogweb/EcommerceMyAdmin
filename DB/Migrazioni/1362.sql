@@ -1,0 +1,1 @@
+alter table adminusers add email varchar(80) not null default '';
