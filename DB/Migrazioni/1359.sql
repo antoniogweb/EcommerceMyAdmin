@@ -1,0 +1,1 @@
+alter table adminsessions_two add id_user int not null default 0;

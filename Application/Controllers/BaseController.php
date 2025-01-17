@@ -81,7 +81,7 @@ class BaseController extends Controller
 		if( !session_id() )
 			session_start();
 		
-		$this->session('admin');
+		$this->creaSessioneAdmin();
 		
 		$data['token'] = null;
 		
@@ -168,6 +168,24 @@ class BaseController extends Controller
 		// Controlla che tutti i prodotti abbiano la combinazione canonical
 		if (v("ecommerce_attivo") && VariabiliModel::combinazioniLinkVeri())
 			CombinazioniModel::g(false)->checkCanonicalAll();
+	}
+	
+	protected function creaSessioneAdmin()
+	{
+		if (!isset($this->s["admin"]))
+		{
+			$twoFactorModel = null;
+			
+			if (v("attiva_autenticazione_due_fattori_admin"))
+				$twoFactorModel = new SessionitwoModel("uidt", v("autenticazione_due_fattori_admin_durata_cookie"));
+			
+			$this->session('admin', array(
+				new UsersModel(),
+				new SessioniModel(),
+				new AccessiModel(),
+				new GroupsModel(),
+			), $twoFactorModel);
+		}
 	}
 	
 	protected function generaPosizioni()

@@ -52,7 +52,7 @@ class UsersController extends BaseController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if ($action != "login" && $action != "logout")
+		if ($action != "login" && $action != "logout" && $action != "twofactor")
 		{
 			$this->s['admin']->check();
 			
@@ -63,7 +63,7 @@ class UsersController extends BaseController {
 		$this->helper('Menu','users','panel/main');
 		$this->helper('Array');
 
-		$this->session('admin');
+		$this->creaSessioneAdmin();
 		$this->model();
 		$this->model("UsersgroupsModel");
 
@@ -119,6 +119,21 @@ class UsersController extends BaseController {
 			$this->redirect($this->redirectUrlDopoLogout,0);
 		} else if ($res == 'error') {
 
+		}
+	}
+	
+	public function twofactor()
+	{
+		if (!v("attiva_autenticazione_due_fattori_admin"))
+			$this->responseCode(403);
+		
+		if (!empty($_POST))
+			IpcheckModel::check("POST_ADMIN");
+		
+		$this->s['admin']->checkStatus();
+		
+		if ($this->s['admin']->status['status'] != 'two-factor') { //check if already logged
+			$this->redirect($this->redirectUrlDopoLogin,0);
 		}
 	}
 	

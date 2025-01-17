@@ -31,6 +31,7 @@ class Route
 		'panel,main',
 		'panel,salvasidebar',
 		'users,login',
+		'users,twofactor',
 		'users,logout',
 		'users,main',
 		'users,form',

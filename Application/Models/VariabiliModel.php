@@ -798,6 +798,9 @@ class VariabiliModel extends GenericModel {
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
+		### AUTENTICAZIONE DUE FATTORI ##
+		"attiva_autenticazione_due_fattori_admin"	=>	0, // se è attiva l'autenticazione a due fattori nell'admin
+		"autenticazione_due_fattori_admin_durata_cookie"	=>	2592000, // durata del cookie dell'autenticazione a due fattori (default 30 giorni)
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
