@@ -12,4 +12,8 @@
 		<br />
 		<a class="btn btn-lg btn-info btn-block make_spinner" href="<?php echo $this->baseUrl."/".$this->controller."/login";?>"><i class="fa fa-arrow-left"></i> <?php echo gtext("Torna");?></a>
 	</form>
+	
+	<?php if ($sessioneTwo["numero_invii_codice"] < (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_admin")) { ?>
+	<br /><a class="ajlink" href="<?php echo $this->baseUrl."/".$this->controller."/twofactorinviamail";?>"><?php echo gtext("Invia nuovamente il codice ".v("autenticazione_due_fattori_numero_cifre_admin")." cifre");?> <i class="fa fa-envelope"></i></a>
+	<?php } ?>
 </div>
