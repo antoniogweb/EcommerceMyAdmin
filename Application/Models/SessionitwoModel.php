@@ -28,8 +28,9 @@ class SessionitwoModel extends GenericModel
 	protected $twoFactorCookieDurationTime = 86400; // two factor cookie duration
 	protected $twoFactorCookiePath = "/"; // two factor cookie duration
 	protected $cookieName = "uidt";
+	protected $tempoDurataVerificaCodice = 60;
 	
-	public function __construct($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/")
+	public function __construct($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60)
 	{
 		$this->_tables='adminsessions_two';
 		$this->_idFields='id_adminsession_two';
@@ -37,8 +38,23 @@ class SessionitwoModel extends GenericModel
 		$this->cookieName = $cookieName;
 		$this->twoFactorCookieDurationTime = $twoFactorCookieDurationTime;
 		$this->twoFactorCookiePath = $twoFactorCookiePath;
-
+		$this->tempoDurataVerificaCodice = $tempoDurataVerificaCodice;
+		
 		parent::__construct();
+		
+		$this->cleanSessions();
+	}
+	
+	public function cleanSessions()
+	{
+		$time = time() - (int)$this->tempoDurataVerificaCodice;
+		
+		$this->del(null, array(
+			"time_creazione < ? and attivo = 0",
+			array(
+				$time
+			)
+		));
 	}
 	
 	public function getUidt()
@@ -48,7 +64,7 @@ class SessionitwoModel extends GenericModel
 		return $this->uidt;
 	}
 	
-	protected function creaSessione($idUser, $uid, $uidt = "")
+	public function creaSessione($idUser, $uid)
 	{
 		$this->uidt = randomToken();
 		
@@ -60,6 +76,8 @@ class SessionitwoModel extends GenericModel
 			"codice_verifica"	=>	generateString(v("autenticazione_due_fattori_numero_cifre_admin"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
 			"uid"		=>	$uid,
 			"ip"		=>	getIp(),
+			"time_creazione"	=>	time(),
+			"time_per_scadenza"	=>	time(),
 		));
 		
 		if ($this->insert())
@@ -71,10 +89,10 @@ class SessionitwoModel extends GenericModel
 			return "two-factor";
 		}
 		else
-			return "login-error";
+			return "not-logged";
 	}
 	
-	public function getStatus($idUser, $uid = "")
+	public function getStatus($idUser, $uid = "", $loggedState = "logged")
 	{
 		$uidt = $this->getUidt();
 		
@@ -88,7 +106,7 @@ class SessionitwoModel extends GenericModel
 			))->rowNumber();
 			
 			if ($numero > 0)
-				return "logged";
+				return $loggedState;
 			else
 			{
 				if ($this->clear()->where(array(
@@ -99,11 +117,20 @@ class SessionitwoModel extends GenericModel
 					"attivo"	=>	0,
 				))->rowNumber())
 					return "two-factor";
-				else
-					return $this->creaSessione($idUser, $uid);
 			}
 		}
-		else
-			return $this->creaSessione($idUser, $uid);
+		
+		return "not-logged";
+	}
+	
+	public function delSession($uid)
+	{
+		if (trim($uid))
+			return $this->del(null, array(
+				"uid"		=>	sanitizeAlnum($uid),
+				"attivo"	=>	0,
+			));
+		
+		return false;
 	}
 }

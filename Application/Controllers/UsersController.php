@@ -83,7 +83,10 @@ class UsersController extends BaseController {
 		$this->s['admin']->checkStatus();
 		if ($this->s['admin']->status['status']=='logged') { //check if already logged
 			$this->s['admin']->redirect('logged');
+		} else if ($this->s['admin']->status['status']=='two-factor') {
+			$this->s['admin']->logout();
 		}
+		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
 			$choice = $this->s['admin']->login(sanitizeAll($_POST['username']),$_POST['password']);
@@ -94,6 +97,9 @@ class UsersController extends BaseController {
 					break;
 				case 'accepted':
 					$this->redirect($this->redirectUrlDopoLogin,0);
+					break;
+				case 'two-factor':
+					$this->redirect($this->controller."/twofactor",0);
 					break;
 				case 'login-error':
 					$data['notice'] = '<div class="alert alert-danger">Username o password sbagliati</div>';
@@ -122,7 +128,7 @@ class UsersController extends BaseController {
 		}
 	}
 	
-	public function twofactor()
+	private function checkTwoFactor()
 	{
 		if (!v("attiva_autenticazione_due_fattori_admin"))
 			$this->responseCode(403);
@@ -145,17 +151,27 @@ class UsersController extends BaseController {
 		if (empty($user) || !$uidt)
 			$this->redirect($this->redirectUrlDopoLogin,0);
 		
+		return array($uidt, $user);
+	}
+	
+	public function twofactor()
+	{
+		list($uidt, $user) = $this->checkTwoFactor();
+		
 		$data['action'] = $this->baseUrl."/".$this->controller."/".$this->action;
 		$data['notice'] = null;
 		
 		$data["user"] = $user;
 		
-		// print_r($user);
-		
-		// print_r($this->s['admin']->status);
-		
 		$this->append($data);
 		$this->load('two_factor');
+	}
+	
+	public function twofactorinviamail()
+	{
+		$this->checkTwoFactor();
+		
+		
 	}
 	
 	public function main()
