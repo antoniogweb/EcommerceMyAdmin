@@ -46,13 +46,15 @@ class UsersController extends BaseController {
 	
 	public $redirectUrlDopoLogin = "panel/main";
 	
-	public $redirectUrlDopoLogout = "";
+	public $redirectUrlDopoLogout = ""; // url di atterraggio quando c'è un errore nell'autenticazione a due fattori
+	
+	public $redirectUrlErroreTwoFactor = "";
 	
 	function __construct($model, $controller, $queryString, $application, $action)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if ($action != "login" && $action != "logout" && $action != "twofactor")
+		if ($action != "login" && $action != "logout" && $action != "twofactor" && $action != "twofactorinviamail" && $action != "twofactorcheck")
 		{
 			$this->s['admin']->check();
 			
@@ -66,7 +68,9 @@ class UsersController extends BaseController {
 		$this->creaSessioneAdmin();
 		$this->model();
 		$this->model("UsersgroupsModel");
-
+		
+		$this->redirectUrlErroreTwoFactor = $this->controller."/login";
+		
 		$data["sezionePannello"] = "utenti";
 		
 		$this->append($data);
@@ -83,7 +87,10 @@ class UsersController extends BaseController {
 		$this->s['admin']->checkStatus();
 		if ($this->s['admin']->status['status']=='logged') { //check if already logged
 			$this->s['admin']->redirect('logged');
+		} else if ($this->s['admin']->status['status']=='two-factor') {
+			$this->s['admin']->logout();
 		}
+		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
 			$choice = $this->s['admin']->login(sanitizeAll($_POST['username']),$_POST['password']);
@@ -94,6 +101,9 @@ class UsersController extends BaseController {
 					break;
 				case 'accepted':
 					$this->redirect($this->redirectUrlDopoLogin,0);
+					break;
+				case 'two-factor':
+					$this->redirect($this->controller."/twofactorinviamail",0);
 					break;
 				case 'login-error':
 					$data['notice'] = '<div class="alert alert-danger">Username o password sbagliati</div>';
@@ -122,7 +132,7 @@ class UsersController extends BaseController {
 		}
 	}
 	
-	public function twofactor()
+	private function checkTwoFactor()
 	{
 		if (!v("attiva_autenticazione_due_fattori_admin"))
 			$this->responseCode(403);
@@ -133,7 +143,7 @@ class UsersController extends BaseController {
 		$this->s['admin']->checkStatus();
 		
 		if ($this->s['admin']->status['status'] != 'two-factor') { //check if already logged
-			$this->redirect($this->redirectUrlDopoLogin,0);
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		}
 		
 		$uidt = $this->s['admin']->getTwoFactorUidt();
@@ -143,19 +153,68 @@ class UsersController extends BaseController {
 		$user = $uModel->selectId((int)$this->s['admin']->status["id_user"]);
 		
 		if (empty($user) || !$uidt)
-			$this->redirect($this->redirectUrlDopoLogin,0);
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
-		$data['action'] = $this->baseUrl."/".$this->controller."/".$this->action;
+		$sessioneTwo = $this->s['admin']->getTwoFactorModel()->clear()->where(array(
+			"uid_two"	=>	sanitizeAll($uidt),
+			"attivo"	=>	0,
+			"user_agent_md5"	=>	getUserAgent(),
+		))->record();
+		
+		if (empty($sessioneTwo) || $sessioneTwo["tentativi_verifica"] >= (int)v("autenticazione_due_fattori_numero_massimo_tentativi_admin"))
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		return array($sessioneTwo, $user);
+	}
+	
+	public function twofactor()
+	{
+		list($sessioneTwo, $user) = $this->checkTwoFactor();
+		
+		$data['action'] = $this->baseUrl."/".$this->controller."/twofactorcheck";
 		$data['notice'] = null;
 		
 		$data["user"] = $user;
-		
-		// print_r($user);
-		
-		// print_r($this->s['admin']->status);
+		$data["sessioneTwo"] = $sessioneTwo;
 		
 		$this->append($data);
 		$this->load('two_factor');
+	}
+	
+	public function twofactorinviamail()
+	{
+		$this->clean();
+		
+		list($sessioneTwo, $user) = $this->checkTwoFactor();
+		
+		if ($sessioneTwo["numero_invii_codice"] >= (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_admin"))
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		$res = $this->s['admin']->getTwoFactorModel()->inviaCodice($sessioneTwo, $user);
+		
+		if ($res)
+			$this->redirect($this->controller."/twofactor");
+		else
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+	}
+	
+	public function twofactorcheck()
+	{
+		$this->clean();
+		
+		list($sessioneTwo, $user) = $this->checkTwoFactor();
+		
+		$clean["codice"] = trim($this->request->post("codice","", "sanitizeAll"));
+		
+		if ($clean["codice"])
+		{
+			if ($this->s['admin']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"]))
+				$this->redirect($this->redirectUrlDopoLogin);
+		}
+		else
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		$this->redirect($this->controller."/twofactor");
 	}
 	
 	public function main()

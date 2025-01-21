@@ -177,7 +177,7 @@ class BaseController extends Controller
 			$twoFactorModel = null;
 			
 			if (v("attiva_autenticazione_due_fattori_admin"))
-				$twoFactorModel = new SessionitwoModel("uidt", v("autenticazione_due_fattori_admin_durata_cookie"));
+				$twoFactorModel = new SessionitwoModel("uidt", v("autenticazione_due_fattori_admin_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_admin"));
 			
 			$this->session('admin', array(
 				new UsersModel(),

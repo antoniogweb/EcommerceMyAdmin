@@ -32,6 +32,8 @@ class Route
 		'panel,salvasidebar',
 		'users,login',
 		'users,twofactor',
+		'users,twofactorinviamail',
+		'users,twofactorcheck',
 		'users,logout',
 		'users,main',
 		'users,form',

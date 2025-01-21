@@ -807,8 +807,12 @@ class PagesController extends BaseController {
 				
 				$this->menuLinks = 'back,save';
 				if ($queryType === "update")
+				{
 					$this->menuLinks = 'back,copia,save';
-				
+					
+					if (v("attiva_cron_web") && v("attiva_gestione_traduttori"))
+						$this->menuLinks .= ",traduci";
+				}
 				$this->getTabViewFields("form");
 				
 				$params = array(
@@ -874,6 +878,9 @@ class PagesController extends BaseController {
 				}
 				
 				$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];
+				
+				if (v("attiva_gestione_traduttori") && v("attiva_cron_web"))
+					$this->scaffold->mainMenu->links['traduci']['absolute_url'] = Domain::$publicUrl."/cron/traduci?".v("token_comandi_cron_web")."&azione=traduci-pagine-tutte-le-lingue&limit=30&id_record=".$clean['id']."&forzaTraduzioneIdPage";
 				
 				$data['scaffold'] = $this->scaffold->render();
 				
