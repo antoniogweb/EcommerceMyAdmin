@@ -430,6 +430,15 @@ Helper_Menu::$htmlLinks = array(
 		'text'	=>	"Invia mail recupero password",
 		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
 	),
+	'traduci'	=>	array(
+		'title'	=>	"traduci",
+		'text'	=>	"Traduci",
+		'url'	=>	'traduci',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-info ajlink"',
+		"classIconBefore"	=>	'<i class="fa fa-language"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";

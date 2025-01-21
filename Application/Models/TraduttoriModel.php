@@ -144,7 +144,21 @@ class TraduttoriModel extends GenericModel
 			self::traduciTabellaContenuti("id_stato_ordine", $lingua, $idRecord, $limit, $log);
 		}
 	}
+	
+	public static function traduciPagine($l = "", $idRecord = 0, $limit = 10, $log = null)
+	{
+		$lingue = LingueModel::getLingueNonPrincipali();
 
+		foreach ($lingue as $lingua)
+		{
+			if ($l && $l != $lingua)
+				continue;
+
+			// Tabella contenuti: pagine
+			self::traduciTabellaContenuti("id_page", $lingua, $idRecord, $limit, $log);
+		}
+	}
+	
 	public static function traduciTabellaContenuti($campo, $lingua, $idRecord = 0, $limit = 10, $log = null)
 	{
 		if ($log)
@@ -169,6 +183,9 @@ class TraduttoriModel extends GenericModel
 					
 					$idPages = $pModel->clear()->select("id_page")->addWhereAttivoPermettiTest()->orderBy("id_page desc")->limit(v("traduci_ultime_x_pagine_se_modificate"))->toList("id_page")->send();
 					$idPages = forceIntDeep($idPages);
+					
+					if ($idRecord && v("attiva_cron_web") && isset($_GET["forzaTraduzioneIdPage"]))
+						$idPages[] = (int)$idRecord;
 					
 					$ctModel->inner(array("page"))->sWhere(array("(pages.attivo = 'Y' OR pages.id_c in (".v("traduci_sempre_le_pagine_di_queste_categorie").")) AND (contenuti_tradotti.salvato = 0 OR (contenuti_tradotti.data_traduzione IS NOT NULL AND pages.data_ultima_modifica IS NOT NULL AND contenuti_tradotti.data_traduzione < pages.data_ultima_modifica AND pages.id_page in (".$pModel->placeholdersFromArray($idPages).")))",$idPages));
 				}

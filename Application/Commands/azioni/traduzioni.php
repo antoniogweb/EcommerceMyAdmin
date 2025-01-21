@@ -30,10 +30,11 @@ if (!isset($params["azione"]))
 	echo "traduci-caratteristiche-valori -> traduce la tabella caratteristiche_valori (VALORI DELLE CARATTERISTICHE PRODOTTI)\n";
 	echo "traduci-marchi -> traduce la tabella marchi (MARCHI PRODOTTI)\n";
 	echo "traduci -> traduce tutti i testi del sito\n";
+	echo "traduci-pagine-tutte-le-lingue -> traduce la tabella pages (PAGINE e PRODOTTI) per tutte le lingue\n";
 	die();
 }
 
-if (!$params["lingua"] && ($params["azione"] != "traduci"))
+if (!$params["lingua"] && $params["azione"] != "traduci" && $params["azione"] != "traduci-pagine-tutte-le-lingue")
 {
 	echo "si prega di selezionare il codice ISO della lingua nella quale tradurre (en, fr, de, ...) con l'istruzione --lingua=\"<lingua>\" \n";
 	echo "lingue permesse:\n";
@@ -85,3 +86,6 @@ if ($params["azione"] == "traduci-testi")
 
 if ($params["azione"] == "traduci")
 	TraduttoriModel::traduciTutto($params["lingua"], $params["id_record"], $params["limit"], $log);
+
+if ($params["azione"] == "traduci-pagine-tutte-le-lingue")
+	TraduttoriModel::traduciPagine($params["lingua"], $params["id_record"], $params["limit"], $log);
