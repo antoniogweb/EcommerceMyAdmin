@@ -47,6 +47,7 @@ class SessionitwoModel extends GenericModel
 	
 	public function cleanSessions()
 	{
+		// Verifica durata two factor NON attivo
 		$time = time() - (int)$this->tempoDurataVerificaCodice;
 		
 		$this->del(null, array(
@@ -55,11 +56,21 @@ class SessionitwoModel extends GenericModel
 				$time
 			)
 		));
+		
+		// Verifica durata two factor attivo
+		$time2 = time() - (int)$this->twoFactorCookieDurationTime;
+		
+		$this->del(null, array(
+			"time_per_scadenza < ? and attivo = 1",
+			array(
+				$time2
+			)
+		));
 	}
 	
 	public function getUidt()
 	{
-		$this->uidt = isset($_COOKIE[$this->cookieName]) ? sanitizeAlnum($_COOKIE[$this->cookieName]) : null;
+		$this->uidt = isset($_COOKIE[$this->cookieName]) ? sanitizeAll($_COOKIE[$this->cookieName]) : null;
 		
 		return $this->uidt;
 	}
@@ -70,7 +81,7 @@ class SessionitwoModel extends GenericModel
 		
 		$this->sValues(array(
 			"id_user"	=>	(int)$idUser,
-			"uid_two"	=>	sanitizeAlnum($this->uidt),
+			"uid_two"	=>	sanitizeAll($this->uidt),
 			"user_agent_md5"	=>	getUserAgent(),
 			"user_agent"	=>	$_SERVER['HTTP_USER_AGENT'] ?? "",
 			"codice_verifica"	=>	generateString(v("autenticazione_due_fattori_numero_cifre_admin"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
@@ -100,7 +111,7 @@ class SessionitwoModel extends GenericModel
 		{
 			$numero = $this->clear()->where(array(
 				"id_user"	=>	(int)$idUser,
-				"uid_two"	=>	sanitizeAlnum($uidt),
+				"uid_two"	=>	sanitizeAll($uidt),
 				"user_agent_md5"	=>	getUserAgent(),
 				"attivo"	=>	1,
 			))->rowNumber();
@@ -111,8 +122,8 @@ class SessionitwoModel extends GenericModel
 			{
 				if ($this->clear()->where(array(
 					"id_user"	=>	(int)$idUser,
-					"uid"		=>	sanitizeAlnum($uid),
-					"uid_two"	=>	sanitizeAlnum($uidt),
+					"uid"		=>	sanitizeAll($uid),
+					"uid_two"	=>	sanitizeAll($uidt),
 					"user_agent_md5"	=>	getUserAgent(),
 					"attivo"	=>	0,
 				))->rowNumber())
@@ -127,10 +138,75 @@ class SessionitwoModel extends GenericModel
 	{
 		if (trim($uid))
 			return $this->del(null, array(
-				"uid"		=>	sanitizeAlnum($uid),
+				"uid"		=>	sanitizeAll($uid),
 				"attivo"	=>	0,
 			));
 		
 		return false;
+	}
+	
+	public function inviaCodice($sessioneTwo, $user, $campo = "email")
+	{
+		$email = trim($user[$campo]);
+		
+		if ($email && checkMail($email))
+		{
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($email),
+				"oggetto"	=>	"invio codice di verifica",
+				"tipologia"	=>	"INVIO_CODICE_TWO",
+				"testo_path"	=>	"Elementi/Mail/Clienti/codice_due_fattori.php",
+				"array_variabili_tema"	=>	array(
+					"CODICE"		=>	$sessioneTwo["codice_verifica"],
+					"NOME_CLIENTE"	=>	$user["username"],
+				),
+			));
+			
+			if ($res)
+			{
+				$this->sValues(array(
+					"numero_invii_codice"	=>	((int)$sessioneTwo["numero_invii_codice"] + 1),
+					"time_creazione"		=>	time(),
+				));
+				
+				$this->pUpdate($sessioneTwo["id_adminsession_two"]);
+			}
+			
+			return $res;
+		}
+		
+		return false;
+	}
+	
+	public function checkCodice($sessioneTwo, $codice)
+	{
+		$numero = $this->clear()->where(array(
+			"codice_verifica"	=>	sanitizeAll($codice),
+			"uid_two"	=>	sanitizeAll($sessioneTwo["uid_two"]),
+			"attivo"	=>	0,
+			"user_agent_md5"	=>	getUserAgent(),
+		))->rowNumber();
+		
+		if ($numero)
+		{
+			$this->sValues(array(
+				"attivo"				=>	1,
+				"time_per_scadenza"		=>	time(),
+			));
+			
+			$res = true;
+		}
+		else
+		{
+			$this->sValues(array(
+				"tentativi_verifica"	=> ((int)$sessioneTwo["tentativi_verifica"] + 1),
+			));
+			
+			$res = false;
+		}
+		
+		$this->pUpdate($sessioneTwo["id_adminsession_two"]);
+		
+		return $res;
 	}
 }

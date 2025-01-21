@@ -803,6 +803,8 @@ class VariabiliModel extends GenericModel {
 		"autenticazione_due_fattori_admin_durata_cookie"	=>	2592000, // durata del cookie dell'autenticazione a due fattori (default 30 giorni)
 		"autenticazione_due_fattori_numero_cifre_admin"	=>	6, // numero delle cifre del codice di verifica inviato nell'autenticazione a due fattori lato admin
 		"autenticazione_due_fattori_durata_verifica_admin"	=>	60, // tempo in secondi dopo il quale viene cancellata una sessione a due fattori non verificata
+		"autenticazione_due_fattori_numero_massimo_tentativi_admin"	=>	3, // numero massimo di tentativi nell'inserimento del codice a 2 fattori
+		"autenticazione_due_fattori_numero_massimo_invii_codice_admin"	=>	3, // numero massimo di volte che il codice a 2 fattori può essere inviato
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
