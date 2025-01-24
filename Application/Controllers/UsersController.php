@@ -46,9 +46,9 @@ class UsersController extends BaseController {
 	
 	public $redirectUrlDopoLogin = "panel/main";
 	
-	public $redirectUrlDopoLogout = ""; // url di atterraggio quando c'è un errore nell'autenticazione a due fattori
+	public $redirectUrlDopoLogout = "";
 	
-	public $redirectUrlErroreTwoFactor = "";
+	public $redirectUrlErroreTwoFactor = ""; // url di atterraggio quando c'è un errore nell'autenticazione a due fattori
 	
 	function __construct($model, $controller, $queryString, $application, $action)
 	{
@@ -210,6 +210,8 @@ class UsersController extends BaseController {
 		{
 			if ($this->s['admin']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"]))
 				$this->redirect($this->redirectUrlDopoLogin);
+			else
+				flash("notice","<div class='alert alert-danger'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
 		}
 		else
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
