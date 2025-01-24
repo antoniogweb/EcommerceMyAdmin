@@ -160,4 +160,23 @@ class NexiLink extends Nexi
 		
 		return $urlRedirect;
 	}
+	
+	public function checkOrdine()
+	{
+		$importo = str_replace(".","",$this->ordine["total"]);
+		$amount = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
+		$codTrans = isset($_REQUEST["codTrans"]) ? $_REQUEST["codTrans"] : 0;
+		
+		if (strcmp($amount,$importo) === 0)
+			return true;
+		
+		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
+		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $amount \n";
+		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine["codice_transazione"]." \n";
+		
+		$this->statoNotifica = 'OK, pagamento non corretto';
+		$this->scriviLog(false, true);
+		
+		return false;
+	}
 }
