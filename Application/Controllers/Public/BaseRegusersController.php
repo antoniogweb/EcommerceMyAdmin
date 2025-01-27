@@ -863,7 +863,8 @@ class BaseRegusersController extends BaseController
 			))->record();
 			
 			$spedizione = htmlentitydecodeDeep($spedizione);
-			$spedizione = array_map('sanitizeHtmlLight', $spedizione);
+			$spedizione = strip_tagsDeep($spedizione);
+			$spedizione = array_map(v("funzione_sanitize_spedizione_in_ordine"), $spedizione);
 			
 			if (!empty($spedizione))
 			{

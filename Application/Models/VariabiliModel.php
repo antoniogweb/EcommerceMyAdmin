@@ -569,6 +569,7 @@ class VariabiliModel extends GenericModel {
 		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
 		"oggetto_pdf_ordine"		=>	"Ordine [ID_ORDINE] - stampa PDF", // Oggetto mail del PDF ordine offline
 		"filename_pdf_ordine"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine allegato alla mail
+		"funzione_sanitize_spedizione_in_ordine"	=>	"sanitizeHtmlLight", // forza htmlspecialchars sui dati dell'indirizzo utente nel checkout ordine con ENT_QUOTES (sanitizeHtmlLight) o ENT_COMPAT (sanitizeHtmlLightCompat)
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

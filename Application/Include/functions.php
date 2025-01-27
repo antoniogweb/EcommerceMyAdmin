@@ -2260,3 +2260,9 @@ function maggioreDiZero($numero)
 {
 	return $numero > 0 ? true : false;
 }
+
+function sanitizeHtmlLightCompat($stringa) {
+	$charset = Params::$htmlentititiesCharset;
+	$stringa=htmlspecialchars(nullToBlank($stringa),ENT_COMPAT,$charset);
+	return $stringa;
+}
