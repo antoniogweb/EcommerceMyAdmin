@@ -31,7 +31,7 @@ class Random extends Captcha
 			session_start();
 			
 		$r = new Request();
-		$campoCaptcha = $r->post($this->params["campo_nascosto"],'');
+		$campoCaptcha = strtolower($r->post($this->params["campo_nascosto"],''));
 		
 		if (isset($_SESSION["ok_captcha"]))
 			return true;
