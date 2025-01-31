@@ -610,7 +610,7 @@ class Gls extends Spedizioniere
 			$labelSpedizioniere = $this->getLabelSpedizioniere($trackingInfo);
 			$codiceSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "Codice");
 			
-			if ($labelSpedizioniere == "CONSEGNATA" || strtolower($labelSpedizioniere) == "spedizione consegnata" || (int)$codiceSpedizioniere === 906)
+			if ($labelSpedizioniere == "CONSEGNATA" || strtolower($labelSpedizioniere) == "spedizione consegnata" || (int)$codiceSpedizioniere === 906 || strtolower($labelSpedizioniere) == "spedizione consegnata/lasciata all'indirizzo")
 			{
 				$this->scriviLogConsegnata((int)$idSpedizione);
 				
@@ -653,6 +653,8 @@ class Gls extends Spedizioniere
 	{
 		if ($trackingInfo)
 		{
+			$trackingInfo = str_replace("´","'",$trackingInfo);
+			
 			$xmlObj = simplexml_load_string($trackingInfo);
 			
 			if (isset($xmlObj->SPEDIZIONE) && isset($xmlObj->SPEDIZIONE->ColloInternazionale->TRACKINGINT))
