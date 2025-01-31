@@ -1901,7 +1901,7 @@ class GenericModel extends Model_Tree
 		
 		foreach ($cercaArray as $cercaTermine)
 		{
-			if (strpos(v("ricerca_termini_and_or"), "OR") === false || strlen($cercaTermine) > 1)
+			if (strpos(v("ricerca_termini_and_or"), "OR") === false || strlen($cercaTermine) > 2)
 			{
 				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
 					$tabellaCerca.".".$campoCerca	=>	sanitizeAll(htmlentitydecode($cercaTermine)),
