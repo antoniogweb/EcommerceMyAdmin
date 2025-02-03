@@ -545,6 +545,7 @@ class Route
 		'pagesstats,main',
 		'contatti,main',
 		'righe,main',
+		'righe,mainrighe',
 		'righe,salva',
 		'righe,modificaevaso',
 		
