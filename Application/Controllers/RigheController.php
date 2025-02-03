@@ -121,19 +121,17 @@ class RigheController extends BaseController
 					"righe.id_riga_tipologia"	=>	0,
 					"orders.sezionale"	=>	"",
 				))
-				->orderBy("orders.id_o desc,righe.id_order")->convert();
+				->orderBy("orders.data_creazione desc,righe.id_order")->convert();
 		
 		if (v("usa_marchi"))
 		{
-			$this->mainFields[] = "marchi.titolo";
+			$this->mainFields[] = "marchiTitoloCrud";
 			$this->mainHead .= ",Marchio";
 			
 			$this->filters[] = array("id_marchio",null,array("tutti"=>gtext("Marchio")) + $this->m("MarchiModel")->filtro());
 			
-			$this->m[$this->modelName]->select("orders.id_o,righe.*,marchi.*")->inner("pages")->on("pages.id_page = righe.id_page")->inner("marchi")->on("marchi.id_marchio = pages.id_marchio");
-			
 			if ($this->viewArgs["id_marchio"] != "tutti")
-				$this->m[$this->modelName]->aWhere(array(
+				$this->m[$this->modelName]->inner("pages")->on("pages.id_page = righe.id_page")->aWhere(array(
 					"pages.id_marchio"	=>	(int)$this->viewArgs["id_marchio"],
 				));
 		}

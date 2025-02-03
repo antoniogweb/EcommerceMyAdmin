@@ -402,4 +402,16 @@ class RigheModel extends GenericModel {
 	{
 		return '<a href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">#'.$record["orders"]["id_o"].'</a>';
 	}
+	
+	public function marchiTitoloCrud($record)
+	{
+		$idPage = (int)$record["righe"]["id_page"];
+		
+		$marchio = MarchiModel::getDataMarchio(PagesModel::g(false)->select("id_marchio")->whereId($idPage)->field("id_marchio"));
+		
+		if (!empty($marchio))
+			return $marchio["marchi"]["titolo"];
+		
+		return "";
+	}
 }
