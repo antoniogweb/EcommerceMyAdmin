@@ -121,7 +121,7 @@ class RigheController extends BaseController
 					"righe.id_riga_tipologia"	=>	0,
 					"orders.sezionale"	=>	"",
 				))
-				->orderBy("orders.data_creazione desc,righe.id_order")->convert();
+				->orderBy("righe.data_creazione desc,righe.id_order")->convert();
 		
 		if (v("usa_marchi"))
 		{
