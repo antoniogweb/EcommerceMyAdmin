@@ -119,6 +119,7 @@ class RigheController extends BaseController
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->where(array(
 					"righe.id_riga_tipologia"	=>	0,
+					"orders.sezionale"	=>	"",
 				))
 				->orderBy("orders.data_creazione desc,righe.id_order")->convert();
 		
