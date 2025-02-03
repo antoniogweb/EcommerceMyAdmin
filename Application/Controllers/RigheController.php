@@ -31,11 +31,20 @@ class RigheController extends BaseController
 		'al:sanitizeAll'=>'tutti',
 		'titolo:sanitizeAll'=>'tutti',
 		'titolo_riga:sanitizeAll'=>'tutti',
+		'id_marchio:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "marketing";
 	
 	public $tabella = "prodotti più venduti";
+	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		if ($action == "elenco")
+			$this->sezionePannello = "ecommerce";
+		
+		parent::__construct($model, $controller, $queryString, $application, $action);
+	}
 	
 	public function main()
 	{
@@ -79,54 +88,75 @@ class RigheController extends BaseController
 		parent::main();
 	}
 	
-// 	public function mainrighe()
-// 	{
-// 		$this->queryActions = $this->bulkQueryActions = "";
-// 		$this->mainButtons = "";
-// 		$this->addBulkActions = false;
-// 		
-// 		$this->colProperties = array(
-// 			array(
-// 				'width'	=>	'90px',
-// 			),
-// 		);
-// 		
-// 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta', 'mainAction'=>'mainrighe');
-// 		
-// 		$this->shift();
-// 		
-// 		$this->mainFields = array("linkcrud", "cleanDateTime", 'OrdiniModel.getNome|orders.id_o', "righe.title", "righe.quantity", "righe.prezzo_intero_ivato", "righe.price_ivato");
-// 		$this->mainHead = "N°Ordine,Data Ora,Nome/Rag.Soc,Prodotto,Quantità,Prezzo,Prezzo scontato";
-// 		
-// 		$filtri = array("titolo", "titolo_riga", "dal", "al");
-// 		$this->filters = $filtri;
-// 		
-// 		$this->m[$this->modelName]->clear()
-// 				->select("*")
-// 				->inner("orders")->on("righe.id_o = orders.id_o")
-// 				->where(array(
-// 					"righe.id_riga_tipologia"	=>	0,
-// 				))
-// 				->orderBy("orders.data_creazione desc,righe.id_order")->convert();
-// 		
-// 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_creazione", "orders");
-// 		
-// 		if ($this->viewArgs["titolo"] != "tutti")
-// 		{
-// 			$this->m[$this->modelName]->aWhere(array(
-// 				"      AND"	=>	OrdiniModel::getWhereClauseRicercaLibera($this->viewArgs['titolo']),
-// 			));
-// 		}
-// 		
-// 		if ($this->viewArgs['titolo_riga'] != "tutti")
-// 			$this->m[$this->modelName]->aWhere(array(
-// 				"    AND"	=>	RigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
-// 			));
-// 		
-// 		$this->m[$this->modelName]->save();
-// 		
-// 		$this->baseMain();
-// 	}
+	public function elenco()
+	{
+		if (!v("mostra_sezione_righe_ordine"))
+			$this->responseCode(403);
+		
+		Helper_Menu::$htmlLinks["esporta"]["url"] = "elenco";
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'90px',
+			),
+		);
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta', 'mainAction'=>'elenco');
+		
+		$this->shift();
+		
+		$this->mainFields = array("linkcrud", "cleanDateTime", 'OrdiniModel.getNome|orders.id_o', "righe.title", "righe.quantity", "righe.prezzo_intero_ivato", "righe.price_ivato");
+		$this->mainHead = "N°Ordine,Data Ora,Nome/Rag.Soc,Prodotto,Quantità,Prezzo,Prezzo scontato";
+		
+		$this->filters = array("titolo", "titolo_riga", "dal", "al");
+		
+		$this->m[$this->modelName]->clear()
+				->select("orders.id_o,righe.*")
+				->inner("orders")->on("righe.id_o = orders.id_o")
+				->where(array(
+					"righe.id_riga_tipologia"	=>	0,
+				))
+				->orderBy("orders.data_creazione desc,righe.id_order")->convert();
+		
+		if (v("usa_marchi"))
+		{
+			$this->mainFields[] = "marchi.titolo";
+			$this->mainHead .= ",Marchio";
+			
+			$this->filters[] = array("id_marchio",null,array("tutti"=>gtext("Marchio")) + $this->m("MarchiModel")->filtro());
+			
+			$this->m[$this->modelName]->select("orders.id_o,righe.*,marchi.*")->inner("pages")->on("pages.id_page = righe.id_page")->inner("marchi")->on("marchi.id_marchio = pages.id_marchio");
+			
+			if ($this->viewArgs["id_marchio"] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"pages.id_marchio"	=>	(int)$this->viewArgs["id_marchio"],
+				));
+		}
+				
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_creazione", "orders");
+		
+		if ($this->viewArgs["titolo"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"      AND"	=>	OrdiniModel::getWhereClauseRicercaLibera($this->viewArgs['titolo']),
+			));
+		}
+		
+		if ($this->viewArgs['titolo_riga'] != "tutti")
+			$this->m[$this->modelName]->aWhere(array(
+				"    AND"	=>	RigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
+			));
+		
+		
+		
+		$this->m[$this->modelName]->save();
+		
+		$this->baseMain();
+	}
 	
 	public function salva()
 	{

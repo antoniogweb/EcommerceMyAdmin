@@ -397,4 +397,9 @@ class RigheModel extends GenericModel {
 		
 		return $andArray;
 	}
+	
+	public function linkcrud($record)
+	{
+		return '<a href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">#'.$record["orders"]["id_o"].'</a>';
+	}
 }
