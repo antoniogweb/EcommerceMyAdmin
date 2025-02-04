@@ -128,7 +128,6 @@ class VariabiliModel extends GenericModel {
 		"indirizzo_aziendale"		=>	"",
 		"telefono_aziendale"		=>	"",
 		"telefono_aziendale_2"		=>	"",
-		"pagamenti_permessi"		=>	"bonifico,paypal",
 		"email_aziendale"			=>	"",
 		"piattaforma_in_sviluppo"	=>	1,
 		"email_sviluppo"			=>	"",
@@ -807,6 +806,9 @@ class VariabiliModel extends GenericModel {
 		"autenticazione_due_fattori_durata_verifica_admin"	=>	60, // tempo in secondi dopo il quale viene cancellata una sessione a due fattori non verificata
 		"autenticazione_due_fattori_numero_massimo_tentativi_admin"	=>	3, // numero massimo di tentativi nell'inserimento del codice a 2 fattori
 		"autenticazione_due_fattori_numero_massimo_invii_codice_admin"	=>	3, // numero massimo di volte che il codice a 2 fattori può essere inviato
+		### PAGAMENTI ##
+		"pagamenti_permessi"		=>	"bonifico,paypal",
+		"campo_codice_transazione_nexi"	=>	"codice_transazione", // il campo dell'ordine da usare come codice di transazione nei pagamenti Nexi
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
