@@ -806,6 +806,7 @@ class VariabiliModel extends GenericModel {
 		"autenticazione_due_fattori_durata_verifica_admin"	=>	60, // tempo in secondi dopo il quale viene cancellata una sessione a due fattori non verificata
 		"autenticazione_due_fattori_numero_massimo_tentativi_admin"	=>	3, // numero massimo di tentativi nell'inserimento del codice a 2 fattori
 		"autenticazione_due_fattori_numero_massimo_invii_codice_admin"	=>	3, // numero massimo di volte che il codice a 2 fattori può essere inviato
+		"attiva_campo_email_admin"	=>	0, // se impostato su 1, attiva il campo "email" nella scheda degli utenti admin
 		### PAGAMENTI ##
 		"pagamenti_permessi"		=>	"bonifico,paypal",
 		"campo_codice_transazione_nexi"	=>	"codice_transazione", // il campo dell'ordine da usare come codice di transazione nei pagamenti Nexi

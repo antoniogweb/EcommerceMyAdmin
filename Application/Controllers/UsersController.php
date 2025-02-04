@@ -226,6 +226,12 @@ class UsersController extends BaseController {
 		$this->mainFields = array('[[ledit]];adminusers.username;','getYesNoUtenti|adminusers:has_confirmed');
 		$this->mainHead = 'Nome utente,Attivo?';
 		
+		if (v("attiva_autenticazione_due_fattori_admin") || v("attiva_campo_email_admin"))
+		{
+			$this->mainFields[] = "adminusers.email";
+			$this->mainHead .= ",Email";
+		}
+		
 		$this->filters = array("username");
 		
 		$this->m[$this->modelName]->clear()->where(array(
@@ -241,7 +247,7 @@ class UsersController extends BaseController {
 		
 		$clean['id'] = (int)$id;
 		
-		if (v("attiva_autenticazione_due_fattori_admin"))
+		if (v("attiva_autenticazione_due_fattori_admin") || v("attiva_campo_email_admin"))
 		{
 			$this->m[$this->modelName]->setValuesFromPost('username:sanitizeAll,has_confirmed:sanitizeAll,email:sanitizeAll,password','none');
 			$this->formFields = 'username,has_confirmed,email,password,confirmation';
