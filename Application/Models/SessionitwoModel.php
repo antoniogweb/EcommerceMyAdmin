@@ -75,9 +75,21 @@ class SessionitwoModel extends GenericModel
 		return $this->uidt;
 	}
 	
+	private function getOsBrowser()
+	{
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+		
+		$parser = new donatj\UserAgent\UserAgentParser();
+		$ua = $parser->parse();
+		
+		return array($ua->platform(), $ua->browser(), $ua->browserVersion());
+	}
+	
 	public function creaSessione($idUser, $uid)
 	{
 		$this->uidt = randomToken();
+		
+		list ($os, $browser, $browserVersion) = $this->getOsBrowser();
 		
 		$this->sValues(array(
 			"id_user"	=>	(int)$idUser,
@@ -89,6 +101,9 @@ class SessionitwoModel extends GenericModel
 			"ip"		=>	getIp(),
 			"time_creazione"	=>	time(),
 			"time_per_scadenza"	=>	time(),
+			"sistema_operativo"	=>	$os,
+			"browser"	=>	$browser,
+			"versione_browser"	=>	$browserVersion,
 		));
 		
 		if ($this->insert())
@@ -109,10 +124,15 @@ class SessionitwoModel extends GenericModel
 		
 		if ($uidt)
 		{
+			list ($os, $browser, $browserVersion) = $this->getOsBrowser();
+			
 			$numero = $this->clear()->where(array(
 				"id_user"	=>	(int)$idUser,
 				"uid_two"	=>	sanitizeAll($uidt),
-				"user_agent_md5"	=>	getUserAgent(),
+				"sistema_operativo"	=>	sanitizeAll($os),
+				"browser"	=>	sanitizeAll($browser),
+				// "versione_browser"	=>	sanitizeAll($browserVersion),
+				// "user_agent_md5"	=>	getUserAgent(),
 				"attivo"	=>	1,
 			))->rowNumber();
 			
