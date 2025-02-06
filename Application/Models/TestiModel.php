@@ -200,6 +200,9 @@ class TestiModel extends GenericModel
 	{
 		if (!self::$uploadFile || $this->upload("insert"))
 		{
+			if (!isset($this->values["data_ultima_modifica"]))
+				$this->setValue("data_ultima_modifica", date("Y-m-d H:i:s"));
+			
 			return parent::insert();
 		}
 	}
