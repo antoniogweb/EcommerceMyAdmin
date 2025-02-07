@@ -102,6 +102,8 @@
 	
 	<?php include(tpf("/Elementi/FormRegistrazioneCheckout/pagamento.php")); ?>
 	
+	<?php include(tpf("/Elementi/FormRegistrazioneCheckout/custom.php")); ?>
+	
 <!-- registrazione o modificadati -->
 <?php if (strcmp($this->controller,"regusers") === 0) { ?>
 
