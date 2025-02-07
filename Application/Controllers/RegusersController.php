@@ -175,7 +175,7 @@ class RegusersController extends BaseController
 		
 		$this->filters = $filtri;
 		
-		$this->m[$this->modelName]->where(array(
+		$this->m[$this->modelName]->aWhere(array(
 			'has_confirmed'	=>	$this->viewArgs['has_confirmed'],
 			'tipo_cliente'	=>	$this->viewArgs['tipo_cliente'],
 			"lk" => array('n!regusers.codice_fiscale' => $this->viewArgs['codice_fiscale']),
@@ -197,13 +197,6 @@ class RegusersController extends BaseController
 			$this->m[$this->modelName]->aWhere(array(
 				"    AND"	=>	RegusersModel::getWhereClauseRicercaLibera($this->viewArgs['q']),
 			));
-// 			$this->m[$this->modelName]->aWhere(array(
-// 				"OR"	=>	array(
-// 					"lk"	=>	array(
-// 						"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',nome,' ',username,' ',ragione_sociale,' ',telefono)"	=>	$this->viewArgs["q"],
-// 					),
-// 				),
-// 			));
 		}
 		
 		if ($this->viewArgs["id_nazione"] != "tutti")
@@ -245,12 +238,8 @@ class RegusersController extends BaseController
 		parent::main();
 	}
 	
-	public function form($queryType = 'insert', $id = 0)
+	protected function formFields()
 	{
-		$this->_posizioni['main'] = 'class="active"';
-		
-		$this->shift(2);
-		
 		$fields = 'username,has_confirmed,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
 		
 		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
@@ -308,6 +297,17 @@ class RegusersController extends BaseController
 			$fields .= ",prezzi_ivati_in_carrello";
 			$formFields .= ",prezzi_ivati_in_carrello";
 		}
+		
+		return array($fields, $formFields);
+	}
+	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$this->_posizioni['main'] = 'class="active"';
+		
+		$this->shift(2);
+		
+		list ($fields, $formFields) = $this->formFields();
 		
 		$fields = F::addSanitizeFunction($fields);
 

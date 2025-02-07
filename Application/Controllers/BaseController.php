@@ -789,6 +789,25 @@ class BaseController extends Controller
 				$this->{$k} = $this->tabViewFields[$tab][$k];
 			}
 		}
+		
+		if (isset($this->tabViewFields[$tab."-append"]))
+		{
+			foreach ($this->tabViewFields[$tab."-append"] as $k => $v)
+			{
+				if (isset($this->{$k}))
+				{
+					if (is_array($v))
+					{
+						foreach ($v as $va)
+						{
+							$this->{$k}[] = $va;
+						}
+					}
+					else if (is_string($v))
+						$this->{$k} .= $v;
+				}
+			}
+		}
 	}
 	
 	protected function aggiungiCodiceGestionale()
