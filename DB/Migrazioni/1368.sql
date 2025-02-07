@@ -1,0 +1,1 @@
+alter table regusers add pagamento varchar(200) not null default '';

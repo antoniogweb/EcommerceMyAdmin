@@ -376,6 +376,9 @@ class BaseRegusersModel extends Model_Tree
 			$this->addStrongCondition("both",'checkIsStrings|accetto',"accetto|<b>".gtext("Si prega di accettare le condizioni di privacy")."</b>$evidenziaAccetto");
 		}
 		
+		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_UTENTE", "pagamento") && isset($_POST["nazione"]) && $_POST["nazione"])
+			$this->addStrongCondition("both",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($_POST["nazione"]),"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+		
 		$this->addStrongCondition("both",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|<b>".gtext("Si prega di indicare se siete un privato o un'azienda")."</b>");
 		
 		$this->addSoftCondition("both",'checkLength|300',"indirizzo_spedizione|<b>L'indirizzo di spedizione non può superare i 300 caratteri</b><div class='evidenzia'>class_indirizzo_spedizione</div>");

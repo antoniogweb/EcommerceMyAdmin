@@ -91,6 +91,11 @@
 					<?php echo $form["codice_gestionale"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["pagamento"])) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["pagamento"];?>
+				</div>
+				<?php } ?>
 			</div>
 			
 			<?php include($this->viewPath("form_submit_button"));?><br />

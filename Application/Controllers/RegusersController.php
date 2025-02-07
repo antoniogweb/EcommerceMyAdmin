@@ -291,6 +291,12 @@ class RegusersController extends BaseController
 			$formFields .= ",fattura";
 		}
 		
+		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_UTENTE", "pagamento"))
+		{
+			$fields .= ",pagamento";
+			$formFields .= ",pagamento";
+		}
+		
 		if (VariabiliModel::attivaCodiceGestionale())
 		{
 			$fields .= ",codice_gestionale";
