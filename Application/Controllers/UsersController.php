@@ -69,7 +69,7 @@ class UsersController extends BaseController {
 		$this->model();
 		$this->model("UsersgroupsModel");
 		
-		$this->redirectUrlErroreTwoFactor = $this->controller."/login";
+		$this->redirectUrlErroreTwoFactor = $this->applicationUrl.$this->controller."/login";
 		
 		$data["sezionePannello"] = "utenti";
 		
@@ -103,7 +103,7 @@ class UsersController extends BaseController {
 					$this->redirect($this->redirectUrlDopoLogin,0);
 					break;
 				case 'two-factor':
-					$this->redirect($this->controller."/twofactorinviamail",0);
+					$this->redirect($this->applicationUrl.$this->controller."/twofactorinviamail",0);
 					break;
 				case 'login-error':
 					$data['notice'] = '<div class="alert alert-danger">Username o password sbagliati</div>';
@@ -113,6 +113,7 @@ class UsersController extends BaseController {
 					break;
 			}
 		}
+		
 		$this->append($data);
 		$this->load('login');
 	}
@@ -132,7 +133,7 @@ class UsersController extends BaseController {
 		}
 	}
 	
-	private function checkTwoFactor()
+	protected function checkTwoFactor()
 	{
 		if (!v("attiva_autenticazione_due_fattori_admin"))
 			$this->responseCode(403);
@@ -158,7 +159,7 @@ class UsersController extends BaseController {
 		$sessioneTwo = $this->s['admin']->getTwoFactorModel()->clear()->where(array(
 			"uid_two"	=>	sanitizeAll($uidt),
 			"attivo"	=>	0,
-			"user_agent_md5"	=>	getUserAgent(),
+			// "user_agent_md5"	=>	getUserAgent(),
 		))->record();
 		
 		if (empty($sessioneTwo) || $sessioneTwo["tentativi_verifica"] >= (int)v("autenticazione_due_fattori_numero_massimo_tentativi_admin"))
@@ -171,7 +172,7 @@ class UsersController extends BaseController {
 	{
 		list($sessioneTwo, $user) = $this->checkTwoFactor();
 		
-		$data['action'] = $this->baseUrl."/".$this->controller."/twofactorcheck";
+		$data['action'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorcheck";
 		$data['notice'] = null;
 		
 		$data["user"] = $user;
@@ -193,7 +194,7 @@ class UsersController extends BaseController {
 		$res = $this->s['admin']->getTwoFactorModel()->inviaCodice($sessioneTwo, $user);
 		
 		if ($res)
-			$this->redirect($this->controller."/twofactor");
+			$this->redirect($this->applicationUrl.$this->controller."/twofactor");
 		else
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 	}
@@ -216,7 +217,7 @@ class UsersController extends BaseController {
 		else
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
-		$this->redirect($this->controller."/twofactor");
+		$this->redirect($this->applicationUrl.$this->controller."/twofactor");
 	}
 	
 	public function main()

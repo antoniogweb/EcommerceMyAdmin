@@ -68,9 +68,16 @@ class SessionitwoModel extends GenericModel
 		));
 	}
 	
-	public function getUidt()
+	protected function getCookieName($idUser)
 	{
-		$this->uidt = isset($_COOKIE[$this->cookieName]) ? sanitizeAll($_COOKIE[$this->cookieName]) : null;
+		return md5($this->cookieName."_".(int)$idUser);
+	}
+	
+	public function getUidt($idUser)
+	{
+		$cookieName = $this->getCookieName($idUser);
+		
+		$this->uidt = isset($_COOKIE[$cookieName]) ? sanitizeAll((string)$_COOKIE[$cookieName]) : null;
 		
 		return $this->uidt;
 	}
@@ -109,8 +116,11 @@ class SessionitwoModel extends GenericModel
 		if ($this->insert())
 		{
 			$expirationTime = time() + $this->twoFactorCookieDurationTime;
-			Cookie::set($this->cookieName, $this->uidt, $expirationTime, $this->twoFactorCookiePath, true, 'Lax');
-			$_COOKIE[$this->cookieName] = $this->uidt;
+			
+			$cookieName = $this->getCookieName($idUser);
+			
+			Cookie::set($cookieName, $this->uidt, $expirationTime, $this->twoFactorCookiePath, true, 'Lax');
+			$_COOKIE[$cookieName] = $this->uidt;
 			
 			return "two-factor";
 		}
@@ -120,7 +130,7 @@ class SessionitwoModel extends GenericModel
 	
 	public function getStatus($idUser, $uid = "", $loggedState = "logged")
 	{
-		$uidt = $this->getUidt();
+		$uidt = $this->getUidt($idUser);
 		
 		if ($uidt)
 		{
