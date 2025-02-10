@@ -249,6 +249,8 @@ class Gls extends Spedizioniere
 		if ($infoLabel != "")
 			$xmlObj = simplexml_load_string($infoLabel);
 		
+		$codiceZplFinale = "";
+		
 		if ($infoLabel != "" && !empty($spedizione) && isset($xmlObj))
 		{
 			$client = $this->getClient();
@@ -279,10 +281,14 @@ class Gls extends Spedizioniere
 					
 					$pathZpl = $pathSpedizione."/".$p->ContatoreProgressivo.".txt";
 					
+					$codiceZplFinale .= $codiceZpl."\n";
+					
 					FilePutContentsAtomic($pathZpl, $codiceZpl);
 				}
 			}
 		}
+		
+		return $codiceZplFinale;
 	}
 	
 	// Elimina la spedizione $idS

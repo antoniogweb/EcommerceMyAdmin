@@ -1,5 +1,41 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
+<script>
+$(document).ready(function(){
+	
+	$( "body" ).on( "click", ".print_zpl", function(e){
+		e.preventDefault();  //prevent form from submitting
+		
+		var that = $(this);
+		
+		makeSpinner(that);
+		
+		var url = $(this).attr("href");
+		
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			success: function(content){
+				
+				removeSpinner(that);
+				
+				var printWindow = window.open();
+				printWindow.document.open('text/plain')
+				printWindow.document.write(content);
+				printWindow.document.close();
+				printWindow.focus();
+				printWindow.print();
+				printWindow.close();
+				
+			}
+		});
+	});
+	
+});
+</script>
+
 <?php if ($type !== "insert") {
 	$spedizione = SpedizioninegozioModel::g()->select("*")->left(array("spedizioniere"))->whereId((int)$id)->first();
 	$ordini = SpedizioninegozioModel::g()->getOrdini((int)$id, false);
@@ -51,6 +87,10 @@
 				</table>
 				
 				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
+				<?php if ($statoSpedizione != "A" && $modulo->metodo("zpl") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
+				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/zpl/".(int)$id;?>" class="pull-right btn btn-info print_zpl"><i class="fa fa-file-text-o"></i> <?php echo gtext("ZPL");?></a>
+				<?php } ?>
+				
 				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
 				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("PDF");?></a>
 				<?php } ?>
