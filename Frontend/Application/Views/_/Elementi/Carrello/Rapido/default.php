@@ -38,6 +38,7 @@
 							<br />
 							<?php echo $p["cart"]["attributi"];?>
 							<?php } ?>
+							<?php include(tpf("/Elementi/Carrello/ajax_cart_codice.php"));?>
 							<div class="uk-grid uk-margin-xsmall uk-grid-small uk-flex-<?php echo v("attiva_prezzo_fisso") ? "bottom" : "middle";?>" uk-grid>
 								<div class="uk-text-bolder uk-text-small">
 									<?php if (v("attiva_prezzo_fisso") && $p["cart"]["prezzo_fisso"] > 0) { ?>

@@ -759,7 +759,13 @@ function actionAggiungiAlCarrello(principale, accessorio)
 	
 	beforeAggiungiCarrello(principale, accessorio);
 	
-	var url = baseUrl + "/carrello/aggiungi/" + id_page + "/" + quantity + "/" + id_c + "/" + id_p + "/" + id_cart;
+	var azione_carrello = "aggiungi";
+	
+	// Invio la lista se presente
+	if (typeof principale.attr('azione-carrello') !== typeof undefined && principale.attr('azione-carrello') !== false)
+		azione_carrello = principale.attr('azione-carrello');
+	
+	var url = baseUrl + "/carrello/" + azione_carrello + "/" + id_page + "/" + quantity + "/" + id_c + "/" + id_p + "/" + id_cart;
 	
 	$.ajaxQueue({
 		url: url,

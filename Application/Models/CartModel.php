@@ -34,6 +34,10 @@ class CartModel extends GenericModel {
 	
 	public static $permettiCorrezionePrezzi = true; // se impostato a false, correggiPrezzi non gira mai, in nessuna situazione
 	
+	public static $forzaValori = array(); // per impostare dei valori nel carrello
+	
+	public static $sWhereCercaProdottoAdd = null; // per verificare se il prodotto c'è già e va incrementato oppure non c'è e va aggiunto aggiunto
+	
 	public function __construct() {
 		$this->_tables='cart';
 		$this->_idFields='id_cart';
@@ -887,6 +891,12 @@ class CartModel extends GenericModel {
 		{
 			$this->values[$k] = sanitizeHtml($v);
 		}
+		
+		// Salva i valori dalla proprietà statica
+		foreach (self::$forzaValori as $k => $v)
+		{
+			$this->values[$k] = sanitizeHtml($v);
+		}
 	}
 	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $jsonPers = array(), $prIntero = null, $prInteroIvato = null, $prScontato = null, $prScontatoIvato = null, $idRif = null, $forzaRigheSeparate = false, $idIva = null, $forzaValori = array())
@@ -938,6 +948,10 @@ class CartModel extends GenericModel {
 				$this->aWhere(array("id_c"=>$clean["id_c"]));
 			}
 
+			// Where clause aggiuntiva per verificare se il prodotto è già nel carrello
+			if (isset(self::$sWhereCercaProdottoAdd))
+				$this->sWhere(self::$sWhereCercaProdottoAdd);
+			
 			$res = $this->send();
 			
 			$prodottoParent = $this->clear()->where(array(
