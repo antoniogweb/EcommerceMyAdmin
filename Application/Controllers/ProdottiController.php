@@ -31,6 +31,8 @@ class ProdottiController extends PagesController {
 	public static $sCampoPrice = "price";
 	public static $sCampoPriceFisso = "prezzo_fisso";
 	
+	public $queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -124,7 +126,7 @@ class ProdottiController extends PagesController {
 		if ($haCombinazioni)
 			$data["avviso_combinazioni"] = "<div class='callout callout-info'>".gtext("Il prodotto ha delle varianti.")."<br />".gtext("I campi prezzo, codice, peso e giacenza devono essere modificati nella scheda 'Varianti', tramite il pulsante 'Gestisci combinazioni'")."</div>";
 		
-		$this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
+		// $this->queryFields = "title,alias,id_c,attivo,in_evidenza,immagine,sottotitolo";
 		
 		$campiPromo = "id_iva,in_promozione,prezzo_promozione,dal,al";
 		
