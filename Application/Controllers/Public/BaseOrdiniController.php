@@ -1364,6 +1364,9 @@ class BaseOrdiniController extends BaseController
 							
 							$clean['lastId'] = (int)$this->m('OrdiniModel')->lId;
 							
+							if (v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti") && isset(CartModel::$arrayRipartizione))
+								OrdiniivaripartitaModel::g()->inserisciRipartizioni($clean['lastId'], CartModel::$arrayRipartizione);
+							
 							Output::setBodyValue("IdOrdine", $clean['lastId']);
 							
 							//riempie la tabella delle righe

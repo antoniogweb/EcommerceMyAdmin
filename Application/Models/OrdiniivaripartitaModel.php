@@ -33,6 +33,10 @@ class OrdiniivaripartitaModel extends GenericModel
 	
 	public function inserisciRipartizioni($id_o, $ripartizioni)
 	{
+		$this->del(null, array(
+			"id_o"	=>	(int)$id_o,
+		));
+		
 		$i = new IvaModel();
 		
 		foreach ($ripartizioni as $idIva => $ripartizione)

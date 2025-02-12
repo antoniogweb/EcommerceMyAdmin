@@ -314,7 +314,7 @@ class CartModel extends GenericModel {
 		
 		foreach ($arrayRipartizione as $ivaRiga => $prezzoRiga)
 		{
-			$arrayRipartizione[$ivaRiga] = $arrayRipartizione[$ivaRiga] / $total;
+			$arrayRipartizione[$ivaRiga] = $total > 0 ? $arrayRipartizione[$ivaRiga] / $total : 0;
 		}
 		
 		self::$arrayRipartizione = $arrayRipartizione;

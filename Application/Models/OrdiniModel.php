@@ -577,9 +577,6 @@ class OrdiniModel extends FormModel {
 					$this->creaSincronizzaClienteSeAssente($this->lId);
 			}
 			
-			if ($res && v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti") && isset(CartModel::$arrayRipartizione))
-				OrdiniivaripartitaModel::g()->inserisciRipartizioni($this->lId, CartModel::$arrayRipartizione);
-			
 			if (v("usa_transactions"))
 				$this->db->commit();
 			
@@ -1426,6 +1423,9 @@ class OrdiniModel extends FormModel {
 		
 		foreach ($righe as $r)
 		{
+			if ($r["acconto"])
+				continue;
+			
 			$subtotaleRiga = number_format($r["prezzo_finale"] * $r["quantity"],v("cifre_decimali"),".","");
 			$totaleProdotti += $subtotaleRiga;
 			
@@ -1751,6 +1751,14 @@ class OrdiniModel extends FormModel {
 			}
 			
 			$this->pUpdate($idOrdine);
+			
+			if (v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"))
+			{
+				if (isset(CartModel::$arrayRipartizione))
+					OrdiniivaripartitaModel::g()->inserisciRipartizioni((int)$idOrdine, CartModel::$arrayRipartizione);
+				else
+					OrdiniivaripartitaModel::g()->inserisciRipartizioni((int)$idOrdine, array());
+			}
 			
 // 			RigheModel::g()->mDel(array("id_o = ?",array((int)$ordine["id_o"])));
 			
