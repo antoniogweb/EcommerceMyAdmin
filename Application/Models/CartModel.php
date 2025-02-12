@@ -249,6 +249,17 @@ class CartModel extends GenericModel {
 		return $total;
 	}
 	
+	public static function numeroAliquoteInCarrello()
+	{
+		$c = new CartModel();
+		
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$res = $c->clear()->select("distinct iva")->where(array("cart_uid"=>$clean["cart_uid"]))->send(false);
+		
+		return count($res);
+	}
+	
 	public static function getAliquotaIvaPesataSuiProdotti()
 	{
 		if (isset(self::$aliquotaIvaPesata))
@@ -274,7 +285,6 @@ class CartModel extends GenericModel {
 		{
 			foreach ($res as $r)
 			{
-				
 				$prezzo = number_format($r["cart"]["price$labelIvato"],$cifre,".","");
 				$prezzoFisso = number_format($r["cart"]["prezzo_fisso$labelIvato"],$cifre,".","");
 				
@@ -293,9 +303,6 @@ class CartModel extends GenericModel {
 				$totalPesato += $prezzoRiga * ($ivaRiga / 100) / (1 + ($ivaRiga / 100));
 			}
 		}
-		
-		// echo $total."<br />";
-		// echo $totalPesato."<br />";
 		
 		if ($total > 0)
 		{
@@ -317,7 +324,7 @@ class CartModel extends GenericModel {
 			$ivaSped = IvaModel::getIvaSpedizione("valore");
 		else
 		{
-			if (v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"))
+			if (self::numeroAliquoteInCarrello() > 1 && v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"))
 				$ivaSped = self::getAliquotaIvaPesataSuiProdotti();
 			else
 				$ivaSped = self::getMaxIva();
