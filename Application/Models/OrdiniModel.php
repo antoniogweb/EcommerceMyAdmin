@@ -2063,7 +2063,7 @@ class OrdiniModel extends FormModel {
 		
 		$o = new OrdiniModel();
 		
-		$res = $o->clear()->select("SUM(prezzo_scontato + spedizione + costo_pagamento) as TOTALE")->where(array(
+		$res = $o->clear()->select("SUM(total - iva) as TOTALE")->where(array(
 			"ne"	=>	array(
 				"nazione_spedizione"	=>	"IT",
 			),
