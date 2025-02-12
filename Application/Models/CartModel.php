@@ -31,6 +31,7 @@ class CartModel extends GenericModel {
 	public static $cartellaCartUid = "CartUids"; // Cartella dove vengono salvati i file dei cart_uid
 	
 	public static $aliquotaIvaPesata = null;
+	public static $arrayRipartizione = null;
 	
 	public static $cifreCalcolo = 16;
 	
@@ -281,6 +282,8 @@ class CartModel extends GenericModel {
 		
 		$labelIvato = v("prezzi_ivati_in_prodotti") ? "_ivato" : "";
 		
+		$arrayRipartizione = array();
+		
 		if (count($res) > 0)
 		{
 			foreach ($res as $r)
@@ -301,8 +304,20 @@ class CartModel extends GenericModel {
 				$total += $prezzoRiga;
 				// $totalPesato += number_format($prezzoRiga * ($ivaRiga / 100),$cifre,".","");
 				$totalPesato += $prezzoRiga * ($ivaRiga / 100) / (1 + ($ivaRiga / 100));
+				
+				if (isset($arrayRipartizione[$r["cart"]["id_iva"]]))
+					$arrayRipartizione[$r["cart"]["id_iva"]] += $prezzoRiga;
+				else
+					$arrayRipartizione[$r["cart"]["id_iva"]] = $prezzoRiga;
 			}
 		}
+		
+		foreach ($arrayRipartizione as $ivaRiga => $prezzoRiga)
+		{
+			$arrayRipartizione[$ivaRiga] = $arrayRipartizione[$ivaRiga] / $total;
+		}
+		
+		self::$arrayRipartizione = $arrayRipartizione;
 		
 		if ($total > 0)
 		{
@@ -324,7 +339,7 @@ class CartModel extends GenericModel {
 			$ivaSped = IvaModel::getIvaSpedizione("valore");
 		else
 		{
-			if (self::numeroAliquoteInCarrello() > 1 && v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"))
+			if (self::numeroAliquoteInCarrello() > 1 && v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti") && !isset(IvaModel::$aliquotaEstera))
 				$ivaSped = self::getAliquotaIvaPesataSuiProdotti();
 			else
 				$ivaSped = self::getMaxIva();

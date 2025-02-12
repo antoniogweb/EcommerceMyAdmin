@@ -2,6 +2,9 @@
 <?php
 $mostraIvato = $this->viewArgs["prezzi"] == "I" ? true : false;
 $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclusa";
+$haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
+	"id_o"	=>	(int)$ordine["id_o"],
+))->rowNumber();
 ?>
 
 <section class="content-header">
@@ -221,7 +224,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 								<?php } ?>
 								<td class="text-right colonne_non_ivate">
-									<?php echo $ordine["iva_spedizione_ripartita"] ? "" : setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
+									<?php echo $haRipartizioni ? "" : setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
 								</td>
 								<td class="text-right">
 									<?php echo $mostraIvato ? setPriceReverse($ordine["costo_pagamento_ivato"]) : setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
@@ -250,7 +253,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 								<?php } ?>
 								<td class="text-right colonne_non_ivate">
-									<?php echo $ordine["iva_spedizione_ripartita"] ? "" : setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
+									<?php echo $haRipartizioni ? "" : setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
 								</td>
 								<td class="text-right">
 									<?php echo $mostraIvato ? setPriceReverse($ordine["spedizione_ivato"]) : setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
@@ -279,7 +282,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 								</td>
 								<?php } ?>
 								<td class="text-right colonne_non_ivate">
-									<?php echo $ordine["iva_spedizione_ripartita"] ? "" : setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
+									<?php echo $haRipartizioni ? "" : setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
 								</td>
 								<td class="text-right">
 									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_crediti"]) : setPriceReverse($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
@@ -307,7 +310,7 @@ $labelIvaInclusaEsclusa = $this->viewArgs["prezzi"] == "I" ? "inclusa" : "esclus
 									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_promozione"]) : setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
 								</td>
 								<td class="text-right colonne_non_ivate">
-									<?php echo $ordine["iva_spedizione_ripartita"] ? "" :  setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
+									<?php echo $haRipartizioni ? "" :  setPriceReverse($ordine["iva_spedizione"], 2)." %";?>
 								</td>
 								<td class="text-right">
 									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_promozione"]) : setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €

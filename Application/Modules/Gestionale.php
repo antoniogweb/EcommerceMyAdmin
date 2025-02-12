@@ -173,9 +173,10 @@ class Gestionale
 	public function infoOrdine($id_o, $estraiAcconto = false, $campiAggiuntiviRighe = "")
 	{
 		$oModel = new OrdiniModel();
+		$orModel = new OrdiniivaripartitaModel();
 		$rModel = new RigheModel();
 		
-		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,inviato_al_gestionale,codice_gestionale_cliente,codice_gestionale_spedizione,versione_api_gestionale,errore_gestionale,fonte,euro_promozione,tipo_promozione,euro_crediti,sorgente,id_lista_regalo")->whereId((int)$id_o)->record();
+		$ordine = $oModel->clear()->select("id_o,data_creazione,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,nazione,citta,telefono,email,pagamento,accetto,total,total_pieno,tipo_cliente,stato,subtotal,subtotal_ivato,spedizione,spedizione_ivato,costo_pagamento,costo_pagamento_ivato,iva,registrato,id_user,prezzo_scontato,prezzo_scontato_ivato,codice_promozione,nome_promozione,usata_promozione,id_p,peso,id_iva,id_iva_estera,stringa_iva_estera,aliquota_iva_estera,iva_spedizione,indirizzo_spedizione,cap_spedizione,provincia_spedizione,dprovincia_spedizione,nazione_spedizione,citta_spedizione,telefono_spedizione,id_spedizione,id_corriere,pec,codice_destinatario,destinatario_spedizione,pagato,data_pagamento,note,da_spedire,tipo_ordine,nazione_navigazione,lingua,codice_gestionale,inviato_al_gestionale,codice_gestionale_cliente,codice_gestionale_spedizione,versione_api_gestionale,errore_gestionale,fonte,euro_promozione,tipo_promozione,euro_crediti,sorgente,id_lista_regalo,prezzi_ivati_in_carrello")->whereId((int)$id_o)->record();
 		
 		if (!empty($ordine))
 		{
@@ -246,120 +247,139 @@ class Gestionale
 			
 			$ordine["numero_prodotti"] = $numeroProdotti;
 			
+			$ripartizioni = $orModel->clear()->where(array(
+				"id_o"	=>	(int)$id_o,
+			))->orderBy("aliquota_iva")->send(false);
+			
+			if (count($ripartizioni) === 0)
+				$ripartizioni = array(
+					array(
+						"id_o"		=>	(int)$id_o,
+						"id_iva"	=>	$idIva,
+						"aliquota_iva"	=>	$ordine["valore_iva"],
+						"ripartizione"	=>	1,
+						"ripartizione_su_ivato"	=>	v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine") ? $ordine["prezzi_ivati_in_carrello"] : v("prezzi_ivati_in_carrello"),
+					)
+				);
+			
 			if ($ordine["spedizione"] > 0)
 			{
-				$righe[] = array(
-					"id_r"	=>	-1,
-					"titolo"	=>	gtext("Spedizione"),
-					"attributi"	=>	"",
-					"codice"	=>	"SPEDIZIONE",
-					"immagine"	=>	"",
-					"peso"		=>	0,
-					"quantity"	=>	1,
-					"prezzo"	=>	$ordine["spedizione"],
-					"prezzo_ivato"	=>	$ordine["spedizione_ivato"],
-					"prezzo_intero"	=>	$ordine["spedizione"],
-					"prezzo_intero_ivato"	=>	$ordine["spedizione_ivato"],
-					"prezzo_finale"	=>	$ordine["spedizione"],
-					"prezzo_finale_ivato"	=>	$ordine["spedizione_ivato"],
-					"gift_card"	=>	0,
-					"id_iva"	=>	$idIva,
-					"iva"		=>	$ordine["valore_iva"],
-					"fonte"		=>	$ordine["tipo_ordine"],
-					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
-					"acconto"	=>	0,
-					"id_riga_tipologia"	=>	0,
-					"prodotto_generico"	=>	0,
-					"sconto"	=>	0,
-				);
+				foreach ($ripartizioni as $ripartizione)
+				{
+					$valoriRipartizione = array(
+						"ivato"		=>	$ordine["spedizione_ivato"] * $ripartizione["ripartizione"],
+						"non_ivato"	=>	($ordine["spedizione_ivato"] * $ripartizione["ripartizione"]) / (1 + ($ripartizione["aliquota_iva"] / 100)),
+						"id_iva"	=>	$ripartizione["id_iva"],
+						"aliquota"	=>	$ripartizione["aliquota_iva"],
+						"titolo"	=>	count($ripartizioni) > 1 ? gtext("Spedizione Iva") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Spedizione"),
+						"codice"	=>	count($ripartizioni) > 1 ? "SPEDIZIONE ".setPriceReverse($ripartizione["aliquota_iva"]) : "SPEDIZIONE",
+					);
+					
+					$righe[] = $this->addRipartizione($valoriRipartizione, $ordine);
+				}
 			}
 			
 			if ($ordine["costo_pagamento"] > 0)
 			{
-				$righe[] = array(
-					"id_r"	=>	-1,
-					"titolo"	=>	gtext("Spedizione"),
-					"attributi"	=>	"",
-					"codice"	=>	"SPEDIZIONE",
-					"immagine"	=>	"",
-					"peso"		=>	0,
-					"quantity"	=>	1,
-					"prezzo"	=>	$ordine["costo_pagamento"],
-					"prezzo_ivato"	=>	$ordine["costo_pagamento_ivato"],
-					"prezzo_intero"	=>	$ordine["costo_pagamento"],
-					"prezzo_intero_ivato"	=>	$ordine["costo_pagamento_ivato"],
-					"prezzo_finale"	=>	$ordine["costo_pagamento"],
-					"prezzo_finale_ivato"	=>	$ordine["costo_pagamento_ivato"],
-					"gift_card"	=>	0,
-					"id_iva"	=>	$idIva,
-					"iva"		=>	$ordine["valore_iva"],
-					"fonte"		=>	$ordine["tipo_ordine"],
-					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
-					"acconto"	=>	0,
-					"id_riga_tipologia"	=>	0,
-					"prodotto_generico"	=>	0,
-					"sconto"	=>	0,
-				);
+				foreach ($ripartizioni as $ripartizione)
+				{
+					$valoriRipartizione = array(
+						"ivato"		=>	$ordine["costo_pagamento_ivato"] * $ripartizione["ripartizione"],
+						"non_ivato"	=>	($ordine["costo_pagamento_ivato"] * $ripartizione["ripartizione"]) / (1 + ($ripartizione["aliquota_iva"] / 100)),
+						"id_iva"	=>	$ripartizione["id_iva"],
+						"aliquota"	=>	$ripartizione["aliquota_iva"],
+						"titolo"	=>	count($ripartizioni) > 1 ? gtext("Pagamento Iva") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Pagamento"),
+						"codice"	=>	count($ripartizioni) > 1 ?  "PAGAMENTO ".setPriceReverse($ripartizione["aliquota_iva"]) : "PAGAMENTO",
+					);
+					
+					$righe[] = $this->addRipartizione($valoriRipartizione, $ordine);
+				}
 			}
 			
 			if ($ordine["euro_crediti"] > 0)
 			{
-				$costoNonIvato = number_format($ordine["euro_crediti"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
+				// $costoNonIvato = number_format($ordine["euro_crediti"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
+				foreach ($ripartizioni as $ripartizione)
+				{
+					$valoriRipartizione = array(
+						"ivato"		=>	(-1) * $ordine["euro_crediti"] * $ripartizione["ripartizione"],
+						"non_ivato"	=>	(-1) * ($ordine["euro_crediti"] * $ripartizione["ripartizione"]) / (1 + ($ripartizione["aliquota_iva"] / 100)),
+						"id_iva"	=>	$ripartizione["id_iva"],
+						"aliquota"	=>	$ripartizione["aliquota_iva"],
+						"titolo"	=>	count($ripartizioni) > 1 ? gtext("Sconto crediti") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Sconto crediti"),
+						"codice"	=>	count($ripartizioni) > 1 ?  "CREDITI ".setPriceReverse($ripartizione["aliquota_iva"]) : "CREDITI",
+					);
+					
+					$righe[] = $this->addRipartizione($valoriRipartizione, $ordine);
+				}
 				
-				$righe[] = array(
-					"id_r"	=>	-1,
-					"titolo"	=>	gtext("Sconto crediti"),
-					"attributi"	=>	"",
-					"codice"	=>	$ordine["codice_promozione"],
-					"immagine"	=>	"",
-					"peso"		=>	0,
-					"quantity"	=>	1,
-					"prezzo"	=>	(-1)*$costoNonIvato,
-					"prezzo_ivato"	=>	(-1)*$ordine["euro_crediti"],
-					"prezzo_intero"	=>	(-1)*$costoNonIvato,
-					"prezzo_intero_ivato"	=>	(-1)*$ordine["euro_crediti"],
-					"prezzo_finale"	=>	(-1)*$costoNonIvato,
-					"prezzo_finale_ivato"	=>	(-1)*$ordine["euro_crediti"],
-					"gift_card"	=>	0,
-					"id_iva"	=>	$idIva,
-					"iva"		=>	$ordine["valore_iva"],
-					"fonte"		=>	$ordine["tipo_ordine"],
-					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
-					"acconto"	=>	0,
-					"id_riga_tipologia"	=>	0,
-					"prodotto_generico"	=>	0,
-					"sconto"	=>	0,
-				);
+				// $righe[] = array(
+				// 	"id_r"	=>	-1,
+				// 	"titolo"	=>	gtext("Sconto crediti"),
+				// 	"attributi"	=>	"",
+				// 	"codice"	=>	"CREDITI",
+				// 	"immagine"	=>	"",
+				// 	"peso"		=>	0,
+				// 	"quantity"	=>	1,
+				// 	"prezzo"	=>	(-1)*$costoNonIvato,
+				// 	"prezzo_ivato"	=>	(-1)*$ordine["euro_crediti"],
+				// 	"prezzo_intero"	=>	(-1)*$costoNonIvato,
+				// 	"prezzo_intero_ivato"	=>	(-1)*$ordine["euro_crediti"],
+				// 	"prezzo_finale"	=>	(-1)*$costoNonIvato,
+				// 	"prezzo_finale_ivato"	=>	(-1)*$ordine["euro_crediti"],
+				// 	"gift_card"	=>	0,
+				// 	"id_iva"	=>	$idIva,
+				// 	"iva"		=>	$ordine["valore_iva"],
+				// 	"fonte"		=>	$ordine["tipo_ordine"],
+				// 	"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+				// 	"acconto"	=>	0,
+				// 	"id_riga_tipologia"	=>	0,
+				// 	"prodotto_generico"	=>	0,
+				// 	"sconto"	=>	0,
+				// );
 			}
 			
 			if ($ordine["euro_promozione"] > 0 && $ordine["tipo_promozione"] == "ASSOLUTO")
 			{
-				$costoNonIvato = number_format($ordine["euro_promozione"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
+				// $costoNonIvato = number_format($ordine["euro_promozione"] / (1 + ($ordine["valore_iva"] / 100)),v("cifre_decimali"),".","");
+				foreach ($ripartizioni as $ripartizione)
+				{
+					$valoriRipartizione = array(
+						"ivato"		=>	(-1) * $ordine["euro_promozione"] * $ripartizione["ripartizione"],
+						"non_ivato"	=>	(-1) * ($ordine["euro_promozione"] * $ripartizione["ripartizione"]) / (1 + ($ripartizione["aliquota_iva"] / 100)),
+						"id_iva"	=>	$ripartizione["id_iva"],
+						"aliquota"	=>	$ripartizione["aliquota_iva"],
+						"titolo"	=>	count($ripartizioni) > 1 ? gtext("Coupon") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Coupon"),
+						"codice"	=>	count($ripartizioni) > 1 ?  $ordine["codice_promozione"]." ".setPriceReverse($ripartizione["aliquota_iva"]) : $ordine["codice_promozione"],
+					);
+					
+					$righe[] = $this->addRipartizione($valoriRipartizione, $ordine);
+				}
 				
-				$righe[] = array(
-					"id_r"	=>	-1,
-					"titolo"	=>	gtext("Coupon"),
-					"attributi"	=>	"",
-					"codice"	=>	$ordine["codice_promozione"],
-					"immagine"	=>	"",
-					"peso"		=>	0,
-					"quantity"	=>	1,
-					"prezzo"	=>	(-1)*$costoNonIvato,
-					"prezzo_ivato"	=>	(-1)*$ordine["euro_promozione"],
-					"prezzo_intero"	=>	(-1)*$costoNonIvato,
-					"prezzo_intero_ivato"	=>	(-1)*$ordine["euro_promozione"],
-					"prezzo_finale"	=>	(-1)*$costoNonIvato,
-					"prezzo_finale_ivato"	=>	(-1)*$ordine["euro_promozione"],
-					"gift_card"	=>	0,
-					"id_iva"	=>	$idIva,
-					"iva"		=>	$ordine["valore_iva"],
-					"fonte"		=>	$ordine["tipo_ordine"],
-					"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
-					"acconto"	=>	0,
-					"id_riga_tipologia"	=>	0,
-					"prodotto_generico"	=>	0,
-					"sconto"	=>	0,
-				);
+				// $righe[] = array(
+				// 	"id_r"	=>	-1,
+				// 	"titolo"	=>	gtext("Coupon"),
+				// 	"attributi"	=>	"",
+				// 	"codice"	=>	$ordine["codice_promozione"],
+				// 	"immagine"	=>	"",
+				// 	"peso"		=>	0,
+				// 	"quantity"	=>	1,
+				// 	"prezzo"	=>	(-1)*$costoNonIvato,
+				// 	"prezzo_ivato"	=>	(-1)*$ordine["euro_promozione"],
+				// 	"prezzo_intero"	=>	(-1)*$costoNonIvato,
+				// 	"prezzo_intero_ivato"	=>	(-1)*$ordine["euro_promozione"],
+				// 	"prezzo_finale"	=>	(-1)*$costoNonIvato,
+				// 	"prezzo_finale_ivato"	=>	(-1)*$ordine["euro_promozione"],
+				// 	"gift_card"	=>	0,
+				// 	"id_iva"	=>	$idIva,
+				// 	"iva"		=>	$ordine["valore_iva"],
+				// 	"fonte"		=>	$ordine["tipo_ordine"],
+				// 	"codice_iva"=>	$this->codiceGestionale(new IvaModel, $idIva),
+				// 	"acconto"	=>	0,
+				// 	"id_riga_tipologia"	=>	0,
+				// 	"prodotto_generico"	=>	0,
+				// 	"sconto"	=>	0,
+				// );
 			}
 			
 			$ordine["righe"] = $righe;
@@ -373,6 +393,34 @@ class Gestionale
 			
 			return $ordine;
 		}
+	}
+	
+	protected function addRipartizione($valori, $ordine)
+	{
+		return array(
+			"id_r"	=>	-1,
+			"titolo"	=>	$valori["titolo"],
+			"attributi"	=>	"",
+			"codice"	=>	$valori["codice"],
+			"immagine"	=>	"",
+			"peso"		=>	0,
+			"quantity"	=>	1,
+			"prezzo"	=>	$valori["non_ivato"],
+			"prezzo_ivato"	=>	$valori["ivato"],
+			"prezzo_intero"	=>	$valori["non_ivato"],
+			"prezzo_intero_ivato"	=>	$valori["ivato"],
+			"prezzo_finale"	=>	$valori["non_ivato"],
+			"prezzo_finale_ivato"	=>	$valori["ivato"],
+			"gift_card"	=>	0,
+			"id_iva"	=>	$valori["id_iva"],
+			"iva"		=>	$valori["aliquota"],
+			"fonte"		=>	$ordine["tipo_ordine"],
+			"codice_iva"=>	$this->codiceGestionale(new IvaModel, (int)$valori["id_iva"]),
+			"acconto"	=>	0,
+			"id_riga_tipologia"	=>	0,
+			"prodotto_generico"	=>	0,
+			"sconto"	=>	0,
+		);
 	}
 	
 	public function annullaOrdine($idO)

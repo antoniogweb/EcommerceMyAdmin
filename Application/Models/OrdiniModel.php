@@ -577,6 +577,9 @@ class OrdiniModel extends FormModel {
 					$this->creaSincronizzaClienteSeAssente($this->lId);
 			}
 			
+			if ($res && v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti") && isset(CartModel::$arrayRipartizione))
+				OrdiniivaripartitaModel::g()->inserisciRipartizioni($this->lId, CartModel::$arrayRipartizione);
+			
 			if (v("usa_transactions"))
 				$this->db->commit();
 			
@@ -1985,7 +1988,7 @@ class OrdiniModel extends FormModel {
 		}
 		
 		$this->values["id_iva"] = CartModel::getIdIvaSpedizione();
-		$this->values["iva_spedizione"] = number_format(CartModel::getAliquotaIvaSpedizione(),2,".","");
+		$this->values["iva_spedizione"] = number_format(CartModel::getAliquotaIvaSpedizione(),8,".","");
 		$this->values["iva_spedizione_ripartita"] = v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti");
 		
 		if (isset(IvaModel::$aliquotaEstera))
