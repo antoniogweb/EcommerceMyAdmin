@@ -90,11 +90,8 @@
 		<td align="left" style="width:15%">Codice</td>
 		<td align="left" style="width:40%">Descrizione</td>
 		<td align="left" style="width:15%">Quantità</td>
-		<?php if (v("attiva_prezzo_fisso")) { ?>
-		<td align="left" style="width:15%">Prezzo fisso</td>
-		<?php } ?>
 		<td align="left" style="width:15%">Prezzo</td>
-		<td align="left" style="width:15%">Totale</td>
+		<td align="right" style="width:15%">Totale</td>
 	</tr>
 
 	<?php foreach ($righeOrdine as $p) { ?>
@@ -102,40 +99,20 @@
 		<td style="width:15%"><?php echo $p["righe"]["codice"];?></td>
 		<td style="width:40%"><?php echo htmlentitydecode($p["righe"]["title"]);?><?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?></td>
 		<td style="width:15%"><?php echo $p["righe"]["quantity"];?></td>
-		<?php if (v("attiva_prezzo_fisso")) { ?>
-		<td style="width:15%"> <?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0 && $p["righe"]["prezzo_fisso"] > 0){ echo "<del>€ ".setPriceReverse($p["righe"]["prezzo_fisso_intero"])."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["prezzo_fisso"]);?></span></td>
-		<?php } ?>
-		<td style="width:15%"> <?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse($p["righe"]["prezzo_intero"])."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse($p["righe"]["price"]);?></span></td>
-		<td style="width:15%">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse($p["righe"]["quantity"] * $p["righe"]["price"]);?></span></td>
+		<td style="width:15%"> <?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["price"]));?></span></td>
+		<td style="width:15%" align="right">&euro; <span class="item_price_subtotal"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["quantity"] * $p["righe"]["price"]));?></span></td>
 	</tr>
 	<?php } ?>
 
 </table>
 
-<!--informazioni cliente-->
-<div style="margin-top:20mm;">
-	<div class="riga_informazioni">
-		Totale merce: <strong>&euro; <?php echo setPriceReverse($ordine["subtotal"]);?></strong>
-	</div>
-	<?php if (strcmp($ordine["usata_promozione"],"Y") === 0) { ?>
-	<div class="riga_informazioni">
-		Prezzo scontato (<i><?php echo htmlentitydecode($ordine["nome_promozione"]);?></i>): <strong>€ <?php echo setPriceReverse($ordine["prezzo_scontato"]);?></strong>
-	</div>
-	<?php } ?>
-	<?php if ($ordine["costo_pagamento"] > 0) { ?>
-	<div class="riga_informazioni">
-		Spese pagamento: <strong>&euro; <?php echo setPriceReverse($ordine["costo_pagamento"]);?></strong>
-	</div>
-	<?php } ?>
-	<div class="riga_informazioni">
-		Spese spedizione: <strong>&euro; <?php echo setPriceReverse($ordine["spedizione"]);?></strong>
-	</div>
-	<div class="riga_informazioni">
-		Totale IVA: <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong>
-	</div>
-	<div style="padding-top:15px" class="riga_informazioni">
-		Totale: <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong>
-	</div>
+<div style="margin-top:10mm;">
+<?php
+include(tpf(ElementitemaModel::p("RESOCONTO_TOTALI","", array(
+	"titolo"	=>	"Totali ordine",
+	"percorso"	=>	"Elementi/Ordini/Resoconto/Totali",
+))));
+?>
 </div>
 
 <?php if (!$ordine["pec"] && (!$ordine["codice_destinatario"] || $ordine["codice_destinatario"] == "0000000")) { ?>
