@@ -810,6 +810,8 @@ class VariabiliModel extends GenericModel {
 		### PAGAMENTI ##
 		"pagamenti_permessi"		=>	"bonifico,paypal",
 		"campo_codice_transazione_nexi"	=>	"codice_transazione", // il campo dell'ordine da usare come codice di transazione nei pagamenti Nexi
+		### IVA ##
+		"ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"	=>	0, // se impostato su 1, calcola l'IVA della spedizione ripartendo sulla base dei totali e delle aliquote dei prodotti del carrello
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

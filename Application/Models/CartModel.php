@@ -30,6 +30,8 @@ class CartModel extends GenericModel {
 	public static $cartRows = null;
 	public static $cartellaCartUid = "CartUids"; // Cartella dove vengono salvati i file dei cart_uid
 	
+	public static $aliquotaIvaPesata = null;
+	
 	public static $cifreCalcolo = 16;
 	
 	public static $permettiCorrezionePrezzi = true; // se impostato a false, correggiPrezzi non gira mai, in nessuna situazione
@@ -110,6 +112,11 @@ class CartModel extends GenericModel {
 		return v("prezzi_ivati_in_carrello") ? self::$cifreCalcolo : v("cifre_decimali");
 	}
 	
+	public static function getCifreApprossimazioneAliquotaIva()
+	{
+		return v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti") ? self::$cifreCalcolo : 2;
+	}
+	
 	// Totale scontato
 	public function totaleScontato($conSpedizione = false, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
@@ -117,6 +124,7 @@ class CartModel extends GenericModel {
 		
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
+		$cifreAliquota = self::getCifreApprossimazioneAliquotaIva();
 		
 		if (!$pieno && (hasActiveCoupon() || (v("attiva_crediti") && CreditiModel::gNumeroEuroRimasti(User::$id) > 0)))
 		{
@@ -160,7 +168,7 @@ class CartModel extends GenericModel {
 				
 				$total += ($totaleSpedizione + $totalePagamento);
 				
-				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),$cifreAliquota,".","");
 				
 				$totaleIvato = $totaleIvato + number_format(($totaleSpedizione + $totalePagamento) * (1 + ($ivaSped / 100)),$cifre,".","");
 			}
@@ -174,7 +182,7 @@ class CartModel extends GenericModel {
 				{
 					$valoreSconto = ($numeroEuroRimasti >= $totaleIvato) ? $totaleIvato : $numeroEuroRimasti;
 					
-					$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+					$ivaSped = number_format(self::getAliquotaIvaSpedizione(),$cifreAliquota,".","");
 					
 					$total = $total - number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
 					
@@ -191,7 +199,7 @@ class CartModel extends GenericModel {
 				{
 					$valoreSconto = ($numeroEuroRimasti >= $totaleIvato) ? $totaleIvato : $numeroEuroRimasti;
 					
-					$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+					$ivaSped = number_format(self::getAliquotaIvaSpedizione(),$cifreAliquota,".","");
 					
 					$total = $total - number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
 				}
@@ -241,6 +249,66 @@ class CartModel extends GenericModel {
 		return $total;
 	}
 	
+	public static function getAliquotaIvaPesataSuiProdotti()
+	{
+		if (isset(self::$aliquotaIvaPesata))
+			return self::$aliquotaIvaPesata;
+		
+		$cifre = self::$cifreCalcolo;
+		
+		$c = new CartModel();
+		$p = new PromozioniModel();
+		
+		$coupon = $p->getCoupon(User::$coupon);
+		
+		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+		
+		$res = $c->clear()->where(array("cart_uid"=>$clean["cart_uid"]))->send();
+		
+		$total = 0;
+		$totalPesato = 0;
+		
+		$labelIvato = v("prezzi_ivati_in_prodotti") ? "_ivato" : "";
+		
+		if (count($res) > 0)
+		{
+			foreach ($res as $r)
+			{
+				
+				$prezzo = number_format($r["cart"]["price$labelIvato"],$cifre,".","");
+				$prezzoFisso = number_format($r["cart"]["prezzo_fisso$labelIvato"],$cifre,".","");
+				
+				if (!$r["cart"]["id_riga_tipologia"] && !empty($coupon) && $coupon["tipo_sconto"] == "PERCENTUALE" && PromozioniModel::checkProdottoInPromo($r["cart"]["id_page"]))
+				{
+					$prezzo = number_format($prezzo - $prezzo*($coupon["sconto"]/100),$cifre,".","");
+					$prezzoFisso = number_format($prezzoFisso - $prezzoFisso*($coupon["sconto"]/100),$cifre,".","");
+				}
+				
+				$ivaRiga = $c->gIvaRiga($r);
+
+				$prezzoRiga = $prezzoFisso + number_format($prezzo * $r["cart"]["quantity"],$cifre,".","");
+				// echo $prezzoRiga."<br />";
+				$total += $prezzoRiga;
+				// $totalPesato += number_format($prezzoRiga * ($ivaRiga / 100),$cifre,".","");
+				$totalPesato += $prezzoRiga * ($ivaRiga / 100) / (1 + ($ivaRiga / 100));
+			}
+		}
+		
+		// echo $total."<br />";
+		// echo $totalPesato."<br />";
+		
+		if ($total > 0)
+		{
+			$totalPesato = $totalPesato / $total;
+			
+			self::$aliquotaIvaPesata = ((1 / (1 - $totalPesato)) - 1) * 100;
+		}
+		else
+			self::$aliquotaIvaPesata = 0;
+		
+		return self::$aliquotaIvaPesata;
+	}
+	
 	public static function getAliquotaIvaSpedizione()
 	{
 // 		IvaModel::getAliquotaEstera();
@@ -248,7 +316,12 @@ class CartModel extends GenericModel {
 		if (IvaModel::getIvaSpedizione("valore"))
 			$ivaSped = IvaModel::getIvaSpedizione("valore");
 		else
-			$ivaSped = self::getMaxIva();
+		{
+			if (v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"))
+				$ivaSped = self::getAliquotaIvaPesataSuiProdotti();
+			else
+				$ivaSped = self::getMaxIva();
+		}
 		
 		// Controllo l'aliquota estera
 		if (isset(IvaModel::$aliquotaEstera))
@@ -308,6 +381,8 @@ class CartModel extends GenericModel {
 		
 		$totaleIvato = 0;
 		
+		$cifreAliquota = self::getCifreApprossimazioneAliquotaIva();
+		
 		if (count($res) > 0)
 		{
 			foreach ($res as $r)
@@ -329,6 +404,9 @@ class CartModel extends GenericModel {
 				
 				$ivaRiga = $this->gIvaRiga($r);
 				
+				if (v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"))
+					$ivaRiga = number_format($ivaRiga,$cifreAliquota,".","");
+				
 				if (isset($arraySubtotale[$ivaRiga]))
 					$arraySubtotale[$ivaRiga] += $subtotale;
 				else
@@ -346,7 +424,7 @@ class CartModel extends GenericModel {
 		{
 			$ivaSped = self::getAliquotaIvaSpedizione();
 			
-			$ivaSped = number_format($ivaSped,2,".","");
+			$ivaSped = number_format($ivaSped,$cifreAliquota,".","");
 			
 			$pienoSpedizione = $pieno ? true : null;
 			
@@ -370,7 +448,7 @@ class CartModel extends GenericModel {
 			{
 				$valoreSconto = ($numeroEuroRimasti >= $totaleIvato) ? $totaleIvato : $numeroEuroRimasti;
 				
-				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),$cifreAliquota,".","");
 				
 				if (isset($arraySubtotale[$ivaSped]))
 					$arraySubtotale[$ivaSped] -= number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
@@ -390,7 +468,7 @@ class CartModel extends GenericModel {
 			{
 				$valoreSconto = ($numeroEuroRimasti >= $totaleIvato) ? $totaleIvato : $numeroEuroRimasti;
 				
-				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),2,".","");
+				$ivaSped = number_format(self::getAliquotaIvaSpedizione(),$cifreAliquota,".","");
 				
 				if (isset($arraySubtotale[$ivaSped]))
 					$arraySubtotale[$ivaSped] -= number_format($valoreSconto / (1 + ($ivaSped/100)),$cifre,".","");
@@ -399,12 +477,14 @@ class CartModel extends GenericModel {
 			}
 		}
 		
-// 		print_r($arraySubtotale);
+		// print_r($arraySubtotale);
 		
 		foreach ($arraySubtotale as $iva => $sub)
 		{
 			$arrayIva[$iva] = number_format($sub*$iva/100,$cifre,".","");
 		}
+		
+		// print_r($arrayIva);
 		
 // 		if (isset($_GET["dev"]))
 // 		echo "NUMERO ".count($arrayIva)."<br />"; print_r($arrayIva);

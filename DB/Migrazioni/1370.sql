@@ -1,0 +1,1 @@
+alter table orders add iva_spedizione_ripartita tinyint not null default 0 after iva_spedizione;

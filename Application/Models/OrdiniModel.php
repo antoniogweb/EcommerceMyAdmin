@@ -1417,9 +1417,9 @@ class OrdiniModel extends FormModel {
 			"id_o"	=>	(int)$id_o,
 		))->send(false);
 		
-		$totaleIva = $totaleProdotti = $totaleProdottiPieno = $spedizione = $pagamento = $totaleIvaProdotti = $totaleIvaProdottiPieno = 0;
+		$totaleIva = $totaleProdotti = $totaleProdottiPieno = $spedizione = $pagamento = $totaleIvaProdotti = $totaleIvaProdottiPieno = $totaleProdottiIvato = 0;
 		
-		$arrayTotali = $arrayTotaliProdotti = $arrayTotaliProdottiPieno = array();
+		$arrayTotali = $arrayTotaliProdotti = $arrayTotaliProdottiPieno = $arrayTotaliIvati = array();
 		
 		foreach ($righe as $r)
 		{
@@ -1430,6 +1430,14 @@ class OrdiniModel extends FormModel {
 				$arrayTotali[$r["id_iva"]] += $subtotaleRiga;
 			else
 				$arrayTotali[$r["id_iva"]] = $subtotaleRiga;
+			
+			$subtotaleRiga = number_format($r["prezzo_finale_ivato"] * $r["quantity"],v("cifre_decimali"),".","");
+			$totaleProdottiIvato += $subtotaleRiga;
+			
+			if (isset($arrayTotaliIvati[$r["id_iva"]]))
+				$arrayTotaliIvati[$r["id_iva"]] += $subtotaleRiga;
+			else
+				$arrayTotaliIvati[$r["id_iva"]] = $subtotaleRiga;
 			
 			$subtotaleRiga = number_format($r["price"] * $r["quantity"],v("cifre_decimali"),".","");
 			$totaleProdottiPieno += $subtotaleRiga;
@@ -1443,44 +1451,114 @@ class OrdiniModel extends FormModel {
 		// salvo i totali dei prodotti
 		$arrayTotaliProdotti = $arrayTotali;
 		
+		$i = new IvaModel();
+		
 		if (!empty($ordine))
 		{
-			// CREDITI
-			if ($ordine["euro_crediti"] > 0)
+			if ($ordine["iva_spedizione_ripartita"])
 			{
-				$subtotaleRiga = number_format($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
-				
-				if (isset($arrayTotali[$ordine["id_iva"]]))
-					$arrayTotali[$ordine["id_iva"]] -= $subtotaleRiga;
+				if (v("prezzi_ivati_in_prodotti"))
+				{
+					foreach ($arrayTotaliIvati as $idIva => $subtotIvato)
+					{
+						$frazione = $totaleProdottiIvato > 0 ? ($subtotIvato / $totaleProdottiIvato) : 0;
+						
+						$aliquota = $i->getValore($idIva);
+						
+						// CREDITI
+						if ($ordine["euro_crediti"] > 0)
+						{
+							$subtotaleRiga = number_format($ordine["euro_crediti"] * $frazione / (1 + ($aliquota / 100)),CartModel::$cifreCalcolo,".","");
+							
+							$arrayTotali[$idIva] -= $subtotaleRiga;
+						}
+						
+						if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO")
+						{
+							$subtotaleRiga = number_format($ordine["euro_promozione"] * $frazione/ (1 + ($aliquota / 100)),CartModel::$cifreCalcolo,".","");
+							
+							$arrayTotali[$idIva] -= $subtotaleRiga;
+						}
+						
+						$subtotaleRiga = $spedizione = number_format($ordine["spedizione_ivato"] * $frazione / (1 + ($aliquota / 100)),CartModel::$cifreCalcolo,".","");
+						
+						$arrayTotali[$idIva] += $subtotaleRiga;
+						
+						$subtotaleRiga = $pagamento = number_format($ordine["costo_pagamento_ivato"] * $frazione / (1 + ($aliquota / 100)),CartModel::$cifreCalcolo,".","");
+						
+						$arrayTotali[$idIva] += $subtotaleRiga;
+					}
+				}
 				else
-					$arrayTotali[$ordine["id_iva"]] = (-1)*$subtotaleRiga;
+				{
+					foreach ($arrayTotali as $idIva => $subtot)
+					{
+						$frazione = $totaleProdotti > 0 ? ($subtot / $totaleProdotti) : 0;
+						
+						$aliquota = $i->getValore($idIva);
+						
+						// CREDITI
+						if ($ordine["euro_crediti"] > 0)
+						{
+							$subtotaleRiga = number_format($ordine["euro_crediti"] * $frazione / (1 + ($aliquota / 100)),v("cifre_decimali"),".","");
+							
+							$arrayTotali[$idIva] -= $subtotaleRiga;
+						}
+						
+						if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO")
+						{
+							$subtotaleRiga = number_format($ordine["euro_promozione"] * $frazione/ (1 + ($aliquota / 100)),v("cifre_decimali"),".","");
+							
+							$arrayTotali[$idIva] -= $subtotaleRiga;
+						}
+						
+						$subtotaleRiga = $spedizione = number_format($ordine["spedizione"] * $frazione,v("cifre_decimali"),".","");
+						
+						$arrayTotali[$idIva] += $subtotaleRiga;
+						
+						$subtotaleRiga = $pagamento = number_format($ordine["costo_pagamento"] * $frazione,v("cifre_decimali"),".","");
+						
+						$arrayTotali[$idIva] += $subtotaleRiga;
+					}
+				}
 			}
-			
-			if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO")
-			{
-				$subtotaleRiga = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
-				
-				if (isset($arrayTotali[$ordine["id_iva"]]))
-					$arrayTotali[$ordine["id_iva"]] -= $subtotaleRiga;
-				else
-					$arrayTotali[$ordine["id_iva"]] = (-1)*$subtotaleRiga;
-			}
-			
-			$subtotaleRiga = $spedizione = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
-			
-			if (isset($arrayTotali[$ordine["id_iva"]]))
-				$arrayTotali[$ordine["id_iva"]] += $subtotaleRiga;
 			else
-				$arrayTotali[$ordine["id_iva"]] = $subtotaleRiga;
-			
-			$subtotaleRiga = $pagamento = number_format($ordine["costo_pagamento"],v("cifre_decimali"),".","");
-			
-			$arrayTotali[$ordine["id_iva"]] += $subtotaleRiga;
+			{
+				// CREDITI
+				if ($ordine["euro_crediti"] > 0)
+				{
+					$subtotaleRiga = number_format($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+					
+					if (isset($arrayTotali[$ordine["id_iva"]]))
+						$arrayTotali[$ordine["id_iva"]] -= $subtotaleRiga;
+					else
+						$arrayTotali[$ordine["id_iva"]] = (-1)*$subtotaleRiga;
+				}
+				
+				if ((strcmp($ordine["usata_promozione"],"Y") === 0 || $ordine["sconto"] > 0) && $ordine["tipo_promozione"] == "ASSOLUTO")
+				{
+					$subtotaleRiga = number_format($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)),v("cifre_decimali"),".","");
+					
+					if (isset($arrayTotali[$ordine["id_iva"]]))
+						$arrayTotali[$ordine["id_iva"]] -= $subtotaleRiga;
+					else
+						$arrayTotali[$ordine["id_iva"]] = (-1)*$subtotaleRiga;
+				}
+				
+				$subtotaleRiga = $spedizione = number_format($ordine["spedizione"],v("cifre_decimali"),".","");
+				
+				if (isset($arrayTotali[$ordine["id_iva"]]))
+					$arrayTotali[$ordine["id_iva"]] += $subtotaleRiga;
+				else
+					$arrayTotali[$ordine["id_iva"]] = $subtotaleRiga;
+				
+				$subtotaleRiga = $pagamento = number_format($ordine["costo_pagamento"],v("cifre_decimali"),".","");
+				
+				$arrayTotali[$ordine["id_iva"]] += $subtotaleRiga;
+			}
 		}
 		
 		$arrayIva = array();
-		
-		$i = new IvaModel();
 		
 		foreach ($arrayTotali as $idAliquota => $totale)
 		{
@@ -1907,7 +1985,8 @@ class OrdiniModel extends FormModel {
 		}
 		
 		$this->values["id_iva"] = CartModel::getIdIvaSpedizione();
-		$this->values["iva_spedizione"] = CartModel::getAliquotaIvaSpedizione();
+		$this->values["iva_spedizione"] = number_format(CartModel::getAliquotaIvaSpedizione(),2,".","");
+		$this->values["iva_spedizione_ripartita"] = v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti");
 		
 		if (isset(IvaModel::$aliquotaEstera))
 		{
