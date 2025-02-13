@@ -570,6 +570,7 @@ class VariabiliModel extends GenericModel {
 		"filename_pdf_ordine"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine allegato alla mail
 		"funzione_sanitize_spedizione_in_ordine"	=>	"sanitizeHtmlLight", // forza htmlspecialchars sui dati dell'indirizzo utente nel checkout ordine con ENT_QUOTES (sanitizeHtmlLight) o ENT_COMPAT (sanitizeHtmlLightCompat)
 		"mostra_sezione_righe_ordine"	=>	0, // se impostato su 1, mostra la sezione con l'elenco delle righe ordine
+		"mostra_sempre_stato_closed"	=>	0, // se impostato su 1, mostra lo stato closed anche se attiva_spedizione = 0
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

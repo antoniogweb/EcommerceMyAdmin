@@ -269,7 +269,7 @@ class OrdiniModel extends FormModel {
 			),
 		))->orderBy("id_order");
 		
-		if (!v("attiva_spedizione"))
+		if (!v("attiva_spedizione") && !v("mostra_sempre_stato_closed"))
 			$query->sWhere("codice != 'closed'");
 		
 		return $query->findAll(false);
@@ -340,7 +340,7 @@ class OrdiniModel extends FormModel {
 				"deleted"	=>	gtext("Ordine annullato", false),
 			);
 		
-		if (!v("attiva_spedizione"))
+		if (!v("attiva_spedizione") && !v("mostra_sempre_stato_closed"))
 			unset(self::$stati["closed"]);
 		
 		if (!App::$isFrontend)
