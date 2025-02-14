@@ -495,6 +495,10 @@ class BaseOrdiniController extends BaseController
 		
 		$data["tipoOutput"] = "web";
 		
+		// Imposta lo stato dell'ordine e fai il redirect
+		if ($this->statoOrdineModificato($id_o))
+			$this->redirect("resoconto-acquisto/$id_o/$cart_uid/$admin_token?n=y");
+		
 		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
 		{
 			if (PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
@@ -599,6 +603,21 @@ class BaseOrdiniController extends BaseController
 		}
 		else
 			$this->load("to_paypal");
+	}
+	
+	protected function statoOrdineModificato($idO = 0)
+	{
+		if (v("permetti_al_cliente_di_annullare_ordine") && isset($_GET["annulla_ordine"]))
+		{
+			if ($this->m("OrdiniModel")->impostaStato((int)$idO, "deleted"))
+			{
+				flash("stato_modificato", "<div class='uk-text-center ".v("alert_success_class")."'>".gtext("L'ordine è stato annullato")."</div>");
+				
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	private function infoordine($id_o)

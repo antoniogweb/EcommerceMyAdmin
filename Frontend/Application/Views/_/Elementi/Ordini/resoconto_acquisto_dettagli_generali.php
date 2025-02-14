@@ -1,5 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<table class="table uk-width-2-3@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top uk-table-small">
+<?php echo flash("stato_modificato");?>
+
+<table class="table uk-width-3-4@m uk-table uk-table-divider uk-table-hover uk-margin-remove-top uk-table-small">
 	<tr>
 		<td class="first_column"><?php echo gtext("Ordine", false); ?>:</td>
 		<td><b>#<?php echo $ordine["id_o"];?></b></td>
@@ -25,7 +27,13 @@
 	<?php if (strcmp($tipoOutput,"web") === 0 || !OrdiniModel::conPagamentoOnline($ordine)) { ?>
 	<tr>
 		<td class="first_column"><?php echo gtext("Stato ordine", false); ?>:</td>
-		<td><b><?php echo statoOrdine($ordine["stato"]);?></b></td>
+		<td class="uk-flex uk-flex-between">
+			<b><?php echo statoOrdine($ordine["stato"]);?></b>
+			
+			<?php if (v("permetti_al_cliente_di_annullare_ordine") && strcmp($tipoOutput,"web") === 0 && $ordine["stato"] != "deleted") { ?>
+			<a class="uk-button uk-button-danger uk-button-small" href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y&annulla_ordine"><?php echo gtext("Annulla ordine")?></a>
+			<?php } ?>
+		</td>
 	</tr>
 	<?php } ?>
 	<tr>

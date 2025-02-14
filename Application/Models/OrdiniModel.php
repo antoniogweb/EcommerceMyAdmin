@@ -2735,4 +2735,25 @@ class OrdiniModel extends FormModel {
 		
 		return NazioniModel::g()->findTitoloDaCodice($nazione);
 	}
+	
+	public function impostaStato($idO, $stato)
+	{
+		$sModel = new StatiordineModel();
+		$ordine = $this->selectId((int)$idO);
+		
+		$numero = $sModel->clear()->where(array(
+			"codice"	=>	sanitizeAll($stato),
+		))->rowNumber();
+		
+		if ($numero && $ordine["stato"] != $stato)
+		{
+			$this->sValues(array(
+				"stato"	=>	$stato,
+			));
+			
+			return $this->update((int)$idO);
+		}
+		
+		return false;
+	}
 }
