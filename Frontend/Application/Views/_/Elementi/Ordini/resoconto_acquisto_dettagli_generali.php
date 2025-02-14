@@ -30,7 +30,7 @@
 		<td class="uk-flex uk-flex-between">
 			<b><?php echo statoOrdine($ordine["stato"]);?></b>
 			
-			<?php if (v("permetti_al_cliente_di_annullare_ordine") && strcmp($tipoOutput,"web") === 0 && $ordine["stato"] != "deleted") { ?>
+			<?php if (strcmp($tipoOutput,"web") === 0 && $puoAnnullare) { ?>
 			<a class="uk-button uk-button-danger uk-button-small" href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y&annulla_ordine"><?php echo gtext("Annulla ordine")?></a>
 			<?php } ?>
 		</td>

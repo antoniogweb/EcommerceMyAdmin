@@ -495,6 +495,8 @@ class BaseOrdiniController extends BaseController
 		
 		$data["tipoOutput"] = "web";
 		
+		$data["puoAnnullare"] = $this->puoAnnullareOrdine($id_o);
+		
 		// Imposta lo stato dell'ordine e fai il redirect
 		if ($this->statoOrdineModificato($id_o))
 			$this->redirect("resoconto-acquisto/$id_o/$cart_uid/$admin_token?n=y");
@@ -605,13 +607,23 @@ class BaseOrdiniController extends BaseController
 			$this->load("to_paypal");
 	}
 	
-	protected function statoOrdineModificato($idO = 0)
+	protected function puoAnnullareOrdine($idO)
 	{
-		if (v("permetti_al_cliente_di_annullare_ordine") && isset($_GET["annulla_ordine"]))
+		$ordine = $this->m("OrdiniModel")->clear()->select("stato")->whereId((int)$idO)->record();
+		
+		if (v("permetti_al_cliente_di_annullare_ordine") && !empty($ordine) && $ordine["stato"] == "pending")
+			return true;
+		
+		return false;
+	}
+	
+	protected function statoOrdineModificato($idO)
+	{
+		if ($this->puoAnnullareOrdine($idO) && isset($_GET["annulla_ordine"]))
 		{
 			if ($this->m("OrdiniModel")->impostaStato((int)$idO, "deleted"))
 			{
-				flash("stato_modificato", "<div class='uk-text-center ".v("alert_success_class")."'>".gtext("L'ordine è stato annullato")."</div>");
+				flash("stato_modificato", "<div class='uk-text-center uk-text-bold ".v("alert_success_class")."'>".gtext("L'ordine è stato annullato")."</div>");
 				
 				return true;
 			}
