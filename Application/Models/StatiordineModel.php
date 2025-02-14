@@ -243,6 +243,14 @@ class StatiordineModel extends GenericModel {
 		return self::$recordTabella[$codiceStato]["pagato"] > 0 ? true : false;
 	}
 	
+	public function nonpagato($codiceStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("codice");
+		
+		return ((int)self::$recordTabella[$codiceStato]["pagato"] === 0) ? true : false;
+	}
+	
 	public function neutro($codiceStato)
 	{
 		if (!isset(self::$recordTabella))

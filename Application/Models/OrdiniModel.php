@@ -492,15 +492,27 @@ class OrdiniModel extends FormModel {
 	
 	public function setPagato($id = 0)
 	{
-		if (!OrdiniModel::$ordineImportato && isset($this->values["stato"]) && StatiordineModel::g(false)->pagato($this->values["stato"]))
+		if (!OrdiniModel::$ordineImportato && isset($this->values["stato"]))
 		{
 			$record = $this->selectId((int)$id);
 			
-			if (empty($record) || !$record["pagato"])
+			if (StatiordineModel::g(false)->pagato($this->values["stato"]))
 			{
-				$this->values["pagato"] = 1;
-				$this->values["data_pagamento"] = date("Y-m-d H:i");
-				$this->values["time_pagamento"] = time();
+				if (empty($record) || !$record["pagato"])
+				{
+					$this->values["pagato"] = 1;
+					$this->values["data_pagamento"] = date("Y-m-d H:i");
+					$this->values["time_pagamento"] = time();
+				}
+			}
+			else if (StatiordineModel::g(false)->nonpagato($this->values["stato"]))
+			{
+				if (empty($record) || !$record["annullato"])
+				{
+					$this->values["annullato"] = 1;
+					$this->values["data_annullamento"] = date("Y-m-d H:i");
+					$this->values["time_annullamento"] = time();
+				}
 			}
 		}
 	}
