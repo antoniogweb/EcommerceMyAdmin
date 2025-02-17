@@ -41,6 +41,8 @@ class CartModel extends GenericModel {
 	
 	public static $sWhereCercaProdottoAdd = null; // per verificare se il prodotto c'è già e va incrementato oppure non c'è e va aggiunto aggiunto
 	
+	public static $accettaOgniProdotto = false; // se impostato su true, accetta ogni prodotto nel database (non controlla che sia attivo)
+	
 	public function __construct() {
 		$this->_tables='cart';
 		$this->_idFields='id_cart';
@@ -709,8 +711,6 @@ class CartModel extends GenericModel {
 					"id_cart"	=>	$clean["id_cart"],
 					"cart_uid"	=>	$clean["cart_uid"],
 				));
-				
-// 				$this->update(null, "id_cart = " . $clean["id_cart"] . " AND cart_uid = '" . $clean["cart_uid"] . "'");
 			}
 		}
 		
@@ -722,13 +722,16 @@ class CartModel extends GenericModel {
 		$clean["id_cart"] = (int)$id_cart;
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
 		
-		return $this->del(null, array("(id_cart = ? OR id_p = ?) AND cart_uid = ?", array(
+		$res = $this->del(null, array("(id_cart = ? OR id_p = ?) AND cart_uid = ?", array(
 			$clean["id_cart"],
 			$clean["id_cart"],
 			$clean["cart_uid"]
 		)));
 		
-// 		return $this->del(null, "(id_cart = " . $clean["id_cart"] . " OR id_p = " . $clean["id_cart"] . ") AND cart_uid = '" . $clean["cart_uid"] . "'");
+		if ($res && v("hook_delete_cart"))
+			callFunction(v("hook_delete_cart"), (int)$id_cart, v("hook_delete_cart"));
+		
+		return $res;
 	}
 	
 	public function calcolaPrezzoFinale($idPage, $prezzoIntero, $qty = 1, $checkPromo = true, $checkUser = true, $idC = 0)
@@ -1020,7 +1023,7 @@ class CartModel extends GenericModel {
 			return false;
 		}
 		
-		if (isset($idRif) || isset($idIva))
+		if (isset($idRif) || isset($idIva) || self::$accettaOgniProdotto)
 			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"]))->send();
 		else
 			$rPage = $p->clear()->where(array("id_page"=>$clean["id_page"],"attivo"=>"Y"))->send();
@@ -1105,6 +1108,10 @@ class CartModel extends GenericModel {
 				
 				$this->sanitize();
 				$this->update($res[0]["cart"]["id_cart"]);
+				
+				// Hook ad aggiunta nel carrello
+				if (v("hook_add_to_cart"))
+					callFunction(v("hook_add_to_cart"), (int)$res[0]["cart"]["id_cart"], v("hook_add_to_cart"));
 				
 				return $res[0]["cart"]["id_cart"];
 			}
@@ -1290,7 +1297,13 @@ class CartModel extends GenericModel {
 // 				echo $this->notice;
 // 				echo $this->getQuery();
 // 				echo $this->getError();
-				return $this->lastId();
+				$lId = $this->lastId();
+				
+				// Hook ad aggiunta nel carrello
+				if (v("hook_add_to_cart"))
+					callFunction(v("hook_add_to_cart"), (int)$lId, v("hook_add_to_cart"));
+				
+				return $lId;
 			}
 		}
 		

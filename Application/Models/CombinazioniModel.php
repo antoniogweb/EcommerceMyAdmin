@@ -170,6 +170,22 @@ class CombinazioniModel extends GenericModel {
 		$this->valori = $valori;
 	}
 	
+	public function combinazionePrincipaleOCanonica($idPage, $forzaCanonicalSeNoPrincipale = false)
+	{
+		$clean["id_page"] = (int)$idPage;
+		
+		$principale = $this->combinazionePrincipale($clean["id_page"]);
+		
+		$idC = 0;
+		
+		if (!empty($principale))
+			$idC = (int)$principale["id_c"];
+		else if (v("permetti_acquisto_da_categoria_se_ha_una_combinazione") || $forzaCanonicalSeNoPrincipale)
+			$idC = (int)PagesModel::g(false)->getIdCombinazioneCanonical($clean["id_page"]);
+		
+		return $idC;
+	}
+	
 	public function combinazionePrincipale($idPage)
 	{
 		return $this->clear()->where(array(

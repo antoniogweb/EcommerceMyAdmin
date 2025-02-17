@@ -779,6 +779,9 @@ class VariabiliModel extends GenericModel {
 		"hook_update_ordine"		=>	"", // se diversa da blank, funzione che viene chiamata dopo la modifica dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
 		"hook_set_placeholder"		=>	"", // se diversa da blank, funzione che viene chiamata sui placeholder. Come unico argomento gli viene passato l'array di tutti i placeholder (VariabiliModel::$placeholders)
 		"hook_after_login_admin"	=>	"", // se diversa da blank, funzione che viene chiamata dopo il login in admin. Gli viene passato un riferimento al controller come unico parametro
+		"hook_add_to_cart"			=>	"", // se diverso da blank, funzione che viene chiamata dopo l'aggiunta di un prodotto al carrello. Gli viene passato l'ID della riga del carrello come unico parametro
+		"hook_delete_cart"			=>	"", // se diverso da blank, funzione che viene chiamata dopo l'eliminazione di una riga del carrello. Gli viene passato l'ID della riga del carrello come unico parametro
+		"hook_utente_annulla_ordine"	=>	"", // se diverso da blank, funzione che viene chiamata dopo che l'utente ha annullato l'ordine. Gli viene passato l'ID dell'ordine come unico parametro
 		### GDPR ##
 		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
 		### PASSWORD ##

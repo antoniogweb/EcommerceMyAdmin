@@ -625,6 +625,9 @@ class BaseOrdiniController extends BaseController
 			{
 				flash("stato_modificato", "<div class='uk-text-center uk-text-bold ".v("alert_success_class")."'>".gtext("L'ordine è stato annullato")."</div>");
 				
+				if (v("hook_utente_annulla_ordine"))
+					callFunction(v("hook_utente_annulla_ordine"), (int)$idO, v("hook_utente_annulla_ordine"));
+				
 				return true;
 			}
 		}

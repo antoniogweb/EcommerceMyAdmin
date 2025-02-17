@@ -158,12 +158,14 @@ class BaseCartController extends BaseController
 		// Cerco la combinazione principale
 		if ((int)$clean["id_c"] === 0)
 		{
-			$principale = $c->combinazionePrincipale($clean["id_page"]);
+			$clean["id_c"] = $c->combinazionePrincipaleOCanonica($clean["id_page"]);
 			
-			if (!empty($principale))
-				$clean["id_c"] = (int)$principale["id_c"];
-			else if (v("permetti_acquisto_da_categoria_se_ha_una_combinazione"))
-				$clean["id_c"] = (int)PagesModel::g(false)->getIdCombinazioneCanonical($clean["id_page"]);
+// 			$principale = $c->combinazionePrincipale($clean["id_page"]);
+// 			
+// 			if (!empty($principale))
+// 				$clean["id_c"] = (int)$principale["id_c"];
+// 			else if (v("permetti_acquisto_da_categoria_se_ha_una_combinazione"))
+// 				$clean["id_c"] = (int)PagesModel::g(false)->getIdCombinazioneCanonical($clean["id_page"]);
 		}
 		
 		$recordCart = array();
