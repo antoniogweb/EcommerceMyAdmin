@@ -87,7 +87,7 @@ $(document).ready(function(){
 				</table>
 				
 				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
-				<?php if (false && $statoSpedizione != "A" && $modulo->metodo("zpl") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
+				<?php if ($statoSpedizione != "A" && $modulo->metodo("zpl") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
 				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/zpl/".(int)$id;?>" class="pull-right btn btn-info print_zpl"><i class="fa fa-file-text-o"></i> <?php echo gtext("ZPL");?></a>
 				<?php } ?>
 				
