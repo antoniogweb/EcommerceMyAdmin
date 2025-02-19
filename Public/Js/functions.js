@@ -397,6 +397,10 @@ $(document).ready(function(){
 		
 		var t_href = $(this).attr("href");
 		
+		var reload = true;
+		
+		if ($(this).hasClass("no_reload_on_modal_close"))
+			reload = false;
 // 		console.log(t_href);
 		
 		e.preventDefault();
@@ -406,7 +410,8 @@ $(document).ready(function(){
 		});
 		
 		$('.modal').on('hide.bs.modal',function(){      //correct here use 'shown.bs.modal' event which comes in bootstrap3
-			reloadPage();
+			if (reload)
+				reloadPage();
 		});
 		
 		$('#my_modal').modal({show:true});
