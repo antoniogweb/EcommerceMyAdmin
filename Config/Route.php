@@ -548,6 +548,7 @@ class Route
 		'righe,mainrighe',
 		'righe,salva',
 		'righe,elenco',
+		'righe,modificaevaso',
 		
 		'modali,main',
 		'modali,form',
