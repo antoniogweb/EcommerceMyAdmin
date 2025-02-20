@@ -68,6 +68,8 @@ class OrdiniModel extends FormModel {
 	
 	public static $isDeletable = null;
 	
+	public static $colonneAggiuntiveOrdine = array();
+	
 	public static function getWhereClausePagato()
 	{
 		return "(orders.stato in (select codice from stati_ordine where stati_ordine.attivo = 1 AND stati_ordine.pagato = 1) OR (orders.pagato = 1 AND orders.stato in (select codice from stati_ordine where stati_ordine.attivo = 1 AND stati_ordine.pagato = -1)))";
@@ -521,6 +523,12 @@ class OrdiniModel extends FormModel {
 	{
 		$this->values["tipo_ordine"] = "B";
 		$this->values["fonte"] = "ORDINE_NEGOZIO";
+	}
+	
+	public function setOrdineWeb()
+	{
+		$this->values["tipo_ordine"] = "W";
+		$this->values["fonte"] = "ORDINE_WEB";
 	}
 	
 	public function insert()
@@ -1313,6 +1321,11 @@ class OrdiniModel extends FormModel {
 				
 				if ($r->values["prodotto_generico"])
 					$r->delFields("codice");
+			}
+			
+			foreach (self::$colonneAggiuntiveOrdine as $colonnaAggiuntiva)
+			{
+				$r->delFields($colonnaAggiuntiva);
 			}
 			
 			$r->sanitize();

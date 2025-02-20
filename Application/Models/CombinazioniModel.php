@@ -1091,10 +1091,15 @@ class CombinazioniModel extends GenericModel {
     
     // $idOrdine: ID dell'ordine a cui attaccare la riga
     // $values: se non vuoto, prende i valori da quell'array
-    public function aggiungiaordine($id, $idOrdine = 0, $values = array())
+    // $colonneAggiuntive = array() : inserisce i valori di quelle colonne
+    public function aggiungiaordine($id, $idOrdine = 0, $values = array(), $colonneAggiuntive = array())
     {
 		if( !session_id() )
 			session_start();
+		
+		// Imposta le colonne aggiuntive che non devono essere sovrascritte dal passaggio al carrello
+		if (!empty($colonneAggiuntive))
+			OrdiniModel::$colonneAggiuntiveOrdine = array_keys($colonneAggiuntive);
 		
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		Params::$automaticConversionToDbFormat = false;
@@ -1171,7 +1176,7 @@ class CombinazioniModel extends GenericModel {
 						"id_c"		=>	(int)$id,
 						"title"		=>	$title,
 						"immagine"	=>	ProdottiModel::immagineCarrello($pagina["pages"]["id_page"], (int)$id),
-						"quantity"	=>	1,
+						"quantity"	=>	isset($values["quantity"]) ? (int)$values["quantity"] : 1,
 						"codice"	=>	$record["codice"],
 						"peso"		=>	$record["peso"],
 						"attributi"	=>	$this->getStringa((int)$id),
@@ -1198,6 +1203,11 @@ class CombinazioniModel extends GenericModel {
 						"acconto"	=>	$rigaTipologia["acconto"] ?? 0,
 						"evasa"		=>	(isset($rigaTipologia["id_riga_tipologia"]) && $rigaTipologia["id_riga_tipologia"]) ? 1 : 0,
 					), "sanitizeDb");
+					
+					foreach ($colonneAggiuntive as $cK => $cV)
+					{
+						$r->setValue($cK, $cV, "sanitizeDb");
+					}
 					
 					if ($r->insert())
 						$_SESSION["aggiorna_totali_ordine"] = true;
