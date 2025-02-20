@@ -1106,8 +1106,6 @@ class CombinazioniModel extends GenericModel {
 		
 		$record = $this->selectId((int)$id);
 		
-		print_r($record);
-		
 		if ($idOrdine)
 			$_GET["id_ordine"] = (int)$idOrdine;
 		
