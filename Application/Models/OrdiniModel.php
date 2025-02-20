@@ -68,7 +68,7 @@ class OrdiniModel extends FormModel {
 	
 	public static $isDeletable = null;
 	
-	public static $colonneAggiuntiveOrdine = array();
+	public static $colonneAggiuntiveRighe = array();
 	
 	public static function getWhereClausePagato()
 	{
@@ -1323,7 +1323,7 @@ class OrdiniModel extends FormModel {
 					$r->delFields("codice");
 			}
 			
-			foreach (self::$colonneAggiuntiveOrdine as $colonnaAggiuntiva)
+			foreach (self::$colonneAggiuntiveRighe as $colonnaAggiuntiva)
 			{
 				$r->delFields($colonnaAggiuntiva);
 			}

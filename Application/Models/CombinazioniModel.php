@@ -1099,12 +1099,14 @@ class CombinazioniModel extends GenericModel {
 		
 		// Imposta le colonne aggiuntive che non devono essere sovrascritte dal passaggio al carrello
 		if (!empty($colonneAggiuntive))
-			OrdiniModel::$colonneAggiuntiveOrdine = array_keys($colonneAggiuntive);
+			OrdiniModel::$colonneAggiuntiveRighe = array_keys($colonneAggiuntive);
 		
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		Params::$automaticConversionToDbFormat = false;
 		
 		$record = $this->selectId((int)$id);
+		
+		print_r($record);
 		
 		if ($idOrdine)
 			$_GET["id_ordine"] = (int)$idOrdine;
