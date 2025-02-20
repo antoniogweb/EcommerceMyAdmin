@@ -565,6 +565,8 @@ class BaseBaseController extends Controller
 		
 		if (isset($_POST["invia_coupon"]))
 		{
+			IpcheckModel::check("POST_COUPON");
+			
 			User::$coupon = $this->request->post("il_coupon","","sanitizeAll");
 			
 			$time = time() + v("durata_carrello_wishlist_coupon");
