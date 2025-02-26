@@ -2022,7 +2022,7 @@ class OrdiniModel extends FormModel {
 		
 		$this->values["id_iva"] = CartModel::getIdIvaSpedizione();
 		$this->values["iva_spedizione"] = number_format(CartModel::getAliquotaIvaSpedizione(),8,".","");
-		$this->values["iva_spedizione_ripartita"] = v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti");
+		$this->values["iva_spedizione_ripartita"] = (CartModel::numeroAliquoteInCarrello() > 1) ? v("ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti") : 0;
 		
 		if (isset(IvaModel::$aliquotaEstera))
 		{

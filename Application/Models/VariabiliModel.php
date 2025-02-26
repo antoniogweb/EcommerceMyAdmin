@@ -476,6 +476,7 @@ class VariabiliModel extends GenericModel {
 		"scorpora_iva_prezzo_estero_spedizione_pagamenti"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default o per IVA diversa da default anche per spedizioni e pagamenti
 		"permetti_pagamento_contrassegno_fuori_nazione_default"	=>	0, // se impostato su 1, permette il pagamento con contrassegno fuori dalla nazione di default
 		"forza_commercio_indiretto"	=>	1, // se impostata a 1, considera sempre l'acquisto come commercio INDIRETTO (beni fisici)
+		"forza_aliquota_iva_b2c"	=>	0, // se impostato a 1, nel calcolo dell'aliquota IVA considera sempre come se fosse un B2C
 		## FASCE PREZZO ##
 		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo

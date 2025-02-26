@@ -150,7 +150,7 @@ class IvaModel extends GenericModel
 		{
 			$tipo = "B2B";
 			
-			if ($_POST["tipo_cliente"] == "privato")
+			if ($_POST["tipo_cliente"] == "privato" || v("forza_aliquota_iva_b2c"))
 				$tipo = "B2C";
 			
 			$n = new NazioniModel();
