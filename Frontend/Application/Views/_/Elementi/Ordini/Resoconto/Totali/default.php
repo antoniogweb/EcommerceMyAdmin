@@ -73,9 +73,9 @@
 			<tr>
 				<td class="first_column"><?php echo gtext($scrittaFinaleTotale, false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></td>
 			</tr>
-			<?php if (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"] && !$ordine["nascondi_iva_estera"] && CartModel::scorporaIvaPrezzoEstero($ordine)) { ?>
+			<?php if (isset($mostraSempreIvaTotali) || (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"] && !$ordine["nascondi_iva_estera"] && CartModel::scorporaIvaPrezzoEstero($ordine))) { ?>
 			<tr>
-				<td class="first_column"><span style="color:#999;font-style:italic;"><?php echo gtext("Di cui IVA", false); ?> (<?php echo $ordine["stringa_iva_estera"];?>):</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></span></td>
+				<td class="first_column"><span style="color:#999;font-style:italic;"><?php echo gtext("Di cui IVA", false); ?> <?php if (isset($ordine["stringa_iva_estera"]) && $ordine["stringa_iva_estera"]) { ?>(<?php echo $ordine["stringa_iva_estera"];?>)<?php } ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["iva"]);?></strong></span></td>
 			</tr>
 			<?php } ?>
 		</table>

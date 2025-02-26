@@ -108,6 +108,7 @@
 
 <div style="margin-top:10mm;">
 <?php
+$mostraSempreIvaTotali = true;
 include(tpf(ElementitemaModel::p("RESOCONTO_TOTALI","", array(
 	"titolo"	=>	"Totali ordine",
 	"percorso"	=>	"Elementi/Ordini/Resoconto/Totali",
