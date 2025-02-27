@@ -2781,4 +2781,52 @@ class OrdiniModel extends FormModel {
 		
 		return false;
 	}
+	
+	// Aggiungi una riga esistente ad un ordine esistente
+	public function aggiungiRigaEsistenteAOrdine($idO, $idR, $template = "<br />Ordine <b>[ID_ORDINE]</b> del <b>[DATA_ORDINE]</b>")
+	{
+		$rModel = new RigheModel();
+		
+		$ordine = $this->selectId((int)$idO);
+		$riga = $rModel->selectId((int)$idR);
+		
+		self::$colonneAggiuntiveRighe = array("title_lingua");
+		
+		if (!empty($ordine) && !empty($riga) && $riga["id_o"] != $ordine["id_o"])
+		{
+			unset($riga["id_r"]);
+			unset($riga["data_creazione"]);
+			unset($riga["id_cart"]);
+			unset($riga["id_order"]);
+			
+			$riga["cart_uid"] = $ordine["cart_uid"];
+			$riga["id_o"] = $ordine["id_o"];
+			$riga["id_admin"] = $ordine["id_admin"];
+			$riga["id_o_padre"] = $riga["id_o"];
+			$riga["id_r_padre"] = (int)$idR;
+			
+			TraduzioniModel::sLingua(v("lingua_default_frontend"), "front");
+			$templateTitle = gtext($template);
+			TraduzioniModel::rLingua();
+			
+			TraduzioniModel::sLingua($ordine["lingua"], "front");
+			$templateTitleLingua = gtext($template);
+			TraduzioniModel::rLingua();
+			
+			$templateTitle = str_replace("[ID_ORDINE]", $ordine["id_o"], $templateTitle);
+			$templateTitle = str_replace("[DATA_ORDINE]", date("d/m/Y",strtotime($ordine["data_creazione"])), $templateTitle);
+			
+			$templateTitleLingua = str_replace("[ID_ORDINE]", $ordine["id_o"], $templateTitleLingua);
+			$templateTitleLingua = str_replace("[DATA_ORDINE]", date("d/m/Y",strtotime($ordine["data_creazione"])), $templateTitleLingua);
+			
+			$riga["title"] = $riga["title"].$templateTitle;
+			$riga["title_lingua"] = $riga["title_lingua"].$templateTitleLingua;
+			
+			$rModel->sValues($riga, "sanitizeDb");
+			
+			return $rModel->insert();
+		}
+		
+		return false;
+	}
 }
