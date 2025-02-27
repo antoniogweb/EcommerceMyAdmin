@@ -57,12 +57,12 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 						$tempViewArgs = $this->viewArgs;
 						$tempViewArgs["prezzi"] = "I";
 						?>
-						<a href="<?php echo $this->baseUrl."/ordini/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" class="btn btn-<?php echo $mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtext("Prezzi IVA inclusa")?></a>
+						<a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" class="btn btn-<?php echo $mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtext("Prezzi IVA inclusa")?></a>
 						<?php
 						$tempViewArgs = $this->viewArgs;
 						$tempViewArgs["prezzi"] = "NI";
 						?>
-						<a href="<?php echo $this->baseUrl."/ordini/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" style="margin-left:8px;" class="btn btn-<?php echo !$mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtext("Prezzi IVA esclusa")?></a>
+						<a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" style="margin-left:8px;" class="btn btn-<?php echo !$mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtext("Prezzi IVA esclusa")?></a>
 					</div>
 					<?php } ?>
 					
