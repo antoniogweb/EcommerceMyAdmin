@@ -2794,6 +2794,8 @@ class OrdiniModel extends FormModel {
 		
 		if (!empty($ordine) && !empty($riga) && $riga["id_o"] != $ordine["id_o"])
 		{
+			$idOrdineOriginario = (int)$riga["id_o"];
+			
 			unset($riga["id_r"]);
 			unset($riga["data_creazione"]);
 			unset($riga["id_cart"]);
@@ -2802,7 +2804,7 @@ class OrdiniModel extends FormModel {
 			$riga["cart_uid"] = $ordine["cart_uid"];
 			$riga["id_o"] = $ordine["id_o"];
 			$riga["id_admin"] = $ordine["id_admin"];
-			$riga["id_o_padre"] = $riga["id_o"];
+			$riga["id_o_padre"] = $idOrdineOriginario;
 			$riga["id_r_padre"] = (int)$idR;
 			
 			TraduzioniModel::sLingua(v("lingua_default_frontend"), "front");
@@ -2813,10 +2815,10 @@ class OrdiniModel extends FormModel {
 			$templateTitleLingua = gtext($template);
 			TraduzioniModel::rLingua();
 			
-			$templateTitle = str_replace("[ID_ORDINE]", $ordine["id_o"], $templateTitle);
+			$templateTitle = str_replace("[ID_ORDINE]", (int)$idOrdineOriginario, $templateTitle);
 			$templateTitle = str_replace("[DATA_ORDINE]", date("d/m/Y",strtotime($ordine["data_creazione"])), $templateTitle);
 			
-			$templateTitleLingua = str_replace("[ID_ORDINE]", $ordine["id_o"], $templateTitleLingua);
+			$templateTitleLingua = str_replace("[ID_ORDINE]", (int)$idOrdineOriginario, $templateTitleLingua);
 			$templateTitleLingua = str_replace("[DATA_ORDINE]", date("d/m/Y",strtotime($ordine["data_creazione"])), $templateTitleLingua);
 			
 			$riga["title"] = $riga["title"].$templateTitle;
