@@ -278,7 +278,7 @@ class RegusersModel extends FormModel {
 		))->orderBy("ultimo_usato,id_spedizione desc")->limit(1)->record();
     }
     
-    public static function getWhereClauseRicercaLibera($search)
+    public static function getWhereClauseRicercaLibera($search, $table = "")
 	{
 		$tokens = explode(" ", $search);
 		$andArray = array();
@@ -287,7 +287,7 @@ class RegusersModel extends FormModel {
 		foreach ($tokens as $token)
 		{
 			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"n!concat(ragione_sociale,' ',username,' ',nome,' ',cognome,' ',telefono)"	=>	sanitizeAll(htmlentitydecode($token)),
+				"n!concat(".$table."ragione_sociale,' ',".$table."username,' ',".$table."nome,' ',".$table."cognome,' ',".$table."telefono)"	=>	sanitizeAll(htmlentitydecode($token)),
 			);
 			
 			$iCerca++;
