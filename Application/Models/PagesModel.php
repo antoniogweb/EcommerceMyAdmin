@@ -1633,7 +1633,7 @@ class PagesModel extends GenericModel {
 	}
 	
 	// cerca la pagina usando l'alias esatto
-	private function cercaDaAlias($alias, $lingua = null)
+	public function cercaDaAlias($alias, $lingua = null, $forzaTutti = false)
 	{
 		$clean['alias'] = sanitizeAll($alias);
 		
@@ -1653,7 +1653,7 @@ class PagesModel extends GenericModel {
 		if (v("usa_alias_combinazione_in_url_prodotto") && $lingua)
 			$this->inner("combinazioni_alias")->on(array("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = ?",array(sanitizeDb($lingua))));
 		
-		if (!User::$adminLogged)
+		if (!User::$adminLogged && !$forzaTutti)
 			$this->aWhere(array(
 				"pages.attivo"=>"Y",
 				"combinazioni.acquistabile"	=>	1,
