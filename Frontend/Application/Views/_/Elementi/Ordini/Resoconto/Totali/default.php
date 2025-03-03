@@ -70,7 +70,7 @@
 				</td>
 			</tr>
 			<?php } ?>
-			<tr>
+			<tr class="riga_totale_finale">
 				<td class="first_column"><?php echo gtext($scrittaFinaleTotale, false); ?>:</td> <td class="uk-text-right"> <strong>&euro; <?php echo setPriceReverse($ordine["total"]);?></strong></td>
 			</tr>
 			<?php if (isset($mostraSempreIvaTotali) || (v("prezzi_ivati_in_carrello") && $ordine["id_iva_estera"] && !$ordine["nascondi_iva_estera"] && CartModel::scorporaIvaPrezzoEstero($ordine))) { ?>

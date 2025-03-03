@@ -450,6 +450,33 @@ class BaseOrdiniController extends BaseController
 		
 	}
 	
+	public function pdfordine($id_o = 0, $cart_uid = 0, $admin_token = "token")
+	{
+		$clean["cart_uid"] = sanitizeAll($cart_uid);
+		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
+		$clean["id_o"] = (int)$id_o;
+		
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"], $clean["admin_token"], v("check_accesso_admin_token_ordine_frontend_da")))
+			$this->redirect("");
+		
+		if (!$this->m("OrdiniModel")->pdfScaricabile($clean["id_o"]))
+			$this->redirect("");
+		
+		$this->clean();
+		
+		$strutturaProdotti = GestionaliModel::getModuloPadre()->infoOrdine($clean["id_o"]);
+		$ordine = OrdiniModel::g()->selectId($clean["id_o"]);
+		
+		ob_start();
+		include(tpf(ElementitemaModel::p("PDF_ORDINE","", array(
+			"titolo"	=>	"PDF ordine",
+			"percorso"	=>	"Elementi/Ordini/Pdf",
+		))));
+		$content = ob_get_clean();
+		
+		Pdf::output("", "", array(), "I", $content);
+	}
+	
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$data['notice'] = null;

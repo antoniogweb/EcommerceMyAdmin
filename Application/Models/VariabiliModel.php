@@ -650,6 +650,7 @@ class VariabiliModel extends GenericModel {
 		"mail_ordine_dopo_pagamento_negozio"	=>	0, // manda la mail dell'ordine al negozio solo dopo che è avventuo il pagamento (solo paypal e carta di credito)
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
 		"mail_aggiuntive_invio_ordine_negozio"	=>	"", //elenco di email AGGIUNTIVE, divise da virgola, a cui mandare la mail di ordine avvenuto (si tratta della mail che arriva al negozio). L'ordine verrà comunque mandato anche alla mail indicata nelle impostazioni dell'ecommerce.
+		"stati_a_cui_permettere_scarido_pdf_ordine"	=>	"", // elenco stati, divisi da virgola, ai quali il cliente può scaricare il PDF dell'ordine
 		## PAGAMENTI ##
 		"check_ipn_al_ritorno_carta"	=>	0, // se impostata su 1, fa il check ipn al ritorno sul sito (controlla che non sia già stato fatto). Solo per pagamento con carta di credito
 		"setta_lingua_e_nazione__da_ordine_in_pagina_ringraziamento"	=>	0, // se impostato su 1, la pagina di atterraggio dell'ordine verranno settati la lingua e la nazione dell'ordine (sovrascrivendo lingua e nazione dell'URL)

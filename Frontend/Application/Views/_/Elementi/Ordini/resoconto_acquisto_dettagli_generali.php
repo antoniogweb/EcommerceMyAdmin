@@ -52,6 +52,12 @@
 		<td><b><?php echo gtext(CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo"));?></b></td>
 	</tr>
 	<?php } ?>
+	<?php if (OrdiniModel::g()->pdfScaricabile((int)$ordine["id_o"])) { ?>
+	<tr>
+		<td><?php echo gtext("PDF ordine", false); ?>:</td>
+		<td><a target="_blank" class="uk-button uk-button-primary uk-button-small" href="<?php echo $baseUrl."pdf-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/download.svg");?> <?php echo gtext("Scarica PDF", false); ?></span></a></td>
+	</tr>
+	<?php } ?>
 	<?php if (v("attiva_gestione_spedizioni")) {
 		$spModel = SpedizioninegozioModel::g();
 		$spedizioniOrdine = $spModel->getSpedizioniOrdine((int)$ordine["id_o"]);

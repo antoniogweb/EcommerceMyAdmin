@@ -2836,4 +2836,19 @@ class OrdiniModel extends FormModel {
 		
 		return false;
 	}
+	
+	public function pdfScaricabile($idO)
+	{
+		if (v("stati_a_cui_permettere_scarido_pdf_ordine"))
+		{
+			$arrayStatiOrdineScaricabile = explode(",", v("stati_a_cui_permettere_scarido_pdf_ordine"));
+			
+			$statoOrdine = $this->clear()->select("stato")->whereId((int)$idO)->field("stato");
+			
+			if (count($arrayStatiOrdineScaricabile) > 0 && in_array($statoOrdine, $arrayStatiOrdineScaricabile))
+				return true;
+		}
+		
+		return false;
+	}
 }
