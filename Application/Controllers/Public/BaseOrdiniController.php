@@ -474,7 +474,7 @@ class BaseOrdiniController extends BaseController
 		))));
 		$content = ob_get_clean();
 		
-		Pdf::output("", "", array(), "I", $content);
+		Pdf::output("", gtext("pdf_ordine_").$clean["id_o"].".pdf", array(), "I", $content);
 	}
 	
 	public function summary($id_o = 0, $cart_uid = 0, $admin_token = "token")
