@@ -512,7 +512,7 @@ class OrdiniModel extends FormModel {
 				if (!empty($record) && !$record["annullato"] && !$record["evaso_non_evaso"])
 				{
 					$this->values["annullato"] = 1;
-					$this->values["data_annullamento"] = date("Y-m-d H:i:s");
+					$this->values["data_annullamento"] = date("Y-m-d H:i");
 					$this->values["time_annullamento"] = time();
 				}
 			}
