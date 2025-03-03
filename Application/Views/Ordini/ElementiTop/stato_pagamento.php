@@ -16,8 +16,8 @@
 <tr>
 	<td><?php echo gtext("Data annullamento / rimborso");?>:</td>
 	<td>
-		<?php if (date("Y-m-d", strtotime($ordine["data_annullamento"])) == date("Y-m-d")) { ?>
-		<a title="<?php echo gtext("Segna come non annullato");?>" class="pull-right badge bg-maroon ajlink" href="<?php echo $this->baseUrl."/ordini/nonannullato/".$ordine["id_o"];?>"><i class="fa fa-times "></i></a>
+		<?php if (false && date("Y-m-d", strtotime($ordine["data_annullamento"])) == date("Y-m-d")) { ?>
+		<a title="<?php echo gtext("Segna come non annullato");?>" class="pull-right badge bg-maroon ajlink" href="<?php echo $this->baseUrl."/ordini/settanonannullato/".$ordine["id_o"];?>"><i class="fa fa-times "></i></a>
 		<?php } ?>
 		
 		<span class="label bg-maroon"><?php echo gtext("Ordine annullato in data");?></span> <b><?php echo date("d-m-Y H:i", strtotime($ordine["data_annullamento"]));?></b>
