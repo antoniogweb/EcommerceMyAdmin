@@ -257,6 +257,7 @@
 .uk-table tr.riga_totale_finale td
 {
 	font-weight:bold;
+	border-bottom: none;
 }
 </style>
 
@@ -363,7 +364,7 @@
 <sethtmlpageheader name="myHeader1" value="on" show-this-page="1" />
 
 <htmlpagefooter name="myFooter1" >
-	<div class="bottom_righe" style="background:red;">
+	<div class="bottom_righe">
 		<b><?php echo gtext("Testo generico footer");?></b>
 	</div>
 	<div class="footer">
