@@ -87,6 +87,7 @@ class Route
 // 		'immagini,rotatea',
 		'ordini,main',
 		'ordini,form',
+		'ordini,nonannullato',
 		'ordini,vedi',
 		'ordini,integrazioni',
 		'ordini,righe',

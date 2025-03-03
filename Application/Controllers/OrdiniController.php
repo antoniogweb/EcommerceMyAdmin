@@ -767,6 +767,26 @@ class OrdiniController extends BaseController {
 		$this->load("vedi_script_pixel");
 	}
 	
+	public function nonannullato($id_o)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$ordine = $this->m("OrdiniModel")->selectId((int)$id_o);
+		
+		if (!empty($ordine) && $ordine["annullato"] && $ordine["data_annullamento"] && date("Y-m-d", strtotime($ordine["data_annullamento"])) == date("Y-m-d"))
+		{
+			$this->m("OrdiniModel")->query(array(
+				"update orders set annullato = 0, data_annullamento = NULL, time_annullamento = 0, time_annullamento_annullato = ? where id_o = ?",
+				array(
+					time(),
+					(int)$id_o
+				)
+			));
+		}
+	}
+	
 	public function vedi($id_o)
 	{
 		@session_start();
