@@ -2635,6 +2635,21 @@ class OrdiniModel extends FormModel {
 		return "";
     }
     
+    public function datePagamentoAnnullamentoCrud($record)
+	{
+		$formato = "d-m-Y H:i";
+		
+		$html = "";
+		
+		if ($record[$this->_tables]["data_pagamento"])
+			$html .= "<div><b>".gtext("P").":</b> <b class='text-success'>".date($formato,strtotime($record[$this->_tables]["data_pagamento"]))."</b></div>";
+		
+		if ($record[$this->_tables]["data_annullamento"])
+			$html .= "<div><b>".gtext("R").":</b> <b class='text-danger'>".date($formato,strtotime($record[$this->_tables]["data_annullamento"]))."</b></div>";
+		
+		return $html;
+	}
+    
     public function commessoCrud($record)
     {
 		if ($record["orders"]["id_commesso"])
@@ -2848,6 +2863,26 @@ class OrdiniModel extends FormModel {
 			if (count($arrayStatiOrdineScaricabile) > 0 && in_array($statoOrdine, $arrayStatiOrdineScaricabile))
 				return true;
 		}
+		
+		return false;
+	}
+	
+	public function puoAnnullareDataPagamento($idO = 0)
+	{
+		$ordine = $this->selectId((int)$idO);
+		
+		if (!empty($ordine) && !OrdiniModel::conPagamentoOnline($ordine) && $ordine["pagato"] && $ordine["data_pagamento"] && date("Y-m-d", strtotime($ordine["data_pagamento"])) == date("Y-m-d"))
+			return true;
+		
+		return false;
+	}
+	
+	public function puoAnnullareDataAnnullamento($idO = 0)
+	{
+		$ordine = $this->selectId((int)$idO);
+		
+		if (!empty($ordine) && $ordine["annullato"] && $ordine["data_annullamento"] && date("Y-m-d", strtotime($ordine["data_annullamento"])) == date("Y-m-d"))
+			return true;
 		
 		return false;
 	}

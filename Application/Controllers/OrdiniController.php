@@ -143,6 +143,10 @@ class OrdiniController extends BaseController {
 		'alc:sanitizeAll'=>'tutti',
 		'numero_documento:sanitizeAll'=>'tutti',
 		'nazione_spedizione:sanitizeAll'=>'tutti',
+		'dalp:sanitizeAll'=>'tutti',
+		'alp:sanitizeAll'=>'tutti',
+		'dalr:sanitizeAll'=>'tutti',
+		'alr:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -244,6 +248,12 @@ class OrdiniController extends BaseController {
 		{
 			$this->mainFields[] = 'agenteCrud';
 			$this->mainHead .= ',Agente';
+		}
+		
+		if (v("mostra_date_pagamento_annullamento_in_elenco"))
+		{
+			$this->mainFields[] = 'datePagamentoAnnullamentoCrud';
+			$this->mainHead .= ',Pagamento/Rimborso';
 		}
 		
 		$this->mainFields[] = 'infoGatewayCrud';
@@ -362,6 +372,21 @@ class OrdiniController extends BaseController {
 		if ($this->viewArgs['al'] != "tutti")
 			$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_creazione, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['al']))));
 		
+		if (v("mostra_date_pagamento_annullamento_in_elenco"))
+		{
+			if ($this->viewArgs['dalp'] != "tutti")
+				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_pagamento, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dalp']))));
+		
+			if ($this->viewArgs['alp'] != "tutti")
+				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_pagamento, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['alp']))));
+			
+			if ($this->viewArgs['dalr'] != "tutti")
+				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_annullamento, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dalr']))));
+		
+			if ($this->viewArgs['alr'] != "tutti")
+				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_annullamento, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['alr']))));
+		}
+		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dalc'], $this->viewArgs['alc'], 'data_consegna');
 		
 		if (strcmp($this->viewArgs['lista_regalo'],'tutti') !== 0)
@@ -466,6 +491,14 @@ class OrdiniController extends BaseController {
 		if (count($nazioniDiSpedizioneInOrdini) > 1)
 		{
 			$this->filters[] = array("nazione_spedizione",null,array("tutti" => "Nazione spedizione") + $nazioniDiSpedizioneInOrdini);
+		}
+		
+		if (v("mostra_date_pagamento_annullamento_in_elenco"))
+		{
+			$this->filters[] = array("dalp");
+			$this->filters[] = array("alp");
+			$this->filters[] = array("dalr");
+			$this->filters[] = array("alr");
 		}
 		
 		$this->getTabViewFields("main");
@@ -767,25 +800,55 @@ class OrdiniController extends BaseController {
 		$this->load("vedi_script_pixel");
 	}
 	
-// 	public function settanonannullato($id_o)
-// 	{
-// 		$this->shift(1);
-// 		
-// 		$this->clean();
-// 		
-// 		$ordine = $this->m("OrdiniModel")->selectId((int)$id_o);
-// 		
-// 		if (!empty($ordine) && $ordine["annullato"] && $ordine["data_annullamento"] && date("Y-m-d", strtotime($ordine["data_annullamento"])) == date("Y-m-d"))
-// 		{
-// 			$this->m("OrdiniModel")->query(array(
-// 				"update orders set annullato = 0, data_annullamento = NULL, time_annullamento = 0, time_annullamento_annullato = ? where id_o = ?",
-// 				array(
-// 					time(),
-// 					(int)$id_o
-// 				)
-// 			));
-// 		}
-// 	}
+	public function settanonpagato($id_o)
+	{
+		if (!v("permetti_annullare_data_pagamento_e_annullamento"))
+			$this->responseCode(403);
+		
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$ordine = $this->m("OrdiniModel")->selectId((int)$id_o);
+		
+		if ($this->m("OrdiniModel")->puoAnnullareDataPagamento((int)$id_o))
+		{
+			$res = $this->m("OrdiniModel")->query(array(
+				"update orders set pagato = 0, data_pagamento = NULL, time_pagamento = 0 where id_o = ?",
+				array(
+					(int)$id_o
+				)
+			));
+			
+			if ($res)
+				$this->m("OrdinidateModel")->inserisci($ordine, 1);
+		}
+	}
+	
+	public function settanonannullato($id_o)
+	{
+		if (!v("permetti_annullare_data_pagamento_e_annullamento"))
+			$this->responseCode(403);
+		
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$ordine = $this->m("OrdiniModel")->selectId((int)$id_o);
+		
+		if ($this->m("OrdiniModel")->puoAnnullareDataAnnullamento((int)$id_o))
+		{
+			$res = $this->m("OrdiniModel")->query(array(
+				"update orders set annullato = 0, data_annullamento = NULL, time_annullamento = 0 where id_o = ?",
+				array(
+					(int)$id_o
+				)
+			));
+			
+			if ($res)
+				$this->m("OrdinidateModel")->inserisci($ordine, 0);
+		}
+	}
 	
 	public function vedi($id_o)
 	{

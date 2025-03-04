@@ -573,6 +573,9 @@ class VariabiliModel extends GenericModel {
 		"mostra_sezione_righe_ordine"	=>	0, // se impostato su 1, mostra la sezione con l'elenco delle righe ordine
 		"mostra_sempre_stato_closed"	=>	0, // se impostato su 1, mostra lo stato closed anche se attiva_spedizione = 0
 		"permetti_al_cliente_di_annullare_ordine"	=>	0, // se impostato su 1 il cliente può annullare l'ordine in autonomia dalla pagina dell'ordine
+		"mostra_data_annullamento_se_presente"	=>	0, // se impostato a 1, mostra la data annullamento nel dettaglio dell'ordine
+		"permetti_annullare_data_pagamento_e_annullamento"	=>	0, // se impostato a 1, permette di annullare le date di pagamento e annullamento nello stesso giorno
+		"mostra_date_pagamento_annullamento_in_elenco"	=>	0, // se impostato a 1, mostra le date di pagamento e annullamento nell'elenco ordini
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

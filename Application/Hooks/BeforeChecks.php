@@ -851,6 +851,42 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Codice gestionale",
 			),
 		),
+		"dalp"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control data_field",
+				"placeholder"	=>	"Pagamento dal",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+			),
+		),
+		"alp"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control data_field",
+				"placeholder"	=>	"Pagamento al",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+			),
+		),
+		"dalr"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control data_field",
+				"placeholder"	=>	"Rimborso dal",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+			),
+		),
+		"alr"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control data_field",
+				"placeholder"	=>	"Rimborso al",
+			),
+			"wrap"	=>	array(
+				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(
