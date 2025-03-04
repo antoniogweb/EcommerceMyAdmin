@@ -31,9 +31,9 @@ class OrdinidateModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public function inserisci($ordine, $annullaPagato = 1)
+	public function inserisci($ordine, $tipo = "P")
 	{
-		if ($annullaPagato)
+		if ($tipo == "P")
 		{
 			$this->sValues(array(
 				"data_pagamento"	=>	$ordine["data_pagamento"],
@@ -41,12 +41,20 @@ class OrdinidateModel extends GenericModel
 				"pagato"			=>	$ordine["pagato"],
 			));
 		}
-		else
+		else if ($tipo == "A")
 		{
 			$this->sValues(array(
 				"data_annullamento"	=>	$ordine["data_annullamento"],
 				"time_annullamento"	=>	$ordine["time_annullamento"],
 				"annullato"			=>	$ordine["annullato"],
+			));
+		}
+		else if ($tipo == "R")
+		{
+			$this->sValues(array(
+				"data_rimborso"		=>	$ordine["data_rimborso"],
+				"time_rimborso"		=>	$ordine["time_rimborso"],
+				"rimborsato"		=>	$ordine["rimborsato"],
 			));
 		}
 		

@@ -252,7 +252,7 @@ class OrdiniController extends BaseController {
 		
 		if (v("mostra_date_pagamento_annullamento_in_elenco"))
 		{
-			$this->mainFields[] = 'datePagamentoAnnullamentoCrud';
+			$this->mainFields[] = 'datePagamentoRimborsoCrud';
 			$this->mainHead .= ',Pagamento/Rimborso';
 		}
 		
@@ -381,10 +381,10 @@ class OrdiniController extends BaseController {
 				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_pagamento, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['alp']))));
 			
 			if ($this->viewArgs['dalr'] != "tutti")
-				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_annullamento, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dalr']))));
+				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_rimborso, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs['dalr']))));
 		
 			if ($this->viewArgs['alr'] != "tutti")
-				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_annullamento, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['alr']))));
+				$this->m[$this->modelName]->sWhere(array("DATE_FORMAT(data_rimborso, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs['alr']))));
 		}
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dalc'], $this->viewArgs['alc'], 'data_consegna');
@@ -821,7 +821,7 @@ class OrdiniController extends BaseController {
 			));
 			
 			if ($res)
-				$this->m("OrdinidateModel")->inserisci($ordine, 1);
+				$this->m("OrdinidateModel")->inserisci($ordine, "P");
 		}
 	}
 	
@@ -846,7 +846,32 @@ class OrdiniController extends BaseController {
 			));
 			
 			if ($res)
-				$this->m("OrdinidateModel")->inserisci($ordine, 0);
+				$this->m("OrdinidateModel")->inserisci($ordine, "A");
+		}
+	}
+	
+	public function settanonrimborsato($id_o)
+	{
+		if (!v("permetti_annullare_data_pagamento_e_annullamento"))
+			$this->responseCode(403);
+		
+		$this->shift(1);
+		
+		$this->clean();
+		
+		$ordine = $this->m("OrdiniModel")->selectId((int)$id_o);
+		
+		if ($this->m("OrdiniModel")->puoAnnullareDataRimborso((int)$id_o))
+		{
+			$res = $this->m("OrdiniModel")->query(array(
+				"update orders set rimborsato = 0, data_rimborso = NULL, time_rimborso = 0 where id_o = ?",
+				array(
+					(int)$id_o
+				)
+			));
+			
+			if ($res)
+				$this->m("OrdinidateModel")->inserisci($ordine, "R");
 		}
 	}
 	

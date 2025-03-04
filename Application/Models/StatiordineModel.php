@@ -83,6 +83,13 @@ class StatiordineModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'rimborsato'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine rimborsato",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 				'da_spedire'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Stato corrispondente ad un ordine pronto per la spedizione",
@@ -202,6 +209,14 @@ class StatiordineModel extends GenericModel {
 			return "danger";
 	}
 	
+	public function rimborsatoCrud($record)
+	{
+		if ($record["stati_ordine"]["rimborsato"])
+			return "<i class='fa fa-check text-danger'></i>";
+		
+		return "";
+	}
+	
 	public function pagatoCrud($record)
 	{
 		$label = self::getLabel($record["stati_ordine"]["pagato"]);
@@ -257,6 +272,14 @@ class StatiordineModel extends GenericModel {
 			self::g(false)->setRecordTabella("codice");
 		
 		return self::$recordTabella[$codiceStato]["pagato"] < 0 ? true : false;
+	}
+	
+	public function rimborsato($codiceStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("codice");
+		
+		return self::$recordTabella[$codiceStato]["rimborsato"] ? true : false;
 	}
 	
 	public static function getCampo($codiceStato, $campo)

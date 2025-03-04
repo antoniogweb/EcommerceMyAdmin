@@ -507,13 +507,25 @@ class OrdiniModel extends FormModel {
 					$this->values["time_pagamento"] = time();
 				}
 			}
-			else if (StatiordineModel::g(false)->nonpagato($this->values["stato"]))
+			else if (!empty($record) && !$record["evaso_non_evaso"])
 			{
-				if (!empty($record) && !$record["annullato"] && !$record["evaso_non_evaso"])
+				if (StatiordineModel::g(false)->rimborsato($this->values["stato"]))
 				{
-					$this->values["annullato"] = 1;
-					$this->values["data_annullamento"] = date("Y-m-d H:i");
-					$this->values["time_annullamento"] = time();
+					if (!$record["rimborsato"])
+					{
+						$this->values["rimborsato"] = 1;
+						$this->values["data_rimborso"] = date("Y-m-d H:i");
+						$this->values["time_rimborso"] = time();
+					}
+				}
+				else if (StatiordineModel::g(false)->nonpagato($this->values["stato"]))
+				{
+					if (!$record["annullato"])
+					{
+						$this->values["annullato"] = 1;
+						$this->values["data_annullamento"] = date("Y-m-d H:i");
+						$this->values["time_annullamento"] = time();
+					}
 				}
 			}
 		}
@@ -2635,7 +2647,7 @@ class OrdiniModel extends FormModel {
 		return "";
     }
     
-    public function datePagamentoAnnullamentoCrud($record)
+    public function datePagamentoRimborsoCrud($record)
 	{
 		$formato = "d-m-Y H:i";
 		
@@ -2644,8 +2656,8 @@ class OrdiniModel extends FormModel {
 		if ($record[$this->_tables]["data_pagamento"])
 			$html .= "<div><b>".gtext("P").":</b> <b class='text-success'>".date($formato,strtotime($record[$this->_tables]["data_pagamento"]))."</b></div>";
 		
-		if ($record[$this->_tables]["data_annullamento"])
-			$html .= "<div><b>".gtext("R").":</b> <b class='text-danger'>".date($formato,strtotime($record[$this->_tables]["data_annullamento"]))."</b></div>";
+		if ($record[$this->_tables]["data_rimborso"])
+			$html .= "<div><b>".gtext("R").":</b> <b class='text-danger'>".date($formato,strtotime($record[$this->_tables]["data_rimborso"]))."</b></div>";
 		
 		return $html;
 	}
@@ -2882,6 +2894,16 @@ class OrdiniModel extends FormModel {
 		$ordine = $this->selectId((int)$idO);
 		
 		if (!empty($ordine) && $ordine["annullato"] && $ordine["data_annullamento"] && date("Y-m-d", strtotime($ordine["data_annullamento"])) == date("Y-m-d"))
+			return true;
+		
+		return false;
+	}
+	
+	public function puoAnnullareDataRimborso($idO = 0)
+	{
+		$ordine = $this->selectId((int)$idO);
+		
+		if (!empty($ordine) && $ordine["rimborsato"] && $ordine["data_rimborso"] && date("Y-m-d", strtotime($ordine["data_rimborso"])) == date("Y-m-d"))
 			return true;
 		
 		return false;

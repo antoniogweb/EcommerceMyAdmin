@@ -15,6 +15,7 @@ $().ready(function() {
 			<?php echo $form["codice"];?>
 			<?php echo $form["classe"];?>
 			<?php echo $form["pagato"];?>
+			<?php echo $form["rimborsato"];?>
 			<?php echo $form["da_spedire"] ?? "";?>
 			<?php echo $form["in_spedizione"] ?? "";?>
 			<?php echo $form["spedito"] ?? "";?>

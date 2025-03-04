@@ -89,6 +89,7 @@ class Route
 		'ordini,form',
 		'ordini,settanonpagato',
 		'ordini,settanonannullato',
+		'ordini,settanonrimborsato',
 		'ordini,vedi',
 		'ordini,integrazioni',
 		'ordini,righe',
