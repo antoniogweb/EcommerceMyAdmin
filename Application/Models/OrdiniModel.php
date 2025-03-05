@@ -520,7 +520,7 @@ class OrdiniModel extends FormModel {
 				}
 				else if (StatiordineModel::g(false)->nonpagato($this->values["stato"]))
 				{
-					if (!$record["annullato"])
+					if (!$record["annullato"] && $record["stato"] != $this->values["stato"])
 					{
 						$this->values["annullato"] = 1;
 						$this->values["data_annullamento"] = date("Y-m-d H:i");
