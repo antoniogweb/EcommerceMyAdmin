@@ -291,7 +291,7 @@ class DocumentiModel extends GenericModel {
 		return "<span class='text text-success text-bold'>".$str."</span>";
 	}
 	
-	public function elaboraArchivio($id, $idPage = 0)
+	public function elaboraArchivio($id, $idPage = 0, $idUser = 0)
 	{
 		$record = $this->selectId((int)$id);
 		
@@ -324,6 +324,7 @@ class DocumentiModel extends GenericModel {
 					$okElaborazione[] = $this->scDocumento($extractPath, $this_file, 0, array(
 						"id_page"		=>	$idPage,
 						"id_archivio"	=>	$id,
+						"id_user"		=>	$idUser,
 					));
 				}
 			}
@@ -378,6 +379,7 @@ class DocumentiModel extends GenericModel {
 		$idArchivio = isset($params["id_archivio"]) ? $params["id_archivio"] : 0;
 		$idImport = isset($params["id_import"]) ? $params["id_import"] : 0;
 		$lingua = isset($params["lingua"]) ? $params["lingua"] : null;
+		$idUser = isset($params["id_user"]) ? (int)$params["id_user"] : 0;
 		
 		$okElaborazione = true;
 		
@@ -402,6 +404,7 @@ class DocumentiModel extends GenericModel {
 				"id_page"			=>	$idPage,
 				"id_archivio"		=>	$idArchivio,
 				"id_import"			=>	$idImport,
+				"id_user"			=>	$idUser,
 			));
 			
 			// Lingua

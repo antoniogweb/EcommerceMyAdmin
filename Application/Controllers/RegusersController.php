@@ -40,9 +40,14 @@ Helper_List::$filtersFormLayout["filters"]["agente"] = array(
 
 class RegusersController extends BaseController
 {
+	use TraitdocumentiController;
+	
 	public $menuLinks = "back,save,invia_link_recupero_password";
 	
 	protected $nomeCampoIdOrdini = "id_user";
+	
+	public $mainMenuAssociati = "back";
+	public $documentiInPagina = false;
 	
 	public $argKeys = array(
 		'page:forceInt'=>1,
@@ -64,6 +69,9 @@ class RegusersController extends BaseController
 		'gruppo:sanitizeAll'=>'tutti',
 		'ticket:forceInt'=>0,
 		'codice_gestionale:sanitizeAll'=>'tutti',
+		'id_tipo_doc:sanitizeAll' => "tutti",
+		'titolo_documento:sanitizeAll' => "tutti",
+		'lingua_doc:sanitizeAll' => "tutti",
 	);
 	
 	public $tabella = "clienti";

@@ -413,6 +413,7 @@ class VariabiliModel extends GenericModel {
 		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
 		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX
 		"attiva_regione_su_cliente"	=>	0, // se impostato ad 1, attiva il campo "id_regione" nella scheda cliente (lato admin)
+		"documenti_in_clienti"		=>	0, // se impostato su 1, attiva la possibilità di caricare documenti legati ai clienti
 		## PROMO ##
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto

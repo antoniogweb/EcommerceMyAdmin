@@ -25,3 +25,9 @@
 <p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/promozioni/form/insert";?>?partial=Y&nobuttons=Y&id_user=<?php echo $id;?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi codice coupon")?></a></p>
 
 <?php } ?>
+
+<?php if ($this->action === "documenti" && v("documenti_in_clienti")) { ?>
+
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=0&id_user=<?php echo $id;?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></p>
+
+<?php } ?>

@@ -117,6 +117,7 @@ class Route
 		'regusers,ordinicollegati',
 		'regusers,inviamailrecuperopassword',
 		'regusers,emailesistente',
+		'regusers,documenti',
 		
 		'reggroups,main',
 		'reggroups,form',

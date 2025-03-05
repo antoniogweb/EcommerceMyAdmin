@@ -15,6 +15,9 @@
 	<li <?php echo $posizioni['ordinicollegati'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/ordinicollegati/$id".$this->viewStatus;?>"><?php echo gtext("Ordini collegati");?></a></li>
 	<li <?php echo $posizioni['promozioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/promozioni/$id".$this->viewStatus;?>"><?php echo gtext("Coupon");?></a></li>
 	<?php } ?>
+	<?php if (v("documenti_in_clienti")) { ?>
+	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/documenti/$id".$this->viewStatus;?>"><?php echo gtext("Documenti");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } else { ?>

@@ -33,6 +33,7 @@ class DocumentiController extends BaseController
 	public $argKeys = array(
 		'id_page:sanitizeAll'	=>	'tutti',
 		'compresso:forceInt'	=>	0,
+		'id_user:forceInt'	=>	0,
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -67,6 +68,9 @@ class DocumentiController extends BaseController
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
+		
+		if ((int)$this->viewArgs["id_user"] !== 0)
+			$this->m[$this->modelName]->setValue("id_user", (int)$this->viewArgs["id_user"]);
 		
 		parent::form($queryType, $id);
 	}
@@ -132,7 +136,7 @@ class DocumentiController extends BaseController
 		
 		$data['menu'] = "";
 		
-		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"];
+		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"]."&id_user=".$this->viewArgs["id_user"];
 		
 		$this->append($data);
 		
@@ -149,7 +153,7 @@ class DocumentiController extends BaseController
 		$data['menu'] = "";
 		$data['caricaZip'] = true;
 		
-		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1";
+		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1"."&id_user=".$this->viewArgs["id_user"];
 		
 		$this->append($data);
 		
@@ -202,6 +206,9 @@ class DocumentiController extends BaseController
 			if ($this->viewArgs["id_page"] != "tutti")
 				$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
 			
+			if ((int)$this->viewArgs["id_user"] !== 0)
+				$this->m[$this->modelName]->setValue("id_user", (int)$this->viewArgs["id_user"]);
+			
 			$this->m["DocumentiModel"]->setValue("titolo", $this->m["DocumentiModel"]->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
 			$this->m["DocumentiModel"]->setValue("data_documento", date("Y-m-d"));
 			
@@ -224,7 +231,7 @@ class DocumentiController extends BaseController
 				$result = "OK";
 				
 				if ($compresso)
-					$this->m["DocumentiModel"]->elaboraArchivio($lId, (int)$this->viewArgs["id_page"]);
+					$this->m["DocumentiModel"]->elaboraArchivio($lId, (int)$this->viewArgs["id_page"], (int)$this->viewArgs["id_user"]);
 			}
 			else
 				$errore = $erroreGenerico.strip_tags($this->m["DocumentiModel"]->notice);

@@ -59,7 +59,8 @@ class BaseController extends Controller
 	public $campiVariabiliDaModificare = "";
 	public $loginController = "users";
 	public $formQueryActions = "insert,update";
-
+	public $documentiInPagina = true;
+	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
 		'attivo:sanitizeAll'=>'tutti',
