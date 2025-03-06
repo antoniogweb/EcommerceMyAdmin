@@ -173,7 +173,7 @@ class DocumentiController extends BaseController
 		
 		$this->clean();
 		
-		$this->m["DocumentiModel"]->setValues(array(
+		$this->m("DocumentiModel")->setValues(array(
 			"filename"	=>	"",
 		));
 		
@@ -188,56 +188,56 @@ class DocumentiController extends BaseController
 			$testoSuccesso = gtext("File")." ".sanitizeHtml($_FILES["filename"]["name"])." ".gtext("correttamente caricato");
 		
 		if ($compresso)
-			$this->m["DocumentiModel"]->uploadFields["filename"]["allowedExtensions"] = "zip";
+			$this->m("DocumentiModel")->uploadFields["filename"]["allowedExtensions"] = "zip";
 		
-		if ($this->m["DocumentiModel"]->upload("insert"))
+		if ($this->m("DocumentiModel")->upload("insert"))
 		{
-			$ext = $this->m["DocumentiModel"]->files->ext;
+			$ext = $this->m("DocumentiModel")->files->ext;
 			
-			$this->m["DocumentiModel"]->setValue("estensione", $ext);
+			$this->m("DocumentiModel")->setValue("estensione", $ext);
 			
 			if ($_FILES["filename"]["type"])
-				$this->m["DocumentiModel"]->setValue("content_type", $_FILES["filename"]["type"]);
+				$this->m("DocumentiModel")->setValue("content_type", $_FILES["filename"]["type"]);
 			
 			$idTipoDoc = TipidocumentoestensioniModel::cercaTipoDocumentoDaEstensione($ext);
 			
-			$this->m["DocumentiModel"]->setValue("id_tipo_doc", $idTipoDoc);
+			$this->m("DocumentiModel")->setValue("id_tipo_doc", $idTipoDoc);
 			
 			if ($this->viewArgs["id_page"] != "tutti")
-				$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
+				$this->m("DocumentiModel")->setValue("id_page", $this->viewArgs["id_page"]);
 			
 			if ((int)$this->viewArgs["id_user"] !== 0)
-				$this->m[$this->modelName]->setValue("id_user", (int)$this->viewArgs["id_user"]);
+				$this->m("DocumentiModel")->setValue("id_user", (int)$this->viewArgs["id_user"]);
 			
-			$this->m["DocumentiModel"]->setValue("titolo", $this->m["DocumentiModel"]->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
-			$this->m["DocumentiModel"]->setValue("data_documento", date("Y-m-d"));
+			$this->m("DocumentiModel")->setValue("titolo", $this->m("DocumentiModel")->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
+			$this->m("DocumentiModel")->setValue("data_documento", date("Y-m-d"));
 			
 			// Lingua
-			$this->m["DocumentiModel"]->setValue("lingua", DocumentiModel::cercaLinguaDaNomeFile($_FILES["filename"]["name"]));
+			$this->m("DocumentiModel")->setValue("lingua", DocumentiModel::cercaLinguaDaNomeFile($_FILES["filename"]["name"]));
 			
 			if ($compresso)
 			{
-				$this->m["DocumentiModel"]->setValue("visibile",0);
-				$this->m["DocumentiModel"]->setValue("archivio",1);
+				$this->m("DocumentiModel")->setValue("visibile",0);
+				$this->m("DocumentiModel")->setValue("archivio",1);
 			}
 			
 			DocumentiModel::$uploadFile = false;
 			
-			if ($this->m["DocumentiModel"]->insert())
+			if ($this->m("DocumentiModel")->insert())
 			{
 				$errore = $testoSuccesso;
 				
-				$lId = $this->m["DocumentiModel"]->lId;
+				$lId = $this->m("DocumentiModel")->lId;
 				$result = "OK";
 				
 				if ($compresso)
-					$this->m["DocumentiModel"]->elaboraArchivio($lId, (int)$this->viewArgs["id_page"], (int)$this->viewArgs["id_user"]);
+					$this->m("DocumentiModel")->elaboraArchivio($lId, (int)$this->viewArgs["id_page"], (int)$this->viewArgs["id_user"]);
 			}
 			else
-				$errore = $erroreGenerico.strip_tags($this->m["DocumentiModel"]->notice);
+				$errore = $erroreGenerico.strip_tags($this->m("DocumentiModel")->notice);
 		}
 		else
-			$errore = $erroreGenerico.strip_tags($this->m["DocumentiModel"]->notice);
+			$errore = $erroreGenerico.strip_tags($this->m("DocumentiModel")->notice);
 		
 		echo json_encode(array(
 			"result"	=>	$result,
