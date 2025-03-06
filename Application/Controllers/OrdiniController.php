@@ -200,6 +200,7 @@ class OrdiniController extends BaseController {
 			'OrdiniModel.getCFoPIva|orders.id_o',
 			'orders.nome_promozione',
 			'statoordinelabel',
+			'pagamentoCrud',
 			'totaleCrud',
 		);
 		
@@ -210,7 +211,7 @@ class OrdiniController extends BaseController {
 		
 		$this->mainButtons = $mainButtons;
 		
-		$this->mainHead = 'N°,Data Ora,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Tot.';
+		$this->mainHead = 'N°,Data Ora,Nome/Rag.Soc,Email,Tipo,C.F./P.IVA,Promoz.,Stato,Pagamento,Tot.';
 		
 		if (v("attiva_ip_location"))
 		{

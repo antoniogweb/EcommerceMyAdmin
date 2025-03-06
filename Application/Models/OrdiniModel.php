@@ -2126,6 +2126,11 @@ class OrdiniModel extends FormModel {
 		return 0;
 	}
 	
+	public function pagamentoCrud($record)
+	{
+		return metodoPagamento($record["orders"]["pagamento"]);
+	}
+	
 	public function statoordinelabel($records)
 	{
 		if (isset(OrdiniModel::$stati[$records["orders"]["stato"]]))
