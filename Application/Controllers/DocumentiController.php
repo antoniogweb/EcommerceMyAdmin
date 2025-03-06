@@ -136,7 +136,7 @@ class DocumentiController extends BaseController
 		
 		$data['menu'] = "";
 		
-		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"]."&id_user=".$this->viewArgs["id_user"];
+		$data['uploadUrl'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/upload?id_page=".$this->viewArgs["id_page"]."&id_user=".$this->viewArgs["id_user"];
 		
 		$this->append($data);
 		
@@ -153,7 +153,7 @@ class DocumentiController extends BaseController
 		$data['menu'] = "";
 		$data['caricaZip'] = true;
 		
-		$data['uploadUrl'] = $this->baseUrl."/documenti/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1"."&id_user=".$this->viewArgs["id_user"];
+		$data['uploadUrl'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1"."&id_user=".$this->viewArgs["id_user"];
 		
 		$this->append($data);
 		

@@ -934,6 +934,8 @@ class Route
 	//set $rewrite to 'yes' if you want that MvcMyLibrary rewrites the URLs according to what specified in $map
 	public static $rewrite = 'no';
 	
+	public static $controllersMap = array();
+	
 	//define the urls of your website
 	//you have to set $rewrite to 'yes'
 	public static $map = array();

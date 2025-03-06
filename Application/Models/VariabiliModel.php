@@ -57,7 +57,6 @@ class VariabiliModel extends GenericModel {
 		"correlati_in_prodotti"		=>	1,
 		"caratteristiche_in_prodotti"=>	1,
 		"attiva_personalizzazioni"	=>	0,
-		"documenti_in_prodotti"		=>	1,
 		"ecommerce_attivo"			=>	1,
 		"mostra_link_in_blog"		=>	0,
 		"attiva_ruoli"				=>	0,
@@ -70,7 +69,6 @@ class VariabiliModel extends GenericModel {
 		"contenuti_in_pagine"		=>	1, // se sono visibili oppure no i contenuti nelle pagine
 		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
 		"fasce_in_pagine"			=>	1,
-		"mostra_tipi_documento"		=>	1,
 		"download_attivi"			=>	1,
 		"usa_tag"					=>	0, // se attivare i tag
 		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
@@ -197,7 +195,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_autore_in_blog"		=>	0,
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
-		"riconoscimento_tipo_documento_automatico"	=>	1,
 		"contenuti_in_eventi"		=>	1,
 		"permetti_upload_archivio"	=>	0,
 		"elimina_archivio_dopo_upload"	=>	1,
@@ -217,7 +214,6 @@ class VariabiliModel extends GenericModel {
 		"label_regione_url"			=>	"regione",
 		"alias_fascia_prezzo"		=>	"fascia-prezzo",
 		"attiva_formn_contatti"		=>	0,
-		"attiva_immagine_in_documenti"	=>	1,
 		"attiva_nazione_marchi"		=>	0,
 		"attiva_campo_nuovo_in_pagine"	=>	0,
 		"attiva_in_evidenza_marchi"	=>	0,
@@ -234,14 +230,9 @@ class VariabiliModel extends GenericModel {
 		"alias_valore_tipo_in_evidenza"	=>	"in-evidenza",
 		"attiva_nuovo_marchi"		=>	0,
 		"usa_descrizione_in_slide"	=>	0,
-		"attiva_altre_lingue_documento"	=>	0,
 		"mostra_icone"	=>	0,
 		"mostra_slide"	=>	1,
-		"abilita_traduzioni_documenti"	=>	1,
 		"abilita_visibilita_pagine"		=>	0,
-		"cerca_lingua_documento_da_nome_file"	=>	1,
-		"lingua_default_documenti"	=>	"tutte",
-		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg",
 		"nuova_modalita_caratteristiche"	=>	1,
 		"attiva_tipologie_caratteristiche"	=>	1,
 		"lingua_default_frontend"	=>	"it",
@@ -274,7 +265,6 @@ class VariabiliModel extends GenericModel {
 		"tempo_log_ore"				=>	240,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
-		"dimensioni_upload_documenti"	=>	3000000, // dimensione massima degli upload nei documenti
 		"dimensioni_upload_contenuti"	=>	6000000, // dimensione massima degli upload nei contenuti
 		"dimensioni_upload_file_generici"	=>	10000000, // dimensione massima degli upload nei file generici (nell'area di testo)
 		"estensioni_upload_file_contenuti"	=>	"pdf", // estensioni ammesse nell'upload dei file dei contenuti
@@ -288,7 +278,6 @@ class VariabiliModel extends GenericModel {
 		"genera_e_invia_password"	=>	0,
 		"page_main_class"			=>	"top_page_main",
 		"attiva_azioni_ajax"		=>	0,
-		"attiva_link_documenti"		=>	0,
 		"checkout_solo_loggato"		=>	0, // costringe ad eseguire il login per poter andare al checkout
 		"stile_form_login"			=>	"stile_1_pp_base",
 		"email_debug_retargeting"	=>	"",
@@ -413,7 +402,6 @@ class VariabiliModel extends GenericModel {
 		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
 		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX
 		"attiva_regione_su_cliente"	=>	0, // se impostato ad 1, attiva il campo "id_regione" nella scheda cliente (lato admin)
-		"documenti_in_clienti"		=>	0, // se impostato su 1, attiva la possibilità di caricare documenti legati ai clienti
 		## PROMO ##
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
@@ -594,7 +582,6 @@ class VariabiliModel extends GenericModel {
 		"attiva_spedizione"			=>	1, // se mostrare oppure no la spedizione in carrello
 		"soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni"	=>	1, // se impostato ad 1, la soglia oltre alla quale la spedizione è gratuita vale in tutto il mondo, altrimenti vale solo nella nazione di default (variabile nazione_default)
 		"soglia_spedizioni_gratuite_diversa_per_ogni_nazione"	=>	0, // se impostata a 1, la soglia sopra la quale la spedizione è gratuita non viene più impostata sotto Preferenze > Impostazioni ma nel dettaglio della singola nazione
-		"attiva_biblioteca_documenti"	=>	0, // se mostrare o nascondere i link della propria biblioteca in area riservata
 		## CORRIERI ##
 		"scegli_il_corriere_dalla_categoria_dei_prodotti"	=>	0, // se impostato ad 1, il corriere verrà scelto in funzione della categoria del prodotto (se viene trovata un'associazione)
 		"attiva_campo_ritiro_in_sede_su_corrieri"	=>	0, // se impostato ad 1, permette di selezionare se un corriere è un ritiro in sede
@@ -751,8 +738,8 @@ class VariabiliModel extends GenericModel {
 		"email_ticket_negozio"		=>	"", // la mail a cui viene inviata la notifica di nuovo ticket
 		"numero_massimo_ticket_aperti"	=>	2, // numero massimo di ticket allo stato diverso da chiuso
 		"numero_massimo_messaggi_consecutivi_per_ticket"	=>	2, // numero massimo di messaggi che un cliente può inviare prima di ricevere risposta dal negozio
-		"dimensioni_upload_immagine_ticket"	=>	5000000, // dimensione massima degli upload nei documenti
-		"dimensioni_upload_video_ticket"	=>	10000000, // dimensione massima degli upload nei documenti
+		"dimensioni_upload_immagine_ticket"	=>	5000000, // dimensione massima degli upload nei ticket
+		"dimensioni_upload_video_ticket"	=>	10000000, // dimensione massima degli upload dei video nei ticket
 		"permetti_il_caricamento_di_video_nei_ticket"	=>	1, // 1: permetti, 0: non permettere
 		"ticket_video_extensions"	=>	"mp4,mov",
 		"ticket_video_mime_types"	=>	"video/mp4,video/quicktime",
@@ -823,6 +810,20 @@ class VariabiliModel extends GenericModel {
 		"campo_codice_transazione_nexi"	=>	"codice_transazione", // il campo dell'ordine da usare come codice di transazione nei pagamenti Nexi
 		### IVA ##
 		"ripartisci_iva_spese_accessorie_proporzionalmente_ai_prodotti"	=>	0, // se impostato su 1, calcola l'IVA della spedizione ripartendo sulla base dei totali e delle aliquote dei prodotti del carrello
+		### DOCUMENTI ##
+		"documenti_in_prodotti"		=>	1, // se impostato su 1, mostra la scheda documenti nei prodotti
+		"mostra_tipi_documento"		=>	1, // se impostato su 1, attiva la sezione "tipi documento"
+		"riconoscimento_tipo_documento_automatico"	=>	1, // se impostato su 1, permette l'upload di file ZIP per l'elaborazione o di molti documenti
+		"attiva_altre_lingue_documento"	=>	0, // se impostato su 1, permette l'inclusione o l'esclusione di altre lingue nel documento
+		"abilita_traduzioni_documenti"	=>	1, // se impostato su 1, abilita le traduzioni dei documenti
+		"attiva_immagine_in_documenti"	=>	1, // se impostato su 1, attiva il campo immagine nei documenti
+		"cerca_lingua_documento_da_nome_file"	=>	1, // se impostato su 1, cerca la lingua del documento dal nome del file
+		"lingua_default_documenti"	=>	"tutte", // lingua di default dei documenti
+		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg", // estensioni accettate per i documenti
+		"dimensioni_upload_documenti"	=>	3000000, // dimensione massima degli upload nei documenti
+		"attiva_link_documenti"		=>	0, // se impostato su 1, attiva la possibilità di impostare un link ad un documento (ex in slide, etc)
+		"documenti_in_clienti"		=>	0, // se impostato su 1, attiva la possibilità di caricare documenti legati ai clienti
+		"attiva_biblioteca_documenti"	=>	0, // se mostrare o nascondere i link della propria biblioteca in area riservata
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

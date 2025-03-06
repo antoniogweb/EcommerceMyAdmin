@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($this->action == "gruppi") { ?>
-	<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
+	<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/gruppi/$id".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 	
 		<?php echo Html_Form::select("id_group","",$listaGruppi,null,"combobox","yes");?>
 		
@@ -13,7 +13,7 @@
 
 <?php if ($this->action == "lingue") { ?>
 	<?php if (count($listaLingue) > 0) { ?>
-	<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/lingue/$id".$this->viewStatus;?>' method='POST'>
+	<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id".$this->viewStatus;?>' method='POST'>
 	
 		<?php echo Html_Form::select("id_lingua","",$listaLingue,"form-control",null,"yes");?>
 		

@@ -120,7 +120,7 @@ trait TraitController
 		
 		$this->modelName = "ContenutitradottiModel";
 		
-		$this->formAction = $this->updateRedirectUrl = $this->controller."/traduzione/".(int)$id."/".(int)$idCt.$this->viewStatus;
+		$this->formAction = $this->updateRedirectUrl = $this->applicationUrl.$this->controller."/traduzione/".(int)$id."/".(int)$idCt.$this->viewStatus;
 		
 		$this->ctform("update", $idCt);
 		

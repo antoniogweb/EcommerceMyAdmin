@@ -97,6 +97,11 @@ class BaseController extends Controller
 			
 			$token = User::$token = $this->s['admin']->status['token'];
 			$data['token'] = $token;
+			
+			$recordAdmin = $this->m('UsersModel')->clear()->where(array("id_user"=>(int)User::$id))->record();
+			
+			if (!empty($recordAdmin))
+				User::$isSuperAdmin = $recordAdmin["superadmin"] ? true : false;
 		}
 		
 		if (strcmp($controller, $this->loginController) !== 0)

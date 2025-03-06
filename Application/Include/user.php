@@ -42,7 +42,8 @@ class User
 	public static $nomeCliente = '';
 	public static $idLista = 0;
 	public static $sorgente = "";
-
+	public static $isSuperAdmin = false;
+	
 	public static $adminLogged = false;
 	public static $asJson = false;
 	
