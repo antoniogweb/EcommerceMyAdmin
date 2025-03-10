@@ -175,6 +175,9 @@ class OrdiniModel extends FormModel {
 		
 		self::$stati = array();
 		
+		if (v("attiva_gestione_stati_pending"))
+			self::$statiPending = array();
+		
 		foreach ($res as $stato)
 		{
 			// Se nuovo o vecchio sistema
@@ -182,6 +185,9 @@ class OrdiniModel extends FormModel {
 			
 			self::$stati[$stato["stati_ordine"]["codice"]] = $titoloPag;
 			self::$labelStati[$stato["stati_ordine"]["codice"]] = $stato["stati_ordine"]["classe"];
+			
+			if ($stato["stati_ordine"]["stato_pending"])
+				self::$statiPending[] = $stato["stati_ordine"]["codice"];
 		}
 		
 		self::$statiOrdineSettati = true;

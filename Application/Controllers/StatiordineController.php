@@ -58,6 +58,13 @@ class StatiordineController extends BaseController
 		$this->mainFields = array("edit","stati_ordine.codice", "pagatoCrud", "rimborsatoCrud");
 		$this->mainHead = "Titolo,Codice,Pagato,Rimborsato";
 		
+		if (v("attiva_gestione_stati_pending"))
+		{
+			$this->mainFields[] = 'statoPendingCrud';
+			
+			$this->mainHead .= ',Stato pending';
+		}
+		
 		if (v("attiva_gestione_spedizioni"))
 		{
 			$this->mainFields[] = 'daSpedireCrud';
@@ -77,6 +84,9 @@ class StatiordineController extends BaseController
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$fields = 'titolo,classe,codice,pagato,rimborsato,manda_mail_al_cambio_stato,descrizione';
+		
+		if (v("attiva_gestione_stati_pending"))
+			$fields .= ",stato_pending";
 		
 		if (v("attiva_gestione_spedizioni"))
 			$fields .= ",da_spedire,in_spedizione,spedito";

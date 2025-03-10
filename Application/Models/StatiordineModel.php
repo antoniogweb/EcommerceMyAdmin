@@ -76,6 +76,13 @@ class StatiordineModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'stato_pending'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine in attesa di pagamento (pending)?",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 				'pagato'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Stato corrispondente ad un ordine pagato",
@@ -213,6 +220,14 @@ class StatiordineModel extends GenericModel {
 	{
 		if ($record["stati_ordine"]["rimborsato"])
 			return "<i class='fa fa-check text-danger'></i>";
+		
+		return "";
+	}
+	
+	public function statoPendingCrud($record)
+	{
+		if ($record["stati_ordine"]["stato_pending"])
+			return "<i class='fa fa-check text-success'></i>";
 		
 		return "";
 	}

@@ -14,6 +14,7 @@ $().ready(function() {
 			<?php echo $form["titolo"];?>
 			<?php echo $form["codice"];?>
 			<?php echo $form["classe"];?>
+			<?php echo $form["stato_pending"] ?? "";?>
 			<?php echo $form["pagato"];?>
 			<?php echo $form["rimborsato"];?>
 			<?php echo $form["da_spedire"] ?? "";?>
