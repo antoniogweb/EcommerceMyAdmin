@@ -23,17 +23,17 @@
 					<div class="uk-grid uk-grid-small" uk-grid>
 						<div class="uk-width-1-4">
 							<?php if ($p["cart"]["immagine"]) { ?>
-							<?php if (!$p["cart"]["id_p"]) { ?><a class="" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } ?>
+							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?><a class="" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } ?>
 								<figure class="tm-media-box-wrap">
 									<img src="<?php echo $this->baseUrlSrc."/thumb/carrelloajax/".$p["cart"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>">
 								</figure>
-							<?php if (!$p["cart"]["id_p"]) { ?></a><?php } ?>
+							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?></a><?php } ?>
 							<?php } ?>
 						</div>
 						<div class="uk-width-expand uk-margin-remove-top">
-							<?php if (!$p["cart"]["id_p"]) { ?><a class="uk-text-small" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } else { ?><span class="uk-link uk-text-small"><?php } ?>
-								<?php echo field($p, "title");?>
-							<?php if (!$p["cart"]["id_p"]) { ?></a><?php } else { ?></span><?php } ?>
+							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?><a class="uk-text-small" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } else { ?><span class="uk-link uk-text-small"><?php } ?>
+								<?php echo field($p, "title");?>11
+							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?></a><?php } else { ?></span><?php } ?>
 							<?php if ($p["cart"]["attributi"]) { ?>
 							<br />
 							<?php echo $p["cart"]["attributi"];?>

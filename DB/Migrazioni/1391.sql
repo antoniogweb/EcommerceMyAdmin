@@ -1,0 +1,1 @@
+alter table righe add prodotto_attivo tinyint not null default 1;

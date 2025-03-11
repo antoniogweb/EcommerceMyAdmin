@@ -1178,6 +1178,7 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_crediti"] = $rPage[0]["pages"]["prodotto_crediti"];
 				$this->values["numero_crediti"] = $rPage[0]["pages"]["numero_crediti"];
 				$this->values["prodotto_generico"] = $rPage[0]["pages"]["prodotto_generico"];
+				$this->values["prodotto_attivo"] = $rPage[0]["pages"]["attivo"] == "Y" ? 1 : 0;
 				
 				$this->values["nazione_navigazione"] = sanitizeHtml(User::getNazioneNavigazione());
 				
