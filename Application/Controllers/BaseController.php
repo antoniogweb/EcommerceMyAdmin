@@ -420,6 +420,9 @@ class BaseController extends Controller
 			if (isset($this->scaffold->mainMenu->links['invia_link_recupero_password']))
 				$this->scaffold->mainMenu->links['invia_link_recupero_password']['url'] = 'inviamailrecuperopassword/'.$clean["id"];
 			
+			if (isset($this->scaffold->mainMenu->links['forza_login_utente']))
+				$this->scaffold->mainMenu->links['forza_login_utente']['absolute_url'] = Domain::$publicUrl.'/'.v("lingua_default_frontend").'/regusers/logincomeutente/'.$clean["id"]."?".v("token_login_come_utente");
+			
 			$this->aggiungiUrlmenuScaffold($clean["id"]);
 			
 			if (isset($_GET["insert"]))

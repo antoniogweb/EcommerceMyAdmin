@@ -334,6 +334,9 @@ class RegusersController extends BaseController
 		if ((int)$this->viewArgs["ticket"] === 1)
 			$this->insertRedirect = false;
 		
+		if (v("permetti_di_loggarti_come_utente"))
+			$this->menuLinks = "forza_login_utente,".$this->menuLinks;
+		
 		$this->getTabViewFields("form");
 		
 		$this->m[$this->modelName]->setPasswordStrengthCondition();

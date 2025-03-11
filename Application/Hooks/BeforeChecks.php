@@ -439,6 +439,15 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-info ajlink"',
 		"classIconBefore"	=>	'<i class="fa fa-language"></i>',
 	),
+	"forza_login_utente" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'target="_blank" role="button" class="btn btn-default pull-right"',
+		"class"	=>	"btn btn-info",
+		'text'	=>	"Login come utente",
+		"classIconBefore"	=>	'<i class="fa fa-user"></i>',
+		"classIconAfter"	=>	'<i class="fa fa-arrow-right"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";
