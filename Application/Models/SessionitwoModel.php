@@ -24,11 +24,23 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class SessionitwoModel extends GenericModel
 {
+	private static $instance = null; //instance of this class
+	
 	protected $uidt = null;
 	protected $twoFactorCookieDurationTime = 86400; // two factor cookie duration
 	protected $twoFactorCookiePath = "/"; // two factor cookie duration
 	protected $cookieName = "uidt";
 	protected $tempoDurataVerificaCodice = 60;
+	
+	public static function getInstance($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60)
+	{
+		if (!isset(self::$instance)) {
+			$className = __CLASS__;
+			self::$instance = new $className($cookieName,$twoFactorCookieDurationTime,$twoFactorCookiePath,$tempoDurataVerificaCodice);
+		}
+
+		return self::$instance;
+	}
 	
 	public function __construct($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60)
 	{
