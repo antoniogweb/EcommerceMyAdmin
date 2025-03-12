@@ -8,6 +8,11 @@
 		<a href="<?php echo $this->baseUrl."/biblioteca-documenti/";?>" title="<?php echo gtext("Biblioteca documenti", false);?>"><?php echo gtext("Biblioteca documenti");?></a>
 	</li>
 	<?php } ?>
+	<?php if (v("documenti_in_clienti")) { ?>
+	<li>
+		<a href="<?php echo $this->baseUrl."/documenti-riservati/";?>" title="<?php echo gtext("Documenti riservati", false);?>"><?php echo gtext("Documenti riservati");?></a>
+	</li>
+	<?php } ?>
 	<li>
 		<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 	</li>

@@ -237,6 +237,25 @@ class BaseRiservataController extends BaseController
 		$this->load('documenti');
 	}
 	
+	public function documentiriservati()
+	{
+		if (!v("documenti_in_clienti"))
+			$this->responseCode(403);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/documenti-riservati";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Documenti riservati"));
+		
+		$data['documenti'] = $this->m("DocumentiModel")->getDocumentiRiservatiUtente(User::$id);
+		
+		$this->append($data);
+		
+		$this->load('documenti_riservati');
+	}
+	
 	public function crediti()
 	{
 		if (!v("attiva_crediti"))

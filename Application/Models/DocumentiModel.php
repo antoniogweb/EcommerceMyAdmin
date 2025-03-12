@@ -85,6 +85,7 @@ class DocumentiModel extends GenericModel {
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipidocumentoModel', 'id_tipo_doc',null,"CASCADE"),
 			'gruppi' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReggroupsdocumentiModel","id_doc","id_group"), "CASCADE"),
+			'user' => array("BELONGS_TO", 'RegusersModel', 'id_user',null,"CASCADE"),
         );
     }
     
@@ -166,6 +167,13 @@ class DocumentiModel extends GenericModel {
 			return "<i class='text text-success fa fa-check'></i>";
 		else
 			return "<i class='text text-danger fa fa-ban'></i>";
+    }
+    
+    public function hasUser($id)
+    {
+		return (int)$this->clear()->where(array(
+			$this->_idFields	=>	(int)$id,
+		))->field("id_user");
     }
     
 	public function update($id = NULL, $whereClause = NULL)
@@ -493,6 +501,25 @@ class DocumentiModel extends GenericModel {
 		return $this;
 	}
 	
+	// Restituisce tutti i documenti assegnati manualmente in admin ad un utente
+	public function getDocumentiRiservatiUtente($idUser, $idDoc = 0, $ritornaNumero = false)
+	{
+		if (!$idUser)
+			$idUser = -1;
+		
+		$this->clear()->addJoinTraduzione()->where(array(
+				"id_user"	=>	(int)$idUser,
+				"archivio"	=>	0,
+			))->orderBy("documenti.id_order");
+		
+		if ($idDoc)
+			$this->aWhere(array(
+				"id_doc"	=>	(int)$idDoc,
+			));
+		
+		return $ritornaNumero ? $this->rowNumber() : $this->send();
+	}
+	
 	// Restituisce tutti i documenti acquistati da un utente
 	public function getDocumentiUtente($idUser, $soloAttivi = true, $idDoc = 0, $ritornaNumero = false)
 	{
@@ -528,11 +555,11 @@ class DocumentiModel extends GenericModel {
 		if (!$idUser)
 			$idUser = User::$id;
 		
+		$record = $this->selectId((int)$idDoc);
+
 		// Controllo l'accesso alla categoria di appartenenza della pagina del documento
 		if (v("attiva_accessibilita_categorie"))
 		{
-			$record = $this->selectId((int)$idDoc);
-			
 			$pModel = new PagesModel();
 			
 			if (!empty($record) && !$pModel->check($record["id_page"]))
@@ -547,6 +574,9 @@ class DocumentiModel extends GenericModel {
 		
 		if (!empty($documento))
 			return $this->getDocumentiUtente($idUser, true, $documento["documenti"]["id_doc"], true);
+		
+		if ((int)$record["id_user"])
+			return $this->getDocumentiRiservatiUtente((int)$idUser, (int)$idDoc, true);
 		
 		return true;
 	}

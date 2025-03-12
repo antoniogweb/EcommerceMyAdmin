@@ -74,6 +74,7 @@ class RegusersModel extends FormModel {
 			'liste' => array("HAS_MANY", 'ListeregaloModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'ordini' => array("HAS_MANY", 'OrdiniModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'feedback' => array("HAS_MANY", 'FeedbackModel', 'id_user', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_user', null, "RESTRICT", "L'elemento ha dei documenti associati e non può essere eliminato"),
 			'sedi' => array("HAS_MANY", 'SpedizioniModel', 'id_user', null, "CASCADE"),
 			'integrazioni' => array("HAS_MANY", 'RegusersintegrazioniloginModel', 'id_user', null, "CASCADE"),
 			'gruppi_temp' => array("HAS_MANY", 'RegusersgroupstempModel', 'id_user', null, "CASCADE"),

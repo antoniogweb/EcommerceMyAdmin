@@ -13,6 +13,7 @@
 			<?php if ($islogged) { ?>
 				<?php include(tpf("/Elementi/Riservata/Link/main.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/biblioteca.php"));?>
+				<?php include(tpf("/Elementi/Riservata/Link/documenti_riservati.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/ordini.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/agente.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/liste.php"));?>
