@@ -2189,6 +2189,9 @@ class BaseContenutiController extends BaseController
 				
 				if (file_exists($path))
 				{
+					// Salva il download
+					$this->m("DocumentidownloadModel")->salvaDownload((int)$id);
+					
 					$extArray = explode('.', $documento['filename']);
 					$ext = strtolower(end($extArray));
 				

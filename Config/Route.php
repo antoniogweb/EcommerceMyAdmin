@@ -928,6 +928,8 @@ class Route
 		'cookiearchivio,main',
 		'cookiearchivio,form',
 		'cookiearchivio,carica',
+		
+		'documentidownload,main',
 	);
 	
 	//it can be 'yes' or 'no'
