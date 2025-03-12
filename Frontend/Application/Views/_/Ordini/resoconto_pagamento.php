@@ -1,6 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
-if (strcmp($ordine["stato"],"pending") === 0)
+// if (strcmp($ordine["stato"],"pending") === 0)
+if (OrdiniModel::isStatoPending($ordine["stato"]))
 {
 	foreach (OrdiniModel::$pagamenti as $codPag => $descPag)
 	{

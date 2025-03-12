@@ -395,13 +395,6 @@ class VariabiliModel extends GenericModel {
 		"tempo_conferma_uid_contatto"	=>	86400, // tempo in secondi per confermare il contatto
 		"tempo_durata_uid_contatto"	=>	15552000, // durata in secondi del cookie del contatto
 		"fonti_contatti_da_mostrare_admin"	=>	"NEWSLETTER,FORM_CONTATTO,NEWSLETTER_DA_ORDINE,NEWSLETTER_DA_REGISTRAZIONE", // elenco delle fonti contatti da mostrare nella sezione contatti generica dell'admin
-		## CLIENTI ##
-		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
-		"sistema_maiuscole_clienti"	=>	0, // se impostato  a 1, Nome e Cognome verranno forzati con la prima lettera maiuscola mentre codice fiscale tutto in maiuscolo
-		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
-		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
-		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX
-		"attiva_regione_su_cliente"	=>	0, // se impostato ad 1, attiva il campo "id_regione" nella scheda cliente (lato admin)
 		## PROMO ##
 		"considera_promo_in_margine_euro"	=>	0, // se togliere i soldi dello sconto nel margine calcolato per il feed di google
 		"attiva_promo_sconto_assoluto"	=>	0, // se impostato su 1, permette di impostare uno sconto assoluto
@@ -529,6 +522,14 @@ class VariabiliModel extends GenericModel {
 		"permetti_sempre_eliminazione_account_backend"=>	0, // se impostato a 1, utilizza deleteAccount se non può eliminare il cliente
 		"elimina_record_utente_ad_autoeliminazione"	=>	1, // se impostato a 1, elimina il record. Altrimenti va a sovrascirverlo con dati random
 		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
+		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
+		"sistema_maiuscole_clienti"	=>	0, // se impostato  a 1, Nome e Cognome verranno forzati con la prima lettera maiuscola mentre codice fiscale tutto in maiuscolo
+		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
+		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
+		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX
+		"attiva_regione_su_cliente"	=>	0, // se impostato ad 1, attiva il campo "id_regione" nella scheda cliente (lato admin)
+		"permetti_di_loggarti_come_utente"	=>	0, // se impostato su 1, dal pannello admin, per ogni cliente ci sarà un pulsante per navigare il sito come se foste loggato come quel cliente
+		"token_login_come_utente"	=>	"", // token per forzare il login come un determinato cliente
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo
@@ -642,6 +643,7 @@ class VariabiliModel extends GenericModel {
 		"mail_credenziali_dopo_pagamento"	=>	0, // manda la mail con le credenziali solo dopo il pagamento dell'ordine
 		"mail_aggiuntive_invio_ordine_negozio"	=>	"", //elenco di email AGGIUNTIVE, divise da virgola, a cui mandare la mail di ordine avvenuto (si tratta della mail che arriva al negozio). L'ordine verrà comunque mandato anche alla mail indicata nelle impostazioni dell'ecommerce.
 		"stati_a_cui_permettere_scarido_pdf_ordine"	=>	"", // elenco stati, divisi da virgola, ai quali il cliente può scaricare il PDF dell'ordine
+		"attiva_gestione_stati_pending"	=>	0, // attiva la gestione degli stati pending
 		## PAGAMENTI ##
 		"check_ipn_al_ritorno_carta"	=>	0, // se impostata su 1, fa il check ipn al ritorno sul sito (controlla che non sia già stato fatto). Solo per pagamento con carta di credito
 		"setta_lingua_e_nazione__da_ordine_in_pagina_ringraziamento"	=>	0, // se impostato su 1, la pagina di atterraggio dell'ordine verranno settati la lingua e la nazione dell'ordine (sovrascrivendo lingua e nazione dell'URL)
@@ -848,6 +850,7 @@ class VariabiliModel extends GenericModel {
 		"token_recupera_carrello",
 		"token_gestisci_lingue_da_admin",
 		"token_comandi_cron_web",
+		"token_login_come_utente",
 	);
 	
 	public static function inizializza($variabili = array())

@@ -1,0 +1,1 @@
+alter table cart add prodotto_attivo tinyint not null default 1;

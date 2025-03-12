@@ -181,7 +181,7 @@ class BaseBaseController extends Controller
 			new SessioniModel(),
 			new AccessiModel(),
 			new GroupsModel(),
-		));
+		), User::getTwoFactorModelAdmin());
 		
 		$this->s['admin']->checkStatus();
 		

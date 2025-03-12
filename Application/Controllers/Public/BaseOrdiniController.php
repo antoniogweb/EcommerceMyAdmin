@@ -132,7 +132,7 @@ class BaseOrdiniController extends BaseController
 			$clean['codiceTransazione'] = $this->request->post('txn_id','','sanitizeAll');
 			$clean['amount'] = $this->request->post('mc_gross','0','none');
 			
-			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid'],"stato"=>"pending"))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->addWherePending()->send();
 
 			if (count($res) > 0)
 			{
@@ -278,7 +278,7 @@ class BaseOrdiniController extends BaseController
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
 			
-			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid'],"stato"=>"pending"))->send();
+			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->addWherePending()->send();
 			
 			if (count($res) > 0)
 			{
@@ -366,7 +366,8 @@ class BaseOrdiniController extends BaseController
 							))
 							->send();
 		
-		if ((int)count($res) === 0 || $res[0]["orders"]["stato"] != "pending")
+		// if ((int)count($res) === 0 || $res[0]["orders"]["stato"] != "pending")
+		if ((int)count($res) === 0 || !OrdiniModel::isStatoPending($res[0]["orders"]["stato"]))
 			$this->redirect("");
 		
 		$data["tendinaIndirizzi"] = $this->m("RegusersModel")->getTendinaIndirizzi(User::$id);
@@ -398,7 +399,8 @@ class BaseOrdiniController extends BaseController
 		
 		$data["ordine"] = $res[0]["orders"];
 		
-		if ($res[0]["orders"]["stato"] != "pending")
+		// if ($res[0]["orders"]["stato"] != "pending")
+		if (!OrdiniModel::isStatoPending($res[0]["orders"]["stato"]))
 			$this->redirect("");
 		
 		$this->append($data);
@@ -425,7 +427,8 @@ class BaseOrdiniController extends BaseController
 		
 		$urlSummary = "resoconto-acquisto/".$clean["id_o"]."/".$clean["cart_uid"]."/".$clean["admin_token"]."?n=y";
 		
-		if (empty($ordine) || $ordine["stato"] != "pending")
+		// if (empty($ordine) || $ordine["stato"] != "pending")
+		if (empty($ordine) || !OrdiniModel::isStatoPending($ordine["stato"]))
 			$this->redirect("");
 		
 		$gateway = PagamentiModel::gateway($ordine, true, $ordine["pagamento"]);
@@ -528,7 +531,9 @@ class BaseOrdiniController extends BaseController
 		if ($this->statoOrdineModificato($id_o))
 			$this->redirect("resoconto-acquisto/$id_o/$cart_uid/$admin_token?n=y");
 		
-		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
+		$isPending = OrdiniModel::isStatoPending($data["ordine"]["stato"]);
+		
+		if (strcmp($data["ordine"]["pagamento"],"paypal") === 0 and $isPending)
 		{
 			if (PagamentiModel::gateway($data["ordine"], true, "paypal")->isPaypalCheckout())
 			{
@@ -592,7 +597,7 @@ class BaseOrdiniController extends BaseController
 				$data["pulsantePaypal"] = $p->paypal_button();
 			}
 		}
-		else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
+		else if (strcmp($data["ordine"]["pagamento"],"carta_di_credito") === 0 and $isPending)
 		{
 			$urlPagamento = PagamentiModel::gateway($data["ordine"], true)->getUrlPagamento();
 			
@@ -601,14 +606,14 @@ class BaseOrdiniController extends BaseController
 				$data["pulsantePaga"] = PagamentiModel::gateway()->getPulsantePaga();
 				$data["urlPagamento"] = $urlPagamento;
 				
-				if (isset($_GET["to_paypal"]) && strcmp($data["ordine"]["stato"],"pending") === 0 && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
+				if (isset($_GET["to_paypal"]) && $isPending && strcmp($data["tipoOutput"],"web") === 0 && PagamentiModel::gateway()->redirect())
 				{
 					header('Location: '.$urlPagamento);
 					die();
 				}
 			}
 		}
-		else if (strcmp($data["ordine"]["pagamento"],"klarna") === 0 and strcmp($data["ordine"]["stato"],"pending") === 0)
+		else if (strcmp($data["ordine"]["pagamento"],"klarna") === 0 and $isPending)
 		{
 			if (isset($_GET["to_paypal"]))
 				$this->redirect("redirect-to-gateway/".$clean["id_o"]."/".$clean["cart_uid"]."/".$data["ordine"]["admin_token"]);
@@ -618,7 +623,7 @@ class BaseOrdiniController extends BaseController
 
 		$this->append($data);
 		
-		if (strcmp($data["ordine"]["stato"],"pending") !== 0 && isset($_GET["to_paypal"]))
+		if (!$isPending && isset($_GET["to_paypal"]))
 		{
 			unset($_GET["to_paypal"]);
 			
@@ -638,7 +643,7 @@ class BaseOrdiniController extends BaseController
 	{
 		$ordine = $this->m("OrdiniModel")->clear()->select("stato")->whereId((int)$idO)->record();
 		
-		if (v("permetti_al_cliente_di_annullare_ordine") && !empty($ordine) && $ordine["stato"] == "pending")
+		if (v("permetti_al_cliente_di_annullare_ordine") && !empty($ordine) && OrdiniModel::isStatoPending($ordine["stato"]))
 			return true;
 		
 		return false;
@@ -770,7 +775,7 @@ class BaseOrdiniController extends BaseController
 		
 		$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
-		if (count($res) > 0 && $res[0]["orders"]["stato"] == "pending")
+		if (count($res) > 0 && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]))
 		{
 			$data["ordine"] = $res[0]["orders"];
 			
@@ -803,7 +808,7 @@ class BaseOrdiniController extends BaseController
 		
 		$res = $this->m("OrdiniModel")->clear()->where(array("banca_token" => $clean['banca_token']))->send();
 		
-		if (count($res) > 0 && $res[0]["orders"]["stato"] == "pending")
+		if (count($res) > 0 && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]))
 		{
 			$data["ordine"] = $res[0]["orders"];
 			
@@ -950,7 +955,7 @@ class BaseOrdiniController extends BaseController
 					VariabiliModel::ottieniVariabili();
 				}
 				
-				if (v("check_ipn_al_ritorno_carta") && $res[0]["orders"]["stato"] == "pending" && !OrdiniresponseModel::responsoPresente($clean['cart_uid']))
+				if (v("check_ipn_al_ritorno_carta") && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]) && !OrdiniresponseModel::responsoPresente($clean['cart_uid']))
 				{
 					sleep(3);
 					

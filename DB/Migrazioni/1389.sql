@@ -1,0 +1,1 @@
+update stati_ordine set stato_pending = 1 where codice = 'pending';

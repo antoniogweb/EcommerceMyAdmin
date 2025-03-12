@@ -356,6 +356,12 @@ class BaseRegusersController extends BaseController
 		}
 	}
 	
+	protected function unsetAccessToken()
+	{
+		if (isset($_SESSION["access_token"]))
+			unset($_SESSION["access_token"]);
+	}
+	
 	public function logout()
 	{
 		$res = $this->s['registered']->logout();
@@ -363,20 +369,27 @@ class BaseRegusersController extends BaseController
 		if ($res === 'not-logged')
 		{
 			if (Output::$html)
+			{
+				$this->unsetAccessToken();
+				
 				$this->redirect('',0);
+			}
 		}
 		else if ($res === 'was-logged')
 		{
 			if (Output::$html)
+			{
+				$this->unsetAccessToken();
+				
 				$this->redirect('',0);
+			}
 		}
 		else if ($res === 'error')
 		{
 			$data['notice'] = null;
 		}
 		
-		if (isset($_SESSION["access_token"]))
-			unset($_SESSION["access_token"]);
+		$this->unsetAccessToken();
 		
 		if (Output::$html)
 		{
@@ -1197,5 +1210,29 @@ class BaseRegusersController extends BaseController
 		
 		$this->append($data);
 		$this->load('notice');
+	}
+	
+	// Forza il login come se fossi l'utente $idUser
+	public function logincomeutente($idUser)
+	{
+		$this->clean();
+		
+		if (!v("permetti_di_loggarti_come_utente") || !User::$adminLogged || !VariabiliModel::checkToken("token_login_come_utente"))
+			$this->responseCode(403);
+		
+		$utente = $this->m("RegusersModel")->clear()->where(array(
+			"id_user"	=>	(int)$idUser,
+			Users_CheckAdmin::$statusFieldName	=>	(int)Users_CheckAdmin::$statusFieldActiveValue,
+		))->record();
+		
+		if (empty($utente))
+			$this->responseCode(403);
+		
+		$res = $this->s['registered']->logout();
+		$this->unsetAccessToken();
+		
+		// Forza il login
+		$this->s['registered']->login(sanitizeAll($utente["username"]),null,true);
+		$this->redirectUser();
 	}
 }

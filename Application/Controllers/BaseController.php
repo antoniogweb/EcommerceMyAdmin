@@ -180,10 +180,11 @@ class BaseController extends Controller
 	{
 		if (!isset($this->s["admin"]))
 		{
-			$twoFactorModel = null;
-			
-			if (v("attiva_autenticazione_due_fattori_admin"))
-				$twoFactorModel = new SessionitwoModel("uidt", v("autenticazione_due_fattori_admin_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_admin"));
+			$twoFactorModel = User::getTwoFactorModelAdmin();
+// 			$twoFactorModel = null;
+// 			
+// 			if (v("attiva_autenticazione_due_fattori_admin"))
+// 				$twoFactorModel = SessionitwoModel::getInstance("uidt", v("autenticazione_due_fattori_admin_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_admin"));
 			
 			$this->session('admin', array(
 				new UsersModel(),
@@ -418,6 +419,9 @@ class BaseController extends Controller
 			
 			if (isset($this->scaffold->mainMenu->links['invia_link_recupero_password']))
 				$this->scaffold->mainMenu->links['invia_link_recupero_password']['url'] = 'inviamailrecuperopassword/'.$clean["id"];
+			
+			if (isset($this->scaffold->mainMenu->links['forza_login_utente']))
+				$this->scaffold->mainMenu->links['forza_login_utente']['absolute_url'] = Domain::$publicUrl.'/'.v("lingua_default_frontend").'/regusers/logincomeutente/'.$clean["id"]."?".v("token_login_come_utente");
 			
 			$this->aggiungiUrlmenuScaffold($clean["id"]);
 			

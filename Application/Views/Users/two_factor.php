@@ -16,6 +16,6 @@
 	</form>
 	
 	<?php if ($sessioneTwo["numero_invii_codice"] < (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_admin")) { ?>
-	<br /><a class="ajlink" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorinviamail";?>"><?php echo gtext("Invia nuovamente il codice ".v("autenticazione_due_fattori_numero_cifre_admin")." cifre");?> <i class="fa fa-envelope"></i></a>
+	<br /><a class="ajlink" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorinviamail";?>"><?php echo gtext("Invia nuovamente il codice a ".v("autenticazione_due_fattori_numero_cifre_admin")." cifre");?> <i class="fa fa-envelope"></i></a>
 	<?php } ?>
 </div>

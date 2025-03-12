@@ -44,6 +44,8 @@ class OrdiniModel extends FormModel {
 		"deleted"	=>	"Ordine annullato",
 	);
 	
+	public static $statiPending = array("pending"); // array di stati considerati "pending" e che permettono al cliente di pagare online
+	
 	public static $labelTipoOrdine = array(
 		"W"	=>	"Web",
 		"B"	=>	"Backend",
@@ -173,6 +175,9 @@ class OrdiniModel extends FormModel {
 		
 		self::$stati = array();
 		
+		if (v("attiva_gestione_stati_pending"))
+			self::$statiPending = array();
+		
 		foreach ($res as $stato)
 		{
 			// Se nuovo o vecchio sistema
@@ -180,6 +185,9 @@ class OrdiniModel extends FormModel {
 			
 			self::$stati[$stato["stati_ordine"]["codice"]] = $titoloPag;
 			self::$labelStati[$stato["stati_ordine"]["codice"]] = $stato["stati_ordine"]["classe"];
+			
+			if (v("attiva_gestione_stati_pending") && $stato["stati_ordine"]["stato_pending"])
+				self::$statiPending[] = $stato["stati_ordine"]["codice"];
 		}
 		
 		self::$statiOrdineSettati = true;
@@ -2605,9 +2613,7 @@ class OrdiniModel extends FormModel {
 		
 // 		var_dump($ordineEsistente);
 		
-		$ordinePending =  $oModel->aWhere(array(
-			"stato"	=>	"pending",
-		))->rowNumber();
+		$ordinePending =  $oModel->addWherePending()->rowNumber();
 		
 // 		var_dump($ordinePending);
 		
@@ -2912,5 +2918,21 @@ class OrdiniModel extends FormModel {
 			return true;
 		
 		return false;
+	}
+	
+	public static function isStatoPending($stato)
+	{
+		return in_array($stato, self::$statiPending) ? true : false;
+	}
+	
+	public function addWherePending()
+	{
+		$this->aWhere(array(
+			"in"	=>	array(
+				"orders.stato"	=>	self::$statiPending,
+			)
+		));
+		
+		return $this;
 	}
 }
