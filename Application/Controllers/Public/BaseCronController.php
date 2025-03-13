@@ -65,4 +65,17 @@ class BaseCronController extends Controller
 		require_once(ROOT . "/admin/Application/Commands/azioni/traduzioni.php");
 		echo "</pre>";
 	}
+	
+	public function prodotti()
+	{
+		$this->clean();
+		
+		$options = array(
+			"azione" => isset($_GET["azione"]) ? (string)$_GET["azione"] : "",
+		);
+		
+		echo "<pre>";
+		require_once(ROOT . "/admin/Application/Commands/azioni/prodotti.php");
+		echo "</pre>";
+	}
 }
