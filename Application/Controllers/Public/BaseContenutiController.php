@@ -2190,7 +2190,10 @@ class BaseContenutiController extends BaseController
 				if (file_exists($path))
 				{
 					// Salva il download
-					$this->m("DocumentidownloadModel")->salvaDownload((int)$id);
+					$idDownload = $this->m("DocumentidownloadModel")->salvaDownload((int)$id);
+					
+					// Azione che viene eseguita dopo il download del documento
+					$this->azioneDopoDownloadDocumento((int)$id, (int)$idDownload);
 					
 					$extArray = explode('.', $documento['filename']);
 					$ext = strtolower(end($extArray));
@@ -2213,6 +2216,11 @@ class BaseContenutiController extends BaseController
 		}
 		else
 			$this->redirect("");
+	}
+	
+	protected function azioneDopoDownloadDocumento($idDoc, $idDownload)
+	{
+		
 	}
 	
 	public function recuperacarrello($c = "")

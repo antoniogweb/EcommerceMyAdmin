@@ -2,7 +2,7 @@
 <?php if (v("ecommerce_attivo") && v("attiva_sezione_download_documenti")) { ?>
 <li class="<?php echo tm($tm, array("documentidownload"));?> treeview">
 	<a href="#">
-		<i class="fa fa-download"></i>
+		<i class="fa fa-bar-chart"></i>
 		<span><?php echo gtext("Download documenti")?></span>
 	</a>
 	<ul class="treeview-menu">

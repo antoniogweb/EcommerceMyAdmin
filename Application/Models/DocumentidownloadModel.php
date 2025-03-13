@@ -40,21 +40,25 @@ class DocumentidownloadModel extends GenericModel {
     
 	public function salvaDownload($idDoc)
 	{
-		$documento = DocumentiModel::g()->clear()->selectId((int)$idDoc);
+		$dModel = new DocumentiModel();
+		
+		$documento = $dModel->clear()->selectId((int)$idDoc);
 		
 		if (!empty($documento))
 		{
 			$this->sValues(array(
 				"id_doc"	=>	(int)$idDoc,
 				"id_user"	=>	(int)User::$id,
+				"id_page"	=>	(int)$documento["id_page"],
 			));
 			
 			$res = $this->insert();
 			
-			return $res;
+			if ($res)
+				return $this->lId;
 		}
 		
-		return false;
+		return 0;
 	}
 	
 	public function filename($record)
@@ -70,5 +74,20 @@ class DocumentidownloadModel extends GenericModel {
 		}
 		
 		return "";
+	}
+	
+	public function cleanDateTimeDocumento($record)
+    {
+		$formato = "d-m-Y H:i";
+		
+		if (isset($record["documenti"]["data_creazione"]) && $record["documenti"]["data_creazione"])
+			return date($formato,strtotime($record["documenti"]["data_creazione"]));
+		
+		return "";
+    }
+    
+    public function numeroCrud($reocrd)
+	{
+		return $reocrd["aggregate"]["numero_scaricamenti"];
 	}
 }

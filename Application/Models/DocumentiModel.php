@@ -82,6 +82,7 @@ class DocumentiModel extends GenericModel {
         return array(
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_doc', null, "CASCADE"),
 			'lingue' => array("HAS_MANY", 'DocumentilingueModel', 'id_doc', null, "CASCADE"),
+			'download' => array("HAS_MANY", 'DocumentidownloadModel', 'id_doc', null, "CASCADE"),
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'tipo' => array("BELONGS_TO", 'TipidocumentoModel', 'id_tipo_doc',null,"CASCADE"),
 			'gruppi' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReggroupsdocumentiModel","id_doc","id_group"), "CASCADE"),

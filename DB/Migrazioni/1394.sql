@@ -1,0 +1,1 @@
+alter table documenti_download add id_page INT UNSIGNED NOT NULL default 0;

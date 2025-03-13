@@ -118,6 +118,7 @@ class Route
 		'regusers,inviamailrecuperopassword',
 		'regusers,emailesistente',
 		'regusers,documenti',
+		'regusers,download',
 		
 		'reggroups,main',
 		'reggroups,form',

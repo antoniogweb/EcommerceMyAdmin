@@ -17,6 +17,7 @@
 	<?php } ?>
 	<?php if (v("documenti_in_clienti")) { ?>
 	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/documenti/$id".$this->viewStatus;?>"><?php echo gtext("Documenti");?></a></li>
+	<li <?php echo $posizioni['download'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/download/$id".$this->viewStatus;?>"><?php echo gtext("Statistiche download");?></a></li>
 	<?php } ?>
 </ul>
 

@@ -402,6 +402,38 @@ class RegusersController extends BaseController
 		$this->append($data);
 	}
 	
+	public function download($id = 0)
+	{
+		$this->_posizioni['download'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_user";
+		
+		$this->mainButtons = "";
+		
+		$this->modelName = "DocumentidownloadModel";
+		
+		$this->mainFields = array("smartDate|documenti_download.data_creazione","cleanDateTimeDocumento","documenti.titolo","filename", "numeroCrud");
+		$this->mainHead = "Data scaricamento,Data ora caricamento,Titolo,File,Numero scaricamenti";
+		
+		$this->m($this->modelName)->select("documenti_download.*,documenti.*,count(*) as numero_scaricamenti")->inner(array("documento"))->aWhere(array(
+				"documenti_download.id_user"	=>	(int)$id,
+				"documenti.id_user"				=>	(int)$id,
+			))
+			->groupBy('date_format(documenti_download.data_creazione,"%Y-%m-%d"),documenti_download.id_doc')
+			->orderBy('date_format(documenti_download.data_creazione,"%Y-%m-%d") desc')->convert()->save();
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"download/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m("RegusersModel")->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+
 	public function ordini($id = 0)
 	{
 		$this->_posizioni[$this->action] = 'class="active"';

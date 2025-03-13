@@ -27,15 +27,13 @@ Helper_List::$filtersFormLayout["filters"]["titolo"]["attributes"]["placeholder"
 Helper_List::$filtersFormLayout["filters"]["utente"] = array(
 	"attributes"	=>	array(
 		"class"	=>	"form-control",
-		"placeholder"	=>	"Cliente ..",
+		"placeholder"	=>	"Utente ..",
 	),
 );
 
 class DocumentidownloadController extends BaseController {
 	
 	public $filters = array("titolo","utente");
-	
-	public $orderBy = "id_order";
 	
 	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'utente:sanitizeAll'=>'tutti');
 	
@@ -62,14 +60,16 @@ class DocumentidownloadController extends BaseController {
 		$this->queryActions = $this->bulkQueryActions = "";
 		$this->mainButtons = "";
 		
-		$this->mainFields = array("cleanDateTime","documenti.titolo","utenteCrud","filename");
-		$this->mainHead = "Data ora scaricamento,Titolo,Utente,File";
+		$this->mainFields = array("smartDate|documenti_download.data_creazione","cleanDateTimeDocumento","documenti.titolo","utenteCrud","filename", "numeroCrud");
+		$this->mainHead = "Data scaricamento,Data ora caricamento,Titolo,Utente,File,Numero scaricamenti";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->m[$this->modelName]->select("*")->inner(array("documento"))->left(array("user"))->where(array(
+		$this->m[$this->modelName]->select("documenti_download.*,documenti.*,regusers.*,count(*) as numero_scaricamenti")->inner(array("documento"))->left(array("user"))->aWhere(array(
 				"lk" => array("documenti.titolo" => $this->viewArgs["titolo"]),
-			))->orderBy($this->orderBy)->convert();
+			))
+			->groupBy('date_format(documenti_download.data_creazione,"%Y-%m-%d"),documenti_download.id_doc,documenti_download.id_user')
+			->orderBy('date_format(documenti_download.data_creazione,"%Y-%m-%d") desc')->convert();
 		
 		if ($this->viewArgs["utente"] != "tutti")
 		{
@@ -77,6 +77,8 @@ class DocumentidownloadController extends BaseController {
 				"    AND"	=>	RegusersModel::getWhereClauseRicercaLibera($this->viewArgs['utente'], "regusers."),
 			));
 		}
+		
+		$this->getTabViewFields("main");
 		
 		$this->m[$this->modelName]->save();
 		
