@@ -827,6 +827,8 @@ class VariabiliModel extends GenericModel {
 		"documenti_in_clienti"		=>	0, // se impostato su 1, attiva la possibilità di caricare documenti legati ai clienti
 		"attiva_biblioteca_documenti"	=>	0, // se mostrare o nascondere i link della propria biblioteca in area riservata
 		"attiva_sezione_download_documenti"	=>	0, // se impostato su 1, mostra la voce di menù che manda alle statistiche di scaricamento
+		### CALENDARIO CHIUSURE ##
+		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

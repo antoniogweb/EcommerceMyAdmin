@@ -931,6 +931,8 @@ class Route
 		'cookiearchivio,carica',
 		
 		'documentidownload,main',
+		
+		'calendariochiusure,main',
 	);
 	
 	//it can be 'yes' or 'no'

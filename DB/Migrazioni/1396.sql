@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Calendario chiusure', 'calendariochiusure', '', '1', 'attiva_calendario_chiusure=1', '105', '1', 'utenti', 'main')
