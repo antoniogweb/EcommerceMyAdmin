@@ -43,7 +43,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipo");?>:</span> <?php echo dfield($documento, "estensione");?>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
-				<a target="_blank" class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/contenuti/documento/".$documento["documenti"]["id_doc"];?>">
+				<a target="_blank" class="td_edit" title="<?php echo gtext("Scarica",false);?>" class="" href="<?php echo $this->baseUrl."/contenuti/documento/".$documento["documenti"]["id_doc"];?>">
 					<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/download.svg");?></span>
 				</a>
 			</div>
