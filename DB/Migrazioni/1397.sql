@@ -1,0 +1,1 @@
+alter table orders add data_documento date null default null after numero_documento;

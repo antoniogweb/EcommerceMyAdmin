@@ -33,6 +33,46 @@ class CalendariochiusureModel extends GenericModel
 		parent::__construct();
 	}
 	
+	public static function arrayGiorniChiusura()
+	{
+		$cModel = new CalendariochiusureModel();
+		
+		return $cModel->clear()->where(array(
+			"gte"	=>	array(
+				"data_chiusura"	=>	date("Y-m-d"),
+			)
+		))->toList("data_chiusura")->send();
+	}
+	
+	public static function isGiornoChiusura($date, $giorniSettimanaEsclusi = array(0))
+	{
+		if (in_array($date->format("Y-m-d"), self::arrayGiorniChiusura()) || in_array($date->format("w"), $giorniSettimanaEsclusi))
+			return true;
+		
+		return false;
+	}
+	
+	// Restituisce un array con le date nel formato "Y-m-d" => $formatLabel dei $numeroGiorni successivi alla data $dal (DateTime), escludendo i giorni di chiusura e i giorni della settimana dove date("w") è in $giorniSettimanaEsclusi
+	public static function nextXDays($dal, $numeroGiorni = 1, $formatLabel = "d-m-Y", $arrayDate = array(), $giorniSettimanaEsclusi = array(0))
+	{
+		if ((int)$numeroGiorni === 0)
+			return $arrayDate;
+		
+		if (!self::isGiornoChiusura($dal, $giorniSettimanaEsclusi))
+		{
+			$arrayDate[$dal->format("Y-m-d")] = $dal->format($formatLabel);
+			
+			
+			$numeroGiorni--;
+		}
+		
+		$dal->modify("+1 days");
+		
+		$arrayDate = self::nextXDays($dal, $numeroGiorni, $formatLabel, $arrayDate);
+		
+		return $arrayDate;
+	}
+	
 	public function aggiungiDate($dal, $al)
 	{
 		if ($dal)

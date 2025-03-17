@@ -1,7 +1,14 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <table class="table table-striped">
 	<?php include(ROOT."/Application/Views/Ordini/ElementiTop/numero_ordine.php")?>
-	<?php include(ROOT."/Application/Views/Ordini/ElementiTop/data_creazione.php")?>
+	
+	<?php
+	if (file_exists(LIBRARY."/Application/".getApplicationPath()."Views/".ucwords($this->controller)."/ElementiTop/data_creazione.php"))
+		include(LIBRARY."/Application/".getApplicationPath()."Views/".ucwords($this->controller)."/ElementiTop/data_creazione.php");
+	else
+		include(ROOT."/Application/Views/Ordini/ElementiTop/data_creazione.php");
+	?>
+	
 	<?php include(ROOT."/Application/Views/Ordini/ElementiTop/total.php")?>
 	<?php include(ROOT."/Application/Views/Ordini/ElementiTop/acconto.php")?>
 	<?php include(ROOT."/Application/Views/Ordini/ElementiTop/stato.php")?>

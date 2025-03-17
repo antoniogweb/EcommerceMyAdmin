@@ -2658,6 +2658,16 @@ class OrdiniModel extends FormModel {
 		return "";
     }
     
+    public function dataDocumentoCrud($record)
+    {
+		$formato = "d-m-Y";
+		
+		if (isset($record[$this->_tables]["data_documento"]) && $record[$this->_tables]["data_documento"])
+			return date($formato,strtotime($record[$this->_tables]["data_documento"]));
+
+		return "";
+    }
+    
     public function datePagamentoRimborsoCrud($record)
 	{
 		$formato = "d-m-Y H:i";
