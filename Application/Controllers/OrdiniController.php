@@ -105,6 +105,8 @@ class OrdiniController extends BaseController {
 	
 	public $campiAggiuntiviOrdine = array();
 	
+	protected $orderByOrdiniMain = "orders.data_creazione desc,orders.id_o desc";
+	
 	public static $selectFiltroTipo = array(
 		"tutti"		=>	"Tipo cliente",
 		"privato"	=>	"Privato",
@@ -289,7 +291,7 @@ class OrdiniController extends BaseController {
 		
 		$this->aggiungiintegrazioni();
 		
-		$this->m[$this->modelName]->clear()->restore(true)->orderBy("orders.data_creazione desc,orders.id_o desc");
+		$this->m[$this->modelName]->clear()->restore(true)->orderBy($this->orderByOrdiniMain);
 
 		$where = array(
 			'id_o'	=>	$this->viewArgs['id_ordine'],
