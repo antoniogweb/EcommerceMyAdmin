@@ -105,6 +105,7 @@ class CookiearchivioController extends BaseController
 		if (isset($_POST["cookie"]))
 		{
 			$cookieTecnici = App::getCookieTecnici();
+			$cookieTecnici["uid"] = array();
 			
 			// echo "<pre>";
 			$lines = explode("\n", $_POST["cookie"]);
