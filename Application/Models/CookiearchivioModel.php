@@ -86,7 +86,7 @@ class CookiearchivioModel extends GenericModel
 	{
 		$ore = 0;
 		$giorni = ($time + 60 - time()) / (3600 * 24);
-		$giorniEsatti = number_format($giorni, 0);
+		$giorniEsatti = number_format($giorni, 0, "", "");
 		
 		if ($giorni > 0 && $giorni < 1)
 			$ore = ceil(($time + 60 - time()) / 3600);
