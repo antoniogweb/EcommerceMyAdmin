@@ -256,7 +256,7 @@ class OrdiniController extends BaseController {
 		if (v("mostra_date_pagamento_annullamento_in_elenco"))
 		{
 			$this->mainFields[] = 'datePagamentoRimborsoCrud';
-			$this->mainHead .= ',Pagamento/Rimborso';
+			$this->mainHead .= ',Pagamento / Rimborso';
 		}
 		
 		$this->mainFields[] = 'infoGatewayCrud';
