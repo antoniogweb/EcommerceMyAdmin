@@ -411,8 +411,11 @@ class RegusersController extends BaseController
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_user";
 		
+		$this->queryActions = $this->bulkQueryActions = "";
 		$this->mainButtons = "";
+		$this->addBulkActions = false;
 		
+		$this->colProperties = array();
 		$this->modelName = "DocumentidownloadModel";
 		
 		$this->mainFields = array("smartDate|documenti_download.data_creazione","cleanDateTimeDocumento","documenti.titolo","filename", "numeroCrud");
