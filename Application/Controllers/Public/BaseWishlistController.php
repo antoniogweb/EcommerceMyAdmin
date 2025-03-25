@@ -64,40 +64,40 @@ class BaseWishlistController extends BaseController
 		
 		$this->append($data);
 		
-		if (Output::$json)
-		{
-			$pagineConDecode = array();
-			
-			foreach ($data["pages"] as $page)
-			{
-				$temp = $page;
-				$page["quantity"] = 1;
-				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
-				$page["pages"]["price"] = number_format($temp["pages"]["price"],2,",","");
-// 				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
-// 				$page["pages"]["prezzo_scontato"] = number_format($temp["pages"]["price"],2,",","");
-// 				$page["pages"]["iva"] = number_format($page["pages"]["iva"],2,",","");
-				
-				$page["wishlist"] = htmlentitydecodeDeep($page["wishlist"]);
-				
-				$pagineConDecode[] = $page;
-			}
-			
-			Output::setBodyValue("Type", "Wishlist");
-			Output::setBodyValue("Pages", $pagineConDecode);
-			Output::setHeaderValue("CartProductsNumber",$this->m("WishlistModel")->numberOfItems());
-			
-			$this->load("api_output");
-		}
-		else
-		{
+// 		if (Output::$json)
+// 		{
+// 			$pagineConDecode = array();
+// 			
+// 			foreach ($data["pages"] as $page)
+// 			{
+// 				$temp = $page;
+// 				$page["quantity"] = 1;
+// 				$page["pages"]["url-alias"] = getUrlAlias($page["pages"]["id_page"]);
+// 				$page["pages"]["price"] = number_format($temp["pages"]["price"],2,",","");
+// // 				$page["pages"]["prezzo_promozione"] = number_format($page["pages"]["prezzo_promozione"],2,",",".");
+// // 				$page["pages"]["prezzo_scontato"] = number_format($temp["pages"]["price"],2,",","");
+// // 				$page["pages"]["iva"] = number_format($page["pages"]["iva"],2,",","");
+// 				
+// 				$page["wishlist"] = htmlentitydecodeDeep($page["wishlist"]);
+// 				
+// 				$pagineConDecode[] = $page;
+// 			}
+// 			
+// 			Output::setBodyValue("Type", "Wishlist");
+// 			Output::setBodyValue("Pages", $pagineConDecode);
+// 			Output::setHeaderValue("CartProductsNumber",$this->m("WishlistModel")->numberOfItems());
+// 			
+// 			$this->load("api_output");
+// 		}
+// 		else
+// 		{
 			if (strcmp($pageView,"partial") !== 0)
 			{
 				$this->load("top_cart");
 			}
 			
 			$this->load('main');
-		}
+		// }
 	}
 
 	//HTML del carrello aggiornato via ajax

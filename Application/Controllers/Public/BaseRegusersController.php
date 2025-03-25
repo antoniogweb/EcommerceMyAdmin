@@ -109,6 +109,9 @@ class BaseRegusersController extends BaseController
 						$this->redirect('area-riservata',0);
 					break;
 				case 'accepted':
+					
+					$this->hookAfterLogin();
+					
 					if (Output::$html)
 					{
 						$this->redirectUser();
@@ -327,6 +330,9 @@ class BaseRegusersController extends BaseController
 					$this->redirect('area-riservata',0);
 					break;
 				case 'accepted':
+					
+					$this->hookAfterLogin();
+					
 					ob_start();
 					include tpf("Elementi/Mail/mail_login_da_social.php");
 					$output = ob_get_clean();
@@ -354,6 +360,12 @@ class BaseRegusersController extends BaseController
 		{
 			$this->redirect("regusers/login");
 		}
+	}
+	
+	protected function hookAfterLogin()
+	{
+		if (v("hook_after_login_utente"))
+			callFunction(v("hook_after_login_utente"), (int)$this->s['registered']->status['id_user'], v("hook_after_login_utente"));
 	}
 	
 	protected function unsetAccessToken()
