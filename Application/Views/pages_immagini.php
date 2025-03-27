@@ -165,13 +165,11 @@ $(document).ready(function(){
 					<div id="form_images" class="form_images">
 
 						<div class="images_preview">
-							<div class='EGuploadFileBox'>
-
+							<div>
 								<form action='<?php echo $this->baseUrl?>/pages/form/immagini/<?php echo $id_page.$this->viewStatus;?>#form_images' method='POST' enctype="multipart/form-data">
-									
 									<span class="btn btn-success fileinput-button">
-										<i class="fa fa-plus"></i>
-										<span>SELEZIONA LE IMMAGINI</span>
+										<i class="fa fa-plus-circle"></i>
+										<span><?php echo gtext("SELEZIONA LE IMMAGINI");?></span>
 										<!-- The file input field used as target for the file upload widget -->
 										<input id="userfile" type="file" name="Filedata" multiple>
 									</span>
@@ -180,17 +178,10 @@ $(document).ready(function(){
 									</div>
 									<div class="alert-fileupload"></div>
 									
-<!-- 									<input id="userfile" name="userfile" type="file"> -->
-									
 									<input type="hidden" name="id_page" value="<?php echo $id_page; ?>">
 								</form>
-
 							</div>
-
-							
-
 						</div>
-
 					</div>
                 </div>
 			</div>

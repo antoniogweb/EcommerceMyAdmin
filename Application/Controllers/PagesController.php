@@ -2099,6 +2099,7 @@ class PagesController extends BaseController
 			->inner(array("corr"))
 			->where(array(
 				"id_page"	=>	$clean['id'],
+				 "section"	=>	$this->viewArgs["pcorr_sec"],
 			))
 			->orderBy("pages_pages.id_order")->save();
 		
