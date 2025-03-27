@@ -129,10 +129,16 @@ class PagamentiModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Il costo del pagamento verrà aggiunto al totale dell'ordine.")."</div>"
 					),
 				),
-				'istruzioni_pagamento'		=>	array(
-					'labelString'=>	'Istruzioni per il pagamento',
+				'descrizione'		=>	array(
+					'labelString'	=>	'Descrizione',
 					'entryClass'	=>	'form_input_text help_alias',
-					'wrap'		=>	array(
+					"className"		=>	"editor_visuale",
+				),
+				'istruzioni_pagamento'		=>	array(
+					'labelString'	=>	'Istruzioni per il pagamento',
+					'entryClass'	=>	'form_input_text help_alias',
+					"className"		=>	"editor_visuale",
+					'wrap'			=>	array(
 						null,
 						null,
 						"<div class='form_notice'>".gtext("Questo testo apparirà nella pagina di resoconto e nella mail al cliente una volta che l'ordine sarà confermato.")."</div>"
@@ -186,6 +192,8 @@ class PagamentiModel extends GenericModel {
 			return 'Alias Account / Shop ID';
 		else if ($record["codice"] == "klarna")
 			return 'Nome utente API';
+		else if ($record["codice"] == "satispay")
+			return 'KeyId';
 		else
 			return 'PAYPAL CLIENT ID';
 	}

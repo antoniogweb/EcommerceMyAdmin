@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 $().ready(function() {
-	$('textarea').tinymce(tiny_editor_config);
+	$('textarea.editor_visuale').tinymce(tiny_editor_config);
 });
 </script>
 
@@ -68,7 +68,11 @@ $().ready(function() {
 					
 					<?php echo $form["alias_account"];?>
 					
-					<?php echo $form["chiave_segreta"];?>
+					<?php echo $form["chiave_segreta"] ?? "";?>
+					
+					<?php echo $form["public_key"] ?? "";?>
+					
+					<?php echo $form["private_key"] ?? "";?>
 				</div>
 			</div>
 			<?php } ?>

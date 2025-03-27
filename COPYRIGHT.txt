@@ -204,3 +204,8 @@ PHP User Agent Parser
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/donatj/PhpUserAgent
+
+Satispay GBusiness API PHP SDK
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/satispay/gbusiness-api-php-sdk

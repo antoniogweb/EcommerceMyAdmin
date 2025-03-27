@@ -87,6 +87,8 @@ class PagamentiController extends BaseController
 			$fields .= ",gateway_pagamento,test,alias_account,chiave_segreta";
 		else if (isset($record["codice"]) && $record["codice"] == "klarna")
 			$fields .= ",test,alias_account,chiave_segreta";
+		else if (isset($record["codice"]) && $record["codice"] == "satispay")
+			$fields .= ",test,alias_account,public_key,private_key";
 		
 		if (isset($record["codice"]) && !OrdiniModel::conPagamentoOnline(array("pagamento"=>$record["codice"])))
 			$fields .= ",istruzioni_pagamento";

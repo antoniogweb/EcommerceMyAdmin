@@ -258,6 +258,16 @@ class BaseOrdiniController extends BaseController
 		$this->ipncarta();
 	}
 	
+	public function ipnsatispay()
+	{
+		// if (OrdiniModel::ordineNonEsistenteONonPending())
+		// 	die("");
+		
+		PagamentiModel::$sCodice = "satispay";
+		
+		$this->ipncarta();
+	}
+	
 	//IPN carta
 	public function ipncarta()
 	{
@@ -613,7 +623,7 @@ class BaseOrdiniController extends BaseController
 				}
 			}
 		}
-		else if (strcmp($data["ordine"]["pagamento"],"klarna") === 0 and $isPending)
+		else if ((strcmp($data["ordine"]["pagamento"],"klarna") === 0 || strcmp($data["ordine"]["pagamento"],"satispay") === 0) and $isPending)
 		{
 			if (isset($_GET["to_paypal"]))
 				$this->redirect("redirect-to-gateway/".$clean["id_o"]."/".$clean["cart_uid"]."/".$data["ordine"]["admin_token"]);
@@ -977,6 +987,11 @@ class BaseOrdiniController extends BaseController
 	public function ritornodaklarna()
 	{
 		$this->ritornoda("klarna");
+	}
+	
+	public function ritornodasatispay()
+	{
+		$this->ritornoda("satispay");
 	}
 	
 	protected function ritornoda($tipo)

@@ -1,0 +1,1 @@
+alter table pagamenti add private_key text not null;

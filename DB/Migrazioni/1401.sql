@@ -1,0 +1,1 @@
+alter table pagamenti add public_key text not null;

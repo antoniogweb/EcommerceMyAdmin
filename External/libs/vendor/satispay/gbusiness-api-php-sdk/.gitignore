@@ -1,0 +1,4 @@
+/vendor
+/examples/authentication.json
+composer.lock
+.idea
