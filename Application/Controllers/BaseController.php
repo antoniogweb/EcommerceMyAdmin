@@ -246,7 +246,13 @@ class BaseController extends Controller
 		{
 			$params = $this->m[$this->modelName]->uploadFields[$field];
 			$path = $params["path"];
-			$folder = Domain::$parentRoot."/".trim($path,"/");
+			
+			$basePath = $this->m[$this->modelName]->getFolderBasePath($field);
+			
+			// if (isset($params["basePath"]) && trim($params["basePath"]) && @is_dir($params["basePath"]))
+			// 	$folder = rtrim($params["basePath"],"/")."/".trim($path,"/");
+			// else
+				$folder = $basePath."/".trim($path,"/");
 			
 			$record = $this->m[$this->modelName]->selectId($clean["id"]);
 			

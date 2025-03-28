@@ -564,6 +564,19 @@ trait CommonModel {
 		return $this;
 	}
 	
+	public function getFolderBasePath($field)
+	{
+		if (isset($this->uploadFields[$field]))
+		{
+			$params = $this->uploadFields[$field];
+			
+			if (isset($params["basePath"]) && trim($params["basePath"]) && @is_dir($params["basePath"]))
+				return rtrim($params["basePath"],"/");
+			else
+				return Domain::$parentRoot;
+		}
+	}
+	
 	public function upload($type = "update")
 	{
 		if (self::$uploadFileGeneric)
@@ -609,7 +622,13 @@ trait CommonModel {
 						}
 						
 						$this->files->setParam('fileUploadKey',$field);
-						$this->files->setBase(Domain::$parentRoot."/".$path);
+						
+						$basePath = $this->getFolderBasePath($field);
+						
+						// if (isset($params["basePath"]) && trim($params["basePath"]) && @is_dir($params["basePath"]))
+						// 	$this->files->setBase(rtrim($params["basePath"],"/")."/".$path);
+						// else
+							$this->files->setBase($basePath."/".$path);
 						
 						if (isset($params["clean_field"]) || isset($params["forza_randon_field_name"]))
 						{

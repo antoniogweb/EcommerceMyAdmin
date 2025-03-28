@@ -68,6 +68,7 @@ class DocumentiModel extends GenericModel {
 			"filename"	=>	array(
 				"type"	=>	"file",
 				"path"	=>	self::$pathFiles,
+				"basePath"	=>	defined('BASE_PATH_DOCUMENTI') ? BASE_PATH_DOCUMENTI : '',
 				"allowedExtensions"	=>	'pdf,png,jpg,jpeg',
 				"maxFileSize"	=>	v("dimensioni_upload_documenti"),
 				"clean_field"	=>	"clean_filename",

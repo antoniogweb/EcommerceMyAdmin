@@ -2185,7 +2185,7 @@ class BaseContenutiController extends BaseController
 		{
 			if ($this->m("DocumentiModel")->checkAccessoUtente($documento["id_doc"]))
 			{
-				$path = ROOT."/images/documenti/".$documento['filename'];
+				$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".$documento['filename'];
 				
 				if (file_exists($path))
 				{
@@ -2212,7 +2212,7 @@ class BaseContenutiController extends BaseController
 				}
 			}
 			else
-				$this->redirect("");	
+				$this->redirect("");
 		}
 		else
 			$this->redirect("");
