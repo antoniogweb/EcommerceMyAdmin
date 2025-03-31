@@ -99,6 +99,10 @@
 					<?php echo $form["pagamento"];?>
 				</div>
 				<?php } ?>
+				<?php
+				if (file_exists($this->viewPath("campi_aggiuntivi_anagrafica")))
+					include($this->viewPath("campi_aggiuntivi_anagrafica"));
+				?>
 			</div>
 			
 			<?php include($this->viewPath("form_submit_button"));?><br />
