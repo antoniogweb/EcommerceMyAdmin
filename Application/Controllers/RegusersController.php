@@ -248,9 +248,9 @@ class RegusersController extends BaseController
 	
 	protected function formFields()
 	{
-		$fields = 'username,has_confirmed,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
+		$fields = 'username,has_confirmed,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2,genere';
 		
-		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2';
+		$formFields = 'username,has_confirmed,password,confirmation,tipo_cliente,nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,dprovincia,citta,telefono,nazione,pec,codice_destinatario,lingua,telefono_2,genere';
 		
 		if (v("attiva_ruoli"))
 		{

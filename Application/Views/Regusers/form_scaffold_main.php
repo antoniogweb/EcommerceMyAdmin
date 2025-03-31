@@ -33,6 +33,9 @@
 				<div class='col-md-3 ragione_sociale'>
 					<?php echo $form["ragione_sociale"];?>
 				</div>
+				<div class='col-md-3 genere'>
+					<?php echo $form["genere"];?>
+				</div>
 				<div class='col-md-3'>
 					<?php echo $form["nome"];?>
 				</div>

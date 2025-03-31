@@ -1777,7 +1777,7 @@ class GenericModel extends Model_Tree
 		}
     }
     
-    public function selectUtenti($id = 0, $soloClienteSelezionato = false)
+    public function selectUtenti($id = 0, $soloClienteSelezionato = false, $sWhere = null)
     {
 		$ru = new RegusersModel();
 		
@@ -1799,6 +1799,9 @@ class GenericModel extends Model_Tree
 					"deleted"	=>	"no",
 				),
 			));
+		
+		if ($sWhere)
+			$ru->sWhere($sWhere);
 		
 		$res = $ru->send(false);
 		

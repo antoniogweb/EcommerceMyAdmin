@@ -1,0 +1,1 @@
+alter table regusers add genere char(1) not null default '';

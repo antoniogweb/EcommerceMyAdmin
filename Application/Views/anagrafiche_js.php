@@ -31,12 +31,17 @@ function updateForm()
 {
 	var tipo_cliente = $(".radio_cliente option:selected").attr("value");
 	
+	var generePresente = $(".genere").length > 0 ? true : false;
+	
 	if (tipo_cliente == "privato")
 	{
 		$(".ragione_sociale").css("display","none");
 		$(".p_iva").css("display","none");
 		$(".nome").css("display","block");
 		$(".cognome").css("display","block");
+		
+		if (generePresente)
+			$(".genere").css("display","block");
 	}
 	else if (tipo_cliente == "libero_professionista")
 	{
@@ -44,6 +49,9 @@ function updateForm()
 		$(".p_iva").css("display","block");
 		$(".nome").css("display","block");
 		$(".cognome").css("display","block");
+		
+		if (generePresente)
+			$(".genere").css("display","block");
 	}
 	else
 	{
@@ -53,6 +61,9 @@ function updateForm()
 		$(".nome").css("display","none");
 		$(".cognome").css("display","none");
 		<?php } ?>
+		
+		if (generePresente)
+			$(".genere").css("display","none");
 	}
 }
 
