@@ -18,8 +18,9 @@ if (!isset($classePulsanteLogin))
 		
 		<div class="uk-margin">
 			<label class="uk-form-label uk-text-bold"><?php echo gtext("Password");?> *</label>
-			<div class="uk-form-controls">
+			<div class="uk-form-controls uk-position-relative">
 				<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="password" type="password" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtext("Scrivi la tua password", false) : "";?>" />
+				<?php include tpf("Elementi/mostra_nascondi_password.php");?>
 			</div>
 		</div>
 		
