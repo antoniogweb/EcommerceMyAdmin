@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD INDEX `orders_data_creazione_id_o` (`data_creazione`, `id_o`);
