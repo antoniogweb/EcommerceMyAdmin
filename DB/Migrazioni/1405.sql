@@ -1,0 +1,1 @@
+ALTER TABLE `mail_ordini` ADD INDEX `mail_ordini_time_creazione` (`time_creazione`);
