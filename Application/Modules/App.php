@@ -102,7 +102,11 @@ class App
 		}
 		
 		uasort(self::$pannelli, function($a, $b){
-			return strcmp($a["ordine"], $b["ordine"]);
+			if ($a["ordine"] == $b["ordine"]) {
+				return 0;
+			}
+			
+			return ($a["ordine"] < $b["ordine"]) ? -1 : 1;
 		});
 	}
 	

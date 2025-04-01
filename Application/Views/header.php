@@ -184,7 +184,7 @@
 							<li class="<?php if (strcmp($sezionePannello,$tipoPannello) === 0) { ?>active<?php } ?> <?php echo $pannello["classe"];?>">
 								<?php $linkPannello = App::primoLinkPannello($tipoPannello, $pannello["link"]);?>
 								<?php if ($linkPannello) { ?>
-									<a href="<?php echo $this->baseUrl.'/'.App::primoLinkPannello($tipoPannello, $pannello["link"]);?>"><i class="fa <?php echo $pannello["icona"];?>"></i>
+									<a <?php echo $pannello["attributi_link"] ?? "";?> href="<?php echo $this->baseUrl.'/'.App::primoLinkPannello($tipoPannello, $pannello["link"]);?>"><i class="fa <?php echo $pannello["icona"];?>"></i>
 										<?php if (!User::$isMobile) { ?>
 										<?php echo gtext($pannello["titolo"])?>
 										<?php } ?>
