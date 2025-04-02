@@ -249,7 +249,7 @@ class Satispay
 				{
 					if ($pagamento->status == "ACCEPTED")
 						$result = true;
-					else if ($sessione["status"] == "PENDING")
+					else if ($pagamento->status == "PENDING")
 						$inProgress = true;
 				}
 			}
