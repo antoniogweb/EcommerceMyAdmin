@@ -26,16 +26,21 @@ class Satispay
 	private $private_key = "";
 	private $keyId = "";
 	
-	public $requestUrl = "";
+	// public $requestUrl = "";
 	public $merchantServerUrl = "";
+	
 	public $okUrl = "";
 	public $errorUrl = "";
 	public $notifyUrl = "";
 	public $statoNotifica = "";
+	public $statoPagamento = "";
 	public $statoCheckOrdine = "";
 	
 	protected $urlPagamento = null;
 	protected $ordine = null;
+	
+	protected $idPagamentoSatispay = null; // l'ID del pagamento Satispay della sessione in corso
+	private static $amountPagato = 0;
 	
 	private static $languages = array(
 		"it"	=>	"ITA",
@@ -111,6 +116,8 @@ class Satispay
 		\SatispayGBusiness\Api::setPrivateKey($this->private_key);
 		\SatispayGBusiness\Api::setKeyId($this->keyId);
 		
+		$prefissoTelefonico = NazioniModel::g()->getPrefissoTelefonicoDaCodice($this->ordine["nazione"]);
+		
 		$pagamento = [
 			'flow' => 'MATCH_CODE',
 			'amount_unit' => $this->setImporto($this->ordine["total"]),
@@ -119,7 +126,7 @@ class Satispay
 			'callback_url' => $this->notifyUrl,
 			'redirect_url' => $this->okUrl,    
 			'metadata' => [
-				"phone_number"  =>  "+39".str_replace(" ","",$this->ordine["telefono"]),
+				"phone_number"  =>  $prefissoTelefonico.str_replace(" ","",$this->ordine["telefono"]),
 				// 'order_id' => '1234',
 				// 'user_id' => '5678',
 				// 'payment_id' => 'payment1234',
@@ -158,6 +165,8 @@ class Satispay
 			$this->statoNotifica .= "REQUEST:$key=$value \n";
 		}
 		
+		$this->statoNotifica .= "SESSIONE:\n".$this->statoPagamento."\n";
+		
 		if ($this->statoCheckOrdine)
 			$this->statoNotifica .= "CHECK ORDINE:".$this->statoCheckOrdine."\n";
 		
@@ -175,12 +184,89 @@ class Satispay
 		
 	}
 	
-	public function validate($scriviSuFileLog = true)
+	public function validateRitorno()
 	{
-		// Controllo che ci siano tutti i parametri di ritorno obbligatori per calcolare il MAC
+		return true;
+	}
+	
+	public function getPagamento()
+	{
+		$log = new LogModel();
 		
+		$ultimoLog = $log->getLog("SATISPAY_CREA_PAGAMENTO", $this->ordine["cart_uid"]);
+		
+		if (!empty($ultimoLog))
+		{
+			$sessionArray = json_decode($ultimoLog["log_piattaforma"]["full_log"], true);
+			
+			if (isset($sessionArray["id"]))
+			{
+				$idPagamentoSatispay = $this->idPagamentoSatispay = $sessionArray["id"];
+				
+				\SatispayGBusiness\Api::setPublicKey($this->public_key);
+				\SatispayGBusiness\Api::setPrivateKey($this->private_key);
+				\SatispayGBusiness\Api::setKeyId($this->keyId);
+				
+				$pagamento = \SatispayGBusiness\Payment::get($idPagamentoSatispay);
+				
+				$this->statoPagamento = json_encode($pagamento, JSON_PRETTY_PRINT);
+				
+				if (isset($pagamento->amount_unit))
+					self::$amountPagato = $pagamento->amount_unit;
+				
+				return $pagamento;
+			}
+		}
 		
 		return false;
+	}
+	
+	public function validate($scriviSuFileLog = true)
+	{
+		$clean['banca_token'] = isset($_GET["banca_token"]) ? sanitizeAll($_GET["banca_token"]) : "";
+		$clean['cart_uid'] = isset($_GET["cart_uid"]) ? sanitizeAll($_GET["cart_uid"]) : "";
+		
+		$result = false;
+		
+		// $inProgress = false;
+		
+		if ($clean['banca_token'] && $clean['cart_uid'])
+		{
+			$oModel = new OrdiniModel();
+			
+			$ordine = $oModel->clear()->where(array(
+				"cart_uid"		=>	$clean['cart_uid'],
+				"banca_token" 	=>	$clean['banca_token'],
+			))->record();
+			
+			if (!empty($ordine))
+			{
+				$this->ordine = $ordine;
+				
+				$pagamento = $this->getPagamento();
+				
+				if ($pagamento !== false && isset($pagamento->status))
+				{
+					if ($pagamento->status == "ACCEPTED")
+						$result = true;
+					// else if ($sessione["status"] == "IN_PROGRESS")
+					// 	$inProgress = true;
+				}
+			}
+		}
+		
+		if ($result)
+		{
+			$this->statoNotifica = 'OK, pagamento avvenuto, preso riscontro';
+			$this->scriviLog(true, $scriviSuFileLog);
+		}
+		else
+		{
+			$this->statoNotifica = 'KO, pagamento non avvenuto, preso riscontro';
+			$this->scriviLog(false, $scriviSuFileLog);
+		}
+		
+		return $result;
 	}
 	
 	public function redirect()
@@ -190,24 +276,20 @@ class Satispay
 	
 	public function success()
 	{
-
 		return false;
 	}
 	
 	public function checkOrdine()
 	{
-		$importo = str_replace(".","",$this->ordine["total"]);
-		$amount = isset($_REQUEST["importo"]) ? $_REQUEST["importo"] : 0;
-		$codTrans = isset($_REQUEST["codTrans"]) ? $_REQUEST["codTrans"] : 0;
+		$importo = number_format($this->ordine["total"] * 100,0,".","");
 		
-		if (strcmp($amount,$importo) === 0 && strcmp($codTrans,$this->ordine[v("campo_codice_transazione_nexi")]) === 0)
+		if (strcmp(self::$amountPagato,$importo) === 0)
 			return true;
 		
 		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
-		$this->statoCheckOrdine .= "DOVUTO: $importo - PAGATO: $amount \n";
-		$this->statoCheckOrdine .= "COD TRANS: $codTrans - COD TRANS ORDINE: ".$this->ordine[v("campo_codice_transazione_nexi")]." \n";
+		$this->statoCheckOrdine .= "DOVUTO: $importo - CAPTURED: ".self::$amountPagato." \n";
 		
-		$this->statoNotifica = 'OK, pagamento non corretto';
+		$this->statoNotifica = 'KO, pagamento non corretto';
 		$this->scriviLog(false, true);
 		
 		return false;
@@ -215,8 +297,7 @@ class Satispay
 	
 	public function amountPagato()
 	{
-
-		return 0;
+		return self::$amountPagato / 100;
 	}
 	
 }

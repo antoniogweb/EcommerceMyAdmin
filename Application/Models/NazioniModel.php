@@ -156,6 +156,13 @@ class NazioniModel extends GenericModel
 		))->field("titolo");
 	}
 	
+	public function getPrefissoTelefonicoDaCodice($codice)
+	{
+		return $this->clear()->select("prefisso_telefonico")->where(array(
+			"iso_country_code"	=>	sanitizeDb($codice),
+		))->field("prefisso_telefonico");
+	}
+	
 	public function findCodiceDaTitolo($titolo)
 	{
 		$nazione = $this->clear()->where(array(

@@ -1007,7 +1007,7 @@ class BaseOrdiniController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
 		
-		PagamentiModel::gateway()->validate(false);
+		// PagamentiModel::gateway()->validate(false);
 		
 		if (isset($_GET["banca_token"]))
 		{

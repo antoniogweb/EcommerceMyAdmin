@@ -347,7 +347,7 @@ class Klarna
 		$this->statoCheckOrdine = "ORDINE NON TORNA\n";
 		$this->statoCheckOrdine .= "DOVUTO: $importo - CAPTURED: ".self::$amountPagato." \n";
 		
-		$this->statoNotifica = 'OK, pagamento non corretto';
+		$this->statoNotifica = 'KO, pagamento non corretto';
 		$this->scriviLog(false, true);
 		
 		return false;
