@@ -136,6 +136,8 @@ class NazioniController extends BaseController {
 		if (v("soglia_spedizioni_gratuite_diversa_per_ogni_nazione"))
 			$campi .= ",soglia_spedizioni_gratuite";
 
+		$campi .= ",prefisso_telefonico";
+		
 		$this->m[$this->modelName]->setValuesFromPost($campi);
 		
 		parent::form($queryType, $id);

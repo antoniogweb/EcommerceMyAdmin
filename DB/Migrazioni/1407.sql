@@ -1,0 +1,1 @@
+ALTER TABLE nazioni add prefisso_telefonico char(10) not null default '';

@@ -1,0 +1,1 @@
+update nazioni set prefisso_telefonico = '+351' where iso_country_code = 'PT';

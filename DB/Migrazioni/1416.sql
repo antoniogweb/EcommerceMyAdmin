@@ -1,0 +1,1 @@
+update nazioni set prefisso_telefonico = '+352' where iso_country_code = 'LU';
