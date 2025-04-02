@@ -42,13 +42,13 @@ class Satispay
 	protected $idPagamentoSatispay = null; // l'ID del pagamento Satispay della sessione in corso
 	private static $amountPagato = 0;
 	
-	private static $languages = array(
-		"it"	=>	"ITA",
-		"en"	=>	"ENG",
-		"es"	=>	"SPA",
-		"fr"	=>	"FRA",
-		"de"	=>	"GER",
-	);
+	// private static $languages = array(
+	// 	"it"	=>	"ITA",
+	// 	"en"	=>	"ENG",
+	// 	"es"	=>	"SPA",
+	// 	"fr"	=>	"FRA",
+	// 	"de"	=>	"GER",
+	// );
 	
 	public function __construct($ordine = array())
 	{
@@ -78,13 +78,13 @@ class Satispay
 		}
 	}
 	
-	private static function getLanguageCode($lingua)
-	{
-		if (isset(self::$languages[$lingua]))
-			return self::$languages[$lingua];
-		
-		return "ITA";
-	}
+// 	private static function getLanguageCode($lingua)
+// 	{
+// 		if (isset(self::$languages[$lingua]))
+// 			return self::$languages[$lingua];
+// 		
+// 		return "ITA";
+// 	}
 
 	public function getPulsantePaga()
 	{
