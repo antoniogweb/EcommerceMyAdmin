@@ -276,7 +276,7 @@ class Satispay
 	
 	public function success()
 	{
-		return false;
+		return true;
 	}
 	
 	public function checkOrdine()
