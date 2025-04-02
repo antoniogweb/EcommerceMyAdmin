@@ -228,7 +228,7 @@ class Satispay
 		
 		$result = false;
 		
-		// $inProgress = false;
+		$inProgress = false;
 		
 		if ($clean['banca_token'] && $clean['cart_uid'])
 		{
@@ -249,8 +249,8 @@ class Satispay
 				{
 					if ($pagamento->status == "ACCEPTED")
 						$result = true;
-					// else if ($sessione["status"] == "IN_PROGRESS")
-					// 	$inProgress = true;
+					else if ($sessione["status"] == "PENDING")
+						$inProgress = true;
 				}
 			}
 		}
@@ -265,6 +265,9 @@ class Satispay
 			$this->statoNotifica = 'KO, pagamento non avvenuto, preso riscontro';
 			$this->scriviLog(false, $scriviSuFileLog);
 		}
+		
+		if ($inProgress)
+			die("");
 		
 		return $result;
 	}

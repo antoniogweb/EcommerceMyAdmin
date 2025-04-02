@@ -260,8 +260,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function ipnsatispay()
 	{
-		// if (OrdiniModel::ordineNonEsistenteONonPending())
-		// 	die("");
+		if (OrdiniModel::ordineNonEsistenteONonPending())
+			die("");
 		
 		PagamentiModel::$sCodice = "satispay";
 		
