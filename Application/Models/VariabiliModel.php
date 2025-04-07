@@ -290,7 +290,6 @@ class VariabiliModel extends GenericModel {
 		"attiva_elementi_tema"		=>	0, // se permettere in admin o frontend di cambiare lo stile dei vari elementi del tema
 		"attiva_codice_js_pagina"	=>	1, // codice conversione JS della pagina (anche JS generico)
 		"token_edit_frontend"		=>	"", // token per attivare l'edit frontend
-		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
 		"mostra_errori_personalizzazione"	=>	1, // mostrare che manca personalizzazione oppure no
 		"coupon_ajax"				=>	0, // se inserire il coupon con una richiesta POST ajax
 		"attiva_gestione_integrazioni"	=>	0, // se mostra la gestione delle integrazioni
@@ -830,6 +829,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_sezione_download_documenti"	=>	0, // se impostato su 1, mostra la voce di menù che manda alle statistiche di scaricamento
 		### CALENDARIO CHIUSURE ##
 		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
+		### FASCE ##
+		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
+		"attiva_gestione_fasce_frontend_prodotti"	=>	0, // se impostato su 1, mostra il link per la gestione delle fasce nei prodotti
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

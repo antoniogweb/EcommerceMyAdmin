@@ -108,8 +108,11 @@ trait BaseFasceController
 		$altreImmagini = $this->altreImmagini;
 		
 		ob_start();
-		include tpf("Fasce/slide_prodotto.php");
-		$output = ob_get_clean();
+		include(tpf(ElementitemaModel::p("FASCIA_SLIDE_PRODOTTO","", array(
+			"titolo"	=>	"Fascia slide in dettaglio prodotto",
+			"percorso"	=>	"Elementi/Fasce/SlideProdotto",
+		))));
+		return ob_get_clean();
 		
 		return $output;
 	}

@@ -862,7 +862,7 @@ class PagesController extends BaseController
 						else
 							$data["urlPagina"] = $this->m["PagesModel"]->getUrlAlias($clean['id'], LingueModel::getPrincipaleFrontend());
 						
-						if (v("attiva_gestione_fasce_frontend") && !isProdotto($clean['id']))
+						if (v("attiva_gestione_fasce_frontend") && (!isProdotto($clean['id'])) || v("attiva_gestione_fasce_frontend_prodotti"))
 							$data["urlPaginaEditFrontend"] = $data["urlPagina"]."?".v("token_edit_frontend")."&em_edit_frontend";
 					}
 				}

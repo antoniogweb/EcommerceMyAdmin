@@ -1573,7 +1573,10 @@ class BaseContenutiController extends BaseController
 	
 	public function fascia($idPage = 0, $idFascia = 0)
 	{
-		$clean['idPage'] = (int)$idPage;
+		if (!User::$adminLogged)
+			$this->responseCode(403);
+		
+		$clean['idPage'] = PagesModel::$currentIdPage = (int)$idPage;
 		$clean['idFascia'] = (int)$idFascia;
 		
 		$this->clean();
