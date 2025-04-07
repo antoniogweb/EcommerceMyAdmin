@@ -467,4 +467,14 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getFasciaDocumenti()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_DOCUMENTI","", array(
+			"titolo"	=>	"Fascia con l'elenco dei documenti di una pagina",
+			"percorso"	=>	"Elementi/Fasce/Documenti",
+		))));
+		return ob_get_clean();
+	}
 }

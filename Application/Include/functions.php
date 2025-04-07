@@ -1002,6 +1002,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[prodotti_in_pagina\]/', array($obj,'getProdottiInPagina') ,$string);
 		$string = preg_replace_callback('/\[partner\]/', array($obj,'getFasciaPartner') ,$string);
 		$string = preg_replace_callback('/\[agenti\]/', array($obj,'getFasciaAgenti') ,$string);
+		$string = preg_replace_callback('/\[elenco_documenti\]/', array($obj,'getFasciaDocumenti') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{

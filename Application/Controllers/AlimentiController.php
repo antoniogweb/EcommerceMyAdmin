@@ -32,11 +32,19 @@ class AlimentiController extends GenericsectionController {
 		
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',
-			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
 			'PagesModel.categoriesS|pages.id_page',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$filtroCategoria = array("tutti" => AlimenticatModel::g(false)->getTitoloCategoriaPadreSezione()) + AlimenticatModel::g(false)->buildSelect(null,false);
+		$this->filters = array(null,'title',array("id_c",null,$filtroCategoria),array("attivo",null,SlideModel::$YN));
 		
 		$this->orderBy = "pages.title";
 		

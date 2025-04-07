@@ -30,4 +30,9 @@ class StoriaModel extends BasicsectionModel {
 	{
 		$this->formStruct["entries"]["sottotitolo"]["labelString"] = gtext("Periodo");
 	}
+	
+	public function setFilters()
+	{
+
+	}
 }

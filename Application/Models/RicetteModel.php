@@ -31,4 +31,9 @@ class RicetteModel extends BasicsectionModel {
 		$this->formStruct["entries"]["description"]["labelString"] = gtext("Ingredienti");
 		$this->formStruct["entries"]["descrizione_2"]["labelString"] = gtext("Procedimento");
 	}
+	
+	public function setFilters()
+	{
+
+	}
 }

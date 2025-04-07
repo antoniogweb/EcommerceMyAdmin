@@ -38,6 +38,8 @@ class StoriaController extends GenericsectionController {
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
+		$this->filters = array(null,null,'title',null,array("attivo",null,SlideModel::$YN));
+
 		$this->orderBy = "pages.id_order";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Periodo,Pubblicato?';
