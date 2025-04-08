@@ -480,6 +480,9 @@ class BaseOrdiniController extends BaseController
 		$strutturaProdotti = GestionaliModel::getModuloPadre()->infoOrdine($clean["id_o"]);
 		$ordine = OrdiniModel::g()->selectId($clean["id_o"]);
 		
+		if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+			VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)$ordine["prezzi_ivati_in_carrello"];
+		
 		ob_start();
 		include(tpf(ElementitemaModel::p("PDF_ORDINE","", array(
 			"titolo"	=>	"PDF ordine",
