@@ -29,7 +29,7 @@
 		<?php if ($ordine["codice_fiscale"]) { ?>
 		<tr>
 			<td class="first_column"><?php echo gtext("Codice fiscale", false); ?></td>
-			<td><?php echo $ordine["codice_fiscale"];?></td>
+			<td><?php echo strtoupper($ordine["codice_fiscale"]);?></td>
 		</tr>
 		<?php } ?>
 		<tr>
