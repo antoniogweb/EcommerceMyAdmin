@@ -369,7 +369,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								<?php } ?>
 								<tr>
 									<td class="first_column"><?php echo gtext("Codice fiscale");?></td>
-									<td><?php echo $ordine["codice_fiscale"];?></td>
+									<td><?php echo strtoupper($ordine["codice_fiscale"]);?></td>
 								</tr>
 								<tr>
 									<td class="first_column"><?php echo gtext("Indirizzo");?></td>

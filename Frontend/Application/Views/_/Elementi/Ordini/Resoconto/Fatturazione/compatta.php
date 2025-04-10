@@ -11,7 +11,7 @@
 			<br /><span class="uk-text-emphasis"><?php echo gtext("P. IVA");?>: <?php echo $ordine["p_iva"];?>
 			<?php } ?>
 			<?php if ($ordine["codice_fiscale"]) { ?>
-			<br /><span class="uk-text-emphasis"><?php echo gtext("Codice fiscale");?>: <?php echo $ordine["codice_fiscale"];?>
+			<br /><span class="uk-text-emphasis"><?php echo gtext("Codice fiscale");?>: <?php echo strtoupper($ordine["codice_fiscale"]);?>
 			<?php } ?>
 		</div>
 		<div class="uk-width-1-1 uk-width-1-2@m">
