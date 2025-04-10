@@ -55,6 +55,23 @@ class ProvinceModel extends GenericModel
 		return 0;
 	}
 	
+	public static function recuperaCodice($testo)
+	{
+		$pModel = new ProvinceModel();
+		
+		$codice = $pModel->clear()->select("codice_provincia")->where(array(
+			"OR"	=>	array(
+				"codice_provincia"	=>	sanitizeAll($testo),
+				"provincia"	=>	sanitizeAll($testo),
+			),
+		))->field("codice_provincia");
+		
+		if ($codice)
+			return $codice;
+		
+		return $testo;
+	}
+	
 	public function selectArray($isSpedizione = false)
 	{
 		$whereArray = array();
