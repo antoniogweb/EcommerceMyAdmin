@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Gestione meù cucina', 'menucucina', '', '0', 'attiva_standard_cms_menu=1&mostra_menu_cucina=1', '106', '1', 'sito', 'main');

@@ -933,6 +933,36 @@ class Route
 		'documentidownload,main',
 		
 		'calendariochiusure,main',
+		
+		'menucucinacat,main',
+		'menucucinacat,form',
+		'menucucinacat,meta',
+		'menucucinacat,gruppi',
+		'menucucinacat,ordina',
+		'menucucinacat,contenuti',
+		
+		'menucucina,main',
+		'menucucina,aggiungicategoria',
+		'menucucina,form',
+		'menucucina,immagini',
+		'menucucina,eliminacategoria',
+		'menucucina,correlati',
+		'menucucina,attributi',
+		'menucucina,caratteristiche',
+		'menucucina,move',
+		'menucucina,pubblica',
+		'menucucina,inevidenza',
+		'menucucina,updatevalue',
+		'menucucina,meta',
+		'menucucina,ordina',
+		'menucucina,contenuti',
+		'menucucina,ordinacontenuti',
+		'menucucina,ordinacorrelati',
+		'menucucina,link',
+		'menucucina,testi',
+		'menucucina,lingue',
+		'menucucina,tag',
+		'menucucina,ordinatag',
 	);
 	
 	//it can be 'yes' or 'no'

@@ -22,33 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BlogModel extends PagesModel {
+class MenucucinaModel extends BasicsectionModel {
 	
-	public $hModelName = "BlogcatModel";
-	
-	public function __construct() {
-		
-		parent::__construct();
-		
-		$this->uploadFields["video_thumb"] = array(
-			"type"	=>	"image",
-			"path"	=>	"images/video",
-// 				"mandatory"	=>	true,
-			"allowedExtensions"	=>	'png,jpg,jpeg,gif',
-			'allowedMimeTypes'	=>	'',
-			"createImage"	=>	true,
-			"maxFileSize"	=>	3000000,
-// 				"clean_field"	=>	"clean_immagine",
-			"Content-Disposition"	=>	"inline",
-			"thumb"	=> array(
-				'imgWidth'		=>	400,
-				'imgHeight'		=>	400,
-				'defaultImage'	=>  null,
-				'cropImage'		=>	'no',
-			),
-		);
-		
-	}
+	public $hModelName = "MenucucinacatModel";
 	
 	public function setFilters() {}
 }
