@@ -719,6 +719,7 @@ class BaseContenutiController extends BaseController
 			$i++;
 		}
 		
+		App::$currentBreadcrumbArray = $breadcrumbArray;
 		App::$currentBreadcrumb = implode(v("divisone_breadcrum"), $breadcrumbArray);
 		
 		return App::$currentBreadcrumb;

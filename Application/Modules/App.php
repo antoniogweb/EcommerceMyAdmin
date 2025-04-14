@@ -33,6 +33,7 @@ class App
 	public static $pannelli = array();
 	
 	public static $currentBreadcrumb = null;
+	public static $currentBreadcrumbArray = array();
 	
 	public static $vociMenuApp = [];
 	
