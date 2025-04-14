@@ -923,6 +923,7 @@ class VariabiliModel extends GenericModel {
 			"INDIRIZZO SITO WEB"	=>	DOMAIN_NAME,
 			"PRODOTTI/SERVIZI"	=>	v("placeholder_prodotti_o_servizi"),
 			"EMAIL AZIENDALE"	=>	v("email_aziendale"),
+			"TELEFONO AZIENDALE"	=>	v("telefono_aziendale"),
 			"NOMINATIVO RESPONSABILE TRATTAMENTO DATI"	=>	v("responsabile_trattamento_dati"),
 			"EMAIL RESPONSABILE TRATTAMENTO DATI"		=>	v("email_responsabile_trattamento_dati"),
 		);

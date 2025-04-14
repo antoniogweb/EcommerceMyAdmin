@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class MenucucinaModel extends BasicsectionModel {
+class MenucucinaModel extends PagesModel {
 	
 	public $hModelName = "MenucucinacatModel";
 	
