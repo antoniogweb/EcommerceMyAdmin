@@ -1,0 +1,1 @@
+alter table province add attiva tinyint not null default 1;

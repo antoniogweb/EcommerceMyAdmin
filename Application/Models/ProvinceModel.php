@@ -33,7 +33,14 @@ class ProvinceModel extends GenericModel
 	
 	public function selectTendina()
 	{
-		return array(""=>"Seleziona") + $this->orderBy("provincia")->toList("codice_provincia","provincia")->send();
+		$this->orderBy("provincia")->toList("codice_provincia","provincia");
+		
+		if (v("mostra_solo_province_attive") && App::$isFrontend)
+			$this->aWhere(array(
+				"attiva"	=>	1,
+			));
+		
+		return array(""=>"Seleziona") + $this->send();
 	}
 	
 	public function findTitoloDaCodice($codice)
