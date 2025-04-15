@@ -33,11 +33,13 @@ $options = getopt(null, array(
 	"path::",
 	"dominio::",
 	"queryString::",
+	"sWhere::",
+	"sWhereParams::",
 ));
 
 $default = array(
-	"lingua"		=>	"it",
-	"nazione"		=>	"it",
+	"lingua"			=>	"it",
+	"nazione"			=>	"it",
 );
 
 $params = array_merge($default, $options);
@@ -89,7 +91,26 @@ if (FeedModel::getModulo($modulo)->isAttivo())
 	
 	IvaModel::getAliquotaEstera();
 	
-	FeedModel::getModulo($modulo)->feedProdotti(null, $params["path"]);
+	$p = null;
+	
+	if (isset($params["sWhere"]) && $params["sWhere"])
+	{
+		$p = new PagesModel();
+		
+		if (isset($params["sWhereParams"]) && $params["sWhereParams"])
+		{
+			$sWhereParams = explode(",", $params["sWhereParams"]);
+			
+			$p->clear()->sWhere(array(
+				$params["sWhere"],
+				sanitizeAllDeep($sWhereParams),
+			));
+		}
+		else
+			$p->clear()->sWhere($params["sWhere"]);
+	}
+	
+	FeedModel::getModulo($modulo)->feedProdotti($p, $params["path"]);
 }
 else
 	echo "Il modulo ".(string)$params["modulo"]." non è attivo";
