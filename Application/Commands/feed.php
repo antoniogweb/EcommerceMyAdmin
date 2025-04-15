@@ -38,8 +38,8 @@ $options = getopt(null, array(
 ));
 
 $default = array(
-	"lingua"			=>	"it",
-	"nazione"			=>	"it",
+	"lingua"	=>	"it",
+	"nazione"	=>	"it",
 );
 
 $params = array_merge($default, $options);
