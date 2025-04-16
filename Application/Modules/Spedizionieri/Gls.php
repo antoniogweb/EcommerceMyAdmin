@@ -197,7 +197,7 @@ class Gls extends Spedizioniere
 					
 					if ($record["nazione"] != "IT")
 					{
-						$temp["Provincia"] = $record["nazione"];
+						$temp["Provincia"] = ($record["nazione"] == "MC") ? "FR" : $record["nazione"];
 						$temp["TipoSpedizione"] = "P";
 						$temp["PersonaRiferimento"] = F::sanitizeXML($record["ragione_sociale_2"]);
 						$temp["TelefonoDestinatario"] = F::sanitizeXML($record["telefono"]);
