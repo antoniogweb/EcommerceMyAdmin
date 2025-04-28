@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class UsersModel extends GenericModel {
 	
 	public $applySoftConditionsOnPost = true;
+	public $applySoftConditionsOnValues = false;
 	
 	public function __construct() {
 	

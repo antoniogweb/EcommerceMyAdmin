@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class RegusersModel extends FormModel {
 	
 	public $applySoftConditionsOnPost = true;
+	public $applySoftConditionsOnValues = false;
 	
 	public static $clienteImportato = false;
 	
