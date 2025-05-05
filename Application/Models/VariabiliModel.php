@@ -158,7 +158,6 @@ class VariabiliModel extends GenericModel {
 		"codice_verifica_fbk"		=>	"",
 		"codice_fbk_noscript"		=>	"",
 		"debug_js"					=>	0,
-		"email_log_errori"			=>	"",
 		"mostra_tipo_caratteristica"=>	0,
 		"immagine_in_caratteristiche"	=>	0,
 		"caratteristiche_in_tab_separate"	=>	0,
@@ -829,6 +828,9 @@ class VariabiliModel extends GenericModel {
 		"documenti_in_clienti"		=>	0, // se impostato su 1, attiva la possibilità di caricare documenti legati ai clienti
 		"attiva_biblioteca_documenti"	=>	0, // se mostrare o nascondere i link della propria biblioteca in area riservata
 		"attiva_sezione_download_documenti"	=>	0, // se impostato su 1, mostra la voce di menù che manda alle statistiche di scaricamento
+		### MAIL LOG ##
+		"email_log_errori"			=>	"",	// // Indirizzi email (divisi da virgola) a cui inviare un avviso se la verifica IPN (o affini) del pagamento non va a buon fine (con errori segnalati dal gateway di pagamento riportati nel corpo della mail)
+		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)
 		### CALENDARIO CHIUSURE ##
 		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
 		### FASCE ##
@@ -1218,5 +1220,10 @@ class VariabiliModel extends GenericModel {
 			return true;
 		
 		return false;
+	}
+	
+	public static function getMailAvvisoPagamentoOrdineNonPending()
+	{
+		return v("email_log_pagamento_da_analizzare") ? "email_log_pagamento_da_analizzare" : "email_log_errori";
 	}
 }

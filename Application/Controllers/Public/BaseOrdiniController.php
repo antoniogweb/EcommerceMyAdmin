@@ -221,6 +221,8 @@ class BaseOrdiniController extends BaseController
 					));
 				}
 			}
+			else
+				$this->mailErrorePagamentoOrdineNonPending($clean['cart_uid']);
 		}
 		else
 		{
@@ -266,6 +268,16 @@ class BaseOrdiniController extends BaseController
 		PagamentiModel::$sCodice = "satispay";
 		
 		$this->ipncarta();
+	}
+	
+	protected function mailErrorePagamentoOrdineNonPending($cartUid)
+	{
+		$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => sanitizeAll($cartUid)))->send();
+		
+		if (count($res))
+		{
+			MailordiniModel::inviaMailLog("Attenzione, pagamento relativo all' ordine ".(int)$res[0]["orders"]["id_o"]." allo stato ".statoOrdine($res[0]["orders"]["stato"]), "Attenzione, è stato eseguito un pagamento relativo all'ordine ".(int)$res[0]["orders"]["id_o"]." che non si trova in attesa di pagamento ma è allo stato <b>".statoOrdine($res[0]["orders"]["stato"])."</b>", "PAGAMENTO NON PENDING", VariabiliModel::getMailAvvisoPagamentoOrdineNonPending());
+		}
 	}
 	
 	//IPN carta
@@ -343,6 +355,8 @@ class BaseOrdiniController extends BaseController
 					MailordiniModel::inviaMailLog("ERRORE PAGAMENTO DIVERSO DA ORDINE", "Discrepanza nel dovuto:<br />Dovuto: ".number_format($res[0]["orders"]["total"],2,",","")." Euro<br />Pagato: ".number_format(PagamentiModel::gateway()->amountPagato(), 2, ",", "")." Euro", "Ordine N.".$res[0]["orders"]["id_o"]);
 				}
 			}
+			else
+				$this->mailErrorePagamentoOrdineNonPending($clean['cart_uid']);
 		}
 		else
 		{
