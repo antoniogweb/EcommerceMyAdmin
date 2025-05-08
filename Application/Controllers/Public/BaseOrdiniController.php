@@ -272,7 +272,14 @@ class BaseOrdiniController extends BaseController
 	
 	protected function mailErrorePagamentoOrdineNonPending($cartUid)
 	{
-		$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => sanitizeAll($cartUid)))->send();
+		$statiCheckPagamento = explode(",", "deleted");
+		
+		$res = $this->m("OrdiniModel")->clear()->where(array(
+			"cart_uid" => sanitizeAll($cartUid),
+			"in"	=>	array(
+				"orders.stato"	=>	$statiCheckPagamento,
+			)
+		))->send();
 		
 		if (count($res))
 		{

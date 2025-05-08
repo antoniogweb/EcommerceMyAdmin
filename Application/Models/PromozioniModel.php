@@ -590,9 +590,17 @@ class PromozioniModel extends GenericModel {
 			"id_p"	=>	(int)$promozione["id_p"],
 		))->aWhere($whereMarchi)->toList("id_page")->send();
 		
+		$arrayIdCategorie = array();
+		
 		foreach ($idCs as $idC)
 		{
+			if (in_array($idC, $arrayIdCategorie))
+				continue;
+			
 			$children = $c->children((int)$idC, true);
+			
+			if (count($children) > 0)
+				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
 			
 			$bindedValues = $children;
 			$bindedValues[] = (int)$idC;
