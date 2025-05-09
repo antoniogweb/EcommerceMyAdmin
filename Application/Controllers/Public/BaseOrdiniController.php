@@ -283,7 +283,7 @@ class BaseOrdiniController extends BaseController
 		
 		if (count($res))
 		{
-			MailordiniModel::inviaMailLog("Attenzione, pagamento relativo all' ordine ".(int)$res[0]["orders"]["id_o"]." allo stato ".statoOrdine($res[0]["orders"]["stato"]), "Attenzione, è stato eseguito un pagamento relativo all'ordine ".(int)$res[0]["orders"]["id_o"]." che non si trova in attesa di pagamento ma è allo stato <b>".statoOrdine($res[0]["orders"]["stato"])."</b>", "PAGAMENTO NON PENDING", VariabiliModel::getMailAvvisoPagamentoOrdineNonPending());
+			MailordiniModel::inviaMailLog("Attenzione, pagamento relativo all' ordine ".(int)$res[0]["orders"]["id_o"]." allo stato ".statoOrdine($res[0]["orders"]["stato"]), "Attenzione, è stato eseguito un pagamento relativo all'ordine ".(int)$res[0]["orders"]["id_o"]." che non si trova allo stato in attesa di pagamento ma è allo stato <b>".statoOrdine($res[0]["orders"]["stato"])."</b>", "PAGAMENTO NON PENDING", VariabiliModel::getMailAvvisoPagamentoOrdineNonPending());
 		}
 	}
 	
