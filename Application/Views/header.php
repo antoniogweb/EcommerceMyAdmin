@@ -29,6 +29,30 @@
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
+	
+	<script>
+	jQuery(function($){
+		$.datepicker.regional['it'] = {
+			closeText: '<?php echo gtext("Chiudi");?>',
+			prevText: '&#x3c;<?php echo gtext("Prec");?>',
+			nextText: '<?php echo gtext("Succ");?>&#x3e;',
+			currentText: '<?php echo gtext("Oggi");?>',
+			monthNames: ['<?php echo gtext("Gennaio");?>','<?php echo gtext("Febbraio");?>','<?php echo gtext("Marzo");?>','<?php echo gtext("Aprile");?>','<?php echo gtext("Maggio");?>','<?php echo gtext("Giugno");?>','<?php echo gtext("Luglio");?>','<?php echo gtext("Agosto");?>','<?php echo gtext("Settembre");?>','<?php echo gtext("Ottobre");?>','<?php echo gtext("Novembre");?>','<?php echo gtext("Dicembre");?>'],
+			monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',
+				'Lug','Ago','Set','Ott','Nov','Dic'],
+			dayNames: ['Domenica','Luned&#236','Marted&#236','Mercoled&#236','Gioved&#236','Venerd&#236','Sabato'],
+			dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
+			dayNamesMin: ['<?php echo gtext("Do");?>','<?php echo gtext("Lu");?>','<?php echo gtext("Ma");?>','<?php echo gtext("Me");?>','<?php echo gtext("Gi");?>','<?php echo gtext("Ve");?>','<?php echo gtext("Sa");?>'],
+			weekHeader: 'Sm',
+			dateFormat: 'dd/mm/yy',
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: false,
+			yearSuffix: ''};
+		$.datepicker.setDefaults($.datepicker.regional['it']);
+	});
+	</script>
+	
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/crud.js?v=<?php echo rand(1,100000);?>"></script>
 	
