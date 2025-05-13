@@ -88,6 +88,7 @@ class ContattiModel extends GenericModel {
 			"cognome"	=>	"",
 			"telefono"	=>	"",
 			"citta"		=>	"",
+			"cap"		=>	"",
 			"redirect_to_url"	=>	"",
 			"redirect_query_string"	=>	"",
 			"nazione"	=>	v("nazione_default"),

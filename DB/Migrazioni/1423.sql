@@ -1,0 +1,1 @@
+alter table contatti add cap char(10) not null default '' after citta;
