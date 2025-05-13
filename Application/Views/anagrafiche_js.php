@@ -10,7 +10,7 @@
 			<div class="modal-body">
 				<h3 class="titolo_avviso_cliente_presente"><?php echo gtext("Attenzione, l'indirizzo email [INDIRIZZO_EMAIL] che hai inserito nella testata dell'ordine è già presente nel database dei clienti.");?></h3>
 				<?php echo gtext("Questo significa che il cliente è già presente nel database.");?><br /><br />
-				<?php echo gtext("Premi il pulsante");?> <b><?php echo gtext("Importa dati cliente da anagrafica");?></b> <?php echo gtext("se vuoi che i dati del clienti vengano caricati dall'anagrafica cliente ed inseriti nell'ordine corrente.")?><br /><br />
+				<?php echo gtext("Premi il pulsante");?> <b><?php echo gtext("Importa dati cliente da anagrafica");?></b> <?php echo gtext("se vuoi che i dati del cliente vengano caricati dall'anagrafica cliente ed inseriti nell'ordine corrente.")?><br /><br />
 				<?php echo gtext("Premi il pulsante");?> <b><?php echo gtext("Continua e sovrascrivi dati cliente");?></b> <?php echo gtext("se vuoi continuare inserendo i dati del cliente. Nel momento in cui salverai l'ordine, l'anagrafica cliente verrà sovrascritta con i dati che hai inserito nella testata dell'ordine.")?><br />
 			</div>
 			<div class="modal-footer">
