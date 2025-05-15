@@ -600,6 +600,8 @@ class PromozioniModel extends GenericModel {
 		$pm = new PromozionimarchiModel();
 		
 		###### CATEGORIE ####
+		$idPagineIncluseDaCategorie = $idPagineEscluseDaCategorie = array();
+		
 		$idCsIncluse = $pc->clear()->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
 			"includi"	=>	1,
@@ -608,6 +610,12 @@ class PromozioniModel extends GenericModel {
 		$idCsEscluse = $pc->aWhere(array(
 			"includi"	=>	0,
 		))->toList("id_c")->send();
+		
+		if (count($idCsIncluse) > 0)
+			$idPagineIncluseDaCategorie = $this->getElencoProdottiCategorie($idCsIncluse);
+		
+		if (count($idCsEscluse) > 0)
+			$idPagineEscluseDaCategorie = $this->getElencoProdottiCategorie($idCsEscluse);
 		
 		###### MARCHI ####
 		$idMarchisInclusi = $idMarchisEsclusi = array();
@@ -643,83 +651,44 @@ class PromozioniModel extends GenericModel {
 		$idPagesIncluse = $pp->clear()->select("promozioni_pages.id_page")->inner(array("pagina"))->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
 			"promozioni_pages.includi"	=>	1,
-		))->aWhere($whereMarchi)->toList("id_page")->send();
+		))->toList("id_page")->send();
 		
 		$idPagesEscluse = $pp->aWhere(array(
 			"promozioni_pages.includi"	=>	0,
 		))->toList("id_page")->send();
 		
-		$wherePagineEscluse = array();
+		$idPagesIncluse = array_merge($idPagesIncluse, $idPagineIncluseDaCategorie);
+		$idPagesEscluse = array_merge($idPagesEscluse, $idPagineEscluseDaCategorie);
 		
-		if (count($idPagesEscluse) > 0)
-			$wherePagineEscluse = array(
+		$wherePagine = array();
+		
+		if (count($idPagesIncluse) > 0)
+			$wherePagine = array(
+				"  in "	=>	array(
+					"pages.id_page"	=>	forceIntDeep($idPagesIncluse),
+				)
+			);
+		else if (count($idPagesEscluse) > 0)
+			$wherePagine = array(
 				"  nin "	=>	array(
 					"pages.id_page"	=>	forceIntDeep($idPagesEscluse),
 				)
 			);
 		######
 		
-		$idPagineIncluseDaCategorie = $this->getElencoProdottiCategorie($idCsIncluse, $whereMarchi, $wherePagineEscluse);
-		$idPagineEscluseDaCategorie = $this->getElencoProdottiCategorie($idCsEscluse);
+		$idC = $c->clear()->where(array("section" => Parametri::$nomeSezioneProdotti))->field("id_c");
 		
-		if (count($idPagineIncluseDaCategorie) > 0)
-			$idPagesIncluse = array_merge($idPagesIncluse, $idPagineIncluseDaCategorie);
+		$children = $c->children((int)$idC, true);
 		
-		if (count($idPagineEscluseDaCategorie) > 0)
-			$idPagesEscluse = array_merge($idPagesEscluse, $idPagineEscluseDaCategorie);
-		
-// 		$arrayIdCategorie = array();
-// 		
-// 		foreach ($idCsIncluse as $idC)
-// 		{
-// 			if (in_array($idC, $arrayIdCategorie))
-// 				continue;
-// 			
-// 			$children = $c->children((int)$idC, true);
-// 			
-// 			if (count($children) > 0)
-// 				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
-// 			
-// 			$bindedValues = $children;
-// 			$bindedValues[] = (int)$idC;
-// 			
-// 			$pages = $p->clear()->select("id_page")->where(array(
-// 				"attivo" => "Y",
-// 				"principale"=>"Y",
-// 			))
-// 			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
-// 			->aWhere($whereMarchi)
-// 			->toList("id_page")->send();
-// 			
-// 			$idPages = array_merge($idPages, $pages);
-// 		}
-		
-		$idPagesIncluse = array_unique($idPagesIncluse);
-		$idPagesEscluse = array_unique($idPagesEscluse);
-		
-		if (count($idPagesEscluse) > 0)
-			$wherePagineEscluse = array(
-				"  nin "	=>	array(
-					"pages.id_page"	=>	forceIntDeep($idPagesEscluse),
-				)
-			);
-		
-		if (count($idPagesIncluse) === 0)
-		{
-			$idC = $c->clear()->where(array("section"=>Parametri::$nomeSezioneProdotti))->field("id_c");
-			
-			$children = $c->children((int)$idC, true);
-			
-			$idPagesIncluse = $p->clear()->select("id_page")->where(array(
-					"attivo" => "Y",
-					"principale"=>"Y",
-					"in" => array("-id_c" => $children),
-				))
-				->aWhere($whereMarchi)
-				->aWhere($wherePagineEscluse)
-				->toList("id_page")
-				->send();
-		}
+		$idPagesIncluse = $p->clear()->select("id_page")->where(array(
+				"attivo" => "Y",
+				"principale"=>"Y",
+				"in" => array("-id_c" => $children),
+			))
+			->aWhere($whereMarchi)
+			->aWhere($wherePagine)
+			->toList("id_page")
+			->send();
 		
 		return $idPagesIncluse;
 	}
