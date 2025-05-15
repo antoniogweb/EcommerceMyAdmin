@@ -57,17 +57,40 @@ class PromozionipagineModel extends GenericModel {
 			
 			if (count($res3) > 0)
 			{
-				$this->notice = "<div class='alert alert-danger'>Questo elemento è già stato associato</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento è già stato associato")."</div>";
 			}
 			else
 			{
-				return parent::insert();
+				$includi = isset($this->values["includi"]) ? (int)$this->values["includi"] : 0;
+				
+				$includiComplementare = $includi ? 0 : 1;
+				
+				$fraseErrore = $includi ? "Hai già alcuni prodotti in esclusione, non puoi aggiungerne in inclusione" : "Hai già alcuni prodotti in inclusione, non puoi aggiungerne in esclusione";
+				
+				$numero = $this->clear()->where(array(
+					"id_p"		=>	$clean["id_p"],
+					"includi"	=>	$includiComplementare,
+				))->rowNumber();
+				
+				if ((int)$numero === 0)
+					return parent::insert();
+				else
+					$this->notice = "<div class='alert alert-danger'>".gtext($fraseErrore)."</div>";
 			}
 		}
 		else
 		{
-			$this->notice = "<div class='alert alert-danger'>Questo elemento non esiste</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
 		}
+		
+		return false;
 	}
 	
+	public function inclusoCrud($record)
+	{
+		if ($record["promozioni_pages"]["includi"])
+			return "<i class='fa fa-check text-success'></i>";
+		else
+			return "<i class='fa fa-ban text-danger'></i>";
+	}
 }

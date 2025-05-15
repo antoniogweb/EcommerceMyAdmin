@@ -10,6 +10,10 @@
 		<?php echo Html_Form::select("id_c","",$listaCategorie,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
+	<span select2>
+		<?php echo Html_Form::select("includi","",PromozioniModel::$selectIncludiEscludi,null,null,"yes","style='min-width:200px'");?>
+	</span>
+	
 	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
 	
 </form>
@@ -27,10 +31,7 @@
 	</span>
 	
 	<span select2>
-		<?php echo Html_Form::select("includi","",array(
-			"1"	=>	gtext("Includi"),
-			"0"	=>	gtext("Escludi"),
-		),null,null,"yes","style='min-width:200px'");?>
+		<?php echo Html_Form::select("includi","",PromozioniModel::$selectIncludiEscludi,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
 	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
@@ -47,6 +48,10 @@
 	
 	<span select2>
 		<?php echo Html_Form::select("id_page","",$listaProdotti,null,null,"yes","style='min-width:200px'");?>
+	</span>
+	
+	<span select2>
+		<?php echo Html_Form::select("includi","",PromozioniModel::$selectIncludiEscludi,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
 	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
