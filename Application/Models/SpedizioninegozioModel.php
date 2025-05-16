@@ -336,6 +336,10 @@ class SpedizioninegozioModel extends FormModel {
 			
 			// Aggiungo i valori di default del corriere
 			$this->inserisciValoriDefaultCorriere($this->lId);
+			
+			// Hook dopo la creazione della spedizione
+			if (v("hook_after_creazione_spedizione"))
+				callFunction(v("hook_after_creazione_spedizione"), $this->lId, v("hook_after_creazione_spedizione"));
 		}
 		
 		return $res;
