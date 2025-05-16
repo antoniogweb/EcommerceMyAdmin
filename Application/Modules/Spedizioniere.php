@@ -167,7 +167,7 @@ class Spedizioniere
 		return array();
 	}
 	
-	public function settaNoticeModel(SpedizioninegozioModel $spedizione = null, $notice)
+	public function settaNoticeModel(?SpedizioninegozioModel $spedizione = null, $notice = "")
 	{
 		if ($spedizione)
 			$spedizione->notice = "<div class='alert alert-danger'>".gtext($notice)."</div>";
