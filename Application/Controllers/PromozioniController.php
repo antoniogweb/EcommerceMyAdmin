@@ -138,6 +138,8 @@ class PromozioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		PromozioniModel::$checkValoreSconto = true;
+		
 		$this->shift(2);
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);

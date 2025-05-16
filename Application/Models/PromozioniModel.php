@@ -33,6 +33,8 @@ class PromozioniModel extends GenericModel {
 	
 	public static $selectIncludiEscludi = null;
 	
+	public static $checkValoreSconto = false; // se viene fatto il check al valore dello sconto, metodo self::checkValoreSconto()
+	
 	public function __construct() {
 		$this->_tables='promozioni';
 		$this->_idFields='id_p';
@@ -171,6 +173,14 @@ class PromozioniModel extends GenericModel {
 			EventiretargetingModel::processaPromo($idPromozione);
 	}
     
+    protected function checkValoreSconto()
+	{
+		if (!self::$checkValoreSconto || (isset($this->values["tipo_sconto"]) && $this->values["tipo_sconto"] == "ASSOLUTO") || (isset($this->values["sconto"]) && number_format(setPrice($this->values["sconto"]),2,".","") <= 100))
+			return true;
+		
+		return false;
+	}
+    
 	public function insert()
 	{
 		if (strcmp($this->values["codice"],"") === 0)
@@ -187,22 +197,30 @@ class PromozioniModel extends GenericModel {
 			
 			if (count($res) === 0)
 			{
-				$res = parent::insert();
-				
-				if ($res)
-					$this->processaEventiPromozione($this->lId);
-				
-				return $res;
+				if ($this->checkValoreSconto())
+				{
+					$res = parent::insert();
+					
+					if ($res)
+						$this->processaEventiPromozione($this->lId);
+					
+					return $res;
+				}
+				else
+				{
+					$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: non è possibile uno sconto percentuale maggiore del 100%")."</div>";
+					$this->result = false;
+				}
 			}
 			else
 			{
-				$this->notice = "<div class='alert'>Attenzione: il codice promozione è già presente, si prega di selezionarne un altro</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: il codice promozione è già presente, si prega di selezionarne un altro")."</div>";
 				$this->result = false;
 			}
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Si prega di ricontrollare il formato delle date di validità della promozione</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Si prega di ricontrollare il formato delle date di validità della promozione")."</div>";
 			$this->result = false;
 		}
 		
@@ -231,22 +249,30 @@ class PromozioniModel extends GenericModel {
 			
 			if ((int)$numero === 0)
 			{
-				$res = parent::update($id);
-				
-// 				if ($res)
-// 					$this->processaEventiPromozione($id);
-				
-				return $res;
+				if ($this->checkValoreSconto())
+				{
+					$res = parent::update($id);
+					
+	// 				if ($res)
+	// 					$this->processaEventiPromozione($id);
+					
+					return $res;
+				}
+				else
+				{
+					$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: non è possibile uno sconto percentuale maggiore del 100%")."</div>";
+					$this->result = false;
+				}
 			}
 			else
 			{
-				$this->notice = "<div class='alert'>Attenzione: il codice promozione è già presente, si prega di selezionarne un altro</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: il codice promozione è già presente, si prega di selezionarne un altro")."</div>";
 				$this->result = false;
 			}
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Si prega di ricontrollare il formato delle date di validità della promozione</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Si prega di ricontrollare il formato delle date di validità della promozione")."</div>";
 			$this->result = false;
 		}
 	}
