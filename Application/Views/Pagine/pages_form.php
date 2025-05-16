@@ -2,13 +2,7 @@
 
 <?php include(ROOT."/Application/Views/pages_form_js.php");?>
 
-<section class="content-header">
-	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione <?php echo $tabella;?>: <?php if (strcmp($type,"update") === 0) { echo $titoloPagina; } else { echo "inserimento nuovo elemento";}?></h1>
-	<?php } else { ?>
-	<h1><?php echo $pageTitle;?></h1>
-	<?php } ?>
-</section>
+<?php include($this->viewPath("pages_top"));?>
 
 <!-- Main content -->
 <section class="content">
