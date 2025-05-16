@@ -222,7 +222,7 @@ trait BaseCrudController
 		
 		if (isset($_GET["esporta"]) || isset($_GET["esporta_xls"]))
 		{
-			if (isset($this->mainCsvFields) and isset($this->mainCsvHead))
+			if (isset($this->mainCsvFields) && isset($this->mainCsvHead))
 			{
 				$this->mainFields = $this->mainCsvFields;
 				$this->mainHead = $this->mainCsvHead;
@@ -306,6 +306,8 @@ trait BaseCrudController
 
 		if (isset($_GET["esporta"]))
 		{
+			ini_set("memory_limit","256M");
+			
 			$this->scaffold->itemList->renderToCsv = true;
 			$this->scaffold->itemList->csvColumnsSeparator = ";";
 			
@@ -326,6 +328,8 @@ trait BaseCrudController
 		}
 		else if (isset($_GET["esporta_xls"]))
 		{
+			ini_set("memory_limit","256M");
+			
 			$this->scaffold->params["recordPerPage"] = 10000000000;
 			$this->scaffold->params['pageList'] = false;
 			

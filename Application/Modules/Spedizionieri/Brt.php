@@ -399,7 +399,7 @@ class Brt extends Spedizioniere
 		return [];
 	}
 	
-	public function eliminaSpedizione($idS, SpedizioninegozioModel $spedizione = null)
+	public function eliminaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
 		if ($this->isAttivo())
 		{
@@ -448,7 +448,7 @@ class Brt extends Spedizioniere
 	}
 	
 	// Pronoto la spedizione al corriere per avere il numero di spedizione e l'etichetta
-	public function prenotaSpedizione($idS, SpedizioninegozioModel $spedizione = null)
+	public function prenotaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
 		if ($this->isAttivo())
 		{

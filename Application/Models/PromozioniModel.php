@@ -31,6 +31,10 @@ class PromozioniModel extends GenericModel {
 	
 	public static $erroreCouponUtente = "";
 	
+	public static $selectIncludiEscludi = null;
+	
+	public static $checkValoreSconto = false; // se viene fatto il check al valore dello sconto, metodo self::checkValoreSconto()
+	
 	public function __construct() {
 		$this->_tables='promozioni';
 		$this->_idFields='id_p';
@@ -39,6 +43,12 @@ class PromozioniModel extends GenericModel {
 		
 		$this->orderBy = 'promozioni.dal desc,promozioni.al desc';
 		$this->_lang = 'It';
+		
+		if (!isset(self::$selectIncludiEscludi))
+			self::$selectIncludiEscludi = array(
+				"1"	=>	gtext("Includi"),
+				"0"	=>	gtext("Escludi"),
+			);
 		
 		parent::__construct();
 	}
@@ -163,6 +173,14 @@ class PromozioniModel extends GenericModel {
 			EventiretargetingModel::processaPromo($idPromozione);
 	}
     
+    protected function checkValoreSconto()
+	{
+		if (!self::$checkValoreSconto || (isset($this->values["tipo_sconto"]) && $this->values["tipo_sconto"] == "ASSOLUTO") || (isset($this->values["sconto"]) && number_format(setPrice($this->values["sconto"]),2,".","") <= 100))
+			return true;
+		
+		return false;
+	}
+    
 	public function insert()
 	{
 		if (strcmp($this->values["codice"],"") === 0)
@@ -179,22 +197,30 @@ class PromozioniModel extends GenericModel {
 			
 			if (count($res) === 0)
 			{
-				$res = parent::insert();
-				
-				if ($res)
-					$this->processaEventiPromozione($this->lId);
-				
-				return $res;
+				if ($this->checkValoreSconto())
+				{
+					$res = parent::insert();
+					
+					if ($res)
+						$this->processaEventiPromozione($this->lId);
+					
+					return $res;
+				}
+				else
+				{
+					$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: non è possibile uno sconto percentuale maggiore del 100%")."</div>";
+					$this->result = false;
+				}
 			}
 			else
 			{
-				$this->notice = "<div class='alert'>Attenzione: il codice promozione è già presente, si prega di selezionarne un altro</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: il codice promozione è già presente, si prega di selezionarne un altro")."</div>";
 				$this->result = false;
 			}
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Si prega di ricontrollare il formato delle date di validità della promozione</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Si prega di ricontrollare il formato delle date di validità della promozione")."</div>";
 			$this->result = false;
 		}
 		
@@ -223,22 +249,30 @@ class PromozioniModel extends GenericModel {
 			
 			if ((int)$numero === 0)
 			{
-				$res = parent::update($id);
-				
-// 				if ($res)
-// 					$this->processaEventiPromozione($id);
-				
-				return $res;
+				if ($this->checkValoreSconto())
+				{
+					$res = parent::update($id);
+					
+	// 				if ($res)
+	// 					$this->processaEventiPromozione($id);
+					
+					return $res;
+				}
+				else
+				{
+					$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: non è possibile uno sconto percentuale maggiore del 100%")."</div>";
+					$this->result = false;
+				}
 			}
 			else
 			{
-				$this->notice = "<div class='alert'>Attenzione: il codice promozione è già presente, si prega di selezionarne un altro</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: il codice promozione è già presente, si prega di selezionarne un altro")."</div>";
 				$this->result = false;
 			}
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Si prega di ricontrollare il formato delle date di validità della promozione</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Si prega di ricontrollare il formato delle date di validità della promozione")."</div>";
 			$this->result = false;
 		}
 	}
@@ -540,6 +574,44 @@ class PromozioniModel extends GenericModel {
 		return 0;
 	}
 	
+	// Restituisce l'elenco dei prodotti in $idsC (array di id_c) considerando l'inclusione o l'esclusione di marchi ($whereMarchi) e l'inclusione o l'esclusione di prodotti ($wherePagine)
+	protected function getElencoProdottiCategorie($idsC, $whereMarchi = array(), $wherePagine = array())
+	{
+		$c = new CategoriesModel();
+		$p = new PagesModel();
+		
+		$idPages = $arrayIdCategorie = array();
+		
+		foreach ($idsC as $idC)
+		{
+			if (in_array($idC, $arrayIdCategorie))
+				continue;
+			
+			$children = $c->children((int)$idC, true);
+			
+			if (count($children) > 0)
+				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
+			
+			$bindedValues = $children;
+			$bindedValues[] = (int)$idC;
+			
+			$pages = $p->clear()->select("id_page")->where(array(
+				"attivo" => "Y",
+				"principale"=>"Y",
+			))
+			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
+			->aWhere($whereMarchi)
+			->aWhere($wherePagine)
+			->toList("id_page")->send();
+			
+			$idPages = array_merge($idPages, $pages);
+		}
+		
+		$idPages = array_unique($idPages);
+		
+		return $idPages;
+	}
+	
 	// Estrae l'elenco di tuti i prodotti nella promozione
 	public function elencoProdottiPromozione($coupon)
 	{
@@ -553,6 +625,25 @@ class PromozioniModel extends GenericModel {
 		$c = new CategoriesModel();
 		$pm = new PromozionimarchiModel();
 		
+		###### CATEGORIE ####
+		$idPagineIncluseDaCategorie = $idPagineEscluseDaCategorie = array();
+		
+		$idCsIncluse = $pc->clear()->where(array(
+			"id_p"	=>	(int)$promozione["id_p"],
+			"includi"	=>	1,
+		))->toList("id_c")->send();
+		
+		$idCsEscluse = $pc->aWhere(array(
+			"includi"	=>	0,
+		))->toList("id_c")->send();
+		
+		if (count($idCsIncluse) > 0)
+			$idPagineIncluseDaCategorie = $this->getElencoProdottiCategorie($idCsIncluse);
+		
+		if (count($idCsEscluse) > 0)
+			$idPagineEscluseDaCategorie = $this->getElencoProdottiCategorie($idCsEscluse);
+		
+		###### MARCHI ####
 		$idMarchisInclusi = $idMarchisEsclusi = array();
 		
 		if (v("usa_marchi") && v("attiva_filtro_marchi_su_promo"))
@@ -582,57 +673,50 @@ class PromozioniModel extends GenericModel {
 				)
 			);
 		
-		$idCs = $pc->clear()->where(array(
+		###### PAGINE ####
+		$idPagesIncluse = $pp->clear()->select("promozioni_pages.id_page")->inner(array("pagina"))->where(array(
 			"id_p"	=>	(int)$promozione["id_p"],
-		))->toList("id_c")->send();
+			"promozioni_pages.includi"	=>	1,
+		))->toList("id_page")->send();
 		
-		$idPages = $pp->clear()->select("promozioni_pages.id_page")->inner(array("pagina"))->where(array(
-			"id_p"	=>	(int)$promozione["id_p"],
-		))->aWhere($whereMarchi)->toList("id_page")->send();
+		$idPagesEscluse = $pp->aWhere(array(
+			"promozioni_pages.includi"	=>	0,
+		))->toList("id_page")->send();
 		
-		$arrayIdCategorie = array();
+		$idPagesIncluse = array_merge($idPagesIncluse, $idPagineIncluseDaCategorie);
+		$idPagesEscluse = array_merge($idPagesEscluse, $idPagineEscluseDaCategorie);
 		
-		foreach ($idCs as $idC)
-		{
-			if (in_array($idC, $arrayIdCategorie))
-				continue;
-			
-			$children = $c->children((int)$idC, true);
-			
-			if (count($children) > 0)
-				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
-			
-			$bindedValues = $children;
-			$bindedValues[] = (int)$idC;
-			
-			$pages = $p->clear()->select("id_page")->where(array(
-				"attivo" => "Y",
-				"principale"=>"Y",
-// 				"in" => array("-id_c" => $children),
-			))
-			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
-			->aWhere($whereMarchi)
-			->toList("id_page")->send();
-			
-			$idPages = array_merge($idPages, $pages);
-		}
+		$wherePagine = array();
 		
-		$idPages = array_unique($idPages);
+		if (count($idPagesIncluse) > 0)
+			$wherePagine = array(
+				"  in "	=>	array(
+					"pages.id_page"	=>	forceIntDeep($idPagesIncluse),
+				)
+			);
+		else if (count($idPagesEscluse) > 0)
+			$wherePagine = array(
+				"  nin "	=>	array(
+					"pages.id_page"	=>	forceIntDeep($idPagesEscluse),
+				)
+			);
+		######
 		
-		if (count($idPages) === 0)
-		{
-			$idC = $c->clear()->where(array("section"=>Parametri::$nomeSezioneProdotti))->field("id_c");
-			
-			$children = $c->children((int)$idC, true);
-			
-			$idPages = $p->clear()->select("id_page")->where(array(
+		$idC = $c->clear()->where(array("section" => Parametri::$nomeSezioneProdotti))->field("id_c");
+		
+		$children = $c->children((int)$idC, true);
+		
+		$idPagesIncluse = $p->clear()->select("id_page")->where(array(
 				"attivo" => "Y",
 				"principale"=>"Y",
 				"in" => array("-id_c" => $children),
-			))->aWhere($whereMarchi)->toList("id_page")->send();
-		}
+			))
+			->aWhere($whereMarchi)
+			->aWhere($wherePagine)
+			->toList("id_page")
+			->send();
 		
-		return $idPages;
+		return $idPagesIncluse;
 	}
 	
 	public function sconto($record)

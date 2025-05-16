@@ -138,6 +138,8 @@ class PromozioniController extends BaseController {
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		PromozioniModel::$checkValoreSconto = true;
+		
 		$this->shift(2);
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id);
@@ -242,7 +244,7 @@ class PromozioniController extends BaseController {
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_p";
 		
-		$this->m['PromozionicategorieModel']->setFields('id_c','sanitizeAll');
+		$this->m['PromozionicategorieModel']->setFields('id_c,includi','sanitizeAll');
 		$this->m['PromozionicategorieModel']->values['id_p'] = $clean['id'];
 		$this->m['PromozionicategorieModel']->updateTable('insert,del');
 		
@@ -252,8 +254,8 @@ class PromozioniController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("CategoriesModel.indentNoHtml|promozioni_categorie.id_c");
-		$this->mainHead = "Categoria";
+		$this->mainFields = array("CategoriesModel.indentNoHtml|promozioni_categorie.id_c", "inclusoCrud");
+		$this->mainHead = "Categoria,Incluso / Escluso";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"categorie/".$clean['id'],'pageVariable'=>'page_fgl');
 		
@@ -324,7 +326,7 @@ class PromozioniController extends BaseController {
 		$clean['id'] = $this->id = (int)$id;
 		$this->id_name = "id_p";
 		
-		$this->m['PromozionipagineModel']->setFields('id_page','sanitizeAll');
+		$this->m['PromozionipagineModel']->setFields('id_page,includi','sanitizeAll');
 		$this->m['PromozionipagineModel']->values['id_p'] = $clean['id'];
 		$this->m['PromozionipagineModel']->updateTable('insert,del');
 		
@@ -334,8 +336,8 @@ class PromozioniController extends BaseController {
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("pages.title");
-		$this->mainHead = "Prodotto";
+		$this->mainFields = array("pages.title", "inclusoCrud");
+		$this->mainHead = "Prodotto,Incluso / Escluso";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"pagine/".$clean['id'],'pageVariable'=>'page_fgl');
 		

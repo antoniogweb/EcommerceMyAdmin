@@ -1,0 +1,1 @@
+alter table promozioni_categorie add includi tinyint not null default 1 after id_c;

@@ -326,7 +326,7 @@ class Gls extends Spedizioniere
 	}
 	
 	// Pronota la spedizione al corriere per avere il numero di spedizione e l'etichetta
-	public function prenotaSpedizione($idS, SpedizioninegozioModel $spedizione = null)
+	public function prenotaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
 		if ($this->isAttivo())
 		{
