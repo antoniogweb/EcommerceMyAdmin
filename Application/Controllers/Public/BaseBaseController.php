@@ -244,6 +244,8 @@ class BaseBaseController extends Controller
 			$cache->loadHtml = false;
 			
 			Cache_Functions::getInstance()->setSaveToDisk(false);
+			
+			Cache_Db::$cacheFolder = null;
 		}
 		
 		// Predisponi i filtri in coda nell'URL
