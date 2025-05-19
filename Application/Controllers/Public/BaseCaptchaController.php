@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class BaseCaptchaController extends BaseController
+class BaseCaptchaController extends Controller
 {
 	public function index($idCaptcha = 1)
 	{
