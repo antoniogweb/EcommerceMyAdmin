@@ -22,8 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ConteggioqueryModel extends GenericModel {
-
+class ConteggioqueryModel extends GenericModel
+{
 	public function __construct() {
 		$this->_tables='conteggio_query';
 		$this->_idFields='id_conteggio';
@@ -45,4 +45,22 @@ class ConteggioqueryModel extends GenericModel {
 		$cq->insert();
 	}
 	
+	public static function numeroQuery($soglia = 1000, $secondi = 60)
+	{
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$res = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
+			"gte"	=>	array(
+				"data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
+		
+		// echo $cq->getQuery();
+		
+		return $res;
+	}
 }
