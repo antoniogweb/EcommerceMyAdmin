@@ -208,12 +208,19 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
+	public function setDataOraModifica()
+	{
+		$this->values["data_ora_modifica"] = date("Y-m-d H:i:s");
+	}
+	
 	public function insert()
 	{
 		if (isset($this->values["id_page"]))
 			$this->setPriceNonIvato($this->values["id_page"]);
 		
 		$this->settaCifreDecimali();
+		
+		$this->setDataOraModifica();
 		
 		$res = parent::insert();
 		
@@ -272,6 +279,8 @@ class CombinazioniModel extends GenericModel {
 			$this->setPriceNonIvato($record["id_page"]);
 		
 		$this->settaCifreDecimali();
+		
+		$this->setDataOraModifica();
 		
 		if (parent::update($id, $where))
 		{

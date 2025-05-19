@@ -1,0 +1,1 @@
+alter table combinazioni add data_ora_modifica datetime null default null after data_creazione;
