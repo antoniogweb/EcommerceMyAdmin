@@ -44,6 +44,7 @@
 			$attributi = CombinazioniModel::g()->getStringa($p["liste_regalo_pages"]["id_c"], "<br />", false);
 			$idListaRegalo = $p["liste_regalo_pages"]["id_lista_regalo"];
 			$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
+			$acquistabile = (acquistabile($p["liste_regalo_pages"]["id_page"]) && $p["pages"]["attivo"] == "Y");
 			
 			if ($regalati && !$numeroRegalati)
 				continue;
@@ -70,7 +71,7 @@
 							<?php if ($attributi) { ?>
 							<div class="uk-text-meta"><?php echo $attributi;?></div>
 							<?php } ?>
-							<?php if (!CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"])) { ?>
+							<?php if (!CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"]) || !$acquistabile) { ?>
 							<br /><span class="uk-text-warning"><?php echo gtext("Il prodotto non è più acquistabile");?></span>
 							<?php } ?>
 						</div>

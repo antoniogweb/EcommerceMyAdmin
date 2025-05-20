@@ -48,7 +48,7 @@
 			$numeroDesiderati = ListeregaloModel::numeroProdotti($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 			$numeroRegalati = ListeregaloModel::numeroRegalati($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
 			$numeroRimastiDaRegalare = ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);
-			$acquistabile = acquistabile($p["liste_regalo_pages"]["id_page"]);
+			$acquistabile = (acquistabile($p["liste_regalo_pages"]["id_page"]) && $p["pages"]["attivo"] == "Y");
 		?>
 		<div class="accessorio_principale">
 			<div class="id_combinazione uk-hidden"><?php echo $p["liste_regalo_pages"]["id_c"];?></div>

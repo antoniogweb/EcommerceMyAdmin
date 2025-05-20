@@ -557,4 +557,148 @@ class ListeregaloModel extends GenericModel
 			array((int)$idLista)
 		))->send(false);
 	}
+	
+	// Restituisce i prodotti non più acquistabili
+	public static function prodottiInListaNonPiuAcquistabili($dataCreazioneLista = null, $soloMaiInviato = true)
+	{
+		if ($dataCreazioneLista && checkIsoDate($dataCreazioneLista))
+			$createDopoIl = new DateTime($dataCreazioneLista);
+		else
+		{
+			$createDopoIl = new DateTime(date("Y-m-d"));
+			$createDopoIl->modify("-90 days");
+		}
+		
+		$combModel = new CombinazioniModel();
+		
+		$idCnonAttive = $combModel->clear()->inner(array("pagina"))->where(array(
+			"acquistabile"	=>	0,
+			"pages.attivo"	=>	"N",
+		))->toList("id_c")->send();
+		
+		$model = self::listeUtenteAttiveModel();
+		
+		$model->select("distinct liste_regalo.id_lista_regalo,liste_regalo.lingua,liste_regalo.titolo,liste_regalo.codice,liste_regalo.email,liste_regalo.data_creazione,liste_regalo.id_user,r.quantita_comprata,liste_regalo_pages.quantity,liste_regalo_pages.id_page,liste_regalo_pages.id_c,pages.title,regusers.*,liste_regalo_pages.id_lista_regalo_page")
+			->inner(array("regali"))
+			->inner("pages")->on("pages.id_page = liste_regalo_pages.id_page")
+			->inner("regusers")->on("liste_regalo.id_user = regusers.id_user")
+			->left("(select id_c,sum(quantity) as quantita_comprata,orders.id_lista_regalo as id_lista from righe inner join orders on righe.id_o = orders.id_o where orders.stato != 'deleted' and orders.id_lista_regalo != 0 group by righe.id_c,orders.id_lista_regalo) as r")->on("r.id_c = liste_regalo_pages.id_c and r.id_lista = liste_regalo_pages.id_lista_regalo")
+			->sWhere("liste_regalo_pages.id_c in (select combinazioni.id_c from combinazioni inner join pages on combinazioni.id_page = pages.id_page where combinazioni.acquistabile = 0 or pages.attivo = 'N')")
+			->sWhere("liste_regalo_pages.quantity > coalesce(r.quantita_comprata,0)")
+			->orderBy("liste_regalo.id_lista_regalo desc")
+			->sWhere(array(
+				"date_format(liste_regalo.data_creazione,'%Y-%m-%d') >= ?",
+				array(sanitizeAll($createDopoIl->format("Y-m-d")))
+			));
+		
+		if ($soloMaiInviato)
+			$model->sWhere("liste_regalo_pages.numero_avvisi = 0");
+		
+		$listeConProdottiNonAcquistabili = $model->send();
+		
+		$struttura = array();
+		
+		foreach ($listeConProdottiNonAcquistabili as $el)
+		{
+			$idLista = $el["liste_regalo"]["id_lista_regalo"];
+			
+			$titoloprodotto = $el["pages"]["title"];
+			
+			$attributi = CombinazioniModel::g()->getStringa($el["liste_regalo_pages"]["id_c"], "<br />", false);
+			
+			if ($attributi)
+				$titoloprodotto .= " ".$attributi;
+			
+			$str = array(
+				"PRODOTTO"				=>	$titoloprodotto,
+				"id_page"				=>	$el["liste_regalo_pages"]["id_page"],
+				"id_c"					=>	$el["liste_regalo_pages"]["id_c"],
+				"id_lista_regalo_page"	=>	$el["liste_regalo_pages"]["id_lista_regalo_page"],
+			);
+			
+			if (isset($struttura[$idLista]))
+				$struttura[$idLista]["prodotti"][] = $str;
+			else
+			{
+				$struttura[$idLista]["lista"] = array(
+					"NOME_CREATORE_LISTA"	=>	self::getNominativo($el["regusers"]),
+					"EMAIL_CREATORE_LISTA"	=>	$el["regusers"]["username"],
+					"TITOLO_LISTA"			=>	$el["liste_regalo"]["titolo"],
+					"CODICE_LISTA"			=>	$el["liste_regalo"]["codice"],
+					"LINK_LISTA"	=>	Domain::$publicUrl."/".$el["regusers"]["lingua"].F::getNazioneUrl($el["regusers"]["nazione_navigazione"])."/".ListeregaloModel::getUrlAlias($el["liste_regalo"]["id_lista_regalo"]),
+					"data_creazione"	=>	$el["liste_regalo"]["data_creazione"],
+					"id_user"			=>	$el["liste_regalo"]["id_user"],
+					"email_in_lista"	=>	$el["liste_regalo"]["email"],
+					"lingua"			=>	$el["liste_regalo"]["lingua"],
+					"LINK_AREA_RISERVATA"	=>	Domain::$publicUrl."/".$el["regusers"]["lingua"].F::getNazioneUrl($el["regusers"]["nazione_navigazione"])."/area-riservata",
+				);
+				
+				$struttura[$idLista]["prodotti"] = array($str);
+			}
+		}
+			
+		// echo $model->getQuery()."\n";
+		
+		return $struttura;
+	}
+	
+	public static function inviaAvvisoProdottiNonPiuAcquistabili($liste)
+    {
+		$lrpModel = new ListeregalopagesModel();
+		
+		foreach ($liste as $lista)
+		{
+			$prodottiHtml = "<ul>";
+			
+			foreach ($lista["prodotti"] as $prodotto)
+			{
+				$prodottiHtml .= "<li>".$prodotto["PRODOTTO"]."</li>";
+			}
+			
+			$prodottiHtml .= "</ul>";
+			
+			// print_r($lista);
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($lista["lista"]["EMAIL_CREATORE_LISTA"]),
+				"oggetto"	=>	"Alcuni prodotti nella tua lista non sono più acquistabili",
+				"tipologia"	=>	"AVVISO LISTA PRODOTTI",
+				"testo_path"	=>	"Elementi/Mail/ListeRegalo/mail_avviso_prodotti_lista_regalo_non_piu_acquistabili.php",
+				"lingua"	=>	$lista["lista"]["lingua"],
+				"array_variabili_tema"	=>	array(
+					"NOME_CREATORE_LISTA"	=>	$lista["lista"]["NOME_CREATORE_LISTA"],
+					"TITOLO_LISTA"	=>	$lista["lista"]["TITOLO_LISTA"],
+					"EMAIL_CREATORE_LISTA"	=>	$lista["lista"]["NOME_CREATORE_LISTA"],
+					"CODICE_LISTA"	=>	$lista["lista"]["CODICE_LISTA"],
+					"LINK_LISTA"	=>	$lista["lista"]["LINK_LISTA"],
+					"ELENCO_PRODOTTI"	=>	$prodottiHtml,
+					"LINK_AREA_RISERVATA"	=>	$lista["lista"]["LINK_AREA_RISERVATA"],
+				),
+			));
+			
+			
+			$inviato = 0;
+			
+			if ($res)
+			{
+				foreach ($lista["prodotti"] as $prodotto)
+				{
+					$idListaPage = $prodotto["id_lista_regalo_page"];
+					
+					$numeroInviati = (int)$lrpModel->clear()->select("numero_avvisi")->whereId((int)$idListaPage)->field("numero_avvisi");
+					$numeroInviati = $numeroInviati + 1;
+					
+					$lrpModel->sValues(array(
+						"numero_avvisi"	=>	$numeroInviati,
+					));
+					
+					$lrpModel->update((int)$idListaPage);
+				}
+				
+			}
+			
+			return $res;
+		}
+		
+		return false;
+    }
 }

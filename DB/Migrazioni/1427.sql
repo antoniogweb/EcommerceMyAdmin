@@ -1,0 +1,1 @@
+alter table liste_regalo_pages add numero_avvisi tinyint not null default 0;
