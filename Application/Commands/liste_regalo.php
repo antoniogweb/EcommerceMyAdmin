@@ -71,7 +71,7 @@ if ($params["azione"] == "prodotti-non-attivi")
 	$listeDaNotificare = ListeregaloModel::prodottiInListaNonPiuAcquistabili($dataCreazione);
 	
 	if ($mandaEmail)
-		ListeregaloModel::inviaAvvisoProdottiNonPiuAcquistabili($listeDaNotificare);
+		ListeregaloModel::inviaAvvisoProdottiNonPiuAcquistabili($listeDaNotificare, $log);
 	else
 		print_r($listeDaNotificare);
 	

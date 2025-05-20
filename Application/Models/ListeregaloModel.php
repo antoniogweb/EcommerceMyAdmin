@@ -642,7 +642,7 @@ class ListeregaloModel extends GenericModel
 		return $struttura;
 	}
 	
-	public static function inviaAvvisoProdottiNonPiuAcquistabili($liste)
+	public static function inviaAvvisoProdottiNonPiuAcquistabili($liste, $log = null)
     {
 		$lrpModel = new ListeregalopagesModel();
 		
@@ -680,6 +680,8 @@ class ListeregaloModel extends GenericModel
 			
 			if ($res)
 			{
+				$log->writeString("Mandato avviso alla mail ".$lista["lista"]["EMAIL_CREATORE_LISTA"].", lista ".$lista["lista"]["TITOLO_LISTA"].", per i seguenti prodotti:");
+				
 				foreach ($lista["prodotti"] as $prodotto)
 				{
 					$idListaPage = $prodotto["id_lista_regalo_page"];
@@ -692,6 +694,9 @@ class ListeregaloModel extends GenericModel
 					));
 					
 					$lrpModel->update((int)$idListaPage);
+					
+					if ($log)
+						$log->writeString("Prodotto: ".strip_tags($prodotto["PRODOTTO"])." - ID PAGE:".$prodotto["id_page"]." - ID COMB:".$prodotto["id_c"]." - ID PAGE IN LISTA:".$prodotto["id_lista_regalo_page"]);
 				}
 				
 			}
