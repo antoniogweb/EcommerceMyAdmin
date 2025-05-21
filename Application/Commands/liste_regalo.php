@@ -26,7 +26,7 @@ define('EG','allowed');
 
 $options = getopt(null, array(
 	"azione::",
-	"data_creazione_dal::",
+	"giorni::",
 	"manda_avviso::",
 ));
 
@@ -63,12 +63,12 @@ $log = Files_Log::getInstance("log_comandi_liste_regalo");
 
 if ($params["azione"] == "prodotti-non-attivi")
 {
-	$dataCreazione = $params["data_creazione_dal"] ?? null;
+	$numeroGiorni = $params["giorni"] ?? 90;
 	$mandaEmail = isset($params["manda_avviso"]) ? true : false;
 	
 	$log->writeString("INIZIO CHECK PRODOTTI NON ATTIVI");
 	
-	$listeDaNotificare = ListeregaloModel::prodottiInListaNonPiuAcquistabili($dataCreazione);
+	$listeDaNotificare = ListeregaloModel::prodottiInListaNonPiuAcquistabili($numeroGiorni);
 	
 	if ($mandaEmail)
 		ListeregaloModel::inviaAvvisoProdottiNonPiuAcquistabili($listeDaNotificare, $log);

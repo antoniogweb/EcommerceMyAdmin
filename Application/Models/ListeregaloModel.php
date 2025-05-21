@@ -559,15 +559,10 @@ class ListeregaloModel extends GenericModel
 	}
 	
 	// Restituisce i prodotti non più acquistabili
-	public static function prodottiInListaNonPiuAcquistabili($dataCreazioneLista = null, $soloMaiInviato = true)
+	public static function prodottiInListaNonPiuAcquistabili($ultimiXgiorni = 90, $soloMaiInviato = true)
 	{
-		if ($dataCreazioneLista && checkIsoDate($dataCreazioneLista))
-			$createDopoIl = new DateTime($dataCreazioneLista);
-		else
-		{
-			$createDopoIl = new DateTime(date("Y-m-d"));
-			$createDopoIl->modify("-90 days");
-		}
+		$createDopoIl = new DateTime(date("Y-m-d"));
+		$createDopoIl->modify("-$ultimiXgiorni days");
 		
 		$combModel = new CombinazioniModel();
 		
@@ -602,9 +597,16 @@ class ListeregaloModel extends GenericModel
 		{
 			$idLista = $el["liste_regalo"]["id_lista_regalo"];
 			
-			$titoloprodotto = $el["pages"]["title"];
+			$page = PagesModel::getPageDetails($el["liste_regalo_pages"]["id_page"], $el["liste_regalo"]["lingua"]);
 			
+			if (!empty($page))
+				$titoloprodotto = field($page, "title");
+			else
+				$titoloprodotto = $el["pages"]["title"];
+			
+			TraduzioniModel::sLingua($el["liste_regalo"]["lingua"], "front");
 			$attributi = CombinazioniModel::g()->getStringa($el["liste_regalo_pages"]["id_c"], "<br />", false);
+			TraduzioniModel::rLingua();
 			
 			if ($attributi)
 				$titoloprodotto .= " ".$attributi;
@@ -657,7 +659,6 @@ class ListeregaloModel extends GenericModel
 			
 			$prodottiHtml .= "</ul>";
 			
-			// print_r($lista);
 			$res = MailordiniModel::inviaMail(array(
 				"emails"	=>	array($lista["lista"]["EMAIL_CREATORE_LISTA"]),
 				"oggetto"	=>	"Alcuni prodotti nella tua lista non sono più acquistabili",
@@ -674,9 +675,6 @@ class ListeregaloModel extends GenericModel
 					"LINK_AREA_RISERVATA"	=>	$lista["lista"]["LINK_AREA_RISERVATA"],
 				),
 			));
-			
-			
-			$inviato = 0;
 			
 			if ($res)
 			{
@@ -700,10 +698,8 @@ class ListeregaloModel extends GenericModel
 				}
 				
 			}
-			
-			return $res;
 		}
 		
-		return false;
+		return true;
     }
 }
