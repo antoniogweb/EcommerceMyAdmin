@@ -843,6 +843,7 @@ class Route
 		'cache,svuotacacheimmagini',
 		'cache,svuotacachemetodi',
 		'cache,svuotacachetemplate',
+		'cache,svuotacachenotfound',
 		
 		'feed,main',
 		'feed,form',

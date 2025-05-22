@@ -100,4 +100,24 @@ class CacheController extends BaseController
 			}
 		}
 	}
+	
+	public function svuotacachenotfound()
+	{
+		$this->clean();
+		
+		if (file_exists(Domain::$parentRoot."/Logs/404"))
+		{
+			$dir = Domain::$parentRoot."/Logs";
+			
+			if (@is_dir($dir))
+			{
+				$tmpFolder = randomToken(20);
+				
+				if (@rename($dir."/404", $dir."/$tmpFolder"))
+				{
+					GenericModel::eliminaCartella($dir."/$tmpFolder");
+				}
+			}
+		}
+	}
 }

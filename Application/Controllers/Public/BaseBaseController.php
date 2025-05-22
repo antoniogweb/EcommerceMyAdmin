@@ -332,7 +332,7 @@ class BaseBaseController extends Controller
 	// Se trova il file 404 oppure no
 	protected function isNotFoundAndCached($action = "notfound")
 	{
-		$path = ROOT."/Logs/".$this->getPageNotFoundFileName();
+		$path = ROOT."/Logs/404/".$this->getPageNotFoundFileName();
 		
 		if ($action == "notfound" && file_exists($path))
 			return true;

@@ -516,7 +516,7 @@ class BaseContenutiController extends BaseController
 			
 			if ($this->isNotFoundAndCached())
 			{
-				$htmlNotFound = file_get_contents(ROOT."/Logs/".$notFoundFileName);
+				$htmlNotFound = file_get_contents(ROOT."/Logs/404/".$notFoundFileName);
 				$this->clean();
 				echo $htmlNotFound;
 			}
@@ -542,8 +542,9 @@ class BaseContenutiController extends BaseController
 				$this->theme->render($cache, $timer);
 				$content = ob_get_clean();
 				
+				createFolderFull("Logs/404", ROOT);
 				App::createLogFolder();
-				FilePutContentsAtomic(ROOT."/Logs/".$notFoundFileName, $content);
+				FilePutContentsAtomic(ROOT."/Logs/404/".$notFoundFileName, $content);
 			}
 		}
 		else
