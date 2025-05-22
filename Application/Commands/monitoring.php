@@ -28,6 +28,8 @@ define('EG','allowed');
 
 $options = getopt(null, array(
 	"azione::",
+	"query::",
+	"secondi::",
 ));
 
 $default = array(
@@ -55,7 +57,10 @@ if ($params["azione"] == "check-numero-query")
 {
 	$log->writeString("INIZIO CHECK NUMERO QUERY");
 	
-	$conteggio = ConteggioqueryModel::numeroQuery(10, 60);
+	$query = $params["query"] ?? 10000;
+	$secondi = $params["secondi"] ?? 60;
+	
+	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi);
 	
 	print_r($conteggio);
 	
