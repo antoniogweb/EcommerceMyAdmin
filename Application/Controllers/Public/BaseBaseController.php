@@ -72,253 +72,272 @@ class BaseBaseController extends Controller
 		Domain::setPath();
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
-		
-		$this->setTabelleCacheAggiuntive($model, $controller, $queryString, $application, $action);
-		
-		Domain::$adminName = $this->baseUrlSrc."/admin";
-		Domain::$publicUrl = $this->baseUrlSrc;
-		
-		TraduzioniModel::getInstance()->ottieniTraduzioni();
-		
-		// Variabili
-		$this->model('VariabiliModel');
-		
-		if (empty(VariabiliModel::$valori))
-			VariabiliModel::ottieniVariabili();
-		
-		if (!class_exists("Tema"))
-			require(LIBRARY."/Application/Include/tema.php");
-		
-		// Imposta il tema
-		Tema::set();
-		
-		$this->defaultRegistrazione = array(
-			"nazione"		=>	v("nazione_default"),
-			"tipo_cliente"	=>	v("tipo_cliente_default"),
-		);
-		
-		if (v("carica_tutti_i_model"))
+			
+		if (!$this->isNotFoundAndCached($action))
 		{
-			$this->model("CategoriesModel");
-			$this->model("MenuModel");
-			$this->model("PagesModel");
-			$this->model("ImmaginiModel");
-			$this->model("CartModel");
-			$this->model("WishlistModel");
-			$this->model("RigheModel");
-			$this->model("OrdiniModel");
-			$this->model("RegusersModel");
-			$this->model("PromozioniModel");
+			$this->setTabelleCacheAggiuntive($model, $controller, $queryString, $application, $action);
 			
-			$this->model("AttributiModel");
-			$this->model("AttributivaloriModel");
-			$this->model("CombinazioniModel");
-			$this->model("PagesattributiModel");
-			$this->model("PagescarvalModel");
+			Domain::$adminName = $this->baseUrlSrc."/admin";
+			Domain::$publicUrl = $this->baseUrlSrc;
 			
-			$this->model("SpedizioniModel");
-			$this->model("ScaglioniModel");
-			$this->model("ImpostazioniModel");
-			$this->model("LayerModel");
-			$this->model("CorrieriModel");
-			$this->model("CorrierispeseModel");
-			$this->model("NazioniModel");
-			$this->model("ClassiscontoModel");
-			$this->model("ProvinceModel");
-			$this->model("MarchiModel");
-			$this->model("ContenutiModel");
-			$this->model("DocumentiModel");
-			$this->model("RuoliModel");
-			$this->model("PersonalizzazioniModel");
-			$this->model("TagModel");
-			$this->model("TipiaziendaModel");
-			$this->model("PagesregioniModel");
-			$this->model("CaptchaModel");
-			$this->model('ContattiModel');
+			TraduzioniModel::getInstance()->ottieniTraduzioni();
 			
-			if (v("attiva_liste_regalo"))
-				$this->model('ListeregaloModel');
+			// Variabili
+			$this->model('VariabiliModel');
 			
-			if (v("abilita_feedback"))
-				$this->model("FeedbackModel");
-		}
-		
-		RegioniModel::$nAlias = gtext(v("label_nazione_url"));
-		RegioniModel::$rAlias = gtext(v("label_regione_url"));
-		
-		// Traduzioni sezione crud
-		Lang_It_UploadStrings::$staticStrings = array(
-			"error" => "<div class='".v("alert_error_class")."'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
-			"executed"	=>	"<div class='".v("alert_success_class")."'>".gtext("Operazione eseguita!")."</div>",
-			"not-child" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
-			"not-dir" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una directory")."</div>\n",
-			"not-empty" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è vuota")."</div>\n",
-			"no-folder-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
-			"no-file-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stato specificato alcun file")."</div>\n",
-			"not-writable" => "<div class='".v("alert_error_class")."'>".gtext("La cartella non è scrivibile")."</div>\n",
-			"not-writable-file" => "<div class='".v("alert_error_class")."'>".gtext("Il file non è scrivibile")."</div>\n",
-			"dir-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
-			"no-upload-file" => "<div class='".v("alert_error_class")."'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
-			"size-over" => "<div class='".v("alert_error_class")."'>".gtext("La dimensione del file è troppo grande")."</div>\n",
-			"not-allowed-ext" => "<div class='".v("alert_error_class")."'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
-			"not-allowed-mime-type" => "<div class='".v("alert_error_class")."'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
-			"file-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
-		);
-		
-		ImpostazioniModel::init();
-		
-		$this->session('registered', array(
-			new RegusersModel(),
-			new RegsessioniModel(),
-			new RegaccessiModel(),
-			new ReggroupsModel(),
-		));
-		
-		$this->s['registered']->checkStatus();
-		
-		$this->session('admin',array(
-			new UsersModel(),
-			new SessioniModel(),
-			new AccessiModel(),
-			new GroupsModel(),
-		), User::getTwoFactorModelAdmin());
-		
-		$this->s['admin']->checkStatus();
-		
-		//controllo login
-		$data['username'] = null;
-		$data['islogged'] = false;
-		$data['dettagliUtente'] = null;
-		$data['iduser'] = 0;
-		$data['nomeCliente'] = "";
-		
-		$data["adminUser"] = false;
-		
-		if ($this->s['registered']->status['status'] === 'logged')
-		{
-			$data['username'] = $this->s['registered']->status['user'];
+			if (empty(VariabiliModel::$valori))
+				VariabiliModel::ottieniVariabili();
 			
-			$res = $this->m('RegusersModel')->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
-			$data['dettagliUtente'] = $this->dettagliUtente = User::$dettagli = $res[0]['regusers'];
+			if (!class_exists("Tema"))
+				require(LIBRARY."/Application/Include/tema.php");
 			
-			if (User::$dettagli["has_confirmed"])
+			// Imposta il tema
+			Tema::set();
+			
+			$this->defaultRegistrazione = array(
+				"nazione"		=>	v("nazione_default"),
+				"tipo_cliente"	=>	v("tipo_cliente_default"),
+			);
+			
+			if (v("carica_tutti_i_model"))
 			{
-				$this->s['registered']->logout();
+				$this->model("CategoriesModel");
+				$this->model("MenuModel");
+				$this->model("PagesModel");
+				$this->model("ImmaginiModel");
+				$this->model("CartModel");
+				$this->model("WishlistModel");
+				$this->model("RigheModel");
+				$this->model("OrdiniModel");
+				$this->model("RegusersModel");
+				$this->model("PromozioniModel");
+				
+				$this->model("AttributiModel");
+				$this->model("AttributivaloriModel");
+				$this->model("CombinazioniModel");
+				$this->model("PagesattributiModel");
+				$this->model("PagescarvalModel");
+				
+				$this->model("SpedizioniModel");
+				$this->model("ScaglioniModel");
+				$this->model("ImpostazioniModel");
+				$this->model("LayerModel");
+				$this->model("CorrieriModel");
+				$this->model("CorrierispeseModel");
+				$this->model("NazioniModel");
+				$this->model("ClassiscontoModel");
+				$this->model("ProvinceModel");
+				$this->model("MarchiModel");
+				$this->model("ContenutiModel");
+				$this->model("DocumentiModel");
+				$this->model("RuoliModel");
+				$this->model("PersonalizzazioniModel");
+				$this->model("TagModel");
+				$this->model("TipiaziendaModel");
+				$this->model("PagesregioniModel");
+				$this->model("CaptchaModel");
+				$this->model('ContattiModel');
+				
+				if (v("attiva_liste_regalo"))
+					$this->model('ListeregaloModel');
+				
+				if (v("abilita_feedback"))
+					$this->model("FeedbackModel");
+			}
+			
+			RegioniModel::$nAlias = gtext(v("label_nazione_url"));
+			RegioniModel::$rAlias = gtext(v("label_regione_url"));
+			
+			// Traduzioni sezione crud
+			Lang_It_UploadStrings::$staticStrings = array(
+				"error" => "<div class='".v("alert_error_class")."'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
+				"executed"	=>	"<div class='".v("alert_success_class")."'>".gtext("Operazione eseguita!")."</div>",
+				"not-child" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
+				"not-dir" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una directory")."</div>\n",
+				"not-empty" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è vuota")."</div>\n",
+				"no-folder-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
+				"no-file-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stato specificato alcun file")."</div>\n",
+				"not-writable" => "<div class='".v("alert_error_class")."'>".gtext("La cartella non è scrivibile")."</div>\n",
+				"not-writable-file" => "<div class='".v("alert_error_class")."'>".gtext("Il file non è scrivibile")."</div>\n",
+				"dir-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
+				"no-upload-file" => "<div class='".v("alert_error_class")."'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
+				"size-over" => "<div class='".v("alert_error_class")."'>".gtext("La dimensione del file è troppo grande")."</div>\n",
+				"not-allowed-ext" => "<div class='".v("alert_error_class")."'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+				"not-allowed-mime-type" => "<div class='".v("alert_error_class")."'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
+				"file-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
+			);
+			
+			ImpostazioniModel::init();
+			
+			$this->session('registered', array(
+				new RegusersModel(),
+				new RegsessioniModel(),
+				new RegaccessiModel(),
+				new ReggroupsModel(),
+			));
+			
+			$this->s['registered']->checkStatus();
+			
+			$this->session('admin',array(
+				new UsersModel(),
+				new SessioniModel(),
+				new AccessiModel(),
+				new GroupsModel(),
+			), User::getTwoFactorModelAdmin());
+			
+			$this->s['admin']->checkStatus();
+			
+			//controllo login
+			$data['username'] = null;
+			$data['islogged'] = false;
+			$data['dettagliUtente'] = null;
+			$data['iduser'] = 0;
+			$data['nomeCliente'] = "";
+			
+			$data["adminUser"] = false;
+			
+			if ($this->s['registered']->status['status'] === 'logged')
+			{
+				$data['username'] = $this->s['registered']->status['user'];
+				
+				$res = $this->m('RegusersModel')->clear()->where(array("id_user"=>(int)$this->s['registered']->status['id_user']))->send();
+				$data['dettagliUtente'] = $this->dettagliUtente = User::$dettagli = $res[0]['regusers'];
+				
+				if (User::$dettagli["has_confirmed"])
+				{
+					$this->s['registered']->logout();
+					$this->redirect("");
+				}
+				
+				$this->iduser = User::$id = (int)$this->s['registered']->status['id_user'];
+				$data['iduser'] = $this->iduser;
+
+				$data['islogged'] = true;
+				$this->islogged = User::$logged = $data['islogged'];
+				
+				User::$groups = $this->s['registered']->status['groups'];
+				
+				$data['nomeCliente'] = User::$nomeCliente = (strcmp($data['dettagliUtente']["tipo_cliente"],"privato") === 0 || strcmp($data['dettagliUtente']["tipo_cliente"],"libero_professionista") === 0) ?  $data['dettagliUtente']["nome"] : $data['dettagliUtente']["ragione_sociale"];
+				
+				// Estraggo lo sconto dell'utente
+				User::setClasseSconto();
+				
+				User::$ruid = $this->s['registered']->getUid();
+				
+				if (User::$dettagli["agente"])
+					User::$isAgente = true;
+				
+				// Imposto lo stato loggato su Output
+				Output::setHeaderValue("Status","logged");
+				
+				if (Params::$allowSessionIdFromGet)
+					$this->s['registered']->setCookieFromGetToken();
+				
+				if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
+					VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)User::$dettagli["prezzi_ivati_in_carrello"];
+				
+				// Imposta le preferenze sulla base dell'utente loggato
+				$this->settaPreferenzeUtenteLoggato();
+			}
+			
+			if ($this->s['admin']->status['status'] === 'logged')
+			{
+				$data["adminUser"] = User::$adminLogged = true;
+				$cache->loadHtml = false;
+				
+				Cache_Functions::getInstance()->setSaveToDisk(false);
+				
+				Cache_Db::$cacheFolder = null;
+			}
+			
+			// Predisponi i filtri in coda nell'URL
+			$this->predisponiAltriFiltri();
+			
+			$this->model("CaratteristichevaloriModel");
+			
+			$data["isProdotto"] = false;
+			
+			$this->initCookieEcommerce();
+			
+			$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
+			
+			// Controlla quantità prodotti in base a lista (se hai prodotti in una lista regalo)
+			$this->m("CartModel")->controllaQuantitaProdottiListaInCarrello();
+			
+			$data["carrello"] = $this->m("CartModel")->getProdotti();
+			
+			// Recuperta dati da cliente loggato
+			$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
+			
+			// Correggi decimali imponibili sulla base dell'IVA estera
+			$this->m("CartModel")->correggiPrezzi();
+			
+			$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
+			$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();
+			
+			if (v("attiva_liste_regalo") && (int)$data["prodInCart"] === 0)
+				ListeregaloModel::unsetCookieIdLista();
+			
+			Domain::$name = $this->baseUrl;
+			
+			if (in_array($_SERVER['REQUEST_URI'],array("/home","/home/index","/home/index/")))
+			{
 				$this->redirect("");
 			}
 			
-			$this->iduser = User::$id = (int)$this->s['registered']->status['id_user'];
-			$data['iduser'] = $this->iduser;
-
-			$data['islogged'] = true;
-			$this->islogged = User::$logged = $data['islogged'];
+			$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m("CategoriesModel")->getShopCategoryId();
 			
-			User::$groups = $this->s['registered']->status['groups'];
+			if (!$cache->saved() && $this->estratiDatiGenerali)
+				$this->estratiDatiGenerali($controller, $action);
 			
-			$data['nomeCliente'] = User::$nomeCliente = (strcmp($data['dettagliUtente']["tipo_cliente"],"privato") === 0 || strcmp($data['dettagliUtente']["tipo_cliente"],"libero_professionista") === 0) ?  $data['dettagliUtente']["nome"] : $data['dettagliUtente']["ragione_sociale"];
+			// Modali
+			if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
+				$data["modali_frontend"] = $this->m("PagesModel")->getModaliFrontend();
 			
-			// Estraggo lo sconto dell'utente
-			User::setClasseSconto();
+			Lang::$current = Params::$lang;
 			
-			User::$ruid = $this->s['registered']->getUid();
+			$this->append($data);
 			
-			if (User::$dettagli["agente"])
-				User::$isAgente = true;
+			Params::$rewriteStatusVariables = false;
 			
-			// Imposto lo stato loggato su Output
-			Output::setHeaderValue("Status","logged");
+			VariabiliModel::inizializza();
+			VariabiliModel::checkCookieTerzeParti();
 			
-			if (Params::$allowSessionIdFromGet)
-				$this->s['registered']->setCookieFromGetToken();
-			
-			if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
-				VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)User::$dettagli["prezzi_ivati_in_carrello"];
-			
-			// Imposta le preferenze sulla base dell'utente loggato
-			$this->settaPreferenzeUtenteLoggato();
-		}
-		
-		if ($this->s['admin']->status['status'] === 'logged')
-		{
-			$data["adminUser"] = User::$adminLogged = true;
-			$cache->loadHtml = false;
-			
-			Cache_Functions::getInstance()->setSaveToDisk(false);
-			
-			Cache_Db::$cacheFolder = null;
-		}
-		
-		// Predisponi i filtri in coda nell'URL
-		$this->predisponiAltriFiltri();
-		
-		$this->model("CaratteristichevaloriModel");
-		
-		$data["isProdotto"] = false;
-		
-		$this->initCookieEcommerce();
-		
-		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
-		
-		// Controlla quantità prodotti in base a lista (se hai prodotti in una lista regalo)
-		$this->m("CartModel")->controllaQuantitaProdottiListaInCarrello();
-		
-		$data["carrello"] = $this->m("CartModel")->getProdotti();
-		
-		// Recuperta dati da cliente loggato
-		$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
-		
-		// Correggi decimali imponibili sulla base dell'IVA estera
-		$this->m("CartModel")->correggiPrezzi();
-		
-		$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
-		$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();
-		
-		if (v("attiva_liste_regalo") && (int)$data["prodInCart"] === 0)
-			ListeregaloModel::unsetCookieIdLista();
-		
-		Domain::$name = $this->baseUrl;
-		
-		if (in_array($_SERVER['REQUEST_URI'],array("/home","/home/index","/home/index/")))
-		{
-			$this->redirect("");
-		}
-		
-		$clean["idShop"] = $data["idShop"] = $this->idShop = CategoriesModel::$idShop = $this->m("CategoriesModel")->getShopCategoryId();
-		
-		if (!$cache->saved() && $this->estratiDatiGenerali)
-			$this->estratiDatiGenerali($controller, $action);
-		
-		// Modali
-		if (v("attiva_modali") && $controller == "home" && $action == "index" && isset($_COOKIE["ok_cookie"]))
-			$data["modali_frontend"] = $this->m("PagesModel")->getModaliFrontend();
-		
-		Lang::$current = Params::$lang;
-		
-		$this->append($data);
-		
-		Params::$rewriteStatusVariables = false;
-		
-		VariabiliModel::inizializza();
-		VariabiliModel::checkCookieTerzeParti();
-		
-		if (v("ecommerce_attivo"))
-		{
-			if (getSubTotalN() > 9999999)
+			if (v("ecommerce_attivo"))
 			{
-				$this->m("CartModel")->emptyCart();
+				if (getSubTotalN() > 9999999)
+				{
+					$this->m("CartModel")->emptyCart();
+				}
+				
+				$this->m("PagesModel")->aggiornaStatoProdottiInPromozione();
+				
+				if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
+				{
+					VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
+					VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
+				}
+				
+				if ($controller != "ordini" || $action != "summary")
+					User::impostaNazioneSpedizioneECorriereDaUrl();
 			}
-			
-			$this->m("PagesModel")->aggiornaStatoProdottiInPromozione();
-			
-			if (!v("usa_codice_combinazione_in_url_prodotto") && !v("usa_alias_combinazione_in_url_prodotto"))
-			{
-				VariabiliModel::$valori["aggiorna_pagina_al_cambio_combinazione_in_prodotto"] = 0;
-				VariabiliModel::$valori["immagini_separate_per_variante"] = 0;
-			}
-			
-			if ($controller != "ordini" || $action != "summary")
-				User::impostaNazioneSpedizioneECorriereDaUrl();
 		}
+	}
+	
+	protected function getPageNotFoundFileName()
+	{
+		return "404_".Params::$langCountry.".html";
+	}
+	
+	// Se trova il file 404 oppure no
+	protected function isNotFoundAndCached($action = "notfound")
+	{
+		$path = ROOT."/Logs/".$this->getPageNotFoundFileName();
+		
+		if ($action == "notfound" && file_exists($path))
+			return true;
+		
+		return false;
 	}
 	
 	// Imposta le preferenze sulla base dell'utente loggato

@@ -512,11 +512,39 @@ class BaseContenutiController extends BaseController
 		{
 			header('HTTP/1.0 404 Not Found');
 			
-			$this->estraiDatiFiltri();
+			$notFoundFileName = $this->getPageNotFoundFileName();
 			
-			$this->append($data);
-			
-			$this->load("404");
+			if ($this->isNotFoundAndCached())
+			{
+				$htmlNotFound = file_get_contents(ROOT."/Logs/".$notFoundFileName);
+				$this->clean();
+				echo $htmlNotFound;
+			}
+			else
+			{
+				$this->estraiDatiFiltri();
+				
+				User::$id = 0;
+				User::$cart_uid = 0;
+				User::$wishlist_uid = 0;
+				User::$logged = false;
+				$data["islogged"] = false;
+				$data["carrello"] = array();
+				$data["prodInCart"] = 0;
+				$data["prodInWishlist"] = 0;
+				$this->append($data);
+				$this->clean();
+				$this->loadHeaderFooter("404");
+				
+				ob_start();
+				$cache = Cache_Html::getInstance();
+				$timer = Factory_Timer::getInstance();
+				$this->theme->render($cache, $timer);
+				$content = ob_get_clean();
+				
+				App::createLogFolder();
+				FilePutContentsAtomic(ROOT."/Logs/".$notFoundFileName, $content);
+			}
 		}
 		else
 			$this->load("api_output");
