@@ -30,6 +30,7 @@ $options = getopt(null, array(
 	"azione::",
 	"query::",
 	"secondi::",
+	"email::",
 ));
 
 $default = array(
@@ -59,10 +60,14 @@ if ($params["azione"] == "check-numero-query")
 	
 	$query = $params["query"] ?? 10000;
 	$secondi = $params["secondi"] ?? 60;
+	$mail = isset($params["email"]) ? true : false;
 	
 	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi);
 	
-	print_r($conteggio);
+	if (!empty($conteggio) && $mail)
+		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	else
+		echo json_encode($conteggio,JSON_PRETTY_PRINT)."\n";
 	
 	$log->writeString("FINE CHECK NUMERO QUERY");
 }
