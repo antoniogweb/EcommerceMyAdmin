@@ -68,14 +68,13 @@ if ($params["azione"] == "check-numero-query")
 	
 	if (!empty($conteggio) && $mail)
 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
-	else
-		echo json_encode($conteggio,JSON_PRETTY_PRINT)."\n";
 	
 	$log->writeString("IPs\n".json_encode($conteggio,JSON_PRETTY_PRINT));
 	
 	if (!empty($conteggio) && $blocca)
 	{
 		Shield::blockIps($conteggio, $secondi);
+		
 		$log->writeString("Gli IP sono stati bloccati");
 	}
 	
