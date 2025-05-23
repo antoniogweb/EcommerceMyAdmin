@@ -72,22 +72,25 @@ class Shield
 	{
 		$pathJail = ROOT."/Logs/Jail/";
 		
-		foreach (new DirectoryIterator($pathJail."Temp") as $fileInfo)
+		if (@is_dir($pathJail))
 		{
-			$fileName = $fileInfo->getFilename();
-			
-			if ($fileInfo->isDot())
-				continue;
-			
-			if ($fileName == "index.html" || $fileName == ".htaccess")
-				continue;
-			
-			if ((time() - $fileInfo->getCTime()) >= self::$freedAfterSeconds)
+			foreach (new DirectoryIterator($pathJail."Temp") as $fileInfo)
 			{
-				rename($pathJail."/Temp/".$fileName, $pathJail."/Freed/".$fileName);
+				$fileName = $fileInfo->getFilename();
 				
-				if ($log)
-					$log->writeString("Liberato IP $fileName dopo ".self::$freedAfterSeconds." secondi");
+				if ($fileInfo->isDot())
+					continue;
+				
+				if ($fileName == "index.html" || $fileName == ".htaccess")
+					continue;
+				
+				if ((time() - $fileInfo->getCTime()) >= self::$freedAfterSeconds)
+				{
+					rename($pathJail."/Temp/".$fileName, $pathJail."/Freed/".$fileName);
+					
+					if ($log)
+						$log->writeString("Liberato IP $fileName dopo ".self::$freedAfterSeconds." secondi");
+				}
 			}
 		}
 	}
