@@ -59,8 +59,6 @@ class ConteggioqueryModel extends GenericModel
 			),
 		))->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
 		
-		// echo $cq->getQuery();
-		
 		return $res;
 	}
 }

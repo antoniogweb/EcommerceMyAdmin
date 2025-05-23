@@ -31,6 +31,7 @@ $options = getopt(null, array(
 	"query::",
 	"secondi::",
 	"email::",
+	"blocca::",
 ));
 
 $default = array(
@@ -61,6 +62,7 @@ if ($params["azione"] == "check-numero-query")
 	$query = $params["query"] ?? 10000;
 	$secondi = $params["secondi"] ?? 60;
 	$mail = isset($params["email"]) ? true : false;
+	$blocca = isset($params["blocca"]) ? true : false;
 	
 	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi);
 	
@@ -68,6 +70,16 @@ if ($params["azione"] == "check-numero-query")
 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
 	else
 		echo json_encode($conteggio,JSON_PRETTY_PRINT)."\n";
+	
+	$log->writeString("IPs\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+	
+	if (!empty($conteggio) && $blocca)
+	{
+		Shield::blockIps($conteggio, $secondi);
+		$log->writeString("Gli IP sono stati bloccati");
+	}
+	
+	Shield::freeTempIps($log);
 	
 	$log->writeString("FINE CHECK NUMERO QUERY");
 }

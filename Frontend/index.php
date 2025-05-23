@@ -22,8 +22,11 @@
 
 define('EG','allowed');
 
+include(LIBRARY . DS . 'Frontend' . DS . "/block_ip.php");
+
 if (file_exists(ROOT . "/redirect_url.php"))
 	include(ROOT . "/redirect_url.php");
+	
 
 define('FRONT', ROOT);
 define('APPLICATION_PATH','Application'); //name of the folder that contains the application files
