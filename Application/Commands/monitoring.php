@@ -32,6 +32,7 @@ $options = getopt(null, array(
 	"secondi::",
 	"email::",
 	"blocca::",
+	"giorni::",
 ));
 
 $default = array(
@@ -68,18 +69,29 @@ if ($params["azione"] == "check-numero-query")
 	
 	if (!empty($conteggio) && $mail)
 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
-	else
-		echo json_encode($conteggio,JSON_PRETTY_PRINT)."\n";
 	
-	$log->writeString("IPs\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+	if (!empty($conteggio))
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
 	
 	if (!empty($conteggio) && $blocca)
 	{
 		Shield::blockIps($conteggio, $secondi);
+		
 		$log->writeString("Gli IP sono stati bloccati");
 	}
 	
 	Shield::freeTempIps($log);
 	
 	$log->writeString("FINE CHECK NUMERO QUERY");
+}
+
+if ($params["azione"] == "svuota-query")
+{
+	$log->writeString("INIZIO ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
+	
+	$giorni = $params["giorni"] ?? 10;
+	
+	ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni($giorni);
+	
+	$log->writeString("FINE ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
 }

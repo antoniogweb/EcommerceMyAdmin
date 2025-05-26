@@ -61,4 +61,19 @@ class ConteggioqueryModel extends GenericModel
 		
 		return $res;
 	}
+	
+	public static function svuotaConteggioQueryPiuVecchioDiGiorni($giorni)
+	{
+		$giorni = (int)$giorni;
+		
+		$dataOra = new DateTime();
+		$dataOra->modify("-$giorni days");
+		
+		$cq = new ConteggioqueryModel();
+		
+		$cq->del(null, array(
+			"date_format(data_creazione,'%Y-%m-%d') <= ?",
+			array($dataOra->format("Y-m-d"))
+		));
+	}
 }
