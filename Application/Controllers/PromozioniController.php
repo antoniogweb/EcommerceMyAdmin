@@ -163,6 +163,7 @@ class PromozioniController extends BaseController {
 			$campiDisabilitati = "codice,sconto,tipo_sconto,tipo_credito";
 			$this->disabledFields = $campiDisabilitati;
 			$this->m[$this->modelName]->delFields($campiDisabilitati);
+			PromozioniModel::$checkValoreSconto = false;
 		}
 		
 		if ($queryType == "insert" && $this->viewArgs['id_user'] != "tutti")
