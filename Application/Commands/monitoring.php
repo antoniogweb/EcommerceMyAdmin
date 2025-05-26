@@ -32,6 +32,7 @@ $options = getopt(null, array(
 	"secondi::",
 	"email::",
 	"blocca::",
+	"giorni::",
 ));
 
 $default = array(
@@ -82,4 +83,15 @@ if ($params["azione"] == "check-numero-query")
 	Shield::freeTempIps($log);
 	
 	$log->writeString("FINE CHECK NUMERO QUERY");
+}
+
+if ($params["azione"] == "svuota-query")
+{
+	$log->writeString("INIZIO ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
+	
+	$giorni = $params["giorni"] ?? 10;
+	
+	ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni($giorni);
+	
+	$log->writeString("FINE ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
 }
