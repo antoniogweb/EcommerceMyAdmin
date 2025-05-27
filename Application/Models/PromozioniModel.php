@@ -749,7 +749,7 @@ class PromozioniModel extends GenericModel {
 		))->send(false);
 		
 		$ora = new DateTime();
-		$ora->modify("+30 years");
+		$ora->modify("+2 years");
 		
 		if (count($promo) > 0)
 		{
