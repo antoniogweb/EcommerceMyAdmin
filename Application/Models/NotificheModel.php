@@ -67,13 +67,13 @@ class NotificheModel extends GenericModel {
 				"class"	=>	"text-yellow",
 			);
 		
-		if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
-			$notifiche[] = array(
-				"testo"	=>	gtext("Impostare un tempo massimo<br /> per i log della piattaforma"),
-				"link"	=>	"",
-				"icona"	=>	"fa-file-text-o",
-				"class"	=>	"text-yellow",
-			);
+		// if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
+		// 	$notifiche[] = array(
+		// 		"testo"	=>	gtext("Impostare un tempo massimo<br /> per i log della piattaforma"),
+		// 		"link"	=>	"",
+		// 		"icona"	=>	"fa-file-text-o",
+		// 		"class"	=>	"text-yellow",
+		// 	);
 		
 		$n = new NotificheModel();
 		$res = $n->clear()->where(array(
