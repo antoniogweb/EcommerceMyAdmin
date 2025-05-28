@@ -964,6 +964,8 @@ class Route
 		'menucucina,lingue',
 		'menucucina,tag',
 		'menucucina,ordinatag',
+		
+		'configurazioni,dacompletare',
 	);
 	
 	//it can be 'yes' or 'no'

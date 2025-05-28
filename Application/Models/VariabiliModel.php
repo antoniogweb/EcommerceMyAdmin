@@ -839,6 +839,8 @@ class VariabiliModel extends GenericModel {
 		### FASCE ##
 		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
 		"attiva_gestione_fasce_frontend_prodotti"	=>	0, // se impostato su 1, mostra il link per la gestione delle fasce nei prodotti
+		### TOKEN ##
+		"token_lista_configurazioni_mancanti"	=>	"", // token per vedere, se loggato in admin, l'elenco delle configurazioni mancanti
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
@@ -864,6 +866,7 @@ class VariabiliModel extends GenericModel {
 		"token_gestisci_lingue_da_admin",
 		"token_comandi_cron_web",
 		"token_login_come_utente",
+		"token_lista_configurazioni_mancanti",
 	);
 	
 	public static function inizializza($variabili = array())
