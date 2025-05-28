@@ -181,7 +181,6 @@ class Satispay
 		}
 		else
 			return $this->statoNotifica;
-		
 	}
 	
 	public function validateRitorno()

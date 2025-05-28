@@ -243,13 +243,19 @@ class paypal_class {
 			$this->ipn_status = $text . 'FAIL: ' . $this->ipn_status . "!\n";
 			// Log the POST variables
 		$this->ipn_status .= "[From:" . $hostname . "|" . $_SERVER ['REMOTE_ADDR'] . "]IPN POST Vars Received By Paypal_IPN Response API:\n";
+		
+		$arrayValoriNoLog = array("last_name", "payer_email", "address_city", "address_name", "first_name", "address_zip", "address_street");
+		
 		foreach ( $this->ipn_data as $key => $value ) {
-			$this->ipn_status .= "$key=$value \n";
+			if (in_array($key, $arrayValoriNoLog))
+				$this->ipn_status .= "$key=**** \n";
+			else
+				$this->ipn_status .= "$key=$value \n";
 		}
 
-		foreach ( $_POST as $key => $value ) {
-			$this->ipn_status .= "POST:$key=$value \n";
-		}
+		// foreach ( $_POST as $key => $value ) {
+		// 	$this->ipn_status .= "POST:$key=$value \n";
+		// }
 
 		// Log the response from the paypal server
 		$this->ipn_status .= "IPN Response from Paypal Server:\n" . $this->ipn_response;

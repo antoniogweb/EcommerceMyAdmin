@@ -163,8 +163,13 @@ class Nexi
 		
 		$this->statoNotifica .= "[From:" . $hostname . "|" . $_SERVER ['REMOTE_ADDR'] . "]REQUEST Vars Received:\n";
 		
+		$arrayValoriNoLog = array("mail", "cognome", "pan", "brand");
+		
 		foreach ( $_REQUEST as $key => $value ) {
-			$this->statoNotifica .= "REQUEST:$key=$value \n";
+			if (in_array($key, $arrayValoriNoLog))
+				$this->statoNotifica .= "REQUEST:$key=**** \n";
+			else
+				$this->statoNotifica .= "REQUEST:$key=$value \n";
 		}
 		
 		if ($this->statoCheckOrdine)
