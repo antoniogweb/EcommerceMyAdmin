@@ -163,7 +163,7 @@ class Nexi
 		
 		$this->statoNotifica .= "[From:" . $hostname . "|" . $_SERVER ['REMOTE_ADDR'] . "]REQUEST Vars Received:\n";
 		
-		$arrayValoriNoLog = array("mail", "cognome", "pan", "brand");
+		$arrayValoriNoLog = array("mail", "cognome", "pan", "brand", "nome");
 		
 		foreach ( $_REQUEST as $key => $value ) {
 			if (in_array($key, $arrayValoriNoLog))
