@@ -542,17 +542,17 @@ trait CommonModel {
 	
 	public function sistemaMaiuscole()
 	{
-		if (!v("sistema_maiuscole_clienti"))
-			return;
+		// if (!v("sistema_maiuscole_clienti"))
+		// 	return;
 		
-		if (isset($this->values["nome"]))
-			$this->values["nome"] = ucfirst($this->values["nome"]);
-		
-		if (isset($this->values["cognome"]))
-			$this->values["cognome"] = ucfirst($this->values["cognome"]);
-		
-		if (isset($this->values["codice_fiscale"]))
-			$this->values["codice_fiscale"] = strtoupper($this->values["codice_fiscale"]);
+// 		if (isset($this->values["nome"]))
+// 			$this->values["nome"] = ucfirst($this->values["nome"]);
+// 		
+// 		if (isset($this->values["cognome"]))
+// 			$this->values["cognome"] = ucfirst($this->values["cognome"]);
+// 		
+// 		if (isset($this->values["codice_fiscale"]))
+// 			$this->values["codice_fiscale"] = strtoupper($this->values["codice_fiscale"]);
 	}
 	
 	public function addWhereUtenteAttivo()

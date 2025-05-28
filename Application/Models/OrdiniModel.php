@@ -2563,7 +2563,7 @@ class OrdiniModel extends FormModel {
 		return $this;
 	}
 	
-	// Controlla che non abbia fatto più di tot ordini nello stesso giorno
+	// Controlla che non abbia fatto più di tot ordini nello stesso giorno dallo stesso IP
 	public function checkNumeroOrdini()
 	{
 		if (v("salva_ip") && (int)v("numero_massimo_ordini_giornalieri_stesso_ip") > 0)

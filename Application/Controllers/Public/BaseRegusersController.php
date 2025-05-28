@@ -963,6 +963,9 @@ class BaseRegusersController extends BaseController
 	{
 		$this->s['registered']->check(null,0);
 		
+		// Sistema maiuscole
+		$this->correggiValoriPostFormRegistrazioneEOrdine();
+		
 		$redirect = RegusersModel::getRedirect();
 		
 		foreach (Params::$frontEndLanguages as $l)
@@ -1060,6 +1063,9 @@ class BaseRegusersController extends BaseController
 		VariabiliModel::$valori["attiva_spedizione"] = 1;
 		
 		$this->s['registered']->check(null,0);
+		
+		// Sistema maiuscole
+		$this->correggiValoriPostFormRegistrazioneEOrdine();
 		
 		if ((int)$id === 0 && (isset($_GET["impostaFatt"]) || isset($_POST["impostaFatt"])))
 		{

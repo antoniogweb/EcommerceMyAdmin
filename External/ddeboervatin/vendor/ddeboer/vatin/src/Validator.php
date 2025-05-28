@@ -65,7 +65,7 @@ class Validator
      *
      * @param Client|null $viesClient Client for the VIES web service
      */
-    public function __construct(Client $viesClient = null)
+    public function __construct(?Client $viesClient = null)
     {
         $this->viesClient = $viesClient;
     }
