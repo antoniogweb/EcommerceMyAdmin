@@ -324,6 +324,32 @@ class BaseBaseController extends Controller
 		}
 	}
 	
+	protected function correggiValoriPostFormRegistrazioneEOrdine()
+	{
+		if (v("sistema_maiuscole_clienti"))
+		{
+			if (isset($_POST["nome"]))
+				$_POST["nome"] = eg_ucfirst($_POST["nome"]);
+			
+			if (isset($_POST["cognome"]))
+				$_POST["cognome"] = eg_ucfirst($_POST["cognome"]);
+			
+			if (isset($_POST["codice_fiscale"]))
+				$_POST["codice_fiscale"] = eg_strtoupper($_POST["codice_fiscale"]);
+		}
+		
+		if (v("clienti_tutto_maiuscolo"))
+		{
+			$campiInMaiuscolo = array("nome", "cognome", "indirizzo", "citta", "codice_fiscale", "ragione_sociale");
+			
+			foreach ($campiInMaiuscolo as $campo)
+			{
+				if (isset($_POST[$campo]) && trim($_POST[$campo]))
+					$_POST[$campo] = eg_strtoupper($_POST[$campo]);
+			}
+		}
+	}
+	
 	protected function getPageNotFoundFileName()
 	{
 		return "404_".Params::$langCountry.".html";
@@ -729,6 +755,9 @@ class BaseBaseController extends Controller
 	{
 		if( !session_id() )
 			session_start();
+		
+		// Sistema maiuscole
+		$this->correggiValoriPostFormRegistrazioneEOrdine();
 		
 		$logSubmit = new LogModel();
 		
