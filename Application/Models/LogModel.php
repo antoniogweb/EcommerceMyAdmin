@@ -67,8 +67,24 @@ class LogModel extends GenericModel
 		{
 			$limit = time() - (v("tempo_log_ore") * 3600); 
 			$this->db->del($this->_tables,'svuota = 1 AND time_inserimento < '.(int)$limit);
+			
+			if (v("tempo_log_permanenti_giorni"))
+			{
+				$limit = time() - ((int)v("tempo_log_permanenti_giorni") * 3600 * 24); 
+				$this->db->del($this->_tables,'time_inserimento < '.(int)$limit);
+			}
+			
 			self::$deletedExpired = true;
 		}
+	}
+	
+	public static function numeroLogPermanenti()
+	{
+		$lModel = new LogModel();
+		
+		return $lModel->clear()->where(array(
+			"svuota"	=>	0
+		))->rowNumber();
 	}
 	
 	public function setNumeroProdotti($numero)

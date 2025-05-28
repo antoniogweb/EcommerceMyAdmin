@@ -261,7 +261,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_codice_in_carrello"	=>	1,
 		"carrello_monoprodotto"		=>	0,
 		"abilita_log_piattaforma"	=>	0,
-		"tempo_log_ore"				=>	240,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
 		"dimensioni_upload_contenuti"	=>	6000000, // dimensione massima degli upload nei contenuti
@@ -832,6 +831,9 @@ class VariabiliModel extends GenericModel {
 		### MAIL LOG ##
 		"email_log_errori"			=>	"",	// // Indirizzi email (divisi da virgola) a cui inviare un avviso se la verifica IPN (o affini) del pagamento non va a buon fine (con errori segnalati dal gateway di pagamento riportati nel corpo della mail)
 		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)
+		### LOG ##
+		"tempo_log_ore"				=>	240, // numero ORE!! dopo il quale vengono eliminati i log temporanei dalla tabella log_piattaforma
+		"tempo_log_permanenti_giorni"	=>	0, // numero GIORNI!! dopo il quale vengono eliminati i log permanenti dalla tabella log_piattaforma. Se impostato a 0, i log permanenti non vengono mai eliminati
 		### CALENDARIO CHIUSURE ##
 		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
 		### FASCE ##
