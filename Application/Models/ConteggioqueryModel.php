@@ -57,7 +57,7 @@ class ConteggioqueryModel extends GenericModel
 			"gte"	=>	array(
 				"data_creazione"	=>	sanitizeAll($dataOra),
 			),
-		))->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
+		))->sWhere("ip != ''")->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
 		
 		return $res;
 	}
