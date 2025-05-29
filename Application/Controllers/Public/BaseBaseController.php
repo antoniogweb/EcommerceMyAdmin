@@ -340,7 +340,15 @@ class BaseBaseController extends Controller
 		
 		if (v("clienti_tutto_maiuscolo"))
 		{
-			$campiInMaiuscolo = array("nome", "cognome", "indirizzo", "citta", "codice_fiscale", "ragione_sociale");
+			$campiInMaiuscoloFatturazione = array("nome", "cognome", "indirizzo", "citta", "codice_fiscale", "ragione_sociale");
+			$campiInMaiuscoloSpedizione = array("indirizzo_spedizione", "citta_spedizione", "destinatario_spedizione");
+			
+			if ($this->action == "add" || $this->action == "modify")
+				$campiInMaiuscolo = $campiInMaiuscoloFatturazione;
+			else if ($this->action == "spedizione")
+				$campiInMaiuscolo = $campiInMaiuscoloSpedizione;
+			else
+				$campiInMaiuscolo = array_merge($campiInMaiuscoloFatturazione, $campiInMaiuscoloSpedizione);
 			
 			foreach ($campiInMaiuscolo as $campo)
 			{
