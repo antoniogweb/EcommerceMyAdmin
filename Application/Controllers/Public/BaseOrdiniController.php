@@ -1139,6 +1139,10 @@ class BaseOrdiniController extends BaseController
 		// Controllo che abbia delle spedizioni se non può crearle in fase di checkout
 		$this->checkIndirizziSpedizione();
 		
+		// Sistema maiuscole
+		$this->correggiValoriPostFormRegistrazioneEOrdine();
+		
+		// Controlla che non abbia fatto più di tot ordini nello stesso giorno dallo stesso IP
 		$this->m('OrdiniModel')->checkNumeroOrdini();
 		
 		$logSubmit = new LogModel();

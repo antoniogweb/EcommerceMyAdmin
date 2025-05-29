@@ -22,19 +22,17 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-$mysqli = Factory_Db::getInstance(DATABASE_TYPE);
-
-if (count($mysqli->queries) > 0 && v("salva_conteggio_query") && !defined('APP_CONSOLE'))
-	ConteggioqueryModel::aggiungi(count($mysqli->queries) + 1);
-
-if (v("debug_get_variable") && isset($_GET[v("debug_get_variable")]))
-	print_r($mysqli->queries);
-
-F::checkPreparedStatement();
-
-if (defined('LOG_TIMES') && !defined('APP_CONSOLE'))
+class ConfigurazioniController extends BaseController
 {
-	$timer = Factory_Timer::getInstance();
-	$timer->endTime("APP","APP");
-	Factory_Timer::getInstance()->writeLog();
+	public function dacompletare()
+	{
+		if (!VariabiliModel::checkToken("token_lista_configurazioni_mancanti"))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		$notifiche = NotificheModel::getNotificheStatiche(false);
+		
+		print_r($notifiche);
+	}
 }

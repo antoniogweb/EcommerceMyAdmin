@@ -261,7 +261,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_codice_in_carrello"	=>	1,
 		"carrello_monoprodotto"		=>	0,
 		"abilita_log_piattaforma"	=>	0,
-		"tempo_log_ore"				=>	240,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
 		"estensioni_upload_immagini_testi"	=>	'png,jpg,jpeg,gif,svg', // estensioni ammesse nell'upload di immagini nella tabella testi
@@ -524,6 +523,7 @@ class VariabiliModel extends GenericModel {
 		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
 		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
 		"sistema_maiuscole_clienti"	=>	0, // se impostato  a 1, Nome e Cognome verranno forzati con la prima lettera maiuscola mentre codice fiscale tutto in maiuscolo
+		"clienti_tutto_maiuscolo"	=>	0, // se impostato  a 1, allaregistrazione o al checkout nome, cognome, ragione sociale, indirizzo, citta e codice fiscale verranno impostati tutti maiuscoli
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
 		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
 		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX
@@ -833,11 +833,16 @@ class VariabiliModel extends GenericModel {
 		### MAIL LOG ##
 		"email_log_errori"			=>	"",	// // Indirizzi email (divisi da virgola) a cui inviare un avviso se la verifica IPN (o affini) del pagamento non va a buon fine (con errori segnalati dal gateway di pagamento riportati nel corpo della mail)
 		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)
+		### LOG ##
+		"tempo_log_ore"				=>	240, // numero ORE!! dopo il quale vengono eliminati i log temporanei dalla tabella log_piattaforma
+		"tempo_log_permanenti_giorni"	=>	0, // numero GIORNI!! dopo il quale vengono eliminati i log permanenti dalla tabella log_piattaforma. Se impostato a 0, i log permanenti non vengono mai eliminati
 		### CALENDARIO CHIUSURE ##
 		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
 		### FASCE ##
 		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
 		"attiva_gestione_fasce_frontend_prodotti"	=>	0, // se impostato su 1, mostra il link per la gestione delle fasce nei prodotti
+		### TOKEN ##
+		"token_lista_configurazioni_mancanti"	=>	"", // token per vedere, se loggato in admin, l'elenco delle configurazioni mancanti
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
@@ -863,6 +868,7 @@ class VariabiliModel extends GenericModel {
 		"token_gestisci_lingue_da_admin",
 		"token_comandi_cron_web",
 		"token_login_come_utente",
+		"token_lista_configurazioni_mancanti",
 	);
 	
 	public static function inizializza($variabili = array())

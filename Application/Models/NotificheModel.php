@@ -33,10 +33,8 @@ class NotificheModel extends GenericModel {
 		parent::__construct();
 	}
 	
-	public static function getNotifiche()
+	public static function getNotificheStatiche($soloPubblicate = 1)
 	{
-		self::segnaEseguite();
-		
 		$notifiche = array();
 		
 		$files = scandir(ROOT."/DB/Migrazioni", SCANDIR_SORT_DESCENDING);
@@ -66,6 +64,72 @@ class NotificheModel extends GenericModel {
 				"icona"	=>	"fa-map-o",
 				"class"	=>	"text-yellow",
 			);
+		
+		if (!$soloPubblicate)
+		{
+			if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
+				$notifiche[] = array(
+					"testo"	=>	gtext("Impostare un tempo massimo per i log della piattaforma. Variavile tempo_log_permanenti_giorni"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
+			if (!v("svuota_file_cookie_carrello_dopo_x_minuti") && v("ecommerce_attivo"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Salvare i cookie dei carrelli su file. Variabile svuota_file_cookie_carrello_dopo_x_minuti"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+		}
+		
+		return $notifiche;
+	}
+	
+	public static function getNotifiche()
+	{
+		self::segnaEseguite();
+		
+		$notifiche = self::getNotificheStatiche();
+		
+// 		$notifiche = array();
+// 		
+// 		$files = scandir(ROOT."/DB/Migrazioni", SCANDIR_SORT_DESCENDING);
+// 		$ultimaMigrazione = $files[0];
+// 		$migrationNum = (int)basename($ultimaMigrazione, '.sql');
+// 		
+// 		if ($migrationNum > (int)v("db_version") && ControllersModel::checkAccessoAlController(array("cron")))
+// 			$notifiche[] = array(
+// 				"testo"	=>	gtext("Attenzione, aggiorna il database!"),
+// 				"link"	=>	Url::getRoot()."cron/migrazioni/".v("codice_cron"),
+// 				"icona"	=>	"fa-database",
+// 				"class"	=>	"text-yellow",
+// 			);
+// 		
+// 		if (v("piattaforma_in_sviluppo") && ControllersModel::checkAccessoAlController(array("impostazioni")))
+// 			$notifiche[] = array(
+// 				"testo"	=>	gtext("Indicizzazione non attiva."),
+// 				"link"	=>	Url::getRoot()."impostazioni/ecommerce/1",
+// 				"icona"	=>	"fa-warning",
+// 				"class"	=>	"text-yellow",
+// 			);
+// 		
+// 		if (v("permetti_gestione_sitemap") && !SitemapModel::g(false)->rowNumber() && ControllersModel::checkAccessoAlController(array("sitemap")))
+// 			$notifiche[] = array(
+// 				"testo"	=>	gtext("Sitemap vuota!"),
+// 				"link"	=>	Url::getRoot()."sitemap/main",
+// 				"icona"	=>	"fa-map-o",
+// 				"class"	=>	"text-yellow",
+// 			);
+		
+		// if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
+		// 	$notifiche[] = array(
+		// 		"testo"	=>	gtext("Impostare un tempo massimo<br /> per i log della piattaforma"),
+		// 		"link"	=>	"",
+		// 		"icona"	=>	"fa-file-text-o",
+		// 		"class"	=>	"text-yellow",
+		// 	);
 		
 		$n = new NotificheModel();
 		$res = $n->clear()->where(array(

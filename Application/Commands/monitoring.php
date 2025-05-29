@@ -71,7 +71,11 @@ if ($params["azione"] == "check-numero-query")
 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
 	
 	if (!empty($conteggio))
+	{
 		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
 	
 	if (!empty($conteggio) && $blocca)
 	{
