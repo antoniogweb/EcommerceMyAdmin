@@ -264,6 +264,7 @@ class VariabiliModel extends GenericModel {
 		"tempo_log_ore"				=>	240,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
+		"estensioni_upload_immagini_testi"	=>	'png,jpg,jpeg,gif,svg', // estensioni ammesse nell'upload di immagini nella tabella testi
 		"dimensioni_upload_contenuti"	=>	6000000, // dimensione massima degli upload nei contenuti
 		"dimensioni_upload_file_generici"	=>	10000000, // dimensione massima degli upload nei file generici (nell'area di testo)
 		"estensioni_upload_file_contenuti"	=>	"pdf", // estensioni ammesse nell'upload dei file dei contenuti
