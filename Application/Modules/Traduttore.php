@@ -184,10 +184,10 @@ class Traduttore
 							}
 						}
 
-						if (count($aliasArrayFinale) > 0)
+						if (isset($aliasArrayFinale) && count($aliasArrayFinale) > 0)
 							$alias = $aliasArrayFinale[count($aliasArrayFinale) - 1];
 
-						if (trim($alias))
+						if (isset($alias) && trim($alias))
 						{
 							$idC = (int)$cModel->getIdFromAlias(trim($alias), $linguaCorrente);
 

@@ -263,6 +263,7 @@ class VariabiliModel extends GenericModel {
 		"abilita_log_piattaforma"	=>	0,
 		"attiva_modali"				=>	0,
 		"mostra_gestione_antispam"	=>	0,
+		"estensioni_upload_immagini_testi"	=>	'png,jpg,jpeg,gif,svg', // estensioni ammesse nell'upload di immagini nella tabella testi
 		"dimensioni_upload_contenuti"	=>	6000000, // dimensione massima degli upload nei contenuti
 		"dimensioni_upload_file_generici"	=>	10000000, // dimensione massima degli upload nei file generici (nell'area di testo)
 		"estensioni_upload_file_contenuti"	=>	"pdf", // estensioni ammesse nell'upload dei file dei contenuti
@@ -522,6 +523,7 @@ class VariabiliModel extends GenericModel {
 		"variabile_token_eliminazione"	=>	"token_del", // nome della variaibile che contiene il token dell'eliminazione
 		"attiva_clienti"		=>	1, // se i clienti sono attivi o no
 		"sistema_maiuscole_clienti"	=>	0, // se impostato  a 1, Nome e Cognome verranno forzati con la prima lettera maiuscola mentre codice fiscale tutto in maiuscolo
+		"clienti_tutto_maiuscolo"	=>	0, // se impostato  a 1, allaregistrazione o al checkout nome, cognome, ragione sociale, indirizzo, citta e codice fiscale verranno impostati tutti maiuscoli
 		"attiva_clienti_nazioni"	=>	0, // attiva la tab per gestire i clienti nella nazione
 		"aggiorna_sempre_i_dati_del_cliente_al_checkout"	=>	0, // se impostato su 1, il sistema va sempre ad aggiornare i dati del cliente con i dati del checkout
 		"utilizza_ricerca_ajax_su_select_2_clienti"		=>	0, // se impostato su 1, la tendina dei cliente carica i dati tramite AJAX

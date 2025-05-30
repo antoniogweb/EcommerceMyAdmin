@@ -63,7 +63,7 @@ class Shield
 		{
 			$ip = sanitizeIp($ip);
 			
-			if (!v("ip_sito") || $ip != v("ip_sito"))
+			if (trim($ip))
 				self::writeIp($ip, $query, $secondi);
 		}
 	}
