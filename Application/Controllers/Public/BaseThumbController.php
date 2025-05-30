@@ -1039,6 +1039,9 @@ class BaseThumbController extends Controller {
 		$this->clean();
 		
 		$this->model("TestiModel");
+		
+		Cache_Db::removeTablesFromCache(array("testi"));
+		
 		$testo = $this->m("TestiModel")->selectId((int)$id);
 		
 		if (!empty($testo) && $testo[$field])
@@ -1082,6 +1085,11 @@ class BaseThumbController extends Controller {
 		}
 		else
 		{
+			$params = array(
+				'imgWidth'		=>	300,
+				'imgHeight'		=>	300,
+			);
+			
 			$thumb = new Image_Gd_Thumbnail(FRONT.'/Public/Img',$params);
 			$thumb->render('nofound.jpeg');
 		}
