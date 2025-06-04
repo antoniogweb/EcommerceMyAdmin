@@ -33,6 +33,7 @@ $options = getopt(null, array(
 	"email::",
 	"blocca::",
 	"giorni::",
+	"numero_ip_stessa_rete::",
 ));
 
 $default = array(
@@ -64,8 +65,9 @@ if ($params["azione"] == "check-numero-query")
 	$secondi = $params["secondi"] ?? 60;
 	$mail = isset($params["email"]) ? true : false;
 	$blocca = isset($params["blocca"]) ? true : false;
+	$numero_ip_stessa_rete = $params["numero_ip_stessa_rete"] ?? 30;
 	
-	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi);
+	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete);
 	
 	if (!empty($conteggio) && $mail)
 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");

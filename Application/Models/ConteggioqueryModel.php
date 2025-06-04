@@ -45,7 +45,7 @@ class ConteggioqueryModel extends GenericModel
 		$cq->insert();
 	}
 	
-	public static function numeroQuery($soglia = 1000, $secondi = 60)
+	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30)
 	{
 		$secondi = time() - $secondi;
 		
@@ -68,13 +68,13 @@ class ConteggioqueryModel extends GenericModel
 		->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
 		
 		// Cerca range
-		$resRange = $cq->clear()->select("SUM(numero) as numero_query,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
+		$resRange = $cq->clear()->select("SUM(numero) as numero_query,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
 				"data_creazione"	=>	sanitizeAll($dataOra),
 			),
 		))
 		->sWhere($sWhereIp)
-		->groupBy("subip having numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
+		->groupBy("subip having numero_ip > ".(int)$numeroIpStessarete." && numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
 		
 		return $resIp + $resRange;
 	}
