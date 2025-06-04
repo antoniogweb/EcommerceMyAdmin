@@ -82,6 +82,31 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if (!v("attiva_check_ip"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare il check IP sui form. Variabile attiva_check_ip. Impostare i limiti con le variabili limite_ip_chiave_contemporanee, limite_ip_chiave_minuto e limite_ip_chiave_orario"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
+			if (!VariabiliModel::checkNumeroMailInviate())
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare un numero massimo di email inviabili in un ora e/o in un giorno. Variabili max_numero_email_ora e max_numero_email_giorno"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
+			if (!v("check_accesso_admin_token_ordine_frontend_da"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare il doppio token per poter vedere il dettaglio dell'ordine in modalità anonima. Variabile check_accesso_admin_token_ordine_frontend_da."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
 		}
 		
 		return $notifiche;
