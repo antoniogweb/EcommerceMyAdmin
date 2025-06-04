@@ -163,7 +163,7 @@ class RegusersgroupstempModel extends GenericModel {
 	{
 		$rugt = new RegusersgroupstempModel();
 		
-		return $rugt->clear()->groupBy("id_user")->rowNumber();
+		return $rugt->clear()->inner(array("cliente"))->groupBy("regusers_groups_temp.id_user")->rowNumber();
 	}
 	
 	public function del($id = null, $where = null)
