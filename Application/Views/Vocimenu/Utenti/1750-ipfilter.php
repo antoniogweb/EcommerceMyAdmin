@@ -6,7 +6,7 @@
 		<span><?php echo gtext("Filtri IP");?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li class="dropdown-header"><?php echo gtext("IP brute force moduli");?></li>
+		<li class="dropdown-header"><?php echo gtext("IP brute force form");?></li>
 <!-- 		<li><a href="<?php echo $this->baseUrl."/ipfilter/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li> -->
 		<li><a href="<?php echo $this->baseUrl."/ipfilter/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
 	</ul>
