@@ -53,18 +53,30 @@ class ConteggioqueryModel extends GenericModel
 		
 		$cq = new ConteggioqueryModel();
 		
-		$res = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
+		$sWhereIp = array(
+			"ip != '' and ip != ? and ip not in (select ip from ip_filter where whitelist = 1)",
+			array(sanitizeIp(v("ip_sito")))
+		);
+		
+		// Cerca singolo IP
+		$resIp = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
 			"gte"	=>	array(
 				"data_creazione"	=>	sanitizeAll($dataOra),
 			),
 		))
-		->sWhere(array(
-			"ip != '' and ip != ? and ip not in (select ip from ip_filter where whitelist = 1)",
-			array(sanitizeIp(v("ip_sito")))
-		))
+		->sWhere($sWhereIp)
 		->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
 		
-		return $res;
+		// Cerca range
+		$resRange = $cq->clear()->select("SUM(numero) as numero_query,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
+			"gte"	=>	array(
+				"data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere($sWhereIp)
+		->groupBy("subip having numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
+		
+		return $resIp + $resRange;
 	}
 	
 	public static function svuotaConteggioQueryPiuVecchioDiGiorni($giorni)

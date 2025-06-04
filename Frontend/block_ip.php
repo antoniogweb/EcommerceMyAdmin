@@ -55,8 +55,15 @@ function getIpToCheck()
 
 $ip = sanitizeIpToCheck(getIpToCheck());
 
-if (@is_file(ROOT."/admin/Logs/Jail/Temp/$ip") || @is_file(ROOT."/admin/Logs/Jail/Perm/$ip"))
+if (trim($ip))
 {
-	http_response_code(403);
-	die();
+    $ipArray = explode(".", $ip);
+    
+    $subIp = $ipArray[0].".".$ipArray[1].".".$ipArray[2];
+    
+    if (@is_file(ROOT."/admin/Logs/Jail/Temp/$ip") || @is_file(ROOT."/admin/Logs/Jail/Perm/$ip") || @is_file(ROOT."/admin/Logs/Jail/Temp/$subIp") || @is_file(ROOT."/admin/Logs/Jail/Perm/$subIp"))
+    {
+        http_response_code(403);
+        die();
+    }
 }

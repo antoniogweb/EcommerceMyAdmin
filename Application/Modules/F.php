@@ -294,7 +294,15 @@ class F
 
 		return implode(",", $fieldsArray);
 	}
-
+	
+	public static function checkIpESubIp($ip)
+	{
+		if (preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) || preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip))
+			return sanitizeAll($ip);
+			
+		return '';
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

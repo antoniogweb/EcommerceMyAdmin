@@ -41,12 +41,12 @@ class Shield
 		
 		$content = date("Y-m-d H:i:s")."\nQuery:$query\nSecondi:$secondi";
 		
-		$temp = file_exists($pathJail."/Freed/".$ip) ? "Perm" : "Temp";
+		$temp = is_file($pathJail."/Freed/".$ip) ? "Perm" : "Temp";
 		
-		if (!file_exists($pathJail."/$temp/".$ip))
+		if (!is_file($pathJail."/$temp/".$ip))
 			FilePutContentsAtomic($pathJail."/$temp/".$ip, $content);
 		
-		if (!file_exists($pathJail."/Log/".$ip))
+		if (!is_file($pathJail."/Log/".$ip))
 			FilePutContentsAtomic($pathJail."/Log/".$ip, $content);
 	}
 	
@@ -61,7 +61,8 @@ class Shield
 		
 		foreach ($ips as $ip => $query)
 		{
-			$ip = sanitizeIp($ip);
+			// $ip = sanitizeIp($ip);
+			$ip = F::checkIpESubIp($ip);
 			
 			if (trim($ip))
 				self::writeIp($ip, $query, $secondi);
