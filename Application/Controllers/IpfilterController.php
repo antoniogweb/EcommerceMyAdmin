@@ -30,7 +30,7 @@ class IpfilterController extends BaseController {
 	
 	public $sezionePannello = "utenti";
 	
-	public $tabella = "filtri IP";
+	public $tabella = "IP brute force moduli";
 	
 	public function __construct($model, $controller, $queryString, $application, $action)
 	{
@@ -44,8 +44,8 @@ class IpfilterController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("ip_filter.ip", "modalitaCrud");
-		$this->mainHead = "Titolo,Modalità";
+		$this->mainFields = array("cleanDateTime", "ip_filter.ip", "modalitaCrud");
+		$this->mainHead = "Data/ora,Titolo,Modalità";
 		
 		$this->m[$this->modelName]->orderBy("id_ip_filter desc")->convert()->save();
 		
