@@ -966,6 +966,9 @@ class Route
 		'menucucina,ordinatag',
 		
 		'configurazioni,dacompletare',
+		
+		'geolocator,main',
+		'geolocator,form',
 	);
 	
 	//it can be 'yes' or 'no'

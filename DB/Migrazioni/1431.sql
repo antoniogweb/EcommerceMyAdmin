@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Gestione Geolocator', 'geolocator', '', '1', 'attiva_gestione_geolocator=1', '108', '1', 'utenti', 'main');

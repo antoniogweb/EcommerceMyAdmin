@@ -93,7 +93,6 @@ class VariabiliModel extends GenericModel {
 		"cifre_decimali"			=>	2, // usate nel calcolo dei totali
 		"cifre_decimali_visualizzate"	=>	8, // usate nella visualizzazione delle cifre in admin e nell'import
 		"link_cms"					=>	"blog/main",
-		"attiva_ip_location"		=>	0,
 		"mostra_tipi_fasce"			=>	1,
 		"attiva_tipi_azienda"		=>	0,
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
@@ -843,6 +842,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_fasce_frontend_prodotti"	=>	0, // se impostato su 1, mostra il link per la gestione delle fasce nei prodotti
 		### TOKEN ##
 		"token_lista_configurazioni_mancanti"	=>	"", // token per vedere, se loggato in admin, l'elenco delle configurazioni mancanti
+		### IP ##
+		"attiva_gestione_geolocator"	=>	0, // se permette oppure no la gestione dei geolocator
+		"attiva_ip_location"		=>	0, // se è attiva la ricerca dell'IP all'accesso al sito (vecchia versione)
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

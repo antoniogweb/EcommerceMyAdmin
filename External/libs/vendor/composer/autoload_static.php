@@ -68,6 +68,9 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Mpdf\\PsrLogAwareTrait\\' => 22,
             'Mpdf\\PsrHttpMessageShim\\' => 24,
             'Mpdf\\' => 5,
+            'MaxMind\\WebService\\' => 19,
+            'MaxMind\\Exception\\' => 18,
+            'MaxMind\\Db\\' => 11,
             'MatthiasMullie\\PathConverter\\' => 29,
             'MatthiasMullie\\Minify\\' => 22,
             'Matrix\\' => 7,
@@ -96,6 +99,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+            'GeoIp2\\' => 7,
         ),
         'F' => 
         array (
@@ -109,6 +113,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'C' => 
         array (
             'Composer\\Pcre\\' => 14,
+            'Composer\\CaBundle\\' => 18,
             'Complex\\' => 8,
         ),
         'B' => 
@@ -205,6 +210,18 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
         ),
+        'MaxMind\\WebService\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/WebService',
+        ),
+        'MaxMind\\Exception\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/Exception',
+        ),
+        'MaxMind\\Db\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind-db/reader/src/MaxMind/Db',
+        ),
         'MatthiasMullie\\PathConverter\\' => 
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
@@ -269,6 +286,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
+        'GeoIp2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geoip2/geoip2/src',
+        ),
         'Facebook\\' => 
         array (
             0 => __DIR__ . '/..' . '/joelbutcher/facebook-graph-sdk/src',
@@ -284,6 +305,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Composer\\Pcre\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/pcre/src',
+        ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
         'Complex\\' => 
         array (

@@ -209,3 +209,8 @@ Satispay GBusiness API PHP SDK
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/satispay/gbusiness-api-php-sdk
+
+MaxMind GeoIP2 PHP API
+-------
+License:	Apache-2.0 license
+link: 		https://github.com/maxmind/GeoIP2-php
