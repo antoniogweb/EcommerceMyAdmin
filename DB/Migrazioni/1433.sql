@@ -1,0 +1,1 @@
+ALTER TABLE ip_location ADD INDEX ip_location_ip (ip);

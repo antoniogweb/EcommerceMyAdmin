@@ -45,6 +45,87 @@ class ConteggioqueryModel extends GenericModel
 		$cq->insert();
 	}
 	
+	private static function getSWhereIp()
+	{
+		return array(
+			"conteggio_query.ip != '' and conteggio_query.ip != ? and conteggio_query.ip not in (select ip from ip_filter where whitelist = 1)",
+			array(sanitizeIp(v("ip_sito")))
+		);
+	}
+	
+	// Restituisce i network che stanno facendo più query
+	public static function numeroQueryNetwork($soglia = 1000, $secondi = 60)
+	{
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		$resNetwork = $cq->clear()->select("SUM(numero) as numero_query,concat(ip_location.network,'-',ip_location.nazione) as network_nazione")->inner("ip_location")->on("conteggio_query.ip = ip_location.ip and ip_location.network != ''")->aWhere(array(
+			"gte"	=>	array(
+				"conteggio_query.data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere(self::getSWhereIp())
+		->groupBy("ip_location.network,ip_location.nazione having numero_query > ".(int)$soglia)->toList("aggregate.network_nazione", "aggregate.numero_query")->send();
+		
+		return $resNetwork;
+	}
+	
+	// Restituisce l'elenco degli IP delle nazioni $nazioni indicate negli ultimi $secondi
+	public static function ipNazioni($secondi = 60, $nazioni = array())
+	{
+		if (empty($nazioni))
+			return array();
+		
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		$resNazioni = $cq->clear()->select("SUM(numero) as numero_query,conteggio_query.ip")->inner("ip_location")->on(array(
+			"conteggio_query.ip = ip_location.ip and ip_location.nazione in (".$cq->placeholdersFromArray($nazioni).")",
+			sanitizeAllDeep($nazioni)
+		))->aWhere(array(
+			"gte"	=>	array(
+				"conteggio_query.data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere(self::getSWhereIp())
+		->groupBy("conteggio_query.ip")
+		->toList("conteggio_query.ip", "aggregate.numero_query")->send();
+		
+		return $resNazioni;
+	}
+	
+	// Restituisce le nazioni network che stanno facendo più query
+	public static function numeroQueryNazione($soglia = 1000, $secondi = 60)
+	{
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		$resNazioni = $cq->clear()->select("SUM(numero) as numero_query,ip_location.nazione")->inner("ip_location")->on("conteggio_query.ip = ip_location.ip and ip_location.nazione != ''")->aWhere(array(
+			"gte"	=>	array(
+				"conteggio_query.data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere(self::getSWhereIp())
+		->groupBy("ip_location.nazione having numero_query > ".(int)$soglia)->toList("ip_location.nazione", "aggregate.numero_query")->send();
+		
+		return $resNazioni;
+	}
+	
 	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30)
 	{
 		$secondi = time() - $secondi;
@@ -53,10 +134,7 @@ class ConteggioqueryModel extends GenericModel
 		
 		$cq = new ConteggioqueryModel();
 		
-		$sWhereIp = array(
-			"ip != '' and ip != ? and ip not in (select ip from ip_filter where whitelist = 1)",
-			array(sanitizeIp(v("ip_sito")))
-		);
+		$sWhereIp = self::getSWhereIp();
 		
 		// Cerca singolo IP
 		$resIp = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
@@ -92,5 +170,33 @@ class ConteggioqueryModel extends GenericModel
 			"date_format(data_creazione,'%Y-%m-%d') <= ?",
 			array($dataOra->format("Y-m-d"))
 		));
+	}
+	
+	public static function geolocalizzaIp($secondi, $limit = 100)
+	{
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$ips = $resIp = $cq->clear()->select("distinct ip")->aWhere(array(
+			"gte"	=>	array(
+				"data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere(self::getSWhereIp())->limit($limit)->orderBy("id_conteggio desc")->toList("ip")->send();
+		
+		$ipLocationModel = new IplocationModel();
+		
+		foreach ($ips as $ip)
+		{
+			if (trim($ip) && $ip != "127.0.0.1")
+			{
+				list ($nazione, $network) = $ipLocationModel->getNazione($ip);
+				
+				echo $ip.": ".$nazione." - Network: $network\n";
+			}
+		}
 	}
 }

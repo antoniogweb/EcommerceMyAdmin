@@ -43,4 +43,24 @@ class MaxMindGeoIp2WBS extends Geolocator
 		$model->formStruct["entries"]["key_2"]["type"] = "Password";
 		$model->formStruct["entries"]["key_2"]["fill"] = true;
 	}
+	
+	public function getNazione($ip)
+	{
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+
+		$client = new GeoIp2\WebService\Client($this->getParam("key_1"), $this->getParam("key_2"));
+
+		$record = $client->country($ip);
+
+		$nazione = "";
+		$network = "";
+		
+		if (isset($record->country->isoCode))
+			$nazione = $record->country->isoCode;
+		
+		if (isset($record->traits->network))
+			$network = $record->traits->network;
+		
+		return array($nazione, $network);
+	}
 }

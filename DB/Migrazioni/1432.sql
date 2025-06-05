@@ -1,0 +1,1 @@
+alter table ip_location add network varchar(50) not null default '';

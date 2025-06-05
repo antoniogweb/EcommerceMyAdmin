@@ -87,5 +87,38 @@ class IplocationModel extends Model_Tree {
 		
 		return $default;
 	}
-
+	
+	// restituisce la nazione dell'ip $ip
+	public function getNazione($ip)
+	{
+		$this->deleteExpired();
+		
+		$nazione = "";
+		$network = "";
+		
+		if (v("attiva_gestione_geolocator") && GeolocatorModel::getModulo()->isAttivo())
+		{
+			$recordIp = $this->clear()->select("nazione,network")->where(array(
+				"ip"			=>	sanitizeAll($ip),
+			))->record();
+			
+			if (!empty($recordIp))
+				return array($recordIp["nazione"], $recordIp["network"]);
+			
+			list ($nazione, $network) = GeolocatorModel::getModulo()->getNazione($ip);
+			
+			$this->setValues(array(
+				"ip"			=>	sanitizeAll($ip),
+				"nazione"		=>	sanitizeAll($nazione),
+				"time_creazione"=>	time(),
+				"user_agent"	=>	"COMANDO",
+				"network"		=>	sanitizeAll($network),
+			));
+			
+			$this->insert();
+		}
+		
+		return array($nazione, $network);
+	}
+	
 }

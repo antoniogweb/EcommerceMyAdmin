@@ -34,6 +34,8 @@ $options = getopt(null, array(
 	"blocca::",
 	"giorni::",
 	"numero_ip_stessa_rete::",
+	"limit::",
+	"nazioni::",
 ));
 
 $default = array(
@@ -69,6 +71,8 @@ if ($params["azione"] == "check-numero-query")
 	
 	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete);
 	
+	arsort($conteggio);
+	
 	if (!empty($conteggio) && $mail)
 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
 	
@@ -91,6 +95,110 @@ if ($params["azione"] == "check-numero-query")
 	$log->writeString("FINE CHECK NUMERO QUERY");
 }
 
+if ($params["azione"] == "check-numero-query-network")
+{
+	$log->writeString("INIZIO CHECK NUMERO QUERY NETWORK");
+	
+	$query = $params["query"] ?? 10000;
+	$secondi = $params["secondi"] ?? 60;
+	$mail = isset($params["email"]) ? true : false;
+	
+	$conteggio = ConteggioqueryModel::numeroQueryNetwork($query, $secondi);
+	
+	arsort($conteggio);
+	
+	if (!empty($conteggio) && $mail)
+		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	
+	if (!empty($conteggio))
+	{
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
+	
+	Shield::freeTempIps($log);
+	
+	$log->writeString("FINE CHECK NUMERO QUERY NETWORK");
+}
+
+if ($params["azione"] == "check-numero-query-nazione")
+{
+	$log->writeString("INIZIO CHECK NUMERO QUERY NAZIONE");
+	
+	$query = $params["query"] ?? 10000;
+	$secondi = $params["secondi"] ?? 60;
+	$mail = isset($params["email"]) ? true : false;
+	
+	$conteggio = ConteggioqueryModel::numeroQueryNazione($query, $secondi);
+	
+	arsort($conteggio);
+	
+	if (!empty($conteggio) && $mail)
+		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	
+	if (!empty($conteggio))
+	{
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
+	
+	Shield::freeTempIps($log);
+	
+	$log->writeString("FINE CHECK NUMERO QUERY NAZIONE");
+}
+
+if ($params["azione"] == "check-numero-query-ip-nazioni")
+{
+	$log->writeString("INIZIO BLOCCO IP NAZIONI");
+	
+	if (isset($params["nazioni"]))
+	{
+		$secondi = $params["secondi"] ?? 60;
+		$nazioniArray = explode(",", $params["nazioni"]);
+		$blocca = isset($params["blocca"]) ? true : false;
+		
+		$conteggio = ConteggioqueryModel::ipNazioni($secondi, $nazioniArray);
+		
+		if (!empty($conteggio))
+		{
+			$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+			
+			print_r($conteggio);
+		}
+		
+		if (!empty($conteggio) && $blocca)
+		{
+			Shield::blockIps($conteggio, $secondi);
+			
+			$log->writeString("Gli IP sono stati bloccati");
+		}
+	}
+	
+// 	$query = $params["nazioni"] ?? 10000;
+// 	$secondi = $params["secondi"] ?? 60;
+// 	$mail = isset($params["email"]) ? true : false;
+// 	
+// 	$conteggio = ConteggioqueryModel::numeroQueryNazione($query, $secondi);
+// 	
+// 	arsort($conteggio);
+// 	
+// 	if (!empty($conteggio) && $mail)
+// 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+// 	
+// 	if (!empty($conteggio))
+// 	{
+// 		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+// 		
+// 		print_r($conteggio);
+// 	}
+// 	
+	Shield::freeTempIps($log);
+	
+	$log->writeString("FINE BLOCCO IP NAZIONI");
+}
+
 if ($params["azione"] == "svuota-query")
 {
 	$log->writeString("INIZIO ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
@@ -100,4 +208,16 @@ if ($params["azione"] == "svuota-query")
 	ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni($giorni);
 	
 	$log->writeString("FINE ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
+}
+
+if ($params["azione"] == "geolocalizza")
+{
+	$log->writeString("INIZIO GEOLOCALIZZAZIONE");
+	
+	$secondi = $params["secondi"] ?? 60;
+	$limit = $params["limit"] ?? 100;
+	
+	ConteggioqueryModel::geolocalizzaIp($secondi, $limit);
+	
+	$log->writeString("FINE GEOLOCALIZZAZIONE");
 }
