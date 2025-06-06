@@ -144,6 +144,8 @@ class TraduttoriModel extends GenericModel
 			self::traduciTabellaContenuti("id_stato_ordine", $lingua, $idRecord, $limit, $log);
 			// Tabella contenuti: contenuti
 			self::traduciTabellaContenuti("id_cont", $lingua, $idRecord, $limit, $log);
+			// Tabella contenuti: tag
+			self::traduciTabellaContenuti("id_tag", $lingua, $idRecord, $limit, $log);
 		}
 	}
 	

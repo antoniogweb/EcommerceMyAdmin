@@ -35,6 +35,8 @@ class BaseCronController extends Controller
 		
 		if (!VariabiliModel::checkToken("token_comandi_cron_web"))
 			$this->responseCode(403);
+		
+		Cache_Db::$cacheFolder = null;
 	}
 	
 	private function getOpzioni($opzioni, $elencoOpzioni)

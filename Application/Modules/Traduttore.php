@@ -60,7 +60,9 @@ class Traduttore
 		$testo = str_replace("<br /> <br /> <br /> <br />", "<br />", $testo);
 		$testo = str_replace("<br /> <br /> <br />", "<br />", $testo);
 		$testo = str_replace("<br /> <br />", "<br />", $testo);
-
+		$testo = str_replace("</p>.", ".</p>", $testo);
+		$testo = str_replace("</p>).", ").</p>", $testo);
+		
 		return $testo;
 	}
 
@@ -112,6 +114,8 @@ class Traduttore
 
 	public function elaboraLink($testo, $linguaCorrente)
 	{
+		$testo = preg_replace('/&(?!amp)/', '&amp;', $testo);
+		
 		$dom = new DomDocument();
 		$dom->loadHTML('<meta charset="UTF-8">'.$testo);
 
