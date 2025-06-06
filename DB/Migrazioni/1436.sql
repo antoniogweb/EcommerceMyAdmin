@@ -1,0 +1,1 @@
+alter table contenuti add data_ultima_modifica datetime null default null;

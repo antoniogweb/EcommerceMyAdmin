@@ -55,6 +55,7 @@ class ContenutitradottiModel extends GenericModel
         return array(
 			'page' => array("BELONGS_TO", 'PagesModel', 'id_page',null,"CASCADE"),
 			'category' => array("BELONGS_TO", 'CategoriesModel', 'id_c',null,"CASCADE"),
+			'contenuti' => array("BELONGS_TO", 'ContenutiModel', 'id_cont',null,"CASCADE"),
         );
     }
     

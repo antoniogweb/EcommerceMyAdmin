@@ -68,6 +68,8 @@ class ContenutiModel extends GenericModel {
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
 		
+		$this->salvaDataModifica = true;
+		
 		$this->uploadFields = array(
 			"immagine_1"	=>	array(
 				"type"	=>	"image",

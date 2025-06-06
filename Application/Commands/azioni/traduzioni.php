@@ -29,6 +29,7 @@ if (!isset($params["azione"]))
 	echo "traduci-caratteristiche -> traduce la tabella caratteristiche (CARATTERISTICHE PRODOTTI)\n";
 	echo "traduci-caratteristiche-valori -> traduce la tabella caratteristiche_valori (VALORI DELLE CARATTERISTICHE PRODOTTI)\n";
 	echo "traduci-marchi -> traduce la tabella marchi (MARCHI PRODOTTI)\n";
+	echo "traduci-contenuti -> traduce la tabella caontenuti (FASCE)\n";
 	echo "traduci -> traduce tutti i testi del sito\n";
 	echo "traduci-pagine-tutte-le-lingue -> traduce la tabella pages (PAGINE e PRODOTTI) per tutte le lingue\n";
 	die();
@@ -80,6 +81,9 @@ if ($params["azione"] == "traduci-caratteristiche-valori")
 
 if ($params["azione"] == "traduci-marchi")
 	TraduttoriModel::traduciTabellaContenuti("id_marchio", $params["lingua"], $params["id_record"], $params["limit"], $log);
+
+if ($params["azione"] == "traduci-contenuti")
+	TraduttoriModel::traduciTabellaContenuti("id_cont", $params["lingua"], $params["id_record"], $params["limit"], $log);
 
 if ($params["azione"] == "traduci-testi")
 	TraduttoriModel::traduciTabellaTesti($params["lingua"], $params["id_record"], $params["limit"], $log);
