@@ -102,6 +102,8 @@ trait CommonModel {
 			$url = Url::getRoot().TagModel::getUrlAlias($p[$tableName]["link_id_tag"]);
 		else if ($p[$tableName]["link_id_documento"])
 			$url = Url::getRoot().DocumentiModel::getUrlAlias($p[$tableName]["link_id_documento"]);
+		else if (isset($p[$tableName]["link_libero"]) && trim($p[$tableName]["link_libero"]))
+			$url = checkHttp(trim($p[$tableName]["link_libero"]));
 		else if (field($p, "url") && $tableName == "pages")
 			$url = checkHttp(field($p, "url"));
 		else if (field($p, "go_to") && $tableName == "pages")
