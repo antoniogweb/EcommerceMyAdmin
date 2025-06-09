@@ -2456,15 +2456,20 @@ class OrdiniModel extends FormModel {
 	{
 		$or = new OrdiniresponseModel();
 		
-		$res = $or->where(array(
-			"cart_uid"	=>	$record["orders"]["cart_uid"],
-		))->limit(1)->orderBy("id_order_gateway_response desc")->findAll();
-		
-		if (count($res) > 0)
+		if (trim($record["orders"]["cart_uid"]))
 		{
-			$label = $res[0]["orders_gateway_response"]["risultato_transazione"] ? "success" : "danger";
-			return "<a class='iframe ext text-$label' href='".Url::getRoot()."/ordini/vediresponse/".$res[0]["orders_gateway_response"]["cart_uid"]."?partial=Y'><i class='fa fa-info-circle'></i></a>";
+			$res = $or->where(array(
+				"cart_uid"	=>	$record["orders"]["cart_uid"],
+			))->limit(1)->orderBy("id_order_gateway_response desc")->findAll();
+			
+			if (count($res) > 0)
+			{
+				$label = $res[0]["orders_gateway_response"]["risultato_transazione"] ? "success" : "danger";
+				return "<a class='iframe ext text-$label' href='".Url::getRoot()."/ordini/vediresponse/".$res[0]["orders_gateway_response"]["cart_uid"]."?partial=Y'><i class='fa fa-info-circle'></i></a>";
+			}
 		}
+		
+		return "";
 	}
 	
 	public static function statoGestionale($ordine)

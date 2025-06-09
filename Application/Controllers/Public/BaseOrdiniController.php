@@ -272,18 +272,21 @@ class BaseOrdiniController extends BaseController
 	
 	protected function mailErrorePagamentoOrdineNonPending($cartUid)
 	{
-		$statiCheckPagamento = explode(",", "deleted");
-		
-		$res = $this->m("OrdiniModel")->clear()->where(array(
-			"cart_uid" => sanitizeAll($cartUid),
-			"in"	=>	array(
-				"orders.stato"	=>	$statiCheckPagamento,
-			)
-		))->send();
-		
-		if (count($res))
+		if (trim($cartUid))
 		{
-			MailordiniModel::inviaMailLog("Attenzione, pagamento relativo all' ordine ".(int)$res[0]["orders"]["id_o"]." allo stato ".statoOrdine($res[0]["orders"]["stato"]), "Attenzione, è stato eseguito un pagamento relativo all'ordine ".(int)$res[0]["orders"]["id_o"]." che non si trova allo stato in attesa di pagamento ma è allo stato <b>".statoOrdine($res[0]["orders"]["stato"])."</b>", "PAGAMENTO NON PENDING", VariabiliModel::getMailAvvisoPagamentoOrdineNonPending());
+			$statiCheckPagamento = explode(",", "deleted");
+			
+			$res = $this->m("OrdiniModel")->clear()->where(array(
+				"cart_uid" => sanitizeAll($cartUid),
+				"in"	=>	array(
+					"orders.stato"	=>	$statiCheckPagamento,
+				)
+			))->send();
+			
+			if (count($res))
+			{
+				MailordiniModel::inviaMailLog("Attenzione, pagamento relativo all' ordine ".(int)$res[0]["orders"]["id_o"]." allo stato ".statoOrdine($res[0]["orders"]["stato"]), "Attenzione, è stato eseguito un pagamento relativo all'ordine ".(int)$res[0]["orders"]["id_o"]." che non si trova allo stato in attesa di pagamento ma è allo stato <b>".statoOrdine($res[0]["orders"]["stato"])."</b>", "PAGAMENTO NON PENDING", VariabiliModel::getMailAvvisoPagamentoOrdineNonPending());
+			}
 		}
 	}
 	
