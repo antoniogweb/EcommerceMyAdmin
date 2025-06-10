@@ -11,6 +11,7 @@ $params = array_merge($default, $options);
 
 ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
+Cache_Db::$cachedTables = array();
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 
