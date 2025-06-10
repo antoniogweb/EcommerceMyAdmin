@@ -57,11 +57,20 @@ class Traduttore
 		// $testo = preg_replace_callback('/\[EGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
 		// $testo = preg_replace_callback('/\[(.*?)?EGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchioBefore") ,$testo);
 
-		$testo = str_replace("<br /> <br /> <br /> <br />", "<br />", $testo);
-		$testo = str_replace("<br /> <br /> <br />", "<br />", $testo);
-		$testo = str_replace("<br /> <br />", "<br />", $testo);
-		$testo = str_replace("</p>.", ".</p>", $testo);
-		$testo = str_replace("</p>).", ").</p>", $testo);
+		$codiceOpzioni = "CORREZIONE_TRADUZIONE_".$this->getParam("codice");
+		
+		$correzioni = OpzioniModel::codice($codiceOpzioni);
+		
+		foreach ($correzioni as $valore => $titolo)
+		{
+			$testo = str_replace($valore, $titolo, $testo);
+		}
+		
+		// $testo = str_replace("<br /> <br /> <br /> <br />", "<br />", $testo);
+		// $testo = str_replace("<br /> <br /> <br />", "<br />", $testo);
+		// $testo = str_replace("<br /> <br />", "<br />", $testo);
+		// $testo = str_replace("</p>.", ".</p>", $testo);
+		// $testo = str_replace("</p>).", ").</p>", $testo);
 		
 		return $testo;
 	}
