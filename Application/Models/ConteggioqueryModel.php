@@ -62,8 +62,6 @@ class ConteggioqueryModel extends GenericModel
 		
 		$cq = new ConteggioqueryModel();
 		
-		$sWhereIp = self::getSWhereIp();
-		
 		$resNetwork = $cq->clear()->select("SUM(numero) as numero_query,concat(ip_location.network,'-',ip_location.nazione) as network_nazione")->inner("ip_location")->on("conteggio_query.ip = ip_location.ip and ip_location.network != ''")->aWhere(array(
 			"gte"	=>	array(
 				"conteggio_query.data_creazione"	=>	sanitizeAll($dataOra),
@@ -86,8 +84,6 @@ class ConteggioqueryModel extends GenericModel
 		$dataOra = date("Y-m-d H:i:s", $secondi);
 		
 		$cq = new ConteggioqueryModel();
-		
-		$sWhereIp = self::getSWhereIp();
 		
 		$resNazioni = $cq->clear()->select("SUM(numero) as numero_query,conteggio_query.ip")->inner("ip_location")->on(array(
 			"conteggio_query.ip = ip_location.ip and ip_location.nazione in (".$cq->placeholdersFromArray($nazioni).")",
@@ -112,8 +108,6 @@ class ConteggioqueryModel extends GenericModel
 		$dataOra = date("Y-m-d H:i:s", $secondi);
 		
 		$cq = new ConteggioqueryModel();
-		
-		$sWhereIp = self::getSWhereIp();
 		
 		$resNazioni = $cq->clear()->select("SUM(numero) as numero_query,ip_location.nazione")->inner("ip_location")->on("conteggio_query.ip = ip_location.ip and ip_location.nazione != ''")->aWhere(array(
 			"gte"	=>	array(
