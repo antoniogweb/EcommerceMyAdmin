@@ -7,7 +7,10 @@
 	</a>
 	<ul class="treeview-menu">
 		<?php $elencoArrayLinkOpzioni = OpzioniModel::getElencoCodiciLabel();?>
-		<?php foreach ($elencoArrayLinkOpzioni as $codice => $label) { ?>
+		<?php foreach ($elencoArrayLinkOpzioni as $codice => $label) {
+			if ($codice == "FRASI_DA_NON_TRADURRE")
+				continue;
+		?>
 		<li><a href="<?php echo $this->baseUrl."/opzioni/main?codice=$codice";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista $label")?></a></li>
 		<?php } ?>
 	</ul>

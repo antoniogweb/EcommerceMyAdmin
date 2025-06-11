@@ -31,7 +31,7 @@
 		<li class="<?php echo tm($tm, array("caratteristiche"));?>"><a href="<?php echo $this->baseUrl."/caratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista caratteristiche");?></a></li>
 		
 		<?php if (v("attiva_tipologie_caratteristiche")) { ?>
-		<li class="dropdown-header">Tipologie</li>
+		<li class="dropdown-header"><?php echo gtext("Tipologie");?></li>
 		<li class="<?php echo tm($tm, array("tipologiecaratteristiche"));?>"><a href="<?php echo $this->baseUrl."/tipologiecaratteristiche/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Tipologie");?></a></li>
 		<?php } ?>
 	</ul>
@@ -41,10 +41,10 @@
 <li class="<?php echo tm($tm, array("combinazioni"));?> treeview">
 	<a href="#">
 		<i class="fa fa-archive"></i>
-		<span>Magazzino</span>
+		<span><?php echo gtext("Magazzino");?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/combinazioni/main/1";?>"><fa class="fa fa-list"></fa> Elenco codici</a></li>
+		<li><a href="<?php echo $this->baseUrl."/combinazioni/main/1";?>"><fa class="fa fa-list"></fa> <?php echo gtext("Elenco codici");?></a></li>
 	</ul>
 </li>
 <?php } ?>

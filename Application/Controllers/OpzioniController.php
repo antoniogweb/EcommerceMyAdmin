@@ -56,8 +56,16 @@ class OpzioniController extends BaseController
 		
 		$this->colProperties = array();
 		
-		$this->mainFields = array("opzioni.titolo", "opzioni.valore");
-		$this->mainHead = "Titolo,Valore";
+		if ($this->viewArgs["codice"] == "FRASI_DA_NON_TRADURRE")
+		{
+			$this->mainFields = array("opzioni.titolo");
+			$this->mainHead = "Titolo";
+		}
+		else
+		{
+			$this->mainFields = array("opzioni.titolo", "opzioni.valore");
+			$this->mainHead = "Titolo,Valore";
+		}
 		
 		$this->m[$this->modelName]->clear()->where(array(
 				"codice" => $this->viewArgs["codice"],
@@ -73,12 +81,20 @@ class OpzioniController extends BaseController
 		
 		$this->checkCodice();
 		
-		$this->m[$this->modelName]->setValuesFromPost('titolo,valore');
+		$fields = 'titolo,valore';
+		
+		if ($this->viewArgs["codice"] == "FRASI_DA_NON_TRADURRE")
+			$fields = 'titolo';
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		if ($this->viewArgs["codice"] == "FRASI_DA_NON_TRADURRE")
+			$this->m[$this->modelName]->setValue("valore", $this->request->post("titolo",""));
 		
 		if ($queryType == "insert" && $this->viewArgs["codice"] != "tutti")
 			$this->m[$this->modelName]->setValue("codice", $this->viewArgs["codice"]);
 		
-		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"titolo,valore");
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',$fields);
 		
 		parent::form($queryType, $id);
 	}

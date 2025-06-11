@@ -27,7 +27,8 @@ class Traduttore
 	use Modulo;
 
 	public static $marchi = null;
-
+	public static $placeholderTestiDaNonTradurre = array();
+	
 	public function estraiPlaceholder($matches)
 	{
 		$numero = 1000 - count($this->placeholders) + 1;
@@ -50,7 +51,12 @@ class Traduttore
 
 		$testo = str_replace("#MARCHIO_", "", $testo);
 		$testo = str_replace("__", " ", $testo);
-
+		
+		foreach (self::$placeholderTestiDaNonTradurre as $md5Titolo => $titolo)
+		{
+			$testo = str_replace("[$md5Titolo]", $titolo, $testo);
+		}
+		
 		// $testo = preg_replace_callback('/\[EFGH\_([0-9]{1,})(.*?)?\]/', array($this, "ripristinaMarchio") ,$testo);
 		// $testo = preg_replace_callback('/\[(.*?)?EFGH\_([0-9]{1,})\]/', array($this, "ripristinaMarchioBefore") ,$testo);
   //
@@ -219,11 +225,33 @@ class Traduttore
 
 		return $testo;
 	}
-
+	
+	protected function estraiTestiDaNonTradurre($testo)
+	{
+		$testiDaNonTradurre = OpzioniModel::codice("FRASI_DA_NON_TRADURRE");
+		
+		foreach ($testiDaNonTradurre as $valore => $titolo)
+		{
+			if (preg_match("/".preg_quote($titolo, "/")."/", $testo))
+			{
+				$md5Titolo = md5($titolo);
+				
+				if (!isset(self::$placeholderTestiDaNonTradurre[$md5Titolo]))
+					self::$placeholderTestiDaNonTradurre[$md5Titolo] = $titolo;
+				
+				$testo = preg_replace("/".preg_quote($titolo, "/")."/", "[".$md5Titolo."]", $testo);
+			}
+		}
+		
+		return $testo;
+	}
+	
 	public function elaboraTesto($testo, $linguaCorrente)
 	{
 		$this->placeholders = [];
 
+		$testo = $this->estraiTestiDaNonTradurre($testo);
+		
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
 
 		$testo = $this->estraiMarchi($testo);
