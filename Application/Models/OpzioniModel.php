@@ -71,6 +71,16 @@ class OpzioniModel extends GenericModel {
 		return $_GET["codice"] ?? "";
 	}
 	
+	public static function isCodiceGestibile($codice)
+	{
+		self::$codiciGestibili = array_keys(self::getElencoCodiciLabel());
+		
+		if (in_array($codice, self::$codiciGestibili))
+			return true;
+		
+		return false;
+	}
+	
 	public static function getElencoCodiciLabel()
 	{
 		$elenco = v("codici_opzioni_gestibili") ? explode(";", v("codici_opzioni_gestibili")) : array();
