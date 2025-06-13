@@ -226,12 +226,15 @@ class Traduttore
 		return $testo;
 	}
 	
+	// Parole da non tradurre
 	protected function estraiTestiDaNonTradurre($testo)
 	{
 		$testiDaNonTradurre = OpzioniModel::codice("FRASI_DA_NON_TRADURRE");
 		
 		foreach ($testiDaNonTradurre as $valore => $titolo)
 		{
+			$titolo = htmlentitydecode($titolo);
+			
 			if (preg_match("/".preg_quote($titolo, "/")."/", $testo))
 			{
 				$md5Titolo = md5($titolo);
@@ -246,11 +249,37 @@ class Traduttore
 		return $testo;
 	}
 	
-	public function elaboraTesto($testo, $linguaCorrente)
+	// Parole con traduzione parziale
+	protected function rielaboraPerTraduzioniParziali($testo, $targetLanguage)
+	{
+		if (isset(TraduzionicorrezioniModel::$correzioni[2][$targetLanguage]))
+		{
+			foreach (TraduzionicorrezioniModel::$correzioni[2][$targetLanguage] as $daTradurre => $tradotta)
+			{
+				$daTradurre = htmlentitydecode($daTradurre);
+				$tradotta = htmlentitydecode($tradotta);
+				
+				if (preg_match("/".preg_quote($daTradurre, "/")."/", $testo))
+				{
+					$md5Titolo = md5($daTradurre);
+					
+					if (!isset(self::$placeholderTestiDaNonTradurre[$md5Titolo]))
+						self::$placeholderTestiDaNonTradurre[$md5Titolo] = $tradotta;
+					
+					$testo = preg_replace("/".preg_quote($daTradurre, "/")."/", "[".$md5Titolo."]", $testo);
+				}
+			}
+		}
+		
+		return $testo;
+	}
+	
+	public function elaboraTesto($testo, $linguaCorrente, $targetLanguage)
 	{
 		$this->placeholders = [];
 
 		$testo = $this->estraiTestiDaNonTradurre($testo);
+		$testo = $this->rielaboraPerTraduzioniParziali($testo, $targetLanguage);
 		
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
 

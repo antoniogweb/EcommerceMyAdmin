@@ -25,14 +25,54 @@ if (!defined('EG')) die('Direct access not allowed!');
 class TraduzionicorrezioniModel extends GenericModel
 {
 	public static $correzioni = null;
-
+	
+	public static $tipoCorrezione = array();
+	
 	public function __construct() {
 		$this->_tables='traduzioni_correzioni';
 		$this->_idFields='id_t_c';
 		
 		parent::__construct();
+		
+		self::$tipoCorrezione = array(
+			0 => gtext('Intero testo'),
+			2 => gtext('Porzione di testo'),
+		);
 	}
 
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'parola_tradotta_da_correggere'	=>	array(
+					'labelString'=>	'Testo da tradurre',
+				),
+				'parola_tradotta_corretta'	=>	array(
+					'labelString'=>	'Testo tradotto',
+				),
+				'successivo'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Match',
+					'entryClass'	=>	'form_input_text help_attivo',
+					'options'	=>	self::$tipoCorrezione,
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato 'Intero testo' viene usata questa traduzione nel caso il testo da tradurre sia esattamente uguale a quello impostato.")."<br />".gtext("Se impostato 'Porzione di testo' viene usata questa traduzione ogni volta che si trova la porzione di testo indicata nel testo da tradurre.")."</div>"
+					),
+					'reverse'	=>	'yes',
+				),
+				'lingua'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	LingueModel::getSelectLingueNonPrincipali(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
+	}
+	
 	public static function getCorrezioni()
 	{
 		if (!isset(self::$correzioni))
@@ -59,5 +99,15 @@ class TraduzionicorrezioniModel extends GenericModel
 		}
 
 		return $testo;
+	}
+	
+	public function tipoCrud($record)
+	{
+		$idTipo = $record["traduzioni_correzioni"]["successivo"];
+		
+		if (isset(self::$tipoCorrezione[$idTipo]))
+			return gtext(self::$tipoCorrezione[$idTipo]);
+		
+		return "";
 	}
 }

@@ -189,6 +189,16 @@ class LingueModel extends GenericModel
 			"attiva"		=>	1,
 		))->orderBy("id_order")->toList("codice")->send();
 	}
+	
+	public static function getSelectLingueNonPrincipali()
+	{
+		$l = new LingueModel();
+		
+		return $l->clear()->select("codice,descrizione")->where(array(
+			"principale"	=>	0,
+			"attiva"		=>	1,
+		))->orderBy("id_order")->toList("codice","descrizione")->send();
+	}
 
 	// Attiva la lingua e genera tutte le traduzioni
 	public function attivaLingua($lingua)

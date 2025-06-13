@@ -913,6 +913,9 @@ class Route
 		'traduttori,main',
 		'traduttori,form',
 
+		'traduzionicorrezioni,main',
+		'traduzionicorrezioni,form',
+		
 		'lingue,main',
 		'lingue,attivalingua',
 

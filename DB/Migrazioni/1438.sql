@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`id_controller`, `data_creazione`, `titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES (NULL, '2024-06-26 16:17:54', 'Gestione correzioni traduzioni', 'traduzionicorrezioni', 'traduttori', '0', '', '100', '1', 'utenti', 'main');
