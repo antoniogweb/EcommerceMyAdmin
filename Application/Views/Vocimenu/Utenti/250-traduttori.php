@@ -8,7 +8,7 @@
 	<ul class="treeview-menu">
 		<li class="<?php echo tm($tm, array("traduttori"));?>"><a href="<?php echo $this->baseUrl."/traduttori/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Traduttori automatici");?></a></li>
 		<?php if (OpzioniModel::isCodiceGestibile("FRASI_DA_NON_TRADURRE") && ControllersModel::checkAccessoAlController(array("opzioni"))) { ?>
-		<li class="<?php echo tm($tm, array("opzioni"));?>"><a href="<?php echo $this->baseUrl."/opzioni/main?codice=FRASI_DA_NON_TRADURRE";?>"><i class="fa fa-ban"></i> <?php echo gtext("Termini da non tradurre");?></a></li>
+		<li class="<?php echo tm($tm, array("opzioni"));?>"><a href="<?php echo $this->baseUrl."/opzioni/main?codice=FRASI_DA_NON_TRADURRE";?>"><i class="fa fa-ban"></i> <?php echo gtext("Frasi da non tradurre");?></a></li>
 		<?php } ?>
 		<li class="<?php echo tm($tm, array("traduzionicorrezioni"));?>"><a href="<?php echo $this->baseUrl."/traduzionicorrezioni/main/1";?>"><i class="fa fa-eraser"></i> <?php echo gtext("Correzioni");?></a></li>
 		<?php if (v("attiva_cron_web")) { ?>
