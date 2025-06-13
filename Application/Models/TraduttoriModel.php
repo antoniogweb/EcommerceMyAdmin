@@ -31,6 +31,7 @@ class TraduttoriModel extends GenericModel
 	public static $campoTabella = array(
 		"id_page"		=>	"pages",
 		"id_c"			=>	"categories",
+		"id_cont"		=>	"contenuti",
 // 		"id_marchio"	=>	"marchi",
 // 		"id_tag"		=>	"tag",
 // 		"id_car"		=>	"caratteristiche",

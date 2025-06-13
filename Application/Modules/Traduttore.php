@@ -280,6 +280,7 @@ class Traduttore
 
 		$testo = $this->estraiTestiDaNonTradurre($testo);
 		$testo = $this->rielaboraPerTraduzioniParziali($testo, $targetLanguage);
+		$testo = $this->elaboraLink($testo, $linguaCorrente);
 		
 		$testo = preg_replace_callback('/\[([0-9a-zA-Z\_\-\s]{1,})\]/', array($this, "estraiPlaceholder") ,$testo);
 
@@ -287,7 +288,7 @@ class Traduttore
 
 		// echo $testo."\n\n\n\n";
 
-		$testo = $this->elaboraLink($testo, $linguaCorrente);
+		
 
 		return $testo;
 	}
