@@ -42,5 +42,7 @@ class ProgettiController extends GenericsectionController {
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
 		$this->queryFields = "title,attivo,description,immagine,sottotitolo,alias";
+		
+		$this->filters = array(null,null,'title',array("attivo",null,SlideModel::$YN));
 	}
 }

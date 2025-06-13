@@ -54,4 +54,6 @@ class SociModel extends BasicsectionModel {
 		
 		return $res;
 	}
+	
+	public function setFilters() {}
 }

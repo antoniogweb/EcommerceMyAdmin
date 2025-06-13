@@ -26,4 +26,5 @@ class ProgettiModel extends BasicsectionModel {
 	
 	public $hModelName = "ProgetticatModel";
 	
+	public function setFilters() {}
 }
