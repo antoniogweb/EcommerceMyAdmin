@@ -36,6 +36,7 @@ $options = getopt(null, array(
 	"numero_ip_stessa_rete::",
 	"limit::",
 	"nazioni::",
+	"numero::",
 ));
 
 $default = array(
@@ -176,24 +177,6 @@ if ($params["azione"] == "check-numero-query-ip-nazioni")
 		}
 	}
 	
-// 	$query = $params["nazioni"] ?? 10000;
-// 	$secondi = $params["secondi"] ?? 60;
-// 	$mail = isset($params["email"]) ? true : false;
-// 	
-// 	$conteggio = ConteggioqueryModel::numeroQueryNazione($query, $secondi);
-// 	
-// 	arsort($conteggio);
-// 	
-// 	if (!empty($conteggio) && $mail)
-// 		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
-// 	
-// 	if (!empty($conteggio))
-// 	{
-// 		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
-// 		
-// 		print_r($conteggio);
-// 	}
-// 	
 	Shield::freeTempIps($log);
 	
 	$log->writeString("FINE BLOCCO IP NAZIONI");
@@ -220,4 +203,31 @@ if ($params["azione"] == "geolocalizza")
 	ConteggioqueryModel::geolocalizzaIp($secondi, $limit);
 	
 	$log->writeString("FINE GEOLOCALIZZAZIONE");
+}
+
+// Crea la cartella con le immagini captcha anti DDOS
+if ($params["azione"] == "crea-captcha-ddos")
+{
+	$log->writeString("INIZIO CREAZIONE CAPTCHA");
+	
+	$numero = $params["numero"] ?? 120;
+	
+	Shield::creaCapctaDDOS($numero);
+	
+	$log->writeString("FINE CREAZIONE CAPTCHA");
+}
+
+// Elimina la cartella con le immagini captcha anti DDOS
+if ($params["azione"] == "elimina-captcha-ddos")
+{
+	$log->writeString("INIZIO ELIMINAZIONE CAPTCHA");
+	
+	if (is_dir(LIBRARY."/Logs/CaptchaDDOS"))
+	{
+		$nuovoNome = randomToken(20);
+		rename(LIBRARY."/Logs/CaptchaDDOS", LIBRARY."/Logs/$nuovoNome");
+		PagesModel::eliminaCartella(LIBRARY."/Logs/$nuovoNome");
+	}
+	
+	$log->writeString("FINE ELIMINAZIONE CAPTCHA");
 }

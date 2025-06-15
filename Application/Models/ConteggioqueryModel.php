@@ -120,6 +120,27 @@ class ConteggioqueryModel extends GenericModel
 		return $resNazioni;
 	}
 	
+// 	public static function numeroQueryGlobali($soglia = 1000, $secondi = 60)
+// 	{
+// 		$secondi = time() - $secondi;
+// 		
+// 		$dataOra = date("Y-m-d H:i:s", $secondi);
+// 		
+// 		$cq = new ConteggioqueryModel();
+// 		
+// 		$sWhereIp = self::getSWhereIp();
+// 		
+// 		$res = $cq->clear()->select("SUM(numero) as numero_query")->aWhere(array(
+// 			"gte"	=>	array(
+// 				"data_creazione"	=>	sanitizeAll($dataOra),
+// 			),
+// 		))
+// 		->sWhere($sWhereIp)
+// 		->groupBy("having numero_query > ".(int)$soglia)->toList("aggregate.numero_query")->send();
+// 		
+// 		return $res;
+// 	}
+	
 	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30)
 	{
 		$secondi = time() - $secondi;
