@@ -235,14 +235,14 @@ class Traduttore
 		{
 			$titolo = htmlentitydecode($titolo);
 			
-			if (preg_match("/".preg_quote($titolo, "/")."/", $testo))
+			if (preg_match("/".preg_quote($titolo, "/")."/i", $testo, $matches))
 			{
 				$md5Titolo = md5($titolo);
 				
 				if (!isset(self::$placeholderTestiDaNonTradurre[$md5Titolo]))
-					self::$placeholderTestiDaNonTradurre[$md5Titolo] = $titolo;
+					self::$placeholderTestiDaNonTradurre[$md5Titolo] = $matches[0];
 				
-				$testo = preg_replace("/".preg_quote($titolo, "/")."/", "[".$md5Titolo."]", $testo);
+				$testo = preg_replace("/".preg_quote($titolo, "/")."/i", "[".$md5Titolo."]", $testo);
 			}
 		}
 		
@@ -259,14 +259,14 @@ class Traduttore
 				$daTradurre = htmlentitydecode($daTradurre);
 				$tradotta = htmlentitydecode($tradotta);
 				
-				if (preg_match("/".preg_quote($daTradurre, "/")."/", $testo))
+				if (preg_match("/".preg_quote($daTradurre, "/")."/i", $testo))
 				{
 					$md5Titolo = md5($daTradurre);
 					
 					if (!isset(self::$placeholderTestiDaNonTradurre[$md5Titolo]))
 						self::$placeholderTestiDaNonTradurre[$md5Titolo] = $tradotta;
 					
-					$testo = preg_replace("/".preg_quote($daTradurre, "/")."/", "[".$md5Titolo."]", $testo);
+					$testo = preg_replace("/".preg_quote($daTradurre, "/")."/i", "[".$md5Titolo."]", $testo);
 				}
 			}
 		}
