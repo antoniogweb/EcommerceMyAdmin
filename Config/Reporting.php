@@ -41,7 +41,8 @@ if (!defined('DISPLAY_ERRORS'))
 
 //set if the error file (see the next directive) has to be created or not
 //set ERROR_REPORTING_FILE to true if you want that MvcMyLibrary saves the errors in the LOG_ERROR_FILE (next), otherwise set ERROR_REPORTING_FILE to false
-define ('ERROR_REPORTING_FILE',true);
+if (!defined('ERROR_REPORTING_FILE'))
+	define ('ERROR_REPORTING_FILE',true);
 
 //only if ERROR_REPORTING_FILE has been set to true
 //set the file where the errors will be saved
