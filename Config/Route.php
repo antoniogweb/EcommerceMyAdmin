@@ -598,6 +598,7 @@ class Route
 		
 		'opzioni,main',
 		'opzioni,form',
+		'opzioni,ordina',
 		'opzioni,importacategoriegoogle',
 		
 		'applicazioni,main',

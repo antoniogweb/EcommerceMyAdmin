@@ -229,7 +229,7 @@ class Traduttore
 	// Parole da non tradurre
 	protected function estraiTestiDaNonTradurre($testo)
 	{
-		$testiDaNonTradurre = OpzioniModel::codice("FRASI_DA_NON_TRADURRE");
+		$testiDaNonTradurre = OpzioniModel::codice("FRASI_DA_NON_TRADURRE", "valore", "id_order");
 		
 		foreach ($testiDaNonTradurre as $valore => $titolo)
 		{

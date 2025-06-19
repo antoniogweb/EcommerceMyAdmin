@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["q"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Titolo ..",
+	),
+);
+
 class OpzioniController extends BaseController
 {
 	public $orderBy = "id_order";
@@ -30,7 +37,10 @@ class OpzioniController extends BaseController
 	
 	public $sezionePannello = "utenti";
 	
-	public $argKeys = array('codice:sanitizeAll'=>'tutti','q:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'codice:sanitizeAll'	=>'tutti',
+		'q:sanitizeAll'			=>'tutti'
+	);
 	
 	public function __construct($model, $controller, $queryString, $application, $action)
 	{
@@ -51,20 +61,21 @@ class OpzioniController extends BaseController
 		
 		$this->checkCodice();
 		
-		$this->bulkQueryActions = "";
-		$this->addBulkActions = false;
-		
-		$this->colProperties = array();
-		
 		if ($this->viewArgs["codice"] == "FRASI_DA_NON_TRADURRE")
 		{
 			$this->mainFields = array("opzioni.titolo");
 			$this->mainHead = "Titolo";
+			
+			$this->filters = array(null, "q");
 		}
 		else
 		{
 			$this->mainFields = array("opzioni.titolo", "opzioni.valore");
 			$this->mainHead = "Titolo,Valore";
+			
+			$this->bulkQueryActions = "";
+			$this->addBulkActions = false;
+			$this->colProperties = array();
 		}
 		
 		$this->m[$this->modelName]->clear()->where(array(
@@ -73,6 +84,13 @@ class OpzioniController extends BaseController
 			))->orderBy("id_order")->convert()->save();
 		
 		parent::main();
+	}
+	
+	public function ordina()
+	{
+		$this->modelName = "OpzioniModel";
+		
+		parent::ordina();
 	}
 	
 	public function form($queryType = 'insert', $id = 0)

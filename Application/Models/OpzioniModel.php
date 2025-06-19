@@ -108,14 +108,19 @@ class OpzioniModel extends GenericModel {
 		return "opzioni";
 	}
 	
-	public static function codice($codice, $field = "valore")
+	public static function codice($codice, $field = "valore", $orderBy = null)
 	{
 		$op = new OpzioniModel();
 		
-		return $op->clear()->where(array(
+		$op->clear()->where(array(
 			"codice"	=>	$codice,
 			"attivo"	=>	1,
-		))->toList($field, "titolo")->findAll();
+		))->toList($field, "titolo");
+		
+		if (isset($orderBy))
+			$op->orderBy($orderBy);
+		
+		return $op->findAll();
 	}
 	
 	// Restituisci il primo codice
