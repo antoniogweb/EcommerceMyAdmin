@@ -67,13 +67,13 @@ Files_Log::$logFolder = LIBRARY."/Logs";
 
 if (!isset($params["modulo"]))
 {
-	echo "si prega di selezionare il modulo con l'istruzione --modulo=\"<modulo>\"";
+	echo "si prega di selezionare il modulo con l'istruzione --modulo=\"<modulo>\" \n";
 	die();
 }
 
 if (!isset($params["path"]))
 {
-	echo "si prega di selezionare il percorso del file dove salvare il feed con l'istruzione --path=\"<path>\"";
+	echo "si prega di selezionare il percorso del file dove salvare il feed con l'istruzione --path=\"<path>\" \n";
 	die();
 }
 

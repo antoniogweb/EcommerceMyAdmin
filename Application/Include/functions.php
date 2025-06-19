@@ -1863,6 +1863,14 @@ function v($chiave)
 	return VariabiliModel::valore($chiave);
 }
 
+function vg($chiave, $valore = null)
+{
+	if (isset($valore))
+		VariabiliModel::setValoreGlobaleTemporaneo($chiave, $valore);
+	else
+		return VariabiliModel::getValoreGlobaleTemporaneo($chiave);
+}
+
 function getIsoDate($date)
 {
 	$date = trim($date);

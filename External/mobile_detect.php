@@ -623,7 +623,7 @@ class Mobile_Detect
      *                          from the $headers array instead.
      */
     public function __construct(
-        array $headers = null,
+        ?array $headers = null,
         $userAgent = null
     ) {
         $this->setHttpHeaders($headers);
@@ -1113,9 +1113,11 @@ class Mobile_Detect
      */
     public function match($regex, $userAgent = null)
     {
+        $defaultUserAgent = $this->userAgent ?? "";
+            
         // Escape the special character which is the delimiter.
         $regex = str_replace('/', '\/', $regex);
-        $match = (bool) preg_match('/'.$regex.'/is', (!empty($userAgent) ? $userAgent : $this->userAgent), $matches);
+        $match = (bool) preg_match('/'.$regex.'/is', (!empty($userAgent) ? $userAgent : $defaultUserAgent), $matches);
         // If positive match is found, store the results for debug.
         if ($match) {
             $this->matchingRegex = $regex;

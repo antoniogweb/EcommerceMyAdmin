@@ -24,7 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class VariabiliModel extends GenericModel {
 	
-	public static $valori = array();
+	public static $valori = array(); // array di valori permanenti richiamabili con la funzione v("..")
+	
+	public static $valoriGlobaliTemporanei = array(); // array di valori globali temporanei e richiamabili con la funzione vg("..")
 	
 	public static $placeholders = null;
 	
@@ -1111,6 +1113,16 @@ class VariabiliModel extends GenericModel {
 				$var->insert();
 			}
 		}
+	}
+	
+	public static function setValoreGlobaleTemporaneo($chiave, $valore)
+	{
+		self::$valoriGlobaliTemporanei[$chiave] = $valore;
+	}
+	
+	public static function getValoreGlobaleTemporaneo($chiave)
+	{
+		return self::$valoriGlobaliTemporanei[$chiave] ?? null;
 	}
 	
 	public static function valore($chiave)
