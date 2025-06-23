@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class SessionitwoModel extends GenericModel
+class SessioniregtwoModel extends GenericModel
 {
 	use SessionitwotraitModel;
 	
@@ -35,10 +35,10 @@ class SessionitwoModel extends GenericModel
 	protected $tempoDurataVerificaCodice = 60;
 	protected $numeroCifreCodice = 6;
 	
-	public function __construct($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60, $numeroCifreCodice = 6)
+	public function __construct($cookieName = "uidtr", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60, $numeroCifreCodice = 6)
 	{
-		$this->_tables='adminsessions_two';
-		$this->_idFields='id_adminsession_two';
+		$this->_tables='regsessions_two';
+		$this->_idFields='id_regsessions_two';
 		
 		$this->setValoriConfigurazione($cookieName, $twoFactorCookieDurationTime, $twoFactorCookiePath, $tempoDurataVerificaCodice, $numeroCifreCodice);
 		

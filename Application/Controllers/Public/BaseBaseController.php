@@ -174,7 +174,7 @@ class BaseBaseController extends Controller
 				new RegsessioniModel(),
 				new RegaccessiModel(),
 				new ReggroupsModel(),
-			));
+			), User::getTwoFactorModelFront());
 			
 			$this->s['registered']->checkStatus();
 			

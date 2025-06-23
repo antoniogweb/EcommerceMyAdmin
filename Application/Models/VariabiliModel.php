@@ -804,13 +804,21 @@ class VariabiliModel extends GenericModel {
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
 		### AUTENTICAZIONE DUE FATTORI ##
+		### ---- BACKEND
 		"attiva_autenticazione_due_fattori_admin"	=>	0, // se è attiva l'autenticazione a due fattori nell'admin
 		"autenticazione_due_fattori_admin_durata_cookie"	=>	2592000, // durata del cookie dell'autenticazione a due fattori (default 30 giorni)
 		"autenticazione_due_fattori_numero_cifre_admin"	=>	6, // numero delle cifre del codice di verifica inviato nell'autenticazione a due fattori lato admin
-		"autenticazione_due_fattori_durata_verifica_admin"	=>	60, // tempo in secondi dopo il quale viene cancellata una sessione a due fattori non verificata
-		"autenticazione_due_fattori_numero_massimo_tentativi_admin"	=>	3, // numero massimo di tentativi nell'inserimento del codice a 2 fattori
-		"autenticazione_due_fattori_numero_massimo_invii_codice_admin"	=>	3, // numero massimo di volte che il codice a 2 fattori può essere inviato
+		"autenticazione_due_fattori_durata_verifica_admin"	=>	60, // tempo in secondi dopo il quale viene cancellata una sessione a due fattori non verificata lato admin
+		"autenticazione_due_fattori_numero_massimo_tentativi_admin"	=>	3, // numero massimo di tentativi nell'inserimento del codice a 2 fattori lato admin
+		"autenticazione_due_fattori_numero_massimo_invii_codice_admin"	=>	3, // numero massimo di volte che il codice a 2 fattori può essere inviato lato admin
 		"attiva_campo_email_admin"	=>	0, // se impostato su 1, attiva il campo "email" nella scheda degli utenti admin
+		### ---- FRONTEND
+		"attiva_autenticazione_due_fattori_front"	=>	0, // se è attiva l'autenticazione a due fattori nel frontend
+		"autenticazione_due_fattori_front_durata_cookie"	=>	2592000, // durata del cookie dell'autenticazione a due fattori (default 30 giorni) nel frontend
+		"autenticazione_due_fattori_numero_cifre_front"	=>	6, // numero delle cifre del codice di verifica inviato nell'autenticazione a due fattori lato frontend
+		"autenticazione_due_fattori_durata_verifica_front"	=>	60, // tempo in secondi dopo il quale viene cancellata una sessione a due fattori non verificata lato frontend
+		"autenticazione_due_fattori_numero_massimo_tentativi_front"	=>	3, // numero massimo di tentativi nell'inserimento del codice a 2 fattori lato frontend
+		"autenticazione_due_fattori_numero_massimo_invii_codice_front"	=>	3, // numero massimo di volte che il codice a 2 fattori può essere inviato lato frontend
 		### PAGAMENTI ##
 		"pagamenti_permessi"		=>	"bonifico,paypal",
 		"campo_codice_transazione_nexi"	=>	"codice_transazione", // il campo dell'ordine da usare come codice di transazione nei pagamenti Nexi

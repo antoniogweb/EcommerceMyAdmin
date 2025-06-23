@@ -30,6 +30,8 @@ class BaseRegusersController extends BaseController
 	private $permalinkPaginaRegistrazione = "crea-account";
 	private $creaAccountViewFile = "form";
 	
+	public $redirectUrlErroreTwoFactor = ""; // url di atterraggio quando c'è un errore nell'autenticazione a due fattori
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -59,6 +61,8 @@ class BaseRegusersController extends BaseController
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
 		
 		$data["arrayLingue"] = array();
+		
+		$this->redirectUrlErroreTwoFactor = $this->applicationUrl.$this->controller."/login";
 		
 		$this->append($data);
 	}
@@ -102,7 +106,7 @@ class BaseRegusersController extends BaseController
 		{
 			$username = checkMail($_POST['username']) ? sanitizeAll($_POST['username']) : '';
 			$choice = $this->s['registered']->login(sanitizeAll($_POST['username']),$_POST['password']);
-
+			
 			switch($choice) {
 				case 'logged':
 					if (Output::$html)
@@ -120,6 +124,9 @@ class BaseRegusersController extends BaseController
 					{
 						$this->setUserHead();
 					}
+					break;
+				case 'two-factor':
+					$this->redirect($this->applicationUrl.$this->controller."/twofactorsendmail/",0);
 					break;
 				case 'login-error':
 					if (Output::$html)
@@ -145,6 +152,99 @@ class BaseRegusersController extends BaseController
 			$this->load("api_output");
 	}
 	
+	protected function checkTwoFactor()
+	{
+		if (!v("attiva_autenticazione_due_fattori_front"))
+			$this->responseCode(403);
+		
+		if (!empty($_POST))
+			IpcheckModel::check("POST");
+		
+		$this->s['registered']->checkStatus();
+		
+		if ($this->s['registered']->status['status'] != 'two-factor') { //check if already logged
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		}
+		
+		$uidt = $this->s['registered']->getTwoFactorUidt();
+		
+		$user = $this->m('RegusersModel')->selectId((int)$this->s['registered']->status["id_user"]);
+		
+		if (empty($user) || !$uidt)
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		$sessioneTwo = $this->s['registered']->getTwoFactorModel()->clear()->where(array(
+			"uid_two"	=>	sanitizeAll($uidt),
+			"attivo"	=>	0,
+			// "user_agent_md5"	=>	getUserAgent(),
+		))->record();
+		
+		if (empty($sessioneTwo) || $sessioneTwo["tentativi_verifica"] >= (int)v("autenticazione_due_fattori_numero_massimo_tentativi_front"))
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		return array($sessioneTwo, $user);
+	}
+	
+	public function twofactor()
+	{
+		list($sessioneTwo, $user) = $this->checkTwoFactor();
+		
+		$data['action'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorcheck/";
+		$data['notice'] = null;
+		
+		$data["user"] = $user;
+		$data["sessioneTwo"] = $sessioneTwo;
+		
+		$this->append($data);
+		$this->load('two_factor');
+	}
+	
+	public function twofactorsendmail()
+	{
+		$this->clean();
+		
+		list($sessioneTwo, $user) = $this->checkTwoFactor();
+		
+		if ($sessioneTwo["numero_invii_codice"] >= (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_front"))
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		$res = $this->s['registered']->getTwoFactorModel()->inviaCodice($sessioneTwo, $user, "username");
+		
+		if ($res)
+		{
+			flash("notice","<div class='".v("alert_success_class")."'>".gtext("Il codice di autenticazione a due fattori è stato inviato all'indirizzo email indicato.")."</div>");
+			
+			$this->redirect($this->applicationUrl.$this->controller."/twofactor/");
+		}
+		else
+		{
+			flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile inviare il codice di autenticazione a due fattori. Si prega di riprovare.")."</div>");
+			
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		}
+	}
+	
+	public function twofactorcheck()
+	{
+		$this->clean();
+		
+		list($sessioneTwo, $user) = $this->checkTwoFactor();
+		
+		$clean["codice"] = trim($this->request->post("codice","", "sanitizeAll"));
+		
+		if ($clean["codice"])
+		{
+			if ($this->s['registered']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"]))
+				$this->redirectUser();
+			else
+				flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
+		}
+		else
+			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		
+		$this->redirect($this->applicationUrl.$this->controller."/twofactor/");
+	}
+	
 	protected function redirectUser()
 	{
 		$urlRedirect = RegusersModel::getUrlRedirect();
@@ -165,6 +265,8 @@ class BaseRegusersController extends BaseController
 				$this->m('RegusersModel')->redirectVersoAreaRiservata();
 				die();
 			}
+		} else if ($this->s['registered']->status['status']=='two-factor') {
+			$this->s['registered']->logout();
 		}
 	}
 	

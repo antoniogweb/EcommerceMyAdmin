@@ -233,7 +233,17 @@ class User
 		$twoFactorModel = null;
 		
 		if (v("attiva_autenticazione_due_fattori_admin"))
-			$twoFactorModel = SessionitwoModel::getInstance("uidt", v("autenticazione_due_fattori_admin_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_admin"));
+			$twoFactorModel = SessionitwoModel::getInstance("uidt", v("autenticazione_due_fattori_admin_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_admin"), v("autenticazione_due_fattori_numero_cifre_admin"));
+		
+		return $twoFactorModel;
+	}
+	
+	public static function getTwoFactorModelFront()
+	{
+		$twoFactorModel = null;
+		
+		if (v("attiva_autenticazione_due_fattori_front"))
+			$twoFactorModel = SessioniregtwoModel::getInstance("uidtr", v("autenticazione_due_fattori_front_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_front"), v("autenticazione_due_fattori_numero_cifre_front"));
 		
 		return $twoFactorModel;
 	}
