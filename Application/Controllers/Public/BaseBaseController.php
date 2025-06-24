@@ -836,9 +836,11 @@ class BaseBaseController extends Controller
 						
 						$_SESSION["email_carrello"] = $clean["username"];
 						
+						$statoAccessoUtente = "login-error";
+						
 						//loggo l'utente
 						if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
-							$this->s['registered']->login($clean["username"],$password);
+							$statoAccessoUtente = $this->s['registered']->login($clean["username"],$password);
 						
 						// Iscrizione alla newsletter
 						if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())
@@ -890,10 +892,15 @@ class BaseBaseController extends Controller
 						
 						$urlRedirect = RegusersModel::getUrlRedirect();
 						
-						if ($urlRedirect && !v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
-							header('Location: '.$urlRedirect);
-						else
-							$this->redirect("avvisi");
+						if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
+						{
+							if ($statoAccessoUtente == 'two-factor')
+								$this->redirectTwoFactorSendMail();
+							else if ($urlRedirect)
+								HeaderObj::location($urlRedirect);
+						}
+						
+						$this->redirect("avvisi");
 					}
 					else
 					{
@@ -1494,5 +1501,10 @@ class BaseBaseController extends Controller
 		}
 		
 		return $arrayLingue;
+	}
+	
+	protected function redirectTwoFactorSendMail()
+	{
+		$this->redirect($this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString,0);
 	}
 }

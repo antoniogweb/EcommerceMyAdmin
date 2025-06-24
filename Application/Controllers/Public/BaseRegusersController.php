@@ -126,7 +126,7 @@ class BaseRegusersController extends BaseController
 					}
 					break;
 				case 'two-factor':
-					$this->redirect($this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString,0);
+					$this->redirectTwoFactorSendMail();
 					break;
 				case 'login-error':
 					if (Output::$html)
@@ -256,7 +256,11 @@ class BaseRegusersController extends BaseController
 		$urlRedirect = RegusersModel::getUrlRedirect();
 		
 		if ($urlRedirect)
-			header('Location: '.$urlRedirect);
+		{
+			HeaderObj::location($urlRedirect);
+			// header('Location: '.$urlRedirect);
+			// die();
+		}
 		else
 			$this->m('RegusersModel')->redirectVersoAreaRiservata();
 	}
@@ -1122,7 +1126,8 @@ class BaseRegusersController extends BaseController
 				$urlRedirect = RegusersModel::getUrlRedirect();
 				
 				if ($urlRedirect)
-					header('Location: '.$urlRedirect);
+					HeaderObj::location($urlRedirect);
+					// header('Location: '.$urlRedirect);
 			}
 		}
 		else

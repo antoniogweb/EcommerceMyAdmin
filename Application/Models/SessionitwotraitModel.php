@@ -90,7 +90,7 @@ trait SessionitwotraitModel
 		return array($ua->platform(), $ua->browser(), $ua->browserVersion());
 	}
 	
-	public function creaSessione($idUser, $uid)
+	public function creaSessione($idUser, $uid, $force = false)
 	{
 		$this->uidt = randomToken();
 		
@@ -111,6 +111,9 @@ trait SessionitwotraitModel
 			"versione_browser"	=>	$browserVersion,
 		));
 		
+		if ($force)
+			$this->setValue("attivo", "1");
+		
 		if ($this->insert())
 		{
 			$expirationTime = time() + $this->twoFactorCookieDurationTime;
@@ -120,7 +123,10 @@ trait SessionitwotraitModel
 			Cookie::set($cookieName, $this->uidt, $expirationTime, $this->twoFactorCookiePath, true, 'Lax');
 			$_COOKIE[$cookieName] = $this->uidt;
 			
-			return "two-factor";
+			if ($force)
+				return "logged";
+			else
+				return "two-factor";
 		}
 		else
 			return "not-logged";
