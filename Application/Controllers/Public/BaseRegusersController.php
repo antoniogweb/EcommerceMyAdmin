@@ -126,7 +126,7 @@ class BaseRegusersController extends BaseController
 					}
 					break;
 				case 'two-factor':
-					$this->redirect($this->applicationUrl.$this->controller."/twofactorsendmail/",0);
+					$this->redirect($this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString,0);
 					break;
 				case 'login-error':
 					if (Output::$html)
@@ -189,7 +189,9 @@ class BaseRegusersController extends BaseController
 	{
 		list($sessioneTwo, $user) = $this->checkTwoFactor();
 		
-		$data['action'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorcheck/";
+		$redirect = RegusersModel::getRedirect();
+		
+		$data['action'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorcheck/".RegusersModel::$redirectQueryString;
 		$data['notice'] = null;
 		
 		$data["user"] = $user;
@@ -205,6 +207,8 @@ class BaseRegusersController extends BaseController
 		
 		list($sessioneTwo, $user) = $this->checkTwoFactor();
 		
+		$redirect = RegusersModel::getRedirect();
+		
 		if ($sessioneTwo["numero_invii_codice"] >= (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_front"))
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
@@ -214,7 +218,7 @@ class BaseRegusersController extends BaseController
 		{
 			flash("notice","<div class='".v("alert_success_class")."'>".gtext("Il codice di autenticazione a due fattori è stato inviato all'indirizzo email indicato.")."</div>");
 			
-			$this->redirect($this->applicationUrl.$this->controller."/twofactor/");
+			$this->redirect($this->applicationUrl.$this->controller."/twofactor/".RegusersModel::$redirectQueryString);
 		}
 		else
 		{
@@ -230,6 +234,8 @@ class BaseRegusersController extends BaseController
 		
 		list($sessioneTwo, $user) = $this->checkTwoFactor();
 		
+		$redirect = RegusersModel::getRedirect();
+		
 		$clean["codice"] = trim($this->request->post("codice","", "sanitizeAll"));
 		
 		if ($clean["codice"])
@@ -242,7 +248,7 @@ class BaseRegusersController extends BaseController
 		else
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
-		$this->redirect($this->applicationUrl.$this->controller."/twofactor/");
+		$this->redirect($this->applicationUrl.$this->controller."/twofactor/".RegusersModel::$redirectQueryString);
 	}
 	
 	protected function redirectUser()

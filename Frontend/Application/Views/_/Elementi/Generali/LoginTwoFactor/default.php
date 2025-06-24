@@ -29,7 +29,7 @@
 		</form>
 		
 		<?php if ($sessioneTwo["numero_invii_codice"] < (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_front")) { ?>
-		<br /><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorsendmail/";?>"><?php echo gtext("Invia nuovamente il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/mail.svg");?></span></a>
+		<br /><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString;?>"><?php echo gtext("Invia nuovamente il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/mail.svg");?></span></a>
 		<?php } ?>
 	</div>
 </div>
