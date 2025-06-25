@@ -29,6 +29,7 @@ class BaseRegusersModel extends Model_Tree
 	public $lId = null;
 	public $uploadFields = array();
 	public static $uploadFileGeneric = true;
+	public $modificataEmail = false;
 	
 	public function __construct()
 	{
@@ -162,14 +163,21 @@ class BaseRegusersModel extends Model_Tree
 		
 		$this->sistemaMaiuscole();
 		
+		$oldEmail = $this->clear()->whereId($clean["id"])->field("username");
+		
 		if ($this->controllaCF($checkFiscale) && $this->controllaPIva())
 		{
 			$this->setProvinciaFatturazione();
 			
 			$res = parent::update($clean["id"]);
 			
+			$newEmail = $this->clear()->whereId($clean["id"])->field("username");
+			
 			if ($res && v("attiva_liste_regalo"))
 				ListeregaloModel::sincronizzaEmailConAccount($clean["id"]);
+			
+			if ($oldEmail != $newEmail)
+				$this->modificataEmail = true;
 			
 			return $res;
 		}

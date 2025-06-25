@@ -90,6 +90,15 @@ trait SessionitwotraitModel
 		return array($ua->platform(), $ua->browser(), $ua->browserVersion());
 	}
 	
+	public function resettaSessione($idUser, $uid)
+	{
+		$this->del(null, array(
+			"id_user"	=>	(int)$idUser,
+		));
+		
+		return $this->creaSessione($idUser, $uid);
+	}
+	
 	public function creaSessione($idUser, $uid, $force = false)
 	{
 		$this->uidt = randomToken();

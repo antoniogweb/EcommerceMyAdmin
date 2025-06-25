@@ -1117,6 +1117,11 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->m('RegusersModel')->queryResult)
 		{
+			$statoAccessoUtente = "logged";
+			
+			if ($this->m('RegusersModel')->modificataEmail)
+				$statoAccessoUtente = $this->s['registered']->twoFactorResetSession();
+			
 			if (Output::$html)
 			{
 				$data['notice'] = $this->m('RegusersModel')->notice;
@@ -1125,9 +1130,10 @@ class BaseRegusersController extends BaseController
 				
 				$urlRedirect = RegusersModel::getUrlRedirect();
 				
-				if ($urlRedirect)
+				if ($statoAccessoUtente == 'two-factor')
+					$this->redirectTwoFactorSendMail();
+				else if ($urlRedirect)
 					HeaderObj::location($urlRedirect);
-					// header('Location: '.$urlRedirect);
 			}
 		}
 		else

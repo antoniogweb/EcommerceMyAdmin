@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<h4 class=""><?php echo gtext("Per completare l'accesso, digita nel campo sottostante il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre che ti è stato inviato via mail all'indirizzo");?> <b><?php echo partiallyHideEmail($user["username"]);?></b></h4>
+<h4 class=""><?php echo gtext("Per completare la verifica digita nel campo sottostante il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?><br /><?php echo gtext("che è stato inviato all'indirizzo");?><b> <?php echo partiallyHideEmail($user["username"]);?></b></h4>
 <br />
 <div class="uk-child-width-1-3@m uk-text-center uk-flex uk-flex-center">
     <div>
