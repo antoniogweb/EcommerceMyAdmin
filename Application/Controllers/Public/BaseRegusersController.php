@@ -872,6 +872,7 @@ class BaseRegusersController extends BaseController
 							if ($this->m('RegusersModel')->checkCodice($clean['id_user'], $clean['conf_token'], $clean["codice"]))
 							{
 								$this->s['registered']->twoFactorResetSession($clean['id_user']);
+								$this->maindaMailNegozioNuovaRegistrazione($clean['id_user']);
 								
 								$_SESSION['result'] = 'account_confermato';
 								$this->redirect("avvisi");

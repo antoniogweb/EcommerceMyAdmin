@@ -10,9 +10,7 @@ Un cliente si è registrato nel vostro sito web. Ecco i suoi dati:
 <?php } ?>
 </p>
 
-<?php if (v("conferma_registrazione")) { ?>
-<p><?php echo gtext("Il cliente non ha ancora confermato l'account.", false);?></p>
-<?php } else if (v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
+<?php if (v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
 <p><?php echo gtext("Può approvare il cliente nell'area admin, sotto la voce di menù E-commerce > Clienti > Da approvare."); ?></p>
 <?php } ?>
 
