@@ -1,0 +1,1 @@
+alter table regusers add tentativi_verifica tinyint not null default 0;

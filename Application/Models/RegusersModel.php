@@ -304,7 +304,7 @@ class RegusersModel extends FormModel {
 	{
 		$record = $this->selectId((int)$id);
 		
-		if (!empty($record))
+		if (!empty($record) && !$record["has_confirmed"])
 		{
 			$linguaUrl = v("attiva_nazione_nell_url") ? $record["lingua"]."_".strtolower($record["nazione"]) : $record["lingua"];
 			
@@ -317,6 +317,33 @@ class RegusersModel extends FormModel {
 				"testo_path"	=>	"Elementi/Mail/Clienti/recupero_password.php",
 				"array_variabili_tema"	=>	array(
 					"LINK_RECUPERO"	=>	Domain::$publicUrl."/".$linguaUrl."/password-dimenticata",
+					"NOME_CLIENTE"	=>	RegusersModel::getNominativo($record),
+				),
+			));
+			
+			return $res;
+		}
+		
+		return false;
+	}
+	
+	public function inviamailconfermaaccount($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $this->daConfermare((int)$id))
+		{
+			$linguaUrl = v("attiva_nazione_nell_url") ? $record["lingua"]."_".strtolower($record["nazione"]) : $record["lingua"];
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($record["username"]),
+				"oggetto"	=>	"Conferma il tuo account",
+				"tipologia"	=>	"CONFERMA_ACCOUNT",
+				"id_user"	=>	(int)$id,
+				"lingua"	=>	$record["lingua"],
+				"testo_path"	=>	"Elementi/Mail/Clienti/conferma_account.php",
+				"array_variabili_tema"	=>	array(
+					"LINK_RECUPERO"	=>	Domain::$publicUrl."/".$linguaUrl."/account-verification",
 					"NOME_CLIENTE"	=>	RegusersModel::getNominativo($record),
 				),
 			));
@@ -427,5 +454,29 @@ class RegusersModel extends FormModel {
 		}
 		
 		return $arrayErrori;
+	}
+	
+	public function verificatoCrud($record)
+	{
+		if ($record["regusers"]["ha_confermato"])
+			return "<b><i class='fa fa-check text-success'></i></b>";
+		else
+			return "<i class='fa fa-ban'></i>";
+	}
+	
+	public function isAttivo($idUser)
+	{
+		return $this->clear()->whereId((int)$idUser)->aWhere(array(
+			"has_confirmed" => 0,
+		))->rowNumber();
+	}
+	
+	public function daConfermare($idUser)
+	{
+		return $this->clear()->whereId((int)$idUser)->aWhere(array(
+			"has_confirmed" => 1,
+			"ha_confermato"	=>	0,
+			"bloccato"		=>	0,
+		))->rowNumber();
 	}
 }

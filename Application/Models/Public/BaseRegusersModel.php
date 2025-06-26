@@ -611,4 +611,77 @@ class BaseRegusersModel extends Model_Tree
 		
 		return false;
     }
+    
+    public function checkNumeroTentativiVerifica($idUser)
+	{
+		$numero = (int)$this->clear()->where(array(
+			"id_user"				=>	(int)$idUser,
+			"has_confirmed"			=>	1,
+			"ha_confermato"			=>	0,
+			"bloccato"				=>	0,
+		))->field("tentativi_verifica");
+		
+		if ($numero >= 3)
+		{
+			$tokenConferma = md5(randString(30).microtime().uniqid(mt_rand(),true));
+			$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
+			$codiceConfermaRegistrazione = sanitizeAll(generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+			
+			$this->sValues(array(
+				"confirmation_token"	=>	$tokenConferma,
+				"token_reinvio"			=>	$tokenReinvio,
+				"codice_verifica"		=>	$codiceConfermaRegistrazione,
+				"confirmation_time"		=>	0,
+				"time_token_reinvio"	=>	0,
+			));
+			
+			return false;
+		}
+		else
+			return true;
+	}
+    
+    public function checkCodice($idUser, $tokenConferma, $codice)
+	{
+		$record = $this->selectId((int)$idUser);
+		
+		$numero = $this->clear()->where(array(
+			"confirmation_token"	=>	sanitizeAll($tokenConferma),
+			"has_confirmed"			=>	1,
+			"ha_confermato"			=>	0,
+			"bloccato"				=>	0,
+			"ne"	=>	array(
+				"confirmation_token"	=>	"",
+			),
+			"codice_verifica"	=>	sanitizeAll($codice),
+			" ne"	=>	array(
+				"codice_verifica"	=>	"",
+			),
+		))->rowNumber();
+		
+		if (trim($codice) && $numero)
+		{
+			$this->sValues(array(
+				"has_confirmed"	=>	0,
+				"ha_confermato"	=>	1,
+				"confirmation_time"		=>	0,
+				"time_token_reinvio"	=>	0,
+				"confirmation_token"	=>	"",
+			));
+			
+			$res = true;
+		}
+		else
+		{
+			$this->sValues(array(
+				"tentativi_verifica"	=> ((int)$record["tentativi_verifica"] + 1),
+			));
+			
+			$res = false;
+		}
+		
+		$this->pUpdate((int)$idUser);
+		
+		return $res;
+	}
 }

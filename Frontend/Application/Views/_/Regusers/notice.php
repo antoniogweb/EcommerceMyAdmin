@@ -41,10 +41,10 @@ if (isset($_SESSION['result']))
 	{
 		$breadcrumb = array(
 			gtext("Home") 		=> $this->baseUrl,
-			gtext("Account confermato")	=>	"",
+			gtext("Account verificato")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Account attivato");
+		$titoloPagina = gtext("Account verificato");
 	}
 	else if (strcmp($_SESSION['result'],'invalid_token') === 0)
 	{

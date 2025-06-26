@@ -430,6 +430,14 @@ Helper_Menu::$htmlLinks = array(
 		'text'	=>	"Invia mail recupero password",
 		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
 	),
+	"invia_link_conferma_account" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'style="margin-left:5px;" role="button" class="btn btn-warning make_spinner"',
+		"class"	=>	"btn btn-warning",
+		'text'	=>	"Invia mail conferma account",
+		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
+	),
 	'traduci'	=>	array(
 		'title'	=>	"traduci",
 		'text'	=>	"Traduci",

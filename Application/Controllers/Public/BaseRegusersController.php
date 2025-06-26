@@ -130,7 +130,21 @@ class BaseRegusersController extends BaseController
 					break;
 				case 'login-error':
 					if (Output::$html)
+					{
+						if (v("conferma_registrazione"))
+						{
+							$res = RegusersModel::utenteDaConfermare($username, false);
+							
+							if (count($res) > 0)
+							{
+								$this->redirect("account-verification");
+								// $_POST['invia'] = 1;
+								// $this->richieditokenconferma();
+							}
+						}
+						
 						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('E-Mail o Password sbagliati').'</div>';
+					}
 					else
 						Output::setHeaderValue("Status","login-error");
 					break;
@@ -241,7 +255,11 @@ class BaseRegusersController extends BaseController
 		if ($clean["codice"])
 		{
 			if ($this->s['registered']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"]))
+			{
+				$this->hookAfterLogin();
+				
 				$this->redirectUser();
+			}
 			else
 				flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
 		}
@@ -399,6 +417,8 @@ class BaseRegusersController extends BaseController
 				// Prendi la nazione dall'URL o imposta quella di default
 				$nazione = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				$this->m('RegusersModel')->setValue("nazione", $nazione);
+				
+				VariabiliModel::$valori["conferma_registrazione"] = 0;
 				
 				if ($this->m('RegusersModel')->insert())
 				{
@@ -562,13 +582,18 @@ class BaseRegusersController extends BaseController
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];
 								
-// 								$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+								$tokenConferma = md5(randString(30).microtime().uniqid(mt_rand(),true));
 								$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
 								
+								$codiceConfermaRegistrazione = sanitizeAll(generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+								
 								$this->m('RegusersModel')->setValues(array(
+									"confirmation_token"	=>	$tokenConferma,
 									"token_reinvio"			=>	$tokenReinvio,
 									"time_token_reinvio"	=>	time(),
 									"token_reinvio_usato_volte"	=>	0,
+									"codice_verifica"		=>	$codiceConfermaRegistrazione,
+									"tentativi_verifica"	=>	0,
 								));
 								
 								$_SESSION['result'] = 'error';
@@ -755,17 +780,20 @@ class BaseRegusersController extends BaseController
 					
 					if ($checkTime > $now)
 					{
-						$tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+						// $tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
+						$tokenConferma = $res[0]["regusers"]["confirmation_token"];
 						
 						$resInvio = MailordiniModel::inviaMail(array(
 							"emails"	=>	array($res[0]["regusers"]["username"]),
-							"oggetto"	=>	"conferma la tua mail",
+							"oggetto"	=>	"codice di conferma per il tuo account",
 							"tipologia"	=>	"LINK_CONFERMA",
 							"id_user"	=>	$clean['id_user'],
 							"id_page"	=>	0,
 							"testo_path"	=>	"Elementi/Mail/mail_link_conferma.php",
 							"array_variabili_tema"	=>	array(
-								"LINK_CONFERMA"	=>	Url::getRoot()."conferma-account/$tokenConferma",
+								"LINK_CONFERMA"		=>	Url::getRoot()."conferma-account/$tokenConferma",
+								"CODICE_VERIFICA"	=>	$res[0]["regusers"]["codice_verifica"],
+								"NOME_CLIENTE"		=>	RegusersModel::getNominativo($res[0]["regusers"]),
 							),
 						));
 						
@@ -774,7 +802,7 @@ class BaseRegusersController extends BaseController
 							$usatoVolte++;
 							
 							$this->m('RegusersModel')->setValues(array(
-								"confirmation_token"	=>	$tokenConferma,
+								// "confirmation_token"	=>	$tokenConferma,
 								"confirmation_time"		=>	time(),
 								"time_token_reinvio"	=>	time(),
 								"token_reinvio_usato_volte"	=>	$usatoVolte,
@@ -782,9 +810,9 @@ class BaseRegusersController extends BaseController
 							
 							if ($this->m('RegusersModel')->pUpdate($clean['id_user']))
 							{
-								flash("notice_reinvio", "<div class='".v("alert_success_class")."'>".gtext("Il link per la conferma della mail è stato nuovamente inviato all' indirizzo e-mail che ha indicato in fase di registrazione.")."</div>");
+								flash("notice", "<div class='".v("alert_success_class")."'>".gtext("Il codice di verifica è stato inviato all'indirizzo email indicato.")."</div>");
 								
-								$_SESSION['result'] = 'utente_creato';
+								$this->redirect("conferma-account/$tokenConferma");
 							}
 						}
 					}
@@ -797,7 +825,7 @@ class BaseRegusersController extends BaseController
 	
 	public function conferma($conf_token = "")
 	{
-		$this->clean();
+		// $this->clean();
 		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Conferma registrazione");
 		
@@ -835,22 +863,42 @@ class BaseRegusersController extends BaseController
 					
 					if ($checkTime > $now)
 					{
-						$validToken = true;
+						$clean['id_user'] = (int)$res[0]['regusers']["id_user"];
 						
-						$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
+						$clean["codice"] = trim($this->request->post("codice","", "sanitizeAll"));
 						
-						$this->m('RegusersModel')->setValues(array(
-							"has_confirmed"	=>	0,
-							"ha_confermato"	=>	1,
-							"confirmation_time"		=>	0,
-							"time_token_reinvio"	=>	0,
-						));
+						if ($clean["codice"])
+						{
+							if ($this->m('RegusersModel')->checkCodice($clean['id_user'], $clean['conf_token'], $clean["codice"]))
+							{
+								$this->s['registered']->twoFactorResetSession($clean['id_user']);
+								
+								$_SESSION['result'] = 'account_confermato';
+								$this->redirect("avvisi");
+							}
+							else
+								flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
+						}
 						
-						$this->m('RegusersModel')->pUpdate($clean['id_user']);
-
-						$_SESSION['result'] = 'account_confermato';
+						if ($this->m('RegusersModel')->checkNumeroTentativiVerifica($clean['id_user']))
+						{
+							$validToken = true;
 						
-						$this->redirect("avvisi");
+							$clean['id_user'] = (int)$res[0]['regusers']['id_user'];
+							
+							$data["user"] = $res[0]['regusers'];
+							
+							if ((int)$res[0]["regusers"]["token_reinvio_usato_volte"] < 3)
+								$_SESSION['token_reinvio'] = $res[0]["regusers"]["token_reinvio"];
+							else if (isset($_SESSION['token_reinvio']))
+								unset($_SESSION['token_reinvio']);
+								
+							$data['action'] = $this->baseUrl."/conferma-account/".$clean['conf_token'];
+							$data['notice'] = null;
+							
+							$this->append($data);
+							$this->load("conferma_account");
+						}
 					}
 				}
 			}

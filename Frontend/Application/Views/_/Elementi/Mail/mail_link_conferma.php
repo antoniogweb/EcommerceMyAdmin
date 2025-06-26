@@ -1,9 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<p><?php echo gtext("Gentile cliente, la ringraziamo per la sua iscrizione al nostro sito web.",false);?></p>
+<p><?php echo gtext("Gentile [NOME_CLIENTE]",false);?>,</p>
 
-<p><b><?php echo gtext("Le ricordiamo che il suo account non è ancora attivo.");?></b></p>
+<p><?php echo gtext("ecco il codice di verifica a ".v("conferma_registrazione_numero_cifre_codice_verifica"). " cifre necessario per completare la conferma dell'account nel nostro sito web:");?></p>
 
-<p><?php echo gtext("Per attivarlo segua il seguente link, che sarà attivo per ".v("ore_durata_link_conferma")." ore.", false);?><br /><b><a href="[LINK_CONFERMA]"><?php echo gtext("Attiva l'account")?></a></b></p>
+<h2 style="text-align:center;">[CODICE_VERIFICA]</h2>
 
-<p><?php echo gtext("Cordiali saluti", false);?>.</p>
+<p><?php echo gtext("Se ha ricevuto questa e-mail per errore le chiediamo gentilmente di cancellarla");?>.</p>

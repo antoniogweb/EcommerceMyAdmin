@@ -90,13 +90,13 @@ trait SessionitwotraitModel
 		return array($ua->platform(), $ua->browser(), $ua->browserVersion());
 	}
 	
-	public function resettaSessione($idUser, $uid)
+	public function resettaSessione($idUser, $uid, $force = false)
 	{
 		$this->del(null, array(
 			"id_user"	=>	(int)$idUser,
 		));
 		
-		return $this->creaSessione($idUser, $uid);
+		return $this->creaSessione($idUser, $uid, $force);
 	}
 	
 	public function creaSessione($idUser, $uid, $force = false)

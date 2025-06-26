@@ -146,7 +146,6 @@ class VariabiliModel extends GenericModel {
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
-		"conferma_registrazione"	=>	0,
 		"ore_durata_link_conferma"	=>	24,
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
@@ -531,6 +530,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_regione_su_cliente"	=>	0, // se impostato ad 1, attiva il campo "id_regione" nella scheda cliente (lato admin)
 		"permetti_di_loggarti_come_utente"	=>	0, // se impostato su 1, dal pannello admin, per ogni cliente ci sarà un pulsante per navigare il sito come se foste loggato come quel cliente
 		"token_login_come_utente"	=>	"", // token per forzare il login come un determinato cliente
+		"conferma_registrazione"	=>	0, // se impostato su 1, l'account verrà creato disabilitato finché il cliente non verifica l'account tramite link inviato via mail e codice di verifica
+		"conferma_registrazione_numero_cifre_codice_verifica"	=>	6, // numero di cifre del codice per confermare l'account (usato solo se conferma_registrazione = 1)
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo

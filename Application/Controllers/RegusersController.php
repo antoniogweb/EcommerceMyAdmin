@@ -124,6 +124,12 @@ class RegusersController extends BaseController
 		
 		$filtri = array('q','username','codice_fiscale','p_iva');
 		
+		if (v("conferma_registrazione"))
+		{
+			$mainFields[] = 'verificatoCrud';
+			$headLabels .= ',Verificato';
+		}
+		
 		if (v("attiva_gruppi_utenti"))
 		{
 			$mainFields[] = 'RegusersModel.listaGruppi|regusers.id_user';
@@ -334,8 +340,11 @@ class RegusersController extends BaseController
 		if ((int)$this->viewArgs["ticket"] === 1)
 			$this->insertRedirect = false;
 		
-		if (v("permetti_di_loggarti_come_utente"))
+		if (v("permetti_di_loggarti_come_utente") && $this->m[$this->modelName]->isAttivo((int)$id))
 			$this->menuLinks = "forza_login_utente,".$this->menuLinks;
+		
+		if (v("permetti_di_loggarti_come_utente") && $this->m[$this->modelName]->daConfermare((int)$id))
+			$this->menuLinks = str_replace("invia_link_recupero_password", "invia_link_conferma_account", $this->menuLinks);
 		
 		$this->getTabViewFields("form");
 		
@@ -356,10 +365,16 @@ class RegusersController extends BaseController
 			
 			$cliente = $this->m[$this->modelName]->selectId((int)$id);
 			
-			if (!empty($cliente) && $cliente["codice_app"])
-				$data["appLogin"] = $this->m["IntegrazioniloginModel"]->where(array(
-					"codice"	=>	sanitizeDb($cliente["codice_app"]),
-				))->record();
+			if (!empty($cliente))
+			{	
+				if ($cliente["codice_app"])
+					$data["appLogin"] = $this->m["IntegrazioniloginModel"]->where(array(
+						"codice"	=>	sanitizeDb($cliente["codice_app"]),
+					))->record();
+				
+				if (!$cliente["bloccato"] && !$cliente["ha_confermato"])
+					$data["daConfermare"] = true; 
+			}
 			
 			$this->append($data);
 		}
@@ -573,12 +588,35 @@ class RegusersController extends BaseController
 		
 		$this->shift(1);
 		
-		$res = $this->m("RegusersModel")->inviaMailRecuperoPassword((int)$id);
+		if ($this->m("RegusersModel")->isAttivo((int)$id))
+		{
+			$res = $this->m("RegusersModel")->inviaMailRecuperoPassword((int)$id);
+			
+			if ($res)
+				flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per il recupero della password è stata inviata correttamente.")."</div>");
+			else
+				flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+			}
 		
-		if ($res)
-			flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per il recupero della password è stata inviata correttamente.")."</div>");
-		else
-			flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// Manda al cliente la mail per il recupero della password
+	public function inviamailconfermaaccount($id = 0)
+	{
+		$this->clean();
+		
+		$this->shift(1);
+		
+		if (v("conferma_registrazione") && $this->m("RegusersModel")->daConfermare((int)$id))
+		{
+			$res = $this->m("RegusersModel")->inviamailconfermaaccount((int)$id);
+			
+			if ($res)
+				flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per la conferma dell'account è stata inviata correttamente.")."</div>");
+			else
+				flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+		}
 		
 		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
 	}

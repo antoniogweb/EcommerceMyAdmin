@@ -10,7 +10,11 @@ $titoloPagina = gtext("Verifica il tuo account");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
-<p class="uk-text-muted"><?php echo gtext("Inserisci l'indirizzo e-mail con il quale ti sei registrato al sito,<br />ti invieremo una mail attraverso la quale potrai confermare e quindi attivare il tuo account.");?></p>
+<p class="uk-text-muted">
+	<?php echo gtext("Sembra che il tuo account sia già presente, ma che non sia mai stato verificato, ed è quindi non attivo.")?><br />
+	<?php echo gtext("Inserisci l'indirizzo e-mail con il quale ti sei registrato al sito.");?><br />
+	<?php echo gtext("Ti invieremo una codice grazie al quale potrai verificare e quindi attivare il tuo account.");?>
+</p>
 
 <?php echo $notice;?>
 

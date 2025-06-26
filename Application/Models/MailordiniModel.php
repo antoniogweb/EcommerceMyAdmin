@@ -169,6 +169,7 @@ class MailordiniModel extends GenericModel
 		$username = $clean["username"] = $variabili["username"];
 		$password = $variabili["password"];
 		$tokenConferma = isset($variabili["tokenConferma"]) ? $variabili["tokenConferma"] : "";
+		$codiceVerifica = isset($variabili["codiceVerifica"]) ? $variabili["codiceVerifica"] : "";
 		
 		// MAIL AL CLIENTE
 		ob_start();

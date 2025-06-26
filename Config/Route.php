@@ -116,6 +116,7 @@ class Route
 		'regusers,promozioni',
 		'regusers,ordinicollegati',
 		'regusers,inviamailrecuperopassword',
+		'regusers,inviamailconfermaaccount',
 		'regusers,emailesistente',
 		'regusers,documenti',
 		'regusers,download',

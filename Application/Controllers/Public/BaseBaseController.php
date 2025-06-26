@@ -823,6 +823,7 @@ class BaseBaseController extends Controller
 				{
 					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
 					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
+					$codiceConfermaRegistrazione = $this->m('RegusersModel')->values['codice_verifica'] = sanitizeAll(generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 					
 					if ($this->registrazioneAgente)
 						$this->m('RegusersModel')->values['agente'] = 1;
@@ -866,6 +867,7 @@ class BaseBaseController extends Controller
 							"password"	=>	$password,
 							"tokenConferma"	=>	$tokenConferma,
 							"agente"	=>	$this->registrazioneAgente ? 1 : 0,
+							"codiceVerifica"	=>	$codiceConfermaRegistrazione,
 						));
 						
 // 						if ($res)
@@ -899,8 +901,10 @@ class BaseBaseController extends Controller
 							else if ($urlRedirect)
 								HeaderObj::location($urlRedirect);
 						}
-						
-						$this->redirect("avvisi");
+						else if (v("conferma_registrazione"))
+							$this->redirect("conferma-account/$tokenConferma".RegusersModel::$redirectQueryString);
+						else
+							$this->redirect("avvisi");
 					}
 					else
 					{

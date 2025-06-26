@@ -1,0 +1,1 @@
+alter table regusers add codice_verifica char(10) not null default '';
