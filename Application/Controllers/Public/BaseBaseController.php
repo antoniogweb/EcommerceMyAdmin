@@ -900,6 +900,8 @@ class BaseBaseController extends Controller
 								$this->redirectTwoFactorSendMail();
 							else if ($urlRedirect)
 								HeaderObj::location($urlRedirect);
+							else
+								$this->redirect("avvisi");
 						}
 						else if (v("conferma_registrazione"))
 							$this->redirect("conferma-account/$tokenConferma".RegusersModel::$redirectQueryString);
