@@ -75,6 +75,14 @@ class NotificheModel extends GenericModel {
 					"class"	=>	"text-yellow",
 				);
 			
+			if (!v("tempo_log_gateway_response") && OrdiniresponseModel::numeroLog())
+				$notifiche[] = array(
+					"testo"	=>	gtext("Impostare un tempo massimo per i log contententi gli esiti dei pagamenti. Variavile tempo_log_gateway_response"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
 			if (!v("svuota_file_cookie_carrello_dopo_x_minuti") && v("ecommerce_attivo"))
 				$notifiche[] = array(
 					"testo"	=>	gtext("Salvare i cookie dei carrelli su file. Variabile svuota_file_cookie_carrello_dopo_x_minuti"),
