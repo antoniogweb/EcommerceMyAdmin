@@ -408,6 +408,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionKendraRanking(array $args = [])
  * @method \Aws\Keyspaces\KeyspacesClient createKeyspaces(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionKeyspaces(array $args = [])
+ * @method \Aws\KeyspacesStreams\KeyspacesStreamsClient createKeyspacesStreams(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionKeyspacesStreams(array $args = [])
  * @method \Aws\Kinesis\KinesisClient createKinesis(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionKinesis(array $args = [])
  * @method \Aws\KinesisAnalytics\KinesisAnalyticsClient createKinesisAnalytics(array $args = [])
@@ -548,6 +550,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionOSIS(array $args = [])
  * @method \Aws\ObservabilityAdmin\ObservabilityAdminClient createObservabilityAdmin(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionObservabilityAdmin(array $args = [])
+ * @method \Aws\Odb\OdbClient createOdb(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionOdb(array $args = [])
  * @method \Aws\Omics\OmicsClient createOmics(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionOmics(array $args = [])
  * @method \Aws\OpenSearchServerless\OpenSearchServerlessClient createOpenSearchServerless(array $args = [])
@@ -821,7 +825,7 @@ namespace Aws;
  */
 class Sdk
 {
-    const VERSION = '3.347.1';
+    const VERSION = '3.349.2';
 
     /** @var array Arguments for creating clients */
     private $args;

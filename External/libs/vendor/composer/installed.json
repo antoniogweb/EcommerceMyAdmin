@@ -201,17 +201,17 @@
                 },
                 {
                         "name": "aws/aws-sdk-php",
-                        "version": "3.347.1",
-                        "version_normalized": "3.347.1.0",
+                        "version": "3.349.2",
+                        "version_normalized": "3.349.2.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/aws/aws-sdk-php.git",
-                                "reference": "ca91caa1d93223f03905e245a268759258ca41a6"
+                                "reference": "63cc727845f077d17cb94791deb327249e1626ce"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ca91caa1d93223f03905e245a268759258ca41a6",
-                                "reference": "ca91caa1d93223f03905e245a268759258ca41a6",
+                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/63cc727845f077d17cb94791deb327249e1626ce",
+                                "reference": "63cc727845f077d17cb94791deb327249e1626ce",
                                 "shasum": ""
                         },
                         "require": {
@@ -251,7 +251,7 @@
                                 "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages",
                                 "ext-sockets": "To use client-side monitoring"
                         },
-                        "time": "2025-06-24T18:14:42+00:00",
+                        "time": "2025-07-03T18:08:27+00:00",
                         "type": "library",
                         "extra": {
                                 "branch-alias": {
@@ -295,7 +295,7 @@
                         "support": {
                                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                                "source": "https://github.com/aws/aws-sdk-php/tree/3.347.1"
+                                "source": "https://github.com/aws/aws-sdk-php/tree/3.349.2"
                         },
                         "install-path": "../aws/aws-sdk-php"
                 },
@@ -2097,17 +2097,17 @@
                 },
                 {
                         "name": "myclabs/deep-copy",
-                        "version": "1.13.1",
-                        "version_normalized": "1.13.1.0",
+                        "version": "1.13.3",
+                        "version_normalized": "1.13.3.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/myclabs/DeepCopy.git",
-                                "reference": "1720ddd719e16cf0db4eb1c6eca108031636d46c"
+                                "reference": "faed855a7b5f4d4637717c2b3863e277116beb36"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/1720ddd719e16cf0db4eb1c6eca108031636d46c",
-                                "reference": "1720ddd719e16cf0db4eb1c6eca108031636d46c",
+                                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/faed855a7b5f4d4637717c2b3863e277116beb36",
+                                "reference": "faed855a7b5f4d4637717c2b3863e277116beb36",
                                 "shasum": ""
                         },
                         "require": {
@@ -2123,7 +2123,7 @@
                                 "phpspec/prophecy": "^1.10",
                                 "phpunit/phpunit": "^7.5.20 || ^8.5.23 || ^9.5.13"
                         },
-                        "time": "2025-04-29T12:36:36+00:00",
+                        "time": "2025-07-05T12:25:42+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -2148,7 +2148,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.1"
+                                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.3"
                         },
                         "funding": [
                                 {

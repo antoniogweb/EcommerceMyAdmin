@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '616de545532e7078f206a169e83c3479cf35c2c3',
+        'reference' => '7951dab67364dbafa9fbdd895da0ee6f0ccab11f',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '616de545532e7078f206a169e83c3479cf35c2c3',
+            'reference' => '7951dab67364dbafa9fbdd895da0ee6f0ccab11f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'aws/aws-sdk-php' => array(
-            'pretty_version' => '3.347.1',
-            'version' => '3.347.1.0',
-            'reference' => 'ca91caa1d93223f03905e245a268759258ca41a6',
+            'pretty_version' => '3.349.2',
+            'version' => '3.349.2.0',
+            'reference' => '63cc727845f077d17cb94791deb327249e1626ce',
             'type' => 'library',
             'install_path' => __DIR__ . '/../aws/aws-sdk-php',
             'aliases' => array(),
@@ -281,9 +281,9 @@
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
-            'pretty_version' => '1.13.1',
-            'version' => '1.13.1.0',
-            'reference' => '1720ddd719e16cf0db4eb1c6eca108031636d46c',
+            'pretty_version' => '1.13.3',
+            'version' => '1.13.3.0',
+            'reference' => 'faed855a7b5f4d4637717c2b3863e277116beb36',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclabs/deep-copy',
             'aliases' => array(),
@@ -495,8 +495,8 @@
         'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-factory' => array(
@@ -511,8 +511,8 @@
         'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-message' => array(
@@ -527,8 +527,8 @@
         'psr/http-message-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/log' => array(
