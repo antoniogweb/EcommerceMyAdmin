@@ -44,9 +44,6 @@ class TraduzioniController extends BaseController {
 		);
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
-		if (!v("attiva_gestione_traduttori"))
-			$this->responseCode(403);
 		
 		$this->helper('Menu','users','panel/main');
 		$this->helper('Array');

@@ -845,7 +845,8 @@ class VariabiliModel extends GenericModel {
 		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)
 		### LOG ##
 		"tempo_log_ore"				=>	240, // numero ORE!! dopo il quale vengono eliminati i log temporanei dalla tabella log_piattaforma
-		"tempo_log_permanenti_giorni"	=>	0, // numero GIORNI!! dopo il quale vengono eliminati i log permanenti dalla tabella log_piattaforma. Se impostato a 0, i log permanenti non vengono mai eliminati
+		"tempo_log_permanenti_giorni"	=>	0, // numero GIORNI dopo il quale vengono eliminati i log permanenti dalla tabella log_piattaforma. Se impostato a 0, i log permanenti non vengono mai eliminati
+		"tempo_log_gateway_response"	=>	0, // numero GIORNI dopo il quale vengono eliminati i log contententi gli esiti dei pagamenti (inviati dal gateway di pagamento dopo il pagamento con carta). Se impostato a 0, i log contententi gli esiti dei pagamenti non vengono mai eliminati
 		### CALENDARIO CHIUSURE ##
 		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
 		### FASCE ##

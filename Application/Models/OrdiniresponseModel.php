@@ -24,11 +24,41 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdiniresponseModel extends GenericModel
 {
+	private static $deletedExpired = false;
+	
 	public function __construct() {
 		$this->_tables = 'orders_gateway_response';
 		$this->_idFields = 'id_order_gateway_response';
 		
 		parent::__construct();
+		
+		if (v("tempo_log_gateway_response"))
+			$this->eliminaScaduti();
+	}
+	
+	public function eliminaScaduti()
+	{
+		if (!self::$deletedExpired && v("tempo_log_gateway_response"))
+		{
+			$giorni = (int)v("tempo_log_gateway_response");
+			
+			$dateTime = new DateTime();
+			$dateTime->modify("- $giorni days");
+			
+			$this->del(null,array(
+				"data_creazione < ?",
+				array(sanitizeAll($dateTime->format("Y-m-d H:i:s")))
+			));
+			
+			self::$deletedExpired = true;
+		}
+	}
+	
+	public static function numeroLog()
+	{
+		$lModel = new OrdiniresponseModel();
+		
+		return $lModel->clear()->rowNumber();
 	}
 	
 	public static function aggiungi($cartUid, $resoponse, $result)

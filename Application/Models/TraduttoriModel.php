@@ -43,6 +43,7 @@ class TraduttoriModel extends GenericModel
 	public static $campiDaTradurreContenuti = array(
 		"title",
 		"description",
+		"meta_title",
 		"keywords",
 		"meta_description",
 		"sottotitolo",
