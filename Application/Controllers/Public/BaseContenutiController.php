@@ -1132,7 +1132,8 @@ class BaseContenutiController extends BaseController
 			));
 		
 		// Promozioni
-		if (self::$isPromo)
+		// if (self::$isPromo)
+		if ($this->action == "promozione")
 		{
 			$this->addStatoWhereClause(AltriFiltri::$aliasValoreTipoPromo[0]);
 		}
