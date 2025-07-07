@@ -156,7 +156,7 @@
 						$notifiche = NotificheModel::getNotifiche();
 					?>
 					<ul class="nav navbar-nav navbar-right">
-						<?php if (LingueModel::permettiCambioLinguaBackend()) { ?>
+						<?php if (LingueModel::permettiCambioLinguaBackend() && count(Params::$frontEndLanguages) > 1) { ?>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtext(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
