@@ -1338,6 +1338,7 @@ class OrdiniModel extends FormModel {
 			if ($idRiff)
 			{
 				$r->delFields("title");
+				$r->delFields("title_lingua");
 				
 				if ($r->values["prodotto_generico"])
 					$r->delFields("codice");
