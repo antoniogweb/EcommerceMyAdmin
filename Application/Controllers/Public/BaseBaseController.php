@@ -870,23 +870,23 @@ class BaseBaseController extends Controller
 							"codiceVerifica"	=>	$codiceConfermaRegistrazione,
 						));
 						
-// 						if ($res)
-// 						{
-							ob_start();
-							include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
-							$output = ob_get_clean();
-							
-							$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
-							
-							$res = MailordiniModel::inviaMail(array(
-								"emails"	=>	array($emailCMS),
-								"oggetto"	=>	$this->registrazioneAgente ? "invio dati nuovo agente" : "invio dati nuovo utente",
-								"testo"		=>	$output,
-								"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
-								"id_user"	=>	(int)$lId,
-								"id_page"	=>	0,
-							));
-// 						}
+						if (!v("conferma_registrazione"))
+							$this->maindaMailNegozioNuovaRegistrazione($lId);
+
+// 						ob_start();
+// 						include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
+// 						$output = ob_get_clean();
+// 						
+// 						$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
+// 						
+// 						$res = MailordiniModel::inviaMail(array(
+// 							"emails"	=>	array($emailCMS),
+// 							"oggetto"	=>	$this->registrazioneAgente ? "invio dati nuovo agente" : "invio dati nuovo utente",
+// 							"testo"		=>	$output,
+// 							"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
+// 							"id_user"	=>	(int)$lId,
+// 							"id_page"	=>	0,
+// 						));
 						
 						F::checkPreparedStatement();
 						
@@ -904,7 +904,7 @@ class BaseBaseController extends Controller
 								$this->redirect("avvisi");
 						}
 						else if (v("conferma_registrazione"))
-							$this->redirect("conferma-account/$tokenConferma".RegusersModel::$redirectQueryString);
+							$this->redirect("conferma-account/$tokenConferma");
 						else
 							$this->redirect("avvisi");
 					}
@@ -943,6 +943,34 @@ class BaseBaseController extends Controller
 		}
 		
 		$this->append($data);
+	}
+	
+	protected function maindaMailNegozioNuovaRegistrazione($idUser)
+	{
+		$datiCliente = $this->m('RegusersModel')->selectId((int)$idUser);
+		
+		if (empty($datiCliente))
+			return;
+		
+		$clean["username"] = $datiCliente["username"];
+		
+		if ($datiCliente["agente"])
+			$this->registrazioneAgente = true;
+		
+		ob_start();
+		include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
+		$output = ob_get_clean();
+		
+		$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
+		
+		$res = MailordiniModel::inviaMail(array(
+			"emails"	=>	array($emailCMS),
+			"oggetto"	=>	$datiCliente["agente"] ? "invio dati nuovo agente" : "invio dati nuovo utente",
+			"testo"		=>	$output,
+			"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
+			"id_user"	=>	(int)$idUser,
+			"id_page"	=>	0,
+		));
 	}
 	
 	protected function inserisciFeedback($id)

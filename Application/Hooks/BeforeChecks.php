@@ -107,7 +107,9 @@ if (LingueModel::permettiCambioLinguaBackend())
 {
 	Params::$frontEndLanguages = array_keys(LingueModel::$lingueBackend);
 	
-	if (isset($_COOKIE["backend_lang"]) && LingueModel::linguaPermessaBackend((string)$_COOKIE["backend_lang"]))
+	if (count(Params::$frontEndLanguages) === 1)
+		Params::$defaultFrontEndLanguage = (string)Params::$frontEndLanguages[0];
+	else if (isset($_COOKIE["backend_lang"]) && LingueModel::linguaPermessaBackend((string)$_COOKIE["backend_lang"]))
 		Params::$defaultFrontEndLanguage = (string)$_COOKIE["backend_lang"];
 	else
 		Params::$defaultFrontEndLanguage = v("default_backend_language");

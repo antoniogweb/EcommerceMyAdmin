@@ -48,7 +48,9 @@ class MenuModel extends HierarchicalModel {
 		
 		if (isset($_GET["lingua"]) and in_array($_GET["lingua"], BaseController::$traduzioni))
 			self::$lingua = sanitizeAll($_GET["lingua"]);
-		
+		else
+			self::$lingua = Params::$defaultFrontEndLanguage;
+			
 		$this->titoloMenu .= " (".strtoupper(self::$lingua).")";
 	}
 

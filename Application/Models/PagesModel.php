@@ -4551,6 +4551,9 @@ class PagesModel extends GenericModel {
 			"pages.in_promozione" => "Y",
 		));
 		
+		if (VariabiliModel::combinazioniLinkVeri())
+			$this->sWhere("pages.id_page not in (select id_page from combinazioni where combinazioni.canonical = 1 and price = price_scontato)");
+		
 		return $this;
 	}
 	
