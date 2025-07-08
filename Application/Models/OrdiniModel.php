@@ -2879,8 +2879,10 @@ class OrdiniModel extends FormModel {
 				$templateTitleLingua = str_replace("[ID_ORDINE]", (int)$idOrdineOriginario, $templateTitleLingua);
 				$templateTitleLingua = str_replace("[DATA_ORDINE]", date("d/m/Y",strtotime($ordineOriginario["data_creazione"])), $templateTitleLingua);
 				
+				$titleLingua = trim($riga["title_lingua"]) ? $riga["title_lingua"] : $riga["title"];
+				
 				$riga["title"] = $riga["title"].$templateTitle;
-				$riga["title_lingua"] = $riga["title_lingua"].$templateTitleLingua;
+				$riga["title_lingua"] = $titleLingua.$templateTitleLingua;
 				
 				$rModel->sValues($riga, "sanitizeDb");
 				
