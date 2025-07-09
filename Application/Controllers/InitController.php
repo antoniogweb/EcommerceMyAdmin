@@ -94,7 +94,27 @@ trait InitController
 		
 		Lang_It_ModelStrings::$staticStrings = array(
 			"error" => "<div class='alert'>".gtext("Errore nella query: contatta l'amministratore!")."</div>\n",
+			"executed" => "<div class='alert alert-success'>".gtext("operazione eseguita!")."</div>\n",
 		);
+		
+		Helper_List::$actionsLayout = array(
+			"edit"	=>	array(
+				"text"	=>	"<i class='text_16 verde fa fa-arrow-right'></i>",
+				"attributes"	=>	array(
+					"title"	=>	gtext("modifica la riga"),
+					"class"	=>	"action_edit",
+				),
+			),
+			"del"	=>	array(
+				"attributes"	=>	array(
+					"title"	=>	gtext("elimina la riga"),
+					"class"	=>	"text text-danger del_button",
+				),
+				"text"	=>	"<i class='fa fa-trash-o'></i>",
+			),
+		);
+		
+		Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-save'></i> ".gtext("Salva");
 		
 		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin","",$this->baseUrlSrc);
 		

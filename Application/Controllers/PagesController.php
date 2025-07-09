@@ -876,7 +876,7 @@ class PagesController extends BaseController
 				
 				if (isset($_GET["insert"]))
 				{
-					$this->scaffold->model->notice = "<div class='alert alert-success'>operazione eseguita!</div>\n";
+					$this->scaffold->model->notice = "<div class='alert alert-success'>".gtext("operazione eseguita!")."</div>\n";
 				}
 				
 				$this->scaffold->mainMenu->links['copia']['url'] = 'form/copia/'.$clean['id'];

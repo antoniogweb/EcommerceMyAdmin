@@ -3,7 +3,7 @@
 <li class="<?php echo tm($tm, array("regusers","ruoli","tipiazienda","reggroups", "regusersgroupstemp"));?> treeview">
 	<a href="#">
 		<i class="fa fa-user-o"></i>
-		<span>Clienti</span>
+		<span><?php echo gtext("Clienti");?></span>
 	</a>
 	<ul class="treeview-menu">
 		<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi cliente");?></a></li>
@@ -15,15 +15,15 @@
 		<?php } ?>
 		<?php if (v("attiva_ruoli")) { ?>
 		<li class="dropdown-header">Ruoli</li>
-		<li class="<?php echo tm($tm, array("ruoli"));?>"><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> Lista ruoli</a></li>
+		<li class="<?php echo tm($tm, array("ruoli"));?>"><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista ruoli");?></a></li>
 		<?php } ?>
 		<?php if (v("attiva_tipi_azienda")) { ?>
 		<li class="dropdown-header">Tipi azienda</li>
-		<li class="<?php echo tm($tm, array("tipiazienda"));?>"><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> Lista tipi aziende</a></li>
+		<li class="<?php echo tm($tm, array("tipiazienda"));?>"><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista tipi aziende");?></a></li>
 		<?php } ?>
 		<?php if (v("attiva_gruppi")) { ?>
 		<li class="dropdown-header">Gruppi</li>
-		<li class="<?php echo tm($tm, array("reggroups"));?>"><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-group"></i> Lista gruppi</a></li>
+		<li class="<?php echo tm($tm, array("reggroups"));?>"><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-group"></i> <?php echo gtext("Lista gruppi");?></a></li>
 			<?php if (v("gruppi_inseriti_da_approvare_alla_registrazione")) {
 				$numeroDaApprovare = RegusersgroupstempModel::numerodaapprovare();
 			?>

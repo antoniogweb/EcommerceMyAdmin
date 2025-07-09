@@ -464,7 +464,7 @@ Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";
 
 Form_Form::$defaultEntryAttributes["className"] = "form-control";
 Form_Form::$defaultEntryAttributes["submitClass"] = "btn btn-success make_spinner";
-Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-save'></i> Salva";
+// Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-save'></i> Salva";
 
 if (!showreport())
 {
@@ -493,22 +493,6 @@ Helper_Popup::$popupHtml["bottom"] = "</div>";
 Helper_Popup::$popupHtml["after_loop"] = "</div>";
 
 Helper_List::$tableAttributes = array('class'=>'table table-striped table-scaffolding','cellspacing'=>'0');
-
-Helper_List::$actionsLayout = array(
-	"edit"	=>	array(
-		"text"	=>	"<i class='text_16 verde fa fa-arrow-right'></i>",
-		"attributes"	=>	array(
-			"class"	=>	"action_edit",
-		),
-	),
-	"del"	=>	array(
-		"attributes"	=>	array(
-			"title"	=>	"elimina",
-			"class"	=>	"text text-danger del_button",
-		),
-		"text"	=>	"<i class='fa fa-trash-o'></i>",
-	),
-);
 
 if (v("attiva_azioni_ajax"))
 	Helper_List::$actionsLayout["del"]["attributes"]["class"] .= " ajlink";
