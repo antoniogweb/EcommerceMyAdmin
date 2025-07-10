@@ -1,0 +1,1 @@
+alter table reggroups add usato_per_documenti tinyint not null default 1;

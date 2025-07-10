@@ -63,10 +63,30 @@ class ReggroupsModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Se impostato su sì, ogni volta che il cliente verrà aggiunto o rimosso dal gruppo, verrà contemporaneamente iscritto o disiscritto dalla newsletter.")."<br />".gtext("Importante: solo se il collegamento con la newsletter lo permette.")."</div>"
 					),
 				),
+				'usato_per_documenti'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Il gruppo può essere applicato anche ai documenti?',
+					'entryClass'	=>	'form_input_text help_test',
+					'options'	=>	self::$attivoSiNo,
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, sarà possibile impostare l'accesso ad un documento solo per utenti appartenenti a questo gruppo")."</div>"
+					),
+				),
 			),
 		);
 		
 // 		$this->formStruct["entries"] = $this->formStruct["entries"] + $this->getLinkEntries();
+	}
+	
+	public function usatoPerDocumentiCrud($record)
+	{
+		if ($record["reggroups"]["usato_per_documenti"])
+			return "<i class='fa fa-check text-success'></i>";
+		
+		return "<i class='fa fa-ban'></i>";
 	}
 	
 }

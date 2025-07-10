@@ -1258,4 +1258,12 @@ class VariabiliModel extends GenericModel {
 	{
 		return v("email_log_pagamento_da_analizzare") ? "email_log_pagamento_da_analizzare" : "email_log_errori";
 	}
+	
+	public static function documentiAttivi()
+	{
+		if (v("download_attivi") || v("documenti_in_clienti") || v("documenti_in_prodotti"))
+			return true;
+		
+		return false;
+	}
 }

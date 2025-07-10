@@ -1159,7 +1159,7 @@ class GenericModel extends Model_Tree
 			
 			if (count($res3) > 0)
 			{
-				$this->notice = "<div class='alert'>Questo contenuto è già stato associato a questo gruppo</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Questo contenuto è già stato associato a questo gruppo")."</div>";
 				return false;
 			}
 			else
@@ -1169,7 +1169,7 @@ class GenericModel extends Model_Tree
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
 			return false;
 		}
 	}

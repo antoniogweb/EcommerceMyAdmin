@@ -283,7 +283,9 @@ class DocumentiController extends BaseController
 		
 		parent::main();
 		
-		$data["listaGruppi"] = $this->m[$this->modelName]->clear()->from("reggroups")->select("reggroups.name,reggroups.id_group")->orderBy("reggroups.name")->toList("reggroups.id_group","reggroups.name")->send();
+		$data["listaGruppi"] = $this->m[$this->modelName]->clear()->from("reggroups")->select("reggroups.name,reggroups.id_group")->where(array(
+			"reggroups.usato_per_documenti"	=>	1,
+		))->orderBy("reggroups.name")->toList("reggroups.id_group","reggroups.name")->send();
 		
 		$data['tabella'] = "documenti";
 		

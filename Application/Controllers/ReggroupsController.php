@@ -55,6 +55,13 @@ class ReggroupsController extends BaseController
 		
 		$this->mainFields = array("reggroups.name");
 		$this->mainHead = "Titolo";
+		
+		if (VariabiliModel::documentiAttivi())
+		{
+			$this->mainFields[] = "usatoPerDocumentiCrud";
+			$this->mainHead = ",Usato in documenti";
+		}
+		
 // 		$this->filters = array(array("attivo",null,$this->filtroAttivo),"cerca");
 		
 		$this->m[$this->modelName]->clear()
@@ -74,6 +81,9 @@ class ReggroupsController extends BaseController
 		
 		if (v("permetti_di_collegare_gruppi_utenti_a_newsletter"))
 			$fields .= ",sincronizza_newsletter";
+		
+		if (VariabiliModel::documentiAttivi())
+			$fields .= ",usato_per_documenti";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
