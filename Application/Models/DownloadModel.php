@@ -45,40 +45,5 @@ class DownloadModel extends PagesModel {
 		return parent::update($id, $where);
 	}
 	
-	public function setFilters()
-	{
-		$this->_popupItemNames = array(
-			'attivo'	=>	'attivo',
-			'id_c'	=>	'id_c',
-// 			'in_evidenza'	=>	'in_evidenza',
-// 			'in_promozione'	=>	'in_promozione',
-// 			'mostra_in_slide'	=>	'mostra_in_slide',
-// 			'settore'	=>	'settore',
-		);
-
-		$this->_popupLabels = array(
-			'attivo'	=>	'PUBBLICATO?',
-			'id_c'	=>	'CATEGORIA',
-			'in_evidenza'	=>	'IN EVIDENZA?',
-// 			'in_promozione'	=>	'IN PROMOZIONE?',
-// 			'mostra_in_slide'	=>	'IN SLIDE?',
-// 			'settore'	=>	'SETTORE',
-		);
-
-		$this->_popupFunctions = array(
-			'attivo'=>	'getYesNo',
-			'id_c'	=>	'getCatNameForFilters',
-		);
-		
-		$this->_popupOrderBy = array(
-			'id_c'	=>	'lft asc',
-		);
-		
-		if (isset($this->hModel->section))
-		{
-			$this->_popupWhere = array(
-				'id_c'	=>	$this->hModel->getChildrenFilterWhere(),
-			);
-		}
-	}
+	public function setFilters() {}
 }

@@ -47,7 +47,9 @@ class DownloadController extends PagesController {
 		);
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Categoria,Pubblicato?';
-		$this->filters = array(null,null,'title');
+		
+		$filtroCategoria = array("tutti" => DownloadcatModel::g(false)->getTitoloCategoriaPadreSezione()) + DownloadcatModel::g(false)->buildSelect(null,false);
+		$this->filters = array(null,'title',array("id_c",null,$filtroCategoria),array("attivo",null,SlideModel::$YN));
 		
 		$this->metaQueryFields = "keywords,meta_description,template,add_in_sitemap";
 		$this->queryFields = "title,alias,attivo,id_c";

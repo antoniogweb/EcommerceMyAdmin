@@ -89,6 +89,8 @@ class GenericModel extends Model_Tree
 	
 	public $campoTimeEventoRemarketing = "creation_time";
 	
+	public $campoDataUploadDocumento = null;
+	
 	public static $tabelleConAliasMap = array(
 		"pages"			=>	array(
 			"chiave"		=>	"id_page",

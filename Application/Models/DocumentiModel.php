@@ -36,6 +36,8 @@ class DocumentiModel extends GenericModel {
 	
 	public static $uploadFile = true;
 	
+	public $campoDataUploadDocumento = "data_file_upload";
+	
 	public function __construct() {
 		$this->_tables='documenti';
 		$this->_idFields='id_doc';

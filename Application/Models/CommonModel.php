@@ -673,6 +673,9 @@ trait CommonModel {
 							
 							$this->values[$field] = sanitizeAll($this->files->fileName);
 							
+							if (isset($this->campoDataUploadDocumento))
+								$this->values[$this->campoDataUploadDocumento] = date("Y-m-d H:i:s");
+							
 							if (isset($params["clean_field"]))
 							{
 // 								$cleanFileName = $this->files->getNameWithoutFileExtension($_FILES[$field]["name"]);
