@@ -69,7 +69,7 @@ class NotificheModel extends GenericModel {
 		{
 			if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
 				$notifiche[] = array(
-					"testo"	=>	gtext("Impostare un tempo massimo per i log della piattaforma. Variavile tempo_log_permanenti_giorni"),
+					"testo"	=>	gtext("Impostare un tempo massimo per i log della piattaforma. Variabile tempo_log_permanenti_giorni"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -77,7 +77,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("tempo_log_gateway_response") && OrdiniresponseModel::numeroLog())
 				$notifiche[] = array(
-					"testo"	=>	gtext("Impostare un tempo massimo per i log contententi gli esiti dei pagamenti. Variavile tempo_log_gateway_response"),
+					"testo"	=>	gtext("Impostare un tempo massimo per i log contententi gli esiti dei pagamenti. Variabile tempo_log_gateway_response"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
