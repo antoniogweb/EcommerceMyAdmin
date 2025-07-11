@@ -2,19 +2,19 @@
 
 <?php if ($this->action == "scaglioni" && v("scaglioni_in_prodotti")) { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/scaglioni/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>">Aggiungi scaglione</a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/scaglioni/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>"><?php echo gtext("Aggiungi scaglione");?></a></p>
 
 <?php } ?>
 
 <?php if ($this->action === "contenuti") { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>">Aggiungi fascia</a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><?php echo gtext("Aggiungi fascia");?></a></p>
 
 <?php } ?>
 
 <?php if ($this->action === "documenti" && v("documenti_in_prodotti")) { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></p>
 
 <?php } ?>
 

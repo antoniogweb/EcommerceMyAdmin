@@ -61,7 +61,7 @@ class BaseCronController extends Controller
 			"azione" => isset($_GET["azione"]) ? (string)$_GET["azione"] : "",
 		);
 		
-		$options = $this->getOpzioni($options, array("lingua", "id_record", "limit"));
+		$options = $this->getOpzioni($options, array("lingua", "id_record", "limit", "da_lingua"));
 		
 		echo "<pre>";
 		require_once(ROOT . "/admin/Application/Commands/azioni/traduzioni.php");

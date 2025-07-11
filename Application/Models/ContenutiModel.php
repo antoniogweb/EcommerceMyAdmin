@@ -139,7 +139,7 @@ class ContenutiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'lingua'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	array("tutte" => "TUTTE") + $this->selectLingua(),
+					"options"	=>	array("tutte" => gtext("TUTTE")) + $this->selectLingua(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					"labelString"	=>	"Visibile su lingua",
@@ -341,9 +341,9 @@ class ContenutiModel extends GenericModel {
 	public function attivo($record)
 	{
 		if ($record["contenuti"]["attivo"] == "No")
-			return "No";
+			return gtext("No");
 		
-		return "Sì";
+		return gtext("Sì");
 	}
 	
 	public function accessi($record)

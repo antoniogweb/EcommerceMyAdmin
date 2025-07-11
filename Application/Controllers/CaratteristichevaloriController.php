@@ -58,7 +58,7 @@ class CaratteristichevaloriController extends BaseController {
 		if ($this->viewArgs["id_page"] != "tutti")
 			$section = $this->m["PagesModel"]->section((int)$this->viewArgs["id_page"], true);
 		
-		$filtroCaratteristica = array("tutti" => "Caratteristica") + $this->m[$this->modelName]->selectCaratteristica(true, "caratteristiche.titolo");
+		$filtroCaratteristica = array("tutti" => gtext("Caratteristica")) + $this->m[$this->modelName]->selectCaratteristica(true, "caratteristiche.titolo");
 		
 		$campoTitoloCaratteristica = "titoloCrud";
 		
@@ -105,7 +105,7 @@ class CaratteristichevaloriController extends BaseController {
 			$this->bulkQueryActions = "aggiungiaprodotto";
 			
 			$this->bulkActions = array(
-				"checkbox_caratteristiche_valori_id_cv"	=>	array("aggiungiaprodotto","Aggiungi al prodotto"),
+				"checkbox_caratteristiche_valori_id_cv"	=>	array("aggiungiaprodotto",gtext("Aggiungi al prodotto")),
 			);
 			
 			if ($section)

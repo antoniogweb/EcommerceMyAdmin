@@ -293,27 +293,27 @@ class CombinazioniController extends BaseController
 			$filtroMarchiSelect = $this->m("MarchiModel")->select("id_marchio,titolo")->orderBy("titolo")->toList("id_marchio", "titolo")->send();
 			
 			$this->filters[] = array("id_marchio",null,array(
-				"tutti"		=>	"Marchio",
+				"tutti"		=>	gtext("Marchio"),
 			) + $filtroMarchiSelect);
 		}
 		
 		$this->filters[] = array("st_giac",null,array(
-			"tutti"		=>	"Stato giacenza",
-			"0"	=>	"Esaurito",
-			"1"	=>	"Non esaurito",
+			"tutti"		=>	gtext("Stato giacenza"),
+			"0"	=>	gtext("Esaurito"),
+			"1"	=>	gtext("Non esaurito"),
 		));
 		
 		if (!partial())
 			$this->filters[] = array("attivo",null,array(
-				"tutti"		=>	"Attivo / Non attivo",
-				"Y"	=>	"Attivo",
-				"N"	=>	"Non attivo",
+				"tutti"		=>	gtext("Attivo / Non attivo"),
+				"Y"	=>	gtext("Attivo"),
+				"N"	=>	gtext("Non attivo"),
 			));
 		
 		$this->filters[] = array("acquistabile",null,array(
-			"tutti"		=>	"Acquistabile / Non acquistabile",
-			"1"	=>	"Acquistabile",
-			"0"	=>	"Non acquistabile",
+			"tutti"		=>	gtext("Acquistabile / Non acquistabile"),
+			"1"	=>	gtext("Acquistabile"),
+			"0"	=>	gtext("Non acquistabile"),
 		));
 		
 		

@@ -386,7 +386,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'labelString'=>	'Pubblicato?',
 					'entryClass'	=>	'form_input_text help_attivo',
-					'options'	=>	array('sì'=>'Y','no'=>'N'),
+					'options'	=>	array(gtext('sì')=>'Y',gtext('no')=>'N'),
 					'wrap'		=>	array(
 						null,
 						null,
@@ -409,7 +409,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_evidenza',
 					'labelString'=>	'In evidenza?',
-					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'options'	=>	array(gtext('no')=>'N',gtext('sì')=>'Y'),
 					'wrap'		=>	array(
 						null,
 						null,
@@ -420,7 +420,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_nuovo',
 					'labelString'=>	'Prodotto marcato come nuovo?',
-					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'options'	=>	array(gtext('no')=>'N',gtext('sì')=>'Y'),
 					'wrap'		=>	array(
 						null,
 						null,
@@ -435,7 +435,7 @@ class PagesModel extends GenericModel {
 				'in_promozione'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'In promozione?',
-					'options'	=>	array('no'=>'N','sì'=>'Y'),
+					'options'	=>	array(gtext('no')=>'N',gtext('sì')=>'Y'),
 					'className'	=>	'in_promozione form-control',
 					'entryClass'	=>	'form_input_text form_input_text_promozione',
 				),
@@ -536,14 +536,14 @@ class PagesModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Se settato su no, il prodotto non è acquistabile e viene nascosto nel frontend.<br />Può solo essere aggiunto come accessorio.</div>"
+						"<div class='form_notice'>".gtext("Se settato su no, il prodotto non è acquistabile e viene nascosto nel frontend.<br />Può solo essere aggiunto come accessorio.")."</div>"
 					),
 				),
 				'aggiungi_sempre_come_accessorio'		=>	array(
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Se settato su sì, il prodotto viene sempre aggiunto come accessorio alla creazione di qualsiasi nuovo prodotto.</div>"
+						"<div class='form_notice'>".gtext("Se settato su sì, il prodotto viene sempre aggiunto come accessorio alla creazione di qualsiasi nuovo prodotto.")."</div>"
 					),
 				),
 				'id_p'		=>	array(
@@ -736,7 +736,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'labelString'=>	'Carica header e footer?',
 					'entryClass'	=>	'form_input_text help_test',
-					'options'	=>	self::$attivoSiNo,
+					'options'	=>	gtextDeep(self::$attivoSiNo),
 					'reverse' => 'yes',
 					'wrap'		=>	array(
 						null,

@@ -75,6 +75,8 @@ class ReggroupsController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->m[$this->modelName]->addStrongCondition("both",'checkNotEmpty',"name");
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
 		$fields = "name";

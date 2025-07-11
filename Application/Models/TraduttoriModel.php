@@ -374,11 +374,13 @@ class TraduttoriModel extends GenericModel
 			$log->writeString("FINE TRADUZIONE $lingua TABELLA TESTI");
 	}
 	
-	public static function traduciTabellaTraduzioni($lingua, $idRecord = 0, $limit = 10, $log = null)
+	public static function traduciTabellaTraduzioni($lingua, $idRecord = 0, $limit = 10, $log = null, $daLingua = "")
 	{
 		if ($log)
 			$log->writeString("INIZIO TRADUZIONE $lingua TABELLA TRADUZIONI");
-
+		
+		$traduciDaLingua = $daLingua ? $daLingua : v("lingua_default_frontend");
+		
 		if (LingueModel::checkLinguaAttiva($lingua))
 		{
 			$tModel = new TraduzioniModel();
@@ -422,7 +424,7 @@ class TraduttoriModel extends GenericModel
 
 				if (trim($riga["principale"]["valore"]))
 				{
-					$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], v("lingua_default_frontend"), $lingua);
+					$traduzione = TraduttoriModel::getModulo()->traduci($riga["principale"]["valore"], $traduciDaLingua, $lingua);
 
 					if ($traduzione !== false)
 					{
@@ -432,7 +434,7 @@ class TraduttoriModel extends GenericModel
 							"valore"	=>	$traduzione,
 						));
 
-						$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".v("lingua_default_frontend").":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
+						$testoLog = "TRADOTTO RECORD ".$riga["principale"]["id_t"]."\n".$traduciDaLingua.":\n".$riga["principale"]["valore"]."\n$lingua:\n".$traduzione;
 
 						if ($log)
 							$log->writeString($testoLog);

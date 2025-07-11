@@ -67,7 +67,7 @@ class ReggroupsModel extends GenericModel {
 					'type'		=>	'Select',
 					'labelString'=>	'Il gruppo può essere applicato anche ai documenti?',
 					'entryClass'	=>	'form_input_text help_test',
-					'options'	=>	self::$attivoSiNo,
+					'options'	=>	gtextDeep(self::$attivoSiNo),
 					'reverse' => 'yes',
 					'wrap'		=>	array(
 						null,

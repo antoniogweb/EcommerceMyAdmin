@@ -53,7 +53,7 @@ class FormModel extends GenericModel {
 					'type'		=>	'Select',
 					'labelString'=>	'Utente attivo',
 					'className'	=>	'for_print form-control',
-					'options'	=>	array('sì'=>'0','no'=>'1'),
+					'options'	=>	array(gtext('sì')=>'0',gtext('no')=>'1'),
 				),
 				'stato'		=>	array(
 					'type'		=>	'Select',
@@ -271,7 +271,7 @@ class FormModel extends GenericModel {
 // 				),
 				'lingua'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	LingueModel::getValori(),
+					"options"	=>	gtextDeep(LingueModel::getValori()),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
@@ -392,7 +392,7 @@ class FormModel extends GenericModel {
 	{
 		$cl = new ClassiscontoModel();
 		
-		return array("0" => "-- Seleziona --") + $cl->clear()->select("id_classe,concat(titolo,' (',sconto,' %)') as label")->orderBy("sconto")->toList("id_classe","aggregate.label")->send();
+		return array("0" => gtext("-- Seleziona --")) + $cl->clear()->select("id_classe,concat(titolo,' (',sconto,' %)') as label")->orderBy("sconto")->toList("id_classe","aggregate.label")->send();
 	}
 	
 	public function selectCouponUsabile($id = 0)

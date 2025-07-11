@@ -5,6 +5,7 @@ $default = array(
 	"lingua"	=>	"",
 	"id_record"	=>	0,
 	"limit"		=>	10,
+	"da_lingua"	=>	"",
 );
 
 $params = array_merge($default, $options);
@@ -56,7 +57,7 @@ if (!$params["lingua"] && $params["azione"] != "traduci" && $params["azione"] !=
 $log = Files_Log::getInstance("log_traduzioni");
 
 if ($params["azione"] == "traduci-tabella-traduzioni")
-	TraduttoriModel::traduciTabellaTraduzioni($params["lingua"], $params["id_record"], $params["limit"], $log);
+	TraduttoriModel::traduciTabellaTraduzioni($params["lingua"], $params["id_record"], $params["limit"], $log, $params["da_lingua"]);
 
 if ($params["azione"] == "traduci-categorie")
 	TraduttoriModel::traduciTabellaContenuti("id_c", $params["lingua"], $params["id_record"], $params["limit"], $log);

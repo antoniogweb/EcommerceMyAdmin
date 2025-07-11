@@ -31,6 +31,7 @@ $options = getopt(null, array(
 	"lingua::",
 	"id_record::",
 	"limit::",
+	"da_lingua::",
 ));
 
 require_once(dirname(__FILE__) . "/../../index.php");
