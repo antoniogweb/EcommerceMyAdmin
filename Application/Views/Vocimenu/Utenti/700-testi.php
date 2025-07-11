@@ -3,7 +3,7 @@
 <li class="<?php echo tm($tm, array("testi","elementitema","temi"));?> treeview">
 	<a href="#">
 		<i class="fa fa-pencil"></i>
-		<span>Temi</span>
+		<span><?php echo gtext("Temi"); ?></span>
 	</a>
 	<ul class="treeview-menu">
 		<?php if (v("mostra_gestione_testi")) { ?>

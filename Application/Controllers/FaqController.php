@@ -44,7 +44,7 @@ class FaqController extends PagesController {
 		$this->orderBy = "pages.id_order";
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Attiva';
-		$this->filters = array(null,'title',array("attivo",null,SlideModel::$YN));
+		$this->filters = array(null,'title',array("attivo",null,gtextDeep(SlideModel::$YN)));
 		
 		$this->queryFields = "title,attivo,description";
 		

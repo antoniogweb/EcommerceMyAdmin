@@ -52,7 +52,7 @@ class TipicontenutoModel extends GenericModel
 			'entries' 	=> 	array(
 				'tipo'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	self::$tipi,
+					"options"	=>	gtextDeep(self::$tipi),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),

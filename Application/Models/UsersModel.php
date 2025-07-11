@@ -74,7 +74,7 @@ class UsersModel extends GenericModel {
 				'has_confirmed'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Utente attivo',
-					'options'	=>	array('sì'=>'0','no'=>'1'),
+					'options'	=>	array(gtext('sì')=>'0',gtext('no')=>'1'),
 				),
 				'password'			=>	array(
 					'type'	=>	'Password',

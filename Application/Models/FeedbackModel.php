@@ -70,7 +70,7 @@ class FeedbackModel extends GenericModel {
 				'attivo'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Pubblicato',
-					'options'	=>	array('1' => 'sì','0' => 'no'),
+					'options'	=>	array('1' => gtext('sì'),'0' => gtext('no')),
 					"reverse"	=>	"yes",
 				),
 				'voto'	=>	array(
@@ -303,7 +303,7 @@ class FeedbackModel extends GenericModel {
 	
 	public function attivo($record)
 	{
-		return $record["feedback"]["attivo"] ? "Sì" : "No";
+		return $record["feedback"]["attivo"] ? gtext("Sì") : gtext("No");
 	}
 	
 	public function daapprovare($record)

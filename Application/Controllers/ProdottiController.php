@@ -62,7 +62,7 @@ class ProdottiController extends PagesController {
 		{
 			$this->tableFields[] = 'marchio';
 			$this->head .= ',Marchio';
-			$filtroMarchio = array("tutti" => "Tutti") + $this->m["MarchiModel"]->filtro();
+			$filtroMarchio = array("tutti" => gtext("Tutti")) + $this->m["MarchiModel"]->filtro();
 			$this->filters[] = array("-id_marchio",null,$filtroMarchio);
 		}
 		
@@ -72,7 +72,7 @@ class ProdottiController extends PagesController {
 		{
 			$this->tableFields[] = 'tag';
 			$this->head .= ',Tag';
-			$filtroTag = array("tutti" => "Tutti") + $this->m["TagModel"]->filtro();
+			$filtroTag = array("tutti" => gtext("Tutti")) + $this->m["TagModel"]->filtro();
 			$fTag = array("id_tag",null,$filtroTag);
 			$this->filters[] = $fTag;
 		}
@@ -84,19 +84,19 @@ class ProdottiController extends PagesController {
 		{
 			$this->tableFields[] = 'nazioneCrud';
 			$this->head .= ',Nazione';
-			$fNaz = array("id_naz",null,array("tutti" => "Tutti") + $this->m["NazioniModel"]->filtro());
+			$fNaz = array("id_naz",null,array("tutti" => gtext("Tutti")) + $this->m["NazioniModel"]->filtro());
 			
 			$this->tableFields[] = 'regioneCrud';
 			$this->head .= ',Regione';
-			$fReg = array("id_reg",null,array("tutti" => "Tutti") + $this->m["RegioniModel"]->filtro());
+			$fReg = array("id_reg",null,array("tutti" => gtext("Tutti")) + $this->m["RegioniModel"]->filtro());
 			
 			$this->filters[] = $fNaz;
 			$this->filters[] = $fReg;
 		}
 		
-		$this->filters[] = array("in_promozione",null,SlideModel::$YN);
-		$this->filters[] = array("attivo",null,SlideModel::$YN);
-		$this->filters[] = array("in_evidenza",null,SlideModel::$YN);
+		$this->filters[] = array("in_promozione",null,gtextDeep(SlideModel::$YN));
+		$this->filters[] = array("attivo",null,gtextDeep(SlideModel::$YN));
+		$this->filters[] = array("in_evidenza",null,gtextDeep(SlideModel::$YN));
 		
 		$this->tableFields[] = 'PagesModel.inPromozioneText|pages.id_page';
 		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';

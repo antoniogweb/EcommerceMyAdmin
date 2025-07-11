@@ -49,14 +49,14 @@ class TraduzionicorrezioniController extends BaseController
 		if (!v("attiva_gestione_traduttori"))
 			$this->responseCode(403);
 		
-		$this->filters = array("parola_tradotta_da_correggere",array("lingua",null,array("tutti"	=>	gtext("Lingua")) + LingueModel::getSelectLingueNonPrincipali()));
+		$this->filters = array("parola_tradotta_da_correggere",array("lingua",null,array("tutti" => gtext("Lingua")) + gtextDeep(LingueModel::getSelectLingueNonPrincipali())));
 	}
 
 	public function main()
 	{
 		$this->shift();
 		
-		$this->mainFields = array("traduzioni_correzioni.parola_tradotta_da_correggere", "traduzioni_correzioni.parola_tradotta_corretta", "tipoCrud", "LingueModel::getTitoloDaCodice|traduzioni_correzioni.lingua");
+		$this->mainFields = array("traduzioni_correzioni.parola_tradotta_da_correggere", "traduzioni_correzioni.parola_tradotta_corretta", "tipoCrud", "getTitoloDaCodice");
 		$this->mainHead = "Testo da tradurre,Testo tradotto,Tipo,Lingua";
 		
 		$this->m[$this->modelName]->clear()->where(array(

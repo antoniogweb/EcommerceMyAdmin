@@ -971,8 +971,8 @@ class VariabiliModel extends GenericModel {
 	public function opzioniSiNo()
 	{
 		return array(
-			"1"	=>	"Sì",
-			"0"	=>	"No",
+			"1"	=>	gtext("Sì"),
+			"0"	=>	gtext("No"),
 		);
 	}
 	
