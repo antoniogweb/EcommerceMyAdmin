@@ -43,6 +43,14 @@ class ServiziController extends GenericsectionController {
 		
 		$this->filters = array(null,null,'title',array("attivo",null,SlideModel::$YN));
 		
-		$this->queryFields = "title,sottotitolo,attivo,description,immagine,immagine_2";
+		$this->queryFields = "title,alias,sottotitolo,attivo,description,immagine,immagine_2";
+		
+		if (v("attiva_gestione_servizi_in_evidenza"))
+		{
+			$this->queryFields .= ",in_evidenza";
+			
+			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
+			$this->head .= ",In evidenza";
+		}
 	}
 }

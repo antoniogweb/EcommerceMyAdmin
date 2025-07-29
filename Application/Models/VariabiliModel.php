@@ -177,7 +177,6 @@ class VariabiliModel extends GenericModel {
 		"abilita_codice_fiscale"	=>	1,
 		"controlla_codice_fiscale"	=>	1, // se impostare il check sul codice fiscale al checkout
 		"mostra_eventi"				=>	0,
-		"mostra_servizi"			=>	0, // Attiva la sezione servizi
 		"attiva_immagine_sfondo"	=>	0,
 		"attiva_tutte_le_categorie"	=>	0,
 		"url_elenco_slide"			=>	"slide/main",
@@ -765,6 +764,9 @@ class VariabiliModel extends GenericModel {
 		### FAQ ##
 		"mostra_faq"				=>	0, // se attivare o meno la sezione mostra_faq
 		"attiva_gestione_faq_in_evidenza"	=>	1, // se attivato, permette di gestire le FAQ in evidenza
+		### SERVIZI ##
+		"mostra_servizi"			=>	0, // Attiva la sezione servizi
+		"attiva_gestione_servizi_in_evidenza"	=>	0, // se attivato, permette di gestire i SERVIZI in evidenza
 		### TEMA ##
 		"theme_folder"				=>	"", // tema frontend
 		### TRADUZIONI ##

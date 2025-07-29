@@ -2,6 +2,8 @@
 
 <?php echo $form["title"];?>
 
+<?php echo $form["alias"];?>
+
 <?php echo $form["sottotitolo"];?>
 
 <?php echo $form["description"];?>

@@ -74,7 +74,7 @@ class TipicontenutoModel extends GenericModel
 	{
 		$c = new CategoriesModel();
 		
-		$sezioni = array(""=>"--") + $c->clear()->select("section, section as `Sezione|strtoupper`")->where(array(
+		$sezioni = array("-- root --"=>"--") + $c->clear()->select("section, section as `Sezione|strtoupper`")->where(array(
 			"ne"	=>	array(
 				"section"	=>	"",
 			),
